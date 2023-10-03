@@ -1,6 +1,7 @@
 .hlx/*
 coverage/*
 logs/*
-node_modules/*
+node_modules
 .DS_Store
 .idea
+storage-*
