@@ -24,6 +24,7 @@ What milo blocks could be used for current blocks
 | --- | --- | --- | --- |
 | `nav` | all pages | [`global navigation`](https://milo.adobe.com/docs/authoring/global-navigation) | ⚠️ In current example, known issues: `profile` component is not working as it requires extra configuration parameters (IMS, ...), `app launcher` has been disabled as it requires performance improvement |
 | `footer` | all pages | `global footer` |  |
+| `metadata` | all pages | `metadata` |  |
 | --- | --- | --- | --- |
 | `template-list` | 1433 ([example](https://www.adobe.com/express/learn/blog/winston-churchill-digital-presentation)) | [`section-metadata (n-up)`](https://main--milo--adobecom.hlx.page/docs/library/blocks/section-metadata) | layout gap? |
 | `banner` | 489 ([example](https://www.adobe.com/express/learn/blog/picking-the-best-ai-image-generator-for-your-small-business)) | [`aside`](https://main--milo--adobecom.hlx.page/docs/library/blocks/aside) |  |
