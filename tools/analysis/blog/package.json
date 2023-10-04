@@ -1,0 +1,16 @@
+{
+  "name": "investigate-express-blog-pages",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crawlee": "3.4.1",
+    "exceljs": "^4.3.0",
+    "jsdom": "22.1.0"
+  }
+}

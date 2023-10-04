@@ -3,7 +3,7 @@ Milo Migration for Blog Pages
 
 ## Quick Statistics
 
-* 785 unique Blog URLs (computed from https://www.adobe.com/robots.txt)
+* 793 unique Blog URLs (computed from https://www.adobe.com/robots.txt)
 * 17 unique blocks
 * Top 5 blocks (by usage):
   1. `template-list` (1433)
@@ -12,9 +12,9 @@ Milo Migration for Blog Pages
   4. `table-of-contents` (433)
   5. `embed` (354)
 * Overall low variance usage in top blocks (ex. for `template-list`, variances are: `horizontal` (13), `4columns` (3), `sixcols` (5))
-* 8 blocks used <= 20:
-  * `quotes`, `sticky-promo-bar`, `icon-list`, `video`, `make-a-project`, `link-list`, `hero-animation`
-* 10 pages using a "wrong" block and would require a fix (see details below)
+* 7 blocks used <= 20:
+  * `animation`, `quotes`, `sticky-promo-bar`, `icon-list`, `video`, `make-a-project`, `link-list`, `hero-animation`
+* 11 pages using a "wrong" block and would require a fix (see details below)
 
 ## Blocks Mapping to Milo
 
@@ -52,6 +52,8 @@ What milo blocks could be used for current blocks
 
 ## Statistics Details
 
+Blocks data statistics available as an [Excel Workbook](https://adobe.sharepoint.com/:x:/r/sites/adobecom/Shared%20Documents/express/drafts/catalan/analysis/blog-blocks-data.xlsx?d=w35b64f7d2a8a4329afb2e2b376f07d51&csf=1&web=1&e=BKzJS5)
+
 ### Unknown blocks
 
 | block | URLs |
@@ -65,6 +67,8 @@ What milo blocks could be used for current blocks
 | `author` | https://www.adobe.com/express/learn/blog/2019-graphic-design-trends-and-spark-post-templates |
 | `how-do-i-resize-an-image-for-a-youtube-banner` | https://www.adobe.com/express/learn/blog/design-youtube-banner |
 | `adobe-spark-for-education` | https://www.adobe.com/express/learn/blog/introducing-adobe-spark-for-education |
+| `icon` | https://www.adobe.com/express/learn/blog/everything-you-need-to-know-about-facebook-live |
+
 
 
 
@@ -72,12 +76,37 @@ What milo blocks could be used for current blocks
 
 ### Get Blog Page URLs
 
-TODO
+1. Get all adobe.com express URLs:
+
+  > Requires [Franklin Bulk CLI](https://github.com/catalan-adobe/franklin-bulk-cli)
+
+  ```
+  franklin-bulk importer crawl \
+    -o https://www.adobe.com/express/sitemap-index.xml \
+    -f adobecom-express-all-urls.txt
+  ```
+
+2. Filter blog URLs:
+
+  ```
+  grep 'express' adobecom-express-all-urls.txt \
+    | grep 'blog/' \
+    | sort | uniq \
+    > adobecom-express-blog-all-urls.txt
+  ```
 
 ### Collect Blocks Data
 
-TODO
+  ```
+  node crawl-blog-pages-data.js adobecom-express-blog-all-urls.txt
+  ```
+
+  This will generate raw data under `storage-blog-blocks2/datasets/blog-blocks-data`
 
 ### Generate Blocks Statistics
 
-TODO
+  ```
+  node process-blocks-dataset.js
+  ```
+
+  This will generate statistical data in `blog-blocks-data.xlsx`
