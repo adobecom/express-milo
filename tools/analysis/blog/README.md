@@ -6,14 +6,14 @@ Milo Migration for Blog Pages
 * 793 unique Blog URLs (computed from https://www.adobe.com/robots.txt)
 * 17 unique blocks
 * Top 5 blocks (by usage):
-  1. `template-list` (1433)
-  2. `banner` (489)
-  3. `blog-posts` (480)
-  4. `table-of-contents` (433)
+  1. `template-list` (1451)
+  2. `banner` (497)
+  3. `blog-posts` (487)
+  4. `table-of-contents` (438)
   5. `embed` (354)
 * Overall low variance usage in top blocks (ex. for `template-list`, variances are: `horizontal` (13), `4columns` (3), `sixcols` (5))
 * 7 blocks used <= 20:
-  * `animation`, `quotes`, `sticky-promo-bar`, `icon-list`, `video`, `make-a-project`, `link-list`, `hero-animation`
+  * `animation`, `quotes`, `sticky-promo-bar`, `icon-list`, `make-a-project`, `link-list`, `hero-animation`
 * 11 pages using a "wrong" block and would require a fix (see details below)
 
 ## Blocks Mapping to Milo
@@ -39,7 +39,6 @@ What milo blocks could be used for current blocks
 | `sticky-promo-bar` | 14 ([example](https://www.adobe.com/express/learn/blog/whats-new-in-adobe-creative-cloud-express)) | ?? | I don't see any Milo block doing that OOTB |
 | `link-list` | 8 ([example](https://www.adobe.com/express/learn/blog/tags/small-business)) | ?? | I don't see any Milo block doing that OOTB |
 | `icon-list` | 5 ([example](https://www.adobe.com/express/learn/blog/creative-cloud-express-features)) | Combination of fragments + section metadata + icon-block | for the 5 occurences it seems to be the localized version of the same content |
-| `video` | 4 ([example](https://www.adobe.com/express/learn/blog/houston-we-have-winners-see-the-sparks-that-earned-nasas-approval)) | Milo supports video embeds OOTB without having to explicitely add any |  |
 | `quotes` | 2 ([example](https://www.adobe.com/express/learn/blog/hope-quotes)) | Multiple [`quote`](https://main--milo--adobecom.hlx.page/docs/library/blocks/quote) blocks |
 | `make-a-project` | 1 ([example](https://www.adobe.com/express/learn/blog/welcome-to-adobe-spark)) | <TODO> |  |
 | `hero-animation` | 1 ([example](https://www.adobe.com/express/learn/blog/tags/uk)) | [`marquee`](https://main--milo--adobecom.hlx.page/docs/library/blocks/marquee) |
@@ -68,7 +67,7 @@ Blocks data statistics available as an [Excel Workbook](https://adobe.sharepoint
 | `how-do-i-resize-an-image-for-a-youtube-banner` | https://www.adobe.com/express/learn/blog/design-youtube-banner |
 | `adobe-spark-for-education` | https://www.adobe.com/express/learn/blog/introducing-adobe-spark-for-education |
 | `icon` | https://www.adobe.com/express/learn/blog/everything-you-need-to-know-about-facebook-live |
-
+| `video` | https://www.adobe.com/express/learn/blog/houston-we-have-winners-see-the-sparks-that-earned-nasas-approval |
 
 
 
