@@ -72,6 +72,15 @@
       "includePaths": [
         "**.docx**"
       ]
+    },
+    {
+      "containerId": "tools",
+      "id": "sendtocaas",
+      "title": "Send to CaaS",
+      "environments": [ "dev", "preview", "live", "prod" ],
+      "event": "send-to-caas",
+      "excludePaths": ["https://milo.adobe.com/tools/caas**", "*.json"]
     }
+
   ]
 }
