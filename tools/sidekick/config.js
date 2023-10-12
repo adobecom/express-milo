@@ -19,8 +19,7 @@
         text: 'Blocks',
         paths: [
           'https://main--milo--adobecom.hlx.page/docs/library/blocks.json',
-          'https://main--express-milo--adobecom.hlx.page/docs/library/blocks.json',
-        ]
+        ],
       },
     ],
     plugins: [
@@ -30,34 +29,13 @@
         button: {
           text: 'Send to CaaS',
           action: async (_, sk) => {
+            // eslint-disable-next-line import/no-unresolved
             const { default: sendToCaaS } = await import('https://milo.adobe.com/tools/send-to-caas/sidekick.js');
             sendToCaaS(_, sk);
           },
         },
       },
       // TOOLS ---------------------------------------------------------------------
-      {
-        id: 'library',
-        condition: () => true,
-        button: {
-          text: 'Library',
-          action: (_, s) => {
-            const domain = 'https://main--milo--adobecom.hlx.page';
-            const { config } = s;
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.onload = () => {
-              const skEvent = new CustomEvent(
-                'hlx:library-loaded',
-                { detail: { domain, libraries: config.libraries } },
-              );
-              document.dispatchEvent(skEvent);
-            };
-            script.src = `${domain}/libs/ui/library/library.js`;
-            document.head.appendChild(script);
-          },
-        },
-      },
       {
         id: 'tools',
         condition: (s) => s.isEditor(),

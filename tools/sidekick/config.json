@@ -1,4 +1,6 @@
 {
+  "project": "adobe-express",
+  "host": "www.adobe.com",
   "plugins": [
     {
       "id": "library",
