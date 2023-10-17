@@ -94,7 +94,8 @@
     margin: 0;
   }
 
-  .blog-article div.section > div > p:not(.button-container), .blog-article div.section > div > h2,
+  .blog-article div.section > div > p:not(.button-container), /*.blog-article div.section > div:not(.aside), */
+  .blog-article div.section > div > h2,
   .blog-article div.section > div > h3, .blog-article div.section > div > h4,
   .blog-article div.section > div > h5, .blog-article div.section > div > ul,
   .blog-article div.section > div > ol, .blog-article div.section > div > .table-of-contents,
@@ -105,6 +106,9 @@
     text-align: left;
   }
 
+  .blog-article div.section > div > p:has(#caas) {
+    max-width: unset;
+  }
 
 
 
@@ -116,8 +120,13 @@
 
 
   .blog main div.section h2, .blog main div.section h3,
-  .blog main div.section h2 + p:not(.button-container), .blog main div.section h3 + p:not(.button-container)  {
+  .blog main div.section h2 + p:not(.button-container), 
+  .blog main div.section h3 + p:not(.button-container) {
     text-align: left;
+  }
+
+  .blog main div.section > div.aside * {
+    text-align: center;
   }
 
   .blog main .section h3 {

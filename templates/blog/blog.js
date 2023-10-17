@@ -196,6 +196,8 @@ async function decorateBlogPage() {
     }
     $div.append($blogHeader);
     if ($heroPicture) {
+      // TODO - remove this disgraceful hack!
+      $heroPicture.querySelector('img').setAttribute('width', 2000);
       $div.append($heroPicture);
     }
     decorateBlogLinkedImages();
