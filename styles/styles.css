@@ -6,11 +6,3 @@
  * 
  *
  */
-
-body.blog main h1:first-child {
-  display: none;
-}
-
-body.blog main picture:first-child {
-  display: none;
-}
