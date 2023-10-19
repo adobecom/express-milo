@@ -5,7 +5,6 @@ const metadataMap = {
   'og:image': 'Image',
   'og:description': 'Description',
   'primaryproductname': 'Primaryproductname',
-  'theme': 'Theme',
   'show-free-plan': 'Show Free Plan',
   'author': 'Author',
   'publication-date': 'Publication Date',
@@ -91,9 +90,17 @@ export default {
     const u = new URL(params.originalURL);
     const ORIGIN = u.origin;
 
-    // /**
-    //  * header / hero
-    //  */
+    /**
+     * header / hero
+     */
+    const heroDiv = document.createElement('div');
+    heroDiv.append(document.querySelector('main h1'));
+    heroDiv.append(document.querySelector('main picture'));
+    const hero = WebImporter.DOMUtils.createTable([
+      ['hero'],
+      [heroDiv],
+    ], document);
+    main.prepend(hero);
 
     // const hero = document.querySelector('.hero');
     // if (hero) {
@@ -109,9 +116,9 @@ export default {
     //   hero.remove();
     // }
 
-    // /**
-    //  * content
-    //  */
+    /**
+     * content
+     */
 
     // table-of-contents -> toc
     const toc = document.querySelector('.table-of-contents');
