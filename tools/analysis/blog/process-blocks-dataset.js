@@ -14,6 +14,9 @@ const XLSX_BLOG_BLOCKS_SHEET_HEADERS = [ 'name', 'total usage', 'js exists', 'cs
 const XLSX_BLOG_MP4_LINKS_SHEET_NAME = 'mp4 links';
 const XLSX_BLOG_MP4_LINKS_SHEET_HEADERS = [ 'url', 'mp4 link', 'status' ];
 
+const XLSX_BLOG_TAGS_SHEET_NAME = 'tags';
+const XLSX_BLOG_TAGS_SHEET_HEADERS = [ 'tag', 'total usage' ];
+
 (async() => {
   const jsonsInDir = fs.readdirSync(JSON_FOLDER).filter(file => path.extname(file) === '.json');
   
@@ -24,10 +27,13 @@ const XLSX_BLOG_MP4_LINKS_SHEET_HEADERS = [ 'url', 'mp4 link', 'status' ];
   const sheet2 = workbook.addWorksheet(XLSX_BLOG_MP4_LINKS_SHEET_NAME);
   sheet2.addRow(XLSX_BLOG_MP4_LINKS_SHEET_HEADERS);
   sheet2.autoFilter = `A1:${String.fromCharCode(97 + (XLSX_BLOG_MP4_LINKS_SHEET_HEADERS.length - 1))}1`;
+  const sheet3 = workbook.addWorksheet(XLSX_BLOG_TAGS_SHEET_NAME);
+  sheet3.addRow(XLSX_BLOG_TAGS_SHEET_HEADERS);
+  sheet3.autoFilter = `A1:${String.fromCharCode(97 + (XLSX_BLOG_TAGS_SHEET_HEADERS.length - 1))}1`;
 
   const blocksData = { blocks: {} };
-
   const linksToCheck = { all: [], mp4: [] };
+  const tagsData = { tags: {}, total: 0 };
 
   for (let i = 0; i < jsonsInDir.length; i++) {
     const file = jsonsInDir[i];
@@ -74,6 +80,7 @@ const XLSX_BLOG_MP4_LINKS_SHEET_HEADERS = [ 'url', 'mp4 link', 'status' ];
       /**
        * process links
        */
+
       if (json.links) {
         console.log('process links')
         for (let i = 0; i < json.links.length; i++) {
@@ -101,6 +108,28 @@ const XLSX_BLOG_MP4_LINKS_SHEET_HEADERS = [ 'url', 'mp4 link', 'status' ];
           }
         }
       }
+
+
+      /**
+       * process tags
+       */
+
+      json.meta.forEach(m => {
+        if (m.name?.includes('tag') || m.property?.includes('tag')) {
+          console.log(m);
+          if (!tagsData.tags[m.content]) {
+            tagsData.tags[m.content] = {
+              total: 1,
+              urls: [json.url],
+            };
+            tagsData.total++;
+          } else {
+            tagsData.tags[m.content].total++;
+            tagsData.tags[m.content].urls.push(json.url);
+          }
+        }
+      });
+
     } catch(e) {
       console.log('error', e);
     }
@@ -120,6 +149,12 @@ const XLSX_BLOG_MP4_LINKS_SHEET_HEADERS = [ 'url', 'mp4 link', 'status' ];
         }
     });
     column.width = maxLength < 10 ? 10 : maxLength;
+  });
+
+  // add tags data to sheet3
+  Object.keys(tagsData.tags).forEach(tag => {
+    const td = tagsData.tags[tag];
+    sheet3.addRow([ tag, td.total ]);
   });
 
   blocksData.total = Object.keys(blocksData.blocks).length;
