@@ -227,10 +227,10 @@ async function loadFEDS() {
         surfaceVersion: '1',
       }
       : {},
-    breadcrumbs: {
-      showLogo: true,
-      links: await buildBreadCrumbArray(),
-    },
+    // breadcrumbs: {
+    //   showLogo: true,
+    //   links: await buildBreadCrumbArray(),
+    // },
   };
 
   window.addEventListener('feds.events.experience.loaded', async () => {
@@ -305,15 +305,15 @@ async function loadFEDS() {
   });
 }
 
-if (!window.hlx || window.hlx.gnav) {
+if (true /*!window.hlx || window.hlx.gnav*/) {
   loadIMS();
   loadFEDS();
-  setTimeout(() => {
-    import('./google-yolo.js').then((mod) => {
-      mod.default();
-    });
-  }, 4000);
+  // setTimeout(() => {
+  //   import('./google-yolo.js').then((mod) => {
+  //     mod.default();
+  //   });
+  // }, 4000);
 }
 /* Core Web Vitals RUM collection */
 
-sampleRUM('cwv');
+// sampleRUM('cwv');

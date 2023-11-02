@@ -40,3 +40,19 @@ export const [setLibs, getLibs] = (() => {
 export async function useMiloSample() {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 }
+
+/**
+ * Express ports
+ */
+
+export async function loadGnav() {
+  const { getMetadata, loadScript } = await import(`${getLibs()}/utils/utils.js`);
+
+  const usp = new URLSearchParams(window.location.search);
+  const gnav = usp.get('gnav') || getMetadata('gnav');
+
+  const gnavUrl = '/express/scripts/gnav.js';
+  if (!(gnav === 'off' || document.querySelector(`head script[src="${gnavUrl}"]`))) {
+    loadScript(gnavUrl, 'module');
+  }
+}

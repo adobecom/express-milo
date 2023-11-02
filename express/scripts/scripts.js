@@ -984,6 +984,7 @@ export function loadScript(url, callback, type) {
   if (type) {
     $script.setAttribute('type', type);
   }
+  // $script.setAttribute('crossorigin', 'anonymous');
   $head.append($script);
   $script.onload = callback;
   return $script;
@@ -1054,9 +1055,9 @@ function loadGnav() {
   const gnav = usp.get('gnav') || getMetadata('gnav');
 
   const gnavUrl = '/express/scripts/gnav.js';
-  if (!(gnav === 'off' || document.querySelector(`head script[src="${gnavUrl}"]`))) {
+  // if (!(gnav === 'off' || document.querySelector(`head script[src="${gnavUrl}"]`))) {
     loadScript(gnavUrl, null, 'module');
-  }
+  // }
 }
 
 function decoratePageStyle() {
@@ -2179,29 +2180,29 @@ function decorateLegalCopy(main) {
   });
 }
 
-function loadLana(options = {}) {
-  if (window.lana) return;
+// function loadLana(options = {}) {
+//   if (window.lana) return;
 
-  const lanaError = (e) => {
-    window.lana.log(e.reason || e.error || e.message, {
-      errorType: 'i',
-    });
-  };
+//   const lanaError = (e) => {
+//     window.lana.log(e.reason || e.error || e.message, {
+//       errorType: 'i',
+//     });
+//   };
 
-  window.lana = {
-    log: async (...args) => {
-      await import('./lana.js');
-      window.removeEventListener('error', lanaError);
-      window.removeEventListener('unhandledrejection', lanaError);
-      return window.lana.log(...args);
-    },
-    debug: false,
-    options,
-  };
+//   window.lana = {
+//     log: async (...args) => {
+//       await import('./lana.js');
+//       window.removeEventListener('error', lanaError);
+//       window.removeEventListener('unhandledrejection', lanaError);
+//       return window.lana.log(...args);
+//     },
+//     debug: false,
+//     options,
+//   };
 
-  window.addEventListener('error', lanaError);
-  window.addEventListener('unhandledrejection', lanaError);
-}
+//   window.addEventListener('error', lanaError);
+//   window.addEventListener('unhandledrejection', lanaError);
+// }
 
 function removeMetadata() {
   document.head.querySelectorAll('meta').forEach((meta) => {
@@ -2264,85 +2265,86 @@ async function loadArea(area = document) {
     decorateHeaderAndFooter();
   }
 
-  window.hlx = window.hlx || {};
-  const params = new URLSearchParams(window.location.search);
-  ['martech', 'gnav', 'testing'].forEach((p) => {
-    window.hlx[p] = params.get('lighthouse') !== 'on' && params.get(p) !== 'off';
-  });
-  window.hlx.init = true;
+  // await loadPostLCP();
+  // window.hlx = window.hlx || {};
+  // const params = new URLSearchParams(window.location.search);
+  // ['martech', 'gnav', 'testing'].forEach((p) => {
+  //   window.hlx[p] = params.get('lighthouse') !== 'on' && params.get(p) !== 'off';
+  // });
+  // window.hlx.init = true;
 
-  setTheme();
-  if (main) {
-    const language = getLanguage(getLocale(window.location));
-    const langSplits = language.split('-');
-    langSplits.pop();
-    const htmlLang = langSplits.join('-');
-    document.documentElement.setAttribute('lang', htmlLang);
+  // setTheme();
+  // if (main) {
+  //   const language = getLanguage(getLocale(window.location));
+  //   const langSplits = language.split('-');
+  //   langSplits.pop();
+  //   const htmlLang = langSplits.join('-');
+  //   document.documentElement.setAttribute('lang', htmlLang);
 
-    removeIrrelevantSections(main);
-  }
-  if (window.hlx.testing) await decorateTesting();
+  //   removeIrrelevantSections(main);
+  // }
+  // if (window.hlx.testing) await decorateTesting();
 
-  if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
-    const { default: replaceContent } = await import('./content-replace.js');
-    await replaceContent(main);
-  }
+  // if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
+  //   const { default: replaceContent } = await import('./content-replace.js');
+  //   await replaceContent(main);
+  // }
 
-  if (getMetadata('template-search-page') === 'Y') {
-    const { default: redirect } = await import('./template-redirect.js');
-    await redirect();
-  }
+  // if (getMetadata('template-search-page') === 'Y') {
+  //   const { default: redirect } = await import('./template-redirect.js');
+  //   await redirect();
+  // }
 
-  let sections = [];
-  if (main) {
-    loadLana({ clientId: 'express' });
-    sections = await decorateMain(main);
-    decoratePageStyle();
-    decorateLegalCopy(main);
-    addJapaneseSectionHeaderSizing();
-    displayEnv();
-    displayOldLinkWarning();
-    wordBreakJapanese();
+  // let sections = [];
+  // if (main) {
+  //   // loadLana({ clientId: 'express' });
+  //   sections = await decorateMain(main);
+  //   decoratePageStyle();
+  //   decorateLegalCopy(main);
+  //   addJapaneseSectionHeaderSizing();
+  //   displayEnv();
+  //   displayOldLinkWarning();
+  //   wordBreakJapanese();
 
-    if (window.hlx.testing) {
-      const target = checkTesting();
-      if (useAlloy) {
-        document.querySelector('body').classList.add('personalization-container');
-        // target = true;
-      }
-      if (target) {
-        hideBody();
-        setTimeout(() => {
-          unhideBody();
-        }, 3000);
-      }
-    }
-  }
+  //   if (window.hlx.testing) {
+  //     const target = checkTesting();
+  //     if (useAlloy) {
+  //       document.querySelector('body').classList.add('personalization-container');
+  //       // target = true;
+  //     }
+  //     if (target) {
+  //       hideBody();
+  //       setTimeout(() => {
+  //         unhideBody();
+  //       }, 3000);
+  //     }
+  //   }
+  // }
 
-  const areaBlocks = [];
-  if (blog) await loadAndExecute('/express/styles/blog.css', '/express/scripts/blog.js');
-  for (const section of sections) {
-    const loaded = section.blocks.map((block) => loadBlock(block));
-    areaBlocks.push(...section.blocks);
+  // const areaBlocks = [];
+  // if (blog) await loadAndExecute('/express/styles/blog.css', '/express/scripts/blog.js');
+  // for (const section of sections) {
+  //   const loaded = section.blocks.map((block) => loadBlock(block));
+  //   areaBlocks.push(...section.blocks);
 
-    // Only move on to the next section when all blocks are loaded.
-    // eslint-disable-next-line no-await-in-loop
-    await Promise.all(loaded);
-    // Post LCP operations.
-    if (isDoc && section.el.dataset.idx === '0') loadPostLCP();
+  //   // Only move on to the next section when all blocks are loaded.
+  //   // eslint-disable-next-line no-await-in-loop
+  //   await Promise.all(loaded);
+  //   // Post LCP operations.
+  //   if (isDoc && section.el.dataset.idx === '0') loadPostLCP();
 
-    // Show the section when all blocks inside are done.
-    delete section.el.dataset.status;
-    delete section.el.dataset.idx;
-  }
-  const footer = document.querySelector('footer');
-  delete footer.dataset.status;
+  //   // Show the section when all blocks inside are done.
+  //   delete section.el.dataset.status;
+  //   delete section.el.dataset.idx;
+  // }
+  // const footer = document.querySelector('footer');
+  // delete footer.dataset.status;
 
-  loadLazy(main);
+  // loadLazy(main);
 
-  if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
-    import('../../tools/preview/preview.js');
-  }
+  // if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
+  //   import('../../tools/preview/preview.js');
+  // }
 }
 
 (async function loadPage() {
