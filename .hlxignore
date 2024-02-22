@@ -1,0 +1,5 @@
+.*
+*.md
+LICENSE
+test/*
+!tools/sidekick/config.json
