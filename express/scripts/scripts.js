@@ -36,6 +36,7 @@ const CONFIG = {
   locales: {
     '': { ietf: 'en-US', tk: 'jdq5hay.css' },
     br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
+    // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hans-CN
     cn: { ietf: 'zh-CN', tk: 'qxw8hzm' },
     de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
     dk: { ietf: 'da-DK', tk: 'aaz7dvd.css' },
@@ -50,6 +51,7 @@ const CONFIG = {
     nl: { ietf: 'nl-NL', tk: 'cya6bri.css' },
     no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
     se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
+    // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hant-TW
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   },
@@ -79,7 +81,7 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, setConfig, getMetadata, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, getMetadata, loadLana, createTag } = await import(`${miloLibs}/utils/utils.js`);
 
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
@@ -100,8 +102,8 @@ const miloLibs = setLibs(LIBS);
   loadLana({ clientId: 'express' });
   console.log(config);
 
-  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark').toLowerCase()) && document.body.dataset.device === 'mobile';
-  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating').toLowerCase());
+  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark')?.toLowerCase()) && document.body.dataset.device === 'mobile';
+  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating')?.toLowerCase());
   const runGating = () => {
     // TODO add mobile-beta stuff
     // import('./mobile-beta-gating.js').then(async (gatingScript) => {
