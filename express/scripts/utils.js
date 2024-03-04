@@ -24,6 +24,7 @@ export const [setLibs, getLibs] = (() => {
         if (branch === 'local') return 'http://localhost:6456/libs';
         return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
       })();
+      window.express.miloLibs = libs;
       return libs;
     }, () => libs,
   ];
@@ -36,9 +37,65 @@ export const [setLibs, getLibs] = (() => {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+export function readBlockConfig(block) {
+  const config = {};
+  block.querySelectorAll(':scope>div').forEach(($row) => {
+    if ($row.children) {
+      const $cols = [...$row.children];
+      if ($cols[1]) {
+        const $value = $cols[1];
+        const name = toClassName($cols[0].textContent.trim());
+        let value;
+        if ($value.querySelector('a')) {
+          const $as = [...$value.querySelectorAll('a')];
+          if ($as.length === 1) {
+            value = $as[0].href;
+          } else {
+            value = $as.map(($a) => $a.href);
+          }
+        } else if ($value.querySelector('p')) {
+          const $ps = [...$value.querySelectorAll('p')];
+          if ($ps.length === 1) {
+            value = $ps[0].textContent.trim();
+          } else {
+            value = $ps.map(($p) => $p.textContent.trim());
+          }
+        } else value = $row.children[1].textContent.trim();
+        config[name] = value;
+      }
+    }
+  });
+  return config;
+}
+
+export function removeIrrelevantSections(area) {
+  if (!area) return;
+  area.querySelectorAll(':scope > div').forEach((section) => {
+    const sectionMetaBlock = section.querySelector('div.section-metadata');
+    if (sectionMetaBlock) {
+      const sectionMeta = readBlockConfig(sectionMetaBlock);
+
+      // section meant for different device
+      let sectionRemove = !!(sectionMeta.audience
+          && sectionMeta.audience.toLowerCase() !== document.body.dataset?.device);
+
+      // section visibility steered over metadata
+      if (!sectionRemove && sectionMeta.showwith !== undefined) {
+        let showWithSearchParam = null;
+        if (!['www.adobe.com'].includes(window.location.hostname)) {
+          const urlParams = new URLSearchParams(window.location.search);
+          showWithSearchParam = urlParams.get(`${sectionMeta.showwith.toLowerCase()}`)
+              || urlParams.get(`${sectionMeta.showwith}`);
+        }
+        sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(sectionMeta.showwith.toLowerCase()) !== 'on';
+      }
+      if (sectionRemove) section.remove();
+    }
+  });
+}
 
 export function decorateArea(area = document) {
-
+  removeIrrelevantSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
