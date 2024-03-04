@@ -63,12 +63,12 @@ sitemaps:
       taiwan:
         source: /tw/express/query-index.json
         destination: /tw/express/sitemap.xml
-        hreflang: zh-Hant
+        hreflang: zh-TW
         alternate: /tw/{path}
       china:
         source: /cn/express/query-index.json
         destination: /cn/express/sitemap.xml
-        hreflang: zh-Hans
+        hreflang: zh-CN
         alternate: /cn/{path}
       denmark:
         source: /dk/express/query-index.json
@@ -187,14 +187,14 @@ sitemaps:
       taiwan:
         source: /tw/express/templates/default/metadata.json?sheet=sitemap
         destination: /tw/express/templates/sitemap.xml
-        hreflang: zh-Hant
+        hreflang: zh-TW
         alternate: /tw/{path}
       netherlands:
         source: /nl/express/templates/default/metadata.json?sheet=sitemap
         destination: /nl/express/templates/sitemap.xml
         hreflang: nl
         alternate: /nl/{path}
-  
+
   colors:
     origin: https://www.adobe.com
     languages:
