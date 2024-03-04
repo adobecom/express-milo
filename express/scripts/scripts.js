@@ -18,11 +18,18 @@ const STYLES = '';
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
 const LIBS = '/libs';
 
+window.express = {};
+
 // Add any config options.
 const CONFIG = {
-  // codeRoot: '',
-  // contentRoot: '',
-  // imsClientId: 'college',
+  codeRoot: '/express',
+  contentRoot: '/express',
+  jarvis: {
+    id: 'Acom_Express',
+    version: '1.0',
+    onDemand: true,
+  },
+  imsClientId: 'AdobeExpressWeb',
   // geoRouting: 'off',
   // fallbackRouting: 'off',
   decorateArea,
@@ -46,6 +53,7 @@ const CONFIG = {
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   },
+  links: 'on',
 };
 
 // Decorate the page with site specific needs.
@@ -71,8 +79,43 @@ const miloLibs = setLibs(LIBS);
 }());
 
 (async function loadPage() {
-  const { loadArea, setConfig } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadArea, setConfig, getMetadata, loadLana } = await import(`${miloLibs}/utils/utils.js`);
+
+  const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
+  const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
+  if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
+      (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
+
   const config = setConfig({ ...CONFIG, miloLibs });
+
+  if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
+    const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
+    document.head.append(meta);
+    // TODO add with gnav task
+    // import('./gnav.js').then((gnav) => gnav.buildBreadCrumbArray(getConfig().locale.prefix.replaceAll('/', ''))).then((breadcrumbs) => {
+    //   if (breadcrumbs && breadcrumbs.length) document.body.classList.add('breadcrumbs-spacing');
+    // });
+  } else if (getMetadata('breadcrumbs') === 'on' && !!getMetadata('breadcrumbs-base') && (!!getMetadata('short-title') || !!getMetadata('breadcrumbs-page-title'))) document.body.classList.add('breadcrumbs-spacing');
+
+  loadLana({ clientId: 'express' });
   console.log(config);
+
+  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark').toLowerCase()) && document.body.dataset.device === 'mobile';
+  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating').toLowerCase());
+  const runGating = () => {
+    // TODO add mobile-beta stuff
+    // import('./mobile-beta-gating.js').then(async (gatingScript) => {
+    //   gatingScript.default();
+    // });
+  };
+
+  isMobileGating && rushGating && runGating();
+
   await loadArea();
+
+  isMobileGating && !rushGating && runGating();
+
+  import('./express-delayed.js').then((mod) => {
+    mod.default();
+  });
 }());
