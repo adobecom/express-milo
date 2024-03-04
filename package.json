@@ -9,7 +9,7 @@
     "test:watch": "npm test -- --watch",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint .",
-    "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'"
+    "lint:css": "stylelint 'blocks/**/*.css' 'express/styles/*.css'"
   },
   "repository": {
     "type": "git",
