@@ -1,8 +1,5 @@
 import { getLibs } from './utils.js';
-let createTag, getMetadata;
-const importUtils = () => import(`${getLibs()}/utils/utils.js`).then(module => {
-    ({ createTag, getMetadata } = module);
-});
+let { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`)
 
 function loadExpressProduct() {
     if (!window.hlx.preload_product) return;
@@ -66,7 +63,6 @@ const PEP_DELAY = 3000;
  * Executes everything that happens a lot later, without impacting the user experience.
  */
 export default async function loadDelayed(DELAY = 15000) {
-    await importUtils();
     if (await canPEP()) {
         const { default: loadLoginUserAutoRedirect } = await import('../features/direct-path-to-product/direct-path-to-product.js');
         return new Promise((resolve) => {
