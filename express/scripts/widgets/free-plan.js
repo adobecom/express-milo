@@ -9,9 +9,6 @@ const utilsProm = import(`${getLibs()}/utils/utils.js`).then((mod) => {
 });
 await Promise.all([placeholdersProm, utilsProm]);
 
-
-import {createOptimizedPicture} from "../utils/media.js";
-
 const typeMap = {
   branded: [
     'free-plan-check-1',
