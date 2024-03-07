@@ -68,8 +68,10 @@ export function readBlockConfig(block) {
   return config;
 }
 
-export function removeIrrelevantSections(area) {
+export async function removeIrrelevantSections(area) {
   if (!area) return;
+  const miloLibs = getLibs();
+  const { getMetadata } = await import(`${miloLibs}/utils/utils.js`);
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -146,6 +148,49 @@ export function lazyLoadLottiePlayer($block = null) {
       });
     }
   }
+}
+
+async function loadAEMGnav() {
+  const miloLibs = getLibs();
+  const { createTag, getMetadata, loadScript } = await import(`${miloLibs}/utils/utils.js`);
+  const main = document.querySelector('main');
+  const header = document.createElement('header');
+  const footer = document.createElement('footer');
+  main.parentNode.insertBefore(header, main);
+  main.parentNode.insertBefore(footer, main.nextSibling);
+
+  header.addEventListener('click', (event) => {
+    if (event.target.id === 'feds-topnav') {
+      const root = window.location.href.split('/express/')[0];
+      window.location.href = `${root}/express/`;
+    }
+  });
+
+  const headerMeta = getMetadata('header');
+  if (headerMeta !== 'off') header.innerHTML = '<div id="feds-header"></div>';
+  else header.remove();
+  const footerMeta = getMetadata('footer');
+  if (footerMeta !== 'off') {
+    footer.innerHTML = `
+      <div id="feds-footer"></div>
+    `;
+    footer.setAttribute('data-status', 'loading');
+  } else footer.remove();
+
+  const usp = new URLSearchParams(window.location.search);
+  const gnav = usp.get('gnav') || getMetadata('gnav');
+
+  const gnavUrl = '/express/scripts/gnav.js';
+  if (!(gnav === 'off' || document.querySelector(`head script[src="${gnavUrl}"]`))) {
+    loadScript(gnavUrl, 'module');
+  }
+}
+
+export function listenMiloEvents() {
+  const lcpLoadedHandler = async () => {
+    await loadAEMGnav();
+  };
+  window.addEventListener('milo:LCP:loaded', lcpLoadedHandler);
 }
 
 export function decorateArea(area = document) {

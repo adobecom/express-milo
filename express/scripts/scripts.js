@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea } from './utils.js';
+import {setLibs, decorateArea, getLibs, listenMiloEvents} from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -22,6 +22,18 @@ window.express = {};
 
 // Add any config options.
 const CONFIG = {
+  local: {
+    express: 'stage.projectx.corp.adobe.com',
+  },
+  stage: {
+    express: 'stage.projectx.corp.adobe.com',
+  },
+  live: {
+    express: 'stage.projectx.corp.adobe.com',
+  },
+  prod: {
+    express: 'new.express.adobe.com',
+  },
   codeRoot: '/express',
   contentRoot: '/express',
   jarvis: {
@@ -91,8 +103,9 @@ const miloLibs = setLibs(LIBS);
   const config = setConfig({ ...CONFIG, miloLibs });
 
   if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
-    const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
-    document.head.append(meta);
+    // TODO only add this back once we're consuming the milo version of gnav
+    //const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
+    //document.head.append(meta);
     // TODO add with gnav task
     // import('./gnav.js').then((gnav) => gnav.buildBreadCrumbArray(getConfig().locale.prefix.replaceAll('/', ''))).then((breadcrumbs) => {
     //   if (breadcrumbs && breadcrumbs.length) document.body.classList.add('breadcrumbs-spacing');
@@ -113,6 +126,13 @@ const miloLibs = setLibs(LIBS);
 
   isMobileGating && rushGating && runGating();
 
+  // prevent milo gnav from loading
+  const header = document.querySelector('header');
+  if (header) header.remove()
+  const footer = document.querySelector('footer');
+  if (footer) footer.remove()
+
+  listenMiloEvents();
   await loadArea();
 
   isMobileGating && !rushGating && runGating();
