@@ -164,7 +164,7 @@ async function loadAEMGnav() {
     });
     header.innerHTML = '<div id="feds-header"></div>';
   }
-  const footer = document.querySelector('header');
+  const footer = document.querySelector('footer');
   if (footer) {
     footer.innerHTML = `
       <div id="feds-footer"></div>
