@@ -153,29 +153,24 @@ export function lazyLoadLottiePlayer($block = null) {
 async function loadAEMGnav() {
   const miloLibs = getLibs();
   const { createTag, getMetadata, loadScript } = await import(`${miloLibs}/utils/utils.js`);
-  const main = document.querySelector('main');
-  const header = document.createElement('header');
-  const footer = document.createElement('footer');
-  main.parentNode.insertBefore(header, main);
-  main.parentNode.insertBefore(footer, main.nextSibling);
+  const header = document.querySelector('header');
 
-  header.addEventListener('click', (event) => {
-    if (event.target.id === 'feds-topnav') {
-      const root = window.location.href.split('/express/')[0];
-      window.location.href = `${root}/express/`;
-    }
-  });
-
-  const headerMeta = getMetadata('header');
-  if (headerMeta !== 'off') header.innerHTML = '<div id="feds-header"></div>';
-  else header.remove();
-  const footerMeta = getMetadata('footer');
-  if (footerMeta !== 'off') {
+  if (header) {
+    header.addEventListener('click', (event) => {
+      if (event.target.id === 'feds-topnav') {
+        const root = window.location.href.split('/express/')[0];
+        window.location.href = `${root}/express/`;
+      }
+    });
+    header.innerHTML = '<div id="feds-header"></div>';
+  }
+  const footer = document.querySelector('header');
+  if (footer) {
     footer.innerHTML = `
       <div id="feds-footer"></div>
     `;
     footer.setAttribute('data-status', 'loading');
-  } else footer.remove();
+  }
 
   const usp = new URLSearchParams(window.location.search);
   const gnav = usp.get('gnav') || getMetadata('gnav');
@@ -190,7 +185,12 @@ export function listenMiloEvents() {
   const lcpLoadedHandler = async () => {
     await loadAEMGnav();
   };
+  const postSectionLoadingHandler = async () => {
+    const footer = document.querySelector('footer');
+    delete footer.dataset.status;
+  };
   window.addEventListener('milo:LCP:loaded', lcpLoadedHandler);
+  window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
 export function decorateArea(area = document) {
