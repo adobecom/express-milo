@@ -127,10 +127,10 @@ const miloLibs = setLibs(LIBS);
   isMobileGating && rushGating && runGating();
 
   // prevent milo gnav from loading
-  const header = document.querySelector('header');
-  if (header) header.remove()
-  const footer = document.querySelector('footer');
-  if (footer) footer.remove()
+  const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
+  document.head.append(headerMeta);
+  const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
+  document.head.append(footerMeta);
 
   listenMiloEvents();
   await loadArea();
