@@ -248,6 +248,32 @@ async function loadFEDS() {
   }
   loadScript(`${domain}/etc.clientlibs/globalnav/clientlibs/base/feds.js`).then((script) => {
     script.id = 'feds-script';
+    const fedsHeader = document.querySelector('header header');
+    if (fedsHeader) fedsHeader.classList.add('custom-header');
+    else {
+      const header = document.querySelector('header');
+
+      const callback = function(mutationsList, observer) {
+        for(let mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+            // Loop through all added nodes
+            mutation.addedNodes.forEach((node) => {
+              // Check if the added node is a 'header' or contains a 'header'
+              if (node.nodeType === Node.ELEMENT_NODE) { // Ensure it's an element node
+                if (node.tagName === 'HEADER' || node.querySelector('header')) {
+                  const header = node.querySelector('header');
+                  header.classList.add('custom-header');
+                  observer.disconnect();
+                }
+              }
+            });
+          }
+        }
+      };
+
+      const observer = new MutationObserver(callback);
+      observer.observe(header, { childList: true, subtree: true });
+    }
   });
   setTimeout(() => {
     const acom = '7a5eb705-95ed-4cc4-a11d-0cc5760e93db';
