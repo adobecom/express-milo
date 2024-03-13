@@ -41,7 +41,7 @@ main .section .steps .step-image {
   margin-right: 20px;
 }
 
-main .section .steps .step-image svg,
+main .section .steps .step-image picture img,
 main .section .steps .step-image img.icon {
   width: 40px;
   max-width: unset;
@@ -53,40 +53,38 @@ main .section .steps .step-description {
   width: 100%;
 }
 
-main .section.steps-dark-container,
-main .section.steps-highlight-container,
-main .section.steps-container {
+main .section:has(> .steps) {
   margin-top: 80px;
 }
 
-main .section.steps-dark-container,
-main .section.steps-highlight-container {
+main .section:has(> .steps):has(> .dark),
+main .section:has(> .steps):has(> .highlight) {
   padding: 120px 0;
 }
 
-main .section.steps-dark-container {
+main .section:has(> .steps):has(> .dark) {
   background-color: var(--color-black);
 }
 
-main .section.steps-dark-container > *,
-main .section.steps-highlight-container > * {
+main .section:has(> .steps):has(> .dark) > *,
+main .section:has(> .steps):has(> .highlight) > * {
     color: var(--color-white);
 }
 
-main .section.steps-dark-container div > h2:first-of-type,
-main .section.steps-highlight-container > div > h2:first-of-type {
+main .section:has(> .steps):has(> .dark) div > h2:first-of-type,
+main .section:has(> .steps):has(> .highlight) > div > h2:first-of-type {
     margin-top: 0;
 }
 
-main .section.steps-dark-container .steps > div {
+main .section:has(> .steps):has(> .dark) .steps > div {
   background-color: var(--color-gray-700);
 }
 
-main .section.steps-highlight-container {
+main .section:has(> .steps):has(> .highlight) {
   background: var(--gradient-highlight-vertical);
 }
 
-main .section.steps-highlight-container .steps > div {
+main .section:has(> .steps):has(> .highlight) .steps > div {
   background-color: var(--color-white);
   color: var(--color-gray-800);
 }
@@ -98,13 +96,13 @@ main .section .steps .icon {
 }
 
 @media (min-width: 900px) {
-  main .section.steps-dark-container,
-  main .section.steps-highlight-container {
+  main .section:has(> .steps):has(> .dark),
+  main .section:has(> .steps):has(> .highlight) {
     padding: 80px 0;
   }
-  main .section.steps-container > div,
-  main .section.steps-dark-container > div,
-  main .section.steps-highlight-container > div {
+  main .section:has(> .steps) > div,
+  main .section:has(> .steps):has(> .dark) > div,
+  main .section:has(> .steps):has(> .highlight) > div {
     max-width: 950px;
   }
   main .section .steps {
@@ -120,8 +118,8 @@ main .section .steps .icon {
 }
 
 @media (min-width: 1200px) {
-  main .section.steps-dark-container > div,
-  main .section.steps-container > div {
+  main .section:has(> .steps):has(> .dark) > div,
+  main .section:has(> .steps) > div {
     max-width: 1024px;
   }
 }
