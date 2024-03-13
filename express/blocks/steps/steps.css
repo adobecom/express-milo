@@ -10,7 +10,8 @@ main .section .steps {
   margin-right: auto;
 }
 
-main .section .steps h2 {
+main .section .steps h2,
+main .section .steps h3 {
   margin: 0;
 }
 
@@ -57,34 +58,34 @@ main .section:has(> .steps) {
   margin-top: 80px;
 }
 
-main .section:has(> .steps):has(> .dark),
-main .section:has(> .steps):has(> .highlight) {
+main .section:has(> .steps.dark),
+main .section:has(> .steps.highlight) {
   padding: 120px 0;
 }
 
-main .section:has(> .steps):has(> .dark) {
+main .section:has(> .steps.dark) {
   background-color: var(--color-black);
 }
 
-main .section:has(> .steps):has(> .dark) > *,
-main .section:has(> .steps):has(> .highlight) > * {
+main .section:has(> .steps.dark) > *,
+main .section:has(> .steps.highlight) > * {
     color: var(--color-white);
 }
 
-main .section:has(> .steps):has(> .dark) div > h2:first-of-type,
-main .section:has(> .steps):has(> .highlight) > div > h2:first-of-type {
+main .section:has(> .steps.dark) div > h2:first-of-type,
+main .section:has(> .steps.highlight) > div > h2:first-of-type {
     margin-top: 0;
 }
 
-main .section:has(> .steps):has(> .dark) .steps > div {
+main .section:has(> .steps.dark) .steps > div {
   background-color: var(--color-gray-700);
 }
 
-main .section:has(> .steps):has(> .highlight) {
+main .section:has(> .steps.highlight) {
   background: var(--gradient-highlight-vertical);
 }
 
-main .section:has(> .steps):has(> .highlight) .steps > div {
+main .section:has(> .steps.highlight) .steps > div {
   background-color: var(--color-white);
   color: var(--color-gray-800);
 }
@@ -96,13 +97,13 @@ main .section .steps .icon {
 }
 
 @media (min-width: 900px) {
-  main .section:has(> .steps):has(> .dark),
-  main .section:has(> .steps):has(> .highlight) {
+  main .section:has(> .steps.dark),
+  main .section:has(> .steps.highlight) {
     padding: 80px 0;
   }
   main .section:has(> .steps) > div,
-  main .section:has(> .steps):has(> .dark) > div,
-  main .section:has(> .steps):has(> .highlight) > div {
+  main .section:has(> .steps.dark) > div,
+  main .section:has(> .steps.highlight) > div {
     max-width: 950px;
   }
   main .section .steps {
@@ -118,7 +119,7 @@ main .section .steps .icon {
 }
 
 @media (min-width: 1200px) {
-  main .section:has(> .steps):has(> .dark) > div,
+  main .section:has(> .steps.dark) > div,
   main .section:has(> .steps) > div {
     max-width: 1024px;
   }
