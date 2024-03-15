@@ -1,16 +1,11 @@
 import { getLibs, getLottie } from '../../scripts/utils.js';
-import {
-  transformLinkToAnimation,
-  createOptimizedPicture,
-} from '../../scripts/utils/media.js';
-import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
 import { getIcon, getIconElement } from '../../scripts/utils/icons.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
+import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
 
-let { createTag, getConfig, getMetadata } = await import(
+const { createTag, getConfig, getMetadata } = await import(
   `${getLibs()}/utils/utils.js`
 );
-
-import BlockMediator from '../../scripts/block-mediator.min.js';
 
 function lazyLoadLottiePlayer($block = null) {
   const usp = new URLSearchParams(window.location.search);
@@ -63,7 +58,6 @@ function lazyLoadLottiePlayer($block = null) {
   }
 }
 
-
 export function toClassName(name) {
   return name && typeof name === 'string'
     ? name
@@ -74,6 +68,8 @@ export function toClassName(name) {
 }
 
 export default async function decorate(block) {
+  decorateButtons_deprecated(block);
+
   let submitButtonText;
   let submissionTitle;
   let submissionText;
@@ -116,8 +112,6 @@ export default async function decorate(block) {
       feedbackRequired: false,
     },
   ];
-
-  console.log("ratings block is being initialized");
 
   function buildSchema() {
     if (!ratingAverage || !ratingTotal) {
@@ -588,10 +582,7 @@ export default async function decorate(block) {
   block.innerHTML = '';
   lazyLoadLottiePlayer(block);
 
-  // When the context comes in.
-  document.addEventListener('context_loaded', () => {
-    regenerateBlockState(actionTitle, $CTA, headingTag);
-  });
+  regenerateBlockState(actionTitle, $CTA, headingTag);
 
   // When the ratings are retrieved.
   document.addEventListener('ratings_received', () => {
@@ -599,52 +590,50 @@ export default async function decorate(block) {
     block.classList.add('ratings_received');
   });
 
-  const resp = await fetch(
-    `https://www.adobe.com/reviews-api/ccx${sheet}.json`
+  fetch(`https://www.adobe.com/reviews-api/ccx${sheet}.json`).then(
+    async (resp) => {
+      if (resp.ok) {
+        const response = await resp.json();
+        if (response.data[0].Average) {
+          ratingAverage = parseFloat(response.data[0].Average).toFixed(2);
+        }
+        if (response.data[0].Total) {
+          ratingTotal = parseFloat(response.data[0].Total);
+        }
+        if (response.data[0].Segments) {
+          actionSegments = response.data[0].Segments;
+        }
+        if (ratingAverage || ratingTotal) {
+          document.dispatchEvent(new Event('ratings_received'));
+        }
+      }
+    },
   );
-  if (resp.ok) {
-    const response = await resp.json();
-    if (response.data[0].Average) {
-      ratingAverage = parseFloat(response.data[0].Average).toFixed(2);
-    }
-    if (response.data[0].Total) {
-      ratingTotal = parseFloat(response.data[0].Total);
-    }
-    if (response.data[0].Segments) {
-      actionSegments = response.data[0].Segments;
-    }
-    if (ratingAverage || ratingTotal) {
-      document.dispatchEvent(new Event('ratings_received'));
-    }
-  }
 
-  const { fetchPlaceholders } = await import(
-    `${getLibs()}/features/placeholders.js`
-  );
-  await fetchPlaceholders().then((placeholders) => {
-    ratings[0].text = placeholders['one-star-rating'];
-    ratings[0].textareaLabel = placeholders['one-star-rating-text'];
-    ratings[0].textareaInside = placeholders['one-star-rating-input'];
-    ratings[1].text = placeholders['two-star-rating'];
-    ratings[1].textareaLabel = placeholders['two-star-rating-text'];
-    ratings[1].textareaInside = placeholders['two-star-rating-input'];
-    ratings[2].text = placeholders['three-star-rating'];
-    ratings[2].textareaLabel = placeholders['three-star-rating-text'];
-    ratings[2].textareaInside = placeholders['three-star-rating-input'];
-    ratings[3].text = placeholders['four-star-rating'];
-    ratings[3].textareaLabel = placeholders['four-star-rating-text'];
-    ratings[3].textareaInside = placeholders['four-star-rating-input'];
-    ratings[4].text = placeholders['five-star-rating'];
-    ratings[4].textareaLabel = placeholders['five-star-rating-text'];
-    ratings[4].textareaInside = placeholders['five-star-rating-input'];
-    submitButtonText = placeholders['rating-submit'];
-    submissionTitle = placeholders['rating-submission-title'];
-    submissionText = placeholders['rating-submission-text'];
-    defaultTitle = placeholders['rating-default-title'];
-    actionNotUsedText = placeholders['rating-action-not-used'];
-    alreadySubmittedTitle = placeholders['rating-already-submitted-title'];
-    alreadySubmittedText = placeholders['rating-already-submitted-text'];
-    votesText = placeholders['rating-votes'];
+  import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
+    ratings[0].text = await mod.replaceKey('one-star-rating', getConfig());
+    ratings[0].textareaLabel = await mod.replaceKey('one-star-rating-text', getConfig());
+    ratings[0].textareaInside = await mod.replaceKey('one-star-rating-input', getConfig());
+    ratings[1].text = await mod.replaceKey('two-star-rating', getConfig());
+    ratings[1].textareaLabel = await mod.replaceKey('two-star-rating-text', getConfig());
+    ratings[1].textareaInside = await mod.replaceKey('two-star-rating-input', getConfig());
+    ratings[2].text = await mod.replaceKey('three-star-rating', getConfig());
+    ratings[2].textareaLabel = await mod.replaceKey('three-star-rating-text', getConfig());
+    ratings[2].textareaInside = await mod.replaceKey('three-star-rating-input', getConfig());
+    ratings[3].text = await mod.replaceKey('four-star-rating', getConfig());
+    ratings[3].textareaLabel = await mod.replaceKey('four-star-rating-text', getConfig());
+    ratings[3].textareaInside = await mod.replaceKey('four-star-rating-input', getConfig());
+    ratings[4].text = await mod.replaceKey('five-star-rating', getConfig());
+    ratings[4].textareaLabel = await mod.replaceKey('five-star-rating-text', getConfig());
+    ratings[4].textareaInside = await mod.replaceKey('five-star-rating-input', getConfig());
+    submitButtonText = await mod.replaceKey('rating-submit', getConfig());
+    submissionTitle = await mod.replaceKey('rating-submission-title', getConfig());
+    submissionText = await mod.replaceKey('rating-submission-text', getConfig());
+    defaultTitle = await mod.replaceKey('rating-default-title', getConfig());
+    actionNotUsedText = await mod.replaceKey('rating-action-not-used', getConfig());
+    alreadySubmittedTitle = await mod.replaceKey('rating-already-submitted-title', getConfig());
+    alreadySubmittedText = await mod.replaceKey('rating-already-submitted-text', getConfig());
+    votesText = await mod.replaceKey('rating-votes', getConfig());
     regenerateBlockState(actionTitle, $CTA, headingTag);
   });
 }
