@@ -1,7 +1,8 @@
 import { getLibs } from '../../scripts/utils.js';
-import {  transformLinkToAnimation, createOptimizedPicture  } from '../../scripts/utils/media.js';
-import {  decorateButtons_deprecated  } from '../../scripts/utils/decorate.js';
-let { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
+import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
+
+const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 function buildContent(content) {
   const contentLink = content.querySelector('a');

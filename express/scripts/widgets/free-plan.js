@@ -1,11 +1,13 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer } from '../utils.js';
+
 let replaceKey;
-let getConfig, createTag, getMetadata;
+let getConfig; let createTag; let
+  getMetadata;
 const placeholdersProm = import(`${getLibs()}/features/placeholders.js`).then((mod) => {
-  ({replaceKey} = mod);
+  ({ replaceKey } = mod);
 });
 const utilsProm = import(`${getLibs()}/utils/utils.js`).then((mod) => {
-  ({getConfig, createTag, getMetadata} = mod);
+  ({ getConfig, createTag, getMetadata } = mod);
 });
 await Promise.all([placeholdersProm, utilsProm]);
 
@@ -62,7 +64,7 @@ export async function addFreePlanWidget(elem) {
       class: 'learn-more-button',
       href: '#plans-comparison-container',
     });
-    const lottieWrapper = createTag('span', {class: 'lottie-wrapper'});
+    const lottieWrapper = createTag('span', { class: 'lottie-wrapper' });
 
     learnMoreButton.textContent = await replaceKey('learn-more', getConfig());
     lottieWrapper.innerHTML = getLottie('purple-arrows', '/express/icons/purple-arrows.json');
