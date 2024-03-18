@@ -1,5 +1,6 @@
 import { getLibs } from './utils.js';
-let { getConfig, getMetadata, loadScript, getEnv } = await import(`${getLibs()}/utils/utils.js`)
+
+const { getConfig, getMetadata, loadScript, getEnv } = await import(`${getLibs()}/utils/utils.js`);
 
 const isHomepage = window.location.pathname.endsWith('/express/');
 function getCookie(cname) {
@@ -165,9 +166,7 @@ async function loadFEDS() {
       },
     },
     locale: (prefix === '' ? 'en' : prefix),
-    content: {
-      experience: getMetadata('gnav') || fedsExp,
-    },
+    content: { experience: getMetadata('gnav') || fedsExp },
     profile: {
       customSignIn: () => {
         const sparkLang = config.locale.ietf;
@@ -176,8 +175,7 @@ async function loadFEDS() {
         const env = getEnv();
         if (isHomepage) {
           sparkLoginUrl = 'https://new.express.adobe.com/?showCsatOnExportOnce=True&promoid=GHMVYBFM&mv=other';
-        }
-        else if (env && env.express) {
+        } else if (env && env.express) {
           sparkLoginUrl = sparkLoginUrl.replace('express.adobe.com', env.express);
         }
         window.location.href = sparkLoginUrl;
@@ -253,8 +251,8 @@ async function loadFEDS() {
     else {
       const header = document.querySelector('header');
 
-      const callback = function(mutationsList, observer) {
-        for(let mutation of mutationsList) {
+      const callback = function (mutationsList, observer) {
+        for (const mutation of mutationsList) {
           if (mutation.type === 'childList') {
             // Loop through all added nodes
             mutation.addedNodes.forEach((node) => {
@@ -283,9 +281,7 @@ async function loadFEDS() {
     };
     // eslint-disable-next-line max-len
     const otDomainId = ids?.[Object.keys(ids).find((domainId) => window.location.host.includes(domainId))] ?? acom;
-    window.fedsConfig.privacy = {
-      otDomainId,
-    };
+    window.fedsConfig.privacy = { otDomainId };
     loadScript('https://www.adobe.com/etc.clientlibs/globalnav/clientlibs/base/privacy-standalone.js');
   }, 4000);
   const footer = document.querySelector('footer');
@@ -308,4 +304,4 @@ setTimeout(() => {
 }, 4000);
 /* Core Web Vitals RUM collection */
 // TODO maybe add this back
-//sampleRUM('cwv');
+// sampleRUM('cwv');
