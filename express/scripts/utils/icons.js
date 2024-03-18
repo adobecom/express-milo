@@ -1,14 +1,12 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../utils.js';
 
-let { createTag } = await import(
-  `${getLibs()}/utils/utils.js`
-);
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 export function getIcon(icons, alt, size = 44) {
   // eslint-disable-next-line no-param-reassign
   icons = Array.isArray(icons) ? icons : [icons];
   const [defaultIcon, mobileIcon] = icons;
-  const icon = (mobileIcon && window.innerWidth < 600) ? mobileIcon : defaultIcon;
+  const icon = mobileIcon && window.innerWidth < 600 ? mobileIcon : defaultIcon;
   const symbols = [
     'adobefonts',
     'adobe-stock',
@@ -100,11 +98,7 @@ export function getIcon(icons, alt, size = 44) {
     'pricing-admin',
   ];
 
-  const size22Icons = [
-    'chevron',
-    'pricingfree',
-    'pricingpremium',
-  ];
+  const size22Icons = ['chevron', 'pricingfree', 'pricingpremium'];
 
   if (symbols.includes(icon)) {
     const iconName = icon;
@@ -114,15 +108,18 @@ export function getIcon(icons, alt, size = 44) {
       ${alt ? `<title>${alt}</title>` : ''}
       <use href="/express/icons/ccx-sheet_${sheetSize}.svg#${iconName}${sheetSize}"></use>
     </svg>`;
-  } else {
-    return (`<img class="icon icon-${icon}" src="/express/icons/${icon}.svg" alt="${alt || icon}">`);
   }
+  return `<img class="icon icon-${icon}" src="/express/icons/${icon}.svg" alt="${
+    alt || icon
+  }">`;
 }
 
 export function getIconElement(icons, size, alt, additionalClassName) {
   const $div = createTag('div');
   $div.innerHTML = getIcon(icons, alt, size);
 
-  if (additionalClassName) $div.firstElementChild.classList.add(additionalClassName);
-  return ($div.firstElementChild);
+  if (additionalClassName) {
+    $div.firstElementChild.classList.add(additionalClassName);
+  }
+  return $div.firstElementChild;
 }
