@@ -37,7 +37,7 @@ function lazyLoadLottiePlayer($block = null) {
         };
         const intersectionObserver = new IntersectionObserver(
           observer,
-          options
+          options,
         );
         intersectionObserver.observe(block);
       };
@@ -61,9 +61,9 @@ function lazyLoadLottiePlayer($block = null) {
 export function toClassName(name) {
   return name && typeof name === 'string'
     ? name
-        .trim()
-        .toLowerCase()
-        .replace(/[^0-9a-z]/gi, '-')
+      .trim()
+      .toLowerCase()
+      .replace(/[^0-9a-z]/gi, '-')
     : '';
 }
 
@@ -218,9 +218,8 @@ export default async function decorate(block) {
     const $tooltip = block.querySelector('.tooltip');
     const $sliderFill = block.querySelector('.slider-fill');
     const thumbWidth = 60;
-    const pos =
-      (value - $input.getAttribute('min')) /
-      ($input.getAttribute('max') - $input.getAttribute('min'));
+    const pos = (value - $input.getAttribute('min'))
+      / ($input.getAttribute('max') - $input.getAttribute('min'));
     const thumbCorrect = thumbWidth * (pos - 0.25) * -1 - 0.1;
     const titlePos = pos * $input.offsetWidth - thumbWidth / 4 + thumbCorrect;
     $tooltip.style.left = `${titlePos}px`;
@@ -250,7 +249,7 @@ export default async function decorate(block) {
           false,
           true,
           false,
-          false
+          false,
         );
         let counter = 10;
         window.ratingSubmitCountdown = setInterval(() => {
@@ -309,7 +308,7 @@ export default async function decorate(block) {
       block.classList.add('rated');
       localStorage.setItem(
         `ccxActionRatingsFeedback${sheetCamelCase}`,
-        `${$input.value},${$textarea.value}`
+        `${$input.value},${$textarea.value}`,
       );
       updateSliderStyle($input.value);
     };
@@ -349,8 +348,8 @@ export default async function decorate(block) {
         $tooltip.style.transition = 'left .3s, right .3s';
         $sliderFill.style.transition = 'width .3s';
         if (
-          (!$textarea.getAttribute('required') && $textarea.value !== '') ||
-          $textarea.value !== ''
+          (!$textarea.getAttribute('required') && $textarea.value !== '')
+          || $textarea.value !== ''
         ) {
           $submit.focus({ preventScroll: true });
         }
@@ -376,11 +375,11 @@ export default async function decorate(block) {
     $textarea.addEventListener('keyup', () => {
       localStorage.setItem(
         `ccxActionRatingsFeedback${sheetCamelCase}`,
-        `${$input.value},${$textarea.value}`
+        `${$input.value},${$textarea.value}`,
       );
     });
     const ccxActionRatingsFeedback = localStorage.getItem(
-      `ccxActionRatingsFeedback${sheetCamelCase}`
+      `ccxActionRatingsFeedback${sheetCamelCase}`,
     );
     if (ccxActionRatingsFeedback) {
       const match = ccxActionRatingsFeedback.match(/([^,]*),((.|\n)*)/);
@@ -412,12 +411,11 @@ export default async function decorate(block) {
       const halfStars = filledStars === ratingRoundedHalf ? 0 : 1;
       const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
       $stars.innerHTML = `${star.repeat(filledStars)}${starHalf.repeat(
-        halfStars
+        halfStars,
       )}${starEmpty.repeat(emptyStars)}`;
       const $votes = createTag('span', { class: 'rating-votes' });
       $votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount} ${votesText}`;
-      if (getConfig().locale.region === 'kr')
-        $votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount}${votesText}`;
+      if (getConfig().locale.region === 'kr') $votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount}${votesText}`;
       $stars.appendChild($votes);
       if (rating > 4.2) {
         buildSchema(actionTitle);
@@ -466,7 +464,7 @@ export default async function decorate(block) {
           <div>
         </div>
       </div>
-    `
+    `,
     );
     const star = getIcon('star');
     $form.insertAdjacentHTML(
@@ -475,17 +473,17 @@ export default async function decorate(block) {
       <div class="slider-bottom">
         <div class="vertical-line"><button type="button" aria-label="1" class="stars one-star">${star}</button></div>
         <div class="vertical-line"><button type="button" aria-label="2" class="stars two-stars">${star.repeat(
-          2
-        )}</button></div>
+    2,
+  )}</button></div>
         <div class="vertical-line"><button type="button" aria-label="3" class="stars three-stars">${star.repeat(
-          3
-        )}</button></div>
+    3,
+  )}</button></div>
         <div class="vertical-line"><button type="button" aria-label="4" class="stars four-stars">${star.repeat(
-          4
-        )}</button></div>
+    4,
+  )}</button></div>
         <div class="vertical-line"><button type="button" aria-label="5" class="stars five-stars">${star.repeat(
-          5
-        )}</button></div>
+    5,
+  )}</button></div>
       </div>
       <div class="slider-comment">
         <label for="comment"></label>
@@ -493,7 +491,7 @@ export default async function decorate(block) {
         <input type="submit" value="${submitButtonText}">
       </div>
       <div class="ratings-scroll-anchor"></div>
-    `
+    `,
     );
     // Form-submit event listener.
     $form.addEventListener('submit', (e) => {
@@ -504,13 +502,12 @@ export default async function decorate(block) {
       localStorage.removeItem(`ccxActionRatingsFeedback${sheetCamelCase}`);
       block.innerHTML = `
       <${headingTag} id="${toClassName(
-        submissionTitle
-      )}">${submissionTitle}</${headingTag}>
+  submissionTitle,
+)}">${submissionTitle}</${headingTag}>
       <div class="no-slider">
         <p>${submissionText}</p>
       </div>`;
-      if (window.scrollY > $section.offsetTop)
-        window.scrollTo(0, $section.offsetTop - 64);
+      if (window.scrollY > $section.offsetTop) window.scrollTo(0, $section.offsetTop - 64);
     });
     sliderFunctionality();
   }
@@ -520,7 +517,7 @@ export default async function decorate(block) {
     title,
     paragraph,
     $CTA = null,
-    headingTag = 'h3'
+    headingTag = 'h3',
   ) {
     const $headingWrapper = createTag('div', { class: 'ratings-heading' });
     const $heading = createTag(headingTag, { id: toClassName(title) });
@@ -547,7 +544,7 @@ export default async function decorate(block) {
         alreadySubmittedTitle,
         alreadySubmittedText,
         null,
-        headingTag
+        headingTag,
       );
     } else if (actionUsed) {
       decorateRatingSlider(title, headingTag);
@@ -560,14 +557,12 @@ export default async function decorate(block) {
   if (!$rows[1]) return;
 
   const classes = block.classList;
-  if (classes.contains('show') && classes.contains('average'))
-    showRatingAverage = true;
+  if (classes.contains('show') && classes.contains('average')) showRatingAverage = true;
 
-  const $heading =
-    $rows[0].querySelector('h1') ??
-    $rows[0].querySelector('h2') ??
-    $rows[0].querySelector('h3') ??
-    $rows[0].querySelector('h4');
+  const $heading = $rows[0].querySelector('h1')
+    ?? $rows[0].querySelector('h2')
+    ?? $rows[0].querySelector('h3')
+    ?? $rows[0].querySelector('h4');
   const headingTag = $heading ? $heading.tagName : 'h3';
   const $CTA = $rows[0].querySelector('a');
   if ($CTA) $CTA.classList.add('xlarge');
@@ -575,9 +570,7 @@ export default async function decorate(block) {
   actionTitle = $heading ? $heading.textContent.trim() : defaultTitle;
   sheet = $sheet.textContent.trim();
   sheetCamelCase = sheet
-    .replace(/(?:^\w|[A-Z]|\b\w)/g, (w, i) =>
-      i === 0 ? w.toLowerCase() : w.toUpperCase()
-    )
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, (w, i) => (i === 0 ? w.toLowerCase() : w.toUpperCase()))
     .replace(/\s+|-+|\/+/g, '');
   block.innerHTML = '';
   lazyLoadLottiePlayer(block);
