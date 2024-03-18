@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import {setLibs, decorateArea, getLibs, listenMiloEvents} from './utils.js';
+import { setLibs, decorateArea, getLibs, listenMiloEvents } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -22,18 +22,10 @@ window.express = {};
 
 // Add any config options.
 const CONFIG = {
-  local: {
-    express: 'stage.projectx.corp.adobe.com',
-  },
-  stage: {
-    express: 'stage.projectx.corp.adobe.com',
-  },
-  live: {
-    express: 'stage.projectx.corp.adobe.com',
-  },
-  prod: {
-    express: 'new.express.adobe.com',
-  },
+  local: { express: 'stage.projectx.corp.adobe.com' },
+  stage: { express: 'stage.projectx.corp.adobe.com' },
+  live: { express: 'stage.projectx.corp.adobe.com' },
+  prod: { express: 'new.express.adobe.com' },
   codeRoot: '/express',
   contentRoot: '/express',
   jarvis: {
@@ -98,14 +90,14 @@ const miloLibs = setLibs(LIBS);
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
-      (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
+    (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
 
   const config = setConfig({ ...CONFIG, miloLibs });
 
   if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
     // TODO only add this back once we're consuming the milo version of gnav
-    //const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
-    //document.head.append(meta);
+    // const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
+    // document.head.append(meta);
     // TODO add with gnav task
     // import('./gnav.js').then((gnav) => gnav.buildBreadCrumbArray(getConfig().locale.prefix.replaceAll('/', ''))).then((breadcrumbs) => {
     //   if (breadcrumbs && breadcrumbs.length) document.body.classList.add('breadcrumbs-spacing');
