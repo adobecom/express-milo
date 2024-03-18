@@ -1,4 +1,4 @@
-import { getLibs, getLottie } from '../../scripts/utils.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer } from '../../scripts/utils.js';
 import { getIcon, getIconElement } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
@@ -6,57 +6,6 @@ import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
 const { createTag, getConfig, getMetadata } = await import(
   `${getLibs()}/utils/utils.js`
 );
-
-function lazyLoadLottiePlayer($block = null) {
-  const usp = new URLSearchParams(window.location.search);
-  const lottie = usp.get('lottie');
-  if (lottie !== 'off') {
-    const loadLottiePlayer = () => {
-      if (window['lottie-player']) return;
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = '/express/scripts/lottie-player.1.5.6.js';
-      document.head.appendChild(script);
-      window['lottie-player'] = true;
-    };
-    if ($block) {
-      const addIntersectionObserver = (block) => {
-        const observer = (entries) => {
-          const entry = entries[0];
-          if (entry.isIntersecting) {
-            if (entry.intersectionRatio >= 0.25) {
-              loadLottiePlayer();
-            }
-          }
-        };
-        const options = {
-          root: null,
-          rootMargin: '0px',
-          threshold: [0.0, 0.25],
-        };
-        const intersectionObserver = new IntersectionObserver(
-          observer,
-          options,
-        );
-        intersectionObserver.observe(block);
-      };
-      if (document.readyState === 'complete') {
-        addIntersectionObserver($block);
-      } else {
-        window.addEventListener('load', () => {
-          addIntersectionObserver($block);
-        });
-      }
-    } else if (document.readyState === 'complete') {
-      loadLottiePlayer();
-    } else {
-      window.addEventListener('load', () => {
-        loadLottiePlayer();
-      });
-    }
-  }
-}
 
 export function toClassName(name) {
   return name && typeof name === 'string'
