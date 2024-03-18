@@ -1,4 +1,5 @@
 // This was only added for the blocks premigration. It is not to be used for new blocks.
+// eslint-disable-next-line camelcase
 export function decorateButtons_deprecated(el) {
   el.querySelectorAll(':scope a').forEach(($a) => {
     const originalHref = $a.href;
