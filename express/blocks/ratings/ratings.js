@@ -1,13 +1,14 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer } from '../../scripts/utils.js';
 import { getIcon, getIconElement } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
+// eslint-disable-next-line camelcase
 import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig, getMetadata } = await import(
   `${getLibs()}/utils/utils.js`
 );
 
-export function toClassName(name) {
+function toClassName(name) {
   return name && typeof name === 'string'
     ? name
       .trim()

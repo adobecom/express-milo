@@ -1,5 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
+// eslint-disable-next-line camelcase
 import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
