@@ -1,5 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
-let { createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+
+const { createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
 function correctCenterAlignment(plat) {
   if (plat.parentElement.offsetWidth <= plat.offsetWidth) return;
@@ -184,10 +185,8 @@ export function onCarouselCSSLoad(selector, parent, options) {
 
 export default async function buildCarousel(selector, parent, options = {}) {
   // Load CSS then build carousel
-  console.log("build carousel");
   return new Promise((resolve) => {
     loadStyle('/express/blocks/shared/carousel.css', () => {
-      console.log("carousel css loaded");
       onCarouselCSSLoad(selector, parent, options);
       resolve();
     });
