@@ -2,7 +2,7 @@ import { getLibs, getLottie, lazyLoadLottiePlayer } from '../../scripts/utils.js
 import { getIcon, getIconElement } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 // eslint-disable-next-line camelcase
-import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig, getMetadata } = await import(
   `${getLibs()}/utils/utils.js`
@@ -18,7 +18,7 @@ function toClassName(name) {
 }
 
 export default async function decorate(block) {
-  decorateButtons_deprecated(block);
+  decorateButtonsDeprecated(block);
 
   let submitButtonText;
   let submissionTitle;
@@ -164,36 +164,36 @@ export default async function decorate(block) {
 
   // Updates the front-end style of the slider.
   function updateSliderStyle(value) {
-    const $input = block.querySelector('input[type=range]');
-    const $tooltip = block.querySelector('.tooltip');
-    const $sliderFill = block.querySelector('.slider-fill');
+    const input = block.querySelector('input[type=range]');
+    const tooltip = block.querySelector('.tooltip');
+    const sliderFill = block.querySelector('.slider-fill');
     const thumbWidth = 60;
-    const pos = (value - $input.getAttribute('min'))
-      / ($input.getAttribute('max') - $input.getAttribute('min'));
+    const pos = (value - input.getAttribute('min'))
+      / (input.getAttribute('max') - input.getAttribute('min'));
     const thumbCorrect = thumbWidth * (pos - 0.25) * -1 - 0.1;
-    const titlePos = pos * $input.offsetWidth - thumbWidth / 4 + thumbCorrect;
-    $tooltip.style.left = `${titlePos}px`;
-    $sliderFill.style.width = `${titlePos + thumbWidth / 2}px`;
+    const titlePos = pos * input.offsetWidth - thumbWidth / 4 + thumbCorrect;
+    tooltip.style.left = `${titlePos}px`;
+    sliderFill.style.width = `${titlePos + thumbWidth / 2}px`;
   }
 
   // Implements the slider logic.
   function sliderFunctionality() {
-    const $input = block.querySelector('input[type=range]');
-    const $sliderFill = block.querySelector('.slider-fill');
-    const $tooltip = block.querySelector('.tooltip');
-    const $tooltipText = block.querySelector('.tooltip--text');
-    const $tooltipImg = block.querySelector('.tooltip--image');
-    const $textarea = block.querySelector('.slider-comment textarea');
-    const $textareaLabel = block.querySelector('.slider-comment label');
-    const $stars = Array.from(block.querySelectorAll('.stars'));
-    const $submit = block.querySelector('input[type=submit]');
-    const $scrollAnchor = block.querySelector('.ratings-scroll-anchor');
-    const $commentBox = block.querySelector('.slider-comment');
-    const $timerAnimation = createTag('div', { class: 'timer' });
+    const input = block.querySelector('input[type=range]');
+    const sliderFill = block.querySelector('.slider-fill');
+    const tooltip = block.querySelector('.tooltip');
+    const tooltipText = block.querySelector('.tooltip--text');
+    const tooltipImg = block.querySelector('.tooltip--image');
+    const textarea = block.querySelector('.slider-comment textarea');
+    const textareaLabel = block.querySelector('.slider-comment label');
+    const stars = Array.from(block.querySelectorAll('.stars'));
+    const submit = block.querySelector('input[type=submit]');
+    const scrollAnchor = block.querySelector('.ratings-scroll-anchor');
+    const commentBox = block.querySelector('.slider-comment');
+    const timerAnimation = createTag('div', { class: 'timer' });
     // Countdown timer to auto-submit
     const countdown = (bool) => {
       if (bool) {
-        $timerAnimation.innerHTML = getLottie(
+        timerAnimation.innerHTML = getLottie(
           'countdown',
           '/express/blocks/ratings/countdown.json',
           false,
@@ -208,7 +208,7 @@ export default async function decorate(block) {
           } else {
             clearInterval(window.ratingSubmitCountdown);
             window.ratingSubmitCountdown = null;
-            $submit.click();
+            submit.click();
           }
         }, 920);
       } else if (window.ratingSubmitCountdown) {
@@ -218,114 +218,114 @@ export default async function decorate(block) {
     };
     // Updates the comment box
     const updateCommentBoxAndTimer = () => {
-      const val = parseFloat($input.value) ?? 0;
+      const val = parseFloat(input.value) ?? 0;
       const index = Math.round(val);
       if (val !== index) return;
-      if (ratings[index - 1].feedbackRequired || $textarea.value !== '') {
-        $commentBox.classList.add('submit--appear');
-        $timerAnimation.remove();
+      if (ratings[index - 1].feedbackRequired || textarea.value !== '') {
+        commentBox.classList.add('submit--appear');
+        timerAnimation.remove();
         countdown(false);
       } else {
-        $commentBox.classList.remove('submit--appear');
-        $stars[index - 1].parentElement.appendChild($timerAnimation);
+        commentBox.classList.remove('submit--appear');
+        stars[index - 1].parentElement.appendChild(timerAnimation);
         countdown(true);
       }
-      $commentBox.classList.add('comment--appear');
+      commentBox.classList.add('comment--appear');
     };
     // Updates the value of the slider and tooltip.
     const updateSliderValue = (snap = true) => {
-      $timerAnimation.remove();
+      timerAnimation.remove();
       countdown(false);
-      let val = parseFloat($input.value) ?? 0;
+      let val = parseFloat(input.value) ?? 0;
       const index = Math.round(val);
       if (snap) {
         val = index;
-        $input.value = index;
+        input.value = index;
         updateCommentBoxAndTimer();
       }
-      $tooltipText.textContent = ratings[index - 1].text;
-      $tooltipImg.innerHTML = '';
-      $tooltipImg.appendChild(ratings[index - 1].img);
-      $textareaLabel.textContent = ratings[index - 1].textareaLabel;
-      $textarea.setAttribute('placeholder', ratings[index - 1].textareaInside);
+      tooltipText.textContent = ratings[index - 1].text;
+      tooltipImg.innerHTML = '';
+      tooltipImg.appendChild(ratings[index - 1].img);
+      textareaLabel.textContent = ratings[index - 1].textareaLabel;
+      textarea.setAttribute('placeholder', ratings[index - 1].textareaInside);
       if (ratings[index - 1].feedbackRequired) {
-        $textarea.setAttribute('required', 'true');
+        textarea.setAttribute('required', 'true');
       } else {
-        $textarea.removeAttribute('required');
+        textarea.removeAttribute('required');
       }
       ratings.forEach((obj) => block.classList.remove(obj.class));
       block.classList.add(ratings[index - 1].class);
       block.classList.add('rated');
       localStorage.setItem(
         `ccxActionRatingsFeedback${sheetCamelCase}`,
-        `${$input.value},${$textarea.value}`,
+        `${input.value},${textarea.value}`,
       );
-      updateSliderStyle($input.value);
+      updateSliderStyle(input.value);
     };
     // Slider event listeners.
-    $input.addEventListener('input', () => updateSliderValue(false));
-    $input.addEventListener('change', () => updateSliderValue());
+    input.addEventListener('input', () => updateSliderValue(false));
+    input.addEventListener('change', () => updateSliderValue());
     let firstTimeInteract = true;
     const scrollToScrollAnchor = () => {
       if (firstTimeInteract) {
         setTimeout(() => {
-          $scrollAnchor.scrollIntoViewIfNeeded(false);
+          scrollAnchor.scrollIntoViewIfNeeded(false);
         }, 450); // Allows for comment slide animation.
         firstTimeInteract = false;
       } else {
-        $scrollAnchor.scrollIntoViewIfNeeded(false);
+        scrollAnchor.scrollIntoViewIfNeeded(false);
       }
     };
-    $input.addEventListener('keyup', (e) => {
+    input.addEventListener('keyup', (e) => {
       if (e.code === 'ArrowLeft' || e.code === 'ArrowDown') {
-        $input.value -= 1;
+        input.value -= 1;
         updateSliderValue();
         scrollToScrollAnchor();
       } else if (e.code === 'ArrowRight' || e.code === 'ArrowUp') {
-        $input.value += 1;
+        input.value += 1;
         updateSliderValue();
         scrollToScrollAnchor();
       }
     });
     ['mousedown', 'touchstart'].forEach((event) => {
-      $input.addEventListener(event, () => {
-        $tooltip.style.transition = 'none';
-        $sliderFill.style.transition = 'none';
+      input.addEventListener(event, () => {
+        tooltip.style.transition = 'none';
+        sliderFill.style.transition = 'none';
       });
     });
     ['mouseup', 'touchend'].forEach((event) => {
-      $input.addEventListener(event, () => {
-        $tooltip.style.transition = 'left .3s, right .3s';
-        $sliderFill.style.transition = 'width .3s';
+      input.addEventListener(event, () => {
+        tooltip.style.transition = 'left .3s, right .3s';
+        sliderFill.style.transition = 'width .3s';
         if (
-          (!$textarea.getAttribute('required') && $textarea.value !== '')
-          || $textarea.value !== ''
+          (!textarea.getAttribute('required') && textarea.value !== '')
+          || textarea.value !== ''
         ) {
-          $submit.focus({ preventScroll: true });
+          submit.focus({ preventScroll: true });
         }
         scrollToScrollAnchor();
       });
     });
     window.addEventListener('resize', () => {
-      updateSliderStyle($input.value);
+      updateSliderStyle(input.value);
     });
-    $stars.forEach(($star, index) => {
-      $star.addEventListener('click', () => {
-        $input.value = index + 1;
+    stars.forEach((star, index) => {
+      star.addEventListener('click', () => {
+        input.value = index + 1;
         updateSliderValue();
         scrollToScrollAnchor();
       });
     });
-    $textarea.addEventListener('focus', () => {
-      $commentBox.classList.add('submit--appear');
-      $timerAnimation.remove();
+    textarea.addEventListener('focus', () => {
+      commentBox.classList.add('submit--appear');
+      timerAnimation.remove();
       countdown(false);
     });
     // Get text from localStorage if they navigated away after typing then came back
-    $textarea.addEventListener('keyup', () => {
+    textarea.addEventListener('keyup', () => {
       localStorage.setItem(
         `ccxActionRatingsFeedback${sheetCamelCase}`,
-        `${$input.value},${$textarea.value}`,
+        `${input.value},${textarea.value}`,
       );
     });
     const ccxActionRatingsFeedback = localStorage.getItem(
@@ -336,9 +336,9 @@ export default async function decorate(block) {
       const localStorageRating = match[1];
       const localStoragetext = match[2];
       if (localStoragetext && localStoragetext !== '') {
-        $textarea.value = localStoragetext;
-        $input.value = localStorageRating;
-        $commentBox.classList.add('comment--appear');
+        textarea.value = localStoragetext;
+        input.value = localStorageRating;
+        commentBox.classList.add('comment--appear');
         updateSliderValue();
       }
     }
@@ -349,7 +349,7 @@ export default async function decorate(block) {
     const star = getIcon('star');
     const starHalf = getIcon('star-half');
     const starEmpty = getIcon('star-empty');
-    const $stars = createTag('span', { class: 'rating-stars' });
+    const stars = createTag('span', { class: 'rating-stars' });
     let rating = ratingAverage ?? 5;
     rating = Math.round(rating * 10) / 10; // round nearest decimal point
     const ratingAmount = ratingTotal ?? 0;
@@ -360,37 +360,37 @@ export default async function decorate(block) {
       const filledStars = Math.floor(ratingRoundedHalf);
       const halfStars = filledStars === ratingRoundedHalf ? 0 : 1;
       const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
-      $stars.innerHTML = `${star.repeat(filledStars)}${starHalf.repeat(
+      stars.innerHTML = `${star.repeat(filledStars)}${starHalf.repeat(
         halfStars,
       )}${starEmpty.repeat(emptyStars)}`;
-      const $votes = createTag('span', { class: 'rating-votes' });
-      $votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount} ${votesText}`;
-      if (getConfig().locale.region === 'kr') $votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount}${votesText}`;
-      $stars.appendChild($votes);
+      const votes = createTag('span', { class: 'rating-votes' });
+      votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount} ${votesText}`;
+      if (getConfig().locale.region === 'kr') votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount}${votesText}`;
+      stars.appendChild(votes);
       if (rating > 4.2) {
         buildSchema(actionTitle);
       }
     } else {
-      $stars.innerHTML = `${star.repeat(5)}`;
+      stars.innerHTML = `${star.repeat(5)}`;
     }
-    return $stars;
+    return stars;
   }
 
   // Decorates the rating Form and Slider HTML.
   function decorateRatingSlider(title, headingTag = 'h3') {
-    const $headingWrapper = createTag('div', { class: 'ratings-heading' });
-    const $heading = createTag(headingTag, { id: toClassName(title) });
-    $heading.textContent = title;
-    $headingWrapper.appendChild($heading);
-    const $stars = getCurrentRatingStars();
-    $headingWrapper.appendChild($stars);
-    block.appendChild($headingWrapper);
-    const $section = block.closest('.section');
-    const $form = createTag('form');
-    block.appendChild($form);
-    const $slider = createTag('div', { class: 'slider' });
-    $form.appendChild($slider);
-    const $input = createTag('input', {
+    const headingWrapper = createTag('div', { class: 'ratings-heading' });
+    const heading = createTag(headingTag, { id: toClassName(title) });
+    heading.textContent = title;
+    headingWrapper.appendChild(heading);
+    const stars = getCurrentRatingStars();
+    headingWrapper.appendChild(stars);
+    block.appendChild(headingWrapper);
+    const section = block.closest('.section');
+    const form = createTag('form');
+    block.appendChild(form);
+    const slider = createTag('div', { class: 'slider' });
+    form.appendChild(slider);
+    const input = createTag('input', {
       type: 'range',
       name: 'rating',
       id: 'rating',
@@ -400,10 +400,10 @@ export default async function decorate(block) {
       value: '4.5',
       'aria-labelledby': toClassName(title),
     });
-    $slider.appendChild($input);
+    slider.appendChild(input);
     // Initial state of the slider:
-    $slider.appendChild(createTag('div', { class: 'slider-fill' }));
-    $slider.insertAdjacentHTML(
+    slider.appendChild(createTag('div', { class: 'slider-fill' }));
+    slider.insertAdjacentHTML(
       'beforeend',
       /* html */ `
       <div class="tooltip">
@@ -417,7 +417,7 @@ export default async function decorate(block) {
     `,
     );
     const star = getIcon('star');
-    $form.insertAdjacentHTML(
+    form.insertAdjacentHTML(
       'beforeend',
       /* html */ `
       <div class="slider-bottom">
@@ -444,10 +444,10 @@ export default async function decorate(block) {
     `,
     );
     // Form-submit event listener.
-    $form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const rating = $input.value;
-      const comment = $form.querySelector('#comment').value;
+      const rating = input.value;
+      const comment = form.querySelector('#comment').value;
       submitRating(rating, comment);
       localStorage.removeItem(`ccxActionRatingsFeedback${sheetCamelCase}`);
       block.innerHTML = `
@@ -457,7 +457,7 @@ export default async function decorate(block) {
       <div class="no-slider">
         <p>${submissionText}</p>
       </div>`;
-      if (window.scrollY > $section.offsetTop) window.scrollTo(0, $section.offsetTop - 64);
+      if (window.scrollY > section.offsetTop) window.scrollTo(0, section.offsetTop - 64);
     });
     sliderFunctionality();
   }
@@ -466,26 +466,26 @@ export default async function decorate(block) {
   function decorateCannotRateBlock(
     title,
     paragraph,
-    $CTA = null,
+    CTA = null,
     headingTag = 'h3',
   ) {
-    const $headingWrapper = createTag('div', { class: 'ratings-heading' });
-    const $heading = createTag(headingTag, { id: toClassName(title) });
-    $heading.textContent = title;
-    $headingWrapper.appendChild($heading);
-    const $stars = getCurrentRatingStars();
-    $headingWrapper.appendChild($stars);
-    block.appendChild($headingWrapper);
-    const $textAndCTA = createTag('div', { class: 'no-slider' });
-    const $p = createTag('p');
-    $p.textContent = paragraph;
-    $textAndCTA.appendChild($p);
-    if ($CTA) $textAndCTA.appendChild($CTA);
-    block.appendChild($textAndCTA);
+    const headingWrapper = createTag('div', { class: 'ratings-heading' });
+    const heading = createTag(headingTag, { id: toClassName(title) });
+    heading.textContent = title;
+    headingWrapper.appendChild(heading);
+    const stars = getCurrentRatingStars();
+    headingWrapper.appendChild(stars);
+    block.appendChild(headingWrapper);
+    const textAndCTA = createTag('div', { class: 'no-slider' });
+    const p = createTag('p');
+    p.textContent = paragraph;
+    textAndCTA.appendChild(p);
+    if (CTA) textAndCTA.appendChild(CTA);
+    block.appendChild(textAndCTA);
   }
 
   // Determine if user is allowed to rate, and then re-decorate the block.
-  function regenerateBlockState(title, $CTA, headingTag = 'h3') {
+  function regenerateBlockState(title, CTA, headingTag = 'h3') {
     block.innerHTML = '';
     const actionRated = hasRated();
     const actionUsed = determineActionUsed();
@@ -499,25 +499,25 @@ export default async function decorate(block) {
     } else if (actionUsed) {
       decorateRatingSlider(title, headingTag);
     } else {
-      decorateCannotRateBlock(title, actionNotUsedText, $CTA, headingTag);
+      decorateCannotRateBlock(title, actionNotUsedText, CTA, headingTag);
     }
   }
 
-  const $rows = Array.from(block.children);
-  if (!$rows[1]) return;
+  const rows = Array.from(block.children);
+  if (!rows[1]) return;
 
   const classes = block.classList;
   if (classes.contains('show') && classes.contains('average')) showRatingAverage = true;
 
-  const $heading = $rows[0].querySelector('h1')
-    ?? $rows[0].querySelector('h2')
-    ?? $rows[0].querySelector('h3')
-    ?? $rows[0].querySelector('h4');
-  const headingTag = $heading ? $heading.tagName : 'h3';
-  const $CTA = $rows[0].querySelector('a');
-  if ($CTA) $CTA.classList.add('xlarge');
-  const $sheet = $rows[1].firstElementChild;
-  actionTitle = $heading ? $heading.textContent.trim() : defaultTitle;
+  const heading = rows[0].querySelector('h1')
+    ?? rows[0].querySelector('h2')
+    ?? rows[0].querySelector('h3')
+    ?? rows[0].querySelector('h4');
+  const headingTag = heading ? heading.tagName : 'h3';
+  const CTA = rows[0].querySelector('a');
+  if (CTA) CTA.classList.add('xlarge');
+  const $sheet = rows[1].firstElementChild;
+  actionTitle = heading ? heading.textContent.trim() : defaultTitle;
   sheet = $sheet.textContent.trim();
   sheetCamelCase = sheet
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (w, i) => (i === 0 ? w.toLowerCase() : w.toUpperCase()))
@@ -525,11 +525,11 @@ export default async function decorate(block) {
   block.innerHTML = '';
   lazyLoadLottiePlayer(block);
 
-  regenerateBlockState(actionTitle, $CTA, headingTag);
+  regenerateBlockState(actionTitle, CTA, headingTag);
 
   // When the ratings are retrieved.
   document.addEventListener('ratings_received', () => {
-    regenerateBlockState(actionTitle, $CTA, headingTag);
+    regenerateBlockState(actionTitle, CTA, headingTag);
     block.classList.add('ratings_received');
   });
 
@@ -577,6 +577,6 @@ export default async function decorate(block) {
     alreadySubmittedTitle = await mod.replaceKey('rating-already-submitted-title', getConfig());
     alreadySubmittedText = await mod.replaceKey('rating-already-submitted-text', getConfig());
     votesText = await mod.replaceKey('rating-votes', getConfig());
-    regenerateBlockState(actionTitle, $CTA, headingTag);
+    regenerateBlockState(actionTitle, CTA, headingTag);
   });
 }
