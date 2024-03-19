@@ -22,7 +22,6 @@ function normCountry(country) {
   return (country.toLowerCase() === 'uk' ? 'gb' : country.toLowerCase()).split('_')[0];
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export async function getCountry() {
   const urlParams = new URLSearchParams(window.location.search);
   let countryCode = urlParams.get('country') || getCookie('international');
@@ -50,3 +49,26 @@ export async function getCountry() {
   const configCountry = getConfig().locale.region;
   return normCountry(configCountry);
 }
+
+export const formatSalesPhoneNumber = (() => {
+  let numbersMap;
+  return async (tags, placeholder = '') => {
+    if (tags.length <= 0) return;
+
+    if (!numbersMap) {
+      numbersMap = await fetch('/express/system/business-sales-numbers.json').then((r) => r.json());
+    }
+
+    if (!numbersMap?.data) return;
+    const country = await getCountry() || 'us';
+    tags.forEach((a) => {
+      const r = numbersMap.data.find((d) => d.country === country);
+
+      const decodedNum = r ? decodeURI(r.number.trim()) : decodeURI(a.href.replace('tel:', '').trim());
+
+      a.textContent = placeholder ? a.textContent.replace(placeholder, decodedNum) : decodedNum;
+      a.setAttribute('title', placeholder ? a.getAttribute('title').replace(placeholder, decodedNum) : decodedNum);
+      a.href = `tel:${decodedNum}`;
+    });
+  };
+})();

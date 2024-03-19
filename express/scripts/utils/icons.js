@@ -115,11 +115,11 @@ export function getIcon(icons, alt, size = 44) {
 }
 
 export function getIconElement(icons, size, alt, additionalClassName) {
-  const $div = createTag('div');
-  $div.innerHTML = getIcon(icons, alt, size);
+  const div = createTag('div');
+  div.innerHTML = getIcon(icons, alt, size);
 
   if (additionalClassName) {
-    $div.firstElementChild.classList.add(additionalClassName);
+    div.firstElementChild.classList.add(additionalClassName);
   }
-  return $div.firstElementChild;
+  return div.firstElementChild;
 }

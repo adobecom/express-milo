@@ -2,11 +2,11 @@ import { getLibs } from '../../scripts/utils.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
-export function addBlockClasses($block, classNames) {
-  const $rows = Array.from($block.children);
-  $rows.forEach(($row) => {
+export function addBlockClasses(block, classNames) {
+  const rows = Array.from(block.children);
+  rows.forEach((row) => {
     classNames.forEach((className, i) => {
-      $row.children[i].className = className;
+      row.children[i].className = className;
     });
   });
 }

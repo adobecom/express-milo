@@ -1,7 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
-// eslint-disable-next-line camelcase
-import { decorateButtons_deprecated } from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -143,7 +142,7 @@ async function buildApp(block, content) {
 }
 
 export default async function decorate(block) {
-  decorateButtons_deprecated(block);
+  decorateButtonsDeprecated(block);
   const rows = Array.from(block.children);
   const heading = rows[0] ? rows[0].querySelector('div') : null;
   const background = rows[2] ? rows[2].querySelector('picture') : null;

@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import buildCarousel from '../shared/carousel.js';
-import { decorateButtons_deprecated, addTempWrapper } from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -112,8 +112,8 @@ async function loadSpreadsheetData(block, relevantRowsData) {
 }
 
 export default async function decorate(block) {
-  addTempWrapper(block, 'link-list');
-  decorateButtons_deprecated(block);
+  addTempWrapperDeprecated(block, 'link-list');
+  decorateButtonsDeprecated(block);
 
   const options = {};
   const toggleLinksHighlight = (links) => {
