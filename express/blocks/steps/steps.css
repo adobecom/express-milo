@@ -1,0 +1,126 @@
+main .section .steps {
+  margin-top: 56px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+  grid-template-columns: 1fr;
+  grid-gap: 16px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+main .section .steps h2,
+main .section .steps h3 {
+  margin: 0;
+}
+
+main .section .steps h3 {
+  font-size: var(--heading-font-size-s);
+  text-align: left;
+  line-height: 26px;
+  margin-top: 0;
+}
+
+main .section .steps p {
+  font-size: var(--body-font-size-s);
+  text-align: left;
+  margin: 4px 0;
+}
+
+main .section .steps > div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: var(--color-gray-700);
+  color: var(--color-white);
+}
+
+main .section .steps .step-image {
+  margin-right: 20px;
+}
+
+main .section .steps .step-image picture img,
+main .section .steps .step-image img.icon {
+  width: 40px;
+  max-width: unset;
+  height: 40px;
+  margin: 4px 0;
+}
+
+main .section .steps .step-description {
+  width: 100%;
+}
+
+main .section:has(> .steps) {
+  margin-top: 80px;
+}
+
+main .section:has(> .steps.dark),
+main .section:has(> .steps.highlight) {
+  padding: 120px 0;
+}
+
+main .section:has(> .steps.dark) {
+  background-color: var(--color-black);
+}
+
+main .section:has(> .steps.dark) > *,
+main .section:has(> .steps.highlight) > * {
+    color: var(--color-white);
+}
+
+main .section:has(> .steps.dark) div > h2:first-of-type,
+main .section:has(> .steps.highlight) > div > h2:first-of-type {
+    margin-top: 0;
+}
+
+main .section:has(> .steps.dark) .steps > div {
+  background-color: var(--color-gray-700);
+}
+
+main .section:has(> .steps.highlight) {
+  background: var(--gradient-highlight-vertical);
+}
+
+main .section:has(> .steps.highlight) .steps > div {
+  background-color: var(--color-white);
+  color: var(--color-gray-800);
+}
+
+main .section .steps .icon {
+  fill: currentColor;
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 900px) {
+  main .section:has(> .steps.dark),
+  main .section:has(> .steps.highlight) {
+    padding: 80px 0;
+  }
+  main .section:has(> .steps) > div,
+  main .section:has(> .steps.dark) > div,
+  main .section:has(> .steps.highlight) > div {
+    max-width: 950px;
+  }
+  main .section .steps {
+    -ms-grid-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: none;
+  }
+  main .section .steps > div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .section:has(> .steps.dark) > div,
+  main .section:has(> .steps) > div {
+    max-width: 1024px;
+  }
+}

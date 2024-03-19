@@ -1,6 +1,5 @@
 // This was only added for the blocks premigration. It is not to be used for new blocks.
-// eslint-disable-next-line camelcase
-export function decorateButtons_deprecated(el) {
+export function decorateButtonsDeprecated(el) {
   el.querySelectorAll(':scope a').forEach(($a) => {
     const originalHref = $a.href;
     const linkText = $a.textContent.trim();
@@ -46,6 +45,37 @@ export function decorateButtons_deprecated(el) {
       //         $a.title = $iconName;
       //     }
       // }
+    }
+  });
+}
+
+export function addTempWrapperDeprecated($block, blockName) {
+  const wrapper = document.createElement('div');
+  const parent = $block.parentElement;
+  wrapper.classList.add(`${blockName}-wrapper`);
+  parent.insertBefore(wrapper, $block);
+  wrapper.append($block);
+}
+
+export function normalizeHeadings(block, allowedHeadings) {
+  const allowed = allowedHeadings.map((h) => h.toLowerCase());
+  block.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
+    const h = tag.tagName.toLowerCase();
+    if (allowed.indexOf(h) === -1) {
+      // current heading is not in the allowed list -> try first to "promote" the heading
+      let level = parseInt(h.charAt(1), 10) - 1;
+      while (allowed.indexOf(`h${level}`) === -1 && level > 0) {
+        level -= 1;
+      }
+      if (level === 0) {
+        // did not find a match -> try to "downgrade" the heading
+        while (allowed.indexOf(`h${level}`) === -1 && level < 7) {
+          level += 1;
+        }
+      }
+      if (level !== 7) {
+        tag.outerHTML = `<h${level}>${tag.textContent.trim()}</h${level}>`;
+      }
     }
   });
 }
