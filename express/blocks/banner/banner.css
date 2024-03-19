@@ -1,0 +1,81 @@
+main .section:has(.banner),
+main .section:has(.banner.compact) {
+  background-color: var(--color-info-accent);
+}
+
+main .section:has(.banner),
+main .section:has(.banner.compact) {
+  padding: 80px 15px;
+}
+
+main .section:has(.banner.compact) {
+  padding: 40px 15px;
+}
+
+main .section:has(.banner) > div {
+  padding: 0;
+}
+
+main .banner {
+  padding: 0;
+  margin: 0 auto;
+  color: var(--color-white);
+}
+
+main .banner.light {
+  color: var(--color-black);
+}
+
+main .banner.compact p {
+  margin: 24px;
+}
+
+main .banner.compact p.button-container {
+  margin-bottom: 0;
+}
+
+main .banner.compact p.button-container ~ p {
+  margin-top: 0;
+}
+
+main .banner h2,
+main .banner h3 {
+  color: var(--color-white);
+}
+
+main .banner h2 {
+  margin-top: 0;
+}
+
+main .banner.light h2,
+main .banner.light h3 {
+  color: var(--color-black);
+}
+
+main .banner a:any-link {
+  color: var(--color-white);
+}
+
+main .banner.light a:any-link {
+  color: var(--color-black);
+}
+
+main .banner .icon {
+  height: 72px;
+  width: 72px;
+}
+
+main .banner.multi-button .button-container {
+  display: inline-block;
+}
+
+main .banner p:last-of-type {
+  margin-bottom: 0;
+}
+
+@media (min-width: 900px) {
+  main .section:has(.banner) {
+    padding-left: 56px;
+    padding-right: 56px;
+  }
+}
