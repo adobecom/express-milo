@@ -45,6 +45,7 @@ main .banner h3 {
 
 main .banner h2 {
   margin-top: 0;
+  margin-bottom: 0;
 }
 
 main .banner.light h2,

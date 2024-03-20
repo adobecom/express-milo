@@ -3,6 +3,10 @@ main .section > div.link-list-wrapper {
   padding-right: 0;
 }
 
+main .section:has( .link-list) {
+  padding-top: 60px;
+}
+
 main .section:has( .link-list) > div,
 main .section:has( .link-list.centered) > div {
   max-width: 1200px;
@@ -38,6 +42,7 @@ main .link-list h4 {
 main .link-list h3 {
   font-size: var(--heading-font-size-m);
   margin-bottom: 20px;
+  margin-top: 0;
 }
 
 main .link-list p.button-container {

@@ -24,6 +24,10 @@ main .ratings .ratings-heading {
   flex-wrap: wrap;
 }
 
+main .ratings .ratings-heading h3 {
+  margin: 0;
+}
+
 main .ratings .rating-stars {
   color: var(--color-info-accent);
   margin-top: 20px;
@@ -448,6 +452,10 @@ main .ratings #rate-our-quick-action {
 
 main .ratings .no-slider {
   padding-bottom: 80px;
+}
+
+main .ratings .no-slider p {
+  margin: 32px 0;
 }
 
 @media (min-width: 900px) {
