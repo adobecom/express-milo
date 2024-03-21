@@ -608,10 +608,6 @@ main .hero.hero-noimage p {
   font-size: var(--body-font-size-s);
 }
 
-main .hero a.button:any-link {
-  text-shadow: none;
-}
-
 main .icon {
   height: 1em;
   width: 1em;
@@ -659,6 +655,7 @@ main .hero a:any-link {
 }
 
 main .hero a.button:any-link {
+  text-shadow: none;
   padding: 10px 1.5em;
   border-radius: 22px;
 }
