@@ -1,9 +1,6 @@
 main .section > div.link-list-wrapper {
   padding-left: 0;
   padding-right: 0;
-}
-
-main .section:has( .link-list) {
   padding-top: 60px;
 }
 
@@ -37,6 +34,7 @@ main .link-list h2,
 main .link-list h3,
 main .link-list h4 {
   text-align: left;
+  padding-left: 32px;
 }
 
 main .link-list h3 {
@@ -77,13 +75,6 @@ main .link-list.shaded .carousel-container .carousel-platform {
 main .link-list.centered .carousel-container .carousel-platform {
   box-sizing: border-box;
 }
-
-main .link-list h2,
-main .link-list h3,
-main .link-list h4 {
-  padding-left: 32px;
-}
-
 main .link-list .carousel-platform {
   scroll-padding: 32px;
 }
@@ -182,7 +173,8 @@ main .link-list.large p.button-container .button {
 @media (min-width: 900px) {
   main .section:has( .link-list) > div,
   main .section:has( .link-list.centered) > div {
-    padding: 0 50px;
+    padding-left: 50px;
+    padding-right: 50px;
   }
 
   main .link-list {
@@ -197,15 +189,6 @@ main .link-list.large p.button-container .button {
 
   main .link-list .carousel-platform {
     scroll-padding: 0;
-  }
-
-  main .section:has( .link-list) > div,
-  main .section:has( .link-list.centered) > div {
-    max-width: 1200px;
-  }
-
-  main .section:has( .link-list) > div, main .section:has( .link-list.centered) > div {
-    padding: 0 50px;
   }
 
   main .section.link-list-fullwidth-leftalign-container > div.link-list-wrapper .link-list,
@@ -223,11 +206,7 @@ main .link-list.large p.button-container .button {
 @media (min-width: 1200px) {
   main .section:has( .link-list) > div,
   main .section:has( .link-list.centered) > div {
-    padding: 0 55px;
-  }
-
-  main .section:has( .link-list) > div,
-  main .section:has( .link-list.centered) > div {
-    max-width: 1200px;
+    padding-left: 55px;
+    padding-right: 55px;
   }
 }
