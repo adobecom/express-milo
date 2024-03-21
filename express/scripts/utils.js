@@ -193,6 +193,53 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
+export async function decorateButtons(area) {
+  const buttons = area.querySelectorAll('a[href*="#_btn"]');
+  if (buttons.length === 0) return;
+  const {createTag} = await import(`${miloLibs}/utils/utils.js`);
+  buttons.forEach((button) => {
+    const parent = button.parentElement
+    const btnDescription = button.hash.split('#').filter((hash) => hash.startsWith('_btn'))[0];
+    const btnAttributes = btnDescription.split('-');
+    btnAttributes.shift();
+    button.href = button.href.replace(`#${btnDescription}`, '')
+    button.classList.add('con-button', ...btnAttributes);
+
+    if (parent.nodeName === 'STRONG') {
+      button.classList.add('blue')
+      parent.insertAdjacentElement('afterend', button);
+      parent.remove();
+    }
+    if (parent.nodeName === 'EM') {
+      button.classList.add('outline')
+      parent.insertAdjacentElement('afterend', button);
+      parent.remove();
+    }
+    const strongChild = button.querySelector('strong');
+    if (strongChild) {
+      button.classList.add('blue')
+      const spanChild = createTag('span', {}, strongChild.textContent);
+      strongChild.replaceWith(spanChild);
+    }
+    const actionArea = button.closest('p, div');
+    if (actionArea) {
+      actionArea.classList.add('action-area');
+      actionArea.nextElementSibling?.classList.add('supplemental-text', 'body-xl');
+    }
+
+    // const miloButton = parent.nodeName === 'STRONG' || parent.nodeName === 'EM'
+    //     || (parent.nodeName === 'P' && button.querySelector('strong'));
+    // // convert to milo compatible format
+    // if (!miloButton) {
+    //   let tag = 'strong'
+    //   if (btnAttributes.includes('reverse')) tag = 'em';
+    //   const node = createTag(tag);
+    //   parent.insertBefore(node, button);
+    //   node.append(button);
+    // }
+  });
+}
+
 export function decorateArea(area = document) {
   removeIrrelevantSections(area);
   // LCP image decoration
@@ -200,6 +247,7 @@ export function decorateArea(area = document) {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
+  decorateButtons(area);
 }
 
 export async function useMiloSample() {
