@@ -74,10 +74,13 @@ export function readBlockConfig(block) {
   return config;
 }
 
-export async function removeIrrelevantSections(area) {
+export function removeIrrelevantSections(area) {
   if (!area) return;
-  const miloLibs = getLibs();
-  const { getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+  const getMetadata = (name, doc = document) => {
+    const attr = name && name.includes(':') ? 'property' : 'name';
+    const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
+    return meta && meta.content;
+  };
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -199,32 +202,32 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
-export async function decorateButtons(area) {
+export function decorateButtons(area) {
   const buttons = area.querySelectorAll('a[href*="#_btn"]');
   if (buttons.length === 0) return;
-  const {createTag} = await import(`${miloLibs}/utils/utils.js`);
   buttons.forEach((button) => {
-    const parent = button.parentElement
+    const parent = button.parentElement;
     const btnDescription = button.hash.split('#').filter((hash) => hash.startsWith('_btn'))[0];
     const btnAttributes = btnDescription.split('-');
     btnAttributes.shift();
-    button.href = button.href.replace(`#${btnDescription}`, '')
+    button.href = button.href.replace(`#${btnDescription}`, '');
     button.classList.add('con-button', ...btnAttributes);
 
     if (parent.nodeName === 'STRONG') {
-      button.classList.add('blue')
+      button.classList.add('blue');
       parent.insertAdjacentElement('afterend', button);
       parent.remove();
     }
     if (parent.nodeName === 'EM') {
-      button.classList.add('outline')
+      button.classList.add('outline');
       parent.insertAdjacentElement('afterend', button);
       parent.remove();
     }
     const strongChild = button.querySelector('strong');
     if (strongChild) {
-      button.classList.add('blue')
-      const spanChild = createTag('span', {}, strongChild.textContent);
+      button.classList.add('blue');
+      const spanChild = document.createElement('span');
+      spanChild.textContent = strongChild.textContent;
       strongChild.replaceWith(spanChild);
     }
     const actionArea = button.closest('p, div');
