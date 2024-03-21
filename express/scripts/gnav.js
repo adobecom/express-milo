@@ -115,7 +115,7 @@ async function loadFEDS() {
   const prefix = config.locale.prefix.replaceAll('/', '');
 
   async function showRegionPicker() {
-    const { getModal } = await import('../blocks/modal/modal.js');
+    const { getModal } = await import(`${getLibs()}/blocks/modal/modal.js`);
     const details = {
       path: '/express/fragments/regions',
       id: 'langnav',
