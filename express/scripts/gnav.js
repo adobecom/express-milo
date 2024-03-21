@@ -1,6 +1,6 @@
-import { getLibs } from './utils.js';
+import { getLibs, getHelixEnv } from './utils.js';
 
-const { getConfig, getMetadata, loadScript, getEnv } = await import(`${getLibs()}/utils/utils.js`);
+const { getConfig, getMetadata, loadScript, getEnv, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
 const isHomepage = window.location.pathname.endsWith('/express/');
 function getCookie(cname) {
@@ -115,7 +115,7 @@ async function loadFEDS() {
   const prefix = config.locale.prefix.replaceAll('/', '');
 
   async function showRegionPicker() {
-    const { getModal } = await import('../blocks/modal/modal.js');
+    const { getModal } = await import(`${getLibs()}/blocks/modal/modal.js`);
     const details = {
       path: '/express/fragments/regions',
       id: 'langnav',
@@ -207,6 +207,7 @@ async function loadFEDS() {
     }
 
     /* switch all links if lower env */
+    const env = getHelixEnv();
     document.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach(($a) => {
       const hrefURL = new URL($a.href);
       hrefURL.host = env.spark;
@@ -259,8 +260,8 @@ async function loadFEDS() {
               // Check if the added node is a 'header' or contains a 'header'
               if (node.nodeType === Node.ELEMENT_NODE) { // Ensure it's an element node
                 if (node.tagName === 'HEADER' || node.querySelector('header')) {
-                  const header = node.querySelector('header');
-                  header.classList.add('custom-header');
+                  const nodeHeader = node.querySelector('header');
+                  nodeHeader.classList.add('custom-header');
                   observer.disconnect();
                 }
               }
@@ -293,15 +294,17 @@ async function loadFEDS() {
   });
 }
 
+// eslint-disable-next-line max-len
 // TODO maybe put the code in this if statment. Only do if we want to test our applicaiton without the gnav sometimes
-if (!window.hlx || window.hlx.gnav) {}
-await loadIMS();
-loadFEDS();
-setTimeout(() => {
-  import('./google-yolo.js').then((mod) => {
-    mod.default();
-  });
-}, 4000);
+if (!window.hlx || window.hlx.gnav) {
+  await loadIMS();
+  loadFEDS();
+  setTimeout(() => {
+    import('./google-yolo.js').then((mod) => {
+      mod.default();
+    });
+  }, 4000);
+}
 /* Core Web Vitals RUM collection */
 // TODO maybe add this back
 // sampleRUM('cwv');
