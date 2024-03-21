@@ -21,6 +21,9 @@ module.exports = {
     'no-return-assign': ['error', 'except-parens'],
     'no-unused-expressions': 0,
     'chai-friendly/no-unused-expressions': 2,
+    'import/no-cycle': 1,
+    'import/no-extraneous-dependencies': 0,
+    'no-restricted-syntax': 0,
   },
   overrides: [
     {
@@ -31,4 +34,5 @@ module.exports = {
   plugins: [
     'chai-friendly',
   ],
+  ignorePatterns: ['*.min.js'],
 };

@@ -1,7 +1,10 @@
 import { getLibs } from './utils.js';
+import BlockMediator from './block-mediator.min.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
+// TODO see if we even want to preload the product. Currently we're not in the old project
+// eslint-disable-next-line no-unused-vars
 function loadExpressProduct() {
   if (!window.hlx.preload_product) return;
   if (document.body.dataset.device === 'mobile') return;
@@ -36,10 +39,10 @@ async function isSignedIn() {
     resolve();
   }, { once: true });
   // if not ready, abort
-  await Promise.race([resolved, new Promise((r) => setTimeout(r, 5000))]);
+  await Promise.race([resolved, new Promise((r) => { setTimeout(r, 5000); })]);
   if (window.adobeProfile?.getUserProfile() === null) {
     // retry after 1s
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => { setTimeout(r, 1000); });
   }
   return window.adobeProfile?.getUserProfile();
 }
@@ -84,4 +87,19 @@ export default async function loadDelayed(DELAY = 15000) {
       resolve();
     }, window.delay_preload_product ? DELAY * 2 : DELAY);
   });
+}
+
+export function getDestination() {
+  return BlockMediator.get('primaryCtaUrl')
+    || document.querySelector('a.button.xlarge.same-as-floating-button-CTA, a.primaryCTA')?.href;
+}
+
+export function getProfile() {
+  const { feds, adobeProfile, fedsConfig } = window;
+  if (fedsConfig?.universalNav) {
+    return feds?.services?.universalnav?.interface?.adobeProfile?.getUserProfile()
+    || adobeProfile?.getUserProfile();
+  }
+  return feds?.services?.profile?.interface?.adobeProfile?.getUserProfile()
+    || adobeProfile?.getUserProfile();
 }

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea, getLibs, listenMiloEvents } from './utils.js';
+import { setLibs, decorateArea, listenMiloEvents } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -40,6 +40,7 @@ const CONFIG = {
   locales: {
     '': { ietf: 'en-US', tk: 'jdq5hay.css' },
     br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
+    // eslint-disable-next-line max-len
     // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hans-CN
     cn: { ietf: 'zh-CN', tk: 'qxw8hzm' },
     de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
@@ -55,6 +56,7 @@ const CONFIG = {
     nl: { ietf: 'nl-NL', tk: 'cya6bri.css' },
     no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
     se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
+    // eslint-disable-next-line max-len
     // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hant-TW
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
@@ -99,6 +101,7 @@ const miloLibs = setLibs(LIBS);
     // const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
     // document.head.append(meta);
     // TODO add with gnav task
+    // eslint-disable-next-line max-len
     // import('./gnav.js').then((gnav) => gnav.buildBreadCrumbArray(getConfig().locale.prefix.replaceAll('/', ''))).then((breadcrumbs) => {
     //   if (breadcrumbs && breadcrumbs.length) document.body.classList.add('breadcrumbs-spacing');
     // });
@@ -116,7 +119,7 @@ const miloLibs = setLibs(LIBS);
     // });
   };
 
-  isMobileGating && rushGating && runGating();
+  if (isMobileGating && rushGating) { runGating(); }
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
@@ -127,7 +130,7 @@ const miloLibs = setLibs(LIBS);
   listenMiloEvents();
   await loadArea();
 
-  isMobileGating && !rushGating && runGating();
+  if (isMobileGating && rushGating) { runGating(); }
 
   import('./express-delayed.js').then((mod) => {
     mod.default();
