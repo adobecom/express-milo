@@ -187,10 +187,6 @@ main .ratings .slider-bottom .lottie {
   height: 24px;
 }
 
-main .ratings .slider .tooltip {
-  transition: left 0.3s, right 0.3s;
-}
-
 @media (max-width: 899px) {
   main .ratings .slider-bottom {
     padding: 20px 25px 50px 28px;
