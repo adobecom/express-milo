@@ -1,6 +1,9 @@
 import { getLibs } from '../../scripts/utils.js';
 import buildCarousel from '../shared/carousel.js';
-import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import {
+  decorateButtonsDeprecated,
+  addTempWrapperDeprecated,
+} from '../../scripts/utils/decorate.js';
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -99,7 +102,10 @@ async function loadSpreadsheetData(block, relevantRowsData) {
     const listEl = defaultContainer.cloneNode(true);
 
     listEl.innerHTML = listEl.innerHTML.replaceAll('Default', list[0].trim());
-    listEl.innerHTML = listEl.innerHTML.replace('/express/templates/default', list[1].trim());
+    listEl.innerHTML = listEl.innerHTML.replace(
+      '/express/templates/default',
+      list[1].trim(),
+    );
 
     defaultContainerParent.append(listEl);
   });
@@ -107,7 +113,10 @@ async function loadSpreadsheetData(block, relevantRowsData) {
   defaultContainer.remove();
 
   if (relevantRowsData.linkListTitle) {
-    block.innerHTML = block.innerHTML.replaceAll('link-list-title', relevantRowsData.linkListTitle.trim());
+    block.innerHTML = block.innerHTML.replaceAll(
+      'link-list-title',
+      relevantRowsData.linkListTitle.trim(),
+    );
   }
 }
 
@@ -167,7 +176,9 @@ export default async function decorate(block) {
   });
 
   if (window.location.href.includes('/express/templates/')) {
-    const { default: updateAsyncBlocks } = await import('../../scripts/template-ckg.js');
+    const { default: updateAsyncBlocks } = await import(
+      '../../scripts/utils/template-ckg.js'
+    );
     await updateAsyncBlocks();
   }
 }

@@ -30,6 +30,12 @@ export const [setLibs, getLibs] = (() => {
   ];
 })();
 
+function toClassName(name) {
+  return name && typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
+    : '';
+}
+
 /*
  * ------------------------------------------------------------
  * Edit above at your own risk.
@@ -152,7 +158,7 @@ export function lazyLoadLottiePlayer($block = null) {
 
 async function loadAEMGnav() {
   const miloLibs = getLibs();
-  const { createTag, getMetadata, loadScript } = await import(`${miloLibs}/utils/utils.js`);
+  const { getMetadata, loadScript } = await import(`${miloLibs}/utils/utils.js`);
   const header = document.querySelector('header');
 
   if (header) {
@@ -250,6 +256,39 @@ export function decorateArea(area = document) {
   decorateButtons(area);
 }
 
-export async function useMiloSample() {
-  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+export function getHelixEnv() {
+  let envName = sessionStorage.getItem('helix-env');
+  if (!envName) {
+    envName = 'stage';
+    if (window.spark?.hostname === 'www.adobe.com') envName = 'prod';
+  }
+  const envs = {
+    stage: {
+      commerce: 'commerce-stg.adobe.com',
+      adminconsole: 'stage.adminconsole.adobe.com',
+      spark: 'stage.projectx.corp.adobe.com',
+    },
+    prod: {
+      commerce: 'commerce.adobe.com',
+      spark: 'express.adobe.com',
+      adminconsole: 'adminconsole.adobe.com',
+    },
+  };
+  const env = envs[envName];
+
+  const overrideItem = sessionStorage.getItem('helix-env-overrides');
+  if (overrideItem) {
+    const overrides = JSON.parse(overrideItem);
+    const keys = Object.keys(overrides);
+    env.overrides = keys;
+
+    for (const a of keys) {
+      env[a] = overrides[a];
+    }
+  }
+
+  if (env) {
+    env.name = envName;
+  }
+  return env;
 }
