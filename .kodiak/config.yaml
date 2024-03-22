@@ -1,0 +1,27 @@
+version: 1.0
+
+snow:
+  - id: 545804 # Milo Express https://adobe.service-now.com/service_registry_portal.do#/service/545804
+
+notifications:
+  jira:
+    default:
+      project: MWPW # Mandatory
+      filters:
+        include:
+          risk_rating: R5
+      fields:
+        assignee:
+          name: vhargrave
+        customfield_11800: MWPW-140779 #epic link
+        watchers:
+          - casalino
+          - jmichnow
+          - mauchley
+          - all66020
+        labels:
+          - "OriginatingProcess=Kodiak"
+          - "security"
+          - "kodiak-ticket"
+        components:
+          - name: "DevOps Security"
