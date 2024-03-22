@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, toClassName } from '../../scripts/utils.js';
 import {
   normalizeHeadings,
   decorateButtonsDeprecated,
@@ -10,12 +10,6 @@ import { createOptimizedPicture } from '../../scripts/utils/media.js';
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 const PROMOTION_FOLDER = 'express/promotions';
-
-export function toClassName(name) {
-  return name && typeof name === 'string'
-    ? name.trim().toLowerCase().replace(/[^0-9a-z]/gi, '-')
-    : '';
-}
 
 async function fetchPromotion(name) {
   const { prefix } = getConfig().locale;
