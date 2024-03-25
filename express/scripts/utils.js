@@ -30,7 +30,7 @@ export const [setLibs, getLibs] = (() => {
   ];
 })();
 
-function toClassName(name) {
+export function toClassName(name) {
   return name && typeof name === 'string'
     ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
     : '';
