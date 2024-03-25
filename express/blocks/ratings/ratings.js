@@ -1,4 +1,4 @@
-import { getLibs, getLottie, lazyLoadLottiePlayer } from '../../scripts/utils.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
 import { getIcon, getIconElement } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
@@ -6,15 +6,6 @@ import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 const { createTag, getConfig, getMetadata } = await import(
   `${getLibs()}/utils/utils.js`
 );
-
-function toClassName(name) {
-  return name && typeof name === 'string'
-    ? name
-      .trim()
-      .toLowerCase()
-      .replace(/[^0-9a-z]/gi, '-')
-    : '';
-}
 
 export default async function decorate(block) {
   decorateButtonsDeprecated(block);
