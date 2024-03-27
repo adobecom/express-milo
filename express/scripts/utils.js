@@ -241,7 +241,7 @@ async function transpileMarquee(area) {
           aTags.forEach((a) => {
             let elToAppend;
             const buttonContainer = a.parentElement;
-            console.log(buttonContainer.parentElement.tagName);
+            
             if (buttonContainer?.childNodes.length === 1) {
               const buttonWrapper = createTag('span');
               buttonWrapper.append(a);
