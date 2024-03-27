@@ -109,6 +109,7 @@ const miloLibs = setLibs(LIBS);
   } else if (getMetadata('breadcrumbs') === 'on' && !!getMetadata('breadcrumbs-base') && (!!getMetadata('short-title') || !!getMetadata('breadcrumbs-page-title'))) document.body.classList.add('breadcrumbs-spacing');
 
   loadLana({ clientId: 'express' });
+  console.log(config)
  
   const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark')?.toLowerCase()) && document.body.dataset.device === 'mobile';
   const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating')?.toLowerCase());
