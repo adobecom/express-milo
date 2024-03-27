@@ -1,7 +1,7 @@
 
   
 import { titleCase } from './utils/string.js';
-// import HtmlSanitizer from './html-sanitizer.js';
+import HtmlSanitizer from './html-sanitizer.js';
 import { fetchPlaceholders } from './utils/fetch-placeholders.js';
 
 let getMetadata;
@@ -101,11 +101,11 @@ const ignoredMeta = [
   'viewport',
 ];
 
-// async function sanitizeMeta(meta) {
-//   if (meta.property || meta.name.includes(':') || ignoredMeta.includes(meta.name)) return;
-//   await yieldToMain();
-//   meta.content = HtmlSanitizer.SanitizeHtml(meta.content);
-// }
+async function sanitizeMeta(meta) {
+  if (meta.property || meta.name.includes(':') || ignoredMeta.includes(meta.name)) return;
+  await yieldToMain();
+  meta.content = HtmlSanitizer.SanitizeHtml(meta.content);
+}
 
 // metadata -> dom blades
 async function autoUpdatePage(main) {
