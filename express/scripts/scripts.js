@@ -64,9 +64,6 @@ const CONFIG = {
   links: 'on',
 };
 
-// Decorate the page with site specific needs.
-decorateArea();
-
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -74,6 +71,9 @@ decorateArea();
  */
 
 const miloLibs = setLibs(LIBS);
+
+// Decorate the page with site specific needs.
+decorateArea();
 
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];

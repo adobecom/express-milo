@@ -76,8 +76,7 @@ export function readBlockConfig(block) {
 
 export async function removeIrrelevantSections(area) {
   if (!area) return;
-  const miloLibs = getLibs();
-  const { getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+  const { getMetadata } = await import(`${getLibs()}/utils/utils.js`);
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -199,13 +198,95 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
+async function transpileMarquee(area) {
+  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+
+  const handleSubCTAText = (oldContainer, newContainer) => {
+    const elAfterBtn = oldContainer.nextElementSibling;
+    if (!elAfterBtn || elAfterBtn?.tagName !== 'BLOCKQUOTE') return;
+  
+    const subText = elAfterBtn.querySelector('p');
+
+    if (subText) {
+      const subTextEl = createTag('span', { class: 'cta-sub-text' }, subText.innerHTML)
+      newContainer.append(subTextEl);
+    }
+    elAfterBtn.remove();
+  };
+
+  const needsTranspile = (block) => {
+    const firstRow = block.querySelector(':scope > div:first-of-type');
+    return firstRow.children.length > 1 && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
+  }
+
+  const transpile = (block) => {
+    const rows = block.querySelectorAll(':scope > div');
+
+    if (rows.length) {
+      rows.forEach((r, i, arr) => {
+        if (i < arr.length - 1) {
+          const keyCol = r.querySelector(':scope > div');
+          keyCol?.remove();
+
+          if (i > 0) {
+            r.remove()
+          }
+        }
+        
+        if (i === arr.length - 1) {
+          const aTags = r.querySelectorAll('p > a');
+          const elsToAppend = [];
+          const preActionArea = createTag('p');
+
+          aTags.forEach((a) => {
+            let elToAppend;
+            const buttonContainer = a.parentElement;
+            console.log(buttonContainer.parentElement.tagName);
+            if (buttonContainer?.childNodes.length === 1) {
+              const buttonWrapper = createTag('span');
+              buttonWrapper.append(a);
+              handleSubCTAText(buttonContainer, buttonWrapper);
+              elToAppend = buttonWrapper;
+              buttonContainer.remove();
+            }
+
+            if (elToAppend) elsToAppend.push(elToAppend);
+          })
+
+          elsToAppend.forEach((e, i) => {
+            preActionArea.append(e);
+            const link = e.querySelector('a');
+
+            if (!link) return;
+            if (i === 0) link.classList.add('button', 'accent', 'primaryCTA', 'xlarge');
+            if (i === 1) link.classList.add('button', 'modal', 'link-block', 'accent', 'secondary', 'xlarge');
+          })
+
+          const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
+          lastPInFirstDiv?.after(preActionArea);
+          r.append(createTag('div'))
+        };
+      })
+    }
+  }
+
+  const marquees = area.querySelectorAll('.marquee');
+  marquees.forEach((block) => {
+    if (needsTranspile(block)) transpile(block);
+  })
+}
+
 export function decorateArea(area = document) {
-  removeIrrelevantSections(area);
+  document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main'));
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
+
+  // transpile conflicting blocks
+  transpileMarquee(area);
 }
 
 export function getHelixEnv() {
