@@ -220,6 +220,10 @@ async function transpileMarquee(area) {
   }
 
   const transpile = (block) => {
+    if (block.classList.contains('short')) {
+      block.classList.remove('short');
+      block.classList.add('small');
+    }
     const rows = block.querySelectorAll(':scope > div');
 
     if (rows.length) {
@@ -241,7 +245,7 @@ async function transpileMarquee(area) {
           aTags.forEach((a) => {
             let elToAppend;
             const buttonContainer = a.parentElement;
-            
+
             if (buttonContainer?.childNodes.length === 1) {
               const buttonWrapper = createTag('span');
               buttonWrapper.append(a);
