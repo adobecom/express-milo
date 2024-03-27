@@ -5,6 +5,7 @@ import {
 } from '../utils.js';
 
 import { fetchPlaceholders } from './fetch-placeholders.js';
+import { getIconElement } from './icons.js';
 const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
 
 const typeMap = {
