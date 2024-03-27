@@ -89,7 +89,7 @@ main .search-marquee .search-dropdown-container .suggestions-container ul {
 
 main .search-marquee .search-dropdown-container .trends-container .trends-wrapper li,
 main .search-marquee .search-dropdown-container .suggestions-container li {
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 main .search-marquee .search-dropdown-container .suggestions-container li {
@@ -103,6 +103,10 @@ main .search-marquee .search-dropdown-container .suggestions-container li:focus-
     background: var(--color-gray-200);
     outline: none;
     border-radius: 8px;
+}
+
+main .search-marquee .search-dropdown-container .trends-container .trends-wrapper {
+    margin : 10px 0 10px 0;
 }
 
 main .search-marquee .search-dropdown-container .trends-container .trends-wrapper li a {
