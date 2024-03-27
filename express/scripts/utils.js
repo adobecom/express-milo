@@ -102,6 +102,17 @@ export async function removeIrrelevantSections(area) {
   });
 }
 
+async function overrideMiloBlocks(area) {
+  if (!area) return;
+  area.querySelectorAll('main > div').forEach((section) => {
+    const columnBlock = section.querySelectorAll('div.columns');
+    columnBlock.forEach((column) => {
+      column.classList.remove('columns');
+      column.className = `ax-columns ${column.className}`;
+    });
+  });
+}
+
 // Get lottie animation HTML - remember to lazyLoadLottiePlayer() to see it.
 export function getLottie(name, src, loop = true, autoplay = true, control = false, hover = false) {
   return (`<lottie-player class="lottie lottie-${name}" src="${src}" background="transparent" speed="1" ${(loop) ? 'loop ' : ''}${(autoplay) ? 'autoplay ' : ''}${(control) ? 'controls ' : ''}${(hover) ? 'hover ' : ''}></lottie-player>`);
@@ -201,6 +212,7 @@ export function listenMiloEvents() {
 
 export function decorateArea(area = document) {
   removeIrrelevantSections(area);
+  overrideMiloBlocks(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
