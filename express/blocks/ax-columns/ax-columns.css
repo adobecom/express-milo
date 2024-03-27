@@ -222,10 +222,6 @@ main .columns .icon.icon-check {
 }
 
 main .columns.columns-marquee .brand.icon {
-  display: none;
-}
-
-main .columns.columns-marquee .brand.icon {
   display: unset;
   height: 32px;
   width: auto;
@@ -318,6 +314,7 @@ main .columns.highlight > div {
   border-radius: 20px;
   overflow: hidden;
   margin: 20px 0;
+  padding: 0;
 }
 
 main .columns.highlight > div:first-child {
@@ -359,10 +356,6 @@ main .columns-video .column-picture .column-video-overlay svg {
   transform: translate(-50%, -50%);
   width: 66px;
   height: 66px;
-}
-
-main .columns.highlight > div {
-  padding: 0;
 }
 
 main .columns.highlight .column-picture {
@@ -466,8 +459,8 @@ main .columns.offer .column .columns-iconlist .columns-iconlist-description p {
 }
 
 main .columns .column {
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
 main .columns.fullsize .column-picture,
@@ -491,10 +484,6 @@ main .columns.fullsize .has-brand > div p:first-child {
   margin: 0;
 }
 
-main .columns .column {
-  padding-left: 32px;
-  padding-right: 32px;
-}
 
 main .columns.fullsize .column {
   padding-left: 24px;
@@ -537,18 +526,15 @@ main .columns.highlight .column.column-picture {
 main .columns.color .img-wrapper {
   height: 345px;
   width: 345px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
 }
 
 main .columns.color .color-svg-img {
   height: 63%;
   width: 46%;
-}
-
-main .columns.color .img-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
 }
 
 main .columns.columns.color > div {
@@ -682,16 +668,13 @@ main .columns.fullsize.top .column .columns-iconlist .columns-iconlist-descripti
   }
 
   main .columns .column {
+    margin: 0;
     padding-left: 32px;
     padding-right: 32px;
   }
 
   main .columns .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(.text) {
     padding-right: 16px;
-  }
-
-  main .columns .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay):not(.text) {
-    padding-left: 16px;
   }
 
   main .columns .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay):not(.text) {
@@ -738,11 +721,6 @@ main .columns.fullsize.top .column .columns-iconlist .columns-iconlist-descripti
 
   main .columns.fullsize .has-brand > div p:first-child {
     margin: 16px 0;
-  }
-
-  main .columns .column {
-    padding-left: 32px;
-    padding-right: 32px;
   }
 
   main .columns .column.column-picture {
@@ -820,10 +798,6 @@ main .columns.fullsize.top .column .columns-iconlist .columns-iconlist-descripti
     font-size: 22px;
     line-height: 29px;
     display: block;
-  }
-
-  main .columns .column {
-    margin: 0;
   }
 
   main .columns.width-2-columns .column-picture,
