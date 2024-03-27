@@ -1,5 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import { fetchPlaceholders } from '../../scripts/utils.js';
+
+import { getLibs } from '../../scripts/utils.js'
+import { fetchPlaceholders } from '../../scripts/utils/fetch-placeholders.js';
+// const { fetchPlaceholders } = await import(`${getLibs()}/features/placeholders.js`);
 const {getConfig} = await import(`${getLibs()}/utils/utils.js`);
 import { memoize } from '../../scripts/utils/hofs.js'
 
@@ -34,7 +37,9 @@ function extractFilterTerms(input) {
       .toLowerCase());
 }
 function extractLangs(locales) {
-  return locales.toLowerCase().split(' or ').map((l) => l.trim());
+  console.log('--------');
+  console.log(locales)
+  return Object.keys(locales)
 }
 function extractRegions(locales) {
   return extractLangs(locales).map((l) => (l === 'en' ? 'ZZ' : l.toUpperCase()));
@@ -68,6 +73,7 @@ function formatFilterString(filters) {
   });
   // locale needs backward compatibility with old api
   const confLocales = getConfig().locales;
+  console.log(confLocales)
   if (locales) {
     const langFilter = extractLangs(locales)
       .map((l) => confLocales[l === 'en' ? '' : l]?.ietf)

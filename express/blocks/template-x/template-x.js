@@ -1,18 +1,20 @@
 /* eslint-disable import/named, import/extensions */
 
-import {  
-  fetchPlaceholders,
-  getIconElement, 
+import {    
   getLottie,
-  getMetadata,
   lazyLoadLottiePlayer,
-  titleCase,
+  
   toClassName, 
 } from '../../scripts/utils.js';
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+import { titleCase } from '../../scripts/utils/string.js';
+import {  getIconElement } from '../../scripts/utils/icons.js';
+import { getLibs } from '../../scripts/utils.js'
+const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
+// const { fetchPlaceholders } = await import(`${getLibs()}/features/placeholders.js`);
+import { fetchPlaceholders } from '../../scripts/utils/fetch-placeholders.js';
 import {  sampleRUM} from '../../scripts/utils/sampleRUM.js'
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
-import { addTempWrapper } from '../../scripts/decorate.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 import { Masonry } from '../../features/masonry/masonry.js'
 import buildCarousel from '../../features/carousel/carousel.js';
@@ -50,10 +52,10 @@ async function getTemplates(response, phs, fallbackMsg) {
 }
 
 async function fetchAndRenderTemplates(props) {
-  import('../../scripts/mobile-beta-gating.js').then((gatingScript) => {
-    gatingScript.default();
-  });
-
+  // import('../../scripts/mobile-beta-gating.js').then((gatingScript) => {
+  //   gatingScript.default();
+  // });
+  console.log(fetchPlaceholders)
   const [placeholders, { response, fallbackMsg }] = await Promise.all(
     [fetchPlaceholders(), fetchTemplates(props)],
   );
@@ -1617,8 +1619,7 @@ function determineTemplateXType(props) {
 }
 
 export default async function decorate(block) {
-  addTempWrapper(block, 'template-x');
-
+  addTempWrapperDeprecated(block, 'template-x');
   const props = constructProps(block);
   block.innerHTML = '';
   await buildTemplateList(block, props, determineTemplateXType(props));

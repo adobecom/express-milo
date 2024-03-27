@@ -1,5 +1,5 @@
-import { createTag } from '../../scripts/utils.js';
-
+import { getLibs } from '../../scripts/utils.js'
+const { createTag } =  await import(`${getLibs()}/utils/utils.js`);
 // todo: remove this.isTemplateList() when template-list is deprecated
 function nodeIsBefore(node, otherNode) {
   // eslint-disable-next-line no-bitwise

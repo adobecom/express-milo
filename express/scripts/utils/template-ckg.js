@@ -3,7 +3,7 @@ import { titleCase } from './string.js';
 
 import { getDataWithContext } from './browse-api-controller.js';
 
-import fetchAllTemplatesMetadata from './all-templates-metadata.js';
+import fetchAllTemplatesMetadata from './../all-templates-metadata.js';
 
 const { getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 

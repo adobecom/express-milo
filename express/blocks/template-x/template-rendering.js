@@ -1,6 +1,11 @@
-/* eslint-disable no-underscore-dangle */
-import { createTag, getIconElement, getMetadata } from '../../scripts/utils.js';
+/* eslint-disable no-underscore-dangle */ 
+import {  getIconElement } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
+import { getLibs } from '../../scripts/utils.js'
+const { createTag , getMetadata } = await import(
+  `${getLibs()}/utils/utils.js`
+);
+
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);

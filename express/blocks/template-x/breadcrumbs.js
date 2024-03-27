@@ -1,10 +1,12 @@
 import {
-  fetchPlaceholders,
-  getMetadata,
   titleCase, 
-} from '../../scripts/utils.js';
+} from '../../scripts/utils/string.js'
 import fetchAllTemplatesMetadata from '../../scripts/all-templates-metadata.js';
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+import { getLibs } from '../../scripts/utils.js'
+import { fetchPlaceholders } from '../../scripts/utils/fetch-placeholders.js';
+const { createTag,
+  getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+// const { fetchPlaceholders } = await import(`${getLibs()}/features/placeholders.js`);
 function sanitize(str) {
   return str?.replaceAll(/[$@%'"]/g, '');
 }

@@ -1,4 +1,5 @@
-import { createTag, loadStyle } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js'
+const { createTag ,  loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
 function correctCenterAlignment(plat) {
   if (plat.parentElement.offsetWidth <= plat.offsetWidth) return;
