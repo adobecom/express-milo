@@ -2,7 +2,7 @@ import { getLibs
 } from '../../scripts/utils.js';
 
 import { fetchPlaceholders } from '../../scripts/utils/fetch-placeholders.js';
- 
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import {  getIconElement } from '../../scripts/utils/icons.js'; 
 const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
 import { sampleRUM } from '../../scripts/utils/sampleRUM.js';
@@ -294,6 +294,7 @@ async function buildSearchDropdown(block) {
       fromScratchLink.append(arrowRightIcon);
       fromScratchLink.classList.remove('button');
       fromScratchLink.classList.add('from-scratch-link');
+
       fromScratchLink.href = getMetadata('search-marquee-from-scratch-link') || '/';
       trendsContainer.append(fromScratchLink);
       linkDiv.remove();
@@ -315,6 +316,7 @@ async function buildSearchDropdown(block) {
         trendsWrapper.append(trendLinkWrapper);
       }
       trendsContainer.append(trendsWrapper);
+  
     }
 
     suggestionsTitle.textContent = placeholders['search-suggestions-title'] ?? '';
@@ -326,6 +328,7 @@ async function buildSearchDropdown(block) {
     dropdownContainer.append(trendsContainer, suggestionsContainer, freePlanContainer);
     searchBarWrapper.append(dropdownContainer);
   }
+ 
 }
 
 function decorateLinkList(block) {
@@ -348,7 +351,9 @@ function decorateLinkList(block) {
 }
 
 export default async function decorate(block) {
+  
   addTempWrapperDeprecated(block, 'search-marquee');
+  decorateButtonsDeprecated(block)
   decorateBackground(block);
   await decorateSearchFunctions(block);
   await buildSearchDropdown(block);
