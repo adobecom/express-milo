@@ -115,6 +115,7 @@ function initSearchFunction(block) {
     const taskXMap = placeholders['x-task-name-mapping'] ? JSON.parse(placeholders['x-task-name-mapping']) : {};
 
     const format = getMetadata('placeholder-format');
+
     const currentTasks = {
       xCore: '',
       content: '',
@@ -219,7 +220,7 @@ function initSearchFunction(block) {
     }
   };
 
-  import('../../scripts/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
+  import('../../scripts/utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
     const { inputHandler } = useInputAutocomplete(
       suggestionsListUIUpdateCB, { throttleDelay: 300, debounceDelay: 500, limit: 7 },
     );
@@ -360,7 +361,7 @@ export default async function decorate(block) {
     document.dispatchEvent(linksPopulated);
   }
   if (window.location.href.includes('/express/templates/')) {
-    const { default: updateAsyncBlocks } = await import('../../scripts/template-ckg.js');
+    const { default: updateAsyncBlocks } = await import('../../scripts/utils/template-ckg.js');
     updateAsyncBlocks();
   }
 }
