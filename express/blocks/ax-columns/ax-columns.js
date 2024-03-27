@@ -1,16 +1,16 @@
+import { getLibs, toClassName } from '../../scripts/utils.js';
+
 import {
-  linkImage,
-  createTag,
-  transformLinkToAnimation,
   addAnimationToggle,
-  toClassName,
-  getIconElement,
-  addHeaderSizing,
-  getMetadata,
-} from '../../scripts/utils.js';
-import { addTempWrapper } from '../../scripts/decorate.js';
+  linkImage,
+  transformLinkToAnimation,
+} from '../../scripts/utils/media.js';
+
+import { getIconElement } from '../../scripts/utils/icons.js';
+import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/utils/free-plan.js';
-import { embedYoutube, embedVimeo } from '../../scripts/embed-videos.js';
+import { embedYoutube, embedVimeo } from '../../scripts/utils/embed-videos.js';
 
 import {
   displayVideoModal,
@@ -18,6 +18,8 @@ import {
   isVideoLink,
 } from '../shared/video.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
+
+const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
 function transformToVideoColumn(cell, aTag, block) {
   const parent = cell.parentElement;
@@ -59,14 +61,15 @@ function transformToVideoColumn(cell, aTag, block) {
   // auto-play if hash matches title
   const hash = window.location.hash.substring(1);
   const titleName = toClassName(title);
-  if ((hash && titleName) && titleName === hash && hash !== '#embed-video') {
+  if (hash && titleName && titleName === hash && hash !== '#embed-video') {
     displayVideoModal(vidUrls, title);
   }
 }
 
 function decorateIconList(columnCell, rowNum, blockClasses) {
-  const icons = [...columnCell.querySelectorAll('img.icon, svg.icon')]
-    .filter((icon) => !icon.closest('p').classList.contains('social-links'));
+  const icons = [...columnCell.querySelectorAll('img.icon, svg.icon')].filter(
+    (icon) => !icon.closest('p').classList.contains('social-links'),
+  );
   // decorate offer icons
   if (rowNum === 0 && blockClasses.contains('offer')) {
     const titleIcon = columnCell.querySelector('img.icon, svg.icon');
@@ -79,10 +82,12 @@ function decorateIconList(columnCell, rowNum, blockClasses) {
     return;
   }
 
-  if (rowNum === 0
+  if (
+    rowNum === 0
     && icons.length === 1
     && icons[0].closest('p').innerText.trim() === ''
-    && !icons[0].closest('p').previousElementSibling) {
+    && !icons[0].closest('p').previousElementSibling
+  ) {
     // treat icon as brand icon if first element in first row cell and no text next to it
     icons[0].classList.add('brand');
     columnCell.parentElement.classList.add('has-brand');
@@ -140,7 +145,7 @@ const handleVideos = (cell, a, block, thumbnail) => {
 };
 
 export default async function decorate(block) {
-  addTempWrapper(block, 'columns');
+  addTempWrapperDeprecated(block, 'columns');
 
   const rows = Array.from(block.children);
 
@@ -232,7 +237,8 @@ export default async function decorate(block) {
 
       cell.classList.add('column');
       const childEls = [...cell.children];
-      const isPictureColumn = childEls.every((el) => ['BR', 'PICTURE'].includes(el.tagName)) && childEls.length > 0;
+      const isPictureColumn = childEls.every((el) => ['BR', 'PICTURE'].includes(el.tagName))
+        && childEls.length > 0;
       if (isPictureColumn) {
         cell.classList.add('column-picture');
       }
@@ -250,7 +256,9 @@ export default async function decorate(block) {
 
   // decorate offer
   if (block.classList.contains('offer')) {
-    block.querySelectorAll('a.button').forEach((aTag) => aTag.classList.add('large', 'wide'));
+    block
+      .querySelectorAll('a.button')
+      .forEach((aTag) => aTag.classList.add('large', 'wide'));
     if (rows.length > 1) {
       // move all content into first row
       rows.forEach((row, rowNum) => {
@@ -266,13 +274,24 @@ export default async function decorate(block) {
   }
 
   // add free plan widget to first columns block on every page except blog
-  if (!(getMetadata('theme') === 'blog' || getMetadata('template') === 'blog') && document.querySelector('main .columns') === block
-    && document.querySelector('main .block') === block) {
-    addFreePlanWidget(block.querySelector('.button-container') || block.querySelector(':scope .column:not(.hero-animation-overlay,.columns-picture)'));
+  if (
+    !(getMetadata('theme') === 'blog' || getMetadata('template') === 'blog')
+    && document.querySelector('main .columns') === block
+    && document.querySelector('main .block') === block
+  ) {
+    addFreePlanWidget(
+      block.querySelector('.button-container')
+        || block.querySelector(
+          ':scope .column:not(.hero-animation-overlay,.columns-picture)',
+        ),
+    );
   }
 
   // invert buttons in regular columns inside columns-highlight-container
-  if (block.closest('.section.columns-highlight-container') && !block.classList.contains('highlight')) {
+  if (
+    block.closest('.section.columns-highlight-container')
+    && !block.classList.contains('highlight')
+  ) {
     block.querySelectorAll('a.button').forEach((button) => {
       button.classList.add('dark');
     });
@@ -338,8 +357,13 @@ export default async function decorate(block) {
 
   // variant for the colors pages
   if (block.classList.contains('color')) {
-    const [primaryColor, accentColor] = rows[1].querySelector(':scope > div').textContent.trim().split(',');
-    const [textCol, svgCol] = Array.from((rows[0].querySelectorAll(':scope > div')));
+    const [primaryColor, accentColor] = rows[1]
+      .querySelector(':scope > div')
+      .textContent.trim()
+      .split(',');
+    const [textCol, svgCol] = Array.from(
+      rows[0].querySelectorAll(':scope > div'),
+    );
     const svgId = svgCol.textContent.trim();
     const svg = createTag('div', { class: 'img-wrapper' });
 
@@ -351,16 +375,22 @@ export default async function decorate(block) {
     svg.style.fill = accentColor;
     rows[0].append(svg);
 
-    const { default: isDarkOverlayReadable } = await import('../../scripts/color-tools.js');
+    const { default: isDarkOverlayReadable } = await import(
+      '../../scripts/utils/color-tools.js'
+    );
 
     if (isDarkOverlayReadable(primaryColor)) {
       block.classList.add('shadow');
     }
   }
 
-  const phoneNumberTags = block.querySelectorAll('a[title="{{business-sales-numbers}}"]');
+  const phoneNumberTags = block.querySelectorAll(
+    'a[title="{{business-sales-numbers}}"]',
+  );
   if (phoneNumberTags.length > 0) {
-    const { formatSalesPhoneNumber } = await import('../../scripts/utils/pricing.js');
+    const { formatSalesPhoneNumber } = await import(
+      '../../scripts/utils/location-utils.js'
+    );
     await formatSalesPhoneNumber(phoneNumberTags);
   }
 }
