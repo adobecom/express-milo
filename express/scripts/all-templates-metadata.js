@@ -1,7 +1,5 @@
-import { getLibs, getHelixEnv } from '../utils.js';
+import { getConfig, getHelixEnv } from './utils.js';
 import { memoize } from './hofs.js';
-
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 const memoizedFetchUrl = memoize((url) => fetch(url).then((r) => (r.ok ? r.json() : null)), {
   key: (q) => q,
