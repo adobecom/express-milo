@@ -19,18 +19,18 @@
   --color-gray-800: #242424;
   --color-black: #000;
   --color-brand-title: #000b1d;
-  --color-info-accent: #5c5ce0;
-  --color-info-accent-hover: #4646c6;
-  --color-info-accent-down: #3d3db4;
-  --color-info-accent-reverse: #eeeefc;
-  --color-info-accent-reverse-down: #e6e6f4;
-  --color-info-accent-light: #dedef9;
-  --color-info-primary: #242424;
-  --color-info-primary-hover: #090909;
-  --color-info-primary-down: #000;
-  --color-info-secondary: #e8e8e8;
-  --color-info-secondary-hover: #d4d4d4;
-  --color-info-secondary-down: #cdcdcd;
+  --color-accent: #5c5ce0;
+  --color-accent-hover: #4646c6;
+  --color-accent-down: #3d3db4;
+  --color-accent-reverse: #eeeefc;
+  --color-accent-reverse-down: #e6e6f4;
+  --color-accent-light: #dedef9;
+  --color-primary: #242424;
+  --color-primary-hover: #090909;
+  --color-primary-down: #000;
+  --color-secondary: #e8e8e8;
+  --color-secondary-hover: #d4d4d4;
+  --color-secondary-down: #cdcdcd;
   --color-premium: #ebcf2d;
   --gradient-highlight-vertical: linear-gradient(15deg, #7c84fc, #ff4dd2);
   --gradient-highlight-horizontal: linear-gradient(90deg, #ff4dd2, #7c84fc);
@@ -438,7 +438,6 @@ body.light-grey {
 }
 
 main {
-  text-align: center;
   overflow-x: clip;
 }
 
@@ -478,7 +477,6 @@ main p {
 
 main a:any-link {
   color: var(--color-info-accent);
-  text-decoration: none;
   font-weight: 600;
 }
 
@@ -491,30 +489,30 @@ main .section:last-of-type > .default-content-wrapper {
 }
 
 @media (min-width: 600px) {
-  main h2 {
+  main > h2 {
     font-size: var(--heading-font-size-l);
     text-align: center;
   }
 
-  main h3 {
+  main > h3 {
     font-size: var(--heading-font-size-l);
     text-align: center;
   }
 
-  main h4 {
+  main > h4 {
     font-size: var(--heading-font-size-m);
     margin-top: 56px;
     text-align: center;
   }
 
-  main h1 + h5 {
+  main > h1 + h5 {
     font-size: var(--body-font-size-xxl);
     font-weight: var(--body-font-weight);
     margin-top: 32px;
     margin-bottom: 16px;
   }
 
-  main p {
+  main > p {
     font-size: var(--body-font-size-l);
   }
 
@@ -714,8 +712,6 @@ main .section.secondary {
 
 main .section > div {
   margin: auto;
-  max-width: 375px;
-  padding: 0;
 }
 
 main .section > div:empty {
@@ -752,18 +748,6 @@ body[data-device='mobile']
     .split-action-container
   ) {
   display: block;
-}
-
-@media (min-width: 900px) {
-  main .section > div {
-    max-width: 830px;
-  }
-}
-
-@media (min-width: 1200px) {
-  main .section > div {
-    max-width: 1024px;
-  }
 }
 
 /* jank protection for async blocks/sections */

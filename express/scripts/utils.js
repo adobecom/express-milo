@@ -76,8 +76,7 @@ export function readBlockConfig(block) {
 
 export async function removeIrrelevantSections(area) {
   if (!area) return;
-  const miloLibs = getLibs();
-  const { getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+  const { getMetadata } = await import(`${getLibs()}/utils/utils.js`);
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -211,12 +210,130 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
+async function transpileMarquee(area) {
+  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+
+  const handleSubCTAText = (oldContainer, newContainer) => {
+    const elAfterBtn = oldContainer.nextElementSibling;
+    if (!elAfterBtn || elAfterBtn?.tagName !== 'BLOCKQUOTE') return;
+  
+    const subText = elAfterBtn.querySelector('p');
+
+    if (subText) {
+      const subTextEl = createTag('span', { class: 'cta-sub-text' }, subText.innerHTML)
+      newContainer.append(subTextEl);
+    }
+    elAfterBtn.remove();
+  };
+
+  const needsTranspile = (block) => {
+    const firstRow = block.querySelector(':scope > div:first-of-type');
+    return firstRow.children.length > 1 && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
+  }
+
+  const transpile = (block) => {
+    const assetArea = createTag('div');
+
+    block.classList.add('transpiled', 'xl-button');
+
+    if (block.classList.contains('short')) {
+      block.classList.remove('short');
+      block.classList.add('small');
+    }
+
+    if (!block.classList.contains('dark')) {
+      block.classList.add('light');
+    }
+
+    const rows = block.querySelectorAll(':scope > div');
+
+    if (rows.length) {
+      rows.forEach((r, i, arr) => {
+        if (i < arr.length - 1) {
+          r.querySelector(':scope > div:first-of-type')?.remove();
+
+          if (document.body.dataset.device === 'mobile') {
+            const valCol = r.querySelector(':scope > div:last-of-type');
+            assetArea.innerHTML = valCol.innerHTML;
+            if (block.classList.contains('dark')) valCol.innerHTML = '#000000';
+            if (block.classList.contains('light')) valCol.innerHTML = '#ffffff00';
+          };
+
+          if (i > 0) {
+            r.remove()
+          }
+        }
+        
+        if (i === arr.length - 1) {
+          const aTags = r.querySelectorAll('p > a');
+          const btnContainers = [];
+          const elsToAppend = [];
+          const actionArea = createTag('p', { class: 'action-area' });
+
+          aTags.forEach((a) => {
+            if (!btnContainers.includes(a.parentElement)) {
+              btnContainers.push(a.parentElement);
+            }
+          })
+
+          const isInlineButtons = btnContainers.length === 1;
+
+          aTags.forEach((a) => {
+            const buttonContainer = a.parentElement;
+
+            if (buttonContainer?.childNodes.length === 1) {
+              const buttonWrapper = createTag('span');
+              buttonWrapper.append(a);
+              handleSubCTAText(buttonContainer, buttonWrapper);
+              buttonContainer.remove();
+
+              elsToAppend.push(buttonWrapper);
+            }
+          })
+
+          elsToAppend.forEach((e, i) => {
+            actionArea.append(e);
+            const link = e.querySelector('a');
+
+            if (!link) return;
+            if (i === 0) {
+              const strong = createTag('strong');
+              e.prepend(strong);
+              strong.append(link);
+            }
+            if (i === 1) {
+              if (!isInlineButtons) {
+                const em = createTag('em');
+                e.prepend(em);
+                em.append(link);
+              }
+            }
+          })
+
+          const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
+          lastPInFirstDiv?.after(actionArea);
+          r.append(assetArea)
+        };
+      })
+    }
+  }
+
+  const marquees = area.querySelectorAll('.marquee');
+  marquees.forEach((block) => {
+    if (needsTranspile(block)) transpile(block);
+  })
+}
+
 export function decorateArea(area = document) {
-  removeIrrelevantSections(area);
+  document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main', 'body'));
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
+
+  // transpile conflicting blocks
+  transpileMarquee(area);
   overrideMiloColumns(area);
 }
