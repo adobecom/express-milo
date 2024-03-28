@@ -7,43 +7,6 @@ import {
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
-export function getHelixEnv() {
-  let envName = sessionStorage.getItem('helix-env');
-  if (!envName) {
-    envName = 'stage';
-    if (window.spark?.hostname === 'www.adobe.com') envName = 'prod';
-  }
-  const envs = {
-    stage: {
-      commerce: 'commerce-stg.adobe.com',
-      adminconsole: 'stage.adminconsole.adobe.com',
-      spark: 'stage.projectx.corp.adobe.com',
-    },
-    prod: {
-      commerce: 'commerce.adobe.com',
-      spark: 'express.adobe.com',
-      adminconsole: 'adminconsole.adobe.com',
-    },
-  };
-  const env = envs[envName];
-
-  const overrideItem = sessionStorage.getItem('helix-env-overrides');
-  if (overrideItem) {
-    const overrides = JSON.parse(overrideItem);
-    const keys = Object.keys(overrides);
-    env.overrides = keys;
-
-    for (const a of keys) {
-      env[a] = overrides[a];
-    }
-  }
-
-  if (env) {
-    env.name = envName;
-  }
-  return env;
-}
-
 async function fetchRelevantRows(path) {
   if (!window.relevantRows) {
     try {
@@ -58,7 +21,7 @@ async function fetchRelevantRows(path) {
 
   if (window.relevantRows.length) {
     const relevantRow = window.relevantRows.find((p) => path === p.path);
-    const env = getHelixEnv();
+    const { env } = getConfig();
 
     if (env && env.name === 'stage') {
       return relevantRow || null;
