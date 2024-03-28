@@ -1,5 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
-import buildCarousel from '../shared/carousel.js';
+import buildCarousel from '../../scripts/widgets/carousel.js';
 import {
   decorateButtonsDeprecated,
   addTempWrapperDeprecated,
