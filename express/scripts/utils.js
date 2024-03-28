@@ -220,20 +220,32 @@ async function transpileMarquee(area) {
   }
 
   const transpile = (block) => {
+    const assetArea = createTag('div');
+
     block.classList.add('transpiled', 'color-detection', 'xl-button');
 
     if (block.classList.contains('short')) {
       block.classList.remove('short');
       block.classList.add('small');
     }
-    
+
+    if (!block.classList.contains('dark')) {
+      block.classList.add('light');
+    }
+
     const rows = block.querySelectorAll(':scope > div');
 
     if (rows.length) {
       rows.forEach((r, i, arr) => {
         if (i < arr.length - 1) {
-          const keyCol = r.querySelector(':scope > div');
-          keyCol?.remove();
+          r.querySelector(':scope > div:first-of-type')?.remove();
+
+          if (document.body.dataset.device === 'mobile') {
+            const valCol = r.querySelector(':scope > div:last-of-type');
+            assetArea.innerHTML = valCol.innerHTML;
+            if (block.classList.contains('dark')) valCol.innerHTML = '#000000';
+            if (block.classList.contains('light')) valCol.innerHTML = '#ffffff00';
+          };
 
           if (i > 0) {
             r.remove()
@@ -288,7 +300,7 @@ async function transpileMarquee(area) {
 
           const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
           lastPInFirstDiv?.after(actionArea);
-          r.append(createTag('div'))
+          r.append(assetArea)
         };
       })
     }

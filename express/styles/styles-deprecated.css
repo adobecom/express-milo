@@ -10,8 +10,24 @@
   margin: 0;
 }
 
+.marquee.transpiled.small .text {
+  order: 2;
+}
+
+.marquee.transpiled.small .asset {
+  order: 1;
+}
+
 @media screen and (min-width: 600px) {
   .marquee.transpiled .action-area {
     align-items: flex-start;
+  }
+
+  .marquee.transpiled.small .text {
+    order: 1;
+  }
+  
+  .marquee.transpiled.small .asset {
+    order: 2;
   }
 }
