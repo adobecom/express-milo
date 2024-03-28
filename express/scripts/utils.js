@@ -220,10 +220,13 @@ async function transpileMarquee(area) {
   }
 
   const transpile = (block) => {
+    block.classList.add('transpiled', 'color-detection', 'xl-button');
+
     if (block.classList.contains('short')) {
       block.classList.remove('short');
       block.classList.add('small');
     }
+    
     const rows = block.querySelectorAll(':scope > div');
 
     if (rows.length) {
@@ -239,35 +242,52 @@ async function transpileMarquee(area) {
         
         if (i === arr.length - 1) {
           const aTags = r.querySelectorAll('p > a');
+          const btnContainers = [];
           const elsToAppend = [];
-          const preActionArea = createTag('p');
+          const actionArea = createTag('p', { class: 'action-area' });
 
           aTags.forEach((a) => {
-            let elToAppend;
+            if (!btnContainers.includes(a.parentElement)) {
+              btnContainers.push(a.parentElement);
+            }
+          })
+
+          const isInlineButtons = btnContainers.length === 1;
+
+          aTags.forEach((a) => {
             const buttonContainer = a.parentElement;
 
             if (buttonContainer?.childNodes.length === 1) {
               const buttonWrapper = createTag('span');
               buttonWrapper.append(a);
               handleSubCTAText(buttonContainer, buttonWrapper);
-              elToAppend = buttonWrapper;
               buttonContainer.remove();
-            }
 
-            if (elToAppend) elsToAppend.push(elToAppend);
+              elsToAppend.push(buttonWrapper);
+            }
           })
 
           elsToAppend.forEach((e, i) => {
-            preActionArea.append(e);
+            actionArea.append(e);
             const link = e.querySelector('a');
 
             if (!link) return;
-            if (i === 0) link.classList.add('button', 'accent', 'primaryCTA', 'xlarge');
-            if (i === 1) link.classList.add('button', 'modal', 'link-block', 'accent', 'secondary', 'xlarge');
+            if (i === 0) {
+              const strong = createTag('strong');
+              e.prepend(strong);
+              strong.append(link);
+            }
+            if (i === 1) {
+              if (!isInlineButtons) {
+                const em = createTag('em');
+                e.prepend(em);
+                em.append(link);
+              }
+            }
           })
 
           const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
-          lastPInFirstDiv?.after(preActionArea);
+          lastPInFirstDiv?.after(actionArea);
           r.append(createTag('div'))
         };
       })
@@ -282,7 +302,7 @@ async function transpileMarquee(area) {
 
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main'));
+  removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main', 'body'));
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');

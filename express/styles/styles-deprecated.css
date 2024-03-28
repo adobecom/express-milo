@@ -1,0 +1,17 @@
+/* TODO: stylesheet to be eventually removed once we stop using block transpilations */
+
+.marquee.transpiled p.action-area > span {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.marquee.transpiled p.action-area > span > a {
+  margin: 0;
+}
+
+@media screen and (min-width: 600px) {
+  .marquee.transpiled .action-area {
+    align-items: flex-start;
+  }
+}
