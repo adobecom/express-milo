@@ -102,7 +102,7 @@ export async function removeIrrelevantSections(area) {
   });
 }
 
-async function overrideMiloBlocks(area) {
+async function overrideMiloColumns(area) {
   if (!area) return;
   area.querySelectorAll('main > div').forEach((section) => {
     const columnBlock = section.querySelectorAll('div.columns');
@@ -212,12 +212,12 @@ export function listenMiloEvents() {
 
 export function decorateArea(area = document) {
   removeIrrelevantSections(area);
-  overrideMiloBlocks(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
+  overrideMiloColumns(area);
 }
 
 export function getHelixEnv() {
