@@ -10,13 +10,13 @@ import { getIconElement } from '../../scripts/utils/icons.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
+import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';
 import {
   embedYoutube,
   embedVimeo,
   isVideoLink,
 } from '../../scripts/utils/embed-videos.js';
 
-import { displayVideoModal, hideVideoModal } from '../shared/video.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);

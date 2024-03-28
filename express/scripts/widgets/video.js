@@ -1,5 +1,5 @@
-import { getLibs, toClassName } from '../../scripts/utils.js';
-import { isVideoLink, getAvailableVimeoSubLang } from '../../scripts/utils/embed-videos.js';
+import { getLibs, toClassName } from '../utils.js';
+import { isVideoLink, getAvailableVimeoSubLang } from '../utils/embed-videos.js';
 
 const { createTag, getConfig, loadBlock } = await import(`${getLibs()}/utils/utils.js`);
 
