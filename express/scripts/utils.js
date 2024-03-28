@@ -107,6 +107,7 @@ async function overrideMiloColumns(area) {
   area.querySelectorAll('main > div').forEach((section) => {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
+      if (column.classList[0] !== 'columns') return;
       column.classList.remove('columns');
       column.className = `ax-columns ${column.className}`;
     });
