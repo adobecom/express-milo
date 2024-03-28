@@ -9,7 +9,7 @@ import {
 import { getIconElement } from '../../scripts/utils/icons.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { addFreePlanWidget } from '../../scripts/utils/free-plan.js';
+import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import {
   embedYoutube,
   embedVimeo,
