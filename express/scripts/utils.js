@@ -222,7 +222,7 @@ async function transpileMarquee(area) {
   const transpile = (block) => {
     const assetArea = createTag('div');
 
-    block.classList.add('transpiled', 'color-detection', 'xl-button');
+    block.classList.add('transpiled', 'xl-button');
 
     if (block.classList.contains('short')) {
       block.classList.remove('short');
