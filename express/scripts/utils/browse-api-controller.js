@@ -1,7 +1,7 @@
 import { getLibs } from '../utils.js';
 import { memoize } from './hofs.js';
 
-const { getConfig, getMetadata, getEnv } = await import(`${getLibs()}/utils/utils.js`);
+const { getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
 const endpoints = {
   dev: {
@@ -89,7 +89,7 @@ export async function getDataWithContext({ urlPath }) {
     ],
   };
 
-  const env = window.location.host === 'localhost:3000' ? { name: 'dev' } : getEnv(getConfig());
+  const env = window.location.host === 'localhost:3000' ? { name: 'dev' } : getConfig().env;
   const result = await getData(env.name, data);
   if (result?.status?.httpCode !== 200) return null;
 
@@ -121,7 +121,7 @@ export async function getDataWithId() {
     ],
   };
 
-  const env = window.location.host === 'localhost:3000' ? { name: 'dev' } : getHelixEnv();
+  const env = window.location.host === 'localhost:3000' ? { name: 'dev' } : getConfig().env;
   const result = await getData(env.name, dataRaw);
   if (result.status.httpCode !== 200) return null;
 

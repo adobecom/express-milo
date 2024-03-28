@@ -5,7 +5,7 @@ import {
   addTempWrapperDeprecated,
 } from '../../scripts/utils/decorate.js';
 
-const { getConfig, getEnv } = await import(`${getLibs()}/utils/utils.js`);
+const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 async function fetchRelevantRows(path) {
   if (!window.relevantRows) {
@@ -21,7 +21,7 @@ async function fetchRelevantRows(path) {
 
   if (window.relevantRows.length) {
     const relevantRow = window.relevantRows.find((p) => path === p.path);
-    const env = getEnv(getConfig());
+    const { env } = getConfig();
 
     if (env && env.name === 'stage') {
       return relevantRow || null;

@@ -1,7 +1,7 @@
 import { getLibs } from '../utils.js';
 import { memoize } from './hofs.js';
 
-const { getConfig, getEnv } = await import(`${getLibs()}/utils/utils.js`);
+const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 const memoizedFetchUrl = memoize((url) => fetch(url).then((r) => (r.ok ? r.json() : null)), {
   key: (q) => q,
@@ -15,11 +15,11 @@ export default async function fetchAllTemplatesMetadata() {
 
   if (!allTemplatesMetadata) {
     try {
-      const env = getEnv(getConfig());
+      const { env } = getConfig();
       const dev = new URLSearchParams(window.location.search).get('dev');
       let sheet;
 
-      if (['yes', 'true', 'on'].includes(dev) && env?.name === 'stage') {
+      if (['yes', 'true', 'on'].includes(dev) && env.name === 'stage') {
         sheet = '/templates-dev.json?sheet=seo-templates&limit=100000';
       } else {
         sheet = `${prefix}/express/templates/default/metadata.json?limit=100000`;
