@@ -18,7 +18,18 @@
   order: 1;
 }
 
+.marquee.transpiled .foreground .text h2 {
+  font-weight: 700;
+  text-transform: none;
+  font-size: clamp(var(--heading-font-size-s), 3vw, var(--heading-font-size-l));
+  margin: 0 0 8px 0;
+}
+
 @media screen and (min-width: 600px) {
+  .marquee.transpiled .foreground .text h2 {
+    font-size: var(--heading-font-size-s);
+  }
+
   .marquee.transpiled .action-area {
     align-items: flex-start;
   }
