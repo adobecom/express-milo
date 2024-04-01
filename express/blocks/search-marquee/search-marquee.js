@@ -222,7 +222,7 @@ function initSearchFunction(block) {
     }
   };
 
-  import('../../scripts/utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
+  import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
     const { inputHandler } = useInputAutocomplete(
       suggestionsListUIUpdateCB, { throttleDelay: 300, debounceDelay: 500, limit: 7 },
     );
