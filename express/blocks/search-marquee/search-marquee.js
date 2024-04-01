@@ -1,18 +1,15 @@
 import { getLibs
 } from '../../scripts/utils.js';
-
-const {replaceKey, replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`);
-// const {placeholderList} = await import(`${getLibs()}/blocks/library-config/lists/placeholders.js`);
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import {  getIconElement } from '../../scripts/utils/icons.js'; 
-const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
-const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`)
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js'
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js'
-
 import buildCarousel from '../shared/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js'
 import BlockMediator from '../../scripts/block-mediator.min.js';
+const {replaceKey} = await import(`${getLibs()}/features/placeholders.js`);
+const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
+const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`)
 
 function handlelize(str) {
   return str.normalize('NFD')
