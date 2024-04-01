@@ -1,31 +1,25 @@
-/* eslint-disable import/named, import/extensions, no-underscore-dangle */
-
+/* eslint-disable no-underscore-dangle */
 import {
-  addAnimationToggle,
-  createOptimizedPicture,
-  createTag,
-  decorateMain,
-  fetchPlaceholders,
-  fetchBlockFragDecorated,
-  fetchRelevantRows,
-  fixIcons,
-  getConfig,
-  getIconElement,
+  getLibs,
   getLottie,
-  getMetadata,
   lazyLoadLottiePlayer,
-  linkImage,
-  sampleRUM,
   toClassName,
 } from '../../scripts/utils.js';
-import { addTempWrapper } from '../../scripts/decorate.js';
 
-import { Masonry } from '../shared/masonry.js';
+import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scripts/utils/media.js';
+import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
-import buildCarousel from '../shared/carousel.js';
-import fetchAllTemplatesMetadata from '../../scripts/all-templates-metadata.js';
-import { memoize } from '../../scripts/hofs.js';
+import { fixIcons, getIconElement } from '../../scripts/utils/icons.js';
+import { addTempWrapperDeprecated, fetchBlockFragDecorated } from '../../scripts/utils/decorate.js';
+
+import { Masonry } from '../../scripts/widgets/masonry.js';
+
+import buildCarousel from '../../scripts/widgets/carousel.js';
+import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
+import { memoize } from '../../scripts/utils/hofs.js';
 import getBreadcrumbs from './breadcrumbs.js';
+
+const [{ createTag, getConfig, getMetadata }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -59,15 +53,14 @@ async function populateHeadingPlaceholder(locale, props) {
   const heading = props.heading.replace("''", '');
   // special treatment for express/ root url
   const lowerCaseHeading = heading === 'Adobe Express' ? heading : heading.toLowerCase();
-  const placeholders = await fetchPlaceholders();
   const lang = getConfig().locale.ietf;
   const templateCount = lang === 'es-ES' ? props.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : props.total.toLocaleString(lang);
   let grammarTemplate;
 
   if (getMetadata('template-search-page') === 'Y') {
-    grammarTemplate = props.total === 1 ? placeholders['template-search-heading-singular'] : placeholders['template-search-heading-plural'];
+    grammarTemplate = props.total === 1 ? placeholderMod.replaceKey('template-search-heading-singular', getConfig()) : placeholderMod.replaceKey('template-search-heading-plural', getConfig());
   } else {
-    grammarTemplate = placeholders['template-placeholder'];
+    grammarTemplate = placeholderMod.replaceKey('template-placeholder', getConfig());
   }
 
   if (grammarTemplate) {
@@ -95,9 +88,8 @@ function formatSearchQuery(limit, start, sort, filters) {
   const filterString = prunedFilter.reduce((string, [key, value]) => {
     if (key === prunedFilter[prunedFilter.length - 1][0]) {
       return `${string}${key}:${value}`;
-    } else {
-      return `${string}${key}:${value} AND `;
     }
+    return `${string}${key}:${value} AND `;
   }, '');
 
   return `https://www.adobe.com/cc-express-search-api?limit=${limit}&start=${start}&orderBy=${sort}&filters=${filterString}`;
@@ -109,8 +101,7 @@ const memoizedFetchUrl = memoize((url) => fetch(url).then((r) => (r.ok ? r.json(
 });
 
 async function getFallbackMsg(tasks = '') {
-  const placeholders = await fetchPlaceholders();
-  const fallBacktextTemplate = tasks && tasks !== "''" ? placeholders['templates-fallback-with-tasks'] : placeholders['templates-fallback-without-tasks'];
+  const fallBacktextTemplate = tasks && tasks !== "''" ? placeholderMod.replaceKey('templates-fallback-with-tasks', getConfig()) : placeholderMod.replaceKey('templates-fallback-without-tasks', getConfig());
 
   if (fallBacktextTemplate) {
     return tasks ? fallBacktextTemplate.replaceAll('{{tasks}}', tasks.toString()) : fallBacktextTemplate;
@@ -189,12 +180,12 @@ async function appendCategoryTemplatesCount($section, props) {
   for (const { cntSpan, anchor } of res) {
     anchor.append(cntSpan);
     // eslint-disable-next-line no-await-in-loop
-    await new Promise((resolve) => setTimeout(resolve, 25));
+    await new Promise((resolve) => { setTimeout(resolve, 25); });
   }
 }
 
 async function processResponse(props) {
-  const [placeholders, response] = await Promise.all([fetchPlaceholders(), fetchTemplates(props)]);
+  const response = await fetchTemplates(props);
   const { _embedded } = response || {};
   let templateFetched = [];
   if (_embedded) {
@@ -228,20 +219,19 @@ async function processResponse(props) {
       const $buttonWrapper = createTag('div', { class: 'button-container' });
       const $button = createTag('a', {
         href: template.branchURL,
-        title: placeholders['edit-this-template'] ?? 'Edit this template',
+        title: placeholderMod.replaceKey('edit-this-template', getConfig()) ?? 'Edit this template',
         class: 'button accent',
       });
 
-      $button.textContent = placeholders['edit-this-template'] ?? 'Edit this template';
+      $button.textContent = placeholderMod.replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
       imgWrapper.append(img);
       $buttonWrapper.append($button);
       $template.append(imgWrapper, $buttonWrapper);
       loadBetterAssetInBackground(img);
       return $template;
     });
-  } else {
-    return null;
   }
+  return null;
 }
 
 async function fetchBlueprint(pathname) {
@@ -270,9 +260,7 @@ function populateTemplates($block, templates, props) {
     if ($linkContainer) {
       const $link = $linkContainer.querySelector(':scope a');
       if ($link) {
-        const $a = createTag('a', {
-          href: $link.href || '#',
-        });
+        const $a = createTag('a', { href: $link.href || '#' });
 
         $a.append(...$tmplt.children);
         $tmplt.remove();
@@ -421,7 +409,7 @@ function initToggle($section) {
 }
 
 async function attachFreeInAppPills($block) {
-  const freeInAppText = await fetchPlaceholders().then((json) => json['free-in-app']);
+  const freeInAppText = placeholderMod.replaceKey('free-in-app', getConfig());
 
   const $templateLinks = $block.querySelectorAll('a.template');
   for (const $templateLink of $templateLinks) {
@@ -499,8 +487,7 @@ function getRedirectUrl(tasks, topics, format, allTemplatesMetadata) {
 }
 
 async function redirectSearch($searchBar, props) {
-  const placeholders = await fetchPlaceholders();
-  const taskMap = JSON.parse(placeholders['task-name-mapping']);
+  const taskMap = JSON.parse(placeholderMod.replaceKey('task-name-mapping', getConfig()));
   if ($searchBar) {
     const wrapper = $searchBar.closest('.template-list-search-bar-wrapper');
     const $selectorTask = wrapper.querySelector('.task-dropdown-list > .option.active');
@@ -530,22 +517,22 @@ async function redirectSearch($searchBar, props) {
   window.location = redirectUrl;
 }
 
-function makeTemplateFunctions(placeholders) {
+function makeTemplateFunctions() {
   const functions = {
     premium: {
-      placeholders: JSON.parse(placeholders['template-filter-premium']),
+      placeholders: JSON.parse(placeholderMod.replaceKey('template-filter-premium', getConfig())),
       elements: {},
-      icons: placeholders['template-filter-premium-icons'].replace(/\s/g, '').split(','),
+      icons: placeholderMod.replaceKey('template-filter-premium-icons', getConfig()).replace(/\s/g, '').split(','),
     },
     animated: {
-      placeholders: JSON.parse(placeholders['template-filter-animated']),
+      placeholders: JSON.parse(placeholderMod.replaceKey('template-filter-animated', getConfig())),
       elements: {},
-      icons: placeholders['template-filter-animated-icons'].replace(/\s/g, '').split(','),
+      icons: placeholderMod.replaceKey('template-filter-animated-icons', getConfig()).replace(/\s/g, '').split(','),
     },
     sort: {
-      placeholders: JSON.parse(placeholders['template-sort']),
+      placeholders: JSON.parse(placeholderMod.replaceKey('template-sort', getConfig())),
       elements: {},
-      icons: placeholders['template-sort-icons'].replace(/\s/g, '').split(','),
+      icons: placeholderMod.replaceKey('template-sort-icons', getConfig()).replace(/\s/g, '').split(','),
     },
   };
 
@@ -601,7 +588,7 @@ function updateFilterIcon(block) {
   });
 }
 
-function decorateFunctionsContainer($block, $section, functions, placeholders, props) {
+function decorateFunctionsContainer($block, $section, functions, props) {
   const $functionsContainer = createTag('div', { class: 'functions-container' });
   const $functionContainerMobile = createTag('div', { class: 'functions-drawer' });
 
@@ -635,15 +622,15 @@ function decorateFunctionsContainer($block, $section, functions, placeholders, p
   const $applyButton = createTag('a', { class: 'apply-filter-button button gradient', href: '#' });
 
   $closeButton.classList.add('close-drawer');
-  $applyButton.textContent = placeholders['apply-filters'];
+  $applyButton.textContent = placeholderMod.replaceKey('apply-filters', getConfig());
 
   $functionContainerMobile.children[0]
     .querySelector('.current-option-premium')
-    .textContent = `${placeholders.free} ${placeholders['versus-shorthand']} ${placeholders.premium}`;
+    .textContent = `${placeholderMod.replaceKey('free', getConfig())} ${placeholderMod.replaceKey('versus-shorthand', getConfig())} ${placeholderMod.replaceKey('premium', getConfig())}`;
 
   $functionContainerMobile.children[1]
     .querySelector('.current-option-animated')
-    .textContent = `${placeholders.static} ${placeholders['versus-shorthand']} ${placeholders.animated}`;
+    .textContent = `${placeholderMod.replaceKey('static', getConfig())} ${placeholderMod.replaceKey('versus-shorthand', getConfig())} ${placeholderMod.replaceKey('animated', getConfig())}`;
 
   $drawerInnerWrapper.append(
     $functionContainerMobile.children[0],
@@ -679,10 +666,10 @@ function decorateFunctionsContainer($block, $section, functions, placeholders, p
   );
   $functionContainerMobile.prepend($filterContainer);
 
-  $mobileFilterButton.textContent = placeholders.filter;
+  $mobileFilterButton.textContent = placeholderMod.replaceKey('filter', getConfig());
   const $sortButton = $functionContainerMobile.querySelector('.current-option-sort');
   if ($sortButton) {
-    $sortButton.textContent = placeholders.sort;
+    $sortButton.textContent = placeholderMod.replaceKey('sort', getConfig());
     $sortButton.className = 'filter-mobile-option-heading';
   }
 
@@ -764,10 +751,12 @@ function initSearchFunction($toolBar, $stickySearchBarWrapper, generatedSearchBa
     $searchForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       $searchBar.disabled = true;
-      sampleRUM('search', {
-        source: 'template-list',
-        target: $searchBar.value,
-      }, 1);
+
+      // TODO: Disabled at this moment
+      // sampleRUM('search', {
+      //   source: 'template-list',
+      //   target: $searchBar.value,
+      // }, 1);
       await redirectSearch($searchBar, props);
     });
 
@@ -856,12 +845,12 @@ function updateLottieStatus($section) {
   }
 }
 
-async function decorateCategoryList(block, section, placeholders, props) {
+async function decorateCategoryList(block, section, props) {
   const $blockWrapper = block.closest('.template-list-wrapper');
   const $mobileDrawerWrapper = section.querySelector('.filter-drawer-mobile');
   const $inWrapper = section.querySelector('.filter-drawer-mobile-inner-wrapper');
-  const categories = JSON.parse(placeholders['task-categories']);
-  const categoryIcons = placeholders['task-category-icons'].replace(/\s/g, '').split(',');
+  const categories = JSON.parse(placeholderMod.replaceKey('task-categories', getConfig()));
+  const categoryIcons = placeholderMod.replaceKey('task-category-icons', getConfig()).replace(/\s/g, '').split(',');
   const $categoriesDesktopWrapper = createTag('div', { class: 'category-list-wrapper' });
   const $categoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
   const $desktopCategoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
@@ -870,8 +859,8 @@ async function decorateCategoryList(block, section, placeholders, props) {
   const categoriesListHeading = createTag('div', { class: 'category-list-heading' });
   const $categories = createTag('ul', { class: 'category-list' });
 
-  categoriesListHeading.append(getIconElement('template-search'), placeholders['jump-to-category']);
-  $categoriesToggle.textContent = placeholders['jump-to-category'];
+  categoriesListHeading.append(getIconElement('template-search'), placeholderMod.replaceKey('jump-to-category', getConfig()));
+  $categoriesToggle.textContent = placeholderMod.replaceKey('jump-to-category', getConfig());
   const allTemplatesMetadata = await fetchAllTemplatesMetadata();
 
   Object.entries(categories).forEach((category, index) => {
@@ -967,7 +956,7 @@ async function decorateCategoryList(block, section, placeholders, props) {
   }, { passive: true });
 }
 
-async function decorateSearchFunctions($toolBar, $section, placeholders, props) {
+async function decorateSearchFunctions($toolBar, $section, props) {
   const $inBlockLocation = $toolBar.querySelector('.wrapper-content-search');
   const $linkListLocation = document.querySelector('.link-list-fullwidth-container');
   const $searchBarWrapper = createTag('div', { class: 'template-list-search-bar-wrapper' });
@@ -975,8 +964,8 @@ async function decorateSearchFunctions($toolBar, $section, placeholders, props) 
   const $searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: placeholders['template-search-placeholder'] ?? 'Search for over 50,000 templates',
-    enterKeyHint: placeholders.search ?? 'Search',
+    placeholder: placeholderMod.replaceKey('template-search-placeholder', getConfig()) ?? 'Search for over 50,000 templates',
+    enterKeyHint: placeholderMod.replaceKey('search', getConfig()) ?? 'Search',
   });
 
   // Tasks Dropdown
@@ -985,8 +974,8 @@ async function decorateSearchFunctions($toolBar, $section, placeholders, props) 
   const $taskDropdownChev = getIconElement('drop-down-arrow');
   const $taskDropdownToggle = createTag('button', { class: 'task-dropdown-toggle' });
   const $taskDropdownList = createTag('ul', { class: 'task-dropdown-list' });
-  const categories = JSON.parse(placeholders['task-categories']);
-  const categoryIcons = placeholders['task-category-icons'].replace(/\s/g, '').split(',');
+  const categories = JSON.parse(placeholderMod['task-categories']);
+  const categoryIcons = placeholderMod['task-category-icons'].replace(/\s/g, '').split(',');
   let optionMatched = false;
 
   Object.entries(categories).forEach((category, index) => {
@@ -1443,7 +1432,7 @@ function initToolbarShadow($toolbar) {
   });
 }
 
-function decorateToolbar($block, $section, placeholders, props) {
+function decorateToolbar($block, $section, props) {
   const $toolBar = $section.querySelector('.api-templates-toolbar');
 
   if ($toolBar) {
@@ -1459,12 +1448,11 @@ function decorateToolbar($block, $section, placeholders, props) {
     const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
     lgView.append(getIconElement('large_grid'));
 
-    const functionsObj = makeTemplateFunctions(placeholders);
+    const functionsObj = makeTemplateFunctions();
     const $functions = decorateFunctionsContainer(
       $block,
       $section,
       functionsObj,
-      placeholders,
       props,
     );
 
@@ -1473,7 +1461,7 @@ function decorateToolbar($block, $section, placeholders, props) {
 
     $toolBar.append(toolBarFirstWrapper, functionsWrapper, $functions.mobile);
 
-    decorateSearchFunctions($toolBar, $section, placeholders, props);
+    decorateSearchFunctions($toolBar, $section, props);
     initDrawer($block, $section, $toolBar, props);
     initFilterSort($block, $toolBar, props);
     initViewToggle($block, $toolBar, props);
@@ -1483,7 +1471,6 @@ function decorateToolbar($block, $section, placeholders, props) {
 
 export async function decorateTemplateList($block, props) {
   const { prefix } = getConfig().locale;
-  const placeholders = await fetchPlaceholders();
   if ($block.classList.contains('apipowered')) {
     await readRowsFromBlock($block, props);
 
@@ -1586,12 +1573,12 @@ export async function decorateTemplateList($block, props) {
         }
       }
 
-      if (placeholders['template-filter-premium'] && !$block.classList.contains('horizontal')) {
+      if (placeholderMod.replaceKey('template-filter-premium', getConfig()) && !$block.classList.contains('horizontal')) {
         document.addEventListener('linkspopulated', async (e) => {
           // desktop/mobile fires the same event
           if ($parent.contains(e.detail[0])) {
-            decorateToolbar($block, $parent, placeholders, props);
-            await decorateCategoryList($block, $parent, placeholders, props);
+            decorateToolbar($block, $parent, props);
+            await decorateCategoryList($block, $parent, props);
           }
         });
       }
@@ -1692,7 +1679,7 @@ export async function decorateTemplateList($block, props) {
         href: `${document.URL.replace(/#.*$/, '')}#${$titleHeading.id}`,
       });
       const $clipboardTag = createTag('span', { class: 'clipboard-tag' });
-      $clipboardTag.textContent = placeholders['tag-copied'];
+      $clipboardTag.textContent = placeholderMod.replaceKey('tag-copied', getConfig());
 
       $anchorLink.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1781,12 +1768,11 @@ export async function decorateTemplateList($block, props) {
 }
 
 async function decorateLoadMoreButton($block, props) {
-  const placeholders = await fetchPlaceholders();
   const $loadMoreDiv = createTag('div', { class: 'load-more' });
   const $loadMoreButton = createTag('button', { class: 'load-more-button' });
   const $loadMoreText = createTag('p', { class: 'load-more-text' });
   $loadMoreDiv.append($loadMoreButton, $loadMoreText);
-  $loadMoreText.textContent = placeholders['load-more'];
+  $loadMoreText.textContent = placeholderMod.replaceKey('load-more', getConfig());
   $block.insertAdjacentElement('afterend', $loadMoreDiv);
   $loadMoreButton.append(getIconElement('plus-icon'));
 
@@ -1809,12 +1795,10 @@ async function decorateTailButton($block, props) {
   const $carouselPlatform = $block.querySelector('.carousel-platform');
 
   if ($block.classList.contains('spreadsheet-powered')) {
-    const placeholders = await fetchPlaceholders();
-
-    if (placeholders['relevant-rows-view-all'] && (props.viewAllLink || placeholders['relevant-rows-view-all-link'])) {
+    if (placeholderMod.replaceKey('relevant-rows-view-all', getConfig()) && (props.viewAllLink || placeholderMod.replaceKey('relevant-rows-view-all-link', getConfig()))) {
       props.tailButton = createTag('a', { class: 'button accent tail-cta' });
-      props.tailButton.innerText = placeholders['relevant-rows-view-all'];
-      props.tailButton.href = props.viewAllLink || placeholders['relevant-rows-view-all-link'];
+      props.tailButton.innerText = placeholderMod.replaceKey('relevant-rows-view-all', getConfig());
+      props.tailButton.href = props.viewAllLink || placeholderMod.replaceKey('relevant-rows-view-all-link', getConfig());
     }
   }
 
@@ -1837,9 +1821,7 @@ function addBackgroundAnimation($block, animationUrl) {
 
   if ($parent) {
     $parent.classList.add('with-animation');
-    const $videoBackground = createTag('video', {
-      class: 'animation-background',
-    });
+    const $videoBackground = createTag('video', { class: 'animation-background' });
     $videoBackground.append(createTag('source', { src: animationUrl, type: 'video/mp4' }));
     $videoBackground.setAttribute('autoplay', '');
     $videoBackground.setAttribute('muted', '');
@@ -1851,9 +1833,8 @@ function addBackgroundAnimation($block, animationUrl) {
 }
 
 async function replaceRRTemplateList($block, props) {
-  const placeholders = await fetchPlaceholders();
   const relevantRowsData = await fetchRelevantRows(window.location.pathname);
-  props.limit = parseInt(placeholders['relevant-rows-templates-limit'], 10) || 10;
+  props.limit = parseInt(placeholderMod.replaceKey('relevant-rows-templates-limit', getConfig()), 10) || 10;
 
   if (relevantRowsData) {
     $block.closest('.section').dataset.audience = 'mobile';
@@ -1896,7 +1877,7 @@ async function replaceRRTemplateList($block, props) {
       .replaceAll('default-format', relevantRowsData.placeholderFormat || '');
 
     if (relevantRowsData.templateTasks === '') {
-      $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', placeholders['start-from-scratch'] || '');
+      $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', placeholderMod.replaceKey('start-from-scratch', getConfig()) || '');
     } else {
       $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', relevantRowsData.createText || '');
     }
@@ -1945,7 +1926,7 @@ function constructProps() {
 }
 
 export default async function decorate($block) {
-  addTempWrapper($block, 'template-list');
+  addTempWrapperDeprecated($block, 'template-list');
 
   const props = constructProps();
   if ($block.classList.contains('spreadsheet-powered')) {
