@@ -282,9 +282,8 @@ async function buildSearchDropdown(block) {
 
     const fromScratchLink = block.querySelector('a');
     const trendsTitle = await replaceKey('search-trends-title', config);
-    const trends = await replaceKey('search-trends', config)
-    console.log(trendsTitle, trends)
-
+    const trends = JSON.parse(await replaceKey('search-trends', config))
+ 
     if (fromScratchLink) {
       const linkDiv = fromScratchLink.parentElement.parentElement;
       const templateFreeAccentIcon = getIconElement('template-free-accent');
@@ -310,6 +309,7 @@ async function buildSearchDropdown(block) {
     if (trends) {
       const trendsWrapper = createTag('ul', { class: 'trends-wrapper' });
       for (const [key, value] of Object.entries(trends)) {
+
         const trendLinkWrapper = createTag('li');
         const trendLink = createTag('a', { class: 'trend-link', href: value });
         trendLink.textContent = key;
