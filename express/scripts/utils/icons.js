@@ -102,7 +102,7 @@ export function getIcon(icons, alt, size = 44) {
 
   if (symbols.includes(icon)) {
     const iconName = icon;
-    console.log(iconName, icon)
+    let sheetSize = size;
     if (size22Icons.includes(icon)) sheetSize = 22;
     return `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-${icon}">
       ${alt ? `<title>${alt}</title>` : ''}
