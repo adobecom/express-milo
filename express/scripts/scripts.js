@@ -11,7 +11,7 @@
  */
 
 import { setLibs, decorateArea, listenMiloEvents } from './utils.js';
-import replaceContent from "./content-replace.js"
+import {autoUpdateContent} from "./content-replace.js"
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -129,7 +129,8 @@ const miloLibs = setLibs(LIBS);
   document.head.append(footerMeta);
 
   listenMiloEvents();
-  replaceContent( document.getElementsByTagName('main')[0], miloLibs)
+
+  autoUpdateContent( document.getElementsByTagName('main')[0], miloLibs)
   await loadArea();
 
   if (isMobileGating && rushGating) { runGating(); }

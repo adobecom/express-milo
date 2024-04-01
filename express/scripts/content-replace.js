@@ -1,138 +1,56 @@
+export const REG = /\{\{(.*?)\}\}/g;
 
-  
-import { titleCase } from './utils/string.js';
-import HtmlSanitizer from './html-sanitizer.js';
-import { fetchPlaceholders } from './utils/fetch-placeholders.js';
-
-let getMetadata;
-
-async function replaceDefaultPlaceholders(block, components) {
-  block.innerHTML = block.innerHTML.replaceAll('https://www.adobe.com/express/templates/default-create-link', components.link);
-
-  if (components.tasks === '') {
-    const placeholders = await fetchPlaceholders();
-    block.innerHTML = block.innerHTML.replaceAll('default-create-link-text', placeholders['start-from-scratch'] || '');
-  } else {
-    block.innerHTML = block.innerHTML.replaceAll('default-create-link-text', getMetadata('create-text') || '');
-  }
-}
-
-async function getReplacementsFromSearch() {
-  // FIXME: tasks and tasksx split to be removed after mobile GA
-  const params = new Proxy(new URLSearchParams(window.location.search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-  });
-  const {
-    tasks,
-    tasksx,
-    phformat,
-    topics,
-    q,
-  } = params;
-  if (!tasks && !phformat) {
-    return null;
-  }
-  const placeholders = await fetchPlaceholders();
-  const categories = JSON.parse(placeholders['task-categories']);
-  const xCategories = JSON.parse(placeholders['x-task-categories']);
-  if (!categories) {
-    return null;
-  }
-  const tasksPair = Object.entries(categories).find((cat) => cat[1] === tasks);
-  const xTasksPair = Object.entries(xCategories).find((cat) => cat[1] === tasksx);
-  const exp = /['"<>?.;{}]/gm;
-  const sanitizedTasks = tasks?.match(exp) ? '' : tasks;
-  const sanitizedTopics = topics?.match(exp) ? '' : topics;
-  const sanitizedQuery = q?.match(exp) ? '' : q;
-
-  let translatedTasks;
-  if (document.body.dataset.device === 'desktop') {
-    translatedTasks = xTasksPair?.[1] ? xTasksPair[0].toLowerCase() : tasksx;
-  } else {
-    translatedTasks = tasksPair?.[1] ? tasksPair[0].toLowerCase() : tasks;
-  }
-  return {
-    '{{queryTasks}}': sanitizedTasks || '',
-    '{{QueryTasks}}': titleCase(sanitizedTasks || ''),
-    '{{queryTasksX}}': tasksx || '',
-    '{{translatedTasks}}': translatedTasks || '',
-    '{{TranslatedTasks}}': titleCase(translatedTasks || ''),
-    '{{placeholderRatio}}': phformat || '',
-    '{{QueryTopics}}': titleCase(sanitizedTopics || ''),
-    '{{queryTopics}}': sanitizedTopics || '',
-    '{{query}}': sanitizedQuery || '',
-  };
-}
-
-const bladeRegex = /\{\{[a-zA-Z_-]+\}\}/g;
-function replaceBladesInStr(str, replacements) {
-  if (!replacements) return str;
-  return str.replaceAll(bladeRegex, (match) => {
-    if (match in replacements) {
-      return replacements[match];
-    }
-    return match;
-  });
-}
-
-async function updateMetadataForTemplates() {
-  if (!['yes', 'true', 'on', 'Y'].includes(getMetadata('template-search-page'))) {
-    return;
-  }
-  const head = document.querySelector('head');
-  if (head) {
-    const replacements = await getReplacementsFromSearch();
-    if (!replacements) return;
-    const title = head.getElementsByTagName('title')[0];
-    title.innerText = replaceBladesInStr(title.innerText, replacements);
-    [...head.getElementsByTagName('meta')].forEach((meta) => {
-      meta.setAttribute('content', replaceBladesInStr(meta.getAttribute('content'), replacements));
-    });
-  }
-}
-
-const ignoredMeta = [
-  'serp-content-type',
-  'description',
-  'primaryproductname',
-  'theme',
-  'show-free-plan',
-  'sheet-powered',
-  'viewport',
+const preserveFormatKeys = [
+  'event-description',
 ];
 
-async function sanitizeMeta(meta) {
-  if (meta.property || meta.name.includes(':') || ignoredMeta.includes(meta.name)) return;
-  await yieldToMain();
-  meta.content = HtmlSanitizer.SanitizeHtml(meta.content);
+export function getMetadata(name) {
+  const attr = name && name.includes(':') ? 'property' : 'name';
+  const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
+  return (meta && meta.content) || '';
 }
 
-// metadata -> dom blades
-async function autoUpdatePage(main) {
-  const wl = ['{{heading_placeholder}}', '{{type}}', '{{quantity}}'];
-  // FIXME: deprecate wl
-  if (!main) return;
-
-  const regex = /\{\{([a-zA-Z0-9_-]+)}}/g;
-
-  const metaTags = document.head.querySelectorAll('meta');
-
-  await Promise.all(Array.from(metaTags).map((meta) => sanitizeMeta(meta)));
-
-  main.innerHTML = main.innerHTML.replaceAll(regex, (match, p1) => {
-    if (!wl.includes(match.toLowerCase())) {
-      return getMetadata(p1);
-    }
-    return match;
+export function yieldToMain() {
+  return new Promise((r) => {
+    setTimeout(r, 0);
   });
+}
 
-  // handle link replacement on sheet-powered pages
-  main.querySelectorAll('a[href*="#"]').forEach((a) => {
+function handleRegisterButton(a) {
+  const signIn = () => {
+    if (typeof window.adobeIMS?.signIn !== 'function') {
+      window?.lana.log({ message: 'IMS signIn method not available', tags: 'errorType=warn,module=gnav' });
+      return;
+    }
+
+    window.adobeIMS.signIn();
+  };
+
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    signIn();
+  });
+}
+
+function autoUpdateLinks(scope) {
+  scope.querySelectorAll('a[href*="#"]').forEach((a) => {
     try {
-      let url = new URL(a.href);
+      const url = new URL(a.href);
       if (getMetadata(url.hash.replace('#', ''))) {
         a.href = getMetadata(url.hash.replace('#', ''));
-        url = new URL(a.href);
+      }
+
+      if (a.href.endsWith('#rsvp-form')) {
+        const profile = window.bm8tr.get('imsProfile');
+        if (profile?.noProfile) {
+          handleRegisterButton(a);
+        } else if (!profile) {
+          window.bm8tr.subscribe('imsProfile', ({ newValue }) => {
+            if (newValue?.noProfile) {
+              handleRegisterButton(a);
+            }
+          });
+        }
       }
     } catch (e) {
       window.lana?.log(`Error while attempting to replace link ${a.href}: ${e}`);
@@ -140,67 +58,75 @@ async function autoUpdatePage(main) {
   });
 }
 
-// cleanup remaining dom blades
-async function updateNonBladeContent(main) {
-  const heroAnimation = main.querySelector('.hero-animation.wide');
-  const templateList = main.querySelector('.template-list.fullwidth.apipowered');
-  const templateX = main.querySelector('.template-x');
-  const browseByCat = main.querySelector('.browse-by-category');
-  const seoNav = main.querySelector('.seo-nav');
+function updateImgTag(child, matchCallback, parentElement) {
+  const parentPic = child.closest('picture');
+  const originalAlt = child.alt;
+  const replacedSrc = originalAlt.replace(REG, (_match, p1) => matchCallback(_match, p1, child));
 
-  if (heroAnimation) {
-    if (getMetadata('hero-title')) {
-      heroAnimation.innerHTML = heroAnimation.innerHTML.replace('Default template title', getMetadata('hero-title'));
-    }
-
-    if (getMetadata('hero-text')) {
-      heroAnimation.innerHTML = heroAnimation.innerHTML.replace('Default template text', getMetadata('hero-text'));
-    }
-  }
-
-  if (templateList) {
-    await replaceDefaultPlaceholders(templateList, {
-      link: getMetadata('create-link') || '/',
-      tasks: getMetadata('tasks'),
+  if (replacedSrc && parentPic && replacedSrc !== originalAlt) {
+    parentPic.querySelectorAll('source').forEach((el) => {
+      try {
+        el.srcset = el.srcset.replace(/.*\?/, `${replacedSrc}?`);
+      } catch (e) {
+        window.lana?.log(`failed to convert optimized picture source from ${el} with dynamic data: ${e}`);
+      }
     });
-  }
 
-  if (templateX) {
-    await replaceDefaultPlaceholders(templateX, {
-      link: getMetadata('create-link-x') || getMetadata('create-link') || '/',
-      tasks: getMetadata('tasks-x'),
+    parentPic.querySelectorAll('img').forEach((el) => {
+      const onImgLoad = () => {
+        el.removeEventListener('load', onImgLoad);
+      };
+
+      try {
+        el.src = el.src.replace(/.*\?/, `${replacedSrc}?`);
+      } catch (e) {
+        window.lana?.log(`failed to convert optimized img from ${el} with dynamic data: ${e}`);
+      }
+
+      el.addEventListener('load', onImgLoad);
     });
-  }
-
-  if (seoNav) {
-    if (getMetadata('top-templates-title')) {
-      seoNav.innerHTML = seoNav.innerHTML.replace('Default top templates title', getMetadata('top-templates-title'));
-    }
-
-    if (getMetadata('top-templates-text')) {
-      seoNav.innerHTML = seoNav.innerHTML.replace('Default top templates text', getMetadata('top-templates-text'));
-    } else {
-      seoNav.innerHTML = seoNav.innerHTML.replace('Default top templates text', '');
-    }
-  }
-
-  if (browseByCat && !['yes', 'true', 'on', 'Y'].includes(getMetadata('show-browse-by-category'))) {
-    browseByCat.remove();
+  } else if (originalAlt.match(REG)) {
+    parentElement.remove();
   }
 }
 
-export function setBlockTheme(block) {
-  if (getMetadata(`${block.dataset.blockName}-theme`)) {
-    block.classList.add(getMetadata(`${block.dataset.blockName}-theme`));
-  }
+function updateTextNode(child, matchCallback) {
+  const originalText = child.nodeValue;
+  const replacedText = originalText.replace(REG, matchCallback);
+  if (replacedText !== originalText) child.nodeValue = replacedText;
 }
 
-export const yieldToMain = () => new Promise((resolve) => { setTimeout(resolve, 0); });
+// data -> dom gills
+export function autoUpdateContent(parent) {
+  if (!parent) {
+    window.lana?.log('page server block cannot find its parent element');
+    return;
+  }
 
-export default async function replaceContent(main, libs) {
-  const res = await import(`${libs}/utils/utils.js`);
-  getMetadata = res.getMetadata
-  await updateMetadataForTemplates();
-  await autoUpdatePage(main);
-  await updateNonBladeContent(main);
+  const getContent = (_match, p1, n) => {
+    const content = getMetadata(p1) || '';
+    if (preserveFormatKeys.includes(p1)) {
+      n.parentNode?.classList.add('preserve-format');
+    }
+    return content;
+  };
+
+  const allElements = parent.querySelectorAll('*');
+
+  allElements.forEach((element) => {
+    if (element.childNodes.length) {
+      element.childNodes.forEach((n) => {
+        if (n.tagName === 'IMG' && n.nodeType === 1) {
+          updateImgTag(n, getContent, element);
+        }
+
+        if (n.nodeType === 3) {
+          updateTextNode(n, getContent);
+        }
+      });
+    }
+  });
+
+  // handle link replacement. To keep when switching to metadata based rendering
+  autoUpdateLinks(parent);
 }
