@@ -1,37 +1,10 @@
-import { getLibs } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import {
   decorateButtonsDeprecated,
   addTempWrapperDeprecated,
 } from '../../scripts/utils/decorate.js';
 
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-
-async function fetchRelevantRows(path) {
-  if (!window.relevantRows) {
-    try {
-      const { prefix } = getConfig().locale;
-      const resp = await fetch(`${prefix}/express/relevant-rows.json`);
-      window.relevantRows = resp.ok ? (await resp.json()).data : [];
-    } catch {
-      const resp = await fetch('/express/relevant-rows.json');
-      window.relevantRows = resp.ok ? (await resp.json()).data : [];
-    }
-  }
-
-  if (window.relevantRows.length) {
-    const relevantRow = window.relevantRows.find((p) => path === p.path);
-    const { env } = getConfig();
-
-    if (env && env.name === 'stage') {
-      return relevantRow || null;
-    }
-
-    return relevantRow && relevantRow.live !== 'N' ? relevantRow : null;
-  }
-
-  return null;
-}
+import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 export function normalizeHeadings(block, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());
