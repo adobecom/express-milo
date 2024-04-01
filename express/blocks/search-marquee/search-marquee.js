@@ -1,13 +1,13 @@
 import { getLibs
 } from '../../scripts/utils.js';
 
-import { fetchPlaceholders } from '../../scripts/utils/fetch-placeholders.js';
+const { fetchPlaceholders } = await import(`${getLibs()}/features/placeholders.js`);
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import {  getIconElement } from '../../scripts/utils/icons.js'; 
 const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
-import { sampleRUM } from '../../scripts/utils/sampleRUM.js';
+const { sampleRUM } = await import(`${getLibs()}/utils/sampleRUM.js`)
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js'
-import { buildFreePlanWidget } from '../../scripts/utils/free-plan.js';
+import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js'
 
 import buildCarousel from '../shared/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js'
