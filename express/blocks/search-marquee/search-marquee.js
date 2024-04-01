@@ -1,11 +1,12 @@
 import { getLibs
 } from '../../scripts/utils.js';
 
-const { fetchPlaceholders } = await import(`${getLibs()}/features/placeholders.js`);
+const {replaceKey, replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`);
+// const {placeholderList} = await import(`${getLibs()}/blocks/library-config/lists/placeholders.js`);
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import {  getIconElement } from '../../scripts/utils/icons.js'; 
 const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
-const { sampleRUM } = await import(`${getLibs()}/utils/sampleRUM.js`)
+const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`)
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js'
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js'
 
@@ -110,10 +111,10 @@ function initSearchFunction(block) {
   })).sort((a, b) => b[0].length - a[0].length);
 
   const redirectSearch = async () => {
-    const placeholders = await fetchPlaceholders();
-    const taskMap = placeholders['task-name-mapping'] ? JSON.parse(placeholders['task-name-mapping']) : {};
-    const taskXMap = placeholders['x-task-name-mapping'] ? JSON.parse(placeholders['x-task-name-mapping']) : {};
-
+    const config = getConfig()
+    const taskMap = await replaceKey('task-name-mapping', config) || {};
+    const taskXMap = await  replaceKey('x-task-name-mapping', config) || {};
+    console.log(taskMap, taskXMap)
     const format = getMetadata('placeholder-format');
 
     const currentTasks = {
@@ -124,6 +125,7 @@ function initSearchFunction(block) {
 
     const tasksFoundInInput = findTask(taskMap);
     const tasksXFoundInInput = findTask(taskXMap);
+
 
     if (tasksFoundInInput.length > 0) {
       searchInput = trimInput(tasksFoundInInput, searchInput);
@@ -228,15 +230,15 @@ function initSearchFunction(block) {
   });
 }
 
-async function decorateSearchFunctions(block) {
-  const placeholders = await fetchPlaceholders();
+async function decorateSearchFunctions(block) { 
+  const config = getConfig()
   const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
   const searchForm = createTag('form', { class: 'search-form' });
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: placeholders['template-search-placeholder'] ?? 'Search for over 50,000 templates',
-    enterKeyHint: placeholders.search ?? 'Search',
+   placeholder:  await replaceKey( 'template-search-placeholder', config) || 'Search for over 50,000 templates',
+   enterKeyHint: await replaceKey('search', config) || 'Search',
   });
 
   searchForm.append(searchBar);
@@ -267,9 +269,8 @@ function decorateBackground(block) {
   }
 }
 
-async function buildSearchDropdown(block) {
-  const placeholders = await fetchPlaceholders();
-
+async function buildSearchDropdown(block) { 
+  const config = getConfig()
   const searchBarWrapper = block.querySelector('.search-bar-wrapper');
   if (searchBarWrapper) {
     const dropdownContainer = createTag('div', { class: 'search-dropdown-container hidden' });
@@ -280,9 +281,9 @@ async function buildSearchDropdown(block) {
     const freePlanContainer = createTag('div', { class: 'free-plans-container' });
 
     const fromScratchLink = block.querySelector('a');
-    const trendsTitle = placeholders['search-trends-title'];
-    let trends;
-    if (placeholders['search-trends']) trends = JSON.parse(placeholders['search-trends']);
+    const trendsTitle = await replaceKey('search-trends-title', config);
+    const trends = await replaceKey('search-trends', config)
+    console.log(trendsTitle, trends)
 
     if (fromScratchLink) {
       const linkDiv = fromScratchLink.parentElement.parentElement;
@@ -319,10 +320,10 @@ async function buildSearchDropdown(block) {
   
     }
 
-    suggestionsTitle.textContent = placeholders['search-suggestions-title'] ?? '';
+    suggestionsTitle.textContent = await replaceKey('search-suggestions-title', config) || '';
     suggestionsContainer.append(suggestionsTitle, suggestionsList);
 
-    const freePlanTags = await buildFreePlanWidget({ typeKey: 'branded', checkmarks: true });
+    const freePlanTags = await buildFreePlanWidget('branded' );
 
     freePlanContainer.append(freePlanTags);
     dropdownContainer.append(trendsContainer, suggestionsContainer, freePlanContainer);
@@ -351,7 +352,11 @@ function decorateLinkList(block) {
 }
 
 export default async function decorate(block) {
-  
+  const config = getConfig()
+  import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
+    const t = await mod.replaceKey('search', getConfig());
+    console.log(t)
+  }) 
   addTempWrapperDeprecated(block, 'search-marquee');
   decorateButtonsDeprecated(block)
   decorateBackground(block);
