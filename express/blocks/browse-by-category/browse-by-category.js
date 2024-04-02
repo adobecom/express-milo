@@ -58,8 +58,8 @@ export default async function decorate(block) {
   rows.forEach((row) => {
     payload.categories.push({
       image: row.querySelector('picture'),
-      text: row.querySelector('a.button') ? row.querySelector('a.button').textContent.trim() : 'missing category text',
-      link: row.querySelector('a.button') ? row.querySelector('a.button').href : 'missing category link',
+      text: row.querySelector('a')?.textContent.trim() || 'missing category text',
+      link: row.querySelector('a')?.href || 'missing category link',
     });
   });
 
