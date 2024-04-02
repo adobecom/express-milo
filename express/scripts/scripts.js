@@ -130,7 +130,7 @@ const miloLibs = setLibs(LIBS);
 
   listenMiloEvents();
   if (getMetadata('sheet-powered') === 'Y') {
-    autoUpdateContent(document.getElementsByTagName('area')[0], miloLibs);
+    autoUpdateContent(document.getElementsByTagName('main')[0], miloLibs);
   }
 
   await loadArea();
