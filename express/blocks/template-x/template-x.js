@@ -188,7 +188,7 @@ function constructProps(block) {
     loadedOtherCategoryCounts: false,
   };
 
-  Array.from(block.children).forEach((row) => {
+  Array.from(block.children).forEach((row, index) => {
     const cols = row.querySelectorAll('div');
     const key = cols[0].querySelector('strong')?.textContent.trim().toLowerCase();
     if (cols.length === 1) {
@@ -216,6 +216,7 @@ function constructProps(block) {
       if (key === 'blank template') {
         cols[0].remove();
         props.templates.push(row);
+        row.classList.add("blank_template"); 
       }
     } else if (cols.length === 5) {
       if (key === 'holiday block' && ['yes', 'true', 'on'].includes(cols[1].textContent.trim().toLowerCase())) {
@@ -244,9 +245,10 @@ function constructProps(block) {
   return props;
 }
 
-function populateTemplates(block, props, templates) {
-  for (let tmplt of templates) {
-    const isPlaceholder = tmplt.querySelector(':scope > div:first-of-type > img[src*=".svg"], :scope > div:first-of-type > svg');
+function populateTemplates(block, props, templates) { 
+  for (let i = 0; i < templates.length; i += 1) {
+    let tmplt = templates[i];
+    const isPlaceholder = tmplt.classList.contains("blank_template")
     const linkContainer = tmplt.querySelector(':scope > div:nth-of-type(2)');
     const rowWithLinkInFirstCol = tmplt.querySelector(':scope > div:first-of-type > a');
     const innerWrapper = block.querySelector('.template-x-inner-wrapper');
@@ -1638,5 +1640,6 @@ export default async function decorate(block) {
 
   const props = constructProps(block);
   block.innerHTML = '';
+  
   await buildTemplateList(block, props, determineTemplateXType(props));
 }
