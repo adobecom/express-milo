@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElement } from '../../scripts/utils/icons.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
-import buildCarousel from '../shared/carousel.js';
+import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
