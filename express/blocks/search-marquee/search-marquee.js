@@ -1,15 +1,21 @@
-import { getLibs
+import {
+  getLibs
 } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
-import {  getIconElement } from '../../scripts/utils/icons.js'; 
+import { getIconElement } from '../../scripts/utils/icons.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js'
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js'
 import buildCarousel from '../shared/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js'
 import BlockMediator from '../../scripts/block-mediator.min.js';
-const {replaceKey} = await import(`${getLibs()}/features/placeholders.js`);
-const { createTag, getConfig , getMetadata} = await import(`${getLibs()}/utils/utils.js`);
-const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`)
+
+const imports = await
+  Promise.all([import(`${getLibs()}/features/placeholders.js`),
+    await import(`${getLibs()}/utils/utils.js`),
+    await import(`${getLibs()}/utils/samplerum.js`)]);
+  const {replaceKey} = imports[0];
+  const {createTag, getConfig, getMetadata} = imports[1];
+  const {sampleRUM} = imports[2];
 
 function handlelize(str) {
   return str.normalize('NFD')
@@ -110,7 +116,7 @@ function initSearchFunction(block) {
   const redirectSearch = async () => {
     const config = getConfig()
     const taskMap = await replaceKey('task-name-mapping', config) || {};
-    const taskXMap = await  replaceKey('x-task-name-mapping', config) || {};
+    const taskXMap = await replaceKey('x-task-name-mapping', config) || {};
     console.log(taskMap, taskXMap)
     const format = getMetadata('placeholder-format');
 
@@ -227,15 +233,15 @@ function initSearchFunction(block) {
   });
 }
 
-async function decorateSearchFunctions(block) { 
+async function decorateSearchFunctions(block) {
   const config = getConfig()
   const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
   const searchForm = createTag('form', { class: 'search-form' });
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-   placeholder:  await replaceKey( 'template-search-placeholder', config) || 'Search for over 50,000 templates',
-   enterKeyHint: await replaceKey('search', config) || 'Search',
+    placeholder: await replaceKey('template-search-placeholder', config) || 'Search for over 50,000 templates',
+    enterKeyHint: await replaceKey('search', config) || 'Search',
   });
 
   searchForm.append(searchBar);
@@ -266,7 +272,7 @@ function decorateBackground(block) {
   }
 }
 
-async function buildSearchDropdown(block) { 
+async function buildSearchDropdown(block) {
   const config = getConfig()
   const searchBarWrapper = block.querySelector('.search-bar-wrapper');
   if (searchBarWrapper) {
@@ -280,7 +286,7 @@ async function buildSearchDropdown(block) {
     const fromScratchLink = block.querySelector('a');
     const trendsTitle = await replaceKey('search-trends-title', config);
     const trends = JSON.parse(await replaceKey('search-trends', config))
- 
+
     if (fromScratchLink) {
       const linkDiv = fromScratchLink.parentElement.parentElement;
       const templateFreeAccentIcon = getIconElement('template-free-accent');
@@ -314,19 +320,19 @@ async function buildSearchDropdown(block) {
         trendsWrapper.append(trendLinkWrapper);
       }
       trendsContainer.append(trendsWrapper);
-  
+
     }
 
     suggestionsTitle.textContent = await replaceKey('search-suggestions-title', config) || '';
     suggestionsContainer.append(suggestionsTitle, suggestionsList);
 
-    const freePlanTags = await buildFreePlanWidget('branded' );
+    const freePlanTags = await buildFreePlanWidget('branded');
 
     freePlanContainer.append(freePlanTags);
     dropdownContainer.append(trendsContainer, suggestionsContainer, freePlanContainer);
     searchBarWrapper.append(dropdownContainer);
   }
- 
+
 }
 
 function decorateLinkList(block) {
@@ -353,7 +359,7 @@ export default async function decorate(block) {
   import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
     const t = await mod.replaceKey('search', getConfig());
     console.log(t)
-  }) 
+  })
   addTempWrapperDeprecated(block, 'search-marquee');
   decorateButtonsDeprecated(block)
   decorateBackground(block);
