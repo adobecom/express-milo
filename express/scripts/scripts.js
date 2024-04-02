@@ -11,7 +11,7 @@
  */
 
 import { setLibs, decorateArea, listenMiloEvents } from './utils.js';
-import { autoUpdateContent } from "./content-replace.js"
+import { autoUpdateContent } from './content-replace.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -130,7 +130,7 @@ const miloLibs = setLibs(LIBS);
 
   listenMiloEvents();
   if (getMetadata('sheet-powered') === 'Y') {
-    autoUpdateContent(document.getElementsByTagName('main')[0], miloLibs)
+    autoUpdateContent(document.getElementsByTagName('main')[0], miloLibs);
   }
 
   await loadArea();

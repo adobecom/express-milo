@@ -1,5 +1,7 @@
-import { getConfig } from '../../../scripts/utils.js';
+import { getLibs } from '../../../scripts/utils.js';
 import { memoize, throttle, debounce } from '../../../scripts/utils/hofs.js';
+
+const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 const url = 'https://adobesearch-atc.adobe.io/uss/v3/autocomplete';
 const experienceId = 'default-templates-autocomplete-v1';
@@ -26,9 +28,7 @@ async function fetchAPI({ limit = 5, textQuery, locale = 'en-US' }) {
         {
           limit,
           id: experienceId,
-          scope: {
-            entities: scopeEntities,
-          },
+          scope: { entities: scopeEntities },
         },
       ],
     }),

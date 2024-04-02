@@ -1,21 +1,18 @@
-import {
-  getLibs
-} from '../../scripts/utils.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs } from '../../scripts/utils.js';
+import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElement } from '../../scripts/utils/icons.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js'
-import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js'
+import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import buildCarousel from '../shared/carousel.js';
-import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js'
+import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const imports = await
-  Promise.all([import(`${getLibs()}/features/placeholders.js`),
-    await import(`${getLibs()}/utils/utils.js`),
-    await import(`${getLibs()}/utils/samplerum.js`)]);
-  const {replaceKey} = imports[0];
-  const {createTag, getConfig, getMetadata} = imports[1];
-  const {sampleRUM} = imports[2];
+Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  await import(`${getLibs()}/utils/utils.js`),
+  await import(`${getLibs()}/utils/samplerum.js`)]);
+const { replaceKey } = imports[0];
+const { createTag, getConfig, getMetadata } = imports[1];
+const { sampleRUM } = imports[2];
 
 function handlelize(str) {
   return str.normalize('NFD')
@@ -114,10 +111,10 @@ function initSearchFunction(block) {
   })).sort((a, b) => b[0].length - a[0].length);
 
   const redirectSearch = async () => {
-    const config = getConfig()
+    const config = getConfig();
     const taskMap = await replaceKey('task-name-mapping', config) || {};
     const taskXMap = await replaceKey('x-task-name-mapping', config) || {};
-    console.log(taskMap, taskXMap)
+    console.log(taskMap, taskXMap);
     const format = getMetadata('placeholder-format');
 
     const currentTasks = {
@@ -128,7 +125,6 @@ function initSearchFunction(block) {
 
     const tasksFoundInInput = findTask(taskMap);
     const tasksXFoundInInput = findTask(taskXMap);
-
 
     if (tasksFoundInInput.length > 0) {
       searchInput = trimInput(tasksFoundInInput, searchInput);
@@ -227,14 +223,15 @@ function initSearchFunction(block) {
 
   import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
     const { inputHandler } = useInputAutocomplete(
-      suggestionsListUIUpdateCB, { throttleDelay: 300, debounceDelay: 500, limit: 7 },
+      suggestionsListUIUpdateCB,
+      { throttleDelay: 300, debounceDelay: 500, limit: 7 },
     );
     searchBar.addEventListener('input', inputHandler);
   });
 }
 
 async function decorateSearchFunctions(block) {
-  const config = getConfig()
+  const config = getConfig();
   const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
   const searchForm = createTag('form', { class: 'search-form' });
   const searchBar = createTag('input', {
@@ -273,7 +270,7 @@ function decorateBackground(block) {
 }
 
 async function buildSearchDropdown(block) {
-  const config = getConfig()
+  const config = getConfig();
   const searchBarWrapper = block.querySelector('.search-bar-wrapper');
   if (searchBarWrapper) {
     const dropdownContainer = createTag('div', { class: 'search-dropdown-container hidden' });
@@ -285,7 +282,7 @@ async function buildSearchDropdown(block) {
 
     const fromScratchLink = block.querySelector('a');
     const trendsTitle = await replaceKey('search-trends-title', config);
-    const trends = JSON.parse(await replaceKey('search-trends', config))
+    const trends = JSON.parse(await replaceKey('search-trends', config));
 
     if (fromScratchLink) {
       const linkDiv = fromScratchLink.parentElement.parentElement;
@@ -312,7 +309,6 @@ async function buildSearchDropdown(block) {
     if (trends) {
       const trendsWrapper = createTag('ul', { class: 'trends-wrapper' });
       for (const [key, value] of Object.entries(trends)) {
-
         const trendLinkWrapper = createTag('li');
         const trendLink = createTag('a', { class: 'trend-link', href: value });
         trendLink.textContent = key;
@@ -320,7 +316,6 @@ async function buildSearchDropdown(block) {
         trendsWrapper.append(trendLinkWrapper);
       }
       trendsContainer.append(trendsWrapper);
-
     }
 
     suggestionsTitle.textContent = await replaceKey('search-suggestions-title', config) || '';
@@ -332,7 +327,6 @@ async function buildSearchDropdown(block) {
     dropdownContainer.append(trendsContainer, suggestionsContainer, freePlanContainer);
     searchBarWrapper.append(dropdownContainer);
   }
-
 }
 
 function decorateLinkList(block) {
@@ -355,13 +349,8 @@ function decorateLinkList(block) {
 }
 
 export default async function decorate(block) {
-  const config = getConfig()
-  import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
-    const t = await mod.replaceKey('search', getConfig());
-    console.log(t)
-  })
   addTempWrapperDeprecated(block, 'search-marquee');
-  decorateButtonsDeprecated(block)
+  decorateButtonsDeprecated(block);
   decorateBackground(block);
   await decorateSearchFunctions(block);
   await buildSearchDropdown(block);
