@@ -23,10 +23,9 @@ window.express = {};
 
 // Add any config options.
 const CONFIG = {
-  local: { express: 'stage.projectx.corp.adobe.com' },
-  stage: { express: 'stage.projectx.corp.adobe.com' },
-  live: { express: 'stage.projectx.corp.adobe.com' },
-  prod: { express: 'new.express.adobe.com' },
+  local: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
+  stage: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
+  prod: { express: 'new.express.adobe.com', commerce: 'commerce.adobe.com' },
   codeRoot: '/express',
   contentRoot: '/express',
   jarvis: {

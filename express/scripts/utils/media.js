@@ -73,3 +73,32 @@ export function transformLinkToAnimation($a, $videoLooping = true) {
   });
   return $video;
 }
+
+export function linkImage($elem) {
+  const $a = $elem.querySelector('a');
+  if ($a) {
+    const $parent = $a.closest('div');
+    $a.remove();
+    $a.className = '';
+    $a.innerHTML = '';
+    $a.append(...$parent.children);
+    $parent.append($a);
+  }
+}
+
+export function addAnimationToggle(target) {
+  target.addEventListener('click', () => {
+    const videos = target.querySelectorAll('video');
+    const paused = videos[0] ? videos[0].paused : false;
+    videos.forEach((video) => {
+      if (paused) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // ignore
+          });
+        }
+      } else video.pause();
+    });
+  }, true);
+}

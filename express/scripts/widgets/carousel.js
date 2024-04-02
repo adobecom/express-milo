@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../utils.js';
 
 const { createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -186,7 +186,7 @@ export function onCarouselCSSLoad(selector, parent, options) {
 export default async function buildCarousel(selector, parent, options = {}) {
   // Load CSS then build carousel
   return new Promise((resolve) => {
-    loadStyle('/express/blocks/shared/carousel.css', () => {
+    loadStyle('/express/scripts/widgets/carousel.css', () => {
       onCarouselCSSLoad(selector, parent, options);
       resolve();
     });
