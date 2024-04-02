@@ -63,7 +63,7 @@ export default async function decorate(block) {
     });
   });
 
-  block.innerHTML = '';
+  block.replaceChildren();
 
   decorateHeading(block, payload);
   decorateCategories(block, payload);
