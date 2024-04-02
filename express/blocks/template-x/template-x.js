@@ -1,29 +1,47 @@
 /* eslint-disable import/named, import/extensions */
 
-import {    
-  getConfig,
-  getLottie, 
+import {
+  getLibs,
+  getLottie,
   lazyLoadLottiePlayer,
-  toClassName, 
+  toClassName,
 } from '../../scripts/utils.js';
 import { titleCase } from '../../scripts/utils/string.js';
-import { getIcon, getIconElement } from '../../scripts/utils/icons.js';
+import { getIconElement } from '../../scripts/utils/icons.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
-import { addTempWrapperDeprecated } from '../../scripts/decorate.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
-
-import buildCarousel from '../shared/carousel.js';
-import { fetchTemplates, isValidTemplate, fetchTemplatesCategoryCount } from './../search-marquee/utils/autocomplete-api-v3.js';
+import buildCarousel from '../../scripts/widgets/carousel.js';
+import { fetchTemplates, isValidTemplate, fetchTemplatesCategoryCount } from './template-search-api-v3.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 
 import renderTemplate from './template-rendering.js';
 
-import { Masonry } from '../shared/masonry.js';
+import { Masonry } from '../../scripts/widgets/masonry.js';
 import isDarkOverlayReadable from './color-tools.js';
+const imports = await
+  Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  await import(`${getLibs()}/utils/utils.js`)]);
 
-const { createTag, getMetadata,getConfig } = await import(`${getLibs()}/utils/utils.js`);
+const { replaceKeyArray } = imports[0];
+const { createTag, getMetadata, getConfig } = imports[1];
 
-
+async function fetchLocalPlaceholders() {
+  const keys = [
+    'template-search-heading-singular', 'template-placeholder', 'template-search-heading-plural',
+    'load-more', 'template-filter-premium', 'template-filter-premium-icons', 'template-filter-animated',
+    'template-filter-animated-icons',
+    'template-x-sort', 'template-x-sort-icons', 'apply-filters', 'versus-shorthand', 'x-task-categories',
+    'task-category-icons', 'jump-to-category', 'task-name-mapping', 'x-task-name-mapping', 'template-placeholder',
+    'template-search-heading-singular', 'template-search-heading-plural',
+  ]
+  const values = await replaceKeyArray(keys, getConfig());
+  const output = {};
+  for (let i = 0; i < keys.length; i += 1) {
+    output[keys[i]] = values[i];
+  }
+  return output;
+}
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
 }
@@ -51,12 +69,12 @@ async function getTemplates(response, phs, fallbackMsg) {
 }
 
 async function fetchAndRenderTemplates(props) {
-  import('../../scripts/mobile-beta-gating.js').then((gatingScript) => {
-    gatingScript.default();
-  });
+  // import('../../scripts/mobile-beta-gating.js').then((gatingScript) => {
+  //   gatingScript.default();
+  // });
 
   const [placeholders, { response, fallbackMsg }] = await Promise.all(
-    [fetchPlaceholders(), fetchTemplates(props)],
+    [fetchLocalPlaceholders(), fetchTemplates(props)],
   );
   if (!response || !response.items || !Array.isArray(response.items)) {
     return { templates: null };
@@ -109,7 +127,7 @@ async function processContentRow(block, props) {
 
 async function formatHeadingPlaceholder(props) {
   // special treatment for express/ root url
-  const placeholders = await fetchPlaceholders();
+  const placeholders = await fetchLocalPlaceholders();
   const config = getConfig();
   const { region } = config.locale;
   const lang = config.locale.ietf;
@@ -259,7 +277,6 @@ function populateTemplates(block, props, templates) {
       props.tailButton = rowWithLinkInFirstCol;
       rowWithLinkInFirstCol.remove();
     }
-
     if (tmplt.children.length === 3) {
       // look for options in last cell
       const overlayCell = tmplt.querySelector(':scope > div:last-of-type');
@@ -308,6 +325,7 @@ function populateTemplates(block, props, templates) {
     if (isPlaceholder) {
       tmplt.classList.add('placeholder');
     }
+    
   }
 }
 
@@ -341,7 +359,7 @@ async function decorateNewTemplates(block, props, options = { reDrawMasonry: fal
 }
 
 async function decorateLoadMoreButton(block, props) {
-  const placeholders = await fetchPlaceholders();
+  const placeholders = await fetchLocalPlaceholders();
   const loadMoreDiv = createTag('div', { class: 'load-more' });
   const loadMoreButton = createTag('button', { class: 'load-more-button' });
   const loadMoreText = createTag('p', { class: 'load-more-text' });
@@ -366,7 +384,7 @@ async function decorateLoadMoreButton(block, props) {
 }
 
 async function attachFreeInAppPills(block) {
-  const freeInAppText = await fetchPlaceholders().then((json) => json['free-in-app']);
+  const freeInAppText = await fetchLocalPlaceholders().then((json) => json['free-in-app']);
 
   const templateLinks = block.querySelectorAll('a.template');
   for (const templateLink of templateLinks) {
@@ -430,7 +448,6 @@ function makeTemplateFunctions(placeholders) {
         }),
       },
     };
-
     const $span = entry[1].elements.wrapper.subElements.button.subElements.textSpan;
     [[$span.textContent]] = Object.entries(entry[1].placeholders);
   });
@@ -585,7 +602,7 @@ async function appendCategoryTemplatesCount(block, props) {
 }
 
 async function decorateCategoryList(block, props) {
-  const placeholders = await fetchPlaceholders();
+  const placeholders = await fetchLocalPlaceholders();
   const { prefix } = getConfig().locale;
   const mobileDrawerWrapper = block.querySelector('.filter-drawer-mobile');
   const drawerWrapper = block.querySelector('.filter-drawer-mobile-inner-wrapper');
@@ -1003,7 +1020,6 @@ function toggleMasonryView(block, props, button, toggleButtons) {
   const placeholder = block.querySelector('.template.placeholder');
   const ratios = props.placeholderFormat;
   const width = getPlaceholderWidth(block);
-
   if (ratios[1]) {
     const height = (ratios[1] / ratios[0]) * width;
     placeholder.style = `height: ${height - 21}px`;
@@ -1041,7 +1057,7 @@ function initToolbarShadow(block, toolbar) {
 }
 
 async function decorateToolbar(block, props) {
-  const placeholders = await fetchPlaceholders();
+  const placeholders = await fetchLocalPlaceholders();
   const sectionHeading = createTag('h2');
   const tBarWrapper = createTag('div', { class: 'toolbar-wrapper' });
   const tBar = createTag('div', { class: 'api-templates-toolbar' });
@@ -1301,7 +1317,7 @@ function importSearchBar(block, blockMediator) {
         }, { passive: true });
 
         const redirectSearch = async () => {
-          const placeholders = await fetchPlaceholders();
+          const placeholders = await fetchLocalPlaceholders();
           const taskMap = placeholders['task-name-mapping'] ? JSON.parse(placeholders['task-name-mapping']) : {};
 
           const format = getMetadata('placeholder-format');
@@ -1435,7 +1451,7 @@ function wordExistsInString(word, inputString) {
 }
 
 async function getTaskNameInMapping(text) {
-  const placeholders = await fetchPlaceholders();
+  const placeholders = await fetchLocalPlaceholders();
   const taskMap = placeholders['x-task-name-mapping'] ? JSON.parse(placeholders['x-task-name-mapping']) : {};
   return Object.entries(taskMap)
     .filter((task) => task[1].some((word) => {
@@ -1618,7 +1634,7 @@ function determineTemplateXType(props) {
 }
 
 export default async function decorate(block) {
-   addTempWrapperDeprecated(block, 'template-x');
+  addTempWrapperDeprecated(block, 'template-x');
 
   const props = constructProps(block);
   block.innerHTML = '';

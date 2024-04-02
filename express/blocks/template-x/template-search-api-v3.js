@@ -1,6 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-import { fetchPlaceholders, getConfig } from '../../scripts/utils.js';
-import { memoize } from '../../scripts/hofs.js';
+import { getLibs } from '../../scripts/utils.js';
+import { memoize } from '../../scripts/utils/hofs.js';
+
+const imports = await
+Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  await import(`${getLibs()}/utils/utils.js`)]);
+const { replaceKey } = imports[0];
+const { getConfig } = imports[1];
 
 // supported by content api
 const supportedLanguages = [
@@ -84,8 +90,7 @@ function formatFilterString(filters) {
 }
 
 const memoizedFetch = memoize(
-  (url, headers) => fetch(url, headers).then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 },
-);
+  (url, headers) => fetch(url, headers).then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 });
 
 async function fetchSearchUrl({
   limit, start, filters, sort, q, collectionId,
@@ -134,8 +139,8 @@ async function fetchSearchUrl({
 }
 
 async function getFallbackMsg(tasks = '') {
-  const placeholders = await fetchPlaceholders();
-  const fallbackTextTemplate = tasks && tasks !== "''" ? placeholders['templates-fallback-with-tasks'] : placeholders['templates-fallback-without-tasks'];
+  const config = getConfig();
+  const fallbackTextTemplate = tasks && tasks !== "''" ? replaceKey(['templates-fallback-with-tasks'], config) : replaceKey(['templates-fallback-without-tasks'], config);
 
   if (fallbackTextTemplate) {
     return tasks ? fallbackTextTemplate.replaceAll('{{tasks}}', tasks.toString()) : fallbackTextTemplate;

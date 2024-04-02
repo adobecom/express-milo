@@ -114,7 +114,6 @@ function initSearchFunction(block) {
     const config = getConfig();
     const taskMap = await replaceKey('task-name-mapping', config) || {};
     const taskXMap = await replaceKey('x-task-name-mapping', config) || {};
-    console.log(taskMap, taskXMap);
     const format = getMetadata('placeholder-format');
 
     const currentTasks = {
