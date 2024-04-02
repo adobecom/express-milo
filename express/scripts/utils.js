@@ -102,6 +102,18 @@ export async function removeIrrelevantSections(area) {
   });
 }
 
+async function overrideMiloColumns(area) {
+  if (!area) return;
+  area.querySelectorAll('main > div').forEach((section) => {
+    const columnBlock = section.querySelectorAll('div.columns');
+    columnBlock.forEach((column) => {
+      if (column.classList[0] !== 'columns') return;
+      column.classList.remove('columns');
+      column.className = `ax-columns ${column.className}`;
+    });
+  });
+}
+
 // Get lottie animation HTML - remember to lazyLoadLottiePlayer() to see it.
 export function getLottie(name, src, loop = true, autoplay = true, control = false, hover = false) {
   return (`<lottie-player class="lottie lottie-${name}" src="${src}" background="transparent" speed="1" ${(loop) ? 'loop ' : ''}${(autoplay) ? 'autoplay ' : ''}${(control) ? 'controls ' : ''}${(hover) ? 'hover ' : ''}></lottie-player>`);
@@ -206,41 +218,5 @@ export function decorateArea(area = document) {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
-}
-
-export function getHelixEnv() {
-  let envName = sessionStorage.getItem('helix-env');
-  if (!envName) {
-    envName = 'stage';
-    if (window.spark?.hostname === 'www.adobe.com') envName = 'prod';
-  }
-  const envs = {
-    stage: {
-      commerce: 'commerce-stg.adobe.com',
-      adminconsole: 'stage.adminconsole.adobe.com',
-      spark: 'stage.projectx.corp.adobe.com',
-    },
-    prod: {
-      commerce: 'commerce.adobe.com',
-      spark: 'express.adobe.com',
-      adminconsole: 'adminconsole.adobe.com',
-    },
-  };
-  const env = envs[envName];
-
-  const overrideItem = sessionStorage.getItem('helix-env-overrides');
-  if (overrideItem) {
-    const overrides = JSON.parse(overrideItem);
-    const keys = Object.keys(overrides);
-    env.overrides = keys;
-
-    for (const a of keys) {
-      env[a] = overrides[a];
-    }
-  }
-
-  if (env) {
-    env.name = envName;
-  }
-  return env;
+  overrideMiloColumns(area);
 }

@@ -1,4 +1,4 @@
-import { getLibs, getHelixEnv } from '../utils.js';
+import { getLibs } from '../utils.js';
 import { memoize } from './hofs.js';
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
@@ -15,11 +15,11 @@ export default async function fetchAllTemplatesMetadata() {
 
   if (!allTemplatesMetadata) {
     try {
-      const env = getHelixEnv();
+      const { env } = getConfig();
       const dev = new URLSearchParams(window.location.search).get('dev');
       let sheet;
 
-      if (['yes', 'true', 'on'].includes(dev) && env?.name === 'stage') {
+      if (['yes', 'true', 'on'].includes(dev) && env.name === 'stage') {
         sheet = '/templates-dev.json?sheet=seo-templates&limit=100000';
       } else {
         sheet = `${prefix}/express/templates/default/metadata.json?limit=100000`;

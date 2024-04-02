@@ -1,0 +1,1012 @@
+main .ax-columns.columns-marquee {
+  min-height: unset;
+}
+
+main .section:has(.ax-columns) {
+  padding-left: 15px;
+  padding-top: 60px;
+  padding-right: 15px;
+  padding-bottom: 40px;
+}
+
+main .section:has(.ax-columns) > div {
+  padding: 0;
+  max-width: 350px;
+}
+
+main .section:has(.ax-columns.highlight),
+main .section:has(.ax-columns.dark) {
+  padding-bottom: 120px;
+  color: var(--color-white);
+}
+
+main .section:has(.ax-columns.highlight) .legal {
+  color: var(--color-black);
+  font-size: var(--body-font-size-m);
+}
+
+main .section:has(.ax-columns.highlight) .legal a:any-link {
+  color: var(--color-black);
+  text-decoration: underline;
+}
+
+main .columns-dark-container {
+  background: var(--color-black);
+}
+
+main .section:has(.ax-columns.highlight) {
+  background: var(--gradient-highlight-vertical);
+}
+
+main .ax-columns p {
+  margin: 16px 0;
+  font-size: var(--body-font-size-l);
+  line-height: 1.33;
+}
+
+main .ax-columns p.powered-by {
+  font-size: var(--body-font-size-m);
+  line-height: 1.2;
+}
+
+main .ax-columns p.button-container {
+  margin: 0;
+  margin-top: 40px;
+}
+
+main .ax-columns .button-container a {
+  margin: 0;
+}
+
+main .ax-columns:not(.highlight) .column-video .button-container a {
+  border-radius: 24px;
+  padding: 8px 20px;
+}
+
+main .ax-columns:not(.highlight) .column-video .button-container a:hover,
+main .ax-columns:not(.highlight) .column-video .button-container a:active,
+main .ax-columns:not(.highlight) .column-video .button-container a,
+main .ax-columns:not(.highlight) .column-video .button-container a:focus {
+  background-color: transparent;
+  border-color: var(--color-black);
+  color: var(--color-black);
+  box-shadow: none;
+}
+
+main .ax-columns:not(.highlight) .column-video .button-container a:before {
+  display: inline-block;
+  width: 18px;
+  height: 20px;
+  margin-right: 16px;
+  vertical-align: sub;
+  top: 1px;
+  position: relative;
+  content: url(/express/icons/play.svg);
+}
+
+main .ax-columns .column-picture {
+  margin: 15px 0;
+}
+
+main .ax-columns h1 {
+  font-size: var(--heading-font-size-xxl);
+  line-height: 1.06;
+}
+
+main .ax-columns h1.columns-heading-long {
+  font-size: var(--heading-font-size-xl);
+}
+
+main .ax-columns h1.columns-heading-very-long {
+  font-size: var(--heading-font-size-l);
+}
+
+main .ax-columns h1.columns-heading-x-long {
+  font-size: var(--heading-font-size-m);
+}
+
+main .ax-columns h2 {
+  font-size: var(--heading-font-size-xl);
+  line-height: 1.08;
+  margin: 0;
+}
+
+main .ax-columns h2.columns-heading-very-long {
+  font-size: var(--heading-font-size-l);
+}
+
+main .ax-columns h3 {
+  font-size: var(--heading-font-size-l);
+  line-height: 1.11;
+}
+
+main .ax-columns h4,
+main .ax-columns h5,
+main .ax-columns h6 {
+  font-size: var(--heading-font-size-m);
+  line-height: 1.14;
+  margin-top: 32px;
+}
+
+main .ax-columns h2 + h2,
+main .ax-columns h3 + h3,
+main .ax-columns h4 + h4,
+main .ax-columns h5 + h5,
+main .ax-columns h6 + h6 {
+  margin-top: 0;
+}
+
+main .ax-columns.width-2-columns .column-picture,
+main .ax-columns.width-2-columns .hero-animation-overlay {
+  order: 2;
+}
+
+main .ax-columns.width-3-columns h3 {
+  font-size: var(--heading-font-size-m);
+}
+
+main .ax-columns > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+main .ax-columns.center .column {
+  text-align: center;
+}
+
+main .ax-columns.center .column p.button-container {
+  text-align: center;
+}
+
+main .ax-columns a > p:empty {
+  display: none;
+}
+
+main
+  .section.section:has(.ax-columns).steps-container
+  div
+  .steps.block
+  div.step-description
+  h2 {
+  font-size: var(--heading-font-size-l);
+  line-height: 1.11;
+}
+
+main
+  .section.section:has(.ax-columns).steps-container
+  div
+  .steps.block
+  div.step-description
+  h3,
+main
+  .section.section:has(.ax-columns).steps-container
+  div
+  .steps.block
+  div.step-description
+  h4,
+main
+  .section.section:has(.ax-columns).steps-container
+  div
+  .steps.block
+  div.step-description
+  h6 {
+  font-size: var(--heading-font-size-s);
+  line-height: 1.18;
+}
+
+main
+  .section.section:has(.ax-columns).steps-container
+  div
+  .steps.block
+  div.step-description
+  p {
+  font-size: var(--body-font-size-s);
+  line-height: 1.28;
+}
+
+main .ax-columns > div span.num {
+  position: relative;
+  font-weight: 900;
+  font-size: 36px;
+  line-height: 39px;
+  top: 0;
+  margin-right: 12px;
+}
+
+main .ax-columns > div span.num + * {
+  display: inline;
+}
+
+main .ax-columns .icon {
+  height: 24px;
+  margin-right: 12px;
+  float: left;
+}
+
+main .ax-columns .brand.icon {
+  width: auto;
+  margin-right: 0;
+  float: none;
+}
+
+main .ax-columns.center .icon {
+  float: none;
+}
+
+main .ax-columns .icon.icon-check {
+  width: 22px;
+}
+
+main .ax-columns.columns-marquee .brand.icon {
+  display: unset;
+  height: 32px;
+  width: auto;
+  margin: 0 auto;
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+main .ax-columns .has-brand {
+  padding-top: 72px;
+  position: relative;
+}
+
+main .ax-columns .social.icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 24px;
+}
+
+main .ax-columns .column hr {
+  margin-top: 32px;
+}
+
+main .ax-columns .column .columns-iconlist {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  margin-bottom: 40px;
+}
+
+main .ax-columns .column .columns-iconlist > div {
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+}
+
+main .ax-columns .column .columns-iconlist p {
+  margin: 0;
+}
+
+main .ax-columns .column .columns-iconlist .columns-iconlist-icon {
+  display: flex;
+}
+
+main .ax-columns .column .columns-iconlist .columns-iconlist-icon img.icon,
+main .ax-columns .column .columns-iconlist .columns-iconlist-icon svg.icon {
+  height: 22px;
+  width: 22px;
+}
+
+main .ax-columns .column iframe {
+  aspect-ratio: 1 / 0.56;
+}
+
+main .ax-columns .column .columns-iconlist .columns-iconlist-description {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-left: 10px;
+  text-align: left;
+}
+
+main .ax-columns .column,
+main .ax-columns .column p.button-container,
+main .ax-columns .column h1,
+main .ax-columns .column h2,
+main .ax-columns .column h3,
+main .ax-columns .column h4,
+main .ax-columns .column h5,
+main .ax-columns .column h6 {
+  text-align: left;
+}
+
+main .ax-columns.center .column,
+main .ax-columns.center .column p.button-container,
+main .ax-columns.center .column h1,
+main .ax-columns.center .column h2,
+main .ax-columns.center .column h3,
+main .ax-columns.center .column h4,
+main .ax-columns.center .column h5,
+main .ax-columns.center .column h6 {
+  text-align: center;
+}
+
+main .ax-columns.highlight > div {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 20px 0;
+  padding: 0;
+}
+
+main .ax-columns.highlight > div:first-child {
+  margin-top: 50px;
+}
+
+main .ax-columns.highlight.width-2-columns .column-picture {
+  order: -1;
+}
+
+main .ax-columns.highlight .columns-video {
+  cursor: pointer;
+}
+
+main .columns-video .column-picture {
+  position: relative;
+}
+
+main .columns-video .column-picture img {
+  display: block;
+}
+
+main .columns-video .column-picture .column-video-overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+main
+  .ax-columns.highlight
+  .columns-video:hover
+  .column-picture
+  .column-video-overlay {
+  background-image: linear-gradient(#ffffff00, #90909025, #000000a0);
+}
+
+main .columns-video .column-picture .column-video-overlay svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  fill: var(--color-white);
+  transform: translate(-50%, -50%);
+  width: 66px;
+  height: 66px;
+}
+
+main .ax-columns.highlight .column-picture {
+  margin: 0;
+}
+
+main .section:has(.ax-columns.highlight) h4 {
+  margin: 16px 0;
+  font-size: var(--heading-font-size-m);
+}
+
+main .section:has(.ax-columns.highlight) h2 {
+  font-size: var(--heading-font-size-xl);
+}
+
+main
+  .ax-columns.highlight
+  .column:not(.column-picture):not(.hero-animation-overlay) {
+  padding: 20px 16px;
+}
+
+main .ax-columns.highlight .column h5 {
+  color: var(--color-info-accent);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+main .ax-columns.highlight .column h5 + h2,
+main .ax-columns.highlight .column h5 + h3,
+main .ax-columns.highlight .column h5 + h4 {
+  margin-top: 0;
+}
+
+main .ax-columns.highlight h1,
+main .ax-columns.highlight h2,
+main .ax-columns.highlight h3 {
+  font-size: var(--heading-font-size-l);
+}
+
+main .ax-columns.highlight h4 {
+  font-size: var(--heading-font-size-m);
+}
+
+main .ax-columns.highlight h5,
+main .ax-columns.highlight h6 {
+  font-size: var(--heading-font-size-s);
+}
+
+main .ax-columns.highlight .column .columns-iconlist {
+  margin-bottom: 0;
+}
+
+main .ax-columns.highlight .column .columns-iconlist > div {
+  margin-top: 8px;
+}
+
+main .ax-columns.highlight .column p {
+  font-size: var(--body-font-size-s);
+}
+
+main .ax-columns.offer .column {
+  width: 278px;
+}
+
+main .ax-columns.offer .column:not(:first-child) {
+  padding-top: 40px;
+}
+
+main .ax-columns.offer > div p.button-container {
+  margin-bottom: 40px;
+}
+
+/* sub title */
+main .ax-columns.offer h3:not(:first-of-type) {
+  font-size: var(--body-font-size-xl);
+  font-weight: 600;
+  line-height: var(--body-line-height);
+  margin: 80px 0 0;
+}
+
+main .ax-columns.offer .columns-offer-icon .icon {
+  margin-right: 0;
+  float: unset;
+  width: 26px;
+}
+
+main .ax-columns.offer .column .columns-iconlist,
+main .ax-columns.offer .column .columns-iconlist .columns-iconlist-icon > div {
+  width: 100%;
+}
+
+main .ax-columns.offer .column .columns-iconlist .columns-iconlist-icon .icon {
+  width: 44px;
+  height: 44px;
+}
+
+main .ax-columns.offer .column .columns-iconlist .columns-iconlist-description {
+  flex: 1;
+}
+
+main
+  .ax-columns.offer
+  .column
+  .columns-iconlist
+  .columns-iconlist-description
+  p {
+  font-size: var(--body-font-size-m);
+}
+
+main .ax-columns .column {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+main .ax-columns.fullsize .column-picture,
+main .ax-columns.fullsize .hero-animation-overlay {
+  order: -1;
+}
+
+main .ax-columns.fullsize > div > div p {
+  margin: 16px 0;
+}
+
+main .ax-columns.fullsize > div > div .button-container {
+  margin: 16px 0;
+}
+
+main .ax-columns.fullsize > div > div .button-container a {
+  margin: 16px 0 0 0;
+}
+
+main .ax-columns.fullsize .has-brand > div p:first-child {
+  margin: 0;
+}
+
+main .ax-columns.fullsize .column {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+main .ax-columns .column.column-picture {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+main .ax-columns.columns-marquee:not(.center):not(.fullsize) .brand.icon {
+  transform: none;
+  left: 0;
+  padding-left: 32px;
+}
+
+main .ax-columns.fullsize .hero-animation-overlay {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+main .ax-columns.fullsize .hero-animation-overlay video {
+  max-height: 40vh;
+  margin-bottom: 40px;
+  max-width: 370px;
+}
+
+main
+  .ax-columns.fullsize
+  .has-brand
+  > div:not(.column-picture):not(.hero-animation-overlay) {
+  padding-top: 16px;
+}
+
+main .ax-columns.highlight .column.column-picture {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+/* Custom color variant */
+
+main .ax-columns.color .img-wrapper {
+  height: 345px;
+  width: 345px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+}
+
+main .ax-columns.color .color-svg-img {
+  height: 63%;
+  width: 46%;
+}
+
+main .ax-columns.columns.color > div {
+  padding: 80px 0 0 0;
+  gap: 15px;
+}
+
+main .ax-columns.color .column.text {
+  padding: 0;
+  max-width: 345px;
+}
+
+main .ax-columns.color.shadow .img-wrapper {
+  box-shadow: 0 3px 6px #00000029;
+}
+
+main .ax-columns.color h2,
+main .ax-columns.color p {
+  hyphens: manual;
+  text-align: center;
+}
+
+main .ax-columns.color h2 {
+  font-size: var(--heading-font-size-l);
+}
+
+main .collapsible-card-wrapper + .columns-wrapper .ax-columns > div {
+  display: flex;
+  flex-direction: column-reverse;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+}
+
+main
+  .ax-columns
+  .button-container.free-plan-container.stacked
+  .free-plan-widget {
+  margin-top: 0;
+  padding: 16px 0;
+  background-color: transparent;
+}
+
+main
+  .ax-columns.center.button-container.free-plan-container.stacked
+  .free-plan-widget {
+  padding-left: 24px;
+}
+
+main .columns-fullsize-top-container .columns-wrapper {
+  max-width: 1200px;
+}
+
+main .ax-columns.fullsize.top > div {
+  padding: 40px 0;
+}
+
+main .ax-columns.fullsize.top .column {
+  width: auto;
+  padding: 0 20px;
+}
+
+main .ax-columns.fullsize.top .column .columns-iconlist > div {
+  margin-top: 12px;
+}
+
+main .ax-columns.fullsize.top .column .columns-iconlist p {
+  font-size: var(--body-font-size-s);
+  line-height: 18px;
+}
+
+main
+  .ax-columns.fullsize.top
+  .column
+  .columns-iconlist
+  .columns-iconlist-icon
+  img.icon {
+  margin-right: 8px;
+}
+
+main
+  .ax-columns.fullsize.top
+  .column
+  .columns-iconlist
+  .columns-iconlist-description {
+  margin-left: 8px;
+}
+
+/* Japanese font sizing styles */
+:lang(ja) main .ax-columns h2.columns-heading-long {
+  font-size: var(--heading-font-size-l);
+}
+
+:lang(ja) main .ax-columns h2.columns-heading-very-long {
+  font-size: var(--heading-font-size-l);
+}
+
+:lang(ja) main .ax-columns h2.columns-heading-x-long {
+  font-size: var(--heading-font-size-m);
+}
+
+@media (max-width: 600px) {
+  :lang(ja) main .ax-columns h2 {
+    font-size: var(--heading-font-size-l);
+  }
+
+  :lang(ja) main .ax-columns h2.columns-heading-long {
+    font-size: var(--heading-font-size-l);
+  }
+
+  :lang(ja) main .ax-columns h2.columns-heading-very-long {
+    font-size: var(--heading-font-size-m);
+  }
+
+  :lang(ja) main .ax-columns h2.columns-heading-x-long {
+    font-size: var(--heading-font-size-m);
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1200px) {
+  :lang(ja) main .ax-columns h1 {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  :lang(ja) main .ax-columns h1.columns-heading-long {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  :lang(ja) main .ax-columns h1.columns-heading-very-long {
+    font-size: var(--heading-font-size-l);
+  }
+
+  :lang(ja) main .ax-columns h1.columns-heading-x-long {
+    font-size: var(--heading-font-size-m);
+  }
+}
+
+@media (min-width: 900px) {
+  body
+    main
+    .ax-columns.columns-marquee:not(.center):not(.fullsize)
+    .brand.icon {
+    padding-left: 0;
+  }
+
+  main
+    .columns-fullsize-center-container
+    .ax-columns.fullsize
+    .has-brand
+    > div:not(.column-picture):not(.hero-animation-overlay) {
+    padding-top: 0;
+  }
+
+  main .ax-columns .column {
+    margin: 0;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  main
+    .ax-columns
+    .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(
+      .text
+    ) {
+    padding-right: 16px;
+  }
+
+  main
+    .ax-columns
+    .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay):not(
+      .text
+    ) {
+    padding-left: 16px;
+  }
+
+  main
+    .ax-columns.highlight
+    .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay) {
+    padding-left: 32px;
+  }
+
+  main .ax-columns.color .column {
+    padding-right: 15px;
+    min-width: 388px;
+  }
+
+  main .ax-columns.fullsize .column-picture,
+  main .ax-columns.fullsize .hero-animation-overlay {
+    padding-top: 0;
+    padding-bottom: 0;
+    order: unset;
+  }
+
+  main .ax-columns.fullsize .hero-animation-overlay video {
+    max-height: unset;
+    margin-bottom: unset;
+  }
+
+  main .ax-columns.fullsize > div > div {
+    display: block;
+  }
+
+  main .ax-columns.fullsize > div > div p {
+    margin: 16px 0;
+  }
+
+  main .ax-columns.fullsize > div > div .button-container {
+    margin: 0;
+    margin-top: 40px;
+  }
+
+  main .ax-columns.fullsize > div > div .button-container a {
+    margin: 0;
+  }
+
+  main .ax-columns.fullsize .has-brand > div p:first-child {
+    margin: 16px 0;
+  }
+
+  main .ax-columns .column.column-picture {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  main
+    .ax-columns
+    .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay) {
+    padding-left: 16px;
+  }
+
+  main .collapsible-card-wrapper + .columns-wrapper .ax-columns > div {
+    flex-direction: unset;
+  }
+
+  main .ax-columns.color .img-wrapper {
+    height: 418px;
+    width: 418px;
+  }
+
+  main .ax-columns.color h2,
+  main .ax-columns.color p {
+    text-align: left;
+  }
+
+  main .ax-columns.columns-marquee .brand.icon {
+    position: unset;
+    top: unset;
+    left: unset;
+    transform: unset;
+  }
+
+  main .ax-columns.columns-marquee:not(.center):not(.fullsize) .brand.icon {
+    padding-left: 0;
+  }
+
+  main .ax-columns .has-brand {
+    padding-top: 0;
+  }
+
+  main .ax-columns.top > div,
+  main .ax-columns.offer > div {
+    align-items: flex-start;
+  }
+
+  main .section:has(.ax-columns) > div {
+    max-width: 836px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  main .ax-columns > div {
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+  }
+
+  main .section div.ax-columns > div {
+    position: relative;
+  }
+
+  main .section div.ax-columns > div > div {
+    width: 50%;
+    box-sizing: border-box;
+  }
+
+  main .section div.ax-columns > div > div:only-child {
+    width: 100%;
+  }
+
+  main .ax-columns > div span.num {
+    font-size: 22px;
+    line-height: 29px;
+    display: block;
+  }
+
+  main .ax-columns.width-2-columns .column-picture,
+  main .ax-columns.width-2-columns .hero-animation-overlay,
+  main .ax-columns.highlight.width-2-columns .column-picture {
+    order: 0;
+  }
+
+  main .ax-columns.highlight.width-2-columns .column-picture img {
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    top: 0;
+    object-fit: cover;
+  }
+
+  main .ax-columns.offer > div {
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  main .ax-columns.offer .column {
+    width: 600px;
+    margin: 0 auto;
+  }
+
+  main .ax-columns.offer > div:first-child {
+    padding-bottom: 0;
+  }
+
+  main .columns-video .column-picture {
+    position: initial;
+  }
+
+  main .columns-video .column-picture .column-video-overlay {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .section:has(.ax-columns) > div {
+    max-width: 1024px;
+  }
+
+  main .section:has(.ax-columns.fullsize) > div {
+    max-width: 1122px;
+  }
+
+  main
+    .ax-columns:not(.fullsize)
+    .column:not(.column-picture):not(.hero-animation-overlay):not(.text) {
+    padding: 40px;
+  }
+
+  main .ax-columns.fullsize .column.hero-animation-overlay {
+    position: relative;
+    height: 610px;
+  }
+
+  main .ax-columns.fullsize .column.columns-picture > p,
+  main .ax-columns.fullsize .column.hero-animation-overlay > p {
+    margin: 0;
+  }
+
+  main .ax-columns.fullsize .column video {
+    position: absolute;
+    left: 0;
+    max-width: 600px;
+  }
+
+  main .ax-columns.fullsize + h2 {
+    margin-top: 0;
+  }
+
+  main .ax-columns.offer > div {
+    width: 1100px;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  main .ax-columns.offer .column {
+    width: 490px;
+    padding: 40px 0;
+  }
+
+  main .ax-columns.offer .column:not(:first-child) {
+    padding-top: 0;
+  }
+
+  main .ax-columns.color .column.text {
+    max-width: unset;
+  }
+
+  main .ax-columns.color .img-wrapper {
+    height: 500px;
+    width: 500px;
+  }
+
+  main .ax-columns.color > div {
+    gap: 25px;
+  }
+
+  main .ax-columns.fullsize.top > div {
+    padding: 80px 0;
+  }
+
+  :lang(ja) main .ax-columns h1 {
+    font-size: var(--heading-font-size-xxl);
+  }
+
+  :lang(ja) main .ax-columns h1.columns-heading-long {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  :lang(ja) main .ax-columns h1.columns-heading-very-long {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  :lang(ja) main .ax-columns h1.columns-heading-x-long {
+    font-size: var(--heading-font-size-l);
+  }
+
+  :lang(ja) main .ax-columns h2.columns-heading-long {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  :lang(ja) main .ax-columns h2.columns-heading-very-long {
+    font-size: var(--heading-font-size-l);
+  }
+
+  :lang(ja) main .ax-columns h2.columns-heading-x-long {
+    font-size: var(--heading-font-size-m);
+  }
+
+  main .ax-columns h2.columns-heading-very-long {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  main .ax-columns h1.columns-heading-long {
+    font-size: var(--heading-font-size-xxl);
+  }
+  main .ax-columns h1.columns-heading-very-long {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  main .ax-columns h1.columns-heading-x-long {
+    font-size: var(--heading-font-size-l);
+  }
+}
