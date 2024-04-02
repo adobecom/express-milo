@@ -1,34 +1,38 @@
-main .template-list-horizontal-fullwidth-container,
-main .template-list-fullwidth-apipowered-container {
+main .section:has(.template-list) {
+  padding-top: 60px;
+}
+
+main .section:has(.template-list.horizontal.fullwidth),
+main .section:has(.template-list.fullwidth.apipowered) {
   padding-top: 0;
 }
 
-main .template-list-fullwidth-container > div,
-main .template-list-fullwidth-apipowered-container > div {
+main .section:has(.template-list.fullwidth) > div,
+main .section:has(.template-list.fullwidth.apipowered) > div {
   max-width: none;
   padding: 0;
 }
 
-main .template-list-fullwidth-container > .default-content-wrapper,
-main .template-list-fullwidth-apipowered-container > .default-content-wrapper {
+main .section:has(.template-list.fullwidth) > .default-content-wrapper,
+main .section:has(.template-list.fullwidth.apipowered) > .default-content-wrapper {
   padding: 0 15px;
 }
 
-main .template-list-fullwidth-container .default-content-wrapper h2,
-main .template-list-fullwidth-container .default-content-wrapper p,
-main .template-list-fullwidth-apipowered-container .default-content-wrapper h2,
-main .template-list-fullwidth-apipowered-container .default-content-wrapper p {
+main .section:has(.template-list.fullwidth) .default-content-wrapper h2,
+main .section:has(.template-list.fullwidth) .default-content-wrapper p,
+main .section:has(.template-list.fullwidth.apipowered) .default-content-wrapper h2,
+main .section:has(.template-list.fullwidth.apipowered) .default-content-wrapper p {
   margin: 0;
   text-align: left;
 }
 
-main .template-list-horizontal-fullwidth-mini-apipowered-spreadsheet-powered-container h2,
-main .template-list-horizontal-fullwidth-mini-apipowered-spreadsheet-powered-container .default-content-wrapper h2{
+main .section:has(.template-list.horizontal.fullwidth.mini.apipowered.spreadsheet-powered) h2,
+main .section:has(.template-list.horizontal.fullwidth.mini.apipowered.spreadsheet-powered) .default-content-wrapper h2{
   margin: 20px 12px 0 12px;
   text-align: left;
 }
 
-main .template-list-horizontal-fullwidth-mini-apipowered-spreadsheet-powered-container p {
+main .section:has(.template-list.horizontal.fullwidth.mini.apipowered.spreadsheet-powered) p {
   font-weight: 800;
   font-size: var(--body-font-size-m);
   margin: 16px 12px 12px 12px;
@@ -39,15 +43,15 @@ main .template-list.template-list-complete {
   min-height: unset;
 }
 
-main .template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper h2,
-main .template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper h3,
-main .template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper p {
+main .section:has(.template-list.horizontal.fullwidth.collaboration) .default-content-wrapper h2,
+main .section:has(.template-list.horizontal.fullwidth.collaboration) .default-content-wrapper h3,
+main .section:has(.template-list.horizontal.fullwidth.collaboration) .default-content-wrapper p {
   text-align: left;
   padding: 0 28px;
   margin: 12px 0;
 }
 
-main .template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper p {
+main .section:has(.template-list.horizontal.fullwidth.collaboration) .default-content-wrapper p {
   font-size: var(--body-font-size-m);
   line-height: 24px;
 }
@@ -221,8 +225,8 @@ main .template-list .template:not(.placeholder) .icon-free-badge {
 }
 
 /* horizontal template-list */
-main .template-list-horizontal-fullwidth-container > div,
-main .template-list-horizontal-fullwidth-collaboration-container > div {
+main .section:has(.template-list.horizontal.fullwidth) > div,
+main .section:has(.template-list.horizontal.fullwidth.collaboration) > div {
   max-width: none;
   padding: 0;
 }
@@ -532,11 +536,11 @@ main .template-list.flex-masonry .template.appear {
   opacity: 1;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper {
   position: relative;
 }
 
-main .template-list-fullwidth-apipowered-container .load-more {
+main .section:has(.template-list.fullwidth.apipowered) .load-more {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -550,7 +554,7 @@ main .template-list-fullwidth-apipowered-container .load-more {
   background: linear-gradient(#ffffff00, #ffffff, #ffffff);
 }
 
-main .template-list-fullwidth-apipowered-container .load-more-button {
+main .section:has(.template-list.fullwidth.apipowered) .load-more-button {
   width: 88px;
   height: 48px;
   display: flex;
@@ -565,21 +569,21 @@ main .template-list-fullwidth-apipowered-container .load-more-button {
   transition: background-color 0.2s;
 }
 
-main .template-list-fullwidth-apipowered-container .load-more-button:hover {
+main .section:has(.template-list.fullwidth.apipowered) .load-more-button:hover {
   background-color: var(--color-gray-700);
 }
 
-main .template-list-fullwidth-apipowered-container .load-more-button.disabled {
+main .section:has(.template-list.fullwidth.apipowered) .load-more-button.disabled {
   pointer-events: none;
   opacity: 0.5;
 }
 
-main .template-list-fullwidth-apipowered-container .load-more-button > .icon-plus-icon {
+main .section:has(.template-list.fullwidth.apipowered) .load-more-button > .icon-plus-icon {
   height: 22px;
   width: 22px;
 }
 
-main .template-list-fullwidth-apipowered-container .load-more-text {
+main .section:has(.template-list.fullwidth.apipowered) .load-more-text {
   margin-top: 8px;
   font-weight: 700;
   font-size: 18px;
@@ -609,7 +613,7 @@ main .section .template-list-search-bar-wrapper {
   transition: max-width 0.5s;
 }
 
-main .template-list-fullwidth-apipowered-container.search-marquee-spreadsheet-powered-container .template-list-search-bar-wrapper {
+main .section:has(.template-list.fullwidth.apipowered).search-marquee-spreadsheet-powered-container .template-list-search-bar-wrapper {
   margin-top: 0;
 }
 
@@ -853,7 +857,7 @@ main .section .template-list-search-bar-wrapper .task-dropdown-list li.option.ac
   color: var(--color-info-accent);
 }
 
-main .template-list-fullwidth-apipowered-container .animated-template-text {
+main .section:has(.template-list.fullwidth.apipowered) .animated-template-text {
   margin-top: -28px;
   background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
   background-size: 400% 400%;
@@ -865,7 +869,7 @@ main .template-list-fullwidth-apipowered-container .animated-template-text {
   transition: width .3s, margin .3s, min-width .3s, background-color .3s, color .3s, border .3s, background-position 2s ease-out, padding-left .3s;
 }
 
-main .template-list-fullwidth-apipowered-container .toolbar-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper {
   padding: 0;
   background: var(--color-gray-100);
   position: sticky;
@@ -873,7 +877,7 @@ main .template-list-fullwidth-apipowered-container .toolbar-wrapper {
   top: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar {
   position: relative;
   z-index: 1;
   margin: 16px 0 28px 0;
@@ -886,18 +890,18 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar {
   gap: 16px;
 }
 
-main .template-list-fullwidth-apipowered-container .toolbar-wrapper.sticking .api-templates-toolbar {
+main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper.sticking .api-templates-toolbar {
   box-sizing: border-box;
   border-radius: 0;
   padding: 16px;
   width: 100%;
 }
 
-main .template-list-fullwidth-apipowered-container .toolbar-wrapper.with-box-shadow {
+main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper.with-box-shadow {
   box-shadow: 0 4px 8px 2px rgb(102 102 102 / 10%);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-content-search {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-content-search {
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
@@ -907,17 +911,17 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapp
   flex-basis: 100%;
 }
 
-main .template-list-fullwidth-apipowered-container .toolbar-wrapper.sticking .wrapper-content-search {
+main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper.sticking .wrapper-content-search {
   width: 100%;
   padding-left: 48px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar h2 {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar h2 {
   font-size: 18px;
   line-height: 24px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper {
   margin: 0;
   width: 100%;
   position: absolute;
@@ -927,15 +931,15 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .templ
   padding: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .icon-search {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .icon-search {
   left: 12px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper .icon-search {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper .icon-search {
   left: 132px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper .icon-search-clear {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper .icon-search-clear {
   right: 12px;
 }
 
@@ -945,25 +949,25 @@ main .section .template-list-search-bar-wrapper.sticky-search-bar.collapsed .sea
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .toolbar-wrapper.sticking .template-list-search-bar-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper.sticking .template-list-search-bar-wrapper {
   display: unset;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper.collapsed {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper.collapsed {
   max-width: 42px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .search-bar {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .search-bar {
   padding: 0;
   max-width: 42px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .search-bar::placeholder,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .search-bar {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .search-bar::placeholder,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper.collapsed .search-bar {
   color: transparent;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions {
   display: flex;
   justify-content: space-between;
   flex-grow: 1;
@@ -971,35 +975,35 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapp
   gap: 24px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .icon {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .icon {
   display: block;
   padding-right: 6px;
   height: 18px;
   width: 18px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .icon-holder .icon {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .icon-holder .icon {
   min-width: 18px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .views .icon {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .views .icon {
   height: 22px;
   width: 22px;
   padding-right: unset;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .current-option {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .current-option {
   font-family: var(--body-font-family);
   font-size: 14px;
   line-height: 24px;
@@ -1009,13 +1013,13 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapp
   text-overflow: ellipsis;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .function-wrapper,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-sort {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .function-wrapper,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-sort {
   cursor: pointer;
   user-select: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .function-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .function-wrapper {
   background-color: var(--color-gray-200);
   padding: 4px 8px;
   border-radius: 8px;
@@ -1025,11 +1029,11 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapp
   transition: background-color 0.2s;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .function-wrapper:hover {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .function-wrapper:hover {
   background-color: var(--color-gray-300);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper {
   position: absolute;
   box-sizing: border-box;
   z-index: 1;
@@ -1045,7 +1049,7 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapp
   box-shadow: 0 3px 6px #00000016;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-sort .options-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-sort .options-wrapper {
   position: absolute;
   box-sizing: border-box;
   z-index: 1;
@@ -1062,27 +1066,27 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .funct
   box-shadow: 0 3px 6px #00000016;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-sort .options-wrapper .icon {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-sort .options-wrapper .icon {
   padding-right: 4px;
   height: 18px;
   width: 18px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .function-wrapper.opened .options-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .function-wrapper.opened .options-wrapper {
   display: flex;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .function-wrapper.opened .button-wrapper .icon.icon-drop-down-arrow {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .function-wrapper.opened .button-wrapper .icon.icon-drop-down-arrow {
   transform: rotate(180deg);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li {
   margin-bottom: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li > a {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li > a {
   font-size: 14px;
   font-family: var(--body-font-family);
   line-height: 18px;
@@ -1095,95 +1099,95 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .funct
   transition: background-color 0.2s, color 0.2s;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li.active > a {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li.active > a {
   font-weight: 600;
   color: var(--color-info-accent);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li > a > span {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li > a > span {
   margin-left: 4px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button:hover,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:hover,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button.active
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button:hover,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:hover,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button.active
 {
   background-color: var(--color-gray-200);
   color: var(--color-info-accent);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:hover,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button.active
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:hover,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button.active
 {
   border-radius: 8px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button .icon,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button .icon,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li .icon{
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button .icon,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button .icon,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .category-list-wrapper .category-list li .icon{
   height: 18px;
   width: 18px;
   padding-right: 6px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button:hover .option-radio,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:hover .option-radio {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button:hover .option-radio,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:hover .option-radio {
   border: #4646C6 6px solid;
   max-height: 4px;
   max-width: 4px;
   border-radius: 50%;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button:active .option-radio,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:active .option-radio {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button:active .option-radio,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button:active .option-radio {
   border: #3D3DB4 6px solid;
   max-height: 4px;
   max-width: 4px;
   border-radius: 50%;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button .option-radio:focus-visible,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button .option-radio:focus-visible {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button .option-radio:focus-visible,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button .option-radio:focus-visible {
   outline-offset: 4px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button.active .option-radio,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button.active .option-radio {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container .options-wrapper .option-button.active .option-radio,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-wrapper .options-wrapper .option-button.active .option-radio {
   border: #5c5ce0 6px solid;
   max-height: 4px;
   max-width: 4px;
   border-radius: 50%;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .views {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .views {
   display: flex;
   gap: 8px;
   min-width: 82px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .views .view-toggle-button {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .views .view-toggle-button {
   opacity: 0.16;
   height: 22px;
   transition: opacity 0.2s;
   cursor: pointer;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .views .view-toggle-button:hover {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .views .view-toggle-button:hover {
   opacity: 0.27;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .views .view-toggle-button.active {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .views .view-toggle-button.active {
   opacity: 1;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .button-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .button-wrapper {
   display: flex;
   align-items: center;
   position: relative;
   padding-right: 24px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .button-wrapper .icon.icon-drop-down-arrow {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .button-wrapper .icon.icon-drop-down-arrow {
   height: 10px;
   width: 10px;
   position: absolute;
@@ -1193,15 +1197,15 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .butto
   padding-right: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile-inner-wrapper .function-wrapper .icon.icon-drop-down-arrow {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile-inner-wrapper .function-wrapper .icon.icon-drop-down-arrow {
   transform: rotate(180deg);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile-inner-wrapper .function-wrapper.collapsed .icon.icon-drop-down-arrow {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile-inner-wrapper .function-wrapper.collapsed .icon.icon-drop-down-arrow {
   transform: rotate(0deg);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile {
   position: fixed;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -1218,7 +1222,7 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .funct
   transition: transform 0.5s;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile.scrollable::before {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile.scrollable::before {
   content: '';
   position: absolute;
   z-index: 1;
@@ -1229,25 +1233,25 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .funct
   background: linear-gradient(#ffffff00, #ffffff90, #ffffff);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile .filter-drawer-mobile-inner-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile .filter-drawer-mobile-inner-wrapper {
   text-align: right;
   height: 100%;
   overflow: auto;
   padding-bottom: 76px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile .filter-drawer-mobile-inner-wrapper::-webkit-scrollbar {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile .filter-drawer-mobile-inner-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile .close-drawer {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile .close-drawer {
   margin-left: auto;
   cursor: pointer;
   height: 18px;
   width: 18px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-container-mobile .drawer-background {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-container-mobile .drawer-background {
   z-index: 3;
   position: fixed;
   background: var(--color-gray-600);
@@ -1258,16 +1262,16 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .funct
   transition: opacity 0.5s;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-container-mobile .drawer-background.hidden {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-container-mobile .drawer-background.hidden {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-container-mobile .drawer-background.transparent {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-container-mobile .drawer-background.transparent {
   opacity: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-button-mobile-wrapper,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .button-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-button-mobile-wrapper,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .button-wrapper {
   font-family: var(--body-font-family);
   cursor: pointer;
   display: flex;
@@ -1275,50 +1279,50 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .funct
   align-items: center;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .filter-drawer-mobile .button-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .filter-drawer-mobile .button-wrapper {
   margin-bottom: 8px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .filter-drawer-mobile .button-wrapper span {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .filter-drawer-mobile .button-wrapper span {
   font-size: 14px;
   line-height: 24px;
   font-weight: 700;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-button-mobile-wrapper .icon,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .button-wrapper .icon {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-button-mobile-wrapper .icon,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .button-wrapper .icon {
   height: 18px;
   width: 18px;
   display: block;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-button-mobile-wrapper .icon.icon-drop-down-arrow,
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .button-wrapper .icon.icon-drop-down-arrow {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-button-mobile-wrapper .icon.icon-drop-down-arrow,
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .button-wrapper .icon.icon-drop-down-arrow {
   height: 10px;
   width: 10px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile .function-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile .function-wrapper {
   padding: 12px 0;
   border-top: var(--color-gray-200) 1px solid;
   overflow: hidden;
   transition: max-height 0.2s;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile .function-wrapper:first-of-type {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile .function-wrapper:first-of-type {
   border-top: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile .options-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile .options-wrapper {
   display: flex;
   flex-direction: column;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile .options-wrapper .option-button:before {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile .options-wrapper .option-button:before {
   margin-right: 16px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .apply-filter-button-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .apply-filter-button-wrapper {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -1332,15 +1336,15 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .apply
   transition: opacity 0.2s;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .apply-filter-button-wrapper.hidden {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .apply-filter-button-wrapper.hidden {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .apply-filter-button-wrapper.transparent {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .apply-filter-button-wrapper.transparent {
   opacity: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .apply-filter-button {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .apply-filter-button {
   width: 276px;
   height: 32px;
   font-size: 16px;
@@ -1350,30 +1354,30 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .apply
   justify-content: center;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile.hidden {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile.hidden {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .filter-drawer-mobile.retracted {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .filter-drawer-mobile.retracted {
   transform: translateX(100%);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper {
   padding: 12px 0;
   border-top: var(--color-gray-200) 1px solid;
   overflow: auto;
   transition: max-height 0.5s;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper.collapsed {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper.collapsed {
   overflow: hidden;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper::-webkit-scrollbar {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper {
   margin-bottom: 8px;
   cursor: pointer;
   display: flex;
@@ -1383,19 +1387,19 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .categ
   padding-right: 16px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper > .icon {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper > .icon {
   height: 22px;
   width: 22px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list-toggle {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list-toggle {
   font-family: var(--body-font-family);
   font-size: 14px;
   line-height: 24px;
   font-weight: 700;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper .icon-drop-down-arrow {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper .icon-drop-down-arrow {
   height: 10px;
   width: 10px;
   position: absolute;
@@ -1403,26 +1407,26 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .categ
   transform: rotate(180deg);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper.collapsed .icon-drop-down-arrow {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list-toggle-wrapper.collapsed .icon-drop-down-arrow {
   transform: rotate(0deg);
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list {
   margin: 0;
   list-style: none;
   padding-left: unset;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list li {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list li {
   margin-bottom: 12px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list li > .category-list-template-count {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list li > .category-list-template-count {
   font-family: var(--body-font-family);
   margin-left: 2px;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .category-list-wrapper .category-list li a {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .category-list-wrapper .category-list li a {
   color: var(--color-black);
   font-weight: 400;
   font-size: 14px;
@@ -1430,24 +1434,24 @@ main .template-list-fullwidth-apipowered-container .api-templates-toolbar .categ
   cursor: pointer;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .lottie-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .lottie-wrapper {
   position: fixed;
   z-index: 2;
   bottom: 76px;
   right: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .api-templates-toolbar .lottie-wrapper .lottie {
+main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .lottie-wrapper .lottie {
   height: 54px;
   width: 54px;
   pointer-events: none;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list {
   display: flex;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-wrapper {
   text-align: left;
   padding-top: 32px;
   padding-left: 40px;
@@ -1458,27 +1462,27 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   transition: max-height 0.5s;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-wrapper::-webkit-scrollbar {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-wrapper::-webkit-scrollbar {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-wrapper.desktop-only {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-wrapper.desktop-only {
   display: none;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list.sm-view .category-list-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list.sm-view .category-list-wrapper {
   width: 165px;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list.md-view .category-list-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list.md-view .category-list-wrapper {
   width: 258px;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list.lg-view .category-list-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list.lg-view .category-list-wrapper {
   width: 352px;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-toggle-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-toggle-wrapper {
   margin-bottom: 16px;
   display: flex;
   gap: 4px;
@@ -1487,12 +1491,12 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   padding-right: 16px;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-toggle-wrapper .icon.icon-template-free {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-toggle-wrapper .icon.icon-template-free {
   height: 18px;
   width: 18px;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-toggle {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-toggle {
   font-family: var(--body-font-family);
   font-size: 16px;
   line-height: 24px;
@@ -1520,7 +1524,7 @@ main .template-list-wrapper .category-list-wrapper .category-list-heading .icon 
   padding-right: 8px;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list ul {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list ul {
   position: relative;
   list-style: none;
   max-height: 800px;
@@ -1530,24 +1534,24 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   padding-left: 0;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list ul > li {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list ul > li {
   margin-bottom: 4px;
   padding: 4px 7px;
   border-radius: 8px;
   transition: background-color .2s, color .2s;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list ul > li:hover {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list ul > li:hover {
   background-color: var(--color-gray-200);
   color: var(--color-info-accent);
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list ul > li.active > a {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list ul > li.active > a {
   color: var(--color-info-accent);
   font-weight: 600;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list ul > li .icon {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list ul > li .icon {
   height: 18px;
   width: 18px;
   display: block;
@@ -1555,7 +1559,7 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   /* padding-right: 6px; */
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list ul > li > a {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list ul > li > a {
   font-family: var(--body-font-family);
   color: var(--color-black);
   font-weight: 400;
@@ -1568,13 +1572,13 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   white-space: nowrap;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list ul > li > a > .category-list-template-count {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list ul > li > a > .category-list-template-count {
   font-family: var(--body-font-family);
   margin-left: 2px;
   font-size: 14px;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-resize {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-resize {
   font-family: var(--body-font-family);
   color: var(--color-gray-500);
   position: relative;
@@ -1584,7 +1588,7 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   background: var(--color-white);
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-resize.collapsed:after {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-resize.collapsed:after {
   content: '';
   position: absolute;
   width: 100%;
@@ -1593,7 +1597,7 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   bottom: 100%;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-resize:before {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-resize:before {
   content: '⎼';
   font-weight: 400;
   margin-right: 4px;
@@ -1608,7 +1612,7 @@ main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-c
   border-radius: 50%;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-resize.collapsed:before {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-resize.collapsed:before {
   content: '+';
   padding-top: 2px;
   padding-bottom: 4px;
@@ -1629,19 +1633,19 @@ main .template-list.horizontal .carousel-container.controls-hidden .carousel-fad
 }
 
 /* Remove max-width on mobile breakpoints */
-main .section.template-list-horizontal-container {
+main .section:has(.template-list.horizontal) {
   padding-left: 0;
   padding-right: 0;
 }
 
-main .section.template-list-horizontal-container > div {
+main .section:has(.template-list.horizontal) > div {
   padding-left: 0;
   padding-right: 0;
 }
 
 /* re-add max-width on elements that are not carousel */
-main .section.template-list-horizontal-container > div > *:not(.template-list.horizontal),
-main .section.template-list-horizontal-container > div > .template-list.horizontal > *:not(.carousel-container) {
+main .section:has(.template-list.horizontal) > div > *:not(.template-list.horizontal),
+main .section:has(.template-list.horizontal) > div > .template-list.horizontal > *:not(.carousel-container) {
   max-width: 350px;
   padding-left: 15px;
   padding-right: 15px;
@@ -1659,7 +1663,7 @@ main .template-list.horizontal .carousel-platform {
 }
 
 @media (max-width: 600px) {
-  main .section.template-list-horizontal-container > div.template-list-wrapper {
+  main .section:has(.template-list.horizontal) > div.template-list-wrapper {
     margin-left: 0;
     margin-right: 0;
     max-width: unset;
@@ -1670,49 +1674,49 @@ main .template-list.mini {
   min-height: unset;
 }
 
-main .template-list-horizontal-fullwidth-mini-container .template-list .template-title {
+main .section:has(.template-list.horizontal.fullwidth.mini) .template-list .template-title {
   margin-bottom: 8px;
 }
 
-main .template-list-horizontal-fullwidth-mini-container.toc-container .template-list .template-title h2 {
+main .section:has(.template-list.horizontal.fullwidth.mini).toc-container .template-list .template-title h2 {
   -webkit-hyphens: none; /* safari */
   hyphens: none;
   display: inline;
 }
 
-main .template-list-horizontal-fullwidth-mini-container.toc-container .template-list .template-title .toc-slot {
+main .section:has(.template-list.horizontal.fullwidth.mini).toc-container .template-list .template-title .toc-slot {
   display: inline;
   width: 116px;
   height: 44px;
   float: right;
 }
 
-main .template-list-horizontal-fullwidth-mini-container .template-list .template-title p:last-of-type {
+main .section:has(.template-list.horizontal.fullwidth.mini) .template-list .template-title p:last-of-type {
   margin-top: 16px;
   font-weight: 800;
 }
 
-main .template-list-horizontal-fullwidth-mini-container .template-list .template-title p:first-of-type {
+main .section:has(.template-list.horizontal.fullwidth.mini) .template-list .template-title p:first-of-type {
   margin-bottom: 8px;
 }
 
-main .template-list-horizontal-fullwidth-mini-container .template-list .template-title p:last-of-type {
+main .section:has(.template-list.horizontal.fullwidth.mini) .template-list .template-title p:last-of-type {
   margin-top: 16px;
   font-weight: 800;
 }
 
-main .template-list-horizontal-fullwidth-mini-container .template-title .icon {
+main .section:has(.template-list.horizontal.fullwidth.mini) .template-title .icon {
   height: unset;
   width: 167px;
 }
 
-main .template-list-horizontal-fullwidth-mini-container .template-list .carousel-fader-left,
-main .template-list-horizontal-fullwidth-mini-container .template-list .carousel-fader-right {
+main .section:has(.template-list.horizontal.fullwidth.mini) .template-list .carousel-fader-left,
+main .section:has(.template-list.horizontal.fullwidth.mini) .template-list .carousel-fader-right {
   display: none;
 }
 
-main .template-list-horizontal-fullwidth-mini-apipowered-spreadsheet-powered-container > div,
-main .template-list-horizontal-fullwidth-mini-container > div {
+main .section:has(.template-list.horizontal.fullwidth.mini.apipowered.spreadsheet-powered) > div,
+main .section:has(.template-list.horizontal.fullwidth.mini) > div {
   max-width: unset;
   padding: 0;
 }
@@ -1798,24 +1802,24 @@ main .template-list.collaboration .carousel-container {
   margin-left: 6px;
 }
 
-main .template-list-horizontal-apipowered-holiday-container {
+main .section:has(.template-list.horizontal.apipowered.holiday) {
   padding-bottom: 10px;
   position: relative;
   overflow-x: hidden;
   background: var(--color-black);
 }
 
-main .template-list-horizontal-apipowered-holiday-container.with-animation {
+main .section:has(.template-list.horizontal.apipowered.holiday).with-animation {
   color: var(--color-white);
   padding-top: 0;
 }
 
-main .template-list-horizontal-apipowered-holiday-container p,
-main .template-list-horizontal-apipowered-holiday-container picture {
+main .section:has(.template-list.horizontal.apipowered.holiday) p,
+main .section:has(.template-list.horizontal.apipowered.holiday) picture {
   z-index: 1;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-bar {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar {
   display: flex;
   padding: 0 30px;
   justify-content: space-between;
@@ -1824,31 +1828,31 @@ main .template-list-horizontal-apipowered-holiday-container .toggle-bar {
   cursor: pointer;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-bar p {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar p {
   margin: 14px 0;
   font-size: 16px;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-bar img {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar img {
   display: block;
   max-height: 32px;
   width: 84px;
   min-width: 84px;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-button {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-button {
   display: flex;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-button a {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-button a {
   color: var(--color-white);
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-button a:hover {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-button a:hover {
   text-decoration: underline;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-button.mobile-only {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-button.mobile-only {
   width: max-content;
   padding: 0 30px;
   margin-left: 0;
@@ -1857,22 +1861,22 @@ main .template-list-horizontal-apipowered-holiday-container .toggle-button.mobil
   transition: margin 0.5s, transform 0.5s;
 }
 
-main .template-list-horizontal-apipowered-holiday-container.with-icon .toggle-button.mobile-only {
+main .section:has(.template-list.horizontal.apipowered.holiday).with-icon .toggle-button.mobile-only {
   margin: auto auto auto 190px;
   transform: translate(-50%, -6px);
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-button.mobile-only.expanded {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-button.mobile-only.expanded {
   transform: translate(-50%, -6px);
   margin: auto auto auto 50%;
 }
 
-main .template-list-horizontal-apipowered-holiday-container.with-icon .toggle-button.mobile-only.expanded {
+main .section:has(.template-list.horizontal.apipowered.holiday).with-icon .toggle-button.mobile-only.expanded {
   margin-left: 50%;
   transform: translate(-50%, -6px);
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-button .toggle-button-chev {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-button .toggle-button-chev {
   display: flex;
   width: 6px;
   height: 6px;
@@ -1890,12 +1894,12 @@ main .template-list-horizontal-apipowered-holiday-container .toggle-button .togg
   transition: transform 0.2s;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-button.expanded .toggle-button-chev {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-button.expanded .toggle-button-chev {
   transform: rotate(-135deg);
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-bar-top,
-main .template-list-horizontal-apipowered-holiday-container .toggle-bar-bottom {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar-top,
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar-bottom {
   text-align: left;
   display: flex;
   justify-content: space-between;
@@ -1904,13 +1908,13 @@ main .template-list-horizontal-apipowered-holiday-container .toggle-bar-bottom {
   color: var(--color-white);
 }
 
-main .template-list-horizontal-apipowered-holiday-container .toggle-bar-bottom {
+main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar-bottom {
   display: none;
   z-index: 1;
   flex-grow: 1;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .template-list-wrapper p.mobile-only {
+main .section:has(.template-list.horizontal.apipowered.holiday) .template-list-wrapper p.mobile-only {
   color: var(--color-white);
   position: absolute;
   top: 0;
@@ -1920,21 +1924,21 @@ main .template-list-horizontal-apipowered-holiday-container .template-list-wrapp
   padding: 0 30px;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .template-list-wrapper,
+main .section:has(.template-list.horizontal.apipowered.holiday) .template-list-wrapper,
 main .template-list.holiday,
 main .template-list.holiday .carousel-container {
   max-width: none;
   z-index: 1;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .template-list-wrapper {
+main .section:has(.template-list.horizontal.apipowered.holiday) .template-list-wrapper {
   max-height: 0;
   position: relative;
   transition: max-height 0.5s, padding-top 0.5s;
   overflow: hidden;
 }
 
-main .template-list-horizontal-apipowered-holiday-container .template-list-wrapper.expanded {
+main .section:has(.template-list.horizontal.apipowered.holiday) .template-list-wrapper.expanded {
   max-height: 300px;
   padding-top: 16px;
 }
@@ -1945,7 +1949,7 @@ main .template-list.holiday .carousel-container .carousel-platform {
 
 /* holiday animations */
 
-main .template-list-horizontal-apipowered-holiday-container .animation-background {
+main .section:has(.template-list.horizontal.apipowered.holiday) .animation-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -1958,36 +1962,36 @@ main .template-list-horizontal-apipowered-holiday-container .animation-backgroun
   transition: opacity 0.2s;
 }
 
-main .template-list-horizontal-apipowered-holiday-container.expanded .animation-background {
+main .section:has(.template-list.horizontal.apipowered.holiday).expanded .animation-background {
   opacity: 1;
   transition: opacity 1s;
 }
 
-main .template-list-fullwidth-apipowered-container .template-list-fallback-msg-wrapper {
+main .section:has(.template-list.fullwidth.apipowered) .template-list-fallback-msg-wrapper {
   font-size: 22px;
   text-align: center;
   padding: 0 28px;
 }
 
-main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs {
+main .section:has(.template-list.fullwidth.apipowered) nav ol.templates-breadcrumbs {
   list-style: none;
   margin: 0;
   padding: 0 0 0 40px;
   display: flex;
 }
 
-main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs li {
+main .section:has(.template-list.fullwidth.apipowered) nav ol.templates-breadcrumbs li {
   display: flex;
   padding: 5px 10px 5px 0;
   color: var(--color-gray-500);
 }
 
-main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs li a {
+main .section:has(.template-list.fullwidth.apipowered) nav ol.templates-breadcrumbs li a {
   color: var(--color-black);
   font-weight: 400;
 }
 
-main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs li:not(:first-child):before {
+main .section:has(.template-list.fullwidth.apipowered) nav ol.templates-breadcrumbs li:not(:first-child):before {
   content: '/';
   color: var(--color-black);
   padding: 0 10px 0 0;
@@ -2035,11 +2039,11 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     right: 0;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .template-list-search-bar-wrapper .task-dropdown-list {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .template-list-search-bar-wrapper .task-dropdown-list {
     left: 0;
   }
 
-  main .template-list-fullwidth-apipowered-container .toolbar-wrapper.sticking {
+  main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper.sticking {
     padding-left: 40px;
     padding-right: 40px;
     margin: 0;
@@ -2047,12 +2051,12 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     z-index: 2;
   }
 
-  main .template-list-fullwidth-apipowered-container .toolbar-wrapper {
+  main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper {
     margin: 0 40px;
     border-radius: 12px;
   }
 
-  main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list::before {
+  main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list::before {
     content: '';
     z-index: 0;
     position: absolute;
@@ -2085,15 +2089,15 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     background: linear-gradient(90deg, #ffffff 50%, #ffffff9B 88%, #ffffff00 100%);
   }
 
-  main .template-list-fullwidth-apipowered-container .category-list-wrapper.desktop-only .category-list-toggle-wrapper {
+  main .section:has(.template-list.fullwidth.apipowered) .category-list-wrapper.desktop-only .category-list-toggle-wrapper {
     padding: 4px 8px;
   }
 
-  main .template-list-fullwidth-apipowered-container .category-list-wrapper.desktop-only .category-list-toggle-wrapper .icon {
+  main .section:has(.template-list.fullwidth.apipowered) .category-list-wrapper.desktop-only .category-list-toggle-wrapper .icon {
     transition: transform 0.2s;
   }
 
-  main .template-list-fullwidth-apipowered-container .category-list-wrapper.desktop-only:hover .category-list-toggle-wrapper .icon {
+  main .section:has(.template-list.fullwidth.apipowered) .category-list-wrapper.desktop-only:hover .category-list-toggle-wrapper .icon {
     transform: rotate(180deg);
   }
 }
@@ -2103,20 +2107,20 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     width: 258.5px;
   }
 
-  main .template-list-container > div,
-  main .template-list-fourcols-container > div,
-  main .template-list-horizontal-container > div {
+  main .section:has(.template-list) > div,
+  main .section:has(.template-list.fourcols) > div,
+  main .section:has(.template-list.horizontal) > div {
     max-width: 900px;
   }
 
-  main .template-list-sixcols-container > div {
+  main .section:has(.template-list.sixcols) > div {
     max-width: 748px;
   }
 
-  main .template-list-fullwidth-container > div,
-  main .template-list-fullwidth-container > .default-content-wrapper,
-  main .template-list-fullwidth-apipowered-container > div,
-  main .template-list-fullwidth-apipowered-container > .default-content-wrapper {
+  main .section:has(.template-list.fullwidth) > div,
+  main .section:has(.template-list.fullwidth) > .default-content-wrapper,
+  main .section:has(.template-list.fullwidth.apipowered) > div,
+  main .section:has(.template-list.fullwidth.apipowered) > .default-content-wrapper {
     max-width: none;
   }
 
@@ -2172,7 +2176,7 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     display: none;
   }
 
-  main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-wrapper {
+  main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-wrapper {
     text-align: left;
     padding-top: 32px;
     padding-left: 40px;
@@ -2185,17 +2189,17 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     display: inline-block;
   }
 
-  main .section.template-list-horizontal-container {
+  main .section:has(.template-list.horizontal) {
     padding-left: 32px;
     padding-right: 32px;
   }
 
-  main .section.template-list-horizontal-container > div {
+  main .section:has(.template-list.horizontal) > div {
     max-width: 836px;
   }
 
-  main .section.template-list-horizontal-container > div > *:not(.template-list.horizontal),
-  main .section.template-list-horizontal-container > div > .template-list.horizontal > *:not(.carousel-container) {
+  main .section:has(.template-list.horizontal) > div > *:not(.template-list.horizontal),
+  main .section:has(.template-list.horizontal) > div > .template-list.horizontal > *:not(.carousel-container) {
     max-width: unset;
   }
 
@@ -2203,21 +2207,21 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     max-width: 800px;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar h2 {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar h2 {
     font-size: 22px;
     line-height: 24px;
     width: max-content;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions {
     flex-grow: 0;
   }
 
-  main .template-list-fullwidth-apipowered-container .toolbar-wrapper.sticking .wrapper-content-search {
+  main .section:has(.template-list.fullwidth.apipowered) .toolbar-wrapper.sticking .wrapper-content-search {
     width: auto;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-content-search .template-list-search-bar-wrapper {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-content-search .template-list-search-bar-wrapper {
     width: 480px;
   }
 
@@ -2235,16 +2239,16 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
 }
 
 @media (min-width: 1200px) {
-  main .template-list-fourcols-container > div {
+  main .section:has(.template-list.fourcols) > div {
     max-width: 1200px;
   }
 
-  main .template-list-sixcols-container > div {
+  main .section:has(.template-list.sixcols) > div {
     max-width: 1122px;
   }
 
-  main .template-list-fullwidth-container > div,
-  main .template-list-fullwidth-apipowered-container > div {
+  main .section:has(.template-list.fullwidth) > div,
+  main .section:has(.template-list.fullwidth.apipowered) > div {
     max-width: none;
   }
 
@@ -2266,7 +2270,7 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     font-weight: 400;
   }
 
-  main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-wrapper.desktop-only {
+  main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-wrapper.desktop-only {
     display: unset;
     background: transparent;
     position: absolute;
@@ -2280,7 +2284,7 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     z-index: 1;
   }
 
-  main .template-list-fullwidth-apipowered-container .template-list-wrapper.with-categories-list .category-list-wrapper.desktop-only:hover {
+  main .section:has(.template-list.fullwidth.apipowered) .template-list-wrapper.with-categories-list .category-list-wrapper.desktop-only:hover {
     min-width: max-content;
     padding-right: 160px;
     overflow: visible;
@@ -2333,28 +2337,28 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     width: 150px;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar {
     border-radius: 12px;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-functions .functions-container {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-functions .functions-container {
     display: flex;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer {
     display: none;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .wrapper-content-search {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .wrapper-content-search {
     flex-basis: unset;
     padding-right: 16px;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-sort:hover .options-wrapper {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-sort:hover .options-wrapper {
     display: flex;
   }
 
-  main .template-list-fullwidth-apipowered-container .api-templates-toolbar .functions-drawer .function-sort:hover .button-wrapper .icon.icon-drop-down-arrow {
+  main .section:has(.template-list.fullwidth.apipowered) .api-templates-toolbar .functions-drawer .function-sort:hover .button-wrapper .icon.icon-drop-down-arrow {
     transform: rotate(180deg);
   }
 
@@ -2362,13 +2366,13 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     max-width: 233px;
   }
 
-  main .section.template-list-horizontal-container > div {
+  main .section:has(.template-list.horizontal) > div {
     max-width: 1024px;
   }
 
   main .template-list.horizontal.fullwidth > div,
-  main .section.template-list-horizontal-fullwidth-container > div,
-  main .section.template-list-horizontal-fullwidth-collaboration-container > div {
+  main .section:has(.template-list.horizontal.fullwidth) > div,
+  main .section:has(.template-list.horizontal.fullwidth.collaboration) > div {
     max-width: none;
   }
 
@@ -2376,7 +2380,7 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     max-width: 1090px;
   }
 
-  main .template-list-horizontal-fullwidth-mini-container .template-list.mini {
+  main .section:has(.template-list.horizontal.fullwidth.mini) .template-list.mini {
     display: none;
   }
 
@@ -2396,27 +2400,27 @@ main .template-list-fullwidth-apipowered-container nav ol.templates-breadcrumbs 
     left: 28px;
   }
 
-  main .template-list-horizontal-apipowered-holiday-container {
+  main .section:has(.template-list.horizontal.apipowered.holiday) {
     padding-bottom: 0;
   }
 
-  main .template-list-horizontal-apipowered-holiday-container .toggle-bar {
+  main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar {
     max-width: 1024px;
   }
 
-  main .template-list-horizontal-apipowered-holiday-container .mobile-only {
+  main .section:has(.template-list.horizontal.apipowered.holiday) .mobile-only {
     display: none;
   }
 
-  main .template-list-horizontal-apipowered-holiday-container .toggle-bar-bottom {
+  main .section:has(.template-list.horizontal.apipowered.holiday) .toggle-bar-bottom {
     display: flex;
   }
 
-  main .template-list-horizontal-apipowered-holiday-container .template-list-wrapper.expanded {
+  main .section:has(.template-list.horizontal.apipowered.holiday) .template-list-wrapper.expanded {
     padding-top: 0;
   }
 
-  main .section.template-list-fullwidth-apipowered-container .template-list-fallback-msg-wrapper {
+  main .section:has(.template-list.fullwidth.apipowered) .template-list-fallback-msg-wrapper {
     padding-left: 120px;
     text-align: left;
   }
