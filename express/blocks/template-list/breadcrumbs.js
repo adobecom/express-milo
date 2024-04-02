@@ -15,7 +15,7 @@ function translateTask(taskCategories, tasks) {
     ?.[0]?.toLowerCase() ?? tasks;
 }
 
-function getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholderMod) {
+async function getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholderMod) {
   const { search, origin } = window.location;
   let { tasks, topics } = new Proxy(
     new URLSearchParams(search),
@@ -47,7 +47,7 @@ function getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholderMod) 
     const taskCrumb = createTag('li');
     const taskAnchor = createTag('a', { href: taskUrl });
     taskCrumb.append(taskAnchor);
-    const translatedTasks = translateTask(JSON.parse(placeholderMod.replaceKey('task-categories', getConfig())), tasks);
+    const translatedTasks = translateTask(JSON.parse(await placeholderMod.replaceKey('task-categories', getConfig())), tasks);
     taskAnchor.textContent = titleCase(translatedTasks);
     crumbs.unshift(taskCrumb);
   }
@@ -55,7 +55,7 @@ function getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholderMod) 
   return crumbs;
 }
 
-function getCrumbsForSEOPage(templatesUrl, allTemplatesMetadata, placeholderMod, segments) {
+async function getCrumbsForSEOPage(templatesUrl, allTemplatesMetadata, placeholderMod, segments) {
   const { origin, pathname } = window.location;
   const tasks = getMetadata('tasks')
   // TODO: remove templateTasks and allTemplatesMetadata here after all content are updated
@@ -67,20 +67,20 @@ function getCrumbsForSEOPage(templatesUrl, allTemplatesMetadata, placeholderMod,
   const crumbs = [];
   segments
     .slice(0, segments.length - 1)
-    .forEach((currSeg) => {
+    .forEach(async (currSeg) => {
       const seg = sanitize(currSeg);
       if (!seg) return;
       builtUrl = `${builtUrl}/${seg}`;
       // at least translate tasks seg
       let translatedSeg = seg;
       if (seg === tasks) {
-        translatedSeg = translateTask(JSON.parse(placeholderMod.replaceKey('task-categories', getConfig())), seg);
+        translatedSeg = translateTask(JSON.parse(await placeholderMod.replaceKey('task-categories', getConfig())), seg);
       } else if (seg === getMetadata('tasks-x')) {
         // try new v3x mapping
-        translatedSeg = translateTask(JSON.parse(placeholderMod.replaceKey('x-task-categories', getConfig())), seg);
-      } else if (placeholderMod.replaceKey('seg', getConfig())) {
+        translatedSeg = translateTask(JSON.parse(await placeholderMod.replaceKey('x-task-categories', getConfig())), seg);
+      } else if (await placeholderMod.replaceKey('seg', getConfig())) {
         // try placeholder sheet
-        translatedSeg = placeholderMod.replaceKey('seg', getConfig());
+        translatedSeg = await placeholderMod.replaceKey('seg', getConfig());
       }
       const segmentCrumb = createTag('li');
       if (allTemplatesMetadata.some((t) => t.url === builtUrl.replace(origin, ''))) {
@@ -123,14 +123,14 @@ export default async function getBreadcrumbs() {
   const homeCrumb = createTag('li');
   const homeUrl = `${origin}${homePath}`;
   const homeAnchor = createTag('a', { href: homeUrl });
-  homeAnchor.textContent = titleCase(placeholderMod.replaceKey('express', getConfig()) || '') || 'Home';
+  homeAnchor.textContent = titleCase(await placeholderMod.replaceKey('express', getConfig()) || '') || 'Home';
   homeCrumb.append(homeAnchor);
   breadcrumbs.append(homeCrumb);
 
   const templatesCrumb = createTag('li');
   const templatesUrl = `${homeUrl}templates/`;
   const templatesAnchor = createTag('a', { href: templatesUrl });
-  templatesAnchor.textContent = titleCase(placeholderMod.replaceKey('templates', getConfig()) || '') || 'Templates';
+  templatesAnchor.textContent = titleCase(await placeholderMod.replaceKey('templates', getConfig()) || '') || 'Templates';
   templatesCrumb.append(templatesAnchor);
   breadcrumbs.append(templatesCrumb);
 
@@ -143,8 +143,8 @@ export default async function getBreadcrumbs() {
   const allTemplatesMetadata = await fetchAllTemplatesMetadata();
   const isSearchPage = children.startsWith('/search?') || getMetadata('template-search-page') === 'Y';
   const crumbs = isSearchPage
-    ? getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholderMod)
-    : getCrumbsForSEOPage(templatesUrl, allTemplatesMetadata, placeholderMod, children.split('/'));
+    ? await getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholderMod)
+    : await getCrumbsForSEOPage(templatesUrl, allTemplatesMetadata, placeholderMod, children.split('/'));
 
   crumbs.forEach((c) => {
     breadcrumbs.append(c);

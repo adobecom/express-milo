@@ -19,7 +19,7 @@ import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadat
 import { memoize } from '../../scripts/utils/hofs.js';
 import getBreadcrumbs from './breadcrumbs.js';
 
-const [{ createTag, getConfig, getMetadata }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+const [{ createTag, getConfig, getMetadata, decorateSections }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -58,9 +58,9 @@ async function populateHeadingPlaceholder(locale, props) {
   let grammarTemplate;
 
   if (getMetadata('template-search-page') === 'Y') {
-    grammarTemplate = props.total === 1 ? placeholderMod.replaceKey('template-search-heading-singular', getConfig()) : placeholderMod.replaceKey('template-search-heading-plural', getConfig());
+    grammarTemplate = props.total === 1 ? await placeholderMod.replaceKey('template-search-heading-singular', getConfig()) : await placeholderMod.replaceKey('template-search-heading-plural', getConfig());
   } else {
-    grammarTemplate = placeholderMod.replaceKey('template-placeholder', getConfig());
+    grammarTemplate = await placeholderMod.replaceKey('template-placeholder', getConfig());
   }
 
   if (grammarTemplate) {
@@ -101,7 +101,7 @@ const memoizedFetchUrl = memoize((url) => fetch(url).then((r) => (r.ok ? r.json(
 });
 
 async function getFallbackMsg(tasks = '') {
-  const fallBacktextTemplate = tasks && tasks !== "''" ? placeholderMod.replaceKey('templates-fallback-with-tasks', getConfig()) : placeholderMod.replaceKey('templates-fallback-without-tasks', getConfig());
+  const fallBacktextTemplate = tasks && tasks !== "''" ? await placeholderMod.replaceKey('templates-fallback-with-tasks', getConfig()) : await placeholderMod.replaceKey('templates-fallback-without-tasks', getConfig());
 
   if (fallBacktextTemplate) {
     return tasks ? fallBacktextTemplate.replaceAll('{{tasks}}', tasks.toString()) : fallBacktextTemplate;
@@ -205,7 +205,7 @@ async function processResponse(props) {
   }
 
   if (templateFetched) {
-    return templateFetched.filter((template) => !!template.branchURL).map((template) => {
+    return templateFetched.filter((template) => !!template.branchURL).map(async (template) => {
       const templateTag = createTag('div');
       const imgWrapper = createTag('div');
 
@@ -219,11 +219,11 @@ async function processResponse(props) {
       const buttonWrapper = createTag('div', { class: 'button-container' });
       const button = createTag('a', {
         href: template.branchURL,
-        title: placeholderMod.replaceKey('edit-this-template', getConfig()) ?? 'Edit this template',
+        title: await placeholderMod.replaceKey('edit-this-template', getConfig()) ?? 'Edit this template',
         class: 'button accent',
       });
 
-      button.textContent = placeholderMod.replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+      button.textContent = await placeholderMod.replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
       imgWrapper.append(img);
       buttonWrapper.append(button);
       templateTag.append(imgWrapper, buttonWrapper);
@@ -245,7 +245,7 @@ async function fetchBlueprint(pathname) {
   const body = await resp.text();
   const main = createTag('main');
   main.innerHTML = body;
-  await decorateMain(main);
+  await decorateSections(main);
 
   window.spark.blueprint = main;
   return (main);
@@ -409,7 +409,7 @@ function initToggle(section) {
 }
 
 async function attachFreeInAppPills(block) {
-  const freeInAppText = placeholderMod.replaceKey('free-in-app', getConfig());
+  const freeInAppText = await placeholderMod.replaceKey('free-in-app', getConfig());
 
   const templateLinks = block.querySelectorAll('a.template');
   for (const templateLink of templateLinks) {
@@ -487,7 +487,7 @@ function getRedirectUrl(tasks, topics, format, allTemplatesMetadata) {
 }
 
 async function redirectSearch(searchBar, props) {
-  const taskMap = JSON.parse(placeholderMod.replaceKey('task-name-mapping', getConfig()));
+  const taskMap = JSON.parse(await placeholderMod.replaceKey('task-name-mapping', getConfig()));
   if (searchBar) {
     const wrapper = searchBar.closest('.template-list-search-bar-wrapper');
     const selectorTask = wrapper.querySelector('.task-dropdown-list > .option.active');
@@ -517,22 +517,22 @@ async function redirectSearch(searchBar, props) {
   window.location = redirectUrl;
 }
 
-function makeTemplateFunctions() {
+async function makeTemplateFunctions() {
   const functions = {
     premium: {
-      placeholders: JSON.parse(placeholderMod.replaceKey('template-filter-premium', getConfig())),
+      placeholders: JSON.parse(await placeholderMod.replaceKey('template-filter-premium', getConfig())),
       elements: {},
-      icons: placeholderMod.replaceKey('template-filter-premium-icons', getConfig()).replace(/\s/g, '').split(','),
+      icons: await placeholderMod.replaceKey('template-filter-premium-icons', getConfig()).replace(/\s/g, '').split(','),
     },
     animated: {
-      placeholders: JSON.parse(placeholderMod.replaceKey('template-filter-animated', getConfig())),
+      placeholders: JSON.parse(await placeholderMod.replaceKey('template-filter-animated', getConfig())),
       elements: {},
-      icons: placeholderMod.replaceKey('template-filter-animated-icons', getConfig()).replace(/\s/g, '').split(','),
+      icons: await placeholderMod.replaceKey('template-filter-animated-icons', getConfig()).replace(/\s/g, '').split(','),
     },
     sort: {
-      placeholders: JSON.parse(placeholderMod.replaceKey('template-sort', getConfig())),
+      placeholders: JSON.parse(await placeholderMod.replaceKey('template-sort', getConfig())),
       elements: {},
-      icons: placeholderMod.replaceKey('template-sort-icons', getConfig()).replace(/\s/g, '').split(','),
+      icons: await placeholderMod.replaceKey('template-sort-icons', getConfig()).replace(/\s/g, '').split(','),
     },
   };
 
@@ -588,7 +588,7 @@ function updateFilterIcon(block) {
   });
 }
 
-function decorateFunctionsContainer(block, section, functions, props) {
+async function decorateFunctionsContainer(block, section, functions, props) {
   const functionsContainer = createTag('div', { class: 'functions-container' });
   const functionContainerMobile = createTag('div', { class: 'functions-drawer' });
 
@@ -622,15 +622,15 @@ function decorateFunctionsContainer(block, section, functions, props) {
   const applyButton = createTag('a', { class: 'apply-filter-button button gradient', href: '#' });
 
   closeButton.classList.add('close-drawer');
-  applyButton.textContent = placeholderMod.replaceKey('apply-filters', getConfig());
+  applyButton.textContent = await placeholderMod.replaceKey('apply-filters', getConfig());
 
   functionContainerMobile.children[0]
     .querySelector('.current-option-premium')
-    .textContent = `${placeholderMod.replaceKey('free', getConfig())} ${placeholderMod.replaceKey('versus-shorthand', getConfig())} ${placeholderMod.replaceKey('premium', getConfig())}`;
+    .textContent = `${await placeholderMod.replaceKey('free', getConfig())} ${await placeholderMod.replaceKey('versus-shorthand', getConfig())} ${await placeholderMod.replaceKey('premium', getConfig())}`;
 
   functionContainerMobile.children[1]
     .querySelector('.current-option-animated')
-    .textContent = `${placeholderMod.replaceKey('static', getConfig())} ${placeholderMod.replaceKey('versus-shorthand', getConfig())} ${placeholderMod.replaceKey('animated', getConfig())}`;
+    .textContent = `${await placeholderMod.replaceKey('static', getConfig())} ${await placeholderMod.replaceKey('versus-shorthand', getConfig())} ${await placeholderMod.replaceKey('animated', getConfig())}`;
 
   drawerInnerWrapper.append(
     functionContainerMobile.children[0],
@@ -666,10 +666,10 @@ function decorateFunctionsContainer(block, section, functions, props) {
   );
   functionContainerMobile.prepend(filterContainer);
 
-  mobileFilterButton.textContent = placeholderMod.replaceKey('filter', getConfig());
+  mobileFilterButton.textContent = await placeholderMod.replaceKey('filter', getConfig());
   const sortButton = functionContainerMobile.querySelector('.current-option-sort');
   if (sortButton) {
-    sortButton.textContent = placeholderMod.replaceKey('sort', getConfig());
+    sortButton.textContent = await placeholderMod.replaceKey('sort', getConfig());
     sortButton.className = 'filter-mobile-option-heading';
   }
 
@@ -849,8 +849,8 @@ async function decorateCategoryList(block, section, props) {
   const blockWrapper = block.closest('.template-list-wrapper');
   const mobileDrawerWrapper = section.querySelector('.filter-drawer-mobile');
   const inWrapper = section.querySelector('.filter-drawer-mobile-inner-wrapper');
-  const categories = JSON.parse(placeholderMod.replaceKey('task-categories', getConfig()));
-  const categoryIcons = placeholderMod.replaceKey('task-category-icons', getConfig()).replace(/\s/g, '').split(',');
+  const categories = JSON.parse(await placeholderMod.replaceKey('task-categories', getConfig()));
+  const categoryIcons = await placeholderMod.replaceKey('task-category-icons', getConfig()).replace(/\s/g, '').split(',');
   const categoriesDesktopWrapper = createTag('div', { class: 'category-list-wrapper' });
   const categoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
   const desktopCategoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
@@ -859,8 +859,8 @@ async function decorateCategoryList(block, section, props) {
   const categoriesListHeading = createTag('div', { class: 'category-list-heading' });
   const categoriesTag = createTag('ul', { class: 'category-list' });
 
-  categoriesListHeading.append(getIconElement('template-search'), placeholderMod.replaceKey('jump-to-category', getConfig()));
-  categoriesToggle.textContent = placeholderMod.replaceKey('jump-to-category', getConfig());
+  categoriesListHeading.append(getIconElement('template-search'), await placeholderMod.replaceKey('jump-to-category', getConfig()));
+  categoriesToggle.textContent = await placeholderMod.replaceKey('jump-to-category', getConfig());
   const allTemplatesMetadata = await fetchAllTemplatesMetadata();
 
   Object.entries(categories).forEach((category, index) => {
@@ -964,8 +964,8 @@ async function decorateSearchFunctions(toolBar, section, props) {
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: placeholderMod.replaceKey('template-search-placeholder', getConfig()) ?? 'Search for over 50,000 templates',
-    enterKeyHint: placeholderMod.replaceKey('search', getConfig()) ?? 'Search',
+    placeholder: await placeholderMod.replaceKey('template-search-placeholder', getConfig()) ?? 'Search for over 50,000 templates',
+    enterKeyHint: await placeholderMod.replaceKey('search', getConfig()) ?? 'Search',
   });
 
   // Tasks Dropdown
@@ -1432,7 +1432,7 @@ function initToolbarShadow(toolbar) {
   });
 }
 
-function decorateToolbar(block, section, props) {
+async function decorateToolbar(block, section, props) {
   const toolBar = section.querySelector('.api-templates-toolbar');
 
   if (toolBar) {
@@ -1448,8 +1448,8 @@ function decorateToolbar(block, section, props) {
     const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
     lgView.append(getIconElement('large_grid'));
 
-    const functionsObj = makeTemplateFunctions();
-    const functions = decorateFunctionsContainer(
+    const functionsObj = await makeTemplateFunctions();
+    const functions = await decorateFunctionsContainer(
       block,
       section,
       functionsObj,
@@ -1573,11 +1573,11 @@ export async function decorateTemplateList(block, props) {
         }
       }
 
-      if (placeholderMod.replaceKey('template-filter-premium', getConfig()) && !block.classList.contains('horizontal')) {
+      if (await placeholderMod.replaceKey('template-filter-premium', getConfig()) && !block.classList.contains('horizontal')) {
         document.addEventListener('linkspopulated', async (e) => {
           // desktop/mobile fires the same event
           if (parent.contains(e.detail[0])) {
-            decorateToolbar(block, parent, props);
+            await decorateToolbar(block, parent, props);
             await decorateCategoryList(block, parent, props);
           }
         });
@@ -1679,7 +1679,7 @@ export async function decorateTemplateList(block, props) {
         href: `${document.URL.replace(/#.*$/, '')}#${titleHeading.id}`,
       });
       const clipboardTag = createTag('span', { class: 'clipboard-tag' });
-      clipboardTag.textContent = placeholderMod.replaceKey('tag-copied', getConfig());
+      clipboardTag.textContent = await placeholderMod.replaceKey('tag-copied', getConfig());
 
       anchorLink.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1772,7 +1772,7 @@ async function decorateLoadMoreButton(block, props) {
   const loadMoreButton = createTag('button', { class: 'load-more-button' });
   const loadMoreText = createTag('p', { class: 'load-more-text' });
   loadMoreDiv.append(loadMoreButton, loadMoreText);
-  loadMoreText.textContent = placeholderMod.replaceKey('load-more', getConfig());
+  loadMoreText.textContent = await placeholderMod.replaceKey('load-more', getConfig());
   block.insertAdjacentElement('afterend', loadMoreDiv);
   loadMoreButton.append(getIconElement('plus-icon'));
 
@@ -1795,10 +1795,10 @@ async function decorateTailButton($block, props) {
   const $carouselPlatform = $block.querySelector('.carousel-platform');
 
   if ($block.classList.contains('spreadsheet-powered')) {
-    if (placeholderMod.replaceKey('relevant-rows-view-all', getConfig()) && (props.viewAllLink || placeholderMod.replaceKey('relevant-rows-view-all-link', getConfig()))) {
+    if (await placeholderMod.replaceKey('relevant-rows-view-all', getConfig()) && (props.viewAllLink || await placeholderMod.replaceKey('relevant-rows-view-all-link', getConfig()))) {
       props.tailButton = createTag('a', { class: 'button accent tail-cta' });
-      props.tailButton.innerText = placeholderMod.replaceKey('relevant-rows-view-all', getConfig());
-      props.tailButton.href = props.viewAllLink || placeholderMod.replaceKey('relevant-rows-view-all-link', getConfig());
+      props.tailButton.innerText = await placeholderMod.replaceKey('relevant-rows-view-all', getConfig());
+      props.tailButton.href = props.viewAllLink || await placeholderMod.replaceKey('relevant-rows-view-all-link', getConfig());
     }
   }
 
@@ -1834,7 +1834,7 @@ function addBackgroundAnimation($block, animationUrl) {
 
 async function replaceRRTemplateList($block, props) {
   const relevantRowsData = await fetchRelevantRows(window.location.pathname);
-  props.limit = parseInt(placeholderMod.replaceKey('relevant-rows-templates-limit', getConfig()), 10) || 10;
+  props.limit = parseInt(await placeholderMod.replaceKey('relevant-rows-templates-limit', getConfig()), 10) || 10;
 
   if (relevantRowsData) {
     $block.closest('.section').dataset.audience = 'mobile';
@@ -1877,7 +1877,7 @@ async function replaceRRTemplateList($block, props) {
       .replaceAll('default-format', relevantRowsData.placeholderFormat || '');
 
     if (relevantRowsData.templateTasks === '') {
-      $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', placeholderMod.replaceKey('start-from-scratch', getConfig()) || '');
+      $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', await placeholderMod.replaceKey('start-from-scratch', getConfig()) || '');
     } else {
       $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', relevantRowsData.createText || '');
     }
@@ -1890,9 +1890,9 @@ function constructProps() {
   const smScreen = window.matchMedia('(max-width: 900px)');
   const mdScreen = window.matchMedia('(min-width: 901px) and (max-width: 1200px)');
   const bgScreen = window.matchMedia('(max-width: 1440px)');
-  const ratioSeparator = getMetadata('placeholder-format').includes(':') ? ':' : 'x';
+  const ratioSeparator = getMetadata('placeholder-format')?.includes(':') ? ':' : 'x';
   const ratioFromMetadata = getMetadata('placeholder-format')
-    .split(ratioSeparator)
+    ?.split(ratioSeparator)
     .map((str) => parseInt(str, 10));
 
   return {
