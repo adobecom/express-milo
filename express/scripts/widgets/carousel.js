@@ -66,6 +66,8 @@ function initToggleTriggers(parent) {
 }
 
 export function onCarouselCSSLoad(selector, parent, options) {
+  console.log(selector)
+  console.log(parent)
   const carouselContent = selector ? parent.querySelectorAll(selector) : parent.querySelectorAll(':scope > *');
 
   carouselContent.forEach((el) => el.classList.add('carousel-element'));
