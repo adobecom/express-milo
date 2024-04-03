@@ -14,7 +14,6 @@ const utilsProm = import(`${getLibs()}/utils/utils.js`).then((mod) => {
   ({ getConfig } = mod);
 });
 await Promise.all([placeholdersProm, utilsProm]);
-
 const DEFAULT_VARIANT = 'default';
 const SMART_VARIANT = 'smart';
 
@@ -124,7 +123,6 @@ export default async function decorate(block) {
   }
   addTempWrapperDeprecated(block, 'link-list');
   decorateButtonsDeprecated(block);
-  const placeholders = await fetchPlaceholders();
   const options = {};
 
   if (block.classList.contains('spreadsheet-powered')) {

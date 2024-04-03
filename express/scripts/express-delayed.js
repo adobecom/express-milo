@@ -1,14 +1,13 @@
 import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
 
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
-
-import BlockMediator from './block-mediator.min.js';
+const { createTag, getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 export function getDestination() {
   return BlockMediator.get('primaryCtaUrl')
       || document.querySelector('a.button.xlarge.same-as-floating-button-CTA, a.primaryCTA')?.href;
 }
+
 // TODO see if we even want to preload the product. Currently we're not in the old project
 // eslint-disable-next-line no-unused-vars
 function loadExpressProduct() {
@@ -55,9 +54,11 @@ async function isSignedIn() {
     resolve();
   }, { once: true });
   // if not ready, abort
+  // eslint-disable-next-line no-promise-executor-return
   await Promise.race([resolved, new Promise((r) => setTimeout(r, 5000))]);
   if (getProfile() === null) {
     // retry after 1s
+    // eslint-disable-next-line no-promise-executor-return
     await new Promise((r) => setTimeout(r, 1000));
   }
   return getProfile();
@@ -71,9 +72,8 @@ async function canPEP() {
   if (!pepSegment) return false;
   if (!getDestination()) return false;
 
-  const { replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`)
-  let pepHeader, pepCancel;
-  [pepHeader, pepCancel] = await replaceKeyArray(['pep-header', 'pep-cancel'], getConfig());
+  const { replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`);
+  const [pepHeader, pepCancel] = await replaceKeyArray(['pep-header', 'pep-cancel'], getConfig());
 
   if (!pepHeader || !pepCancel) return false;
   const segments = getSegmentsFromAlloyResponse(await window.alloyLoader);
@@ -107,19 +107,4 @@ export default async function loadDelayed(DELAY = 15000) {
       resolve();
     }, window.delay_preload_product ? DELAY * 2 : DELAY);
   });
-}
-
-export function getDestination() {
-  return BlockMediator.get('primaryCtaUrl')
-    || document.querySelector('a.button.xlarge.same-as-floating-button-CTA, a.primaryCTA')?.href;
-}
-
-export function getProfile() {
-  const { feds, adobeProfile, fedsConfig } = window;
-  if (fedsConfig?.universalNav) {
-    return feds?.services?.universalnav?.interface?.adobeProfile?.getUserProfile()
-    || adobeProfile?.getUserProfile();
-  }
-  return feds?.services?.profile?.interface?.adobeProfile?.getUserProfile()
-    || adobeProfile?.getUserProfile();
 }
