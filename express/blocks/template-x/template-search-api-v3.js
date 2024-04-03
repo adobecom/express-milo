@@ -90,7 +90,9 @@ function formatFilterString(filters) {
 }
 
 const memoizedFetch = memoize(
-  (url, headers) => fetch(url, headers).then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 });
+  (url, headers) => fetch(url, headers).then((r) => (r.ok ? r.json() : null)),
+  { ttl: 30 * 1000 },
+);
 
 async function fetchSearchUrl({
   limit, start, filters, sort, q, collectionId,

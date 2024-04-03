@@ -41,7 +41,7 @@ export class Masonry {
     const width = this.wrapper.offsetWidth;
     if (!width) {
       return 0;
-    } else if (window.innerWidth >= 900) {
+    } if (window.innerWidth >= 900) {
       if (block.classList.contains('sm-view')) {
         colWidth = 176;
       }
@@ -228,7 +228,7 @@ export class Masonry {
       if (setup === 1) {
         // no redrawing needed
         return;
-      } else if (setup === 0) {
+      } if (setup === 0) {
         // setup incomplete, try again
         window.setTimeout(() => {
           this.draw(cells);

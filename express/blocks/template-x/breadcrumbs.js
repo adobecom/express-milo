@@ -1,10 +1,20 @@
-import {
-  fetchPlaceholders,
-  getMetadata,
-  titleCase,
-  createTag,
-} from '../../scripts/utils.js';
-import fetchAllTemplatesMetadata from '../../scripts/all-templates-metadata.js';
+import { getLibs } from '../../scripts/utils.js';
+import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
+import { titleCase } from '../../scripts/utils/string.js';
+
+const imports = await
+Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  await import(`${getLibs()}/utils/utils.js`)]);
+
+const { replaceKeyArray } = imports[0];
+const { createTag, getMetadata, getConfig } = imports[1];
+
+function fetchPlaceholders() {
+  const keys = [
+    'x-task-categories', 'task-categories',
+  ];
+  return replaceKeyArray(keys, getConfig());
+}
 
 function sanitize(str) {
   return str?.replaceAll(/[$@%'"]/g, '');
@@ -12,15 +22,16 @@ function sanitize(str) {
 
 function translateTask(taskCategories, tasks) {
   return Object.entries(taskCategories)
-    .find(([_, t]) => t === tasks || t === tasks.replace(/-/g, ' '))
+    .find(([, t]) => t === tasks || t === tasks.replace(/-/g, ' '))
     ?.[0]?.toLowerCase() ?? tasks;
 }
 
 function getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholders) {
   const { search, origin } = window.location;
-  const { tasksx, q } = new Proxy(new URLSearchParams(search), {
-    get: (searchParams, prop) => searchParams.get(prop),
-  });
+  const { tasksx, q } = new Proxy(
+    new URLSearchParams(search),
+    { get: (searchParams, prop) => searchParams.get(prop) },
+  );
   const tasks = sanitize(tasksx);
   const crumbs = [];
   // won't have meaningful short-title with no tasks and no q

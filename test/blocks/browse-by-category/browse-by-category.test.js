@@ -5,7 +5,7 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 const { default: decorate } = await import(
-  '../../../../express/blocks/browse-by-category/browse-by-category.js'
+  '../../../express/blocks/browse-by-category/browse-by-category.js'
 );
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 

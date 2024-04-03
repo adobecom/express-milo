@@ -19,12 +19,16 @@ import renderTemplate from './template-rendering.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
 import isDarkOverlayReadable from './color-tools.js';
+
 const imports = await
-  Promise.all([import(`${getLibs()}/features/placeholders.js`),
-  await import(`${getLibs()}/utils/utils.js`)]);
+Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  await import(`${getLibs()}/utils/utils.js`),
+  await import(`${getLibs()}/utils/samplerum.js`),
+]);
 
 const { replaceKeyArray } = imports[0];
 const { createTag, getMetadata, getConfig } = imports[1];
+const { sampleRUM } = imports[2];
 
 async function fetchLocalPlaceholders() {
   const keys = [
@@ -34,7 +38,7 @@ async function fetchLocalPlaceholders() {
     'template-x-sort', 'template-x-sort-icons', 'apply-filters', 'versus-shorthand', 'x-task-categories',
     'task-category-icons', 'jump-to-category', 'task-name-mapping', 'x-task-name-mapping', 'template-placeholder',
     'template-search-heading-singular', 'template-search-heading-plural',
-  ]
+  ];
   const values = await replaceKeyArray(keys, getConfig());
   const output = {};
   for (let i = 0; i < keys.length; i += 1) {
@@ -188,7 +192,7 @@ function constructProps(block) {
     loadedOtherCategoryCounts: false,
   };
 
-  Array.from(block.children).forEach((row, index) => {
+  Array.from(block.children).forEach((row) => {
     const cols = row.querySelectorAll('div');
     const key = cols[0].querySelector('strong')?.textContent.trim().toLowerCase();
     if (cols.length === 1) {
@@ -216,7 +220,7 @@ function constructProps(block) {
       if (key === 'blank template') {
         cols[0].remove();
         props.templates.push(row);
-        row.classList.add("blank_template"); 
+        row.classList.add('blank_template');
       }
     } else if (cols.length === 5) {
       if (key === 'holiday block' && ['yes', 'true', 'on'].includes(cols[1].textContent.trim().toLowerCase())) {
@@ -245,10 +249,10 @@ function constructProps(block) {
   return props;
 }
 
-function populateTemplates(block, props, templates) { 
+function populateTemplates(block, props, templates) {
   for (let i = 0; i < templates.length; i += 1) {
     let tmplt = templates[i];
-    const isPlaceholder = tmplt.classList.contains("blank_template")
+    const isPlaceholder = tmplt.classList.contains('blank_template');
     const linkContainer = tmplt.querySelector(':scope > div:nth-of-type(2)');
     const rowWithLinkInFirstCol = tmplt.querySelector(':scope > div:first-of-type > a');
     const innerWrapper = block.querySelector('.template-x-inner-wrapper');
@@ -257,9 +261,7 @@ function populateTemplates(block, props, templates) {
       const link = linkContainer.querySelector(':scope a');
       if (link) {
         if (isPlaceholder) {
-          const aTag = createTag('a', {
-            href: link.href || '#',
-          });
+          const aTag = createTag('a', { href: link.href || '#' });
 
           aTag.append(...tmplt.children);
           tmplt.remove();
@@ -327,7 +329,6 @@ function populateTemplates(block, props, templates) {
     if (isPlaceholder) {
       tmplt.classList.add('placeholder');
     }
-    
   }
 }
 
@@ -599,7 +600,7 @@ async function appendCategoryTemplatesCount(block, props) {
   for (const { cntSpan, anchor } of res) {
     anchor.append(cntSpan);
     // eslint-disable-next-line no-await-in-loop
-    await new Promise((resolve) => setTimeout(resolve, 25));
+    await new Promise((resolve) => { setTimeout(resolve, 25); });
   }
 }
 
@@ -1427,9 +1428,10 @@ function importSearchBar(block, blockMediator) {
           }
         };
 
-        import('../../scripts/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
+        import('../search-marquee/utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
           const { inputHandler } = useInputAutocomplete(
-            suggestionsListUIUpdateCB, { throttleDelay: 300, debounceDelay: 500, limit: 7 },
+            suggestionsListUIUpdateCB,
+            { throttleDelay: 300, debounceDelay: 500, limit: 7 },
           );
           searchBar.addEventListener('input', inputHandler);
         });
@@ -1640,6 +1642,6 @@ export default async function decorate(block) {
 
   const props = constructProps(block);
   block.innerHTML = '';
-  
+
   await buildTemplateList(block, props, determineTemplateXType(props));
 }
