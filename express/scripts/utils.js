@@ -24,7 +24,6 @@ export const [setLibs, getLibs] = (() => {
         if (branch === 'local') return 'http://localhost:6456/libs';
         return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
       })();
-      window.express.miloLibs = libs;
       return libs;
     }, () => libs,
   ];
