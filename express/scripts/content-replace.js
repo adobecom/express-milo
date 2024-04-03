@@ -98,6 +98,9 @@ function updateTextNode(child, matchCallback) {
 
 // data -> dom gills
 export function autoUpdateContent(parent) {
+  if (getMetadata('sheet-powered') !== 'Y') {
+    return;
+  }
   if (!parent) {
     window.lana?.log('page server block cannot find its parent element');
     return;
