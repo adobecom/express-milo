@@ -7,7 +7,6 @@ export function decorateHeading(block, payload) {
   const headingSection = createTag('div', { class: 'browse-by-category-heading-section' });
   const heading = createTag('h3', { class: 'browse-by-category-heading' });
   const viewAllButtonWrapper = createTag('p', { class: 'browse-by-category-link-wrapper' });
-
   if (payload.viewAllLink.href !== '') {
     const viewAllButton = createTag('a', { class: 'browse-by-category-link', href: payload.viewAllLink.href });
     viewAllButton.textContent = payload.viewAllLink.text;
@@ -49,8 +48,8 @@ export default async function decorate(block) {
   const payload = {
     heading: headingDiv.querySelector('h4') ? headingDiv.querySelector('h4').textContent.trim() : '',
     viewAllLink: {
-      text: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').textContent.trim() : '',
-      href: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').href : '',
+      text: headingDiv.querySelector('a') ? headingDiv.querySelector('a').textContent.trim() : '',
+      href: headingDiv.querySelector('a') ? headingDiv.querySelector('a').href : '',
     },
     categories: [],
   };
