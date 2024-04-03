@@ -111,8 +111,8 @@ const miloLibs = setLibs(LIBS);
   loadLana({ clientId: 'express' });
   console.log(config);
 
-  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark').toLowerCase()) && document.body.dataset.device === 'mobile';
-  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating').toLowerCase());
+  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark')?.toLowerCase()) && document.body.dataset.device === 'mobile';
+  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating')?.toLowerCase());
   const runGating = () => {
     // TODO add mobile beta stuff
     // import('./mobile-beta-gating.js').then(async (gatingScript) => {
