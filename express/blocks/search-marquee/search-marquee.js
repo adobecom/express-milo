@@ -114,7 +114,6 @@ function initSearchFunction(block) {
     const config = getConfig();
     const taskMap = await replaceKey('task-name-mapping', config) || {};
     const taskXMap = await replaceKey('x-task-name-mapping', config) || {};
-    console.log(taskMap, taskXMap);
     const format = getMetadata('placeholder-format');
 
     const currentTasks = {
@@ -320,8 +319,8 @@ async function buildSearchDropdown(block) {
 
     suggestionsTitle.textContent = await replaceKey('search-suggestions-title', config) || '';
     suggestionsContainer.append(suggestionsTitle, suggestionsList);
-
-    const freePlanTags = await buildFreePlanWidget('branded');
+    config.typeKey = 'branded';
+    const freePlanTags = await buildFreePlanWidget(config);
 
     freePlanContainer.append(freePlanTags);
     dropdownContainer.append(trendsContainer, suggestionsContainer, freePlanContainer);

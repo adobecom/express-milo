@@ -1,3 +1,4 @@
+import { autoUpdateContent } from './content-replace.js';
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -42,6 +43,7 @@ export function toClassName(name) {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+
 export function readBlockConfig(block) {
   const config = {};
   block.querySelectorAll(':scope>div').forEach(($row) => {
@@ -215,6 +217,7 @@ export function listenMiloEvents() {
 }
 
 export function decorateArea(area = document) {
+  autoUpdateContent(area, getLibs());
   removeIrrelevantSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
