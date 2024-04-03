@@ -59,6 +59,8 @@ const CONFIG = {
     // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hant-TW
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
+    tr: { ietf: 'tr-TR', tk: 'ley8vds.css' },
+    eg: { ietf: 'en-EG', tk: 'pps7abe.css' },
   },
   links: 'on',
 };
@@ -109,10 +111,10 @@ const miloLibs = setLibs(LIBS);
   loadLana({ clientId: 'express' });
   console.log(config);
 
-  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark')?.toLowerCase()) && document.body.dataset.device === 'mobile';
-  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating')?.toLowerCase());
+  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark').toLowerCase()) && document.body.dataset.device === 'mobile';
+  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating').toLowerCase());
   const runGating = () => {
-    // TODO add mobile-beta stuff
+    // TODO add mobile beta stuff
     // import('./mobile-beta-gating.js').then(async (gatingScript) => {
     //   gatingScript.default();
     // });
@@ -126,10 +128,22 @@ const miloLibs = setLibs(LIBS);
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
+  // handle split
+  const { userAgent } = navigator;
+  document.body.dataset.device = userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  const fqaMeta = createTag('meta', { content: 'on' });
+  if (document.body.dataset.device === 'mobile'
+      || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
+    fqaMeta.setAttribute('name', 'fqa-off');
+  } else {
+    fqaMeta.setAttribute('name', 'fqa-on');
+  }
+  document.head.append(fqaMeta);
+
   listenMiloEvents();
   await loadArea();
 
-  if (isMobileGating && rushGating) { runGating(); }
+  if (isMobileGating && !rushGating) { runGating(); }
 
   import('./express-delayed.js').then((mod) => {
     mod.default();

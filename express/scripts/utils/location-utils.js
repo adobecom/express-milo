@@ -22,9 +22,9 @@ function normCountry(country) {
   return (country.toLowerCase() === 'uk' ? 'gb' : country.toLowerCase()).split('_')[0];
 }
 
-export async function getCountry() {
+export async function getCountry(ignoreCookie = false) {
   const urlParams = new URLSearchParams(window.location.search);
-  let countryCode = urlParams.get('country') || getCookie('international');
+  let countryCode = urlParams.get('country') || (!ignoreCookie && getCookie('international'));
   if (countryCode) {
     return normCountry(countryCode);
   }
@@ -60,7 +60,7 @@ export const formatSalesPhoneNumber = (() => {
     }
 
     if (!numbersMap?.data) return;
-    const country = await getCountry() || 'us';
+    const country = await getCountry(true) || 'us';
     tags.forEach((a) => {
       const r = numbersMap.data.find((d) => d.country === country);
 

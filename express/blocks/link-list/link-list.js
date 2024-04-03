@@ -5,7 +5,18 @@ import {
   addTempWrapperDeprecated,
 } from '../../scripts/utils/decorate.js';
 
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let replaceKey;
+let getConfig;
+const placeholdersProm = import(`${getLibs()}/features/placeholders.js`).then((mod) => {
+  ({ replaceKey } = mod);
+});
+const utilsProm = import(`${getLibs()}/utils/utils.js`).then((mod) => {
+  ({ getConfig } = mod);
+});
+await Promise.all([placeholdersProm, utilsProm]);
+
+const DEFAULT_VARIANT = 'default';
+const SMART_VARIANT = 'smart';
 
 async function fetchRelevantRows(path) {
   if (!window.relevantRows) {
@@ -83,20 +94,38 @@ async function loadSpreadsheetData(block, relevantRowsData) {
   }
 }
 
+const formatBlockLinks = (links, variant, baseURL) => {
+  if (!links || variant !== SMART_VARIANT || !baseURL) {
+    return;
+  }
+  const formattedURL = `${baseURL}?acomx-dno=true&category=templates`;
+  links.forEach((p) => {
+    const a = p.querySelector('a');
+    a.href = `${formattedURL}&q=${a.title}`;
+  });
+};
+
+const toggleLinksHighlight = (links, variant) => {
+  if (variant === SMART_VARIANT) {
+    return;
+  }
+  links.forEach((l) => {
+    const a = l.querySelector(':scope > a');
+    if (a) {
+      l.classList.toggle('active', a.href === window.location.href);
+    }
+  });
+};
+
 export default async function decorate(block) {
+  let variant = DEFAULT_VARIANT;
+  if (block.classList.contains(SMART_VARIANT)) {
+    variant = SMART_VARIANT;
+  }
   addTempWrapperDeprecated(block, 'link-list');
   decorateButtonsDeprecated(block);
-
+  const placeholders = await fetchPlaceholders();
   const options = {};
-  const toggleLinksHighlight = (links) => {
-    links.forEach((l) => {
-      const a = l.querySelector(':scope > a');
-
-      if (a) {
-        l.classList.toggle('active', a.href === window.location.href);
-      }
-    });
-  };
 
   if (block.classList.contains('spreadsheet-powered')) {
     const relevantRowsData = await fetchRelevantRows(window.location.pathname);
@@ -124,18 +153,17 @@ export default async function decorate(block) {
       link.classList.add('medium');
       link.classList.remove('accent');
     });
-
     const platformEl = document.createElement('div');
     platformEl.classList.add('link-list-platform');
     await buildCarousel('p.button-container', block, options);
   }
 
   if (block.classList.contains('shaded')) {
-    toggleLinksHighlight(links);
+    toggleLinksHighlight(links, variant);
   }
 
   window.addEventListener('popstate', () => {
-    toggleLinksHighlight(links);
+    toggleLinksHighlight(links, variant);
   });
 
   if (window.location.href.includes('/express/templates/')) {
@@ -144,4 +172,7 @@ export default async function decorate(block) {
     );
     await updateAsyncBlocks();
   }
+
+  const searchBrankLinks = await replaceKey('search-branch-links', getConfig());
+  formatBlockLinks(links, variant, searchBrankLinks);
 }
