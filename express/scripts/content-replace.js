@@ -124,6 +124,7 @@ function swapTokenBrackets(parent) {
 
 // data -> dom gills
 export function autoUpdateContent(parent) {
+  swapTokenBrackets(parent);
   if (getMetadata('sheet-powered') !== 'Y') {
     return;
   }
@@ -141,8 +142,6 @@ export function autoUpdateContent(parent) {
   };
 
   const allElements = parent.querySelectorAll('*');
-
-  swapTokenBrackets(parent);
 
   allElements.forEach((element) => {
     if (element.childNodes.length) {
