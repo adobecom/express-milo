@@ -43,7 +43,6 @@ export function toClassName(name) {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
-
 export function readBlockConfig(block) {
   const config = {};
   block.querySelectorAll(':scope>div').forEach(($row) => {

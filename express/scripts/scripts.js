@@ -141,7 +141,6 @@ const miloLibs = setLibs(LIBS);
   document.head.append(fqaMeta);
 
   listenMiloEvents();
-
   await loadArea();
 
   if (isMobileGating && !rushGating) { runGating(); }
