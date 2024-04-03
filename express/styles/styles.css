@@ -658,7 +658,7 @@ main .hero a.button:any-link {
   border-radius: 22px;
 }
 
-main .section div .block p.legal-copy {
+main .section .block p.legal-copy {
   font-size: var(--body-font-size-xs);
   line-height: 1.5;
 }
@@ -816,6 +816,21 @@ main .fragment {
   margin: 32px auto;
 }
 
+.free-plan-widget .plan-widget-tag {
+  display: flex;
+  align-items: center;
+}
+
+.free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
+  background-color: #33AB84;
+  display: block;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  padding: 3px;
+  margin-right: 4px;
+}
+
 @media (min-width: 900px) {
   .button-container.free-plan-container {
     width: max-content;
@@ -831,6 +846,7 @@ main .fragment {
     margin: 0;
     display: flex;
     align-items: center;
+    /* todo: investigate why */
     z-index: 4;
   }
 
@@ -1097,4 +1113,22 @@ a.app-store-aTag {
 
 #feds-topnav .feds-login {
   border: none;
+}
+
+main > div[class="section section-wrapper sticky-promo-bar-loadinbody-rounded-container firefly-card-container"],
+main > div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container floating-button-container"],
+main > div[class="section section-wrapper fullscreen-marquee-image-container"] + div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container"],
+main > div[class="section section-wrapper schemas-container"],
+main > div[class="section section-wrapper"]:empty {
+  padding-top: 0;
+}
+
+main > div[class="section section-wrapper columns-container"][id^="column-"] {
+  padding: 0;
+}
+
+/* FIXME: hacky behavior to fight for space with Jarvis */
+body.has-floating-panel #adbMsgClientWrapper .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
+body.has-floating-panel #adbMsgClientWrapper #adbmsgCta {
+  bottom: 140px!important;
 }

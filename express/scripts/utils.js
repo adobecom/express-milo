@@ -24,7 +24,6 @@ export const [setLibs, getLibs] = (() => {
         if (branch === 'local') return 'http://localhost:6456/libs';
         return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
       })();
-      window.express.miloLibs = libs;
       return libs;
     }, () => libs,
   ];
@@ -74,9 +73,15 @@ export function readBlockConfig(block) {
   return config;
 }
 
-export async function removeIrrelevantSections(area) {
+export function removeIrrelevantSections(area) {
   if (!area) return;
-  const { getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+
+  const getMetadata = (name, doc = document) => {
+    const attr = name && name.includes(':') ? 'property' : 'name';
+    const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
+    return meta && meta.content;
+  };
+
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -101,7 +106,7 @@ export async function removeIrrelevantSections(area) {
   });
 }
 
-async function overrideMiloColumns(area) {
+function overrideMiloColumns(area) {
   if (!area) return;
   area.querySelectorAll('main > div').forEach((section) => {
     const columnBlock = section.querySelectorAll('div.columns');
@@ -336,41 +341,4 @@ export function decorateArea(area = document) {
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
-}
-
-export function getHelixEnv() {
-  let envName = sessionStorage.getItem('helix-env');
-  if (!envName) {
-    envName = 'stage';
-    if (window.spark?.hostname === 'www.adobe.com') envName = 'prod';
-  }
-  const envs = {
-    stage: {
-      commerce: 'commerce-stg.adobe.com',
-      adminconsole: 'stage.adminconsole.adobe.com',
-      spark: 'stage.projectx.corp.adobe.com',
-    },
-    prod: {
-      commerce: 'commerce.adobe.com',
-      spark: 'express.adobe.com',
-      adminconsole: 'adminconsole.adobe.com',
-    },
-  };
-  const env = envs[envName];
-
-  const overrideItem = sessionStorage.getItem('helix-env-overrides');
-  if (overrideItem) {
-    const overrides = JSON.parse(overrideItem);
-    const keys = Object.keys(overrides);
-    env.overrides = keys;
-
-    for (const a of keys) {
-      env[a] = overrides[a];
-    }
-  }
-
-  if (env) {
-    env.name = envName;
-  }
-  return env;
 }
