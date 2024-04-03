@@ -1,7 +1,12 @@
 import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
 
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+
+export function getDestination() {
+  return BlockMediator.get('primaryCtaUrl')
+      || document.querySelector('a.button.xlarge.same-as-floating-button-CTA, a.primaryCTA')?.href;
+}
 
 // TODO see if we even want to preload the product. Currently we're not in the old project
 // eslint-disable-next-line no-unused-vars
@@ -28,8 +33,18 @@ function getSegmentsFromAlloyResponse(response) {
   return ids;
 }
 
+export function getProfile() {
+  const { feds, adobeProfile, fedsConfig } = window;
+  if (fedsConfig?.universalNav) {
+    return feds?.services?.universalnav?.interface?.adobeProfile?.getUserProfile()
+        || adobeProfile?.getUserProfile();
+  }
+  return feds?.services?.profile?.interface?.adobeProfile?.getUserProfile()
+      || adobeProfile?.getUserProfile();
+}
+
 async function isSignedIn() {
-  if (window.adobeProfile?.getUserProfile()) return true;
+  if (getProfile()) return true;
   if (window.feds.events?.profile_data) return false; // data ready -> not signed in
   let resolve;
   const resolved = new Promise((r) => {
@@ -39,23 +54,28 @@ async function isSignedIn() {
     resolve();
   }, { once: true });
   // if not ready, abort
-  await Promise.race([resolved, new Promise((r) => { setTimeout(r, 5000); })]);
-  if (window.adobeProfile?.getUserProfile() === null) {
+  // eslint-disable-next-line no-promise-executor-return
+  await Promise.race([resolved, new Promise((r) => setTimeout(r, 5000))]);
+  if (getProfile() === null) {
     // retry after 1s
-    await new Promise((r) => { setTimeout(r, 1000); });
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((r) => setTimeout(r, 1000));
   }
-  return window.adobeProfile?.getUserProfile();
+  return getProfile();
 }
 
 // product entry prompt
 async function canPEP() {
+  // TODO test this whole method
   if (document.body.dataset.device !== 'desktop') return false;
   const pepSegment = getMetadata('pep-segment');
   if (!pepSegment) return false;
-  const { fetchPlaceholders } = await import(`${getLibs()}/features/placeholders.js`);
-  const placeholders = await fetchPlaceholders();
-  // TODO check this is working properly with placeholders task
-  if (!placeholders.cancel || !placeholders['pep-header'] || !placeholders['pep-cancel']) return false;
+  if (!getDestination()) return false;
+
+  const { replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`);
+  const [pepHeader, pepCancel] = await replaceKeyArray(['pep-header', 'pep-cancel'], getConfig());
+
+  if (!pepHeader || !pepCancel) return false;
   const segments = getSegmentsFromAlloyResponse(await window.alloyLoader);
   if (!pepSegment.replace(/\s/g, '').split(',').some((pepSeg) => segments.includes(pepSeg))) return false;
   return !!(await isSignedIn());
@@ -87,19 +107,4 @@ export default async function loadDelayed(DELAY = 15000) {
       resolve();
     }, window.delay_preload_product ? DELAY * 2 : DELAY);
   });
-}
-
-export function getDestination() {
-  return BlockMediator.get('primaryCtaUrl')
-    || document.querySelector('a.button.xlarge.same-as-floating-button-CTA, a.primaryCTA')?.href;
-}
-
-export function getProfile() {
-  const { feds, adobeProfile, fedsConfig } = window;
-  if (fedsConfig?.universalNav) {
-    return feds?.services?.universalnav?.interface?.adobeProfile?.getUserProfile()
-    || adobeProfile?.getUserProfile();
-  }
-  return feds?.services?.profile?.interface?.adobeProfile?.getUserProfile()
-    || adobeProfile?.getUserProfile();
 }

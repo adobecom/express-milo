@@ -319,8 +319,8 @@ async function buildSearchDropdown(block) {
 
     suggestionsTitle.textContent = await replaceKey('search-suggestions-title', config) || '';
     suggestionsContainer.append(suggestionsTitle, suggestionsList);
-
-    const freePlanTags = await buildFreePlanWidget('branded');
+    config.typeKey = 'branded';
+    const freePlanTags = await buildFreePlanWidget(config);
 
     freePlanContainer.append(freePlanTags);
     dropdownContainer.append(trendsContainer, suggestionsContainer, freePlanContainer);

@@ -1,3 +1,4 @@
+import { autoUpdateContent } from './content-replace.js';
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -24,7 +25,6 @@ export const [setLibs, getLibs] = (() => {
         if (branch === 'local') return 'http://localhost:6456/libs';
         return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
       })();
-      window.express.miloLibs = libs;
       return libs;
     }, () => libs,
   ];
@@ -43,6 +43,7 @@ export function toClassName(name) {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+
 export function readBlockConfig(block) {
   const config = {};
   block.querySelectorAll(':scope>div').forEach(($row) => {
@@ -74,10 +75,14 @@ export function readBlockConfig(block) {
   return config;
 }
 
-export async function removeIrrelevantSections(area) {
+export function removeIrrelevantSections(area) {
   if (!area) return;
-  const miloLibs = getLibs();
-  const { getMetadata } = await import(`${miloLibs}/utils/utils.js`);
+  const getMetadata = (name, doc = document) => {
+    const attr = name && name.includes(':') ? 'property' : 'name';
+    const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
+    return meta && meta.content;
+  };
+
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -102,7 +107,7 @@ export async function removeIrrelevantSections(area) {
   });
 }
 
-async function overrideMiloColumns(area) {
+function overrideMiloColumns(area) {
   if (!area) return;
   area.querySelectorAll('main > div').forEach((section) => {
     const columnBlock = section.querySelectorAll('div.columns');
@@ -212,6 +217,7 @@ export function listenMiloEvents() {
 }
 
 export function decorateArea(area = document) {
+  autoUpdateContent(area, getLibs());
   removeIrrelevantSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
