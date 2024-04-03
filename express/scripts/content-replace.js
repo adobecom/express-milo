@@ -1,4 +1,6 @@
-export const REG = /\{\{(.*?)\}\}/g;
+export const ORIGINAL_REG = /\{\{(.*?)\}\}/g;
+export const SQUARE_REG = /\[\[(.*?)\]\]/g;
+let REG = ORIGINAL_REG;
 
 const preserveFormatKeys = [
   'event-description',
@@ -96,6 +98,30 @@ function updateTextNode(child, matchCallback) {
   if (replacedText !== originalText) child.nodeValue = replacedText;
 }
 
+function swapTokenBrackets(parent) {
+  const url = new URLSearchParams(window.location.href);
+
+  const getNewBrackets = (_match) => _match.replace('{{', '[[').replace('}}', ']]');
+
+  if (url.has('use_square_brackets')) {
+    const allElements = parent.querySelectorAll('*');
+    allElements.forEach((element) => {
+      if (element.childNodes.length) {
+        element.childNodes.forEach((n) => {
+          if (n.tagName === 'IMG' && n.nodeType === 1) {
+            updateImgTag(n, getNewBrackets, element);
+          }
+
+          if (n.nodeType === 3) {
+            updateTextNode(n, getNewBrackets);
+          }
+        });
+      }
+    });
+    REG = SQUARE_REG;
+  }
+}
+
 // data -> dom gills
 export function autoUpdateContent(parent) {
   if (getMetadata('sheet-powered') !== 'Y') {
@@ -115,6 +141,8 @@ export function autoUpdateContent(parent) {
   };
 
   const allElements = parent.querySelectorAll('*');
+
+  swapTokenBrackets(parent);
 
   allElements.forEach((element) => {
     if (element.childNodes.length) {
