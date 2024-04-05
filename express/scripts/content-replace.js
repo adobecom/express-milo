@@ -98,7 +98,7 @@ function updateTextNode(child, matchCallback) {
   if (replacedText !== originalText) child.nodeValue = replacedText;
 }
 
-function swapTokenBrackets(parent) {
+export function swapTokenBrackets(parent) {
   const url = new URLSearchParams(window.location.href);
 
   const getNewBrackets = (_match) => _match.replace('{{', '[[').replace('}}', ']]');

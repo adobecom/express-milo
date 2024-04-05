@@ -1,4 +1,4 @@
-import { autoUpdateContent } from './content-replace.js';
+import { autoUpdateContent, swapTokenBrackets } from './content-replace.js';
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -222,6 +222,7 @@ export function decorateArea(area = document) {
     const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
     return (meta && meta.content) || '';
   }
+  swapTokenBrackets(area);
   if (getMetadata('sheet-powered') === 'Y') {
     autoUpdateContent(area, getLibs());
   }
