@@ -7,12 +7,10 @@ import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadat
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const imports = await
-Promise.all([import(`${getLibs()}/features/placeholders.js`),
-  await import(`${getLibs()}/utils/utils.js`),
-  await import(`${getLibs()}/utils/samplerum.js`)]);
+  Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  await import(`${getLibs()}/utils/utils.js`)]);
 const { replaceKey } = imports[0];
 const { createTag, getConfig, getMetadata } = imports[1];
-const { sampleRUM } = imports[2];
 
 function handlelize(str) {
   return str.normalize('NFD')
@@ -154,6 +152,7 @@ function initSearchFunction(block) {
   };
 
   const onSearchSubmit = async () => {
+    const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`);
     searchBar.disabled = true;
     sampleRUM('search', {
       source: block.dataset.blockName,
