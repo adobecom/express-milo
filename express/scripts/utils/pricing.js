@@ -1,4 +1,4 @@
-import { getHelixEnv, getLibs } from '../utils.js';
+import {  getLibs } from '../utils.js';
 import { getCountry } from './location-utils.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
@@ -138,7 +138,7 @@ export function buildUrl(optionUrl, country, language, offerId = '') {
     }
   }
 
-  const env = getHelixEnv();
+  const env = getConfig().env;
   if (env && env.commerce && planUrl.hostname.includes('commerce')) planUrl.hostname = env.commerce;
   if (env && env.spark && rUrl) {
     const url = new URL(rUrl);
