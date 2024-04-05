@@ -76,6 +76,7 @@ export function readBlockConfig(block) {
 
 export function removeIrrelevantSections(area) {
   if (!area) return;
+
   const getMetadata = (name, doc = document) => {
     const attr = name && name.includes(':') ? 'property' : 'name';
     const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
@@ -89,7 +90,7 @@ export function removeIrrelevantSections(area) {
 
       // section meant for different device
       let sectionRemove = !!(sectionMeta.audience
-          && sectionMeta.audience.toLowerCase() !== document.body.dataset?.device);
+        && sectionMeta.audience.toLowerCase() !== document.body.dataset?.device);
 
       // section visibility steered over metadata
       if (!sectionRemove && sectionMeta.showwith !== undefined) {
@@ -97,7 +98,7 @@ export function removeIrrelevantSections(area) {
         if (!['www.adobe.com'].includes(window.location.hostname)) {
           const urlParams = new URLSearchParams(window.location.search);
           showWithSearchParam = urlParams.get(`${sectionMeta.showwith.toLowerCase()}`)
-              || urlParams.get(`${sectionMeta.showwith}`);
+            || urlParams.get(`${sectionMeta.showwith}`);
         }
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(sectionMeta.showwith.toLowerCase()) !== 'on';
       }
@@ -216,7 +217,15 @@ export function listenMiloEvents() {
 }
 
 export function decorateArea(area = document) {
-  autoUpdateContent(area, getLibs());
+  function getMetadata(name) {
+    const attr = name && name.includes(':') ? 'property' : 'name';
+    const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
+    return (meta && meta.content) || '';
+  }
+  if (getMetadata('sheet-powered') === 'Y') {
+    autoUpdateContent(area, getLibs());
+  }
+
   removeIrrelevantSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
