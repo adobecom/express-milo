@@ -288,7 +288,7 @@ async function transpileMarquee(area) {
               btnContainers.push(a.parentElement);
             }
 
-            if (isVideoLink(a.href)) {
+            if (isVideoLink(a.href) && !a.querySelector('span.icon.icon-play')) {
               const playIcon = createTag('span', { class: 'icon icon-play' });
               a.prepend(playIcon);
             }
