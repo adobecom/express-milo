@@ -337,7 +337,7 @@ function populateTemplates(block, templates, props) {
         if (videoLink.includes('/media_')) {
           videoLink = `./media_${videoLink.split('/media_')[1]}`;
         }
-        tmplt.querySelectorAll(':scope br').forEach(($br) => $br.remove());
+        tmplt.querySelectorAll(':scope br').forEach((br) => br.remove());
         const picture = tmplt.querySelector('picture');
         if (picture) {
           const img = tmplt.querySelector('img');
@@ -694,11 +694,11 @@ function resetTaskDropdowns(section) {
   });
 }
 
-function closeTaskDropdown($toolBar) {
-  const section = $toolBar.closest('.section.template-list-fullwidth-apipowered-container');
+function closeTaskDropdown(toolBar) {
+  const section = toolBar.closest('.section.template-list-fullwidth-apipowered-container');
   const searchBarWrappers = section.querySelectorAll('.template-list-search-bar-wrapper');
-  searchBarWrappers.forEach(($wrapper) => {
-    const taskDropdown = $wrapper.querySelector('.task-dropdown');
+  searchBarWrappers.forEach((wrapper) => {
+    const taskDropdown = wrapper.querySelector('.task-dropdown');
     const taskDropdownList = taskDropdown.querySelector('.task-dropdown-list');
     taskDropdown.classList.remove('active');
     taskDropdownList.classList.remove('active');
@@ -1524,8 +1524,8 @@ export async function decorateTemplateList(block, props) {
             wrapper.classList.toggle('expanded');
             parent.classList.toggle('expanded');
             Array.from(toggleButtons)
-              .forEach(($button) => {
-                $button.classList.toggle('expanded');
+              .forEach((button) => {
+                button.classList.toggle('expanded');
               });
           }
         }, props.autoCollapseDelay);
@@ -1791,10 +1791,10 @@ async function decorateLoadMoreButton(block, props) {
   return loadMoreDiv;
 }
 
-async function decorateTailButton($block, props) {
-  const $carouselPlatform = $block.querySelector('.carousel-platform');
+async function decorateTailButton(block, props) {
+  const carouselPlatform = block.querySelector('.carousel-platform');
 
-  if ($block.classList.contains('spreadsheet-powered')) {
+  if (block.classList.contains('spreadsheet-powered')) {
     if (await placeholderMod.replaceKey('relevant-rows-view-all', getConfig()) && (props.viewAllLink || await placeholderMod.replaceKey('relevant-rows-view-all-link', getConfig()))) {
       props.tailButton = createTag('a', { class: 'button accent tail-cta' });
       props.tailButton.innerText = await placeholderMod.replaceKey('relevant-rows-view-all', getConfig());
@@ -1802,72 +1802,72 @@ async function decorateTailButton($block, props) {
     }
   }
 
-  if ($carouselPlatform && props.tailButton) {
+  if (carouselPlatform && props.tailButton) {
     props.tailButton.classList.add('tail-cta');
-    $carouselPlatform.append(props.tailButton);
+    carouselPlatform.append(props.tailButton);
   }
 }
 
-function cacheCreatedTemplate($block, props) {
-  const lastRow = $block.children[$block.children.length - 1];
+function cacheCreatedTemplate(block, props) {
+  const lastRow = block.children[block.children.length - 1];
   if (lastRow && lastRow.querySelector(':scope > div:first-of-type > img[src*=".svg"], :scope > div:first-of-type > svg')) {
     props.templates.push(lastRow.cloneNode(true));
     lastRow.remove();
   }
 }
 
-function addBackgroundAnimation($block, animationUrl) {
-  const $parent = $block.closest('.template-list-horizontal-apipowered-holiday-container');
+function addBackgroundAnimation(block, animationUrl) {
+  const parent = block.closest('.template-list-horizontal-apipowered-holiday-container');
 
-  if ($parent) {
-    $parent.classList.add('with-animation');
-    const $videoBackground = createTag('video', { class: 'animation-background' });
-    $videoBackground.append(createTag('source', { src: animationUrl, type: 'video/mp4' }));
-    $videoBackground.setAttribute('autoplay', '');
-    $videoBackground.setAttribute('muted', '');
-    $videoBackground.setAttribute('loop', '');
-    $videoBackground.setAttribute('playsinline', '');
-    $parent.prepend($videoBackground);
-    $videoBackground.muted = true;
+  if (parent) {
+    parent.classList.add('with-animation');
+    const videoBackground = createTag('video', { class: 'animation-background' });
+    videoBackground.append(createTag('source', { src: animationUrl, type: 'video/mp4' }));
+    videoBackground.setAttribute('autoplay', '');
+    videoBackground.setAttribute('muted', '');
+    videoBackground.setAttribute('loop', '');
+    videoBackground.setAttribute('playsinline', '');
+    parent.prepend(videoBackground);
+    videoBackground.muted = true;
   }
 }
 
-async function replaceRRTemplateList($block, props) {
+async function replaceRRTemplateList(block, props) {
   const relevantRowsData = await fetchRelevantRows(window.location.pathname);
   props.limit = parseInt(await placeholderMod.replaceKey('relevant-rows-templates-limit', getConfig()), 10) || 10;
 
   if (relevantRowsData) {
-    $block.closest('.section').dataset.audience = 'mobile';
+    block.closest('.section').dataset.audience = 'mobile';
     props.headingTitle = relevantRowsData.header || null;
     props.headingSlug = relevantRowsData.shortTitle || null;
     props.viewAllLink = relevantRowsData.viewAllLink || null;
 
     if (relevantRowsData.manualTemplates === 'Y') {
-      const $sectionFromFragment = await fetchBlockFragDecorated(`/express/fragments/relevant-rows/${relevantRowsData.templateFragment}`, 'template-list');
-      const $newBlock = $sectionFromFragment.querySelector('.template-list');
+      const sectionFromFragment = await fetchBlockFragDecorated(`/express/fragments/relevant-rows/${relevantRowsData.templateFragment}`, 'template-list');
+      const newBlock = sectionFromFragment.querySelector('.template-list');
 
-      if ($newBlock) {
-        const $section = $block.closest('.section');
-        const $sectionHeading = $section.querySelector('div.default-content-wrapper > h2');
-        let $sectionSlug = null;
+      if (newBlock) {
+        const section = block.closest('.section');
+        const sectionHeading = section.querySelector('div.default-content-wrapper > h2');
+        let sectionSlug = null;
 
-        if ($sectionHeading.textContent.trim().indexOf('{{heading_placeholder}}') >= 0) {
-          if ($block.classList.contains('spreadsheet-powered') && props.headingTitle) {
-            $sectionHeading.textContent = props.headingTitle || '';
+        if (sectionHeading.textContent.trim().indexOf('{{heading_placeholder}}') >= 0) {
+          if (block.classList.contains('spreadsheet-powered') && props.headingTitle) {
+            sectionHeading.textContent = props.headingTitle || '';
 
             if (props.headingSlug) {
-              $sectionSlug = createTag('p');
-              $sectionSlug.textContent = props.headingSlug;
+              sectionSlug = createTag('p');
+              sectionSlug.textContent = props.headingSlug;
             }
           }
         }
-        $block.classList.remove('apipowered');
-        $block.innerHTML = $newBlock.innerHTML;
-        await fixIcons($block);
+        block.classList.remove('apipowered');
+        block.innerHTML = newBlock.innerHTML;
+        await fixIcons(block);
       }
     }
 
-    $block.innerHTML = $block.innerHTML.replaceAll('default-title', relevantRowsData.shortTitle || '')
+    block.innerHTML = block.innerHTML.replaceAll('default-title', relevantRowsData.shortTitle || '')
       .replaceAll('default-tasks', relevantRowsData.templateTasks || '')
       .replaceAll('default-topics', relevantRowsData.templateTopics || '')
       .replaceAll('default-locale', relevantRowsData.templateLocale || 'en')
@@ -1877,12 +1877,12 @@ async function replaceRRTemplateList($block, props) {
       .replaceAll('default-format', relevantRowsData.placeholderFormat || '');
 
     if (relevantRowsData.templateTasks === '') {
-      $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', await placeholderMod.replaceKey('start-from-scratch', getConfig()) || '');
+      block.innerHTML = block.innerHTML.replaceAll('default-create-link-text', await placeholderMod.replaceKey('start-from-scratch', getConfig()) || '');
     } else {
-      $block.innerHTML = $block.innerHTML.replaceAll('default-create-link-text', relevantRowsData.createText || '');
+      block.innerHTML = block.innerHTML.replaceAll('default-create-link-text', relevantRowsData.createText || '');
     }
   } else {
-    $block.remove();
+    block.remove();
   }
 }
 
@@ -1925,42 +1925,42 @@ function constructProps() {
   };
 }
 
-export default async function decorate($block) {
-  addTempWrapperDeprecated($block, 'template-list');
+export default async function decorate(block) {
+  addTempWrapperDeprecated(block, 'template-list');
 
   const props = constructProps();
-  if ($block.classList.contains('spreadsheet-powered')) {
-    await replaceRRTemplateList($block, props);
+  if (block.classList.contains('spreadsheet-powered')) {
+    await replaceRRTemplateList(block, props);
   }
 
-  if ($block.classList.contains('apipowered') && !$block.classList.contains('holiday')) {
-    cacheCreatedTemplate($block, props);
+  if (block.classList.contains('apipowered') && !block.classList.contains('holiday')) {
+    cacheCreatedTemplate(block, props);
   }
 
-  await decorateBreadcrumbs($block);
+  await decorateBreadcrumbs(block);
 
-  await decorateTemplateList($block, props);
+  await decorateTemplateList(block, props);
 
-  if ($block.classList.contains('horizontal')) {
-    const requireInfiniteScroll = !$block.classList.contains('mini') && !$block.classList.contains('collaboration');
-    await buildCarousel(':scope > .template', $block, requireInfiniteScroll);
+  if (block.classList.contains('horizontal')) {
+    const requireInfiniteScroll = !block.classList.contains('mini') && !block.classList.contains('collaboration');
+    await buildCarousel(':scope > .template', block, requireInfiniteScroll);
   } else {
-    addAnimationToggle($block);
+    addAnimationToggle(block);
   }
 
-  if ($block.classList.contains('apipowered') && !$block.classList.contains('holiday') && !$block.classList.contains('mini')) {
-    const $loadMore = await decorateLoadMoreButton($block, props);
+  if (block.classList.contains('apipowered') && !block.classList.contains('holiday') && !block.classList.contains('mini')) {
+    const loadMore = await decorateLoadMoreButton(block, props);
 
-    if ($loadMore) {
-      updateLoadMoreButton($block, $loadMore, props);
+    if (loadMore) {
+      updateLoadMoreButton(block, loadMore, props);
     }
   }
 
-  if ($block.classList.contains('mini') || $block.classList.contains('apipowered')) {
-    await decorateTailButton($block, props);
+  if (block.classList.contains('mini') || block.classList.contains('apipowered')) {
+    await decorateTailButton(block, props);
   }
 
-  if ($block.classList.contains('holiday') && props.backgroundAnimation) {
-    addBackgroundAnimation($block, props.backgroundAnimation);
+  if (block.classList.contains('holiday') && props.backgroundAnimation) {
+    addBackgroundAnimation(block, props.backgroundAnimation);
   }
 }
