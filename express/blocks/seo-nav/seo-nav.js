@@ -7,7 +7,7 @@ function decorateCarousel(links, container) {
     link.classList.add('small', 'secondary', 'fill');
     link.classList.remove('accent');
   });
-  buildCarousel('p.button-container', container);
+  buildCarousel('p', container);
 }
 
 export function updatePillsByCKG(block, carouselDiv) {
@@ -19,7 +19,7 @@ export function updatePillsByCKG(block, carouselDiv) {
           return;
         }
 
-        const newLinks = [...block.querySelectorAll('p.button-container')];
+        const newLinks = [...block.querySelectorAll('p')];
         if (!newLinks.length) {
           carouselDiv.style.display = 'none';
         }
