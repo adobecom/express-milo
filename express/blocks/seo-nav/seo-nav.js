@@ -1,5 +1,5 @@
 import buildCarousel from '../../scripts/widgets/carousel.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 function decorateCarousel(links, container) {
   links.forEach((p) => {
@@ -33,7 +33,7 @@ export function updatePillsByCKG(block, carouselDiv) {
 
 export default function decorate(block) {
   addTempWrapperDeprecated(block, 'seo-nav');
-
+  decorateButtonsDeprecated(block)
   const links = [...block.querySelectorAll('p.button-container')];
   const seoCopy = block.querySelectorAll('div')[block.querySelectorAll('div').length - 1];
   const carouselDiv = block.querySelector('div:nth-of-type(2) > div');
