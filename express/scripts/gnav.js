@@ -1,6 +1,6 @@
-import { getLibs, getHelixEnv } from './utils.js';
+import { getLibs } from './utils.js';
 
-const { getConfig, getMetadata, loadScript, getEnv, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+const { getConfig, getMetadata, loadScript, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
 const isHomepage = window.location.pathname.endsWith('/express/');
 function getCookie(cname) {
@@ -172,7 +172,7 @@ async function loadFEDS() {
         const sparkLang = config.locale.ietf;
         const sparkPrefix = sparkLang === 'en-US' ? '' : `/${sparkLang}`;
         let sparkLoginUrl = `https://express.adobe.com${sparkPrefix}/sp/`;
-        const env = getEnv();
+        const { env } = getConfig();
         if (isHomepage) {
           sparkLoginUrl = 'https://new.express.adobe.com/?showCsatOnExportOnce=True&promoid=GHMVYBFM&mv=other';
         } else if (env && env.express) {
@@ -205,19 +205,6 @@ async function loadFEDS() {
         $aNav.href = $aHero.href;
       }
     }
-
-    /* switch all links if lower env */
-    const env = getHelixEnv();
-    document.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach(($a) => {
-      const hrefURL = new URL($a.href);
-      hrefURL.host = env.spark;
-      $a.setAttribute('href', hrefURL.toString());
-    });
-    document.querySelectorAll('a[href^="https://express.adobe.com/"]').forEach(($a) => {
-      const hrefURL = new URL($a.href);
-      hrefURL.host = env.spark;
-      $a.setAttribute('href', hrefURL.toString());
-    });
 
     const geocheck = new URLSearchParams(window.location.search).get('geocheck');
     if (geocheck === 'on' || geocheck === 'force') {
