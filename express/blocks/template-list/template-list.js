@@ -10,7 +10,7 @@ import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scr
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 import { fixIcons, getIconElement } from '../../scripts/utils/icons.js';
-import { addTempWrapperDeprecated, fetchBlockFragDecorated } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated, fetchBlockFragDecorated } from '../../scripts/utils/decorate.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
 
@@ -1937,6 +1937,8 @@ export default async function decorate(block) {
         [],
       ),
   );
+
+  decorateButtonsDeprecated(block);
 
   const props = constructProps();
   if (block.classList.contains('spreadsheet-powered')) {
