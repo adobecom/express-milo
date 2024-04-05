@@ -236,6 +236,14 @@ async function transpileMarquee(area) {
     return firstRow.children.length > 1 && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
   }
 
+  const isVideoLink = (url) => {
+    if (!url) return null;
+    return url.includes('youtube.com/watch')
+      || url.includes('youtu.be/')
+      || url.includes('vimeo')
+      || /.*\/media_.*(mp4|webm|m3u8)$/.test(new URL(url).pathname);
+  }
+
   const transpile = (block) => {
     const assetArea = createTag('div');
 
@@ -278,6 +286,11 @@ async function transpileMarquee(area) {
           aTags.forEach((a) => {
             if (!btnContainers.includes(a.parentElement)) {
               btnContainers.push(a.parentElement);
+            }
+
+            if (isVideoLink(a.href)) {
+              const playIcon = createTag('span', { class: 'icon icon-play' });
+              a.prepend(playIcon);
             }
           })
 
