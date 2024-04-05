@@ -45,7 +45,7 @@ async function handlePrice(pricingArea, placeholderArr, specialPromo, legacyVers
   const priceEl = pricingArea.querySelector('[title="[[pricing]]"]');
   if (!priceEl) return null;
   const priceParent = priceEl?.parentNode;
-
+  const config =  getConfig()
   const price = createTag('span', { class: 'pricing-price' });
   const basePrice = createTag('span', { class: 'pricing-base-price' });
   const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
@@ -73,11 +73,11 @@ async function handlePrice(pricingArea, placeholderArr, specialPromo, legacyVers
       }
     });
   } else {
-    const priceSuffixContent = placeholderArr.map(async (phText) => {
+    const priceSuffixContent = await Promise.all(placeholderArr.map((phText) => {
       const key = phText.replace('[[', '').replace(']]', '');
-      return (key.includes('vat') && !response.showVat) ? '' : await replaceKey(key, getConfig()) || '';
-    }).join(' ');
-    priceSuffix.textContent = priceSuffixContent;
+      return (key.includes('vat') && !response.showVat) ? '' : replaceKey(key,config) || '';
+    })) 
+    priceSuffix.textContent = priceSuffixContent.join(' ');
   }
   const isPremiumCard = response.ooAvailable || false;
   const savePercentElem = pricingArea.querySelector('.card-offer');
@@ -132,12 +132,13 @@ async function createPricingSection(pricingArea, ctaGroup, specialPromo, legacyV
   if (offer) {
     offer.classList.add('card-offer');
   }
+
   const pricingBtnContainer = pricingArea.querySelector('.button-container');
   if (pricingBtnContainer != null) {
     const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
     const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
+    console.log(placeholderArr);
     const priceRow = await handlePrice(
-
       pricingArea,
       placeholderArr,
       specialPromo,
