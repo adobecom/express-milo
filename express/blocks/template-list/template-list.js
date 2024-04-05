@@ -1928,6 +1928,16 @@ function constructProps() {
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'template-list');
 
+  block.classList.add(
+    ...[...block.classList]
+      .slice(0)
+      .map((v) => v.split('-'))
+      .reduce(
+        (result, subclass) => ([...result, ...subclass]),
+        [],
+      ),
+  );
+
   const props = constructProps();
   if (block.classList.contains('spreadsheet-powered')) {
     await replaceRRTemplateList(block, props);
