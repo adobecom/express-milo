@@ -1,4 +1,4 @@
-import {  getLibs } from '../utils.js';
+import { getLibs } from '../utils.js';
 import { getCountry } from './location-utils.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
@@ -138,7 +138,7 @@ export function buildUrl(optionUrl, country, language, offerId = '') {
     }
   }
 
-  const env = getConfig().env;
+  const { env } = getConfig();
   if (env && env.commerce && planUrl.hostname.includes('commerce')) planUrl.hostname = env.commerce;
   if (env && env.spark && rUrl) {
     const url = new URL(rUrl);
@@ -492,7 +492,7 @@ export async function fetchPlan(planUrl) {
 
 export async function formatDynamicCartLink(a, plan) {
   try {
-    const pattern = new RegExp(/.*commerce.*adobe\.com.*/gm);
+    const pattern = /.*commerce.*adobe\.com.*/gm;
     if (pattern.test(a.href)) {
       let response;
       if (!plan) {

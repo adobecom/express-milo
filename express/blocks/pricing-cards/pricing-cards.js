@@ -9,11 +9,11 @@ import {
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 
 const imports = await
-  Promise.all([import(`${getLibs()}/features/placeholders.js`),
+Promise.all([import(`${getLibs()}/features/placeholders.js`),
   await import(`${getLibs()}/utils/utils.js`)]);
 
-const { replaceKey, replaceKeyArray } = imports[0];
-const { createTag, getConfig, getMetadata } = imports[1];
+const { replaceKey } = imports[0];
+const { createTag, getConfig } = imports[1];
 
 const blockKeys = ['header', 'borderParams', 'explain', 'mPricingRow', 'mCtaGroup', 'yPricingRow', 'yCtaGroup', 'featureList', 'compare'];
 const plans = ['monthly', 'yearly']; // authored order should match with billing-radio
@@ -21,8 +21,11 @@ const BILLING_PLAN = 'billing-plan';
 const SAVE_PERCENTAGE = 'savePercentage';
 const SALES_NUMBERS = '[[business-sales-numbers]]';
 
-const fetchPlaceholders = () => {};
-
+export function yieldToMain() {
+  return new Promise((r) => {
+    setTimeout(r, 0);
+  });
+}
 function suppressOfferEyebrow(specialPromo, legacyVersion) {
   if (specialPromo.parentElement) {
     if (legacyVersion) {
@@ -37,7 +40,7 @@ function suppressOfferEyebrow(specialPromo, legacyVersion) {
   }
 }
 
-function handlePrice(placeholders, pricingArea, placeholderArr, specialPromo, legacyVersion) {
+async function handlePrice(pricingArea, placeholderArr, specialPromo, legacyVersion) {
   const priceRow = createTag('div', { class: 'pricing-row' });
   const priceEl = pricingArea.querySelector('[title="[[pricing]]"]');
   if (!priceEl) return null;
@@ -49,76 +52,80 @@ function handlePrice(placeholders, pricingArea, placeholderArr, specialPromo, le
 
   priceRow.append(basePrice, price, priceSuffix);
 
-  fetchPlanOnePlans(priceEl?.href).then((response) => {
-    let specialPromoPercentageEyeBrowTextReplaced = false;
-    let pricingCardPercentageEyeBrowTextReplaced = false;
-    const parentP = priceEl.parentElement;
-    price.innerHTML = response.formatted;
-    basePrice.innerHTML = response.formattedBP || '';
-    if (basePrice.innerHTML !== '') {
-      price.classList.add('price-active');
-    } else {
-      price.classList.remove('price-active');
-    }
-    if (parentP.children.length > 1) {
-      Array.from(parentP.childNodes).forEach((node) => {
-        if (node === priceEl) return;
-        if (node.nodeName === '#text') {
-          priceSuffix.append(node);
-        } else {
-          priceSuffix.before(node);
-        }
-      });
-    } else {
-      const priceSuffixContent = placeholderArr.map((phText) => {
-        const key = phText.replace('[[', '').replace(']]', '');
-        return (key.includes('vat') && !response.showVat) ? '' : replaceKey(key, getConfig()) || '';
-      }).join(' ');
-      priceSuffix.textContent = priceSuffixContent;
-    }
-    const isPremiumCard = response.ooAvailable || false;
-    const savePercentElem = pricingArea.querySelector('.card-offer');
-    if (savePercentElem && !pricingCardPercentageEyeBrowTextReplaced) {
-      const offerTextContent = savePercentElem.textContent;
-      if (shallSuppressOfferEyebrowText(response.savePer, offerTextContent, isPremiumCard,
-        false, response.offerId)) {
-        savePercentElem.remove();
+  const response = await fetchPlanOnePlans(priceEl?.href);
+  let specialPromoPercentageEyeBrowTextReplaced = false;
+  let pricingCardPercentageEyeBrowTextReplaced = false;
+  const parentP = priceEl.parentElement;
+  price.innerHTML = response.formatted;
+  basePrice.innerHTML = response.formattedBP || '';
+  if (basePrice.innerHTML !== '') {
+    price.classList.add('price-active');
+  } else {
+    price.classList.remove('price-active');
+  }
+  if (parentP.children.length > 1) {
+    Array.from(parentP.childNodes).forEach((node) => {
+      if (node === priceEl) return;
+      if (node.nodeName === '#text') {
+        priceSuffix.append(node);
       } else {
-        savePercentElem.innerHTML = savePercentElem.innerHTML.replace(`[[${SAVE_PERCENTAGE}]]`, response.savePer);
-        pricingCardPercentageEyeBrowTextReplaced = true;
+        priceSuffix.before(node);
       }
+    });
+  } else {
+    const priceSuffixContent = placeholderArr.map(async (phText) => {
+      const key = phText.replace('[[', '').replace(']]', '');
+      return (key.includes('vat') && !response.showVat) ? '' : await replaceKey(key, getConfig()) || '';
+    }).join(' ');
+    priceSuffix.textContent = priceSuffixContent;
+  }
+  const isPremiumCard = response.ooAvailable || false;
+  const savePercentElem = pricingArea.querySelector('.card-offer');
+  if (savePercentElem && !pricingCardPercentageEyeBrowTextReplaced) {
+    const offerTextContent = savePercentElem.textContent;
+    if (shallSuppressOfferEyebrowText(
+      response.savePer,
+      offerTextContent,
+      isPremiumCard,
+      false,
+      response.offerId,
+    )) {
+      savePercentElem.remove();
+    } else {
+      savePercentElem.innerHTML = savePercentElem.innerHTML.replace(`[[${SAVE_PERCENTAGE}]]`, response.savePer);
+      pricingCardPercentageEyeBrowTextReplaced = true;
     }
+  }
 
-    if (specialPromo && !specialPromoPercentageEyeBrowTextReplaced && specialPromo.textContent.includes(`[[${SAVE_PERCENTAGE}]]`)) {
-      const offerTextContent = specialPromo.textContent;
+  if (specialPromo && !specialPromoPercentageEyeBrowTextReplaced && specialPromo.textContent.includes(`[[${SAVE_PERCENTAGE}]]`)) {
+    const offerTextContent = specialPromo.textContent;
 
-      const shouldSuppress = shallSuppressOfferEyebrowText(
-        response.savePer,
-        offerTextContent,
-        isPremiumCard,
-        true,
-        response.offerId,
-      );
-      if (shouldSuppress) {
-        suppressOfferEyebrow(specialPromo, legacyVersion);
-      } else {
-        specialPromo.innerHTML = specialPromo.innerHTML.replace(`[[${SAVE_PERCENTAGE}]]`, response.savePer);
-        specialPromoPercentageEyeBrowTextReplaced = true;
-      }
+    const shouldSuppress = shallSuppressOfferEyebrowText(
+      response.savePer,
+      offerTextContent,
+      isPremiumCard,
+      true,
+      response.offerId,
+    );
+    if (shouldSuppress) {
+      suppressOfferEyebrow(specialPromo, legacyVersion);
+    } else {
+      specialPromo.innerHTML = specialPromo.innerHTML.replace(`[[${SAVE_PERCENTAGE}]]`, response.savePer);
+      specialPromoPercentageEyeBrowTextReplaced = true;
     }
-    if (!isPremiumCard && specialPromo.parentElement.classList.contains('special-promo')) {
-      specialPromo.parentElement.classList.remove('special-promo');
-      if (specialPromo.parentElement.firstChild.innerHTML !== '') {
-        specialPromo.parentElement.firstChild.remove();
-      }
+  }
+  if (!isPremiumCard && specialPromo?.parentElement.classList.contains('special-promo')) {
+    specialPromo.parentElement.classList.remove('special-promo');
+    if (specialPromo.parentElement.firstChild.innerHTML !== '') {
+      specialPromo.parentElement.firstChild.remove();
     }
-  });
+  }
 
   priceParent?.remove();
   return priceRow;
 }
 
-function createPricingSection(placeholders, pricingArea, ctaGroup, specialPromo, legacyVersion) {
+async function createPricingSection(pricingArea, ctaGroup, specialPromo, legacyVersion) {
   const pricingSection = createTag('div', { class: 'pricing-section' });
   pricingArea.classList.add('pricing-area');
   const offer = pricingArea.querySelector(':scope > p > em');
@@ -129,8 +136,13 @@ function createPricingSection(placeholders, pricingArea, ctaGroup, specialPromo,
   if (pricingBtnContainer != null) {
     const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
     const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
-    const priceRow = handlePrice(placeholders, pricingArea,
-      placeholderArr, specialPromo, legacyVersion);
+    const priceRow = await handlePrice(
+
+      pricingArea,
+      placeholderArr,
+      specialPromo,
+      legacyVersion,
+    );
     if (priceRow) {
       pricingArea.prepend(priceRow);
       pricingBtnContainer?.remove();
@@ -281,7 +293,7 @@ function decorateCompareSection(compare, el, card) {
 }
 // In legacy versions, the card element encapsulates all content
 // In new versions, the cardBorder element encapsulates all content instead
-function decorateCard({
+async function decorateCard({
   header,
   borderParams,
   explain,
@@ -291,7 +303,7 @@ function decorateCard({
   yCtaGroup,
   featureList,
   compare,
-}, el, placeholders, legacyVersion) {
+}, el, legacyVersion) {
   const card = createTag('div', { class: 'card' });
   const cardBorder = createTag('div', { class: 'card-border' });
 
@@ -300,10 +312,15 @@ function decorateCard({
     : decorateHeader(header, borderParams, card, cardBorder);
 
   decorateBasicTextSection(explain, 'card-explain', card);
-  const mPricingSection = createPricingSection(placeholders, mPricingRow, mCtaGroup,
-    specialPromo, legacyVersion);
+  const mPricingSection = await createPricingSection(
+
+    mPricingRow,
+    mCtaGroup,
+    specialPromo,
+    legacyVersion,
+  );
   mPricingSection.classList.add('monthly');
-  const yPricingSection = createPricingSection(placeholders, yPricingRow, yCtaGroup, null);
+  const yPricingSection = await createPricingSection(yPricingRow, yCtaGroup, null);
   yPricingSection.classList.add('yearly', 'hide');
   card.append(mPricingSection, yPricingSection);
   subscribeToBlockMediator(mPricingSection, yPricingSection);
@@ -340,10 +357,11 @@ export default async function init(el) {
   }, {}));
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
   const cardsContainer = createTag('div', { class: 'cards-container' });
-  const placeholders = await fetchPlaceholders();
   cards
-    .map((card) => decorateCard(card, el, placeholders, legacyVersion))
-    .forEach((card) => cardsContainer.append(card));
+    .forEach(async (card) => {
+      const c2 = await decorateCard(card, el, legacyVersion);
+      cardsContainer.append(c2);
+    });
 
   const phoneNumberTags = [...cardsContainer.querySelectorAll('a')].filter((a) => a.title.includes(SALES_NUMBERS));
   if (phoneNumberTags.length > 0) {
