@@ -219,7 +219,6 @@ async function lazyLoadSEOLinkList() {
   if (seoNav) {
     const topTemplatesContainer = seoNav.querySelector('p').parentElement;
     const topTemplates = getMetadata('top-templates');
-    console.log(topTemplates);
     if (topTemplates) {
       const topTemplatesTemplate = seoNav.querySelector('p').cloneNode(true);
       const topTemplatesData = topTemplates
