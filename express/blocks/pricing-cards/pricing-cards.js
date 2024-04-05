@@ -1,16 +1,19 @@
-import {   addTempWrapperDeprecated,
-} from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { getLibs } from '../../scripts/utils.js';
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 import {
   formatDynamicCartLink,
-
   shallSuppressOfferEyebrowText,
   fetchPlanOnePlans,
 } from '../../scripts/utils/pricing.js';
-import { fetchPlaceholders } from '../../scripts/utils/placeholders.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
+
+const imports = await
+  Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  await import(`${getLibs()}/utils/utils.js`)]);
+
+const { replaceKey, replaceKeyArray } = imports[0];
+const { createTag, getConfig, getMetadata } = imports[1];
 
 const blockKeys = ['header', 'borderParams', 'explain', 'mPricingRow', 'mCtaGroup', 'yPricingRow', 'yCtaGroup', 'featureList', 'compare'];
 const plans = ['monthly', 'yearly']; // authored order should match with billing-radio
@@ -18,12 +21,16 @@ const BILLING_PLAN = 'billing-plan';
 const SAVE_PERCENTAGE = 'savePercentage';
 const SALES_NUMBERS = '{{business-sales-numbers}}';
 
+function fetchPlaceholders() {
+
+}
+
 function suppressOfferEyebrow(specialPromo) {
   if (specialPromo.parentElement) {
-      specialPromo.className = 'hide';
-      specialPromo.parentElement.className = '';
-      specialPromo.parentElement.classList.add('card-border');
-      specialPromo.remove();
+    specialPromo.className = 'hide';
+    specialPromo.parentElement.className = '';
+    specialPromo.parentElement.classList.add('card-border');
+    specialPromo.remove();
   }
 }
 
@@ -36,7 +43,7 @@ function handlePrice(placeholders, pricingArea, placeholderArr, specialPromo) {
   const price = createTag('span', { class: 'pricing-price' });
   const basePrice = createTag('span', { class: 'pricing-base-price' });
   const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
-
+  const config = getConfig();
   priceRow.append(basePrice, price, priceSuffix);
 
   fetchPlanOnePlans(priceEl?.href).then((response) => {
@@ -62,7 +69,7 @@ function handlePrice(placeholders, pricingArea, placeholderArr, specialPromo) {
     } else {
       const priceSuffixContent = placeholderArr.map((phText) => {
         const key = phText.replace('{{', '').replace('}}', '');
-        return (key.includes('vat') && !response.showVat) ? '' : placeholders[key] || '';
+        return (key.includes('vat') && !response.showVat) ? '' : replaceKey(key, config) || '';
       }).join(' ');
       priceSuffix.textContent = priceSuffixContent;
     }
@@ -70,8 +77,13 @@ function handlePrice(placeholders, pricingArea, placeholderArr, specialPromo) {
     const savePercentElem = pricingArea.querySelector('.card-offer');
     if (savePercentElem && !pricingCardPercentageEyeBrowTextReplaced) {
       const offerTextContent = savePercentElem.textContent;
-      if (shallSuppressOfferEyebrowText(response.savePer, offerTextContent, isPremiumCard,
-        false, response.offerId)) {
+      if (shallSuppressOfferEyebrowText(
+        response.savePer,
+        offerTextContent,
+        isPremiumCard,
+        false,
+        response.offerId,
+      )) {
         savePercentElem.remove();
       } else {
         savePercentElem.innerHTML = savePercentElem.innerHTML.replace(`{{${SAVE_PERCENTAGE}}}`, response.savePer);
@@ -102,7 +114,7 @@ function handlePrice(placeholders, pricingArea, placeholderArr, specialPromo) {
   return priceRow;
 }
 
-function createPricingSection(placeholders, pricingArea, ctaGroup, specialPromo ) {
+function createPricingSection(placeholders, pricingArea, ctaGroup, specialPromo) {
   const pricingSection = createTag('div', { class: 'pricing-section' });
   pricingArea.classList.add('pricing-area');
   const offer = pricingArea.querySelector(':scope > p > em');
@@ -113,8 +125,12 @@ function createPricingSection(placeholders, pricingArea, ctaGroup, specialPromo 
   if (pricingBtnContainer != null) {
     const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
     const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
-    const priceRow = handlePrice(placeholders, pricingArea,
-      placeholderArr, specialPromo );
+    const priceRow = handlePrice(
+      placeholders,
+      pricingArea,
+      placeholderArr,
+      specialPromo,
+    );
     if (priceRow) {
       pricingArea.prepend(priceRow);
       pricingBtnContainer?.remove();
@@ -159,7 +175,7 @@ function readBraces(inputString, card) {
     return specialPromo;
   }
   return null;
-} 
+}
 
 function decorateHeader(header, borderParams, card, cardBorder) {
   const h2 = header.querySelector('h2');
@@ -245,11 +261,15 @@ function decorateCard({
   const card = createTag('div', { class: 'card' });
   const cardBorder = createTag('div', { class: 'card-border' });
 
-  const { specialPromo, cardWrapper } =  decorateHeader(header, borderParams, card, cardBorder);
+  const { specialPromo, cardWrapper } = decorateHeader(header, borderParams, card, cardBorder);
 
   decorateBasicTextSection(explain, 'card-explain', card);
-  const mPricingSection = createPricingSection(placeholders, mPricingRow, mCtaGroup,
-    specialPromo);
+  const mPricingSection = createPricingSection(
+    placeholders,
+    mPricingRow,
+    mCtaGroup,
+    specialPromo,
+  );
   mPricingSection.classList.add('monthly');
   const yPricingSection = createPricingSection(placeholders, yPricingRow, yCtaGroup, null);
   yPricingSection.classList.add('yearly', 'hide');
@@ -261,9 +281,8 @@ function decorateCard({
 }
 
 export default async function init(el) {
-  console.log('------------')
   addTempWrapperDeprecated(el, 'pricing-cards');
-  // For backwards compatability with old versions of the pricing card 
+  // For backwards compatability with old versions of the pricing card
   const currentKeys = [...blockKeys];
   const divs = currentKeys.map((_, index) => el.querySelectorAll(`:scope > div:nth-child(${index + 1}) > div`));
 
@@ -273,10 +292,7 @@ export default async function init(el) {
   }, {}));
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
   const cardsContainer = createTag('div', { class: 'cards-container' });
- 
-  console.log('------')
-  console.log(fetchPlaceholders)
-  const placeholders = await fetchPlaceholders();
+  const placeholders = fetchPlaceholders();
   cards
     .map((card) => decorateCard(card, el, placeholders))
     .forEach((card) => cardsContainer.append(card));
