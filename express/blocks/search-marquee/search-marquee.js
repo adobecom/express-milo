@@ -7,7 +7,7 @@ import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadat
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const imports = await
-  Promise.all([import(`${getLibs()}/features/placeholders.js`),
+Promise.all([import(`${getLibs()}/features/placeholders.js`),
   await import(`${getLibs()}/utils/utils.js`)]);
 const { replaceKey } = imports[0];
 const { createTag, getConfig, getMetadata } = imports[1];
