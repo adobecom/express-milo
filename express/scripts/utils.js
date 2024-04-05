@@ -221,11 +221,11 @@ async function transpileMarquee(area) {
   const handleSubCTAText = (oldContainer, newContainer) => {
     const elAfterBtn = oldContainer.nextElementSibling;
     if (!elAfterBtn || elAfterBtn?.tagName !== 'BLOCKQUOTE') return;
-  
+
     const subText = elAfterBtn.querySelector('p');
 
     if (subText) {
-      const subTextEl = createTag('span', { class: 'cta-sub-text' }, subText.innerHTML)
+      const subTextEl = createTag('span', { class: 'cta-sub-text' }, subText.innerHTML);
       newContainer.append(subTextEl);
     }
     elAfterBtn.remove();
@@ -234,7 +234,7 @@ async function transpileMarquee(area) {
   const needsTranspile = (block) => {
     const firstRow = block.querySelector(':scope > div:first-of-type');
     return firstRow.children.length > 1 && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
-  }
+  };
 
   const isVideoLink = (url) => {
     if (!url) return null;
@@ -242,7 +242,7 @@ async function transpileMarquee(area) {
       || url.includes('youtu.be/')
       || url.includes('vimeo')
       || /.*\/media_.*(mp4|webm|m3u8)$/.test(new URL(url).pathname);
-  }
+  };
 
   const transpile = (block) => {
     const assetArea = createTag('div');
@@ -270,13 +270,13 @@ async function transpileMarquee(area) {
             assetArea.innerHTML = valCol.innerHTML;
             if (block.classList.contains('dark')) valCol.innerHTML = '#000000';
             if (block.classList.contains('light')) valCol.innerHTML = '#ffffff00';
-          };
+          }
 
           if (i > 0) {
-            r.remove()
+            r.remove();
           }
         }
-        
+
         if (i === arr.length - 1) {
           const aTags = r.querySelectorAll('p > a');
           const btnContainers = [];
@@ -292,7 +292,7 @@ async function transpileMarquee(area) {
               const playIcon = createTag('span', { class: 'icon icon-play' });
               a.prepend(playIcon);
             }
-          })
+          });
 
           const isInlineButtons = btnContainers.length === 1;
 
@@ -307,39 +307,39 @@ async function transpileMarquee(area) {
 
               elsToAppend.push(buttonWrapper);
             }
-          })
+          });
 
-          elsToAppend.forEach((e, i) => {
+          elsToAppend.forEach((e, index) => {
             actionArea.append(e);
             const link = e.querySelector('a');
 
             if (!link) return;
-            if (i === 0) {
+            if (index === 0) {
               const strong = createTag('strong');
               e.prepend(strong);
               strong.append(link);
             }
-            if (i === 1) {
+            if (index === 1) {
               if (!isInlineButtons) {
                 const em = createTag('em');
                 e.prepend(em);
                 em.append(link);
               }
             }
-          })
+          });
 
           const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
           lastPInFirstDiv?.after(actionArea);
-          r.append(assetArea)
-        };
-      })
+          r.append(assetArea);
+        }
+      });
     }
-  }
+  };
 
   const marquees = area.querySelectorAll('.marquee');
   marquees.forEach((block) => {
     if (needsTranspile(block)) transpile(block);
-  })
+  });
 }
 
 export function decorateArea(area = document) {
