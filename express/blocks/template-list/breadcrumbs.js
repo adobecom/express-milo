@@ -11,6 +11,7 @@ function sanitize(str) {
 
 function translateTask(taskCategories, tasks) {
   return Object.entries(taskCategories)
+    // eslint-disable-next-line no-unused-vars
     .find(([_, t]) => t === tasks || t === tasks.replace(/-/g, ' '))
     ?.[0]?.toLowerCase() ?? tasks;
 }
