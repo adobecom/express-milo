@@ -1,20 +1,8 @@
+import { getLibs } from './utils.js';
+
+const { getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+
 export const REG = /\{\{(.*?)\}\}/g;
-
-const preserveFormatKeys = [
-  'event-description',
-];
-
-export function getMetadata(name) {
-  const attr = name && name.includes(':') ? 'property' : 'name';
-  const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
-  return (meta && meta.content) || '';
-}
-
-export function yieldToMain() {
-  return new Promise((r) => {
-    setTimeout(r, 0);
-  });
-}
 
 function handleRegisterButton(a) {
   const signIn = () => {
@@ -32,7 +20,7 @@ function handleRegisterButton(a) {
   });
 }
 
-function autoUpdateLinks(scope) {
+export function autoUpdateLinks(scope) {
   scope.querySelectorAll('a[href*="#"]').forEach((a) => {
     try {
       const url = new URL(a.href);
@@ -56,77 +44,4 @@ function autoUpdateLinks(scope) {
       window.lana?.log(`Error while attempting to replace link ${a.href}: ${e}`);
     }
   });
-}
-
-function updateImgTag(child, matchCallback, parentElement) {
-  const parentPic = child.closest('picture');
-  const originalAlt = child.alt;
-  const replacedSrc = originalAlt.replace(REG, (_match, p1) => matchCallback(_match, p1, child));
-
-  if (replacedSrc && parentPic && replacedSrc !== originalAlt) {
-    parentPic.querySelectorAll('source').forEach((el) => {
-      try {
-        el.srcset = el.srcset.replace(/.*\?/, `${replacedSrc}?`);
-      } catch (e) {
-        window.lana?.log(`failed to convert optimized picture source from ${el} with dynamic data: ${e}`);
-      }
-    });
-
-    parentPic.querySelectorAll('img').forEach((el) => {
-      const onImgLoad = () => {
-        el.removeEventListener('load', onImgLoad);
-      };
-
-      try {
-        el.src = el.src.replace(/.*\?/, `${replacedSrc}?`);
-      } catch (e) {
-        window.lana?.log(`failed to convert optimized img from ${el} with dynamic data: ${e}`);
-      }
-
-      el.addEventListener('load', onImgLoad);
-    });
-  } else if (originalAlt.match(REG)) {
-    parentElement.remove();
-  }
-}
-
-function updateTextNode(child, matchCallback) {
-  const originalText = child.nodeValue;
-  const replacedText = originalText.replace(REG, matchCallback);
-  if (replacedText !== originalText) child.nodeValue = replacedText;
-}
-
-// data -> dom gills
-export function autoUpdateContent(parent) {
-  if (!parent) {
-    window.lana?.log('page server block cannot find its parent element');
-    return;
-  }
-
-  const getContent = (_match, p1, n) => {
-    const content = getMetadata(p1) || '';
-    if (preserveFormatKeys.includes(p1)) {
-      n.parentNode?.classList.add('preserve-format');
-    }
-    return content;
-  };
-
-  const allElements = parent.querySelectorAll('*');
-
-  allElements.forEach((element) => {
-    if (element.childNodes.length) {
-      element.childNodes.forEach((n) => {
-        if (n.tagName === 'IMG' && n.nodeType === 1) {
-          updateImgTag(n, getContent, element);
-        }
-
-        if (n.nodeType === 3) {
-          updateTextNode(n, getContent);
-        }
-      });
-    }
-  });
-
-  // handle link replacement. To keep when switching to metadata based rendering
-  autoUpdateLinks(parent);
 }

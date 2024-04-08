@@ -1,4 +1,3 @@
-import { autoUpdateContent } from './content-replace.js';
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -10,7 +9,6 @@ import { autoUpdateContent } from './content-replace.js';
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -29,6 +27,12 @@ export const [setLibs, getLibs] = (() => {
     }, () => libs,
   ];
 })();
+
+function getMetadata(name) {
+  const attr = name && name.includes(':') ? 'property' : 'name';
+  const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
+  return (meta && meta.content) || '';
+}
 
 export function toClassName(name) {
   return name && typeof name === 'string'
@@ -76,12 +80,6 @@ export function readBlockConfig(block) {
 
 export function removeIrrelevantSections(area) {
   if (!area) return;
-
-  const getMetadata = (name, doc = document) => {
-    const attr = name && name.includes(':') ? 'property' : 'name';
-    const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
-    return meta && meta.content;
-  };
 
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
@@ -175,7 +173,7 @@ export function lazyLoadLottiePlayer($block = null) {
 
 async function loadAEMGnav() {
   const miloLibs = getLibs();
-  const { getMetadata, loadScript } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadScript } = await import(`${miloLibs}/utils/utils.js`);
   const header = document.querySelector('header');
 
   if (header) {
@@ -216,14 +214,75 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
+function replacePlaceholdersWithSheetContent(area) {
+  const REG = /\{\{(.*?)\}\}/g;
+  const updateImgTag = (child, matchCallback, parentElement) => {
+    const parentPic = child.closest('picture');
+    const originalAlt = child.alt;
+    const replacedSrc = originalAlt.replace(REG, (_match, p1) => matchCallback(_match, p1, child));
+
+    if (replacedSrc && parentPic && replacedSrc !== originalAlt) {
+      parentPic.querySelectorAll('source').forEach((el) => {
+        try {
+          el.srcset = el.srcset.replace(/.*\?/, `${replacedSrc}?`);
+        } catch (e) {
+          window.lana?.log(`failed to convert optimized picture source from ${el} with dynamic data: ${e}`);
+        }
+      });
+
+      parentPic.querySelectorAll('img').forEach((el) => {
+        const onImgLoad = () => {
+          el.removeEventListener('load', onImgLoad);
+        };
+
+        try {
+          el.src = el.src.replace(/.*\?/, `${replacedSrc}?`);
+        } catch (e) {
+          window.lana?.log(`failed to convert optimized img from ${el} with dynamic data: ${e}`);
+        }
+
+        el.addEventListener('load', onImgLoad);
+      });
+    } else if (originalAlt.match(REG)) {
+      parentElement.remove();
+    }
+  };
+  const updateTextNode = (child, matchCallback) => {
+    const originalText = child.nodeValue;
+    const replacedText = originalText.replace(REG, matchCallback);
+    if (replacedText !== originalText) child.nodeValue = replacedText;
+  };
+  const preserveFormatKeys = [
+    'event-description',
+  ];
+  const getContent = (_match, p1, n) => {
+    const content = getMetadata(p1) || '';
+    if (preserveFormatKeys.includes(p1)) {
+      n.parentNode?.classList.add('preserve-format');
+    }
+    return content;
+  };
+
+  const allElements = area.querySelectorAll('*');
+
+  allElements.forEach((element) => {
+    if (element.childNodes.length) {
+      element.childNodes.forEach((n) => {
+        if (n.tagName === 'IMG' && n.nodeType === 1) {
+          updateImgTag(n, getContent, element);
+        }
+
+        if (n.nodeType === 3) {
+          updateTextNode(n, getContent);
+        }
+      });
+    }
+  });
+}
+
 export function decorateArea(area = document) {
-  function getMetadata(name) {
-    const attr = name && name.includes(':') ? 'property' : 'name';
-    const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
-    return (meta && meta.content) || '';
-  }
   if (getMetadata('sheet-powered') === 'Y') {
-    autoUpdateContent(area, getLibs());
+    replacePlaceholdersWithSheetContent(area);
   }
 
   removeIrrelevantSections(area);
