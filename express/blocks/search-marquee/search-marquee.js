@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElement } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
@@ -240,9 +240,9 @@ async function decorateSearchFunctions(block) {
   });
 
   searchForm.append(searchBar);
-  const searchIcon = getIconElement('search');
+  const searchIcon = getIconElementDeprecated('search');
   searchIcon.loading = 'lazy';
-  const searchClearIcon = getIconElement('search-clear');
+  const searchClearIcon = getIconElementDeprecated('search-clear');
   searchClearIcon.loading = 'lazy';
   searchBarWrapper.append(searchIcon, searchClearIcon);
   searchBarWrapper.append(searchForm);
@@ -284,9 +284,9 @@ async function buildSearchDropdown(block) {
 
     if (fromScratchLink) {
       const linkDiv = fromScratchLink.parentElement.parentElement;
-      const templateFreeAccentIcon = getIconElement('template-free-accent');
+      const templateFreeAccentIcon = getIconElementDeprecated('template-free-accent');
       templateFreeAccentIcon.loading = 'lazy';
-      const arrowRightIcon = getIconElement('arrow-right');
+      const arrowRightIcon = getIconElementDeprecated('arrow-right');
       arrowRightIcon.loading = 'lazy';
       fromScratchLink.prepend(templateFreeAccentIcon);
       fromScratchLink.append(arrowRightIcon);
