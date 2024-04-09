@@ -1927,6 +1927,7 @@ function constructProps() {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'template-list');
+  await fixIcons(block);
 
   const section = block.closest('.section');
 
