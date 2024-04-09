@@ -1928,9 +1928,13 @@ function constructProps() {
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'template-list');
 
+  const section = block.closest('.section');
+
+  section.classList.add(`${[...block.classList].join('-')}-container`);
+
   block.classList.add(
     ...[...block.classList]
-      .slice(0)
+      .slice(1)
       .map((v) => v.split('-'))
       .reduce(
         (result, subclass) => ([...result, ...subclass]),
