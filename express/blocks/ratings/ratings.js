@@ -1,5 +1,5 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
-import { getIcon, getIconElement } from '../../scripts/utils/icons.js';
+import { getIconDeprecated, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
@@ -28,27 +28,27 @@ export default async function decorate(block) {
   const ratings = [
     {
       class: 'one-star',
-      img: getIconElement('emoji-angry-face'),
+      img: getIconElementDeprecated('emoji-angry-face'),
       feedbackRequired: true,
     },
     {
       class: 'two-stars',
-      img: getIconElement('emoji-thinking-face'),
+      img: getIconElementDeprecated('emoji-thinking-face'),
       feedbackRequired: true,
     },
     {
       class: 'three-stars',
-      img: getIconElement('emoji-upside-down-face'),
+      img: getIconElementDeprecated('emoji-upside-down-face'),
       feedbackRequired: true,
     },
     {
       class: 'four-stars',
-      img: getIconElement('emoji-smiling-face'),
+      img: getIconElementDeprecated('emoji-smiling-face'),
       feedbackRequired: false,
     },
     {
       class: 'five-stars',
-      img: getIconElement('emoji-star-struck'),
+      img: getIconElementDeprecated('emoji-star-struck'),
       feedbackRequired: false,
     },
   ];
@@ -336,9 +336,9 @@ export default async function decorate(block) {
 
   // Gets the current rating and returns star span element.
   function getCurrentRatingStars() {
-    const star = getIcon('star');
-    const starHalf = getIcon('star-half');
-    const starEmpty = getIcon('star-empty');
+    const star = getIconDeprecated('star');
+    const starHalf = getIconDeprecated('star-half');
+    const starEmpty = getIconDeprecated('star-empty');
     const stars = createTag('span', { class: 'rating-stars' });
     let rating = ratingAverage ?? 5;
     rating = Math.round(rating * 10) / 10; // round nearest decimal point
@@ -400,13 +400,13 @@ export default async function decorate(block) {
         <div>
           <span class="tooltip--text"></span>
           <div class="tooltip--image">
-            ${getIcon('emoji-star-struck')}
+            ${getIconDeprecated('emoji-star-struck')}
           <div>
         </div>
       </div>
     `,
     );
-    const star = getIcon('star');
+    const star = getIconDeprecated('star');
     form.insertAdjacentHTML(
       'beforeend',
       /* html */ `
