@@ -208,5 +208,6 @@ main .link-list.large p.button-container .button {
   main .section:has( .link-list.centered) > div {
     padding-left: 55px;
     padding-right: 55px;
+    max-width: 1200px;
   }
 }
