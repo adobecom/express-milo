@@ -10,7 +10,7 @@ import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scr
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 import { fixIcons, getIconElement } from '../../scripts/utils/icons.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated, fetchBlockFragDecorated } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated, fetchBlockFragDecorated, decorateSocialIcons } from '../../scripts/utils/decorate.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
 
@@ -1927,6 +1927,9 @@ function constructProps() {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'template-list');
+
+  decorateSocialIcons(block);
+
   await fixIcons(block);
 
   const section = block.closest('.section');

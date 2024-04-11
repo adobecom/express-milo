@@ -1,4 +1,5 @@
 import { getLibs } from '../utils.js';
+import { getIconElement } from './icons.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -108,4 +109,55 @@ export async function fetchBlockFragDecorated(url, blockName) {
     img.setAttribute('loading', 'lazy');
   }
   return section;
+}
+
+export function decorateSocialIcons($main) {
+  $main.querySelectorAll(':scope a').forEach(($a) => {
+    const urlObject = new URL($a.href);
+
+    if (urlObject.hash === '#embed-video') return;
+    if ($a.closest('.block')?.dataset.blockName === 'embed') return;
+
+    if ($a.href === $a.textContent.trim()) {
+      let icon = '';
+      if (urlObject.hostname === 'www.instagram.com') {
+        icon = 'instagram';
+      }
+      if (urlObject.hostname === 'www.twitter.com') {
+        icon = 'twitter';
+      }
+      if (urlObject.hostname.split('.')[1] === 'pinterest') {
+        icon = 'pinterest';
+      }
+      if (urlObject.hostname.split('.')[1] === 'facebook') {
+        icon = 'facebook';
+      }
+      if (urlObject.hostname === 'www.linkedin.com') {
+        icon = 'linkedin';
+      }
+      if (urlObject.hostname === 'www.youtube.com') {
+        icon = 'youtube';
+      }
+      if (urlObject.hostname === 'www.tiktok.com') {
+        icon = 'tiktok';
+      }
+      const $parent = $a.parentElement;
+      if (!icon && $parent.previousElementSibling && $parent.previousElementSibling.classList.contains('social-links')) {
+        icon = 'globe';
+      }
+
+      if (icon) {
+        $a.innerHTML = '';
+        const $icon = getIconElement(icon, 22);
+        $icon.classList.add('social.is-visible');
+        $a.appendChild($icon);
+        if ($parent.previousElementSibling && $parent.previousElementSibling.classList.contains('social-links')) {
+          $parent.previousElementSibling.appendChild($a);
+          $parent.remove();
+        } else {
+          $parent.classList.add('social-links');
+        }
+      }
+    }
+  });
 }
