@@ -1926,18 +1926,21 @@ function constructProps() {
 }
 
 export default async function decorate(block) {
-  addTempWrapperDeprecated(block, 'template-list');
+  const newBlock = block.cloneNode(true);
+  block.parentNode.insertBefore(newBlock, block);
+  block.remove();
+  addTempWrapperDeprecated(newBlock, 'template-list');
 
-  decorateSocialIcons(block);
+  decorateSocialIcons(newBlock);
 
-  await fixIcons(block);
+  await fixIcons(newBlock);
 
-  const section = block.closest('.section');
+  const section = newBlock.closest('.section');
 
-  section.classList.add(`${[...block.classList].join('-')}-container`);
+  section.classList.add(`${[...newBlock.classList].join('-')}-container`);
 
-  block.classList.add(
-    ...[...block.classList]
+  newBlock.classList.add(
+    ...[...newBlock.classList]
       .slice(1)
       .map((v) => v.split('-'))
       .reduce(
@@ -1946,41 +1949,41 @@ export default async function decorate(block) {
       ),
   );
 
-  decorateButtonsDeprecated(block);
+  decorateButtonsDeprecated(newBlock);
 
   const props = constructProps();
-  if (block.classList.contains('spreadsheet-powered')) {
-    await replaceRRTemplateList(block, props);
+  if (newBlock.classList.contains('spreadsheet-powered')) {
+    await replaceRRTemplateList(newBlock, props);
   }
 
-  if (block.classList.contains('apipowered') && !block.classList.contains('holiday')) {
-    cacheCreatedTemplate(block, props);
+  if (newBlock.classList.contains('apipowered') && !newBlock.classList.contains('holiday')) {
+    cacheCreatedTemplate(newBlock, props);
   }
 
-  await decorateBreadcrumbs(block);
+  await decorateBreadcrumbs(newBlock);
 
-  await decorateTemplateList(block, props);
+  await decorateTemplateList(newBlock, props);
 
-  if (block.classList.contains('horizontal')) {
-    const requireInfiniteScroll = !block.classList.contains('mini') && !block.classList.contains('collaboration');
-    await buildCarousel(':scope > .template', block, requireInfiniteScroll);
+  if (newBlock.classList.contains('horizontal')) {
+    const requireInfiniteScroll = !newBlock.classList.contains('mini') && !newBlock.classList.contains('collaboration');
+    await buildCarousel(':scope > .template', newBlock, requireInfiniteScroll);
   } else {
-    addAnimationToggle(block);
+    addAnimationToggle(newBlock);
   }
 
-  if (block.classList.contains('apipowered') && !block.classList.contains('holiday') && !block.classList.contains('mini')) {
-    const loadMore = await decorateLoadMoreButton(block, props);
+  if (newBlock.classList.contains('apipowered') && !newBlock.classList.contains('holiday') && !newBlock.classList.contains('mini')) {
+    const loadMore = await decorateLoadMoreButton(newBlock, props);
 
     if (loadMore) {
-      updateLoadMoreButton(block, loadMore, props);
+      updateLoadMoreButton(newBlock, loadMore, props);
     }
   }
 
-  if (block.classList.contains('mini') || block.classList.contains('apipowered')) {
-    await decorateTailButton(block, props);
+  if (newBlock.classList.contains('mini') || newBlock.classList.contains('apipowered')) {
+    await decorateTailButton(newBlock, props);
   }
 
-  if (block.classList.contains('holiday') && props.backgroundAnimation) {
-    addBackgroundAnimation(block, props.backgroundAnimation);
+  if (newBlock.classList.contains('holiday') && props.backgroundAnimation) {
+    addBackgroundAnimation(newBlock, props.backgroundAnimation);
   }
 }
