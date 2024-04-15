@@ -10,7 +10,8 @@ import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scr
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 import { fixIcons, getIconElement } from '../../scripts/utils/icons.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated, fetchBlockFragDecorated, decorateSocialIcons } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated, decorateSocialIcons } from '../../scripts/utils/decorate.js';
+import { fetchBlockFragDeprecated } from '../../scripts/utils/loadBlock.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
 
@@ -1843,7 +1844,7 @@ async function replaceRRTemplateList(block, props) {
     props.viewAllLink = relevantRowsData.viewAllLink || null;
 
     if (relevantRowsData.manualTemplates === 'Y') {
-      const sectionFromFragment = await fetchBlockFragDecorated(`/express/fragments/relevant-rows/${relevantRowsData.templateFragment}`, 'template-list');
+      const sectionFromFragment = await fetchBlockFragDeprecated(`/express/fragments/relevant-rows/${relevantRowsData.templateFragment}`, 'template-list');
       const newBlock = sectionFromFragment.querySelector('.template-list');
 
       if (newBlock) {
