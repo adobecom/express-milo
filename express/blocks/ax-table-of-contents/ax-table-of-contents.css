@@ -1,0 +1,25 @@
+
+main .ax-table-of-contents {
+    margin-top: 32px;
+}
+
+main .ax-table-of-contents .toc {
+    text-align: left;
+}
+
+main .ax-table-of-contents.horizontal .toc > div {
+    display: inline-block;
+}
+
+main .ax-table-of-contents .toc .toc-level-h2 {
+    margin: 8px;
+}
+
+main .ax-table-of-contents .toc .toc-level-h3 {
+    margin: 4px;
+    padding-left: 20px;
+}
+
+main .ax-table-of-contents .toc .toc-level-h4 {
+    padding-left: 40px;
+}

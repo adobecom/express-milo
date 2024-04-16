@@ -106,14 +106,28 @@ export function removeIrrelevantSections(area) {
 }
 
 function overrideMiloColumns(area) {
-  if (!area) return;
-  area.querySelectorAll('main > div').forEach((section) => {
+  const replaceColumnBlock = (section) => {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
       if (column.classList[0] !== 'columns') return;
       column.classList.remove('columns');
       column.className = `ax-columns ${column.className}`;
     });
+  };
+
+  const repalceTableOfContentBlock = (section) => {
+    const tableOfContentBlock = section.querySelectorAll('div.table-of-contents');
+    tableOfContentBlock.forEach((tableOfContent) => {
+      if (tableOfContent.classList[0] !== 'table-of-contents') return;
+      tableOfContent.classList.remove('table-of-contents');
+      tableOfContent.className = `ax-table-of-contents ${tableOfContent.className}`;
+    });
+  };
+
+  if (!area) return;
+  area.querySelectorAll('main > div').forEach((section) => {
+    replaceColumnBlock(section);
+    repalceTableOfContentBlock(section);
   });
 }
 

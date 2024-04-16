@@ -5,10 +5,10 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 export default function decorate($block, name, doc) {
-  addTempWrapperDeprecated($block, 'table-of-contents');
+  addTempWrapperDeprecated($block, 'ax-table-of-contents');
 
   const config = readBlockConfig($block);
-  const $headings = doc.querySelectorAll('main h2, main h3, main h4, main .table-of-contents');
+  const $headings = doc.querySelectorAll('main h2, main h3, main h4, main .ax-table-of-contents');
   let skip = true;
   const $toc = createTag('div', { class: 'toc' });
   $headings.forEach(($h) => {
