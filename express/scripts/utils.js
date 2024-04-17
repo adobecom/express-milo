@@ -24,17 +24,10 @@ export const [setLibs, getLibs] = (() => {
         if (branch === 'local') return 'http://localhost:6456/libs';
         return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
       })();
-      window.express.miloLibs = libs;
       return libs;
     }, () => libs,
   ];
 })();
-
-function toClassName(name) {
-  return name && typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
-    : '';
-}
 
 /*
  * ------------------------------------------------------------
@@ -43,6 +36,35 @@ function toClassName(name) {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+
+function createTag(tag, attributes, html, options = {}) {
+  const el = document.createElement(tag);
+  if (html) {
+    if (html instanceof HTMLElement
+        || html instanceof SVGElement
+        || html instanceof DocumentFragment) {
+      el.append(html);
+    } else if (Array.isArray(html)) {
+      el.append(...html);
+    } else {
+      el.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (attributes) {
+    Object.entries(attributes).forEach(([key, val]) => {
+      el.setAttribute(key, val);
+    });
+  }
+  options.parent?.append(el);
+  return el;
+}
+
+export function toClassName(name) {
+  return name && typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
+    : '';
+}
+
 export function readBlockConfig(block) {
   const config = {};
   block.querySelectorAll(':scope>div').forEach(($row) => {
@@ -76,11 +98,13 @@ export function readBlockConfig(block) {
 
 export function removeIrrelevantSections(area) {
   if (!area) return;
+
   const getMetadata = (name, doc = document) => {
     const attr = name && name.includes(':') ? 'property' : 'name';
     const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
     return meta && meta.content;
   };
+
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -102,6 +126,18 @@ export function removeIrrelevantSections(area) {
       }
       if (sectionRemove) section.remove();
     }
+  });
+}
+
+function overrideMiloColumns(area) {
+  if (!area) return;
+  area.querySelectorAll('main > div').forEach((section) => {
+    const columnBlock = section.querySelectorAll('div.columns');
+    columnBlock.forEach((column) => {
+      if (column.classList[0] !== 'columns') return;
+      column.classList.remove('columns');
+      column.className = `ax-columns ${column.className}`;
+    });
   });
 }
 
@@ -202,96 +238,141 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
-export function decorateButtons(area) {
-  const buttons = area.querySelectorAll('a[href*="#_btn"]');
-  if (buttons.length === 0) return;
-  buttons.forEach((button) => {
-    const parent = button.parentElement;
-    const btnDescription = button.hash.split('#').filter((hash) => hash.startsWith('_btn'))[0];
-    const btnAttributes = btnDescription.split('-');
-    btnAttributes.shift();
-    button.href = button.href.replace(`#${btnDescription}`, '');
-    button.classList.add('con-button', ...btnAttributes);
+function transpileMarquee(area) {
+  const handleSubCTAText = (oldContainer, newContainer) => {
+    const elAfterBtn = oldContainer.nextElementSibling;
+    if (!elAfterBtn || elAfterBtn?.tagName !== 'BLOCKQUOTE') return;
 
-    if (parent.nodeName === 'STRONG') {
-      button.classList.add('blue');
-      parent.insertAdjacentElement('afterend', button);
-      parent.remove();
+    const subText = elAfterBtn.querySelector('p');
+
+    if (subText) {
+      const subTextEl = createTag('span', { class: 'cta-sub-text' }, subText.innerHTML);
+      newContainer.append(subTextEl);
     }
-    if (parent.nodeName === 'EM') {
-      button.classList.add('outline');
-      parent.insertAdjacentElement('afterend', button);
-      parent.remove();
-    }
-    const strongChild = button.querySelector('strong');
-    if (strongChild) {
-      button.classList.add('blue');
-      const spanChild = document.createElement('span');
-      spanChild.textContent = strongChild.textContent;
-      strongChild.replaceWith(spanChild);
-    }
-    const actionArea = button.closest('p, div');
-    if (actionArea) {
-      actionArea.classList.add('action-area');
-      actionArea.nextElementSibling?.classList.add('supplemental-text', 'body-xl');
+    elAfterBtn.remove();
+  };
+
+  const needsTranspile = (block) => {
+    const firstRow = block.querySelector(':scope > div:first-of-type');
+    return firstRow.children.length > 1 && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
+  };
+
+  const isVideoLink = (url) => {
+    if (!url) return null;
+    return url.includes('youtube.com/watch')
+      || url.includes('youtu.be/')
+      || url.includes('vimeo')
+      || /.*\/media_.*(mp4|webm|m3u8)$/.test(new URL(url).pathname);
+  };
+
+  const transpile = (block) => {
+    const assetArea = createTag('div');
+
+    block.classList.add('transpiled', 'xl-button');
+
+    if (block.classList.contains('short')) {
+      block.classList.remove('short');
+      block.classList.add('small');
     }
 
-    // const miloButton = parent.nodeName === 'STRONG' || parent.nodeName === 'EM'
-    //     || (parent.nodeName === 'P' && button.querySelector('strong'));
-    // // convert to milo compatible format
-    // if (!miloButton) {
-    //   let tag = 'strong'
-    //   if (btnAttributes.includes('reverse')) tag = 'em';
-    //   const node = createTag(tag);
-    //   parent.insertBefore(node, button);
-    //   node.append(button);
-    // }
+    if (!block.classList.contains('dark')) {
+      block.classList.add('light');
+    }
+
+    const rows = block.querySelectorAll(':scope > div');
+
+    if (rows.length) {
+      rows.forEach((r, i, arr) => {
+        if (i < arr.length - 1) {
+          r.querySelector(':scope > div:first-of-type')?.remove();
+
+          if (document.body.dataset.device === 'mobile') {
+            const valCol = r.querySelector(':scope > div:last-of-type');
+            assetArea.innerHTML = valCol.innerHTML;
+            if (block.classList.contains('dark')) valCol.innerHTML = '#000000';
+            if (block.classList.contains('light')) valCol.innerHTML = '#ffffff00';
+          }
+
+          if (i > 0) {
+            r.remove();
+          }
+        }
+
+        if (i === arr.length - 1) {
+          const aTags = r.querySelectorAll('p > a');
+          const btnContainers = [];
+          const elsToAppend = [];
+          const actionArea = createTag('p', { class: 'action-area' });
+
+          aTags.forEach((a) => {
+            if (!btnContainers.includes(a.parentElement)) {
+              btnContainers.push(a.parentElement);
+            }
+
+            if (isVideoLink(a.href) && !a.querySelector('span.icon.icon-play')) {
+              const playIcon = createTag('span', { class: 'icon icon-play' });
+              a.prepend(playIcon);
+            }
+          });
+
+          const isInlineButtons = btnContainers.length === 1;
+
+          aTags.forEach((a) => {
+            const buttonContainer = a.parentElement;
+
+            if (buttonContainer?.childNodes.length === 1) {
+              const buttonWrapper = createTag('span');
+              buttonWrapper.append(a);
+              handleSubCTAText(buttonContainer, buttonWrapper);
+              buttonContainer.remove();
+
+              elsToAppend.push(buttonWrapper);
+            }
+          });
+
+          elsToAppend.forEach((e, index) => {
+            actionArea.append(e);
+            const link = e.querySelector('a');
+
+            if (!link) return;
+            if (index === 0) {
+              const strong = createTag('strong');
+              e.prepend(strong);
+              strong.append(link);
+            }
+            if (index === 1) {
+              if (!isInlineButtons) {
+                const em = createTag('em');
+                e.prepend(em);
+                em.append(link);
+              }
+            }
+          });
+
+          const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
+          lastPInFirstDiv?.after(actionArea);
+          r.append(assetArea);
+        }
+      });
+    }
+  };
+
+  const marquees = [...area.querySelectorAll('div.marquee')].filter((m) => m.classList[0] === 'marquee');
+  marquees.forEach((block) => {
+    if (needsTranspile(block)) transpile(block);
   });
 }
 
 export function decorateArea(area = document) {
-  removeIrrelevantSections(area);
+  document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main', 'body'));
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
-  decorateButtons(area);
-}
 
-export function getHelixEnv() {
-  let envName = sessionStorage.getItem('helix-env');
-  if (!envName) {
-    envName = 'stage';
-    if (window.spark?.hostname === 'www.adobe.com') envName = 'prod';
-  }
-  const envs = {
-    stage: {
-      commerce: 'commerce-stg.adobe.com',
-      adminconsole: 'stage.adminconsole.adobe.com',
-      spark: 'stage.projectx.corp.adobe.com',
-    },
-    prod: {
-      commerce: 'commerce.adobe.com',
-      spark: 'express.adobe.com',
-      adminconsole: 'adminconsole.adobe.com',
-    },
-  };
-  const env = envs[envName];
-
-  const overrideItem = sessionStorage.getItem('helix-env-overrides');
-  if (overrideItem) {
-    const overrides = JSON.parse(overrideItem);
-    const keys = Object.keys(overrides);
-    env.overrides = keys;
-
-    for (const a of keys) {
-      env[a] = overrides[a];
-    }
-  }
-
-  if (env) {
-    env.name = envName;
-  }
-  return env;
+  // transpile conflicting blocks
+  transpileMarquee(area);
+  overrideMiloColumns(area);
 }

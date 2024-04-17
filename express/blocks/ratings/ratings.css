@@ -24,6 +24,10 @@ main .ratings .ratings-heading {
   flex-wrap: wrap;
 }
 
+main .ratings .ratings-heading h3 {
+  margin: 0;
+}
+
 main .ratings .rating-stars {
   color: var(--color-info-accent);
   margin-top: 20px;
@@ -181,10 +185,6 @@ main .ratings .slider-bottom .timer {
 main .ratings .slider-bottom .lottie {
   width: 24px;
   height: 24px;
-}
-
-main .ratings .slider .tooltip {
-  transition: left 0.3s, right 0.3s;
 }
 
 @media (max-width: 899px) {
@@ -448,6 +448,10 @@ main .ratings #rate-our-quick-action {
 
 main .ratings .no-slider {
   padding-bottom: 80px;
+}
+
+main .ratings .no-slider p {
+  margin: 32px 0;
 }
 
 @media (min-width: 900px) {

@@ -1,7 +1,7 @@
 main .section .steps {
   margin-top: 56px;
-  display: -ms-grid;
-  display: grid;
+  display: -ms-grid; /* stylelint-disable-line */
+  display: grid; /* stylelint-disable-line */
   -ms-grid-columns: 1fr;
   grid-template-columns: 1fr;
   grid-gap: 16px;
@@ -29,9 +29,9 @@ main .section .steps p {
 }
 
 main .section .steps > div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: -webkit-box; /* stylelint-disable-line */
+  display: -ms-flexbox; /* stylelint-disable-line */
+  display: flex; /* stylelint-disable-line */
   padding: 20px;
   border-radius: 12px;
   background-color: var(--color-gray-700);
@@ -69,12 +69,12 @@ main .section:has(> .steps.dark) {
 
 main .section:has(> .steps.dark) > *,
 main .section:has(> .steps.highlight) > * {
-    color: var(--color-white);
+  color: var(--color-white);
 }
 
 main .section:has(> .steps.dark) div > h2:first-of-type,
 main .section:has(> .steps.highlight) > div > h2:first-of-type {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 main .section:has(> .steps.dark) .steps > div {
@@ -96,6 +96,10 @@ main .section .steps .icon {
   height: 24px;
 }
 
+main .section:has(.steps) .content {
+  max-width: 375px;
+}
+
 @media (min-width: 900px) {
   main .section:has(> .steps.dark),
   main .section:has(> .steps.highlight) {
@@ -112,9 +116,9 @@ main .section .steps .icon {
     max-width: none;
   }
   main .section .steps > div {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    display: -webkit-box; /* stylelint-disable-line */
+    display: -ms-flexbox; /* stylelint-disable-line */
+    display: flex; /* stylelint-disable-line */
   }
 }
 
