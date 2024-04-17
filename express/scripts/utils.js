@@ -119,6 +119,10 @@ function overrideMiloColumns(area) {
     const tableOfContentBlock = section.querySelectorAll('div.table-of-contents');
     tableOfContentBlock.forEach((tableOfContent) => {
       if (tableOfContent.classList[0] !== 'table-of-contents') return;
+
+      const config = readBlockConfig(tableOfContent);
+      if (config.levels === undefined) return;
+
       tableOfContent.classList.remove('table-of-contents');
       tableOfContent.className = `ax-table-of-contents ${tableOfContent.className}`;
     });
