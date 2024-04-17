@@ -268,7 +268,7 @@ function transpileMarquee(area) {
   const transpile = (block) => {
     const assetArea = createTag('div');
 
-    block.classList.add('transpiled', 'xl-button');
+    block.classList.add('transpiled', 'xxl-button');
 
     if (block.classList.contains('short')) {
       block.classList.remove('short');
@@ -313,6 +313,7 @@ function transpileMarquee(area) {
               const playIcon = createTag('span', { class: 'icon icon-play' });
               a.prepend(playIcon);
             }
+            a.textContent = `${a.textContent}| btn-xlarge`;
           });
 
           const isInlineButtons = btnContainers.length === 1;
@@ -363,6 +364,42 @@ function transpileMarquee(area) {
   });
 }
 
+export function decorateButtons(area) {
+  const buttons = [...area.querySelectorAll('a')].filter(link => link.textContent.includes('| btn-') || link.textContent.includes('|btn-'));
+  if (buttons.length === 0) return;
+  buttons.forEach((button) => {
+    const parent = button.parentElement;
+    const btnContent = button.textContent.split('|');
+    const btnDescription = btnContent.filter((t) => t.startsWith(' btn-') || t.startsWith('btn-'))[0]
+    const btnAttributes = btnDescription.trim().split('-');
+    btnAttributes.shift();
+    button.href = button.href.replace(`#${btnDescription}`, '');
+    button.classList.add('con-button', ...btnAttributes);
+
+    if (parent.nodeName === 'STRONG') {
+      parent.insertAdjacentElement('afterend', button);
+      parent.remove();
+    }
+    if (parent.nodeName === 'EM') {
+      parent.insertAdjacentElement('afterend', button);
+      parent.remove();
+    }
+    const strongChild = button.querySelector('strong');
+    if (strongChild) {
+      button.classList.add('blue');
+      const spanChild = document.createElement('span');
+      spanChild.textContent = strongChild.textContent;
+      strongChild.replaceWith(spanChild);
+    }
+    const actionArea = button.closest('p, div');
+    if (actionArea) {
+      actionArea.classList.add('action-area');
+      actionArea.nextElementSibling?.classList.add('supplemental-text', 'body-xl');
+    }
+    button.textContent = btnContent[0];
+  });
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main', 'body'));
@@ -375,4 +412,5 @@ export function decorateArea(area = document) {
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
+  decorateButtons(area);
 }
