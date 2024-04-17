@@ -19,19 +19,19 @@
   --color-gray-800: #242424;
   --color-black: #000;
   --color-brand-title: #000b1d;
-  --color-accent: #5c5ce0;
-  --color-accent-hover: #4646c6;
-  --color-accent-down: #3d3db4;
-  --color-accent-reverse: #eeeefc;
-  --color-accent-reverse-down: #e6e6f4;
-  --color-accent-light: #dedef9;
-  --color-primary: #242424;
-  --color-primary-hover: #090909;
-  --color-primary-down: #000;
-  --color-secondary: #e8e8e8;
-  --color-secondary-hover: #d4d4d4;
-  --color-secondary-down: #cdcdcd;
-  --color-premium: #ebcf2d;
+  --color-info-accent: #5c5ce0;
+  --color-info-accent-hover: #4646c6;
+  --color-info-accent-down: #3d3db4;
+  --color-info-accent-reverse: #eeeefc;
+  --color-info-accent-reverse-down: #e6e6f4;
+  --color-info-accent-light: #dedef9;
+  --color-info-primary: #242424;
+  --color-info-primary-hover: #090909;
+  --color-info-primary-down: #000;
+  --color-info-secondary: #e8e8e8;
+  --color-info-secondary-hover: #d4d4d4;
+  --color-info-secondary-down: #cdcdcd;
+  --color-info-premium: #ebcf2d;
   --gradient-highlight-vertical: linear-gradient(15deg, #7c84fc, #ff4dd2);
   --gradient-highlight-horizontal: linear-gradient(90deg, #ff4dd2, #7c84fc);
   --gradient-highlight-diagonal: linear-gradient(45deg, #7c84fc, #ff4dd2);
@@ -1131,4 +1131,48 @@ main > div[class="section section-wrapper columns-container"][id^="column-"] {
 body.has-floating-panel #adbMsgClientWrapper .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
 body.has-floating-panel #adbMsgClientWrapper #adbmsgCta {
   bottom: 140px!important;
+}
+
+/*Styles can be removed once we stop using block transpilations*/
+.marquee.transpiled p.action-area > span {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.marquee.transpiled p.action-area > span > a {
+  margin: 0;
+}
+
+.marquee.transpiled.small .text {
+  order: 2;
+}
+
+.marquee.transpiled.small .asset {
+  order: 1;
+}
+
+.marquee.transpiled .foreground .text h2 {
+  font-weight: 700;
+  text-transform: none;
+  font-size: clamp(var(--heading-font-size-s), 3vw, var(--heading-font-size-l));
+  margin: 0 0 8px 0;
+}
+
+@media screen and (min-width: 600px) {
+  .marquee.transpiled .foreground .text h2 {
+    font-size: var(--heading-font-size-s);
+  }
+
+  .marquee.transpiled .action-area {
+    align-items: flex-start;
+  }
+
+  .marquee.transpiled.small .text {
+    order: 1;
+  }
+
+  .marquee.transpiled.small .asset {
+    order: 2;
+  }
 }

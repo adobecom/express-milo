@@ -77,7 +77,7 @@ const miloLibs = setLibs(LIBS);
 decorateArea();
 
 (function loadStyles() {
-  const paths = [`${miloLibs}/styles/styles.css`, '/express/styles/styles-deprecated.css'];
+  const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
   paths.forEach((path) => {
     const link = document.createElement('link');

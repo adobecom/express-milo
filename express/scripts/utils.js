@@ -29,12 +29,6 @@ export const [setLibs, getLibs] = (() => {
   ];
 })();
 
-export function toClassName(name) {
-  return name && typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
-    : '';
-}
-
 /*
  * ------------------------------------------------------------
  * Edit above at your own risk.
@@ -42,6 +36,35 @@ export function toClassName(name) {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+
+function createTag(tag, attributes, html, options = {}) {
+  const el = document.createElement(tag);
+  if (html) {
+    if (html instanceof HTMLElement
+        || html instanceof SVGElement
+        || html instanceof DocumentFragment) {
+      el.append(html);
+    } else if (Array.isArray(html)) {
+      el.append(...html);
+    } else {
+      el.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (attributes) {
+    Object.entries(attributes).forEach(([key, val]) => {
+      el.setAttribute(key, val);
+    });
+  }
+  options.parent?.append(el);
+  return el;
+}
+
+export function toClassName(name) {
+  return name && typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
+    : '';
+}
+
 export function readBlockConfig(block) {
   const config = {};
   block.querySelectorAll(':scope>div').forEach(($row) => {
@@ -215,9 +238,7 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
-async function transpileMarquee(area) {
-  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-
+function transpileMarquee(area) {
   const handleSubCTAText = (oldContainer, newContainer) => {
     const elAfterBtn = oldContainer.nextElementSibling;
     if (!elAfterBtn || elAfterBtn?.tagName !== 'BLOCKQUOTE') return;
@@ -336,7 +357,7 @@ async function transpileMarquee(area) {
     }
   };
 
-  const marquees = area.querySelectorAll('.marquee');
+  const marquees = [...area.querySelectorAll('div.marquee')].filter((m) => m.classList[0] === 'marquee');
   marquees.forEach((block) => {
     if (needsTranspile(block)) transpile(block);
   });
