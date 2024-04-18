@@ -77,6 +77,10 @@
   /* 28px */
   --heading-font-size-s: 1.375rem;
   /* 22px */
+
+  --block-sm-max-width: 375px;
+  --block-md-max-width: 830px;
+  --block-lg-max-width: 1024px;
 }
 
 @media (min-width: 900px) {
@@ -822,7 +826,7 @@ main .fragment {
 }
 
 .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
-  background-color: #33AB84;
+  background-color: #33ab84;
   display: block;
   border-radius: 50%;
   height: 8px;
@@ -1115,22 +1119,28 @@ a.app-store-aTag {
   border: none;
 }
 
-main > div[class="section section-wrapper sticky-promo-bar-loadinbody-rounded-container firefly-card-container"],
-main > div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container floating-button-container"],
-main > div[class="section section-wrapper fullscreen-marquee-image-container"] + div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container"],
-main > div[class="section section-wrapper schemas-container"],
-main > div[class="section section-wrapper"]:empty {
+main
+  > div[class='section section-wrapper sticky-promo-bar-loadinbody-rounded-container firefly-card-container'],
+main
+  > div[class='section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container floating-button-container'],
+main
+  > div[class='section section-wrapper fullscreen-marquee-image-container']
+  + div[class='section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container'],
+main > div[class='section section-wrapper schemas-container'],
+main > div[class='section section-wrapper']:empty {
   padding-top: 0;
 }
 
-main > div[class="section section-wrapper columns-container"][id^="column-"] {
+main > div[class='section section-wrapper columns-container'][id^='column-'] {
   padding: 0;
 }
 
 /* FIXME: hacky behavior to fight for space with Jarvis */
-body.has-floating-panel #adbMsgClientWrapper .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
+body.has-floating-panel
+  #adbMsgClientWrapper
+  .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
 body.has-floating-panel #adbMsgClientWrapper #adbmsgCta {
-  bottom: 140px!important;
+  bottom: 140px !important;
 }
 
 /*Styles can be removed once we stop using block transpilations*/

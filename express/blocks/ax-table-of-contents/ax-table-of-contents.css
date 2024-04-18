@@ -1,6 +1,18 @@
 main .ax-table-of-contents {
-  max-width: var(--grid-container-width);
+  max-width: var(--block-sm-max-width);
   margin: 32px auto 0 auto;
+}
+
+@media (min-width: 900px) {
+  main .ax-table-of-contents {
+    max-width: var(--block-md-max-width);
+  }
+}
+
+@media (min-width: 1200px) {
+  main .ax-table-of-contents {
+    max-width: var(--block-lg-max-width);
+  }
 }
 
 main .ax-table-of-contents .toc {
