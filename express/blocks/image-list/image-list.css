@@ -6,10 +6,6 @@ main .image-list-s-container > div, main .image-list-xs-container > div {
   padding: 0;
 }
 
-main .section:has(.image-list) {
-  margin-top: 60px;
-}
-
 main .section:has(.image-list) > div {
   margin: auto;
   max-width: 1200px;
