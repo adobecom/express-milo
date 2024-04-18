@@ -1,11 +1,3 @@
-main .image-list-container > div, main .image-list-xl-container > div,
-main .image-list-l-container > div, main .image-list-m-container > div,
-main .image-list-s-container > div, main .image-list-xs-container > div {
-  margin: auto;
-  max-width: 1200px;
-  padding: 0;
-}
-
 main .section:has(.image-list) > div {
   margin: auto;
   max-width: 1200px;
