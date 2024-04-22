@@ -231,11 +231,11 @@ main .search-marquee .hidden {
     display: none;
 }
 
-main .search-marquee h1 {
+main .search-marquee #hero-title {
     margin : 0
 }
 
-main .search-marquee p {
+main .search-marquee #hero-title + p{
     margin : 32px;
 }
 
