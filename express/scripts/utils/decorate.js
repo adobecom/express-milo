@@ -1,4 +1,4 @@
-import { getIconElement } from './icons.js';
+import { getIconElementDeprecated } from './icons.js';
 
 // This was only added for the blocks premigration. It is not to be used for new blocks.
 export function decorateButtonsDeprecated(el) {
@@ -119,7 +119,7 @@ export function decorateSocialIcons($main) {
 
       if (icon) {
         $a.innerHTML = '';
-        const $icon = getIconElement(icon, 22);
+        const $icon = getIconElementDeprecated(icon, 22);
         $icon.classList.add('social.is-visible');
         $a.appendChild($icon);
         if ($parent.previousElementSibling && $parent.previousElementSibling.classList.contains('social-links')) {
