@@ -232,11 +232,13 @@ main .search-marquee .hidden {
 }
 
 main .search-marquee #hero-title {
-    margin : 0
+    margin : 0;
+    text-align: center;
 }
 
 main .search-marquee #hero-title + p{
-    margin : 32px;
+    margin : 32px 0 32px 0;
+    text-align: center;
 }
 
 @media (min-width: 900px) {
