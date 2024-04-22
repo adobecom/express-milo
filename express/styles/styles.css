@@ -31,7 +31,7 @@
   --color-info-secondary: #e8e8e8;
   --color-info-secondary-hover: #d4d4d4;
   --color-info-secondary-down: #cdcdcd;
-  --color-premium: #ebcf2d;
+  --color-info-premium: #ebcf2d;
   --gradient-highlight-vertical: linear-gradient(15deg, #7c84fc, #ff4dd2);
   --gradient-highlight-horizontal: linear-gradient(90deg, #ff4dd2, #7c84fc);
   --gradient-highlight-diagonal: linear-gradient(45deg, #7c84fc, #ff4dd2);
@@ -438,7 +438,6 @@ body.light-grey {
 }
 
 main {
-  text-align: center;
   overflow-x: clip;
 }
 
@@ -478,7 +477,6 @@ main p {
 
 main a:any-link {
   color: var(--color-info-accent);
-  text-decoration: none;
   font-weight: 600;
 }
 
@@ -491,30 +489,30 @@ main .section:last-of-type > .default-content-wrapper {
 }
 
 @media (min-width: 600px) {
-  main h2 {
+  main > h2 {
     font-size: var(--heading-font-size-l);
     text-align: center;
   }
 
-  main h3 {
+  main > h3 {
     font-size: var(--heading-font-size-l);
     text-align: center;
   }
 
-  main h4 {
+  main > h4 {
     font-size: var(--heading-font-size-m);
     margin-top: 56px;
     text-align: center;
   }
 
-  main h1 + h5 {
+  main > h1 + h5 {
     font-size: var(--body-font-size-xxl);
     font-weight: var(--body-font-weight);
     margin-top: 32px;
     margin-bottom: 16px;
   }
 
-  main p {
+  main > p {
     font-size: var(--body-font-size-l);
   }
 
@@ -660,7 +658,7 @@ main .hero a.button:any-link {
   border-radius: 22px;
 }
 
-main .section div .block p.legal-copy {
+main .section .block p.legal-copy {
   font-size: var(--body-font-size-xs);
   line-height: 1.5;
 }
@@ -714,8 +712,6 @@ main .section.secondary {
 
 main .section > div {
   margin: auto;
-  max-width: 375px;
-  padding: 0;
 }
 
 main .section > div:empty {
@@ -752,18 +748,6 @@ body[data-device='mobile']
     .split-action-container
   ) {
   display: block;
-}
-
-@media (min-width: 900px) {
-  main .section > div {
-    max-width: 830px;
-  }
-}
-
-@media (min-width: 1200px) {
-  main .section > div {
-    max-width: 1024px;
-  }
 }
 
 /* jank protection for async blocks/sections */
@@ -832,6 +816,21 @@ main .fragment {
   margin: 32px auto;
 }
 
+.free-plan-widget .plan-widget-tag {
+  display: flex;
+  align-items: center;
+}
+
+.free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
+  background-color: #33AB84;
+  display: block;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  padding: 3px;
+  margin-right: 4px;
+}
+
 @media (min-width: 900px) {
   .button-container.free-plan-container {
     width: max-content;
@@ -847,6 +846,7 @@ main .fragment {
     margin: 0;
     display: flex;
     align-items: center;
+    /* todo: investigate why */
     z-index: 4;
   }
 
@@ -1113,4 +1113,66 @@ a.app-store-aTag {
 
 #feds-topnav .feds-login {
   border: none;
+}
+
+main > div[class="section section-wrapper sticky-promo-bar-loadinbody-rounded-container firefly-card-container"],
+main > div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container floating-button-container"],
+main > div[class="section section-wrapper fullscreen-marquee-image-container"] + div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container"],
+main > div[class="section section-wrapper schemas-container"],
+main > div[class="section section-wrapper"]:empty {
+  padding-top: 0;
+}
+
+main > div[class="section section-wrapper columns-container"][id^="column-"] {
+  padding: 0;
+}
+
+/* FIXME: hacky behavior to fight for space with Jarvis */
+body.has-floating-panel #adbMsgClientWrapper .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
+body.has-floating-panel #adbMsgClientWrapper #adbmsgCta {
+  bottom: 140px!important;
+}
+
+/*Styles can be removed once we stop using block transpilations*/
+.marquee.transpiled p.action-area > span {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.marquee.transpiled p.action-area > span > a {
+  margin: 0;
+}
+
+.marquee.transpiled.small .text {
+  order: 2;
+}
+
+.marquee.transpiled.small .asset {
+  order: 1;
+}
+
+.marquee.transpiled .foreground .text h2 {
+  font-weight: 700;
+  text-transform: none;
+  font-size: clamp(var(--heading-font-size-s), 3vw, var(--heading-font-size-l));
+  margin: 0 0 8px 0;
+}
+
+@media screen and (min-width: 600px) {
+  .marquee.transpiled .foreground .text h2 {
+    font-size: var(--heading-font-size-s);
+  }
+
+  .marquee.transpiled .action-area {
+    align-items: flex-start;
+  }
+
+  .marquee.transpiled.small .text {
+    order: 1;
+  }
+
+  .marquee.transpiled.small .asset {
+    order: 2;
+  }
 }
