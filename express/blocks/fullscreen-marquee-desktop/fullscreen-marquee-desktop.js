@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -142,6 +142,8 @@ async function buildApp(block, content) {
 }
 
 export default async function decorate(block) {
+  addTempWrapperDeprecated(block, 'fullscreen-marquee-desktop');
+
   decorateButtonsDeprecated(block);
   const rows = Array.from(block.children);
   const heading = rows[0] ? rows[0].querySelector('div') : null;
