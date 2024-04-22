@@ -231,6 +231,14 @@ main .search-marquee .hidden {
     display: none;
 }
 
+main .search-marquee h1 {
+    margin : 0
+}
+
+main .search-marquee p {
+    margin : 32px;
+}
+
 @media (min-width: 900px) {
     main .search-marquee > div:first-of-type h1 {
         font-size: var(--heading-font-size-xl);
