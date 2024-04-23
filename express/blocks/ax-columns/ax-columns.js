@@ -8,7 +8,7 @@ import {
 
 import { getIconElement } from '../../scripts/utils/icons.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import {addTempWrapperDeprecated, decorateButtonsDeprecated} from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';
 import {
@@ -146,6 +146,7 @@ const handleVideos = (cell, a, block, thumbnail) => {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'columns');
+  decorateButtonsDeprecated(block, 'button-xxl');
 
   const rows = Array.from(block.children);
 
