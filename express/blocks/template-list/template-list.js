@@ -549,13 +549,13 @@ async function makeTemplateFunctions() {
         subElements: {
           iconHolder: createTag('span', { class: 'icon-holder' }),
           textSpan: createTag('span', { class: `current-option current-option-${entry[0]}` }),
-          chevIcon: getIconElement('drop-down-arrow'),
+          chevIcon: getIconElementDeprecated('drop-down-arrow'),
         },
       },
       options: {
         wrapper: createTag('div', { class: `options-wrapper options-wrapper-${entry[0]}` }),
         subElements: Object.entries(entry[1].placeholders).map((option, subIndex) => {
-          const icon = getIconElement(entry[1].icons[subIndex]);
+          const icon = getIconElementDeprecated(entry[1].icons[subIndex]);
           const optionButton = createTag('div', { class: 'option-button', 'data-value': option[1] });
           [optionButton.textContent] = option;
           optionButton.prepend(icon);
@@ -618,7 +618,7 @@ async function decorateFunctionsContainer(block, section, functions, props) {
   const drawer = createTag('div', { class: 'filter-drawer-mobile hidden retracted' });
   const drawerInnerWrapper = createTag('div', { class: 'filter-drawer-mobile-inner-wrapper' });
   const drawerBackground = createTag('div', { class: 'drawer-background hidden transparent' });
-  const closeButton = getIconElement('search-clear');
+  const closeButton = getIconElementDeprecated('search-clear');
   const applyButtonWrapper = createTag('div', { class: 'apply-filter-button-wrapper hidden transparent' });
   const applyButton = createTag('a', { class: 'apply-filter-button button gradient', href: '#' });
 
@@ -657,7 +657,7 @@ async function decorateFunctionsContainer(block, section, functions, props) {
     });
   });
 
-  mobileFilterButtonWrapper.append(getIconElement('scratch-icon-22'), mobileFilterButton);
+  mobileFilterButtonWrapper.append(getIconElementDeprecated('scratch-icon-22'), mobileFilterButton);
   applyButtonWrapper.append(applyButton);
   filterContainer.append(
     mobileFilterButtonWrapper,
@@ -856,11 +856,11 @@ async function decorateCategoryList(block, section, props) {
   const categoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
   const desktopCategoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
   const categoriesToggle = createTag('span', { class: 'category-list-toggle' });
-  const desktopCategoriesToggle = getIconElement('drop-down-arrow');
+  const desktopCategoriesToggle = getIconElementDeprecated('drop-down-arrow');
   const categoriesListHeading = createTag('div', { class: 'category-list-heading' });
   const categoriesTag = createTag('ul', { class: 'category-list' });
 
-  categoriesListHeading.append(getIconElement('template-search'), await placeholderMod.replaceKey('jump-to-category', getConfig()));
+  categoriesListHeading.append(getIconElementDeprecated('template-search'), await placeholderMod.replaceKey('jump-to-category', getConfig()));
   categoriesToggle.textContent = await placeholderMod.replaceKey('jump-to-category', getConfig());
   const allTemplatesMetadata = await fetchAllTemplatesMetadata();
 
@@ -882,7 +882,7 @@ async function decorateCategoryList(block, section, props) {
       icon = 'template-static';
     }
 
-    const iconElement = getIconElement(icon);
+    const iconElement = getIconElementDeprecated(icon);
     const redirectUrl = getRedirectUrl(targetTasks, currentTopic, format, allTemplatesMetadata);
     const a = createTag('a', {
       'data-tasks': targetTasks,
@@ -921,7 +921,7 @@ async function decorateCategoryList(block, section, props) {
   }
 
   const toggleButton = categoriesMobileWrapper.querySelector('.category-list-toggle-wrapper');
-  toggleButton.append(getIconElement('drop-down-arrow'));
+  toggleButton.append(getIconElementDeprecated('drop-down-arrow'));
   toggleButton.addEventListener('click', () => {
     const listWrapper = toggleButton.parentElement;
     toggleButton.classList.toggle('collapsed');
@@ -972,7 +972,7 @@ async function decorateSearchFunctions(toolBar, section, props) {
   // Tasks Dropdown
   const taskDropdownContainer = createTag('div', { class: 'task-dropdown-container' });
   const taskDropdown = createTag('div', { class: 'task-dropdown' });
-  const taskDropdownChev = getIconElement('drop-down-arrow');
+  const taskDropdownChev = getIconElementDeprecated('drop-down-arrow');
   const taskDropdownToggle = createTag('button', { class: 'task-dropdown-toggle' });
   const taskDropdownList = createTag('ul', { class: 'task-dropdown-list' });
   const categories = JSON.parse(placeholderMod['task-categories']);
@@ -980,7 +980,7 @@ async function decorateSearchFunctions(toolBar, section, props) {
   let optionMatched = false;
 
   Object.entries(categories).forEach((category, index) => {
-    const itemIcon = getIconElement(categoryIcons[index]);
+    const itemIcon = getIconElementDeprecated(categoryIcons[index]);
     const listItem = createTag('li', { class: 'option', 'data-tasks': category[1] });
     [listItem.textContent] = category;
     listItem.prepend(itemIcon);
@@ -1002,7 +1002,7 @@ async function decorateSearchFunctions(toolBar, section, props) {
   }
 
   searchForm.append(searchBar);
-  searchBarWrapper.append(getIconElement('search'), getIconElement('search-clear'));
+  searchBarWrapper.append(getIconElementDeprecated('search'), getIconElementDeprecated('search-clear'));
   taskDropdownContainer.append(taskDropdown);
   taskDropdown.append(taskDropdownToggle, taskDropdownList, taskDropdownChev);
   searchBarWrapper.append(searchForm, taskDropdownContainer);
@@ -1443,11 +1443,11 @@ async function decorateToolbar(block, section, props) {
     const viewsWrapper = createTag('div', { class: 'views' });
 
     const smView = createTag('a', { class: 'view-toggle-button small-view', 'data-view': 'sm' });
-    smView.append(getIconElement('small_grid'));
+    smView.append(getIconElementDeprecated('small_grid'));
     const mdView = createTag('a', { class: 'view-toggle-button medium-view', 'data-view': 'md' });
-    mdView.append(getIconElement('medium_grid'));
+    mdView.append(getIconElementDeprecated('medium_grid'));
     const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
-    lgView.append(getIconElement('large_grid'));
+    lgView.append(getIconElementDeprecated('large_grid'));
 
     const functionsObj = await makeTemplateFunctions();
     const functions = await decorateFunctionsContainer(
@@ -1775,7 +1775,7 @@ async function decorateLoadMoreButton(block, props) {
   loadMoreDiv.append(loadMoreButton, loadMoreText);
   loadMoreText.textContent = await placeholderMod.replaceKey('load-more', getConfig());
   block.insertAdjacentElement('afterend', loadMoreDiv);
-  loadMoreButton.append(getIconElement('plus-icon'));
+  loadMoreButton.append(getIconElementDeprecated('plus-icon'));
 
   loadMoreButton.addEventListener('click', async () => {
     loadMoreButton.classList.add('disabled');
