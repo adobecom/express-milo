@@ -276,7 +276,3 @@ main .blog-posts .card .card-body p {
     font-family: var(--body-font-family);
     font-weight: var(--body-font-weight);
 }
-
-:lang(ja) main .blog-posts-container div.blog-posts-decoration p {
-    font-family: var(--body-font-family);
-}
