@@ -1,14 +1,8 @@
-/* eslint-disable import/named, import/extensions */
+import { getLibs, readBlockConfig } from '../../scripts/utils.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { createOptimizedPicture } from '../../scripts/utils/media.js';
 
-import { addTempWrapper } from '../../scripts/decorate.js';
-import {
-  createOptimizedPicture,
-  createTag,
-  fetchPlaceholders,
-  getConfig,
-  getLocale,
-  readBlockConfig,
-} from '../../scripts/utils.js';
+const { createTag, getConfig, getLocale } = await import(`${getLibs()}/utils/utils.js`);
 
 const blogPosts = [];
 let blogResults;
@@ -188,8 +182,8 @@ async function getFilteredResults(config) {
 
 // Translates the Read More string into the local language
 async function getReadMoreString() {
-  const placeholders = await fetchPlaceholders();
-  let readMoreString = placeholders['read-more'];
+  const placeholderMod = await import(`${getLibs()}/features/placeholders.js`);
+  let readMoreString = placeholderMod.replaceKey('read-more', getConfig());
   if (readMoreString === undefined || readMoreString === '') {
     const locale = getConfig().locale.region;
     const readMore = {
@@ -207,9 +201,7 @@ async function getReadMoreString() {
 // Given a post, get all the required parameters from it to construct a card or hero card
 function getCardParameters(post, dateFormatter) {
   const path = post.path.split('.')[0];
-  const {
-    title, teaser, image,
-  } = post;
+  const { title, teaser, image } = post;
   const publicationDate = new Date(post.date * 1000);
   const dateString = dateFormatter.format(publicationDate);
   const filteredTitle = title.replace(/(\s?)(｜|\|)(\s?Adobe\sExpress\s?)$/g, '');
@@ -336,7 +328,7 @@ function checkStructure(element, querySelectors) {
 }
 
 export default async function decorate(block) {
-  addTempWrapper(block, 'blog-posts');
+  addTempWrapperDeprecated(block, 'blog-posts');
   const config = getBlogPostsConfig(block);
 
   // wrap p in parent section
