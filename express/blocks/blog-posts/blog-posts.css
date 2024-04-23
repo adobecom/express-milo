@@ -1,30 +1,30 @@
-.blog main div.blog-posts-container {
+.blog main div.section:has(.blog-posts) {
     padding: 0;
     margin-top: 64px;
 }
 
-main .blog-posts-container > div {
+main .section:has(.blog-posts) > div {
     max-width: 375px;
     margin: auto;
     padding: 0;
 
 }
 
-.blog main .blog-posts-container > div > h2, main .blog-posts-container div.blog-posts-decoration {
+.blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
     max-width: 280px;
 }
 
-main .blog-posts-container div.blog-posts-decoration {
+main .section:has(.blog-posts) div.blog-posts-decoration {
     display: flex;
     justify-content: space-between;
 }
 
-main .blog-posts-container div.blog-posts-decoration p {
+main .section:has(.blog-posts) div.blog-posts-decoration p {
     margin: 0;
     font-family: var(--body-serif-font-family);
 }
 
-main .blog-posts-container div.blog-posts-decoration p a {
+main .section:has(.blog-posts) div.blog-posts-decoration p a {
     margin: 0;
     font-family: var(--body-font-family);
 }
@@ -234,17 +234,17 @@ main .blog-posts .card .card-body p {
         margin-bottom: 0px;
     }
 
-    main .blog-posts-container > div {
+    main .section:has(.blog-posts) > div {
         max-width: 900px;
     }
 
-    .blog main .blog-posts-container > div > h2, main .blog-posts-container div.blog-posts-decoration {
+    .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
         max-width: 700px;
     }
 }
 
 @media (min-width: 1200px) {
-    main .blog-posts-container > div {
+    main .section:has(.blog-posts) > div {
         max-width: 1200px;
     }
 
@@ -254,13 +254,13 @@ main .blog-posts .card .card-body p {
         height: 338px;
     }
 
-    .blog main .blog-posts-container > div > h2, main .blog-posts-container div.blog-posts-decoration {
+    .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
         max-width: 1088px;
     }
 }
 
 /* Japanese font styles */
-:lang(ja) main .blog-posts-container div.blog-posts-decoration p {
+:lang(ja) main .section:has(.blog-posts) div.blog-posts-decoration p {
     font-family: var(--body-font-family);
 }
 
