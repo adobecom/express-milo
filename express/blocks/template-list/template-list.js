@@ -9,7 +9,7 @@ import {
 import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scripts/utils/media.js';
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
-import { fixIcons, getIconElement } from '../../scripts/utils/icons.js';
+import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated, decorateSocialIcons } from '../../scripts/utils/decorate.js';
 import { fetchBlockFragDeprecated } from '../../scripts/utils/loadBlock.js';
 
@@ -313,7 +313,7 @@ function populateTemplates(block, templates, props) {
           }
         } else {
           // add icon to 1st cell
-          const icon = getIconElement(toClassName(option));
+          const icon = getIconElementDeprecated(toClassName(option));
           icon.setAttribute('title', option);
           tmplt.children[0].append(icon);
         }
