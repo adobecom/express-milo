@@ -2,7 +2,7 @@ import { getLibs, toClassName } from '../utils.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
-export function getIcon(icons, alt, size = 44) {
+export function getIconDeprecated(icons, alt, size = 44) {
   // eslint-disable-next-line no-param-reassign
   icons = Array.isArray(icons) ? icons : [icons];
   const [defaultIcon, mobileIcon] = icons;
@@ -114,9 +114,9 @@ export function getIcon(icons, alt, size = 44) {
   }">`;
 }
 
-export function getIconElement(icons, size, alt, additionalClassName) {
+export function getIconElementDeprecated(icons, size, alt, additionalClassName) {
   const div = createTag('div');
-  div.innerHTML = getIcon(icons, alt, size);
+  div.innerHTML = getIconDeprecated(icons, alt, size);
 
   if (additionalClassName) {
     div.firstElementChild.classList.add(additionalClassName);
@@ -169,7 +169,7 @@ export async function fixIcons(el = document) {
           }
         }
         $picture.parentElement
-          .replaceChild(getIconElement([icon, mobileIcon], size, altText), $picture);
+          .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
       }
     }
   });
