@@ -1,6 +1,6 @@
 /* global _satellite */
 import { getLibs } from '../../scripts/utils.js';
-import { getIconElement } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
 import { getProfile, getDestination } from '../../scripts/express-delayed.js';
 
@@ -52,7 +52,7 @@ export default async function loadLoginUserAutoRedirect() {
   const buildRedirectAlert = () => {
     const container = createTag('div', { class: 'pep-container' });
     const headerWrapper = createTag('div', { class: 'pep-header' });
-    const headerIcon = createTag('div', { class: 'pep-header-icon' }, getIconElement('cc-express'));
+    const headerIcon = createTag('div', { class: 'pep-header-icon' }, getIconElementDeprecated('cc-express'));
     const headerText = createTag('span', { class: 'pep-header-text' }, mod.replaceKey('pep-header', getConfig()));
     const progressBg = createTag('div', { class: 'pep-progress-bg' });
     const progressBar = createTag('div', { class: 'pep-progress-bar' });
