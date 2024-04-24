@@ -139,7 +139,7 @@ function overrideMiloColumns(area) {
     });
   };
 
-  const repalceTableOfContentBlock = (section) => {
+  const replaceTableOfContentBlock = (section) => {
     const tableOfContentBlock = section.querySelectorAll('div.table-of-contents');
     tableOfContentBlock.forEach((tableOfContent) => {
       if (tableOfContent.classList[0] !== 'table-of-contents') return;
@@ -155,7 +155,7 @@ function overrideMiloColumns(area) {
   if (!area) return;
   area.querySelectorAll('main > div').forEach((section) => {
     replaceColumnBlock(section);
-    repalceTableOfContentBlock(section);
+    replaceTableOfContentBlock(section);
   });
 }
 
