@@ -189,6 +189,10 @@ a.con-button:any-link {
   display: inline-block;
 }
 
+svg.icon-milo, img.icon-milo {
+  top: 0.15em !important;
+}
+
 
 a.con-button.button-l:any-link,
 a.con-button.l-button:any-link,
