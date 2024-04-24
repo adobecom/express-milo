@@ -378,7 +378,7 @@ function transpileMarquee(area) {
               const playIcon = createTag('span', { class: 'icon icon-play' });
               a.prepend(playIcon);
             }
-            a.textContent = `${a.textContent}| btn-xlarge`;
+            a.textContent = `${a.textContent}`;
           });
 
           const isInlineButtons = btnContainers.length === 1;
