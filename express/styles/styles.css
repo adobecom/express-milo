@@ -152,10 +152,9 @@ footer {
 }
 
 /* buttons */
-
 a.button:any-link {
   text-decoration: none;
-  border-radius: 18px;
+  border-radius: 999px;
   padding: 5px 1.2em 6px;
   text-align: center;
   font-size: var(--body-font-size-s);
@@ -174,7 +173,7 @@ a.button:any-link {
 
 a.con-button:any-link {
   text-decoration: none;
-  border-radius: 15px;
+  border-radius: 999px;
   padding: 4px 1em;
   text-align: center;
   font-size: var(--body-font-size-xs);
@@ -190,11 +189,12 @@ a.con-button:any-link {
   display: inline-block;
 }
 
+
 a.con-button.button-l:any-link,
 a.con-button.l-button:any-link,
 .button-l a.con-button:any-link,
 .l-button a.con-button:any-link {
-  border-radius: 18px;
+  border-radius: 999px;
   padding: 5px 1.2em 6px;
   font-size: var(--body-font-size-s);
 }
@@ -206,9 +206,9 @@ a.con-button.xl-button:any-link,
 .button-xl a.con-button:any-link,
 .xl-button a.con-button:any-link {
   padding: 10px 1.5em;
-  border-radius: 22px;
+  border-radius: 999px;
   font-size: var(--body-font-size-m);
-  line-height: 24px;
+  line-height: 26.5px;
 }
 
 a.button.xlarge:any-link,
@@ -218,8 +218,9 @@ a.con-button.xxl-button:any-link,
 .button-xxl a.con-button:any-link,
 .xxl-button a.con-button:any-link {
   padding: 13px 1.5em 14px;
-  border-radius: 27px;
+  border-radius: 999px;
   font-size: var(--body-font-size-m);
+  line-height: 26.5px;
 }
 
 a.button.small:any-link, a.con-button.small:any-link  {
