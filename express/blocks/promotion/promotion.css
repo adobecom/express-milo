@@ -1,90 +1,95 @@
-main .section.promotion-container {
-  margin-top: 0;
-  padding-top: 0;
-  margin-bottom: 0;
+.promotion {
+  max-width: var(--block-sm-max-width);
+  margin: auto;
 }
 
-main .promotion[data-block-status="loaded"] {
+.promotion[data-block-status="loaded"] {
   display: block;
 }
 
-main .promotion {
-  margin-top: 60px;
-}
-
-main .promotion .promotion-wrapper {
+.promotion .promotion-wrapper {
   border: 1px solid var(--color-gray-300);
   border-radius: 8px;
   margin-top: 56px;
 }
 
-main .promotion .promotion-hero {
+.promotion .promotion-hero {
   margin: 0;
   max-height:365px;
   overflow: hidden;
 }
 
-main .promotion .promotion-hero img {
+.promotion .promotion-hero img {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   width: 100%;
 }
 
-main .promotion .promotion-content {
+.promotion .promotion-content {
   margin: 50px 24px;
   text-align: left;
 }
 
-main .promotion .promotion-content h2,
-main .promotion .promotion-content h3 {
+.promotion .promotion-content h2,
+.promotion .promotion-content h3 {
   text-align: left;
 }
 
-main .section .promotion .promotion-content p.button-container {
+ .promotion .promotion-content p.button-container {
   text-align: left;
 }
 
-main .section .promotion .promotion-content p.button-container a {
+ .promotion .promotion-content p.button-container a {
   margin: 0;
 }
 
-main .section .promotion h2 {
+ .promotion h2 {
   margin-top: 0;
 }
 
+@media (min-width: 600px) {
+  .promotion h1,
+  .promotion h2,
+  .promotion h3,
+  .promotion h4,
+  .promotion h5 {
+    text-align: center;
+  }
+}
+
 @media (min-width: 900px) {
-  main .section.promotion-container > div {
+  .promotion {
     max-width: 800px;
   }
 
-  main .promotion > h2 {
+  .promotion > h2 {
     font-size: var(--heading-font-size-xl);
   }
 
-  main .promotion .promotion-content {
+  .promotion .promotion-content {
     margin: 50px 50px;
     text-align: left;
   }
 }
 
 @media (min-width: 1200px) {
-  main .section.promotion-container > div {
+  .promotion {
     max-width: 1000px;
   }
 
-  main .promotion .promotion-wrapper {
+  .promotion .promotion-wrapper {
     display: flex;
   }
 
-  main .promotion .promotion-hero, main .promotion .promotion-content {
+  .promotion .promotion-hero, .promotion .promotion-content {
     flex: 50%;
   }
 
-  main .promotion .promotion-hero {
+  .promotion .promotion-hero {
     border-bottom-left-radius: 8px;
   }
 
-  main .promotion .promotion-hero img {
+  .promotion .promotion-hero img {
     border-top-left-radius: 8px;
     border-top-right-radius: 0;
     border-bottom-left-radius: 8px;
@@ -92,7 +97,7 @@ main .section .promotion h2 {
     object-fit: cover;
   }
 
-  main .promotion .promotion-content {
+  .promotion .promotion-content {
     margin: 32px;
     text-align: left;
   }
