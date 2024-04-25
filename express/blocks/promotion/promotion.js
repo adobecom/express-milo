@@ -2,7 +2,6 @@ import { getLibs, toClassName } from '../../scripts/utils.js';
 import {
   normalizeHeadings,
   decorateButtonsDeprecated,
-  addTempWrapperDeprecated,
 } from '../../scripts/utils/decorate.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
@@ -23,8 +22,6 @@ async function fetchPromotion(name) {
 }
 
 export default async function decorate($block) {
-  addTempWrapperDeprecated($block, 'promotion');
-
   const name = $block.textContent.trim();
   if (!name) return;
 
