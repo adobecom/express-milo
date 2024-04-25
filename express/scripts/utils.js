@@ -351,7 +351,7 @@ function transpileMarquee(area) {
   const transpile = (block) => {
     const assetArea = createTag('div');
 
-    block.classList.add('transpiled', 'xl-button');
+    block.classList.add('transpiled', 'xxl-button');
 
     if (block.classList.contains('short')) {
       block.classList.remove('short');
@@ -396,6 +396,7 @@ function transpileMarquee(area) {
               const playIcon = createTag('span', { class: 'icon icon-play' });
               a.prepend(playIcon);
             }
+            a.textContent = `${a.textContent}`;
           });
 
           const isInlineButtons = btnContainers.length === 1;
