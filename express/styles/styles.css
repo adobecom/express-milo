@@ -77,6 +77,10 @@
   /* 28px */
   --heading-font-size-s: 1.375rem;
   /* 22px */
+
+  --block-sm-max-width: 375px;
+  --block-md-max-width: 830px;
+  --block-lg-max-width: 1024px;
 }
 
 @media (min-width: 900px) {
@@ -98,6 +102,7 @@ body {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
   color: var(--body-color);
+  overflow-x: clip;
 }
 
 body.no-scroll {
@@ -506,11 +511,7 @@ body.light-grey {
   background-color: var(--body-alt-background-color);
 }
 
-main {
-  overflow-x: clip;
-}
-
-main h1,
+h1,
 h2,
 h3,
 h4,
@@ -522,66 +523,72 @@ h6 {
   hyphens: auto;
 }
 
-main h1 {
+h1 {
   font-size: var(--heading-font-size-xxl);
 }
 
-main h2 {
+h2 {
   font-size: var(--heading-font-size-l);
 }
 
-main h3 {
+h3 {
   font-size: var(--heading-font-size-m);
 }
 
-main h4,
-main h5 {
+h4,
+h5 {
   font-size: var(--heading-font-size-s);
 }
 
-main p {
+p {
   font-size: var(--body-font-size-xl);
   line-height: var(--body-line-height);
 }
 
-main a:any-link {
+a:any-link {
   color: var(--color-info-accent);
   font-weight: 600;
 }
 
-main img {
+img {
   max-width: 100%;
 }
 
-main .section:last-of-type > .default-content-wrapper {
+.section > .content h1, .section > .content h2, .section > .content h3, .section > .content h4 {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.section .content p {
+  margin: 32px 0;
+}
+
+.section:last-of-type > .default-content-wrapper {
   padding-bottom: 40px;
 }
 
 @media (min-width: 600px) {
-  main > h2 {
+  h2 {
     font-size: var(--heading-font-size-l);
-    text-align: center;
   }
 
-  main > h3 {
+  h3 {
     font-size: var(--heading-font-size-l);
-    text-align: center;
   }
 
-  main > h4 {
+  h4 {
     font-size: var(--heading-font-size-m);
     margin-top: 56px;
-    text-align: center;
   }
 
-  main > h1 + h5 {
+  h1 + h5 {
     font-size: var(--body-font-size-xxl);
     font-weight: var(--body-font-weight);
     margin-top: 32px;
     margin-bottom: 16px;
   }
 
-  main > p {
+  p {
     font-size: var(--body-font-size-l);
   }
 
@@ -596,18 +603,18 @@ main .section:last-of-type > .default-content-wrapper {
     height: calc(var(--header-height) + var(--breadcrumbs-height));
   }
 
-  main h5 + p,
-  main .section p.button-container {
+  h5 + p,
+  .section p.button-container {
     text-align: unset;
   }
 
-  main .section.cards-container {
+  .section.cards-container {
     background-color: unset;
   }
 }
 
 @media (min-width: 1200px) {
-  main h1,
+  h1,
   h2,
   h3,
   h4,
@@ -617,86 +624,86 @@ main .section:last-of-type > .default-content-wrapper {
     hyphens: unset;
   }
 
-  main .section h1 {
+  .section h1 {
     font-size: var(--heading-font-size-l);
   }
 }
 
 /* hero */
-main .section.hero {
+.section.hero {
   color: var(--color-white);
   position: relative;
   padding: 120px 15px;
 }
 
-main .hero.hero-noimage {
+.hero.hero-noimage {
   color: var(--body-color);
   padding-top: 64px;
   padding-bottom: 0;
 }
 
-main .hero.hero-noimage + .section {
+.hero.hero-noimage + .section {
   padding-top: 0;
 }
 
-main .hero.hero-noimage > div {
+.hero.hero-noimage > div {
   max-width: 1024px;
 }
 
-main .hero.hero-noimage a.button:any-link {
+.hero.hero-noimage a.button:any-link {
   color: white;
 }
 
-main .hero.hero-noimage a:any-link {
+.hero.hero-noimage a:any-link {
   color: black;
 }
 
-main .hero h1 {
+.hero h1 {
   font-size: var(--heading-font-size-xl);
   line-height: var(--heading-line-height);
   text-align: center;
   margin: 0;
 }
 
-main .hero h2 {
+.hero h2 {
   font-size: var(--body-font-size-xl);
   font-weight: var(--body-font-weight);
   margin: 32px;
 }
 
-main .hero h5 {
+.hero h5 {
   font-size: var(--body-font-size-l);
   font-weight: var(--body-font-weight);
   margin: auto;
   margin-top: 32px;
 }
 
-main .hero.hero-noimage p {
+.hero.hero-noimage p {
   font-size: var(--body-font-size-s);
 }
 
-main .icon {
+.icon {
   height: 1em;
   width: 1em;
   color: currentColor;
 }
 
-main .hero .icon {
+.hero .icon {
   height: 2em;
   width: 2em;
 }
 
-main .icon.icon-cc-express-stacked,
-main .columns .icon.icon-cc-express-stacked {
+.icon.icon-cc-express-stacked,
+.columns .icon.icon-cc-express-stacked {
   width: unset;
   height: unset;
 }
 
-main .banner .icon.icon-facebook {
+.banner .icon.icon-facebook {
   fill: #1877f2;
 }
 
-main .hero .hero-bg {
+.hero .hero-bg {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -706,34 +713,34 @@ main .hero .hero-bg {
   z-index: -1;
 }
 
-main .hero .hero-bg img {
+.hero .hero-bg img {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-main .hero > div {
+.hero > div {
   padding: 0;
   margin: auto;
 }
 
-main .hero a:any-link {
+.hero a:any-link {
   color: currentColor;
 }
 
-main .hero a.button:any-link {
+.hero a.button:any-link {
   text-shadow: none;
   padding: 10px 1.5em;
   border-radius: 22px;
 }
 
-main .section .block p.legal-copy {
+.section .block p.legal-copy {
   font-size: var(--body-font-size-xs);
   line-height: 1.5;
 }
 
 @media (min-width: 600px) {
-  main .hero h5 {
+  .hero h5 {
     font-size: 22px;
     font-weight: 400;
     max-width: 672px;
@@ -741,8 +748,8 @@ main .section .block p.legal-copy {
     margin-top: 32px;
   }
 
-  main .hero h2,
-  main .hero p {
+  .hero h2,
+  .hero p {
     font-size: var(--body-font-size-xl);
     line-height: var(--body-line-height);
     text-align: center;
@@ -751,53 +758,49 @@ main .section .block p.legal-copy {
 }
 
 @media (min-width: 900px) {
-  main .hero {
+  .hero {
     padding-left: 50px;
     padding-right: 50px;
   }
 
-  main .hero h2,
-  main .hero p {
+  .hero h2,
+  .hero p {
     font-size: var(--body-font-size-xxl);
     margin: 24px 50px 0;
   }
 }
 
 @media (min-width: 1200px) {
-  main .hero h1 {
+  .hero h1 {
     font-size: var(--heading-font-size-xxl);
     margin: 0;
   }
 
-  main .hero .columns > div > div {
+  .hero .columns > div > div {
     margin: 8px;
   }
 }
 
 /* make page : default content */
-main .section.secondary {
+.section.secondary {
   background-color: var(--color-gray-100);
 }
 
-main .section > div {
-  margin: auto;
-}
-
-main .section > div:empty {
+.section > div:empty {
   padding: 0;
 }
 
-main .section p.button-container {
+.section p.button-container {
   text-align: center;
   margin-top: 16px;
   margin-bottom: 0;
 }
 
-main .section .hero {
+.section .hero {
   color: initial;
 }
 
-main [data-audience] {
+[data-audience] {
   display: none;
 }
 
@@ -821,9 +824,9 @@ body[data-device='mobile']
 
 /* jank protection for async blocks/sections */
 
-main .pricing,
-main .hero-animation,
-main .fragment {
+.pricing,
+.hero-animation,
+.fragment {
   opacity: 0;
   height: 100vh;
   transition: opacity 100ms;
@@ -891,7 +894,7 @@ main .fragment {
 }
 
 .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
-  background-color: #33AB84;
+  background-color: #33ab84;
   display: block;
   border-radius: 50%;
   height: 8px;
@@ -962,14 +965,14 @@ main .fragment {
     margin-right: 16px;
   }
 
-  main .template-list-fourcols-container > div,
-  main .template-list-horizontal-container > div {
+  .template-list-fourcols-container > div,
+  .template-list-horizontal-container > div {
     max-width: 1200px;
   }
 
-  main .columns-fullsize-container > div,
-  main .columns-fullsize-center-container > div,
-  main .template-list-sixcols-container > div {
+  .columns-fullsize-container > div,
+  .columns-fullsize-center-container > div,
+  .template-list-sixcols-container > div {
     max-width: 1122px;
   }
 
@@ -979,7 +982,7 @@ main .fragment {
   }
 }
 
-main .template-list-sixcols-container > div {
+.template-list-sixcols-container > div {
   padding: 0;
 }
 
@@ -1041,13 +1044,13 @@ img.icon-microsoft-store {
 }
 
 /* hide promotion block until loaded */
-main .promotion {
+.promotion {
   display: none;
 }
 
 /* hide floating button before css loads */
-main .floating-button-wrapper,
-main .floating-button {
+.floating-button-wrapper,
+.floating-button {
   position: fixed;
   display: none;
 }
@@ -1064,86 +1067,102 @@ wbr.wbr-off {
 }
 
 /* progressive section appearance */
-main .section[data-section-status='loading'],
-main .section[data-section-status='initialized'],
-main .hero[data-status='loading'],
-main > div,
-main .section[data-status='decorated'] {
+.section[data-section-status='loading'],
+.section[data-section-status='initialized'],
+.hero[data-status='loading'],
+> div,
+.section[data-status='decorated'] {
   display: none;
 }
 
-main > .section,
+> .section,
 .fragment > .section,
-main > .hero {
+> .hero {
   display: block;
   position: relative;
 }
 
 /* Japanese font sizing styles */
-:lang(ja) main h1.heading-long {
+:lang(ja) h1.heading-long {
   font-size: var(--heading-font-size-xl);
 }
 
-:lang(ja) main h1.heading-very-long {
+:lang(ja) h1.heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) main h1.heading-x-long {
+:lang(ja) h1.heading-x-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) main h2.heading-long {
+:lang(ja) h2.heading-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) main h2.heading-very-long {
+:lang(ja) h2.heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) main h2.heading-x-long {
+:lang(ja) h2.heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
 @media (max-width: 600px) {
-  :lang(ja) main h2.heading-long {
+  :lang(ja) h2.heading-long {
     font-size: var(--heading-font-size-l);
   }
 
-  :lang(ja) main h2.heading-very-long {
+  :lang(ja) h2.heading-very-long {
     font-size: var(--heading-font-size-m);
   }
 
-  :lang(ja) main h2.heading-x-long {
+  :lang(ja) h2.heading-x-long {
     font-size: var(--heading-font-size-m);
   }
 }
 
 /* long-form section: left-align text */
-main .section.long-form .default-content-wrapper {
+.section.long-form {
+  padding-top: 60px;
+}
+
+.section.long-form .content {
   box-sizing: border-box;
   padding: 0 20px 60px;
   max-width: unset;
 }
 
-main .section.long-form .default-content-wrapper,
-main .section.long-form .default-content-wrapper h2,
-main .section.long-form .default-content-wrapper h3,
-main .section.long-form .default-content-wrapper h4,
-main .section.long-form .default-content-wrapper h5,
-main .section.long-form .default-content-wrapper h6 {
+.section.long-form .content,
+.section.long-form .content h2,
+.section.long-form .content h3,
+.section.long-form .content h4,
+.section.long-form .content h5,
+.section.long-form .content h6 {
   text-align: left;
 }
 
-main .section.long-form .default-content-wrapper h2,
-main .section.long-form .default-content-wrapper h3,
-main .section.long-form .default-content-wrapper h4,
-main .section.long-form .default-content-wrapper h5,
-main .section.long-form .default-content-wrapper h6 {
+.section.long-form .content h2,
+.section.long-form .content h3,
+.section.long-form .content h4,
+.section.long-form .content h5,
+.section.long-form .content h6 {
   font-size: var(--heading-font-size-s);
 }
 
+.section.long-form .content h2 {
+  margin-top: 80px;
+}
+
+.section.long-form .content h3 {
+  margin-top: 64px;
+}
+
+.section.long-form .content h4 {
+  margin-top: 56px;
+}
+
 @media (min-width: 600px) {
-  main .section.long-form .default-content-wrapper {
+  .section.long-form .content {
     padding: 0 40px 60px;
     max-width: 1070px;
   }
@@ -1184,22 +1203,28 @@ a.app-store-aTag {
   border: none;
 }
 
-main > div[class="section section-wrapper sticky-promo-bar-loadinbody-rounded-container firefly-card-container"],
-main > div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container floating-button-container"],
-main > div[class="section section-wrapper fullscreen-marquee-image-container"] + div[class="section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container"],
-main > div[class="section section-wrapper schemas-container"],
-main > div[class="section section-wrapper"]:empty {
+main
+  > div[class='section section-wrapper sticky-promo-bar-loadinbody-rounded-container firefly-card-container'],
+main
+  > div[class='section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container floating-button-container'],
+main
+  > div[class='section section-wrapper fullscreen-marquee-image-container']
+  + div[class='section section-wrapper template-x-container link-list-noarrows-container collapsible-card-container'],
+> div[class='section section-wrapper schemas-container'],
+> div[class='section section-wrapper']:empty {
   padding-top: 0;
 }
 
-main > div[class="section section-wrapper columns-container"][id^="column-"] {
+> div[class='section section-wrapper columns-container'][id^='column-'] {
   padding: 0;
 }
 
 /* FIXME: hacky behavior to fight for space with Jarvis */
-body.has-floating-panel #adbMsgClientWrapper .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
+body.has-floating-panel
+  #adbMsgClientWrapper
+  .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
 body.has-floating-panel #adbMsgClientWrapper #adbmsgCta {
-  bottom: 140px!important;
+  bottom: 140px !important;
 }
 
 /*Styles can be removed once we stop using block transpilations*/

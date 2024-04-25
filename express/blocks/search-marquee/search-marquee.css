@@ -1,8 +1,8 @@
-main .section .search-marquee-wrapper {
+.search-marquee-wrapper {
     max-width: none;
 }
 
-main .search-marquee-wrapper > .backgroundimg, main .search-marquee > .backgroundimg {
+.search-marquee-wrapper > .backgroundimg, .search-marquee > .backgroundimg {
     object-fit: cover;
     min-width: 100%;
     max-height: 100%;
@@ -12,7 +12,7 @@ main .search-marquee-wrapper > .backgroundimg, main .search-marquee > .backgroun
     z-index: -1;
 }
 
-main .search-marquee {
+.search-marquee {
     padding: 32px 28px;
     margin-bottom: 24px;
     background-position: center;
@@ -22,16 +22,16 @@ main .search-marquee {
     align-items: center;
 }
 
-main .search-marquee > div:first-of-type h1 {
+.search-marquee > div:first-of-type h1 {
     font-size: var(--heading-font-size-l);
 }
 
-main .search-marquee > div:first-of-type p {
+.search-marquee > div:first-of-type p {
     font-size: var(--body-font-size-m);
     max-width: 640px;
 }
 
-main .search-marquee .search-marquee-bg {
+.search-marquee .search-marquee-bg {
     position: absolute;
     left: 0;
     top: 0;
@@ -41,7 +41,7 @@ main .search-marquee .search-marquee-bg {
     z-index: 0;
 }
 
-main .search-marquee .search-dropdown-container {
+.search-marquee .search-dropdown-container {
     background: #FFFFFF;
     top: calc(100% + 6px);
     border-radius: 12px;
@@ -53,33 +53,33 @@ main .search-marquee .search-dropdown-container {
     z-index: 3;
 }
 
-main .search-marquee .search-dropdown-container .dropdown-title {
+.search-marquee .search-dropdown-container .dropdown-title {
     margin: 0;
     font-size: var(--body-font-size-s);
     color: var(--color-gray-500);
 }
 
-main .search-marquee .search-dropdown-container .trends-container,
-main .search-marquee .search-dropdown-container .suggestions-container {
+.search-marquee .search-dropdown-container .trends-container,
+.search-marquee .search-dropdown-container .suggestions-container {
     padding: 20px 28px 0;
     text-align: left;
 }
 
-main .search-marquee .search-dropdown-container .trends-container .from-scratch-link {
+.search-marquee .search-dropdown-container .trends-container .from-scratch-link {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 16px;
 }
 
-main .search-marquee .search-dropdown-container .trends-container ul {
+.search-marquee .search-dropdown-container .trends-container ul {
     padding-left: 0;
     list-style: none;
     max-height: 216px;
     overflow: auto;
 }
 
-main .search-marquee .search-dropdown-container .suggestions-container ul {
+.search-marquee .search-dropdown-container .suggestions-container ul {
     padding-left: 0;
     list-style: none;
     max-height: 164px;
@@ -87,33 +87,33 @@ main .search-marquee .search-dropdown-container .suggestions-container ul {
     margin: 0 0 16px -8px;
 }
 
-main .search-marquee .search-dropdown-container .trends-container .trends-wrapper li,
-main .search-marquee .search-dropdown-container .suggestions-container li {
+.search-marquee .search-dropdown-container .trends-container .trends-wrapper li,
+.search-marquee .search-dropdown-container .suggestions-container li {
     margin-bottom: 10px;
 }
 
-main .search-marquee .search-dropdown-container .suggestions-container li {
+.search-marquee .search-dropdown-container .suggestions-container li {
     cursor: pointer;
     margin: 0 8px 0 0;
     padding: 8px;
 }
 
-main .search-marquee .search-dropdown-container .suggestions-container li:hover,
-main .search-marquee .search-dropdown-container .suggestions-container li:focus-visible {
+.search-marquee .search-dropdown-container .suggestions-container li:hover,
+.search-marquee .search-dropdown-container .suggestions-container li:focus-visible {
     background: var(--color-gray-200);
     outline: none;
     border-radius: 8px;
 }
 
-main .search-marquee .search-dropdown-container .trends-container .trends-wrapper {
+.search-marquee .search-dropdown-container .trends-container .trends-wrapper {
     margin : 10px 0 10px 0;
 }
 
-main .search-marquee .search-dropdown-container .trends-container .trends-wrapper li a {
+.search-marquee .search-dropdown-container .trends-container .trends-wrapper li a {
     color: var(--color-black);
 }
 
-main .search-marquee .search-dropdown-container .free-plans-container .free-plan-widget {
+.search-marquee .search-dropdown-container .free-plans-container .free-plan-widget {
     width: 100%;
     border-radius: 0 0 12px 12px;
     flex-direction: row;
@@ -124,11 +124,11 @@ main .search-marquee .search-dropdown-container .free-plans-container .free-plan
     justify-content: center;
 }
 
-main .search-marquee .search-dropdown-container .free-plans-container .free-plan-widget .plan-widget-tag {
+.search-marquee .search-dropdown-container .free-plans-container .free-plan-widget .plan-widget-tag {
     font-size: var(--body-font-size-s);
 }
 
-main .search-marquee .search-bar-wrapper {
+.search-marquee .search-bar-wrapper {
     position: relative;
     width: 100%;
     max-width: 560px;
@@ -137,7 +137,7 @@ main .search-marquee .search-bar-wrapper {
     transition: max-width 0.5s;
 }
 
-main .search-marquee .search-bar-wrapper .search-bar {
+.search-marquee .search-bar-wrapper .search-bar {
     scroll-margin: 65px;
     box-sizing: border-box;
     margin: 0;
@@ -153,17 +153,17 @@ main .search-marquee .search-bar-wrapper .search-bar {
     transition: max-width 0.5s, padding-right 0.5s, padding-left 0.5s;
 }
 
-main .search-marquee .search-bar-wrapper .search-bar::placeholder {
+.search-marquee .search-bar-wrapper .search-bar::placeholder {
     transition: color 0.5s;
 }
 
-main .search-marquee .search-bar-wrapper .search-bar:focus-visible,
-main .search-marquee .search-bar-wrapper .search-bar:focus {
+.search-marquee .search-bar-wrapper .search-bar:focus-visible,
+.search-marquee .search-bar-wrapper .search-bar:focus {
     border: #444444 2px solid;
     outline: none;
 }
 
-main .search-marquee .search-bar-wrapper .icon.icon-search {
+.search-marquee .search-bar-wrapper .icon.icon-search {
     position: absolute;
     z-index: 1;
     height: 16px;
@@ -175,7 +175,7 @@ main .search-marquee .search-bar-wrapper .icon.icon-search {
     left: 16px;
 }
 
-main .search-marquee .search-bar-wrapper .icon.icon-search-clear {
+.search-marquee .search-bar-wrapper .icon.icon-search-clear {
     position: absolute;
     z-index: 1;
     height: 16px;
@@ -186,29 +186,29 @@ main .search-marquee .search-bar-wrapper .icon.icon-search-clear {
     right: 40px;
 }
 
-main .search-marquee .carousel-container {
+.search-marquee .carousel-container {
     margin-top: 32px;
     margin-bottom: 0;
 }
 
-main .search-marquee.spreadsheet-powered .carousel-container {
+.search-marquee.spreadsheet-powered .carousel-container {
     visibility: hidden;
 }
 
-main .search-marquee.spreadsheet-powered .carousel-container.appear {
+.search-marquee.spreadsheet-powered .carousel-container.appear {
     visibility: unset;
 }
 
-main .search-marquee .carousel-container .carousel-platform {
+.search-marquee .carousel-container .carousel-platform {
     margin: auto;
 }
 
-main .search-marquee .carousel-container .carousel-platform p.button-container {
+.search-marquee .carousel-container .carousel-platform p.button-container {
     margin: 0;
     border: none;
 }
 
-main .search-marquee .carousel-container .carousel-platform a {
+.search-marquee .carousel-container .carousel-platform a {
     display: block;
     box-sizing: border-box;
     min-width: 160px;
@@ -223,39 +223,39 @@ main .search-marquee .carousel-container .carousel-platform a {
     border: none;
 }
 
-main .search-marquee .carousel-container .carousel-platform a:hover {
+.search-marquee .carousel-container .carousel-platform a:hover {
     background-color: var(--color-gray-200);
 }
 
-main .search-marquee .hidden {
+.search-marquee .hidden {
     display: none;
 }
 
-main .search-marquee #hero-title {
+.search-marquee #hero-title {
     margin : 0;
     text-align: center;
 }
 
-main .search-marquee #hero-title + p{
+.search-marquee #hero-title + p{
     margin : 32px 0 32px 0;
     text-align: center;
 }
 
 @media (min-width: 900px) {
-    main .search-marquee > div:first-of-type h1 {
+    .search-marquee > div:first-of-type h1 {
         font-size: var(--heading-font-size-xl);
     }
-    
-    main .search-marquee > div:first-of-type p {
+
+    .search-marquee > div:first-of-type p {
         font-size: var(--body-font-size-l);
         max-width: 900px;
     }
 
-    main .search-marquee .search-dropdown-container .free-plans-container .free-plan-widget .plan-widget-tag {
+    .search-marquee .search-dropdown-container .free-plans-container .free-plan-widget .plan-widget-tag {
         font-size: var(--body-font-size-m);
     }
 
-    main .search-marquee .search-dropdown-container .suggestions-container ul {
+    .search-marquee .search-dropdown-container .suggestions-container ul {
         max-height: 216px;
     }
 }
