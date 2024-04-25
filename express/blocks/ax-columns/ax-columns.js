@@ -145,7 +145,7 @@ const handleVideos = (cell, a, block, thumbnail) => {
 };
 
 export default async function decorate(block) {
-  addTempWrapperDeprecated(block, 'columns');
+  addTempWrapperDeprecated(block, 'ax-columns');
 
   const rows = Array.from(block.children);
 
