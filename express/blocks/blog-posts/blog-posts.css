@@ -234,7 +234,7 @@
         margin-bottom: 0px;
     }
 
-    .blog-posts-wrapper {
+    .section:has(.blog-posts) > div {
         max-width: 900px;
     }
 
@@ -244,7 +244,7 @@
 }
 
 @media (min-width: 1200px) {
-    .blog-posts-wrapper {
+    .section:has(.blog-posts) > div {
         max-width: 1200px;
     }
 
