@@ -1,10 +1,10 @@
 import {
-  getLibs
+  getLibs,
+  getLottie,
+  lazyLoadLottiePlayer,
+  toClassName,
 } from '../../scripts/utils.js';
-import { fetchTemplates, isValidTemplate, fetchTemplatesCategoryCount } from './template-search-api-v3.js';
-import fetchAllTemplatesMetadata from '../../scripts/all-templates-metadata.js';
-import isDarkOverlayReadable from '../../scripts/color-tools.js';
-
+import { fetchTemplates, isValidTemplate, fetchTemplatesCategoryCount } from './template-search-api-v3.js'; 
 import { titleCase } from '../../scripts/utils/string.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
@@ -286,7 +286,8 @@ function adjustTemplateDimensions(block, props, tmplt, isPlaceholder) {
 function populateTemplates(block, props, templates) {
   for (let i = 0; i < templates.length; i += 1) {
     let tmplt = templates[i];
-    const isPlaceholder = tmplt.classList.contains('blank_template');
+    const isPlaceholder = i === 0
+     // const isPlaceholder = tmplt.classList.contains('blank_template');
     const linkContainer = tmplt.querySelector(':scope > div:nth-of-type(2)');
     const rowWithLinkInFirstCol = tmplt.querySelector(':scope > div:first-of-type > a');
     const innerWrapper = block.querySelector('.template-x-inner-wrapper');
@@ -1642,7 +1643,6 @@ function determineTemplateXType(props) {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'template-x');
-
   const props = constructProps(block);
   block.innerHTML = '';
   await buildTemplateList(block, props, determineTemplateXType(props));
