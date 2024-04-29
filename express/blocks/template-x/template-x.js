@@ -7,7 +7,7 @@ import {
   toClassName,
 } from '../../scripts/utils.js';
 import { titleCase } from '../../scripts/utils/string.js';
-import { getIconElement } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
@@ -312,7 +312,7 @@ function populateTemplates(block, props, templates) {
           }
         } else {
           // add icon to 1st cell
-          const $icon = getIconElement(toClassName(option));
+          const $icon = getIconElementDeprecated(toClassName(option));
           $icon.setAttribute('title', option);
           tmplt.children[0].append($icon);
         }
@@ -369,7 +369,7 @@ async function decorateLoadMoreButton(block, props) {
   loadMoreDiv.append(loadMoreButton, loadMoreText);
   loadMoreText.textContent = placeholders['load-more'] ?? '';
   block.append(loadMoreDiv);
-  loadMoreButton.append(getIconElement('plus-icon'));
+  loadMoreButton.append(getIconElementDeprecated('plus-icon'));
 
   loadMoreButton.addEventListener('click', async () => {
     loadMoreButton.classList.add('disabled');
@@ -437,13 +437,13 @@ function makeTemplateFunctions(placeholders) {
         subElements: {
           iconHolder: createTag('span', { class: 'icon-holder' }),
           textSpan: createTag('span', { class: `current-option current-option-${entry[0]}` }),
-          chevIcon: getIconElement('drop-down-arrow'),
+          chevIcon: getIconElementDeprecated('drop-down-arrow'),
         },
       },
       options: {
         wrapper: createTag('div', { class: `options-wrapper options-wrapper-${entry[0]}` }),
         subElements: Object.entries(entry[1].placeholders).map((option, subIndex) => {
-          const icon = getIconElement(entry[1].icons[subIndex]);
+          const icon = getIconElementDeprecated(entry[1].icons[subIndex]);
           const optionButton = createTag('div', { class: 'option-button', 'data-value': option[1] });
           [optionButton.textContent] = option;
           optionButton.prepend(icon);
@@ -503,7 +503,7 @@ function decorateFunctionsContainer(block, functions, placeholders) {
   const drawer = createTag('div', { class: 'filter-drawer-mobile hidden retracted' });
   const drawerInnerWrapper = createTag('div', { class: 'filter-drawer-mobile-inner-wrapper' });
   const drawerBackground = createTag('div', { class: 'drawer-background hidden transparent' });
-  const $closeButton = getIconElement('search-clear');
+  const $closeButton = getIconElementDeprecated('search-clear');
   const applyButtonWrapper = createTag('div', { class: 'apply-filter-button-wrapper hidden transparent' });
   const applyButton = createTag('a', { class: 'apply-filter-button button gradient', href: '#' });
 
@@ -542,7 +542,7 @@ function decorateFunctionsContainer(block, functions, placeholders) {
     });
   });
 
-  mobileFilterButtonWrapper.append(getIconElement('scratch-icon-22'), mobileFilterButton);
+  mobileFilterButtonWrapper.append(getIconElementDeprecated('scratch-icon-22'), mobileFilterButton);
   applyButtonWrapper.append(applyButton);
   filterContainer.append(
     mobileFilterButtonWrapper,
@@ -613,11 +613,11 @@ async function decorateCategoryList(block, props) {
   const categoryIcons = placeholders['task-category-icons']?.replace(/\s/g, '')?.split(',');
   const categoriesDesktopWrapper = createTag('div', { class: 'category-list-wrapper' });
   const categoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
-  const categoriesToggle = getIconElement('drop-down-arrow');
+  const categoriesToggle = getIconElementDeprecated('drop-down-arrow');
   const categoriesListHeading = createTag('div', { class: 'category-list-heading' });
   const categoriesList = createTag('ul', { class: 'category-list' });
 
-  categoriesListHeading.append(getIconElement('template-search'), placeholders['jump-to-category']);
+  categoriesListHeading.append(getIconElementDeprecated('template-search'), placeholders['jump-to-category']);
   categoriesToggleWrapper.append(categoriesToggle);
   categoriesDesktopWrapper.append(categoriesToggleWrapper, categoriesListHeading, categoriesList);
 
@@ -639,7 +639,7 @@ async function decorateCategoryList(block, props) {
       icon = 'template-static';
     }
 
-    const iconElement = getIconElement(icon);
+    const iconElement = getIconElementDeprecated(icon);
     const a = createTag('a', {
       'data-tasks': targetTasks,
       href: `${prefix}/express/templates/search?tasks=${targetTasks}&tasksx=${targetTasks}&phformat=${format}&topics=${currentTopic || "''"}&q=${currentTopic || ''}`,
@@ -669,7 +669,7 @@ async function decorateCategoryList(block, props) {
   block.classList.add('with-categories-list');
 
   const toggleButton = categoriesMobileWrapper.querySelector('.category-list-toggle-wrapper');
-  toggleButton.append(getIconElement('drop-down-arrow'));
+  toggleButton.append(getIconElementDeprecated('drop-down-arrow'));
   toggleButton.addEventListener('click', () => {
     const listWrapper = toggleButton.parentElement;
     toggleButton.classList.toggle('collapsed');
@@ -1080,11 +1080,11 @@ async function decorateToolbar(block, props) {
     const viewsWrapper = createTag('div', { class: 'views' });
 
     const smView = createTag('a', { class: 'view-toggle-button small-view', 'data-view': 'sm' });
-    smView.append(getIconElement('small_grid'));
+    smView.append(getIconElementDeprecated('small_grid'));
     const mdView = createTag('a', { class: 'view-toggle-button medium-view', 'data-view': 'md' });
-    mdView.append(getIconElement('medium_grid'));
+    mdView.append(getIconElementDeprecated('medium_grid'));
     const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
-    lgView.append(getIconElement('large_grid'));
+    lgView.append(getIconElementDeprecated('large_grid'));
 
     const functionsObj = makeTemplateFunctions(placeholders);
     const functions = decorateFunctionsContainer(block, functionsObj, placeholders);

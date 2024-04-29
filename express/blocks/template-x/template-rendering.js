@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
 import { getLibs } from '../../scripts/utils.js';
-import { getIconElement } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
@@ -119,7 +119,7 @@ async function share(branchUrl, tooltip, timeoutId) {
 function renderShareWrapper(branchUrl, placeholders) {
   const text = placeholders['tag-copied'] ?? 'Copied to clipboard';
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
-  const shareIcon = getIconElement('share-arrow');
+  const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
   const tooltip = createTag('div', {
     class: 'shared-tooltip',
@@ -138,7 +138,7 @@ function renderShareWrapper(branchUrl, placeholders) {
     }
     timeoutId = share(branchUrl, tooltip, timeoutId);
   });
-  const checkmarkIcon = getIconElement('checkmark-green');
+  const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   tooltip.append(checkmarkIcon);
   tooltip.append(text);
   wrapper.append(shareIcon);
@@ -385,19 +385,19 @@ function getStillWrapperIcons(template, placeholders) {
     planIcon = createTag('span', { class: 'free-tag' });
     planIcon.append(placeholders.free ?? 'Free');
   } else {
-    planIcon = getIconElement('premium');
+    planIcon = getIconElementDeprecated('premium');
   }
   let videoIcon = '';
   if (!containsVideo(template.pages) && template.pages.length > 1) {
-    videoIcon = getIconElement('multipage-static-badge');
+    videoIcon = getIconElementDeprecated('multipage-static-badge');
   }
 
   if (containsVideo(template.pages) && template.pages.length === 1) {
-    videoIcon = getIconElement('video-badge');
+    videoIcon = getIconElementDeprecated('video-badge');
   }
 
   if (containsVideo(template.pages) && template.pages.length > 1) {
-    videoIcon = getIconElement('multipage-video-badge');
+    videoIcon = getIconElementDeprecated('multipage-video-badge');
   }
   if (videoIcon) videoIcon.classList.add('media-type-icon');
   return { planIcon, videoIcon };
