@@ -1,28 +1,28 @@
-main .browse-by-category.fullwidth {
+.browse-by-category.fullwidth {
   margin: 0;
   padding: 0 28px;
   max-width: fit-content;
 }
 
-main .browse-by-category {
+.browse-by-category {
   max-width: max-content;
 }
 
-main .browse-by-category .carousel-container .carousel-platform {
+.browse-by-category .carousel-container .carousel-platform {
   align-items: start;
 }
 
-main .browse-by-category.card .carousel-container .carousel-platform {
+.browse-by-category.card .carousel-container .carousel-platform {
   gap: 14px;
   margin: 6px 0 0 0;
 }
 
-main .browse-by-category .carousel-container .button.carousel-arrow {
+.browse-by-category .carousel-container .button.carousel-arrow {
   position: absolute;
   top: 46px;
 }
 
-main .browse-by-category .browse-by-category-heading-section {
+.browse-by-category .browse-by-category-heading-section {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -31,17 +31,17 @@ main .browse-by-category .browse-by-category-heading-section {
   margin-bottom: 10px;
 }
 
-main .browse-by-category .browse-by-category-heading-section .browse-by-category-heading {
+.browse-by-category .browse-by-category-heading-section .browse-by-category-heading {
   text-align: left;
   font-size: 28px;
   line-height: 30px;
 }
 
-main .browse-by-category .browse-by-category-heading-section .browse-by-category-link-wrapper {
+.browse-by-category .browse-by-category-heading-section .browse-by-category-link-wrapper {
   margin: 8px 0 0;
 }
 
-main .browse-by-category .browse-by-category-link {
+.browse-by-category .browse-by-category-link {
   font-size: 16px;
   line-height: 22px;
   display: flex;
@@ -50,7 +50,7 @@ main .browse-by-category .browse-by-category-link {
   width: max-content;
 }
 
-main .browse-by-category .browse-by-category-link::after {
+.browse-by-category .browse-by-category-link::after {
   display: flex;
   width: 6px;
   height: 6px;
@@ -68,7 +68,7 @@ main .browse-by-category .browse-by-category-link::after {
   margin-right: 2.25px;
 }
 
-main .browse-by-category:not(.card) .browse-by-category-card {
+.browse-by-category:not(.card) .browse-by-category-card {
   position: relative;
   display: flex;
   gap: 8px;
@@ -79,27 +79,27 @@ main .browse-by-category:not(.card) .browse-by-category-card {
   padding: 10px 8px 0 8px;
 }
 
-main .browse-by-category.card .browse-by-category-card {
+.browse-by-category.card .browse-by-category-card {
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
-main .browse-by-category .browse-by-category-card-link {
+.browse-by-category .browse-by-category-card-link {
   position: absolute;
   height: 100%;
   width: 100%;
 }
 
-main .browse-by-category:not(.card) .browse-by-category-card-link:hover ~ .browse-by-category-image-wrapper img {
+.browse-by-category:not(.card) .browse-by-category-card-link:hover ~ .browse-by-category-image-wrapper img {
   transform: scale(1.1) matrix(1, -0.07, 0.05, 1, 0, 0);
 }
 
-main .browse-by-category.card .browse-by-category-card-link:hover ~ .browse-by-category-image-wrapper img {
+.browse-by-category.card .browse-by-category-card-link:hover ~ .browse-by-category-image-wrapper img {
   transform: scale(1.1) matrix(1, -0.01, 0.01, 1, 0, 0);
 }
 
-main .browse-by-category .browse-by-category-image-wrapper {
+.browse-by-category .browse-by-category-image-wrapper {
   background-color: var(--color-gray-200);
   min-height: 90px;
   width: 148px;
@@ -110,7 +110,7 @@ main .browse-by-category .browse-by-category-image-wrapper {
   pointer-events: none;
 }
 
-main .browse-by-category:not(.card) .browse-by-category-image-wrapper img {
+.browse-by-category:not(.card) .browse-by-category-image-wrapper img {
   display: block;
   object-fit: cover;
   width: 80px;
@@ -122,7 +122,7 @@ main .browse-by-category:not(.card) .browse-by-category-image-wrapper img {
   transition: transform 0.2s ease-in-out;
 }
 
-main .browse-by-category .browse-by-category-image-wrapper .browse-by-category-image-shadow {
+.browse-by-category .browse-by-category-image-wrapper .browse-by-category-image-shadow {
   position: absolute;
   width: 76px;
   height: 76px;
@@ -132,7 +132,7 @@ main .browse-by-category .browse-by-category-image-wrapper .browse-by-category-i
   opacity: 1;
 }
 
-main .browse-by-category.card .browse-by-category-image-shadow-wrapper {
+.browse-by-category.card .browse-by-category-image-shadow-wrapper {
   display: block;
   object-fit: cover;
   transform: matrix(1, -0.07, 0.07, 1, 0, 0);
@@ -142,7 +142,7 @@ main .browse-by-category.card .browse-by-category-image-shadow-wrapper {
   transition: transform 0.2s ease-in-out;
 }
 
-main .browse-by-category.card .browse-by-category-image-wrapper {
+.browse-by-category.card .browse-by-category-image-wrapper {
   background-color: #f8f8f8;
   min-height: 90px;
   height: 116px;
@@ -154,7 +154,7 @@ main .browse-by-category.card .browse-by-category-image-wrapper {
   pointer-events: none;
 }
 
-main .browse-by-category.card .browse-by-category-image-wrapper img {
+.browse-by-category.card .browse-by-category-image-wrapper img {
   display: block;
   object-fit: contain;
   max-width: 110px;
@@ -166,7 +166,7 @@ main .browse-by-category.card .browse-by-category-image-wrapper img {
   transition: transform 0.2s ease-in-out;
 }
 
-main .browse-by-category.card .browse-by-category-image-wrapper .browse-by-category-image-shadow {
+.browse-by-category.card .browse-by-category-image-wrapper .browse-by-category-image-shadow {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -174,7 +174,7 @@ main .browse-by-category.card .browse-by-category-image-wrapper .browse-by-categ
   background: #d6d6d6e5;
 }
 
-main .browse-by-category:not(.card) .browse-by-category-card-title {
+.browse-by-category:not(.card) .browse-by-category-card-title {
   margin: 0;
   font-size: 18px;
   line-height: 24px;
@@ -182,7 +182,7 @@ main .browse-by-category:not(.card) .browse-by-category-card-title {
   max-width: 148px;
 }
 
-main .browse-by-category.card .browse-by-category-card-title {
+.browse-by-category.card .browse-by-category-card-title {
   margin: 6px 0;
   font-size: 16px;
   line-height: 24px;
@@ -191,7 +191,7 @@ main .browse-by-category.card .browse-by-category-card-title {
 }
 
 @media (min-width: 900px) {
-  main .browse-by-category .browse-by-category-heading-section {
+  .browse-by-category .browse-by-category-heading-section {
     flex-direction: row;
     padding: 0 0 0 20px;
   }

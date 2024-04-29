@@ -1,4 +1,3 @@
-import { autoUpdateContent } from './content-replace.js';
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -10,7 +9,6 @@ import { autoUpdateContent } from './content-replace.js';
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -30,12 +28,6 @@ export const [setLibs, getLibs] = (() => {
   ];
 })();
 
-export function toClassName(name) {
-  return name && typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
-    : '';
-}
-
 /*
  * ------------------------------------------------------------
  * Edit above at your own risk.
@@ -43,6 +35,40 @@ export function toClassName(name) {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+
+const getMetadata = (name, doc = document) => {
+  const attr = name && name.includes(':') ? 'property' : 'name';
+  const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
+  return meta && meta.content;
+};
+
+function createTag(tag, attributes, html, options = {}) {
+  const el = document.createElement(tag);
+  if (html) {
+    if (html instanceof HTMLElement
+        || html instanceof SVGElement
+        || html instanceof DocumentFragment) {
+      el.append(html);
+    } else if (Array.isArray(html)) {
+      el.append(...html);
+    } else {
+      el.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (attributes) {
+    Object.entries(attributes).forEach(([key, val]) => {
+      el.setAttribute(key, val);
+    });
+  }
+  options.parent?.append(el);
+  return el;
+}
+
+export function toClassName(name) {
+  return name && typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
+    : '';
+}
 
 export function readBlockConfig(block) {
   const config = {};
@@ -77,11 +103,6 @@ export function readBlockConfig(block) {
 
 export function removeIrrelevantSections(area) {
   if (!area) return;
-  const getMetadata = (name, doc = document) => {
-    const attr = name && name.includes(':') ? 'property' : 'name';
-    const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
-    return meta && meta.content;
-  };
 
   area.querySelectorAll(':scope > div').forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
@@ -90,7 +111,7 @@ export function removeIrrelevantSections(area) {
 
       // section meant for different device
       let sectionRemove = !!(sectionMeta.audience
-          && sectionMeta.audience.toLowerCase() !== document.body.dataset?.device);
+        && sectionMeta.audience.toLowerCase() !== document.body.dataset?.device);
 
       // section visibility steered over metadata
       if (!sectionRemove && sectionMeta.showwith !== undefined) {
@@ -98,7 +119,7 @@ export function removeIrrelevantSections(area) {
         if (!['www.adobe.com'].includes(window.location.hostname)) {
           const urlParams = new URLSearchParams(window.location.search);
           showWithSearchParam = urlParams.get(`${sectionMeta.showwith.toLowerCase()}`)
-              || urlParams.get(`${sectionMeta.showwith}`);
+            || urlParams.get(`${sectionMeta.showwith}`);
         }
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(sectionMeta.showwith.toLowerCase()) !== 'on';
       }
@@ -108,14 +129,32 @@ export function removeIrrelevantSections(area) {
 }
 
 function overrideMiloColumns(area) {
-  if (!area) return;
-  area.querySelectorAll('main > div').forEach((section) => {
+  const replaceColumnBlock = (section) => {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
       if (column.classList[0] !== 'columns') return;
       column.classList.remove('columns');
       column.className = `ax-columns ${column.className}`;
     });
+  };
+
+  const replaceTableOfContentBlock = (section) => {
+    const tableOfContentBlock = section.querySelectorAll('div.table-of-contents');
+    tableOfContentBlock.forEach((tableOfContent) => {
+      if (tableOfContent.classList[0] !== 'table-of-contents') return;
+
+      const config = readBlockConfig(tableOfContent);
+      if (config.levels === undefined) return;
+
+      tableOfContent.classList.remove('table-of-contents');
+      tableOfContent.className = `ax-table-of-contents ${tableOfContent.className}`;
+    });
+  };
+
+  if (!area) return;
+  area.querySelectorAll('main > div').forEach((section) => {
+    replaceColumnBlock(section);
+    replaceTableOfContentBlock(section);
   });
 }
 
@@ -175,7 +214,7 @@ export function lazyLoadLottiePlayer($block = null) {
 
 async function loadAEMGnav() {
   const miloLibs = getLibs();
-  const { getMetadata, loadScript } = await import(`${miloLibs}/utils/utils.js`);
+  const { loadScript } = await import(`${miloLibs}/utils/utils.js`);
   const header = document.querySelector('header');
 
   if (header) {
@@ -216,13 +255,211 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
+function replacePlaceholdersWithSheetContent(area) {
+  const REG = /\{\{(.*?)\}\}/g;
+  const updateImgTag = (child, matchCallback, parentElement) => {
+    const parentPic = child.closest('picture');
+    const originalAlt = child.alt;
+    const replacedSrc = originalAlt.replace(REG, (_match, p1) => matchCallback(_match, p1, child));
+
+    if (replacedSrc && parentPic && replacedSrc !== originalAlt) {
+      parentPic.querySelectorAll('source').forEach((el) => {
+        try {
+          el.srcset = el.srcset.replace(/.*\?/, `${replacedSrc}?`);
+        } catch (e) {
+          window.lana?.log(`failed to convert optimized picture source from ${el} with dynamic data: ${e}`);
+        }
+      });
+
+      parentPic.querySelectorAll('img').forEach((el) => {
+        const onImgLoad = () => {
+          el.removeEventListener('load', onImgLoad);
+        };
+
+        try {
+          el.src = el.src.replace(/.*\?/, `${replacedSrc}?`);
+        } catch (e) {
+          window.lana?.log(`failed to convert optimized img from ${el} with dynamic data: ${e}`);
+        }
+
+        el.addEventListener('load', onImgLoad);
+      });
+    } else if (originalAlt.match(REG)) {
+      parentElement.remove();
+    }
+  };
+  const updateTextNode = (child, matchCallback) => {
+    const originalText = child.nodeValue;
+    const replacedText = originalText.replace(REG, matchCallback);
+    if (replacedText !== originalText) child.nodeValue = replacedText;
+  };
+  const preserveFormatKeys = [
+    'event-description',
+  ];
+  const getContent = (_match, p1, n) => {
+    const content = getMetadata(p1) || '';
+    if (preserveFormatKeys.includes(p1)) {
+      n.parentNode?.classList.add('preserve-format');
+    }
+    return content;
+  };
+
+  const allElements = area.querySelectorAll('*');
+
+  allElements.forEach((element) => {
+    if (element.childNodes.length) {
+      element.childNodes.forEach((n) => {
+        if (n.tagName === 'IMG' && n.nodeType === 1) {
+          updateImgTag(n, getContent, element);
+        }
+
+        if (n.nodeType === 3) {
+          updateTextNode(n, getContent);
+        }
+      });
+    }
+  });
+}
+
+function transpileMarquee(area) {
+  const handleSubCTAText = (oldContainer, newContainer) => {
+    const elAfterBtn = oldContainer.nextElementSibling;
+    if (!elAfterBtn || elAfterBtn?.tagName !== 'BLOCKQUOTE') return;
+
+    const subText = elAfterBtn.querySelector('p');
+
+    if (subText) {
+      const subTextEl = createTag('span', { class: 'cta-sub-text' }, subText.innerHTML);
+      newContainer.append(subTextEl);
+    }
+    elAfterBtn.remove();
+  };
+
+  const needsTranspile = (block) => {
+    const firstRow = block.querySelector(':scope > div:first-of-type');
+    return firstRow.children.length > 1 && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
+  };
+
+  const isVideoLink = (url) => {
+    if (!url) return null;
+    return url.includes('youtube.com/watch')
+      || url.includes('youtu.be/')
+      || url.includes('vimeo')
+      || /.*\/media_.*(mp4|webm|m3u8)$/.test(new URL(url).pathname);
+  };
+
+  const transpile = (block) => {
+    const assetArea = createTag('div');
+
+    block.classList.add('transpiled', 'xxl-button');
+
+    if (block.classList.contains('short')) {
+      block.classList.remove('short');
+      block.classList.add('small');
+    }
+
+    if (!block.classList.contains('dark')) {
+      block.classList.add('light');
+    }
+
+    const rows = block.querySelectorAll(':scope > div');
+
+    if (rows.length) {
+      rows.forEach((r, i, arr) => {
+        if (i < arr.length - 1) {
+          r.querySelector(':scope > div:first-of-type')?.remove();
+
+          if (document.body.dataset.device === 'mobile') {
+            const valCol = r.querySelector(':scope > div:last-of-type');
+            assetArea.innerHTML = valCol.innerHTML;
+            if (block.classList.contains('dark')) valCol.innerHTML = '#000000';
+            if (block.classList.contains('light')) valCol.innerHTML = '#ffffff00';
+          }
+
+          if (i > 0) {
+            r.remove();
+          }
+        }
+
+        if (i === arr.length - 1) {
+          const aTags = r.querySelectorAll('p > a');
+          const btnContainers = [];
+          const elsToAppend = [];
+          const actionArea = createTag('p', { class: 'action-area' });
+
+          aTags.forEach((a) => {
+            if (!btnContainers.includes(a.parentElement)) {
+              btnContainers.push(a.parentElement);
+            }
+
+            if (isVideoLink(a.href) && !a.querySelector('span.icon.icon-play')) {
+              const playIcon = createTag('span', { class: 'icon icon-play' });
+              a.prepend(playIcon);
+            }
+            a.textContent = `${a.textContent}`;
+          });
+
+          const isInlineButtons = btnContainers.length === 1;
+
+          aTags.forEach((a) => {
+            const buttonContainer = a.parentElement;
+
+            if (buttonContainer?.childNodes.length === 1) {
+              const buttonWrapper = createTag('span');
+              buttonWrapper.append(a);
+              handleSubCTAText(buttonContainer, buttonWrapper);
+              buttonContainer.remove();
+
+              elsToAppend.push(buttonWrapper);
+            }
+          });
+
+          elsToAppend.forEach((e, index) => {
+            actionArea.append(e);
+            const link = e.querySelector('a');
+
+            if (!link) return;
+            if (index === 0) {
+              const strong = createTag('strong');
+              e.prepend(strong);
+              strong.append(link);
+            }
+            if (index === 1) {
+              if (!isInlineButtons) {
+                const em = createTag('em');
+                e.prepend(em);
+                em.append(link);
+              }
+            }
+          });
+
+          const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
+          lastPInFirstDiv?.after(actionArea);
+          r.append(assetArea);
+        }
+      });
+    }
+  };
+
+  const marquees = [...area.querySelectorAll('div.marquee')].filter((m) => m.classList[0] === 'marquee');
+  marquees.forEach((block) => {
+    if (needsTranspile(block)) transpile(block);
+  });
+}
+
 export function decorateArea(area = document) {
-  autoUpdateContent(area, getLibs());
-  removeIrrelevantSections(area);
+  if (getMetadata('sheet-powered') === 'Y') {
+    replacePlaceholdersWithSheetContent(area);
+  }
+  document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main', 'body'));
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
+
+  // transpile conflicting blocks
+  transpileMarquee(area);
   overrideMiloColumns(area);
 }

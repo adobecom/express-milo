@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElement } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
@@ -8,11 +8,9 @@ import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const imports = await
 Promise.all([import(`${getLibs()}/features/placeholders.js`),
-  await import(`${getLibs()}/utils/utils.js`),
-  await import(`${getLibs()}/utils/samplerum.js`)]);
+  await import(`${getLibs()}/utils/utils.js`)]);
 const { replaceKey } = imports[0];
 const { createTag, getConfig, getMetadata } = imports[1];
-const { sampleRUM } = imports[2];
 
 function handlelize(str) {
   return str.normalize('NFD')
@@ -154,6 +152,7 @@ function initSearchFunction(block) {
   };
 
   const onSearchSubmit = async () => {
+    const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`);
     searchBar.disabled = true;
     sampleRUM('search', {
       source: block.dataset.blockName,
@@ -241,9 +240,9 @@ async function decorateSearchFunctions(block) {
   });
 
   searchForm.append(searchBar);
-  const searchIcon = getIconElement('search');
+  const searchIcon = getIconElementDeprecated('search');
   searchIcon.loading = 'lazy';
-  const searchClearIcon = getIconElement('search-clear');
+  const searchClearIcon = getIconElementDeprecated('search-clear');
   searchClearIcon.loading = 'lazy';
   searchBarWrapper.append(searchIcon, searchClearIcon);
   searchBarWrapper.append(searchForm);
@@ -285,9 +284,9 @@ async function buildSearchDropdown(block) {
 
     if (fromScratchLink) {
       const linkDiv = fromScratchLink.parentElement.parentElement;
-      const templateFreeAccentIcon = getIconElement('template-free-accent');
+      const templateFreeAccentIcon = getIconElementDeprecated('template-free-accent');
       templateFreeAccentIcon.loading = 'lazy';
-      const arrowRightIcon = getIconElement('arrow-right');
+      const arrowRightIcon = getIconElementDeprecated('arrow-right');
       arrowRightIcon.loading = 'lazy';
       fromScratchLink.prepend(templateFreeAccentIcon);
       fromScratchLink.append(arrowRightIcon);

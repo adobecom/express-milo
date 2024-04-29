@@ -1,5 +1,5 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer } from '../utils.js';
-import { getIconElement } from '../utils/icons.js';
+import { getIconElementDeprecated } from '../utils/icons.js';
 
 let replaceKey;
 let getConfig; let createTag; let
@@ -38,7 +38,7 @@ export async function buildFreePlanWidget(config) {
         widget.append(textDiv);
 
         if (checkmarks) {
-          textDiv.prepend(getIconElement('checkmark'));
+          textDiv.prepend(getIconElementDeprecated('checkmark'));
         }
       }
     });

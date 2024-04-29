@@ -5,6 +5,8 @@ import {
   addTempWrapperDeprecated,
 } from '../../scripts/utils/decorate.js';
 
+import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
+
 let replaceKey;
 let getConfig;
 const placeholdersProm = import(`${getLibs()}/features/placeholders.js`).then((mod) => {
@@ -16,32 +18,6 @@ const utilsProm = import(`${getLibs()}/utils/utils.js`).then((mod) => {
 await Promise.all([placeholdersProm, utilsProm]);
 const DEFAULT_VARIANT = 'default';
 const SMART_VARIANT = 'smart';
-
-async function fetchRelevantRows(path) {
-  if (!window.relevantRows) {
-    try {
-      const { prefix } = getConfig().locale;
-      const resp = await fetch(`${prefix}/express/relevant-rows.json`);
-      window.relevantRows = resp.ok ? (await resp.json()).data : [];
-    } catch {
-      const resp = await fetch('/express/relevant-rows.json');
-      window.relevantRows = resp.ok ? (await resp.json()).data : [];
-    }
-  }
-
-  if (window.relevantRows.length) {
-    const relevantRow = window.relevantRows.find((p) => path === p.path);
-    const { env } = getConfig();
-
-    if (env && env.name === 'stage') {
-      return relevantRow || null;
-    }
-
-    return relevantRow && relevantRow.live !== 'N' ? relevantRow : null;
-  }
-
-  return null;
-}
 
 export function normalizeHeadings(block, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());

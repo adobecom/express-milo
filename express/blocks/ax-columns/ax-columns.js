@@ -6,9 +6,9 @@ import {
   transformLinkToAnimation,
 } from '../../scripts/utils/media.js';
 
-import { getIconElement } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';
 import {
@@ -41,7 +41,7 @@ function transformToVideoColumn(cell, aTag, block) {
     const sibling = parent.querySelector('.column-picture');
     if (sibling && block.classList.contains('highlight')) {
       const videoOverlay = createTag('div', { class: 'column-video-overlay' });
-      const videoOverlayIcon = getIconElement('play', 44);
+      const videoOverlayIcon = getIconElementDeprecated('play', 44);
       videoOverlay.append(videoOverlayIcon);
       sibling.append(videoOverlay);
     }
@@ -145,7 +145,8 @@ const handleVideos = (cell, a, block, thumbnail) => {
 };
 
 export default async function decorate(block) {
-  addTempWrapperDeprecated(block, 'columns');
+  addTempWrapperDeprecated(block, 'ax-columns');
+  decorateButtonsDeprecated(block, 'button-xxl');
 
   const rows = Array.from(block.children);
 

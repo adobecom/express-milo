@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <g id="Group_379080" data-name="Group 379080" transform="translate(-18520 1067)">
+    <g id="Success" transform="translate(-2295 439)">
+      <circle id="Ellipse_25523" data-name="Ellipse 25523" cx="16" cy="16" r="16" transform="translate(20815 -1506)" fill="#33ab84"/>
+      <g id="SX_Checkmark_18_N" transform="translate(20822 -1499)">
+        <g id="SMOCK">
+          <rect id="Canvas" width="18" height="18" fill="rgba(255,19,220,0)"/>
+        </g>
+        <g id="ICONS">
+          <path id="Path_120018" data-name="Path 120018" d="M6.795,14.729A1,1,0,0,0,7.479,15a.843.843,0,0,0,.086,0,1,1,0,0,0,.713-.4L15.8,4.6a1,1,0,1,0-1.6-1.2L7.351,12.508,3.685,9.064a1,1,0,0,0-1.369,1.459Z" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
