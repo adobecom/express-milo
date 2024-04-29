@@ -1,30 +1,26 @@
-/* eslint-disable import/named, import/extensions */
-
 import {
-  getLibs,
-  getLottie,
-  lazyLoadLottiePlayer,
-  toClassName,
+  getLibs
 } from '../../scripts/utils.js';
+import { fetchTemplates, isValidTemplate, fetchTemplatesCategoryCount } from './template-search-api-v3.js';
+import fetchAllTemplatesMetadata from '../../scripts/all-templates-metadata.js';
+import isDarkOverlayReadable from '../../scripts/color-tools.js';
+
 import { titleCase } from '../../scripts/utils/string.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 import buildCarousel from '../../scripts/widgets/carousel.js';
-import { fetchTemplates, isValidTemplate, fetchTemplatesCategoryCount } from './template-search-api-v3.js';
-import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
-
 import renderTemplate from './template-rendering.js';
-
+import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import { Masonry } from '../../scripts/widgets/masonry.js';
 import isDarkOverlayReadable from './color-tools.js';
 
 const imports = await
-Promise.all([import(`${getLibs()}/features/placeholders.js`),
+  Promise.all([import(`${getLibs()}/features/placeholders.js`),
   await import(`${getLibs()}/utils/utils.js`),
   await import(`${getLibs()}/utils/samplerum.js`),
-]);
+  ]);
 
 const { replaceKeyArray } = imports[0];
 const { createTag, getMetadata, getConfig } = imports[1];
@@ -46,6 +42,7 @@ async function fetchLocalPlaceholders() {
   }
   return output;
 }
+
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
 }
@@ -65,7 +62,9 @@ function handlelize(str) {
 
 async function getTemplates(response, phs, fallbackMsg) {
   const filtered = response.items.filter((item) => isValidTemplate(item));
-  const templates = await Promise.all(filtered.map((template) => renderTemplate(template, phs)));
+  const templates = await Promise.all(
+    filtered.map((template) => renderTemplate(template, phs)),
+  );
   return {
     fallbackMsg,
     templates,
@@ -73,10 +72,6 @@ async function getTemplates(response, phs, fallbackMsg) {
 }
 
 async function fetchAndRenderTemplates(props) {
-  // import('../../scripts/mobile-beta-gating.js').then((gatingScript) => {
-  //   gatingScript.default();
-  // });
-
   const [placeholders, { response, fallbackMsg }] = await Promise.all(
     [fetchLocalPlaceholders(), fetchTemplates(props)],
   );
@@ -220,7 +215,6 @@ function constructProps(block) {
       if (key === 'blank template') {
         cols[0].remove();
         props.templates.push(row);
-        row.classList.add('blank_template');
       }
     } else if (cols.length === 5) {
       if (key === 'holiday block' && ['yes', 'true', 'on'].includes(cols[1].textContent.trim().toLowerCase())) {
@@ -249,6 +243,46 @@ function constructProps(block) {
   return props;
 }
 
+const SHORT_PLACEHOLDER_HEIGHT_CUTOFF = 80;
+const WIDE_PLACEHOLDER_RATIO_CUTOFF = 1.3;
+
+function adjustPlaceholderDimensions(block, props, tmplt, option) {
+  const sep = option.includes(':') ? ':' : 'x';
+  const ratios = option.split(sep).map((e) => +e);
+  props.placeholderFormat = ratios;
+  if (!ratios[1]) return;
+  if (block.classList.contains('horizontal')) {
+    const height = block.classList.contains('mini') ? 100 : 200;
+    const width = (ratios[0] / ratios[1]) * height;
+    tmplt.style = `width: ${width}px`;
+    if (width / height > WIDE_PLACEHOLDER_RATIO_CUTOFF) {
+      tmplt.classList.add('tall');
+    }
+  } else {
+    const width = block.classList.contains('sixcols') || block.classList.contains('fullwidth') ? 165 : 200;
+    const height = (ratios[1] / ratios[0]) * width;
+    tmplt.style.height = `${height}px`;
+    if (height < SHORT_PLACEHOLDER_HEIGHT_CUTOFF) tmplt.classList.add('short');
+    if (width / height > WIDE_PLACEHOLDER_RATIO_CUTOFF) tmplt.classList.add('wide');
+  }
+}
+
+function adjustTemplateDimensions(block, props, tmplt, isPlaceholder) {
+  const overlayCell = tmplt.querySelector(':scope > div:last-of-type');
+  const option = overlayCell.textContent.trim();
+  if (!option) return;
+  if (isPlaceholder) {
+    // add aspect ratio to template
+    adjustPlaceholderDimensions(block, props, tmplt, option);
+  } else {
+    // add icon to 1st cell
+    const $icon = getIconElementDeprecated(toClassName(option));
+    $icon.setAttribute('title', option);
+    tmplt.children[0].append($icon);
+  }
+  overlayCell.remove();
+}
+
 function populateTemplates(block, props, templates) {
   for (let i = 0; i < templates.length; i += 1) {
     let tmplt = templates[i];
@@ -259,65 +293,30 @@ function populateTemplates(block, props, templates) {
 
     if (innerWrapper && linkContainer) {
       const link = linkContainer.querySelector(':scope a');
-      if (link) {
-        if (isPlaceholder) {
-          const aTag = createTag('a', { href: link.href || '#' });
-
-          aTag.append(...tmplt.children);
-          tmplt.remove();
-          tmplt = aTag;
-          // convert A to SPAN
-          const newLink = createTag('span', { class: 'template-link' });
-          newLink.append(link.textContent.trim());
-
-          linkContainer.innerHTML = '';
-          linkContainer.append(newLink);
-        }
-        innerWrapper.append(tmplt);
+      if (link && isPlaceholder) {
+        const aTag = createTag('a', {
+          href: link.href || '#',
+        });
+        aTag.append(...tmplt.children);
+        tmplt.remove();
+        tmplt = aTag;
+        // convert A to SPAN
+        const newLink = createTag('span', { class: 'template-link' });
+        newLink.append(link.textContent.trim());
+        linkContainer.innerHTML = '';
+        linkContainer.append(newLink);
       }
+      innerWrapper.append(tmplt);
     }
 
     if (rowWithLinkInFirstCol && !tmplt.querySelector('img')) {
       props.tailButton = rowWithLinkInFirstCol;
       rowWithLinkInFirstCol.remove();
     }
+
     if (tmplt.children.length === 3) {
       // look for options in last cell
-      const overlayCell = tmplt.querySelector(':scope > div:last-of-type');
-      const option = overlayCell.textContent.trim();
-      if (option) {
-        if (isPlaceholder) {
-          // add aspect ratio to template
-          const sep = option.includes(':') ? ':' : 'x';
-          const ratios = option.split(sep).map((e) => +e);
-          props.placeholderFormat = ratios;
-          if (block.classList.contains('horizontal')) {
-            const height = block.classList.contains('mini') ? 100 : 200;
-            if (ratios[1]) {
-              const width = (ratios[0] / ratios[1]) * height;
-              tmplt.style = `width: ${width}px`;
-              if (width / height > 1.3) {
-                tmplt.classList.add('tall');
-              }
-            }
-          } else {
-            const width = block.classList.contains('sixcols') || block.classList.contains('fullwidth') ? 165 : 200;
-            if (ratios[1]) {
-              const height = (ratios[1] / ratios[0]) * width;
-              tmplt.style = `height: ${height - 21}px`;
-              if (width / height > 1.3) {
-                tmplt.classList.add('wide');
-              }
-            }
-          }
-        } else {
-          // add icon to 1st cell
-          const $icon = getIconElementDeprecated(toClassName(option));
-          $icon.setAttribute('title', option);
-          tmplt.children[0].append($icon);
-        }
-      }
-      overlayCell.remove();
+      adjustTemplateDimensions(block, props, tmplt, isPlaceholder);
     }
 
     if (!tmplt.querySelectorAll(':scope > div > *').length) {
@@ -325,7 +324,6 @@ function populateTemplates(block, props, templates) {
       tmplt.remove();
     }
     tmplt.classList.add('template');
-
     if (isPlaceholder) {
       tmplt.classList.add('placeholder');
     }
@@ -451,6 +449,7 @@ function makeTemplateFunctions(placeholders) {
         }),
       },
     };
+
     const $span = entry[1].elements.wrapper.subElements.button.subElements.textSpan;
     [[$span.textContent]] = Object.entries(entry[1].placeholders);
   });
@@ -600,7 +599,7 @@ async function appendCategoryTemplatesCount(block, props) {
   for (const { cntSpan, anchor } of res) {
     anchor.append(cntSpan);
     // eslint-disable-next-line no-await-in-loop
-    await new Promise((resolve) => { setTimeout(resolve, 25); });
+    await new Promise((resolve) => setTimeout(resolve, 25));
   }
 }
 
@@ -1023,6 +1022,7 @@ function toggleMasonryView(block, props, button, toggleButtons) {
   const placeholder = block.querySelector('.template.placeholder');
   const ratios = props.placeholderFormat;
   const width = getPlaceholderWidth(block);
+
   if (ratios[1]) {
     const height = (ratios[1] / ratios[0]) * width;
     placeholder.style = `height: ${height - 21}px`;
@@ -1321,7 +1321,7 @@ function importSearchBar(block, blockMediator) {
 
         const redirectSearch = async () => {
           const placeholders = await fetchLocalPlaceholders();
-          const taskMap = placeholders['task-name-mapping'] ? JSON.parse(placeholders['task-name-mapping']) : {};
+          const taskMap = placeholders['x-task-name-mapping'] ? JSON.parse(placeholders['task-name-mapping']) : {};
 
           const format = getMetadata('placeholder-format');
           let currentTasks = '';
@@ -1430,8 +1430,7 @@ function importSearchBar(block, blockMediator) {
 
         import('../search-marquee/utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
           const { inputHandler } = useInputAutocomplete(
-            suggestionsListUIUpdateCB,
-            { throttleDelay: 300, debounceDelay: 500, limit: 7 },
+            suggestionsListUIUpdateCB, { throttleDelay: 300, debounceDelay: 500, limit: 7 },
           );
           searchBar.addEventListener('input', inputHandler);
         });
@@ -1505,8 +1504,12 @@ async function buildTemplateList(block, props, type = []) {
     await decorateTemplates(block, props);
   } else {
     window.lana.log(`failed to load templates with props: ${JSON.stringify(props)}`, { tags: 'templates-api' });
-    // fixme: better error message.
-    block.innerHTML = 'Oops. Our templates delivery got stolen. Please try refresh the page.';
+
+    if (getConfig().env.name === 'prod') {
+      block.remove();
+    } else {
+      block.textContent = 'Error loading templates, please refresh the page or try again later.';
+    }
   }
 
   if (templates && props.tabs) {
@@ -1642,6 +1645,5 @@ export default async function decorate(block) {
 
   const props = constructProps(block);
   block.innerHTML = '';
-
   await buildTemplateList(block, props, determineTemplateXType(props));
 }

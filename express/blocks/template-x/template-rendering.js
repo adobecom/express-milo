@@ -1,10 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
@@ -174,11 +174,9 @@ function getPageIterator(pages) {
     },
   };
 }
-async function renderRotatingMedias(
-  wrapper,
+async function renderRotatingMedias(wrapper,
   pages,
-  { templateTitle, renditionLinkHref, componentLinkHref },
-) {
+  { templateTitle, renditionLinkHref, componentLinkHref }) {
   const pageIterator = getPageIterator(pages);
   let imgTimeoutId;
 
@@ -295,6 +293,8 @@ async function renderRotatingMedias(
   return { cleanup, hover: playMedia };
 }
 
+let currentHoveredElement;
+
 function renderMediaWrapper(template, placeholders) {
   const mediaWrapper = createTag('div', { class: 'media-wrapper' });
 
@@ -318,10 +318,14 @@ function renderMediaWrapper(template, placeholders) {
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
       mediaWrapper.append(renderShareWrapper(branchUrl, placeholders));
-      mediaWrapper.querySelector('.icon')?.focus();
     }
     renderedMedia.hover();
+    currentHoveredElement?.classList.remove('singleton-hover');
+    currentHoveredElement = e.target;
+    currentHoveredElement?.classList.add('singleton-hover');
+    document.activeElement.blur();
   };
+
   const leaveHandler = () => {
     if (renderedMedia) renderedMedia.cleanup();
   };
@@ -332,22 +336,23 @@ function renderMediaWrapper(template, placeholders) {
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
       mediaWrapper.append(renderShareWrapper(branchUrl, placeholders));
-      mediaWrapper.querySelector('.icon')?.focus();
       renderedMedia.hover();
     }
+    currentHoveredElement?.classList.remove('singleton-hover');
+    currentHoveredElement = e.target;
+    currentHoveredElement?.classList.add('singleton-hover');
   };
 
-  return { mediaWrapper, enterHandler, leaveHandler, focusHandler };
+  return {
+    mediaWrapper, enterHandler, leaveHandler, focusHandler,
+  };
 }
 
 async function renderHoverWrapper(template, placeholders) {
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
-    mediaWrapper,
-    enterHandler,
-    leaveHandler,
-    focusHandler,
+    mediaWrapper, enterHandler, leaveHandler, focusHandler,
   } = renderMediaWrapper(template, placeholders);
 
   btnContainer.append(mediaWrapper);
@@ -372,7 +377,7 @@ async function renderHoverWrapper(template, placeholders) {
 
   if (isEligible) {
     const cta = renderCTA(placeholders, template.customLinks.branchUrl);
-    btnContainer.append(cta);
+    btnContainer.prepend(cta);
     cta.addEventListener('focusin', focusHandler);
   }
 
