@@ -3,6 +3,7 @@ import { expect } from '@esm-bundle/chai';
 
 import sinon from 'sinon';
 import { mockRes } from '../test-utilities.js';
+
 await import('../../../express/scripts/scripts.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
