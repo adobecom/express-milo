@@ -734,7 +734,7 @@ img {
   border-radius: 22px;
 }
 
-.section .block p.legal-copy {
+.section p.legal-copy {
   font-size: var(--body-font-size-xs);
   line-height: 1.5;
 }
@@ -943,8 +943,8 @@ body[data-device='mobile']
     margin: 0 auto;
   }
 
-  .button-container.free-plan-container a.button {
-    margin-right: 24px;
+  .button-container.free-plan-container a.button + .free-plan-widget {
+    margin-left: 24px;
   }
 
   .button-container.free-plan-container .free-plan-widget {

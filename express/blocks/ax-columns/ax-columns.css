@@ -177,7 +177,7 @@
 
   .section.section:has(.ax-columns).steps-container
   div
-  .steps.block
+  .steps
   div.step-description
   h2 {
   font-size: var(--heading-font-size-l);
@@ -187,19 +187,19 @@
 
   .section.section:has(.ax-columns).steps-container
   div
-  .steps.block
+  .steps
   div.step-description
   h3,
 
   .section.section:has(.ax-columns).steps-container
   div
-  .steps.block
+  .steps
   div.step-description
   h4,
 
   .section.section:has(.ax-columns).steps-container
   div
-  .steps.block
+  .steps
   div.step-description
   h6 {
   font-size: var(--heading-font-size-s);
@@ -209,7 +209,7 @@
 
   .section.section:has(.ax-columns).steps-container
   div
-  .steps.block
+  .steps
   div.step-description
   p {
   font-size: var(--body-font-size-s);
