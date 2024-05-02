@@ -25,7 +25,7 @@ describe('Frictionless Quick Action Block', () => {
         ],
       },
     }));
-    const { default: init } = await import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js')
+    const { default: init } = await import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js');
 
     const block = document.body.querySelector('.frictionless-quick-action');
     await init(block);
@@ -40,13 +40,12 @@ describe('Frictionless Quick Action Block', () => {
     const dropzone = block.querySelector('div:nth-child(2) > div:nth-child(2) .dropzone');
     const dropzoneTitle = dropzone.querySelector(':scope > h4');
     expect(dropzoneTitle.textContent).to.be.equal('Drag and drop an image or browse to upload.');
-
     window.fetch = ogFetch;
   });
 
   it('sdk starts on file drop', async () => {
     const block = document.body.querySelector('.frictionless-quick-action');
-    const { default: init } = await import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js')
+    const { default: init } = await import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js');
     init(block);
     const dropzoneContainer = block.querySelector(':scope .dropzone-container');
     const file = new File([''], 'test', { type: 'image/png' });
