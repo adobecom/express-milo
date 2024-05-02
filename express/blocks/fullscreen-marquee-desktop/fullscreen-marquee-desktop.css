@@ -241,17 +241,17 @@
   transition: .5s opacity ease-in;
 }
 
-.block.fullscreen-marquee-desktop .button-container.free-plan-container {
+.fullscreen-marquee-desktop .button-container.free-plan-container {
   flex-direction: row;
   width: auto;
   justify-content: left;
 }
 
-.block.fullscreen-marquee-desktop .button-container.free-plan-container a.button {
+.fullscreen-marquee-desktop .button-container.free-plan-container a.button {
   margin-right: 24px;
 }
 
-.block.fullscreen-marquee-desktop .button-container.free-plan-container .free-plan-widget {
+.fullscreen-marquee-desktop .button-container.free-plan-container .free-plan-widget {
   margin: 0;
 }
 
