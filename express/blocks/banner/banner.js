@@ -1,7 +1,8 @@
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
-import { normalizeHeadings } from '../../scripts/utils/decorate.js';
+import {decorateButtonsDeprecated, normalizeHeadings} from '../../scripts/utils/decorate.js';
 
 export default async function decorate(block) {
+  decorateButtonsDeprecated(block);
   normalizeHeadings(block, ['h2', 'h3']);
   const buttons = block.querySelectorAll('a.button');
   if (buttons.length > 1) {
