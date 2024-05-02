@@ -39,7 +39,7 @@ describe('Frictionless Quick Action Block', () => {
     const dropzone = block.querySelector('div:nth-child(2) > div:nth-child(2) .dropzone');
     const dropzoneTitle = dropzone.querySelector(':scope > h4');
     expect(dropzoneTitle.textContent).to.be.equal('Drag and drop an image or browse to upload.');
-    
+
     window.fetch = ogFetch;
   });
 
