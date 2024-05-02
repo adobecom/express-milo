@@ -101,6 +101,21 @@ export function readBlockConfig(block) {
   return config;
 }
 
+function hideQuickActionsOnDevices() {
+  if (getMetadata('fqa-off') || !!getMetadata('fqa-on')) return;
+  const { userAgent } = navigator;
+  document.body.dataset.device = userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  const fqaMeta = document.createElement('meta');
+  fqaMeta.setAttribute('content', 'on');
+  if (document.body.dataset.device === 'mobile'
+      || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
+    fqaMeta.setAttribute('name', 'fqa-off');
+  } else {
+    fqaMeta.setAttribute('name', 'fqa-on');
+  }
+  document.head.append(fqaMeta);
+}
+
 export function removeIrrelevantSections(area) {
   if (!area) return;
 
@@ -121,7 +136,9 @@ export function removeIrrelevantSections(area) {
           showWithSearchParam = urlParams.get(`${sectionMeta.showwith.toLowerCase()}`)
             || urlParams.get(`${sectionMeta.showwith}`);
         }
-        sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(sectionMeta.showwith.toLowerCase()) !== 'on';
+        const showwith = sectionMeta.showwith.toLowerCase();
+        if ((showwith === 'fqa-off' || showwith === 'fqa-on')) hideQuickActionsOnDevices();
+        sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
     }
@@ -452,7 +469,7 @@ export function decorateArea(area = document) {
     replacePlaceholdersWithSheetContent(area);
   }
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  removeIrrelevantSections(area.tagName === 'main' ? area : area.querySelector('main', 'body'));
+  removeIrrelevantSections(area === document ? area.querySelector('main', 'body') : area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');

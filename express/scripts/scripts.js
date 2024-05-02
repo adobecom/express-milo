@@ -128,18 +128,6 @@ decorateArea();
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
-  // handle split
-  const { userAgent } = navigator;
-  document.body.dataset.device = userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  const fqaMeta = createTag('meta', { content: 'on' });
-  if (document.body.dataset.device === 'mobile'
-      || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
-    fqaMeta.setAttribute('name', 'fqa-off');
-  } else {
-    fqaMeta.setAttribute('name', 'fqa-on');
-  }
-  document.head.append(fqaMeta);
-
   listenMiloEvents();
   await loadArea();
 
