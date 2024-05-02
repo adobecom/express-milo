@@ -2,6 +2,7 @@
   max-width: var(--block-sm-max-width);
   margin: auto;
   padding: 0;
+  line-height: 20px;
 }
 
 @media (min-width: 900px) {
