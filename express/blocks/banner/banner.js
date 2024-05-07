@@ -1,5 +1,5 @@
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
-import {decorateButtonsDeprecated, normalizeHeadings} from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated, normalizeHeadings } from '../../scripts/utils/decorate.js';
 
 export default async function decorate(block) {
   decorateButtonsDeprecated(block);
