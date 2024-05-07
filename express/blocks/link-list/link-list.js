@@ -43,7 +43,7 @@ export function normalizeHeadings(block, allowedHeadings) {
 }
 
 async function loadSpreadsheetData(block, relevantRowsData) {
-  const defaultContainer = block.querySelector('.button-container');
+  const defaultContainer = block.querySelector('.button-container, a.con-button');
   const defaultContainerParent = defaultContainer.parentElement;
 
   relevantRowsData.linkListCategories.split('\n').forEach((listData) => {
@@ -122,7 +122,7 @@ export default async function decorate(block) {
   }
 
   normalizeHeadings(block, ['h3']);
-  const links = [...block.querySelectorAll('p.button-container, .con-button')];
+  const links = [...block.querySelectorAll('p.button-container, a.con-button')];
   if (links.length) {
     links.forEach((p) => {
       const link = p.querySelector('a');
@@ -135,7 +135,7 @@ export default async function decorate(block) {
     });
     const platformEl = document.createElement('div');
     platformEl.classList.add('link-list-platform');
-    await buildCarousel('p.button-container', block, options);
+    await buildCarousel('p.button-container, a.con-button', block, options);
   }
 
   if (block.classList.contains('shaded')) {
