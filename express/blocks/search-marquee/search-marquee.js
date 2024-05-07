@@ -118,7 +118,7 @@ function initSearchFunction(block) {
       xCore: '',
       content: '',
     };
-    let searchInput = searchBar.value || getMetadata('topics');
+    let searchInput = searchBar.value?.toLowerCase() || getMetadata('topics');
 
     const tasksFoundInInput = findTask(taskMap);
     const tasksXFoundInInput = findTask(taskXMap);

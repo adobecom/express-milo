@@ -523,25 +523,27 @@ export default async function decorate(block) {
     block.classList.add('ratings_received');
   });
 
-  fetch(`https://www.adobe.com/reviews-api/ccx${sheet}.json`).then(
-    async (resp) => {
-      if (resp.ok) {
-        const response = await resp.json();
-        if (response.data[0].Average) {
-          ratingAverage = parseFloat(response.data[0].Average).toFixed(2);
-        }
-        if (response.data[0].Total) {
-          ratingTotal = parseFloat(response.data[0].Total);
-        }
-        if (response.data[0].Segments) {
-          actionSegments = response.data[0].Segments;
-        }
-        if (ratingAverage || ratingTotal) {
-          document.dispatchEvent(new Event('ratings_received'));
-        }
-      }
-    },
-  );
+  const { env } = getConfig();
+  let url = `https://www.adobe.com/reviews-api/ccx${sheet}.json`;
+  if (env?.name === 'stage') {
+    url = `https://www.stage.adobe.com/reviews-api/ccx${sheet}.json`;
+  }
+  const resp = await fetch(url);
+  if (resp.ok) {
+    const response = await resp.json();
+    if (response.data[0].Average) {
+      ratingAverage = parseFloat(response.data[0].Average).toFixed(2);
+    }
+    if (response.data[0].Total) {
+      ratingTotal = parseFloat(response.data[0].Total);
+    }
+    if (response.data[0].Segments) {
+      actionSegments = response.data[0].Segments;
+    }
+    if (ratingAverage || ratingTotal) {
+      document.dispatchEvent(new Event('ratings_received'));
+    }
+  }
 
   import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
     ratings[0].text = await mod.replaceKey('one-star-rating', getConfig());

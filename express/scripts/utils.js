@@ -143,6 +143,28 @@ export function removeIrrelevantSections(area) {
       if (sectionRemove) section.remove();
     }
   });
+
+  // floating CTA vs page CTA with same text or link logics
+  if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
+    const { device } = document.body.dataset;
+    const textToTarget = getMetadata(`${device}-floating-cta-text`)?.trim() || getMetadata('main-cta-text')?.trim();
+    const linkToTarget = getMetadata(`${device}-floating-cta-link`)?.trim() || getMetadata('main-cta-link')?.trim();
+    if (textToTarget || linkToTarget) {
+      const sameUrlCTAs = Array.from(area.querySelectorAll('a:any-link'))
+        .filter((a) => {
+          const sameText = a.textContent.trim() === textToTarget;
+          const samePathname = new URL(a.href).pathname === new URL(linkToTarget)?.pathname;
+          const isNotInFloatingCta = !a.closest('.block')?.classList.contains('floating-button');
+          const notFloatingCtaIgnore = !a.classList.contains('floating-cta-ignore');
+
+          return (sameText || samePathname) && isNotInFloatingCta && notFloatingCtaIgnore;
+        });
+
+      sameUrlCTAs.forEach((cta) => {
+        cta.classList.add('same-as-floating-button-CTA');
+      });
+    }
+  }
 }
 
 function overrideMiloColumns(area) {
