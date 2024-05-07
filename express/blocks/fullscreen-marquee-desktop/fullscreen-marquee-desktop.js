@@ -50,7 +50,7 @@ async function buildApp(block, content) {
   const appFrame = createTag('div', { class: 'fullscreen-marquee-desktop-app-frame' });
   const app = createTag('div', { class: 'fullscreen-marquee-desktop-app' });
   const contentContainer = createTag('div', { class: 'fullscreen-marquee-desktop-app-content-container' });
-  const cta = block.querySelector('.button-container a');
+  const cta = block.querySelector('.button-container a, a.con-button');
   let appImage;
   let editor;
   let variant;

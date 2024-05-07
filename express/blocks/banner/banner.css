@@ -2,6 +2,7 @@
 .banner.compact {
   background-color: var(--color-info-accent);
   padding: 80px 15px;
+  text-align: center;
 }
 
 .banner h1,

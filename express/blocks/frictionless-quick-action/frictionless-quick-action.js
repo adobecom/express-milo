@@ -185,7 +185,7 @@ function startSDKWithUnconvertedFile(file) {
     else if (file.size > maxSize) invalidInputError = 'your image file is too large';
 
     error = createTag('p', {}, invalidInputError);
-    const dropzoneButton = fqaBlock.querySelector(':scope .dropzone a.button');
+    const dropzoneButton = fqaBlock.querySelector(':scope .dropzone a.button, :scope .dropzone a.con-button');
     dropzoneButton?.before(error);
   }
 }
@@ -230,7 +230,7 @@ export default async function decorate(block) {
   const animation = animationContainer.querySelector('a');
   const dropzone = actionAndAnimationRow[1];
   const dropzoneBackground = createTag('div', { class: 'dropzone-bg' });
-  const cta = dropzone.querySelector('a.button');
+  const cta = dropzone.querySelector('a.button, a.con-button');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });

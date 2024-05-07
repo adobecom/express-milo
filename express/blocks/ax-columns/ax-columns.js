@@ -26,10 +26,12 @@ function transformToVideoColumn(cell, aTag, block) {
   const title = aTag.textContent.trim();
   // gather video urls from all links in cell
   const vidUrls = [];
-  cell.querySelectorAll(':scope a.button').forEach((button) => {
+  cell.querySelectorAll(':scope a.button, :scope a.con-button').forEach((button) => {
     vidUrls.push(button.href);
     if (button !== aTag) {
-      button.closest('.button-container').remove();
+      const buttonContainer = button.closest('.button-container');
+      if (buttonContainer) buttonContainer.remove();
+      else button.remove();
     }
   });
   aTag.setAttribute('rel', 'nofollow');
@@ -211,7 +213,7 @@ export default async function decorate(block) {
         }
       }
 
-      if (aTag && aTag.classList.contains('button')) {
+      if (aTag && (aTag.classList.contains('button') || aTag.classList.contains('con-button'))) {
         if (block.className.includes('fullsize')) {
           aTag.classList.add('xlarge');
           BlockMediator.set('primaryCtaUrl', aTag.href);
@@ -258,7 +260,7 @@ export default async function decorate(block) {
   // decorate offer
   if (block.classList.contains('offer')) {
     block
-      .querySelectorAll('a.button')
+      .querySelectorAll('a.button, a.con-button')
       .forEach((aTag) => aTag.classList.add('large', 'wide'));
     if (rows.length > 1) {
       // move all content into first row
@@ -281,6 +283,7 @@ export default async function decorate(block) {
   ) {
     addFreePlanWidget(
       block.querySelector('.button-container')
+        || block.querySelector('.con-button')?.parentElement
         || block.querySelector(
           ':scope .column:not(.hero-animation-overlay,.columns-picture)',
         ),
@@ -292,7 +295,7 @@ export default async function decorate(block) {
     block.closest('.section.columns-highlight-container')
     && !block.classList.contains('highlight')
   ) {
-    block.querySelectorAll('a.button').forEach((button) => {
+    block.querySelectorAll('a.button, a.con-button').forEach((button) => {
       button.classList.add('dark');
     });
   }
