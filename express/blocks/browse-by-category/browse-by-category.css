@@ -37,6 +37,14 @@
   line-height: 30px;
 }
 
+.browse-by-category .browse-by-category-sub-heading {
+  text-align: left;
+  font-size: 16px;
+  line-height: 30px;
+  padding-top: 5px;
+  padding-left: 2px;
+}
+
 .browse-by-category .browse-by-category-heading-section .browse-by-category-link-wrapper {
   margin: 8px 0 0;
 }

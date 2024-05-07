@@ -47,7 +47,7 @@ export class Masonry {
       }
 
       if (block.classList.contains('md-view')) {
-        colWidth = 256;
+        colWidth = 270;
       }
 
       if (block.classList.contains('lg-view')) {

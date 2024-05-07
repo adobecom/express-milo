@@ -903,6 +903,15 @@ body[data-device='mobile']
   margin-right: 4px;
 }
 
+/* floating-cta main CTA suppression */
+body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"] .same-as-floating-button-CTA {
+  display: block;
+}
+
+main > div:not(.banner-container) .block:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action) a.button.same-as-floating-button-CTA {
+  display: none;
+}
+
 @media (min-width: 900px) {
   .button-container.free-plan-container {
     width: max-content;
@@ -924,6 +933,10 @@ body[data-device='mobile']
 
   .free-plan-widget .plan-widget-tag {
     text-align: left;
+  }
+
+  main > div:not(.banner-container) .block:not(.pricing-summary, .pricing-cards, .pricing-table, .puf) a.button.same-as-floating-button-CTA {
+    display: inline-block;
   }
 }
 

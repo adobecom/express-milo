@@ -74,6 +74,11 @@
   margin-left: unset;
 }
 
+.link-list.centered div:first-child h3 {
+  width: fit-content;
+  margin: auto auto 20px auto;
+}
+
 /* fullwidth variant */
 
 .link-list-fullwidth-container > div.link-list-wrapper {

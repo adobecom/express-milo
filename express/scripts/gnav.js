@@ -56,7 +56,7 @@ async function checkGeo(userGeo, userLocale, geoCheckForce) {
 
 async function loadIMS() {
   window.adobeid = {
-    client_id: sessionStorage.getItem('imsclient'),
+    client_id: getConfig().imsClientId,
     scope: 'AdobeID,openid',
     locale: getConfig().locale.region,
     environment: 'prod',

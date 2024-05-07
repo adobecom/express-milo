@@ -1,4 +1,4 @@
-.ax-columns.columns-marquee {
+.section:first-of-type .ax-columns:first-of-type {
   min-height: unset;
 }
 
@@ -249,7 +249,7 @@
   width: 22px;
 }
 
-.ax-columns.columns-marquee .brand.icon {
+.section:first-of-type .ax-columns:first-of-type .brand.icon {
   display: unset;
   height: 32px;
   width: auto;
@@ -533,7 +533,7 @@
   padding-right: 8px;
 }
 
-.ax-columns.columns-marquee:not(.center):not(.fullsize) .brand.icon {
+.section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
   transform: none;
   left: 0;
   padding-left: 32px;
@@ -713,15 +713,12 @@
 }
 
 @media (min-width: 900px) {
-  body
-
-    .ax-columns.columns-marquee:not(.center):not(.fullsize)
-    .brand.icon {
+  .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
     padding-left: 0;
   }
 
 
-    .columns-fullsize-center-container
+  .columns-fullsize-center-container
     .ax-columns.fullsize
     .has-brand
     > div:not(.column-picture):not(.hero-animation-overlay) {
@@ -819,14 +816,14 @@
     text-align: left;
   }
 
-  .ax-columns.columns-marquee .brand.icon {
+  .section:first-of-type .ax-columns:first-of-type .brand.icon {
     position: unset;
     top: unset;
     left: unset;
     transform: unset;
   }
 
-  .ax-columns.columns-marquee:not(.center):not(.fullsize) .brand.icon {
+  .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
     padding-left: 0;
   }
 

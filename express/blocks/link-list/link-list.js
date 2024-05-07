@@ -69,21 +69,27 @@ async function loadSpreadsheetData(block, relevantRowsData) {
   }
 }
 
-const formatBlockLinks = (links, variant, baseURL) => {
-  if (!links || variant !== SMART_VARIANT || !baseURL) {
+const formatSmartBlockLinks = (links, baseURL) => {
+  if (!links || !baseURL) return;
+
+  let url = baseURL;
+  const multipleURLs = baseURL?.replace(/\s/g, '').split(',');
+  if (multipleURLs?.length > 0) {
+    [url] = multipleURLs;
+  } else {
     return;
   }
-  const formattedURL = `${baseURL}?acomx-dno=true&category=templates`;
+
+  const formattedURL = `${url}?acomx-dno=true&category=templates`;
   links.forEach((p) => {
     const a = p.querySelector('a');
     a.href = `${formattedURL}&q=${a.title}`;
+    a.classList.add('floating-cta-ignore');
   });
 };
 
 const toggleLinksHighlight = (links, variant) => {
-  if (variant === SMART_VARIANT) {
-    return;
-  }
+  if (variant === SMART_VARIANT) return;
   links.forEach((l) => {
     const a = l.querySelector(':scope > a');
     if (a) {
@@ -116,7 +122,7 @@ export default async function decorate(block) {
   }
 
   normalizeHeadings(block, ['h3']);
-  const links = [...block.querySelectorAll('p.button-container')];
+  const links = [...block.querySelectorAll('p.button-container, .con-button')];
   if (links.length) {
     links.forEach((p) => {
       const link = p.querySelector('a');
@@ -141,12 +147,11 @@ export default async function decorate(block) {
   });
 
   if (window.location.href.includes('/express/templates/')) {
-    const { default: updateAsyncBlocks } = await import(
-      '../../scripts/utils/template-ckg.js'
-    );
+    const { default: updateAsyncBlocks } = await import('../../scripts/utils/template-ckg.js');
     await updateAsyncBlocks();
   }
-
-  const searchBrankLinks = await replaceKey('search-branch-links', getConfig());
-  formatBlockLinks(links, variant, searchBrankLinks);
+  if (variant === SMART_VARIANT) {
+    const searchBrankLinks = await replaceKey('search-branch-links', getConfig());
+    formatSmartBlockLinks(links, searchBrankLinks);
+  }
 }
