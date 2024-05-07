@@ -525,7 +525,7 @@ export default async function decorate(block) {
 
   const { env } = getConfig();
   let url = `https://www.adobe.com/reviews-api/ccx${sheet}.json`;
-  if (env?.name === 'stage') {
+  if (env?.name === 'stage' || env?.name === 'local') {
     url = `https://www.stage.adobe.com/reviews-api/ccx${sheet}.json`;
   }
   const resp = await fetch(url);
