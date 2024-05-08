@@ -6,9 +6,7 @@ import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const imports = await
-Promise.all([import(`${getLibs()}/features/placeholders.js`),
-  await import(`${getLibs()}/utils/utils.js`)]);
+const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
 const { replaceKey } = imports[0];
 const { createTag, getConfig, getMetadata } = imports[1];
 

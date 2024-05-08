@@ -9,7 +9,7 @@
   max-width: 375px;
 }
 
-.section:has(.faq) > div > h2 {
+.section:has(.faq) > div > h2, .section:has(.faq) > div > h3, .section:has(.faq) > div > h4, .section:has(.faq) > div > h5, .section:has(.faq) > div > h6 {
   margin-top: 0;
   margin-bottom: 40px;
 }
@@ -72,7 +72,7 @@
     max-width: 830px;
   }
 
-  .section:has(.faq) > div > h2 {
+  .section:has(.faq) > div > h2, .section:has(.faq) > div > h3, .section:has(.faq) > div > h4, .section:has(.faq) > div > h5, .section:has(.faq) > div > h6 {
     margin-bottom: 80px;
   }
 
