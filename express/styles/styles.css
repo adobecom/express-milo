@@ -152,10 +152,6 @@ header #feds-header a.feds-navLink:hover .feds-navLink-text {
   color: var(--color-info-accent-hover);
 }
 
-footer {
-  margin-top: 0;
-}
-
 /* buttons */
 a.button:any-link {
   text-decoration: none;
@@ -507,10 +503,6 @@ a.button > svg > use {
   color: currentColor;
 }
 
-body.light-grey {
-  background-color: var(--body-alt-background-color);
-}
-
 h1,
 h2,
 h3,
@@ -784,10 +776,6 @@ img {
 /* make page : default content */
 .section.secondary {
   background-color: var(--color-gray-100);
-}
-
-.section > div:empty {
-  padding: 0;
 }
 
 .section p.button-container {
@@ -1077,22 +1065,6 @@ img.icon-microsoft-store {
 /* Japanese heading balanced word wrap styles */
 wbr.wbr-off {
   display: none;
-}
-
-/* progressive section appearance */
-.section[data-section-status='loading'],
-.section[data-section-status='initialized'],
-.hero[data-status='loading'],
-> div,
-.section[data-status='decorated'] {
-  display: none;
-}
-
-> .section,
-.fragment > .section,
-> .hero {
-  display: block;
-  position: relative;
 }
 
 /* Japanese font sizing styles */
