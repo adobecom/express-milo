@@ -497,7 +497,7 @@ export default async function decorate(block) {
   if (!rows[1]) return;
 
   const classes = block.classList;
-  if ((classes.contains('show-average') && classes.contains('average')) || (classes.contains('show-average'))) showRatingAverage = true;
+  if ((classes.contains('show') && classes.contains('average')) || (classes.contains('show-average'))) showRatingAverage = true;
 
   const heading = rows[0].querySelector('h1')
     ?? rows[0].querySelector('h2')
