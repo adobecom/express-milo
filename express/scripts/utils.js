@@ -486,6 +486,33 @@ function transpileMarquee(area) {
   });
 }
 
+async function buildAutoBlocks(main) {
+  const lastDiv = main.querySelector(':scope > div:last-of-type');
+
+  function loadFloatingCTA(BlockMediator) {
+    const validButtonVersion = ['floating-button', 'multifunction-button', 'bubble-ui-button', 'floating-panel'];
+    const device = document.body.dataset?.device;
+    const blockName = getMetadata(`${device}-floating-cta`);
+
+    if (blockName && validButtonVersion.includes(blockName) && lastDiv) {
+      const button = createTag('div', { class: blockName });
+      const colEl = createTag('div', {}, device);
+      button.appendChild(colEl);
+      button.classList.add('metadata-powered');
+      lastDiv.append(button);
+      BlockMediator.set('floatingCtasLoaded', true);
+    }
+  }
+
+  if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
+    const { default: BlockMediator } = await import('./block-mediator.min.js');
+
+    if (!BlockMediator.get('floatingCtasLoaded')) {
+      loadFloatingCTA(BlockMediator);
+    }
+  }
+}
+
 export function decorateArea(area = document) {
   if (getMetadata('sheet-powered') === 'Y') {
     replacePlaceholdersWithSheetContent(area);
