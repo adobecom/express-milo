@@ -118,8 +118,8 @@ function hideQuickActionsOnDevices() {
 
 export function removeIrrelevantSections(area) {
   if (!area) return;
-
-  area.querySelectorAll(':scope > div').forEach((section) => {
+  const selector = area === document ? 'body > main > div' : ':scope > div';
+  area.querySelectorAll(selector).forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
       const sectionMeta = readBlockConfig(sectionMetaBlock);
@@ -518,7 +518,7 @@ export function decorateArea(area = document) {
     replacePlaceholdersWithSheetContent(area);
   }
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  removeIrrelevantSections(area === document ? area.querySelector('main', 'body') : area);
+  removeIrrelevantSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');

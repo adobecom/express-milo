@@ -103,6 +103,7 @@ body {
   font-size: var(--body-font-size-m);
   color: var(--body-color);
   overflow-x: clip;
+  -webkit-font-smoothing: initial;
 }
 
 body.no-scroll {
