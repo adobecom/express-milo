@@ -6,13 +6,19 @@
   padding-left: 15px;
   padding-right: 15px;
   margin: auto;
+  padding-top: 60px;
+  max-width: 350px;
   line-height: initial;
 }
 
-.section .ax-columns.top.center, .section .ax-columns.fullsize.center, .section .ax-columns.light, .section .ax-columns.numbered {
+.ax-columns.top.center, .ax-columns.fullsize.center, .ax-columns.light, .ax-columns.fullsize.center {
   max-width: 375px;
   padding-left: 0;
   padding-right: 0;
+}
+
+.ax-columns:not(.highlight, .top.center, .fullsize, .light, .dark, .numbered) {
+  padding-bottom: 40px;
 }
 
 .ax-columns h1,
@@ -24,13 +30,8 @@
   margin: 0;
 }
 
-.section .ax-columns {
-  padding-top: 60px;
-  max-width: 350px;
-}
-
-.section .ax-columns.highlight,
-.section .ax-columns.dark {
+.ax-columns.highlight,
+.ax-columns.dark {
   padding-bottom: 120px;
   color: var(--color-white);
 }
@@ -832,6 +833,10 @@
     transform: unset;
   }
 
+  .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
+    padding-left: 0;
+  }
+
   .ax-columns .has-brand {
     padding-top: 0;
   }
@@ -841,7 +846,7 @@
     align-items: flex-start;
   }
 
-  .section .ax-columns {
+  .section .ax-columns, .ax-columns.top.center, .ax-columns.fullsize.center, .ax-columns.light, .ax-columns.fullsize.center {
     max-width: 836px;
     padding-left: 32px;
     padding-right: 32px;
@@ -910,14 +915,13 @@
 }
 
 @media (min-width: 1200px) {
-  .section .ax-columns {
+  .section .ax-columns, .ax-columns.top.center, .ax-columns.light {
     max-width: 1024px;
   }
 
   .section .ax-columns.fullsize {
     max-width: 1122px;
   }
-
 
   .ax-columns:not(.fullsize)
     .column:not(.column-picture):not(.hero-animation-overlay):not(.text) {
