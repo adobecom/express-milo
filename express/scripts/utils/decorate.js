@@ -63,6 +63,22 @@ export function addTempWrapperDeprecated($block, blockName) {
   wrapper.append($block);
 }
 
+export function splitAndAddVariantsWithDash(block) {
+  // split and add options with a dash
+  // (fullscreen-center -> fullscreen-center + fullscreen + center)
+  const extra = [];
+  block.classList.forEach((className, index) => {
+    if (index === 0) return; // block name, no split
+    const split = className.split('-');
+    if (split.length > 1) {
+      split.forEach((part) => {
+        extra.push(part);
+      });
+    }
+  });
+  block.classList.add(...extra);
+}
+
 export function normalizeHeadings(block, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());
   block.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
