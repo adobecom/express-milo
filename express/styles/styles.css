@@ -548,7 +548,6 @@ img {
 }
 
 .section > .content h1, .section > .content h2, .section > .content h3, .section > .content h4 {
-  margin-top: 80px;
   text-align: center;
 }
 
@@ -556,7 +555,11 @@ img {
   margin: 32px 0;
 }
 
-.section:last-of-type > .default-content-wrapper {
+.section > .content:first-child {
+  padding-top: 0.1px;
+}
+
+.section:last-of-type > .content {
   padding-bottom: 40px;
 }
 
