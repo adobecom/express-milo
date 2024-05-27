@@ -5,8 +5,14 @@
 .ax-columns {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 40px;
   margin: auto;
+  line-height: initial;
+}
+
+.section .ax-columns.top.center, .section .ax-columns.fullsize.center, .section .ax-columns.light, .section .ax-columns.numbered {
+  max-width: 375px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .ax-columns h1,
@@ -18,16 +24,13 @@
   margin: 0;
 }
 
-.section > .ax-columns {
-  padding-top: 60px;
-}
-
 .section .ax-columns {
+  padding-top: 60px;
   max-width: 350px;
 }
 
-.section:has(.ax-columns.highlight),
-.section:has(.ax-columns.dark) {
+.section .ax-columns.highlight,
+.section .ax-columns.dark {
   padding-bottom: 120px;
   color: var(--color-white);
 }
@@ -61,7 +64,7 @@
   line-height: 1.2;
 }
 
-.ax-columns p.button-container {
+.ax-columns p.button-container, .ax-columns .con-button {
   margin: 0;
   margin-top: 40px;
 }
@@ -70,22 +73,27 @@
   margin: 0;
 }
 
-.ax-columns:not(.highlight) .column-video .button-container a {
+.ax-columns:not(.highlight) .column-video .button-container a, .ax-columns:not(.highlight) .column-video a.con-button {
   border-radius: 24px;
   padding: 8px 20px;
 }
 
-.ax-columns:not(.highlight) .column-video .button-container a:hover,
+ .ax-columns:not(.highlight) .column-video .button-container a:hover,
 .ax-columns:not(.highlight) .column-video .button-container a:active,
 .ax-columns:not(.highlight) .column-video .button-container a,
-.ax-columns:not(.highlight) .column-video .button-container a:focus {
+.ax-columns:not(.highlight) .column-video .button-container a:focus,
+ .ax-columns:not(.highlight) .column-video a.con-button:hover,
+ .ax-columns:not(.highlight) .column-video a.con-button:active,
+ .ax-columns:not(.highlight) .column-video a.con-button a,
+ .ax-columns:not(.highlight) .column-video a.con-button:focus {
   background-color: transparent;
   border-color: var(--color-black);
   color: var(--color-black);
   box-shadow: none;
 }
 
-.ax-columns:not(.highlight) .column-video .button-container a:before {
+.ax-columns:not(.highlight) .column-video .button-container a:before,
+.ax-columns:not(.highlight) .column-video a.con-button:before {
   display: inline-block;
   width: 18px;
   height: 20px;
@@ -169,7 +177,7 @@
   text-align: center;
 }
 
-.ax-columns.center .column p.button-container {
+.ax-columns.center .column p.button-container, .ax-columns.center .column a.con-button {
   text-align: center;
 }
 
@@ -459,7 +467,7 @@
   padding-top: 40px;
 }
 
-.ax-columns.offer > div p.button-container {
+.ax-columns.offer > div p.button-container, .ax-columns.offer > div a.con-button {
   margin-bottom: 40px;
 }
 
@@ -514,7 +522,7 @@
   margin: 16px 0;
 }
 
-.ax-columns.fullsize > div > div .button-container {
+.ax-columns.fullsize > div > div .button-container, .ax-columns.fullsize > div > div a.con-button {
   margin: 16px 0;
 }
 
@@ -613,7 +621,7 @@
 }
 
 
-  .ax-columns
+.ax-columns
   .button-container.free-plan-container.stacked
   .free-plan-widget {
   margin-top: 0;
@@ -622,12 +630,12 @@
 }
 
 
-  .ax-columns.center.button-container.free-plan-container.stacked
+.ax-columns.center.button-container.free-plan-container.stacked
   .free-plan-widget {
   padding-left: 24px;
 }
 
-.columns-fullsize-top-container .columns-wrapper {
+.ax-columns.fullsize.top {
   max-width: 1200px;
 }
 
@@ -720,9 +728,7 @@
     padding-left: 0;
   }
 
-
-  .columns-fullsize-center-container
-    .ax-columns.fullsize
+    .ax-columns.fullsize.center
     .has-brand
     > div:not(.column-picture):not(.hero-animation-overlay) {
     padding-top: 0;
@@ -781,7 +787,7 @@
     margin: 16px 0;
   }
 
-  .ax-columns.fullsize > div > div .button-container {
+  .ax-columns.fullsize > div > div .button-container, .ax-columns.fullsize > div > div a.con-button {
     margin: 0;
     margin-top: 40px;
   }
@@ -824,10 +830,6 @@
     top: unset;
     left: unset;
     transform: unset;
-  }
-
-  .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
-    padding-left: 0;
   }
 
   .ax-columns .has-brand {
