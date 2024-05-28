@@ -817,8 +817,7 @@ body[data-device='mobile']
 /* jank protection for async blocks/sections */
 
 .pricing,
-.hero-animation,
-.fragment {
+.hero-animation {
   opacity: 0;
   height: 100vh;
   transition: opacity 100ms;
