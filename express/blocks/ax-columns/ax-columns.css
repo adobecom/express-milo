@@ -1,5 +1,6 @@
-.section:first-of-type .ax-columns:first-of-type {
+.section:first-child .ax-columns:first-child {
   min-height: unset;
+  padding-top: 0;
 }
 
 .ax-columns {
