@@ -577,7 +577,7 @@ export async function getExperimentConfig(experimentId) {
 
     return (config);
   } else {
-    const path = `/express/experiments/${experimentId}/manifest.json`;
+    const path = `/drafts/vhargrave/experiment/${experimentId}/manifest.json`;
     try {
       const config = {};
       const resp = await fetch(path);
