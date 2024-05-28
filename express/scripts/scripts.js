@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea, listenMiloEvents } from './utils.js';
+import { setLibs, decorateArea, listenMiloEvents, decorateTesting } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -129,6 +129,7 @@ decorateArea();
   document.head.append(footerMeta);
 
   listenMiloEvents();
+  await decorateTesting();
   await loadArea();
 
   if (isMobileGating && !rushGating) { runGating(); }

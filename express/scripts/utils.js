@@ -513,6 +513,158 @@ async function buildAutoBlocks(main) {
   }
 }
 
+export function getExperiment() {
+  let experiment = toClassName(getMetadata('experiment'));
+  const { hostname } = window.location;
+  if (!(/adobe\.com/.test(hostname) || /\.hlx\.live/.test(hostname) || hostname.includes('localhost'))) {
+    experiment = '';
+    // reason = 'not prod host and not local';
+  }
+  if (window.location.hash) {
+    experiment = '';
+    // reason = 'suppressed by #';
+  }
+
+  if (navigator.userAgent.match(/bot|crawl|spider/i)) {
+    experiment = '';
+    // reason = 'bot detected';
+  }
+
+  const usp = new URLSearchParams(window.location.search);
+  if (usp.has('experiment')) {
+    [experiment] = usp.get('experiment').split('/');
+  }
+
+  return experiment;
+}
+
+export function toCamelCase(name) {
+  return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+export async function getExperimentConfig(experimentId) {
+  const instantExperiment = getMetadata('instant-experiment');
+  if (instantExperiment) {
+    const config = {
+      experimentName: `Instant Experiment: ${experimentId}`,
+      audience: '',
+      status: 'Active',
+      id: experimentId,
+      variants: {},
+      variantNames: [],
+    };
+
+    const pages = instantExperiment.split(',').map((p) => new URL(p.trim()).pathname);
+    const evenSplit = 1 / (pages.length + 1);
+
+    config.variantNames.push('control');
+    config.variants.control = {
+      percentageSplit: '',
+      pages: [window.location.pathname],
+      blocks: [],
+      label: 'Control',
+    };
+
+    pages.forEach((page, i) => {
+      const vname = `challenger-${i + 1}`;
+      config.variantNames.push(vname);
+      config.variants[vname] = {
+        percentageSplit: `${evenSplit}`,
+        pages: [page],
+        label: `Challenger ${i + 1}`,
+      };
+    });
+
+    return (config);
+  } else {
+    const path = `/express/experiments/${experimentId}/manifest.json`;
+    try {
+      const config = {};
+      const resp = await fetch(path);
+      const json = await resp.json();
+      json.settings.data.forEach((line) => {
+        const key = toCamelCase(line.Name);
+        config[key] = line.Value;
+      });
+      config.id = experimentId;
+      config.manifest = path;
+      const variants = {};
+      let variantNames = Object.keys(json.experiences.data[0]);
+      variantNames.shift();
+      variantNames = variantNames.map((vn) => toCamelCase(vn));
+      variantNames.forEach((variantName) => {
+        variants[variantName] = {};
+      });
+      let lastKey = 'default';
+      json.experiences.data.forEach((line) => {
+        let key = toCamelCase(line.Name);
+        if (!key) key = lastKey;
+        lastKey = key;
+        const vns = Object.keys(line);
+        vns.shift();
+        vns.forEach((vn) => {
+          const camelVN = toCamelCase(vn);
+          if (key === 'pages' || key === 'blocks') {
+            variants[camelVN][key] = variants[camelVN][key] || [];
+            if (key === 'pages') variants[camelVN][key].push(new URL(line[vn]).pathname);
+            else variants[camelVN][key].push(line[vn]);
+          } else {
+            variants[camelVN][key] = line[vn];
+          }
+        });
+      });
+      config.variants = variants;
+      config.variantNames = variantNames;
+      return config;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log('error loading experiment manifest: %s', path, e);
+    }
+    return null;
+  }
+}
+
+export function checkTesting() {
+  return (getMetadata('testing').toLowerCase() === 'on');
+}
+
+async function loadAndRunExp(config, forcedExperiment, forcedVariant) {
+  const promises = [import('./experiment.js')];
+  const aepaudiencedevice = getMetadata('aepaudiencedevice').toLowerCase();
+  if (aepaudiencedevice === 'all' || aepaudiencedevice === document.body.dataset?.device) {
+    loadIMS();
+    // rush instrument-martech-launch-alloy
+    promises.push(loadMartech());
+    window.delay_preload_product = true;
+  }
+  const [{ runExps }] = await Promise.all(promises);
+  await runExps(config, forcedExperiment, forcedVariant);
+}
+
+export async function decorateTesting() {
+  try {
+    const usp = new URLSearchParams(window.location.search);
+
+    const experiment = getExperiment();
+    const [forcedExperiment, forcedVariant] = usp.get('experiment') ? usp.get('experiment').split('/') : [];
+
+    if (experiment) {
+      const config = await getExperimentConfig(experiment);
+      if (config && (toCamelCase(config.status) === 'active' || forcedExperiment)) {
+        await loadAndRunExp(config, forcedExperiment, forcedVariant);
+      }
+    }
+    const martech = usp.get('martech');
+    if ((checkTesting() && (martech !== 'off') && (martech !== 'delay')) || martech === 'rush') {
+      // eslint-disable-next-line no-console
+      console.log('rushing martech');
+    }
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('error testing', e);
+  }
+}
+
 export function decorateArea(area = document) {
   if (getMetadata('sheet-powered') === 'Y') {
     replacePlaceholdersWithSheetContent(area);
