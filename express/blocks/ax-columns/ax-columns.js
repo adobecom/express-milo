@@ -9,9 +9,8 @@ import {
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import {
-  addTempWrapperDeprecated,
   decorateButtonsDeprecated,
-  splitAndAddVariantsWithDash
+  splitAndAddVariantsWithDash,
 } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';

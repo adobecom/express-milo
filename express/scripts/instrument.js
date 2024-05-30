@@ -85,21 +85,11 @@ export function sendEventToAdobeAnaltics(eventName) {
       web: {
         webInteraction: {
           name: eventName,
-          linkClicks: {
-            value: 1,
-          },
+          linkClicks: { value: 1 },
           type: 'other',
         },
       },
-      _adobe_corpnew: {
-        digitalData: {
-          primaryEvent: {
-            eventInfo: {
-              eventName,
-            },
-          },
-        },
-      },
+      _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName } } } },
     },
   });
 }
@@ -113,9 +103,7 @@ function sendFrictionlessEventToAdobeAnaltics(block) {
       web: {
         webInteraction: {
           name: eventName,
-          linkClicks: {
-            value: 1,
-          },
+          linkClicks: { value: 1 },
           type: 'other',
         },
       },
@@ -401,19 +389,13 @@ export function trackButtonClick(a) {
       web: {
         webInteraction: {
           name: adobeEventName,
-          linkClicks: {
-            value: 1,
-          },
+          linkClicks: { value: 1 },
           type: 'other',
         },
       },
       _adobe_corpnew: {
         digitalData: {
-          primaryEvent: {
-            eventInfo: {
-              eventName: adobeEventName,
-            },
-          },
+          primaryEvent: { eventInfo: { eventName: adobeEventName } },
           ...(hemingwayAsset
             ? {
               asset: {

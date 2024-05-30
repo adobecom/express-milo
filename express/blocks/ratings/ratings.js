@@ -1,7 +1,7 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
 import { getIconDeprecated, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
-import {decorateButtonsDeprecated, splitAndAddVariantsWithDash} from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated, splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig, getMetadata } = await import(
   `${getLibs()}/utils/utils.js`
