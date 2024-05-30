@@ -251,6 +251,7 @@ export function lazyLoadLottiePlayer($block = null) {
   }
 }
 
+// TODO we might be able to remove this before migrating
 async function loadAEMGnav() {
   const miloLibs = getLibs();
   const { loadScript } = await import(`${miloLibs}/utils/utils.js`);
@@ -282,6 +283,7 @@ async function loadAEMGnav() {
   }
 }
 
+// TODO we might be able to remove this before migrating
 export function listenMiloEvents() {
   const lcpLoadedHandler = async () => {
     await loadAEMGnav();
@@ -486,10 +488,9 @@ function transpileMarquee(area) {
   });
 }
 
-async function buildAutoBlocks(main) {
-  const lastDiv = main.querySelector(':scope > div:last-of-type');
-
-  function loadFloatingCTA(BlockMediator) {
+export function buildFloatingButton() {
+  if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
+    const lastDiv = document.querySelector('main > div:last-of-type');
     const validButtonVersion = ['floating-button', 'multifunction-button', 'bubble-ui-button', 'floating-panel'];
     const device = document.body.dataset?.device;
     const blockName = getMetadata(`${device}-floating-cta`);
@@ -500,15 +501,6 @@ async function buildAutoBlocks(main) {
       button.appendChild(colEl);
       button.classList.add('metadata-powered');
       lastDiv.append(button);
-      BlockMediator.set('floatingCtasLoaded', true);
-    }
-  }
-
-  if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
-    const { default: BlockMediator } = await import('./block-mediator.min.js');
-
-    if (!BlockMediator.get('floatingCtasLoaded')) {
-      loadFloatingCTA(BlockMediator);
     }
   }
 }

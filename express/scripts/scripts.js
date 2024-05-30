@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, decorateArea, listenMiloEvents } from './utils.js';
+import { setLibs, buildFloatingButton, decorateArea } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -128,7 +128,8 @@ decorateArea();
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
-  listenMiloEvents();
+  // listenMiloEvents();
+  buildFloatingButton();
   await loadArea();
 
   if (isMobileGating && !rushGating) { runGating(); }
