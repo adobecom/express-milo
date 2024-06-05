@@ -13,7 +13,7 @@ notifications:
       fields:
         customfield_11800: MWPW-145743 #epic link
         customfield_12900:
-          value: Express Dev
+          value: Express dev
         watchers:
           - dstrong
           - vhargrave
