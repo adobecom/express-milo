@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, buildFloatingButton, decorateArea } from './utils.js';
+import { setLibs, buildAutoBlocks, decorateArea } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -32,6 +32,7 @@ const CONFIG = {
     version: '1.0',
     onDemand: true,
   },
+  imsScope: 'AdobeID,openid,pps.read,firefly_api,additional_info.roles,read_organizations', // TODO enable unav over the metadata
   imsClientId: 'AdobeExpressWeb',
   // geoRouting: 'off',
   // fallbackRouting: 'off',
@@ -111,17 +112,6 @@ decorateArea();
   loadLana({ clientId: 'express' });
   console.log(config);
 
-  const isMobileGating = ['yes', 'true', 'on'].includes(getMetadata('mobile-benchmark')?.toLowerCase()) && document.body.dataset.device === 'mobile';
-  const rushGating = ['yes', 'on', 'true'].includes(getMetadata('rush-beta-gating')?.toLowerCase());
-  const runGating = () => {
-    // TODO add mobile beta stuff
-    // import('./mobile-beta-gating.js').then(async (gatingScript) => {
-    //   gatingScript.default();
-    // });
-  };
-
-  if (isMobileGating && rushGating) { runGating(); }
-
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
   document.head.append(headerMeta);
@@ -129,10 +119,9 @@ decorateArea();
   document.head.append(footerMeta);
 
   // listenMiloEvents();
-  buildFloatingButton();
+  buildAutoBlocks();
+  import('./instrument.js').then((mod) => { mod.default(); });
   await loadArea();
-
-  if (isMobileGating && !rushGating) { runGating(); }
 
   import('./express-delayed.js').then((mod) => {
     mod.default();

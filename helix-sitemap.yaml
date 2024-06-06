@@ -83,7 +83,7 @@ sitemaps:
       norway:
         source: /no/express/query-index.json
         destination: /no/express/sitemap.xml
-        hreflang: nb
+        hreflang: no
         alternate: /no/{path}
       sweden:
         source: /se/express/query-index.json
@@ -194,6 +194,11 @@ sitemaps:
         destination: /nl/express/templates/sitemap.xml
         hreflang: nl
         alternate: /nl/{path}
+      # unitedkingdom:
+      #   source: /uk/express/templates/default/metadata.json?sheet=sitemap
+      #   destination: /uk/express/templates/sitemap.xml
+      #   hreflang: en-GB
+      #   alternate: /uk/{path}
 
   colors:
     origin: https://www.adobe.com
