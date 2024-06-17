@@ -251,15 +251,19 @@ async function decorateSearchFunctions(block) {
 function decorateBackground(block) {
   const mediaRow = block.querySelector('div:nth-child(2)');
   if (mediaRow) {
-    const media = mediaRow.querySelector('picture img');
-    if (media) {
-      media.classList.add('backgroundimg');
-      const wrapper = block.parentElement;
-      if (wrapper.classList.contains('search-marquee-wrapper')) {
-        wrapper.prepend(media);
-      } else {
-        block.prepend(media);
-      }
+    let media = mediaRow.querySelector('picture img');
+    if (!media) {
+      media = createTag('img');
+      media.src = mediaRow.querySelector('a')?.href;
+    }
+    media.classList.add('backgroundimg');
+    media.loading = 'eager';
+    media.setAttribute('fetchpriority', 'high');
+    const wrapper = block.parentElement;
+    if (wrapper.classList.contains('search-marquee-wrapper')) {
+      wrapper.prepend(media);
+    } else {
+      block.prepend(media);
     }
     mediaRow.remove();
   }

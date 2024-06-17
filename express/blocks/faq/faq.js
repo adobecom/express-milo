@@ -1,4 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
+import { trackButtonClick } from '../../scripts/instrument.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -22,6 +23,10 @@ function decorateFAQBlocks(block) {
     const { question, answer } = faq;
 
     const $accordion = createTag('div', { class: 'faq-accordion' });
+    // for tracking the faq
+    $accordion.addEventListener('click', () => {
+      trackButtonClick($accordion);
+    });
     block.append($accordion);
 
     const $questionDiv = createTag('h3', { class: 'faq-question' });

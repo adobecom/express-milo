@@ -2,7 +2,32 @@ import { getLibs, toClassName } from '../utils.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
-export function getIconDeprecated(icons, alt, size = 44) {
+function sanitizeInput(input) {
+  if (Number.isInteger(input)) return input;
+  return input.replace(/[^a-zA-Z0-9-_]/g, ''); // Simple regex to strip out potentially dangerous characters
+}
+
+function createSVGWrapper(icon, sheetSize, alt, altSrc) {
+  const svgWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgWrapper.classList.add('icon');
+  svgWrapper.classList.add(`icon-${icon}`);
+  svgWrapper.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns', 'http://www.w3.org/1999/xlink');
+  if (alt) {
+    svgWrapper.appendChild(createTag('title', { innerText: alt }));
+  }
+  const u = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+  if (altSrc) {
+    u.setAttribute('href', altSrc);
+  } else {
+    u.setAttribute('href', `/express/icons/ccx-sheet_${sanitizeInput(sheetSize)}.svg#${
+      sanitizeInput(icon)}${sanitizeInput(sheetSize)}`);
+  }
+  svgWrapper.appendChild(u);
+  return svgWrapper;
+}
+
+// eslint-disable-next-line default-param-last
+export function getIconDeprecated(icons, alt, size = 44, altSrc) {
   // eslint-disable-next-line no-param-reassign
   icons = Array.isArray(icons) ? icons : [icons];
   const [defaultIcon, mobileIcon] = icons;
@@ -100,28 +125,22 @@ export function getIconDeprecated(icons, alt, size = 44) {
 
   const size22Icons = ['chevron', 'pricingfree', 'pricingpremium'];
 
-  if (symbols.includes(icon)) {
-    const iconName = icon;
+  if (symbols.includes(icon) || altSrc) {
     let sheetSize = size;
     if (size22Icons.includes(icon)) sheetSize = 22;
-    return `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-${icon}">
-      ${alt ? `<title>${alt}</title>` : ''}
-      <use href="/express/icons/ccx-sheet_${sheetSize}.svg#${iconName}${sheetSize}"></use>
-    </svg>`;
+    return createSVGWrapper(icon, sheetSize, alt, altSrc);
   }
-  return `<img class="icon icon-${icon}" src="/express/icons/${icon}.svg" alt="${
-    alt || icon
-  }">`;
+  return createTag('img', {
+    class: `icon icon-${icon}`,
+    src: altSrc || `/express/icons/${icon}.svg`,
+    alt: `${alt || icon}`,
+  });
 }
 
-export function getIconElementDeprecated(icons, size, alt, additionalClassName) {
-  const div = createTag('div');
-  div.innerHTML = getIconDeprecated(icons, alt, size);
-
-  if (additionalClassName) {
-    div.firstElementChild.classList.add(additionalClassName);
-  }
-  return div.firstElementChild;
+export function getIconElementDeprecated(icons, size, alt, additionalClassName, altSrc) {
+  const icon = getIconDeprecated(icons, alt, size, altSrc);
+  if (additionalClassName) icon.classList.add(additionalClassName);
+  return icon;
 }
 
 /**
