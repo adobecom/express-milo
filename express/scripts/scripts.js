@@ -126,7 +126,4 @@ decorateArea();
   import('./express-delayed.js').then((mod) => {
     mod.default();
   });
-  import('./instrument.js').then((mod) => {
-    mod.default();
-  });
 }());
