@@ -1,13 +1,66 @@
 /* global _satellite __satelliteLoadedCallback alloy */
 
 import { getLibs } from './utils.js';
+import trackBranchParameters from './branchlinks.js';
 
-const [{ loadScript, getConfig, getMetadata }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+const [{ loadScript, getConfig }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
 
 const d = document;
 const loc = window.location;
 const { pathname } = loc;
 let expressLandingPageType;
+// home
+if (
+  pathname === '/express'
+    || pathname === '/express/'
+) {
+  expressLandingPageType = 'home';
+  // seo
+} else if (
+  pathname === '/express/create'
+    || pathname.includes('/create/')
+    || pathname === '/express/make'
+    || pathname.includes('/make/')
+    || pathname === '/express/feature'
+    || pathname.includes('/feature/')
+    || pathname === '/express/discover'
+    || pathname.includes('/discover/')
+) {
+  expressLandingPageType = 'seo';
+  // learn
+} else if (
+  pathname === '/express/tools'
+    || pathname.includes('/tools/')
+) {
+  expressLandingPageType = 'quickAction';
+} else if (
+  pathname === '/express/learn'
+    || (
+      pathname.includes('/learn/')
+        && !pathname.includes('/blog/')
+    )
+) {
+  expressLandingPageType = 'learn';
+  // blog
+} else if (
+  pathname === '/express/learn/blog'
+    || pathname.includes('/learn/blog/')
+) {
+  expressLandingPageType = 'blog';
+  // pricing
+} else if (
+  pathname.includes('/pricing')
+) {
+  expressLandingPageType = 'pricing';
+  // edu
+} else if (
+  pathname.includes('/education/')
+) {
+  expressLandingPageType = 'edu';
+  // other
+} else {
+  expressLandingPageType = 'other';
+}
 
 function getAssetDetails(el) {
   if (el.tagName === 'PICTURE') {
@@ -32,30 +85,8 @@ function getAssetDetails(el) {
   };
 }
 
-function getPlacement(btn) {
-  const parentBlock = btn.closest('[daa-lh^="b"]');
-  let placement = 'outside-blocks';
-
-  if (parentBlock) {
-    const blockName = parentBlock.classList[0];
-    const sameBlocks = btn.closest('main')?.querySelectorAll(`.${blockName}`);
-
-    if (sameBlocks && sameBlocks.length > 1) {
-      sameBlocks.forEach((b, i) => {
-        if (b === parentBlock) {
-          placement = `${blockName}-${i + 1}`;
-        }
-      });
-    } else {
-      placement = blockName;
-    }
-
-    if (['template-x'].includes(blockName) && btn.classList.contains('placeholder')) {
-      placement = 'blank-template-cta';
-    }
-  }
-
-  return placement;
+export function getExpressLandingPageType() {
+  return expressLandingPageType;
 }
 
 function set(path, value) {
@@ -77,182 +108,104 @@ function set(path, value) {
   return obj;
 }
 
-export function sendEventToAdobeAnaltics(eventName) {
-  _satellite.track('event', {
-    xdm: {},
-    data: {
-      eventType: 'web.webinteraction.linkClicks',
-      web: {
-        webInteraction: {
-          name: eventName,
-          linkClicks: { value: 1 },
-          type: 'other',
-        },
-      },
-      _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName } } } },
-    },
-  });
+function setDataAnalyticsAttributesForMartech() {
+  if (!window.alloy_all) window.alloy_all = {};
+  const locale = getConfig().locale.prefix;
+  const pathSegments = pathname.substr(1).split('/');
+  if (locale !== '') pathSegments.shift();
+  const pageName = `adobe.com:${pathSegments.join(':')}`;
+
+  let category;
+  if (pathname.includes('/create/')
+      || pathname.includes('/feature/')) {
+    category = 'design';
+    if (pathname.includes('/image')) category = 'photo';
+    if (pathname.includes('/video')) category = 'video';
+  }
+
+  //----------------------------------------------------------------------------
+  // set some global and persistent data layer properties
+  //----------------------------------------------------------------------------
+  set('page.pageInfo.pageName', pageName);
+  set('page.pageInfo.siteSection', 'adobe.com:express');
+  set('page.pageInfo.category', category);
+
+  //----------------------------------------------------------------------------
+  // spark specific global and persistent data layer properties
+  //----------------------------------------------------------------------------
+  set('page.pageInfo.pageurl', loc.href);
+  set('page.pageInfo.namespace', 'express');
 }
 
-function sendFrictionlessEventToAdobeAnaltics(block) {
-  const eventName = 'view-quickaction-upload-page';
-  _satellite.track('event', {
-    xdm: {},
-    data: {
-      eventType: 'web.webinteraction.linkClicks',
-      web: {
-        webInteraction: {
-          name: eventName,
-          linkClicks: { value: 1 },
-          type: 'other',
-        },
-      },
-      _adobe_corpnew: {
-        sdm: {
-          event: {
-            pagename: eventName,
-            url: loc.href,
+function safelyFireAnalyticsEvent(event) {
+  // eslint-disable-next-line no-underscore-dangle
+  if (window._satellite?.track) {
+    event();
+  } else {
+    window.addEventListener('alloy_sendEvent', () => {
+      event();
+    }, { once: true });
+  }
+}
+
+export function sendEventToAnalytics(eventName) {
+  const fireEvent = () => {
+    _satellite.track('event', {
+      xdm: {},
+      data: {
+        eventType: 'web.webinteraction.linkClicks',
+        web: {
+          webInteraction: {
+            name: eventName,
+            linkClicks: { value: 1 },
+            type: 'other',
           },
-          custom: {
-            qa: {
-              group: block.dataset.frictionlessgroup ?? 'unknown',
-              type: block.dataset.frictionlesstype ?? 'unknown',
+        },
+        _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName } } } },
+      },
+    });
+  };
+  safelyFireAnalyticsEvent(fireEvent);
+}
+
+export function sendFrictionlessEventToAdobeAnaltics(block) {
+  const eventName = 'view-quickaction-upload-page';
+  const fireEvent = () => {
+    _satellite.track('event', {
+      xdm: {},
+      data: {
+        eventType: 'web.webinteraction.linkClicks',
+        web: {
+          webInteraction: {
+            name: eventName,
+            linkClicks: { value: 1 },
+            type: 'other',
+          },
+        },
+        _adobe_corpnew: {
+          sdm: {
+            event: {
+              pagename: eventName,
+              url: loc.href,
+            },
+            custom: {
+              qa: {
+                group: block.dataset.frictionlessgroup ?? 'unknown',
+                type: block.dataset.frictionlesstype ?? 'unknown',
+              },
             },
           },
         },
       },
-    },
-  });
+    });
+  };
+  safelyFireAnalyticsEvent(fireEvent);
 }
 
 export function textToName(text) {
   const splits = text.toLowerCase().split(' ');
   const camelCase = splits.map((s, i) => (i ? s.charAt(0).toUpperCase() + s.substr(1) : s)).join('');
   return (camelCase);
-}
-
-export async function trackBranchParameters($links) {
-  const rootUrl = new URL(window.location.href);
-  const params = rootUrl.searchParams;
-  const pageUrl = window.location.pathname;
-
-  const { referrer } = window.document;
-
-  const [
-    searchTerm,
-    canvasHeight,
-    canvasWidth,
-    canvasUnit,
-    sceneline,
-    taskID,
-    assetCollection,
-    category,
-    searchCategory,
-    loadPrintAddon,
-    tab,
-    action,
-    prompt,
-    sdid,
-    mv,
-    mv2,
-    sKwcId,
-    efId,
-    promoId,
-    trackingId,
-    cgen,
-  ] = [
-    getMetadata('branch-search-term'),
-    getMetadata('branch-canvas-height'),
-    getMetadata('branch-canvas-width'),
-    getMetadata('branch-canvas-unit'),
-    getMetadata('branch-sceneline'),
-    getMetadata('branch-task-id'),
-    getMetadata('branch-asset-collection'),
-    getMetadata('branch-category'),
-    getMetadata('branch-search-category'),
-    getMetadata('branch-loadprintaddon'),
-    getMetadata('branch-tab'),
-    getMetadata('branch-action'),
-    getMetadata('branch-prompt'),
-    params.get('sdid'),
-    params.get('mv'),
-    params.get('mv2'),
-    params.get('s_kwcid'),
-    params.get('ef_id'),
-    params.get('promoid'),
-    params.get('trackingid'),
-    params.get('cgen'),
-  ];
-
-  const promises = [];
-  $links.forEach((a) => {
-    if (a.href && a.href.match('adobesparkpost.app.link')) {
-      a.rel = 'nofollow';
-      const btnUrl = new URL(a.href);
-      const urlParams = btnUrl.searchParams;
-      const setParams = (k, v) => {
-        if (v) urlParams.set(k, encodeURIComponent(v));
-      };
-      if (urlParams.has('acomx-dno')) {
-        urlParams.delete('acomx-dno');
-        btnUrl.search = urlParams.toString();
-        a.href = decodeURIComponent(btnUrl.toString());
-        return;
-      }
-      const placement = getPlacement(a);
-
-      const prom = placeholderMod.replaceKey('search-branch-links', getConfig()).then((searchBranchLink) => {
-        const isSearchBranchLink = searchBranchLink?.replace(/\s/g, '').split(',').includes(`${btnUrl.origin}${btnUrl.pathname}`);
-        if (isSearchBranchLink) {
-          setParams('category', category || 'templates');
-          setParams('taskID', taskID);
-          setParams('assetCollection', assetCollection);
-
-          if (searchCategory) {
-            setParams('searchCategory', searchCategory);
-          } else if (searchTerm) {
-            setParams('q', searchTerm);
-          }
-          if (loadPrintAddon) setParams('loadPrintAddon', loadPrintAddon);
-          setParams('tab', tab);
-          setParams('action', action);
-          setParams('prompt', prompt);
-        }
-      });
-      promises.push(prom);
-
-      setParams('referrer', referrer);
-      setParams('url', pageUrl);
-      setParams('height', canvasHeight);
-      setParams('width', canvasWidth);
-      setParams('unit', canvasUnit);
-      setParams('sceneline', sceneline);
-      setParams('sdid', sdid);
-      setParams('mv', mv);
-      setParams('mv2', mv2);
-      setParams('efid', efId);
-      setParams('promoid', promoId);
-      setParams('trackingid', trackingId);
-      setParams('cgen', cgen);
-      setParams('placement', placement);
-
-      if (sKwcId) {
-        const sKwcIdParameters = sKwcId.split('!');
-
-        if (typeof sKwcIdParameters[2] !== 'undefined' && sKwcIdParameters[2] === '3') {
-          setParams('customer_placement', 'Google%20AdWords');
-        }
-
-        if (typeof sKwcIdParameters[8] !== 'undefined' && sKwcIdParameters[8] !== '') {
-          setParams('keyword', sKwcIdParameters[8]);
-        }
-      }
-
-      btnUrl.search = urlParams.toString();
-      a.href = decodeURIComponent(btnUrl.toString());
-    }
-  });
-  await Promise.all(promises);
 }
 
 export function appendLinkText(eventName, a) {
@@ -284,133 +237,136 @@ export function appendLinkText(eventName, a) {
 }
 
 export function trackButtonClick(a) {
-  let adobeEventName = 'adobe.com:express:cta:';
-  let hemingwayAssetId;
-  let hemingwayAssetPath;
-  let hemingwayAssetPosition;
+  const fireEvent = () => {
+    let adobeEventName = 'adobe.com:express:cta:';
+    let hemingwayAssetId;
+    let hemingwayAssetPath;
+    let hemingwayAssetPosition;
 
-  const hemingwayAsset = a.querySelector('picture,video,audio,img')
-      || a.closest('[class*="-container"],[class*="-wrapper"]')?.querySelector('picture,video,audio,img');
-  const block = a.closest('.block');
-  const urlConstructable = a.href || a.currentSrc || a.src;
-  if (hemingwayAsset && block && urlConstructable) {
-    const { assetId, assetPath } = getAssetDetails(hemingwayAsset);
-    hemingwayAssetPath = assetPath;
-    hemingwayAssetId = assetId;
+    const hemingwayAsset = a.querySelector('picture,video,audio,img')
+        || a.closest('[class*="-container"],[class*="-wrapper"]')?.querySelector('picture,video,audio,img');
+    const block = a.closest('.section > div');
+    const urlConstructable = a.href || a.currentSrc || a.src;
+    if (hemingwayAsset && block && urlConstructable) {
+      const { assetId, assetPath } = getAssetDetails(hemingwayAsset);
+      hemingwayAssetPath = assetPath;
+      hemingwayAssetId = assetId;
 
-    const siblings = [...block
-      .querySelectorAll(`.${a.className.split(' ').join('.')}`)];
-    hemingwayAssetPosition = siblings.indexOf(a);
-  }
+      const siblings = [...block
+        .querySelectorAll(`.${a.className.split(' ').join('.')}`)];
+      hemingwayAssetPosition = siblings.indexOf(a);
+    }
 
-  const $tutorialContainer = a.closest('.tutorial-card');
-  const $contentToggleContainer = a.closest('.content-toggle');
-  // let cardPosition;
+    const $tutorialContainer = a.closest('.tutorial-card');
+    const $contentToggleContainer = a.closest('.content-toggle');
+    // let cardPosition;
 
-  if ($tutorialContainer) {
-    const videoName = textToName(a.querySelector('h3').textContent.trim());
-    adobeEventName = `${adobeEventName}tutorials:${videoName}:tutorialPressed`;
-  } else if ($contentToggleContainer) {
-    const toggleName = textToName(a.textContent.trim());
-    adobeEventName = `${adobeEventName}contentToggle:${toggleName}:buttonPressed`;
-  } else if (a.classList.contains('floating-button-lottie')) {
-    adobeEventName = `${adobeEventName}floatingButton:scrollPressed`;
-  } else if (a.classList.contains('video-player-inline-player-overlay')) {
-    const sessionName = a.parentNode.parentNode.parentNode.querySelector('.video-player-session-number').textContent.trim();
-    const videoName = a.parentNode.parentNode.parentNode.querySelector('.video-player-video-title').textContent.trim();
-    adobeEventName = `${adobeEventName}playing:${sessionName}-${videoName}`;
-  } else if (a.classList.contains('notch')) {
-    adobeEventName = `${adobeEventName}splitAction:notch`;
-  } else if (a.classList.contains('underlay')) {
-    adobeEventName = `${adobeEventName}splitAction:background`;
-  } else if (a.parentElement.classList.contains('floating-button')) {
-    adobeEventName = `${adobeEventName}floatingButton:ctaPressed`;
-  } else if (a.closest('.faq')) {
-    adobeEventName = appendLinkText(`${adobeEventName}faq:`, a);
-    // CTA in the hero
-  } else if (a.closest('.hero')) {
-    adobeEventName = appendLinkText(`${adobeEventName}hero:`, a);
-    // Click in the pricing block
-  } else if (expressLandingPageType === 'pricing') {
-    if (a.tagName !== 'A') {
-      adobeEventName += `pricing:pricing:${a.textContent.trim()}:Click`;
-      // Creative cloud learn more
-    } else if (a.id === 'free-trial') {
-      adobeEventName += 'pricing:cta:StartForFree';
-    } else if (a.id === '3-month-trial') {
-      adobeEventName += 'pricing:cta:StartYour3MonthTrial';
-      // View plans
+    if ($tutorialContainer) {
+      const videoName = textToName(a.querySelector('h3').textContent.trim());
+      adobeEventName = `${adobeEventName}tutorials:${videoName}:tutorialPressed`;
+    } else if ($contentToggleContainer) {
+      const toggleName = textToName(a.textContent.trim());
+      adobeEventName = `${adobeEventName}contentToggle:${toggleName}:buttonPressed`;
+    } else if (a.classList.contains('floating-button-lottie')) {
+      adobeEventName = `${adobeEventName}floatingButton:scrollPressed`;
+    } else if (a.classList.contains('video-player-inline-player-overlay')) {
+      const sessionName = a.parentNode.parentNode.parentNode.querySelector('.video-player-session-number').textContent.trim();
+      const videoName = a.parentNode.parentNode.parentNode.querySelector('.video-player-video-title').textContent.trim();
+      adobeEventName = `${adobeEventName}playing:${sessionName}-${videoName}`;
+    } else if (a.classList.contains('notch')) {
+      adobeEventName = `${adobeEventName}splitAction:notch`;
+    } else if (a.classList.contains('underlay')) {
+      adobeEventName = `${adobeEventName}splitAction:background`;
+    } else if (a.parentElement.classList.contains('floating-button')) {
+      adobeEventName = `${adobeEventName}floatingButton:ctaPressed`;
+    } else if (a.closest('.faq')) {
+      adobeEventName = appendLinkText(`${adobeEventName}faq:`, a);
+      // CTA in the hero
+    } else if (a.closest('.hero')) {
+      adobeEventName = appendLinkText(`${adobeEventName}hero:`, a);
+      // Click in the pricing block
+    } else if (expressLandingPageType === 'pricing') {
+      if (a.tagName !== 'A') {
+        adobeEventName += `pricing:pricing:${a.textContent.trim()}:Click`;
+        // Creative cloud learn more
+      } else if (a.id === 'free-trial') {
+        adobeEventName += 'pricing:cta:StartForFree';
+      } else if (a.id === '3-month-trial') {
+        adobeEventName += 'pricing:cta:StartYour3MonthTrial';
+        // View plans
+      } else {
+        adobeEventName = 'adobe.com:express:CTA:pricing:viewPlans:Click';
+      }
+      // quick actions clicks
+    } else if (a.closest('.toc-container')) {
+      if (a.classList.contains('toc-toggle')) {
+        adobeEventName += 'toc:toggle:Click';
+      } else if (a.classList.contains('toc-close')) {
+        adobeEventName += 'toc:close:Click';
+      } else if (a.classList.contains('toc-handle')) {
+        adobeEventName += 'toc:close:Click:handle';
+      } else if (a.classList.contains('toc-wrapper')) {
+        adobeEventName += 'toc:close:Click:background';
+      } else {
+        adobeEventName = appendLinkText(`${adobeEventName}toc:link:Click:`, a);
+      }
+    } else if (a.closest('.template')) {
+      adobeEventName = appendLinkText(adobeEventName, a);
+    } else if (a.closest('.tabs-ax .tab-list-container')) {
+      adobeEventName += `${a.closest('.tabs-ax')?.id}:${a.id}`;
+      // Default clicks
     } else {
-      adobeEventName = 'adobe.com:express:CTA:pricing:viewPlans:Click';
+      adobeEventName = appendLinkText(adobeEventName, a);
     }
-    // quick actions clicks
-  } else if (a.closest('.toc-container')) {
-    if (a.classList.contains('toc-toggle')) {
-      adobeEventName += 'toc:toggle:Click';
-    } else if (a.classList.contains('toc-close')) {
-      adobeEventName += 'toc:close:Click';
-    } else if (a.classList.contains('toc-handle')) {
-      adobeEventName += 'toc:close:Click:handle';
-    } else if (a.classList.contains('toc-wrapper')) {
-      adobeEventName += 'toc:close:Click:background';
-    } else {
-      adobeEventName = appendLinkText(`${adobeEventName}toc:link:Click:`, a);
-    }
-  } else if (a.closest('.template')) {
-    adobeEventName = appendLinkText(adobeEventName, a);
-  } else if (a.closest('.tabs-ax .tab-list-container')) {
-    adobeEventName += `${a.closest('.tabs-ax')?.id}:${a.id}`;
-    // Default clicks
-  } else {
-    adobeEventName = appendLinkText(adobeEventName, a);
-  }
 
-  // clicks using [data-lh and data-ll]
-  let trackingHeader = a.closest('[data-lh]');
-  if (trackingHeader || a.dataset.lh) {
-    adobeEventName = 'adobe.com:express';
-    let headerString = '';
-    while (trackingHeader) {
-      headerString = `:${textToName(trackingHeader.dataset.lh.trim())}${headerString}`;
-      trackingHeader = trackingHeader.parentNode.closest('[data-lh]');
+    // clicks using [data-lh and data-ll]
+    let trackingHeader = a.closest('[data-lh]');
+    if (trackingHeader || a.dataset.lh) {
+      adobeEventName = 'adobe.com:express';
+      let headerString = '';
+      while (trackingHeader) {
+        headerString = `:${textToName(trackingHeader.dataset.lh.trim())}${headerString}`;
+        trackingHeader = trackingHeader.parentNode.closest('[data-lh]');
+      }
+      adobeEventName += headerString;
+      if (a.dataset.ll) {
+        adobeEventName += `:${textToName(a.dataset.ll.trim())}`;
+      } else {
+        adobeEventName += `:${textToName(a.innerText.trim())}`;
+      }
     }
-    adobeEventName += headerString;
-    if (a.dataset.ll) {
-      adobeEventName += `:${textToName(a.dataset.ll.trim())}`;
-    } else {
-      adobeEventName += `:${textToName(a.innerText.trim())}`;
-    }
-  }
 
-  _satellite.track('event', {
-    xdm: {},
-    data: {
-      eventType: 'web.webinteraction.linkClicks',
-      web: {
-        webInteraction: {
-          name: adobeEventName,
-          linkClicks: { value: 1 },
-          type: 'other',
+    _satellite.track('event', {
+      xdm: {},
+      data: {
+        eventType: 'web.webinteraction.linkClicks',
+        web: {
+          webInteraction: {
+            name: adobeEventName,
+            linkClicks: { value: 1 },
+            type: 'other',
+          },
         },
-      },
-      _adobe_corpnew: {
-        digitalData: {
-          primaryEvent: { eventInfo: { eventName: adobeEventName } },
-          ...(hemingwayAsset
-            ? {
-              asset: {
-                assetInfo: {
-                  assetId: hemingwayAssetId,
-                  assetPath: hemingwayAssetPath,
-                  assetPosition: hemingwayAssetPosition,
+        _adobe_corpnew: {
+          digitalData: {
+            primaryEvent: { eventInfo: { eventName: adobeEventName } },
+            ...(hemingwayAsset
+              ? {
+                asset: {
+                  assetInfo: {
+                    assetId: hemingwayAssetId,
+                    assetPath: hemingwayAssetPath,
+                    assetPosition: hemingwayAssetPosition,
+                  },
                 },
-              },
-            }
-            : {}),
+              }
+              : {}),
+          },
         },
       },
-    },
-  });
+    });
+  };
+  safelyFireAnalyticsEvent(fireEvent);
 }
 
 function trackVideoAnalytics(parameters) {
@@ -478,103 +434,17 @@ function decorateAnalyticsEvents() {
   });
 
   d.addEventListener('videoclosed', (e) => {
-    sendEventToAdobeAnaltics(`adobe.com:express:cta:learn:columns:${e.detail.parameters.videoId}:videoClosed`);
+    sendEventToAnalytics(`adobe.com:express:cta:learn:columns:${e.detail.parameters.videoId}:videoClosed`);
   });
 }
 
-function martechLoadedCB() {
-  /* eslint-disable no-underscore-dangle */
-  //------------------------------------------------------------------------------------
-  // gathering the data
-  //------------------------------------------------------------------------------------
-  const locale = getConfig().locale.prefix;
-  const pathSegments = pathname.substr(1).split('/');
-  if (locale !== '') pathSegments.shift();
-  const pageName = `adobe.com:${pathSegments.join(':')}`;
-
-  let category;
-  if (pathname.includes('/create/')
-      || pathname.includes('/feature/')) {
-    category = 'design';
-    if (pathname.includes('/image')) category = 'photo';
-    if (pathname.includes('/video')) category = 'video';
-  }
-
-  // home
-  if (
-    pathname === '/express'
-      || pathname === '/express/'
-  ) {
-    expressLandingPageType = 'home';
-    // seo
-  } else if (
-    pathname === '/express/create'
-      || pathname.includes('/create/')
-      || pathname === '/express/make'
-      || pathname.includes('/make/')
-      || pathname === '/express/feature'
-      || pathname.includes('/feature/')
-      || pathname === '/express/discover'
-      || pathname.includes('/discover/')
-  ) {
-    expressLandingPageType = 'seo';
-    // learn
-  } else if (
-    pathname === '/express/tools'
-      || pathname.includes('/tools/')
-  ) {
-    expressLandingPageType = 'quickAction';
-  } else if (
-    pathname === '/express/learn'
-      || (
-        pathname.includes('/learn/')
-        && !pathname.includes('/blog/')
-      )
-  ) {
-    expressLandingPageType = 'learn';
-    // blog
-  } else if (
-    pathname === '/express/learn/blog'
-      || pathname.includes('/learn/blog/')
-  ) {
-    expressLandingPageType = 'blog';
-    // pricing
-  } else if (
-    pathname.includes('/pricing')
-  ) {
-    expressLandingPageType = 'pricing';
-    // edu
-  } else if (
-    pathname.includes('/education/')
-  ) {
-    expressLandingPageType = 'edu';
-    // other
-  } else {
-    expressLandingPageType = 'other';
-  }
-
-  //----------------------------------------------------------------------------
-  // set some global and persistent data layer properties
-  //----------------------------------------------------------------------------
-  set('page.pageInfo.pageName', pageName);
-  set('page.pageInfo.siteSection', 'adobe.com:express');
-  set('page.pageInfo.category', category);
-
-  //----------------------------------------------------------------------------
-  // spark specific global and persistent data layer properties
-  //----------------------------------------------------------------------------
-  set('page.pageInfo.pageurl', loc.href);
-  set('page.pageInfo.namespace', 'express');
-
-  //------------------------------------------------------------------------------------
-  // Fire extra express events
-  //------------------------------------------------------------------------------------
-  const quickActionBlock = d.querySelector('.frictionless-quick-action.block');
-  if (quickActionBlock) {
-    sendFrictionlessEventToAdobeAnaltics(quickActionBlock);
-  }
+export default function martechLoadedCB() {
+  setDataAnalyticsAttributesForMartech();
   decorateAnalyticsEvents();
 
+  // TODO Start of section to be removed after Jingle finishes adding xlg to old express Repo
+  // this piece of code is necessary for the ratings block atm so that the right user
+  // segments can leave a review
   const ENABLE_PRICING_MODAL_AUDIENCE = 'enablePricingModal';
   const RETURNING_VISITOR_SEGMENT_ID = 23153796;
 
@@ -611,7 +481,7 @@ function martechLoadedCB() {
           audiences.push(ENABLE_PRICING_MODAL_AUDIENCE);
           segments.push(RETURNING_VISITOR_SEGMENT_ID);
 
-          sendEventToAdobeAnaltics('pricingModalUserInSegment');
+          sendEventToAnalytics('pricingModalUserInSegment');
         }
 
         QUICK_ACTION_SEGMENTS.forEach((QUICK_ACTION_SEGMENT) => {
@@ -635,90 +505,5 @@ function martechLoadedCB() {
   }
 
   __satelliteLoadedCallback(getAudiences);
-}
-
-export default async function decorateTrackingEvents() {
-  martechLoadedCB();
-  const $links = d.querySelectorAll('main a');
-
-  // for adding branch parameters to branch links
-  await trackBranchParameters($links);
-
-  // for tracking the faq
-  d.querySelectorAll('main .faq-accordion').forEach(($a) => {
-    $a.addEventListener('click', () => {
-      trackButtonClick($a);
-    });
-  });
-
-  // for tracking the content toggle buttons
-  d.querySelectorAll('main .content-toggle button').forEach(($button) => {
-    $button.addEventListener('click', () => {
-      trackButtonClick($button);
-    });
-  });
-
-  // for tracking just the sticky banner close button
-  const $button = d.querySelector('.sticky-promo-bar button.close');
-  if ($button) {
-    $button.addEventListener('click', () => {
-      sendEventToAdobeAnaltics('adobe.com:express:cta:startYourFreeTrial:close');
-    });
-  }
-
-  // Tracking any video column blocks.
-  const $columnVideos = d.querySelectorAll('.column-video');
-  if ($columnVideos.length) {
-    $columnVideos.forEach(($columnVideo) => {
-      const $parent = $columnVideo.closest('.columns');
-      const $a = $parent.querySelector('a');
-      const adobeEventName = appendLinkText(`adobe.com:express:cta:learn:columns:${expressLandingPageType}:`, $a);
-
-      $parent.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sendEventToAdobeAnaltics(adobeEventName);
-      });
-    });
-  }
-
-  const toggleBar = d.querySelector('.toggle-bar.block');
-  if (toggleBar) {
-    const tgBtns = toggleBar.querySelectorAll('button.toggle-bar-button');
-
-    tgBtns.forEach((btn) => {
-      const textEl = btn.querySelector('.text-wrapper');
-      let texts = [];
-
-      if (textEl) {
-        let child = textEl.firstChild;
-        while (child) {
-          if (child.nodeType === 3) {
-            texts.push(child.data);
-          }
-          child = child.nextSibling;
-        }
-      }
-
-      texts = texts.join('') || textEl.textContent.trim();
-      const eventName = `adobe.com:express:homepage:intentToggle:${textToName(texts)}`;
-      btn.addEventListener('click', () => {
-        sendEventToAdobeAnaltics(eventName);
-      });
-    });
-  }
-
-  // for tracking the tab-ax tabs
-  d.querySelectorAll('main .tabs-ax .tab-list-container button[role="tab"]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      trackButtonClick(btn);
-    });
-  });
-
-  d.querySelectorAll('main .pricing-table .toggle-content').forEach((toggle) => {
-    toggle.addEventListener('click', () => {
-      const buttonEl = toggle.querySelector('span[role="button"]');
-      const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
-      sendEventToAdobeAnaltics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
-    });
-  });
+  // end of section to be removed after Jingle finishes adding xlg to old express Repo
 }

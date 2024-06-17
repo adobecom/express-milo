@@ -1,4 +1,4 @@
-import { getIconElementDeprecated } from './icons.js';
+import { getIconDeprecated, getIconElementDeprecated } from './icons.js';
 import { getLibs } from '../utils.js';
 
 const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
@@ -42,15 +42,14 @@ export function decorateButtonsDeprecated(el, size) {
           $twoup.classList.add('button-container');
         }
       }
-      // TODO add with icon code probably
-      // if (linkText.startsWith('{{icon-') && linkText.endsWith('}}')) {
-      //     const $iconName = /{{icon-([\w-]+)}}/g.exec(linkText)[1];
-      //     if ($iconName) {
-      //         $a.innerHTML = getIcon($iconName, `${$iconName} icon`);
-      //         $a.classList.remove('button', 'primary', 'secondary', 'accent');
-      //         $a.title = $iconName;
-      //     }
-      // }
+      if (linkText.startsWith('{{icon-') && linkText.endsWith('}}')) {
+        const $iconName = /{{icon-([\w-]+)}}/g.exec(linkText)[1];
+        if ($iconName) {
+          $a.appendChild(getIconDeprecated($iconName, `${$iconName} icon`));
+          $a.classList.remove('button', 'primary', 'secondary', 'accent');
+          $a.title = $iconName;
+        }
+      }
     }
   });
 }

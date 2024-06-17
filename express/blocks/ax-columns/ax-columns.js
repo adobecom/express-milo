@@ -19,8 +19,12 @@ import {
   embedVimeo,
   isVideoLink,
 } from '../../scripts/utils/embed-videos.js';
-
 import BlockMediator from '../../scripts/block-mediator.min.js';
+import {
+  appendLinkText,
+  getExpressLandingPageType,
+  sendEventToAnalytics,
+} from '../../scripts/instrument.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -398,5 +402,20 @@ export default async function decorate(block) {
       '../../scripts/utils/location-utils.js'
     );
     await formatSalesPhoneNumber(phoneNumberTags);
+  }
+
+  // Tracking any video column blocks.
+  const columnVideos = block.querySelectorAll('.column-video');
+  if (columnVideos.length) {
+    columnVideos.forEach((columnVideo) => {
+      const parent = columnVideo.closest('.columns');
+      const a = parent.querySelector('a');
+      const adobeEventName = appendLinkText(`adobe.com:express:cta:learn:columns:${getExpressLandingPageType()}:`, a);
+
+      parent.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sendEventToAnalytics(adobeEventName);
+      });
+    });
   }
 }
