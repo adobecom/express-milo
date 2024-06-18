@@ -1,5 +1,6 @@
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import { decorateButtonsDeprecated, normalizeHeadings } from '../../scripts/utils/decorate.js';
+import { fixIcons } from '../../scripts/utils/icons.js';
 
 export default async function decorate(block) {
   decorateButtonsDeprecated(block);
@@ -28,4 +29,5 @@ export default async function decorate(block) {
   if (phoneNumberTags.length > 0) {
     await formatSalesPhoneNumber(phoneNumberTags);
   }
+  fixIcons(block);
 }

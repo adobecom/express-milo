@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -46,8 +47,8 @@ function createTag(tag, attributes, html, options = {}) {
   const el = document.createElement(tag);
   if (html) {
     if (html instanceof HTMLElement
-        || html instanceof SVGElement
-        || html instanceof DocumentFragment) {
+      || html instanceof SVGElement
+      || html instanceof DocumentFragment) {
       el.append(html);
     } else if (Array.isArray(html)) {
       el.append(...html);
@@ -108,7 +109,7 @@ function hideQuickActionsOnDevices() {
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
   if (document.body.dataset.device === 'mobile'
-      || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
+    || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
     fqaMeta.setAttribute('name', 'fqa-off');
   } else {
     fqaMeta.setAttribute('name', 'fqa-on');

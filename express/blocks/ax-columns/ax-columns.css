@@ -3,6 +3,11 @@
   padding-top: 0;
 }
 
+.section.long-form .ax-columns {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
 .ax-columns {
   padding-left: 15px;
   padding-right: 15px;
@@ -179,7 +184,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 0;
 }
 
 .ax-columns.center .column {
