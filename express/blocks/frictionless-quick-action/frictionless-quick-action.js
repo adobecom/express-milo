@@ -5,11 +5,17 @@ import {
 import { getLibs } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
 
 const { createTag, getConfig, loadScript } = await import(`${getLibs()}/utils/utils.js`);
 
 const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
 const imageInputAccept = '.png, .jpeg, .jpg';
+const sizeLimits = {
+  image: 40 * 1024 * 1024,
+  video: 1024 * 1024 * 1024,
+};
+// only allows 1 qa per page?
 let inputElement;
 let quickAction;
 let fqaBlock;
@@ -167,9 +173,27 @@ function startSDK(data = '') {
   });
 }
 
+function getQAGroup() {
+  if ([
+    'convert-to-jpg',
+    'convert-to-png',
+    'convert-to-svg',
+    'crop-image',
+    'resize-image',
+    'remove-background',
+    'generate-qr-code',
+  ].includes(quickAction)) {
+    return 'image';
+  }
+  // update list of video qas here
+  if ([].includes(quickAction)) return 'video';
+  // fallback to image until we have real video QA
+  return 'image';
+}
+
 function startSDKWithUnconvertedFile(file) {
   if (!file) return;
-  const maxSize = 17 * 1024 * 1024; // 17 MB in bytes
+  const maxSize = sizeLimits[getQAGroup()] ?? 40 * 1024 * 1024;
   if (validImageTypes.includes(file.type) && file.size <= maxSize) {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -202,22 +226,6 @@ function uploadFile() {
     const file = inputElement.files[0];
     startSDKWithUnconvertedFile(file);
   };
-}
-
-function getQAGroup(qa) {
-  // TODO: fill up the mapping here
-  switch (qa) {
-    case 'convert-to-jpg':
-    case 'convert-to-png':
-    case 'convert-to-svg':
-    case 'crop-image':
-    case 'resize-image':
-    case 'remove-background':
-      return 'image';
-    case 'generate-qr-code':
-    default:
-      return 'image';
-  }
 }
 
 export default async function decorate(block) {
@@ -316,4 +324,6 @@ export default async function decorate(block) {
 
   fqaBlock.dataset.frictionlesstype = quickAction;
   fqaBlock.dataset.frictionlessgroup = getQAGroup(quickAction);
+
+  sendFrictionlessEventToAdobeAnaltics(block);
 }

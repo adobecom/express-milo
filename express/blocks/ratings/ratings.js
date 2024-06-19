@@ -1,5 +1,5 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
-import { getIconDeprecated, getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { decorateButtonsDeprecated, splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
@@ -88,6 +88,12 @@ export default async function decorate(block) {
     return ccxActionRatings && ccxActionRatings.includes(sheet);
   }
 
+  function populateStars(count, star, parent) {
+    for (let i = 0; i < count; i += 1) {
+      parent.appendChild(getIconElementDeprecated(star));
+    }
+  }
+
   function determineActionUsed() {
     // "dev" mode: check action-used query parameter
     const u = new URL(window.location.href);
@@ -155,16 +161,16 @@ export default async function decorate(block) {
 
   // Updates the front-end style of the slider.
   function updateSliderStyle(value) {
-    const input = block.querySelector('input[type=range]');
-    const tooltip = block.querySelector('.tooltip');
-    const sliderFill = block.querySelector('.slider-fill');
+    const $input = block.querySelector('input[type=range]');
+    const $tooltip = block.querySelector('.tooltip');
+    const $sliderFill = block.querySelector('.slider-fill');
     const thumbWidth = 60;
-    const pos = (value - input.getAttribute('min'))
-      / (input.getAttribute('max') - input.getAttribute('min'));
+    const pos = (value - $input.getAttribute('min'))
+        / ($input.getAttribute('max') - $input.getAttribute('min'));
     const thumbCorrect = thumbWidth * (pos - 0.25) * -1 - 0.1;
-    const titlePos = pos * input.offsetWidth - thumbWidth / 4 + thumbCorrect;
-    tooltip.style.left = `${titlePos}px`;
-    sliderFill.style.width = `${titlePos + thumbWidth / 2}px`;
+    const titlePos = pos * $input.offsetWidth - thumbWidth / 4 + thumbCorrect;
+    $tooltip.style.left = `${titlePos}px`;
+    $sliderFill.style.width = `${titlePos + thumbWidth / 2}px`;
   }
 
   // Implements the slider logic.
@@ -337,9 +343,7 @@ export default async function decorate(block) {
 
   // Gets the current rating and returns star span element.
   function getCurrentRatingStars() {
-    const star = getIconDeprecated('star');
-    const starHalf = getIconDeprecated('star-half');
-    const starEmpty = getIconDeprecated('star-empty');
+    const star = getIconElementDeprecated('star');
     const stars = createTag('span', { class: 'rating-stars' });
     let rating = ratingAverage ?? 5;
     rating = Math.round(rating * 10) / 10; // round nearest decimal point
@@ -351,18 +355,25 @@ export default async function decorate(block) {
       const filledStars = Math.floor(ratingRoundedHalf);
       const halfStars = filledStars === ratingRoundedHalf ? 0 : 1;
       const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
-      stars.innerHTML = `${star.repeat(filledStars)}${starHalf.repeat(
-        halfStars,
-      )}${starEmpty.repeat(emptyStars)}`;
-      const votes = createTag('span', { class: 'rating-votes' });
-      votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount} ${votesText}`;
-      if (getConfig().locale.region === 'kr') votes.innerHTML = `<strong>${rating} / 5</strong> - ${ratingAmount}${votesText}`;
-      stars.appendChild(votes);
+      populateStars(filledStars, 'star', stars);
+      populateStars(halfStars, 'star-half', stars);
+      populateStars(emptyStars, 'star-empty', stars);
+      const $votes = createTag('span', { class: 'rating-votes' });
+      const strong = document.createElement('strong');
+      strong.textContent = `${rating} / 5`;
+      $votes.appendChild(strong);
+      $votes.appendChild(document.createTextNode(` - ${ratingAmount} ${votesText}`));
+      if (getConfig().locale.region === 'kr') {
+        $votes.childNodes[0].textContent = `${rating} / 5`;
+      }
+      stars.appendChild($votes);
       if (rating > 4.2) {
         buildSchema(actionTitle);
       }
     } else {
-      stars.innerHTML = `${star.repeat(5)}`;
+      for (let i = 0; i < 5; i += 1) {
+        stars.appendChild(star.cloneNode(true));
+      }
     }
     return stars;
   }
@@ -401,30 +412,22 @@ export default async function decorate(block) {
         <div>
           <span class="tooltip--text"></span>
           <div class="tooltip--image">
-            ${getIconDeprecated('emoji-star-struck')}
+         
           <div>
         </div>
       </div>
     `,
     );
-    const star = getIconDeprecated('star');
+    slider.querySelector('.tooltip--image').append(getIconElementDeprecated('emoji-star-struck'));
     form.insertAdjacentHTML(
       'beforeend',
       /* html */ `
       <div class="slider-bottom">
-        <div class="vertical-line"><button type="button" aria-label="1" class="stars one-star">${star}</button></div>
-        <div class="vertical-line"><button type="button" aria-label="2" class="stars two-stars">${star.repeat(
-    2,
-  )}</button></div>
-        <div class="vertical-line"><button type="button" aria-label="3" class="stars three-stars">${star.repeat(
-    3,
-  )}</button></div>
-        <div class="vertical-line"><button type="button" aria-label="4" class="stars four-stars">${star.repeat(
-    4,
-  )}</button></div>
-        <div class="vertical-line"><button type="button" aria-label="5" class="stars five-stars">${star.repeat(
-    5,
-  )}</button></div>
+        <div class="vertical-line"><button type="button" aria-label="1" class="stars one-star"></button></div>
+        <div class="vertical-line"><button type="button" aria-label="2" class="stars two-stars"></button></div>
+        <div class="vertical-line"><button type="button" aria-label="3" class="stars three-stars"> </button></div>
+        <div class="vertical-line"><button type="button" aria-label="4" class="stars four-stars">$ </button></div>
+        <div class="vertical-line"><button type="button" aria-label="5" class="stars five-stars"> </button></div>
       </div>
       <div class="slider-comment">
         <label for="comment"></label>
@@ -434,6 +437,12 @@ export default async function decorate(block) {
       <div class="ratings-scroll-anchor"></div>
     `,
     );
+    populateStars(1, 'star', form.querySelector('.one-star'));
+    populateStars(2, 'star', form.querySelector('.two-stars'));
+    populateStars(3, 'star', form.querySelector('.three-stars'));
+    populateStars(4, 'star', form.querySelector('.four-stars'));
+    populateStars(5, 'star', form.querySelector('.five-stars'));
+
     // Form-submit event listener.
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -501,12 +510,11 @@ export default async function decorate(block) {
   if ((classes.contains('show') && classes.contains('average')) || (classes.contains('show-average'))) showRatingAverage = true;
 
   const heading = rows[0].querySelector('h1')
-    ?? rows[0].querySelector('h2')
-    ?? rows[0].querySelector('h3')
-    ?? rows[0].querySelector('h4');
+      ?? rows[0].querySelector('h2')
+      ?? rows[0].querySelector('h3')
+      ?? rows[0].querySelector('h4');
   const headingTag = heading ? heading.tagName : 'h3';
   const CTA = rows[0].querySelector('a');
-  if (CTA) CTA.classList.add('xlarge');
   const $sheet = rows[1].firstElementChild;
   actionTitle = heading ? heading.textContent.trim() : defaultTitle;
   sheet = $sheet.textContent.trim();

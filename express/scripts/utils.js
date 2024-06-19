@@ -36,12 +36,16 @@ export const [setLibs, getLibs] = (() => {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
-
+const cachedMetadata = [];
 const getMetadata = (name, doc = document) => {
   const attr = name && name.includes(':') ? 'property' : 'name';
   const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
   return meta && meta.content;
 };
+export function getCachedMetadata(name) {
+  if (cachedMetadata[name] === undefined) cachedMetadata[name] = getMetadata(name);
+  return cachedMetadata[name];
+}
 
 function createTag(tag, attributes, html, options = {}) {
   const el = document.createElement(tag);
@@ -151,14 +155,23 @@ export function removeIrrelevantSections(area) {
     const textToTarget = getMetadata(`${device}-floating-cta-text`)?.trim() || getMetadata('main-cta-text')?.trim();
     const linkToTarget = getMetadata(`${device}-floating-cta-link`)?.trim() || getMetadata('main-cta-link')?.trim();
     if (textToTarget || linkToTarget) {
+      const linkToTargetURL = new URL(linkToTarget);
       const sameUrlCTAs = Array.from(area.querySelectorAll('a:any-link'))
         .filter((a) => {
-          const sameText = a.textContent.trim() === textToTarget;
-          const samePathname = new URL(a.href).pathname === new URL(linkToTarget)?.pathname;
-          const isNotInFloatingCta = !a.closest('.block')?.classList.contains('floating-button');
-          const notFloatingCtaIgnore = !a.classList.contains('floating-cta-ignore');
+          try {
+            const currURL = new URL(a.href);
+            const sameText = a.textContent.trim() === textToTarget;
+            const samePathname = currURL.pathname === linkToTargetURL?.pathname;
+            const sameHash = currURL.hash === linkToTargetURL?.hash;
+            const isNotInFloatingCta = !a.closest('.block')?.classList.contains('floating-button');
+            const notFloatingCtaIgnore = !a.classList.contains('floating-cta-ignore');
 
-          return (sameText || samePathname) && isNotInFloatingCta && notFloatingCtaIgnore;
+            return (sameText || (samePathname && sameHash))
+                  && isNotInFloatingCta && notFloatingCtaIgnore;
+          } catch (err) {
+            window.lana?.log(err);
+            return false;
+          }
         });
 
       sameUrlCTAs.forEach((cta) => {
@@ -489,7 +502,7 @@ function transpileMarquee(area) {
   });
 }
 
-export function buildFloatingButton() {
+export function buildAutoBlocks() {
   if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
     const lastDiv = document.querySelector('main > div:last-of-type');
     const validButtonVersion = ['floating-button', 'multifunction-button', 'bubble-ui-button', 'floating-panel'];
@@ -502,6 +515,7 @@ export function buildFloatingButton() {
       button.appendChild(colEl);
       button.classList.add('metadata-powered');
       lastDiv.append(button);
+      import('./block-mediator.min.js').then((mod) => { mod.set('floatingCtasLoaded', true); });
     }
   }
 }
@@ -517,6 +531,11 @@ export function decorateArea(area = document) {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
+  const links = area === Document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
+  if (links.length) {
+    // eslint-disable-next-line import/no-cycle
+    import('./branchlinks.js').then((mod) => mod.default(links));
+  }
 
   // transpile conflicting blocks
   transpileMarquee(area);

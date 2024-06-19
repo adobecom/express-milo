@@ -905,7 +905,8 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
   display: block;
 }
 
-main > div:not(.banner-container) .block:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action) a.button.same-as-floating-button-CTA {
+.section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
+.section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
   display: none;
 }
 
@@ -932,7 +933,8 @@ main > div:not(.banner-container) .block:not(.pricing-summary, .pricing-cards, .
     text-align: left;
   }
 
-  main > div:not(.banner-container) .block:not(.pricing-summary, .pricing-cards, .pricing-table, .puf) a.button.same-as-floating-button-CTA {
+  .section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
+  .section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
     display: inline-block;
   }
 }

@@ -53,11 +53,7 @@
 }
 
 .quotes .quote .author {
-  display: flex;
   margin-top: 16px;
-  width: 100%;
-  flex-direction: row;
-  flex-wrap: nowrap;
   align-items: center;
   align-self: baseline;
 }
