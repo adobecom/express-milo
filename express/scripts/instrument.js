@@ -504,6 +504,13 @@ export default function martechLoadedCB() {
     getSegments(data?.identity?.ECID || null);
   }
 
-  __satelliteLoadedCallback(getAudiences);
+  // eslint-disable-next-line no-underscore-dangle
+  if (window.__satelliteLoadedCallback) {
+    __satelliteLoadedCallback(getAudiences);
+  } else {
+    window.addEventListener('alloy_sendEvent', () => {
+      __satelliteLoadedCallback(getAudiences);
+    }, { once: true });
+  }
   // end of section to be removed after Jingle finishes adding xlg to old express Repo
 }

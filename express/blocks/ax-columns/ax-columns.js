@@ -174,24 +174,12 @@ export default async function decorate(block) {
     }
   }
 
-  function decodeHTMLEntities(text) {
-    const textArea = document.createElement('textarea');
-    textArea.innerHTML = text;
-    return textArea.value;
-  }
-
   rows.forEach((row, rowNum) => {
     const cells = Array.from(row.children);
 
     cells.forEach((cell, cellNum) => {
       const aTag = cell.querySelector('a');
       const pics = cell.querySelectorAll(':scope picture');
-      const p = cell.querySelector('p');
-
-
-      if (p && p.textContent.includes('<')) {
-        p.innerHTML = decodeHTMLEntities(p.textContent);
-      }
 
       if (cellNum === 0 && isNumberedList) {
         // add number to first cell
