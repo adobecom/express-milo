@@ -543,10 +543,6 @@ a:any-link {
   font-weight: 600;
 }
 
-img {
-  max-width: 100%;
-}
-
 .section > .content h1, .section > .content h2, .section > .content h3, .section > .content h4 {
   text-align: center;
 }
