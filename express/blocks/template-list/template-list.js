@@ -11,7 +11,6 @@ import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated, decorateSocialIcons } from '../../scripts/utils/decorate.js';
-import { fetchBlockFragDeprecated } from '../../scripts/utils/loadBlock.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
 
@@ -1831,6 +1830,32 @@ function addBackgroundAnimation(block, animationUrl) {
     parent.prepend(videoBackground);
     videoBackground.muted = true;
   }
+}
+
+async function fetchBlockFragDeprecated(url, blockName) {
+  const location = new URL(window.location);
+  const { prefix } = getConfig().locale;
+  const fragmentUrl = `${location.origin}${prefix}${url}`;
+
+  const path = new URL(fragmentUrl).pathname.split('.')[0];
+  const resp = await fetch(`${path}.plain.html`);
+  if (resp.status === 404) {
+    return null;
+  }
+
+  const html = await resp.text();
+  const section = createTag('div');
+  section.innerHTML = html;
+  section.className = `section section-wrapper ${blockName}-container`;
+  const block = section.querySelector(`.${blockName}`);
+  block.dataset.blockName = blockName;
+  block.parentElement.className = `${blockName}-wrapper`;
+  block.classList.add('block');
+  const img = section.querySelector('img');
+  if (img) {
+    img.setAttribute('loading', 'lazy');
+  }
+  return section;
 }
 
 async function replaceRRTemplateList(block, props) {
