@@ -514,7 +514,9 @@ export function buildAutoBlocks() {
       button.appendChild(colEl);
       button.classList.add('metadata-powered');
       lastDiv.append(button);
-      import('./block-mediator.min.js').then((mod) => { mod.set('floatingCtasLoaded', true); });
+      import('./block-mediator.min.js').then((mod) => {
+        mod.default.set('floatingCtasLoaded', true);
+      });
     }
   }
 }
