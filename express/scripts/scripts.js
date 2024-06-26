@@ -121,6 +121,10 @@ decorateArea();
   // listenMiloEvents();
   buildAutoBlocks();
   import('./instrument.js').then((mod) => { mod.default(); });
+  if (getMetadata('sheet-powered') === 'Y') {
+    const { default: replaceContent } = await import('./utils/content-replace.js');
+    await replaceContent(document.querySelector('main'));
+  }
   await loadArea();
 
   import('./express-delayed.js').then((mod) => {

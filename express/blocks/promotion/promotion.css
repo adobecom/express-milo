@@ -1,6 +1,6 @@
 .promotion {
   max-width: var(--block-sm-max-width);
-  margin: auto;
+  margin: var(--spacing-xxxl) auto;
 }
 
 .promotion[data-block-status="loaded"] {
@@ -87,6 +87,14 @@
 
   .promotion .promotion-hero {
     border-bottom-left-radius: 8px;
+  }
+
+  .promotion .promotion-content p {
+    margin: 32px 0;
+  }
+
+  .promotion .promotion-content p.button-container {
+    margin: 16px 0 0 0;
   }
 
   .promotion .promotion-hero img {
