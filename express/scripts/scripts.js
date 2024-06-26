@@ -122,7 +122,7 @@ decorateArea();
 
   // listenMiloEvents();
   buildAutoBlocks();
-  if (urlParams.get('martech') !== 'off') {
+  if (urlParams.get('martech') !== 'off' || getMetadata('martech') === 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
   if (getMetadata('sheet-powered') === 'Y') {
