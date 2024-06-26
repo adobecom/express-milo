@@ -2,9 +2,15 @@
   max-width: 375px;
 }
 
+.section:has(.quotes) {
+  padding: 40px;
+}
+.section:has(.quotes)>div>h2 {
+  margin-top: 80px;
+}
+
 .quotes-wrapper {
   margin: auto;
-  padding: 10px 0 40px;
 }
 
 .content:has(+ .quotes-wrapper) {
@@ -12,6 +18,7 @@
 }
 
 .quotes {
+  margin-top: 40px;
   padding-bottom: 40px;
   display: flex;
   flex-direction: column;
@@ -46,6 +53,10 @@
   text-align: left;
   font-size: 72px;
   font-weight: 900;
+}
+
+.quotes .quote p {
+  margin: 32px 0;
 }
 
 .quotes .quote .author {

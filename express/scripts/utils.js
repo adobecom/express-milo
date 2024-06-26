@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -35,6 +36,7 @@ export const [setLibs, getLibs] = (() => {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+
 const cachedMetadata = [];
 const getMetadata = (name, doc = document) => {
   const attr = name && name.includes(':') ? 'property' : 'name';
@@ -46,12 +48,14 @@ export function getCachedMetadata(name) {
   return cachedMetadata[name];
 }
 
+export const yieldToMain = () => new Promise((resolve) => { setTimeout(resolve, 0); });
+
 function createTag(tag, attributes, html, options = {}) {
   const el = document.createElement(tag);
   if (html) {
     if (html instanceof HTMLElement
-        || html instanceof SVGElement
-        || html instanceof DocumentFragment) {
+      || html instanceof SVGElement
+      || html instanceof DocumentFragment) {
       el.append(html);
     } else if (Array.isArray(html)) {
       el.append(...html);
@@ -112,7 +116,7 @@ function hideQuickActionsOnDevices() {
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
   if (document.body.dataset.device === 'mobile'
-      || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
+    || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
     fqaMeta.setAttribute('name', 'fqa-off');
   } else {
     fqaMeta.setAttribute('name', 'fqa-on');
@@ -309,72 +313,6 @@ export function listenMiloEvents() {
   window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
-function replacePlaceholdersWithSheetContent(area) {
-  const REG = /\{\{(.*?)\}\}/g;
-  const updateImgTag = (child, matchCallback, parentElement) => {
-    const parentPic = child.closest('picture');
-    const originalAlt = child.alt;
-    const replacedSrc = originalAlt.replace(REG, (_match, p1) => matchCallback(_match, p1, child));
-
-    if (replacedSrc && parentPic && replacedSrc !== originalAlt) {
-      parentPic.querySelectorAll('source').forEach((el) => {
-        try {
-          el.srcset = el.srcset.replace(/.*\?/, `${replacedSrc}?`);
-        } catch (e) {
-          window.lana?.log(`failed to convert optimized picture source from ${el} with dynamic data: ${e}`);
-        }
-      });
-
-      parentPic.querySelectorAll('img').forEach((el) => {
-        const onImgLoad = () => {
-          el.removeEventListener('load', onImgLoad);
-        };
-
-        try {
-          el.src = el.src.replace(/.*\?/, `${replacedSrc}?`);
-        } catch (e) {
-          window.lana?.log(`failed to convert optimized img from ${el} with dynamic data: ${e}`);
-        }
-
-        el.addEventListener('load', onImgLoad);
-      });
-    } else if (originalAlt.match(REG)) {
-      parentElement.remove();
-    }
-  };
-  const updateTextNode = (child, matchCallback) => {
-    const originalText = child.nodeValue;
-    const replacedText = originalText.replace(REG, matchCallback);
-    if (replacedText !== originalText) child.nodeValue = replacedText;
-  };
-  const preserveFormatKeys = [
-    'event-description',
-  ];
-  const getContent = (_match, p1, n) => {
-    const content = getMetadata(p1) || '';
-    if (preserveFormatKeys.includes(p1)) {
-      n.parentNode?.classList.add('preserve-format');
-    }
-    return content;
-  };
-
-  const allElements = area.querySelectorAll('*');
-
-  allElements.forEach((element) => {
-    if (element.childNodes.length) {
-      element.childNodes.forEach((n) => {
-        if (n.tagName === 'IMG' && n.nodeType === 1) {
-          updateImgTag(n, getContent, element);
-        }
-
-        if (n.nodeType === 3) {
-          updateTextNode(n, getContent);
-        }
-      });
-    }
-  });
-}
-
 function transpileMarquee(area) {
   const handleSubCTAText = (oldContainer, newContainer) => {
     const elAfterBtn = oldContainer.nextElementSibling;
@@ -522,9 +460,6 @@ export function buildAutoBlocks() {
 }
 
 export function decorateArea(area = document) {
-  if (getMetadata('sheet-powered') === 'Y') {
-    replacePlaceholdersWithSheetContent(area);
-  }
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   removeIrrelevantSections(area);
   // LCP image decoration

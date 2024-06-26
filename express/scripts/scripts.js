@@ -122,8 +122,12 @@ decorateArea();
 
   // listenMiloEvents();
   buildAutoBlocks();
-  if (urlParams.get('martech') !== 'off') {
-    import('./instrument.js').then((mod) => { mod.default(); });
+    if (urlParams.get('martech') !== 'off') {
+        import('./instrument.js').then((mod) => { mod.default(); });
+    }
+  if (getMetadata('sheet-powered') === 'Y') {
+    const { default: replaceContent } = await import('./utils/content-replace.js');
+    await replaceContent(document.querySelector('main'));
   }
   await loadArea();
 
