@@ -104,6 +104,7 @@ body {
   color: var(--body-color);
   overflow-x: clip;
   -webkit-font-smoothing: initial;
+  line-height: initial;
 }
 
 body.no-scroll {
@@ -226,7 +227,7 @@ a.con-button.xxl-button:any-link,
   padding: 13px 1.5em 14px;
   border-radius: 999px;
   font-size: var(--body-font-size-m);
-  line-height: 26.5px;
+  line-height: var(--body-line-height);
 }
 
 a.button.small:any-link, a.con-button.small:any-link  {
@@ -1110,6 +1111,7 @@ wbr.wbr-off {
 /* long-form section: left-align text */
 .section.long-form {
   padding-top: 60px;
+  padding-bottom: 40px;
 }
 
 .section.long-form .content {
