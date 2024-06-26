@@ -898,6 +898,7 @@
     flex-direction: row;
     text-align: left;
     align-items: center;
+    padding: 40px 0;
   }
 
   .section div.ax-columns > div {

@@ -30,27 +30,27 @@ export async function buildFreePlanWidget(config) {
   const { typeKey, checkmarks } = config;
   const widget = createTag('div', { class: 'free-plan-widget' });
 
-  const textDivs = await Promise.all(typeMap[typeKey].map(async (tagKey) => {
-    const tagText = await replaceKey(tagKey, getConfig());
-    if (tagText) {
+  const promises = [];
+  for (let i = 0; i < typeMap[typeKey].length; i += 1) {
+    promises.push(replaceKey(typeMap[typeKey][i], getConfig()));
+  }
+
+  const texts = await Promise.all(promises);
+
+  for (let i = 0; i < texts.length; i += 1) {
+    if (texts[i]) {
       const textDiv = createTag('span', { class: 'plan-widget-tag' });
-      textDiv.textContent = tagText;
+      textDiv.textContent = texts[i];
+      widget.append(textDiv);
+
       if (checkmarks) {
         textDiv.prepend(getIconElementDeprecated('checkmark'));
       }
-      return textDiv;
     }
-  }));
-
-  textDivs.forEach((textDiv) => {
-    if (textDiv) {
-      widget.append(textDiv);
-    }
-  });
+  }
 
   return widget;
 }
-
 
 export async function addFreePlanWidget(elem) {
   const freePlanMeta = getMetadata('show-free-plan').toLowerCase();
