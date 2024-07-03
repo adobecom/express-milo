@@ -1,4 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
+import {fixIcons} from "../../scripts/utils/icons.js";
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -13,6 +14,7 @@ export function addBlockClasses(block, classNames) {
 
 export default async function decorate(block) {
   addBlockClasses(block, ['step-image', 'step-description']);
+  fixIcons(block);
 
   const section = block.closest('.section');
   const heading = section.querySelector('h2, h3, h4');

@@ -46,7 +46,7 @@
   margin-right: 20px;
 }
 
-.steps .step-image picture img,
+.steps .step-image svg,
 .steps .step-image img.icon {
   width: 40px;
   max-width: unset;
