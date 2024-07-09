@@ -6,7 +6,7 @@ import {
   transformLinkToAnimation,
 } from '../../scripts/utils/media.js';
 
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { decorateSocialIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import {
   decorateButtonsDeprecated,
@@ -155,6 +155,7 @@ const handleVideos = (cell, a, block, thumbnail) => {
 
 export default async function decorate(block) {
   splitAndAddVariantsWithDash(block);
+  decorateSocialIcons(block);
   decorateButtonsDeprecated(block, 'button-xxl');
 
   const rows = Array.from(block.children);
