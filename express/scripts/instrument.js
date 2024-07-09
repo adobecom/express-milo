@@ -239,23 +239,6 @@ export function appendLinkText(eventName, a) {
 export function trackButtonClick(a) {
   const fireEvent = () => {
     let adobeEventName = 'adobe.com:express:cta:';
-    let hemingwayAssetId;
-    let hemingwayAssetPath;
-    let hemingwayAssetPosition;
-
-    const hemingwayAsset = a.querySelector('picture,video,audio,img')
-        || a.closest('[class*="-container"],[class*="-wrapper"]')?.querySelector('picture,video,audio,img');
-    const block = a.closest('.section > div');
-    const urlConstructable = a.href || a.currentSrc || a.src;
-    if (hemingwayAsset && block && urlConstructable) {
-      const { assetId, assetPath } = getAssetDetails(hemingwayAsset);
-      hemingwayAssetPath = assetPath;
-      hemingwayAssetId = assetId;
-
-      const siblings = [...block
-        .querySelectorAll(`.${a.className.split(' ').join('.')}`)];
-      hemingwayAssetPosition = siblings.indexOf(a);
-    }
 
     const $tutorialContainer = a.closest('.tutorial-card');
     const $contentToggleContainer = a.closest('.content-toggle');
@@ -347,22 +330,8 @@ export function trackButtonClick(a) {
             type: 'other',
           },
         },
-        _adobe_corpnew: {
-          digitalData: {
-            primaryEvent: { eventInfo: { eventName: adobeEventName } },
-            ...(hemingwayAsset
-              ? {
-                asset: {
-                  assetInfo: {
-                    assetId: hemingwayAssetId,
-                    assetPath: hemingwayAssetPath,
-                    assetPosition: hemingwayAssetPosition,
-                  },
-                },
-              }
-              : {}),
-          },
-        },
+        // eslint-disable-next-line max-len
+        _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName: adobeEventName } } } },
       },
     });
   };

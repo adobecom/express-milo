@@ -24,7 +24,7 @@ window.express = {};
 const CONFIG = {
   local: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
   stage: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
-  prod: { express: 'new.express.adobe.com', commerce: 'commerce.adobe.com' },
+  prod: { express: 'express.adobe.com', commerce: 'commerce.adobe.com' },
   codeRoot: '/express',
   contentRoot: '/express',
   jarvis: {
@@ -32,7 +32,6 @@ const CONFIG = {
     version: '1.0',
     onDemand: true,
   },
-  imsScope: 'AdobeID,openid,pps.read,firefly_api,additional_info.roles,read_organizations', // TODO enable unav over the metadata
   imsClientId: 'AdobeExpressWeb',
   // geoRouting: 'off',
   // fallbackRouting: 'off',

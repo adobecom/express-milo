@@ -1,23 +1,12 @@
 import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
 
-const { createTag, getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getMetadata, getConfig, loadStyle, loadLink } = await import(`${getLibs()}/utils/utils.js`);
 
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
   return pepDestinationMeta || BlockMediator.get('primaryCtaUrl')
       || document.querySelector('a.button.xlarge.same-as-floating-button-CTA, a.primaryCTA, a.con-button.same-as-floating-button-CTA')?.href;
-}
-
-// TODO see if we even want to preload the product. Currently we're not in the old project
-// eslint-disable-next-line no-unused-vars
-function loadExpressProduct() {
-  if (!window.hlx.preload_product) return;
-  if (document.body.dataset.device === 'mobile') return;
-  const path = ['www.adobe.com'].includes(window.location.hostname)
-    ? 'https://new.express.adobe.com/static/preload.html' : 'https://stage.projectx.corp.adobe.com/static/preload.html';
-  const iframe = createTag('iframe', { src: path, style: 'display:none' });
-  document.body.append(iframe);
 }
 
 function getSegmentsFromAlloyResponse(response) {
@@ -109,9 +98,9 @@ export function getProfile() {
   });
 }
 
-const branchLinkOrigins = ['https://adobesparkpost.app.link', 'https://adobesparkpost-web.app.link'];
+const branchLinkOriginPattern = /^https:\/\/adobesparkpost(-web)?\.app\.link/;
 function isBranchLink(url) {
-  return branchLinkOrigins.includes(new URL(url).origin);
+  return branchLinkOriginPattern.test(new URL(url).origin);
 }
 
 // product entry prompt
@@ -143,27 +132,49 @@ async function canPEP() {
 
 const PEP_DELAY = 3000;
 
+function preloadSUSILight() {
+  const config = getConfig();
+  if (!getMetadata('preload-susi-light')) return;
+  const preloadTag = createTag('meta', {
+    name: 'susi-sentry-preload',
+    content: 'edu-express',
+    'data-locale': config.locale.ietf.toLowerCase(),
+  });
+  if (config.env.name !== 'prod') {
+    preloadTag.setAttribute('data-stage', 'true');
+  }
+  import('../blocks/susi-light/susi-light.js')
+    .then((mod) => mod.loadWrapper())
+    .then(() => {
+      document.head.append(preloadTag);
+    });
+  loadStyle('/express/blocks/susi-light/susi-light.css');
+  import(`${getLibs()}/blocks/fragment/fragment.js`);
+  loadLink('/express/icons/close-button-x.svg', { rel: 'preload', as: 'image' });
+  loadLink('/express/icons/cc-express.svg', { rel: 'preload', as: 'image' });
+}
+
 /**
  * Executes everything that happens a lot later, without impacting the user experience.
  */
-export default async function loadDelayed(DELAY = 15000) {
-  if (await canPEP()) {
-    const { default: loadLoginUserAutoRedirect } = await import('../features/direct-path-to-product/direct-path-to-product.js');
-    return new Promise((resolve) => {
-      // TODO: not preloading product this early to protect desktop CWV
-      // until we see significant proof of preloading improving product load time
-      // loadExpressProduct();
-      setTimeout(() => {
-        loadLoginUserAutoRedirect();
-        resolve();
-      }, PEP_DELAY);
-    });
+export default async function loadDelayed() {
+  try {
+    preloadSUSILight();
+    if (await canPEP()) {
+      const { default: loadLoginUserAutoRedirect } = await import('../features/direct-path-to-product/direct-path-to-product.js');
+      return new Promise((resolve) => {
+        // TODO: not preloading product to protect desktop CWV
+        // until we see significant proof of preloading improving product load time
+        // loadExpressProduct();
+        setTimeout(() => {
+          loadLoginUserAutoRedirect();
+          resolve();
+        }, PEP_DELAY);
+      });
+    }
+    return null;
+  } catch (err) {
+    window.lana?.log(`Express-Delayed Error: ${err}`);
+    return null;
   }
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      loadExpressProduct();
-      resolve();
-    }, window.delay_preload_product ? DELAY * 2 : DELAY);
-  });
 }
