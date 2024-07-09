@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+.banner p {
+  margin: 32px 0;
+}
+
 .banner h1,
 .banner h2,
 .banner h3,
