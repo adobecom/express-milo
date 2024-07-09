@@ -425,9 +425,9 @@ export default async function decorate(block) {
       <div class="slider-bottom">
         <div class="vertical-line"><button type="button" aria-label="1" class="stars one-star"></button></div>
         <div class="vertical-line"><button type="button" aria-label="2" class="stars two-stars"></button></div>
-        <div class="vertical-line"><button type="button" aria-label="3" class="stars three-stars"> </button></div>
-        <div class="vertical-line"><button type="button" aria-label="4" class="stars four-stars">$ </button></div>
-        <div class="vertical-line"><button type="button" aria-label="5" class="stars five-stars"> </button></div>
+        <div class="vertical-line"><button type="button" aria-label="3" class="stars three-stars"></button></div>
+        <div class="vertical-line"><button type="button" aria-label="4" class="stars four-stars"></button></div>
+        <div class="vertical-line"><button type="button" aria-label="5" class="stars five-stars"></button></div>
       </div>
       <div class="slider-comment">
         <label for="comment"></label>

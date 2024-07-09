@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/adobecom/college#readme",
   "devDependencies": {
-    "@babel/core": "7.17.7",
+    "@babel/core": "7.24.7",
     "@babel/eslint-parser": "7.17.0",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@web/dev-server-import-maps": "^0.0.6",
