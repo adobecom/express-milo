@@ -62,29 +62,6 @@ if (
   expressLandingPageType = 'other';
 }
 
-function getAssetDetails(el) {
-  if (el.tagName === 'PICTURE') {
-    return getAssetDetails(el.querySelector('img'));
-  }
-  // Get asset details
-  const assetUrl = new URL(el.href // the reference for an a/svg tag
-      || el.currentSrc // the active source in a picture/video/audio element
-      || el.src); // the source for an image/video/iframe
-  const match = assetUrl.href.match(/media_([a-f0-9]+)\.\w+/);
-  let assetId;
-  if (match) {
-    [, assetId] = match;
-  } else if (assetUrl.origin.endsWith('.adobeprojectm.com')) {
-    [assetId] = assetUrl.pathname.split('/').splice(-2, 1);
-  } else {
-    assetId = `${assetUrl.pathname}`;
-  }
-  return {
-    assetId,
-    assetPath: assetUrl.href,
-  };
-}
-
 export function getExpressLandingPageType() {
   return expressLandingPageType;
 }
@@ -239,23 +216,6 @@ export function appendLinkText(eventName, a) {
 export function trackButtonClick(a) {
   const fireEvent = () => {
     let adobeEventName = 'adobe.com:express:cta:';
-    let hemingwayAssetId;
-    let hemingwayAssetPath;
-    let hemingwayAssetPosition;
-
-    const hemingwayAsset = a.querySelector('picture,video,audio,img')
-        || a.closest('[class*="-container"],[class*="-wrapper"]')?.querySelector('picture,video,audio,img');
-    const block = a.closest('.section > div');
-    const urlConstructable = a.href || a.currentSrc || a.src;
-    if (hemingwayAsset && block && urlConstructable) {
-      const { assetId, assetPath } = getAssetDetails(hemingwayAsset);
-      hemingwayAssetPath = assetPath;
-      hemingwayAssetId = assetId;
-
-      const siblings = [...block
-        .querySelectorAll(`.${a.className.split(' ').join('.')}`)];
-      hemingwayAssetPosition = siblings.indexOf(a);
-    }
 
     const $tutorialContainer = a.closest('.tutorial-card');
     const $contentToggleContainer = a.closest('.content-toggle');
@@ -347,22 +307,8 @@ export function trackButtonClick(a) {
             type: 'other',
           },
         },
-        _adobe_corpnew: {
-          digitalData: {
-            primaryEvent: { eventInfo: { eventName: adobeEventName } },
-            ...(hemingwayAsset
-              ? {
-                asset: {
-                  assetInfo: {
-                    assetId: hemingwayAssetId,
-                    assetPath: hemingwayAssetPath,
-                    assetPosition: hemingwayAssetPosition,
-                  },
-                },
-              }
-              : {}),
-          },
-        },
+        // eslint-disable-next-line max-len
+        _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName: adobeEventName } } } },
       },
     });
   };

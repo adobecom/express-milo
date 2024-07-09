@@ -175,10 +175,10 @@ export async function fixIcons(el = document) {
           altText = placeholders.replaceKey(mobileIcon, getConfig());
         }
         const $picture = $img.closest('picture');
-        const $block = $picture.closest('.block');
+        const $block = $picture.closest('.section > div');
         let size = 44;
         if ($block) {
-          const blockName = $block.getAttribute('data-block-name');
+          const blockName = $block.classList[0];
           // use small icons in .columns (except for .columns.offer)
           if (blockName === 'columns') {
             size = $block.classList.contains('offer') ? 44 : 22;
