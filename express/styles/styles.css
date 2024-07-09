@@ -157,7 +157,7 @@ header #feds-header a.feds-navLink:hover .feds-navLink-text {
 /* buttons */
 a.button:any-link {
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: 18px;
   padding: 5px 1.2em 6px;
   text-align: center;
   font-size: var(--body-font-size-s);
@@ -190,6 +190,7 @@ a.con-button:any-link {
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
+  min-height: initial;
 }
 
 svg.icon-milo, img.icon-milo {
