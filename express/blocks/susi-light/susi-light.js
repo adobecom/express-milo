@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable camelcase */
 import { getLibs } from '../../scripts/utils.js';
 
 const { createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`);
@@ -7,13 +8,11 @@ const config = { consentProfile: 'free' };
 const variant = 'edu-express';
 const usp = new URLSearchParams(window.location.search);
 const isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
-// eslint-disable-next-line camelcase
 const client_id = 'AdobeExpressWeb';
 const authParams = {
   dt: false,
   locale: getConfig().locale.ietf.toLowerCase(),
   response_type: 'code',
-  // eslint-disable-next-line camelcase
   client_id,
   scope: 'AdobeID,openid',
 };

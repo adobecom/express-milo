@@ -62,29 +62,6 @@ if (
   expressLandingPageType = 'other';
 }
 
-function getAssetDetails(el) {
-  if (el.tagName === 'PICTURE') {
-    return getAssetDetails(el.querySelector('img'));
-  }
-  // Get asset details
-  const assetUrl = new URL(el.href // the reference for an a/svg tag
-      || el.currentSrc // the active source in a picture/video/audio element
-      || el.src); // the source for an image/video/iframe
-  const match = assetUrl.href.match(/media_([a-f0-9]+)\.\w+/);
-  let assetId;
-  if (match) {
-    [, assetId] = match;
-  } else if (assetUrl.origin.endsWith('.adobeprojectm.com')) {
-    [assetId] = assetUrl.pathname.split('/').splice(-2, 1);
-  } else {
-    assetId = `${assetUrl.pathname}`;
-  }
-  return {
-    assetId,
-    assetPath: assetUrl.href,
-  };
-}
-
 export function getExpressLandingPageType() {
   return expressLandingPageType;
 }
