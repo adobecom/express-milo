@@ -10,7 +10,7 @@
 .image-list img {
   width: 300px;
   margin: 12.5px;
-}    
+}
 
 .image-list .mobile-only {
   display: block;
@@ -33,23 +33,23 @@
   }
   .image-list.xl img {
     width: 810px;
-  }    
-  
+  }
+
   .image-list.l img {
     margin: 15px;
     width: 375px;
   }
-  
+
   .image-list img {
     margin: 15px;
     width: 240px;
   }
-  
+
   .image-list.s img {
     margin: 11px;
     width: 180px;
   }
-  
+
   .image-list.xs img {
     margin: 11px;
     width: 140px;
@@ -58,31 +58,31 @@
 }
 
 @media (min-width: 1200px) {
-  
+
   .image-list {
-    margin: 60px;
+    margin: 60px auto;
   }
 
   .image-list.xl img {
     margin: 0;
     width: 1080px;
-  }    
-  
+  }
+
   .image-list.l img {
     margin: 20px;
     width: 500px;
   }
-  
+
   .image-list img {
     margin: 15px;
     width: 330px;
   }
-  
+
   .image-list.s img {
     margin: 15px;
     width: 240px;
   }
-  
+
   .image-list.xs img {
     margin: 14px;
     width: 188px;

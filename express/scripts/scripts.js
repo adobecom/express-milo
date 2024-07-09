@@ -66,6 +66,8 @@ const CONFIG = {
   links: 'on',
 };
 
+const urlParams = new URLSearchParams(window.location.search);
+
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
@@ -120,7 +122,9 @@ decorateArea();
 
   // listenMiloEvents();
   buildAutoBlocks();
-  import('./instrument.js').then((mod) => { mod.default(); });
+  if (urlParams.get('martech') !== 'off' || getMetadata('martech') === 'off') {
+    import('./instrument.js').then((mod) => { mod.default(); });
+  }
   if (getMetadata('sheet-powered') === 'Y') {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
