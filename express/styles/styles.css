@@ -624,55 +624,55 @@ a:any-link {
 }
 
 /* hero */
-.section.hero {
+.section#hero {
   color: var(--color-white);
   position: relative;
   padding: 120px 15px;
 }
 
-.hero.hero-noimage {
+#hero.hero-noimage {
   color: var(--body-color);
   padding-top: 64px;
   padding-bottom: 0;
 }
 
-.hero.hero-noimage + .section {
+#hero.hero-noimage + .section {
   padding-top: 0;
 }
 
-.hero.hero-noimage > div {
+#hero.hero-noimage > div {
   max-width: 1024px;
 }
 
-.hero.hero-noimage a.button:any-link {
+#hero.hero-noimage a.button:any-link {
   color: white;
 }
 
-.hero.hero-noimage a:any-link {
+#hero.hero-noimage a:any-link {
   color: black;
 }
 
-.hero h1 {
+#hero h1 {
   font-size: var(--heading-font-size-xl);
   line-height: var(--heading-line-height);
   text-align: center;
   margin: 0;
 }
 
-.hero h2 {
+#hero h2 {
   font-size: var(--body-font-size-xl);
   font-weight: var(--body-font-weight);
   margin: 32px;
 }
 
-.hero h5 {
+#hero h5 {
   font-size: var(--body-font-size-l);
   font-weight: var(--body-font-weight);
   margin: auto;
   margin-top: 32px;
 }
 
-.hero.hero-noimage p {
+#hero.hero-noimage p {
   font-size: var(--body-font-size-s);
 }
 
@@ -682,7 +682,7 @@ a:any-link {
   color: currentColor;
 }
 
-.hero .icon {
+#hero .icon {
   height: 2em;
   width: 2em;
 }
@@ -697,7 +697,7 @@ a:any-link {
   fill: #1877f2;
 }
 
-.hero .hero-bg {
+#hero .hero-bg {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -707,22 +707,22 @@ a:any-link {
   z-index: -1;
 }
 
-.hero .hero-bg img {
+#hero .hero-bg img {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.hero > div {
+#hero > div {
   padding: 0;
   margin: auto;
 }
 
-.hero a:any-link {
+#hero a:any-link {
   color: currentColor;
 }
 
-.hero a.button:any-link {
+#hero a.button:any-link {
   text-shadow: none;
   padding: 10px 1.5em;
   border-radius: 22px;
@@ -734,7 +734,7 @@ a:any-link {
 }
 
 @media (min-width: 600px) {
-  .hero h5 {
+  #hero h5 {
     font-size: 22px;
     font-weight: 400;
     max-width: 672px;
@@ -742,8 +742,8 @@ a:any-link {
     margin-top: 32px;
   }
 
-  .hero h2,
-  .hero p {
+  #hero h2,
+  #hero p {
     font-size: var(--body-font-size-xl);
     line-height: var(--body-line-height);
     text-align: center;
@@ -752,25 +752,25 @@ a:any-link {
 }
 
 @media (min-width: 900px) {
-  .hero {
+  #hero {
     padding-left: 50px;
     padding-right: 50px;
   }
 
-  .hero h2,
-  .hero p {
+  #hero h2,
+  #hero p {
     font-size: var(--body-font-size-xxl);
     margin: 24px 50px 0;
   }
 }
 
 @media (min-width: 1200px) {
-  .hero h1 {
+  #hero h1 {
     font-size: var(--heading-font-size-xxl);
     margin: 0;
   }
 
-  .hero .columns > div > div {
+  #hero .columns > div > div {
     margin: 8px;
   }
 }
@@ -786,7 +786,7 @@ a:any-link {
   margin-bottom: 0;
 }
 
-.section .hero {
+.section #hero {
   color: initial;
 }
 
@@ -1071,40 +1071,40 @@ wbr.wbr-off {
 }
 
 /* Japanese font sizing styles */
-:lang(ja) h1.heading-long {
+:lang(ja) h1.heading-long, :lang(ja) #hero h1.heading-long {
   font-size: var(--heading-font-size-xl);
 }
 
-:lang(ja) h1.heading-very-long {
+:lang(ja) h1.heading-very-long, :lang(ja) #hero h1.heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) h1.heading-x-long {
+:lang(ja) h1.heading-x-long, :lang(ja) #hero h1.heading-x-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) h2.heading-long {
+:lang(ja) h2.heading-long, :lang(ja) #hero h2.heading-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) h2.heading-very-long {
+:lang(ja) h2.heading-very-long, :lang(ja) #hero h2.heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-:lang(ja) h2.heading-x-long {
+:lang(ja) h2.heading-x-long, :lang(ja) #hero h2.heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
 @media (max-width: 600px) {
-  :lang(ja) h2.heading-long {
+  :lang(ja) h2.heading-long, :lang(ja) #hero h2.heading-long {
     font-size: var(--heading-font-size-l);
   }
 
-  :lang(ja) h2.heading-very-long {
+  :lang(ja) h2.heading-very-long, :lang(ja) #hero h2.heading-very-long {
     font-size: var(--heading-font-size-m);
   }
 
-  :lang(ja) h2.heading-x-long {
+  :lang(ja) h2.heading-x-long, :lang(ja) #hero h2.heading-x-long {
     font-size: var(--heading-font-size-m);
   }
 }
