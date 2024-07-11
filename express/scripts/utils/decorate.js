@@ -1,12 +1,10 @@
-import { getIconDeprecated } from './icons.js';
 import { getLibs } from '../utils.js';
 
-const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-
 // This was only added for the blocks premigration. It is not to be used for new blocks.
-export function decorateButtonsDeprecated(el, size) {
+export async function decorateButtonsDeprecated(el, size) {
+  const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
   decorateButtons(el, size);
-  el.querySelectorAll(':scope a:not(.con-button, .social-link)').forEach(($a) => {
+  for (const $a of el.querySelectorAll(':scope a:not(.con-button, .social-link)')) {
     const originalHref = $a.href;
     const linkText = $a.textContent.trim();
     if ($a.children.length > 0) {
@@ -45,13 +43,14 @@ export function decorateButtonsDeprecated(el, size) {
       if (linkText.startsWith('{{icon-') && linkText.endsWith('}}')) {
         const $iconName = /{{icon-([\w-]+)}}/g.exec(linkText)[1];
         if ($iconName) {
+          const { getIconDeprecated } = await import(`./icons.js`);
           $a.appendChild(getIconDeprecated($iconName, `${$iconName} icon`));
           $a.classList.remove('button', 'primary', 'secondary', 'accent');
           $a.title = $iconName;
         }
       }
     }
-  });
+  }
 }
 
 export function addTempWrapperDeprecated($block, blockName) {
