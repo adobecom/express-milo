@@ -2,6 +2,10 @@
   padding-top: 60px;
 }
 
+.template-list-wrapper {
+  margin: auto;
+}
+
 .template-list-horizontal-fullwidth-container,
 .template-list-fullwidth-apipowered-container {
   padding-top: 0;

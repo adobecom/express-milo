@@ -6,11 +6,7 @@ import {
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
-debugger;
-const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-debugger;
-const { replaceKey } = imports[0];
-const { getConfig, createTag, getLocale } = imports[1];
+const [{ replaceKey }, { getConfig, createTag, getLocale }] = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
 
 const blogPosts = [];
 let blogResults;
@@ -190,8 +186,7 @@ async function getFilteredResults(config) {
 
 // Translates the Read More string into the local language
 async function getReadMoreString() {
-  const placeholders = await fetchPlaceholders();
-  let readMoreString = placeholders['read-more'];
+  let readMoreString = await replaceKey('read-more', getConfig());
   if (readMoreString === undefined || readMoreString === '') {
     const locale = getConfig().locale.region;
     const readMore = {

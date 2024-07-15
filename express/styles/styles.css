@@ -155,7 +155,7 @@ header #feds-header a.feds-navLink:hover .feds-navLink-text {
 }
 
 /* buttons */
-a.button:any-link {
+a.button:any-link, a.con-button:any-link {
   text-decoration: none;
   border-radius: 18px;
   padding: 5px 1.2em 6px;
@@ -169,24 +169,6 @@ a.button:any-link {
   border-width: 2px;
   border-style: solid;
   margin: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-}
-
-a.con-button:any-link {
-  text-decoration: none;
-  border-radius: 999px;
-  padding: 4px 1em;
-  text-align: center;
-  font-size: var(--body-font-size-xs);
-  font-style: normal;
-  font-weight: 600;
-  line-height: var(--body-line-height);
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, border 0.3s;
-  border-width: 2px;
-  border-style: solid;
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
@@ -231,7 +213,7 @@ a.con-button.xxl-button:any-link,
   line-height: var(--body-line-height);
 }
 
-a.button.small:any-link, a.con-button.small:any-link  {
+a.button.small:any-link, a.con-button.small:any-link, .small a.con-button:any-link  {
   padding: 4px 1em;
   border-radius: 15px;
   font-size: var(--body-font-size-xs);
