@@ -5,11 +5,16 @@
     padding: 0;
   }
 
+.blog main .section > .content {
+  margin: auto;
+  max-width: 375px;
+}
+
   .blog main .section > div > p {
     font-family: var(--body-serif-font-family);
   }
 
-  .blog main .section > div > p .button {
+  .blog main .section > div > p .button, .blog main .section > div > p .con-button {
     font-family: var(--body-font-family);
   }
 
@@ -92,10 +97,14 @@
     margin: 0;
   }
 
-  .blog-article div.section > div > p:not(.button-container), .blog-article div.section > div > h2,
+  .blog .content p.action-area {
+    text-align: center;
+  }
+
+  .blog-article div.section > div > p:not(.button-container, .action-area), .blog-article div.section > div > h2,
   .blog-article div.section > div > h3, .blog-article div.section > div > h4,
   .blog-article div.section > div > h5, .blog-article div.section > div > ul,
-  .blog-article div.section > div > ol, .blog-article div.section > div > .table-of-contents {
+  .blog-article div.section > div > ol, .blog-article div.section > div > .ax-table-of-contents {
     max-width: 530px;
     margin-left: auto;
     margin-right: auto;
@@ -178,6 +187,16 @@
     max-width: unset;
     margin-top: 0;
     }
+
+  .blog main .section > .content {
+    max-width: 830px;
+  }
+}
+
+@media (min-width:1200px) {
+  .blog main .section > .content {
+    max-width: 1024px;
+  }
 }
 
 /* Japanese font styles */

@@ -7,7 +7,6 @@ main .blog-posts-container > div {
     max-width: 375px;
     margin: auto;
     padding: 0;
-
 }
 
 .blog main .blog-posts-container > div > h2, main .blog-posts-container div.blog-posts-decoration {
