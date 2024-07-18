@@ -176,7 +176,7 @@ a.button:any-link {
 
 a.con-button:any-link {
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: 18px;
   padding: 4px 1em;
   text-align: center;
   font-size: var(--body-font-size-xs);
@@ -190,6 +190,7 @@ a.con-button:any-link {
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
+  min-height: initial;
 }
 
 svg.icon-milo, img.icon-milo {
@@ -821,34 +822,34 @@ body[data-device='mobile']
 }
 
 /* free plan widget */
-main .block .button-container.free-plan-container {
+.button-container.free-plan-container {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-main .block.center .button-container.free-plan-container {
+.center .button-container.free-plan-container {
   justify-content: center;
 }
 
-main .block.center .free-plan-widget-placeholder,
-main .block.fullscreen-marquee .free-plan-widget-placeholder {
+.center .free-plan-widget-placeholder,
+.fullscreen-marquee .free-plan-widget-placeholder {
   margin: auto;
 }
 
-main .block .button-container.free-plan-container.fixed {
+.button-container.free-plan-container.fixed {
   position: fixed;
   top: -8px;
   margin-top: 16px;
   z-index: 10;
 }
 
-main .block .button-container.free-plan-container a.button {
+.button-container.free-plan-container a.button {
   max-height: 24px;
 }
 
-main .block .free-plan-widget {
+.free-plan-widget {
   position: relative;
   box-sizing: border-box;
   background-color: var(--color-gray-100);
@@ -863,7 +864,7 @@ main .block .free-plan-widget {
   white-space: nowrap;
 }
 
-main .block .free-plan-widget .learn-more-button {
+.free-plan-widget .learn-more-button {
   position: absolute;
   display: flex;
   align-items: center;
@@ -872,16 +873,16 @@ main .block .free-plan-widget .learn-more-button {
   transform: translateX(-50%);
 }
 
-main .block.center .free-plan-widget {
+.center .free-plan-widget {
   margin: 32px auto;
 }
 
-main .free-plan-widget .plan-widget-tag {
+.free-plan-widget .plan-widget-tag {
   display: flex;
   align-items: center;
 }
 
-main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
+.free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
   background-color: #33ab84;
   display: block;
   border-radius: 50%;
@@ -902,17 +903,17 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
 }
 
 @media (min-width: 900px) {
-  main .block .button-container.free-plan-container {
+  .button-container.free-plan-container {
     width: max-content;
   }
 
-  main .block.fullscreen-marquee .button-container.free-plan-container {
+  .fullscreen-marquee .button-container.free-plan-container {
     justify-content: center;
     width: auto;
     align-items: center;
   }
 
-  main .block .button-container.free-plan-container a.button {
+  .button-container.free-plan-container a.button {
     margin: 0;
     display: flex;
     align-items: center;
@@ -920,7 +921,7 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
     z-index: 4;
   }
 
-  main .block .free-plan-widget .plan-widget-tag {
+  .free-plan-widget .plan-widget-tag {
     text-align: left;
   }
 
@@ -931,61 +932,61 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
 }
 
 @media (min-width: 1200px) {
-  main .block .button-container.free-plan-container {
+  .button-container.free-plan-container {
     flex-direction: row;
     width: auto;
     justify-content: left;
   }
 
-  main .block.center .button-container.free-plan-container {
+  .center .button-container.free-plan-container {
     justify-content: unset;
     margin: 40px auto 0;
   }
 
-  main .block .free-plan-widget {
+  .free-plan-widget {
     margin: 0 auto;
   }
 
-  main .block .button-container.free-plan-container a.button + .free-plan-widget {
+  .button-container.free-plan-container a.button + .free-plan-widget {
     margin-left: 24px;
   }
 
-  main .block .button-container.free-plan-container .free-plan-widget {
+  .button-container.free-plan-container .free-plan-widget {
     margin: 0;
   }
 
-  main .block .button-container.free-plan-container.stacked {
+  .button-container.free-plan-container.stacked {
     margin-top: 0;
     flex-wrap: wrap;
   }
 
-  main .block .button-container.free-plan-container.stacked .free-plan-widget {
+  .button-container.free-plan-container.stacked .free-plan-widget {
     margin-top: 24px;
     flex-direction: row;
   }
 
-  main .block .button-container.free-plan-container.stacked .free-plan-widget > div {
+  .button-container.free-plan-container.stacked .free-plan-widget > div {
     margin-right: 16px;
   }
 
-  main .block .template-list-fourcols-container > div,
+  .template-list-fourcols-container > div,
   .template-list-horizontal-container > div {
     max-width: 1200px;
   }
 
-  main .block .columns-fullsize-container > div,
-  main .block .columns-fullsize-center-container > div,
-  main .block .template-list-sixcols-container > div {
+  .columns-fullsize-container > div,
+  .columns-fullsize-center-container > div,
+  .template-list-sixcols-container > div {
     max-width: 1122px;
   }
 
-  main .block .free-plan-bullet .free-plan-bullet-container,
-  main .block .free-plan-widget-placeholder {
+  .free-plan-bullet .free-plan-bullet-container,
+  .free-plan-widget-placeholder {
     max-width: 400px;
   }
 }
 
-main .block .template-list-sixcols-container > div {
+.template-list-sixcols-container > div {
   padding: 0;
 }
 
