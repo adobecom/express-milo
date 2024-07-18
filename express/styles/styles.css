@@ -157,7 +157,7 @@ header #feds-header a.feds-navLink:hover .feds-navLink-text {
 /* buttons */
 a.button:any-link {
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: 18px;
   padding: 5px 1.2em 6px;
   text-align: center;
   font-size: var(--body-font-size-s);
@@ -176,7 +176,7 @@ a.button:any-link {
 
 a.con-button:any-link {
   text-decoration: none;
-  border-radius: 18px;
+  border-radius: 999px;
   padding: 4px 1em;
   text-align: center;
   font-size: var(--body-font-size-xs);
