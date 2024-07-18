@@ -38,7 +38,7 @@ export const [setLibs, getLibs] = (() => {
  */
 
 const cachedMetadata = [];
-const getMetadata = (name, doc = document) => {
+export const getMetadata = (name, doc = document) => {
   const attr = name && name.includes(':') ? 'property' : 'name';
   const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
   return meta && meta.content;
@@ -50,7 +50,7 @@ export function getCachedMetadata(name) {
 
 export const yieldToMain = () => new Promise((resolve) => { setTimeout(resolve, 0); });
 
-function createTag(tag, attributes, html, options = {}) {
+export function createTag(tag, attributes, html, options = {}) {
   const el = document.createElement(tag);
   if (html) {
     if (html instanceof HTMLElement
@@ -476,4 +476,114 @@ export function decorateArea(area = document) {
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
+}
+
+export async function fetchPlaceholders() {
+  const requestPlaceholders = async (url) => {
+    const resp = await fetch(url);
+    if (resp.ok) {
+      const json = await resp.json();
+      window.placeholders = {};
+      json.data.forEach((placeholder) => {
+        if (placeholder.value) window.placeholders[placeholder.key] = placeholder.value;
+        else if (placeholder.Text) window.placeholders[placeholder.Key] = placeholder.Text;
+      });
+    }
+  };
+  if (!window.placeholders) {
+    try {
+      const { prefix } = getConfig().locale;
+      await requestPlaceholders(`${prefix}/express/placeholders.json`);
+    } catch {
+      await requestPlaceholders('/express/placeholders.json');
+    }
+  }
+  return window.placeholders;
+}
+
+export function getIconElement(icons, size, alt, additionalClassName, altSrc) {
+  const icon = getIcon(icons, alt, size, altSrc);
+  if (additionalClassName) icon.classList.add(additionalClassName);
+  return icon;
+}
+
+export function transformLinkToAnimation($a, $videoLooping = true) {
+  if (!$a || !$a.href.endsWith('.mp4')) {
+    return null;
+  }
+  const params = new URL($a.href).searchParams;
+  const attribs = {};
+  const dataAttr = $videoLooping ? ['playsinline', 'autoplay', 'loop', 'muted'] : ['playsinline', 'autoplay', 'muted'];
+  dataAttr.forEach((p) => {
+    if (params.get(p) !== 'false') attribs[p] = '';
+  });
+  // use closest picture as poster
+  const $poster = $a.closest('div').querySelector('picture source');
+  if ($poster) {
+    attribs.poster = $poster.srcset;
+    $poster.parentNode.remove();
+  }
+  // replace anchor with video element
+  const videoUrl = new URL($a.href);
+
+  const isLegacy = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.pathname.includes('media_');
+  const $video = createTag('video', attribs);
+  if (isLegacy) {
+    const helixId = videoUrl.hostname.includes('hlx.blob.core') ? videoUrl.pathname.split('/')[2] : videoUrl.pathname.split('media_')[1].split('.')[0];
+    const videoHref = `./media_${helixId}.mp4`;
+    $video.innerHTML = `<source src="${videoHref}" type="video/mp4">`;
+  } else {
+    $video.innerHTML = `<source src="${videoUrl}" type="video/mp4">`;
+  }
+
+  const $innerDiv = $a.closest('div');
+  $innerDiv.prepend($video);
+  $innerDiv.classList.add('hero-animation-overlay');
+  $video.setAttribute('tabindex', 0);
+  $a.replaceWith($video);
+  // autoplay animation
+  $video.addEventListener('canplay', () => {
+    $video.muted = true;
+    const playPromise = $video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // ignore
+      });
+    }
+  });
+  return $video;
+}
+
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
+  const url = new URL(src, window.location.href);
+  const picture = document.createElement('picture');
+  const { pathname } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+
+  // webp
+  breakpoints.forEach((br) => {
+    const source = document.createElement('source');
+    if (br.media) source.setAttribute('media', br.media);
+    source.setAttribute('type', 'image/webp');
+    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
+    picture.appendChild(source);
+  });
+
+  // fallback
+  breakpoints.forEach((br, i) => {
+    if (i < breakpoints.length - 1) {
+      const source = document.createElement('source');
+      if (br.media) source.setAttribute('media', br.media);
+      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      picture.appendChild(source);
+    } else {
+      const img = document.createElement('img');
+      img.setAttribute('loading', eager ? 'eager' : 'lazy');
+      img.setAttribute('alt', alt);
+      picture.appendChild(img);
+      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+    }
+  });
+
+  return picture;
 }
