@@ -1,13 +1,9 @@
-import {
-  createOptimizedPicture,
-  createTag,
-  fetchPlaceholders,
-  transformLinkToAnimation,
-} from '../../scripts/utils.js';
-import { addFreePlanWidget } from '../../scripts/utils/free-plan.js';
-import {
-  decorateButtonsDeprecated,
-} from '../../scripts/utils/decorate.js';
+import { getLibs } from '../../scripts/utils.js';
+import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
+import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+
+const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 function buildContent(content) {
   const contentLink = content.querySelector('a');
@@ -115,11 +111,15 @@ async function buildApp(block, content) {
     variant = 'image';
   }
 
-  await fetchPlaceholders().then((placeholders) => {
-    appImage = createOptimizedPicture(placeholders[`fullscreen-marquee-desktop-${variant}-app`]);
-    editor = createOptimizedPicture(placeholders[`fullscreen-marquee-desktop-${variant}-editor`]);
+  await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
+    const imgSrc = await mod.replaceKey(`fullscreen-marquee-desktop-${variant}-app`, getConfig());
+    appImage = createOptimizedPicture(imgSrc);
+
+    const editorSrc = await mod.replaceKey(`fullscreen-marquee-desktop-${variant}-editor`, getConfig());
+    editor = createOptimizedPicture(editorSrc);
 
     appImage.classList.add('fullscreen-marquee-app-image');
+    return mod.replaceKey();
   });
 
   editor.classList.add('fullscreen-marquee-app-editor');
