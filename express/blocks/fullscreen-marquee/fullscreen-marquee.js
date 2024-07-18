@@ -125,13 +125,13 @@ async function buildApp(block, content) {
   editor.classList.add('fullscreen-marquee-app-editor');
   content.classList.add('fullscreen-marquee-app-content');
 
-    window.addEventListener('mousemove', (e) => {
-      const rotateX = ((e.clientX * 10) / (window.innerWidth / 2) - 10);
-      const rotateY = -((e.clientY * 10) / (window.innerHeight / 2) - 10);
-  
-      app.style.transform = `rotateX(${rotateY}deg) rotateY(${rotateX}deg) translate3d(${rotateX}px, 0px, 0px)`;
-      appBackground.style.transform = `rotateX(${rotateY}deg) rotateY(${rotateX}deg) translate3d(${rotateX}px, 0px, -50px)`;
-    }, { passive: true });
+  window.addEventListener('mousemove', (e) => {
+    const rotateX = ((e.clientX * 10) / (window.innerWidth / 2) - 10);
+    const rotateY = -((e.clientY * 10) / (window.innerHeight / 2) - 10);
+
+    app.style.transform = `rotateX(${rotateY}deg) rotateY(${rotateX}deg) translate3d(${rotateX}px, 0px, 0px)`;
+    appBackground.style.transform = `rotateX(${rotateY}deg) rotateY(${rotateX}deg) translate3d(${rotateX}px, 0px, -50px)`;
+  }, { passive: true });
 
   contentContainer.append(content);
   app.append(appImage);
@@ -139,7 +139,7 @@ async function buildApp(block, content) {
   appFrame.append(app);
   appFrame.append(appBackground);
   app.append(editor);
-  decorateButtonsDeprecated(block)
+  decorateButtonsDeprecated(block);
   addMarqueeCenterCTA(block, appFrame);
   return appFrame;
 }
@@ -152,8 +152,6 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   block.classList.add('block');
-
-  console.log('block::', block)
 
   if (content) {
     content = buildContent(content);
