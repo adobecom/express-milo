@@ -19,6 +19,7 @@
 .fullscreen-marquee .fullscreen-marquee-heading h1 {
   font-size: var(--heading-font-size-l);
   text-align: left;
+  margin: 0;
 }
 
 .fullscreen-marquee .fullscreen-marquee-heading p {
@@ -28,7 +29,6 @@
   font-size: var(--body-font-size-m);
   text-align: left;
 }
-
 
 .fullscreen-marquee-heading h1.budoux {
   display: flex;
@@ -142,6 +142,11 @@
   justify-content: center;
   height: 100%;
   width: 100%;
+}
+
+.fullscreen-marquee .fullscreen-marquee-app-content img {
+  height: auto;
+  width: auto;
 }
 
 .fullscreen-marquee .fullscreen-marquee-app-frame .fullscreen-marquee-app {
