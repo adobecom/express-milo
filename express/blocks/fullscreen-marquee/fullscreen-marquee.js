@@ -151,7 +151,6 @@ export default async function decorate(block) {
   let content = rows[1] ?? null;
 
   block.innerHTML = '';
-  block.classList.add('block');
 
   if (content) {
     content = buildContent(content);
@@ -169,5 +168,9 @@ export default async function decorate(block) {
 
   if (content && document.body.dataset.device === 'desktop') {
     block.append(await buildApp(block, content));
+  }
+
+  if (document.body.dataset.device === 'mobile') {
+    decorateButtonsDeprecated(block);
   }
 }
