@@ -583,10 +583,6 @@ a:any-link {
   .section p.button-container {
     text-align: unset;
   }
-
-  .section.cards-container {
-    background-color: unset;
-  }
 }
 
 @media (min-width: 1200px) {
@@ -879,8 +875,8 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
   display: block;
 }
 
-.section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
-.section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
+.section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
+.section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
   display: none;
 }
 
@@ -907,8 +903,8 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
     text-align: left;
   }
 
-  .section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
-  .section:not(.banner-container) > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
+  .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
+  .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
     display: inline-block;
   }
 }
@@ -956,20 +952,10 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
     max-width: 1200px;
   }
 
-  .columns-fullsize-container > div,
-  .columns-fullsize-center-container > div,
-  .template-list-sixcols-container > div {
-    max-width: 1122px;
-  }
-
   .free-plan-bullet .free-plan-bullet-container,
   .free-plan-widget-placeholder {
     max-width: 400px;
   }
-}
-
-.template-list-sixcols-container > div {
-  padding: 0;
 }
 
 @-webkit-keyframes freePlanHighlight {
