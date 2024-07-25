@@ -171,5 +171,5 @@ export default async function decorate(block) {
 
   if (content && document.body.dataset.device === 'desktop') {
     block.append(await buildApp(block, content));
-  }  
+  }
 }
