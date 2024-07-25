@@ -19,14 +19,14 @@
   max-width: fit-content;
 }
 
-.how-to-steps-carousel-container > div p,
-.how-to-steps-carousel-container > div p.button-container,
-.how-to-steps-carousel-container > div p.button-container a {
+.how-to-steps-carousel-container > div.content p,
+.how-to-steps-carousel-container > div.content p.button-container,
+.how-to-steps-carousel-container > div.content p.button-container a {
   text-align: left;
   margin: 0;
 }
 
-.how-to-steps-carousel-container > div p.button-container {
+.how-to-steps-carousel-container > div.content p.button-container {
   margin: 16px 0;
 }
 
