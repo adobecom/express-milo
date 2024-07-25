@@ -1,34 +1,50 @@
 /* blog styling */
 
-.blog main #hero {
+.blog #hero {
     margin: 0;
     padding: 0;
   }
 
-.blog main .section > .content {
+.blog .section:not(:has(.blog-posts)) > div:first-child:not(.banner) {
+  padding-top: 60px;
+}
+
+.blog .section h1, .blog .section h2, .blog .section h3, .blog .section h4, .blog .section h5 {
+  margin: 0;
+}
+
+.blog .section > div > h2 {
+  margin: 80px 0 0;
+}
+
+.blog .section > div > h2:first-child, .blog .section > div > h3:first-child {
+  margin-top: 60px;
+}
+
+.blog .section > .content {
   margin: auto;
   max-width: 375px;
 }
 
-  .blog main .section > div > p {
+  .blog .section > div > p {
     font-family: var(--body-serif-font-family);
   }
 
-  .blog main .section > div > p .button, .blog main .section > div > p .con-button {
+  .blog .section > div > p .button, .blog .section > div > p .con-button {
     font-family: var(--body-font-family);
   }
 
-  .blog main #hero > div {
+  .blog #hero > div {
     margin: auto;
     max-width: 1000px;
     width: 100%;
   }
 
-  .blog main #hero {
+  .blog #hero {
     color: black;
   }
 
-  .blog main #hero .blog-header .eyebrow {
+  .blog #hero .blog-header .eyebrow {
     margin: 0;
     margin-bottom: 12px;
     font-weight: 700;
@@ -38,25 +54,25 @@
     text-transform: capitalize;
   }
 
-  .blog main #hero .blog-header .author {
+  .blog #hero .blog-header .author {
     margin-top: 24px;
     display: flex;
     align-items: center;
     font-size: var(--body-font-size-s);
   }
 
-  .blog main #hero .blog-header .author div.author-social {
+  .blog #hero .blog-header .author div.author-social {
     flex-grow: 1;
     text-align: right;
   }
 
-  .blog main #hero .blog-header .author div.author-social svg {
+  .blog #hero .blog-header .author div.author-social svg {
     margin: 0 0 6px 6px;
     height: 18px;
     width: 18px;
   }
 
-  .blog main #hero .blog-header img {
+  .blog #hero .blog-header img {
     width: 64px;
     height: 64px;
     object-fit: cover;
@@ -64,26 +80,26 @@
     margin-right: 20px;
   }
 
-  .blog main #hero .blog-header h1 {
+  .blog #hero .blog-header h1 {
     text-align: left;
     font-size: var(--heading-font-size-l);
   }
 
-  .blog main #hero .blog-header {
+  .blog #hero .blog-header {
     font-family: var(--body-serif-font-family);
   }
 
-  .blog main #hero .blog-header h1 {
+  .blog #hero .blog-header h1 {
     font-family: var(--body-font-family);
   }
 
-  .blog main #hero .blog-header p.subheading {
+  .blog #hero .blog-header p.subheading {
     text-align: left;
     font-size: var(--body-font-size-l);
     margin-left: 0;
   }
 
-  .blog main #hero .blog-header {
+  .blog #hero .blog-header {
     text-align: left;
     margin: 80px 32px 32px;
     background-image: url(/express/icons/cc-express-logo.svg);
@@ -121,63 +137,63 @@
   }
 
 
-  .blog main div.section h2, .blog main div.section h3,
-  .blog main div.section h2 + p:not(.button-container), .blog main div.section h3 + p:not(.button-container)  {
+  .blog div.section h2, .blog div.section h3,
+  .blog div.section h2 + p:not(.button-container), .blog div.section h3 + p:not(.button-container)  {
     text-align: left;
   }
 
-  .blog main .section h3 {
+  .blog .section h3 {
     font-size: 36px;
     line-height: 40px;
     margin-top: 64px;
     text-align: left;
   }
 
-  .blog main .section h4 {
+  .blog .section h4 {
     text-align: left;
   }
 
-  .blog main .hero-animation p {
+  .blog .hero-animation p {
     font-family: var(--body-serif-font-family);
   }
 
-  .blog main .banner-container {
+  .blog .banner {
     margin-top: 64px;
   }
 
-  .blog main .banner > div > div > h2 {
+  .blog .banner > div > div > h2 {
     text-align: center;
   }
 
-  .blog main svg.copy-success {
+  .blog svg.copy-success {
     fill: var(--color-info-accent);
   }
 
-  .blog main svg.copy-failure {
+  .blog svg.copy-failure {
     fill: var(--color-gray-400);
   }
 
-  .blog main div.sticky-promo-bar {
+  .blog div.sticky-promo-bar {
     text-align: center;
   }
 
 @media (min-width: 600px) {
-  .blog main #hero .blog-header p.subheading {
+  .blog #hero .blog-header p.subheading {
     font-size: var(--body-font-size-xl);
   }
 
-  .blog main #hero .blog-header h1 {
+  .blog #hero .blog-header h1 {
     font-size: var(--heading-font-size-xl);
   }
 
-  .blog main #hero .blog-header {
+  .blog #hero .blog-header {
     padding-top: 66px;
   }
 
-  .blog main #hero .blog-header .eyebrow {
+  .blog #hero .blog-header .eyebrow {
     margin-bottom: 24px;
   }
-  .blog main #hero .blog-header .author {
+  .blog #hero .blog-header .author {
     margin-top: 32px;
   }
 }
@@ -188,30 +204,30 @@
     margin-top: 0;
     }
 
-  .blog main .section > .content {
+  .blog .section > .content {
     max-width: 830px;
   }
 }
 
 @media (min-width:1200px) {
-  .blog main .section > .content {
+  .blog .section > .content {
     max-width: 1024px;
   }
 }
 
 /* Japanese font styles */
-:lang(ja) .blog main .section h3 {
+:lang(ja) .blog .section h3 {
   font-size: var(--heading-font-size-m);
 }
 
-:lang(ja) .blog main .hero-animation p {
+:lang(ja) .blog .hero-animation p {
   font-family: var(--body-font-family);
 }
 
-:lang(ja) .blog main .section > div > p {
+:lang(ja) .blog .section > div > p {
   font-family: var(--body-font-family);
 }
 
-:lang(ja) .blog main #hero .blog-header {
+:lang(ja) .blog #hero .blog-header {
   font-family: var(--body-font-family);
 }

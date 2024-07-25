@@ -88,36 +88,11 @@
   line-height: 1.2;
 }
 
-.quotes-highlight-container {
-  background: var(--gradient-highlight-vertical);
-}
-
-.quotes-dark-container {
-  background-color: var(--color-black);
-}
-
-.quotes-inverted-container .quote {
-  background-color: var(--color-black);
-  color: var(--color-white);
-}
-
-
 .quotes h2,
 .quotes h3,
 .quotes h4,
 .quotes h5 {
   color: var(--color-black);
-}
-
-.quotes-highlight-container h2,
-.quotes-highlight-container h3,
-.quotes-highlight-container h4,
-.quotes-highlight-container h5,
-.quotes-dark-container h2,
-.quotes-dark-container h3,
-.quotes-dark-container h4,
-.quotes-dark-container h5 {
-  color: var(--color-white);
 }
 
 @media (min-width: 900px) {

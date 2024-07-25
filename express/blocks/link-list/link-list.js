@@ -126,9 +126,6 @@ export default async function decorate(block) {
   if (links.length) {
     links.forEach((p) => {
       const link = p.querySelector('a');
-      if (!block.classList.contains('shaded')) {
-        link.classList.add('secondary');
-      }
 
       link.classList.add('medium');
       link.classList.remove('accent');
@@ -136,10 +133,6 @@ export default async function decorate(block) {
     const platformEl = document.createElement('div');
     platformEl.classList.add('link-list-platform');
     await buildCarousel('p.button-container, a.con-button', block, options);
-  }
-
-  if (block.classList.contains('shaded')) {
-    toggleLinksHighlight(links, variant);
   }
 
   window.addEventListener('popstate', () => {
