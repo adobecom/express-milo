@@ -163,7 +163,7 @@ export default async function decorate(block) {
   }
 
   if (heading) {
-    if (getConfig().locale.region === 'jp') heading.querySelector('h1').classList.add('budoux');
+    if (getConfig().locale?.ietf === 'ja-JP') heading.querySelector('h1').classList.add('budoux');
 
     heading.classList.add('fullscreen-marquee-heading');
     block.append(heading);
