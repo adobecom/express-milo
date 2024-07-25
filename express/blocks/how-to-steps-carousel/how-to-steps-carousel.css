@@ -1,6 +1,7 @@
 .how-to-steps-carousel-container {
   margin: 120px 0 0 0;
   padding: 0;
+  text-align: center;
 }
 
 .how-to-steps-carousel-container > picture > img {
