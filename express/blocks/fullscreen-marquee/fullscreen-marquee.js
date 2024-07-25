@@ -139,7 +139,6 @@ async function buildApp(block, content) {
   appFrame.append(app);
   appFrame.append(appBackground);
   app.append(editor);
-  decorateButtonsDeprecated(block);
   addMarqueeCenterCTA(block, appFrame);
   return appFrame;
 }
@@ -149,6 +148,8 @@ export default async function decorate(block) {
   const heading = rows[0] ? rows[0].querySelector('div') : null;
   const background = rows[2] ? rows[2].querySelector('picture') : null;
   let content = rows[1] ?? null;
+
+  decorateButtonsDeprecated(block);
 
   block.innerHTML = '';
 
@@ -162,15 +163,13 @@ export default async function decorate(block) {
   }
 
   if (heading) {
+    if (getConfig().locale.region === 'jp') heading.querySelector('h1').classList.add('budoux');
+
     heading.classList.add('fullscreen-marquee-heading');
     block.append(heading);
   }
 
   if (content && document.body.dataset.device === 'desktop') {
     block.append(await buildApp(block, content));
-  }
-
-  if (document.body.dataset.device === 'mobile') {
-    decorateButtonsDeprecated(block);
-  }
+  }  
 }
