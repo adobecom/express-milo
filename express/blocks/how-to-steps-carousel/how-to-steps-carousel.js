@@ -1,6 +1,7 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 let rotationInterval;
@@ -90,11 +91,12 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
   const heading = section.querySelector('h2, h3, h4');
 
   const includeSchema = block.classList.contains('schema');
-  if (includeSchema) {
-    // this is due to block loader setting how-to-steps-carousel-schema-container
-    // and not how-to-steps-carousel-container as expected
-    section.classList.add('how-to-steps-carousel-container');
-  }
+  // if (includeSchema) {
+  //   // this is due to block loader setting how-to-steps-carousel-schema-container
+  //   // and not how-to-steps-carousel-container as expected
+  section.classList.add('how-to-steps-carousel-container');
+  // }
+
   const schema = {
     '@context': 'http://schema.org',
     '@type': 'HowTo',
@@ -294,11 +296,20 @@ export default async function decorate(block) {
   // move first image of container outside of div for styling
   const section = block.closest('.section');
   const content = section.querySelector('.content');
+  const elements = section.querySelectorAll('.content:not(:first-of-type');
   const howto = block;
   const rows = Array.from(howto.children);
   let picture;
 
   if (content) content.append(block);
+
+  // move additional .content under the first content block
+  if (elements.length) {
+    for (const el of elements) {
+      content.append(...el.children);
+      el.remove();
+    }
+  }
 
   if (image) {
     const canvasWidth = 2000;
@@ -359,6 +370,6 @@ export default async function decorate(block) {
     parent.remove();
     section.prepend(picture);
   }
-
+  decorateButtonsDeprecated(section);
   buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindow);
 }
