@@ -80,7 +80,6 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
     if (i === 0) {
       // add block to first wrapper
       wrapper.append(block);
-      // wrapper.className = '';
     } else if (i >= 1) {
       // add children from rest of wrappers to first wrapper
       wrapper.previousElementSibling.append(...wrapper.children);
@@ -91,9 +90,9 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
   const heading = section.querySelector('h2, h3, h4');
 
   const includeSchema = block.classList.contains('schema');
- 
+
   section.classList.add('how-to-steps-carousel-container');
-  
+
   const schema = {
     '@context': 'http://schema.org',
     '@type': 'HowTo',
@@ -292,21 +291,9 @@ export default async function decorate(block) {
 
   // move first image of container outside of div for styling
   const section = block.closest('.section');
-  // const content = section.querySelector('.content');
-  // const elements = section.querySelectorAll('.content:not(:first-of-type');
   const howto = block;
   const rows = Array.from(howto.children);
   let picture;
-
-  // if (content) content.append(block);
-
-  // // move additional .content under the first content block
-  // if (elements.length) {
-  //   for (const el of elements) {
-  //     content.append(...el.children);
-  //     el.remove();
-  //   }
-  // }
 
   if (image) {
     const canvasWidth = 2000;
