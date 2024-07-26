@@ -167,7 +167,7 @@ export function createFloatingButton(block, audience, data) {
   });
 
   const floatButtonWrapperOld = aTag.closest('.floating-button-wrapper');
-  const floatButtonWrapper = createTag('div', { class: 'floating-button-wrapper' });
+  const floatButtonWrapper = createTag('div', { class: 'section floating-button-wrapper' });
   const floatButton = createTag('div', {
     class: 'floating-button block',
     'data-block-name': 'floating-button',
