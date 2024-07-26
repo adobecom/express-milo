@@ -164,13 +164,12 @@ body.branch-banner-is-active .floating-button-wrapper .floating-button {
     display: none;
 }
 
-body[data-device="mobile"] .section.floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"] {
+body[data-device="mobile"] .section.floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"],
+body[data-device="desktop"] .floating-button-wrapper[data-audience="desktop"][data-section-status="loaded"] {
     display: flex;
     position: fixed; 
 }
-body[data-device="desktop"] .floating-button-wrapper[data-audience="desktop"][data-section-status="loaded"] {
-    display: flex;
-}
+
 body[data-suppressfloatingcta="true"] .floating-button-wrapper[data-audience="desktop"][data-section-status="loaded"] {
     display: none;
 }
