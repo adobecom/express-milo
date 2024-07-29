@@ -466,7 +466,8 @@ export function buildAutoBlocks() {
 function addJapaneseSectionHeaderSizing(area) {
   import(`${getLibs()}/utils/utils.js`).then((mod) => {
     if (mod.getConfig().locale.ietf === 'ja-JP' && mod.getMetadata('template') !== 'blog') {
-      const headings = area === document ? area.querySelectorAll('main > div > h1, main > div > h2') : area.querySelectorAll(':scope > div > h1, :scope > div > h2');
+      const context = area === document ? 'main' : ':scope';
+      const headings = area.querySelectorAll(`${context} > div > h1, ${context} > div > h2, ${context} .section > .content > h1, ${context} .section > .content > h2`);
       if (headings.length) import('./utils/location-utils.js').then((locMod) => locMod.addHeaderSizing(headings, null));
     }
   });
