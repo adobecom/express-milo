@@ -440,7 +440,7 @@ function transpileMarquee(area) {
 }
 
 export function buildAutoBlocks() {
-  if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
+  if (['yes', 'y', 'true', 'on'] .includes(getMetadata('show-floating-cta')?.toLowerCase())) {
     const lastDiv = document.querySelector('main > div:last-of-type');
     const validButtonVersion = ['floating-button', 'multifunction-button', 'bubble-ui-button', 'floating-panel'];
     const device = document.body.dataset?.device;
@@ -459,15 +459,30 @@ export function buildAutoBlocks() {
   }
 }
 
+/**
+ * Call `addHeaderSizing` on default content blocks in all section blocks
+ * in all Japanese pages except blog pages.
+ */
+function addJapaneseSectionHeaderSizing(area) {
+  import(`${getLibs()}/utils/utils.js`).then((mod) => {
+    if (mod.getConfig().locale.ietf === 'ja-JP' && mod.getMetadata('template') !== 'blog') {
+      const headings = area === document ? area.querySelectorAll('main > div > h1, main > div > h2') : area.querySelectorAll(':scope > div > h1, :scope > div > h2');
+      if(headings.length) import('./utils/location-utils.js').then((mod) => mod.addHeaderSizing(headings, null));
+    }
+  });
+}
+
 export function decorateArea(area = document) {
-  document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  removeIrrelevantSections(area);
-  // LCP image decoration
-  (function decorateLCPImage() {
-    const lcpImg = area.querySelector('img');
-    lcpImg?.removeAttribute('loading');
-  }());
-  const links = area === Document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
+  if (area !== document) {
+    removeIrrelevantSections(area);
+    // LCP image decoration
+    (function decorateLCPImage() {
+      const lcpImg = area.querySelector('img');
+      lcpImg?.removeAttribute('loading');
+    }());
+  }
+
+  const links = area === document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
   if (links.length) {
     // eslint-disable-next-line import/no-cycle
     import('./branchlinks.js').then((mod) => mod.default(links));
@@ -476,4 +491,5 @@ export function decorateArea(area = document) {
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
+  addJapaneseSectionHeaderSizing(area);
 }
