@@ -100,8 +100,8 @@ function getJapaneseTextCharacterCount(text) {
  * Default is "heading".
  * @param {string} selector CSS selector to select the target heading tags. Default is "h1, h2".
  */
-export function addHeaderSizing($block, classPrefix = 'heading', selector = 'h1, h2') {
-  const headings = $block.querySelectorAll(selector);
+export function addHeaderSizing(passedHeadings, $block , classPrefix = 'heading', selector = 'h1, h2') {
+  const headings = passedHeadings || $block.querySelectorAll(selector);
   // Each threshold of JP should be smaller than other languages
   // because JP characters are larger and JP sentences are longer
   const sizes = getConfig().locale.region === 'jp'

@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, buildAutoBlocks, decorateArea } from './utils.js';
+import {setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections} from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -75,8 +75,13 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const miloLibs = setLibs(LIBS);
 
-// Decorate the page with site specific needs.
-decorateArea();
+document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+removeIrrelevantSections(document);
+// LCP image decoration
+(function decorateLCPImage() {
+  const lcpImg = document.querySelector('img');
+  lcpImg?.removeAttribute('loading');
+}());
 
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];
@@ -98,6 +103,8 @@ decorateArea();
     (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
 
   const config = setConfig({ ...CONFIG, miloLibs });
+  // Decorate the page with site specific needs.
+  decorateArea();
 
   if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
     // TODO only add this back once we're consuming the milo version of gnav
@@ -121,7 +128,7 @@ decorateArea();
 
   // listenMiloEvents();
   buildAutoBlocks();
-  if (urlParams.get('martech') !== 'off' || getMetadata('martech') === 'off') {
+  if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
   if (getMetadata('sheet-powered') === 'Y') {
