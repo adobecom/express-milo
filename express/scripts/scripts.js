@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import {setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections} from './utils.js';
+import { setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
