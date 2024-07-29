@@ -31,10 +31,13 @@
 }
 
 .how-to-steps-carousel-container > div.content > h2 {
-  font-size: var(--heading-font-size-xl);
   text-align: left;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.how-to-steps-carousel-container > div.content > h2:not(:lang(ja)) {
+  font-size: var(--heading-font-size-xl);
 }
 
 .how-to-steps-carousel-container > div > div {
