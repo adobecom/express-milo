@@ -10,6 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
+
+
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -170,7 +172,7 @@ export function removeIrrelevantSections(area) {
             const notFloatingCtaIgnore = !a.classList.contains('floating-cta-ignore');
 
             return (sameText || (samePathname && sameHash))
-                  && isNotInFloatingCta && notFloatingCtaIgnore;
+              && isNotInFloatingCta && notFloatingCtaIgnore;
           } catch (err) {
             window.lana?.log(err);
             return false;
@@ -457,6 +459,398 @@ export function buildAutoBlocks() {
       });
     }
   }
+}
+
+/**
+ * Returns a picture element with webp and fallbacks
+ * @param {string} src The image URL
+ * @param {string} alt The alt text of the image
+ * @param {boolean} eager load image eager
+ * @param {Array} breakpoints breakpoints and corresponding params (eg. width)
+ */
+
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
+  const url = new URL(src, window.location.href);
+  const picture = document.createElement('picture');
+  const { pathname } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+
+  // webp
+  breakpoints.forEach((br) => {
+    const source = document.createElement('source');
+    if (br.media) source.setAttribute('media', br.media);
+    source.setAttribute('type', 'image/webp');
+    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
+    picture.appendChild(source);
+  });
+
+  // fallback
+  breakpoints.forEach((br, i) => {
+    if (i < breakpoints.length - 1) {
+      const source = document.createElement('source');
+      if (br.media) source.setAttribute('media', br.media);
+      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      picture.appendChild(source);
+    } else {
+      const img = document.createElement('img');
+      img.setAttribute('loading', eager ? 'eager' : 'lazy');
+      img.setAttribute('alt', alt);
+      picture.appendChild(img);
+      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+    }
+  });
+
+  return picture;
+}
+
+function decoratePictures(main) {
+  main.querySelectorAll('img[src*="/media_"]').forEach((img, i) => {
+    const newPicture = createOptimizedPicture(img.src, img.alt, !i);
+    const picture = img.closest('picture');
+    if (picture) picture.parentElement.replaceChild(newPicture, picture);
+  });
+}
+
+
+/**
+ * fetches the string variables.
+ * @returns {object} localized variables
+ */
+
+export async function fetchPlaceholders() {
+  const requestPlaceholders = async (url) => {
+    const resp = await fetch(url);
+    if (resp.ok) {
+      const json = await resp.json();
+      window.placeholders = {};
+      json.data.forEach((placeholder) => {
+        if (placeholder.value) window.placeholders[placeholder.key] = placeholder.value;
+        else if (placeholder.Text) window.placeholders[placeholder.Key] = placeholder.Text;
+      });
+    }
+  };
+  if (!window.placeholders) {
+    try {
+      const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+      const { prefix } = getConfig().locale;
+      await requestPlaceholders(`${prefix}/express/placeholders.json`);
+    } catch {
+      await requestPlaceholders('/express/placeholders.json');
+    }
+  }
+  return window.placeholders;
+}
+
+function sanitizeInput(input) {
+  if (Number.isInteger(input)) return input;
+  return input.replace(/[^a-zA-Z0-9-_]/g, ''); // Simple regex to strip out potentially dangerous characters
+}
+
+function createSVGWrapper(icon, sheetSize, alt, altSrc) {
+  const svgWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgWrapper.classList.add('icon');
+  svgWrapper.classList.add(`icon-${icon}`);
+  svgWrapper.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns', 'http://www.w3.org/1999/xlink');
+  if (alt) {
+    svgWrapper.appendChild(createTag('title', { innerText: alt }));
+  }
+  const u = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+  if (altSrc) {
+    u.setAttribute('href', altSrc);
+  } else {
+    u.setAttribute('href', `/express/icons/ccx-sheet_${sanitizeInput(sheetSize)}.svg#${
+      sanitizeInput(icon)}${sanitizeInput(sheetSize)}`);
+  }
+  svgWrapper.appendChild(u);
+  return svgWrapper;
+}
+
+function getIcon(icons, alt, size, altSrc = 44) {
+  // eslint-disable-next-line no-param-reassign
+  icons = Array.isArray(icons) ? icons : [icons];
+  const [defaultIcon, mobileIcon] = icons;
+  const icon = (mobileIcon && window.innerWidth < 600) ? mobileIcon : defaultIcon;
+  const symbols = [
+    'adobefonts',
+    'adobe-stock',
+    'android',
+    'animation',
+    'blank',
+    'brand',
+    'brand-libraries',
+    'brandswitch',
+    'calendar',
+    'certified',
+    'color-how-to-icon',
+    'changespeed',
+    'check',
+    'chevron',
+    'cloud-storage',
+    'crop-image',
+    'crop-video',
+    'convert',
+    'convert-png-jpg',
+    'cursor-browser',
+    'desktop',
+    'desktop-round',
+    'download',
+    'elements',
+    'facebook',
+    'globe',
+    'incredibly-easy',
+    'instagram',
+    'image',
+    'ios',
+    'libraries',
+    'library',
+    'linkedin',
+    'magicwand',
+    'mergevideo',
+    'mobile-round',
+    'muteaudio',
+    'palette',
+    'photos',
+    'photoeffects',
+    'pinterest',
+    'play',
+    'premium-templates',
+    'pricingfree',
+    'pricingpremium',
+    'privacy',
+    'qr-code',
+    'remove-background',
+    'resize',
+    'resize-video',
+    'reversevideo',
+    'rush',
+    'snapchat',
+    'sparkpage',
+    'sparkvideo',
+    'stickers',
+    'templates',
+    'text',
+    'tiktok',
+    'trim-video',
+    'twitter',
+    'up-download',
+    'upload',
+    'users',
+    'webmobile',
+    'youtube',
+    'star',
+    'star-half',
+    'star-empty',
+    'pricing-gen-ai',
+    'pricing-features',
+    'pricing-import',
+    'pricing-motion',
+    'pricing-stock',
+    'pricing-one-click',
+    'pricing-collaborate',
+    'pricing-premium-plan',
+    'pricing-sync',
+    'pricing-brand',
+    'pricing-calendar',
+    'pricing-fonts',
+    'pricing-libraries',
+    'pricing-cloud',
+    'pricing-support',
+    'pricing-sharing',
+    'pricing-history',
+    'pricing-corporate',
+    'pricing-admin',
+  ];
+
+  const size22Icons = [
+    'chevron',
+    'pricingfree',
+    'pricingpremium',
+  ];
+
+  if (symbols.includes(icon) || altSrc) {
+    let sheetSize = size;
+    if (size22Icons.includes(icon)) sheetSize = 22;
+    return createSVGWrapper(icon, sheetSize, alt, altSrc);
+  }
+  return createTag('img', {
+    class: `icon icon-${icon}`,
+    src: altSrc || `/express/icons/${icon}.svg`,
+    alt: `${alt || icon}`,
+  });
+}
+
+export function getIconElement(icons, size, alt, additionalClassName, altSrc) {
+  // const icon = getIcon(icons, alt, altSrc, size);
+  // if (additionalClassName) icon.classList.add(additionalClassName);
+  return 'icon';
+}
+
+const PAGE_URL = new URL(window.location.href);
+const ENVS = {
+  stage: {
+    name: 'stage',
+    ims: 'stg1',
+    adobeIO: 'cc-collab-stage.adobe.io',
+    adminconsole: 'stage.adminconsole.adobe.com',
+    account: 'stage.account.adobe.com',
+    edgeConfigId: '8d2805dd-85bf-4748-82eb-f99fdad117a6',
+    pdfViewerClientId: '600a4521c23d4c7eb9c7b039bee534a0',
+  },
+  prod: {
+    name: 'prod',
+    ims: 'prod',
+    adobeIO: 'cc-collab.adobe.io',
+    adminconsole: 'adminconsole.adobe.com',
+    account: 'account.adobe.com',
+    edgeConfigId: '2cba807b-7430-41ae-9aac-db2b0da742d5',
+    pdfViewerClientId: '3c0a5ddf2cc04d3198d9e48efc390fa9',
+  },
+};
+ENVS.local = {
+  ...ENVS.stage,
+  name: 'local',
+};
+
+function getEnv(conf) {
+  const { host } = window.location;
+  const query = PAGE_URL.searchParams.get('env');
+
+  if (query) return { ...ENVS[query], consumer: conf[query] };
+  if (host.includes('localhost')) return { ...ENVS.local, consumer: conf.local };
+  /* c8 ignore start */
+  if (host.includes('hlx.page')
+    || host.includes('hlx.live')
+    || host.includes('stage.adobe')
+    || host.includes('corp.adobe')) {
+    return { ...ENVS.stage, consumer: conf.stage };
+  }
+  return { ...ENVS.prod, consumer: conf.prod };
+  /* c8 ignore stop */
+}
+const LANGSTORE = 'langstore';
+
+export function getLocale(locales, pathname = window.location.pathname) {
+  if (!locales) {
+    return { ietf: 'en-US', tk: 'hah7vzn.css', prefix: '' };
+  }
+  const split = pathname.split('/');
+  const localeString = split[1];
+  const locale = locales[localeString] || locales[''];
+  if (localeString === LANGSTORE) {
+    locale.prefix = `/${localeString}/${split[2]}`;
+    if (
+      Object.values(locales)
+        .find((loc) => loc.ietf?.startsWith(split[2]))?.dir === 'rtl'
+    ) locale.dir = 'rtl';
+    return locale;
+  }
+  const isUS = locale.ietf === 'en-US';
+  locale.prefix = isUS ? '' : `/${localeString}`;
+  locale.region = isUS ? 'us' : localeString.split('_')[0];
+  return locale;
+}
+
+const AUTO_BLOCKS = [
+  { faas: '/tools/faas' },
+  { fragment: '/express/fragments/' },
+];
+
+const DO_NOT_INLINE = [
+  'accordion',
+  'columns',
+  'z-pattern',
+];
+
+// export const [setConfig, updateConfig, getConfig] = (() => {
+//   let config = {};
+//   return [
+//     (conf) => {
+//       const origin = conf.origin || window.location.origin;
+//       const pathname = conf.pathname || window.location.pathname;
+//       config = { env: getEnv(conf), ...conf };
+//       config.codeRoot = conf.codeRoot ? `${origin}${conf.codeRoot}` : origin;
+//       config.base = config.miloLibs || config.codeRoot;
+//       config.locale = pathname ? getLocale(conf.locales, pathname) : getLocale(conf.locales);
+//       config.autoBlocks = conf.autoBlocks ? [...AUTO_BLOCKS, ...conf.autoBlocks] : AUTO_BLOCKS;
+//       config.doNotInline = conf.doNotInline
+//         ? [...DO_NOT_INLINE, ...conf.doNotInline]
+//         : DO_NOT_INLINE;
+//       const lang = getMetadata('content-language') || config.locale.ietf;
+//       document.documentElement.setAttribute('lang', lang);
+//       try {
+//         const dir = getMetadata('content-direction')
+//           || config.locale.dir
+//           || (config.locale.ietf && (new Intl.Locale(config.locale.ietf)?.textInfo?.direction))
+//           || 'ltr';
+//         document.documentElement.setAttribute('dir', dir);
+//       } catch (e) {
+//         // eslint-disable-next-line no-console
+//         console.log('Invalid or missing locale:', e);
+//       }
+//       config.locale.contentRoot = `${origin}${config.locale.prefix}${config.contentRoot ?? ''}`;
+//       config.useDotHtml = !PAGE_URL.origin.includes('.hlx.')
+//         && (conf.useDotHtml ?? PAGE_URL.pathname.endsWith('.html'));
+//       return config;
+//     },
+//     // eslint-disable-next-line no-return-assign
+//     (conf) => (config = conf),
+//     () => config,
+//   ];
+// })();
+
+export function titleCase(str) {
+  const splitStr = str.toLowerCase().split(' ');
+  for (let i = 0; i < splitStr.length; i += 1) {
+    splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+  }
+  return splitStr.join(' ');
+}
+
+export function transformLinkToAnimation($a, $videoLooping = true) {
+  if (!$a || !$a.href.endsWith('.mp4')) {
+    return null;
+  }
+  const params = new URL($a.href).searchParams;
+  const attribs = {};
+  const dataAttr = $videoLooping ? ['playsinline', 'autoplay', 'loop', 'muted'] : ['playsinline', 'autoplay', 'muted'];
+  dataAttr.forEach((p) => {
+    if (params.get(p) !== 'false') attribs[p] = '';
+  });
+  // use closest picture as poster
+  const $poster = $a.closest('div').querySelector('picture source');
+  if ($poster) {
+    attribs.poster = $poster.srcset;
+    $poster.parentNode.remove();
+  }
+  // replace anchor with video element
+  const videoUrl = new URL($a.href);
+
+  const isLegacy = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.pathname.includes('media_');
+  const $video = createTag('video', attribs);
+  if (isLegacy) {
+    const helixId = videoUrl.hostname.includes('hlx.blob.core') ? videoUrl.pathname.split('/')[2] : videoUrl.pathname.split('media_')[1].split('.')[0];
+    const videoHref = `./media_${helixId}.mp4`;
+    $video.innerHTML = `<source src="${videoHref}" type="video/mp4">`;
+  } else {
+    $video.innerHTML = `<source src="${videoUrl}" type="video/mp4">`;
+  }
+
+  const $innerDiv = $a.closest('div');
+  $innerDiv.prepend($video);
+  $innerDiv.classList.add('hero-animation-overlay');
+  $video.setAttribute('tabindex', 0);
+  $a.replaceWith($video);
+  // autoplay animation
+  $video.addEventListener('canplay', () => {
+    $video.muted = true;
+    const playPromise = $video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // ignore
+      });
+    }
+  });
+  return $video;
 }
 
 export function decorateArea(area = document) {

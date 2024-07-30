@@ -90,9 +90,20 @@ decorateArea();
   });
 }());
 
-(async function loadPage() {
-  const { loadArea, setConfig, getMetadata, loadLana, createTag } = await import(`${miloLibs}/utils/utils.js`);
 
+
+(async function loadPage() {
+  const { loadArea, loadStyle, setConfig, getMetadata, loadLana, createTag } = await import(`${miloLibs}/utils/utils.js`);
+  async function setTemplateTheme() {
+    // todo: remove theme after we move blog to template column in metadata sheet
+    const template = getMetadata('template') || getMetadata('theme');
+    if (!template || template?.toLowerCase() === 'no brand header') return;
+    const name = template.toLowerCase().replace(/[^0-9a-z]/gi, '-');
+    document.body.classList.add(name);
+    await new Promise((resolve) => {
+      loadStyle(`/express/templates/${name}/${name}.css`, resolve);
+    });
+  }
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
@@ -130,6 +141,8 @@ decorateArea();
     await replaceContent(document.querySelector('main'));
   }
   await loadArea();
+
+  await setTemplateTheme();
 
   import('./express-delayed.js').then((mod) => {
     mod.default();
