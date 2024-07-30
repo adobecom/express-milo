@@ -321,6 +321,8 @@ export default async function decorate(block) {
 
     templateImg.style.visibility = 'hidden';
     templateImg.style.position = 'absolute';
+    templateImg.removeAttribute('width');
+    templateImg.removeAttribute('height');
     backgroundPicImg.style.width = `${canvasWidth}px`;
     if (window.screen.width < 600) backgroundPicImg.style.height = `${window.screen.width * 0.536}px`;
     picture = backgroundPic;
