@@ -263,7 +263,7 @@ export default async function decorate(block) {
     });
   });
   addAnimationToggle(block);
-  addHeaderSizing(block, 'columns-heading');
+  addHeaderSizing(null, block, 'columns-heading');
 
   // decorate offer
   if (block.classList.contains('offer')) {
