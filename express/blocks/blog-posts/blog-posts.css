@@ -229,7 +229,7 @@ main .section:has(.blog-posts) > .content {
         flex-direction: unset;
         max-width: 1200px;
         align-items: center;
-        margin: 56px auto;
+        margin: 116px auto;
     }
 
     main .blog-posts .blog-card h3.blog-card-title {

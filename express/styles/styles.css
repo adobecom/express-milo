@@ -123,6 +123,10 @@ body > header {
   background-color: #fff;
 }
 
+body > main {
+  text-align: center;
+}
+
 .feds-topnav-spacing,
 body > header:not(.feds-header-wrapper) {
   height: var(--header-height);
@@ -152,6 +156,10 @@ header #feds-topnav a.feds-navLink.feds-navLink--primaryCta:focus {
 
 header #feds-header a.feds-navLink:hover .feds-navLink-text {
   color: var(--color-info-accent-hover);
+}
+
+a:hover {
+  text-decoration: none;
 }
 
 /* buttons */

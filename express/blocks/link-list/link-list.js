@@ -126,6 +126,7 @@ export default async function decorate(block) {
   if (links.length) {
     links.forEach((p) => {
       const link = p.querySelector('a');
+      link.classList.add('secondary');
 
       link.classList.add('medium');
       link.classList.remove('accent');
