@@ -19,8 +19,12 @@
   margin-top: 0px;
 }
 
-.blog .section:not(:has(.blog-posts)) > div:first-child:not(.banner) {
+.blog .section:not(:has(.faq), :has(.blog-posts)) > div:first-child:not(.banner) {
   padding-top: 60px;
+}
+
+.blog .section > .content p:has(.con-button) {
+  margin-bottom: 0;
 }
 
 .blog .section h1, .blog .section h2, .blog .section h3, .blog .section h4, .blog .section h5 {
