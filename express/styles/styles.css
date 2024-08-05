@@ -547,7 +547,7 @@ a:any-link {
   padding-top: 0.1px;
 }
 
-.section:last-of-type > .content {
+.section:last-of-type>.content:not(:has(+ .template-list-wrapper)) {
   padding-bottom: 40px;
 }
 
