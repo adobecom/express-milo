@@ -5,6 +5,14 @@
     padding: 0;
   }
 
+.blog main div.template-list-wrapper + div {
+  padding-top: 60px;
+}
+
+.blog main div>h3:first-child {
+  margin-top: 0px;
+}
+
 .blog .section:not(:has(.blog-posts)) > div:first-child:not(.banner) {
   padding-top: 60px;
 }
@@ -17,7 +25,7 @@
   margin: 80px 0 0;
 }
 
-.blog .section > div > h2:first-child, .blog .section > div > h3:first-child {
+.blog .section > div:first-child > h2:first-child, .blog .section > div:first-child > h3:first-child {
   margin-top: 60px;
 }
 
