@@ -187,7 +187,7 @@ async function getFilteredResults(config) {
 // Translates the Read More string into the local language
 async function getReadMoreString() {
   let readMoreString = await replaceKey('read-more', getConfig());
-  if (readMoreString === undefined || readMoreString === '') {
+  if (readMoreString === 'read more') {
     const locale = getConfig().locale.region;
     const readMore = {
       us: 'Read More',

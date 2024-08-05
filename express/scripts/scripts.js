@@ -128,6 +128,36 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     const heroSection = createTag('div', { id: 'hero' });
     const main = document.querySelector('main');
     main.prepend(heroSection);
+    // split sections for template-list
+    const blocks = document.querySelectorAll('main > div > .template-list');
+    blocks.forEach((block) => {
+      const $section = block.parentNode;
+      const $elems = [...$section.children];
+
+      if ($elems.length <= 1) return;
+
+      const $blockSection = createTag('div');
+      const $postBlockSection = createTag('div');
+      const $nextSection = $section.nextElementSibling;
+      $section.parentNode.insertBefore($blockSection, $nextSection);
+      $section.parentNode.insertBefore($postBlockSection, $nextSection);
+
+      let $appendTo;
+      $elems.forEach(($e) => {
+        if ($e === block || ($e.className === 'section-metadata')) {
+          $appendTo = $blockSection;
+        }
+
+        if ($appendTo) {
+          $appendTo.appendChild($e);
+          $appendTo = $postBlockSection;
+        }
+      });
+
+      if (!$postBlockSection.hasChildNodes()) {
+        $postBlockSection.remove();
+      }
+    });
   }
 }
 

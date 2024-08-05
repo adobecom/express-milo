@@ -9,6 +9,12 @@
   padding-top: 60px;
 }
 
+.blog main .section:has(.image-list) > div {
+  margin: auto;
+  max-width: 1200px;
+  padding: 0;
+}
+
 .blog main div>h3:first-child {
   margin-top: 0px;
 }
@@ -25,9 +31,7 @@
   margin: 80px 0 0;
 }
 
-.blog .section > div:first-child > h2:first-child, .blog .section > div:first-child > h3:first-child {
-  margin-top: 60px;
-}
+
 
 .blog .section > .content {
   margin: auto;
