@@ -204,9 +204,7 @@ async function getReadMoreString() {
 // Given a post, get all the required parameters from it to construct a card or hero card
 function getCardParameters(post, dateFormatter) {
   const path = post.path.split('.')[0];
-  const {
-    title, teaser, image,
-  } = post;
+  const { title, teaser, image } = post;
   const publicationDate = new Date(post.date * 1000);
   const dateString = dateFormatter.format(publicationDate);
   const filteredTitle = title.replace(/(\s?)(｜|\|)(\s?Adobe\sExpress\s?)$/g, '');

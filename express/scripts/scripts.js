@@ -162,7 +162,14 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 }
 
 (async function loadPage() {
-  const { loadArea, setConfig, getMetadata, loadLana, createTag, loadStyle } = await import(`${miloLibs}/utils/utils.js`);
+  const {
+    loadArea,
+    setConfig,
+    getMetadata,
+    loadLana,
+    createTag,
+    loadStyle,
+  } = await import(`${miloLibs}/utils/utils.js`);
 
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
