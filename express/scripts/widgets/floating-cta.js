@@ -1,6 +1,6 @@
 // import { decorateLinks} from '../';
 
-import { getLibs, getLottie, lazyLoadLottiePlayer, getMobileOperatingSystem } from '../utils.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer } from '../utils.js';
 import { getIconElementDeprecated } from '../utils/icons.js';
 import BlockMediator from '../block-mediator.min.js';
 
@@ -49,6 +49,25 @@ export function closeToolBox(wrapper, lottie) {
   setTimeout(() => {
     wrapper.classList.add('toolbox-opened');
   }, 10);
+}
+
+export function getMobileOperatingSystem() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  // Windows Phone must come first because its UA also contains "Android"
+  if (/windows phone/i.test(userAgent)) {
+    return 'Windows Phone';
+  }
+
+  if (/android/i.test(userAgent)) {
+    return 'Android';
+  }
+
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    return 'iOS';
+  }
+
+  return 'unknown';
 }
 
 export function initLottieArrow(lottieScrollButton, floatButtonWrapper, scrollAnchor, data) {
