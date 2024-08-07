@@ -273,44 +273,6 @@ function replaceUrlParam(url, paramName, paramValue) {
   return url;
 }
 
-// TODO probably want to replace / merge this with new getEnv method
-export function getHelixEnv() {
-  let envName = sessionStorage.getItem('helix-env');
-  if (!envName) {
-    envName = 'stage';
-    if (window.spark?.hostname === 'www.adobe.com') envName = 'prod';
-  }
-  const envs = {
-    stage: {
-      commerce: 'commerce-stg.adobe.com',
-      adminconsole: 'stage.adminconsole.adobe.com',
-      spark: 'stage.projectx.corp.adobe.com',
-    },
-    prod: {
-      commerce: 'commerce.adobe.com',
-      spark: 'express.adobe.com',
-      adminconsole: 'adminconsole.adobe.com',
-    },
-  };
-  const env = envs[envName];
-
-  const overrideItem = sessionStorage.getItem('helix-env-overrides');
-  if (overrideItem) {
-    const overrides = JSON.parse(overrideItem);
-    const keys = Object.keys(overrides);
-    env.overrides = keys;
-
-    for (const a of keys) {
-      env[a] = overrides[a];
-    }
-  }
-
-  if (env) {
-    env.name = envName;
-  }
-  return env;
-}
-
 export function buildUrl(optionUrl, country, language, offerId = '') {
   const currentUrl = new URL(window.location.href);
   let planUrl = new URL(optionUrl);
@@ -340,11 +302,11 @@ export function buildUrl(optionUrl, country, language, offerId = '') {
     }
   }
 
-  const env = getHelixEnv();
-  if (env && env.commerce && planUrl.hostname.includes('commerce')) planUrl.hostname = env.commerce;
-  if (env && env.spark && rUrl) {
+  const env = getConfig().env.name;
+  if (env && getConfig()[env].commerce && planUrl.hostname.includes('commerce')) planUrl.hostname = getConfig()[env].commerce;
+  if (env && getConfig()[env].express && rUrl) {
     const url = new URL(rUrl);
-    url.hostname = env.spark;
+    url.hostname = getConfig()[env].express;
     rUrl = url.toString();
   }
 
