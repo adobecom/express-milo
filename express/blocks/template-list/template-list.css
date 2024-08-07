@@ -1,5 +1,9 @@
-.template-list {
+.template-list-wrapper {
   padding-top: 60px;
+}
+
+.template-list-wrapper {
+  margin: auto;
 }
 
 .template-list-horizontal-fullwidth-container,

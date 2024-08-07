@@ -94,8 +94,82 @@ removeIrrelevantSections(document);
   });
 }());
 
+function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
+  const template = getMetadata('template');
+  const h1 = document.querySelector('main h1');
+  if (template !== 'blog') {
+    if (h1 && !h1.closest('main > div > div')) {
+      const heroPicture = h1.parentElement.querySelector('picture');
+      let heroSection;
+      const main = document.querySelector('main');
+      if (main.children.length === 1) {
+        heroSection = createTag('div', { id: 'hero' });
+        const div = createTag('div');
+        heroSection.append(div);
+        if (heroPicture) {
+          div.append(heroPicture);
+        }
+        div.append(h1);
+        main.prepend(heroSection);
+      } else {
+        heroSection = h1.closest('main > div');
+        heroSection.id = 'hero';
+        heroSection.removeAttribute('style');
+      }
+      if (heroPicture) {
+        heroPicture.classList.add('hero-bg');
+      } else {
+        heroSection.classList.add('hero-noimage');
+      }
+    }
+  } else if (template === 'blog' && h1 && getMetadata('author') && getMetadata('publication-date')) {
+    loadStyle(`${config.codeRoot}/templates/blog/blog.css`);
+    document.body.style.visibility = 'hidden';
+    const heroSection = createTag('div', { id: 'hero' });
+    const main = document.querySelector('main');
+    main.prepend(heroSection);
+    // split sections for template-list
+    const blocks = document.querySelectorAll('main > div > .template-list');
+    blocks.forEach((block) => {
+      const $section = block.parentNode;
+      const $elems = [...$section.children];
+
+      if ($elems.length <= 1) return;
+
+      const $blockSection = createTag('div');
+      const $postBlockSection = createTag('div');
+      const $nextSection = $section.nextElementSibling;
+      $section.parentNode.insertBefore($blockSection, $nextSection);
+      $section.parentNode.insertBefore($postBlockSection, $nextSection);
+
+      let $appendTo;
+      $elems.forEach(($e) => {
+        if ($e === block || ($e.className === 'section-metadata')) {
+          $appendTo = $blockSection;
+        }
+
+        if ($appendTo) {
+          $appendTo.appendChild($e);
+          $appendTo = $postBlockSection;
+        }
+      });
+
+      if (!$postBlockSection.hasChildNodes()) {
+        $postBlockSection.remove();
+      }
+    });
+  }
+}
+
 (async function loadPage() {
-  const { loadArea, setConfig, getMetadata, loadLana, createTag } = await import(`${miloLibs}/utils/utils.js`);
+  const {
+    loadArea,
+    setConfig,
+    getMetadata,
+    loadLana,
+    createTag,
+    loadStyle,
+  } = await import(`${miloLibs}/utils/utils.js`);
 
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
@@ -128,6 +202,7 @@ removeIrrelevantSections(document);
 
   // listenMiloEvents();
   buildAutoBlocks();
+  decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }

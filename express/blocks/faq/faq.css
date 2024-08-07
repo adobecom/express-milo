@@ -1,6 +1,9 @@
 .section:has(.faq) {
   background-color: var(--color-gray-200);
-  padding: 80px 0;
+}
+
+.section:has(.faq) > div:first-child {
+  padding-top: 80px;
 }
 
 .section:has(.faq) > div {
