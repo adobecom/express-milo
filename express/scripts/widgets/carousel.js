@@ -78,6 +78,8 @@ export function onCarouselCSSLoad(selector, parent, options) {
 
   const arrowLeft = createTag('a', { class: 'button carousel-arrow carousel-arrow-left' });
   const arrowRight = createTag('a', { class: 'button carousel-arrow carousel-arrow-right' });
+  arrowLeft.title = 'Carousel Left';
+  arrowRight.title = 'Carousel Right';
 
   platform.append(...carouselContent);
 

@@ -41,10 +41,11 @@ export function decorateCategories(block, payload) {
     const categoryImageShadowWrapper = createTag('div', { class: 'browse-by-category-image-shadow-wrapper' });
     const categoryImageShadow = createTag('div', { class: 'browse-by-category-image-shadow' });
     const categoryImage = categoryCard.image;
-    const categoryTitle = createTag('h4', { class: 'browse-by-category-card-title' });
+    const categoryTitle = createTag('p', { class: 'browse-by-category-card-title' });
     const categoryAnchor = createTag('a', { class: 'browse-by-category-card-link' });
 
     categoryTitle.textContent = categoryCard.text;
+    categoryAnchor.title = categoryCard.text;
     categoryAnchor.href = categoryCard.link;
     categoryImageShadowWrapper.append(categoryImageShadow, categoryImage);
     categoryImageWrapper.append(categoryImageShadowWrapper);

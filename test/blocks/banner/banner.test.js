@@ -9,6 +9,7 @@ const { default: decorate } = imports[1];
 
 const body = await readFile({ path: './mocks/body.html' });
 const light = await readFile({ path: './mocks/light.html' });
+const standout = await readFile({ path: './mocks/standout.html' });
 const multiButton = await readFile({ path: './mocks/multi-button.html' });
 
 describe('Banner', () => {

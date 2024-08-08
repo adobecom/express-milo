@@ -1633,8 +1633,8 @@ export async function decorateTemplateList(block, props) {
     if (!heroPicture && blueprint) {
       const bpHeroImage = blueprint.querySelector('div:first-of-type img');
       if (bpHeroImage) {
-        const heroSection = document.querySelector('main .hero');
-        const heroDiv = document.querySelector('main .hero > div');
+        const heroSection = document.querySelector('main #hero');
+        const heroDiv = document.querySelector('main #hero > div');
 
         if (heroSection && !heroDiv) {
           const p = createTag('p');

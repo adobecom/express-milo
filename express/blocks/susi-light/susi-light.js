@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import { getLibs } from '../../scripts/utils.js';
 
-const { createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`);
 
 const config = { consentProfile: 'free' };
 const variant = 'edu-express';
@@ -83,6 +83,12 @@ export default async function init(el) {
   if (isStage && ['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
     destURL.hostname = 'stage.projectx.corp.adobe.com';
   }
+  const goDest = () => window.location.assign(destURL.toString());
+  loadIms().then(() => {
+    if (window.adobeIMS?.isSignedInUser()) {
+      goDest();
+    }
+  }).catch(() => {});
   el.innerHTML = '';
   await loadWrapper();
   const susi = createTag('susi-sentry-light');

@@ -239,6 +239,15 @@
   display: flex;
 }
 
+.fullscreen-marquee .hyperlink {
+  display: inline-block;
+  position: relative;
+  top: -27px;
+  text-decoration: underline;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 @media (min-width: 900px) {
   .section > .fullscreen-marquee {
     padding-bottom: 40px;
@@ -272,11 +281,11 @@
 
   .fullscreen-marquee .button-container.free-plan-container a.button {
     margin-bottom: 10px;
-  } 
+  }
 }
 
 @media (min-width: 1200px) {
   .fullscreen-marquee .button-container.free-plan-container a.button {
     margin-bottom: 0;
-  } 
+  }
 }

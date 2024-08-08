@@ -31,7 +31,7 @@
   gap: 40px;
 }
 
-.ax-columns:first-child {
+.ax-columns:not(.extra-wide):first-child {
   padding-top: 60px;
 }
 
@@ -1070,4 +1070,56 @@
   .ax-columns h1.columns-heading-x-long {
     font-size: var(--heading-font-size-l);
   }
+
+  .ax-columns.extra-wide > div {
+    align-items: flex-start;
+  }
+
+  .section >  .ax-columns.extra-wide {
+    max-width: 1440px;
+    margin-top: -60px;
+  }
+  .ax-columns.extra-wide .button-container, .ax-columns.extra-wide .con-button{
+    margin-top: 0;
+  }
+}
+
+.ax-columns.extra-wide {
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ax-columns.extra-wide .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+  width: fit-content;
+  margin: auto;
+  flex: 1;
+}
+
+.ax-columns.extra-wide > div {
+  align-items: flex-start;
+}
+
+.ax-columns.extra-wide .column:has(a:only-of-type) {
+  text-align: center;
+}
+
+.ax-columns.extra-wide .column > div{
+  text-align: center;
+}
+
+.ax-columns.slim-button  a.button {
+  padding: 5px 19.5px;
+}
+
+.ax-columns.slim-padding > div {
+  padding: 0px;
+}
+
+.ax-columns.slim-padding .column {
+  padding: 20px;
 }

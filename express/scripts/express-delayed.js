@@ -1,7 +1,7 @@
 import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
 
-const { createTag, getMetadata, getConfig, loadStyle, loadLink } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
@@ -150,8 +150,6 @@ function preloadSUSILight() {
     });
   loadStyle('/express/blocks/susi-light/susi-light.css');
   import(`${getLibs()}/blocks/fragment/fragment.js`);
-  loadLink('/express/icons/close-button-x.svg', { rel: 'preload', as: 'image' });
-  loadLink('/express/icons/cc-express.svg', { rel: 'preload', as: 'image' });
 }
 
 /**

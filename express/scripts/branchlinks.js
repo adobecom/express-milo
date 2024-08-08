@@ -159,7 +159,9 @@ export default async function trackBranchParameters(links) {
       setParams('trackingid', trackingId);
       setParams('cgen', cgen);
       setParams('placement', placement);
-      setParams('locale', getConfig().locale.ietf);
+      const { locale: { ietf, region } } = getConfig();
+      setParams('locale', ietf);
+      setParams('contentRegion', region === 'uk' ? 'gb' : region);
 
       if (sKwcId) {
         const sKwcIdParameters = sKwcId.split('!');
