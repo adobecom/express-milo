@@ -211,7 +211,8 @@ export function trackSearch(eventName, searchID = generateSearchId()) {
   // todo: also send the search ID to a separate event. Ask Linh Nguyen.
 }
 
-const memoizedFetch = memoize((url, headers) => fetch(url, headers).then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 });
+const memoizedFetch = memoize((url, headers) => fetch(url, headers)
+  .then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 });
 
 async function fetchSearchUrl({
   limit,
