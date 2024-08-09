@@ -1,6 +1,8 @@
+/* global _satellite */
 /* eslint-disable no-underscore-dangle */
 import { getLibs, fetchPlaceholders } from '../../scripts/utils.js';
 import { memoize } from '../../scripts/hofs.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -87,12 +89,130 @@ function formatFilterString(filters) {
   return str;
 }
 
+export function generateSearchId() {
+  // todo: follow up with Linh on ID generation rules. Also refer to wiki: https://wiki.corp.adobe.com/pages/viewpage.action?pageId=2833614476
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
+export function gatherPageImpression(searchProps) {
+  const { filters } = searchProps;
+  const usp = new URLSearchParams(window.location.search);
+
+  let statusFilter = 'all';
+  if (filters.premium && filters.premium !== 'all') {
+    statusFilter = filters.premium.toLowerCase() === 'false' ? 'free' : 'premium';
+  }
+
+  let typeFilter = 'all';
+  if (filters.animated && filters.animated !== 'all') {
+    typeFilter = filters.animated.toLowerCase() === 'false' ? 'still' : 'animted';
+  }
+
+  const impressionEventPayload = {
+    category: 'templates',
+    custom_ui_location: 'seo',
+    collection: usp.get('tasksx') || filters.tasks || 'all-templates',
+    collection_path: window.location.pathname,
+    type_filter: typeFilter,
+    status_filter: statusFilter,
+  };
+
+  return impressionEventPayload;
+}
+
+export function updateImpressionCache(newVals) {
+  BlockMediator.set('templateSearchSpecs', {
+    ...BlockMediator.get('templateSearchSpecs'),
+    ...newVals,
+  });
+}
+
+function cleanPayload(impression, eventType) {
+  if (eventType === 'search-inspire') {
+    delete impression.content_id;
+    delete impression.keyword_rank;
+    delete impression.prefix_query;
+    delete impression.result_count;
+
+    if (impression.search_type === 'adjust-filter') {
+      delete impression.suggestion_list_shown;
+    }
+  }
+
+  if (eventType === 'view-search-results') {
+    delete impression.content_id;
+    delete impression.keyword_rank;
+    delete impression.prefix_query;
+    delete impression.suggestion_list_shown;
+  }
+
+  if (eventType === 'select-template') {
+    delete impression.keyword_rank;
+    delete impression.prefix_query;
+    delete impression.suggestion_list_shown;
+  }
+  return impression;
+}
+
+function safelyFireAnalyticsEvent(event) {
+  // eslint-disable-next-line no-underscore-dangle
+  if (window._satellite?.track) {
+    event();
+  } else {
+    window.addEventListener('alloy_sendEvent', () => {
+      event();
+    }, { once: true });
+  }
+}
+
+// trackSearch action logs a new search ID each time if an existing one isn't provided.
+export function trackSearch(eventName, searchID = generateSearchId()) {
+  updateImpressionCache({
+    event_name: eventName,
+    search_id: searchID,
+  });
+
+  // eslint-disable-next-line no-undef
+  const impression = cleanPayload(structuredClone(BlockMediator.get('templateSearchSpecs')), eventName);
+  function fireEvent() {
+    _satellite.track('event', {
+      xdm: {},
+      data: {
+        eventType: 'web.webinteraction.linkClicks',
+        web: {
+          webInteraction: {
+            name: eventName,
+            linkClicks: {
+              value: 1,
+            },
+            type: 'other',
+          },
+        },
+        _adobe_corpnew: {
+          digitalData: {
+            page: {
+              pageInfo: impression,
+            },
+          },
+        },
+      },
+    });
+  }
+  safelyFireAnalyticsEvent(fireEvent);
+  // todo: also send the search ID to a separate event. Ask Linh Nguyen.
+}
+
 const memoizedFetch = memoize(
   (url, headers) => fetch(url, headers).then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 },
 );
 
 async function fetchSearchUrl({
-  limit, start, filters, sort, q, collectionId,
+  limit,
+  start,
+  filters,
+  sort,
+  q,
+  collectionId,
 }) {
   const base = 'https://www.adobe.com/express-search-api-v3';
   const collectionIdParam = `collectionId=${collectionId}`;

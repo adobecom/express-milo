@@ -515,6 +515,8 @@ h6 {
   line-height: var(--heading-line-height);
   -webkit-hyphens: auto; /* safari */
   hyphens: auto;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 h1 {
