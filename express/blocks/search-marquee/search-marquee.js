@@ -385,6 +385,8 @@ export default async function decorate(block) {
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');
+    logo.width = 164;
+    logo.height = 38;
     block.prepend(logo);
   }  
   await decorateSearchFunctions(block);
