@@ -1,5 +1,8 @@
 /* eslint-disable no-underscore-dangle */
-import { getLibs, getIconElement } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { trackSearch, updateImpressionCache } from './template-search-api-v3.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -116,7 +119,7 @@ async function share(branchUrl, tooltip, timeoutId) {
 function renderShareWrapper(branchUrl, placeholders) {
   const text = placeholders['tag-copied'] ?? 'Copied to clipboard';
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
-  const shareIcon = getIconElement('share-arrow');
+  const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
   const tooltip = createTag('div', {
     class: 'shared-tooltip',
@@ -135,7 +138,7 @@ function renderShareWrapper(branchUrl, placeholders) {
     }
     timeoutId = share(branchUrl, tooltip, timeoutId);
   });
-  const checkmarkIcon = getIconElement('checkmark-green');
+  const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   tooltip.append(checkmarkIcon);
   tooltip.append(text);
   wrapper.append(shareIcon);
@@ -359,6 +362,17 @@ function renderHoverWrapper(template, placeholders) {
   const cta = renderCTA(placeholders, template.customLinks.branchUrl);
   btnContainer.prepend(cta);
   cta.addEventListener('focusin', focusHandler);
+  cta.addEventListener('click', () => {
+    updateImpressionCache({
+      content_id: template.id,
+      status: template.licensingCategory,
+      task: getMetadata('tasksx') || getMetadata('tasks') || '',
+      search_keyword: getMetadata('q') || getMetadata('topics') || '',
+      collection: getMetadata('tasksx') || getMetadata('tasks') || '',
+      collection_path: window.location.pathname,
+    });
+    trackSearch('select-template', BlockMediator.get('templateSearchSpecs')?.search_id);
+  }, { passive: true });
 
   return btnContainer;
 }
@@ -369,24 +383,21 @@ function getStillWrapperIcons(template, placeholders) {
     planIcon = createTag('span', { class: 'free-tag' });
     planIcon.append(placeholders.free ?? 'Free');
   } else {
-    planIcon = getIconElement('premium');
+    planIcon = getIconElementDeprecated('premium');
   }
   let videoIcon = '';
   if (!containsVideo(template.pages) && template.pages.length > 1) {
-    videoIcon = getIconElement('multipage-static-badge');
+    videoIcon = getIconElementDeprecated('multipage-static-badge');
   }
 
   if (containsVideo(template.pages) && template.pages.length === 1) {
-    videoIcon = getIconElement('video-badge');
+    videoIcon = getIconElementDeprecated('video-badge');
   }
 
   if (containsVideo(template.pages) && template.pages.length > 1) {
-    videoIcon = getIconElement('multipage-video-badge');
+    videoIcon = getIconElementDeprecated('multipage-video-badge');
   }
-  if (videoIcon.length > 1) {
-    console.log(videoIcon);
-    videoIcon.classList.add('media-type-icon');
-  }
+  if (videoIcon) videoIcon.classList.add('media-type-icon');
   return { planIcon, videoIcon };
 }
 

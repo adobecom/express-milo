@@ -90,10 +90,15 @@ decorateArea();
   });
 }());
 
-
-
 (async function loadPage() {
-  const { loadArea, loadStyle, setConfig, getMetadata, loadLana, createTag } = await import(`${miloLibs}/utils/utils.js`);
+  const {
+    loadArea,
+    loadStyle,
+    setConfig,
+    getMetadata,
+    loadLana,
+    createTag,
+  } = await import(`${miloLibs}/utils/utils.js`);
   async function setTemplateTheme() {
     // todo: remove theme after we move blog to template column in metadata sheet
     const template = getMetadata('template') || getMetadata('theme');
@@ -141,7 +146,6 @@ decorateArea();
     await replaceContent(document.querySelector('main'));
   }
   await loadArea();
-
   await setTemplateTheme();
 
   import('./express-delayed.js').then((mod) => {

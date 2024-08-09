@@ -9,18 +9,24 @@ import {
   getLibs,
 } from '../../scripts/utils.js';
 
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
-import { addTempWrapper } from '../../scripts/decorate.js';
 import { Masonry } from '../shared/masonry.js';
 import buildCarousel from '../shared/carousel.js';
-import { fetchTemplates, isValidTemplate, fetchTemplatesCategoryCount } from './template-search-api-v3.js';
+import {
+  fetchTemplates,
+  isValidTemplate,
+  fetchTemplatesCategoryCount,
+  gatherPageImpression,
+  trackSearch,
+  updateImpressionCache,
+  generateSearchId,
+} from './template-search-api-v3.js';
 import fetchAllTemplatesMetadata from '../../scripts/all-templates-metadata.js';
 import renderTemplate from './template-rendering.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
-import { fixIcons } from '../../scripts/utils/icons.js';
+import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { getMetadata, createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
-const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`);
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -40,7 +46,6 @@ function handlelize(str) {
 }
 
 async function getTemplates(response, phs, fallbackMsg) {
-  // console.log('getTemplates', response, phs, fallbackMsg);
   const filtered = response.items.filter((item) => isValidTemplate(item));
   const templates = await Promise.all(
     filtered.map((template) => renderTemplate(template, phs)),
@@ -122,6 +127,7 @@ async function formatHeadingPlaceholder(props) {
   if (toolBarHeading) {
     toolBarHeading = toolBarHeading
       .replace('{{quantity}}', props.fallbackMsg ? '0' : templateCount)
+      .replace('quantity', props.fallbackMsg ? '0' : templateCount)
       .replace('{{Type}}', titleCase(getMetadata('short-title') || getMetadata('q') || getMetadata('topics')))
       .replace('{{type}}', getMetadata('short-title') || getMetadata('q') || getMetadata('topics'));
     if (region === 'fr') {
@@ -166,8 +172,6 @@ function constructProps(block) {
     textColor: '#FFFFFF',
     loadedOtherCategoryCounts: false,
   };
-  // console.log('constructProps block');
-  // console.log(block.outerHTML);
   Array.from(block.children).forEach((row) => {
     const cols = row.querySelectorAll('div');
     const key = cols[0].querySelector('strong')?.textContent.trim().toLowerCase();
@@ -321,8 +325,8 @@ function updateLoadMoreButton(props, loadMore) {
 }
 
 async function decorateNewTemplates(block, props, options = { reDrawMasonry: false }) {
-  console.log('props that matter', props);
   const { templates: newTemplates } = await fetchAndRenderTemplates(props);
+  updateImpressionCache({ result_count: props.total });
   const loadMore = block.parentElement.querySelector('.load-more');
 
   props.templates = props.templates.concat(newTemplates);
@@ -353,6 +357,7 @@ async function decorateLoadMoreButton(block, props) {
   loadMoreButton.append(getIconElementDeprecated('plus-icon'));
 
   loadMoreButton.addEventListener('click', async () => {
+    trackSearch('select-load-more', BlockMediator.get('templateSearchSpecs').search_id);
     loadMoreButton.classList.add('disabled');
     const scrollPosition = window.scrollY;
     await decorateNewTemplates(block, props);
@@ -581,7 +586,7 @@ async function appendCategoryTemplatesCount(block, props) {
   // append one by one to gain attention
   for (const { cntSpan, anchor } of res) {
     anchor.append(cntSpan);
-    // eslint-disable-next-line no-await-in-loop
+    // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
     await new Promise((resolve) => setTimeout(resolve, 25));
   }
 }
@@ -624,13 +629,23 @@ async function decorateCategoryList(block, props) {
     const iconElement = getIconElementDeprecated(icon);
     const a = createTag('a', {
       'data-tasks': targetTasks,
-      href: `${prefix}/express/templates/search?tasks=${targetTasks}&tasksx=${targetTasks}&phformat=${format}&topics=${currentTopic || "''"}&q=${currentTopic || ''}`,
+      'data-topics': currentTopic || '',
+      href: `${prefix}/express/templates/search?tasks=${targetTasks}&tasksx=${targetTasks}&phformat=${format}&topics=${currentTopic || "''"}&q=${currentTopic || ''}&searchId=${generateSearchId()}`,
     });
     [a.textContent] = category;
 
     a.prepend(iconElement);
     listItem.append(a);
     categoriesList.append(listItem);
+    a.addEventListener('click', () => {
+      updateImpressionCache({
+        category_filter: a.dataset.tasks,
+        collection: a.dataset.topics,
+        collection_path: window.location.pathname,
+        content_category: 'templates',
+      });
+      trackSearch('search-inspire', new URLSearchParams(new URL(a.href).search).get('searchId'));
+    }, { passive: true });
   });
 
   categoriesDesktopWrapper.addEventListener('mouseover', () => {
@@ -638,6 +653,18 @@ async function decorateCategoryList(block, props) {
   }, { once: true });
 
   const categoriesMobileWrapper = categoriesDesktopWrapper.cloneNode({ deep: true });
+  const mobileJumpCategoryLinks = categoriesMobileWrapper.querySelectorAll('.category-list > li > a');
+  mobileJumpCategoryLinks.forEach((a) => {
+    a.addEventListener('click', () => {
+      updateImpressionCache({
+        search_keyword: a.dataset.tasks,
+        collection: a.dataset.topics,
+        collection_path: window.location.pathname,
+        content_category: 'templates',
+      });
+      trackSearch('search-inspire', new URLSearchParams(new URL(a.href).search).get('searchId'));
+    }, { passive: true });
+  });
   const mobileCategoriesToggle = createTag('span', { class: 'category-list-toggle' });
   mobileCategoriesToggle.textContent = placeholders['jump-to-category'] ?? '';
   categoriesMobileWrapper.querySelector('.category-list-toggle-wrapper > .icon')?.replaceWith(mobileCategoriesToggle);
@@ -804,7 +831,7 @@ function initDrawer(block, props, toolBar) {
           wrapper.classList.toggle('collapsed');
           wrapper.style.maxHeight = wrapper.classList.contains('collapsed') ? minHeight : maxHeight;
         }
-      }, { passive: true });
+      });
     }
   });
 
@@ -834,8 +861,7 @@ function updateQuery(functionWrapper, props, option) {
   }
 }
 
-async function redrawTemplates(block, existingProps, props, toolBar) {
-  if (JSON.stringify(props) === JSON.stringify(existingProps)) return;
+async function redrawTemplates(block, props, toolBar) {
   const heading = toolBar.querySelector('h2');
   const currentTotal = props.total.toLocaleString('en-US');
   props.templates = [props.templates[0]];
@@ -857,6 +883,33 @@ async function redrawTemplates(block, existingProps, props, toolBar) {
       block.classList.remove(className);
     });
   }
+}
+
+function parseOrderBy(queryString) {
+  let orderType = 'relevancy';
+  let orderDirection = 'descending';
+
+  if (!queryString) {
+    return {
+      orderType,
+      orderDirection,
+    };
+  }
+
+  const parts = queryString.split('=');
+
+  if (parts[1]?.startsWith('-')) {
+    orderDirection = 'descending';
+    orderType = parts[1].substring(1);
+  } else {
+    orderDirection = 'ascending';
+    [, orderType] = parts;
+  }
+
+  return {
+    orderType,
+    orderDirection,
+  };
 }
 
 async function initFilterSort(block, props, toolBar) {
@@ -908,10 +961,23 @@ async function initFilterSort(block, props, toolBar) {
           updateQuery(wrapper, props, option);
           updateFilterIcon(block);
 
-          if (!button.classList.contains('in-drawer')) {
-            await redrawTemplates(block, existingProps, props, toolBar);
+          if (!button.classList.contains('in-drawer') && JSON.stringify(props) !== JSON.stringify(existingProps)) {
+            const sortObj = parseOrderBy(props.sort);
+            updateImpressionCache({
+              ...gatherPageImpression(props),
+              ...{
+                search_type: 'adjust-filter',
+                search_keyword: 'change filters, no keyword found',
+                sort_type: sortObj.orderType,
+                sort_order: sortObj.orderDirection,
+                content_category: 'templates',
+              },
+            });
+            trackSearch('search-inspire');
+            await redrawTemplates(block, props, toolBar);
+            trackSearch('view-search-results', BlockMediator.get('templateSearchSpecs').search_id);
           }
-        }, { passive: true });
+        });
       });
 
       document.addEventListener('click', (e) => {
@@ -925,7 +991,22 @@ async function initFilterSort(block, props, toolBar) {
     if (applyFilterButton) {
       applyFilterButton.addEventListener('click', async (e) => {
         e.preventDefault();
-        await redrawTemplates(block, existingProps, props, toolBar);
+        if (JSON.stringify(props) !== JSON.stringify(existingProps)) {
+          const sortObj = parseOrderBy(props.sort);
+          updateImpressionCache({
+            ...gatherPageImpression(props),
+            ...{
+              search_type: 'adjust-filter',
+              search_keyword: 'change filters, no keyword found',
+              sort_type: sortObj.orderType,
+              sort_order: sortObj.orderDirection,
+              content_category: 'templates',
+            },
+          });
+          trackSearch('search-inspire');
+          await redrawTemplates(block, props, toolBar);
+        }
+
         closeDrawer(toolBar);
       });
     }
@@ -1031,7 +1112,7 @@ function initViewToggle(block, props, toolBar) {
   });
 }
 
-function initToolbarShadow(block, toolbar) {
+function initToolbarShadow(toolbar) {
   const toolbarWrapper = toolbar.parentElement;
   document.addEventListener('scroll', () => {
     if (toolbarWrapper.getBoundingClientRect().top <= 0) {
@@ -1080,7 +1161,7 @@ async function decorateToolbar(block, props) {
     initDrawer(block, props, tBar);
     initFilterSort(block, props, tBar);
     initViewToggle(block, props, tBar);
-    initToolbarShadow(block, tBar);
+    initToolbarShadow(tBar);
   }
 }
 
@@ -1173,16 +1254,13 @@ function decorateHoliday(block, props) {
 }
 
 async function decorateTemplates(block, props) {
+  const impression = gatherPageImpression(props);
+  updateImpressionCache(impression);
   const innerWrapper = block.querySelector('.template-x-inner-wrapper');
 
   let rows = block.children.length;
 
   const templates = Array.from(innerWrapper.children);
-  
-  // templates.forEach((template) => {
-  //   console.log(template.querySelector('img').src);
-  // });
-
   rows = templates.length;
   let breakpoints = [{ width: '400' }];
 
@@ -1240,6 +1318,15 @@ async function decorateTemplates(block, props) {
 
   const templateLinks = block.querySelectorAll('.template .button-container > a, a.template.placeholder');
   const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
+
+  const searchId = new URLSearchParams(window.location.search).get('searchId');
+  updateImpressionCache({
+    search_keyword: getMetadata('q') || getMetadata('topics-x'),
+    result_count: props.total,
+    content_category: 'templates',
+  });
+  if (searchId) trackSearch('view-search-results', searchId);
+
   document.dispatchEvent(linksPopulated);
 }
 
@@ -1338,46 +1425,59 @@ function importSearchBar(block, blockMediator) {
             searchInput = searchInput.trim();
             [[currentTasks]] = tasksFoundInInput;
           }
+          updateImpressionCache({ collection: currentTasks || 'all-templates', content_category: 'templates' });
+          trackSearch('search-inspire');
 
           const { prefix } = getConfig().locale;
           const topicUrl = searchInput ? `/${searchInput}` : '';
           const taskUrl = `/${handlelize(currentTasks.toLowerCase())}`;
           const targetPath = `${prefix}/express/templates${taskUrl}${topicUrl}`;
+          const searchId = BlockMediator.get('templateSearchSpecs').search_id;
           const allTemplatesMetadata = await fetchAllTemplatesMetadata();
           const pathMatch = (event) => event.url === targetPath;
+          let targetLocation;
+
           if (allTemplatesMetadata.some(pathMatch)) {
-            window.location = `${window.location.origin}${targetPath}`;
+            targetLocation = `${window.location.origin}${targetPath}?searchId=${searchId || ''}`;
           } else {
-            const searchUrlTemplate = `/express/templates/search?tasks=${currentTasks}&phformat=${format}&topics=${searchInput || "''"}&q=${searchInput || "''"}`;
-            window.location = `${window.location.origin}${prefix}${searchUrlTemplate}`;
+            const searchUrlTemplate = `/express/templates/search?tasks=${currentTasks}&phformat=${format}&topics=${searchInput || "''"}&q=${searchInput || "''"}&searchId=${searchId || ''}`;
+            targetLocation = `${window.location.origin}${prefix}${searchUrlTemplate}`;
           }
+          window.location.assign(targetLocation);
         };
 
         const onSearchSubmit = async () => {
           searchBar.disabled = true;
-          sampleRUM('search', {
-            source: block.dataset.blockName,
-            target: searchBar.value,
-          }, 1);
           await redirectSearch();
         };
 
-        const handleSubmitInteraction = async (item) => {
+        const handleSubmitInteraction = async (item, index) => {
           if (item.query !== searchBar.value) {
             searchBar.value = item.query;
             searchBar.dispatchEvent(new Event('input'));
           }
+          updateImpressionCache({
+            status_filter: 'free',
+            type_filter: 'all',
+            collection: 'all-templates',
+            keyword_rank: index + 1,
+            search_keyword: searchBar.value,
+            search_type: 'autocomplete',
+          });
           await onSearchSubmit();
         };
 
         searchForm.addEventListener('submit', async (event) => {
           event.preventDefault();
           searchBar.disabled = true;
-          sampleRUM('search', {
-            source: block.dataset.blockName,
-            target: searchBar.value,
-          }, 1);
-          await redirectSearch();
+          updateImpressionCache({
+            status_filter: 'free',
+            type_filter: 'all',
+            collection: 'all-templates',
+            search_type: 'direct',
+            search_keyword: searchBar.value,
+          });
+          await onSearchSubmit();
         });
 
         clearBtn.addEventListener('click', () => {
@@ -1397,12 +1497,15 @@ function importSearchBar(block, blockMediator) {
               const valRegEx = new RegExp(searchBar.value, 'i');
               li.innerHTML = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
               li.addEventListener('click', async () => {
-                await handleSubmitInteraction(item);
+                if (item.query === searchBar.value) return;
+                searchBar.value = item.query;
+                searchBar.dispatchEvent(new Event('input'));
+                await handleSubmitInteraction(item, index);
               });
 
               li.addEventListener('keydown', async (event) => {
                 if (event.key === 'Enter' || event.keyCode === 13) {
-                  await handleSubmitInteraction(item);
+                  await handleSubmitInteraction(item, index);
                 }
               });
 
@@ -1422,11 +1525,19 @@ function importSearchBar(block, blockMediator) {
 
               suggestionsList.append(li);
             });
+            const suggestListString = suggestions.map((s) => s.query).join(',');
+            updateImpressionCache({
+              prefix_query: searchBarVal,
+              suggestion_list_shown: suggestListString,
+            });
           }
         };
 
         import('../../scripts/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
-          const { inputHandler } = useInputAutocomplete(suggestionsListUIUpdateCB, { throttleDelay: 300, debounceDelay: 500, limit: 7 });
+          const { inputHandler } = useInputAutocomplete(
+            suggestionsListUIUpdateCB,
+            { throttleDelay: 300, debounceDelay: 500, limit: 7 },
+          );
           searchBar.addEventListener('input', inputHandler);
         });
       }
@@ -1472,7 +1583,6 @@ function renderFallbackMsgWrapper(block, { fallbackMsg }) {
 }
 
 async function buildTemplateList(block, props, type = []) {
-  // console.log(`${JSON.stringify(props)}`);
   if (type?.length > 0) {
     type.forEach((typeName) => {
       block.parentElement.classList.add(typeName);
@@ -1635,51 +1745,9 @@ function determineTemplateXType(props) {
 
 export default async function decorate(block) {
   await fixIcons(block);
-  console.log('THE BLOCK');
-  console.log(block.outerHTML);
-  // addTempWrapper(block, 'template-x');
-  // console.log('post addTempWrapper');
   block.dataset.blockName = 'template-x';
   block.dataset.blockName = 'template-x';
-
-  // console.log(block);
-
   const props = constructProps(block);
-  // const props = {
-  //   templates: [
-  //     {},
-  //   ],
-  //   filters: {
-  //     locales: 'EN',
-  //     topics: '',
-  //     premium: 'false',
-  //   },
-  //   renditionParams: {
-  //     format: 'jpg',
-  //     size: 151,
-  //   },
-  //   tailButton: '',
-  //   limit: '70',
-  //   total: 0,
-  //   start: '',
-  //   collectionId: 'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418',
-  //   sort: '',
-  //   headingTitle: null,
-  //   headingSlug: null,
-  //   viewAllLink: null,
-  //   holidayIcon: null,
-  //   backgroundColor: '#000B1D',
-  //   backgroundAnimation: null,
-  //   textColor: '#FFFFFF',
-  //   loadedOtherCategoryCounts: false,
-  //   contentRow: {},
-  //   templateStats: '{{quantity}} Adobe Express templates',
-  //   toolBar: true,
-  //   searchBar: true,
-  //   orientation: 'Vertical',
-  //   width: 'full',
-  //   loadMoreTemplates: true,
-  // };
   block.innerHTML = '';
   await buildTemplateList(block, props, determineTemplateXType(props));
 }

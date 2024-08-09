@@ -4,6 +4,7 @@ import { titleCase } from './string.js';
 import { getDataWithContext } from './browse-api-controller.js';
 
 import fetchAllTemplatesMetadata from './all-templates-metadata.js';
+import { trackSearch, updateImpressionCache, generateSearchId } from '../../blocks/template-x/template-search-api-v3.js';
 
 const { getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -129,32 +130,36 @@ async function updateLinkList(container, linkPill, list) {
         .replace(currentTasksX, '')
         .trim();
 
+      let clone;
       if (!isSearch(d.pathname)) {
         const pageData = {
           url: d.pathname,
           'short-title': d.displayValue,
         };
 
-        const clone = replaceLinkPill(linkPill, pageData);
+        clone = replaceLinkPill(linkPill, pageData);
         clone.innerHTML = clone.innerHTML.replaceAll('Default', d.displayValue);
-        clone.innerHTML = clone.innerHTML.replace(
-          '/express/templates/default',
-          d.pathname,
-        );
+        clone.innerHTML = clone.innerHTML.replace('/express/templates/default', `${d.pathname}?searchId=${generateSearchId()}`);
         if (clone) pageLinks.push(clone);
       } else {
         // fixme: we need single page search UX
-        const searchParams = `tasks=${currentTasks}&tasksx=${currentTasksX}&phformat=${getMetadata(
-          'placeholder-format',
-        )}&topics=${topicsQuery}&q=${d.displayValue}&ckgid=${d.ckgID}`;
+        const searchParams = `tasks=${currentTasks}&tasksx=${currentTasksX}&phformat=${getMetadata('placeholder-format')}&topics=${topicsQuery}&q=${d.displayValue}&ckgid=${d.ckgID}&searchId=${generateSearchId()}`;
         const pageData = {
           url: `${prefix}/express/templates/search?${searchParams}`,
           'short-title': d.displayValue,
         };
 
-        const clone = replaceLinkPill(linkPill, pageData);
+        clone = replaceLinkPill(linkPill, pageData);
         searchLinks.push(clone);
       }
+      clone.addEventListener('click', () => {
+        const a = clone.querySelector(':scope > a');
+        updateImpressionCache({
+          keyword_filter: d.displayValue,
+          content_category: 'templates',
+        });
+        trackSearch('search-inspire', new URLSearchParams(new URL(a.href).search).get('searchId'));
+      });
     });
 
     if (leftTrigger) container.append(leftTrigger);
