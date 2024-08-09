@@ -45,6 +45,7 @@ export function decorateCategories(block, payload) {
     const categoryAnchor = createTag('a', { class: 'browse-by-category-card-link' });
 
     categoryTitle.textContent = categoryCard.text;
+    categoryAnchor.title = categoryCard.text;
     categoryAnchor.href = categoryCard.link;
     categoryImageShadowWrapper.append(categoryImageShadow, categoryImage);
     categoryImageWrapper.append(categoryImageShadowWrapper);
