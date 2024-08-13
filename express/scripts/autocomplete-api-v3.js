@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { getLibs } from './utils.js';
-import { memoize, throttle, debounce } from './hofs.js';
+import { memoize, throttle, debounce } from './utils/hofs.js';
 
 const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
-import { trackSearch, updateImpressionCache } from './template-search-api-v3.js';
+import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
@@ -343,9 +343,7 @@ function renderMediaWrapper(template, placeholders) {
     currentHoveredElement?.classList.add('singleton-hover');
   };
 
-  return {
-    mediaWrapper, enterHandler, leaveHandler, focusHandler,
-  };
+  return { mediaWrapper, enterHandler, leaveHandler, focusHandler };
 }
 
 function renderHoverWrapper(template, placeholders) {

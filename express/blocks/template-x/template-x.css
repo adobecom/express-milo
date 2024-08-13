@@ -14,7 +14,10 @@ main.with-holiday-templates-banner > div[class='section section-wrapper template
   width: 100%;
 }
 
-.template-x-wrapper.fullwidth {
+[data-block-name="template-x"] {
+  margin: 0 auto;
+}
+.template-x.fullwidth {
   max-width: none;
   padding: 0;
 }
@@ -102,15 +105,15 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   font-weight: 700;
 }
 
-.template-x-wrapper .template-title.horizontal .text-wrapper * {
+.template-x .template-title.horizontal .text-wrapper * {
   text-align: left;
 }
 
-.template-x-wrapper .template-title.horizontal .text-wrapper p {
+.template-x .template-title.horizontal .text-wrapper p {
   margin-bottom: 0;
 }
 
-.template-x-wrapper .template-x.tabbed .template-title.horizontal .text-wrapper > div {
+.template-x.tabbed .template-title.horizontal .text-wrapper > div {
   width: 100%;
 }
 
@@ -181,35 +184,35 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   text-align: center;
 }
 
-.template-x-wrapper .template-title {
+.template-x .template-title {
   margin: 0 12px 20px 12px;
 }
 
-.template-x-wrapper .template-title.with-link > div {
+.template-x .template-title.with-link > div {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   align-items: flex-start;
 }
 
-.template-x-wrapper .template-title.horizontal > div > * {
+.template-x .template-title.horizontal > div > * {
   text-align: left;
   margin: 0;
 }
 
-.template-x-wrapper .template-title.horizontal h2 {
+.template-x .template-title.horizontal h2 {
   font-size: var(--heading-font-size-m);
 }
 
-.template-x-wrapper .template-title.horizontal.holiday .template-title,
-.template-x-wrapper .template-title.horizontal.holiday picture,
-.template-x-wrapper .template-title.horizontal.holiday a,
-.template-x-wrapper .template-title.horizontal.holiday h4,
-.template-x-wrapper .template-title.horizontal.holiday p {
+.template-x .template-title.horizontal.holiday .template-title,
+.template-x .template-title.horizontal.holiday picture,
+.template-x .template-title.horizontal.holiday a,
+.template-x .template-title.horizontal.holiday h4,
+.template-x .template-title.horizontal.holiday p {
   z-index: 1;
 }
 
-.template-x-wrapper .template-title.horizontal p {
+.template-x .template-title.horizontal p {
   margin-top: 8px;
   width: fit-content;
   font-size: var(--body-font-size-m);
@@ -219,19 +222,19 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   margin-bottom: 0;
 }
 
-.template-x-wrapper .template-link,
-.template-x-wrapper .template-title-link {
+.template-x .template-link,
+.template-x .template-title-link {
   text-decoration: none;
   padding-left: 16px;
   padding-top: 6px;
   display: flex;
 }
 
-.template-x-wrapper .toggle-button {
+.template-x .toggle-button {
   display: flex;
 }
 
-.holiday.template-x-wrapper .toggle-button-chev {
+.holiday.template-x .toggle-button-chev {
   display: flex;
   width: 6px;
   height: 6px;
@@ -252,7 +255,7 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   transform: rotate(-135deg);
 }
 
-.template-x-wrapper .template-title-link {
+.template-x .template-title-link {
   padding: 0;
   white-space: nowrap;
 }
@@ -399,19 +402,19 @@ main.with-holiday-templates-banner {
   width: auto;
 }
 
-.template-x-wrapper .template-title.horizontal h4 {
+.template-x .template-title.horizontal h4 {
   font-size: var(--heading-font-size-s);
   line-height: 26px;
 }
 
-.template-x-wrapper.holiday .template-title.horizontal h4 {
+.template-x.holiday .template-title.horizontal h4 {
   text-align: left;
   margin-top: 14px;
   margin-bottom: 14px;
   font-size: var(--body-font-size-m);
 }
 
-.template-x-wrapper .template-title.horizontal .template:not(.placeholder) .template-link {
+.template-x .template-title.horizontal .template:not(.placeholder) .template-link {
   display: none;
 }
 
@@ -1621,15 +1624,15 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   padding-right: 0;
 }
 
-.template-x-wrapper.horizontal {
+.template-x.horizontal {
   min-height: 54px;
   padding-left: 0;
   padding-right: 0;
 }
 
 /* re-add max-width on elements that are not carousel */
-.template-x-wrapper.horizontal > *:not(.template-x.horizontal),
-.template-x-wrapper.horizontal:not(.holiday) > .template-x.horizontal > *:not(.carousel-container) {
+.template-x.horizontal > *:not(.template-x.horizontal),
+.template-x.horizontal:not(.holiday) > .template-x.horizontal > *:not(.carousel-container) {
   max-width: unset;
   padding-left: 15px;
   padding-right: 15px;
@@ -1639,7 +1642,7 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   margin-block: auto;
 }
 
-main .template-x-wrapper.horizontal > .template-x.horizontal.tabbed > .template-title {
+main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-bottom: 0;
 }
 
@@ -2354,7 +2357,7 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     max-width: 900px;
   }
 
-  .template-x-wrapper.sixcols:not(.horizontal) {
+  .template-x.sixcols:not(.horizontal) {
     max-width: 748px;
   }
 
@@ -2364,20 +2367,20 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     align-items: flex-end;
   }
 
-  .template-x-wrapper .template-title.with-link > div {
+  .template-x .template-title.with-link > div {
     flex-direction: row;
     justify-content: space-between;
   }
 
-  .template-x-wrapper .template-title.with-link.link-only {
+  .template-x .template-title.with-link.link-only {
     justify-content: flex-end;
   }
 
-  .template-x-wrapper .template-x:not(.holiday) .template-title.horizontal .view-all-link-wrapper {
+  .template-x:not(.holiday) .template-title.horizontal .view-all-link-wrapper {
     margin: 0;
   }
 
-  .template-x-wrapper .template-title.horizontal > div > * {
+  .template-x .template-title.horizontal > div > * {
     text-align: left;
   }
 
@@ -2626,7 +2629,7 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     display: flex;
   }
 
-  .template-x-horizontal-holiday-container .template-x-wrapper.expanded {
+  .template-x-horizontal-holiday-container .template-x.expanded {
     padding-top: 0;
   }
 
@@ -2635,15 +2638,15 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     text-align: left;
   }
 
-  .template-x-wrapper.fourcols {
+  .template-x.fourcols {
     max-width: 1200px;
   }
 
-  .template-x-wrapper.sixcols:not(.horizontal) {
+  .template-x.sixcols:not(.horizontal) {
     max-width: 1122px;
   }
 
-  .template-x-wrapper.fullwidth {
+  .template-x.fullwidth {
     max-width: none;
   }
 
@@ -2778,12 +2781,12 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     transform: rotate(180deg);
   }
 
-  .template-x-wrapper.horizontal {
+  .template-x.horizontal {
     max-width: 1024px;
   }
 
   .template-x.horizontal.fullwidth .template-x-inner-wrapper > div,
-  .template-x-wrapper.horizontal.fullwidth {
+  .template-x.horizontal.fullwidth {
     max-width: none;
   }
 
