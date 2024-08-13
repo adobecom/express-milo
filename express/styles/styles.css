@@ -107,6 +107,14 @@ body {
   line-height: initial;
 }
 
+body[data-device="mobile"] {
+  h1, h2, h3, h4, h5, h6 {
+    hyphens: none;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+}
+
 body.no-scroll {
   overflow-y: hidden;
   touch-action: none;
@@ -204,9 +212,9 @@ a.con-button.xl-button:any-link,
 .button-xl a.con-button:any-link,
 .xl-button a.con-button:any-link {
   padding: 10px 1.5em;
-  border-radius: 999px;
-  font-size: var(--body-font-size-m);
-  line-height: 26.5px;
+  border-radius: 22px;
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height);
 }
 
 a.button.xlarge:any-link,
@@ -1182,14 +1190,6 @@ main
 
 > div[class='section section-wrapper columns-container'][id^='column-'] {
   padding: 0;
-}
-
-/* FIXME: hacky behavior to fight for space with Jarvis */
-body.has-floating-panel
-  #adbMsgClientWrapper
-  .adbmsgAuthoredBotPopUpContainer.outwardAnimate,
-body.has-floating-panel #adbMsgClientWrapper #adbmsgCta {
-  bottom: 140px !important;
 }
 
 /*Styles can be removed once we stop using block transpilations*/
