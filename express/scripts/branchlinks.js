@@ -1,6 +1,10 @@
-import { getCachedMetadata, getLibs } from './utils.js';
+import { getCachedMetadata, getLibs, toClassName } from './utils.js';
 
 const [{ getConfig }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+
+function toCamelCase(name) {
+  return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
 
 function getPlacement(btn) {
   const parentBlock = btn.closest('[daa-lh^="b"]');
@@ -28,11 +32,30 @@ function getPlacement(btn) {
   return placement;
 }
 
+const setBasicBranchMetadata = new Set([
+  'search-term',
+  'canvas-height',
+  'canvas-width',
+  'canvas-unit',
+  'sceneline',
+  'task-id',
+  'asset-collection',
+  'category',
+  'search-category',
+  'load-print-addon',
+  'tab',
+  'action',
+  'prompt',
+]);
+
 export default async function trackBranchParameters(links) {
   const rootUrl = new URL(window.location.href);
   const params = rootUrl.searchParams;
   const pageUrl = window.location.pathname;
   const { referrer } = window.document;
+
+  const listBranchMetadataNodes = [...document.head.querySelectorAll('meta[name^=branch-]')];
+  const listAdditionalBranchMetadataNodes = listBranchMetadataNodes.filter((e) => !setBasicBranchMetadata.has(e.name.replace(/^branch-/, '')));
 
   const [
     searchTerm,
@@ -66,7 +89,7 @@ export default async function trackBranchParameters(links) {
     getCachedMetadata('branch-asset-collection'),
     getCachedMetadata('branch-category'),
     getCachedMetadata('branch-search-category'),
-    getCachedMetadata('branch-loadprintaddon'),
+    getCachedMetadata('branch-load-print-addon'),
     getCachedMetadata('branch-tab'),
     getCachedMetadata('branch-action'),
     getCachedMetadata('branch-prompt'),
@@ -82,7 +105,7 @@ export default async function trackBranchParameters(links) {
 
   const promises = [];
   links.forEach((a) => {
-    if (a.href && a.href.match('adobesparkpost.app.link')) {
+    if (a.href && a.href.match(/adobesparkpost(-web)?\.app\.link/)) {
       a.rel = 'nofollow';
       const btnUrl = new URL(a.href);
       const urlParams = btnUrl.searchParams;
@@ -103,6 +126,10 @@ export default async function trackBranchParameters(links) {
           setParams('category', category || 'templates');
           setParams('taskID', taskID);
           setParams('assetCollection', assetCollection);
+          setParams('height', canvasHeight);
+          setParams('width', canvasWidth);
+          setParams('unit', canvasUnit);
+          setParams('sceneline', sceneline);
 
           if (searchCategory) {
             setParams('searchCategory', searchCategory);
@@ -117,12 +144,13 @@ export default async function trackBranchParameters(links) {
       });
       promises.push(prom);
 
+      for (const { name, content } of listAdditionalBranchMetadataNodes) {
+        const paramName = toCamelCase(name.replace(/^branch-/, ''));
+        setParams(paramName, content);
+      }
+
       setParams('referrer', referrer);
       setParams('url', pageUrl);
-      setParams('height', canvasHeight);
-      setParams('width', canvasWidth);
-      setParams('unit', canvasUnit);
-      setParams('sceneline', sceneline);
       setParams('sdid', sdid);
       setParams('mv', mv);
       setParams('mv2', mv2);
@@ -131,6 +159,9 @@ export default async function trackBranchParameters(links) {
       setParams('trackingid', trackingId);
       setParams('cgen', cgen);
       setParams('placement', placement);
+      const { locale: { ietf, region } } = getConfig();
+      setParams('locale', ietf);
+      setParams('contentRegion', region === 'uk' ? 'gb' : region);
 
       if (sKwcId) {
         const sKwcIdParameters = sKwcId.split('!');

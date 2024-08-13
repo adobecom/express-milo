@@ -2,6 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
+import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
@@ -158,12 +159,7 @@ function initSearchFunction(block) {
   };
 
   const onSearchSubmit = async () => {
-    const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`);
     searchBar.disabled = true;
-    sampleRUM('search', {
-      source: block.dataset.blockName,
-      target: searchBar.value,
-    }, 1);
     await redirectSearch();
   };
 
@@ -193,7 +189,6 @@ function initSearchFunction(block) {
       collection: 'all-templates',
       search_keyword: searchBar.value,
       search_type: 'direct',
-    });    
     await onSearchSubmit();
   });
 

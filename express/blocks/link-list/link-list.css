@@ -20,13 +20,6 @@
   width: max-content;
 }
 
-.link-list.shaded {
-  margin-top: 8px;
-  margin-bottom: 24px;
-  background-color: #EDEDED;
-  border-radius: 100px;
-}
-
 .link-list h2,
 .link-list h3,
 .link-list h4 {
@@ -55,10 +48,6 @@
   margin-bottom: 0;
 }
 
-.link-list.shaded .carousel-container .carousel-platform {
-  padding: 4px;
-}
-
 .link-list.centered .carousel-container .carousel-platform {
   box-sizing: border-box;
 }
@@ -77,26 +66,6 @@
 .link-list.centered div:first-child h3 {
   width: fit-content;
   margin: auto auto 20px auto;
-}
-
-/* fullwidth variant */
-
-.link-list-fullwidth-container > div.link-list-wrapper {
-  box-sizing: border-box;
-  width: fit-content;
-  max-width: 100%;
-}
-
-.link-list-fullwidth-container > div.link-list-wrapper .link-list,
-.link-list-fullwidth-container > div.link-list-wrapper .link-list h2,
-.link-list-fullwidth-container > div.link-list-wrapper .link-list h3,
-.link-list-fullwidth-container > div.link-list-wrapper .link-list h4 {
-  text-align: center;
-}
-
-.link-list-fullwidth-container > div.link-list-wrapper .link-list .carousel-platform {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .hero-animation-wrapper + .link-list-wrapper .link-list {
@@ -126,42 +95,6 @@
   padding: 3px 14px;
 }
 
-.link-list.shaded p.button-container {
-  margin: 0 2px;
-}
-
-.link-list.shaded p.button-container .button {
-  margin: 0;
-  padding: 2px 16px;
-  background-color: transparent;
-  color: var(--color-black);
-  border: none;
-}
-
-.link-list.shaded p.button-container .button:hover,
-.link-list.shaded p.button-container.active .button {
-  background-color: var(--color-white);
-}
-
-/* fullwidth + leftalign variant */
-
-.link-list-fullwidth-leftalign-container {
-  padding-top: 0;
-}
-
-.link-list-fullwidth-leftalign-container > div.link-list-wrapper {
-  margin-left: 0;
-}
-
-.link-list-fullwidth-leftalign-container ~ .section {
-  padding-top: 0;
-}
-
-.link-list.large p.button-container .button {
-  padding: 12px 24px;
-  border-radius: 24px;
-}
-
 @media (min-width: 900px) {
   .link-list-wrapper {
     padding-left: 50px;
@@ -180,17 +113,6 @@
 
   .link-list .carousel-platform {
     scroll-padding: 0;
-  }
-
-  .link-list-fullwidth-leftalign-container > div.link-list-wrapper .link-list,
-  .link-list-fullwidth-leftalign-container > div.link-list-wrapper .link-list h2,
-  .link-list-fullwidth-leftalign-container > div.link-list-wrapper .link-list h3,
-  .link-list-fullwidth-leftalign-container > div.link-list-wrapper .link-list h4 {
-    padding-left: 0;
-  }
-
-  .link-list-fullwidth-leftalign-container .link-list .carousel-platform p.button-container:first-child {
-    margin-left: 10px;
   }
 }
 

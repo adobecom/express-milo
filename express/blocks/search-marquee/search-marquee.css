@@ -27,6 +27,12 @@
   padding-bottom: 8px;
 }
 
+.search-marquee .express-logo {
+    width: unset;
+    height: 30px;
+    padding-bottom: 8px;
+}
+
 .search-marquee > div:first-of-type h1 {
     font-size: var(--heading-font-size-l);
 }
@@ -55,7 +61,7 @@
     width: 100%;
     box-sizing: border-box;
     left: 0;
-    z-index: 3;
+    z-index: 12;
 }
 
 .search-marquee .search-dropdown-container .dropdown-title {

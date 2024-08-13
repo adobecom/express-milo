@@ -9,8 +9,8 @@ import {
 import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scripts/utils/media.js';
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
-import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated, decorateSocialIcons } from '../../scripts/utils/decorate.js';
+import { decorateSocialIcons, fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
 
@@ -1633,8 +1633,8 @@ export async function decorateTemplateList(block, props) {
     if (!heroPicture && blueprint) {
       const bpHeroImage = blueprint.querySelector('div:first-of-type img');
       if (bpHeroImage) {
-        const heroSection = document.querySelector('main .hero');
-        const heroDiv = document.querySelector('main .hero > div');
+        const heroSection = document.querySelector('main #hero');
+        const heroDiv = document.querySelector('main #hero > div');
 
         if (heroSection && !heroDiv) {
           const p = createTag('p');

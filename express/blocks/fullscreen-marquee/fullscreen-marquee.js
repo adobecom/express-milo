@@ -1,6 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
-import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -17,19 +18,19 @@ function buildContent(content) {
 
     if (contentImage) {
       formattedContent = contentImage;
+      const img = formattedContent.querySelector('img');
+      if (img) {
+        img.removeAttribute('width');
+        img.removeAttribute('height');
+      }
     }
   }
 
   return formattedContent;
 }
 
-function buildHeading(block, heading) {
-  heading.classList.add('fullscreen-marquee-desktop-heading');
-  return heading;
-}
-
 function buildBackground(block, background) {
-  background.classList.add('fullscreen-marquee-desktop-background');
+  background.classList.add('fullscreen-marquee-background');
 
   window.addEventListener('scroll', () => {
     const progress = (window.scrollY * 100) / block.offsetHeight;
@@ -45,12 +46,33 @@ function buildBackground(block, background) {
   return background;
 }
 
+// Adds the first CTA to the middle of the marquee image
+async function addMarqueeCenterCTA(block, appFrame) {
+  const buttons = block.querySelectorAll('p a');
+  if (buttons.length === 0) return;
+  for (const cta of buttons) {
+    cta.classList.add('xlarge');
+  }
+  const cta = buttons[0];
+
+  const highlightCta = cta.cloneNode(true);
+  const appHighlight = createTag('a', {
+    class: 'fullscreen-marquee-app-frame-highlight',
+    href: cta.href,
+  });
+
+  await addFreePlanWidget(cta.parentElement);
+
+  appHighlight.append(highlightCta);
+  appFrame.append(appHighlight);
+}
+
 async function buildApp(block, content) {
-  const appBackground = createTag('div', { class: 'fullscreen-marquee-desktop-app-background' });
-  const appFrame = createTag('div', { class: 'fullscreen-marquee-desktop-app-frame' });
-  const app = createTag('div', { class: 'fullscreen-marquee-desktop-app' });
-  const contentContainer = createTag('div', { class: 'fullscreen-marquee-desktop-app-content-container' });
-  const cta = block.querySelector('.button-container a, a.con-button');
+  const appBackground = createTag('div', { class: 'fullscreen-marquee-app-background' });
+  const appFrame = createTag('div', { class: 'fullscreen-marquee-app-frame' });
+  const app = createTag('div', { class: 'fullscreen-marquee-app' });
+  const contentContainer = createTag('div', { class: 'fullscreen-marquee-app-content-container' });
+
   let appImage;
   let editor;
   let variant;
@@ -59,14 +81,14 @@ async function buildApp(block, content) {
     variant = 'video';
 
     if (content) {
-      const thumbnailContainer = createTag('div', { class: 'fullscreen-marquee-desktop-app-thumbnail-container' });
+      const thumbnailContainer = createTag('div', { class: 'fullscreen-marquee-app-thumbnail-container' });
       const thumbnail = content.cloneNode(true);
 
       thumbnailContainer.append(thumbnail);
       app.append(thumbnailContainer);
 
       content.addEventListener('loadedmetadata', () => {
-        const framesContainer = createTag('div', { class: 'fullscreen-marquee-desktop-app-frames-container' });
+        const framesContainer = createTag('div', { class: 'fullscreen-marquee-app-frames-container' });
         function createFrame(current, total) {
           const frame = createTag('video', { src: `${content.currentSrc}#t=${current}` });
           framesContainer.append(frame);
@@ -86,7 +108,7 @@ async function buildApp(block, content) {
       });
 
       thumbnail.addEventListener('loadedmetadata', () => {
-        thumbnail.currentTime = Math.floor(thumbnail.duration) / 2;
+        thumbnail.currentTime = Math.floor(thumbnail.duration) / 2 || 0;
         thumbnail.pause();
       });
     }
@@ -97,15 +119,16 @@ async function buildApp(block, content) {
   await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
     const imgSrc = await mod.replaceKey(`fullscreen-marquee-desktop-${variant}-app`, getConfig());
     appImage = createOptimizedPicture(imgSrc);
+
     const editorSrc = await mod.replaceKey(`fullscreen-marquee-desktop-${variant}-editor`, getConfig());
     editor = createOptimizedPicture(editorSrc);
 
-    appImage.classList.add('fullscreen-marquee-desktop-app-image');
+    appImage.classList.add('fullscreen-marquee-app-image');
     return mod.replaceKey();
   });
 
-  editor.classList.add('fullscreen-marquee-desktop-app-editor');
-  content.classList.add('fullscreen-marquee-desktop-app-content');
+  editor.classList.add('fullscreen-marquee-app-editor');
+  content.classList.add('fullscreen-marquee-app-content');
 
   window.addEventListener('mousemove', (e) => {
     const rotateX = ((e.clientX * 10) / (window.innerWidth / 2) - 10);
@@ -121,34 +144,29 @@ async function buildApp(block, content) {
   appFrame.append(app);
   appFrame.append(appBackground);
   app.append(editor);
-
-  if (cta) {
-    cta.classList.add('xlarge');
-
-    const highlightCta = cta.cloneNode(true);
-    const appHighlight = createTag('a', {
-      class: 'fullscreen-marquee-desktop-app-frame-highlight',
-      href: cta.href,
-    });
-
-    const { addFreePlanWidget } = await import('../../scripts/widgets/free-plan.js');
-    await addFreePlanWidget(cta.parentElement);
-
-    appHighlight.append(highlightCta);
-    appFrame.append(appHighlight);
-  }
-
+  addMarqueeCenterCTA(block, appFrame);
   return appFrame;
 }
 
-export default async function decorate(block) {
-  addTempWrapperDeprecated(block, 'fullscreen-marquee-desktop');
+function decorateMultipleCTAs(block) {
+  const links = Array.from(block.querySelectorAll('a')).slice(1);
+  links
+    .forEach((link) => {
+      if ((link.classList.contains('button') || (link.classList.contains('con-button'))) && link.closest('em')) {
+        link.classList.remove('button');
+        link.classList.remove('con-button');
+        link.classList.add('hyperlink');
+      }
+    });
+}
 
-  decorateButtonsDeprecated(block);
+export default async function decorate(block) {
   const rows = Array.from(block.children);
   const heading = rows[0] ? rows[0].querySelector('div') : null;
   const background = rows[2] ? rows[2].querySelector('picture') : null;
   let content = rows[1] ?? null;
+
+  decorateButtonsDeprecated(block);
 
   block.innerHTML = '';
 
@@ -162,10 +180,14 @@ export default async function decorate(block) {
   }
 
   if (heading) {
-    block.append(buildHeading(block, heading));
+    if (getConfig().locale?.ietf === 'ja-JP') heading.querySelector('h1').classList.add('budoux');
+
+    heading.classList.add('fullscreen-marquee-heading');
+    block.append(heading);
   }
 
-  if (content) {
+  if (content && document.body.dataset.device === 'desktop') {
     block.append(await buildApp(block, content));
   }
+  decorateMultipleCTAs(block);
 }
