@@ -168,7 +168,7 @@ export function removeIrrelevantSections(area) {
             const sameText = a.textContent.trim() === textToTarget;
             const samePathname = currURL.pathname === linkToTargetURL?.pathname;
             const sameHash = currURL.hash === linkToTargetURL?.hash;
-            const isNotInFloatingCta = !a.closest('.section > div')?.classList.contains('floating-button');
+            const isNotInFloatingCta = !a.closest('.block')?.classList.contains('floating-button');
             const notFloatingCtaIgnore = !a.classList.contains('floating-cta-ignore');
 
             return (sameText || (samePathname && sameHash))
@@ -583,30 +583,17 @@ export function transformLinkToAnimation($a, $videoLooping = true) {
     }
   });
   return $video;
- /* 
- * Call `addHeaderSizing` on default content blocks in all section blocks
- * in all Japanese pages except blog pages.
- */
-function addJapaneseSectionHeaderSizing(area) {
-  import(`${getLibs()}/utils/utils.js`).then((mod) => {
-    if (mod.getConfig().locale.ietf === 'ja-JP' && mod.getMetadata('template') !== 'blog') {
-      const context = area === document ? 'main' : ':scope';
-      const headings = area.querySelectorAll(`${context} > div > h1, ${context} > div > h2, ${context} .section > .content > h1, ${context} .section > .content > h2`);
-      if (headings.length) import('./utils/location-utils.js').then((locMod) => locMod.addHeaderSizing(headings, null));
-    }
-  });
+}
 
 export function decorateArea(area = document) {
-  if (area !== document) {
-    removeIrrelevantSections(area);
-    // LCP image decoration
-    (function decorateLCPImage() {
-      const lcpImg = area.querySelector('img');
-      lcpImg?.removeAttribute('loading');
-    }());
-  }
-
-  const links = area === document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
+  document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  removeIrrelevantSections(area);
+  // LCP image decoration
+  (function decorateLCPImage() {
+    const lcpImg = area.querySelector('img');
+    lcpImg?.removeAttribute('loading');
+  }());
+  const links = area === Document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
   if (links.length) {
     // eslint-disable-next-line import/no-cycle
     import('./branchlinks.js').then((mod) => mod.default(links));
@@ -615,5 +602,4 @@ export function decorateArea(area = document) {
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
-  addJapaneseSectionHeaderSizing(area);
 }
