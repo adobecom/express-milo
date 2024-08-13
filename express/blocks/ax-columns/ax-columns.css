@@ -41,7 +41,7 @@
   padding-right: 0;
 }
 
-.ax-columns:last-child:not(.highlight, .top.center, .fullsize, .light, .dark, .numbered) {
+.ax-columns:last-child:not(.highlight, .top.center, .fullsize, .light, .dark, .numbered, .centered) {
   padding-bottom: 40px;
 }
 
