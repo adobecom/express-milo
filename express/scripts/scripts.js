@@ -62,6 +62,10 @@ const CONFIG = {
     tr: { ietf: 'tr-TR', tk: 'ley8vds.css' },
     eg: { ietf: 'en-EG', tk: 'pps7abe.css' },
   },
+  entitlements: {
+    '2a537e84-b35f-4158-8935-170c22b8ae87': 'express-entitled',
+    'eb0dcb78-3e56-4b10-89f9-51831f2cc37f': 'express-pep',
+  },
   links: 'on',
 };
 
