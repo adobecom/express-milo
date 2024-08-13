@@ -5,7 +5,7 @@ import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
-import { trackSearch, updateImpressionCache } from '../template-x/template-search-api-v3.js';
+import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
 
 const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
 const { replaceKey } = imports[0];

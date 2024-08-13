@@ -1,16 +1,15 @@
 import {
-  createOptimizedPicture,
   fetchPlaceholders,
   getLottie,
   lazyLoadLottiePlayer,
-  titleCase,
   toClassName,
   transformLinkToAnimation,
   getLibs,
 } from '../../scripts/utils.js';
-
-import { Masonry } from '../shared/masonry.js';
-import buildCarousel from '../shared/carousel.js';
+import { titleCase } from '../../scripts/utils/string.js';
+import { createOptimizedPicture } from '../../scripts/utils/media.js';
+import { Masonry } from '../../scripts/widgets/masonry.js';
+import buildCarousel from '../../scripts/widgets/carousel.js';
 import {
   fetchTemplates,
   isValidTemplate,
@@ -19,8 +18,8 @@ import {
   trackSearch,
   updateImpressionCache,
   generateSearchId,
-} from './template-search-api-v3.js';
-import fetchAllTemplatesMetadata from '../../scripts/all-templates-metadata.js';
+} from '../../template-x/template-search-api-v3.js';
+import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import renderTemplate from './template-rendering.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
@@ -1060,8 +1059,12 @@ function getPlaceholderWidth(block) {
 }
 
 function toggleMasonryView(block, props, button, toggleButtons) {
+  const blockEl = block.closest('.template-x');
+  blockEl.classList.add('template-x-wrapper');
   const templatesToView = block.querySelectorAll('.template:not(.placeholder)');
   // const blockWrapper = block.closest('.template-x-wrapper');
+  const blockWrapper = blockEl.closest('.template-x-wrapper');
+
 
   if (!button.classList.contains('active') && templatesToView.length > 0) {
     toggleButtons.forEach((b) => {
@@ -1073,12 +1076,12 @@ function toggleMasonryView(block, props, button, toggleButtons) {
     ['sm-view', 'md-view', 'lg-view'].forEach((className) => {
       if (className !== `${button.dataset.view}-view`) {
         block.classList.remove(className);
-        // blockWrapper.classList.remove(className);
+        blockWrapper.classList.remove(className);
       }
     });
     button.classList.add('active');
     block.classList.add(`${button.dataset.view}-view`);
-    // blockWrapper.classList.add(`${button.dataset.view}-view`);
+    blockWrapper.classList.add(`${button.dataset.view}-view`);
 
     props.masonry.draw();
   }
@@ -1333,7 +1336,7 @@ async function decorateTemplates(block, props) {
 async function decorateBreadcrumbs(block) {
   // breadcrumbs are desktop-only
   if (document.body.dataset.device !== 'desktop') return;
-  const { default: getBreadcrumbs } = await import('./breadcrumbs.js');
+  const { default: getBreadcrumbs } = await import('../template-list/breadcrumbs.js');
   const breadcrumbs = await getBreadcrumbs();
   if (breadcrumbs) block.prepend(breadcrumbs);
 }

@@ -1,29 +1,43 @@
 /* global _satellite */
 /* eslint-disable no-underscore-dangle */
-import { getLibs, fetchPlaceholders } from '../../scripts/utils.js';
-import { memoize } from '../../scripts/hofs.js';
-import BlockMediator from '../../scripts/block-mediator.min.js';
+import { getLibs } from '../scripts/utils.js';
+import BlockMediator from '../scripts/block-mediator.min.js';
+import { memoize } from '../scripts/utils/hofs.js';
 
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-
-// import { fetchPlaceholders, getConfig } from '../../scripts/utils.js';
+const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
+const { replaceKey } = imports[0];
+const { getConfig } = imports[1];
 
 // supported by content api
 const supportedLanguages = [
-  'en-US',
-  'fr-FR',
-  'de-DE',
-  'it-IT',
+  'ar-SA',
+  'cs-CZ',
   'da-DK',
+  'de-DE',
   'es-ES',
+  'el-GR',
+  'en-US',
   'fi-FI',
+  'fil-PH',
+  'fr-FR',
+  'hi-IN',
+  'id-ID',
+  'it-IT',
+  'i-DEFAULT',
   'ja-JP',
   'ko-KR',
+  'MS-MY',
   'nb-NO',
   'nl-NL',
+  'pl-PL',
   'pt-BR',
+  'ro-RO',
+  'ru-RU',
   'sv-SE',
   'th-TH',
+  'tr-TR',
+  'uk-UA',
+  'vi-VN',
   'zh-Hant-TW',
   'zh-Hans-CN',
 ];
@@ -38,12 +52,15 @@ function extractFilterTerms(input) {
       .trim()
       .toLowerCase());
 }
+
 function extractLangs(locales) {
-  return locales?.toLowerCase().split(' or ').map((l) => l.trim());
+  return locales.toLowerCase().split(' or ').map((l) => l.trim());
 }
+
 function extractRegions(locales) {
   return extractLangs(locales).map((l) => (l === 'en' ? 'ZZ' : l.toUpperCase()));
 }
+
 function formatFilterString(filters) {
   const {
     animated,
@@ -182,19 +199,11 @@ export function trackSearch(eventName, searchID = generateSearchId()) {
         web: {
           webInteraction: {
             name: eventName,
-            linkClicks: {
-              value: 1,
-            },
+            linkClicks: { value: 1 },
             type: 'other',
           },
         },
-        _adobe_corpnew: {
-          digitalData: {
-            page: {
-              pageInfo: impression,
-            },
-          },
-        },
+        _adobe_corpnew: { digitalData: { page: { pageInfo: impression } } },
       },
     });
   }
@@ -202,9 +211,8 @@ export function trackSearch(eventName, searchID = generateSearchId()) {
   // todo: also send the search ID to a separate event. Ask Linh Nguyen.
 }
 
-const memoizedFetch = memoize(
-  (url, headers) => fetch(url, headers).then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 },
-);
+const memoizedFetch = memoize((url, headers) => fetch(url, headers)
+  .then((r) => (r.ok ? r.json() : null)), { ttl: 30 * 1000 });
 
 async function fetchSearchUrl({
   limit,
@@ -234,7 +242,7 @@ async function fetchSearchUrl({
   );
 
   const langs = extractLangs(filters.locales);
-  if (langs?.length === 0 || langs === undefined) {
+  if (langs.length === 0) {
     return memoizedFetch(url);
   }
 
@@ -258,8 +266,7 @@ async function fetchSearchUrl({
 }
 
 async function getFallbackMsg(tasks = '') {
-  const placeholders = await fetchPlaceholders();
-  const fallbackTextTemplate = tasks && tasks !== "''" ? placeholders['templates-fallback-with-tasks'] : placeholders['templates-fallback-without-tasks'];
+  const fallbackTextTemplate = tasks && tasks !== "''" ? await replaceKey('templates-fallback-with-tasks', getConfig()) : await replaceKey('templates-fallback-without-tasks', getConfig());
 
   if (fallbackTextTemplate) {
     return tasks ? fallbackTextTemplate.replaceAll('{{tasks}}', tasks.toString()) : fallbackTextTemplate;
@@ -295,7 +302,18 @@ async function fetchTemplatesNoToolbar(props) {
   if (prefLangRes.items?.length >= limit) return { response: prefLangRes };
 
   const backupLangRes = await backupLangPromise;
-  const mergedItems = [...prefLangRes.items, ...backupLangRes.items].slice(0, limit);
+  const dedup = (items) => {
+    const [set, arr] = [new Set(), []];
+    items.forEach((item) => {
+      if (!set.has(item.id)) {
+        set.add(item.id);
+        arr.push(item);
+      }
+    });
+    return arr;
+  };
+  const mergedItems = dedup([...prefLangRes.items, ...backupLangRes.items])
+    .slice(0, limit);
   return {
     response: {
       metadata: {
@@ -333,16 +351,16 @@ async function fetchTemplatesWithToolbar(props) {
 function isValidBehaviors(behaviors) {
   const collectivelyExhausiveBehaviors = ['animated', 'video', 'still'];
   return behaviors.some((b) => collectivelyExhausiveBehaviors.includes(b))
-    && (!behaviors.includes('still') || !(behaviors.includes('video') || behaviors.includes('animated')));
+        && (!behaviors.includes('still') || !(behaviors.includes('video') || behaviors.includes('animated')));
 }
 
 export function isValidTemplate(template) {
   return !!(template.status === 'approved'
-    && template.customLinks?.branchUrl
-    && template.pages?.[0]?.rendition?.image?.thumbnail?.componentId
-    && template._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href?.replace
-    && template._links?.['http://ns.adobe.com/adobecloud/rel/component']?.href?.replace
-    && isValidBehaviors(template.behaviors));
+        && template.customLinks?.branchUrl
+        && template.pages?.[0]?.rendition?.image?.thumbnail?.componentId
+        && template._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href?.replace
+        && template._links?.['http://ns.adobe.com/adobecloud/rel/component']?.href?.replace
+        && isValidBehaviors(template.behaviors));
 }
 
 export async function fetchTemplatesCategoryCount(props, tasks) {

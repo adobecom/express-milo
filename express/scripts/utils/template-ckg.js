@@ -4,7 +4,7 @@ import { titleCase } from './string.js';
 import { getDataWithContext } from './browse-api-controller.js';
 
 import fetchAllTemplatesMetadata from './all-templates-metadata.js';
-import { trackSearch, updateImpressionCache, generateSearchId } from '../../blocks/template-x/template-search-api-v3.js';
+import { trackSearch, updateImpressionCache, generateSearchId } from '../../template-x/template-search-api-v3.js';
 
 const { getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
