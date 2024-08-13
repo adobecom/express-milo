@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, buildAutoBlocks, decorateArea } from './utils.js';
+import { setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -24,7 +24,7 @@ window.express = {};
 const CONFIG = {
   local: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
   stage: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
-  prod: { express: 'new.express.adobe.com', commerce: 'commerce.adobe.com' },
+  prod: { express: 'express.adobe.com', commerce: 'commerce.adobe.com' },
   codeRoot: '/express',
   contentRoot: '/express',
   jarvis: {
@@ -32,7 +32,6 @@ const CONFIG = {
     version: '1.0',
     onDemand: true,
   },
-  imsScope: 'AdobeID,openid,pps.read,firefly_api,additional_info.roles,read_organizations', // TODO enable unav over the metadata
   imsClientId: 'AdobeExpressWeb',
   // geoRouting: 'off',
   // fallbackRouting: 'off',
@@ -63,6 +62,10 @@ const CONFIG = {
     tr: { ietf: 'tr-TR', tk: 'ley8vds.css' },
     eg: { ietf: 'en-EG', tk: 'pps7abe.css' },
   },
+  entitlements: {
+    '2a537e84-b35f-4158-8935-170c22b8ae87': 'express-entitled',
+    'eb0dcb78-3e56-4b10-89f9-51831f2cc37f': 'express-pep',
+  },
   links: 'on',
 };
 
@@ -76,8 +79,13 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const miloLibs = setLibs(LIBS);
 
-// Decorate the page with site specific needs.
-decorateArea();
+document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+removeIrrelevantSections(document);
+// LCP image decoration
+(function decorateLCPImage() {
+  const lcpImg = document.querySelector('img');
+  lcpImg?.removeAttribute('loading');
+}());
 
 (function loadStyles() {
   const paths = [`${miloLibs}/styles/styles.css`];
@@ -90,6 +98,73 @@ decorateArea();
   });
 }());
 
+function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
+  const template = getMetadata('template');
+  const h1 = document.querySelector('main h1');
+  if (template !== 'blog') {
+    if (h1 && !h1.closest('main > div > div')) {
+      const heroPicture = h1.parentElement.querySelector('picture');
+      let heroSection;
+      const main = document.querySelector('main');
+      if (main.children.length === 1) {
+        heroSection = createTag('div', { id: 'hero' });
+        const div = createTag('div');
+        heroSection.append(div);
+        if (heroPicture) {
+          div.append(heroPicture);
+        }
+        div.append(h1);
+        main.prepend(heroSection);
+      } else {
+        heroSection = h1.closest('main > div');
+        heroSection.id = 'hero';
+        heroSection.removeAttribute('style');
+      }
+      if (heroPicture) {
+        heroPicture.classList.add('hero-bg');
+      } else {
+        heroSection.classList.add('hero-noimage');
+      }
+    }
+  } else if (template === 'blog' && h1 && getMetadata('author') && getMetadata('publication-date')) {
+    loadStyle(`${config.codeRoot}/templates/blog/blog.css`);
+    document.body.style.visibility = 'hidden';
+    const heroSection = createTag('div', { id: 'hero' });
+    const main = document.querySelector('main');
+    main.prepend(heroSection);
+    // split sections for template-list
+    const blocks = document.querySelectorAll('main > div > .template-list');
+    blocks.forEach((block) => {
+      const $section = block.parentNode;
+      const $elems = [...$section.children];
+
+      if ($elems.length <= 1) return;
+
+      const $blockSection = createTag('div');
+      const $postBlockSection = createTag('div');
+      const $nextSection = $section.nextElementSibling;
+      $section.parentNode.insertBefore($blockSection, $nextSection);
+      $section.parentNode.insertBefore($postBlockSection, $nextSection);
+
+      let $appendTo;
+      $elems.forEach(($e) => {
+        if ($e === block || ($e.className === 'section-metadata')) {
+          $appendTo = $blockSection;
+        }
+
+        if ($appendTo) {
+          $appendTo.appendChild($e);
+          $appendTo = $postBlockSection;
+        }
+      });
+
+      if (!$postBlockSection.hasChildNodes()) {
+        $postBlockSection.remove();
+      }
+    });
+  }
+}
+
 (async function loadPage() {
   const {
     loadArea,
@@ -99,12 +174,15 @@ decorateArea();
     loadLana,
     createTag,
   } = await import(`${miloLibs}/utils/utils.js`);
+
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
     (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
 
   const config = setConfig({ ...CONFIG, miloLibs });
+  // Decorate the page with site specific needs.
+  decorateArea();
 
   if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
     // TODO only add this back once we're consuming the milo version of gnav
@@ -128,7 +206,8 @@ decorateArea();
 
   // listenMiloEvents();
   buildAutoBlocks();
-  if (urlParams.get('martech') !== 'off' || getMetadata('martech') === 'off') {
+  decorateHeroLCP(loadStyle, config, createTag, getMetadata);
+  if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
   if (getMetadata('sheet-powered') === 'Y') {
