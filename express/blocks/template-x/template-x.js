@@ -1065,7 +1065,6 @@ function toggleMasonryView(block, props, button, toggleButtons) {
   // const blockWrapper = block.closest('.template-x-wrapper');
   const blockWrapper = blockEl.closest('.template-x-wrapper');
 
-
   if (!button.classList.contains('active') && templatesToView.length > 0) {
     toggleButtons.forEach((b) => {
       if (b !== button) {
