@@ -34,7 +34,6 @@ function initScrollWatcher(block) {
 }
 
 export default async function decorate(block) {
-  console.log('block', block);
   const buttons = block.querySelectorAll('a');
   block.classList.add('hidden');
 
