@@ -10,6 +10,7 @@ folders:
   /fr/express/templates/: /fr/express/templates/default
   /in/express/templates/: /in/express/templates/default
   /it/express/templates/: /it/express/templates/default
+  /id_id/express/templates/: /id_id/express/templates/default
   /jp/express/templates/: /jp/express/templates/default
   /kr/express/templates/: /kr/express/templates/default
   /nl/express/templates/: /nl/express/templates/default
