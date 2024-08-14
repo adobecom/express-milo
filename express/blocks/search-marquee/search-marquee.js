@@ -193,7 +193,7 @@ function initSearchFunction(block) {
       collection: 'all-templates',
       search_keyword: searchBar.value,
       search_type: 'direct',
-    });    
+    });
     await onSearchSubmit();
   });
 
@@ -388,7 +388,7 @@ export default async function decorate(block) {
     logo.width = 164;
     logo.height = 38;
     block.prepend(logo);
-  }  
+  }
   await decorateSearchFunctions(block);
   await buildSearchDropdown(block);
   initSearchFunction(block);

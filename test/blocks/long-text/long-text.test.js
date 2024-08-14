@@ -44,7 +44,7 @@ describe('Long Text', () => {
     const removedBlock = document.querySelector('.long-text');
     expect(removedBlock).to.not.exist;
   });
- 
+
   it('Empty Content parent element removed if it contains long-text-wrapper', () => {
     document.body.innerHTML = longTextWrapper;
     const longText = document.querySelector('.long-text');

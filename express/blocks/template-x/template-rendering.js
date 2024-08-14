@@ -185,9 +185,11 @@ function getPageIterator(pages) {
     },
   };
 }
-async function renderRotatingMedias(wrapper,
+async function renderRotatingMedias(
+  wrapper,
   pages,
-  { templateTitle, renditionLinkHref, componentLinkHref }) {
+  { templateTitle, renditionLinkHref, componentLinkHref },
+) {
   const pageIterator = getPageIterator(pages);
   let imgTimeoutId;
 
@@ -361,7 +363,10 @@ function renderHoverWrapper(template, placeholders) {
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
-    mediaWrapper, enterHandler, leaveHandler, focusHandler,
+    mediaWrapper,
+    enterHandler,
+    leaveHandler,
+    focusHandler,
   } = renderMediaWrapper(template, placeholders);
 
   const cta = renderCTA(placeholders, template.customLinks.branchUrl);

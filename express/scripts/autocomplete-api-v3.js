@@ -29,9 +29,7 @@ async function fetchAPI({ limit = 5, textQuery, locale = 'en-US' }) {
         {
           limit,
           id: experienceId,
-          scope: {
-            entities: scopeEntities,
-          },
+          scope: { entities: scopeEntities },
         },
       ],
     }),
