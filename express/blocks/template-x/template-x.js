@@ -1,13 +1,11 @@
 import {
-  fetchPlaceholders,
   getLottie,
   lazyLoadLottiePlayer,
   toClassName,
-  transformLinkToAnimation,
   getLibs,
 } from '../../scripts/utils.js';
 import { titleCase } from '../../scripts/utils/string.js';
-import { createOptimizedPicture } from '../../scripts/utils/media.js';
+import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { Masonry } from '../../scripts/widgets/masonry.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import {
@@ -25,7 +23,9 @@ import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const { getMetadata, createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
+const { replaceKey, replaceKeyArray } = imports[0];
+const { getMetadata, createTag, getConfig } = imports[1];
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -44,10 +44,10 @@ function handlelize(str) {
     .toLowerCase();
 }
 
-async function getTemplates(response, phs, fallbackMsg) {
+async function getTemplates(response, fallbackMsg) {
   const filtered = response.items.filter((item) => isValidTemplate(item));
   const templates = await Promise.all(
-    filtered.map((template) => renderTemplate(template, phs)),
+    filtered.map((template) => renderTemplate(template)),
   );
   return {
     fallbackMsg,
@@ -56,8 +56,8 @@ async function getTemplates(response, phs, fallbackMsg) {
 }
 
 async function fetchAndRenderTemplates(props) {
-  const [placeholders, { response, fallbackMsg }] = await Promise.all(
-    [fetchPlaceholders(), fetchTemplates(props)],
+  const [{ response, fallbackMsg }] = await Promise.all(
+    [fetchTemplates(props)],
   );
   if (!response || !response.items || !Array.isArray(response.items)) {
     return { templates: null };
@@ -75,7 +75,7 @@ async function fetchAndRenderTemplates(props) {
   props.total = response.metadata.totalHits;
 
   // eslint-disable-next-line no-return-await
-  return await getTemplates(response, placeholders, fallbackMsg);
+  return await getTemplates(response, fallbackMsg);
 }
 
 async function processContentRow(block, props) {
@@ -110,17 +110,20 @@ async function processContentRow(block, props) {
 
 async function formatHeadingPlaceholder(props) {
   // special treatment for express/ root url
-  const placeholders = await fetchPlaceholders();
   const config = getConfig();
   const { region } = config.locale;
   const lang = config.locale.ietf;
   const templateCount = lang === 'es-ES' ? props.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : props.total.toLocaleString(lang);
-  let toolBarHeading = getMetadata('toolbar-heading') ? props.templateStats : placeholders['template-placeholder'];
+  const templatePlaceholder = await replaceKey('template-placeholder', getConfig());
+  let toolBarHeading = getMetadata('toolbar-heading') ? props.templateStats : templatePlaceholder;
 
+  const templateSearchHeadingSingular = await replaceKey('template-search-heading-singular', getConfig());
+  const templateSearchHeadingPlural = await replaceKey('template-search-heading-plural', getConfig());
   if (getMetadata('template-search-page') === 'Y'
-    && placeholders['template-search-heading-singular']
-    && placeholders['template-search-heading-plural']) {
-    toolBarHeading = props.total === 1 ? placeholders['template-search-heading-singular'] : placeholders['template-search-heading-plural'];
+    && templateSearchHeadingSingular !== 'template search heading singular'
+    && templateSearchHeadingPlural !== 'template search heading plural') {
+    // eslint-disable-next-line max-len
+    toolBarHeading = props.total === 1 ? templateSearchHeadingSingular : templateSearchHeadingPlural;
   }
 
   if (toolBarHeading) {
@@ -346,12 +349,12 @@ async function decorateNewTemplates(block, props, options = { reDrawMasonry: fal
 }
 
 async function decorateLoadMoreButton(block, props) {
-  const placeholders = await fetchPlaceholders();
   const loadMoreDiv = createTag('div', { class: 'load-more' });
   const loadMoreButton = createTag('button', { class: 'load-more-button' });
   const loadMoreText = createTag('p', { class: 'load-more-text' });
   loadMoreDiv.append(loadMoreButton, loadMoreText);
-  loadMoreText.textContent = placeholders['load-more'] ?? '';
+  const loadMore = await replaceKey('load-more', getConfig());
+  loadMoreText.textContent = loadMore === 'load more' ? '' : loadMore;
   block.append(loadMoreDiv);
   loadMoreButton.append(getIconElementDeprecated('plus-icon'));
 
@@ -372,7 +375,7 @@ async function decorateLoadMoreButton(block, props) {
 }
 
 async function attachFreeInAppPills(block) {
-  const freeInAppText = await fetchPlaceholders().then((json) => json['free-in-app']);
+  const freeInAppText = await replaceKey('free-in-app', getConfig());
 
   const templateLinks = block.querySelectorAll('a.template');
   for (const templateLink of templateLinks) {
@@ -380,7 +383,7 @@ async function attachFreeInAppPills(block) {
       && templateLink.querySelectorAll('.icon-premium').length <= 0
       && !templateLink.classList.contains('placeholder')
       && !templateLink.querySelector('.icon-free-badge')
-      && freeInAppText) {
+      && freeInAppText !== 'free in app') {
       const $freeInAppBadge = createTag('span', { class: 'icon icon-free-badge' });
       $freeInAppBadge.textContent = freeInAppText;
       templateLink.querySelector('div').append($freeInAppBadge);
@@ -388,24 +391,25 @@ async function attachFreeInAppPills(block) {
   }
 }
 
-function makeTemplateFunctions(placeholders) {
+async function makeTemplateFunctions() {
+  const [templateFilterPremium, templateFilterPremiumIcons, templateFilterAnimated, templateFilterAnimatedIcons, templateXSort, templateXSortIcons] = await replaceKeyArray(['template-filter-premium', 'template-filter-premium-icons', 'template-filter-animated', 'template-filter-animated-icons', 'template-x-sort', 'template-x-sort-icons'], getConfig());
   const functions = {
     premium: {
-      placeholders: JSON.parse(placeholders['template-filter-premium'] ?? '{}'),
+      placeholders: JSON.parse(templateFilterPremium !== 'template filter premium' ? templateFilterPremium : '{}'),
       elements: {},
-      icons: placeholders['template-filter-premium-icons']?.replace(/\s/g, '')?.split(',')
+      icons: (templateFilterPremiumIcons !== 'template filter premium icons' ? templateFilterPremiumIcons.replace(/\s/g, '')?.split(',') : undefined)
         || ['template-premium-and-free', 'template-free', 'template-premium'],
     },
     animated: {
-      placeholders: JSON.parse(placeholders['template-filter-animated'] ?? '{}'),
+      placeholders: JSON.parse(templateFilterAnimated !== 'template filter animated' ? templateFilterAnimated : '{}'),
       elements: {},
-      icons: placeholders['template-filter-animated-icons']?.replace(/\s/g, '')?.split(',')
+      icons: (templateFilterAnimatedIcons !== 'template filter animated icons' ? templateFilterAnimatedIcons.replace(/\s/g, '')?.split(',') : undefined)
         || ['template-static-and-animated', 'template-static', 'template-animated'],
     },
     sort: {
-      placeholders: JSON.parse(placeholders['template-x-sort'] ?? '{}'),
+      placeholders: JSON.parse(templateXSort !== 'template x sort' ? templateXSort : '{}'),
       elements: {},
-      icons: placeholders['template-x-sort-icons']?.replace(/\s/g, '')?.split(',')
+      icons: (templateXSortIcons !== 'template x sort icons' ? templateXSortIcons.replace(/\s/g, '')?.split(',') : undefined)
         || ['sort', 'visibility-on', 'visibility-off', 'order-dsc', 'order-asc'],
     },
   };
@@ -460,7 +464,7 @@ function updateFilterIcon(block) {
   });
 }
 
-function decorateFunctionsContainer(block, functions, placeholders) {
+async function decorateFunctionsContainer(block, functions) {
   const functionsContainer = createTag('div', { class: 'functions-container' });
   const functionContainerMobile = createTag('div', { class: 'functions-drawer' });
 
@@ -494,15 +498,17 @@ function decorateFunctionsContainer(block, functions, placeholders) {
   const applyButton = createTag('a', { class: 'apply-filter-button button gradient', href: '#' });
 
   $closeButton.classList.add('close-drawer');
-  applyButton.textContent = placeholders['apply-filters'];
+  const [applyFilters, free, versusShorthand, premium, staticP, animated, filter, sort] = await replaceKeyArray(['apply-filters', 'free', 'versus-shorthand', 'premium', 'static', 'animated', 'filter', 'sort'], getConfig());
+
+  applyButton.textContent = applyFilters;
 
   functionContainerMobile.children[0]
     .querySelector('.current-option-premium')
-    .textContent = `${placeholders.free} ${placeholders['versus-shorthand']} ${placeholders.premium}`;
+    .textContent = `${free} ${versusShorthand} ${premium}`;
 
   functionContainerMobile.children[1]
     .querySelector('.current-option-animated')
-    .textContent = `${placeholders.static} ${placeholders['versus-shorthand']} ${placeholders.animated}`;
+    .textContent = `${staticP} ${versusShorthand} ${animated}`;
 
   drawerInnerWrapper.append(
     functionContainerMobile.children[0],
@@ -538,10 +544,10 @@ function decorateFunctionsContainer(block, functions, placeholders) {
   );
   functionContainerMobile.prepend(filterContainer);
 
-  mobileFilterButton.textContent = placeholders.filter;
+  mobileFilterButton.textContent = filter;
   const sortButton = functionContainerMobile.querySelector('.current-option-sort');
   if (sortButton) {
-    sortButton.textContent = placeholders.sort;
+    sortButton.textContent = sort;
     sortButton.className = 'filter-mobile-option-heading';
   }
 
@@ -591,19 +597,21 @@ async function appendCategoryTemplatesCount(block, props) {
 }
 
 async function decorateCategoryList(block, props) {
-  const placeholders = await fetchPlaceholders();
   const { prefix } = getConfig().locale;
   const mobileDrawerWrapper = block.querySelector('.filter-drawer-mobile');
   const drawerWrapper = block.querySelector('.filter-drawer-mobile-inner-wrapper');
-  const categories = placeholders['x-task-categories'] ? JSON.parse(placeholders['x-task-categories']) : {};
-  const categoryIcons = placeholders['task-category-icons']?.replace(/\s/g, '')?.split(',');
+  const xTaskCategories = await replaceKey('x-task-categories', getConfig());
+  const categories = xTaskCategories !== 'x task categories' ? JSON.parse(xTaskCategories) : {};
+  const taskCategoryIcons = await replaceKey('task-category-icons', getConfig());
+  const categoryIcons = taskCategoryIcons !== 'task category icons' ? taskCategoryIcons.replace(/\s/g, '')?.split(',') : undefined;
   const categoriesDesktopWrapper = createTag('div', { class: 'category-list-wrapper' });
   const categoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
   const categoriesToggle = getIconElementDeprecated('drop-down-arrow');
   const categoriesListHeading = createTag('div', { class: 'category-list-heading' });
   const categoriesList = createTag('ul', { class: 'category-list' });
 
-  categoriesListHeading.append(getIconElementDeprecated('template-search'), placeholders['jump-to-category']);
+  const jumpToCategory = await replaceKey('jump-to-category', getConfig());
+  categoriesListHeading.append(getIconElementDeprecated('template-search'), jumpToCategory);
   categoriesToggleWrapper.append(categoriesToggle);
   categoriesDesktopWrapper.append(categoriesToggleWrapper, categoriesListHeading, categoriesList);
 
@@ -665,7 +673,7 @@ async function decorateCategoryList(block, props) {
     }, { passive: true });
   });
   const mobileCategoriesToggle = createTag('span', { class: 'category-list-toggle' });
-  mobileCategoriesToggle.textContent = placeholders['jump-to-category'] ?? '';
+  mobileCategoriesToggle.textContent = jumpToCategory !== 'jump to category' ? jumpToCategory : '';
   categoriesMobileWrapper.querySelector('.category-list-toggle-wrapper > .icon')?.replaceWith(mobileCategoriesToggle);
   const lottieArrows = createTag('a', { class: 'lottie-wrapper' });
   mobileDrawerWrapper.append(lottieArrows);
@@ -1126,7 +1134,6 @@ function initToolbarShadow(toolbar) {
 }
 
 async function decorateToolbar(block, props) {
-  const placeholders = await fetchPlaceholders();
   const sectionHeading = createTag('h2');
   const tBarWrapper = createTag('div', { class: 'toolbar-wrapper' });
   const tBar = createTag('div', { class: 'api-templates-toolbar' });
@@ -1152,8 +1159,8 @@ async function decorateToolbar(block, props) {
     const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
     lgView.append(getIconElementDeprecated('large_grid'));
 
-    const functionsObj = makeTemplateFunctions(placeholders);
-    const functions = decorateFunctionsContainer(block, functionsObj, placeholders);
+    const functionsObj = await makeTemplateFunctions();
+    const functions = await decorateFunctionsContainer(block, functionsObj);
 
     viewsWrapper.append(smView, mdView, lgView);
     functionsWrapper.append(viewsWrapper, functions.desktop);
@@ -1406,8 +1413,8 @@ function importSearchBar(block, blockMediator) {
         }, { passive: true });
 
         const redirectSearch = async () => {
-          const placeholders = await fetchPlaceholders();
-          const taskMap = placeholders['x-task-name-mapping'] ? JSON.parse(placeholders['task-name-mapping']) : {};
+          const xTaskNameMapping = await replaceKey('x-task-name-mapping', getConfig());
+          const taskMap = xTaskNameMapping !== 'x task name mapping' ? JSON.parse(xTaskNameMapping) : {};
 
           const format = getMetadata('placeholder-format');
           let currentTasks = '';
@@ -1561,8 +1568,9 @@ function wordExistsInString(word, inputString) {
   return regexPattern.test(inputString);
 }
 
-function getTaskNameInMapping(text, placeholders) {
-  const taskMap = placeholders['x-task-name-mapping'] ? JSON.parse(placeholders['x-task-name-mapping']) : {};
+async function getTaskNameInMapping(text) {
+  const xTaskNameMapping = await replaceKey('x-task-name-mapping', getConfig());
+  const taskMap = xTaskNameMapping !== 'x task name mapping' ? JSON.parse(xTaskNameMapping) : {};
   return Object.entries(taskMap)
     .filter((task) => task[1].some((word) => {
       const searchValue = text.toLowerCase();
@@ -1627,7 +1635,6 @@ async function buildTemplateList(block, props, type = []) {
     const tabsWrapper = createTag('div', { class: 'template-tabs' });
     const tabBtns = [];
 
-    const placeholders = await fetchPlaceholders();
     const collectionRegex = /(.+?)\s*\((.+?)\)/;
     const tabConfigs = tabs.map((tab) => {
       const match = collectionRegex.exec(tab.trim());
@@ -1636,7 +1643,7 @@ async function buildTemplateList(block, props, type = []) {
       }
       return { tab, collectionId: props.collectionId };
     });
-    const taskNames = tabConfigs.map(({ tab }) => getTaskNameInMapping(tab, placeholders));
+    const taskNames = tabConfigs.map(({ tab }) => getTaskNameInMapping(tab));
     if (taskNames.length === tabs.length) {
       taskNames.filter(({ length }) => length).forEach(([[task]], index) => {
         const tabBtn = createTag('button', { class: 'template-tab-button' });
