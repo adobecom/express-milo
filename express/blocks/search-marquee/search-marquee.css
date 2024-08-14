@@ -40,6 +40,8 @@
 .search-marquee > div:first-of-type p {
     font-size: var(--body-font-size-m);
     max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .search-marquee .search-marquee-bg {
