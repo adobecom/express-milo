@@ -2,7 +2,7 @@ div[class='section section-wrapper floating-buttons-container'] {
   padding: 0;
 }
 
-.block.floating-buttons {
+.floating-buttons {
   position: fixed;
   bottom: 0;
   background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 78%);
@@ -14,7 +14,7 @@ div[class='section section-wrapper floating-buttons-container'] {
   max-width: none;
 }
 
-.block.floating-buttons > div > div {
+.floating-buttons > div > div {
   max-height: 150px;
   display: flex;
   align-items: stretch;
@@ -22,11 +22,11 @@ div[class='section section-wrapper floating-buttons-container'] {
   flex-wrap: wrap;
 }
 
-.block.floating-buttons.hidden {
+.floating-buttons.hidden {
   bottom: -200px;
 }
 
-.block.floating-buttons > div > div > a.button:any-link {
+.floating-buttons > div > div > a.button:any-link {
   flex: 1 0 auto;
   border-radius: 100px;
   display: flex;
@@ -36,7 +36,7 @@ div[class='section section-wrapper floating-buttons-container'] {
 }
 
 @media screen and (min-width: 900px) {
-  .block.floating-buttons > div > div > a.button:any-link {
+  .floating-buttons > div > div > a.button:any-link {
     flex: initial;
     display: inline-block;
   }
