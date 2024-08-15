@@ -16,4 +16,8 @@ export default function decorate(block) {
       block.remove();
     }
   }
+  if (block.querySelector('p').textContent === 'null'
+  || block.querySelector('p').textContent === null) {
+    block.querySelector('p').remove();
+  }
 }
