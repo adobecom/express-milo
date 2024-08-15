@@ -538,7 +538,7 @@ p {
   line-height: var(--body-line-height);
 }
 
-a:any-link {
+:not(header) a:any-link {
   color: var(--color-info-accent);
   font-weight: 600;
 }
