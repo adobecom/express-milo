@@ -196,7 +196,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   } else if (getMetadata('breadcrumbs') === 'on' && !!getMetadata('breadcrumbs-base') && (!!getMetadata('short-title') || !!getMetadata('breadcrumbs-page-title'))) document.body.classList.add('breadcrumbs-spacing');
 
   loadLana({ clientId: 'express' });
-  console.log(config);
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
