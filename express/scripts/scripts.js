@@ -175,6 +175,9 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     loadStyle,
   } = await import(`${miloLibs}/utils/utils.js`);
 
+  const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
+  document.head.append(budouxExcludeSelector);
+
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
