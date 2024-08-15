@@ -1,18 +1,10 @@
-main .seo-nav-container {
-  padding: 18px 28px;
-}
-
 main .seo-nav-wrapper,
 main .seo-nav-center-container > div {
   max-width: 1200px;
 }
 
-main .seo-nav-container .seo-nav-center-container .carousel-platform {
+main .seo-nav-center-container .carousel-platform {
   padding-top: 6px;
-}
-
-main .seo-nav-container .carousel-container a.button.carousel-arrow {
-  transform: translateY(-10px);
 }
 
 main .seo-nav {
