@@ -175,6 +175,9 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     loadStyle,
   } = await import(`${miloLibs}/utils/utils.js`);
 
+  const gnav = createTag('meta', { name: 'gnav-source', content: 'https://main--express--adobecom.hlx.page/express/localnav-express' });
+  document.head.append(gnav);
+
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
