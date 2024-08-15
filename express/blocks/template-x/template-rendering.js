@@ -4,7 +4,9 @@ import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
+const { replaceKey } = imports[0];
+const { createTag, getMetadata, getConfig } = imports[1];
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
@@ -116,8 +118,9 @@ async function share(branchUrl, tooltip, timeoutId) {
   }, 2500);
 }
 
-function renderShareWrapper(branchUrl, placeholders) {
-  const text = placeholders['tag-copied'] ?? 'Copied to clipboard';
+async function renderShareWrapper(branchUrl) {
+  const tagCopied = await replaceKey('tag-copied', getConfig());
+  const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
@@ -148,8 +151,9 @@ function renderShareWrapper(branchUrl, placeholders) {
   return wrapper;
 }
 
-function renderCTA(placeholders, branchUrl) {
-  const btnTitle = placeholders['edit-this-template'] ?? 'Edit this template';
+async function renderCTA(branchUrl) {
+  const editThisTemplate = await replaceKey('edit-this-template', getConfig());
+  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const btnEl = createTag('a', {
     href: branchUrl,
     title: btnTitle,
@@ -308,7 +312,7 @@ async function renderRotatingMedias(
 
 let currentHoveredElement;
 
-function renderMediaWrapper(template, placeholders) {
+function renderMediaWrapper(template) {
   const mediaWrapper = createTag('div', { class: 'media-wrapper' });
 
   // TODO: reduce memory with LRU cache or memoization with ttl
@@ -330,7 +334,8 @@ function renderMediaWrapper(template, placeholders) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      mediaWrapper.append(renderShareWrapper(branchUrl, placeholders));
+      const shareWrapper = await renderShareWrapper(branchUrl);
+      mediaWrapper.append(shareWrapper);
     }
     renderedMedia.hover();
     currentHoveredElement?.classList.remove('singleton-hover');
@@ -348,7 +353,8 @@ function renderMediaWrapper(template, placeholders) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      mediaWrapper.append(renderShareWrapper(branchUrl, placeholders));
+      const shareWrapper = await renderShareWrapper(branchUrl);
+      mediaWrapper.append(shareWrapper);
       renderedMedia.hover();
     }
     currentHoveredElement?.classList.remove('singleton-hover');
@@ -359,7 +365,7 @@ function renderMediaWrapper(template, placeholders) {
   return { mediaWrapper, enterHandler, leaveHandler, focusHandler };
 }
 
-function renderHoverWrapper(template, placeholders) {
+async function renderHoverWrapper(template) {
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
@@ -367,9 +373,9 @@ function renderHoverWrapper(template, placeholders) {
     enterHandler,
     leaveHandler,
     focusHandler,
-  } = renderMediaWrapper(template, placeholders);
+  } = renderMediaWrapper(template);
 
-  const cta = renderCTA(placeholders, template.customLinks.branchUrl);
+  const cta = await renderCTA(template.customLinks.branchUrl);
   const ctaLink = renderCTALink(template.customLinks.branchUrl);
 
   ctaLink.append(mediaWrapper);
@@ -380,7 +386,6 @@ function renderHoverWrapper(template, placeholders) {
   btnContainer.addEventListener('mouseleave', leaveHandler);
 
   cta.addEventListener('focusin', focusHandler);
-
   const ctaClickHandler = () => {
     updateImpressionCache({
       content_id: template.id,
@@ -398,11 +403,12 @@ function renderHoverWrapper(template, placeholders) {
   return btnContainer;
 }
 
-function getStillWrapperIcons(template, placeholders) {
+async function getStillWrapperIcons(template) {
   let planIcon = null;
   if (template.licensingCategory === 'free') {
     planIcon = createTag('span', { class: 'free-tag' });
-    planIcon.append(placeholders.free ?? 'Free');
+    const free = await replaceKey('free', getConfig());
+    planIcon.append(free === 'free' ? 'Free' : free);
   } else {
     planIcon = getIconElementDeprecated('premium');
   }
@@ -422,7 +428,7 @@ function getStillWrapperIcons(template, placeholders) {
   return { planIcon, videoIcon };
 }
 
-function renderStillWrapper(template, placeholders) {
+async function renderStillWrapper(template) {
   const stillWrapper = createTag('div', { class: 'still-wrapper' });
 
   const templateTitle = getTemplateTitle(template);
@@ -443,7 +449,7 @@ function renderStillWrapper(template, placeholders) {
   });
   imgWrapper.append(img);
 
-  const { planIcon, videoIcon } = getStillWrapperIcons(template, placeholders);
+  const { planIcon, videoIcon } = await getStillWrapperIcons(template);
   // console.log('theOtherVideoIcon');
   // console.log(videoIcon);
   img.onload = (e) => {
@@ -457,10 +463,12 @@ function renderStillWrapper(template, placeholders) {
   return stillWrapper;
 }
 
-export default function renderTemplate(template, placeholders) {
+export default async function renderTemplate(template) {
   const tmpltEl = createTag('div');
-  tmpltEl.append(renderStillWrapper(template, placeholders));
-  tmpltEl.append(renderHoverWrapper(template, placeholders));
+  const stillWrapper = await renderStillWrapper(template);
+  tmpltEl.append(stillWrapper);
+  const hoverWrapper = await renderHoverWrapper(template);
+  tmpltEl.append(hoverWrapper);
 
   return tmpltEl;
 }
