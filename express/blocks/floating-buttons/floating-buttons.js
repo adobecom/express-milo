@@ -24,11 +24,7 @@ function initScrollWatcher(block) {
 
   const primaryUrl = new URL(primaryCta);
 
-  const pageCta = Array.from(document.querySelectorAll(
-    '.section:first-of-type a.primaryCTA',
-    '.section:first-of-type a.cta',
-    '.section:first-of-type a.button',
-  )).find((a) => a.href === primaryUrl.href);
+  const pageCta = Array.from(document.querySelectorAll('.section:first-of-type a.primaryCTA, .section:first-of-type a.cta, .section:first-of-type a.con-button, .section:first-of-type a.button')).find((a) => a.href === primaryUrl.href);
 
   if (pageCta) hideOnIntersect.observe(pageCta);
 }

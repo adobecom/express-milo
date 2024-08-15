@@ -269,8 +269,8 @@ export function createFloatingButton(block, audience, data) {
 
   document.dispatchEvent(new CustomEvent('floatingbuttonloaded', { detail: { block: floatButtonWrapper } }));
 
-  const heroCTA = document.querySelector('a.button.same-as-floating-button-CTA');
-  if (heroCTA) {
+  const heroCTA = document.querySelectorAll('a.button.same-as-floating-button-CTA, a.con-button.same-as-floating-button-CTA');
+  if (heroCTA[0]) {
     const hideButtonWhenIntersecting = new IntersectionObserver(([e]) => {
       if (e.boundingClientRect.top > window.innerHeight - 40 || e.boundingClientRect.top === 0) {
         floatButtonWrapper.classList.remove('floating-button--below-the-fold');
@@ -296,10 +296,10 @@ export function createFloatingButton(block, audience, data) {
       threshold: 0,
     });
     if (document.readyState === 'complete') {
-      hideButtonWhenIntersecting.observe(heroCTA);
+      hideButtonWhenIntersecting.observe(heroCTA[0]);
     } else {
       window.addEventListener('load', () => {
-        hideButtonWhenIntersecting.observe(heroCTA);
+        hideButtonWhenIntersecting.observe(heroCTA[0]);
       });
     }
   } else {
