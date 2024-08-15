@@ -209,10 +209,10 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
-  if (getMetadata('sheet-powered') === 'Y') {
-    const { default: replaceContent } = await import('./utils/content-replace.js');
-    await replaceContent(document.querySelector('main'));
-  }
+
+  const { default: replaceContent } = await import('./utils/content-replace.js');
+  await replaceContent(document.querySelector('main'));
+
   await loadArea();
   import('./express-delayed.js').then((mod) => {
     mod.default();
