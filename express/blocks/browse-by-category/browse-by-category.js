@@ -21,7 +21,10 @@ export function decorateHeading(block, payload) {
     viewAllButton.textContent = payload.viewAllLink.text;
     viewAllButtonWrapper.append(viewAllButton);
   }
-  if (payload.heading === 'null') {
+  if (payload.heading === 'null'
+    || payload.heading === ''
+    || payload.heading === 'undefined'
+    || payload.heading === null) {
     heading.textContent = '';
   } else {
     heading.textContent = payload?.heading;
