@@ -1,0 +1,246 @@
+.floating-button-wrapper {
+    position: fixed;
+    left: 0;
+    bottom: -1px;
+    top: auto;
+    right: auto;
+    z-index: 2;
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: flex-end;
+    -webkit-align-items: flex-end;
+    -ms-flex-align: flex-end;
+    align-items: flex-end;
+    mix-blend-mode: normal;
+    box-sizing: border-box;
+    padding: 0 6px;
+    pointer-events: none;
+    background: -webkit-linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 78%);
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 78%);
+    transition: bottom 0.6s ease-out, opacity 0.6s ease-out, height 0.6s ease-out, background 0.6s, padding-bottom 0.6s;
+    height: 150px;
+}
+.floating-button-wrapper.push-up {
+    padding-bottom: 96px;
+}
+.floating-button-wrapper.push-up .floating-button {
+    margin-bottom: 8px;
+}
+
+body.branch-banner-is-active .floating-button-wrapper {
+    height: calc(150px + 76px);
+}
+
+.floating-button-wrapper.floating-button--hidden {
+    height: 150px;
+    bottom: -151px;
+    opacity: 0.9;
+}
+
+.floating-button {
+    display: block;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 100px;
+    background-color: var(--color-gray-200);
+    transition: background-color .3s, padding .3s, margin-bottom 0.6s ease-out, bottom .3s;
+    z-index: 2;
+    max-width: 100vw;
+    pointer-events: auto;
+    margin-bottom: 24px;
+}
+
+body.branch-banner-is-active .floating-button-wrapper .floating-button {
+    margin-bottom: calc(24px + 76px);
+}
+
+.floating-button-wrapper.floating-button--hidden .floating-button {
+    margin-bottom: 24px;
+}
+
+.floating-button .floating-button-inner-wrapper {
+    position: relative;
+}
+
+.floating-button .floating-button-inner-wrapper .floating-button-background {
+    position: absolute;
+    height: 100%;
+    display: block;
+    z-index: 2;
+    width: 100%;
+    pointer-events: auto;
+    border-radius: 27px;
+    border-color: transparent;
+    background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
+    background-size: 400% 400%;
+    -webkit-animation: buttonGradient 45s ease infinite;
+    -moz-animation: buttonGradient 45s ease infinite;
+    animation: buttonGradient 45s ease infinite;
+    transition: width .3s, margin .3s, min-width .3s, background-color .3s, color .3s, border .3s, background-position 2s ease-out, padding-left .3s;
+}
+
+.floating-button a.button:any-link {
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+    max-width: 332px;
+    white-space: normal;
+    margin: 0;
+    z-index: 2;
+    width: calc(100vw - 54px);
+    pointer-events: auto;
+}
+
+.floating-button a.button:any-link,
+.floating-button a.button:any-link:hover,
+.floating-button a.button:any-link:active,
+.floating-button a.button:any-link:focus {
+    background: transparent;
+}
+
+
+.floating-button-wrapper.floating-button--above-the-fold:not(.floating-button--scrolled) a.button:any-link {
+    padding: 13px 80px 14px 48px;
+}
+
+.floating-button .floating-button-lottie {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    margin: 0;
+    padding: 4px 0 0;
+    background: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: opacity 0.3s;
+    z-index: 2;
+    opacity: 1;
+}
+
+.floating-button-wrapper[data-audience='desktop'].floating-button--below-the-fold .floating-button .floating-button-lottie {
+    z-index: 0;
+}
+
+.floating-button .floating-button-lottie .lottie-purple-arrows {
+    width: 50px;
+    height: 50px;
+    pointer-events: none;
+}
+
+.floating-button--scrolled .floating-button {
+    background-color: rgba(0,0,0,0);
+}
+
+.floating-button--scrolled .floating-button .floating-button-background {
+    margin-right: 0;
+    min-width: 250px;
+    width: 100%;
+}
+
+.floating-button-wrapper.floating-button--above-the-fold:not(.floating-button--scrolled) .floating-button-background {
+    width: calc(100% - 50px);
+}
+
+.floating-button--scrolled .floating-button-lottie {
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    z-index: 0;
+}
+
+[data-audience].floating-button-wrapper {
+    display: none;
+}
+
+body[data-device="mobile"] .section.floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"],
+body[data-device="desktop"] .floating-button-wrapper[data-audience="desktop"][data-section-status="loaded"] {
+    display: flex;
+    position: fixed; 
+}
+
+body[data-suppressfloatingcta="true"] .floating-button-wrapper[data-audience="desktop"][data-section-status="loaded"] {
+    display: none;
+}
+
+.floating-button-wrapper:first-of-type + .section {
+    padding-top: 0;
+}
+
+@media screen and (min-width: 900px) {
+    /* reset above-banner styles */
+    body.branch-banner-is-active #branch-banner-iframe {
+        display: none;
+    }
+    body.branch-banner-is-active .floating-button-wrapper .floating-button {
+        margin-bottom: 24px;
+    }
+    body.branch-banner-is-active .floating-button-wrapper {
+        height: 150px;
+    }
+
+    main.branch-banner-is-active .floating-button-wrapper {
+        height: 150px;
+    }
+
+    .floating-button-wrapper.floating-button--intersecting:not(.floating-button--clicked),
+    .floating-button-wrapper {
+        bottom: -151px;
+        opacity: 0.9;
+    }
+
+    .floating-button-wrapper {
+        transition: none;
+    }
+
+    .floating-button-wrapper.floating-button--above-the-fold,
+    .floating-button-wrapper.floating-button--below-the-fold {
+        bottom: -1px;
+        opacity: 1;
+        transition: bottom 0.6s ease-out, opacity 0.6s ease-out;
+    }
+
+    .floating-button--below-the-fold .floating-button {
+        background-color: rgba(0,0,0,0);
+    }
+
+    .floating-button--below-the-fold .floating-button a.button:any-link {
+        margin-right: 0;
+        min-width: 250px;
+    }
+
+    .floating-button--below-the-fold .floating-button-lottie {
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .floating-button-wrapper.floating-button--hidden {
+        bottom: -151px;
+        opacity: 0.9;
+    }
+
+    .floating-button a.button:any-link,
+    .floating-button a.button:any-link:hover,
+    .floating-button a.button:any-link:active,
+    .floating-button a.button:any-link:focus {
+        transition: width .3s, margin .3s, min-width .3s, background-color .3s, color .3s, border .3s, background-position 2s ease-out, padding .3s;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .floating-button a.button:any-link,
+    .floating-button--scrolled .floating-button a.button:any-link {
+        min-width: unset
+    }
+}
