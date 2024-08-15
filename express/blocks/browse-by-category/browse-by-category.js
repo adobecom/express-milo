@@ -21,8 +21,11 @@ export function decorateHeading(block, payload) {
     viewAllButton.textContent = payload.viewAllLink.text;
     viewAllButtonWrapper.append(viewAllButton);
   }
-
-  heading.textContent = payload.heading;
+  if (payload.heading === 'null') {
+    heading.textContent = '';
+  } else {
+    heading.textContent = payload?.heading;
+  }
   headingSection.append(heading);
   const headingContainer = createTag('div');
   headingContainer.append(heading);
@@ -45,6 +48,7 @@ export function decorateCategories(block, payload) {
     const categoryAnchor = createTag('a', { class: 'browse-by-category-card-link' });
 
     categoryTitle.textContent = categoryCard.text;
+
     categoryAnchor.title = categoryCard.text;
     categoryAnchor.href = categoryCard.link;
     categoryImageShadowWrapper.append(categoryImageShadow, categoryImage);
