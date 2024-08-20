@@ -178,7 +178,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   const gnav = createTag('meta', { name: 'gnav-source', content: '/express/localnav-express' });
   document.head.append(gnav);
 
-  const footer = createTag('meta', { name: 'footer', content: '/federal/footer' });
+  const footer = createTag('meta', { name: 'footer', content: 'federal/footer' });
   document.head.append(footer);
 
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
