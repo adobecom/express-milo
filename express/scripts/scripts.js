@@ -181,6 +181,9 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   const footer = createTag('meta', { name: 'footer', content: 'global-footer' });
   document.head.append(footer);
 
+  const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer' });
+  document.head.append(footerSrc);
+
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
