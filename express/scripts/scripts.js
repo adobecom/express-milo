@@ -181,6 +181,12 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
 
   const config = setConfig({ ...CONFIG, miloLibs });
+
+  // TODO this if statement can be removed post migration
+  if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
+    const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
+    document.head.append(budouxExcludeSelector);
+  }
   // Decorate the page with site specific needs.
   decorateArea();
 
