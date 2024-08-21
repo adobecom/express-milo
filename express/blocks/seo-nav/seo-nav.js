@@ -41,11 +41,13 @@ export default function decorate(block) {
     decorateCarousel(links, carouselDiv);
   }
 
-  if (seoCopy) {
+  if (seoCopy && seoCopy.innerText !== 'null') {
     const $paragraphs = seoCopy.querySelectorAll('p');
     for (let i = 0; i < $paragraphs.length; i += 1) {
       $paragraphs[i].classList.add('seo-paragraph');
     }
+  } else {
+    seoCopy.style.display = 'none';
   }
 
   const observer = new MutationObserver(updatePillsByCKG(block, carouselDiv));
