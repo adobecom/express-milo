@@ -175,15 +175,18 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     loadStyle,
   } = await import(`${miloLibs}/utils/utils.js`);
 
-  const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
-  document.head.append(budouxExcludeSelector);
-
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
     (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
 
   const config = setConfig({ ...CONFIG, miloLibs });
+
+  // TODO this if statement can be removed post migration because we'll be setting the metadata properly by then
+  if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
+    const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
+    document.head.append(budouxExcludeSelector);
+  }
   // Decorate the page with site specific needs.
   decorateArea();
 
