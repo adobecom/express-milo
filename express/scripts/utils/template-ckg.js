@@ -152,7 +152,6 @@ async function updateLinkList(container, linkPill, list) {
         clone = replaceLinkPill(linkPill, pageData);
         searchLinks.push(clone);
       }
-
       clone.addEventListener('click', () => {
         const a = clone.querySelector(':scope > a');
         updateImpressionCache({

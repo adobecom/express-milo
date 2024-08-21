@@ -168,11 +168,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 (async function loadPage() {
   const {
     loadArea,
+    loadStyle,
     setConfig,
     getMetadata,
     loadLana,
     createTag,
-    loadStyle,
   } = await import(`${miloLibs}/utils/utils.js`);
 
   const gnav = createTag('meta', { name: 'gnav-source', content: '/express/localnav-express' });
@@ -205,7 +205,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   } else if (getMetadata('breadcrumbs') === 'on' && !!getMetadata('breadcrumbs-base') && (!!getMetadata('short-title') || !!getMetadata('breadcrumbs-page-title'))) document.body.classList.add('breadcrumbs-spacing');
 
   loadLana({ clientId: 'express' });
-  console.log(config);
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
@@ -219,12 +218,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
-  if (getMetadata('sheet-powered') === 'Y') {
-    const { default: replaceContent } = await import('./utils/content-replace.js');
-    await replaceContent(document.querySelector('main'));
-  }
-  await loadArea();
 
+  const { default: replaceContent } = await import('./utils/content-replace.js');
+  await replaceContent(document.querySelector('main'));
+
+  await loadArea();
   import('./express-delayed.js').then((mod) => {
     mod.default();
   });
