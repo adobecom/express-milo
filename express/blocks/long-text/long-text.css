@@ -1,0 +1,81 @@
+/* to remove after wrapper deprecation */
+main .section div.long-text-wrapper {
+    max-width: none;
+    padding: 0;
+}
+
+main .section div.long-text-wrapper.plain {
+    max-width: 1200px;
+}
+
+main .long-text {
+    margin: 0 28px;
+    padding: 28px;
+    background-color: var(--color-gray-100);
+    border-radius: 20px;
+}
+
+main .long-text.plain {
+    margin: unset;
+    background-color: initial;
+    border-radius: unset;
+}
+
+main .long-text * {
+    text-align: left;
+}
+
+main .long-text.center * {
+    text-align: center;
+}
+
+main .long-text h2 {
+    font-size: var(--heading-font-size-l);
+}
+
+main .long-text.plain h1 {
+    font-size: var(--heading-font-size-l);
+    margin-bottom: 40px;
+}
+
+main .long-text.plain h2 {
+    font-size: var(--heading-font-size-m);
+    margin-bottom: 24px;
+}
+
+main .long-text.plain h3 {
+    font-size: var(--heading-font-size-s);
+    margin-bottom: 16px;
+}
+
+main .long-text p {
+    font-size: var(--body-font-size-s);
+}
+
+main .long-text.plain p {
+    margin-top: 0;
+    margin-bottom: 80px;
+    font-size: var(--body-font-size-l);
+}
+
+@media (min-width: 900px) {
+    main .long-text:not(.plain) {
+        margin: 0 60px;
+        padding: 28px;
+    }
+
+    main .long-text.plain h1 {
+        font-size: var(--heading-font-size-xl);
+        margin-bottom: 40px;
+    }
+
+    main .long-text.plain h2 {
+        font-size: var(--heading-font-size-l);
+        margin-bottom: 24px;
+    }
+
+    main .long-text.plain h3 {
+        font-size: var(--heading-font-size-s);
+        margin-bottom: 16px;
+    }
+}
