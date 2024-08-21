@@ -182,7 +182,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 
   const config = setConfig({ ...CONFIG, miloLibs });
 
-  // TODO this if statement can be removed post migration because we'll be setting the metadata properly by then
+  // TODO this if statement can be removed post migration
   if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
     const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
     document.head.append(budouxExcludeSelector);
