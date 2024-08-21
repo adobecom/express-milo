@@ -1,0 +1,43 @@
+div[class='section section-wrapper floating-buttons-container'] {
+  padding: 0;
+}
+
+.floating-buttons {
+  position: fixed;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.95) 70%, rgba(255,255,255,1) 78%);
+  width: 100%;
+  left: 0;
+  padding-bottom: 24px;
+  transition: bottom 0.4s;
+  z-index: 99;
+  max-width: none;
+}
+
+.floating-buttons > div > div {
+  max-height: 150px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.floating-buttons.hidden {
+  bottom: -200px;
+}
+
+.floating-buttons > div > div > a.button:any-link {
+  flex: 1 0 auto;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 8px;
+}
+
+@media screen and (min-width: 900px) {
+  .floating-buttons > div > div > a.button:any-link {
+    flex: initial;
+    display: inline-block;
+  }
+}
