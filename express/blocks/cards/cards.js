@@ -1,11 +1,13 @@
 // eslint-disable-next-line import/no-unresolved
 import { getLibs } from '../../scripts/utils.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 /**
  * @param {HTMLDivElement} $block
  */
 export default function decorate($block) {
+  decorateButtonsDeprecated($block);
   $block.querySelectorAll(':scope>div').forEach(($card) => {
     $card.classList.add('card');
     const $cardDivs = [...$card.children];
