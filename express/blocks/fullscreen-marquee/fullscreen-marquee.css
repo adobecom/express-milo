@@ -248,6 +248,13 @@
   padding-right: 10px;
 }
 
+/* disable budoux on small screens  */
+@media (max-width: 600px) {
+  h1.budoux {
+    word-break: normal;
+  }
+}
+
 @media (min-width: 900px) {
   .section > .fullscreen-marquee {
     padding-bottom: 40px;
