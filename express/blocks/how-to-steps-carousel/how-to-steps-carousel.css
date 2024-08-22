@@ -145,7 +145,7 @@
   margin-bottom: 0;
 }
 
-.how-to-steps-carousel .tip-text h3 {
+main .how-to-steps-carousel .tip-text h3 {
   margin-bottom: 16px;
   font-size: var(--heading-font-size-m);
   text-align: left;
