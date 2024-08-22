@@ -3,8 +3,8 @@
   margin: var(--spacing-xxxl) auto;
 }
 
-.promotion[data-block-status="loaded"] {
-  display: block;
+.promotion h2, .promotion h3{
+  text-align: center;
 }
 
 .promotion .promotion-wrapper {

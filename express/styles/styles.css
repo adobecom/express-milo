@@ -107,7 +107,7 @@ main {
   line-height: initial;
 }
 
-main[data-device="mobile"] {
+body[data-device="mobile"] {
   h1, h2, h3, h4, h5, h6 {
     hyphens: none;
     overflow-wrap: break-word;
@@ -845,33 +845,6 @@ main {
     }
   }
 
-  /*[data-audience] {*/
-  /*  display: none;*/
-  /*}*/
-
-  /*body[data-device='mobile']*/
-  /*  main*/
-  /*  [data-audience='mobile'][data-section-status='loaded']:not(*/
-  /*    .floating-button-wrapper*/
-  /*  ),*/
-  /*body[data-device='desktop']*/
-  /*  main*/
-  /*  [data-audience='desktop'][data-section-status='loaded']:not(*/
-  /*    .floating-button-wrapper*/
-  /*  ),*/
-  /*body[data-device='mobile']*/
-  /*  main*/
-  /*  [data-audience='mobile'][data-section-status='loaded']:not(*/
-  /*    .split-action-container*/
-  /*  ) {*/
-  /*  display: block;*/
-  /*}*/
-
-  /*!* floating-cta main CTA suppression *!*/
-  /*body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"] .same-as-floating-button-CTA {*/
-  /*  display: block;*/
-  /*}*/
-
   @media (min-width: 900px) {
     .button-container.free-plan-container {
       width: max-content;
@@ -977,6 +950,7 @@ main {
   }
 
   .section.long-form .content,
+  .section.long-form .content p,
   .section.long-form .content h2,
   .section.long-form .content h3,
   .section.long-form .content h4,
