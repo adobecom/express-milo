@@ -676,7 +676,7 @@ main {
     margin-right: 4px;
   }
 
-  .section > .content h1, .section > .content h2, .section > .content h3, .section > .content h4 {
+  .section > .content h1, .section > .content h2, .section > .content h3, .section > .content h4, .section > .content p {
     text-align: center;
   }
 

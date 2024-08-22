@@ -14,6 +14,10 @@ main.with-holiday-templates-banner > div[class='section section-wrapper template
   width: 100%;
 }
 
+.template-title {
+  text-align: center;
+}
+
 [data-block-name="template-x"] {
   margin: 0 auto;
 }
@@ -1663,7 +1667,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 
 .template-x.horizontal.mini .carousel-platform {
   padding: 32px;
-} 
+}
 
 .template-x.horizontal.fullwidth.holiday .carousel-container .carousel-fader-right {
   transform: translate3d(0, 0, 0);
@@ -2469,7 +2473,7 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
   main.with-holiday-templates-banner {
     padding-top: 54px;
   }
-    
+
   .template-x.horizontal.holiday .toggle-bar {
     gap: 14px;
   }
