@@ -1,10 +1,16 @@
-main .section.cards-container {
+main .section:has(.card) {
   background-color: #F1F3F4;
   padding-top: 80px;
 }
 
-main .section.cards-container>div>h2:first-of-type {
+main .section:has(.card)>div>h2:first-of-type {
   margin-top: 0;
+}
+
+main .section:has(.content) > div {
+  max-width: 375px;
+  margin: auto;
+  padding: 0;
 }
 
 main .section .cards-container>div,
