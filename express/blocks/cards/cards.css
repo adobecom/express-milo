@@ -7,12 +7,6 @@ main .section:has(.card)>div>h2:first-of-type {
   margin-top: 0;
 }
 
-main .section:has(.content) > div {
-  max-width: 375px;
-  margin: auto;
-  padding: 0;
-}
-
 main .section .cards-container>div,
 main .section .cards-dark-container>div {
   max-width: 870px;
