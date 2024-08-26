@@ -1104,3 +1104,25 @@ main {
     transform: translateX(-25%);
   }
 }
+
+header .feds-navLink:hover {
+  color: var(--color-info-accent-hover);
+}
+
+header .feds-navLink--blue {
+  color: var(--color-info-accent);
+}
+
+header .feds-cta--primary {
+  background-color: var(--color-info-accent);
+  border-color: var(--color-info-accent);
+}
+
+header .feds-cta--primary:hover {
+  background-color: var(--color-info-accent-hover);
+  border-color: var(--color-info-accent-hover);
+}
+
+header .feds-promo-content a {
+  color: var(--color-info-accent);
+}
