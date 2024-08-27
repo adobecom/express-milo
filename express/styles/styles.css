@@ -97,6 +97,16 @@
   }
 }
 
+body {
+  background-color: var(--body-background-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  color: var(--body-color);
+  overflow-x: clip;
+  -webkit-font-smoothing: initial;
+  line-height: initial;
+}
+
 body[data-device="mobile"] {
   h1, h2, h3, h4, h5, h6 {
     hyphens: none;
@@ -122,14 +132,6 @@ body > header {
 }
 
 main {
-  background-color: var(--body-background-color);
-  font-family: var(--body-font-family);
-  font-size: var(--body-font-size-m);
-  color: var(--body-color);
-  overflow-x: clip;
-  -webkit-font-smoothing: initial;
-  line-height: initial;
-
   a:hover {
     text-decoration: none;
   }
