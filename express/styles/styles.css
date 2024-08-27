@@ -774,8 +774,7 @@ main {
   }
 
   @media (min-width: 900px) {
-    h5 + p,
-    .section p.button-container {
+    h5 + p {
       text-align: unset;
     }
   }
