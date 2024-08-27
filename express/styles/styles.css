@@ -1105,12 +1105,9 @@ main {
   }
 }
 
+/* override color gnav & footer */
 header .feds-navLink:hover {
   color: var(--color-info-accent-hover);
-}
-
-header .feds-navLink--blue {
-  color: var(--color-info-accent);
 }
 
 header .feds-cta--primary {
@@ -1123,6 +1120,9 @@ header .feds-cta--primary:hover {
   border-color: var(--color-info-accent-hover);
 }
 
-header .feds-promo-content a {
-  color: var(--color-info-accent);
+body {
+  --link-color: var(--color-info-accent);
+  --link-hover-color: var(--color-info-accent-hover);
+  --feds-color-link--hover--light: var(--color-info-accent-hover);
 }
+/* end override color gnav & footer */
