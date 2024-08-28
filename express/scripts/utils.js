@@ -473,6 +473,28 @@ function addJapaneseSectionHeaderSizing(area) {
   });
 }
 
+function fragmentBlocksToLinks(area) {
+  area.querySelectorAll('div.fragment').forEach((blk) => {
+    let fragLink = blk.querySelector('a');
+    if (!fragLink) {
+      try {
+        const firstDiv = blk.querySelector('div');
+        const textContent = firstDiv?.textContent?.trim();
+        const fragURL = new URL(textContent, window.location.origin);
+        firstDiv.textContent = '';
+        fragLink = createTag('a', { href: fragURL.href });
+      } catch (error) {
+        blk.remove();
+        window.lana.log(`Failed creating a url from an old fragment block: ${error.message}`);
+      }
+    }
+    if (fragLink) {
+      blk.parentElement.replaceChild(fragLink, blk);
+      fragLink.setAttribute('ax-old-fragment', 'on');
+    }
+  });
+}
+
 export function decorateArea(area = document) {
   if (area !== document) {
     removeIrrelevantSections(area);
@@ -482,6 +504,8 @@ export function decorateArea(area = document) {
       lcpImg?.removeAttribute('loading');
     }());
   }
+
+  fragmentBlocksToLinks(area);
 
   const links = area === document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
   if (links.length) {
