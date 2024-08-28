@@ -6,6 +6,7 @@ main .section div.long-text-wrapper {
 
 main .section div.long-text-wrapper.plain {
     max-width: 1200px;
+    margin: auto;
 }
 
 main .long-text {

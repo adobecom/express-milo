@@ -204,6 +204,10 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   font-size: var(--heading-font-size-m);
 }
 
+#templates-heading {
+  margin-top: 80px;
+}
+
 .template-x .template-title.horizontal.holiday .template-title,
 .template-x .template-title.horizontal.holiday picture,
 .template-x .template-title.horizontal.holiday a,
