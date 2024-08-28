@@ -34,6 +34,16 @@
     },
     {
       "containerId": "tools",
+      "id": "localize-2",
+      "title": "Localize project (V2)",
+      "environments": [ "edit" ],
+      "url": "https://main--express-milo--adobecom.hlx.page/tools/loc?milolibs=locui",
+      "passReferrer": true,
+      "passConfig": true,
+      "includePaths": [ "**.xlsx**" ]
+    },
+    {
+      "containerId": "tools",
       "title": "Send to CaaS",
       "id": "sendtocaas",
       "environments": ["dev","preview", "live", "prod"],

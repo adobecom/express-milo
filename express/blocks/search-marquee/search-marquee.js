@@ -2,10 +2,10 @@ import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
-import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
+import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
 
 const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
 const { replaceKey } = imports[0];
@@ -154,12 +154,16 @@ function initSearchFunction(block) {
       const searchUrlTemplate = `/express/templates/search?tasks=${currentTasks.xCore}&tasksx=${currentTasks.content}&phformat=${format}&topics=${searchInput || "''"}&q=${searchBar.value || "''"}&searchId=${searchId || ''}`;
       targetLocation = `${window.location.origin}${prefix}${searchUrlTemplate}`;
     }
-
     window.location.assign(targetLocation);
   };
 
   const onSearchSubmit = async () => {
+    const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`);
     searchBar.disabled = true;
+    sampleRUM('search', {
+      source: block.dataset.blockName,
+      target: searchBar.value,
+    }, 1);
     await redirectSearch();
   };
 
@@ -235,7 +239,6 @@ function initSearchFunction(block) {
 
         suggestionsList.append(li);
       });
-
       const suggestListString = suggestions.map((s) => s.query).join(',');
       updateImpressionCache({
         prefix_query: searchBarVal,
@@ -382,6 +385,8 @@ export default async function decorate(block) {
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');
+    logo.width = 164;
+    logo.height = 38;
     block.prepend(logo);
   }
   await decorateSearchFunctions(block);
