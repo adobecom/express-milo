@@ -983,6 +983,10 @@ main {
   }
 
   /*Styles can be removed once we stop using block transpilations*/
+  .marquee {
+    display: block;
+  }
+
   .marquee .background picture {
     position: relative;
   }
