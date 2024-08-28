@@ -989,7 +989,7 @@ main {
 
   @media screen and (min-width: 1200px) {
     .marquee .background picture {
-      position: relative;
+      position: absolute;
     }
   }
 }
