@@ -2,9 +2,12 @@ import { readFile } from '@web/test-runner-commands';
 import sinon from 'sinon';
 import { expect } from '@esm-bundle/chai';
 
-const { default: decorate, windowHelper } = await import(
-  '../../../../express/blocks/gen-ai-cards/gen-ai-cards.js'
-);
+const imports = await Promise.all([
+  import('../../../express/scripts/scripts.js'),
+  import('../../../express/blocks/gen-ai-cards/gen-ai-cards.js'),
+]);
+
+const { default: decorate, windowHelper } = imports[1];
 const testBody = await readFile({ path: './mocks/body.html' });
 
 describe('Gen AI Cards', () => {
