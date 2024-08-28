@@ -7,6 +7,12 @@ main .section:has(.card)>div>h2:first-of-type {
   margin-top: 0;
 }
 
+main .section:has(.card) .content {
+  margin: auto;
+  max-width: 375px;
+  padding: 0;
+}
+
 main .section .cards-container>div,
 main .section .cards-dark-container>div {
   max-width: 870px;
@@ -17,6 +23,7 @@ main .section .cards {
   display: flex;
   flex-direction: column;
   margin: 56px auto;
+  max-width: 375px;
 }
 
 main .section .cards .card {
@@ -101,6 +108,10 @@ main .section .cards.large .card .card-content li {
 }
 
 @media (min-width:900px) {
+  main .section:has(.card) .content {
+    max-width: 830px;
+  }
+
   main .section .cards {
     max-width: 1024px;
     width: unset;
