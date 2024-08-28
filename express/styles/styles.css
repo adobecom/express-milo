@@ -983,46 +983,13 @@ main {
   }
 
   /*Styles can be removed once we stop using block transpilations*/
-  .marquee.transpiled p.action-area > span {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
+  .marquee .background picture {
+    position: relative;
   }
 
-  .marquee.transpiled p.action-area > span > a {
-    margin: 0;
-  }
-
-  .marquee.transpiled.small .text {
-    order: 2;
-  }
-
-  .marquee.transpiled.small .asset {
-    order: 1;
-  }
-
-  .marquee.transpiled .foreground .text h2 {
-    font-weight: 700;
-    text-transform: none;
-    font-size: clamp(var(--heading-font-size-s), 3vw, var(--heading-font-size-l));
-    margin: 0 0 8px 0;
-  }
-
-  @media screen and (min-width: 600px) {
-    .marquee.transpiled .foreground .text h2 {
-      font-size: var(--heading-font-size-s);
-    }
-
-    .marquee.transpiled .action-area {
-      align-items: flex-start;
-    }
-
-    .marquee.transpiled.small .text {
-      order: 1;
-    }
-
-    .marquee.transpiled.small .asset {
-      order: 2;
+  @media screen and (min-width: 1200px) {
+    .marquee .background picture {
+      position: relative;
     }
   }
 }
