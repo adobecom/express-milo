@@ -996,6 +996,9 @@ main {
   }
 
   @media screen and (min-width: 900px) {
+    .marquee {
+      display: flex;
+    }
     .marquee .background picture, .marquee .background video  {
       position: absolute;
     }
