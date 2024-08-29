@@ -991,6 +991,10 @@ main {
     position: relative;
   }
 
+  .marquee .foreground > text {
+    max-width: 50%;
+  }
+
   @media screen and (min-width: 900px) {
     .marquee .background picture, .marquee .background video  {
       position: absolute;
