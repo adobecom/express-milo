@@ -987,12 +987,12 @@ main {
     display: block;
   }
 
-  .marquee .background picture {
+  .marquee .background picture, .marquee .background video  {
     position: relative;
   }
 
   @media screen and (min-width: 1200px) {
-    .marquee .background picture {
+    .marquee .background picture, .marquee .background video  {
       position: absolute;
     }
   }
