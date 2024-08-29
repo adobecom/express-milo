@@ -991,7 +991,7 @@ main {
     position: relative;
   }
 
-  @media screen and (min-width: 1200px) {
+  @media screen and (min-width: 900px) {
     .marquee .background picture, .marquee .background video  {
       position: absolute;
     }
