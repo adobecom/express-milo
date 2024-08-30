@@ -559,6 +559,10 @@ a:any-link {
   padding-bottom: 40px;
 }
 
+.section:has(.fragment) .content {
+  max-width: unset;
+}
+
 @media (min-width: 600px) {
   h2 {
     font-size: var(--heading-font-size-l);
