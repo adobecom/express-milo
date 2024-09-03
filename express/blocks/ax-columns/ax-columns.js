@@ -28,6 +28,14 @@ import {
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
+function replaceHyphensInText(area) {
+  [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
+    .filter((header) => header.textContent.includes('-'))
+    .forEach((header) => {
+      header.textContent = header.textContent.replace(/-/g, '\u2011');
+    });
+}
+
 function transformToVideoColumn(cell, aTag, block) {
   const parent = cell.parentElement;
   const title = aTag.textContent.trim();
@@ -153,7 +161,30 @@ const handleVideos = (cell, a, block, thumbnail) => {
   });
 };
 
+const extractProperties = (block) => {
+  const allProperties = {};
+  const rows = Array.from(block.querySelectorAll(':scope > div')).slice(0, 3);
+
+  rows.forEach((row) => {
+    const content = row.innerText.trim();
+    if (content.includes('linear-gradient')) {
+      allProperties['card-gradient'] = content;
+      row.remove();
+    } else if (content.includes('text-color')) {
+      allProperties['card-text-color'] = content.replace(/text-color\(|\)/g, '');
+      row.remove();
+    } else if (content.includes('background-color')) {
+      allProperties['background-color'] = content.replace(/background-color\(|\)/g, '');
+      row.remove();
+    }
+  });
+
+  return allProperties;
+};
+
 export default async function decorate(block) {
+  document.body.dataset.device === 'mobile' && replaceHyphensInText(block);
+  const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
   decorateSocialIcons(block);
   decorateButtonsDeprecated(block, 'button-xxl');
@@ -181,6 +212,15 @@ export default async function decorate(block) {
     cells.forEach((cell, cellNum) => {
       const aTag = cell.querySelector('a');
       const pics = cell.querySelectorAll(':scope picture');
+
+      // apply custom gradient and text color to all columns cards
+      const parent = cell.parentElement;
+      if (colorProperties['card-gradient']) {
+        parent.style.background = colorProperties['card-gradient'];
+      }
+      if (colorProperties['card-text-color']) {
+        parent.style.color = colorProperties['card-text-color'];
+      }
 
       if (cellNum === 0 && isNumberedList) {
         // add number to first cell
@@ -298,11 +338,14 @@ export default async function decorate(block) {
     );
   }
 
+  // add custom background color to columns-highlight-container
+  const sectionContainer = block.closest('.section');
+  if (sectionContainer && colorProperties['background-color']) {
+    sectionContainer.style.background = colorProperties['background-color'];
+  }
+
   // invert buttons in regular columns inside columns-highlight-container
-  if (
-    block.closest('.section.columns-highlight-container')
-    && !block.classList.contains('highlight')
-  ) {
+  if (sectionContainer && !block.classList.contains('highlight')) {
     block.querySelectorAll('a.button, a.con-button').forEach((button) => {
       button.classList.add('dark');
     });

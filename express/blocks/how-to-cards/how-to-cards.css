@@ -1,0 +1,97 @@
+.how-to-cards.block {
+    max-width: 1440px;
+}
+
+.how-to-cards h3 {
+    font-size: var(--heading-font-size-s);
+    text-align: left;
+    line-height: 26px;
+    margin-top: 0;
+}
+
+.how-to-cards .text h2,
+.how-to-cards .text p {
+    text-align: left;
+    padding: 0 16px;
+}
+
+.how-to-cards .cards-container {
+    margin: 0;
+}
+
+.how-to-cards .card {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    padding: 24px;
+    border-radius: 12px;
+    background-color: var(--color-gray-150);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.how-to-cards .card p {
+    font-size: var(--body-font-size-s);
+    text-align: left;
+    margin: 4px 0;
+}
+
+.how-to-cards .number {
+    position: relative;
+    font-weight: 700;
+    border-radius: 50%;
+    background-color: white;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.how-to-cards .number-txt {
+    z-index: 1;
+}
+
+.how-to-cards .number-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0;
+    width: 100%;
+    transition: height .5s cubic-bezier(0.19, 1, 0.22, 1);
+    background-color: black;
+}
+
+.how-to-cards .card:hover,
+.how-to-cards .card:focus {
+    background-color: var(--color-gray-200);
+    transition: background-color .5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.how-to-cards .card:not(:hover) {
+    transition: background-color .2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.how-to-cards .card:hover .number-bg,
+.how-to-cards .card:focus .number-bg {
+    height: 100%;
+    transition: height .5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.how-to-cards .card:not(:hover) .number-bg {
+    transition: height .2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.how-to-cards .card:hover .number-txt,
+.how-to-cards .card:focus .number-txt {
+    color: white;
+    transition: color .1s linear;
+}
+
+@media (min-width: 480px) {
+    .how-to-cards .card {
+        width: 308px;
+    }
+}
