@@ -41,11 +41,15 @@ function extractComponentLinkHref(template) {
 }
 
 function extractImageThumbnail(page) {
-  return page.rendition.image?.thumbnail;
+  return page?.rendition?.image?.thumbnail;
 }
 
 function getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page) {
   const thumbnail = extractImageThumbnail(page);
+  if (!thumbnail) {
+    // webpages
+    return renditionLinkHref.replace('{&page,size,type,fragment}', '');
+  }
   const {
     mediaType,
     componentId,
@@ -118,9 +122,8 @@ async function share(branchUrl, tooltip, timeoutId) {
   }, 2500);
 }
 
-async function renderShareWrapper(branchUrl) {
-  const tagCopied = await replaceKey('tag-copied', getConfig());
-  const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
+function renderShareWrapper(branchUrl, placeholders) {
+  const text = placeholders['tag-copied'] ?? 'Copied to clipboard';
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
@@ -131,9 +134,9 @@ async function renderShareWrapper(branchUrl) {
     tabindex: '-1',
   });
   let timeoutId = null;
-  shareIcon.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  shareIcon.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
     timeoutId = share(branchUrl, tooltip, timeoutId);
   });
 
@@ -151,9 +154,8 @@ async function renderShareWrapper(branchUrl) {
   return wrapper;
 }
 
-async function renderCTA(branchUrl) {
-  const editThisTemplate = await replaceKey('edit-this-template', getConfig());
-  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
+function renderCTA(placeholders, branchUrl) {
+  const btnTitle = placeholders['edit-this-template'] ?? 'Edit this template';
   const btnEl = createTag('a', {
     href: branchUrl,
     title: btnTitle,
@@ -375,7 +377,7 @@ async function renderHoverWrapper(template) {
     focusHandler,
   } = renderMediaWrapper(template);
 
-  const cta = await renderCTA(template.customLinks.branchUrl);
+  const cta = renderCTA(template.customLinks.branchUrl);
   const ctaLink = renderCTALink(template.customLinks.branchUrl);
 
   ctaLink.append(mediaWrapper);
@@ -398,8 +400,17 @@ async function renderHoverWrapper(template) {
     trackSearch('select-template', BlockMediator.get('templateSearchSpecs')?.search_id);
   };
 
+  const ctaClickHandlerTouchDevice = (ev) => {
+    // If it is a mobile device with a touch screen, do not jump over to the Edit page,
+    // but allow the user to preview the template instead
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      ev.preventDefault();
+    }
+  };
+
   cta.addEventListener('click', ctaClickHandler, { passive: true });
   ctaLink.addEventListener('click', ctaClickHandler, { passive: true });
+  ctaLink.addEventListener('click', ctaClickHandlerTouchDevice);
   return btnContainer;
 }
 
@@ -465,10 +476,12 @@ async function renderStillWrapper(template) {
 
 export default async function renderTemplate(template) {
   const tmpltEl = createTag('div');
-  const stillWrapper = await renderStillWrapper(template);
-  tmpltEl.append(stillWrapper);
-  const hoverWrapper = await renderHoverWrapper(template);
-  tmpltEl.append(hoverWrapper);
+  if (template.assetType === 'Webpage_Template') {
+    // webpage_template has no pages
+    template.pages = [{}];
+  }
+  tmpltEl.append(renderStillWrapper(template));
+  tmpltEl.append(renderHoverWrapper(template));
 
   return tmpltEl;
 }

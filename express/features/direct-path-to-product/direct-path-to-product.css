@@ -34,11 +34,8 @@
 
 .pep-container .pep-progress-bg .pep-progress-bar {
     background-color: var(--color-info-accent);
-    width: 100%;
+    width: 0;
     height: 100%;
-    -webkit-animation: loginRedirectProgress 4s ease;
-    -moz-animation: loginRedirectProgress 4s ease;
-    animation: loginRedirectProgress 4s ease;
 }
 
 .pep-container .profile-wrapper {
@@ -119,36 +116,6 @@
 
 .pep-container .notice-btn:hover {
     color: var(--color-info-accent-hover);
-}
-
-@-webkit-keyframes loginRedirectProgress {
-    0% {
-        width: 0;
-    }
-
-    100% {
-        width: 100%
-    }
-}
-
-@-moz-keyframes loginRedirectProgress {
-    0% {
-        width: 0;
-    }
-
-    100% {
-        width: 100%
-    }
-}
-
-@keyframes loginRedirectProgress {
-    0% {
-        width: 0;
-    }
-
-    100% {
-        width: 100%
-    }
 }
 
 @-webkit-keyframes rotateCircle {
