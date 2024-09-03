@@ -183,7 +183,7 @@ const extractProperties = (block) => {
 };
 
 export default async function decorate(block) {
-  document.body.dataset.device === 'mobile' && replaceHyphensInText(block);
+  if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
   decorateSocialIcons(block);

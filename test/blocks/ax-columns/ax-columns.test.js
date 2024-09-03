@@ -7,7 +7,6 @@ import { expect } from '@esm-bundle/chai';
 const imports = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/ax-columns/ax-columns.js')]);
 const { default: decorate } = imports[1];
 
-const body = await readFile({ path: './mocks/body.html' });
 const buttonLight = await readFile({ path: './mocks/button-light.html' });
 const color = await readFile({ path: './mocks/color.html' });
 const fullsize = await readFile({ path: './mocks/fullsize.html' });
@@ -27,7 +26,8 @@ describe('Columns', () => {
     window.isTestEnv = true;
   });
 
-  it('Columns exists', () => {
+  it('Columns exists', async () => {
+    const body = await readFile({ path: './mocks/body.html' });
     document.body.innerHTML = body;
     const columns = document.querySelector('.columns');
     decorate(columns);

@@ -10,7 +10,7 @@ replaceKeyArray(['describe-image-mobile', 'describe-image-desktop', 'generate', 
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
-const promptTokenRegex = new RegExp('(%7B%7B|{{)prompt-text(%7D%7D|}})');
+const promptTokenRegex = /(%7B%7B|\{\{)prompt-text(%7D%7D|\}\})/;
 
 export const windowHelper = {
   redirect: (url) => {

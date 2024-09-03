@@ -56,17 +56,14 @@ export default async function init(el) {
   const goDest = () => window.location.assign(destURL);
   if (window.feds?.utilities?.imslib) {
     const { imslib } = window.feds.utilities;
+    /* eslint-disable chai-friendly/no-unused-expressions */
     imslib.isReady() && imslib.isSignedInUser() && goDest();
     imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
   }
   el.innerHTML = '';
   await loadWrapper();
-  const config = {
-    consentProfile: 'free',
-  };
-  if (title) {
-    config.title = title;
-  }
+  const config = { consentProfile: 'free' };
+  if (title) { config.title = title; }
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
   susi.authParams.redirect_uri = destURL;
@@ -82,12 +79,11 @@ export default async function init(el) {
           web: {
             webInteraction: {
               name: eventName,
-              linkClicks: {
-                value: 1,
-              },
+              linkClicks: { value: 1 },
               type,
             },
           },
+          /* eslint-disable object-curly-newline */
           _adobe_corpnew: {
             digitalData: {
               primaryEvent: {
@@ -98,6 +94,7 @@ export default async function init(el) {
               },
             },
           },
+          /* eslint-enable object-curly-newline */
         },
       });
     };

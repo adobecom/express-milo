@@ -167,6 +167,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 }
 
 (async function loadPage() {
+  if (window.isTestEnv) return;
   const {
     loadArea,
     loadStyle,

@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const [{ decorate }] = await Promise.all([import('../../../express/blocks/how-to-cards/how-to-cards.js')]);
+const [, { default: init }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/how-to-cards/how-to-cards.js')]);
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('How-to-cards', () => {
@@ -11,7 +11,7 @@ describe('How-to-cards', () => {
   });
   after(() => {});
   it('decorates into gallery of steps', async () => {
-    const bl = await decorate(blocks[0]);
+    const bl = await init(blocks[0]);
     const ol = bl.querySelector('ol');
     expect(ol).to.exist;
     expect(ol.classList.contains('gallery')).to.be.true;
@@ -87,7 +87,7 @@ describe('How-to-cards', () => {
     }));
   });
   it('decorates h2 headline + text', async () => {
-    const bl = await decorate(blocks[1]);
+    const bl = await init(blocks[1]);
     expect(bl.querySelector('div').classList.contains('text')).to.be.true;
     expect(bl.querySelector('div h2')).to.exist;
   });

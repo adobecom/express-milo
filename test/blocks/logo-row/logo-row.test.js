@@ -1,8 +1,10 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
+import decorate from '../../../express/blocks/logo-row/logo-row.js';
 
-const [, { decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/logo-row/logo-row.js')]);
+await import('../../../express/scripts/scripts.js');
+
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('Logo Row', () => {
