@@ -1,7 +1,8 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import { delay } from '../../helpers/waitfor.js';
-import { buildGallery } from '../../../express/blocks/how-to-cards/how-to-cards.js';
+
+const [, { buildGallery }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/how-to-cards/how-to-cards.js')]);
 
 document.body.innerHTML = await readFile({ path: './mocks/gallery-body.html' });
 describe('gallery', () => {
