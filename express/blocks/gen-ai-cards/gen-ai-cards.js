@@ -161,6 +161,7 @@ async function decorateCards(block, { actions }) {
           btnUrl.searchParams.set('category', 'templates');
           a.href = decodeURIComponent(btnUrl.toString());
         }
+        a.classList.add('con-button');
         a.removeAttribute('title');
         linksWrapper.append(a);
       }
@@ -185,10 +186,10 @@ function constructPayload(block) {
 
   const payload = {
     heading: headingDiv.querySelector('h2, h3, h4, h5, h6')?.textContent?.trim(),
-    subHeadings: headingDiv.querySelectorAll('p:not(.button-container)'),
+    subHeadings: headingDiv.querySelectorAll('p:not(.button-container, :has(a.con-button, a[href*="legal"])))'),
     legalLink: {
-      text: headingDiv.querySelector('a.button')?.textContent?.trim(),
-      href: headingDiv.querySelector('a.button')?.href,
+      text: headingDiv.querySelector('a[href*="legal"]')?.textContent?.trim(),
+      href: headingDiv.querySelector('a[href*="legal"]')?.href,
     },
     actions: [],
   };
@@ -197,7 +198,7 @@ function constructPayload(block) {
     const ctaObj = {
       image: row.querySelector(':scope > div:nth-of-type(1) picture'),
       videoLink: row.querySelector(':scope > div:nth-of-type(1) a'),
-      title: row.querySelector(':scope > div:nth-of-type(2) p:not(.button-container) strong')?.textContent.trim(),
+      title: row.querySelector(':scope > div:nth-of-type(2) p:nth-of-type(2):not(.button-container) strong')?.textContent.trim(),
       text: row.querySelector(':scope > div:nth-of-type(2) p:not(.button-container):not(:has(strong)):not(:has(em)):not(:empty)')?.textContent.trim(),
       subtext: row.querySelector(':scope > div:nth-of-type(2) p:not(.button-container) em')?.textContent.trim(),
       ctaLinks: row.querySelectorAll(':scope > div:nth-of-type(2) a'),
