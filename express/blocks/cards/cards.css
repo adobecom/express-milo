@@ -3,19 +3,25 @@ main .section:has(.card) {
   padding-top: 80px;
 }
 
-main .section:has(.card)>div>h2:first-of-type {
-  margin-top: 0;
+main .section:has(.cards.highlight) {
+  padding-top: 60px;
+  padding-left: 15px;
+  padding-bottom: 120px;
+  padding-right: 15px;
+}
+
+main .section:has(.card) > div > h2:first-of-type {
+  margin-top: 80px;
 }
 
 main .section:has(.card) .content {
   margin: auto;
-  max-width: 375px;
+  max-width: 350px;
   padding: 0;
 }
 
-main .section .cards-container>div,
-main .section .cards-dark-container>div {
-  max-width: 870px;
+main .section:has(.cards.highlight) {
+  background: var(--gradient-highlight-vertical);
 }
 
 main .section .cards {
@@ -178,3 +184,8 @@ main .section .cards.large .card .card-content li {
   }
 }
 
+@media (min-width:1200px) {
+  main .section:has(.card) .content {
+    max-width: unset;
+  }
+}
