@@ -168,11 +168,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 (async function loadPage() {
   const {
     loadArea,
+    loadStyle,
     setConfig,
     getMetadata,
     loadLana,
     createTag,
-    loadStyle,
   } = await import(`${miloLibs}/utils/utils.js`);
 
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
@@ -181,6 +181,12 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
 
   const config = setConfig({ ...CONFIG, miloLibs });
+
+  // TODO this if statement can be removed post migration
+  if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
+    const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
+    document.head.append(budouxExcludeSelector);
+  }
   // Decorate the page with site specific needs.
   decorateArea();
 
@@ -196,7 +202,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   } else if (getMetadata('breadcrumbs') === 'on' && !!getMetadata('breadcrumbs-base') && (!!getMetadata('short-title') || !!getMetadata('breadcrumbs-page-title'))) document.body.classList.add('breadcrumbs-spacing');
 
   loadLana({ clientId: 'express' });
-  console.log(config);
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
@@ -210,12 +215,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
-  if (getMetadata('sheet-powered') === 'Y') {
-    const { default: replaceContent } = await import('./utils/content-replace.js');
-    await replaceContent(document.querySelector('main'));
-  }
-  await loadArea();
 
+  const { default: replaceContent } = await import('./utils/content-replace.js');
+  await replaceContent(document.querySelector('main'));
+
+  await loadArea();
   import('./express-delayed.js').then((mod) => {
     mod.default();
   });
