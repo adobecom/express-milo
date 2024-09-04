@@ -89,8 +89,8 @@ export async function getDataWithContext({ urlPath }) {
     ],
   };
 
-  const env = window.location.host === 'localhost:3000' ? { name: 'dev' } : getConfig().env;
-  const result = await getData(env.name === 'local' ? 'dev' : env.name, data);
+  const env = getConfig().env.name === 'local' ? { name: 'dev' } : getConfig().env;
+  const result = await getData(env.name, data);
   if (result?.status?.httpCode !== 200) return null;
 
   return result;
