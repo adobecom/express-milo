@@ -1,5 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { fixIcons } from '../../scripts/utils/icons.js';
 
 const [{ createTag }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
 
@@ -77,6 +78,7 @@ function decoratePercentageBar(el) {
 
 export default async function init(el) {
   addTempWrapperDeprecated(el, 'pricing-cards');
+  await fixIcons(el);
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
   const cards = [];

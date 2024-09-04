@@ -1,13 +1,18 @@
-main .logo-row .block-layout {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+main .logo-row {
+    max-width: 1024px;
+    margin: auto;
 }
 
 main .logo-row .block-row {
     display: flex;
     width: 100%;
+}
+
+main .logo-row .block-layout {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
 }
 
 main .logo-row .text-column {
@@ -40,12 +45,23 @@ main .logo-row .brand-image {
     object-fit: contain;
 }
 
+@media (max-width: 1200px) {
+    main .logo-row {
+        max-width: 830px;
+    }
+}
+
+
 @media (max-width: 900px) {
-    main .logo-row .block-row {
-        display: block;
+    main .logo-row {
+        max-width: 375px;
     }
 
     main .logo-row .image-column {
+        display: block;
+    }
+
+    main .logo-row .block-row {
         display: block;
     }
 

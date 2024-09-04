@@ -2,7 +2,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { throttle, debounce } from '../../scripts/utils/hofs.js';
 
-const { createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 const nextSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g id="Slider Button - Arrow - Right">
@@ -19,12 +19,6 @@ const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"
 </svg>`;
 
 const scrollPadding = 16;
-
-let resStyle;
-const styleLoaded = new Promise((res) => {
-  resStyle = res;
-});
-loadStyle('/express/features/gallery/gallery.css', resStyle);
 
 function createControl(items, container) {
   const control = createTag('div', { class: 'gallery-control loading' });
@@ -103,7 +97,6 @@ export async function buildGallery(
 ) {
   if (!root) throw new Error('Invalid Gallery input');
   const control = createControl([...items], container);
-  await styleLoaded;
   container.classList.add('gallery');
   [...items].forEach((item) => {
     item.classList.add('gallery--item');
