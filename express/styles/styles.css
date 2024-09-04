@@ -514,6 +514,8 @@ h6 {
   line-height: var(--heading-line-height);
   -webkit-hyphens: auto; /* safari */
   hyphens: auto;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 
 h1 {
@@ -543,11 +545,16 @@ a:any-link {
   font-weight: 600;
 }
 
+main {
+  text-align: center;
+  overflow-x: clip;
+}
+
 .section > .content h1, .section > .content h2, .section > .content h3, .section > .content h4 {
   text-align: center;
 }
 
-.section .content p {
+.section .content p, .section p {
   margin: 32px 0;
 }
 
@@ -557,10 +564,6 @@ a:any-link {
 
 .section:last-of-type>.content:not(:has(+ .template-list-wrapper)) {
   padding-bottom: 40px;
-}
-
-.section:has(.fragment) .content {
-  max-width: unset;
 }
 
 @media (min-width: 600px) {

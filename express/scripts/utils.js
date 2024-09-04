@@ -166,11 +166,11 @@ export function removeIrrelevantSections(area) {
             const sameText = a.textContent.trim() === textToTarget;
             const samePathname = currURL.pathname === linkToTargetURL?.pathname;
             const sameHash = currURL.hash === linkToTargetURL?.hash;
-            const isNotInFloatingCta = !a.closest('.section > div')?.classList.contains('floating-button');
+            const isNotInFloatingCta = !a.closest('.block')?.classList.contains('floating-button');
             const notFloatingCtaIgnore = !a.classList.contains('floating-cta-ignore');
 
             return (sameText || (samePathname && sameHash))
-                  && isNotInFloatingCta && notFloatingCtaIgnore;
+              && isNotInFloatingCta && notFloatingCtaIgnore;
           } catch (err) {
             window.lana?.log(err);
             return false;
@@ -459,62 +459,54 @@ export function buildAutoBlocks() {
   }
 }
 
-/**
- * Call `addHeaderSizing` on default content blocks in all section blocks
- * in all Japanese pages except blog pages.
- */
-function addJapaneseSectionHeaderSizing(area) {
-  import(`${getLibs()}/utils/utils.js`).then((mod) => {
-    if (mod.getConfig().locale.ietf === 'ja-JP' && mod.getMetadata('template') !== 'blog') {
-      const context = area === document ? 'main' : ':scope';
-      const headings = area.querySelectorAll(`${context} > div > h1, ${context} > div > h2, ${context} .section > .content > h1, ${context} .section > .content > h2`);
-      if (headings.length) import('./utils/location-utils.js').then((locMod) => locMod.addHeaderSizing(headings, null));
-    }
-  });
-}
+// function fragmentBlocksToLinksOld(area) {
+//   area.querySelectorAll('div.fragment').forEach((blk) => {
+//     let fragLink = blk.querySelector('a');
+//     if (!fragLink) {
+//       try {
+//         const firstDiv = blk.querySelector('div');
+//         const textContent = firstDiv?.textContent?.trim();
+//         const fragURL = new URL(textContent, window.location.origin);
+//         firstDiv.textContent = '';
+//         fragLink = createTag('a', { href: fragURL.href });
+//       } catch (error) {
+//         blk.remove();
+//         window.lana.log(`Failed creating a url from an old fragment block: ${error.message}`);
+//       }
+//     }
+//     if (fragLink) {
+//       blk.parentElement.replaceChild(fragLink, blk);
+//     }
+//   });
+// }
 
 function fragmentBlocksToLinks(area) {
   area.querySelectorAll('div.fragment').forEach((blk) => {
-    let fragLink = blk.querySelector('a');
-    if (!fragLink) {
-      try {
-        const firstDiv = blk.querySelector('div');
-        const textContent = firstDiv?.textContent?.trim();
-        const fragURL = new URL(textContent, window.location.origin);
-        firstDiv.textContent = '';
-        fragLink = createTag('a', { href: fragURL.href });
-      } catch (error) {
-        blk.remove();
-        window.lana.log(`Failed creating a url from an old fragment block: ${error.message}`);
-      }
-    }
+    const fragLink = blk.querySelector('a');
     if (fragLink) {
-      blk.parentElement.replaceChild(fragLink, blk);
-      fragLink.setAttribute('ax-old-fragment', 'on');
+      const p = document.createElement('p');
+      p.append(fragLink);
+      blk.replaceWith(p);
     }
   });
 }
 
 export function decorateArea(area = document) {
-  if (area !== document) {
-    removeIrrelevantSections(area);
-    // LCP image decoration
-    (function decorateLCPImage() {
-      const lcpImg = area.querySelector('img');
-      lcpImg?.removeAttribute('loading');
-    }());
-  }
-
-  fragmentBlocksToLinks(area);
-
-  const links = area === document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
+  document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  removeIrrelevantSections(area);
+  // LCP image decoration
+  (function decorateLCPImage() {
+    const lcpImg = area.querySelector('img');
+    lcpImg?.removeAttribute('loading');
+  }());
+  const links = area === Document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
   if (links.length) {
     // eslint-disable-next-line import/no-cycle
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
+  fragmentBlocksToLinks(area);
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
-  addJapaneseSectionHeaderSizing(area);
 }
