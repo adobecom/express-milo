@@ -66,6 +66,10 @@ main .section .cards .card .card-content p {
   margin-top: 0;
 }
 
+main .section .cards .card .card-content ul {
+  text-align: left;
+}
+
 main .section .cards.dark .card {
   background-color: #000;
 }
