@@ -480,8 +480,11 @@ export default async function renderTemplate(template) {
     // webpage_template has no pages
     template.pages = [{}];
   }
-  tmpltEl.append(renderStillWrapper(template));
-  tmpltEl.append(renderHoverWrapper(template));
+
+  const stillWrapper = await renderStillWrapper(template);
+  tmpltEl.append(stillWrapper);
+  const hoverWrapper = await renderHoverWrapper(template);
+  tmpltEl.append(hoverWrapper);
 
   return tmpltEl;
 }
