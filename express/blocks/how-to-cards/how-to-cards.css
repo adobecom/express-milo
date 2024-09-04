@@ -1,5 +1,10 @@
-.how-to-cards.block {
+.section:not(:first-of-type) .how-to-cards:first-child {
+    padding-top: 60px;
+}
+
+.how-to-cards {
     max-width: 1440px;
+    margin: auto;
 }
 
 .how-to-cards h3 {
@@ -94,4 +99,96 @@
     .how-to-cards .card {
         width: 308px;
     }
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 0 16px;
+    scroll-padding: 0 16px;
+}
+
+.gallery::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+}
+
+.gallery.center.gallery--all-displayed {
+    justify-content: center;
+}
+
+.gallery--item {
+    scroll-snap-align: start;
+    width: calc(100% - 16px);
+}
+
+.gallery-control {
+    padding: 16px 16px 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    align-items: center;
+}
+
+.gallery-control.hide,
+.gallery-control .hide {
+    display: none;
+}
+
+.gallery-control.loading {
+    visibility: hidden;
+}
+
+.gallery-control button {
+    all: unset;
+    cursor: pointer;
+    height: 2rem;
+    box-shadow: 0px 2px 8px 0px #00000029;
+    border-radius: 50px;
+}
+
+.gallery-control button:focus {
+    outline: revert;
+}
+
+.gallery-control button:hover:not(:disabled) circle {
+    fill: var(--color-gray-300);
+}
+
+.gallery-control button:disabled {
+    cursor: auto;
+}
+
+.gallery-control button:disabled path {
+    stroke: var(--color-gray-300);
+}
+
+.gallery-control .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: white;
+    box-shadow: 0px 2px 8px 0px #00000029;
+    padding: 8px 16px;
+    border-radius: 50px;
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.gallery-control .status .dot {
+    border-radius: 50px;
+    width: 6px;
+    height: 6px;
+    background-color: #717171;
+}
+
+.gallery-control .status .dot.curr {
+    width: 30px;
+    background-color: #686DF4;
 }
