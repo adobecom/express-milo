@@ -1,0 +1,165 @@
+{
+  "id": "urn:aaid:sc:VA6C2:74f8db2e-e6b0-5c4d-acc0-b769b373ed54",
+  "parentDirectoryId": "urn:aaid:sc:VA6C2:9a95c444-ed0d-42fb-bfbb-2cb624fbbec6",
+  "ancestorAssetIds": [
+    "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+    "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+    "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+    "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+    "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+    "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+    "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+    "urn:aaid:sc:VA6C2:9a95c444-ed0d-42fb-bfbb-2cb624fbbec6"
+  ],
+  "path": "/content/assets/content/approved/ccx/template/ccx_content_partnerships/bdf81e9e-acc4-5351-bff9-4de5d0a95e27",
+  "contentType": "application/vnd.adobe.hz.express+dcx",
+  "createDate": "2024-06-28T19:32:56.868Z",
+  "modifyDate": "2024-06-28T19:32:57.193Z",
+  "name": "bdf81e9e-acc4-5351-bff9-4de5d0a95e27",
+  "status": "approved",
+  "dc:title": {
+    "i-default": "Pink Floral Workshop Flyer for Print by Huyen Dihn"
+  },
+  "etags": "\"51bef6458d7942178d8a22e015341e66\"",
+  "assetType": "Template",
+  "behaviors": [
+    "still"
+  ],
+  "topics": [
+    "artist",
+    "floral",
+    "flower",
+    "huyen dinh",
+    "huyendinh",
+    "print artist",
+    "workshop"
+  ],
+  "availabilityDate": "2024-07-10T02:42:50.175Z",
+  "licensingCategory": "free",
+  "language": "en-US",
+  "applicableRegions": [
+    "ZZ"
+  ],
+  "attribution": {
+    "vendor": "Adobe Express",
+    "submittedBy": "2BCD1E4C6619FCEC0A495FDD@c0b827b66271908b495fe8.e"
+  },
+  "pages": [
+    {
+      "task": {
+        "name": "flyer",
+        "size": {
+          "name": "letter"
+        }
+      },
+      "extractedColors": [
+        {
+          "name": "dark gray",
+          "coverage": 0.0619,
+          "mode": "RGB",
+          "value": {
+            "r": 88,
+            "g": 89,
+            "b": 89
+          }
+        },
+        {
+          "name": "pink",
+          "coverage": 0.8015,
+          "mode": "RGB",
+          "value": {
+            "r": 251,
+            "g": 225,
+            "b": 235
+          }
+        },
+        {
+          "name": "white",
+          "coverage": 0.0485,
+          "mode": "RGB",
+          "value": {
+            "r": 251,
+            "g": 238,
+            "b": 246
+          }
+        },
+        {
+          "name": "lilac",
+          "coverage": 0.0663,
+          "mode": "RGB",
+          "value": {
+            "r": 235,
+            "g": 194,
+            "b": 233
+          }
+        },
+        {
+          "name": "gray",
+          "coverage": 0.0219,
+          "mode": "RGB",
+          "value": {
+            "r": 144,
+            "g": 137,
+            "b": 142
+          }
+        }
+      ],
+      "rendition": {
+        "image": {
+          "thumbnail": {
+            "componentId": "fcb8f005-cd35-4826-94e5-c5faee5d54b3",
+            "hzRevision": "19df1eea-9969-40d7-aa17-acfcb3ac5707",
+            "width": 386,
+            "height": 500,
+            "mediaType": "image/webp"
+          },
+          "preview": {
+            "componentId": "0d036589-3a8e-4df0-8b0c-890cc3b1cce5",
+            "hzRevision": "f2ad33b7-1b4b-4879-b0ce-c41cf9eb6c88",
+            "width": 927,
+            "height": 1200,
+            "mediaType": "image/webp"
+          }
+        }
+      }
+    }
+  ],
+  "customLinks": {
+    "branchUrl": "https://adobesparkpost.app.link/uHF8ZOZG6Kb"
+  },
+  "stats": {
+    "remixCount": 65
+  },
+  "styles": [
+    "pop-art"
+  ],
+  "segments": [
+    "personal"
+  ],
+  "_links": {
+    "http://ns.adobe.com/adobecloud/rel/rendition": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:74f8db2e-e6b0-5c4d-acc0-b769b373ed54/rendition?assetType=TEMPLATE&etag=51bef6458d7942178d8a22e015341e66{&page,size,type,fragment}",
+      "templated": true,
+      "mode": "id",
+      "name": "ACP"
+    },
+    "http://ns.adobe.com/adobecloud/rel/primary": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:74f8db2e-e6b0-5c4d-acc0-b769b373ed54/primary?assetType=TEMPLATE&etag=51bef6458d7942178d8a22e015341e66",
+      "templated": false,
+      "mode": "id",
+      "name": "ACP"
+    },
+    "http://ns.adobe.com/adobecloud/rel/manifest": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:74f8db2e-e6b0-5c4d-acc0-b769b373ed54/manifest?assetType=TEMPLATE&etag=51bef6458d7942178d8a22e015341e66",
+      "templated": false,
+      "mode": "id",
+      "name": "ACP"
+    },
+    "http://ns.adobe.com/adobecloud/rel/component": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:74f8db2e-e6b0-5c4d-acc0-b769b373ed54/component?assetType=TEMPLATE&etag=51bef6458d7942178d8a22e015341e66{&revision,component_id}",
+      "templated": true,
+      "mode": "id",
+      "name": "ACP"
+    }
+  }
+}

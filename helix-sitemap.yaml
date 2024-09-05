@@ -43,7 +43,7 @@ sitemaps:
       indonesia:
         source: /id_id/express/query-index.json
         destination: /id_id/express/sitemap.xml
-        hreflang: en-ID
+        hreflang: id-ID
         alternate: /id_id/{path}
       japan:
         source: /jp/express/query-index.json
@@ -169,6 +169,11 @@ sitemaps:
         destination: /de/express/templates/sitemap.xml
         hreflang: de
         alternate: /de/{path}
+      indonesia:
+        source: /id_id/express/templates/default/metadata.json?sheet=sitemap
+        destination: /id_id/express/templates/sitemap.xml
+        hreflang: id-ID
+        alternate: /id_id/{path}
       italy:
         source: /it/express/templates/default/metadata.json?sheet=sitemap
         destination: /it/express/templates/sitemap.xml
@@ -179,11 +184,6 @@ sitemaps:
         destination: /in/express/templates/sitemap.xml
         hreflang: en-IN
         alternate: /in/{path}
-      indonesia:
-        source: /id_id/express/templates/default/metadata.json?sheet=sitemap
-        destination: /id_id/express/templates/sitemap.xml
-        hreflang: en-ID
-        alternate: /id_id/{path}
       japan:
         source: /jp/express/templates/default/metadata.json?sheet=sitemap
         destination: /jp/express/templates/sitemap.xml

@@ -10,21 +10,27 @@ const OPT_OUT_KEY = 'no-direct-path-to-product';
 
 const adobeEventName = 'adobe.com:express:cta:pep';
 
+const REACT_TIME = 4000;
+
 function track(name) {
-  _satellite?.track('event', {
-    xdm: {},
-    data: {
-      eventType: 'web.webinteraction.linkClicks',
-      web: {
-        webInteraction: {
-          name,
-          linkClicks: { value: 1 },
-          type: 'other',
+  try {
+    _satellite?.track('event', {
+      xdm: {},
+      data: {
+        eventType: 'web.webinteraction.linkClicks',
+        web: {
+          webInteraction: {
+            name,
+            linkClicks: { value: 1 },
+            type: 'other',
+          },
         },
+        _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName: name } } } },
       },
-      _adobe_corpnew: { digitalData: { primaryEvent: { eventInfo: { eventName: name } } } },
-    },
-  });
+    });
+  } catch (e) {
+    window.lana.log(e);
+  }
 }
 
 function buildProfileWrapper(profile) {
@@ -41,7 +47,7 @@ function buildProfileWrapper(profile) {
 }
 
 export default async function loadLoginUserAutoRedirect() {
-  let followThrough = true;
+  let cancel = false;
   const [mod] = await Promise.all([
     import(`${getLibs()}/features/placeholders.js`),
     new Promise((resolve) => {
@@ -49,7 +55,7 @@ export default async function loadLoginUserAutoRedirect() {
     }),
   ]);
 
-  const buildRedirectAlert = () => {
+  const buildRedirectAlert = async () => {
     const container = createTag('div', { class: 'pep-container' });
     const headerWrapper = createTag('div', { class: 'pep-header' });
     const headerIcon = createTag('div', { class: 'pep-header-icon' }, getIconElementDeprecated('cc-express'));
@@ -58,40 +64,37 @@ export default async function loadLoginUserAutoRedirect() {
     const progressBar = createTag('div', { class: 'pep-progress-bar' });
     const noticeWrapper = createTag('div', { class: 'notice-wrapper' });
     const noticeText = createTag('span', { class: 'notice-text' }, mod.replaceKey('pep-cancel', getConfig()));
-    const noticeBtn = createTag('a', { class: 'notice-btn' }, mod.replaceKey('cancel', getConfig()));
+    const noticeBtn = createTag('button', { class: 'notice-btn', tabIndex: '1' }, mod.replaceKey('cancel', getConfig()));
 
     headerWrapper.append(headerIcon, headerText);
     progressBg.append(progressBar);
     noticeWrapper.append(noticeText, noticeBtn);
     container.append(headerWrapper, progressBg);
-    return new Promise((resolve) => {
-      getProfile().then((profile) => {
-        if (profile) {
-          container.append(buildProfileWrapper(profile));
-        }
-        container.append(noticeWrapper);
+    const profile = await getProfile();
+    if (profile) {
+      container.append(buildProfileWrapper(profile));
+    }
+    container.append(noticeWrapper);
 
-        const header = document.querySelector('header');
-        header.append(container);
+    const header = document.querySelector('header');
+    header.append(container);
+    const handleTab = (event) => {
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        noticeBtn.focus();
+        document.removeEventListener('keydown', handleTab);
+      }
+    };
+    document.addEventListener('keydown', handleTab);
 
-        noticeBtn.addEventListener('click', () => {
-          track(`${adobeEventName}:cancel`);
-          container.remove();
-          followThrough = false;
-          localStorage.setItem(OPT_OUT_KEY, '3');
-        });
-
-        resolve(container);
-      });
+    noticeBtn.addEventListener('click', () => {
+      track(`${adobeEventName}:cancel`);
+      container.remove();
+      document.removeEventListener('keydown', handleTab);
+      cancel = true;
+      localStorage.setItem(OPT_OUT_KEY, '3');
     });
-  };
-
-  const initRedirect = (container) => {
-    container.classList.add('done');
-
-    track(`${adobeEventName}:redirect`);
-
-    window.location.assign(getDestination());
+    return { container, noticeBtn };
   };
 
   const optOutCounter = localStorage.getItem(OPT_OUT_KEY);
@@ -100,10 +103,67 @@ export default async function loadLoginUserAutoRedirect() {
     const counterNumber = parseInt(optOutCounter, 10);
     localStorage.setItem(OPT_OUT_KEY, (counterNumber - 1).toString());
   } else {
-    buildRedirectAlert().then((container) => {
-      setTimeout(() => {
-        if (followThrough) initRedirect(container);
-      }, 4000);
-    });
+    const { container, noticeBtn } = await buildRedirectAlert();
+    let startTime = performance.now();
+    let remainTime = REACT_TIME;
+    let timeoutId;
+    let [hovering, focusing] = [false, false];
+    const progressBar = container.querySelector('.pep-progress-bar');
+    let start;
+    const pause = () => {
+      clearTimeout(timeoutId);
+      const pastTime = performance.now() - startTime;
+      remainTime -= pastTime;
+      const progress = Math.min(100, ((REACT_TIME - remainTime) / REACT_TIME) * 100);
+      progressBar.style.transition = 'none';
+      progressBar.style.width = `${progress}%`;
+    };
+    const resume = () => {
+      timeoutId = start();
+    };
+    const mouseEnter = () => {
+      hovering = true;
+      if (focusing) return;
+      pause();
+    };
+    const mouseLeave = () => {
+      hovering = false;
+      if (focusing) return;
+      resume();
+    };
+    const focusIn = () => {
+      focusing = true;
+      if (hovering) return;
+      pause();
+    };
+    const focusOut = () => {
+      focusing = false;
+      if (hovering) return;
+      resume();
+    };
+    start = () => {
+      startTime = performance.now();
+      progressBar.style.transition = `width ${remainTime}ms linear`;
+      // eslint-disable-next-line chai-friendly/no-unused-expressions
+      progressBar.offsetWidth; // forcing a reflow to get more consistent transition
+      progressBar.style.width = '100%';
+      return setTimeout(() => {
+        container.removeEventListener('mouseenter', mouseEnter);
+        container.removeEventListener('mouseleave', mouseLeave);
+        noticeBtn.removeEventListener('focusin', focusIn);
+        noticeBtn.removeEventListener('focusout', focusOut);
+        if (!cancel) {
+          container.classList.add('done');
+          track(`${adobeEventName}:redirect`);
+          window.location.assign(getDestination());
+          container.remove();
+        }
+      }, remainTime);
+    };
+    noticeBtn.addEventListener('focusin', focusIn);
+    noticeBtn.addEventListener('focusout', focusOut);
+    container.addEventListener('mouseenter', mouseEnter);
+    container.addEventListener('mouseleave', mouseLeave);
+    timeoutId = start();
   }
 }
