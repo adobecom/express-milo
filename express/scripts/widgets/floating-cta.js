@@ -176,13 +176,13 @@ export function createFloatingButton(block, audience, data) {
 
   // Hide CTAs with same url & text as the Floating CTA && is NOT a Floating CTA (in mobile/tablet)
   const aTagURL = new URL(aTag.href);
-  const sameUrlCTAs = Array.from(main.querySelectorAll('a.button:any-link'))
+  const sameUrlCTAs = Array.from(main.querySelectorAll('a.button:any-link, a.con-button:any-link'))
     .filter((a) => (
       a.textContent.trim() === aTag.textContent.trim()
         || (new URL(a.href).pathname === aTagURL.pathname && new URL(a.href).hash === aTagURL.hash))
         && !a.parentElement.parentElement.classList.contains('floating-button'));
   sameUrlCTAs.forEach((cta) => {
-    cta.classList.add('same-as-floating-button-CTA');
+    cta.classList.add('same-fcta');
   });
 
   const floatButtonWrapperOld = aTag.closest('.floating-button-wrapper');
@@ -269,8 +269,8 @@ export function createFloatingButton(block, audience, data) {
 
   document.dispatchEvent(new CustomEvent('floatingbuttonloaded', { detail: { block: floatButtonWrapper } }));
 
-  const heroCTA = document.querySelectorAll('a.button.same-as-floating-button-CTA, a.con-button.same-as-floating-button-CTA');
-  if (heroCTA[0]) {
+  const heroCTA = document.querySelector('a.button.same-fcta, a.con-button.same-fcta');
+  if (heroCTA) {
     const hideButtonWhenIntersecting = new IntersectionObserver(([e]) => {
       if (e.boundingClientRect.top > window.innerHeight - 40 || e.boundingClientRect.top === 0) {
         floatButtonWrapper.classList.remove('floating-button--below-the-fold');
@@ -296,10 +296,10 @@ export function createFloatingButton(block, audience, data) {
       threshold: 0,
     });
     if (document.readyState === 'complete') {
-      hideButtonWhenIntersecting.observe(heroCTA[0]);
+      hideButtonWhenIntersecting.observe(heroCTA);
     } else {
       window.addEventListener('load', () => {
-        hideButtonWhenIntersecting.observe(heroCTA[0]);
+        hideButtonWhenIntersecting.observe(heroCTA);
       });
     }
   } else {
