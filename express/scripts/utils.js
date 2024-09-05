@@ -178,7 +178,7 @@ export function removeIrrelevantSections(area) {
         });
 
       sameUrlCTAs.forEach((cta) => {
-        cta.classList.add('same-as-floating-button-CTA');
+        cta.classList.add('same-fcta');
       });
     }
   }

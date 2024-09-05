@@ -982,7 +982,7 @@ async function initFilterSort(block, props, toolBar) {
             });
             trackSearch('search-inspire');
             await redrawTemplates(block, props, toolBar);
-            trackSearch('view-search-results', BlockMediator.get('templateSearchSpecs').search_id);
+            trackSearch('view-search-result', BlockMediator.get('templateSearchSpecs').search_id);
           }
         });
       });
@@ -1334,7 +1334,7 @@ async function decorateTemplates(block, props) {
     result_count: props.total,
     content_category: 'templates',
   });
-  if (searchId) trackSearch('view-search-results', searchId);
+  if (searchId) trackSearch('view-search-result', searchId);
 
   document.dispatchEvent(linksPopulated);
 }

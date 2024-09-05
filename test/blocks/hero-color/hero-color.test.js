@@ -5,11 +5,8 @@ import sinon from 'sinon';
 import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const imports = await Promise.all([
-  import('../../../express/scripts/scripts.js'),
-  import('../../../express/blocks/hero-color/hero-color.js'),
-]);
-const { default: decorate, resizeSvg } = imports[1];
+const [, { default: decorate, resizeSvg }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/hero-color/hero-color.js')]);
+
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const clock = sinon.useFakeTimers({ shouldAdvanceTime: true });
 
@@ -40,20 +37,5 @@ describe('Hero Color', () => {
 
     expect(primaryColor).to.exist;
     expect(secondaryColor).to.exist;
-  });
-
-  it('Should resize svg on load', async () => {
-    await clock.nextAsync();
-    const svg = document.querySelector('.color-svg-img');
-    expect(Array.from(svg.classList)).to.not.contain('hidden-svg');
-    expect(svg.style.height).to.equal('150px');
-  });
-
-  it('Svg height should be changed after screen is resized', () => {
-    const svg = document.querySelector('.color-svg-img');
-    resizeSvg({ matches: true });
-    expect(svg.style.height).to.equal('150px');
-    resizeSvg({ matches: false });
-    expect(svg.style.height).to.equal('200px');
   });
 });

@@ -1667,7 +1667,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 
 .template-x.horizontal.mini .carousel-platform {
   padding: 32px;
-} 
+}
 
 .template-x.horizontal.fullwidth.holiday .carousel-container .carousel-fader-right {
   transform: translate3d(0, 0, 0);
@@ -2067,7 +2067,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   flex-basis: 100%;
 }
 
-.template-x .template .button-container a.button {
+.template-x .template .button-container a.button, .template-x .template a.con-button {
   max-width: 100%;
   margin: 6px 6px 0;
   box-sizing: border-box;
@@ -2077,14 +2077,14 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   text-overflow: ellipsis;
 }
 
-.template-x .template .button-container a.cta-link {
+.template-x .template .button-container a.cta-link, .template-x .template a.con-button {
   width: 100%;
   height: 100%;
   white-space: nowrap;
   font-weight: var(--body-font-weight);
 }
 
-.template-x.horizontal .template .button-container a.button {
+.template-x.horizontal .template .button-container a.button, .template-x.horizontal .template a.con-button {
   min-height: 16px;
 }
 
@@ -2473,7 +2473,7 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
   main.with-holiday-templates-banner {
     padding-top: 54px;
   }
-    
+
   .template-x.horizontal.holiday .toggle-bar {
     gap: 14px;
   }

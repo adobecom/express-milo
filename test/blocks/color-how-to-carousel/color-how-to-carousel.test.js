@@ -1,11 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const imports = await Promise.all([
-  import('../../../express/scripts/scripts.js'),
-  import('../../../express/blocks/color-how-to-carousel/color-how-to-carousel.js'),
-]);
-const { default: decorate } = imports[1];
+const [, { default: decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/color-how-to-carousel/color-how-to-carousel.js')]);
 
 const redBody = await readFile({ path: './mocks/body.html' });
 const blackBody = await readFile({ path: './mocks/body-dark.html' });

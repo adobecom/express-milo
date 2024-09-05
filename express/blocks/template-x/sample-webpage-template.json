@@ -1,0 +1,146 @@
+{
+  "id": "urn:aaid:sc:VA6C2:cd210180-70f1-5193-aca7-84eeb8a1bdd3",
+  "parentDirectoryId": "urn:aaid:sc:VA6C2:201252df-82cd-4397-90bd-87d18579b3fb",
+  "ancestorAssetIds": [
+    "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+    "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+    "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+    "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+    "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+    "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+    "urn:aaid:sc:VA6C2:9c5613dc-9f25-4aa9-87fa-db80e6123fd6",
+    "urn:aaid:sc:VA6C2:201252df-82cd-4397-90bd-87d18579b3fb"
+  ],
+  "path": "/content/assets/content/approved/ccx/webpage_template/ccx_content/extracurricular_activities",
+  "contentType": "application/vnd.adobe.hztemp.page+dcx",
+  "createDate": "2024-07-24T19:03:44.830Z",
+  "modifyDate": "2024-07-24T19:03:45.114Z",
+  "name": "extracurricular_activities",
+  "status": "approved",
+  "dc:title": {
+    "i-default": "Extracurricular activities"
+  },
+  "dc:description": {
+    "en-US": "Bright colors and clear fonts get webpages made with this template noticed. Change text, add your own images or video, and get exactly the look you want. Use this fun, informal template to promote a wide variety of events from school outings to parties."
+  },
+  "etags": "\"23b75d99a3554908ae1f8baf96be58b2\"",
+  "assetType": "Webpage_Template",
+  "task": {
+    "name": "event-microsite",
+    "size": {
+      "name": "500x500px"
+    }
+  },
+  "features": [
+    "restricted"
+  ],
+  "behaviors": [
+    "still"
+  ],
+  "topics": [
+    "education",
+    "education resource",
+    "educator resource",
+    "event",
+    "extracurricular",
+    "landing",
+    "rsvp",
+    "scholastic event",
+    "student activity",
+    "website"
+  ],
+  "availabilityDate": "2024-08-09T02:16:31.760Z",
+  "licensingCategory": "free",
+  "language": "en-US",
+  "applicableRegions": [
+    "ZZ"
+  ],
+  "extractedColors": [
+    {
+      "name": "light blue",
+      "coverage": 0.4445,
+      "mode": "RGB",
+      "value": {
+        "r": 131,
+        "g": 181,
+        "b": 213
+      }
+    },
+    {
+      "name": "off white",
+      "coverage": 0.198,
+      "mode": "RGB",
+      "value": {
+        "r": 231,
+        "g": 231,
+        "b": 231
+      }
+    },
+    {
+      "name": "royal blue",
+      "coverage": 0.1482,
+      "mode": "RGB",
+      "value": {
+        "r": 24,
+        "g": 76,
+        "b": 149
+      }
+    },
+    {
+      "name": "dark blue",
+      "coverage": 0.1529,
+      "mode": "RGB",
+      "value": {
+        "r": 17,
+        "g": 37,
+        "b": 85
+      }
+    },
+    {
+      "name": "black",
+      "coverage": 0.0564,
+      "mode": "RGB",
+      "value": {
+        "r": 2,
+        "g": 2,
+        "b": 5
+      }
+    }
+  ],
+  "attribution": {
+    "vendor": "Adobe Express",
+    "submittedBy": "61D11F476369A4AC0A495FBE@c0b827b66271908b495fe8.e"
+  },
+  "customLinks": {
+    "branchUrl": "https://adobesparkpost.app.link/Q3DIFvesULb"
+  },
+  "segments": [
+    "all"
+  ],
+  "_links": {
+    "http://ns.adobe.com/adobecloud/rel/rendition": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:cd210180-70f1-5193-aca7-84eeb8a1bdd3/rendition?assetType=WEBPAGE_TEMPLATE&etag=23b75d99a3554908ae1f8baf96be58b2{&page,size,type,fragment}",
+      "templated": true,
+      "mode": "id",
+      "name": "ACP"
+    },
+    "http://ns.adobe.com/adobecloud/rel/primary": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:cd210180-70f1-5193-aca7-84eeb8a1bdd3/primary?assetType=WEBPAGE_TEMPLATE&etag=23b75d99a3554908ae1f8baf96be58b2",
+      "templated": false,
+      "mode": "id",
+      "name": "ACP"
+    },
+    "http://ns.adobe.com/adobecloud/rel/manifest": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:cd210180-70f1-5193-aca7-84eeb8a1bdd3/manifest?assetType=WEBPAGE_TEMPLATE&etag=23b75d99a3554908ae1f8baf96be58b2",
+      "templated": false,
+      "mode": "id",
+      "name": "ACP"
+    },
+    "http://ns.adobe.com/adobecloud/rel/component": {
+      "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:cd210180-70f1-5193-aca7-84eeb8a1bdd3/component?assetType=WEBPAGE_TEMPLATE&etag=23b75d99a3554908ae1f8baf96be58b2{&revision,component_id}",
+      "templated": true,
+      "mode": "id",
+      "name": "ACP"
+    }
+  }
+}
