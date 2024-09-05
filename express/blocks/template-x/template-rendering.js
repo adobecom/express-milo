@@ -5,9 +5,9 @@ import { trackSearch, updateImpressionCache } from '../../template-x/template-se
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey } = imports[0];
+const { replaceKeyArray } = imports[0];
 const { createTag, getMetadata, getConfig } = imports[1];
-
+const [tagCopied, editThisTemplate, free] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free'], getConfig());
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
 }
@@ -41,11 +41,15 @@ function extractComponentLinkHref(template) {
 }
 
 function extractImageThumbnail(page) {
-  return page.rendition.image?.thumbnail;
+  return page?.rendition?.image?.thumbnail;
 }
 
 function getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page) {
   const thumbnail = extractImageThumbnail(page);
+  if (!thumbnail) {
+    // webpages
+    return renditionLinkHref.replace('{&page,size,type,fragment}', '');
+  }
   const {
     mediaType,
     componentId,
@@ -118,8 +122,7 @@ async function share(branchUrl, tooltip, timeoutId) {
   }, 2500);
 }
 
-async function renderShareWrapper(branchUrl) {
-  const tagCopied = await replaceKey('tag-copied', getConfig());
+function renderShareWrapper(branchUrl) {
   const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
   const shareIcon = getIconElementDeprecated('share-arrow');
@@ -131,9 +134,9 @@ async function renderShareWrapper(branchUrl) {
     tabindex: '-1',
   });
   let timeoutId = null;
-  shareIcon.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  shareIcon.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
     timeoutId = share(branchUrl, tooltip, timeoutId);
   });
 
@@ -151,8 +154,7 @@ async function renderShareWrapper(branchUrl) {
   return wrapper;
 }
 
-async function renderCTA(branchUrl) {
-  const editThisTemplate = await replaceKey('edit-this-template', getConfig());
+function renderCTA(branchUrl) {
   const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const btnEl = createTag('a', {
     href: branchUrl,
@@ -334,7 +336,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = await renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(branchUrl);
       mediaWrapper.append(shareWrapper);
     }
     renderedMedia.hover();
@@ -353,7 +355,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = await renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(branchUrl);
       mediaWrapper.append(shareWrapper);
       renderedMedia.hover();
     }
@@ -365,7 +367,7 @@ function renderMediaWrapper(template) {
   return { mediaWrapper, enterHandler, leaveHandler, focusHandler };
 }
 
-async function renderHoverWrapper(template) {
+function renderHoverWrapper(template) {
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
@@ -375,7 +377,7 @@ async function renderHoverWrapper(template) {
     focusHandler,
   } = renderMediaWrapper(template);
 
-  const cta = await renderCTA(template.customLinks.branchUrl);
+  const cta = renderCTA(template.customLinks.branchUrl);
   const ctaLink = renderCTALink(template.customLinks.branchUrl);
 
   ctaLink.append(mediaWrapper);
@@ -398,16 +400,24 @@ async function renderHoverWrapper(template) {
     trackSearch('select-template', BlockMediator.get('templateSearchSpecs')?.search_id);
   };
 
+  const ctaClickHandlerTouchDevice = (ev) => {
+    // If it is a mobile device with a touch screen, do not jump over to the Edit page,
+    // but allow the user to preview the template instead
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      ev.preventDefault();
+    }
+  };
+
   cta.addEventListener('click', ctaClickHandler, { passive: true });
   ctaLink.addEventListener('click', ctaClickHandler, { passive: true });
+  ctaLink.addEventListener('click', ctaClickHandlerTouchDevice);
   return btnContainer;
 }
 
-async function getStillWrapperIcons(template) {
+function getStillWrapperIcons(template) {
   let planIcon = null;
   if (template.licensingCategory === 'free') {
     planIcon = createTag('span', { class: 'free-tag' });
-    const free = await replaceKey('free', getConfig());
     planIcon.append(free === 'free' ? 'Free' : free);
   } else {
     planIcon = getIconElementDeprecated('premium');
@@ -428,7 +438,7 @@ async function getStillWrapperIcons(template) {
   return { planIcon, videoIcon };
 }
 
-async function renderStillWrapper(template) {
+function renderStillWrapper(template) {
   const stillWrapper = createTag('div', { class: 'still-wrapper' });
 
   const templateTitle = getTemplateTitle(template);
@@ -449,7 +459,7 @@ async function renderStillWrapper(template) {
   });
   imgWrapper.append(img);
 
-  const { planIcon, videoIcon } = await getStillWrapperIcons(template);
+  const { planIcon, videoIcon } = getStillWrapperIcons(template);
   // console.log('theOtherVideoIcon');
   // console.log(videoIcon);
   img.onload = (e) => {
@@ -465,10 +475,13 @@ async function renderStillWrapper(template) {
 
 export default async function renderTemplate(template) {
   const tmpltEl = createTag('div');
-  const stillWrapper = await renderStillWrapper(template);
-  tmpltEl.append(stillWrapper);
-  const hoverWrapper = await renderHoverWrapper(template);
-  tmpltEl.append(hoverWrapper);
+  if (template.assetType === 'Webpage_Template') {
+    // webpage_template has no pages
+    template.pages = [{}];
+  }
+
+  tmpltEl.append(renderStillWrapper(template));
+  tmpltEl.append(renderHoverWrapper(template));
 
   return tmpltEl;
 }
