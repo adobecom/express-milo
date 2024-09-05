@@ -5,9 +5,9 @@ import { trackSearch, updateImpressionCache } from '../../template-x/template-se
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey } = imports[0];
+const { replaceKeyArray } = imports[0];
 const { createTag, getMetadata, getConfig } = imports[1];
-
+const [tagCopied, editThisTemplate, free] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free'], getConfig());
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
 }
@@ -122,8 +122,8 @@ async function share(branchUrl, tooltip, timeoutId) {
   }, 2500);
 }
 
-function renderShareWrapper(branchUrl, placeholders) {
-  const text = placeholders['tag-copied'] ?? 'Copied to clipboard';
+function renderShareWrapper(branchUrl) {
+  const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
@@ -154,8 +154,8 @@ function renderShareWrapper(branchUrl, placeholders) {
   return wrapper;
 }
 
-function renderCTA(placeholders, branchUrl) {
-  const btnTitle = placeholders['edit-this-template'] ?? 'Edit this template';
+function renderCTA(branchUrl) {
+  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const btnEl = createTag('a', {
     href: branchUrl,
     title: btnTitle,
@@ -336,7 +336,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = await renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(branchUrl);
       mediaWrapper.append(shareWrapper);
     }
     renderedMedia.hover();
@@ -355,7 +355,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = await renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(branchUrl);
       mediaWrapper.append(shareWrapper);
       renderedMedia.hover();
     }
@@ -367,7 +367,7 @@ function renderMediaWrapper(template) {
   return { mediaWrapper, enterHandler, leaveHandler, focusHandler };
 }
 
-async function renderHoverWrapper(template) {
+function renderHoverWrapper(template) {
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
@@ -414,11 +414,10 @@ async function renderHoverWrapper(template) {
   return btnContainer;
 }
 
-async function getStillWrapperIcons(template) {
+function getStillWrapperIcons(template) {
   let planIcon = null;
   if (template.licensingCategory === 'free') {
     planIcon = createTag('span', { class: 'free-tag' });
-    const free = await replaceKey('free', getConfig());
     planIcon.append(free === 'free' ? 'Free' : free);
   } else {
     planIcon = getIconElementDeprecated('premium');
@@ -439,7 +438,7 @@ async function getStillWrapperIcons(template) {
   return { planIcon, videoIcon };
 }
 
-async function renderStillWrapper(template) {
+function renderStillWrapper(template) {
   const stillWrapper = createTag('div', { class: 'still-wrapper' });
 
   const templateTitle = getTemplateTitle(template);
@@ -460,7 +459,7 @@ async function renderStillWrapper(template) {
   });
   imgWrapper.append(img);
 
-  const { planIcon, videoIcon } = await getStillWrapperIcons(template);
+  const { planIcon, videoIcon } = getStillWrapperIcons(template);
   // console.log('theOtherVideoIcon');
   // console.log(videoIcon);
   img.onload = (e) => {
@@ -481,10 +480,8 @@ export default async function renderTemplate(template) {
     template.pages = [{}];
   }
 
-  const stillWrapper = await renderStillWrapper(template);
-  tmpltEl.append(stillWrapper);
-  const hoverWrapper = await renderHoverWrapper(template);
-  tmpltEl.append(hoverWrapper);
+  tmpltEl.append(renderStillWrapper(template));
+  tmpltEl.append(renderHoverWrapper(template));
 
   return tmpltEl;
 }
