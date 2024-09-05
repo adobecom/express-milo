@@ -16,7 +16,7 @@ main .section:has(.card) > div > h2:first-of-type {
 
 main .section:has(.card) .content {
   margin: auto;
-  max-width: 350px;
+  max-width: 375px;
   padding: 0;
 }
 
