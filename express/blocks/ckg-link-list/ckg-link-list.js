@@ -19,7 +19,6 @@ function addColorSampler(pill, colorHex, btn) {
 }
 
 export default async function decorate(block) {
-  console.log(block);
   block.style.visibility = 'hidden';
 
   const payloadContext = { urlPath: block.textContent.trim() || window.location.pathname };
