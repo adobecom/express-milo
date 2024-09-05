@@ -159,6 +159,16 @@ indices:
       - '/fr/express/learn/blog/**'
     target: /fr/express/query-index.xlsx
 
+  indonesia:
+    <<: *website
+    include:
+      - '/id_id/express/**'
+      - '/id_id/education/express/**'
+    exclude:
+      - '/id_id/express/learn/blog'
+      - '/id_id/express/learn/blog/**'
+    target: /id_id/express/query-index.xlsx
+
   italy:
     <<: *website
     include:

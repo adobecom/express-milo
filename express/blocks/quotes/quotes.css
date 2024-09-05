@@ -44,6 +44,18 @@
   flex-grow: 1;
 }
 
+.quotes .quote .author .author-content {
+  display: flex;
+  align-items: center;
+}
+
+.quotes .quote .author .summary {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .quotes .quote .content::before {
   content: "“";
   display: block;
@@ -60,6 +72,8 @@
 }
 
 .quotes .quote .author {
+  display: flex;
+  flex-wrap: nowrap;
   margin-top: 16px;
   align-items: center;
   align-self: baseline;

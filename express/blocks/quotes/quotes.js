@@ -12,16 +12,22 @@ export default function decorate($block) {
     if ($card.children.length > 1) {
       const $author = $card.children[1];
       $author.classList.add('author');
+      // Create a container for image and summary
+      const $authorContent = createTag('div', { class: 'author-content' });
+
       if ($author.querySelector('picture')) {
         const $authorImg = createTag('div', { class: 'image' });
         $authorImg.appendChild($author.querySelector('picture'));
-        $author.appendChild($authorImg);
+        $authorContent.appendChild($authorImg);
       }
+
       const $authorSummary = createTag('div', { class: 'summary' });
       Array.from($author.querySelectorAll('p'))
         .filter(($p) => !!$p.textContent.trim())
         .forEach(($p) => $authorSummary.appendChild($p));
-      $author.appendChild($authorSummary);
+      $authorContent.appendChild($authorSummary);
+      // Append the author content container to author
+      $author.appendChild($authorContent);
     }
     $card.firstElementChild.classList.add('content');
   });
