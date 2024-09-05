@@ -39,7 +39,7 @@ function decorateCardBorder(card, source) {
     card.appendChild(newHeader);
     return;
   }
-  const pattern = /\{\{(.*?)\}\}/g;
+  const pattern = /\(\((.*?)\)\)/g;
   const matches = Array.from(source.textContent?.matchAll(pattern));
   if (matches.length > 0) {
     const [, promoType] = matches[0];
