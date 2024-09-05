@@ -1,18 +1,14 @@
 import { expect } from '@esm-bundle/chai';
 import { readFile } from '@web/test-runner-commands';
 import sinon from 'sinon';
-import { setConfig } from '../../../../express/scripts/utils.js';
 
-setConfig({});
-const { default: decorate } = await import('../../../../express/blocks/ckg-link-list/ckg-link-list.js');
+const [, { default: decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/ckg-link-list/ckg-link-list.js')]);
 const html = await readFile({ path: './mocks/default.html' });
 
 function jsonOk(body) {
   const mockResponse = new window.Response(JSON.stringify(body), {
     status: 200,
-    headers: {
-      'Content-type': 'application/json',
-    },
+    headers: { 'Content-type': 'application/json' },
   });
 
   return Promise.resolve(mockResponse);
@@ -20,20 +16,12 @@ function jsonOk(body) {
 
 const MOCK_JSON = {
   experienceId: 'templates-browse-v1',
-  status: {
-    httpCode: 200,
-  },
+  status: { httpCode: 200 },
   queryResults: [
     {
       id: 'ccx-search-1',
-      status: {
-        httpCode: 200,
-      },
-      metadata: {
-        totalHits: 0,
-        start: 0,
-        limit: 0,
-      },
+      status: { httpCode: 200 },
+      metadata: { totalHits: 0, start: 0, limit: 0 },
       context: {
         application: {
           'metadata.color.hexCodes': {
