@@ -289,7 +289,7 @@ async function sanitizeMeta(meta) {
 
 // metadata -> dom blades
 async function autoUpdatePage(main) {
-  const wl = ['{{heading_placeholder}}', '{{type}}', '{{quantity}}'];
+  const wl = ['{{heading_placeholder}}', '{{type}}', '{{quantity}}', '{{prompt-text}}'];
   // FIXME: deprecate wl
   if (!main) return;
 

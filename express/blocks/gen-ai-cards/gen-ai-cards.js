@@ -147,6 +147,9 @@ async function decorateCards(block, { actions }) {
 
     const hasGenAIForm = promptTokenRegex.test(ctaLinks?.[0]?.href);
 
+    // console.log('CTA LINK::', ctaLinks?.[0]?.href);
+    // console.log('hasGenAIForm::', hasGenAIForm);
+
     if (ctaLinks.length > 0) {
       if (hasGenAIForm) {
         const genAIForm = buildGenAIForm(cta);
