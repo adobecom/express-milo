@@ -44,10 +44,12 @@ const CONFIG = {
     cn: { ietf: 'zh-CN', tk: 'qxw8hzm' },
     de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
     dk: { ietf: 'da-DK', tk: 'aaz7dvd.css' },
+    eg: { ietf: 'en-EG', tk: 'pps7abe.css' },
     es: { ietf: 'es-ES', tk: 'oln4yqj.css' },
     fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
     fr: { ietf: 'fr-FR', tk: 'vrk5vyv.css' },
     gb: { ietf: 'en-GB', tk: 'pps7abe.css' },
+    id_id: { ietf: 'id-ID', tk: 'cya6bri.css' },
     in: { ietf: 'en-IN', tk: 'pps7abe.css' },
     it: { ietf: 'it-IT', tk: 'bbf5pok.css' },
     jp: { ietf: 'ja-JP', tk: 'dvg6awq' },
@@ -55,12 +57,11 @@ const CONFIG = {
     nl: { ietf: 'nl-NL', tk: 'cya6bri.css' },
     no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
     se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
+    tr: { ietf: 'tr-TR', tk: 'ley8vds.css' },
     // eslint-disable-next-line max-len
     // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hant-TW
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
-    tr: { ietf: 'tr-TR', tk: 'ley8vds.css' },
-    eg: { ietf: 'en-EG', tk: 'pps7abe.css' },
   },
   entitlements: {
     '2a537e84-b35f-4158-8935-170c22b8ae87': 'express-entitled',
@@ -166,6 +167,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 }
 
 (async function loadPage() {
+  if (window.isTestEnv) return;
   const {
     loadArea,
     loadStyle,

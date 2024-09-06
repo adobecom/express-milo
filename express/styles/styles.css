@@ -689,10 +689,15 @@ main {
     padding-bottom: 40px;
   }
 
-  .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
-  .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
-    display: none;
-  }
+    /* floating-cta main CTA suppression */
+    body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"] .same-fcta {
+        display: block;
+    }
+
+    .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-fcta,
+    .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-fcta {
+        display: none;
+    }
 
   /* Store icons */
   img.icon-apple-store,
@@ -864,11 +869,11 @@ main {
       text-align: left;
     }
 
-    .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-as-floating-button-CTA,
-    .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-as-floating-button-CTA {
-      display: inline-block;
-    }
+  .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-fcta,
+  .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-fcta {
+    display: inline-block;
   }
+}
 
   @media (min-width: 1200px) {
     .button-container.free-plan-container {

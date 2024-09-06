@@ -44,7 +44,7 @@ const currencies = {
   my: 'MYR',
   nl: 'EUR',
   no: 'NOK',
-  nz: 'AUD',
+  nz: 'NZD',
   pe: 'PEN',
   ph: 'PHP',
   pl: 'EUR',
@@ -59,15 +59,15 @@ const currencies = {
   tw: 'TWD',
   us: 'USD',
   ve: 'USD',
-  za: 'USD',
-  ae: 'USD',
+  za: 'ZAR',
+  ae: 'AED',
   bh: 'BHD',
   eg: 'EGP',
   jo: 'JOD',
   kw: 'KWD',
   om: 'OMR',
-  qa: 'USD',
-  sa: 'SAR',
+  qa: 'QAR',
+  sa: 'USD',
   ua: 'USD',
   dz: 'USD',
   lb: 'LBP',
@@ -123,11 +123,14 @@ export async function formatPrice(price, currency) {
     EGP: 'LE',
     ARS: 'Ar$',
   };
-  const locale = ['USD', 'TWD'].includes(currency)
-    ? 'en-GB' // use en-GB for intl $ symbol formatting
-    : (getConfig().locales[await getCountry() || '']?.ietf ?? 'en-US');
+  let currencyLocale = 'en-GB'; // use en-GB for intl $ symbol formatting
+  if (!['USD', 'TWD'].includes(currency)) {
+    const country = await getCountry();
+    currencyLocale = Object.entries(getConfig().locales).find(([key]) => key.startsWith(country))?.[1]?.ietf ?? 'en-US';
+  }
   const currencyDisplay = getCurrencyDisplay(currency);
-  let formattedPrice = new Intl.NumberFormat(locale, {
+
+  let formattedPrice = new Intl.NumberFormat(currencyLocale, {
     style: 'currency',
     currency,
     currencyDisplay,
