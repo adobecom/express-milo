@@ -6,7 +6,7 @@ const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
   return pepDestinationMeta || BlockMediator.get('primaryCtaUrl')
-      || document.querySelector('a.button.xlarge.same-as-floating-button-CTA, a.primaryCTA, a.con-button.same-as-floating-button-CTA')?.href;
+      || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA, a.con-button.button-xxl.same-fcta, a.con-button.xxl-button.same-fcta')?.href;
 }
 
 function getSegmentsFromAlloyResponse(response) {
@@ -106,6 +106,8 @@ function isBranchLink(url) {
 // product entry prompt
 async function canPEP() {
   // TODO test this whole method
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('force-pep')) return true;
   if (document.body.dataset.device !== 'desktop') return false;
   const pepSegment = getMetadata('pep-segment');
   if (!pepSegment) return false;
