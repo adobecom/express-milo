@@ -1097,7 +1097,7 @@ header .feds-cta--primary:hover {
   border-color: var(--color-info-accent-hover);
 }
 
-body {
+body { /* stylelint-disable-line no-duplicate-selectors */
   --link-color: var(--color-info-accent);
   --link-hover-color: var(--color-info-accent-hover);
   --feds-color-link--hover--light: var(--color-info-accent-hover);
