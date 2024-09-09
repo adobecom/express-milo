@@ -109,9 +109,7 @@ function initGNavObserver(block) {
     const callback = (mutationList) => {
       for (const mutation of mutationList) {
         if (mutation.type === 'attributes') {
-          if (gNav.classList.contains('feds-header-wrapper--scrolled')
-            && !gNav.classList.contains('feds-header-wrapper--retracted')
-            && block.classList.contains('sticking')
+          if (gNav && block.classList.contains('sticking')
             && !block.classList.contains('hidden')) {
             block.classList.add('bumped-by-gnav');
           } else {
@@ -138,10 +136,10 @@ function initStickyBehavior(block, props) {
 
       if (sectionRect && sectionRect.bottom < 0) {
         block.classList.add('hidden');
-      } else if (blockRect.top < -45) {
+      } else if (blockRect.top < 0) {
         block.classList.remove('hidden');
         block.classList.add('sticking');
-      } else if (blockRect.top >= -45) {
+      } else if (blockRect.top >= 0) {
         block.classList.remove('sticking');
         block.classList.remove('hidden');
       }
