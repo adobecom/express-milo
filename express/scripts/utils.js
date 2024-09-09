@@ -459,6 +459,25 @@ export function buildAutoBlocks() {
   }
 }
 
+export function decorateSectionMetadata(section) {
+  const sectionMeta = section.querySelector('div.section-metadata');
+  if (sectionMeta) {
+    const meta = readBlockConfig(sectionMeta);
+    const keys = Object.keys(meta);
+    keys.forEach((key) => {
+      if (!['style', 'anchor', 'background'].includes(key)) {
+        section.dataset[key] = meta[key];
+      }
+    });
+    sectionMeta.remove();
+  }
+}
+
+function decorateSectionsMetadata(el, isDoc) {
+  const selector = isDoc ? 'body > main > div' : ':scope > div';
+  return [...el.querySelectorAll(selector)].map(decorateSectionMetadata);
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   removeIrrelevantSections(area);
@@ -476,4 +495,5 @@ export function decorateArea(area = document) {
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
+  decorateSectionsMetadata(area, area === document);
 }

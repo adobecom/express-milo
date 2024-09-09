@@ -47,13 +47,13 @@
 
 .toggle-bar.sticky.sticking > div:nth-of-type(2) {
     position: fixed;
-    top: 0;
+    top: calc(var(--global-height-nav));
     left: 50%;
     transform: translate(-50%, 0);
 }
 
 .toggle-bar.sticky.sticking.bumped-by-gnav > div:nth-of-type(2) {
-    top: 66px;
+    top: calc(var(--global-height-nav));
 }
 
 .toggle-bar.sticky.sticking.hidden > div:nth-of-type(2) {
