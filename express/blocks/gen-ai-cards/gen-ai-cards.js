@@ -3,7 +3,7 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
-const promptTokenRegex = /(%7B%7B|{{)prompt-text(%7D%7D|}})/;
+const promptTokenRegex = /(?:\{\{|%7B%7B)?prompt(?:-|\+|%20|\s)text(?:\}\}|%7D%7D)?/;
 
 export function decorateTextWithTag(textSource, options = {}) {
   const {
@@ -147,9 +147,6 @@ async function decorateCards(block, { actions }) {
 
     const hasGenAIForm = promptTokenRegex.test(ctaLinks?.[0]?.href);
 
-    // console.log('CTA LINK::', ctaLinks?.[0]?.href);
-    // console.log('hasGenAIForm::', hasGenAIForm);
-
     if (ctaLinks.length > 0) {
       if (hasGenAIForm) {
         const genAIForm = buildGenAIForm(cta);
@@ -215,6 +212,12 @@ function constructPayload(block) {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'gen-ai-cards');
+  const links = block.querySelectorAll(':scope a[href*="adobesparkpost"]');
+
+  if (links) {
+    const linksPopulated = new CustomEvent('linkspopulated', { detail: links });
+    document.dispatchEvent(linksPopulated);
+  }
 
   const payload = constructPayload(block);
   decorateHeading(block, payload);
