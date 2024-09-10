@@ -120,7 +120,6 @@ function initGNavObserver(block) {
     };
 
     const observer = new MutationObserver(callback);
-
     // Start observing the target node for configured mutations
     observer.observe(gNav, config);
   }
@@ -128,6 +127,8 @@ function initGNavObserver(block) {
 
 function initStickyBehavior(block, props) {
   const toggleBar = block.querySelector('div:nth-of-type(2)');
+  const gNav = document.querySelector('header.global-navigation');
+  const topValue = gNav ? 20 : -20;
 
   if (toggleBar) {
     document.addEventListener('scroll', () => {
@@ -136,12 +137,14 @@ function initStickyBehavior(block, props) {
 
       if (sectionRect && sectionRect.bottom < 0) {
         block.classList.add('hidden');
-      } else if (blockRect.top < 0) {
+      } else if (blockRect.top < topValue) {
         block.classList.remove('hidden');
         block.classList.add('sticking');
-      } else if (blockRect.top >= 0) {
+        if (gNav) block.classList.add('bumped-by-gnav');
+      } else if (blockRect.top >= topValue) {
         block.classList.remove('sticking');
         block.classList.remove('hidden');
+        block.classList.remove('bumped-by-gnav');
       }
     }, { passive: true });
   }
