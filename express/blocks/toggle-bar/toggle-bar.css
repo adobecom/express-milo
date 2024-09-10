@@ -47,7 +47,7 @@
 
 .toggle-bar.sticky.sticking > div:nth-of-type(2) {
     position: fixed;
-    top: calc(var(--global-height-nav));
+    top: 0;
     left: 50%;
     transform: translate(-50%, 0);
 }
