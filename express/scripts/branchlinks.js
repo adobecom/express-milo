@@ -56,6 +56,7 @@ export default async function trackBranchParameters(links) {
 
   const listBranchMetadataNodes = [...document.head.querySelectorAll('meta[name^=branch-]')];
   const listAdditionalBranchMetadataNodes = listBranchMetadataNodes.filter((e) => !setBasicBranchMetadata.has(e.name.replace(/^branch-/, '')));
+  const searchBranchLinks = await placeholderMod.replaceKey('search-branch-links', getConfig());
 
   const [
     searchTerm,
@@ -103,7 +104,6 @@ export default async function trackBranchParameters(links) {
     params.get('cgen'),
   ];
 
-  const promises = [];
   links.forEach((a) => {
     if (a.href && a.href.match(/adobesparkpost(-web)?\.app\.link/)) {
       a.rel = 'nofollow';
@@ -120,29 +120,26 @@ export default async function trackBranchParameters(links) {
       }
       const placement = getPlacement(a);
 
-      const prom = placeholderMod.replaceKey('search-branch-links', getConfig()).then((searchBranchLink) => {
-        const isSearchBranchLink = searchBranchLink?.replace(/\s/g, '').split(',').includes(`${btnUrl.origin}${btnUrl.pathname}`);
-        if (isSearchBranchLink) {
-          setParams('category', category || 'templates');
-          setParams('taskID', taskID);
-          setParams('assetCollection', assetCollection);
-          setParams('height', canvasHeight);
-          setParams('width', canvasWidth);
-          setParams('unit', canvasUnit);
-          setParams('sceneline', sceneline);
+      const isSearchBranchLink = searchBranchLinks?.replace(/\s/g, '').split(',').includes(`${btnUrl.origin}${btnUrl.pathname}`);
+      if (isSearchBranchLink) {
+        setParams('category', category || 'templates');
+        setParams('taskID', taskID);
+        setParams('assetCollection', assetCollection);
+        setParams('height', canvasHeight);
+        setParams('width', canvasWidth);
+        setParams('unit', canvasUnit);
+        setParams('sceneline', sceneline);
 
-          if (searchCategory) {
-            setParams('searchCategory', searchCategory);
-          } else if (searchTerm) {
-            setParams('q', searchTerm);
-          }
-          if (loadPrintAddon) setParams('loadPrintAddon', loadPrintAddon);
-          setParams('tab', tab);
-          setParams('action', action);
-          setParams('prompt', prompt);
+        if (searchCategory) {
+          setParams('searchCategory', searchCategory);
+        } else if (searchTerm) {
+          setParams('q', searchTerm);
         }
-      });
-      promises.push(prom);
+        if (loadPrintAddon) setParams('loadPrintAddon', loadPrintAddon);
+        setParams('tab', tab);
+        setParams('action', action);
+        setParams('prompt', prompt);
+      }
 
       for (const { name, content } of listAdditionalBranchMetadataNodes) {
         const paramName = toCamelCase(name.replace(/^branch-/, ''));
@@ -179,5 +176,4 @@ export default async function trackBranchParameters(links) {
       a.href = decodeURIComponent(btnUrl.toString());
     }
   });
-  await Promise.all(promises);
 }
