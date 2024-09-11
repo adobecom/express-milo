@@ -101,34 +101,10 @@ function syncWithStoredIntent(block) {
   }
 }
 
-function initGNavObserver(block) {
-  const gNav = document.querySelector('header.global-navigation');
-  if (gNav) {
-    const config = { attributes: true, childList: false, subtree: false };
-
-    const callback = (mutationList) => {
-      for (const mutation of mutationList) {
-        if (mutation.type === 'attributes') {
-          if (gNav && block.classList.contains('sticking')
-            && !block.classList.contains('hidden')) {
-            block.classList.add('bumped-by-gnav');
-          } else {
-            block.classList.remove('bumped-by-gnav');
-          }
-        }
-      }
-    };
-
-    const observer = new MutationObserver(callback);
-    // Start observing the target node for configured mutations
-    observer.observe(gNav, config);
-  }
-}
-
 function initStickyBehavior(block, props) {
   const toggleBar = block.querySelector('div:nth-of-type(2)');
   const gNav = document.querySelector('header.global-navigation');
-  const topValue = gNav ? 20 : -20;
+  const topValue = gNav ? 20 : -45;
 
   if (toggleBar) {
     document.addEventListener('scroll', () => {
@@ -148,10 +124,6 @@ function initStickyBehavior(block, props) {
       }
     }, { passive: true });
   }
-
-  window.addEventListener('feds.events.experience.loaded', () => {
-    initGNavObserver(block);
-  });
 }
 
 export default async function decorate(block) {
