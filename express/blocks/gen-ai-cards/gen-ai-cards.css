@@ -1,0 +1,213 @@
+.section .gen-ai-cards-wrapper {
+  max-width: none;
+}
+
+.gen-ai-cards {
+  padding: 0 28px;
+  max-width: 1440px;
+  margin: auto;
+}
+
+.gen-ai-cards .gen-ai-cards-heading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: auto auto 32px;
+}
+
+.gen-ai-cards .gen-ai-cards-heading-section h2 {
+  text-align: left;
+  max-width: 800px;
+  margin-bottom: 8px;
+  font-size: var(--heading-font-size-m);
+}
+.gen-ai-cards .gen-ai-cards-heading-section p {
+  text-align: left;
+  margin: 0;
+  max-width: 800px;
+}
+
+.gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
+  font-size: var(--body-font-size-s);
+  line-height: 22px;
+  color: var(--body-color);
+  text-decoration: underline;
+}
+
+.gen-ai-cards .carousel-container .carousel-platform {
+  align-items: unset;
+}
+
+.gen-ai-cards .card {
+  position: relative;
+  height: 347px;
+  width: 406px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 8px;
+  background-color: #f4f4fd;
+}
+
+.gen-ai-cards .carousel-left-trigger ~ .card {
+  margin-left: 0;
+}
+
+.gen-ai-cards .card .text-wrapper {
+  text-align: left;
+  margin: 24px 24px 16px 24px;
+}
+
+.gen-ai-cards .card .text-wrapper p {
+  margin: 0;
+}
+
+.gen-ai-cards .card .text-wrapper p.cta-card-title {
+  font-size: var(--body-font-size-m);
+  line-height: var(--body-font-size-m);
+  font-weight: 700;
+}
+
+.gen-ai-cards .card .text-wrapper .tag {
+  font-size: 10px;
+  padding: 0 4px;
+  margin-left: 6px;
+  font-weight: 700;
+  background-color: #DEDEF9;
+  color: var(--color-info-accent);
+  border-radius: 4px;
+}
+
+.gen-ai-cards .card .text-wrapper p.cta-card-desc {
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-font-size-l);
+}
+
+.gen-ai-cards .card .media-wrapper {
+  position: absolute;
+  border-radius: 16px;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: 374px;
+  height: 246px;
+  overflow: hidden;
+}
+
+.gen-ai-cards .card .media-wrapper picture img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gen-ai-cards .card .gen-ai-input-form {
+  position: absolute;
+  width: 352px;
+  height: 55px;
+  padding: 8px;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-sizing: border-box;
+  border: 2px solid var(--color-info-accent);
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, calc(-100% - 30px));
+  display: flex;
+  justify-content: space-between;
+}
+
+.gen-ai-cards .card .gen-ai-input-form input {
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: none;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  resize: none;
+  width: 230px;
+}
+
+.gen-ai-cards .gen-ai-input:active,
+.gen-ai-cards .gen-ai-input:focus-visible {
+  border: none;
+  outline: none;
+}
+
+.gen-ai-cards .card .gen-ai-input-form input::placeholder {
+  font-style: italic;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+}
+
+.gen-ai-cards .card .gen-ai-input-form input:placeholder-shown {
+  text-overflow: ellipsis;
+}
+
+.gen-ai-cards .card .gen-ai-input-form button:disabled {
+  pointer-events: none;
+}
+
+.gen-ai-cards .card .gen-ai-input-form .gen-ai-submit {
+  color: var(--color-white);
+  background-color: var(--color-info-accent);
+  border-style: none;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-font-size-s);
+  font-weight: 700;
+  padding: 10px 1.5em 10px 1.5em;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+
+.gen-ai-cards .card.gen-ai-action .gen-ai-input-form .gen-ai-submit {
+  left: 56px;
+  bottom: 24px;
+}
+
+.gen-ai-cards .gen-ai-input-form .gen-ai-submit:not(:disabled):hover {
+  background-color: var(--color-info-accent-hover);
+}
+
+.gen-ai-cards .card .gen-ai-input-form .gen-ai-submit:disabled {
+  background-color: var(--color-gray-200);
+  color: var(--color-gray-500);
+}
+
+.gen-ai-cards .card .links-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  left: 50%;
+  bottom: 40px;
+  transform: translate(-50%, 0);
+}
+
+.gen-ai-cards .card .links-wrapper a {
+  margin: 4px auto;
+  width: max-content;
+  color: var(--body-color);
+  border: 0;
+}
+
+.gen-ai-cards .card .links-wrapper a:hover {
+  /* 90% white to align with products */
+  background-color: #e6e6e6;
+}
+
+.gen-ai-cards .card .links-wrapper a:not(:hover) {
+  background-color: var(--color-white);
+}
+
+@media (min-width: 900px) {
+  .gen-ai-cards .gen-ai-cards-heading-section {
+      flex-direction: row;
+      align-items: flex-end;
+  }
+
+  .gen-ai-cards .carousel-container .carousel-fader-left,
+  .gen-ai-cards .carousel-container .carousel-fader-right{
+      background: unset;
+  }
+}
