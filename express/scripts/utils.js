@@ -459,27 +459,6 @@ export function buildAutoBlocks() {
   }
 }
 
-// function fragmentBlocksToLinksOld(area) {
-//   area.querySelectorAll('div.fragment').forEach((blk) => {
-//     let fragLink = blk.querySelector('a');
-//     if (!fragLink) {
-//       try {
-//         const firstDiv = blk.querySelector('div');
-//         const textContent = firstDiv?.textContent?.trim();
-//         const fragURL = new URL(textContent, window.location.origin);
-//         firstDiv.textContent = '';
-//         fragLink = createTag('a', { href: fragURL.href });
-//       } catch (error) {
-//         blk.remove();
-//         window.lana.log(`Failed creating a url from an old fragment block: ${error.message}`);
-//       }
-//     }
-//     if (fragLink) {
-//       blk.parentElement.replaceChild(fragLink, blk);
-//     }
-//   });
-// }
-
 function fragmentBlocksToLinks(area) {
   area.querySelectorAll('div.fragment').forEach((blk) => {
     const fragLink = blk.querySelector('a');
