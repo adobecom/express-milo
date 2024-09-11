@@ -177,6 +177,17 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     createTag,
   } = await import(`${miloLibs}/utils/utils.js`);
 
+  // TODO remove metadata after we go live
+  const gnav = createTag('meta', { name: 'gnav-source', content: '/express/localnav-express' });
+  document.head.append(gnav);
+
+  const footer = createTag('meta', { name: 'footer', content: 'global-footer' });
+  document.head.append(footer);
+
+  const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
+  document.head.append(footerSrc);
+  // end TODO remove metadata after we go live
+
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (

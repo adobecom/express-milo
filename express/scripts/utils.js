@@ -478,6 +478,17 @@ function decorateSectionsMetadata(el, isDoc) {
   return [...el.querySelectorAll(selector)].map(decorateSectionMetadata);
 }
 
+function fragmentBlocksToLinks(area) {
+  area.querySelectorAll('div.fragment').forEach((blk) => {
+    const fragLink = blk.querySelector('a');
+    if (fragLink) {
+      const p = document.createElement('p');
+      p.append(fragLink);
+      blk.replaceWith(p);
+    }
+  });
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   removeIrrelevantSections(area);
@@ -492,6 +503,7 @@ export function decorateArea(area = document) {
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
+  fragmentBlocksToLinks(area);
   // transpile conflicting blocks
   transpileMarquee(area);
   overrideMiloColumns(area);
