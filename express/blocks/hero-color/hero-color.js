@@ -106,9 +106,7 @@ function resizeSvgOnMediaQueryChange() {
 }
 
 function decorateCTA(block) {
-  const primaryCta = block.querySelector('.text-container a:last-child');
-  primaryCta?.classList.add('button', 'accent', 'primaryCta', 'same-fcta');
-  primaryCta?.parentElement?.classList.add('button-container');
+  const primaryCta = block.querySelector('.text-container a.button');
   if (!primaryCta) return;
 
   primaryCta.classList.add('primaryCta');
