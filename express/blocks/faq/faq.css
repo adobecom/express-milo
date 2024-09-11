@@ -8,7 +8,9 @@
 
 .section:has(.faq) > div {
   margin: auto;
-  padding: 0 24px;
+  padding-top: 0;
+  padding-right: 24px;
+  padding-left: 24px;
   max-width: 375px;
 }
 
@@ -23,6 +25,7 @@
 
 .faq {
   text-align: left;
+  padding-bottom: 80px;
 }
 
 .faq .faq-accordion {
@@ -71,7 +74,9 @@
 
 @media (min-width: 900px) {
   .section:has(.faq) > div {
-    padding: 0 56px;
+    padding-top: 0;
+    padding-right: 56px;
+    padding-left: 56px;
     max-width: 830px;
   }
 
