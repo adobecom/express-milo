@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, readBlockConfig } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { sendEventToAnalytics, textToName } from '../../scripts/instrument.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
@@ -126,10 +126,30 @@ function initStickyBehavior(block, props) {
   }
 }
 
+function decorateSectionMetadata(section) {
+  const metadataDiv = section.querySelector(':scope > .section-metadata');
+
+  if (metadataDiv) {
+    const meta = readBlockConfig(metadataDiv);
+    const keys = Object.keys(meta);
+    keys.forEach((key) => {
+      if (!['style', 'anchor', 'background'].includes(key)) {
+        section.setAttribute(`data-${key}`, meta[key]);
+      }
+    });
+  }
+}
+
+function decorteSectionsMetadata() {
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(decorateSectionMetadata);
+}
+
 export default async function decorate(block) {
   await fixIcons(block);
   addTempWrapperDeprecated(block, 'toggle-bar');
 
+  decorteSectionsMetadata();
   const props = { activeTab: '', activeSection: null };
   const enclosingMain = block.closest('main');
   if (enclosingMain) {
