@@ -19,14 +19,13 @@ import {
   embedVimeo,
   isVideoLink,
 } from '../../scripts/utils/embed-videos.js';
-import BlockMediator from '../../scripts/block-mediator.min.js';
 import {
   appendLinkText,
   getExpressLandingPageType,
   sendEventToAnalytics,
 } from '../../scripts/instrument.js';
 
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
@@ -264,7 +263,7 @@ export default async function decorate(block) {
       if (aTag && (aTag.classList.contains('button') || aTag.classList.contains('con-button'))) {
         if (block.className.includes('fullsize')) {
           aTag.classList.add('xlarge');
-          BlockMediator.set('primaryCtaUrl', aTag.href);
+          getConfig().express.primaryCtaUrl = aTag.href;
           aTag.classList.add('primaryCTA');
         } else if (aTag.classList.contains('light')) {
           aTag.classList.replace('accent', 'primary');

@@ -10,15 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections } from './utils.js';
+import { setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections, listenMiloEvents } from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
 
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
 const LIBS = '/libs';
-
-window.express = {};
 
 // Add any config options.
 const CONFIG = {
@@ -68,9 +66,8 @@ const CONFIG = {
     'eb0dcb78-3e56-4b10-89f9-51831f2cc37f': 'express-pep',
   },
   links: 'on',
+  express: {},
 };
-
-const urlParams = new URLSearchParams(window.location.search);
 
 /*
  * ------------------------------------------------------------
@@ -172,6 +169,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     loadArea,
     loadStyle,
     setConfig,
+    getConfig,
     getMetadata,
     loadLana,
     createTag,
@@ -186,6 +184,9 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 
   const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
   document.head.append(footerSrc);
+
+  const googleLoginRedirect = createTag('meta', { name: 'google-login', content: 'desktop' });
+  document.head.append(googleLoginRedirect);
   // end TODO remove metadata after we go live
 
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
@@ -222,12 +223,9 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
-  // listenMiloEvents();
+  listenMiloEvents(getConfig);
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
-  if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
-    import('./instrument.js').then((mod) => { mod.default(); });
-  }
 
   const { default: replaceContent } = await import('./utils/content-replace.js');
   await replaceContent(document.querySelector('main'));

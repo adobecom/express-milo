@@ -1,9 +1,8 @@
 import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
-import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 function changeTextColorAccordingToBg(
   primaryColor,
@@ -110,7 +109,7 @@ function decorateCTA(block) {
   if (!primaryCta) return;
 
   primaryCta.classList.add('primaryCta');
-  BlockMediator.set('primaryCtaUrl', primaryCta.href);
+  getConfig().express.primaryCtaUrl = primaryCta.href;
 }
 
 export default function decorate(block) {
