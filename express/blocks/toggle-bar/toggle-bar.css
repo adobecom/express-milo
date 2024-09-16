@@ -4,6 +4,10 @@
     max-width: max-content;
 }
 
+.section[data-toggle]{
+    padding-top: 60px;
+}
+
 .toggle-bar {
     display: none;
 }
