@@ -268,49 +268,27 @@ export function lazyLoadLottiePlayer($block = null) {
   }
 }
 
-// TODO we might be able to remove this before migrating
-async function loadAEMGnav() {
-  const miloLibs = getLibs();
-  const { loadScript } = await import(`${miloLibs}/utils/utils.js`);
-  const header = document.querySelector('header');
-
-  if (header) {
-    header.addEventListener('click', (event) => {
-      if (event.target.id === 'feds-topnav') {
-        const root = window.location.href.split('/express/')[0];
-        window.location.href = `${root}/express/`;
-      }
-    });
-    header.innerHTML = '<div id="feds-header"></div>';
-  }
-  const footer = document.querySelector('footer');
-  if (footer) {
-    footer.innerHTML = `
-      <div id="feds-footer"></div>
-    `;
-    footer.setAttribute('data-status', 'loading');
-  }
-
-  const usp = new URLSearchParams(window.location.search);
-  const gnav = usp.get('gnav') || getMetadata('gnav');
-
-  const gnavUrl = '/express/scripts/gnav.js';
-  if (!(gnav === 'off' || document.querySelector(`head script[src="${gnavUrl}"]`))) {
-    loadScript(gnavUrl, 'module');
+function getRedirectUri(getConfig) {
+  const primaryCtaUrl = getConfig().express.primaryCtaUrl
+      || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
+  if (primaryCtaUrl) {
+    const googleLoginRedirect = createTag('meta', { name: 'google-login-redirect', content: primaryCtaUrl });
+    document.head.append(googleLoginRedirect);
   }
 }
 
-// TODO we might be able to remove this before migrating
-export function listenMiloEvents() {
+export function listenMiloEvents(getConfig) {
   const lcpLoadedHandler = async () => {
-    await loadAEMGnav();
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
+      import('./instrument.js').then((mod) => { mod.default(); });
+    }
   };
-  const postSectionLoadingHandler = async () => {
-    const footer = document.querySelector('footer');
-    delete footer.dataset.status;
+  const delayedHandler = async () => {
+    getRedirectUri(getConfig);
   };
-  window.addEventListener('milo:LCP:loaded', lcpLoadedHandler);
-  window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
+  document.addEventListener('milo:postlcp', lcpLoadedHandler);
+  document.addEventListener('milo:delayed', delayedHandler);
 }
 
 function transpileMarquee(area) {
