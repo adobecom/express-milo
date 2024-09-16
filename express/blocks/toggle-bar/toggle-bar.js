@@ -148,8 +148,8 @@ function decorteSectionsMetadata() {
 export default async function decorate(block) {
   await fixIcons(block);
   addTempWrapperDeprecated(block, 'toggle-bar');
-
   decorteSectionsMetadata();
+
   const props = { activeTab: '', activeSection: null };
   const enclosingMain = block.closest('main');
   if (enclosingMain) {
