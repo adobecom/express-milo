@@ -1,11 +1,10 @@
-import { getLibs } from './utils.js';
-import BlockMediator from './block-mediator.min.js';
+import { expressObj, getLibs } from './utils.js';
 
 const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
-  return pepDestinationMeta || BlockMediator.get('primaryCtaUrl')
+  return pepDestinationMeta || expressObj.primaryCtaUrl
       || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA, a.con-button.button-xxl.same-fcta, a.con-button.xxl-button.same-fcta')?.href;
 }
 
