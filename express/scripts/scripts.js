@@ -15,7 +15,6 @@ import {
   buildAutoBlocks,
   decorateArea,
   removeIrrelevantSections,
-  listenMiloEvents,
   getRedirectUri,
 } from './utils.js';
 
