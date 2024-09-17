@@ -23,6 +23,7 @@ const STYLES = ['/express/styles/styles.css'];
 
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
 const LIBS = '/libs';
+const miloLibs = setLibs(LIBS);
 
 // Add any config options.
 const CONFIG = {
@@ -72,7 +73,7 @@ const CONFIG = {
     'eb0dcb78-3e56-4b10-89f9-51831f2cc37f': 'express-pep',
   },
   links: 'on',
-  googleYoloURLCallback: getRedirectUri,
+  googleLoginURLCallback: getRedirectUri,
 };
 
 /*
@@ -80,8 +81,6 @@ const CONFIG = {
  * Edit below at your own risk
  * ------------------------------------------------------------
  */
-
-const miloLibs = setLibs(LIBS);
 
 document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
 removeIrrelevantSections(document);

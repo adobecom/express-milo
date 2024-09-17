@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -36,6 +35,7 @@ export const [setLibs, getLibs] = (() => {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+export const expressObj = {};
 
 const cachedMetadata = [];
 const getMetadata = (name, doc = document) => {
@@ -46,6 +46,11 @@ const getMetadata = (name, doc = document) => {
 export function getCachedMetadata(name) {
   if (cachedMetadata[name] === undefined) cachedMetadata[name] = getMetadata(name);
   return cachedMetadata[name];
+}
+
+export function getRedirectUri() {
+  return expressObj.primaryCtaUrl
+      || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
 }
 
 export const yieldToMain = () => new Promise((resolve) => { setTimeout(resolve, 0); });
@@ -266,11 +271,6 @@ export function lazyLoadLottiePlayer($block = null) {
       });
     }
   }
-}
-
-export function getRedirectUri(getConfig) {
-  return getConfig().express.primaryCtaUrl
-      || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
 }
 
 function transpileMarquee(area) {
