@@ -268,27 +268,9 @@ export function lazyLoadLottiePlayer($block = null) {
   }
 }
 
-function getRedirectUri(getConfig) {
-  const primaryCtaUrl = getConfig().express.primaryCtaUrl
+export function getRedirectUri(getConfig) {
+  return getConfig().express.primaryCtaUrl
       || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
-  if (primaryCtaUrl) {
-    const googleLoginRedirect = createTag('meta', { name: 'google-login-redirect', content: primaryCtaUrl });
-    document.head.append(googleLoginRedirect);
-  }
-}
-
-export function listenMiloEvents(getConfig) {
-  const lcpLoadedHandler = async () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
-      import('./instrument.js').then((mod) => { mod.default(); });
-    }
-  };
-  const delayedHandler = async () => {
-    getRedirectUri(getConfig);
-  };
-  document.addEventListener('milo:postlcp', lcpLoadedHandler);
-  document.addEventListener('milo:delayed', delayedHandler);
 }
 
 function transpileMarquee(area) {

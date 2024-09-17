@@ -10,7 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections, listenMiloEvents } from './utils.js';
+import {
+  setLibs,
+  buildAutoBlocks,
+  decorateArea,
+  removeIrrelevantSections,
+  listenMiloEvents,
+  getRedirectUri,
+} from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
@@ -66,7 +73,7 @@ const CONFIG = {
     'eb0dcb78-3e56-4b10-89f9-51831f2cc37f': 'express-pep',
   },
   links: 'on',
-  express: {},
+  googleYoloURLCallback: getRedirectUri,
 };
 
 /*
@@ -226,7 +233,10 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   listenMiloEvents(getConfig);
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
-
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
+    import('./instrument.js').then((mod) => { mod.default(); });
+  }
   const { default: replaceContent } = await import('./utils/content-replace.js');
   await replaceContent(document.querySelector('main'));
 
