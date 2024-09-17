@@ -229,7 +229,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
-  listenMiloEvents(getConfig);
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   const urlParams = new URLSearchParams(window.location.search);
