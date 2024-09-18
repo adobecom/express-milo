@@ -174,7 +174,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     loadArea,
     loadStyle,
     setConfig,
-    getConfig,
     getMetadata,
     loadLana,
     createTag,
