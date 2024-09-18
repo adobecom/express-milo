@@ -1,6 +1,7 @@
-import { expressObj, getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -109,7 +110,7 @@ function decorateCTA(block) {
   if (!primaryCta) return;
 
   primaryCta.classList.add('primaryCta');
-  expressObj.primaryCtaUrl = primaryCta.href;
+  BlockMediator.set('primaryCtaUrl', primaryCta.href);
 }
 
 export default function decorate(block) {
