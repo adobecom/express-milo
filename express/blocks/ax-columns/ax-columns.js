@@ -1,4 +1,4 @@
-import { getLibs, toClassName, expressObj } from '../../scripts/utils.js';
+import { getLibs, toClassName } from '../../scripts/utils.js';
 
 import {
   addAnimationToggle,
@@ -19,6 +19,7 @@ import {
   embedVimeo,
   isVideoLink,
 } from '../../scripts/utils/embed-videos.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 import {
   appendLinkText,
   getExpressLandingPageType,
@@ -263,7 +264,7 @@ export default async function decorate(block) {
       if (aTag && (aTag.classList.contains('button') || aTag.classList.contains('con-button'))) {
         if (block.className.includes('fullsize')) {
           aTag.classList.add('xlarge');
-          expressObj.primaryCtaUrl = aTag.href;
+          BlockMediator.set('primaryCtaUrl', aTag.href);
           aTag.classList.add('primaryCTA');
         } else if (aTag.classList.contains('light')) {
           aTag.classList.replace('accent', 'primary');

@@ -48,8 +48,9 @@ export function getCachedMetadata(name) {
   return cachedMetadata[name];
 }
 
-export function getRedirectUri() {
-  return expressObj.primaryCtaUrl
+export async function getRedirectUri() {
+  const BlockMediator = await import('./block-mediator.min.js');
+  return BlockMediator.get('primaryCtaUrl')
       || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
 }
 

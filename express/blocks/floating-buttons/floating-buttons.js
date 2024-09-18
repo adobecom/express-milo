@@ -1,4 +1,4 @@
-import { expressObj } from '../../scripts/utils.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 
 function initScrollWatcher(block) {
@@ -19,7 +19,7 @@ function initScrollWatcher(block) {
   const footer = document.querySelector('footer');
   if (footer) hideOnIntersect.observe(footer);
 
-  const primaryCta = expressObj.primaryCtaUrl;
+  const primaryCta = BlockMediator.get('primaryCtaUrl');
   if (!primaryCta) return;
 
   const primaryUrl = new URL(primaryCta);
