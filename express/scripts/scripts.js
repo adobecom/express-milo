@@ -205,8 +205,35 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 
   if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
     // TODO only add this back once we're consuming the milo version of gnav
-    // const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
-    // document.head.append(meta);
+    const path = window.location.pathname;
+    const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
+    document.head.append(meta);
+
+    const bt = createTag('meta', { name: 'breadcrumbs-from-url', content: 'on' });
+    document.head.append(bt);
+
+    let hiddenEntries = '';
+    const disallowList = [];
+    if (path.includes('/express/feature/')) {
+      disallowList.push(...['jpg-to-png']);
+      hiddenEntries += 'ai,image,video,design';
+      if (path.includes('/resize/youtube/')) { hiddenEntries += ',youtube'; }
+    } else if (path.includes('/express/create/')) {
+      hiddenEntries += 'ai,print';
+      disallowList.push(...['announcement', 'book', 'frame', 'letter', 'program', 'story', 'thumbnail', 'company', 'worksheet']);
+      if (path.includes('/marketing/plan/')) { hiddenEntries += 'marketing,plan'; }
+      if (path.includes('/ai/audio/')) { hiddenEntries += ',audio'; }
+      if (path.includes('/ai/image/')) { hiddenEntries += ',image'; }
+      if (path.includes('/ai/music/')) { hiddenEntries += ',music'; }
+      if (path.includes('/ai/video/')) { hiddenEntries += ',video'; }
+    }
+    disallowList.forEach((entry) => {
+      hiddenEntries += `,${entry}`;
+    });
+
+    const bhe = createTag('meta', { name: 'breadcrumbs-hidden-entries', content: hiddenEntries });
+    document.head.append(bhe);
+
     // TODO add with gnav task
     // eslint-disable-next-line max-len
     // import('./gnav.js').then((gnav) => gnav.buildBreadCrumbArray(getConfig().locale.prefix.replaceAll('/', ''))).then((breadcrumbs) => {
