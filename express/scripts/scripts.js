@@ -215,7 +215,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     let hiddenEntries = '';
     const disallowList = [];
     if (path.includes('/express/feature/')) {
-      disallowList.push(...['jpg-to-png']);
+      disallowList.push(...['jpg to png']);
       hiddenEntries += 'ai,image,video,design';
       if (path.includes('/resize/youtube/')) { hiddenEntries += ',youtube'; }
     } else if (path.includes('/express/create/')) {
