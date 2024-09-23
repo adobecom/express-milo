@@ -29,7 +29,6 @@ const typeMap = {
 export async function buildFreePlanWidget(config) {
   const { typeKey, checkmarks } = config;
   const widget = createTag('div', { class: 'free-plan-widget' });
-
   const promises = [];
   for (let i = 0; i < typeMap[typeKey].length; i += 1) {
     promises.push(replaceKey(typeMap[typeKey][i], getConfig()));

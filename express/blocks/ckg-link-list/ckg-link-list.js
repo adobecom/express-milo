@@ -19,6 +19,10 @@ function addColorSampler(pill, colorHex, btn) {
 }
 
 export default async function decorate(block) {
+  const headerButton = document.querySelector('.hero-color-wrapper .text-container p:last-child');
+  headerButton.classList.add('button-container');
+  headerButton.querySelector('a').classList.add('button', 'accent', 'primaryCta', 'same-fcta');
+
   block.style.visibility = 'hidden';
 
   const payloadContext = { urlPath: block.textContent.trim() || window.location.pathname };
@@ -26,6 +30,8 @@ export default async function decorate(block) {
   if (!ckgResult) return;
   const pills = ckgResult?.queryResults?.[0]?.facets?.[0]?.buckets;
   const hexCodes = ckgResult?.queryResults?.[0].context?.application?.['metadata.color.hexCodes'];
+
+  // const headerButton = document.querySelector('.hero-color-wrapper');
 
   if (!pills || !pills.length) return;
 
