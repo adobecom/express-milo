@@ -31,8 +31,6 @@ export default async function decorate(block) {
   const pills = ckgResult?.queryResults?.[0]?.facets?.[0]?.buckets;
   const hexCodes = ckgResult?.queryResults?.[0].context?.application?.['metadata.color.hexCodes'];
 
-  // const headerButton = document.querySelector('.hero-color-wrapper');
-
   if (!pills || !pills.length) return;
 
   pills.forEach((pill) => {
