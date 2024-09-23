@@ -2501,7 +2501,7 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     display: unset;
     background: transparent;
     position: absolute;
-    left: 0;
+    left: 28px;
     top: 120px;
     height: calc(100% - 64px);
     max-height: unset;
