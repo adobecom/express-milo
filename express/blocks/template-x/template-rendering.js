@@ -460,8 +460,6 @@ function renderStillWrapper(template) {
   imgWrapper.append(img);
 
   const { planIcon, videoIcon } = getStillWrapperIcons(template);
-  // console.log('theOtherVideoIcon');
-  // console.log(videoIcon);
   img.onload = (e) => {
     if (e.eventPhase >= Event.AT_TARGET) {
       imgWrapper.append(planIcon);
