@@ -1,5 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
@@ -67,6 +67,12 @@ function decorateColors(block) {
 
   changeTextColorAccordingToBg(primaryColor, block);
 
+  if (block.classList.contains('dark')) {
+    const button = block.querySelector('a.button');
+    button.classList.remove('accent');
+    button.classList.add(['primary', 'dark']);
+  }
+
   return { secondaryColor };
 }
 
@@ -115,6 +121,7 @@ function decorateCTA(block) {
 
 export default function decorate(block) {
   addTempWrapperDeprecated(block, 'hero-color');
+  decorateButtonsDeprecated(block);
 
   const svgContainer = createTag('div', { class: 'svg-container' });
   block.append(svgContainer);
