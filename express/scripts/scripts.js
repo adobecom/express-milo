@@ -205,6 +205,12 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
     document.head.append(budouxExcludeSelector);
   }
+
+  if (getMetadata('sheet-powered') === 'Y') {
+    const { default: replaceContent } = await import('./utils/content-replace.js');
+    await replaceContent(document.querySelector('main'));
+  }
+
   // Decorate the page with site specific needs.
   decorateArea();
 
@@ -233,8 +239,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
-  const { default: replaceContent } = await import('./utils/content-replace.js');
-  await replaceContent(document.querySelector('main'));
 
   await loadArea();
   import('./express-delayed.js').then((mod) => {
