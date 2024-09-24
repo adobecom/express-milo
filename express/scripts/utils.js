@@ -9,7 +9,6 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 /**
  * The decision engine for where to get Milo's libs from.
  */
@@ -36,6 +35,7 @@ export const [setLibs, getLibs] = (() => {
  * Note: This file should have no self-invoking functions.
  * ------------------------------------------------------------
  */
+export const expressObj = {};
 
 const cachedMetadata = [];
 const getMetadata = (name, doc = document) => {
@@ -46,6 +46,12 @@ const getMetadata = (name, doc = document) => {
 export function getCachedMetadata(name) {
   if (cachedMetadata[name] === undefined) cachedMetadata[name] = getMetadata(name);
   return cachedMetadata[name];
+}
+
+export async function getRedirectUri() {
+  const BlockMediator = await import('./block-mediator.min.js');
+  return BlockMediator.get('primaryCtaUrl')
+      || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
 }
 
 export const yieldToMain = () => new Promise((resolve) => { setTimeout(resolve, 0); });
@@ -266,51 +272,6 @@ export function lazyLoadLottiePlayer($block = null) {
       });
     }
   }
-}
-
-// TODO we might be able to remove this before migrating
-async function loadAEMGnav() {
-  const miloLibs = getLibs();
-  const { loadScript } = await import(`${miloLibs}/utils/utils.js`);
-  const header = document.querySelector('header');
-
-  if (header) {
-    header.addEventListener('click', (event) => {
-      if (event.target.id === 'feds-topnav') {
-        const root = window.location.href.split('/express/')[0];
-        window.location.href = `${root}/express/`;
-      }
-    });
-    header.innerHTML = '<div id="feds-header"></div>';
-  }
-  const footer = document.querySelector('footer');
-  if (footer) {
-    footer.innerHTML = `
-      <div id="feds-footer"></div>
-    `;
-    footer.setAttribute('data-status', 'loading');
-  }
-
-  const usp = new URLSearchParams(window.location.search);
-  const gnav = usp.get('gnav') || getMetadata('gnav');
-
-  const gnavUrl = '/express/scripts/gnav.js';
-  if (!(gnav === 'off' || document.querySelector(`head script[src="${gnavUrl}"]`))) {
-    loadScript(gnavUrl, 'module');
-  }
-}
-
-// TODO we might be able to remove this before migrating
-export function listenMiloEvents() {
-  const lcpLoadedHandler = async () => {
-    await loadAEMGnav();
-  };
-  const postSectionLoadingHandler = async () => {
-    const footer = document.querySelector('footer');
-    delete footer.dataset.status;
-  };
-  window.addEventListener('milo:LCP:loaded', lcpLoadedHandler);
-  window.addEventListener('milo:postSection:loading', postSectionLoadingHandler);
 }
 
 function transpileMarquee(area) {
