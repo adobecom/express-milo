@@ -287,9 +287,9 @@ if (!window.hlx || window.hlx.gnav) {
   await loadIMS();
   loadFEDS();
   setTimeout(() => {
-    import('./google-yolo.js').then((mod) => {
-      mod.default();
-    });
+    // import('./google-yolo.js').then((mod) => {
+    //   mod.default();
+    // });
   }, 4000);
 }
 /* Core Web Vitals RUM collection */
