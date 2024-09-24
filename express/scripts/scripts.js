@@ -18,7 +18,7 @@ import {
   getRedirectUri,
 } from './utils.js';
 
-// Add project-wide style path here..
+// Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
 
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
