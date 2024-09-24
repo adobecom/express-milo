@@ -108,7 +108,7 @@ async function getCrumbsForSEOPage(templatesUrl, allTemplatesMetadata, placehold
 export default async function getBreadcrumbs() {
   // for backward compatibility
   // TODO: remove this check after all content are updated
-  if (getMetadata('sheet-powered') !== 'Y' || !document.querySelector('.search-marquee')) {
+  if (getMetadata('sheet-powered') !== 'Y' && !document.querySelector('.search-marquee')) {
     return null;
   }
   const { origin, pathname } = window.location;
