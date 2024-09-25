@@ -2,6 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { getDataWithContext } from '../../scripts/utils/browse-api-controller.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import { titleCase } from '../../scripts/utils/string.js';
+import {decorateButtonsDeprecated} from "../../scripts/utils/decorate.js";
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -19,9 +20,7 @@ function addColorSampler(pill, colorHex, btn) {
 }
 
 export default async function decorate(block) {
-  const headerButton = document.querySelector('.hero-color-wrapper .text-container p:last-child');
-  headerButton.classList.add('button-container');
-  headerButton.querySelector('a').classList.add('button', 'accent', 'primaryCta', 'same-fcta');
+  decorateButtonsDeprecated(block);
 
   block.style.visibility = 'hidden';
 
