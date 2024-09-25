@@ -431,6 +431,18 @@ function fragmentBlocksToLinks(area) {
   });
 }
 
+const blocksToClean = [
+  { name: 'pricing-cards', selector: '.pricing-cards', placeholders: ['{{gradient-promo}}'] },
+];
+
+function cleanupBrackets(area) {
+  const pattern = /\{\{(.*?)\}\}/g;
+  for (const block of blocksToClean) {
+    const el = area.querySelector(block.selector);
+    if (el?.outerHTML) el.outerHTML = el.outerHTML.replace(pattern, '(($1))');
+  }
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   removeIrrelevantSections(area);
@@ -445,6 +457,7 @@ export function decorateArea(area = document) {
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
+  cleanupBrackets(area);
   fragmentBlocksToLinks(area);
   // transpile conflicting blocks
   transpileMarquee(area);
