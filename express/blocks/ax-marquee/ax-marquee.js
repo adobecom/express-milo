@@ -502,8 +502,9 @@ async function handleOptions(div, typeHint, block) {
 }
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'ax-marquee');
-  decorateButtonsDeprecated(block);
   handlePrice(block);
+  decorateButtonsDeprecated(block);
+
   const possibleBreakpoints = breakpointConfig.map((bp) => bp.typeHint);
   const possibleOptions = ['shadow', 'background'];
   const animations = {};
@@ -539,9 +540,7 @@ export default async function decorate(block) {
 
   const phoneNumberTags = [...block.querySelectorAll(':scope a')].filter((a) => a.textContent.includes('((business-sales-numbers))'));
   if (phoneNumberTags.length) {
-    const { formatSalesPhoneNumber } = await import(
-      '../../scripts/utils/location-utils.js'
-    );
+    const { formatSalesPhoneNumber } = await import('../../scripts/utils/location-utils.js');
     await formatSalesPhoneNumber(phoneNumberTags);
   }
 

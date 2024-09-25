@@ -334,6 +334,8 @@ export function decorateArea(area = document) {
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
+  area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
+
   fragmentBlocksToLinks(area);
   renameConflictingBlocks(area);
 }
