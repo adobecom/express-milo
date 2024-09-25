@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { getDataWithContext } from '../../scripts/utils/browse-api-controller.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import { titleCase } from '../../scripts/utils/string.js';
-import {decorateButtonsDeprecated} from "../../scripts/utils/decorate.js";
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
