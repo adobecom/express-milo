@@ -31,12 +31,16 @@ export async function getCountry(ignoreCookie = false) {
   countryCode = sessionStorage.getItem('visitorCountry');
   if (countryCode) return countryCode;
 
-  const resp = await fetch('https://geo2.adobe.com/json/');
-  if (resp.ok) {
-    const { country } = await resp.json();
-    const normalized = normCountry(country);
-    sessionStorage.setItem('visitorCountry', normalized);
-    return normalized;
+  try {
+    const resp = await fetch('https://geo2.adobe.com/json/');
+    if (resp.ok) {
+      const { country } = await resp.json();
+      const normalized = normCountry(country);
+      sessionStorage.setItem('visitorCountry', normalized);
+      return normalized;
+    }
+  } catch (e) {
+    window.lana.log('could not fet geo2 data from geo2 service', e);
   }
 
   const configCountry = getConfig().locale.region;
