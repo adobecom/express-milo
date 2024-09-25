@@ -31,13 +31,6 @@ export async function getCountry(ignoreCookie = false) {
   countryCode = sessionStorage.getItem('visitorCountry');
   if (countryCode) return countryCode;
 
-  const fedsUserGeo = window.feds?.data?.location?.country;
-  if (fedsUserGeo) {
-    const normalized = normCountry(fedsUserGeo);
-    sessionStorage.setItem('visitorCountry', normalized);
-    return normalized;
-  }
-
   const resp = await fetch('https://geo2.adobe.com/json/');
   if (resp.ok) {
     const { country } = await resp.json();
