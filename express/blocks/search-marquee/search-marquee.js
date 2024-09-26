@@ -11,6 +11,8 @@ const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js
 const { replaceKey } = imports[0];
 const { createTag, getConfig, getMetadata } = imports[1];
 
+const config = getConfig();
+const { prefix } = getConfig().locale;
 function handlelize(str) {
   return str.normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Remove accents
@@ -108,7 +110,6 @@ function initSearchFunction(block) {
   })).sort((a, b) => b[0].length - a[0].length);
 
   const redirectSearch = async () => {
-    const config = getConfig();
     const taskMap = await replaceKey('task-name-mapping', config) || {};
     const taskXMap = await replaceKey('x-task-name-mapping', config) || {};
     const format = getMetadata('placeholder-format');
@@ -118,9 +119,8 @@ function initSearchFunction(block) {
       content: '',
     };
     let searchInput = searchBar.value?.toLowerCase() || getMetadata('topics');
-
-    const tasksFoundInInput = findTask(taskMap);
-    const tasksXFoundInInput = findTask(taskXMap);
+    const tasksFoundInInput = findTask(JSON.parse(taskMap));
+    const tasksXFoundInInput = findTask(JSON.parse(taskXMap));
 
     if (tasksFoundInInput.length > 0) {
       searchInput = trimInput(tasksFoundInInput, searchInput);
@@ -131,7 +131,6 @@ function initSearchFunction(block) {
       searchInput = trimInput(tasksXFoundInInput, searchInput);
       [[currentTasks.content]] = tasksXFoundInInput;
     }
-    const { prefix } = getConfig().locale;
     const topicUrl = searchInput ? `/${searchInput}` : '';
     const taskUrl = `/${handlelize(currentTasks.xCore.toLowerCase())}`;
     const taskXUrl = `/${handlelize(currentTasks.content.toLowerCase())}`;
@@ -257,7 +256,6 @@ function initSearchFunction(block) {
 }
 
 async function decorateSearchFunctions(block) {
-  const config = getConfig();
   const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
   const searchForm = createTag('form', { class: 'search-form' });
   const searchBar = createTag('input', {
@@ -300,7 +298,6 @@ function decorateBackground(block) {
 }
 
 async function buildSearchDropdown(block) {
-  const config = getConfig();
   const searchBarWrapper = block.querySelector('.search-bar-wrapper');
   if (searchBarWrapper) {
     const dropdownContainer = createTag('div', { class: 'search-dropdown-container hidden' });
@@ -329,7 +326,6 @@ async function buildSearchDropdown(block) {
       trendsContainer.append(fromScratchLink);
       linkDiv.remove();
     }
-
     if (trendsTitle) {
       const trendsTitleEl = createTag('p', { class: 'dropdown-title' });
       trendsTitleEl.textContent = trendsTitle;
@@ -391,6 +387,7 @@ export default async function decorate(block) {
   }
   await decorateSearchFunctions(block);
   await buildSearchDropdown(block);
+
   initSearchFunction(block);
   decorateLinkList(block);
 

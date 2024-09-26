@@ -10,15 +10,20 @@
  * governing permissions and limitations under the License.
  */
 
-import { setLibs, buildAutoBlocks, decorateArea, removeIrrelevantSections } from './utils.js';
+import {
+  setLibs,
+  buildAutoBlocks,
+  decorateArea,
+  removeIrrelevantSections,
+  getRedirectUri,
+} from './utils.js';
 
 // Add project-wide style path here.
 const STYLES = ['/express/styles/styles.css'];
 
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
 const LIBS = '/libs';
-
-window.express = {};
+const miloLibs = setLibs(LIBS);
 
 // Add any config options.
 const CONFIG = {
@@ -68,17 +73,14 @@ const CONFIG = {
     'eb0dcb78-3e56-4b10-89f9-51831f2cc37f': 'express-pep',
   },
   links: 'on',
+  googleLoginURLCallback: getRedirectUri,
 };
-
-const urlParams = new URLSearchParams(window.location.search);
 
 /*
  * ------------------------------------------------------------
  * Edit below at your own risk
  * ------------------------------------------------------------
  */
-
-const miloLibs = setLibs(LIBS);
 
 document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
 removeIrrelevantSections(document);
@@ -186,6 +188,9 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
 
   const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
   document.head.append(footerSrc);
+
+  const googleLoginRedirect = createTag('meta', { name: 'google-login', content: 'desktop' });
+  document.head.append(googleLoginRedirect);
   // end TODO remove metadata after we go live
 
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
@@ -200,6 +205,12 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
     document.head.append(budouxExcludeSelector);
   }
+
+  if (getMetadata('sheet-powered') === 'Y') {
+    const { default: replaceContent } = await import('./utils/content-replace.js');
+    await replaceContent(document.querySelector('main'));
+  }
+
   // Decorate the page with site specific needs.
   decorateArea();
 
@@ -222,15 +233,12 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
-  // listenMiloEvents();
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
+  const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
-
-  const { default: replaceContent } = await import('./utils/content-replace.js');
-  await replaceContent(document.querySelector('main'));
 
   await loadArea();
   import('./express-delayed.js').then((mod) => {
