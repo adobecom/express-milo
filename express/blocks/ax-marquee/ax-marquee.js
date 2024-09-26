@@ -12,7 +12,6 @@ import { displayVideoModal, isVideoLink } from '../../scripts/widgets/video.js';
 const imports = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
 const { getMetadata, createTag, getConfig } = imports[0];
 
-
 const DEFAULT_BREAKPOINT = {
   typeHint: 'default',
   minWidth: 0,
