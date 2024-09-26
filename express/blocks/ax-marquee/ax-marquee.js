@@ -533,16 +533,19 @@ export default async function decorate(block) {
   }
 
   const button = block.querySelector('.button');
+  const promises = [];
   if (button) {
     const { addFreePlanWidget } = await import('../../scripts/widgets/free-plan.js');
-    await addFreePlanWidget(button.parentElement);
+    promises.push(addFreePlanWidget(button.parentElement));
   }
 
   const phoneNumberTags = [...block.querySelectorAll(':scope a')].filter((a) => a.textContent.includes('((business-sales-numbers))'));
   if (phoneNumberTags.length) {
     const { formatSalesPhoneNumber } = await import('../../scripts/utils/location-utils.js');
-    await formatSalesPhoneNumber(phoneNumberTags);
+    promises.push(formatSalesPhoneNumber(phoneNumberTags));
   }
+
+  await Promise.all(promises);
 
   if (getConfig().locale?.region === 'jp') {
     addHeaderSizing(block);
