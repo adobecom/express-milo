@@ -44,15 +44,16 @@ function handleHeading(headingRow, headingCols) {
     }
     decorateButtonsDeprecated(col, 'button-l');
     const buttonsWrapper = createTag('div', { class: 'buttons-wrapper' });
-    const buttons = col.querySelectorAll('.button');
+    const buttons = col.querySelectorAll('.button, .con-button');
 
     buttons.forEach((btn) => {
       if (btn.classList.contains('con-button', 'blue')) {
-        btn.classList.add('primary');
+        btn.classList.add('primary', 'button');
         btn.parentNode.remove();
       }
       formatDynamicCartLink(btn);
       const btnWrapper = btn.closest('p');
+      btnWrapper.classList.add('button-container');
       buttonsWrapper.append(btnWrapper);
     });
     col.append(buttonsWrapper);
