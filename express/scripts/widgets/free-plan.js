@@ -52,7 +52,7 @@ export async function buildFreePlanWidget(config) {
 }
 
 export async function addFreePlanWidget(elem) {
-  const freePlanMeta = getMetadata('show-free-plan').toLowerCase();
+  const freePlanMeta = getMetadata('show-free-plan')?.toLowerCase();
 
   if (!freePlanMeta || ['no', 'false', 'n', 'off'].includes(freePlanMeta)) return;
   let widget;

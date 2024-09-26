@@ -544,7 +544,7 @@ export default async function decorate(block) {
     await formatSalesPhoneNumber(phoneNumberTags);
   }
 
-  if (getConfig().locale.region === 'jp') {
+  if (getConfig().locale?.region === 'jp') {
     addHeaderSizing(block);
   }
   block.classList.add('appear');
