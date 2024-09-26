@@ -32,7 +32,10 @@
 /* links stay links by default in cells */
 .pricing-table .row:not(.row-heading) .col a.button,
 .pricing-table .row:not(.row-heading) .col a.button:hover,
-.pricing-table .row:not(.row-heading) .col a.button:active {
+.pricing-table .row:not(.row-heading) .col a.button:active,
+.pricing-table .row:not(.row-heading) .col a.con-button,
+.pricing-table .row:not(.row-heading) .col a.con-button:hover,
+.pricing-table .row:not(.row-heading) .col a.con-button:active {
   text-decoration: underline;
   background-color: unset;
   color: unset;
@@ -373,7 +376,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   width: 100%;
   margin: 0;
 }
-.pricing-table .row.row-heading .col .buttons-wrapper .button-container .button {
+.pricing-table .row.row-heading .col .buttons-wrapper .button-container .button,
+.pricing-table .row.row-heading .col .buttons-wrapper .button-container .con-button {
   margin: 0;
 }
 .pricing-table .row.row-heading .col .icon {
