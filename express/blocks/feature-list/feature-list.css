@@ -1,0 +1,32 @@
+main .section .feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+    margin-top: 56px;
+}
+
+
+main .section .feature-list img {
+    height: 48px;
+}
+
+main .section .feature-list > div {
+    width: 200px;
+    padding: 20px;
+}
+
+main .section .feature-list h3 {
+    font-size: 26px;
+    line-height: 30px;
+}
+
+main .section .feature-list h4 {
+    font-size: 22px;
+    line-height: 26px;
+    margin-top: 20px;
+}
+
+main .section .feature-list p {
+    margin-top: 20px;
+}
