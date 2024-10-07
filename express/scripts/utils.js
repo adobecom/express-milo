@@ -190,13 +190,12 @@ export function removeIrrelevantSections(area) {
   }
 }
 
-function overrideMiloColumns(area) {
+function renameConflictingBlocks(area) {
   const replaceColumnBlock = (section) => {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
       if (column.classList[0] !== 'columns') return;
-      column.classList.remove('columns');
-      column.className = `ax-columns ${column.className}`;
+      column.classList.replace('columns', 'ax-columns');
     });
   };
 
@@ -207,9 +206,24 @@ function overrideMiloColumns(area) {
 
       const config = readBlockConfig(tableOfContent);
       if (config.levels === undefined) return;
+      tableOfContent.classList.replace('table-of-contents', 'ax-table-of-contents');
+    });
+  };
 
-      tableOfContent.classList.remove('table-of-contents');
-      tableOfContent.className = `ax-table-of-contents ${tableOfContent.className}`;
+  const replaceMarqueeBlock = (section) => {
+    const marquees = section.querySelectorAll('div.marquee');
+    marquees.forEach((marquee) => {
+      const firstRow = marquee.querySelector(':scope > div:first-of-type');
+      const isExpressMarquee = firstRow.children.length > 1
+        && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
+      if (isExpressMarquee) {
+        marquee.classList.replace('marquee', 'ax-marquee');
+        const links = marquee.querySelectorAll(':scope a');
+        links.forEach((link) => {
+          link.textContent = link.textContent.replace('{{business-sales-numbers}}', '((business-sales-numbers))');
+          link.textContent = link.textContent.replace('{{pricing}}', '((pricing))');
+        });
+      }
     });
   };
 
@@ -217,6 +231,7 @@ function overrideMiloColumns(area) {
   area.querySelectorAll('main > div').forEach((section) => {
     replaceColumnBlock(section);
     replaceTableOfContentBlock(section);
+    replaceMarqueeBlock(section);
   });
 }
 
@@ -274,132 +289,6 @@ export function lazyLoadLottiePlayer($block = null) {
   }
 }
 
-function transpileMarquee(area) {
-  const handleSubCTAText = (oldContainer, newContainer) => {
-    const elAfterBtn = oldContainer.nextElementSibling;
-    if (!elAfterBtn || elAfterBtn?.tagName !== 'BLOCKQUOTE') return;
-
-    const subText = elAfterBtn.querySelector('p');
-
-    if (subText) {
-      const subTextEl = createTag('span', { class: 'cta-sub-text' }, subText.innerHTML);
-      newContainer.append(subTextEl);
-    }
-    elAfterBtn.remove();
-  };
-
-  const needsTranspile = (block) => {
-    const firstRow = block.querySelector(':scope > div:first-of-type');
-    return firstRow.children.length > 1 && ['default', 'mobile', 'desktop', 'hd'].includes(firstRow.querySelector(':scope > div')?.textContent?.trim().toLowerCase());
-  };
-
-  const isVideoLink = (url) => {
-    if (!url) return null;
-    return url.includes('youtube.com/watch')
-      || url.includes('youtu.be/')
-      || url.includes('vimeo')
-      || /.*\/media_.*(mp4|webm|m3u8)$/.test(new URL(url).pathname);
-  };
-
-  const transpile = (block) => {
-    const assetArea = createTag('div');
-
-    block.classList.add('transpiled', 'xxl-button');
-
-    if (block.classList.contains('short')) {
-      block.classList.remove('short');
-      block.classList.add('small');
-    }
-
-    if (!block.classList.contains('dark')) {
-      block.classList.add('light');
-    }
-
-    const rows = block.querySelectorAll(':scope > div');
-
-    if (rows.length) {
-      rows.forEach((r, i, arr) => {
-        if (i < arr.length - 1) {
-          r.querySelector(':scope > div:first-of-type')?.remove();
-
-          if (document.body.dataset.device === 'mobile') {
-            const valCol = r.querySelector(':scope > div:last-of-type');
-            assetArea.innerHTML = valCol.innerHTML;
-            if (block.classList.contains('dark')) valCol.innerHTML = '#000000';
-            if (block.classList.contains('light')) valCol.innerHTML = '#ffffff00';
-          }
-
-          if (i > 0) {
-            r.remove();
-          }
-        }
-
-        if (i === arr.length - 1) {
-          const aTags = r.querySelectorAll('p > a');
-          const btnContainers = [];
-          const elsToAppend = [];
-          const actionArea = createTag('p', { class: 'action-area' });
-
-          aTags.forEach((a) => {
-            if (!btnContainers.includes(a.parentElement)) {
-              btnContainers.push(a.parentElement);
-            }
-
-            if (isVideoLink(a.href) && !a.querySelector('span.icon.icon-play')) {
-              const playIcon = createTag('span', { class: 'icon icon-play' });
-              a.prepend(playIcon);
-            }
-            a.textContent = `${a.textContent}`;
-          });
-
-          const isInlineButtons = btnContainers.length === 1;
-
-          aTags.forEach((a) => {
-            const buttonContainer = a.parentElement;
-
-            if (buttonContainer?.childNodes.length === 1) {
-              const buttonWrapper = createTag('span');
-              buttonWrapper.append(a);
-              handleSubCTAText(buttonContainer, buttonWrapper);
-              buttonContainer.remove();
-
-              elsToAppend.push(buttonWrapper);
-            }
-          });
-
-          elsToAppend.forEach((e, index) => {
-            actionArea.append(e);
-            const link = e.querySelector('a');
-
-            if (!link) return;
-            if (index === 0) {
-              const strong = createTag('strong');
-              e.prepend(strong);
-              strong.append(link);
-            }
-            if (index === 1) {
-              if (!isInlineButtons) {
-                const em = createTag('em');
-                e.prepend(em);
-                em.append(link);
-              }
-            }
-          });
-
-          const lastPInFirstDiv = r.querySelector(':scope > div > p:last-of-type');
-          lastPInFirstDiv?.after(actionArea);
-          r.append(assetArea);
-        }
-      });
-    }
-  };
-
-  const marquees = [...area.querySelectorAll('div.marquee')].filter((m) => m.classList[0] === 'marquee');
-  marquees.forEach((block) => {
-    if (needsTranspile(block)) transpile(block);
-  });
-}
-
 export function buildAutoBlocks() {
   if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
     const lastDiv = document.querySelector('main > div:last-of-type');
@@ -445,8 +334,8 @@ export function decorateArea(area = document) {
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
+  area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
+
   fragmentBlocksToLinks(area);
-  // transpile conflicting blocks
-  transpileMarquee(area);
-  overrideMiloColumns(area);
+  renameConflictingBlocks(area);
 }
