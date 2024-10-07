@@ -19,7 +19,7 @@
   margin-top: 0px;
 }
 
-.blog .section:not(:has(.faq), :has(.blog-posts)) > div:first-child:not(.banner) {
+.blog .section:not(:has(.faq), :has(.blog-posts)) > div:first-child:not(.banner, .sticky-promo-bar){
   padding-top: 60px;
 }
 
@@ -191,6 +191,8 @@
 
   .blog main div.sticky-promo-bar {
     text-align: center;
+    padding: 0;
+    max-width: 830px;
   }
 
 @media (min-width: 600px) {

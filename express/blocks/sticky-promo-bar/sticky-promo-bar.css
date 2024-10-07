@@ -1,0 +1,110 @@
+main .sticky-promo-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateY(calc(100% + 24px));
+    background-color: var(--color-info-accent);
+    color: white;
+    padding: 12px 36px 12px 12px;
+    font-weight: 900;
+    z-index: 10;
+    max-width: 500px;
+    margin: auto;
+    transition: transform 0.4s;
+}
+
+main .sticky-promo-bar.shown {
+    transform: translateY(0);
+}
+
+main .sticky-promo-bar.clone {
+    position: static;
+    transform: translateY(0);
+}
+
+main .sticky-promo-bar.rounded {
+    border-radius: 10px;
+    font-weight: 300;
+    padding: 7px 16px 9px;
+    margin: 12px auto;
+    box-sizing: border-box;
+    max-width: 360px;
+}
+
+body[data-device="mobile"] main .sticky-promo-bar.loadinbody {
+    margin: 12px auto;
+    box-sizing: border-box;
+    max-width: 360px;
+}
+
+main .sticky-promo-bar:not(.rounded) a:any-link {
+    color: white;
+    border: 2px solid white;
+    border-radius: 20px;
+    padding: 3px 10px 5px 10px;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 400;
+    font-size: 0.9em;
+    white-space: nowrap;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+main .sticky-promo-bar.rounded a:any-link {
+    color: white;
+    text-decoration: underline;
+    font-style: initial;
+}
+
+main .sticky-promo-bar.rounded p {
+    display: inline;
+    font-size: var(--body-font-size-m);
+    margin: 0;
+    line-height: normal;
+}
+
+main .sticky-promo-bar .close {
+    color: white;
+    position: absolute;
+    margin-top: 0;
+    margin-left: 0;
+    width: 21px;
+    height: 21px;
+    top: 18px;
+    right: 20px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+main .sticky-promo-bar.rounded .close {
+    display: none;
+}
+
+main .sticky-promo-bar .close:before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    width: 21px;
+    height: 1px;
+    background-color: currentColor;
+    transform: rotate(-45deg);
+    left: 0;
+}
+
+main .sticky-promo-bar .close:after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    width: 21px;
+    height: 1px;
+    background-color: currentColor;
+    transform: rotate(45deg);
+    left: 0;
+}
+
+:lang(ja) body[data-device="mobile"] .sticky-promo-bar {
+    font-size: var(--body-font-size-s);
+}
