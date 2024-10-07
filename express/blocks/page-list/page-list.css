@@ -1,0 +1,30 @@
+main .section:has(.page-list) > div {
+  max-width: 1000px;
+}
+
+main .section:has(.page-list) h2 {
+  margin-top: 80px;
+  text-align: left;
+}
+
+main .page-list.appear {
+  opacity: 1;
+}
+
+main .page-list {
+  text-align: left;
+  columns: 235px;
+  margin: auto;
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+
+main .page-list p {
+  margin: 0;
+}
+
+main .page-list p a:any-link {
+  font-weight: var(--body-font-weight);
+  color: var(--body-color);
+}
+
