@@ -13,11 +13,10 @@ import {
   splitAndAddVariantsWithDash,
 } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
-import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';
+import { displayVideoModal, hideVideoModal, isVideoLink } from '../../scripts/widgets/video.js';
 import {
   embedYoutube,
   embedVimeo,
-  isVideoLink,
 } from '../../scripts/utils/embed-videos.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import {
@@ -303,7 +302,7 @@ export default async function decorate(block) {
     });
   });
   addAnimationToggle(block);
-  addHeaderSizing(null, block, 'columns-heading');
+  addHeaderSizing(block, 'columns-heading');
 
   // decorate offer
   if (block.classList.contains('offer')) {
