@@ -31,19 +31,16 @@ export async function getCountry(ignoreCookie = false) {
   countryCode = sessionStorage.getItem('visitorCountry');
   if (countryCode) return countryCode;
 
-  const fedsUserGeo = window.feds?.data?.location?.country;
-  if (fedsUserGeo) {
-    const normalized = normCountry(fedsUserGeo);
-    sessionStorage.setItem('visitorCountry', normalized);
-    return normalized;
-  }
-
-  const resp = await fetch('https://geo2.adobe.com/json/');
-  if (resp.ok) {
-    const { country } = await resp.json();
-    const normalized = normCountry(country);
-    sessionStorage.setItem('visitorCountry', normalized);
-    return normalized;
+  try {
+    const resp = await fetch('https://geo2.adobe.com/json/');
+    if (resp.ok) {
+      const { country } = await resp.json();
+      const normalized = normCountry(country);
+      sessionStorage.setItem('visitorCountry', normalized);
+      return normalized;
+    }
+  } catch (e) {
+    window.lana.log('could not fet geo2 data from geo2 service', e);
   }
 
   const configCountry = getConfig().locale.region;
@@ -100,8 +97,8 @@ function getJapaneseTextCharacterCount(text) {
  * Default is "heading".
  * @param {string} selector CSS selector to select the target heading tags. Default is "h1, h2".
  */
-export function addHeaderSizing(passedHeadings, $block, classPrefix = 'heading', selector = 'h1, h2') {
-  const headings = passedHeadings || $block.querySelectorAll(selector);
+export function addHeaderSizing($block, classPrefix = 'heading', selector = 'h1, h2') {
+  const headings = $block.querySelectorAll(selector);
   // Each threshold of JP should be smaller than other languages
   // because JP characters are larger and JP sentences are longer
   const sizes = getConfig().locale.region === 'jp'
