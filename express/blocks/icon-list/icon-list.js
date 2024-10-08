@@ -1,6 +1,6 @@
 import { getLibs, toClassName } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getIconElementDeprecated, fixIcons } from '../../scripts/utils/icons.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -13,8 +13,9 @@ export function addBlockClasses(block, classNames) {
   });
 }
 
-export default function decorate($block) {
+export default async function decorate($block) {
   addTempWrapperDeprecated($block, 'icon-list');
+  await fixIcons($block);
 
   let numCols = 0;
   const $rows = [...$block.children];
