@@ -320,16 +320,13 @@ function fragmentBlocksToLinks(area) {
   });
 }
 
-const blocksToClean = [
-  { name: 'pricing-cards', selector: '.pricing-cards', placeholders: ['{{gradient-promo}}'] },
-];
-
 function cleanupBrackets(area) {
-  const pattern = /\{\{(.*?)\}\}/g;
-  for (const block of blocksToClean) {
-    const el = area.querySelector(block.selector);
-    if (el?.outerHTML) el.outerHTML = el.outerHTML.replace(pattern, '(($1))');
-  }
+  const elements = area.querySelectorAll('*');
+  elements.forEach((element) => {
+    if (element.children.length === 0) {
+      element.innerHTML = element.innerHTML.replace(/\{\{(.*?)\}\}/g, '(($1))');
+    }
+  });
 }
 
 export function decorateArea(area = document) {

@@ -384,7 +384,8 @@ End border style variants
 
 .pricing-cards .billing-toggle {
   display: flex;
-  justify-content: center;
+  width: 100%;
+  justify-content: start;
   gap: 12px;
   align-items: center;
   font-size: var(--body-font-size-s);
