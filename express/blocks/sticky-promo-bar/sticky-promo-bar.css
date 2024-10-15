@@ -12,6 +12,8 @@ main .sticky-promo-bar {
     max-width: 500px;
     margin: auto;
     transition: transform 0.4s;
+    padding: 0;
+    max-width: 375px;
 }
 
 main .sticky-promo-bar.shown {
@@ -107,4 +109,16 @@ main .sticky-promo-bar .close:after {
 
 :lang(ja) body[data-device="mobile"] .sticky-promo-bar {
     font-size: var(--body-font-size-s);
+}
+
+@media (min-width: 900px) {
+    main .sticky-promo-bar {
+        max-width: 830px;
+    }
+}
+
+@media (min-width: 1200px) {
+    main .sticky-promo-bar {
+        max-width: 1024px;
+    }
 }
