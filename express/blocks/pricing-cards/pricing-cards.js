@@ -13,7 +13,7 @@ import {
 } from '../../scripts/utils/pricing.js';
 import createToggle, { tagFreePlan } from './pricing-toggle.js';
 
-const [{ createTag, getConfig }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+const [{ createTag, getConfig }, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 
 const blockKeys = [
   'header',
@@ -46,15 +46,12 @@ function suppressOfferEyebrow(specialPromo, legacyVersion) {
 }
 
 async function getPriceElementSuffix(placeholderArr, response) {
-  const placeholders = await placeholderMod.replaceKeyArray(placeholderArr, getConfig());
-  return placeholderArr
-    .map((phText) => {
-      const key = phText.replace('((', '').replace('))', '');
-      return key.includes('vat') && !response.showVat
-        ? ''
-        : placeholders?.[key] || '';
-    })
-    .join(' ');
+  const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
+  const placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
+
+  return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat
+    ? ''
+    : placeholdersResponse[i] || '')).join(' ');
 }
 
 function handleYear2PricingToken(pricingArea, y2p, priceSuffix) {
@@ -230,6 +227,7 @@ async function handlePrice(pricingArea, specialPromo, legacyVersion) {
     placeholderArr,
     response,
   );
+
   const isPremiumCard = response.ooAvailable || false;
   const savePercentElem = pricingArea.querySelector('.card-offer');
   handleRawPrice(price, basePrice, response);
@@ -284,7 +282,7 @@ function readBraces(inputString, card) {
     return null;
   }
 
-  // Pattern to find {{...}}
+  // Pattern to find ((...))
   const pattern = /\(\((.*?)\)\)/g;
   const matches = Array.from(inputString.trim().matchAll(pattern));
 
