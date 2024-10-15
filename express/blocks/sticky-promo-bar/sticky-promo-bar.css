@@ -32,6 +32,7 @@ main .sticky-promo-bar.rounded {
     margin: 12px auto;
     box-sizing: border-box;
     max-width: 360px;
+    text-align: center;
 }
 
 body[data-device="mobile"] main .sticky-promo-bar.loadinbody {
