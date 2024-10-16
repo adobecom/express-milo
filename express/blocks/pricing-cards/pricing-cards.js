@@ -12,6 +12,7 @@ import {
   fetchPlanOnePlans,
 } from '../../scripts/utils/pricing.js';
 import createToggle, { tagFreePlan } from './pricing-toggle.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const [{ createTag, getConfig }, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 
@@ -205,7 +206,7 @@ function handleTooltip(pricingArea) {
   tooltipDiv.append(iconWrapper);
 }
 
-async function handlePrice(pricingArea, specialPromo, legacyVersion) {
+async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
   const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
 
@@ -223,6 +224,10 @@ async function handlePrice(pricingArea, specialPromo, legacyVersion) {
   priceRow.append(basePrice, price, priceSuffix);
 
   const response = await fetchPlanOnePlans(priceEl?.href);
+  if (response.term && groupID) {
+    BlockMediator.set(groupID, response.term);
+  }
+
   const priceSuffixTextContent = await getPriceElementSuffix(
     placeholderArr,
     response,
@@ -248,6 +253,7 @@ async function createPricingSection(
   pricingArea,
   ctaGroup,
   specialPromo,
+  groupID,
   legacyVersion,
 ) {
   const pricingSection = createTag('div', { class: 'pricing-section' });
@@ -257,7 +263,7 @@ async function createPricingSection(
     offer.classList.add('card-offer');
     offer.parentElement.outerHTML = offer.outerHTML;
   }
-  await handlePrice(pricingArea, specialPromo, legacyVersion);
+  await handlePrice(pricingArea, specialPromo, groupID, legacyVersion);
   ctaGroup.classList.add('card-cta-group');
   ctaGroup.querySelectorAll('a').forEach((a, i) => {
     a.classList.add('large');
@@ -417,19 +423,22 @@ async function decorateCard({
     : decorateHeader(header, borderParams, card, cardBorder);
 
   decorateBasicTextSection(explain, 'card-explain', card);
+  const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
   const [mPricingSection, yPricingSection] = await Promise.all([
-    createPricingSection(mPricingRow, mCtaGroup, specialPromo, legacyVersion),
+    createPricingSection(mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
     createPricingSection(yPricingRow, yCtaGroup, null),
   ]);
   mPricingSection.classList.add('monthly');
-  yPricingSection.classList.add('annually', 'hide');
-  const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
+  yPricingSection.classList.add('annually');
+  // urgent update
+  const defaultHidePlan = BlockMediator.get(groupID) === 'ABM' ? 0 : 1;
+  [mPricingSection, yPricingSection][defaultHidePlan].classList.add('hide');
+
   const toggle = createToggle(
     [mPricingSection, yPricingSection],
     groupID,
     adjustElementPosition,
   );
-
   card.append(toggle, mPricingSection, yPricingSection);
   decorateBasicTextSection(featureList, 'card-feature-list', card);
   decorateCompareSection(compare, el, card);
