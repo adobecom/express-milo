@@ -50,7 +50,7 @@ export function getCachedMetadata(name) {
 
 export async function getRedirectUri() {
   const BlockMediator = await import('./block-mediator.min.js');
-  return BlockMediator.get('primaryCtaUrl')
+  return BlockMediator.default.get('primaryCtaUrl')
       || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
 }
 
