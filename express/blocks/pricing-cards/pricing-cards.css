@@ -381,15 +381,19 @@ End border style variants
   visibility: hidden;
   
 } 
-
 .pricing-cards .billing-toggle {
-  display: flex;
+  justify-content: center;
   width: 100%;
-  justify-content: start;
-  gap: 12px;
+  margin-left: 10px;
   align-items: center;
   font-size: var(--body-font-size-s);
   margin-bottom: 12px;
+}
+
+.pricing-cards .billing-toggle .toggle-button-wrapper {
+  display: flex;
+  margin-top: 10px;
+  gap: 12px;
 }
 
 .pricing-cards .billing-toggle button {
