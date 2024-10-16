@@ -6,6 +6,11 @@
   margin: auto;
 }
 
+.link-list-wrapper .link-list.narrow {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
 .link-list {
   display: block;
   overflow: hidden;

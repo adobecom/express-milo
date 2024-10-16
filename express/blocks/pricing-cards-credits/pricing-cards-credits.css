@@ -4,7 +4,7 @@ main .section>div:has(.pricing-cards-credits) {
 
 /* General styles */
 .pricing-cards-credits {
-    --card-width: 400px;
+    --card-width: 361px;
     --card-padding: 30px;
     --border-radius: 20px;
     --primary-color: #5c5ce0;
@@ -15,6 +15,7 @@ main .section>div:has(.pricing-cards-credits) {
     gap: 16px;
     width: min-content;
     margin: auto;
+    padding-bottom: 16px;
     text-align: left;
 }
 
@@ -22,7 +23,7 @@ main .section>div:has(.pricing-cards-credits) {
 .pricing-cards-credits > .card {
     width: var(--card-width);
     padding: var(--card-padding);
-    margin: 48px 10px 0;
+    margin: 48px 0px 0;
     border: 2px solid #C6C6C6;
     background-color: white;
     border-radius: var(--border-radius);
@@ -106,7 +107,7 @@ main .section>div:has(.pricing-cards-credits) {
 }
 
 .pricing-cards-credits .pricing-bar {
-    border-bottom: 10px solid lightgray;
+    border-bottom: 10px solid #E9E9E9;
     border-radius: 5px;
     margin-top: 30px;
     width: var(--card-width);

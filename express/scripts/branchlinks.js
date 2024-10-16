@@ -1,7 +1,8 @@
 import { getCachedMetadata, getLibs, toClassName } from './utils.js';
 
 const [{ getConfig }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
-
+let searchBranchLinks = await placeholderMod.replaceKey('search-branch-links', getConfig());
+searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks;
 function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
@@ -48,16 +49,9 @@ const setBasicBranchMetadata = new Set([
   'prompt',
 ]);
 
-export default async function trackBranchParameters(links) {
-  const rootUrl = new URL(window.location.href);
-  const params = rootUrl.searchParams;
-  const pageUrl = window.location.pathname;
-  const { referrer } = window.document;
-
-  const listBranchMetadataNodes = [...document.head.querySelectorAll('meta[name^=branch-]')];
-  const listAdditionalBranchMetadataNodes = listBranchMetadataNodes.filter((e) => !setBasicBranchMetadata.has(e.name.replace(/^branch-/, '')));
-  const searchBranchLinks = await placeholderMod.replaceKey('search-branch-links', getConfig());
-
+export function getTrackingAppendedURL(url, options = {}) {
+  const { placement, isSearchOverride } = options;
+  const windowParams = new URLSearchParams(window.location.search);
   const [
     searchTerm,
     canvasHeight,
@@ -94,86 +88,105 @@ export default async function trackBranchParameters(links) {
     getCachedMetadata('branch-tab'),
     getCachedMetadata('branch-action'),
     getCachedMetadata('branch-prompt'),
-    params.get('sdid'),
-    params.get('mv'),
-    params.get('mv2'),
-    params.get('s_kwcid'),
-    params.get('ef_id'),
-    params.get('promoid'),
-    params.get('trackingid'),
-    params.get('cgen'),
+    windowParams.get('sdid'),
+    windowParams.get('mv'),
+    windowParams.get('mv2'),
+    windowParams.get('s_kwcid'),
+    windowParams.get('ef_id'),
+    windowParams.get('promoid'),
+    windowParams.get('trackingid'),
+    windowParams.get('cgen'),
   ];
+  const { referrer } = window.document;
+  const pageUrl = window.location.pathname;
+  const { experiment } = window.hlx;
 
+  const experimentStatus = experiment ? experiment.status.toLocaleLowerCase() : null;
+
+  const listBranchMetadataNodes = [...document.head.querySelectorAll('meta[name^=branch-]')];
+  const listAdditionalBranchMetadataNodes = listBranchMetadataNodes.filter((e) => !setBasicBranchMetadata.has(e.name.replace(/^branch-/, '')));
+
+  const appending = new URL(url);
+  const urlParams = appending.searchParams;
+  const isSearchBranchLink = searchBranchLinks?.replace(/\s/g, '').split(',').includes(`${appending.origin}${appending.pathname}`);
+
+  const setParams = (k, v) => {
+    if (v) urlParams.set(k, encodeURIComponent(v));
+  };
+
+  if (isSearchBranchLink || isSearchOverride) {
+    setParams('category', category || 'templates');
+    setParams('taskID', taskID);
+    setParams('assetCollection', assetCollection);
+    setParams('height', canvasHeight);
+    setParams('width', canvasWidth);
+    setParams('unit', canvasUnit);
+    setParams('sceneline', sceneline);
+
+    if (searchCategory) {
+      setParams('searchCategory', searchCategory);
+    } else if (searchTerm) {
+      setParams('q', searchTerm);
+    }
+    if (loadPrintAddon) setParams('loadPrintAddon', loadPrintAddon);
+    setParams('tab', tab);
+    setParams('action', action);
+    setParams('prompt', prompt);
+  }
+
+  for (const { name, content } of listAdditionalBranchMetadataNodes) {
+    const paramName = toCamelCase(name.replace(/^branch-/, ''));
+    setParams(paramName, content);
+  }
+
+  setParams('referrer', referrer);
+  setParams('url', pageUrl);
+  setParams('sdid', sdid);
+  setParams('mv', mv);
+  setParams('mv2', mv2);
+  setParams('efid', efId);
+  setParams('promoid', promoId);
+  setParams('trackingid', trackingId);
+  setParams('cgen', cgen);
+  if (placement) setParams('placement', placement);
+  const { locale: { ietf, region } } = getConfig();
+  setParams('locale', ietf);
+  setParams('contentRegion', region === 'uk' ? 'gb' : region);
+
+  if (sKwcId) {
+    const sKwcIdParameters = sKwcId.split('!');
+
+    if (typeof sKwcIdParameters[2] !== 'undefined' && sKwcIdParameters[2] === '3') {
+      setParams('customer_placement', 'Google%20AdWords');
+    }
+
+    if (typeof sKwcIdParameters[8] !== 'undefined' && sKwcIdParameters[8] !== '') {
+      setParams('keyword', sKwcIdParameters[8]);
+    }
+  }
+
+  // eslint-disable-next-line chai-friendly/no-unused-expressions
+  experimentStatus === 'active' && setParams('expid', `${experiment.id}-${experiment.selectedVariant}`);
+
+  appending.search = urlParams.toString();
+  return decodeURIComponent(appending.toString());
+}
+
+export default async function trackBranchParameters(links) {
+  const { isSearchOverride } = links;
   links.forEach((a) => {
     if (a.href && a.href.match(/adobesparkpost(-web)?\.app\.link/)) {
+      const placement = getPlacement(a);
       a.rel = 'nofollow';
       const btnUrl = new URL(a.href);
       const urlParams = btnUrl.searchParams;
-      const setParams = (k, v) => {
-        if (v) urlParams.set(k, encodeURIComponent(v));
-      };
       if (urlParams.has('acomx-dno')) {
         urlParams.delete('acomx-dno');
         btnUrl.search = urlParams.toString();
         a.href = decodeURIComponent(btnUrl.toString());
         return;
       }
-      const placement = getPlacement(a);
-
-      const isSearchBranchLink = searchBranchLinks?.replace(/\s/g, '').split(',').includes(`${btnUrl.origin}${btnUrl.pathname}`);
-      if (isSearchBranchLink) {
-        setParams('category', category || 'templates');
-        setParams('taskID', taskID);
-        setParams('assetCollection', assetCollection);
-        setParams('height', canvasHeight);
-        setParams('width', canvasWidth);
-        setParams('unit', canvasUnit);
-        setParams('sceneline', sceneline);
-
-        if (searchCategory) {
-          setParams('searchCategory', searchCategory);
-        } else if (searchTerm) {
-          setParams('q', searchTerm);
-        }
-        if (loadPrintAddon) setParams('loadPrintAddon', loadPrintAddon);
-        setParams('tab', tab);
-        setParams('action', action);
-        setParams('prompt', prompt);
-      }
-
-      for (const { name, content } of listAdditionalBranchMetadataNodes) {
-        const paramName = toCamelCase(name.replace(/^branch-/, ''));
-        setParams(paramName, content);
-      }
-
-      setParams('referrer', referrer);
-      setParams('url', pageUrl);
-      setParams('sdid', sdid);
-      setParams('mv', mv);
-      setParams('mv2', mv2);
-      setParams('efid', efId);
-      setParams('promoid', promoId);
-      setParams('trackingid', trackingId);
-      setParams('cgen', cgen);
-      setParams('placement', placement);
-      const { locale: { ietf, region } } = getConfig();
-      setParams('locale', ietf);
-      setParams('contentRegion', region === 'uk' ? 'gb' : region);
-
-      if (sKwcId) {
-        const sKwcIdParameters = sKwcId.split('!');
-
-        if (typeof sKwcIdParameters[2] !== 'undefined' && sKwcIdParameters[2] === '3') {
-          setParams('customer_placement', 'Google%20AdWords');
-        }
-
-        if (typeof sKwcIdParameters[8] !== 'undefined' && sKwcIdParameters[8] !== '') {
-          setParams('keyword', sKwcIdParameters[8]);
-        }
-      }
-
-      btnUrl.search = urlParams.toString();
-      a.href = decodeURIComponent(btnUrl.toString());
+      a.href = getTrackingAppendedURL(btnUrl, { placement, isSearchOverride });
     }
   });
 }

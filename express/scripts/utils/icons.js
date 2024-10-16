@@ -19,8 +19,7 @@ function createSVGWrapper(icon, sheetSize, alt, altSrc) {
   if (altSrc) {
     u.setAttribute('href', altSrc);
   } else {
-    u.setAttribute('href', `/express/icons/ccx-sheet_${sanitizeInput(sheetSize)}.svg#${
-      sanitizeInput(icon)}${sanitizeInput(sheetSize)}`);
+    u.setAttribute('href', `/express/icons/ccx-sheet_${sanitizeInput(sheetSize)}.svg#${sanitizeInput(icon)}${sanitizeInput(sheetSize)}`);
   }
   svgWrapper.appendChild(u);
   return svgWrapper;
@@ -196,6 +195,7 @@ export async function fixIcons(el = document) {
 
 export function decorateSocialIcons(block) {
   block.querySelectorAll(':scope a').forEach(($a) => {
+    if (!$a.href) return;
     const urlObject = new URL($a.href);
     if (urlObject.hash === '#embed-video') return;
     if ($a.closest('.embed')?.dataset.blockName === 'embed') return;

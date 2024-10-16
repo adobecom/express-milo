@@ -2,8 +2,9 @@ import { getLibs } from '../../scripts/utils.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
 function buildContent(content) {
   const contentLink = content.querySelector('a');
@@ -174,6 +175,12 @@ export default async function decorate(block) {
     content = buildContent(content);
   }
 
+  if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
+    const logo = getIconElementDeprecated('adobe-express-logo');
+    logo.classList.add('express-logo');
+    block.prepend(logo);
+  }
+
   if (background) {
     block.classList.add('has-background');
     block.append(buildBackground(block, background));
@@ -184,6 +191,12 @@ export default async function decorate(block) {
 
     heading.classList.add('fullscreen-marquee-heading');
     block.append(heading);
+  }
+
+  const smallHeaderApplied = block.parentElement.classList.contains('small-header');
+  const desktop = document.body.dataset.device === 'desktop';
+  if (!desktop && smallHeaderApplied) {
+    block.parentElement.classList.remove('small-header');
   }
 
   if (content && document.body.dataset.device === 'desktop') {
