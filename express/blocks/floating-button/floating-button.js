@@ -7,7 +7,7 @@ import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 
 export default function decorate(block) {
   addTempWrapperDeprecated(block, 'floating-button');
-  if (!block.classList.contains('metadata-powered')) {
+  if (!block.classList.contains('meta-powered')) {
     block.parentElement?.remove();
     return;
   }

@@ -807,7 +807,7 @@ main.with-holiday-templates-banner {
   background: var(--color-gray-100);
   position: sticky;
   z-index: 1;
-  top: 0;
+  top: 64px;
 }
 
 .template-x .api-templates-toolbar {
@@ -2063,7 +2063,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 
 .template-x .template .button-container .media-wrapper {
   position: relative;
-  height: calc(100% - 34px);
+  height: 100%;
   width: 100%;
 }
 
@@ -2082,8 +2082,9 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 }
 
 .template-x .template .button-container a.cta-link, .template-x .template a.con-button {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 34px);
   white-space: nowrap;
   font-weight: var(--body-font-weight);
 }
@@ -2182,6 +2183,15 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   font-size: 22px;
   text-align: center;
   padding: 0 28px;
+}
+
+.template-x.narrow, .template-x.sixcols:not(.horizontal).narrow {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.template-x.narrow h2 {
+  font-size: 22px;
 }
 
 nav ol.templates-breadcrumbs {

@@ -17,10 +17,28 @@
   }
 }
 
+.ax-table-of-contents-wrapper {
+  max-width: var(--block-sm-max-width);
+  margin: auto;
+  padding: 0;
+  line-height: 20px;
+}
+
+@media (min-width: 900px) {
+  .ax-table-of-contents-wrapper {
+    max-width: var(--block-md-max-width);
+  }
+}
+
+@media (min-width: 1200px) {
+  .ax-table-of-contents-wrapper {
+    max-width: var(--block-lg-max-width);
+  }
+}
+
 .ax-table-of-contents {
-  margin: 32px auto 0 auto;
+  margin-top: 32px;
   max-width: 530px;
-  text-align: left;
 }
 
 .ax-table-of-contents .toc {
