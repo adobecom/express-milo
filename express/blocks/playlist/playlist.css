@@ -1,10 +1,10 @@
 .section:has(.playlist) {
     padding-top: 60px;
     background-color: var(--body-alt-background-color);
-    padding: 40px 8px;
+    padding: 60px 8px 40px 8px;
 }
 
-.section:has(.playlist) .default-content-wrapper {
+.section:has(.playlist) > .content {
     max-width: none;
     padding: 0 16px;
 }
@@ -319,7 +319,7 @@
 }
 
 @media (min-width: 900px) {
-    .section:has(.playlist) .default-content-wrapper {
+    .section:has(.playlist) > .content {
         max-width: 830px;
         padding: 0 24px;
     }
@@ -330,7 +330,7 @@
     }
 
     .section:has(.playlist) > .content h2 {
-        margin: 0 40px 32px;
+        margin: 80px 0 0 0;
     }
 
     .playlist .thumbnails-container {
@@ -392,7 +392,7 @@
 }
 
 @media (min-width: 1200px) {
-    .section:has(.playlist) .default-content-wrapper {
+    .section:has(.playlist) .content {
         max-width: 1120px;
         padding: 0 24px;
     }
@@ -402,7 +402,7 @@
         max-width: 1120px;
     }
 
-    .section:has(.playlist) > div.default-content-wrapper > h2 {
+    .section:has(.playlist) > div.content > h2 {
         margin: 0 40px 32px;
     }
 
