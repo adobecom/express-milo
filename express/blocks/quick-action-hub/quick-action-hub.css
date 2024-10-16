@@ -5,6 +5,7 @@ main .section:has(div.quick-action-hub-wrapper) {
 main .section > div.quick-action-hub-wrapper {
   padding: 88px 16px;
   margin: auto;
+  max-width: 375px;
 }
 
 main .quick-action-hub {
