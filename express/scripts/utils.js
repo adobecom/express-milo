@@ -320,6 +320,20 @@ function fragmentBlocksToLinks(area) {
   });
 }
 
+function cleanupBrackets(area) {
+  const elements = area.querySelectorAll('*');
+  elements.forEach((element) => {
+    if (element.children.length === 0) {
+      element.innerHTML = element.innerHTML.replace(/\{\{(.*?)\}\}/g, '(($1))');
+    }
+  });
+}
+
+function removeBillingRadios(area) {
+  const billingRadioBlocks = area.querySelectorAll('.billing-radio');
+  [...billingRadioBlocks].forEach((el) => el.remove());
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   removeIrrelevantSections(area);
@@ -334,6 +348,8 @@ export function decorateArea(area = document) {
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
+  removeBillingRadios(area);
+  cleanupBrackets(area);
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
 
   fragmentBlocksToLinks(area);
