@@ -207,7 +207,7 @@ function handleTooltip(pricingArea) {
 
 async function handlePrice(pricingArea, specialPromo, legacyVersion) {
   const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
-  const pricingBtnContainer = pricingArea.querySelector('.action-area');
+  const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
 
   if (!pricingBtnContainer) return;
   if (!priceEl) return;
