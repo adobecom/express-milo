@@ -10,6 +10,7 @@ main .icon-list {
   text-align: left;
   font-size: 1.125rem;
   padding-bottom: 80px;
+  margin: auto;
   margin-top: 40px;
   display: flex;
   justify-content: center;
@@ -188,6 +189,10 @@ main .icon-list-center-container ~ .columns-highlight-container {
 }
 
 @media (min-width:900px) {
+  main .icon-list{
+    max-width: 830px;
+  }
+
   main .icon-list.two-column {
     flex-wrap: nowrap;
   }
@@ -206,6 +211,10 @@ main .icon-list-center-container ~ .columns-highlight-container {
 }
 
 @media (min-width:1200px) {
+  main .icon-list{
+    max-width: 1024px;
+  }
+
   main .section.icon-list-two-column-container > div {
     max-width: 1200px;
   }
