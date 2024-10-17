@@ -320,11 +320,37 @@ function fragmentBlocksToLinks(area) {
   });
 }
 
+const blocksToClean = [
+  {
+    selector: '.pricing-cards',
+    placeholders: [
+      '{{gradient-promo}}',
+      '{{pricing}}',
+      '{{savePercentage}}',
+      '{{vat-include-text}}',
+      '{{vat-exclude-text}}',
+      '{{business-sales-numbers}}',
+    ],
+  },
+  {
+    selector: '.cta-carousel',
+    placeholders: [
+      '{{prompt-text}}',
+      '%7B%7Bprompt-text%7D%7D',
+    ],
+  },
+];
+
 function cleanupBrackets(area) {
-  const elements = area.querySelectorAll('*');
-  elements.forEach((element) => {
-    if (element.children.length === 0) {
-      element.innerHTML = element.innerHTML.replace(/\{\{(.*?)\}\}/g, '(($1))');
+  blocksToClean.forEach((block) => {
+    const elements = area.querySelectorAll(block.selector);
+    if (elements.length) {
+      const placeholderPattern = block.placeholders.map((ph) => ph.replace('{{', '\\{\\{').replace('}}', '\\}\\}').replace('%7B%7B', '%7B%7B').replace('%7D%7D', '%7D%7D')).join('|');
+      const regex = new RegExp(placeholderPattern, 'g');
+
+      elements.forEach((element) => {
+        element.innerHTML = element.innerHTML.replace(regex, (match) => match.replace('{{', '((').replace('}}', '))').replace('%7B%7B', '((').replace('%7D%7D', '))'));
+      });
     }
   });
 }
