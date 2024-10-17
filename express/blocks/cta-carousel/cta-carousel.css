@@ -299,6 +299,10 @@
     pointer-events: none;
 }
 
+.cta-carousel .card .text-wrapper  {
+    text-align: center;
+}
+
 .cta-carousel .card .text-wrapper .cta-card-text {
     font-size: var(--body-font-size-s);
     font-weight: 700;
