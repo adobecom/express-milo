@@ -61,12 +61,15 @@ function handleGenAISubmit(form, link) {
 
   btn.disabled = true;
 
-  let promptToken = '{{prompt-text}}';
-  const legacyPromptToken = '%7B%7Bprompt-text%7D%7D';
-  if (link.indexOf(legacyPromptToken) > -1) {
-    promptToken = legacyPromptToken;
+  const promptTokens = ['((prompt-text))', '%7B%7Bprompt-text%7D%7D'];
+  let genAILink;
+
+  for (const token of promptTokens) {
+    if (link.indexOf(token) > -1) {
+      genAILink = link.replace(token, encodeURI(input.value).replaceAll(' ', '+'));
+      break;
+    }
   }
-  const genAILink = link.replace(promptToken, encodeURI(input.value).replaceAll(' ', '+'));
   if (genAILink !== '') window.location.assign(genAILink);
 }
 
