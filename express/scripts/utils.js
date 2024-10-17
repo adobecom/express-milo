@@ -349,7 +349,7 @@ function cleanupBrackets(area) {
       const regex = new RegExp(placeholderPattern, 'g');
 
       elements.forEach((element) => {
-        element.innerHTML = element.innerHTML.replace(regex, (match) => match.replace('{{', '((').replace('}}', '))').replace('%7B%7B', '((').replace('%7D%7D', '))'));
+        element.innerHTML = element.innerHTML.replace(regex, (match) => match.replace(/\{\{/g, '((').replace(/\}\}/g, '))').replace(/%7B%7B/g, '((').replace(/%7D%7D/g, '))'));
       });
     }
   });
