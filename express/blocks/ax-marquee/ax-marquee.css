@@ -17,6 +17,17 @@ body.no-desktop-brand-header header {
     box-sizing: border-box;
 }
 
+.ax-marquee.light-primary-cta a.button.primaryCTA {
+    background: var(--color-white);
+    color: var(--color-black);
+    border-color:transparent;
+}
+
+.ax-marquee.light-primary-cta a.button.primaryCTA:hover{
+    border-color: transparent;
+    background-color: #E6E6E6;
+}
+
 .ax-marquee.appear {
     opacity: 1;
     height: unset;

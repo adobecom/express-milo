@@ -12,6 +12,12 @@
   max-width: none;
 }
 
+.fullscreen-marquee .express-logo {
+  width: unset;
+  height: 30px;
+  padding-bottom: 8px;
+}
+
 .fullscreen-marquee.has-background {
   padding-bottom: 160px;
 }
@@ -106,7 +112,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
   opacity: 0;
   cursor: pointer;
   border-radius: 24px;
@@ -258,7 +263,11 @@
 @media (min-width: 900px) {
   .section > .fullscreen-marquee {
     padding-bottom: 40px;
-    padding-top: 80px;
+    padding-top: 40px;
+  }
+
+  .fullscreen-marquee .express-logo {
+    padding-bottom: 18px;
   }
 
   .fullscreen-marquee .fullscreen-marquee-heading {

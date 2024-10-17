@@ -1,14 +1,11 @@
 import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
-import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
-import buildCarousel from '../../scripts/widgets/carousel.js';
-import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
-import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
+import { trackSearch, updateImpressionCache, generateSearchId } from '../../template-x/template-search-api-v3.js';
 
 const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey } = imports[0];
+const { replaceKey, replaceKeyArray } = imports[0];
 const { createTag, getConfig, getMetadata } = imports[1];
 
 const config = getConfig();
@@ -34,9 +31,7 @@ function cycleThroughSuggestions(block, targetIndex = 0) {
   if (suggestions.length > 0) suggestions[targetIndex].focus();
 }
 
-function initSearchFunction(block) {
-  const searchBarWrapper = block.querySelector('.search-bar-wrapper');
-
+function initSearchFunction(block, searchBarWrapper) {
   const searchDropdown = searchBarWrapper.querySelector('.search-dropdown-container');
   const searchForm = searchBarWrapper.querySelector('.search-form');
   const searchBar = searchBarWrapper.querySelector('input.search-bar');
@@ -136,6 +131,7 @@ function initSearchFunction(block) {
     const taskXUrl = `/${handlelize(currentTasks.content.toLowerCase())}`;
     const targetPath = `${prefix}/express/templates${taskUrl}${topicUrl}`;
     const targetPathX = `${prefix}/express/templates${taskXUrl}${topicUrl}`;
+    const { default: fetchAllTemplatesMetadata } = await import('../../scripts/utils/all-templates-metadata.js');
     const allTemplatesMetadata = await fetchAllTemplatesMetadata();
     const pathMatch = (e) => e.url === targetPath;
     const pathMatchX = (e) => e.url === targetPathX;
@@ -177,7 +173,7 @@ function initSearchFunction(block) {
       type_filter: 'all',
       collection: 'all-templates',
       keyword_rank: index + 1,
-      search_keyword: searchBar.value,
+      search_keyword: searchBar.value || 'empty search',
       search_type: 'autocomplete',
     });
 
@@ -190,7 +186,7 @@ function initSearchFunction(block) {
       status_filter: 'free',
       type_filter: 'all',
       collection: 'all-templates',
-      search_keyword: searchBar.value,
+      search_keyword: searchBar.value || 'empty search',
       search_type: 'direct',
     });
     await onSearchSubmit();
@@ -273,11 +269,12 @@ async function decorateSearchFunctions(block) {
   searchBarWrapper.append(searchIcon, searchClearIcon);
   searchBarWrapper.append(searchForm);
 
-  block.append(searchBarWrapper);
+  block.insertBefore(searchBarWrapper, block.querySelector('div:nth-of-type(2)'));
+  return searchBarWrapper;
 }
 
 function decorateBackground(block) {
-  const mediaRow = block.querySelector('div:nth-child(2)');
+  const mediaRow = block.querySelector('div:nth-of-type(2)');
   if (mediaRow) {
     let media = mediaRow.querySelector('picture img');
     if (!media) {
@@ -287,76 +284,82 @@ function decorateBackground(block) {
     media.classList.add('backgroundimg');
     media.loading = 'eager';
     media.setAttribute('fetchpriority', 'high');
-    const wrapper = block.parentElement;
-    if (wrapper.classList.contains('search-marquee-wrapper')) {
-      wrapper.prepend(media);
-    } else {
-      block.prepend(media);
-    }
+    block.prepend(media);
     mediaRow.remove();
   }
 }
 
-async function buildSearchDropdown(block) {
-  const searchBarWrapper = block.querySelector('.search-bar-wrapper');
-  if (searchBarWrapper) {
-    const dropdownContainer = createTag('div', { class: 'search-dropdown-container hidden' });
-    const trendsContainer = createTag('div', { class: 'trends-container' });
-    const suggestionsContainer = createTag('div', { class: 'suggestions-container hidden' });
-    const suggestionsTitle = createTag('p', { class: 'dropdown-title' });
-    const suggestionsList = createTag('ul', { class: 'suggestions-list' });
-    const freePlanContainer = createTag('div', { class: 'free-plans-container' });
+async function buildSearchDropdown(block, searchBarWrapper) {
+  if (!searchBarWrapper) return;
+  const dropdownContainer = createTag('div', { class: 'search-dropdown-container hidden' });
+  const trendsContainer = createTag('div', { class: 'trends-container' });
+  const suggestionsContainer = createTag('div', { class: 'suggestions-container hidden' });
+  const suggestionsTitle = createTag('p', { class: 'dropdown-title' });
+  const suggestionsList = createTag('ul', { class: 'suggestions-list' });
 
-    const fromScratchLink = block.querySelector('a');
-    const trendsTitle = await replaceKey('search-trends-title', config);
-    const trends = JSON.parse(await replaceKey('search-trends', config));
+  const fromScratchLink = block.querySelector('a');
+  const [trendsTitle, searchTrends, searchSuggestionsTitle] = await replaceKeyArray(['search-trends-title', 'search-trends', 'search-suggestions-title'], config);
+  let trends;
+  if (searchTrends !== 'search trends') trends = JSON.parse(searchTrends);
 
-    if (fromScratchLink) {
-      const linkDiv = fromScratchLink.parentElement.parentElement;
-      const templateFreeAccentIcon = getIconElementDeprecated('template-free-accent');
-      templateFreeAccentIcon.loading = 'lazy';
-      const arrowRightIcon = getIconElementDeprecated('arrow-right');
-      arrowRightIcon.loading = 'lazy';
-      fromScratchLink.prepend(templateFreeAccentIcon);
-      fromScratchLink.append(arrowRightIcon);
-      fromScratchLink.classList.remove('button');
-      fromScratchLink.classList.add('from-scratch-link');
-
-      fromScratchLink.href = getMetadata('search-marquee-from-scratch-link') || '/';
-      trendsContainer.append(fromScratchLink);
-      linkDiv.remove();
-    }
-    if (trendsTitle) {
-      const trendsTitleEl = createTag('p', { class: 'dropdown-title' });
-      trendsTitleEl.textContent = trendsTitle;
-      trendsContainer.append(trendsTitleEl);
-    }
-
-    if (trends) {
-      const trendsWrapper = createTag('ul', { class: 'trends-wrapper' });
-      for (const [key, value] of Object.entries(trends)) {
-        const trendLinkWrapper = createTag('li');
-        const trendLink = createTag('a', { class: 'trend-link', href: value });
-        trendLink.textContent = key;
-        trendLinkWrapper.append(trendLink);
-        trendsWrapper.append(trendLinkWrapper);
-      }
-      trendsContainer.append(trendsWrapper);
-    }
-
-    suggestionsTitle.textContent = await replaceKey('search-suggestions-title', config) || '';
-    suggestionsContainer.append(suggestionsTitle, suggestionsList);
-    config.typeKey = 'branded';
-    const freePlanTags = await buildFreePlanWidget(config);
-
-    freePlanContainer.append(freePlanTags);
-    dropdownContainer.append(trendsContainer, suggestionsContainer, freePlanContainer);
-    searchBarWrapper.append(dropdownContainer);
+  if (fromScratchLink) {
+    const linkDiv = fromScratchLink.parentElement.parentElement;
+    const templateFreeAccentIcon = getIconElementDeprecated('template-free-accent');
+    templateFreeAccentIcon.loading = 'lazy';
+    const arrowRightIcon = getIconElementDeprecated('arrow-right');
+    arrowRightIcon.loading = 'lazy';
+    fromScratchLink.prepend(templateFreeAccentIcon);
+    fromScratchLink.append(arrowRightIcon);
+    fromScratchLink.classList.remove('button');
+    fromScratchLink.classList.add('from-scratch-link');
+    fromScratchLink.href = getMetadata('search-marquee-from-scratch-link') || '/';
+    trendsContainer.append(fromScratchLink);
+    linkDiv.remove();
   }
+
+  if (trendsTitle) {
+    const trendsTitleEl = createTag('p', { class: 'dropdown-title' });
+    trendsTitleEl.textContent = trendsTitle;
+    trendsContainer.append(trendsTitleEl);
+  }
+
+  if (trends) {
+    const trendsWrapper = createTag('ul', { class: 'trends-wrapper' });
+    for (const [key, value] of Object.entries(trends)) {
+      const trendLinkWrapper = createTag('li');
+      const trendLink = createTag('a', { class: 'trend-link', href: `${value}?searchId=${generateSearchId()}` });
+      trendLink.addEventListener('click', () => {
+        updateImpressionCache({
+          keyword_filter: key,
+          content_category: 'templates',
+        });
+        trackSearch('search-inspire', new URLSearchParams(new URL(trendLink.href).search).get('searchId'));
+      });
+      trendLink.textContent = key;
+      trendLinkWrapper.append(trendLink);
+      trendsWrapper.append(trendLinkWrapper);
+    }
+    trendsContainer.append(trendsWrapper);
+  }
+
+  suggestionsTitle.textContent = searchSuggestionsTitle !== 'search suggestions title' ? searchSuggestionsTitle : '';
+  suggestionsContainer.append(suggestionsTitle, suggestionsList);
+
+  import('../../scripts/widgets/free-plan.js')
+    .then(({ buildFreePlanWidget }) => buildFreePlanWidget({ typeKey: 'branded', checkmarks: true }))
+    .then((freePlanTags) => {
+      const freePlanContainer = createTag('div', { class: 'free-plans-container' });
+      freePlanContainer.append(freePlanTags);
+      dropdownContainer.append(freePlanContainer);
+    });
+  dropdownContainer.append(trendsContainer, suggestionsContainer);
+  searchBarWrapper.append(dropdownContainer);
 }
 
-function decorateLinkList(block) {
-  const carouselItemsWrapper = block.querySelector(':scope > div:nth-of-type(2) > div');
+async function decorateLinkList(block) {
+  // preventing css. will be removed by buildCarousel
+  block.querySelector(':scope > div:last-of-type').style.cssText = 'max-height: 90px; visibility: hidden;';
+  const carouselItemsWrapper = block.querySelector(':scope > div:last-of-type > div');
   if (carouselItemsWrapper) {
     const showLinkList = getMetadata('show-search-marquee-link-list');
     if ((showLinkList && !['yes', 'true', 'on', 'Y'].includes(showLinkList))
@@ -365,12 +368,21 @@ function decorateLinkList(block) {
       || window.location.pathname.endsWith('/express/templates')) {
       carouselItemsWrapper.remove();
     } else {
-      buildCarousel(':scope > p', carouselItemsWrapper).then(() => {
-        const carousel = carouselItemsWrapper.querySelector('.carousel-container');
-        block.append(carousel);
-        carouselItemsWrapper.parentElement.remove();
-      });
+      const { default: buildCarousel } = await import('../../scripts/widgets/carousel.js');
+      await buildCarousel(':scope > p', carouselItemsWrapper);
+      const carousel = carouselItemsWrapper.querySelector('.carousel-container');
+      block.append(carousel);
+      carouselItemsWrapper.parentElement.remove();
     }
+  }
+  const blockLinks = block.querySelectorAll('a');
+  if (blockLinks && blockLinks.length > 0) {
+    const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });
+    document.dispatchEvent(linksPopulated);
+  }
+  if (window.location.href.includes('/express/templates/')) {
+    const { default: updateAsyncBlocks } = await import('../../scripts/utils/template-ckg.js');
+    updateAsyncBlocks();
   }
 }
 
@@ -381,23 +393,10 @@ export default async function decorate(block) {
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');
-    logo.width = 164;
-    logo.height = 38;
     block.prepend(logo);
   }
-  await decorateSearchFunctions(block);
-  await buildSearchDropdown(block);
-
-  initSearchFunction(block);
+  const searchBarWrapper = await decorateSearchFunctions(block);
+  await buildSearchDropdown(block, searchBarWrapper);
+  initSearchFunction(block, searchBarWrapper);
   decorateLinkList(block);
-
-  const blockLinks = block.querySelectorAll('a');
-  if (blockLinks && blockLinks.length > 0) {
-    const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });
-    document.dispatchEvent(linksPopulated);
-  }
-  if (window.location.href.includes('/express/templates/')) {
-    const { default: updateAsyncBlocks } = await import('../../scripts/utils/template-ckg.js');
-    updateAsyncBlocks();
-  }
 }

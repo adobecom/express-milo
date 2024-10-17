@@ -6,23 +6,41 @@ import { getLibs } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag, getConfig, loadScript } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getConfig, loadScript, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
-const validImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
-const imageInputAccept = '.png, .jpeg, .jpg';
-const sizeLimits = {
-  image: 40 * 1024 * 1024,
-  video: 1024 * 1024 * 1024,
-};
-// only allows 1 qa per page?
-let inputElement;
-let quickAction;
-let fqaBlock;
-let error;
 let ccEverywhere;
 let quickActionContainer;
 let uploadContainer;
+
+const JPG = 'jpg';
+const JPEG = 'jpeg';
+const PNG = 'png';
+export const getBaseImgCfg = (...types) => ({
+  group: 'image',
+  max_size: 40 * 1024 * 1024,
+  accept: types.map((type) => `.${type}`).join(', '),
+  input_check: (input) => types.map((type) => `image/${type}`).includes(input),
+});
+export const getBaseVideoCfg = (...types) => ({
+  group: 'video',
+  max_size: 1024 * 1024 * 1024,
+  accept: types.map((type) => `.${type}`).join(', '),
+  input_check: (input) => types.map((type) => `video/${type}`).includes(input),
+});
+const QA_CONFIGS = {
+  'convert-to-jpg': { ...getBaseImgCfg(PNG) },
+  'convert-to-png': { ...getBaseImgCfg(JPG, JPEG) },
+  'convert-to-svg': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'crop-image': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'resize-image': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'remove-background': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'generate-qr-code': {
+    ...getBaseImgCfg(JPG, JPEG, PNG),
+    input_check: () => true,
+  },
+};
 
 function fade(element, action) {
   if (action === 'in') {
@@ -43,196 +61,189 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
-function startSDK(data = '') {
+// eslint-disable-next-line default-param-last
+async function startSDK(data = '', quickAction, block) {
   const urlParams = new URLSearchParams(window.location.search);
   const CDN_URL = 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
-  const clientId = getConfig().imsClientId;
+  const clientId = 'AdobeExpressWeb';
 
-  loadScript(CDN_URL).then(async () => {
-    if (!window.CCEverywhere) {
-      return;
-    }
-    if (!ccEverywhere) {
-      let { ietf } = getConfig().locale;
-      // for testing
-      const country = urlParams.get('country');
-      if (country) ietf = getConfig().locales[country]?.ietf;
-      if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
-      else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
-
-      const ccEverywhereConfig = {
-        hostInfo: {
-          clientId,
-          appName: 'express',
-        },
-        configParams: {
-          locale: ietf?.replace('-', '_'),
-          env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
-        },
-        authOption: () => ({ mode: 'delayed' }),
-      };
-
-      ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
-    }
-
-    // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
-    const exportConfig = [
-      {
-        id: 'download-button',
-        // label: 'Download',
-        action: { target: 'download' },
-        style: { uiType: 'button' },
-        buttonStyle: {
-          variant: 'secondary',
-          treatment: 'fill',
-          size: 'xl',
-        },
-      },
-      {
-        id: 'edit-in-express',
-        // label: 'Edit in Adobe Express for free',
-        action: { target: 'express' },
-        style: { uiType: 'button' },
-        buttonStyle: {
-          variant: 'primary',
-          treatment: 'fill',
-          size: 'xl',
-        },
-      },
-    ];
-
-    const id = `${quickAction}-container`;
-    quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
-    fqaBlock.append(quickActionContainer);
-    const divs = fqaBlock.querySelectorAll(':scope > div');
-    if (divs[1]) [, uploadContainer] = divs;
-    fade(uploadContainer, 'out');
-
-    const contConfig = {
-      mode: 'inline',
-      parentElementId: `${quickAction}-container`,
-      backgroundColor: 'transparent',
-      hideCloseButton: true,
-    };
-
-    const docConfig = {
-      asset: {
-        data,
-        dataType: 'base64',
-        type: 'image',
-      },
-    };
-
-    const appConfig = {
-      metaData: { isFrictionlessQa: 'true' },
-      receiveQuickActionErrors: false,
-      callbacks: {
-        onIntentChange: () => {
-          quickActionContainer?.remove();
-          fade(uploadContainer, 'in');
-          document.body.classList.add('editor-modal-loaded');
-          window.history.pushState({ hideFrictionlessQa: true }, '', '');
-          return {
-            containerConfig: {
-              mode: 'modal',
-              zIndex: 999,
-            },
-          };
-        },
-        onCancel: () => {
-          window.history.back();
-        },
-      },
-    };
-
-    switch (quickAction) {
-      case 'convert-to-jpg':
-        ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
-        break;
-      case 'convert-to-png':
-        ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
-        break;
-      case 'convert-to-svg':
-        exportConfig.pop();
-        ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
-        break;
-      case 'crop-image':
-        ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
-        break;
-      case 'resize-image':
-        ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
-        break;
-      case 'remove-background':
-        ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-        break;
-      case 'generate-qr-code':
-        ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
-        break;
-      default: break;
-    }
-  });
-}
-
-function getQAGroup() {
-  if ([
-    'convert-to-jpg',
-    'convert-to-png',
-    'convert-to-svg',
-    'crop-image',
-    'resize-image',
-    'remove-background',
-    'generate-qr-code',
-  ].includes(quickAction)) {
-    return 'image';
+  await loadScript(CDN_URL);
+  if (!window.CCEverywhere) {
+    return;
   }
-  // update list of video qas here
-  if ([].includes(quickAction)) return 'video';
-  // fallback to image until we have real video QA
-  return 'image';
+  if (!ccEverywhere) {
+    let { ietf } = getConfig().locale;
+    // for testing
+    const country = urlParams.get('country');
+    if (country) ietf = getConfig().locales[country]?.ietf;
+    if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
+    else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
+
+    const ccEverywhereConfig = {
+      hostInfo: {
+        clientId,
+        appName: 'express',
+      },
+      configParams: {
+        locale: ietf?.replace('-', '_'),
+        env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
+      },
+      authOption: () => ({ mode: 'delayed' }),
+    };
+
+    ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
+  }
+
+  // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
+  const exportConfig = [
+    {
+      id: 'download-button',
+      // label: 'Download',
+      action: { target: 'download' },
+      style: { uiType: 'button' },
+      buttonStyle: {
+        variant: 'secondary',
+        treatment: 'fill',
+        size: 'xl',
+      },
+    },
+    {
+      id: 'edit-in-express',
+      // label: 'Edit in Adobe Express for free',
+      action: { target: 'express' },
+      style: { uiType: 'button' },
+      buttonStyle: {
+        variant: 'primary',
+        treatment: 'fill',
+        size: 'xl',
+      },
+    },
+  ];
+
+  const id = `${quickAction}-container`;
+  quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
+  block.append(quickActionContainer);
+  const divs = block.querySelectorAll(':scope > div');
+  if (divs[1]) [, uploadContainer] = divs;
+  fade(uploadContainer, 'out');
+
+  const contConfig = {
+    mode: 'inline',
+    parentElementId: `${quickAction}-container`,
+    backgroundColor: 'transparent',
+    hideCloseButton: true,
+  };
+
+  const docConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'image',
+    },
+  };
+
+  const appConfig = {
+    metaData: { isFrictionlessQa: 'true' },
+    receiveQuickActionErrors: false,
+    callbacks: {
+      onIntentChange: () => {
+        quickActionContainer?.remove();
+        fade(uploadContainer, 'in');
+        document.body.classList.add('editor-modal-loaded');
+        window.history.pushState({ hideFrictionlessQa: true }, '', '');
+        return {
+          containerConfig: {
+            mode: 'modal',
+            zIndex: 999,
+          },
+        };
+      },
+      onCancel: () => {
+        window.history.back();
+      },
+    },
+  };
+
+  switch (quickAction) {
+    case 'convert-to-jpg':
+      ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-png':
+      ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-svg':
+      exportConfig.pop();
+      ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-image':
+      ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-image':
+      ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'remove-background':
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'generate-qr-code':
+      ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    default: break;
+  }
 }
 
-function startSDKWithUnconvertedFile(file) {
+let timeoutId = null;
+function showErrorToast(block, msg) {
+  let toast = block.querySelector('.error-toast');
+  const hideToast = () => toast.classList.add('hide');
+  if (!toast) {
+    toast = createTag('div', { class: 'error-toast hide' });
+    toast.prepend(getIconElementDeprecated('error'));
+    const close = createTag('button', {}, getIconElementDeprecated('close-white'));
+    close.addEventListener('click', hideToast);
+    toast.append(close);
+    block.append(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.remove('hide');
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(hideToast, 6000);
+}
+
+async function startSDKWithUnconvertedFile(file, quickAction, block) {
   if (!file) return;
-  const maxSize = sizeLimits[getQAGroup()] ?? 40 * 1024 * 1024;
-  if (validImageTypes.includes(file.type) && file.size <= maxSize) {
+  const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
+  if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
     const reader = new FileReader();
     reader.onloadend = () => {
       window.history.pushState({ hideFrictionlessQa: true }, '', '');
-      startSDK(reader.result);
+      startSDK(reader.result, quickAction, block);
     };
 
     // Read the file as a data URL (Base64)
     reader.readAsDataURL(file);
-  } else if (!error) {
-    let invalidInputError;
-    if (!validImageTypes.includes(file.type)) invalidInputError = 'invalid image type. Please make sure your image format is one of the following: "image/png", "image/jpeg", "image/jpg"';
-    else if (file.size > maxSize) invalidInputError = 'your image file is too large';
-
-    error = createTag('p', {}, invalidInputError);
-    const dropzoneButton = fqaBlock.querySelector(':scope .dropzone a.button, :scope .dropzone a.con-button');
-    dropzoneButton?.before(error);
+    return;
   }
-}
-
-function uploadFile() {
-  if (!inputElement) {
-    inputElement = createTag('input', { type: 'file', accept: imageInputAccept });
+  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
+  let msg;
+  if (!QA_CONFIGS[quickAction].input_check(file.type)) {
+    msg = await replaceKey('file-type-not-supported', getConfig());
+  } else {
+    msg = await replaceKey('file-size-not-supported', getConfig());
   }
-  // Trigger the file selector when the button is clicked
-  inputElement.click();
-
-  // Handle file selection
-  inputElement.onchange = () => {
-    const file = inputElement.files[0];
-    startSDKWithUnconvertedFile(file);
-  };
+  showErrorToast(block, msg);
 }
 
 export default async function decorate(block) {
-  fqaBlock = block;
   decorateButtonsDeprecated(block);
-
   const rows = Array.from(block.children);
+  rows[1].classList.add('container');
+  const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
+  const quickAction = quickActionRow?.[0].children[1]?.textContent;
+  if (!quickAction) {
+    throw new Error('Invalid Quick Action Type.');
+  }
+  quickActionRow[0].remove();
+
   const actionAndAnimationRow = rows[1].children;
   const animationContainer = actionAndAnimationRow[0];
   const animation = animationContainer.querySelector('a');
@@ -254,13 +265,19 @@ export default async function decorate(block) {
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
   actionColumn.append(dropzoneContainer, gtcText);
+  const inputElement = createTag('input', { type: 'file', accept: QA_CONFIGS[quickAction].accept });
+  inputElement.onchange = () => {
+    const file = inputElement.files[0];
+    startSDKWithUnconvertedFile(file, quickAction, block);
+  };
+  block.append(inputElement);
 
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();
     if (quickAction === 'generate-qr-code') {
-      startSDK();
+      startSDK('', quickAction, block);
     } else {
-      uploadFile();
+      inputElement.click();
     }
     document.body.dataset.suppressfloatingcta = 'true';
   });
@@ -290,19 +307,15 @@ export default async function decorate(block) {
     dropzoneContainer.addEventListener(eventName, unhighlight, false);
   });
 
-  dropzoneContainer.addEventListener('drop', (e) => {
+  dropzoneContainer.addEventListener('drop', async (e) => {
     const dt = e.dataTransfer;
     const { files } = dt;
 
-    [...files].forEach(startSDKWithUnconvertedFile);
+    await Promise.all(
+      [...files].map((file) => startSDKWithUnconvertedFile(file, quickAction, block)),
+    );
     document.body.dataset.suppressfloatingcta = 'true';
   }, false);
-
-  const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
-  if (quickActionRow[0]) {
-    quickAction = quickActionRow[0].children[1]?.textContent;
-    quickActionRow[0].remove();
-  }
 
   const freePlanTags = await buildFreePlanWidget({ typeKey: 'branded', checkmarks: true });
   dropzone.append(freePlanTags);
@@ -322,8 +335,14 @@ export default async function decorate(block) {
     }
   }, { passive: true });
 
-  fqaBlock.dataset.frictionlesstype = quickAction;
-  fqaBlock.dataset.frictionlessgroup = getQAGroup(quickAction);
+  block.dataset.frictionlesstype = quickAction;
+  block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
+
+  if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
+    const logo = getIconElementDeprecated('adobe-express-logo');
+    logo.classList.add('express-logo');
+    block.prepend(logo);
+  }
 
   sendFrictionlessEventToAdobeAnaltics(block);
 }

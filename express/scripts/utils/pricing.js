@@ -250,6 +250,7 @@ export async function fetchPlanOnePlans(planUrl) {
       plan.sup = offer.priceSuperScript ?? '';
       plan.savePer = offer.savePer ?? '';
       plan.showVat = offer.showVat ?? false;
+      plan.term = offer.term;
       plan.formatted = offer.unitPriceCurrencyFormatted?.replace(
         plan.rawPrice[0],
         `<strong>${plan.prefix}${plan.rawPrice[0]}</strong>`,

@@ -2,6 +2,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
+import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
@@ -106,7 +107,11 @@ async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
 }
 
 async function share(branchUrl, tooltip, timeoutId) {
-  await navigator.clipboard.writeText(branchUrl);
+  const urlWithTracking = getTrackingAppendedURL(branchUrl, {
+    placement: 'template-x',
+    isSearchOverride: true,
+  });
+  await navigator.clipboard.writeText(urlWithTracking);
   tooltip.classList.add('display-tooltip');
 
   const rect = tooltip.getBoundingClientRect();
@@ -393,7 +398,7 @@ function renderHoverWrapper(template) {
       content_id: template.id,
       status: template.licensingCategory,
       task: getMetadata('tasksx') || getMetadata('tasks') || '',
-      search_keyword: getMetadata('q') || getMetadata('topics') || '',
+      search_keyword: getMetadata('q') || getMetadata('topics-x') || getMetadata('topics') || '',
       collection: getMetadata('tasksx') || getMetadata('tasks') || '',
       collection_path: window.location.pathname,
     });

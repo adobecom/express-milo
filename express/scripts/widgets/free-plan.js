@@ -29,14 +29,20 @@ const typeMap = {
 export async function buildFreePlanWidget(config) {
   const { typeKey, checkmarks } = config;
   const widget = createTag('div', { class: 'free-plan-widget' });
+  const noSignupRequired = getMetadata('no-signup-required');
+
   const promises = [];
   for (let i = 0; i < typeMap[typeKey].length; i += 1) {
     promises.push(replaceKey(typeMap[typeKey][i], getConfig()));
   }
 
   const texts = await Promise.all(promises);
+  const freePlanCheck3 = await replaceKey('free-plan-check-3', getConfig());
 
   for (let i = 0; i < texts.length; i += 1) {
+    if (noSignupRequired && texts[i] === 'free-plan-check-2') {
+      texts[i] = freePlanCheck3;
+    }
     if (texts[i]) {
       const textDiv = createTag('span', { class: 'plan-widget-tag' });
       textDiv.textContent = texts[i];

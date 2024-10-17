@@ -43,7 +43,7 @@ export default async function init(el) {
   const rows = el.querySelectorAll(':scope> div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   // eslint-disable-next-line camelcase
-  const client_id = rows[1]?.textContent?.trim() ?? 'AdobeExpressWeb';
+  const client_id = rows[1]?.textContent?.trim() || 'AdobeExpressWeb';
   const title = rows[2]?.textContent?.trim();
   const authParams = {
     dt: false,

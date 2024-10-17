@@ -920,6 +920,11 @@ main {
     padding-bottom: 40px;
   }
 
+  & .section.long-form.narrow {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+
   & .section.long-form .content {
     box-sizing: border-box;
     padding: 0 20px 60px;
@@ -928,6 +933,7 @@ main {
 
   & .section.long-form .content,
   & .section.long-form .content p,
+  & .section.long-form .content h1,
   & .section.long-form .content h2,
   & .section.long-form .content h3,
   & .section.long-form .content h4,

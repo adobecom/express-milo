@@ -31,6 +31,13 @@
   gap: 40px;
 }
 
+.ax-columns .express-logo.icon {
+  width: unset;
+  height: 30px;
+  padding-bottom: 8px;
+  float: unset;
+}
+
 .ax-columns:not(.extra-wide):first-child:not(:empty) {
   padding-top: 60px;
 }
@@ -91,6 +98,23 @@
 .ax-columns p.powered-by {
   font-size: var(--body-font-size-m);
   line-height: 1.2;
+}
+
+.ax-columns .phone-number-cta-row {
+  font-style: normal;
+  margin: 20px auto auto auto;
+  width: fit-content;
+  display: block;
+}
+
+.ax-columns .trial-cta {
+  display: block;
+  margin: auto;
+}
+
+.ax-columns .phone-number-cta-row a.phone {
+  text-decoration: underline;
+  color: var(--color-black);
 }
 
 .ax-columns p.button-container, .ax-columns .con-button {
@@ -892,6 +916,10 @@
     max-width: 836px;
     padding-left: 32px;
     padding-right: 32px;
+  }
+
+  .section .ax-columns.narrow {
+    max-width: 850px;
   }
 
   .ax-columns > div {

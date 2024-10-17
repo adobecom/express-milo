@@ -36,7 +36,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 }
 
 export function transformLinkToAnimation($a, $videoLooping = true) {
-  if (!$a || !$a.href.endsWith('.mp4')) {
+  if (!$a || !$a.href || !$a.href.endsWith('.mp4')) {
     return null;
   }
   const params = new URL($a.href).searchParams;

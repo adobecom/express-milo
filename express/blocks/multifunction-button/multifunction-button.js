@@ -85,7 +85,7 @@ export function createMultiFunctionButton(block, data, audience) {
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'multifunction-button');
 
-  if (!block.classList.contains('metadata-powered')) return;
+  if (!block.classList.contains('meta-powered')) return;
 
   const audience = block.querySelector(':scope > div').textContent.trim();
   if (audience === 'mobile') {
