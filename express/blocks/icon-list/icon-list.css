@@ -6,6 +6,12 @@ main .section:has(.icon-list) h2 {
   margin-top: 80px;
 }
 
+main .icon-list-wrapper {
+  margin: auto;
+  max-width: 375px;
+  padding: 0;
+}
+
 main .icon-list {
   text-align: left;
   font-size: 1.125rem;
@@ -35,6 +41,7 @@ main .icon-list .icon-list-description {
 main .icon-list .icon-list-description p {
   margin: 8px 0;
   text-align: left;
+  font-size: var(--body-font-size-m);
 }
 
 main .icon-list .icon-list-image {
