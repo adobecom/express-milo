@@ -129,6 +129,7 @@
 
 .playlist .video-player-inline-player-overlay:hover .video-player-inline-player-play-button {
     display: unset;
+    color: var(--body-color);
 }
 
 .playlist .video-player-inline-player {
