@@ -20,6 +20,9 @@ function addColorSampler(pill, colorHex, btn) {
 }
 
 export default async function decorate(block) {
+  const headerButton = document.querySelector('.hero-color-wrapper .text-container p:last-child');
+  headerButton?.classList?.add('button-container');
+  headerButton?.querySelector('a').classList.add('button', 'accent', 'primaryCta', 'same-fcta');
   decorateButtonsDeprecated(block);
 
   block.style.visibility = 'hidden';

@@ -269,6 +269,28 @@ export async function fetchPlanOnePlans(planUrl) {
   return plan;
 }
 
+const offerIdSuppressMap = new Map();
+
+export function shallSuppressOfferEyebrowText(
+  savePer,
+  offerTextContent,
+  isPremiumCard,
+  isSpecialEyebrowText,
+  offerId,
+) {
+  if (offerId == null || offerId === undefined) return true;
+  const key = offerId + isSpecialEyebrowText;
+  if (offerIdSuppressMap.has(key)) {
+    return offerIdSuppressMap.get(key);
+  }
+  let suppressOfferEyeBrowText = false;
+  if (offerTextContent) {
+    suppressOfferEyeBrowText = savePer === '' && offerTextContent.includes('{{savePercentage}}');
+  }
+  offerIdSuppressMap.set(key, suppressOfferEyeBrowText);
+  return suppressOfferEyeBrowText;
+}
+
 function replaceUrlParam(url, paramName, paramValue) {
   const params = url.searchParams;
   params.set(paramName, paramValue);
