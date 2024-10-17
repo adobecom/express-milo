@@ -45,13 +45,13 @@ main .section:has(.feature-list) h2 {
 }
 
 @media (min-width: 900px) {
-    main .section:has(.feature-list) {
+    main .section .feature-list {
         max-width: 830px;
     }
 }
 
 @media (min-width: 1200px) {
-    main .section:has(.feature-list){
+    main .section .feature-list{
         max-width: 1024px;
     }
 }
