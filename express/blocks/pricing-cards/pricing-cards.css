@@ -86,6 +86,7 @@ Border style variants
   font-weight: 400;
   padding-bottom: 12px;
   line-height: 1.5rem;
+  text-align: center;
 }
 
 .pricing-cards .gradient-promo {
