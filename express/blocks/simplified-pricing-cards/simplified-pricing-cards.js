@@ -12,9 +12,9 @@ import {
 
 import { adjustElementPosition, handleTooltip } from './simplified-pricing-tooltip.js';
 
-const SALES_NUMBERS = '[[business-sales-numbers]]';
-const PRICE_TOKEN = '[[pricing]]';
-const YEAR_2_PRICING_TOKEN = '[[year-2-pricing-token]]';
+const SALES_NUMBERS = '((business-sales-numbers))';
+const PRICE_TOKEN = '((pricing))';
+const YEAR_2_PRICING_TOKEN = '((year-2-pricing-token))';
 
 function getHeightWithoutPadding(element) {
   const styles = window.getComputedStyle(element);
@@ -52,7 +52,7 @@ function equalizeHeights(el) {
 function getPriceElementSuffix(placeholders, placeholderArr, response) {
   return placeholderArr
     .map((phText) => {
-      const key = phText.replace('[[', '').replace(']]', '');
+      const key = phText.replace('((', '').replace('))', '');
       return key.includes('vat') && !response.showVat
         ? ''
         : placeholders?.[key] || '';
