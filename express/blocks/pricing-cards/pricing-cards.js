@@ -12,6 +12,7 @@ import {
   fetchPlanOnePlans,
 } from '../../scripts/utils/pricing.js';
 import createToggle, { tagFreePlan } from './pricing-toggle.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const [{ createTag, getConfig }, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 
@@ -30,6 +31,7 @@ const SAVE_PERCENTAGE = '((savePercentage))';
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '[[year-2-pricing-token]]';
+const BASE_PRICING_TOKEN = '[[base-pricing-token]]';
 
 function suppressOfferEyebrow(specialPromo, legacyVersion) {
   if (specialPromo.parentElement) {
@@ -54,17 +56,18 @@ async function getPriceElementSuffix(placeholderArr, response) {
     : placeholdersResponse[i] || '')).join(' ');
 }
 
-function handleYear2PricingToken(pricingArea, y2p, priceSuffix) {
+// eslint-disable-next-line default-param-last
+function handlePriceToken(pricingArea, priceToken = YEAR_2_PRICING_TOKEN, newPrice, priceSuffix = '') {
   try {
     const elements = pricingArea.querySelectorAll('p');
     const year2PricingToken = Array.from(elements).find(
-      (p) => p.textContent.includes(YEAR_2_PRICING_TOKEN),
+      (p) => p.textContent.includes(priceToken),
     );
     if (!year2PricingToken) return;
-    if (y2p) {
+    if (newPrice) {
       year2PricingToken.innerHTML = year2PricingToken.innerHTML.replace(
-        YEAR_2_PRICING_TOKEN,
-        `${y2p} ${priceSuffix}`,
+        priceToken,
+        `${newPrice} ${priceSuffix}`,
       );
     } else {
       year2PricingToken.textContent = '';
@@ -205,7 +208,7 @@ function handleTooltip(pricingArea) {
   tooltipDiv.append(iconWrapper);
 }
 
-async function handlePrice(pricingArea, specialPromo, legacyVersion) {
+async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
   const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
 
@@ -223,6 +226,10 @@ async function handlePrice(pricingArea, specialPromo, legacyVersion) {
   priceRow.append(basePrice, price, priceSuffix);
 
   const response = await fetchPlanOnePlans(priceEl?.href);
+  if (response.term && groupID) {
+    BlockMediator.set(groupID, response.term);
+  }
+
   const priceSuffixTextContent = await getPriceElementSuffix(
     placeholderArr,
     response,
@@ -235,8 +242,8 @@ async function handlePrice(pricingArea, specialPromo, legacyVersion) {
   handleTooltip(pricingArea);
   handleSavePercentage(savePercentElem, isPremiumCard, response);
   handleSpecialPromo(specialPromo, isPremiumCard, response, legacyVersion);
-  handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
-
+  handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
+  handlePriceToken(pricingArea, BASE_PRICING_TOKEN, response.formattedBP);
   priceEl?.parentNode?.remove();
   if (!priceRow) return;
   pricingArea.prepend(priceRow);
@@ -248,6 +255,7 @@ async function createPricingSection(
   pricingArea,
   ctaGroup,
   specialPromo,
+  groupID,
   legacyVersion,
 ) {
   const pricingSection = createTag('div', { class: 'pricing-section' });
@@ -257,7 +265,7 @@ async function createPricingSection(
     offer.classList.add('card-offer');
     offer.parentElement.outerHTML = offer.outerHTML;
   }
-  await handlePrice(pricingArea, specialPromo, legacyVersion);
+  await handlePrice(pricingArea, specialPromo, groupID, legacyVersion);
   ctaGroup.classList.add('card-cta-group');
   ctaGroup.querySelectorAll('a').forEach((a, i) => {
     a.classList.add('large');
@@ -417,19 +425,22 @@ async function decorateCard({
     : decorateHeader(header, borderParams, card, cardBorder);
 
   decorateBasicTextSection(explain, 'card-explain', card);
+  const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
   const [mPricingSection, yPricingSection] = await Promise.all([
-    createPricingSection(mPricingRow, mCtaGroup, specialPromo, legacyVersion),
+    createPricingSection(mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
     createPricingSection(yPricingRow, yCtaGroup, null),
   ]);
   mPricingSection.classList.add('monthly');
-  yPricingSection.classList.add('annually', 'hide');
-  const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
+  yPricingSection.classList.add('annually');
+  // urgent update
+  const defaultHidePlan = BlockMediator.get(groupID) === 'ABM' ? 0 : 1;
+  [mPricingSection, yPricingSection][defaultHidePlan].classList.add('hide');
+
   const toggle = createToggle(
     [mPricingSection, yPricingSection],
     groupID,
     adjustElementPosition,
   );
-
   card.append(toggle, mPricingSection, yPricingSection);
   decorateBasicTextSection(featureList, 'card-feature-list', card);
   decorateCompareSection(compare, el, card);
