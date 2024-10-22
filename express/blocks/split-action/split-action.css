@@ -12,10 +12,6 @@ main .split-action.transparent {
     opacity: 0;
 }
 
-body.branch-banner-is-active .split-action-container {
-    z-index: 100000;
-}
-
 main .split-action .block-body {
     position: fixed;
     bottom: 0;
