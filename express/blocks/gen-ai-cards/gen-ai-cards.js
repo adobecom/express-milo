@@ -121,6 +121,7 @@ async function decorateCards(block, { actions }) {
 
   await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
     searchBranchLinks = await mod.replaceKey('search-branch-links', getConfig());
+    searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks.replace(/\s/g, '')?.split(',');
     return mod.replaceKey();
   });
 
@@ -156,7 +157,7 @@ async function decorateCards(block, { actions }) {
       } else {
         const a = ctaLinks[0];
         const btnUrl = new URL(a.href);
-        if (searchBranchLinks?.replace(/\s/g, '').split(',').includes(`${btnUrl.origin}${btnUrl.pathname}`)) {
+        if (searchBranchLinks.includes(`${btnUrl.origin}${btnUrl.pathname}`)) {
           btnUrl.searchParams.set('q', cta.text);
           btnUrl.searchParams.set('category', 'templates');
           a.href = decodeURIComponent(btnUrl.toString());

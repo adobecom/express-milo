@@ -336,6 +336,11 @@ async function decorateNewTemplates(block, props, options = { reDrawMasonry: fal
 
   const newCells = Array.from(block.querySelectorAll('.template:not(.appear)'));
 
+  const templateLinks = block.querySelectorAll('.template:not(.appear) .button-container > a, a.template.placeholder');
+  templateLinks.isSearchOverride = true;
+  const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
+  document.dispatchEvent(linksPopulated);
+
   if (options.reDrawMasonry) {
     props.masonry.cells = [props.masonry.cells[0]].concat(newCells);
   } else {
@@ -1325,17 +1330,17 @@ async function decorateTemplates(block, props) {
 
   await attachFreeInAppPills(block);
 
-  const templateLinks = block.querySelectorAll('.template .button-container > a, a.template.placeholder');
-  const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
-
   const searchId = new URLSearchParams(window.location.search).get('searchId');
   updateImpressionCache({
-    search_keyword: getMetadata('q') || getMetadata('topics-x'),
+    search_keyword: getMetadata('q') || getMetadata('topics-x') || getMetadata('topics'),
     result_count: props.total,
     content_category: 'templates',
   });
   if (searchId) trackSearch('view-search-result', searchId);
 
+  const templateLinks = block.querySelectorAll('.template .button-container > a, a.template.placeholder');
+  templateLinks.isSearchOverride = true;
+  const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
   document.dispatchEvent(linksPopulated);
 }
 
@@ -1470,7 +1475,7 @@ function importSearchBar(block, blockMediator) {
             type_filter: 'all',
             collection: 'all-templates',
             keyword_rank: index + 1,
-            search_keyword: searchBar.value,
+            search_keyword: searchBar.value || 'empty search',
             search_type: 'autocomplete',
           });
           await onSearchSubmit();
@@ -1484,7 +1489,7 @@ function importSearchBar(block, blockMediator) {
             type_filter: 'all',
             collection: 'all-templates',
             search_type: 'direct',
-            search_keyword: searchBar.value,
+            search_keyword: searchBar.value || 'empty search',
           });
           await onSearchSubmit();
         });

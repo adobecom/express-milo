@@ -191,6 +191,7 @@ export function createFloatingButton(block, audience, data) {
     class: 'floating-button block',
     'data-block-name': 'floating-button',
     'data-block-status': 'loaded',
+    'data-block': '',
   });
   [...block.classList].filter((c) => c === 'closed').forEach((c) => floatButtonWrapper.classList.add(c));
   const floatButtonInnerWrapper = createTag('div', { class: 'floating-button-inner-wrapper' });
