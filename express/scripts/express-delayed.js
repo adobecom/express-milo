@@ -1,5 +1,6 @@
 import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
+import {decorateButtonsDeprecated} from "./utils/decorate.js";
 
 const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -154,11 +155,18 @@ function preloadSUSILight() {
   import(`${getLibs()}/blocks/fragment/fragment.js`);
 }
 
+function turnContentLinksIntoButtons() {
+  document.querySelectorAll('.section > .content').forEach((content) => {
+    decorateButtonsDeprecated(content);
+  });
+}
+
 /**
  * Executes everything that happens a lot later, without impacting the user experience.
  */
 export default async function loadDelayed() {
   try {
+    turnContentLinksIntoButtons();
     preloadSUSILight();
     if (await canPEP()) {
       const { default: loadLoginUserAutoRedirect } = await import('../features/direct-path-to-product/direct-path-to-product.js');
