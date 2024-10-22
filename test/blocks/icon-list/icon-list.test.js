@@ -14,14 +14,14 @@ describe('Icon List', () => {
   it('Icon List exists', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     const iconList = document.querySelector('.icon-list');
-    decorate(iconList);
+    await decorate(iconList);
     expect(iconList).to.exist;
   });
 
   it('4 columns should be transformed to 2', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/4-column-body.html' });
     const iconList = document.querySelector('.icon-list');
-    decorate(iconList);
+    await decorate(iconList);
     const columns = document.querySelectorAll('.icon-list-column');
     expect(columns.length).to.equal(2);
   });
@@ -29,7 +29,7 @@ describe('Icon List', () => {
   it('2 columns should have icon-list-image and icon-list-description classes', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     const iconList = document.querySelector('.icon-list');
-    decorate(iconList);
+    await decorate(iconList);
     const columns = document.querySelectorAll('.icon-list-column');
 
     columns.forEach((column) => {
@@ -44,7 +44,7 @@ describe('Icon List', () => {
   it('Text content in .icon-list-image should be icon if no img or svg', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     const iconList = document.querySelector('.icon-list');
-    decorate(iconList);
+    await decorate(iconList);
     const columns = document.querySelectorAll('.icon-list-column');
 
     columns.forEach((column) => {
