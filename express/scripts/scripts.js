@@ -49,7 +49,6 @@ const CONFIG = {
     cn: { ietf: 'zh-CN', tk: 'qxw8hzm' },
     de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
     dk: { ietf: 'da-DK', tk: 'aaz7dvd.css' },
-    eg: { ietf: 'en-EG', tk: 'pps7abe.css' },
     es: { ietf: 'es-ES', tk: 'oln4yqj.css' },
     fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
     fr: { ietf: 'fr-FR', tk: 'vrk5vyv.css' },
@@ -193,6 +192,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   document.head.append(googleLoginRedirect);
   // end TODO remove metadata after we go live
 
+  if (getMetadata('template-search-page') === 'Y') {
+    const { default: redirect } = await import('./utils/template-redirect.js');
+    await redirect();
+  }
+
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
@@ -238,6 +242,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
+  }
+
+  if (getMetadata('toc-seo') === 'on') {
+    loadStyle('/express/features/table-of-contents-seo/table-of-contents-seo.css');
+    import('../features/table-of-contents-seo/table-of-contents-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
   }
 
   await loadArea();

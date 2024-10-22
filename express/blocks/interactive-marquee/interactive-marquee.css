@@ -260,6 +260,10 @@ main .interactive-marquee.horizontal-masonry .generate-btn {
     cursor: pointer;
 }
 
+main .interactive-marquee.horizontal-masonry .generate-btn:focus {
+    border: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) border-box;
+}
+
 main .interactive-marquee.horizontal-masonry .generate-small-btn {
     background-color: #333;
     color: white;
@@ -270,6 +274,10 @@ main .interactive-marquee.horizontal-masonry .generate-small-btn {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+main .interactive-marquee.horizontal-masonry .generate-small-btn:focus {
+    border: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) border-box;
 }
 
 main .interactive-marquee.horizontal-masonry .generate-small-btn::before {
@@ -290,13 +298,9 @@ main .interactive-marquee.horizontal-masonry .generate-small-btn::before {
 
 /* Input styles */
 main .interactive-marquee.horizontal-masonry input[type="text"] {
-    width: calc(100% - 60px);
-    height: 35px;
     padding: 10px;
-    border-color: transparent;
-    border-radius: 16px;
-    margin-left: 40px;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+    width: calc(100% - 140px);
 }
 
 main .interactive-marquee.horizontal-masonry input[type="text"]::placeholder {
@@ -314,11 +318,25 @@ main .interactive-marquee.horizontal-masonry .enticement-container {
     margin-top: 80px;
     margin-bottom: 15px;
     position: relative;
+    width: calc(100% -20px);
+    height: 35px;
+    padding: 10px;
+    border-color: transparent;
+    border-radius: 16px;
+    border: 2px solid transparent;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+main .interactive-marquee.horizontal-masonry .enticement-container:hover {
+    --gradient: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    background: linear-gradient(white 0 0) padding-box, var(--gradient) border-box;
 }
 
 main .interactive-marquee.horizontal-masonry .enticement-text {
     position: absolute;
-    left: -30px;
+    left: -70px;
     top: -55px;
     font-size: 36px;
     color: black;
@@ -327,7 +345,7 @@ main .interactive-marquee.horizontal-masonry .enticement-text {
 
 main .interactive-marquee.horizontal-masonry .icon-enticement-arrow {
     position: absolute;
-    left: -45px;
+    left: -85px;
     top: 0px;
     filter: brightness(1) invert(1);
     width: 70px;
@@ -351,6 +369,7 @@ main .interactive-marquee.horizontal-masonry .media-container p.image-container 
     border-radius: 16px;
     height: 180px;
     flex: 0 0 calc(33% - 10px);
+    max-width: 400px;
 }
 
 main .interactive-marquee.horizontal-masonry.tall .media-container p.image-container {
@@ -402,20 +421,25 @@ main .interactive-marquee.horizontal-masonry .media-container .prompt-title {
 }
 
 /* Hover effects */
-main .interactive-marquee.horizontal-masonry .media-container p.image-container:hover::after {
+main .interactive-marquee.horizontal-masonry .media-container p.image-container::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
+    display: block;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.3s;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
     z-index: 2;
     height: 100%;
     width: 100%;
     border-radius: 16px;
+}
+
+main .interactive-marquee.horizontal-masonry .media-container p.image-container:hover::after {
+    opacity: 1;
 }
 
 main .interactive-marquee.horizontal-masonry .media-container p.image-container:hover .overlay {
@@ -436,6 +460,10 @@ main .interactive-marquee.horizontal-masonry .media-container p.image-container:
 }
 
 /* Typography styles */
+main .interactive-marquee.horizontal-masonry .foreground >.text:first-of-type h1 {
+    font-size: 45px;
+}
+
 main .interactive-marquee.horizontal-masonry .foreground h1>em {
     font-style: normal;
     background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
@@ -642,12 +670,13 @@ main .interactive-marquee.horizontal-masonry .media-container p.image-container:
     }
 
     main .interactive-marquee.horizontal-masonry .media-container p.image-container img {
+        width: 300px;
         height: unset;
     }
 
     main .interactive-marquee.horizontal-masonry input[type="text"] {
         margin-left: unset;
-        width: calc(100% - 20px);
+        width: calc(100% - 140px);
     }
 
     main .interactive-marquee.horizontal-masonry .media-container p.image-container,
@@ -655,17 +684,30 @@ main .interactive-marquee.horizontal-masonry .media-container p.image-container:
     main .interactive-marquee.horizontal-masonry.quad .media-container p.image-container {
         flex: unset;
     }
+
+    main .interactive-marquee.horizontal-masonry .media-container .image-container:has( img.tall-prompt-image ){
+        width: 220px;
+        margin: auto;
+    }
+    main .interactive-marquee.horizontal-masonry p.image-container img.tall-prompt-image {
+        max-width: 220px;
+    }
+}
+
+main .interactive-marquee.interactive-marquee.horizontal-masonry {
+    padding: 16px;
 }
 
 /* Additional styles */
 main .interactive-marquee.interactive-marquee.horizontal-masonry .media-container {
     max-height: unset;
+    margin: auto;
 }
 
-main .interactive-marquee.horizontal-masonry .media-container p.image-container::after {
-    display: block;
+main .interactive-marquee .foreground .text p {
+    font-size: 20x;
+    margin: 10px 0px;
 }
-
 
 main .interactive-marquee .foreground .text .icon-area > div {
     display: flex;
@@ -673,7 +715,7 @@ main .interactive-marquee .foreground .text .icon-area > div {
 }
 
 main .interactive-marquee .foreground .express-logo {
-    width: unset;
+    width: fit-content;
     height: 30px;
-    padding-bottom: 8px;
+    padding-bottom: 20px;
 }
