@@ -13,6 +13,8 @@ export default function decorate(block) {
   // Style image column
   imageColumn.classList.add('image-column');
 
+  const images = imageColumn.querySelectorAll('img');
   // Add classes to all images
-  imageColumn.querySelectorAll('img').forEach((img) => img.classList.add('brand-image'));
+  images.forEach((img) => img.classList.add('brand-image'));
+  if (images.length > 5) block.classList.add('numerous');
 }

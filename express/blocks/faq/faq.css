@@ -72,6 +72,10 @@
   margin-top: 0;
 }
 
+.faq.narrow {
+  max-width: 850px;
+}
+
 @media (min-width: 900px) {
   .section:has(> .faq) > div {
     padding-top: 0;
