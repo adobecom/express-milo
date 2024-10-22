@@ -47,6 +47,11 @@
   margin-top: 0;
 }
 
+.promotion.narrow {
+  max-width: 850px;
+  margin: 0 auto;
+}
+
 @media (min-width: 600px) {
   .promotion h1,
   .promotion h2,

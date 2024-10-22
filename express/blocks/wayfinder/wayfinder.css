@@ -1,0 +1,132 @@
+.wayfinder {
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 16px 20px 12px 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 60px;
+    text-align: center;
+}
+
+.wayfinder.narrow {
+    width: 850px;
+}
+
+.wayfinder.borderless {
+    border: none;
+}
+
+.wayfinder.dark {
+    background-color: black;
+    color: white;
+}
+
+.wayfinder.light {
+    border: 2px solid var(--color-info-accent);
+}
+
+.wayfinder.gradient {
+    background: linear-gradient(
+            90.93deg,
+            #aa5ef6 0.23%,
+            #ef67f0 39.65%,
+            #ff4fed 59.89%,
+            #f69634 108.11%
+    );
+    color: black;
+    border: 2px solid white;
+}
+
+.wayfinder .cta-row .button {
+    height: fit-content;
+    margin: 8px;
+    background-color: black;
+    border-color: black;
+}
+
+.wayfinder.dark .cta-row .button {
+    color: white;
+    border-color: white;
+}
+
+.wayfinder .text-row{
+    margin: auto;
+    font-size: 16px;
+}
+
+.wayfinder .cta-row strong .button {
+    background-color: var(--color-info-accent);
+    color: white;
+    border: none;
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+
+.wayfinder .cta-row em .button {
+    background-color: transparent;
+    color: black;
+}
+
+.wayfinder .cta-row em strong .button {
+    background-color: none;
+    border: none;
+    text-underline-offset: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+    text-decoration: underline;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin-top: 11px;
+}
+
+.wayfinder .cta-row {
+    overflow-x: scroll;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.wayfinder .cta-row::-webkit-scrollbar {
+    display: none;
+}
+
+.wayfinder .cta-row > div {
+    display: flex;
+    width: max-content;
+    margin: auto;
+}
+
+@media (min-width: 540px) {
+    .wayfinder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 30px auto auto auto;
+        max-width: 90%;
+        padding: 10px;
+
+    }
+
+    .wayfinder .text-row {
+        margin: initial;
+        font-size: 18px;
+    }
+
+    .wayfinder .text-row div {
+
+        gap: 16px;
+    }
+
+    .wayfinder .cta-row {
+        display: flex;
+        margin-left: 10px;
+        overflow-x: scroll;
+    }
+}
+
+@media (min-width: 1200px) {
+    .wayfinder div {
+        display: flex;
+        width: fit-content;
+        flex: none;
+    }
+}

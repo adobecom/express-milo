@@ -300,7 +300,7 @@ export function buildAutoBlocks() {
       const button = createTag('div', { class: blockName });
       const colEl = createTag('div', {}, device);
       button.appendChild(colEl);
-      button.classList.add('metadata-powered');
+      button.classList.add('meta-powered');
       lastDiv.append(button);
       import('./block-mediator.min.js').then((mod) => {
         mod.default.set('floatingCtasLoaded', true);
@@ -380,4 +380,10 @@ export function decorateArea(area = document) {
 
   fragmentBlocksToLinks(area);
   renameConflictingBlocks(area);
+
+  const selector = area === document ? 'main > div' : ':scope > div';
+  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'quick-action-hub', 'template-x'].map((block) => `${selector} .${block} a[href*=".mp4"]`).join(', ');
+  [...area.querySelectorAll(videoLinksToNotAutoBlock)].forEach((link) => {
+    if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
+  });
 }
