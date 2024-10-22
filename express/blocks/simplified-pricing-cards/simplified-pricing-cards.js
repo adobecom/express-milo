@@ -1,17 +1,16 @@
 import { getLibs } from '../../scripts/utils.js';
-import {
-  decorateButtonsDeprecated,
-} from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
+
+import { adjustElementPosition, handleTooltip } from './simplified-pricing-tooltip.js';
+
 const { formatSalesPhoneNumber } = await import(
   '../../scripts/utils/location-utils.js'
 );
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-
-import { adjustElementPosition, handleTooltip } from './simplified-pricing-tooltip.js';
 
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
@@ -25,7 +24,6 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-
   const classNames = ['.plan-explanation', '.card-header'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards .card').length;
   if (cardCount === 1) return;
@@ -35,23 +33,24 @@ function equalizeHeights(el) {
     headers.forEach((placeholder) => {
       placeholder.style.height = 'unset';
     });
-    if (window.screen.width < 1200) continue;
-    headers.forEach((header) => {
-      if (header.checkVisibility()) {
-        const height = getHeightWithoutPadding(header);
-        maxHeight = Math.max(maxHeight, height);
-      }
-    });
-    headers.forEach((placeholder) => {
-      if (maxHeight > 0) {
-        placeholder.style.height = `${maxHeight}px`;
-      }
-    });
+    if (window.screen.width > 1200) {
+      headers.forEach((header) => {
+        if (header.checkVisibility()) {
+          const height = getHeightWithoutPadding(header);
+          maxHeight = Math.max(maxHeight, height);
+        }
+      });
+      headers.forEach((placeholder) => {
+        if (maxHeight > 0) {
+          placeholder.style.height = `${maxHeight}px`;
+        }
+      });
+    }
   }
 }
 
 async function getPriceElementSuffix(placeholderArr, response) {
-  const mod = await import(`${getLibs()}/features/placeholders.js`)
+  const mod = await import(`${getLibs()}/features/placeholders.js`);
   return placeholderArr
     .map((phText) => {
       const key = phText.replace('((', '').replace('))', '');
@@ -117,9 +116,9 @@ async function createPricingSection(
   ctaGroup,
 ) {
   pricingArea.classList.add('pricing-area');
-  const priceEl = Array.from(pricingArea.querySelectorAll(`a`)).filter(a => a.textContent === PRICE_TOKEN)[0];
+  const priceEl = Array.from(pricingArea.querySelectorAll('a')).filter((a) => a.textContent === PRICE_TOKEN)[0];
   const pricingBtnContainer = pricingArea.querySelector('.action-area');
- 
+
   if (pricingBtnContainer && priceEl) {
     const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
     const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
@@ -200,7 +199,7 @@ function decorateCardBorder(card, source) {
 }
 
 export default async function init(el) {
-  decorateButtonsDeprecated(el)
+  decorateButtonsDeprecated(el);
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
   const cards = [];
@@ -213,8 +212,10 @@ export default async function init(el) {
     }
     decorateCardBorder(card, rows[1].children[0]);
     decorateHeader(rows[0].children[0], rows[2].children[0]);
-    await createPricingSection(rows[3].children[0],
-      rows[4].children[0]);
+    await createPricingSection(
+      rows[3].children[0],
+      rows[4].children[0],
+    );
 
     for (let j = 0; j < rows.length - 2; j += 1) {
       card.appendChild(rows[j].children[0]);
@@ -247,9 +248,7 @@ export default async function init(el) {
   });
 
   const { debounce } = await import('../../scripts/utils/hofs.js');
-  window.addEventListener('resize', debounce(
-    () => {
-      equalizeHeights(el);
-    }, 100,
-  ));
+  window.addEventListener('resize', debounce(() => {
+    equalizeHeights(el);
+  }, 100));
 }
