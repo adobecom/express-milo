@@ -682,7 +682,7 @@ main {
     margin-right: 4px;
   }
 
-  & .section > .content h1, .section > .content h2, .section > .content h3, .section > .content h4, .section > .content p {
+  & .section > .content {
     text-align: center;
   }
 
@@ -698,8 +698,8 @@ main {
     padding-bottom: 40px;
   }
 
-  & .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-fcta,
-  & .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-fcta {
+  & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
+  & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
       display: none;
   }
 
@@ -836,8 +836,8 @@ main {
       text-align: left;
     }
 
-    & .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.button.same-fcta,
-    & .section > div:not(.pricing-summary, .pricing-cards, .pricing-table, .puf, .split-action, .link-list, .wayfinder, .ratings) a.con-button.same-fcta {
+    & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
+    & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
       display: inline-block;
     }
   }
@@ -917,7 +917,6 @@ main {
   /* long-form section: left-align text */
   & .section.long-form {
     padding-top: 60px;
-    padding-bottom: 40px;
   }
 
   & .section.long-form.narrow {
@@ -932,7 +931,7 @@ main {
   }
 
   & .section.long-form .content,
-  & .section.long-form .content p,
+  & .section.long-form .content p:not(.button-container, :has(.con-button)),
   & .section.long-form .content h1,
   & .section.long-form .content h2,
   & .section.long-form .content h3,
