@@ -1,16 +1,16 @@
 import { getLibs } from '../../scripts/utils.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
-
 import { adjustElementPosition, handleTooltip } from './simplified-pricing-tooltip.js';
+
+const [{ decorateButtons }, { createTag }] = await Promise.all([import(`${getLibs()}/utils/decorate.js`),
+  import(`${getLibs()}/utils/utils.js`)]);
 
 const { formatSalesPhoneNumber } = await import(
   '../../scripts/utils/location-utils.js'
 );
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
@@ -199,7 +199,7 @@ function decorateCardBorder(card, source) {
 }
 
 export default async function init(el) {
-  decorateButtonsDeprecated(el);
+  decorateButtons(el);
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
   const cards = [];

@@ -3,12 +3,12 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import { mockRes } from '../test-utilities.js';
 
-const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
-const { getLibs } = await import('../../../express/scripts/utils.js');
-await import(`${getLibs()}/utils/utils.js`).then((mod) => {
-  const conf = { locales };
-  mod.setConfig(conf);
-});
+// const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
+// const { getLibs } = await import('../../../express/scripts/utils.js');
+// await import(`${getLibs()}/utils/utils.js`).then((mod) => {
+//   const conf = { locales };
+//   mod.setConfig(conf);
+// });
 // eslint-disable-next-line import/no-unresolved
 const { default: decorate } = await import('../../../../express/blocks/simplified-pricing-cards/simplified-pricing-cards.js');
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
