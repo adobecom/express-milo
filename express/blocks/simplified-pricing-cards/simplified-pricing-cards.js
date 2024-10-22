@@ -1,14 +1,15 @@
-import { addTempWrapper } from '../../scripts/decorate.js';
+import { getLibs } from '../../scripts/utils.js';
 import {
-  createTag,
-  fetchPlaceholders,
-} from '../../scripts/utils.js';
-
+  decorateButtonsDeprecated,
+} from '../../scripts/utils/decorate.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
-  formatSalesPhoneNumber,
 } from '../../scripts/utils/pricing.js';
+const { formatSalesPhoneNumber } = await import(
+  '../../scripts/utils/location-utils.js'
+);
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 import { adjustElementPosition, handleTooltip } from './simplified-pricing-tooltip.js';
 
@@ -49,13 +50,14 @@ function equalizeHeights(el) {
   }
 }
 
-function getPriceElementSuffix(placeholders, placeholderArr, response) {
+async function getPriceElementSuffix(placeholderArr, response) {
+  const mod = await import(`${getLibs()}/features/placeholders.js`)
   return placeholderArr
     .map((phText) => {
       const key = phText.replace('((', '').replace('))', '');
       return key.includes('vat') && !response.showVat
         ? ''
-        : placeholders?.[key] || '';
+        : mod?.[key] || '';
     })
     .join(' ');
 }
@@ -111,14 +113,13 @@ function handleRawPrice(price, basePrice, response) {
 }
 
 async function createPricingSection(
-  placeholders,
   pricingArea,
   ctaGroup,
 ) {
   pricingArea.classList.add('pricing-area');
-  const priceEl = pricingArea.querySelector(`[title="${PRICE_TOKEN}"]`);
-  const pricingBtnContainer = pricingArea.querySelector('.button-container');
-
+  const priceEl = Array.from(pricingArea.querySelectorAll(`a`)).filter(a => a.textContent === PRICE_TOKEN)[0];
+  const pricingBtnContainer = pricingArea.querySelector('.action-area');
+ 
   if (pricingBtnContainer && priceEl) {
     const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
     const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
@@ -129,8 +130,7 @@ async function createPricingSection(
     const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
     const response = await fetchPlanOnePlans(priceEl?.href);
 
-    const priceSuffixTextContent = getPriceElementSuffix(
-      placeholders,
+    const priceSuffixTextContent = await getPriceElementSuffix(
       placeholderArr,
       response,
     );
@@ -183,7 +183,7 @@ function decorateHeader(header, planExplanation) {
 }
 
 function decorateCardBorder(card, source) {
-  const pattern = /\[\[(.*?)\]\]/g;
+  const pattern = /\(\((.*?)\)\)/g;
   const matches = Array.from(source.textContent?.matchAll(pattern));
   if (matches.length > 0) {
     const [, promoType] = matches[matches.length - 1];
@@ -200,8 +200,7 @@ function decorateCardBorder(card, source) {
 }
 
 export default async function init(el) {
-  addTempWrapper(el, 'simplified-pricing-cards');
-  const placeholders = await fetchPlaceholders();
+  decorateButtonsDeprecated(el)
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
   const cards = [];
@@ -214,7 +213,7 @@ export default async function init(el) {
     }
     decorateCardBorder(card, rows[1].children[0]);
     decorateHeader(rows[0].children[0], rows[2].children[0]);
-    await createPricingSection(placeholders, rows[3].children[0],
+    await createPricingSection(rows[3].children[0],
       rows[4].children[0]);
 
     for (let j = 0; j < rows.length - 2; j += 1) {
@@ -247,7 +246,7 @@ export default async function init(el) {
     observer.observe(column);
   });
 
-  const { debounce } = await import('../../scripts/hofs.js');
+  const { debounce } = await import('../../scripts/utils/hofs.js');
   window.addEventListener('resize', debounce(
     () => {
       equalizeHeights(el);

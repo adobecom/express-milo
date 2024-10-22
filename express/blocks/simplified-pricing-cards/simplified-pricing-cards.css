@@ -262,8 +262,7 @@ main .section>.simplified-pricing-cards-wrapper {
 
 .simplified-pricing-cards .card-cta-group a {
   box-sizing: border-box;
-  margin: 0;
-  width: 100%;
+  margin: 0; 
 }
 
 .simplified-pricing-cards .tooltip {
@@ -309,6 +308,8 @@ main .section>.simplified-pricing-cards-wrapper {
   padding-top: 12px;
   padding-bottom: 12px;
   border-radius: 24px;
+  display: block;
+  width: fit-content;
 }
 
 /* Tooltip CSS */
@@ -406,7 +407,8 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 .simplified-pricing-cards .pricing-footer {
-  margin-top: 24px;
+  width: fit-content;
+  margin: 24px auto auto auto;
 }
 
 .simplified-pricing-cards .pricing-footer div{

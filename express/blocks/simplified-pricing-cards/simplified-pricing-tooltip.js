@@ -1,7 +1,7 @@
-import {
-  createTag,
-  getIconElement,
-} from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 export function adjustElementPosition() {
   const elements = document.querySelectorAll('.tooltip-text');
@@ -24,7 +24,7 @@ export function adjustElementPosition() {
 
 export function handleTooltip(pricingArea) {
   const elements = pricingArea.querySelectorAll('p');
-  const pattern = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
+  const pattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g;
   let tooltip;
   let tooltipDiv;
 
@@ -42,7 +42,7 @@ export function handleTooltip(pricingArea) {
   tooltipDiv.classList.add('tooltip');
   const span = createTag('div', { class: 'tooltip-text' });
   span.innerText = tooltipText;
-  const icon = getIconElement('info', 44, 'Info', 'tooltip-icon');
+  const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
   icon.append(span);
   const iconWrapper = createTag('span');
   iconWrapper.append(icon);
