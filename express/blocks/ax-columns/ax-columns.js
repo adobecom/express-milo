@@ -377,10 +377,11 @@ export default async function decorate(block) {
   }
 
   // add custom background color to columns-highlight-container
-  const sectionContainer = block.closest('.section');
+  const sectionContainer = block.closest('.section:has(.ax-columns.highlight)');
   if (sectionContainer && colorProperties['background-color']) {
     sectionContainer.style.background = colorProperties['background-color'];
   }
+
 
   // invert buttons in regular columns inside columns-highlight-container
   if (sectionContainer && !block.classList.contains('highlight')) {

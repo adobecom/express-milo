@@ -14,7 +14,7 @@ import {
   setLibs,
   buildAutoBlocks,
   decorateArea,
-  removeIrrelevantSections,
+  preDecorateSections,
   getRedirectUri,
 } from './utils.js';
 
@@ -82,7 +82,7 @@ const CONFIG = {
  */
 
 document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-removeIrrelevantSections(document);
+preDecorateSections(document);
 // LCP image decoration
 (function decorateLCPImage() {
   const lcpImg = document.querySelector('img');
@@ -248,6 +248,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     loadStyle('/express/features/table-of-contents-seo/table-of-contents-seo.css');
     import('../features/table-of-contents-seo/table-of-contents-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
   }
+
+  /* region based redirect to homepage */
+  import('./utils/location-utils.js').then(({ getCountry }) => getCountry()).then((country) => {
+    if (country === 'cn') { window.location.href = '/cn'; }
+  });
 
   await loadArea();
   import('./express-delayed.js').then((mod) => {

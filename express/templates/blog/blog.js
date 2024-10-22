@@ -154,11 +154,6 @@ export default async function decorateBlogPage() {
     const section = picture.closest('.section');
     section.classList.add('fullwidth');
   });
-
-  const content = $main.querySelectorAll(':scope > .section > .content');
-  content.forEach((c) => {
-    decorateButtonsDeprecated(c, 'medium');
-  });
 }
 
 await decorateBlogPage();
