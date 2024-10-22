@@ -1,7 +1,7 @@
 .feature-grid {
   position: relative;
   margin: auto;
-  padding: 0 16px;
+  padding: 60px 16px 0;
   overflow: hidden;
   max-width: 375px;
 }
