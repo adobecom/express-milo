@@ -1,10 +1,22 @@
 import { getLibs } from '../../scripts/utils.js';
+import BlockMediator from '../../scripts/block-mediator.min.js';
 
 const [{ createTag, getConfig }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 const PLANS = ['monthly', 'annually'];
-const placeholders = await placeholderMod.replaceKeyArray([...PLANS, 'subscription-type'], getConfig());
+const SPECIAL_PLAN = 'annual-billed-monthly';
+const SUBSCRIPTION_TYPE = 'subscription-type';
+const keyArray = [
+  ...PLANS,
+  SPECIAL_PLAN,
+  SUBSCRIPTION_TYPE,
+];
+const placeholderValues = await placeholderMod.replaceKeyArray(keyArray, getConfig());
+const placeholders = keyArray.reduce((acc, key, index) => {
+  acc[key] = placeholderValues[index];
+  return acc;
+}, {});
 
-function toggleOther(pricingSections, buttons, planIndex) {
+function togglePlan(pricingSections, buttons, planIndex) {
   const button = buttons[planIndex];
   if (button.classList.contains('checked')) return;
   buttons.filter((b) => b !== button).forEach((b) => {
@@ -33,7 +45,7 @@ function focusPreviousButton(buttons, currentIndex) {
   buttons[prevIndex].focus();
 }
 
-function onKeyDown(e, pricingSections, buttons, toggleWrapper) {
+function handleKeyNavigation(e, pricingSections, buttons, toggleWrapper) {
   if (!e.target.isEqualNode(document.activeElement)) return;
   const currentIndex = buttons.indexOf(e.target);
   switch (e.code) {
@@ -50,7 +62,7 @@ function onKeyDown(e, pricingSections, buttons, toggleWrapper) {
     case 'Enter':
     case 'Space':
       e.preventDefault();
-      toggleOther(pricingSections, buttons, currentIndex);
+      togglePlan(pricingSections, buttons, currentIndex);
       break;
     case 'Tab':
       toggleWrapper.nextElementSibling.focus();
@@ -89,40 +101,48 @@ export function tagFreePlan(cardContainer) {
 
 export default function createToggle(pricingSections, groupID, adjElemPos) {
   const subDesc = placeholders?.['subscription-type'] || 'Subscription Type:';
-  const toggleWrapper = createTag('div', { class: 'billing-toggle' });
-  toggleWrapper.innerHTML = `<strong>${subDesc}</strong>`;
-  toggleWrapper.setAttribute('role', 'radiogroup');
-  toggleWrapper.setAttribute('aria-labelledby', groupID);
-  const groupLabel = toggleWrapper.children[0];
-  groupLabel.setAttribute('id', groupID);
-  const buttons = PLANS.map((plan, i) => {
-    const buttonID = `${groupID}:${plan}`;
-    const defaultChecked = i === 0;
+  const toggleWrapper = createTag('div', {
+    class: 'billing-toggle',
+    role: 'radiogroup',
+    'aria-labelledby': groupID,
+  });
+
+  const groupLabel = createTag('strong', { id: groupID }, subDesc);
+  toggleWrapper.appendChild(groupLabel);
+
+  const buttons = PLANS.map((basePlan, i) => {
+    const planLabelID = (BlockMediator.get(groupID) === 'ABM' && placeholders?.[SPECIAL_PLAN] && basePlan === 'monthly')
+      ? SPECIAL_PLAN
+      : basePlan;
+    const label = placeholders?.[planLabelID];
+    const buttonID = `${groupID}:${basePlan}`;
+    // urgent update
+    const isDefault = i === (BlockMediator.get(groupID) === 'ABM' ? 1 : 0);
     const button = createTag('button', {
-      class: defaultChecked ? 'checked' : '',
+      class: isDefault ? 'checked' : '',
       id: buttonID,
-      plan,
-      tabIndex: defaultChecked ? '' : -1,
+      plan: basePlan,
+      role: 'radio',
+      'aria-checked': isDefault.toString(),
+      'aria-labelledby': buttonID,
     });
+
     button.appendChild(createTag('span'));
-    button.setAttribute('aria-checked', defaultChecked);
-    button.setAttribute('aria-labeledby', buttonID);
 
-    const label = placeholders?.[plan] || plan[0].toUpperCase() + plan.slice(1).toLowerCase();
+    button.appendChild(createTag('div', { id: `${buttonID}:radio` }, label));
 
-    button.append(createTag('div', { id: `${buttonID}:radio` }, label));
-    button.setAttribute('role', 'radio');
     button.addEventListener('click', () => {
-      toggleOther(pricingSections, buttons, i);
+      togglePlan(pricingSections, buttons, i);
       adjElemPos();
     });
+
     return button;
   });
 
-  toggleWrapper.addEventListener('keydown', (e) => {
-    onKeyDown(e, pricingSections, buttons, toggleWrapper);
-  });
+  const toggleButtonWrapper = createTag('div', { class: 'toggle-button-wrapper' });
+  toggleButtonWrapper.append(...buttons);
+  toggleWrapper.append(toggleButtonWrapper);
+  toggleWrapper.addEventListener('keydown', (e) => handleKeyNavigation(e, pricingSections, buttons, toggleWrapper));
 
-  toggleWrapper.append(...buttons);
   return toggleWrapper;
 }

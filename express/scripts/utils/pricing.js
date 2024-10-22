@@ -285,15 +285,7 @@ export function shallSuppressOfferEyebrowText(
     return offerIdSuppressMap.get(key);
   }
   let suppressOfferEyeBrowText = false;
-  if (isPremiumCard) {
-    if (isSpecialEyebrowText) {
-      suppressOfferEyeBrowText = !(savePer !== '' && offerTextContent.includes('{{savePercentage}}'));
-    } else if (isPremiumCard === '84EA7C85DEB6D5260ACE527CB41FDF0B' || isPremiumCard === '2D84772E931C704E05CAD34D43BE1746') {
-      suppressOfferEyeBrowText = false;
-    } else {
-      suppressOfferEyeBrowText = true;
-    }
-  } else if (offerTextContent) {
+  if (offerTextContent) {
     suppressOfferEyeBrowText = savePer === '' && offerTextContent.includes('{{savePercentage}}');
   }
   offerIdSuppressMap.set(key, suppressOfferEyeBrowText);
