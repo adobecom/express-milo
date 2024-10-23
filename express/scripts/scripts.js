@@ -210,7 +210,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     document.head.append(budouxExcludeSelector);
   }
 
-  if (getMetadata('sheet-powered') === 'Y') {
+  if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
   }
