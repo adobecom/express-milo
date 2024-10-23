@@ -3,7 +3,6 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
-
 function decorateList(block) {
   const list = [];
 
@@ -16,9 +15,7 @@ function decorateList(block) {
     if (titleEl && textEl) {
       const title = titleEl.textContent.trim();
       const text = textEl.textContent.trim();
-      list.push({
-        title, text,
-      });
+      list.push({ title, text });
     }
   });
   if (list.length > 0) {
