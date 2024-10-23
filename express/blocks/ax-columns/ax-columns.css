@@ -42,7 +42,7 @@
   float: unset;
 }
 
-.section:not(:first-child).ax-columns:not(.extra-wide):first-child:not(:empty) {
+.section:not(:first-child) .ax-columns:not(.extra-wide):first-child:not(:empty) {
   padding-top: 60px;
 }
 
@@ -934,6 +934,9 @@
     flex-direction: row;
     text-align: left;
     align-items: center;
+  }
+
+  .section .ax-columns > div:not(.columns-video) {
     padding: 40px 0;
   }
 

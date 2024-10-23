@@ -147,6 +147,10 @@ main {
     text-decoration: none;
   }
 
+  & video {
+    max-width: 100%;
+  }
+
   & a.button:any-link, & a.con-button:any-link {
     text-decoration: none;
     border-radius: 18px;
@@ -485,28 +489,6 @@ main {
     padding: 120px 15px;
   }
 
-  & #hero.hero-noimage {
-    color: var(--body-color);
-    padding-top: 64px;
-    padding-bottom: 0;
-  }
-
-  & #hero.hero-noimage + .section {
-    padding-top: 0;
-  }
-
-  & #hero.hero-noimage > div {
-    max-width: 1024px;
-  }
-
-  & #hero.hero-noimage a.button:any-link {
-    color: white;
-  }
-
-  & #hero.hero-noimage a:any-link {
-    color: black;
-  }
-
   & #hero h1 {
     font-size: var(--heading-font-size-xl);
     line-height: var(--heading-line-height);
@@ -525,10 +507,6 @@ main {
     font-weight: var(--body-font-weight);
     margin: auto;
     margin-top: 32px;
-  }
-
-  & #hero.hero-noimage p {
-    font-size: var(--body-font-size-s);
   }
 
   & .icon {
@@ -684,6 +662,7 @@ main {
 
   & .section > .content {
     text-align: center;
+    max-width: 375px;
   }
 
   & .section .content p, .section p {
@@ -840,6 +819,10 @@ main {
     & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
       display: inline-block;
     }
+
+    & .section > .content {
+      max-width: 830px;
+    }
   }
 
   @media (min-width: 1200px) {
@@ -911,6 +894,10 @@ main {
     & .free-plan-bullet .free-plan-bullet-container,
     & .free-plan-widget-placeholder {
       max-width: 400px;
+    }
+
+    & .section > .content {
+      max-width: 1024px;
     }
   }
 
@@ -1010,6 +997,34 @@ main {
     & .marquee.transpiled.small .asset {
       order: 2;
     }
+  }
+}
+
+body:not(.blog) main {
+  & #hero:not(:has(.hero-bg)) {
+    color: var(--body-color);
+    padding-top: 64px;
+    padding-bottom: 0;
+  }
+
+  & #hero:not(:has(.hero-bg)) + .section {
+    padding-top: 0;
+  }
+
+  & #hero:not(:has(.hero-bg)) > div {
+    max-width: 1024px;
+  }
+
+  & #hero:not(:has(.hero-bg)) a.button:any-link {
+    color: white;
+  }
+
+  & #hero:not(:has(.hero-bg)) a:any-link {
+    color: black;
+  }
+
+  & #hero:not(:has(.hero-bg)) p {
+    font-size: var(--body-font-size-s);
   }
 }
 

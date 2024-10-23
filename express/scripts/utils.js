@@ -155,7 +155,7 @@ export function preDecorateSections(area) {
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
-      else if(sectionMeta.anchor) section.id = sectionMeta.anchor;
+      else if (sectionMeta.anchor) section.id = sectionMeta.anchor;
     }
   });
 
@@ -409,7 +409,7 @@ export function decorateArea(area = document) {
   addPromotion(area);
 
   const selector = area === document ? 'main > div' : ':scope > div';
-  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'quick-action-hub', 'template-x'].map((block) => `${selector} .${block} a`).join(', ');
+  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x'].map((block) => `${selector} .${block} a`).join(', ');
   [...area.querySelectorAll(videoLinksToNotAutoBlock)].forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
   });
