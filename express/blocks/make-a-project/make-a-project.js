@@ -6,8 +6,8 @@ import { fixIcons } from '../../scripts/utils/icons.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
-export default function decorate($block) {
-  fixIcons($block);
+export default async function decorate($block) {
+  await fixIcons($block);
   addTempWrapperDeprecated($block, 'make-a-project');
 
   if ($block.children.length) {
