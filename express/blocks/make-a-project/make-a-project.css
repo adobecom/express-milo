@@ -1,18 +1,11 @@
-main .section.make-a-project-container {
-  padding-top: 0;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-main .section.make-a-project-container > div {
-  margin: 0;
-  padding: 0;
-  max-width: unset;
+main .section .make-a-project-wrapper:has(.make-a-project.centered) {
+  max-width: 375px;
+  margin: 0 auto;
 }
 
 main .section:has(.make-a-project) h2 {
   margin: 80px 0 40px;
-} 
+}
 
 main .make-a-project {
   display: flex;
@@ -396,6 +389,10 @@ main .make-a-project .make-a-project-projectlist .make-a-project-item picture {
   main .make-a-project .make-a-project-marquee h2 {
     margin-bottom: 0;
   }
+
+  main .section .make-a-project-wrapper:has(.make-a-project.centered) {
+    max-width: 830px;
+  }
 }
 
 main .make-a-project:not(.dark) .make-a-project-CTA {
@@ -479,4 +476,10 @@ main .default-content-wrapper + .make-a-project-wrapper > .make-a-project {
 
 main .make-a-project .carousel-container .carousel-platform {
   padding-top: 0;
+}
+
+@media(min-width: 1200px) {
+  main .section .make-a-project-wrapper:has(.make-a-project.centered) {
+    max-width: 1024px;
+  }
 }

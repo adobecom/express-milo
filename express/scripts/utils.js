@@ -130,7 +130,7 @@ function hideQuickActionsOnDevices() {
   document.head.append(fqaMeta);
 }
 
-export function removeIrrelevantSections(area) {
+export function preDecorateSections(area) {
   if (!area) return;
   const selector = area === document ? 'body > main > div' : ':scope > div';
   area.querySelectorAll(selector).forEach((section) => {
@@ -155,6 +155,7 @@ export function removeIrrelevantSections(area) {
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
+      else if (sectionMeta.anchor) section.id = sectionMeta.anchor;
     }
   });
 
@@ -360,9 +361,34 @@ function removeBillingRadios(area) {
   [...billingRadioBlocks].forEach((el) => el.remove());
 }
 
+function addPromotion(area) {
+  const customPromotion = document.querySelector('main .promotion.auto-promotion');
+  const promotion = area.querySelector('main .promotion:not(.auto-promotion)');
+  // check for existing promotion
+  if (promotion && customPromotion) {
+    customPromotion.remove();
+  } else if (!promotion && !customPromotion && !document.querySelector('main .promotion')) {
+    // extract category from metadata
+    const category = getMetadata('category');
+    if (category) {
+      const promos = {
+        photo: 'photoshop',
+        design: 'illustrator',
+        video: 'premiere',
+      };
+      // insert promotion at the bottom
+      if (promos[category]) {
+        const $promoSection = createTag('div', { class: 'section' });
+        $promoSection.innerHTML = `<div class="promotion auto-promotion" data-block-name="promotion"><div><div>${promos[category]}</div></div></div>`;
+        document.querySelector('main').append($promoSection);
+      }
+    }
+  }
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  removeIrrelevantSections(area);
+  preDecorateSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
@@ -380,9 +406,10 @@ export function decorateArea(area = document) {
 
   fragmentBlocksToLinks(area);
   renameConflictingBlocks(area);
+  addPromotion(area);
 
   const selector = area === document ? 'main > div' : ':scope > div';
-  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'quick-action-hub', 'template-x'].map((block) => `${selector} .${block} a[href*=".mp4"]`).join(', ');
+  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x'].map((block) => `${selector} .${block} a`).join(', ');
   [...area.querySelectorAll(videoLinksToNotAutoBlock)].forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
   });

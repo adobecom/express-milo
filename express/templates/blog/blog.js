@@ -1,7 +1,6 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs, toClassName } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -153,11 +152,6 @@ export default async function decorateBlogPage() {
   pictures.forEach((picture) => {
     const section = picture.closest('.section');
     section.classList.add('fullwidth');
-  });
-
-  const content = $main.querySelectorAll(':scope > .section > .content');
-  content.forEach((c) => {
-    decorateButtonsDeprecated(c, 'medium');
   });
 }
 
