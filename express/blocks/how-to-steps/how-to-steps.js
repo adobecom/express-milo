@@ -1,7 +1,7 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs } from '../../scripts/utils.js';
-import { decorateButtonsDeprecated } from "../../scripts/utils/decorate.js";
-import { getIconElementDeprecated } from "../../scripts/utils/icons.js";
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
