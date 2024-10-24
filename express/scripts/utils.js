@@ -362,12 +362,12 @@ function removeBillingRadios(area) {
 }
 
 function addPromotion(area) {
-  const customPromotion = document.querySelector('main .promotion.custom-promotion');
-  const promotion = area.querySelector('main .promotion:not(.custom-promotion)');
+  const customPromotion = document.querySelector('main .promotion.auto-promotion');
+  const promotion = area.querySelector('main .promotion:not(.auto-promotion)');
   // check for existing promotion
   if (promotion && customPromotion) {
     customPromotion.remove();
-  } else if (!promotion && !customPromotion) {
+  } else if (!promotion && !customPromotion && !document.querySelector('main .promotion')) {
     // extract category from metadata
     const category = getMetadata('category');
     if (category) {
@@ -379,7 +379,7 @@ function addPromotion(area) {
       // insert promotion at the bottom
       if (promos[category]) {
         const $promoSection = createTag('div', { class: 'section' });
-        $promoSection.innerHTML = `<div class="promotion custom-promotion" data-block-name="promotion"><div><div>${promos[category]}</div></div></div>`;
+        $promoSection.innerHTML = `<div class="promotion auto-promotion" data-block-name="promotion"><div><div>${promos[category]}</div></div></div>`;
         document.querySelector('main').append($promoSection);
       }
     }

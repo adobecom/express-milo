@@ -1,6 +1,6 @@
 import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
-import {decorateButtonsDeprecated} from "./utils/decorate.js";
+import { decorateButtonsDeprecated } from './utils/decorate.js';
 
 const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 

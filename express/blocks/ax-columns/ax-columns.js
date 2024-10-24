@@ -382,7 +382,6 @@ export default async function decorate(block) {
     sectionContainer.style.background = colorProperties['background-color'];
   }
 
-
   // invert buttons in regular columns inside columns-highlight-container
   if (sectionContainer && !block.classList.contains('highlight')) {
     block.querySelectorAll('a.button, a.con-button').forEach((button) => {
