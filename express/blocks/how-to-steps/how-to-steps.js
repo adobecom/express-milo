@@ -1,7 +1,9 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs } from '../../scripts/utils.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag, getIconElement } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 function renderHoverContainer(imgElement, row, buttonContainer) {
   let hoverContainer;
@@ -13,7 +15,7 @@ function renderHoverContainer(imgElement, row, buttonContainer) {
       row.style.position = 'relative';
 
       const wrapper = createTag('div', { class: 'share-icon-wrapper' });
-      const shareIcon = getIconElement('share-arrow');
+      const shareIcon = getIconElementDeprecated('share-arrow');
       wrapper.appendChild(shareIcon);
       hoverContainer.appendChild(wrapper);
 
@@ -56,6 +58,7 @@ function renderHoverContainer(imgElement, row, buttonContainer) {
 }
 
 export default function decorate(block) {
+  decorateButtonsDeprecated(block);
   const howto = block;
   const heading = howto.closest('.section').querySelector('h2, h3, h4');
   const rows = Array.from(howto.children);

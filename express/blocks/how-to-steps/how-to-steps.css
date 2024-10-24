@@ -7,7 +7,7 @@
   padding: 32px 0;
 }
 
-main .section:has(.how-to-steps) > div {
+main .how-to-steps {
   padding: 0 20px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -80,7 +80,7 @@ main .how-to-steps .tip-number span {
 
 main .how-to-steps.narrow {
   max-width: 850px;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 main .how-to-steps.narrow-mobile-width {
@@ -102,10 +102,10 @@ main .how-to-steps.inline-tip.narrow-mobile-width .tip .tip-number {
 
 main .how-to-steps .narrow {
   max-width: 850px;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
-main .section .template-x-container, 
+main .section .template-x-container,
 main .section .template-x-container .template-x-heading {
   display: flex;
   flex-direction: column;
@@ -140,8 +140,8 @@ main .section .template-x-heading {
 }
 
 .template-x-thumbnail picture img {
-  width: 200px; 
-  height: auto;  
+  width: 200px;
+  height: auto;
 }
 
 .template-x-thumbnail picture img.icon-share-arrow {
@@ -180,7 +180,7 @@ main .section .template-x-heading {
 }
 
 .share-icon-wrapper svg {
-  width: 16px; 
+  width: 16px;
   height: 16px;
   cursor: pointer;
 }
@@ -235,6 +235,6 @@ main .section .template-x-heading {
   main .how-to-steps {
     max-width: 1070px;
     padding: 0 40px;
-    margin: 0 auto; 
+    margin: 0 auto;
   }
 }
