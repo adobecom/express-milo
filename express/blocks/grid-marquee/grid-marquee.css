@@ -5,11 +5,10 @@
   --t-img-h: 152px;
   --d-img-w: 256px;
   --d-img-h: 199px;
-}
-.grid-marquee {
   max-width: initial;
   text-align: center;
 }
+
 .grid-marquee .express-logo {
   width: initial;
   height: 30px;
@@ -54,7 +53,6 @@
   position: absolute;
   top: 50%;
   object-fit: fill;
-  max-width: none;
   width: 250%;
   transform: translate(-50%, -35%);
   max-height: 600px;
@@ -247,7 +245,7 @@
   align-items: center;
   padding-top: 40px;
   gap: 12px 48px;
-  height: 39px;
+  min-height: 39px;
 }
 
 .grid-marquee .ratings-container {
@@ -381,9 +379,5 @@
     border-top: none;
     padding: 6px 16px;
     font-size: var(--body-font-size-l);
-  }
-
-  .grid-marquee .card {
-    padding: 16px;
   }
 }

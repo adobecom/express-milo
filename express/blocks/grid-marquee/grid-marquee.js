@@ -1,6 +1,7 @@
 import { getLibs, yieldToMain } from '../../scripts/utils.js';
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+
+const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 let currDrawer = null;
 const desktopMQ = window.matchMedia('(min-width: 1200px)');
@@ -43,9 +44,7 @@ function drawerOn(drawer) {
   }
   currDrawer = drawer;
 }
-document.addEventListener('click', (e) => {
-  currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff();
-});
+document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
 let isTouch;
 const iconRegex = /icon-(.+)/;
 async function decorateDrawer(video, poster, titleText, panels, panelsFrag, drawer) {
@@ -154,11 +153,42 @@ function toCard(drawer) {
   return { card, lazyCB };
 }
 
+async function formatDynamicCartLink(a, plan) {
+  try {
+    const {
+      fetchPlanOnePlans,
+      buildUrl,
+    } = await import('../../scripts/utils/pricing.js');
+    const pattern = /.*commerce.*adobe\.com.*/;
+    if (pattern.test(a.href)) {
+      let response;
+      if (!plan) {
+        response = await fetchPlanOnePlans(a.href);
+      } else {
+        response = plan;
+      }
+      const newTrialHref = buildUrl(
+        response.url,
+        response.country,
+        response.language,
+        response.offerId,
+      );
+      a.href = newTrialHref;
+    }
+  } catch (error) {
+    window.lana.log(`Failed to fetch prices for page plan: ${error}`);
+  }
+  return a;
+}
+
 function decorateHeadline(headline) {
   const ctas = headline.querySelectorAll('a');
   if (!ctas.length) return headline;
   ctas[0].parentElement.classList.add('ctas');
-  ctas.forEach((cta) => cta.classList.add('button'));
+  ctas.forEach((cta) => {
+    cta.classList.add('button');
+    formatDynamicCartLink(cta);
+  });
   ctas[0].classList.add('primaryCTA');
   headline.classList.add('headline');
   return headline;
@@ -182,8 +212,8 @@ function makeRatings() {
   const ratings = createTag('div', { class: 'ratings' });
   const userAgent = getMobileOperatingSystem();
   const cb = (el) => el && ratings.append(el);
-  userAgent !== 'Android' && makeRating('apple').then(cb);
-  userAgent !== 'iOS' && makeRating('google').then(cb);
+  if (userAgent !== 'Android') makeRating('apple').then(cb);
+  if (userAgent !== 'iOS') makeRating('google').then(cb);
   return ratings;
 }
 
