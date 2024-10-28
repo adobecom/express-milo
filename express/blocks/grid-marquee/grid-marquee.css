@@ -354,7 +354,7 @@
   .grid-marquee .drawer[aria-hidden='true'] {
     opacity: 0;
     visibility: hidden;
-    bottom: initial;
+    transform: initial;
   }
 
   .grid-marquee .drawer .title-row {
