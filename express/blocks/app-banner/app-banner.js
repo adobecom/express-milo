@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
-import {fixIcons, getIconElementDeprecated} from '../../scripts/utils/icons.js';
-import {addTempWrapperDeprecated, decorateButtonsDeprecated} from '../../scripts/utils/decorate.js';
+import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const [{ createTag, getConfig }, { replaceKeyArray }] = await Promise.all([
   import(`${getLibs()}/utils/utils.js`),
