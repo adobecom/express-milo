@@ -95,7 +95,6 @@ function addCloseBtn(block) {
 }
 
 function initScrollDirection(block) {
-    debugger;
   const $section = block.closest('.section');
   const background = $section.querySelector('.gradient-background');
   let lastScrollTop = 0;
