@@ -1,4 +1,3 @@
-
 import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
@@ -7,8 +6,8 @@ import { fixIcons } from '../../scripts/utils/icons.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
-export default function decorate($block) {
-  fixIcons($block);
+export default async function decorate($block) {
+  await fixIcons($block);
   addTempWrapperDeprecated($block, 'make-a-project');
 
   if ($block.children.length) {

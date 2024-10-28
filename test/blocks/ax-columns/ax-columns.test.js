@@ -30,14 +30,14 @@ describe('Columns', () => {
   it('Columns exists', async () => {
     const body = await readFile({ path: './mocks/body.html' });
     document.body.innerHTML = body;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
     expect(columns).to.exist;
   });
 
   it('ElementsMinHeight should be 0', (done) => {
     document.body.innerHTML = fullsize;
-    const columns = document.querySelector('.columns.fullsize');
+    const columns = document.querySelector('.ax-columns.fullsize');
     decorate(columns);
     const h3s = columns.querySelectorAll('h3');
 
@@ -52,7 +52,7 @@ describe('Columns', () => {
 
   it('Should render a numbered column', () => {
     document.body.innerHTML = numbered30;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const columnNumber = columns.querySelector('.num');
@@ -61,7 +61,7 @@ describe('Columns', () => {
 
   it('Should render an offer column & have only 1 row', () => {
     document.body.innerHTML = offer;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const rows = Array.from(columns.children);
@@ -70,7 +70,7 @@ describe('Columns', () => {
 
   it('Should transform primary color to bg color and secondary color to fill', () => {
     document.body.innerHTML = color;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const imgWrapper = columns.querySelector('.img-wrapper');
@@ -80,7 +80,7 @@ describe('Columns', () => {
 
   it('Should render an offer column and decorate icons', () => {
     document.body.innerHTML = offerIcon;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const title = columns.querySelector('h1');
@@ -91,7 +91,7 @@ describe('Columns', () => {
 
   it('Should render a column and decorate icons', () => {
     document.body.innerHTML = icon;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const iconDecorate = columns.querySelector('.brand');
@@ -102,7 +102,7 @@ describe('Columns', () => {
 
   it('Should render a column and decorate icons with sibling', () => {
     document.body.innerHTML = iconWithSibling;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const columnsIcon = columns.querySelector('.columns-iconlist');
@@ -111,7 +111,7 @@ describe('Columns', () => {
 
   it('Should contain right classes if column video has highlight', () => {
     document.body.innerHTML = highlight;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const highlightRow = columns.querySelector('#hightlight-row');
@@ -126,7 +126,7 @@ describe('Columns', () => {
 
   it('Icon list should be wrapped in a column-iconlist div', () => {
     document.body.innerHTML = iconList;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const childrenLength = columns.children.length;
@@ -137,7 +137,7 @@ describe('Columns', () => {
 
   it('Embed vidoes if href includes youtu or vimeo', () => {
     document.body.innerHTML = video;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const links = document.querySelectorAll('.button-container > a');
@@ -149,7 +149,7 @@ describe('Columns', () => {
 
   it('Picture should be wrapped in a div if it exists', () => {
     document.body.innerHTML = picture;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const picDiv = columns.querySelector('picture');
@@ -159,7 +159,7 @@ describe('Columns', () => {
 
   it('Should replace accent to primary if button contains classList light', () => {
     document.body.innerHTML = buttonLight;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const button = columns.querySelector('.button');
@@ -169,7 +169,7 @@ describe('Columns', () => {
 
   it('P should be removed if empty', () => {
     document.body.innerHTML = buttonLight;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const p = columns.querySelectorAll('p');
@@ -178,7 +178,7 @@ describe('Columns', () => {
 
   it('Powered by classList should be added if innerText matches/has Powered By', () => {
     document.body.innerHTML = buttonLight;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const poweredBy = columns.querySelector('.powered-by');
@@ -187,7 +187,7 @@ describe('Columns', () => {
 
   it('Invert buttons in regular columns inside columns-highlight-container', () => {
     document.body.innerHTML = notHighlight;
-    const columns = document.querySelector('.columns');
+    const columns = document.querySelector('.ax-columns');
     decorate(columns);
 
     const button = columns.querySelector('.button');

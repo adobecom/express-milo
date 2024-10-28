@@ -7,6 +7,10 @@ main .list {
     justify-content: space-evenly;
 }
 
+.section .banner + .list-wrapper {
+    padding-top: 60px;
+}
+
 main .list .item {
     margin-bottom: 50px;
     width: 310px;
@@ -27,7 +31,7 @@ main .list .item-text {
     line-height: 1.4;
 }
 
-main .list li, 
+main .list li,
 main .list p {
   line-height: 200%
 }
