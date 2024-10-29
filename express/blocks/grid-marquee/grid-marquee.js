@@ -153,31 +153,27 @@ function toCard(drawer) {
   return { card, lazyCB };
 }
 
-async function formatDynamicCartLink(a, plan) {
+async function formatDynamicCartLink(a) {
   try {
+    const pattern = /.*commerce.*adobe\.com.*/gm;
+    if (!pattern.test(a.href)) return a;
+    a.style.visibility = 'hidden';
     const {
       fetchPlanOnePlans,
       buildUrl,
     } = await import('../../scripts/utils/pricing.js');
-    const pattern = /.*commerce.*adobe\.com.*/;
-    if (pattern.test(a.href)) {
-      let response;
-      if (!plan) {
-        response = await fetchPlanOnePlans(a.href);
-      } else {
-        response = plan;
-      }
-      const newTrialHref = buildUrl(
-        response.url,
-        response.country,
-        response.language,
-        response.offerId,
-      );
-      a.href = newTrialHref;
-    }
+    const {
+      url,
+      country,
+      language,
+      offerId,
+    } = await fetchPlanOnePlans(a.href);
+    const newTrialHref = buildUrl(url, country, language, offerId);
+    a.href = newTrialHref;
   } catch (error) {
     window.lana.log(`Failed to fetch prices for page plan: ${error}`);
   }
+  a.style.visibility = 'visible';
   return a;
 }
 
@@ -224,10 +220,12 @@ export default function init(el) {
   logo.classList.add('express-logo');
   const cards = items.map((item) => toCard(item));
   const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
+  [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
   foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [makeRatings()] : []));
   background.classList.add('background');
   el.append(foreground);
   new IntersectionObserver((entries, ob) => {
+    console.log('io!');
     ob.unobserve(el);
     cards.forEach((card) => card.lazyCB());
   }).observe(el);
