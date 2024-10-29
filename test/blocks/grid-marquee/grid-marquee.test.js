@@ -2,6 +2,12 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import { delay } from '../../helpers/waitfor.js';
 
+const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js')]);
+const { getLibs } = imports[0];
+await import(`${getLibs()}/utils/utils.js`).then((mod) => {
+  const conf = {};
+  mod.setConfig(conf);
+});
 const [, { default: decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/grid-marquee/grid-marquee.js')]);
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('grid-marquee', () => {
