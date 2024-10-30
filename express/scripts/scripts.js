@@ -218,16 +218,10 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   // Decorate the page with site specific needs.
   decorateArea();
 
-  if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
-    // TODO only add this back once we're consuming the milo version of gnav
-    // const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
-    // document.head.append(meta);
-    // TODO add with gnav task
-    // eslint-disable-next-line max-len
-    // import('./gnav.js').then((gnav) => gnav.buildBreadCrumbArray(getConfig().locale.prefix.replaceAll('/', ''))).then((breadcrumbs) => {
-    //   if (breadcrumbs && breadcrumbs.length) document.body.classList.add('breadcrumbs-spacing');
-    // });
-  } else if (getMetadata('breadcrumbs') === 'on' && !!getMetadata('breadcrumbs-base') && (!!getMetadata('short-title') || !!getMetadata('breadcrumbs-page-title'))) document.body.classList.add('breadcrumbs-spacing');
+  // TODO remove this after we go live
+  const breadcrumbHiddenEntries = document.head.querySelector('meta[name="breadcrumbs-hidden-entries"]');
+  if (breadcrumbHiddenEntries && !breadcrumbHiddenEntries.content.includes('express')) { breadcrumbHiddenEntries.content += ',express'; }
+  // end TODO
 
   loadLana({ clientId: 'express' });
 
