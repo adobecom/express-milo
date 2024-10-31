@@ -24,7 +24,6 @@ main .section>.simplified-pricing-cards-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  width: fit-content;
   margin: 16px auto auto auto;
 }
 
