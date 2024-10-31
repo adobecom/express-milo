@@ -218,11 +218,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   // Decorate the page with site specific needs.
   decorateArea();
 
-  // TODO remove this after we go live
-  const breadcrumbHiddenEntries = document.head.querySelector('meta[name="breadcrumbs-hidden-entries"]');
-  if (breadcrumbHiddenEntries && !breadcrumbHiddenEntries.content.includes('express')) { breadcrumbHiddenEntries.content += ',express'; }
-  // end TODO
-
   loadLana({ clientId: 'express' });
 
   // prevent milo gnav from loading
