@@ -3,7 +3,7 @@
 }
 
 .how-to-cards {
-    max-width: 1440px;
+    max-width: 1280px;
     margin: auto;
 }
 
@@ -14,10 +14,20 @@
     margin-top: 0;
 }
 
-.how-to-cards .text h2,
+.how-to-cards .text {
+    padding: 0 16px;
+}
+
+.how-to-cards .text h2 {
+    text-align: left;
+}
+
 .how-to-cards .text p {
     text-align: left;
-    padding: 0 16px;
+    margin: 0;
+    padding: 8px 0 32px 0;
+    font-size: var(--body-font-size-l);
+
 }
 
 .how-to-cards .cards-container {
@@ -98,6 +108,12 @@
 @media (min-width: 480px) {
     .how-to-cards .card {
         width: 308px;
+    }
+}
+
+@media (min-width: 900px) {
+    .how-to-cards {
+        padding: 0 0 0 40px;
     }
 }
 

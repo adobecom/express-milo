@@ -4,8 +4,7 @@ import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 const [{ decorateButtons }, { createTag, getMetadata, getConfig }, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/decorate.js`),
   import(`${getLibs()}/utils/utils.js`),
   import(`${getLibs()}/features/placeholders.js`)]);
-const [describeImageMobile, describeImageDesktop, generate, useThisPrompt, promptTitle] = await
-replaceKeyArray(['describe-image-mobile', 'describe-image-desktop', 'generate', 'use-this-prompt', 'prompt-title'], getConfig());
+const [generate, useThisPrompt, promptTitle] = await replaceKeyArray(['generate', 'use-this-prompt', 'prompt-title'], getConfig());
 
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
@@ -34,20 +33,25 @@ function handleGenAISubmit(form, link) {
   if (genAILink) windowHelper.redirect(urlObj.toString());
 }
 
-function createEnticement(enticementDetail, enticementLink, mode) {
-  const enticementDiv = createTag('div', { class: 'enticement-container' });
+// eslint-disable-next-line max-len
+function createEnticement(enticementDetail, enticementPlaceholder, enticementPlaceholerMobile, enticementLink, mode) {
+  const enticementDiv = createTag('form', { class: 'enticement-container' });
   const svgImage = getIconElementDeprecated('enticement-arrow', 60);
   const arrowText = enticementDetail;
   const enticementText = createTag('span', { class: 'enticement-text' }, arrowText.trim());
-  const mobilePlacehoderText = describeImageMobile !== 'describe image mobile' ? describeImageMobile : 'Describe your image...';
-  const desktopPlaceholderText = describeImageDesktop !== 'describe image desktop' ? describeImageDesktop : 'Describe the image you want to create...';
-  const input = createTag('input', { type: 'text', placeholder: window.screen.width < 600 ? mobilePlacehoderText : desktopPlaceholderText });
+  const input = createTag('input', { type: 'text', placeholder: window.screen.width < 600 ? enticementPlaceholerMobile : enticementPlaceholder });
   const buttonContainer = createTag('span', { class: 'button-container' });
-  const button = createTag('button', { class: 'generate-small-btn' });
+  const button = createTag('input', { class: 'generate-small-btn', type: 'submit' });
+
   buttonContainer.append(button);
-  button.textContent = generate;
-  button.addEventListener('click', () => handleGenAISubmit(enticementDiv, enticementLink));
+  button.value = generate;
+
+  enticementDiv.addEventListener('submit', (e) => {
+    e.preventDefault();
+    handleGenAISubmit(enticementDiv, enticementLink);
+  });
   enticementDiv.append(enticementText, svgImage, input, buttonContainer);
+
   if (mode === 'light') enticementText.classList.add('light');
   return enticementDiv;
 }
@@ -93,19 +97,28 @@ async function setHorizontalMasonry(el) {
   const enticementMode = el.classList.contains('light') ? 'light' : 'dark';
   const enticementText = enticementElement.textContent.trim();
   const enticementLink = enticementElement.href;
+  const enticementPlaceholder = args[1].textContent;
+  const enticementPlaceholerMobile = args[2].textContent;
   args[0].remove();
+  args[1].remove();
+  args[2].remove();
 
-  el.querySelector('.interactive-container').appendChild(createEnticement(enticementText, enticementLink, enticementMode));
-  for (let i = 1; i < args.length; i += 3) {
+  el.querySelector('.interactive-container').appendChild(createEnticement(enticementText, enticementPlaceholder, enticementPlaceholerMobile, enticementLink, enticementMode));
+  for (let i = 3; i < args.length; i += 3) {
     const divider = args[i];
     divider.remove();
     const prompt = args[i + 1];
     prompt.classList.add('overlay');
 
-    const image = args[i + 2];
-    image.classList.add('image-container');
-    image.appendChild(prompt);
-    image.appendChild(createPromptLinkElement(link.href, prompt.textContent));
+    const pictureContainer = args[i + 2];
+    pictureContainer.classList.add('image-container');
+    pictureContainer.appendChild(prompt);
+    pictureContainer.appendChild(createPromptLinkElement(link.href, prompt.textContent));
+
+    const image = pictureContainer.querySelector('img');
+    if (image.width < image.height) {
+      image.classList.add('tall-prompt-image');
+    }
 
     const title = createTag('div', { class: 'prompt-title' });
     title.textContent = promptTitle !== 'prompt title' ? promptTitle : 'Prompt used';

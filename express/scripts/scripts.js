@@ -14,7 +14,7 @@ import {
   setLibs,
   buildAutoBlocks,
   decorateArea,
-  removeIrrelevantSections,
+  preDecorateSections,
   getRedirectUri,
 } from './utils.js';
 
@@ -49,7 +49,6 @@ const CONFIG = {
     cn: { ietf: 'zh-CN', tk: 'qxw8hzm' },
     de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
     dk: { ietf: 'da-DK', tk: 'aaz7dvd.css' },
-    eg: { ietf: 'en-EG', tk: 'pps7abe.css' },
     es: { ietf: 'es-ES', tk: 'oln4yqj.css' },
     fi: { ietf: 'fi-FI', tk: 'aaz7dvd.css' },
     fr: { ietf: 'fr-FR', tk: 'vrk5vyv.css' },
@@ -83,7 +82,7 @@ const CONFIG = {
  */
 
 document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-removeIrrelevantSections(document);
+preDecorateSections(document);
 // LCP image decoration
 (function decorateLCPImage() {
   const lcpImg = document.querySelector('img');
@@ -193,6 +192,11 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   document.head.append(googleLoginRedirect);
   // end TODO remove metadata after we go live
 
+  if (getMetadata('template-search-page') === 'Y') {
+    const { default: redirect } = await import('./utils/template-redirect.js');
+    await redirect();
+  }
+
   const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
   const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
   if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
@@ -206,7 +210,7 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     document.head.append(budouxExcludeSelector);
   }
 
-  if (getMetadata('sheet-powered') === 'Y') {
+  if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
   }
@@ -214,16 +218,10 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   // Decorate the page with site specific needs.
   decorateArea();
 
-  if (getMetadata('hide-breadcrumbs') !== 'true' && !getMetadata('breadcrumbs') && !window.location.pathname.endsWith('/express/')) {
-    // TODO only add this back once we're consuming the milo version of gnav
-    // const meta = createTag('meta', { name: 'breadcrumbs', content: 'on' });
-    // document.head.append(meta);
-    // TODO add with gnav task
-    // eslint-disable-next-line max-len
-    // import('./gnav.js').then((gnav) => gnav.buildBreadCrumbArray(getConfig().locale.prefix.replaceAll('/', ''))).then((breadcrumbs) => {
-    //   if (breadcrumbs && breadcrumbs.length) document.body.classList.add('breadcrumbs-spacing');
-    // });
-  } else if (getMetadata('breadcrumbs') === 'on' && !!getMetadata('breadcrumbs-base') && (!!getMetadata('short-title') || !!getMetadata('breadcrumbs-page-title'))) document.body.classList.add('breadcrumbs-spacing');
+  // TODO remove this after we go live
+  const breadcrumbHiddenEntries = document.head.querySelector('meta[name="breadcrumbs-hidden-entries"]');
+  if (breadcrumbHiddenEntries && !breadcrumbHiddenEntries.content.includes('express')) { breadcrumbHiddenEntries.content += ',express'; }
+  // end TODO
 
   loadLana({ clientId: 'express' });
 
@@ -239,6 +237,16 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
+
+  if (getMetadata('toc-seo') === 'on') {
+    loadStyle('/express/features/table-of-contents-seo/table-of-contents-seo.css');
+    import('../features/table-of-contents-seo/table-of-contents-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
+  }
+
+  /* region based redirect to homepage */
+  import('./utils/location-utils.js').then(({ getCountry }) => getCountry()).then((country) => {
+    if (country === 'cn') { window.location.href = '/cn'; }
+  });
 
   await loadArea();
   import('./express-delayed.js').then((mod) => {

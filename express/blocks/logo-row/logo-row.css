@@ -1,11 +1,18 @@
 main .logo-row {
-    max-width: 1024px;
+    max-width: 1280px;
     margin: auto;
 }
 
 main .logo-row .block-row {
     display: flex;
-    width: 100%;
+    width: fit-content;
+    margin: auto;
+}
+
+.logo-row .text-column {
+    margin: auto 0 auto auto;
+    padding-right: 40px;
+    max-width: 300px;
 }
 
 main .logo-row .block-layout {
@@ -36,12 +43,18 @@ main .logo-row .image-column {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
+    gap: 40px;
+}
+
+.logo-row.numerous .image-column {
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
 main .logo-row .brand-image {
-    width: 150px;
-    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
     object-fit: contain;
 }
 
@@ -58,7 +71,10 @@ main .logo-row .brand-image {
     }
 
     main .logo-row .image-column {
-        display: block;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
     }
 
     main .logo-row .block-row {
@@ -66,11 +82,16 @@ main .logo-row .brand-image {
     }
 
     main .logo-row .text-column  {
-
+        margin: auto;
         padding-bottom: 20px;
         padding-right: initial;
     }
     main .logo-row .text-column > * {
         text-align: center;
+    }
+
+    main .logo-row .brand-image {
+        max-height: 100px;
+        object-fit: contain;
     }
 }

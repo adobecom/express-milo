@@ -8,6 +8,10 @@
   padding-bottom: 40px;
 }
 
+.section:has(.ax-columns) .content:first-child > h2, .section:has(.ax-columns) .content:first-child > h3 {
+  padding-top: 60px
+}
+
 .ax-columns {
   padding-left: 15px;
   padding-right: 15px;
@@ -31,7 +35,14 @@
   gap: 40px;
 }
 
-.ax-columns:not(.extra-wide):first-child:not(:empty) {
+.ax-columns .express-logo.icon {
+  width: unset;
+  height: 30px;
+  padding-bottom: 8px;
+  float: unset;
+}
+
+.section:not(:first-child) .ax-columns:not(.extra-wide):first-child:not(:empty) {
   padding-top: 60px;
 }
 
@@ -82,7 +93,7 @@
   background: var(--gradient-highlight-vertical);
 }
 
-.ax-columns p {
+.section .ax-columns p {
   margin: 16px 0;
   font-size: var(--body-font-size-l);
   line-height: 1.33;
@@ -91,6 +102,23 @@
 .ax-columns p.powered-by {
   font-size: var(--body-font-size-m);
   line-height: 1.2;
+}
+
+.ax-columns .phone-number-cta-row {
+  font-style: normal;
+  margin: 20px auto auto auto;
+  width: fit-content;
+  display: block;
+}
+
+.ax-columns .trial-cta {
+  display: block;
+  margin: auto;
+}
+
+.ax-columns .phone-number-cta-row a.phone {
+  text-decoration: underline;
+  color: var(--color-black);
 }
 
 .ax-columns p.button-container, .ax-columns .con-button {
@@ -137,51 +165,51 @@
   margin: 15px 0;
 }
 
-.ax-columns h1 {
+.section .ax-columns h1 {
   font-size: var(--heading-font-size-xxl);
   line-height: 1.06;
 }
 
-.ax-columns h1.columns-heading-long {
+.section .ax-columns h1.columns-heading-long {
   font-size: var(--heading-font-size-xl);
 }
 
-.ax-columns h1.columns-heading-very-long {
+.section .ax-columns h1.columns-heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-.ax-columns h1.columns-heading-x-long {
+.section .ax-columns h1.columns-heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
-.ax-columns h2 {
+.section .ax-columns h2 {
   font-size: var(--heading-font-size-xl);
   line-height: 1.08;
   margin: 0;
 }
 
-.ax-columns h2.columns-heading-very-long {
+.section .ax-columns h2.columns-heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-.ax-columns h3 {
+.section .ax-columns h3 {
   font-size: var(--heading-font-size-l);
   line-height: 1.11;
 }
 
-.ax-columns h4,
-.ax-columns h5,
-.ax-columns h6 {
+.section .ax-columns h4,
+.section .ax-columns h5,
+.section .ax-columns h6 {
   font-size: var(--heading-font-size-m);
   line-height: 1.14;
   margin-top: 32px;
 }
 
-.ax-columns h2 + h2,
-.ax-columns h3 + h3,
-.ax-columns h4 + h4,
-.ax-columns h5 + h5,
-.ax-columns h6 + h6 {
+.section .ax-columns h2 + h2,
+.section .ax-columns h3 + h3,
+.section .ax-columns h4 + h4,
+.section .ax-columns h5 + h5,
+.section .ax-columns h6 + h6 {
   margin-top: 0;
 }
 
@@ -190,32 +218,31 @@
   order: 2;
 }
 
-.ax-columns.width-3-columns h3 {
+.section .ax-columns.width-3-columns h3 {
   font-size: var(--heading-font-size-m);
 }
 
-.ax-columns > div {
+.section .ax-columns > div {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.ax-columns.center .column, .ax-columns.enterprise .column {
+.section .ax-columns.center .column, .ax-columns.enterprise .column {
   text-align: center;
 }
 
-.ax-columns.center .column p.button-container, .ax-columns.center .column a.con-button,
-.ax-columns.enterprise .column p.button-container, .ax-columns.enterprise .column a.con-button {
+.section .ax-columns.center .column p.button-container, .section .ax-columns.center .column a.con-button,
+.section .ax-columns.enterprise .column p.button-container, .section .ax-columns.enterprise .column a.con-button {
   text-align: center;
 }
 
-.ax-columns a > p:empty {
+.section .ax-columns a > p:empty {
   display: none;
 }
 
-
-  .section.section:has(.ax-columns).steps-container
+.section:has(.ax-columns).steps-container
   div
   .steps
   div.step-description
@@ -225,19 +252,15 @@
 }
 
 
-  .section.section:has(.ax-columns).steps-container
+.section:has(.ax-columns).steps-container
   div
   .steps
   div.step-description
-  h3,
-
-  .section.section:has(.ax-columns).steps-container
+  h3, .section:has(.ax-columns).steps-container
   div
   .steps
   div.step-description
-  h4,
-
-  .section.section:has(.ax-columns).steps-container
+  h4, .section:has(.ax-columns).steps-container
   div
   .steps
   div.step-description
@@ -246,8 +269,7 @@
   line-height: 1.18;
 }
 
-
-  .section.section:has(.ax-columns).steps-container
+.section:has(.ax-columns).steps-container
   div
   .steps
   div.step-description
@@ -748,6 +770,16 @@
   }
 }
 
+.section.long-form:has(.ax-columns) .content {
+  padding: 0 35px 60px;
+}
+
+@media (min-width: 600px) {
+  .section.long-form:has(.ax-columns) .content {
+    padding: 0 55px 60px;
+  }
+}
+
 @media (min-width: 900px) and (max-width: 1200px) {
   :lang(ja) .ax-columns h1 {
     font-size: var(--heading-font-size-xl);
@@ -894,10 +926,17 @@
     padding-right: 32px;
   }
 
-  .ax-columns > div {
+  .section .ax-columns.narrow {
+    max-width: 850px;
+  }
+
+  .section .ax-columns > div {
     flex-direction: row;
     text-align: left;
     align-items: center;
+  }
+
+  .section .ax-columns > div:not(.columns-video) {
     padding: 40px 0;
   }
 

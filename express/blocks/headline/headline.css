@@ -1,0 +1,9 @@
+.headline .express-logo {
+    width: unset;
+    height: 30px;
+    padding-top: 30px;
+}
+
+.headline {
+    text-align: center;
+}

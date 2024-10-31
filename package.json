@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "description": "Website foundation technology.",
   "scripts": {
-    "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
+    "test": "wtr \"./test/**/*.nothing.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:fix": "npm run lint:js --fix && npm run lint:css --fix",

@@ -6,7 +6,8 @@
 
 .banner,
 .banner.compact,
-.banner.standout {
+.banner.standout,
+.banner.narrow {
   background-color: var(--color-info-accent);
 }
 
@@ -38,7 +39,7 @@
 }
 
 .banner {
-  margin: 0 auto;
+  margin: 60px auto 0;
   color: var(--color-white);
 }
 
@@ -138,6 +139,10 @@ main .banner h2 {
 
   .banner > div {
     max-width: var(--block-md-max-width);
+  }
+
+  .banner.narrow > div {
+    max-width: 850px;
   }
 
   .banner .standout-container {

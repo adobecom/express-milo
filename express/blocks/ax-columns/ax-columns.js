@@ -181,6 +181,20 @@ const extractProperties = (block) => {
   return allProperties;
 };
 
+const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
+  if (rowNum + cellNum !== 0) return;
+  const content = cell.querySelector('p > em');
+  if (!content) return;
+  const links = content.querySelectorAll('a');
+  if (links.length < 2) return;
+  content.classList.add('phone-number-cta-row');
+  links[0].classList.add('button');
+  links[0].classList.add('xlarge');
+  links[0].classList.add('trial-cta');
+  links[1].classList.add('phone');
+  content.parentElement.prepend(links[0]);
+};
+
 export default async function decorate(block) {
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
@@ -189,6 +203,25 @@ export default async function decorate(block) {
   decorateButtonsDeprecated(block, 'button-xxl');
 
   const rows = Array.from(block.children);
+
+  if (block.classList.contains('narrow')) {
+    let count = 1;
+    rows.forEach((ele) => {
+      const headers = ele.querySelectorAll('h2');
+      if (headers.length > 0) {
+        headers.forEach((header) => {
+          const span = document.createElement('span');
+          span.style.background = 'linear-gradient(to top, rgb(201, 101, 214), rgb(239, 133, 120))';
+          span.style.webkitBackgroundClip = 'text';
+          span.style.backgroundClip = 'text';
+          span.style.color = 'transparent';
+          span.textContent = `${count}. `;
+          header.prepend(span);
+          count += 1;
+        });
+      }
+    });
+  }
 
   let numCols = 0;
   if (rows[0]) numCols = rows[0].children.length;
@@ -299,6 +332,7 @@ export default async function decorate(block) {
           $pars[i].classList.add('powered-by');
         }
       }
+      decoratePrimaryCTARow(rowNum, cellNum, cell);
     });
   });
   addAnimationToggle(block);
@@ -336,9 +370,14 @@ export default async function decorate(block) {
         ),
     );
   }
+  if (document.querySelector('main > div > div') === block && ['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
+    const logo = getIconElementDeprecated('adobe-express-logo');
+    logo.classList.add('express-logo');
+    block.querySelector('.column')?.prepend(logo);
+  }
 
   // add custom background color to columns-highlight-container
-  const sectionContainer = block.closest('.section');
+  const sectionContainer = block.closest('.section:has(.ax-columns.highlight)');
   if (sectionContainer && colorProperties['background-color']) {
     sectionContainer.style.background = colorProperties['background-color'];
   }
