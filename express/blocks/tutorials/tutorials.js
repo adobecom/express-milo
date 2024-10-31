@@ -37,7 +37,7 @@ export function handlePopstate(event) {
   }
 }
 
-function decorateTutorials($block) {
+export function decorateTutorials($block) {
   const $tutorials = [...$block.children];
   $tutorials.forEach(($tutorial) => {
     const [$link, $time, $picture] = [...$tutorial.children];

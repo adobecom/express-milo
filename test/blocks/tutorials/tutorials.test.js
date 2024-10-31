@@ -8,7 +8,7 @@ const imports = await Promise.all([
   import('../../../express/scripts/scripts.js'),
   import('../../../express/blocks/tutorials/tutorials.js'),
 ]);
-const { default: decorate, handlePopstate } = imports[1];
+const { default: handlePopstate, decorateTutorials } = imports[1];
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('Tutorials', () => {
@@ -17,7 +17,7 @@ describe('Tutorials', () => {
   });
   it('Tutorials exists', () => {
     const tutorials = document.querySelector('.tutorials');
-    decorate(tutorials);
+    decorateTutorials(tutorials);
     expect(tutorials).to.exist;
   });
 
@@ -39,10 +39,12 @@ describe('Tutorials', () => {
     const keyupEvent = new KeyboardEvent('keyup', { key: 'Enter' });
     card.dispatchEvent(keyupEvent);
 
-    const url = {
+    const state = {
       url: 'https://example.com/tutorial',
       title: 'Tutorial',
     };
-    handlePopstate({ state: url });
+
+    const popstateEvent = new PopStateEvent('popstate', { state });
+    handlePopstate({ popstateEvent });
   });
 });
