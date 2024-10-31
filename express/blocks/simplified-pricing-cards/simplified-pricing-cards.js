@@ -1,4 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
+import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
@@ -199,7 +200,7 @@ function decorateCardBorder(card, source) {
 }
 
 export default async function init(el) {
-  decorateButtons(el);
+  decorateButtonsDeprecated(el);
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
   const cards = [];
@@ -229,6 +230,7 @@ export default async function init(el) {
     el.children[0].appendChild(card);
   }
   rows[rows.length - 2].classList.add('pricing-footer');
+  rows[rows.length - 1].classList.add('compare-all-footer')
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
   el.appendChild(rows[rows.length - 2]);
   el.appendChild(rows[rows.length - 1]);

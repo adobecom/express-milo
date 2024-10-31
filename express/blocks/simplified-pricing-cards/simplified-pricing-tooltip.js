@@ -1,7 +1,8 @@
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+const [{ decorateButtons }, { createTag }] = await Promise.all([import(`${getLibs()}/utils/decorate.js`),
+  import(`${getLibs()}/utils/utils.js`)]);
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 export function adjustElementPosition() {
   const elements = document.querySelectorAll('.tooltip-text');
@@ -15,9 +16,6 @@ export function adjustElementPosition() {
     } else if (rect.left < 0) {
       element.classList.remove('overflow-right');
       element.classList.add('overflow-left');
-    } else {
-      element.classList.remove('overflow-right');
-      element.classList.remove('overflow-left');
     }
   }
 }
@@ -48,5 +46,6 @@ export function handleTooltip(pricingArea) {
   iconWrapper.append(icon);
   iconWrapper.append(span);
   tooltipDiv.append(iconWrapper);
+  iconWrapper.addEventListener('click', adjustElementPosition);
   window.addEventListener('resize', adjustElementPosition);
 }

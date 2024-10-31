@@ -243,7 +243,7 @@ main .section>.simplified-pricing-cards-wrapper {
   gap: 5px;
   margin-top: 20px;
   min-height: unset;
-}
+} 
 
 .simplified-pricing-cards .card-cta-group strong .button {
   position: relative;
@@ -260,7 +260,8 @@ main .section>.simplified-pricing-cards-wrapper {
   margin: 0;
 }
 
-.simplified-pricing-cards .card-cta-group a {
+.simplified-pricing-cards .card-cta-group a.button:any-link, 
+.simplified-pricing-cards .card-cta-group a.con-button {
   box-sizing: border-box;
   margin: 0;
   width: 100%;
@@ -411,6 +412,11 @@ main .section>.simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .pricing-footer div{
  width: calc(var(--card-width));
  margin: auto;
+}
+
+.simplified-pricing-cards .compare-all-footer {
+  width: fit-content;
+  margin: auto;
 }
 
 /* Tablet styles */
