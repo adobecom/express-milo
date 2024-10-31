@@ -1,17 +1,64 @@
 import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
-import { adjustElementPosition, handleTooltip } from './simplified-pricing-tooltip.js';
 
-const [{ decorateButtons }, { createTag , getConfig}, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/decorate.js`),
+const [{ createTag, getConfig }, { replaceKeyArray }] = await Promise.all([
   import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 
 const { formatSalesPhoneNumber } = await import(
   '../../scripts/utils/location-utils.js'
 );
+
+function adjustElementPosition() {
+  const elements = document.querySelectorAll('.tooltip-text');
+
+  if (elements.length === 0) return;
+  for (const element of elements) {
+    const rect = element.getBoundingClientRect();
+    if (rect.right > window.innerWidth) {
+      element.classList.remove('overflow-left');
+      element.classList.add('overflow-right');
+    } else if (rect.left < 0) {
+      element.classList.remove('overflow-right');
+      element.classList.add('overflow-left');
+    }
+  }
+}
+
+function handleTooltip(pricingArea) {
+  const elements = pricingArea.querySelectorAll('p');
+  const pattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g;
+  let tooltip;
+  let tooltipDiv;
+
+  Array.from(elements).forEach((p) => {
+    const res = pattern.exec(p.textContent);
+    if (res) {
+      tooltip = res;
+      tooltipDiv = p;
+    }
+  });
+  if (!tooltip) return;
+
+  tooltipDiv.innerHTML = tooltipDiv.innerHTML.replace(pattern, '');
+  const tooltipText = tooltip[2];
+  tooltipDiv.classList.add('tooltip');
+  const span = createTag('div', { class: 'tooltip-text' });
+  span.innerText = tooltipText;
+  const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
+  icon.append(span);
+  const iconWrapper = createTag('span');
+  iconWrapper.append(icon);
+  iconWrapper.append(span);
+  tooltipDiv.append(iconWrapper);
+  iconWrapper.addEventListener('click', adjustElementPosition);
+  window.addEventListener('resize', adjustElementPosition);
+}
+
 
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
