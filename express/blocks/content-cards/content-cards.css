@@ -1,5 +1,6 @@
 .section .content-cards-wrapper {
-  max-width: none;
+  max-width: min-content;
+  margin: auto;
 }
 
 .content-cards {
@@ -206,7 +207,11 @@
       flex-direction: row;
       align-items: flex-end;
   }
-
+  .content-cards h2.content-cards-heading {
+    font-size: 36px;
+    margin: auto;
+    max-width: none;
+  }
   .content-cards .carousel-container .carousel-fader-left,
   .content-cards .carousel-container .carousel-fader-right{
       background: unset;
