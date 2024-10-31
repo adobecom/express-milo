@@ -13,7 +13,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  margin: auto auto 32px;
+  margin: 20px;
 }
 
 .content-cards .content-cards-heading-section h2 {
@@ -33,6 +33,13 @@
   line-height: 22px;
   color: var(--body-color);
   text-decoration: underline;
+}
+
+.content-cards .carousel-container {
+  scroll-padding-left: 20px;
+}  
+.content-cards .carousel-container .carousel-element.card:nth-child(2){
+  margin-left: 20px;
 }
 
 .content-cards .carousel-container .carousel-platform {
