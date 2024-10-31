@@ -13,7 +13,7 @@ export function decorateTextWithTag(textSource, options = {}) {
     tagClass,
   } = options;
   const text = createTag(baseT || 'p', { class: baseClass || '' });
-  const tagText = textSource.match(/\[(.*?)]/);
+  const tagText = textSource?.match(/\[(.*?)]/);
 
   if (tagText) {
     const [fullText, tagTextContent] = tagText;
@@ -62,48 +62,48 @@ export const windowHelper = {
   },
 };
 
-function handleGenAISubmit(form, link) {
+function handleContentCardsSubmit(form, link) {
   const input = form.querySelector('input');
   if (input.value.trim() === '') return;
-  const genAILink = link.replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
-  if (genAILink) windowHelper.redirect(genAILink);
+  const contentCardsLink = link.replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
+  if (contentCardsLink) windowHelper.redirect(contentCardsLink);
 }
 
-function buildGenAIForm({ ctaLinks, subtext }) {
-  const genAIForm = createTag('form', { class: 'gen-ai-input-form' });
-  const genAIInput = createTag('input', {
+function buildContentCardsForm({ ctaLinks, subtext }) {
+  const contentCardsForm = createTag('form', { class: 'content-cards-input-form' });
+  const contentCardsInput = createTag('input', {
     placeholder: subtext || '',
     type: 'text',
     enterKeyhint: 'enter',
   });
-  const genAISubmit = createTag('button', {
-    class: 'gen-ai-submit',
+  const contentCardsSubmit = createTag('button', {
+    class: 'content-cards-submit',
     type: 'submit',
     disabled: true,
   });
 
-  genAIForm.append(genAIInput, genAISubmit);
+  contentCardsForm.append(contentCardsInput, contentCardsSubmit);
 
-  genAISubmit.textContent = ctaLinks[0].textContent;
-  genAISubmit.disabled = genAIInput.value === '';
+  contentCardsSubmit.textContent = ctaLinks[0].textContent;
+  contentCardsSubmit.disabled = contentCardsInput.value === '';
 
-  genAIInput.addEventListener('input', () => {
-    genAISubmit.disabled = genAIInput.value.trim() === '';
+  contentCardsInput.addEventListener('input', () => {
+    contentCardsSubmit.disabled = contentCardsInput.value.trim() === '';
   });
 
-  genAIInput.addEventListener('keyup', (e) => {
+  contentCardsInput.addEventListener('keyup', (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleGenAISubmit(genAIForm, ctaLinks[0].href);
+      handleContentCardsSubmit(contentCardsForm, ctaLinks[0].href);
     }
   });
 
-  genAIForm.addEventListener('submit', (e) => {
+  contentCardsForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    handleGenAISubmit(genAIForm, ctaLinks[0].href);
+    handleContentCardsSubmit(contentCardsForm, ctaLinks[0].href);
   });
 
-  return genAIForm;
+  return contentCardsForm;
 }
 
 function removeLazyAfterNeighborLoaded(image, lastImage) {
@@ -138,6 +138,7 @@ async function decorateCards(block, { actions }) {
     const textWrapper = createTag('div', { class: 'text-wrapper' });
 
     card.append(textWrapper, mediaWrapper, linksWrapper);
+
     if (image) {
       mediaWrapper.append(image);
       if (i > 0) {
@@ -146,13 +147,13 @@ async function decorateCards(block, { actions }) {
       }
     }
 
-    const hasGenAIForm = promptTokenRegex.test(ctaLinks?.[0]?.href);
+    const hasContentCardsForm = promptTokenRegex.test(ctaLinks?.[0]?.href);
 
     if (ctaLinks.length > 0) {
-      if (hasGenAIForm) {
-        const genAIForm = buildGenAIForm(cta);
-        card.classList.add('gen-ai-action');
-        card.append(genAIForm);
+      if (hasContentCardsForm) {
+        const contentCardsForm = buildContentCardsForm(cta);
+        card.classList.add('content-cards-action');
+        card.append(contentCardsForm);
         linksWrapper.remove();
       } else {
         const a = ctaLinks[0];
@@ -167,7 +168,6 @@ async function decorateCards(block, { actions }) {
         linksWrapper.append(a);
       }
     }
-
     const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title' });
     textWrapper.append(titleText);
     const desc = createTag('p', { class: 'cta-card-desc' });
@@ -207,12 +207,12 @@ function constructPayload(block) {
 
     payload.actions.push(ctaObj);
   });
-
   return payload;
 }
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'content-cards');
+
   const links = block.querySelectorAll(':scope a[href*="adobesparkpost"]');
 
   if (links) {

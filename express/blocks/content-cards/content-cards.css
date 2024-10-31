@@ -8,6 +8,20 @@
   margin: auto;
 }
 
+.content-cards .background  {
+  width: 100%
+}
+
+.content-cards .background img {
+  position: absolute;
+  top: 50%;
+  object-fit: fill;
+  width: 250%;
+  transform: translate(-50%, -35%);
+  max-height: 600px;
+  max-width: 1200px;
+}
+
 .content-cards .content-cards-heading-section {
   display: flex;
   flex-direction: column;
