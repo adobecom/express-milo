@@ -6,7 +6,7 @@
   padding-top: 80px;
 }
 
-.section:has(> .faq) > div {
+.section:has(> .faq) > .content, .section:has(> .faq) > .faq {
   margin: auto;
   padding-top: 0;
   padding-right: 24px;
@@ -14,7 +14,7 @@
   max-width: 375px;
 }
 
-.section:has(> .faq) > div > h2, .section:has(> .faq) > div > h3, .section:has(> .faq) > div > h4, .section:has(> .faq) > div > h5, .section:has(> .faq) > div > h6 {
+.section:has(> .faq) > .content > h2, .section:has(> .faq) > .content > h3, .section:has(> .faq) > .content > h4, .section:has(> .faq) > .content > h5, .section:has(> .faq) > .content > h6 {
   margin-top: 0;
   margin-bottom: 40px;
 }
@@ -77,14 +77,14 @@
 }
 
 @media (min-width: 900px) {
-  .section:has(> .faq) > div {
+  .section:has(> .faq) > .content, .section:has(> .faq) > .faq  {
     padding-top: 0;
     padding-right: 56px;
     padding-left: 56px;
     max-width: 830px;
   }
 
-  .section:has(> .faq) > div > h2, .section:has(> .faq) > div > h3, .section:has(> .faq) > div > h4, .section:has(> .faq) > div > h5, .section:has(> .faq) > div > h6 {
+  .section:has(> .faq) > .content > h2, .section:has(> .faq) > .content > h3, .section:has(> .faq) > .content > h4, .section:has(> .faq) > .content > h5, .section:has(> .faq) > .content > h6 {
     margin-bottom: 80px;
   }
 
@@ -95,7 +95,7 @@
 }
 
 @media (min-width: 1200px) {
-  .section:has(> .faq) > div {
+  .section:has(> .faq) > .content, .section:has(> .faq) > .faq {
     max-width: 1024px;
   }
 }
