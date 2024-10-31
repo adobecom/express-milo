@@ -13,6 +13,11 @@ const { formatSalesPhoneNumber } = await import(
   '../../scripts/utils/location-utils.js'
 );
 
+const SALES_NUMBERS = '((business-sales-numbers))';
+const PRICE_TOKEN = '((pricing))';
+const YEAR_2_PRICING_TOKEN = '((year-2-pricing-token))';
+
+/* Tooltip Code */
 function adjustElementPosition() {
   const elements = document.querySelectorAll('.tooltip-text');
 
@@ -59,10 +64,7 @@ function handleTooltip(pricingArea) {
   window.addEventListener('resize', adjustElementPosition);
 }
 
-
-const SALES_NUMBERS = '((business-sales-numbers))';
-const PRICE_TOKEN = '((pricing))';
-const YEAR_2_PRICING_TOKEN = '((year-2-pricing-token))';
+/* Sync Heights Code */
 
 function getHeightWithoutPadding(element) {
   const styles = window.getComputedStyle(element);
@@ -96,6 +98,8 @@ function equalizeHeights(el) {
     }
   }
 }
+
+/* Main Pricing Card Code */
 
 async function getPriceElementSuffix(placeholderArr, response) {
   const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
@@ -273,7 +277,7 @@ export default async function init(el) {
     el.children[0].appendChild(card);
   }
   rows[rows.length - 2].classList.add('pricing-footer');
-  rows[rows.length - 1].classList.add('compare-all-footer')
+  rows[rows.length - 1].classList.add('compare-all-footer');
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
   el.appendChild(rows[rows.length - 2]);
   el.appendChild(rows[rows.length - 1]);

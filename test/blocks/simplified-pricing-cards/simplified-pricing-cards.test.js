@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { mockRes } from '../test-utilities.js'; 
+import { mockRes } from '../test-utilities.js';
 
 const [, { default: decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/simplified-pricing-cards/simplified-pricing-cards.js')]);
 
