@@ -6,8 +6,8 @@ import {
 } from '../../scripts/utils/pricing.js';
 import { adjustElementPosition, handleTooltip } from './simplified-pricing-tooltip.js';
 
-const [{ decorateButtons }, { createTag }] = await Promise.all([import(`${getLibs()}/utils/decorate.js`),
-  import(`${getLibs()}/utils/utils.js`)]);
+const [{ decorateButtons }, { createTag , getConfig}, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/decorate.js`),
+  import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
 
 const { formatSalesPhoneNumber } = await import(
   '../../scripts/utils/location-utils.js'
@@ -51,15 +51,11 @@ function equalizeHeights(el) {
 }
 
 async function getPriceElementSuffix(placeholderArr, response) {
-  const mod = await import(`${getLibs()}/features/placeholders.js`);
-  return placeholderArr
-    .map((phText) => {
-      const key = phText.replace('((', '').replace('))', '');
-      return key.includes('vat') && !response.showVat
-        ? ''
-        : mod?.[key] || '';
-    })
-    .join(' ');
+  const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
+  const placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
+  return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat
+    ? ''
+    : placeholdersResponse[i] || '')).join(' ');
 }
 
 function handleYear2PricingToken(pricingArea, y2p, priceSuffix) {
