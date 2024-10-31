@@ -409,7 +409,7 @@ export function decorateArea(area = document) {
   addPromotion(area);
 
   const selector = area === document ? 'main > div' : ':scope > div';
-  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x'].map((block) => `${selector} .${block} a`).join(', ');
+  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"]`).join(', ');
   [...area.querySelectorAll(videoLinksToNotAutoBlock)].forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
   });
