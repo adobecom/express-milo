@@ -1,16 +1,10 @@
 import sinon from 'sinon';
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { mockRes } from '../test-utilities.js';
+import { mockRes } from '../test-utilities.js'; 
 
-// const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
-// const { getLibs } = await import('../../../express/scripts/utils.js');
-// await import(`${getLibs()}/utils/utils.js`).then((mod) => {
-//   const conf = { locales };
-//   mod.setConfig(conf);
-// });
-// eslint-disable-next-line import/no-unresolved
-const { default: decorate } = await import('../../../../express/blocks/simplified-pricing-cards/simplified-pricing-cards.js');
+const [, { default: decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/simplified-pricing-cards/simplified-pricing-cards.js')]);
+
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const MOCK_JSON = JSON.parse(await readFile({ path: './mocks/mock_offers_one.json' }));
 
