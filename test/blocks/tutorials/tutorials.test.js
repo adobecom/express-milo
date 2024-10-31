@@ -10,7 +10,7 @@ const imports = await Promise.all([
 ]);
 const { default: decorate, handlePopstate } = imports[1];
 
-document.body.innerHTML = await readFile({ path: './mocks/mock.html' });
+document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('Tutorials', () => {
   before(() => {
     window.isTestEnv = true;
