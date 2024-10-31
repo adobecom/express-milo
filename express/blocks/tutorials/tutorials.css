@@ -1,5 +1,11 @@
-main .tutorials-wrapper, main .content + tutorials-wrapper {
+main .tutorials-wrapper, .section:has(.content:first-child + .tutorials-wrapper) .content {
   max-width: 1200px;
+}
+
+
+.section:has(.content:first-child + .tutorials-wrapper) .content, main .tutorials-wrapper:first-child {
+  padding-top: 60px;
+  margin-top: 0px;
 }
 
 .default-content-wrapper:has(+ .tutorials-wrapper .tutorials.twoperrow) {
@@ -94,6 +100,14 @@ main .section>div {
   margin: auto;
 }
 
+a {
+  color: var(--text-color);
+}
+
 body {
-  color: var(--text-color)
+  --link-hover-color: var(--text-color);
+}
+
+#explore-content-scheduling-tutorials{
+  margin-top: 80px;
 }
