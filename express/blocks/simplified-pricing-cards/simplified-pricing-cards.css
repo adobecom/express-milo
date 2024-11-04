@@ -480,7 +480,7 @@ main .section>.simplified-pricing-cards-wrapper {
 /* Desktop styles */
 @media (min-width: 1280px) {
   .simplified-pricing-cards {
-    --card-width: 300px;
+    --card-width: 290px;
     --header-size: 28px;
     --header-offer-size: 16px;
    padding-top: 40px;
@@ -536,14 +536,13 @@ main .section>.simplified-pricing-cards-wrapper {
   }
 
   .simplified-pricing-cards .card-header p em {
-    font-size: 14pt;
+    font-size: 12pt;
   }
 
 }
 
 @media (min-width: 1280px) and (max-width: 1399px) {
-  .simplified-pricing-cards {
-    --card-width: 300px;
+  .simplified-pricing-cards { 
     --header-size: 28px;
     --header-offer-size: 16px;
   }
@@ -593,12 +592,6 @@ main .section>.simplified-pricing-cards-wrapper {
     width: fit-content;
     margin: auto; 
   }
-
-
-  .simplified-pricing-cards .card-header p em {
-    font-size: 14pt;
-  }
-
 }
 
 @media (min-width: 1400px) {
