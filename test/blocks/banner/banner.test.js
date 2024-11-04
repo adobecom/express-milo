@@ -36,6 +36,47 @@ describe('Banner', () => {
     expect(button).to.exist;
   });
 
+  it('Banner standout variant has correct elements', () => {
+    document.body.innerHTML = standout;
+    const banner = document.querySelector('.banner');
+    decorate(banner);
+
+    const contentContainer = banner.querySelector('.content-container');
+    expect(contentContainer).to.exist;
+
+    const button = banner.querySelector('a.button');
+
+    ['large', 'primary'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.true;
+    });
+
+    ['accent', 'reverse'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.false;
+    });
+  });
+
+  it('creates a Banner cool variant block with correct elements', () => {
+    document.body.innerHTML = cool;
+    const banner = document.querySelector('.banner');
+    decorate(banner);
+
+    const wrapperEl = banner.querySelector('.wrapper');
+    expect(wrapperEl).to.exist;
+
+    const contentContainer = banner.querySelector('.content-container');
+    expect(contentContainer).to.exist;
+
+    const button = banner.querySelector('a.button');
+
+    ['large', 'primary'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.true;
+    });
+
+    ['accent', 'reverse'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.false;
+    });
+  });
+
   it('Banner light variant has correct elements', () => {
     document.body.innerHTML = light;
     const banner = document.querySelector('.banner');
