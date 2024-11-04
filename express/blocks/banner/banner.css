@@ -125,7 +125,7 @@ main .banner h2 {
   font-weight: 900;
 }
 
-.banner.cool .top-container {
+.banner.cool .wrapper {
   padding: 0 24px;
   max-width: unset;
 }
@@ -200,7 +200,7 @@ main .banner h2 {
 }
 
 @media (min-width: 600px) {
-  .banner.cool .top-container {
+  .banner.cool .wrapper {
     max-width: 820px;
   }
   .banner.cool .content-container {
@@ -218,7 +218,7 @@ main .banner h2 {
   .banner.cool {
     padding: 65px 0;
   }
-  .banner.cool .top-container {
+  .banner.cool .wrapper {
     padding: 0 82px;
     max-width: unset;
   }
@@ -238,7 +238,7 @@ main .banner h2 {
 }
 
 @media (min-width: 1200px) {
-  .banner.cool .top-container {
+  .banner.cool .wrapper {
     max-width: 1200px;
   }
 }
