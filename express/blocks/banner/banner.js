@@ -19,8 +19,8 @@ export default async function decorate(block) {
     }
     block.replaceChildren(contentContainer);
   } else if (isBannerCoolVariant) {
-    const topContainer = createTag('div', { class: 'top-container', });
-    const contentContainer = createTag('div', { class: 'content-container', });
+    const topContainer = createTag('div', { class: 'top-container' });
+    const contentContainer = createTag('div', { class: 'content-container' });
 
     topContainer.append(contentContainer);
 
