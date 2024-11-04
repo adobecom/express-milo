@@ -66,7 +66,7 @@ describe('Banner', () => {
     const contentContainer = banner.querySelector('.content-container');
     expect(contentContainer).to.exist;
 
-    const button = banner.querySelector('a');
+    const button = banner.querySelector('a.button');
 
     ['large', 'primary'].forEach((className) => {
       expect(button.classList.contains(className)).to.be.true;
