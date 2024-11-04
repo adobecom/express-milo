@@ -54,9 +54,7 @@ export default async function decorate(block) {
     }
   });
 
-  const phoneNumberTags = block.querySelectorAll(
-    'a[title="{{business-sales-numbers}}"]',
-  );
+  const phoneNumberTags = block.querySelectorAll('a[title="{{business-sales-numbers}}"]');
   if (phoneNumberTags.length > 0) {
     await formatSalesPhoneNumber(phoneNumberTags);
   }
