@@ -196,8 +196,8 @@ async function createPricingSection(
 
   ctaGroup.classList.add('card-cta-group');
   ctaGroup.querySelectorAll('a').forEach((a, i) => {
-    if (a.href.includes('#_button-fill')){
-      a.classList.add('primary')
+    if (a.href.includes('#_button-fill')) {
+      a.classList.add('primary');
     }
     a.classList.add('large');
     if (i === 1) a.classList.add('secondary');
@@ -208,7 +208,6 @@ async function createPricingSection(
     if (a.textContent.includes(SALES_NUMBERS)) {
       formatSalesPhoneNumber([a], SALES_NUMBERS);
     }
- 
   });
 }
 
