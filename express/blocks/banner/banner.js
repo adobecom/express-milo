@@ -19,15 +19,15 @@ export default async function decorate(block) {
     }
     block.replaceChildren(contentContainer);
   } else if (isBannerCoolVariant) {
-    const topContainer = createTag('div', { class: 'top-container' });
+    const wrapperEl = createTag('div', { class: 'wrapper' });
     const contentContainer = createTag('div', { class: 'content-container' });
 
-    topContainer.append(contentContainer);
+    wrapperEl.append(contentContainer);
 
     for (const child of block.children) {
       contentContainer.append(child);
     }
-    block.replaceChildren(topContainer);
+    block.replaceChildren(wrapperEl);
   }
 
   normalizeHeadings(block, ['h2', 'h3']);
