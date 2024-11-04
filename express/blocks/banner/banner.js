@@ -1,16 +1,11 @@
 import { getLibs } from '../../scripts/utils.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
-import {
-  decorateButtonsDeprecated,
-  normalizeHeadings,
-} from '../../scripts/utils/decorate.js';
+import { decorateButtonsDeprecated, normalizeHeadings } from '../../scripts/utils/decorate.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 export default async function decorate(block) {
-  // const timeStart = performance.now();
-
   decorateButtonsDeprecated(block);
 
   const isBannerLightVariant = block.classList.contains('light');
@@ -72,6 +67,4 @@ export default async function decorate(block) {
     await formatSalesPhoneNumber(phoneNumberTags);
   }
   fixIcons(block);
-
-  // console.log('=== TIME NEEDED', performance.now() - timeStart);
 }
