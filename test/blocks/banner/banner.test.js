@@ -60,7 +60,7 @@ describe('Banner', () => {
     const banner = document.querySelector('.banner');
     decorate(banner);
 
-    const wrapperEl = banner.querySelector('.wrapper');
+    const wrapperEl = banner.querySelector('.wrapperr');
     expect(wrapperEl).to.exist;
 
     const contentContainer = banner.querySelector('.content-container');
