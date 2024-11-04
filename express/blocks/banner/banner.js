@@ -13,9 +13,7 @@ export default async function decorate(block) {
   const isBannerCoolVariant = block.classList.contains('cool');
 
   if (isBannerStandoutVariant) {
-    const contentContainer = createTag('div', {
-      class: 'content-container',
-    });
+    const contentContainer = createTag('div', { class: 'content-container' });
     for (const child of block.children) {
       contentContainer.append(child);
     }
