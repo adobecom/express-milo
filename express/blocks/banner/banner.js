@@ -10,15 +10,24 @@ export default async function decorate(block) {
 
   const isBannerLightVariant = block.classList.contains('light');
   const isBannerStandoutVariant = block.classList.contains('standout');
+  const isBannerCoolVariant = block.classList.contains('cool');
 
   if (isBannerStandoutVariant) {
-    const standoutContainer = createTag('div', { class: 'standout-container' });
+    const contentContainer = createTag('div', { class: 'content-container' });
+    for (const child of block.children) {
+      contentContainer.append(child);
+    }
+    block.replaceChildren(contentContainer);
+  } else if (isBannerCoolVariant) {
+    const wrapperEl = createTag('div', { class: 'wrapper' });
+    const contentContainer = createTag('div', { class: 'content-container' });
+
+    wrapperEl.append(contentContainer);
 
     for (const child of block.children) {
-      standoutContainer.append(child);
+      contentContainer.append(child);
     }
-
-    block.replaceChildren(standoutContainer);
+    block.replaceChildren(wrapperEl);
   }
 
   normalizeHeadings(block, ['h2', 'h3']);
@@ -31,7 +40,7 @@ export default async function decorate(block) {
     button.classList.remove('primary');
     button.classList.remove('secondary');
 
-    if (isBannerStandoutVariant) {
+    if (isBannerStandoutVariant || isBannerCoolVariant) {
       button.classList.remove('accent');
       button.classList.add('large', 'primary');
     } else if (isBannerLightVariant) {
