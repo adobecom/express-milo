@@ -41,7 +41,7 @@ const EMBEDS_CONFIG = {
 };
 
 function decorateBlockEmbeds(block) {
-  block.querySelectorAll('.embed a[href]').forEach((a) => {
+  block.querySelectorAll('.embed a:not([href*="youtube.com"], [href*="vimeo.com"], [href*="twitter.com"])').forEach((a) => {
     const url = new URL(a.href.replace(/\/$/, ''));
 
     const config = EMBEDS_CONFIG[url.hostname];
