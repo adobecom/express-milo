@@ -116,6 +116,7 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   background-color: var(--color-white);
 }
 
+/* wide cards */
 .content-cards.wide .card {
   width: 399px;
   height: 478px;
@@ -130,8 +131,33 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   overflow: hidden;
   padding: 16px;
   margin: 9px 9px 10px auto;
-  opacity: 0.8;
 }
+
+.content-cards.wide .card .media-wrapper {
+  position: absolute;
+  border-radius: 16px;
+  left: 50%;
+  top: 16px;
+  transform: translateX(-50%);
+  overflow: hidden;
+  width: 351px;
+  height: 198px;
+}
+
+.content-cards.wide .card .text-wrapper {
+  margin-top: 220px
+}
+
+.content-cards.wide .card .text-wrapper p.cta-card-title {
+  font-size: 28px;
+}
+
+.content-cards.wide .card .text-wrapper p.cta-card-desc {
+  font-size: 16px;
+  line-height: 22px;
+  margin-top: 16px;
+}
+/*  wide cards  */
 
 .content-cards .carousel-left-trigger ~ .card {
   margin-left: 0;
