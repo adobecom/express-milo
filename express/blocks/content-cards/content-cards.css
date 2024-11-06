@@ -118,7 +118,8 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 
 /* wide cards */
 .content-cards.wide .card {
-  width: 399px;
+  min-width: 399px;
+  max-width: 399px;
   height: 478px;
   border: 1px solid white;
   border-radius: 16px;
