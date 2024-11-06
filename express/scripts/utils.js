@@ -409,6 +409,19 @@ export function decorateArea(area = document) {
   addPromotion(area);
 
   const selector = area === document ? 'main > div' : ':scope > div';
+
+  // const embeds = area === Document ? area.querySelectorAll(`${selector} > .embed`) : area.querySelectorAll(`${selector} > .embed`);
+  // if (embeds.length) {
+  //   [...embeds].forEach((embed) => {
+  //     const embedLinks = embed.querySelectorAll('a[href*="youtube.com"], a[href*="vimeo.com"]');
+  //     embedLinks.forEach((link) => {
+  //       embed.parentNode.insertBefore(link, embed.nextSibling);
+  //     });
+  //     const otherLinks = embed.querySelectorAll('a');
+  //     if (!otherLinks.length) embed.remove();
+  //   });
+  // }
+
   const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"]`).join(', ');
   [...area.querySelectorAll(videoLinksToNotAutoBlock)].forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
