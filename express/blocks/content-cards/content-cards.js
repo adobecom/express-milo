@@ -116,7 +116,29 @@ function removeLazyAfterNeighborLoaded(image, lastImage) {
 }
 
 async function decorateCards(block, { actions }) {
-  const cards = createTag('div', { class: 'content-cards-cards' });
+  const cards = createTag('div', { class: 'content-cards' });
+  const isTileVariant = block.classList.contains('tile');
+
+  if (!isTileVariant) {
+    cards.classList.add('wide');
+    const background = actions.shift();
+    const backgroundContainer = createTag('div', { class: 'background' });
+    const contentCardsWrapper = document.querySelector('.content-cards-wrapper > .content-cards:not(.tile)').parentElement;
+    contentCardsWrapper.prepend(backgroundContainer);
+
+    const imgSrc = background?.image.querySelector('img')?.src;
+
+    if (imgSrc) {
+      contentCardsWrapper.style.backgroundImage = `
+        linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
+        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
+        url(${imgSrc})
+      `;
+      contentCardsWrapper.style.backgroundSize = 'cover';
+      contentCardsWrapper.style.backgroundPosition = 'center';
+    }
+  }
+
   let searchBranchLinks;
 
   await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
@@ -134,7 +156,7 @@ async function decorateCards(block, { actions }) {
     } = cta;
     const card = createTag('div', { class: 'card' });
     const linksWrapper = createTag('div', { class: 'links-wrapper' });
-    const mediaWrapper = createTag('div', { class: 'media-wrapper' });
+    const mediaWrapper = createTag('div', { class: `media-wrapper${isTileVariant ? ' tile' : ''}` });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
 
     card.append(textWrapper, mediaWrapper, linksWrapper);
@@ -223,5 +245,5 @@ export default async function decorate(block) {
   const payload = constructPayload(block);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
-  await buildCarousel('', block.querySelector('.content-cards-cards'));
+  await buildCarousel('', block.querySelector('.content-cards'));
 }

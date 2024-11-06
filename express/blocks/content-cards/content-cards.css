@@ -4,7 +4,6 @@
 }
 
 .content-cards {
-  max-width: 1440px;
   margin: auto;
 }
 
@@ -12,7 +11,7 @@
   width: 100%
 }
 
-.content-cards .background img {
+.content-cards-wrapper .background img {
   position: absolute;
   top: 50%;
   object-fit: fill;
@@ -23,10 +22,6 @@
 }
 
 .content-cards .content-cards-heading-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
   margin: 20px;
 }
 
@@ -119,6 +114,23 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   margin: 0 8px;
   border: 2px solid #E1E1E1;
   background-color: var(--color-white);
+}
+
+.content-cards.wide .card {
+  width: 399px;
+  height: 478px;
+  border: 1px solid white;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+  flex: 1 1 calc(33.33% - 32px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+  margin: 9px 9px 10px auto;
+  opacity: 0.8;
 }
 
 .content-cards .carousel-left-trigger ~ .card {
