@@ -198,7 +198,7 @@ async function createPricingSection(
   ctaGroup.classList.add('card-cta-group');
   ctaGroup.querySelectorAll('a').forEach((a, i) => {
     if (cardIndex === 0) {
-      a.classList.add('button' ,'primary');
+      a.classList.add('button', 'primary');
     }
     a.classList.add('large');
     if (i === 1) a.classList.add('secondary');
