@@ -307,7 +307,7 @@ main .section>.simplified-pricing-cards-wrapper {
   border: 2px solid var(--color-black);
   color: black;
   margin: 40px auto 24px auto;
-  padding: 12px 15px;
+  padding: 12px 19px;
   border-radius: 24px;
 }
 
@@ -406,7 +406,7 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 .simplified-pricing-cards .pricing-footer {
-  margin-top: 40px;
+  margin-top: 24px;
   text-align: center;
 }
 
