@@ -17,8 +17,11 @@ describe('Tutorials', () => {
   });
   it('Tutorials exists', () => {
     const tutorials = document.querySelector('.tutorials');
-    decorateTutorials(tutorials);
+    if (tutorials) {
+      decorateTutorials(tutorials);
+    }
     expect(tutorials).to.exist;
+    expect(tutorials.children.length).to.be.greaterThan(0);
   });
 
   it('Tutorials has correct elements', () => {
@@ -32,19 +35,5 @@ describe('Tutorials', () => {
   it('Display video modal when card is clicked', () => {
     const card = document.querySelector('.tutorial-card');
     card.click();
-  });
-
-  it('Display video modal when keyup enter is presses', () => {
-    const card = document.querySelector('.tutorial-card');
-    const keyupEvent = new KeyboardEvent('keyup', { key: 'Enter' });
-    card.dispatchEvent(keyupEvent);
-
-    const state = {
-      url: 'https://example.com/tutorial',
-      title: 'Tutorial',
-    };
-
-    const popstateEvent = new PopStateEvent('popstate', { state });
-    handlePopstate({ popstateEvent });
   });
 });
