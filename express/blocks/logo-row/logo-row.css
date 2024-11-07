@@ -3,6 +3,10 @@ main .logo-row {
     margin: auto;
 }
 
+main .logo-row p {
+    margin: 0;
+}
+
 main .logo-row .block-row {
     display: flex;
     width: fit-content;
