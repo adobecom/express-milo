@@ -149,12 +149,13 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   top: 16px;
   transform: translateX(-50%);
   overflow: hidden;
-  width: 351px;
-  height: 198px;
+  width: 247px;
+  height: 150px;
 }
 
 .content-cards.wide .card .text-wrapper {
-  margin-top: 220px;
+  margin-top: 170px;
+  /* margin-top: 220px; */
   margin-left: 4px;
   margin-right: 4px;
 }
@@ -346,6 +347,15 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 
   .content-cards.wide .card .text-wrapper p.cta-card-title {
     font-size: 28px;
+  }
+
+  .content-cards.wide .card .media-wrapper {
+    width: 351px;
+    height: 198px;
+  }
+
+  .content-cards.wide .card .text-wrapper {
+    margin-top: 220px;
   }
 }
 
