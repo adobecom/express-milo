@@ -284,6 +284,7 @@ export default async function init(el) {
   rows[rows.length - 2].classList.add('pricing-footer');
   rows[rows.length - 1].classList.add('compare-all-footer');
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
+  rows[rows.length - 1].querySelector('a').classList.remove('con-button')
   el.appendChild(rows[rows.length - 2]);
   el.appendChild(rows[rows.length - 1]);
 
