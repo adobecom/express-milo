@@ -18,7 +18,7 @@ main .section .embed img {
     max-width: 100%;
 }
 
-main .section .embed {
+main .section .embed, body.blog main > .section > .embed {
     text-align: center;
     max-width: 800px;
 }
