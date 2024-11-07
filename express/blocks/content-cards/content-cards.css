@@ -3,8 +3,15 @@
   margin: auto;
 }
 
+.content-cards-wrapper.wide {
+  max-width: none;
+}
+
 .content-cards {
   margin: auto;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .content-cards .background  {
@@ -28,13 +35,14 @@
 .content-cards .content-cards-heading-section h2 {
   max-width: 800px;
   margin-bottom: 8px;
-  font-size: 22px;
   text-align: center;
+  font-size: 22px;
 }
 
 .content-cards .content-cards-heading-section p {
   text-align: center;
   max-width: none;
+  font-size: 16px;
 }
 
 .content-cards .content-cards-heading-section .content-cards-link {
@@ -103,8 +111,8 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   opacity: 0.5;
   pointer-events: none;
 }
-/* carousel */
 
+/* carousel */
 .content-cards .card {
   position: relative;
   width: 292px;
@@ -118,9 +126,9 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 
 /* wide cards */
 .content-cards.wide .card {
-  min-width: 399px;
-  max-width: 399px;
-  height: 478px;
+  min-width: 294px;
+  max-width: 294px;
+  height: 427px;
   border: 1px solid white;
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
@@ -152,7 +160,8 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 }
 
 .content-cards.wide .card .text-wrapper p.cta-card-title {
-  font-size: 28px;
+  font-size: 20px;
+  font-weight: 800;
 }
 
 .content-cards.wide .card .text-wrapper p.cta-card-desc {
@@ -322,6 +331,18 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   background-color: var(--color-white);
 }
 
+@media (min-width: 600px) {
+  .content-cards.wide .card {
+    min-width: 399px;
+    max-width: 399px;
+    height: 478px;
+  }
+
+  .content-cards.wide .card .text-wrapper p.cta-card-title {
+    font-size: 28px;
+  }
+}
+
 @media (min-width: 900px) {
   .content-cards .content-cards-heading-section {
       flex-direction: row;
@@ -339,5 +360,14 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   main .content-cards .carousel-container .carousel-fader-left,
   main .content-cards .carousel-container .carousel-fader-right {
     display: none;
+  }
+  .content-cards.wide .carousel-container .carousel-element.card:nth-child(2){
+    margin-left: 60px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .content-cards.wide .carousel-container .carousel-element.card:nth-child(2){
+    margin-left: 120px;
   }
 }

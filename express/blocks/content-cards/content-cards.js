@@ -124,18 +124,15 @@ async function decorateCards(block, { actions }) {
     const background = actions.shift();
     const backgroundContainer = createTag('div', { class: 'background' });
     const contentCardsWrapper = document.querySelector('.content-cards-wrapper > .content-cards:not(.tile)').parentElement;
+    contentCardsWrapper.classList.add('wide');
     contentCardsWrapper.prepend(backgroundContainer);
-
     const imgSrc = background?.image.querySelector('img')?.src;
-
     if (imgSrc) {
-      contentCardsWrapper.style.backgroundImage = `
+      block.style.backgroundImage = `
         linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
         linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
         url(${imgSrc})
       `;
-      contentCardsWrapper.style.backgroundSize = 'cover';
-      contentCardsWrapper.style.backgroundPosition = 'center';
     }
   }
 
