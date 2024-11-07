@@ -150,11 +150,18 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
 
 .template-x.fullwidth.holiday .template-x-inner-wrapper {
   max-height: 0;
-  position: relative;
   transition: max-height 0.5s, padding-top 0.5s;
   overflow: hidden;
   margin-right: 56px;
   margin-left: 56px;
+}
+
+.template-x.fullwidth.holiday {
+  position: absolute;
+}
+
+.template-x.fullwidth.holiday ~ div {
+  padding-top: 54px;
 }
 
 .template-x.fullwidth.holiday.expanded .template-x-inner-wrapper {
@@ -1649,8 +1656,6 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
 .template-x.horizontal > *:not(.template-x.horizontal),
 .template-x.horizontal:not(.holiday) > .template-x.horizontal > *:not(.carousel-container) {
   max-width: unset;
-  padding-left: 15px;
-  padding-right: 15px;
   margin-right: auto;
   margin-left: auto;
   margin-bottom: 24px;
@@ -1838,7 +1843,6 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 }
 
 .template-x.horizontal.holiday {
-  position: absolute;
   overflow: hidden;
   width: 100%;
   background: var(--color-black);

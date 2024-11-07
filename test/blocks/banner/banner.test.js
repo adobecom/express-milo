@@ -10,6 +10,7 @@ const { default: decorate } = imports[1];
 const body = await readFile({ path: './mocks/body.html' });
 const light = await readFile({ path: './mocks/light.html' });
 const standout = await readFile({ path: './mocks/standout.html' });
+const cool = await readFile({ path: './mocks/cool.html' });
 const multiButton = await readFile({ path: './mocks/multi-button.html' });
 
 describe('Banner', () => {
@@ -33,6 +34,47 @@ describe('Banner', () => {
     const button = banner.querySelector('a.button');
     expect(heading).to.exist;
     expect(button).to.exist;
+  });
+
+  it('creates a Banner standout variant block with correct elements', () => {
+    document.body.innerHTML = standout;
+    const banner = document.querySelector('.banner');
+    decorate(banner);
+
+    const contentContainer = banner.querySelector('.content-container');
+    expect(contentContainer).to.exist;
+
+    const button = banner.querySelector('a.button');
+
+    ['large', 'primary'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.true;
+    });
+
+    ['accent', 'reverse'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.false;
+    });
+  });
+
+  it('creates a Banner cool variant block with correct elements', () => {
+    document.body.innerHTML = cool;
+    const banner = document.querySelector('.banner');
+    decorate(banner);
+
+    const wrapperEl = banner.querySelector('.wrapper');
+    expect(wrapperEl).to.exist;
+
+    const contentContainer = banner.querySelector('.content-container');
+    expect(contentContainer).to.exist;
+
+    const button = banner.querySelector('a.button');
+
+    ['large', 'primary'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.true;
+    });
+
+    ['accent', 'reverse'].forEach((className) => {
+      expect(button.classList.contains(className)).to.be.false;
+    });
   });
 
   it('Banner light variant has correct elements', () => {
