@@ -176,7 +176,13 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 }
 
 .content-cards.wide .card .links-wrapper {
-  left: 18%;
+  position: absolute;
+  width: fit-content;
+  bottom: 24px;
+  flex-direction: initial;
+  justify-content: initial;
+  left: auto;
+  transform: none;
 }
 /*  wide cards  */
 
