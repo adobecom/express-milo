@@ -162,6 +162,7 @@ function handleRawPrice(price, basePrice, response) {
 async function createPricingSection(
   pricingArea,
   ctaGroup,
+  cardIndex
 ) {
   pricingArea.classList.add('pricing-area');
   const priceEl = Array.from(pricingArea.querySelectorAll('a')).filter((a) => a.textContent === PRICE_TOKEN)[0];
@@ -196,14 +197,14 @@ async function createPricingSection(
 
   ctaGroup.classList.add('card-cta-group');
   ctaGroup.querySelectorAll('a').forEach((a, i) => {
-    if (a.href.includes('#_button-fill')) {
-      a.classList.add('primary');
+    if (cardIndex === 0) {
+      a.classList.add('button','primary');
     }
     a.classList.add('large');
     if (i === 1) a.classList.add('secondary');
-    if (a.parentNode.tagName.toLowerCase() === 'strong') {
-      a.classList.add('button', 'primary');
-    }
+    // if (a.parentNode.tagName.toLowerCase() === 'strong') {
+    //   a.classList.add('button', 'primary');
+    // }
     formatDynamicCartLink(a);
     if (a.textContent.includes(SALES_NUMBERS)) {
       formatSalesPhoneNumber([a], SALES_NUMBERS);
@@ -266,6 +267,7 @@ export default async function init(el) {
     await createPricingSection(
       rows[3].children[0],
       rows[4].children[0],
+      cardIndex
     );
 
     for (let j = 0; j < rows.length - 2; j += 1) {
