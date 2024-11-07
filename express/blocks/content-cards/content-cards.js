@@ -152,7 +152,7 @@ async function decorateCards(block, { actions }) {
       title,
     } = cta;
     const card = createTag('div', { class: 'card' });
-    const linksWrapper = createTag('div', { class: 'links-wrapper' });
+    const linksWrapper = createTag('div', { class: `links-wrapper${!isTileVariant ? ' wide' : ''}` });
     const mediaWrapper = createTag('div', { class: `media-wrapper${isTileVariant ? ' tile' : ''}` });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
 
