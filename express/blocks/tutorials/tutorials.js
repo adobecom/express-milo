@@ -3,7 +3,7 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 function createTutorialCard(title, url, time, $picture) {
   const $card = createTag('a', { class: 'tutorial-card', title, tabindex: 0 });
   const $cardTop = createTag('div', { class: 'tutorial-card-top' });
@@ -15,7 +15,6 @@ function createTutorialCard(title, url, time, $picture) {
   $cardBottom.innerHTML = `<h3>${title}</h3>`;
   $card.addEventListener('click', () => {
     displayVideoModal(url, title, true);
-    loadStyle('/express/blocks/tutorials/video.css');
   });
   $card.addEventListener('keyup', ({ key }) => {
     if (key === 'Enter') {
