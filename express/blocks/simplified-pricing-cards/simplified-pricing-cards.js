@@ -162,7 +162,7 @@ function handleRawPrice(price, basePrice, response) {
 async function createPricingSection(
   pricingArea,
   ctaGroup,
-  cardIndex
+  cardIndex,
 ) {
   pricingArea.classList.add('pricing-area');
   const priceEl = Array.from(pricingArea.querySelectorAll('a')).filter((a) => a.textContent === PRICE_TOKEN)[0];
@@ -198,7 +198,7 @@ async function createPricingSection(
   ctaGroup.classList.add('card-cta-group');
   ctaGroup.querySelectorAll('a').forEach((a, i) => {
     if (cardIndex === 0) {
-      a.classList.add('button','primary');
+      a.classList.add('button' ,'primary');
     }
     a.classList.add('large');
     if (i === 1) a.classList.add('secondary');
@@ -267,7 +267,7 @@ export default async function init(el) {
     await createPricingSection(
       rows[3].children[0],
       rows[4].children[0],
-      cardIndex
+      cardIndex,
     );
 
     for (let j = 0; j < rows.length - 2; j += 1) {
@@ -284,7 +284,7 @@ export default async function init(el) {
   rows[rows.length - 2].classList.add('pricing-footer');
   rows[rows.length - 1].classList.add('compare-all-footer');
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
-  rows[rows.length - 1].querySelector('a').classList.remove('con-button')
+  rows[rows.length - 1].querySelector('a').classList.remove('con-button');
   el.appendChild(rows[rows.length - 2]);
   el.appendChild(rows[rows.length - 1]);
 
