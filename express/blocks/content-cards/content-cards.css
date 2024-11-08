@@ -43,6 +43,7 @@
   text-align: center;
   max-width: none;
   font-size: 16px;
+  margin-top: 8px;
 }
 
 .content-cards .content-cards-heading-section .content-cards-link {
@@ -338,6 +339,10 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   background-color: var(--color-white);
 }
 
+main .content-cards.wide .carousel-container .carousel-fader-left, main .content-cards.wide .carousel-container .carousel-fader-right {
+  display: block;
+}
+
 @media (min-width: 600px) {
   .content-cards.wide .card {
     min-width: 399px;
@@ -385,5 +390,23 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 @media (min-width: 1200px) {
   .content-cards.wide .carousel-container .carousel-element.card:nth-child(2){
     margin-left: 120px;
+  }
+  .content-cards .card {
+    width: 357px;
+    height: 396px;
+  }
+  .content-cards .card .text-wrapper {
+    margin: 20px 20px 12px;
+  }
+  .content-cards .card .media-wrapper {
+    border-radius: 8px;
+    width: 325px;
+    height: 274px;
+  }
+}
+
+@media (min-width: 1600px) {
+  main .content-cards.wide .carousel-container .carousel-fader-left, main .content-cards.wide .carousel-container .carousel-fader-right {
+    display: none;
   }
 }
