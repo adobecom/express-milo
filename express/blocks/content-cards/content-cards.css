@@ -379,17 +379,20 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
   main .content-cards .carousel-container .carousel-fader-right {
     display: none;
   }
-  .content-cards.wide .carousel-container .carousel-element.card:nth-child(2){
+  /* .content-cards.wide .carousel-container .carousel-element.card:nth-child(2){
     margin-left: 60px;
-  }
+  } */
 }
 
 @media (min-width: 1200px) {
   .content-cards.tile {
     padding-bottom: 90px;
   }
+  .content-cards.wide {
+    margin-top: -4px;
+  }
   .content-cards.wide .carousel-container .carousel-element.card:nth-child(2){
-    margin-left: 120px;
+    margin-left: 99px;
   }
   .content-cards .card {
     width: 357px;
