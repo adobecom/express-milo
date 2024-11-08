@@ -165,8 +165,8 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 
 .content-cards.wide .card .text-wrapper p.cta-card-desc {
   font-size: 16px;
-  line-height: 22px;
-  margin-top: 16px;
+  line-height: 24px;
+  margin-top: 17px;
 }
 
 .content-cards.wide .card .links-wrapper a:not(:hover) {
@@ -177,10 +177,10 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 .content-cards.wide .card .links-wrapper {
   position: absolute;
   width: fit-content;
-  bottom: 24px;
+  bottom: 21px;
   flex-direction: initial;
   justify-content: initial;
-  left: auto;
+  left: 23px;
   transform: none;
 }
 /*  wide cards  */
@@ -398,10 +398,13 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
     width: 357px;
     height: 396px;
   }
-  .content-cards .card .text-wrapper {
-    margin: 20px 20px 12px;
+  .content-cards.wide .card .text-wrapper {
+    margin-top: 228px;
+    margin-left: 7px;
+    margin-right: 4px;
   }
   .content-cards .card .media-wrapper {
+    margin-top: 6px;
     border-radius: 8px;
     width: 325px;
     height: 274px;
