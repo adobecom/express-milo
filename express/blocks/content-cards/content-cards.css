@@ -104,6 +104,16 @@ main .content-cards .carousel-container .carousel-fader-right {
   pointer-events: none;
 }
 
+main .content-cards.wide .carousel-container .carousel-fader-left {
+  top: 499px;
+  right: 42px;
+}
+
+main .content-cards.wide .carousel-container .carousel-fader-right {
+  top: 499px;
+  right: 15px;
+}
+
 main .content-cards .carousel-container .carousel-fader-left.arrow-hidden,
 main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   opacity: 0.5;
