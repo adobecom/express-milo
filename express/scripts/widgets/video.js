@@ -1,7 +1,7 @@
 import { getLibs, toClassName } from '../utils.js';
 import { getAvailableVimeoSubLang } from '../utils/embed-videos.js';
 
-const { createTag, getConfig, loadBlock } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag, getConfig, loadBlock, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
 const docTitle = document.title;
 
@@ -218,6 +218,7 @@ export function displayVideoModal(url, title, push) {
     .some((src) => src && isVideoLink(src));
 
   document.body.classList.add('no-scroll');
+  loadStyle('/express/scripts/widgets/video.css');
   if (canPlayInline) {
     const $overlay = createTag('div', { class: 'video-overlay' });
     const $video = createTag('div', { class: 'video-overlay-video', id: 'video-overlay-video' });
