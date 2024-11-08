@@ -56,9 +56,6 @@
 .content-cards .carousel-container {
   scroll-padding-left: 20px;
 }  
-.content-cards .carousel-container .carousel-element.card:nth-child(2){
-  margin-left: 20px;
-}
 
 .content-cards .carousel-container .carousel-platform {
   align-items: unset;
