@@ -102,7 +102,13 @@ body {
 }
 
 body[data-device="mobile"] {
-  & h1, & h2, & h3, & h4, & h5, & h6 {
+
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6 {
     hyphens: none;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -116,7 +122,7 @@ body[data-device="mobile"] {
 
 :root:lang(ja) {
   --body-font-family: adobe-clean-han-japanese, 'Adobe Clean', adobe-clean,
-  'Trebuchet MS', sans-serif;
+    'Trebuchet MS', sans-serif;
 }
 
 /* floating-cta main CTA suppression */
@@ -125,7 +131,7 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
 }
 
 /* gnav */
-body > header {
+body>header {
   box-sizing: content-box;
   padding-bottom: 0;
   background-repeat: no-repeat;
@@ -151,7 +157,8 @@ main {
     max-width: 100%;
   }
 
-  & a.button:any-link, & a.con-button:any-link {
+  & a.button:any-link,
+  & a.con-button:any-link {
     text-decoration: none;
     border-radius: 18px;
     padding: 5px 1.2em 6px;
@@ -171,7 +178,8 @@ main {
     min-height: initial;
   }
 
-  & svg.icon-milo, & img.icon-milo {
+  & svg.icon-milo,
+  & img.icon-milo {
     top: 0.15em !important;
   }
 
@@ -209,7 +217,9 @@ main {
     line-height: var(--body-line-height);
   }
 
-  & a.button.small:any-link, & a.con-button.small:any-link, & .small a.con-button:any-link  {
+  & a.button.small:any-link,
+  & a.con-button.small:any-link,
+  & .small a.con-button:any-link {
     padding: 4px 1em;
     border-radius: 15px;
     font-size: var(--body-font-size-xs);
@@ -253,21 +263,24 @@ main {
     color: var(--color-white);
     outline: none;
     box-shadow: 0 0 0 2px var(--color-white),
-    0 0 0 4px var(--color-info-accent-hover);
+      0 0 0 4px var(--color-info-accent-hover);
   }
 
-  & a.button.primary:any-link, & .dark a.con-button.outline:any-link {
+  & a.button.primary:any-link,
+  & .dark a.con-button.outline:any-link {
     color: var(--color-white);
     background-color: var(--color-info-primary);
     border-color: var(--color-info-primary);
   }
 
-  & a.button.primary:any-link:hover, & a.con-button.outline:any-link:hover {
+  & a.button.primary:any-link:hover,
+  & a.con-button.outline:any-link:hover {
     background-color: var(--color-info-primary-hover);
     border-color: var(--color-info-primary-hover);
   }
 
-  & a.button.primary:any-link:active, & a.con-button.outline:any-link:active {
+  & a.button.primary:any-link:active,
+  & a.con-button.outline:any-link:active {
     background-color: var(--color-info-primary-down);
     border-color: var(--color-info-primary-down);
   }
@@ -295,29 +308,31 @@ main {
     border-color: var(--color-info-secondary-down);
   }
 
-  & a.button.secondary:focus{
+  & a.button.secondary:focus {
     background-color: var(--color-gray-500);
     border-color: var(--color-gray-500);
     color: var(--color-white);
   }
 
-  & a.button.reverse:any-link, & a.con-button.outline:any-link {
+  & a.button.reverse:any-link,
+  & a.con-button.outline:any-link {
     color: var(--color-black);
     background-color: var(--color-white);
   }
 
-  & a.button.reverse:any-link:hover, & a.con-button.outline:any-link:hover {
+  & a.button.reverse:any-link:hover,
+  & a.con-button.outline:any-link:hover {
     background-color: var(--color-info-secondary-hover);
   }
 
-  & a.button.reverse:any-link:active, & a.con-button.outline:any-link:active {
+  & a.button.reverse:any-link:active,
+  & a.con-button.outline:any-link:active {
     background-color: var(--color-info-secondary-down);
   }
 
   & a.button.reverse:focus,
   & a.button.reverse.accent:any-link:focus,
-  & a.button.reverse.primaryCTA:any-link:focus
-  {
+  & a.button.reverse.primaryCTA:any-link:focus {
     background-color: var(--color-info-accent-hover);
     border-color: var(--color-info-accent-hover);
     color: var(--color-white);
@@ -329,8 +344,7 @@ main {
   }
 
   & a.button.reverse.accent:any-link:hover,
-  & a.button.reverse.primaryCTA:any-link:hover
-  {
+  & a.button.reverse.primaryCTA:any-link:hover {
     background-color: var(--color-info-accent-reverse);
   }
 
@@ -339,19 +353,22 @@ main {
     background-color: var(--color-info-accent-reverse-down);
   }
 
-  & a.button.dark:any-link, & a.con-button.dark:any-link {
+  & a.button.dark:any-link,
+  & a.con-button.dark:any-link {
     color: var(--color-black);
     background-color: var(--color-white);
     border-color: var(--color-white);
   }
 
-  & a.button.dark:any-link:hover, & a.con-button.dark:any-link:hover {
+  & a.button.dark:any-link:hover,
+  & a.con-button.dark:any-link:hover {
     color: var(--color-black);
     background-color: var(--color-gray-100);
     border-color: var(--color-gray-100);
   }
 
-  & a.button.dark:any-link:active, & a.con-button.dark:any-link:active {
+  & a.button.dark:any-link:active,
+  & a.con-button.dark:any-link:active {
     color: var(--color-black);
     background-color: var(--color-gray-200);
     border-color: var(--color-gray-200);
@@ -366,40 +383,45 @@ main {
     border-color: var(--color-info-primary-hover);
     color: var(--color-white);
     box-shadow: 0 0 0 2px var(--color-white),
-    0 0 0 4px var(--color-info-accent-hover);
+      0 0 0 4px var(--color-info-accent-hover);
   }
 
   & a.con-button.outline:any-link:active {
     background-color: var(--color-info-secondary-hover);
     box-shadow: 0 0 0 2px var(--color-white),
-    0 0 0 4px var(--color-info-accent-hover);
+      0 0 0 4px var(--color-info-accent-hover);
   }
 
-  & a.button.dark.reverse:any-link, & .dark a.con-button.outline:any-link {
+  & a.button.dark.reverse:any-link,
+  & .dark a.con-button.outline:any-link {
     color: var(--color-white);
     background-color: transparent;
     border-color: var(--color-white);
   }
 
-  & a.button.dark.reverse:any-link:hover, & .dark a.con-button.outline:any-link:hover {
+  & a.button.dark.reverse:any-link:hover,
+  & .dark a.con-button.outline:any-link:hover {
     color: var(--color-white);
     background-color: rgba(0, 0, 0, 0.1);
     border-color: var(--color-gray-100);
   }
 
-  & a.button.dark.reverse:any-link:active, & .dark a.con-button.outline:any-link:active {
+  & a.button.dark.reverse:any-link:active,
+  & .dark a.con-button.outline:any-link:active {
     color: var(--color-white);
     background-color: rgba(0, 0, 0, 0.2);
     border-color: var(--color-gray-200);
   }
 
-  & a.button.dark.reverse:any-link:focus, & .dark a.con-button.outline:any-link:focus {
+  & a.button.dark.reverse:any-link:focus,
+  & .dark a.con-button.outline:any-link:focus {
     background-color: var(--color-white);
     border-color: var(--color-white);
     color: var(--color-info-accent-hover);
   }
 
-  & a.button.wide, & a.con-button.wide {
+  & a.button.wide,
+  & a.con-button.wide {
     display: block;
   }
 
@@ -409,16 +431,14 @@ main {
   & a.button.gradient:any-link:focus {
     color: var(--color-white);
     border-color: transparent;
-    background: linear-gradient(
-            320deg,
-            #7c84f3,
-            #ff4dd2,
-            #ff993b,
-            #ff4dd2,
-            #7c84f3,
-            #ff4dd2,
-            #ff993b
-    );
+    background: linear-gradient(320deg,
+        #7c84f3,
+        #ff4dd2,
+        #ff993b,
+        #ff4dd2,
+        #7c84f3,
+        #ff4dd2,
+        #ff993b);
     background-size: 400% 400%;
     transition: background-color 0.3s, color 0.3s, border 0.3s;
     -webkit-animation: buttonGradient 45s ease infinite;
@@ -426,7 +446,7 @@ main {
     animation: buttonGradient 45s ease infinite;
   }
 
-  & a.button > svg {
+  & a.button>svg {
     float: left;
     display: inline;
     width: 20px;
@@ -436,7 +456,7 @@ main {
     color: currentColor;
   }
 
-  & a.button > svg > use {
+  & a.button>svg>use {
     fill: currentColor;
     color: currentColor;
   }
@@ -449,7 +469,8 @@ main {
   & h6 {
     font-weight: var(--heading-font-weight);
     line-height: var(--heading-line-height);
-    -webkit-hyphens: auto; /* safari */
+    -webkit-hyphens: auto;
+    /* safari */
     hyphens: auto;
     margin-block-start: 0;
     margin-block-end: 0;
@@ -546,7 +567,7 @@ main {
     object-fit: cover;
   }
 
-  & #hero > div {
+  & #hero>div {
     padding: 0;
     margin: auto;
   }
@@ -660,16 +681,17 @@ main {
     margin-right: 4px;
   }
 
-  & .section > .content {
+  & .section>.content {
     text-align: center;
     max-width: 375px;
   }
 
-  & .section .content p, .section p {
+  & .section .content p,
+  .section p {
     margin: 32px 0;
   }
 
-  & .section > .content:first-child {
+  & .section>.content:first-child {
     padding-top: 0.1px;
   }
 
@@ -683,10 +705,10 @@ main {
   }
 
   /* Store icons */
-  &  img.icon-apple-store,
-  &  img.icon-google-store,
-  &  img.icon-galaxy-store,
-  &  img.icon-microsoft-store {
+  & img.icon-apple-store,
+  & img.icon-google-store,
+  & img.icon-galaxy-store,
+  & img.icon-microsoft-store {
     height: 70px;
     width: auto;
     margin: 8px;
@@ -699,206 +721,34 @@ main {
   }
 
   /* Japanese font sizing styles */
-  & :lang(ja) h1.heading-long, & :lang(ja) #hero h1.heading-long {
+  & :lang(ja) h1.heading-long,
+  & :lang(ja) #hero h1.heading-long {
     font-size: var(--heading-font-size-xl);
   }
 
-  & :lang(ja) h1.heading-very-long, & :lang(ja) #hero h1.heading-very-long {
+  & :lang(ja) h1.heading-very-long,
+  & :lang(ja) #hero h1.heading-very-long {
     font-size: var(--heading-font-size-l);
   }
 
-  & :lang(ja) h1.heading-x-long, & :lang(ja) #hero h1.heading-x-long {
+  & :lang(ja) h1.heading-x-long,
+  & :lang(ja) #hero h1.heading-x-long {
     font-size: var(--heading-font-size-l);
   }
 
-  & :lang(ja) h2.heading-long, & :lang(ja) #hero h2.heading-long {
+  & :lang(ja) h2.heading-long,
+  & :lang(ja) #hero h2.heading-long {
     font-size: var(--heading-font-size-l);
   }
 
-  & :lang(ja) h2.heading-very-long, & :lang(ja) #hero h2.heading-very-long {
+  & :lang(ja) h2.heading-very-long,
+  & :lang(ja) #hero h2.heading-very-long {
     font-size: var(--heading-font-size-l);
   }
 
-  & :lang(ja) h2.heading-x-long, & :lang(ja) #hero h2.heading-x-long {
+  & :lang(ja) h2.heading-x-long,
+  & :lang(ja) #hero h2.heading-x-long {
     font-size: var(--heading-font-size-m);
-  }
-
-  @media (min-width: 600px) {
-    & h2 {
-      font-size: var(--heading-font-size-l);
-    }
-
-    & h3 {
-      font-size: var(--heading-font-size-l);
-    }
-
-    & h4 {
-      font-size: var(--heading-font-size-m);
-      margin-top: 56px;
-    }
-
-    & h1 + h5 {
-      font-size: var(--body-font-size-xxl);
-      font-weight: var(--body-font-weight);
-      margin-top: 32px;
-      margin-bottom: 16px;
-    }
-
-    & p {
-      font-size: var(--body-font-size-l);
-    }
-
-    & #hero h5 {
-      font-size: 22px;
-      font-weight: 400;
-      max-width: 672px;
-      margin: auto;
-      margin-top: 32px;
-    }
-
-    & #hero h2,
-    & #hero p {
-      font-size: var(--body-font-size-xl);
-      line-height: var(--body-line-height);
-      text-align: center;
-      margin: 24px 15px 0;
-    }
-
-    & :lang(ja) h2.heading-long, :lang(ja) #hero h2.heading-long {
-      font-size: var(--heading-font-size-l);
-    }
-
-    & :lang(ja) h2.heading-very-long, :lang(ja) #hero h2.heading-very-long {
-      font-size: var(--heading-font-size-m);
-    }
-
-    & :lang(ja) h2.heading-x-long, :lang(ja) #hero h2.heading-x-long {
-      font-size: var(--heading-font-size-m);
-    }
-  }
-
-  @media (min-width: 900px) {
-    & h5 + & p {
-      text-align: unset;
-    }
-
-    & #hero {
-      padding-left: 50px;
-      padding-right: 50px;
-    }
-
-    & #hero h2,
-    & #hero p {
-      font-size: var(--body-font-size-xxl);
-      margin: 24px 50px 0;
-    }
-
-    & .button-container.free-plan-container {
-      width: max-content;
-    }
-
-    & .fullscreen-marquee .button-container.free-plan-container {
-      justify-content: center;
-      width: auto;
-      align-items: center;
-    }
-
-    & .button-container.free-plan-container a.button {
-      margin: 0;
-      display: flex;
-      align-items: center;
-      /* todo: investigate why */
-      z-index: 4;
-    }
-
-    & .free-plan-widget .plan-widget-tag {
-      text-align: left;
-    }
-
-    & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
-    & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
-      display: inline-block;
-    }
-
-    & .section > .content {
-      max-width: 830px;
-    }
-  }
-
-  @media (min-width: 1200px) {
-    & h1,
-    & h2,
-    & h3,
-    & h4,
-    & h5,
-    & h6 {
-      -webkit-hyphens: unset; /* safari */
-      hyphens: unset;
-    }
-
-    & .section h1 {
-      font-size: var(--heading-font-size-l);
-    }
-
-    & #hero h1 {
-      font-size: var(--heading-font-size-xxl);
-      margin: 0;
-    }
-
-    & #hero .columns > div > div {
-      margin: 8px;
-    }
-
-    & .button-container.free-plan-container {
-      flex-direction: row;
-      width: auto;
-      justify-content: left;
-    }
-
-    & .center .button-container.free-plan-container {
-      justify-content: unset;
-      margin: 40px auto 0;
-    }
-
-    & .free-plan-widget {
-      margin: 0 auto;
-    }
-
-    & .button-container.free-plan-container a.button + .free-plan-widget {
-      margin-left: 24px;
-    }
-
-    & .button-container.free-plan-container .free-plan-widget {
-      margin: 0;
-    }
-
-    & .button-container.free-plan-container.stacked {
-      margin-top: 0;
-      flex-wrap: wrap;
-    }
-
-    & .button-container.free-plan-container.stacked .free-plan-widget {
-      margin-top: 24px;
-      flex-direction: row;
-    }
-
-    & .button-container.free-plan-container.stacked .free-plan-widget > div {
-      margin-right: 16px;
-    }
-
-    & .template-list-fourcols-container > div,
-    & .template-list-horizontal-container > div {
-      max-width: 1200px;
-    }
-
-    & .free-plan-bullet .free-plan-bullet-container,
-    & .free-plan-widget-placeholder {
-      max-width: 400px;
-    }
-
-    & .section > .content {
-      max-width: 1024px;
-    }
   }
 
   /* long-form section: left-align text */
@@ -955,14 +805,16 @@ main {
     }
   }
 
+
+
   /*Styles can be removed once we stop using block transpilations*/
-  & .marquee.transpiled p.action-area > span {
+  & .marquee.transpiled p.action-area>span {
     display: flex;
     flex-direction: column;
     text-align: center;
   }
 
-  & .marquee.transpiled p.action-area > span > a {
+  & .marquee.transpiled p.action-area>span>a {
     margin: 0;
   }
 
@@ -1000,6 +852,196 @@ main {
   }
 }
 
+
+@media (min-width: 600px) {
+  main {
+    & h2 {
+      font-size: var(--heading-font-size-l);
+    }
+
+    & h3 {
+      font-size: var(--heading-font-size-l);
+    }
+
+    & h4 {
+      font-size: var(--heading-font-size-m);
+      margin-top: 56px;
+    }
+
+    & h1+h5 {
+      font-size: var(--body-font-size-xxl);
+      font-weight: var(--body-font-weight);
+      margin-top: 32px;
+      margin-bottom: 16px;
+    }
+
+    & p {
+      font-size: var(--body-font-size-l);
+    }
+
+    & #hero h5 {
+      font-size: 22px;
+      font-weight: 400;
+      max-width: 672px;
+      margin: auto;
+      margin-top: 32px;
+    }
+
+    & #hero h2,
+    & #hero p {
+      font-size: var(--body-font-size-xl);
+      line-height: var(--body-line-height);
+      text-align: center;
+      margin: 24px 15px 0;
+    }
+
+    & :lang(ja) h2.heading-long,
+    :lang(ja) #hero h2.heading-long {
+      font-size: var(--heading-font-size-l);
+    }
+
+    & :lang(ja) h2.heading-very-long,
+    :lang(ja) #hero h2.heading-very-long {
+      font-size: var(--heading-font-size-m);
+    }
+
+    & :lang(ja) h2.heading-x-long,
+    :lang(ja) #hero h2.heading-x-long {
+      font-size: var(--heading-font-size-m);
+    }
+  }
+}
+
+@media (min-width: 900px) {
+  main {
+    & h5+& p {
+      text-align: unset;
+    }
+
+    & #hero {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+
+    & #hero h2,
+    & #hero p {
+      font-size: var(--body-font-size-xxl);
+      margin: 24px 50px 0;
+    }
+
+    & .button-container.free-plan-container {
+      width: max-content;
+    }
+
+    & .fullscreen-marquee .button-container.free-plan-container {
+      justify-content: center;
+      width: auto;
+      align-items: center;
+    }
+
+    & .button-container.free-plan-container a.button {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      /* todo: investigate why */
+      z-index: 4;
+    }
+
+    & .free-plan-widget .plan-widget-tag {
+      text-align: left;
+    }
+
+    & .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
+    & .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
+      display: inline-block;
+    }
+
+    & .section>.content {
+      max-width: 830px;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  main {
+
+    & h1,
+    & h2,
+    & h3,
+    & h4,
+    & h5,
+    & h6 {
+      -webkit-hyphens: unset;
+      /* safari */
+      hyphens: unset;
+    }
+
+    & .section h1 {
+      font-size: var(--heading-font-size-l);
+    }
+
+    & #hero h1 {
+      font-size: var(--heading-font-size-xxl);
+      margin: 0;
+    }
+
+    & #hero .columns>div>div {
+      margin: 8px;
+    }
+
+    & .button-container.free-plan-container {
+      flex-direction: row;
+      width: auto;
+      justify-content: left;
+    }
+
+    & .center .button-container.free-plan-container {
+      justify-content: unset;
+      margin: 40px auto 0;
+    }
+
+    & .free-plan-widget {
+      margin: 0 auto;
+    }
+
+    & .button-container.free-plan-container a.button+.free-plan-widget {
+      margin-left: 24px;
+    }
+
+    & .button-container.free-plan-container .free-plan-widget {
+      margin: 0;
+    }
+
+    & .button-container.free-plan-container.stacked {
+      margin-top: 0;
+      flex-wrap: wrap;
+    }
+
+    & .button-container.free-plan-container.stacked .free-plan-widget {
+      margin-top: 24px;
+      flex-direction: row;
+    }
+
+    & .button-container.free-plan-container.stacked .free-plan-widget>div {
+      margin-right: 16px;
+    }
+
+    & .template-list-fourcols-container>div,
+    & .template-list-horizontal-container>div {
+      max-width: 1200px;
+    }
+
+    & .free-plan-bullet .free-plan-bullet-container,
+    & .free-plan-widget-placeholder {
+      max-width: 400px;
+    }
+
+    & .section>.content {
+      max-width: 1024px;
+    }
+  }
+}
+
 body:not(.blog) main {
   & #hero:not(:has(.hero-bg)) {
     color: var(--body-color);
@@ -1007,11 +1049,11 @@ body:not(.blog) main {
     padding-bottom: 0;
   }
 
-  & #hero:not(:has(.hero-bg)) + .section {
+  & #hero:not(:has(.hero-bg))+.section {
     padding-top: 0;
   }
 
-  & #hero:not(:has(.hero-bg)) > div {
+  & #hero:not(:has(.hero-bg))>div {
     max-width: 1024px;
   }
 
@@ -1117,9 +1159,11 @@ header .feds-cta--primary:hover {
   border-color: var(--color-info-accent-hover);
 }
 
-body { /* stylelint-disable-line no-duplicate-selectors */
+body {
+  /* stylelint-disable-line no-duplicate-selectors */
   --link-color: var(--color-info-accent);
   --link-hover-color: var(--color-info-accent-hover);
   --feds-color-link--hover--light: var(--color-info-accent-hover);
 }
+
 /* end override color gnav & footer */

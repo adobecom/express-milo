@@ -2,9 +2,6 @@
   max-width: 375px;
 }
 
-.section:has(.quotes) {
-  padding: 40px;
-}
 .section:has(.quotes)>div>h2 {
   margin-top: 80px;
 }
