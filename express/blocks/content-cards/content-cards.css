@@ -163,7 +163,6 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 
 .content-cards.wide .card .text-wrapper {
   margin-top: 170px;
-  /* margin-top: 220px; */
   margin-left: 4px;
   margin-right: 4px;
 }
@@ -201,7 +200,7 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 
 .content-cards .card .text-wrapper {
   text-align: left;
-  margin: 24px 24px 16px 24px;
+  margin: 20px 20px 16px 20px;
 }
 
 .content-cards .card .text-wrapper p {
