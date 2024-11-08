@@ -430,7 +430,7 @@ main .section>.simplified-pricing-cards-wrapper {
   }
 
   .simplified-pricing-cards .card-wrapper {
-    margin: 48px auto 0px auto;
+    margin: 48px auto;
     width: min-content;
   }
 
@@ -472,7 +472,7 @@ main .section>.simplified-pricing-cards-wrapper {
     height: 0;
   }
 
-  .simplified-pricing-cards a.button.compare-all-button {
+  .simplified-pricing-cards .compare-all-footer a.button.compare-all-button {
     margin-top: 40px;
   } 
 }
@@ -527,7 +527,7 @@ main .section>.simplified-pricing-cards-wrapper {
  
   }
 
-  .simplified-pricing-cards a.button.compare-all-button {
+  .simplified-pricing-cards .compare-all-footer a.button.compare-all-button {
     margin-top: 40px;
   }
      
