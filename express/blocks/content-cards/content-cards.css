@@ -203,7 +203,7 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
 }
 
 .content-cards-heading-section .text-wrapper p {
-  width: max-content;
+  width: unset;
 }
 
 .content-cards .card .text-wrapper p.cta-card-title {
@@ -348,6 +348,15 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
   display: block;
 }
 
+.content-cards .card .text-wrapper {
+  text-align: left;
+  margin: 20px 20px 16px 20px;
+}
+
+.content-cards .carousel-container .carousel-element.card:nth-child(2){
+  margin-left: 20px;
+}
+
 @media (min-width: 600px) {
   .content-cards.wide .card {
     min-width: 399px;
@@ -371,8 +380,8 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
 
 @media (min-width: 900px) {
   .content-cards .content-cards-heading-section {
-      flex-direction: row;
-      align-items: flex-end;
+    flex-direction: row;
+    align-items: flex-end;
   }
   .content-cards h2.content-cards-heading {
     font-size: 36px;
@@ -381,7 +390,7 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
   }
   .content-cards .carousel-container .carousel-fader-left,
   .content-cards .carousel-container .carousel-fader-right{
-      background: unset;
+    background: unset;
   }
   main .content-cards .carousel-container .carousel-fader-left,
   main .content-cards .carousel-container .carousel-fader-right {
@@ -390,6 +399,9 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
   .content-cards .card .text-wrapper {
     text-align: left;
     margin: 20px 20px 16px 20px;
+  }
+  .content-cards-heading-section .text-wrapper p {
+    width: max-content;
   }
 }
 
@@ -421,6 +433,9 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
   .content-cards .card .text-wrapper {
     text-align: left;
     margin: 20px 20px 16px 20px;
+  }
+  .content-cards-heading-section .text-wrapper p {
+    width: unset;
   }
 }
 
