@@ -229,6 +229,7 @@ main .section .template-x-heading {
   main .how-to-steps .tip-text p {
     font-size: var(--body-font-size-xl);
   }
+
 }
 
 @media (min-width: 900px) {
@@ -236,5 +237,11 @@ main .section .template-x-heading {
     max-width: 1070px;
     padding: 0 40px;
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 900px) {
+  main .section:has(.content:first-child + .how-to-steps) .content {
+    max-width: 350px;
   }
 }
