@@ -519,11 +519,7 @@ main .section>.simplified-pricing-cards-wrapper {
   .simplified-pricing-cards .card-wrapper .card.hide .card-cta-group {
     display: flex;
   }
-
-  .simplified-pricing-cards .card-header p em {
-    margin-right: 0;
-  }
-
+  
   .simplified-pricing-cards .card {
     gap: 10px; 
       padding-top: initial;
@@ -563,8 +559,7 @@ main .section>.simplified-pricing-cards-wrapper {
   }
 
   .simplified-pricing-cards .card-header { 
-    gap: unset; 
-    padding: 5px;
+    gap: unset;  
 
   }
 
