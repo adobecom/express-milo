@@ -241,6 +241,11 @@ main .section .template-x-heading {
 }
 
 @media (max-width: 900px) {
+  main .section:has(.content:first-child + .how-to-steps) .content{
+    max-width: fit-content;
+  }
+}
+@media (max-width: 600px) {
   main .section:has(.content:first-child + .how-to-steps) .content {
     max-width: 350px;
   }
