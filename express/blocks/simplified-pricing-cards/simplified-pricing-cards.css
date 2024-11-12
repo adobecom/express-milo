@@ -422,7 +422,7 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 /* Tablet styles */
-@media (min-width: 768px) and (max-width: 1280px) {
+@media (min-width: 768px) and (max-width: 1279px) {
   .simplified-pricing-cards {
     --card-width: 580px;
     --header-size: 28px;
@@ -480,7 +480,7 @@ main .section>.simplified-pricing-cards-wrapper {
 /* Desktop styles */
 @media (min-width: 1280px) {
   .simplified-pricing-cards {
-    --card-width: 290px;
+    --card-width: 270px;
     --header-size: 28px;
     --header-offer-size: 16px;
    padding-top: 40px;
@@ -518,6 +518,10 @@ main .section>.simplified-pricing-cards-wrapper {
   .simplified-pricing-cards .card-wrapper .card.hide .pricing-area,
   .simplified-pricing-cards .card-wrapper .card.hide .card-cta-group {
     display: flex;
+  }
+
+  .simplified-pricing-cards .card-header p em {
+    margin-right: 0;
   }
 
   .simplified-pricing-cards .card {
