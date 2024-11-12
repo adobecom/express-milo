@@ -386,6 +386,16 @@ function addPromotion(area) {
   }
 }
 
+function decorateLegalCopy(area) {
+  const legalCopyPrefixes = ['*', '†'];
+  area.querySelectorAll('p').forEach(($p) => {
+    const pText = $p.textContent.trim() ? $p.textContent.trim().charAt(0) : '';
+    if (pText && legalCopyPrefixes.includes(pText)) {
+      $p.classList.add('legal-copy');
+    }
+  });
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   preDecorateSections(area);
@@ -407,6 +417,7 @@ export function decorateArea(area = document) {
   fragmentBlocksToLinks(area);
   renameConflictingBlocks(area);
   addPromotion(area);
+  decorateLegalCopy(area);
 
   const selector = area === document ? 'main > div' : ':scope > div';
   const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"]`).join(', ');
