@@ -408,7 +408,6 @@ main .interactive-marquee.horizontal-masonry .media-container p.image-container 
 main .interactive-marquee.horizontal-masonry .media-container .overlay {
     position: absolute;
     top: 0px;
-    width: 150px;
     padding: 10px;
     display: none;
     color: white;

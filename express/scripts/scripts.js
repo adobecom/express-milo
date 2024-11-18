@@ -14,6 +14,7 @@ import {
   setLibs,
   buildAutoBlocks,
   decorateArea,
+  getMetadata,
   preDecorateSections,
   getRedirectUri,
 } from './utils.js';
@@ -24,6 +25,11 @@ const STYLES = ['/express/styles/styles.css'];
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
 const LIBS = '/libs';
 const miloLibs = setLibs(LIBS);
+let jarvisImmediatelyVisible = false;
+const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
+const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
+if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
+  (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) jarvisImmediatelyVisible = true;
 
 // Add any config options.
 const CONFIG = {
@@ -33,9 +39,9 @@ const CONFIG = {
   codeRoot: '/express',
   contentRoot: '/express',
   jarvis: {
-    id: 'Acom_Express',
-    version: '1.0',
-    onDemand: true,
+    id: getMetadata('jarvis-surface-id') || 'Acom_Express',
+    version: getMetadata('jarvis-surface-version') || '1.0',
+    onDemand: !jarvisImmediatelyVisible,
   },
   imsClientId: 'AdobeExpressWeb',
   // geoRouting: 'off',
@@ -100,7 +106,7 @@ preDecorateSections(document);
   });
 }());
 
-function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
+function decorateHeroLCP(loadStyle, config, createTag) {
   const template = getMetadata('template');
   const h1 = document.querySelector('main h1');
   if (template !== 'blog') {
@@ -173,7 +179,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     loadArea,
     loadStyle,
     setConfig,
-    getMetadata,
     loadLana,
     createTag,
   } = await import(`${miloLibs}/utils/utils.js`);
@@ -196,11 +201,6 @@ function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
     const { default: redirect } = await import('./utils/template-redirect.js');
     await redirect();
   }
-
-  const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
-  const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
-  if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
-    (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
 
   const config = setConfig({ ...CONFIG, miloLibs });
 

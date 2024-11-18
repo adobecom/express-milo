@@ -38,7 +38,7 @@ export const [setLibs, getLibs] = (() => {
 export const expressObj = {};
 
 const cachedMetadata = [];
-const getMetadata = (name, doc = document) => {
+export const getMetadata = (name, doc = document) => {
   const attr = name && name.includes(':') ? 'property' : 'name';
   const meta = doc.head.querySelector(`meta[${attr}="${name}"]`);
   return meta && meta.content;
@@ -50,13 +50,19 @@ export function getCachedMetadata(name) {
 
 export async function getRedirectUri() {
   const BlockMediator = await import('./block-mediator.min.js');
-  return BlockMediator.default.get('primaryCtaUrl')
+  const branchLinkOriginPattern = /^https:\/\/adobesparkpost(-web)?\.app\.link/;
+  function isBranchLink(url) {
+    return url && branchLinkOriginPattern.test(new URL(url).origin);
+  }
+  const url = getMetadata('pep-destination')
+      || BlockMediator.default.get('primaryCtaUrl')
       || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
+  return isBranchLink(url) && url;
 }
 
 export const yieldToMain = () => new Promise((resolve) => { setTimeout(resolve, 0); });
 
-function createTag(tag, attributes, html, options = {}) {
+export function createTag(tag, attributes, html, options = {}) {
   const el = document.createElement(tag);
   if (html) {
     if (html instanceof HTMLElement
@@ -413,7 +419,7 @@ export function decorateArea(area = document) {
   const embeds = area.querySelectorAll(`${selector} > .embed a[href*="instagram.com"]`);
   linksToNotAutoblock.push(...embeds);
 
-  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"]`).join(', ');
+  const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"]`).join(', ');
   linksToNotAutoblock.push(...area.querySelectorAll(videoLinksToNotAutoBlock));
   linksToNotAutoblock.forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
