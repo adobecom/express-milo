@@ -8,7 +8,7 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   const conf = {};
   mod.setConfig(conf);
 });
-const [, { default: decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/grid-marquee/grid-marquee.js')]);
+const [{ default: decorate }] = await Promise.all([import('../../../express/blocks/grid-marquee/grid-marquee.js')]);
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('grid-marquee', () => {
   let block;

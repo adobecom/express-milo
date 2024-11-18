@@ -143,7 +143,7 @@ main {
   -webkit-font-smoothing: initial;
   line-height: initial;
 
-  & a:hover {
+  & a, & a:hover {
     text-decoration: none;
   }
 
@@ -677,8 +677,8 @@ main {
     padding-bottom: 40px;
   }
 
-  & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
-  & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
+  & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner) a.button.same-fcta,
+  & .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner) a.con-button.same-fcta {
       display: none;
   }
 
