@@ -1,5 +1,6 @@
 main .section .discover-cards {
     max-width: none;
+    text-align: center;
 }
 
 .section .discover-cards:first-child {
