@@ -46,8 +46,8 @@ function drawerOn(drawer) {
 }
 document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
 let isTouch;
-const iconRegex = /icon-(.+)/;
-async function decorateDrawer(video, poster, titleText, panels, panelsFrag, drawer) {
+const iconRegex = /icon-\s*([^\s]+)/;
+async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, drawer) {
   const titleRow = createTag('div', { class: 'title-row' });
   const content = createTag('div', { class: 'content' });
   const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black'));
@@ -57,12 +57,14 @@ async function decorateDrawer(video, poster, titleText, panels, panelsFrag, draw
   });
   titleRow.append(createTag('strong', { class: 'drawer-title' }, titleText), closeButton);
   await yieldToMain();
-  video.setAttribute('muted', true);
-  video.setAttribute('loop', true);
-  video.setAttribute('preload', 'metadata');
-  video.setAttribute('title', titleText);
-  video.setAttribute('poster', poster);
-  video.removeAttribute('controls');
+  const video = createTag('video', {
+    playsinline: '',
+    muted: '',
+    loop: '',
+    preload: 'metadata',
+    title: titleText,
+    poster,
+  }, `<source src="${videoSrc}" type="video/mp4">`);
   const videoWrapper = createTag('div', { class: 'video-container' }, video);
 
   const icons = panelsFrag.querySelectorAll('.icon');
@@ -136,7 +138,8 @@ function toCard(drawer) {
   const panelsFrag = new DocumentFragment();
   panelsFrag.append(...panels);
   panels.forEach((panel) => panel.classList.add('panel'));
-  const video = face.querySelector('video');
+  const videoAnchor = face.querySelector('a');
+  videoAnchor?.remove();
   const card = createTag('button', {
     class: 'card',
     'aria-controls': `drawer-${titleText}`,
@@ -146,7 +149,7 @@ function toCard(drawer) {
 
   face.classList.add('face');
   addCardInteractions(card, drawer);
-  const lazyCB = () => decorateDrawer(video, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
+  const lazyCB = () => decorateDrawer(videoAnchor.href, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
   drawer.classList.add('drawer');
   drawer.setAttribute('aria-hidden', true);
   drawer.id = `drawer-${titleText}`;
@@ -208,8 +211,10 @@ function makeRatings() {
   const ratings = createTag('div', { class: 'ratings' });
   const userAgent = getMobileOperatingSystem();
   const cb = (el) => el && ratings.append(el);
-  if (userAgent !== 'Android') makeRating('apple').then(cb);
-  if (userAgent !== 'iOS') makeRating('google').then(cb);
+  // eslint-disable-next-line chai-friendly/no-unused-expressions
+  userAgent !== 'Android' && makeRating('apple').then(cb);
+  // eslint-disable-next-line chai-friendly/no-unused-expressions
+  userAgent !== 'iOS' && makeRating('google').then(cb);
   return ratings;
 }
 
@@ -225,7 +230,6 @@ export default function init(el) {
   background.classList.add('background');
   el.append(foreground);
   new IntersectionObserver((entries, ob) => {
-    console.log('io!');
     ob.unobserve(el);
     cards.forEach((card) => card.lazyCB());
   }).observe(el);

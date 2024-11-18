@@ -37,18 +37,17 @@ const breakpointConfig = [
 ];
 
 // Transforms a {{pricing}} tag into human readable format.
-async function handlePrice(block) {
-  const priceEls = [...block.querySelectorAll(':scope a')].filter((a) => a.textContent.includes('((pricing))'));
-  if (!priceEls.length) return null;
+async function handlePrice(block, tokenType = '((pricing))', responseFieldName = 'formatted') {
+  const priceEl = block.querySelector(`[title="${tokenType}"]`);
+  if (!priceEl) return null;
 
-  const priceEl = priceEls[0];
   const newContainer = createTag('span');
   priceEl.closest('p')?.classList.remove('button-container');
   priceEl.after(newContainer);
   priceEl.remove();
   try {
     const response = await fetchPlanOnePlans(priceEl?.href);
-    newContainer.innerHTML = response.formatted;
+    newContainer.innerHTML = response[responseFieldName];
   } catch (error) {
     window.lana.log('Failed to fetch prices for page plan');
     window.lana.log(error);
@@ -503,6 +502,8 @@ async function handleOptions(div, typeHint, block) {
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'ax-marquee');
   handlePrice(block);
+  handlePrice(block, '[[savePercentage]]', 'savePer');
+  handlePrice(block, '[[base-pricing-token]]', 'formattedBP');
   decorateButtonsDeprecated(block);
 
   const possibleBreakpoints = breakpointConfig.map((bp) => bp.typeHint);

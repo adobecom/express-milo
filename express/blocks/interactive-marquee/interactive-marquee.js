@@ -24,10 +24,11 @@ export const windowHelper = {
 // 'use-this-prompt'
 // 'prompt-title'
 
-function handleGenAISubmit(form, link) {
+async function handleGenAISubmit(form, link) {
   const input = form.querySelector('input');
   if (input.value.trim() === '') return;
-  const genAILink = link.replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
+  const mod = await import('../../scripts/branchlinks.js');
+  const genAILink = mod.getTrackingAppendedURL(link).replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
   const urlObj = new URL(genAILink);
   urlObj.searchParams.delete('referrer');
   if (genAILink) windowHelper.redirect(urlObj.toString());
