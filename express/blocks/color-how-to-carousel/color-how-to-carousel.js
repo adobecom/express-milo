@@ -1,6 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
+import {fixIcons} from "../../scripts/utils/icons.js";
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -178,6 +179,7 @@ function getColorSVG(svgName) {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'color-how-to-carousel');
+  await fixIcons(block);
 
   const payload = {
     rotationInterval: null,
