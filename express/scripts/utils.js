@@ -55,7 +55,7 @@ export async function getRedirectUri() {
     return url && branchLinkOriginPattern.test(new URL(url).origin);
   }
   const url = getMetadata('pep-destination')
-      || BlockMediator.get('primaryCtaUrl')
+      || BlockMediator.default.get('primaryCtaUrl')
       || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
   return isBranchLink(url) && url;
 }
@@ -394,13 +394,14 @@ function addPromotion(area) {
 
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
+  const selector = area === document ? 'main > div' : ':scope > div';
   preDecorateSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
-  const links = area === Document ? area.querySelectorAll('main a[href*="adobesparkpost.app.link"]') : area.querySelectorAll(':scope a[href*="adobesparkpost.app.link"]');
+  const links = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"]`);
   if (links.length) {
     // eslint-disable-next-line import/no-cycle
     import('./branchlinks.js').then((mod) => mod.default(links));
@@ -414,9 +415,13 @@ export function decorateArea(area = document) {
   renameConflictingBlocks(area);
   addPromotion(area);
 
-  const selector = area === document ? 'main > div' : ':scope > div';
+  const linksToNotAutoblock = [];
+  const embeds = area.querySelectorAll(`${selector} > .embed a[href*="instagram.com"]`);
+  linksToNotAutoblock.push(...embeds);
+
   const videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"]`).join(', ');
-  [...area.querySelectorAll(videoLinksToNotAutoBlock)].forEach((link) => {
+  linksToNotAutoblock.push(...area.querySelectorAll(videoLinksToNotAutoBlock));
+  linksToNotAutoblock.forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
   });
 }
