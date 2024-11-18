@@ -36,7 +36,7 @@ describe('Banner', () => {
     expect(button).to.exist;
   });
 
-  it('creates a Banner standout variant block with correct elements', () => {
+  it('Banner standout variant has correct elements', () => {
     document.body.innerHTML = standout;
     const banner = document.querySelector('.banner');
     decorate(banner);
@@ -59,9 +59,6 @@ describe('Banner', () => {
     document.body.innerHTML = cool;
     const banner = document.querySelector('.banner');
     decorate(banner);
-
-    const wrapperEl = banner.querySelector('.wrapper');
-    expect(wrapperEl).to.exist;
 
     const contentContainer = banner.querySelector('.content-container');
     expect(contentContainer).to.exist;

@@ -1,0 +1,238 @@
+main .section .discover-cards {
+    max-width: none;
+}
+
+.section .discover-cards:first-child {
+    padding-top: 60px;
+}
+
+.discover-cards {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.discover-cards .sub-header {
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+    margin: 10px 0 8px 0;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.discover-cards .cards-container {
+    max-width: 1700px;
+}
+.discover-cards .cards-container .card {
+    min-width: 294px;
+    height: 427px;
+    border: 1px solid white;
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+    flex: 1 1 calc(33.33% - 32px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    padding: 16px;
+    margin: 9px -7px 10px auto;
+
+}
+.discover-cards .center-title {
+    text-align: center;
+}
+.discover-cards .center-title h3 {
+    font-size: 22px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.discover-cards .gallery-control {
+    padding-top: 11px;
+}
+.discover-cards .gallery-control .status {
+    display: none;
+}
+.discover-cards .cards-container .card .text-content {
+    text-align: left;
+}
+.discover-cards .cards-container .card .text-content .header {
+    text-align: left;
+    font-size: 20px;
+    margin-top: 17px;
+}
+.discover-cards .cards-container .card .text-content .body {
+    font-size: 16px;
+    width: 262px;
+    margin-top: 8px;
+    margin-bottom: 2px;
+}
+.discover-cards .cards-container .card picture img.short {
+    height: 147px;
+    margin-top: 6px;
+}
+.discover-cards .card .button-container {
+    position: absolute;
+    bottom: 5px;
+    left: 6px;
+    right: 16px;
+    text-align: left;
+}
+.section .discover-cards .card .button-container a {
+    background-color: #292929;
+    color: var(--color-white);
+    border: none;
+}
+
+.discover-cards .cards-container.gallery {
+    scroll-padding-left: 20px;
+}
+.discover-cards .cards-container .card:first-child {
+    margin-left: 20px;
+}
+
+@media (min-width: 600px) {
+    .discover-cards .cards-container .card {
+        min-width: 399px;
+        max-width: 399px;
+        height: 478px;
+    }
+    .discover-cards .center-title h3 {
+        font-size: 36px;
+        margin-top: 50px;
+        margin-bottom: 20px;
+    }
+    .discover-cards .cards-container .card .text-content .header {
+        font-size: 28px;
+        margin-top: 10px;
+    }
+    .discover-cards .cards-container .card .text-content .body {
+        width: auto;
+    }
+    .discover-cards .cards-container .card .text-content {
+        text-align: left;
+        width: 351px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .discover-cards .gallery-control {
+        padding-top: 9px;
+    }
+    .discover-cards .cards-container .card picture img.short {
+        width: 351px;
+        height: 198px;
+    }
+    .discover-cards .cards-container.gallery {
+        scroll-padding-left: 60px;
+    }
+    .discover-cards .cards-container .card:first-child {
+        margin-left: 60px;
+    }
+    .discover-cards .card .button-container {
+        bottom: 11px;
+        left: 13px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .discover-cards .cards-container {
+        margin: auto;
+    }
+    .discover-cards .cards-container.gallery {
+        scroll-padding-left: 100px;
+    }
+    .discover-cards .cards-container .card:first-child {
+        margin-left: 100px;
+    }
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 16px;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 0 16px;
+    scroll-padding: 0 16px;
+}
+
+.gallery::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+}
+
+.gallery.center.gallery--all-displayed {
+    justify-content: center;
+}
+
+.gallery--item {
+    scroll-snap-align: start;
+    width: calc(100% - 16px);
+}
+
+.gallery-control {
+    padding: 16px 16px 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    align-items: center;
+}
+
+.gallery-control.hide,
+.gallery-control .hide {
+    display: none;
+}
+
+.gallery-control.loading {
+    visibility: hidden;
+}
+
+.gallery-control button {
+    all: unset;
+    cursor: pointer;
+    height: 2rem;
+    box-shadow: 0px 2px 8px 0px #00000029;
+    border-radius: 50px;
+}
+
+.gallery-control button:focus {
+    outline: revert;
+}
+
+.gallery-control button:hover:not(:disabled) circle {
+    fill: var(--color-gray-300);
+}
+
+.gallery-control button:disabled {
+    cursor: auto;
+}
+
+.gallery-control button:disabled path {
+    stroke: var(--color-gray-300);
+}
+
+.gallery-control .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: white;
+    box-shadow: 0px 2px 8px 0px #00000029;
+    padding: 8px 16px;
+    border-radius: 50px;
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.gallery-control .status .dot {
+    border-radius: 50px;
+    width: 6px;
+    height: 6px;
+    background-color: #717171;
+}
+
+.gallery-control .status .dot.curr {
+    width: 30px;
+    background-color: #686DF4;
+}

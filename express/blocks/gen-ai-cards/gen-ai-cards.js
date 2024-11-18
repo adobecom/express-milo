@@ -13,7 +13,7 @@ export function decorateTextWithTag(textSource, options = {}) {
     tagClass,
   } = options;
   const text = createTag(baseT || 'p', { class: baseClass || '' });
-  const tagText = textSource.match(/\[(.*?)]/);
+  const tagText = textSource?.match(/\[(.*?)]/);
 
   if (tagText) {
     const [fullText, tagTextContent] = tagText;
@@ -218,6 +218,13 @@ export default async function decorate(block) {
   if (links) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: links });
     document.dispatchEvent(linksPopulated);
+  }
+
+  if (block.classList.contains('homepage')) {
+    const parent = block.closest('.gen-ai-cards-wrapper');
+    if (parent) {
+      parent.classList.add('homepage');
+    }
   }
 
   const payload = constructPayload(block);
