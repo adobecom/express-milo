@@ -665,8 +665,12 @@ main {
     max-width: 375px;
   }
 
-  & .section .content p, .section p {
+  & .section .content p, & .section p {
     margin: 32px 0;
+  }
+
+  & .section .content:first-child p.button-container {
+    margin-top: 76px;
   }
 
   & .section > .content:first-child {

@@ -121,15 +121,15 @@ main .hero-color .hidden-svg {
     max-width: calc(50% - 24px);
   }
 
-  main .hero-color.dark .button,
-  main .hero-color.dark .button:hover {
+  main .hero-color.dark .button:any-link,
+  main .hero-color.dark .button:any-link:hover {
     background-color: var(--color-white);
     color: var(--color-black);
     border-color: var(--color-white);
   }
 
-  main .hero-color.light .button,
-  main .hero-color.light .button:hover {
+  main .hero-color.light .button:any-link,
+  main .hero-color.light .button:any-link:hover {
     background-color: var(--color-black);
     color: var(--color-white);
     border-color: var(--color-black);
