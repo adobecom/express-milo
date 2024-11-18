@@ -145,9 +145,7 @@
 }
 
 .grid-marquee .drawer .title-row {
-  padding-top: 6px;
-  padding-bottom: 8px;
-  padding: 6px 16px 0;
+  padding: 0px 16px 12px;
   font-size: 1.125rem;
   display: flex;
   align-items: center;

@@ -11,6 +11,8 @@ module.exports = {
   rules: {
     'no-param-reassign': [2, { props: false }],
     'linebreak-style': ['error', 'unix'],
+    'no-await-in-loop': 0,
+    'max-statements-per-line': ['error', { max: 2 }],
     'import/extensions': ['error', { js: 'always' }],
     'object-curly-newline': ['error', {
       ObjectExpression: { multiline: true, minProperties: 6 },
