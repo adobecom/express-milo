@@ -1,5 +1,7 @@
 .*
 *.md
+*.json
+!*/**/*.json
 LICENSE
 test/*
 build/*

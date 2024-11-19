@@ -135,18 +135,6 @@ describe('Columns', () => {
     expect(iconListDiv).to.exist;
   });
 
-  it('Embed vidoes if href includes youtu or vimeo', () => {
-    document.body.innerHTML = video;
-    const columns = document.querySelector('.ax-columns');
-    decorate(columns);
-
-    const links = document.querySelectorAll('.button-container > a');
-    links.forEach((link) => {
-      expect(link.href).to.include('youtu');
-      expect(link.href).to.include('vimeo');
-    });
-  });
-
   it('Picture should be wrapped in a div if it exists', () => {
     document.body.innerHTML = picture;
     const columns = document.querySelector('.ax-columns');

@@ -144,7 +144,7 @@ function initSearchFunction(block, searchBarWrapper) {
     if (allTemplatesMetadata.some(pathMatchX) && document.body.dataset.device !== 'mobile') {
       targetLocation = `${window.location.origin}${targetPathX}?searchId=${searchId || ''}`;
     } else if (allTemplatesMetadata.some(pathMatch) && document.body.dataset.device !== 'desktop') {
-      targetLocation = `${window.location.origin}${targetPath}`;
+      targetLocation = `${window.location.origin}${targetPath}?searchId=${searchId || ''}`;
     } else {
       const searchUrlTemplate = `/express/templates/search?tasks=${currentTasks.xCore}&tasksx=${currentTasks.content}&phformat=${format}&topics=${searchInput || "''"}&q=${searchBar.value || "''"}&searchId=${searchId || ''}`;
       targetLocation = `${window.location.origin}${prefix}${searchUrlTemplate}`;

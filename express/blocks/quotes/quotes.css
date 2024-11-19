@@ -2,9 +2,6 @@
   max-width: 375px;
 }
 
-.section:has(.quotes) {
-  padding: 40px;
-}
 .section:has(.quotes)>div>h2 {
   margin-top: 80px;
 }
@@ -23,6 +20,11 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.quotes.singular {
+  margin: 0 auto;
+  padding-bottom: 0;
 }
 
 .quotes .quote {
@@ -57,7 +59,7 @@
 }
 
 .quotes .quote .content::before {
-  content: "“";
+  content: '“';
   display: block;
   position: absolute;
   margin-top: -15px;
@@ -93,6 +95,158 @@
   max-width: unset;
   border-radius: 21px;
   box-sizing: border-box;
+}
+
+main div:has(> .quotes-wrapper .singular.quotes) {
+  padding-top: 0;
+}
+
+main .quotes-wrapper:has(.singular.quotes) {
+  margin-left: 0;
+  margin-right: 0;
+  max-width: unset;
+}
+
+main .quotes.singular {
+  width: 100%;
+}
+
+main .quotes.singular .quote-container {
+  width: 100%;
+}
+
+main .quotes.singular .quote-container .desktop-container {
+  position: relative;
+  display: none;
+}
+
+main .quotes.singular .quote-container .mobile-container {
+  position: relative;
+}
+
+main .quotes.singular .quote-container .mobile-container .quote {
+  max-width: 375px;
+}
+
+/* toggles between the mobile and desktop layout */
+@media (min-width: 600px) {
+  main .quotes.singular .quote-container .desktop-container {
+    display: block;
+  }
+  main .quotes.singular .quote-container .mobile-container {
+    display: none;
+  }
+}
+
+main .quotes.singular .quote-container .desktop-container .background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+main .quotes.singular .quote-container .mobile-container .background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+main .quotes.singular .quote {
+  display: flex;
+  flex-flow: row;
+  background: transparent;
+  justify-content: center;
+  padding: 70px 0;
+  min-height: 370px;
+}
+
+main .quotes.singular .author-photo {
+  width: 100px;
+  height: 100px;
+  min-width: 100px; /* at certain container width, the 100px width may be made smaller by the browser, so impose a min-width */
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+main .quotes.singular .author-photo picture,
+main .quotes.singular .author-photo picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  display: inline-block;
+}
+
+main .quotes.singular .mobile-container .author-photo {
+  width: 60px;
+  height: 60px;
+  min-width: 60px; /* at certain container width, the 60px width may be made smaller by the browser, so impose a min-width */
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+main .quotes.singular .mobile-container .author-photo picture,
+main .quotes.singular .mobile-container .author-photo picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0%;
+  display: inline-block;
+}
+
+main .quotes.singular .quote-details {
+  width: 90%;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: left;
+  line-height: initial;
+}
+
+main .quotes.singular .desktop-container .quote-details {
+  margin-left: 30px;
+}
+
+main .quotes.singular .author-description {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+main .quotes.singular .mobile-container .author-panel {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+main .quotes.singular .mobile-container .author-panel .author-photo {
+  margin-right: 15px;
+}
+
+@media (min-width: 600px) {
+  main .quotes.singular .quote {
+    width: 80%;
+    min-height: 315px;
+  }
+}
+
+@media (min-width: 900px) {
+  main .quotes.singular .quote {
+    width: 75%;
+    max-width: 830px;
+    font-weight: 600;
+  }
+  main .quotes.singular .quote-details {
+    font-size: 28px;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .quotes.singular .quote {
+    max-width: 1024px;
+  }
 }
 
 .quotes .quote .author .summary p {

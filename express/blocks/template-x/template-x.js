@@ -98,7 +98,8 @@ async function processContentRow(block, props) {
       }
     });
 
-    if (textWrapper.children.length === 1 && textWrapper.firstElementChild.className === 'button-container') {
+    if (textWrapper.children.length === 1 && (textWrapper.firstElementChild.tagName === 'A' || (
+      textWrapper.firstElementChild.tagName === 'DIV' && textWrapper.firstElementChild.children.length === 1 && textWrapper.firstElementChild.firstElementChild.tagName === 'A'))) {
       templateTitle.classList.add('link-only');
     }
   }
