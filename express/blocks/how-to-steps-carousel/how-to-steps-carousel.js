@@ -2,7 +2,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
-import { embedYoutube } from '../../scripts/utils/embed-videos.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 let rotationInterval;

@@ -97,15 +97,14 @@ function getMimeType(src) {
   return `video/${src.split('.').pop()}`;
 }
 
-function getAvailableVimeoSubLang(){
+function getAvailableVimeoSubLang() {
   const langs = {
     fr: 'fr',
     de: 'de',
     jp: 'ja',
   };
   return langs[getConfig().locale.prefix.replace('/', '')] || 'en';
-};
-
+}
 
 function playInlineVideo($element, vidUrls, playerType, title, ts) {
   const [primaryUrl] = vidUrls;
