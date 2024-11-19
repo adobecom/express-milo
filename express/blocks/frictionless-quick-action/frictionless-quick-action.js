@@ -17,6 +17,7 @@ let uploadContainer;
 const JPG = 'jpg';
 const JPEG = 'jpeg';
 const PNG = 'png';
+const WEBP = 'webp';
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
   max_size: 40 * 1024 * 1024,
@@ -30,11 +31,11 @@ export const getBaseVideoCfg = (...types) => ({
   input_check: (input) => types.map((type) => `video/${type}`).includes(input),
 });
 const QA_CONFIGS = {
-  'convert-to-jpg': { ...getBaseImgCfg(PNG) },
-  'convert-to-png': { ...getBaseImgCfg(JPG, JPEG) },
+  'convert-to-jpg': { ...getBaseImgCfg(PNG, WEBP) },
+  'convert-to-png': { ...getBaseImgCfg(JPG, JPEG, WEBP) },
   'convert-to-svg': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'crop-image': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'resize-image': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'resize-image': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
   'remove-background': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'generate-qr-code': {
     ...getBaseImgCfg(JPG, JPEG, PNG),
@@ -62,38 +63,7 @@ function selectElementByTagPrefix(p) {
 }
 
 // eslint-disable-next-line default-param-last
-async function startSDK(data = '', quickAction, block) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const CDN_URL = 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
-  const clientId = 'AdobeExpressWeb';
-
-  await loadScript(CDN_URL);
-  if (!window.CCEverywhere) {
-    return;
-  }
-  if (!ccEverywhere) {
-    let { ietf } = getConfig().locale;
-    // for testing
-    const country = urlParams.get('country');
-    if (country) ietf = getConfig().locales[country]?.ietf;
-    if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
-    else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
-
-    const ccEverywhereConfig = {
-      hostInfo: {
-        clientId,
-        appName: 'express',
-      },
-      configParams: {
-        locale: ietf?.replace('-', '_'),
-        env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
-      },
-      authOption: () => ({ mode: 'delayed' }),
-    };
-
-    ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
-  }
-
+export function runQuickAction(quickAction, data, block) {
   // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
   const exportConfig = [
     {
@@ -141,7 +111,6 @@ async function startSDK(data = '', quickAction, block) {
       type: 'image',
     },
   };
-
   const appConfig = {
     metaData: { isFrictionlessQa: 'true' },
     receiveQuickActionErrors: false,
@@ -164,6 +133,7 @@ async function startSDK(data = '', quickAction, block) {
     },
   };
 
+  if (!ccEverywhere) return;
   switch (quickAction) {
     case 'convert-to-jpg':
       ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
@@ -189,6 +159,51 @@ async function startSDK(data = '', quickAction, block) {
       break;
     default: break;
   }
+}
+
+// eslint-disable-next-line default-param-last
+async function startSDK(data = '', quickAction, block) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlOverride = urlParams.get('sdk-override');
+  let valid = false;
+  if (urlOverride) {
+    try {
+      if (new URL(urlOverride).host === 'dev.cc-embed.adobe.com') valid = true;
+    } catch (e) {
+      window.lana.log('Invalid SDK URL');
+    }
+  }
+  const CDN_URL = valid ? urlOverride : 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
+  const clientId = 'AdobeExpressWeb';
+
+  await loadScript(CDN_URL);
+  if (!window.CCEverywhere) {
+    return;
+  }
+
+  if (!ccEverywhere) {
+    let { ietf } = getConfig().locale;
+    const country = urlParams.get('country');
+    if (country) ietf = getConfig().locales[country]?.ietf;
+    if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
+    else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
+
+    const ccEverywhereConfig = {
+      hostInfo: {
+        clientId,
+        appName: 'express',
+      },
+      configParams: {
+        locale: ietf?.replace('-', '_'),
+        env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
+      },
+      authOption: () => ({ mode: 'delayed' }),
+    };
+
+    ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
+  }
+
+  runQuickAction(quickAction, data, block);
 }
 
 let timeoutId = null;

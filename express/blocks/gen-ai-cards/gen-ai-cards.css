@@ -1,11 +1,18 @@
 .section .gen-ai-cards-wrapper {
   max-width: none;
+  margin: auto;
 }
 
 .gen-ai-cards {
   padding: 0 28px;
   max-width: 1440px;
+
   margin: auto;
+}
+
+.gen-ai-cards.homepage {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .gen-ai-cards .gen-ai-cards-heading-section {
@@ -28,6 +35,11 @@
   max-width: 800px;
 }
 
+.gen-ai-cards .gen-ai-cards-heading-section .text-wrapper {
+  width: 100%;
+  text-align: center;
+}
+
 .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
   font-size: var(--body-font-size-s);
   line-height: 22px;
@@ -39,6 +51,12 @@
   align-items: unset;
 }
 
+.gen-ai-cards.homepage .carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .gen-ai-cards .card {
   position: relative;
   height: 347px;
@@ -47,6 +65,16 @@
   overflow: hidden;
   margin: 0 8px;
   background-color: #f4f4fd;
+}
+
+.gen-ai-cards.homepage .card {
+  border: 2px solid #E1E1E1;
+  background: var(--color-white);
+}
+
+.gen-ai-cards.homepage .carousel-element.card {
+  width: 292px;
+  height: 396px;
 }
 
 .gen-ai-cards .carousel-left-trigger ~ .card {
@@ -92,6 +120,32 @@
   width: 374px;
   height: 246px;
   overflow: hidden;
+}
+
+main .gen-ai-cards.homepage .carousel-container a.button.carousel-arrow {
+  box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.2);
+}
+
+main .gen-ai-cards.homepage .carousel-container a.button.carousel-arrow::before {
+  width: 7px;
+  height: 7px;
+  border-top: solid 3px var(--color-gray-700);
+  border-right: solid 3px var(--color-gray-700);
+}
+
+main .gen-ai-cards.homepage .carousel-container .carousel-fader-left.arrow-hidden a.button.carousel-arrow::before,
+main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidden a.button.carousel-arrow::before {
+  border-top: solid 3px var(--color-gray-400);
+  border-right: solid 3px var(--color-gray-400);
+}
+
+main .gen-ai-cards.homepage .card .media-wrapper {
+  border-radius: 8px;
+}
+
+.gen-ai-cards.homepage .card .media-wrapper {
+  width: 262px;
+  height: 274px;
 }
 
 .gen-ai-cards .card .media-wrapper picture img {
@@ -200,14 +254,96 @@
   background-color: var(--color-white);
 }
 
+main .gen-ai-cards.homepage .carousel-container .carousel-platform.left-fader:not(.right-fader) {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+main .gen-ai-cards.homepage .carousel-container .carousel-platform.right-fader:not(.left-fade) {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+main .gen-ai-cards.homepage .carousel-container .carousel-fader-left {
+  align-items: end;
+  top: 45px;
+  right: 42px;
+  left: auto;
+  pointer-events: none;
+}
+
+main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
+  align-items: end;
+  top: 45px;
+  right: 15px;
+  pointer-events: none;
+}
+.gen-ai-cards.homepage .gen-ai-cards-heading-section {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.gen-ai-cards.homepage .gen-ai-cards-heading-section p {
+  font-size: 16px;
+}
+
+.gen-ai-cards.homepage .gen-ai-cards-heading {
+  font-size: 22px;
+}
+
+.section .gen-ai-cards-wrapper.homepage {
+  max-width: fit-content;
+}
+
+.gen-ai-cards.homepage .gen-ai-cards-heading-section h2,
+.gen-ai-cards .gen-ai-cards-heading-section p {
+  text-align: center;
+  max-width: none;
+}
+.gen-ai-cards.homepage .carousel-container {
+  scroll-padding-left: 20px;
+}
+.gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2){
+  margin-left: 20px;
+  margin-right: 0px
+}
+
+main .gen-ai-cards.homepage .carousel-container .carousel-fader-left.arrow-hidden,
+main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidden {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 @media (min-width: 900px) {
-  .gen-ai-cards .gen-ai-cards-heading-section {
-      flex-direction: row;
-      align-items: flex-end;
+  .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2){
+    margin-left: 0px;
+  }
+
+  .gen-ai-cards.homepage .gen-ai-cards-heading {
+    font-size: 36px;
   }
 
   .gen-ai-cards .carousel-container .carousel-fader-left,
   .gen-ai-cards .carousel-container .carousel-fader-right{
       background: unset;
+  }
+
+  main .gen-ai-cards.homepage .carousel-container .carousel-fader-left,
+  main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .gen-ai-cards.homepage .carousel-element.card .media-wrapper {
+    width: 325px;
+  }
+  .gen-ai-cards.homepage .carousel-element.card {
+    width: 357px;
+    height: 396px;
+  }
+  .gen-ai-cards.homepage .card .text-wrapper {
+    text-align: left;
+    margin: 20px 20px 12px;
   }
 }

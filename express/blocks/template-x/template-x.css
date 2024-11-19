@@ -1660,6 +1660,8 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   margin-left: auto;
   margin-bottom: 24px;
   margin-block: auto;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {

@@ -2,8 +2,8 @@ import { getLibs } from '../utils.js';
 import { getIconElementDeprecated } from '../utils/icons.js';
 
 let replaceKey;
-let getConfig; let createTag; let
-  getMetadata;
+let getConfig; let createTag;
+let getMetadata;
 const placeholdersProm = import(`${getLibs()}/features/placeholders.js`).then((mod) => {
   ({ replaceKey } = mod);
 });

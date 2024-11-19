@@ -4,12 +4,20 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 import { mockRes } from '../test-utilities.js';
 
-await import('../../../express/scripts/scripts.js');
+const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js'), import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js')]);
+const { getLibs, createTag } = imports[0];
+const { default: init, runQuickAction } = imports[2];
+await import(`${getLibs()}/utils/utils.js`).then((mod) => {
+  mod.setConfig({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } });
+});
 
 document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
 const ogFetch = window.fetch;
 
 describe('Frictionless Quick Action Block', () => {
+  afterEach(() => {
+    sinon.restore();
+  });
   it('initializes correctly', async () => {
     window.fetch = sinon.stub().callsFake(() => mockRes({
       payload: {
@@ -25,7 +33,7 @@ describe('Frictionless Quick Action Block', () => {
         ],
       },
     }));
-    const { default: init } = await import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js');
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
 
     const block = document.body.querySelector('.frictionless-quick-action');
     await init(block);
@@ -43,10 +51,129 @@ describe('Frictionless Quick Action Block', () => {
     window.fetch = ogFetch;
   });
 
-  it('sdk starts on file drop', async () => {
+  it('sdk loads other components', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
     const block = document.body.querySelector('.frictionless-quick-action');
-    const { default: init } = await import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js');
-    init(block);
+
+    runQuickAction('convert-to-jpg', 'data:image/png;base64,', block);
+    const qac = block.querySelector('.quick-action-container');
+    expect(qac).to.not.be.null;
+  });
+
+  it('should test showErrorToast', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
+    const block = document.body.querySelector('.frictionless-quick-action');
+    await init(block);
+
+    const oversizedFile = new File([new ArrayBuffer(50 * 1024 * 1024)], 'test.png', { type: 'image/png' });
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(oversizedFile);
+
+    const dropEvent = new DragEvent('drop', { dataTransfer });
+
+    const dropzoneContainer = block.querySelector(':scope .dropzone-container');
+    dropzoneContainer.dispatchEvent(dropEvent);
+
+    await new Promise((resolve) => {
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+            const errorToast = document.querySelector('.error-toast');
+            if (errorToast) {
+              observer.disconnect();
+              resolve();
+            }
+          }
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+
+    const errorToast = document.querySelector('.error-toast');
+    expect(errorToast).to.not.be.null;
+    expect(errorToast.textContent).to.include('file size not supported');
+  });
+  it('handles popstate event correctly', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
+    const block = document.body.querySelector('.frictionless-quick-action');
+    await init(block);
+
+    const quickActionContainer = document.createElement('div');
+    quickActionContainer.classList.add('quick-action-container');
+    block.append(quickActionContainer);
+
+    const uploadContainer = document.createElement('div');
+    uploadContainer.classList.add('hidden');
+    block.append(uploadContainer);
+
+    const event = new PopStateEvent('popstate', { state: { hideFrictionlessQa: true } });
+
+    window.dispatchEvent(event);
+
+    expect(uploadContainer.classList.contains('hidden')).to.be.true;
+  });
+
+  it('should handle dropzone container', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
+    const block = document.body.querySelector('.frictionless-quick-action');
+    await init(block);
+
+    const dropzoneContainer = block.querySelector('.dropzone-container');
+    const inputElement = block.querySelector('input[type="file"]');
+    const inputClickStub = sinon.stub(inputElement, 'click');
+
+    const clickEvent = new MouseEvent('click');
+    dropzoneContainer.dispatchEvent(clickEvent);
+    expect(inputClickStub.calledOnce).to.be.true;
+
+    const dragenterEvent = new Event('dragenter');
+    dropzoneContainer.dispatchEvent(dragenterEvent);
+
+    expect(dropzoneContainer.classList.contains('highlight')).to.be.true;
+
+    const dragleaveEvent = new Event('dragleave');
+    dropzoneContainer.dispatchEvent(dragleaveEvent);
+    expect(dropzoneContainer.classList.contains('highlight')).to.be.false;
+
+    inputClickStub.restore();
+  });
+
+  it('should handle click on dropzone container and trigger input click', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
+    const block = document.body.querySelector('.frictionless-quick-action');
+    await init(block);
+
+    const dropzoneContainer = block.querySelector('.dropzone-container');
+    const inputElement = block.querySelector('input[type="file"]');
+
+    const inputClickStub = sinon.stub(inputElement, 'click');
+
+    dropzoneContainer.dispatchEvent(new MouseEvent('click'));
+
+    expect(inputClickStub.calledOnce).to.be.true;
+
+    inputClickStub.restore();
+  });
+
+  it('should add the metadata and test if the logo got added', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
+    const block = document.body.querySelector('.frictionless-quick-action');
+
+    const meta = createTag('meta', { name: 'marquee-inject-logo', content: 'on' });
+    document.head.append(meta);
+
+    await init(block);
+
+    expect(block.querySelector('.express-logo')).to.not.be.null;
+
+    meta.remove();
+  });
+
+  it('sdk starts on file drop', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/crop-image-quick-action.html' });
+    const block = document.body.querySelector('.frictionless-quick-action');
+    await init(block);
+
     const dropzoneContainer = block.querySelector(':scope .dropzone-container');
     const file = new File([''], 'test', { type: 'image/png' });
     const dataTransfer = new DataTransfer();
@@ -58,8 +185,6 @@ describe('Frictionless Quick Action Block', () => {
         if (mutation.type === 'childList') {
           mutation.addedNodes.forEach((node) => {
             if (node.nodeName === 'SCRIPT') {
-              // eslint-disable-next-line no-console
-              console.log('A new script tag was added:', node);
               const script = document.querySelector('head > script[src="https://sdk.cc-embed.adobe.com/v3/CCEverywhere.js"]');
               expect(script).to.not.be.null;
               observer.disconnect();
@@ -70,6 +195,7 @@ describe('Frictionless Quick Action Block', () => {
     };
     const observer = new MutationObserver(callback);
     observer.observe(document.head, { childList: true, subtree: true });
+
     dropzoneContainer.dispatchEvent(event);
   });
 });
