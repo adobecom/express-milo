@@ -64,6 +64,7 @@ main .section .cards .card .card-content h2 {
 
 main .section .cards .card .card-content p {
   margin-top: 0;
+  text-align: center;
 }
 
 main .section .cards .card .card-content ul {
