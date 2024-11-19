@@ -1,12 +1,18 @@
+.ckg-link-list:first-child {
+    padding-top: 60px;
+}
+
 .ckg-link-list {
     min-height: 62px;
+    max-width: 375px;
+    margin: auto;
 }
 
 .ckg-link-list .carousel-container {
     margin-bottom: 0;
 }
 
-.ckg-link-list .button-container {
+.section .ckg-link-list .button-container {
     margin: 0 4px;
     display: block;
     border-radius: 40px;
@@ -58,4 +64,16 @@
     background-color: unset;
     -webkit-backdrop-filter: brightness(0.4);
     backdrop-filter: brightness(0.4);
+}
+
+@media (min-width: 900px) {
+    .ckg-link-list {
+        max-width: 830px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .ckg-link-list {
+        max-width: 1024px;
+    }
 }

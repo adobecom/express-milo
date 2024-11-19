@@ -3,6 +3,11 @@
   margin-bottom: 80px;
 }
 
+main .section:has(.content:first-child + .how-to-steps) .content {
+  padding: 0 20px;
+  max-width: 810px;
+}
+
 .section:has(.how-to-steps)  {
   padding: 32px 0;
 }
@@ -229,6 +234,7 @@ main .section .template-x-heading {
   main .how-to-steps .tip-text p {
     font-size: var(--body-font-size-xl);
   }
+
 }
 
 @media (min-width: 900px) {
@@ -236,5 +242,9 @@ main .section .template-x-heading {
     max-width: 1070px;
     padding: 0 40px;
     margin: 0 auto;
+  }
+
+  main .section:has(.content:first-child + .how-to-steps) .content {
+    max-width: 1070px;
   }
 }

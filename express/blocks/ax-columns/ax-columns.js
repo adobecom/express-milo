@@ -14,10 +14,6 @@ import {
 } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { displayVideoModal, hideVideoModal, isVideoLink } from '../../scripts/widgets/video.js';
-import {
-  embedYoutube,
-  embedVimeo,
-} from '../../scripts/utils/embed-videos.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import {
   appendLinkText,
@@ -138,21 +134,8 @@ function decorateIconList(columnCell, rowNum, blockClasses) {
   }
 }
 
-const handleVideos = (cell, a, block, thumbnail) => {
+const handleVideos = (cell, a, block) => {
   if (!a.href) return;
-
-  const url = new URL(a.href);
-
-  if (url.hash === '#embed-video') {
-    if (a.href.includes('youtu')) {
-      a.parentElement.replaceChild(embedYoutube(url), a);
-    } else if (a.href.includes('vimeo')) {
-      a.parentElement.replaceChild(embedVimeo(url, thumbnail), a);
-    }
-    if (thumbnail) thumbnail.remove();
-
-    return;
-  }
 
   transformToVideoColumn(cell, a, block);
   a.addEventListener('click', (e) => {

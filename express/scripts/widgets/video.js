@@ -1,5 +1,4 @@
 import { getLibs, toClassName } from '../utils.js';
-import { getAvailableVimeoSubLang } from '../utils/embed-videos.js';
 
 const { createTag, getConfig, loadBlock, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -96,6 +95,15 @@ function getMimeType(src) {
     return 'application/x-mpegURL';
   }
   return `video/${src.split('.').pop()}`;
+}
+
+function getAvailableVimeoSubLang() {
+  const langs = {
+    fr: 'fr',
+    de: 'de',
+    jp: 'ja',
+  };
+  return langs[getConfig().locale.prefix.replace('/', '')] || 'en';
 }
 
 function playInlineVideo($element, vidUrls, playerType, title, ts) {
