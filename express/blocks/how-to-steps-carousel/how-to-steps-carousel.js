@@ -2,7 +2,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
-import { embedYoutube } from '../../scripts/utils/embed-videos.js';
 
 const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 let rotationInterval;
@@ -291,7 +290,6 @@ export default async function decorate(block) {
   const howToWindow = block.ownerDocument.defaultView;
   const howToDocument = block.ownerDocument;
   const isImageVariant = block.classList.contains('image');
-  const isVideoVariant = block.classList.contains('video');
 
   // move first image of container outside of div for styling
   const section = block.closest('.section');
@@ -299,20 +297,7 @@ export default async function decorate(block) {
   const rows = Array.from(howto.children);
   let picture;
 
-  if (isVideoVariant) {
-    const videoData = rows.shift();
-
-    // remove the added social link from the block DOM
-    block.removeChild(block.children[0]);
-
-    const videoLink = videoData.querySelector('a');
-    const youtubeURL = videoLink?.href;
-    const url = new URL(youtubeURL);
-
-    const videoEl = embedYoutube(url);
-    videoEl.classList.add('video-how-to-steps-carousel');
-    section.prepend(videoEl);
-  } else if (isImageVariant) {
+  if (isImageVariant) {
     const canvasWidth = 2000;
     const canvasHeight = 1072;
     let url;

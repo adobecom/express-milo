@@ -143,6 +143,10 @@ main {
   -webkit-font-smoothing: initial;
   line-height: initial;
 
+  & ol, & ul {
+    text-align: left;
+  }
+
   & a, & a:hover {
     text-decoration: none;
   }
