@@ -3,6 +3,11 @@
   margin-bottom: 80px;
 }
 
+main .section:has(.content:first-child + .how-to-steps) .content {
+  padding: 0 20px;
+  max-width: 810px;
+}
+
 .section:has(.how-to-steps)  {
   padding: 32px 0;
 }
@@ -238,15 +243,8 @@ main .section .template-x-heading {
     padding: 0 40px;
     margin: 0 auto;
   }
-}
 
-@media (max-width: 900px) {
-  main .section:has(.content:first-child + .how-to-steps) .content{
-    max-width: fit-content;
-  }
-}
-@media (max-width: 600px) {
   main .section:has(.content:first-child + .how-to-steps) .content {
-    max-width: fit-content;
+    max-width: 1070px;
   }
 }
