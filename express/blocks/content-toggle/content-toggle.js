@@ -57,11 +57,13 @@ function initButton($block, $sections, index) {
           } else {
             $section.style.display = 'none';
           }
+        });
+        if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
           window.scrollTo({
             top: offsetPosition,
             behavior: 'smooth',
           });
-        });
+        }
       }
     });
     if (index === 0) {
