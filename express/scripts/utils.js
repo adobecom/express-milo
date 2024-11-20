@@ -392,6 +392,16 @@ function addPromotion(area) {
   }
 }
 
+function decorateLegalCopy(area) {
+  const legalCopyPrefixes = ['*', '†'];
+  area.querySelectorAll('p').forEach(($p) => {
+    const pText = $p.textContent.trim() ? $p.textContent.trim().charAt(0) : '';
+    if (pText && legalCopyPrefixes.includes(pText)) {
+      $p.classList.add('legal-copy');
+    }
+  });
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const selector = area === document ? 'main > div' : ':scope > div';
@@ -414,6 +424,7 @@ export function decorateArea(area = document) {
   fragmentBlocksToLinks(area);
   renameConflictingBlocks(area);
   addPromotion(area);
+  decorateLegalCopy(area);
 
   const linksToNotAutoblock = [];
   const embeds = area.querySelectorAll(`${selector} > .embed a[href*="instagram.com"]`);
