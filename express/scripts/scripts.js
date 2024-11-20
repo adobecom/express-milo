@@ -243,6 +243,12 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     if (country === 'cn') { window.location.href = '/cn'; }
   });
 
+  document.head.querySelectorAll('meta').forEach((meta) => {
+    if (meta.content && meta.content.includes('--none--')) {
+      meta.remove();
+    }
+  });
+
   await loadArea();
   import('./express-delayed.js').then((mod) => {
     mod.default();
