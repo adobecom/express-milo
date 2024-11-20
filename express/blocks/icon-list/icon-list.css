@@ -196,7 +196,7 @@ main .icon-list-center-container ~ .columns-highlight-container {
 }
 
 @media (min-width:900px) {
-  main .icon-list{
+  main .icon-list-wrapper {
     max-width: 830px;
   }
 
@@ -218,7 +218,7 @@ main .icon-list-center-container ~ .columns-highlight-container {
 }
 
 @media (min-width:1200px) {
-  main .icon-list{
+  main .icon-list-wrapper {
     max-width: 1024px;
   }
 
