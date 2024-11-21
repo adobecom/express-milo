@@ -2,6 +2,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
+// eslint-disable-next-line import/no-cycle
 import { getProfile, getDestination } from '../../scripts/express-delayed.js';
 
 const { createTag, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);

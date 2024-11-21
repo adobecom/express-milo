@@ -3,6 +3,7 @@ import BlockMediator from './block-mediator.min.js';
 import { decorateButtonsDeprecated } from './utils/decorate.js';
 
 const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+const { getUserProfile } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
 
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
@@ -25,6 +26,16 @@ function getSegmentsFromAlloyResponse(response) {
 }
 
 export function getProfile() {
+  getUserProfile()
+    .then((data) => {
+      debugger;
+      const requiredFields = ['display_name', 'email', 'avatar'];
+      const hasRequiredFields = requiredFields.every((field) => !!data[field]);
+      if (!hasRequiredFields) return;
+
+      this.profile = data;
+    }).catch((e) => {
+  });
   const { imslib } = window.feds.utilities;
   return new Promise((res) => {
     imslib.onReady().then(() => {
@@ -60,6 +71,7 @@ export function getProfile() {
             }, 150);
           }
         });
+
         Promise.all([imsDataPromise, profileDataPromise])
           .then(([imsData, profileData]) => {
             res({
@@ -169,6 +181,7 @@ export default async function loadDelayed() {
     turnContentLinksIntoButtons();
     preloadSUSILight();
     if (await canPEP()) {
+      // eslint-disable-next-line import/no-unresolved
       const { default: loadLoginUserAutoRedirect } = await import('../features/direct-path-to-product/direct-path-to-product.js');
       return new Promise((resolve) => {
         // TODO: not preloading product to protect desktop CWV
