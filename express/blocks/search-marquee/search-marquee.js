@@ -314,6 +314,7 @@ async function buildSearchDropdown(block, searchBarWrapper) {
     fromScratchLink.classList.add('from-scratch-link');
     fromScratchLink.href = getMetadata('search-marquee-from-scratch-link') || '/';
     trendsContainer.append(fromScratchLink);
+    import('../../scripts/branchlinks.js').then((mod) => { fromScratchLink.href = mod.getTrackingAppendedURL([fromScratchLink], { placement: 'search-marquee' }) });
     linkDiv.remove();
   }
 
