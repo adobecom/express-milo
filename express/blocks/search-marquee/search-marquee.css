@@ -209,7 +209,7 @@
     border: none;
 }
 
-.search-marquee .carousel-container .carousel-platform a {
+.search-marquee .carousel-container .carousel-platform a:any-link {
     display: block;
     box-sizing: border-box;
     min-width: 160px;
@@ -224,7 +224,7 @@
     border: none;
 }
 
-.search-marquee .carousel-container .carousel-platform a:hover {
+.search-marquee .carousel-container .carousel-platform a:any-link:hover {
     background-color: var(--color-gray-200);
 }
 
