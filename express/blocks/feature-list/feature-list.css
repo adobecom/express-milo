@@ -8,6 +8,10 @@ main .section .feature-list {
     max-width: 375px;
 }
 
+main .section:has(.feature-list) .content:first-child {
+    padding-top: 60px;
+}
+
 main .section .feature-list img {
     height: 48px;
 }
