@@ -47,7 +47,6 @@ export function getProfile() {
   });
 }
 
-
 const branchLinkOriginPattern = /^https:\/\/adobesparkpost(-web)?\.app\.link/;
 function isBranchLink(url) {
   return branchLinkOriginPattern.test(new URL(url).origin);
