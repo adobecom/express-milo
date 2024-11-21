@@ -4,6 +4,7 @@
     border-radius: 20px;
     max-width: 375px;
     margin: 60px auto 0;
+    width: calc(100% - 96px);
 }
 
 .submit-email > div {
@@ -86,6 +87,7 @@
     }
 
     .section .submit-email {
+        width: 100%;
         padding: 56px;
         padding-bottom: 80px;
     }

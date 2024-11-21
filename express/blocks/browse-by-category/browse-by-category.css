@@ -4,6 +4,10 @@
   margin: auto;
 }
 
+.browse-by-category:first-child {
+  padding-top: 60px;
+}
+
 main .browse-by-category {
   max-width: max-content;
 }

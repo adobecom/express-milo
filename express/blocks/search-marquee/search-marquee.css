@@ -90,7 +90,7 @@
 
 .search-marquee .search-dropdown-container .trends-container .trends-wrapper li,
 .search-marquee .search-dropdown-container .suggestions-container li {
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 
 .search-marquee .search-dropdown-container .suggestions-container li {
@@ -107,7 +107,7 @@
 }
 
 .search-marquee .search-dropdown-container .trends-container .trends-wrapper {
-    margin : 10px 0 10px 0;
+    margin : 16px 0;
 }
 
 .search-marquee .search-dropdown-container .trends-container .trends-wrapper li a {
