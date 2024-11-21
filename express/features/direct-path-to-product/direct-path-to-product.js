@@ -2,10 +2,14 @@
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-// eslint-disable-next-line import/no-cycle
 import { getProfile, getDestination } from '../../scripts/express-delayed.js';
 
-const { createTag, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+const [{ createTag, getConfig, loadStyle }, { replaceKeyArray }] = await Promise.all([
+  import(`${getLibs()}/utils/utils.js`),
+  import(`${getLibs()}/features/placeholders.js`),
+]);
+
+const [pepHeader, pepCancel, Cancel] = await replaceKeyArray(['pep-header', 'pep-cancel', 'cancel'], getConfig());
 
 const OPT_OUT_KEY = 'no-direct-path-to-product';
 
@@ -60,12 +64,12 @@ export default async function loadLoginUserAutoRedirect() {
     const container = createTag('div', { class: 'pep-container' });
     const headerWrapper = createTag('div', { class: 'pep-header' });
     const headerIcon = createTag('div', { class: 'pep-header-icon' }, getIconElementDeprecated('cc-express'));
-    const headerText = createTag('span', { class: 'pep-header-text' }, mod.replaceKey('pep-header', getConfig()));
+    const headerText = createTag('span', { class: 'pep-header-text' }, pepHeader);
     const progressBg = createTag('div', { class: 'pep-progress-bg' });
     const progressBar = createTag('div', { class: 'pep-progress-bar' });
     const noticeWrapper = createTag('div', { class: 'notice-wrapper' });
-    const noticeText = createTag('span', { class: 'notice-text' }, mod.replaceKey('pep-cancel', getConfig()));
-    const noticeBtn = createTag('button', { class: 'notice-btn', tabIndex: '1' }, mod.replaceKey('cancel', getConfig()));
+    const noticeText = createTag('span', { class: 'notice-text' }, pepCancel);
+    const noticeBtn = createTag('button', { class: 'notice-btn', tabIndex: '1' }, Cancel);
 
     headerWrapper.append(headerIcon, headerText);
     progressBg.append(progressBar);
