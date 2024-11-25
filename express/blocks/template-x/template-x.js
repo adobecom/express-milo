@@ -1574,9 +1574,7 @@ function wordExistsInString(word, inputString) {
   return regexPattern.test(inputString);
 }
 
-async function getTaskNameInMapping(text) {
-  const xTaskNameMapping = await replaceKey('x-task-name-mapping', getConfig());
-  const taskMap = xTaskNameMapping !== 'x task name mapping' ? JSON.parse(xTaskNameMapping) : {};
+function getTaskNameInMapping(text, taskMap) {
   return Object.entries(taskMap)
     .filter((task) => task[1].some((word) => {
       const searchValue = text.toLowerCase();
@@ -1649,7 +1647,9 @@ async function buildTemplateList(block, props, type = []) {
       }
       return { tab, collectionId: props.collectionId };
     });
-    const taskNames = tabConfigs.map(({ tab }) => getTaskNameInMapping(tab));
+    const xTaskNameMapping = await replaceKey('x-task-name-mapping', getConfig());
+    const taskMap = xTaskNameMapping !== 'x task name mapping' ? JSON.parse(xTaskNameMapping) : {};
+    const taskNames = tabConfigs.map(({ tab }) => getTaskNameInMapping(tab, taskMap));
     if (taskNames.length === tabs.length) {
       taskNames.filter(({ length }) => length).forEach(([[task]], index) => {
         const tabBtn = createTag('button', { class: 'template-tab-button' });
