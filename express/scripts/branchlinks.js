@@ -8,7 +8,8 @@ function toCamelCase(name) {
 }
 
 function getPlacement(btn) {
-  const parentBlock = btn.closest('[daa-lh^="b"]');
+  let parentBlock = btn.closest('.section > div[class*="-wrapper"]');
+  if (parentBlock) parentBlock = btn.closest('.section > div > div');
   let placement = 'outside-blocks';
 
   if (parentBlock) {
