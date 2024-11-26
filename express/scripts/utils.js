@@ -299,7 +299,7 @@ export function lazyLoadLottiePlayer($block = null) {
 export function buildAutoBlocks() {
   if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
     const lastDiv = document.querySelector('main > div:last-of-type');
-    const validButtonVersion = ['floating-button', 'multifunction-button', 'bubble-ui-button', 'floating-panel'];
+    const validButtonVersion = ['floating-button', 'multifunction-button', 'mobile-fork-button'];
     const device = document.body.dataset?.device;
     const blockName = getMetadata(`${device}-floating-cta`);
 
