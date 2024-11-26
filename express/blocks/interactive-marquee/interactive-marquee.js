@@ -62,7 +62,7 @@ function createPromptLinkElement(promptLink, prompt) {
   icon.classList.add('link');
   icon.addEventListener('click', async () => {
     const mod = await import('../../scripts/branchlinks.js');
-    const genAILink = mod.getTrackingAppendedURL(promptLink, placeholders);
+    const genAILink = mod.getTrackingAppendedURL(promptLink);
     const urlObj = new URL(genAILink);
     urlObj.searchParams.delete('referrer');
     urlObj.searchParams.append('prompt', prompt);

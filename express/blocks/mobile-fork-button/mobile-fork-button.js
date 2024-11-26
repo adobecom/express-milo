@@ -1,10 +1,9 @@
 import { getLibs } from '../../scripts/utils.js';
+import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
+import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
-
-import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { getIconElementDeprecated } from "../../scripts/utils/icons.js";
-import { addTempWrapperDeprecated } from "../../scripts/utils/decorate.js";
 
 function getMobileOperatingSystem() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -60,9 +59,8 @@ function androidDeviceAndRamCheck() {
   if (getMetadata('fork-eligibility-check') === 'on') {
     if (navigator.deviceMemory >= 4 && isAndroid) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
   return true;
 }

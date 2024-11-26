@@ -4,7 +4,7 @@ import buildCarousel from '../../scripts/widgets/carousel.js';
 import { titleCase } from '../../scripts/utils/string.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 function addColorSampler(colorHex, btn) {
   const colorDot = createTag('div', {
@@ -30,17 +30,17 @@ export default async function decorate(block) {
   pills.forEach(({ canonicalName: colorName, metadata: { link, hexCode: colorHex } }) => {
     if (!colorName || !link || !colorHex) return;
     const buttonContainer = createTag(
-        'p',
-        { class: 'button-container' },
-        createTag(
-            'a',
-            {
-              class: 'button',
-              title: colorName,
-              href: link,
-            },
-            titleCase(colorName),
-        ),
+      'p',
+      { class: 'button-container' },
+      createTag(
+        'a',
+        {
+          class: 'button',
+          title: colorName,
+          href: link,
+        },
+        titleCase(colorName),
+      ),
     );
     block.append(buttonContainer);
 
