@@ -25,7 +25,6 @@ main .section .discover-cards {
 }
 .discover-cards .cards-container .card {
     min-width: 294px;
-    height: 427px;
     border: 1px solid white;
     border-radius: 16px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
@@ -72,10 +71,6 @@ main .section .discover-cards {
     margin-top: 6px;
 }
 .discover-cards .card .button-container {
-    position: absolute;
-    bottom: 5px;
-    left: 6px;
-    right: 16px;
     text-align: left;
 }
 .section .discover-cards .card .button-container a {
@@ -95,7 +90,6 @@ main .section .discover-cards {
     .discover-cards .cards-container .card {
         min-width: 399px;
         max-width: 399px;
-        height: 478px;
     }
     .discover-cards .center-title h3 {
         font-size: 36px;
@@ -127,10 +121,6 @@ main .section .discover-cards {
     }
     .discover-cards .cards-container .card:first-child {
         margin-left: 60px;
-    }
-    .discover-cards .card .button-container {
-        bottom: 11px;
-        left: 13px;
     }
 }
 

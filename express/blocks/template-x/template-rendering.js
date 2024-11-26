@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
-import { trackSearch, updateImpressionCache } from '../../template-x/template-search-api-v3.js';
+import { trackSearch, updateImpressionCache } from '../../scripts/template-search-api-v3.js';
 import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
@@ -476,7 +476,7 @@ function renderStillWrapper(template) {
   return stillWrapper;
 }
 
-export default async function renderTemplate(template) {
+export default function renderTemplate(template) {
   const tmpltEl = createTag('div');
   if (template.assetType === 'Webpage_Template') {
     // webpage_template has no pages
@@ -485,6 +485,5 @@ export default async function renderTemplate(template) {
 
   tmpltEl.append(renderStillWrapper(template));
   tmpltEl.append(renderHoverWrapper(template));
-
   return tmpltEl;
 }

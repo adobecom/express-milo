@@ -130,7 +130,6 @@ function buildOriginalLayout(block) {
 }
 
 export default async function decorate(block) {
-  debugger;
   const isExpandableVariant = block.classList.contains('expandable');
 
   if (isExpandableVariant) {

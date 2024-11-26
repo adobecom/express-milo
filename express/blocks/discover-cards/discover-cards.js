@@ -1,8 +1,18 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, yieldToMain } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+
+async function syncMinHeights(groups) {
+  const maxHeights = groups.map((els) => els
+      .filter((e) => !!e)
+      .reduce((max, e) => Math.max(max, e.offsetHeight), 0));
+  await yieldToMain();
+  maxHeights.forEach((maxHeight, i) => groups[i].forEach((e) => {
+    if (e) e.style.minHeight = `${maxHeight}px`;
+  }));
+}
 
 const nextSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g id="Slider Button - Arrow - Right">
@@ -115,7 +125,7 @@ export default async function decorate(block) {
   const cardsWrapper = createTag('div', { class: 'cards-container' });
 
   const cards = block.querySelectorAll(':scope > div:not(:first-child)');
-
+  const cardParagraphs = [[]];
   cards.forEach((card) => {
     card.classList.add('card');
 
@@ -129,6 +139,7 @@ export default async function decorate(block) {
         textHeader.classList.add('header');
         textBody.classList.add('body');
         element.classList.add('text-content');
+        cardParagraphs[0].push(element);
       }
 
       element.querySelector('picture img')?.classList.add('short');
@@ -142,6 +153,13 @@ export default async function decorate(block) {
 
   block.appendChild(cardsWrapper);
   await buildGallery(cards, cardsWrapper);
+  new IntersectionObserver((entries, obs) => {
+    obs.unobserve(block);
+    syncMinHeights(cardParagraphs);
+  }).observe(block);
+  window.addEventListener('resize', debounce(() => {
+    syncMinHeights(cardParagraphs);
+  }, 100));
 
   const imageSize = document.body.dataset.device === 'desktop' ? 'large' : 'small';
   block.style.backgroundImage = `

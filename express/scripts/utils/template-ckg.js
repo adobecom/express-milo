@@ -1,10 +1,10 @@
 import { getLibs } from '../utils.js';
 import { titleCase } from './string.js';
 
-import { getDataWithContext } from './browse-api-controller.js';
+import getCKGData from './browse-api-controller.js';
 
 import fetchAllTemplatesMetadata from './all-templates-metadata.js';
-import { trackSearch, updateImpressionCache, generateSearchId } from '../../template-x/template-search-api-v3.js';
+import { trackSearch, updateImpressionCache, generateSearchId } from '../template-search-api-v3.js';
 
 const { getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
@@ -14,42 +14,28 @@ let ckgData;
 let sheetData;
 
 async function fetchLinkList() {
-  if (!ckgData) {
-    const response = await getDataWithContext({ urlPath: window.location.pathname });
-    // catch data from CKG API, if empty, use top priority categories sheet
-    if (response && response.queryResults[0].facets) {
-      ckgData = response.queryResults[0].facets[0].buckets.map((ckgItem) => {
-        let formattedTasks;
-        if (getMetadata('template-search-page') === 'Y') {
-          const params = new Proxy(
-            new URLSearchParams(window.location.search),
-            { get: (searchParams, prop) => searchParams.get(prop) },
-          );
-          formattedTasks = titleCase(params.tasks).replace(/[$@%"]/g, '');
-        } else {
-          formattedTasks = titleCase(getMetadata('tasks')).replace(
-            /[$@%"]/g,
-            '',
-          );
-        }
+  if (ckgData) return;
+  const data = await getCKGData();
+  // catch data from CKG API, if empty, use top priority categories sheet
+  if (data) {
+    ckgData = data.map((ckgItem) => {
+      let formattedTasks;
+      if (getMetadata('template-search-page') === 'Y') {
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+          get: (searchParams, prop) => searchParams.get(prop),
+        });
+        formattedTasks = titleCase(params.tasks).replace(/[$@%"]/g, '');
+      } else {
+        formattedTasks = titleCase(getMetadata('tasks')).replace(/[$@%"]/g, '');
+      }
 
-        return {
-          parent: formattedTasks,
-          ckgID: ckgItem.canonicalName,
-          displayValue: ckgItem.displayValue,
-          value: ckgItem.value,
-        };
-      });
-    }
-  }
-
-  if (!sheetData) {
-    let resolver;
-    sheetData = new Promise((res) => {
-      resolver = res;
+      return {
+        parent: formattedTasks,
+        ckgID: ckgItem.metadata.ckgId,
+        displayValue: ckgItem.canonicalName,
+        value: ckgItem.metadata.link,
+      };
     });
-    const resp = await fetch('/express/templates/top-priority-categories.json');
-    resolver(resp.ok ? (await resp.json()).data : []);
   }
 }
 
@@ -120,91 +106,65 @@ async function updateLinkList(container, linkPill, list) {
   const currentTasks = taskMeta ? taskMeta.replace(/[$@%"]/g, '') : ' ';
   const currentTasksX = getMetadata('tasks-x') || '';
 
-  if (list) {
-    list.forEach((d) => {
-      const { prefix } = getConfig().locale;
-      const topics = getMetadata('topics') !== '" "'
-        ? `${getMetadata('topics')?.replace(/[$@%"]/g, '')}`
-        : '';
-      const topicsQuery = `${topics} ${d.displayValue.toLowerCase()}`
-        .split(' ')
+  if (!list) return;
+  list.forEach((d) => {
+    const { prefix } = getConfig().locale;
+    const topics = getMetadata('topics') !== '" "' ? `${getMetadata('topics')?.replace(/[$@%"]/g, '')}` : '';
+    const topicsQuery = `${topics} ${d.displayValue.toLowerCase()}`.split(' ')
         .filter((item, i, allItems) => i === allItems.indexOf(item))
         .join(' ')
         .replace(currentTasks, '')
         .replace(currentTasksX, '')
         .trim();
 
-      let clone;
-      if (!isSearch(d.pathname)) {
-        const pageData = {
-          url: d.pathname,
-          'short-title': d.displayValue,
-        };
+    let clone;
+    if (!isSearch(d.pathname)) {
+      const pageData = {
+        url: `${prefix}${d.pathname}`,
+        'short-title': d.displayValue,
+      };
 
-        clone = replaceLinkPill(linkPill, pageData);
-        clone.innerHTML = clone.innerHTML
+      clone = replaceLinkPill(linkPill, pageData);
+      clone.innerHTML = clone.innerHTML
           .replaceAll('Default', d.displayValue)
           .replace('/express/templates/default', d.pathname);
-        const innerLink = clone.querySelector('a');
-        if (innerLink) {
-          const url = new URL(innerLink.href);
-          if (!url.searchParams.get('searchId')) {
-            url.searchParams.set('searchId', generateSearchId());
-            innerLink.href = url.toString();
-          }
+      const innerLink = clone.querySelector('a');
+      if (innerLink) {
+        const url = new URL(innerLink.href);
+        if (!url.searchParams.get('searchId')) {
+          url.searchParams.set('searchId', generateSearchId());
+          innerLink.href = url.toString();
         }
-
-        if (clone) pageLinks.push(clone);
-      } else {
-        // fixme: we need single page search UX
-        const searchParams = `tasks=${currentTasks}&tasksx=${currentTasksX}&phformat=${getMetadata('placeholder-format')}&topics=${topicsQuery}&q=${d.displayValue}&ckgid=${d.ckgID}&searchId=${generateSearchId()}`;
-        const pageData = {
-          url: `${prefix}/express/templates/search?${searchParams}`,
-          'short-title': d.displayValue,
-        };
-
-        clone = replaceLinkPill(linkPill, pageData);
-        searchLinks.push(clone);
       }
-      clone.addEventListener('click', () => {
-        const a = clone.querySelector(':scope > a');
-        updateImpressionCache({
-          keyword_filter: d.displayValue,
-          content_category: 'templates',
-        });
-        trackSearch('search-inspire', new URLSearchParams(new URL(a.href).search).get('searchId'));
-      });
-    });
 
-    if (leftTrigger) container.append(leftTrigger);
-    pageLinks.concat(searchLinks).forEach((clone) => {
-      container.append(clone);
-    });
-    if (rightTrigger) container.append(rightTrigger);
+      if (clone) pageLinks.push(clone);
+    } else {
+      // fixme: we need single page search UX
+      const searchParams = `tasks=${currentTasks}&tasksx=${currentTasksX}&phformat=${getMetadata('placeholder-format')}&topics=${topicsQuery}&q=${d.displayValue}&ckgid=${d.ckgID}&searchId=${generateSearchId()}`;
+      const pageData = {
+        url: `${prefix}/express/templates/search?${searchParams}`,
+        'short-title': d.displayValue,
+      };
 
-    if (container.children.length === 2) {
-      const templatePages = await fetchAllTemplatesMetadata();
-      const linkListData = [];
-
-      (await sheetData).forEach((row) => {
-        if (row.parent === getMetadata('short-title')) {
-          linkListData.push({
-            childSibling: row['child-siblings'],
-            shortTitle: getMetadata('short-title'),
-            tasks: getMetadata('tasks'),
-          });
-        }
-      });
-
-      linkListData.forEach((d) => {
-        const templatePageData = templatePages.find(
-          (p) => p.live === 'Y' && p.shortTitle === d.childSibling,
-        );
-        const clone = replaceLinkPill(linkPill, templatePageData);
-        if (clone) container.append(clone);
-      });
+      clone = replaceLinkPill(linkPill, pageData);
+      searchLinks.push(clone);
     }
-  }
+
+    clone.addEventListener('click', () => {
+      const a = clone.querySelector(':scope > a');
+      updateImpressionCache({
+        keyword_filter: d.displayValue,
+        content_category: 'templates',
+      });
+      trackSearch('search-inspire', new URLSearchParams(new URL(a.href).search).get('searchId'));
+    });
+  });
+
+  if (leftTrigger) container.append(leftTrigger);
+  pageLinks.concat(searchLinks).forEach((clone) => {
+    container.append(clone);
+  });
+  if (rightTrigger) container.append(rightTrigger);
 }
 
 async function lazyLoadLinklist() {

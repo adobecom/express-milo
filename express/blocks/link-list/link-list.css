@@ -163,7 +163,29 @@
     border-radius: 24px;
   }
 
+  & .link-list.left-align {
+    margin-top: 0;
+    margin-bottom: 75px;
+  }
+  & .link-list.left-align h3 {
+    padding-left: 0;
+  }
+  & .link-list.left-align .button-container {
+    margin-left: 0;
+  }
+
   @media (min-width: 900px) {
+    & .link-list.content-group {
+      width: 648px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 0;
+      margin-bottom: 70px;
+    }
+    & .link-list.content-group h3 {
+      padding-left: 0;
+    }
+
     & div + .link-list-wrapper {
       padding-top: 0px;
     }

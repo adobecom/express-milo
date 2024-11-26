@@ -1,8 +1,8 @@
 /* global _satellite */
 /* eslint-disable no-underscore-dangle */
-import { getLibs } from '../scripts/utils.js';
-import BlockMediator from '../scripts/block-mediator.min.js';
-import { memoize } from '../scripts/utils/hofs.js';
+import { getLibs } from './utils.js';
+import BlockMediator from './block-mediator.min.js';
+import { memoize } from './utils/hofs.js';
 
 const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
 const { replaceKey } = imports[0];
