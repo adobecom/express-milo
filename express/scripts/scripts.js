@@ -193,6 +193,9 @@ function decorateHeroLCP(loadStyle, config, createTag) {
   const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
   document.head.append(footerSrc);
 
+  const adobeHomeRedirect = createTag('meta', { property: 'adobe-home-redirect', content: 'on' });
+  document.head.append(adobeHomeRedirect);
+
   const googleLoginRedirect = createTag('meta', { name: 'google-login', content: 'desktop' });
   document.head.append(googleLoginRedirect);
   // end TODO remove metadata after we go live
@@ -204,11 +207,12 @@ function decorateHeroLCP(loadStyle, config, createTag) {
 
   const config = setConfig({ ...CONFIG, miloLibs });
 
-  // TODO this if statement can be removed post migration
+  // TODO this can be removed post migration
   if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
     const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
     document.head.append(budouxExcludeSelector);
   }
+
 
   if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
