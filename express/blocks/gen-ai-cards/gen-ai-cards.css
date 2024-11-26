@@ -75,6 +75,7 @@
 .gen-ai-cards.homepage .carousel-element.card {
   width: 292px;
   height: 396px;
+  flex-direction: column;
 }
 
 .gen-ai-cards .carousel-left-trigger ~ .card {
@@ -346,4 +347,23 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     text-align: left;
     margin: 20px 20px 12px;
   }
+}
+
+.gen-ai-cards.homepage .card .text-wrapper {
+  flex-grow: 1;
+}
+
+.gen-ai-cards.homepage .card .media-wrapper picture img {
+  width: 100%;
+}
+
+.gen-ai-cards.homepage .card .media-wrapper {
+  position: relative;
+}
+
+.gen-ai-cards.homepage .carousel-element.card {
+  height: unset;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
