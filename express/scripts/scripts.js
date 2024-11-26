@@ -193,7 +193,7 @@ function decorateHeroLCP(loadStyle, config, createTag) {
   const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
   document.head.append(footerSrc);
 
-  const adobeHomeRedirect = createTag('meta', { property: 'adobe-home-redirect', content: 'on' });
+  const adobeHomeRedirect = createTag('meta', { name: 'adobe-home-redirect', content: 'on' });
   document.head.append(adobeHomeRedirect);
 
   const googleLoginRedirect = createTag('meta', { name: 'google-login', content: 'desktop' });
