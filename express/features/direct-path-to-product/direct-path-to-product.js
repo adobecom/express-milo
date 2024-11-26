@@ -53,12 +53,9 @@ function buildProfileWrapper(profile) {
 
 export default async function loadLoginUserAutoRedirect() {
   let cancel = false;
-  const [mod] = await Promise.all([
-    import(`${getLibs()}/features/placeholders.js`),
-    new Promise((resolve) => {
-      loadStyle('/express/features/direct-path-to-product/direct-path-to-product.css', resolve);
-    }),
-  ]);
+  await new Promise((resolve) => {
+    loadStyle('/express/features/direct-path-to-product/direct-path-to-product.css', resolve);
+  });
 
   const buildRedirectAlert = async () => {
     const container = createTag('div', { class: 'pep-container' });
