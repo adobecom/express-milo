@@ -6,8 +6,8 @@ const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 async function syncMinHeights(groups) {
   const maxHeights = groups.map((els) => els
-      .filter((e) => !!e)
-      .reduce((max, e) => Math.max(max, e.offsetHeight), 0));
+    .filter((e) => !!e)
+    .reduce((max, e) => Math.max(max, e.offsetHeight), 0));
   await yieldToMain();
   maxHeights.forEach((maxHeight, i) => groups[i].forEach((e) => {
     if (e) e.style.minHeight = `${maxHeight}px`;

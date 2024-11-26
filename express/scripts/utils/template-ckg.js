@@ -11,7 +11,6 @@ const { getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const defaultRegex = /\/express\/templates\/default/;
 
 let ckgData;
-let sheetData;
 
 async function fetchLinkList() {
   if (ckgData) return;
@@ -40,6 +39,7 @@ async function fetchLinkList() {
 }
 
 const searchRegex = /\/search\?/;
+
 function isSearch(pathname) {
   return searchRegex.test(pathname);
 }
@@ -111,11 +111,11 @@ async function updateLinkList(container, linkPill, list) {
     const { prefix } = getConfig().locale;
     const topics = getMetadata('topics') !== '" "' ? `${getMetadata('topics')?.replace(/[$@%"]/g, '')}` : '';
     const topicsQuery = `${topics} ${d.displayValue.toLowerCase()}`.split(' ')
-        .filter((item, i, allItems) => i === allItems.indexOf(item))
-        .join(' ')
-        .replace(currentTasks, '')
-        .replace(currentTasksX, '')
-        .trim();
+      .filter((item, i, allItems) => i === allItems.indexOf(item))
+      .join(' ')
+      .replace(currentTasks, '')
+      .replace(currentTasksX, '')
+      .trim();
 
     let clone;
     if (!isSearch(d.pathname)) {
@@ -126,8 +126,8 @@ async function updateLinkList(container, linkPill, list) {
 
       clone = replaceLinkPill(linkPill, pageData);
       clone.innerHTML = clone.innerHTML
-          .replaceAll('Default', d.displayValue)
-          .replace('/express/templates/default', d.pathname);
+        .replaceAll('Default', d.displayValue)
+        .replace('/express/templates/default', d.pathname);
       const innerLink = clone.querySelector('a');
       if (innerLink) {
         const url = new URL(innerLink.href);

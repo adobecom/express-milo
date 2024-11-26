@@ -23,17 +23,17 @@ const mFetch = memoize(
 export default async function getData() {
   const { locale } = getConfig();
   const textQuery = window.location.pathname
-      .split('/')
-      .filter(Boolean)
-      .map((s) => s.trim())
-      .filter(
-          // subpaths only
-          (s) => !['express', 'templates', 'colors', locale.prefix.replace('/', '')].includes(s),
-      )
-      // capitalize as flyer's res payload size > Flyer's
-      .map((s) => s && String(s[0]).toUpperCase() + String(s).slice(1))
-      .reverse()
-      .join(' ');
+    .split('/')
+    .filter(Boolean)
+    .map((s) => s.trim())
+    .filter(
+      // subpaths only
+      (s) => !['express', 'templates', 'colors', locale.prefix.replace('/', '')].includes(s),
+    )
+  // capitalize as flyer's res payload size > Flyer's
+    .map((s) => s && String(s[0]).toUpperCase() + String(s).slice(1))
+    .reverse()
+    .join(' ');
   const data = {
     experienceId,
     querySuggestion: {

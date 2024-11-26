@@ -1,9 +1,9 @@
 import { getLibs } from '../../scripts/utils.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
+import { fixIcons } from '../../scripts/utils/icons.js';
 
-import { createOptimizedPicture, transformLinkToAnimation } from "../../scripts/utils/media.js";
-import {fixIcons} from "../../scripts/utils/icons.js";
+const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
 function enableToggle(block, toggleChev) {
   const onToggle = (e) => {
@@ -57,8 +57,8 @@ async function loadTemplates(props) {
     throw new Error('Invalid template response format');
   }
   return response.items
-      .filter((item) => isValidTemplate(item))
-      .map((template) => renderTemplate(template));
+    .filter((item) => isValidTemplate(item))
+    .map((template) => renderTemplate(template));
 }
 
 async function fetchAndRenderTemplates(block, props) {
