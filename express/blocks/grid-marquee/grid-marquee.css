@@ -1,10 +1,7 @@
 .grid-marquee {
   --m-img-w: 152px;
-  --m-img-h: 103px;
-  --t-img-w: 183px;
-  --t-img-h: 152px;
-  --d-img-w: 256px;
-  --d-img-h: 199px;
+  --t-img-w: 181px;
+  --d-img-w: 254px;
   max-width: initial;
   text-align: center;
 }
@@ -109,9 +106,6 @@
 .grid-marquee .face img {
   border-radius: 8px;
   width: var(--m-img-w);
-  height: var(--m-img-h);
-  object-fit: cover;
-  object-position: center;
 }
 
 .grid-marquee .drawer {
@@ -289,7 +283,6 @@
 
   .grid-marquee .face img {
     width: var(--t-img-w);
-    height: var(--t-img-h);
   }
 }
 
@@ -329,7 +322,6 @@
 
   .grid-marquee .face img {
     width: var(--d-img-w);
-    height: var(--d-img-h);
   }
 
   .grid-marquee .face {

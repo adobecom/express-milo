@@ -26,12 +26,12 @@ export const windowHelper = {
 
 async function handleGenAISubmit(form, link) {
   const input = form.querySelector('input');
-  if (input.value.trim() === '') return;
+  if (!link || input.value.trim() === '') return;
   const mod = await import('../../scripts/branchlinks.js');
   const genAILink = mod.getTrackingAppendedURL(link).replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
   const urlObj = new URL(genAILink);
   urlObj.searchParams.delete('referrer');
-  if (genAILink) windowHelper.redirect(urlObj.toString());
+  windowHelper.redirect(urlObj.toString());
 }
 
 // eslint-disable-next-line max-len
@@ -60,8 +60,10 @@ function createEnticement(enticementDetail, enticementPlaceholder, enticementPla
 function createPromptLinkElement(promptLink, prompt) {
   const icon = getIconElementDeprecated('external-link', 22);
   icon.classList.add('link');
-  icon.addEventListener('click', () => {
-    const urlObj = new URL(promptLink);
+  icon.addEventListener('click', async () => {
+    const mod = await import('../../scripts/branchlinks.js');
+    const genAILink = mod.getTrackingAppendedURL(promptLink, placeholders);
+    const urlObj = new URL(genAILink);
     urlObj.searchParams.delete('referrer');
     urlObj.searchParams.append('prompt', prompt);
     windowHelper.redirect(urlObj.toString());

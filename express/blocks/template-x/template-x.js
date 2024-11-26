@@ -16,7 +16,7 @@ import {
   trackSearch,
   updateImpressionCache,
   generateSearchId,
-} from '../../template-x/template-search-api-v3.js';
+} from '../../scripts/template-search-api-v3.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import renderTemplate from './template-rendering.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
