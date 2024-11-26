@@ -6,6 +6,7 @@ import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 
+// make change
 function toggleCollapsibleCard($block) {
   $block.classList.toggle('expanded');
   $block.classList.remove('initial-expansion');
