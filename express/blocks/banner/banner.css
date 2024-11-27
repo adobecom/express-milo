@@ -17,7 +17,7 @@
 
 .banner.cool {
   background: linear-gradient(170.96deg, #bfe4ff -0.25%, #cecef6 104.12%);
-  padding: 40px 0;
+  padding: 24px 0;
 }
 
 .section .banner p {
@@ -126,7 +126,7 @@ main .banner h2 {
 }
 
 .banner.cool .wrapper {
-  padding: 0 24px;
+  padding: 0 16px;
   max-width: unset;
 }
 
@@ -199,9 +199,13 @@ main .banner h2 {
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 768px) {
+  .banner.cool {
+    padding: 40px 0;
+  }
   .banner.cool .wrapper {
-    max-width: 820px;
+    padding: 0 32px;
+    max-width: unset;
   }
   .banner.cool .content-container {
     padding: 38px 45px 20px;
@@ -214,12 +218,12 @@ main .banner h2 {
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1280px) {
   .banner.cool {
-    padding: 65px 0;
+    padding: 48px 0;
   }
   .banner.cool .wrapper {
-    padding: 0 82px;
+    padding: 0 40px;
     max-width: unset;
   }
   .banner.cool .content-container {
@@ -237,8 +241,9 @@ main .banner h2 {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1680px) {
   .banner.cool .wrapper {
-    max-width: 1200px;
+    padding: 0;
+    max-width: 1600px;
   }
 }
