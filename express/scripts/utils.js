@@ -170,6 +170,8 @@ export function preDecorateSections(area) {
     }
   });
 
+  area.querySelectorAll(`${selector} > .billing-radio, ${selector} > .split-action`).forEach((el) => el.remove());
+
   // floating CTA vs page CTA with same text or link logics
   if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
     const { device } = document.body.dataset;
