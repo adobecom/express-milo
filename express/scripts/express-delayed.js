@@ -3,6 +3,7 @@ import BlockMediator from './block-mediator.min.js';
 import { decorateButtonsDeprecated } from './utils/decorate.js';
 
 const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+const { getUserProfile } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
 
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
@@ -25,77 +26,24 @@ function getSegmentsFromAlloyResponse(response) {
 }
 
 export function getProfile() {
-  const { imslib } = window.feds.utilities;
   return new Promise((res) => {
-    imslib.onReady().then(() => {
-      if (!imslib.isSignedInUser()) res(null);
-      if (window.fedsConfig.universalNav === true) {
-        // Using Universal Navigation
-        // The new Profile Menu does not send an event when the method or data are available
-        const imsDataPromise = imslib.getProfile();
-        const profileDataPromise = new Promise((resolve) => {
-          // The new Profile Menu will expose adobeProfile.getUserProfile, but there is no
-          // event or callback to inform us that the profile has rendered and the method
-          // is available
-          // We have to build a polling mechanism to see when the method is available
-          let interval;
-          const setDefault = () => resolve({});
-          const onReady = () => window.adobeProfile?.getUserProfile()
-            .then(resolve).catch(setDefault);
-          const isProfileMethodAvailable = () => typeof window.adobeProfile?.getUserProfile === 'function';
-          if (isProfileMethodAvailable()) {
-            onReady();
-          } else {
-            const timeout = setTimeout(() => {
-              clearInterval(interval);
-              setDefault();
-            }, 5000);
-
-            interval = setInterval(() => {
-              if (isProfileMethodAvailable()) {
-                clearTimeout(timeout);
-                clearInterval(interval);
-                onReady();
-              }
-            }, 150);
-          }
+    getUserProfile()
+      .then((data) => {
+        res({
+          avatar: data.avatar,
+          display_name: data.display_name,
+          email: data.email,
+          enterpriseAdmin: undefined,
+          first_name: data?.first_name,
+          id: data?.userId,
+          last_name: data?.last_name,
+          name_id: undefined,
+          teamAdmin: undefined,
         });
-        Promise.all([imsDataPromise, profileDataPromise])
-          .then(([imsData, profileData]) => {
-            res({
-              avatar: profileData?.avatar,
-              display_name: imsData?.displayName,
-              email: imsData?.email,
-              enterpriseAdmin: undefined,
-              first_name: imsData?.first_name,
-              id: imsData?.userId,
-              last_name: imsData?.last_name,
-              name_id: undefined,
-              teamAdmin: undefined,
-            });
-          })
-          .catch(() => {
-            res(null);
-          });
-      } else {
-        // Using old Profile Menu
-        const getProfileData = () => window.adobeProfile?.getUserProfile();
-        if (window.feds.events?.profile_data === true) {
-          // Profile data has been loaded
-          res(getProfileData());
-        } else {
-          // Profile data is not available yet
-          const eventDriven = () => {
-            window.removeEventListener('feds.events.profile_data.loaded', eventDriven);
-            res(getProfileData());
-          };
-          window.addEventListener('feds.events.profile_data.loaded', eventDriven);// You might want to remove th});
-        }
-      }
-    }).catch(() => {
-      res(null);
-      // IMS timeout, the "sign in" CTA will not be displayed
-    });
+      })
+      .catch(() => {
+        res(null);
+      });
   });
 }
 
@@ -177,6 +125,7 @@ export default async function loadDelayed() {
     turnContentLinksIntoButtons();
     preloadSUSILight();
     if (await canPEP()) {
+      // eslint-disable-next-line import/no-unresolved
       const { default: loadLoginUserAutoRedirect } = await import('../features/direct-path-to-product/direct-path-to-product.js');
       return new Promise((resolve) => {
         // TODO: not preloading product to protect desktop CWV

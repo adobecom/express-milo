@@ -217,7 +217,6 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
   }
-
   // Decorate the page with site specific needs.
   decorateArea();
 
