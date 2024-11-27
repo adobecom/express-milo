@@ -1,6 +1,14 @@
+main .list-wrapper:first-child {
+    padding-top: 60px;
+}
+
+main > .section:last-child > .list-wrapper:last-child {
+    padding-bottom: 60px;
+}
+
 main .list {
     max-width: 375px;
-    margin: 40px auto;
+    margin: 0px auto;
     padding: 0 24px;
     display: flex;
     flex-wrap: wrap;
