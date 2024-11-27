@@ -63,8 +63,12 @@
   width: 406px;
   border-radius: 8px;
   overflow: hidden;
-  margin: 0 8px;
+  margin: 0px;
   background-color: #f4f4fd;
+}
+
+.gen-ai-cards .carousel-container .carousel-platform {
+  gap: 8px;
 }
 
 .gen-ai-cards.homepage .card {
@@ -306,7 +310,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
 }
 .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2){
   margin-left: 20px;
-  margin-right: 0px
 }
 
 main .gen-ai-cards.homepage .carousel-container .carousel-fader-left.arrow-hidden,
