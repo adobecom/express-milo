@@ -49,6 +49,11 @@ export function getCachedMetadata(name) {
 }
 
 export async function getRedirectUri() {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  if (getMetadata('adobe-home-redirect') === 'on') {
+    const { env, locale } = getConfig();
+    return `https://www${env.name !== 'prod' ? '.stage' : ''}.adobe.com${locale.prefix}`;
+  }
   const BlockMediator = await import('./block-mediator.min.js');
   const branchLinkOriginPattern = /^https:\/\/adobesparkpost(-web)?\.app\.link/;
   function isBranchLink(url) {
