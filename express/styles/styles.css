@@ -1109,25 +1109,3 @@ body:not(.blog) main {
     transform: translateX(-25%);
   }
 }
-
-/* override color gnav & footer */
-header .feds-navLink:hover {
-  color: var(--color-info-accent-hover);
-}
-
-header .feds-cta--primary {
-  background-color: var(--color-info-accent);
-  border-color: var(--color-info-accent);
-}
-
-header .feds-cta--primary:hover {
-  background-color: var(--color-info-accent-hover);
-  border-color: var(--color-info-accent-hover);
-}
-
-body { /* stylelint-disable-line no-duplicate-selectors */
-  --link-color: var(--color-info-accent);
-  --link-hover-color: var(--color-info-accent-hover);
-  --feds-color-link--hover--light: var(--color-info-accent-hover);
-}
-/* end override color gnav & footer */
