@@ -14,7 +14,6 @@ import {
   setLibs,
   buildAutoBlocks,
   decorateArea,
-  getMetadata,
   preDecorateSections,
   getRedirectUri,
 } from './utils.js';
@@ -25,11 +24,6 @@ const STYLES = ['/express/styles/styles.css'];
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
 const LIBS = '/libs';
 const miloLibs = setLibs(LIBS);
-let jarvisImmediatelyVisible = false;
-const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
-const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
-if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
-  (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) jarvisImmediatelyVisible = true;
 
 // Add any config options.
 const CONFIG = {
@@ -39,9 +33,9 @@ const CONFIG = {
   codeRoot: '/express',
   contentRoot: '/express',
   jarvis: {
-    id: getMetadata('jarvis-surface-id') || 'Acom_Express',
-    version: getMetadata('jarvis-surface-version') || '1.0',
-    onDemand: !jarvisImmediatelyVisible,
+    id: 'Acom_Express',
+    version: '1.0',
+    onDemand: true,
   },
   imsClientId: 'AdobeExpressWeb',
   // geoRouting: 'off',
@@ -106,7 +100,7 @@ preDecorateSections(document);
   });
 }());
 
-function decorateHeroLCP(loadStyle, config, createTag) {
+function decorateHeroLCP(loadStyle, config, createTag, getMetadata) {
   const template = getMetadata('template');
   const h1 = document.querySelector('main h1');
   if (template !== 'blog') {
@@ -173,12 +167,36 @@ function decorateHeroLCP(loadStyle, config, createTag) {
   }
 }
 
+const listenAlloy = () => {
+  let resolver;
+  let loaded;
+  const t1 = performance.now();
+  window.alloyLoader = new Promise((r) => {
+    resolver = r;
+  });
+  window.addEventListener('alloy_sendEvent', (e) => {
+    if (e.detail.type === 'pageView') {
+      // eslint-disable-next-line no-console
+      if (usp.has('debug-alloy')) console.log(`Alloy loaded in ${performance.now() - t1}`);
+      loaded = true;
+      resolver(e.detail.result);
+    }
+  }, { once: true });
+  setTimeout(() => {
+    if (!loaded) {
+      window.lana.log(`Alloy failed to load, waited ${performance.now() - t1}`, { sampleRate: 0.01 });
+      resolver();
+    }
+  }, 3000);
+};
+
 (async function loadPage() {
   if (window.isTestEnv) return;
   const {
     loadArea,
     loadStyle,
     setConfig,
+    getMetadata,
     loadLana,
     createTag,
   } = await import(`${miloLibs}/utils/utils.js`);
@@ -193,9 +211,6 @@ function decorateHeroLCP(loadStyle, config, createTag) {
   const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
   document.head.append(footerSrc);
 
-  const adobeHomeRedirect = createTag('meta', { name: 'adobe-home-redirect', content: 'on' });
-  document.head.append(adobeHomeRedirect);
-
   const googleLoginRedirect = createTag('meta', { name: 'google-login', content: 'desktop' });
   document.head.append(googleLoginRedirect);
   // end TODO remove metadata after we go live
@@ -205,9 +220,14 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     await redirect();
   }
 
+  const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
+  const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
+  if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
+    (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) CONFIG.jarvis.onDemand = false;
+
   const config = setConfig({ ...CONFIG, miloLibs });
 
-  // TODO this can be removed post migration
+  // TODO this if statement can be removed post migration
   if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
     const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
     document.head.append(budouxExcludeSelector);
@@ -217,10 +237,12 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
   }
+
   // Decorate the page with site specific needs.
   decorateArea();
 
   loadLana({ clientId: 'express' });
+  listenAlloy();
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
@@ -243,12 +265,6 @@ function decorateHeroLCP(loadStyle, config, createTag) {
   /* region based redirect to homepage */
   import('./utils/location-utils.js').then(({ getCountry }) => getCountry()).then((country) => {
     if (country === 'cn') { window.location.href = '/cn'; }
-  });
-
-  document.head.querySelectorAll('meta').forEach((meta) => {
-    if (meta.content && meta.content.includes('--none--')) {
-      meta.remove();
-    }
   });
 
   await loadArea();

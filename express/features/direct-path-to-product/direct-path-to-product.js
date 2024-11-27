@@ -2,6 +2,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
+// eslint-disable-next-line import/no-cycle
 import { getProfile, getDestination } from '../../scripts/express-delayed.js';
 
 const [{ createTag, getConfig, loadStyle }, { replaceKeyArray }] = await Promise.all([
@@ -9,7 +10,7 @@ const [{ createTag, getConfig, loadStyle }, { replaceKeyArray }] = await Promise
   import(`${getLibs()}/features/placeholders.js`),
 ]);
 
-const [pepHeader, pepCancel, Cancel] = await replaceKeyArray(['pep-header', 'pep-cancel', 'cancel'], getConfig());
+const [pepHeader, pepCancel, cancelPlaceholder] = await replaceKeyArray(['pep-header', 'pep-cancel', 'cancel'], getConfig());
 
 const OPT_OUT_KEY = 'no-direct-path-to-product';
 
@@ -53,9 +54,7 @@ function buildProfileWrapper(profile) {
 
 export default async function loadLoginUserAutoRedirect() {
   let cancel = false;
-  await new Promise((resolve) => {
-    loadStyle('/express/features/direct-path-to-product/direct-path-to-product.css', resolve);
-  });
+  loadStyle('/express/features/direct-path-to-product/direct-path-to-product.css');
 
   const buildRedirectAlert = async () => {
     const container = createTag('div', { class: 'pep-container' });
@@ -66,7 +65,7 @@ export default async function loadLoginUserAutoRedirect() {
     const progressBar = createTag('div', { class: 'pep-progress-bar' });
     const noticeWrapper = createTag('div', { class: 'notice-wrapper' });
     const noticeText = createTag('span', { class: 'notice-text' }, pepCancel);
-    const noticeBtn = createTag('button', { class: 'notice-btn', tabIndex: '1' }, Cancel);
+    const noticeBtn = createTag('button', { class: 'notice-btn', tabIndex: '1' }, cancelPlaceholder);
 
     headerWrapper.append(headerIcon, headerText);
     progressBg.append(progressBar);

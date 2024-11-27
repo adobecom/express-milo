@@ -8,7 +8,7 @@ const { getUserProfile } = await import(`${getLibs()}/blocks/global-navigation/u
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
   return pepDestinationMeta || BlockMediator.get('primaryCtaUrl')
-      || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA, a.con-button.button-xxl.same-fcta, a.con-button.xxl-button.same-fcta')?.href;
+    || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA, a.con-button.button-xxl.same-fcta, a.con-button.xxl-button.same-fcta')?.href;
 }
 
 function getSegmentsFromAlloyResponse(response) {
@@ -41,7 +41,12 @@ export function getProfile() {
           teamAdmin: undefined,
         });
       })
-      .catch(() => {
+      .catch((e) => {
+        window.lana.log({
+          message: 'Error fetching user profile',
+          e,
+          tags: 'errorType=error,module=pep',
+        });
         res(null);
       });
   });
@@ -103,13 +108,6 @@ function preloadSUSILight() {
   import(`${getLibs()}/blocks/fragment/fragment.js`);
 }
 
-function loadTOC() {
-  if (getMetadata('toc-seo') === 'on') {
-    loadStyle('/express/features/table-of-contents-seo/table-of-contents-seo.css');
-    import('../features/table-of-contents-seo/table-of-contents-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
-  }
-}
-
 function turnContentLinksIntoButtons() {
   document.querySelectorAll('.section > .content').forEach((content) => {
     decorateButtonsDeprecated(content);
@@ -121,7 +119,6 @@ function turnContentLinksIntoButtons() {
  */
 export default async function loadDelayed() {
   try {
-    loadTOC();
     turnContentLinksIntoButtons();
     preloadSUSILight();
     if (await canPEP()) {
