@@ -1,10 +1,10 @@
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const [{ decorateButtons }, { createTag, getMetadata, getConfig }, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/decorate.js`),
-  import(`${getLibs()}/utils/utils.js`),
-  import(`${getLibs()}/features/placeholders.js`)]);
-const [generate, useThisPrompt, promptTitle] = await replaceKeyArray(['generate', 'use-this-prompt', 'prompt-title'], getConfig());
+let decorateButtons; let createTag;
+let getMetadata; let getConfig;
+let replaceKeyArray; let generate;
+let useThisPrompt; let promptTitle;
 
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
@@ -62,7 +62,7 @@ function createPromptLinkElement(promptLink, prompt) {
   icon.classList.add('link');
   icon.addEventListener('click', async () => {
     const mod = await import('../../scripts/branchlinks.js');
-    const genAILink = mod.getTrackingAppendedURL(promptLink);
+    const genAILink = await mod.getTrackingAppendedURL(promptLink);
     const urlObj = new URL(genAILink);
     urlObj.searchParams.delete('referrer');
     urlObj.searchParams.append('prompt', prompt);
@@ -184,6 +184,12 @@ export default async function init(el) {
     window.lana?.log('Using interactive-marquee on Express requires using the horizontal-masonry class.');
     return;
   }
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/decorate.js`)]).then(([utils, placeholders, decorate]) => {
+    ({ createTag, getMetadata, getConfig } = utils);
+    ({ replaceKeyArray } = placeholders);
+    ({ decorateButtons } = decorate);
+  });
+  ([generate, useThisPrompt, promptTitle] = await replaceKeyArray(['generate', 'use-this-prompt', 'prompt-title'], getConfig()));
   interactiveInit(el);
   await setHorizontalMasonry(el);
 }

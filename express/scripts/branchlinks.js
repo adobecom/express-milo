@@ -1,8 +1,4 @@
 import { getCachedMetadata, getLibs, toClassName } from './utils.js';
-
-const [{ getConfig }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
-let searchBranchLinks = await placeholderMod.replaceKey('search-branch-links', getConfig());
-searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks;
 function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
@@ -50,7 +46,8 @@ const setBasicBranchMetadata = new Set([
   'prompt',
 ]);
 
-export function getTrackingAppendedURL(url, options = {}) {
+export async function getTrackingAppendedURL(url, options = {}) {
+  const [{ getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
   const { placement, isSearchOverride } = options;
   const windowParams = new URLSearchParams(window.location.search);
   const [
@@ -109,6 +106,9 @@ export function getTrackingAppendedURL(url, options = {}) {
 
   const appending = new URL(url);
   const urlParams = appending.searchParams;
+
+  let searchBranchLinks = await replaceKey('search-branch-links', getConfig());
+  searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks;
   const isSearchBranchLink = searchBranchLinks?.replace(/\s/g, '').split(',').includes(`${appending.origin}${appending.pathname}`);
 
   const setParams = (k, v) => {
@@ -187,7 +187,9 @@ export default async function trackBranchParameters(links) {
         a.href = decodeURIComponent(btnUrl.toString());
         return;
       }
-      a.href = getTrackingAppendedURL(btnUrl, { placement, isSearchOverride });
+      getTrackingAppendedURL(btnUrl, { placement, isSearchOverride }).then((url) => {
+        a.href = url;
+      });
     }
   });
 }

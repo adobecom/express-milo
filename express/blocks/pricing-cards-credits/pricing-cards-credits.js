@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const [{ createTag }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
+let createTag;
 
 function decorateHeader(header, planExplanation) {
   const h2 = header.querySelector('h2');
@@ -77,6 +77,7 @@ function decoratePercentageBar(el) {
 }
 
 export default async function init(el) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(el, 'pricing-cards');
   await fixIcons(el);
   const rows = Array.from(el.querySelectorAll(':scope > div'));

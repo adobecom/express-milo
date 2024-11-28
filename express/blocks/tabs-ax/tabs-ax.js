@@ -6,7 +6,7 @@ import { getLibs, readBlockConfig } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { trackButtonClick } from '../../scripts/instrument.js';
 
-const [{ createTag, MILO_EVENTS }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+let createTag; let MILO_EVENTS;
 
 const isElementInContainerView = (targetEl) => {
   const rect = targetEl.getBoundingClientRect();
@@ -135,7 +135,8 @@ function decorteSectionsMetadata() {
   sections.forEach(decorateSectionMetadata);
 }
 
-const init = (block) => {
+export default async function init(block) {
+  ({ createTag, MILO_EVENTS } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'tabs-ax');
   decorteSectionsMetadata();
   // to avoid hero style conflicts
@@ -220,6 +221,4 @@ const init = (block) => {
   });
   handleDeferredImages(block);
   initTabs(block, config, rootElem);
-};
-
-export default init;
+}

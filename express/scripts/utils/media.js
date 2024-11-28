@@ -1,6 +1,5 @@
-import { getLibs } from '../utils.js';
+import { createTag } from '../utils.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
 export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');

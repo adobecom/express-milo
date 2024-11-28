@@ -1349,7 +1349,7 @@ async function decorateBreadcrumbs(block) {
   // breadcrumbs are desktop-only
   if (document.body.dataset.device !== 'desktop') return;
   const { default: getBreadcrumbs } = await import('../template-list/breadcrumbs.js');
-  const breadcrumbs = await getBreadcrumbs();
+  const breadcrumbs = await getBreadcrumbs(createTag, getMetadata, getConfig);
   if (breadcrumbs) block.prepend(breadcrumbs);
 }
 
@@ -1448,7 +1448,7 @@ function importSearchBar(block, blockMediator) {
           const taskUrl = `/${handlelize(currentTasks.toLowerCase())}`;
           const targetPath = `${prefix}/express/templates${taskUrl}${topicUrl}`;
           const searchId = BlockMediator.get('templateSearchSpecs').search_id;
-          const allTemplatesMetadata = await fetchAllTemplatesMetadata();
+          const allTemplatesMetadata = await fetchAllTemplatesMetadata(getConfig);
           const pathMatch = (event) => event.url === targetPath;
           let targetLocation;
 
@@ -1551,6 +1551,7 @@ function importSearchBar(block, blockMediator) {
         import('../../scripts/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
           const { inputHandler } = useInputAutocomplete(
             suggestionsListUIUpdateCB,
+            getConfig,
             { throttleDelay: 300, debounceDelay: 500, limit: 7 },
           );
           searchBar.addEventListener('input', inputHandler);

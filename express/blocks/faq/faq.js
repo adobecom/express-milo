@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { trackButtonClick } from '../../scripts/instrument.js';
 
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getMetadata;
 
 function decorateFAQBlocks(block) {
   const showSchema = getMetadata('show-faq-schema');
@@ -60,6 +60,7 @@ function decorateFAQBlocks(block) {
 }
 
 export default async function decorate(block) {
+  ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   decorateFAQBlocks(block);
 
   const phoneNumberTags = block.querySelectorAll(

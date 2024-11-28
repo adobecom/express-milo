@@ -6,7 +6,7 @@ import getCKGData from './browse-api-controller.js';
 import fetchAllTemplatesMetadata from './all-templates-metadata.js';
 import { trackSearch, updateImpressionCache, generateSearchId } from '../template-search-api-v3.js';
 
-const { getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let getMetadata; let getConfig;
 
 const defaultRegex = /\/express\/templates\/default/;
 
@@ -67,7 +67,7 @@ async function updateSEOLinkList(container, linkPill, list) {
 
   container.innerHTML = '';
 
-  const templatePages = await fetchAllTemplatesMetadata();
+  const templatePages = await fetchAllTemplatesMetadata(getConfig);
 
   if (list && templatePages) {
     if (leftTrigger) container.append(leftTrigger);
@@ -271,6 +271,7 @@ function hideAsyncBlocks() {
 }
 
 export default async function updateAsyncBlocks() {
+  ({ getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   hideAsyncBlocks();
   // TODO: integrate memoization
   const showSearchMarqueeLinkList = getMetadata('show-search-marquee-link-list');

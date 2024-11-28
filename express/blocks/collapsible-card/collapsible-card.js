@@ -4,7 +4,7 @@ import { getMobileOperatingSystem } from '../../scripts/widgets/floating-cta.js'
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 // make change
 function toggleCollapsibleCard($block) {
@@ -55,6 +55,7 @@ function decorateBadge($block) {
 }
 
 export default async function decorate($block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated($block, 'collapsible-card');
 
   if ($block.classList.contains('spreadsheet-powered')) {

@@ -2,11 +2,10 @@ import { getLibs } from '../../scripts/utils.js';
 import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
-const [{ createTag, getConfig }, { replaceKeyArray }] = await Promise.all([
-  import(`${getLibs()}/utils/utils.js`),
-  import(`${getLibs()}/features/placeholders.js`)]);
-const [appleStoreRatingScore, appleStoreRatingCount, googleStoreRatingScore, googleStoreRatingCount] = await replaceKeyArray(['apple-store-rating-score', 'apple-store-rating-count', 'google-store-rating-score', 'google-store-rating-count'], getConfig());
-
+let createTag; let getConfig;
+let replaceKeyArray; let appleStoreRatingScore;
+let appleStoreRatingCount; let googleStoreRatingScore;
+let googleStoreRatingCount;
 function getMobileOperatingSystem() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -208,16 +207,24 @@ function watchFloatingButtonState(block) {
   });
 }
 
-export default async function decorate($block) {
-  addTempWrapperDeprecated($block, 'app-banner');
-  const decorateButtons = decorateButtonsDeprecated($block);
-  const fixIcon = fixIcons($block);
+export default async function decorate(block) {
+  addTempWrapperDeprecated(block, 'app-banner');
+  let decorateButtons;
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders, buttons]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKeyArray } = placeholders);
+    decorateButtons = buttons;
+  });
+  ([appleStoreRatingScore, appleStoreRatingCount, googleStoreRatingScore, googleStoreRatingCount] = await replaceKeyArray(['apple-store-rating-score', 'apple-store-rating-count', 'google-store-rating-score', 'google-store-rating-count'], getConfig()));
+
+  decorateButtons = decorateButtonsDeprecated(block);
+  const fixIcon = fixIcons(block);
   await Promise.all([decorateButtons, fixIcon]);
   if (weekPassed()) {
     localStorage.removeItem('app-banner-optout-exp-date');
     const payload = await buildPayload();
-    decorateBanner($block, payload);
-    addCloseBtn($block);
+    decorateBanner(block, payload);
+    addCloseBtn(block);
 
     if (Array.isArray(window.floatingCta) && window.floatingCta.length) {
       const db = window.floatingCta[0];
@@ -225,13 +232,13 @@ export default async function decorate($block) {
       const delay = mfb.delay ? mfb.delay * 1000 : db.delay * 1000;
 
       setTimeout(() => {
-        initScrollDirection($block);
-        watchFloatingButtonState($block);
+        initScrollDirection(block);
+        watchFloatingButtonState(block);
       }, delay);
     } else {
       setTimeout(() => {
-        initScrollDirection($block);
-        watchFloatingButtonState($block);
+        initScrollDirection(block);
+        watchFloatingButtonState(block);
       }, 1000);
     }
   }

@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 export function decorateHeading(block, payload) {
   const headingSection = createTag('div', { class: 'browse-by-category-heading-section' });
@@ -64,6 +64,7 @@ export function decorateCategories(block, payload) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const rows = Array.from(block.children);
   const headingDiv = rows.shift();
 

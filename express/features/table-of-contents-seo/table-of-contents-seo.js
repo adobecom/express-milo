@@ -3,8 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/utils/hofs.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const imports = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
-const { createTag, getMetadata } = imports[0];
+let createTag; let getMetadata;
 
 const MOBILE_SIZE = 600;
 const MOBILE_NAV_HEIGHT = 65;
@@ -353,6 +352,7 @@ function buildMetadataConfigObject() {
 }
 
 export default async function setTOCSEO() {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const doc = document.querySelector('main');
   const config = buildMetadataConfigObject();
   const tocSEO = createTag('div', { class: 'table-of-contents-seo' });

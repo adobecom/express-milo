@@ -2,7 +2,8 @@
 import { getLibs, toClassName } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 
-const { createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
+let getMetadata;
 
 async function fetchAuthorImage($image, author) {
   const resp = await fetch(`/express/learn/blog/authors/${toClassName(author)}.plain.html`);
@@ -51,6 +52,7 @@ const loadImage = (img) => new Promise((resolve) => {
 });
 
 export default async function decorateBlogPage() {
+  ({ createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const $main = document.querySelector('main');
   const $h1 = document.querySelector('main h1');
   const author = getMetadata('author');

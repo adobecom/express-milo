@@ -1,7 +1,7 @@
 import { getLibs, yieldToMain } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
 
 let currDrawer = null;
 const desktopMQ = window.matchMedia('(min-width: 1200px)');
@@ -218,7 +218,8 @@ function makeRatings() {
   return ratings;
 }
 
-export default function init(el) {
+export default async function init(el) {
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const rows = [...el.querySelectorAll(':scope > div')];
   const [headline, background, items, foreground] = [rows[0], rows[1], rows.slice(2), createTag('div', { class: 'foreground' })];
   const logo = getIconElementDeprecated('adobe-express-logo');

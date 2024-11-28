@@ -1,15 +1,12 @@
 /* global _satellite */
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
-
 import { getProfile, getDestination } from '../../scripts/express-delayed.js';
 
-const [{ createTag, getConfig, loadStyle }, { replaceKeyArray }] = await Promise.all([
-  import(`${getLibs()}/utils/utils.js`),
-  import(`${getLibs()}/features/placeholders.js`),
-]);
-
-const [pepHeader, pepCancel, Cancel] = await replaceKeyArray(['pep-header', 'pep-cancel', 'cancel'], getConfig());
+let createTag; let getConfig;
+let loadStyle; let replaceKeyArray;
+let pepHeader; let pepCancel;
+let Cancel;
 
 const OPT_OUT_KEY = 'no-direct-path-to-product';
 
@@ -52,6 +49,11 @@ function buildProfileWrapper(profile) {
 }
 
 export default async function loadLoginUserAutoRedirect() {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig, loadStyle } = utils);
+    ({ replaceKeyArray } = placeholders);
+  });
+  [pepHeader, pepCancel, Cancel] = await replaceKeyArray(['pep-header', 'pep-cancel', 'cancel'], getConfig());
   let cancel = false;
   await new Promise((resolve) => {
     loadStyle('/express/features/direct-path-to-product/direct-path-to-product.css', resolve);

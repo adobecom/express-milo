@@ -1,11 +1,13 @@
 import { getLibs } from '../../scripts/utils.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey } = imports[0];
-const { getConfig } = imports[1];
+let getConfig; let replaceKey;
 
-export default function decorate($block) {
+export default async function decorate($block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
   fixIcons($block);
   const $form = document.createElement('form');
   const $formHeading = document.createElement('h2');

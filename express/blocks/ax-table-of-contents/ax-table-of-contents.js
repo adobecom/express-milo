@@ -2,11 +2,12 @@
 import { getLibs, readBlockConfig } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 // eslint-disable-next-line no-unused-vars
-export default function decorate(block) {
+export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'ax-table-of-contents');
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
 
   const config = readBlockConfig(block);
   const headings = document.body.querySelectorAll('main h2, main h3, main h4, main .ax-table-of-contents');

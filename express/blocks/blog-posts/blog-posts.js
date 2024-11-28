@@ -6,7 +6,8 @@ import {
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
-const [{ replaceKey }, { getConfig, createTag, getLocale }] = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
+let replaceKey; let getConfig;
+let createTag; let getLocale;
 
 const blogPosts = [];
 let blogResults;
@@ -331,6 +332,10 @@ function checkStructure(element, querySelectors) {
 }
 
 export default async function decorate(block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ getConfig, createTag, getLocale } = utils);
+    ({ replaceKey } = placeholders);
+  });
   addTempWrapperDeprecated(block, 'blog-posts');
   const config = getBlogPostsConfig(block);
 

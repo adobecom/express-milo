@@ -6,10 +6,9 @@ import { trackSearch, updateImpressionCache, generateSearchId } from '../../scri
 
 let createTag; let getConfig;
 let getMetadata; let replaceKey;
-let replaceKeyArray;
+let replaceKeyArray; let config;
+let prefix;
 
-const config = getConfig();
-const { prefix } = getConfig().locale;
 function handlelize(str) {
   return str.normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '') // Remove accents
@@ -132,7 +131,7 @@ function initSearchFunction(block, searchBarWrapper) {
     const targetPath = `${prefix}/express/templates${taskUrl}${topicUrl}`;
     const targetPathX = `${prefix}/express/templates${taskXUrl}${topicUrl}`;
     const { default: fetchAllTemplatesMetadata } = await import('../../scripts/utils/all-templates-metadata.js');
-    const allTemplatesMetadata = await fetchAllTemplatesMetadata();
+    const allTemplatesMetadata = await fetchAllTemplatesMetadata(getConfig);
     const pathMatch = (e) => e.url === targetPath;
     const pathMatchX = (e) => e.url === targetPathX;
     let targetLocation;
@@ -314,7 +313,9 @@ async function buildSearchDropdown(block, searchBarWrapper) {
     fromScratchLink.classList.add('from-scratch-link');
     fromScratchLink.href = getMetadata('search-marquee-from-scratch-link') || '/';
     trendsContainer.append(fromScratchLink);
-    import('../../scripts/branchlinks.js').then((mod) => { fromScratchLink.href = mod.getTrackingAppendedURL([fromScratchLink], { placement: 'search-marquee' }); });
+    import('../../scripts/branchlinks.js').then(async (mod) => {
+      fromScratchLink.href = await mod.getTrackingAppendedURL([fromScratchLink], { placement: 'search-marquee' });
+    });
     linkDiv.remove();
   }
 
@@ -393,6 +394,8 @@ export default async function decorate(block) {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKey, replaceKeyArray } = placeholders);
   });
+  config = getConfig();
+  ({ prefix } = getConfig().locale);
   decorateBackground(block);
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');
