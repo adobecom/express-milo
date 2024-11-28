@@ -22,6 +22,7 @@ async function fetchPromotion(name) {
 }
 
 export default async function decorate($block) {
+  ({ createTag, getConfig } = import(`${getLibs()}/utils/utils.js`));
   const name = $block.textContent.trim();
   if (!name) return;
 
@@ -63,9 +64,7 @@ export default async function decorate($block) {
     if (h2) $block.append(h2);
     $block.append(containerDiv);
 
-    await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated($block), fixIcons($block)]).then(([utils]) => {
-      ({ createTag, getConfig } = utils);
-    });
+    await Promise.all([decorateButtonsDeprecated($block), fixIcons($block)]);
 
     // apply primary light button styles
     $block.querySelectorAll('.button.accent').forEach((b) => {
