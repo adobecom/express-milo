@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
 let rotationInterval;
 let fixedImageSize = false;
 
@@ -290,6 +290,7 @@ export default async function decorate(block) {
   const howToWindow = block.ownerDocument.defaultView;
   const howToDocument = block.ownerDocument;
   const isImageVariant = block.classList.contains('image');
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
 
   // move first image of container outside of div for styling
   const section = block.closest('.section');
@@ -358,6 +359,6 @@ export default async function decorate(block) {
     parent.remove();
     section.prepend(picture);
   }
-  decorateButtonsDeprecated(section);
+  await decorateButtonsDeprecated(section);
   buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindow);
 }

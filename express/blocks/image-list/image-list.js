@@ -3,9 +3,9 @@ import { toClassName } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 
-export default function decorate(block) {
+export default async function decorate(block) {
   decorateSocialIcons(block);
-  decorateButtonsDeprecated(block);
+  await decorateButtonsDeprecated(block);
   const rows = Array.from(block.children);
   rows.forEach((row) => {
     const cells = Array.from(row.children);

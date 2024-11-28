@@ -2,8 +2,9 @@ import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
 import { decorateButtonsDeprecated } from './utils/decorate.js';
 
-const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
-const { getUserProfile } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
+let createTag; let getMetadata;
+let getConfig; let loadStyle;
+let getUserProfile;
 
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
@@ -121,6 +122,10 @@ function turnContentLinksIntoButtons() {
  */
 export default async function loadDelayed() {
   try {
+    await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`)]).then(([utils, utilities]) => {
+      ({ createTag, getMetadata, getConfig, loadStyle } = utils);
+      ({ getUserProfile } = utilities);
+    });
     loadTOC();
     turnContentLinksIntoButtons();
     preloadSUSILight();

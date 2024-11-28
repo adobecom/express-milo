@@ -3,13 +3,14 @@ import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { decorateButtonsDeprecated, splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
-const { createTag, getConfig, getMetadata } = await import(
-  `${getLibs()}/utils/utils.js`
-);
+let createTag; let getConfig;
+let getMetadata;
 
 export default async function decorate(block) {
   splitAndAddVariantsWithDash(block);
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag, getConfig, getMetadata } = utils);
+  });
 
   let submitButtonText;
   let submissionTitle;

@@ -3,8 +3,8 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
-const [{ replaceKey }, { getConfig, createTag }] = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-
+let replaceKey; let getConfig;
+let createTag;
 export function decorateTextWithTag(textSource, options = {}) {
   const {
     baseT,
@@ -253,7 +253,10 @@ function constructPayload(block) {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'cta-carousel');
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
+    ({ createTag } = utils);
+    ({ replaceKey } = placeholders);
+  });
 
   const payload = constructPayload(block);
   decorateHeading(block, payload);

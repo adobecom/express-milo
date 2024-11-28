@@ -4,9 +4,9 @@ import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { trackSearch, updateImpressionCache, generateSearchId } from '../../scripts/template-search-api-v3.js';
 
-const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey, replaceKeyArray } = imports[0];
-const { createTag, getConfig, getMetadata } = imports[1];
+let createTag; let getConfig;
+let getMetadata; let replaceKey;
+let replaceKeyArray;
 
 const config = getConfig();
 const { prefix } = getConfig().locale;
@@ -389,7 +389,10 @@ async function decorateLinkList(block) {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'search-marquee');
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig, getMetadata } = utils);
+    ({ replaceKey, replaceKeyArray } = placeholders);
+  });
   decorateBackground(block);
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');
