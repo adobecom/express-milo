@@ -113,7 +113,24 @@ function loadTOC() {
 
 function turnContentLinksIntoButtons() {
   document.querySelectorAll('.section > .content').forEach((content) => {
-    decorateButtonsDeprecated(content);
+    const links = content.querySelectorAll('a');
+    links.forEach((link) => {
+      const $up = link.parentElement;
+      const $twoup = link.parentElement.parentElement;
+      if (!link.querySelector('img')) {
+        if ($up.childNodes.length === 1 && ($up.tagName === 'P' || $up.tagName === 'DIV')) {
+          decorateButtonsDeprecated($up);
+        }
+        if ($up.childNodes.length === 1 && $up.tagName === 'STRONG'
+            && $twoup.children.length === 1 && $twoup.tagName === 'P') {
+          decorateButtonsDeprecated($twoup);
+        }
+        if ($up.childNodes.length === 1 && $up.tagName === 'EM'
+            && $twoup.children.length === 1 && $twoup.tagName === 'P') {
+          decorateButtonsDeprecated($twoup);
+        }
+      }
+    });
   });
 }
 
