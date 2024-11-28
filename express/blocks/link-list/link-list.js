@@ -9,13 +9,6 @@ import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 let replaceKey;
 let getConfig;
-const placeholdersProm = import(`${getLibs()}/features/placeholders.js`).then((mod) => {
-  ({ replaceKey } = mod);
-});
-const utilsProm = import(`${getLibs()}/utils/utils.js`).then((mod) => {
-  ({ getConfig } = mod);
-});
-await Promise.all([placeholdersProm, utilsProm]);
 const DEFAULT_VARIANT = 'default';
 const SMART_VARIANT = 'smart';
 
@@ -104,7 +97,10 @@ export default async function decorate(block) {
     variant = SMART_VARIANT;
   }
   addTempWrapperDeprecated(block, 'link-list');
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
+    ({ getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
   const options = {};
 
   if (block.classList.contains('spreadsheet-powered')) {

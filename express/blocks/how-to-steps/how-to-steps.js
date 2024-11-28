@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function renderHoverContainer(imgElement, row, buttonContainer) {
   let hoverContainer;
@@ -57,8 +57,10 @@ function renderHoverContainer(imgElement, row, buttonContainer) {
   });
 }
 
-export default function decorate(block) {
-  decorateButtonsDeprecated(block);
+export default async function decorate(block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
   const howto = block;
   const heading = howto.closest('.section').querySelector('h2, h3, h4');
   const rows = Array.from(howto.children);

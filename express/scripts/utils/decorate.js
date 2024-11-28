@@ -1,10 +1,9 @@
 import { getIconDeprecated } from './icons.js';
 import { getLibs } from '../utils.js';
 
-const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-
 // This was only added for the blocks premigration. It is not to be used for new blocks.
-export function decorateButtonsDeprecated(el, size) {
+export async function decorateButtonsDeprecated(el, size) {
+  const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
   decorateButtons(el, size);
   el.querySelectorAll(':scope a:not(.con-button, .social-link)').forEach(($a) => {
     const originalHref = $a.href;

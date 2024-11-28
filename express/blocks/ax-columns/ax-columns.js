@@ -21,7 +21,8 @@ import {
   sendEventToAnalytics,
 } from '../../scripts/instrument.js';
 
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getMetadata;
+let getConfig;
 
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
@@ -183,7 +184,9 @@ export default async function decorate(block) {
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
   decorateSocialIcons(block);
-  decorateButtonsDeprecated(block, 'button-xxl');
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block, 'button-xxl')]).then(([utils]) => {
+    ({ createTag, getMetadata, getConfig } = utils);
+  });
 
   const rows = Array.from(block.children);
 
@@ -319,7 +322,7 @@ export default async function decorate(block) {
     });
   });
   addAnimationToggle(block);
-  addHeaderSizing(block, 'columns-heading');
+  addHeaderSizing(block, getConfig, 'columns-heading');
 
   // decorate offer
   if (block.classList.contains('offer')) {

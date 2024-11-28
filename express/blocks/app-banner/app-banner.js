@@ -210,8 +210,9 @@ function watchFloatingButtonState(block) {
 
 export default async function decorate($block) {
   addTempWrapperDeprecated($block, 'app-banner');
-  decorateButtonsDeprecated($block);
-  await fixIcons($block);
+  const decorateButtons = decorateButtonsDeprecated($block);
+  const fixIcon = fixIcons($block);
+  await Promise.all([decorateButtons, fixIcon]);
   if (weekPassed()) {
     localStorage.removeItem('app-banner-optout-exp-date');
     const payload = await buildPayload();

@@ -14,7 +14,8 @@ import {
 import createToggle, { tagFreePlan } from './pricing-toggle.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const [{ createTag, getConfig }, { replaceKeyArray }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+let createTag; let getConfig;
+let replaceKeyArray;
 
 const blockKeys = [
   'header',
@@ -467,7 +468,10 @@ export default async function init(el) {
     parentElement.replaceChild(i, offer);
   });
 
-  decorateButtonsDeprecated(el);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(el)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKeyArray } = placeholders);
+  });
   addTempWrapperDeprecated(el, 'pricing-cards');
 
   // For backwards compatability with old versions of the pricing card

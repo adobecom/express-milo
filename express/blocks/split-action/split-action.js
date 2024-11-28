@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function show(block) {
   const body = block.closest('body');
@@ -62,9 +62,11 @@ function initNotchDragAction(card) {
   });
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'split-action');
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
 
   block.classList.add('hidden');
   block.classList.add('transparent');
