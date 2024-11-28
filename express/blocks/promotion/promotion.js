@@ -22,7 +22,7 @@ async function fetchPromotion(name) {
 }
 
 export default async function decorate($block) {
-  ({ createTag, getConfig } = import(`${getLibs()}/utils/utils.js`));
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const name = $block.textContent.trim();
   if (!name) return;
 
