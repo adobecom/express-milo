@@ -2,13 +2,14 @@
 import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function pickRandomFromArray(arr) {
   return arr[Math.floor(arr.length * Math.random())];
 }
 
-export default function decorate($block) {
+export default async function decorate($block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated($block, 'quotes');
 
   const isSingularVariant = $block.classList.contains('singular');

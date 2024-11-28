@@ -513,7 +513,7 @@ async function redirectSearch(searchBar, props) {
     searchInput = searchInput.trim();
     [[currentTasks]] = tasksFoundInInput;
   }
-  const allTemplatesMetadata = await fetchAllTemplatesMetadata();
+  const allTemplatesMetadata = await fetchAllTemplatesMetadata(getConfig);
   const redirectUrl = getRedirectUrl(currentTasks, searchInput, format, allTemplatesMetadata);
   window.location = redirectUrl;
 }
@@ -862,7 +862,7 @@ async function decorateCategoryList(block, section, props) {
 
   categoriesListHeading.append(getIconElementDeprecated('template-search'), await replaceKey('jump-to-category', getConfig()));
   categoriesToggle.textContent = await replaceKey('jump-to-category', getConfig());
-  const allTemplatesMetadata = await fetchAllTemplatesMetadata();
+  const allTemplatesMetadata = await fetchAllTemplatesMetadata(getConfig);
 
   Object.entries(categories).forEach((category, index) => {
     const format = `${props.placeholderFormat[0]}:${props.placeholderFormat[1]}`;
@@ -1418,7 +1418,7 @@ async function decorateBreadcrumbs(block) {
   const parent = block.closest('.section');
   // breadcrumbs are desktop-only
   if (document.body.dataset.device !== 'desktop') return;
-  const breadcrumbs = await getBreadcrumbs();
+  const breadcrumbs = await getBreadcrumbs(createTag, getMetadata, getConfig);
   if (breadcrumbs) parent.prepend(breadcrumbs);
 }
 

@@ -4,8 +4,9 @@ import {
   collectFloatingButtonData,
 } from '../../scripts/widgets/floating-cta.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
+import {getLibs} from "../../scripts/utils.js";
 
-export default function decorate(block) {
+export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'floating-button');
   if (!block.classList.contains('meta-powered')) {
     block.parentElement?.remove();
@@ -18,9 +19,9 @@ export default function decorate(block) {
   }
 
   const parentSection = block.closest('.section');
-  const data = collectFloatingButtonData(block);
+  const data = collectFloatingButtonData();
 
-  const blockWrapper = createFloatingButton(
+  const blockWrapper = await createFloatingButton(
     block,
     parentSection ? audience : null,
     data,

@@ -1,7 +1,7 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs, readBlockConfig } from '../../scripts/utils.js';
 
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
 
 async function fetchIndex(indexURL) {
   try {
@@ -46,6 +46,7 @@ function addPages(pages, config, $block) {
 }
 
 async function decoratePageList($block) {
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const config = readBlockConfig($block);
 
   const { prefix } = getConfig().locale;

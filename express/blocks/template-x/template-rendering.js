@@ -107,7 +107,7 @@ async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
 }
 
 async function share(branchUrl, tooltip, timeoutId) {
-  const urlWithTracking = getTrackingAppendedURL(branchUrl, {
+  const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
     isSearchOverride: true,
   });

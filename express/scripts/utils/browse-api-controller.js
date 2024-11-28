@@ -1,8 +1,6 @@
 import { getLibs } from '../utils.js';
 import { memoize } from './hofs.js';
 
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-
 const endpoints = {
   stage: {
     cdn: 'https://www.stage.adobe.com/ax-uss-api-v2/',
@@ -21,6 +19,7 @@ const mFetch = memoize(
 );
 
 export default async function getData() {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   const { locale } = getConfig();
   const textQuery = window.location.pathname
     .split('/')

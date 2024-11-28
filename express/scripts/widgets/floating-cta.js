@@ -1,10 +1,8 @@
 // import { decorateLinks} from '../';
 
-import { getLibs, getLottie, lazyLoadLottiePlayer } from '../utils.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer, createTag } from '../utils.js';
 import { getIconElementDeprecated } from '../utils/icons.js';
 import BlockMediator from '../block-mediator.min.js';
-
-const { createTag, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 export const hideScrollArrow = (floatButtonWrapper, lottieScrollButton) => {
   floatButtonWrapper.classList.add('floating-button--scrolled');
@@ -121,10 +119,9 @@ async function buildLottieArrow(wrapper, floatingBtn, data) {
     getLottie('purple-arrows', '/express/icons/purple-arrows.json'),
   );
 
-  await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
-    const placeholder = await mod.replaceKey('see-more', getConfig());
-    lottieScrollButton.setAttribute('aria-label', placeholder);
-    return mod.replaceKey();
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(async ([utils, placeholders]) => {
+    const seeMore = await placeholders.replaceKey('see-more', utils.getConfig());
+    lottieScrollButton.setAttribute('aria-label', seeMore);
   });
 
   floatingBtn.append(lottieScrollButton);
@@ -141,7 +138,8 @@ async function buildLottieArrow(wrapper, floatingBtn, data) {
   return lottieScrollButton;
 }
 
-export function createFloatingButton(block, audience, data) {
+export async function createFloatingButton(block, audience, data) {
+  const { loadStyle } = await import(`${getLibs()}/utils/utils.js`);
   const aTag = makeCTAFromSheet(block, data);
   const main = document.querySelector('main');
   loadStyle('/express/scripts/widgets/floating-cta.css');

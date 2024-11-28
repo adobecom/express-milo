@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { sendEventToAnalytics } from '../../scripts/instrument.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function initScrollInteraction(block) {
   const inBodyBanner = block.cloneNode(true);
@@ -30,6 +30,7 @@ function initScrollInteraction(block) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const close = createTag('button', {
     class: 'close',
     'aria-label': 'close',

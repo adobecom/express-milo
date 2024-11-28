@@ -1,6 +1,6 @@
 import { getLibs } from '../utils.js';
 
-const { createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let loadStyle;
 
 function correctCenterAlignment(plat) {
   if (plat.parentElement.offsetWidth <= plat.offsetWidth) return;
@@ -65,7 +65,7 @@ function initToggleTriggers(parent) {
   // todo: should unobserve triggers where/when appropriate...
 }
 
-export function onCarouselCSSLoad(selector, parent, options) {
+function onCarouselCSSLoad(selector, parent, options) {
   const carouselContent = selector ? parent.querySelectorAll(selector) : parent.querySelectorAll(':scope > *');
 
   carouselContent.forEach((el) => el.classList.add('carousel-element'));
@@ -186,6 +186,7 @@ export function onCarouselCSSLoad(selector, parent, options) {
 }
 
 export default async function buildCarousel(selector, parent, options = {}) {
+  ({ createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`));
   // Load CSS then build carousel
   return new Promise((resolve) => {
     loadStyle('/express/scripts/widgets/carousel.css', () => {

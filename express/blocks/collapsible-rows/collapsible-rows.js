@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function buildTableLayout(block) {
   const parentDiv = block.closest('.section.section-wrapper');
@@ -130,6 +130,7 @@ function buildOriginalLayout(block) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const isExpandableVariant = block.classList.contains('expandable');
 
   if (isExpandableVariant) {

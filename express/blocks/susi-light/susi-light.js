@@ -2,7 +2,8 @@
 /* eslint-disable camelcase */
 import { getLibs } from '../../scripts/utils.js';
 
-const { createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let loadScript;
+let getConfig;
 
 const variant = 'edu-express';
 const usp = new URLSearchParams(window.location.search);
@@ -40,6 +41,7 @@ function getDestURL(url) {
 }
 
 export default async function init(el) {
+  ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const rows = el.querySelectorAll(':scope> div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   // eslint-disable-next-line camelcase

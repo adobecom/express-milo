@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { isVideoLink } from '../../scripts/widgets/video.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function renderImageOrVideo(media) {
   let updatedMedia;
@@ -93,7 +93,8 @@ const extractProperties = (block) => {
   return allProperties;
 };
 
-export default function decorate(block) {
+export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const colorProperties = extractProperties(block);
   const inputRows = block.querySelectorAll(':scope > div > div');
   block.innerHTML = '';
