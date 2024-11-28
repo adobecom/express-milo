@@ -3,7 +3,8 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
+
 function createTutorialCard(title, url, time, $picture) {
   const $card = createTag('a', { class: 'tutorial-card', title, tabindex: 0 });
   const $cardTop = createTag('div', { class: 'tutorial-card-top' });
@@ -57,7 +58,8 @@ export function decorateTutorials($block) {
   window.addEventListener('popstate', handlePopstate);
 }
 
-export default function decorate($block) {
+export default async function decorate($block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated($block, 'tutorials');
 
   decorateTutorials($block);

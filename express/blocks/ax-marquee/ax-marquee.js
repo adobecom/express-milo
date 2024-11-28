@@ -9,8 +9,7 @@ import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scrip
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { displayVideoModal, isVideoLink } from '../../scripts/widgets/video.js';
 
-const imports = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
-const { getMetadata, createTag, getConfig } = imports[0];
+let getMetadata; let createTag; let getConfig;
 
 const DEFAULT_BREAKPOINT = {
   typeHint: 'default',
@@ -500,6 +499,8 @@ async function handleOptions(div, typeHint, block) {
   }
 }
 export default async function decorate(block) {
+  ({ getMetadata, createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+
   addTempWrapperDeprecated(block, 'ax-marquee');
   handlePrice(block);
   handlePrice(block, '[[savePercentage]]', 'savePer');
