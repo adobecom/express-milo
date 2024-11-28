@@ -969,14 +969,16 @@ async function decorateSearchFunctions(toolBar, section, props) {
     enterKeyHint: await replaceKey('search', getConfig()) ?? 'Search',
   });
 
+  const taskCats = await replaceKey('task-categories', getConfig());
+  const taskCatIcons = await replaceKey('task-category-icons', getConfig());
   // Tasks Dropdown
   const taskDropdownContainer = createTag('div', { class: 'task-dropdown-container' });
   const taskDropdown = createTag('div', { class: 'task-dropdown' });
   const taskDropdownChev = getIconElementDeprecated('drop-down-arrow');
   const taskDropdownToggle = createTag('button', { class: 'task-dropdown-toggle' });
   const taskDropdownList = createTag('ul', { class: 'task-dropdown-list' });
-  const categories = JSON.parse(placeholderMod['task-categories']);
-  const categoryIcons = placeholderMod['task-category-icons'].replace(/\s/g, '').split(',');
+  const categories = JSON.parse(taskCats);
+  const categoryIcons = taskCatIcons.replace(/\s/g, '').split(',');
   let optionMatched = false;
 
   Object.entries(categories).forEach((category, index) => {
@@ -1977,7 +1979,7 @@ export default async function decorate(block) {
   );
 
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
+    ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKey } = placeholders);
   });
 
