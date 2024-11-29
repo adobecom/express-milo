@@ -41,12 +41,7 @@ export function getProfile() {
           teamAdmin: undefined,
         });
       })
-      .catch((e) => {
-        window.lana.log({
-          message: 'Error fetching user profile',
-          e,
-          tags: 'errorType=error,module=pep',
-        });
+      .catch(() => {
         res(null);
       });
   });
@@ -72,14 +67,13 @@ async function canPEP() {
   const [cancel, pepHeader, pepCancel] = await replaceKeyArray(['cancel', 'pep-header', 'pep-cancel'], getConfig());
   if (!cancel || !pepHeader || !pepCancel) return false;
   const segments = getSegmentsFromAlloyResponse(await window.alloyLoader);
+  segments.push('4181424b-506b-43ae-b871-dc79f54527a0');
+
   if (!pepSegment.replace(/\s/g, '').split(',').some((pepSeg) => segments.includes(pepSeg))) return false;
 
   return new Promise((resolve) => {
-    if (window.feds?.utilities?.imslib) {
-      const { imslib } = window.feds.utilities;
-      imslib.onReady().then(() => {
-        resolve(imslib.isSignedInUser());
-      }).catch(() => resolve(false));
+    if (window.adobeIMS?.isSignedInUser()) {
+      resolve(window.adobeIMS.isSignedInUser());
     } else {
       resolve(false);
     }
@@ -108,6 +102,13 @@ function preloadSUSILight() {
   import(`${getLibs()}/blocks/fragment/fragment.js`);
 }
 
+function loadTOC() {
+  if (getMetadata('toc-seo') === 'on') {
+    loadStyle('/express/features/table-of-contents-seo/table-of-contents-seo.css');
+    import('../features/table-of-contents-seo/table-of-contents-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
+  }
+}
+
 function turnContentLinksIntoButtons() {
   document.querySelectorAll('.section > .content').forEach((content) => {
     decorateButtonsDeprecated(content);
@@ -119,6 +120,7 @@ function turnContentLinksIntoButtons() {
  */
 export default async function loadDelayed() {
   try {
+    loadTOC();
     turnContentLinksIntoButtons();
     preloadSUSILight();
     if (await canPEP()) {
