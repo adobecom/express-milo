@@ -596,7 +596,10 @@ async function syncMinHeights(groups) {
 }
 
 export default async function init(el) {
-  await fixIcons(el);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(el)]).then(([utils, placeholdersMod]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKeyArray } = placeholdersMod);
+  });
   const offers = Array.from(el.querySelectorAll('p > em'));
 
   // replace <em> with <i>
@@ -607,15 +610,12 @@ export default async function init(el) {
     parentElement.replaceChild(i, offer);
   });
 
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(el)]).then(([utils, placeholdersMod]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKeyArray } = placeholdersMod);
-  });
   placeholderValues = await replaceKeyArray(keyArray, getConfig());
   placeholders = keyArray.reduce((acc, key, index) => {
     acc[key] = placeholderValues[index];
     return acc;
   }, {});
+  decorateButtonsDeprecated(el);
   addTempWrapperDeprecated(el, 'pricing-cards');
 
   // For backwards compatability with old versions of the pricing card

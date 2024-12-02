@@ -70,6 +70,10 @@ export default async function decorate(block) {
     const { formatSalesPhoneNumber } = await import(
       '../../scripts/utils/location-utils.js'
     );
-    await formatSalesPhoneNumber(phoneNumberTags);
+    try {
+      await formatSalesPhoneNumber(phoneNumberTags);
+    } catch (e) {
+      window.lana?.log('faq.js - error fetching sales phones numbers:', e.message);
+    }
   }
 }

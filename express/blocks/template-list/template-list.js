@@ -1955,6 +1955,10 @@ function constructProps() {
 }
 
 export default async function decorate(block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig, getMetadata } = utils);
+    ({ replaceKey } = placeholders);
+  });
   const newBlock = block.cloneNode(true);
   block.parentNode.insertBefore(newBlock, block);
   block.remove();
@@ -1978,10 +1982,7 @@ export default async function decorate(block) {
       ),
   );
 
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig, getMetadata } = utils);
-    ({ replaceKey } = placeholders);
-  });
+  await decorateButtonsDeprecated(block);
 
   const props = constructProps();
   if (newBlock.classList.contains('spreadsheet-powered')) {

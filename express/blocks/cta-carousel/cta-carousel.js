@@ -254,7 +254,7 @@ function constructPayload(block) {
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'cta-carousel');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
-    ({ createTag } = utils);
+    ({ createTag, getConfig } = utils);
     ({ replaceKey } = placeholders);
   });
 

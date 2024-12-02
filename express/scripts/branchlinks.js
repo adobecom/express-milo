@@ -1,4 +1,5 @@
 import { getCachedMetadata, getLibs, toClassName } from './utils.js';
+
 function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
@@ -175,7 +176,7 @@ export async function getTrackingAppendedURL(url, options = {}) {
 
 export default async function trackBranchParameters(links) {
   const { isSearchOverride } = links;
-  links.forEach((a) => {
+  await Promise.all(links.map((a) => {
     if (a.href && a.href.match(/adobesparkpost(-web)?\.app\.link/)) {
       const placement = getPlacement(a);
       a.rel = 'nofollow';
@@ -185,11 +186,14 @@ export default async function trackBranchParameters(links) {
         urlParams.delete('acomx-dno');
         btnUrl.search = urlParams.toString();
         a.href = decodeURIComponent(btnUrl.toString());
-        return;
+        // eslint-disable-next-line no-promise-executor-return
+        return new Promise((r) => r(''));
       }
-      getTrackingAppendedURL(btnUrl, { placement, isSearchOverride }).then((url) => {
+      return getTrackingAppendedURL(btnUrl, { placement, isSearchOverride }).then((url) => {
         a.href = url;
       });
     }
-  });
+    // eslint-disable-next-line no-promise-executor-return
+    return new Promise((r) => r(''));
+  }));
 }

@@ -13,13 +13,14 @@ const { default: decorate } = imports[1];
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('Cards', () => {
-  before(() => {
+  before(async () => {
     window.isTestEnv = true;
+    const cards = document.querySelector('.cards');
+    await decorate(cards);
   });
 
   it('Cards exists', () => {
     const cards = document.querySelector('.cards');
-    decorate(cards);
     expect(cards).to.exist;
   });
 

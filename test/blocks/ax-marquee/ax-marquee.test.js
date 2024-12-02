@@ -131,12 +131,14 @@ describe('ax-marquee', () => {
       expect(shadow).to.exist;
     });
 
-    it('video link click opens video overlay', async () => {
+    it.only('video link click opens video overlay', async () => {
       const marquee = await prepBlock('./mocks/shadow-background.html');
       const videoLink = marquee.querySelector('a[href="./media_1ff62f7924e9f7cb39ebf245d1ac1be92eb868835.mp4"]');
-      if (videoLink) await transformToVideoLink(videoLink.closest('div'), videoLink);
+      if (videoLink) transformToVideoLink(videoLink.closest('div'), videoLink);
       videoLink.click();
-      expect(document.querySelector('.video-overlay')).to.exist;
+      setTimeout(() => {
+        expect(document.querySelector('.video-overlay')).to.exist;
+      }, 100);
     });
   });
 

@@ -28,7 +28,7 @@ async function handleGenAISubmit(form, link) {
   const input = form.querySelector('input');
   if (!link || input.value.trim() === '') return;
   const mod = await import('../../scripts/branchlinks.js');
-  const genAILink = mod.getTrackingAppendedURL(link).replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
+  const genAILink = await mod.getTrackingAppendedURL(link).replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
   const urlObj = new URL(genAILink);
   urlObj.searchParams.delete('referrer');
   windowHelper.redirect(urlObj.toString());

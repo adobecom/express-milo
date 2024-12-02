@@ -58,7 +58,11 @@ export default async function decorate(block) {
 
   const phoneNumberTags = block.querySelectorAll('a[title="{{business-sales-numbers}}"]');
   if (phoneNumberTags.length > 0) {
-    await formatSalesPhoneNumber(phoneNumberTags);
+    try {
+      await formatSalesPhoneNumber(phoneNumberTags);
+    } catch (e) {
+      window.lana?.log('banner.js - error fetching sales phones numbers:', e.message);
+    }
   }
   fixIcons(block);
 }

@@ -17,43 +17,43 @@ describe('Steps', () => {
     window.isTestEnv = true;
   });
 
-  it('Steps exist', () => {
+  it('Steps exist', async () => {
     document.body.innerHTML = body;
     const steps = document.querySelector('.steps');
-    decorate(steps);
+    await decorate(steps);
     expect(steps).to.exist;
   });
 
-  it('Steps has the right elements', () => {
+  it('Steps has the right elements', async () => {
     document.body.innerHTML = body;
     const steps = document.querySelector('.steps');
-    decorate(steps);
+    await decorate(steps);
 
     expect(document.querySelector('.section')).to.exist;
     expect(document.querySelector('h3')).to.exist;
     expect(document.querySelector('.step-description')).to.exist;
   });
 
-  it('Highlight schema contains right elements', () => {
+  it('Highlight schema contains right elements', async () => {
     document.body.innerHTML = schemaHighlight;
     const steps = document.querySelector('.steps');
-    decorate(steps);
+    await decorate(steps);
 
     expect(document.querySelector('.steps-highlight-container')).to.exist;
   });
 
-  it('Dark schema contains right elements', () => {
+  it('Dark schema contains right elements', async () => {
     document.body.innerHTML = schemaDark;
     const steps = document.querySelector('.steps');
-    decorate(steps);
+    await decorate(steps);
 
     expect(document.querySelector('.steps-dark-container')).to.exist;
   });
 
-  it('Schema has the right elements', () => {
+  it('Schema has the right elements', async () => {
     document.body.innerHTML = schema;
     const steps = document.querySelector('.steps');
-    decorate(steps);
+    await decorate(steps);
 
     expect(document.querySelector('.steps-container')).to.exist;
     expect(document.querySelector('script')).to.exist;

@@ -13,9 +13,9 @@ describe('Feature Grid Desktop', async () => {
     window.isTestEnv = true;
   });
 
-  describe('Small Grid', () => {
+  describe('Small Grid', async () => {
     const smallGrid = document.querySelector('#small-grid');
-    decorate(smallGrid);
+    await decorate(smallGrid);
 
     it('has a heading', () => {
       const heading = smallGrid.querySelector('.heading > h1');
@@ -47,7 +47,7 @@ describe('Feature Grid Desktop', async () => {
     beforeEach(async () => {
       document.body.innerHTML = await readFile({ path: './mocks/body.html' });
       fullGrid = document.querySelector('#full-grid');
-      decorate(fullGrid);
+      await decorate(fullGrid);
       loadMoreButton = fullGrid.querySelector('.load-more-button');
     });
 
