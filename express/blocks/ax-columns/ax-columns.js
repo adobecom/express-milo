@@ -180,13 +180,14 @@ const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
 };
 
 export default async function decorate(block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
+    ({ createTag, getMetadata, getConfig } = utils);
+  });
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
   decorateSocialIcons(block);
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block, 'button-xxl')]).then(([utils]) => {
-    ({ createTag, getMetadata, getConfig } = utils);
-  });
+  await decorateButtonsDeprecated(block, 'button-xxl');
 
   const rows = Array.from(block.children);
 

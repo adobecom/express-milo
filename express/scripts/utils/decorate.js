@@ -4,7 +4,10 @@ import { getLibs } from '../utils.js';
 // This was only added for the blocks premigration. It is not to be used for new blocks.
 export async function decorateButtonsDeprecated(el, size) {
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-  decorateButtons(el, size);
+  // deactivate milo button styling for ax-columns and banner since links have perhaps unnecessarily
+  // been authored bold or italic. We'll want to roll this back at some point.
+  if (!el.closest('.ax-columns') && !el.closest('.banner')) decorateButtons(el, size);
+
   el.querySelectorAll(':scope a:not(.con-button, .social-link)').forEach(($a) => {
     const originalHref = $a.href;
     const linkText = $a.textContent.trim();
