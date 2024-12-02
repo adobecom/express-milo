@@ -273,6 +273,7 @@
   .fullscreen-marquee .fullscreen-marquee-heading {
     align-items: center;
     max-width: 1160px;
+    text-align: center;
   }
 
   .fullscreen-marquee .fullscreen-marquee-heading h1 {
@@ -291,12 +292,12 @@
     margin: 10px auto 0px auto;
   }
 
-  .fullscreen-marquee .fullscreen-marquee-app-frame {
-    display: unset;
+  .fullscreen-marquee .fullscreen-marquee-heading .button-container {
+    display: inline-block;
   }
 
-  .fullscreen-marquee .button-container.free-plan-container a.button {
-    margin-bottom: 10px;
+  .fullscreen-marquee .fullscreen-marquee-app-frame {
+    display: unset;
   }
 }
 
