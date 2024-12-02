@@ -6,7 +6,7 @@ import { getProfile, getDestination } from '../../scripts/express-delayed.js';
 let createTag; let getConfig;
 let loadStyle; let replaceKeyArray;
 let pepHeader; let pepCancel;
-let Cancel;
+let cancelPlaceholder;
 
 const OPT_OUT_KEY = 'no-direct-path-to-product';
 
@@ -53,7 +53,7 @@ export default async function loadLoginUserAutoRedirect() {
     ({ createTag, getConfig, loadStyle } = utils);
     ({ replaceKeyArray } = placeholders);
   });
-  [pepHeader, pepCancel, Cancel] = await replaceKeyArray(['pep-header', 'pep-cancel', 'cancel'], getConfig());
+  [pepHeader, pepCancel, cancelPlaceholder] = await replaceKeyArray(['pep-header', 'pep-cancel', 'cancel'], getConfig());
   let cancel = false;
   await new Promise((resolve) => {
     loadStyle('/express/features/direct-path-to-product/direct-path-to-product.css', resolve);
@@ -68,7 +68,7 @@ export default async function loadLoginUserAutoRedirect() {
     const progressBar = createTag('div', { class: 'pep-progress-bar' });
     const noticeWrapper = createTag('div', { class: 'notice-wrapper' });
     const noticeText = createTag('span', { class: 'notice-text' }, pepCancel);
-    const noticeBtn = createTag('button', { class: 'notice-btn', tabIndex: '1' }, Cancel);
+    const noticeBtn = createTag('button', { class: 'notice-btn', tabIndex: '1' }, cancelPlaceholder);
 
     headerWrapper.append(headerIcon, headerText);
     progressBg.append(progressBar);
