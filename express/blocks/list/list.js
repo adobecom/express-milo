@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function decorateList(block) {
   const list = [];
@@ -35,12 +35,7 @@ function decorateList(block) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'list');
   decorateList(block);
-
-  const pricingLinks = block.querySelectorAll('a[title^="{{pricing"]');
-  if (pricingLinks.length > 0) {
-    const { decoratePricing } = await import('../../scripts/utils/pricing.js');
-    decoratePricing(block);
-  }
 }

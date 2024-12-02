@@ -2,12 +2,14 @@
 import { getLibs } from '../../scripts/utils.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 /**
  * @param {HTMLDivElement} $block
  */
-export default function decorate($block) {
-  decorateButtonsDeprecated($block);
+export default async function decorate($block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated($block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
   $block.querySelectorAll(':scope>div').forEach(($card) => {
     $card.classList.add('card');
     const $cardDivs = [...$card.children];

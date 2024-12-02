@@ -4,9 +4,7 @@ import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
 import { memoize } from './utils/hofs.js';
 
-const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey } = imports[0];
-const { getConfig } = imports[1];
+let getConfig;
 
 // supported by content api
 const supportedLanguages = [
@@ -267,6 +265,7 @@ async function fetchSearchUrl({
 }
 
 async function getFallbackMsg(tasks = '') {
+  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
   const fallbackTextTemplate = tasks && tasks !== "''" ? await replaceKey('templates-fallback-with-tasks', getConfig()) : await replaceKey('templates-fallback-without-tasks', getConfig());
 
   if (fallbackTextTemplate) {
@@ -378,6 +377,7 @@ export async function fetchTemplatesCategoryCount(props, tasks) {
 }
 
 export async function fetchTemplates(props) {
+  ({ getConfig } = await import(`${getLibs()}/utils/utils.js`));
   // api rejects 10000+
   const start = parseInt(props.start, 10);
   if (Number.isInteger(start) && start > 9999) {

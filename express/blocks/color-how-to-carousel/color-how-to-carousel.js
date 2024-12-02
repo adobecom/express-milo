@@ -3,7 +3,7 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function activate(block, target) {
   // de-activate all
@@ -179,7 +179,9 @@ function getColorSVG(svgName) {
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'color-how-to-carousel');
-  await fixIcons(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), fixIcons(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
 
   const payload = {
     rotationInterval: null,

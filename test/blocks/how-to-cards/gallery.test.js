@@ -2,13 +2,20 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import { delay } from '../../helpers/waitfor.js';
 
-const [, { buildGallery }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/how-to-cards/how-to-cards.js')]);
+const [, { buildGallery, default: init }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/how-to-cards/how-to-cards.js')]);
 
 document.body.innerHTML = await readFile({ path: './mocks/gallery-body.html' });
+const otherDoc = await readFile({ path: './mocks/body.html' });
+const parser = new DOMParser();
+// Parse the HTML string into a Document object
+const htmlDocument = parser.parseFromString(otherDoc, 'text/html');
+// Access the HTML content as an object
+const howToCards = htmlDocument.body;
+await init(howToCards.querySelector('.how-to-cards'));
 describe('gallery', () => {
   const oldIO = window.IntersectionObserver;
   let fire;
-  beforeEach(() => {
+  beforeEach(async () => {
     const mockIntersectionObserver = class {
       items = [];
 
@@ -25,8 +32,12 @@ describe('gallery', () => {
   after(() => {
     window.IntersectionObserver = oldIO;
   });
-  it('handles irregular inputs', () => {
-    expect(() => buildGallery()).to.throw;
+  it('handles irregular inputs', async () => {
+    try {
+      await buildGallery();
+    } catch (e) {
+      expect(() => e).to.throw;
+    }
   });
   it('decorates items into gallery', async () => {
     const root = document.querySelector('.how-to-cards');

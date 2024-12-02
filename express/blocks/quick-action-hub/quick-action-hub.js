@@ -3,13 +3,15 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
-export default async function decorate($block) {
-  addTempWrapperDeprecated($block, 'quick-action-hub');
-  await fixIcons($block);
+export default async function decorate(block) {
+  addTempWrapperDeprecated(block, 'quick-action-hub');
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), fixIcons(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
 
-  const $rows = Array.from($block.children);
+  const $rows = Array.from(block.children);
   const $header = $rows[0].firstElementChild;
   const $container = createTag('div', { class: 'quick-action-hub-container' });
   const $listContainer = createTag('div', { class: 'quick-action-hub-list-container' });
@@ -51,10 +53,10 @@ export default async function decorate($block) {
     $listContainer.append($column);
   });
 
-  $block.innerHTML = '';
+  block.innerHTML = '';
 
-  $block.append($container);
-  $block.append($contentContainer);
+  block.append($container);
+  block.append($contentContainer);
   $container.append($header);
   $container.append($listContainer);
 }

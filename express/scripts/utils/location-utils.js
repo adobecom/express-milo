@@ -1,7 +1,5 @@
 import { getLibs } from '../utils.js';
 
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-
 function getCookie(cname) {
   const name = `${cname}=`;
   const decodedCookie = decodeURIComponent(document.cookie);
@@ -23,6 +21,8 @@ function normCountry(country) {
 }
 
 export async function getCountry(ignoreCookie = false) {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+
   const urlParams = new URLSearchParams(window.location.search);
   let countryCode = urlParams.get('country') || (!ignoreCookie && getCookie('international'));
   if (countryCode) {
@@ -97,7 +97,7 @@ function getJapaneseTextCharacterCount(text) {
  * Default is "heading".
  * @param {string} selector CSS selector to select the target heading tags. Default is "h1, h2".
  */
-export function addHeaderSizing($block, classPrefix = 'heading', selector = 'h1, h2') {
+export function addHeaderSizing($block, getConfig, classPrefix = 'heading', selector = 'h1, h2') {
   const headings = $block.querySelectorAll(selector);
   // Each threshold of JP should be smaller than other languages
   // because JP characters are larger and JP sentences are longer

@@ -3,8 +3,8 @@ import { getLibs } from '../../scripts/utils.js';
 import { titleCase } from '../../scripts/utils/string.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 
-const { createTag, getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`);
-
+let createTag; let getMetadata;
+let getConfig;
 function sanitize(str) {
   return str?.replaceAll(/[$@%'"]/g, '');
 }
@@ -105,7 +105,10 @@ async function getCrumbsForSEOPage(templatesUrl, allTemplatesMetadata, placehold
 
 // returns null if no breadcrumbs
 // returns breadcrumbs as an li element
-export default async function getBreadcrumbs() {
+export default async function getBreadcrumbs(createTagParam, getMetadataParam, getConfigParam) {
+  createTag = createTagParam;
+  getMetadata = getMetadataParam;
+  getConfig = getConfigParam;
   // for backward compatibility
   // TODO: remove this check after all content are updated
   if (getMetadata('sheet-powered') !== 'Y' && !document.querySelector('.search-marquee')) {
@@ -141,7 +144,7 @@ export default async function getBreadcrumbs() {
   if (!children || children === '/') {
     return nav;
   }
-  const allTemplatesMetadata = await fetchAllTemplatesMetadata();
+  const allTemplatesMetadata = await fetchAllTemplatesMetadata(getConfig);
   const isSearchPage = children.startsWith('/search?') || getMetadata('template-search-page') === 'Y';
   const crumbs = isSearchPage
     ? await getCrumbsForSearch(templatesUrl, allTemplatesMetadata, placeholderMod)

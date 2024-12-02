@@ -3,7 +3,7 @@
 import { getLibs } from './utils.js';
 import trackBranchParameters from './branchlinks.js';
 
-const [{ loadScript, getConfig }] = await Promise.all([import(`${getLibs()}/utils/utils.js`)]);
+let loadScript; let getConfig;
 
 const d = document;
 const loc = window.location;
@@ -371,7 +371,8 @@ function decorateAnalyticsEvents() {
   });
 }
 
-export default function martechLoadedCB() {
+export default async function martechLoadedCB() {
+  ({ loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   setDataAnalyticsAttributesForMartech();
   decorateAnalyticsEvents();
 

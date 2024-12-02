@@ -6,7 +6,7 @@ import {
 import { fixIcons } from '../../scripts/utils/icons.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
 
 const PROMOTION_FOLDER = 'express/promotions';
 
@@ -22,6 +22,7 @@ async function fetchPromotion(name) {
 }
 
 export default async function decorate($block) {
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const name = $block.textContent.trim();
   if (!name) return;
 
@@ -63,8 +64,7 @@ export default async function decorate($block) {
     if (h2) $block.append(h2);
     $block.append(containerDiv);
 
-    decorateButtonsDeprecated($block);
-    fixIcons($block);
+    await Promise.all([decorateButtonsDeprecated($block), fixIcons($block)]);
 
     // apply primary light button styles
     $block.querySelectorAll('.button.accent').forEach((b) => {

@@ -2,7 +2,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { throttle, debounce } from '../../scripts/utils/hofs.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 const nextSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g id="Slider Button - Arrow - Right">
@@ -132,6 +132,7 @@ export function addSchema(bl, heading) {
 }
 
 export default async function init(bl) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const heading = bl.querySelector('h3, h4, h5, h6');
   const cardsContainer = createTag('ol', { class: 'cards-container' });
   let steps = [...bl.querySelectorAll(':scope > div')];

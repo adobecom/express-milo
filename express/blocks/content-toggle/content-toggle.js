@@ -2,7 +2,7 @@ import { getLibs, readBlockConfig } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { trackButtonClick } from '../../scripts/instrument.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function decorateButton($block, $toggle) {
   const $button = createTag('button', { class: 'content-toggle-button' });
@@ -98,7 +98,8 @@ function decorteSectionsMetadata() {
   sections.forEach(decorateSectionMetadata);
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'content-toggle');
   decorteSectionsMetadata();
 

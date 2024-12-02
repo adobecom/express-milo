@@ -5,7 +5,8 @@ import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 import { sendEventToAnalytics } from '../../scripts/instrument.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const [{ createTag, getConfig }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+let createTag; let getConfig;
+let replaceKey;
 
 const MOBILE_SIZE = 981;
 function defineDeviceByScreenSize() {
@@ -35,14 +36,14 @@ function handleHeading(headingRow, headingCols) {
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
 
-  headingCols.forEach((col) => {
+  headingCols.forEach(async (col) => {
     col.classList.add('col-heading');
     const elements = col.children;
     if (!elements?.length) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
       return;
     }
-    decorateButtonsDeprecated(col, 'button-l');
+    await decorateButtonsDeprecated(col, 'button-l');
     const buttonsWrapper = createTag('div', { class: 'buttons-wrapper' });
     const buttons = col.querySelectorAll('.button, .con-button');
 
@@ -199,6 +200,10 @@ export default async function init(el) {
   splitAndAddVariantsWithDash(el);
 
   addTempWrapperDeprecated(el, 'pricing-table');
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
 
   const blockId = getId();
   el.id = `pricing-table-${blockId + 1}`;
@@ -206,7 +211,7 @@ export default async function init(el) {
   const visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
   const rows = Array.from(el.children);
   let sectionItem = 0;
-  const viewAllFeatures = await placeholderMod.replaceKey('view-all-features', getConfig());
+  const viewAllFeatures = await replaceKey('view-all-features', getConfig());
 
   let headingChildren;
   let firstSection = true;

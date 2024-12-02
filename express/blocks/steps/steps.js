@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 export function addBlockClasses(block, classNames) {
   const rows = Array.from(block.children);
@@ -13,6 +13,7 @@ export function addBlockClasses(block, classNames) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addBlockClasses(block, ['step-image', 'step-description']);
   fixIcons(block);
 

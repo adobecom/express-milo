@@ -1,7 +1,5 @@
 import { getLibs, toClassName } from '../utils.js';
 
-const { createTag, getConfig, loadBlock, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
-
 const docTitle = document.title;
 
 export async function fetchVideoAnalytics() {
@@ -61,6 +59,7 @@ async function getVideoAnalytic($video) {
 }
 
 async function fetchVideoPromotions() {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   if (!window.videoPromotions) {
     window.videoPromotions = {};
     try {
@@ -97,7 +96,7 @@ function getMimeType(src) {
   return `video/${src.split('.').pop()}`;
 }
 
-function getAvailableVimeoSubLang() {
+function getAvailableVimeoSubLang(getConfig) {
   const langs = {
     fr: 'fr',
     de: 'de',
@@ -106,7 +105,8 @@ function getAvailableVimeoSubLang() {
   return langs[getConfig().locale.prefix.replace('/', '')] || 'en';
 }
 
-function playInlineVideo($element, vidUrls, playerType, title, ts) {
+async function playInlineVideo($element, vidUrls, playerType, title, ts) {
+  const { createTag, loadBlock } = await import(`${getLibs()}/utils/utils.js`);
   const [primaryUrl] = vidUrls;
   if (!primaryUrl) return;
   if (playerType === 'html5') {
@@ -219,7 +219,8 @@ export function hideVideoModal(push) {
   document.body.classList.remove('no-scroll');
 }
 
-export function displayVideoModal(url, title, push) {
+export async function displayVideoModal(url, title, push) {
+  const { createTag, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`);
   let vidUrls = typeof url === 'string' ? [url] : url;
   const [primaryUrl] = vidUrls;
   const canPlayInline = vidUrls
@@ -287,7 +288,7 @@ export function displayVideoModal(url, title, push) {
     } else if (primaryUrl.includes('vimeo')) {
       vidType = 'vimeo';
       const vid = new URL(primaryUrl).pathname.split('/')[1];
-      const language = getAvailableVimeoSubLang();
+      const language = getAvailableVimeoSubLang(getConfig);
       vidUrls = [`https://player.vimeo.com/video/${vid}?app_id=122963&autoplay=1&texttrack=${language}`];
     } else if (primaryUrl.includes('/media_')) {
       vidType = 'html5';
@@ -299,7 +300,7 @@ export function displayVideoModal(url, title, push) {
       // local video url(s), remove origin, extract timestamp
       vidUrls = vidUrls.map((vidUrl) => new URL(vidUrl).pathname);
     }
-    playInlineVideo($video, vidUrls, vidType, title, ts);
+    await playInlineVideo($video, vidUrls, vidType, title, ts);
   } else {
     // redirect to first video url
     [window.location.href] = vidUrls;

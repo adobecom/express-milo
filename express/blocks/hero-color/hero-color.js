@@ -3,7 +3,7 @@ import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scrip
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function changeTextColorAccordingToBg(
   primaryColor,
@@ -119,9 +119,11 @@ function decorateCTA(block) {
   BlockMediator.set('primaryCtaUrl', primaryCta.href);
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'hero-color');
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
 
   const svgContainer = createTag('div', { class: 'svg-container' });
   block.append(svgContainer);

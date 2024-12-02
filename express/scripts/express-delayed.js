@@ -2,8 +2,9 @@ import { getLibs } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
 import { decorateButtonsDeprecated } from './utils/decorate.js';
 
-const { createTag, getMetadata, getConfig, loadStyle } = await import(`${getLibs()}/utils/utils.js`);
-const { getUserProfile } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
+let createTag; let getMetadata;
+let getConfig; let loadStyle;
+let getUserProfile;
 
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
@@ -112,7 +113,24 @@ function loadTOC() {
 
 function turnContentLinksIntoButtons() {
   document.querySelectorAll('.section > .content').forEach((content) => {
-    decorateButtonsDeprecated(content);
+    const links = content.querySelectorAll('a');
+    links.forEach((link) => {
+      const $up = link.parentElement;
+      const $twoup = link.parentElement.parentElement;
+      if (!link.querySelector('img')) {
+        if ($up.childNodes.length === 1 && ($up.tagName === 'P' || $up.tagName === 'DIV')) {
+          decorateButtonsDeprecated($up);
+        }
+        if ($up.childNodes.length === 1 && $up.tagName === 'STRONG'
+            && $twoup.children.length === 1 && $twoup.tagName === 'P') {
+          decorateButtonsDeprecated($twoup);
+        }
+        if ($up.childNodes.length === 1 && $up.tagName === 'EM'
+            && $twoup.children.length === 1 && $twoup.tagName === 'P') {
+          decorateButtonsDeprecated($twoup);
+        }
+      }
+    });
   });
 }
 
@@ -121,6 +139,10 @@ function turnContentLinksIntoButtons() {
  */
 export default async function loadDelayed() {
   try {
+    await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`)]).then(([utils, utilities]) => {
+      ({ createTag, getMetadata, getConfig, loadStyle } = utils);
+      ({ getUserProfile } = utilities);
+    });
     loadTOC();
     turnContentLinksIntoButtons();
     preloadSUSILight();

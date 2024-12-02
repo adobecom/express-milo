@@ -1,5 +1,4 @@
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { getLibs } from '../../scripts/utils.js';
 import {
   createFloatingButton,
   hideScrollArrow,
@@ -9,8 +8,9 @@ import {
   openToolBox,
   closeToolBox,
 } from '../../scripts/widgets/floating-cta.js';
+import { getLibs } from '../../scripts/utils.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function toggleMultifunctionToolBox(wrapper, lottie, data) {
   wrapper.classList.add('with-transition');
@@ -74,8 +74,8 @@ function buildMultifunctionToolBox(wrapper, data) {
   initNotchDragAction(wrapper, data);
 }
 
-export function createMultiFunctionButton(block, data, audience) {
-  const buttonWrapper = createFloatingButton(block, audience, data);
+export async function createMultiFunctionButton(block, data, audience) {
+  const buttonWrapper = await createFloatingButton(block, audience, data);
   buttonWrapper.classList.add('multifunction');
   buildMultifunctionToolBox(buttonWrapper, data);
 
@@ -83,6 +83,7 @@ export function createMultiFunctionButton(block, data, audience) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'multifunction-button');
 
   if (!block.classList.contains('meta-powered')) return;
@@ -93,7 +94,7 @@ export default async function decorate(block) {
   }
 
   const data = collectFloatingButtonData();
-  const blockWrapper = createMultiFunctionButton(block, data, audience);
+  const blockWrapper = await createMultiFunctionButton(block, data, audience);
   const blockLinks = blockWrapper.querySelectorAll('a');
   if (blockLinks && blockLinks.length > 0) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });

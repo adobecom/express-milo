@@ -1,10 +1,11 @@
 import { getLibs } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+let getMetadata;
 
 // avoid using this kind of text-block unless necessary
-export default function init(el) {
+export default async function init(el) {
+  ({ getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const heading = el.querySelector('h1, h2, h3, h4, h5, h6');
   const cfg = el.querySelector(':scope p:last-of-type');
   try {

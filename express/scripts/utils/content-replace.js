@@ -1,7 +1,8 @@
 import { titleCase } from './string.js';
 import { getLibs, yieldToMain } from '../utils.js';
 
-const [{ getConfig, getMetadata }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
+let getConfig; let getMetadata;
+let replaceKey;
 
 const HtmlSanitizer = new (function handSanitizer() {
   const tagWL = {
@@ -188,7 +189,7 @@ async function replaceDefaultPlaceholders(block, components) {
   block.innerHTML = block.innerHTML.replaceAll('https://www.adobe.com/express/templates/default-create-link', components.link);
 
   if (components.tasks === '') {
-    const startFromScratch = await placeholderMod.replaceKey('start-from-scratch', getConfig());
+    const startFromScratch = await replaceKey('start-from-scratch', getConfig());
     block.innerHTML = block.innerHTML.replaceAll('default-create-link-text', startFromScratch || '');
   } else {
     block.innerHTML = block.innerHTML.replaceAll('default-create-link-text', getMetadata('create-text') || '');
@@ -209,8 +210,8 @@ async function getReplacementsFromSearch() {
   if (!tasks && !phformat) {
     return null;
   }
-  const taskCategories = await placeholderMod.replaceKey('task-categories', getConfig());
-  const xTaskCategories = await placeholderMod.replaceKey('x-task-categories', getConfig());
+  const taskCategories = await replaceKey('task-categories', getConfig());
+  const xTaskCategories = await replaceKey('x-task-categories', getConfig());
   const categories = JSON.parse(taskCategories);
   const xCategories = JSON.parse(xTaskCategories);
   if (!categories) {
@@ -390,13 +391,11 @@ async function validatePage() {
   }
 }
 
-export function setBlockTheme(block) {
-  if (getMetadata(`${block.dataset.blockName}-theme`)) {
-    block.classList.add(getMetadata(`${block.dataset.blockName}-theme`));
-  }
-}
-
 export default async function replaceContent(main) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholdersMod]) => {
+    ({ getConfig, getMetadata } = utils);
+    ({ replaceKey } = placeholdersMod);
+  });
   await updateMetadataForTemplates();
   await autoUpdatePage(main);
   await updateNonBladeContent(main);

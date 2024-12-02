@@ -2,7 +2,7 @@ import { getLibs, toClassName } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElementDeprecated, fixIcons } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 export function addBlockClasses(block, classNames) {
   const rows = Array.from(block.children);
@@ -14,6 +14,7 @@ export function addBlockClasses(block, classNames) {
 }
 
 export default async function decorate($block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated($block, 'icon-list');
   await fixIcons($block);
 
