@@ -1,5 +1,5 @@
 import { getLibs, readBlockConfig } from '../../scripts/utils.js';
-import {addTempWrapperDeprecated, decorateButtonsDeprecated} from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { sendEventToAnalytics, textToName } from '../../scripts/instrument.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 

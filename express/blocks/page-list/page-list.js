@@ -46,7 +46,6 @@ function addPages(pages, config, $block) {
 }
 
 async function decoratePageList($block) {
-  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const config = readBlockConfig($block);
 
   const { prefix } = getConfig().locale;
@@ -61,5 +60,6 @@ async function decoratePageList($block) {
 }
 
 export default async function decorate($block) {
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   return decoratePageList($block);
 }

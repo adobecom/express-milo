@@ -23,9 +23,9 @@ import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey, replaceKeyArray } = imports[0];
-const { getMetadata, createTag, getConfig } = imports[1];
+let replaceKey; let replaceKeyArray;
+let getMetadata; let createTag;
+let getConfig;
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -1760,8 +1760,10 @@ function determineTemplateXType(props) {
 }
 
 export default async function decorate(block) {
-  await fixIcons(block);
-  block.dataset.blockName = 'template-x';
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(block)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig, getMetadata } = utils);
+    ({ replaceKey, replaceKeyArray } = placeholders);
+  });
   block.dataset.blockName = 'template-x';
   const props = constructProps(block);
   block.innerHTML = '';

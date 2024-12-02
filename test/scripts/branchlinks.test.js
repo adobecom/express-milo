@@ -38,24 +38,24 @@ describe('branchlinks getTrackingAppendedURL', () => {
     document.querySelector('meta[name="branch-newstuff"]').remove();
   });
   it('returns a string', () => {
-    urls.forEach((url) => expect(getTrackingAppendedURL(url, window)).to.be.string);
+    urls.forEach(async (url) => {
+      const trackingURL = await getTrackingAppendedURL(url, window);
+      expect(trackingURL).to.be.string;
+    });
   });
-  it('adds to branch links locale', () => {
-    const appendedUrls = urls.map((url) => getTrackingAppendedURL(url, window));
+  it('adds to branch links locale', async () => {
+    const appendedUrls = await Promise.all(urls.map((url) => getTrackingAppendedURL(url, window)));
     appendedUrls.forEach((url) => expect(url.includes('locale')).to.be.true);
   });
-  it('appends branch tracking parameters to search branch links only', () => {
-    const appendedUrls = urls.map((url) => getTrackingAppendedURL(url, window));
+  it('appends branch tracking parameters to search branch links only', async () => {
+    const appendedUrls = await Promise.all(urls.map((url) => getTrackingAppendedURL(url, window)));
     expect(appendedUrls[0].includes('assetCollection')).to.be.false;
     expect(appendedUrls[1].includes('newstuff')).to.be.true;
     expect(appendedUrls[2].includes('assetCollection')).to.be.false;
   });
-  it('accepts searchOverride option to allow non search branch links to work like search branch links', () => {
-    expect(
-      getTrackingAppendedURL(urls[2], { isSearchOverride: true }).includes(
-        'assetCollection',
-      ),
-    ).to.be.true;
+  it('accepts searchOverride option to allow non search branch links to work like search branch links', async () => {
+    const url = await getTrackingAppendedURL(urls[2], { isSearchOverride: true });
+    expect(url.includes('assetCollection')).to.be.true;
   });
 });
 

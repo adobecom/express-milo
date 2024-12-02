@@ -7,7 +7,7 @@ import {
 } from '../../scripts/utils/media.js';
 
 import { decorateSocialIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
-import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
+import { addHeaderSizing, formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import {
   decorateButtonsDeprecated,
   splitAndAddVariantsWithDash,
@@ -81,8 +81,9 @@ function transformToVideoColumn(cell, aTag, block) {
 
 function decorateIconList(columnCell, rowNum, blockClasses) {
   const icons = [...columnCell.querySelectorAll('img.icon, svg.icon')].filter(
-    (icon) => !icon.closest('p').classList.contains('social-links'),
+    (icon) => !icon.closest('p')?.classList?.contains('social-links'),
   );
+
   // decorate offer icons
   if (rowNum === 0 && blockClasses.contains('offer')) {
     const titleIcon = columnCell.querySelector('img.icon, svg.icon');
@@ -98,22 +99,22 @@ function decorateIconList(columnCell, rowNum, blockClasses) {
   if (
     rowNum === 0
     && icons.length === 1
-    && icons[0].closest('p').innerText.trim() === ''
-    && !icons[0].closest('p').previousElementSibling
+    && icons[0].closest('p')?.innerText?.trim() === ''
+    && !icons[0].closest('p')?.previousElementSibling
   ) {
     // treat icon as brand icon if first element in first row cell and no text next to it
     icons[0].classList.add('brand');
     columnCell.parentElement.classList.add('has-brand');
     return;
   }
-  if (icons.length) {
+  if (icons?.length) {
     let iconList = createTag('div', { class: 'columns-iconlist' });
     let iconListDescription;
     [...columnCell.children].forEach(($e) => {
       const imgs = $e.querySelectorAll('img.icon, svg.icon');
       // only build icon list if single icon plus text
       const img = imgs.length === 1 ? imgs[0] : null;
-      const hasText = img ? img.closest('p').textContent.trim() !== '' : false;
+      const hasText = img ? img.closest('p')?.textContent?.trim() !== '' : false;
       if (img && hasText) {
         const iconListRow = createTag('div');
         const iconDiv = createTag('div', { class: 'columns-iconlist-icon' });
@@ -467,10 +468,11 @@ export default async function decorate(block) {
     'a[title="{{business-sales-numbers}}"]',
   );
   if (phoneNumberTags.length > 0) {
-    const { formatSalesPhoneNumber } = await import(
-      '../../scripts/utils/location-utils.js'
-    );
-    await formatSalesPhoneNumber(phoneNumberTags);
+    try {
+      await formatSalesPhoneNumber(phoneNumberTags);
+    } catch (e) {
+      window.lana?.log('ax-columns.js - error fetching sales phones numbers:', e.message);
+    }
   }
 
   // Tracking any video column blocks.
