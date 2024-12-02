@@ -112,6 +112,7 @@
     font-weight: 700;
     color: var(--color-info-accent);
     cursor: pointer;
+    border: none;
 }
 
 .pep-container .notice-btn:hover {
