@@ -507,7 +507,7 @@ export default async function decorate(block) {
   handlePrice(block);
   handlePrice(block, '[[savePercentage]]', 'savePer');
   handlePrice(block, '[[base-pricing-token]]', 'formattedBP');
-  decorateButtonsDeprecated(block);
+  await decorateButtonsDeprecated(block);
 
   const possibleBreakpoints = breakpointConfig.map((bp) => bp.typeHint);
   const possibleOptions = ['shadow', 'background'];
