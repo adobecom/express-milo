@@ -1,6 +1,4 @@
-import { getLibs, toClassName } from '../utils.js';
-
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+import { getLibs, toClassName, createTag } from '../utils.js';
 
 function sanitizeInput(input) {
   if (Number.isInteger(input)) return input;
@@ -152,7 +150,13 @@ export async function fixIcons(el = document) {
   el.querySelectorAll('svg use[href^="./_icons_"]').forEach(($use) => {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
   });
-  const placeholders = await import(`${getLibs()}/features/placeholders.js`);
+
+  let replaceKey;
+  let getConfig;
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
   /* new icons handling */
   el.querySelectorAll('img').forEach(($img) => {
     const alt = $img.getAttribute('alt');
@@ -168,10 +172,10 @@ export async function fixIcons(el = document) {
             return null;
           });
         let altText = null;
-        if (placeholders.replaceKey(icon, getConfig())) {
-          altText = placeholders.replaceKey(icon, getConfig());
-        } else if (placeholders.replaceKey(mobileIcon, getConfig())) {
-          altText = placeholders.replaceKey(mobileIcon, getConfig());
+        if (replaceKey(icon, getConfig())) {
+          altText = replaceKey(icon, getConfig());
+        } else if (replaceKey(mobileIcon, getConfig())) {
+          altText = replaceKey(mobileIcon, getConfig());
         }
         const $picture = $img.closest('picture');
         const $block = $picture.closest('.section > div');

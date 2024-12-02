@@ -1,17 +1,6 @@
 import { getLibs } from '../utils.js';
 import { getIconElementDeprecated } from '../utils/icons.js';
 
-let replaceKey;
-let getConfig; let createTag;
-let getMetadata;
-const placeholdersProm = import(`${getLibs()}/features/placeholders.js`).then((mod) => {
-  ({ replaceKey } = mod);
-});
-const utilsProm = import(`${getLibs()}/utils/utils.js`).then((mod) => {
-  ({ getConfig, createTag, getMetadata } = mod);
-});
-await Promise.all([placeholdersProm, utilsProm]);
-
 const typeMap = {
   branded: [
     'free-plan-check-1',
@@ -27,6 +16,7 @@ const typeMap = {
 };
 
 export async function buildFreePlanWidget(config) {
+  const [{ getConfig, createTag, getMetadata }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
   const { typeKey, checkmarks } = config;
   const widget = createTag('div', { class: 'free-plan-widget' });
   const noSignupRequired = getMetadata('no-signup-required');
@@ -58,6 +48,7 @@ export async function buildFreePlanWidget(config) {
 }
 
 export async function addFreePlanWidget(elem) {
+  const { getMetadata } = await import(`${getLibs()}/utils/utils.js`);
   const freePlanMeta = getMetadata('show-free-plan')?.toLowerCase();
 
   if (!freePlanMeta || ['no', 'false', 'n', 'off'].includes(freePlanMeta)) return;

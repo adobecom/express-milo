@@ -14,27 +14,27 @@ describe('List', () => {
     window.isTestEnv = true;
   });
 
-  it('List exists', () => {
+  it('List exists', async () => {
     document.body.innerHTML = body;
     const list = document.querySelector('.list');
-    decorate(list);
+    await decorate(list);
     expect(list).to.exist;
   });
 
-  it('Should have the right elements', () => {
+  it('Should have the right elements', async () => {
     document.body.innerHTML = body;
     const list = document.querySelector('.list');
-    decorate(list);
+    await decorate(list);
 
     expect(document.querySelector('.item')).to.exist;
     expect(document.querySelector('.item')).to.exist;
     expect(document.querySelector('.item-text')).to.exist;
   });
 
-  it('Should have the right elements', () => {
+  it('Should have the right elements', async () => {
     document.body.innerHTML = pricing;
     const list = document.querySelector('.list');
-    decorate(list);
+    await decorate(list);
 
     expect(document.querySelector('a[title^="{{pricing"]')).to.exist;
   });

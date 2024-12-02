@@ -8,18 +8,19 @@ const imports = await Promise.all([
   import('../../../express/scripts/scripts.js'),
   import('../../../express/blocks/tutorials/tutorials.js'),
 ]);
-const { default: handlePopstate, decorateTutorials } = imports[1];
+const { default: decorate } = imports[1];
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('Tutorials', () => {
-  before(() => {
+  before(async () => {
     window.isTestEnv = true;
+    const tutorials = document.querySelector('.tutorials');
+    if (tutorials) {
+      await decorate(tutorials);
+    }
   });
   it('Tutorials exists', () => {
     const tutorials = document.querySelector('.tutorials');
-    if (tutorials) {
-      decorateTutorials(tutorials);
-    }
     expect(tutorials).to.exist;
     expect(tutorials.children.length).to.be.greaterThan(0);
   });

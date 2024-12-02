@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function enableToggle(block, toggleChev) {
   const onToggle = (e) => {
@@ -115,7 +115,8 @@ function decorateHoliday(block, toggleChev) {
   }
 }
 
-export default function decorate(el) {
+export default async function decorate(el) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   fixIcons(el);
   const block = createTag('div', { class: 'holiday-blade-inner-content' });
   block.innerHTML = el.innerHTML;

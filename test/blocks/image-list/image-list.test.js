@@ -16,14 +16,14 @@ describe('Image List', () => {
   it('Image List exists', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/body.html' });
     const imageList = document.querySelector('.image-list');
-    decorate(imageList);
+    await decorate(imageList);
     expect(imageList).to.exist;
   });
 
   it('If third cell, it should be removed', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/third-cell.html' });
     const imageList = document.querySelector('.image-list');
-    decorate(imageList);
+    await decorate(imageList);
 
     const thirdCell = imageList.querySelector('div > div:nth-child(3)');
     expect(thirdCell).to.be.null;
@@ -32,7 +32,7 @@ describe('Image List', () => {
   it('If second cell has no anchor, it should be removed', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/second-cell-no-anchor.html' });
     const imageList = document.querySelector('.image-list');
-    decorate(imageList);
+    await decorate(imageList);
 
     const secondCell = imageList.querySelector('div > div:nth-child(2)');
     expect(secondCell).to.be.null;

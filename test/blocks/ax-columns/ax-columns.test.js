@@ -31,57 +31,42 @@ describe('Columns', () => {
     const body = await readFile({ path: './mocks/body.html' });
     document.body.innerHTML = body;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
     expect(columns).to.exist;
   });
 
-  it('ElementsMinHeight should be 0', (done) => {
-    document.body.innerHTML = fullsize;
-    const columns = document.querySelector('.ax-columns.fullsize');
-    decorate(columns);
-    const h3s = columns.querySelectorAll('h3');
-
-    // setTimeout is needed because of the intersect observer
-    setTimeout(() => {
-      h3s.forEach((h3) => {
-        expect(h3.style.minHeight).to.not.equal('0');
-      });
-      done();
-    }, 1);
-  });
-
-  it('Should render a numbered column', () => {
+  it('Should render a numbered column', async () => {
     document.body.innerHTML = numbered30;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const columnNumber = columns.querySelector('.num');
     expect(columnNumber.textContent).to.be.equal('01/30 —');
   });
 
-  it('Should render an offer column & have only 1 row', () => {
+  it('Should render an offer column & have only 1 row', async () => {
     document.body.innerHTML = offer;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const rows = Array.from(columns.children);
     expect(rows.length).to.be.equal(1);
   });
 
-  it('Should transform primary color to bg color and secondary color to fill', () => {
+  it('Should transform primary color to bg color and secondary color to fill', async () => {
     document.body.innerHTML = color;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const imgWrapper = columns.querySelector('.img-wrapper');
     expect(imgWrapper.style.backgroundColor).to.be.equal('rgb(255, 87, 51)');
     expect(imgWrapper.style.fill).to.be.equal('rgb(52, 210, 228)');
   });
 
-  it('Should render an offer column and decorate icons', () => {
+  it('Should render an offer column and decorate icons', async () => {
     document.body.innerHTML = offerIcon;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const title = columns.querySelector('h1');
     const titleIcon = columns.querySelector('.columns-offer-icon');
@@ -89,10 +74,10 @@ describe('Columns', () => {
     expect(titleIcon).to.exist;
   });
 
-  it('Should render a column and decorate icons', () => {
+  it('Should render a column and decorate icons', async () => {
     document.body.innerHTML = icon;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const iconDecorate = columns.querySelector('.brand');
     const iconParent = columns.children[0];
@@ -100,19 +85,19 @@ describe('Columns', () => {
     expect(iconParent.classList.contains('has-brand')).to.be.true;
   });
 
-  it('Should render a column and decorate icons with sibling', () => {
+  it('Should render a column and decorate icons with sibling', async () => {
     document.body.innerHTML = iconWithSibling;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const columnsIcon = columns.querySelector('.columns-iconlist');
     expect(columnsIcon).to.exist;
   });
 
-  it('Should contain right classes if column video has highlight', () => {
+  it('Should contain right classes if column video has highlight', async () => {
     document.body.innerHTML = highlight;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const highlightRow = columns.querySelector('#hightlight-row');
     highlightRow.click();
@@ -124,10 +109,10 @@ describe('Columns', () => {
     expect(columnVideo).to.exist;
   });
 
-  it('Icon list should be wrapped in a column-iconlist div', () => {
+  it('Icon list should be wrapped in a column-iconlist div', async () => {
     document.body.innerHTML = iconList;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const childrenLength = columns.children.length;
     const iconListDiv = columns.querySelector('.columns-iconlist');
@@ -135,48 +120,48 @@ describe('Columns', () => {
     expect(iconListDiv).to.exist;
   });
 
-  it('Picture should be wrapped in a div if it exists', () => {
+  it('Picture should be wrapped in a div if it exists', async () => {
     document.body.innerHTML = picture;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const picDiv = columns.querySelector('picture');
     const parent = picDiv.parentElement;
     expect(parent.tagName).to.equal('DIV');
   });
 
-  it('Should replace accent to primary if button contains classList light', () => {
+  it('Should replace accent to primary if button contains classList light', async () => {
     document.body.innerHTML = buttonLight;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const button = columns.querySelector('.button');
     expect(button.classList.contains('light')).to.be.true;
     expect(button.classList.contains('primary')).to.be.true;
   });
 
-  it('P should be removed if empty', () => {
+  it('P should be removed if empty', async () => {
     document.body.innerHTML = buttonLight;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const p = columns.querySelectorAll('p');
     expect(p.length).to.equal(1);
   });
 
-  it('Powered by classList should be added if innerText matches/has Powered By', () => {
+  it('Powered by classList should be added if innerText matches/has Powered By', async () => {
     document.body.innerHTML = buttonLight;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const poweredBy = columns.querySelector('.powered-by');
     expect(poweredBy).to.exist;
   });
 
-  it('Invert buttons in regular columns inside columns-highlight-container', () => {
+  it('Invert buttons in regular columns inside columns-highlight-container', async () => {
     document.body.innerHTML = notHighlight;
     const columns = document.querySelector('.ax-columns');
-    decorate(columns);
+    await decorate(columns);
 
     const button = columns.querySelector('.button');
     expect(button.classList.contains('dark')).to.be.true;

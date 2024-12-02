@@ -2,7 +2,7 @@ import { getLibs, yieldToMain } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 async function syncMinHeights(groups) {
   const maxHeights = groups.map((els) => els
@@ -114,7 +114,9 @@ export async function buildGallery(
 }
 
 export default async function decorate(block) {
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
   const firstChild = block.querySelector(':scope > div:first-child');
 
   if (firstChild && firstChild.querySelector('h3')) {

@@ -3,7 +3,7 @@ import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getMetadata;
 
 function getMobileOperatingSystem() {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -44,8 +44,8 @@ function buildMobileGating(block, data) {
   block.append(header, buildAction(data.tools[0], 'accent'), buildAction(data.tools[1], 'outline'));
 }
 
-export function createMultiFunctionButton(block, data, audience) {
-  const buttonWrapper = createFloatingButton(block, audience, data);
+export async function createMultiFunctionButton(block, data, audience) {
+  const buttonWrapper = await createFloatingButton(block, audience, data);
   buttonWrapper.classList.add('multifunction', 'mobile-fork-button');
   buildMobileGating(buttonWrapper.querySelector('.floating-button'), data);
   return buttonWrapper;
@@ -118,9 +118,10 @@ function collectFloatingButtonData() {
 }
 
 export default async function decorate(block) {
+  ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   if (!androidDeviceAndRamCheck()) {
     const { default: decorateNormal } = await import('../floating-button/floating-button.js');
-    decorateNormal(block);
+    await decorateNormal(block);
     return;
   }
   addTempWrapperDeprecated(block, 'multifunction-button');
@@ -132,7 +133,7 @@ export default async function decorate(block) {
   }
 
   const data = collectFloatingButtonData();
-  const blockWrapper = createMultiFunctionButton(block, data, audience);
+  const blockWrapper = await createMultiFunctionButton(block, data, audience);
   const blockLinks = blockWrapper.querySelectorAll('a');
   if (blockLinks && blockLinks.length > 0) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });

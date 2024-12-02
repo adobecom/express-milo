@@ -2,7 +2,7 @@ import { getLibs } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
-const { createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
 const promptTokenRegex = /(?:\{\{|%7B%7B)?prompt(?:-|\+|%20|\s)text(?:\}\}|%7D%7D)?/;
 
 export function decorateTextWithTag(textSource, options = {}) {
@@ -212,6 +212,7 @@ function constructPayload(block) {
 }
 
 export default async function decorate(block) {
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'gen-ai-cards');
   const links = block.querySelectorAll(':scope a[href*="adobesparkpost"]');
 

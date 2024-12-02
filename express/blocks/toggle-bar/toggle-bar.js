@@ -3,7 +3,7 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { sendEventToAnalytics, textToName } from '../../scripts/instrument.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function decorateButton(block, toggle) {
   const button = createTag('button', { class: 'toggle-bar-button' });
@@ -146,7 +146,9 @@ function decorteSectionsMetadata() {
 }
 
 export default async function decorate(block) {
-  await fixIcons(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), fixIcons(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
   addTempWrapperDeprecated(block, 'toggle-bar');
   decorteSectionsMetadata();
 

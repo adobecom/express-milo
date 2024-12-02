@@ -1,7 +1,6 @@
 import { getCountry } from './location-utils.js';
 import { getLibs } from '../utils.js';
 
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 const currencies = {
   ar: 'ARS',
   at: 'EUR',
@@ -116,6 +115,7 @@ function getCurrencyDisplay(currency) {
 }
 
 export async function formatPrice(price, currency) {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   if (price === '') return null;
   const customSymbols = {
     SAR: 'SR',
@@ -146,6 +146,7 @@ export async function formatPrice(price, currency) {
 export const getOfferOnePlans = (() => {
   let json;
   return async (offerId) => {
+    const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
     let country = await getCountry();
     if (!country) country = 'us';
 
@@ -299,7 +300,7 @@ function replaceUrlParam(url, paramName, paramValue) {
   return url;
 }
 
-export function buildUrl(optionUrl, country, language, offerId = '') {
+export function buildUrl(optionUrl, country, language, getConfig, offerId = '') {
   const currentUrl = new URL(window.location.href);
   let planUrl = new URL(optionUrl);
 
@@ -363,6 +364,7 @@ export function buildUrl(optionUrl, country, language, offerId = '') {
 }
 
 export async function formatDynamicCartLink(a, plan) {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   try {
     const pattern = /.*commerce.*adobe\.com.*/gm;
     if (pattern.test(a.href)) {
@@ -376,6 +378,7 @@ export async function formatDynamicCartLink(a, plan) {
         response.url,
         response.country,
         response.language,
+        getConfig,
         response.offerId,
       );
       a.href = newTrialHref;

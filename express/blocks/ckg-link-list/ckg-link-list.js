@@ -4,7 +4,7 @@ import buildCarousel from '../../scripts/widgets/carousel.js';
 import { titleCase } from '../../scripts/utils/string.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 function addColorSampler(colorHex, btn) {
   const colorDot = createTag('div', {
@@ -20,7 +20,9 @@ function addColorSampler(colorHex, btn) {
 }
 
 export default async function decorate(block) {
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
 
   block.style.visibility = 'hidden';
 

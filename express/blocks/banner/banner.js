@@ -3,10 +3,12 @@ import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import { decorateButtonsDeprecated, normalizeHeadings } from '../../scripts/utils/decorate.js';
 import { fixIcons } from '../../scripts/utils/icons.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 export default async function decorate(block) {
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag } = utils);
+  });
 
   const isBannerLightVariant = block.classList.contains('light');
   const isBannerStandoutVariant = block.classList.contains('standout');
@@ -56,7 +58,11 @@ export default async function decorate(block) {
 
   const phoneNumberTags = block.querySelectorAll('a[title="{{business-sales-numbers}}"]');
   if (phoneNumberTags.length > 0) {
-    await formatSalesPhoneNumber(phoneNumberTags);
+    try {
+      await formatSalesPhoneNumber(phoneNumberTags);
+    } catch (e) {
+      window.lana?.log('banner.js - error fetching sales phones numbers:', e.message);
+    }
   }
   fixIcons(block);
 }

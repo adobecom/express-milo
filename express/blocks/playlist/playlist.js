@@ -5,7 +5,7 @@ import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import { fetchVideoAnalytics } from '../../scripts/widgets/video.js';
 
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+let createTag;
 
 async function loadVideoAnalytic(video) {
   const videoAnalytics = await fetchVideoAnalytics();
@@ -310,6 +310,7 @@ function decorateVideoPlayerMenu(block, payload) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'playlist');
 
   const payload = {

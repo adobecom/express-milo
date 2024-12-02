@@ -4,7 +4,8 @@ import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
+let getMetadata;
 
 function buildContent(content) {
   const contentLink = content.querySelector('a');
@@ -167,7 +168,9 @@ export default async function decorate(block) {
   const background = rows[2] ? rows[2].querySelector('picture') : null;
   let content = rows[1] ?? null;
 
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag, getConfig, getMetadata } = utils);
+  });
 
   block.innerHTML = '';
 

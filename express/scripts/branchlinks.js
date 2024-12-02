@@ -1,8 +1,5 @@
 import { getCachedMetadata, getLibs, toClassName } from './utils.js';
 
-const [{ getConfig }, placeholderMod] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
-let searchBranchLinks = await placeholderMod.replaceKey('search-branch-links', getConfig());
-searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks;
 function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
@@ -50,7 +47,8 @@ const setBasicBranchMetadata = new Set([
   'prompt',
 ]);
 
-export function getTrackingAppendedURL(url, options = {}) {
+export async function getTrackingAppendedURL(url, options = {}) {
+  const [{ getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
   const { placement, isSearchOverride } = options;
   const windowParams = new URLSearchParams(window.location.search);
   const [
@@ -109,6 +107,9 @@ export function getTrackingAppendedURL(url, options = {}) {
 
   const appending = new URL(url);
   const urlParams = appending.searchParams;
+
+  let searchBranchLinks = await replaceKey('search-branch-links', getConfig());
+  searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks;
   const isSearchBranchLink = searchBranchLinks?.replace(/\s/g, '').split(',').includes(`${appending.origin}${appending.pathname}`);
 
   const setParams = (k, v) => {
@@ -175,7 +176,7 @@ export function getTrackingAppendedURL(url, options = {}) {
 
 export default async function trackBranchParameters(links) {
   const { isSearchOverride } = links;
-  links.forEach((a) => {
+  await Promise.all(links.map((a) => {
     if (a.href && a.href.match(/adobesparkpost(-web)?\.app\.link/)) {
       const placement = getPlacement(a);
       a.rel = 'nofollow';
@@ -185,9 +186,14 @@ export default async function trackBranchParameters(links) {
         urlParams.delete('acomx-dno');
         btnUrl.search = urlParams.toString();
         a.href = decodeURIComponent(btnUrl.toString());
-        return;
+        // eslint-disable-next-line no-promise-executor-return
+        return new Promise((r) => r(''));
       }
-      a.href = getTrackingAppendedURL(btnUrl, { placement, isSearchOverride });
+      return getTrackingAppendedURL(btnUrl, { placement, isSearchOverride }).then((url) => {
+        a.href = url;
+      });
     }
-  });
+    // eslint-disable-next-line no-promise-executor-return
+    return new Promise((r) => r(''));
+  }));
 }

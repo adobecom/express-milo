@@ -1,6 +1,4 @@
-import { getLibs } from '../utils.js';
-
-const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+import { createTag } from '../utils.js';
 
 // todo: remove this.needBackwardCompatibility() when template-list is deprecated
 function nodeIsBefore(node, otherNode) {

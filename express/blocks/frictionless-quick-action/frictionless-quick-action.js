@@ -8,7 +8,8 @@ import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
-const { createTag, getConfig, loadScript, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+let createTag; let getConfig;
+let loadScript; let getMetadata;
 
 let ccEverywhere;
 let quickActionContainer;
@@ -249,7 +250,9 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 }
 
 export default async function decorate(block) {
-  decorateButtonsDeprecated(block);
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag, getConfig, loadScript, getMetadata } = utils);
+  });
   const rows = Array.from(block.children);
   rows[1].classList.add('container');
   const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');

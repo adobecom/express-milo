@@ -23,9 +23,9 @@ import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKey, replaceKeyArray } = imports[0];
-const { getMetadata, createTag, getConfig } = imports[1];
+let replaceKey; let replaceKeyArray;
+let getMetadata; let createTag;
+let getConfig;
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -1349,7 +1349,7 @@ async function decorateBreadcrumbs(block) {
   // breadcrumbs are desktop-only
   if (document.body.dataset.device !== 'desktop') return;
   const { default: getBreadcrumbs } = await import('../template-list/breadcrumbs.js');
-  const breadcrumbs = await getBreadcrumbs();
+  const breadcrumbs = await getBreadcrumbs(createTag, getMetadata, getConfig);
   if (breadcrumbs) block.prepend(breadcrumbs);
 }
 
@@ -1448,7 +1448,7 @@ function importSearchBar(block, blockMediator) {
           const taskUrl = `/${handlelize(currentTasks.toLowerCase())}`;
           const targetPath = `${prefix}/express/templates${taskUrl}${topicUrl}`;
           const searchId = BlockMediator.get('templateSearchSpecs').search_id;
-          const allTemplatesMetadata = await fetchAllTemplatesMetadata();
+          const allTemplatesMetadata = await fetchAllTemplatesMetadata(getConfig);
           const pathMatch = (event) => event.url === targetPath;
           let targetLocation;
 
@@ -1551,6 +1551,7 @@ function importSearchBar(block, blockMediator) {
         import('../../scripts/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
           const { inputHandler } = useInputAutocomplete(
             suggestionsListUIUpdateCB,
+            getConfig,
             { throttleDelay: 300, debounceDelay: 500, limit: 7 },
           );
           searchBar.addEventListener('input', inputHandler);
@@ -1759,8 +1760,10 @@ function determineTemplateXType(props) {
 }
 
 export default async function decorate(block) {
-  await fixIcons(block);
-  block.dataset.blockName = 'template-x';
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(block)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig, getMetadata } = utils);
+    ({ replaceKey, replaceKeyArray } = placeholders);
+  });
   block.dataset.blockName = 'template-x';
   const props = constructProps(block);
   block.innerHTML = '';
