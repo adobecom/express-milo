@@ -71,14 +71,7 @@ async function canPEP() {
   if (!pepSegment.replace(/\s/g, '').split(',').some((pepSeg) => segments.includes(pepSeg))) return false;
 
   return new Promise((resolve) => {
-    if (window.feds?.utilities?.imslib) {
-      const { imslib } = window.feds.utilities;
-      imslib.onReady().then(() => {
-        resolve(imslib.isSignedInUser());
-      }).catch(() => resolve(false));
-    } else {
-      resolve(false);
-    }
+    resolve(window.adobeIMS?.isSignedInUser() ?? false);
   });
 }
 
