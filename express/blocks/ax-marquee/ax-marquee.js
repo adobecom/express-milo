@@ -38,9 +38,9 @@ const breakpointConfig = [
 
 // Transforms a {{pricing}} tag into human readable format.
 async function handlePrice(block, tokenType = '((pricing))', responseFieldName = 'formatted') {
-  const priceEl = block.querySelector(`[title="${tokenType}"]`);
-  if (!priceEl) return null;
-
+  const priceEls = [...block.querySelectorAll(':scope a')].filter((a) => a.textContent.includes(`${tokenType}`));
+  if (!priceEls.length) return null;
+  const priceEl = priceEls[0];
   const newContainer = createTag('span');
   priceEl.closest('p')?.classList.remove('button-container');
   priceEl.after(newContainer);
@@ -500,13 +500,14 @@ async function handleOptions(div, typeHint, block) {
   }
 }
 export default async function decorate(block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
+    ({ getMetadata, createTag, getConfig } = utils);
+  });
   addTempWrapperDeprecated(block, 'ax-marquee');
   handlePrice(block);
   handlePrice(block, '[[savePercentage]]', 'savePer');
   handlePrice(block, '[[base-pricing-token]]', 'formattedBP');
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
-    ({ getMetadata, createTag, getConfig } = utils);
-  });
+  decorateButtonsDeprecated(block);
 
   const possibleBreakpoints = breakpointConfig.map((bp) => bp.typeHint);
   const possibleOptions = ['shadow', 'background'];
