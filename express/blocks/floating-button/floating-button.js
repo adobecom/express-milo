@@ -4,7 +4,6 @@ import {
   collectFloatingButtonData,
 } from '../../scripts/widgets/floating-cta.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
-import {getLibs} from "../../scripts/utils.js";
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'floating-button');

@@ -8,6 +8,7 @@ import {
   openToolBox,
   closeToolBox,
 } from '../../scripts/widgets/floating-cta.js';
+import { getLibs } from '../../scripts/utils.js';
 
 let createTag;
 
@@ -82,6 +83,7 @@ export async function createMultiFunctionButton(block, data, audience) {
 }
 
 export default async function decorate(block) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'multifunction-button');
 
   if (!block.classList.contains('meta-powered')) return;
