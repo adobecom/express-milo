@@ -36,6 +36,10 @@
   text-align: left;
 }
 
+.fullscreen-marquee .fullscreen-marquee-heading .button-container {
+  display: none;
+}
+
 .fullscreen-marquee-heading h1.budoux {
   display: flex;
   flex-wrap: wrap;
