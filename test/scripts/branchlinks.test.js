@@ -5,7 +5,7 @@ const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 
 window.isTestEnv = true;
 
-const imports = await Promise.all([import('../../expresscode/scripts/utils.js'), import('../../expresscode/scripts/scripts.js')]);
+const imports = await Promise.all([import('../../express/scripts/utils.js'), import('../../express/scripts/scripts.js')]);
 const { getLibs } = imports[0];
 
 let createTag;
@@ -14,7 +14,7 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   mod.setConfig(conf);
   createTag = mod.createTag;
 });
-const { default: trackBranchParameters, getTrackingAppendedURL } = await import('../../expresscode/scripts/branchlinks.js');
+const { default: trackBranchParameters, getTrackingAppendedURL } = await import('../../express/scripts/branchlinks.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/branchlinks.html' });
 

@@ -2,8 +2,8 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 const imports = await Promise.all([
-  import('../../../expresscode/scripts/scripts.js'),
-  import('../../../expresscode/blocks/fullscreen-marquee/fullscreen-marquee.js'),
+  import('../../../express/scripts/scripts.js'),
+  import('../../../express/blocks/fullscreen-marquee/fullscreen-marquee.js'),
 ]);
 
 const { default: decorate } = imports[1];

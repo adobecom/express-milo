@@ -4,8 +4,8 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 const imports = await Promise.all([
-  import('../../../expresscode/scripts/scripts.js'),
-  import('../../../expresscode/blocks/floating-buttons/floating-buttons.js'),
+  import('../../../express/scripts/scripts.js'),
+  import('../../../express/blocks/floating-buttons/floating-buttons.js'),
 ]);
 const { default: decorate } = imports[1];
 const testBody = await readFile({ path: './mocks/body.html' });

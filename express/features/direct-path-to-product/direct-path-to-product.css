@@ -73,7 +73,7 @@
 }
 
 .pep-container.done .profile-wrapper .profile-img-container::after {
-    background-image: url('/expresscode/icons/success-check.svg');
+    background-image: url('/express/icons/success-check.svg');
     content: "";
     position: absolute;
     top: 50%;
