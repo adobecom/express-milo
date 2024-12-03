@@ -4,7 +4,7 @@ import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 import { mockRes } from '../test-utilities.js';
 
-const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js'), import('../../../express/blocks/frictionless-quick-action/frictionless-quick-action.js')]);
+const imports = await Promise.all([import('../../../expresscode/scripts/utils.js'), import('../../../expresscode/scripts/scripts.js'), import('../../../expresscode/blocks/frictionless-quick-action/frictionless-quick-action.js')]);
 const { getLibs, createTag } = imports[0];
 const { default: init, runQuickAction } = imports[2];
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {

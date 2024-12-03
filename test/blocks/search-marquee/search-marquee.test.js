@@ -5,14 +5,14 @@ const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 
 window.isTestEnv = true;
 
-const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js')]);
+const imports = await Promise.all([import('../../../expresscode/scripts/utils.js'), import('../../../expresscode/scripts/scripts.js')]);
 const { getLibs } = imports[0];
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   const conf = { locales };
   mod.setConfig(conf);
 });
-const { default: decorate } = await import('../../../express/blocks/search-marquee/search-marquee.js');
+const { default: decorate } = await import('../../../expresscode/blocks/search-marquee/search-marquee.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('Search Marquee', () => {

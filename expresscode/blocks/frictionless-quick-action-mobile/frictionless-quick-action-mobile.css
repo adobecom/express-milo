@@ -84,7 +84,7 @@
     width: calc(100% - 34px);
     height: calc(100% - 34px);
     border-radius: 10px;
-    border-image: url("/express/icons/dash-rectangle.svg") 20 / 20px;
+    border-image: url("/expresscode/icons/dash-rectangle.svg") 20 / 20px;
 }
 
 .frictionless-quick-action-mobile .dropzone .text {

@@ -2,7 +2,7 @@ import { expect } from '@esm-bundle/chai';
 import { readFile } from '@web/test-runner-commands';
 import sinon from 'sinon';
 
-const [, { default: decorate }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/ckg-link-list/ckg-link-list.js')]);
+const [, { default: decorate }] = await Promise.all([import('../../../expresscode/scripts/scripts.js'), import('../../../expresscode/blocks/ckg-link-list/ckg-link-list.js')]);
 const html = await readFile({ path: './mocks/default.html' });
 
 function jsonOk(body) {

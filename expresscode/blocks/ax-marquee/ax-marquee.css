@@ -1,5 +1,5 @@
 body.no-desktop-brand-header header {
-    background-image: url(/express/icons/cc-express-logo.svg);
+    background-image: url(/expresscode/icons/cc-express-logo.svg);
     height: auto;
 }
 
@@ -230,7 +230,7 @@ body.no-desktop-brand-header header {
     vertical-align: sub;
     top: 1px;
     position: relative;
-    content: url(/express/icons/play.svg);
+    content: url(/expresscode/icons/play.svg);
 }
 
 .ax-marquee.dark p.button-container a.primaryCTA::before {

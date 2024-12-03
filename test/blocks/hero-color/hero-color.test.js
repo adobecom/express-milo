@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const [, { default: decorate, resizeSvg }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/hero-color/hero-color.js')]);
+const [, { default: decorate, resizeSvg }] = await Promise.all([import('../../../expresscode/scripts/scripts.js'), import('../../../expresscode/blocks/hero-color/hero-color.js')]);
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const clock = sinon.useFakeTimers({ shouldAdvanceTime: true });
