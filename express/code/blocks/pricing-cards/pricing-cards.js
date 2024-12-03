@@ -615,7 +615,7 @@ export default async function init(el) {
     acc[key] = placeholderValues[index];
     return acc;
   }, {});
-  decorateButtonsDeprecated(el);
+  await decorateButtonsDeprecated(el);
   addTempWrapperDeprecated(el, 'pricing-cards');
 
   // For backwards compatability with old versions of the pricing card
