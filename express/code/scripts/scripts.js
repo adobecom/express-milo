@@ -38,7 +38,7 @@ const CONFIG = {
   local: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
   stage: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
   prod: { express: 'express.adobe.com', commerce: 'commerce.adobe.com' },
-  codeRoot: '/express',
+  codeRoot: '/express/code',
   contentRoot: '/express',
   jarvis: {
     id: getMetadata('jarvis-surface-id') || 'Acom_Express',
