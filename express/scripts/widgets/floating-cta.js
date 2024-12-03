@@ -3,6 +3,7 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer, createTag } from '../utils.js';
 import { getIconElementDeprecated } from '../utils/icons.js';
 import BlockMediator from '../block-mediator.min.js';
+import { getMobileOperatingSystem } from '../utils/media.js';
 
 export const hideScrollArrow = (floatButtonWrapper, lottieScrollButton) => {
   floatButtonWrapper.classList.add('floating-button--scrolled');
@@ -47,25 +48,6 @@ export function closeToolBox(wrapper, lottie) {
   setTimeout(() => {
     wrapper.classList.add('toolbox-opened');
   }, 10);
-}
-
-export function getMobileOperatingSystem() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-  // Windows Phone must come first because its UA also contains "Android"
-  if (/windows phone/i.test(userAgent)) {
-    return 'Windows Phone';
-  }
-
-  if (/android/i.test(userAgent)) {
-    return 'Android';
-  }
-
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return 'iOS';
-  }
-
-  return 'unknown';
 }
 
 export function initLottieArrow(lottieScrollButton, floatButtonWrapper, scrollAnchor, data) {
@@ -351,19 +333,17 @@ export function collectFloatingButtonData() {
       href: getMetadata(`cta-${i}-link`),
       text: getMetadata(`cta-${i}-text`),
       icon: getIconElementDeprecated(iconMetadata),
-      iconText: getMetadata(`cta-${i}-icon-text`),
     };
 
     if (Object.values(completeSet).every((val) => !!val)) {
       const {
-        href, text, icon, iconText,
+        href, text, icon,
       } = completeSet;
       const aTag = createTag('a', { title: text, href });
       aTag.textContent = text;
       data.tools.push({
         icon,
         anchor: aTag,
-        iconText,
       });
     }
   }
