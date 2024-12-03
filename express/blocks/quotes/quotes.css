@@ -125,11 +125,11 @@ main .quotes.singular .quote-container .mobile-container {
 }
 
 main .quotes.singular .quote-container .mobile-container .quote {
-  max-width: 375px;
+  max-width: unset;
 }
 
 /* toggles between the mobile and desktop layout */
-@media (min-width: 600px) {
+@media (min-width: 768px) {
   main .quotes.singular .quote-container .desktop-container {
     display: block;
   }
@@ -196,7 +196,7 @@ main .quotes.singular .mobile-container .author-photo picture img {
 }
 
 main .quotes.singular .quote-details {
-  width: 90%;
+  margin: 0 16px;
   font-size: 22px;
   font-weight: 800;
   text-align: left;
@@ -225,25 +225,29 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   margin-right: 15px;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 768px) {
+  main .quotes.singular .quote-details {
+    margin: 0 32px;
+  }
   main .quotes.singular .quote {
-    width: 80%;
+    width: 83.3%;
     min-height: 315px;
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1280px) {
   main .quotes.singular .quote {
     width: 75%;
     max-width: 830px;
     font-weight: 600;
   }
   main .quotes.singular .quote-details {
+    margin: 0 40px;
     font-size: 28px;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1680px) {
   main .quotes.singular .quote {
     max-width: 1024px;
   }
@@ -263,23 +267,22 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   color: var(--color-black);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1280px) {
   .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
     max-width: 724px;
   }
-
   .quotes {
     flex-direction: row;
     gap: 16px;
   }
-
   .quotes .quote {
     flex: 1;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1680px) {
   .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
     max-width: 1024px;
+    margin: auto;
   }
 }
