@@ -1248,7 +1248,7 @@ function decorateHoliday(block, props) {
     block.prepend(animation);
   }
 
-  if (templateXSection && templateXSection.querySelectorAll('div.block').length === 1) main.classList.add('with-holiday-templates-banner');
+  if (templateXSection && templateXSection.querySelectorAll(':scope > div').length === 1) main.classList.add('with-holiday-templates-banner');
   block.classList.add(props.textColor);
   toggleBar.classList.add('toggle-bar');
   topElements.append(heading);

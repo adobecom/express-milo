@@ -23,7 +23,7 @@ main .how-to-steps {
   margin-bottom: 0;
 }
 
-main .how-to-steps + .block {
+main .how-to-steps + div {
   margin-bottom: 80px;
 }
 
