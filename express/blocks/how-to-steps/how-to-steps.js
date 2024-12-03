@@ -74,7 +74,7 @@ export default async function decorate(block) {
   }
 
   const narrowVariant = block?.classList.contains('narrow');
-  const container = document.querySelector('div.how-to-steps.block');
+  const container = document.querySelector('div.how-to-steps');
   const desktop = document.body.dataset.device === 'desktop';
   if (desktop && narrowVariant && container) {
     container.classList.add('narrow');

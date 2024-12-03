@@ -351,4 +351,14 @@
         flex-direction: row;
         align-items: flex-end;
     }
+    .cta-carousel.center-heading .cta-carousel-heading-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .cta-carousel.center-heading .cta-carousel-heading-section .cta-carousel-link {
+        align-self: flex-end;
+        margin-left: auto;
+    }
 }
