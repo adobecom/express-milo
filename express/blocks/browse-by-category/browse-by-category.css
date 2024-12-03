@@ -195,6 +195,7 @@ main .browse-by-category:not(.card) .browse-by-category-card-title {
   max-width: 148px;
 }
 
+
 main .browse-by-category.card .browse-by-category-card-title {
   margin: 6px 0;
   font-size: 16px;
