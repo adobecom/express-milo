@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const imports = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/toggle-bar/toggle-bar.js')]);
+const imports = await Promise.all([import('../../../express/code/scripts/scripts.js'), import('../../../express/code/blocks/toggle-bar/toggle-bar.js')]);
 const { default: decorate } = imports[1];
 const defVer = await readFile({ path: './mocks/default.html' });
 const stickyVer = await readFile({ path: './mocks/sticky.html' });

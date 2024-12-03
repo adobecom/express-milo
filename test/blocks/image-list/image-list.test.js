@@ -4,9 +4,9 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-await import('../../../express/scripts/scripts.js');
+await import('../../../express/code/scripts/scripts.js');
 
-const { default: decorate } = await import('../../../express/blocks/image-list/image-list.js');
+const { default: decorate } = await import('../../../express/code/blocks/image-list/image-list.js');
 
 describe('Image List', () => {
   before(() => {

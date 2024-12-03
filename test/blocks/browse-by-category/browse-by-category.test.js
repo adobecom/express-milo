@@ -4,10 +4,10 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-await import('../../../express/scripts/scripts.js');
+await import('../../../express/code/scripts/scripts.js');
 
 const { default: decorate } = await import(
-  '../../../express/blocks/browse-by-category/browse-by-category.js'
+  '../../../express/code/blocks/browse-by-category/browse-by-category.js'
 );
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
