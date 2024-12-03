@@ -5,6 +5,7 @@
 // import { expect } from '@esm-bundle/chai';
 //
 // await import('../../../express/code/scripts/scripts.js');
+// eslint-disable-next-line max-len
 // const imports = await Promise.all([import('../../../express/code/blocks/long-text/long-text.js')]);
 // const { default: decorate } = imports[0];
 //
