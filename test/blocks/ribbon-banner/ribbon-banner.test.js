@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js'), import('../../../express/blocks/ribbon-banner/ribbon-banner.js')]);
+const imports = await Promise.all([import('../../../express/code/scripts/utils.js'), import('../../../express/code/scripts/scripts.js'), import('../../../express/code/blocks/ribbon-banner/ribbon-banner.js')]);
 const { getLibs } = imports[0];
 const { default: decorate } = imports[2];
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {

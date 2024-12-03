@@ -2,7 +2,7 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import { delay } from '../../helpers/waitfor.js';
 
-const [, { buildGallery, default: init }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/how-to-cards/how-to-cards.js')]);
+const [, { buildGallery, default: init }] = await Promise.all([import('../../../express/code/scripts/scripts.js'), import('../../../express/code/blocks/how-to-cards/how-to-cards.js')]);
 
 document.body.innerHTML = await readFile({ path: './mocks/gallery-body.html' });
 const otherDoc = await readFile({ path: './mocks/body.html' });

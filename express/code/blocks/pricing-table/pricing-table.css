@@ -1,0 +1,656 @@
+/* collapses below 980px */
+.pricing-table {
+  padding: 40px 0;
+}
+
+.pricing-table .button.hide {
+  display: none;
+}
+
+.pricing-table > .row {
+  display: grid;
+}
+
+.pricing-table .col {
+  min-height: 27px;
+}
+
+.pricing-table .col,
+.pricing-table .col p {
+  font-size: var(--body-font-size-s);
+  line-height: 130%;
+}
+
+.pricing-table .col p {
+  margin: 0;
+}
+
+.pricing-table .col p picture {
+  margin-right: 8px;
+}
+
+/* links stay links by default in cells */
+.pricing-table .row:not(.row-heading) .col a.button,
+.pricing-table .row:not(.row-heading) .col a.button:hover,
+.pricing-table .row:not(.row-heading) .col a.button:active,
+.pricing-table .row:not(.row-heading) .col a.con-button,
+.pricing-table .row:not(.row-heading) .col a.con-button:hover,
+.pricing-table .row:not(.row-heading) .col a.con-button:active {
+  text-decoration: underline;
+  background-color: unset;
+  color: unset;
+  margin: unset;
+  border: 0;
+  border-radius: 0;
+  padding: unset;
+}
+
+.pricing-table .section-row .col.section-row-title,
+.pricing-table .section-row .col.section-row-title p {
+  font-size: var(--body-font-size-xs);
+  line-height: 130%;
+}
+
+.pricing-table .section-row .col:not(.section-row-title),
+.pricing-table .row-heading .col.col-heading {
+  text-align: center;
+}
+
+.pricing-table .row-heading .col.col-heading {
+  background-color: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pricing-table .row-heading .col.col-heading .buttons-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pricing-table .row-heading .col.col-heading .buttons-wrapper > * {
+  margin: 12px 6px;
+}
+
+.pricing-table .row-heading .col-heading .tracking-header {
+  font-size: 1.375rem;
+  line-height: 130%;
+}
+
+.pricing-table .row-heading .col-heading .body {
+  font-size: var(--body-font-size-m);
+}
+
+/* section */
+.pricing-table .divider {
+  display: none;
+}
+
+.pricing-table .row .col {
+  padding: 16px 24px;
+}
+
+.pricing-table .point-cursor {
+  cursor: pointer;
+}
+
+.pricing-table .section-head .section-head-title > :not(.icon) {
+  font-size: var(--body-font-size-m);
+  width: calc(100% - 20px);
+}
+
+.pricing-table .section-head .section-head-title,
+.pricing-table .section-row .section-row-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pricing-table .light {
+  color: var(--color-white);
+}
+
+/* icons */
+.pricing-table .icon-milo-info {
+  height: 18px;
+}
+
+.pricing-table .icon-milo-info:hover {
+  cursor: pointer;
+}
+
+.pricing-table .icon-milo-checkmark {
+  color: var(--checkmark-color);
+  width: 23px;
+  height: 100%;
+}
+
+.pricing-table .icon.expand {
+  background-color: transparent;
+  border: 0;
+  background-image: url('/express/code/icons/expand.svg');
+  background-repeat: no-repeat;
+  background-position: center right;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.pricing-table .section-head-title:hover .icon.expand {
+  filter: invert(41%) sepia(22%) saturate(100) hue-rotate(203deg)
+    brightness(96%) contrast(93%);
+}
+
+.pricing-table .icon.expand[aria-expanded='true'] {
+  background-image: url('/express/code/icons/collapse.svg');
+}
+
+.pricing-table .row-heading {
+  position: sticky;
+  z-index: 1;
+  background-color: var(--color-white);
+}
+
+.top-border-transparent {
+  border-top: 1px solid transparent;
+}
+
+@media (min-width: 900px) {
+  .pricing-table > .row {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+}
+
+/* Start tablet styles */
+@media (max-width: 899px) {
+  .pricing-table {
+    margin: 0 30px;
+  }
+
+  .pricing-table .section-head {
+    display: block;
+  }
+
+  .pricing-table .section-head .col:not(.section-head-title),
+  .pricing-table .col-heading.col-1 {
+    display: none;
+  }
+
+  .pricing-table .section-row-title {
+    grid-row: 1;
+    grid-column: 1 / x;
+    background-color: var(--color-gray-100);
+  }
+
+  .pricing-table .row-heading .col:nth-child(n + 1) {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pricing-table {
+    margin: 0 2px;
+  }
+}
+
+/* ---NEW--- */
+:root {
+  --checkmark-color: #268e6c;
+  --shaded-color: #f8f8f8;
+  --border-color: #d9d9d9;
+  --border-radius: 8px;
+  --border-width: 1px;
+}
+
+/* Negating the very general "main .pricing" rules in styles.css */
+.pricing-table .pricing {
+  height: auto;
+  opacity: 1;
+}
+
+/* Table Width */
+main .section .pricing-table-wrapper {
+  margin: auto;
+  max-width: 900px;
+}
+main .section .pricing-table-wrapper:has(.pricing-table.few-cols) {
+  max-width: 700px;
+}
+main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
+  max-width: 1200px;
+}
+@media (max-width: 980px) {
+  main .section .pricing-table-wrapper,
+  main .section .pricing-table-wrapper:has(.pricing-table.few-cols),
+  main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
+    max-width: 500px;
+  }
+  main .section .pricing-table-wrapper .pricing-table {
+    margin: 0px 20px;
+  }
+}
+/* /Table Width */
+
+.pricing-table .row:not(.blank-row) {
+  min-height: 80px;
+}
+
+@media (min-width: 981px) {
+  /* Sticky Table */
+.pricing-table.sticky .row.row-heading.stuck {
+  width: 100vw;
+  margin-left: calc((100vw - 100%) / -2);
+  padding: 0 calc((100vw - 100%) / 2);
+  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.16);
+  box-sizing: border-box;
+  transition: box-shadow 200ms linear;
+}
+.pricing-table.sticky .row.row-heading.stuck > .col {
+  border: 0;
+}
+/* /Sticky Table */
+}
+
+/* Blank Row */
+.pricing-table .row.blank-row {
+  height: 40px;
+}
+/* /Blank Row */
+
+/* Toggle Row */
+.pricing-table .row.toggle-row {
+  border: none;
+  padding: 0;
+  background-color: unset;
+  font-family: var(--body-font-family);
+  display: grid;
+  appearance: unset;
+  width: 100%;
+}
+.pricing-table .row.toggle-row .col.toggle-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--color-info-accent);
+  gap: 8px;
+  font-weight: 700;
+  height: 100%;
+  box-sizing: border-box;
+}
+.pricing-table .row.toggle-row.desktop-hide {
+  display: none;
+}
+.pricing-table .row.toggle-row .col.toggle-content {
+  font-size: 1rem;
+}
+.pricing-table .row.toggle-row:hover .col.toggle-content {
+  text-decoration: underline;
+}
+.pricing-table .row.toggle-row .col.toggle-content .icon.expand {
+  height: 18px;
+  width: 18px;
+}
+.pricing-table .row.toggle-row .col {
+  white-space: nowrap;
+}
+.pricing-table .row.toggle-row .col .icon {
+  /* display: inline-block; */
+  height: 24px;
+  width: 24px;
+}
+/* /Toggle Row */
+
+/* Additional Rows */
+.pricing-table .row.section-row.additional-row.collapsed {
+  display: none;
+}
+/* /Additional Rows */
+
+/* Table Borders */
+.pricing-table .col {
+  border: var(--border-width) solid var(--border-color);
+}
+.pricing-table .row .col {
+  border-width: 0px;
+}
+
+.pricing-table .row .col:first-child {
+  border-left-width: var(--border-width);
+}
+.pricing-table .row .col:last-child {
+  border-right-width: var(--border-width);
+}
+.pricing-table .row.table-end-row:not(.connect-to-toggle) .col {
+  border-bottom-width: var(--border-width);
+}
+.pricing-table .row.table-start-row .col,
+.pricing-table .row.section-row .col,
+.pricing-table .row.toggle-row .col {
+  border-top-width: var(--border-width);
+}
+
+.pricing-table .row.table-start-row .col:first-child {
+  border-top-left-radius: var( --border-radius);
+}
+.pricing-table .row.table-start-row .col:last-child {
+  border-top-right-radius: var( --border-radius);
+}
+.pricing-table .row.table-end-row:not(.connect-to-toggle) .col:first-child {
+  border-bottom-left-radius: var( --border-radius);
+}
+.pricing-table .row.table-end-row:not(.connect-to-toggle) .col:last-child {
+  border-bottom-right-radius: var( --border-radius);
+}
+.pricing-table .row.section-header-row .col {
+  border-top-width: var(--border-width);
+}
+/* /Table Borders */
+
+/* Table Header Row */
+.pricing-table .row.row-heading .col {
+  display: flex;
+}
+.pricing-table .row.row-heading .col.col-1 {
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+
+.pricing-table .row.row-heading .col > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: 6px;
+  row-gap: 6px;
+}
+
+.pricing-table.vertical-header .row.row-heading .col > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pricing-table .row.row-heading .col .buttons-wrapper {
+  width: 100%;
+}
+.pricing-table .row.row-heading .col .buttons-wrapper .button-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+}
+.pricing-table .row.row-heading .col .buttons-wrapper .button-container .button,
+.pricing-table .row.row-heading .col .buttons-wrapper .button-container .con-button {
+  margin: 0;
+}
+.pricing-table .row.row-heading .col .icon {
+  height: 24px;
+  width: 24px;
+}
+.pricing-table .row.row-heading .col > div p {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+.pricing-table .row-heading .col.col-heading p {
+  display: flex;
+  gap: 6px;
+}
+.pricing-table .row.row-heading .col:first-child * {
+    font-weight: 900;
+    text-align: start;
+  }
+/* /Table Header Row */
+
+/* Table Section Header Row */
+.pricing-table .row.section-header-row * {
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+/* /Table Section Header Row */
+
+/* Table Shaded Rows */
+.pricing-table .row.shaded {
+  background: var(--shaded-color);
+}
+/* /Table Shaded Rows */
+
+/* Table Section Rows */
+.pricing-table .row:not(.row-heading) .col.col-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  text-align: left;
+}
+
+.pricing-table .row.section-row .col .col-heading {
+  display: none;
+}
+.pricing-table .row.section-row .col:first-child :first-child {
+  font-weight: 600;
+}
+
+.pricing-table .row.section-row .col,
+.pricing-table .row.section-row .col .col-wrapper,
+.pricing-table .row.section-row .col .col-wrapper .col-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.pricing-table .row.section-row .col .col-content {
+  font-weight: 600;
+}
+.pricing-table .row.section-row .col .col-content em{
+  color: gray;
+}
+
+.pricing-table .row.section-row .col.included-feature .col-content {
+  color: var(--checkmark-color);
+}
+.pricing-table .row.section-row .col.excluded-feature .col-content {
+  color: var(--color-gray-600);
+}
+.pricing-table .row.section-row .col .col-wrapper .col-content {
+  row-gap: 12px;
+}
+.pricing-table .feat-icon {
+  display: block;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+}
+.pricing-table .dash {
+  width: 13px;
+  height: 11.5px;
+  margin-bottom: 4.5px;
+  margin-top: -4.5px;
+  background-color: var(--color-gray-600);
+  -webkit-mask-image: url('./dash.svg');
+  mask-image: url('./dash.svg');
+}
+
+.pricing-table .dim .col-content span {
+  background-color: var(--color-gray-600);
+}
+
+.pricing-table .dim .col-content em {
+  font-style: normal;
+}
+
+.pricing-table .check {
+  width: 13px;
+  height: 11.5px;
+  background-color: var(--checkmark-color);
+  -webkit-mask-image: url('./check.svg');
+  mask-image: url('./check.svg');
+}
+/* /Table Section Rows */
+
+
+@media (max-width: 980px) {
+  .pricing-table .row:not(.blank-row){
+    min-height: 60px;
+  }
+
+  .pricing-table .row.row-heading {
+    min-height: 0px;
+    margin-bottom: 16px;
+  }
+
+  /* Table Blank Row */
+  .pricing-table .row.blank-row {
+    height: 20px;
+  }
+  .pricing-table .row.row-2.blank-row {
+    height: 0;
+  }
+  /* /Table Blank Row */
+
+  /* Table Header Row */
+  .pricing-table.sticky .row.row-heading {
+    top: auto;
+    position: static;
+    border: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  .pricing-table .row.row-heading .col {
+    background-color: transparent;
+    padding: 0;
+  }
+  .pricing-table .row.row-heading .col:not(:first-child) {
+    display: none;
+  }
+  /* /Table Header Row */
+
+  /* Table Borders */
+  .pricing-table .row.row-heading .col {
+    border: 0;
+  }
+  .pricing-table .row.section-row {
+    border: var(--border-width) solid var(--border-color);
+    border-bottom: none;
+  }
+  /* /Table Borders */
+
+  /* Table Feature Row Content */
+  .pricing-table .row.section-row .col .col-heading {
+    display: flex;
+    flex: 1 1 0;
+    justify-content: start;
+    align-items: center;
+    column-gap: 6px;
+  }
+  .pricing-table .row.section-row .col .col-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    padding: 16px;
+    border-radius: var( --border-radius);
+  }
+  .pricing-table .row.section-row .col .col-wrapper .col-content {
+    width: 60%;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: row;
+    column-gap: 12px;
+    justify-content: start;
+    align-items: center;
+    text-align: start;
+  }
+
+  .pricing-table .row.section-row .col .col-heading p {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-align: left;
+  }
+
+  .pricing-table .row.section-row .col .col-heading .icon {
+    height: 18px;
+    width: 18px;
+  }
+  /* /Table Feature Row Content */
+
+  /* Collapsed Rows */
+  .pricing-table .row.section-row.collapsed {
+    display: none;
+  }
+  /* /Collapsed Rows */
+
+  .pricing-table .row.section-row .col .col-header-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    column-gap: 6px;
+  }
+  .pricing-table .row.section-row .col {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pricing-table .row.section-header-row * {
+    font-size: 1.25rem;
+  }
+
+  .pricing-table .row.section-header-row .col,
+  .pricing-table .row.section-row,
+  .pricing-table .row.toggle-row .col{
+    padding: 16px;
+  }
+  .pricing-table .row.toggle-row.desktop-hide {
+    display: grid;
+  }
+  .pricing-table .row.toggle-row .col.toggle-content {
+    font-size: var(--body-font-size-s);
+  }
+
+  .pricing-table .row.section-row {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+  }
+  .pricing-table .row.section-row .col {
+    padding: 0;
+  }
+
+  .pricing-table .row.section-row .col.col-1 p:first-child {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .pricing-table .row.section-row .col.col-1 p:not(:first-child) {
+    font-weight: 400;
+    font-size: 0.75rem;
+  }
+
+  .pricing-table .row.section-row .col,
+  .pricing-table .row.section-row .col .col-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  /* /Table Header Borders */
+  .pricing-table .row.section-row .col {
+    border-width: 0px;
+  }
+}
