@@ -143,11 +143,11 @@
     margin: 0;
 }
 
-.frictionless-quick-action-mobile.block .free-plan-container {
+.frictionless-quick-action-mobile .free-plan-container {
     min-height: 15px;
 }
 
-.frictionless-quick-action-mobile.block .free-plan-widget {
+.frictionless-quick-action-mobile .free-plan-widget {
     background-color: unset;
     flex-direction: row;
     padding: unset;
@@ -156,11 +156,11 @@
     font-size: var(--body-font-size-xs);
 }
 
-.frictionless-quick-action-mobile.block .free-plan-widget > div {
+.frictionless-quick-action-mobile .free-plan-widget > div {
     margin: 10px;
 }
 
-.frictionless-quick-action-mobile.block .free-plan-widget img.icon.icon-checkmark {
+.frictionless-quick-action-mobile .free-plan-widget img.icon.icon-checkmark {
     background-color: #f06dad;
 }
 
