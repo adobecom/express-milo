@@ -9,7 +9,7 @@ const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 
 window.isTestEnv = true;
 
-const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js'), import('../../../express/blocks/ax-marquee/ax-marquee.js')]);
+const imports = await Promise.all([import('../../../expresscode/scripts/utils.js'), import('../../../expresscode/scripts/scripts.js'), import('../../../expresscode/blocks/ax-marquee/ax-marquee.js')]);
 const { getLibs } = imports[0];
 const {
   default: decorate,
