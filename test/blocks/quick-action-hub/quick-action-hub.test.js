@@ -2,6 +2,6 @@
 /* eslint-disable no-unused-vars */
 
 const [, { default: decorate }] = await Promise.all([
-  import('../../../express/scripts/scripts.js'),
-  import('../../../express/blocks/quick-action-hub/quick-action-hub.js'),
+  import('../../../express/code/scripts/scripts.js'),
+  import('../../../express/code/blocks/quick-action-hub/quick-action-hub.js'),
 ]);

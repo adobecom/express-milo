@@ -4,8 +4,8 @@
 // import { readFile } from '@web/test-runner-commands';
 // import { expect } from '@esm-bundle/chai';
 //
-// await import('../../../express/scripts/scripts.js');
-// const imports = await Promise.all([import('../../../express/blocks/long-text/long-text.js')]);
+// await import('../../../express/code/scripts/scripts.js');
+// const imports = await Promise.all([import('../../../express/code/blocks/long-text/long-text.js')]);
 // const { default: decorate } = imports[0];
 //
 // const body = await readFile({ path: './mocks/body.html' });

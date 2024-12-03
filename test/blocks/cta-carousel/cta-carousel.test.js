@@ -4,7 +4,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const [, { default: decorate, decorateTextWithTag }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/cta-carousel/cta-carousel.js')]);
+const [, { default: decorate, decorateTextWithTag }] = await Promise.all([import('../../../express/code/scripts/scripts.js'), import('../../../express/code/blocks/cta-carousel/cta-carousel.js')]);
 
 const create = await readFile({ path: './mocks/create.html' });
 const quickAction = await readFile({ path: './mocks/quick-action.html' });
