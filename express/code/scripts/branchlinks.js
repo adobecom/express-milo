@@ -176,7 +176,7 @@ export async function getTrackingAppendedURL(url, options = {}) {
 
 export default async function trackBranchParameters(links) {
   const { isSearchOverride } = links;
-  await Promise.all(links.map((a) => {
+  await Promise.all([...links].map((a) => {
     if (a.href && a.href.match(/adobesparkpost(-web)?\.app\.link/)) {
       const placement = getPlacement(a);
       a.rel = 'nofollow';
