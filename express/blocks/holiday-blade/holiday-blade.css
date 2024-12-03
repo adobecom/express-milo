@@ -30,11 +30,11 @@
     z-index: -1;
 }
 
-.holiday-blade-inner-content.light  {
+.holiday-blade.light .holiday-blade-inner-content   {
     --text-color: var(--color-white);
 }
 
-.holiday-blade-inner-content.light .toggle-bar .icon {
+.holiday-blade.light .holiday-blade-inner-content .toggle-bar .icon {
     filter: invert(0);
 }
 

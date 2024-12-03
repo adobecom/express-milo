@@ -1,30 +1,12 @@
 import { getLibs, yieldToMain } from '../../scripts/utils.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getMobileOperatingSystem } from '../../scripts/utils/media.js';
 
 let createTag; let getConfig;
 
 let currDrawer = null;
 const desktopMQ = window.matchMedia('(min-width: 1200px)');
 const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-function getMobileOperatingSystem() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-  // Windows Phone must come first because its UA also contains "Android"
-  if (/windows phone/i.test(userAgent)) {
-    return 'Windows Phone';
-  }
-
-  if (/android/i.test(userAgent)) {
-    return 'Android';
-  }
-
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return 'iOS';
-  }
-
-  return 'unknown';
-}
 
 function drawerOff() {
   if (!currDrawer) return;

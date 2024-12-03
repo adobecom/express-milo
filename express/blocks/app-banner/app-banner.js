@@ -1,29 +1,12 @@
 import { getLibs } from '../../scripts/utils.js';
 import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getMobileOperatingSystem } from '../../scripts/utils/media.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let appleStoreRatingScore;
 let appleStoreRatingCount; let googleStoreRatingScore;
 let googleStoreRatingCount;
-function getMobileOperatingSystem() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-  // Windows Phone must come first because its UA also contains "Android"
-  if (/windows phone/i.test(userAgent)) {
-    return 'Windows Phone';
-  }
-
-  if (/android/i.test(userAgent)) {
-    return 'Android';
-  }
-
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    return 'iOS';
-  }
-
-  return 'unknown';
-}
 
 async function buildPayload() {
   const payload = {
