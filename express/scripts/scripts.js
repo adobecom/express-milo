@@ -31,6 +31,8 @@ const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
 if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta) && (
   (jarvisVisibleMeta === 'mobile' && !desktopViewport) || (jarvisVisibleMeta === 'desktop' && desktopViewport))) jarvisImmediatelyVisible = true;
 
+const prodDomains = ['business.adobe.com', 'www.adobe.com'];
+
 // Add any config options.
 const CONFIG = {
   local: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
@@ -44,6 +46,7 @@ const CONFIG = {
     onDemand: !jarvisImmediatelyVisible,
   },
   imsClientId: 'AdobeExpressWeb',
+  prodDomains,
   // geoRouting: 'off',
   // fallbackRouting: 'off',
   decorateArea,
