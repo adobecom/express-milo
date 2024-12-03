@@ -1,7 +1,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-const { default: decorate } = await import('../../../expresscode/blocks/pricing-cards-credits/pricing-cards-credits.js');
+const { default: decorate } = await import('../../../express/blocks/pricing-cards-credits/pricing-cards-credits.js');
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('Pricing Cards Credits', () => {

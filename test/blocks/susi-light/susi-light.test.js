@@ -4,14 +4,14 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-await import('../../../expresscode/scripts/scripts.js');
+await import('../../../express/scripts/scripts.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('Susi-light', async () => {
   const block = document.querySelector('.susi-light');
   const { default: decorate } = await import(
-    '../../../expresscode/blocks/susi-light/susi-light.js'
+    '../../../express/blocks/susi-light/susi-light.js'
   );
   decorate(block);
   before(() => {

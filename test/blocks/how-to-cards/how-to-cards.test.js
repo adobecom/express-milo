@@ -4,14 +4,14 @@ import { expect } from '@esm-bundle/chai';
 const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 
 window.isTestEnv = true;
-const imports = await Promise.all([import('../../../expresscode/scripts/utils.js'), import('../../../expresscode/scripts/scripts.js')]);
+const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js')]);
 const { getLibs } = imports[0];
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   const conf = { locales };
   mod.setConfig(conf);
 });
-const { default: init } = await import('../../../expresscode/blocks/how-to-cards/how-to-cards.js');
+const { default: init } = await import('../../../express/blocks/how-to-cards/how-to-cards.js');
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 describe('How-to-cards', () => {

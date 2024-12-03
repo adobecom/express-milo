@@ -4,9 +4,9 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-await import('../../../expresscode/scripts/scripts.js');
+await import('../../../express/scripts/scripts.js');
 const { default: decorate } = await import(
-  '../../../expresscode/blocks/quotes/quotes.js'
+  '../../../express/blocks/quotes/quotes.js'
 );
 const body = await readFile({ path: './mocks/body.html' });
 const singular = await readFile({ path: './mocks/singular.html' });

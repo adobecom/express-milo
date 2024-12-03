@@ -6,14 +6,14 @@ import { expect } from '@esm-bundle/chai';
 
 const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 window.isTestEnv = true;
-const imports = await Promise.all([import('../../../expresscode/scripts/utils.js'), import('../../../expresscode/scripts/scripts.js')]);
+const imports = await Promise.all([import('../../../express/scripts/utils.js'), import('../../../express/scripts/scripts.js')]);
 const { getLibs } = imports[0];
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   const conf = { locales };
   mod.setConfig(conf);
 });
-const { default: decorate } = await import('../../../expresscode/blocks/ax-columns/ax-columns.js');
+const { default: decorate } = await import('../../../express/blocks/ax-columns/ax-columns.js');
 
 // eslint-disable-next-line max-len
 const [buttonLight, color, fullsize, highlight, icon, iconWithSibling, iconList, notHighlight, numbered30, offer, offerIcon, picture, video] = await Promise.all(

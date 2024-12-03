@@ -283,7 +283,7 @@ main .interactive-marquee.horizontal-masonry .generate-small-btn:focus {
 main .interactive-marquee.horizontal-masonry .generate-small-btn::before {
     content: '';
     filter: brightness(0) invert(1);
-    background-image: url(/expresscode/icons/adobe-firefly.svg);
+    background-image: url(/express/icons/adobe-firefly.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -474,7 +474,7 @@ main .interactive-marquee.horizontal-masonry .foreground h1>em {
 
 main .interactive-marquee.horizontal-masonry h1>em::after {
     content: '';
-    background-image: url(/expresscode/icons/double-sparkles.svg);
+    background-image: url(/express/icons/double-sparkles.svg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
