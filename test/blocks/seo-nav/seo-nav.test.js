@@ -4,9 +4,9 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-await import('../../../express/scripts/scripts.js');
+await import('../../../express/code/scripts/scripts.js');
 const { default: decorate, updatePillsByCKG } = await import(
-  '../../../express/blocks/seo-nav/seo-nav.js'
+  '../../../express/code/blocks/seo-nav/seo-nav.js'
 );
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 

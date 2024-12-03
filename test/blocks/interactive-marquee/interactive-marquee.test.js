@@ -1,8 +1,8 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-await import('../../../express/scripts/scripts.js');
-const [, { default: init }] = await Promise.all([import('../../../express/scripts/scripts.js'), import('../../../express/blocks/interactive-marquee/interactive-marquee.js')]);
+await import('../../../express/code/scripts/scripts.js');
+const [, { default: init }] = await Promise.all([import('../../../express/code/scripts/scripts.js'), import('../../../express/code/blocks/interactive-marquee/interactive-marquee.js')]);
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 

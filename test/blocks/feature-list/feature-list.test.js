@@ -1,4 +1,4 @@
 /* eslint-env mocha */
 /* eslint-disable no-unused-vars */
 
-const { default: decorate } = await import('../../../express/blocks/feature-list/feature-list.js');
+const { default: decorate } = await import('../../../express/code/blocks/feature-list/feature-list.js');
