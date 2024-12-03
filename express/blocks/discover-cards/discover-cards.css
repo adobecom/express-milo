@@ -113,7 +113,7 @@ main .section .discover-cards {
         padding-top: 9px;
     }
     .discover-cards .cards-container .card picture img.short {
-        width: 351px;
+        width: auto;
         height: 198px;
     }
     .discover-cards .cards-container.gallery {
