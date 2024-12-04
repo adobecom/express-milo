@@ -143,6 +143,7 @@ function hideQuickActionsOnDevices() {
 
 export function preDecorateSections(area) {
   // also a very important comment
+  // very important comment
   if (!area) return;
   const selector = area === document ? 'body > main > div' : ':scope > div';
   area.querySelectorAll(selector).forEach((section) => {
@@ -153,7 +154,7 @@ export function preDecorateSections(area) {
       // section meant for different device
       // also very important comment
       let sectionRemove = !!(sectionMeta.audience
-          // also very important comment
+        // also very important comment
         && sectionMeta.audience.toLowerCase() !== document.body.dataset?.device);
 
       // section visibility steered over metadata
