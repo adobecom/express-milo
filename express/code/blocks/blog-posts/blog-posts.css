@@ -9,7 +9,7 @@ main .section:has(.blog-posts-wrapper) > div {
     padding: 0;
 }
 
-main .section:has(.blog-posts-wrapper) > .content:first-child, main .section > .blog-posts-wrapper:first-child {
+main .section > .blog-posts-wrapper:first-child {
     padding-top: 60px
 }
 

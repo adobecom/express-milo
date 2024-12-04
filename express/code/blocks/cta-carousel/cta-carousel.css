@@ -8,6 +8,10 @@
     margin: auto;
 }
 
+.cta-carousel:first-child {
+    padding-top: 60px;
+}
+
 .cta-carousel .cta-carousel-heading-section {
     display: flex;
     flex-direction: column;
