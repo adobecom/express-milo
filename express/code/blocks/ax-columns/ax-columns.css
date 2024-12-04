@@ -8,10 +8,6 @@
   padding-bottom: 40px;
 }
 
-.section:has(.ax-columns) .content:first-child > h2, .section:has(.ax-columns) .content:first-child > h3 {
-  padding-top: 60px
-}
-
 .ax-columns {
   padding-left: 15px;
   padding-right: 15px;
