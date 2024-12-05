@@ -1,9 +1,11 @@
 .template-list-wrapper {
   padding-top: 60px;
+  margin: auto;
+  max-width: 375px;
 }
 
 .template-list-wrapper {
-  margin: auto;
+
 }
 
 .template-list-horizontal-fullwidth-container,

@@ -198,14 +198,14 @@ End border style variants
 .pricing-cards .tooltip-text::after {
   content: '';
   position: absolute;
-  bottom: -5px; 
+  bottom: -5px;
   left: 50%;
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid black;
-  
+
 }
 
 .pricing-cards .tooltip-text.overflow-left::after {
@@ -380,8 +380,8 @@ End border style variants
 
 .pricing-cards .billing-toggle.suppressed-billing-toggle {
   visibility: hidden;
-  
-} 
+
+}
 .pricing-cards .billing-toggle {
   justify-content: center;
   width: 100%;
@@ -436,7 +436,7 @@ End border style variants
   gap: 16px;
 }
 
-.pricing-cards .card-cta-group a, 
+.pricing-cards .card-cta-group a,
 .pricing-cards .card-cta-group a.con-button,
 .pricing-cards .card-cta-group a.button {
   width: 100%;
@@ -509,6 +509,7 @@ End border style variants
   font-size: var(--body-font-size-xs);
   max-width: 1200px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 @media screen and (min-width: 900px) {

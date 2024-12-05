@@ -300,6 +300,10 @@
     display: inline-block;
   }
 
+  .fullscreen-marquee .fullscreen-marquee-heading .button-container.free-plan-container {
+    display: flex;
+  }
+
   .fullscreen-marquee .fullscreen-marquee-app-frame {
     display: unset;
   }

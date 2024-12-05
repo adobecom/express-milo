@@ -261,6 +261,9 @@ function populateTemplates(block, templates, props) {
     if (linkContainer) {
       const link = linkContainer.querySelector(':scope a');
       if (link) {
+        if (!link.parentElement.classList.contains('button-container')) {
+          link.parentElement.classList.add('button-container');
+        }
         const a = createTag('a', { href: link.href || '#' });
 
         a.append(...tmplt.children);

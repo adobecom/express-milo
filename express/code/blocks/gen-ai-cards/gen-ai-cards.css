@@ -10,6 +10,10 @@
   margin: auto;
 }
 
+.gen-ai-cards:first-child {
+  padding-top: 60px;
+}
+
 .gen-ai-cards.homepage {
   padding-left: 0;
   padding-right: 0;
@@ -36,8 +40,11 @@
 }
 
 .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper {
-  width: 100%;
   text-align: center;
+}
+
+.gen-ai-cards.homepage .gen-ai-cards-heading-section .text-wrapper {
+  width: 100%;
 }
 
 .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
@@ -321,6 +328,11 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 @media (min-width: 900px) {
   .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2){
     margin-left: 0px;
+  }
+
+  .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
+    flex-direction: row;
+    align-items: flex-end;
   }
 
   .gen-ai-cards.homepage .gen-ai-cards-heading {
