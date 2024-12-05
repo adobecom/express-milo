@@ -5,13 +5,6 @@ div[data-audience="mobile"].section.section-wrapper.template-x-container {
   padding-top: 0;
 }
 
-.section:has(.template-x) > .content:first-child h2 {
-  margin-top: 80px;
-}
-.section:has(.template-x) > .content:first-child h3 {
-  padding-top: 64px;
-}
-
 /* holiday special positioning */
 main.with-holiday-templates-banner > div[class='section section-wrapper template-x-container'] {
   position: absolute;
@@ -101,6 +94,10 @@ main.with-holiday-templates-banner > div[class='section section-wrapper template
 
 main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   max-width: 175px;
+}
+
+.template-x.sixcols:not(.horizontal) {
+  max-width: 375px;
 }
 
 .template-x.horizontal .template-tabs button.template-tab-button:first-of-type {

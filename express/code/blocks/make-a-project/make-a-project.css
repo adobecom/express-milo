@@ -7,6 +7,10 @@ main .section:has(.make-a-project) h2 {
   margin: 80px 0 40px;
 }
 
+main .section:has(.make-a-project) .content:first-child {
+  padding-top: 0;
+}
+
 main .make-a-project {
   display: flex;
   flex-direction: column;

@@ -144,6 +144,14 @@ main {
   line-height: initial;
 }
 
+.section:not([data-padding='none']) .content:first-child {
+  padding-top: 60px;
+}
+
+.content:first-child h2 {
+  margin-top: 80px;
+}
+
 main ol, main ul {
   text-align: left;
 }
@@ -676,10 +684,6 @@ main .section .content p, main .section p {
 
 main .section .content:first-child p.button-container {
   margin-top: 76px;
-}
-
-main .section > .content:first-child {
-  padding-top: 0.1px;
 }
 
 main .section:last-of-type>.content:not(:has(+ .template-list-wrapper)) {
