@@ -144,16 +144,12 @@ main {
   line-height: initial;
 }
 
-.content:first-child {
+.section:not([data-padding='none']) .content:first-child {
   padding-top: 60px;
 }
 
 .content:first-child h2 {
   margin-top: 80px;
-}
-
-.content:first-child h3 {
-  margin-top: 64px;
 }
 
 main ol, main ul {

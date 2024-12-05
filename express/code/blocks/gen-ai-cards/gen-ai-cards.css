@@ -43,6 +43,10 @@
   text-align: center;
 }
 
+.gen-ai-cards.homepage .gen-ai-cards-heading-section .text-wrapper {
+  width: 100%;
+}
+
 .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
   font-size: var(--body-font-size-s);
   line-height: 22px;
@@ -326,7 +330,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     margin-left: 0px;
   }
 
-  .gen-ai-cards .gen-ai-cards-heading-section {
+  .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
     flex-direction: row;
     align-items: flex-end;
   }
