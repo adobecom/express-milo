@@ -5,8 +5,10 @@ function toCamelCase(name) {
 }
 
 function getPlacement(btn) {
-  let parentBlock = btn.closest('.section > div[class*="-wrapper"]');
-  if (parentBlock) parentBlock = btn.closest('.section > div > div');
+  let parentBlock;
+  const wrapper = btn.closest('.section > div[class*="-wrapper"]');
+  if (wrapper) parentBlock = btn.closest('.section > div > div');
+  else if (btn.closest('.section > div:not(.content)')?.classList?.length > 1) parentBlock = btn.closest('.section > div');
   let placement = 'outside-blocks';
 
   if (parentBlock) {
