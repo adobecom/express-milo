@@ -189,6 +189,7 @@ export const getOfferOnePlans = (() => {
       ooAvailable,
       showVat,
       y2p: await formatPrice(offer.y2p, currency),
+      term: offer.Term,
     };
   };
 })();

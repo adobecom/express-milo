@@ -180,6 +180,10 @@
   gap: 16px;
 }
 
+.grid-marquee .panel .drawer-cta:hover {
+  text-decoration: underline;
+}
+
 .grid-marquee .drawer .icon {
   width: 22px;
   height: 22px;
