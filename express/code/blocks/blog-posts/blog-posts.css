@@ -6,6 +6,9 @@
 main .section:has(.blog-posts-wrapper) > div {
     max-width: 375px;
     margin: auto;
+}
+
+main .section:has(.blog-posts-wrapper) > div:not:first-child {
     padding: 0;
 }
 
@@ -208,10 +211,6 @@ main .section:has(.blog-posts) > .content >h2 {
 
 main .section:has(.blog-posts) > .content >h3 {
     margin-top: 64px;
-}
-
-main .section:has(.blog-posts) > .content {
-    padding: 0;
 }
 
 @media (min-width: 900px) {
