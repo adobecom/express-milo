@@ -62,6 +62,10 @@
   margin-top: 80px;
 }
 
+.section:has(> .steps) .content:first-child {
+  padding-top: 0;
+}
+
 .section:has(> .steps.dark),
 .section:has(> .steps.highlight) {
   padding: 120px 0;
