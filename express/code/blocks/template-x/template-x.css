@@ -96,6 +96,10 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   max-width: 175px;
 }
 
+.template-x.sixcols:not(.horizontal) {
+  max-width: 375px;
+}
+
 .template-x.horizontal .template-tabs button.template-tab-button:first-of-type {
   margin-left: 0;
 }

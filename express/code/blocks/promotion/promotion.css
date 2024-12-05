@@ -1,6 +1,10 @@
 .promotion {
   max-width: var(--block-sm-max-width);
-  margin: var(--spacing-xxxl) auto;
+  margin: auto;
+}
+
+.promotion:first-child {
+  padding-top: 60px;
 }
 
 .promotion h2, .promotion h3{
