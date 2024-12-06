@@ -691,7 +691,8 @@ main .section:last-of-type>.content:not(:has(+ .template-list-wrapper)) {
 }
 
 main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner) a.button.same-fcta,
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner) a.con-button.same-fcta {
+main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner) a.con-button.same-fcta,
+#hero a.same-fcta {
   display: none;
 }
 
