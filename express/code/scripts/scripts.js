@@ -206,10 +206,6 @@ const listenAlloy = () => {
     createTag,
   } = await import(`${miloLibs}/utils/utils.js`);
 
-  // TODO remove metadata after we go live
-  const gnav = createTag('meta', { name: 'gnav-source', content: '/express/localnav-express' });
-  document.head.append(gnav);
-
   const footer = createTag('meta', { name: 'footer', content: 'global-footer' });
   document.head.append(footer);
 
@@ -229,6 +225,11 @@ const listenAlloy = () => {
     const { default: redirect } = await import('./utils/template-redirect.js');
     await redirect();
   }
+
+  debugger;
+  // TODO remove metadata after we go live
+  const gnav = createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` });
+  document.head.append(gnav);
 
   // TODO this can be removed post migration
   if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
