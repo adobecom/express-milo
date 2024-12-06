@@ -9,7 +9,8 @@
 }
 
 main .browse-by-category {
-  max-width: max-content;
+  margin: auto;
+  max-width: 375px
 }
 
 main .browse-by-category .carousel-container .carousel-platform {
@@ -206,5 +207,15 @@ main .browse-by-category.card .browse-by-category-card-title {
 @media (min-width: 900px) {
   main .browse-by-category .browse-by-category-heading-section {
     flex-direction: row;
+  }
+
+  main .browse-by-category {
+    max-width: 830px
+  }
+}
+
+@media (min-width: 1200px) {
+  main .browse-by-category {
+    max-width: 1024px
   }
 }
