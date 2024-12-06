@@ -144,7 +144,7 @@ main {
   line-height: initial;
 }
 
-.section:not([data-padding='none']) .content:first-child {
+.section:not([data-padding='none']) > .content:first-child {
   padding-top: 60px;
 }
 
