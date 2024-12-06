@@ -8,7 +8,7 @@ export async function decorateButtonsDeprecated(el, size) {
   // been authored bold or italic. We'll want to roll this back at some point.
   if (!el.closest('.ax-columns') && !el.closest('.banner') && !el.closest('.fullscreen-marquee')) decorateButtons(el, size);
 
-  el.querySelectorAll(':scope a:not(.con-button, .social-link, .same-fcta)').forEach(($a) => {
+  el.querySelectorAll(':scope a:not(.con-button, .social-link)').forEach(($a) => {
     const originalHref = $a.href;
     const linkText = $a.textContent.trim();
     if ($a.children.length > 0) {
