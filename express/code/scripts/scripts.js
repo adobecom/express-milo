@@ -226,7 +226,6 @@ const listenAlloy = () => {
     await redirect();
   }
 
-  debugger;
   // TODO remove metadata after we go live
   const gnav = createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` });
   document.head.append(gnav);
