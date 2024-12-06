@@ -223,12 +223,12 @@ const listenAlloy = () => {
   document.head.append(googleLoginRedirect);
   // end TODO remove metadata after we go live
 
+  const config = setConfig({ ...CONFIG, miloLibs });
+
   if (getMetadata('template-search-page') === 'Y') {
     const { default: redirect } = await import('./utils/template-redirect.js');
     await redirect();
   }
-
-  const config = setConfig({ ...CONFIG, miloLibs });
 
   // TODO this can be removed post migration
   if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
