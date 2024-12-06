@@ -302,7 +302,7 @@ async function autoUpdatePage(main) {
 
   main.innerHTML = main.innerHTML.replaceAll(regex, (match, p1) => {
     if (!wl.includes(match.toLowerCase())) {
-      return getMetadata(p1);
+      return getMetadata(p1) ?? '';
     }
     return match;
   });
@@ -328,7 +328,6 @@ async function updateNonBladeContent(main) {
   const templateX = main.querySelector('.template-x');
   const browseByCat = main.querySelector('.browse-by-category');
   const seoNav = main.querySelector('.seo-nav');
-
   if (heroAnimation) {
     if (getMetadata('hero-title')) {
       heroAnimation.innerHTML = heroAnimation.innerHTML.replace('Default template title', getMetadata('hero-title'));
