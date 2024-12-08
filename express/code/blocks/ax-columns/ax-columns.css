@@ -157,14 +157,8 @@
   content: url(/express/code/icons/play.svg);
 }
 
-.ax-columns.single-video .column-picture {
+.ax-columns .column-picture {
   margin: 15px 0;
-  width: 225px;
-}
-
-.ax-columns.single-video .column-video video {
-  width: 225px;
-  margin: 0;
 }
 
 .section .ax-columns h1 {
@@ -229,7 +223,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px 0;
 }
 
 .section .ax-columns.center .column, .ax-columns.enterprise .column {
@@ -623,6 +616,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .ax-columns.fullsize .hero-animation-overlay video {
   max-height: 40vh;
+  margin-bottom: 40px;
   max-width: 370px;
 }
 
@@ -1016,14 +1010,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   main .ax-columns .columns-video {
     min-height: 356px;
-  }
-
-  main .ax-columns .column-picture {
-    width:  unset;
-  }
-
-  main .ax-columns .column-video video {
-    width: unset;
   }
 }
 
