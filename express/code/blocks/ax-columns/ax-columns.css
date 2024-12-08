@@ -415,6 +415,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   margin-bottom: 0;
 }
 
+.section:first-child .ax-columns:first-child > div.columns-video {
+  padding: 40px 0;
+}
+
 .ax-columns.highlight > div:first-child {
   margin-top: 50px;
 }
