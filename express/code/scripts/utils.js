@@ -374,11 +374,6 @@ function cleanupBrackets(area) {
   });
 }
 
-function removeBillingRadios(area) {
-  const billingRadioBlocks = area.querySelectorAll('.billing-radio');
-  [...billingRadioBlocks].forEach((el) => el.remove());
-}
-
 function addPromotion(area) {
   const customPromotion = document.querySelector('main .promotion.auto-promotion');
   const promotion = area.querySelector('main .promotion:not(.auto-promotion)');
@@ -429,7 +424,6 @@ export function decorateArea(area = document) {
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
-  removeBillingRadios(area);
   cleanupBrackets(area);
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
 
