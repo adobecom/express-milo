@@ -574,6 +574,10 @@ main #hero a.button:any-link {
   border-radius: 22px;
 }
 
+main #hero p.button-container {
+  margin-bottom: 0;
+}
+
 main .section p.legal-copy {
   font-size: var(--body-font-size-xs);
   line-height: 1.5;
@@ -682,7 +686,7 @@ main .section .content p, main .section p {
   margin: 32px 0;
 }
 
-main .section .content:first-child p.button-container {
+main .section:not(#hero) .content:first-child p.button-container {
   margin-top: 76px;
 }
 
