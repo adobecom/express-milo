@@ -82,5 +82,4 @@ export default async function decorate($block) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: $links });
     document.dispatchEvent(linksPopulated);
   }
-  $block.setAttribute('data-block-status', 'loaded');
 }
