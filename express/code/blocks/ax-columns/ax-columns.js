@@ -489,8 +489,4 @@ export default async function decorate(block) {
       });
     });
   }
-
-  if (Array.from(block.querySelectorAll('.column-picture')).length === 1) {
-    block.classList.add('single-video');
-  }
 }
