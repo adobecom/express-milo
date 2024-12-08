@@ -1,4 +1,4 @@
-main .section:has(.icon-list){
+main .section:has(.icon-list-wrapper:first-child) {
   padding-top: 60px;
 }
 
