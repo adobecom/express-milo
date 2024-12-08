@@ -342,6 +342,7 @@ const blocksToClean = [
       '{{gradient-promo}}',
       '{{pricing}}',
       '{{savePercentage}}',
+      '{{special-promo}}',
       '{{vat-include-text}}',
       '{{vat-exclude-text}}',
       '{{business-sales-numbers}}',
