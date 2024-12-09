@@ -7,6 +7,10 @@
   margin: 0 auto;
 }
 
+.section .link-list {
+  max-width: 375px;
+}
+
 .section .link-list-wrapper .link-list.narrow {
   max-width: 850px;
 }
@@ -174,6 +178,10 @@
 }
 
 @media (min-width: 900px) {
+  .section .link-list {
+    max-width: 830px;
+  }
+
   .section .link-list.content-group {
     width: 648px;
     margin-left: auto;
@@ -225,5 +233,9 @@
   .section .link-list-wrapper {
     padding: 60px 55px 0 55px;
     max-width: 1200px;
+  }
+
+  .section .link-list {
+    max-width: 1024px;
   }
 }
