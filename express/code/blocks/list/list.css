@@ -1,10 +1,10 @@
-main .list-wrapper:first-child, main .section-metadata:first-child + .list-wrapper {
+main .section:not([data-padding='none']) .list-wrapper:first-child, main .section.section:not([data-padding='none']) .section-metadata:first-child + .list-wrapper {
     padding-top: 60px;
 }
 
 main .list {
     max-width: 375px;
-    margin: 0px auto 40px;
+    margin: 40px auto;
     padding: 0 24px;
     display: flex;
     flex-wrap: wrap;
