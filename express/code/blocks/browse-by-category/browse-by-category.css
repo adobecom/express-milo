@@ -4,7 +4,7 @@
   margin: auto;
 }
 
-.browse-by-category:first-child {
+.browse-by-category:not(.fullwidth):first-child {
   padding-top: 60px;
 }
 
