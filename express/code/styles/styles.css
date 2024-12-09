@@ -920,10 +920,6 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
 }
 
 /* long-form section: left-align text */
-main .section.long-form {
-  padding-top: 60px;
-}
-
 main .section.long-form.narrow {
   max-width: 850px;
   margin: 0 auto;

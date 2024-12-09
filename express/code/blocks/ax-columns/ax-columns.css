@@ -8,7 +8,7 @@
   padding-bottom: 40px;
 }
 
-main .section:has(.ax-columns) > .content {
+.section:has(.ax-columns) > .content {
   max-width: 350px;
 }
 
@@ -233,6 +233,7 @@ main .section:has(.ax-columns) > .content {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: 40px;
 }
 
 .section .ax-columns.center .column, .ax-columns.enterprise .column {
@@ -829,6 +830,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     padding-right: 32px;
   }
 
+  .section:has(.ax-columns) > .content {
+    max-width: 836px;
+  }
+
 
     .ax-columns
     .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(
@@ -1028,6 +1033,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 @media (min-width: 1200px) {
+  .section:has(.ax-columns) > .content {
+    max-width: 1024px;
+  }
+
   .section .ax-columns, .ax-columns.top.center, .ax-columns.light {
     max-width: 1024px;
   }
