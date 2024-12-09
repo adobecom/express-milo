@@ -171,7 +171,7 @@
 }
 
 .section .ax-columns h1.columns-heading-very-long {
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size-xl);
 }
 
 .section .ax-columns h1.columns-heading-x-long {

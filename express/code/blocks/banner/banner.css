@@ -18,6 +18,7 @@
 .banner.cool {
   background: linear-gradient(170.96deg, #bfe4ff -0.25%, #cecef6 104.12%);
   padding: 40px 0;
+  margin-top: 0px;
 }
 
 .section .banner p {
