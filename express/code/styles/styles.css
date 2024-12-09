@@ -588,7 +588,7 @@ main .section.secondary {
   background-color: var(--color-gray-100);
 }
 
-main .section p.button-container {
+main .section p.button-container, main .section .content p.button-container {
   text-align: center;
   margin-top: 16px;
   margin-bottom: 0;

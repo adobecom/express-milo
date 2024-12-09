@@ -1,9 +1,23 @@
-.headline .express-logo {
+.section > .headline .express-logo {
     width: unset;
     height: 30px;
     padding-top: 30px;
 }
 
-.headline {
+.section > .headline {
     text-align: center;
+    max-width: 375px;
+    margin: auto;
+}
+
+@media (min-width: 900px) {
+    .section > .headline {
+        max-width: 830px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .section > .headline .block-row {
+        max-width: 1024px;
+    }
 }
