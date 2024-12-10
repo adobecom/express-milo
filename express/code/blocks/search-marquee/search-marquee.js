@@ -1,6 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
-import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { trackSearch, updateImpressionCache, generateSearchId } from '../../scripts/template-search-api-v3.js';
 
@@ -244,6 +242,7 @@ function initSearchFunction(block, searchBarWrapper) {
   import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
     const { inputHandler } = useInputAutocomplete(
       suggestionsListUIUpdateCB,
+      getConfig,
       { throttleDelay: 300, debounceDelay: 500, limit: 7 },
     );
     searchBar.addEventListener('input', inputHandler);

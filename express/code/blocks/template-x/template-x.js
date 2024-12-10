@@ -2,6 +2,8 @@ import {
   getLottie,
   lazyLoadLottiePlayer,
   toClassName,
+  getIconElementDeprecated,
+  fixIcons,
   getLibs,
 } from '../../scripts/utils.js';
 import { titleCase } from '../../scripts/utils/string.js';
@@ -20,7 +22,6 @@ import {
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import renderTemplate from './template-rendering.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
-import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 let replaceKey; let replaceKeyArray;

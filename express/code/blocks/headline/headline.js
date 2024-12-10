@@ -1,5 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let getMetadata;
 

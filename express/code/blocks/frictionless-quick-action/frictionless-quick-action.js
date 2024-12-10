@@ -2,11 +2,9 @@ import {
   addAnimationToggle,
   transformLinkToAnimation,
 } from '../../scripts/utils/media.js';
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
 let createTag; let getConfig;
 let loadScript; let getMetadata;

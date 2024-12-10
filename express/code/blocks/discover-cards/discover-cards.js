@@ -1,6 +1,5 @@
-import { getLibs, yieldToMain } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 let createTag;
 

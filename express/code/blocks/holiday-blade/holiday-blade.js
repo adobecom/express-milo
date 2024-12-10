@@ -1,7 +1,6 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, fixIcons } from '../../scripts/utils.js';
 
 import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
-import { fixIcons } from '../../scripts/utils/icons.js';
 
 let createTag;
 

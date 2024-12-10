@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { getLibs } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 
 let createTag;
 

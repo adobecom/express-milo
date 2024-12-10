@@ -1,5 +1,5 @@
 import buildCarousel from '../../scripts/widgets/carousel.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils.js';
 
 function decorateCarousel(links, container) {
   links.forEach((p) => {

@@ -1,4 +1,3 @@
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import {
   createFloatingButton,
   hideScrollArrow,
@@ -8,7 +7,7 @@ import {
   openToolBox,
   closeToolBox,
 } from '../../scripts/widgets/floating-cta.js';
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 
 let createTag;
 

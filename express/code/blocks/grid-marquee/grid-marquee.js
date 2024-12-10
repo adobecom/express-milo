@@ -1,6 +1,4 @@
-import { getLibs, yieldToMain } from '../../scripts/utils.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
-import { getMobileOperatingSystem } from '../../scripts/utils/media.js';
+import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let createTag; let getConfig;
 
