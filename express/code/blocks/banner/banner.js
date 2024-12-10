@@ -1,7 +1,6 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, fixIcons, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
-import { decorateButtonsDeprecated, normalizeHeadings } from '../../scripts/utils/decorate.js';
-import { fixIcons } from '../../scripts/utils/icons.js';
+import { normalizeHeadings } from '../../scripts/utils/decorate.js';
 
 let createTag;
 

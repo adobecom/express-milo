@@ -1,6 +1,5 @@
-import { getLibs } from './utils.js';
+import { getLibs, decorateButtonsDeprecated } from './utils.js';
 import BlockMediator from './block-mediator.min.js';
-import { decorateButtonsDeprecated } from './utils/decorate.js';
 
 let createTag; let getMetadata;
 let getConfig; let loadStyle;

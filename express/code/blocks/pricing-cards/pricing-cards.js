@@ -1,9 +1,10 @@
 import {
   getLibs,
   yieldToMain,
+  getIconElementDeprecated,
+  fixIcons,
+  addTempWrapperDeprecated, decorateButtonsDeprecated,
 } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElementDeprecated, fixIcons } from '../../scripts/utils/icons.js';
 import { debounce } from '../../scripts/utils/hofs.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import {

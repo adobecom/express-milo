@@ -1,7 +1,4 @@
-import { getLibs } from '../../../scripts/utils.js';
 import { memoize, throttle, debounce } from '../../../scripts/utils/hofs.js';
-
-const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
 
 const url = 'https://adobesearch-atc.adobe.io/uss/v3/autocomplete';
 const experienceId = 'default-templates-autocomplete-v1';
@@ -50,6 +47,7 @@ const memoizedFetchAPI = memoize(fetchAPI, {
 
 export default function useInputAutocomplete(
   updateUIWithSuggestions,
+  getConfig,
   { throttleDelay = 300, debounceDelay = 500, limit = 5 } = {},
 ) {
   const state = { query: '', waitingFor: '' };

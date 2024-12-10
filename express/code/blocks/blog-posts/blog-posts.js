@@ -2,9 +2,9 @@
 import {
   getLibs,
   readBlockConfig,
+  addTempWrapperDeprecated,
 } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 let replaceKey; let getConfig;
 let createTag; let getLocale;

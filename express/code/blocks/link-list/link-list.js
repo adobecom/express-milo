@@ -1,9 +1,5 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
-import {
-  decorateButtonsDeprecated,
-  addTempWrapperDeprecated,
-} from '../../scripts/utils/decorate.js';
 
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
