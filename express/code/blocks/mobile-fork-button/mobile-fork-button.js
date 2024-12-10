@@ -1,8 +1,7 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getMobileOperatingSystem } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
 import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { getMobileOperatingSystem } from '../../scripts/utils/media.js';
 
 let createTag; let getMetadata;
 
