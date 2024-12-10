@@ -4,10 +4,11 @@ import { trackSearch, updateImpressionCache } from '../../scripts/template-searc
 import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
-const imports = await Promise.all([import(`${getLibs()}/features/placeholders.js`), import(`${getLibs()}/utils/utils.js`)]);
-const { replaceKeyArray } = imports[0];
-const { createTag, getMetadata, getConfig } = imports[1];
-const [tagCopied, editThisTemplate, free] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free'], getConfig());
+let createTag; let getConfig;
+let getMetadata; let replaceKeyArray;
+let tagCopied; let editThisTemplate;
+let free;
+
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
 }
@@ -475,7 +476,13 @@ function renderStillWrapper(template) {
   return stillWrapper;
 }
 
-export default function renderTemplate(template) {
+export default async function renderTemplate(template) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig, getMetadata } = utils);
+    ({ replaceKeyArray } = placeholders);
+  });
+  [tagCopied, editThisTemplate, free] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free'], getConfig());
+
   const tmpltEl = createTag('div');
   if (template.assetType === 'Webpage_Template') {
     // webpage_template has no pages
