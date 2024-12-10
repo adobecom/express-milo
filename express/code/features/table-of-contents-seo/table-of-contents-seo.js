@@ -1,7 +1,6 @@
 /* eslint-disable import/named, import/extensions */
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/utils/hofs.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
 let createTag; let getMetadata;
 

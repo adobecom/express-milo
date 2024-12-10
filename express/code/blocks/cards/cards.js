@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { getLibs } from '../../scripts/utils.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, decorateButtonsDeprecated } from '../../scripts/utils.js';
 
 let createTag;
 /**

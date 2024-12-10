@@ -1,9 +1,10 @@
 import {
   createTag,
   getLibs,
+  getMobileOperatingSystem,
+  getIconElementDeprecated,
 } from '../../scripts/utils.js';
-import { getMobileOperatingSystem, transformLinkToAnimation } from '../../scripts/utils/media.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 
 let replaceKey; let getConfig;
 let loadScript;

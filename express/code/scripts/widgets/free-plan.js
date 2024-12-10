@@ -1,5 +1,4 @@
-import { getLibs } from '../utils.js';
-import { getIconElementDeprecated } from '../utils/icons.js';
+import { getLibs, getIconElementDeprecated } from '../utils.js';
 
 const typeMap = {
   branded: [
