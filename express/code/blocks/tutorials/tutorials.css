@@ -100,14 +100,10 @@ main .section>div {
   margin: auto;
 }
 
-a {
+main .section .tutorials a, main .section .tutorials a:hover {
   color: var(--text-color);
 }
 
-body {
-  --link-hover-color: var(--text-color);
-}
-
-#explore-content-scheduling-tutorials{
-  margin-top: 80px;
+main .section .tutorials a:hover {
+  color: var(--text-color);
 }
