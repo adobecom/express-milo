@@ -242,6 +242,7 @@ function initSearchFunction(block, searchBarWrapper) {
   import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
     const { inputHandler } = useInputAutocomplete(
       suggestionsListUIUpdateCB,
+      getConfig,
       { throttleDelay: 300, debounceDelay: 500, limit: 7 },
     );
     searchBar.addEventListener('input', inputHandler);
