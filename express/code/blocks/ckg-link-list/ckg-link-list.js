@@ -1,8 +1,7 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import getData from '../../scripts/utils/browse-api-controller.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import { titleCase } from '../../scripts/utils/string.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 let createTag;
 

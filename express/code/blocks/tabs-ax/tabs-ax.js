@@ -2,8 +2,7 @@
  * tabs - consonant v6
  * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Tab_Role
  */
-import { getLibs, readBlockConfig } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { trackButtonClick } from '../../scripts/instrument.js';
 
 let createTag; let MILO_EVENTS;

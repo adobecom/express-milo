@@ -1,6 +1,5 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let replaceKey; let getConfig;

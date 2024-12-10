@@ -1,6 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getLibs, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 
 let createTag;
 
