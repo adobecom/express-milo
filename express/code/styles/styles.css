@@ -686,10 +686,6 @@ main .section .content p, main .section p {
   margin: 32px 0;
 }
 
-main .section:not(#hero) .content:first-child p.button-container {
-  margin-top: 76px;
-}
-
 main .section:last-of-type>.content:not(:has(+ .template-list-wrapper)) {
   padding-bottom: 40px;
 }
