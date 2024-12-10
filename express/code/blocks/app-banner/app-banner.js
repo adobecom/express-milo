@@ -1,5 +1,4 @@
-import { getLibs, getMobileOperatingSystem, fixIcons, getIconElementDeprecated } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, getMobileOperatingSystem, fixIcons, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let appleStoreRatingScore;

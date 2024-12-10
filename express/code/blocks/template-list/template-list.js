@@ -5,13 +5,13 @@ import {
   lazyLoadLottiePlayer,
   toClassName,
   fixIcons, getIconElementDeprecated,
+  addTempWrapperDeprecated, decorateButtonsDeprecated,
 } from '../../scripts/utils.js';
 
 import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scripts/utils/media.js';
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
-import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
 

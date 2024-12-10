@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import { fetchVideoAnalytics } from '../../scripts/widgets/video.js';
 

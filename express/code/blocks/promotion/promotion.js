@@ -1,7 +1,6 @@
-import { getLibs, toClassName, fixIcons } from '../../scripts/utils.js';
+import { getLibs, toClassName, fixIcons, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import {
   normalizeHeadings,
-  decorateButtonsDeprecated,
 } from '../../scripts/utils/decorate.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 

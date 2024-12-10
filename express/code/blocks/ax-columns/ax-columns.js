@@ -1,4 +1,4 @@
-import { getLibs, toClassName, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 
 import {
   addAnimationToggle,
@@ -9,7 +9,6 @@ import {
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 import { addHeaderSizing, formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import {
-  decorateButtonsDeprecated,
   splitAndAddVariantsWithDash,
 } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
