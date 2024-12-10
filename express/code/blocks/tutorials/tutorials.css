@@ -103,7 +103,3 @@ main .section>div {
 main .section .tutorials a, main .section .tutorials a:hover {
   color: var(--text-color);
 }
-
-main .section .tutorials a:hover {
-  color: var(--text-color);
-}
