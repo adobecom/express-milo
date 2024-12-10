@@ -1,4 +1,4 @@
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { addTempWrapperDeprecated } from '../../scripts/utils.js';
 import {
   createFloatingButton,
   collectFloatingButtonData,

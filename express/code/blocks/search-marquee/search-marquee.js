@@ -1,5 +1,4 @@
-import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { trackSearch, updateImpressionCache, generateSearchId } from '../../scripts/template-search-api-v3.js';
 

@@ -1,6 +1,5 @@
-import { getLibs, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 
 let createTag; let getMetadata;
 

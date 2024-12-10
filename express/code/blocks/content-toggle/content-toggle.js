@@ -1,5 +1,4 @@
-import { getLibs, readBlockConfig } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { trackButtonClick } from '../../scripts/instrument.js';
 
 let createTag;

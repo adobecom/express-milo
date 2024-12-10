@@ -1,5 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let createTag; let getConfig;

@@ -1,6 +1,5 @@
 /* eslint-disable import/named, import/extensions */
-import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 
 let createTag;
 

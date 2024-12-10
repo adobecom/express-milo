@@ -1,5 +1,4 @@
-import { getLibs, toClassName, getIconElementDeprecated } from '../../scripts/utils.js';
-import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
+import { getLibs, toClassName, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import { displayVideoModal, hideVideoModal } from '../../scripts/widgets/video.js';
 
 let createTag;

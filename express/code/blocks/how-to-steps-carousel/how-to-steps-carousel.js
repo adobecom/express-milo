@@ -1,7 +1,6 @@
 /* eslint-disable import/named, import/extensions */
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 let createTag; let getConfig;
 let rotationInterval;

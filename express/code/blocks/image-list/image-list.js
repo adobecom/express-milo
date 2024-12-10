@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { toClassName } from '../../scripts/utils.js';
-import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
+import { toClassName, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 
 export default async function decorate(block) {
