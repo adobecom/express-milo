@@ -1,8 +1,7 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { transformLinkToAnimation, createOptimizedPicture } from '../../scripts/utils/media.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 
 let createTag; let getConfig;
 let getMetadata;

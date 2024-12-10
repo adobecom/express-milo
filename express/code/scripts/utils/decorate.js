@@ -1,5 +1,4 @@
-import { getIconDeprecated } from './icons.js';
-import { getLibs } from '../utils.js';
+import { getLibs, getIconDeprecated } from '../utils.js';
 
 // This was only added for the blocks premigration. It is not to be used for new blocks.
 export async function decorateButtonsDeprecated(el, size) {

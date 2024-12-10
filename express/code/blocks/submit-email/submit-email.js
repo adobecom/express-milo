@@ -1,5 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
-import { fixIcons } from '../../scripts/utils/icons.js';
+import { getLibs, fixIcons } from '../../scripts/utils.js';
 
 let getConfig; let replaceKey;
 

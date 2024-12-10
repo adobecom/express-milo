@@ -1,8 +1,7 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, fixIcons } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
-import { fixIcons } from '../../scripts/utils/icons.js';
 
 let createTag;
 

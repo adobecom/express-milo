@@ -1,6 +1,5 @@
 /* global _satellite */
-import { getLibs } from '../../scripts/utils.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { getProfile, getDestination } from '../../scripts/express-delayed.js';
 
 let createTag; let getConfig;
