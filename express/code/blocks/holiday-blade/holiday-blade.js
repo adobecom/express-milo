@@ -57,7 +57,7 @@ async function loadTemplates(props) {
   }
   return response.items
     .filter((item) => isValidTemplate(item))
-    .map((template) => renderTemplate(template));
+    .map(async (template) => renderTemplate(template));
 }
 
 async function fetchAndRenderTemplates(block, props) {
