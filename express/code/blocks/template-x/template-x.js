@@ -48,8 +48,9 @@ function handlelize(str) {
 async function getTemplates(response, fallbackMsg) {
   const filtered = response.items.filter((item) => isValidTemplate(item));
   const templates = await Promise.all(
-    filtered.map((template) => renderTemplate(template)),
+    filtered.map(async (template) => renderTemplate(template)),
   );
+  await Promise.all(templates);
   return {
     fallbackMsg,
     templates,
