@@ -1,6 +1,5 @@
-import { getLibs, getMobileOperatingSystem } from '../../scripts/utils.js';
+import { getLibs, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 
 let createTag;

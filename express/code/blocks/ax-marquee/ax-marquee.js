@@ -1,4 +1,4 @@
-import { getLibs, toClassName } from '../../scripts/utils.js';
+import { getLibs, toClassName, getIconElementDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import {
@@ -6,7 +6,6 @@ import {
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
 import { displayVideoModal, isVideoLink } from '../../scripts/widgets/video.js';
 
 let getMetadata; let createTag;

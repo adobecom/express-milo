@@ -1,7 +1,6 @@
 // import { decorateLinks} from '../';
 
-import { getLibs, getLottie, lazyLoadLottiePlayer, createTag, getMobileOperatingSystem } from '../utils.js';
-import { getIconElementDeprecated } from '../utils/icons.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer, createTag, getMobileOperatingSystem, getIconElementDeprecated } from '../utils.js';
 import BlockMediator from '../block-mediator.min.js';
 
 export const hideScrollArrow = (floatButtonWrapper, lottieScrollButton) => {

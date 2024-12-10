@@ -1,9 +1,8 @@
-import { getLibs, toClassName } from '../../scripts/utils.js';
+import { getLibs, toClassName, fixIcons } from '../../scripts/utils.js';
 import {
   normalizeHeadings,
   decorateButtonsDeprecated,
 } from '../../scripts/utils/decorate.js';
-import { fixIcons } from '../../scripts/utils/icons.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 
 let createTag; let getConfig;

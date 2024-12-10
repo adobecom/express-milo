@@ -1,4 +1,4 @@
-import { getLibs, toClassName } from '../../scripts/utils.js';
+import { getLibs, toClassName, getIconElementDeprecated } from '../../scripts/utils.js';
 
 import {
   addAnimationToggle,
@@ -6,7 +6,7 @@ import {
   transformLinkToAnimation,
 } from '../../scripts/utils/media.js';
 
-import { decorateSocialIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 import { addHeaderSizing, formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import {
   decorateButtonsDeprecated,

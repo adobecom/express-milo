@@ -1,5 +1,4 @@
-import { getLibs, getMobileOperatingSystem } from '../../scripts/utils.js';
-import { fixIcons, getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getLibs, getMobileOperatingSystem, fixIcons, getIconElementDeprecated } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils/decorate.js';
 
 let createTag; let getConfig;

@@ -1,7 +1,6 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, fixIcons } from '../../scripts/utils.js';
 import { addTempWrapperDeprecated } from '../../scripts/utils/decorate.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
-import { fixIcons } from '../../scripts/utils/icons.js';
 
 let createTag;
 

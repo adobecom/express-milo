@@ -1,5 +1,4 @@
-import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
-import { getIconElementDeprecated } from '../../scripts/utils/icons.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName, getIconElementDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { decorateButtonsDeprecated, splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
