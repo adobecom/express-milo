@@ -31,7 +31,7 @@ export const loadFaasFiles = async () => {
   const faasCurrentJS = `${faasHostUrl}/faas/service/jquery.faas-current.js`;
   loadStyle('/express/blocks/faas/faas.css');
   return Promise.all([
-    loadScript('/express/scripts/libs/jquery-3.6.0.min.js').then(() => loadScript(faasCurrentJS)),
+    loadScript('/express/code/scripts/libs/jquery-3.6.0.min.js').then(() => loadScript(faasCurrentJS)),
   ]);
 };
 
