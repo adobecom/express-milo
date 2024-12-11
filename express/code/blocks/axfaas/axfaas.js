@@ -1,11 +1,10 @@
-
 import { initFaas, loadFaasFiles } from './utils.js';
 
 const ROOT_MARGIN = 1000;
 
 function createIntersectionObserver({
-                                             el, callback, once = true, options = {},
-                                           }) {
+  el, callback, once = true, options = {},
+}) {
   const io = new IntersectionObserver((entries, observer) => {
     entries.forEach(async (entry) => {
       if (entry.isIntersecting) {
