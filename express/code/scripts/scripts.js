@@ -82,6 +82,9 @@ const CONFIG = {
   },
   links: 'on',
   googleLoginURLCallback: getRedirectUri,
+  autoBlocks: [
+    { axfaas: '/tools/axfaas' },
+  ],
 };
 
 /*
