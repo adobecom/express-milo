@@ -29,7 +29,7 @@ export const loadFaasFiles = async () => {
   ({ createTag, getConfig, loadStyle, loadScript } = await import(`${getLibs()}/utils/utils.js`));
   const faasHostUrl = `https://${getFaasHostSubDomain()}apps.enterprise.adobe.com`;
   const faasCurrentJS = `${faasHostUrl}/faas/service/jquery.faas-current.js`;
-  loadStyle('/express/blocks/faas/faas.css');
+  loadStyle('/express/code/blocks/axfaas/axfaas.css');
   return Promise.all([
     loadScript('/express/code/scripts/libs/jquery-3.6.0.min.js').then(() => loadScript(faasCurrentJS)),
   ]);
