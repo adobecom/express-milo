@@ -700,6 +700,10 @@ export function decorateArea(area = document) {
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
 
+  // TODO temporary FAAS Fix
+  const faasLinks = area.querySelectorAll('a[href*="milo.adobe.com/tools/faas"]');
+  faasLinks.forEach((link) => { link.href = link.href.replace('/tools/faas', '/tools/axfaas'); });
+
   cleanupBrackets(area);
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
 
