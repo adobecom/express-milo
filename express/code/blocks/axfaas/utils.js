@@ -243,9 +243,9 @@ const beforeSubmitCallback = () => {
         country: country.value,
       }),
     })
-        .catch((error) => {
-          window.lana.log(`AA Sandbox Error: ${error.toString()}`);
-        });
+      .catch((error) => {
+        window.lana.log(`AA Sandbox Error: ${error.toString()}`);
+      });
   }
 };
 /* c8 ignore stop */
