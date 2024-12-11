@@ -53,10 +53,10 @@ export function transformLinkToAnimation($a, $videoLooping = true) {
   // replace anchor with video element
   const videoUrl = new URL($a.href);
 
-  const isLegacy = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.pathname.includes('media_');
+  const isLegacy = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') || videoUrl.pathname.includes('media_');
   const $video = createTag('video', attribs);
   if (isLegacy) {
-    const helixId = videoUrl.hostname.includes('hlx.blob.core') ? videoUrl.pathname.split('/')[2] : videoUrl.pathname.split('media_')[1].split('.')[0];
+    const helixId = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') ? videoUrl.pathname.split('/')[2] : videoUrl.pathname.split('media_')[1].split('.')[0];
     const videoHref = `./media_${helixId}.mp4`;
     $video.innerHTML = `<source src="${videoHref}" type="video/mp4">`;
   } else {
