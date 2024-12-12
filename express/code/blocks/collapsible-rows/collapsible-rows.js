@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 let createTag;
 
 function buildTableLayout(block) {
-  const parentDiv = block.closest('.section.section-wrapper');
+  const parentDiv = block.closest('.section');
   parentDiv?.classList.add('collapsible-rows-grey-bg', 'collapsible-section-padding');
 
   const rows = Array.from(block.children);

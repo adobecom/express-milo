@@ -128,14 +128,14 @@
     background: transparent;
     text-align: center;
 }
-.section.section-wrapper.collapsible-rows-grey-bg {
+.section.collapsible-rows-grey-bg {
     background-color: #E8E8E8;
 }
-.section.section-wrapper.collapsible-section-padding {
+.section.collapsible-section-padding {
     padding-top: 10px;
     padding-bottom: 50px;
 }
-.section.section-wrapper .collapsible-rows-background {
+.section .collapsible-rows-background {
     position: absolute;
     top: 0;
     left: 0;
@@ -147,7 +147,7 @@
     max-width: none;
 }
 
-.section.section-wrapper .collapsible-rows-background img {
+.section .collapsible-rows-background img {
     position: absolute;
     top: 50%;
     left: 50%;
