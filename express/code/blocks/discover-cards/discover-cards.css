@@ -87,14 +87,16 @@ main .section .discover-cards {
 }
 
 @media (min-width: 600px) {
-    .discover-cards .cards-container .card {
-        min-width: 399px;
-        max-width: 399px;
-    }
     .discover-cards .center-title h3 {
         font-size: 36px;
         margin-top: 50px;
         margin-bottom: 20px;
+    }
+    .discover-cards .cards-container .card {
+        min-width: 399px;
+        max-width: 399px;
+        height: 478px;
+        margin: 9px -5px 10px auto;
     }
     .discover-cards .cards-container .card .text-content .header {
         font-size: 28px;
@@ -124,7 +126,7 @@ main .section .discover-cards {
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1680px) {
     .discover-cards .cards-container {
         margin: auto;
     }

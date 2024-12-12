@@ -98,3 +98,15 @@ main .list ol li::before {
     position: absolute;
     text-align: center;
 }
+
+@media  (min-width: 768px) {
+    main .section>.list-wrapper {
+        max-width: unset;
+    }
+
+    main .list {
+        max-width: unset;
+        margin: auto;
+        padding: 0px 24px 40px 24px;
+    }
+}
