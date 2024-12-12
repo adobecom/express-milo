@@ -148,7 +148,7 @@
 
 .pricing-table .row-heading {
   position: sticky;
-  z-index: 1;
+  z-index: 3;
   background-color: var(--color-white);
 }
 
@@ -196,7 +196,7 @@
 
 /* ---NEW--- */
 :root {
-  --checkmark-color: #268e6c;
+  --checkmark-color: #007A4D;
   --shaded-color: #f8f8f8;
   --border-color: #d9d9d9;
   --border-radius: 8px;
@@ -224,7 +224,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   main .section .pricing-table-wrapper,
   main .section .pricing-table-wrapper:has(.pricing-table.few-cols),
   main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
-    max-width: 500px;
+    max-width: unset;
   }
   main .section .pricing-table-wrapper .pricing-table {
     margin: 0px 20px;
@@ -238,17 +238,18 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
 @media (min-width: 981px) {
   /* Sticky Table */
-.pricing-table.sticky .row.row-heading.stuck {
-  width: 100vw;
-  margin-left: calc((100vw - 100%) / -2);
-  padding: 0 calc((100vw - 100%) / 2);
-  box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.16);
-  box-sizing: border-box;
-  transition: box-shadow 200ms linear;
-}
-.pricing-table.sticky .row.row-heading.stuck > .col {
-  border: 0;
-}
+  .pricing-table.sticky .row.row-heading.stuck {
+    width: 100vw;
+    margin-left: calc((100vw - 100%) / -2);
+    padding: 0 calc((100vw - 100%) / 2);
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.16);
+    box-sizing: border-box;
+    transition: box-shadow 200ms linear;
+  }
+
+  .pricing-table.sticky .row.row-heading.stuck>.col {
+    border: 0;
+  }
 /* /Sticky Table */
 }
 
@@ -331,16 +332,16 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 }
 
 .pricing-table .row.table-start-row .col:first-child {
-  border-top-left-radius: var( --border-radius);
+  border-top-left-radius: var(--border-radius);
 }
 .pricing-table .row.table-start-row .col:last-child {
-  border-top-right-radius: var( --border-radius);
+  border-top-right-radius: var(--border-radius);
 }
 .pricing-table .row.table-end-row:not(.connect-to-toggle) .col:first-child {
-  border-bottom-left-radius: var( --border-radius);
+  border-bottom-left-radius: var(--border-radius);
 }
 .pricing-table .row.table-end-row:not(.connect-to-toggle) .col:last-child {
-  border-bottom-right-radius: var( --border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 .pricing-table .row.section-header-row .col {
   border-top-width: var(--border-width);
@@ -461,6 +462,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 }
 .pricing-table .feat-icon {
   display: block;
+  position: relative;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center;
   -webkit-mask-size: contain;
@@ -470,12 +472,20 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 }
 .pricing-table .dash {
   width: 13px;
-  height: 11.5px;
-  margin-bottom: 4.5px;
-  margin-top: -4.5px;
+  height: 13px;
   background-color: var(--color-gray-600);
   -webkit-mask-image: url('./dash.svg');
   mask-image: url('./dash.svg');
+  z-index: 2;
+}
+
+.pricing-table .cross {
+  width: 13px;
+  height: 13px;
+  background-color: var(--color-gray-600);
+  -webkit-mask-image: url('./crossmark.svg');
+  mask-image: url('./crossmark.svg');
+  z-index: 2;
 }
 
 .pricing-table .dim .col-content span {
@@ -486,18 +496,57 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   font-style: normal;
 }
 
+.pricing-table .col-content .icon-container {
+  position: relative;
+}
+
+.pricing-table .col.icon-container .col-content {
+  position: relative;
+}
+
+.pricing-table .col.icon-container .col-content:after,
+.pricing-table .col .col-content .icon-container:after {
+  content: '';
+  display: block;
+  position: absolute;
+  background: var(--Background-Positive-subdued, #CEF8E0);
+  border-radius: 24px;
+  width: 24px;
+  height: 24px;
+  left: -5.25px;
+  top: -5.75px;
+  opacity: 0.75;
+}
+
+
+.pricing-table .col.icon-container.excluded-feature .col-content:after,
+.pricing-table .col.dim .col-content .icon-container:after,
+.pricing-table .col.excluded-feature .col-content .icon-container:after {
+  background-color: #E6E6E6;
+}
+
 .pricing-table .check {
   width: 13px;
-  height: 11.5px;
+  height: 13px;
   background-color: var(--checkmark-color);
   -webkit-mask-image: url('./check.svg');
   mask-image: url('./check.svg');
+  z-index: 2;
+}
+
+.pricing-table.vertical-shading .row.shaded {
+  background-color: unset;
+}
+
+.pricing-table.vertical-shading .row-heading .col:nth-child(2n),
+.pricing-table.vertical-shading .col:nth-child(2n) {
+  background: var(--shaded-color);
 }
 /* /Table Section Rows */
 
 
 @media (max-width: 980px) {
-  .pricing-table .row:not(.blank-row){
+  .pricing-table .row:not(.blank-row) {
     min-height: 60px;
   }
 
@@ -559,7 +608,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     align-items: center;
     border: 1px solid var(--border-color);
     padding: 16px;
-    border-radius: var( --border-radius);
+    border-radius: var(--border-radius);
   }
   .pricing-table .row.section-row .col .col-wrapper .col-content {
     width: 60%;
@@ -570,6 +619,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     justify-content: start;
     align-items: center;
     text-align: start;
+    padding-left: 10px;
   }
 
   .pricing-table .row.section-row .col .col-heading p {
@@ -613,7 +663,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
   .pricing-table .row.section-header-row .col,
   .pricing-table .row.section-row,
-  .pricing-table .row.toggle-row .col{
+  .pricing-table .row.toggle-row .col {
     padding: 16px;
   }
   .pricing-table .row.toggle-row.desktop-hide {
@@ -652,5 +702,18 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   /* /Table Header Borders */
   .pricing-table .row.section-row .col {
     border-width: 0px;
+  }
+
+  .pricing-table .col.icon-container .col-content:after {
+    content: '';
+    display: block;
+    position: absolute;
+    background: var(--Background-Positive-subdued, #CEF8E0);
+    border-radius: 24px;
+    width: 24px;
+    height: 24px;
+    left: 4.75px;
+    top: -5.75px;
+    opacity: 0.75;
   }
 }
