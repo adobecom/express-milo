@@ -75,7 +75,6 @@ async function fetchAndRenderTemplates(props) {
   }
 
   props.total = response.metadata.totalHits;
-
   // eslint-disable-next-line no-return-await
   return await getTemplates(response, fallbackMsg);
 }

@@ -75,7 +75,7 @@ function equalizeHeights(el) {
     headers.forEach((placeholder) => {
       placeholder.style.height = 'unset';
     });
-    if (window.screen.width > 1200) {
+    if (window.screen.width > 1279) {
       headers.forEach((header) => {
         if (header.checkVisibility()) {
           const height = getHeightWithoutPadding(header);
