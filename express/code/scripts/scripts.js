@@ -264,11 +264,6 @@ const listenAlloy = () => {
     import('./instrument.js').then((mod) => { mod.default(); });
   }
 
-  if (getMetadata('toc-seo') === 'on') {
-    loadStyle('/express/code/features/table-of-contents-seo/table-of-contents-seo.css');
-    import('../features/table-of-contents-seo/table-of-contents-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
-  }
-
   /* region based redirect to homepage */
   import('./utils/location-utils.js').then(({ getCountry }) => getCountry()).then((country) => {
     if (country === 'cn') { window.location.href = '/cn'; }

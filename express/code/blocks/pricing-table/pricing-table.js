@@ -88,7 +88,7 @@ function handleHeading(headingRow, headingCols) {
   });
 }
 
-const EXCLUDE_ICON = '<span class="feat-icon dash"></span>';
+const EXCLUDE_ICON = '<span class="feat-icon cross"></span>';
 const INCLUDE_ICON = '<span class="feat-icon check"></span>';
 
 function handleSection(sectionParams) {
@@ -146,11 +146,13 @@ function handleSection(sectionParams) {
       if (!child.innerHTML || child.textContent === '-') {
         col.classList.add('excluded-feature');
         child.innerHTML = EXCLUDE_ICON;
+        child.classList.add('icon-container');
       } else if (child.textContent === '+') {
         col.classList.add('included-feature');
         child.innerHTML = INCLUDE_ICON;
+        child.classList.add('icon-container');
       } else if (!col.children.length) {
-        child.innerHTML = `<p>${col.innerHTML}</p>`;
+        child.innerHTML = `<p >${col.innerHTML}</p>`;
       }
     });
     if (nextRow.classList.contains('toggle-row')) {

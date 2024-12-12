@@ -366,26 +366,6 @@ main .make-a-project .make-a-project-projectlist .make-a-project-item picture {
 }
 
 @media (min-width: 900px) {
-  main .section-wrapper.make-a-project-container + .section-wrapper.template-list-horizontal-container {
-    /* padding-top: 40px; */
-    padding-right: 0;
-    padding-left: 0;
-  }
-
-  main .section-wrapper.make-a-project-container + .section-wrapper.template-list-horizontal-container h2 {
-    font-size: var(--heading-font-size-m);
-  }
-
-  main .section-wrapper.make-a-project-container + .section-wrapper.template-list-horizontal-container .carousel-container {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  main .section-wrapper.make-a-project-container + .section-wrapper.template-list-horizontal-container > div,
-  main .section-wrapper.make-a-project-container + .section-wrapper.template-list-horizontal-container .template-list.horizontal {
-    max-width: 1264px;
-  }
-
   main .make-a-project .make-a-project-projectlist .make-a-project-item {
     margin: 0 32px;
   }
