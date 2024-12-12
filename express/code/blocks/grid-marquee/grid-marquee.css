@@ -1,6 +1,6 @@
-.grid-marquee {
+.section .grid-marquee {
   --m-img-w: 152px;
-  --t-img-w: 181px;
+  --t-img-w: 304px;
   --d-img-w: 254px;
   max-width: initial;
   text-align: center;
@@ -112,6 +112,7 @@
   z-index: 3;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
   border-radius: 16px 16px 0 0;
   padding-top: 16px;
@@ -130,6 +131,7 @@
 .grid-marquee .drawer .content {
   overflow: auto;
   scrollbar-width: thin;
+  width: 100%;
 }
 
 .grid-marquee .drawer[aria-hidden='true'] {
@@ -151,30 +153,36 @@
 }
 
 .grid-marquee .drawer .video-container {
+  /* override browser button style */
+  border: 0;
+  margin: auto;
   border-top: 1px solid #0000001A;
   display: flex;
   justify-content: center;
-  padding: 16px;
+  width: 100%;
+  padding: 16px 0;
+  cursor: pointer;
+  background: none;
 }
 
 .grid-marquee .drawer video {
-  max-height: 30vh;
   border-radius: 8px;
+  width: 328px;
 }
 
 .grid-marquee .panel {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
-.grid-marquee .drawer .panel p {
+.grid-marquee .drawer .panel .drawer-cta-wrapper {
+  border-top: 1px solid #0000001A;
   margin: 0;
 }
 
 .grid-marquee .panel .drawer-cta {
-  margin: 0;
   padding: 16px;
-  border-top: 1px solid #0000001A;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -190,14 +198,15 @@
   margin-right: 0px;
 }
 
-.grid-marquee .drawer button[aria-label='close'] .icon {
-  width: 12px;
-  height: 12px;
-}
-
 .grid-marquee .drawer [aria-label='close'] {
   background: initial;
   border: initial;
+  cursor: pointer;
+}
+
+.grid-marquee .drawer [aria-label='close'] .icon {
+  width: 12px;
+  height: 12px;
 }
 
 .grid-marquee .drawer [role='tablist'] {
@@ -257,12 +266,13 @@
   margin: 0;
 }
 
-@media screen and (min-width: 900px) {
-  .grid-marquee .headline {
-    max-width: 820px;
+@media screen and (min-width: 768px) {
+  .grid-marquee .background img {
+    max-width: 1500px;
+    max-height: 1200px;
   }
-  .grid-marquee .headline h1 {
-    font-size: var(--heading-font-size-m);
+  .grid-marquee .headline {
+    max-width: 1200px;
   }
   .grid-marquee .headline .ctas {
     display: flex;
@@ -276,30 +286,55 @@
   }
 
   .grid-marquee .cards-container {
-    grid-template-columns: repeat(auto-fit, minmax(199px, 1fr));
-    width: 820px;
     gap: 8px;
   }
 
   .grid-marquee .card {
-    width: 199px;
+    width: 304px;
     border-radius: 16px;
   }
 
   .grid-marquee .face img {
     width: var(--t-img-w);
   }
+  .grid-marquee .drawer .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .grid-marquee .drawer .title-row {
+    width: 480px;
+  }
+  .grid-marquee .drawer video {
+    width: 480px;
+  }
+  .grid-marquee .drawer [role='tablist'] {
+    display: flex;
+    justify-content: center;
+    padding: 0 0 8px 0;
+    gap: 8px;
+  }
+
+  .grid-marquee .panel .drawer-cta-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .grid-marquee .drawer .drawer-cta {
+    width: 480px;
+  }
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1280px) {
   .grid-marquee .express-logo {
     padding-top: 40px;
   }
   .grid-marquee .background img {
+    max-height: 600px;
     max-width: 1800px;
   }
   .grid-marquee .headline {
-    max-width: 1200px;
+    max-width: 1600px;
     padding-bottom: 40px;
   }
   .grid-marquee .headline h1 {
@@ -316,6 +351,7 @@
     line-height: 23.4px;
   }
   .grid-marquee .cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(288px, 1fr));
     width: 1200px;
     gap: 16px;
   }
@@ -346,6 +382,10 @@
     box-shadow: 0px 0px 12px 0px #00000029;
   }
 
+  .grid-marquee .drawer .content {
+    display: block;
+  }
+
   .grid-marquee .drawer[aria-hidden='true'] {
     opacity: 0;
     visibility: hidden;
@@ -357,21 +397,31 @@
   }
 
   .grid-marquee .drawer .video-container {
-    border-top: 0;
-    padding: 0 16px 12px 16px;
+    border-top: none;
+    padding: 0 0 12px 0;
   }
 
   .grid-marquee .drawer video {
     width: var(--d-img-w);
-    height: var(--d-img-h);
+    height: initial;
   }
 
   .grid-marquee .drawer div[role='tablist'] {
-    padding-bottom: 16px;
+    padding: 0 0 16px 16px;
+    display: block;
   }
 
-  .grid-marquee .drawer .panel a {
+  .grid-marquee .drawer .panel {
+    width: initial;
+  }
+
+  .grid-marquee .panel .drawer-cta-wrapper {
     border-top: none;
+    display: initial;
+  }
+
+  .grid-marquee .drawer .panel .drawer-cta {
+    width: initial;
     padding: 6px 16px;
     font-size: var(--body-font-size-l);
   }
