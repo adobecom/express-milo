@@ -16,21 +16,15 @@ main .logo-row .block-layout {
 }
 
 main .logo-row .block-row {
-    display: flex;
+    display: block;
     width: fit-content;
     margin: auto;
 }
 
 main .logo-row .text-column {
-    margin: auto 0 16px auto;
-    padding-right: 40px;
+    margin: auto auto 16px auto;
     max-width: 300px;
     text-align: center;
-
-}
-
-main .logo-row .text-column > * {
-    text-align: left;
 }
 
 main .logo-row .text-content {
@@ -43,7 +37,9 @@ main .logo-row .text-content {
 main .logo-row .image-column {
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    gap: 10px;
+    justify-content: center;
+    max-width: 375px;
 }
 
 main .logo-row .image-column p {
@@ -62,23 +58,17 @@ main .logo-row .brand-image {
     object-fit: contain;
 }
 
-@media (max-width: 420) {
-    main .logo-row .image-column {
-        max-width: 325px;
-    }
-}
-
-@media (max-width: 900px) {
+@media (min-width: 768px ) and (max-width: 1279px) {
     main .logo-row .block-row {
-        display: block;
+        display: flex;
     }
 
     main .logo-row .image-column {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 10px;
-
+        gap: 5px;
+        max-width: unset;
     }
 
     main .logo-row .text-column  {
@@ -86,19 +76,34 @@ main .logo-row .brand-image {
         padding-right: initial;
     }
     main .logo-row .text-column > * {
-        text-align: center;
+        text-align: left;
+        font-size: 20px;
     }
 
     main .logo-row .brand-image {
-        max-height: 100px;
         object-fit: contain;
+        max-width: 80px;
+        max-height: 80px;
     }
-
 }
 
-/* Surface Pro */
-@media (max-width: 1024px) {
-    main .logo-row .image-column {
-        gap: 10px;
+@media (min-width: 1280px) {
+    main .logo-row .text-column {
+        margin: auto 0 16px auto;
+        padding-right: 40px;
+        max-width: 320px;
+
     }
+
+    main .logo-row .block-row {
+        display: flex;
+    }
+
+    main .logo-row .text-column > * {
+        text-align: left;
+    }
+    main .logo-row .image-column {
+        max-width: unset;
+    }
+
 }

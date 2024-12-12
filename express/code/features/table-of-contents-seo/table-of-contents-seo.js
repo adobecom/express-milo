@@ -116,7 +116,7 @@ function findCorrespondingHeading(headingText, doc) {
     .find((h) => h.textContent.trim().includes(headingText.replace('...', '').trim()));
 }
 function toggleSticky(tocClone, sticky) {
-  const main = document.querySelector('main .section.section-wrapper');
+  const main = document.querySelector('main .section');
   if (window.scrollY >= sticky + MOBILE_NAV_HEIGHT) {
     tocClone.classList.add('sticky');
     tocClone.style.top = `${MOBILE_NAV_HEIGHT}px`;
@@ -129,7 +129,7 @@ function toggleSticky(tocClone, sticky) {
 }
 
 function handleTOCCloning(toc, tocEntries) {
-  const mainElement = document.querySelector('.section.section-wrapper').firstElementChild;
+  const mainElement = document.querySelector('.section').firstElementChild;
 
   if (mainElement) {
     const tocClone = toc.cloneNode(true);
@@ -351,7 +351,7 @@ function buildMetadataConfigObject() {
 }
 
 export default async function setTOCSEO() {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const doc = document.querySelector('main');
   const config = buildMetadataConfigObject();
   const tocSEO = createTag('div', { class: 'table-of-contents-seo' });

@@ -3,7 +3,7 @@ import { getLibs } from '../../scripts/utils.js';
 let createTag;
 
 function buildTableLayout(block) {
-  const parentDiv = block.closest('.section.section-wrapper');
+  const parentDiv = block.closest('.section');
   parentDiv?.classList.add('collapsible-rows-grey-bg', 'collapsible-section-padding');
 
   const rows = Array.from(block.children);
@@ -33,8 +33,11 @@ function buildTableLayout(block) {
   collapsibleRows.forEach((row) => {
     const { header, subHeader } = row;
 
+    const rowWrapper = createTag('div', { class: 'collapsible-row-wrapper' }); // New wrapper
     const headerAccordion = createTag('div', { class: 'collapsible-row-accordion expandable header-accordion' });
-    block.append(headerAccordion);
+
+    rowWrapper.append(headerAccordion);
+    block.append(rowWrapper);
 
     const headerDiv = createTag('h3', { class: 'collapsible-row-header expandable' });
     headerDiv.innerHTML = header;
@@ -49,7 +52,7 @@ function buildTableLayout(block) {
     headerDiv.appendChild(iconElement);
 
     const subHeaderAccordion = createTag('div', { class: 'collapsible-row-accordion expandable sub-header-accordion' });
-    block.append(subHeaderAccordion);
+    rowWrapper.append(subHeaderAccordion);
 
     const subHeaderDiv = createTag('div', { class: 'collapsible-row-sub-header expandable' });
     subHeaderDiv.innerHTML = subHeader;

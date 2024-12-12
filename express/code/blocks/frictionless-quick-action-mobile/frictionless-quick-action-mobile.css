@@ -20,10 +20,18 @@
     color: #242424;
 }
 
+.frictionless-quick-action-mobile h1.post-upload {
+    font-size: var(--heading-font-size-m);
+}
+
 .frictionless-quick-action-mobile .express-logo {
     width: initial;
     height: 30px;
     padding-bottom: 8px;
+}
+
+.frictionless-quick-action-mobile .express-logo.hide {
+    display: none;
 }
 
 .frictionless-quick-action-mobile input {
