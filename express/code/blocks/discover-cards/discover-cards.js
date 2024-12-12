@@ -165,6 +165,6 @@ export default async function decorate(block) {
   block.style.backgroundImage = `
         linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
         linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        url(/express/blocks/discover-cards/img/cards-bg-large.webp)
+        url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
       `;
 }
