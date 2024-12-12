@@ -247,11 +247,6 @@ main .section>.simplified-pricing-cards-wrapper {
     min-height: unset;
 }
 
-.simplified-pricing-cards .card-cta-group a.button, .simplified-pricing-cards .card-cta-group a.con-button {
-    margin-left: 0;
-    margin-right: 0;
-}
-
 .simplified-pricing-cards .card-cta-group strong .button {
     position: relative;
     top: 4px;
@@ -481,6 +476,8 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 /* Desktop styles */
+
+
 @media (min-width: 1280px) {
     .simplified-pricing-cards {
         --card-width: 270px;
