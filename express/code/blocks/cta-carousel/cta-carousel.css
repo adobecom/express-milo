@@ -176,6 +176,22 @@
     transition: background-color .2s;
 }
 
+.cta-carousel.center-heading .cta-carousel-heading-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cta-carousel.center-heading .cta-carousel-heading-section h2 {
+    text-align: center;
+}
+
+.cta-carousel.center-heading .cta-carousel-heading-section .cta-carousel-link {
+    align-self: flex-end;
+    margin-left: auto;
+}
+
 .cta-carousel.quick-action .card.gen-ai-action .card-sleeve .gen-ai-input-form .gen-ai-submit {
     left: 56px;
     bottom: 24px;
@@ -354,15 +370,5 @@
     .cta-carousel .cta-carousel-heading-section {
         flex-direction: row;
         align-items: flex-end;
-    }
-    .cta-carousel.center-heading .cta-carousel-heading-section {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    .cta-carousel.center-heading .cta-carousel-heading-section .cta-carousel-link {
-        align-self: flex-end;
-        margin-left: auto;
     }
 }
