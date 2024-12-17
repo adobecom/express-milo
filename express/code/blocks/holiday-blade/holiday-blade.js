@@ -55,9 +55,10 @@ async function loadTemplates(props) {
   if (!response?.items || !Array.isArray(response.items)) {
     throw new Error('Invalid template response format');
   }
-  return response.items
+  const items = await Promise.all(response.items
     .filter((item) => isValidTemplate(item))
-    .map(async (template) => renderTemplate(template));
+    .map(async (template) => renderTemplate(template)));
+  return items;
 }
 
 async function fetchAndRenderTemplates(block, props) {
@@ -89,6 +90,7 @@ async function fetchAndRenderTemplates(block, props) {
 function decorateHoliday(block, toggleChev) {
   const rows = block.children;
   const toggleBar = rows[0].children[0];
+  toggleBar.children[0].classList.add('toggle-bar-first-element');
   toggleBar.classList.add('toggle-bar');
   const staticImage = rows[0].children[1].querySelector('img');
   if (staticImage) {
@@ -135,10 +137,10 @@ export default async function decorate(el) {
     },
     limit,
   };
-  if (block.classList.contains('still-only')) props.filters.behaviors = 'still';
-  if (block.classList.contains('animated-only')) props.filters.behaviors = 'animated';
-  if (block.classList.contains('free-only')) props.filters.premium = 'false';
-  if (block.classList.contains('premium-only')) props.filters.premium = 'true';
+  if (el.classList.contains('still-only')) props.filters.behaviors = 'still';
+  if (el.classList.contains('animated-only')) props.filters.behaviors = 'animated';
+  if (el.classList.contains('free-only')) props.filters.premium = 'false';
+  if (el.classList.contains('premium-only')) props.filters.premium = 'true';
 
   if (isQuery) {
     props.q = query;

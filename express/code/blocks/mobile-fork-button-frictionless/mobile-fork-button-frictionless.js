@@ -1,7 +1,8 @@
-import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import {
+  createTag,
+  getMobileOperatingSystem, addTempWrapperDeprecated, getIconElementDeprecated,
+} from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-
-let createTag; let getMetadata;
 
 function buildAction(entry, buttonType) {
   const wrapper = createTag('div', { class: 'floating-button-inner-row mobile-gating-row' });
@@ -23,23 +24,20 @@ function buildMobileGating(block, data) {
   block.append(header, buildAction(data.tools[0], 'accent'), buildAction(data.tools[1], 'outline'));
 }
 
-export async function createMultiFunctionButton(block, data, audience) {
-  const buttonWrapper = await createFloatingButton(block, audience, data);
-  buttonWrapper.classList.add('multifunction', 'mobile-fork-button');
+export function createMultiFunctionButton(block, data, audience) {
+  const buttonWrapper = createFloatingButton(block, audience, data);
+  buttonWrapper.classList.add('multifunction', 'mobile-fork-button-frictionless');
   buildMobileGating(buttonWrapper.querySelector('.floating-button'), data);
   return buttonWrapper;
 }
 
-// Checks if the device is an android and has sufficient RAM, enables the mobile gating if it is.
-// If there is no metadata check enabled, still enable the gating block in case authors want it.
-
+// frictionless block always check eligibility
 function androidDeviceAndRamCheck() {
-  if (getMetadata('fork-eligibility-check')?.toLowerCase()?.trim() !== 'on') return true;
   const isAndroid = getMobileOperatingSystem() === 'Android';
   return navigator.deviceMemory >= 4 && isAndroid;
 }
 
-function collectFloatingButtonData() {
+function collectFloatingButtonData(eligible) {
   const metadataMap = Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
     if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
     return acc;
@@ -66,10 +64,10 @@ function collectFloatingButtonData() {
 
   for (let i = 1; i < 3; i += 1) {
     const prefix = `fork-cta-${i}`;
-    const iconMetadata = getMetadataLocal(`${prefix}-icon`);
-    const iconTextMetadata = getMetadataLocal(`${prefix}-icon-text`);
-    const hrefMetadata = getMetadataLocal(`${prefix}-link`);
-    const textMetadata = getMetadataLocal(`${prefix}-text`);
+    const iconMetadata = (eligible && getMetadataLocal(`${prefix}-icon-frictionless`)) || getMetadataLocal(`${prefix}-icon`);
+    const iconTextMetadata = (eligible && getMetadataLocal(`${prefix}-icon-text-frictionless`)) || getMetadataLocal(`${prefix}-icon-text`);
+    const hrefMetadata = (eligible && getMetadataLocal(`${prefix}-link-frictionless`)) || getMetadataLocal(`${prefix}-link`);
+    const textMetadata = (eligible && getMetadataLocal(`${prefix}-text-frictionless`)) || getMetadataLocal(`${prefix}-text`);
     if (!iconMetadata) break;
     const completeSet = {
       icon: getIconElementDeprecated(iconMetadata),
@@ -83,6 +81,14 @@ function collectFloatingButtonData() {
         href, text, icon, iconText,
       } = completeSet;
       const aTag = createTag('a', { title: text, href });
+      if (href.toLowerCase().trim() === '#mobile-fqa-upload') {
+        // mobile-fork-button-frictionless pairs with mobile-fqa
+        // temporary solution before a nicer way for cross-block interactions is found
+        aTag.addEventListener('click', (e) => {
+          e.preventDefault();
+          document.getElementById('mobile-fqa-upload').click();
+        });
+      }
       aTag.textContent = text;
       data.tools.push({
         icon,
@@ -96,12 +102,7 @@ function collectFloatingButtonData() {
 }
 
 export default async function decorate(block) {
-  ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
-  if (!androidDeviceAndRamCheck()) {
-    const { default: decorateNormal } = await import('../floating-button/floating-button.js');
-    decorateNormal(block);
-    return;
-  }
+  const eligible = androidDeviceAndRamCheck();
   addTempWrapperDeprecated(block, 'multifunction-button');
   if (!block.classList.contains('meta-powered')) return;
 
@@ -110,8 +111,8 @@ export default async function decorate(block) {
     block.closest('.section').remove();
   }
 
-  const data = collectFloatingButtonData();
-  const blockWrapper = await createMultiFunctionButton(block, data, audience);
+  const data = collectFloatingButtonData(eligible);
+  const blockWrapper = createMultiFunctionButton(block, data, audience);
   const blockLinks = blockWrapper.querySelectorAll('a');
   if (blockLinks && blockLinks.length > 0) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });

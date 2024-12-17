@@ -3,7 +3,8 @@ import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecate
 let createTag; let getConfig;
 
 let currDrawer = null;
-const desktopMQ = window.matchMedia('(min-width: 1200px)');
+const largeMQ = window.matchMedia('(min-width: 1280px)');
+const mediumMQ = window.matchMedia('(min-width: 768px)');
 const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function drawerOff() {
@@ -37,6 +38,23 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
   });
   titleRow.append(createTag('strong', { class: 'drawer-title' }, titleText), closeButton);
   await yieldToMain();
+
+  const icons = panelsFrag.querySelectorAll('.icon');
+  const anchors = [...panelsFrag.querySelectorAll('a')];
+  anchors.forEach((anchor, i) => {
+    const parent = anchor.parentElement;
+    if (parent.tagName === 'P') {
+      parent.classList.add('drawer-cta-wrapper');
+    }
+    anchor.classList.add('drawer-cta');
+    const icon = icons[i];
+    const match = icon && iconRegex.exec(icon.className);
+    if (match?.[1]) {
+      icon.append(getIconElementDeprecated(match[1]));
+    }
+    anchor.prepend(icon);
+  });
+
   const video = createTag('video', {
     playsinline: '',
     muted: '',
@@ -45,19 +63,11 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     title: titleText,
     poster,
   }, `<source src="${videoSrc}" type="video/mp4">`);
-  const videoWrapper = createTag('div', { class: 'video-container' }, video);
+  const videoWrapper = createTag('button', { class: 'video-container' }, video);
+  // link video to first anchor
+  videoWrapper.addEventListener('click', () => anchors[0]?.click());
+  videoWrapper.setAttribute('title', anchors[0]?.title);
 
-  const icons = panelsFrag.querySelectorAll('.icon');
-  const anchors = [...panelsFrag.querySelectorAll('a')];
-  anchors.forEach((anchor, i) => {
-    anchor.classList.add('drawer-cta');
-    const icon = icons[i];
-    const match = icon && iconRegex.exec(icon.className);
-    if (match?.[1]) {
-      icon.append(getIconElementDeprecated(match[1]));
-    }
-    anchor?.prepend(icon);
-  });
   content.append(titleRow, videoWrapper, panelsFrag);
   drawer.append(content);
   if (panels.length <= 1) {
@@ -214,8 +224,11 @@ export default async function init(el) {
     ob.unobserve(el);
     cards.forEach((card) => card.lazyCB());
   }).observe(el);
-  desktopMQ.addEventListener('change', () => {
+  largeMQ.addEventListener('change', () => {
     isTouch = false;
+    drawerOff();
+  });
+  mediumMQ.addEventListener('change', () => {
     drawerOff();
   });
 }

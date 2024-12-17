@@ -587,7 +587,7 @@ export function buildAutoBlocks() {
     const lastDiv = document.querySelector('main > div:last-of-type');
     const newDiv = document.createElement('div');
     lastDiv.insertAdjacentElement('afterend', newDiv);
-    const validButtonVersion = ['floating-button', 'multifunction-button', 'mobile-fork-button'];
+    const validButtonVersion = ['floating-button', 'multifunction-button', 'mobile-fork-button', 'mobile-fork-button-frictionless'];
     const device = document.body.dataset?.device;
     const blockName = getMetadata(`${device}-floating-cta`);
 
@@ -700,6 +700,10 @@ export function decorateArea(area = document) {
     // eslint-disable-next-line import/no-cycle
     import('./branchlinks.js').then((mod) => mod.default(links));
   }
+
+  // TODO temporary FAAS Fix
+  const faasLinks = area.querySelectorAll('a[href*="milo.adobe.com/tools/faas"]');
+  faasLinks.forEach((link) => { link.href = link.href.replace('/tools/faas', '/tools/axfaas'); });
 
   cleanupBrackets(area);
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
