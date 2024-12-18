@@ -200,14 +200,6 @@ const listenAlloy = () => {
   }, 3000);
 };
 
-const listenFaas = () => {
-  window.addEventListener('milo:faas:afterSubmit', (e) => {
-    import('../events/faas/faas.js').then((mod) => {
-      mod.default(e);
-    });
-  });
-};
-
 (async function loadPage() {
   if (window.isTestEnv) return;
   const {
@@ -259,7 +251,6 @@ const listenFaas = () => {
 
   // TODO this method should be removed about two weeks after going live
   listenAlloy();
-  listenFaas();
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
