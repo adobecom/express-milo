@@ -50,6 +50,7 @@ const CONFIG = {
   // geoRouting: 'off',
   // fallbackRouting: 'off',
   decorateArea,
+  faasCloseModalAfterSubmit: 'on',
   locales: {
     '': { ietf: 'en-US', tk: 'jdq5hay.css' },
     br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
@@ -199,6 +200,14 @@ const listenAlloy = () => {
   }, 3000);
 };
 
+const listenFaas = () => {
+  window.addEventListener('milo:faas:afterSubmit', (e) => {
+    import('../events/faas/faas.js').then((mod) => {
+      mod.default(e);
+    });
+  });
+};
+
 (async function loadPage() {
   if (window.isTestEnv) return;
   const {
@@ -250,6 +259,7 @@ const listenAlloy = () => {
 
   // TODO this method should be removed about two weeks after going live
   listenAlloy();
+  listenFaas();
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
