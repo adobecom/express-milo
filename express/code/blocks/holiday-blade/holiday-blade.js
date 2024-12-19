@@ -55,9 +55,9 @@ async function loadTemplates(props) {
   if (!response?.items || !Array.isArray(response.items)) {
     throw new Error('Invalid template response format');
   }
-  return response.items
+  return Promise.all(response.items
     .filter((item) => isValidTemplate(item))
-    .map(async (template) => renderTemplate(template));
+    .map(async (template) => renderTemplate(template)));
 }
 
 async function fetchAndRenderTemplates(block, props) {
