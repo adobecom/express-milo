@@ -56,6 +56,7 @@
 
 .gen-ai-cards .carousel-container .carousel-platform {
   align-items: unset;
+  gap: 8px;
 }
 
 .gen-ai-cards.homepage .carousel-container {
@@ -72,10 +73,6 @@
   overflow: hidden;
   margin: 0px;
   background-color: #f4f4fd;
-}
-
-.gen-ai-cards .carousel-container .carousel-platform {
-  gap: 8px;
 }
 
 .gen-ai-cards.homepage .card {
@@ -355,9 +352,10 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     display: none;
   }
 
-  main .gen-ai-cards .card {
-    margin-right: 22px;
+  .gen-ai-cards .carousel-container .carousel-platform {
+    gap: 22px;
   }
+
   .gen-ai-cards.homepage .carousel-element.card .media-wrapper {
     width: 352px;
   }
