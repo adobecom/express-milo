@@ -241,6 +241,11 @@ main .section>.simplified-pricing-cards-wrapper {
     font-size: var(--body-font-size-m);
 }
 
+.section .simplified-pricing-cards a.button {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 .simplified-pricing-cards .card-cta-group {
     gap: 5px;
     margin-top: 20px;
