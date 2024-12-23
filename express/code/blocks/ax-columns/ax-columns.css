@@ -58,10 +58,6 @@
   padding-right: 0;
 }
 
-.ax-columns:last-child:not(.highlight, .highlight-dark, .top.center, .fullsize, .light, .dark, .numbered, .centered) {
-  padding-bottom: 40px;
-}
-
 .ax-columns h1,
 .ax-columns h2,
 .ax-columns h3,
@@ -943,6 +939,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 836px;
     padding-left: 32px;
     padding-right: 32px;
+  }
+
+  .section .ax-columns.extra-wide {
+    max-width: 830px;
   }
 
   .section .ax-columns.narrow {
