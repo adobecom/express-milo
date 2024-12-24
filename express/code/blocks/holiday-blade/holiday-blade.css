@@ -2,7 +2,7 @@
     max-width: 100%;
     width: 100%;
     z-index: 6;
-    position: absolute;
+    position: fixed;
     top: auto;
     overflow: hidden;
     --text-color: var(--color-black);
@@ -536,7 +536,7 @@
         width: 100%;
         top: auto;
         z-index: 6;
-        position: absolute;
+        position: fixed;
         overflow: hidden;
         width: 100%;
         height: 48px;

@@ -3,11 +3,10 @@
 import { getLibs } from '../../scripts/utils.js';
 
 let createTag; let loadScript;
-let getConfig;
+let getConfig; let isStage;
 
 const variant = 'edu-express';
 const usp = new URLSearchParams(window.location.search);
-const isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
 
 const onRedirect = (e) => {
   // eslint-disable-next-line no-console
@@ -42,6 +41,7 @@ function getDestURL(url) {
 
 export default async function init(el) {
   ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
   const rows = el.querySelectorAll(':scope> div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   // eslint-disable-next-line camelcase
