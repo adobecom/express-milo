@@ -126,6 +126,15 @@ function turnContentLinksIntoButtons() {
   });
 }
 
+async function addJapaneseSectionHeaderSizing() {
+  if (getConfig().locale.region === 'jp') {
+    const { addHeaderSizing } = await import('./utils/location-utils.js');
+    document.body.querySelectorAll('body:not(.blog) .section .content').forEach((el) => {
+      addHeaderSizing(el, getConfig);
+    });
+  }
+}
+
 /**
  * Executes everything that happens a lot later, without impacting the user experience.
  */
@@ -135,8 +144,9 @@ export default async function loadDelayed() {
       ({ createTag, getMetadata, getConfig, loadStyle } = utils);
       ({ getUserProfile } = utilities);
     });
-    loadTOC();
+    addJapaneseSectionHeaderSizing();
     turnContentLinksIntoButtons();
+    loadTOC();
     preloadSUSILight();
     if (await canPEP()) {
       // eslint-disable-next-line import/no-unresolved
