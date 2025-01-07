@@ -1853,7 +1853,7 @@ async function fetchBlockFragDeprecated(url, blockName) {
   const html = await resp.text();
   const section = createTag('div');
   section.innerHTML = html;
-  section.className = `section section-wrapper ${blockName}-container`;
+  section.className = 'section';
   const block = section.querySelector(`.${blockName}`);
   block.dataset.blockName = blockName;
   block.parentElement.className = `${blockName}-wrapper`;

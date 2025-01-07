@@ -37,7 +37,7 @@ export default async function decorate($block) {
       const backgroundDesktopCSS = `no-repeat calc(-400px + 25%) -20px / 640px url("${backgroundUrl}"), no-repeat calc(450px + 75%) -20px / 640px url("${backgroundUrl}")`;
       $desktopContainerBackground.style.background = backgroundDesktopCSS;
 
-      const backgroundMobileCSS = `no-repeat -20px -20px / 750px url("${backgroundUrl}")`;
+      const backgroundMobileCSS = `no-repeat -80px -48px / 750px url("${backgroundUrl}")`;
       $mobileContainerBackground.style.background = backgroundMobileCSS;
 
       $rows.shift();

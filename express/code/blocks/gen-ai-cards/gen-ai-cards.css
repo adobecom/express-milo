@@ -56,6 +56,7 @@
 
 .gen-ai-cards .carousel-container .carousel-platform {
   align-items: unset;
+  gap: 8px;
 }
 
 .gen-ai-cards.homepage .carousel-container {
@@ -72,10 +73,6 @@
   overflow: hidden;
   margin: 0px;
   background-color: #f4f4fd;
-}
-
-.gen-ai-cards .carousel-container .carousel-platform {
-  gap: 8px;
 }
 
 .gen-ai-cards.homepage .card {
@@ -95,7 +92,7 @@
 
 .gen-ai-cards .card .text-wrapper {
   text-align: left;
-  margin: 24px 24px 16px 24px;
+  margin: 20px 15px 16px 15px;
 }
 
 .gen-ai-cards .card .text-wrapper p {
@@ -103,7 +100,7 @@
 }
 
 .gen-ai-cards .card .text-wrapper p.cta-card-title {
-  font-size: var(--body-font-size-m);
+  font-size: var(--body-font-size-l);
   line-height: var(--body-font-size-m);
   font-weight: 700;
 }
@@ -254,7 +251,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   margin: 4px auto;
   width: max-content;
   color: var(--body-color);
-  border: 0;
+  border: 2px solid black;
 }
 
 .gen-ai-cards .card .links-wrapper a:hover {
@@ -325,9 +322,15 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   pointer-events: none;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2){
-    margin-left: 0px;
+    margin-left: 30px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2){
+    margin-left: unset;
   }
 
   .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
@@ -348,22 +351,26 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
     display: none;
   }
-}
 
-@media (min-width: 1200px) {
+  .gen-ai-cards .carousel-container .carousel-platform {
+    gap: 22px;
+  }
+
   .gen-ai-cards.homepage .carousel-element.card .media-wrapper {
-    width: 325px;
+    width: 352px;
   }
   .gen-ai-cards.homepage .carousel-element.card {
-    width: 357px;
-    height: 396px;
+    width: 380px;
+    height: 392px;
   }
   .gen-ai-cards.homepage .card .text-wrapper {
     text-align: left;
-    margin: 20px 20px 12px;
+    margin: 20px 15px 15px;
+  }
+  main .gen-ai-cards.homepage .gen-ai-cards-heading {
+    font-size: var(--heading-font-size-m);
   }
 }
-
 .gen-ai-cards.homepage .card .text-wrapper {
   flex-grow: 1;
 }

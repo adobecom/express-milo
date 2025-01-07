@@ -1,16 +1,10 @@
 /* templates pages spacial styling */
-div[class='section section-wrapper template-x-container'],
-div[class='section section-wrapper browse-by-category-card-fullwidth-container template-x-container'],
-div[data-audience="mobile"].section.section-wrapper.template-x-container {
-  padding-top: 0;
-}
-
 .section:has(.template-x) .content:first-child {
   padding-top: 0;
 }
 
 /* holiday special positioning */
-main.with-holiday-templates-banner > div[class='section section-wrapper template-x-container'] {
+main.with-holiday-templates-banner > div.section:has(.template-x) {
   position: absolute;
   top: 0;
   left: 0;
