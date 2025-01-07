@@ -75,7 +75,6 @@ async function fetchAndRenderTemplates(props) {
   }
 
   props.total = response.metadata.totalHits;
-
   // eslint-disable-next-line no-return-await
   return await getTemplates(response, fallbackMsg);
 }
@@ -1230,7 +1229,7 @@ function initExpandCollapseToolbar(block, templateTitle, toggle, toggleChev) {
 
 function decorateHoliday(block, props) {
   const main = document.querySelector('main');
-  const templateXSection = block.closest('div[class="section section-wrapper template-x-container"]');
+  const templateXSection = block.closest('div[class="section"]');
   const mobileViewport = window.innerWidth < 901;
   const templateTitle = block.querySelector('.template-title');
   const toggleBar = templateTitle.querySelector('div');

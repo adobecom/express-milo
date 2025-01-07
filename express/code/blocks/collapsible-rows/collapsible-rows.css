@@ -1,3 +1,11 @@
+.collapsible-row-wrapper {
+    margin: 0 auto 10px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background: var(--color-white);
+    width: 92%;
+}
+
 .collapsible-row-accordion {
     height: 128px;
     margin-bottom: 4px;
@@ -17,7 +25,6 @@
     margin: auto;
 }
 .collapsible-rows .collapsible-row-accordion {
-    margin-left: 15px;
     margin-right: 15px;
 }
 .collapsible-row-header {
@@ -42,7 +49,7 @@
 .collapsible-rows .collapsible-row-toggle-btn {
     display: block;
     width: fit-content;
-    margin-left: 0;
+    margin: 15px 0 0 15px;
     text-align: left;
     text-decoration: none;
     border-radius: 18px;
@@ -54,14 +61,11 @@
     transition: background-color 0.3s, color 0.3s, border 0.3s;
     border-width: 2px;
     border-style: solid;
-    margin-top: 15px;
-    margin-left: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
     color: var(--color-white);
     background-color: var(--color-info-accent);
     border-color: var(--color-info-accent);
-    font-weight: 600;
 }
 .collapsible-row-accordion.expandable.header-accordion {
     height: 100%;
@@ -117,21 +121,21 @@
 .collapsible-row-accordion.title {
     font-size: 32px;
     font-weight: 800;
-    margin-top: 20px;
+    margin: 20px 0 10px 0;
     padding-left: 0;
     height: 50px;
     border: none;
     background: transparent;
-    text-align: left;
+    text-align: center;
 }
-.section.section-wrapper.collapsible-rows-grey-bg {
+.section.collapsible-rows-grey-bg {
     background-color: #E8E8E8;
 }
-.section.section-wrapper.collapsible-section-padding {
+.section.collapsible-section-padding {
     padding-top: 10px;
     padding-bottom: 50px;
 }
-.section.section-wrapper .collapsible-rows-background {
+.section .collapsible-rows-background {
     position: absolute;
     top: 0;
     left: 0;
@@ -143,7 +147,7 @@
     max-width: none;
 }
 
-.section.section-wrapper .collapsible-rows-background img {
+.section .collapsible-rows-background img {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -184,7 +188,7 @@
     .collapsible-row-toggle-btn {
         display: block;
         width: fit-content;
-        margin-left: 0;
+        margin: 10px 0 0 0;
         text-align: left;
         text-decoration: none;
         border-radius: 18px;
@@ -196,13 +200,17 @@
         transition: background-color 0.3s, color 0.3s, border 0.3s;
         border-width: 2px;
         border-style: solid;
-        margin: 10px 0;
         overflow: hidden;
         text-overflow: ellipsis;
         color: var(--color-white);
         background-color: var(--color-info-accent);
         border-color: var(--color-info-accent);
-        font-weight: 600;
+    }
+}
+
+@media (min-width: 600px) {
+    .collapsible-row-wrapper {
+        width: unset;
     }
 }
 

@@ -12,6 +12,8 @@ let loadScript;
 let ccEverywhere;
 let quickActionContainer;
 let uploadContainer;
+let ui2SDK;
+let ui2Landing;
 
 const JPG = 'jpg';
 const JPEG = 'jpeg';
@@ -54,18 +56,18 @@ const QA_CONFIGS = {
   },
 };
 
-function fade(element, action) {
-  if (action === 'in') {
-    element.classList.remove('hidden');
-    setTimeout(() => {
-      element.classList.remove('transparent');
-    }, 10);
-  } else if (action === 'out') {
-    element.classList.add('transparent');
-    setTimeout(() => {
-      element.classList.add('hidden');
-    }, 200);
-  }
+function fadeIn(element) {
+  element.classList.remove('hidden');
+  setTimeout(() => {
+    element.classList.remove('transparent');
+  }, 10);
+}
+
+function fadeOut(element) {
+  element.classList.add('transparent');
+  setTimeout(() => {
+    element.classList.add('hidden');
+  }, 200);
 }
 
 function selectElementByTagPrefix(p) {
@@ -117,9 +119,7 @@ export function runQuickAction(quickAction, data, block) {
   block.append(quickActionContainer);
   const divs = block.querySelectorAll(':scope > div');
   if (divs[1]) [, uploadContainer] = divs;
-  const extraContainer = block.querySelector('.extra-container');
-  fade(uploadContainer, 'out');
-  fade(extraContainer, 'out');
+  ui2SDK();
 
   const contConfig = {
     mode: 'inline',
@@ -141,8 +141,7 @@ export function runQuickAction(quickAction, data, block) {
     callbacks: {
       onIntentChange: () => {
         quickActionContainer?.remove();
-        fade(uploadContainer, 'in');
-        fade(extraContainer, 'in');
+        ui2Landing();
         document.body.classList.add('editor-modal-loaded');
         window.history.pushState({ hideFrictionlessQa: true }, '', '');
         return {
@@ -315,12 +314,43 @@ export default async function decorate(block) {
   }
 
   const [headline, dropzoneContainer, extraContainer] = rows;
+  const h1 = headline.querySelector('h1');
+  const landingHeadlineText = h1.textContent;
+  const postUploadHeadline = headline.querySelector('p');
+  let postUploadHeadlineText;
+  if (postUploadHeadline) {
+    postUploadHeadlineText = postUploadHeadline.textContent;
+    postUploadHeadline.remove();
+  }
   headline.classList.add('headline');
   dropzoneContainer.classList.add('dropzone-container');
   extraContainer.classList.add('extra-container');
   decorateExtra(extraContainer);
 
-  const dropzone = createTag('button', { class: 'dropzone hide' });
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add('express-logo');
+  block.prepend(logo);
+
+  ui2SDK = () => {
+    fadeOut(uploadContainer);
+    fadeOut(extraContainer);
+    logo.classList.add('hide');
+    if (postUploadHeadlineText) {
+      h1.textContent = postUploadHeadlineText;
+      h1.classList.add('post-upload');
+    }
+  };
+  ui2Landing = () => {
+    fadeIn(uploadContainer);
+    fadeIn(extraContainer);
+    logo.classList.remove('hide');
+    if (postUploadHeadlineText) {
+      h1.textContent = landingHeadlineText;
+      h1.classList.remove('post-upload');
+    }
+  };
+
+  const dropzone = createTag('button', { class: 'dropzone hide', id: 'mobile-fqa-upload' });
   const [animationContainer, dropzoneContent] = rows[1].children;
   while (dropzoneContent.firstChild) dropzone.append(dropzoneContent.firstChild);
   dropzoneContent.replaceWith(dropzone);
@@ -350,6 +380,8 @@ export default async function decorate(block) {
 
   dropzone.addEventListener('click', (e) => {
     e.preventDefault();
+    dropzone.classList.remove('hide');
+    animationContainer.classList.add('hide');
     if (quickAction === 'generate-qr-code') {
       startSDK('', quickAction, block);
     } else {
@@ -367,8 +399,7 @@ export default async function decorate(block) {
       editorModal?.remove();
       document.body.classList.remove('editor-modal-loaded');
       inputElement.value = '';
-      fade(uploadContainer, 'in');
-      fade(extraContainer, 'in');
+      ui2Landing();
       document.body.dataset.suppressfloatingcta = 'false';
     }
   }, { passive: true });
@@ -376,9 +407,6 @@ export default async function decorate(block) {
   block.dataset.frictionlesstype = quickAction;
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
-  block.prepend(logo);
   import('../../scripts/instrument.js').then(({ sendFrictionlessEventToAdobeAnaltics }) => {
     sendFrictionlessEventToAdobeAnaltics(block);
   });
