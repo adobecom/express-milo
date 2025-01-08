@@ -110,6 +110,7 @@
     text-align: left;
     color: var(--text-color);
     font-size: var(--body-font-size-l);
+    
 }
 
 .holiday-blade-inner-content .toggle-bar a {
@@ -119,6 +120,8 @@
     font-size: 16px;
     text-decoration: underline;
     font-family: 'adobe-clean';
+    top: -3px;
+    position: relative;
 }
 
 .holiday-blade-inner-content .toggle-bar .icon {
@@ -128,17 +131,9 @@
 
 .holiday-blade-inner-content .toggle-bar > p:first-of-type picture>img {
     margin: auto;
-    display: block;
-    margin-top: 4px;
+    display: block; 
     width: fit-content;
-}
-
-.holiday-blade-inner-content .toggle-bar > p:first-of-type picture>img {
-    margin: auto;
-    display: block;
-    margin-top: 4px;
-    width: fit-content;
-}
+} 
 
 .holiday-blade-inner-content.light .toggle-bar .icon {
     filter: invert(100)
@@ -557,12 +552,13 @@
 
     .holiday-blade-inner-content .toggle-bar p:first-of-type {
         display: block;
-        width: initial;
+        width: initial; 
     }
 
     .holiday-blade-inner-content .toggle-bar > p, 
     .holiday-blade-inner-content .toggle-bar > h4{
         width: unset;
+
     }
  
     .holiday-blade-inner-content .toggle-bar .toggle-bar-first-element  {
