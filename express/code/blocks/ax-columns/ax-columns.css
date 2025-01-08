@@ -3,8 +3,7 @@
   padding-top: 0;
 }
 
-.section.long-form .ax-columns {
-  padding-top: 40px;
+.section.long-form .ax-columns:last-child {
   padding-bottom: 40px;
 }
 
