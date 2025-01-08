@@ -8,7 +8,7 @@ main .tutorials-wrapper, .section:has(.content:first-child + .tutorials-wrapper)
   margin-top: 0px;
 }
 
-.default-content-wrapper:has(+ .tutorials-wrapper .tutorials.twoperrow) {
+.content:has(+ .tutorials-wrapper .tutorials.twoperrow) {
   max-width: 1024px;
   margin-top: 24px;
 }

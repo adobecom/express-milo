@@ -186,7 +186,7 @@ main .icon-list-center-container ~ .columns-highlight-container {
   margin-top: 120px;
 }
 
-.section.icon-list-enterprise-container .default-content-wrapper h4 {
+.section.icon-list-enterprise-container .content h4 {
   padding-top: 120px;
   font-size: var(--heading-font-size-l);
 }
