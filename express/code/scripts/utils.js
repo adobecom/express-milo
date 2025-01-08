@@ -694,7 +694,7 @@ export function decorateArea(area = document) {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
-  const links = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"]`);
+  const links = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`);
   if (links.length) {
     // eslint-disable-next-line import/no-cycle
     import('./branchlinks.js').then((mod) => mod.default(links));
