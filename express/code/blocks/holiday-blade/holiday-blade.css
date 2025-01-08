@@ -18,12 +18,12 @@
 }
 
 .section .holiday-blade-inner-content.expanded .holiday-blade-inner-wrapper {
-    height: initial;
+    height: initial; 
 }
 
 .section .holiday-blade {
     display: block;
-    height: 100px;
+    height: 60px;
     z-index: 20;
     margin: 0;
 }
@@ -52,13 +52,19 @@
     left: auto;
     pointer-events: none;
     width: 30px;
+ 
 }
 
 .holiday-blade-inner-content .carousel-container .carousel-fader-right {
     align-items: end;
     top: 20px;
-    right: 7px;
+    right: 7px; 
     width: 30px;
+ 
+}
+
+.holiday-blade .toggle-bar > p {
+    margin-top: -2px;
 }
 
 .holiday-blade-inner-content .carousel-container .carousel-arrow {
@@ -69,6 +75,7 @@
 
 .holiday-blade-inner-content .carousel-container .carousel-arrow-left {
     position: absolute;
+ 
 }
 
 .holiday-blade-inner-content.light {
@@ -110,7 +117,6 @@
     text-align: left;
     color: var(--text-color);
     font-size: var(--body-font-size-l);
-    
 }
 
 .holiday-blade-inner-content .toggle-bar a {
@@ -120,8 +126,6 @@
     font-size: 16px;
     text-decoration: underline;
     font-family: 'adobe-clean';
-    top: -3px;
-    position: relative;
 }
 
 .holiday-blade-inner-content .toggle-bar .icon {
@@ -131,15 +135,16 @@
 
 .holiday-blade-inner-content .toggle-bar > p:first-of-type picture>img {
     margin: auto;
-    display: block; 
+    display: block;
+    margin-top: 4px;
     width: fit-content;
-} 
+}
 
 .holiday-blade-inner-content.light .toggle-bar .icon {
     filter: invert(100)
 }
 
-.holiday-blade-inner-content .toggle-bar .toggle-bar-first-element:has(img)  {
+ .holiday-blade-inner-content .toggle-bar .toggle-bar-first-element:has(img)  {
     display: none;
 }   
 
@@ -201,7 +206,7 @@
     padding: 12px;
     margin: 0px 50px 0px 0px;
     color: var(--text-color);
-    text-align: center;
+
 }
 
 .holiday-blade-inner-content div div>* {
@@ -308,6 +313,8 @@
     /* IE10+ */
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+
+
 }
 
 .holiday-blade-inner-content .button-container:focus-within {
@@ -339,7 +346,7 @@
     justify-content: space-between;
     padding: 16px 8px 8px 8px;
     box-shadow: 0 0 6px #00000029;
-}
+} 
 
 .holiday-blade-inner-content .template:hover:not(.placeholder) .button-container {
     opacity: 1;
@@ -423,6 +430,7 @@
     padding: 2px;
 }
 
+
 .holiday-blade-inner-content .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped {
     left: unset;
     right: calc(100% + 12px);
@@ -451,6 +459,7 @@
     transform: rotate(180deg);
 }
 
+
 .holiday-blade-inner-content .carousel {
     height: 200px;
 }
@@ -461,9 +470,8 @@
 
 @media screen and (min-width: 768px) and (max-width: 1279px) {
     .section .holiday-blade {
-        height: 45px;
+        height: 0px;
     }
-
     .section .holiday-blade-inner-content {
         max-width: 100%;
         z-index: 6;
@@ -472,9 +480,9 @@
         --toggle-bar-height: 45px;
         --template-height: 180px;
     }
-
     .holiday-blade-inner-content .toggle-bar>h4,
     .holiday-blade-inner-content .toggle-bar>p {
+    
         width: unset;
     }
 
@@ -483,10 +491,13 @@
         padding-bottom: 0;
         margin: auto;
     }
+
+
     .holiday-blade-inner-content.expanded {
         height: fit-content;
         overflow: unset;
     }
+
     .holiday-blade-inner-content .carousel-container {
         position: relative;
         top: 0px;
@@ -496,6 +507,7 @@
         padding-bottom: 30px;
     }
     .holiday-blade-inner-content.static-background .static-background-image {
+      
         width: 100%;
         clip-path: polygon(0 0, 100% 0, 100% var(--expanded-blade-height), 0 var(--expanded-blade-height)); 
     }
@@ -519,20 +531,12 @@
         width: 80%;
         text-align: center;
     }
-
-    .holiday-blade-inner-content .toggle-bar .toggle-bar-first-element:has(img) {
-        display: block;
-        margin: auto;
-        width: 80%;
-        text-align: center;
-    }
 }
 
 @media screen and (min-width: 1280px) {
     .section .holiday-blade {
-        height: unset;
-        min-height: 48px;
-    }  
+        height: 0px;
+    }
     .section .holiday-blade-inner-content {
         max-width: 100%;
         width: 100%;
@@ -552,13 +556,12 @@
 
     .holiday-blade-inner-content .toggle-bar p:first-of-type {
         display: block;
-        width: initial; 
+        width: initial;
     }
 
     .holiday-blade-inner-content .toggle-bar > p, 
     .holiday-blade-inner-content .toggle-bar > h4{
         width: unset;
-
     }
  
     .holiday-blade-inner-content .toggle-bar .toggle-bar-first-element  {
