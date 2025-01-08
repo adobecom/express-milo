@@ -23,7 +23,7 @@
 
 .section .holiday-blade {
     display: block;
-    height: 60px;
+    height: 110px;
     z-index: 20;
     margin: 0;
 }
@@ -470,8 +470,9 @@
 
 @media screen and (min-width: 768px) and (max-width: 1279px) {
     .section .holiday-blade {
-        height: 0px;
+        height: 60px;
     }
+
     .section .holiday-blade-inner-content {
         max-width: 100%;
         z-index: 6;
@@ -535,8 +536,9 @@
 
 @media screen and (min-width: 1280px) {
     .section .holiday-blade {
-        height: 0px;
-    }
+        height: unset;
+        min-height: 48px;
+    }  
     .section .holiday-blade-inner-content {
         max-width: 100%;
         width: 100%;
