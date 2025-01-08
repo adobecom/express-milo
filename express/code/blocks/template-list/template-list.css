@@ -22,21 +22,21 @@
   padding: 0;
 }
 
-.template-list-fullwidth-container > .default-content-wrapper,
-.template-list-fullwidth-apipowered-container > .default-content-wrapper {
+.template-list-fullwidth-container > .content,
+.template-list-fullwidth-apipowered-container > .content {
   padding: 0 15px;
 }
 
-.template-list-fullwidth-container .default-content-wrapper h2,
-.template-list-fullwidth-container .default-content-wrapper p,
-.template-list-fullwidth-apipowered-container .default-content-wrapper h2,
-.template-list-fullwidth-apipowered-container .default-content-wrapper p {
+.template-list-fullwidth-container .content h2,
+.template-list-fullwidth-container .content p,
+.template-list-fullwidth-apipowered-container .content h2,
+.template-list-fullwidth-apipowered-container .content p {
   margin: 0;
   text-align: left;
 }
 
 .template-list-horizontal-fullwidth-mini-apipowered-spreadsheet-powered-container h2,
-.template-list-horizontal-fullwidth-mini-apipowered-spreadsheet-powered-container .default-content-wrapper h2{
+.template-list-horizontal-fullwidth-mini-apipowered-spreadsheet-powered-container .content h2{
   margin: 20px 12px 0 12px;
   text-align: left;
 }
@@ -52,15 +52,15 @@
   min-height: unset;
 }
 
-.template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper h2,
-.template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper h3,
-.template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper p {
+.template-list-horizontal-fullwidth-collaboration-container .content h2,
+.template-list-horizontal-fullwidth-collaboration-container .content h3,
+.template-list-horizontal-fullwidth-collaboration-container .content p {
   text-align: left;
   padding: 0 28px;
   margin: 12px 0;
 }
 
-.template-list-horizontal-fullwidth-collaboration-container .default-content-wrapper p {
+.template-list-horizontal-fullwidth-collaboration-container .content p {
   font-size: var(--body-font-size-m);
   line-height: 24px;
 }
@@ -2127,9 +2127,9 @@
   }
 
   .template-list-fullwidth-container > div,
-  .template-list-fullwidth-container > .default-content-wrapper,
+  .template-list-fullwidth-container > .content,
   .template-list-fullwidth-apipowered-container > div,
-  .template-list-fullwidth-apipowered-container > .default-content-wrapper {
+  .template-list-fullwidth-apipowered-container > .content {
     max-width: none;
   }
 

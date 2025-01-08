@@ -774,7 +774,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     font-size: var(--heading-font-size-m);
   }
 
-  .section:has(.ax-columns.enterprise) .default-content-wrapper h2 {
+  .section:has(.ax-columns.enterprise) .content h2 {
     padding-left: 20px;
     padding-right: 20px;
     word-break: auto-phrase;
