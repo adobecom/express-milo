@@ -107,6 +107,8 @@ function turnContentLinksIntoButtons() {
   document.querySelectorAll('.section > .content').forEach((content) => {
     const links = content.querySelectorAll('a');
     links.forEach((link) => {
+      const linkText = link.textContent.trim();
+      link.title = link.title || linkText;
       const $up = link.parentElement;
       const $twoup = link.parentElement.parentElement;
       if (!link.querySelector('img')) {
