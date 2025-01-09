@@ -2,6 +2,10 @@ main .tutorials-wrapper, .section:has(.content:first-child + .tutorials-wrapper)
   max-width: 1200px;
 }
 
+main .section > .tutorials-wrapper {
+  margin: auto;
+  max-width: 375px;
+}
 
 .section:has(.content:first-child + .tutorials-wrapper) .content, main .tutorials-wrapper:first-child {
   padding-top: 60px;
@@ -96,10 +100,18 @@ main .tutorials h3 {
   font-weight: 700;
 }
 
-main .section > .tutorials-wrapper {
-  margin: auto;
-}
-
 main .section .tutorials a, main .section .tutorials a:hover {
   color: var(--text-color);
+}
+
+@media (min-width: 900px) {
+  main .section > .tutorials-wrapper {
+    max-width: 830px;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .section > .tutorials-wrapper {
+    max-width: 1024px;
+  }
 }
