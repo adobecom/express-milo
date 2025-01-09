@@ -1,18 +1,19 @@
 import { createTag } from '../../scripts/utils.js';
 
 function buildTableLayout(block) {
-  const parentDiv = block.closest('.section.section-wrapper');
-  parentDiv?.classList.add('collapsible-rows-grey-bg', 'collapsible-section-padding');
+  const parentDiv = block.closest('.section');
+  parentDiv?.classList.add('faqv2-grey-bg', 'faqv2-section-padding');
+  console.log('parentDiv', parentDiv);
 
   const rows = Array.from(block.children);
   block.innerHTML = '';
   const background = rows.shift();
-  background.classList.add('collapsible-rows-background');
+  background.classList.add('faqv2-background');
   parentDiv.prepend(background);
   const headerText = rows.shift()?.innerText.trim();
 
   if (headerText) {
-    const rowAccordionHeader = createTag('h2', { class: 'collapsible-row-accordion title' });
+    const rowAccordionHeader = createTag('h2', { class: 'faqv2-accordion title' });
     rowAccordionHeader.textContent = headerText;
     block.prepend(rowAccordionHeader);
   }
@@ -31,28 +32,28 @@ function buildTableLayout(block) {
   collapsibleRows.forEach((row) => {
     const { header, subHeader } = row;
 
-    const rowWrapper = createTag('div', { class: 'collapsible-row-wrapper' });
+    const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
     block.append(rowWrapper);
 
-    const headerAccordion = createTag('div', { class: 'collapsible-row-accordion expandable header-accordion' });
+    const headerAccordion = createTag('div', { class: 'faqv2-accordion expandable header-accordion' });
     rowWrapper.append(headerAccordion);
 
-    const headerDiv = createTag('h3', { class: 'collapsible-row-header expandable' });
+    const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
     headerDiv.innerHTML = header;
     headerAccordion.append(headerDiv);
 
     const iconElement = createTag('img', {
-      src: '/express/icons/plus-heavy.svg',
+      src: '/express/code/icons/plus-heavy.svg',
       alt: 'toggle-icon',
       class: 'toggle-icon',
     });
 
     headerDiv.appendChild(iconElement);
 
-    const subHeaderAccordion = createTag('div', { class: 'collapsible-row-accordion expandable sub-header-accordion' });
+    const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
     rowWrapper.append(subHeaderAccordion);
 
-    const subHeaderDiv = createTag('div', { class: 'collapsible-row-sub-header expandable' });
+    const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
     subHeaderDiv.innerHTML = subHeader;
     subHeaderAccordion.append(subHeaderDiv);
 
@@ -62,7 +63,7 @@ function buildTableLayout(block) {
       subHeaderAccordion.style.display = isCollapsed ? 'flex' : 'none';
       subHeaderAccordion.style.paddingTop = 0;
 
-      iconElement.src = isCollapsed ? '/express/icons/minus-heavy.svg' : '/express/icons/plus-heavy.svg';
+      iconElement.src = isCollapsed ? '/express/code/icons/minus-heavy.svg' : '/express/code/icons/plus-heavy.svg';
     });
   });
 }
@@ -89,7 +90,7 @@ function buildOriginalLayout(block) {
   collapsibleRows.forEach((row, index) => {
     const { header, subHeader } = row;
 
-    const accordion = createTag('div', { class: 'collapsible-row-accordion' });
+    const accordion = createTag('div', { class: 'faqv2-accordion' });
 
     if (index >= visibleCount) {
       accordion.classList.add('collapsed');
@@ -98,21 +99,21 @@ function buildOriginalLayout(block) {
 
     block.append(accordion);
 
-    const headerDiv = createTag('h3', { class: 'collapsible-row-header' });
+    const headerDiv = createTag('h3', { class: 'faqv2-header' });
     accordion.append(headerDiv);
     headerDiv.innerHTML = header;
 
-    const subHeaderDiv = createTag('div', { class: 'collapsible-row-sub-header' });
+    const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
     subHeaderDiv.innerHTML = subHeader;
     accordion.append(subHeaderDiv);
   });
 
-  const toggleButton = createTag('a', { class: 'collapsible-row-toggle-btn button' });
+  const toggleButton = createTag('a', { class: 'faqv2-toggle-btn button' });
   toggleButton.textContent = 'View more';
   collapsibleRows.length > 3 && block.append(toggleButton);
 
   toggleButton.addEventListener('click', () => {
-    const hiddenItems = block.querySelectorAll('.collapsible-row-accordion');
+    const hiddenItems = block.querySelectorAll('.faqv2-accordion');
     hiddenItems.forEach((item, index) => {
       if (index >= visibleCount) {
         if (item.classList.contains('collapsed')) {

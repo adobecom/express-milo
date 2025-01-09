@@ -1,4 +1,4 @@
-.collapsible-row-wrapper {
+.faqv2-wrapper {
   margin: 0 auto 10px auto;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -6,7 +6,7 @@
   width: 92%;
 }
 
-.collapsible-row-accordion {
+.faqv2-accordion {
   height: 128px;
   margin-bottom: 4px;
   border-radius: 0px 8px 8px 0px;
@@ -18,18 +18,18 @@
   justify-content: center;
 }
 
-.collapsible-rows {
+.faqv2 {
   position: relative;
   z-index: 1;
   width: 100%;
   height: auto;
 }
 
-.collapsible-rows .collapsible-row-accordion {
+.faqv2 .faqv2-accordion {
   margin-right: 15px;
 }
 
-.collapsible-row-header {
+.faqv2-header {
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -39,7 +39,7 @@
   color: #444444;
 }
 
-.collapsible-row-sub-header {
+.faqv2-sub-header {
   margin-top: 10px;
   font-size: 14px;
   font-style: normal;
@@ -50,7 +50,7 @@
   color: #505050;
 }
 
-.collapsible-rows .collapsible-row-toggle-btn {
+.faqv2 .faqv2-toggle-btn {
   display: block;
   width: fit-content;
   margin: 15px 0 0 15px;
@@ -72,7 +72,7 @@
   border-color: var(--color-info-accent);
 }
 
-.collapsible-row-accordion.expandable.header-accordion {
+.faqv2-accordion.expandable.header-accordion {
   height: 100%;
   border-radius: 8px;
   border: none;
@@ -80,7 +80,7 @@
   background: white;
 }
 
-.collapsible-row-accordion.expandable.header-accordion.rounded-corners {
+.faqv2-accordion.expandable.header-accordion.rounded-corners {
   border-radius: 8px 8px 0 0;
   margin-bottom: 0;
   background: linear-gradient(to bottom,
@@ -90,7 +90,7 @@
     white;
 }
 
-.collapsible-row-accordion.expandable.sub-header-accordion {
+.faqv2-accordion.expandable.sub-header-accordion {
   height: 100%;
   border-radius: 0 0 8px 8px;
   border: none;
@@ -105,7 +105,7 @@
     white;
 }
 
-.collapsible-row-header.expandable {
+.faqv2-header.expandable {
   font-size: 16px;
   font-weight: 700;
   display: flex;
@@ -116,12 +116,12 @@
   padding-left: 6px;
 }
 
-.collapsible-row-accordion.expandable .toggle-icon {
+.faqv2-accordion.expandable .toggle-icon {
   width: 12px;
   height: 12px;
 }
 
-.collapsible-row-sub-header.expandable {
+.faqv2-sub-header.expandable {
   font-size: 16px;
   font-weight: 400;
   margin-top: 0;
@@ -129,7 +129,7 @@
   padding-left: 6px;
 }
 
-.collapsible-row-accordion.title {
+.faqv2-accordion.title {
   font-size: 32px;
   font-weight: 800;
   margin: 20px 0 10px 0;
@@ -140,16 +140,16 @@
   text-align: center;
 }
 
-.section.section-wrapper.collapsible-rows-grey-bg {
+.section.faqv2-grey-bg {
   background-color: #E8E8E8;
 }
 
-.section.section-wrapper.collapsible-section-padding {
+.section.faqv2-section-padding {
   padding-top: 10px;
   padding-bottom: 50px;
 }
 
-.section.section-wrapper .collapsible-rows-background {
+.section .faqv2-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -161,7 +161,7 @@
   max-width: none;
 }
 
-.section.section-wrapper .collapsible-rows-background img {
+.section .faqv2-background img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -173,22 +173,22 @@
 }
 
 @media (min-width: 400px) {
-  .collapsible-row-header {
+  .faqv2-header {
     font-size: 18px;
     font-weight: 400;
   }
 
-  .collapsible-row-sub-header {
+  .faqv2-sub-header {
     font-size: 18px;
     font-weight: 700;
     line-height: 24px;
   }
 
-  .collapsible-rows.small .collapsible-row-accordion {
+  .faqv2.small .faqv2-accordion {
     height: 78px;
   }
 
-  .collapsible-row-accordion {
+  .faqv2-accordion {
     height: 128px;
     margin-bottom: 4px;
     border-radius: 0px 8px 8px 0px;
@@ -200,11 +200,11 @@
     justify-content: center;
   }
 
-  .collapsible-row-accordion.collapsed {
+  .faqv2-accordion.collapsed {
     display: none;
   }
 
-  .collapsible-row-toggle-btn {
+  .faqv2-toggle-btn {
     display: block;
     width: fit-content;
     margin: 10px 0 0 0;
@@ -229,30 +229,23 @@
 }
 
 @media (min-width: 600px) {
-  .collapsible-row-wrapper {
+  .faqv2-wrapper {
     width: unset;
   }
 }
 
 @media (min-width: 900px) {
-  .collapsible-rows-container {
+  .faqv2 {
     width: 648px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
   }
 
-  .collapsible-rows {
-    width: 648px;
+  .faqv2 .faqv2-accordion {
     margin-left: 0;
     margin-right: 0;
   }
 
-  .collapsible-rows .collapsible-row-accordion {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .collapsible-rows .collapsible-row-toggle-btn {
+  .faqv2 .faqv2-toggle-btn {
     width: 65px;
     height: 24px;
     line-height: 24px;
