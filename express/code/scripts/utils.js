@@ -481,7 +481,7 @@ export function preDecorateSections(area) {
   }
 }
 
-function renameConflictingBlocks(area) {
+function renameConflictingBlocks(area, selector) {
   const replaceColumnBlock = (section) => {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
@@ -519,7 +519,7 @@ function renameConflictingBlocks(area) {
   };
 
   if (!area) return;
-  area.querySelectorAll('main > div').forEach((section) => {
+  area.querySelectorAll(selector).forEach((section) => {
     replaceColumnBlock(section);
     replaceTableOfContentBlock(section);
     replaceMarqueeBlock(section);
@@ -687,7 +687,7 @@ function decorateLegalCopy(area) {
 
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  const selector = area === document ? 'main > div' : ':scope > div';
+  const selector = area === document ? 'main > div' : ':scope body > div';
   preDecorateSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
@@ -708,7 +708,7 @@ export function decorateArea(area = document) {
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
 
   fragmentBlocksToLinks(area);
-  renameConflictingBlocks(area);
+  renameConflictingBlocks(area, selector);
   addPromotion(area);
   decorateLegalCopy(area);
 

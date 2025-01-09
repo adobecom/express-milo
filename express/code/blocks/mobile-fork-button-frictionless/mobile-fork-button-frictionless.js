@@ -24,8 +24,8 @@ function buildMobileGating(block, data) {
   block.append(header, buildAction(data.tools[0], 'accent'), buildAction(data.tools[1], 'outline'));
 }
 
-export function createMultiFunctionButton(block, data, audience) {
-  const buttonWrapper = createFloatingButton(block, audience, data);
+export async function createMultiFunctionButton(block, data, audience) {
+  const buttonWrapper = await createFloatingButton(block, audience, data);
   buttonWrapper.classList.add('multifunction', 'mobile-fork-button-frictionless');
   buildMobileGating(buttonWrapper.querySelector('.floating-button'), data);
   return buttonWrapper;
@@ -112,7 +112,7 @@ export default async function decorate(block) {
   }
 
   const data = collectFloatingButtonData(eligible);
-  const blockWrapper = createMultiFunctionButton(block, data, audience);
+  const blockWrapper = await createMultiFunctionButton(block, data, audience);
   const blockLinks = blockWrapper.querySelectorAll('a');
   if (blockLinks && blockLinks.length > 0) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });
