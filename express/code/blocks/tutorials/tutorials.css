@@ -96,7 +96,7 @@ main .tutorials h3 {
   font-weight: 700;
 }
 
-main .section>div {
+main .section > .tutorials {
   margin: auto;
 }
 
