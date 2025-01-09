@@ -481,7 +481,7 @@ export function preDecorateSections(area) {
   }
 }
 
-function renameConflictingBlocks(area) {
+function renameConflictingBlocks(area, selector) {
   const replaceColumnBlock = (section) => {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
@@ -519,7 +519,7 @@ function renameConflictingBlocks(area) {
   };
 
   if (!area) return;
-  area.querySelectorAll('main > div').forEach((section) => {
+  area.querySelectorAll(selector).forEach((section) => {
     replaceColumnBlock(section);
     replaceTableOfContentBlock(section);
     replaceMarqueeBlock(section);
@@ -687,14 +687,14 @@ function decorateLegalCopy(area) {
 
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  const selector = area === document ? 'main > div' : ':scope > div';
+  const selector = area === document ? 'main > div' : ':scope body > div';
   preDecorateSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
-  const links = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"]`);
+  const links = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`);
   if (links.length) {
     // eslint-disable-next-line import/no-cycle
     import('./branchlinks.js').then((mod) => mod.default(links));
@@ -708,7 +708,7 @@ export function decorateArea(area = document) {
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
 
   fragmentBlocksToLinks(area);
-  renameConflictingBlocks(area);
+  renameConflictingBlocks(area, selector);
   addPromotion(area);
   decorateLegalCopy(area);
 
@@ -716,7 +716,7 @@ export function decorateArea(area = document) {
   const embeds = area.querySelectorAll(`${selector} > .embed a[href*="instagram.com"]`);
   linksToNotAutoblock.push(...embeds);
 
-  let videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'image-list', 'tutorials', 'quick-action-hub'].map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
+  let videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'image-list', 'tutorials', 'quick-action-hub', 'holiday-blade'].map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
   videoLinksToNotAutoBlock += `,${['tutorials'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"], ${selector} .${block} a[href*="video.tv.adobe.com"]`).join(', ')}`;
   linksToNotAutoblock.push(...area.querySelectorAll(videoLinksToNotAutoBlock));
   linksToNotAutoblock.forEach((link) => {

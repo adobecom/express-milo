@@ -4,7 +4,7 @@
   margin: auto;
 }
 
-.browse-by-category:not(.fullwidth):first-child {
+.browse-by-category:first-child {
   padding-top: 60px;
 }
 
@@ -194,6 +194,7 @@ main .browse-by-category:not(.card) .browse-by-category-card-title {
   line-height: 24px;
   font-weight: 700;
   max-width: 148px;
+  text-align: center;
 }
 
 main .browse-by-category.card .browse-by-category-card-title {
