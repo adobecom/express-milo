@@ -222,12 +222,6 @@
   }
 }
 
-@media (min-width: 600px) {
-  .faqv2-wrapper {
-    width: unset;
-  }
-}
-
 @media (min-width: 900px) {
   .faqv2 {
     width: 648px;
