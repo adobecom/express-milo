@@ -44,9 +44,6 @@ main .how-to-v2 ol li .detail-container {
   font-size: 16px;
   line-height: 20.8px;
   font-weight: 400;
-}
-
-main .how-to-v2 ol li .detail-container {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.21s ease-out;

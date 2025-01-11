@@ -96,7 +96,7 @@ function getMimeType(src) {
   return `video/${src.split('.').pop()}`;
 }
 
-function getAvailableVimeoSubLang(getConfig) {
+export function getAvailableVimeoSubLang(getConfig) {
   const langs = {
     fr: 'fr',
     de: 'de',
