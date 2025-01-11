@@ -2,8 +2,6 @@ import { createTag } from '../../scripts/utils.js';
 
 function buildTableLayout(block) {
   const parentDiv = block.closest('.section');
-  parentDiv?.classList.add('faqv2-grey-bg', 'faqv2-section-padding');
-
   const rows = Array.from(block.children);
   block.innerHTML = '';
   const background = rows.shift();
