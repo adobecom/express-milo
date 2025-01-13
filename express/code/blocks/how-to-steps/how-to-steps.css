@@ -245,6 +245,7 @@ main .section .template-x-heading {
   }
 
   main .section:has(.content:first-child + .how-to-steps) .content {
+    padding: 0 40px;
     max-width: 1070px;
   }
 }

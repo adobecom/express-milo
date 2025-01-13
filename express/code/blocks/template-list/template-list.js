@@ -1537,7 +1537,7 @@ export async function decorateTemplateList(block, props) {
           }
         }, props.autoCollapseDelay);
       } else {
-        const toolBar = parent.querySelector('.default-content-wrapper');
+        const toolBar = parent.querySelector('.content');
         const templateListWrapper = parent.querySelector('.template-list-wrapper');
         const sectionHeading = parent.querySelector('div > h2');
         let sectionSlug = null;
@@ -1881,7 +1881,7 @@ async function replaceRRTemplateList(block, props) {
 
       if (newBlock) {
         const section = block.closest('.section');
-        const sectionHeading = section.querySelector('div.default-content-wrapper > h2');
+        const sectionHeading = section.querySelector('div.content > h2');
         let sectionSlug = null;
 
         if (sectionHeading.textContent.trim().indexOf('{{heading_placeholder}}') >= 0) {

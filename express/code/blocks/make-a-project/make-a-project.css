@@ -454,7 +454,7 @@ main .make-a-project .free-plan-widget {
 }
 
 /* add padding if make a project isn't the first block */
-main .default-content-wrapper + .make-a-project-wrapper > .make-a-project {
+main .content + .make-a-project-wrapper > .make-a-project {
   padding-top: 40px;
 }
 
