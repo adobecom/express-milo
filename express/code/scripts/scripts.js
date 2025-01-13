@@ -50,6 +50,7 @@ const CONFIG = {
   // geoRouting: 'off',
   // fallbackRouting: 'off',
   decorateArea,
+  faasCloseModalAfterSubmit: 'on',
   locales: {
     '': { ietf: 'en-US', tk: 'jdq5hay.css' },
     br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
