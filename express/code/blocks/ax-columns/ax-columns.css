@@ -1145,7 +1145,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     font-size: var(--heading-font-size-xl);
   }
 
-  .section.ax-columns h1.columns-heading-x-long {
+  .section .ax-columns h1.columns-heading-x-long {
     font-size: var(--heading-font-size-l);
   }
 
