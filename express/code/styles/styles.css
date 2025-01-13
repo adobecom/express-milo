@@ -144,11 +144,11 @@ main {
   line-height: initial;
 }
 
-.section:not([data-padding='none']) > .content:first-child {
+main .section:not([data-padding='none']) > .content:first-child {
   padding-top: 60px;
 }
 
-.content:first-child h2 {
+main .content h2 {
   margin-top: 80px;
 }
 
@@ -748,7 +748,6 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
 
   main h4 {
     font-size: var(--heading-font-size-m);
-    margin-top: 56px;
   }
 
   main h1 + h5 {

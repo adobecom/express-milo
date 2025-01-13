@@ -231,11 +231,11 @@ main .section>.simplified-pricing-cards-wrapper {
 ;
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container {
+.pricing-cards-wrapper+.content .button-container {
     margin-top: -40px;
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container .button {
+.pricing-cards-wrapper+.content .button-container .button {
     padding: 13px 1.5em 14px;
     border-radius: 27px;
     font-size: var(--body-font-size-m);

@@ -85,6 +85,11 @@
   margin-top: 0;
 }
 
+.section:has(> .steps.dark) .content:first-child,
+.section:has(> .steps.highlight) .content:first-child {
+  padding-top: 0px;
+}
+
 .section:has(> .steps.dark) .steps > div {
   background-color: var(--color-gray-700);
 }

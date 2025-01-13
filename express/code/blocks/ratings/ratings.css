@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.section.long-form:has(.ax-columns) + .section .ratings {
+  margin-top: 40px;
+}
+
 .ratings > * {
   max-width: 1024px;
   margin: auto;

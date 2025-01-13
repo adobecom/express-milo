@@ -364,12 +364,12 @@ End border style variants
   text-align: center;
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container {
+.section .pricing-cards-wrapper+.content .button-container {
   margin-top: -40px;
 
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container .button {
+.pricing-cards-wrapper+.content .button-container .button {
   padding: 13px 1.5em 14px 1.5em;
   border-radius: 27px;
   font-size: var(--body-font-size-m);
