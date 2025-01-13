@@ -2,6 +2,7 @@ import { getLibs, decorateButtonsDeprecated, addTempWrapperDeprecated } from '..
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
+import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
 let replaceKey;
 let getConfig;
@@ -88,6 +89,7 @@ const toggleLinksHighlight = (links, variant) => {
 };
 
 export default async function decorate(block) {
+  splitAndAddVariantsWithDash(block);
   let variant = DEFAULT_VARIANT;
   if (block.classList.contains(SMART_VARIANT)) {
     variant = SMART_VARIANT;
