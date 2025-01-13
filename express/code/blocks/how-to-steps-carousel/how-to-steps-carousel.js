@@ -81,6 +81,7 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
     if (i === 0) {
       // add block to first wrapper
       wrapper.append(block);
+      wrapper.classList.remove('content');
     } else if (i >= 1) {
       // add children from rest of wrappers to first wrapper
       wrapper.previousElementSibling.append(...wrapper.children);
@@ -213,7 +214,7 @@ function roundedImage(x, y, width, height, radius, ctx) {
   ctx.closePath();
 }
 
-function layerTemplateImage(ctx, templateImg) {
+function layerTemplateImage(canvas, ctx, templateImg) {
   templateImg.style.objectFit = 'contain';
 
   return new Promise((outerResolve) => {
@@ -224,34 +225,12 @@ function layerTemplateImage(ctx, templateImg) {
           if (change.contentRect.width === prevWidth) return;
           prevWidth = change.contentRect.width;
           if (prevWidth <= maxWidth && change.contentRect.height <= maxHeight) {
-            const aspectRatio = templateImg.naturalWidth / templateImg.naturalHeight;
-            let newHeight;
-            let newWidth;
-
-            if (templateImg.naturalWidth > templateImg.naturalHeight) {
-              newWidth = maxWidth;
-              newHeight = Math.round(newWidth / aspectRatio);
-
-              if (newHeight > maxHeight) {
-                newHeight = maxHeight;
-                newWidth = Math.round(newHeight * aspectRatio);
-              }
-            } else {
-              newHeight = maxHeight;
-              newWidth = Math.round(newHeight * aspectRatio);
-
-              if (newWidth > maxWidth) {
-                newWidth = maxWidth;
-                newHeight = Math.round(newWidth / aspectRatio);
-              }
-            }
-
             ctx.save();
             roundedImage(
-              centerX - (newWidth / 2),
-              centerY - (newHeight / 2),
-              newWidth,
-              newHeight,
+              centerX - (templateImg.width / 2),
+              centerY - (templateImg.height / 2),
+              templateImg.width,
+              templateImg.height,
               7,
               ctx,
             );
@@ -262,10 +241,10 @@ function layerTemplateImage(ctx, templateImg) {
               0,
               templateImg.naturalWidth,
               templateImg.naturalHeight,
-              centerX - (newWidth / 2),
-              centerY - (newHeight / 2),
-              newWidth,
-              newHeight,
+              centerX - (templateImg.width / 2),
+              centerY - (templateImg.height / 2),
+              templateImg.width,
+              templateImg.height,
             );
             ctx.restore();
             obs.disconnect();
@@ -286,10 +265,10 @@ function layerTemplateImage(ctx, templateImg) {
 }
 
 export default async function decorate(block) {
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const howToWindow = block.ownerDocument.defaultView;
   const howToDocument = block.ownerDocument;
   const isImageVariant = block.classList.contains('image');
-  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
 
   // move first image of container outside of div for styling
   const section = block.closest('.section');
@@ -300,6 +279,8 @@ export default async function decorate(block) {
   if (isImageVariant) {
     const canvasWidth = 2000;
     const canvasHeight = 1072;
+
+    const placeholderImgUrl = createTag('div');
     let url;
 
     await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
@@ -307,7 +288,6 @@ export default async function decorate(block) {
       return mod.replaceKey();
     });
 
-    const placeholderImgUrl = createTag('div');
     const alt = block.querySelector('picture > img').getAttribute('alt');
     const eagerLoad = document.querySelector('.block') === block;
     const backgroundPic = createOptimizedPicture(url, 'template in express', eagerLoad);
@@ -338,7 +318,7 @@ export default async function decorate(block) {
       const sources = backgroundPic.querySelectorAll(':scope > source');
       sources.forEach((source) => source.remove());
       return loadImage(templateImg).then(() => {
-        layerTemplateImage(ctx, templateImg).then(() => {
+        layerTemplateImage(canvas, ctx, templateImg).then(() => {
           templateDiv.remove();
           const img = createTag('img');
           canvas.toBlob((blob) => {

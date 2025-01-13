@@ -304,7 +304,7 @@ export default async function decorate(block) {
   const [fallbackRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'fallback');
   fallbackRow?.remove();
   if (fallbackRow && !isEligibleMFQA()) {
-    const fallbackBlock = fallbackRow.querySelector('.block');
+    const fallbackBlock = fallbackRow.querySelector(':scope > div:last-child > div');
     block.replaceWith(fallbackBlock);
     return fallbackBlock;
   }

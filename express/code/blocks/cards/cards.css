@@ -3,6 +3,10 @@ main .section:has(.card) {
   padding-top: 80px;
 }
 
+.section.section:has(.card):not([data-padding='none']) > .content:first-child {
+  padding-top: 0;
+}
+
 main .section:has(.cards.highlight) {
   padding-top: 60px;
   padding-left: 15px;
@@ -191,6 +195,6 @@ main .section .cards.large .card .card-content li {
 
 @media (min-width:1200px) {
   main .section:has(.card) .content {
-    max-width: unset;
+    max-width: 1024px;
   }
 }
