@@ -81,6 +81,7 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
     if (i === 0) {
       // add block to first wrapper
       wrapper.append(block);
+      wrapper.classList.remove('content');
     } else if (i >= 1) {
       // add children from rest of wrappers to first wrapper
       wrapper.previousElementSibling.append(...wrapper.children);

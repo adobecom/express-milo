@@ -9,7 +9,7 @@
   margin-bottom: 56px;
 }
 
-.how-to-steps-carousel-container > div.content{
+.how-to-steps-carousel-container > div {
   background-color: var(--color-gray-100);
   border-radius: 40px;
 
@@ -19,24 +19,24 @@
   max-width: fit-content;
 }
 
-.how-to-steps-carousel-container > div.content p,
-.how-to-steps-carousel-container > div.content p.button-container,
-.how-to-steps-carousel-container > div.content p.button-container a {
+.how-to-steps-carousel-container > div p,
+.how-to-steps-carousel-container > div p.button-container,
+.how-to-steps-carousel-container > div p.button-container a {
   text-align: left;
   margin: 0;
 }
 
-.how-to-steps-carousel-container > div.content p.button-container {
+.how-to-steps-carousel-container > div p.button-container {
   margin: 16px 0;
 }
 
-.how-to-steps-carousel-container > div.content > h2 {
+.how-to-steps-carousel-container > div > h2 {
   text-align: left;
   margin-top: 0;
   margin-bottom: 0;
 }
 
-.how-to-steps-carousel-container > div.content > h2:not(:lang(ja)) {
+.how-to-steps-carousel-container > div > h2 {
   font-size: var(--heading-font-size-xl);
 }
 
@@ -182,14 +182,14 @@ main .how-to-steps-carousel .tip-text h3 {
     align-items: start;
   }
 
-  .how-to-steps-carousel-container > div.content {
+  .how-to-steps-carousel-container > div {
     max-width: 600px;
     padding: 80px 88px;
   }
 }
 
 @media (min-width: 900px) {
-  .how-to-steps-carousel-container > div.content {
+  .how-to-steps-carousel-container > div {
     margin: 0 80px;
   }
 
