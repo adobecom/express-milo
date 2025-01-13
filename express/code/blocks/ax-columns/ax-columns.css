@@ -17,6 +17,7 @@
   margin: auto;
   max-width: 350px;
   line-height: initial;
+  word-wrap: normal;
 }
 
 .ax-columns.centered {
