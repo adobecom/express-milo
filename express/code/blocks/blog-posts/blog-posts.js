@@ -217,7 +217,6 @@ function getCardParameters(post, dateFormatter) {
 
 // For configs with a single featuredd post, get a hero sized card
 async function getHeroCard(post, dateFormatter) {
-  if (!post) return;
   const readMoreString = await getReadMoreString();
   const {
     path, title, teaser, dateString, filteredTitle, imagePath,
