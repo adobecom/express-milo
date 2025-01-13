@@ -311,7 +311,7 @@ async function handleAnimation(div, typeHint, block, animations) {
     const url = new URL(a.href);
     const params = new URLSearchParams(url.search);
     videoParameters = { loop: params.get('loop') !== 'false' };
-    const id = url.hostname.includes('hlx.blob.core')
+    const id = (url.hostname.includes('hlx.blob.core') || url.hostname.includes('aem.blob.core'))
       ? url.pathname.split('/')[2]
       : url.pathname.split('media_')[1].split('.')[0];
     source = `./media_${id}.mp4`;

@@ -14,7 +14,7 @@
     {
       "id": "docs",
       "title": "Docs",
-      "url": "https://main--express--adobecom.hlx.live/docs/",
+      "url": "https://main--express--adobecom.aem.live/docs/",
       "environments": [ "edit" ],
       "excludePaths": [ "/**" ],
       "includePaths": [ "**.docx**" ]
