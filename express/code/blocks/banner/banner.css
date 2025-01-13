@@ -199,6 +199,9 @@ main .banner h2 {
 }
 
 @media (min-width: 768px) {
+  .banner.cool {
+    padding: 40px 0;
+  }
   .banner.cool .wrapper {
     padding: 0 32px;
     max-width: unset;

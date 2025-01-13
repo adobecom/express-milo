@@ -10,16 +10,16 @@
   margin: auto;
 }
 
-.content:has(+ .quotes-wrapper) {
-  padding-top: 40px;
-}
-
 .quotes {
   margin-top: 40px;
   padding-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.quotes:last-child {
+  padding-bottom: 80px;
 }
 
 .quotes.singular {

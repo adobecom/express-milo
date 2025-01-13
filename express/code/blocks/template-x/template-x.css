@@ -24,7 +24,7 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   padding: 0;
 }
 
-.template-x > .default-content-wrapper {
+.template-x > .content {
   padding: 0 15px;
 }
 
@@ -36,8 +36,8 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   padding-bottom: 40px;
 }
 
-.template-x .default-content-wrapper h2,
-.template-x .default-content-wrapper p {
+.template-x .content h2,
+.template-x .content p {
   margin: 0;
   text-align: left;
 }
@@ -58,15 +58,15 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   min-height: unset;
 }
 
-.template-x-horizontal-fullwidth-collaboration-container .default-content-wrapper h2,
-.template-x-horizontal-fullwidth-collaboration-container .default-content-wrapper h3,
-.template-x-horizontal-fullwidth-collaboration-container .default-content-wrapper p {
+.template-x-horizontal-fullwidth-collaboration-container .content h2,
+.template-x-horizontal-fullwidth-collaboration-container .content h3,
+.template-x-horizontal-fullwidth-collaboration-container .content p {
   text-align: left;
   padding: 0 28px;
   margin: 12px 0;
 }
 
-.template-x-horizontal-fullwidth-collaboration-container .default-content-wrapper p {
+.template-x-horizontal-fullwidth-collaboration-container .content p {
   font-size: var(--body-font-size-m);
   line-height: 24px;
 }
