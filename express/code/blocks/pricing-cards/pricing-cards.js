@@ -311,7 +311,7 @@ function adjustElementPosition() {
     if (rect.right > window.innerWidth) {
       element.classList.remove('overflow-left');
       element.classList.add('overflow-right');
-    } else if (rect.left < 0) {
+    } else if (rect.left < 40) {
       element.classList.remove('overflow-right');
       element.classList.add('overflow-left');
     } else {
@@ -343,7 +343,8 @@ function handleTooltip(pricingArea) {
   span.innerText = tooltipText;
   const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
   icon.append(span);
-  const iconWrapper = createTag('span');
+  const iconWrapper = createTag('button');
+  icon.setAttribute('tabindex', 1);
   iconWrapper.append(icon);
   iconWrapper.append(span);
   tooltipDiv.append(iconWrapper);
