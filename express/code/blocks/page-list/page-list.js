@@ -19,10 +19,10 @@ async function fetchIndex(indexURL) {
 function outputPages(filteredPages, $block) {
   filteredPages.forEach((page) => {
     const p = createTag('p');
-    const a = createTag('a')
-    a.textContent = page.shortTitle
-    a.href = page.path
-    p.appendChild(a)
+    const a = createTag('a');
+    a.textContent = page.shortTitle;
+    a.href = page.path;
+    p.appendChild(a);
     $block.appendChild(p);
   });
 }
