@@ -6,6 +6,7 @@
 main .section:has(.content:first-child + .how-to-steps) .content {
   padding: 0 20px;
   max-width: 810px;
+  box-sizing: border-box;
 }
 
 .section:has(.how-to-steps)  {
