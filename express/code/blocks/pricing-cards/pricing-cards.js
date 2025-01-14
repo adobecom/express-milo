@@ -311,7 +311,7 @@ function adjustElementPosition() {
     if (rect.right > window.innerWidth) {
       element.classList.remove('overflow-left');
       element.classList.add('overflow-right');
-    } else if (rect.left < 40) {
+    } else if (rect.left < 0) {
       element.classList.remove('overflow-right');
       element.classList.add('overflow-left');
     } else {
