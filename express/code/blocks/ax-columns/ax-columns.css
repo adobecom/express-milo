@@ -48,8 +48,12 @@
   float: unset;
 }
 
-.section:not(:first-child) .ax-columns:first-child:not(:empty) {
+.section:not(:first-child) .ax-columns:first-child {
   padding-top: 60px;
+}
+
+.section:not(:first-child) .ax-columns.highlight:empty:first-child {
+  padding-top: 0px;
 }
 
 .ax-columns.top.center, .ax-columns.fullsize.center, .ax-columns.light, .ax-columns.fullsize.center {
