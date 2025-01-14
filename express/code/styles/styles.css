@@ -119,6 +119,10 @@ body[data-device="mobile"] {
   'Trebuchet MS', sans-serif;
 }
 
+:is(p):lang(ja) {
+  line-break: normal;
+}
+
 /* floating-cta main CTA suppression */
 body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"] .same-fcta {
   display: block;

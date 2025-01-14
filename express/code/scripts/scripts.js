@@ -313,12 +313,6 @@ const listenAlloy = () => {
   const gnav = createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` });
   document.head.append(gnav);
 
-  // TODO this can be removed post migration
-  if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
-    const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
-    document.head.append(budouxExcludeSelector);
-  }
-
   if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
