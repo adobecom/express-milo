@@ -788,12 +788,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 }
 
-.section.long-form:has(.ax-columns:not(.fullsize)) .content {
+.section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
   padding: 0 35px 60px;
 }
 
 @media (min-width: 600px) {
-  .section.long-form:has(.ax-columns:not(.fullsize)) .content {
+  .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
     padding: 0 55px 60px;
   }
 }
