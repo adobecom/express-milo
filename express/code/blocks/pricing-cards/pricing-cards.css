@@ -163,6 +163,18 @@ Border style variants
 End border style variants
 */
 
+.pricing-cards .tooltip > button:focus-within .tooltip-text {
+  opacity: 1;
+}
+
+.pricing-cards .tooltip>button {
+  border: none;
+  background-color: transparent;
+  padding: 0px;
+  font-family: "adobe-clean";
+  position: relative;
+}
+
 .pricing-cards .tooltip-icon {
   position: relative;
   top: 2px;
@@ -186,13 +198,11 @@ End border style variants
   color: white;
   border-radius: 8px;
   position: absolute;
-  bottom: 100%;
-  min-width: 200px;
-  left: -105px;
-  width: fit-content;
-  margin-bottom: 19px;
+  bottom: 100%; 
+  width:  200px;
+  left: -105px; 
+  margin-bottom: 5px;
   transition: bottom 0.5s;
-  width: 100%;
 }
 
 .pricing-cards .tooltip-text::after {
@@ -205,12 +215,11 @@ End border style variants
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid black;
-
 }
 
 .pricing-cards .tooltip-text.overflow-left::after {
   right: inherit;
-  left: 20px;
+  left: 23px;
 }
 
 .pricing-cards .tooltip-text.overflow-right::after {
