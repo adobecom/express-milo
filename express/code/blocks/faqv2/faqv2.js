@@ -71,6 +71,12 @@ function buildTableLayout(block) {
       !isLongFormVariant && headerAccordion.classList.toggle('rounded-corners');
       const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
 
+      if (isCollapsed) {
+        headerAccordion.style.borderRadius = '8px 8px 0 0';
+      } else {
+        headerAccordion.style.borderRadius = '8px';
+      }
+
       iconElement.src = isCollapsed
         ? '/express/code/icons/minus-heavy.svg'
         : '/express/code/icons/plus-heavy.svg';
