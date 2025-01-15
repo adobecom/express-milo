@@ -232,7 +232,6 @@ function constructProps(block) {
       }
     }
   });
-
   return props;
 }
 
