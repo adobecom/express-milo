@@ -159,24 +159,67 @@ function renderShareWrapper(branchUrl) {
   return wrapper;
 }
 
-function renderCTA(branchUrl) {
+const buildiFrameContent = (template) => {
+  const iFrame = createTag('iframe', {
+    src: `https://w299ihl20.wxp.adobe-addons.com/distribute/private/JZnNGECCzfpgfcUmlgcNKgZKclyFP1YXLvq8rF3yfE9RI7inYDEPFaEGWDFv2ynr/0/w299ihl20/wxp-w299ihl20-version-1713829154591/adobePdp.html?TD=${template.id}`,
+    title: 'Edit this template',
+    tabindex: '-1',
+  });
+
+  iFrame.allowfullscreen = true;
+  iFrame.style.width = '100%';
+  iFrame.style.height = '100%';
+
+  const container = createTag('div', { class: 'milo-iframe' });
+  container.append(iFrame);
+  return container;
+};
+
+const showModaliFrame = async (template) => {
+  const { getModal } = await import(`${getLibs()}/blocks/modal/modal.js`);
+
+  const iFrameContent = buildiFrameContent(template);
+  const modal = await getModal(null, {
+    id: template.id.replace(/:/g, '-'),
+    class: 'milo-iframe',
+    content: iFrameContent,
+    closeEvent: 'closeModal',
+  });
+
+  return modal;
+};
+
+function renderCTA(template) {
   const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const btnEl = createTag('a', {
-    href: branchUrl,
+    href: '#modal',
     title: btnTitle,
     class: 'button accent small',
+    target: '_self',
   });
+
+  btnEl.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await showModaliFrame(template);
+  });
+
   btnEl.textContent = btnTitle;
   return btnEl;
 }
 
-function renderCTALink(branchUrl) {
-  const linkEl = createTag('a', {
-    href: branchUrl,
+function renderCTALink(template) {
+  const link = createTag('a', {
+    href: '#modal',
+    title: 'Edit this template',
     class: 'cta-link',
-    tabindex: '-1',
   });
-  return linkEl;
+
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await showModaliFrame(template);
+  });
+
+  return link;
 }
 
 function getPageIterator(pages) {
@@ -382,8 +425,8 @@ function renderHoverWrapper(template) {
     focusHandler,
   } = renderMediaWrapper(template);
 
-  const cta = renderCTA(template.customLinks.branchUrl);
-  const ctaLink = renderCTALink(template.customLinks.branchUrl);
+  const cta = renderCTA(template);
+  const ctaLink = renderCTALink(template);
 
   ctaLink.append(mediaWrapper);
 
