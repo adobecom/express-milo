@@ -361,7 +361,6 @@ async function decorateLoadMoreButton(block, props) {
   const loadMoreText = createTag('p', { class: 'load-more-text' });
   loadMoreDiv.append(loadMoreButton, loadMoreText);
   const loadMore = await replaceKey('load-more', getConfig());
-  debugger;
   loadMoreText.textContent = loadMore === 'load more' ? '' : loadMore;
   block.append(loadMoreDiv);
   loadMoreButton.append(getIconElementDeprecated('plus-icon'));
