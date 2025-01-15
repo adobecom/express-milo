@@ -251,12 +251,15 @@
 		margin-left: 0;
 	}
 
-	.faqv2.longform {
+	.faqv2.longform.expandable {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		width: 100%;
 		padding: 30px 10px;
+    max-width: 90%;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
 	}
 
 	.faqv2.longform .faqv2-longform-header-container {
