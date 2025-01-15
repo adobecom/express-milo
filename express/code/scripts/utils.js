@@ -686,6 +686,43 @@ function decorateLegalCopy(area) {
   });
 }
 
+function unwrapBlockDeprecated($block) {
+  const $section = $block.parentNode;
+  const $elems = [...$section.children];
+
+  if ($elems.length <= 1) return;
+
+  const $blockSection = createTag('div');
+  const $postBlockSection = createTag('div');
+  const $nextSection = $section.nextElementSibling;
+  $section.parentNode.insertBefore($blockSection, $nextSection);
+  $section.parentNode.insertBefore($postBlockSection, $nextSection);
+
+  let $appendTo;
+  $elems.forEach(($e) => {
+    if ($e === $block || ($e.className === 'section-metadata')) {
+      $appendTo = $blockSection;
+    }
+
+    if ($appendTo) {
+      $appendTo.appendChild($e);
+      $appendTo = $postBlockSection;
+    }
+  });
+
+  if (!$postBlockSection.hasChildNodes()) {
+    $postBlockSection.remove();
+  }
+}
+
+// TODO remove this method and the unwrap block method once template-list blocks are gone
+function splitSections(area, selector) {
+  const blocks = area.querySelectorAll(`${selector} > .template-list`);
+  blocks.forEach((block) => {
+    unwrapBlockDeprecated(block);
+  });
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const selector = area === document ? 'main > div' : ':scope body > div';
@@ -702,6 +739,7 @@ export function decorateArea(area = document) {
   }
 
   cleanupBrackets(area);
+  splitSections(area, selector);
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
 
   fragmentBlocksToLinks(area);
