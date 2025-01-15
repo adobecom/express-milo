@@ -94,6 +94,7 @@
 .faqv2-accordion.expandable.sub-header-accordion {
 	height: 100%;
 	border-radius: 0 0 8px 8px;
+  padding-top: 0;
 	border: none;
 	display: none;
 	margin-bottom: 6px;
@@ -104,6 +105,10 @@
 			#F2693C,
 			#F08420) left / 1% 100% no-repeat,
 		white;
+}
+
+.faqv2-accordion.expandable.sub-header-accordion.collapsed {
+	display: flex;
 }
 
 .faqv2-header.expandable {
@@ -270,7 +275,7 @@
 
 	.faqv2.longform .faqv2-accordions-col {
 		flex: 1;
-		max-width: 50%;
+		max-width: 46%;
 		display: flex;
 		flex-direction: column;
 	}
