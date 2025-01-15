@@ -10,7 +10,8 @@
 
 main .browse-by-category {
   margin: auto;
-  max-width: 375px
+  max-width: 375px;
+  word-wrap: initial;
 }
 
 main .browse-by-category .carousel-container .carousel-platform {
