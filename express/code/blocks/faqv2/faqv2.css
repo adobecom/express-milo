@@ -145,16 +145,16 @@
 	text-align: center;
 }
 
-.section.faqv2-grey-bg {
+.faqv2-grey-bg {
 	background-color: #E8E8E8;
 }
 
-.section.faqv2-section-padding {
+.faqv2-section-padding {
 	padding-top: 10px;
 	padding-bottom: 50px;
 }
 
-.section .faqv2-background {
+.faqv2-background {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -166,7 +166,7 @@
 	max-width: none;
 }
 
-.section .faqv2-background img {
+.faqv2-background img {
 	position: fixed;
 	top: 50%;
 	left: 50%;

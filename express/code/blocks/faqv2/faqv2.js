@@ -2,15 +2,8 @@ import { createTag } from '../../scripts/utils.js';
 
 function buildTableLayout(block) {
   const isLongFormVariant = block.classList.contains('longform');
-  const parentDiv = block.closest('.section');
-  parentDiv?.classList.add('faqv2-grey-bg', 'faqv2-section-padding');
-  isLongFormVariant && parentDiv?.classList.add('longform');
   const rows = Array.from(block.children);
   block.innerHTML = '';
-
-  const background = rows.shift();
-  background.classList.add('faqv2-background');
-  parentDiv.prepend(background);
 
   const headerText = rows.shift()?.innerText.trim();
   if (headerText) {
@@ -36,7 +29,7 @@ function buildTableLayout(block) {
     const subHeader = cells[1];
     collapsibleRows.push({
       header: header.textContent.trim(),
-      subHeader: subHeader.innerHTML,
+      subHeader: subHeader?.innerHTML,
     });
   });
 
