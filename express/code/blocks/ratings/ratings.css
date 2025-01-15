@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.section:has(.ax-columns, .content) + .section .ratings {
+  margin-top: 0px;
+}
+
 .section.long-form:has(.ax-columns) + .section .ratings {
   margin-top: 40px;
 }
