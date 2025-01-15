@@ -14,6 +14,7 @@ main .section:has(.make-a-project) .content:first-child {
 main .make-a-project {
   display: flex;
   flex-direction: column;
+  word-wrap: initial;
 }
 
 main .make-a-project .make-a-project-marquee {
