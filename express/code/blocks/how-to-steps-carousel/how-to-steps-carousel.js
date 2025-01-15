@@ -1,6 +1,7 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
+import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 
 let createTag; let getConfig;
 let rotationInterval;
@@ -339,5 +340,6 @@ export default async function decorate(block) {
     section.prepend(picture);
   }
   await decorateButtonsDeprecated(section);
+  addHeaderSizing(section, getConfig);
   buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindow);
 }
