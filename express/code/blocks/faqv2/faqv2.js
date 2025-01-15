@@ -1,19 +1,33 @@
 import { createTag } from '../../scripts/utils.js';
 
 function buildTableLayout(block) {
+  const isLongFormVariant = block.classList.contains('longform');
   const parentDiv = block.closest('.section');
+  parentDiv?.classList.add('faqv2-grey-bg', 'faqv2-section-padding');
+  isLongFormVariant && parentDiv?.classList.add('longform');
   const rows = Array.from(block.children);
   block.innerHTML = '';
+
   const background = rows.shift();
   background.classList.add('faqv2-background');
   parentDiv.prepend(background);
-  const headerText = rows.shift()?.innerText.trim();
 
+  const headerText = rows.shift()?.innerText.trim();
   if (headerText) {
     const rowAccordionHeader = createTag('h2', { class: 'faqv2-accordion title' });
     rowAccordionHeader.textContent = headerText;
-    block.prepend(rowAccordionHeader);
+
+    if (isLongFormVariant) {
+      const container = createTag('div', { class: 'faqv2-longform-header-container' });
+      container.appendChild(rowAccordionHeader);
+      block.prepend(container);
+    } else {
+      block.prepend(rowAccordionHeader);
+    }
   }
+
+  const container = createTag('div', { class: 'faqv2-accordions-col' });
+  block.appendChild(container);
 
   const collapsibleRows = [];
   rows.forEach((row) => {
@@ -30,7 +44,7 @@ function buildTableLayout(block) {
     const { header, subHeader } = row;
 
     const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
-    block.append(rowWrapper);
+    container.appendChild(rowWrapper);
 
     const headerAccordion = createTag('div', { class: 'faqv2-accordion expandable header-accordion' });
     rowWrapper.append(headerAccordion);
@@ -40,11 +54,10 @@ function buildTableLayout(block) {
     headerAccordion.append(headerDiv);
 
     const iconElement = createTag('img', {
-      src: '/express/code/icons/plus-heavy.svg',
+      src: '/express/icons/plus-heavy.svg',
       alt: 'toggle-icon',
       class: 'toggle-icon',
     });
-
     headerDiv.appendChild(iconElement);
 
     const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
@@ -55,12 +68,14 @@ function buildTableLayout(block) {
     subHeaderAccordion.append(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
-      headerAccordion.classList.toggle('rounded-corners');
+      !isLongFormVariant && headerAccordion.classList.toggle('rounded-corners');
       const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
       subHeaderAccordion.style.display = isCollapsed ? 'flex' : 'none';
       subHeaderAccordion.style.paddingTop = 0;
 
-      iconElement.src = isCollapsed ? '/express/code/icons/minus-heavy.svg' : '/express/code/icons/plus-heavy.svg';
+      iconElement.src = isCollapsed
+        ? '/express/icons/minus-heavy.svg'
+        : '/express/icons/plus-heavy.svg';
     });
   });
 }
