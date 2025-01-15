@@ -160,7 +160,7 @@ main ol, main ul {
   text-align: left;
 }
 
-main a, main a:hover {
+main a, main a:hover, main u {
   text-decoration: none;
 }
 
