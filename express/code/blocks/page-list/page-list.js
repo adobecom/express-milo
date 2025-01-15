@@ -16,20 +16,17 @@ async function fetchIndex(indexURL) {
   }
 }
 
-function outputPages(filteredPages, $block) {
+function outputPages(filteredPages, block) {
   filteredPages.forEach((page) => {
-    const p = createTag('p');
-    const a = createTag('a');
-    a.textContent = page.shortTitle;
-    a.href = page.path;
-    p.appendChild(a);
-    $block.appendChild(p);
+    const p = createTag('p'); 
+    p.appendChild(createTag('a',{ href : page.path}, page.shortTitle));
+    block.appendChild(p);
   });
 }
 
-function addPages(pages, config, $block) {
-  $block.innerHTML = '';
-  $block.setAttribute('data-filter', config.filter);
+function addPages(pages, config, block) {
+  block.innerHTML = '';
+  block.setAttribute('data-filter', config.filter);
 
   const filteredPages = pages.filter((page) => {
     const path = page.path.split('.')[0];
@@ -45,11 +42,11 @@ function addPages(pages, config, $block) {
     return true;
   });
 
-  outputPages(filteredPages, $block);
+  outputPages(filteredPages, block);
 }
 
-async function decoratePageList($block) {
-  const config = readBlockConfig($block);
+async function decoratePageList(block) {
+  const config = readBlockConfig(block);
 
   const { prefix } = getConfig().locale;
   const indexURL = `${prefix}/express/query-index.json`;
@@ -58,11 +55,11 @@ async function decoratePageList($block) {
     && e.path && e.path.includes(config.filter)));
   shortIndex.sort((e1, e2) => e1.shortTitle.localeCompare(e2.shortTitle));
 
-  addPages(shortIndex, config, $block);
-  $block.classList.add('appear');
+  addPages(shortIndex, config, block);
+  block.classList.add('appear');
 }
 
-export default async function decorate($block) {
+export default async function decorate(block) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  return decoratePageList($block);
+  return decoratePageList(block);
 }
