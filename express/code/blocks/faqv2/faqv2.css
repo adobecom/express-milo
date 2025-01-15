@@ -287,8 +287,9 @@
 	}
 
 	.faqv2.longform .faqv2-accordion.title {
-		flex: 0 0 25%;
-		margin-right: 24px;
+    max-width: 70%;
+    margin: auto;
+    text-align: left;
 	}
 
 	.faqv2.longform .faqv2-accordion.expandable.sub-header-accordion {
