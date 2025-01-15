@@ -309,10 +309,10 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
 .template-x .template > div:first-child > a:any-link {
   padding-left: 0;
 }
-
+/* 
 .template-x .template img, .template-x .template video {
   border-radius: 12px;
-}
+} */
 
 .template-x .template img:not(.icon),
 .template-x .template video {
@@ -1998,7 +1998,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 
 .template-x .template .still-wrapper .image-wrapper {
   position: relative;
-  padding: 10px; 
+  padding: 15px; 
   background: #ebebeb;
 }
 
