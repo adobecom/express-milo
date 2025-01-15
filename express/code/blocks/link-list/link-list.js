@@ -116,7 +116,7 @@ export default async function decorate(block) {
   }
 
   normalizeHeadings(block, ['h3']);
-  const links = [...block.querySelectorAll('p.button-container, a.con-button')];
+  const links = [...block.querySelectorAll('p.button-container')];
   if (links.length) {
     links.forEach((p) => {
       const link = p.querySelector('a');
@@ -127,7 +127,7 @@ export default async function decorate(block) {
     });
     const platformEl = document.createElement('div');
     platformEl.classList.add('link-list-platform');
-    await buildCarousel('p.button-container, a.con-button', block, options);
+    await buildCarousel('p.button-container', block, options);
   }
 
   window.addEventListener('popstate', () => {
