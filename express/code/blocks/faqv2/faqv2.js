@@ -54,7 +54,7 @@ function buildTableLayout(block) {
     headerAccordion.append(headerDiv);
 
     const iconElement = createTag('img', {
-      src: '/express/icons/plus-heavy.svg',
+      src: '/express/code/icons/plus-heavy.svg',
       alt: 'toggle-icon',
       class: 'toggle-icon',
     });
@@ -74,8 +74,8 @@ function buildTableLayout(block) {
       subHeaderAccordion.style.paddingTop = 0;
 
       iconElement.src = isCollapsed
-        ? '/express/icons/minus-heavy.svg'
-        : '/express/icons/plus-heavy.svg';
+        ? '/express/code/icons/minus-heavy.svg'
+        : '/express/code/icons/plus-heavy.svg';
     });
   });
 }
