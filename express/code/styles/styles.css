@@ -780,7 +780,9 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
     text-align: center;
     margin: 24px 15px 0;
   }
+}
 
+@media (max-width: 600px) {
   main :lang(ja) h2.heading-long, :lang(ja) #hero h2.heading-long {
     font-size: var(--heading-font-size-l);
   }
