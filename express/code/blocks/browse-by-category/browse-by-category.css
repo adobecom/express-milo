@@ -8,6 +8,10 @@
   padding-top: 60px;
 }
 
+.section:has(.template-x) .browse-by-category.card.fullwidth:first-child {
+  padding-top: 0px;
+}
+
 main .browse-by-category {
   margin: auto;
   max-width: 375px;
