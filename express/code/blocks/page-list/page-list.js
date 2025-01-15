@@ -18,8 +18,8 @@ async function fetchIndex(indexURL) {
 
 function outputPages(filteredPages, block) {
   filteredPages.forEach((page) => {
-    const p = createTag('p'); 
-    p.appendChild(createTag('a',{ href : page.path}, page.shortTitle));
+    const p = createTag('p');
+    p.appendChild(createTag('a', { href: page.path }, page.shortTitle));
     block.appendChild(p);
   });
 }
