@@ -1,7 +1,10 @@
-/* to remove after Milo migration */
 .section > .color-how-to-carousel-wrapper {
     max-width: 1200px;
     margin: auto;
+}
+
+.section > .color-how-to-carousel-wrapper:first-child {
+    padding-top: 60px;
 }
 
 .color-how-to-carousel {
