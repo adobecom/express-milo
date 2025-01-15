@@ -125,6 +125,7 @@
     font-size: var(--body-font-size-xl);
     margin-top: 16px;
     margin-bottom: 0;
+    word-break: initial;
 }
 
 .color-how-to-carousel .tip-text h3 {
