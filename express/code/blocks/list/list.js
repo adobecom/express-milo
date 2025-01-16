@@ -37,4 +37,17 @@ export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'list');
   decorateList(block);
+
+  const pricingLinks = [...block.querySelectorAll('a')].filter((a) => a.textContent.includes('((pricing'));
+  if (!pricingLinks.length) return;
+  const { fetchPlanOnePlans } = await import('../../scripts/utils/pricing.js');
+  pricingLinks.forEach((link) => {
+    const priceType = link.textContent.replace(/\(\(|\)\)/g, '').split('.')[1];
+    fetchPlanOnePlans(link.href).then((response) => {
+      if (response[priceType]) {
+        const priceText = createTag('span', { class: 'inline-pricing' }, response[priceType]);
+        link.parentElement.replaceChild(priceText, link);
+      }
+    });
+  });
 }
