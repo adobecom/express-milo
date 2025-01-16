@@ -2,7 +2,7 @@ main .tutorials-wrapper, .section:has(.content:first-child + .tutorials-wrapper)
   max-width: 1200px;
 }
 
-main .section > .tutorials-wrapper {
+main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
   margin: auto;
   max-width: 375px;
 }
@@ -105,13 +105,13 @@ main .section .tutorials a, main .section .tutorials a:hover {
 }
 
 @media (min-width: 900px) {
-  main .section > .tutorials-wrapper {
+  main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
     max-width: 830px;
   }
 }
 
 @media (min-width: 1200px) {
-  main .section > .tutorials-wrapper {
+  main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
     max-width: 1024px;
   }
 }
