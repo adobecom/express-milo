@@ -635,6 +635,13 @@ const blocksToClean = [
       '%7B%7Bprompt-text%7D%7D',
     ],
   },
+  {
+    selector: '.list',
+    placeholders: [
+      '{{pricing.formatted}}',
+      '{{pricing.formattedBP}}',
+    ],
+  },
 ];
 
 function cleanupBrackets(area) {
