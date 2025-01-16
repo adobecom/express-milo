@@ -47,8 +47,8 @@ const CONFIG = {
   },
   imsClientId: 'AdobeExpressWeb',
   prodDomains,
-  // geoRouting: 'off',
-  // fallbackRouting: 'off',
+  geoRouting: 'on',
+  fallbackRouting: 'on',
   decorateArea,
   faasCloseModalAfterSubmit: 'on',
   locales: {
