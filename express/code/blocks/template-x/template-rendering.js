@@ -127,11 +127,14 @@ async function share(branchUrl, tooltip, timeoutId) {
   }, 2500);
 }
 
-function renderShareWrapper(branchUrl) {
+function renderShareWrapper(templateInfo) {
+  const { templateTitle, branchUrl } = templateInfo;
   const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
+  shareIcon.setAttribute('role', 'button');
+  shareIcon.setAttribute('aria-label', `Share ${templateTitle}`);
   const tooltip = createTag('div', {
     class: 'shared-tooltip',
     'aria-label': text,
@@ -341,7 +344,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(templateInfo);
       mediaWrapper.append(shareWrapper);
     }
     renderedMedia.hover();
@@ -360,7 +363,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(templateInfo);
       mediaWrapper.append(shareWrapper);
       renderedMedia.hover();
     }
