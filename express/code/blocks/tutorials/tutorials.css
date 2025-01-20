@@ -1,9 +1,13 @@
 main .tutorials-wrapper, .section:has(.content:first-child + .tutorials-wrapper) .content {
   max-width: 1200px;
+
+}
+
+main .tutorials-wrapper {
+  margin: auto;
 }
 
 main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
-  margin: auto;
   max-width: 375px;
 }
 
