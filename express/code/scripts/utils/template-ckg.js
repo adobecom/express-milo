@@ -18,12 +18,13 @@ function sanitizeHTML(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;') 
+    .replace(/'/g, '&#39;');
 }
 
 async function fetchLinkList() {
   if (ckgData) return;
   const data = await getCKGData();
+  // catch data from CKG API, if empty, use top priority categories sheet
   if (data) {
     ckgData = data.map((ckgItem) => {
       let formattedTasks;
@@ -65,7 +66,7 @@ function replaceLinkPill(linkPill, data) {
       a.rel = 'nofollow';
     });
   }
-  clone.querySelectorAll('a').forEach(a => {
+  clone.querySelectorAll('a').forEach((a) => {
     const href = a.getAttribute('href');
     if (!href || !/^(https?:|\/)/.test(href)) {
       a.removeAttribute('href');
@@ -164,8 +165,7 @@ async function updateLinkList(container, linkPill, list) {
       searchParams.set('topics', topicsQuery);
       searchParams.set('q', sanitizeHTML(d.displayValue));
       searchParams.set('ckgid', sanitizeHTML(d.ckgID));
-      searchParams.set('searchId', generateSearchId());
-      
+      searchParams.set('searchId', generateSearchId());     
       const pageData = {
         url: `${prefix}/express/templates/search?${searchParams.toString()}`,
         'short-title': sanitizeHTML(d.displayValue),
