@@ -151,7 +151,9 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      let a = {...contConfig}
+      a.mode = "fill"
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, a);
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
