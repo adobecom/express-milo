@@ -18,8 +18,7 @@ function sanitizeHTML(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-    .replace(/\//g, '&#x2F;');
+    .replace(/'/g, '&#39;') 
 }
 
 async function fetchLinkList() {
