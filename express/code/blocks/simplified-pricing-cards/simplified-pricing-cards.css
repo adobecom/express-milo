@@ -268,6 +268,7 @@ main .section>.simplified-pricing-cards-wrapper {
     width: 100%;
 }
 
+
 .simplified-pricing-cards .tooltip {
     position: relative;
     display: inline;
@@ -277,9 +278,13 @@ main .section>.simplified-pricing-cards-wrapper {
     position: relative;
 }
 
-.simplified-pricing-cards .tooltip .icon:hover~.tooltip-text {
+.simplified-pricing-cards .tooltip  button.hover .tooltip-text {
     opacity: 1;
-}
+} 
+
+.simplified-pricing-cards .tooltip-text.hover {
+    opacity: 1;
+} 
 
 .simplified-pricing-cards .toggle-switch {
     display: block;
@@ -333,9 +338,8 @@ main .section>.simplified-pricing-cards-wrapper {
     bottom: 100%;
     width:  200px;
     left: -105px; 
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     transition: bottom 0.5s;
-    pointer-events: none;
 }
 
 .simplified-pricing-cards .tooltip>button {
@@ -360,7 +364,7 @@ main .section>.simplified-pricing-cards-wrapper {
     content: '';
     position: absolute;
     bottom: -5px;
-    left: 105px; 
+    left: 107px; 
     border-top-color: var(--color-black);
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;

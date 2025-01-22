@@ -348,6 +348,27 @@ function handleTooltip(pricingArea) {
   iconWrapper.append(icon);
   iconWrapper.append(span);
   tooltipDiv.append(iconWrapper);
+
+  iconWrapper.addEventListener('mouseover', () => {
+    iconWrapper.classList.add('hover')
+  })
+  iconWrapper.addEventListener('mouseleave', () => {
+    setTimeout(() => { 
+      iconWrapper.classList.remove('hover')
+     }, 500)
+  })
+  span.addEventListener('mouseenter', () => {
+    span.classList.add('hover')
+  })
+  span.addEventListener('mouseleave', () => {
+    span.classList.remove('hover')
+  })
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+      document.activeElement.blur()
+      iconWrapper.classList.remove('hover')
+    }
+  })
 }
 
 async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
