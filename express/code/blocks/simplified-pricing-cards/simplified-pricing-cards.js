@@ -59,25 +59,29 @@ export function handleTooltip(pricingArea) {
   window.addEventListener('resize', adjustElementPosition);
 
   iconWrapper.addEventListener('mouseover', () => {
-    iconWrapper.classList.add('hover')
-  })
+    iconWrapper.classList.add('hover');
+  });
+
   iconWrapper.addEventListener('mouseleave', () => {
-    setTimeout(() => { 
-      iconWrapper.classList.remove('hover')
-     }, 500)
-  })
+    setTimeout(() => {
+      iconWrapper.classList.remove('hover');
+    }, 500);
+  });
+
   span.addEventListener('mouseenter', () => {
-    span.classList.add('hover')
-  })
+    span.classList.add('hover');
+  });
+
   span.addEventListener('mouseleave', () => {
-    span.classList.remove('hover')
-  })
+    span.classList.remove('hover');
+  });
+
   document.addEventListener('keydown', (e) => {
-    if (e.key === "Escape") {
-      document.activeElement.blur()
-      iconWrapper.classList.remove('hover')
+    if (e.key === 'Escape') {
+      document.activeElement.blur();
+      iconWrapper.classList.remove('hover');
     }
-  })
+  });
 }
 
 function getHeightWithoutPadding(element) {
