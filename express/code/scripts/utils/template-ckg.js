@@ -158,6 +158,7 @@ async function updateLinkList(container, linkPill, list) {
 
       if (clone) pageLinks.push(clone);
     } else {
+      // fixme: we need single page search UX
       const searchParams = new URLSearchParams();
       searchParams.set('tasks', currentTasks);
       searchParams.set('tasksx', currentTasksX);
