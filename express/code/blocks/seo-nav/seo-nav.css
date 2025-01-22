@@ -3,6 +3,10 @@ main .seo-nav-center-container > div {
   max-width: 1200px;
 }
 
+main .seo-nav-wrapper:first-child {
+  padding-top: 18px;
+}
+
 main .seo-nav-center-container .carousel-platform {
   padding-top: 6px;
 }

@@ -62,8 +62,8 @@
   padding-right: 0;
 }
 
-.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered)) > .ax-columns:last-child,
-.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered)) > .content:last-child {
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)) > .ax-columns:last-child,
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)) > .content:last-child {
   padding-bottom: 40px;
 }
 
