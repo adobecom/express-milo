@@ -22,6 +22,9 @@
 
 .ax-columns.centered {
   max-width: 375px;
+}
+
+.section:not(:has(> .ax-columns:not(.centered))) > .ax-columns.centered {
   padding-left: 0px;
   padding-right: 0px;
 }
