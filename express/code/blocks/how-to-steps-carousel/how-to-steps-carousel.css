@@ -12,10 +12,8 @@
 .how-to-steps-carousel-container > div.content{
   background-color: var(--color-gray-100);
   border-radius: 40px;
-
   margin: 0 24px;
   padding: 56px 24px;
-  width: 100%;
   max-width: fit-content;
 }
 
