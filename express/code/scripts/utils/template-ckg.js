@@ -166,7 +166,7 @@ async function updateLinkList(container, linkPill, list) {
       searchParams.set('topics', topicsQuery);
       searchParams.set('q', sanitizeHTML(d.displayValue));
       searchParams.set('ckgid', sanitizeHTML(d.ckgID));
-      searchParams.set('searchId', generateSearchId());     
+      searchParams.set('searchId', generateSearchId());
       const pageData = {
         url: `${prefix}/express/templates/search?${searchParams.toString()}`,
         'short-title': sanitizeHTML(d.displayValue),
