@@ -71,7 +71,6 @@ const CONFIG = {
     nl: { ietf: 'nl-NL', tk: 'cya6bri.css' },
     no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
     se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
-    tr: { ietf: 'tr-TR', tk: 'ley8vds.css' },
     // eslint-disable-next-line max-len
     // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hant-TW
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
