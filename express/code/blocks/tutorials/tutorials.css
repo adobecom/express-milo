@@ -11,7 +11,9 @@ main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
   max-width: 375px;
 }
 
-.section:has(.content:first-child + .tutorials-wrapper) .content, main .tutorials-wrapper:first-child {
+.section:has(.content:first-child + .tutorials-wrapper) .content,
+main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .tutorials-wrapper:first-child {
   padding-top: 60px;
   margin-top: 0px;
 }

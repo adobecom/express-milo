@@ -4,7 +4,8 @@ main .section>.logo-row {
     margin: auto;
 }
 
-main .logo-row:first-child {
+main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .logo-row:first-child {
     padding-top: 60px;
 }
 

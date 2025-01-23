@@ -1,5 +1,6 @@
 /* templates pages spacial styling */
-main .section:has(.template-x) .content:first-child {
+main .section:has(.template-x):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .content:first-child {
   padding-top: 0;
 }
 
@@ -28,7 +29,8 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   padding: 0 15px;
 }
 
-.section > .template-x.top-padding:first-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .template-x.top-padding:first-child {
   padding-top: 100px;
 }
 
