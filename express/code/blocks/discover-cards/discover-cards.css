@@ -3,7 +3,8 @@ main .section .discover-cards {
     text-align: center;
 }
 
-.section:not([data-padding='none']) .discover-cards:first-child {
+.section:not([data-padding='none']):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .discover-cards:first-child {
     padding-top: 60px;
 }
 

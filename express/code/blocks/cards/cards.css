@@ -3,15 +3,20 @@ main .section:has(.card) {
   padding-top: 80px;
 }
 
-.section.section:has(.card):not([data-padding='none']) > .content:first-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):has(.card):not([data-padding='none']) > .content:first-child {
   padding-top: 0;
 }
 
 main .section:has(.cards.highlight) {
-  padding-top: 60px;
   padding-left: 15px;
-  padding-bottom: 120px;
   padding-right: 15px;
+}
+
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):has(.cards.highlight) {
+  padding-top: 60px;
+  padding-bottom: 120px;
 }
 
 main .section:has(.card) > div > h2:first-of-type {

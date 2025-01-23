@@ -1,14 +1,10 @@
-main .seo-nav-wrapper,
-main .seo-nav-center-container > div {
+main .seo-nav-wrapper {
   max-width: 1200px;
 }
 
-main .seo-nav-wrapper:first-child {
+main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .seo-nav-wrapper:first-child {
   padding-top: 18px;
-}
-
-main .seo-nav-center-container .carousel-platform {
-  padding-top: 6px;
 }
 
 main .seo-nav {
@@ -70,8 +66,7 @@ main .seo-nav .carousel-container .carousel-fader-right {
 }
 
 @media (min-width: 900px) {
-  main .seo-nav-wrapper,
-  main .seo-nav-center-container > div {
+  main .seo-nav-wrapper {
     padding: 0 50px;
   }
 
@@ -92,8 +87,7 @@ main .seo-nav .carousel-container .carousel-fader-right {
 }
 
 @media (min-width: 1200px) {
-  main .seo-nav-wrapper,
-  main .seo-nav-center-container > div {
+  main .seo-nav-wrapper {
       padding: 0 55px;
   }
 }
@@ -101,15 +95,10 @@ main .seo-nav .carousel-container .carousel-fader-right {
 /* Carousel styles (Link-list specific) */
 
 /* Remove max-width on mobile breakpoints */
-main .section.seo-nav-container,
-main .seo-nav-wrapper,
-main .section.seo-nav-container .seo-nav > div {
+main .seo-nav-wrapper {
   max-width: none;
   padding-left: 0;
   padding-right: 0;
-}
-
-main .seo-nav-wrapper {
   margin: 40px 28px 58px 28px;
 }
 
@@ -128,14 +117,13 @@ main .seo-nav div:nth-of-type(2) > div {
     scroll-padding: 0;
   }
 
-  main .seo-nav-wrapper, main .seo-nav-center-container > div {
+  main .seo-nav-wrapper {
     padding: 0 28px;
   }
 }
 
 @media (min-width: 1200px) {
-  main .seo-nav-wrapper,
-  main .section.seo-nav-center-container > div {
+  main .seo-nav-wrapper {
     padding: 0 28px;
   }
 }

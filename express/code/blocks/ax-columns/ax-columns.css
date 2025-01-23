@@ -1,9 +1,13 @@
 .section:first-child .ax-columns:first-child {
   min-height: unset;
+}
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):first-child .ax-columns:first-child {
   padding-top: 0;
 }
 
-.section.long-form .ax-columns:last-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing).long-form .ax-columns:last-child {
   padding-bottom: 40px;
 }
 
@@ -51,11 +55,13 @@
   float: unset;
 }
 
-.section:not(:first-child) .ax-columns:first-child {
+.section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child {
   padding-top: 60px;
 }
 
-.section:not(:first-child) .ax-columns.highlight:empty:first-child {
+.section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:empty:first-child {
   padding-top: 0px;
 }
 
@@ -65,8 +71,10 @@
   padding-right: 0;
 }
 
-.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)) > .ax-columns:last-child,
-.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)) > .content:last-child {
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .ax-columns:last-child,
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .content:last-child {
   padding-bottom: 40px;
 }
 
@@ -84,10 +92,14 @@
   color: var(--color-white);
 }
 
-.ax-columns.highlight:last-child,
-.ax-columns.dark:last-child,
-.ax-columns.highlight:nth-last-child(2):has(+ .section-metadata),
-.ax-columns.dark:nth-last-child(2):has(+ .section-metadata) {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:last-child,
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.dark:last-child,
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:nth-last-child(2):has(+ .section-metadata),
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.dark:nth-last-child(2):has(+ .section-metadata) {
   padding-bottom: 40px;
 }
 
@@ -436,7 +448,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   margin-bottom: 0;
 }
 
-.section:first-child .ax-columns:first-child > div.columns-video {
+.section:first-child:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child > div.columns-video {
   padding: 40px 0;
 }
 
@@ -1168,7 +1181,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     margin-top: 0;
   }
 
-  .section:not(:first-child) .ax-columns.extra-wide:first-child:not(:empty) {
+  .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.extra-wide:first-child:not(:empty) {
     padding-top: 0;
   }
 

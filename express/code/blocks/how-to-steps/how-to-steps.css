@@ -9,7 +9,8 @@ main .section:has(.content:first-child + .how-to-steps) .content {
   box-sizing: border-box;
 }
 
-.section:has(.how-to-steps)  {
+.section:has(.how-to-steps):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing)  {
   padding: 32px 0;
 }
 

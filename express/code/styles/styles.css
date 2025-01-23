@@ -148,7 +148,17 @@ main {
   line-height: initial;
 }
 
-main .section:not([data-padding='none']) > .content:first-child {
+main .section:not([data-padding='none']):not(.xxxl-spacing-static,
+.xxl-spacing-static,
+.xl-spacing-static,
+.xxxl-spacing,
+.xxl-spacing,
+.xl-spacing,
+.l-spacing,
+.m-spacing,
+.s-spacing,
+.xs-spacing,
+.xxs-spacing) > .content:first-child {
   padding-top: 60px;
 }
 
@@ -690,7 +700,17 @@ main .section .content p, main .section p {
   margin: 32px 0;
 }
 
-main .section:last-of-type>.content:not(:has(+ .template-list-wrapper)) {
+main .section:not(.xxxl-spacing-static,
+.xxl-spacing-static,
+.xl-spacing-static,
+.xxxl-spacing,
+.xxl-spacing,
+.xl-spacing,
+.l-spacing,
+.m-spacing,
+.s-spacing,
+.xs-spacing,
+.xxs-spacing):last-of-type>.content:not(:has(+ .template-list-wrapper)) {
   padding-bottom: 40px;
 }
 

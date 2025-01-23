@@ -304,13 +304,14 @@ export async function fixIcons(el = document) {
   });
 }
 
-// This was only added for the blocks premigration. It is not to be used for new blocks.
+// This was only added for the blocks premigration.
+// For new blocks they should only use the decorateButtons method from milo.
 export async function decorateButtonsDeprecated(el, size) {
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-  // deactivate milo button styling for ax-columns and banner since links have perhaps unnecessarily
-  // been authored bold or italic. We'll want to roll this back at some point.
+  // eslint-disable-next-line max-len
+  // DO NOT add any more exceptions here. Authors must learn to author buttons the new milo way, even with old blocks
   if (!el.closest('.ax-columns') && !el.closest('.banner') && !el.closest('.fullscreen-marquee') && !el.closest('.link-list')) decorateButtons(el, size);
-
+  // DO NOT add any more exceptions above. We should be removing the exceptions and not adding more.
   el.querySelectorAll(':scope a:not(.con-button, .social-link)').forEach(($a) => {
     const originalHref = $a.href;
     const linkText = $a.textContent.trim();
