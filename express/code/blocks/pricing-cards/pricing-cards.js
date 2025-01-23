@@ -345,7 +345,7 @@ function handleTooltip(pricingArea) {
   icon.append(span);
   const iconWrapper = createTag('button');
   icon.setAttribute('tabindex', 1);
-  iconWrapper.setAttribute('aria-label',tooltipText);
+  iconWrapper.setAttribute('aria-label', tooltipText);
   iconWrapper.append(icon);
   iconWrapper.append(span);
   tooltipDiv.append(iconWrapper);
