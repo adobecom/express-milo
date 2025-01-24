@@ -151,6 +151,8 @@ main .how-to-v2 {
     display: flex;
     flex-direction: row;
     padding: 0 24px;
+    justify-content: center;
+    align-items: center;
   }
 
   main .how-to-v2 .steps-content > * {
