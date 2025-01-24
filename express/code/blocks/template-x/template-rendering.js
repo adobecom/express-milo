@@ -134,7 +134,7 @@ function renderShareWrapper(templateInfo) {
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
   shareIcon.setAttribute('role', 'button');
-  shareIcon.setAttribute('aria-label', `Share ${templateTitle}`);
+  shareIcon.setAttribute('aria-label', `${share === 'share' ? 'Share' : share} ${templateTitle}`);
   const tooltip = createTag('div', {
     class: 'shared-tooltip',
     'aria-label': text,
@@ -484,7 +484,7 @@ export default async function renderTemplate(template) {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKeyArray } = placeholders);
   });
-  [tagCopied, editThisTemplate, free] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free'], getConfig());
+  [tagCopied, editThisTemplate, free, share] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free', 'share'], getConfig());
 
   const tmpltEl = createTag('div');
   if (template.assetType === 'Webpage_Template') {
