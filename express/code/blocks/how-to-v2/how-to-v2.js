@@ -44,7 +44,7 @@ function buildAccordion(block, rows, stepsContent) {
 
     detailContainer.append(detailText);
 
-    i > 0 && listItem.append(listItemIndicator);
+    listItem.append(listItemIndicator);
     listItem.append(listItemContent);
 
     listItemContent.append(newStepTitle);
@@ -92,30 +92,12 @@ export default async function decorate(block) {
     stepsContentBackgroundImg.src = backgroundURL;
   }
 
-  // if (isVideoVariant) {
-  //   const videoData = rows.shift();
-
-  //   // remove the added social link from the block DOM
-  //   block.removeChild(block.children[0]);
-
-  //   const videoLink = videoData.querySelector('a');
-  //   const youtubeURL = videoLink?.href;
-  //   const url = new URL(youtubeURL);
-
-  //   const videoContainerEl = createTag('div', { class: 'video-container' });
-
-  //   const videoEl = embedYoutube(url);
-  //   videoEl.classList.add('video-how-to-steps-accordion');
-
-  //   videoContainerEl.append(videoEl);
-  //   stepsContent.append(videoContainerEl);
-  // } else {
-  //   const imageData = rows.shift();
-  //   const imageEl = imageData.querySelector('picture');
-  //   const imageContainerEl = createTag('div', { class: 'image-container' });
-  //   imageContainerEl.append(imageEl);
-  //   stepsContent.append(imageContainerEl);
-  // }
+  const mediaData = rows.shift();
+  const mediaEl = mediaData.querySelector('picture') || mediaData.querySelector('a');
+  block.removeChild(block.children[0]);
+  const mediaContainerEl = createTag('div', { class: 'media-container' });
+  mediaContainerEl.append(mediaEl);
+  stepsContent.append(mediaContainerEl);
 
   const heading = section.querySelector('h2, h3, h4');
   block.replaceChildren(heading, stepsContent);

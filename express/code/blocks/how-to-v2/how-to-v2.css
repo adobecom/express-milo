@@ -2,6 +2,7 @@ main .how-to-v2 h2 {
   font-size: 22px;
   text-align: center;
   padding: 0 24px;
+  margin-bottom: 20px;
 }
 
 main .how-to-v2 ol {
