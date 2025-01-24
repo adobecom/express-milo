@@ -725,6 +725,9 @@ async function decorateCategoryList(block, props) {
   drawerWrapper.addEventListener('scroll', () => {
     updateLottieStatus(block);
   }, { passive: true });
+  if (document.querySelector('.print')) {
+    categoriesDesktopWrapper.remove();
+  }
 }
 
 function closeDrawer(toolBar) {
@@ -1305,6 +1308,12 @@ async function decorateTemplates(block, props) {
   //       +- "Edit this template"
   //
   // make copy of children to avoid modifying list while looping
+
+  window.addEventListener('Message', (event) => {
+    console.log('message recieved', event.data);
+    console.log('source', event.source);
+    console.log('origin', event.origin);
+  });
 
   populateTemplates(block, props, templates);
   if (props.orientation.toLowerCase() !== 'horizontal') {
