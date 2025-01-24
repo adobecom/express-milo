@@ -59,7 +59,7 @@ main .how-to-v2 ol li:first-child .detail-container {
 }
 
 main .how-to-v2 lite-youtube,
-main .how-to-v2 picture {
+main .how-to-v2 picture img {
   border-radius: 16px;
   overflow: hidden;
 }
