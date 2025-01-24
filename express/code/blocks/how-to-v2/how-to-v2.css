@@ -95,8 +95,8 @@ main .how-to-v2 ol.steps {
   padding: 0;
 }
 
-main .how-to-v2 ol.steps .step .step-content h3:hover {
-  background-color: var( --color-gray-100);
+main .how-to-v2 ol.steps .step .step-content h3:not(:has(picture)):hover {
+  background-color: var(--color-gray-100);
   margin: -8px 0 -8px -16px; 
   padding: 8px 0 8px 16px;
 }
