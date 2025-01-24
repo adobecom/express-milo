@@ -58,8 +58,8 @@ main .how-to-v2 ol li:first-child .detail-container {
   max-height: none;
 }
 
-main .how-to-v2.video lite-youtube,
-main .how-to-v2.image picture {
+main .how-to-v2 lite-youtube,
+main .how-to-v2 picture {
   border-radius: 16px;
   overflow: hidden;
 }
@@ -101,18 +101,18 @@ main .how-to-v2 ol.steps .step .step-content h3:hover {
   padding: 8px 0 8px 16px;
 }
 
-main .how-to-v2.video .video-container {
+main .how-to-v2 .video-container {
   margin-top: 20px;
 }
 
-main .how-to-v2.image .image-container {
+main .how-to-v2 .image-container {
   margin-top: 20px;
   width: 100%; 
   overflow: hidden;
 }
 
-main .how-to-v2.image .image-container img,
-main .how-to-v2.video .video-container > * {
+main .how-to-v2 .image-container img,
+main .how-to-v2 .video-container > * {
   border-radius: 16px;
   max-width: 400px;
   width: 100%;
@@ -120,14 +120,13 @@ main .how-to-v2.video .video-container > * {
   object-fit: cover;
 }
 
-main .how-to-v2.video .video-container > * {
+main .how-to-v2 .video-container > * {
   margin-left: auto;
   margin-right: auto;
   height: unset;
 }
 
-main .how-to-v2.video,
-main .how-to-v2.image {
+main .how-to-v2 {
   /* note we don't set margin here because background gradient has to go past into this container */
   margin: 0;
   max-width: unset;
@@ -139,8 +138,7 @@ main .how-to-v2.image {
     font-size: 28px;
   }
 
-  main .how-to-v2.video,
-  main .how-to-v2.image  {
+  main .how-to-v2 {
     max-width: 950px;
     margin: auto;
   }
@@ -156,13 +154,13 @@ main .how-to-v2.image {
     box-sizing: border-box;
   }
 
-  main .how-to-v2.image .image-container,
-  main .how-to-v2.video .video-container {
+  main .how-to-v2 .image-container,
+  main .how-to-v2 .video-container {
     align-items: center;
     display: inline-grid;
   }
 
-  main .how-to-v2.image .image-container img {
+  main .how-to-v2 .image-container img {
     height: unset;
   }
 
@@ -184,19 +182,18 @@ main .how-to-v2.image {
     font-size: 36px;
   }
 
-  main .how-to-v2.video,
-  main .how-to-v2.image  {
+  main .how-to-v2 {
     max-width: 1300px;
     margin: auto;
   }
 
-  main .how-to-v2.image .image-container img,
-  main .how-to-v2.video .video-container > * {
+  main .how-to-v2 .image-container img,
+  main .how-to-v2 .video-container > * {
     max-height: 300px;
     max-width: 533px;
   }
 
-  main .how-to-v2.image .image-container {
+  main .how-to-v2 .image-container {
     display: inline-block;
   }
 
