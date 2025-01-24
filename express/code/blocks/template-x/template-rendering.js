@@ -7,7 +7,7 @@ import BlockMediator from '../../scripts/block-mediator.min.js';
 let createTag; let getConfig;
 let getMetadata; let replaceKeyArray;
 let tagCopied; let editThisTemplate;
-let free;
+let free; let sharePlaceholder;
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
@@ -134,7 +134,7 @@ function renderShareWrapper(templateInfo) {
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
   shareIcon.setAttribute('role', 'button');
-  shareIcon.setAttribute('aria-label', `${share === 'share' ? 'Share' : share} ${templateTitle}`);
+  shareIcon.setAttribute('aria-label', `${sharePlaceholder === 'share' ? 'Share' : sharePlaceholder} ${templateTitle}`);
   const tooltip = createTag('div', {
     class: 'shared-tooltip',
     'aria-label': text,
@@ -484,7 +484,7 @@ export default async function renderTemplate(template) {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKeyArray } = placeholders);
   });
-  [tagCopied, editThisTemplate, free, share] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free', 'share'], getConfig());
+  [tagCopied, editThisTemplate, free, sharePlaceholder] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free', 'share'], getConfig());
 
   const tmpltEl = createTag('div');
   if (template.assetType === 'Webpage_Template') {
