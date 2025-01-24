@@ -44,7 +44,7 @@ function buildAccordion(block, rows, stepsContent) {
 
     detailContainer.append(detailText);
 
-    listItem.append(listItemIndicator);
+    i > 0 && listItem.append(listItemIndicator);
     listItem.append(listItemContent);
 
     listItemContent.append(newStepTitle);
