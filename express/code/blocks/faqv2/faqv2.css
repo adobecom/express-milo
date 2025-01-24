@@ -94,7 +94,11 @@
   border-radius: 16px 16px 0 0;
 }
 
-.faqv2.expandable.longform .faqv2-wrapper::after {
+.faqv2.expandable.longform .faqv2-accordions-col .faqv2-wrapper:last-child {
+  border-radius: 0 0 16px 16px;
+}
+
+.faqv2.expandable.longform .faqv2-wrapper:not(:last-child)::after {
   content: '';
   position: absolute;
   bottom: 0;
