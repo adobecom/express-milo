@@ -152,7 +152,7 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'remove-background':
       let a = {...contConfig}
-      // a.mode ="inline"
+      a.mode ="fill"
       // a.size = {
       //   width: window.screen.width,
       //   height: window.screen.height
