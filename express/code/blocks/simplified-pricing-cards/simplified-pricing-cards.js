@@ -50,12 +50,39 @@ export function handleTooltip(pricingArea) {
   span.innerText = tooltipText;
   const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
   icon.append(span);
-  const iconWrapper = createTag('span');
+  const iconWrapper = createTag('button');
+  iconWrapper.setAttribute('aria-label', tooltipText);
+  icon.setAttribute('tabindex', 1);
   iconWrapper.append(icon);
   iconWrapper.append(span);
   tooltipDiv.append(iconWrapper);
   iconWrapper.addEventListener('click', adjustElementPosition);
   window.addEventListener('resize', adjustElementPosition);
+
+  iconWrapper.addEventListener('mouseover', () => {
+    iconWrapper.classList.add('hover');
+  });
+
+  iconWrapper.addEventListener('mouseleave', () => {
+    setTimeout(() => {
+      iconWrapper.classList.remove('hover');
+    }, 500);
+  });
+
+  span.addEventListener('mouseenter', () => {
+    span.classList.add('hover');
+  });
+
+  span.addEventListener('mouseleave', () => {
+    span.classList.remove('hover');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.activeElement.blur();
+      iconWrapper.classList.remove('hover');
+    }
+  });
 }
 
 function getHeightWithoutPadding(element) {
