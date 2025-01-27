@@ -110,7 +110,6 @@ function collectFloatingButtonData(eligible) {
       });
     }
   }
-
   return data;
 }
 
