@@ -208,9 +208,7 @@ main .how-to-v2 {
   }
 
   main .how-to-v2 ol li h3 {
-    text-align: left;
     font-size: 22px;
     line-height: 28.6px;
-    font-weight: 700;
   }
 }
