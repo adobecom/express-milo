@@ -157,7 +157,7 @@ export function runQuickAction(quickAction, data, block) {
         width: window.screen.width,
         height: window.screen.height
       }
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, a);
      // ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, a);
       break;
     case 'generate-qr-code':
