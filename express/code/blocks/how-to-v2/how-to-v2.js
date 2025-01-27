@@ -68,7 +68,7 @@ function buildAccordion(block, rows, stepsContent) {
   }, 0);
 }
 
-export default async function decorate(block) {
+export default function decorate(block) {
   const section = block.closest('.section');
   const rows = Array.from(block.children);
 
@@ -76,14 +76,10 @@ export default async function decorate(block) {
   const backgroundImage = backgroundRow.querySelector('img');
   const backgroundURL = backgroundImage?.src;
   const hasBackground = !!backgroundURL;
-
-  if (hasBackground) {
-    rows.shift();
-  }
-
   const stepsContent = createTag('div', { class: 'steps-content' });
 
   if (hasBackground) {
+    rows.shift();
     // So that background image goes beyond container
     const stepsContentBackground = createTag('div', { class: 'steps-content-backg' });
     const stepsContentBackgroundImg = createTag('img', { class: 'steps-content-backg-image' });
