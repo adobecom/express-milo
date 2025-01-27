@@ -40,6 +40,7 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
+  'remove-background-full-editor':  { ...getBaseImgCfg(JPG, JPEG, PNG) }
 };
 
 function fade(element, action) {
@@ -151,9 +152,10 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
-      let a = {...contConfig}
-      a.mode ="modal" 
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, a);
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'remove-background-full-editor':
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {...contConfig, mode : "modal"});
       document.querySelector(".global-navigation.ready").style.display = "none" 
       break;
     case 'generate-qr-code':
