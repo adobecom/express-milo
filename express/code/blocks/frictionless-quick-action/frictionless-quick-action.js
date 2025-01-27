@@ -151,6 +151,12 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
+      let a = {...contConfig}
+      a.mode ="inline"
+      a.size = {
+        width: window.screen.width,
+        height: window.screen.height
+      }
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, contConfig);
      // ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, a);
       break;
