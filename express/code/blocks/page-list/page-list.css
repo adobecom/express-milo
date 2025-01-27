@@ -1,10 +1,7 @@
-main .section:has(.page-list) {
-  padding: 64px 16px 0px 16px;
-}
-
-
 main .section:has(.page-list) > div {
   max-width: 1000px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 main .section:has(.page-list) h2 {

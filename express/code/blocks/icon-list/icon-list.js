@@ -57,6 +57,7 @@ export default async function decorate($block) {
       $block.append($col);
     });
     $block.classList.add('two-column');
+    // if you're thinking of copying this pattern, don't . Blocks should not be touching the section
     $block.closest('div.section').classList.add('icon-list-two-column-container');
   }
 }

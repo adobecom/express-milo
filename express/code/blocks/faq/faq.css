@@ -2,7 +2,8 @@
   background-color: var(--color-gray-200);
 }
 
-.section:has(> .faq) > div:first-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):has(> .faq) > div:first-child, .section:has(> .faq):not([data-padding='none']) > .content:first-child  {
   padding-top: 80px;
 }
 
