@@ -152,11 +152,11 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'remove-background':
       let a = {...contConfig}
-      a.mode ="inline"
-      a.size = {
-        width: window.screen.width,
-        height: window.screen.height
-      }
+      // a.mode ="inline"
+      // a.size = {
+      //   width: window.screen.width,
+      //   height: window.screen.height
+      // }
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, a);
      // ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, a);
       break;
