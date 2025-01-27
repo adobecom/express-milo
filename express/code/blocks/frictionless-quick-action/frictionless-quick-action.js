@@ -152,13 +152,9 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'remove-background':
       let a = {...contConfig}
-      a.mode ="modal"
-      // a.size = {
-      //   width: window.screen.width,
-      //   height: window.screen.height
-      // }
+      a.mode ="modal" 
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, a);
-     // ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, a);
+      document.querySelector(".global-navigation.ready").style.display = "none" 
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
