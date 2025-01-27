@@ -3,7 +3,7 @@
   margin: auto;
 }
 
-.promotion:first-child {
+.promotion:not(:empty):first-child {
   padding-top: 60px;
 }
 

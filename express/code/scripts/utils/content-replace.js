@@ -187,8 +187,7 @@ const HtmlSanitizer = new (function handSanitizer() {
 
 async function replaceDefaultPlaceholders(block, components) {
   block.innerHTML = block.innerHTML.replaceAll('https://www.adobe.com/express/templates/default-create-link', components.link);
-
-  if (components.tasks === '') {
+  if (!components.tasks) {
     const startFromScratch = await replaceKey('start-from-scratch', getConfig());
     block.innerHTML = block.innerHTML.replaceAll('default-create-link-text', startFromScratch || '');
   } else {

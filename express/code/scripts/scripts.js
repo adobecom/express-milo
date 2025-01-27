@@ -47,9 +47,10 @@ const CONFIG = {
   },
   imsClientId: 'AdobeExpressWeb',
   prodDomains,
-  // geoRouting: 'off',
-  // fallbackRouting: 'off',
+  geoRouting: 'on',
+  fallbackRouting: 'on',
   decorateArea,
+  faasCloseModalAfterSubmit: 'on',
   locales: {
     '': { ietf: 'en-US', tk: 'jdq5hay.css' },
     br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
@@ -70,7 +71,6 @@ const CONFIG = {
     nl: { ietf: 'nl-NL', tk: 'cya6bri.css' },
     no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
     se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
-    tr: { ietf: 'tr-TR', tk: 'ley8vds.css' },
     // eslint-disable-next-line max-len
     // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hant-TW
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
@@ -85,6 +85,85 @@ const CONFIG = {
   autoBlocks: [
     { axfaas: '/tools/axfaas' },
   ],
+  languageMap: {
+    ae_ar: '',
+    ae_en: '',
+    africa: '',
+    ar: 'es',
+    at: 'de',
+    au: '',
+    be_en: '',
+    be_fr: 'fr',
+    be_nl: 'nl',
+    bg: '',
+    ca: '',
+    ca_fr: 'fr',
+    cis_en: '',
+    cis_ru: '',
+    cr: 'es',
+    cy_en: '',
+    cz: '',
+    ch_de: 'de',
+    ch_fr: 'fr',
+    ch_it: 'it',
+    cl: 'es',
+    co: 'es',
+    ec: 'es',
+    ee: '',
+    eg_ar: '',
+    eg_en: '',
+    gr_en: '',
+    gr_el: '',
+    gt: 'es',
+    hk_en: '',
+    hk_zh: 'tw',
+    hu: '',
+    id_en: '',
+    ie: '',
+    il_en: '',
+    il_he: '',
+    in_hi: 'in',
+    kw_ar: '',
+    kw_en: '',
+    la: 'es',
+    lt: '',
+    lu_en: '',
+    lu_de: 'de',
+    lu_fr: 'fr',
+    lv: '',
+    mena_ar: '',
+    mena_en: '',
+    mt: '',
+    mx: 'es',
+    my_en: '',
+    my_ms: '',
+    ng: '',
+    nz: '',
+    pe: 'es',
+    ph_en: '',
+    ph_fil: '',
+    pl: '',
+    pr: 'es',
+    pt: 'br',
+    qa_ar: '',
+    qa_en: '',
+    ro: '',
+    ru: '',
+    sa_ar: '',
+    sa_en: '',
+    sea: '',
+    sg: '',
+    si: '',
+    sk: '',
+    th_en: '',
+    th_th: '',
+    tr: '',
+    ua: '',
+    fi: '',
+    vn_en: '',
+    vn_vi: '',
+    za: '',
+  },
 };
 
 /*
@@ -232,12 +311,6 @@ const listenAlloy = () => {
   // TODO remove metadata after we go live
   const gnav = createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` });
   document.head.append(gnav);
-
-  // TODO this can be removed post migration
-  if (getMetadata('jpwordwrap:budoux-exclude-selector') === null && config.locale.ietf === 'ja-JP') {
-    const budouxExcludeSelector = createTag('meta', { property: 'jpwordwrap:budoux-exclude-selector', content: 'p' });
-    document.head.append(budouxExcludeSelector);
-  }
 
   if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');

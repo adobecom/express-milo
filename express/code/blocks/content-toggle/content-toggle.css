@@ -1,8 +1,10 @@
-main .section:has(.content-toggle-wrapper) {
+main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):has(.content-toggle-wrapper) {
     padding-top: 60px;
 }
 
-main .section[data-toggle] {
+main .section[data-toggle]:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) {
     padding-top: 60px;
 }
 

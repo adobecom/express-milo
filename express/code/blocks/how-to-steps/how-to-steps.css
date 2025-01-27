@@ -6,9 +6,11 @@
 main .section:has(.content:first-child + .how-to-steps) .content {
   padding: 0 20px;
   max-width: 810px;
+  box-sizing: border-box;
 }
 
-.section:has(.how-to-steps)  {
+.section:has(.how-to-steps):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing)  {
   padding: 32px 0;
 }
 
@@ -245,6 +247,7 @@ main .section .template-x-heading {
   }
 
   main .section:has(.content:first-child + .how-to-steps) .content {
+    padding: 0 40px;
     max-width: 1070px;
   }
 }

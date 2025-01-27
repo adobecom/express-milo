@@ -7,13 +7,15 @@ main .section:has(.make-a-project) h2 {
   margin: 80px 0 40px;
 }
 
-main .section:has(.make-a-project) .content:first-child {
+main .section:has(.make-a-project):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .content:first-child {
   padding-top: 0;
 }
 
 main .make-a-project {
   display: flex;
   flex-direction: column;
+  word-wrap: initial;
 }
 
 main .make-a-project .make-a-project-marquee {
@@ -454,7 +456,7 @@ main .make-a-project .free-plan-widget {
 }
 
 /* add padding if make a project isn't the first block */
-main .default-content-wrapper + .make-a-project-wrapper > .make-a-project {
+main .content + .make-a-project-wrapper > .make-a-project {
   padding-top: 40px;
 }
 
