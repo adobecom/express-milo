@@ -111,7 +111,7 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  const variant = new URLSearchParams(window.location).get('variant')
+  const variant = new URLSearchParams(window.location.search).get('variant')
   const appConfig = {
     metaData: { isFrictionlessQa: 'true', variant},
     receiveQuickActionErrors: false,
@@ -204,7 +204,7 @@ async function startSDK(data = '', quickAction, block) {
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
 
 
-    const baseQA = new URLSearchParams(window.location).get('baseQA')
+    const baseQA = new URLSearchParams(window.location.search).get('baseQA');
     const ccEverywhereConfig = {
       hostInfo: {
         clientId,
