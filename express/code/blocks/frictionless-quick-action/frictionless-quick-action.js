@@ -111,8 +111,9 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
+  const variant = new URLSearchParams(window.location).get('variant')
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
+    metaData: { isFrictionlessQa: 'true', variant},
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -155,7 +156,17 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background-full-editor':
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {...contConfig, mode : "modal"});
+      
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+        ...contConfig, 
+        mode : "modal", 
+        metaData: { 
+          isFrictionlessQa: 'true',
+
+          
+         } 
+      });
+
       document.querySelector(".global-navigation.ready").style.display = "none" 
       break;
     case 'generate-qr-code':
@@ -192,6 +203,8 @@ async function startSDK(data = '', quickAction, block) {
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
 
+
+    const baseQA = new URLSearchParams(window.location).get('baseQA')
     const ccEverywhereConfig = {
       hostInfo: {
         clientId,
@@ -200,6 +213,7 @@ async function startSDK(data = '', quickAction, block) {
       configParams: {
         locale: ietf?.replace('-', '_'),
         env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
+        baseQA
       },
       authOption: () => ({ mode: 'delayed' }),
     };
