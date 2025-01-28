@@ -307,7 +307,7 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 .simplified-pricing-cards a.button.compare-all-button, main .section .simplified-pricing-cards a.con-button.compare-all-button {
-    background-color: var(--color-white);
+    background: var(--color-white);
     border: 2px solid var(--color-black);
     color: black;
     margin: 24px auto 24px auto;
