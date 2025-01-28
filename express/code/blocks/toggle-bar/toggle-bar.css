@@ -166,7 +166,7 @@
     font-size: var(--body-font-size-xs);
     padding: 2px 4px;
     font-weight: 700;
-    background-color: #DEDEF9;
+    background-color: var(--palette-indigo-200);
     color: var(--color-info-accent);
     border-radius: 4px;
 }

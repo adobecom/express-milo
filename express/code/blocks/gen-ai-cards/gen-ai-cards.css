@@ -110,7 +110,7 @@
   padding: 0 4px;
   margin-left: 6px;
   font-weight: 700;
-  background-color: #DEDEF9;
+  background-color: var(--palette-indigo-200);
   color: var(--color-info-accent);
   border-radius: 4px;
 }
