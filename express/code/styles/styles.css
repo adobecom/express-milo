@@ -268,7 +268,7 @@ main a.button.accent:any-link:hover,
 main a.con-button.blue:any-link:hover,
 main .dark a.con-button.blue:any-link:hover,
 main a.button.primaryCTA:any-link:hover {
-  background: linear-gradient(900deg, #9C28AF, #6338EE, #274DEA, #6338EE, #9C28AF, #6338EE, #274DEA);
+  background: linear-gradient(90deg, #9C28AF, #6338EE, #274DEA, #6338EE, #9C28AF, #6338EE, #274DEA);
   animation: none;
   background-size: 700% 700%;
   border-color: var(--color-info-accent-hover);
@@ -279,7 +279,8 @@ main a.button.accent:any-link:active,
 main a.con-button.blue:any-link:active,
 main .dark a.con-button.blue:any-link:active,
 main a.button.primaryCTA:any-link:active {
-  background: var(--color-info-accent-down);
+  background: linear-gradient(90deg, #B539C8, #7155FA, #1D3ECF, #7155FA, #B539C8, #7155FA, #1D3ECF);
+  background-size: 700% 700%;
   border-color: var(--color-info-accent-down);
 }
 
@@ -288,7 +289,8 @@ main a.button.accent:focus,
 main a.con-button.blue:focus,
 main .dark a.con-button.blue:focus,
 main a.button.primaryCTA:focus {
-  background: var(--color-info-accent-hover);
+  background: linear-gradient(90deg, #B539C8, #7155FA, #3B63FB, #7155FA, #B539C8, #7155FA, #3B63FB);
+  background-size: 700% 700%;
   border-color: var(--color-info-accent-hover);
   color: var(--color-white);
   outline: none;
