@@ -203,6 +203,33 @@ main .blog-posts .card .card-body {
   height: 300px;
 }
 
+/* discover variant */
+main .blog-posts.discover .blog-card .blog-card-image img {
+  border-radius: 16px 16px 0 0;
+}
+main .blog-posts.discover .blog-card {
+  display: block;
+  width: 320px;
+  background: #F8F8F8;
+  margin: unset;       
+  margin-top: 20px;
+}
+main .blog-posts.discover .blog-card-image {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+  object-fit: cover;
+}
+main .blog-posts.discover .blog-card .blog-card-title {
+  padding: 20px 20px 0;
+}
+main .blog-posts.discover .blog-card .blog-card-teaser {
+  padding: 0 20px 0;
+}
+main .blog-posts.discover .blog-card .blog-card-date {
+  padding: 15px 10px 20px 20px;
+}
+
 main .blog-posts .card .card-body p {
   font-size: 1rem;
 }
@@ -260,6 +287,15 @@ main .section:has(.blog-posts) > .content >h3 {
 
     .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
         max-width: 700px;
+    }
+
+    /* discover variant */
+    main .blog-posts.discover .blog-cards {
+      flex-wrap: unset;
+    }
+    main .blog-posts.discover .blog-card {
+        margin-left: 20px;
+        margin-right: 20px;
     }
 }
 
