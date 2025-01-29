@@ -278,12 +278,12 @@ End border style variants
   right: 8px;
   top: -10px;
   border-radius: 4px;
-  background: #D3D5FF;
+  background: var(--palette-indigo-200);
   padding: 0px 6px 1px;
   height: 20px;
   font-size: var(--body-font-size-xs);
   font-weight: 700;
-  color: #5258E4;
+  color: var(--palette-indigo-1000);
   height: 20px;
   font-style: normal;
   height: auto;
@@ -307,7 +307,7 @@ End border style variants
 }
 
 .pricing-cards .pricing-price.price-active {
-  color: #5258E4;
+  color: var(--palette-indigo-1000);
 }
 
 .pricing-cards .pricing-base-price {
@@ -498,7 +498,7 @@ End border style variants
 
 .pricing-cards .card-compare a {
   text-decoration: underline;
-  color: #5258E4;
+  color: var(--palette-indigo-1000);
   font-weight: 400;
 }
 
