@@ -1,7 +1,6 @@
 :root {
   --card-width: 353px;
   --card-padding: 12px;
-  --color-pricing-text: #5258E4;
 }
 
 .pricing-cards.no-visible {
@@ -284,7 +283,7 @@ End border style variants
   height: 20px;
   font-size: var(--body-font-size-xs);
   font-weight: 700;
-  color: var(--color-pricing-text);
+  color: var(--palette-indigo-1000);
   height: 20px;
   font-style: normal;
   height: auto;
@@ -308,7 +307,7 @@ End border style variants
 }
 
 .pricing-cards .pricing-price.price-active {
-  color: var(--color-pricing-text);
+  color: var(--palette-indigo-1000);
 }
 
 .pricing-cards .pricing-base-price {
@@ -499,7 +498,7 @@ End border style variants
 
 .pricing-cards .card-compare a {
   text-decoration: underline;
-  color: var(--color-pricing-text);
+  color: var(--palette-indigo-1000);
   font-weight: 400;
 }
 
