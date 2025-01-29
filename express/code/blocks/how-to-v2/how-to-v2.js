@@ -69,10 +69,13 @@ function buildAccordion(block, rows, stepsContent) {
 }
 
 export default function decorate(block) {
-  const section = block.closest('.section');
   const rows = Array.from(block.children);
+  const heading = block.querySelector('h2, h3, h4');
+  if (heading) {
+    rows.shift();
+  }
 
-  const backgroundRow = block.children[0];
+  const backgroundRow = block.children[1];
   const backgroundImage = backgroundRow.querySelector('img');
   const backgroundURL = backgroundImage?.src;
   const hasBackground = !!backgroundURL;
@@ -95,7 +98,6 @@ export default function decorate(block) {
   mediaContainerEl.append(mediaEl);
   stepsContent.append(mediaContainerEl);
 
-  const heading = section.querySelector('h2, h3, h4');
   block.replaceChildren(heading, stepsContent);
   buildAccordion(block, rows, stepsContent);
 }
