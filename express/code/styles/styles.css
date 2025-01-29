@@ -248,8 +248,19 @@ main a.con-button.blue:any-link,
 main .dark a.con-button.blue:any-link,
 main a.button.primaryCTA:any-link {
   color: var(--color-white);
-  background-color: var(--color-info-accent);
+  background: linear-gradient(90deg, #B539C8, #7155FA, #3B63FB, #7155FA, #B539C8, #7155FA, #3B63FB);
+  background-size: 700% 700%;
   border-color: var(--color-info-accent);
+  animation: buttonGradient 20s linear infinite;
+}
+
+@keyframes buttonGradient {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 main a.button:any-link:hover,
@@ -257,7 +268,9 @@ main a.button.accent:any-link:hover,
 main a.con-button.blue:any-link:hover,
 main .dark a.con-button.blue:any-link:hover,
 main a.button.primaryCTA:any-link:hover {
-  background-color: var(--color-info-accent-hover);
+  background: linear-gradient(90deg, #9C28AF, #6338EE, #274DEA, #6338EE, #9C28AF, #6338EE, #274DEA);
+  animation: none;
+  background-size: 700% 700%;
   border-color: var(--color-info-accent-hover);
 }
 
@@ -266,7 +279,8 @@ main a.button.accent:any-link:active,
 main a.con-button.blue:any-link:active,
 main .dark a.con-button.blue:any-link:active,
 main a.button.primaryCTA:any-link:active {
-  background-color: var(--color-info-accent-down);
+  background: linear-gradient(90deg, #B539C8, #7155FA, #1D3ECF, #7155FA, #B539C8, #7155FA, #1D3ECF);
+  background-size: 700% 700%;
   border-color: var(--color-info-accent-down);
 }
 
@@ -275,7 +289,8 @@ main a.button.accent:focus,
 main a.con-button.blue:focus,
 main .dark a.con-button.blue:focus,
 main a.button.primaryCTA:focus {
-  background-color: var(--color-info-accent-hover);
+  background: linear-gradient(90deg, #B539C8, #7155FA, #3B63FB, #7155FA, #B539C8, #7155FA, #3B63FB);
+  background-size: 700% 700%;
   border-color: var(--color-info-accent-hover);
   color: var(--color-white);
   outline: none;
@@ -285,67 +300,67 @@ main a.button.primaryCTA:focus {
 
 main a.button.primary:any-link, main .dark a.con-button.outline:any-link {
   color: var(--color-white);
-  background-color: var(--color-info-primary);
+  background: var(--color-info-primary);
   border-color: var(--color-info-primary);
 }
 
 main a.button.primary:any-link:hover, main a.con-button.outline:any-link:hover {
-  background-color: var(--color-info-primary-hover);
+  background: var(--color-info-primary-hover);
   border-color: var(--color-info-primary-hover);
 }
 
 main a.button.primary:any-link:active, main a.con-button.outline:any-link:active {
-  background-color: var(--color-info-primary-down);
+  background: var(--color-info-primary-down);
   border-color: var(--color-info-primary-down);
 }
 
 main a.button.primary:focus,
 main a.button.primary.reverse:focus {
-  background-color: var(--color-info-primary-hover);
+  background: var(--color-info-primary-hover);
   border-color: var(--color-info-primary-hover);
   color: var(--color-white);
 }
 
 main a.button.secondary:any-link {
   color: var(--color-black);
-  background-color: var(--color-info-secondary);
+  background: var(--color-info-secondary);
   border-color: var(--color-info-secondary);
 }
 
 main a.button.secondary:any-link:hover {
-  background-color: var(--color-info-secondary-hover);
+  background: var(--color-info-secondary-hover);
   border-color: var(--color-info-secondary-hover);
 }
 
 main a.button.secondary:any-link:active {
-  background-color: var(--color-info-secondary-down);
+  background: var(--color-info-secondary-down);
   border-color: var(--color-info-secondary-down);
 }
 
 main a.button.secondary:focus{
-  background-color: var(--color-gray-500);
+  background: var(--color-gray-500);
   border-color: var(--color-gray-500);
   color: var(--color-white);
 }
 
 main a.button.reverse:any-link, main a.con-button.outline:any-link {
   color: var(--color-black);
-  background-color: var(--color-white);
+  background: var(--color-white);
 }
 
 main a.button.reverse:any-link:hover, main a.con-button.outline:any-link:hover {
-  background-color: var(--color-info-secondary-hover);
+  background: var(--color-info-secondary-hover);
 }
 
 main a.button.reverse:any-link:active, main a.con-button.outline:any-link:active {
-  background-color: var(--color-info-secondary-down);
+  background: var(--color-info-secondary-down);
 }
 
 main a.button.reverse:focus,
 main a.button.reverse.accent:any-link:focus,
 main a.button.reverse.primaryCTA:any-link:focus
 {
-  background-color: var(--color-info-accent-hover);
+  background: var(--color-info-accent-hover);
   border-color: var(--color-info-accent-hover);
   color: var(--color-white);
 }
@@ -358,29 +373,29 @@ main a.button.reverse.primaryCTA:any-link {
 main a.button.reverse.accent:any-link:hover,
 main a.button.reverse.primaryCTA:any-link:hover
 {
-  background-color: var(--color-info-accent-reverse);
+  background: var(--color-info-accent-reverse);
 }
 
 main a.button.reverse.accent:any-link:active,
 main a.button.reverse.primaryCTA:any-link:active {
-  background-color: var(--color-info-accent-reverse-down);
+  background: var(--color-info-accent-reverse-down);
 }
 
 main a.button.dark:any-link, main a.con-button.dark:any-link {
   color: var(--color-black);
-  background-color: var(--color-white);
+  background: var(--color-white);
   border-color: var(--color-white);
 }
 
 main a.button.dark:any-link:hover, main a.con-button.dark:any-link:hover {
   color: var(--color-black);
-  background-color: var(--color-gray-100);
+  background: var(--color-gray-100);
   border-color: var(--color-gray-100);
 }
 
 main a.button.dark:any-link:active, main a.con-button.dark:any-link:active {
   color: var(--color-black);
-  background-color: var(--color-gray-200);
+  background: var(--color-gray-200);
   border-color: var(--color-gray-200);
 }
 
@@ -389,7 +404,7 @@ main a.button.dark:any-link:focus {
 }
 
 main a.con-button.outline:any-link:focus {
-  background-color: var(--color-info-primary-hover);
+  background: var(--color-info-primary-hover);
   border-color: var(--color-info-primary-hover);
   color: var(--color-white);
   box-shadow: 0 0 0 2px var(--color-white),
@@ -397,31 +412,31 @@ main a.con-button.outline:any-link:focus {
 }
 
 main a.con-button.outline:any-link:active {
-  background-color: var(--color-info-secondary-hover);
+  background: var(--color-info-secondary-hover);
   box-shadow: 0 0 0 2px var(--color-white),
   0 0 0 4px var(--color-info-accent-hover);
 }
 
 main a.button.dark.reverse:any-link, main .dark a.con-button.outline:any-link {
   color: var(--color-white);
-  background-color: transparent;
+  background: transparent;
   border-color: var(--color-white);
 }
 
 main a.button.dark.reverse:any-link:hover, main .dark a.con-button.outline:any-link:hover {
   color: var(--color-white);
-  background-color: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   border-color: var(--color-gray-100);
 }
 
 main a.button.dark.reverse:any-link:active, main .dark a.con-button.outline:any-link:active {
   color: var(--color-white);
-  background-color: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-color: var(--color-gray-200);
 }
 
 main a.button.dark.reverse:any-link:focus, main .dark a.con-button.outline:any-link:focus {
-  background-color: var(--color-white);
+  background: var(--color-white);
   border-color: var(--color-white);
   color: var(--color-info-accent-hover);
 }
