@@ -75,7 +75,7 @@ main .section .discover-cards {
     text-align: left;
 }
 .section .discover-cards .card .button-container a {
-    background-color: #292929;
+    background: #292929;
     color: var(--color-white);
     border: none;
 }
