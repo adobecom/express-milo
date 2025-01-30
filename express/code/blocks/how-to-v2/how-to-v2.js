@@ -68,22 +68,18 @@ function buildAccordion(block, rows, stepsContent) {
   }, 0);
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
   const rows = Array.from(block.children);
-  const heading = block.querySelector('h2, h3, h4');
-  if (heading) {
-    rows.shift();
-  }
 
-  const backgroundRow = block.children[1];
+  const backgroundRow = block.children[0];
   const backgroundImage = backgroundRow.querySelector('img');
   const backgroundURL = backgroundImage?.src;
   const hasBackground = !!backgroundURL;
   const stepsContent = createTag('div', { class: 'steps-content' });
 
   if (hasBackground) {
-    rows.shift();
     // So that background image goes beyond container
+    rows.shift();
     const stepsContentBackground = createTag('div', { class: 'steps-content-backg' });
     const stepsContentBackgroundImg = createTag('img', { class: 'steps-content-backg-image' });
     stepsContent.append(stepsContentBackground);
@@ -98,6 +94,6 @@ export default function decorate(block) {
   mediaContainerEl.append(mediaEl);
   stepsContent.append(mediaContainerEl);
 
-  block.replaceChildren(heading, stepsContent);
+  block.append(stepsContent);
   buildAccordion(block, rows, stepsContent);
 }
