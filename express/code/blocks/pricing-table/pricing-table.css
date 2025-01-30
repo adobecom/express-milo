@@ -717,3 +717,21 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     opacity: 0.75;
   }
 }
+
+
+@media (min-width: 981px) {
+  .pricing-table.seamless .row-2{
+    height: 0px;
+  } 
+
+  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col {
+   border-bottom: none;
+   border-bottom-left-radius: 0px;
+   border-bottom-right-radius: 0px;
+  } 
+
+  .pricing-table.seamless .row-3 {
+    display: none;
+  } 
+}
+
