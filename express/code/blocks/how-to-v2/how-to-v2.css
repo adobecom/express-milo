@@ -148,10 +148,12 @@ main:has(.how-to-v2) h2 {
     margin-left: 20px;
     margin-right: 20px;
   }
+
   main:has(.how-to-v2) .content h2 {
     font-size: 36px;
     padding-bottom: 20px;
   }
+  
   main .how-to-v2 ol li h3 {
     font-size: 22px;
     line-height: 28px;
@@ -159,7 +161,6 @@ main:has(.how-to-v2) h2 {
 }
 
 @media (min-width: 768px) {
-
   main .how-to-v2 h2 {
     font-size: 28px;
   }
