@@ -29,6 +29,7 @@ main .how-to-v2 ol li .step-content {
   padding: 8px 16px;
   margin: 0;
 }
+
 main .how-to-v2 ol li .step-content:has(.milo-video) {
   width: 100%;
 }
@@ -39,8 +40,8 @@ main .how-to-v2 ol li .step-indicator:has(+ div .closed) {
 
 main .how-to-v2 ol li h3 {
   text-align: left;
-  font-size: 18px;
-  line-height: 23.4px;
+  font-size: 16px;
+  line-height: 23px;
   font-weight: 700;
 }
 
@@ -136,6 +137,27 @@ main .how-to-v2 {
   max-width: unset;
 }
 
+main:has(.how-to-v2) h2 {
+  font-size: 22px;
+  padding-bottom: 20px;
+}
+
+@media (min-width: 400px) {
+  main:has(.how-to-v2) .content {
+    max-width: unset;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  main:has(.how-to-v2) .content h2 {
+    font-size: 36px;
+    padding-bottom: 20px;
+  }
+  main .how-to-v2 ol li h3 {
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+
 @media (min-width: 768px) {
 
   main .how-to-v2 h2 {
@@ -182,33 +204,3 @@ main .how-to-v2 {
   }
 }
 
-@media (min-width: 1280px) {
-
-  main .how-to-v2 h2 {
-    font-size: 36px;
-  }
-
-  main .how-to-v2 {
-    max-width: 1300px;
-    margin: auto;
-  }
-
-  main .how-to-v2 .image-container img,
-  main .how-to-v2 .video-container > * {
-    max-height: 300px;
-    max-width: 533px;
-  }
-
-  main .how-to-v2 .image-container {
-    display: inline-block;
-  }
-
-  main .how-to-v2 .steps-content {
-    margin-top: 30px;
-  }
-
-  main .how-to-v2 ol li h3 {
-    font-size: 22px;
-    line-height: 28.6px;
-  }
-}
