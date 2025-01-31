@@ -633,7 +633,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.fullsize .column {
   padding-left: 24px;
   padding-right: 24px;
-  width: 100%;
+  width: calc(100% - 48px);
 }
 
 .ax-columns .column.column-picture {
