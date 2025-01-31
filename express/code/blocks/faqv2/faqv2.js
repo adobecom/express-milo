@@ -67,13 +67,14 @@ function buildTableLayout(block) {
     });
   });
 
-  while (block.firstChild) {
-    block.removeChild(block.firstChild);
-  }
+  // while (block.firstChild) {
+  //   block.removeChild(block.firstChild);
+  // }
 
-  while (parentContainer.firstChild) {
-    block.appendChild(parentContainer.firstChild);
-  }
+  // while (parentContainer.firstChild) {
+  //   block.appendChild(parentContainer.firstChild);
+  // }
+  block.replaceChildren(...parentContainer.childNodes);
 }
 
 function buildOriginalLayout(block) {
