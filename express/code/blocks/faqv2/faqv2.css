@@ -323,10 +323,6 @@
 		border-radius: 0;
 		background: none;
 		width: auto;
-		border-top: 1px solid #8F8F8F;
-	}
-
-	.faqv2.longform .faqv2-wrapper:first-child {
 		border-top: none;
 	}
 
