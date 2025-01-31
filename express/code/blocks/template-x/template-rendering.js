@@ -8,6 +8,7 @@ let createTag; let getConfig;
 let getMetadata; let replaceKeyArray;
 let tagCopied; let editThisTemplate;
 let free;
+let variants;
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
@@ -189,7 +190,7 @@ const showModaliFrame = async (template) => {
   return modal;
 };
 
-function renderCTA(template) {
+function renderPrintCTA(template) {
   const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const btnEl = createTag('a', {
     href: '#modal',
@@ -207,7 +208,7 @@ function renderCTA(template) {
   return btnEl;
 }
 
-function renderCTALink(template) {
+function renderPrintCTALink(template) {
   const link = createTag('a', {
     href: '#modal',
     title: 'Edit this template',
@@ -220,6 +221,26 @@ function renderCTALink(template) {
   });
 
   return link;
+}
+
+function renderCTA(branchUrl) {
+  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
+  const btnEl = createTag('a', {
+    href: branchUrl,
+    title: btnTitle,
+    class: 'button accent small',
+  });
+  btnEl.textContent = btnTitle;
+  return btnEl;
+}
+
+function renderCTALink(branchUrl) {
+  const linkEl = createTag('a', {
+    href: branchUrl,
+    class: 'cta-link',
+    tabindex: '-1',
+  });
+  return linkEl;
 }
 
 function getPageIterator(pages) {
@@ -416,6 +437,9 @@ function renderMediaWrapper(template) {
 }
 
 function renderHoverWrapper(template) {
+  let cta;
+  let ctaLink;
+
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
@@ -425,8 +449,15 @@ function renderHoverWrapper(template) {
     focusHandler,
   } = renderMediaWrapper(template);
 
-  const cta = renderCTA(template);
-  const ctaLink = renderCTALink(template);
+  if (variants?.includes('flyer')
+  || variants?.includes('t-shirt')
+  || variants?.includes('print')) {
+    cta = renderPrintCTA(template);
+    ctaLink = renderPrintCTALink(template);
+  } else {
+    cta = renderCTA(template.customLinks.branchUrl);
+    ctaLink = renderCTALink(template.customLinks.branchUrl);
+  }
 
   ctaLink.append(mediaWrapper);
 
@@ -519,7 +550,8 @@ function renderStillWrapper(template) {
   return stillWrapper;
 }
 
-export default async function renderTemplate(template) {
+export default async function renderTemplate(template, variant) {
+  variants = variant;
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKeyArray } = placeholders);
