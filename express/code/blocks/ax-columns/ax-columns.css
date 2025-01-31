@@ -28,7 +28,7 @@
   max-width: 375px;
 }
 
-.section:has(.bg)::before {
+.section:has(.ax-columns.bg)::before {
   content: '';
   position: absolute;
   top: 0;
