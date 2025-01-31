@@ -2,8 +2,9 @@ import { createTag } from '../../scripts/utils.js';
 
 function buildTableLayout(block) {
   const isLongFormVariant = block.classList.contains('longform');
-  const rows = Array.from(block.children);
-  block.innerHTML = '';
+  const rows = [...block.children];
+
+  const parentContainer = createTag('div');
 
   const headerText = rows.shift()?.innerText.trim();
   if (headerText) {
@@ -13,38 +14,33 @@ function buildTableLayout(block) {
     if (isLongFormVariant) {
       const container = createTag('div', { class: 'faqv2-longform-header-container' });
       container.appendChild(rowAccordionHeader);
-      block.prepend(container);
+      parentContainer.appendChild(container);
     } else {
-      block.prepend(rowAccordionHeader);
+      parentContainer.appendChild(rowAccordionHeader);
     }
   }
 
   const container = createTag('div', { class: 'faqv2-accordions-col' });
-  block.appendChild(container);
+  parentContainer.appendChild(container);
 
-  const collapsibleRows = [];
-  rows.forEach((row) => {
-    const cells = Array.from(row.children);
-    const header = cells[0];
-    const subHeader = cells[1];
-    collapsibleRows.push({
-      header: header.textContent.trim(),
-      subHeader: subHeader?.innerHTML,
-    });
+  const collapsibleRows = rows.map((row) => {
+    const cells = [...row.children];
+    return {
+      header: cells[0]?.textContent.trim(),
+      subHeader: cells[1]?.innerHTML,
+    };
   });
 
-  collapsibleRows.forEach((row) => {
-    const { header, subHeader } = row;
-
+  collapsibleRows.forEach(({ header, subHeader }) => {
     const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
     container.appendChild(rowWrapper);
 
     const headerAccordion = createTag('div', { class: 'faqv2-accordion expandable header-accordion' });
-    rowWrapper.append(headerAccordion);
+    rowWrapper.appendChild(headerAccordion);
 
     const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
     headerDiv.innerHTML = header;
-    headerAccordion.append(headerDiv);
+    headerAccordion.appendChild(headerDiv);
 
     const iconElement = createTag('img', {
       src: '/express/code/icons/plus-heavy.svg',
@@ -54,27 +50,30 @@ function buildTableLayout(block) {
     headerDiv.appendChild(iconElement);
 
     const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
-    rowWrapper.append(subHeaderAccordion);
-
+    rowWrapper.appendChild(subHeaderAccordion);
     const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
     subHeaderDiv.innerHTML = subHeader;
-    subHeaderAccordion.append(subHeaderDiv);
+    subHeaderAccordion.appendChild(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
-      !isLongFormVariant && headerAccordion.classList.toggle('rounded-corners');
-      const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
-
-      if (isCollapsed) {
-        headerAccordion.style.borderRadius = '8px 8px 0 0';
-      } else {
-        headerAccordion.style.borderRadius = '8px';
+      if (!isLongFormVariant) {
+        headerAccordion.classList.toggle('rounded-corners');
       }
-
+      const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
+      headerAccordion.style.borderRadius = isCollapsed ? '8px 8px 0 0' : '8px';
       iconElement.src = isCollapsed
         ? '/express/code/icons/minus-heavy.svg'
         : '/express/code/icons/plus-heavy.svg';
     });
   });
+
+  while (block.firstChild) {
+    block.removeChild(block.firstChild);
+  }
+
+  while (parentContainer.firstChild) {
+    block.appendChild(parentContainer.firstChild);
+  }
 }
 
 function buildOriginalLayout(block) {
