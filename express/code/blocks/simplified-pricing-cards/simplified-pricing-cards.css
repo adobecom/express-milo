@@ -491,6 +491,10 @@ main .section>.simplified-pricing-cards-wrapper {
         padding-top: 40px;
     }
 
+    .simplified-pricing-cards.wide {
+        --card-width: 397px;
+    }
+
     .simplified-pricing-cards .card.hide {
         gap: 8px;
     }
