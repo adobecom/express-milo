@@ -66,14 +66,6 @@ function buildTableLayout(block) {
         : '/express/code/icons/plus-heavy.svg';
     });
   });
-
-  // while (block.firstChild) {
-  //   block.removeChild(block.firstChild);
-  // }
-
-  // while (parentContainer.firstChild) {
-  //   block.appendChild(parentContainer.firstChild);
-  // }
   block.replaceChildren(...parentContainer.childNodes);
 }
 
