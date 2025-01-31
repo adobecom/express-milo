@@ -210,16 +210,17 @@
 }
 
 /* Table Width */
-main .section .pricing-table-wrapper {
+main .section .pricing-table {
   margin: auto;
   max-width: 900px;
 }
-main .section .pricing-table-wrapper:has(.pricing-table.few-cols) {
+main .section .pricing-table:has(.pricing-table.few-cols) {
   max-width: 700px;
 }
-main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
+main .section .pricing-table:has(.pricing-table.many-cols) {
   max-width: 1200px;
 }
+
 @media (max-width: 980px) {
   main .section .pricing-table-wrapper,
   main .section .pricing-table-wrapper:has(.pricing-table.few-cols),
@@ -388,8 +389,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   margin: 0;
 }
 .pricing-table .row.row-heading .col .icon {
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
 }
 .pricing-table .row.row-heading .col > div p {
   font-size: 1.125rem;
@@ -720,6 +721,21 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
 
 @media (min-width: 981px) {
+
+  .pricing-table .row.row-heading .col:first-child p {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  
+  .pricing-table .row.row-heading .col > div p {
+    font-weight: 900;
+    font-size: 18px;
+  }
+  
+  .pricing-table.seamless {
+    width: 1100px;
+  }
+
   .pricing-table.seamless .row-2{
     height: 0px;
   } 
@@ -728,7 +744,18 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
    border-bottom: none;
    border-bottom-left-radius: 0px;
    border-bottom-right-radius: 0px;
+   border-top: none;
   } 
+
+  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-1 {
+    border-left: none;
+    border-top: none;
+  }
+
+  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-3 {
+    border-top: none;
+    border-right: none;
+  }
 
   .pricing-table.seamless .row-3 {
     display: none;
