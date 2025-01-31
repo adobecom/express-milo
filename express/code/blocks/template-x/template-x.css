@@ -309,10 +309,10 @@ main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
 .template-x .template > div:first-child > a:any-link {
   padding-left: 0;
 }
-/* 
+
 .template-x .template img, .template-x .template video {
   border-radius: 12px;
-} */
+}
 
 .template-x .template img:not(.icon),
 .template-x .template video {
@@ -822,6 +822,12 @@ main.with-holiday-templates-banner {
   position: sticky;
   z-index: 1;
   top: 64px;
+}
+
+.template-x.print .toolbar-wrapper,
+.template-x.t-shirt .toolbar-wrapper,
+.template-x.flyer .toolbar-wrapper {
+  background: var(--color-gray-150);
 }
 
 .template-x .api-templates-toolbar {
@@ -1998,8 +2004,19 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 
 .template-x .template .still-wrapper .image-wrapper {
   position: relative;
-  padding: 15px; 
+}
+
+.template-x.print .template .still-wrapper .image-wrapper,
+.template-x.t-shirt .template .still-wrapper .image-wrapper,
+.template-x.flyer .template .still-wrapper .image-wrapper {
   background: #ebebeb;
+  padding: 15px;
+}
+
+.template-x.print .template img, .template-x.print .template video,
+.template-x.t-shirt .template img, .template-x.t-shirt .template video,
+.template-x.flyer .template img, .template-x.flyer .template video {
+  border-radius: 0;
 }
 
 .template-x .template .still-wrapper .image-wrapper .free-tag {

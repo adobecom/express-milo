@@ -160,6 +160,9 @@ main a, main a:hover {
   text-decoration: none;
 }
 
+main a:not(.marquee), main a:not(.marquee):hover{
+  text-decoration: underline;
+}
 main video {
   max-width: 100%;
 }
