@@ -56,11 +56,10 @@ function buildTableLayout(block) {
     subHeaderAccordion.appendChild(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
-      if (!isLongFormVariant) {
-        headerAccordion.classList.toggle('rounded-corners');
-      }
       const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
-      headerAccordion.style.borderRadius = isCollapsed ? '8px 8px 0 0' : '8px';
+      if (!isLongFormVariant) {
+        headerAccordion.classList.toggle('rounded-corners', isCollapsed);
+      }
       iconElement.src = isCollapsed
         ? '/express/code/icons/minus-heavy.svg'
         : '/express/code/icons/plus-heavy.svg';
