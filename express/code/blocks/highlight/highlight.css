@@ -34,11 +34,11 @@
     padding-left: 30px;
   }
 
-  .highlight:first-child {
+  .highlight > :first-child {
     margin-left: auto;
   }
 
-  .highlight:last-child {
+  .highlight > :last-child {
     margin-right: auto;
   }
 }
