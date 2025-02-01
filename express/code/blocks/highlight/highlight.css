@@ -30,15 +30,15 @@
     flex: 1;
   }
 
-  .highlight .icon-row+.icon-row {
+  .highlight .icon-row + .icon-row {
     padding-left: 30px;
   }
 
-  .highlight-blade .icon-row:first-child {
+  .highlight-blade:first-child {
     margin-left: auto;
   }
 
-  .highlight-blade .icon-row:last-child {
+  .highlight-blade:last-child {
     margin-right: auto;
   }
 }
