@@ -242,7 +242,7 @@ const isStyleSheetPresent = (stylesheetHref) => {
 };
 
 export function onBasicCarouselCSSLoad(selector, parent) {
-  const stylesheetHref = '/express/blocks/shared/basic-carousel.css';
+  const stylesheetHref = '/express/code/scripts/widgets/basic-carousel.css';
 
   const waitForCSS = () => new Promise((resolve) => {
     const interval = setInterval(() => {
@@ -260,7 +260,6 @@ export function onBasicCarouselCSSLoad(selector, parent) {
 
 export default async function buildBasicCarousel(selector, parent, options = {}) {
   ({ createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`));
-  // Load CSS then build carousel
   return new Promise((resolve) => {
     loadStyle('/express/code/scripts/widgets/basic-carousel.css', () => {
       onBasicCarouselCSSLoad(selector, parent, options);
