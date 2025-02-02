@@ -113,8 +113,10 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
 }
 
 /* basic carousel carousel caontainers */
+.template-list-wrapper:has(.template-list.horizontal-fullwidth.three.basic-carousel),
 .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-square.basic-carousel) {
   margin: 0;
+  padding-top: 0;
   max-width: unset;
 }
 .template-list.horizontal-fullwidth.four-rectangle.basic-carousel,
@@ -123,18 +125,26 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
   padding: 0;
 }
 /* basic carousel platform */ 
+.template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform {
+  height: 135px
+}
 .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
   height: 238px
 }
 .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
-  padding-bottom: 20px
+  padding-bottom: 20px;
+  height: 385px;
+}
+/* basic carousel template */
+.template-list.horizontal-fullwidth.three.basic-carousel .template {
+  min-height: unset;
 }
 /* basic carousel nav */
 .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
 .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-right {
   display: none;
 }
-/* basic carousel templates - milo */
+/* basic carousel template img */
 .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 320px;
   height: 320px;
@@ -142,7 +152,7 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
 }
 .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 216px;
-  height: 384px;
+  height: 122px;
   border-radius: 16px;
 }
 .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
