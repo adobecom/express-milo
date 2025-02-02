@@ -112,7 +112,11 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
   padding-right: unset;
 }
 
-/* basic carousel - milo */
+/* basic carousel carousel caontainers */
+.template-list.horizontal-fullwidth.four-rectangle.basic-carousel {
+  padding: 0;
+}
+/* basic carousel templates - milo */
 .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 320px;
   height: 320px;
@@ -132,7 +136,6 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
   width: 216px;
   height: 384px;
   border-radius: 16px;
-  padding: 0;
 }
 
 
