@@ -112,14 +112,37 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
   padding-right: unset;
 }
 
+/* basic carousel - milo */
+.template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
+  width: 320px;
+  height: 320px;
+  border-radius: 16px;
+}
+.template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
+  width: 216px;
+  height: 384px;
+  border-radius: 16px;
+}
+.template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
+  /* width: 216px;
+  height: 384px;
+  border-radius: 16px; */
+}
+.template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
+  width: 216px;
+  height: 384px;
+  border-radius: 16px;
+}
+
+
 /* basic carousel for mobile template-x carousel */
-main .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
+/* main .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
 main .basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
 main .basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
 main .basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
   width: 206px;
   height: 310px;
-}
+} */
 
 main .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
   width: 222px;
