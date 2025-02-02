@@ -113,25 +113,26 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
 }
 
 /* basic carousel - milo */
-.template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
+.template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 320px;
   height: 320px;
   border-radius: 16px;
 }
-.template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
+.template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 216px;
   height: 384px;
   border-radius: 16px;
 }
-.template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
-  /* width: 216px;
-  height: 384px;
-  border-radius: 16px; */
+.template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+  width: 216px;
+  height: 216px;
+  border-radius: 16px;
 }
-.template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img{
+.template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 216px;
   height: 384px;
   border-radius: 16px;
+  padding: 0;
 }
 
 
