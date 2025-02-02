@@ -166,15 +166,14 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
   border-radius: 16px;
 }
 
-
 /* basic carousel for mobile template-x carousel */
-/* main .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
+main .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
 main .basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
 main .basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
 main .basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
   width: 206px;
   height: 310px;
-} */
+}
 
 main .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
   width: 222px;
@@ -273,6 +272,27 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
 }
 
 @media (min-width: 600px) {
+  /* basic carousel template */
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .template {
+    min-height: unset;
+  }
+  /* basic carousel template img */
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+    width: 123px;
+    height: 123px;
+  }
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+    width: 123px;
+    height: 218px;
+  }
+  /* basic carousel platform */
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    margin: auto;
+  }
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    height: 275px;
+    margin: auto;
+  }
   main .template-x.basic-carousel .basic-carousel-container {
     width: 648px;
   }
