@@ -100,7 +100,9 @@ function initializeCarousel(selector, parent) {
 
     if (window.innerWidth <= 600) {
       elements.forEach((el, index) => {
-        if (index === currentIndex) {
+        if (determineScrollCount() === 1) {
+          el.style.opacity = '1';
+        } else if (index === currentIndex) {
           el.style.opacity = '1';
         } else if (index === currentIndex - 1 || index === currentIndex + 1) {
           el.style.opacity = '0.5';
