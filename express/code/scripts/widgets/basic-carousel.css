@@ -113,7 +113,13 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
 }
 
 /* basic carousel carousel caontainers */
-.template-list.horizontal-fullwidth.four-rectangle.basic-carousel {
+.template-list-wrapper:has(.template-list.horizontal-fullwidth.four-square.basic-carousel) {
+  margin: 0;
+  max-width: unset;
+}
+.template-list.horizontal-fullwidth.four-rectangle.basic-carousel,
+.template-list.horizontal-fullwidth.four-square.basic-carousel,
+.template-list.horizontal-fullwidth.three.basic-carousel {
   padding: 0;
 }
 /* basic carousel templates - milo */
