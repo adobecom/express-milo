@@ -272,6 +272,17 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
 }
 
 @media (min-width: 600px) {
+  /* basic carousel nav */
+  .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
+  .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-right,
+  .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
+  .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-fader-right,
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-fader-right,
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-fader-right {
+    display: none;
+  }
   /* basic carousel template */
   .template-list.horizontal-fullwidth.four-square.basic-carousel .template {
     min-height: unset;
