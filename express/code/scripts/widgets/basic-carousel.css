@@ -129,6 +129,11 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
 .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
   padding-bottom: 20px
 }
+/* basic carousel nav */
+.template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
+.template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-right {
+  display: none;
+}
 /* basic carousel templates - milo */
 .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 320px;
