@@ -300,6 +300,9 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
     margin: auto;
   }
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    height: 135px
+  }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
     height: 275px;
     margin: auto;
