@@ -17,10 +17,6 @@
   padding-top: 0;
 }
 
-.template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle) {
-  max-width: unset;
-}
-
 .template-list-fullwidth-container > div,
 .template-list-fullwidth-apipowered-container > div {
   max-width: none;
