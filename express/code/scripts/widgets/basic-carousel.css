@@ -98,8 +98,8 @@
   cursor: pointer;
   display: block;
   float: left;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   margin: 0 7px;
   background: #F8F8F8;
   box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
@@ -188,7 +188,7 @@
 .basic-carousel-container a.button.basic-carousel-arrow::before {
   content: '';
   position: absolute;
-  margin-top: 11px;
+  margin-top: 16px;
   width: 8px;
   height: 8px;
   border-top: solid 1px #724CDC;
@@ -196,7 +196,7 @@
 }
 
 .basic-carousel-container a.button.basic-carousel-arrow-left::before {
-  margin-left: 13px;
+  margin-left: 17px;
   transform: rotate(-135deg);
 }
 
@@ -205,7 +205,7 @@
 }
 
 .basic-carousel-container a.button.basic-carousel-arrow-right::before {
-  margin-left: 9px;
+  margin-left: 15px;
   transform: rotate(45deg);
 }
 
