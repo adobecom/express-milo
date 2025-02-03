@@ -740,7 +740,7 @@ main .section .pricing-table:has(.pricing-table.many-cols) {
     height: 0px;
   } 
 
-  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col {
+  .pricing-table.seamless .row-1 .col {
    border-bottom: none;
    border-bottom-left-radius: 0px;
    border-bottom-right-radius: 0px;
