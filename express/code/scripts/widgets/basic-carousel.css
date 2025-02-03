@@ -308,15 +308,29 @@
   .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle.basic-carousel)  {
     height: 420px;
   }
+  .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-square.basic-carousel)  {
+    height: 230px;
+  }
   /* basic carousel template img */
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
     width: 207px;
     height: 368px;
   }
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+    width: 207px;
+    height: 207px;
+  }
   /* basic carousel platform */
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
     height: 365px;
     margin: auto;
+  }
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    height: 200px;
+  }
+  .template-list .template:not(.placeholder) .icon-free-badge {
+    display: block;
+    line-height: 23px;
   }
 }
 
