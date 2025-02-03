@@ -107,11 +107,6 @@
   pointer-events: auto;
 }
 
-.template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.horizontal > *:not(.carousel-container) {
-  padding-left: unset;
-  padding-right: unset;
-}
-
 /* basic carousel carousel caontainers */
 .template-list-wrapper:has(.template-list.horizontal-fullwidth.three.basic-carousel),
 .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-square.basic-carousel) {
@@ -164,15 +159,6 @@
   width: 216px;
   height: 384px;
   border-radius: 16px;
-}
-
-/* basic carousel for mobile template-x carousel */
-.basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
-.basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
-.basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
-.basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
-  width: 206px;
-  height: 310px;
 }
 
 .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
@@ -233,42 +219,6 @@
   align-self:stretch;
   width: 0;
   margin: 0;
-}
-
-.template-x .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
-  height: 362px;
-}
-
-.template-x .basic-carousel-container .template.basic-carousel-element .button-container {
-  height: 362px;
-}
-
-.template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  width: 130px;
-  background-color: #33AB84;
-  color: white;
-  text-align: center;
-  border-radius: 6px;
-  padding: 6px;
-  top: 50%;
-  transform: translateY(-50%);
-  left: calc(-825% + 12px);
-  font-size: var(--body-font-size-s);
-}
-
-.template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
-  content: " ";
-  position: absolute;
-  top: 50%;
-  left: 100%; 
-  margin-top: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent transparent #33AB84;
 }
 
 @media (min-width: 600px) {
@@ -333,104 +283,14 @@
     height: 275px;
     margin: auto;
   }
-  .template-x.basic-carousel .basic-carousel-container {
-    width: 648px;
-  }
-  .template-x.basic-carousel .basic-carousel-container .template.basic-carousel-element {
-    margin: 5px;
-  }
   .basic-carousel-left-trigger {
     margin-left: 0;
   }
   .basic-carousel-right-trigger {
     margin-left: 0;
   }
-  .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
-    width: 648px;
-    height: 364px;
-  }
-  .basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
-    width: 316px;
-    height: 474px;
-  }
-  .template-x.one .basic-carousel-container .basic-carousel-platform { 
-    height: 440px;
-  }
-  .template-x.two .basic-carousel-container .basic-carousel-platform { 
-    height: 544px;
-    max-height: unset;
-  }
-  .basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
-    width: 206px;
-    height: 310px;
-  }
-  .basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
-    width: 152px;
-    height: 225px;
-  }
   .basic-carousel-container .template.basic-carousel-element {
     scroll-snap-align: start;
-  }
-  .template-x.two .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
-    height: 530px;
-  }
-  .template-x.three .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
-    height: 365px;
-  }
-  .template-x.four .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
-    height: 276px;
-  }
-  .basic-carousel.four.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
-    width: 648px;
-  }
-  .basic-carousel.three.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
-    width: 220px;
-  }
-  .basic-carousel.four.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
-    width: 170px;
-  }
-  .template-x.one .basic-carousel-container .template.basic-carousel-element .button-container {
-    width: 664px;
-    height: 416px;
-  }
-  .template-x.two .basic-carousel-container .template.basic-carousel-element .button-container {
-    width: 332px;
-    height: 526px;
-  }
-  .template-x.three .basic-carousel-container .template.basic-carousel-element .button-container {
-    width: 222px;
-    height: 362px;
-  }
-  .template-x.four .basic-carousel-container .template.basic-carousel-element .button-container {
-    width: 168px;
-    height: 277px;
-  }
-  .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    width: 130px;
-    background-color: #33AB84;
-    color: white;
-    text-align: center;
-    border-radius: 6px;
-    padding: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    left: calc(100% + 12px);
-    font-size: var(--body-font-size-s);
-  } 
-
-  .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
-    content: " ";
-    position: absolute;
-    top: 50%;
-    left: -10%;
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent #33AB84 transparent transparent;
   }
 }
 
