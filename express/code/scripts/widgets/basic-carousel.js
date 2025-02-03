@@ -1,8 +1,9 @@
 import { getLibs } from '../utils.js';
 
+const smalLViewport = 600;
 let createTag; let loadStyle;
 function initializeCarousel(selector, parent) {
-  let currentIndex = window.innerWidth <= 600 ? 1 : 0;
+  let currentIndex = window.innerWidth <= smalLViewport ? 1 : 0;
   let scrollCount = 1;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -21,7 +22,7 @@ function initializeCarousel(selector, parent) {
       currentIndex = index;
     });
     el.addEventListener('mouseleave', () => {
-      if (window.innerWidth > 600) {
+      if (window.innerWidth > smalLViewport) {
         const isHover = el.querySelector('.button-container.singleton-hover');
         if (isHover) {
           isHover.classList.remove('singleton-hover');
@@ -70,7 +71,7 @@ function initializeCarousel(selector, parent) {
     if (platform.closest('.two')) return 2;
     return 1;
   };
-  scrollCount = window.innerWidth <= 600 ? 1 : determineScrollCount();
+  scrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
 
   const updateCarousel = () => {
     if (scrolling) return;
@@ -79,7 +80,7 @@ function initializeCarousel(selector, parent) {
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
 
-    if (window.innerWidth <= 600) {
+    if (window.innerWidth <= smalLViewport) {
       for (const element of elements) {
         const buttonContainer = element.querySelector('.button-container.singleton-hover');
         if (buttonContainer) {
@@ -89,7 +90,7 @@ function initializeCarousel(selector, parent) {
       }
     }
 
-    const newScrollPos = window.innerWidth <= 600
+    const newScrollPos = window.innerWidth <= smalLViewport
       ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
       : currentIndex * elementWidth;
 
@@ -98,7 +99,7 @@ function initializeCarousel(selector, parent) {
       behavior: 'smooth',
     });
 
-    if (window.innerWidth <= 600) {
+    if (window.innerWidth <= smalLViewport) {
       elements.forEach((el, index) => {
         if (determineScrollCount() === 1) {
           el.style.opacity = '1';
@@ -220,7 +221,7 @@ function initializeCarousel(selector, parent) {
   });
 
   window.addEventListener('resize', () => {
-    const newScrollCount = window.innerWidth <= 600 ? 1 : determineScrollCount();
+    const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
     if (newScrollCount !== scrollCount) {
       scrollCount = newScrollCount;
       updateCarousel();
