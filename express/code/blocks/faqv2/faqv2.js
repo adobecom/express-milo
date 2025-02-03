@@ -98,7 +98,6 @@ async function buildOriginalLayout(block) {
 
     if (index >= visibleCount) {
       accordion.classList.add('collapsed');
-      accordion.style.display = 'none';
     }
 
     block.append(accordion);
