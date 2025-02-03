@@ -272,6 +272,15 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
 }
 
 @media (min-width: 600px) {
+  /* basic carousel carousel caontainers */
+  .template-list-wrapper:has(.template-list.horizontal-fullwidth.three.basic-carousel),
+  .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-square.basic-carousel)  {
+    height: 150px;
+  }
+  .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle.basic-carousel)  {
+    padding-top: 10px;
+    height: 322px;
+  }
   /* basic carousel nav */
   .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
   .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-right,
@@ -288,6 +297,10 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
     min-height: unset;
   }
   /* basic carousel template img */
+  .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+    width: 170px;
+    height: 95px;
+  }
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
     width: 123px;
     height: 123px;
@@ -297,6 +310,8 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
     height: 218px;
   }
   /* basic carousel platform */
+  .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform,
+  .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform,
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
     margin: auto;
   }
