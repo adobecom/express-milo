@@ -113,7 +113,7 @@ export function runQuickAction(quickAction, data, block) {
   };
   const variant = new URLSearchParams(window.location.search).get('variant')
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true', variant},
+    metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload'},
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
