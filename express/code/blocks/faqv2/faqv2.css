@@ -16,6 +16,10 @@
   position: relative;
 }
 
+.has-background picture img {
+  opacity: 0.5;
+}
+
 .faqv2-accordion {
 	height: 128px;
 	margin-bottom: 4px;
