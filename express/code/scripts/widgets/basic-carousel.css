@@ -195,7 +195,7 @@
 .basic-carousel-container .basic-carousel-platform .basic-carousel-left-trigger,
 .basic-carousel-container .basic-carousel-platform .basic-carousel-right-trigger{
   justify-self: stretch;
-  align-self:stretch;
+  align-self: stretch;
   width: 0;
   margin: 0;
 }
