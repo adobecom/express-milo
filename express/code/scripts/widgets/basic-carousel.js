@@ -1,4 +1,5 @@
 import { getLibs } from '../utils.js';
+import { debounce } from '../utils/hofs.js';
 
 const smalLViewport = 600;
 let createTag; let loadStyle;
@@ -220,13 +221,13 @@ function initializeCarousel(selector, parent) {
     }
   });
 
-  window.addEventListener('resize', () => {
+  window.addEventListener('resize', debounce(() => {
     const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
     if (newScrollCount !== scrollCount) {
       scrollCount = newScrollCount;
       updateCarousel();
     }
-  });
+  }));
 
   updateCarousel();
 }
