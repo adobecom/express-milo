@@ -239,7 +239,7 @@ const isStyleSheetPresent = (stylesheetHref) => {
         return true;
       }
     } catch (e) {
-      console.error('stylesheet loading error: ', e);
+      window.lana.log('stylesheet loading error: ', e);
     }
   }
   return false;
