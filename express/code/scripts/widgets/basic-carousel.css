@@ -101,7 +101,7 @@
   width: 32px;
   height: 32px;
   margin: 0 7px;
-  background: var(--color-white);
+  background: #F8F8F8;
   box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
   border-radius: 50%;
   pointer-events: auto;
@@ -191,8 +191,8 @@
   margin-top: 11px;
   width: 8px;
   height: 8px;
-  border-top: solid 2px var(--color-gray-700);
-  border-right: solid 2px var(--color-gray-700);
+  border-top: solid 1px #724CDC;
+  border-right: solid 1px #724CDC;
 }
 
 .basic-carousel-container a.button.basic-carousel-arrow-left::before {
