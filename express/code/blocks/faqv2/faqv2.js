@@ -29,7 +29,7 @@ function buildTableLayout(block) {
     const cells = [...row.children];
     return {
       header: cells[0]?.textContent.trim(),
-      subHeader: cells[1]?.innerHTML,
+      subHeader: cells[1]?.textContent,
     };
   });
 
@@ -41,7 +41,7 @@ function buildTableLayout(block) {
     rowWrapper.appendChild(headerAccordion);
 
     const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
-    headerDiv.innerHTML = header;
+    headerDiv.textContent = header;
     headerAccordion.appendChild(headerDiv);
 
     const iconElement = createTag('img', {
@@ -54,7 +54,7 @@ function buildTableLayout(block) {
     const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
     rowWrapper.appendChild(subHeaderAccordion);
     const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
-    subHeaderDiv.innerHTML = subHeader;
+    subHeaderDiv.textContent = subHeader;
     subHeaderAccordion.appendChild(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
@@ -82,7 +82,7 @@ async function buildOriginalLayout(block) {
     const subHeader = cells[1];
     collapsibleRows.push({
       header: header.textContent.trim(),
-      subHeader: subHeader?.innerHTML,
+      subHeader: subHeader?.textContent,
     });
   });
 
