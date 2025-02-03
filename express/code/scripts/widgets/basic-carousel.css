@@ -298,13 +298,25 @@
   .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {
     display: none;
   }
-
   .basic-carousel-container a.button.basic-carousel-arrow {
     margin: 0 10px;
   }
-
   .basic-carousel-container.controls-hidden .basic-carousel-platform {
     scroll-snap-type: x mandatory;
+  }
+  /* basic carousel carousel containers */
+  .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle.basic-carousel)  {
+    height: 420px;
+  }
+  /* basic carousel template img */
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+    width: 207px;
+    height: 368px;
+  }
+  /* basic carousel platform */
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    height: 365px;
+    margin: auto;
   }
 }
 
