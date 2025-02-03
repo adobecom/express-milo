@@ -104,10 +104,11 @@ async function buildOriginalLayout(block) {
 
     const headerDiv = createTag('h3', { class: 'faqv2-header' });
     accordion.append(headerDiv);
-    headerDiv.innerHTML = header;
+    headerDiv.textContent = header;
 
     const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
-    subHeaderDiv.innerHTML = subHeader;
+    subHeaderDiv.textContent = subHeader;
+
     accordion.append(subHeaderDiv);
   });
 
