@@ -122,9 +122,7 @@ async function buildOriginalLayout(block) {
       if (index >= visibleCount) {
         if (item.classList.contains('collapsed')) {
           item.classList.remove('collapsed');
-          item.style.display = 'flex';
         } else {
-          item.style.display = 'none';
           item.classList.add('collapsed');
         }
       }
