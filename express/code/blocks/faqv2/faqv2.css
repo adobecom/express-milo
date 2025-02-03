@@ -288,6 +288,10 @@
     opacity: 0.5;
   }
 
+  .faqv2.expandable.longform .faqv2-wrapper {
+    box-shadow: unset;
+  }
+
 	.faqv2 {
 		width: 648px;
 		margin: auto;
