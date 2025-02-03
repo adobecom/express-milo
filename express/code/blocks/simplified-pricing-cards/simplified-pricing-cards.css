@@ -492,7 +492,7 @@ main .section>.simplified-pricing-cards-wrapper {
     }
 
     .simplified-pricing-cards.wide {
-        --card-width: 397px;
+        --card-width: 375px;
     }
 
     .simplified-pricing-cards .card.hide {
