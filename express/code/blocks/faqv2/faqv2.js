@@ -70,7 +70,9 @@ function buildTableLayout(block) {
   block.replaceChildren(...parentContainer.childNodes);
 }
 
-function buildOriginalLayout(block) {
+async function buildOriginalLayout(block) {
+  const viewMoreText = await replaceKey('view-more', getConfig());
+  const viewLessText = await replaceKey('view-less', getConfig());
   const collapsibleRows = [];
   const rows = Array.from(block.children);
 
@@ -128,7 +130,7 @@ function buildOriginalLayout(block) {
       }
     });
     isExpanded = !isExpanded;
-    toggleButton.textContent = isExpanded ? 'View less' : 'View more';
+    toggleButton.textContent = isExpanded ? viewLessText : viewMoreText;
   });
 }
 
