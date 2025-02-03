@@ -107,6 +107,10 @@
   pointer-events: auto;
 }
 
+.template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle) {
+  max-width: unset;
+}
+
 /* basic carousel carousel caontainers */
 .template-list-wrapper:has(.template-list.horizontal-fullwidth.three.basic-carousel),
 .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-square.basic-carousel) {
