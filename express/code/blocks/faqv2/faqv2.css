@@ -1,8 +1,8 @@
 .faqv2-wrapper {
 	margin: 0 auto 10px auto;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	border-radius: 8px;
 	background: var(--color-white);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	width: 92%;
 }
 
@@ -13,6 +13,7 @@
   box-shadow: unset;
   padding-top: 10px;
   padding-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -21,7 +22,7 @@
 }
 
 .has-background picture img {
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .faqv2-accordion {
@@ -283,6 +284,10 @@
 }
 
 @media (min-width: 900px) {
+  .has-background picture img {
+    opacity: 0.5;
+  }
+
 	.faqv2 {
 		width: 648px;
 		margin: auto;
