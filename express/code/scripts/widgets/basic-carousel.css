@@ -1,4 +1,4 @@
-main .basic-carousel-container {
+.basic-carousel-container {
   display: inline-block;
   position: relative;
   height: auto;
@@ -6,7 +6,7 @@ main .basic-carousel-container {
   margin-bottom: 24px;
 }
 
-main .basic-carousel-container .basic-carousel-platform {
+.basic-carousel-container .basic-carousel-platform {
   /* Position/Layout */
   position: relative;
   left: 0;
@@ -34,18 +34,18 @@ main .basic-carousel-container .basic-carousel-platform {
   scroll-behavior: smooth;
 }
 
-main .basic-carousel-container:not(.controls-hidden) .basic-carousel-platform::-webkit-scrollbar,
-main .basic-carousel-container .basic-carousel-platform.infinity-scroll-loaded::-webkit-scrollbar {
+.basic-carousel-container:not(.controls-hidden) .basic-carousel-platform::-webkit-scrollbar,
+.basic-carousel-container .basic-carousel-platform.infinity-scroll-loaded::-webkit-scrollbar {
   display: none;
 }
 
-main .basic-carousel-container .basic-carousel-platform > * {
+.basic-carousel-container .basic-carousel-platform > * {
   flex-shrink: 0;
   scroll-snap-align: center; 
   margin: 0 10px;
 }
 
-main .basic-carousel-container .basic-carousel-fader-left {
+.basic-carousel-container .basic-carousel-fader-left {
   /* Position/Layout */
   position: absolute;
   bottom: -40px;
@@ -69,7 +69,7 @@ main .basic-carousel-container .basic-carousel-fader-left {
   transition: opacity 0.2s, display 0.2s;
 }
 
-main .basic-carousel-container .basic-carousel-fader-right {
+.basic-carousel-container .basic-carousel-fader-right {
   /* Position/Layout */
   position: absolute;
   bottom: -40px;
@@ -94,7 +94,7 @@ main .basic-carousel-container .basic-carousel-fader-right {
   transition: opacity 0.2s;
 }
 
-main .basic-carousel-container a.button.basic-carousel-arrow {
+.basic-carousel-container a.button.basic-carousel-arrow {
   cursor: pointer;
   display: block;
   float: left;
@@ -107,7 +107,7 @@ main .basic-carousel-container a.button.basic-carousel-arrow {
   pointer-events: auto;
 }
 
-main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.horizontal > *:not(.carousel-container) {
+.template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.horizontal > *:not(.carousel-container) {
   padding-left: unset;
   padding-right: unset;
 }
@@ -167,15 +167,15 @@ main .template-x-wrapper.horizontal:not(.holiday) > .template-x.basic-carousel.h
 }
 
 /* basic carousel for mobile template-x carousel */
-main .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
-main .basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
-main .basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
-main .basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
+.basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
+.basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
+.basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow),
+.basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
   width: 206px;
   height: 310px;
 }
 
-main .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
+.basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
   width: 222px;
   height: 362px;
   max-width: none;
@@ -183,23 +183,23 @@ main .basic-carousel-container .template.basic-carousel-element .button-containe
   opacity: 1;
 }
 
-main .basic-carousel-container .basic-carousel-fader-left.arrow-hidden,
-main .basic-carousel-container .basic-carousel-fader-right.arrow-hidden {
+.basic-carousel-container .basic-carousel-fader-left.arrow-hidden,
+.basic-carousel-container .basic-carousel-fader-right.arrow-hidden {
   opacity: 0.5;
   pointer-events: none;
 }
 
-main .basic-carousel-container img,
-main .basic-carousel-container video {
+.basic-carousel-container img,
+.basic-carousel-container video {
   pointer-events: none;
 }
 
-main .basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow,
-main .basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow {
+.basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow,
+.basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow {
   pointer-events: none;
 }
 
-main .basic-carousel-container a.button.basic-carousel-arrow::before {
+.basic-carousel-container a.button.basic-carousel-arrow::before {
   content: '';
   position: absolute;
   margin-top: 11px;
@@ -209,41 +209,41 @@ main .basic-carousel-container a.button.basic-carousel-arrow::before {
   border-right: solid 2px var(--color-gray-700);
 }
 
-main .basic-carousel-container a.button.basic-carousel-arrow-left::before {
+.basic-carousel-container a.button.basic-carousel-arrow-left::before {
   margin-left: 13px;
   transform: rotate(-135deg);
 }
 
-main .basic-carousel-container a.button.basic-carousel-arrow-right {
+.basic-carousel-container a.button.basic-carousel-arrow-right {
   float: right;
 }
 
-main .basic-carousel-container a.button.basic-carousel-arrow-right::before {
+.basic-carousel-container a.button.basic-carousel-arrow-right::before {
   margin-left: 9px;
   transform: rotate(45deg);
 }
 
-main .basic-carousel-container.controls-hidden .basic-carousel-platform {
+.basic-carousel-container.controls-hidden .basic-carousel-platform {
   scroll-snap-type: none;
 }
 
-main .basic-carousel-container .basic-carousel-platform .basic-carousel-left-trigger,
-main .basic-carousel-container .basic-carousel-platform .basic-carousel-right-trigger{
+.basic-carousel-container .basic-carousel-platform .basic-carousel-left-trigger,
+.basic-carousel-container .basic-carousel-platform .basic-carousel-right-trigger{
   justify-self: stretch;
   align-self:stretch;
   width: 0;
   margin: 0;
 }
 
-main .template-x .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
+.template-x .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
   height: 362px;
 }
 
-main .template-x .basic-carousel-container .template.basic-carousel-element .button-container {
+.template-x .basic-carousel-container .template.basic-carousel-element .button-container {
   height: 362px;
 }
 
-main .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
+.template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
   position: absolute;
   display: flex;
   align-items: center;
@@ -260,7 +260,7 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
   font-size: var(--body-font-size-s);
 }
 
-main .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
+.template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
   content: " ";
   position: absolute;
   top: 50%;
@@ -333,79 +333,79 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
     height: 275px;
     margin: auto;
   }
-  main .template-x.basic-carousel .basic-carousel-container {
+  .template-x.basic-carousel .basic-carousel-container {
     width: 648px;
   }
-  main .template-x.basic-carousel .basic-carousel-container .template.basic-carousel-element {
+  .template-x.basic-carousel .basic-carousel-container .template.basic-carousel-element {
     margin: 5px;
   }
-  main .basic-carousel-left-trigger {
+  .basic-carousel-left-trigger {
     margin-left: 0;
   }
-  main .basic-carousel-right-trigger {
+  .basic-carousel-right-trigger {
     margin-left: 0;
   }
-  main .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
+  .basic-carousel.one.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
     width: 648px;
     height: 364px;
   }
-  main .basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
+  .basic-carousel.two.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
     width: 316px;
     height: 474px;
   }
-  main .template-x.one .basic-carousel-container .basic-carousel-platform { 
+  .template-x.one .basic-carousel-container .basic-carousel-platform { 
     height: 440px;
   }
-  main .template-x.two .basic-carousel-container .basic-carousel-platform { 
+  .template-x.two .basic-carousel-container .basic-carousel-platform { 
     height: 544px;
     max-height: unset;
   }
-  main .basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
+  .basic-carousel.three.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
     width: 206px;
     height: 310px;
   }
-  main .basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
+  .basic-carousel.four.template-x.horizontal .template:not(.placeholder) img:not(.icon):not(.icon-share-arrow) {
     width: 152px;
     height: 225px;
   }
-  main .basic-carousel-container .template.basic-carousel-element {
+  .basic-carousel-container .template.basic-carousel-element {
     scroll-snap-align: start;
   }
-  main .template-x.two .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
+  .template-x.two .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
     height: 530px;
   }
-  main .template-x.three .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
+  .template-x.three .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
     height: 365px;
   }
-  main .template-x.four .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
+  .template-x.four .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
     height: 276px;
   }
-  main .basic-carousel.four.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
+  .basic-carousel.four.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
     width: 648px;
   }
-  main .basic-carousel.three.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
+  .basic-carousel.three.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
     width: 220px;
   }
-  main .basic-carousel.four.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
+  .basic-carousel.four.template-x.horizontal .template.basic-carousel-element .button-container.singleton-hover a .media-wrapper img:not(.icon):not(.icon-share-arrow) {
     width: 170px;
   }
-  main .template-x.one .basic-carousel-container .template.basic-carousel-element .button-container {
+  .template-x.one .basic-carousel-container .template.basic-carousel-element .button-container {
     width: 664px;
     height: 416px;
   }
-  main .template-x.two .basic-carousel-container .template.basic-carousel-element .button-container {
+  .template-x.two .basic-carousel-container .template.basic-carousel-element .button-container {
     width: 332px;
     height: 526px;
   }
-  main .template-x.three .basic-carousel-container .template.basic-carousel-element .button-container {
+  .template-x.three .basic-carousel-container .template.basic-carousel-element .button-container {
     width: 222px;
     height: 362px;
   }
-  main .template-x.four .basic-carousel-container .template.basic-carousel-element .button-container {
+  .template-x.four .basic-carousel-container .template.basic-carousel-element .button-container {
     width: 168px;
     height: 277px;
   }
-  main .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
+  .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
     position: absolute;
     display: flex;
     align-items: center;
@@ -422,7 +422,7 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
     font-size: var(--body-font-size-s);
   } 
 
-  main .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
+  .template-x .template.basic-carousel-element .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
     content: " ";
     position: absolute;
     top: 50%;
@@ -435,28 +435,28 @@ main .template-x .template.basic-carousel-element .button-container .media-wrapp
 }
 
 @media (min-width: 900px) {
-  main .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {
+  .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {
     display: none;
   }
 
-  main .basic-carousel-container a.button.basic-carousel-arrow {
+  .basic-carousel-container a.button.basic-carousel-arrow {
     margin: 0 10px;
   }
 
-  main .basic-carousel-container.controls-hidden .basic-carousel-platform {
+  .basic-carousel-container.controls-hidden .basic-carousel-platform {
     scroll-snap-type: x mandatory;
   }
 }
 
-main .basic-carousel-container .basic-carousel-platform.left-fader:not(.right-fader){
+.basic-carousel-container .basic-carousel-platform.left-fader:not(.right-fader){
   -webkit-mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px));
   mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px));
 }
-main .basic-carousel-container .basic-carousel-platform.right-fader:not(.left-fade){
+.basic-carousel-container .basic-carousel-platform.right-fader:not(.left-fade){
   -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
   mask-image: linear-gradient(to right, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
 }
-main .basic-carousel-container .basic-carousel-platform.left-fader.right-fader{
+.basic-carousel-container .basic-carousel-platform.left-fader.right-fader{
   -webkit-mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
   mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
 }
