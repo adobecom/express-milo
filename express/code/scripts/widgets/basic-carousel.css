@@ -312,6 +312,10 @@
     height: 230px;
   }
   /* basic carousel template img */
+  .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+    width: 875px;
+    height: 875px;
+  }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
     width: 207px;
     height: 368px;
@@ -321,6 +325,9 @@
     height: 207px;
   }
   /* basic carousel platform */
+  .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    height: 875px;
+  }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
     height: 365px;
     margin: auto;
