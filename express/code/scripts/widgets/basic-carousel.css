@@ -305,6 +305,9 @@
     scroll-snap-type: x mandatory;
   }
   /* basic carousel carousel containers */
+  .template-list-wrapper:has(.template-list.horizontal-fullwidth.three.basic-carousel) {
+    height: 210px;
+  }
   .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle.basic-carousel)  {
     height: 420px;
   }
@@ -316,6 +319,10 @@
     width: 895px;
     height: 895px;
   }
+  .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
+    width: 280px;
+    height: 158px;
+  }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
     width: 207px;
     height: 368px;
@@ -326,7 +333,10 @@
   }
   /* basic carousel platform */
   .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform {
-    height: 875px;
+    height: 895px;
+  }
+  .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    height: 155px
   }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
     height: 365px;
