@@ -42,6 +42,7 @@
 	z-index: 1;
 	width: 100%;
 	height: auto;
+  margin-bottom: 25px;
 }
 
 .faqv2 .faqv2-accordion {
@@ -291,6 +292,7 @@
 	.faqv2 {
 		width: 648px;
 		margin: auto;
+    margin-bottom: 25px;
 	}
 
 	.faqv2 .faqv2-accordion {
