@@ -16,6 +16,10 @@
   position: relative;
 }
 
+.faqv2.expandable {
+  margin-bottom: 20px;
+}
+
 .has-background picture img {
   opacity: 0.5;
 }
