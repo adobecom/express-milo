@@ -1,5 +1,7 @@
-import { createTag } from '../../scripts/utils.js';
+import { createTag, getLibs } from '../../scripts/utils.js';
 
+let replaceKey;
+let getConfig;
 function buildTableLayout(block) {
   const isLongFormVariant = block.classList.contains('longform');
   const rows = [...block.children];
@@ -131,6 +133,10 @@ function buildOriginalLayout(block) {
 }
 
 export default async function decorate(block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
   const isExpandableVariant = block.classList.contains('expandable');
 
   if (isExpandableVariant) {
