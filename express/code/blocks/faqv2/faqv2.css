@@ -2,7 +2,6 @@
 	margin: 0 auto 10px auto;
 	border-radius: 8px;
 	background: var(--color-white);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	width: 92%;
 }
 
@@ -12,7 +11,6 @@
   border-radius: 0;
   padding-top: 10px;
   padding-bottom: 10px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   position: relative;
 }
 
@@ -319,6 +317,7 @@
     max-width: 90%;
     border-radius: 16px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
+    margin-top: 25px;
 	}
 
 	.faqv2.longform .faqv2-longform-header-container {
