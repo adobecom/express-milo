@@ -18,6 +18,8 @@ function isVideo(iterator) {
 }
 
 function getTemplateTitle(template) {
+  if (!template)
+    return ''
   if (template['dc:title']?.['i-default']) {
     return template['dc:title']['i-default'];
   }
@@ -132,6 +134,7 @@ function renderShareWrapper(branchUrl) {
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
+  shareIcon.setAttribute('aria-label', "Copy this link and share it with your friends")
   const tooltip = createTag('div', {
     class: 'shared-tooltip',
     'aria-label': text,
