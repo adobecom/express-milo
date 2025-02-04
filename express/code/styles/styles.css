@@ -714,11 +714,8 @@ main .section:not(.xxxl-spacing-static,
   padding-bottom: 40px;
 }
 
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner) a.button.same-fcta,
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner) a.con-button.same-fcta,
-#hero a.same-fcta {
-  display: none;
-}
+main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content) a.button.same-fcta,
+main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content) a.con-button.same-fcta,
 
 /* Store icons */
 main  img.icon-apple-store,
