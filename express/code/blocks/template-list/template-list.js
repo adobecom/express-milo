@@ -14,7 +14,7 @@ import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
-
+import buildBasicCarousel from '../../scripts/widgets/basic-carousel.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import { memoize } from '../../scripts/utils/hofs.js';
@@ -2001,7 +2001,9 @@ export default async function decorate(block) {
 
   await decorateTemplateList(newBlock, props);
 
-  if (newBlock.classList.contains('horizontal')) {
+  if (newBlock.classList.contains('basic-carousel')) {
+    await buildBasicCarousel(':scope > .template', newBlock);
+  } else if (newBlock.classList.contains('horizontal')) {
     const requireInfiniteScroll = !newBlock.classList.contains('mini') && !newBlock.classList.contains('collaboration');
     await buildCarousel(':scope > .template', newBlock, requireInfiniteScroll);
   } else {
