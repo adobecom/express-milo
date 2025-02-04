@@ -258,8 +258,9 @@ body.no-desktop-brand-header header {
     right: 100%;
     top: 50%;
     transform: translateY(-50%);
+    visibility: hidden;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: visibility 0s, opacity 0.3s;
     pointer-events: none;
 }
 
@@ -281,6 +282,7 @@ body.no-desktop-brand-header header {
 .ax-marquee.reduce-motion .reduce-motion-wrapper:hover span.play-animation-text,
 .ax-marquee:not(.reduce-motion) .reduce-motion-wrapper:hover span.pause-animation-text {
     opacity: 1;
+    visibility: visible;
 }
 
 @media (min-width: 600px) {
