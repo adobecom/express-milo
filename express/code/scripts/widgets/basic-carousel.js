@@ -3,6 +3,7 @@ import { debounce } from '../utils/hofs.js';
 
 const smalLViewport = 600;
 let createTag; let loadStyle;
+let getConfig;
 function initializeCarousel(selector, parent) {
   let currentIndex = window.innerWidth <= smalLViewport ? 1 : 0;
   let scrollCount = 1;
@@ -246,7 +247,9 @@ const isStyleSheetPresent = (stylesheetHref) => {
 };
 
 export function onBasicCarouselCSSLoad(selector, parent) {
-  const stylesheetHref = '/express/code/scripts/widgets/basic-carousel.css';
+  const config = getConfig();
+  const stylesheetHref = `${config.codeRoot}/scripts/widgets/basic-carousel.css`;
+  loadStyle(stylesheetHref);
 
   const waitForCSS = () => new Promise((resolve) => {
     const interval = setInterval(() => {
@@ -263,9 +266,12 @@ export function onBasicCarouselCSSLoad(selector, parent) {
 }
 
 export default async function buildBasicCarousel(selector, parent, options = {}) {
-  ({ createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`));
+  await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
+    ({ createTag, getConfig, loadStyle } = utils);
+  });
+  const config = getConfig();
   return new Promise((resolve) => {
-    loadStyle('/express/code/scripts/widgets/basic-carousel.css', () => {
+    loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
       onBasicCarouselCSSLoad(selector, parent, options);
       resolve();
     });
