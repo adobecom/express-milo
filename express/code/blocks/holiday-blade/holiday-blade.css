@@ -394,7 +394,7 @@
     align-items: center;
     gap: 4px;
     width: 130px;
-    background-color: #33AB84;
+    background-color: #258365;
     color: white;
     text-align: center;
     border-radius: 6px;
@@ -426,13 +426,13 @@
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent #33AB84 transparent transparent;
+    border-color: transparent #258365 transparent transparent;
 }
 
 .holiday-blade-inner-content .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
     right: unset;
     left: 100%;
-    border-color: transparent transparent transparent #33AB84;
+    border-color: transparent transparent transparent #258365;
 }
 
 .holiday-blade-inner-content .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped::after {
@@ -596,7 +596,7 @@
     align-items: center;
     gap: 4px;
     width: 130px;
-    background-color: #33AB84;
+    background-color: #258365;
     color: white;
     text-align: center;
     border-radius: 6px;
@@ -637,14 +637,14 @@
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent #33AB84 transparent transparent;
+    border-color: transparent #258365 transparent transparent;
 }
 
 .holiday-blade-inner-content.horizontal .template:nth-last-of-type(2)
 .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
     right: unset;
     left: 100%;
-    border-color: transparent transparent transparent #33AB84;
+    border-color: transparent transparent transparent #258365;
 }
 
 .holiday-blade-inner-content .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped::after {
