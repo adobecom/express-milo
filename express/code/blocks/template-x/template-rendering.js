@@ -18,8 +18,6 @@ function isVideo(iterator) {
 }
 
 function getTemplateTitle(template) {
-  if (!template)
-    return ''
   if (template['dc:title']?.['i-default']) {
     return template['dc:title']['i-default'];
   }
