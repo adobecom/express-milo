@@ -38,7 +38,7 @@ main .section .grid-marquee h1 {
 }
 
 .grid-marquee .headline a:not(.primaryCTA) {
-  background: black;
+  background-color: black;
   border-color: black;
 }
 
