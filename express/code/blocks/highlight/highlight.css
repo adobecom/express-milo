@@ -1,0 +1,44 @@
+.highlight {
+  margin: 20px;
+}
+
+.highlight .icon-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.highlight .icon-row .text {
+  padding-left: 8px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.highlight .icon-row img {
+  width: 40px;
+  height: 40px;
+}
+
+
+@media (min-width: 768px) {
+  .highlight {
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin: 20px;
+    flex: 1;
+  }
+
+  .highlight .icon-row + .icon-row {
+    padding-left: 30px;
+  }
+
+  .highlight > :first-child {
+    margin-left: auto;
+  }
+
+  .highlight > :last-child {
+    margin-right: auto;
+  }
+}
