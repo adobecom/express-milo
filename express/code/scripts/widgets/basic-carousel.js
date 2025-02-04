@@ -35,11 +35,18 @@ function initializeCarousel(selector, parent) {
   });
 
   const platform = createTag('div', { class: 'basic-carousel-platform' });
-  const isTemplateXCarousel = platform.closest('.template-x');
+  let ariaLabel;
+  if (parent.closest('.template-x')) {
+    ariaLabel = 'Template-X Carousel';
+  } else if (parent.closest('.template-list')) {
+    ariaLabel = 'Template List Carousel';
+  } else {
+    ariaLabel = 'Blog Carousel';
+  }
   const container = createTag('div', {
     class: 'basic-carousel-container',
     role: 'region',
-    'aria-label': isTemplateXCarousel ? 'Template-X Carousel' : 'Blog Carousel',
+    'aria-label': ariaLabel,
   });
 
   const faderLeft = createTag('div', { class: 'basic-carousel-fader-left arrow-hidden' });
