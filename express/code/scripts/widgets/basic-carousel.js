@@ -233,36 +233,20 @@ function initializeCarousel(selector, parent) {
   updateCarousel();
 }
 
-const isStyleSheetPresent = (stylesheetHref) => {
-  for (const sheet of document.styleSheets) {
-    try {
-      if (sheet.href && sheet.href.includes(stylesheetHref)) {
-        return true;
-      }
-    } catch (e) {
-      window.lana.log('stylesheet loading error: ', e);
-    }
-  }
-  return false;
-};
-
-export function onBasicCarouselCSSLoad(selector, parent) {
+export async function onBasicCarouselCSSLoad(selector, parent) {
   const config = getConfig();
   const stylesheetHref = `${config.codeRoot}/scripts/widgets/basic-carousel.css`;
-  loadStyle(stylesheetHref);
 
-  const waitForCSS = () => new Promise((resolve) => {
-    const interval = setInterval(() => {
-      if (isStyleSheetPresent(stylesheetHref)) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 0);
+  await new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = stylesheetHref;
+    link.onload = resolve;
+    link.onerror = () => reject(new Error(`Failed to load ${stylesheetHref}`));
+    document.head.appendChild(link);
   });
 
-  waitForCSS().then(() => {
-    initializeCarousel(selector, parent);
-  });
+  initializeCarousel(selector, parent);
 }
 
 export default async function buildBasicCarousel(selector, parent, options = {}) {
