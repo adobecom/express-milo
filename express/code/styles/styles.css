@@ -719,6 +719,7 @@ main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-a
 #hero a.same-fcta {
   display: none;
 }
+
 /* Store icons */
 main  img.icon-apple-store,
 main  img.icon-google-store,
