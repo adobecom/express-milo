@@ -325,7 +325,7 @@ main a.button.secondary:any-link:active {
 }
 
 main a.button.secondary:focus{
-  background-color: var(--color-gray-500);
+  background-color: var(--color-gray-700);
   border-color: var(--color-gray-500);
   color: var(--color-white);
 }
