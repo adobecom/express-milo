@@ -2137,7 +2137,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   align-items: center;
   gap: 4px;
   width: 130px;
-  background-color: #258365;
+  background-color: #33AB84;
   color: white;
   text-align: center;
   border-radius: 6px;
@@ -2178,13 +2178,13 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent #258365 transparent transparent;
+  border-color: transparent #33AB84 transparent transparent;
 }
 
 .template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
   right: unset;
   left: 100%;
-  border-color: transparent transparent transparent #258365;
+  border-color: transparent transparent transparent #33AB84;
 }
 
 .template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped::after {
