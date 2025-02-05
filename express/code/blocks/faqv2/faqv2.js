@@ -41,7 +41,13 @@ function buildTableLayout(block) {
     const headerAccordion = createTag('div', { class: 'faqv2-accordion expandable header-accordion' });
     rowWrapper.appendChild(headerAccordion);
 
-    const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
+    const headerDiv = createTag('h3', {
+      class: 'faqv2-header expandable',
+      'aria-expanded': false,
+      'aria-label': 'Expand quotes',
+      role: 'button',
+      tabIndex: 0,
+    });
     headerDiv.textContent = header;
     headerAccordion.appendChild(headerDiv);
 
@@ -66,6 +72,13 @@ function buildTableLayout(block) {
       iconElement.src = isCollapsed
         ? `${config.codeRoot}/icons/minus-heavy.svg`
         : `${config.codeRoot}/icons/plus-heavy.svg`;
+    });
+
+    headerDiv.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        headerDiv.click();
+      }
     });
   });
   block.replaceChildren(...parentContainer.childNodes);
@@ -124,8 +137,8 @@ async function buildOriginalLayout(block) {
     role: 'button',
     tabIndex: 0,
   });
-  toggleButton.textContent = 'View more';
 
+  toggleButton.textContent = viewMoreText;
   if (collapsibleRows.length > visibleCount) {
     block.append(toggleButton);
   }
@@ -141,6 +154,13 @@ async function buildOriginalLayout(block) {
     isExpanded = !isExpanded;
     toggleButton.setAttribute('aria-expanded', isExpanded);
     toggleButton.textContent = isExpanded ? viewLessText : viewMoreText;
+  });
+
+  toggleButton.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleButton.click();
+    }
   });
 }
 
