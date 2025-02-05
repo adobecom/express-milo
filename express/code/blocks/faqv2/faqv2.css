@@ -248,7 +248,7 @@
 @media (min-width: 400px) {
 
 	.faqv2-header {
-		font-size: 18px;
+		font-size: 16px;
 		font-weight: 400;
 	}
 
@@ -312,7 +312,7 @@
   }
 
 	.faqv2 {
-		width: 648px;
+		width: 540px;
 		margin: auto;
     margin-bottom: 25px;
 	}
@@ -425,13 +425,19 @@
 }
 
 @media (min-width: 1280px) {
+  .faqv2,
   .faqv2.bold {
     width: 875px;
+  }
+
+  .faqv2 .faqv2-header {
+    font-size: 18px;
   }
 
   .faqv2.bold .faqv2-header {
     font-size: 28px;
     line-height: 32px;
+    font-weight: 900;
   }
 
   .faqv2.bold .faqv2-accordion {
