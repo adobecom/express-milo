@@ -89,7 +89,9 @@ async function buildOriginalLayout(block) {
     });
   });
 
-  block.innerHTML = '';
+  while (block.firstChild) {
+    block.removeChild(block.firstChild);
+  }
 
   const visibleCount = 3;
   let isExpanded = false;
@@ -123,19 +125,19 @@ async function buildOriginalLayout(block) {
     'aria-label': 'Expand quotes',
   });
   toggleButton.textContent = 'View more';
-  collapsibleRows.length > 3 && block.append(toggleButton);
+
+  if (collapsibleRows.length > visibleCount) {
+    block.append(toggleButton);
+  }
 
   toggleButton.addEventListener('click', () => {
     const hiddenItems = block.querySelectorAll('.faqv2-accordion');
     hiddenItems.forEach((item, index) => {
       if (index >= visibleCount) {
-        if (item.classList.contains('collapsed')) {
-          item.classList.remove('collapsed');
-        } else {
-          item.classList.add('collapsed');
-        }
+        item.classList.toggle('collapsed');
       }
     });
+
     isExpanded = !isExpanded;
     toggleButton.setAttribute('aria-expanded', isExpanded);
     toggleButton.textContent = isExpanded ? viewLessText : viewMoreText;
