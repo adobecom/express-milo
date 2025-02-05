@@ -4,6 +4,14 @@
   height: auto;
   width: 100%;
   margin-bottom: 24px;
+  --mobile-template-height: 207px;
+  --mobile-template-width: 207px;
+  --mobile-template-border-radius: 16px;
+  --four-ele-tablet-template-width: 123px; /* */
+  --four-ele-tablet-template-height: 123px;
+  --four-ele-template-height: 207px;
+  --four-ele-template-width: 207px;
+  --basic-carousel-fader-width: 53px;
 }
 
 .basic-carousel-container .basic-carousel-platform {
@@ -43,7 +51,7 @@
   bottom: -40px;
   right: 45px;
   z-index: 1;
-  width: 53px;
+  width: var(--basic-carousel-fader-width);
   display: flex;
   align-items: center;
   text-align: left;
@@ -58,7 +66,7 @@
   bottom: -40px;
   right: 0;
   z-index: 1;
-  width: 53px;
+  width: var(--basic-carousel-fader-width);
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -122,22 +130,22 @@
 .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 320px;
   height: 320px;
-  border-radius: 16px;
+  border-radius: var(--mobile-template-border-radius);
 }
 .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
-  width: 216px;
+  width: var(--mobile-template-width);
   height: 122px;
-  border-radius: 16px;
+  border-radius: var(--mobile-template-border-radius);
 }
 .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
-  width: 216px;
-  height: 216px;
-  border-radius: 16px;
+  width: var(--mobile-template-width);
+  height: var(--mobile-template-height);
+  border-radius: var(--mobile-template-border-radius);
 }
 .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
   width: 216px;
   height: 384px;
-  border-radius: 16px;
+  border-radius: var(--mobile-template-border-radius);
 }
 
 .basic-carousel-container .template.basic-carousel-element .button-container.singleton-hover {
@@ -211,7 +219,7 @@
   }
   .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle.basic-carousel)  {
     padding-top: 10px;
-    height: 322px;
+    height: 320px;
   }
   /* basic carousel nav */
   .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-fader-left,
@@ -238,11 +246,11 @@
     height: 95px;
   }
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
-    width: 123px;
-    height: 123px;
+    width: var(--four-ele-tablet-template-width);
+    height: var(--four-ele-tablet-template-height);
   }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
-    width: 123px;
+    width: var(--four-ele-tablet-template-width);
     height: 218px;
   }
   /* basic carousel platform */
@@ -303,12 +311,12 @@
     height: 158px;
   }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
-    width: 207px;
+    width: var(--four-ele-template-width); 
     height: 368px;
   }
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a picture img {
-    width: 207px;
-    height: 207px;
+    width: var(--four-ele-template-width);
+    height: var(--four-ele-template-height)
   }
   /* basic carousel platform */
   .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform {
