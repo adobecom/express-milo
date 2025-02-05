@@ -63,7 +63,7 @@
 }
 
 .faqv2-header {
-	font-size: 16px;
+	font-size: var(--body-font-size-m);
 	font-style: normal;
 	font-weight: 400;
 	line-height: 24px;
@@ -86,7 +86,7 @@
 
 .faqv2-sub-header {
 	margin-top: 10px;
-	font-size: 14px;
+	font-size: var(--body-font-size-s);
 	font-style: normal;
 	font-weight: 700;
 	line-height: 24px;
@@ -186,7 +186,7 @@
 }
 
 .faqv2-header.expandable {
-	font-size: 16px;
+	font-size: var(--body-font-size-m);
 	font-weight: 700;
 	display: flex;
 	justify-content: space-between;
@@ -202,7 +202,7 @@
 }
 
 .faqv2-sub-header.expandable {
-	font-size: 16px;
+	font-size: var(--body-font-size-m);
 	font-weight: 400;
 	margin-top: 0;
 	padding-bottom: 10px;
@@ -258,12 +258,12 @@
 
 @media (min-width: 400px) {
 	.faqv2-header {
-		font-size: 16px;
+		font-size: var(--body-font-size-m);
 		font-weight: 400;
 	}
 
 	.faqv2-sub-header {
-		font-size: 18px;
+		font-size: var(--body-font-size-l);
 		font-weight: 700;
 		line-height: 24px;
 	}
@@ -330,7 +330,7 @@
   }
 
   .faqv2.bold .faqv2-header {
-    font-size: 16px;
+    font-size: var(--body-font-size-m);
     font-weight: normal;
   }
   
@@ -437,11 +437,11 @@
   }
 
   .faqv2 .faqv2-header {
-    font-size: 18px;
+    font-size: var(--body-font-size-l);
   }
 
   .faqv2.bold .faqv2-header {
-    font-size: 28px;
+    font-size: var(--heading-font-size-m);
     line-height: 32px;
     font-weight: 900;
   }
