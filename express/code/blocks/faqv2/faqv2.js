@@ -117,7 +117,11 @@ async function buildOriginalLayout(block) {
     }
   });
 
-  const toggleButton = createTag('a', { class: 'faqv2-toggle-btn button' });
+  const toggleButton = createTag('a', {
+    class: 'faqv2-toggle-btn button',
+    'aria-expanded': false,
+    'aria-label': 'Expand quotes',
+  });
   toggleButton.textContent = 'View more';
   collapsibleRows.length > 3 && block.append(toggleButton);
 
@@ -133,6 +137,7 @@ async function buildOriginalLayout(block) {
       }
     });
     isExpanded = !isExpanded;
+    toggleButton.setAttribute('aria-expanded', isExpanded);
     toggleButton.textContent = isExpanded ? viewLessText : viewMoreText;
   });
 }
