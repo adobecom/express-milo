@@ -34,12 +34,12 @@ function changeTabs(e) {
       t.setAttribute('aria-selected', false)
       t.setAttribute('aria-current', false)
     });
+  
   target.setAttribute('aria-selected', true);
   target.setAttribute('aria-current', true);
   target.setAttribute('tabindex', '0');
-  
   target.focus(); // Move focus to the activated tab
-  
+
   scrollTabIntoView(target);
   grandparent
     .querySelectorAll('[role="tabpanel"]')
