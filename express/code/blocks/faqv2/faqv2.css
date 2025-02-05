@@ -18,6 +18,11 @@
   margin-bottom: 20px;
 }
 
+.faqv2.expandable .faqv2-accordion.title {  
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
 .has-background picture img {
   opacity: 1;
 }
@@ -52,6 +57,10 @@
   margin-bottom: 8px;
   height: 40px;
   background: #FFFFFF;
+}
+
+.faqv2.expandable .faqv2-accordion {
+  margin-left: unset;
 }
 
 .faqv2-header {
@@ -398,7 +407,7 @@
 		background: transparent;
 	}
 
-	main .longform {
+	.longform {
 		border-radius: 16px;
 	}
 
