@@ -245,6 +245,10 @@
 	max-width: none;
 }
 
+.faqv2-accordion.collapsed {
+  display: none;
+}
+
 @media (min-width: 400px) {
 
 	.faqv2-header {
@@ -272,10 +276,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-	}
-
-	.faqv2-accordion.collapsed {
-		display: none;
 	}
 
 	.faqv2-toggle-btn {
