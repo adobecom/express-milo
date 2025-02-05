@@ -2869,7 +2869,7 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
 }
 
 
-.sr-only {
+.template .sr-only {
   position: absolute;
   width: 1px;
   height: 1px;

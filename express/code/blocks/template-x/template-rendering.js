@@ -106,7 +106,7 @@ async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
   }
 }
 
-async function share(branchUrl, tooltip, timeoutId, liveRegion,text) {
+async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
   const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
     isSearchOverride: true,
@@ -141,7 +141,7 @@ function renderShareWrapper(branchUrl) {
   });
   const liveRegion = createTag('div', {
     'aria-live': 'polite',
-    'class': 'sr-only',
+    class: 'sr-only',
   });
   wrapper.append(liveRegion);
 
