@@ -221,7 +221,7 @@
 }
 
 .faqv2-grey-bg {
-	background-color: #E8E8E8;
+	background-color: var(color-gray-200);
 }
 
 .faqv2-section-padding {
