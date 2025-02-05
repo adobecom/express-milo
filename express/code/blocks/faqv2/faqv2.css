@@ -43,13 +43,15 @@
 }
 
 .faqv2.bold {
-  margin-left: 15px;
   width: 97%;
 }
 
 .faqv2 .faqv2-accordion {
+  margin-left: 15px;
 	margin-right: 15px;
+  margin-bottom: 8px;
   height: 40px;
+  background: #FFFFFF;
 }
 
 .faqv2-header {
@@ -59,7 +61,7 @@
 	line-height: 24px;
 	text-align: left;
 	padding-left: 16px;
-	color: #444444;
+	color: #717171;
 }
 
 .faqv2.bold .faqv2-header {
