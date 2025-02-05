@@ -4,8 +4,6 @@ let replaceKey;
 let getConfig;
 function buildTableLayout(block) {
   const config = getConfig();
-  const test = `${config.codeRoot}`;
-  console.log('test', test);
   const isLongFormVariant = block.classList.contains('longform');
   const rows = [...block.children];
 
@@ -123,6 +121,8 @@ async function buildOriginalLayout(block) {
     class: 'faqv2-toggle-btn button',
     'aria-expanded': false,
     'aria-label': 'Expand quotes',
+    role: 'button',
+    tabIndex: 0,
   });
   toggleButton.textContent = 'View more';
 
