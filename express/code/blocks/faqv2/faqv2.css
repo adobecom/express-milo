@@ -40,7 +40,7 @@
 	height: 128px;
 	margin-bottom: 4px;
 	border-radius: 0px 8px 8px 0px;
-	border-left: 4px solid #724CDC;
+	border-left: 4px solid var(--color-info-accent-hover);
 	background: var(--color-gray-100);
 	padding: 16px;
 	display: flex;
