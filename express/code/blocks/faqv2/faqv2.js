@@ -3,6 +3,9 @@ import { createTag, getLibs } from '../../scripts/utils.js';
 let replaceKey;
 let getConfig;
 function buildTableLayout(block) {
+  const config = getConfig();
+  const test = `${config.codeRoot}`;
+  console.log('test', test);
   const isLongFormVariant = block.classList.contains('longform');
   const rows = [...block.children];
 
@@ -45,7 +48,7 @@ function buildTableLayout(block) {
     headerAccordion.appendChild(headerDiv);
 
     const iconElement = createTag('img', {
-      src: '/express/code/icons/plus-heavy.svg',
+      src: `${config.codeRoot}/icons/plus-heavy.svg`,
       alt: 'toggle-icon',
       class: 'toggle-icon',
     });
@@ -63,8 +66,8 @@ function buildTableLayout(block) {
         headerAccordion.classList.toggle('rounded-corners', isCollapsed);
       }
       iconElement.src = isCollapsed
-        ? '/express/code/icons/minus-heavy.svg'
-        : '/express/code/icons/plus-heavy.svg';
+        ? `${config.codeRoot}/icons/minus-heavy.svg`
+        : `${config.codeRoot}/icons/plus-heavy.svg`;
     });
   });
   block.replaceChildren(...parentContainer.childNodes);
