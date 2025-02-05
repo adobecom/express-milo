@@ -31,8 +31,8 @@ function changeTabs(e) {
   parent
     .querySelectorAll('[aria-selected="true"]')
     .forEach((t) => {
-      t.setAttribute('aria-selected', false)
-      t.setAttribute('aria-current', false)
+      t.setAttribute('aria-selected', false);
+      t.setAttribute('aria-current', false);
     });
   
   target.setAttribute('aria-selected', true);
@@ -197,7 +197,7 @@ export default async function init(block) {
         tabindex: '0',
         'aria-selected': (i === 0) ? 'true' : 'false',
         'aria-controls': `tab-panel-${tabId}-${tabName}`,
-        'aria-current':(i === 0) ? 'true' : 'false',
+        'aria-current': (i === 0) ? 'true' : 'false',
       };
       const tabBtn = createTag('button', tabBtnAttributes);
       tabBtn.innerText = item.textContent;
