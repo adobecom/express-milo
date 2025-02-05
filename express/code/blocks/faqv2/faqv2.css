@@ -243,6 +243,7 @@
 }
 
 @media (min-width: 400px) {
+
 	.faqv2-header {
 		font-size: 18px;
 		font-weight: 400;
@@ -312,6 +313,21 @@
 		margin: auto;
     margin-bottom: 25px;
 	}
+
+  .faqv2.bold {
+    width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .faqv2.bold .faqv2-header {
+    font-size: 16px;
+    font-weight: normal;
+  }
+  
+  .faqv2.bold .faqv2-accordion {
+    height: 64px;
+  }
 
 	.faqv2 .faqv2-accordion {
 		margin-left: 0;
@@ -403,4 +419,19 @@
 	.faqv2.longform .faqv2-header.expandable {
 		font-size: 22px;
 	}
+}
+
+@media (min-width: 1280px) {
+  .faqv2.bold {
+    width: 875px;
+  }
+
+  .faqv2.bold .faqv2-header {
+    font-size: 28px;
+    line-height: 32px;
+  }
+
+  .faqv2.bold .faqv2-accordion {
+    height: 80px;
+  }
 }
