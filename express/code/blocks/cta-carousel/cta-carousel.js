@@ -141,7 +141,7 @@ async function decorateCards(block, payload) {
 
     cardSleeve.append(mediaWrapper, linksWrapper);
     card.append(cardSleeve, textWrapper);
-
+    card.setAttribute('aria-label',cta.text)
     if (cta.image) mediaWrapper.append(cta.image);
 
     if (cta.videoLink) {
