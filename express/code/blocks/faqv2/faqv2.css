@@ -42,6 +42,11 @@
   margin-bottom: 25px;
 }
 
+.faqv2.bold {
+  margin-left: 15px;
+  width: 97%;
+}
+
 .faqv2 .faqv2-accordion {
 	margin-right: 15px;
 }
@@ -54,6 +59,18 @@
 	text-align: left;
 	padding-left: 16px;
 	color: #444444;
+}
+
+.faqv2.bold .faqv2-header {
+  font-size: 20px;
+  font-weight: 900;
+  padding-left: 10px;
+  color: #717171;
+}
+
+.faqv2.bold .faqv2-accordion {
+  height: 88px;
+  background-color: #ffffff;
 }
 
 .faqv2-sub-header {
@@ -245,7 +262,7 @@
 		height: 128px;
 		margin-bottom: 4px;
 		border-radius: 0px 8px 8px 0px;
-		border-left: 4px solid #724CDC;
+		border-left: 4px solid #7E84FC;
 		background: #F8F8F8;
 		padding: 16px;
 		display: flex;
