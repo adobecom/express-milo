@@ -106,10 +106,12 @@ async function buildOriginalLayout(block) {
     accordion.append(headerDiv);
     headerDiv.textContent = header;
 
-    const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
-    subHeaderDiv.textContent = subHeader;
-
-    accordion.append(subHeaderDiv);
+    let subHeaderDiv;
+    if (subHeader) {
+      subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
+      subHeaderDiv.textContent = subHeader;
+      accordion.append(subHeaderDiv);
+    }
   });
 
   const toggleButton = createTag('a', { class: 'faqv2-toggle-btn button' });
