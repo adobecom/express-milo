@@ -298,8 +298,7 @@
 		line-height: var(--body-line-height);
 		cursor: pointer;
 		transition: background-color 0.3s, color 0.3s, border 0.3s;
-		border-width: 2px;
-		border-style: solid;
+    border: 2px solid;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		color: var(--color-white);
