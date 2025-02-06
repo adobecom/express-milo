@@ -294,10 +294,7 @@
     scroll-snap-type: x mandatory;
   }
 
-  .template-list.horizontal-fullwidth.one.basic-carousel .basic-carousel-container .basic-carousel-platform a {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform a,
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a,
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a {
     margin-right: 0;
@@ -336,7 +333,8 @@
     height: 865px;
   }
   .template-list.horizontal-fullwidth.three.basic-carousel .basic-carousel-container .basic-carousel-platform {
-    height: 155px
+    width: 875px;
+    height: 155px;
   }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
     width: 875px;
