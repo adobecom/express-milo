@@ -38,16 +38,16 @@ function buildTableLayout(block) {
     const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
     container.appendChild(rowWrapper);
 
-    const headerAccordion = createTag('div', { class: 'faqv2-accordion expandable header-accordion' });
-    rowWrapper.appendChild(headerAccordion);
-
-    const headerDiv = createTag('h3', {
-      class: 'faqv2-header expandable',
+    const headerAccordion = createTag('div', {
+      class: 'faqv2-accordion expandable header-accordion',
       'aria-expanded': false,
       'aria-label': 'Expand quotes',
       role: 'button',
       tabIndex: 0,
     });
+    rowWrapper.appendChild(headerAccordion);
+
+    const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
     headerDiv.textContent = header;
     headerAccordion.appendChild(headerDiv);
 
@@ -74,7 +74,7 @@ function buildTableLayout(block) {
         : `${config.codeRoot}/icons/plus-heavy.svg`;
     });
 
-    headerDiv.addEventListener('keydown', (event) => {
+    headerAccordion.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         headerDiv.click();
