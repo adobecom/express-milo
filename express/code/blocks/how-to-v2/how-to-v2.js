@@ -68,7 +68,7 @@ function buildAccordion(block, rows, stepsContent) {
   }, 0);
 }
 
-export default async function decorate(block) {
+export default function decorate(block) {
   const rows = Array.from(block.children);
 
   const backgroundRow = block.children[0];
