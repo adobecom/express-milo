@@ -30,8 +30,16 @@ function changeTabs(e) {
   const grandparent = parent.parentNode.nextElementSibling;
   parent
     .querySelectorAll('[aria-selected="true"]')
-    .forEach((t) => t.setAttribute('aria-selected', false));
+    .forEach((t) => {
+      t.setAttribute('aria-selected', false);
+      t.setAttribute('aria-current', false);
+    });
+
   target.setAttribute('aria-selected', true);
+  target.setAttribute('aria-current', true);
+  target.setAttribute('tabindex', '0');
+  target.focus(); // Move focus to the activated tab
+
   scrollTabIntoView(target);
   grandparent
     .querySelectorAll('[role="tabpanel"]')
@@ -189,6 +197,7 @@ export default async function init(block) {
         tabindex: '0',
         'aria-selected': (i === 0) ? 'true' : 'false',
         'aria-controls': `tab-panel-${tabId}-${tabName}`,
+        'aria-current': (i === 0) ? 'true' : 'false',
       };
       const tabBtn = createTag('button', tabBtnAttributes);
       tabBtn.innerText = item.textContent;
