@@ -293,6 +293,11 @@
   .basic-carousel-container.controls-hidden .basic-carousel-platform {
     scroll-snap-type: x mandatory;
   }
+
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a {
+    margin-right: 0;
+  }
+
   /* basic carousel carousel containers */
   .template-list-wrapper:has(.template-list.horizontal-fullwidth.three.basic-carousel) {
     height: 210px;
@@ -328,6 +333,7 @@
     height: 155px
   }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    width: 875px;
     height: 365px;
     margin: auto;
   }
