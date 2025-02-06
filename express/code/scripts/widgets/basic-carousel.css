@@ -294,7 +294,8 @@
     scroll-snap-type: x mandatory;
   }
 
-  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a {
+  .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform a,
+  .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform a {
     margin-right: 0;
   }
 
@@ -338,6 +339,7 @@
     margin: auto;
   }
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    width: 875px;
     height: 200px;
   }
   .template-list .template:not(.placeholder) .icon-free-badge {
