@@ -243,4 +243,8 @@ export default async function decorate(block) {
   decorateHeading(block, payload);
   await decorateCards(block, payload);
   await buildCarousel('', block.querySelector('.content-cards'));
+  if (payload.actions.length === 2) {
+    const platform = block.querySelector('.carousel-platform');
+    platform.classList.add('two-card');
+  }
 }
