@@ -114,9 +114,8 @@ function removeLazyAfterNeighborLoaded(image, lastImage) {
   };
 }
 
-async function decorateCards(block, { actions }) {
+async function decorateCards(block, { actions }, isTileVariant) {
   const cards = createTag('div', { class: 'content-cards' });
-  const isTileVariant = block.classList.contains('tile');
 
   if (!isTileVariant) {
     cards.classList.add('wide');
@@ -241,9 +240,10 @@ export default async function decorate(block) {
 
   const payload = constructPayload(block);
   decorateHeading(block, payload);
-  await decorateCards(block, payload);
+  const isTileVariant = block.classList.contains('tile');
+  await decorateCards(block, payload, isTileVariant);
   await buildCarousel('', block.querySelector('.content-cards'));
-  if (payload.actions.length === 2) {
+  if (payload.actions.length === 2 && isTileVariant) {
     const platform = block.querySelector('.carousel-platform');
     platform.classList.add('two-card');
   }
