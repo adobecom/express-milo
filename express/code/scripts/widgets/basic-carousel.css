@@ -264,9 +264,11 @@
     height: 540px;
   }
   .template-list.horizontal-fullwidth.four-square.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    width: 540px;
     height: 135px
   }
   .template-list.horizontal-fullwidth.four-rectangle.basic-carousel .basic-carousel-container .basic-carousel-platform {
+    width: 540px;
     height: 275px;
     margin: auto;
   }
