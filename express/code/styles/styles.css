@@ -177,13 +177,6 @@ main a, main a:hover, main u {
   text-decoration: none;
 }
 
-:lang(jp) main .section > .content  {
-  text-align: left;
-}
-:lang(jp) main .section > .content.center  {
-  text-align: center;
-}
-
 main video {
   max-width: 100%;
 }
@@ -704,6 +697,14 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
 main .section > .content {
   text-align: center;
   max-width: 375px;
+}
+
+:lang(jp) main .section > .content  {
+  text-align: left;
+}
+
+:lang(jp) main .section > .content.center  {
+  text-align: center;
 }
 
 main .section .content p, main .section p {
