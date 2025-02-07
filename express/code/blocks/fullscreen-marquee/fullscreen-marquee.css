@@ -281,7 +281,7 @@
   }
   
   .fullscreen-marquee.longform .fullscreen-marquee-heading h1 {
-    font-size: 45px;
+    font-size: var(--heading-font-size-xl);
   }
 
   .fullscreen-marquee .fullscreen-marquee-heading h1 {
