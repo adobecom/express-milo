@@ -699,11 +699,11 @@ main .section > .content {
   max-width: 375px;
 }
 
-:lang(jp) main .section > .content  {
+:lang(ja) main .section > .content  {
   text-align: left;
 }
 
-:lang(jp) main .section > .content.center  {
+:lang(ja) main .section > .content.center  {
   text-align: center;
 }
 
