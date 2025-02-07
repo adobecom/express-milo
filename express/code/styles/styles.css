@@ -177,10 +177,10 @@ main a, main a:hover, main u {
   text-decoration: none;
 }
 
-:lang(en) main .section > .content  {
+:lang(jp) main .section > .content  {
   text-align: left;
 }
-:lang(en) main .section > .content.center  {
+:lang(jp) main .section > .content.center  {
   text-align: center;
 }
 
