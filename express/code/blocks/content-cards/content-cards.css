@@ -423,9 +423,6 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
     min-width: 0;
     display: flex;
   }
-  .content-cards-wrapper:has(.carousel-platform.two-card) .content-cards .card .media-wrapper picture img {
-    /* object-fit: contain; */
-  }
   .content-cards .carousel-container .carousel-platform.two-card .card.carousel-element .media-wrapper {
     width: 93%;
     height: 296px;
