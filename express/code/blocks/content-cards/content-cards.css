@@ -412,6 +412,27 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
 }
 
 @media (min-width: 900px) {
+  .content-cards .carousel-container .carousel-platform.two-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+  }
+  .content-cards .carousel-container .carousel-platform.two-card .card.carousel-element {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+  }
+  .content-cards-wrapper:has(.carousel-platform.two-card) .content-cards .card .media-wrapper picture img {
+    object-fit: contain;
+  }
+  .content-cards .carousel-container .carousel-platform.two-card .card.carousel-element .media-wrapper {
+    width: 93%;
+    height: 296px;
+  }
+  .content-cards-wrapper:has(.carousel-platform.two-card) {
+    max-width: 1198px;
+  }
   .content-cards .content-cards-heading-section {
     flex-direction: row;
     align-items: flex-end;
@@ -435,6 +456,9 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
   }
   .content-cards-heading-section .text-wrapper p {
     width: max-content;
+  }
+  .content-cards-wrapper:has(.carousel-platform.two-card) .content-cards-heading-section .text-wrapper p {
+    width: unset;
   }
   main .content-cards.wide .carousel-container .carousel-fader-left {
     right: 39px;
