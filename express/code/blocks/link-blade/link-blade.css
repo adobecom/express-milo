@@ -55,6 +55,7 @@ main a.link-blade-item {
     white-space: nowrap;
     flex-shrink: 0;
     font-weight: 500;
+    margin-top: 1px;
 
 }
 
@@ -77,7 +78,7 @@ main a.link-blade-item {
     width: 32px;
     height: 32px;
     right: 60px;
-    top: 35%;
+    top: 32%;
     transform: translateY(-50%);
     cursor: pointer;
     transition: transform 0.2s;
@@ -98,7 +99,7 @@ main a.link-blade-item {
     border-top: solid 2px var(--color-gray-700);
     border-right: solid 2px var(--color-gray-700);
     transform: rotate(45deg);
-    translate: -5px -3px;
+    translate: -6px -3px;
     z-index: 6;
 }
 
@@ -141,7 +142,6 @@ main a.link-blade-item {
 
     .link-blade-links {
         gap: 12px;
-        padding: 0 24px 24px;
         justify-content: flex-start;
     }
 
