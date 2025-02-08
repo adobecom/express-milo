@@ -1,34 +1,47 @@
 import { getLibs } from '../../scripts/utils.js';
 
 
-function handleChevron(createTag, linksContainer, linksRow) {
-    const leftChev = createTag('button', { class: 'link-blade-chevron left' });
-    const rightChev = createTag('button', { class: 'link-blade-chevron' });
-    // Scroll handler
-    const toggleChevronVisibility = () => {
-        const maxScroll = linksContainer.scrollWidth - linksContainer.clientWidth - 10; 
-        if (linksContainer.scrollLeft  <= 0) {
-            leftChev.classList.add('hidden');
-        } else if (linksContainer.scrollLeft >= maxScroll - 10) {
-            rightChev.classList.add('hidden')
-        } else {
-            leftChev.classList.remove('hidden');
-            rightChev.classList.remove('hidden')
+// Scroll visibility handler
+export const toggleChevronVisibility = (linksContainer, leftChev, rightChev) => {
+    const maxScroll = linksContainer.scrollWidth - linksContainer.clientWidth - 10;
+    const atStart = linksContainer.scrollLeft <= 0;
+    const atEnd = linksContainer.scrollLeft >= maxScroll && maxScroll > 0;
+    leftChev.classList.toggle('hidden', atStart);
+    rightChev.classList.toggle('hidden', atEnd);
+    leftChev.setAttribute('aria-disabled', atStart);
+    rightChev.setAttribute('aria-disabled', atEnd);
+};
+
+
+export function handleChevron(createTag, linksContainer, linksRow) {
+    const leftChev = createTag('button', {
+        class: 'link-blade-chevron left',
+        'aria-label': 'Scroll left',
+        tabindex: '0'
+    });
+    const rightChev = createTag('button', {
+        class: 'link-blade-chevron',
+        'aria-label': 'Scroll right',
+        tabindex: '0'
+    });
+
+    // Keyboard support handler
+    const handleKeyDown = (e, direction) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            direction === 'right' ? rightChev.click() : leftChev.click();
         }
-
-
     };
 
-    // Initial check
-    toggleChevronVisibility();
+    // Initialize accessibility
+    linksContainer.setAttribute('role', 'navigation');
+    linksContainer.setAttribute('aria-label', 'Links list');
+    toggleChevronVisibility(linksContainer, leftChev, rightChev);
 
-    // Scroll event listener
-    linksContainer.addEventListener('scroll', toggleChevronVisibility);
+    // Event listeners
+    linksContainer.addEventListener('scroll', () => toggleChevronVisibility(linksContainer, leftChev, rightChev));
+    window.addEventListener('resize', () => toggleChevronVisibility(linksContainer, leftChev, rightChev));
 
-    // Window resize handler
-    window.addEventListener('resize', toggleChevronVisibility);
-
-    // Click handler with boundary check
     rightChev.addEventListener('click', () => {
         const newScrollPos = linksContainer.scrollLeft + 400;
         const maxScroll = linksContainer.scrollWidth - linksContainer.clientWidth;
@@ -36,61 +49,68 @@ function handleChevron(createTag, linksContainer, linksRow) {
             left: Math.min(newScrollPos, maxScroll),
             behavior: 'smooth'
         });
-        toggleChevronVisibility()
-    });
-    leftChev.addEventListener('click', () => {
-        const newScrollPos = linksContainer.scrollLeft - 400;
-        const maxScroll = linksContainer.scrollWidth - linksContainer.clientWidth;
-        linksContainer.scrollTo({
-            left: Math.min(newScrollPos, maxScroll),
-            behavior: 'smooth'
-        });
-        toggleChevronVisibility()
     });
 
-    linksRow.appendChild(leftChev)
-    linksRow.appendChild(rightChev)
- 
+    leftChev.addEventListener('click', () => {
+        linksContainer.scrollTo({
+            left: Math.max(linksContainer.scrollLeft - 400, 0),
+            behavior: 'smooth'
+        });
+    });
+
+    // Keyboard events
+    rightChev.addEventListener('keydown', (e) => handleKeyDown(e, 'right'));
+    leftChev.addEventListener('keydown', (e) => handleKeyDown(e, 'left'));
+
+    linksRow.append(leftChev, rightChev);
 }
 
 export default async function decorate(block) {
-
     const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-
-    // Process header row
     const [headerRow, linksRow] = block.children;
     const headerContent = headerRow.querySelector('div')?.textContent.trim();
+
+    // Header processing
     if (headerContent) {
-        const header = createTag('h2', { class: 'link-blade-header' }, headerContent);
+        const header = createTag('h2', {
+            class: 'link-blade-header',
+            id: 'link-blade-header'
+        }, headerContent);
         headerRow.innerHTML = '';
         headerRow.appendChild(header);
     }
 
-    // Process links row
+    // Links container setup
     const linksContainer = linksRow.querySelector('div');
-    linksRow.classList.add("link-blade-link-row");
+    linksRow.classList.add('link-blade-link-row');
+    linksRow.setAttribute('aria-orientation', "horizontal");
+    linksRow.setAttribute('aria-controls', "link-blade-links");
+
     if (linksContainer) {
         linksContainer.classList.add('link-blade-links');
+        linksContainer.setAttribute('tabindex', '0');
+        linksContainer.setAttribute('aria-labelledby', 'link-blade-header');
+
+        // Process links
         const paragraphs = linksContainer.querySelectorAll('p');
         const links = [];
 
         paragraphs.forEach((p) => {
-            // Remove any <br> elements and extract links
-            const brs = p.querySelectorAll('br');
-            brs.forEach(br => br.remove());
             const a = p.querySelector('a');
             if (a) {
-                links.push(a);
                 a.classList.add('link-blade-item');
+                links.push(a);
             }
             p.remove();
         });
 
-        // Clear container and append clean links
+        // Append clean links
         linksContainer.innerHTML = '';
-        links.forEach(link => linksContainer.appendChild(link));
+        links.forEach(link => {
+            link.setAttribute('role', 'link');
+            linksContainer.appendChild(link);
+        });
     }
 
-
-    handleChevron(createTag, linksContainer, linksRow)
+    handleChevron(createTag, linksContainer, linksRow);
 }
