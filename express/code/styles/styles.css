@@ -702,14 +702,6 @@ main .section > .content {
   max-width: 375px;
 }
 
-:lang(ja) main .section > .content  {
-  text-align: left;
-}
-
-:lang(ja) main .section > .content.center  {
-  text-align: center;
-}
-
 main .section .content p, main .section p {
   margin: 32px 0;
 }
