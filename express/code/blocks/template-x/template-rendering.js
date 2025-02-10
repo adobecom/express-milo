@@ -161,8 +161,9 @@ function renderShareWrapper(branchUrl) {
 }
 
 const buildiFrameContent = (template) => {
+  const taskID = getMetadata('branch-task-id');
   const iFrame = createTag('iframe', {
-    src: `https://w299ihl20.wxp.adobe-addons.com/distribute/private/JZnNGECCzfpgfcUmlgcNKgZKclyFP1YXLvq8rF3yfE9RI7inYDEPFaEGWDFv2ynr/0/w299ihl20/wxp-w299ihl20-version-1713829154591/adobePdp.html?TD=${template.id}`,
+    src: `https://w299ihl20.wxp.adobe-addons.com/distribute/private/JZnNGECCzfpgfcUmlgcNKgZKclyFP1YXLvq8rF3yfE9RI7inYDEPFaEGWDFv2ynr/0/w299ihl20/wxp-w299ihl20-version-1713829154591/adobePdp.html?TD=${template.id}&taskID=${taskID}`,
     title: 'Edit this template',
     tabindex: '-1',
   });
