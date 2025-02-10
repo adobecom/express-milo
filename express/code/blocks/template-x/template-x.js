@@ -27,6 +27,7 @@ import BlockMediator from '../../scripts/block-mediator.min.js';
 let replaceKey; let replaceKeyArray;
 let getMetadata; let createTag;
 let getConfig;
+let variant;
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -48,7 +49,7 @@ function handlelize(str) {
 async function getTemplates(response, fallbackMsg) {
   const filtered = response.items.filter((item) => isValidTemplate(item));
   const templates = await Promise.all(
-    filtered.map(async (template) => renderTemplate(template)),
+    filtered.map(async (template) => renderTemplate(template, variant)),
   );
   await Promise.all(templates);
   return {
@@ -232,7 +233,6 @@ function constructProps(block) {
       }
     }
   });
-
   return props;
 }
 
@@ -726,6 +726,12 @@ async function decorateCategoryList(block, props) {
   drawerWrapper.addEventListener('scroll', () => {
     updateLottieStatus(block);
   }, { passive: true });
+
+  if (variant.includes('flyer')
+  || variant.includes('t-shirt')
+  || variant.includes('print')) {
+    categoriesDesktopWrapper.remove();
+  }
 }
 
 function closeDrawer(toolBar) {
@@ -1757,6 +1763,11 @@ function determineTemplateXType(props) {
   // use case aspect
   if (props.holidayBlock) type.push('holiday');
 
+  if (props.print && props.print) type.push('print');
+  if (props.print && props.print.toLowerCase() === 'flyer') type.push('flyer');
+  if (props.print && props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
+
+  variant = type;
   return type;
 }
 
