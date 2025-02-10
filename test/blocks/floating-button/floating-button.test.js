@@ -28,7 +28,7 @@ describe('Floating Button', () => {
     <meta name="use-floating-cta-lottie-arrow" content="N">
     <meta name="floating-cta-bubble-sheet" content="fallback-bubbles-sheet">
     <meta name="ctas-above-divider" content="2">
-    <meta name="main-cta-link" content="https://main--express--adobecom.hlx.page/express/fragments/susi-light-teacher#susi-light-2">
+    <meta name="main-cta-link" content="https://main--express--adobecom.aem.page/express/fragments/susi-light-teacher#susi-light-2">
     <meta name="main-cta-text" content="Create now">
     <meta name="cta-1-icon" content="download-app-icon-22">
     <meta name="cta-1-link" content="https://adobesparkpost.app.link/c4bWARQhWAb">

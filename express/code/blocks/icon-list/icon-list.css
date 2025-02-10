@@ -1,4 +1,5 @@
-main .section:has(.icon-list-wrapper:first-child) {
+main .section:has(.icon-list-wrapper:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) {
   padding-top: 60px;
 }
 
@@ -79,17 +80,6 @@ main .icon-list h3, main .icon-list h4 {
   main .icon-list {
     padding-bottom: 0;
   }
-}
-
-/* two column styles */
-
-main .section.icon-list-highlight-container {
-  border-top: 12px solid black;
-  border-image: var(--gradient-highlight-horizontal) 1;
-  margin-top: 120px;
-  border-left: 0;
-  border-bottom: 0;
-  border-right: 0;
 }
 
 main .section.icon-list-two-column-container h2 {
@@ -182,15 +172,6 @@ main .icon-list a:not(.button):any-link {
 }
 
 /* spacing between icon list and columns highlight */
-main .icon-list-center-container ~ .columns-highlight-container {
-  margin-top: 120px;
-}
-
-.section.icon-list-enterprise-container .default-content-wrapper h4 {
-  padding-top: 120px;
-  font-size: var(--heading-font-size-l);
-}
-
 .icon-list.enterprise {
   padding-bottom: 120px;
 }

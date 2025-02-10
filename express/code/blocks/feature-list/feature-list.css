@@ -37,10 +37,6 @@ main .section:has(.feature-list) {
     margin: auto;
 }
 
-main .section:has(.feature-list) .content {
-    max-width: unset;
-}
-
 main .section:has(.feature-list) h2 {
     margin-top: 80px;
 }

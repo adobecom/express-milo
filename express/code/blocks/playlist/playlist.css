@@ -1,7 +1,10 @@
-.section:has(.playlist) {
-    padding-top: 60px;
-    background-color: var(--body-alt-background-color);
+.section:has(.playlist):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) {
     padding: 60px 8px 40px 8px;
+}
+
+.section:has(.playlist) {
+    background-color: var(--body-alt-background-color);
 }
 
 .section:has(.playlist) > .content {

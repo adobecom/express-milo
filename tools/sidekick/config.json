@@ -1,4 +1,5 @@
 {
+  "project": "Express Milo",
   "plugins": [
     {
       "id": "path",
@@ -14,7 +15,7 @@
     {
       "id": "docs",
       "title": "Docs",
-      "url": "https://main--express--adobecom.hlx.live/docs/",
+      "url": "https://main--express--adobecom.aem.live/docs/",
       "environments": [ "edit" ],
       "excludePaths": [ "/**" ],
       "includePaths": [ "**.docx**" ]
@@ -141,6 +142,18 @@
       "title": "Bulk operations",
       "environments": [ "edit", "dev", "preview", "live" ],
       "url": "https://milo.adobe.com/tools/bulk-publish"
+    },
+    {
+      "containerId": "tools",
+      "id": "rollout",
+      "title": "Rollout",
+      "environments": [ "preview" ],
+      "isPalette": true,
+      "passReferrer": true,
+      "passConfig": true,
+      "url": "https://milo.adobe.com/tools/rollout",
+      "includePaths": [ "**.docx**", "**.xlsx**" ],
+      "paletteRect": "top: 40%; left: 50%; transform: translate(-50%,-50%); height: 350px; width: 500px; overflow: hidden; border-radius: 15px; box-shadow: 0 20px 35px 0px rgba(0, 0, 0, 0.5);"
     }
   ]
 }

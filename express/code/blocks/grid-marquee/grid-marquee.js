@@ -47,6 +47,8 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
       parent.classList.add('drawer-cta-wrapper');
     }
     anchor.classList.add('drawer-cta');
+    const linkText = anchor.textContent.trim();
+    anchor.title = anchor.title || linkText;
     const icon = icons[i];
     const match = icon && iconRegex.exec(icon.className);
     if (match?.[1]) {

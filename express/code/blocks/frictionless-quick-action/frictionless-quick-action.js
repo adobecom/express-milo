@@ -252,7 +252,7 @@ export default async function decorate(block) {
     ({ createTag, getConfig, loadScript, getMetadata } = utils);
   });
   const rows = Array.from(block.children);
-  rows[1].classList.add('container');
+  rows[1].classList.add('fqa-container');
   const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
   const quickAction = quickActionRow?.[0].children[1]?.textContent;
   if (!quickAction) {

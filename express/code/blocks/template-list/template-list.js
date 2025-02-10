@@ -14,7 +14,7 @@ import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
-
+import buildBasicCarousel from '../../scripts/widgets/basic-carousel.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import { memoize } from '../../scripts/utils/hofs.js';
@@ -1537,7 +1537,7 @@ export async function decorateTemplateList(block, props) {
           }
         }, props.autoCollapseDelay);
       } else {
-        const toolBar = parent.querySelector('.default-content-wrapper');
+        const toolBar = parent.querySelector('.content');
         const templateListWrapper = parent.querySelector('.template-list-wrapper');
         const sectionHeading = parent.querySelector('div > h2');
         let sectionSlug = null;
@@ -1881,7 +1881,7 @@ async function replaceRRTemplateList(block, props) {
 
       if (newBlock) {
         const section = block.closest('.section');
-        const sectionHeading = section.querySelector('div.default-content-wrapper > h2');
+        const sectionHeading = section.querySelector('div.content > h2');
         let sectionSlug = null;
 
         if (sectionHeading.textContent.trim().indexOf('{{heading_placeholder}}') >= 0) {
@@ -2001,7 +2001,9 @@ export default async function decorate(block) {
 
   await decorateTemplateList(newBlock, props);
 
-  if (newBlock.classList.contains('horizontal')) {
+  if (newBlock.classList.contains('basic-carousel')) {
+    await buildBasicCarousel(':scope > .template', newBlock);
+  } else if (newBlock.classList.contains('horizontal')) {
     const requireInfiniteScroll = !newBlock.classList.contains('mini') && !newBlock.classList.contains('collaboration');
     await buildCarousel(':scope > .template', newBlock, requireInfiniteScroll);
   } else {

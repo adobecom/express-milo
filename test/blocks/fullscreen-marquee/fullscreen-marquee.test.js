@@ -14,10 +14,10 @@ describe('Fullscreen Marquee', () => {
     window.isTestEnv = true;
     document.body.innerHTML = testBody;
     window.placeholders = {
-      'fullscreen-marquee-desktop-video-app': 'https://main--express--adobecom.hlx.page/express/media_11ffe376e21cc1f2437a2c5c9c875a2c478b51d9a.png',
-      'fullscreen-marquee-desktop-image-app': 'https://main--express--adobecom.hlx.page/express/media_1460fa1227fa59f6d998556d97df3d709f53c92b8.png',
-      'fullscreen-marquee-desktop-video-editor': 'https://main--express--adobecom.hlx.page/express/media_11e5c3128ea43f271fd2a565c1e4d68cd1d62c985.png',
-      'fullscreen-marquee-desktop-image-editor': 'https://main--express--adobecom.hlx.page/express/media_1efec67aa1be9ac7f56eddbf1dd44dbbe4292d10d.png',
+      'fullscreen-marquee-desktop-video-app': 'https://main--express--adobecom.aem.page/express/media_11ffe376e21cc1f2437a2c5c9c875a2c478b51d9a.png',
+      'fullscreen-marquee-desktop-image-app': 'https://main--express--adobecom.aem.page/express/media_1460fa1227fa59f6d998556d97df3d709f53c92b8.png',
+      'fullscreen-marquee-desktop-video-editor': 'https://main--express--adobecom.aem.page/express/media_11e5c3128ea43f271fd2a565c1e4d68cd1d62c985.png',
+      'fullscreen-marquee-desktop-image-editor': 'https://main--express--adobecom.aem.page/express/media_1efec67aa1be9ac7f56eddbf1dd44dbbe4292d10d.png',
     };
   });
 

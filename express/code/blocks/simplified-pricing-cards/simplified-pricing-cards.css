@@ -231,14 +231,19 @@ main .section>.simplified-pricing-cards-wrapper {
 ;
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container {
+.pricing-cards-wrapper+.content .button-container {
     margin-top: -40px;
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container .button {
+.pricing-cards-wrapper+.content .button-container .button {
     padding: 13px 1.5em 14px;
     border-radius: 27px;
     font-size: var(--body-font-size-m);
+}
+
+.section .simplified-pricing-cards a.button {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .simplified-pricing-cards .card-cta-group {
@@ -268,6 +273,7 @@ main .section>.simplified-pricing-cards-wrapper {
     width: 100%;
 }
 
+
 .simplified-pricing-cards .tooltip {
     position: relative;
     display: inline;
@@ -277,9 +283,13 @@ main .section>.simplified-pricing-cards-wrapper {
     position: relative;
 }
 
-.simplified-pricing-cards .tooltip .icon:hover~.tooltip-text {
+.simplified-pricing-cards .tooltip  button.hover .tooltip-text {
     opacity: 1;
-}
+} 
+
+.simplified-pricing-cards .tooltip-text.hover {
+    opacity: 1;
+} 
 
 .simplified-pricing-cards .toggle-switch {
     display: block;
@@ -313,6 +323,10 @@ main .section>.simplified-pricing-cards-wrapper {
 
 /* Tooltip CSS */
 
+.simplified-pricing-cards .tooltip > button:focus-within .tooltip-text {
+    opacity: 1;
+}
+
 .simplified-pricing-cards .tooltip-icon {
     position: relative;
     top: 2px;
@@ -327,13 +341,20 @@ main .section>.simplified-pricing-cards-wrapper {
     border-radius: 8px;
     position: absolute;
     bottom: 100%;
-    min-width: 200px;
-    left: -105px;
-    width: fit-content;
-    margin-bottom: 19px;
+    width:  200px;
+    left: -105px; 
+    margin-bottom: 5px;
+    user-select: text;
     transition: bottom 0.5s;
-    pointer-events: none;
 }
+
+.simplified-pricing-cards .tooltip>button {
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    font-family: "adobe-clean";
+    position: relative;
+  }
 
 .simplified-pricing-cards .tooltip-text.overflow-left {
     right: inherit;
@@ -349,14 +370,16 @@ main .section>.simplified-pricing-cards-wrapper {
     content: '';
     position: absolute;
     bottom: -5px;
-    left: 50%;
-    border: 5px solid transparent;
-    border-top-color: var(--color-black)
+    left: 107px; 
+    border-top-color: var(--color-black);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
 }
 
 .simplified-pricing-cards .tooltip-text.overflow-left::after {
     right: inherit;
-    left: 20px;
+    left: 23px;
 }
 
 .simplified-pricing-cards .tooltip-text.overflow-right::after {
