@@ -7,7 +7,9 @@ import BlockMediator from '../../scripts/block-mediator.min.js';
 let createTag; let getConfig;
 let getMetadata; let replaceKeyArray;
 let tagCopied; let editThisTemplate;
-let free; let sharePlaceholder;
+let free;
+let variants;
+let sharePlaceholder;
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
@@ -160,6 +162,65 @@ function renderShareWrapper(templateInfo) {
   wrapper.append(shareIcon);
   wrapper.append(tooltip);
   return wrapper;
+}
+
+const buildiFrameContent = (template) => {
+  const taskID = getMetadata('branch-task-id');
+  const iFrame = createTag('iframe', {
+    src: `https://w299ihl20.wxp.adobe-addons.com/distribute/private/JZnNGECCzfpgfcUmlgcNKgZKclyFP1YXLvq8rF3yfE9RI7inYDEPFaEGWDFv2ynr/0/w299ihl20/wxp-w299ihl20-version-1713829154591/adobePdp.html?TD=${template.id}&taskID=${taskID}`,
+    title: 'Edit this template',
+    tabindex: '-1',
+  });
+
+  iFrame.allowfullscreen = true;
+  return iFrame;
+};
+
+const showModaliFrame = async (template) => {
+  const { getModal } = await import(`${getLibs()}/blocks/modal/modal.js`);
+
+  const iFrameContent = buildiFrameContent(template);
+  const modal = await getModal(null, {
+    id: template.id.replace(/:/g, '-'),
+    class: 'print-iframe',
+    content: iFrameContent,
+    closeEvent: 'closeModal',
+  });
+
+  return modal;
+};
+
+function renderPrintCTA(template) {
+  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
+  const btnEl = createTag('a', {
+    href: '#modal',
+    title: btnTitle,
+    class: 'button accent small',
+    target: '_self',
+  });
+
+  btnEl.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await showModaliFrame(template);
+  });
+
+  btnEl.textContent = btnTitle;
+  return btnEl;
+}
+
+function renderPrintCTALink(template) {
+  const link = createTag('a', {
+    href: '#modal',
+    title: 'Edit this template',
+    class: 'cta-link',
+  });
+
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await showModaliFrame(template);
+  });
+
+  return link;
 }
 
 function renderCTA(branchUrl) {
@@ -376,6 +437,9 @@ function renderMediaWrapper(template) {
 }
 
 function renderHoverWrapper(template) {
+  let cta;
+  let ctaLink;
+
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
@@ -385,8 +449,15 @@ function renderHoverWrapper(template) {
     focusHandler,
   } = renderMediaWrapper(template);
 
-  const cta = renderCTA(template.customLinks.branchUrl);
-  const ctaLink = renderCTALink(template.customLinks.branchUrl);
+  if (variants?.includes('flyer')
+  || variants?.includes('t-shirt')
+  || variants?.includes('print')) {
+    cta = renderPrintCTA(template);
+    ctaLink = renderPrintCTALink(template);
+  } else {
+    cta = renderCTA(template.customLinks.branchUrl);
+    ctaLink = renderCTALink(template.customLinks.branchUrl);
+  }
 
   ctaLink.append(mediaWrapper);
 
@@ -479,7 +550,8 @@ function renderStillWrapper(template) {
   return stillWrapper;
 }
 
-export default async function renderTemplate(template) {
+export default async function renderTemplate(template, variant) {
+  variants = variant;
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKeyArray } = placeholders);
