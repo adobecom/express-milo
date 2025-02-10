@@ -2,7 +2,7 @@
 .link-blade {
     padding: 16px;
     margin: 0 auto;
-    width: 100%;
+    width: calc(100% -48px)
 }
 
 .link-blade-header {
