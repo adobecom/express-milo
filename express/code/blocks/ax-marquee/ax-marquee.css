@@ -243,7 +243,7 @@ body.no-desktop-brand-header header {
 }
 
 .ax-marquee .reduce-motion-wrapper {
-    z-index: 9;
+    z-index: 7;
     position: absolute;
     white-space: nowrap;
     right: 16px;
