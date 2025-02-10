@@ -697,15 +697,6 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
   margin-right: 4px;
 }
 
-main .section.left > .content > * { 
-  text-align: left;
-}
-
-main .section.left > .content > p {
-  margin: 20px;
-  font-size: var(--body-font-size-m);
-}
-
 main .section > .content {
   text-align: center;
   max-width: 375px;
@@ -784,11 +775,20 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
-@media (min-width: 400px) {
-  main .section.left > .content > p {
-    margin: auto;
-    font-size: 20px;
-  }
+
+main .section.left > .content *:is(h1, h2) {
+  font-size: 32px;
+}
+
+main .section.left > .content *:is(h1, h2, h3, h4, h5, h6),
+main .section.left > .content > p  {
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: left;
+}
+
+main .section.left > .content > p {
+  font-size: var(--body-font-size-m);
 }
 
 @media (min-width: 600px) {
@@ -832,10 +832,11 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
   }
 
   main .section.left > .content {
-    margin: auto;
-    padding-left: 20px;
-    padding-right: 20px;
     max-width: 648px
+  }
+  
+  main .section.left > .content > p {
+    font-size: var(--body-font-size-xl);
   }
 }
 
@@ -898,6 +899,12 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
 
   main .section > .content {
     max-width: 830px;
+  }
+
+  main .section.left > .content *:is(h1, h2, h3, h4, h5, h6),
+  main .section.left > .content > p  {
+    margin-left: unset;
+    margin-right: unset;
   }
 }
 
