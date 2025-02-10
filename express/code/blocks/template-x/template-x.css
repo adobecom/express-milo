@@ -16,9 +16,9 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   text-align: center;
 }
 
-.milo-iframe {
-  width: 100% !important;
-  height: 100% !important;
+.dialog-modal.print-iframe, .dialog-modal.print-iframe iframe {
+  width: 100%;
+  height: 100%;
 }
 
 [data-block-name="template-x"] {
