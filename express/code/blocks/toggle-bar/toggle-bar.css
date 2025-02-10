@@ -1,4 +1,5 @@
-.section[data-toggle]{
+.section[data-toggle]:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) {
     padding-top: 60px;
 }
 
@@ -88,6 +89,7 @@
 }
 
 .section .toggle-bar-wrapper > .toggle-bar ul {
+    list-style: none;
     padding: 0;
     margin: 0;
     height: 100%;
@@ -166,7 +168,7 @@
     font-size: var(--body-font-size-xs);
     padding: 2px 4px;
     font-weight: 700;
-    background-color: #DEDEF9;
+    background-color: var(--palette-indigo-200);
     color: var(--color-info-accent);
     border-radius: 4px;
 }

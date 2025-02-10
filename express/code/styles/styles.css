@@ -35,6 +35,9 @@
   --gradient-highlight-vertical: linear-gradient(15deg, #7c84fc, #ff4dd2);
   --gradient-highlight-horizontal: linear-gradient(90deg, #ff4dd2, #7c84fc);
   --gradient-highlight-diagonal: linear-gradient(45deg, #7c84fc, #ff4dd2);
+  --palette-indigo-200: #E0E2FF;
+  --palette-indigo-1000: #4046CA;
+  --background-positive-default: #007A4D;
 
   /* header */
   --header-height: 65px;
@@ -119,6 +122,10 @@ body[data-device="mobile"] {
   'Trebuchet MS', sans-serif;
 }
 
+:is(p):lang(ja) {
+  line-break: normal;
+}
+
 /* floating-cta main CTA suppression */
 body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"][data-section-status="loaded"] .same-fcta {
   display: block;
@@ -144,11 +151,21 @@ main {
   line-height: initial;
 }
 
-.section:not([data-padding='none']) > .content:first-child {
+main .section:not([data-padding='none']):not(.xxxl-spacing-static,
+.xxl-spacing-static,
+.xl-spacing-static,
+.xxxl-spacing,
+.xxl-spacing,
+.xl-spacing,
+.l-spacing,
+.m-spacing,
+.s-spacing,
+.xs-spacing,
+.xxs-spacing) > .content:first-child {
   padding-top: 60px;
 }
 
-.content:first-child h2 {
+main .content h2 {
   margin-top: 80px;
 }
 
@@ -156,7 +173,7 @@ main ol, main ul {
   text-align: left;
 }
 
-main a, main a:hover {
+main a, main a:hover, main u {
   text-decoration: none;
 }
 
@@ -312,7 +329,7 @@ main a.button.secondary:any-link:active {
 }
 
 main a.button.secondary:focus{
-  background-color: var(--color-gray-500);
+  background-color: var(--color-gray-700);
   border-color: var(--color-gray-500);
   color: var(--color-white);
 }
@@ -689,12 +706,22 @@ main .section .content p, main .section p {
   margin: 32px 0;
 }
 
-main .section:last-of-type>.content:not(:has(+ .template-list-wrapper)) {
+main .section:not(.xxxl-spacing-static,
+.xxl-spacing-static,
+.xl-spacing-static,
+.xxxl-spacing,
+.xxl-spacing,
+.xl-spacing,
+.l-spacing,
+.m-spacing,
+.s-spacing,
+.xs-spacing,
+.xxs-spacing):last-of-type>.content:not(:has(+ .template-list-wrapper)) {
   padding-bottom: 40px;
 }
 
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner) a.button.same-fcta,
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner) a.con-button.same-fcta,
+main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner) a.button.same-fcta,
+main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner) a.con-button.same-fcta,
 #hero a.same-fcta {
   display: none;
 }
@@ -751,7 +778,6 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
 
   main h4 {
     font-size: var(--heading-font-size-m);
-    margin-top: 56px;
   }
 
   main h1 + h5 {
@@ -780,7 +806,9 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
     text-align: center;
     margin: 24px 15px 0;
   }
+}
 
+@media (max-width: 600px) {
   main :lang(ja) h2.heading-long, :lang(ja) #hero h2.heading-long {
     font-size: var(--heading-font-size-l);
   }

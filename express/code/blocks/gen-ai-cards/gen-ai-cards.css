@@ -10,7 +10,8 @@
   margin: auto;
 }
 
-.gen-ai-cards:first-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .gen-ai-cards:first-child {
   padding-top: 60px;
 }
 
@@ -56,6 +57,7 @@
 
 .gen-ai-cards .carousel-container .carousel-platform {
   align-items: unset;
+  gap: 8px;
 }
 
 .gen-ai-cards.homepage .carousel-container {
@@ -72,10 +74,6 @@
   overflow: hidden;
   margin: 0px;
   background-color: #f4f4fd;
-}
-
-.gen-ai-cards .carousel-container .carousel-platform {
-  gap: 8px;
 }
 
 .gen-ai-cards.homepage .card {
@@ -113,8 +111,8 @@
   padding: 0 4px;
   margin-left: 6px;
   font-weight: 700;
-  background-color: #DEDEF9;
-  color: var(--color-info-accent);
+  background-color: var(--palette-indigo-200);
+  color: var(--palette-indigo-1000);
   border-radius: 4px;
 }
 
@@ -355,9 +353,10 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     display: none;
   }
 
-  main .gen-ai-cards .card {
-    margin-right: 22px;
+  .gen-ai-cards .carousel-container .carousel-platform {
+    gap: 22px;
   }
+
   .gen-ai-cards.homepage .carousel-element.card .media-wrapper {
     width: 352px;
   }

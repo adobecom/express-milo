@@ -1,6 +1,7 @@
 :root {
   --card-width: 353px;
   --card-padding: 12px;
+  --card-max-width: calc((1200px - 32px) / 3);
 }
 
 .pricing-cards.no-visible {
@@ -54,7 +55,7 @@ End legacy CSS
 
 .pricing-cards .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--card-width), calc((1200px - 32px) / 3)));
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-width), var(--card-max-width)));
   grid-template-rows: repeat(auto-fit, minmax(311px, 1fr));
   justify-content: center;
   gap: 16px;
@@ -175,10 +176,13 @@ End border style variants
 .pricing-cards .tooltip-text.overflow-right {
   left: inherit;
   right: -20px;
-
 }
+
+.pricing-cards .tooltip > button:focus-within .tooltip-text {
+  opacity: 1;
+}
+
 .pricing-cards .tooltip-text {
-  pointer-events: none;
   opacity: 0;
   padding: 8px;
   z-index: 10;
@@ -189,11 +193,28 @@ End border style variants
   bottom: 100%;
   min-width: 200px;
   left: -105px;
-  width: fit-content;
-  margin-bottom: 19px;
+  margin-bottom: 5px;
+  user-select: text;
   transition: bottom 0.5s;
   width: 100%;
 }
+
+.pricing-cards .tooltip>button {
+  border: none;
+  background-color: transparent;
+  padding: 0px;
+  font-family: "adobe-clean";
+  position: relative;
+}
+
+
+.pricing-cards .tooltip  button.hover .tooltip-text {
+  opacity: 1;
+} 
+
+.pricing-cards .tooltip-text.hover {
+  opacity: 1;
+} 
 
 .pricing-cards .tooltip-text::after {
   content: '';
@@ -278,12 +299,12 @@ End border style variants
   right: 8px;
   top: -10px;
   border-radius: 4px;
-  background: #D3D5FF;
+  background: var(--palette-indigo-200);
   padding: 0px 6px 1px;
   height: 20px;
   font-size: var(--body-font-size-xs);
   font-weight: 700;
-  color: #5258E4;
+  color: var(--palette-indigo-1000);
   height: 20px;
   font-style: normal;
   height: auto;
@@ -307,7 +328,7 @@ End border style variants
 }
 
 .pricing-cards .pricing-price.price-active {
-  color: #5258E4;
+  color: var(--palette-indigo-1000);
 }
 
 .pricing-cards .pricing-base-price {
@@ -364,12 +385,12 @@ End border style variants
   text-align: center;
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container {
+.section .pricing-cards-wrapper+.content .button-container {
   margin-top: -40px;
 
 }
 
-.pricing-cards-wrapper+.default-content-wrapper .button-container .button {
+.pricing-cards-wrapper+.content .button-container .button {
   padding: 13px 1.5em 14px 1.5em;
   border-radius: 27px;
   font-size: var(--body-font-size-m);
@@ -498,7 +519,7 @@ End border style variants
 
 .pricing-cards .card-compare a {
   text-decoration: underline;
-  color: #5258E4;
+  color: var(--palette-indigo-1000);
   font-weight: 400;
 }
 
@@ -511,6 +532,12 @@ End border style variants
   max-width: 1200px;
   box-sizing: border-box;
   text-align: center;
+}
+
+@media (max-width: 360px) {
+  .pricing-cards .cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(auto, var(--card-max-width)));
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {

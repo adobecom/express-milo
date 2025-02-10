@@ -2,6 +2,7 @@ import { getLibs, decorateButtonsDeprecated, addTempWrapperDeprecated } from '..
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
+import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
 let replaceKey;
 let getConfig;
@@ -88,6 +89,7 @@ const toggleLinksHighlight = (links, variant) => {
 };
 
 export default async function decorate(block) {
+  splitAndAddVariantsWithDash(block);
   let variant = DEFAULT_VARIANT;
   if (block.classList.contains(SMART_VARIANT)) {
     variant = SMART_VARIANT;
@@ -114,7 +116,7 @@ export default async function decorate(block) {
   }
 
   normalizeHeadings(block, ['h3']);
-  const links = [...block.querySelectorAll('p.button-container, a.con-button')];
+  const links = [...block.querySelectorAll('p.button-container')];
   if (links.length) {
     links.forEach((p) => {
       const link = p.querySelector('a');
@@ -125,7 +127,7 @@ export default async function decorate(block) {
     });
     const platformEl = document.createElement('div');
     platformEl.classList.add('link-list-platform');
-    await buildCarousel('p.button-container, a.con-button', block, options);
+    await buildCarousel('p.button-container', block, options);
   }
 
   window.addEventListener('popstate', () => {

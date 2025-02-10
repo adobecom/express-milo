@@ -1,10 +1,13 @@
 .section:first-child .ax-columns:first-child {
   min-height: unset;
+}
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):first-child .ax-columns:first-child {
   padding-top: 0;
 }
 
-.section.long-form .ax-columns {
-  padding-top: 40px;
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing).long-form .ax-columns:last-child {
   padding-bottom: 40px;
 }
 
@@ -18,10 +21,37 @@
   margin: auto;
   max-width: 350px;
   line-height: initial;
+  word-wrap: normal;
 }
 
 .ax-columns.centered {
   max-width: 375px;
+}
+
+.section:has(.ax-columns.bg)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(
+      to bottom,
+      white 0%, 
+      white 10%, 
+      rgba(255,255,255,0) 30%, 
+      rgba(255,255,255,0) 70%, 
+      white 90%, 
+      white 100%
+    ),
+    var(--bg-image, none);
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.section:not(:has(> .ax-columns:not(.centered))) > .ax-columns.centered {
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -48,8 +78,14 @@
   float: unset;
 }
 
-.section:not(:first-child) .ax-columns:not(.extra-wide):first-child:not(:empty) {
+.section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child {
   padding-top: 60px;
+}
+
+.section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:empty:first-child {
+  padding-top: 0px;
 }
 
 .ax-columns.top.center, .ax-columns.fullsize.center, .ax-columns.light, .ax-columns.fullsize.center {
@@ -58,7 +94,10 @@
   padding-right: 0;
 }
 
-.ax-columns:last-child:not(.highlight, .highlight-dark, .top.center, .fullsize, .light, .dark, .numbered, .centered) {
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .ax-columns:last-child,
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .content:last-child {
   padding-bottom: 40px;
 }
 
@@ -71,14 +110,20 @@
   margin: 0;
 }
 
-.section:has(.ax-columns.highlight),
-.section:has(.ax-columns.dark) {
+.section:has(.ax-columns.highlight:not(.dark)),
+.section:has(.ax-columns.dark:not(.highlight)) {
   color: var(--color-white);
 }
 
-.ax-columns.highlight:last-child,
-.ax-columns.dark:last-child {
-  padding-bottom: 120px;
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:last-child,
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.dark:last-child,
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:nth-last-child(2):has(+ .section-metadata),
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.dark:nth-last-child(2):has(+ .section-metadata) {
+  padding-bottom: 40px;
 }
 
 .section:has(.ax-columns.highlight) .legal {
@@ -231,7 +276,6 @@
 .section .ax-columns > div {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   padding: 40px 0;
 }
@@ -426,7 +470,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   margin-bottom: 0;
 }
 
-.section:first-child .ax-columns:first-child > div.columns-video {
+.section:first-child:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child > div.columns-video {
   padding: 40px 0;
 }
 
@@ -611,6 +656,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.fullsize .column {
   padding-left: 24px;
   padding-right: 24px;
+  width: calc(100% - 48px);
 }
 
 .ax-columns .column.column-picture {
@@ -778,20 +824,21 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     font-size: var(--heading-font-size-m);
   }
 
-  .section:has(.ax-columns.enterprise) .default-content-wrapper h2 {
+  .section:has(.ax-columns.enterprise) .content h2 {
     padding-left: 20px;
     padding-right: 20px;
     word-break: auto-phrase;
   }
 }
 
-.section.long-form:has(.ax-columns) .content {
+.section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
   padding: 0 35px 60px;
 }
 
 @media (min-width: 600px) {
-  .section.long-form:has(.ax-columns) .content {
+  .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
     padding: 0 55px 60px;
+    max-width: 1100px;
   }
 }
 
@@ -943,6 +990,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 836px;
     padding-left: 32px;
     padding-right: 32px;
+  }
+
+  .section .ax-columns.extra-wide {
+    max-width: 830px;
   }
 
   .section .ax-columns.narrow {
@@ -1138,7 +1189,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     font-size: var(--heading-font-size-xl);
   }
 
-  .section.ax-columns h1.columns-heading-x-long {
+  .section .ax-columns h1.columns-heading-x-long {
     font-size: var(--heading-font-size-l);
   }
 
@@ -1148,10 +1199,14 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .section >  .ax-columns.extra-wide {
     max-width: 1440px;
-    margin-top: -60px;
   }
-  .ax-columns.extra-wide .button-container, .ax-columns.extra-wide .con-button{
+  .section .ax-columns.extra-wide .button-container, .section  .ax-columns.extra-wide .con-button{
     margin-top: 0;
+  }
+
+  .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.extra-wide:first-child:not(:empty) {
+    padding-top: 0;
   }
 
   .ax-columns .column-picture{

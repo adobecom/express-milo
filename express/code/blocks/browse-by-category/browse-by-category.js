@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { decorateButtonsDeprecated, getLibs } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let createTag;
@@ -7,7 +7,6 @@ export function decorateHeading(block, payload) {
   const headingSection = createTag('div', { class: 'browse-by-category-heading-section' });
   const heading = createTag('h3', { class: 'browse-by-category-heading' });
   const viewAllButtonWrapper = createTag('p', { class: 'browse-by-category-link-wrapper' });
-
   const subHeaderContent = payload.heading.match(/\((.+)\)/);
   let subheaderElement;
   if (subHeaderContent) {
@@ -65,14 +64,15 @@ export function decorateCategories(block, payload) {
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  await decorateButtonsDeprecated(block);
   const rows = Array.from(block.children);
   const headingDiv = rows.shift();
 
   const payload = {
     heading: headingDiv.querySelector('h4') ? headingDiv.querySelector('h4').textContent.trim() : '',
     viewAllLink: {
-      text: headingDiv.querySelector('a') ? headingDiv.querySelector('a').textContent.trim() : '',
-      href: headingDiv.querySelector('a') ? headingDiv.querySelector('a').href : '',
+      text: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').textContent.trim() : '',
+      href: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').href : '',
     },
     categories: [],
   };

@@ -1,7 +1,11 @@
-/* to remove after Milo migration */
 .section > .color-how-to-carousel-wrapper {
     max-width: 1200px;
     margin: auto;
+}
+
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .color-how-to-carousel-wrapper:first-child {
+    padding-top: 60px;
 }
 
 .color-how-to-carousel {
@@ -122,6 +126,7 @@
     font-size: var(--body-font-size-xl);
     margin-top: 16px;
     margin-bottom: 0;
+    word-break: initial;
 }
 
 .color-how-to-carousel .tip-text h3 {

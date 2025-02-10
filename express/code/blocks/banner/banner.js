@@ -8,6 +8,8 @@ export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
+  const section = block.closest('.section');
+  if (section?.style?.background) block.style.background = section.style.background;
 
   const isBannerLightVariant = block.classList.contains('light');
   const isBannerStandoutVariant = block.classList.contains('standout');

@@ -18,10 +18,10 @@ export const [setLibs, getLibs] = (() => {
     (prodLibs, location) => {
       libs = (() => {
         const { hostname, search } = location || window.location;
-        if (!(hostname.includes('.hlx.') || hostname.includes('local'))) return prodLibs;
+        if (!(hostname.includes('.hlx.') || hostname.includes('.aem.') || hostname.includes('local'))) return prodLibs;
         const branch = new URLSearchParams(search).get('milolibs') || 'main';
         if (branch === 'local') return 'http://localhost:6456/libs';
-        return branch.includes('--') ? `https://${branch}.hlx.live/libs` : `https://${branch}--milo--adobecom.hlx.live/libs`;
+        return branch.includes('--') ? `https://${branch}.aem.live/libs` : `https://${branch}--milo--adobecom.aem.live/libs`;
       })();
       return libs;
     }, () => libs,
@@ -304,13 +304,14 @@ export async function fixIcons(el = document) {
   });
 }
 
-// This was only added for the blocks premigration. It is not to be used for new blocks.
+// This was only added for the blocks premigration.
+// For new blocks they should only use the decorateButtons method from milo.
 export async function decorateButtonsDeprecated(el, size) {
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-  // deactivate milo button styling for ax-columns and banner since links have perhaps unnecessarily
-  // been authored bold or italic. We'll want to roll this back at some point.
-  if (!el.closest('.ax-columns') && !el.closest('.banner') && !el.closest('.fullscreen-marquee')) decorateButtons(el, size);
-
+  // eslint-disable-next-line max-len
+  // DO NOT add any more exceptions here. Authors must learn to author buttons the new milo way, even with old blocks
+  if (!el.closest('.ax-columns') && !el.closest('.banner') && !el.closest('.fullscreen-marquee') && !el.closest('.link-list')) decorateButtons(el, size);
+  // DO NOT add any more exceptions above. We should be removing the exceptions and not adding more.
   el.querySelectorAll(':scope a:not(.con-button, .social-link)').forEach(($a) => {
     const originalHref = $a.href;
     const linkText = $a.textContent.trim();
@@ -326,6 +327,7 @@ export async function decorateButtonsDeprecated(el, size) {
       if (originalHref !== linkText
           && !(linkText.startsWith('https') && linkText.includes('/media_'))
           && !/hlx\.blob\.core\.windows\.net/.test(linkText)
+          && !/aem\.blob\.core\.windows\.net/.test(linkText)
           && !linkText.endsWith(' >')
           && !(hash === '#embed-video')
           && !linkText.endsWith(' ›')
@@ -481,7 +483,7 @@ export function preDecorateSections(area) {
   }
 }
 
-function renameConflictingBlocks(area) {
+function renameConflictingBlocks(area, selector) {
   const replaceColumnBlock = (section) => {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
@@ -519,7 +521,7 @@ function renameConflictingBlocks(area) {
   };
 
   if (!area) return;
-  area.querySelectorAll('main > div').forEach((section) => {
+  area.querySelectorAll(selector).forEach((section) => {
     replaceColumnBlock(section);
     replaceTableOfContentBlock(section);
     replaceMarqueeBlock(section);
@@ -622,6 +624,10 @@ const blocksToClean = [
       '{{pricing}}',
       '{{savePercentage}}',
       '{{special-promo}}',
+      '{{per-month}}',
+      '{{per-year}}',
+      '{{per-month-per-seat}}',
+      '{{per-year-per-seat}}',
       '{{vat-include-text}}',
       '{{vat-exclude-text}}',
       '{{business-sales-numbers}}',
@@ -632,6 +638,13 @@ const blocksToClean = [
     placeholders: [
       '{{prompt-text}}',
       '%7B%7Bprompt-text%7D%7D',
+    ],
+  },
+  {
+    selector: '.list',
+    placeholders: [
+      '{{pricing.formatted}}',
+      '{{pricing.formattedBP}}',
     ],
   },
 ];
@@ -685,30 +698,65 @@ function decorateLegalCopy(area) {
   });
 }
 
+function unwrapBlockDeprecated($block) {
+  const $section = $block.parentNode;
+  const $elems = [...$section.children];
+
+  if ($elems.length <= 1) return;
+
+  const $blockSection = createTag('div');
+  const $postBlockSection = createTag('div');
+  const $nextSection = $section.nextElementSibling;
+  $section.parentNode.insertBefore($blockSection, $nextSection);
+  $section.parentNode.insertBefore($postBlockSection, $nextSection);
+
+  let $appendTo;
+  $elems.forEach(($e) => {
+    if ($e === $block || ($e.className === 'section-metadata')) {
+      $appendTo = $blockSection;
+    }
+
+    if ($appendTo) {
+      $appendTo.appendChild($e);
+      $appendTo = $postBlockSection;
+    }
+  });
+
+  if (!$postBlockSection.hasChildNodes()) {
+    $postBlockSection.remove();
+  }
+}
+
+// TODO remove this method and the unwrap block method once template-list blocks are gone
+function splitSections(area, selector) {
+  const blocks = area.querySelectorAll(`${selector} > .template-list`);
+  blocks.forEach((block) => {
+    unwrapBlockDeprecated(block);
+  });
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  const selector = area === document ? 'main > div' : ':scope > div';
+  const selector = area === document ? 'main > div' : ':scope body > div';
   preDecorateSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
-  const links = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"]`);
-  if (links.length) {
+
+  if (area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`).length) {
     // eslint-disable-next-line import/no-cycle
-    import('./branchlinks.js').then((mod) => mod.default(links));
+    // select links again to refresh reference
+    import('./branchlinks.js').then((mod) => mod.default(area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`)));
   }
 
-  // TODO temporary FAAS Fix
-  const faasLinks = area.querySelectorAll('a[href*="milo.adobe.com/tools/faas"]');
-  faasLinks.forEach((link) => { link.href = link.href.replace('/tools/faas', '/tools/axfaas'); });
-
   cleanupBrackets(area);
+  splitSections(area, selector);
   area.querySelectorAll('a[href^="https://spark.adobe.com/"]').forEach((a) => { a.href = 'https://new.express.adobe.com'; });
 
   fragmentBlocksToLinks(area);
-  renameConflictingBlocks(area);
+  renameConflictingBlocks(area, selector);
   addPromotion(area);
   decorateLegalCopy(area);
 
@@ -716,7 +764,7 @@ export function decorateArea(area = document) {
   const embeds = area.querySelectorAll(`${selector} > .embed a[href*="instagram.com"]`);
   linksToNotAutoblock.push(...embeds);
 
-  let videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'image-list', 'tutorials', 'quick-action-hub'].map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
+  let videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'image-list', 'tutorials', 'quick-action-hub', 'holiday-blade'].map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
   videoLinksToNotAutoBlock += `,${['tutorials'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"], ${selector} .${block} a[href*="video.tv.adobe.com"]`).join(', ')}`;
   linksToNotAutoblock.push(...area.querySelectorAll(videoLinksToNotAutoBlock));
   linksToNotAutoblock.forEach((link) => {

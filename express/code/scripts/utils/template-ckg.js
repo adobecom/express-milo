@@ -12,6 +12,15 @@ const defaultRegex = /\/express\/templates\/default/;
 
 let ckgData;
 
+function sanitizeHTML(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 async function fetchLinkList() {
   if (ckgData) return;
   const data = await getCKGData();
@@ -23,16 +32,16 @@ async function fetchLinkList() {
         const params = new Proxy(new URLSearchParams(window.location.search), {
           get: (searchParams, prop) => searchParams.get(prop),
         });
-        formattedTasks = titleCase(params.tasks).replace(/[$@%"]/g, '');
+        formattedTasks = sanitizeHTML(titleCase(params.tasks).replace(/[$@%"]/g, ''));
       } else {
-        formattedTasks = titleCase(getMetadata('tasks')).replace(/[$@%"]/g, '');
+        formattedTasks = sanitizeHTML(titleCase(getMetadata('tasks')).replace(/[$@%"]/g, ''));
       }
 
       return {
         parent: formattedTasks,
         ckgID: ckgItem.metadata.ckgId,
-        displayValue: ckgItem.canonicalName,
-        value: ckgItem.metadata.link,
+        displayValue: sanitizeHTML(ckgItem.canonicalName),
+        value: sanitizeHTML(ckgItem.metadata.link),
       };
     });
   }
@@ -47,14 +56,22 @@ function isSearch(pathname) {
 function replaceLinkPill(linkPill, data) {
   const clone = linkPill.cloneNode(true);
   if (data) {
-    clone.innerHTML = clone.innerHTML.replace('/express/templates/default', data.url);
-    clone.innerHTML = clone.innerHTML.replaceAll('Default', data['short-title']);
+    const sanitizedUrl = sanitizeHTML(data.url);
+    const sanitizedShortTitle = sanitizeHTML(data['short-title']);
+    clone.innerHTML = clone.innerHTML.replace('/express/templates/default', sanitizedUrl);
+    clone.innerHTML = clone.innerHTML.replaceAll('Default', sanitizedShortTitle);
   }
-  if (isSearch(data.url)) {
+  if (data?.url && isSearch(data.url)) {
     clone.querySelectorAll('a').forEach((a) => {
       a.rel = 'nofollow';
     });
   }
+  clone.querySelectorAll('a').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (!href || !/^(https?:|\/)/.test(href)) {
+      a.removeAttribute('href');
+    }
+  });
   if (defaultRegex.test(clone.innerHTML)) {
     return null;
   }
@@ -86,6 +103,8 @@ async function updateSEOLinkList(container, linkPill, list) {
       });
 
       if (!templatePageData) return;
+      templatePageData.url = sanitizeHTML(templatePageData.url);
+      templatePageData['short-title'] = sanitizeHTML(templatePageData['short-title']);
 
       const clone = replaceLinkPill(linkPill, templatePageData);
       if (clone) container.append(clone);
@@ -103,13 +122,13 @@ async function updateLinkList(container, linkPill, list) {
   container.innerHTML = '';
 
   const taskMeta = getMetadata('tasks');
-  const currentTasks = taskMeta ? taskMeta.replace(/[$@%"]/g, '') : ' ';
-  const currentTasksX = getMetadata('tasks-x') || '';
+  const currentTasks = taskMeta ? sanitizeHTML(taskMeta.replace(/[$@%"]/g, '')) : ' ';
+  const currentTasksX = sanitizeHTML(getMetadata('tasks-x') || '');
 
   if (!list) return;
   list.forEach((d) => {
     const { prefix } = getConfig().locale;
-    const topics = getMetadata('topics') !== '" "' ? `${getMetadata('topics')?.replace(/[$@%"]/g, '')}` : '';
+    const topics = getMetadata('topics') !== '" "' ? `${sanitizeHTML(getMetadata('topics')?.replace(/[$@%"]/g, ''))}` : '';
     const topicsQuery = `${topics} ${d.displayValue.toLowerCase()}`.split(' ')
       .filter((item, i, allItems) => i === allItems.indexOf(item))
       .join(' ')
@@ -120,17 +139,17 @@ async function updateLinkList(container, linkPill, list) {
     let clone;
     if (!isSearch(d.pathname)) {
       const pageData = {
-        url: `${prefix}${d.pathname}`,
-        'short-title': d.displayValue,
+        url: sanitizeHTML(`${prefix}${d.pathname}`),
+        'short-title': sanitizeHTML(d.displayValue),
       };
 
       clone = replaceLinkPill(linkPill, pageData);
       clone.innerHTML = clone.innerHTML
-        .replaceAll('Default', d.displayValue)
-        .replace('/express/templates/default', d.pathname);
+        .replaceAll('Default', sanitizeHTML(d.displayValue))
+        .replace('/express/templates/default', sanitizeHTML(d.pathname));
       const innerLink = clone.querySelector('a');
       if (innerLink) {
-        const url = new URL(innerLink.href);
+        const url = new URL(innerLink.href, window.location.href);
         if (!url.searchParams.get('searchId')) {
           url.searchParams.set('searchId', generateSearchId());
           innerLink.href = url.toString();
@@ -140,17 +159,24 @@ async function updateLinkList(container, linkPill, list) {
       if (clone) pageLinks.push(clone);
     } else {
       // fixme: we need single page search UX
-      const searchParams = `tasks=${currentTasks}&tasksx=${currentTasksX}&phformat=${getMetadata('placeholder-format')}&topics=${topicsQuery}&q=${d.displayValue}&ckgid=${d.ckgID}&searchId=${generateSearchId()}`;
+      const searchParams = new URLSearchParams();
+      searchParams.set('tasks', currentTasks);
+      searchParams.set('tasksx', currentTasksX);
+      searchParams.set('phformat', sanitizeHTML(getMetadata('placeholder-format') || ''));
+      searchParams.set('topics', topicsQuery);
+      searchParams.set('q', sanitizeHTML(d.displayValue));
+      searchParams.set('ckgid', sanitizeHTML(d.ckgID));
+      searchParams.set('searchId', generateSearchId());
       const pageData = {
-        url: `${prefix}/express/templates/search?${searchParams}`,
-        'short-title': d.displayValue,
+        url: `${prefix}/express/templates/search?${searchParams.toString()}`,
+        'short-title': sanitizeHTML(d.displayValue),
       };
 
       clone = replaceLinkPill(linkPill, pageData);
       searchLinks.push(clone);
     }
 
-    clone.addEventListener('click', () => {
+    clone?.addEventListener('click', () => {
       const a = clone.querySelector(':scope > a');
       updateImpressionCache({
         keyword_filter: d.displayValue,

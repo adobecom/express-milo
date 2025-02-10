@@ -3,78 +3,11 @@ import BlockMediator from './block-mediator.min.js';
 
 let createTag; let getMetadata;
 let getConfig; let loadStyle;
-let getUserProfile;
-
 export function getDestination() {
   const pepDestinationMeta = getMetadata('pep-destination');
   return pepDestinationMeta || BlockMediator.get('primaryCtaUrl')
       || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA, a.con-button.button-xxl.same-fcta, a.con-button.xxl-button.same-fcta')?.href;
 }
-
-function getSegmentsFromAlloyResponse(response) {
-  const ids = [];
-  if (response?.destinations) {
-    Object.values(response.destinations).forEach(({ segments }) => {
-      if (segments) {
-        Object.values(segments).forEach(({ id }) => {
-          ids.push(id);
-        });
-      }
-    });
-  }
-  return ids;
-}
-
-export function getProfile() {
-  return new Promise((res) => {
-    getUserProfile()
-      .then((data) => {
-        res({
-          avatar: data.avatar,
-          display_name: data.display_name,
-          email: data.email,
-          enterpriseAdmin: undefined,
-          first_name: data?.first_name,
-          id: data?.userId,
-          last_name: data?.last_name,
-          name_id: undefined,
-          teamAdmin: undefined,
-        });
-      })
-      .catch(() => {
-        res(null);
-      });
-  });
-}
-
-const branchLinkOriginPattern = /^https:\/\/adobesparkpost(-web)?\.app\.link/;
-function isBranchLink(url) {
-  return branchLinkOriginPattern.test(new URL(url).origin);
-}
-
-// product entry prompt
-async function canPEP() {
-  // TODO test this whole method
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('force-pep')) return true;
-  if (document.body.dataset.device !== 'desktop') return false;
-  const pepSegment = getMetadata('pep-segment');
-  if (!pepSegment) return false;
-  const destination = getDestination();
-  if (!destination || !isBranchLink(destination)) return false;
-
-  const { replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`);
-  const [cancel, pepHeader, pepCancel] = await replaceKeyArray(['cancel', 'pep-header', 'pep-cancel'], getConfig());
-  if (!cancel || !pepHeader || !pepCancel) return false;
-  const segments = getSegmentsFromAlloyResponse(await window.alloyLoader);
-  if (!pepSegment.replace(/\s/g, '').split(',').some((pepSeg) => segments.includes(pepSeg))) return false;
-
-  return new Promise((resolve) => {
-    resolve(window.adobeIMS?.isSignedInUser() ?? false);
-  });
-}
-
-const PEP_DELAY = 3000;
 
 function preloadSUSILight() {
   const config = getConfig();
@@ -107,6 +40,8 @@ function turnContentLinksIntoButtons() {
   document.querySelectorAll('.section > .content').forEach((content) => {
     const links = content.querySelectorAll('a');
     links.forEach((link) => {
+      const linkText = link.textContent.trim();
+      link.title = link.title || linkText;
       const $up = link.parentElement;
       const $twoup = link.parentElement.parentElement;
       if (!link.querySelector('img')) {
@@ -126,31 +61,27 @@ function turnContentLinksIntoButtons() {
   });
 }
 
+async function addJapaneseSectionHeaderSizing() {
+  if (getConfig().locale.region === 'jp') {
+    const { addHeaderSizing } = await import('./utils/location-utils.js');
+    document.body.querySelectorAll('body:not(.blog) .section .content').forEach((el) => {
+      addHeaderSizing(el, getConfig);
+    });
+  }
+}
+
 /**
  * Executes everything that happens a lot later, without impacting the user experience.
  */
 export default async function loadDelayed() {
   try {
-    await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`)]).then(([utils, utilities]) => {
+    await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
       ({ createTag, getMetadata, getConfig, loadStyle } = utils);
-      ({ getUserProfile } = utilities);
     });
-    loadTOC();
+    addJapaneseSectionHeaderSizing();
     turnContentLinksIntoButtons();
+    loadTOC();
     preloadSUSILight();
-    if (await canPEP()) {
-      // eslint-disable-next-line import/no-unresolved
-      const { default: loadLoginUserAutoRedirect } = await import('../features/direct-path-to-product/direct-path-to-product.js');
-      return new Promise((resolve) => {
-        // TODO: not preloading product to protect desktop CWV
-        // until we see significant proof of preloading improving product load time
-        // loadExpressProduct();
-        setTimeout(() => {
-          loadLoginUserAutoRedirect();
-          resolve();
-        }, PEP_DELAY);
-      });
-    }
     return null;
   } catch (err) {
     window.lana?.log(`Express-Delayed Error: ${err}`);

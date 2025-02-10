@@ -111,7 +111,7 @@ async function playInlineVideo($element, vidUrls, playerType, title, ts) {
   if (!primaryUrl) return;
   if (playerType === 'html5') {
     const sources = vidUrls.map((src) => `<source src="${src}" type="${getMimeType(src)}"></source>`).join('');
-    const videoHTML = `<video controls playsinline autoplay>${sources}</video>`;
+    const videoHTML = `<video controls playsinline autoplay controlsList="nodownload" oncontextmenu="return false">${sources}</video>`;
     $element.innerHTML = videoHTML;
     const $video = $element.querySelector('video');
     $video.addEventListener('loadeddata', async () => {
