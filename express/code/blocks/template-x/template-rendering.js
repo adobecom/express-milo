@@ -169,12 +169,7 @@ const buildiFrameContent = (template) => {
   });
 
   iFrame.allowfullscreen = true;
-  iFrame.style.width = '100%';
-  iFrame.style.height = '100%';
-
-  const container = createTag('div', { class: 'milo-iframe' });
-  container.append(iFrame);
-  return container;
+  return iFrame;
 };
 
 const showModaliFrame = async (template) => {
@@ -183,7 +178,7 @@ const showModaliFrame = async (template) => {
   const iFrameContent = buildiFrameContent(template);
   const modal = await getModal(null, {
     id: template.id.replace(/:/g, '-'),
-    class: 'milo-iframe',
+    class: 'print-iframe',
     content: iFrameContent,
     closeEvent: 'closeModal',
   });
