@@ -51,19 +51,9 @@
   margin-top: 0;
 }
 
-.promotion.longform {
-  margin: 10px 10px 100px;
-}
-
-.promotion.longform .promotion-wrapper {
-  margin-top: 40px;
-}
-
-@media (min-width: 400px) {
-  .promotion.longform {
-    margin-left: auto;
-    margin-right: auto;
-  }
+.promotion.narrow {
+  max-width: 850px;
+  margin: 0 auto;
 }
 
 @media (min-width: 600px) {
