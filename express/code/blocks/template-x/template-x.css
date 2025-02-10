@@ -2013,6 +2013,21 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   padding: 15px;
 }
 
+.template-x.t-shirt .template .still-wrapper .image-wrapper {
+  background: url('tshirt.png') no-repeat center center;
+  background-size: cover;
+}
+
+.template-x.print:not(.t-shirt) .template .still-wrapper .image-wrapper img,
+.template-x.flyer .template .still-wrapper .image-wrapper img {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+.template-x.t-shirt .template .still-wrapper .image-wrapper img {
+  mix-blend-mode: darken;
+}
+
 .template-x.print .template img, .template-x.print .template video,
 .template-x.t-shirt .template img, .template-x.t-shirt .template video,
 .template-x.flyer .template img, .template-x.flyer .template video {
