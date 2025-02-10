@@ -697,9 +697,13 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
   margin-right: 4px;
 }
 
-main .section.left > .content {
+main .section.left > .content > * { 
   text-align: left;
+}
+
+main .section.left > .content > p {
   margin: 20px;
+  font-size: var(--body-font-size-m);
 }
 
 main .section > .content {
@@ -780,6 +784,13 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
+@media (min-width: 400px) {
+  main .section.left > .content > p {
+    margin: auto;
+    font-size: 20px;
+  }
+}
+
 @media (min-width: 600px) {
   main h2 {
     font-size: var(--heading-font-size-l);
@@ -818,6 +829,13 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
     line-height: var(--body-line-height);
     text-align: center;
     margin: 24px 15px 0;
+  }
+
+  main .section.left > .content {
+    margin: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 648px
   }
 }
 
