@@ -17,6 +17,11 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   text-align: center;
 }
 
+.dialog-modal.print-iframe, .dialog-modal.print-iframe iframe {
+  width: 100%;
+  height: 100%;
+}
+
 [data-block-name="template-x"] {
   margin: 0 auto;
 }
@@ -823,6 +828,12 @@ main.with-holiday-templates-banner {
   position: sticky;
   z-index: 1;
   top: 64px;
+}
+
+.template-x.print .toolbar-wrapper,
+.template-x.t-shirt .toolbar-wrapper,
+.template-x.flyer .toolbar-wrapper {
+  background: var(--color-gray-150);
 }
 
 .template-x .api-templates-toolbar {
@@ -2001,6 +2012,34 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   position: relative;
 }
 
+.template-x.print .template .still-wrapper .image-wrapper,
+.template-x.t-shirt .template .still-wrapper .image-wrapper,
+.template-x.flyer .template .still-wrapper .image-wrapper {
+  background: #ebebeb;
+  padding: 15px;
+}
+
+.template-x.t-shirt .template .still-wrapper .image-wrapper {
+  background: url('tshirt.png') no-repeat center center;
+  background-size: cover;
+}
+
+.template-x.print:not(.t-shirt) .template .still-wrapper .image-wrapper img,
+.template-x.flyer .template .still-wrapper .image-wrapper img {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+
+.template-x.t-shirt .template .still-wrapper .image-wrapper img {
+  mix-blend-mode: darken;
+}
+
+.template-x.print .template img, .template-x.print .template video,
+.template-x.t-shirt .template img, .template-x.t-shirt .template video,
+.template-x.flyer .template img, .template-x.flyer .template video {
+  border-radius: 0;
+}
+
 .template-x .template .still-wrapper .image-wrapper .free-tag {
   position: absolute;
   height: 24px;
@@ -2137,7 +2176,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   align-items: center;
   gap: 4px;
   width: 130px;
-  background-color: #33AB84;
+  background-color: var(--background-positive-default);
   color: white;
   text-align: center;
   border-radius: 6px;
@@ -2178,13 +2217,13 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent #33AB84 transparent transparent;
+  border-color: transparent var(--background-positive-default) transparent transparent;
 }
 
 .template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
   right: unset;
   left: 100%;
-  border-color: transparent transparent transparent #33AB84;
+  border-color: transparent transparent transparent var(--background-positive-default);
 }
 
 .template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped::after {

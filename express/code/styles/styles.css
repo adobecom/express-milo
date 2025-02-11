@@ -37,6 +37,7 @@
   --gradient-highlight-diagonal: linear-gradient(45deg, #7c84fc, #ff4dd2);
   --palette-indigo-200: #E0E2FF;
   --palette-indigo-1000: #4046CA;
+  --background-positive-default: #007A4D;
 
   /* header */
   --header-height: 65px;
@@ -176,6 +177,9 @@ main a, main a:hover, main u {
   text-decoration: none;
 }
 
+main a:not(.marquee), main a:not(.marquee):hover{
+  text-decoration: underline;
+}
 main video {
   max-width: 100%;
 }
@@ -325,7 +329,7 @@ main a.button.secondary:any-link:active {
 }
 
 main a.button.secondary:focus{
-  background-color: var(--color-gray-500);
+  background-color: var(--color-gray-700);
   border-color: var(--color-gray-500);
   color: var(--color-white);
 }

@@ -1,6 +1,7 @@
 :root {
   --card-width: 353px;
   --card-padding: 12px;
+  --card-max-width: calc((1200px - 32px) / 3);
 }
 
 .pricing-cards.no-visible {
@@ -54,7 +55,7 @@ End legacy CSS
 
 .pricing-cards .cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--card-width), calc((1200px - 32px) / 3)));
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-width), var(--card-max-width)));
   grid-template-rows: repeat(auto-fit, minmax(311px, 1fr));
   justify-content: center;
   gap: 16px;
@@ -531,6 +532,12 @@ End border style variants
   max-width: 1200px;
   box-sizing: border-box;
   text-align: center;
+}
+
+@media (max-width: 360px) {
+  .pricing-cards .cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(auto, var(--card-max-width)));
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {

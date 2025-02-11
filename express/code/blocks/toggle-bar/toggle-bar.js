@@ -4,6 +4,7 @@ import { sendEventToAnalytics, textToName } from '../../scripts/instrument.js';
 let createTag;
 
 function decorateButton(block, toggle) {
+  const li = createTag('li');
   const button = createTag('button', { class: 'toggle-bar-button' });
   const iconsWrapper = createTag('div', { class: 'icons-wrapper' });
   const textWrapper = createTag('div', { class: 'text-wrapper' });
@@ -30,7 +31,8 @@ function decorateButton(block, toggle) {
   }
 
   button.append(iconsWrapper, textWrapper);
-  toggle.parentNode.replaceChild(button, toggle);
+  li.append(button);
+  toggle.parentNode.replaceChild(li, toggle);
 
   let texts = [];
   let child = textWrapper.firstChild;
