@@ -483,9 +483,8 @@ main .section .pricing-table:has(.pricing-table.many-cols) {
 .pricing-table.vertical-shading .col:nth-child(2n) {
   background: var(--shaded-color);
 }
+
 /* /Table Section Rows */
-
-
 @media (max-width: 980px) {
   .pricing-table .row:not(.blank-row) {
     min-height: 60px;
@@ -689,7 +688,6 @@ main .section .pricing-table:has(.pricing-table.many-cols) {
     padding: 20px;
   }
 }
-
 
 @media (min-width: 981px) {
   .pricing-table > .row {
