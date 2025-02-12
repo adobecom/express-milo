@@ -778,7 +778,10 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     font-weight: 900;
     font-size: 18px;
   }
-  
+  main .section .pricing-table-wrapper:has(.pricing-table.seamless){
+    max-width: 1100px;
+  }
+
   .pricing-table.seamless {
     width: 1100px;
   }
