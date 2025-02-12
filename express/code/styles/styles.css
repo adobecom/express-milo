@@ -776,18 +776,18 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
 }
 
 
-main .section.left > .content *:is(h1, h2) {
+main .section.blog-content > .content *:is(h1, h2) {
   font-size: 32px;
 }
 
-main .section.left > .content *:is(h1, h2, h3, h4, h5, h6),
-main .section.left > .content > p  {
+main .section.blog-content > .content *:is(h1, h2, h3, h4, h5, h6),
+main .section.blog-content > .content > p  {
   margin-left: 20px;
   margin-right: 20px;
   text-align: left;
 }
 
-main .section.left > .content > p {
+main .section.blog-content > .content > p {
   font-size: var(--body-font-size-m);
 }
 
@@ -831,11 +831,11 @@ main .section.left > .content > p {
     margin: 24px 15px 0;
   }
 
-  main .section.left > .content {
+  main .section.blog-content > .content {
     max-width: 648px
   }
   
-  main .section.left > .content > p {
+  main .section.blog-content > .content > p {
     font-size: var(--body-font-size-xl);
   }
 }
@@ -901,8 +901,8 @@ main .section.left > .content > p {
     max-width: 830px;
   }
 
-  main .section.left > .content *:is(h1, h2, h3, h4, h5, h6),
-  main .section.left > .content > p  {
+  main .section.blog-content > .content *:is(h1, h2, h3, h4, h5, h6),
+  main .section.blog-content > .content > p  {
     margin-left: unset;
     margin-right: unset;
   }
