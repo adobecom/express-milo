@@ -712,7 +712,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     font-size: 18px;
   }
   
-  .pricing-table .row.row-heading .col > div p {
+  .pricing-table .row.row-heading .col > div p,
+  .pricing-table .row.row-heading .col > div p strong {
     font-weight: 900;
     font-size: 18px;
   }
@@ -730,8 +731,11 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
    border-bottom-left-radius: 0px;
    border-bottom-right-radius: 0px;
    border-top: none;
-  } 
-
+  }
+  .pricing-table.seamless .row-1 .col-1 p {
+  margin-top: auto;
+  padding-bottom: 10px;
+  }
   .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-1 {
     border-left: none;
     border-top: none;
