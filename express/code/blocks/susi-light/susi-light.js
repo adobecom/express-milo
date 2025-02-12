@@ -1,11 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let createTag; let loadScript;
 let getConfig; let isStage;
 
-const variant = 'edu-express';
 const usp = new URLSearchParams(window.location.search);
 
 const onRedirect = (e) => {
@@ -39,6 +38,59 @@ function getDestURL(url) {
   return destURL.toString();
 }
 
+function sendEventToAnalytics(type, eventName, client_id) {
+  const sendEvent = () => {
+    window._satellite.track('event', {
+      xdm: {},
+      data: {
+        eventType: 'web.webinteraction.linkClicks',
+        web: {
+          webInteraction: {
+            name: eventName,
+            linkClicks: {
+              value: 1,
+            },
+            type,
+          },
+        },
+        _adobe_corpnew: {
+          digitalData: {
+            primaryEvent: {
+              eventInfo: {
+                eventName,
+                client_id,
+              },
+            },
+          },
+        },
+      },
+    });
+  };
+  if (window._satellite?.track) {
+    sendEvent();
+  } else {
+    window.addEventListener('alloy_sendEvent', () => {
+      sendEvent();
+    }, { once: true });
+  }
+}
+
+// wrap with our customizations
+function wrapEasyIn(client_id, susi, title, guest) {
+  const wrapper = createTag('div', { class: 'easy-in-wrapper' }, susi);
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add('express-logo');
+  const titleDiv = createTag('div', { class: 'title' }, title);
+  const guestDiv = createTag('div', { class: 'guest' }, guest);
+  [...guestDiv.querySelectorAll('a, button')].forEach((e) => {
+    e.addEventListener('click', () => {
+      sendEventToAnalytics('event', `acomx:susi-light:guest-${e.title || e.textContent}`, client_id);
+    });
+  });
+  wrapper.append(logo, titleDiv, susi, guestDiv);
+  return wrapper;
+}
+
 export default async function init(el) {
   ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
@@ -47,6 +99,8 @@ export default async function init(el) {
   // eslint-disable-next-line camelcase
   const client_id = rows[1]?.textContent?.trim() || 'AdobeExpressWeb';
   const title = rows[2]?.textContent?.trim();
+  const variant = el.classList.contains('standard') ? 'standard' : 'edu-express';
+  const isEasyIn = el.classList.contains('easy-in');
   const authParams = {
     dt: false,
     locale: getConfig().locale.ietf.toLowerCase(),
@@ -72,49 +126,13 @@ export default async function init(el) {
   susi.config = config;
   if (isStage) susi.stage = 'true';
   susi.variant = variant;
-  function sendEventToAnalytics(type, eventName) {
-    const sendEvent = () => {
-      window._satellite.track('event', {
-        xdm: {},
-        data: {
-          eventType: 'web.webinteraction.linkClicks',
-          web: {
-            webInteraction: {
-              name: eventName,
-              linkClicks: { value: 1 },
-              type,
-            },
-          },
-          /* eslint-disable object-curly-newline */
-          _adobe_corpnew: {
-            digitalData: {
-              primaryEvent: {
-                eventInfo: {
-                  eventName,
-                  client_id,
-                },
-              },
-            },
-          },
-          /* eslint-enable object-curly-newline */
-        },
-      });
-    };
-    if (window._satellite?.track) {
-      sendEvent();
-    } else {
-      window.addEventListener('alloy_sendEvent', () => {
-        sendEvent();
-      }, { once: true });
-    }
-  }
 
   const onAnalytics = (e) => {
     const { type, event } = e.detail;
-    sendEventToAnalytics(type, event);
+    sendEventToAnalytics(type, event, client_id);
   };
   susi.addEventListener('redirect', onRedirect);
   susi.addEventListener('on-error', onError);
   susi.addEventListener('on-analytics', onAnalytics);
-  el.append(susi);
+  el.append(isEasyIn ? wrapEasyIn(client_id, susi, title, rows[3]) : susi);
 }
