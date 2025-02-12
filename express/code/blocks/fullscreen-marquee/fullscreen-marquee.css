@@ -279,6 +279,10 @@
     max-width: 1160px;
     text-align: center;
   }
+
+  .fullscreen-marquee.longform .fullscreen-marquee-heading {
+    max-width: 916px;
+  }
   
   .fullscreen-marquee.longform .fullscreen-marquee-heading h1 {
     font-size: var(--heading-font-size-xl);
