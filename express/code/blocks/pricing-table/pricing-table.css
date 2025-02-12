@@ -727,15 +727,17 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   } 
 
   .pricing-table.seamless .row-1 .col {
-   border-bottom: none;
-   border-bottom-left-radius: 0px;
-   border-bottom-right-radius: 0px;
-   border-top: none;
+    border-bottom: none;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top: none;
   }
+
   .pricing-table.seamless .row-1 .col-1 p {
-  margin-top: auto;
-  padding-bottom: 10px;
+    margin-top: auto;
+    padding-bottom: 10px;
   }
+  
   .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-1 {
     border-left: none;
     border-top: none;
