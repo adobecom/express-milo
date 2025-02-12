@@ -108,7 +108,7 @@ async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
   }
 }
 
-async function share(branchUrl, tooltip, timeoutId) {
+async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
   const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
     isSearchOverride: true,
@@ -121,7 +121,8 @@ async function share(branchUrl, tooltip, timeoutId) {
   if (tooltipRightEdgePos > window.innerWidth) {
     tooltip.classList.add('flipped');
   }
-
+  // Update ARIA-live region
+  liveRegion.textContent = text;
   clearTimeout(timeoutId);
   return setTimeout(() => {
     tooltip.classList.remove('display-tooltip');
@@ -143,18 +144,21 @@ function renderShareWrapper(templateInfo) {
     role: 'tooltip',
     tabindex: '-1',
   });
+  const liveRegion = createTag('div', {
+    'aria-live': 'polite',
+    class: 'sr-only',
+  });
+  wrapper.append(liveRegion);
+
   let timeoutId = null;
-  shareIcon.addEventListener('click', (ev) => {
+  shareIcon.addEventListener('click', async (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
-    timeoutId = share(branchUrl, tooltip, timeoutId);
+    timeoutId = await share(branchUrl, tooltip, timeoutId, liveRegion, text);
   });
-
-  shareIcon.addEventListener('keypress', (e) => {
-    if (e.key !== 'Enter') {
-      return;
-    }
-    timeoutId = share(branchUrl, tooltip, timeoutId);
+  shareIcon.addEventListener('keypress', async (e) => {
+    if (e.key !== 'Enter') return;
+    timeoutId = await share(branchUrl, tooltip, timeoutId, liveRegion, text);
   });
   const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   tooltip.append(checkmarkIcon);
