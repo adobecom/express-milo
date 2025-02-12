@@ -178,18 +178,17 @@
 }
 
 /* Table Width */
-main .section .pricing-table {
+main .section .pricing-table-wrapper {
   margin: auto;
   max-width: 900px;
 }
-main .section .pricing-table:has(.pricing-table.few-cols) {
+main .section .pricing-table-wrapper:has(.pricing-table.few-cols) {
   max-width: 700px;
 }
-main .section .pricing-table:has(.pricing-table.many-cols) {
+main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   max-width: 1200px;
 } 
 /* /Table Width */
-
 .pricing-table .row:not(.blank-row) {
   min-height: 80px;
 }
