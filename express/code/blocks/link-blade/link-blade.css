@@ -17,16 +17,16 @@
 
 .link-blade-links {
     display: flex;
-        flex-wrap: nowrap;
-        gap: 8px;
-        overflow-x: auto; 
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        position: relative;
-        overflow-x: auto;
-        white-space: nowrap;
-    scroll-behavior: smooth; 
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    position: relative;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
 }
 
 .link-blade-links::-webkit-scrollbar {
@@ -61,7 +61,7 @@ main a.link-blade-item {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     animation-timing-function: ease-out;
     animation-duration: 100ms;
-} 
+}
 
 /* Add the chevron icon for overflow indication */
 .link-blade {
@@ -76,7 +76,7 @@ main a.link-blade-item {
 .link-blade-chevron.hidden {
     display: none;
 }
- 
+
 .link-blade-chevron.left {
     left: 0;
     transform: scaleX(-1);
@@ -86,7 +86,7 @@ main a.link-blade-item {
 /* Chevron button styles */
 .link-blade-chevron::before {
     content: '';
-    position: absolute; 
+    position: absolute;
     width: 7px;
     height: 7px;
     border-top: solid 2px var(--color-gray-700);
@@ -97,7 +97,7 @@ main a.link-blade-item {
 }
 
 .link-blade-chevron {
-    position: absolute; 
+    position: absolute;
     right: 60px;
     top: 32%;
     transform: translateY(-50%);
