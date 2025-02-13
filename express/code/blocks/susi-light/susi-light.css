@@ -4,24 +4,60 @@
     min-height: 462px;
 }
 
-.easy-in-wrapper {
+.susi-tabs {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.easy-in-wrapper .express-logo {
+.susi-tabs .express-logo {
   width: unset;
   height: 24px;
   padding-top: 32px;
 }
 
-.easy-in-wrapper .title {
+.susi-tabs .title {
   font-size: var(--heading-font-size-s);
   line-height: 28.6px;
   font-weight: 900;
-  padding-top: 4px;
+  padding-top: 12px;
+  padding-bottom: 16px;
   text-align: center;
 }
-.easy-in-wrapper .guest {
+
+.susi-tabs [role='tab-panel'][aria-hidden='true'] {
+  display: none;
+}
+
+.susi-tabs [role='tab-list'] {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  box-shadow: 0px 2px 8px 0px #00000029;
+}
+
+.susi-tabs [role='tab'] {
+  background-color: var(--color-white);
+  border: initial;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  padding: 8px 12px 10px;
+  line-height: 15.6px;
+  cursor: pointer;
+}
+
+.susi-tabs [role='tab'][aria-selected='true'] {
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-radius: 6px;
+}
+
+/* FIXME: rename easy in and guest to tabbed and footer */
+.susi-tabs .footer {
   font-size: var(--body-font-size-s);
   text-align: center;
   padding: 16px 0;
@@ -30,7 +66,8 @@
   color: #292929;
   line-height: 20.8px;
 }
-.easy-in-wrapper .guest a {
+
+.susi-tabs .footer a {
   text-decoration: underline;
   color: initial;
 }
