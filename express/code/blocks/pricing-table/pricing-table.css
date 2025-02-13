@@ -370,7 +370,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table.vertical-header .row.row-heading .col > div {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .pricing-table .row.row-heading .col .buttons-wrapper {
@@ -777,6 +777,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table .row.row-heading .col > div p strong {
     font-weight: 900;
     font-size: 18px;
+    font-family: 'adobe-clean';
+    color: black;
   }
   main .section .pricing-table-wrapper:has(.pricing-table.seamless){
     max-width: 1100px;
@@ -784,17 +786,29 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
   .pricing-table.seamless {
     width: 1100px;
+    color:  #505050;
   }
 
   .pricing-table.seamless .row-2{
     height: 0px;
   } 
 
+  .pricing-table.seamless .row-4 .col-1{
+    border-top-left-radius: 8px;
+  } 
+  .pricing-table.seamless .row-4 div:last-child{
+    border-top-right-radius: 8px;
+  } 
   .pricing-table.seamless .row-1 .col {
     border-bottom: none;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top: none;
+  }
+
+  .pricing-table.seamless .row-1 .col:nth-child(2n) {
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
   }
 
   .pricing-table.seamless .row-1 .col-1 p {
