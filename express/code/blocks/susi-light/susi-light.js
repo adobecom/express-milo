@@ -19,7 +19,7 @@ const onError = (e) => {
   window.lana?.log('on error:', e);
 };
 
-export function loadWrapper() {
+export function loadSUSIScripts() {
   const CDN_URL = `https://auth-light.identity${isStage ? '-stage' : ''}.adobe.com/sentry/wrapper.js`;
   return loadScript(CDN_URL);
 }
@@ -113,50 +113,40 @@ function buildSUSIParams(client_id, variant, destURL, locale, title) {
   return params;
 }
 
-function extractOptions(rows, locale, imsClientId) {
-  const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
-  const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
-  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
-  const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
-  const guests = [...rows[5].querySelectorAll('div')];
-  const options = tabNames.map((tabName, index) => ({
-    tabName,
-    ...buildSUSIParams(
-      client_ids[index],
-      variants[index],
-      getDestURL(redirectUrls[index]),
-      locale,
-    ),
-    guest: guests[index],
-  }));
-  return options;
-}
-
-function extractSingleOption(el, locale, imsClientId) {
-  const rows = el.querySelectorAll(':scope > div > div');
-  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
-  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
-  const title = rows[2]?.textContent?.trim();
-  // only edu variant used singly
-  const variant = 'edu-express';
-  return buildSUSIParams(client_id, variant, getDestURL(redirectUrl), locale, title);
-}
-
-function buildTabs(el, locale, imsClientId) {
+function buildSUSITabs(el, options) {
   const rows = [...el.children];
-  const options = extractOptions(rows, locale, imsClientId);
-  const wrapper = createTag('div', { class: 'easy-in-wrapper' });
-  const panelList = createTag('div', { class: 'panel-list' });
-  const panels = options.map((option) => {
-    const panel = createTag('div', { class: 'panel' });
+  const wrapper = createTag('div', { class: 'susi-tabs' });
+  const tabList = createTag('div', { role: 'tab-list' });
+  const panels = options.map((option, i) => {
+    const { footer, tabName, authParams } = option;
+    const panel = createTag('div', { role: 'tab-panel' });
     panel.append(createSUSIComponent(option));
-    const guestDiv = createTag('div', { class: 'guest' }, option.guest);
-    [...guestDiv.querySelectorAll('a, button')].forEach((e) => {
+    const footerDiv = createTag('div', { class: 'footer' }, footer);
+    [...footerDiv.querySelectorAll('a, button')].forEach((e) => {
       e.addEventListener('click', () => {
-        sendEventToAnalytics('event', `acomx:susi-light:guest-${e.title || e.textContent}`, option.authParams.client_id);
+        sendEventToAnalytics('event', `acomx:susi-light:footer-${e.title || e.textContent}`, authParams.client_id);
       });
     });
-    panel.append(guestDiv);
+    panel.append(footerDiv);
+
+    const id = `${tabName}`;
+    panel.setAttribute('aria-labelledby', `tab-${id}`);
+    panel.id = `panel-${id}`;
+    panel.setAttribute('aria-hidden', i > 0);
+    const tab = createTag('button', {
+      role: 'tab',
+      'aria-selected': i === 0,
+      'aria-controls': `panel-${id}`,
+      id: `tab-${id}`,
+    }, tabName);
+    tab.addEventListener('click', () => {
+      tabList.querySelector('[aria-selected=true]')?.setAttribute('aria-selected', false);
+      tab.setAttribute('aria-selected', true);
+      panels.forEach((p) => {
+        p.setAttribute('aria-hidden', p !== panel);
+      });
+    });
+    tabList.append(tab);
     return panel;
   });
 
@@ -164,8 +154,18 @@ function buildTabs(el, locale, imsClientId) {
   logo.classList.add('express-logo');
   const title = rows[0].textContent?.trim();
   const titleDiv = createTag('div', { class: 'title' }, title);
-  wrapper.append(logo, titleDiv, panelList, ...panels);
+  wrapper.append(logo, titleDiv, tabList, ...panels);
   return wrapper;
+}
+
+function redirectIfLoggedIn(destURL) {
+  const goDest = () => window.location.assign(destURL);
+  if (window.feds?.utilities?.imslib) {
+    const { imslib } = window.feds.utilities;
+    /* eslint-disable chai-friendly/no-unused-expressions */
+    imslib.isReady() && imslib.isSignedInUser() && goDest();
+    imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
+  }
 }
 
 export default async function init(el) {
@@ -175,25 +175,42 @@ export default async function init(el) {
   const { imsClientId } = getConfig();
 
   const isTabs = el.classList.contains('tabs');
+  const noRedirect = el.classList.contains('no-redirect');
 
-  const loadWrapperPromise = loadWrapper();
+  await loadSUSIScripts();
+
+  // only edu variant shows single
   if (!isTabs) {
-    const option = extractSingleOption(el, locale, imsClientId);
-    const goDest = () => window.location.assign(option.destURL);
-    if (window.feds?.utilities?.imslib) {
-      const { imslib } = window.feds.utilities;
-      /* eslint-disable chai-friendly/no-unused-expressions */
-      imslib.isReady() && imslib.isSignedInUser() && goDest();
-      imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
+    const rows = el.querySelectorAll(':scope > div > div');
+    const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+    const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+    const title = rows[2]?.textContent?.trim();
+    const variant = 'edu-express';
+    const params = buildSUSIParams(client_id, variant, getDestURL(redirectUrl), locale, title);
+    if (!noRedirect) {
+      redirectIfLoggedIn(params.destURL);
     }
-    await loadWrapperPromise;
-    const susi = createSUSIComponent(option);
-    el.innerHTML = '';
-    el.append(susi);
-  } else {
-    await loadWrapperPromise;
-    const tabs = buildTabs(el, locale, imsClientId);
-    el.innerHTML = '';
-    el.append(tabs);
+    el.replaceChildren(createSUSIComponent(params));
+    return;
   }
+  const rows = [...el.children];
+  const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
+  const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
+  const footers = [...rows[5].querySelectorAll('div')];
+  const tabParams = tabNames.map((tabName, index) => ({
+    tabName,
+    ...buildSUSIParams(
+      client_ids[index],
+      variants[index],
+      getDestURL(redirectUrls[index]),
+      locale,
+    ),
+    footer: footers[index],
+  }));
+  if (!noRedirect) {
+    redirectIfLoggedIn(tabParams[0].destURL);
+  }
+  el.replaceChildren(buildSUSITabs(el, tabParams));
 }
