@@ -75,64 +75,125 @@ function sendEventToAnalytics(type, eventName, client_id) {
   }
 }
 
-// wrap with our customizations
-function wrapEasyIn(client_id, susi, title, guest) {
-  const wrapper = createTag('div', { class: 'easy-in-wrapper' }, susi);
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
-  const titleDiv = createTag('div', { class: 'title' }, title);
-  const guestDiv = createTag('div', { class: 'guest' }, guest);
-  [...guestDiv.querySelectorAll('a, button')].forEach((e) => {
-    e.addEventListener('click', () => {
-      sendEventToAnalytics('event', `acomx:susi-light:guest-${e.title || e.textContent}`, client_id);
-    });
-  });
-  wrapper.append(logo, titleDiv, susi, guestDiv);
-  return wrapper;
-}
-
-export default async function init(el) {
-  ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
-  const rows = el.querySelectorAll(':scope> div > div');
-  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
-  // eslint-disable-next-line camelcase
-  const client_id = rows[1]?.textContent?.trim() || 'AdobeExpressWeb';
-  const title = rows[2]?.textContent?.trim();
-  const variant = el.classList.contains('standard') ? 'standard' : 'edu-express';
-  const isEasyIn = el.classList.contains('easy-in');
-  const authParams = {
-    dt: false,
-    locale: getConfig().locale.ietf.toLowerCase(),
-    response_type: 'code',
-    client_id,
-    scope: 'AdobeID,openid',
-  };
-  const destURL = getDestURL(redirectUrl);
-  const goDest = () => window.location.assign(destURL);
-  if (window.feds?.utilities?.imslib) {
-    const { imslib } = window.feds.utilities;
-    /* eslint-disable chai-friendly/no-unused-expressions */
-    imslib.isReady() && imslib.isSignedInUser() && goDest();
-    imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
-  }
-  el.innerHTML = '';
-  await loadWrapper();
-  const config = { consentProfile: 'free' };
-  if (title) { config.title = title; }
+function createSUSIComponent({ variant, config, authParams, destURL }) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
   susi.authParams.redirect_uri = destURL;
   susi.config = config;
   if (isStage) susi.stage = 'true';
   susi.variant = variant;
-
   const onAnalytics = (e) => {
     const { type, event } = e.detail;
-    sendEventToAnalytics(type, event, client_id);
+    sendEventToAnalytics(type, event, authParams.client_id);
   };
   susi.addEventListener('redirect', onRedirect);
   susi.addEventListener('on-error', onError);
   susi.addEventListener('on-analytics', onAnalytics);
-  el.append(isEasyIn ? wrapEasyIn(client_id, susi, title, rows[3]) : susi);
+  return susi;
+}
+
+function buildSUSIParams(client_id, variant, destURL, locale, title) {
+  const params = {
+    variant,
+    authParams: {
+      dt: false,
+      locale,
+      response_type: 'code',
+      client_id,
+      scope: 'AdobeID,openid',
+    },
+    destURL,
+    config: {
+      consentProfile: 'free',
+    },
+  };
+  if (title) {
+    params.config.title = title;
+  }
+  return params;
+}
+
+function extractOptions(rows, locale, imsClientId) {
+  const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
+  const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
+  const guests = [...rows[5].querySelectorAll('div')];
+  const options = tabNames.map((tabName, index) => ({
+    tabName,
+    ...buildSUSIParams(
+      client_ids[index],
+      variants[index],
+      getDestURL(redirectUrls[index]),
+      locale,
+    ),
+    guest: guests[index],
+  }));
+  return options;
+}
+
+function extractSingleOption(el, locale, imsClientId) {
+  const rows = el.querySelectorAll(':scope > div > div');
+  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+  const title = rows[2]?.textContent?.trim();
+  // only edu variant used singly
+  const variant = 'edu-express';
+  return buildSUSIParams(client_id, variant, getDestURL(redirectUrl), locale, title);
+}
+
+function buildTabs(el, locale, imsClientId) {
+  const rows = [...el.children];
+  const options = extractOptions(rows, locale, imsClientId);
+  const wrapper = createTag('div', { class: 'easy-in-wrapper' });
+  const panelList = createTag('div', { class: 'panel-list' });
+  const panels = options.map((option) => {
+    const panel = createTag('div', { class: 'panel' });
+    panel.append(createSUSIComponent(option));
+    const guestDiv = createTag('div', { class: 'guest' }, option.guest);
+    [...guestDiv.querySelectorAll('a, button')].forEach((e) => {
+      e.addEventListener('click', () => {
+        sendEventToAnalytics('event', `acomx:susi-light:guest-${e.title || e.textContent}`, option.authParams.client_id);
+      });
+    });
+    panel.append(guestDiv);
+    return panel;
+  });
+
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add('express-logo');
+  const title = rows[0].textContent?.trim();
+  const titleDiv = createTag('div', { class: 'title' }, title);
+  wrapper.append(logo, titleDiv, panelList, ...panels);
+  return wrapper;
+}
+
+export default async function init(el) {
+  ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
+  const locale = getConfig().locale.ietf.toLowerCase();
+  const { imsClientId } = getConfig();
+
+  const isTabs = el.classList.contains('tabs');
+
+  const loadWrapperPromise = loadWrapper();
+  if (!isTabs) {
+    const option = extractSingleOption(el, locale, imsClientId);
+    const goDest = () => window.location.assign(option.destURL);
+    if (window.feds?.utilities?.imslib) {
+      const { imslib } = window.feds.utilities;
+      /* eslint-disable chai-friendly/no-unused-expressions */
+      imslib.isReady() && imslib.isSignedInUser() && goDest();
+      imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
+    }
+    await loadWrapperPromise;
+    const susi = createSUSIComponent(option);
+    el.innerHTML = '';
+    el.append(susi);
+  } else {
+    await loadWrapperPromise;
+    const tabs = buildTabs(el, locale, imsClientId);
+    el.innerHTML = '';
+    el.append(tabs);
+  }
 }

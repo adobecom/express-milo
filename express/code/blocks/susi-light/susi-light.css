@@ -22,10 +22,13 @@
   text-align: center;
 }
 .easy-in-wrapper .guest {
+  font-size: var(--body-font-size-s);
   text-align: center;
-  padding: 16px 0 24px;
+  padding: 16px 0;
   background-color: #f3f3f3;
   font-weight: 700;
+  color: #292929;
+  line-height: 20.8px;
 }
 .easy-in-wrapper .guest a {
   text-decoration: underline;
