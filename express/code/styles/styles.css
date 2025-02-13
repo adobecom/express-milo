@@ -697,6 +697,14 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
   margin-right: 4px;
 }
 
+:lang(ja) main .section > .content  {
+  text-align: left;
+}
+
+:lang(ja) main .section > .content.center  {
+  text-align: center;
+}
+
 main .section > .content {
   text-align: center;
   max-width: 375px;
