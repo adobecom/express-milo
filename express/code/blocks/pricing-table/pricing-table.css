@@ -789,6 +789,10 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     color:  #505050;
   }
 
+  .pricing-table.seamless  .row-1 .col {
+    padding: 24px;
+  }
+
   .pricing-table.seamless .row-2{
     height: 0px;
   } 
@@ -799,11 +803,17 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.seamless .row-4 div:last-child{
     border-top-right-radius: 8px;
   } 
+
   .pricing-table.seamless .row-1 .col {
     border-bottom: none;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top: none;
+   
+  }
+
+  .pricing-table.seamless.vertical-header .row-1 .col div {
+    row-gap: 8px;
   }
 
   .pricing-table.seamless .row-1 .col:nth-child(2n) {
@@ -813,7 +823,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
   .pricing-table.seamless .row-1 .col-1 p {
     margin-top: auto;
-    padding-bottom: 10px;
   }
   
   .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-1 {
@@ -829,4 +838,28 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.seamless .row-3 {
     display: none;
   }  
+
+  .pricing-table.seamless .table-end-row:last-of-type{
+    border-bottom: var(--border-width) solid var(--border-color);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  } 
+
+  .pricing-table.seamless .table-end-row:last-of-type .col-1 {
+    border-bottom-left-radius: 8px;
+  }
+
+  .pricing-table.seamless .table-end-row:last-of-type .col:last-child {
+    border-bottom-right-radius: 8px;
+  }
+
+  .pricing-table.seamless .toggle-row {
+    min-height: 5px;
+    height: 5px;
+    padding: 0;
+    display: none;
+  }
+  .pricing-table.seamless .toggle-content{
+    display: none !important;
+  }
 }
