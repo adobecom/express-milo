@@ -699,10 +699,12 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
 
 :lang(ja) main .section > .content  {
   text-align: left;
+  padding: 60px 20px 0;
 }
 
 :lang(ja) main .section > .content.center  {
   text-align: center;
+  padding: 60px 20px 0;
 }
 
 main .section > .content {
