@@ -56,7 +56,10 @@ function handleHeading(headingRow, headingCols) {
       btnWrapper.classList.add('button-container');
       buttonsWrapper.append(btnWrapper);
     });
-    col.append(buttonsWrapper);
+    if (buttons.length > 0) {
+      col.append(buttonsWrapper);
+    }
+   
 
     if (buttons.length > 1) {
       buttons.forEach((btn, index) => {
