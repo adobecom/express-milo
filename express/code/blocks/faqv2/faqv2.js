@@ -24,6 +24,19 @@ function addStructuredData(questions) {
   document.head.appendChild(script);
 }
 
+function createIcon(config, isCollapsed = false) {
+  return createTag('img', {
+    src: `${config.codeRoot}/icons/${isCollapsed ? 'minus' : 'plus'}-heavy.svg`,
+    alt: `${isCollapsed ? 'Collapse' : 'Expand'} answer`,
+    class: 'toggle-icon',
+    'aria-hidden': 'true',
+    loading: 'lazy',
+    width: '12',
+    height: '12',
+    fetchpriority: 'low',
+  });
+}
+
 function buildTableLayout(block) {
   const config = getConfig();
   const isLongFormVariant = block.classList.contains('longform');
@@ -100,15 +113,7 @@ function buildTableLayout(block) {
     headerDiv.textContent = header;
     headerAccordion.appendChild(headerDiv);
 
-    const iconElement = createTag('img', {
-      src: `${config.codeRoot}/icons/plus-heavy.svg`,
-      alt: 'Expand answer',
-      class: 'toggle-icon',
-      'aria-hidden': 'true',
-      loading: 'lazy',
-      width: '12',
-      height: '12',
-    });
+    const iconElement = createIcon(config);
     headerDiv.appendChild(iconElement);
 
     const subHeaderAccordion = createTag('div', {
@@ -128,13 +133,14 @@ function buildTableLayout(block) {
     headerDiv.addEventListener('click', () => {
       const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
       headerAccordion.setAttribute('aria-expanded', isCollapsed);
+
+      const newIcon = createIcon(config, isCollapsed);
+      iconElement.replaceWith(newIcon);
+      iconElement = newIcon;
+
       if (!isLongFormVariant) {
         headerAccordion.classList.toggle('rounded-corners', isCollapsed);
       }
-      iconElement.src = isCollapsed
-        ? `${config.codeRoot}/icons/minus-heavy.svg`
-        : `${config.codeRoot}/icons/plus-heavy.svg`;
-      iconElement.alt = isCollapsed ? 'Collapse answer' : 'Expand answer';
     });
 
     headerAccordion.addEventListener('keydown', (event) => {
@@ -233,28 +239,41 @@ async function buildOriginalLayout(block) {
 
 export default async function decorate(block) {
   block.classList.add('faqv2-loading');
+  block.style.visibility = 'hidden';
 
-  try {
+  const loadDependencies = async () => {
     const [utils, placeholders] = await Promise.all([
       import(`${getLibs()}/utils/utils.js`),
       import(`${getLibs()}/features/placeholders.js`),
     ]);
+    return { utils, placeholders };
+  };
 
+  try {
+    const depsPromise = loadDependencies();
+
+    const section = createTag('section', {
+      class: 'faqv2-section',
+      role: 'region',
+      'aria-label': 'Frequently Asked Questions',
+    });
+    block.replaceChildren(section);
+    block.style.visibility = 'visible';
+
+    const { utils, placeholders } = await depsPromise;
     ({ getConfig } = utils);
     ({ replaceKey } = placeholders);
 
     const isExpandableVariant = block.classList.contains('expandable');
 
-    // Add descriptive metadata
     block.setAttribute('itemscope', '');
     block.setAttribute('itemtype', 'https://schema.org/FAQPage');
 
-    // Add language attribute if not present
     if (!block.closest('[lang]')) {
       block.setAttribute('lang', 'en');
     }
 
-    requestAnimationFrame(() => {
+    requestIdleCallback(() => {
       if (isExpandableVariant) {
         buildTableLayout(block);
       } else {
@@ -263,9 +282,10 @@ export default async function decorate(block) {
 
       block.classList.remove('faqv2-loading');
       block.classList.add('faqv2-loaded');
-    });
+    }, { timeout: 2000 });
   } catch (error) {
     console.error('Error in FAQ component:', error);
     block.classList.remove('faqv2-loading');
+    block.style.visibility = 'visible';
   }
 }
