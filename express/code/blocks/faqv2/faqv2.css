@@ -5,10 +5,6 @@
   width: 100%;
   height: auto;
   margin-bottom: 25px;
-  content-visibility: auto;
-  contain-intrinsic-size: 0 500px;
-  will-change: auto;
-  transform: translateZ(0);
 }
 
 .faqv2-wrapper {
@@ -16,9 +12,6 @@
   border-radius: 8px;
   background: var(--color-white);
   width: 92%;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
 }
 
 .faqv2.expandable.longform .faqv2-wrapper {
@@ -32,10 +25,6 @@
 
 .faqv2.expandable {
   margin-bottom: 20px;
-  will-change: height;
-  contain: content;
-  transform: translateZ(0);
-  transition: none;
 }
 
 .faqv2.expandable .faqv2-accordion.title {
@@ -125,8 +114,6 @@
   color: var(--color-white);
   background-color: var(--color-info-accent);
   border-color: var(--color-info-accent);
-  transform: translateZ(0);
-  transition: background-color 0.2s ease-out;
 }
 
 .faqv2.expandable.longform .faqv2-accordions-col .faqv2-wrapper:first-child {
@@ -152,7 +139,11 @@
   border-radius: 8px;
   border: none;
   margin-bottom: 0;
-  background: linear-gradient(90deg, var(--color-info-accent) 1%, white 1%);
+  background: linear-gradient(to bottom,
+      #5C5CE0,
+      #9C49C6,
+      #BF38A5) left / 1% 100% no-repeat,
+    white;
 }
 
 .faqv2-accordion.expandable.header-accordion.rounded-corners {
@@ -179,9 +170,6 @@
       #F2693C,
       #F08420) left / 1% 100% no-repeat,
     white;
-  transform: translateZ(0);
-  will-change: transform;
-  transition: all 0.3s ease-out;
 }
 
 .faqv2.expandable.longform .faqv2-accordion.expandable.sub-header-accordion {
@@ -262,19 +250,10 @@
   width: 100%;
   height: 100%;
   max-width: none;
-  loading: lazy;
-  decoding: async;
-  fetchpriority: low;
 }
 
 .faqv2-accordion.collapsed {
   display: none;
-  visibility: hidden;
-  contain: strict;
-}
-
-.faqv2-loaded .faqv2-accordion.expandable {
-  transition: transform 0.2s ease-out;
 }
 
 @media (min-width: 400px) {
@@ -477,8 +456,4 @@
   .faqv2.bold .faqv2-accordion {
     height: 80px;
   }
-}
-
-.faqv2.longform.expandable {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
