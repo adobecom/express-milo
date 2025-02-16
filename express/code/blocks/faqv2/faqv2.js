@@ -80,6 +80,9 @@ function buildTableLayout(block) {
       alt: 'Expand answer',
       class: 'toggle-icon',
       'aria-hidden': 'true',
+      loading: 'lazy',
+      width: '12',
+      height: '12',
     });
     headerDiv.appendChild(iconElement);
 
@@ -201,15 +204,31 @@ async function buildOriginalLayout(block) {
 }
 
 export default async function decorate(block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+  block.classList.add('faqv2-loading');
+
+  try {
+    const [utils, placeholders] = await Promise.all([
+      import(`${getLibs()}/utils/utils.js`),
+      import(`${getLibs()}/features/placeholders.js`),
+    ]);
+
     ({ getConfig } = utils);
     ({ replaceKey } = placeholders);
-  });
-  const isExpandableVariant = block.classList.contains('expandable');
 
-  if (isExpandableVariant) {
-    buildTableLayout(block);
-  } else {
-    buildOriginalLayout(block);
+    const isExpandableVariant = block.classList.contains('expandable');
+
+    requestAnimationFrame(() => {
+      if (isExpandableVariant) {
+        buildTableLayout(block);
+      } else {
+        buildOriginalLayout(block);
+      }
+
+      block.classList.remove('faqv2-loading');
+      block.classList.add('faqv2-loaded');
+    });
+  } catch (error) {
+    console.error('Error in FAQ component:', error);
+    block.classList.remove('faqv2-loading');
   }
 }
