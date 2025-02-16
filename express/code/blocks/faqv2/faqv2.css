@@ -7,6 +7,8 @@
   margin-bottom: 25px;
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
+  will-change: auto;
+  transform: translateZ(0);
 }
 
 .faqv2-wrapper {
@@ -16,6 +18,7 @@
   width: 92%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .faqv2.expandable.longform .faqv2-wrapper {
@@ -149,11 +152,7 @@
   border-radius: 8px;
   border: none;
   margin-bottom: 0;
-  background: linear-gradient(to bottom,
-      #5C5CE0,
-      #9C49C6,
-      #BF38A5) left / 1% 100% no-repeat,
-    white;
+  background: linear-gradient(90deg, var(--color-info-accent) 1%, white 1%);
 }
 
 .faqv2-accordion.expandable.header-accordion.rounded-corners {
@@ -264,15 +263,18 @@
   height: 100%;
   max-width: none;
   loading: lazy;
+  decoding: async;
+  fetchpriority: low;
 }
 
 .faqv2-accordion.collapsed {
   display: none;
   visibility: hidden;
+  contain: strict;
 }
 
 .faqv2-loaded .faqv2-accordion.expandable {
-  transition: all 0.2s ease-out;
+  transition: transform 0.2s ease-out;
 }
 
 @media (min-width: 400px) {
