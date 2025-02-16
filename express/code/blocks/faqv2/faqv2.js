@@ -7,15 +7,28 @@ function buildTableLayout(block) {
   const isLongFormVariant = block.classList.contains('longform');
   const rows = [...block.children];
 
+  const section = createTag('section', {
+    class: 'faqv2-section',
+    role: 'region',
+    'aria-label': 'Frequently Asked Questions',
+  });
+
   const parentContainer = createTag('div');
+  section.appendChild(parentContainer);
 
   const headerText = rows.shift()?.innerText.trim();
   if (headerText) {
-    const rowAccordionHeader = createTag('h2', { class: 'faqv2-accordion title' });
+    const rowAccordionHeader = createTag('h2', {
+      class: 'faqv2-accordion title',
+      id: 'faq-section-heading',
+    });
     rowAccordionHeader.textContent = headerText;
 
     if (isLongFormVariant) {
-      const container = createTag('div', { class: 'faqv2-longform-header-container' });
+      const container = createTag('div', {
+        class: 'faqv2-longform-header-container',
+        'aria-labelledby': 'faq-section-heading',
+      });
       container.appendChild(rowAccordionHeader);
       parentContainer.appendChild(container);
     } else {
@@ -23,55 +36,77 @@ function buildTableLayout(block) {
     }
   }
 
-  const container = createTag('div', { class: 'faqv2-accordions-col' });
-  parentContainer.appendChild(container);
+  const faqList = createTag('div', {
+    class: 'faqv2-accordions-col',
+    role: 'list',
+    'aria-label': 'FAQ Items',
+  });
+  parentContainer.appendChild(faqList);
 
-  const collapsibleRows = rows.map((row) => {
+  const collapsibleRows = rows.map((row, index) => {
     const cells = [...row.children];
     return {
       header: cells[0]?.textContent.trim(),
       subHeader: cells[1]?.textContent,
+      id: `faq-item-${index}`,
     };
   });
 
-  collapsibleRows.forEach(({ header, subHeader }) => {
-    const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
-    container.appendChild(rowWrapper);
+  collapsibleRows.forEach(({ header, subHeader, id }) => {
+    const rowWrapper = createTag('div', {
+      class: 'faqv2-wrapper',
+      role: 'listitem',
+    });
+    faqList.appendChild(rowWrapper);
 
     const headerAccordion = createTag('div', {
       class: 'faqv2-accordion expandable header-accordion',
-      'aria-expanded': false,
-      'aria-label': 'Expand quotes',
       role: 'button',
+      'aria-expanded': 'false',
+      'aria-controls': `${id}-content`,
       tabIndex: 0,
     });
     rowWrapper.appendChild(headerAccordion);
 
-    const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
+    const headerDiv = createTag('h3', {
+      class: 'faqv2-header expandable',
+      id,
+    });
     headerDiv.textContent = header;
     headerAccordion.appendChild(headerDiv);
 
     const iconElement = createTag('img', {
       src: `${config.codeRoot}/icons/plus-heavy.svg`,
-      alt: 'toggle-icon',
+      alt: 'Expand answer',
       class: 'toggle-icon',
+      'aria-hidden': 'true',
     });
     headerDiv.appendChild(iconElement);
 
-    const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
+    const subHeaderAccordion = createTag('div', {
+      class: 'faqv2-accordion expandable sub-header-accordion',
+      id: `${id}-content`,
+      role: 'region',
+      'aria-labelledby': id,
+    });
     rowWrapper.appendChild(subHeaderAccordion);
-    const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
+
+    const subHeaderDiv = createTag('div', {
+      class: 'faqv2-sub-header expandable',
+    });
     subHeaderDiv.textContent = subHeader;
     subHeaderAccordion.appendChild(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
       const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
+      headerAccordion.setAttribute('aria-expanded', isCollapsed);
       if (!isLongFormVariant) {
         headerAccordion.classList.toggle('rounded-corners', isCollapsed);
       }
       iconElement.src = isCollapsed
         ? `${config.codeRoot}/icons/minus-heavy.svg`
         : `${config.codeRoot}/icons/plus-heavy.svg`;
+      iconElement.alt = isCollapsed ? 'Collapse answer' : 'Expand answer';
     });
 
     headerAccordion.addEventListener('keydown', (event) => {
@@ -81,7 +116,8 @@ function buildTableLayout(block) {
       }
     });
   });
-  block.replaceChildren(...parentContainer.childNodes);
+
+  block.replaceChildren(section);
 }
 
 async function buildOriginalLayout(block) {
