@@ -12,6 +12,8 @@
   border-radius: 8px;
   background: var(--color-white);
   width: 92%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .faqv2.expandable.longform .faqv2-wrapper {
@@ -25,6 +27,9 @@
 
 .faqv2.expandable {
   margin-bottom: 20px;
+  will-change: height;
+  contain: content;
+  transform: translateZ(0);
 }
 
 .faqv2.expandable .faqv2-accordion.title {
@@ -114,6 +119,8 @@
   color: var(--color-white);
   background-color: var(--color-info-accent);
   border-color: var(--color-info-accent);
+  transform: translateZ(0);
+  transition: background-color 0.2s ease-out;
 }
 
 .faqv2.expandable.longform .faqv2-accordions-col .faqv2-wrapper:first-child {
@@ -170,6 +177,9 @@
       #F2693C,
       #F08420) left / 1% 100% no-repeat,
     white;
+  transform: translateZ(0);
+  will-change: transform;
+  transition: all 0.3s ease-out;
 }
 
 .faqv2.expandable.longform .faqv2-accordion.expandable.sub-header-accordion {
@@ -456,4 +466,8 @@
   .faqv2.bold .faqv2-accordion {
     height: 80px;
   }
+}
+
+.faqv2.longform.expandable {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
