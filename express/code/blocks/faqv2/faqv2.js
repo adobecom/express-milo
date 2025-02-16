@@ -2,6 +2,28 @@ import { createTag, getLibs } from '../../scripts/utils.js';
 
 let replaceKey;
 let getConfig;
+
+function addStructuredData(questions) {
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: questions.map(({ header, subHeader }) => ({
+      '@type': 'Question',
+      name: header,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: subHeader,
+      },
+    })),
+  };
+
+  const script = createTag('script', {
+    type: 'application/ld+json',
+  });
+  script.textContent = JSON.stringify(faqSchema);
+  document.head.appendChild(script);
+}
+
 function buildTableLayout(block) {
   const config = getConfig();
   const isLongFormVariant = block.classList.contains('longform');
@@ -51,6 +73,9 @@ function buildTableLayout(block) {
       id: `faq-item-${index}`,
     };
   });
+
+  // Add structured data for SEO
+  addStructuredData(collapsibleRows);
 
   collapsibleRows.forEach(({ header, subHeader, id }) => {
     const rowWrapper = createTag('div', {
@@ -139,6 +164,9 @@ async function buildOriginalLayout(block) {
     });
   });
 
+  // Add structured data for SEO
+  addStructuredData(collapsibleRows);
+
   while (block.firstChild) {
     block.removeChild(block.firstChild);
   }
@@ -216,6 +244,15 @@ export default async function decorate(block) {
     ({ replaceKey } = placeholders);
 
     const isExpandableVariant = block.classList.contains('expandable');
+
+    // Add descriptive metadata
+    block.setAttribute('itemscope', '');
+    block.setAttribute('itemtype', 'https://schema.org/FAQPage');
+
+    // Add language attribute if not present
+    if (!block.closest('[lang]')) {
+      block.setAttribute('lang', 'en');
+    }
 
     requestAnimationFrame(() => {
       if (isExpandableVariant) {
