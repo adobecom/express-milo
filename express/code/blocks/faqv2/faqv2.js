@@ -84,9 +84,7 @@ function buildTableLayout(block) {
   block.replaceChildren(...parentContainer.childNodes);
 }
 
-async function buildOriginalLayout(block) {
-  const viewMoreText = await replaceKey('view-more', getConfig());
-  const viewLessText = await replaceKey('view-less', getConfig());
+async function buildOriginalLayout(block, viewMoreText = 'View more', viewLessText = 'View less') {
   const collapsibleRows = [];
   const rows = Array.from(block.children);
 
@@ -169,11 +167,18 @@ export default async function decorate(block) {
     ({ getConfig } = utils);
     ({ replaceKey } = placeholders);
   });
-  const isExpandableVariant = block.classList.contains('expandable');
 
+  const isExpandableVariant = block.classList.contains('expandable');
   if (isExpandableVariant) {
     buildTableLayout(block);
   } else {
-    buildOriginalLayout(block);
+    const rows = Array.from(block.children);
+    if (rows.length > 3) {
+      const viewMoreText = await replaceKey('view-more', getConfig());
+      const viewLessText = await replaceKey('view-less', getConfig());
+      buildOriginalLayout(block, viewMoreText, viewLessText);
+    } else {
+      buildOriginalLayout(block);
+    }
   }
 }
