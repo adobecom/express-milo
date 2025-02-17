@@ -181,13 +181,4 @@ export default async function decorate(block) {
   } else {
     buildOriginalLayout(block);
   }
-
-  // Fetch dependencies asynchronously (non-blocking)
-  import(`${getLibs()}/utils/utils.js`).then((utils) => {
-    getConfig = utils.getConfig;
-  });
-
-  import(`${getLibs()}/features/placeholders.js`).then((placeholders) => {
-    replaceKey = placeholders.replaceKey;
-  });
 }
