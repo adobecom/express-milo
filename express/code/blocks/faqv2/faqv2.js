@@ -84,6 +84,28 @@ function buildTableLayout(block) {
   block.replaceChildren(...parentContainer.childNodes);
 }
 
+function renderAccordionRow(block, row, isCollapsed = false) {
+  const { header, subHeader } = row;
+
+  const accordion = createTag('div', { class: 'faqv2-accordion' });
+  if (isCollapsed) {
+    accordion.classList.add('collapsed');
+  }
+
+  block.append(accordion);
+
+  const headerDiv = createTag('h3', { class: 'faqv2-header' });
+  accordion.append(headerDiv);
+  headerDiv.textContent = header;
+
+  let subHeaderDiv;
+  if (subHeader) {
+    subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
+    subHeaderDiv.innerHTML = `<span loading="lazy">${subHeader}</span>`;
+    accordion.append(subHeaderDiv);
+  }
+}
+
 async function buildOriginalLayout(block) {
   const viewMoreText = await replaceKey('view-more', getConfig());
   const viewLessText = await replaceKey('view-less', getConfig());
@@ -105,28 +127,17 @@ async function buildOriginalLayout(block) {
   const visibleCount = 3;
   let isExpanded = false;
 
-  collapsibleRows.forEach((row, index) => {
-    const { header, subHeader } = row;
-
-    const accordion = createTag('div', { class: 'faqv2-accordion' });
-
-    if (index >= visibleCount) {
-      accordion.classList.add('collapsed');
-    }
-
-    block.append(accordion);
-
-    const headerDiv = createTag('h3', { class: 'faqv2-header' });
-    accordion.append(headerDiv);
-    headerDiv.textContent = header;
-
-    let subHeaderDiv;
-    if (subHeader) {
-      subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
-      subHeaderDiv.textContent = subHeader;
-      accordion.append(subHeaderDiv);
-    }
+  collapsibleRows.slice(0, visibleCount).forEach((row) => {
+    renderAccordionRow(block, row);
   });
+
+  if (collapsibleRows.length > visibleCount) {
+    requestIdleCallback(() => {
+      collapsibleRows.slice(visibleCount).forEach((row) => {
+        renderAccordionRow(block, row, true);
+      });
+    });
+  }
 
   const toggleButton = createTag('a', {
     class: 'faqv2-toggle-btn button',
