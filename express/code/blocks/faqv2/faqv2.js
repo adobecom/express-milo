@@ -174,10 +174,6 @@ async function buildOriginalLayout(block) {
 }
 
 export default async function decorate(block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
   const isExpandableVariant = block.classList.contains('expandable');
 
   if (isExpandableVariant) {
@@ -185,4 +181,13 @@ export default async function decorate(block) {
   } else {
     buildOriginalLayout(block);
   }
+
+  // Fetch dependencies asynchronously (non-blocking)
+  import(`${getLibs()}/utils/utils.js`).then((utils) => {
+    getConfig = utils.getConfig;
+  });
+
+  import(`${getLibs()}/features/placeholders.js`).then((placeholders) => {
+    replaceKey = placeholders.replaceKey;
+  });
 }
