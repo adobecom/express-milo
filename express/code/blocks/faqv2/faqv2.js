@@ -100,9 +100,7 @@ async function buildOriginalLayout(block) {
     });
   });
 
-  while (block.firstChild) {
-    block.removeChild(block.firstChild);
-  }
+  block.textContent = '';
 
   const visibleCount = 3;
   let isExpanded = false;
