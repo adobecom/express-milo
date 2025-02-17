@@ -98,75 +98,76 @@ async function buildOriginalLayout(block, viewMoreText = 'View more', viewLessTe
     });
   });
 
-  while (block.firstChild) {
-    block.removeChild(block.firstChild);
-  }
+  // while (block.firstChild) {
+  //   block.removeChild(block.firstChild);
+  // }
 
-  const visibleCount = 3;
-  let isExpanded = false;
+  // const visibleCount = 3;
+  // let isExpanded = false;
 
-  collapsibleRows.forEach((row, index) => {
-    const { header, subHeader } = row;
+  // collapsibleRows.forEach((row, index) => {
+  //   const { header, subHeader } = row;
 
-    const accordion = createTag('div', { class: 'faqv2-accordion' });
+  //   const accordion = createTag('div', { class: 'faqv2-accordion' });
 
-    if (index >= visibleCount) {
-      accordion.classList.add('collapsed');
-    }
+  //   if (index >= visibleCount) {
+  //     accordion.classList.add('collapsed');
+  //   }
 
-    block.append(accordion);
+  //   block.append(accordion);
 
-    const headerDiv = createTag('h3', { class: 'faqv2-header' });
-    accordion.append(headerDiv);
-    headerDiv.textContent = header;
+  //   const headerDiv = createTag('h3', { class: 'faqv2-header' });
+  //   accordion.append(headerDiv);
+  //   headerDiv.textContent = header;
 
-    let subHeaderDiv;
-    if (subHeader) {
-      subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
-      subHeaderDiv.textContent = subHeader;
-      accordion.append(subHeaderDiv);
-    }
-  });
+  //   let subHeaderDiv;
+  //   if (subHeader) {
+  //     subHeaderDiv = createTag('div', { class: 'faqv2-sub-header' });
+  //     subHeaderDiv.textContent = subHeader;
+  //     accordion.append(subHeaderDiv);
+  //   }
+  // });
 
-  const toggleButton = createTag('a', {
-    class: 'faqv2-toggle-btn button',
-    'aria-expanded': false,
-    'aria-label': 'Expand quotes',
-    role: 'button',
-    tabIndex: 0,
-  });
+  // const toggleButton = createTag('a', {
+  //   class: 'faqv2-toggle-btn button',
+  //   'aria-expanded': false,
+  //   'aria-label': 'Expand quotes',
+  //   role: 'button',
+  //   tabIndex: 0,
+  // });
 
-  toggleButton.textContent = viewMoreText;
-  if (collapsibleRows.length > visibleCount) {
-    block.append(toggleButton);
-  }
+  // toggleButton.textContent = viewMoreText;
+  // if (collapsibleRows.length > visibleCount) {
+  //   block.append(toggleButton);
+  // }
 
-  toggleButton.addEventListener('click', () => {
-    const hiddenItems = block.querySelectorAll('.faqv2-accordion');
-    hiddenItems.forEach((item, index) => {
-      if (index >= visibleCount) {
-        item.classList.toggle('collapsed');
-      }
-    });
+  // toggleButton.addEventListener('click', () => {
+  //   const hiddenItems = block.querySelectorAll('.faqv2-accordion');
+  //   hiddenItems.forEach((item, index) => {
+  //     if (index >= visibleCount) {
+  //       item.classList.toggle('collapsed');
+  //     }
+  //   });
 
-    isExpanded = !isExpanded;
-    toggleButton.setAttribute('aria-expanded', isExpanded);
-    toggleButton.textContent = isExpanded ? viewLessText : viewMoreText;
-  });
+  //   isExpanded = !isExpanded;
+  //   toggleButton.setAttribute('aria-expanded', isExpanded);
+  //   toggleButton.textContent = isExpanded ? viewLessText : viewMoreText;
+  // });
 
-  toggleButton.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      toggleButton.click();
-    }
-  });
+  // toggleButton.addEventListener('keydown', (event) => {
+  //   if (event.key === 'Enter' || event.key === ' ') {
+  //     event.preventDefault();
+  //     toggleButton.click();
+  //   }
+  // });
 }
 
 export default async function decorate(block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
+  // console.log('block', block);
+  // await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+  //   ({ getConfig } = utils);
+  //   ({ replaceKey } = placeholders);
+  // });
 
   const isExpandableVariant = block.classList.contains('expandable');
   if (isExpandableVariant) {
