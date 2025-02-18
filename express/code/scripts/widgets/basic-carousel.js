@@ -110,6 +110,8 @@ function initializeCarousel(selector, parent) {
       behavior: 'smooth',
     });
 
+    console.log('currentIndex', currentIndex);
+
     if (window.innerWidth <= smalLViewport && !isGridLayout) {
       elements.forEach((el, index) => {
         if (determineScrollCount() === 1) {
@@ -142,15 +144,33 @@ function initializeCarousel(selector, parent) {
   };
 
   faderLeft.addEventListener('click', () => {
-    if (scrolling || currentIndex === 0) return;
-    currentIndex -= scrollCount;
-    currentIndex = Math.max(0, currentIndex);
+    if (scrolling) return;
+
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
+      if (platform.scrollLeft <= 0) return;
+      currentIndex = Math.max(0, currentIndex - 1);
+    } else {
+      if (currentIndex === 0) return;
+      currentIndex -= scrollCount;
+      currentIndex = Math.max(0, currentIndex);
+    }
     updateCarousel();
   });
 
   faderRight.addEventListener('click', () => {
-    if (scrolling || currentIndex + scrollCount >= elements.length) return;
-    currentIndex += scrollCount;
+    if (scrolling) return;
+
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
+      const maxScroll = platform.scrollWidth - platform.offsetWidth;
+      if (platform.scrollLeft >= maxScroll) return;
+
+      const templatesPerRow = Math.floor(elements.length / 2);
+      const maxIndex = templatesPerRow + 1;
+      currentIndex = Math.min(maxIndex, currentIndex + 1);
+    } else {
+      if (currentIndex + scrollCount >= elements.length) return;
+      currentIndex += scrollCount;
+    }
     updateCarousel();
   });
 
