@@ -375,5 +375,6 @@
     grid-template-rows: repeat(2, 207px);
     grid-auto-flow: column dense;
     grid-auto-columns: 143px;
+    height: 500px;
   }
 }
