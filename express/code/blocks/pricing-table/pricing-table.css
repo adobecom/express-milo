@@ -787,6 +787,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.seamless {
     width: 1100px;
     color:  #505050;
+    padding-bottom: 0px;
   }
 
   .pricing-table.seamless  .row-1 .col {
@@ -809,6 +810,15 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top: none;
+   
+  }
+
+  .pricing-table.seamless .col.dim .col-content .icon-container:after {
+    background: var(--Background-Positive-subdued, #CEF8E0);
+  }
+  .pricing-table.seamless .dim .col-content span {
+    color: var(--checkmark-color);
+    background-color:  var(--checkmark-color);
    
   }
 
