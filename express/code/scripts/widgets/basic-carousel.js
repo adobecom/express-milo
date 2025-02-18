@@ -101,16 +101,24 @@ function initializeCarousel(selector, parent) {
       }
     }
 
-    const newScrollPos = window.innerWidth <= smalLViewport
-      ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
-      : currentIndex * elementWidth;
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
+      const gap = 10;
+      const newScrollPos = currentIndex * (elementWidth + gap);
 
-    platform.scrollTo({
-      left: newScrollPos,
-      behavior: 'smooth',
-    });
+      platform.scrollTo({
+        left: newScrollPos,
+        behavior: 'smooth',
+      });
+    } else {
+      const newScrollPos = window.innerWidth <= smalLViewport
+        ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
+        : currentIndex * elementWidth;
 
-    console.log('currentIndex', currentIndex);
+      platform.scrollTo({
+        left: newScrollPos,
+        behavior: 'smooth',
+      });
+    }
 
     if (window.innerWidth <= smalLViewport && !isGridLayout) {
       elements.forEach((el, index) => {
