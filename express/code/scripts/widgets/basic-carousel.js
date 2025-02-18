@@ -11,9 +11,6 @@ function initializeCarousel(selector, parent) {
   let touchEndX = 0;
   let scrolling = false;
 
-  // Check if carousel has grid class
-  const isGridLayout = !!parent.closest('.grid');
-
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
@@ -40,6 +37,8 @@ function initializeCarousel(selector, parent) {
 
   const platform = createTag('div', { class: 'basic-carousel-platform' });
 
+  // Check if carousel has grid class
+  const isGridLayout = !!parent.closest('.grid');
   // Create row structure for grid layout on mobile
   if (isGridLayout && window.innerWidth <= smalLViewport) {
     const topRow = createTag('div', { class: 'carousel-row top-row' });
@@ -125,6 +124,9 @@ function initializeCarousel(selector, parent) {
     const newScrollPos = window.innerWidth <= smalLViewport
       ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
       : currentIndex * elementWidth;
+
+    console.log('newScrollPos', newScrollPos);
+    console.log('currentIndex', currentIndex);
 
     platform.scrollTo({
       left: newScrollPos,
