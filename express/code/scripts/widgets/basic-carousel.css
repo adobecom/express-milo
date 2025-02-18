@@ -363,3 +363,27 @@
   -webkit-mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
   mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
 }
+
+@media (max-width: 599px) {
+  .template-x.basic-carousel.grid .basic-carousel-container .basic-carousel-platform {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  .template-x.basic-carousel.grid .basic-carousel-container .carousel-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: max-content;
+  }
+
+  .template-x.basic-carousel.grid .basic-carousel-container .template.basic-carousel-element {
+    width: 143px;
+    height: 200px;
+  }
+}

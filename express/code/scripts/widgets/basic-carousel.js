@@ -10,6 +10,10 @@ function initializeCarousel(selector, parent) {
   let touchStartX = 0;
   let touchEndX = 0;
   let scrolling = false;
+
+  // Check if carousel has grid class
+  const isGridLayout = !!parent.closest('.grid');
+
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
@@ -35,6 +39,27 @@ function initializeCarousel(selector, parent) {
   });
 
   const platform = createTag('div', { class: 'basic-carousel-platform' });
+
+  // Create row structure for grid layout on mobile
+  if (isGridLayout && window.innerWidth <= smalLViewport) {
+    const topRow = createTag('div', { class: 'carousel-row top-row' });
+    const bottomRow = createTag('div', { class: 'carousel-row bottom-row' });
+
+    // Split templates into two rows
+    const elements = [...carouselContent];
+    const midPoint = Math.ceil(elements.length / 2);
+
+    // Add templates to respective rows
+    topRow.append(...elements.slice(0, midPoint));
+    bottomRow.append(...elements.slice(midPoint));
+
+    // Add rows to platform
+    platform.append(topRow, bottomRow);
+  } else {
+    // Maintain original behavior for non-grid or desktop
+    platform.append(...carouselContent);
+  }
+
   let ariaLabel;
   if (parent.closest('.template-x')) {
     ariaLabel = 'Template-X Carousel';
@@ -59,8 +84,6 @@ function initializeCarousel(selector, parent) {
     class: 'button basic-carousel-arrow basic-carousel-arrow-right',
     'aria-label': 'Scroll carousel right',
   });
-
-  platform.append(...carouselContent);
 
   container.append(platform, faderLeft, faderRight);
   faderLeft.append(arrowLeft);
