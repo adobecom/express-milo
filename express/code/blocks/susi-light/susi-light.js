@@ -113,7 +113,9 @@ function buildSUSIParams(client_id, variant, destURL, locale, title) {
   return params;
 }
 
+let tabsId = 0;
 function buildSUSITabs(el, options) {
+  tabsId += 1;
   const rows = [...el.children];
   const wrapper = createTag('div', { class: 'susi-tabs' });
   const tabList = createTag('div', { role: 'tab-list' });
@@ -121,15 +123,17 @@ function buildSUSITabs(el, options) {
     const { footer, tabName, authParams } = option;
     const panel = createTag('div', { role: 'tab-panel' });
     panel.append(createSUSIComponent(option));
-    const footerDiv = createTag('div', { class: 'footer' }, footer);
-    [...footerDiv.querySelectorAll('a, button')].forEach((e) => {
-      e.addEventListener('click', () => {
-        sendEventToAnalytics('event', `acomx:susi-light:footer-${e.title || e.textContent}`, authParams.client_id);
+    if (footer) {
+      const footerDiv = createTag('div', { class: 'footer' }, footer);
+      [...footerDiv.querySelectorAll('a, button')].forEach((e) => {
+        e.addEventListener('click', () => {
+          sendEventToAnalytics('event', `acomx:susi-light:footer-${e.title || e.textContent}`, authParams.client_id);
+        });
       });
-    });
-    panel.append(footerDiv);
+      panel.append(footerDiv);
+    }
 
-    const id = `${tabName}`;
+    const id = `${tabName}-${tabsId}`;
     panel.setAttribute('aria-labelledby', `tab-${id}`);
     panel.id = `panel-${id}`;
     panel.setAttribute('aria-hidden', i > 0);
@@ -198,7 +202,7 @@ export default async function init(el) {
   const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
   const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
   const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
-  const footers = [...rows[5].querySelectorAll('div')];
+  const footers = rows[5] ? [...rows[5].querySelectorAll('div')] : [];
   const tabParams = tabNames.map((tabName, index) => ({
     tabName,
     ...buildSUSIParams(
@@ -207,9 +211,10 @@ export default async function init(el) {
       getDestURL(redirectUrls[index]),
       locale,
     ),
-    footer: footers[index],
+    footer: footers[index] ?? null,
   }));
   if (!noRedirect) {
+    // redirect to first one if logged in
     redirectIfLoggedIn(tabParams[0].destURL);
   }
   el.replaceChildren(buildSUSITabs(el, tabParams));
