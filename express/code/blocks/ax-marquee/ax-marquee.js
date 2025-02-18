@@ -182,10 +182,14 @@ async function buildReduceMotionSwitch(block, marqueeForeground) {
         }
       }
     }
+    // Initialize toggle content for accessibility
+    decorateToggleContext(reduceMotionIconWrapper);
+
     reduceMotionIconWrapper.addEventListener(
       'keydown',
       async (e) => {
         if (!e.target.isEqualNode(document.activeElement)) return;
+        if (e.code === 'Escape') reduceMotionIconWrapper.blur();
         if (e.code !== 'Space' && e.code !== 'Enter') return;
         e.preventDefault();
         handlePause(block, e.currentTarget);
@@ -196,13 +200,6 @@ async function buildReduceMotionSwitch(block, marqueeForeground) {
       'click',
       async (e) => {
         handlePause(block, e.currentTarget);
-      },
-      { passive: true },
-    );
-    reduceMotionIconWrapper.addEventListener(
-      'mouseenter',
-      (e) => {
-        decorateToggleContext(e.currentTarget);
       },
       { passive: true },
     );
