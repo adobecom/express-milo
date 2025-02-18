@@ -231,7 +231,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   }
 }
 /* /Table Width */
-
 .pricing-table .row:not(.blank-row) {
   min-height: 80px;
 }
@@ -371,7 +370,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table.vertical-header .row.row-heading .col > div {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .pricing-table .row.row-heading .col .buttons-wrapper {
@@ -715,5 +714,158 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     left: 4.75px;
     top: -5.75px;
     opacity: 0.75;
+  }
+  
+  main .section .pricing-table-wrapper,
+  main .section .pricing-table-wrapper:has(.pricing-table.few-cols),
+  main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
+    max-width: unset;
+  }
+  main .section .pricing-table-wrapper .pricing-table {
+    margin: 0px 20px;
+  }
+
+  .pricing-table {
+    margin: 0 30px;
+  }
+
+  .pricing-table .section-head {
+    display: block;
+  }
+
+  .pricing-table .section-head .col:not(.section-head-title),
+  .pricing-table .col-heading.col-1 {
+    display: none;
+  }
+
+  .pricing-table .section-row-title {
+    grid-row: 1;
+    grid-column: 1 / x;
+    background-color: var(--color-gray-100);
+  }
+
+  .pricing-table .row-heading .col:nth-child(n + 1) {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 981px) {
+  .pricing-table > .row {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  /* Sticky Table */
+  .pricing-table.sticky .row.row-heading.stuck {
+    width: 100vw;
+    margin-left: calc((100vw - 100%) / -2);
+    padding: 0 calc((100vw - 100%) / 2);
+    box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.16);
+    box-sizing: border-box;
+    transition: box-shadow 200ms linear;
+  }
+
+  .pricing-table.sticky .row.row-heading.stuck>.col {
+    border: 0;
+  }
+
+  .pricing-table .row.row-heading .col:first-child p {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  
+  .pricing-table .row.row-heading .col > div p,
+  .pricing-table .row.row-heading .col > div p strong {
+    font-weight: 900;
+    font-size: 18px;
+    font-family: 'adobe-clean';
+    color: black;
+  }
+  main .section .pricing-table-wrapper:has(.pricing-table.seamless){
+    max-width: 1100px;
+  }
+
+  .pricing-table.seamless {
+    width: 1100px;
+    color:  #505050;
+    padding-bottom: 0px;
+  }
+
+  .pricing-table.seamless  .row-1 .col {
+    padding: 24px;
+  }
+
+  .pricing-table.seamless .row-2{
+    height: 0px;
+  } 
+
+  .pricing-table.seamless .row-4 .col-1{
+    border-top-left-radius: 8px;
+  } 
+  .pricing-table.seamless .row-4 div:last-child{
+    border-top-right-radius: 8px;
+  } 
+
+  .pricing-table.seamless .row-1 .col {
+    border-bottom: none;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-top: none;
+   
+  }
+
+  .pricing-table.seamless .col.dim .col-content .icon-container:after {
+    background: var(--Background-Positive-subdued, #CEF8E0);
+  }
+  .pricing-table.seamless .dim .col-content span {
+    color: var(--checkmark-color);
+    background-color:  var(--checkmark-color);
+   
+  }
+  
+  .pricing-table.seamless .row-1 .col:nth-child(2n) {
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+  }
+
+  .pricing-table.seamless .row-1 .col-1 p {
+    margin-top: auto;
+  }
+  
+  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-1 {
+    border-left: none;
+    border-top: none;
+  }
+
+  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-3 {
+    border-top: none;
+    border-right: none;
+  }
+
+  .pricing-table.seamless .row-3 {
+    display: none;
+  }  
+
+  .pricing-table.seamless .table-end-row:last-of-type{
+    border-bottom: var(--border-width) solid var(--border-color);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  } 
+
+  .pricing-table.seamless .table-end-row:last-of-type .col-1 {
+    border-bottom-left-radius: 8px;
+  }
+
+  .pricing-table.seamless .table-end-row:last-of-type .col:last-child {
+    border-bottom-right-radius: 8px;
+  }
+
+  .pricing-table.seamless .toggle-row {
+    min-height: 5px;
+    height: 5px;
+    padding: 0;
+    display: none;
+  }
+  .pricing-table.seamless .toggle-content{
+    display: none !important;
   }
 }

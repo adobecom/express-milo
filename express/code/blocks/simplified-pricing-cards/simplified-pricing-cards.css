@@ -513,6 +513,10 @@ main .section>.simplified-pricing-cards-wrapper {
         gap: 8px;
     }
 
+    .simplified-pricing-cards.wide {
+        --card-width: 385px;
+    }
+
     .simplified-pricing-cards .toggle-switch-wrapper {
         display: none;
     }
