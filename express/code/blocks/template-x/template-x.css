@@ -2031,6 +2031,9 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   background-size: contain;
   padding: 15px;  
 }
+.template-x.t-shirt .template:not(.placeholder) .button-container {
+  background-color: #EEEEEE;
+}
 .template-x.t-shirt .template .button-container .media-wrapper {
   height: 100%;
 }
