@@ -110,7 +110,7 @@ function initializeCarousel(selector, parent) {
       behavior: 'smooth',
     });
 
-    if (window.innerWidth <= smalLViewport) {
+    if (window.innerWidth <= smalLViewport && !isGridLayout) {
       elements.forEach((el, index) => {
         if (determineScrollCount() === 1) {
           el.style.opacity = '1';
@@ -122,7 +122,7 @@ function initializeCarousel(selector, parent) {
       });
     } else {
       elements.forEach((el) => {
-        el.style.opacity = '';
+        el.style.opacity = '1';
       });
     }
 
