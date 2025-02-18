@@ -20,6 +20,7 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
 .dialog-modal.print-iframe, .dialog-modal.print-iframe iframe {
   width: 100%;
   height: 100%;
+  max-width: 1124px;
 }
 
 [data-block-name="template-x"] {
