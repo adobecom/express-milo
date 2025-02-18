@@ -9,6 +9,7 @@ let getMetadata; let replaceKeyArray;
 let tagCopied; let editThisTemplate;
 let free;
 let variants;
+let props;
 let sharePlaceholder;
 
 function containsVideo(pages) {
@@ -165,9 +166,10 @@ function renderShareWrapper(templateInfo) {
 }
 
 const buildiFrameContent = (template) => {
-  const taskID = getMetadata('branch-task-id');
+  const { branchUrl } = template.customLinks;
+  const taskID = props?.taskid;
   const iFrame = createTag('iframe', {
-    src: `https://w299ihl20.wxp.adobe-addons.com/distribute/private/JZnNGECCzfpgfcUmlgcNKgZKclyFP1YXLvq8rF3yfE9RI7inYDEPFaEGWDFv2ynr/0/w299ihl20/wxp-w299ihl20-version-1713829154591/adobePdp.html?TD=${template.id}&taskID=${taskID}`,
+    src: `https://w8hj4j686.wxp.adobe-addons.com/distribute/private/JZnNGECCzfpgfcUmlgcNKgZKclyFP1YXLvq8rF3yfE9RI7inYDEPFaEGWDFv2ynr/0/w299ihl20/wxp-w299ihl20-version-1713829154591/adobePdp.html?TD=${template.id}&taskID=${taskID}&shortcode=${branchUrl.split('/').pop()}`,
     title: 'Edit this template',
     tabindex: '-1',
   });
@@ -550,8 +552,9 @@ function renderStillWrapper(template) {
   return stillWrapper;
 }
 
-export default async function renderTemplate(template, variant) {
+export default async function renderTemplate(template, variant, properties) {
   variants = variant;
+  props = properties;
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKeyArray } = placeholders);
