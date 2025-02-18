@@ -1,7 +1,13 @@
 /* Base styles (Mobile first) */
 .link-blade {
-    padding: 48px 16px;
+    padding: 40px 16px;
     margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    max-width: 767px;
+    min-width: 360px;
 }
 
 .link-blade-header {
@@ -10,13 +16,13 @@
     font-weight: bold;
     color: #2c2c2c;
     text-align: center;
-    margin-bottom: 24px;
     padding: 0 16px;
     font-weight: 900;
 }
 
 .link-blade-links {
     display: flex;
+    padding: 4px;
     flex-wrap: nowrap;
     gap: 8px;
     overflow-x: auto;
@@ -58,10 +64,12 @@ main a.link-blade-item {
     background: var(--Palette-gray-200, #E1E1E1);
     border: 2px solid var(--Palette-transparent-black-300, #00000026);
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     animation-timing-function: ease-out;
     animation-duration: 100ms;
+    outline-offset: 4px;
+    outline-color: #4B75FF;
 }
+ 
 
 /* Add the chevron icon for overflow indication */
 .link-blade {
@@ -133,12 +141,13 @@ main a.link-blade-item {
 /* Tablet styles */
 @media (min-width: 768px) {
     .link-blade {
-        padding: 48px 24px;
+        padding: 40px 24px;
+        min-width: 768px;
+        max-width: 1279px;
     }
 
     .link-blade-header {
         font-size: 28px;
-        margin-bottom: 24px;
     }
 
     .link-blade-links {
@@ -154,14 +163,13 @@ main a.link-blade-item {
 
 /* Desktop styles */
 @media (min-width: 1280px) {
-    .link-blade {
-        max-width: 1200px;
-        padding: 72px 48px;
+    .link-blade { 
+        padding: 80px 40px;
+        min-width: 1280px;
     }
 
     .link-blade-header {
         font-size: 32px;
-        margin-bottom: 40px;
     }
 
     .link-blade-links {
