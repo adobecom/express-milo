@@ -368,3 +368,12 @@
   -webkit-mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
   mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
 }
+
+@media (max-width: 599px) {
+  .template-x.basic-carousel.grid .basic-carousel-platform {
+    display: grid;
+    grid-template-rows: repeat(2, 207px);
+    grid-auto-flow: column dense;
+    grid-auto-columns: 143px;
+  }
+}
