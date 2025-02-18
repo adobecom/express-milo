@@ -2022,6 +2022,22 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 .template-x.t-shirt .template .still-wrapper .image-wrapper {
   background: url('tshirt.png') no-repeat center center;
   background-size: cover;
+  border-radius: 10px;
+}
+
+.template-x.t-shirt .template .singleton-hover {
+  background: url('tshirt-dropshadow.png') no-repeat center center;
+  background-size: contain;
+  padding: 15px;  
+}
+.template-x.t-shirt .template .button-container .media-wrapper {
+  height: 100%;
+}
+.template-x.t-shirt .template .button-container .media-wrapper > img {
+  display: block;
+  margin: 50px auto 0 auto;
+  width: 50%;
+  mix-blend-mode: darken;
 }
 
 .template-x.print:not(.t-shirt) .template .still-wrapper .image-wrapper img,
