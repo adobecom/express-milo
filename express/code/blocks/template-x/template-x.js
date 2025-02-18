@@ -9,7 +9,7 @@ import {
 import { titleCase } from '../../scripts/utils/string.js';
 import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { Masonry } from '../../scripts/widgets/masonry.js';
-import buildCarousel from '../../scripts/widgets/carousel.js';
+import loadCarousel from '../../scripts/utils/loadCarousel.js';
 import {
   fetchTemplates,
   isValidTemplate,
@@ -1694,7 +1694,7 @@ async function buildTemplateList(block, props, type = []) {
             });
 
             await decorateTemplates(block, props);
-            buildCarousel(':scope > .template', templatesWrapper);
+            loadCarousel(':scope > .template', templatesWrapper);
             templatesWrapper.style.opacity = 1;
           }
 
@@ -1736,7 +1736,7 @@ async function buildTemplateList(block, props, type = []) {
   if (templates && props.orientation && props.orientation.toLowerCase() === 'horizontal') {
     const innerWrapper = block.querySelector('.template-x-inner-wrapper');
     if (innerWrapper) {
-      buildCarousel(':scope > .template', innerWrapper);
+      loadCarousel(':scope > .template', innerWrapper);
     } else {
       block.remove();
     }
