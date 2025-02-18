@@ -1,3 +1,8 @@
+.template-x.basic-carousel .template-x-inner-wrapper:has(.basic-carousel-container) {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .basic-carousel-container {
   display: inline-block;
   position: relative;
