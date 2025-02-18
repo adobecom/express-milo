@@ -120,16 +120,11 @@ function buildSUSITabs(el, options) {
   const wrapper = createTag('div', { class: 'susi-tabs' });
   const tabList = createTag('div', { role: 'tab-list' });
   const panels = options.map((option, i) => {
-    const { footer, tabName, authParams } = option;
+    const { footer, tabName } = option;
     const panel = createTag('div', { role: 'tab-panel' });
     panel.append(createSUSIComponent(option));
     if (footer) {
       const footerDiv = createTag('div', { class: 'footer' }, footer);
-      [...footerDiv.querySelectorAll('a, button')].forEach((e) => {
-        e.addEventListener('click', () => {
-          sendEventToAnalytics('event', `acomx:susi-light:footer-${e.title || e.textContent}`, authParams.client_id);
-        });
-      });
       panel.append(footerDiv);
     }
 
