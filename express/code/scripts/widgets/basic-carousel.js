@@ -14,6 +14,8 @@ function initializeCarousel(selector, parent) {
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
 
+  const isGridLayout = !!parent.closest('.grid');
+
   carouselContent.forEach((el, index) => {
     el.classList.add('basic-carousel-element');
     el.setAttribute('tabindex', '0');
