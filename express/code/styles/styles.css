@@ -777,7 +777,6 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
-
 main .section.blog-content > .content *:is(h1, h2) {
   font-size: 32px;
 }
@@ -835,6 +834,10 @@ main .section.blog-content > .content > p {
 
   main .section.blog-content > .content {
     max-width: 648px
+  }
+
+  main .section.blog-content.narrow > .content {
+    max-width: 540px
   }
   
   main .section.blog-content > .content > p {
@@ -907,6 +910,10 @@ main .section.blog-content > .content > p {
   main .section.blog-content > .content > p  {
     margin-left: unset;
     margin-right: unset;
+  }
+
+  main .section.blog-content.narrow > .content {
+    max-width: 875px
   }
 }
 
