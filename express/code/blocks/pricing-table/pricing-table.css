@@ -821,11 +821,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     background-color:  var(--checkmark-color);
    
   }
-
-  .pricing-table.seamless.vertical-header .row-1 .col div {
-    row-gap: 8px;
-  }
-
+  
   .pricing-table.seamless .row-1 .col:nth-child(2n) {
     border-top-right-radius: 16px;
     border-top-left-radius: 16px;
