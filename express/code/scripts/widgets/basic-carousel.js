@@ -102,9 +102,22 @@ function initializeCarousel(selector, parent) {
     }
 
     if (isGridLayout && window.innerWidth <= smalLViewport) {
+      const totalTemplates = carouselContent.length;
+      const midPoint = Math.ceil(totalTemplates / 2);
+
+      // Add grid-area to each template
+      carouselContent.forEach((template, index) => {
+        if (index < midPoint) {
+          template.style.gridArea = `1 / ${index + 1}`; // row 1, column based on index
+        } else {
+          template.style.gridArea = `2 / ${index - midPoint + 1}`; // row 2, column adjusted
+        }
+      });
+    }
+
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
       const gap = 10;
       const newScrollPos = currentIndex * (elementWidth + gap);
-
       platform.scrollTo({
         left: newScrollPos,
         behavior: 'smooth',
@@ -113,7 +126,6 @@ function initializeCarousel(selector, parent) {
       const newScrollPos = window.innerWidth <= smalLViewport
         ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
         : currentIndex * elementWidth;
-
       platform.scrollTo({
         left: newScrollPos,
         behavior: 'smooth',
