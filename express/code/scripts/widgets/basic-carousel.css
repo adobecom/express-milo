@@ -370,15 +370,21 @@
 }
 
 @media (max-width: 599px) {
-  .template-x.basic-carousel.grid .basic-carousel-container{
+  .template-x.basic-carousel.grid .basic-carousel-container {
     margin-top: 40px;
     margin-bottom: 80px;
   }
+  
   .template-x.basic-carousel.grid .basic-carousel-platform {
     display: grid;
     grid-template-rows: repeat(2, 207px);
     grid-auto-columns: 143px;
     height: 500px;
     padding-top: 80px;
+    scroll-snap-type: none;
+  }
+
+  .template-x.basic-carousel.grid .basic-carousel-platform > * {
+    scroll-snap-align: none;
   }
 }
