@@ -119,7 +119,10 @@ function initializeCarousel(selector, parent) {
 
     if (isGridLayout && window.innerWidth <= smalLViewport) {
       const gap = 10;
-      const newScrollPos = currentIndex * (elementWidth + gap);
+      const twoTemplatesWidth = (elementWidth * 2) + gap;
+      const centerOffset = (platformWidth - twoTemplatesWidth) / 2;
+      const newScrollPos = (currentIndex * (elementWidth + gap)) - centerOffset;
+
       platform.scrollTo({
         left: newScrollPos,
         behavior: 'smooth',
