@@ -19,7 +19,7 @@ function handleToggleMore(btn) {
   const icon = btn.querySelector('.icon.expand');
   const expanded = icon?.getAttribute('aria-expanded') === 'false';
   icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row')) {
+  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') && prevElement.classList.contains('additional-row')) {
     if (expanded) {
       btn.classList.remove('collapsed');
       prevElement.classList.remove('collapsed');
@@ -56,6 +56,7 @@ function handleHeading(headingRow, headingCols) {
       btnWrapper.classList.add('button-container');
       buttonsWrapper.append(btnWrapper);
     });
+
     if (buttons.length > 0) {
       col.append(buttonsWrapper);
     }
@@ -212,6 +213,7 @@ export default async function init(el) {
   el.id = `pricing-table-${blockId + 1}`;
   el.setAttribute('role', 'table');
   const visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
+  console.log(visibleCount)
   const rows = Array.from(el.children);
   let sectionItem = 0;
   const viewAllFeatures = await replaceKey('view-all-features', getConfig());
@@ -252,7 +254,10 @@ export default async function init(el) {
     if (index > 0 && !isToggle && cols.length > 1
       && (!nextRow || Array.from(nextRow.children).length <= 1)) {
       const toggleRow = createTag('button', { class: 'toggle-row' });
-      if (!isAdditional) toggleRow.classList.add('desktop-hide');
+      if (!isAdditional) {
+        toggleRow.classList.add('desktop-hide');
+        toggleRow.classList.add('mobile-hide');
+      }
 
       const viewAllText = viewAllFeatures ?? 'View all features';
       const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
@@ -295,7 +300,12 @@ export default async function init(el) {
 
   const handleResize = () => {
     const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
+    let index = 0
     collapisbleRows.forEach((collapisbleRow) => {
+
+      index += 1
+      console.log(index)
+   
       collapisbleRow.classList.add('collapsed');
     });
     const toggleRows = el.querySelectorAll('.toggle-row');
@@ -303,6 +313,7 @@ export default async function init(el) {
       toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
     });
   };
+
   let deviceBySize = defineDeviceByScreenSize();
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
