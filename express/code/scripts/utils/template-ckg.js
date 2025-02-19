@@ -32,14 +32,14 @@ async function fetchLinkList() {
         const params = new Proxy(new URLSearchParams(window.location.search), {
           get: (searchParams, prop) => searchParams.get(prop),
         });
-        formattedTasks = sanitizeHTML(titleCase(params.tasks).replace(/[$@%"]/g, ''));
+        formattedTasks = titleCase(sanitizeHTML(params.tasks).replace(/[$@%"]/g, ''));
       } else {
-        formattedTasks = sanitizeHTML(titleCase(getMetadata('tasks')).replace(/[$@%"]/g, ''));
+        formattedTasks = titleCase(sanitizeHTML(getMetadata('tasks')).replace(/[$@%"]/g, ''));
       }
 
       return {
         parent: formattedTasks,
-        ckgID: ckgItem.metadata.ckgId,
+        ckgID: sanitizeHTML(ckgItem.metadata.ckgId),
         displayValue: sanitizeHTML(ckgItem.canonicalName),
         value: sanitizeHTML(ckgItem.metadata.link),
       };
