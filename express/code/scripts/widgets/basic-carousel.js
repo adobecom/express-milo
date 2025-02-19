@@ -10,6 +10,7 @@ function initializeCarousel(selector, parent) {
   let touchStartX = 0;
   let touchEndX = 0;
   let scrolling = false;
+  let isInitialLoad = true;
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
@@ -107,7 +108,6 @@ function initializeCarousel(selector, parent) {
     if (isGridLayout && window.innerWidth <= smalLViewport) {
       const totalTemplates = carouselContent.length;
       const midPoint = Math.ceil(totalTemplates / 2);
-
       carouselContent.forEach((template, index) => {
         if (index < midPoint) {
           template.style.gridArea = `1 / ${index + 1}`;
@@ -121,12 +121,14 @@ function initializeCarousel(selector, parent) {
       const gap = 10;
       const twoTemplatesWidth = (elementWidth * 2) + gap;
       const centerOffset = (platformWidth - twoTemplatesWidth) / 2;
-      const newScrollPos = (currentIndex * (elementWidth + gap)) - centerOffset;
+      const newScrollPos = isInitialLoad ? 0 : (currentIndex * (elementWidth + gap)) - centerOffset;
 
       platform.scrollTo({
         left: newScrollPos,
-        behavior: 'smooth',
+        behavior: isInitialLoad ? 'auto' : 'smooth',
       });
+
+      isInitialLoad = false;
     } else {
       const newScrollPos = window.innerWidth <= smalLViewport
         ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
