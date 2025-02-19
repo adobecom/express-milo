@@ -85,8 +85,9 @@ main a.link-blade-item {
 
 .link-blade-chevron.left {
     left: 0;
+    right: unset;
     transform: scaleX(-1);
-    translate: -15px -15px;
+    translate: 0px -15px;
 }
 
 /* Chevron button styles */
@@ -104,8 +105,8 @@ main a.link-blade-item {
 
 .link-blade-chevron {
     position: absolute;
-    right: 60px;
-    top: 32%;
+    right: 0;
+    top: 17px;
     transform: translateY(-50%);
     cursor: pointer;
     transition: transform 0.2s;
@@ -115,7 +116,6 @@ main a.link-blade-item {
     width: 32px;
     height: 32px;
     margin-top: 7px;
-    margin-right: -70px;
     background: var(--color-white);
     box-shadow: 0px 2px 8px 0px #00000029;
     border-radius: 50%;
@@ -128,7 +128,7 @@ main a.link-blade-item {
     content: '';
     height: 50px;
     width: 50px;
-    left: -15px;
+    left: -14px;
     background: linear-gradient(270deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
     display: block;
     top: -10px;
