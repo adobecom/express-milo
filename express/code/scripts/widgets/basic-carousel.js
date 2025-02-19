@@ -27,7 +27,6 @@ function initializeCarousel(selector, parent) {
         return;
       }
       currentIndex = index;
-      updateCarousel();
     });
     el.addEventListener('mouseleave', () => {
       if (window.innerWidth > smalLViewport) {
