@@ -19,8 +19,7 @@ function handleToggleMore(btn) {
   const icon = btn.querySelector('.icon.expand');
   const expanded = icon?.getAttribute('aria-expanded') === 'false';
   icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') 
-    && prevElement.classList.contains('additional-row')) {
+  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') && prevElement.classList.contains('additional-row')) {
     if (expanded) {
       btn.classList.remove('collapsed');
       prevElement.classList.remove('collapsed');
@@ -214,7 +213,7 @@ export default async function init(el) {
   el.id = `pricing-table-${blockId + 1}`;
   el.setAttribute('role', 'table');
   const visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
-  console.log(visibleCount)
+  console.log(visibleCount);
   const rows = Array.from(el.children);
   let sectionItem = 0;
   const viewAllFeatures = await replaceKey('view-all-features', getConfig());
@@ -301,12 +300,11 @@ export default async function init(el) {
 
   const handleResize = () => {
     const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
-    let index = 0
+    let index = 0;
     collapisbleRows.forEach((collapisbleRow) => {
+      index += 1;
+      console.log(index);
 
-      index += 1
-      console.log(index)
-   
       collapisbleRow.classList.add('collapsed');
     });
     const toggleRows = el.querySelectorAll('.toggle-row');
