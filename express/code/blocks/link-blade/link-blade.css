@@ -7,7 +7,6 @@
     flex-direction: column;
     gap: 28px;
     max-width: 767px;
-    min-width: 360px;
 }
 
 .link-blade-header {
@@ -63,7 +62,6 @@ main a.link-blade-item {
 .link-blade-item:focus {
     background: var(--Palette-gray-200, #E1E1E1);
     border: 2px solid var(--Palette-transparent-black-300, #00000026);
-    transform: translateY(-1px);
     animation-timing-function: ease-out;
     animation-duration: 100ms;
     outline-offset: 4px;
@@ -142,7 +140,6 @@ main a.link-blade-item {
 @media (min-width: 768px) {
     .link-blade {
         padding: 40px 24px;
-        min-width: 768px;
         max-width: 1279px;
     }
 
