@@ -8,7 +8,7 @@ let useThisPrompt; let promptTitle;
 // [headingSize, bodySize, detailSize, titlesize]
 const typeSizes = ['xxl', 'xl', 'l', 'xs'];
 
-const promptTokenRegex = /(%7B%7B|\{\{)prompt-text(%7D%7D|\}\})/;
+const promptTokenRegex = /(%7B%7B|)prompt%20text(%7D%7D|)/;
 
 export const windowHelper = {
   redirect: (url) => {
@@ -27,8 +27,7 @@ async function handleGenAISubmit(form, link) {
   const input = form.querySelector('input');
   if (!link || input.value.trim() === '') return;
   const mod = await import('../../scripts/branchlinks.js');
-  const trackingLink =  await mod.getTrackingAppendedURL(link);
-  const genAILink = trackingLink.replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+'));
+  const genAILink =  await mod.getTrackingAppendedURL(link.replace(promptTokenRegex, encodeURI(input.value).replaceAll(' ', '+')));
   const urlObj = new URL(genAILink);
   urlObj.searchParams.delete('referrer');
   windowHelper.redirect(urlObj.toString());
