@@ -1,24 +1,49 @@
 import { getLibs } from '../utils.js';
 import { titleCase } from './string.js';
-
 import getCKGData from './browse-api-controller.js';
-
 import fetchAllTemplatesMetadata from './all-templates-metadata.js';
 import { trackSearch, updateImpressionCache, generateSearchId } from '../template-search-api-v3.js';
 
-let getMetadata; let getConfig;
+let getMetadata;
+let getConfig;
 
-const defaultRegex = /\/express\/templates\/default/;
+const defaultRegex = /^\/express\/templates\/default$/;
+const searchRegex = /^\/search\?/;
+const validUrlPattern = /^(https?:|\/)(?:[^<>'"]*[^<>'"])?$/;
 
 let ckgData;
 
+// Enhanced HTML sanitization
 function sanitizeHTML(str) {
   if (typeof str !== 'string') return '';
-  return str.replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// URL sanitization
+function sanitizeUrl(url) {
+  if (!url || typeof url !== 'string') return '';
+
+  const trimmed = url.trim();
+  const safeProtocols = ['http:', 'https:', 'mailto:'];
+
+  try { 
+    const parsedUrl = new URL(trimmed);
+    if (safeProtocols.includes(parsedUrl.protocol)) {
+      return parsedUrl.href; 
+    } else {
+      return ''; 
+    }
+  } catch (e) {
+    // If URL parsing fails, it might still be a relative URL or just a domain
+    if (trimmed.match(/^(?!javascript:|data:|vbscript:|file:).*$/i)) {
+      // Check if it doesn't start with dangerous schemes
+      return trimmed;
+    } else {
+      return '';
+    }
+  }
 }
 
 async function fetchLinkList() {
@@ -41,13 +66,11 @@ async function fetchLinkList() {
         parent: formattedTasks,
         ckgID: sanitizeHTML(ckgItem.metadata.ckgId),
         displayValue: sanitizeHTML(ckgItem.canonicalName),
-        value: sanitizeHTML(ckgItem.metadata.link),
+        value: sanitizeUrl(sanitizeHTML(ckgItem.metadata.link)),
       };
     });
   }
 }
-
-const searchRegex = /\/search\?/;
 
 function isSearch(pathname) {
   return searchRegex.test(pathname);
@@ -56,7 +79,7 @@ function isSearch(pathname) {
 function replaceLinkPill(linkPill, data) {
   const clone = linkPill.cloneNode(true);
   if (data) {
-    const sanitizedUrl = sanitizeHTML(data.url);
+    const sanitizedUrl = sanitizeUrl(data.url);
     const sanitizedShortTitle = sanitizeHTML(data['short-title']);
     clone.innerHTML = clone.innerHTML.replace('/express/templates/default', sanitizedUrl);
     clone.innerHTML = clone.innerHTML.replaceAll('Default', sanitizedShortTitle);
@@ -67,7 +90,7 @@ function replaceLinkPill(linkPill, data) {
     });
   }
   clone.querySelectorAll('a').forEach((a) => {
-    const href = a.getAttribute('href');
+    const href = sanitizeUrl(a.getAttribute('href'));
     if (!href || !/^(https?:|\/)/.test(href)) {
       a.removeAttribute('href');
     }
@@ -139,7 +162,7 @@ async function updateLinkList(container, linkPill, list) {
     let clone;
     if (!isSearch(d.pathname)) {
       const pageData = {
-        url: sanitizeHTML(`${prefix}${d.pathname}`),
+        url: sanitizeUrl(`${prefix}${d.pathname}`),
         'short-title': sanitizeHTML(d.displayValue),
       };
 
@@ -168,7 +191,7 @@ async function updateLinkList(container, linkPill, list) {
       searchParams.set('ckgid', sanitizeHTML(d.ckgID));
       searchParams.set('searchId', generateSearchId());
       const pageData = {
-        url: `${prefix}/express/templates/search?${searchParams.toString()}`,
+        url: sanitizeUrl(`${prefix}/express/templates/search?${searchParams.toString()}`),
         'short-title': sanitizeHTML(d.displayValue),
       };
 
@@ -209,7 +232,7 @@ async function lazyLoadLinklist() {
           shortTitle: getMetadata('short-title'),
           tasks: row.parent,
           displayValue: row.displayValue,
-          pathname: row.value,
+          pathname: sanitizeUrl(row.value),
         });
       });
     }
@@ -271,7 +294,7 @@ async function lazyLoadSearchMarqueeLinklist() {
             shortTitle: getMetadata('short-title'),
             tasks: row.parent, // parent tasks
             displayValue: row.displayValue,
-            pathname: row.value,
+            pathname: sanitizeUrl(row.value),
           });
         });
       }
