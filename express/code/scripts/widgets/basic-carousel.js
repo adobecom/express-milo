@@ -23,7 +23,11 @@ function initializeCarousel(selector, parent) {
     el.setAttribute('aria-label', `Item ${index + 1} of ${carouselContent.length}`);
 
     el.addEventListener('focus', () => {
+      if (isGridLayout && window.innerWidth <= smalLViewport) {
+        return;
+      }
       currentIndex = index;
+      updateCarousel();
     });
     el.addEventListener('mouseleave', () => {
       if (window.innerWidth > smalLViewport) {
@@ -150,13 +154,6 @@ function initializeCarousel(selector, parent) {
     setTimeout(() => {
       scrolling = false;
     }, 300);
-
-    elements.forEach((el, index) => {
-      el.addEventListener('focus', () => {
-        currentIndex = index;
-        updateCarousel();
-      });
-    });
 
     faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
     faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
