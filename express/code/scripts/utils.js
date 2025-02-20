@@ -737,7 +737,9 @@ function splitSections(area, selector) {
 
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
-  const selector = area === document ? 'main > div' : ':scope body > div';
+  let selector = 'main > div';
+  if (area !== document && area.tagName === 'MAIN') selector = ':scope > div'; // personalization
+  else if (area !== document) selector = ':scope body > div'; // fragments
   preDecorateSections(area);
   // LCP image decoration
   (function decorateLCPImage() {
