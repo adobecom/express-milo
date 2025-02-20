@@ -166,9 +166,9 @@ async function decorateCards(block, { actions }) {
         a.removeAttribute('title');
         linksWrapper.append(a);
       }
-    }
+    } 
 
-    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title' });
+    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT : 'h4' });
     textWrapper.append(titleText);
     const desc = createTag('p', { class: 'cta-card-desc' });
     desc.textContent = text;
