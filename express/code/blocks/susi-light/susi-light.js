@@ -93,8 +93,8 @@ export default async function init(el) {
   }
   const destURL = getDestURL(redirectUrl);
   const goDest = () => {
-    window.location.assign(destURL);
     sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
+    window.location.assign(destURL);
   };
   if (window.adobeIMS) {
     window.adobeIMS.isSignedInUser() && goDest();
