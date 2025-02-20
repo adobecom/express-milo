@@ -1,0 +1,17 @@
+.login-page .background {
+  opacity: 0.3;
+  position: absolute;
+}
+
+.login-page .foreground {
+  padding-top: 30px;
+}
+
+.login-page .susi-tabs {
+  background-color: white;
+  border-radius: 16px;
+}
+
+.login-page .footer {
+  border-radius: 0 0 16px 16px;
+}
