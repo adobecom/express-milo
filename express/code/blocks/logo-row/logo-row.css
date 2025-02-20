@@ -41,6 +41,8 @@ main .logo-row .image-column {
     gap: 10px;
     justify-content: center;
     max-width: 375px;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 main .logo-row .image-column p {
