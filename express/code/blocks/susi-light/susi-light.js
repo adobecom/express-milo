@@ -55,28 +55,6 @@ export default async function init(el) {
     client_id,
     scope: 'AdobeID,openid',
   };
-  const destURL = getDestURL(redirectUrl);
-  const goDest = () => window.location.assign(destURL);
-  if (window.adobeIMS) {
-    window.adobeIMS.isSignedInUser() && goDest();
-  } else {
-    loadIms()
-      .then(() => {
-        /* c8 ignore next */
-        window.adobeIMS?.isSignedInUser() && goDest();
-      })
-      .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
-  }
-  el.innerHTML = '';
-  await loadWrapper();
-  const config = { consentProfile: 'free' };
-  if (title) { config.title = title; }
-  const susi = createTag('susi-sentry-light');
-  susi.authParams = authParams;
-  susi.authParams.redirect_uri = destURL;
-  susi.config = config;
-  if (isStage) susi.stage = 'true';
-  susi.variant = variant;
   function sendEventToAnalytics(type, eventName) {
     const sendEvent = () => {
       window._satellite.track('event', {
@@ -113,6 +91,31 @@ export default async function init(el) {
       }, { once: true });
     }
   }
+  const destURL = getDestURL(redirectUrl);
+  const goDest = () => {
+    window.location.assign(destURL);
+    sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
+  };
+  if (window.adobeIMS) {
+    window.adobeIMS.isSignedInUser() && goDest();
+  } else {
+    loadIms()
+      .then(() => {
+        /* c8 ignore next */
+        window.adobeIMS?.isSignedInUser() && goDest();
+      })
+      .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
+  }
+  el.innerHTML = '';
+  await loadWrapper();
+  const config = { consentProfile: 'free' };
+  if (title) { config.title = title; }
+  const susi = createTag('susi-sentry-light');
+  susi.authParams = authParams;
+  susi.authParams.redirect_uri = destURL;
+  susi.config = config;
+  if (isStage) susi.stage = 'true';
+  susi.variant = variant;
 
   const onAnalytics = (e) => {
     const { type, event } = e.detail;
