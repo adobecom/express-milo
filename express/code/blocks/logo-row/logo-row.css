@@ -28,8 +28,9 @@ main .logo-row .block-row {
 
 main .logo-row .text-column {
     margin: auto auto 16px auto;
-    max-width: 300px;
     text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 main .logo-row .text-content {
@@ -44,7 +45,6 @@ main .logo-row .image-column {
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
-    max-width: 375px;
     padding-left: 16px;
     padding-right: 16px;
 }
