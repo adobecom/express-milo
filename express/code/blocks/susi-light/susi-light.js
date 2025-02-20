@@ -4,6 +4,7 @@ import { getLibs } from '../../scripts/utils.js';
 
 let createTag; let loadScript;
 let getConfig; let isStage;
+let loadIms;
 
 const variant = 'edu-express';
 const usp = new URLSearchParams(window.location.search);
@@ -40,7 +41,7 @@ function getDestURL(url) {
 }
 
 export default async function init(el) {
-  ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
   const rows = el.querySelectorAll(':scope> div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
@@ -56,11 +57,15 @@ export default async function init(el) {
   };
   const destURL = getDestURL(redirectUrl);
   const goDest = () => window.location.assign(destURL);
-  if (window.feds?.utilities?.imslib) {
-    const { imslib } = window.feds.utilities;
-    /* eslint-disable chai-friendly/no-unused-expressions */
-    imslib.isReady() && imslib.isSignedInUser() && goDest();
-    imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
+  if (window.adobeIMS) {
+    window.adobeIMS.isSignedInUser() && goDest();
+  } else {
+    loadIms()
+      .then(() => {
+        /* c8 ignore next */
+        window.adobeIMS?.isSignedInUser() && goDest();
+      })
+      .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
   }
   el.innerHTML = '';
   await loadWrapper();
