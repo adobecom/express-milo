@@ -100,7 +100,7 @@
   margin: 0;
 }
 
-.gen-ai-cards .card .text-wrapper p.cta-card-title {
+.gen-ai-cards .card .text-wrapper .cta-card-title {
   font-size: var(--body-font-size-l);
   line-height: var(--body-font-size-m);
   font-weight: 700;
