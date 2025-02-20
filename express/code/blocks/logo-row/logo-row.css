@@ -9,6 +9,10 @@ main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static,
     padding-top: 60px;
 }
 
+main .logo-row.block-layout {
+    margin-bottom: 64px;
+}
+
 main .logo-row .block-layout {
     display: flex;
     align-items: center;
