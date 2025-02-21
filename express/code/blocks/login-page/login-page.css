@@ -4,9 +4,7 @@
 }
 
 .login-page .background img {
-  height: 716px;
-  width: auto;
-  max-width: initial;
+  display: none;
 }
 
 .login-page .foreground {
@@ -20,4 +18,13 @@
 
 .login-page .footer {
   border-radius: 0 0 16px 16px;
+}
+
+@media (min-width: 600px) {
+  .login-page .background img {
+    display: block;
+    height: 716px;
+    width: auto;
+    max-width: initial;
+  }
 }
