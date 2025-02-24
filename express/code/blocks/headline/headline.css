@@ -8,6 +8,8 @@
     text-align: center;
     max-width: 375px;
     margin: auto;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 .section > .headline h1 { 
