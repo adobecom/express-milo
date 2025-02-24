@@ -44,11 +44,13 @@ const CONFIG = {
     '--express-milo--adobecom.(hlx|aem).page': {
       'www.adobe.com': 'www.stage.adobe.com',
       'commerce.adobe.com': 'commerce-stg.adobe.com',
+      'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
       'express.adobe.com': 'stage.projectx.corp.adobe.com',
     },
     'www.stage.adobe.com': {
       'www.adobe.com': 'origin',
       'commerce.adobe.com': 'commerce-stg.adobe.com',
+      'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
       'express.adobe.com': 'stage.projectx.corp.adobe.com',
     },
   },
