@@ -90,3 +90,10 @@ main .content-toggle .tag {
     width: 61px;
     border-radius: 4px;
 }
+
+@media screen and (min-width: 768px) {
+  main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+  .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):has(.content-toggle-wrapper) {
+    padding-top: 38px;
+  }
+}
