@@ -96,4 +96,12 @@ main .content-toggle .tag {
   .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):has(.content-toggle-wrapper) {
     padding-top: 38px;
   }
+
+  main .content-toggle {
+    height: 44px;
+  }
+
+  main .content-toggle .toggle-background  {
+    height: 40px;
+  }
 }
