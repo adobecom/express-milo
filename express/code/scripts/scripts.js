@@ -41,7 +41,7 @@ const CONFIG = {
   codeRoot: '/express/code',
   contentRoot: '/express',
   stageDomainsMap: {
-    '--express-milo--adobecom.(hlx|aem).page': {
+    '--express-milo--adobecom.(hlx|aem).(page|live)': {
       'www.adobe.com': 'www.stage.adobe.com',
       'commerce.adobe.com': 'commerce-stg.adobe.com',
       'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
