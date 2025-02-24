@@ -53,7 +53,7 @@ main .content-toggle .toggle-background  {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    height: 40px;
+    height: 60px;
     margin: 0 8px;
     border-radius: 100px;
     background-color: white;
