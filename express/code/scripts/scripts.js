@@ -41,20 +41,15 @@ const CONFIG = {
   codeRoot: '/express/code',
   contentRoot: '/express',
   stageDomainsMap: {
-    '--express-milo--adobecom.hlx.page': {
+    '--express-milo--adobecom.(hlx|aem).page': {
       'www.adobe.com': 'www.stage.adobe.com',
       'commerce.adobe.com': 'commerce-stg.adobe.com',
-      'http://express.adobe.com/': 'stage.projectx.corp.adobe.com',
-    },
-    '--express-milo--adobecom.hlx.live': {
-      'www.adobe.com': 'www.stage.adobe.com',
-      'commerce.adobe.com': 'commerce-stg.adobe.com',
-      'http://express.adobe.com/': 'stage.projectx.corp.adobe.com',
+      'express.adobe.com/': 'stage.projectx.corp.adobe.com',
     },
     'www.stage.adobe.com': {
       'www.adobe.com': 'origin',
       'commerce.adobe.com': 'commerce-stg.adobe.com',
-      'http://express.adobe.com/': 'stage.projectx.corp.adobe.com',
+      'express.adobe.com/': 'stage.projectx.corp.adobe.com',
     },
   },
   jarvis: {
