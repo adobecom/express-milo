@@ -20,11 +20,11 @@ main .content-toggle {
     justify-content: center;
     width: max-content;
     background-color: #EDEDED;
-    border-radius: 25px;
+    border-radius: 100px;
     padding: 6px;
     margin-top: 10px;
     margin-bottom: 16px;
-    height: 42px;
+    height: 64px;
 }
 
 main .content-toggle .content-toggle-button {
