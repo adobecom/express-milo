@@ -1,10 +1,9 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import sinon from 'sinon';
 
 const [, { default: decorate }] = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
-  import('../../../express/code/blocks/link-blade/link-blade.js')
+  import('../../../express/code/blocks/link-blade/link-blade.js'),
 ]);
 
 const testBody = await readFile({ path: './mocks/body.html' });
@@ -19,11 +18,11 @@ describe('Link Blade', () => {
     document.body.innerHTML = testBody;
     block = document.querySelector('.link-blade');
     await decorate(block);
-    
+
     linksContainer = block.querySelector('.link-blade-links');
     leftChev = block.querySelector('.link-blade-chevron.left');
     rightChev = block.querySelector('.link-blade-chevron:not(.left)');
-    
+
     // Setup mock dimensions
     Object.defineProperty(linksContainer, 'scrollWidth', { value: 2000, configurable: true });
     Object.defineProperty(linksContainer, 'clientWidth', { value: 500, configurable: true });
