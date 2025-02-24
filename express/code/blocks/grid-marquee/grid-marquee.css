@@ -267,6 +267,9 @@ main .section .grid-marquee h1 {
 }
 
 @media screen and (min-width: 768px) {
+  main .section .grid-marquee h1 {
+    font-size: 45px;
+  }
   .grid-marquee .background img {
     max-width: 1500px;
     max-height: 1200px;
