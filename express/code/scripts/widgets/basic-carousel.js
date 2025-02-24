@@ -195,23 +195,17 @@ function initializeCarousel(selector, parent) {
   });
 
   platform.addEventListener('touchstart', (e) => {
-    if (isGridLayout && window.innerWidth <= smalLViewport) return;
-
     touchStartX = e.touches[0].clientX;
     touchEndX = touchStartX;
     e.preventDefault();
   });
 
   platform.addEventListener('touchmove', (e) => {
-    if (isGridLayout && window.innerWidth <= smalLViewport) return;
-
     touchEndX = e.touches[0].clientX;
     e.preventDefault();
   });
 
   platform.addEventListener('touchend', (e) => {
-    if (isGridLayout && window.innerWidth <= smalLViewport) return;
-
     const swipeDistance = touchEndX - touchStartX;
 
     if (Math.abs(swipeDistance) > 50) {
