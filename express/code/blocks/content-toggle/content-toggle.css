@@ -65,13 +65,13 @@ main .content-toggle .toggle-background  {
     border-radius: 100px;
     background-color: white;
     color: #000000;
-    transition: 0.5s;
+    transition: 0.2s;
 }
 
 main .content-toggle.dark .toggle-background  {
     background-color: #242424;
     color: #FFFFFF;
-    transition: 0.5s;
+    transition: 0.2s;
 }
 
 main .content-toggle .tag {
