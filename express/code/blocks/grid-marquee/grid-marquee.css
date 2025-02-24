@@ -13,7 +13,7 @@
 }
 
 main .section .grid-marquee h1 {
-  font-size: var(--heading-font-size-m);
+  font-size: 36px;
   padding-bottom: 8px;
 }
 
