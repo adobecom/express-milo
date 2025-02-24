@@ -25,6 +25,14 @@ main .content-toggle {
     margin-top: 10px;
     margin-bottom: 16px;
     height: 64px;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: manipulation;
+    -ms-touch-action: manipulation;
 }
 
 main .content-toggle .content-toggle-button {
