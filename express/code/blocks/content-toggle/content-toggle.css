@@ -18,7 +18,6 @@ main .content-toggle {
     position: relative;
     display: flex;
     justify-content: center;
-    width: max-content;
     background-color: #EDEDED;
     border-radius: 100px;
     padding: 6px;
