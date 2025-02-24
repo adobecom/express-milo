@@ -71,6 +71,8 @@ function collectFloatingButtonData() {
       mobileText: getMetadataLocal('mobile-floating-cta-text'),
       href: getMetadataLocal('main-cta-link'),
       text: getMetadataLocal('main-cta-text'),
+      forkStickymobileHref: getMetadataLocal('mweb-sticky-mobile-link'),
+      forkStickymobileText: getMetadataLocal('mweb-sticky-mobile-text'),
     },
     bubbleSheet: getMetadataLocal('floating-cta-bubble-sheet'),
     live: getMetadataLocal('floating-cta-live'),
@@ -144,7 +146,7 @@ async function mWebStickyCTA() {
     <div class="section" data-status="decorated" data-idx="8">
       <div class="floating-button-wrapper">
         <div class="floating-button meta-powered">
-          <div>desktop</div>
+          <div>mobile</div>
         </div>
       </div>
     </div>`;
@@ -153,8 +155,9 @@ async function mWebStickyCTA() {
 
   const audience = 'mobile';
   const data = collectFloatingButtonData();
-  data.mainCta.text = 'Create in web now';
-  data.mainCta.href = 'https://www.adobe.com';
+  console.log(data.mainCta.forkStickymobileText);
+  data.mainCta.text = data.mainCta.forkStickymobileText ? data.mainCta.forkStickymobileText : data.mainCta.text;
+  data.mainCta.href = data.mainCta.forkStickymobileHref ? data.mainCta.forkStickymobileHref : data.mainCta.text;
   const buttonWrapper = await createFloatingButton(block, audience, data);
 }
 
@@ -192,9 +195,7 @@ function mWebCloseEvents() {
 }
 
 function mWebVariant() {
-  // if(getMetadata('fork-eligibility-check')?.toLowerCase()?.trim() !== 'on') return true;
-  const debugMetadata = true;
-  if(!debugMetadata) return;
+  if(!getMetadata('mweb-sticky-mobile-link') && !getMetadata('mweb-sticky-mobile-text')) return;
   mWebBuildElements();
   mWebCloseEvents();
   mWebOverlayScroll();
