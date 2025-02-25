@@ -293,7 +293,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   appearance: unset;
   width: 100%;
 }
-.pricing-table .row.toggle-row .col.toggle-content {
+.pricing-table .row.toggle-row .col.toggle-content,
+.pricing-table.business-hub .row .toggle-row {
   display: flex;
   flex-direction: row;
   align-items: center;
