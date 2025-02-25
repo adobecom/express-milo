@@ -697,6 +697,16 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
   margin-right: 4px;
 }
 
+:lang(ja) main .section > .content  {
+  text-align: left;
+  padding: 60px 20px 0;
+}
+
+:lang(ja) main .section > .content.center  {
+  text-align: center;
+  padding: 60px 20px 0;
+}
+
 main .section > .content {
   text-align: center;
   max-width: 375px;
@@ -767,6 +777,21 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
+main .section.blog-content > .content *:is(h1, h2) {
+  font-size: 32px;
+}
+
+main .section.blog-content > .content *:is(h1, h2, h3, h4, h5, h6),
+main .section.blog-content > .content > p  {
+  margin-left: 20px;
+  margin-right: 20px;
+  text-align: left;
+}
+
+main .section.blog-content > .content > p {
+  font-size: var(--body-font-size-m);
+}
+
 @media (min-width: 600px) {
   main h2 {
     font-size: var(--heading-font-size-l);
@@ -805,6 +830,18 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
     line-height: var(--body-line-height);
     text-align: center;
     margin: 24px 15px 0;
+  }
+
+  main .section.blog-content > .content {
+    max-width: 648px
+  }
+
+  main .section.blog-content.narrow > .content {
+    max-width: 540px
+  }
+  
+  main .section.blog-content > .content > p {
+    font-size: var(--body-font-size-xl);
   }
 }
 
@@ -867,6 +904,16 @@ main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
 
   main .section > .content {
     max-width: 830px;
+  }
+
+  main .section.blog-content > .content *:is(h1, h2, h3, h4, h5, h6),
+  main .section.blog-content > .content > p  {
+    margin-left: unset;
+    margin-right: unset;
+  }
+
+  main .section.blog-content.narrow > .content {
+    max-width: 875px
   }
 }
 

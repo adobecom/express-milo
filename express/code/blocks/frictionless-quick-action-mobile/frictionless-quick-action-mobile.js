@@ -75,10 +75,6 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
-function isEligibleMFQA() {
-  return navigator.deviceMemory >= 4 && getMobileOperatingSystem() === 'Android';
-}
-
 export function runQuickAction(quickAction, data, block) {
   // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
   const exportConfig = [
@@ -303,7 +299,7 @@ export default async function decorate(block) {
   quickActionRow?.remove();
   const [fallbackRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'fallback');
   fallbackRow?.remove();
-  if (fallbackRow && !isEligibleMFQA()) {
+  if (fallbackRow && getMobileOperatingSystem() !== 'Android') {
     const fallbackBlock = fallbackRow.querySelector(':scope > div:last-child > div');
     block.replaceWith(fallbackBlock);
     return fallbackBlock;
