@@ -453,6 +453,16 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   text-align: left;
 }
 
+.pricing-table.business-hub .row:not(.row-heading) .col.col-1 {
+  flex-direction: row;
+  justify-content: left;
+  font-size: 14px;
+}
+
+.pricing-table.business-hub .row:not(.row-heading) .toggle-row {
+  font-size: 13px;
+}
+
 .pricing-table .row.section-row .col .col-heading {
   display: none;
 }
