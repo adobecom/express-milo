@@ -307,6 +307,18 @@
   }
 }
 
+@media (min-width: 600px) {
+  .faqv2, 
+  .faqv2.bold {
+    width: 540px;
+    margin: auto;
+  }
+  .faqv2 .faqv2-accordion,
+  .faqv2.bold .faqv2-accordion {
+    margin: 0 10px 8px;
+  }
+}
+
 @media (min-width: 900px) {
   .has-background picture img {
     opacity: 0.5;
@@ -317,13 +329,13 @@
   }
 
   .faqv2 {
-    width: 540px;
+    width: 840px;
     margin: auto;
     margin-bottom: 25px;
   }
 
   .faqv2.bold {
-    width: 540px;
+    width: 860px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -430,11 +442,6 @@
 }
 
 @media (min-width: 1280px) {
-
-  .faqv2,
-  .faqv2.bold {
-    width: 875px;
-  }
 
   .faqv2 .faqv2-header {
     font-size: var(--body-font-size-l);
