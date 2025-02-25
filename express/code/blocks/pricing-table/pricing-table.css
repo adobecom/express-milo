@@ -74,8 +74,9 @@
 }
 
 .pricing-table .row-heading .col-heading .tracking-header {
-  font-size: 1.375rem;
+  font-size: 18px;
   line-height: 130%;
+  margin: auto;
 }
 
 .pricing-table .row-heading .col-heading .body {
@@ -155,6 +156,25 @@
 .top-border-transparent {
   border-top: 1px solid transparent;
 }
+
+.pricing-table-wrapper .pricing-table.business-hub {
+  padding-top: 0;
+  margin-top: 24px;
+}
+
+.pricing-table-wrapper .pricing-table.business-hub .row-heading .col {
+  padding: 0;
+}
+
+.pricing-table.business-hub .row.row-heading {
+  margin-bottom: 4px;
+}
+
+.pricing-table.business-hub .row.section-row .col.col-1 p:first-child {
+  font-size: 22px;
+  color: #505050;
+}
+
 
 @media (min-width: 900px) {
   .pricing-table > .row {
