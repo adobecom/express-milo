@@ -545,8 +545,12 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
 
 @media (max-width: 980px) {
-  .pricing-table .row.table-end-row.section-row .col-1{
+  .pricing-table.seamless .row.table-end-row.section-row .col-1{
     display: none;
+  }
+
+  .pricing-table.seamless .row.section-row .col {
+    border: none !important;
   }
 
   .pricing-table .row:not(.blank-row) {
@@ -859,14 +863,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   } 
-
-  /* .pricing-table.seamless .table-end-row:last-of-type .col-1 {
-    border-bottom-left-radius: 8px;
-  }
-
-  .pricing-table.seamless .table-end-row:last-of-type .col:last-child {
-    border-bottom-right-radius: 8px;
-  } */
 
   .pricing-table.seamless .toggle-row {
     min-height: 5px;
