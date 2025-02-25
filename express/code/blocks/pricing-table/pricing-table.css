@@ -313,7 +313,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table .row.toggle-row:hover .col.toggle-content {
   text-decoration: underline;
 }
-.pricing-table .row.toggle-row .col.toggle-content .icon.expand {
+.pricing-table .row.toggle-row .col.toggle-content .icon.expand,
+.pricing-table.business-hub .row .toggle-row span.icon.expand {
   height: 18px;
   width: 18px;
 }
