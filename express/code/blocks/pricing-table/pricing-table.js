@@ -243,6 +243,34 @@ export default async function init(el) {
         col.classList.add('col', `col-${cdx + 1}`);
         col.setAttribute('role', 'cell');
       });
+
+      // Add our test column to additional rows
+      if (isAdditional && cols.length > 1) {
+        const toggleBtn = createTag('button', {
+          class: 'toggle-row toggle-content col col-1',
+          'aria-expanded': 'false',
+        }, 'View all features');
+
+        toggleBtn.addEventListener('click', () => {
+          const newExpandedState = toggleBtn.getAttribute('aria-expanded') !== 'true';
+          toggleBtn.setAttribute('aria-expanded', newExpandedState.toString());
+
+          const colsToToggle = row.querySelectorAll('.col-2:not(button), .col-3:not(button)');
+
+          requestAnimationFrame(() => {
+            colsToToggle.forEach((col) => {
+              if (newExpandedState) {
+                col.classList.add('collapsed');
+              } else {
+                col.classList.remove('collapsed');
+              }
+            });
+          });
+        });
+
+        row.appendChild(toggleBtn);
+      }
+
       if (sectionItem % 2 === 0 && cols.length > 1) row.classList.add('shaded');
     } else {
       row.setAttribute('tabindex', 0);

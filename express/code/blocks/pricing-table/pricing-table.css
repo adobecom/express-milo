@@ -157,6 +157,11 @@
   border-top: 1px solid transparent;
 }
 
+.pricing-table.business-hub .additional-row .col-1.collapsed,
+.pricing-table.business-hub .additional-row .col-2.collapsed {
+  display: none;
+}
+
 .pricing-table-wrapper .pricing-table.business-hub {
   padding-top: 0;
   margin-top: 24px;
