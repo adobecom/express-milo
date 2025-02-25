@@ -78,6 +78,7 @@ main .section .discover-cards {
     background-color: #292929;
     color: var(--color-white);
     border: none;
+    margin-top: 32px;
 }
 
 .discover-cards .cards-container.gallery {
