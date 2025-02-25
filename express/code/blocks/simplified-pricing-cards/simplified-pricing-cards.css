@@ -35,7 +35,7 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 .simplified-pricing-cards .card {
-    width: calc(var(--card-width) - 32px);
+    width: calc(var(--card-width) - 34px);
     position: relative;
     padding: 16px;
     border: 2px solid var(--color-gray-300);
