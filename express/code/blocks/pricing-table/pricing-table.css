@@ -363,8 +363,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  column-gap: 6px;
-  row-gap: 6px;
+  column-gap: 8px;
+  row-gap: 8px;
 }
 
 .pricing-table.vertical-header .row.row-heading .col > div {
@@ -606,7 +606,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     flex: 1 1 0;
     justify-content: start;
     align-items: center;
-    column-gap: 6px;
+    column-gap: 8px;
   }
   .pricing-table .row.section-row .col .col-wrapper {
     width: 100%;
@@ -655,7 +655,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    column-gap: 6px;
+    column-gap: 8px;
   }
   .pricing-table .row.section-row .col {
     display: flex;
@@ -755,6 +755,50 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table .row-heading .col:nth-child(n + 1) {
     padding: 20px;
   }
+
+
+.pricing-table.seamless .section-head-title{
+  color: var(--Content-Subdued-default, #505050);
+  /* Large Screen/Title/XXL */
+  font-family: "Adobe Clean";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%; /* 28.6px */
+}
+
+.pricing-table.seamless .col-heading {
+  color: var(--Content-Neutral-default, #292929);
+  font-family: "Adobe Clean";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%; /* 18.2px */
+}
+
+.pricing-table.seamless .section-row {
+  border-bottom: 1px solid var(--Palette-sx-gray-100, #E9E9E9);
+  background: var(--Palette-s2-gray-50, #F8F8F8);
+}
+.pricing-table.seamless .row.row-heading .col:first-child:has(.tracking-header) {
+  padding: 0;
+}
+.pricing-table.seamless .row.row-heading .col:first-child .tracking-header {
+  color: var(--Content-Neutral-default, #222);
+  text-align: center;
+  /* Large Screen/Title/L */
+  font-family: "Adobe Clean";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%; /* 23.4px */
+  margin: auto;
+}
+
+.pricing-table.seamless .blank-row {
+  height: 24px;
+}
+
 }
 
 @media (min-width: 981px) {
