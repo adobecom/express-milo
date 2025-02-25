@@ -162,7 +162,7 @@ function redirectIfLoggedIn(destURL) {
   const goDest = () => {
     sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
     window.location.assign(destURL);
-  }
+  };
   if (window.adobeIMS) {
     window.adobeIMS.isSignedInUser() && goDest();
   } else {
@@ -172,6 +172,7 @@ function redirectIfLoggedIn(destURL) {
         window.adobeIMS?.isSignedInUser() && goDest();
       })
       .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
+  }
 }
 
 export default async function init(el) {
