@@ -20,6 +20,8 @@ main .logo-row .block-row {
     display: block;
     width: fit-content;
     margin: auto;
+    margin-left: 16px;
+    margin-right: 16px;
 }
 
 main .logo-row .text-column {
