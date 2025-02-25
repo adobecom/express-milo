@@ -250,7 +250,8 @@ export default async function init(el) {
           class: 'toggle-row toggle-content col col-1',
           'aria-expanded': 'false',
         }, 'View all features');
-
+        const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': firstSection });
+        toggleBtn.prepend(toggleIconTag);
         toggleBtn.addEventListener('click', () => {
           const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
           toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
