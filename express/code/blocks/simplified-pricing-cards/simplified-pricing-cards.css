@@ -29,6 +29,11 @@ main .section>.simplified-pricing-cards-wrapper {
     margin: 16px auto auto auto;
 }
 
+.simplified-pricing-cards.wide {
+    --card-width: 100%;
+    padding: 16px;
+}
+
 .simplified-pricing-cards .card {
     width: calc(var(--card-width) - 32px);
     position: relative;
