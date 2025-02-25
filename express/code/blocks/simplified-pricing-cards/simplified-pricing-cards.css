@@ -451,6 +451,11 @@ main .section>.simplified-pricing-cards-wrapper {
         --header-offer-size: 16px;
     }
 
+    .simplified-pricing-cards.wide {
+        --card-width: 580px;
+        padding: unset;
+    }
+
     .simplified-pricing-cards .card-wrapper {
         margin: 48px auto;
         width: min-content;
