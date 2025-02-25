@@ -250,17 +250,14 @@ body.no-desktop-brand-header header {
     bottom: 16px;
     height: 24px;
     cursor: pointer;
+    display: flex;
+    gap: 8px;
 }
 
 .ax-marquee .reduce-motion-wrapper span {
-    position: absolute;
-    margin-right: 8px;
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    visibility: hidden;
+    display: none;
     opacity: 0;
-    transition: visibility 0s, opacity 0.3s;
+    animation: fadeIn 0.3s;
     pointer-events: none;
 }
 
@@ -280,9 +277,29 @@ body.no-desktop-brand-header header {
 }
 
 .ax-marquee.reduce-motion .reduce-motion-wrapper:hover span.play-animation-text,
-.ax-marquee:not(.reduce-motion) .reduce-motion-wrapper:hover span.pause-animation-text {
+.ax-marquee:not(.reduce-motion) .reduce-motion-wrapper:hover span.pause-animation-text,
+.ax-marquee.reduce-motion .reduce-motion-wrapper:focus-visible span.play-animation-text,
+.ax-marquee:not(.reduce-motion) .reduce-motion-wrapper:focus-visible span.pause-animation-text {
     opacity: 1;
     visibility: visible;
+    display: block;
+}
+
+.ax-marquee.reduce-motion .reduce-motion-wrapper:focus-visible span.play-animation-text,
+.ax-marquee:not(.reduce-motion) .reduce-motion-wrapper:focus-visible span.pause-animation-text {
+  margin-left: 5px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    display: none;
+  }
+  
+  to {
+    opacity: 1;
+    display: block;
+  }
 }
 
 @media (min-width: 600px) {

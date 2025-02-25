@@ -4,6 +4,7 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let createTag; let loadScript;
 let getConfig; let isStage;
+let loadIms;
 
 const usp = new URLSearchParams(window.location.search);
 
@@ -158,17 +159,23 @@ function buildSUSITabs(el, options) {
 }
 
 function redirectIfLoggedIn(destURL) {
-  const goDest = () => window.location.assign(destURL);
-  if (window.feds?.utilities?.imslib) {
-    const { imslib } = window.feds.utilities;
-    /* eslint-disable chai-friendly/no-unused-expressions */
-    imslib.isReady() && imslib.isSignedInUser() && goDest();
-    imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
+  const goDest = () => {
+    sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
+    window.location.assign(destURL);
   }
+  if (window.adobeIMS) {
+    window.adobeIMS.isSignedInUser() && goDest();
+  } else {
+    loadIms()
+      .then(() => {
+        /* c8 ignore next */
+        window.adobeIMS?.isSignedInUser() && goDest();
+      })
+      .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
 }
 
 export default async function init(el) {
-  ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
   const locale = getConfig().locale.ietf.toLowerCase();
   const { imsClientId } = getConfig();

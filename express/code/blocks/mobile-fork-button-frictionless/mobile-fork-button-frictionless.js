@@ -41,12 +41,6 @@ export async function createMultiFunctionButton(block, data, audience) {
   return buttonWrapper;
 }
 
-// frictionless block always check eligibility
-function androidDeviceAndRamCheck() {
-  const isAndroid = getMobileOperatingSystem() === 'Android';
-  return navigator.deviceMemory >= 4 && isAndroid;
-}
-
 function collectFloatingButtonData(eligible) {
   const metadataMap = Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
     if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
@@ -114,7 +108,7 @@ function collectFloatingButtonData(eligible) {
 }
 
 export default async function decorate(block) {
-  const eligible = androidDeviceAndRamCheck();
+  const eligible = getMobileOperatingSystem() === 'Android';
   addTempWrapperDeprecated(block, 'multifunction-button');
   if (!block.classList.contains('meta-powered')) return;
 
