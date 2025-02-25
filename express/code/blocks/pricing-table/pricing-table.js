@@ -252,14 +252,13 @@ export default async function init(el) {
         }, 'View all features');
 
         toggleBtn.addEventListener('click', () => {
-          const newExpandedState = toggleBtn.getAttribute('aria-expanded') !== 'true';
-          toggleBtn.setAttribute('aria-expanded', newExpandedState.toString());
-
-          const colsToToggle = row.querySelectorAll('.col-2:not(button), .col-3:not(button)');
+          const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
+          toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
+          const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
 
           requestAnimationFrame(() => {
             colsToToggle.forEach((col) => {
-              if (newExpandedState) {
+              if (isExpanded) {
                 col.classList.add('collapsed');
               } else {
                 col.classList.remove('collapsed');
