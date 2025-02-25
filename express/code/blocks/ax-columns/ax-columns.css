@@ -876,6 +876,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   :lang(ja) .section .ax-columns h1.columns-heading-x-long {
     font-size: var(--heading-font-size-m);
   }
+
+  main .section.business-hub:has(.ax-columns):not([data-padding='none']) > .content h2 {
+    font-size: 36px;
+    padding-top: 48px;
+  }
 }
 
 @media (min-width: 900px) {
