@@ -261,9 +261,7 @@ export default async function init(el) {
         toggleBtn.prepend(toggleIconTag);
 
         const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-
-        // Only collapse on mobile
-        if (defineDeviceByScreenSize() === 'MOBILE' && sectionItem !== 4) {
+        if (sectionItem !== 4) {
           colsToToggle.forEach((col) => {
             col.classList.add('collapsed');
           });
@@ -334,62 +332,17 @@ export default async function init(el) {
   handleHeading(rows[0], headingChildren);
   assignEvents(el);
 
-  let deviceBySize = defineDeviceByScreenSize();
-
   const handleResize = () => {
-    // Only handle resize for collapsible variant
-    if (!isCollapsibleRowsVariant) return;
-
-    const newDeviceSize = defineDeviceByScreenSize();
-    if (deviceBySize !== newDeviceSize) {
-      const additionalRows = el.querySelectorAll('.additional-row');
-
-      additionalRows.forEach((row) => {
-        // Remove existing toggle buttons
-        const existingToggle = row.querySelector('.toggle-row');
-        if (existingToggle) {
-          existingToggle.remove();
-        }
-
-        // Add toggle buttons if going to mobile
-        if (newDeviceSize === 'MOBILE') {
-          const cols = Array.from(row.children);
-          if (cols.length > 1) {
-            const viewAllText = viewAllFeatures ?? 'View all features';
-            const toggleBtn = createTag('button', {
-              class: 'toggle-row toggle-content col col-1',
-              'aria-expanded': 'false',
-            }, viewAllText);
-
-            const toggleIconTag = createTag('span', {
-              class: 'icon expand',
-              'aria-expanded': 'false',
-            });
-            toggleBtn.prepend(toggleIconTag);
-
-            // Add click handler
-            toggleBtn.addEventListener('click', () => {
-              const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
-              toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
-              const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-              colsToToggle.forEach((col) => {
-                if (isExpanded) {
-                  col.classList.add('collapsed');
-                } else {
-                  col.classList.remove('collapsed');
-                }
-              });
-            });
-
-            row.appendChild(toggleBtn);
-          }
-        }
-      });
-
-      deviceBySize = newDeviceSize;
-    }
+    const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
+    collapisbleRows.forEach((collapisbleRow) => {
+      collapisbleRow.classList.add('collapsed');
+    });
+    const toggleRows = el.querySelectorAll('.toggle-row');
+    toggleRows.forEach((toggleRow) => {
+      toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
+    });
   };
-
+  let deviceBySize = defineDeviceByScreenSize();
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
     deviceBySize = defineDeviceByScreenSize();
