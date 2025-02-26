@@ -246,29 +246,36 @@ export default async function init(el) {
         col.setAttribute('role', 'cell');
       });
 
-      // Add our test column to additional rows
       if (isCollapsibleRowsVariant && isAdditional && cols.length > 1) {
         const viewAllText = viewAllFeatures ?? 'View all features';
         const toggleBtn = createTag('button', {
           class: 'toggle-row toggle-content col col-1',
-          'aria-expanded': 'false',
-          'aria-label': viewAllText,
+          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
         }, viewAllText);
-        const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': firstSection });
+
+        const toggleIconTag = createTag('span', {
+          class: 'icon expand',
+          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
+        });
+
         toggleBtn.prepend(toggleIconTag);
+
+        const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
+        if (sectionItem !== 4) {
+          colsToToggle.forEach((col) => {
+            col.classList.add('collapsed');
+          });
+        }
+
         toggleBtn.addEventListener('click', () => {
           const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
           toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
-          const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-
-          requestAnimationFrame(() => {
-            colsToToggle.forEach((col) => {
-              if (isExpanded) {
-                col.classList.add('collapsed');
-              } else {
-                col.classList.remove('collapsed');
-              }
-            });
+          colsToToggle.forEach((col) => {
+            if (isExpanded) {
+              col.classList.add('collapsed');
+            } else {
+              col.classList.remove('collapsed');
+            }
           });
         });
 
