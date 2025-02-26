@@ -180,6 +180,11 @@
   color: #505050;
 }
 
+.pricing-table.collapsible-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 
 @media (min-width: 900px) {
   .pricing-table > .row {
@@ -453,11 +458,23 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   text-align: left;
 }
 
+.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2,
+.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
   flex-direction: row;
   justify-content: left;
   font-size: 14px;
   background-color: white;
+  padding: 16px;
+  border-bottom: 1px solid #E9E9E9;
+  border-top: 1px solid #E9E9E9;
+}
+.pricing-table.collapsible-rows .row.table-start-row .col:last-child {
+  border-top-right-radius: 0;
 }
 
 .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
@@ -702,6 +719,11 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table .row.section-row,
   .pricing-table .row.toggle-row .col {
     padding: 16px;
+  }
+  .pricing-table.collapsible-rows .row.section-header-row .col,
+  .pricing-table.collapsible-rows .row.section-row,
+  .pricing-table.collapsible-rows .row.toggle-row .col {
+    padding: 0;
   }
   .pricing-table .row.toggle-row.desktop-hide {
     display: grid;
