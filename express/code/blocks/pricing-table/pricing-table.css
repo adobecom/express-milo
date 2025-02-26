@@ -82,6 +82,9 @@
   line-height: 130%;
   margin: auto;
 }
+.pricing-table.collapsible-rows .row-heading .col-heading .tracking-header {
+  margin-bottom: 20px;
+}
 
 .pricing-table .row-heading .col-heading .body {
   font-size: var(--body-font-size-m);
