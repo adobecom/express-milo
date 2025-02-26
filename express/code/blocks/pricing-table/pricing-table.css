@@ -157,25 +157,25 @@
   border-top: 1px solid transparent;
 }
 
-.pricing-table.business-hub .additional-row .col-2.collapsed,
-.pricing-table.business-hub .additional-row .col-3.collapsed {
+.pricing-table.collapsible-rows .additional-row .col-2.collapsed,
+.pricing-table.collapsible-rows .additional-row .col-3.collapsed {
   display: none;
 }
 
-.pricing-table-wrapper .pricing-table.business-hub {
+.pricing-table-wrapper .pricing-table.collapsible-rows {
   padding-top: 0;
   margin-top: 24px;
 }
 
-.pricing-table-wrapper .pricing-table.business-hub .row-heading .col {
+.pricing-table-wrapper .pricing-table.collapsible-rows .row-heading .col {
   padding: 0;
 }
 
-.pricing-table.business-hub .row.row-heading {
+.pricing-table.collapsible-rows .row.row-heading {
   margin-bottom: 4px;
 }
 
-.pricing-table.business-hub .row.section-row .col.col-1 p:first-child {
+.pricing-table.collapsible-rows .row.section-row .col.col-1 p:first-child {
   font-size: 22px;
   color: #505050;
 }
@@ -294,7 +294,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   width: 100%;
 }
 .pricing-table .row.toggle-row .col.toggle-content,
-.pricing-table.business-hub .row .toggle-row {
+.pricing-table.collapsible-rows .row .toggle-row {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -314,7 +314,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   text-decoration: underline;
 }
 .pricing-table .row.toggle-row .col.toggle-content .icon.expand,
-.pricing-table.business-hub .row .toggle-row span.icon.expand {
+.pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
   height: 18px;
   width: 18px;
 }
@@ -453,13 +453,13 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   text-align: left;
 }
 
-.pricing-table.business-hub .row:not(.row-heading) .col.col-1 {
+.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
   flex-direction: row;
   justify-content: left;
   font-size: 14px;
 }
 
-.pricing-table.business-hub .row:not(.row-heading) .toggle-row {
+.pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
   font-size: 13px;
 }
 
