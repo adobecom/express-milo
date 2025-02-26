@@ -86,6 +86,10 @@
   margin-bottom: 20px;
 }
 
+.pricing-table.collapsible-rows .col-wrapper {
+  height: 36px;
+}
+
 .pricing-table .row-heading .col-heading .body {
   font-size: var(--body-font-size-m);
 }
