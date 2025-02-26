@@ -457,6 +457,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   flex-direction: row;
   justify-content: left;
   font-size: 14px;
+  background-color: white;
 }
 
 .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
