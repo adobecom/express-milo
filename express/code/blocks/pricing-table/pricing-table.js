@@ -157,7 +157,7 @@ function handleSection(sectionParams) {
         child.innerHTML = `<p >${col.innerHTML}</p>`;
       }
     });
-    if (nextRow.classList.contains('toggle-row')) {
+    if (nextRow?.classList.contains('toggle-row')) {
       row.classList.add('table-end-row');
 
       if (!nextRow.classList.contains('desktop-hide')) {
@@ -281,7 +281,7 @@ export default async function init(el) {
     }
 
     const nextRow = rows[index + 1];
-    if (index > 0 && !isToggle && cols.length > 1
+    if (!isCollapsibleRowsVariant && index > 0 && !isToggle && cols.length > 1
       && (!nextRow || Array.from(nextRow.children).length <= 1)) {
       const toggleRow = createTag('button', { class: 'toggle-row' });
       if (!isAdditional) toggleRow.classList.add('desktop-hide');
