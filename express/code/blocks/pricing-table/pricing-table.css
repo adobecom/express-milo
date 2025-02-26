@@ -764,6 +764,9 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.collapsible-rows .row.toggle-row .col {
     padding: 0;
   }
+  .pricing-table.collapsible-rows .row.section-row {
+    border-radius: 8px;
+  }
   .pricing-table .row.toggle-row.desktop-hide {
     display: grid;
   }
