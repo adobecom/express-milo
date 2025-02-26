@@ -15,12 +15,11 @@ function defineDeviceByScreenSize() {
 }
 
 function handleToggleMore(btn) {
-  console.log(btn)
   let prevElement = btn.previousElementSibling;
   const icon = btn.querySelector('.icon.expand');
   const expanded = icon?.getAttribute('aria-expanded') === 'false';
   icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') ) {
+  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row')) {
     if (expanded) {
       btn.classList.remove('collapsed');
       prevElement.classList.remove('collapsed');
@@ -28,7 +27,7 @@ function handleToggleMore(btn) {
       btn.classList.add('collapsed');
       prevElement.classList.add('collapsed');
     }
-  
+
     prevElement = prevElement.previousElementSibling;
   }
 }
