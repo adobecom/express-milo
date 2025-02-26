@@ -871,27 +871,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 }
 
 @media (min-width: 981px) {
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
-    border-bottom: unset;
-    padding: 24px;
-  }
-  .pricing-table.collapsible-rows .row.section-row .col.col-1 p:first-child {
-    font-size: 14px;
-  }
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
-    background-color: #FFFFFF;
-  }
-  .pricing-table.collapsible-rows .row:not(.row-heading) {
-    padding: 0;
-  }
-  .pricing-table.collapsible-rows {
-    gap: 0;
-  }
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2::before,
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3::before {
-    display: none;
-  }
-
   .pricing-table > .row {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   }
