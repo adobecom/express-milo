@@ -29,6 +29,10 @@
   margin-right: 8px;
 }
 
+.pricing-table-wrapper:has(.pricing-table.collapsible-rows) {
+  margin-top: -5px;
+}
+
 /* links stay links by default in cells */
 .pricing-table .row:not(.row-heading) .col a.button,
 .pricing-table .row:not(.row-heading) .col a.button:hover,
