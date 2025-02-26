@@ -19,7 +19,7 @@ function handleToggleMore(btn) {
   const icon = btn.querySelector('.icon.expand');
   const expanded = icon?.getAttribute('aria-expanded') === 'false';
   icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row')) {
+  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') && prevElement.classList.contains('additional-row')) {
     if (expanded) {
       btn.classList.remove('collapsed');
       prevElement.classList.remove('collapsed');
