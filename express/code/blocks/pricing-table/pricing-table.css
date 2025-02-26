@@ -823,6 +823,9 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   main .section .pricing-table-wrapper .pricing-table {
     margin: 0px 20px;
   }
+  main .section .pricing-table-wrapper .pricing-table.collapsible-rows {
+    padding-bottom: 0;
+  }
 
   .pricing-table {
     margin: 0 30px;
