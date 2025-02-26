@@ -876,14 +876,14 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   :lang(ja) .section .ax-columns h1.columns-heading-x-long {
     font-size: var(--heading-font-size-m);
   }
+}
 
+@media (min-width: 900px) {
   main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
     font-size: 36px;
     padding-top: 48px;
   }
-}
-
-@media (min-width: 900px) {
+  
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
     padding-left: 0;
   }
