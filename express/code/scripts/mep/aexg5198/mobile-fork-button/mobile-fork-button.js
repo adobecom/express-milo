@@ -155,9 +155,9 @@ async function mWebStickyCTA() {
 
   const audience = 'mobile';
   const data = collectFloatingButtonData();
-  console.log(data.mainCta.forkStickymobileText);
+
   data.mainCta.text = data.mainCta.forkStickymobileText ? data.mainCta.forkStickymobileText : data.mainCta.text;
-  data.mainCta.href = data.mainCta.forkStickymobileHref ? data.mainCta.forkStickymobileHref : data.mainCta.text;
+  data.mainCta.href = data.mainCta.forkStickymobileHref ? data.mainCta.forkStickymobileHref : data.mainCta.href;
   const buttonWrapper = await createFloatingButton(block, audience, data);
 }
 

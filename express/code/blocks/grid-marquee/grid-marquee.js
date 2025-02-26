@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated, getMetadata } from '../../scripts/utils.js';
 
 let createTag; let getConfig;
 
@@ -25,6 +25,17 @@ function drawerOn(drawer) {
   }
   currDrawer = drawer;
 }
+function mWebVariant(anchor) {
+  const metadataMap = Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
+    if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
+    return acc;
+  }, {});
+  const metadata = metadataMap['mweb-drawer-genfill-link'];
+  if(anchor.textContent.trim().toLowerCase() !== 'generative fill' || metadata === null) return;
+  const appOnlyLink = createTag('a', {href: metadata, class: 'mweb-app-only' }, 'App only');
+  anchor.parentElement.append(appOnlyLink);
+}
+
 document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
 let isTouch;
 const iconRegex = /icon-\s*([^\s]+)/;
@@ -49,12 +60,14 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     anchor.classList.add('drawer-cta');
     const linkText = anchor.textContent.trim();
     anchor.title = anchor.title || linkText;
+    mWebVariant(anchor);
     const icon = icons[i];
     const match = icon && iconRegex.exec(icon.className);
     if (match?.[1]) {
       icon.append(getIconElementDeprecated(match[1]));
     }
     anchor.prepend(icon);
+
   });
 
   const video = createTag('video', {

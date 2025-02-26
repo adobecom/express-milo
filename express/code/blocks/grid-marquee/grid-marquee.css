@@ -177,6 +177,7 @@ main .section .grid-marquee h1 {
 }
 
 .grid-marquee .drawer .panel .drawer-cta-wrapper {
+  position: relative;
   border-top: 1px solid #0000001A;
   margin: 0;
 }
@@ -197,6 +198,26 @@ main .section .grid-marquee h1 {
   height: 22px;
   margin-right: 0px;
 }
+
+.grid-marquee .drawer .mweb-app-only {
+  z-index: 10;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  font-size: 12px;
+  color:#fff;
+  text-decoration-line: none;
+  width: 63px;
+  height: 24px;
+  border-radius: 7px;
+  background: linear-gradient(155.77deg, #FF477B 10.74%, #5C5CE0 85.29%);
+}
+
 
 .grid-marquee .drawer [aria-label='close'] {
   background: initial;
