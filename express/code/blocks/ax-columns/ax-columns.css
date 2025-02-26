@@ -15,6 +15,24 @@
   max-width: 350px;
 }
 
+main .section.business-hub:has(.ax-columns):not([data-padding='none']) > .content {
+  padding-top: 0;
+}
+
+main .section.business-hub:has(.ax-columns):not([data-padding='none']) > .content h2 {
+  font-size: 22px;
+  padding-top: 28px;
+}
+
+main .section.business-hub .ax-columns.enterprise {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+main .section.business-hub .ax-columns.enterprise .column h2 {
+  font-size: 60px;
+}
+
 .ax-columns {
   padding-left: 15px;
   padding-right: 15px;
@@ -857,6 +875,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   :lang(ja) .section .ax-columns h1.columns-heading-x-long {
     font-size: var(--heading-font-size-m);
+  }
+
+  main .section.business-hub:has(.ax-columns):not([data-padding='none']) > .content h2 {
+    font-size: 36px;
+    padding-top: 48px;
   }
 }
 
