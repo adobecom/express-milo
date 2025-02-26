@@ -201,8 +201,8 @@ const getId = (function idSetups() {
 export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
-
   const isCollapsibleRowsVariant = el.classList.contains('collapsible-rows');
+  let deviceBySize = defineDeviceByScreenSize();
 
   addTempWrapperDeprecated(el, 'pricing-table');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
@@ -333,16 +333,29 @@ export default async function init(el) {
   assignEvents(el);
 
   const handleResize = () => {
-    const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
-    collapisbleRows.forEach((collapisbleRow) => {
-      collapisbleRow.classList.add('collapsed');
-    });
-    const toggleRows = el.querySelectorAll('.toggle-row');
-    toggleRows.forEach((toggleRow) => {
-      toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
-    });
+    const newDeviceSize = defineDeviceByScreenSize();
+    if (deviceBySize !== newDeviceSize) {
+      deviceBySize = newDeviceSize;
+
+      if (newDeviceSize === 'DESKTOP') {
+        el.classList.remove('collapsible-rows');
+      } else {
+        el.classList.add('collapsible-rows');
+      }
+
+      if (isCollapsibleRowsVariant) {
+        const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
+        collapisbleRows.forEach((collapisbleRow) => {
+          collapisbleRow.classList.add('collapsed');
+        });
+      }
+      const toggleRows = el.querySelectorAll('.toggle-row');
+      toggleRows.forEach((toggleRow) => {
+        toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
+      });
+    }
   };
-  let deviceBySize = defineDeviceByScreenSize();
+
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
     deviceBySize = defineDeviceByScreenSize();
