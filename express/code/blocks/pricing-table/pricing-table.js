@@ -248,10 +248,12 @@ export default async function init(el) {
 
       // Add our test column to additional rows
       if (isCollapsibleRowsVariant && isAdditional && cols.length > 1) {
+        const viewAllText = viewAllFeatures ?? 'View all features';
         const toggleBtn = createTag('button', {
           class: 'toggle-row toggle-content col col-1',
           'aria-expanded': 'false',
-        }, 'View all features');
+          'aria-label': viewAllText,
+        }, viewAllText);
         const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': firstSection });
         toggleBtn.prepend(toggleIconTag);
         toggleBtn.addEventListener('click', () => {
