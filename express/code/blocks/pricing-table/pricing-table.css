@@ -458,17 +458,36 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   text-align: left;
 }
 
+.pricing-table.collapsible-rows .row:not(.row-heading) {
+  padding: 24px 0;
+}
+
 .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2,
 .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
   padding-left: 16px;
   padding-right: 16px;
+  background-color: #F8F8F8;
+  position: relative;
+  border-color: #E9E9E9;
+}
+
+.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2::before,
+.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  background-color: #F8F8F8;
+  z-index: -1;
 }
 
 .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
   flex-direction: row;
   justify-content: left;
   font-size: 14px;
-  background-color: white;
+  background-color: inherit;
   padding: 16px;
   border-bottom: 1px solid #E9E9E9;
   border-top: 1px solid #E9E9E9;
