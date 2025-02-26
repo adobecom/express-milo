@@ -27,12 +27,20 @@
   }
   .login-page .background .m-background {
     display: block;
-    min-height: 716px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .login-page .background .m-background {
+    display: none;
+  }
+  .login-page .background .tablet-background {
+    display: block;
   }
 }
 
 @media (min-width: 1280px) {
-  .login-page .background .m-background {
+  .login-page .background .tablet-background {
     display: none;
   }
   .login-page .background .l-background {
@@ -40,11 +48,29 @@
   }
 }
 
-@media (min-width: 1680px) {
+@media (min-width: 1440px) {
   .login-page .background .l-background {
     display: none;
   }
+  .login-page .background .desktop-background {
+    display: block;
+  }
+}
+
+@media (min-width: 1680px) {
+  .login-page .background .desktop-background {
+    display: none;
+  }
   .login-page .background .xl-background {
+    display: block;
+  }
+}
+
+@media (min-width: 1920px) {
+  .login-page .background .xl-background {
+    display: none;
+  }
+  .login-page .background .xxl-background {
     display: block;
   }
 }
