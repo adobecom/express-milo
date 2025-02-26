@@ -1,6 +1,7 @@
-.login-page .background {
-  opacity: 0.3;
-  position: absolute;
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-page .background img {
@@ -20,11 +21,30 @@
   border-radius: 0 0 16px 16px;
 }
 
-@media (min-width: 600px) {
-  .login-page .background img {
+@media (min-width: 768px) {
+  .login-page .foreground {
+    position: absolute;
+  }
+  .login-page .background .m-background {
     display: block;
-    height: 716px;
-    width: auto;
-    max-width: initial;
+    min-height: 716px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .login-page .background .m-background {
+    display: none;
+  }
+  .login-page .background .l-background {
+    display: block;
+  }
+}
+
+@media (min-width: 1680px) {
+  .login-page .background .l-background {
+    display: none;
+  }
+  .login-page .background .xl-background {
+    display: block;
   }
 }

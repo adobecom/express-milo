@@ -1,6 +1,11 @@
+const breakpoints = ['m', 'l', 'xl'];
 export default async function init(el) {
   const background = el.children[0];
   background.classList.add('background');
-  const foreground = el.children[1];
+  const imgs = [...background.querySelectorAll('img')];
+  imgs.forEach((img, index) => {
+    img.classList.add(`${breakpoints[index]}-background`);
+  });
+  const foreground = el.children[el.children.length - 1];
   foreground.classList.add('foreground');
 }
