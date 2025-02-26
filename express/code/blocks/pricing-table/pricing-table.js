@@ -158,7 +158,7 @@ function handleSection(sectionParams) {
         child.innerHTML = `<p >${col.innerHTML}</p>`;
       }
     });
-    if (nextRow.classList.contains('toggle-row')) {
+    if (nextRow?.classList.contains('toggle-row')) {
       row.classList.add('table-end-row');
 
       if (!nextRow.classList.contains('desktop-hide')) {
@@ -203,6 +203,8 @@ export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
 
+  const isCollapsibleRowsVariant = el.classList.contains('collapsible-rows');
+
   addTempWrapperDeprecated(el, 'pricing-table');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig } = utils);
@@ -244,13 +246,50 @@ export default async function init(el) {
         col.classList.add('col', `col-${cdx + 1}`);
         col.setAttribute('role', 'cell');
       });
+
+      if (isCollapsibleRowsVariant && isAdditional && cols.length > 1) {
+        const viewAllText = viewAllFeatures ?? 'View all features';
+        const toggleBtn = createTag('button', {
+          class: 'toggle-row toggle-content col col-1',
+          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
+        }, viewAllText);
+
+        const toggleIconTag = createTag('span', {
+          class: 'icon expand',
+          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
+        });
+
+        toggleBtn.prepend(toggleIconTag);
+
+        const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
+        if (sectionItem !== 4) {
+          colsToToggle.forEach((col) => {
+            col.classList.add('collapsed');
+          });
+        }
+
+        toggleBtn.addEventListener('click', () => {
+          const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
+          toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
+          colsToToggle.forEach((col) => {
+            if (isExpanded) {
+              col.classList.add('collapsed');
+            } else {
+              col.classList.remove('collapsed');
+            }
+          });
+        });
+
+        row.appendChild(toggleBtn);
+      }
+
       if (sectionItem % 2 === 0 && cols.length > 1) row.classList.add('shaded');
     } else {
       row.setAttribute('tabindex', 0);
     }
 
     const nextRow = rows[index + 1];
-    if (index > 0 && !isToggle && cols.length > 1
+    if (!isCollapsibleRowsVariant && index > 0 && !isToggle && cols.length > 1
       && (!nextRow || Array.from(nextRow.children).length <= 1)) {
       const toggleRow = createTag('button', { class: 'toggle-row' });
       if (!isAdditional) {
