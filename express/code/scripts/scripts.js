@@ -291,8 +291,9 @@ const listenAlloy = () => {
   const footer = createTag('meta', { name: 'footer', content: 'global-footer' });
   document.head.append(footer);
 
-  const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
-  document.head.append(footerSrc);
+  if (!getMetadata('footer-source')) {
+    document.head.append(createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' }));
+  }
 
   const adobeHomeRedirect = createTag('meta', { name: 'adobe-home-redirect', content: 'on' });
   document.head.append(adobeHomeRedirect);
@@ -309,8 +310,9 @@ const listenAlloy = () => {
   }
 
   // TODO remove metadata after we go live
-  const gnav = createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` });
-  document.head.append(gnav);
+  if (!getMetadata('gnav-source')) {
+    document.head.append(createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` }));
+  }
 
   if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
