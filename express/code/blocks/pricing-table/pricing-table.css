@@ -506,7 +506,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   background-color: inherit;
   padding: 16px;
   border-bottom: 1px solid #E9E9E9;
-  border-top: 1px solid #E9E9E9;
 }
 .pricing-table.collapsible-rows .row.table-start-row .col:last-child {
   border-top-right-radius: 0;
@@ -514,6 +513,12 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
 .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
   font-size: 13px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top: 1px solid #E9E9E9;
+  border-bottom: 1px solid #E9E9E9;
+  border-left: 0;
+  border-right: 0;
 }
 
 .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row.collapsed {
