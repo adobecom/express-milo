@@ -19,7 +19,7 @@ function handleToggleMore(btn) {
   const icon = btn.querySelector('.icon.expand');
   const expanded = icon?.getAttribute('aria-expanded') === 'false';
   icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') && prevElement.classList.contains('additional-row')) {
+  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row')) {
     if (expanded) {
       btn.classList.remove('collapsed');
       prevElement.classList.remove('collapsed');
@@ -27,6 +27,7 @@ function handleToggleMore(btn) {
       btn.classList.add('collapsed');
       prevElement.classList.add('collapsed');
     }
+
     prevElement = prevElement.previousElementSibling;
   }
 }
@@ -56,6 +57,7 @@ function handleHeading(headingRow, headingCols) {
       btnWrapper.classList.add('button-container');
       buttonsWrapper.append(btnWrapper);
     });
+
     if (buttons.length > 0) {
       col.append(buttonsWrapper);
     }
@@ -157,7 +159,7 @@ function handleSection(sectionParams) {
         child.innerHTML = `<p >${col.innerHTML}</p>`;
       }
     });
-    if (nextRow?.classList.contains('toggle-row')) {
+    if (nextRow.classList.contains('toggle-row')) {
       row.classList.add('table-end-row');
 
       if (!nextRow.classList.contains('desktop-hide')) {
@@ -202,8 +204,6 @@ export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
 
-  const isCollapsibleRowsVariant = el.classList.contains('collapsible-rows');
-
   addTempWrapperDeprecated(el, 'pricing-table');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig } = utils);
@@ -245,53 +245,19 @@ export default async function init(el) {
         col.classList.add('col', `col-${cdx + 1}`);
         col.setAttribute('role', 'cell');
       });
-
-      if (isCollapsibleRowsVariant && isAdditional && cols.length > 1) {
-        const viewAllText = viewAllFeatures ?? 'View all features';
-        const toggleBtn = createTag('button', {
-          class: 'toggle-row toggle-content col col-1',
-          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
-        }, viewAllText);
-
-        const toggleIconTag = createTag('span', {
-          class: 'icon expand',
-          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
-        });
-
-        toggleBtn.prepend(toggleIconTag);
-
-        const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-        if (sectionItem !== 4) {
-          colsToToggle.forEach((col) => {
-            col.classList.add('collapsed');
-          });
-        }
-
-        toggleBtn.addEventListener('click', () => {
-          const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
-          toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
-          colsToToggle.forEach((col) => {
-            if (isExpanded) {
-              col.classList.add('collapsed');
-            } else {
-              col.classList.remove('collapsed');
-            }
-          });
-        });
-
-        row.appendChild(toggleBtn);
-      }
-
       if (sectionItem % 2 === 0 && cols.length > 1) row.classList.add('shaded');
     } else {
       row.setAttribute('tabindex', 0);
     }
 
     const nextRow = rows[index + 1];
-    if (!isCollapsibleRowsVariant && index > 0 && !isToggle && cols.length > 1
+    if (index > 0 && !isToggle && cols.length > 1
       && (!nextRow || Array.from(nextRow.children).length <= 1)) {
       const toggleRow = createTag('button', { class: 'toggle-row' });
-      if (!isAdditional) toggleRow.classList.add('desktop-hide');
+      if (!isAdditional) {
+        toggleRow.classList.add('desktop-hide');
+        toggleRow.classList.add('mobile-hide');
+      }
 
       const viewAllText = viewAllFeatures ?? 'View all features';
       const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
@@ -332,62 +298,18 @@ export default async function init(el) {
   handleHeading(rows[0], headingChildren);
   assignEvents(el);
 
-  let deviceBySize = defineDeviceByScreenSize();
-
   const handleResize = () => {
-    // Only handle resize for collapsible variant
-    if (!isCollapsibleRowsVariant) return;
-
-    const newDeviceSize = defineDeviceByScreenSize();
-    if (deviceBySize !== newDeviceSize) {
-      const additionalRows = el.querySelectorAll('.additional-row');
-
-      additionalRows.forEach((row) => {
-        // Remove existing toggle buttons
-        const existingToggle = row.querySelector('.toggle-row');
-        if (existingToggle) {
-          existingToggle.remove();
-        }
-
-        // Add toggle buttons if going to mobile
-        if (newDeviceSize === 'MOBILE') {
-          const cols = Array.from(row.children);
-          if (cols.length > 1) {
-            const viewAllText = viewAllFeatures ?? 'View all features';
-            const toggleBtn = createTag('button', {
-              class: 'toggle-row toggle-content col col-1',
-              'aria-expanded': 'false',
-            }, viewAllText);
-
-            const toggleIconTag = createTag('span', {
-              class: 'icon expand',
-              'aria-expanded': 'false',
-            });
-            toggleBtn.prepend(toggleIconTag);
-
-            // Add click handler
-            toggleBtn.addEventListener('click', () => {
-              const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
-              toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
-              const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-              colsToToggle.forEach((col) => {
-                if (isExpanded) {
-                  col.classList.add('collapsed');
-                } else {
-                  col.classList.remove('collapsed');
-                }
-              });
-            });
-
-            row.appendChild(toggleBtn);
-          }
-        }
-      });
-
-      deviceBySize = newDeviceSize;
-    }
+    const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
+    collapisbleRows.forEach((collapisbleRow) => {
+      collapisbleRow.classList.add('collapsed');
+    });
+    const toggleRows = el.querySelectorAll('.toggle-row');
+    toggleRows.forEach((toggleRow) => {
+      toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
+    });
   };
 
+  let deviceBySize = defineDeviceByScreenSize();
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
     deviceBySize = defineDeviceByScreenSize();
