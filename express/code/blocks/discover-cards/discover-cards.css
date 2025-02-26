@@ -78,6 +78,8 @@ main .section .discover-cards {
     background-color: #292929;
     color: var(--color-white);
     border: none;
+    margin-top: 24px;
+    margin-left: 4px
 }
 
 .discover-cards .cards-container.gallery {
