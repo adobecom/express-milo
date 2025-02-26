@@ -767,6 +767,10 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   line-height: 130%; /* 28.6px */
 }
 
+.pricing-table.seamless .row.shaded.section-row {
+  background: var(--Palette-s2-gray-50, #F8F8F8);
+}
+
 .pricing-table.seamless .col-heading {
   color: var(--Content-Neutral-default, #292929);
   font-family: "Adobe Clean";
@@ -774,6 +778,10 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   font-style: normal;
   font-weight: 700;
   line-height: 130%; /* 18.2px */
+}
+.pricing-table.seamless .icon.expand,
+.pricing-table.seamless .icon.expand[aria-expanded='true'] {
+  transform: scale(0.75);
 }
 
 .pricing-table.seamless .section-row {
@@ -792,7 +800,11 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   font-style: normal;
   font-weight: 700;
   line-height: 130%; /* 23.4px */
-  margin: auto;
+  margin: auto auto 16px auto;
+}
+
+.pricing-table.seamless .row.toggle-row .col.toggle-content {
+  gap: 4px;
 }
 
 .pricing-table.seamless .blank-row {
