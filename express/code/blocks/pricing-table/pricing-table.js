@@ -261,7 +261,9 @@ export default async function init(el) {
         toggleBtn.prepend(toggleIconTag);
 
         const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-        if (sectionItem !== 4) {
+
+        // Only collapse on mobile
+        if (defineDeviceByScreenSize() === 'MOBILE' && sectionItem !== 4) {
           colsToToggle.forEach((col) => {
             col.classList.add('collapsed');
           });

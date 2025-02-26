@@ -22,6 +22,11 @@
     .section > .headline {
         max-width: 830px;
     }
+    .section > .headline.business-hub h2 {
+      font-size: 36px;
+      margin-top: 63px;
+      margin-bottom: 33px;
+    }
 }
 
 @media (min-width: 1200px) {
