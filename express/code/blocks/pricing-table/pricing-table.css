@@ -516,6 +516,10 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   font-size: 13px;
 }
 
+.pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row.collapsed {
+  margin-top: -9px;
+}
+
 .pricing-table .row.section-row .col .col-heading {
   display: none;
 }
