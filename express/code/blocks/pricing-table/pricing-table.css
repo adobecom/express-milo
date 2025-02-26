@@ -186,6 +186,14 @@
   gap: 24px;
 }
 
+.pricing-table.collapsible-rows > .row:first-child {
+  margin-bottom: -10px;
+}
+
+.pricing-table.collapsible-rows > .row:nth-child(2) {
+  margin-top: -10px;
+}
+
 @media (min-width: 900px) {
   .pricing-table > .row {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -286,6 +294,9 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table .row.blank-row {
   height: 40px;
 }
+.pricing-table.collapsible-rows .row.blank-row {
+  display: none;
+}
 /* /Blank Row */
 
 /* Toggle Row */
@@ -318,11 +329,16 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table .row.toggle-row:hover .col.toggle-content {
   text-decoration: underline;
 }
-.pricing-table .row.toggle-row .col.toggle-content .icon.expand,
-.pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
+.pricing-table .row.toggle-row .col.toggle-content .icon.expand {
   height: 18px;
   width: 18px;
 }
+.pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
+  height: 14px;
+  width: 14px;
+  background-size: 14px;
+}
+
 .pricing-table .row.toggle-row .col {
   white-space: nowrap;
 }
@@ -486,7 +502,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
   flex-direction: row;
   justify-content: left;
-  font-size: 14px;
+  font-size: 12px;
   background-color: inherit;
   padding: 16px;
   border-bottom: 1px solid #E9E9E9;
