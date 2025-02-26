@@ -202,6 +202,8 @@ export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
 
+  const isCollapsibleRowsVariant = el.classList.contains('collapsible-rows');
+
   addTempWrapperDeprecated(el, 'pricing-table');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig } = utils);
@@ -245,7 +247,7 @@ export default async function init(el) {
       });
 
       // Add our test column to additional rows
-      if (isAdditional && cols.length > 1) {
+      if (isCollapsibleRowsVariant && isAdditional && cols.length > 1) {
         const toggleBtn = createTag('button', {
           class: 'toggle-row toggle-content col col-1',
           'aria-expanded': 'false',
