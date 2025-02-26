@@ -156,13 +156,16 @@
   border-top: 1px solid transparent;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 981px) {
   .pricing-table-wrapper:has(.pricing-table.collapsible-rows) {
     margin-top: -5px;
   }
   .pricing-table.collapsible-rows .row-heading .col-heading .tracking-header {
     margin-bottom: 20px;
     font-size: 18px;
+  }
+  .pricing-table .row.row-heading .col:first-child * {
+    margin: auto;
   }
   .pricing-table.collapsible-rows .col-wrapper {
     height: 36px;
