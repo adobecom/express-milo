@@ -29,8 +29,13 @@ main .section>.simplified-pricing-cards-wrapper {
     margin: 16px auto auto auto;
 }
 
+.simplified-pricing-cards.wide {
+    --card-width: 100%;
+    padding: 16px;
+}
+
 .simplified-pricing-cards .card {
-    width: calc(var(--card-width) - 32px);
+    width: calc(var(--card-width) - 34px);
     position: relative;
     padding: 16px;
     border: 2px solid var(--color-gray-300);
@@ -444,6 +449,11 @@ main .section>.simplified-pricing-cards-wrapper {
         --card-width: 580px;
         --header-size: 22px;
         --header-offer-size: 16px;
+    }
+
+    .simplified-pricing-cards.wide {
+        --card-width: 580px;
+        padding: unset;
     }
 
     .simplified-pricing-cards .card-wrapper {
