@@ -35,7 +35,7 @@ main .section .discover-cards {
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    padding: 16px;
+    padding: 16px 2px;
     margin: 9px -7px 10px auto;
 
 }
@@ -79,7 +79,7 @@ main .section .discover-cards {
     color: var(--color-white);
     border: none;
     margin-top: 24px;
-    margin-left: 0px;
+    margin-left: 14px;
 }
 
 .discover-cards .cards-container.gallery {
