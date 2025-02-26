@@ -29,10 +29,6 @@
   margin-right: 8px;
 }
 
-.pricing-table-wrapper:has(.pricing-table.collapsible-rows) {
-  margin-top: -5px;
-}
-
 /* links stay links by default in cells */
 .pricing-table .row:not(.row-heading) .col a.button,
 .pricing-table .row:not(.row-heading) .col a.button:hover,
@@ -78,16 +74,8 @@
 }
 
 .pricing-table .row-heading .col-heading .tracking-header {
-  font-size: 18px;
+  font-size: 1.375rem;
   line-height: 130%;
-  margin: auto;
-}
-.pricing-table.collapsible-rows .row-heading .col-heading .tracking-header {
-  margin-bottom: 20px;
-}
-
-.pricing-table.collapsible-rows .col-wrapper {
-  height: 36px;
 }
 
 .pricing-table .row-heading .col-heading .body {
@@ -168,42 +156,124 @@
   border-top: 1px solid transparent;
 }
 
-.pricing-table.collapsible-rows .additional-row .col-2.collapsed,
-.pricing-table.collapsible-rows .additional-row .col-3.collapsed {
-  display: none;
+@media (max-width: 900px) {
+  .pricing-table-wrapper:has(.pricing-table.collapsible-rows) {
+    margin-top: -5px;
+  }
+  .pricing-table.collapsible-rows .row-heading .col-heading .tracking-header {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  .pricing-table.collapsible-rows .col-wrapper {
+    height: 36px;
+  }
+  .pricing-table.collapsible-rows .additional-row .col-2.collapsed,
+  .pricing-table.collapsible-rows .additional-row .col-3.collapsed {
+    display: none;
+  }
+  .pricing-table-wrapper .pricing-table.collapsible-rows {
+    padding-top: 0;
+    margin-top: 24px;
+  }
+  .pricing-table-wrapper .pricing-table.collapsible-rows .row-heading .col {
+    padding: 0;
+  }
+  .pricing-table.collapsible-rows .row.row-heading {
+    margin-bottom: 4px;
+  }
+  .pricing-table.collapsible-rows .row.section-row .col.col-1 p:first-child {
+    font-size: 22px;
+    color: #505050;
+  }
+  .pricing-table.collapsible-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .pricing-table.collapsible-rows > .row:first-child {
+    margin-bottom: -10px;
+  }
+  .pricing-table.collapsible-rows > .row:nth-child(2) {
+    margin-top: -10px;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2,
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: #F8F8F8;
+    position: relative;
+    border-color: #E9E9E9;
+  }
+
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2::before,
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    background-color: #F8F8F8;
+    z-index: -1;
+  }
+  .pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
+    height: 14px;
+    width: 14px;
+    background-size: 14px;
+  }
+  .pricing-table.collapsible-rows .row .toggle-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--color-info-accent);
+    gap: 8px;
+    font-weight: 700;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) {
+    padding: 24px 0;
+  }
+  .pricing-table.collapsible-rows .row.blank-row {
+    display: none;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
+    flex-direction: row;
+    justify-content: left;
+    font-size: 12px;
+    background-color: inherit;
+    padding: 16px;
+    border-bottom: 1px solid #E9E9E9;
+  }
+  .pricing-table.collapsible-rows .row.table-start-row .col:last-child {
+    border-top-right-radius: 0;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
+    font-size: 13px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+    border-left: 0;
+    border-right: 0;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row.collapsed {
+    margin-top: -9px;
+  }
+  .pricing-table.collapsible-rows .row.section-header-row .col,
+  .pricing-table.collapsible-rows .row.section-row,
+  .pricing-table.collapsible-rows .row.toggle-row .col {
+    padding: 0;
+  }
+  .pricing-table.collapsible-rows .row.section-row {
+    border-radius: 8px;
+  }
+  main .section .pricing-table-wrapper .pricing-table.collapsible-rows {
+    padding-bottom: 0;
+  }
 }
 
-.pricing-table-wrapper .pricing-table.collapsible-rows {
-  padding-top: 0;
-  margin-top: 24px;
-}
 
-.pricing-table-wrapper .pricing-table.collapsible-rows .row-heading .col {
-  padding: 0;
-}
-
-.pricing-table.collapsible-rows .row.row-heading {
-  margin-bottom: 4px;
-}
-
-.pricing-table.collapsible-rows .row.section-row .col.col-1 p:first-child {
-  font-size: 22px;
-  color: #505050;
-}
-
-.pricing-table.collapsible-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.pricing-table.collapsible-rows > .row:first-child {
-  margin-bottom: -10px;
-}
-
-.pricing-table.collapsible-rows > .row:nth-child(2) {
-  margin-top: -10px;
-}
 
 @media (min-width: 900px) {
   .pricing-table > .row {
@@ -305,9 +375,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table .row.blank-row {
   height: 40px;
 }
-.pricing-table.collapsible-rows .row.blank-row {
-  display: none;
-}
 /* /Blank Row */
 
 /* Toggle Row */
@@ -320,8 +387,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   appearance: unset;
   width: 100%;
 }
-.pricing-table .row.toggle-row .col.toggle-content,
-.pricing-table.collapsible-rows .row .toggle-row {
+.pricing-table .row.toggle-row .col.toggle-content {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -343,11 +409,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table .row.toggle-row .col.toggle-content .icon.expand {
   height: 18px;
   width: 18px;
-}
-.pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
-  height: 14px;
-  width: 14px;
-  background-size: 14px;
 }
 
 .pricing-table .row.toggle-row .col {
@@ -483,57 +544,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   align-items: start;
   justify-content: center;
   text-align: left;
-}
-
-.pricing-table.collapsible-rows .row:not(.row-heading) {
-  padding: 24px 0;
-}
-
-.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2,
-.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
-  padding-left: 16px;
-  padding-right: 16px;
-  background-color: #F8F8F8;
-  position: relative;
-  border-color: #E9E9E9;
-}
-
-.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2::before,
-.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3::before {
-  content: '';
-  position: absolute;
-  top: -8px;
-  bottom: -8px;
-  left: 0;
-  right: 0;
-  background-color: #F8F8F8;
-  z-index: -1;
-}
-
-.pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
-  flex-direction: row;
-  justify-content: left;
-  font-size: 12px;
-  background-color: inherit;
-  padding: 16px;
-  border-bottom: 1px solid #E9E9E9;
-}
-.pricing-table.collapsible-rows .row.table-start-row .col:last-child {
-  border-top-right-radius: 0;
-}
-
-.pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
-  font-size: 13px;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  border-top: 1px solid #E9E9E9;
-  border-bottom: 1px solid #E9E9E9;
-  border-left: 0;
-  border-right: 0;
-}
-
-.pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row.collapsed {
-  margin-top: -9px;
 }
 
 .pricing-table .row.section-row .col .col-heading {
@@ -775,14 +785,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table .row.toggle-row .col {
     padding: 16px;
   }
-  .pricing-table.collapsible-rows .row.section-header-row .col,
-  .pricing-table.collapsible-rows .row.section-row,
-  .pricing-table.collapsible-rows .row.toggle-row .col {
-    padding: 0;
-  }
-  .pricing-table.collapsible-rows .row.section-row {
-    border-radius: 8px;
-  }
   .pricing-table .row.toggle-row.desktop-hide {
     display: grid;
   }
@@ -841,9 +843,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   }
   main .section .pricing-table-wrapper .pricing-table {
     margin: 0px 20px;
-  }
-  main .section .pricing-table-wrapper .pricing-table.collapsible-rows {
-    padding-bottom: 0;
   }
 
   .pricing-table {
