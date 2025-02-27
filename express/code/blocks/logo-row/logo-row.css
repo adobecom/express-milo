@@ -16,6 +16,12 @@ main .logo-row .block-layout {
     font-family: Arial, sans-serif;
 }
 
+main .logo-row.block-layout .text-column {
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 900;
+}
+
 main .logo-row .block-row {
     display: block;
     width: fit-content;
@@ -33,7 +39,6 @@ main .logo-row .text-content {
     font-size: 24px;
     font-weight: bold;
     color: #333;
-
 }
 
 main .logo-row .image-column {
@@ -43,17 +48,18 @@ main .logo-row .image-column {
     justify-content: center;
     padding-left: 16px;
     padding-right: 16px;
-
+    margin: auto;
 }
 
 main .logo-row .image-column p {
-    margin: 0;
+    height: fit-content;
+    margin: auto;
 }
 
 main .logo-row.numerous .image-column {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 16px;
 }
 
 main .logo-row .brand-image {
@@ -98,7 +104,7 @@ main .logo-row .brand-image {
         margin: auto 0 16px auto;
         padding-right: 40px;
         max-width: 320px;
-
+        text-align: left;
     }
 
     main .logo-row .block-row {
