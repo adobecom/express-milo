@@ -78,7 +78,11 @@
 
 main .banner h2 {
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 0;  
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 130%;
 }
 
 .banner.light h2,
