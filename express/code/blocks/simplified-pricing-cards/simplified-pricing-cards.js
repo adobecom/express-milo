@@ -259,20 +259,6 @@ function decorateCardBorder(card, source) {
   source.style.display = 'none';
 }
 
-function getDefaultExpandedIndex(el) {
-  let defaultOpenIndex =0
-  let q = undefined
-  el.classList.forEach((cl) => {
-    if (cl.includes('default-expanded-')) {
-      q = cl
-    }
-  }) 
-  if (q) {
-    defaultOpenIndex = parseInt(q.split('default-expanded-')[1]) - 1
-  }
-  return defaultOpenIndex
-}
-
 export default async function init(el) {
   addTempWrapperDeprecated(el, 'simplified-pricing-cards');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), import('../../scripts/utils/location-utils.js')]).then(([utils, placeholders, locationUtils]) => {
@@ -285,12 +271,10 @@ export default async function init(el) {
   const cardCount = rows[0].children.length;
   const cards = [];
 
-  const defaultOpenIndex = getDefaultExpandedIndex(el)
- 
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
     const card = createTag('div', { class: 'card' });
-    if (cardIndex != defaultOpenIndex) {
+    if (cardIndex > 0) {
       card.classList.add('hide');
     }
     decorateCardBorder(card, rows[1].children[0]);
