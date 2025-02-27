@@ -273,6 +273,10 @@
   }
   .pricing-table.single-section .row.section-row:has(.collapsed) button.toggle-row {
     border-top: none;
+    padding-top: 26px;
+  }
+  .pricing-table.single-section .row.section-row:not(:has(.collapsed)) button.toggle-row {
+    padding-top: 20px;
   }
   .pricing-table.single-section .row.section-row {
     border-radius: 8px;
