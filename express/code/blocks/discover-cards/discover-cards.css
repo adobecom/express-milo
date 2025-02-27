@@ -78,7 +78,7 @@ main .section .discover-cards {
     background-color: #292929;
     color: var(--color-white);
     border: none;
-    margin-top: 24px;
+    margin-top: 32px;
     margin-left: 0px
 }
 
