@@ -177,9 +177,6 @@ main a, main a:hover, main u {
   text-decoration: none;
 }
 
-main a:not(.marquee), main a:not(.marquee):hover{
-  text-decoration: underline;
-}
 main video {
   max-width: 100%;
 }
@@ -1185,4 +1182,23 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   100% {
     transform: translateX(-25%);
   }
+}
+
+/* marquee light xxl-button overrides */
+.marquee.light.xxl-button .icon-area img {
+  max-height: 30px;
+  max-width: 39px;
+}
+
+.marquee.light.xxl-button h2 {
+  font-size: var(--heading-font-size-xl);
+  line-height: 58.5px;
+}
+
+.marquee.light.xxl-button .action-area a {
+  margin: 0;
+}
+
+.marquee.light.xxl-button a:not(.con-button), main a:not(.con-button):hover{
+  text-decoration: underline;
 }
