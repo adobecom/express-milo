@@ -40,13 +40,12 @@ export async function createMultiFunctionButton(block, data, audience) {
   return buttonWrapper;
 }
 
-// Checks if the device is an android and has sufficient RAM, enables the mobile gating if it is.
+// Checks if the device is an android, enables the mobile gating if it is.
 // If there is no metadata check enabled, still enable the gating block in case authors want it.
 
-function androidDeviceAndRamCheck() {
+function androidCheck() {
   if (getMetadata('fork-eligibility-check')?.toLowerCase()?.trim() !== 'on') return true;
-  const isAndroid = getMobileOperatingSystem() === 'Android';
-  return navigator.deviceMemory >= 4 && isAndroid;
+  return getMobileOperatingSystem() === 'Android';
 }
 
 function collectFloatingButtonData() {
@@ -110,7 +109,7 @@ function collectFloatingButtonData() {
 
 export default async function decorate(block) {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
-  if (!androidDeviceAndRamCheck()) {
+  if (!androidCheck()) {
     const { default: decorateNormal } = await import('../floating-button/floating-button.js');
     decorateNormal(block);
     return;

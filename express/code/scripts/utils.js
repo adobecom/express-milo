@@ -457,7 +457,12 @@ export function preDecorateSections(area) {
     const textToTarget = getMetadata(`${device}-floating-cta-text`)?.trim() || getMetadata('main-cta-text')?.trim();
     const linkToTarget = getMetadata(`${device}-floating-cta-link`)?.trim() || getMetadata('main-cta-link')?.trim();
     if (textToTarget || linkToTarget) {
-      const linkToTargetURL = new URL(linkToTarget);
+      let linkToTargetURL = null;
+      try {
+        linkToTargetURL = new URL(linkToTarget);
+      } catch (err) {
+        window.lana?.log(err);
+      }
       const sameUrlCTAs = Array.from(area.querySelectorAll('a:any-link'))
         .filter((a) => {
           try {
