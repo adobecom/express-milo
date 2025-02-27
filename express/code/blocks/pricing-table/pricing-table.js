@@ -202,7 +202,7 @@ const getId = (function idSetups() {
 export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
-  const isCollapsibleRowsVariant = el.classList.contains('collapsible-rows');
+  const isCollapsibleRowsVariant = el.classList.contains('single-section');
   let deviceBySize = defineDeviceByScreenSize();
 
   addTempWrapperDeprecated(el, 'pricing-table');
@@ -345,9 +345,9 @@ export default async function init(el) {
         deviceBySize = newDeviceSize;
 
         if (newDeviceSize === 'DESKTOP') {
-          el.classList.remove('collapsible-rows');
+          el.classList.remove('single-section');
         } else {
-          el.classList.add('collapsible-rows');
+          el.classList.add('single-section');
         }
 
         collapisbleRows.forEach((collapisbleRow) => {
