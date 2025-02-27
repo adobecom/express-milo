@@ -79,7 +79,7 @@ main .section .discover-cards {
     color: var(--color-white);
     border: none;
     margin-top: 24px;
-    margin-left: 4px
+    margin-left: 0px
 }
 
 .discover-cards .cards-container.gallery {
