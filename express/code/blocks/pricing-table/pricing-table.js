@@ -354,9 +354,6 @@ export default async function init(el) {
         toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
       });
     } else {
-      collapisbleRows.forEach((collapisbleRow) => {
-        collapisbleRow.classList.add('collapsed');
-      });
       toggleRows.forEach((toggleRow) => {
         toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
       });
