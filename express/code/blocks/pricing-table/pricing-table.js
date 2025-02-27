@@ -364,8 +364,6 @@ export default async function init(el) {
     }
   };
 
-
-  let deviceBySize = defineDeviceByScreenSize();
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
     deviceBySize = defineDeviceByScreenSize();
