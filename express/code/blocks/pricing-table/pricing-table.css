@@ -281,7 +281,7 @@
   
   .pricing-table.single-section .row.section-row:not(:first-of-type):has(.collapsed) button.toggle-row {
     border-top: none;
-    padding-top: 24px;
+    padding-top: 18px;
   }
   .pricing-table.single-section .row.section-row {
     border-radius: 8px;
