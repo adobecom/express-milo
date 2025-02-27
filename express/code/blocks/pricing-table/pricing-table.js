@@ -333,17 +333,17 @@ export default async function init(el) {
   assignEvents(el);
 
   const handleResize = () => {
-    const newDeviceSize = defineDeviceByScreenSize();
-    if (deviceBySize !== newDeviceSize) {
-      deviceBySize = newDeviceSize;
+    if (isCollapsibleRowsVariant) {
+      const newDeviceSize = defineDeviceByScreenSize();
+      if (deviceBySize !== newDeviceSize) {
+        deviceBySize = newDeviceSize;
 
-      if (newDeviceSize === 'DESKTOP') {
-        el.classList.remove('collapsible-rows');
-      } else {
-        el.classList.add('collapsible-rows');
-      }
+        if (newDeviceSize === 'DESKTOP') {
+          el.classList.remove('collapsible-rows');
+        } else {
+          el.classList.add('collapsible-rows');
+        }
 
-      if (isCollapsibleRowsVariant) {
         const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
         collapisbleRows.forEach((collapisbleRow) => {
           collapisbleRow.classList.add('collapsed');
