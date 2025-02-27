@@ -10,6 +10,10 @@
   margin: auto;
 }
 
+.section > .headline h1 { 
+  font-size: 36px;
+}
+
 .section > .headline.business-hub h2 {
   font-size: 22px;
   padding-left: 16px;
@@ -26,6 +30,9 @@
     font-size: 36px;
     margin-top: 63px;
     margin-bottom: 33px;
+  }
+  .section > .headline h1 { 
+    font-size: 45px;
   }
 }
 
