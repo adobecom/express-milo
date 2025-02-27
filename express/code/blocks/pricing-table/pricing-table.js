@@ -333,6 +333,8 @@ export default async function init(el) {
   assignEvents(el);
 
   const handleResize = () => {
+    const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
+    const toggleRows = el.querySelectorAll('.toggle-row');
     if (isCollapsibleRowsVariant) {
       const newDeviceSize = defineDeviceByScreenSize();
       if (deviceBySize !== newDeviceSize) {
@@ -344,12 +346,17 @@ export default async function init(el) {
           el.classList.add('collapsible-rows');
         }
 
-        const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
         collapisbleRows.forEach((collapisbleRow) => {
           collapisbleRow.classList.add('collapsed');
         });
       }
-      const toggleRows = el.querySelectorAll('.toggle-row');
+      toggleRows.forEach((toggleRow) => {
+        toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
+      });
+    } else {
+      collapisbleRows.forEach((collapisbleRow) => {
+        collapisbleRow.classList.add('collapsed');
+      });
       toggleRows.forEach((toggleRow) => {
         toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
       });
