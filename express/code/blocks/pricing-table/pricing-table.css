@@ -420,14 +420,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   height: 24px;
   width: 24px;
 }
-/* /Toggle Row */
-
-/* Additional Rows */
-.pricing-table .row.section-row.additional-row.collapsed {
-  display: none;
-}
-/* /Additional Rows */
-
 /* Table Borders */
 .pricing-table .col {
   border: var(--border-width) solid var(--border-color);
