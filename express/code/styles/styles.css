@@ -211,7 +211,7 @@ main svg.icon-milo, main img.icon-milo {
 
 
 .text-block .foreground > .cta-container .body-m.action-area a {
-  margin-top: unset;
+  margin: unset;
 }
 
 

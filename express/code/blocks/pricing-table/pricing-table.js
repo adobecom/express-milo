@@ -19,7 +19,7 @@ function handleToggleMore(btn) {
   const icon = btn.querySelector('.icon.expand');
   const expanded = icon?.getAttribute('aria-expanded') === 'false';
   icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row')) {
+  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') && prevElement.classList.contains('additional-row')) {
     if (expanded) {
       btn.classList.remove('collapsed');
       prevElement.classList.remove('collapsed');
@@ -56,6 +56,7 @@ function handleHeading(headingRow, headingCols) {
       btnWrapper.classList.add('button-container');
       buttonsWrapper.append(btnWrapper);
     });
+
     if (buttons.length > 0) {
       col.append(buttonsWrapper);
     }
@@ -291,7 +292,10 @@ export default async function init(el) {
     if (!isCollapsibleRowsVariant && index > 0 && !isToggle && cols.length > 1
       && (!nextRow || Array.from(nextRow.children).length <= 1)) {
       const toggleRow = createTag('button', { class: 'toggle-row' });
-      if (!isAdditional) toggleRow.classList.add('desktop-hide');
+      if (!isAdditional) {
+        toggleRow.classList.add('desktop-hide');
+        toggleRow.classList.add('mobile-hide');
+      }
 
       const viewAllText = viewAllFeatures ?? 'View all features';
       const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
@@ -360,6 +364,8 @@ export default async function init(el) {
     }
   };
 
+
+  let deviceBySize = defineDeviceByScreenSize();
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
     deviceBySize = defineDeviceByScreenSize();
