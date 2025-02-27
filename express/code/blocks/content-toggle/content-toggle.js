@@ -35,11 +35,10 @@ function initButton($block, $sections, index) {
 
     const updateBackgroundSize = () => {
       requestAnimationFrame(() => {
-        const $activeButton = $block.querySelector('button.active');
-        const activeButtonWidth = $activeButton.offsetWidth + 5;
-        let leftOffset = Array.from($buttons).indexOf($activeButton) * 10;
+        const activeButtonWidth = $buttons[index].offsetWidth + 5;
+        let leftOffset = index * 10;
 
-        for (let i = 0; i < Array.from($buttons).indexOf($activeButton); i += 1) {
+        for (let i = 0; i < index; i += 1) {
           leftOffset += $buttons[i].offsetWidth;
         }
 
@@ -68,7 +67,6 @@ function initButton($block, $sections, index) {
         $activeButton.classList.remove('active');
         $buttons[index].classList.add('active');
         updateBackgroundSize();
-
         $sections.forEach(($section) => {
           if ($buttons[index].dataset.text === $section.dataset.toggle.toLowerCase()) {
             $section.style.display = 'block';
