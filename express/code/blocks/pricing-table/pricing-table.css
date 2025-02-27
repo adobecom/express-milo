@@ -995,6 +995,9 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.collapsible-rows .col[data-col-index="3"] {
     border-right: 1px solid var(--border-color);
   }
+  .pricing-table.collapsible-rows .table-end-row:last-of-type{
+    border-bottom: unset;
+  } 
 }
 
 
