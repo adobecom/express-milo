@@ -268,8 +268,15 @@
   .pricing-table.single-section .row.toggle-row .col {
     padding: 0;
   }
+  .pricing-table.single-section .row.section-row:has(.collapsed) {
+    row-gap: 0;
+  }
+  .pricing-table.single-section .row.section-row:has(.collapsed) button.toggle-row {
+    border-top: none;
+  }
   .pricing-table.single-section .row.section-row {
     border-radius: 8px;
+    row-gap: 8px;
   }
   main .section .pricing-table-wrapper .pricing-table.single-section {
     padding-bottom: 0;
