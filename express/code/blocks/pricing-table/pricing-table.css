@@ -157,74 +157,74 @@
 }
 
 @media (max-width: 981px) {
-  .pricing-table-wrapper:has(.pricing-table.collapsible-rows) {
+  .pricing-table-wrapper:has(.pricing-table.single-section) {
     margin-top: -5px;
   }
-  .pricing-table.collapsible-rows .row-heading .col-heading .tracking-header {
+  .pricing-table.single-section .row-heading .col-heading .tracking-header {
     margin-bottom: 20px;
     font-size: 18px;
   }
   .pricing-table .row.row-heading .col:first-child * {
     margin: auto;
   }
-  .pricing-table.collapsible-rows .col-wrapper {
+  .pricing-table.single-section .col-wrapper {
     height: 36px;
   }
-  .pricing-table.collapsible-rows .additional-row .col-2.collapsed,
-  .pricing-table.collapsible-rows .additional-row .col-3.collapsed {
+  .pricing-table.single-section .additional-row .col-2.collapsed,
+  .pricing-table.single-section .additional-row .col-3.collapsed {
     display: none;
   }
-  .pricing-table-wrapper .pricing-table.collapsible-rows {
+  .pricing-table-wrapper .pricing-table.single-section {
     padding-top: 0;
     margin-top: 24px;
   }
-  .pricing-table-wrapper .pricing-table.collapsible-rows .row-heading .col {
+  .pricing-table-wrapper .pricing-table.single-section .row-heading .col {
     padding: 0;
   }
-  .pricing-table.collapsible-rows .row.row-heading {
+  .pricing-table.single-section .row.row-heading {
     margin-bottom: 4px;
   }
-  .pricing-table.collapsible-rows .row.section-row .col.col-1 p:first-child {
+  .pricing-table.single-section .row.section-row .col.col-1 p:first-child {
     font-size: 22px;
     color: #505050;
   }
-  .pricing-table.collapsible-rows {
+  .pricing-table.single-section {
     display: flex;
     flex-direction: column;
     gap: 24px;
   }
-  .pricing-table.collapsible-rows > .row:first-child {
+  .pricing-table.single-section > .row:first-child {
     margin-bottom: -10px;
   }
-  .pricing-table.collapsible-rows > .row:nth-child(2) {
+  .pricing-table.single-section > .row:nth-child(2) {
     margin-top: -10px;
   }
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2,
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
+  .pricing-table.single-section .row:not(.row-heading) .col.col-2,
+  .pricing-table.single-section .row:not(.row-heading) .col.col-3 {
     padding-left: 16px;
     padding-right: 16px;
-    background-color: #F8F8F8;
+    background-color: var(--color-gray-100);
     position: relative;
     border-color: #E9E9E9;
   }
 
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2::before,
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3::before {
+  .pricing-table.single-section .row:not(.row-heading) .col.col-2::before,
+  .pricing-table.single-section .row:not(.row-heading) .col.col-3::before {
     content: '';
     position: absolute;
     top: -8px;
     bottom: -8px;
     left: 0;
     right: 0;
-    background-color: #F8F8F8;
+    background-color: var(--color-gray-100);
     z-index: -1;
   }
-  .pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
+  .pricing-table.single-section .row .toggle-row span.icon.expand {
     height: 14px;
     width: 14px;
     background-size: 14px;
   }
-  .pricing-table.collapsible-rows .row .toggle-row {
+  .pricing-table.single-section .row .toggle-row {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -234,44 +234,51 @@
     height: 100%;
     box-sizing: border-box;
   }
-  .pricing-table.collapsible-rows .row:not(.row-heading) {
+  .pricing-table.single-section .row:not(.row-heading) {
     padding: 24px 0;
   }
-  .pricing-table.collapsible-rows .row.blank-row {
+  .pricing-table.single-section .row.blank-row {
     display: none;
   }
-  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
+  .pricing-table.single-section .row:not(.row-heading) .col.col-1 {
     flex-direction: row;
     justify-content: left;
     font-size: 12px;
     background-color: inherit;
     padding: 16px;
-    border-bottom: 1px solid #E9E9E9;
+    border-bottom: 1px solid var(--color-light-gray);
   }
-  .pricing-table.collapsible-rows .row.table-start-row .col:last-child {
+  .pricing-table.single-section .row.table-start-row .col:last-child {
     border-top-right-radius: 0;
   }
-  .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
+  .pricing-table.single-section .row:not(.row-heading) .toggle-row {
     font-size: 13px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-top: 1px solid #E9E9E9;
-    border-bottom: 1px solid #E9E9E9;
+    border-top: 1px solid var(--color-light-gray);
+    border-bottom: 1px solid var(--color-light-gray);
     border-left: 0;
     border-right: 0;
   }
-  .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row.collapsed {
+  .pricing-table.single-section .row:not(.row-heading) .toggle-row.collapsed {
     margin-top: -9px;
   }
-  .pricing-table.collapsible-rows .row.section-header-row .col,
-  .pricing-table.collapsible-rows .row.section-row,
-  .pricing-table.collapsible-rows .row.toggle-row .col {
+  .pricing-table.single-section .row.section-header-row .col,
+  .pricing-table.single-section .row.section-row,
+  .pricing-table.single-section .row.toggle-row .col {
     padding: 0;
   }
-  .pricing-table.collapsible-rows .row.section-row {
-    border-radius: 8px;
+  .pricing-table.single-section .row.section-row:has(.collapsed) {
+    row-gap: 0;
   }
-  main .section .pricing-table-wrapper .pricing-table.collapsible-rows {
+  .pricing-table.single-section .row.section-row:has(.collapsed) button.toggle-row {
+    border-top: none;
+  }
+  .pricing-table.single-section .row.section-row {
+    border-radius: 8px;
+    row-gap: 8px;
+  }
+  main .section .pricing-table-wrapper .pricing-table.single-section {
     padding-bottom: 0;
   }
 }
@@ -982,16 +989,16 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     display: none !important;
   }
 
-  .pricing-table.collapsible-rows .col[data-col-index="3"] {
+  .pricing-table.single-section .col[data-col-index="3"] {
     border-right: 1px solid var(--border-color);
   }
-  .pricing-table.collapsible-rows .table-start-row .col[data-col-index="3"] {
+  .pricing-table.single-section .table-start-row .col[data-col-index="3"] {
     border-top-right-radius: 8px;
   }
-  .pricing-table.collapsible-rows .table-end-row .col[data-col-index="3"]:last-of-type {
+  .pricing-table.single-section .table-end-row .col[data-col-index="3"]:last-of-type {
     border-bottom-right-radius: 8px;
   }
-  .pricing-table.collapsible-rows .table-end-row:last-of-type{
+  .pricing-table.single-section .table-end-row:last-of-type{
     border-bottom: unset;
   } 
 }
