@@ -202,7 +202,7 @@ const getId = (function idSetups() {
 export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
-  const isCollapsibleRowsVariant = el.classList.contains('single-section');
+  const isSingleSectionVariant = el.classList.contains('single-section');
   let deviceBySize = defineDeviceByScreenSize();
 
   addTempWrapperDeprecated(el, 'pricing-table');
@@ -247,24 +247,28 @@ export default async function init(el) {
         col.setAttribute('role', 'cell');
       });
 
-      if (isCollapsibleRowsVariant && isAdditional && cols.length > 1) {
+      if (isSingleSectionVariant && isAdditional && cols.length > 1) {
         const viewAllText = viewAllFeatures ?? 'View all features';
+        const isFirstSection = sectionItem === 4;
+
         const toggleBtn = createTag('button', {
           class: 'toggle-row toggle-content col col-1',
-          'aria-expanded': 'false',
+          'aria-expanded': isFirstSection ? 'true' : 'false',
         }, viewAllText);
 
         const toggleIconTag = createTag('span', {
           class: 'icon expand',
-          'aria-expanded': 'false',
+          'aria-expanded': isFirstSection ? 'true' : 'false',
         });
 
         toggleBtn.prepend(toggleIconTag);
 
         const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-        colsToToggle.forEach((col) => {
-          col.classList.add('collapsed');
-        });
+        if (!isFirstSection) {
+          colsToToggle.forEach((col) => {
+            col.classList.add('collapsed');
+          });
+        }
 
         toggleBtn.addEventListener('click', () => {
           const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'false';
@@ -287,7 +291,7 @@ export default async function init(el) {
     }
 
     const nextRow = rows[index + 1];
-    if (!isCollapsibleRowsVariant && index > 0 && !isToggle && cols.length > 1
+    if (!isSingleSectionVariant && index > 0 && !isToggle && cols.length > 1
       && (!nextRow || Array.from(nextRow.children).length <= 1)) {
       const toggleRow = createTag('button', { class: 'toggle-row' });
       if (!isAdditional) {
@@ -337,7 +341,7 @@ export default async function init(el) {
   const handleResize = () => {
     const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
     const toggleRows = el.querySelectorAll('.toggle-row');
-    if (isCollapsibleRowsVariant) {
+    if (isSingleSectionVariant) {
       const newDeviceSize = defineDeviceByScreenSize();
       if (deviceBySize !== newDeviceSize) {
         deviceBySize = newDeviceSize;
