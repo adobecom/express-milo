@@ -15,21 +15,21 @@
   max-width: 350px;
 }
 
-main .section.business-hub:has(.ax-columns):not([data-padding='none']) > .content {
+main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content {
   padding-top: 0;
 }
 
-main .section.business-hub:has(.ax-columns):not([data-padding='none']) > .content h2 {
+main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
   font-size: 22px;
   padding-top: 28px;
 }
 
-main .section.business-hub .ax-columns.enterprise {
+main .section .ax-columns.enterprise {
   padding-left: 0;
   padding-right: 0;
 }
 
-main .section.business-hub .ax-columns.enterprise .column h2 {
+main .section .ax-columns.enterprise .column h2 {
   font-size: 60px;
 }
 
@@ -888,14 +888,14 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   :lang(ja) .section .ax-columns h1.columns-heading-x-long {
     font-size: var(--heading-font-size-m);
   }
-
-  main .section.business-hub:has(.ax-columns):not([data-padding='none']) > .content h2 {
-    font-size: 36px;
-    padding-top: 48px;
-  }
 }
 
 @media (min-width: 900px) {
+  main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
+    font-size: 36px;
+    padding-top: 48px;
+  }
+  
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
     padding-left: 0;
   }
