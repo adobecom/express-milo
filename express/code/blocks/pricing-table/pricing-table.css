@@ -156,6 +156,126 @@
   border-top: 1px solid transparent;
 }
 
+@media (max-width: 981px) {
+  .pricing-table-wrapper:has(.pricing-table.collapsible-rows) {
+    margin-top: -5px;
+  }
+  .pricing-table.collapsible-rows .row-heading .col-heading .tracking-header {
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  .pricing-table .row.row-heading .col:first-child * {
+    margin: auto;
+  }
+  .pricing-table.collapsible-rows .col-wrapper {
+    height: 36px;
+  }
+  .pricing-table.collapsible-rows .additional-row .col-2.collapsed,
+  .pricing-table.collapsible-rows .additional-row .col-3.collapsed {
+    display: none;
+  }
+  .pricing-table-wrapper .pricing-table.collapsible-rows {
+    padding-top: 0;
+    margin-top: 24px;
+  }
+  .pricing-table-wrapper .pricing-table.collapsible-rows .row-heading .col {
+    padding: 0;
+  }
+  .pricing-table.collapsible-rows .row.row-heading {
+    margin-bottom: 4px;
+  }
+  .pricing-table.collapsible-rows .row.section-row .col.col-1 p:first-child {
+    font-size: 22px;
+    color: #505050;
+  }
+  .pricing-table.collapsible-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .pricing-table.collapsible-rows > .row:first-child {
+    margin-bottom: -10px;
+  }
+  .pricing-table.collapsible-rows > .row:nth-child(2) {
+    margin-top: -10px;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2,
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
+    padding-left: 16px;
+    padding-right: 16px;
+    background-color: #F8F8F8;
+    position: relative;
+    border-color: #E9E9E9;
+  }
+
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-2::before,
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    background-color: #F8F8F8;
+    z-index: -1;
+  }
+  .pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
+    height: 14px;
+    width: 14px;
+    background-size: 14px;
+  }
+  .pricing-table.collapsible-rows .row .toggle-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: var(--color-info-accent);
+    gap: 8px;
+    font-weight: 700;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) {
+    padding: 24px 0;
+  }
+  .pricing-table.collapsible-rows .row.blank-row {
+    display: none;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-1 {
+    flex-direction: row;
+    justify-content: left;
+    font-size: 12px;
+    background-color: inherit;
+    padding: 16px;
+    border-bottom: 1px solid #E9E9E9;
+  }
+  .pricing-table.collapsible-rows .row.table-start-row .col:last-child {
+    border-top-right-radius: 0;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row {
+    font-size: 13px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+    border-left: 0;
+    border-right: 0;
+  }
+  .pricing-table.collapsible-rows .row:not(.row-heading) .toggle-row.collapsed {
+    margin-top: -9px;
+  }
+  .pricing-table.collapsible-rows .row.section-header-row .col,
+  .pricing-table.collapsible-rows .row.section-row,
+  .pricing-table.collapsible-rows .row.toggle-row .col {
+    padding: 0;
+  }
+  .pricing-table.collapsible-rows .row.section-row {
+    border-radius: 8px;
+  }
+  main .section .pricing-table-wrapper .pricing-table.collapsible-rows {
+    padding-bottom: 0;
+  }
+}
+
 @media (min-width: 900px) {
   .pricing-table > .row {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -291,6 +411,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   height: 18px;
   width: 18px;
 }
+
 .pricing-table .row.toggle-row .col {
   white-space: nowrap;
 }
@@ -299,14 +420,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   height: 24px;
   width: 24px;
 }
-/* /Toggle Row */
-
-/* Additional Rows */
-.pricing-table .row.section-row.additional-row.collapsed {
-  display: none;
-}
-/* /Additional Rows */
-
 /* Table Borders */
 .pricing-table .col {
   border: var(--border-width) solid var(--border-color);
@@ -363,8 +476,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  column-gap: 8px;
-  row-gap: 8px;
+  column-gap: 6px;
+  row-gap: 6px;
 }
 
 .pricing-table.vertical-header .row.row-heading .col > div {
@@ -545,14 +658,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 
 
 @media (max-width: 980px) {
-  .pricing-table.seamless .row.table-end-row.section-row .col-1{
-    display: none;
-  }
-
-  .pricing-table.seamless .row.section-row .col {
-    border: none !important;
-  }
-
   .pricing-table .row:not(.blank-row) {
     min-height: 60px;
   }
@@ -606,7 +711,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     flex: 1 1 0;
     justify-content: start;
     align-items: center;
-    column-gap: 8px;
+    column-gap: 6px;
   }
   .pricing-table .row.section-row .col .col-wrapper {
     width: 100%;
@@ -655,7 +760,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    column-gap: 8px;
+    column-gap: 6px;
   }
   .pricing-table .row.section-row .col {
     display: flex;
@@ -755,50 +860,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table .row-heading .col:nth-child(n + 1) {
     padding: 20px;
   }
-
-
-.pricing-table.seamless .section-head-title{
-  color: var(--Content-Subdued-default, #505050);
-  /* Large Screen/Title/XXL */
-  font-family: "Adobe Clean";
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 130%; /* 28.6px */
-}
-
-.pricing-table.seamless .col-heading {
-  color: var(--Content-Neutral-default, #292929);
-  font-family: "Adobe Clean";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 130%; /* 18.2px */
-}
-
-.pricing-table.seamless .section-row {
-  border-bottom: 1px solid var(--Palette-sx-gray-100, #E9E9E9);
-  background: var(--Palette-s2-gray-50, #F8F8F8);
-}
-.pricing-table.seamless .row.row-heading .col:first-child:has(.tracking-header) {
-  padding: 0;
-}
-.pricing-table.seamless .row.row-heading .col:first-child .tracking-header {
-  color: var(--Content-Neutral-default, #222);
-  text-align: center;
-  /* Large Screen/Title/L */
-  font-family: "Adobe Clean";
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 130%; /* 23.4px */
-  margin: auto;
-}
-
-.pricing-table.seamless .blank-row {
-  height: 24px;
-}
-
 }
 
 @media (min-width: 981px) {
@@ -845,10 +906,9 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.seamless  .row-1 .col {
     padding: 24px;
   }
-  .pricing-table.seamless .row.section-header-row,
-  .pricing-table.seamless .blank-row{
-    display: none;
-    border: none;
+
+  .pricing-table.seamless .row-2{
+    height: 0px;
   } 
 
   .pricing-table.seamless .row-4 .col-1{
@@ -857,13 +917,9 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.seamless .row-4 div:last-child{
     border-top-right-radius: 8px;
   } 
-  .pricing-table.seamless .row {
-    border-bottom: none;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-  }
+
   .pricing-table.seamless .row-1 .col {
-    
+    border-bottom: none;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
     border-top: none;
@@ -888,12 +944,12 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     margin-top: auto;
   }
   
-  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:last-of-type .col-1 {
+  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-1 {
     border-left: none;
     border-top: none;
   }
 
-  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:last-of-type .col-3 {
+  .pricing-table.seamless .table-end-row:not(.connect-to-toggle).row:first-of-type .col-3 {
     border-top: none;
     border-right: none;
   }
@@ -908,6 +964,14 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     border-bottom-right-radius: 8px;
   } 
 
+  .pricing-table.seamless .table-end-row:last-of-type .col-1 {
+    border-bottom-left-radius: 8px;
+  }
+
+  .pricing-table.seamless .table-end-row:last-of-type .col:last-child {
+    border-bottom-right-radius: 8px;
+  }
+
   .pricing-table.seamless .toggle-row {
     min-height: 5px;
     height: 5px;
@@ -918,39 +982,17 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
     display: none !important;
   }
 
-  .pricing-table.pricing-table.seamless .row.table-start-row:not(.connect-to-toggle) .col:last-child  {
-    border-right: none;
+  .pricing-table.collapsible-rows .col[data-col-index="3"] {
+    border-right: 1px solid var(--border-color);
   }
-
-  .pricing-table.pricing-table.seamless .row.table-start-row:not(.connect-to-toggle) .col:first-child  {
-    border-left: none;
+  .pricing-table.collapsible-rows .table-start-row .col[data-col-index="3"] {
+    border-top-right-radius: 8px;
   }
-
-  .pricing-table.pricing-table.seamless .row.table-end-row:not(.connect-to-toggle) .col:last-child {
-    border-bottom-right-radius:0px;
-    border-bottom-left-radius:0px;
-  }
-
-  .pricing-table.pricing-table.seamless .row.table-end-row:not(.connect-to-toggle) .col:first-child {
-    border-bottom-right-radius:0px;
-    border-bottom-left-radius:0px;
-  }
-
-  .pricing-table.pricing-table.seamless .row.table-end-row:not(.connect-to-toggle):last-of-type .col:last-child {
-    border-bottom-left-radius: 8px;
+  .pricing-table.collapsible-rows .table-end-row .col[data-col-index="3"]:last-of-type {
     border-bottom-right-radius: 8px;
-    border-right: var(--border-width) solid var(--border-color);
-    border-top:  var(--border-width) solid var(--border-color);;
   }
+  .pricing-table.collapsible-rows .table-end-row:last-of-type{
+    border-bottom: unset;
+  } 
+}
 
-  .pricing-table.pricing-table.seamless .row.table-end-row:not(.connect-to-toggle):last-of-type .col:first-child {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-top:  var(--border-width) solid var(--border-color);
-    border-left: var(--border-width) solid var(--border-color);
-  }
-
-  .pricing-table.pricing-table.seamless .row.table-end-row:not(.connect-to-toggle) .col {
-    border-bottom-width: 0;
-  }
-} 
