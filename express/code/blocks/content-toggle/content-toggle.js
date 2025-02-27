@@ -33,22 +33,41 @@ function initButton($block, $sections, index) {
     const $buttons = $block.querySelectorAll('.content-toggle-button');
     const $toggleBackground = $block.querySelector('.toggle-background');
 
+    const updateBackgroundSize = () => {
+      requestAnimationFrame(() => {
+        const $activeButton = $block.querySelector('button.active');
+        const activeButtonWidth = $activeButton.offsetWidth + 5;
+        let leftOffset = Array.from($buttons).indexOf($activeButton) * 10;
+
+        for (let i = 0; i < Array.from($buttons).indexOf($activeButton); i += 1) {
+          leftOffset += $buttons[i].offsetWidth;
+        }
+
+        $toggleBackground.style.left = `${leftOffset}px`;
+        $toggleBackground.style.width = `${activeButtonWidth}px`;
+      });
+    };
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateBackgroundSize, 16);
+    });
+
+    if (index === 0) {
+      $buttons[index].classList.add('active');
+      updateBackgroundSize();
+    }
+
     $buttons[index].addEventListener('click', () => {
       const $activeButton = $block.querySelector('button.active');
       const blockPosition = $block.getBoundingClientRect().top;
       const offsetPosition = blockPosition + window.scrollY - 80;
-      const activeButtonWidth = $buttons[index].offsetWidth + 5;
-      let leftOffset = index * 10;
-
-      for (let i = 0; i < index; i += 1) {
-        leftOffset += $buttons[i].offsetWidth;
-      }
-      $toggleBackground.style.left = `${leftOffset}px`;
-      $toggleBackground.style.width = `${activeButtonWidth}px`;
 
       if ($activeButton !== $buttons[index]) {
         $activeButton.classList.remove('active');
         $buttons[index].classList.add('active');
+        updateBackgroundSize();
 
         $sections.forEach(($section) => {
           if ($buttons[index].dataset.text === $section.dataset.toggle.toLowerCase()) {
@@ -65,16 +84,6 @@ function initButton($block, $sections, index) {
         }
       }
     });
-    if (index === 0) {
-      $buttons[index].classList.add('active');
-      const firstButtonWidthGrabbed = setInterval(() => {
-        if ($buttons[index].offsetWidth > 0) {
-          $toggleBackground.style.width = `${$buttons[index].offsetWidth + 5}px`;
-          $toggleBackground.style.left = 0;
-          clearInterval(firstButtonWidthGrabbed);
-        }
-      }, 200);
-    }
   }
 }
 
