@@ -79,6 +79,7 @@ main .section.business-hub .ax-columns.enterprise .column h2 {
   padding-top: 80px;
 }
 
+
 .section .ax-columns.enterprise {
   padding-left: 80px;
   padding-right: 80px;
@@ -847,6 +848,17 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     padding-right: 20px;
     word-break: auto-phrase;
   }
+
+  .section .ax-columns.minimum-padding {
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: left;
+    max-width: unset;
+  }
+
+  .section .ax-columns.ax-columns.minimum-padding .column {
+    padding: 0;
+  }
 }
 
 .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
@@ -1276,3 +1288,4 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.slim-padding .column {
   padding: 20px;
 }
+
