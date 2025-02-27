@@ -35,15 +35,19 @@ function initButton($block, $sections, index) {
 
     const updateBackgroundSize = () => {
       requestAnimationFrame(() => {
-        const activeButtonWidth = $buttons[index].offsetWidth + 5;
+        if ($buttons[index].getBoundingClientRect().width === 0) {
+          requestAnimationFrame(updateBackgroundSize);
+          return;
+        }
+        const buttonWidth = $buttons[index].getBoundingClientRect().width + 5;
         let leftOffset = index * 10;
 
         for (let i = 0; i < index; i += 1) {
-          leftOffset += $buttons[i].offsetWidth;
+          leftOffset += $buttons[i].getBoundingClientRect().width;
         }
 
         $toggleBackground.style.left = `${leftOffset}px`;
-        $toggleBackground.style.width = `${activeButtonWidth}px`;
+        $toggleBackground.style.width = `${buttonWidth}px`;
       });
     };
 
