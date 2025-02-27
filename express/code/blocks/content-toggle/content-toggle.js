@@ -34,18 +34,22 @@ function initButton($block, $sections, index) {
     const $toggleBackground = $block.querySelector('.toggle-background');
 
     const updateBackgroundSize = () => {
-      requestAnimationFrame(() => {
-        const $activeButton = $block.querySelector('button.active');
-        const activeButtonWidth = $activeButton.offsetWidth + 5;
-        let leftOffset = Array.from($buttons).indexOf($activeButton) * 10;
+      const $activeButton = $block.querySelector('button.active');
+      if ($activeButton && $activeButton.offsetWidth > 0) {
+        requestAnimationFrame(() => {
+          const activeButtonWidth = $activeButton.offsetWidth + 5;
+          let leftOffset = Array.from($buttons).indexOf($activeButton) * 10;
 
-        for (let i = 0; i < Array.from($buttons).indexOf($activeButton); i += 1) {
-          leftOffset += $buttons[i].offsetWidth;
-        }
+          for (let i = 0; i < Array.from($buttons).indexOf($activeButton); i += 1) {
+            leftOffset += $buttons[i].offsetWidth;
+          }
 
-        $toggleBackground.style.left = `${leftOffset}px`;
-        $toggleBackground.style.width = `${activeButtonWidth}px`;
-      });
+          $toggleBackground.style.left = `${leftOffset}px`;
+          $toggleBackground.style.width = `${activeButtonWidth}px`;
+        });
+      } else {
+        setTimeout(updateBackgroundSize, 10);
+      }
     };
 
     let resizeTimeout;
@@ -68,7 +72,6 @@ function initButton($block, $sections, index) {
         $activeButton.classList.remove('active');
         $buttons[index].classList.add('active');
         updateBackgroundSize();
-
         $sections.forEach(($section) => {
           if ($buttons[index].dataset.text === $section.dataset.toggle.toLowerCase()) {
             $section.style.display = 'block';
