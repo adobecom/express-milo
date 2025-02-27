@@ -27,6 +27,7 @@ function handleToggleMore(btn) {
       btn.classList.add('collapsed');
       prevElement.classList.add('collapsed');
     }
+
     prevElement = prevElement.previousElementSibling;
   }
 }
