@@ -203,7 +203,7 @@
   .pricing-table.collapsible-rows .row:not(.row-heading) .col.col-3 {
     padding-left: 16px;
     padding-right: 16px;
-    background-color: #F8F8F8;
+    background-color: var(--color-gray-100);
     position: relative;
     border-color: #E9E9E9;
   }
@@ -216,7 +216,7 @@
     bottom: -8px;
     left: 0;
     right: 0;
-    background-color: #F8F8F8;
+    background-color: var(--color-gray-100);
     z-index: -1;
   }
   .pricing-table.collapsible-rows .row .toggle-row span.icon.expand {
@@ -246,7 +246,7 @@
     font-size: 12px;
     background-color: inherit;
     padding: 16px;
-    border-bottom: 1px solid #E9E9E9;
+    border-bottom: 1px solid var(--color-light-gray);
   }
   .pricing-table.collapsible-rows .row.table-start-row .col:last-child {
     border-top-right-radius: 0;
@@ -255,8 +255,8 @@
     font-size: 13px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-top: 1px solid #E9E9E9;
-    border-bottom: 1px solid #E9E9E9;
+    border-top: 1px solid var(--color-light-gray);
+    border-bottom: 1px solid var(--color-light-gray);
     border-left: 0;
     border-right: 0;
   }
