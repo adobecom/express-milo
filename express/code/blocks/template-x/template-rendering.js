@@ -173,8 +173,11 @@ const buildiFrameContent = (template) => {
   const { branchUrl } = template.customLinks;
   const taskID = props?.taskid;
   const zazzleUrl = props.zazzleurl;
+  const { lang } = document.documentElement;
+  const sdid = props?.sdid ? `&sdid=${props.sdid}` : '';
+  const mv = props?.mv ? `&mv=${props.mv}` : '';
   const iFrame = createTag('iframe', {
-    src: `${zazzleUrl}?TD=${template.id}&taskID=${taskID}&shortcode=${branchUrl.split('/').pop()}`,
+    src: `${zazzleUrl}?TD=${template.id}&taskID=${taskID}&shortcode=${branchUrl.split('/').pop()}&lang=${lang}${sdid}${mv}`,
     title: 'Edit this template',
     tabindex: '-1',
   });
