@@ -34,22 +34,17 @@ function initButton($block, $sections, index) {
     const $toggleBackground = $block.querySelector('.toggle-background');
 
     const updateBackgroundSize = () => {
-      const $activeButton = $block.querySelector('button.active');
-      if ($activeButton && $activeButton.offsetWidth > 0) {
-        requestAnimationFrame(() => {
-          const activeButtonWidth = $activeButton.offsetWidth + 5;
-          let leftOffset = Array.from($buttons).indexOf($activeButton) * 10;
+      requestAnimationFrame(() => {
+        const activeButtonWidth = $buttons[index].offsetWidth + 5;
+        let leftOffset = index * 10;
 
-          for (let i = 0; i < Array.from($buttons).indexOf($activeButton); i += 1) {
-            leftOffset += $buttons[i].offsetWidth;
-          }
+        for (let i = 0; i < index; i += 1) {
+          leftOffset += $buttons[i].offsetWidth;
+        }
 
-          $toggleBackground.style.left = `${leftOffset}px`;
-          $toggleBackground.style.width = `${activeButtonWidth}px`;
-        });
-      } else {
-        setTimeout(updateBackgroundSize, 10);
-      }
+        $toggleBackground.style.left = `${leftOffset}px`;
+        $toggleBackground.style.width = `${activeButtonWidth}px`;
+      });
     };
 
     let resizeTimeout;
