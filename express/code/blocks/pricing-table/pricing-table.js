@@ -251,28 +251,26 @@ export default async function init(el) {
         const viewAllText = viewAllFeatures ?? 'View all features';
         const toggleBtn = createTag('button', {
           class: 'toggle-row toggle-content col col-1',
-          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
+          'aria-expanded': 'false',
         }, viewAllText);
 
         const toggleIconTag = createTag('span', {
           class: 'icon expand',
-          'aria-expanded': sectionItem === 4 ? 'true' : 'false',
+          'aria-expanded': 'false',
         });
 
         toggleBtn.prepend(toggleIconTag);
 
         const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-        if (sectionItem !== 4) {
-          colsToToggle.forEach((col) => {
-            col.classList.add('collapsed');
-          });
-        }
+        colsToToggle.forEach((col) => {
+          col.classList.add('collapsed');
+        });
 
         toggleBtn.addEventListener('click', () => {
-          const isExpanded = toggleBtn.getAttribute('aria-expanded') !== 'true';
+          const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'false';
           toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
           colsToToggle.forEach((col) => {
-            if (isExpanded) {
+            if (!isExpanded) {
               col.classList.add('collapsed');
             } else {
               col.classList.remove('collapsed');
