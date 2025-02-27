@@ -9,10 +9,6 @@ main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static,
     padding-top: 40px;
 }
 
-main .logo-row.block-layout {
-    margin-bottom: 64px;
-}
-
 main .logo-row .block-layout {
     display: flex;
     align-items: center;
@@ -47,6 +43,7 @@ main .logo-row .image-column {
     justify-content: center;
     padding-left: 16px;
     padding-right: 16px;
+
 }
 
 main .logo-row .image-column p {
@@ -76,11 +73,13 @@ main .logo-row .brand-image {
         justify-content: center;
         gap: 5px;
         max-width: unset;
+        margin: auto;
     }
 
     main .logo-row .text-column  {
         margin: auto auto 16px auto;
         padding-right: initial;
+        max-width: 300px;
     }
     main .logo-row .text-column > * {
         text-align: left;
