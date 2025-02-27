@@ -260,17 +260,17 @@ function decorateCardBorder(card, source) {
 }
 
 function getDefaultExpandedIndex(el) {
-  let defaultOpenIndex =0
-  let q = undefined
+  let defaultOpenIndex = 0;
+  let q;
   el.classList.forEach((cl) => {
     if (cl.includes('default-expanded-')) {
-      q = cl
+      q = cl;
     }
-  }) 
+  });
   if (q) {
-    defaultOpenIndex = parseInt(q.split('default-expanded-')[1]) - 1
+    defaultOpenIndex = parseInt(q.split('default-expanded-')[1],10) - 1;
   }
-  return defaultOpenIndex
+  return defaultOpenIndex;
 }
 
 export default async function init(el) {
@@ -285,12 +285,12 @@ export default async function init(el) {
   const cardCount = rows[0].children.length;
   const cards = [];
 
-  const defaultOpenIndex = getDefaultExpandedIndex(el)
- 
+  const defaultOpenIndex = getDefaultExpandedIndex(el);
+
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
     const card = createTag('div', { class: 'card' });
-    if (cardIndex != defaultOpenIndex) {
+    if (cardIndex !== defaultOpenIndex) {
       card.classList.add('hide');
     }
     decorateCardBorder(card, rows[1].children[0]);
