@@ -40,6 +40,20 @@ const CONFIG = {
   prod: { express: 'express.adobe.com', commerce: 'commerce.adobe.com' },
   codeRoot: '/express/code',
   contentRoot: '/express',
+  stageDomainsMap: {
+    '--express-milo--adobecom.(hlx|aem).(page|live)': {
+      'www.adobe.com': 'www.stage.adobe.com',
+      'commerce.adobe.com': 'commerce-stg.adobe.com',
+      'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
+      'express.adobe.com': 'stage.projectx.corp.adobe.com',
+    },
+    'www.stage.adobe.com': {
+      'www.adobe.com': 'origin',
+      'commerce.adobe.com': 'commerce-stg.adobe.com',
+      'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
+      'express.adobe.com': 'stage.projectx.corp.adobe.com',
+    },
+  },
   jarvis: {
     id: getMetadata('jarvis-surface-id') || 'Acom_Express',
     version: getMetadata('jarvis-surface-version') || '1.0',
