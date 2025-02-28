@@ -18,8 +18,7 @@
   color: #242424;
   text-align: center;
 
-  /* Large Screen/Heading/Heavy (Black)/XL */
-  font-family: "Adobe Clean";
+  /* Large Screen/Heading/Heavy (Black)/XL */ 
   font-size: 36px;
   font-style: normal;
   font-weight: 900;
@@ -41,14 +40,11 @@
   }
   .section > .headline.business-hub h {
     color: #242424;
-  text-align: center;
-
-  /* Large Screen/Heading/Heavy (Black)/XXL */
-  font-family: "Adobe Clean";
-  font-size: 45px;
-  font-style: normal;
-  font-weight: 900;
-  line-height: 130%; /* 58.5px */
+    text-align: center; 
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 130%; /* 58.5px */
   }
   .section > .headline.business-hub h2 {
     font-size: 36px;
