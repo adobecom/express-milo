@@ -25,12 +25,16 @@ main .section>.simplified-pricing-cards-wrapper {
     flex-wrap: wrap;
     gap: 16px;
     flex-direction: column;
-    width: fit-content;
     margin: 16px auto auto auto;
 }
 
+.simplified-pricing-cards.wide {
+    --card-width: 100%;
+    padding: 16px;
+}
+
 .simplified-pricing-cards .card {
-    width: calc(var(--card-width) - 32px);
+    width: calc(var(--card-width) - 34px);
     position: relative;
     padding: 16px;
     border: 2px solid var(--color-gray-300);
@@ -315,7 +319,7 @@ main .section>.simplified-pricing-cards-wrapper {
     background-color: var(--color-white);
     border: 2px solid var(--color-black);
     color: black;
-    margin: 24px auto 24px auto;
+    margin: 40px auto 24px auto;
     padding-top: 12px;
     padding-bottom: 12px;
     border-radius: 24px;
@@ -446,6 +450,11 @@ main .section>.simplified-pricing-cards-wrapper {
         --header-offer-size: 16px;
     }
 
+    .simplified-pricing-cards.wide {
+        --card-width: 580px;
+        padding: unset;
+    }
+
     .simplified-pricing-cards .card-wrapper {
         margin: 48px auto;
         width: min-content;
@@ -524,6 +533,7 @@ main .section>.simplified-pricing-cards-wrapper {
     .simplified-pricing-cards .card-wrapper {
         margin: auto;
         flex-direction: row;
+        width: fit-content;
     }
 
     .simplified-pricing-cards .pricing-area-wrapper {

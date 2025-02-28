@@ -1,23 +1,64 @@
 .section > .headline .express-logo {
-    width: unset;
-    height: 30px;
-    padding-top: 30px;
+  width: unset;
+  height: 30px;
+  padding-top: 30px;
 }
 
 .section > .headline {
-    text-align: center;
-    max-width: 375px;
-    margin: auto;
+  text-align: center;
+  max-width: 375px;
+  margin: auto;
+}
+
+.section > .headline h1 { 
+  font-size: 36px;
+}
+
+.section > .headline.business-hub h1 {
+  color: #242424;
+  text-align: center;
+
+  /* Large Screen/Heading/Heavy (Black)/XL */ 
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 130%; /* 46.8px */
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.section > .headline.business-hub h2 {
+  font-size: 22px;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-top: 32px;
+  margin-bottom: 24px;
 }
 
 @media (min-width: 900px) {
-    .section > .headline {
-        max-width: 830px;
-    }
+  .section > .headline {
+      max-width: 830px;
+  }
+  .section > .headline.business-hub h {
+    color: #242424;
+    text-align: center; 
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 130%; /* 58.5px */
+  }
+  .section > .headline.business-hub h2 {
+    font-size: 36px;
+    margin-top: 63px;
+    margin-bottom: 33px;
+  }
+  .section > .headline h1 { 
+    font-size: 45px;
+    margin-bottom: 20px;
+  }
 }
 
 @media (min-width: 1200px) {
-    .section > .headline .block-row {
-        max-width: 1024px;
-    }
+  .section > .headline .block-row {
+      max-width: 1024px;
+  }
 }

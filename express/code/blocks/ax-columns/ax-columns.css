@@ -15,6 +15,24 @@
   max-width: 350px;
 }
 
+main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content {
+  padding-top: 0;
+}
+
+main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
+  font-size: 22px;
+  padding-top: 28px;
+}
+
+main .section .ax-columns.enterprise {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+main .section .ax-columns.enterprise .column h2 {
+  font-size: 60px;
+}
+
 .ax-columns {
   padding-left: 15px;
   padding-right: 15px;
@@ -60,6 +78,7 @@
   margin-top: 0;
   padding-top: 80px;
 }
+
 
 .section .ax-columns.enterprise {
   padding-left: 80px;
@@ -829,6 +848,17 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     padding-right: 20px;
     word-break: auto-phrase;
   }
+
+  .section .ax-columns.minimum-padding {
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: left;
+    max-width: unset;
+  }
+
+  .section .ax-columns.ax-columns.minimum-padding .column {
+    padding: 0;
+  }
 }
 
 .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
@@ -861,6 +891,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 @media (min-width: 900px) {
+  main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
+    font-size: 36px;
+    padding-top: 48px;
+  }
+  
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
     padding-left: 0;
   }
@@ -1253,3 +1288,4 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.slim-padding .column {
   padding: 20px;
 }
+

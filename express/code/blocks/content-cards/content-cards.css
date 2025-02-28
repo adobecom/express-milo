@@ -341,7 +341,7 @@ main .content-cards .carousel-container .carousel-fader-right.arrow-hidden {
   margin: 4px auto;
   width: max-content;
   color: var(--body-color);
-  border: 0;
+  border: 2px solid black;
 }
 
 .content-cards .card .links-wrapper a:hover {

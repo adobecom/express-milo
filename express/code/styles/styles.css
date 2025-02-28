@@ -8,6 +8,7 @@
 
 :root {
   --color-white: #fff;
+  --color-light-gray: #E9E9E9;
   --color-gray-100: #f8f8f8;
   --color-gray-150: #f3f3f3;
   --color-gray-200: #e8e8e8;
@@ -206,6 +207,11 @@ main a.button:any-link, main a.con-button:any-link {
 
 main svg.icon-milo, main img.icon-milo {
   top: 0.15em !important;
+}
+
+
+.text-block .foreground > .cta-container .body-m.action-area a {
+  margin: unset;
 }
 
 
