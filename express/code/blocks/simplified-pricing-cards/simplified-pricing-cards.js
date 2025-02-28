@@ -268,7 +268,7 @@ function getDefaultExpandedIndex(el) {
     }
   });
   if (q) {
-    defaultOpenIndex = parseInt(q.split('default-expanded-')[1],10) - 1;
+    defaultOpenIndex = parseInt(q.split('default-expanded-')[1], 10) - 1;
   }
   return defaultOpenIndex;
 }
