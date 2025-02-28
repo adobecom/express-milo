@@ -11,7 +11,7 @@ function drawerOff() {
   if (!currDrawer) return;
   currDrawer.closest('.card').setAttribute('aria-expanded', false);
   currDrawer.setAttribute('aria-hidden', true);
-  currDrawer.querySelector('video')?.pause()?.catch(() => {});
+  currDrawer.querySelector('video')?.pause()?.catch(() => { });
   currDrawer = null;
 }
 function drawerOn(drawer) {
@@ -21,7 +21,7 @@ function drawerOn(drawer) {
   const video = drawer.querySelector('video');
   if (video && !reduceMotionMQ.matches) {
     video.muted = true;
-    video.play().catch(() => {});
+    video.play().catch(() => { });
   }
   currDrawer = drawer;
 }
@@ -210,9 +210,45 @@ function makeRatings() {
   return ratings;
 }
 
+function createToggle({ toggleText, toggleActive, toggleBypassParam }) {
+  const bypassParam = toggleBypassParam.querySelector('div:nth-child(2)').innerText;
+  const toggleWrapper = createTag('div', { class: 'toggle-wrapper' });
+  const toggleLabels = toggleText.querySelectorAll('li');
+  const isChecked = toggleActive.querySelector('div:nth-child(2)')?.innerText || 1;
+
+  toggleText.remove();
+  toggleBypassParam.remove();
+  toggleActive.remove();
+  if (document.location.href.includes(bypassParam)) return null;
+
+  toggleWrapper.innerHTML = `
+    <span class="toggle_label_unchecked" daa-ll="Individual vs Business toggle">${toggleLabels[0]?.innerText}</span>
+    <label class="toggle" daa-ll="Individual vs Business toggle">
+      <input daa-ll="Individual vs Business toggle" type="checkbox" ${isChecked ? 'checked' : ''}>
+      <span class="slider round"></span>
+    </label>
+    <span class="toggle_label_checked">${toggleLabels[1]?.innerText}</span>
+  `;
+
+  toggleWrapper.querySelector('.toggle_label_unchecked')?.addEventListener('click', () => {
+    toggleWrapper.querySelector('input')?.click();
+  });
+  toggleWrapper.querySelector('input')?.addEventListener('change', () => {
+    window.location.href = `${window.location.origin}${window.location.pathname}?${bypassParam}`;
+  });
+  return toggleWrapper;
+}
+
 export default async function init(el) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  const rows = [...el.querySelectorAll(':scope > div')];
+  let rows = [...el.querySelectorAll(':scope > div')];
+  let toggle;
+
+  if (el.matches('.toggle')) {
+    const [headline, background, toggleText, toggleActive, toggleBypassParam, ...tail] = rows;
+    toggle = createToggle({ toggleText, toggleActive, toggleBypassParam });
+    rows = [headline, background].concat(tail);
+  }
   const [headline, background, items, foreground] = [rows[0], rows[1], rows.slice(2), createTag('div', { class: 'foreground' })];
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
@@ -221,6 +257,7 @@ export default async function init(el) {
   [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
   foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [makeRatings()] : []));
   background.classList.add('background');
+  toggle && cardsContainer.parentNode?.insertBefore(toggle, cardsContainer);
   el.append(foreground);
   new IntersectionObserver((entries, ob) => {
     ob.unobserve(el);
