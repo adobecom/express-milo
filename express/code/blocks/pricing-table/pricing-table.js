@@ -19,7 +19,7 @@ function handleToggleMore(btn) {
   const icon = btn.querySelector('.icon.expand');
   const expanded = icon?.getAttribute('aria-expanded') === 'false';
   icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row') && prevElement.classList.contains('additional-row')) {
+  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row')) {
     if (expanded) {
       btn.classList.remove('collapsed');
       prevElement.classList.remove('collapsed');
@@ -27,6 +27,7 @@ function handleToggleMore(btn) {
       btn.classList.add('collapsed');
       prevElement.classList.add('collapsed');
     }
+
     prevElement = prevElement.previousElementSibling;
   }
 }
@@ -56,7 +57,6 @@ function handleHeading(headingRow, headingCols) {
       btnWrapper.classList.add('button-container');
       buttonsWrapper.append(btnWrapper);
     });
-
     if (buttons.length > 0) {
       col.append(buttonsWrapper);
     }
@@ -158,7 +158,7 @@ function handleSection(sectionParams) {
         child.innerHTML = `<p >${col.innerHTML}</p>`;
       }
     });
-    if (nextRow.classList.contains('toggle-row')) {
+    if (nextRow?.classList.contains('toggle-row')) {
       row.classList.add('table-end-row');
 
       if (!nextRow.classList.contains('desktop-hide')) {
@@ -202,6 +202,8 @@ const getId = (function idSetups() {
 export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
+  const isSingleSectionVariant = el.classList.contains('single-section');
+  let deviceBySize = defineDeviceByScreenSize();
 
   addTempWrapperDeprecated(el, 'pricing-table');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
@@ -244,19 +246,55 @@ export default async function init(el) {
         col.classList.add('col', `col-${cdx + 1}`);
         col.setAttribute('role', 'cell');
       });
+
+      if (isSingleSectionVariant && isAdditional && cols.length > 1) {
+        const viewAllText = viewAllFeatures ?? 'View all features';
+        const isFirstSection = sectionItem === 4;
+
+        const toggleBtn = createTag('button', {
+          class: 'toggle-row toggle-content col col-1',
+          'aria-expanded': isFirstSection ? 'true' : 'false',
+        }, viewAllText);
+
+        const toggleIconTag = createTag('span', {
+          class: 'icon expand',
+          'aria-expanded': isFirstSection ? 'true' : 'false',
+        });
+
+        toggleBtn.prepend(toggleIconTag);
+
+        const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
+        if (!isFirstSection) {
+          colsToToggle.forEach((col) => {
+            col.classList.add('collapsed');
+          });
+        }
+
+        toggleBtn.addEventListener('click', () => {
+          const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'false';
+          toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
+          colsToToggle.forEach((col) => {
+            if (!isExpanded) {
+              col.classList.add('collapsed');
+            } else {
+              col.classList.remove('collapsed');
+            }
+          });
+        });
+
+        row.appendChild(toggleBtn);
+      }
+
       if (sectionItem % 2 === 0 && cols.length > 1) row.classList.add('shaded');
     } else {
       row.setAttribute('tabindex', 0);
     }
 
     const nextRow = rows[index + 1];
-    if (index > 0 && !isToggle && cols.length > 1
+    if (!isSingleSectionVariant && index > 0 && !isToggle && cols.length > 1
       && (!nextRow || Array.from(nextRow.children).length <= 1)) {
       const toggleRow = createTag('button', { class: 'toggle-row' });
-      if (!isAdditional) {
-        toggleRow.classList.add('desktop-hide');
-        toggleRow.classList.add('mobile-hide');
-      }
+      if (!isAdditional) toggleRow.classList.add('desktop-hide');
 
       const viewAllText = viewAllFeatures ?? 'View all features';
       const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
@@ -299,16 +337,32 @@ export default async function init(el) {
 
   const handleResize = () => {
     const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
-    collapisbleRows.forEach((collapisbleRow) => {
-      collapisbleRow.classList.add('collapsed');
-    });
     const toggleRows = el.querySelectorAll('.toggle-row');
-    toggleRows.forEach((toggleRow) => {
-      toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
-    });
+    if (isSingleSectionVariant) {
+      const newDeviceSize = defineDeviceByScreenSize();
+      if (deviceBySize !== newDeviceSize) {
+        deviceBySize = newDeviceSize;
+
+        if (newDeviceSize === 'DESKTOP') {
+          el.classList.remove('single-section');
+        } else {
+          el.classList.add('single-section');
+        }
+
+        collapisbleRows.forEach((collapisbleRow) => {
+          collapisbleRow.classList.add('collapsed');
+        });
+      }
+      toggleRows.forEach((toggleRow) => {
+        toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
+      });
+    } else {
+      toggleRows.forEach((toggleRow) => {
+        toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
+      });
+    }
   };
 
-  let deviceBySize = defineDeviceByScreenSize();
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
     deviceBySize = defineDeviceByScreenSize();
