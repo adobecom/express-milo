@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated } from '../../../utils.js';
 
 let createTag; let getConfig;
 
@@ -156,7 +156,7 @@ async function formatDynamicCartLink(a) {
     const {
       fetchPlanOnePlans,
       buildUrl,
-    } = await import('../../scripts/utils/pricing.js');
+    } = await import('../../../utils/pricing.js');
     const {
       url,
       country,
@@ -194,7 +194,7 @@ async function makeRating(store) {
   }
   const [score, cnt] = ratings[['apple', 'google'].indexOf(store)].split(',').map((str) => str.trim());
   const storeLink = createTag('a', { href: link }, getIconElementDeprecated(`${store}-store`));
-  const { default: trackBranchParameters } = await import('../../scripts/branchlinks.js');
+  const { default: trackBranchParameters } = await import('../../../branchlinks.js');
   await trackBranchParameters([storeLink]);
   return createTag('div', { class: 'ratings-container' }, [score, getIconElementDeprecated('star'), cnt, storeLink]);
 }
@@ -210,9 +210,65 @@ function makeRatings() {
   return ratings;
 }
 
+function createToggle({ toggleText, toggleActive, toggleBypassParam }) {
+  const bypassParam = toggleBypassParam.querySelector('div:nth-child(2)').innerText;
+  const toggleWrapper = createTag('div', { class: 'toggle-wrapper' });
+  const toggleLabels = toggleText.querySelectorAll('li');
+  const isChecked = toggleActive.querySelector('div:nth-child(2)')?.innerText || 1;
+
+  toggleText.remove();
+  toggleBypassParam.remove();
+  toggleActive.remove();
+  if (document.location.href.includes(bypassParam)) return null;
+
+  toggleWrapper.innerHTML = `
+    <span class="toggle_label_unchecked" daa-ll="Individual vs Business toggle">${toggleLabels[0]?.innerText}</span>
+    <label class="toggle" daa-ll="Individual vs Business toggle">
+      <input daa-ll="Individual vs Business toggle" type="checkbox" ${isChecked ? 'checked' : ''}>
+      <span class="slider round"></span>
+    </label>
+    <span class="toggle_label_checked">${toggleLabels[1]?.innerText}</span>
+  `;
+
+  toggleWrapper.querySelector('.toggle_label_unchecked')?.addEventListener('click', () => {
+    toggleWrapper.querySelector('input')?.click();
+  });
+  toggleWrapper.querySelector('input')?.addEventListener('change', () => {
+    const hasSearch = Boolean(document.location.search);
+    window.location.href = `${window.location.href}${hasSearch ? '&' : '?'}${bypassParam}`;
+  });
+  // additional updates
+  const cardsInterval = setInterval(() => {
+    const cardWrapper = document.querySelector('.card-wrapper');
+    cardWrapper?.querySelector('.card:nth-child(1)')?.classList.add('hide');
+    cardWrapper?.querySelector('.card:nth-child(3)')?.classList.remove('hide');
+    if (cardWrapper) clearInterval(cardsInterval);
+  }, 250);
+
+  const ctasInterval = setInterval(() => {
+    const ctas = document.querySelector('.grid-marquee .ctas');
+    const secButton = ctas?.querySelector('a:nth-child(2)');
+    if (secButton) {
+      secButton.style.transition = 'none';
+      secButton.style.background = 'none';
+      secButton.style.border = '2px solid #d5d5d5';
+      secButton.style.color = '#2a2a2a';
+    }
+    if (ctas) clearInterval(ctasInterval);
+  }, 1);
+  return toggleWrapper;
+}
+
 export default async function init(el) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  const rows = [...el.querySelectorAll(':scope > div')];
+  let rows = [...el.querySelectorAll(':scope > div')];
+  let toggle;
+
+  if (el.matches('.toggle')) {
+    const [headline, background, toggleText, toggleActive, toggleBypassParam, ...tail] = rows;
+    toggle = createToggle({ toggleText, toggleActive, toggleBypassParam });
+    rows = [headline, background].concat(tail);
+  }
   const [headline, background, items, foreground] = [rows[0], rows[1], rows.slice(2), createTag('div', { class: 'foreground' })];
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
@@ -221,6 +277,7 @@ export default async function init(el) {
   [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
   foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [makeRatings()] : []));
   background.classList.add('background');
+  toggle && cardsContainer.parentNode?.insertBefore(toggle, cardsContainer);
   el.append(foreground);
   new IntersectionObserver((entries, ob) => {
     ob.unobserve(el);
