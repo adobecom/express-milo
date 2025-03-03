@@ -30,9 +30,9 @@ function mWebVariant(anchor) {
     if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
     return acc;
   }, {});
-  const metadata = metadataMap['mweb-drawer-genfill-link'];
+  const metadata = metadataMap['mweb-app-label'];
   if(anchor.textContent.trim().toLowerCase() !== 'generative fill' || metadata === null) return;
-  const appOnlyLink = createTag('a', {href: metadata, class: 'mweb-app-only' }, 'App only');
+  const appOnlyLink = createTag('div', {class: 'mweb-app-only' }, metadata);
   anchor.parentElement.append(appOnlyLink);
 }
 

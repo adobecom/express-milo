@@ -71,8 +71,8 @@ function collectFloatingButtonData() {
       mobileText: getMetadataLocal('mobile-floating-cta-text'),
       href: getMetadataLocal('main-cta-link'),
       text: getMetadataLocal('main-cta-text'),
-      forkStickymobileHref: getMetadataLocal('mweb-sticky-mobile-link'),
-      forkStickymobileText: getMetadataLocal('mweb-sticky-mobile-text'),
+      forkStickymobileHref: getMetadataLocal('cta-1-link'),
+      forkStickymobileText: getMetadataLocal('cta-1-text'),
     },
     bubbleSheet: getMetadataLocal('floating-cta-bubble-sheet'),
     live: getMetadataLocal('floating-cta-live'),
@@ -195,7 +195,7 @@ function mWebCloseEvents() {
 }
 
 function mWebVariant() {
-  if(!getMetadata('mweb-sticky-mobile-link') && !getMetadata('mweb-sticky-mobile-text')) return;
+  if(!getMetadata('cta-1-icon') && !getMetadata('cta-1-link')) return;
   mWebBuildElements();
   mWebCloseEvents();
   mWebOverlayScroll();
