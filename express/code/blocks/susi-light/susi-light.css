@@ -32,10 +32,6 @@
   text-align: center;
 }
 
-.susi-tabs [role='tab-panel'][aria-hidden='true'] {
-  display: none;
-}
-
 .susi-tabs [role='tab-list'] {
   background-color: var(--color-white);
   border-radius: 8px;
@@ -43,6 +39,10 @@
   gap: 4px;
   padding: 4px;
   box-shadow: 0px 2px 8px 0px #00000029;
+}
+
+.susi-tabs [role='tab-list']:has(:first-child:last-child) {
+  display: none;
 }
 
 .susi-tabs [role='tab'] {
@@ -62,7 +62,10 @@
   border-radius: 6px;
 }
 
-/* FIXME: rename easy in and guest to tabbed and footer */
+.susi-tabs [role='tab-panel'][aria-hidden='true'] {
+  display: none;
+}
+
 .susi-tabs .footer {
   font-size: var(--body-font-size-s);
   text-align: center;
