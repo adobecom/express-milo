@@ -2063,7 +2063,8 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   width: 195px;
 }
 
-.template-x.t-shirt .template .singleton-hover a.cta-link {
+.template-x.t-shirt .template .singleton-hover a.cta-link,
+.template-x.t-shirt .template .button-container a.cta-link {
   width: 179px;
   height: 245px;
   padding-left: 15px;
