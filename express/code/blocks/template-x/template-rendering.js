@@ -11,6 +11,10 @@ let free;
 let variants;
 let props;
 let sharePlaceholder;
+let mv;
+let sdid;
+let source;
+let action;
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
@@ -173,8 +177,9 @@ const buildiFrameContent = (template) => {
   const { branchUrl } = template.customLinks;
   const taskID = props?.taskid;
   const zazzleUrl = props.zazzleurl;
+  const { lang } = document.documentElement;
   const iFrame = createTag('iframe', {
-    src: `${zazzleUrl}?TD=${template.id}&taskID=${taskID}&shortcode=${branchUrl.split('/').pop()}`,
+    src: `${zazzleUrl}?TD=${template.id}&taskID=${taskID}&shortcode=${branchUrl.split('/').pop()}&lang=${lang}`,
     title: 'Edit this template',
     tabindex: '-1',
   });
@@ -233,7 +238,7 @@ function renderPrintCTALink(template) {
 function renderCTA(branchUrl) {
   const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const btnEl = createTag('a', {
-    href: branchUrl,
+    href: `${branchUrl}${mv}${sdid}${source}${action}`,
     title: btnTitle,
     class: 'button accent small',
   });
@@ -243,7 +248,7 @@ function renderCTA(branchUrl) {
 
 function renderCTALink(branchUrl) {
   const linkEl = createTag('a', {
-    href: branchUrl,
+    href: `${branchUrl}${mv}${sdid}${source}${action}`,
     class: 'cta-link',
     tabindex: '-1',
   });
@@ -462,6 +467,10 @@ function renderHoverWrapper(template) {
     cta = renderPrintCTA(template);
     ctaLink = renderPrintCTALink(template);
   } else {
+    mv = `?mv=${props.mv}` || '';
+    sdid = `&sdid=${props.sdid}` || '';
+    source = `&source=${props.source}` || '';
+    action = `&action=${props.action}` || '';
     cta = renderCTA(template.customLinks.branchUrl);
     ctaLink = renderCTALink(template.customLinks.branchUrl);
   }

@@ -21,7 +21,32 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   width: 100%;
   height: 100%;
   max-width: 1124px;
+  max-height: 820px;
+  border-radius: 20px;
+  border: none;
+  overflow: unset
 }
+
+.dialog-modal.print-iframe .dialog-close {
+  top: -20px;
+  right: -5px;
+}
+.dialog-modal.print-iframe .dialog-close svg {
+  width: 34px;
+  height: 34px;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.16);
+  border-radius: 70px;
+}
+
+.dialog-modal.print-iframe .dialog-close svg circle {
+  fill: var(--color-white);
+}
+
+.dialog-modal.print-iframe .dialog-close svg line {
+  stroke: var(--color-black);
+  stroke-width: 1;
+}
+
 
 [data-block-name="template-x"] {
   margin: 0 auto;
@@ -2020,27 +2045,83 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   padding: 15px;
 }
 
+.template-x.print .toolbar-wrapper {
+  z-index: 2;
+}
+
+.template-x.print .share-icon-wrapper {
+  display: none;
+}
+
 .template-x.t-shirt .template .still-wrapper .image-wrapper {
   background: url('tshirt.png') no-repeat center center;
   background-size: cover;
   border-radius: 10px;
 }
 
-.template-x.t-shirt .template .singleton-hover {
+.template-x.print.sixcols:not(.horizontal) .template:not(.placeholder) .button-container {
+  width: 195px;
+}
+
+.template-x.t-shirt .template .singleton-hover a.cta-link,
+.template-x.t-shirt .template .button-container a.cta-link {
+  width: 179px;
+  height: 245px;
+  padding-left: 15px;
   background: url('tshirt-dropshadow.png') no-repeat center center;
   background-size: contain;
-  padding: 15px;  
-}
-.template-x.t-shirt .template:not(.placeholder) .button-container {
   background-color: #EEEEEE;
+  border-radius: 10px;
 }
+
 .template-x.t-shirt .template .button-container .media-wrapper {
   height: 100%;
 }
+
+.template-x.print .template.placeholder::before {
+  display: table;
+  content: ' ';
+  position: absolute;
+  top: 20%;
+  width: 118px;
+  height: 155px;
+  padding: 6px;
+  gap: 10px;
+  z-index: -1;
+  border-radius: 14px;
+  border: 2px dashed var(--color-gray-300);
+  background-color: var(--color-white);
+}
+
+.template-x.print .template.placeholder div:nth-of-type(2) {
+  bottom: 80px
+}
+
+.template-x.print .template.placeholder::after {
+  display: table;
+  content: ' ';
+  position: absolute;
+  top: 18%;
+  width: 130px;
+  height: 167px;
+  padding: 6px;
+  gap: 10px;
+  z-index: -2;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.16);
+  background-color: var(--color-white);
+}
+
+.template-x.print .template.placeholder {
+  border: none;
+  background-color: #ebebec;
+  z-index: 1;
+}
+
 .template-x.t-shirt .template .button-container .media-wrapper > img {
   display: block;
-  margin: 50px auto 0 auto;
   width: 50%;
+  margin: -20px auto 0 37px;
+  object-fit: contain;
   mix-blend-mode: darken;
 }
 
@@ -2048,7 +2129,6 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 .template-x.flyer .template .still-wrapper .image-wrapper img {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-
 
 .template-x.t-shirt .template .still-wrapper .image-wrapper img {
   mix-blend-mode: darken;
