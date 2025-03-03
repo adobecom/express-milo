@@ -475,6 +475,7 @@ function renderHoverWrapper(template) {
     ctaLink = renderCTALink(template.customLinks.branchUrl);
   }
 
+  cta.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
   ctaLink.append(mediaWrapper);
 
   btnContainer.append(cta);
