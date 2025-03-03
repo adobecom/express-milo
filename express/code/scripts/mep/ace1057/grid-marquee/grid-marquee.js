@@ -233,7 +233,8 @@ function createToggle({ toggleText, toggleActive, toggleBypassParam }) {
   toggleWrapper.querySelector('.toggle_label_unchecked')?.addEventListener('click', () => {
     toggleWrapper.querySelector('input')?.click();
   });
-  toggleWrapper.querySelector('input')?.addEventListener('change', () => {
+  toggleWrapper.querySelector('input')?.addEventListener('click', (e) => {
+    e.target.checked = true;
     const hasSearch = Boolean(document.location.search);
     window.location.href = `${window.location.href}${hasSearch ? '&' : '?'}${bypassParam}`;
   });
