@@ -125,8 +125,19 @@ function buildSUSITabs(el, options) {
     const panel = createTag('div', { role: 'tab-panel' });
     panel.append(createSUSIComponent(option));
     if (footer) {
-      const footerDiv = createTag('div', { class: 'footer' }, footer);
-      panel.append(footerDiv);
+      footer.classList.add('footer');
+      if (footer.querySelector('h2')) {
+        footer.classList.add('bubbles');
+        const bubbleContainer = createTag('div', { class: 'bubble-container' });
+        [...footer.querySelectorAll('p')].forEach((p) => {
+          p.classList.add('bubble');
+          bubbleContainer.append(p);
+        });
+        footer.append(bubbleContainer);
+      } else {
+        footer.classList.add('banner');
+      }
+      panel.append(footer);
     }
 
     const id = `${tabName}-${tabsId}`;
