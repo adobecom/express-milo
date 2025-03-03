@@ -85,6 +85,7 @@ const CONFIG = {
   autoBlocks: [
     { axfaas: '/tools/axfaas' },
   ],
+  dynamicNavKey: 'bacom',
   languageMap: {
     ae_ar: '',
     ae_en: '',
