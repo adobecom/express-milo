@@ -28,7 +28,6 @@
   line-height: 28.6px;
   font-weight: 900;
   padding-top: 12px;
-  padding-bottom: 16px;
   text-align: center;
 }
 
@@ -38,6 +37,7 @@
   display: flex;
   gap: 4px;
   padding: 4px;
+  margin-top: 16px;
   box-shadow: 0px 2px 8px 0px #00000029;
 }
 
