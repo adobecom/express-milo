@@ -2134,6 +2134,10 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   mix-blend-mode: darken;
 }
 
+.template-x.t-shirt .template .still-wrapper .image-wrapper .icon {
+  display: none;
+}
+
 .template-x.print .template img, .template-x.print .template video,
 .template-x.t-shirt .template img, .template-x.t-shirt .template video,
 .template-x.flyer .template img, .template-x.flyer .template video {

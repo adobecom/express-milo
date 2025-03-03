@@ -203,7 +203,7 @@ const showModaliFrame = async (template) => {
 };
 
 function renderPrintCTA(template) {
-  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
+  const btnTitle = 'Customize design';
   const btnEl = createTag('a', {
     href: '#modal',
     title: btnTitle,
@@ -223,7 +223,7 @@ function renderPrintCTA(template) {
 function renderPrintCTALink(template) {
   const link = createTag('a', {
     href: '#modal',
-    title: 'Edit this template',
+    title: 'Customize design',
     class: 'cta-link',
   });
 
