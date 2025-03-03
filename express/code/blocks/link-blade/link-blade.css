@@ -65,6 +65,7 @@
     animation-duration: 100ms;
     outline-offset: 4px;
     outline-color: #4B75FF;
+    text-decoration: none;
 }
  
 .link-blade .link-blade-link-row {
