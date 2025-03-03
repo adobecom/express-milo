@@ -293,7 +293,7 @@
     display: none;
   }
   .basic-carousel-container a.button.basic-carousel-arrow {
-    margin: 0 10px;
+    margin: 0 6px;
   }
   .basic-carousel-container.controls-hidden .basic-carousel-platform {
     scroll-snap-type: x mandatory;
