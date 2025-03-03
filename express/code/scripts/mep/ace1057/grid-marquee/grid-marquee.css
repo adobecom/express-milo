@@ -289,14 +289,14 @@ main .section .grid-marquee h1 {
   align-items: center;
 }
 
-.grid-marquee .toggle-wrapper .toggle_label_unchecked {
+/* .grid-marquee .toggle-wrapper .toggle_label_unchecked {
   text-shadow: 0px 0px 0.25px #242424;
   cursor: pointer;
 }
 
 .grid-marquee .toggle-wrapper:has(input[type="checkbox"]:checked) > .toggle_label_unchecked {
   text-shadow: none;
-}
+} */
 
 .grid-marquee .toggle-wrapper:has(input[type="checkbox"]:checked) > .toggle_label_checked {
   text-shadow: 0px 0px 0.25px #242424;
