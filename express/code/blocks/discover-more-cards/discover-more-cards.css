@@ -1,0 +1,14 @@
+.discover-more-cards {
+  max-width: none;
+  text-align: center;
+}
+
+.discover-more-cards-wrapper {
+  position: relative;
+  width: 100%;
+  background-size: 350% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 3rem 0;
+}
+
