@@ -11,7 +11,7 @@ function drawerOff() {
   if (!currDrawer) return;
   currDrawer.closest('.card').setAttribute('aria-expanded', false);
   currDrawer.setAttribute('aria-hidden', true);
-  currDrawer.querySelector('video')?.pause()?.catch(() => { });
+  currDrawer.querySelector('video')?.pause()?.catch(() => {});
   currDrawer = null;
 }
 function drawerOn(drawer) {
@@ -21,7 +21,7 @@ function drawerOn(drawer) {
   const video = drawer.querySelector('video');
   if (video && !reduceMotionMQ.matches) {
     video.muted = true;
-    video.play().catch(() => { });
+    video.play().catch(() => {});
   }
   currDrawer = drawer;
 }
