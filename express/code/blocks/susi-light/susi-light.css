@@ -81,23 +81,23 @@
   font-weight: 500;
 }
 
-.susi-tabs .footer.banner {
+.susi-tabs .footer.susi-banner {
   background-color: #f3f3f3;
 }
 
-.susi-tabs .footer.bubbles h2 {
+.susi-tabs .footer.susi-bubbles h2 {
   font-size: var(--body-font-size-l);
   font-weight: 700;
 }
 
-.susi-tabs .footer .bubble-container {
+.susi-tabs .footer .susi-bubble-container {
   display: flex;
   gap: 12px;
   justify-content: center;
   padding-top: 8px;
 }
 
-.susi-tabs .footer .bubble {
+.susi-tabs .footer .susi-bubble {
   font-size: var(--body-font-size-s);
   background-color: #f3f3f3;
   display: flex;

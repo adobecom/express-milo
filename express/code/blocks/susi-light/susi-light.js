@@ -128,15 +128,15 @@ function buildSUSITabs(el, options) {
     if (footer) {
       footer.classList.add('footer');
       if (footer.querySelector('h2')) {
-        footer.classList.add('bubbles');
-        const bubbleContainer = createTag('div', { class: 'bubble-container' });
+        footer.classList.add('susi-bubbles');
+        const bubbleContainer = createTag('div', { class: 'susi-bubble-container' });
         [...footer.querySelectorAll('p')].forEach((p) => {
-          p.classList.add('bubble');
+          p.classList.add('susi-bubble');
           bubbleContainer.append(p);
         });
         footer.append(bubbleContainer);
       } else {
-        footer.classList.add('banner');
+        footer.classList.add('susi-banner');
       }
       panel.append(footer);
     }
