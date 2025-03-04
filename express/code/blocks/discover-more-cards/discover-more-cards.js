@@ -1,5 +1,9 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 
+function constructPayload(block) {
+  const rows = Array.from(block.children);
+}
+
 export default async function decorate(block) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
   addTempWrapperDeprecated(block, 'discover-more-cards');
@@ -30,4 +34,8 @@ export default async function decorate(block) {
       }
     }
   }
+
+  const allDivs = [...block.children].filter((child) => child.tagName === 'DIV');
+  const lastDiv = allDivs.length > 0 ? allDivs[allDivs.length - 1] : null;
+  const payload = constructPayload(lastDiv);
 }
