@@ -80,6 +80,7 @@ function createSUSIComponent({ variant, config, authParams, destURL }) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
   susi.authParams.redirect_uri = destURL;
+  susi.authParams.dctx_id = 'v:2,s,dcp-r,bg:express2024,45faecb0-e687-11ee-a865-f545a8ca5d2c';
   susi.config = config;
   if (isStage) susi.stage = 'true';
   susi.variant = variant;
