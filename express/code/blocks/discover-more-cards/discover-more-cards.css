@@ -1,14 +1,25 @@
 .discover-more-cards {
-  max-width: none;
   text-align: center;
 }
 
 .discover-more-cards-wrapper {
-  position: relative;
-  width: 100%;
-  background-size: 350% auto;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding: 3rem 0;
+  padding-top: 48px;
 }
 
+.discover-more-cards-wrapper h1,
+.discover-more-cards-wrapper h2 {
+  font-size: 22px;
+}
+
+.discover-more-cards-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, white 0%, white 10%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0) 70%, white 90%, white 100%), var(--bg-image, none);
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}

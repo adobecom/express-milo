@@ -9,7 +9,7 @@ export default async function decorate(block) {
   const rows = [...block.children];
 
   if (rows[0]?.querySelector('img')?.src) {
-    cardsWrapper.style.backgroundImage = `url(${rows[0].querySelector('img').src})`;
+    cardsWrapper.style.setProperty('--bg-image', `url(${rows[0].querySelector('img').src})`);
     rows.shift();
   }
 
