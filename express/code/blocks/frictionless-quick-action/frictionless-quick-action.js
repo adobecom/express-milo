@@ -161,8 +161,8 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
-      console.log(appConfig.variant,EXPERIMENTAL_VARIANTS.includes(appConfig.variant))
-      if (appConfig.variant && EXPERIMENTAL_VARIANTS.includes(appConfig.variant)){
+      console.log(appConfig.metaData.variant,EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant))
+      if (appConfig?.metaData?.variant && EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant)){
         document.querySelector(".global-navigation.ready").style.display = "none" 
         ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
           ...contConfig, 
