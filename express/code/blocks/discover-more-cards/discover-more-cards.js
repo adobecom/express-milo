@@ -1,5 +1,4 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
-// import buildCarousel from '../../scripts/widgets/carousel.js';
 
 export default async function decorate(block) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
@@ -15,16 +14,20 @@ export default async function decorate(block) {
 
   const header = rows[0]?.querySelector('h1, h2, h3, h4, h5, h6');
   if (header) {
+    const parent = header.parentElement;
     const headerSection = createTag('div', { class: 'discover-more-cards-header' });
     headerSection.append(header);
     block.prepend(headerSection);
+
     rows.shift();
+
+    if (parent) {
+      const grandparent = parent.parentElement;
+      parent.remove();
+
+      if (grandparent && grandparent.children.length === 0) {
+        grandparent.remove();
+      }
+    }
   }
-
-  rows.forEach((row) => {
-    row.classList.add('discover-more-card');
-    cardsWrapper.append(row);
-  });
-
-  block.append(cardsWrapper);
 }
