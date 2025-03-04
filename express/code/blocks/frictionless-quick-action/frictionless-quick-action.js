@@ -43,6 +43,13 @@ const QA_CONFIGS = {
   'remove-background-full-editor':  { ...getBaseImgCfg(JPG, JPEG, PNG) }
 };
 
+const EXPERIMENTAL_VARIANTS = [
+  'qa-in-product-control',
+  'qa-in-product-variant1',
+  'qa-in-product-variant2',
+  'qa-nba'
+]
+
 function fade(element, action) {
   if (action === 'in') {
     element.classList.remove('hidden');
@@ -154,21 +161,19 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'remove-background-full-editor':
-      
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-        ...contConfig, 
-        mode : "modal", 
-        metaData: { 
-          isFrictionlessQa: 'true',
-
-          
-         } 
-      });
-
-      document.querySelector(".global-navigation.ready").style.display = "none" 
+      console.log(appConfig.variant,EXPERIMENTAL_VARIANTS.includes(appConfig.variant))
+      if (appConfig.variant && EXPERIMENTAL_VARIANTS.includes(appConfig.variant)){
+        document.querySelector(".global-navigation.ready").style.display = "none" 
+        ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+          ...contConfig, 
+          mode : "modal", 
+          metaData: { 
+            isFrictionlessQa: 'true'
+           } 
+        });
+      } else {
+        ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      }
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
