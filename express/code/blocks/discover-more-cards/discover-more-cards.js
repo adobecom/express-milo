@@ -41,11 +41,7 @@ export default async function decorate(block) {
   }
 
   const content = [...block.children].filter((child) => child.tagName === 'DIV');
-  if (isBgImage) {
-    content.splice(0, 2);
-  } else {
-    content.splice(0, 1);
-  }
+  content.splice(0, isBgImage ? 2 : 1);
 
   const payload = constructPayload(content);
   console.log('payload', payload);
