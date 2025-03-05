@@ -10,24 +10,16 @@ const constructPayload = (content) => content.map(
   }),
 );
 
-export default async function decorate(block) {
-  try {
-    ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  } catch (error) {
-    window.lana?.log('discover-more-cards.js - error loading createTag utility:', error);
-  }
-
-  addTempWrapperDeprecated(block, 'discover-more-cards');
-
-  const cardsWrapper = createTag('div', { class: 'discover-more-cards-wrapper' });
-  const rows = [...block.children];
+const handleBackgroundImage = (rows, wrapper) => {
   const isBgImage = rows[0]?.querySelector('img')?.src;
-
   if (isBgImage) {
-    cardsWrapper.style.setProperty('--bg-image', `url(${isBgImage})`);
+    wrapper.style.setProperty('--bg-image', `url(${isBgImage})`);
     rows.shift();
   }
+  return isBgImage;
+};
 
+const handleHeader = (rows, block) => {
   const header = rows[0]?.querySelector('h1, h2, h3, h4, h5, h6');
   if (header) {
     const headerSection = createTag('div', { class: 'discover-more-cards-header' });
@@ -41,10 +33,27 @@ export default async function decorate(block) {
     parent?.remove();
     grandparent?.children.length === 0 && grandparent.remove();
   }
+};
 
-  const content = [...block.children]
-    .filter((child) => child.tagName === 'DIV')
-    .slice(isBgImage ? 2 : 1);
+const getContentDivs = (block, isBgImage) => [...block.children]
+  .filter((child) => child.tagName === 'DIV')
+  .slice(isBgImage ? 2 : 1);
+
+export default async function decorate(block) {
+  try {
+    ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  } catch (error) {
+    window.lana?.log('discover-more-cards.js - error loading createTag utility:', error);
+  }
+
+  addTempWrapperDeprecated(block, 'discover-more-cards');
+
+  const cardsWrapper = createTag('div', { class: 'discover-more-cards-wrapper' });
+  const rows = [...block.children];
+
+  const isBgImage = handleBackgroundImage(rows, cardsWrapper);
+  handleHeader(rows, block);
+  const content = getContentDivs(block, isBgImage);
 
   const payload = constructPayload(content);
   console.log(payload);
