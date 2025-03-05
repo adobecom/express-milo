@@ -2,28 +2,11 @@ import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 
 let createTag;
 function constructPayload(content) {
-  const payload = {
-    cardTitle: '',
-    cardDetails: '',
-    img: null,
-  };
-  const cards = content.map((item) => {
-    const cardImg = item.children[0].querySelector('img');
-    const cardTitleText = item.children[1].innerText;
-    const cardDetailsText = item.children[2].innerText;
-
-    const cardTitle = createTag('p', { class: 'discover-more-cards-title' });
-    cardTitle.textContent = cardTitleText;
-
-    const cardDetails = createTag('p', { class: 'discover-more-cards-details' });
-    cardDetails.textContent = cardDetailsText;
-
-    payload.cardTitle = cardTitleText;
-    payload.cardDetails = cardDetailsText;
-    payload.img = cardImg?.src;
-    return payload;
-  });
-  return cards;
+  return content.map(({ children: [imgDiv, titleDiv, detailsDiv] }) => ({
+    img: imgDiv?.querySelector('img')?.src ?? null,
+    cardTitle: titleDiv?.innerText?.trim() ?? '',
+    cardDetails: detailsDiv?.innerText?.trim() ?? '',
+  }));
 }
 
 export default async function decorate(block) {
