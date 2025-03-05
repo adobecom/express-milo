@@ -86,6 +86,7 @@ main .section .grid-marquee h1 {
 }
 
 .grid-marquee .face {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -199,6 +200,26 @@ main .section .grid-marquee h1 {
   margin-right: 0px;
 }
 
+.grid-marquee .drawer .mweb-app-only {
+  z-index: 10;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  font-size: 12px;
+  color:#fff;
+  text-decoration-line: none;
+  width: 63px;
+  height: 24px;
+  border-radius: 7px;
+  background: linear-gradient(155.77deg, #FF477B 10.74%, #5C5CE0 85.29%);
+}
+
+
 .grid-marquee .drawer [aria-label='close'] {
   background: initial;
   border: initial;
@@ -294,10 +315,16 @@ main .section .grid-marquee h1 {
   .grid-marquee .card {
     width: 304px;
     border-radius: 16px;
+    background: red;
   }
-
+  
   .grid-marquee .face img {
     width: var(--t-img-w);
+  }
+  .grid-marquee .face .mweb-card-chevron {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
   }
   .grid-marquee .drawer .content {
     display: flex;
