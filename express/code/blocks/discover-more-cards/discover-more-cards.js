@@ -24,20 +24,17 @@ export default async function decorate(block) {
 
   const header = rows[0]?.querySelector('h1, h2, h3, h4, h5, h6');
   if (header) {
-    const parent = header.parentElement;
     const headerSection = createTag('div', { class: 'discover-more-cards-header' });
+    const parent = header.parentElement;
+    const grandparent = parent?.parentElement;
+
     headerSection.append(header);
     block.prepend(headerSection);
     rows.shift();
 
-    if (parent) {
-      const grandparent = parent.parentElement;
-      parent.remove();
-
-      if (grandparent && grandparent.children.length === 0) {
-        grandparent.remove();
-      }
-    }
+    // Clean up empty ancestors in order
+    parent?.remove();
+    grandparent?.children.length === 0 && grandparent.remove();
   }
 
   const content = [...block.children].filter((child) => child.tagName === 'DIV');
