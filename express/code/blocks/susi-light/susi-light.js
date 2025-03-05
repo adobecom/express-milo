@@ -126,8 +126,8 @@ function buildSUSITabs(el, options) {
   const wrapper = createTag('div', { class: 'susi-tabs' });
   const tabList = createTag('div', { role: 'tab-list' });
   const panels = options.map((option, i) => {
-    const { footer, tabName } = option;
-    const panel = createTag('div', { role: 'tab-panel' });
+    const { footer, tabName, variant } = option;
+    const panel = createTag('div', { role: 'tab-panel', class: variant });
     panel.append(createSUSIComponent(option));
     if (footer) {
       footer.classList.add('footer');
@@ -168,6 +168,7 @@ function buildSUSITabs(el, options) {
 
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
+  logo.height = 24;
   const title = rows[0].textContent?.trim();
   const titleDiv = createTag('div', { class: 'title' }, title);
   wrapper.append(logo, titleDiv, tabList, ...panels);

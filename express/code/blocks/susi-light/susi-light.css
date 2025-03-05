@@ -70,6 +70,15 @@
   display: none;
 }
 
+/* reduce CLS */
+.susi-tabs [role='tab-panel'].standard susi-sentry-light {
+  min-height: 457.5px;
+}
+
+.susi-tabs [role='tab-panel'].edu-express susi-sentry-light {
+  min-height: 366.5px;
+}
+
 .susi-tabs .footer {
   font-size: var(--body-font-size-s);
   text-align: center;
