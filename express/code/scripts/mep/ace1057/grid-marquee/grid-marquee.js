@@ -265,7 +265,7 @@ export default async function init(el) {
   let rows = [...el.querySelectorAll(':scope > div')];
   let toggle;
 
-  if (el.matches('.toggle')) {
+  if (el.classList.contains('toggle')) {
     const [headline, background, toggleText, toggleActive, toggleBypassParam, ...tail] = rows;
     toggle = createToggle({ toggleText, toggleActive, toggleBypassParam });
     rows = [headline, background].concat(tail);
