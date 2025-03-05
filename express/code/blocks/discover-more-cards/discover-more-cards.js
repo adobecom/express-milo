@@ -2,62 +2,59 @@ import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 
 let createTag;
 
-const constructPayload = (content) => {
-  if (!content?.length) return [];
-
-  return content.map(({ children }) => {
-    if (children.length < 3) return null;
-    const [imgDiv, titleDiv, detailsDiv] = children;
-
-    return {
-      img: imgDiv?.querySelector('img')?.src ?? null,
-      cardTitle: titleDiv?.innerText?.trim() ?? '',
-      cardDetails: detailsDiv?.innerText?.trim() ?? '',
-    };
-  }).filter(Boolean);
-};
-
-const handleBackgroundImage = (rows, wrapper) => {
-  if (!rows.length) return false;
-  const imgSrc = rows[0].querySelector('img')?.src;
-  if (!imgSrc) return false;
-
-  wrapper.style.setProperty('--bg-image', `url(${imgSrc})`);
-  rows.shift();
-  return true;
-};
-
-const handleHeader = (rows, block) => {
-  if (!rows.length) return;
-  const header = rows[0].querySelector('h1, h2, h3, h4, h5, h6');
+function decorateHeading(block, header) {
   if (!header) return;
 
   const headerSection = createTag('div', { class: 'discover-more-cards-header' });
-  const { parentElement: parent } = header;
-
   headerSection.append(header);
   block.prepend(headerSection);
-  rows.shift();
+}
 
-  if (parent?.children.length === 0) {
-    const { parentElement: grandparent } = parent;
-    parent.remove();
-    grandparent?.children.length === 0 && grandparent.remove();
-  }
-};
+function decorateCards(block, cardsWrapper, cards) {
+  if (!cards?.length) return;
 
-const getContentDivs = (block, isBgImage) => Array.from(block.children)
-  .slice(isBgImage ? 2 : 1)
-  .filter((child) => child.tagName === 'DIV');
+  const cardsContainer = createTag('div', { class: 'discover-more-cards-container' });
 
-async function decorateCards(block, cardsWrapper, payload) {
-  console.log('block', block);
-  console.log('payload', payload);
-  payload.forEach((card) => {
-    const cardEl = createTag('div', { class: 'discover-more-cards-card' });
-    cardEl.append(card.img, card.cardTitle, card.cardDetails);
-    cardsWrapper.append(cardEl);
+  cards.forEach((card) => {
+    const cardEl = createTag('div', { class: 'discover-more-card' });
+
+    const imgWrapper = createTag('div', { class: 'discover-more-card-img' });
+    if (card.img) {
+      const img = createTag('img', { src: card.img, alt: card.cardTitle });
+      imgWrapper.append(img);
+    }
+
+    const titleEl = createTag('p', { class: 'discover-more-card-title' });
+    titleEl.textContent = card.cardTitle;
+
+    const detailsEl = createTag('p', { class: 'discover-more-card-details' });
+    detailsEl.textContent = card.cardDetails;
+
+    cardEl.append(imgWrapper, titleEl, detailsEl);
+    cardsContainer.append(cardEl);
   });
+
+  cardsWrapper.append(cardsContainer);
+  block.append(cardsWrapper);
+}
+
+function constructPayload(block) {
+  const rows = [...block.children];
+  block.innerHTML = '';
+
+  const bgImage = rows[0]?.querySelector('img')?.src;
+  if (bgImage) rows.shift();
+
+  const header = rows[0]?.querySelector('h1, h2, h3, h4, h5, h6');
+  if (header) rows.shift();
+
+  const cards = rows.map((row) => ({
+    img: row.querySelector('img')?.src ?? null,
+    cardTitle: row.children[1]?.innerText?.trim() ?? '',
+    cardDetails: row.children[2]?.innerText?.trim() ?? '',
+  }));
+
+  return { bgImage, header, cards };
 }
 
 export default async function decorate(block) {
@@ -65,17 +62,18 @@ export default async function decorate(block) {
     ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   } catch (error) {
     window.lana?.log('discover-more-cards.js - error loading createTag utility:', error);
-    return [];
+    return;
   }
 
   addTempWrapperDeprecated(block, 'discover-more-cards');
   const cardsWrapper = createTag('div', { class: 'discover-more-cards-wrapper' });
-  const rows = [...block.children];
 
-  const isBgImage = handleBackgroundImage(rows, cardsWrapper);
-  handleHeader(rows, block);
+  const { bgImage, header, cards } = constructPayload(block);
 
-  const payload = constructPayload(getContentDivs(block, isBgImage));
-  await decorateCards(block, cardsWrapper, payload);
-  return [];
+  if (bgImage) {
+    cardsWrapper.style.setProperty('--bg-image', `url(${bgImage})`);
+  }
+
+  decorateHeading(block, header);
+  decorateCards(block, cardsWrapper, cards);
 }
