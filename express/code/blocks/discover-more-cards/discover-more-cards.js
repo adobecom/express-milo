@@ -11,12 +11,14 @@ const constructPayload = (content) => content.map(
 );
 
 const handleBackgroundImage = (rows, wrapper) => {
-  const isBgImage = rows[0]?.querySelector('img')?.src;
-  if (isBgImage) {
-    wrapper.style.setProperty('--bg-image', `url(${isBgImage})`);
-    rows.shift();
-  }
-  return isBgImage;
+  if (!rows.length) return false;
+
+  const imgSrc = rows[0].querySelector('img')?.src;
+  if (!imgSrc) return false;
+
+  wrapper.style.setProperty('--bg-image', `url(${imgSrc})`);
+  rows.shift();
+  return true;
 };
 
 const handleHeader = (rows, block) => {
