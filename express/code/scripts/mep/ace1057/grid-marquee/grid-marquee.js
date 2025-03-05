@@ -241,25 +241,7 @@ function createToggle({ toggleText, toggleActive, toggleBypassParam }) {
     const hasSearch = Boolean(document.location.search);
     window.location.href = `${window.location.href}${hasSearch ? '&' : '?'}${bypassParam}`;
   });
-  // additional updates
-  const cardsInterval = setInterval(() => {
-    const cardWrapper = document.querySelector('.card-wrapper');
-    cardWrapper?.querySelector('.card:nth-child(1)')?.classList.add('hide');
-    cardWrapper?.querySelector('.card:nth-child(3)')?.classList.remove('hide');
-    if (cardWrapper) clearInterval(cardsInterval);
-  }, 250);
 
-  const ctasInterval = setInterval(() => {
-    const ctas = document.querySelector('.grid-marquee .ctas');
-    const secButton = ctas?.querySelector('a:nth-child(2)');
-    if (secButton) {
-      secButton.style.transition = 'none';
-      secButton.style.background = 'none';
-      secButton.style.border = '2px solid #d5d5d5';
-      secButton.style.color = '#2a2a2a';
-    }
-    if (ctas) clearInterval(ctasInterval);
-  }, 1);
   return toggleWrapper;
 }
 
