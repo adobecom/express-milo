@@ -43,11 +43,9 @@ const QA_CONFIGS = {
   'remove-background-full-editor':  { ...getBaseImgCfg(JPG, JPEG, PNG) }
 };
 
-const EXPERIMENTAL_VARIANTS = [
-  'qa-in-product-control',
+const EXPERIMENTAL_VARIANTS = [ 
   'qa-in-product-variant1',
   'qa-in-product-variant2',
-  'qa-nba'
 ]
 
 function fade(element, action) {
