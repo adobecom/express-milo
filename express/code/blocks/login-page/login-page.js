@@ -7,6 +7,4 @@ export default async function init(el) {
   imgs.forEach((img, index) => {
     img.classList.add(`${breakpoints[index]}-background`);
   });
-  const foreground = el.children[el.children.length - 1];
-  foreground.classList.add('foreground');
 }
