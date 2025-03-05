@@ -1,17 +1,40 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 
-function constructPayload(block) {
-  const rows = Array.from(block.children);
+let createTag;
+function constructPayload(content) {
+  const payload = {
+    cardTitle: '',
+    cardDetails: '',
+    img: null,
+  };
+  const cards = content.map((item) => {
+    const cardImg = item.children[0].querySelector('img');
+    const cardTitleText = item.children[1].innerText;
+    const cardDetailsText = item.children[2].innerText;
+
+    const cardTitle = createTag('p', { class: 'discover-more-cards-title' });
+    cardTitle.textContent = cardTitleText;
+
+    const cardDetails = createTag('p', { class: 'discover-more-cards-details' });
+    cardDetails.textContent = cardDetailsText;
+
+    payload.cardTitle = cardTitleText;
+    payload.cardDetails = cardDetailsText;
+    payload.img = cardImg?.src;
+    return payload;
+  });
+  return cards;
 }
 
 export default async function decorate(block) {
-  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addTempWrapperDeprecated(block, 'discover-more-cards');
 
   const cardsWrapper = createTag('div', { class: 'discover-more-cards-wrapper' });
   const rows = [...block.children];
+  const isBgImage = rows[0]?.querySelector('img')?.src;
 
-  if (rows[0]?.querySelector('img')?.src) {
+  if (isBgImage) {
     cardsWrapper.style.setProperty('--bg-image', `url(${rows[0].querySelector('img').src})`);
     rows.shift();
   }
@@ -22,7 +45,6 @@ export default async function decorate(block) {
     const headerSection = createTag('div', { class: 'discover-more-cards-header' });
     headerSection.append(header);
     block.prepend(headerSection);
-
     rows.shift();
 
     if (parent) {
@@ -35,7 +57,13 @@ export default async function decorate(block) {
     }
   }
 
-  const allDivs = [...block.children].filter((child) => child.tagName === 'DIV');
-  const lastDiv = allDivs.length > 0 ? allDivs[allDivs.length - 1] : null;
-  const payload = constructPayload(lastDiv);
+  const content = [...block.children].filter((child) => child.tagName === 'DIV');
+  if (isBgImage) {
+    content.splice(0, 2);
+  } else {
+    content.splice(0, 1);
+  }
+
+  const payload = constructPayload(content);
+  console.log('payload', payload);
 }
