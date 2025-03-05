@@ -119,6 +119,14 @@ function buildSUSIParams({ client_id, variant, destURL, locale, title, hideIcon 
   return params;
 }
 
+function sanitizeId(input) {
+  return input
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]/g, '');
+}
+
 let tabsId = 0;
 function buildSUSITabs(el, options) {
   tabsId += 1;
@@ -145,7 +153,7 @@ function buildSUSITabs(el, options) {
       panel.append(footer);
     }
 
-    const id = `${tabName}-${tabsId}`;
+    const id = sanitizeId(`${tabName}-${tabsId}`);
     panel.setAttribute('aria-labelledby', `tab-${id}`);
     panel.id = `panel-${id}`;
     panel.setAttribute('aria-hidden', i > 0);
