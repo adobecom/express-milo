@@ -220,15 +220,18 @@ function createToggle({ toggleText, toggleActive, toggleBypassParam }) {
   toggleActive.remove();
   if (document.location.href.includes(bypassParam)) return null;
 
-  const toggleWrapper = createTag('div', { class: 'toggle-wrapper' },
-  `
+  const toggleWrapper = createTag(
+    'div',
+    { class: 'toggle-wrapper' },
+    `
     <span class="toggle_label_unchecked" daa-ll="Individual vs Business toggle">${toggleLabels[0]?.innerText}</span>
     <label class="toggle" daa-ll="Individual vs Business toggle">
       <input daa-ll="Individual vs Business toggle" type="checkbox" ${isChecked ? 'checked' : ''}>
       <span class="slider round"></span>
     </label>
     <span class="toggle_label_checked">${toggleLabels[1]?.innerText}</span>
-  `);
+    `,
+  );
 
   toggleWrapper.querySelector('.toggle_label_unchecked')?.addEventListener('click', () => {
     toggleWrapper.querySelector('input')?.click();
@@ -260,6 +263,10 @@ function createToggle({ toggleText, toggleActive, toggleBypassParam }) {
   return toggleWrapper;
 }
 
+const appendToggleToGridMarquee = (toggle, cardsContainer) => {
+  toggle && cardsContainer.parentNode?.insertBefore(toggle, cardsContainer);
+};
+
 export default async function init(el) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   let rows = [...el.querySelectorAll(':scope > div')];
@@ -278,7 +285,7 @@ export default async function init(el) {
   [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
   foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [makeRatings()] : []));
   background.classList.add('background');
-  toggle && cardsContainer.parentNode?.insertBefore(toggle, cardsContainer);
+  appendToggleToGridMarquee(toggle, cardsContainer);
   el.append(foreground);
   new IntersectionObserver((entries, ob) => {
     ob.unobserve(el);
