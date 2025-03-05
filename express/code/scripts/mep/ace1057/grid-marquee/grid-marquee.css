@@ -228,7 +228,6 @@ main .section .grid-marquee h1 {
   cursor: initial;
 }
 
-
 .grid-marquee .drawer [role='tabpanel'][aria-hidden='true'] {
   display: none;
 }
@@ -346,6 +345,13 @@ main .section .grid-marquee h1 {
 
 .grid-marquee .slider.round:before {
   border-radius: 50%;
+}
+
+.grid-marquee.toggle .ctas a:nth-child(2) {
+  transition: 'none';
+  background: 'none';
+  border: '2px solid #d5d5d5';
+  color: '#2a2a2a';
 }
 /* TOGGLE END */
 
