@@ -217,11 +217,11 @@ async function startSDK(data = '', quickAction, block) {
       configParams: {
         locale: ietf?.replace('-', '_'),
         env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
-        baseQA
+        urlOverride : baseQA
       },
       authOption: () => ({ mode: 'delayed' }),
     };
-
+    
     ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
   }
 
