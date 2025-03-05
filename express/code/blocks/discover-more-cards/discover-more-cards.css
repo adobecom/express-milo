@@ -2,6 +2,9 @@
   text-align: center;
   position: relative;
   padding: 48px 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 .discover-more-cards-wrapper {
@@ -14,11 +17,13 @@
 /* Background styling */
 .discover-more-cards-wrapper::before {
   content: '';
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100vw;
+  height: 100vh;
   background: linear-gradient(
     to bottom,
     white 0%,
