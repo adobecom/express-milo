@@ -212,7 +212,6 @@ function makeRatings() {
 
 function createToggle({ toggleText, toggleActive, toggleBypassParam }) {
   const bypassParam = toggleBypassParam.querySelector('div:nth-child(2)').innerText;
-  const toggleWrapper = createTag('div', { class: 'toggle-wrapper' });
   const toggleLabels = toggleText.querySelectorAll('li');
   const isChecked = toggleActive.querySelector('div:nth-child(2)')?.innerText || 1;
 
