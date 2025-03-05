@@ -94,7 +94,7 @@ function createSUSIComponent({ variant, config, authParams, destURL }) {
   return susi;
 }
 
-function buildSUSIParams(client_id, variant, destURL, locale, title) {
+function buildSUSIParams({ client_id, variant, destURL, locale, title, hideIcon }) {
   const params = {
     variant,
     authParams: {
@@ -107,10 +107,14 @@ function buildSUSIParams(client_id, variant, destURL, locale, title) {
     destURL,
     config: {
       consentProfile: 'free',
+      fullWidth: true,
     },
   };
-  if (title) {
+  if (title !== undefined) {
     params.config.title = title;
+  }
+  if (hideIcon) {
+    params.config.hideIcon = true;
   }
   return params;
 }
@@ -220,12 +224,14 @@ export default async function init(el) {
   const footers = rows[5] ? [...rows[5].querySelectorAll('div')] : [];
   const tabParams = tabNames.map((tabName, index) => ({
     tabName,
-    ...buildSUSIParams(
-      client_ids[index],
-      variants[index],
-      getDestURL(redirectUrls[index]),
+    ...buildSUSIParams({
+      client_id: client_ids[index],
+      variant: variants[index],
+      destURL: getDestURL(redirectUrls[index]),
       locale,
-    ),
+      title: '', // rm titles
+      hideIcon: true,
+    }),
     footer: footers[index] ?? null,
   }));
   if (!noRedirect) {
