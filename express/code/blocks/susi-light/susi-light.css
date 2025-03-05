@@ -62,6 +62,10 @@
   border-radius: 6px;
 }
 
+.susi-tabs [role='tab-panel'] {
+  width: 400px;
+}
+
 .susi-tabs [role='tab-panel'][aria-hidden='true'] {
   display: none;
 }
