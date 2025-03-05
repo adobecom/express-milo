@@ -124,10 +124,10 @@ function buildSUSITabs(el, options) {
   tabsId += 1;
   const rows = [...el.children];
   const wrapper = createTag('div', { class: 'susi-tabs' });
-  const tabList = createTag('div', { role: 'tab-list' });
+  const tabList = createTag('div', { role: 'tablist' });
   const panels = options.map((option, i) => {
     const { footer, tabName, variant } = option;
-    const panel = createTag('div', { role: 'tab-panel', class: variant });
+    const panel = createTag('div', { role: 'tabpanel', class: variant });
     panel.append(createSUSIComponent(option));
     if (footer) {
       footer.classList.add('footer');
