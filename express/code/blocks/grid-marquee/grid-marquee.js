@@ -25,32 +25,6 @@ function drawerOn(drawer) {
   }
   currDrawer = drawer;
 }
-function getMetadataMap() {
-  return Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
-    if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
-    return acc;
-  }, {});
-}
-function mWebLabel(anchor) {
-  const metadataMap = getMetadataMap();
-  const metadata = metadataMap['mweb-app-label'];
-  if(metadata === null || anchor.textContent.trim().toLowerCase() !== 'generative fill') return;
-  const appOnlyLink = createTag('div', {class: 'mweb-app-only' }, metadata);
-  anchor.parentElement.append(appOnlyLink);
-}
-
-function mWebChevron(face) {
-  const metadataMap = getMetadataMap();
-  const metadata = metadataMap['mweb-card-chevron'];
-  if(metadata === null) return;
-  const svg = `
-    <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M10.207 11.707C9.81641 12.0977 9.18358 12.0977 8.79296 11.707L4.79296 7.70704C4.40235 7.31642 4.40235 6.68359 4.79296 6.29297C5.18358 5.90236 5.8164 5.90236 6.20702 6.29297L9.49999 9.58595L12.793 6.29297C12.9883 6.09766 13.2441 6.00001 13.5 6.00001C13.7559 6.00001 14.0117 6.09766 14.207 6.29297C14.5976 6.68359 14.5976 7.31642 14.207 7.70704L10.207 11.707Z" fill="#8F8F8F"/>
-    </svg>
-  `;
-  const chevron = createTag('div', {class: 'mweb-card-chevron' }, svg);
-  face.append(chevron);
-}
 
 document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
 let isTouch;
@@ -76,7 +50,6 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     anchor.classList.add('drawer-cta');
     const linkText = anchor.textContent.trim();
     anchor.title = anchor.title || linkText;
-    mWebLabel(anchor);
     const icon = icons[i];
     const match = icon && iconRegex.exec(icon.className);
     if (match?.[1]) {
@@ -167,7 +140,6 @@ function toCard(drawer) {
     'aria-label': titleText,
   }, [face, drawer]);
   face.classList.add('face');
-  mWebChevron(face);
   addCardInteractions(card, drawer);
   const lazyCB = () => decorateDrawer(videoAnchor.href, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
   drawer.classList.add('drawer');
