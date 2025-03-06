@@ -160,7 +160,7 @@ export function runQuickAction(quickAction, data, block) {
     case 'remove-background':
       if (appConfig?.metaData?.variant
         && EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant)) {
-        document.querySelector('.global-navigation.ready').style.display = 'none';
+      //  document.querySelector('.global-navigation.ready').style.display = 'none';
         ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
           ...contConfig,
           mode: 'modal',
