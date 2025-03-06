@@ -18,19 +18,26 @@ function decorateCards(block, cardsWrapper, cards) {
   cards.forEach((card) => {
     const cardEl = createTag('div', { class: 'discover-more-card' });
 
+    const cardFront = createTag('div', { class: 'card-face card-front' });
     const imgWrapper = createTag('div', { class: 'discover-more-card-img' });
     if (card.img) {
       const img = createTag('img', { src: card.img, alt: card.cardTitle });
       imgWrapper.append(img);
     }
-
     const titleEl = createTag('p', { class: 'discover-more-card-title' });
     titleEl.textContent = card.cardTitle;
+    cardFront.append(imgWrapper, titleEl);
 
+    const cardBack = createTag('div', { class: 'card-face card-back' });
     const detailsEl = createTag('p', { class: 'discover-more-card-details' });
     detailsEl.textContent = card.cardDetails;
+    cardBack.append(detailsEl);
 
-    cardEl.append(imgWrapper, titleEl, detailsEl);
+    cardEl.addEventListener('click', () => {
+      cardEl.classList.toggle('is-flipped');
+    });
+
+    cardEl.append(cardFront, cardBack);
     cardsContainer.append(cardEl);
   });
 
