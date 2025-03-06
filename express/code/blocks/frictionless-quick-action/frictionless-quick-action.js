@@ -206,7 +206,7 @@ async function startSDK(data = '', quickAction, block) {
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
 
-    const baseQA = new URLSearchParams(window.location.search).get('baseQA');
+    const baseQA = new URLSearchParams(window.location.search).get('base-qa');
     const ccEverywhereConfig = {
       hostInfo: {
         clientId,
