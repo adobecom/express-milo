@@ -1,5 +1,11 @@
 .highlight {
   margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .highlight .icon-row {
@@ -22,8 +28,9 @@
 
 @media (min-width: 768px) {
   .highlight {
-    display: flex;
+    flex-direction: row;
     align-items: center;
+    width: auto;
     padding-top: 40px;
     padding-bottom: 40px;
     margin: 20px;

@@ -40,6 +40,20 @@ const CONFIG = {
   prod: { express: 'express.adobe.com', commerce: 'commerce.adobe.com' },
   codeRoot: '/express/code',
   contentRoot: '/express',
+  stageDomainsMap: {
+    '--express-milo--adobecom.(hlx|aem).(page|live)': {
+      'www.adobe.com': 'www.stage.adobe.com',
+      'commerce.adobe.com': 'commerce-stg.adobe.com',
+      'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
+      'express.adobe.com': 'stage.projectx.corp.adobe.com',
+    },
+    'www.stage.adobe.com': {
+      'www.adobe.com': 'origin',
+      'commerce.adobe.com': 'commerce-stg.adobe.com',
+      'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
+      'express.adobe.com': 'stage.projectx.corp.adobe.com',
+    },
+  },
   jarvis: {
     id: getMetadata('jarvis-surface-id') || 'Acom_Express',
     version: getMetadata('jarvis-surface-version') || '1.0',
@@ -292,8 +306,7 @@ const listenAlloy = () => {
   const footer = createTag('meta', { name: 'footer', content: 'global-footer' });
   document.head.append(footer);
 
-  const footerSrc = createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' });
-  document.head.append(footerSrc);
+  getMetadata('footer-source') || document.head.append(createTag('meta', { name: 'footer-source', content: '/federal/footer/footer' }));
 
   const adobeHomeRedirect = createTag('meta', { name: 'adobe-home-redirect', content: 'on' });
   document.head.append(adobeHomeRedirect);
@@ -310,8 +323,7 @@ const listenAlloy = () => {
   }
 
   // TODO remove metadata after we go live
-  const gnav = createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` });
-  document.head.append(gnav);
+  getMetadata('gnav-source') || document.head.append(createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` }));
 
   if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
