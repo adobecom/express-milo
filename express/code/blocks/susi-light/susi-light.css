@@ -71,11 +71,11 @@
 }
 
 /* reduce CLS */
-.susi-tabs [role='tabpanel'].standard susi-sentry-light {
+.susi-tabs [role='tabpanel'].standard .susi-wrapper {
   min-height: 457.5px;
 }
 
-.susi-tabs [role='tabpanel'].edu-express susi-sentry-light {
+.susi-tabs [role='tabpanel'].edu-express .susi-wrapper {
   min-height: 366.5px;
 }
 
