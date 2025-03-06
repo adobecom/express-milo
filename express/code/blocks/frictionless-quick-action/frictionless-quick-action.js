@@ -39,7 +39,7 @@ const QA_CONFIGS = {
   'generate-qr-code': {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
-  }
+  },
 };
 
 const EXPERIMENTAL_VARIANTS = [
