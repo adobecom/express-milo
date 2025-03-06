@@ -27,6 +27,7 @@ import BlockMediator from '../../scripts/block-mediator.min.js';
 let replaceKey; let replaceKeyArray;
 let getMetadata; let createTag;
 let getConfig;
+let variant;
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
@@ -45,10 +46,10 @@ function handlelize(str) {
     .toLowerCase();
 }
 
-async function getTemplates(response, fallbackMsg) {
+async function getTemplates(response, fallbackMsg, props) {
   const filtered = response.items.filter((item) => isValidTemplate(item));
   const templates = await Promise.all(
-    filtered.map(async (template) => renderTemplate(template)),
+    filtered.map(async (template) => renderTemplate(template, variant, props)),
   );
   await Promise.all(templates);
   return {
@@ -76,7 +77,7 @@ async function fetchAndRenderTemplates(props) {
 
   props.total = response.metadata.totalHits;
   // eslint-disable-next-line no-return-await
-  return await getTemplates(response, fallbackMsg);
+  return await getTemplates(response, fallbackMsg, props);
 }
 
 async function processContentRow(block, props) {
@@ -129,20 +130,38 @@ async function formatHeadingPlaceholder(props) {
   }
 
   if (toolBarHeading) {
-    toolBarHeading = toolBarHeading
-      .replace('{{quantity}}', props.fallbackMsg ? '0' : templateCount)
-      .replace('quantity', props.fallbackMsg ? '0' : templateCount)
-      .replace('{{Type}}', titleCase(getMetadata('short-title') || getMetadata('q') || getMetadata('topics')))
-      .replace('{{type}}', getMetadata('short-title') || getMetadata('q') || getMetadata('topics'));
-    if (region === 'fr') {
-      toolBarHeading.split(' ').forEach((word, index, words) => {
-        if (index + 1 < words.length) {
-          if (word === 'de' && wordStartsWithVowels(words[index + 1])) {
-            words.splice(index, 2, `d'${words[index + 1].toLowerCase()}`);
-            toolBarHeading = words.join(' ');
+    if (variant.includes('print')) {
+      toolBarHeading = toolBarHeading
+        .replace('{{quantity}}', props.fallbackMsg ? '0' : templateCount)
+        .replace('quantity', props.fallbackMsg ? '0' : templateCount)
+        .replace('{{Type}}', props['toolbar-Heading'])
+        .replace('{{type}}', props['toolbar-Heading']);
+      if (region === 'fr') {
+        toolBarHeading.split(' ').forEach((word, index, words) => {
+          if (index + 1 < words.length) {
+            if (word === 'de' && wordStartsWithVowels(words[index + 1])) {
+              words.splice(index, 2, `d'${words[index + 1].toLowerCase()}`);
+              toolBarHeading = words.join(' ');
+            }
           }
-        }
-      });
+        });
+      }
+    } else {
+      toolBarHeading = toolBarHeading
+        .replace('{{quantity}}', props.fallbackMsg ? '0' : templateCount)
+        .replace('quantity', props.fallbackMsg ? '0' : templateCount)
+        .replace('{{Type}}', titleCase(getMetadata('short-title') || getMetadata('q') || getMetadata('topics')))
+        .replace('{{type}}', getMetadata('short-title') || getMetadata('q') || getMetadata('topics'));
+      if (region === 'fr') {
+        toolBarHeading.split(' ').forEach((word, index, words) => {
+          if (index + 1 < words.length) {
+            if (word === 'de' && wordStartsWithVowels(words[index + 1])) {
+              words.splice(index, 2, `d'${words[index + 1].toLowerCase()}`);
+              toolBarHeading = words.join(' ');
+            }
+          }
+        });
+      }
     }
   }
 
@@ -232,7 +251,6 @@ function constructProps(block) {
       }
     }
   });
-
   return props;
 }
 
@@ -726,6 +744,12 @@ async function decorateCategoryList(block, props) {
   drawerWrapper.addEventListener('scroll', () => {
     updateLottieStatus(block);
   }, { passive: true });
+
+  if (variant.includes('flyer')
+  || variant.includes('t-shirt')
+  || variant.includes('print')) {
+    categoriesDesktopWrapper.remove();
+  }
 }
 
 function closeDrawer(toolBar) {
@@ -1757,6 +1781,11 @@ function determineTemplateXType(props) {
   // use case aspect
   if (props.holidayBlock) type.push('holiday');
 
+  if (props.print && props.print) type.push('print');
+  if (props.print && props.print.toLowerCase() === 'flyer') type.push('flyer');
+  if (props.print && props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
+
+  variant = type;
   return type;
 }
 

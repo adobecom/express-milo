@@ -7,7 +7,8 @@ main .section:has(.make-a-project) h2 {
   margin: 80px 0 40px;
 }
 
-main .section:has(.make-a-project) .content:first-child {
+main .section:has(.make-a-project):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .content:first-child {
   padding-top: 0;
 }
 

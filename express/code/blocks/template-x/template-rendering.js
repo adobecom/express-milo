@@ -8,6 +8,13 @@ let createTag; let getConfig;
 let getMetadata; let replaceKeyArray;
 let tagCopied; let editThisTemplate;
 let free;
+let variants;
+let props;
+let sharePlaceholder;
+let mv;
+let sdid;
+let source;
+let action;
 
 function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
@@ -106,7 +113,7 @@ async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
   }
 }
 
-async function share(branchUrl, tooltip, timeoutId) {
+async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
   const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
     isSearchOverride: true,
@@ -119,7 +126,8 @@ async function share(branchUrl, tooltip, timeoutId) {
   if (tooltipRightEdgePos > window.innerWidth) {
     tooltip.classList.add('flipped');
   }
-
+  // Update ARIA-live region
+  liveRegion.textContent = text;
   clearTimeout(timeoutId);
   return setTimeout(() => {
     tooltip.classList.remove('display-tooltip');
@@ -127,29 +135,35 @@ async function share(branchUrl, tooltip, timeoutId) {
   }, 2500);
 }
 
-function renderShareWrapper(branchUrl) {
+function renderShareWrapper(templateInfo) {
+  const { templateTitle, branchUrl } = templateInfo;
   const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
   const shareIcon = getIconElementDeprecated('share-arrow');
   shareIcon.setAttribute('tabindex', 0);
+  shareIcon.setAttribute('role', 'button');
+  shareIcon.setAttribute('aria-label', `${sharePlaceholder === 'share' ? 'Share' : sharePlaceholder} ${templateTitle}`);
   const tooltip = createTag('div', {
     class: 'shared-tooltip',
     'aria-label': text,
     role: 'tooltip',
     tabindex: '-1',
   });
+  const liveRegion = createTag('div', {
+    'aria-live': 'polite',
+    class: 'sr-only',
+  });
+  wrapper.append(liveRegion);
+
   let timeoutId = null;
-  shareIcon.addEventListener('click', (ev) => {
+  shareIcon.addEventListener('click', async (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
-    timeoutId = share(branchUrl, tooltip, timeoutId);
+    timeoutId = await share(branchUrl, tooltip, timeoutId, liveRegion, text);
   });
-
-  shareIcon.addEventListener('keypress', (e) => {
-    if (e.key !== 'Enter') {
-      return;
-    }
-    timeoutId = share(branchUrl, tooltip, timeoutId);
+  shareIcon.addEventListener('keypress', async (e) => {
+    if (e.key !== 'Enter') return;
+    timeoutId = await share(branchUrl, tooltip, timeoutId, liveRegion, text);
   });
   const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   tooltip.append(checkmarkIcon);
@@ -159,10 +173,72 @@ function renderShareWrapper(branchUrl) {
   return wrapper;
 }
 
+const buildiFrameContent = (template) => {
+  const { branchUrl } = template.customLinks;
+  const taskID = props?.taskid;
+  const zazzleUrl = props.zazzleurl;
+  const { lang } = document.documentElement;
+  const iFrame = createTag('iframe', {
+    src: `${zazzleUrl}?TD=${template.id}&taskID=${taskID}&shortcode=${branchUrl.split('/').pop()}&lang=${lang}`,
+    title: 'Edit this template',
+    tabindex: '-1',
+  });
+
+  iFrame.allowfullscreen = true;
+  return iFrame;
+};
+
+const showModaliFrame = async (template) => {
+  const { getModal } = await import(`${getLibs()}/blocks/modal/modal.js`);
+
+  const iFrameContent = buildiFrameContent(template);
+  const modal = await getModal(null, {
+    id: template.id.replace(/:/g, '-'),
+    class: 'print-iframe',
+    content: iFrameContent,
+    closeEvent: 'closeModal',
+  });
+
+  return modal;
+};
+
+function renderPrintCTA(template) {
+  const btnTitle = 'Customize design';
+  const btnEl = createTag('a', {
+    href: '#modal',
+    title: btnTitle,
+    class: 'button accent small',
+    target: '_self',
+  });
+
+  btnEl.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await showModaliFrame(template);
+  });
+
+  btnEl.textContent = btnTitle;
+  return btnEl;
+}
+
+function renderPrintCTALink(template) {
+  const link = createTag('a', {
+    href: '#modal',
+    title: 'Customize design',
+    class: 'cta-link',
+  });
+
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+    await showModaliFrame(template);
+  });
+
+  return link;
+}
+
 function renderCTA(branchUrl) {
   const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const btnEl = createTag('a', {
-    href: branchUrl,
+    href: `${branchUrl}${mv}${sdid}${source}${action}`,
     title: btnTitle,
     class: 'button accent small',
   });
@@ -172,7 +248,7 @@ function renderCTA(branchUrl) {
 
 function renderCTALink(branchUrl) {
   const linkEl = createTag('a', {
-    href: branchUrl,
+    href: `${branchUrl}${mv}${sdid}${source}${action}`,
     class: 'cta-link',
     tabindex: '-1',
   });
@@ -341,7 +417,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(templateInfo);
       mediaWrapper.append(shareWrapper);
     }
     renderedMedia.hover();
@@ -360,7 +436,7 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(branchUrl);
+      const shareWrapper = renderShareWrapper(templateInfo);
       mediaWrapper.append(shareWrapper);
       renderedMedia.hover();
     }
@@ -373,6 +449,9 @@ function renderMediaWrapper(template) {
 }
 
 function renderHoverWrapper(template) {
+  let cta;
+  let ctaLink;
+
   const btnContainer = createTag('div', { class: 'button-container' });
 
   const {
@@ -382,9 +461,21 @@ function renderHoverWrapper(template) {
     focusHandler,
   } = renderMediaWrapper(template);
 
-  const cta = renderCTA(template.customLinks.branchUrl);
-  const ctaLink = renderCTALink(template.customLinks.branchUrl);
+  if (variants?.includes('flyer')
+  || variants?.includes('t-shirt')
+  || variants?.includes('print')) {
+    cta = renderPrintCTA(template);
+    ctaLink = renderPrintCTALink(template);
+  } else {
+    mv = `?mv=${props.mv}` || '';
+    sdid = `&sdid=${props.sdid}` || '';
+    source = `&source=${props.source}` || '';
+    action = `&action=${props.action}` || '';
+    cta = renderCTA(template.customLinks.branchUrl);
+    ctaLink = renderCTALink(template.customLinks.branchUrl);
+  }
 
+  cta.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
   ctaLink.append(mediaWrapper);
 
   btnContainer.append(cta);
@@ -476,12 +567,14 @@ function renderStillWrapper(template) {
   return stillWrapper;
 }
 
-export default async function renderTemplate(template) {
+export default async function renderTemplate(template, variant, properties) {
+  variants = variant;
+  props = properties;
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKeyArray } = placeholders);
   });
-  [tagCopied, editThisTemplate, free] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free'], getConfig());
+  [tagCopied, editThisTemplate, free, sharePlaceholder] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free', 'share'], getConfig());
 
   const tmpltEl = createTag('div');
   if (template.assetType === 'Webpage_Template') {

@@ -4,8 +4,9 @@ main .section>.logo-row {
     margin: auto;
 }
 
-main .logo-row:first-child {
-    padding-top: 60px;
+main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .logo-row:first-child {
+    padding-top: 40px;
 }
 
 main .logo-row .block-layout {
@@ -13,6 +14,12 @@ main .logo-row .block-layout {
     align-items: center;
     padding: 20px;
     font-family: Arial, sans-serif;
+}
+
+main .logo-row.block-layout .text-column {
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 900;
 }
 
 main .logo-row .block-row {
@@ -23,15 +30,15 @@ main .logo-row .block-row {
 
 main .logo-row .text-column {
     margin: auto auto 16px auto;
-    max-width: 300px;
     text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 main .logo-row .text-content {
     font-size: 24px;
     font-weight: bold;
     color: #333;
-
 }
 
 main .logo-row .image-column {
@@ -39,17 +46,20 @@ main .logo-row .image-column {
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
-    max-width: 375px;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin: auto;
 }
 
 main .logo-row .image-column p {
-    margin: 0;
+    height: fit-content;
+    margin: auto;
 }
 
 main .logo-row.numerous .image-column {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 16px;
 }
 
 main .logo-row .brand-image {
@@ -69,11 +79,13 @@ main .logo-row .brand-image {
         justify-content: center;
         gap: 5px;
         max-width: unset;
+        margin: auto;
     }
 
     main .logo-row .text-column  {
         margin: auto auto 16px auto;
         padding-right: initial;
+        max-width: 300px;
     }
     main .logo-row .text-column > * {
         text-align: left;
@@ -92,7 +104,7 @@ main .logo-row .brand-image {
         margin: auto 0 16px auto;
         padding-right: 40px;
         max-width: 320px;
-
+        text-align: left;
     }
 
     main .logo-row .block-row {

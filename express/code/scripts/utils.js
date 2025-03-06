@@ -304,13 +304,14 @@ export async function fixIcons(el = document) {
   });
 }
 
-// This was only added for the blocks premigration. It is not to be used for new blocks.
+// This was only added for the blocks premigration.
+// For new blocks they should only use the decorateButtons method from milo.
 export async function decorateButtonsDeprecated(el, size) {
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-  // deactivate milo button styling for ax-columns and banner since links have perhaps unnecessarily
-  // been authored bold or italic. We'll want to roll this back at some point.
+  // eslint-disable-next-line max-len
+  // DO NOT add any more exceptions here. Authors must learn to author buttons the new milo way, even with old blocks
   if (!el.closest('.ax-columns') && !el.closest('.banner') && !el.closest('.fullscreen-marquee') && !el.closest('.link-list')) decorateButtons(el, size);
-
+  // DO NOT add any more exceptions above. We should be removing the exceptions and not adding more.
   el.querySelectorAll(':scope a:not(.con-button, .social-link)').forEach(($a) => {
     const originalHref = $a.href;
     const linkText = $a.textContent.trim();
@@ -456,7 +457,12 @@ export function preDecorateSections(area) {
     const textToTarget = getMetadata(`${device}-floating-cta-text`)?.trim() || getMetadata('main-cta-text')?.trim();
     const linkToTarget = getMetadata(`${device}-floating-cta-link`)?.trim() || getMetadata('main-cta-link')?.trim();
     if (textToTarget || linkToTarget) {
-      const linkToTargetURL = new URL(linkToTarget);
+      let linkToTargetURL = null;
+      try {
+        linkToTargetURL = new URL(linkToTarget);
+      } catch (err) {
+        window.lana?.log(err);
+      }
       const sameUrlCTAs = Array.from(area.querySelectorAll('a:any-link'))
         .filter((a) => {
           try {
@@ -623,6 +629,10 @@ const blocksToClean = [
       '{{pricing}}',
       '{{savePercentage}}',
       '{{special-promo}}',
+      '{{per-month}}',
+      '{{per-year}}',
+      '{{per-month-per-seat}}',
+      '{{per-year-per-seat}}',
       '{{vat-include-text}}',
       '{{vat-exclude-text}}',
       '{{business-sales-numbers}}',
@@ -633,6 +643,13 @@ const blocksToClean = [
     placeholders: [
       '{{prompt-text}}',
       '%7B%7Bprompt-text%7D%7D',
+    ],
+  },
+  {
+    selector: '.list',
+    placeholders: [
+      '{{pricing.formatted}}',
+      '{{pricing.formattedBP}}',
     ],
   },
 ];
@@ -732,10 +749,11 @@ export function decorateArea(area = document) {
     const lcpImg = area.querySelector('img');
     lcpImg?.removeAttribute('loading');
   }());
-  const links = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`);
-  if (links.length) {
+
+  if (area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`).length) {
     // eslint-disable-next-line import/no-cycle
-    import('./branchlinks.js').then((mod) => mod.default(links));
+    // select links again to refresh reference
+    import('./branchlinks.js').then((mod) => mod.default(area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`)));
   }
 
   cleanupBrackets(area);

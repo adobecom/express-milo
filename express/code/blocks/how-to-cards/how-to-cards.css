@@ -1,4 +1,5 @@
-.section:not(:first-of-type) .how-to-cards:first-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):not(:first-of-type) .how-to-cards:first-child {
     padding-top: 60px;
 }
 

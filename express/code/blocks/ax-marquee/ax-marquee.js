@@ -114,7 +114,7 @@ export async function decorateToggleContext(ct) {
   }
 }
 
-function handlePause(block) {
+function handlePause(block, ct) {
   localStorage.setItem(
     'reduceMotion',
     localStorage.getItem('reduceMotion') === 'on' ? 'off' : 'on',
@@ -123,9 +123,11 @@ function handlePause(block) {
   if (localStorage.getItem('reduceMotion') === 'on') {
     block.classList.add('reduce-motion');
     block.querySelector('video')?.pause();
+    ct.setAttribute('aria-pressed', 'true');
   } else {
     block.classList.remove('reduce-motion');
     const playPromise = block.querySelector('video')?.play();
+    ct.setAttribute('aria-pressed', 'false');
     if (playPromise !== undefined) {
       playPromise.catch(() => {
         // ignore
@@ -138,6 +140,8 @@ async function buildReduceMotionSwitch(block, marqueeForeground) {
     const reduceMotionIconWrapper = createTag('div', {
       class: 'reduce-motion-wrapper',
       tabIndex: '0',
+      role: 'button',
+      'aria-pressed': 'false',
     });
     const videoWrapper = block.querySelector('.background-wrapper');
     const video = videoWrapper.querySelector('video');
@@ -178,27 +182,24 @@ async function buildReduceMotionSwitch(block, marqueeForeground) {
         }
       }
     }
+    // Initialize toggle content for accessibility
+    decorateToggleContext(reduceMotionIconWrapper);
+
     reduceMotionIconWrapper.addEventListener(
       'keydown',
       async (e) => {
         if (!e.target.isEqualNode(document.activeElement)) return;
+        if (e.code === 'Escape') reduceMotionIconWrapper.blur();
         if (e.code !== 'Space' && e.code !== 'Enter') return;
         e.preventDefault();
-        handlePause(block);
+        handlePause(block, e.currentTarget);
       },
     );
 
     reduceMotionIconWrapper.addEventListener(
       'click',
-      async () => {
-        handlePause(block);
-      },
-      { passive: true },
-    );
-    reduceMotionIconWrapper.addEventListener(
-      'mouseenter',
-      (e) => {
-        decorateToggleContext(e.currentTarget);
+      async (e) => {
+        handlePause(block, e.currentTarget);
       },
       { passive: true },
     );

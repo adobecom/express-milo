@@ -22,6 +22,9 @@
   width: 100%;
   text-align: left;
 }
+.section .link-list.fullwidth {
+  max-width: 100%;
+}
 
 .section .link-list.centered {
   box-sizing: border-box;
@@ -97,6 +100,11 @@
   box-sizing: border-box;
   width: fit-content;
   max-width: 100%;
+  padding-top: 0;
+}
+
+.section .link-list.fullwidth {
+  margin-top: 0;
 }
 
 .section div.link-list-wrapper:has(.link-list.fullwidth) .link-list,
@@ -234,7 +242,7 @@
   }
 
   .section .link-list-wrapper {
-    padding: 60px 55px 0 55px;
+    padding: 60px 50px 0 50px;
     max-width: 1200px;
   }
 }

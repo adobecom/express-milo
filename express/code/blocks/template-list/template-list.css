@@ -3,7 +3,8 @@
   max-width: 375px;
 }
 
-.template-list-wrapper:first-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .template-list-wrapper:first-child {
   padding-top: 60px;
 }
 

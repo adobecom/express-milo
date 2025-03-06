@@ -1,13 +1,19 @@
 main .tutorials-wrapper, .section:has(.content:first-child + .tutorials-wrapper) .content {
   max-width: 1200px;
+
 }
 
-main .section > .tutorials-wrapper {
+main .tutorials-wrapper {
   margin: auto;
+}
+
+main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
   max-width: 375px;
 }
 
-.section:has(.content:first-child + .tutorials-wrapper) .content, main .tutorials-wrapper:first-child {
+.section:has(.content:first-child + .tutorials-wrapper) .content,
+main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .tutorials-wrapper:first-child {
   padding-top: 60px;
   margin-top: 0px;
 }
@@ -105,13 +111,13 @@ main .section .tutorials a, main .section .tutorials a:hover {
 }
 
 @media (min-width: 900px) {
-  main .section > .tutorials-wrapper {
+  main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
     max-width: 830px;
   }
 }
 
 @media (min-width: 1200px) {
-  main .section > .tutorials-wrapper {
+  main .section > .tutorials-wrapper:has(.tutorials.twoperrow) {
     max-width: 1024px;
   }
 }
