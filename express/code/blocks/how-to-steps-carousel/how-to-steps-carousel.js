@@ -94,6 +94,7 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
 
   const includeSchema = block.classList.contains('schema');
 
+  // if you're thinking of copying this pattern, don't . Blocks should not be touching the section
   section.classList.add('how-to-steps-carousel-container');
 
   const schema = {

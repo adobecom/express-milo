@@ -1,16 +1,22 @@
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ratings {
+  margin-top: 80px;
+}
+
 .ratings {
   background: var(--color-gray-100);
   padding-top: 80px;
   padding-bottom: 0;
-  margin-top: 80px;
   text-align: center;
 }
 
-.section:has(.ax-columns, .content) + .section .ratings {
+.section:has(.ax-columns, .content) + .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ratings {
   margin-top: 0px;
 }
 
-.section.long-form:has(.ax-columns) + .section .ratings {
+.section.long-form:has(.ax-columns) + .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ratings {
   margin-top: 40px;
 }
 

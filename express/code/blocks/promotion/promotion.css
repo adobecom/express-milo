@@ -3,7 +3,7 @@
   margin: auto;
 }
 
-.promotion:first-child {
+.promotion:not(:empty):first-child {
   padding-top: 60px;
 }
 
@@ -51,9 +51,19 @@
   margin-top: 0;
 }
 
-.promotion.narrow {
-  max-width: 850px;
-  margin: 0 auto;
+.promotion.longform {
+  margin: 10px 10px 100px;
+}
+
+.promotion.longform .promotion-wrapper {
+  margin-top: 40px;
+}
+
+@media (min-width: 400px) {
+  .promotion.longform {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 @media (min-width: 600px) {

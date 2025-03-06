@@ -68,9 +68,10 @@ function handleGenAISubmit(form, link) {
   if (genAILink) windowHelper.redirect(genAILink);
 }
 
-function buildGenAIForm({ ctaLinks, subtext }) {
+function buildGenAIForm({ title, ctaLinks, subtext }) {
   const genAIForm = createTag('form', { class: 'gen-ai-input-form' });
   const genAIInput = createTag('input', {
+    'aria-label': `${title}: ${subtext || ''}`,
     placeholder: subtext || '',
     type: 'text',
     enterKeyhint: 'enter',
@@ -167,7 +168,7 @@ async function decorateCards(block, { actions }) {
       }
     }
 
-    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title' });
+    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h4' });
     textWrapper.append(titleText);
     const desc = createTag('p', { class: 'cta-card-desc' });
     desc.textContent = text;

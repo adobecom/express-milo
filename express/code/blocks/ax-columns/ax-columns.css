@@ -1,14 +1,36 @@
 .section:first-child .ax-columns:first-child {
   min-height: unset;
+}
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing):first-child .ax-columns:first-child {
   padding-top: 0;
 }
 
-.section.long-form .ax-columns:last-child {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing).long-form .ax-columns:last-child {
   padding-bottom: 40px;
 }
 
 .section:has(.ax-columns) > .content {
   max-width: 350px;
+}
+
+main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content {
+  padding-top: 0;
+}
+
+main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
+  font-size: 22px;
+  padding-top: 28px;
+}
+
+main .section .ax-columns.enterprise {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+main .section .ax-columns.enterprise .column h2 {
+  font-size: 60px;
 }
 
 .ax-columns {
@@ -22,6 +44,32 @@
 
 .ax-columns.centered {
   max-width: 375px;
+}
+
+.section:has(.ax-columns.bg)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(
+      to bottom,
+      white 0%, 
+      white 10%, 
+      rgba(255,255,255,0) 30%, 
+      rgba(255,255,255,0) 70%, 
+      white 90%, 
+      white 100%
+    ),
+    var(--bg-image, none);
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.section:not(:has(> .ax-columns:not(.centered))) > .ax-columns.centered {
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -30,6 +78,7 @@
   margin-top: 0;
   padding-top: 80px;
 }
+
 
 .section .ax-columns.enterprise {
   padding-left: 80px;
@@ -48,11 +97,13 @@
   float: unset;
 }
 
-.section:not(:first-child) .ax-columns:first-child {
+.section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child {
   padding-top: 60px;
 }
 
-.section:not(:first-child) .ax-columns.highlight:empty:first-child {
+.section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:empty:first-child {
   padding-top: 0px;
 }
 
@@ -62,8 +113,10 @@
   padding-right: 0;
 }
 
-.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered)) > .ax-columns:last-child,
-.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered)) > .content:last-child {
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .ax-columns:last-child,
+.section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .content:last-child {
   padding-bottom: 40px;
 }
 
@@ -81,10 +134,14 @@
   color: var(--color-white);
 }
 
-.ax-columns.highlight:last-child,
-.ax-columns.dark:last-child,
-.ax-columns.highlight:nth-last-child(2):has(+ .section-metadata),
-.ax-columns.dark:nth-last-child(2):has(+ .section-metadata) {
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:last-child,
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.dark:last-child,
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:nth-last-child(2):has(+ .section-metadata),
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.dark:nth-last-child(2):has(+ .section-metadata) {
   padding-bottom: 40px;
 }
 
@@ -238,7 +295,6 @@
 .section .ax-columns > div {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   padding: 40px 0;
 }
@@ -433,7 +489,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   margin-bottom: 0;
 }
 
-.section:first-child .ax-columns:first-child > div.columns-video {
+.section:first-child:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child > div.columns-video {
   padding: 40px 0;
 }
 
@@ -618,6 +675,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.fullsize .column {
   padding-left: 24px;
   padding-right: 24px;
+  width: calc(100% - 48px);
 }
 
 .ax-columns .column.column-picture {
@@ -790,6 +848,17 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     padding-right: 20px;
     word-break: auto-phrase;
   }
+
+  .section .ax-columns.minimum-padding {
+    padding-left: 16px;
+    padding-right: 16px;
+    text-align: left;
+    max-width: unset;
+  }
+
+  .section .ax-columns.ax-columns.minimum-padding .column {
+    padding: 0;
+  }
 }
 
 .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
@@ -822,6 +891,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 @media (min-width: 900px) {
+  main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
+    font-size: 36px;
+    padding-top: 48px;
+  }
+  
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
     padding-left: 0;
   }
@@ -1165,7 +1239,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     margin-top: 0;
   }
 
-  .section:not(:first-child) .ax-columns.extra-wide:first-child:not(:empty) {
+  .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.extra-wide:first-child:not(:empty) {
     padding-top: 0;
   }
 
@@ -1213,3 +1288,4 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.slim-padding .column {
   padding: 20px;
 }
+

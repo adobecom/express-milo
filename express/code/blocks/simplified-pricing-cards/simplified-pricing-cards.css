@@ -25,12 +25,16 @@ main .section>.simplified-pricing-cards-wrapper {
     flex-wrap: wrap;
     gap: 16px;
     flex-direction: column;
-    width: fit-content;
     margin: 16px auto auto auto;
 }
 
+.simplified-pricing-cards.wide {
+    --card-width: 100%;
+    padding: 16px;
+}
+
 .simplified-pricing-cards .card {
-    width: calc(var(--card-width) - 32px);
+    width: calc(var(--card-width) - 34px);
     position: relative;
     padding: 16px;
     border: 2px solid var(--color-gray-300);
@@ -273,6 +277,7 @@ main .section>.simplified-pricing-cards-wrapper {
     width: 100%;
 }
 
+
 .simplified-pricing-cards .tooltip {
     position: relative;
     display: inline;
@@ -282,9 +287,13 @@ main .section>.simplified-pricing-cards-wrapper {
     position: relative;
 }
 
-.simplified-pricing-cards .tooltip .icon:hover~.tooltip-text {
+.simplified-pricing-cards .tooltip  button.hover .tooltip-text {
     opacity: 1;
-}
+} 
+
+.simplified-pricing-cards .tooltip-text.hover {
+    opacity: 1;
+} 
 
 .simplified-pricing-cards .toggle-switch {
     display: block;
@@ -310,13 +319,17 @@ main .section>.simplified-pricing-cards-wrapper {
     background-color: var(--color-white);
     border: 2px solid var(--color-black);
     color: black;
-    margin: 24px auto 24px auto;
+    margin: 40px auto 24px auto;
     padding-top: 12px;
     padding-bottom: 12px;
     border-radius: 24px;
 }
 
 /* Tooltip CSS */
+
+.simplified-pricing-cards .tooltip > button:focus-within .tooltip-text {
+    opacity: 1;
+}
 
 .simplified-pricing-cards .tooltip-icon {
     position: relative;
@@ -332,13 +345,20 @@ main .section>.simplified-pricing-cards-wrapper {
     border-radius: 8px;
     position: absolute;
     bottom: 100%;
-    min-width: 200px;
-    left: -105px;
-    width: fit-content;
-    margin-bottom: 19px;
+    width:  200px;
+    left: -105px; 
+    margin-bottom: 5px;
+    user-select: text;
     transition: bottom 0.5s;
-    pointer-events: none;
 }
+
+.simplified-pricing-cards .tooltip>button {
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    font-family: "adobe-clean";
+    position: relative;
+  }
 
 .simplified-pricing-cards .tooltip-text.overflow-left {
     right: inherit;
@@ -354,14 +374,16 @@ main .section>.simplified-pricing-cards-wrapper {
     content: '';
     position: absolute;
     bottom: -5px;
-    left: 50%;
-    border: 5px solid transparent;
-    border-top-color: var(--color-black)
+    left: 107px; 
+    border-top-color: var(--color-black);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
 }
 
 .simplified-pricing-cards .tooltip-text.overflow-left::after {
     right: inherit;
-    left: 20px;
+    left: 23px;
 }
 
 .simplified-pricing-cards .tooltip-text.overflow-right::after {
@@ -426,6 +448,11 @@ main .section>.simplified-pricing-cards-wrapper {
         --card-width: 580px;
         --header-size: 22px;
         --header-offer-size: 16px;
+    }
+
+    .simplified-pricing-cards.wide {
+        --card-width: 580px;
+        padding: unset;
     }
 
     .simplified-pricing-cards .card-wrapper {
@@ -495,6 +522,10 @@ main .section>.simplified-pricing-cards-wrapper {
         gap: 8px;
     }
 
+    .simplified-pricing-cards.wide {
+        --card-width: 385px;
+    }
+
     .simplified-pricing-cards .toggle-switch-wrapper {
         display: none;
     }
@@ -502,6 +533,7 @@ main .section>.simplified-pricing-cards-wrapper {
     .simplified-pricing-cards .card-wrapper {
         margin: auto;
         flex-direction: row;
+        width: fit-content;
     }
 
     .simplified-pricing-cards .pricing-area-wrapper {

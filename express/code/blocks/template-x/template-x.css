@@ -1,5 +1,6 @@
 /* templates pages spacial styling */
-.section:has(.template-x) .content:first-child {
+main .section:has(.template-x):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .content:first-child {
   padding-top: 0;
 }
 
@@ -16,6 +17,37 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   text-align: center;
 }
 
+.dialog-modal.print-iframe, .dialog-modal.print-iframe iframe {
+  width: 100%;
+  height: 100%;
+  max-width: 1124px;
+  max-height: 820px;
+  border-radius: 20px;
+  border: none;
+  overflow: unset
+}
+
+.dialog-modal.print-iframe .dialog-close {
+  top: -20px;
+  right: -5px;
+}
+.dialog-modal.print-iframe .dialog-close svg {
+  width: 34px;
+  height: 34px;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.16);
+  border-radius: 70px;
+}
+
+.dialog-modal.print-iframe .dialog-close svg circle {
+  fill: var(--color-white);
+}
+
+.dialog-modal.print-iframe .dialog-close svg line {
+  stroke: var(--color-black);
+  stroke-width: 1;
+}
+
+
 [data-block-name="template-x"] {
   margin: 0 auto;
 }
@@ -26,6 +58,11 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
 
 .template-x > .content {
   padding: 0 15px;
+}
+
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .template-x.top-padding:first-child {
+  padding-top: 100px;
 }
 
 .template-x.top-padding {
@@ -817,6 +854,12 @@ main.with-holiday-templates-banner {
   position: sticky;
   z-index: 1;
   top: 64px;
+}
+
+.template-x.print .toolbar-wrapper,
+.template-x.t-shirt .toolbar-wrapper,
+.template-x.flyer .toolbar-wrapper {
+  background: var(--color-gray-150);
 }
 
 .template-x .api-templates-toolbar {
@@ -1995,6 +2038,112 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   position: relative;
 }
 
+.template-x.print .template .still-wrapper .image-wrapper,
+.template-x.t-shirt .template .still-wrapper .image-wrapper,
+.template-x.flyer .template .still-wrapper .image-wrapper {
+  background: #ebebeb;
+  padding: 15px;
+}
+
+.template-x.print .toolbar-wrapper {
+  z-index: 2;
+}
+
+.template-x.print .share-icon-wrapper {
+  display: none;
+}
+
+.template-x.t-shirt .template .still-wrapper .image-wrapper {
+  background: url('tshirt.png') no-repeat center center;
+  background-size: cover;
+  border-radius: 10px;
+}
+
+.template-x.print.sixcols:not(.horizontal) .template:not(.placeholder) .button-container {
+  width: 195px;
+}
+
+.template-x.t-shirt .template .singleton-hover a.cta-link,
+.template-x.t-shirt .template .button-container a.cta-link {
+  width: 179px;
+  height: 245px;
+  padding-left: 15px;
+  background: url('tshirt-dropshadow.png') no-repeat center center;
+  background-size: contain;
+  background-color: #EEEEEE;
+  border-radius: 10px;
+}
+
+.template-x.t-shirt .template .button-container .media-wrapper {
+  height: 100%;
+}
+
+.template-x.print .template.placeholder::before {
+  display: table;
+  content: ' ';
+  position: absolute;
+  top: 20%;
+  width: 118px;
+  height: 155px;
+  padding: 6px;
+  gap: 10px;
+  z-index: -1;
+  border-radius: 14px;
+  border: 2px dashed var(--color-gray-300);
+  background-color: var(--color-white);
+}
+
+.template-x.print .template.placeholder div:nth-of-type(2) {
+  bottom: 80px
+}
+
+.template-x.print .template.placeholder::after {
+  display: table;
+  content: ' ';
+  position: absolute;
+  top: 18%;
+  width: 130px;
+  height: 167px;
+  padding: 6px;
+  gap: 10px;
+  z-index: -2;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.16);
+  background-color: var(--color-white);
+}
+
+.template-x.print .template.placeholder {
+  border: none;
+  background-color: #ebebec;
+  z-index: 1;
+}
+
+.template-x.t-shirt .template .button-container .media-wrapper > img {
+  display: block;
+  width: 50%;
+  margin: -20px auto 0 37px;
+  object-fit: contain;
+  mix-blend-mode: darken;
+}
+
+.template-x.print:not(.t-shirt) .template .still-wrapper .image-wrapper img,
+.template-x.flyer .template .still-wrapper .image-wrapper img {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.template-x.t-shirt .template .still-wrapper .image-wrapper img {
+  mix-blend-mode: darken;
+}
+
+.template-x.t-shirt .template .still-wrapper .image-wrapper .icon {
+  display: none;
+}
+
+.template-x.print .template img, .template-x.print .template video,
+.template-x.t-shirt .template img, .template-x.t-shirt .template video,
+.template-x.flyer .template img, .template-x.flyer .template video {
+  border-radius: 0;
+}
+
 .template-x .template .still-wrapper .image-wrapper .free-tag {
   position: absolute;
   height: 24px;
@@ -2131,7 +2280,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   align-items: center;
   gap: 4px;
   width: 130px;
-  background-color: #33AB84;
+  background-color: var(--background-positive-default);
   color: white;
   text-align: center;
   border-radius: 6px;
@@ -2172,13 +2321,13 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent #33AB84 transparent transparent;
+  border-color: transparent var(--background-positive-default) transparent transparent;
 }
 
 .template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
   right: unset;
   left: 100%;
-  border-color: transparent transparent transparent #33AB84;
+  border-color: transparent transparent transparent var(--background-positive-default);
 }
 
 .template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped::after {
@@ -2860,4 +3009,16 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
   .template-x.horizontal.holiday.expanded .template-x-wrapper {
     padding-top: 0;
   }
+}
+
+
+.template .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }

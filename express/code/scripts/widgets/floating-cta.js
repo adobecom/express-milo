@@ -1,5 +1,3 @@
-// import { decorateLinks} from '../';
-
 import { getLibs, getLottie, lazyLoadLottiePlayer, createTag, getMobileOperatingSystem, getIconElementDeprecated } from '../utils.js';
 import BlockMediator from '../block-mediator.min.js';
 
@@ -119,7 +117,7 @@ async function buildLottieArrow(wrapper, floatingBtn, data) {
 }
 
 export async function createFloatingButton(block, audience, data) {
-  const { loadStyle } = await import(`${getLibs()}/utils/utils.js`);
+  const { loadStyle, decorateLinks } = await import(`${getLibs()}/utils/utils.js`);
   const aTag = makeCTAFromSheet(block, data);
   const main = document.querySelector('main');
   loadStyle('/express/code/scripts/widgets/floating-cta.css');
@@ -294,7 +292,7 @@ export async function createFloatingButton(block, audience, data) {
     document.dispatchEvent(new CustomEvent('linkspopulated', { detail: [floatButtonLink] }));
   }
 
-  // decorateLinks(floatButtonWrapper);
+  decorateLinks(floatButtonWrapper);
   return floatButtonWrapper;
 }
 
