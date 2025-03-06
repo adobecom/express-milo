@@ -133,10 +133,12 @@ function buildSUSITabs(el, options) {
   const rows = [...el.children];
   const wrapper = createTag('div', { class: 'susi-tabs' });
   const tabList = createTag('div', { role: 'tablist' });
+  const susiScriptReady = loadSUSIScripts();
   const panels = options.map((option, i) => {
     const { footer, tabName, variant } = option;
-    const panel = createTag('div', { role: 'tabpanel', class: variant });
-    panel.append(createSUSIComponent(option));
+    const susiWrapper = createTag('div', { class: 'susi-wrapper' });
+    const panel = createTag('div', { role: 'tabpanel', class: variant }, susiWrapper);
+    susiScriptReady.then(() => susiWrapper.append(createSUSIComponent(option)));
     if (footer) {
       footer.classList.add('footer');
       if (footer.querySelector('h2')) {
@@ -209,8 +211,6 @@ export default async function init(el) {
   const isTabs = el.classList.contains('tabs');
   const noRedirect = el.classList.contains('no-redirect');
 
-  await loadSUSIScripts();
-
   // only edu variant shows single
   if (!isTabs) {
     const rows = el.querySelectorAll(':scope > div > div');
@@ -222,6 +222,7 @@ export default async function init(el) {
     if (!noRedirect) {
       redirectIfLoggedIn(params.destURL);
     }
+    await loadSUSIScripts();
     el.replaceChildren(createSUSIComponent(params));
     return;
   }
