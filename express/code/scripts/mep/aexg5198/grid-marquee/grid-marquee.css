@@ -97,6 +97,12 @@ main .section .grid-marquee h1 {
   line-height: 20.8px;
 }
 
+.grid-marquee .face .mweb-card-chevron {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
 .grid-marquee .face strong {
   font-size: 1rem;
   font-weight: 700;
@@ -250,7 +256,6 @@ main .section .grid-marquee h1 {
   cursor: initial;
 }
 
-
 .grid-marquee .drawer [role='tabpanel'][aria-hidden='true'] {
   display: none;
 }
@@ -320,11 +325,6 @@ main .section .grid-marquee h1 {
   
   .grid-marquee .face img {
     width: var(--t-img-w);
-  }
-  .grid-marquee .face .mweb-card-chevron {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
   }
   .grid-marquee .drawer .content {
     display: flex;
