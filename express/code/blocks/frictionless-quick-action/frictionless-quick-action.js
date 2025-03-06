@@ -39,8 +39,7 @@ const QA_CONFIGS = {
   'generate-qr-code': {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
-  },
-  'remove-background-full-editor': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  }
 };
 
 const EXPERIMENTAL_VARIANTS = [
