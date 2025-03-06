@@ -65,15 +65,17 @@ export default async function decorate(block) {
     return;
   }
 
-  addTempWrapperDeprecated(block, 'discover-more-cards');
-  const cardsWrapper = createTag('div', { class: 'discover-more-cards-wrapper' });
+  if (block) {
+    addTempWrapperDeprecated(block, 'discover-more-cards');
+    const cardsWrapper = createTag('div', { class: 'discover-more-cards-wrapper' });
 
-  const { bgImage, header, cards } = constructPayload(block);
+    const { bgImage, header, cards } = constructPayload(block);
 
-  if (bgImage) {
-    cardsWrapper.style.setProperty('--bg-image', `url(${bgImage})`);
+    if (bgImage) {
+      cardsWrapper.style.setProperty('--bg-image', `url(${bgImage})`);
+    }
+
+    decorateHeading(block, header);
+    decorateCards(block, cardsWrapper, cards);
   }
-
-  decorateHeading(block, header);
-  decorateCards(block, cardsWrapper, cards);
 }
