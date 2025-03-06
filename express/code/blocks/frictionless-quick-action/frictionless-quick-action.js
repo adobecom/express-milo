@@ -40,13 +40,13 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
-  'remove-background-full-editor':  { ...getBaseImgCfg(JPG, JPEG, PNG) }
+  'remove-background-full-editor': { ...getBaseImgCfg(JPG, JPEG, PNG) },
 };
 
-const EXPERIMENTAL_VARIANTS = [ 
+const EXPERIMENTAL_VARIANTS = [
   'qa-in-product-variant1',
   'qa-in-product-variant2',
-]
+];
 
 function fade(element, action) {
   if (action === 'in') {
@@ -107,7 +107,7 @@ export function runQuickAction(quickAction, data, block) {
     parentElementId: `${quickAction}-container`,
     backgroundColor: 'transparent',
     hideCloseButton: true,
-    padding: 0
+    padding: 0,
   };
 
   const docConfig = {
@@ -117,9 +117,9 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  const variant = new URLSearchParams(window.location.search).get('variant')
+  const variant = new URLSearchParams(window.location.search).get('variant');
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload'},
+    metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload' },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -159,15 +159,15 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
-      console.log(appConfig.metaData.variant,EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant))
-      if (appConfig?.metaData?.variant && EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant)){
-        document.querySelector(".global-navigation.ready").style.display = "none" 
+      if (appConfig?.metaData?.variant
+        && EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant)) {
+        document.querySelector('.global-navigation.ready').style.display = 'none';
         ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-          ...contConfig, 
-          mode : "modal", 
-          metaData: { 
-            isFrictionlessQa: 'true'
-           } 
+          ...contConfig,
+          mode: 'modal',
+          metaData: {
+            isFrictionlessQa: 'true',
+          },
         });
       } else {
         ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
@@ -207,7 +207,6 @@ async function startSDK(data = '', quickAction, block) {
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
 
-
     const baseQA = new URLSearchParams(window.location.search).get('baseQA');
     const ccEverywhereConfig = {
       hostInfo: {
@@ -217,11 +216,11 @@ async function startSDK(data = '', quickAction, block) {
       configParams: {
         locale: ietf?.replace('-', '_'),
         env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
-        urlOverride : baseQA
+        urlOverride: baseQA,
       },
       authOption: () => ({ mode: 'delayed' }),
     };
-    
+
     ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
   }
 
