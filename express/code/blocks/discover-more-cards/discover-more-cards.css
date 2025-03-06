@@ -51,11 +51,14 @@
 
 /* Cards container */
 .discover-more-cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  justify-content: center;
   gap: var(--spacing-l);
   position: relative;
   z-index: 1;
+  flex-wrap: wrap;
+  max-width: var(--grid-container-width);
+  margin: 0 auto;
 }
 
 /* Individual card styling */
@@ -67,6 +70,8 @@
   cursor: pointer;
   transform-style: preserve-3d;
   position: relative;
+  flex: 0 0 auto; /* Prevent stretching */
+  margin: 0 auto; /* Center in container */
 }
 
 .discover-more-card .card-face {
