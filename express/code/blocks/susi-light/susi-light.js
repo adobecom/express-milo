@@ -6,6 +6,9 @@ let createTag; let loadScript;
 let getConfig; let isStage;
 let loadIms;
 
+const DCTX_ID_STAGE = 'v:2,s,dcp-r,bg:express2024,bf31d610-dd5f-11ee-abfd-ebac9468bc58';
+const DCTX_ID_PROD = 'v:2,s,dcp-r,bg:express2024,45faecb0-e687-11ee-a865-f545a8ca5d2c';
+
 const usp = new URLSearchParams(window.location.search);
 
 const onRedirect = (e) => {
@@ -80,7 +83,7 @@ function createSUSIComponent({ variant, config, authParams, destURL }) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
   susi.authParams.redirect_uri = destURL;
-  susi.authParams.dctx_id = 'v:2,s,dcp-r,bg:express2024,45faecb0-e687-11ee-a865-f545a8ca5d2c';
+  susi.authParams.dctx_id = isStage ? DCTX_ID_STAGE : DCTX_ID_PROD;
   susi.config = config;
   if (isStage) susi.stage = 'true';
   susi.variant = variant;
