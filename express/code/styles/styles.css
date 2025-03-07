@@ -1204,7 +1204,3 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 .marquee.light.xxl-button .action-area a {
   margin: 0;
 }
-
-.marquee.light.xxl-button a:not(.con-button) {
-  text-decoration: underline;
-}
