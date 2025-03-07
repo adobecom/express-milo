@@ -424,7 +424,7 @@ main .section .grid-marquee h1 {
     max-width: 1800px;
   }
   .grid-marquee .headline {
-    max-width: 1600px;
+    max-width: 1000px;
     padding-bottom: 40px;
   }
   main .section .grid-marquee .headline h1 {
