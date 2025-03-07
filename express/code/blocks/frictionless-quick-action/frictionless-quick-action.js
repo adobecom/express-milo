@@ -8,6 +8,7 @@ import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.j
 
 let createTag; let getConfig;
 let loadScript; let getMetadata;
+let globalNavSelector;
 
 let ccEverywhere;
 let quickActionContainer;
@@ -159,8 +160,8 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'remove-background':
       if (appConfig?.metaData?.variant
-        && EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant)) {
-        document.querySelector('.global-navigation.ready').style.display = 'none';
+        && EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant)) { 
+        document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
         ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
           ...contConfig,
           mode: 'modal',
@@ -269,9 +270,13 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 }
 
 export default async function decorate(block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
-    ({ createTag, getConfig, loadScript, getMetadata } = utils);
-  });
+  const modules = 
+    await Promise.all([import(`${getLibs()}/utils/utils.js`), 
+      import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`), 
+      decorateButtonsDeprecated(block)])
+  const { createTag, getMetadata } = modules[0]
+  globalNavSelector = modules[1]?.selectors
+ 
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
   const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
@@ -355,8 +360,7 @@ export default async function decorate(block) {
   }, false);
 
   const freePlanTags = await buildFreePlanWidget({ typeKey: 'branded', checkmarks: true });
-  dropzone.append(freePlanTags);
-
+  dropzone.append(freePlanTags); 
   window.addEventListener('popstate', (e) => {
     const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
     const correctState = e.state?.hideFrictionlessQa;
