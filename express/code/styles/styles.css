@@ -1205,6 +1205,6 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   margin: 0;
 }
 
-.marquee.light.xxl-button a:not(.con-button), main a:not(.con-button):hover{
+.marquee.light.xxl-button a:not(.con-button) {
   text-decoration: underline;
 }
