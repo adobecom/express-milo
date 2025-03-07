@@ -142,6 +142,7 @@ function buildSUSITabs(el, options) {
     const susiWrapper = createTag('div', { class: 'susi-wrapper' });
     const panel = createTag('div', { role: 'tabpanel', class: variant }, susiWrapper);
     susiScriptReady.then(() => susiWrapper.append(createSUSIComponent(option)));
+
     if (footer) {
       footer.classList.add('footer');
       if (footer.querySelector('h2')) {
@@ -161,7 +162,7 @@ function buildSUSITabs(el, options) {
     const id = sanitizeId(`${tabName}-${tabsId}`);
     panel.setAttribute('aria-labelledby', `tab-${id}`);
     panel.id = `panel-${id}`;
-    panel.setAttribute('aria-hidden', i > 0);
+    i > 0 && panel.classList.add('hide');
     const tab = createTag('button', {
       role: 'tab',
       'aria-selected': i === 0,
@@ -172,7 +173,7 @@ function buildSUSITabs(el, options) {
       tabList.querySelector('[aria-selected=true]')?.setAttribute('aria-selected', false);
       tab.setAttribute('aria-selected', true);
       panels.forEach((p) => {
-        p.setAttribute('aria-hidden', p !== panel);
+        p !== panel ? p.classList.add('hide') : p.classList.remove('hide');
       });
     });
     tabList.append(tab);
