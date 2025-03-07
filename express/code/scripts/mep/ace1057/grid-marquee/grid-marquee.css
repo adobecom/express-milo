@@ -346,7 +346,7 @@ main .section .grid-marquee h1 {
 .grid-marquee .slider.round:before {
   border-radius: 50%;
 }
-
+/* button look change */
 .grid-marquee.toggle .ctas a:nth-child(2) {
   transition: none;
   background: none;
@@ -361,7 +361,7 @@ main .section .grid-marquee h1 {
     max-height: 1200px;
   }
   .grid-marquee .headline {
-    max-width: 1200px;
+    max-width: 1000px;
   }
   .grid-marquee .headline .ctas {
     display: flex;
