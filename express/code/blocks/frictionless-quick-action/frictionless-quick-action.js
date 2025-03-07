@@ -270,10 +270,10 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 }
 
 export default async function decorate(block) {
-  const { utils, gNavUtils } = await Promise.all([import(`${getLibs()}/utils/utils.js`),
+  const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
     decorateButtonsDeprecated(block)]);
-  ({ createTag, getMetadata } = utils);
+  ({ createTag, getMetadata, loadScript, getConfig } = utils);
   globalNavSelector = gNavUtils?.selectors;
 
   const rows = Array.from(block.children);
