@@ -119,3 +119,20 @@
   border-radius: 8px;
   margin: 0;
 }
+
+/* ax-login-page section metadata styles */
+.section.ax-login-page .susi-tabs {
+  background-color: white;
+  border-radius: 16px;
+}
+
+.section.ax-login-page .susi-tabs .footer {
+  border-radius: 0 0 16px 16px;
+}
+
+@media (min-width: 768px) {
+  .section.ax-login-page .susi-light {
+    position: absolute;
+    padding: 30px 0 32px;
+  }
+}
