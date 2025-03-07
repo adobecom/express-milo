@@ -75,27 +75,6 @@ export function constructProps(block) {
                 props.templates.push(row);
             }
             
-        } else if (cols.length === 5) {
-            if (key === 'holiday block' && ['yes', 'true', 'on'].includes(cols[1].textContent.trim().toLowerCase())) {
-                const backgroundColor = cols[3].textContent.trim().toLowerCase();
-                let holidayIcon = cols[2].querySelector('picture');
-
-                if (!holidayIcon) {
-                    const link = cols[2].querySelector('a');
-                    if (link && (link.href.endsWith('.svg') || link.href.endsWith('.png'))) {
-                        holidayIcon = createOptimizedPicture(link.href);
-                    }
-                }
-                const backgroundAnimation = cols[4].querySelector('a');
-
-                props.holidayBlock = true;
-                props.holidayIcon = holidayIcon || null;
-                if (backgroundColor) {
-                    props.backgroundColor = backgroundColor;
-                }
-                props.backgroundAnimation = backgroundAnimation || null;
-                props.textColor = isDarkOverlayReadable(backgroundColor) ? 'dark-text' : 'light-text';
-            }
         }
     });
     return props;
