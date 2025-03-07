@@ -275,7 +275,7 @@ export default async function decorate(block) {
     decorateButtonsDeprecated(block)]);
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
   globalNavSelector = gNavUtils?.selectors.globalNav;
-  
+
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
   const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
