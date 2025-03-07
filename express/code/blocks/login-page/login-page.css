@@ -5,25 +5,12 @@
   align-items: center;
 }
 
-.section.ax-login-page .susi-tabs {
-  background-color: white;
-  border-radius: 16px;
-}
-
-.section.ax-login-page .susi-tabs .footer {
-  border-radius: 0 0 16px 16px;
-}
-
 .login-page .background img {
   display: none;
   width: 100vw; /* not needed if authored right images */
 }
 
 @media (min-width: 768px) {
-  .section.ax-login-page .susi-light {
-    position: absolute;
-    padding: 30px 0 32px;
-  }
   .login-page .background .m-background {
     display: block;
   }

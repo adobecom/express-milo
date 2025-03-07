@@ -218,7 +218,9 @@ export default async function init(el) {
     const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
     const title = rows[2]?.textContent?.trim();
     const variant = 'edu-express';
-    const params = buildSUSIParams(client_id, variant, getDestURL(redirectUrl), locale, title);
+    const params = buildSUSIParams({
+      client_id, variant, destURL: getDestURL(redirectUrl), locale, title,
+    });
     if (!noRedirect) {
       redirectIfLoggedIn(params.destURL);
     }
