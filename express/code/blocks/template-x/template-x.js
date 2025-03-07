@@ -19,6 +19,7 @@ import {
   updateImpressionCache,
   generateSearchId,
 } from '../../scripts/template-search-api-v3.js';
+import { constructProps,determineTemplateXType } from './determine-template-x-type.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import renderTemplate from './template-rendering.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
@@ -28,13 +29,10 @@ let replaceKey; let replaceKeyArray;
 let getMetadata; let createTag;
 let getConfig;
 let variant;
+let props;
 
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
-}
-
-function camelize(str) {
-  return str.replace(/^\w|[A-Z]|\b\w/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase())).replace(/\s+/g, '');
 }
 
 function handlelize(str) {
@@ -168,91 +166,6 @@ async function formatHeadingPlaceholder(props) {
   return toolBarHeading;
 }
 
-function constructProps(block) {
-  const props = {
-    templates: [],
-    filters: {
-      locales: 'en',
-      topics: '',
-    },
-    renditionParams: {
-      format: 'jpg',
-      size: 151,
-    },
-    tailButton: '',
-    limit: 70,
-    total: 0,
-    start: '',
-    collectionId: 'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418',
-    sort: '',
-    masonry: undefined,
-    headingTitle: null,
-    headingSlug: null,
-    viewAllLink: null,
-    holidayIcon: null,
-    backgroundColor: '#000B1D',
-    backgroundAnimation: null,
-    textColor: '#FFFFFF',
-    loadedOtherCategoryCounts: false,
-  };
-  Array.from(block.children).forEach((row) => {
-    const cols = row.querySelectorAll('div');
-    const key = cols[0].querySelector('strong')?.textContent.trim().toLowerCase();
-    if (cols.length === 1) {
-      [props.contentRow] = cols;
-    } else if (cols.length === 2) {
-      let value = cols[1].textContent.trim();
-      // Treat "null" as blank
-      if (value.toLowerCase() === 'null') {
-        value = '';
-      }
-
-      if (key && value) {
-        // FIXME: facebook-post
-        if (['tasks', 'topics', 'locales', 'behaviors'].includes(key) || (['premium', 'animated'].includes(key) && value.toLowerCase() !== 'all')) {
-          props.filters[camelize(key)] = value;
-        } else if (['yes', 'true', 'on', 'no', 'false', 'off'].includes(value.toLowerCase())) {
-          props[camelize(key)] = ['yes', 'true', 'on'].includes(value.toLowerCase());
-        } else if (key === 'collection id') {
-          props[camelize(key)] = value.replaceAll('\\:', ':');
-        } else {
-          props[camelize(key)] = value;
-        }
-      }
-    } else if (cols.length === 3) {
-      if (key === 'template stats' && ['yes', 'true', 'on'].includes(cols[1].textContent.trim().toLowerCase())) {
-        props[camelize(key)] = cols[2].textContent.trim();
-      }
-    } else if (cols.length === 4) {
-      if (key === 'blank template') {
-        cols[0].remove();
-        props.templates.push(row);
-      }
-    } else if (cols.length === 5) {
-      if (key === 'holiday block' && ['yes', 'true', 'on'].includes(cols[1].textContent.trim().toLowerCase())) {
-        const backgroundColor = cols[3].textContent.trim().toLowerCase();
-        let holidayIcon = cols[2].querySelector('picture');
-
-        if (!holidayIcon) {
-          const link = cols[2].querySelector('a');
-          if (link && (link.href.endsWith('.svg') || link.href.endsWith('.png'))) {
-            holidayIcon = createOptimizedPicture(link.href);
-          }
-        }
-        const backgroundAnimation = cols[4].querySelector('a');
-
-        props.holidayBlock = true;
-        props.holidayIcon = holidayIcon || null;
-        if (backgroundColor) {
-          props.backgroundColor = backgroundColor;
-        }
-        props.backgroundAnimation = backgroundAnimation || null;
-        props.textColor = isDarkOverlayReadable(backgroundColor) ? 'dark-text' : 'light-text';
-      }
-    }
-  });
-  return props;
-}
 
 const SHORT_PLACEHOLDER_HEIGHT_CUTOFF = 80;
 const WIDE_PLACEHOLDER_RATIO_CUTOFF = 1.3;
@@ -1765,37 +1678,15 @@ async function buildTemplateList(block, props, type = []) {
   }
 }
 
-function determineTemplateXType(props) {
-  // todo: build layers of aspects based on props conditions - i.e. orientation -> style -> use case
-  const type = [];
-
-  // orientation aspect
-  if (props.orientation && props.orientation.toLowerCase() === 'horizontal') type.push('horizontal');
-
-  // style aspect
-  if (props.width && props.width.toLowerCase() === 'full') type.push('fullwidth');
-  if (props.width && props.width.toLowerCase() === 'sixcols') type.push('sixcols');
-  if (props.width && props.width.toLowerCase() === 'fourcols') type.push('fourcols');
-  if (props.mini) type.push('mini');
-
-  // use case aspect
-  if (props.holidayBlock) type.push('holiday');
-
-  if (props.print && props.print) type.push('print');
-  if (props.print && props.print.toLowerCase() === 'flyer') type.push('flyer');
-  if (props.print && props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
-
-  variant = type;
-  return type;
-}
-
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(block)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKey, replaceKeyArray } = placeholders);
   });
   block.dataset.blockName = 'template-x';
-  const props = constructProps(block);
+  const templateXType = determineTemplateXType(block)
+  props = templateXType.props
+  variant = templateXType.variant
   block.innerHTML = '';
-  await buildTemplateList(block, props, determineTemplateXType(props));
+  await buildTemplateList(block, props, variant);
 }
