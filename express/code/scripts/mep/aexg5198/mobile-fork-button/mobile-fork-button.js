@@ -126,7 +126,7 @@ async function mWebStickyCTA() {
   const newBlock = createTag(
     'div',
     { class: 'floating-button-wrapper' },
-    '<div class="floating-button meta-powered"><div>mobile</div></div>'
+    '<div class="floating-button meta-powered"><div>mobile</div></div>',
   );
   const oldBlock = document.querySelector('.mobile-fork-button');
   oldBlock.replaceWith(newBlock);
@@ -137,7 +137,7 @@ async function mWebStickyCTA() {
 
   data.mainCta.text = data.mainCta.forkStickyMobileText || data.mainCta.text;
   data.mainCta.href = data.mainCta.forkStickyMobileHref || data.mainCta.href;
-  await createFloatingButton(block, audience, data);
+  await createFloatingButton(oldBlock, audience, data);
 }
 
 function mWebOverlayScroll() {
