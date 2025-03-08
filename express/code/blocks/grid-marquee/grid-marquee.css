@@ -177,7 +177,6 @@ main .section .grid-marquee h1 {
 }
 
 .grid-marquee .drawer .panel .drawer-cta-wrapper {
-  position: relative;
   border-top: 1px solid #0000001A;
   margin: 0;
 }
