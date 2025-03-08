@@ -320,7 +320,6 @@ main .section .grid-marquee h1 {
   .grid-marquee .card {
     width: 304px;
     border-radius: 16px;
-    background: red;
   }
   
   .grid-marquee .face img {
