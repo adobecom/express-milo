@@ -29,13 +29,13 @@ function drawerOn(drawer) {
 function mWebLabel(anchor) {
   const metadata = getMetadata('mweb-app-label');
   if(metadata === null || anchor.textContent.trim().toLowerCase() !== 'generative fill') return;
-  const appOnlyLink = createTag('div', {class: 'mweb-app-only' }, metadata);
+  const appOnlyLink = createTag('div', { class: 'mweb-app-only' }, metadata);
   anchor.parentElement.append(appOnlyLink);
 }
 
 function mWebChevron(face) {
   const metadata = getMetadata('mweb-card-chevron');
-  if(metadata === null) return;
+  if (metadata === null) return;
   const svg = `
     <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg" class="mweb-card-chevron">
       <path fill-rule="evenodd" clip-rule="evenodd" d="M6.20703 5.70704C5.81641 6.09765 5.18358 6.09765 4.79296 5.70704L0.792965 1.70704C0.402345 1.31642 0.402345 0.683595 0.792965 0.292975C1.18358 -0.0976448 1.8164 -0.0976448 2.20702 0.292975L5.49999 3.58595L8.79296 0.292975C8.98827 0.0976648 9.24413 5.24521e-06 9.5 5.24521e-06C9.75586 5.24521e-06 10.0117 0.0976648 10.207 0.292975C10.5976 0.683595 10.5976 1.31642 10.207 1.70704L6.20703 5.70704Z" fill="#8F8F8F"/>
@@ -159,13 +159,13 @@ function toCard(drawer) {
     'aria-label': titleText,
   }, [face, drawer]);
   face.classList.add('face');
-  mWebChevron(face)
+  mWebChevron(face);
   addCardInteractions(card, drawer);
   const lazyCB = () => decorateDrawer(videoAnchor.href, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
   drawer.classList.add('drawer');
   drawer.setAttribute('aria-hidden', true);
   drawer.id = `drawer-${titleText}`;
- 
+
   return { card, lazyCB };
 }
 
@@ -177,7 +177,7 @@ async function formatDynamicCartLink(a) {
     const {
       fetchPlanOnePlans,
       buildUrl,
-    } = await import('../../scripts/utils/pricing.js');
+    } = await import('../../../utils/pricing.js');
     const {
       url,
       country,
@@ -215,7 +215,7 @@ async function makeRating(store) {
   }
   const [score, cnt] = ratings[['apple', 'google'].indexOf(store)].split(',').map((str) => str.trim());
   const storeLink = createTag('a', { href: link }, getIconElementDeprecated(`${store}-store`));
-  const { default: trackBranchParameters } = await import('../../scripts/branchlinks.js');
+  const { default: trackBranchParameters } = await import('../../../../scripts/branchlinks.js');
   await trackBranchParameters([storeLink]);
   return createTag('div', { class: 'ratings-container' }, [score, getIconElementDeprecated('star'), cnt, storeLink]);
 }
