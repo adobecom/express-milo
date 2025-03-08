@@ -28,7 +28,7 @@ function drawerOn(drawer) {
 
 function mWebLabel(anchor) {
   const metadata = getMetadata('mweb-app-label');
-  if(metadata === null || anchor.textContent.trim().toLowerCase() !== 'generative fill') return;
+  if (metadata === null || anchor.textContent.trim().toLowerCase() !== 'generative fill') return;
   const appOnlyLink = createTag('div', { class: 'mweb-app-only' }, metadata);
   anchor.parentElement.append(appOnlyLink);
 }
@@ -215,7 +215,7 @@ async function makeRating(store) {
   }
   const [score, cnt] = ratings[['apple', 'google'].indexOf(store)].split(',').map((str) => str.trim());
   const storeLink = createTag('a', { href: link }, getIconElementDeprecated(`${store}-store`));
-  const { default: trackBranchParameters } = await import('../../../../scripts/branchlinks.js');
+  const { default: trackBranchParameters } = await import('../../../branchlinks.js');
   await trackBranchParameters([storeLink]);
   return createTag('div', { class: 'ratings-container' }, [score, getIconElementDeprecated('star'), cnt, storeLink]);
 }
