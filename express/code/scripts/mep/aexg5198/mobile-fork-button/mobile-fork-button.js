@@ -1,7 +1,8 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../../utils.js';
-import { createFloatingButton } from '../../../../scripts/widgets/floating-cta.js';
+import { createFloatingButton } from '../../../widgets/floating-cta.js';
 
-// import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
+// import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } 
+// from '../../scripts/utils.js';
 // import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
 
 let createTag; let getMetadata;
@@ -71,8 +72,8 @@ function collectFloatingButtonData() {
       mobileText: getMetadataLocal('mobile-floating-cta-text'),
       href: getMetadataLocal('main-cta-link'),
       text: getMetadataLocal('main-cta-text'),
-      forkStickymobileHref: getMetadataLocal('cta-1-link'),
-      forkStickymobileText: getMetadataLocal('cta-1-text'),
+      forkStickyMobileHref: getMetadataLocal('cta-1-link'),
+      forkStickyMobileText: getMetadataLocal('cta-1-text'),
     },
     bubbleSheet: getMetadataLocal('floating-cta-bubble-sheet'),
     live: getMetadataLocal('floating-cta-live'),
@@ -113,34 +114,6 @@ function collectFloatingButtonData() {
   return data;
 }
 
-export default async function decorate(block) {
-  ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
-  if (!androidDeviceAndRamCheck()) {
-    const { default: decorateNormal } = await import('../../../../blocks/floating-button/floating-button.js');
-    // const { default: decorateNormal } = await import('../floating-button/floating-button.js');
-    decorateNormal(block);
-    return;
-  }
-  addTempWrapperDeprecated(block, 'multifunction-button');
-  if (!block.classList.contains('meta-powered')) return;
-
-  const audience = block.querySelector(':scope > div').textContent.trim();
-  if (audience === 'mobile') {
-    block.closest('.section').remove();
-  }
-
-  const data = collectFloatingButtonData();
-  const blockWrapper = await createMultiFunctionButton(block, data, audience);
-  const blockLinks = blockWrapper.querySelectorAll('a');
-  if (blockLinks && blockLinks.length > 0) {
-    const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });
-    document.dispatchEvent(linksPopulated);
-  }
-  if (data.longText) blockWrapper.classList.add('long-text');
-
-  mWebVariant();
-}
-
 async function mWebStickyCTA() {
   const blockHTML = `
     <div class="section" data-status="decorated" data-idx="8">
@@ -156,8 +129,8 @@ async function mWebStickyCTA() {
   const audience = 'mobile';
   const data = collectFloatingButtonData();
 
-  data.mainCta.text = data.mainCta.forkStickymobileText ? data.mainCta.forkStickymobileText : data.mainCta.text;
-  data.mainCta.href = data.mainCta.forkStickymobileHref ? data.mainCta.forkStickymobileHref : data.mainCta.href;
+  data.mainCta.text = data.mainCta.forkStickyMobileText ? data.mainCta.forkStickyMobileText : data.mainCta.text;
+  data.mainCta.href = data.mainCta.forkStickyMobileHref ? data.mainCta.forkStickyMobileHref : data.mainCta.href;
   const buttonWrapper = await createFloatingButton(block, audience, data);
 }
 
@@ -200,3 +173,32 @@ function mWebVariant() {
   mWebCloseEvents();
   mWebOverlayScroll();
 }
+
+export default async function decorate(block) {
+  ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
+  if (!androidDeviceAndRamCheck()) {
+    const { default: decorateNormal } = await import('../../../../blocks/floating-button/floating-button.js');
+    // const { default: decorateNormal } = await import('../floating-button/floating-button.js');
+    decorateNormal(block);
+    return;
+  }
+  addTempWrapperDeprecated(block, 'multifunction-button');
+  if (!block.classList.contains('meta-powered')) return;
+
+  const audience = block.querySelector(':scope > div').textContent.trim();
+  if (audience === 'mobile') {
+    block.closest('.section').remove();
+  }
+
+  const data = collectFloatingButtonData();
+  const blockWrapper = await createMultiFunctionButton(block, data, audience);
+  const blockLinks = blockWrapper.querySelectorAll('a');
+  if (blockLinks && blockLinks.length > 0) {
+    const linksPopulated = new CustomEvent('linkspopulated', { detail: blockLinks });
+    document.dispatchEvent(linksPopulated);
+  }
+  if (data.longText) blockWrapper.classList.add('long-text');
+
+  mWebVariant();
+}
+
