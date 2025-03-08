@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated, getMetadata } from '../../scripts/utils.js';
 
 let createTag; let getConfig;
 
@@ -25,6 +25,7 @@ function drawerOn(drawer) {
   }
   currDrawer = drawer;
 }
+
 document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
 let isTouch;
 const iconRegex = /icon-\s*([^\s]+)/;
@@ -138,13 +139,13 @@ function toCard(drawer) {
     'aria-expanded': false,
     'aria-label': titleText,
   }, [face, drawer]);
-
   face.classList.add('face');
   addCardInteractions(card, drawer);
   const lazyCB = () => decorateDrawer(videoAnchor.href, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
   drawer.classList.add('drawer');
   drawer.setAttribute('aria-hidden', true);
   drawer.id = `drawer-${titleText}`;
+ 
   return { card, lazyCB };
 }
 
@@ -234,3 +235,4 @@ export default async function init(el) {
     drawerOff();
   });
 }
+
