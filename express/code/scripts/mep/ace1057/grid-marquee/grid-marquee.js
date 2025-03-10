@@ -130,7 +130,8 @@ function toCard(drawer) {
   const panelsFrag = new DocumentFragment();
   panelsFrag.append(...panels);
   panels.forEach((panel) => panel.classList.add('panel'));
-  const videoAnchor = face.querySelector('a');
+  const videoAnchor = face.querySelector('a') || face.querySelector('video');
+  const videoSrc = videoAnchor?.href || videoAnchor?.dataset.videoSource;
   videoAnchor?.remove();
   const card = createTag('button', {
     class: 'card',
@@ -141,7 +142,7 @@ function toCard(drawer) {
 
   face.classList.add('face');
   addCardInteractions(card, drawer);
-  const lazyCB = () => decorateDrawer(videoAnchor.href, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
+  const lazyCB = () => decorateDrawer(videoSrc, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
   drawer.classList.add('drawer');
   drawer.setAttribute('aria-hidden', true);
   drawer.id = `drawer-${titleText}`;
