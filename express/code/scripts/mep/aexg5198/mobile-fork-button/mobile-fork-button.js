@@ -132,7 +132,8 @@ async function mWebStickyCTA() {
 }
 
 function mWebOverlayScroll() {
-  // This is to make scroll work when switching between mobile and desktop. May need rewrite for RTP.
+  // This is to make scroll work when switching between mobile and desktop. 
+  // May need rewrite for RTP.
   const mobileForkButton = document.querySelector('.mobile-fork-button.mweb-mobile-fork');
   if (mobileForkButton
     && window.getComputedStyle(mobileForkButton, null).display !== 'none') {
