@@ -137,12 +137,24 @@ export default async function decorate(block) {
       const isImg = element.querySelector('picture img');
       if (isDiscoverMoreCardsVariant) {
         if (isImg) {
-          isImg?.classList.add('more');
+          isImg.classList.add('more');
+          // Create front face and move image into it
+          const frontFace = createTag('div', { class: 'card-face front' });
+          frontFace.append(isImg.closest('picture'));
+          element.innerHTML = '';
+          element.append(frontFace);
         } else {
           const pTags = element.querySelectorAll('p');
           if (pTags.length >= 2) {
-            pTags[0].classList.add('title');
-            pTags[1].classList.add('details');
+            const [titleTag, detailsTag] = pTags;
+            titleTag.classList.add('title');
+            detailsTag.classList.add('details');
+
+            // Create back face and move details into it
+            const backFace = createTag('div', { class: 'card-face back' });
+            backFace.append(detailsTag);
+            element.innerHTML = '';
+            element.append(backFace);
           }
         }
       } else {
