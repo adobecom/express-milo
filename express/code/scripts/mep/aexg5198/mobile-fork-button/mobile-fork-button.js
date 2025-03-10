@@ -115,14 +115,6 @@ function collectFloatingButtonData() {
 }
 
 async function mWebStickyCTA() {
-  // const blockHTML = `
-  //   <div class="section" data-status="decorated" data-idx="8">
-  //     <div class="floating-button-wrapper">
-  //       <div class="floating-button meta-powered">
-  //         <div>mobile</div>
-  //       </div>
-  //     </div>
-  //   </div>`;
   const newBlock = createTag(
     'div',
     { class: 'floating-button-wrapper' },
@@ -130,7 +122,6 @@ async function mWebStickyCTA() {
   );
   const oldBlock = document.querySelector('.mobile-fork-button');
   oldBlock.replaceWith(newBlock);
-  // block.outerHTML = blockHTML;
 
   const audience = 'mobile';
   const data = collectFloatingButtonData();
