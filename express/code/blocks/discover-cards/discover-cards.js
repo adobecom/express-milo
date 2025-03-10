@@ -130,7 +130,6 @@ export default async function decorate(block) {
   const cardParagraphs = [[]];
   cards.forEach((card) => {
     card.classList.add('card');
-
     cardsWrapper.appendChild(card);
     const cardDivs = [...card.children];
 
@@ -164,6 +163,12 @@ export default async function decorate(block) {
         }
       }
     });
+
+    if (isDiscoverMoreCardsVariant) {
+      card.addEventListener('click', () => {
+        card.classList.toggle('is-flipped');
+      });
+    }
   });
 
   block.appendChild(cardsWrapper);

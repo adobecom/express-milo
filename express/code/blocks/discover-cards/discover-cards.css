@@ -37,7 +37,10 @@ main .section .discover-cards {
     overflow: hidden;
     padding: 16px;
     margin: 9px -7px 10px auto;
-
+}
+.discover-cards.more .cards-container .card {
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
 }
 .discover-cards .center-title {
     text-align: center;
@@ -234,4 +237,8 @@ main .section .discover-cards {
 .gallery-control .status .dot.curr {
     width: 30px;
     background-color: #686DF4;
+}
+
+.discover-cards .card.is-flipped {
+    transform: rotateY(180deg);
 }
