@@ -120,6 +120,10 @@ main .section .discover-cards {
         width: auto;
         height: 198px;
     }
+    .discover-cards .cards-container .card picture img.more {
+        width: 200px;
+        height: 200px;
+    }
     .discover-cards .cards-container.gallery {
         scroll-padding-left: 60px;
     }

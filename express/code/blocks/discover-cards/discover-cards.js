@@ -113,6 +113,7 @@ export async function buildGallery(
 }
 
 export default async function decorate(block) {
+  const isDiscoverMoreCardsVariant = block.classList?.contains('more');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
@@ -134,20 +135,33 @@ export default async function decorate(block) {
     const cardDivs = [...card.children];
 
     cardDivs.forEach((element) => {
-      const textHeader = element.querySelector('h4');
-      const textBody = element.querySelector('p');
-      if (textHeader && textBody) {
-        textHeader.classList.add('header');
-        textBody.classList.add('body');
-        element.classList.add('text-content');
-        cardParagraphs[0].push(element);
-      }
+      const isImg = element.querySelector('picture img');
+      if (isDiscoverMoreCardsVariant) {
+        if (isImg) {
+          isImg?.classList.add('more');
+        } else {
+          const pTags = element.querySelectorAll('p');
+          if (pTags.length >= 2) {
+            pTags[0].classList.add('title');
+            pTags[1].classList.add('details');
+          }
+        }
+      } else {
+        const textHeader = element.querySelector('h4');
+        const textBody = element.querySelector('p');
+        if (textHeader && textBody) {
+          textHeader.classList.add('header');
+          textBody.classList.add('body');
+          element.classList.add('text-content');
+          cardParagraphs[0].push(element);
+        }
 
-      element.querySelector('picture img')?.classList.add('short');
-      if (element.tagName === 'H2') {
-        element.classList.add('card-title');
-      } else if (element.querySelector('a.button')) {
-        element.classList.add('cta-section');
+        isImg?.classList.add('short');
+        if (element.tagName === 'H2') {
+          element.classList.add('card-title');
+        } else if (element.querySelector('a.button')) {
+          element.classList.add('cta-section');
+        }
       }
     });
   });
