@@ -4,6 +4,7 @@ import { getLibs } from '../../scripts/utils.js';
 
 let createTag; let loadScript;
 let getConfig; let isStage;
+let loadIms;
 
 const variant = 'edu-express';
 const usp = new URLSearchParams(window.location.search);
@@ -40,7 +41,7 @@ function getDestURL(url) {
 }
 
 export default async function init(el) {
-  ({ createTag, loadScript, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
   const rows = el.querySelectorAll(':scope> div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
@@ -54,24 +55,6 @@ export default async function init(el) {
     client_id,
     scope: 'AdobeID,openid',
   };
-  const destURL = getDestURL(redirectUrl);
-  const goDest = () => window.location.assign(destURL);
-  if (window.feds?.utilities?.imslib) {
-    const { imslib } = window.feds.utilities;
-    /* eslint-disable chai-friendly/no-unused-expressions */
-    imslib.isReady() && imslib.isSignedInUser() && goDest();
-    imslib.onReady().then(() => imslib.isSignedInUser() && goDest());
-  }
-  el.innerHTML = '';
-  await loadWrapper();
-  const config = { consentProfile: 'free' };
-  if (title) { config.title = title; }
-  const susi = createTag('susi-sentry-light');
-  susi.authParams = authParams;
-  susi.authParams.redirect_uri = destURL;
-  susi.config = config;
-  if (isStage) susi.stage = 'true';
-  susi.variant = variant;
   function sendEventToAnalytics(type, eventName) {
     const sendEvent = () => {
       window._satellite.track('event', {
@@ -108,6 +91,31 @@ export default async function init(el) {
       }, { once: true });
     }
   }
+  const destURL = getDestURL(redirectUrl);
+  const goDest = () => {
+    sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
+    window.location.assign(destURL);
+  };
+  if (window.adobeIMS) {
+    window.adobeIMS.isSignedInUser() && goDest();
+  } else {
+    loadIms()
+      .then(() => {
+        /* c8 ignore next */
+        window.adobeIMS?.isSignedInUser() && goDest();
+      })
+      .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
+  }
+  el.innerHTML = '';
+  await loadWrapper();
+  const config = { consentProfile: 'free' };
+  if (title) { config.title = title; }
+  const susi = createTag('susi-sentry-light');
+  susi.authParams = authParams;
+  susi.authParams.redirect_uri = destURL;
+  susi.config = config;
+  if (isStage) susi.stage = 'true';
+  susi.variant = variant;
 
   const onAnalytics = (e) => {
     const { type, event } = e.detail;

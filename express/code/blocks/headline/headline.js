@@ -9,11 +9,11 @@ export default async function init(el) {
   const cfg = el.querySelector(':scope p:last-of-type');
   try {
     if (cfg === heading) return el;
-    cfg.textContent.split(',').forEach((item) => {
+    cfg?.textContent.split(',').forEach((item) => {
       const [key, value] = item.split(':').map((t) => t.trim().toLowerCase());
       heading.style[key] = value;
     });
-    cfg.remove();
+    cfg?.remove();
   } catch (e) {
     window.lana?.log(e);
   }
