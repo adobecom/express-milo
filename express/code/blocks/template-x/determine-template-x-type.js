@@ -5,21 +5,50 @@ export const PROPS = {
     templates: [],
     filters: {
         locales: 'en',
-        topics: '',
+        topics: ''
     },
     limit: 70,
     total: 0,
-    collectionId: 'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418',
+    collectionId: {
+        allowed : undefined
+    },
  
-
-    loadedOtherCategoryCounts: false,
-    tasks : undefined,
-    topics : undefined,
-    locales : undefined,
-    behaviors : undefined,
-    premium : undefined,
-    animated : undefined,
-    templateStats : undefined
+    loadedOtherCategoryCounts: undefined,
+    tasks : {
+        allowed :   undefined,
+    },
+    topics : {
+        allowed :  undefined,
+    },
+    locales : {
+        allowed :   undefined,
+    },
+    behaviors :{
+        allowed :  ['still', 'animated', 'all'],
+    },
+    premium : {
+        allowed : [true, false, 'all']
+    },
+    animated: {
+        allowed : [true, false]
+    },
+    templateStats : {
+        allowed :  ['still', 'animated', 'all'],
+    },
+    orientation : {
+        allowed : ['horizontal']
+    },
+    width : {
+        allowed : ['full','sixcols','fourcols']
+    },
+    mini : {
+        allowed : [true, false]
+    },
+    print : {
+        allowed : [
+            'flyer', 't-shirt'
+        ]
+    }
 
 };
 
@@ -84,12 +113,12 @@ export function determineTemplateXType(block) {
     if (props.width && props.width.toLowerCase() === 'fourcols') type.push('fourcols');
     if (props.mini) type.push('mini');
 
-    // use case aspect
-    if (props.holidayBlock) type.push('holiday');
-
-    if (props.print && props.print) type.push('print');
-    if (props.print && props.print.toLowerCase() === 'flyer') type.push('flyer');
-    if (props.print && props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
+    if (props.print ){
+        type.push('print');
+        if (props.print.toLowerCase() === 'flyer') type.push('flyer');
+        if (props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
+    }
+   
 
     return {props, variant:type}
 }
