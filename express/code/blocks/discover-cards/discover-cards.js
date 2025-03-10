@@ -113,6 +113,7 @@ export async function buildGallery(
 }
 
 export default async function decorate(block) {
+  const isDiscoverMoreCards = block.classList.contains('more');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
