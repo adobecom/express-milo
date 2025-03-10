@@ -115,7 +115,13 @@ export async function getTrackingAppendedURL(url, options = {}) {
   const isSearchBranchLink = searchBranchLinks?.replace(/\s/g, '').split(',').includes(`${appending.origin}${appending.pathname}`);
 
   const setParams = (k, v) => {
-    if (v) urlParams.set(k, encodeURIComponent(v));
+    if (v) {
+      if (urlParams.has(k)) {
+        urlParams.set(k, encodeURIComponent(v));
+      } else {
+        urlParams.append(k, encodeURIComponent(v));
+      }
+    }
   };
 
   if (isSearchBranchLink || isSearchOverride) {
