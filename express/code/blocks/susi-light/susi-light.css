@@ -63,7 +63,8 @@
 }
 
 .susi-tabs [role='tabpanel'] {
-  width: 95vw;
+  width: 400px;
+  max-width: 95vw;
 }
 
 .susi-tabs [role='tabpanel'].hide {
