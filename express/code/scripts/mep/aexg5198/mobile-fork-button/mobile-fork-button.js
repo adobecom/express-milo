@@ -167,8 +167,8 @@ function mWebCloseEvents() {
   closeElements.forEach((element) => {
     element.addEventListener('click', (event) => {
       event.preventDefault();
-      mWebOverlayScroll();
       mWebStickyCTA();
+      mWebOverlayScroll();
     });
   });
 }
