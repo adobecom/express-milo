@@ -37,7 +37,10 @@ main .section .discover-cards {
     overflow: hidden;
     padding: 16px;
     margin: 9px -7px 10px auto;
-
+}
+.discover-cards.more .cards-container .card {
+  background: unset;
+  border: none;
 }
 .discover-cards .center-title {
     text-align: center;
