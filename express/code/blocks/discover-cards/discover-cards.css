@@ -237,8 +237,8 @@ main .section .discover-cards {
 
 .discover-cards.more .card {
   background-color: transparent;
+  min-width: 250px;
   width: 250px;
-  min-width: unset;
   max-width: 250px;
   height: 360px;
   max-height: 360px;
@@ -261,6 +261,8 @@ main .section .discover-cards {
 
 .discover-cards.more .flip-card-front, 
 .discover-cards.more .flip-card-back {
+  font-size: 22px;
+  text-align: left;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -270,6 +272,11 @@ main .section .discover-cards {
   border-radius: 16px;
   padding: 16px;
   box-sizing: border-box;
+}
+
+.discover-cards.more .flip-card-front img {
+  width: 200px;
+  height: 200px;
 }
 
 .discover-cards.more .flip-card-back {
