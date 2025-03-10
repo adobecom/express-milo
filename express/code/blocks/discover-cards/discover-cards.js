@@ -131,10 +131,39 @@ export default async function decorate(block) {
   cards.forEach((card) => {
     card.classList.add('card');
 
-    cardsWrapper.appendChild(card);
     const cardDivs = [...card.children];
 
     cardDivs.forEach((element) => {
+      const isImg = element.querySelector('picture img');
+      if (isDiscoverMoreCards) {
+        if (isImg) {
+          card.cardImage = isImg;
+        } else {
+          const [titleDiv, detailsDiv] = element.children;
+          if (titleDiv && detailsDiv) {
+            card.cardTitle = titleDiv.textContent.trim();
+            card.cardDetails = detailsDiv.textContent.trim();
+          }
+        }
+
+        if (card.cardImage && card.cardTitle && card.cardDetails) {
+          const flipCardInner = createTag('div', { class: 'flip-card-inner' });
+          const frontFace = createTag('div', { class: 'flip-card-front' });
+          const backFace = createTag('div', { class: 'flip-card-back' });
+
+          frontFace.append(card.cardImage, card.cardTitle);
+          backFace.append(card.cardDetails);
+          flipCardInner.append(frontFace, backFace);
+          card.innerHTML = '';
+          card.append(flipCardInner);
+
+          card.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+          });
+        }
+        return;
+      }
+
       const textHeader = element.querySelector('h4');
       const textBody = element.querySelector('p');
       if (textHeader && textBody) {
@@ -144,13 +173,15 @@ export default async function decorate(block) {
         cardParagraphs[0].push(element);
       }
 
-      element.querySelector('picture img')?.classList.add('short');
+      isImg?.classList.add('short');
       if (element.tagName === 'H2') {
         element.classList.add('card-title');
       } else if (element.querySelector('a.button')) {
         element.classList.add('cta-section');
       }
     });
+
+    cardsWrapper.appendChild(card);
   });
 
   block.appendChild(cardsWrapper);
