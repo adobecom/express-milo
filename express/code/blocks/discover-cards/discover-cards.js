@@ -138,24 +138,25 @@ export default async function decorate(block) {
       if (isDiscoverMoreCardsVariant) {
         if (isImg) {
           isImg.classList.add('more');
-          // Create front face and move image into it
-          const frontFace = createTag('div', { class: 'card-face front' });
-          frontFace.append(isImg.closest('picture'));
-          element.innerHTML = '';
-          element.append(frontFace);
+          card.cardImage = isImg.closest('picture');
         } else {
           const pTags = element.querySelectorAll('p');
           if (pTags.length >= 2) {
             const [titleTag, detailsTag] = pTags;
             titleTag.classList.add('title');
             detailsTag.classList.add('details');
-
-            // Create back face and move details into it
-            const backFace = createTag('div', { class: 'card-face back' });
-            backFace.append(detailsTag);
-            element.innerHTML = '';
-            element.append(backFace);
+            card.cardTitle = titleTag;
+            card.cardDetails = detailsTag;
           }
+        }
+
+        if (card.cardImage && card.cardTitle && card.cardDetails) {
+          const frontFace = createTag('div', { class: 'card-face front' });
+          frontFace.append(card.cardImage, card.cardTitle);
+          const backFace = createTag('div', { class: 'card-face back' });
+          backFace.append(card.cardDetails);
+          card.innerHTML = '';
+          card.append(frontFace, backFace);
         }
       } else {
         const textHeader = element.querySelector('h4');
