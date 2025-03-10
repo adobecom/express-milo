@@ -129,6 +129,9 @@
 .section.ax-login-page .susi-light {
   padding-bottom: 32px;
 }
+.section.ax-login-page .susi-tabs .footer {
+  border-radius: 8px;
+}
 
 @media (min-width: 768px) {
   .section.ax-login-page .susi-light {
