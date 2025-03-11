@@ -10,14 +10,14 @@ const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 function drawerOff() {
   if (!currDrawer) return;
   currDrawer.closest('.card').setAttribute('aria-expanded', false);
-  currDrawer.setAttribute('aria-hidden', true);
+  currDrawer.classList.add('hide');
   currDrawer.querySelector('video')?.pause()?.catch(() => {});
   currDrawer = null;
 }
 function drawerOn(drawer) {
   drawerOff();
   drawer.closest('.card').setAttribute('aria-expanded', true);
-  drawer.setAttribute('aria-hidden', false);
+  drawer.classList.remove('hide');
   const video = drawer.querySelector('video');
   if (video && !reduceMotionMQ.matches) {
     video.muted = true;
@@ -47,14 +47,17 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
       parent.classList.add('drawer-cta-wrapper');
     }
     anchor.classList.add('drawer-cta');
-    const linkText = anchor.textContent.trim();
-    anchor.title = anchor.title || linkText;
     const icon = icons[i];
     const match = icon && iconRegex.exec(icon.className);
     if (match?.[1]) {
       icon.append(getIconElementDeprecated(match[1]));
     }
-    anchor.prepend(icon);
+    const anchorText = anchor.textContent.trim();
+    anchor.textContent = '';
+    anchor.title = anchor.title || anchorText;
+    anchor.append(createTag('div', { class: 'text-group' }, [icon, anchorText]));
+    const featureLabel = parent.querySelector('em');
+    featureLabel && anchor.append(featureLabel);
   });
 
   const video = createTag('video', {
@@ -86,7 +89,7 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     tabHead.remove();
     panel.setAttribute('aria-labelledby', `tab-${id}`);
     panel.id = `panel-${id}`;
-    panel.setAttribute('aria-hidden', i > 0);
+    i > 0 && panel.classList.add('hide');
     const tab = createTag('button', {
       role: 'tab',
       'aria-selected': i === 0,
@@ -98,7 +101,7 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
       activeTab.setAttribute('aria-selected', false);
       tab.setAttribute('aria-selected', true);
       panels.forEach((p) => {
-        p.setAttribute('aria-hidden', p !== panel);
+        p === panel ? p.classList.remove('hide') : p.classList.add('hide');
       });
       activeTab = tab;
     });
@@ -142,8 +145,7 @@ function toCard(drawer) {
   face.classList.add('face');
   addCardInteractions(card, drawer);
   const lazyCB = () => decorateDrawer(videoAnchor.href, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
-  drawer.classList.add('drawer');
-  drawer.setAttribute('aria-hidden', true);
+  drawer.classList.add('drawer', 'hide');
   drawer.id = `drawer-${titleText}`;
   return { card, lazyCB };
 }
