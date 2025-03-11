@@ -32,7 +32,7 @@
 }
 
 .susi-tabs [role='tablist'] {
-  background-color: var(--color-white);
+  background-color: #e6e6e6;
   border-radius: 8px;
   display: flex;
   gap: 4px;
@@ -46,19 +46,19 @@
 }
 
 .susi-tabs [role='tab'] {
-  background-color: var(--color-white);
+  background-color: #e6e6e6;
+  color: #222222;
   border: initial;
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
   font-weight: 700;
   padding: 8px 12px 10px;
-  line-height: 15.6px;
+  line-height: 130%;
   cursor: pointer;
 }
 
 .susi-tabs [role='tab'][aria-selected='true'] {
-  color: var(--color-white);
-  background-color: var(--color-black);
+  background-color: var(--color-white);
   border-radius: 6px;
 }
 

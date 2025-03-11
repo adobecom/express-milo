@@ -1,13 +1,3 @@
-/* .floating-panel {
-  --font-color: var(--color-black);
-  --bg-color: var(--color-white);
-}
-
-.floating-panel.dark {
-  --font-color: var(--color-white);
-  --bg-color: var(--color-black);
-} */
-
 .floating-panel {
   line-height: 130%;
   padding: 16px;
@@ -16,6 +6,7 @@
   position: fixed;
   z-index: 2;
   bottom: 100px;
+  box-sizing: border-box;
   width: 343px;
   left: 50%;
   transform: translateX(-50%);
@@ -66,8 +57,6 @@
 .floating-panel-link-row .icon {
   width: 22px;
   height: 22px;
-  border: .1px solid white;
-  border-radius: 8px;
   gap: 4px;
 }
 
