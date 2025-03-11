@@ -43,11 +43,6 @@ const QA_CONFIGS = {
   },
 };
 
-const EXPERIMENTAL_VARIANTS = [
-  'qa-in-product-variant1',
-  'qa-in-product-variant2',
-];
-
 function fade(element, action) {
   if (action === 'in') {
     element.classList.remove('hidden');
@@ -159,23 +154,29 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
-      if (appConfig?.metaData?.variant
-        && EXPERIMENTAL_VARIANTS.includes(appConfig.metaData.variant)) {
-        document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-        ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-          ...contConfig,
-          mode: 'modal',
-          metaData: {
-            isFrictionlessQa: 'true',
-          },
-        });
-      } else {
-        ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      }
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
       break;
+    case 'qa-in-product-variant1':
+      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+        ...contConfig,
+        mode: 'modal',
+        metaData: {
+          isFrictionlessQa: 'true',
+        },
+      });
+    case 'qa-in-product-variant2':
+      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+        ...contConfig,
+        mode: 'modal',
+        metaData: {
+          isFrictionlessQa: 'true',
+        },
+      });
     default: break;
   }
 }
@@ -271,8 +272,8 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 
 export default async function decorate(block) {
   const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
-    import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
-    decorateButtonsDeprecated(block)]);
+  import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
+  decorateButtonsDeprecated(block)]);
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
   globalNavSelector = gNavUtils?.selectors.globalNav;
 
