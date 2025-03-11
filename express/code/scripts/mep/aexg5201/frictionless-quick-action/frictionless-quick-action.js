@@ -161,6 +161,12 @@ import {
       case 'generate-qr-code':
         ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
         break;
+      case 'qa-nbs':
+        ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+        break;
+      case 'qa-in-product-control':
+        ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+        break;
       case 'qa-in-product-variant1':
         document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
         ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
