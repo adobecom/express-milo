@@ -170,6 +170,7 @@ export function runQuickAction(quickAction, data, block) {
           isFrictionlessQa: 'true',
         },
       });
+      break;
     case 'qa-in-product-variant2':
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
@@ -179,6 +180,7 @@ export function runQuickAction(quickAction, data, block) {
           isFrictionlessQa: 'true',
         },
       });
+      break;
     default: break;
   }
 }
