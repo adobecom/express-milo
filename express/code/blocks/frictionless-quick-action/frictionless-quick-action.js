@@ -176,7 +176,9 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
         mode: 'modal',
-      });
+      }).then((res) => {
+        console.log(res)
+      })
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant2':
