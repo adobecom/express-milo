@@ -123,7 +123,7 @@
 
 /* ax-login-page section metadata styles */
 .section.ax-login-page .susi-tabs {
-  background-color: white;
+  background-color: var(--color-white);
   border-radius: 16px;
 }
 
