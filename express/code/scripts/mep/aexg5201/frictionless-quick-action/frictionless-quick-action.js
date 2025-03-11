@@ -43,6 +43,9 @@ import {
     },
     'qa-in-product-variant1': { ...getBaseImgCfg(JPG, JPEG, PNG) },
     'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+    'qa-in-product-control':  { ...getBaseImgCfg(JPG, JPEG, PNG) },
+    'qa-nbs': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+
   };
   
   function fade(element, action) {
