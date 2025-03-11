@@ -172,11 +172,12 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'qa-in-product-variant1':
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      // const z =  ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+ 
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
         mode: 'modal',
       });
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant2':
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
