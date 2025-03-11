@@ -29,7 +29,6 @@ describe('Susi-light', async () => {
   });
 
   after(() => {
-    // Do not build up any test state - reset window.fetch to it's original state
     window.fetch = originalFetch;
   });
 
