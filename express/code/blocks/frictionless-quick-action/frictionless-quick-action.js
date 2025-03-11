@@ -172,11 +172,11 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'qa-in-product-variant1':
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, {
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
         mode: 'modal',
       });
-      // ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, );
       break;
     case 'qa-in-product-variant2':
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
