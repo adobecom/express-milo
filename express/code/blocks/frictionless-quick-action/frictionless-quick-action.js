@@ -41,6 +41,8 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
+  'qa-in-product-variant1': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
 };
 
 function fade(element, action) {
