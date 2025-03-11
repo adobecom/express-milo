@@ -1,4 +1,4 @@
-import { getLibs, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 
 const iconRegex = /icon-\s*([^\s]+)/;
@@ -16,12 +16,7 @@ export default async function init(el) {
   subheader.classList.add('subheader');
 
   const linkRowsContainer = createTag('div', { class: 'link-rows-container' });
-  linkRows.forEach((link, index) => {
-    if (index && getMobileOperatingSystem() !== 'Android') {
-      // non-1st links are Android only
-      link.remove();
-      return;
-    }
+  linkRows.forEach((link) => {
     formatDynamicCartLink(link.querySelector('a'));
     link.classList.add('floating-panel-link-row');
     const icon = link.querySelector('.icon');
