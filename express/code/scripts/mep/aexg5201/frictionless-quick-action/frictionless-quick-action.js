@@ -166,19 +166,13 @@ import {
         ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
           ...contConfig,
           mode: 'modal',
-          metaData: {
-            isFrictionlessQa: 'true',
-          },
         });
         break;
       case 'qa-in-product-variant2':
         document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
         ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
           ...contConfig,
-          mode: 'modal',
-          metaData: {
-            isFrictionlessQa: 'true',
-          },
+          mode: 'modal', 
         });
         break;
       default: break;
