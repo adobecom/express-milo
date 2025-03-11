@@ -15,14 +15,13 @@ export default async function init(el) {
   header.append(closeIcon);
   subheader.classList.add('subheader');
 
-  // 1st link Android, 2nd link ios
-  const userAgent = getMobileOperatingSystem();
-  // eslint-disable-next-line chai-friendly/no-unused-expressions
-  userAgent !== 'Android';
-  // eslint-disable-next-line chai-friendly/no-unused-expressions
-  userAgent !== 'iOS';
   const linkRowsContainer = createTag('div', { class: 'link-rows-container' });
-  linkRows.forEach((link) => {
+  linkRows.forEach((link, index) => {
+    if (index && getMobileOperatingSystem() !== 'Android') {
+      // non-1st links are Android only
+      link.remove();
+      return;
+    }
     formatDynamicCartLink(link.querySelector('a'));
     link.classList.add('floating-panel-link-row');
     const icon = link.querySelector('.icon');
