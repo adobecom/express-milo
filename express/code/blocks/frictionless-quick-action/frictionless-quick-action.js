@@ -44,7 +44,7 @@ const QA_CONFIGS = {
   'qa-in-product-variant1': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'qa-nbs': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
 
 };
 
@@ -164,7 +164,7 @@ export function runQuickAction(quickAction, data, block) {
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
       break;
-    case 'qa-nbs':
+    case 'qa-nba':
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-control':
