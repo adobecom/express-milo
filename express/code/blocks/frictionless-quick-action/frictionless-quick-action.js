@@ -117,7 +117,7 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  const variant = new URLSearchParams(window.location.search).get('variant');
+  const variant = new URLSearchParams(window.location.search).get('variant') ||  quickAction;
   const appConfig = {
     metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload' },
     receiveQuickActionErrors: false,
@@ -172,15 +172,10 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'qa-in-product-variant1':
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
- 
-      // ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-      //   ...contConfig,
-      //   mode: 'modal',
-      // })
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig,  {
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
         mode: 'modal',
-      });
+      }) 
       break;
     case 'qa-in-product-variant2':
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
