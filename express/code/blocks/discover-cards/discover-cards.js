@@ -151,6 +151,11 @@ export default async function decorate(block) {
           const frontFace = createTag('div', { class: 'flip-card-front' });
           const backFace = createTag('div', { class: 'flip-card-back' });
 
+          // Make card focusable and add ARIA
+          card.setAttribute('tabindex', '0');
+          card.setAttribute('role', 'button');
+          card.setAttribute('aria-label', `${card.cardTitle}. Press Enter to flip card`);
+
           const plusIconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
           plusIconWrapper.append(getIconElementDeprecated('plus-icon'));
           frontFace.append(card.cardImage, card.cardTitle, plusIconWrapper);
@@ -159,14 +164,28 @@ export default async function decorate(block) {
           scrollableContent.textContent = card.cardDetails;
           const minusIconWrapper = createTag('div', { class: 'minus-icon-wrapper' });
           minusIconWrapper.append(getIconElementDeprecated('minus-icon'));
-
           backFace.append(scrollableContent, minusIconWrapper);
+
           flipCardInner.append(frontFace, backFace);
           card.innerHTML = '';
           card.append(flipCardInner);
 
+          // Handle both click and keyboard events
           card.addEventListener('click', () => {
             card.classList.toggle('is-flipped');
+            // Update ARIA label based on card state
+            const isFlipped = card.classList.contains('is-flipped');
+            card.setAttribute(
+              'aria-label',
+              isFlipped ? `${card.cardTitle}. Press Enter to flip card back` : `${card.cardTitle}. Press Enter to flip card`,
+            );
+          });
+
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              card.click(); // Reuse click handler
+            }
           });
         }
         return;
