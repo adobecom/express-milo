@@ -143,10 +143,10 @@ export default async function decorate(block) {
     const cardDivs = [...card.children];
 
     cardDivs.forEach((element) => {
-      const isImg = element.querySelector('picture img');
+      const img = element.querySelector('picture img');
       if (isDiscoverFlipCards) {
-        if (isImg) {
-          card.cardImage = isImg;
+        if (img) {
+          card.cardImage = img;
         } else {
           const [titleDiv, detailsDiv] = element.children;
           if (titleDiv && detailsDiv) {
@@ -206,7 +206,7 @@ export default async function decorate(block) {
         cardParagraphs[0].push(element);
       }
 
-      isImg?.classList.add('short');
+      img?.classList.add('short');
       if (element.tagName === 'H2') {
         element.classList.add('card-title');
       } else if (element.querySelector('a.button')) {
