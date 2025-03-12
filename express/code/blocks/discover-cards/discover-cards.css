@@ -189,17 +189,24 @@ main .section .discover-cards {
     }
 }
 
-.gallery {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 250px;  /* Match card width */
+.gallery,
+.discover-cards.more .gallery {
+  display: flex;
+  flex-wrap: nowrap;
   gap: 16px;
   overflow-x: scroll;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   padding: 0 16px;
-  justify-content: center;  /* Center the grid */
+  scroll-padding: 0 16px;
+}
+
+.discover-cards.more .gallery {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 250px;
+  justify-content: center;
 }
 
 .gallery::-webkit-scrollbar {
