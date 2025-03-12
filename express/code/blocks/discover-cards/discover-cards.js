@@ -152,13 +152,23 @@ export default async function decorate(block) {
           const backFace = createTag('div', { class: 'flip-card-back' });
 
           const plusIcon = getIconElementDeprecated('plus-icon');
-          plusIcon.style.position = 'absolute';
-          plusIcon.style.bottom = '16px';
-          plusIcon.style.right = '16px';
-          plusIcon.style.width = '24px';
-          plusIcon.style.height = '24px';
+          const iconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
+          iconWrapper.style.position = 'absolute';
+          iconWrapper.style.bottom = '24px';
+          iconWrapper.style.right = '24px';
+          iconWrapper.style.width = '24px'; // Larger to contain icon
+          iconWrapper.style.height = '24px';
+          iconWrapper.style.backgroundColor = 'black';
+          iconWrapper.style.borderRadius = '50%';
+          iconWrapper.style.display = 'flex';
+          iconWrapper.style.alignItems = 'center';
+          iconWrapper.style.justifyContent = 'center';
 
-          frontFace.append(card.cardImage, card.cardTitle, plusIcon);
+          plusIcon.style.width = '12px';
+          plusIcon.style.height = '12px';
+          iconWrapper.append(plusIcon);
+
+          frontFace.append(card.cardImage, card.cardTitle, iconWrapper);
           backFace.append(card.cardDetails);
           flipCardInner.append(frontFace, backFace);
           card.innerHTML = '';
