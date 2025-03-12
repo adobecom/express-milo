@@ -4,7 +4,7 @@ import {
 } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
-import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js'
+import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
 
 let createTag; let getConfig;
 let getMetadata;
@@ -65,6 +65,42 @@ function selectElementByTagPrefix(p) {
   const allEls = document.body.querySelectorAll(':scope > *');
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
+
+
+function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlVariant = urlParams.get('variant');
+  const isStage = urlParams.get('hzenv') === 'stage';
+  const variant = isStage && urlVariant ? urlVariant : quickAction;
+  appConfig.metaData.variant = variant;
+  switch (variant) {
+    case 'qa-nba':
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'qa-in-product-control':
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'qa-in-product-variant1':
+      appConfig.metaData.isFrictionlessQa = false;
+      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+        ...contConfig,
+        mode: 'modal',
+      });
+      break;
+    case 'qa-in-product-variant2':
+      appConfig.metaData.isFrictionlessQa = false;
+      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+        ...contConfig,
+        mode: 'modal',
+      });
+      break;
+    default:
+      break;
+  }
+}
+
 
 // eslint-disable-next-line default-param-last
 export function runQuickAction(quickAction, data, block) {
@@ -158,6 +194,15 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const variant = urlParams.get('variant');
+      const isStage = urlParams.get('hzenv') === 'stage';
+      if (variant) {
+        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
+        break;
+      }
+
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'generate-qr-code':
@@ -165,53 +210,19 @@ export function runQuickAction(quickAction, data, block) {
       break;
     // Experiment code, remove after done
     case 'qa-nba':
-      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-control':
-      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant1':
-      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant2':
-      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     default: break;
   }
-}
-
-function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
-  const urlParams = new URLSearchParams(window.location.search)
-  const variant = urlParams.get('variant') || quickAction;
-  appConfig.metaData.variant = variant
-  switch (quickAction) {
-    case 'qa-nba':
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-control': 
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-variant1': 
-      appConfig.metaData.isFrictionlessQa = false
-      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-        ...contConfig,
-        mode: 'modal',
-      })
-      break;
-    case 'qa-in-product-variant2': 
-      appConfig.metaData.isFrictionlessQa = false
-      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-        ...contConfig,
-        mode: 'modal',
-      });
-      break;
-    default:
-      break;
-  }
-
-
 }
 
 // eslint-disable-next-line default-param-last
@@ -241,6 +252,7 @@ async function startSDK(data = '', quickAction, block) {
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
     // query parameter URL for overriding the cc everywhere iframe source URL, used for testing new experiences
+    const isStageEnv = urlParams.get('hzenv') === 'stage';
     const baseQA = new URLSearchParams(window.location.search).get('base-qa');
     const ccEverywhereConfig = {
       hostInfo: {
@@ -249,8 +261,8 @@ async function startSDK(data = '', quickAction, block) {
       },
       configParams: {
         locale: ietf?.replace('-', '_'),
-        env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
-        urlOverride: baseQA,
+        env: isStageEnv ? 'stage' : 'prod',
+        urlOverride: isStageEnv ? baseQA : undefined,
       },
       authOption: () => ({ mode: 'delayed' }),
     };
@@ -305,8 +317,8 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 
 export default async function decorate(block) {
   const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
-  import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
-  decorateButtonsDeprecated(block)]);
+    import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
+    decorateButtonsDeprecated(block)]);
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
   globalNavSelector = gNavUtils?.selectors.globalNav;
 
