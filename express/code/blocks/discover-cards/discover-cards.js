@@ -113,7 +113,7 @@ export async function buildGallery(
 }
 
 export default async function decorate(block) {
-  const isDiscoverMoreCards = block.classList.contains('more');
+  const isDiscoverFlipCards = block.classList.contains('flip');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
@@ -144,7 +144,7 @@ export default async function decorate(block) {
 
     cardDivs.forEach((element) => {
       const isImg = element.querySelector('picture img');
-      if (isDiscoverMoreCards) {
+      if (isDiscoverFlipCards) {
         if (isImg) {
           card.cardImage = isImg;
         } else {
