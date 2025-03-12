@@ -117,7 +117,8 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  const variant = new URLSearchParams(window.location.search).get('variant');
+  const urlParams =  new URLSearchParams(window.location.search)
+  const variant = (urlParams.get('hzenv') === 'stage' && urlParams.get('variant')) ||  quickAction;
   const appConfig = {
     metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload' },
     receiveQuickActionErrors: false,
@@ -171,13 +172,15 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant1':
+      appConfig.metaData.isFrictionlessQa = false
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
         mode: 'modal',
-      });
+      }) 
       break;
     case 'qa-in-product-variant2':
+      appConfig.metaData.isFrictionlessQa = false
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
