@@ -151,16 +151,16 @@ export default async function decorate(block) {
           const frontFace = createTag('div', { class: 'flip-card-front' });
           const backFace = createTag('div', { class: 'flip-card-back' });
 
-          const plusIcon = getIconElementDeprecated('plus-icon');
           const plusIconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
-          plusIconWrapper.append(plusIcon);
-
-          const minusIcon = getIconElementDeprecated('minus-icon');
-          const minusIconWrapper = createTag('div', { class: 'minus-icon-wrapper' });
-          minusIconWrapper.append(minusIcon);
-
+          plusIconWrapper.append(getIconElementDeprecated('plus-icon'));
           frontFace.append(card.cardImage, card.cardTitle, plusIconWrapper);
-          backFace.append(card.cardDetails, minusIconWrapper);
+
+          const scrollableContent = createTag('div', { class: 'scrollable-content' });
+          scrollableContent.textContent = card.cardDetails;
+          const minusIconWrapper = createTag('div', { class: 'minus-icon-wrapper' });
+          minusIconWrapper.append(getIconElementDeprecated('minus-icon'));
+
+          backFace.append(scrollableContent, minusIconWrapper);
           flipCardInner.append(frontFace, backFace);
           card.innerHTML = '';
           card.append(flipCardInner);
