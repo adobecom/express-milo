@@ -176,7 +176,7 @@ export function runQuickAction(quickAction, data, block) {
   const urlParams = new URLSearchParams(window.location.search);
   const variant = urlParams.get('variant');
   const isStage = urlParams.get('hzenv') === 'stage';
-  
+
   if (!ccEverywhere) return;
   switch (quickAction) {
     case 'convert-to-jpg':
@@ -197,8 +197,7 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'remove-background':
 
-     
-      if (variant) {
+      if (variant && isStage) {
         frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
         break;
       }
@@ -251,7 +250,8 @@ async function startSDK(data = '', quickAction, block) {
     if (country) ietf = getConfig().locales[country]?.ietf;
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
-    // query parameter URL for overriding the cc everywhere iframe source URL, used for testing new experiences
+    // query parameter URL for overriding the cc everywhere 
+    // iframe source URL, used for testing new experiences
     const isStageEnv = urlParams.get('hzenv') === 'stage';
     const baseQA = new URLSearchParams(window.location.search).get('base-qa');
     const ccEverywhereConfig = {
