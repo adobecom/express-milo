@@ -117,7 +117,7 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  const variant = new URLSearchParams(window.location.search).get('variant') ||  quickAction;
+  const variant = (urlParams.get('hzenv') === 'stage' && new URLSearchParams(window.location.search).get('variant')) ||  quickAction;
   const appConfig = {
     metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload' },
     receiveQuickActionErrors: false,
