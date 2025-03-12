@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
 let createTag;
@@ -151,7 +151,14 @@ export default async function decorate(block) {
           const frontFace = createTag('div', { class: 'flip-card-front' });
           const backFace = createTag('div', { class: 'flip-card-back' });
 
-          frontFace.append(card.cardImage, card.cardTitle);
+          const plusIcon = getIconElementDeprecated('plus-icon');
+          plusIcon.style.position = 'absolute';
+          plusIcon.style.bottom = '16px';
+          plusIcon.style.right = '16px';
+          plusIcon.style.width = '24px';
+          plusIcon.style.height = '24px';
+
+          frontFace.append(card.cardImage, card.cardTitle, plusIcon);
           backFace.append(card.cardDetails);
           flipCardInner.append(frontFace, backFace);
           card.innerHTML = '';
