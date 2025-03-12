@@ -38,20 +38,20 @@ main .section .discover-cards {
     padding: 16px;
     margin: 9px -7px 10px auto;
 }
-.discover-cards.more {
+.discover-cards.flip {
   height: 550px;
 }
-.discover-cards.more .cards-container .card {
+.discover-cards.flip .cards-container .card {
   background: unset;
   border: none;
 }
 
-.discover-cards.more h1, 
-.discover-cards.more h2 {
+.discover-cards.flip h1, 
+.discover-cards.flip h2 {
   font-size: 22px;
 }
 /* Default style - centered */
-.discover-cards.more .cards-container.gallery {
+.discover-cards.flip .cards-container.gallery {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 250px;
@@ -71,13 +71,13 @@ main .section .discover-cards {
 
 /* Switch to left-aligned on smaller screens */
 @media (max-width: 1050px) {
-  .discover-cards.more .cards-container.gallery {
+  .discover-cards.flip .cards-container.gallery {
     justify-content: start;
     width: 100%;
   }
 }
 
-.discover-cards.more .cards-container .card.gallery--item {
+.discover-cards.flip .cards-container .card.gallery--item {
   margin: 0;
   padding: 0;
 }
@@ -171,8 +171,8 @@ main .section .discover-cards {
 }
 
 @media (min-width: 1000px) {
-  .discover-cards.more h1,
-  .discover-cards.more h2 {
+  .discover-cards.flip h1,
+  .discover-cards.flip h2 {
     font-size: 36px;
   }
 }
@@ -190,7 +190,7 @@ main .section .discover-cards {
 }
 
 .gallery,
-.discover-cards.more .gallery {
+.discover-cards.flip .gallery {
   display: flex;
   flex-wrap: nowrap;
   gap: 16px;
@@ -202,7 +202,7 @@ main .section .discover-cards {
   scroll-padding: 0 16px;
 }
 
-.discover-cards.more .gallery {
+.discover-cards.flip .gallery {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 250px;
@@ -289,7 +289,7 @@ main .section .discover-cards {
     background-color: #686DF4;
 }
 
-.discover-cards.more .card {
+.discover-cards.flip .card {
   background-color: transparent;
   min-width: 250px;
   width: 250px;
@@ -299,7 +299,7 @@ main .section .discover-cards {
   cursor: pointer;
 }
 
-.discover-cards.more .flip-card-inner {
+.discover-cards.flip .flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
@@ -308,12 +308,12 @@ main .section .discover-cards {
   transform-style: preserve-3d;
 }
 
-.discover-cards.more .card.is-flipped .flip-card-inner {
+.discover-cards.flip .card.is-flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
 
-.discover-cards.more .flip-card-front, 
-.discover-cards.more .flip-card-back {
+.discover-cards.flip .flip-card-front, 
+.discover-cards.flip .flip-card-back {
   font-size: 22px;
   text-align: left;
   position: absolute;
@@ -326,7 +326,7 @@ main .section .discover-cards {
   padding: 32px;
   box-sizing: border-box;
 }
-.discover-cards.more .flip-card-back {
+.discover-cards.flip .flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -334,7 +334,7 @@ main .section .discover-cards {
   transform: rotateY(180deg);
 }
 
-.discover-cards.more .flip-card-back .scrollable-content {
+.discover-cards.flip .flip-card-back .scrollable-content {
   position: absolute;
   top: 24px;
   left: 16px;
@@ -346,17 +346,17 @@ main .section .discover-cards {
   font-size: 16px;
 }
 
-.discover-cards.more .flip-card-back .scrollable-content::-webkit-scrollbar {
+.discover-cards.flip .flip-card-back .scrollable-content::-webkit-scrollbar {
   display: none;
 }
 
-.discover-cards.more .flip-card-front img {
+.discover-cards.flip .flip-card-front img {
   width: 200px;
   height: 200px;
 }
 
-.discover-cards.more .plus-icon-wrapper,
-.discover-cards.more .minus-icon-wrapper {
+.discover-cards.flip .plus-icon-wrapper,
+.discover-cards.flip .minus-icon-wrapper {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -369,13 +369,13 @@ main .section .discover-cards {
   justify-content: center;
 }
 
-.discover-cards.more .plus-icon-wrapper img,
-.discover-cards.more .minus-icon-wrapper img {
+.discover-cards.flip .plus-icon-wrapper img,
+.discover-cards.flip .minus-icon-wrapper img {
   width: 12px;
   height: 12px;
 }
 
-.discover-cards.more .minus-icon-wrapper {
+.discover-cards.flip .minus-icon-wrapper {
   position: absolute;
   bottom: 16px;
   right: 16px;
@@ -389,7 +389,7 @@ main .section .discover-cards {
   z-index: 1;
 }
 
-.discover-cards.more .cards-container.gallery::-webkit-scrollbar {
+.discover-cards.flip .cards-container.gallery::-webkit-scrollbar {
   display: none;
 }
 
