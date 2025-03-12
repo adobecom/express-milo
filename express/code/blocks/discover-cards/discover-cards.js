@@ -175,8 +175,7 @@ export default async function decorate(block) {
           backFace.append(scrollableContent, minusIconWrapper);
 
           flipCardInner.append(frontFace, backFace);
-          card.innerHTML = '';
-          card.append(flipCardInner);
+          card.replaceChildren(flipCardInner);
 
           card.addEventListener('click', () => {
             card.classList.toggle('is-flipped');
