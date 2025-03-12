@@ -291,6 +291,8 @@ main .section .discover-cards {
 .discover-cards.more .flip-card-back {
   line-height: 1.3;
   padding-top: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
   font-size: 16px;
 }
 
