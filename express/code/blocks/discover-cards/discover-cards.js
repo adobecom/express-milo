@@ -137,7 +137,6 @@ export default async function decorate(block) {
   cards.forEach((card, index) => {
     card.classList.add('card');
 
-    // Add ARIA attributes for card position
     card.setAttribute('aria-setsize', numCards);
     card.setAttribute('aria-posinset', index + 1);
 
