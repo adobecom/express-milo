@@ -155,7 +155,7 @@ export default async function decorate(block) {
           const plusIconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
           plusIconWrapper.append(plusIcon);
 
-          const minusIcon = getIconElementDeprecated('minus-circle-icon');
+          const minusIcon = getIconElementDeprecated('minus-icon');
           const minusIconWrapper = createTag('div', { class: 'minus-icon-wrapper' });
           minusIconWrapper.append(minusIcon);
 
