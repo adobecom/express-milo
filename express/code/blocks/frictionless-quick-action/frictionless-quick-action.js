@@ -116,11 +116,10 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  const urlParams =  new URLSearchParams(window.location.search)
-  const variant = (urlParams.get('hzenv') === 'stage' && urlParams.get('variant')) ||  quickAction;
-  
+  const urlParams = new URLSearchParams(window.location.search)
+
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' , variant },
+    metaData: { isFrictionlessQa: 'true' },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -165,21 +164,42 @@ export function runQuickAction(quickAction, data, block) {
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
       break;
+    // Experiment code, remove after done
+    case 'qa-nba':
+      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      break;
+    case 'qa-in-product-control':
+      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      break;
+    case 'qa-in-product-variant1':
+      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      break;
+    case 'qa-in-product-variant2':
+      frictionlessQAExperiment(quickAction,docConfig,appConfig,exportConfig,contConfig)
+      break;
+    default: break;
+  }
+}
+
+function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
+  const variant = (urlParams.get('hzenv') === 'stage' && urlParams.get('variant')) || quickAction;
+  appConfig.metaData.variant = variant
+  switch (quickAction) {
     case 'qa-nba':
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
-    case 'qa-in-product-control':
+    case 'qa-in-product-control': 
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
-    case 'qa-in-product-variant1':
+    case 'qa-in-product-variant1': 
       appConfig.metaData.isFrictionlessQa = false
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
         mode: 'modal',
-      }) 
+      })
       break;
-    case 'qa-in-product-variant2':
+    case 'qa-in-product-variant2': 
       appConfig.metaData.isFrictionlessQa = false
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
@@ -187,8 +207,11 @@ export function runQuickAction(quickAction, data, block) {
         mode: 'modal',
       });
       break;
-    default: break;
+    default:
+      break;
   }
+
+
 }
 
 // eslint-disable-next-line default-param-last
@@ -217,6 +240,7 @@ async function startSDK(data = '', quickAction, block) {
     if (country) ietf = getConfig().locales[country]?.ietf;
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
+    // query parameter URL for overriding the cc everywhere iframe source URL, used for testing new experiences
     const baseQA = new URLSearchParams(window.location.search).get('base-qa');
     const ccEverywhereConfig = {
       hostInfo: {
@@ -281,11 +305,11 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 
 export default async function decorate(block) {
   const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
-    import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
-    decorateButtonsDeprecated(block)]);
+  import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
+  decorateButtonsDeprecated(block)]);
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
   globalNavSelector = gNavUtils?.selectors.globalNav;
-  
+
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
   const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
