@@ -51,6 +51,7 @@ main .section .discover-cards {
 }
 .discover-cards.more .cards-container.gallery {
   margin-top: 32px;
+  overflow: visible;
 }
 
 .discover-cards.more .cards-container .card.gallery--item {
@@ -258,6 +259,7 @@ main .section .discover-cards {
   height: 380px;
   max-height: 380px;
   perspective: 1000px;
+  overflow: visible;
   cursor: pointer;
 }
 
