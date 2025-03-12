@@ -285,7 +285,7 @@ main .section .discover-cards {
   backface-visibility: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
   border-radius: 16px;
-  padding: 16px;
+  padding: 32px;
   box-sizing: border-box;
 }
 .discover-cards.more .flip-card-back {
