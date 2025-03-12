@@ -292,6 +292,15 @@ main .section .discover-cards {
   cursor: pointer;
 }
 
+.discover-cards.more .card:focus .flip-card-inner {
+  /* Remove custom box-shadow */
+}
+
+.discover-cards.more .card:focus .flip-card-front,
+.discover-cards.more .card:focus .flip-card-back {
+  /* Remove outline: none */
+}
+
 .discover-cards.more .flip-card-inner {
   position: relative;
   width: 100%;
