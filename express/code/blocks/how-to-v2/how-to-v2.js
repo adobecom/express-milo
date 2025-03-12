@@ -27,10 +27,12 @@ function buildAccordion(block, rows, stepsContent) {
   rows.forEach((row, i) => {
     const [stepTitle, stepDetail] = row.querySelectorAll(':scope div');
 
-    const newStepTitle = createTag('h3');
+    const titleId = `step-title-${i}`;
+    const detailId = `step-detail-${i}`;
+
+    const newStepTitle = createTag('h3', { id: titleId });
     newStepTitle.replaceChildren(...stepTitle.childNodes);
 
-    const detailId = `step-detail-${i}`;
     const listItem = createTag('LI', {
       class: 'step',
       tabindex: '0',
@@ -48,6 +50,7 @@ function buildAccordion(block, rows, stepsContent) {
     const detailContainer = createTag('div', {
       class: 'detail-container',
       id: detailId,
+      'aria-labelledby': titleId,
     });
 
     if (i !== 0) {
