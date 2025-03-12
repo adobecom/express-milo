@@ -30,10 +30,12 @@ function buildAccordion(block, rows, stepsContent) {
     const newStepTitle = createTag('h3');
     newStepTitle.replaceChildren(...stepTitle.childNodes);
 
+    const detailId = `step-detail-${i}`;
     const listItem = createTag('LI', {
       class: 'step',
       tabindex: '0',
       'aria-expanded': i === 0 ? 'true' : 'false',
+      'aria-controls': detailId,
     });
     list.append(listItem);
 
@@ -43,7 +45,10 @@ function buildAccordion(block, rows, stepsContent) {
     const detailText = stepDetail;
     detailText && detailText.classList.add('detail-text');
 
-    const detailContainer = createTag('div', { class: 'detail-container' });
+    const detailContainer = createTag('div', {
+      class: 'detail-container',
+      id: detailId,
+    });
 
     if (i !== 0) {
       detailContainer.classList.add('closed');
