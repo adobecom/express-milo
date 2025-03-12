@@ -39,7 +39,7 @@ main .section .discover-cards {
     margin: 9px -7px 10px auto;
 }
 .discover-cards.more {
-  height: 510px;
+  height: 550px;
 }
 .discover-cards.more .cards-container .card {
   background: unset;
