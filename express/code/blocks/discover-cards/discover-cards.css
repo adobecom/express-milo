@@ -48,7 +48,7 @@ main .section .discover-cards {
 
 .discover-cards.flip h1, 
 .discover-cards.flip h2 {
-  font-size: 22px;
+  font-size: var(--heading-font-size-s);
 }
 /* Default style - centered */
 .discover-cards.flip .cards-container.gallery {
