@@ -160,7 +160,6 @@ export default async function decorate(block) {
           const frontFace = createTag('div', { class: 'flip-card-front' });
           const backFace = createTag('div', { class: 'flip-card-back' });
 
-          // Make card focusable and add ARIA
           card.setAttribute('tabindex', '0');
           card.setAttribute('role', 'button');
           card.setAttribute('aria-label', `Learn more about ${card.cardTitle}`);
