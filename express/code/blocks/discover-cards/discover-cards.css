@@ -297,10 +297,16 @@ main .section .discover-cards {
 }
 .discover-cards.more .flip-card-back {
   line-height: 1.3;
-  padding-top: 24px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 24px 16px 48px;
   font-size: 16px;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome/Safari/Opera */
+.discover-cards.more .flip-card-back::-webkit-scrollbar {
+  display: none;
 }
 
 .discover-cards.more .flip-card-front img {
@@ -330,5 +336,20 @@ main .section .discover-cards {
 .discover-cards.more .minus-icon-wrapper img {
   width: 12px;
   height: 12px;
+}
+
+/* Create a container for the minus icon to keep it fixed */
+.discover-cards.more .minus-icon-wrapper {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  background-color: black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
 }
 
