@@ -261,7 +261,7 @@ async function startSDK(data = '', quickAction, block) {
       },
       configParams: {
         locale: ietf?.replace('-', '_'),
-        env: false,
+        env: 'prod',
         urlOverride: isStageEnv ? baseQA : undefined,
       },
       authOption: () => ({ mode: 'delayed' }),
