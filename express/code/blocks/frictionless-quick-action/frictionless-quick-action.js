@@ -7,8 +7,7 @@ import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js'
 
 let createTag; let getConfig;
-let getMetadata;
-let loadScript; let globalNavSelector;
+let loadScript; let getMetadata;
 
 let ccEverywhere;
 let quickActionContainer;
@@ -45,7 +44,6 @@ const QA_CONFIGS = {
   'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-
 };
 
 function fade(element, action) {
@@ -107,7 +105,6 @@ export function runQuickAction(quickAction, data, block) {
     parentElementId: `${quickAction}-container`,
     backgroundColor: 'transparent',
     hideCloseButton: true,
-    padding: 0,
   };
 
   const docConfig = {
@@ -121,7 +118,7 @@ export function runQuickAction(quickAction, data, block) {
   const variant = (urlParams.get('hzenv') === 'stage' && urlParams.get('variant')) ||  quickAction;
   
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload' },
+    metaData: { isFrictionlessQa: 'true' , variant },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -219,7 +216,6 @@ async function startSDK(data = '', quickAction, block) {
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
 
-    const baseQA = new URLSearchParams(window.location.search).get('base-qa');
     const ccEverywhereConfig = {
       hostInfo: {
         clientId,
@@ -228,7 +224,6 @@ async function startSDK(data = '', quickAction, block) {
       configParams: {
         locale: ietf?.replace('-', '_'),
         env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
-        urlOverride: baseQA,
       },
       authOption: () => ({ mode: 'delayed' }),
     };
@@ -282,12 +277,9 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 }
 
 export default async function decorate(block) {
-  const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
-    import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
-    decorateButtonsDeprecated(block)]);
-  ({ createTag, getMetadata, loadScript, getConfig } = utils);
-  globalNavSelector = gNavUtils?.selectors.globalNav;
-
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+    ({ createTag, getConfig, loadScript, getMetadata } = utils);
+  });
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
   const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
@@ -372,6 +364,7 @@ export default async function decorate(block) {
 
   const freePlanTags = await buildFreePlanWidget({ typeKey: 'branded', checkmarks: true });
   dropzone.append(freePlanTags);
+
   window.addEventListener('popstate', (e) => {
     const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
     const correctState = e.state?.hideFrictionlessQa;
