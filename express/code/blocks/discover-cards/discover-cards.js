@@ -170,10 +170,8 @@ export default async function decorate(block) {
           card.innerHTML = '';
           card.append(flipCardInner);
 
-          // Handle both click and keyboard events
           card.addEventListener('click', () => {
             card.classList.toggle('is-flipped');
-            // Update ARIA label based on card state
             const isFlipped = card.classList.contains('is-flipped');
             card.setAttribute(
               'aria-label',
@@ -184,7 +182,7 @@ export default async function decorate(block) {
           card.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              card.click(); // Reuse click handler
+              card.click();
             }
           });
         }
