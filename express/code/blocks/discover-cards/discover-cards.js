@@ -154,9 +154,9 @@ export default async function decorate(block) {
           const plusIcon = getIconElementDeprecated('plus-icon');
           const iconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
           iconWrapper.style.position = 'absolute';
-          iconWrapper.style.bottom = '24px';
-          iconWrapper.style.right = '24px';
-          iconWrapper.style.width = '24px'; // Larger to contain icon
+          iconWrapper.style.bottom = '16px';
+          iconWrapper.style.right = '16px';
+          iconWrapper.style.width = '24px';
           iconWrapper.style.height = '24px';
           iconWrapper.style.backgroundColor = 'black';
           iconWrapper.style.borderRadius = '50%';
