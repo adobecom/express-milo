@@ -46,6 +46,7 @@ main .section .discover-cards {
   border: none;
 }
 
+.discover-cards.more h1, 
 .discover-cards.more h2 {
   font-size: 22px;
 }
@@ -144,6 +145,13 @@ main .section .discover-cards {
     .discover-cards .cards-container .card:first-child {
         margin-left: 60px;
     }
+}
+
+@media (min-width: 1000px) {
+  .discover-cards.more h1,
+  .discover-cards.more h2 {
+    font-size: 36px;
+  }
 }
 
 @media (min-width: 1680px) {
