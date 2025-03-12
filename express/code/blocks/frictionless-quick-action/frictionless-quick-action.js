@@ -116,7 +116,6 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  const urlParams = new URLSearchParams(window.location.search)
 
   const appConfig = {
     metaData: { isFrictionlessQa: 'true' },
@@ -182,6 +181,7 @@ export function runQuickAction(quickAction, data, block) {
 }
 
 function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
+  const urlParams = new URLSearchParams(window.location.search)
   const variant = (urlParams.get('hzenv') === 'stage' && urlParams.get('variant')) || quickAction;
   appConfig.metaData.variant = variant
   switch (quickAction) {
