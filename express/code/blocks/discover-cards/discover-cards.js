@@ -119,8 +119,10 @@ export default async function decorate(block) {
   });
   const firstChild = block.querySelector(':scope > div:first-child');
 
-  if (firstChild && firstChild.querySelector('h3')) {
+  if (firstChild && firstChild.querySelector('h1, h2, h3')) {
     firstChild.classList.add('center-title');
+    const header = firstChild.querySelector('h1, h2, h3');
+    header.setAttribute('aria-label', `${header.textContent.trim()} cards`);
     block.insertBefore(firstChild, block.firstChild);
   }
 
@@ -154,7 +156,7 @@ export default async function decorate(block) {
           // Make card focusable and add ARIA
           card.setAttribute('tabindex', '0');
           card.setAttribute('role', 'button');
-          card.setAttribute('aria-label', `${card.cardTitle}. Press Enter to flip card`);
+          card.setAttribute('aria-label', `Learn more about ${card.cardTitle}`);
 
           const plusIconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
           plusIconWrapper.append(getIconElementDeprecated('plus-icon'));
@@ -175,7 +177,7 @@ export default async function decorate(block) {
             const isFlipped = card.classList.contains('is-flipped');
             card.setAttribute(
               'aria-label',
-              isFlipped ? `${card.cardTitle}. Press Enter to flip card back` : `${card.cardTitle}. Press Enter to flip card`,
+              isFlipped ? `Go back to ${card.cardTitle}` : `Learn more about ${card.cardTitle}`,
             );
           });
 
