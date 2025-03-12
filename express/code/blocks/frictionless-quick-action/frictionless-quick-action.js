@@ -250,7 +250,7 @@ async function startSDK(data = '', quickAction, block) {
     if (country) ietf = getConfig().locales[country]?.ietf;
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
-    // query parameter URL for overriding the cc everywhere 
+    // query parameter URL for overriding the cc everywhere
     // iframe source URL, used for testing new experiences
     const isStageEnv = urlParams.get('hzenv') === 'stage';
     const baseQA = new URLSearchParams(window.location.search).get('base-qa');
