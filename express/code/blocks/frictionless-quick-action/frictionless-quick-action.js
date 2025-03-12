@@ -171,6 +171,7 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant1':
+      appConfig.metaData.isFrictionlessQa = false
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
@@ -178,6 +179,7 @@ export function runQuickAction(quickAction, data, block) {
       }) 
       break;
     case 'qa-in-product-variant2':
+      appConfig.metaData.isFrictionlessQa = false
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
