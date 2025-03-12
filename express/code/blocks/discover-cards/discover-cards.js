@@ -152,24 +152,15 @@ export default async function decorate(block) {
           const backFace = createTag('div', { class: 'flip-card-back' });
 
           const plusIcon = getIconElementDeprecated('plus-icon');
-          const iconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
-          iconWrapper.style.position = 'absolute';
-          iconWrapper.style.bottom = '16px';
-          iconWrapper.style.right = '16px';
-          iconWrapper.style.width = '24px';
-          iconWrapper.style.height = '24px';
-          iconWrapper.style.backgroundColor = 'black';
-          iconWrapper.style.borderRadius = '50%';
-          iconWrapper.style.display = 'flex';
-          iconWrapper.style.alignItems = 'center';
-          iconWrapper.style.justifyContent = 'center';
+          const plusIconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
+          plusIconWrapper.append(plusIcon);
 
-          plusIcon.style.width = '12px';
-          plusIcon.style.height = '12px';
-          iconWrapper.append(plusIcon);
+          const minusIcon = getIconElementDeprecated('minus-circle-icon');
+          const minusIconWrapper = createTag('div', { class: 'minus-icon-wrapper' });
+          minusIconWrapper.append(minusIcon);
 
-          frontFace.append(card.cardImage, card.cardTitle, iconWrapper);
-          backFace.append(card.cardDetails);
+          frontFace.append(card.cardImage, card.cardTitle, plusIconWrapper);
+          backFace.append(card.cardDetails, minusIconWrapper);
           flipCardInner.append(frontFace, backFace);
           card.innerHTML = '';
           card.append(flipCardInner);
