@@ -302,3 +302,4 @@ main .section .discover-cards {
 .discover-cards.more .flip-card-back {
   transform: rotateY(180deg);
 }
+
