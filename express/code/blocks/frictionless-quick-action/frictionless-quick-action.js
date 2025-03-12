@@ -182,7 +182,7 @@ export function runQuickAction(quickAction, data, block) {
 
 function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
   const urlParams = new URLSearchParams(window.location.search)
-  const variant = (urlParams.get('hzenv') === 'stage' && urlParams.get('variant')) || quickAction;
+  const variant = urlParams.get('variant') || quickAction;
   appConfig.metaData.variant = variant
   switch (quickAction) {
     case 'qa-nba':
