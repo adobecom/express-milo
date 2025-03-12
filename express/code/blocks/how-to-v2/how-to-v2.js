@@ -6,13 +6,16 @@ function setStepDetails(block, indexOpenedStep) {
 
   listItems.forEach((item, i) => {
     const detail = item.querySelector('.detail-container');
+    const isOpen = i === indexOpenedStep;
 
-    if (i === indexOpenedStep) {
+    if (isOpen) {
       detail.classList.remove('closed');
       detail.style.maxHeight = `${detail.scrollHeight}px`;
+      item.setAttribute('aria-expanded', 'true');
     } else {
       detail.classList.add('closed');
       detail.style.maxHeight = '0';
+      item.setAttribute('aria-expanded', 'false');
     }
   });
 }
@@ -27,7 +30,11 @@ function buildAccordion(block, rows, stepsContent) {
     const newStepTitle = createTag('h3');
     newStepTitle.replaceChildren(...stepTitle.childNodes);
 
-    const listItem = createTag('LI', { class: 'step', tabindex: '0' });
+    const listItem = createTag('LI', {
+      class: 'step',
+      tabindex: '0',
+      'aria-expanded': i === 0 ? 'true' : 'false',
+    });
     list.append(listItem);
 
     const listItemIndicator = createTag('div', { class: 'step-indicator' });
