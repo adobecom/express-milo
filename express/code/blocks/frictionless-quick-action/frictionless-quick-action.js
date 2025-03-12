@@ -66,7 +66,6 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
-
 function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
@@ -100,7 +99,6 @@ function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfi
       break;
   }
 }
-
 
 // eslint-disable-next-line default-param-last
 export function runQuickAction(quickAction, data, block) {
@@ -175,6 +173,10 @@ export function runQuickAction(quickAction, data, block) {
     },
   };
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const variant = urlParams.get('variant');
+  const isStage = urlParams.get('hzenv') === 'stage';
+  
   if (!ccEverywhere) return;
   switch (quickAction) {
     case 'convert-to-jpg':
@@ -195,9 +197,7 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'remove-background':
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const variant = urlParams.get('variant');
-      const isStage = urlParams.get('hzenv') === 'stage';
+     
       if (variant) {
         frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
         break;
