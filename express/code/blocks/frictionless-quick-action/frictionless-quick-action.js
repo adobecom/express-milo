@@ -66,13 +66,13 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
-function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
+function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
   const isStage = urlParams.get('hzenv') === 'stage';
   const variant = isStage && urlVariant ? urlVariant : quickAction;
-  document.body.dataset.frictionlesstype = 'remove-background';
-  document.body.dataset.variant = variant;
+  block?.dataset.frictionlesstype = 'remove-background';
+  block?.dataset.variant = variant;
   appConfig.metaData.variant = variant;
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
@@ -201,7 +201,7 @@ export function runQuickAction(quickAction, data, block) {
     case 'remove-background':
 
       if (variant && isStage) {
-        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
+        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig, block);
         break;
       }
 
@@ -212,16 +212,16 @@ export function runQuickAction(quickAction, data, block) {
       break;
     // Experiment code, remove after done
     case 'qa-nba':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
       break;
     case 'qa-in-product-control':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
       break;
     case 'qa-in-product-variant1':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
       break;
     case 'qa-in-product-variant2':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
       break;
     default: break;
   }
