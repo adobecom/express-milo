@@ -260,7 +260,7 @@ async function startSDK(data = '', quickAction, block) {
     // query parameter URL for overriding the cc everywhere
     // iframe source URL, used for testing new experiences
     const isStageEnv = urlParams.get('hzenv') === 'stage';
-    
+
     const ccEverywhereConfig = {
       hostInfo: {
         clientId,
@@ -428,7 +428,7 @@ export default async function decorate(block) {
     }
   }, { passive: true });
 
-  block.dataset.frictionlesstype = quickAction; 
+  block.dataset.frictionlesstype = quickAction;
   block.dataset.variants = quickAction;
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
