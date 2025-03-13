@@ -71,8 +71,8 @@ function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfi
   const urlVariant = urlParams.get('variant');
   const isStage = urlParams.get('hzenv') === 'stage';
   const variant = isStage && urlVariant ? urlVariant : quickAction;
-  block?.dataset.frictionlesstype = 'remove-background';
-  block?.dataset.variant = variant;
+  block.dataset.frictionlesstype = 'remove-background';
+  block.dataset.variant = variant;
   appConfig.metaData.variant = variant;
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
