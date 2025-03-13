@@ -429,7 +429,7 @@ export default async function decorate(block) {
   }, { passive: true });
 
   block.dataset.frictionlesstype = quickAction; 
-  block.dataset.variant = quickAction;
+  block.dataset.variants = quickAction;
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
