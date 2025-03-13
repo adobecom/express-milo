@@ -157,14 +157,11 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case `qa-in-product-variant1`:
-      
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig, 
         mode : "modal", 
         metaData: { 
           isFrictionlessQa: 'true',
-
-          
          } 
       });
 
@@ -214,7 +211,7 @@ async function startSDK(data = '', quickAction, block) {
       configParams: {
         locale: ietf?.replace('-', '_'),
         env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
-        baseQA
+        urlOverride : baseQA
       },
       authOption: () => ({ mode: 'delayed' }),
     };
