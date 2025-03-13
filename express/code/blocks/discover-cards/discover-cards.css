@@ -293,7 +293,7 @@ main .section .discover-cards {
   background-color: transparent;
   min-width: initial;
   width: 250px;
-  max-width: 250px;
+  max-width: initial;
   height: 380px;
   max-height: 380px;
   cursor: pointer;
