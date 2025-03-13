@@ -156,7 +156,7 @@ export function runQuickAction(quickAction, data, block) {
     case 'remove-background':
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
-    case 'remove-background-full-editor':
+    case `qa-in-product-variant1`:
       
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig, 
