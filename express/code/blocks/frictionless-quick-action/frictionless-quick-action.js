@@ -210,9 +210,9 @@ async function startSDK(data = '', quickAction, block) {
       },
       configParams: {
         locale: ietf?.replace('-', '_'),
-        env: 'stage',
+        env: 'dev',
         baseQA,
-        urlOverride : baseQA
+        
       },
       authOption: () => ({ mode: 'delayed' }),
     };
