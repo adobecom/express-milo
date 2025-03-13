@@ -289,6 +289,13 @@
 }
 
 @media (min-width: 900px) {
+  .basic-carousel-container .basic-carousel-platform {
+    max-width: 648px;
+    margin: auto;
+  }
+  .template-x.basic-carousel.horizontal.fullwidth .template-x-inner-wrapper > div, .template-x.basic-carousel.horizontal.fullwidth {
+    max-width: 648px;
+  }
   .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {
     display: none;
   }
