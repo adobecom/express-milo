@@ -222,6 +222,17 @@ function initializeCarousel(selector, parent) {
     }
 
     if (isGridLayout && window.innerWidth <= smalLViewport) {
+      const tappedElement = document.elementFromPoint(
+        e.changedTouches[0].clientX,
+        e.changedTouches[0].clientY,
+      );
+      const isCard = tappedElement?.closest('.template.basic-carousel-element');
+      if (isCard) {
+        const editButton = isCard.querySelector('.button-container a[title="Edit this template"]');
+        if (editButton?.href) {
+          window.location.href = editButton.href;
+        }
+      }
       return;
     }
 
