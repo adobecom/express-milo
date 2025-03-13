@@ -210,7 +210,7 @@ async function startSDK(data = '', quickAction, block) {
       },
       configParams: {
         locale: ietf?.replace('-', '_'),
-        env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
+        env: 'stage',
         baseQA,
         urlOverride : baseQA
       },
