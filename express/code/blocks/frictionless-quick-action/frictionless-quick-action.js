@@ -113,8 +113,9 @@ export function runQuickAction(quickAction, data, block) {
     },
   };
   const variant = new URLSearchParams(window.location.search).get('variant')
+  const baseQA = new URLSearchParams(window.location.search).get('baseQA')
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true', variant, entryPoint: 'seo-quickaction-image-upload'},
+    metaData: { isFrictionlessQa: 'true', variant, baseQA, entryPoint: 'seo-quickaction-image-upload'},
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -210,7 +211,7 @@ async function startSDK(data = '', quickAction, block) {
       },
       configParams: {
         locale: ietf?.replace('-', '_'),
-        env: 'dev',
+        env: 'prod',
         baseQA,
         
       },
