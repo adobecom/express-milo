@@ -75,7 +75,7 @@ function frictionlessQAExperiment(
 ) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
-  const variant =  urlVariant ? urlVariant : quickAction;
+  const variant = urlVariant || quickAction;
   appConfig.metaData.variant = variant;
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
