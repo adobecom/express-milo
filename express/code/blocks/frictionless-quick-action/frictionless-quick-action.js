@@ -71,8 +71,8 @@ function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfi
   const urlVariant = urlParams.get('variant');
   const isStage = urlParams.get('hzenv') === 'stage';
   const variant = isStage && urlVariant ? urlVariant : quickAction;
-  block.dataset.frictionlesstype = 'remove-background'
-  block.dataset.variant = variant
+  document.body.dataset.frictionlesstype = 'remove-background';
+  document.body.dataset.variant = variant;
   appConfig.metaData.variant = variant;
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
@@ -155,7 +155,7 @@ export function runQuickAction(quickAction, data, block) {
   };
 
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true'},
+    metaData: { isFrictionlessQa: 'true' },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -424,7 +424,6 @@ export default async function decorate(block) {
       document.body.dataset.suppressfloatingcta = 'false';
     }
   }, { passive: true });
-
 
   block.dataset.frictionlesstype = quickAction;
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
