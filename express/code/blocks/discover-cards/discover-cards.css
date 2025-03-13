@@ -291,7 +291,7 @@ main .section .discover-cards {
 
 .discover-cards.flip .card {
   background-color: transparent;
-  min-width: 250px;
+  min-width: initial;
   width: 250px;
   max-width: 250px;
   height: 380px;
