@@ -20,20 +20,26 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
 
 describe('Floating-panel', async () => {
   const block = document.querySelector('.floating-panel');
-  before(() => {
+  before(async () => {
     window.fetch = sinon.stub().callsFake(() => mockRes({}));
+    await decorate(block);
   });
 
   after(() => {
     window.fetch = originalFetch;
   });
 
-  it('decorates all required content', async () => {
-    expect(block).to.exist;
-    await decorate(block);
+  it('decorates all required content', () => {
     expect(block.querySelector('.header')).to.exist;
     expect(block.querySelector('.subheader')).to.exist;
     expect(block.querySelector('.link-rows-container')).to.exist;
     expect(block.querySelectorAll('.floating-panel-link-row').length).to.equal(2);
+  });
+  it('closes after clicking close button', () => {
+    const close = block.querySelector('button.close');
+    expect(close).to.exist;
+    expect(block.classList.contains('hide')).to.be.false;
+    close.click();
+    expect(block.classList.contains('hide')).to.be.true;
   });
 });
