@@ -75,8 +75,7 @@ function frictionlessQAExperiment(
 ) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
-  const isStage = urlParams.get('hzenv') === 'stage';
-  const variant = isStage && urlVariant ? urlVariant : quickAction;
+  const variant =  urlVariant ? urlVariant : quickAction;
   appConfig.metaData.variant = variant;
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
@@ -205,7 +204,7 @@ export function runQuickAction(quickAction, data, block) {
     case 'remove-background':
 
       if (variant && isStage) {
-        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig, block);
+        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
         break;
       }
 
@@ -216,16 +215,16 @@ export function runQuickAction(quickAction, data, block) {
       break;
     // Experiment code, remove after done
     case 'qa-nba':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-control':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant1':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant2':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block);
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     default: break;
   }
