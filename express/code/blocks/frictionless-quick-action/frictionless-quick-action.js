@@ -66,12 +66,18 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
-function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig) {
+function frictionlessQAExperiment(
+  quickAction,
+  docConfig,
+  appConfig,
+  exportConfig,
+  contConfig,
+) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
-  const isStage = urlParams.get('hzenv') === 'stage';
-  const variant = isStage && urlVariant ? urlVariant : quickAction;
+  const variant = urlVariant || quickAction;
   appConfig.metaData.variant = variant;
+  appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
     case 'qa-nba':
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
@@ -253,7 +259,7 @@ async function startSDK(data = '', quickAction, block) {
     // query parameter URL for overriding the cc everywhere
     // iframe source URL, used for testing new experiences
     const isStageEnv = urlParams.get('hzenv') === 'stage';
-    const baseQA = new URLSearchParams(window.location.search).get('base-qa');
+
     const ccEverywhereConfig = {
       hostInfo: {
         clientId,
@@ -262,7 +268,6 @@ async function startSDK(data = '', quickAction, block) {
       configParams: {
         locale: ietf?.replace('-', '_'),
         env: isStageEnv ? 'stage' : 'prod',
-        urlOverride: isStageEnv ? baseQA : undefined,
       },
       authOption: () => ({ mode: 'delayed' }),
     };
@@ -423,6 +428,7 @@ export default async function decorate(block) {
   }, { passive: true });
 
   block.dataset.frictionlesstype = quickAction;
+  block.dataset.variants = quickAction;
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
