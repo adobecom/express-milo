@@ -98,6 +98,10 @@
   background-color: #f3f3f3;
 }
 
+.susi-tabs .footer.susi-bubbles {
+  padding-bottom: 32px
+}
+
 .susi-tabs .footer.susi-bubbles h2 {
   font-size: var(--body-font-size-l);
   font-weight: 700;
@@ -127,7 +131,7 @@
 }
 
 .section.ax-login-page .susi-light {
-  padding-bottom: 32px;
+  padding-bottom: 48px;
 }
 .section.ax-login-page .susi-tabs .footer {
   border-radius: 8px;

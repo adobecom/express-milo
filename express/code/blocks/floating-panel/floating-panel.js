@@ -10,7 +10,14 @@ export default async function init(el) {
   const rows = [...el.children];
   const [header, subheader, ...linkRows] = rows;
   header.classList.add('header');
-  header.append(getIconElementDeprecated('close-white'));
+  const closeButton = createTag('button', {
+    class: 'close',
+    'aria-label': 'Close', // TODO: localize via placeholders
+  }, getIconElementDeprecated('close-white'));
+  closeButton.addEventListener('click', () => {
+    el.classList.add('hide');
+  });
+  header.append(closeButton);
   subheader.classList.add('subheader');
 
   const linkRowsContainer = createTag('div', { class: 'link-rows-container' });
