@@ -220,6 +220,11 @@ function initializeCarousel(selector, parent) {
       }
       return;
     }
+
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
+      return;
+    }
+
     const tappedElement = document.elementFromPoint(
       e.changedTouches[0].clientX,
       e.changedTouches[0].clientY,
