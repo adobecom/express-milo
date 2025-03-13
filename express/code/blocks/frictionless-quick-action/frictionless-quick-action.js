@@ -66,7 +66,8 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
-function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig, block) {
+function frictionlessQAExperiment(quickAction, docConfig, 
+  appConfig, exportConfig, contConfig, block) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
   const isStage = urlParams.get('hzenv') === 'stage';
