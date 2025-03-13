@@ -72,6 +72,7 @@ function frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfi
   const isStage = urlParams.get('hzenv') === 'stage';
   const variant = isStage && urlVariant ? urlVariant : quickAction;
   appConfig.metaData.variant = variant;
+  appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
     case 'qa-nba':
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
@@ -152,7 +153,7 @@ export function runQuickAction(quickAction, data, block) {
   };
 
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
+    metaData: { isFrictionlessQa: 'true'},
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
