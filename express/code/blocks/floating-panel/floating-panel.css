@@ -17,6 +17,10 @@
   background-color: #000b1d;
 }
 
+.floating-panel.hide {
+  display: none;
+}
+
 .floating-panel .header {
   font-weight: 700;
   font-size: var(--body-font-size-l);
@@ -25,7 +29,11 @@
   align-items: center;
   padding-bottom: 8px;;
 }
-.floating-panel .header .icon{
+.floating-panel button.close {
+  all: unset;
+  display: flex;
+}
+.floating-panel button.close .icon {
   width: 10px;
   height: 10px;
   padding: 7px;
