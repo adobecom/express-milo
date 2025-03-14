@@ -32,8 +32,8 @@ export const getBaseVideoCfg = (...types) => ({
 });
 
 const EXPERIMENTAL_VARIANTS = [
-  'qa-in-product-variant1', 'qa-in-product-variant2','qa-nba','qa-in-product-control'
-]
+  'qa-in-product-variant1', 'qa-in-product-variant2', 'qa-nba', 'qa-in-product-control',
+];
 
 const QA_CONFIGS = {
   'convert-to-jpg': { ...getBaseImgCfg(PNG, WEBP) },
@@ -434,7 +434,7 @@ export default async function decorate(block) {
 
   if (EXPERIMENTAL_VARIANTS.includes(quickAction)) {
     block.dataset.frictionlesstype = 'remove-background';
-  } else {  
+  } else {
     block.dataset.frictionlesstype = quickAction;
   }
 
