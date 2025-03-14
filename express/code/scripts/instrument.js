@@ -169,7 +169,7 @@ export function sendFrictionlessEventToAdobeAnaltics(block) {
               qa: {
                 group: block.dataset.frictionlessgroup ?? 'unknown',
                 type: block.dataset.frictionlesstype ?? 'unknown',
-              }
+              },
             },
           },
         },
