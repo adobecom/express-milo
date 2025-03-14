@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
 let createTag;
@@ -113,27 +113,89 @@ export async function buildGallery(
 }
 
 export default async function decorate(block) {
+  const isDiscoverFlipCards = block.classList.contains('flip');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
   const firstChild = block.querySelector(':scope > div:first-child');
 
-  if (firstChild && firstChild.querySelector('h3')) {
+  if (firstChild && firstChild.querySelector('h1, h2, h3')) {
     firstChild.classList.add('center-title');
+    const header = firstChild.querySelector('h1, h2, h3');
+    header.setAttribute('aria-label', `${header.textContent.trim()} cards`);
     block.insertBefore(firstChild, block.firstChild);
   }
 
   const cardsWrapper = createTag('div', { class: 'cards-container' });
+  cardsWrapper.setAttribute('role', 'region');
 
   const cards = block.querySelectorAll(':scope > div:not(:first-child)');
+  const numCards = cards.length;
+  cardsWrapper.setAttribute('aria-label', `${numCards} cards in this section`);
+
   const cardParagraphs = [[]];
-  cards.forEach((card) => {
+  cards.forEach((card, index) => {
     card.classList.add('card');
 
-    cardsWrapper.appendChild(card);
+    card.setAttribute('aria-setsize', numCards);
+    card.setAttribute('aria-posinset', index + 1);
+
     const cardDivs = [...card.children];
 
     cardDivs.forEach((element) => {
+      const img = element.querySelector('picture img');
+      if (isDiscoverFlipCards) {
+        if (img) {
+          card.cardImage = img;
+        } else {
+          const [titleDiv, detailsDiv] = element.children;
+          if (titleDiv && detailsDiv) {
+            card.cardTitle = titleDiv.textContent.trim();
+            card.cardDetails = detailsDiv.textContent.trim();
+          }
+        }
+
+        if (card.cardImage && card.cardTitle && card.cardDetails) {
+          const flipCardInner = createTag('div', { class: 'flip-card-inner' });
+          const frontFace = createTag('div', { class: 'flip-card-front' });
+          const backFace = createTag('div', { class: 'flip-card-back' });
+
+          card.setAttribute('tabindex', '0');
+          card.setAttribute('role', 'button');
+          card.setAttribute('aria-label', `Learn more about ${card.cardTitle}`);
+
+          const plusIconWrapper = createTag('div', { class: 'plus-icon-wrapper' });
+          plusIconWrapper.append(getIconElementDeprecated('plus-icon'));
+          frontFace.append(card.cardImage, card.cardTitle, plusIconWrapper);
+
+          const scrollableContent = createTag('div', { class: 'scrollable-content' });
+          scrollableContent.textContent = card.cardDetails;
+          const minusIconWrapper = createTag('div', { class: 'minus-icon-wrapper' });
+          minusIconWrapper.append(getIconElementDeprecated('minus-icon'));
+          backFace.append(scrollableContent, minusIconWrapper);
+
+          flipCardInner.append(frontFace, backFace);
+          card.replaceChildren(flipCardInner);
+
+          card.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+            const isFlipped = card.classList.contains('is-flipped');
+            card.setAttribute(
+              'aria-label',
+              isFlipped ? `Go back to ${card.cardTitle}` : `Learn more about ${card.cardTitle}`,
+            );
+          });
+
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              card.click();
+            }
+          });
+        }
+        return;
+      }
+
       const textHeader = element.querySelector('h4');
       const textBody = element.querySelector('p');
       if (textHeader && textBody) {
@@ -143,13 +205,15 @@ export default async function decorate(block) {
         cardParagraphs[0].push(element);
       }
 
-      element.querySelector('picture img')?.classList.add('short');
+      img?.classList.add('short');
       if (element.tagName === 'H2') {
         element.classList.add('card-title');
       } else if (element.querySelector('a.button')) {
         element.classList.add('cta-section');
       }
     });
+
+    cardsWrapper.appendChild(card);
   });
 
   block.appendChild(cardsWrapper);
