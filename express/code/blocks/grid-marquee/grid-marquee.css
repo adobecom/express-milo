@@ -134,7 +134,7 @@ main .section .grid-marquee h1 {
   width: 100%;
 }
 
-.grid-marquee .drawer[aria-hidden='true'] {
+.grid-marquee .drawer.hide {
   transform: translateY(100%);
   visibility: hidden;
   pointer-events: none;
@@ -185,11 +185,28 @@ main .section .grid-marquee h1 {
   padding: 16px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
 }
 
 .grid-marquee .panel .drawer-cta:hover {
   text-decoration: underline;
+}
+
+.grid-marquee .panel .drawer-cta .text-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.grid-marquee .panel .drawer-cta em {
+  font-style: normal;
+  border-radius: 7px;
+  background-color: #e9e9e9;
+  color: #292929;
+  font-size: var(--body-font-size-xs);
+  text-overflow: ellipsis;
+  font-weight: 500;
+  padding: 4px 9px;
 }
 
 .grid-marquee .drawer .icon {
@@ -229,7 +246,7 @@ main .section .grid-marquee h1 {
 }
 
 
-.grid-marquee .drawer [role='tabpanel'][aria-hidden='true'] {
+.grid-marquee .drawer [role='tabpanel'].hide {
   display: none;
 }
 
@@ -387,7 +404,7 @@ main .section .grid-marquee h1 {
     display: block;
   }
 
-  .grid-marquee .drawer[aria-hidden='true'] {
+  .grid-marquee .drawer.hide {
     opacity: 0;
     visibility: hidden;
     transform: initial;
