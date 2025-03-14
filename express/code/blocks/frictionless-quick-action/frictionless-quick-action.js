@@ -7,7 +7,8 @@ import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
 
 let createTag; let getConfig;
-let loadScript; let getMetadata;
+let getMetadata;
+let loadScript; let globalNavSelector;
 
 let ccEverywhere;
 let quickActionContainer;
@@ -40,6 +41,10 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
+  'qa-in-product-variant1': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
 };
 
 function fade(element, action) {
@@ -59,6 +64,46 @@ function fade(element, action) {
 function selectElementByTagPrefix(p) {
   const allEls = document.body.querySelectorAll(':scope > *');
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
+}
+
+function frictionlessQAExperiment(
+  quickAction,
+  docConfig,
+  appConfig,
+  exportConfig,
+  contConfig,
+) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlVariant = urlParams.get('variant');
+  const variant = urlVariant || quickAction;
+  appConfig.metaData.variant = variant;
+  appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
+  switch (variant) {
+    case 'qa-nba':
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'qa-in-product-control':
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'qa-in-product-variant1':
+      appConfig.metaData.isFrictionlessQa = false;
+      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+        ...contConfig,
+        mode: 'modal',
+      });
+      break;
+    case 'qa-in-product-variant2':
+      appConfig.metaData.isFrictionlessQa = false;
+      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
+      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
+        ...contConfig,
+        mode: 'modal',
+      });
+      break;
+    default:
+      break;
+  }
 }
 
 // eslint-disable-next-line default-param-last
@@ -101,6 +146,7 @@ export function runQuickAction(quickAction, data, block) {
     parentElementId: `${quickAction}-container`,
     backgroundColor: 'transparent',
     hideCloseButton: true,
+    padding: 0,
   };
 
   const docConfig = {
@@ -110,6 +156,7 @@ export function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
+
   const appConfig = {
     metaData: { isFrictionlessQa: 'true' },
     receiveQuickActionErrors: false,
@@ -132,6 +179,10 @@ export function runQuickAction(quickAction, data, block) {
     },
   };
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const variant = urlParams.get('variant');
+  const isStage = urlParams.get('hzenv') === 'stage';
+
   if (!ccEverywhere) return;
   switch (quickAction) {
     case 'convert-to-jpg':
@@ -151,10 +202,29 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'remove-background':
+
+      if (variant && isStage) {
+        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
+        break;
+      }
+
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    // Experiment code, remove after done
+    case 'qa-nba':
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'qa-in-product-control':
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'qa-in-product-variant1':
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'qa-in-product-variant2':
+      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
       break;
     default: break;
   }
@@ -186,6 +256,9 @@ async function startSDK(data = '', quickAction, block) {
     if (country) ietf = getConfig().locales[country]?.ietf;
     if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
     else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
+    // query parameter URL for overriding the cc everywhere
+    // iframe source URL, used for testing new experiences
+    const isStageEnv = urlParams.get('hzenv') === 'stage';
 
     const ccEverywhereConfig = {
       hostInfo: {
@@ -194,7 +267,7 @@ async function startSDK(data = '', quickAction, block) {
       },
       configParams: {
         locale: ietf?.replace('-', '_'),
-        env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
+        env: isStageEnv ? 'stage' : 'prod',
       },
       authOption: () => ({ mode: 'delayed' }),
     };
@@ -248,9 +321,12 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 }
 
 export default async function decorate(block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
-    ({ createTag, getConfig, loadScript, getMetadata } = utils);
-  });
+  const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
+    import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
+    decorateButtonsDeprecated(block)]);
+  ({ createTag, getMetadata, loadScript, getConfig } = utils);
+  globalNavSelector = gNavUtils?.selectors.globalNav;
+
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
   const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
@@ -352,6 +428,7 @@ export default async function decorate(block) {
   }, { passive: true });
 
   block.dataset.frictionlesstype = quickAction;
+  block.dataset.variants = quickAction;
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
