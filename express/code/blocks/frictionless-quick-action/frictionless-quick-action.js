@@ -30,6 +30,11 @@ export const getBaseVideoCfg = (...types) => ({
   accept: types.map((type) => `.${type}`).join(', '),
   input_check: (input) => types.map((type) => `video/${type}`).includes(input),
 });
+
+const EXPERIMENTAL_VARIANTS = [
+  'qa-in-product-variant1', 'qa-in-product-variant2','qa-nba','qa-in-product-control'
+]
+
 const QA_CONFIGS = {
   'convert-to-jpg': { ...getBaseImgCfg(PNG, WEBP) },
   'convert-to-png': { ...getBaseImgCfg(JPG, JPEG, WEBP) },
@@ -427,8 +432,12 @@ export default async function decorate(block) {
     }
   }, { passive: true });
 
-  block.dataset.frictionlesstype = quickAction;
-  block.dataset.variants = quickAction;
+  if (EXPERIMENTAL_VARIANTS.includes(quickAction)) {
+    block.dataset.frictionlesstype = 'remove-background';
+  } else {  
+    block.dataset.frictionlesstype = quickAction;
+  }
+
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
   if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
