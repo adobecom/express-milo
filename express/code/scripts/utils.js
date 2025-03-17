@@ -767,7 +767,7 @@ async function formatDynamicCartLink(a) {
 
 function decorateCommerceLinks(area) {
   const blocks = getMetadata('ax-commerce-override')?.toLowerCase()?.split(',') || [];
-  const selector = blocks.map((block) => `.${block} a`).join(', ');
+  const selector = blocks.map((block) => `.${block.trim()} a`).join(', ');
   selector && [...area.querySelectorAll(selector)].forEach((a) => {
     formatDynamicCartLink(a);
   });
