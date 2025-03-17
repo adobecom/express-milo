@@ -91,7 +91,6 @@ function initializeCarousel(selector, parent) {
   const updateCarousel = () => {
     if (scrolling) return;
     scrolling = true;
-
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
 
@@ -159,13 +158,18 @@ function initializeCarousel(selector, parent) {
       scrolling = false;
     }, 300);
 
-    faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
-    faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
+    if (isGridLayout) {
+      faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
+      const eleLength = Math.floor(elements.length / 2) - 1;
+      faderRight.classList.toggle('arrow-hidden', currentIndex === eleLength);
+    } else {
+      faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
+      faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
+    }
   };
 
   faderLeft.addEventListener('click', () => {
     if (scrolling) return;
-
     if (isGridLayout && window.innerWidth <= smalLViewport) {
       if (platform.scrollLeft <= 0) return;
       currentIndex = Math.max(0, currentIndex - 1);
@@ -179,7 +183,6 @@ function initializeCarousel(selector, parent) {
 
   faderRight.addEventListener('click', () => {
     if (scrolling) return;
-
     if (isGridLayout && window.innerWidth <= smalLViewport) {
       const maxScroll = platform.scrollWidth - platform.offsetWidth;
       if (platform.scrollLeft >= maxScroll) return;
