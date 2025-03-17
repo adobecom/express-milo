@@ -419,6 +419,30 @@ function hideQuickActionsOnDevices() {
   document.head.append(fqaMeta);
 }
 
+async function formatDynamicCartLink(a) {
+  try {
+    const pattern = /.*commerce.*adobe\.com.*/gm;
+    if (!pattern.test(a.href)) return a;
+    a.style.visibility = 'hidden';
+    const {
+      fetchPlanOnePlans,
+      buildUrl,
+    } = await import('./utils/pricing.js');
+    const {
+      url,
+      country,
+      language,
+      offerId,
+    } = await fetchPlanOnePlans(a.href);
+    const newTrialHref = buildUrl(url, country, language, offerId);
+    a.href = newTrialHref;
+  } catch (error) {
+    window.lana.log(`Failed to fetch prices for page plan: ${error}`);
+  }
+  a.style.visibility = 'visible';
+  return a;
+}
+
 export function preDecorateSections(area) {
   if (!area) return;
   const selector = area === document ? 'body > main > div' : ':scope > div';
@@ -446,6 +470,13 @@ export function preDecorateSections(area) {
       if (sectionRemove) section.remove();
       else if (sectionMeta.anchor) section.id = sectionMeta.anchor;
       else if (sectionMeta.padding) section.setAttribute('data-padding', 'none');
+
+      // express' dynamic cart link feature
+      if (sectionMeta['ax-commerce']?.toLowerCase() === 'on') {
+        [...section.querySelectorAll('a')].forEach((a) => {
+          formatDynamicCartLink(a);
+        });
+      }
     }
   });
 
