@@ -428,13 +428,14 @@ async function formatDynamicCartLink(a) {
       fetchPlanOnePlans,
       buildUrl,
     } = await import('./utils/pricing.js');
+    const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
     const {
       url,
       country,
       language,
       offerId,
     } = await fetchPlanOnePlans(a.href);
-    const newTrialHref = buildUrl(url, country, language, offerId);
+    const newTrialHref = buildUrl(url, country, language, getConfig, offerId);
     a.href = newTrialHref;
   } catch (error) {
     window.lana.log(`Failed to fetch prices for page plan: ${error}`);
