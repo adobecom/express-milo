@@ -170,9 +170,6 @@ export function sendFrictionlessEventToAdobeAnaltics(block) {
                 group: block.dataset.frictionlessgroup ?? 'unknown',
                 type: block.dataset.frictionlesstype ?? 'unknown',
               },
-              sdk: {
-                variants: block.dataset.variants ?? 'unknown',
-              },
             },
           },
         },
