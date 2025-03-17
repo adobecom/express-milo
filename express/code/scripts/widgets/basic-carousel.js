@@ -290,6 +290,20 @@ function initializeCarousel(selector, parent) {
     }
   });
 
+  platform.addEventListener('scroll', debounce(() => {
+    if (!isGridLayout || scrolling) return;
+
+    const elementWidth = elements[0].offsetWidth;
+    const scrollPosition = platform.scrollLeft;
+    const gap = 10;
+    const itemWidth = elementWidth + gap;
+    currentIndex = Math.round(scrollPosition / itemWidth);
+
+    faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
+    const eleLength = Math.floor(elements.length / 2) - 2;
+    faderRight.classList.toggle('arrow-hidden', currentIndex === eleLength);
+  }, 100));
+
   window.addEventListener('resize', debounce(() => {
     const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
     if (newScrollCount !== scrollCount) {
