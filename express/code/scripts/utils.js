@@ -745,17 +745,10 @@ async function formatDynamicCartLink(a) {
     const pattern = /.*commerce.*adobe\.com.*/gm;
     if (!pattern.test(a.href)) return a;
     a.style.visibility = 'hidden';
-    const {
-      fetchPlanOnePlans,
-      buildUrl,
-    } = await import('./utils/pricing.js');
-    const {
-      url,
-      country,
-      language,
-      offerId,
-    } = await fetchPlanOnePlans(a.href);
-    const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+    const [{ fetchPlanOnePlans, buildUrl }, { getConfig }] = await Promise.all([
+      import('./utils/pricing.js'), import(`${getLibs()}/utils/utils.js`),
+    ]);
+    const { url, country, language, offerId } = await fetchPlanOnePlans(a.href);
     const newTrialHref = buildUrl(url, country, language, getConfig, offerId);
     a.href = newTrialHref;
   } catch (error) {
