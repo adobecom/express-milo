@@ -9,7 +9,7 @@ body.no-desktop-brand-header header {
     padding: 0;
 }
 
-.ax-marquee  .content-wrapper picture img {
+.ax-marquee .content-wrapper picture img {
     width: auto;
     max-height: 30px;
 }
