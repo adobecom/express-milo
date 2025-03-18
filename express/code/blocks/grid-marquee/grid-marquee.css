@@ -198,7 +198,7 @@ main .section .grid-marquee h1 {
   align-items: center;
 }
 
-.grid-marquee .panel .drawer-cta em {
+.grid-marquee .grid-marquee-label {
   font-style: normal;
   border-radius: 7px;
   background-color: #e9e9e9;
