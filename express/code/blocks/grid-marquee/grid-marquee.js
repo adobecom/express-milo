@@ -56,8 +56,16 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     anchor.textContent = '';
     anchor.title = anchor.title || anchorText;
     anchor.append(createTag('div', { class: 'text-group' }, [icon, anchorText]));
-    const featureLabel = parent.querySelector('em');
-    featureLabel && anchor.append(featureLabel);
+
+    const mLabel = parent.querySelector('em');
+    const dLabel = parent.querySelector('strong');
+    const [toStay, toGo] = document.body.dataset?.device === 'mobile' ? [mLabel, dLabel] : [dLabel, mLabel];
+    toStay?.contains(toGo) && toGo.replaceWith(...toGo.childNodes);
+    toGo?.remove();
+    if (toStay) {
+      toStay.classList.add('grid-marquee-label');
+      anchor.append(toStay);
+    }
   });
 
   const video = createTag('video', {
