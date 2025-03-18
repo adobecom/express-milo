@@ -207,6 +207,7 @@ main .section .grid-marquee h1 {
   text-overflow: ellipsis;
   font-weight: 500;
   padding: 4px 9px;
+  text-align: center;
 }
 
 .grid-marquee .drawer .icon {
