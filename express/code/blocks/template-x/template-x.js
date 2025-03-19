@@ -231,7 +231,7 @@ function populateTemplates(block, props, templates) {
     }
 
     if (rowWithLinkInFirstCol && !tmplt.querySelector('img')) {
-      props.tailButton = rowWithLinkInFirstCol;
+      // props.tailButton = rowWithLinkInFirstCol;
       rowWithLinkInFirstCol.remove();
     }
 

@@ -9,20 +9,11 @@ export const PROPS = {
     },
     limit: 70,
     total: 0,
-    collectionId: {
-        allowed : undefined
-    },
- 
-    loadedOtherCategoryCounts: undefined,
-    tasks : {
-        allowed :   undefined,
-    },
-    topics : {
-        allowed :  undefined,
-    },
-    locales : {
-        allowed :   undefined,
-    },
+    collectionId: '',
+    loadedOtherCategoryCounts: false,
+    tasks : '',
+    topics : '',
+    locales : '',
     behaviors :{
         allowed :  ['still', 'animated', 'all'],
     },
@@ -99,9 +90,7 @@ export function constructProps(block) {
     return props;
 }
 
-export function determineTemplateXType(block) {
-    const props = constructProps(block)
-    // todo: build layers of aspects based on props conditions - i.e. orientation -> style -> use case
+export function determineTemplateXTypeFromProps (props) {
     const type = [];
 
     // orientation aspect
@@ -112,13 +101,18 @@ export function determineTemplateXType(block) {
     if (props.width && props.width.toLowerCase() === 'sixcols') type.push('sixcols');
     if (props.width && props.width.toLowerCase() === 'fourcols') type.push('fourcols');
     if (props.mini) type.push('mini');
-
-    if (props.print ){
+    console.log(props)
+    if (props.print){
         type.push('print');
         if (props.print.toLowerCase() === 'flyer') type.push('flyer');
         if (props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
     }
-   
-
     return {props, variant:type}
+}
+
+export function determineTemplateXType(block) {
+    const props = constructProps(block)
+    // todo: build layers of aspects based on props conditions - i.e. orientation -> style -> use case
+    
+    return determineTemplateXTypeFromProps(props)
 }
