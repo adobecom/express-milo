@@ -5,41 +5,23 @@ export const PROPS = {
     templates: [],
     filters: {
         locales: 'en',
-        topics: ''
+         topics: ''
     },
-    limit: 70,
-    total: 0,
-    collectionId: '',
+    limit: 20, 
+    collectionId: 'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418',
     loadedOtherCategoryCounts: false,
     tasks : '',
     topics : '',
-    locales : '',
-    behaviors :{
-        allowed :  ['still', 'animated', 'all'],
-    },
-    premium : {
-        allowed : [true, false, 'all']
-    },
-    animated: {
-        allowed : [true, false]
-    },
-    templateStats : {
-        allowed :  ['still', 'animated', 'all'],
-    },
-    orientation : {
-        allowed : ['horizontal']
-    },
-    width : {
-        allowed : ['full','sixcols','fourcols']
-    },
-    mini : {
-        allowed : [true, false]
-    },
-    print : {
-        allowed : [
-            'flyer', 't-shirt'
-        ]
-    }
+    locales : 'en',
+    behaviors : '', 
+    premium : '',
+    animated: "",
+    templateStats : "",
+    orientation :  "",
+    width : "",
+    mini : "",
+    print : "",
+    contentRow :  ''
 
 };
 
@@ -92,7 +74,7 @@ export function constructProps(block) {
 
 export function determineTemplateXTypeFromProps (props) {
     const type = [];
-
+    console.log(props)
     // orientation aspect
     if (props.orientation && props.orientation.toLowerCase() === 'horizontal') type.push('horizontal');
 

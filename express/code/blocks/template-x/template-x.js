@@ -1590,15 +1590,19 @@ async function buildTemplateList(block, props, type = []) {
   }
 }
 
-export default async function decorate(block) {
+export async function decorateWithProps (block, templateXType) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(block)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
     ({ replaceKey, replaceKeyArray } = placeholders);
   });
   block.dataset.blockName = 'template-x';
-  const templateXType = determineTemplateXType(block)
   props = templateXType.props
   variant = templateXType.variant
   block.innerHTML = '';
   await buildTemplateList(block, props, variant);
+}
+
+export default async function decorate(block) {
+  const templateXType = determineTemplateXType(block)
+  decorateWithProps(block, templateXType)
 }
