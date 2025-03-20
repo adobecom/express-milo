@@ -12,6 +12,12 @@ export const PROPS = {
     tasks : '',
     topics : '',
     locales : 'en',
+    toolBar: { 
+        allowed : [true, false]
+    },
+    searchBar: { 
+        allowed : [true, false]
+    },
     behaviors :{
         allowed :  ['still', 'animated', 'all'],
     },
@@ -24,6 +30,9 @@ export const PROPS = {
     templateStats : {
         allowed :  ['still', 'animated', 'all'],
     },
+    loadMoreTemplates: {
+        allowed : [true, false]
+    },
     orientation : {
         allowed : ['horizontal']
     },
@@ -33,11 +42,14 @@ export const PROPS = {
     mini : {
         allowed : [true, false]
     },
+    Q : '',
+    Sort : '',
     print : {
         allowed : [
             'flyer', 't-shirt'
         ]
-    }
+    },
+    
 
 };
 function setValueByKeyPath(obj, keyPath, value) {
