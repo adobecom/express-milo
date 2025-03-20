@@ -57,7 +57,7 @@ function initButton($block, $sections, index) {
       resizeTimeout = setTimeout(updateBackgroundSize, 16);
     });
 
-    if (index === 0) {
+    if (index === 1) {
       $buttons[index].classList.add('active');
       updateBackgroundSize();
     }
