@@ -17,6 +17,7 @@ import {
   getMetadata,
   preDecorateSections,
   getRedirectUri,
+  getIconElementDeprecated,
 } from './utils.js';
 
 // Add project-wide style path here.
@@ -232,6 +233,11 @@ function decorateHeroLCP(loadStyle, config, createTag) {
         heroPicture.classList.add('hero-bg');
       } else {
         heroSection.classList.add('hero-noimage');
+      }
+      if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
+        const logo = getIconElementDeprecated('adobe-express-logo');
+        logo.classList.add('express-logo');
+        heroSection.prepend(logo);
       }
     }
   } else if (template === 'blog' && h1 && getMetadata('author') && getMetadata('publication-date')) {
