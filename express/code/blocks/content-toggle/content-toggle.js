@@ -64,9 +64,6 @@ function initButton($block, $sections, index) {
 
     $buttons[index].addEventListener('click', () => {
       const $activeButton = $block.querySelector('button.active');
-      const blockPosition = $block.getBoundingClientRect().top;
-      const offsetPosition = blockPosition + window.scrollY - 80;
-
       if ($activeButton !== $buttons[index]) {
         $activeButton.classList.remove('active');
         $buttons[index].classList.add('active');
@@ -78,12 +75,6 @@ function initButton($block, $sections, index) {
             $section.style.display = 'none';
           }
         });
-        if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth',
-          });
-        }
       }
     });
   }
