@@ -4,10 +4,16 @@
     min-height: 462px;
 }
 
+.dialog-modal:has(.susi-light.tabs) {
+  width: 400px;
+  min-height: 462px;
+}
+
 .susi-light {
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: initial;
 }
 
 .susi-tabs {
@@ -105,6 +111,8 @@
 .susi-tabs .footer.susi-bubbles h2 {
   font-size: var(--body-font-size-l);
   font-weight: 700;
+  line-height: var(--heading-line-height);
+  margin: 0;
 }
 
 .susi-tabs .footer .susi-bubble-container {
