@@ -91,7 +91,7 @@ function frictionlessQAExperiment(
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
       break;
     case 'qa-in-product-variant1':
-      appConfig.metaData.isFrictionlessQa = false;
+   //   appConfig.metaData.isFrictionlessQa = false;
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
@@ -99,7 +99,7 @@ function frictionlessQAExperiment(
       });
       break;
     case 'qa-in-product-variant2':
-      appConfig.metaData.isFrictionlessQa = false;
+    //  appConfig.metaData.isFrictionlessQa = false;
       document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
       ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
         ...contConfig,
