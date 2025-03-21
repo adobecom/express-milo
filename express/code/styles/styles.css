@@ -556,6 +556,12 @@ main #hero .icon {
   width: 2em;
 }
 
+#hero .icon.express-logo {
+  width: initial;
+  height: 30px;
+  padding: 1rem 0 1rem;
+}
+
 main .icon.icon-cc-express-stacked,
 main .columns .icon.icon-cc-express-stacked {
   width: unset;
