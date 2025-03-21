@@ -629,6 +629,10 @@ main .hero-animation {
   transition: opacity 100ms;
 }
 
+main .promotion.auto-promotion:not([data-block-status="loaded"]) {
+  display: none;
+}
+
 /* free plan widget */
 main .button-container.free-plan-container {
   position: relative;
