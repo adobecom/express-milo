@@ -70,6 +70,7 @@ function initButton($block, $sections, index) {
 
           $toggleBackground.style.left = `${leftOffset}px`;
           $toggleBackground.style.width = `${buttonWidth}px`;
+          $toggleBackground.style.maxWidth = '230px';
         }
       }, 16);
     });
