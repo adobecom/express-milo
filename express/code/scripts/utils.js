@@ -740,6 +740,32 @@ function splitSections(area, selector) {
   });
 }
 
+async function formatDynamicCartLink(a) {
+  try {
+    const pattern = /.*commerce.*adobe\.com.*/gm;
+    if (!pattern.test(a.href)) return a;
+    a.style.visibility = 'hidden';
+    const [{ fetchPlanOnePlans, buildUrl }, { getConfig }] = await Promise.all([
+      import('./utils/pricing.js'), import(`${getLibs()}/utils/utils.js`),
+    ]);
+    const { url, country, language, offerId } = await fetchPlanOnePlans(a.href);
+    const newTrialHref = buildUrl(url, country, language, getConfig, offerId);
+    a.href = newTrialHref;
+  } catch (error) {
+    window.lana.log(`Failed to fetch prices for page plan: ${error}`);
+  }
+  a.style.visibility = 'visible';
+  return a;
+}
+
+function decorateCommerceLinks(area) {
+  const blocks = getMetadata('ax-commerce-override')?.toLowerCase()?.split(',') || [];
+  const selector = blocks.map((block) => `.${block.trim()} a`).join(', ');
+  selector && [...area.querySelectorAll(selector)].forEach((a) => {
+    formatDynamicCartLink(a);
+  });
+}
+
 export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const selector = area === document ? 'main > div' : ':scope body > div';
@@ -775,4 +801,6 @@ export function decorateArea(area = document) {
   linksToNotAutoblock.forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
   });
+
+  decorateCommerceLinks(area);
 }
