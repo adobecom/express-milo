@@ -234,7 +234,7 @@ function decorateHeroLCP(loadStyle, config, createTag) {
       } else {
         heroSection.classList.add('hero-noimage');
       }
-      if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
+      if (['on', 'yes'].includes(getMetadata('hero-inject-logo')?.toLowerCase())) {
         const logo = getIconElementDeprecated('adobe-express-logo');
         logo.classList.add('express-logo');
         heroSection.prepend(logo);
