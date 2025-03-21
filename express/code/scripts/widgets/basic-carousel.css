@@ -38,6 +38,7 @@
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  gap: 20px;
 }
 
 .basic-carousel-container:not(.controls-hidden) .basic-carousel-platform::-webkit-scrollbar,
@@ -46,9 +47,11 @@
 }
 
 .basic-carousel-container .basic-carousel-platform > * {
-  flex-shrink: 0;
-  scroll-snap-align: center; 
-  margin: 0 10px;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+  scroll-snap-align: center;
+  margin: 0;
 }
 
 .basic-carousel-container .basic-carousel-fader-left {

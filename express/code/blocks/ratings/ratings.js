@@ -1,14 +1,37 @@
 import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
-import BlockMediator from '../../scripts/block-mediator.min.js';
 import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
+import {
+  createStarRating,
+  populateStars,
+  RATINGS_CONFIG,
+  hasRated,
+  determineActionUsed,
+  submitRating,
+  buildSchema,
+  fetchRatingsData,
+} from '../../scripts/utils/ratings-utils.js';
 
-let createTag; let getConfig;
-let getMetadata;
+let createTag;
+let getConfig;
+
+// Initialize utils
+import(`${getLibs()}/utils/utils.js`).then((utils) => {
+  ({ createTag, getConfig } = utils);
+});
+
+export async function getCurrentRatingStars(ratingAverage = 5, ratingTotal = 0, showRatingAverage = false, votesText = 'votes') {
+  return createStarRating({
+    rating: ratingAverage,
+    total: ratingTotal,
+    showAverage: showRatingAverage,
+    votesText,
+  });
+}
 
 export default async function decorate(block) {
   splitAndAddVariantsWithDash(block);
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
-    ({ createTag, getConfig, getMetadata } = utils);
+    ({ createTag, getConfig } = utils);
   });
 
   let submitButtonText;
@@ -24,140 +47,14 @@ export default async function decorate(block) {
   let actionSegments;
   let ratingTotal;
   let ratingAverage;
-  let showRatingAverage = false;
-  let actionTitle;
-  const ratings = [
-    {
-      class: 'one-star',
-      img: getIconElementDeprecated('emoji-angry-face'),
-      feedbackRequired: true,
-    },
-    {
-      class: 'two-stars',
-      img: getIconElementDeprecated('emoji-thinking-face'),
-      feedbackRequired: true,
-    },
-    {
-      class: 'three-stars',
-      img: getIconElementDeprecated('emoji-upside-down-face'),
-      feedbackRequired: true,
-    },
-    {
-      class: 'four-stars',
-      img: getIconElementDeprecated('emoji-smiling-face'),
-      feedbackRequired: false,
-    },
-    {
-      class: 'five-stars',
-      img: getIconElementDeprecated('emoji-star-struck'),
-      feedbackRequired: false,
-    },
-  ];
+  const showRatingAverage = block.classList.contains('show-average')
+    || (block.classList.contains('show') && block.classList.contains('average'));
 
-  function buildSchema() {
-    if (!ratingAverage || !ratingTotal) {
-      return;
-    }
-    const script = document.createElement('script');
-    script.setAttribute('type', 'application/ld+json');
-    script.textContent = JSON.stringify({
-      '@type': 'Product',
-      '@context': 'https://schema.org',
-      name: document.title,
-      description: getMetadata('description'),
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: ratingAverage,
-        ratingCount: ratingTotal,
-      },
-    });
-    document.head.appendChild(script);
-  }
-
-  function hasRated() {
-    // dev mode: check use-rating query parameter
-    const u = new URL(window.location.href);
-    const param = u.searchParams.get('action-rated');
-    if (param) {
-      if (param === 'true') return true;
-      if (param === 'false') return false;
-    }
-
-    // "production" mode: check for localStorage
-    const ccxActionRatings = localStorage.getItem('ccxActionRatings');
-    return ccxActionRatings && ccxActionRatings.includes(sheet);
-  }
-
-  function populateStars(count, star, parent) {
-    for (let i = 0; i < count; i += 1) {
-      parent.appendChild(getIconElementDeprecated(star));
-    }
-  }
-
-  function determineActionUsed() {
-    // "dev" mode: check action-used query parameter
-    const u = new URL(window.location.href);
-    const param = u.searchParams.get('action-used');
-    if (param) {
-      if (param === 'true') return true;
-      if (param === 'false') return false;
-    }
-
-    // "production" mode: check for audience
-    const segments = BlockMediator.get('segments');
-
-    if (actionSegments && segments) {
-      const parsedActionSegments = actionSegments
-        .replace(/ /g, '')
-        .split(',')
-        .map(Number);
-      return parsedActionSegments.some((segment) => segments.includes(segment));
-    }
-
-    return false;
-  }
-
-  function submitRating(rating, comment) {
-    const segments = BlockMediator.get('segments');
-    const content = {
-      data: [
-        {
-          name: 'Segments',
-          value: segments.length ? segments.join(', ') : '',
-        },
-        {
-          name: 'Locale',
-          value: getConfig().locale.region,
-        },
-        {
-          name: 'Rating',
-          value: rating,
-        },
-        {
-          name: 'Feedback',
-          value: comment,
-        },
-        {
-          name: 'Timestamp',
-          value: new Date().toLocaleString('en-US', { timeZone: 'UTC' }),
-        },
-      ],
-    };
-
-    fetch(`https://www.adobe.com/reviews-api/ccx${sheet}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(content),
-    });
-
-    let ccxActionRatings = localStorage.getItem('ccxActionRatings') ?? '';
-
-    if (!ccxActionRatings.includes(sheet)) {
-      ccxActionRatings = ccxActionRatings.length > 0 ? sheet : `,${sheet}`;
-    }
-
-    localStorage.setItem('ccxActionRatings', ccxActionRatings);
-  }
+  // Use RATINGS_CONFIG instead of local ratings array
+  const ratings = RATINGS_CONFIG.map((config) => ({
+    ...config,
+    img: getIconElementDeprecated(config.img),
+  }));
 
   // Updates the front-end style of the slider.
   function updateSliderStyle(value) {
@@ -341,50 +238,18 @@ export default async function decorate(block) {
     }
   }
 
-  // Gets the current rating and returns star span element.
-  function getCurrentRatingStars() {
-    const star = getIconElementDeprecated('star');
-    const stars = createTag('span', { class: 'rating-stars' });
-    let rating = ratingAverage ?? 5;
-    rating = Math.round(rating * 10) / 10; // round nearest decimal point
-    const ratingAmount = ratingTotal ?? 0;
-    const u = new URL(window.location.href);
-    const param = u.searchParams.get('show-average');
-    if ((showRatingAverage || param === 'true') && param !== 'false') {
-      const ratingRoundedHalf = Math.round(rating * 2) / 2;
-      const filledStars = Math.floor(ratingRoundedHalf);
-      const halfStars = filledStars === ratingRoundedHalf ? 0 : 1;
-      const emptyStars = halfStars === 1 ? 4 - filledStars : 5 - filledStars;
-      populateStars(filledStars, 'star', stars);
-      populateStars(halfStars, 'star-half', stars);
-      populateStars(emptyStars, 'star-empty', stars);
-      const $votes = createTag('span', { class: 'rating-votes' });
-      const strong = document.createElement('strong');
-      strong.textContent = `${rating} / 5`;
-      $votes.appendChild(strong);
-      $votes.appendChild(document.createTextNode(` - ${ratingAmount} ${votesText}`));
-      if (getConfig().locale.region === 'kr') {
-        $votes.childNodes[0].textContent = `${rating} / 5`;
-      }
-      stars.appendChild($votes);
-      if (rating > 4.2) {
-        buildSchema(actionTitle);
-      }
-    } else {
-      for (let i = 0; i < 5; i += 1) {
-        stars.appendChild(star.cloneNode(true));
-      }
-    }
-    return stars;
-  }
-
   // Decorates the rating Form and Slider HTML.
-  function decorateRatingSlider(title, headingTag = 'h3') {
+  async function decorateRatingSlider(title, headingTag = 'h3') {
     const headingWrapper = createTag('div', { class: 'ratings-heading' });
     const heading = createTag(headingTag, { id: toClassName(title) });
     heading.textContent = title;
     headingWrapper.appendChild(heading);
-    const stars = getCurrentRatingStars();
+    const stars = await getCurrentRatingStars(
+      ratingAverage,
+      ratingTotal,
+      showRatingAverage,
+      votesText,
+    );
     headingWrapper.appendChild(stars);
     block.appendChild(headingWrapper);
     const section = block.closest('.section');
@@ -448,12 +313,10 @@ export default async function decorate(block) {
       e.preventDefault();
       const rating = input.value;
       const comment = form.querySelector('#comment').value;
-      submitRating(rating, comment);
+      submitRating(sheet, rating, comment);
       localStorage.removeItem(`ccxActionRatingsFeedback${sheetCamelCase}`);
       block.innerHTML = `
-      <${headingTag} id="${toClassName(
-  submissionTitle,
-)}">${submissionTitle}</${headingTag}>
+      <${headingTag} id="${toClassName(submissionTitle)}">${submissionTitle}</${headingTag}>
       <div class="no-slider">
         <p>${submissionText}</p>
       </div>`;
@@ -463,7 +326,7 @@ export default async function decorate(block) {
   }
 
   // Decorate block state when user is not allowed to rate (already rated / hasn't used block)
-  function decorateCannotRateBlock(
+  async function decorateCannotRateBlock(
     title,
     paragraph,
     CTA = null,
@@ -473,7 +336,12 @@ export default async function decorate(block) {
     const heading = createTag(headingTag, { id: toClassName(title) });
     heading.textContent = title;
     headingWrapper.appendChild(heading);
-    const stars = getCurrentRatingStars();
+    const stars = await getCurrentRatingStars(
+      ratingAverage,
+      ratingTotal,
+      showRatingAverage,
+      votesText,
+    );
     headingWrapper.appendChild(stars);
     block.appendChild(headingWrapper);
     const textAndCTA = createTag('div', { class: 'no-slider' });
@@ -485,29 +353,26 @@ export default async function decorate(block) {
   }
 
   // Determine if user is allowed to rate, and then re-decorate the block.
-  function regenerateBlockState(title, CTA, headingTag = 'h3') {
+  async function regenerateBlockState(title, CTA, headingTag = 'h3') {
     block.innerHTML = '';
-    const actionRated = hasRated();
-    const actionUsed = determineActionUsed();
+    const actionRated = hasRated(sheet);
+    const actionUsed = determineActionUsed(actionSegments);
     if (actionRated) {
-      decorateCannotRateBlock(
+      await decorateCannotRateBlock(
         alreadySubmittedTitle,
         alreadySubmittedText,
         null,
         headingTag,
       );
     } else if (actionUsed) {
-      decorateRatingSlider(title, headingTag);
+      await decorateRatingSlider(title, headingTag);
     } else {
-      decorateCannotRateBlock(title, actionNotUsedText, CTA, headingTag);
+      await decorateCannotRateBlock(title, actionNotUsedText, CTA, headingTag);
     }
   }
 
   const rows = Array.from(block.children);
   if (!rows[1]) return;
-
-  const classes = block.classList;
-  if ((classes.contains('show') && classes.contains('average')) || (classes.contains('show-average'))) showRatingAverage = true;
 
   const heading = rows[0].querySelector('h1')
       ?? rows[0].querySelector('h2')
@@ -516,7 +381,7 @@ export default async function decorate(block) {
   const headingTag = heading ? heading.tagName : 'h3';
   const CTA = rows[0].querySelector('a');
   const $sheet = rows[1].firstElementChild;
-  actionTitle = heading ? heading.textContent.trim() : defaultTitle;
+  const actionTitle = heading ? heading.textContent.trim() : defaultTitle;
   sheet = $sheet.textContent.trim();
   sheetCamelCase = sheet
     .replace(/(?:^\w|[A-Z]|\b\w)/g, (w, i) => (i === 0 ? w.toLowerCase() : w.toUpperCase()))
@@ -524,34 +389,27 @@ export default async function decorate(block) {
   block.innerHTML = '';
   lazyLoadLottiePlayer(block);
 
-  regenerateBlockState(actionTitle, CTA, headingTag);
+  await regenerateBlockState(actionTitle, CTA, headingTag);
 
   // When the ratings are retrieved.
-  document.addEventListener('ratings_received', () => {
-    regenerateBlockState(actionTitle, CTA, headingTag);
+  document.addEventListener('ratings_received', async () => {
+    await regenerateBlockState(actionTitle, CTA, headingTag);
     block.classList.add('ratings_received');
+    buildSchema(ratingAverage, ratingTotal);
   });
 
-  const { env } = getConfig();
-  let url = `https://www.adobe.com/reviews-api/ccx${sheet}.json`;
-  if (env?.name === 'stage' || env?.name === 'local') {
-    url = `https://www.stage.adobe.com/reviews-api/ccx${sheet}.json`;
+  const data = await fetchRatingsData(sheet);
+  if (data?.average) {
+    ratingAverage = data.average;
   }
-  const resp = await fetch(url);
-  if (resp.ok) {
-    const response = await resp.json();
-    if (response.data[0].Average) {
-      ratingAverage = parseFloat(response.data[0].Average).toFixed(2);
-    }
-    if (response.data[0].Total) {
-      ratingTotal = parseFloat(response.data[0].Total);
-    }
-    if (response.data[0].Segments) {
-      actionSegments = response.data[0].Segments;
-    }
-    if (ratingAverage || ratingTotal) {
-      document.dispatchEvent(new Event('ratings_received'));
-    }
+  if (data?.total) {
+    ratingTotal = data.total;
+  }
+  if (data?.segments) {
+    actionSegments = data.segments;
+  }
+  if (ratingAverage || ratingTotal) {
+    document.dispatchEvent(new Event('ratings_received'));
   }
 
   import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
@@ -578,6 +436,6 @@ export default async function decorate(block) {
     alreadySubmittedTitle = await mod.replaceKey('rating-already-submitted-title', getConfig());
     alreadySubmittedText = await mod.replaceKey('rating-already-submitted-text', getConfig());
     votesText = await mod.replaceKey('rating-votes', getConfig());
-    regenerateBlockState(actionTitle, CTA, headingTag);
+    await regenerateBlockState(actionTitle, CTA, headingTag);
   });
 }

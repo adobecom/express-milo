@@ -101,6 +101,7 @@ function initializeCarousel(selector, parent) {
     scrolling = true;
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
+    const gap = 20; // Match the CSS gap value
 
     if (window.innerWidth <= smalLViewport) {
       for (const element of elements) {
@@ -161,6 +162,7 @@ function initializeCarousel(selector, parent) {
       });
     }
 
+    // Reset scrolling flag after animation
     setTimeout(() => {
       scrolling = false;
     }, 300);
