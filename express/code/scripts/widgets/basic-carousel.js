@@ -88,6 +88,7 @@ function initializeCarousel(selector, parent) {
 
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
+    const gap = 20; // Match the CSS gap value
 
     if (window.innerWidth <= smalLViewport) {
       for (const element of elements) {
@@ -99,17 +100,19 @@ function initializeCarousel(selector, parent) {
       }
     }
 
+    // Calculate the new scroll position with gap consideration
     const newScrollPos = window.innerWidth <= smalLViewport
-      ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
-      : currentIndex * elementWidth;
+      ? currentIndex * (elementWidth + gap) - (platformWidth - elementWidth) / 2
+      : currentIndex * (elementWidth + gap);
 
     platform.scrollTo({
       left: newScrollPos,
       behavior: 'smooth',
     });
 
-    if (window.innerWidth <= smalLViewport) {
-      elements.forEach((el, index) => {
+    // Update element visibility
+    elements.forEach((el, index) => {
+      if (window.innerWidth <= smalLViewport) {
         if (determineScrollCount() === 1) {
           el.style.opacity = '1';
         } else if (index === currentIndex) {
@@ -117,17 +120,17 @@ function initializeCarousel(selector, parent) {
         } else if (index === currentIndex - 1 || index === currentIndex + 1) {
           el.style.opacity = '0.5';
         }
-      });
-    } else {
-      elements.forEach((el) => {
+      } else {
         el.style.opacity = '';
-      });
-    }
+      }
+    });
 
+    // Reset scrolling flag after animation
     setTimeout(() => {
       scrolling = false;
     }, 300);
 
+    // Update focus handlers
     elements.forEach((el, index) => {
       el.addEventListener('focus', () => {
         currentIndex = index;
@@ -135,6 +138,7 @@ function initializeCarousel(selector, parent) {
       });
     });
 
+    // Update arrow visibility
     faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
     faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
   };

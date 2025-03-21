@@ -1,17 +1,80 @@
 // eslint-disable-next-line import/no-unresolved
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import loadCarousel from '../../scripts/utils/load-carousel.js';
+import {
+  fetchRatingsData,
+  createRatingsContainer,
+  determineActionUsed,
+  hasRated,
+  submitRating,
+  createRatingSlider,
+  sliderFunctionality,
+  RATINGS_CONFIG,
+} from '../../scripts/utils/ratings-utils.js';
 
 let createTag;
+let getConfig;
+let loadStyle;
+
+// Initialize utils
+import(`${getLibs()}/utils/utils.js`).then((utils) => {
+  ({ createTag, getConfig, loadStyle } = utils);
+});
 
 function pickRandomFromArray(arr) {
   return arr[Math.floor(arr.length * Math.random())];
 }
 
+async function createQuotesRatings({
+  sheet,
+  votesText = 'votes',
+}) {
+  const data = await fetchRatingsData(sheet);
+  if (!data) return null;
+
+  // Check if user can rate and has already rated
+  const actionUsed = determineActionUsed(data.segments);
+  const alreadyRated = hasRated(sheet);
+
+  // If user can't rate or has already rated, show the ratings container
+  if (!actionUsed || alreadyRated) {
+    return createRatingsContainer({
+      sheet,
+      showAverage: true,
+      votesText,
+    });
+  }
+
+  // If user can rate, show the rating slider
+  const { container } = await createRatingSlider('Rate this product', 'h3');
+  sliderFunctionality(container, {
+    sheetCamelCase: sheet,
+    ratings: RATINGS_CONFIG,
+  });
+
+  // Handle submission via the submit button
+  const submit = container.querySelector('input[type=submit]');
+  submit.addEventListener('click', (e) => {
+    e.preventDefault();
+    const rating = container.querySelector('input[type=range]').value;
+    const comment = container.querySelector('.slider-comment textarea').value;
+    submitRating(sheet, rating, comment);
+    // Refresh the ratings display
+    createQuotesRatings({ sheet, votesText });
+  });
+
+  return container;
+}
+
 export default async function decorate($block) {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  // Load placeholders module
+  const placeholders = await import(`${getLibs()}/features/placeholders.js`);
+
   addTempWrapperDeprecated($block, 'quotes');
 
   const isSingularVariant = $block.classList.contains('singular');
+  const isCarouselVariant = $block.classList.contains('carousel');
+  const hasRatings = $block.classList.contains('ratings');
 
   if (isSingularVariant) {
     const $rows = [...$block.querySelectorAll(':scope>div')];
@@ -96,6 +159,94 @@ export default async function decorate($block) {
     $quoteAuthorPanelMobile.append(authorDescription);
 
     $block.replaceChildren($quoteContainer);
+  } else if (isCarouselVariant) {
+    // Extract ratings data source if present
+    let ratingsDataSource;
+    const $rows = [...$block.querySelectorAll(':scope>div')];
+
+    // Only look for ratings data if first div contains text and no h2
+    if (hasRatings
+        && $rows[0]?.firstElementChild?.textContent
+        && !$rows[0].querySelector('h2')) {
+      ratingsDataSource = $rows[0].firstElementChild.textContent.trim();
+      $rows.shift(); // Remove the ratings data source row
+      // const config = getConfig();
+      // loadStyle(`${config.codeRoot}/blocks/ratings/ratings.css`); // Load ratings CSS when ratings are present
+    }
+
+    // Extract heading if present (should be the first or second row)
+    const [$headingRow] = $rows.filter((row) => row.querySelector('h2'));
+    if ($headingRow) {
+      const headingIndex = $rows.indexOf($headingRow);
+      $rows.splice(headingIndex, 1); // Remove the heading row from its position
+    }
+
+    // Create ratings container if needed
+    let $ratingsContainer;
+    if (hasRatings && ratingsDataSource) {
+      $ratingsContainer = await createQuotesRatings({
+        sheet: ratingsDataSource,
+        votesText: await placeholders.replaceKey('rating-votes', getConfig()),
+      });
+    }
+
+    // Create carousel container
+    const $carouselContainer = createTag('div', { class: 'basic-carousel' });
+
+    // Process each quote into a carousel item
+    $rows.forEach(($card) => {
+      $card.classList.add('template', 'basic-carousel-element', 'quote');
+      if ($card.children.length > 1) {
+        const $author = $card.children[1];
+        $author.classList.add('author');
+        const $authorContent = createTag('div', { class: 'author-content' });
+
+        if ($author.querySelector('picture')) {
+          const $authorImg = createTag('div', { class: 'image' });
+          $authorImg.appendChild($author.querySelector('picture'));
+          $authorContent.appendChild($authorImg);
+        }
+
+        const $authorSummary = createTag('div', { class: 'summary' });
+        Array.from($author.querySelectorAll('p'))
+          .filter(($p) => !!$p.textContent.trim())
+          .forEach(($p) => $authorSummary.appendChild($p));
+        $authorContent.appendChild($authorSummary);
+        $author.appendChild($authorContent);
+      }
+      $card.firstElementChild.classList.add('content');
+
+      $carouselContainer.appendChild($card);
+    });
+
+    // Initialize the carousel after ensuring CSS is loaded
+    const config = getConfig();
+    await new Promise((resolve) => {
+      loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
+        resolve();
+      });
+    });
+    await loadCarousel(null, $carouselContainer);
+
+    // Create a wrapper to hold everything
+    const $wrapper = createTag('div', { class: 'quotes-ratings-wrapper' });
+
+    // Create headline wrapper for heading and ratings
+    if ($headingRow || $ratingsContainer) {
+      const $headlineWrapper = createTag('div', { class: 'container' });
+      if ($headingRow) {
+        $headlineWrapper.appendChild($headingRow);
+      }
+      if ($ratingsContainer) {
+        $headlineWrapper.appendChild($ratingsContainer);
+      }
+      $wrapper.appendChild($headlineWrapper);
+    }
+
+    $wrapper.appendChild($carouselContainer);
+
+    // Replace block content with wrapper containing headline and carousel
+    $block.replaceChildren($wrapper);
   } else {
     $block.querySelectorAll(':scope>div').forEach(($card) => {
       $card.classList.add('quote');

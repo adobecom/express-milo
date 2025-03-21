@@ -1,3 +1,8 @@
+.template-x.basic-carousel .template-x-inner-wrapper:has(.basic-carousel-container) {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .basic-carousel-container {
   display: inline-block;
   position: relative;
@@ -33,6 +38,7 @@
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
+  gap: 20px;
 }
 
 .basic-carousel-container:not(.controls-hidden) .basic-carousel-platform::-webkit-scrollbar,
@@ -41,9 +47,11 @@
 }
 
 .basic-carousel-container .basic-carousel-platform > * {
-  flex-shrink: 0;
-  scroll-snap-align: center; 
-  margin: 0 10px;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
+  scroll-snap-align: center;
+  margin: 0;
 }
 
 .basic-carousel-container .basic-carousel-fader-left {
@@ -284,11 +292,18 @@
 }
 
 @media (min-width: 900px) {
+  .basic-carousel-container .basic-carousel-platform {
+    max-width: 648px;
+    margin: auto;
+  }
+  .template-x.basic-carousel.horizontal.fullwidth .template-x-inner-wrapper > div, .template-x.basic-carousel.horizontal.fullwidth {
+    max-width: 648px;
+  }
   .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {
     display: none;
   }
   .basic-carousel-container a.button.basic-carousel-arrow {
-    margin: 0 10px;
+    margin: 0 6px;
   }
   .basic-carousel-container.controls-hidden .basic-carousel-platform {
     scroll-snap-type: x mandatory;
@@ -362,4 +377,31 @@
 .basic-carousel-container .basic-carousel-platform.left-fader.right-fader{
   -webkit-mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
   mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
+}
+
+@media (max-width: 599px) {
+  .template-x.basic-carousel.grid .basic-carousel-container {
+    margin-top: 40px;
+    margin-bottom: 80px;
+  }
+  
+  .template-x.basic-carousel.grid .basic-carousel-platform {
+    display: grid;
+    grid-template-rows: repeat(2, 207px);
+    grid-auto-columns: 143px;
+    height: 500px;
+    padding-top: 80px;
+    scroll-snap-type: none;
+  }
+
+  .template-x.basic-carousel.grid .basic-carousel-platform > * {
+    scroll-snap-align: none;
+  }
+}
+
+/* Add specific width for quote elements */
+.basic-carousel-container .quote.basic-carousel-element {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }

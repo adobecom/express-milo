@@ -2,6 +2,60 @@
   max-width: 375px;
 }
 
+.quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+  max-width: unset;
+}
+
+.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
+  display: flex;
+  width: 100%;
+}
+
+.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
+  max-width: 100%;
+  height: auto;
+  min-height: 0; /* Allows container to shrink */
+  margin: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-element {
+  display: flex;
+  min-height: 0; /* Allows container to shrink */
+  height: auto;
+}
+
+.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .template.basic-carousel-element {
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+}
+
+.quotes.carousel .quote {
+  display: flex;
+  width: 348px;
+  min-width: 300px;
+  max-width: 348px;
+  padding: 24px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border-radius: var(--Marquee-grid-Card-Card-Radius, 16px);
+  background: var(--Alias-background-app-frame-layer-1, #F8F8F8);
+  /* Drop shadow/emphasized-default */
+  box-shadow: 0px 1px 6px 0px var(--Alias-drop-shadow-emphasized-default, rgba(0, 0, 0, 0.12));
+  height: auto;
+  flex: 1 1 auto;
+}
+
+.quotes.carousel .quote .content {
+  padding-top: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .section:has(.quotes)>div>h2 {
   margin-top: 80px;
 }
@@ -40,16 +94,13 @@
   background: var(--color-white);
 }
 
-.quotes .quote .content {
-  padding-top: 28px;
-  font-size: 1rem;
-  text-align: left;
-  flex-grow: 1;
-}
-
 .quotes .quote .author .author-content {
   display: flex;
   align-items: center;
+}
+
+.quotes.carousel .quote .author-content {
+  flex-direction: column;
 }
 
 .quotes .quote .author .summary {
@@ -70,16 +121,27 @@
   font-weight: 900;
 }
 
+.quotes.carousel .quote .content::before {
+  display: none;
+}
+
 .quotes .quote p {
   margin: 32px 0;
 }
 
 .quotes .quote .author {
   display: flex;
-  flex-wrap: nowrap;
-  margin-top: 16px;
+  flex-direction: column;
   align-items: center;
-  align-self: baseline;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0;
+}
+
+.quotes.carousel .quote .author {
+  display: flex;
+  margin-top: 0;
+  align-items: center;
 }
 
 .quotes .quote .author hr {
@@ -226,6 +288,22 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   margin-right: 15px;
 }
 
+.quotes.carousel .quotes-ratings-wrapper .container {
+  display: flex;
+}
+
+.quotes.carousel .quotes-ratings-wrapper .container > div {
+  width: 495px;
+}
+
+.quotes.carousel .rating-votes {
+  display: flex;
+}
+
+.quotes.carousel .ratings-container {
+  margin-left: auto;
+}
+
 @media (min-width: 768px) {
   main .quotes.singular .quote {
     width: 83.3%;
@@ -257,6 +335,10 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   line-height: 1.2;
 }
 
+.quotes.carousel .quote .author .summary p {
+  text-align: center;
+}
+
 .quotes h2,
 .quotes h3,
 .quotes h4,
@@ -269,7 +351,7 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
     max-width: 724px;
   }
 
-  .quotes {
+  .quotes:not(.carousel) {
     flex-direction: row;
     gap: 16px;
   }
