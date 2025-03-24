@@ -80,6 +80,14 @@ function initializeCarousel(selector, parent) {
   platform.append(rightTrigger);
   const elements = platform.querySelectorAll('.template.basic-carousel-element');
 
+  if (isGridLayout) {
+    platform.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+
   const determineScrollCount = () => {
     if (platform.closest('.four')) return 4;
     if (platform.closest('.three')) return 3;
