@@ -33,6 +33,10 @@ main .section .ax-columns.enterprise .column h2 {
   font-size: 60px;
 }
 
+main .content.columns-header-small h3 {
+  font-size: 22px;
+}
+
 .ax-columns {
   padding-left: 15px;
   padding-right: 15px;
@@ -1288,4 +1292,3 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.slim-padding .column {
   padding: 20px;
 }
-

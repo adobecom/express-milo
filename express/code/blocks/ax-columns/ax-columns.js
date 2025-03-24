@@ -498,4 +498,14 @@ export default async function decorate(block) {
       });
     });
   }
+
+  if (block.classList.contains('small-header')) {
+    const parentDiv = block.parentElement;
+    if (parentDiv) {
+      const parentHeader = parentDiv.querySelector('h1, h2, h3, h4, h5, h6');
+      if (parentHeader) {
+        parentHeader.parentElement.classList.add('columns-header-small');
+      }
+    }
+  }
 }
