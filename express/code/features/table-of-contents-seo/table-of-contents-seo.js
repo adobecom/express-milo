@@ -346,7 +346,6 @@ function buildMetadataConfigObject() {
     ...acc,
     ...el,
   }), { title, 'toc-content-numbers': showContentNumbers });
-
   return config;
 }
 
@@ -367,9 +366,5 @@ export default async function setTOCSEO() {
     const tocContainer = initializeTOCContainer();
     applyTOCBehavior(toc, tocContainer);
     handleActiveTOCHighlighting(tocEntries);
-  } else {
-    setTimeout(() => {
-      tocEntries = addTOCEntries(toc, config, doc);
-    }, 50);
   }
 }
