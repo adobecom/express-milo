@@ -188,14 +188,14 @@ main .section .grid-marquee h1 {
   justify-content: space-between;
 }
 
-.grid-marquee .panel .drawer-cta:hover {
-  text-decoration: underline;
-}
-
 .grid-marquee .panel .drawer-cta .text-group {
   display: flex;
   gap: 16px;
   align-items: center;
+}
+
+.grid-marquee .panel .drawer-cta:hover .text-group {
+  text-decoration: underline;
 }
 
 .grid-marquee .grid-marquee-label {
