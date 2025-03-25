@@ -146,6 +146,10 @@ main .section .grid-marquee h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background-color: var(--color-white);
+  border-bottom: 1px solid #0000001a;
 }
 
 .grid-marquee .drawer .title-row strong {
@@ -156,7 +160,6 @@ main .section .grid-marquee h1 {
   /* override browser button style */
   border: 0;
   margin: auto;
-  border-top: 1px solid #0000001A;
   display: flex;
   justify-content: center;
   width: 100%;
