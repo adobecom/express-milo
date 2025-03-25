@@ -5,7 +5,7 @@ const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
 function initializeCarousel(selector, parent) {
-  let currentIndex = window.innerWidth <= smalLViewport ? 1 : 0;
+  let currentIndex = 0;
   let scrollCount = 1;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -55,8 +55,8 @@ function initializeCarousel(selector, parent) {
     'aria-label': ariaLabel,
   });
 
-  const faderLeft = createTag('div', { class: 'basic-carousel-fader-left arrow-hidden' });
-  const faderRight = createTag('div', { class: 'basic-carousel-fader-right arrow-hidden' });
+  const faderLeft = createTag('div', { class: 'basic-carousel-fader-left' });
+  const faderRight = createTag('div', { class: 'basic-carousel-fader-right' });
   const arrowLeft = createTag('a', {
     class: 'button basic-carousel-arrow basic-carousel-arrow-left',
     'aria-label': 'Scroll carousel left',
@@ -129,7 +129,6 @@ function initializeCarousel(selector, parent) {
       const twoTemplatesWidth = (elementWidth * 2) + gap;
       const centerOffset = (platformWidth - twoTemplatesWidth) / 2;
       const newScrollPos = isInitialLoad ? 0 : (currentIndex * (elementWidth + gap)) - centerOffset;
-
       platform.scrollTo({
         left: newScrollPos,
         behavior: isInitialLoad ? 'auto' : 'smooth',
@@ -196,7 +195,7 @@ function initializeCarousel(selector, parent) {
       if (platform.scrollLeft >= maxScroll) return;
 
       const templatesPerRow = Math.floor(elements.length / 2);
-      const maxIndex = templatesPerRow + 1;
+      const maxIndex = templatesPerRow + 2;
       currentIndex = Math.min(maxIndex, currentIndex + 1);
     } else {
       if (currentIndex + scrollCount >= elements.length) return;
@@ -297,20 +296,6 @@ function initializeCarousel(selector, parent) {
       }
     }
   });
-
-  platform.addEventListener('scroll', debounce(() => {
-    if (!isGridLayout || scrolling) return;
-
-    const elementWidth = elements[0].offsetWidth;
-    const scrollPosition = platform.scrollLeft;
-    const gap = 10;
-    const itemWidth = elementWidth + gap;
-    currentIndex = Math.round(scrollPosition / itemWidth);
-
-    faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
-    const eleLength = Math.floor(elements.length / 2) - 2;
-    faderRight.classList.toggle('arrow-hidden', currentIndex === eleLength);
-  }, 100));
 
   window.addEventListener('resize', debounce(() => {
     const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
