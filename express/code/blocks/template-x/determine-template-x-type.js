@@ -21,7 +21,6 @@ export const PROPS = {
     width : "",
     mini : "",
     print : "",
-    contentRow :  ''
 
 };
 
@@ -34,7 +33,7 @@ export function constructProps(block) {
     const props = { ...PROPS }
     Array.from(block.children).forEach((row) => {
         const cols = row.querySelectorAll('div');
-        const key = cols[0].querySelector('strong')?.textContent.trim().toLowerCase();
+        const key = cols[0].textContent.trim().toLowerCase();
         if (cols.length === 1) {
             [props.contentRow] = cols;
         } else if (cols.length === 2) {
@@ -43,7 +42,7 @@ export function constructProps(block) {
             if (value.toLowerCase() === 'null') {
                 value = '';
             }
-
+            console.log(key,value)
             if (key && value) {
                 // FIXME: facebook-post
                 if (['tasks', 'topics', 'locales', 'behaviors'].includes(key) || (['premium', 'animated'].includes(key) && value.toLowerCase() !== 'all')) {
@@ -69,15 +68,16 @@ export function constructProps(block) {
             
         }
     });
+
     return props;
 }
 
 export function determineTemplateXTypeFromProps (props) {
     const type = [];
-    console.log(props)
+   
     // orientation aspect
     if (props.orientation && props.orientation.toLowerCase() === 'horizontal') type.push('horizontal');
-
+    console.log(props.orientation)
     // style aspect
     if (props.width && props.width.toLowerCase() === 'full') type.push('fullwidth');
     if (props.width && props.width.toLowerCase() === 'sixcols') type.push('sixcols');
@@ -89,11 +89,13 @@ export function determineTemplateXTypeFromProps (props) {
         if (props.print.toLowerCase() === 'flyer') type.push('flyer');
         if (props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
     }
+    console.log(props)
     return {props, variant:type}
 }
 
 export function determineTemplateXType(block) {
     const props = constructProps(block)
+    console.log(props)
     // todo: build layers of aspects based on props conditions - i.e. orientation -> style -> use case
     
     return determineTemplateXTypeFromProps(props)

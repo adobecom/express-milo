@@ -46,6 +46,28 @@ export async function createRichTextInput(output) {
         }
     }
 
+    function makeTextStrong() {
+        // Get the current selection
+        const selection = window.getSelection();
+        
+        if (selection.rangeCount > 0) {
+          // Get the selected range
+          const range = selection.getRangeAt(0);
+          
+          // Create a strong element
+          const strongElement = document.createElement('strong');
+          
+          // Extract the selected content and put it in the strong element
+          strongElement.appendChild(range.extractContents());
+          
+          // Insert the strong element at the position of the range
+          range.insertNode(strongElement);
+          
+          // Collapse the selection to the end
+          selection.collapseToEnd();
+        }
+      }
+
     // Text formatting functions
     function formatText(command) {
         document.execCommand(command, false, null);
@@ -105,7 +127,7 @@ export async function createRichTextInput(output) {
     }
 
     // Button event listeners
-    boldBtn.addEventListener('click', () => formatText('bold'));
+    boldBtn.addEventListener('click', () => makeTextStrong());
     italicBtn.addEventListener('click', () => formatText('italic'));
     underlineBtn.addEventListener('click', () => formatText('underline'));
     linkBtn.addEventListener('click', () => showDialog(linkDialog));

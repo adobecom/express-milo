@@ -14,10 +14,10 @@ export const PROPS = {
     topics : '',
     locales : 'en',
     toolBar: { 
-        allowed : [true, false]
+        allowed : [false, true]
     },
     searchBar: { 
-        allowed : [true, false]
+        allowed : [false, true]
     },
     behaviors :{
         allowed :  ['still', 'animated', 'all'],
@@ -26,7 +26,7 @@ export const PROPS = {
         allowed : [true, false, 'all']
     },
     animated: {
-        allowed : [true, false]
+        allowed : [true, false, 'all']
     },
     templateStats : {
         allowed :  ['still', 'animated', 'all'],
@@ -35,20 +35,20 @@ export const PROPS = {
         allowed : [true, false]
     },
     orientation : {
-        allowed : ['horizontal']
+        allowed : ['horizontal','vertical']
     },
     width : {
-        allowed : ['full','sixcols','fourcols']
+        allowed : ['full','sixcols','fourcols', 'std']
     },
     mini : {
-        allowed : [true, false]
+        allowed : [false, true]
     },
     
     Q : '',
     Sort : '',
     print : {
         allowed : [
-            'flyer', 't-shirt'
+           'none', 'flyer', 't-shirt', ''
         ]
     },
     
@@ -60,7 +60,12 @@ function setValueByKeyPath(obj, keyPath, value) {
     for (let i = 0; i < keyPath.length - 1; i++) {
         current = current[keyPath[i]]
     }
-    current[keyPath[keyPath.length - 1]] = value
+    if (! value || value === 'none') {
+        delete   current[keyPath[keyPath.length - 1]]
+    } else {
+        current[keyPath[keyPath.length - 1]] = value
+    }
+   
 }
 
 async function createInputFields(current, keyPath, output, sourceOfTruth, parentContainer) {
@@ -118,10 +123,7 @@ function createBasicInputField(current, keyPath, sourceOfTruth, parentContainer)
     createHandlerEvent(input, keyPath, sourceOfTruth)
     parentContainer.appendChild(wrapper)
 }
-
-function preview(sourceOfTruth) {
-    const { props, variant } = determineTemplateXTypeFromProps(sourceOfTruth)
-}
+ 
  
 function copyToClipboard(html) {
     const listener = function (e) {
@@ -134,6 +136,25 @@ function copyToClipboard(html) {
     document.removeEventListener('copy', listener);
     console.log('Table copied to clipboard! Now you can paste it in SharePoint.');
 } 
+
+function createHTMLTable (blockName, variants = [],sourceOfTruth) { 
+    let block = createTag('div' , { class : blockName})
+    Object.entries(sourceOfTruth).forEach(entry => {
+        const row = createTag('div')
+        if (entry[1].contentRow) {
+            row.innerHTML = entry[1].value
+        } else {
+            entry.forEach(cell => {
+                const col = createTag('div')
+                col.textContent = cell
+                row.appendChild(col)
+            });
+          
+        }
+        block.appendChild(row)
+    });
+    return block
+}
 
 function createSharePointTable(blockName, variants = [],sourceOfTruth) { 
     let tableHtml = '<table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse;">';
@@ -169,21 +190,34 @@ async function createRichTextInputField(contentRow) {
     return richTextInput;
 }
 
-function createDownloadButton(block, sourceOfTruth) {
+function createDownloadButton(block, previewContainer, sourceOfTruth) {
     const button = createTag('button')
     button.textContent = "Copy To Clipboard"
     button.addEventListener('click', () => {
         copyToClipboard(createSharePointTable('template-x', ['variant1, variant2'], sourceOfTruth))
+        preview(previewContainer, sourceOfTruth)
     })
     block.appendChild(button)
+}
+
+async function preview (previewContainer, sourceOfTruth) {
+    previewContainer.innerHTML = ''
+    const table = createHTMLTable('template-x', ['variant1, variant2'], sourceOfTruth)
+    const {default: decorate} = await import("./../template-x/template-x.js")
+    previewContainer.appendChild(table)
+    decorate(table)
+
 }
 
 export default async function decorate(block) {
     const sourceOfTruth = { ...PROPS }
     const output = []
-    
-    await createInputFields({ ...PROPS }, [], output, sourceOfTruth, block)
- 
-    createDownloadButton(block, sourceOfTruth)
+    const previewContainer = createTag('div', {class : 'preview-container'})
+    const authoringToolWidget = createTag('div', {class : 'authoring-tool-widget'})
+    block.appendChild(authoringToolWidget)
+    block.appendChild(previewContainer)
+    await createInputFields({ ...PROPS }, [], output, sourceOfTruth, authoringToolWidget)
+    createDownloadButton(authoringToolWidget, previewContainer, sourceOfTruth)
+  
 
 }
