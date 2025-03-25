@@ -33,8 +33,22 @@ main .section .ax-columns.enterprise .column h2 {
   font-size: 60px;
 }
 
-main .content.columns-header-small h3 {
-  font-size: 22px;
+main .content.columns-medium-header h1,
+main .content.columns-medium-header h2,
+main .content.columns-medium-header h3,
+main .content.columns-medium-header h4,
+main .content.columns-medium-header h5,
+main .content.columns-medium-header h6 {
+  font-size: var(--heading-font-size-m);
+}
+
+main .content.columns-small-header h1,
+main .content.columns-small-header h2,
+main .content.columns-small-header h3,
+main .content.columns-small-header h4,
+main .content.columns-small-header h5,
+main .content.columns-small-header h6 {
+  font-size: var(--heading-font-size-s);
 }
 
 .ax-columns {
