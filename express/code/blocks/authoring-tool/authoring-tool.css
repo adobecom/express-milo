@@ -1,17 +1,228 @@
+/* Main container styling */
+.authoring-tool {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
 
-  .authoring-tool .divider {
-    margin-left: 20px;
-    text-transform: capitalize;
-    padding: 5px;
-  }
+/* Section dividers */
+.authoring-tool .divider {
+  display: flex;
+  flex-direction: column;
+  margin: 12px 0;
+  text-transform: capitalize;
+  padding: 10px 15px;
+  background-color: #f0f4f8;
+  border-radius: 6px; 
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
 
-  .authoring-tool .divider::before {
-    content: attr(data-text);
-    visibility: hidden;
-    height: 0;
-    display: block;
-  }
+/* Section labels */
 
-  .authoring-tool .divider span {
-    display: inline-block;
-  }
+
+/* Input wrappers */ 
+.authoring-tool .input-field-wrapper {
+  flex: 1; 
+  margin-top: 15px;
+}
+
+/* Input fields */
+.authoring-tool .input-field,
+.authoring-tool select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: white;
+  transition: border-color 0.2s ease;
+}
+
+.authoring-tool .input-field:focus,
+.authoring-tool select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Rich text editor improvements */
+.rich-text-input .editor-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  overflow: hidden;
+  --font-size: 16px;
+  margin: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.rich-text-input img {
+  height: 16px;
+}
+
+.rich-text-input .toolbar {
+  display: flex;
+  padding: 10px;
+  background-color: #f5f7fa;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.rich-text-input .toolbar button {
+  margin-right: 8px;
+  padding: 6px 10px;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.rich-text-input .toolbar button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.rich-text-input .toolbar button.active {
+  background-color: #e0e7ff;
+  border-color: #6366f1;
+  color: #4f46e5;
+  font-weight: bold;
+}
+
+.rich-text-input .editor {
+  min-height: 200px;
+  padding: 15px;
+  border: none;
+  outline: none;
+  overflow-y: auto;
+  line-height: 1.5;
+  background-color: white;
+}
+
+/* Dialog improvements */
+.rich-text-input .image-dialog,
+.rich-text-input .link-dialog {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  width: 400px;
+  max-width: 90vw;
+}
+
+.rich-text-input .image-dialog h3,
+.rich-text-input .link-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 18px;
+  color: #111827;
+}
+
+.rich-text-input .dialog input {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 10px 0;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.rich-text-input .dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.rich-text-input .dialog-buttons button {
+  margin-left: 10px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.rich-text-input .dialog-buttons button.cancel-link,
+.rich-text-input .dialog-buttons button.cancel-image {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #4b5563;
+}
+
+.rich-text-input .dialog-buttons button.insert-link,
+.rich-text-input .dialog-buttons button.insert-image {
+  background-color: #3b82f6;
+  border: 1px solid #3b82f6;
+  color: white;
+}
+
+.rich-text-input .dialog-buttons button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.rich-text-input .overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  backdrop-filter: blur(2px);
+}
+
+/* Copy to clipboard button */
+.authoring-tool button[daa-ll^="Copy To Clipboard"] {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.authoring-tool button[daa-ll^="Copy To Clipboard"]:hover {
+  background-color: #4338ca;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+/* Target all non-rich text inputs (standard text inputs, selects, etc.) */
+input:not([type="hidden"]):not([type="file"]):not([type="submit"]):not([type="button"]),
+select {
+  width: 100%; /* Make inputs take full width of their grid cell */
+  box-sizing: border-box; /* Include padding and border in the element's width */
+}
+
+/* Container for the form or the section containing inputs */
+.form-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Creates 3 equal columns */
+  /* For 2 columns use: grid-template-columns: repeat(2, 1fr); */
+  gap: 20px; /* Space between columns and rows */
+}
+
+/* For rich text editors or textareas that should span full width */
+textarea,
+.rich-text-editor {
+  grid-column: 1 / -1; /* Spans all columns */
+  width: 100%;
+}

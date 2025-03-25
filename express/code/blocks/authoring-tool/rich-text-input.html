@@ -1,0 +1,35 @@
+ <div>   
+    <div class="editor-container">
+        <div class="toolbar">
+            <button class="bold" title="Bold"><strong>B</strong></button>
+            <button class="italic" title="Italic"><em>I</em></button>
+            <button class="underline" title="Underline"><u>U</u></button>
+            <button class="link" title="Insert Link">🔗</button>
+            <button class="image" title="Insert Image">🖼️</button>
+        </div>
+        <div class="editor" contenteditable="true"></div>
+    </div>
+
+    <!-- Link Dialog -->
+    <div class="link-dialog" class="dialog">
+        <h3>Insert Link</h3>
+        <input type="text" class="link-url" placeholder="https://example.com">
+        <input type="text" class="link-text" placeholder="Link Text">
+        <div class="dialog-buttons">
+            <button class="cancel-link">Cancel</button>
+            <button class="insert-link">Insert</button>
+        </div>
+    </div>
+
+    <!-- Image Dialog -->
+    <div class="image-dialog" class="dialog">
+        <h3>Insert Image</h3>
+        <input type="text" class="image-url" placeholder="https://example.com/image.jpg">
+        <input type="text" class="image-alt" placeholder="Alt Text">
+        <div class="dialog-buttons">
+            <button class="cancel-image">Cancel</button>
+            <button class="insert-image">Insert</button>
+        </div>
+    </div>
+    <div class="overlay"></div>
+</div>

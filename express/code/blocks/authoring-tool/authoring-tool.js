@@ -1,10 +1,11 @@
 import { getLibs, fixIcons, createTag } from '../../scripts/utils.js';
 import { determineTemplateXType, determineTemplateXTypeFromProps } from './../template-x/determine-template-x-type.js'
+import { createRichTextInput } from './rich-text-input.js';
 
 export const PROPS = {
-    templates: [],
-    filters: {
-    
+    header : {
+        contentRow : true, 
+        value : undefined
     },
     limit: 20, 
     collectionId: 'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418',
@@ -42,6 +43,7 @@ export const PROPS = {
     mini : {
         allowed : [true, false]
     },
+    
     Q : '',
     Sort : '',
     print : {
@@ -49,6 +51,7 @@ export const PROPS = {
             'flyer', 't-shirt'
         ]
     },
+    
     
 
 };
@@ -60,17 +63,12 @@ function setValueByKeyPath(obj, keyPath, value) {
     current[keyPath[keyPath.length - 1]] = value
 }
 
-// function getValueByKeyPath(obj, keyPath) {
-//     let value = obj
-//     for (let i = 0; i < keyPath.length; i++) {
-//         value = value[keyPath[i]]
-//     }
-//     return value
-// }
-
-function createInputFields(current, keyPath, output, sourceOfTruth, parentContainer) {
+async function createInputFields(current, keyPath, output, sourceOfTruth, parentContainer) {
     if (typeof current === 'object') {
-        if (current.allowed) {
+        if (current.contentRow) { 
+            const richTextInput = await createRichTextInputField(current)
+            parentContainer.appendChild(richTextInput)
+        } else if (current.allowed) {
             output.push(createRestrictedInputfield(current, keyPath, sourceOfTruth, parentContainer))
         } else {
             Array.from(Object.keys(current)).forEach(key => {
@@ -124,59 +122,7 @@ function createBasicInputField(current, keyPath, sourceOfTruth, parentContainer)
 function preview(sourceOfTruth) {
     const { props, variant } = determineTemplateXTypeFromProps(sourceOfTruth)
 }
-
-/**
- * Converts an HTML table to tab-delimited text suitable for pasting into Word
- * @param {string} htmlTable - HTML table string or element
- * @returns {string} Tab-delimited text that Word can convert to a table
- */
-function htmlTableToWordFormat(htmlTable) {
-    // Create a temporary container to parse the HTML
-    const container = document.createElement('div');
-
-    // Check if input is a string (HTML) or an Element
-    if (typeof htmlTable === 'string') {
-        container.innerHTML = htmlTable;
-    } else if (htmlTable instanceof Element) {
-        container.appendChild(htmlTable.cloneNode(true));
-    } else {
-        throw new Error('Input must be an HTML string or Element');
-    }
-
-    // Get the table element
-    const table = container.querySelector('table');
-    if (!table) {
-        throw new Error('No table found in the provided HTML');
-    }
-
-    // Get all rows
-    const rows = table.querySelectorAll('tr');
-
-    // Process each row
-    const result = [];
-    rows.forEach(row => {
-        const rowData = [];
-
-        // Get all cells (th or td) in this row
-        const cells = row.querySelectorAll('th, td');
-        cells.forEach(cell => {
-            // Get the text content and trim whitespace
-            let cellText = cell.textContent.trim();
-
-            // Replace any tabs or newlines with spaces to avoid formatting issues
-            cellText = cellText.replace(/[\t\n\r]/g, ' ');
-
-            rowData.push(cellText);
-        });
-
-        // Join cells with tabs
-        result.push(rowData.join('\t'));
-    });
-
-    // Join rows with newlines
-    return result.join('\n');
-}
-
+ 
 function copyToClipboard(html) {
     const listener = function (e) {
         e.clipboardData.setData('text/html', html);
@@ -194,18 +140,34 @@ function createSharePointTable(blockName, variants = [],sourceOfTruth) {
     tableHtml += '<thead><tr>';
     tableHtml += `<th>${blockName} (${variants.map((variant) => ` ${variant}`)}) </th>`;
     tableHtml += '</tr></thead>';
-    tableHtml += '<tbody>';
+    tableHtml += '<tbody>'; 
     Object.entries(sourceOfTruth).forEach(entry => {
         tableHtml += '<tr>';
-        entry.forEach(cell => {
-            tableHtml += `<td>${cell}</td>`;
-        });
+        if (entry[1].contentRow) {
+            tableHtml += `<td>${entry[1].value}</td>`;
+        } else {
+            entry.forEach(cell => {
+                tableHtml += `<td>${cell}</td>`;
+            });
+        }
+     
         tableHtml += '</tr>';
     });
     tableHtml += '</tbody></table>';
     return tableHtml;
 }
 
+async function createRichTextInputField(contentRow) {
+    const richTextInput = await createRichTextInput();
+    const editor = richTextInput.querySelector(".editor");
+    
+    // Fix: Correct event listener structure
+    editor.addEventListener('blur', (e) => {
+        contentRow.value = e.target.innerHTML;
+    });
+    
+    return richTextInput;
+}
 
 function createDownloadButton(block, sourceOfTruth) {
     const button = createTag('button')
@@ -216,11 +178,12 @@ function createDownloadButton(block, sourceOfTruth) {
     block.appendChild(button)
 }
 
-export default function decorate(block) {
+export default async function decorate(block) {
     const sourceOfTruth = { ...PROPS }
     const output = []
     
-    createInputFields({ ...PROPS }, [], output, sourceOfTruth, block)
+    await createInputFields({ ...PROPS }, [], output, sourceOfTruth, block)
+ 
     createDownloadButton(block, sourceOfTruth)
 
 }
