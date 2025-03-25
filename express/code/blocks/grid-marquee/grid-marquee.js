@@ -13,9 +13,10 @@ function drawerOff() {
   currDrawer.classList.add('hide');
   currDrawer.querySelector('video')?.pause()?.catch(() => {});
   currDrawer = null;
+  document.body.classList.remove('disable-scroll');
 }
 function drawerOn(drawer) {
-  drawerOff();
+  document.body.classList.add('disable-scroll');
   drawer.closest('.card').setAttribute('aria-expanded', true);
   drawer.classList.remove('hide');
   const video = drawer.querySelector('video');
@@ -24,6 +25,7 @@ function drawerOn(drawer) {
     video.play().catch(() => {});
   }
   currDrawer = drawer;
+  drawerOff();
 }
 document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
 let isTouch;
