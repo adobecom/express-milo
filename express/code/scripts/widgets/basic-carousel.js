@@ -165,10 +165,10 @@ function initializeCarousel(selector, parent) {
       scrolling = false;
     }, 300);
 
-    if (isGridLayout) {
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
       faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
       const eleLength = Math.floor(elements.length / 2) - 1;
-      faderRight.classList.toggle('arrow-hidden', currentIndex === eleLength);
+      faderRight.classList.toggle('arrow-hidden', currentIndex + 1 === eleLength);
     } else {
       faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
       faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
