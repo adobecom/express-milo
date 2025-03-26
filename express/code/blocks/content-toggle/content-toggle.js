@@ -74,9 +74,12 @@ function initButton($block, $sections, index) {
       }, 16);
     });
 
-    if (index === 0) {
+    if (index === 1) {
       $buttons[index].classList.add('active');
-      updateBackgroundSize();
+      const resizeObserver = new ResizeObserver(() => {
+        updateBackgroundSize();
+      });
+      resizeObserver.observe($buttons[index]);
     }
 
     $buttons[index].addEventListener('click', () => {
