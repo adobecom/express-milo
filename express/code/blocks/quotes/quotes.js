@@ -179,13 +179,13 @@ async function createQuotesRatings({
         const handleSubmit = async (e) => {
           e.preventDefault();
           if (isSubmitting) return;
-          
+
           // Check if textarea is required and empty
           if (textarea.hasAttribute('required') && !textarea.value.trim()) {
             textarea.classList.add('invalid');
             return;
           }
-          
+
           isSubmitting = true;
           const comment = textarea.value;
           submitRating(sheet, rating, comment);
@@ -342,9 +342,6 @@ export default async function decorate($block) {
         && !$rows[0].querySelector('h2')) {
       ratingsDataSource = $rows[0].firstElementChild.textContent.trim();
       $rows.shift(); // Remove the ratings data source row
-      // const config = getConfig();
-      // Load ratings CSS when ratings are present
-      // loadStyle(`${config.codeRoot}/blocks/ratings/ratings.css`);
     }
 
     // Extract heading if present (should be the first or second row)
