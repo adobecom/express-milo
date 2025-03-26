@@ -6,8 +6,8 @@
 .basic-carousel-container {
   display: inline-block;
   position: relative;
-  height: auto;
   width: 100%;
+  height: auto;
   margin-bottom: 24px;
   --mobile-template-height: 207px;
   --mobile-template-width: 207px;
@@ -387,15 +387,19 @@
   .template-x.basic-carousel.grid .basic-carousel-container {
     margin-top: 40px;
     margin-bottom: 80px;
+    overflow: visible;
   }
   
   .template-x.basic-carousel.grid .basic-carousel-platform {
     display: grid;
     grid-template-rows: repeat(2, 207px);
     grid-auto-columns: 143px;
+    grid-auto-flow: column;
     height: 500px;
     padding-top: 80px;
     scroll-snap-type: none;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .template-x.basic-carousel.grid .basic-carousel-platform > * {

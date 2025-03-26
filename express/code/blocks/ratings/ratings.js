@@ -320,6 +320,7 @@ export default async function decorate(block) {
       <div class="no-slider">
         <p>${submissionText}</p>
       </div>`;
+      block.classList.add('submitted');
       if (window.scrollY > section.offsetTop) window.scrollTo(0, section.offsetTop - 64);
     });
     sliderFunctionality();
@@ -364,6 +365,7 @@ export default async function decorate(block) {
         null,
         headingTag,
       );
+      block.classList.add('submitted');
     } else if (actionUsed) {
       await decorateRatingSlider(title, headingTag);
     } else {

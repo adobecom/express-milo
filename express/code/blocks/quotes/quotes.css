@@ -1,7 +1,10 @@
+/* Base styles for quotes wrapper */
 .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
   max-width: 375px;
+  margin: auto;
 }
 
+/* Carousel specific styles */
 .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
 }
@@ -15,56 +18,35 @@
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
   max-width: 100%;
   height: auto;
-  min-height: 0; /* Allows container to shrink */
+  min-height: 0;
   margin: auto;
   display: flex;
   align-items: stretch;
 }
 
-.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-element {
-  display: flex;
-  min-height: 0; /* Allows container to shrink */
-  height: auto;
-}
-
-.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .template.basic-carousel-element {
-  flex-direction: column-reverse;
-  justify-content: flex-start;
-}
-
+/* Quote card styles */
 .quotes.carousel .quote {
   display: flex;
+  min-height: 0;
   width: 348px;
   min-width: 300px;
   max-width: 348px;
   padding: var(--spacing-400);
   flex-direction: column;
-  align-items: center;
   gap: 16px;
   border-radius: var(--Marquee-grid-Card-Card-Radius, 16px);
   background: var(--Alias-background-app-frame-layer-1, #F8F8F8);
   /* Drop shadow/emphasized-default */
   box-shadow: 0px 1px 6px 0px var(--Alias-drop-shadow-emphasized-default, rgba(0, 0, 0, 0.12));
-  height: auto;
   flex: 1 1 auto;
 }
 
-.quotes.carousel .quote .content {
-  padding-top: 0;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
+/* Section spacing */
 .section:has(.quotes)>div>h2 {
   margin-top: 80px;
 }
 
-.quotes-wrapper {
-  margin: auto;
-}
-
+/* Quotes container styles */
 .quotes {
   margin-top: 40px;
   padding-bottom: 40px;
@@ -78,6 +60,7 @@
   padding-bottom: 80px;
 }
 
+/* Singular quote styles */
 .quotes.singular {
   margin: 0 auto;
   padding-bottom: 0;
@@ -95,6 +78,7 @@
   background: var(--color-white);
 }
 
+/* Author styles */
 .quotes .quote .author .author-content {
   display: flex;
   align-items: center;
@@ -104,6 +88,15 @@
   flex-direction: column;
 }
 
+.quotes.carousel .basic-carousel-element.quote .author:after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-top: var(--spacing-300);
+  background-color: #C6C6C6;
+}
+
 .quotes .quote .author .summary {
   flex-grow: 1;
   display: flex;
@@ -111,6 +104,7 @@
   justify-content: center;
 }
 
+/* Quote content styles */
 .quotes .quote .content::before {
   content: '“';
   display: block;
@@ -130,6 +124,7 @@
   margin: 32px 0;
 }
 
+/* Author section styles */
 .quotes .quote .author {
   display: flex;
   flex-direction: column;
@@ -144,11 +139,14 @@
   margin-top: 0;
   align-items: center;
 }
-
+.quotes.carousel .quote .author > p {
+  display: none;
+}
 .quotes .quote .author hr {
   display: none;
 }
 
+/* Author image styles */
 .quotes .quote .author .image {
   padding-right: 10px;
 }
@@ -161,6 +159,7 @@
   box-sizing: border-box;
 }
 
+/* Singular quote layout */
 main div:has(> .quotes-wrapper .singular.quotes) {
   padding-top: 0;
 }
@@ -289,11 +288,13 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   margin-right: 15px;
 }
 
+/* Ratings styles */
 .quotes.carousel .quotes-ratings-wrapper .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: var(--spacing-500);
 }
 
 .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
@@ -351,13 +352,186 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   color: var(--color-black);
 }
 
+.quotes.carousel .ratings .slider-comment textarea {
+  resize: none;
+  border: 2px solid var(--color-gray-400);
+  border-radius: 6px;
+  padding: 10px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  color: var(--body-color);
+  margin: 16px 0;
+  background: var(--color-white);
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.quotes.carousel .ratings .slider-comment textarea.invalid {
+  border-color: rgb(229, 151, 0);
+}
+
+.quotes.carousel .ratings .slider-comment input[type="submit"] {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: var(--body-line-height);
+  color: var(--body-color);
+  font-weight: 700;
+  font-style: normal;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  margin: 0;
+  padding: 13px 1.5em 13px 1.5em;
+  border-radius: 27px;
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
+  border: 2px solid var(--color-gray-200);
+  background: var(--color-gray-200);
+}
+
+/* Hover ratings styles */
+.quotes.ratings .hover-ratings {
+  position: relative;
+  display: inline-block;
+}
+
+.quotes.ratings .hover-stars {
+  position: relative;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.quotes.ratings .hover-stars .timer {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.quotes.ratings .hover-stars .timer .lottie {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.quotes.ratings .hover-star {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.quotes.ratings .hover-star:hover {
+  transform: scale(1.1);
+}
+
+.quotes.ratings .hover-star .icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-gray-200);
+  transition: color 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* Icon styles */
+main .quotes.ratings .icon {
+  width: 24px;
+  height: 24px;
+}
+
+main .quotes.carousel .ratings .icon.icon-star,
+main .quotes.carousel .ratings button.selected .icon.icon-star {
+  color: var(--color-info-accent);
+}
+
+.quotes.ratings .hover-star:not(.hover) .icon.icon-star {
+  color: var(--color-gray-200);
+}
+
+.quotes.ratings .hover-star:hover .icon,
+.quotes.ratings .hover-star.hover .icon {
+  color: var(--color-info-accent);
+}
+
+.quotes.ratings .hover-star.selected .icon {
+  color: var(--color-info-accent);
+}
+
+/* Tooltip styles */
+.quotes.ratings .hover-tooltip {
+  display: none;
+  visibility: hidden;
+  height: 0;
+}
+
+/* Form styles */
+.quotes.ratings textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 8px;
+  border: 1px solid var(--color-gray-200);
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.quotes.ratings textarea.invalid {
+  border-color: #dc3545;
+  background-color: #fff8f8;
+}
+
+.quotes.ratings textarea[aria-label] {
+  margin-bottom: 16px;
+}
+
+/* Preserve existing hover state for slider variant */
+.quotes.ratings .slider-bottom .stars:hover {
+  color: var(--color-info-accent);
+}
+
+/* Ensure proper spacing in carousel context */
+.quotes.carousel .quotes.ratings .hover-ratings {
+  margin: 0;
+}
+
+.quotes.carousel .quotes.ratings .hover-stars {
+  justify-content: center;
+}
+
+.quotes.carousel .ratings:has(.hover-ratings) {
+  width: 100%;
+}
+
 @media (min-width: 768px) {
+  
   main .quotes.singular .quote {
     width: 83.3%;
     max-width: 968px;
     min-height: 315px;
   }
-
+  .quotes.ratings .hover-stars .timer {
+    right: -50px;
+  }
   .quotes.carousel .quotes-ratings-wrapper .container {
     flex-direction: row;
   }
@@ -365,13 +539,20 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
     width: 75%;
   }
-  .quotes.carousel .ratings {
+ 
+
+  .quotes.carousel .ratings:not(.submitted) {
     display: flex;
     width: 25%;
     min-width: 300px;
     align-items: center;
     justify-content: center;
   }
+ 
+  .quotes.carousel .ratings:has(.hover-ratings) {
+    width: 100%;
+  }
+  
   .quotes.carousel .quotes-ratings-wrapper h2 {
     font-size: 36px;
     font-weight: 900;
@@ -391,6 +572,54 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
     margin-left: 10px;
     font-size: 18px;
   }
+
+  .quotes.ratings .hover-tooltip {
+    position: absolute;
+    top: -48px;
+    transform: translateX(-50%);
+    background-color: #2c2c2c;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+    z-index: 100;
+    display: none;
+  }
+  
+  .quotes.ratings .hover-tooltip[style*="display: block"] {
+    opacity: 1;
+    display: block;
+    visibility: visible;
+    height: auto;
+  }
+  
+  .quotes.ratings .hover-tooltip .tooltip-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .quotes.ratings .hover-tooltip .tooltip-image {
+    display: flex;
+    align-items: center;
+    min-width: 20px;
+  }
+  
+  .quotes.ratings .hover-tooltip .tooltip-image .icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-white);
+    fill: var(--color-white);
+  }
+  
+  .quotes.ratings .hover-tooltip .tooltip-text {
+    color: var(--color-white);
+  }
+
 }
 
 @media (min-width: 1280px) {
@@ -446,146 +675,4 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
     max-width: 1024px;
   }
-}
-
-.quotes.ratings .hover-ratings {
-  position: relative;
-  display: inline-block;
-}
-
-.quotes.ratings .hover-stars {
-  position: relative;
-  display: flex;
-  gap: 4px;
-  margin-bottom: 20px;
-}
-
-.quotes.ratings .hover-stars .timer {
-  position: absolute;
-  right: -50px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.quotes.ratings .hover-stars .timer .lottie {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.quotes.ratings .hover-star {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  position: relative;
-}
-
-.quotes.ratings .hover-star:hover {
-  transform: scale(1.1);
-}
-
-.quotes.ratings .hover-star .icon {
-  width: 24px;
-  height: 24px;
-  color: var(--color-gray-200);
-  transition: color 0.2s ease;
-  position: relative;
-  z-index: 1;
-}
-
-main .quotes.ratings .icon {
-  width: 24px;
-  height: 24px;
-}
-main .quotes.ratings .icon.icon-star {
-  color: var(--color-info-accent);
-}
-
-.quotes.ratings .hover-star:hover .icon,
-.quotes.ratings .hover-star.hover .icon {
-  color: var(--color-info-accent);
-}
-
-.quotes.ratings .hover-star.selected .icon {
-  color: var(--color-info-accent);
-}
-
-.quotes.ratings .hover-tooltip {
-  position: absolute;
-  top: -48px;
-  transform: translateX(-50%);
-  background-color: #2c2c2c;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 14px;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  pointer-events: none;
-  z-index: 100;
-  display: none;
-}
-
-.quotes.ratings .hover-tooltip[style*="display: block"] {
-  opacity: 1;
-  display: block;
-}
-
-.quotes.ratings .hover-tooltip .tooltip-content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.quotes.ratings .hover-tooltip .tooltip-image {
-  display: flex;
-  align-items: center;
-  min-width: 20px;
-}
-
-.quotes.ratings .hover-tooltip .tooltip-image .icon {
-  width: 20px;
-  height: 20px;
-  color: var(--color-white);
-  fill: var(--color-white);
-}
-
-.quotes.ratings .hover-tooltip .tooltip-text {
-  color: var(--color-white);
-}
-
-.quotes.ratings textarea {
-  width: 100%;
-  min-height: 100px;
-  padding: 8px;
-  border: 1px solid var(--color-gray-200);
-  border-radius: 4px;
-  resize: vertical;
-}
-
-.quotes.ratings textarea[aria-label] {
-  margin-bottom: 16px;
-}
-
-/* Preserve existing hover state for slider variant */
-.quotes.ratings .slider-bottom .stars:hover {
-  color: var(--color-info-accent);
-}
-
-/* Ensure proper spacing in carousel context */
-.quotes.carousel .quotes.ratings .hover-ratings {
-  margin: 0;
-}
-
-.quotes.carousel .quotes.ratings .hover-stars {
-  margin: 0;
 }

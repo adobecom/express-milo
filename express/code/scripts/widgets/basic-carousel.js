@@ -4,6 +4,8 @@ import { debounce } from '../utils/hofs.js';
 const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
+
+// Define updateCarousel early to prevent hoisting issues
 function initializeCarousel(selector, parent) {
   let currentIndex = 0;
   let scrollCount = 1;
@@ -40,6 +42,7 @@ function initializeCarousel(selector, parent) {
     });
   });
 
+  // Create platform and other elements
   const platform = createTag('div', { class: 'basic-carousel-platform' });
   let ariaLabel;
   if (parent.closest('.template-x')) {
@@ -107,7 +110,9 @@ function initializeCarousel(selector, parent) {
   // Create play/pause control first if the carousel-play-pause class is present
   let playPauseControl;
   let playPauseButton;
-  if (parent.closest('.carousel-play-pause')) {
+  const hasPlayPause = parent.closest('.carousel-play-pause');
+
+  if (hasPlayPause) {
     playPauseControl = createTag('div', { class: 'basic-carousel-play-pause' });
     playPauseButton = createTag('a', {
       class: 'button basic-carousel-control basic-carousel-play-pause-button playing',
@@ -152,10 +157,15 @@ function initializeCarousel(selector, parent) {
     scrolling = true;
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
-    const defaultGap = 20;
+    const defaultGap = 10;
 
-    // Calculate actual position from set index
-    const position = currentSetIndex * scrollCount;
+    // Special handling for grid layout on mobile
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
+      const twoTemplatesWidth = (elementWidth * 2) + defaultGap;
+      const centerOffset = (platformWidth - twoTemplatesWidth) / 2;
+      const newScrollPos = isInitialLoad
+        ? 0
+        : (currentSetIndex * (elementWidth + defaultGap)) - centerOffset;
 
     if (isGridLayout && window.innerWidth <= smalLViewport) {
       const totalTemplates = carouselContent.length;
@@ -200,11 +210,6 @@ function initializeCarousel(selector, parent) {
           el.style.opacity = '0.5';
         }
       });
-    } else {
-      elements.forEach((el) => {
-        el.style.opacity = '1';
-      });
-    }
 
     setTimeout(() => {
       scrolling = false;
@@ -223,7 +228,7 @@ function initializeCarousel(selector, parent) {
 
   // Function to stop auto-play
   const stopAutoPlay = () => {
-    if (!autoPlayInterval) return;
+    if (!hasPlayPause || !autoPlayInterval) return;
     isPlaying = false;
     clearInterval(autoPlayInterval);
     autoPlayInterval = null;
@@ -233,21 +238,23 @@ function initializeCarousel(selector, parent) {
     playPauseButton.setAttribute('daa-ll', 'Play carousel');
   };
 
-  // Toggle play/pause on button click
-  playPauseButton.addEventListener('click', () => {
-    if (isPlaying) {
-      stopAutoPlay();
-    } else {
-      startAutoPlay();
-    }
-  });
+  if (hasPlayPause) {
+    // Toggle play/pause on button click
+    playPauseButton.addEventListener('click', () => {
+      if (isPlaying) {
+        stopAutoPlay();
+      } else {
+        startAutoPlay();
+      }
+    });
 
-  // Start auto-play by default
-  startAutoPlay();
+    // Start auto-play by default
+    startAutoPlay();
+  }
 
   // Pause on user interaction with arrows
   const pauseOnUserInteraction = () => {
-    if (isPlaying) {
+    if (hasPlayPause && isPlaying) {
       stopAutoPlay();
     }
   };
@@ -257,7 +264,7 @@ function initializeCarousel(selector, parent) {
   faderRight.addEventListener('click', pauseOnUserInteraction);
   platform.addEventListener('touchstart', pauseOnUserInteraction);
 
-  // Update click handlers to use set-based navigation
+  // Update click handlers for grid layout
   faderLeft.addEventListener('click', () => {
     if (scrolling) return;
     if (isGridLayout && window.innerWidth <= smalLViewport) {
@@ -299,6 +306,20 @@ function initializeCarousel(selector, parent) {
   });
 
   platform.addEventListener('touchend', (e) => {
+    if (isGridLayout && window.innerWidth <= smalLViewport) {
+      const tappedElement = document.elementFromPoint(
+        e.changedTouches[0].clientX,
+        e.changedTouches[0].clientY,
+      );
+      const isCard = tappedElement?.closest('.template.basic-carousel-element');
+      if (isCard) {
+        const editButton = isCard.querySelector('.button-container a[title="Edit this template"]');
+        if (editButton?.href) {
+          window.location.href = editButton.href;
+        }
+      }
+      return;
+    }
     const swipeDistance = touchEndX - touchStartX;
 
     if (Math.abs(swipeDistance) > 50) {
@@ -381,6 +402,7 @@ function initializeCarousel(selector, parent) {
     }
   });
 
+  // Handle scroll events for grid layout
   platform.addEventListener('scroll', debounce(() => {
     if (!isGridLayout || scrolling) return;
 

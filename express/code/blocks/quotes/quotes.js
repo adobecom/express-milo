@@ -72,6 +72,7 @@ async function createQuotesRatings({
     thankYouContainer.appendChild(title);
     thankYouContainer.appendChild(message);
     wrapper.appendChild(thankYouContainer);
+    wrapper.classList.add('submitted');
     return wrapper;
   }
 
@@ -157,11 +158,31 @@ async function createQuotesRatings({
         const textarea = commentBox.querySelector('textarea');
         const submit = commentBox.querySelector('input[type="submit"]');
 
+        // Add invalid class handling
+        textarea.addEventListener('invalid', (e) => {
+          e.preventDefault();
+          textarea.classList.add('invalid');
+        });
+
+        textarea.addEventListener('input', () => {
+          if (textarea.value !== '') {
+            countdown(false);
+            textarea.classList.remove('invalid');
+          }
+        });
+
         // Handle submission
         let isSubmitting = false;
         const handleSubmit = async (e) => {
           e.preventDefault();
           if (isSubmitting) return;
+          
+          // Check if textarea is required and empty
+          if (textarea.hasAttribute('required') && !textarea.value.trim()) {
+            textarea.classList.add('invalid');
+            return;
+          }
+          
           isSubmitting = true;
           const comment = textarea.value;
           submitRating(sheet, rating, comment);
@@ -179,6 +200,7 @@ async function createQuotesRatings({
           // Replace the ratings interface with thank you message
           wrapper.innerHTML = '';
           wrapper.appendChild(thankYouContainer);
+          wrapper.classList.add('submitted');
 
           // Scroll to top of section if needed
           const section = wrapper.closest('.section');
@@ -197,12 +219,6 @@ async function createQuotesRatings({
         // Add event listeners for timer control
         textarea.addEventListener('focus', () => {
           countdown(false);
-        });
-
-        textarea.addEventListener('input', () => {
-          if (textarea.value !== '') {
-            countdown(false);
-          }
         });
       },
     });
@@ -369,6 +385,11 @@ export default async function decorate($block) {
         $author.appendChild($authorContent);
       }
       $card.firstElementChild.classList.add('content');
+
+      // Move author before content
+      if ($card.children.length > 1) {
+        $card.insertBefore($card.children[1], $card.firstElementChild);
+      }
 
       $carouselContainer.appendChild($card);
     });
