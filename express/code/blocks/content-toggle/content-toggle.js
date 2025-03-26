@@ -51,29 +51,6 @@ function initButton($block, $sections, index) {
       });
     };
 
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        const activeButton = $block.querySelector('button.active');
-        if (activeButton) {
-          const buttonWidth = activeButton.getBoundingClientRect().width + 5;
-          let leftOffset = 0;
-
-          Array.from($buttons).forEach((btn, i) => {
-            if (btn === activeButton) {
-              leftOffset += i * 10;
-            } else if (Array.from($buttons).indexOf(activeButton) > i) {
-              leftOffset += btn.getBoundingClientRect().width + 10;
-            }
-          });
-
-          $toggleBackground.style.left = `${leftOffset}px`;
-          $toggleBackground.style.width = `${buttonWidth}px`;
-        }
-      }, 16);
-    });
-
     if (index === 0) {
       $buttons[index].classList.add('active');
       updateBackgroundSize();
