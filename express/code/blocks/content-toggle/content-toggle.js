@@ -74,9 +74,11 @@ function initButton($block, $sections, index) {
       }, 16);
     });
 
-    const shouldSelectFirst = $enclosingMain.querySelector('[data-select-first]');
-    console.log('shouldSelectFirst', shouldSelectFirst);
-    if (index === (shouldSelectFirst ? 0 : 1)) {
+    const toggleDefaultOption = $enclosingMain.querySelector('[data-toggle-default]');
+    const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
+    const defaultIndex = parseInt(defaultValue, 10) - 1;
+
+    if (index === (defaultIndex || 1)) {
       $buttons[index].classList.add('active');
       const resizeObserver = new ResizeObserver(() => {
         updateBackgroundSize();
