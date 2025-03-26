@@ -361,7 +361,9 @@ export default async function decorate($block) {
     }
 
     // Create carousel container
-    const $carouselContainer = createTag('div', { class: 'basic-carousel' });
+    const $carouselContainer = createTag('div', {
+      class: `basic-carousel${hasRatings ? ' carousel-play-pause' : ''}`,
+    });
 
     // Process each quote into a carousel item
     $rows.forEach(($card) => {

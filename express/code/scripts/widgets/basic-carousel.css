@@ -406,3 +406,53 @@
     scroll-snap-align: none;
   }
 }
+
+.basic-carousel-container .basic-carousel-play-pause {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    cursor: pointer;
+    pointer-events: auto;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    transition: opacity 0.2s;
+}
+
+.basic-carousel-container a.button.basic-carousel-play-pause-button {
+    cursor: pointer;
+    display: block;
+    float: left;
+    width: 32px;
+    height: 32px;
+    box-shadow: rgba(102, 102, 102, 0.1) 0px 4px 8px 2px;
+    pointer-events: auto;
+    margin: 0px 7px;
+    background: rgb(248, 248, 248);
+    border-radius: 50%;
+}
+
+.basic-carousel-container a.button.basic-carousel-play-pause-button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: 0.2s;
+}
+
+.basic-carousel-container a.button.basic-carousel-play-pause-button.playing::before {
+    width: 3px;
+    height: 12px;
+    background: transparent;
+    border-left: 3px solid var(--color-black);
+    border-right: 3px solid var(--color-black);
+}
+
+.basic-carousel-container a.button.basic-carousel-play-pause-button.paused::before {
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 7px 0px 7px 10px;
+    border-color: transparent transparent transparent var(--color-black);
+}
