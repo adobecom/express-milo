@@ -74,7 +74,9 @@ function initButton($block, $sections, index) {
       }, 16);
     });
 
-    if (index === 1) {
+    const shouldSelectFirst = $enclosingMain.querySelector('[data-select-first]');
+    console.log('shouldSelectFirst', shouldSelectFirst);
+    if (index === (shouldSelectFirst ? 0 : 1)) {
       $buttons[index].classList.add('active');
       const resizeObserver = new ResizeObserver(() => {
         updateBackgroundSize();
