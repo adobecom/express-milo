@@ -68,16 +68,63 @@ function initializeCarousel(selector, parent) {
 
   platform.append(...carouselContent);
 
-  container.append(platform, faderLeft, faderRight);
+  // Add trigger elements for intersection observer
+  const leftTrigger = createTag('div', { class: 'basic-carousel-left-trigger' });
+  const rightTrigger = createTag('div', { class: 'basic-carousel-right-trigger' });
+  platform.prepend(leftTrigger);
+  platform.append(rightTrigger);
+
+  // Set up intersection observer for arrow visibility
+  const onSlideIntersect = (entries) => {
+    entries.forEach((entry) => {
+      if (entry.target === leftTrigger) {
+        faderLeft.classList.toggle('arrow-hidden', entry.isIntersecting);
+      }
+      if (entry.target === rightTrigger) {
+        faderRight.classList.toggle('arrow-hidden', entry.isIntersecting);
+      }
+    });
+  };
+
+  const options = { threshold: 0, root: container };
+  const slideObserver = new IntersectionObserver(onSlideIntersect, options);
+  slideObserver.observe(leftTrigger);
+  slideObserver.observe(rightTrigger);
+
+  if (isGridLayout) {
+    platform.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+
+  // Create a wrapper for all controls
+  const controlsWrapper = createTag('div', { class: 'basic-carousel-controls-wrapper' });
+
+  container.append(platform, controlsWrapper);
+
+  // Create play/pause control first if the carousel-play-pause class is present
+  let playPauseControl;
+  let playPauseButton;
+  if (parent.closest('.carousel-play-pause')) {
+    playPauseControl = createTag('div', { class: 'basic-carousel-play-pause' });
+    playPauseButton = createTag('a', {
+      class: 'button basic-carousel-control basic-carousel-play-pause-button playing',
+      'aria-label': 'Pause carousel',
+      'daa-ll': 'Pause carousel',
+    });
+    playPauseControl.appendChild(playPauseButton);
+    // Add play/pause button first
+    controlsWrapper.appendChild(playPauseControl);
+  }
+
+  // Then add arrow controls
+  controlsWrapper.append(faderLeft, faderRight);
   faderLeft.append(arrowLeft);
   faderRight.append(arrowRight);
   parent.append(container);
 
-  const leftTrigger = createTag('div', { class: 'basic-carousel-left-trigger' });
-  const rightTrigger = createTag('div', { class: 'basic-carousel-right-trigger' });
-
-  platform.prepend(leftTrigger);
-  platform.append(rightTrigger);
   const elements = platform.querySelectorAll('.template.basic-carousel-element');
 
   if (isGridLayout) {
@@ -96,22 +143,19 @@ function initializeCarousel(selector, parent) {
   };
   scrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
 
-  const updateCarousel = () => {
-    if (scrolling) return;
+  // Calculate total number of distinct positions needed
+  const totalSets = Math.ceil(elements.length / scrollCount);
+
+  // Define updateCarousel as a function declaration for hoisting
+  function updateCarousel(forceUpdate = false) {
+    if (!forceUpdate && scrolling) return;
     scrolling = true;
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
-    const gap = 20; // Match the CSS gap value
+    const defaultGap = 20;
 
-    if (window.innerWidth <= smalLViewport) {
-      for (const element of elements) {
-        const buttonContainer = element.querySelector('.button-container.singleton-hover');
-        if (buttonContainer) {
-          buttonContainer.classList.remove('singleton-hover');
-          break;
-        }
-      }
-    }
+    // Calculate actual position from set index
+    const position = currentSetIndex * scrollCount;
 
     if (isGridLayout && window.innerWidth <= smalLViewport) {
       const totalTemplates = carouselContent.length;
@@ -150,9 +194,9 @@ function initializeCarousel(selector, parent) {
       elements.forEach((el, index) => {
         if (determineScrollCount() === 1) {
           el.style.opacity = '1';
-        } else if (index === currentIndex) {
+        } else if (index === position) {
           el.style.opacity = '1';
-        } else if (index === currentIndex - 1 || index === currentIndex + 1) {
+        } else if (index === position - 1 || index === position + 1) {
           el.style.opacity = '0.5';
         }
       });
@@ -162,10 +206,10 @@ function initializeCarousel(selector, parent) {
       });
     }
 
-    // Reset scrolling flag after animation
     setTimeout(() => {
       scrolling = false;
     }, 300);
+  }
 
     if (isGridLayout && window.innerWidth <= smalLViewport) {
       faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
@@ -177,6 +221,43 @@ function initializeCarousel(selector, parent) {
     }
   };
 
+  // Function to stop auto-play
+  const stopAutoPlay = () => {
+    if (!autoPlayInterval) return;
+    isPlaying = false;
+    clearInterval(autoPlayInterval);
+    autoPlayInterval = null;
+    playPauseButton.classList.remove('playing');
+    playPauseButton.classList.add('paused');
+    playPauseButton.setAttribute('aria-label', 'Play carousel');
+    playPauseButton.setAttribute('daa-ll', 'Play carousel');
+  };
+
+  // Toggle play/pause on button click
+  playPauseButton.addEventListener('click', () => {
+    if (isPlaying) {
+      stopAutoPlay();
+    } else {
+      startAutoPlay();
+    }
+  });
+
+  // Start auto-play by default
+  startAutoPlay();
+
+  // Pause on user interaction with arrows
+  const pauseOnUserInteraction = () => {
+    if (isPlaying) {
+      stopAutoPlay();
+    }
+  };
+
+  // Add event listeners for user interaction
+  faderLeft.addEventListener('click', pauseOnUserInteraction);
+  faderRight.addEventListener('click', pauseOnUserInteraction);
+  platform.addEventListener('touchstart', pauseOnUserInteraction);
+
+  // Update click handlers to use set-based navigation
   faderLeft.addEventListener('click', () => {
     if (scrolling) return;
     if (isGridLayout && window.innerWidth <= smalLViewport) {
@@ -222,12 +303,12 @@ function initializeCarousel(selector, parent) {
 
     if (Math.abs(swipeDistance) > 50) {
       if (swipeDistance > 0) {
-        if (currentIndex > 0) {
-          currentIndex -= 1;
+        if (currentSetIndex > 0) {
+          currentSetIndex -= 1;
           updateCarousel();
         }
-      } else if (currentIndex + 1 < elements.length) {
-        currentIndex += 1;
+      } else if (currentSetIndex + 1 < elements.length) {
+        currentSetIndex += 1;
         updateCarousel();
       }
       return;
@@ -277,11 +358,12 @@ function initializeCarousel(selector, parent) {
         }
         const tappedIndex = Array.from(elements).indexOf(isCard);
         if (tappedIndex !== -1) {
-          if (tappedIndex < currentIndex) {
-            currentIndex = Math.max(0, tappedIndex);
+          const currentPosition = currentSetIndex * scrollCount;
+          if (tappedIndex < currentPosition) {
+            currentSetIndex = Math.max(0, Math.floor(tappedIndex / scrollCount));
             updateCarousel();
-          } else if (tappedIndex > currentIndex) {
-            currentIndex = Math.min(elements.length - 1, tappedIndex);
+          } else if (tappedIndex > currentPosition) {
+            currentSetIndex = Math.min(totalSets - 1, Math.floor(tappedIndex / scrollCount));
             updateCarousel();
           } else {
             const btnContainer = isCard.querySelector('.button-container');
@@ -298,6 +380,20 @@ function initializeCarousel(selector, parent) {
       }
     }
   });
+
+  platform.addEventListener('scroll', debounce(() => {
+    if (!isGridLayout || scrolling) return;
+
+    const elementWidth = elements[0].offsetWidth;
+    const scrollPosition = platform.scrollLeft;
+    const gap = 10;
+    const itemWidth = elementWidth + gap;
+    currentSetIndex = Math.round(scrollPosition / itemWidth);
+
+    faderLeft.classList.toggle('arrow-hidden', currentSetIndex === 0);
+    const eleLength = Math.floor(elements.length / 2) - 2;
+    faderRight.classList.toggle('arrow-hidden', currentSetIndex === eleLength);
+  }, 100));
 
   window.addEventListener('resize', debounce(() => {
     const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();

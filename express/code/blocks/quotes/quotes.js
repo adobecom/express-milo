@@ -1,15 +1,16 @@
 // eslint-disable-next-line import/no-unresolved
-import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
 import loadCarousel from '../../scripts/utils/load-carousel.js';
 import {
   fetchRatingsData,
-  createRatingsContainer,
   determineActionUsed,
   hasRated,
   submitRating,
   createRatingSlider,
   sliderFunctionality,
   RATINGS_CONFIG,
+  createHoverStarRating,
+  createRatingsContainer,
 } from '../../scripts/utils/ratings-utils.js';
 
 let createTag;
@@ -27,8 +28,11 @@ function pickRandomFromArray(arr) {
 
 async function createQuotesRatings({
   sheet,
-  votesText = 'votes',
+  isCarouselVariant = false,
 }) {
+  // Load placeholders module
+  const placeholders = await import(`${getLibs()}/features/placeholders.js`);
+
   const data = await fetchRatingsData(sheet);
   if (!data) return null;
 
@@ -36,41 +40,189 @@ async function createQuotesRatings({
   const actionUsed = determineActionUsed(data.segments);
   const alreadyRated = hasRated(sheet);
 
-  // If user can't rate or has already rated, show the ratings container
-  if (!actionUsed || alreadyRated) {
-    return createRatingsContainer({
+  // Create a wrapper for the rating interface
+  const wrapper = createTag('div', { class: 'ratings' });
+
+  // If user can't rate yet, show the ratings container with stars and vote count
+  if (!actionUsed) {
+    const ratingsContainer = await createRatingsContainer({
       sheet,
       showAverage: true,
-      votesText,
+      votesText: await placeholders.replaceKey('rating-votes', getConfig()),
     });
+    wrapper.appendChild(ratingsContainer);
+    return wrapper;
   }
 
-  // If user can rate, show the rating slider
-  const { container } = await createRatingSlider('Rate this product', 'h3');
-  sliderFunctionality(container, {
-    sheetCamelCase: sheet,
-    ratings: RATINGS_CONFIG,
-  });
+  // If user has already rated, show the "already rated" state
+  if (alreadyRated) {
+    const [
+      alreadySubmittedTitle,
+      alreadySubmittedText,
+    ] = await Promise.all([
+      placeholders.replaceKey('rating-already-submitted-title', getConfig()),
+      placeholders.replaceKey('rating-already-submitted-text', getConfig()),
+    ]);
 
-  // Handle submission via the submit button
-  const submit = container.querySelector('input[type=submit]');
-  submit.addEventListener('click', (e) => {
-    e.preventDefault();
-    const rating = container.querySelector('input[type=range]').value;
-    const comment = container.querySelector('.slider-comment textarea').value;
-    submitRating(sheet, rating, comment);
-    // Refresh the ratings display
-    createQuotesRatings({ sheet, votesText });
-  });
+    const thankYouContainer = createTag('div', { class: 'no-slider' });
+    const title = createTag('h3', { id: toClassName(alreadySubmittedTitle) });
+    title.textContent = alreadySubmittedTitle;
+    const message = createTag('p');
+    message.textContent = alreadySubmittedText;
+    thankYouContainer.appendChild(title);
+    thankYouContainer.appendChild(message);
+    wrapper.appendChild(thankYouContainer);
+    return wrapper;
+  }
 
-  return container;
+  // Load all placeholder text
+  const [
+    submissionTitle,
+    submissionText,
+  ] = await Promise.all([
+    placeholders.replaceKey('rating-submission-title', getConfig()),
+    placeholders.replaceKey('rating-submission-text', getConfig()),
+  ]);
+
+  // Create the rating interface based on variant
+  if (isCarouselVariant) {
+    // Use hover-based rating for carousel variant
+    const hoverRating = await createHoverStarRating({
+      ratings: RATINGS_CONFIG,
+      onRatingSelect: async (rating) => {
+        // Create a single timer instance at the hover rating level
+        const timerAnimation = createTag('div', { class: 'timer' });
+
+        // Countdown function to manage the timer
+        const countdown = (bool, ratingValue) => {
+          if (bool) {
+            // Remove any existing timer
+            const existingTimer = hoverRating.querySelector('.timer');
+            if (existingTimer) {
+              existingTimer.remove();
+            }
+
+            // Add timer to current star element
+            const currentStar = hoverRating.querySelector(`[data-rating="${ratingValue}"]`);
+            const hoverStars = hoverRating.querySelector('.hover-stars');
+            if (currentStar && hoverStars) {
+              hoverStars.appendChild(timerAnimation);
+            }
+
+            timerAnimation.innerHTML = getLottie(
+              'countdown',
+              '/express/code/blocks/ratings/countdown.json',
+              false,
+              true,
+              false,
+              false,
+            );
+
+            let counter = 10;
+            window.ratingSubmitCountdown = setInterval(() => {
+              if (counter > 0) {
+                counter -= 1;
+              } else {
+                clearInterval(window.ratingSubmitCountdown);
+                window.ratingSubmitCountdown = null;
+                const submit = hoverRating.querySelector('input[type="submit"]');
+                if (submit) {
+                  submit.click();
+                }
+              }
+            }, 920);
+          } else if (window.ratingSubmitCountdown) {
+            clearInterval(window.ratingSubmitCountdown);
+            window.ratingSubmitCountdown = null;
+            timerAnimation.remove();
+          }
+        };
+
+        // Function to clean up previous rating state
+        const cleanupPreviousRating = () => {
+          // Clear any existing timer
+          countdown(false);
+        };
+
+        // Clean up previous rating state
+        cleanupPreviousRating();
+
+        // Wait for the next tick to ensure the comment box is in the DOM
+        await new Promise((resolve) => { setTimeout(resolve, 0); });
+
+        // Get the comment box and its elements
+        const commentBox = hoverRating.querySelector('.slider-comment');
+        if (!commentBox) return;
+
+        const textarea = commentBox.querySelector('textarea');
+        const submit = commentBox.querySelector('input[type="submit"]');
+
+        // Handle submission
+        let isSubmitting = false;
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          if (isSubmitting) return;
+          isSubmitting = true;
+          const comment = textarea.value;
+          submitRating(sheet, rating, comment);
+          localStorage.removeItem(`ccxActionRatingsFeedback${sheet}`);
+
+          // Show thank you message immediately after submission
+          const thankYouContainer = createTag('div', { class: 'no-slider' });
+          const title = createTag('h3', { id: toClassName(submissionTitle) });
+          title.textContent = submissionTitle;
+          const message = createTag('p');
+          message.textContent = submissionText;
+          thankYouContainer.appendChild(title);
+          thankYouContainer.appendChild(message);
+
+          // Replace the ratings interface with thank you message
+          wrapper.innerHTML = '';
+          wrapper.appendChild(thankYouContainer);
+
+          // Scroll to top of section if needed
+          const section = wrapper.closest('.section');
+          if (window.scrollY > section.offsetTop) {
+            window.scrollTo(0, section.offsetTop - 64);
+          }
+        };
+        submit.addEventListener('click', handleSubmit);
+
+        // Start countdown if feedback not required
+        const ratingConfig = RATINGS_CONFIG[rating - 1];
+        if (!ratingConfig.feedbackRequired) {
+          countdown(true, rating);
+        }
+
+        // Add event listeners for timer control
+        textarea.addEventListener('focus', () => {
+          countdown(false);
+        });
+
+        textarea.addEventListener('input', () => {
+          if (textarea.value !== '') {
+            countdown(false);
+          }
+        });
+      },
+    });
+    wrapper.appendChild(hoverRating);
+  } else {
+    // Use existing slider for other variants
+    const { container } = await createRatingSlider('', 'h3');
+    sliderFunctionality(container, {
+      sheetCamelCase: sheet,
+      ratings: RATINGS_CONFIG,
+    });
+    wrapper.appendChild(container);
+  }
+
+  return wrapper;
 }
 
 export default async function decorate($block) {
-  // Load placeholders module
-  const placeholders = await import(`${getLibs()}/features/placeholders.js`);
-
   addTempWrapperDeprecated($block, 'quotes');
+  lazyLoadLottiePlayer($block);
 
   const isSingularVariant = $block.classList.contains('singular');
   const isCarouselVariant = $block.classList.contains('carousel');
@@ -97,7 +249,8 @@ export default async function decorate($block) {
       const $img = $rows[0].children[0].querySelector('img');
       const backgroundUrl = $img.src;
 
-      const backgroundDesktopCSS = `no-repeat calc(-400px + 25%) -20px / 640px url("${backgroundUrl}"), no-repeat calc(450px + 75%) -20px / 640px url("${backgroundUrl}")`;
+      const backgroundDesktopCSS = `no-repeat calc(-400px + 25%) -20px / 640px url("${backgroundUrl}"), `
+        + `no-repeat calc(450px + 75%) -20px / 640px url("${backgroundUrl}")`;
       $desktopContainerBackground.style.background = backgroundDesktopCSS;
 
       const backgroundMobileCSS = `no-repeat -80px -48px / 750px url("${backgroundUrl}")`;
@@ -171,7 +324,8 @@ export default async function decorate($block) {
       ratingsDataSource = $rows[0].firstElementChild.textContent.trim();
       $rows.shift(); // Remove the ratings data source row
       // const config = getConfig();
-      // loadStyle(`${config.codeRoot}/blocks/ratings/ratings.css`); // Load ratings CSS when ratings are present
+      // Load ratings CSS when ratings are present
+      // loadStyle(`${config.codeRoot}/blocks/ratings/ratings.css`);
     }
 
     // Extract heading if present (should be the first or second row)
@@ -186,7 +340,7 @@ export default async function decorate($block) {
     if (hasRatings && ratingsDataSource) {
       $ratingsContainer = await createQuotesRatings({
         sheet: ratingsDataSource,
-        votesText: await placeholders.replaceKey('rating-votes', getConfig()),
+        isCarouselVariant: true,
       });
     }
 
