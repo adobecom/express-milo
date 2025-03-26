@@ -43,6 +43,9 @@ async function createQuotesRatings({
   // Create a wrapper for the rating interface
   const wrapper = createTag('div', { class: 'ratings' });
 
+  // Ensure Lottie player is loaded before proceeding
+  await lazyLoadLottiePlayer(wrapper);
+
   // If user can't rate yet, show the ratings container with stars and vote count
   if (!actionUsed) {
     const ratingsContainer = await createRatingsContainer({

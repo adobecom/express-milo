@@ -671,6 +671,9 @@ export async function createHoverStarRating({ ratings, onRatingSelect }) {
   const config = getConfig();
 
   const container = createTag('div', { class: 'hover-ratings' });
+  // Ensure Lottie player is loaded before proceeding
+  await lazyLoadLottiePlayer(container);
+
   const starsContainer = createTag('div', { class: 'hover-stars' });
   const tooltip = createTag('div', { class: 'hover-tooltip' });
 
