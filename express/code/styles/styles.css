@@ -710,6 +710,11 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
   margin-right: 4px;
 }
 
+:lang(ja) main .section {
+  max-width: 1024px;
+  margin: auto;
+}
+
 :lang(ja) main .section > .content  {
   text-align: left;
   padding: 60px 20px 0;
