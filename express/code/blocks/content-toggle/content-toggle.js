@@ -51,9 +51,16 @@ function initButton($block, $sections, index) {
       });
     };
 
-    if (index === 0) {
+    const toggleDefaultOption = $enclosingMain.querySelector('[data-toggle-default]');
+    const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
+    const defaultIndex = parseInt(defaultValue, 10) - 1;
+
+    if (index === (defaultIndex || 1)) {
       $buttons[index].classList.add('active');
-      updateBackgroundSize();
+      const resizeObserver = new ResizeObserver(() => {
+        updateBackgroundSize();
+      });
+      resizeObserver.observe($buttons[index]);
     }
 
     $buttons[index].addEventListener('click', () => {
