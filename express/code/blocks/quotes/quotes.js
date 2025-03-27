@@ -18,9 +18,14 @@ let getConfig;
 let loadStyle;
 
 // Initialize utils
-import(`${getLibs()}/utils/utils.js`).then((utils) => {
+let utils;
+try {
+  utils = await import(`${getLibs()}/utils/utils.js`);
   ({ createTag, getConfig, loadStyle } = utils);
-});
+} catch (error) {
+  window.lana?.log('Failed to load utils:', error, { tags: 'ax quotes' });
+  throw error;
+}
 
 function pickRandomFromArray(arr) {
   return arr[Math.floor(arr.length * Math.random())];

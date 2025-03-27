@@ -20,12 +20,13 @@ import(`${getLibs()}/utils/utils.js`).then((utils) => {
 });
 
 export async function getCurrentRatingStars(ratingAverage = 5, ratingTotal = 0, showRatingAverage = false, votesText = 'votes') {
-  return createStarRating({
+  const { stars } = await createStarRating({
     rating: ratingAverage,
     total: ratingTotal,
     showAverage: showRatingAverage,
     votesText,
   });
+  return stars;
 }
 
 export default async function decorate(block) {
@@ -337,13 +338,21 @@ export default async function decorate(block) {
     const heading = createTag(headingTag, { id: toClassName(title) });
     heading.textContent = title;
     headingWrapper.appendChild(heading);
-    const stars = await getCurrentRatingStars(
-      ratingAverage,
-      ratingTotal,
-      showRatingAverage,
-      votesText,
-    );
-    headingWrapper.appendChild(stars);
+    try {
+      const stars = await getCurrentRatingStars(
+        ratingAverage,
+        ratingTotal,
+        showRatingAverage,
+        votesText,
+      );
+      if (stars && stars instanceof Node) {
+        headingWrapper.appendChild(stars);
+      } else {
+        window.lana?.log('Invalid stars element returned from getCurrentRatingStars', { tags: 'ratings' });
+      }
+    } catch (error) {
+      window.lana?.log('Error creating rating stars:', error, { tags: 'ratings' });
+    }
     block.appendChild(headingWrapper);
     const textAndCTA = createTag('div', { class: 'no-slider' });
     const p = createTag('p');
