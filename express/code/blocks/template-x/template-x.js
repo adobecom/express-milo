@@ -48,8 +48,29 @@ function handlelize(str) {
 
 async function getTemplates(response, fallbackMsg, props) {
   const filtered = response.items.filter((item) => isValidTemplate(item));
+  // Sort templates based on templateOrder if present
+  if (props.templateOrder?.length > 0) {
+    console.log('Template Order specified:', props.templateOrder);
+    filtered.sort((a, b) => {
+      const indexA = props.templateOrder.indexOf(a.id);
+      const indexB = props.templateOrder.indexOf(b.id);
+      // If both templates are in templateOrder, sort by their position
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+      // If only one template is in templateOrder, put it first
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      // For templates not in templateOrder, maintain their original order
+      return 0;
+    });
+  }
+  console.log('Rendering templates in order:', filtered.map((t) => t.id));
   const templates = await Promise.all(
-    filtered.map(async (template) => renderTemplate(template, variant, props)),
+    filtered.map(async (template) => {
+      console.log('Rendering template:', template.id);
+      return renderTemplate(template, variant, props);
+    }),
   );
   await Promise.all(templates);
   return {
@@ -194,6 +215,7 @@ function constructProps(block) {
     backgroundAnimation: null,
     textColor: '#FFFFFF',
     loadedOtherCategoryCounts: false,
+    templateOrder: [],
   };
   Array.from(block.children).forEach((row) => {
     const cols = row.querySelectorAll('div');
@@ -208,8 +230,10 @@ function constructProps(block) {
       }
 
       if (key && value) {
-        // FIXME: facebook-post
-        if (['tasks', 'topics', 'locales', 'behaviors'].includes(key) || (['premium', 'animated'].includes(key) && value.toLowerCase() !== 'all')) {
+        // Handle template order
+        if (key === 'template order') {
+          props.templateOrder = value.split(',').map((id) => id.trim());
+        } else if (['tasks', 'topics', 'locales', 'behaviors'].includes(key) || (['premium', 'animated'].includes(key) && value.toLowerCase() !== 'all')) {
           props.filters[camelize(key)] = value;
         } else if (['yes', 'true', 'on', 'no', 'false', 'off'].includes(value.toLowerCase())) {
           props[camelize(key)] = ['yes', 'true', 'on'].includes(value.toLowerCase());
@@ -882,6 +906,8 @@ function updateQuery(functionWrapper, props, option) {
 
   if (paramType === 'sort') {
     props.sort = paramValue;
+    // Clear template order when user selects a sort option
+    props.templateOrder = [];
   } else {
     const filtersObj = props.filters;
 
