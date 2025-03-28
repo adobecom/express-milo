@@ -26,6 +26,15 @@ function decorateButton($block, $toggle) {
   $block.append($button);
 }
 
+function getDefatultToggleIndex($block) {
+  const $enclosingMain = $block.closest('main');
+  const toggleDefaultOption = $enclosingMain.querySelector('[data-toggle-default]');
+  const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
+  const parsedIndex = parseInt(defaultValue, 10);
+  const defaultIndex = !defaultValue || Number.isNaN(parsedIndex) ? 1 : parsedIndex - 1;
+  return defaultIndex;
+}
+
 function initButton($block, $sections, index) {
   const $enclosingMain = $block.closest('main');
 
@@ -68,11 +77,7 @@ function initButton($block, $sections, index) {
       updateBackgroundSize(newIndex);
     };
 
-    const toggleDefaultOption = $enclosingMain.querySelector('[data-toggle-default]');
-    const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
-    const defaultIndex = parseInt(defaultValue, 10) - 1;
-
-    if (index === (defaultIndex || 1)) {
+    if (index === getDefatultToggleIndex($block)) {
       setActiveButton(index);
     }
 
@@ -142,7 +147,7 @@ export default async function decorate(block) {
 
     if ($sections) {
       $sections.forEach(($section, index) => {
-        if (index > 0) {
+        if (index !== getDefatultToggleIndex(block)) {
           $section.style.display = 'none';
         }
       });
