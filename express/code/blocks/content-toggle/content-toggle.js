@@ -72,7 +72,7 @@ function initButton($block, $sections, index) {
     const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
     const defaultIndex = parseInt(defaultValue, 10) - 1;
 
-    if (index === (defaultIndex || 0)) {
+    if (index === (defaultIndex || 1)) {
       setActiveButton(index);
     }
 
