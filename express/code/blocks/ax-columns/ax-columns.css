@@ -1303,9 +1303,13 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 /* SEO variant styles */
 .ax-columns.seo {
-  max-width: 1200px;
+  max-width: 1440px;
   padding-left: 32px;
   padding-right: 32px;
+}
+
+.ax-columns.seo .column .button-container a {
+  font-size: var(--body-font-size-l);
 }
 
 .ax-columns.seo > div {
