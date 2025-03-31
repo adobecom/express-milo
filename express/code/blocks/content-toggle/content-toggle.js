@@ -31,7 +31,7 @@ function getDefatultToggleIndex($block) {
   const toggleDefaultOption = $enclosingMain.querySelector('[data-toggle-default]');
   const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
   const parsedIndex = parseInt(defaultValue, 10);
-  const defaultIndex = !defaultValue || Number.isNaN(parsedIndex) ? 1 : parsedIndex - 1;
+  const defaultIndex = !defaultValue || Number.isNaN(parsedIndex) ? 0 : parsedIndex - 1;
   return defaultIndex;
 }
 
