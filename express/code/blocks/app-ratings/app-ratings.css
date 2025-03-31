@@ -24,7 +24,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: var(--Marquee-grid-Card-Element-Padding, 24px);
+  gap: var(--Marquee-grid-Card-Element-Padding, 16px);
   align-self: stretch;
   padding: 16px;
 }
@@ -37,14 +37,17 @@
 
 .app-ratings .ratings img {
   height: 35px;
-  padding-left: 12px;
-  margin: 0;
+    padding-left: 12px;
+    margin: 0;
+    position: relative;
+    top: 2px;
 }
 
 @media screen and (min-width: 768px) {
   .app-ratings .ratings {
     flex-direction: row;
     padding: 0;
+    gap: 48px;
   }
   .app-ratings {
     padding : 32px 0px;

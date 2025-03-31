@@ -17,7 +17,6 @@ async function makeRating(store) {
         await replaceKey('app-store-ratings-apple-store', getConfig()) 
       ]
     )
-
     const ratings = ratingPlaceholder?.split(';') || []; 
     const link = ratings[2]?.trim();
     if (!link) {
@@ -34,6 +33,8 @@ async function makeRating(store) {
     await trackBranchParameters([storeLink]);
     const star =  getIconElementDeprecated('star')
     star.setAttribute('alt', starsPlaceholder)
+    star.setAttribute('role', 'img')
+    star.setAttribute('aria-hidden', 'true')
     return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
   }
   
@@ -41,11 +42,11 @@ async function makeRating(store) {
     const ratings = createTag('div', { class: 'ratings' });
     const userAgent = getMobileOperatingSystem();
     const cb = (el) => el && ratings.append(el);
-    console.log(userAgent)
-    // eslint-disable-next-line chai-friendly/no-unused-expressions
-    userAgent !== 'Android' && makeRating('apple').then(cb);
     // eslint-disable-next-line chai-friendly/no-unused-expressions
     userAgent !== 'iOS' && makeRating('google').then(cb);
+    // eslint-disable-next-line chai-friendly/no-unused-expressions
+    userAgent !== 'Android' && makeRating('apple').then(cb);
+   
     return ratings;
   }
   
