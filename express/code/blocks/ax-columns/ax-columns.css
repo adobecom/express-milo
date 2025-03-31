@@ -244,6 +244,18 @@ main .section .ax-columns.enterprise .column h2 {
   font-size: var(--heading-font-size-xl);
 }
 
+.ax-columns h1 em {
+  font-style: normal;
+  background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
+  background-size: 400% 400%;
+  -webkit-animation: buttonGradient 45s ease infinite;
+  -moz-animation: buttonGradient 45s ease infinite;
+  animation: buttonGradient 45s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .section .ax-columns h1.columns-heading-very-long {
   font-size: var(--heading-font-size-l);
 }
@@ -1287,5 +1299,52 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .ax-columns.slim-padding .column {
   padding: 20px;
+}
+
+/* SEO variant styles */
+.ax-columns.seo {
+  max-width: 1200px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.ax-columns.seo > div {
+  display: flex;
+  flex-direction: row;
+  gap: 64px;
+  align-items: center;
+}
+
+.ax-columns.seo .column {
+  width: 50%;
+  padding: 40px 0;
+}
+
+.ax-columns.seo .column-picture {
+  order: 2;
+  padding: 0;
+}
+
+.ax-columns.seo .column-picture img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .ax-columns.seo {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .ax-columns.seo > div {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .ax-columns.seo .column {
+    width: 100%;
+    padding: 20px 0;
+  }
 }
 
