@@ -37,7 +37,6 @@ async function makeRating(store) {
   const star = getIconElementDeprecated('star');
   star.setAttribute('alt', starsPlaceholder);
   star.setAttribute('role', 'img');
-  star.setAttribute('aria-hidden', 'true');
   return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
 }
 
