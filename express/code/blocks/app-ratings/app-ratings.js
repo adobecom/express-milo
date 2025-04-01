@@ -36,7 +36,6 @@ async function makeRating(store) {
   await trackBranchParameters([storeLink]);
   const star = getIconElementDeprecated('star');
   star.setAttribute('alt', starsPlaceholder);
-  star.setAttribute('role', 'img');
   return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
 }
 
