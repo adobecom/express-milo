@@ -67,6 +67,11 @@ main .section .ax-columns.enterprise .column h2 {
   background-size: cover;
   background-position: center;
   z-index: -1;
+  opacity: 0.5;
+}
+
+.ax-columns.seo .free-plan-container {
+  background: transparent;
 }
 
 .section:not(:has(> .ax-columns:not(.centered))) > .ax-columns.centered {
