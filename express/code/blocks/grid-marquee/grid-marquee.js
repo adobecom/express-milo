@@ -2,6 +2,9 @@ import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecate
 
 let createTag; let getConfig;
 
+const APPLE = 'apple';
+const GOOGLE = 'google';
+
 let currDrawer = null;
 const largeMQ = window.matchMedia('(min-width: 1280px)');
 const mediumMQ = window.matchMedia('(min-width: 768px)');
@@ -199,28 +202,52 @@ function decorateHeadline(headline) {
 
 async function makeRating(store) {
   const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-  const ratings = (await replaceKey('app-store-ratings', getConfig()))?.split(';') || [];
+
+  const [ratingPlaceholder,
+    starsPlaceholder,
+    playStorePlaceholder,
+    appleStorePlaeholder] = await Promise.all(
+    [
+      await replaceKey('app-store-ratings', getConfig()),
+      await replaceKey('app-store-stars', getConfig()),
+      await replaceKey('app-store-ratings-play-store', getConfig()),
+      await replaceKey('app-store-ratings-apple-store', getConfig()),
+    ],
+  );
+  const ratings = ratingPlaceholder?.split(';') || [];
   const link = ratings[2]?.trim();
   if (!link) {
     return null;
   }
-  const [score, cnt] = ratings[['apple', 'google'].indexOf(store)].split(',').map((str) => str.trim());
-  const storeLink = createTag('a', { href: link }, getIconElementDeprecated(`${store}-store`));
+
+  const storeTypeIndex = [APPLE, GOOGLE].indexOf(store);
+  const [score, cnt] = ratings[storeTypeIndex].split(',').map((str) => str.trim());
+  const ariaLabel = store === APPLE ? appleStorePlaeholder : playStorePlaceholder;
+  const storeLink = createTag('a', { href: link,
+  }, getIconElementDeprecated(`${store}-store`));
+  storeLink.setAttribute('aria-label', ariaLabel);
   const { default: trackBranchParameters } = await import('../../scripts/branchlinks.js');
   await trackBranchParameters([storeLink]);
-  return createTag('div', { class: 'ratings-container' }, [score, getIconElementDeprecated('star'), cnt, storeLink]);
+  const star = getIconElementDeprecated('star');
+  star.setAttribute('aria-label', starsPlaceholder);
+  star.setAttribute('role', 'img');
+  return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
 }
 
-function makeRatings() {
+async function makeRatings() {
   const ratings = createTag('div', { class: 'ratings' });
   const userAgent = getMobileOperatingSystem();
-  const cb = (el) => el && ratings.append(el);
-  // eslint-disable-next-line chai-friendly/no-unused-expressions
-  userAgent !== 'Android' && makeRating('apple').then(cb);
-  // eslint-disable-next-line chai-friendly/no-unused-expressions
-  userAgent !== 'iOS' && makeRating('google').then(cb);
+  if (userAgent !== 'Android') {
+    const appleElement = await makeRating('apple');
+    appleElement && ratings.append(appleElement);
+  }
+  if (userAgent !== 'iOS') {
+    const googleElement = await makeRating('google');
+    googleElement && ratings.append(googleElement);
+  }
   return ratings;
 }
+
 
 export default async function init(el) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
