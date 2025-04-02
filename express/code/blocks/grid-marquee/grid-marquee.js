@@ -258,7 +258,7 @@ export default async function init(el) {
   const cards = items.map((item) => toCard(item));
   const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
   [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
-  foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [makeRatings()] : []));
+  foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [await makeRatings()] : []));
   background.classList.add('background');
   el.append(foreground);
   new IntersectionObserver((entries, ob) => {
