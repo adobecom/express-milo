@@ -38,14 +38,9 @@ async function makeRating(store) {
   const ratingsContainerAria = score + " " + starsPlaceholder + " " + cnt; 
 
   const star = getIconElementDeprecated('star');
+  star.setAttribute('role', 'img')
   star.setAttribute('aria-label', starsPlaceholder);
-  star.setAttribute('role', 'img');
-  star.setAttribute('aria-hidden' , 'true')
-  const b = createTag('div', { class: 'ratings-container'}, [score, star, cnt]);
-  b.setAttribute('role', 'status')
-  b.setAttribute('aria-label', ratingsContainerAria);
-  const a = createTag('div' , { class :"ratings-container"}, [b, storeLink])
-  return a
+  return  createTag('div', { class: 'ratings-container'}, [score, star, cnt, storeLink]);
 }
 
 async function makeRatings() {
