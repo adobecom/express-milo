@@ -34,10 +34,18 @@ async function makeRating(store) {
   storeLink.setAttribute('aria-label', ariaLabel);
   const { default: trackBranchParameters } = await import('../../scripts/branchlinks.js');
   await trackBranchParameters([storeLink]);
+
+  const ratingsContainerAria = score + " " + starsPlaceholder + " " + cnt; 
+
   const star = getIconElementDeprecated('star');
   star.setAttribute('aria-label', starsPlaceholder);
   star.setAttribute('role', 'img');
-  return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
+  star.setAttribute('aria-hidden' , 'true')
+  const b = createTag('div', { class: 'ratings-container'}, [score, star, cnt]);
+  b.setAttribute('role', 'status')
+  b.setAttribute('aria-label', ratingsContainerAria);
+  const a = createTag('div' , { class :"ratings-container"}, [b, storeLink])
+  return a
 }
 
 async function makeRatings() {
