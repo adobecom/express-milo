@@ -6,13 +6,16 @@ function setStepDetails(block, indexOpenedStep) {
 
   listItems.forEach((item, i) => {
     const detail = item.querySelector('.detail-container');
+    const isOpen = i === indexOpenedStep;
 
-    if (i === indexOpenedStep) {
+    if (isOpen) {
       detail.classList.remove('closed');
       detail.style.maxHeight = `${detail.scrollHeight}px`;
+      item.setAttribute('aria-expanded', 'true');
     } else {
       detail.classList.add('closed');
       detail.style.maxHeight = '0';
+      item.setAttribute('aria-expanded', 'false');
     }
   });
 }
@@ -24,10 +27,18 @@ function buildAccordion(block, rows, stepsContent) {
   rows.forEach((row, i) => {
     const [stepTitle, stepDetail] = row.querySelectorAll(':scope div');
 
-    const newStepTitle = createTag('h3');
+    const titleId = `step-title-${i}`;
+    const detailId = `step-detail-${i}`;
+
+    const newStepTitle = createTag('h3', { id: titleId });
     newStepTitle.replaceChildren(...stepTitle.childNodes);
 
-    const listItem = createTag('LI', { class: 'step', tabindex: '0' });
+    const listItem = createTag('LI', {
+      class: 'step',
+      tabindex: '0',
+      'aria-expanded': i === 0 ? 'true' : 'false',
+      'aria-controls': detailId,
+    });
     list.append(listItem);
 
     const listItemIndicator = createTag('div', { class: 'step-indicator' });
@@ -36,7 +47,11 @@ function buildAccordion(block, rows, stepsContent) {
     const detailText = stepDetail;
     detailText && detailText.classList.add('detail-text');
 
-    const detailContainer = createTag('div', { class: 'detail-container' });
+    const detailContainer = createTag('div', {
+      class: 'detail-container',
+      id: detailId,
+      'aria-labelledby': titleId,
+    });
 
     if (i !== 0) {
       detailContainer.classList.add('closed');
