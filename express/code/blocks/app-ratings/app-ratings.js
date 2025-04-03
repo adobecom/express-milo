@@ -6,8 +6,7 @@ let getConfig;
 const APPLE = 'apple';
 const GOOGLE = 'google';
 
-async function makeRating(store, ratingPlaceholder,starsPlaceholder,playStoreLabelPlaceholder,appleStoreLabelPlaceholder) {
-
+async function makeRating(store, ratingPlaceholder, starsPlaceholder, playStoreLabelPlaceholder, appleStoreLabelPlaceholder) {
   const ratings = ratingPlaceholder?.split(';') || [];
   const link = ratings[2]?.trim();
   if (!link) {
@@ -30,15 +29,15 @@ async function makeRating(store, ratingPlaceholder,starsPlaceholder,playStoreLab
   return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
 }
 
-async function makeRatings(ratingPlaceholder,starsPlaceholder,playStoreLabelPlaceholder,appleStoreLabelPlaceholder) {
+async function makeRatings(ratingPlaceholder, starsPlaceholder, playStoreLabelPlaceholder, appleStoreLabelPlaceholder) {
   const ratings = createTag('div', { class: 'ratings' });
   const userAgent = getMobileOperatingSystem();
   if (userAgent !== 'Android') {
-    const appleElement = await makeRating('apple',ratingPlaceholder,starsPlaceholder,playStoreLabelPlaceholder,appleStoreLabelPlaceholder);
+    const appleElement = await makeRating('apple', ratingPlaceholder, starsPlaceholder, playStoreLabelPlaceholder, appleStoreLabelPlaceholder);
     appleElement && ratings.append(appleElement);
   }
   if (userAgent !== 'iOS') {
-    const googleElement = await makeRating('google',ratingPlaceholder,starsPlaceholder,playStoreLabelPlaceholder,appleStoreLabelPlaceholder);
+    const googleElement = await makeRating('google', ratingPlaceholder, starsPlaceholder, playStoreLabelPlaceholder, appleStoreLabelPlaceholder);
     googleElement && ratings.append(googleElement);
   }
   return ratings;
@@ -51,12 +50,12 @@ export default async function decorate(block) {
     starsPlaceholder,
     playStoreLabelPlaceholder,
     appleStoreLabelPlaceholder] = await Promise.all(
-      [
-        replaceKey('app-store-ratings', getConfig()),
-        replaceKey('app-store-stars', getConfig()),
-        replaceKey('app-store-ratings-play-store', getConfig()),
-        replaceKey('app-store-ratings-apple-store', getConfig()),
-      ],
-    );
-  block.append(await makeRatings(ratingPlaceholder,starsPlaceholder,playStoreLabelPlaceholder,appleStoreLabelPlaceholder));
+    [
+      replaceKey('app-store-ratings', getConfig()),
+      replaceKey('app-store-stars', getConfig()),
+      replaceKey('app-store-ratings-play-store', getConfig()),
+      replaceKey('app-store-ratings-apple-store', getConfig()),
+    ],
+  );
+  block.append(await makeRatings(ratingPlaceholder, starsPlaceholder, playStoreLabelPlaceholder, appleStoreLabelPlaceholder));
 }
