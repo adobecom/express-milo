@@ -5,17 +5,14 @@ const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
 function initializeCarousel(selector, parent) {
-  let currentIndex = 0;
+  let currentIndex = window.innerWidth <= smalLViewport ? 1 : 0;
   let scrollCount = 1;
   let touchStartX = 0;
   let touchEndX = 0;
   let scrolling = false;
-  let isInitialLoad = true;
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
-
-  const isGridLayout = !!parent.closest('.grid');
 
   carouselContent.forEach((el, index) => {
     el.classList.add('basic-carousel-element');
@@ -24,9 +21,6 @@ function initializeCarousel(selector, parent) {
     el.setAttribute('aria-label', `Item ${index + 1} of ${carouselContent.length}`);
 
     el.addEventListener('focus', () => {
-      if (isGridLayout && window.innerWidth <= smalLViewport) {
-        return;
-      }
       currentIndex = index;
     });
     el.addEventListener('mouseleave', () => {
@@ -55,8 +49,8 @@ function initializeCarousel(selector, parent) {
     'aria-label': ariaLabel,
   });
 
-  const faderLeft = createTag('div', { class: 'basic-carousel-fader-left' });
-  const faderRight = createTag('div', { class: 'basic-carousel-fader-right' });
+  const faderLeft = createTag('div', { class: 'basic-carousel-fader-left arrow-hidden' });
+  const faderRight = createTag('div', { class: 'basic-carousel-fader-right arrow-hidden' });
   const arrowLeft = createTag('a', {
     class: 'button basic-carousel-arrow basic-carousel-arrow-left',
     'aria-label': 'Scroll carousel left',
@@ -80,14 +74,6 @@ function initializeCarousel(selector, parent) {
   platform.append(rightTrigger);
   const elements = platform.querySelectorAll('.template.basic-carousel-element');
 
-  if (isGridLayout) {
-    platform.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-  }
-
   const determineScrollCount = () => {
     if (platform.closest('.four')) return 4;
     if (platform.closest('.three')) return 3;
@@ -99,6 +85,7 @@ function initializeCarousel(selector, parent) {
   const updateCarousel = () => {
     if (scrolling) return;
     scrolling = true;
+
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
 
@@ -112,40 +99,16 @@ function initializeCarousel(selector, parent) {
       }
     }
 
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      const totalTemplates = carouselContent.length;
-      const midPoint = Math.ceil(totalTemplates / 2);
-      carouselContent.forEach((template, index) => {
-        if (index < midPoint) {
-          template.style.gridArea = `1 / ${index + 1}`;
-        } else {
-          template.style.gridArea = `2 / ${index - midPoint + 1}`;
-        }
-      });
-    }
+    const newScrollPos = window.innerWidth <= smalLViewport
+      ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
+      : currentIndex * elementWidth;
 
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      const gap = 10;
-      const twoTemplatesWidth = (elementWidth * 2) + gap;
-      const centerOffset = (platformWidth - twoTemplatesWidth) / 2;
-      const newScrollPos = isInitialLoad ? 0 : (currentIndex * (elementWidth + gap)) - centerOffset;
-      platform.scrollTo({
-        left: newScrollPos,
-        behavior: isInitialLoad ? 'auto' : 'smooth',
-      });
+    platform.scrollTo({
+      left: newScrollPos,
+      behavior: 'smooth',
+    });
 
-      isInitialLoad = false;
-    } else {
-      const newScrollPos = window.innerWidth <= smalLViewport
-        ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
-        : currentIndex * elementWidth;
-      platform.scrollTo({
-        left: newScrollPos,
-        behavior: 'smooth',
-      });
-    }
-
-    if (window.innerWidth <= smalLViewport && !isGridLayout) {
+    if (window.innerWidth <= smalLViewport) {
       elements.forEach((el, index) => {
         if (determineScrollCount() === 1) {
           el.style.opacity = '1';
@@ -157,7 +120,7 @@ function initializeCarousel(selector, parent) {
       });
     } else {
       elements.forEach((el) => {
-        el.style.opacity = '1';
+        el.style.opacity = '';
       });
     }
 
@@ -165,42 +128,27 @@ function initializeCarousel(selector, parent) {
       scrolling = false;
     }, 300);
 
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
-      const eleLength = Math.floor(elements.length / 2) - 1;
-      faderRight.classList.toggle('arrow-hidden', currentIndex + 1 === eleLength);
-    } else {
-      faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
-      faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
-    }
+    elements.forEach((el, index) => {
+      el.addEventListener('focus', () => {
+        currentIndex = index;
+        updateCarousel();
+      });
+    });
+
+    faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
+    faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
   };
 
   faderLeft.addEventListener('click', () => {
-    if (scrolling) return;
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      if (platform.scrollLeft <= 0) return;
-      currentIndex = Math.max(0, currentIndex - 1);
-    } else {
-      if (currentIndex === 0) return;
-      currentIndex -= scrollCount;
-      currentIndex = Math.max(0, currentIndex);
-    }
+    if (scrolling || currentIndex === 0) return;
+    currentIndex -= scrollCount;
+    currentIndex = Math.max(0, currentIndex);
     updateCarousel();
   });
 
   faderRight.addEventListener('click', () => {
-    if (scrolling) return;
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      const maxScroll = platform.scrollWidth - platform.offsetWidth;
-      if (platform.scrollLeft >= maxScroll) return;
-
-      const templatesPerRow = Math.floor(elements.length / 2);
-      const maxIndex = templatesPerRow + 2;
-      currentIndex = Math.min(maxIndex, currentIndex + 1);
-    } else {
-      if (currentIndex + scrollCount >= elements.length) return;
-      currentIndex += scrollCount;
-    }
+    if (scrolling || currentIndex + scrollCount >= elements.length) return;
+    currentIndex += scrollCount;
     updateCarousel();
   });
 
@@ -230,22 +178,6 @@ function initializeCarousel(selector, parent) {
       }
       return;
     }
-
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      const tappedElement = document.elementFromPoint(
-        e.changedTouches[0].clientX,
-        e.changedTouches[0].clientY,
-      );
-      const isCard = tappedElement?.closest('.template.basic-carousel-element');
-      if (isCard) {
-        const editButton = isCard.querySelector('.button-container a[title="Edit this template"]');
-        if (editButton?.href) {
-          window.location.href = editButton.href;
-        }
-      }
-      return;
-    }
-
     const tappedElement = document.elementFromPoint(
       e.changedTouches[0].clientX,
       e.changedTouches[0].clientY,
