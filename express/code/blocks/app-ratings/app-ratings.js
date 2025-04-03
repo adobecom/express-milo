@@ -35,8 +35,6 @@ async function makeRating(store) {
   const { default: trackBranchParameters } = await import('../../scripts/branchlinks.js');
   await trackBranchParameters([storeLink]);
 
-  const ratingsContainerAria = score + " " + starsPlaceholder + " " + cnt; 
-
   const star = getIconElementDeprecated('star');
   star.setAttribute('role', 'img')
   star.setAttribute('aria-label', starsPlaceholder);
