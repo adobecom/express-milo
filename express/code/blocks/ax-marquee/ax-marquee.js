@@ -464,6 +464,7 @@ async function handleContent(div, block, animations) {
     ];
     if (inlineButtons.length) {
       const primaryCta = inlineButtons[0];
+      formatDynamicCartLink(primaryCta);
       primaryCta.classList.add('button', 'accent', 'primaryCTA', 'xlarge');
       BlockMediator.set('primaryCtaUrl', primaryCta.href);
       primaryCta.parentElement.classList.add(
