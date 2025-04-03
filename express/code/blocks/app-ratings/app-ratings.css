@@ -2,11 +2,9 @@
   max-width: initial;
   text-align: center;
   display: flex;
-  padding: 8px 16px;
   justify-content: center;
   align-items: center;
-  align-content: center;
-  gap: 16px 48px;
+  align-content: center; 
   align-self: stretch;
   flex-wrap: wrap; 
 }
@@ -46,12 +44,10 @@
 @media screen and (min-width: 768px) {
   .app-ratings .ratings {
     flex-direction: row;
-    padding: 0;
+    padding :  16px 32px;
     gap: 48px;
   }
-  .app-ratings {
-    padding : 32px 0px;
-  }
+ 
 }
 
 @media screen and (min-width: 1280px) {
@@ -60,8 +56,3 @@
   }
  
 }
-
-
-.sr-text
-
-{ position: absolute; clip: rect(1px, 1px, 1px, 1px); -webkit-clip-path: inset(50%) ; clip-path: inset(50%); padding: 0; border: 0; height: 1px; width: 1px; white-space: nowrap; overflow: hidden; }
