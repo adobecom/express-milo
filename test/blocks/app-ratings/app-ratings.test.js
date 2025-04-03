@@ -1,4 +1,5 @@
 import { readFile } from '@web/test-runner-commands';
+import { expect } from '@esm-bundle/chai';
 
 const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 window.isTestEnv = true;
@@ -24,6 +25,9 @@ describe('App Ratings', () => {
   });
 
   it('App Ratings exists', async () => {
-    await decorate(document.getElementsByClassName('app-ratings')[0]);
+    const block = document.getElementsByClassName('app-ratings')[0];
+    await decorate(block);
+    const googleRating = block.querySelector('.ratings');
+    expect(googleRating).to.exist;
   });
 });
