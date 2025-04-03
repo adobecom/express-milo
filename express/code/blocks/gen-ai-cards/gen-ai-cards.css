@@ -6,8 +6,11 @@
 .gen-ai-cards {
   padding: 0 28px;
   max-width: 1440px;
-
   margin: auto;
+}
+
+.gen-ai-cards.homepage {
+  max-width: unset;
 }
 
 .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
