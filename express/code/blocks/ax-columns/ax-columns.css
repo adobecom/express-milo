@@ -1247,6 +1247,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns .column-picture{
     width:  unset;
   }
+
+  .section .ax-columns.xl-heading h1 {
+    font-size: var(--heading-font-size-xl);
+  }
 }
 
 .ax-columns.extra-wide {
