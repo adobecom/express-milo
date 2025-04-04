@@ -139,17 +139,54 @@
   border-radius: 8px;
   border: none;
   margin-bottom: 0;
-  background: white;
+  background: #FFFFFF;
+  position: relative;
+}
+
+.faqv2-accordion.expandable.header-accordion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1%;
+  height: 100%;
+  background: linear-gradient(to bottom, #FF4885, #EC5153, #F2693C);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+  border-radius: 8px 0 0 8px;
+  pointer-events: none;
+}
+
+.faqv2-accordion.expandable.header-accordion::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border-radius: 8px;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
+  z-index: 0;
+  transition: clip-path 0.3s ease;
+  clip-path: inset(0 0 0 0);
+  pointer-events: none;
 }
 
 .faqv2-accordion.expandable.header-accordion.rounded-corners {
   border-radius: 8px 8px 0 0;
-  background: linear-gradient(to bottom,
-      #FF4885,
-      #EC5153,
-      #F2693C) left / 1% 100% no-repeat,
-    #FAFAFA;
+  background: #FAFAFA;
+}
+
+.faqv2-accordion.expandable.header-accordion.rounded-corners::before {
+  opacity: 1;
+  border-radius: 8px 0 0 0;
+}
+
+.faqv2-accordion.expandable.header-accordion.rounded-corners::after {
+  border-radius: 8px 8px 0 0;
+  /* Increase the bottom clip to ensure no shadow shows */
+  clip-path: inset(0 0 100% 0);
 }
 
 .faqv2.expandable.longform .faqv2-accordion.expandable.header-accordion.rounded-corners,
@@ -169,7 +206,7 @@
       #EC5153,
       #F2693C,
       #FC7D00) left / 1% 100% no-repeat,
-    white;
+    #FAFAFA;
 }
 
 .faqv2.expandable.longform .faqv2-accordion.expandable.sub-header-accordion {
@@ -178,6 +215,7 @@
 
 .faqv2-accordion.expandable.sub-header-accordion.collapsed {
   display: flex;
+  
 }
 
 .faqv2.expandable.longform .faqv2-accordion.expandable.sub-header-accordion.collapsed {
