@@ -267,13 +267,13 @@ export default async function init(el) {
     starsPlaceholder,
     playStoreLabelPlaceholder,
     appleStoreLabelPlaceholder] = await Promise.all(
-      [
-        replaceKey('app-store-ratings', getConfig()),
-        replaceKey('app-store-stars', getConfig()),
-        replaceKey('app-store-ratings-play-store', getConfig()),
-        replaceKey('app-store-ratings-apple-store', getConfig()),
-      ],
-    ); 
+    [
+      replaceKey('app-store-ratings', getConfig()),
+      replaceKey('app-store-stars', getConfig()),
+      replaceKey('app-store-ratings-play-store', getConfig()),
+      replaceKey('app-store-ratings-apple-store', getConfig()),
+    ],
+  );
   const rows = [...el.querySelectorAll(':scope > div')];
   const [headline, background, items, foreground] = [rows[0], rows[1], rows.slice(2), createTag('div', { class: 'foreground' })];
   const logo = getIconElementDeprecated('adobe-express-logo');
