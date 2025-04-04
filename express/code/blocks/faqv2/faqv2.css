@@ -140,9 +140,9 @@
   border: none;
   margin-bottom: 0;
   background: linear-gradient(to bottom,
-      #5C5CE0,
-      #9C49C6,
-      #BF38A5) left / 1% 100% no-repeat,
+      #FF4885,
+      #EC5153,
+      #F2693C) left / 1% 100% no-repeat,
     white;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
 }
@@ -165,11 +165,9 @@
   display: none;
   margin-bottom: 6px;
   background: linear-gradient(to bottom,
-      #D13381,
-      #DE3E67,
       #EC5153,
       #F2693C,
-      #F08420) left / 1% 100% no-repeat,
+      #FC7D00) left / 1% 100% no-repeat,
     white;
 }
 
