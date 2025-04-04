@@ -358,6 +358,10 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     font-size: 36px;
   }
 
+  .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
+    margin-left: 8px;
+  }
+
   .gen-ai-cards .carousel-container .carousel-fader-left,
   .gen-ai-cards .carousel-container .carousel-fader-right{
       background: unset;
