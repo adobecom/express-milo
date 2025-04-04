@@ -370,11 +370,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
       background: unset;
   }
 
-  main .gen-ai-cards.homepage .carousel-container .carousel-fader-left,
-  main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
-    display: none;
-  }
-
   .gen-ai-cards .carousel-container .carousel-platform {
     gap: 22px;
   }
