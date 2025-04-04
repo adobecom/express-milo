@@ -35,7 +35,7 @@ describe('grid-marquee', () => {
     };
     window.IntersectionObserver = mockIntersectionObserver;
     block = document.querySelector('.grid-marquee');
-    decorate(block);
+    await decorate(block);
   });
   after(() => {
     window.IntersectionObserver = oldIO;
