@@ -188,8 +188,7 @@
 
 .faqv2-accordion.expandable.header-accordion.rounded-corners::after {
   border-radius: 8px 8px 0 0;
-  /* Increase the bottom clip to ensure no shadow shows */
-  clip-path: inset(0 0 100% 0);
+  clip-path: inset(0);
 }
 
 .faqv2.expandable.longform .faqv2-accordion.expandable.header-accordion.rounded-corners,
@@ -210,6 +209,7 @@
   position: relative;
   visibility: hidden;
   transition: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .faqv2-accordion.expandable.sub-header-accordion::before {
@@ -235,10 +235,9 @@
   right: -1px;
   bottom: -1px;
   border-radius: 0 0 8px 8px;
-  box-shadow: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 0;
-  transition: clip-path 0.3s ease, box-shadow 0.3s ease;
-  clip-path: inset(0 0 0 0);
+  transition: all 0.3s ease;
   pointer-events: none;
   background: transparent;
 }
@@ -259,8 +258,7 @@
 }
 
 .faqv2-accordion.expandable.sub-header-accordion.collapsed::after {
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
-  clip-path: inset(0 0 100% 0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .faqv2.expandable.longform .faqv2-accordion.expandable.sub-header-accordion {
