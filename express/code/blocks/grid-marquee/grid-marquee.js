@@ -13,6 +13,7 @@ function drawerOff() {
   currDrawer.classList.add('hide');
   currDrawer.querySelector('video')?.pause()?.catch(() => {});
   currDrawer = null;
+  if (!largeMQ.matches) document.body.classList.remove('disable-scroll');
 }
 function drawerOn(drawer) {
   drawerOff();
@@ -24,6 +25,7 @@ function drawerOn(drawer) {
     video.play().catch(() => {});
   }
   currDrawer = drawer;
+  if (!largeMQ.matches) document.body.classList.add('disable-scroll');
 }
 document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
 let isTouch;

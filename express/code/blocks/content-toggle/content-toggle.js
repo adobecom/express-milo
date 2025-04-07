@@ -26,23 +26,34 @@ function decorateButton($block, $toggle) {
   $block.append($button);
 }
 
+function getDefatultToggleIndex($block) {
+  const $enclosingMain = $block.closest('main');
+  const toggleDefaultOption = $enclosingMain.querySelector('[data-toggle-default]');
+  const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
+  const parsedIndex = parseInt(defaultValue, 10);
+  const defaultIndex = !defaultValue || Number.isNaN(parsedIndex) ? 0 : parsedIndex - 1;
+  return defaultIndex;
+}
+
 function initButton($block, $sections, index) {
   const $enclosingMain = $block.closest('main');
 
   if ($enclosingMain) {
     const $buttons = $block.querySelectorAll('.content-toggle-button');
     const $toggleBackground = $block.querySelector('.toggle-background');
+    let currentResizeObserver = null;
 
-    const updateBackgroundSize = () => {
+    const updateBackgroundSize = (activeIndex) => {
       requestAnimationFrame(() => {
-        if ($buttons[index].getBoundingClientRect().width === 0) {
-          requestAnimationFrame(updateBackgroundSize);
+        const activeButton = $buttons[activeIndex];
+        if (activeButton.getBoundingClientRect().width === 0) {
+          requestAnimationFrame(() => updateBackgroundSize(activeIndex));
           return;
         }
-        const buttonWidth = $buttons[index].getBoundingClientRect().width + 5;
-        let leftOffset = index * 10;
+        const buttonWidth = activeButton.getBoundingClientRect().width + 5;
+        let leftOffset = activeIndex * 10;
 
-        for (let i = 0; i < index; i += 1) {
+        for (let i = 0; i < activeIndex; i += 1) {
           leftOffset += $buttons[i].getBoundingClientRect().width;
         }
 
@@ -51,32 +62,23 @@ function initButton($block, $sections, index) {
       });
     };
 
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        const activeButton = $block.querySelector('button.active');
-        if (activeButton) {
-          const buttonWidth = activeButton.getBoundingClientRect().width + 5;
-          let leftOffset = 0;
+    const setActiveButton = (newIndex) => {
+      if (currentResizeObserver) {
+        currentResizeObserver.disconnect();
+      }
 
-          Array.from($buttons).forEach((btn, i) => {
-            if (btn === activeButton) {
-              leftOffset += i * 10;
-            } else if (Array.from($buttons).indexOf(activeButton) > i) {
-              leftOffset += btn.getBoundingClientRect().width + 10;
-            }
-          });
+      currentResizeObserver = new ResizeObserver(() => {
+        updateBackgroundSize(newIndex);
+      });
+      currentResizeObserver.observe($buttons[newIndex]);
 
-          $toggleBackground.style.left = `${leftOffset}px`;
-          $toggleBackground.style.width = `${buttonWidth}px`;
-        }
-      }, 16);
-    });
+      $buttons.forEach(($btn) => $btn.classList.remove('active'));
+      $buttons[newIndex].classList.add('active');
+      updateBackgroundSize(newIndex);
+    };
 
-    if (index === 0) {
-      $buttons[index].classList.add('active');
-      updateBackgroundSize();
+    if (index === getDefatultToggleIndex($block)) {
+      setActiveButton(index);
     }
 
     $buttons[index].addEventListener('click', () => {
@@ -85,9 +87,7 @@ function initButton($block, $sections, index) {
       const offsetPosition = blockPosition + window.scrollY - 80;
 
       if ($activeButton !== $buttons[index]) {
-        $activeButton.classList.remove('active');
-        $buttons[index].classList.add('active');
-        updateBackgroundSize();
+        setActiveButton(index);
         $sections.forEach(($section) => {
           if ($buttons[index].dataset.text === $section.dataset.toggle.toLowerCase()) {
             $section.style.display = 'block';
@@ -147,7 +147,7 @@ export default async function decorate(block) {
 
     if ($sections) {
       $sections.forEach(($section, index) => {
-        if (index > 0) {
+        if (index !== getDefatultToggleIndex(block)) {
           $section.style.display = 'none';
         }
       });
