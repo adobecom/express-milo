@@ -148,9 +148,8 @@
   display: none;
 }
 
-/* Author image styles */
-.quotes .quote .author .image {
-  padding-right: 10px;
+.quotes .quote .author .summary p:first-of-type {
+  font-size: 14px;
 }
 
 .quotes .quote .author .image img {
