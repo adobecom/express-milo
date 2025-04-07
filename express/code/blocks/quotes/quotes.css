@@ -13,8 +13,12 @@
   width: 100%;
 }
 
-.basic-carousel-container .template.basic-carousel-element.quote:first-child {
+.basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
   margin-left: 30px;
+}
+
+.basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
+  margin-left: 16px;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
