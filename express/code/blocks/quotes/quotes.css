@@ -673,6 +673,10 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   font-weight: bold;
 }
 
+.quotes .quotes-ratings-wrapper .content {
+  text-align: center;
+}
+
 .quotes h2,
 .quotes h3,
 .quotes h4,
