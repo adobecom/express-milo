@@ -432,6 +432,27 @@
     border-radius: 50%;
 }
 
+.basic-carousel-container::before,
+.basic-carousel-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.basic-carousel-container::before {
+  left: 0;
+  background: linear-gradient(to right, #fff 0%, transparent 100%);
+}
+
+.basic-carousel-container::after {
+  right: 0;
+  background: linear-gradient(to left, #fff 0%, transparent 100%);
+}
+
 .basic-carousel-container a.button.basic-carousel-play-pause-button::before {
     content: "";
     position: absolute;
