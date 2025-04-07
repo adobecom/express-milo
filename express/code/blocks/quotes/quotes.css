@@ -534,6 +534,9 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   .quotes.carousel .quotes-ratings-wrapper .container {
     flex-direction: row;
+    max-width: 1300px;
+    width: unset;
+    display: block;
   }
 
   .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
