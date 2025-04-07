@@ -145,6 +145,10 @@
   display: none;
 }
 
+.quotes.carousel {
+  padding: 24px;
+}
+
 /* Author image styles */
 .quotes .quote .author .image {
   padding-right: 10px;
@@ -160,7 +164,7 @@
   cursor: pointer;
 }
 
-.quotes.ratings .quote .author .image {
+.quotes .quote .author .image {
   padding-right: 0;
 }
 
@@ -172,7 +176,7 @@
   box-sizing: border-box;
 }
 
-.quotes.ratings .quotes-ratings-wrapper .basic-carousel-container {
+.quotes .quotes-ratings-wrapper .basic-carousel-container {
   max-width: 1300px;
   width: unset;
   margin: auto;
@@ -217,6 +221,9 @@ main .quotes.singular .quote-container .mobile-container .quote {
   }
   main .quotes.singular .quote-container .mobile-container {
     display: none;
+  }
+  .quotes.ratings.carousel.carousel-play-pause {
+    padding: unset;
   }
 }
 
@@ -314,9 +321,13 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   align-items: center;
   justify-content: center;
   margin-bottom: var(--spacing-500);
+  margin-left: 0;
+  max-width: 1300px;
+  width: unset;
+  margin: auto;
 }
 
-.quotes.ratings.carousel .quotes-ratings-wrapper .container {
+.quotes.carousel .quotes-ratings-wrapper .container {
   max-width: 1300px;
   width: unset;
   display: block;
@@ -548,7 +559,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
 }
 
 @media (min-width: 768px) {
-  
   main .quotes.singular .quote {
     width: 83.3%;
     max-width: 968px;
@@ -643,6 +653,10 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   
   .quotes.ratings .hover-tooltip .tooltip-text {
     color: var(--color-white);
+  }
+
+  .quotes.carousel {
+    padding: unset;
   }
 
 }
