@@ -148,6 +148,7 @@
 /* Author image styles */
 .quotes .quote .author .image {
   padding-right: 10px;
+  margin-bottom: 16px;
 }
 
 .quotes.ratings .quote .author .image {
