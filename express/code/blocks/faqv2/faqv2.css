@@ -416,6 +416,9 @@
   .faqv2.bold .faqv2-accordion {
     margin: 0 10px 8px;
   }
+  .faqv2.expandable {
+    width: unset;
+  }
 }
 
 @media (min-width: 900px) {
