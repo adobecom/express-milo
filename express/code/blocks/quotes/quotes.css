@@ -228,6 +228,11 @@ main .quotes.singular .quote-container .mobile-container .quote {
   main .quotes.singular .quote-container .mobile-container {
     display: none;
   }
+  .section .quotes-wrapper .quotes.carousel {
+    margin-top: 56px;
+    padding-bottom: 0;
+    margin-bottom: 80px;
+  }
 }
 
 main .quotes.singular .quote-container .desktop-container .background {
