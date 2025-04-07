@@ -319,7 +319,8 @@
 }
 
 .faqv2.expandable .faqv2-accordion.title {
-  margin-top: 48px;
+  margin-top: 64px;
+  padding-top: 0px;
 }
 
 .faqv2-grey-bg {
@@ -553,7 +554,7 @@
     margin-bottom: 80px;
   }
   .faqv2.expandable .faqv2-accordion.title {
-    margin-top: 64px;
+    margin-top: 80px;
     font-size: var(--heading-font-size-l);
   }
 
