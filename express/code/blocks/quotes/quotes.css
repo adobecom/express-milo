@@ -90,6 +90,14 @@
   margin-bottom: 16px;
 }
 
+.template.basic-carousel-element.quote {
+  transition: background-color 300ms ease;
+}
+
+.template.basic-carousel-element.quote:hover {
+  background-color: #FFFFFF;
+}
+
 .quotes.carousel .quote .author-content {
   flex-direction: column;
 }
