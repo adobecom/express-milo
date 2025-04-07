@@ -423,6 +423,9 @@
     width: unset;
     max-width: 1024px;
   }
+  .faqv2.expandable .faqv2-accordion.title {
+    font-size: var(--heading-font-size-m);
+  }
 }
 
 @media (min-width: 900px) {
@@ -551,6 +554,7 @@
   }
   .faqv2.expandable .faqv2-accordion.title {
     margin-top: 64px;
+    font-size: var(--heading-font-size-l);
   }
 
 }
