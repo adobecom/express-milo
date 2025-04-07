@@ -149,7 +149,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 1%;
+  width: 5px;
   height: 100%;
   background: linear-gradient(to bottom, #FF4885, #EC5153, #F2693C);
   opacity: 0;
@@ -182,7 +182,7 @@
 
 .faqv2-accordion.expandable.header-accordion.rounded-corners::before {
   opacity: 1;
-  border-radius: 8px 0 0 0;
+  border-radius: 5px 0 0 0;
 }
 
 .faqv2-accordion.expandable.header-accordion.rounded-corners::after {
@@ -216,7 +216,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 1%;
+  width: 5px;
   height: 100%;
   background: linear-gradient(to bottom, #EC5153, #F2693C, #FC7D00);
   opacity: 0;
