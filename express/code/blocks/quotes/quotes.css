@@ -27,12 +27,6 @@
   align-items: stretch;
 }
 
-.quotes-carousel {
-  margin-top: 16px;
-  padding-bottom: 0;
-  margin-bottom: 40px;
-}
-
 /* Quote card styles */
 .quotes.carousel .quote {
   display: flex;
@@ -67,6 +61,12 @@
 .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .quotes:last-child {
   padding-bottom: 80px;
+}
+
+.section .quotes-wrapper .quotes.carousel {
+  margin-top: 16px;
+  padding-bottom: 0;
+  margin-bottom: 40px;
 }
 
 /* Singular quote styles */
