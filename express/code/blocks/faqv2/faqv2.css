@@ -321,6 +321,8 @@
 .faqv2.expandable .faqv2-accordion.title {
   margin-top: 64px;
   padding-top: 0px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .faqv2-grey-bg {
@@ -426,6 +428,8 @@
   }
   .faqv2.expandable .faqv2-accordion.title {
     font-size: var(--heading-font-size-m);
+    padding-left: 32px;
+    padding-right: 32px;
   }
 }
 
