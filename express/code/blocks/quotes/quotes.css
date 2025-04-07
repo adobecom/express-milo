@@ -7,7 +7,18 @@
 /* Carousel specific styles */
 .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
-  padding: 24px;
+}
+
+.template.basic-carousel-element.quote {
+  width: 100%;
+}
+
+.basic-carousel-container .template.basic-carousel-element.quote:first-child {
+  margin-left: 30px;
+}
+
+.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
+  scroll-padding-left: 30px;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
