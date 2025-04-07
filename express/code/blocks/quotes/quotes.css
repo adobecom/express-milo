@@ -13,6 +13,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 1300px;
+  margin: auto;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
