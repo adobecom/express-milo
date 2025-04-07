@@ -115,6 +115,10 @@
   border-color: var(--color-info-accent);
 }
 
+.section:has(.faqv2.expandable) picture.section-background {
+  height: 750px;
+}
+
 .faqv2.expandable.longform .faqv2-accordions-col .faqv2-wrapper:first-child {
   border-radius: 16px 16px 0 0;
 }
