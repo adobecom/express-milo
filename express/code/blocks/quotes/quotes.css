@@ -149,7 +149,7 @@
 }
 
 .quotes .quote .author .summary p:first-of-type {
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
 }
 
 .quotes .quote .author .image img {
