@@ -86,6 +86,10 @@
   align-items: center;
 }
 
+.quotes .quote .author .author-content img {
+  margin-bottom: 16px;
+}
+
 .quotes.carousel .quote .author-content {
   flex-direction: column;
 }
