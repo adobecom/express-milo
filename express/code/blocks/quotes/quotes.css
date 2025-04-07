@@ -157,6 +157,10 @@
   font-weight: bold;
 }
 
+.quote .content {
+  text-align: center;
+}
+
 .quotes .quote .author .image img {
   width: 42px;
   height: 42px;
