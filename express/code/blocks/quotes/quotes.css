@@ -151,6 +151,10 @@
   padding-right: 10px;
 }
 
+.quotes.ratings .quote .author .image {
+  padding-right: 0;
+}
+
 .quotes .quote .author .image img {
   width: 42px;
   height: 42px;
