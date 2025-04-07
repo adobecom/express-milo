@@ -24,7 +24,7 @@
 }
 
 .faqv2.expandable {
-  margin-bottom: 20px;
+  margin-bottom: 64px;
 }
 
 .faqv2.expandable .faqv2-wrapper {
@@ -311,6 +311,10 @@
   border: none;
   background: transparent;
   text-align: center;
+}
+
+.faqv2.expandable .faqv2-accordion.title {
+  margin-top: 48px;
 }
 
 .faqv2-grey-bg {
