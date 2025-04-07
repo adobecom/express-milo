@@ -57,6 +57,10 @@
   background: var(--color-white);
 }
 
+.faqv2.faqv2.expandable .faqv2-accordion {
+  margin-right: 0;
+}
+
 .faqv2.expandable .faqv2-accordion {
   margin-left: unset;
 }
@@ -282,6 +286,7 @@
   cursor: pointer;
   color: var(--color-gray-800);
   padding-left: 6px;
+  padding-right: 2px;
 }
 
 .faqv2-accordion.expandable .toggle-icon {
