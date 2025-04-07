@@ -84,6 +84,10 @@
   align-items: center;
 }
 
+.quotes-wrapper .quotes.carousel {
+  padding: 24px;
+}
+
 .quotes.carousel .quote .author-content {
   flex-direction: column;
 }
@@ -720,6 +724,10 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
 
   .quotes .quote {
     flex: 1;
+  }
+
+  .quotes.carousel .quotes-ratings-wrapper h2 {
+    white-space: nowrap;
   }
 }
 
