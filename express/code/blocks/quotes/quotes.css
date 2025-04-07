@@ -152,6 +152,11 @@
   font-size: var(--body-font-size-s);
 }
 
+.quotes .quote .author .summary p:nth-of-type(2) {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .quotes .quote .author .image img {
   width: 42px;
   height: 42px;
