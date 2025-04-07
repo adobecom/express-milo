@@ -573,6 +573,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     max-width: 1300px;
     width: unset;
     display: block;
+    margin: auto;
   }
 
   .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
@@ -597,6 +598,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     font-weight: 900;
     line-height: 130%;
     margin-bottom: var(--spacing-400);
+    width: max-content;
   }
   .quotes.carousel .ratings-container .rating-average {
     color: #000;
