@@ -7,6 +7,7 @@
 /* Carousel specific styles */
 .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
+  padding: 24px;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
@@ -317,6 +318,8 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   align-items: center;
   justify-content: center;
   margin-bottom: var(--spacing-500);
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
@@ -324,7 +327,7 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
 }
 
 .quotes.carousel .quotes-ratings-wrapper h2 {
-  font-size: 22px;
+  font-size: var(--heading-font-size-s);
   font-weight: 900;
   line-height: 130%;
   margin-bottom: var(--spacing-400);
@@ -645,6 +648,10 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     color: var(--color-white);
   }
 
+  .quotes.carousel .quotes-ratings-wrapper h2 {
+    font-size: var(--heading-font-size-m);
+  }
+
 }
 
 @media (min-width: 1280px) {
@@ -654,6 +661,9 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   main .quotes.singular .quote-details {
     font-size: 28px;
+  }
+  .quotes.carousel .quotes-ratings-wrapper h2 {
+    font-size: var(--heading-font-size-l);
   }
 }
 
