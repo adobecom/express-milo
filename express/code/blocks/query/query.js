@@ -137,12 +137,7 @@ export default function decorate(block) {
     function listenForStreamingResponse() {
       // Mark that we're receiving a stream
       isReceivingStream = true;
-      
-      // For demo purposes: simulate a streaming response
-      // In a real implementation, you would use WebSockets, SSE, or long polling
-      // connected to your webhook endpoint
-      
-      // Simulated initial response after 1 second
+       
       setTimeout(() => {
         if (isReceivingStream) {
           updateResponseContent("I'm processing your request...");
@@ -155,39 +150,6 @@ export default function decorate(block) {
           updateResponseContent("I'm processing your request...\n\nAnalyzing the information...");
         }
       }, 3000);
-      
-      // Simulated final response after 4 seconds
-      // setTimeout(() => {
-      //   if (isReceivingStream) {
-      //     // Complete the response
-      //     updateResponseContent("I've analyzed your request and here's my response:\n\nThis is a simulated response from the AI assistant. In a real implementation, this would be streaming from your webhook endpoint.");
-          
-      //     // End the stream
-      //     completeResponse();
-      //   }
-      // }, 5000);
-      
-      // Add event listener for actual SSE or WebSocket implementation
-      // This would be the real implementation
-      
-      const eventSource = new EventSource(`${webhookUrl}/stream?sessionId=${sessionId}`);
-      
-      eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        updateResponseContent(data.content);
-        
-        if (data.complete) {
-          eventSource.close();
-          completeResponse();
-        }
-      };
-      
-      eventSource.onerror = () => {
-        console.error('SSE error');
-        eventSource.close();
-        completeResponse('Error receiving response');
-      };
-    
     }
   
     /**
