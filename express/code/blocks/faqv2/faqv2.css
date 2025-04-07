@@ -536,6 +536,14 @@
   .faqv2.longform .faqv2-header.expandable {
     font-size: 22px;
   }
+
+  .faqv2.expandable {
+    margin-bottom: 80px;
+  }
+  .faqv2.expandable .faqv2-accordion.title {
+    margin-top: 64px;
+  }
+  
 }
 
 @media (min-width: 1280px) {
