@@ -159,6 +159,12 @@
   box-sizing: border-box;
 }
 
+.quotes.ratings .quotes-ratings-wrapper .basic-carousel-container {
+  max-width: 1300px;
+  width: unset;
+  margin: auto;
+}
+
 /* Singular quote layout */
 main div:has(> .quotes-wrapper .singular.quotes) {
   padding-top: 0;
@@ -295,12 +301,12 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   align-items: center;
   justify-content: center;
   margin-bottom: var(--spacing-500);
-  max-width: 1300px !important;
 }
 
 .quotes.ratings.carousel .quotes-ratings-wrapper .container {
   max-width: 1300px;
   width: unset;
+  display: block;
 }
 
 .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
