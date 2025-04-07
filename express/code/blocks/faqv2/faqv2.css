@@ -119,6 +119,10 @@
   border-color: var(--color-info-accent);
 }
 
+.section.has-background:has(.faqv2.expandable) {
+  background: linear-gradient(to bottom, white 0%, transparent 20%);
+}
+
 .section:has(.faqv2.expandable) picture.section-background {
   height: 750px;
 }
