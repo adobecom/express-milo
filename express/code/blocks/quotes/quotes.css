@@ -103,7 +103,6 @@
   flex-direction: column;
   justify-content: center;
 }
-
 /* Quote content styles */
 .quotes .quote .content::before {
   content: '“';
@@ -663,6 +662,15 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
 
 .quotes.carousel .quote .author .summary p {
   text-align: center;
+}
+
+.quotes .quote .author .summary p:first-of-type {
+  font-size: 14px;
+}
+
+.quotes .quote .author .summary p:nth-of-type(2) {
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .quotes h2,
