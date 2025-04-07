@@ -186,6 +186,7 @@
   border-radius: 8px 8px 0 0;
   background: #FAFAFA;
   box-shadow: none;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
 }
 
 .faqv2-accordion.expandable.header-accordion.rounded-corners::before {
@@ -543,7 +544,7 @@
   .faqv2.expandable .faqv2-accordion.title {
     margin-top: 64px;
   }
-  
+
 }
 
 @media (min-width: 1280px) {
