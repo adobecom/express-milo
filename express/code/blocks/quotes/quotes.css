@@ -151,6 +151,15 @@
   margin-bottom: 16px;
 }
 
+.template.basic-carousel-element.quote {
+  transition: background-color 300ms ease;
+}
+
+.template.basic-carousel-element.quote:hover {
+  background-color: #FFFFFF;
+  cursor: pointer;
+}
+
 .quotes.ratings .quote .author .image {
   padding-right: 0;
 }
