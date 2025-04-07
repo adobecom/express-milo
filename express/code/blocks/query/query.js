@@ -117,8 +117,12 @@ export default function decorate(block) {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-  
-        return await response.json();
+
+        const res = await response.json();
+        if (res.output) {
+          updateResponseContent(res.output)
+          completeResponse();
+        }
       } catch (error) {
         console.error('Webhook error:', error);
         throw error;
@@ -153,19 +157,19 @@ export default function decorate(block) {
       }, 3000);
       
       // Simulated final response after 4 seconds
-      setTimeout(() => {
-        if (isReceivingStream) {
-          // Complete the response
-          updateResponseContent("I've analyzed your request and here's my response:\n\nThis is a simulated response from the AI assistant. In a real implementation, this would be streaming from your webhook endpoint.");
+      // setTimeout(() => {
+      //   if (isReceivingStream) {
+      //     // Complete the response
+      //     updateResponseContent("I've analyzed your request and here's my response:\n\nThis is a simulated response from the AI assistant. In a real implementation, this would be streaming from your webhook endpoint.");
           
-          // End the stream
-          completeResponse();
-        }
-      }, 5000);
+      //     // End the stream
+      //     completeResponse();
+      //   }
+      // }, 5000);
       
       // Add event listener for actual SSE or WebSocket implementation
       // This would be the real implementation
-      /*
+      
       const eventSource = new EventSource(`${webhookUrl}/stream?sessionId=${sessionId}`);
       
       eventSource.onmessage = (event) => {
@@ -183,7 +187,7 @@ export default function decorate(block) {
         eventSource.close();
         completeResponse('Error receiving response');
       };
-      */
+    
     }
   
     /**
