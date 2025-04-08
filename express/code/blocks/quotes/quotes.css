@@ -11,10 +11,12 @@
 
 .template.basic-carousel-element.quote {
   width: 100%;
+  max-height: 318px;
+  margin-bottom: 24px;
 }
 
 .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-  margin-left: 30px;
+  margin-left: 16px;
   margin-right: 16px;
 }
 
@@ -24,7 +26,7 @@
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
-  scroll-padding-left: 30px;
+  scroll-padding-left: 16px;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
@@ -84,7 +86,7 @@
 .section .quotes-wrapper .quotes.carousel {
   margin-top: 40px;
   padding-bottom: 0;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
 }
 
 /* Singular quote styles */
