@@ -8,7 +8,7 @@
   position: relative;
   height: auto;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-400);
   --mobile-template-height: 207px;
   --mobile-template-width: 207px;
   --mobile-template-border-radius: 16px;
