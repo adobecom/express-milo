@@ -35,8 +35,7 @@
 
 .quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow::before,
 .quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow::before {
-  border-top: solid 3px var(--color-gray-300);
-  border-right: solid 3px var(--color-gray-300);
+  opacity: 0.7;
   border-radius: 2px;
 } 
 
