@@ -288,7 +288,7 @@ main .quotes.singular .quote-container .mobile-container .quote {
     margin-bottom: 124px;
   }
   .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-    margin-left: 32px;
+    margin-left: var(--spacing-500);
   }
 }
 
