@@ -37,6 +37,7 @@
   border-top: solid 4px var(--color-black);
   border-right: solid 4px var(--color-black);
   border-radius: 2px;
+  margin-top: 11px;
 }
 
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-left::before {
