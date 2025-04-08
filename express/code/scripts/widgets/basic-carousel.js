@@ -430,6 +430,13 @@ function initializeCarousel(selector, parent) {
 
   window.addEventListener('resize', debounce(() => {
     const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
+    if (window.innerWidth > platform.offsetWidth) {
+      faderLeft.style.opacity = '0';
+      faderRight.style.opacity = '0';
+    } else {
+      faderLeft.style.opacity = '1';
+      faderRight.style.opacity = '1';
+    }
     if (newScrollCount !== scrollCount) {
       scrollCount = newScrollCount;
       updateCarousel();

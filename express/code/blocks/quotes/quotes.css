@@ -751,7 +751,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 1300px;
     margin: auto;
   }
 }
