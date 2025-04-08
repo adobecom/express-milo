@@ -33,8 +33,24 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  /* max-width: 1300px; */
   margin: auto;
+}
+
+.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow::before {
+  border-top: solid 4px var(--color-black);
+  border-right: solid 4px var(--color-black);
+  border-radius: 2px;
+}
+
+.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right {
+  padding-right: 10px;
+}
+  
+
+.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow {
+  margin: 0 0px;
+  background: #FFFFFF;
+  padding-bottom: 1px;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
