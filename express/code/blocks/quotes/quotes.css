@@ -249,7 +249,7 @@ main .quotes.singular .quote-container .mobile-container .quote {
     display: none;
   }
   .section .quotes-wrapper .quotes.carousel {
-    margin-top: 56px;
+    margin-top: 80px;
     padding-bottom: 0;
     margin-bottom: 80px;
   }
@@ -622,7 +622,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     font-size: 36px;
     font-weight: 900;
     line-height: 130%;
-    margin-bottom: var(--spacing-400);
+    margin-bottom: var(--spacing-500);
     width: max-content;
   }
   .quotes.carousel .ratings-container .rating-average {
