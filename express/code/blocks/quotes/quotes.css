@@ -9,6 +9,10 @@
   max-width: unset;
 }
 
+.quotes-wrapper .quote .author-content .summary p {
+  font-size: 12px;
+}
+
 .template.basic-carousel-element.quote {
   width: 100%;
   max-height: 318px;
@@ -229,11 +233,11 @@
   display: none;
 }
 
-.quotes .quote .author .summary p:first-of-type {
+.quotes.carousel .quote .author .summary p:first-of-type {
   font-size: var(--body-font-size-s);
 }
 
-.quotes .quote .author .summary p:nth-of-type(2) {
+.quotes.quotes-ratings-wrapper .quote .author .summary p:nth-of-type(2) {
   font-size: 16px;
   font-weight: bold;
 }
