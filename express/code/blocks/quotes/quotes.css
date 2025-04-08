@@ -13,6 +13,13 @@
   font-size: 12px;
 }
 
+.quotes:not(.carousel) .quote .content {
+  padding-top: 28px;
+  font-size: 1rem;
+  text-align: left;
+  flex-grow: 1;
+}
+
 .template.basic-carousel-element.quote {
   width: 100%;
   max-height: 318px;
