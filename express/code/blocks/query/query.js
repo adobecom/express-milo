@@ -83,7 +83,7 @@ export default function decorate(block) {
         await sendQueryToWebhook(query);
         
         // Set up to receive response stream
-        listenForStreamingResponse();
+       // listenForStreamingResponse();
         
       } catch (error) {
         console.error('Error:', error);
