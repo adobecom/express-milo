@@ -10,6 +10,8 @@ function initializeGridCarousel(selector, parent) {
   let scrolling = false;
   let isInitialLoad = true;
   let touchStartX = 0;
+  /* eslint-disable-next-line no-unused-vars, no-use-before-define */
+  let touchEndX = 0;
 
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
