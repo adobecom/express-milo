@@ -144,8 +144,8 @@
 
 @media (max-width: 599px) {
   .template-x.basic-carousel.grid .basic-carousel-container {
-    margin-top: 40px;
-    margin-bottom: 80px;
+    margin-top: var(--spacing-600);
+    margin-bottom: var(--spacing-900);
   }
   
   .template-x.basic-carousel.grid .basic-carousel-platform {
