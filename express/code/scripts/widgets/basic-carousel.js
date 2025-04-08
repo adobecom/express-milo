@@ -431,11 +431,11 @@ function initializeCarousel(selector, parent) {
   window.addEventListener('resize', debounce(() => {
     const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
     if (window.innerWidth > platform.offsetWidth) {
-      faderLeft.style.opacity = '0';
-      faderRight.style.opacity = '0';
+      faderLeft.style.display = 'none';
+      faderRight.style.display = 'none';
     } else {
-      faderLeft.style.opacity = '1';
-      faderRight.style.opacity = '1';
+      faderLeft.style.display = 'unset';
+      faderRight.style.display = 'unset';
     }
     if (newScrollCount !== scrollCount) {
       scrollCount = newScrollCount;
