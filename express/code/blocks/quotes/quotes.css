@@ -35,14 +35,15 @@
 
 .quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow::before,
 .quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow::before {
-  border-top: solid 4px var(--color-gray-300);
-  border-right: solid 4px var(--color-gray-300);
+  border-top: solid 3px var(--color-gray-300);
+  border-right: solid 3px var(--color-gray-300);
+  border-radius: 2px;
 } 
 
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow::before {
-  border-top: solid 4px var(--color-black);
-  border-right: solid 4px var(--color-black);
-  border-radius: 2.5px;
+  border-top: solid 3px var(--color-black);
+  border-right: solid 3px var(--color-black);
+  border-radius: 2px;
   margin-top: 11px;
 }
 
