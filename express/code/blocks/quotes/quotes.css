@@ -15,12 +15,12 @@
   margin-bottom: 24px;
 }
 
-.basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
+.quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
   margin-left: 16px;
   margin-right: 16px;
 }
 
-.basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
+.quotes-wrapper .basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
   margin-left: 0;
   margin-right: 16px;
 }
