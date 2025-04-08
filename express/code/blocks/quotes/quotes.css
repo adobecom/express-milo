@@ -27,9 +27,6 @@
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
   scroll-padding-left: 16px;
-}
-
-.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -42,15 +39,29 @@
   border-radius: 2px;
 }
 
+.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-left::before {
+  margin-left: 12px;
+}
+
+.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-right::before {
+  margin-left: 10px;
+}
+
+.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left {
+  right: 33px;
+}
+
 .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right {
   padding-right: 10px;
 }
   
-
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow {
   margin: 0 0px;
   background: #FFFFFF;
   padding-bottom: 1px;
+  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.2);
+  width: 32px;
+  height: 32px;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
