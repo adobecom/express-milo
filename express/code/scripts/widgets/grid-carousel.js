@@ -10,7 +10,6 @@ function initializeGridCarousel(selector, parent) {
   let scrolling = false;
   let isInitialLoad = true;
   let touchStartX = 0;
-  let touchEndX = 0;
 
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
@@ -179,7 +178,6 @@ function initializeGridCarousel(selector, parent) {
         window.location.href = editButton.href;
       }
     }
-    return;
   });
 
   // Handle scroll events
@@ -233,4 +231,4 @@ export default async function buildGridCarousel(selector, parent, options = {}) 
       resolve();
     });
   });
-} 
+}
