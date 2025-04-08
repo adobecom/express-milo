@@ -158,6 +158,11 @@
   align-items: center;
 }
 
+.quotes.quotes:not(.carousel) .quote .author .author-content {
+  display: flex;
+  align-items: flex-start;
+}
+
 .quotes .quote .author .author-content img {
   margin-bottom: 16px;
 }
