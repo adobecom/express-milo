@@ -227,7 +227,6 @@
 /* Author section styles */
 .quotes:not(.carousel) .quote .author {
   flex-wrap: nowrap;
-  margin-top: 16px;
   align-items: self-start;
   align-self: baseline;
 }
