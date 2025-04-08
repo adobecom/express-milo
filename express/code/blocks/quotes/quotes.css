@@ -290,6 +290,9 @@ main .quotes.singular .quote-container .mobile-container .quote {
   .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: 32px;
   }
+}
+
+@media (hover: hover) {
   .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-left:hover,
   .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-right:hover {
     background: #D5D5D5;
@@ -643,7 +646,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     width: 75%;
   }
  
-
   .quotes.carousel .ratings:not(.submitted) {
     display: flex;
     width: 25%;
