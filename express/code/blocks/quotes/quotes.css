@@ -179,6 +179,14 @@
   justify-content: center;
 }
 
+.quotes .quote .author .image {
+  padding-right: 10px;
+}
+
+.quotes-ratings-wrapper .quote .author .image {
+  padding-right: 0;
+}
+
 /* Quote content styles */
 .quotes .quote .content::before {
   content: '“';
