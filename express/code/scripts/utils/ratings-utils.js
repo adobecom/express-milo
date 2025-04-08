@@ -833,4 +833,4 @@ export async function createHoverStarRating({ ratings, onRatingSelect }) {
   container.appendChild(tooltip);
 
   return container;
-} 
+}
