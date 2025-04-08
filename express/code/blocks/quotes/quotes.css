@@ -188,11 +188,12 @@
   background-color: #C6C6C6;
 }
 
-.quotes .quote .author .summary {
+.quotes:not(.carousel) .quote .author .summary {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 8px;
 }
 
 .quotes .quote .author-content .image {
@@ -225,15 +226,13 @@
 
 /* Author section styles */
 .quotes:not(.carousel) .quote .author {
-  display: flex;
-  flex-direction: column;
+  flex-wrap: nowrap;
+  margin-top: 16px;
   align-items: self-start;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0;
+  align-self: baseline;
 }
 
-.quotes .quote .author {
+.quotes.carousel .quote .author {
   display: flex;
   flex-direction: column;
   align-items: center;
