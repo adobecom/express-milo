@@ -15,10 +15,12 @@
 
 .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
   margin-left: 30px;
+  margin-right: 16px;
 }
 
 .basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
-  margin-left: 16px;
+  margin-left: 0;
+  margin-right: 16px;
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
@@ -358,6 +360,7 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   font-weight: 900;
   line-height: 130%;
   margin-bottom: var(--spacing-400);
+  padding-left: 30px;
 }
 
 .quotes.carousel .ratings-container {
