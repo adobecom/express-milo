@@ -362,8 +362,4 @@
 .basic-carousel-container .basic-carousel-platform.left-fader.right-fader{
   -webkit-mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
   mask-image: linear-gradient(to right, transparent, rgba(0,0,0,1) 60px, rgba(0,0,0,1) calc(100% - 60px), transparent);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/stage
