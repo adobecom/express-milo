@@ -40,6 +40,11 @@
   margin-top: 11px;
 }
 
+.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-left:hover,
+.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-right:hover {
+  background: #D5D5D5;
+}
+
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-left::before {
   margin-left: 12px;
 }
