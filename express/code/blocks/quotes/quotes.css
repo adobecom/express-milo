@@ -229,6 +229,7 @@
   flex-wrap: nowrap;
   align-items: self-start;
   align-self: baseline;
+  margin-top: 16px;
 }
 
 .quotes.carousel .quote .author {
