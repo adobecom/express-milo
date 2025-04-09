@@ -197,9 +197,13 @@ async function decorateCards(block, payload) {
           a.removeAttribute('title');
           a.setAttribute('aria-label', `${cta.text.toLowerCase().trim()} ${a.text.toLowerCase().trim()}`);
         }
-        const cardLink = createTag('a', { href: a.href, class: 'card-link' });
-        cardLink.append(cardSleeve, textWrapper);
-        card.append(cardLink);
+        if (block.classList.contains('spotlight')) {
+          const cardLink = createTag('a', { href: a.href, class: 'card-link' });
+          cardLink.append(cardSleeve, textWrapper);
+          card.append(cardLink);
+        } else {
+          linksWrapper.append(a);
+        }
       });
     } else {
       card.classList.add('coming-soon');
