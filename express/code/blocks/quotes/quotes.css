@@ -267,6 +267,7 @@
 }
 
 .quotes .quote .author .image img {
+  object-fit: cover;
   width: 42px;
   height: 42px;
   max-width: unset;
