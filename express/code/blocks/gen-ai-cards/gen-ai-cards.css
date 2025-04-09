@@ -364,11 +364,11 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     align-items: center;
     gap: 24px; 
   }
+
+ 
 }
 
 @media (min-width: 1280px) {
-
-
   .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
     padding-bottom: 10px;
     padding-left: 30px;
