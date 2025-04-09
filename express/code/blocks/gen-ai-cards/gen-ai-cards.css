@@ -371,6 +371,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 
   .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
     padding-bottom: 10px;
+    padding-left: 30px;
   }
   
   .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
