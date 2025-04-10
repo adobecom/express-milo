@@ -417,7 +417,14 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   position: relative;
 }
 
-.gen-ai-cards.homepage .carousel-element.card {
+.gen-ai-cards.homepage:not(.spotlight) .carousel-element.card {
+  height: unset;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gen-ai-cards.homepage.spotlight .carousel-element.card {
   height: 325px;
   display: flex;
   flex-direction: column;
