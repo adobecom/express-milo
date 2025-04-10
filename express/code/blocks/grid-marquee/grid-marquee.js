@@ -188,6 +188,7 @@ async function formatDynamicCartLink(a) {
 }
 
 function decorateHeadline(headline) {
+  headline.classList.add('headline');
   const ctas = headline.querySelectorAll('a');
   if (!ctas.length) return headline;
   ctas[0].parentElement.classList.add('ctas');
@@ -196,7 +197,6 @@ function decorateHeadline(headline) {
     formatDynamicCartLink(cta);
   });
   ctas[0].classList.add('primaryCTA');
-  headline.classList.add('headline');
   return headline;
 }
 
