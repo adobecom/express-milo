@@ -897,8 +897,8 @@ function initDrawer(block, props, toolBar) {
 }
 
 function updateQuery(functionWrapper, props, option) {
-  const paramType = option.getAttribute('data-param-type');
-  const paramValue = option.getAttribute('data-param-value');
+  const paramType = functionWrapper.dataset.param;
+  const paramValue = option.dataset.value;
 
   if (paramType === 'sort') {
     props.sort = paramValue;
@@ -1160,7 +1160,7 @@ function toggleMasonryView(block, props, button, toggleButtons) {
 
 function initViewToggle(block, props, toolBar) {
   const toggleButtons = toolBar.querySelectorAll('.view-toggle-button ');
-  const authoredViewIndex = ['sm', 'md', 'lg'].findIndex((size) => getMetadata('initial-template-view')?.toLowerCase().trim() === size);
+  const authoredViewIndex = ['sm', 'md', 'lg'].findIndex((size) => props.initialTemplateView?.toLowerCase().trim() === size);
   const initViewIndex = authoredViewIndex === -1 ? 0 : authoredViewIndex;
 
   toggleButtons.forEach((button, index) => {
