@@ -190,7 +190,10 @@ async function formatDynamicCartLink(a) {
 function decorateHeadline(headline) {
   headline.classList.add('headline');
   const ctas = headline.querySelectorAll('a');
-  if (!ctas.length) return headline;
+  if (!ctas.length) {
+    headline.classList.add('no-cta');
+    return headline;
+  }
   ctas[0].parentElement.classList.add('ctas');
   ctas.forEach((cta) => {
     cta.classList.add('button');
