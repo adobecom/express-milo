@@ -161,9 +161,14 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   border-radius: 8px;
 }
 
-.gen-ai-cards.homepage .card .media-wrapper {
+.gen-ai-cards.homepage.spotlight .card .media-wrapper {
   width: 268px;
   height: 228px;
+}
+
+.gen-ai-cards.homepage .card .media-wrapper {
+  width: 262px;
+  height: 274px;
 }
 
 .gen-ai-cards .card .media-wrapper picture img {
