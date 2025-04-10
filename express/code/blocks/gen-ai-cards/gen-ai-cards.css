@@ -353,6 +353,13 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 }
 
+@media (min-width: 935px) {
+  main .gen-ai-cards.homepage:not(.spotlight) .carousel-container .carousel-fader-left,
+  main .gen-ai-cards.homepage:not(.spotlight) .carousel-container .carousel-fader-right {
+    display: none;
+  }
+}
+
 @media (min-width: 1280px) {
   .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
     flex-direction: row;
@@ -391,6 +398,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     font-size: var(--heading-font-size-m);
   }
 }
+
 .gen-ai-cards.homepage .card .text-wrapper {
   flex-grow: 1;
 }
