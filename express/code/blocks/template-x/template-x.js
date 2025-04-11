@@ -1197,6 +1197,9 @@ async function decorateToolbar(block, props) {
   }
 
   block.prepend(tBarWrapper);
+  const { getGnavHeight } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
+  const gnavHeight = getGnavHeight();
+  tBarWrapper.style.top = `${gnavHeight}px`;
   tBarWrapper.append(tBar);
   tBar.append(contentWrapper, functionsWrapper);
   contentWrapper.append(sectionHeading);
