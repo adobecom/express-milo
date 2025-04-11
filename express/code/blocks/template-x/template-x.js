@@ -48,6 +48,22 @@ function handlelize(str) {
 
 async function getTemplates(response, fallbackMsg, props) {
   const filtered = response.items.filter((item) => isValidTemplate(item));
+  // Sort templates based on templateOrder if present
+  if (props.templateOrder?.length > 0) {
+    filtered.sort((a, b) => {
+      const indexA = props.templateOrder.indexOf(a.id);
+      const indexB = props.templateOrder.indexOf(b.id);
+      // If both templates are in templateOrder, sort by their position
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+      // If only one template is in templateOrder, put it first
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+      // For templates not in templateOrder, maintain their original order
+      return 0;
+    });
+  }
   const templates = await Promise.all(
     filtered.map(async (template) => renderTemplate(template, variant, props)),
   );
@@ -194,6 +210,7 @@ function constructProps(block) {
     backgroundAnimation: null,
     textColor: '#FFFFFF',
     loadedOtherCategoryCounts: false,
+    templateOrder: [],
   };
   Array.from(block.children).forEach((row) => {
     const cols = row.querySelectorAll('div');
@@ -209,7 +226,10 @@ function constructProps(block) {
 
       if (key && value) {
         // FIXME: facebook-post
-        if (['tasks', 'topics', 'locales', 'behaviors'].includes(key) || (['premium', 'animated'].includes(key) && value.toLowerCase() !== 'all')) {
+        // Handle template order
+        if (key === 'template order') {
+          props.templateOrder = value.split(',').map((id) => id.trim());
+        } else if (['tasks', 'topics', 'locales', 'behaviors'].includes(key) || (['premium', 'animated'].includes(key) && value.toLowerCase() !== 'all')) {
           props.filters[camelize(key)] = value;
         } else if (['yes', 'true', 'on', 'no', 'false', 'off'].includes(value.toLowerCase())) {
           props[camelize(key)] = ['yes', 'true', 'on'].includes(value.toLowerCase());
@@ -774,8 +794,8 @@ function updateOptionsStatus(block, props, toolBar) {
     'Most Relevant': '',
     'Most Viewed': '&orderBy=-remixCount',
     'Rare & Original': '&orderBy=remixCount',
-    'Newest to Oldest': '&orderBy=-availabilityDate',
-    'Oldest to Newest': '&orderBy=availabilityDate',
+    'Newest to Oldest': '&orderBy=-createDate',
+    'Oldest to Newest': '&orderBy=createDate',
   };
 
   wrappers.forEach((wrapper) => {
@@ -882,6 +902,8 @@ function updateQuery(functionWrapper, props, option) {
 
   if (paramType === 'sort') {
     props.sort = paramValue;
+    // Clear template order when user selects a sort option
+    props.templateOrder = [];
   } else {
     const filtersObj = props.filters;
 
@@ -1101,7 +1123,6 @@ function toggleMasonryView(block, props, button, toggleButtons) {
   const blockEl = block.closest('.template-x');
   blockEl.classList.add('template-x-wrapper');
   const templatesToView = block.querySelectorAll('.template:not(.placeholder)');
-  // const blockWrapper = block.closest('.template-x-wrapper');
   const blockWrapper = blockEl.closest('.template-x-wrapper');
 
   if (!button.classList.contains('active') && templatesToView.length > 0) {
@@ -1139,7 +1160,7 @@ function toggleMasonryView(block, props, button, toggleButtons) {
 
 function initViewToggle(block, props, toolBar) {
   const toggleButtons = toolBar.querySelectorAll('.view-toggle-button ');
-  const authoredViewIndex = ['sm', 'md', 'lg'].findIndex((size) => getMetadata('initial-template-view')?.toLowerCase().trim() === size);
+  const authoredViewIndex = ['sm', 'md', 'lg'].findIndex((size) => props.initialTemplateView?.toLowerCase().trim() === size);
   const initViewIndex = authoredViewIndex === -1 ? 0 : authoredViewIndex;
 
   toggleButtons.forEach((button, index) => {
