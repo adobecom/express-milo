@@ -63,7 +63,7 @@ export function handleTooltip(pricingArea) {
     iconWrapper.classList.add('hover');
   });
 
-  iconWrapper.addEventListener('mouseleave', () => {
+  icon.addEventListener('mouseleave', () => {
     setTimeout(() => {
       iconWrapper.classList.remove('hover');
     }, 500);
