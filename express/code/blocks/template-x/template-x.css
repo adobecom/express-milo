@@ -532,6 +532,19 @@ main.with-holiday-templates-banner {
   margin: 5px;
 }
 
+.template-x.print[class*="lg-view"] .template {
+  min-width: 328px;
+}
+
+@media (min-width: 900px) {
+  .template-x.print[class*="lg-view"] .template,
+  .template-x.print[class*="md-view"] .template,
+  .template-x.print[class*="sm-view"] .template {
+    min-width: initial;
+    width: 92%;
+  }
+}
+
 .template-x[class*="lg-view"] .template,
 .template-x[class*="md-view"] .template,
 .template-x[class*="sm-view"] .template {
@@ -2082,6 +2095,9 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 .template-x.print .share-icon-wrapper {
   display: none;
 }
+.template-x.print .template .still-wrapper .image-wrapper .media-type-icon {
+  display: none;
+}
 
 .template-x.t-shirt .template .still-wrapper .image-wrapper {
   background: url('tshirt.png') no-repeat center center;
@@ -3062,8 +3078,10 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
   width: 328px;
 }
 
-.template-x[class*="md-view"] .template.placeholder {
-  width: 227.33px;
+@media (min-width: 900px) { 
+  .template-x[class*="md-view"] .template.placeholder {
+    width: 227.33px;
+  }
 }
 
 .template-x[class*="sm-view"] .template.placeholder {
