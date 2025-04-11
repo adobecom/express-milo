@@ -59,7 +59,7 @@ export function handleTooltip(pricingArea) {
   iconWrapper.addEventListener('click', adjustElementPosition);
   window.addEventListener('resize', adjustElementPosition);
 
-  iconWrapper.addEventListener('mouseover', () => {
+  icon.addEventListener('mouseover', () => {
     iconWrapper.classList.add('hover');
   });
 
@@ -67,10 +67,6 @@ export function handleTooltip(pricingArea) {
     setTimeout(() => {
       iconWrapper.classList.remove('hover');
     }, 500);
-  });
-
-  span.addEventListener('mouseenter', () => {
-    span.classList.add('hover');
   });
 
   span.addEventListener('mouseleave', () => {
