@@ -232,8 +232,8 @@ async function fetchSearchUrl({
     'Most Relevant': '',
     'Most Viewed': '&orderBy=-remixCount',
     'Rare & Original': '&orderBy=remixCount',
-    'Newest to Oldest': '&orderBy=-availabilityDate',
-    'Oldest to Newest': '&orderBy=availabilityDate',
+    'Newest to Oldest': '&orderBy=-createDate',
+    'Oldest to Newest': '&orderBy=createDate',
   }[sort] || sort || '';
   const qParam = q && q !== '{{q}}' ? `&q=${q}` : '';
   const url = encodeURI(

@@ -18,6 +18,9 @@ describe('grid-marquee', () => {
     window.placeholders = {
       'app-store-ratings':
         '4.9, 233.8k ratings; 4.6, 117k ratings; https://adobesparkpost.app.link/GJrBPFUWBBb',
+      'app-store-stars': 'test',
+      'app-store-ratings-play-store': 'test',
+      'app-store-ratings-apple-store': 'test',
     };
     const mockIntersectionObserver = class {
       items = [];
@@ -32,7 +35,7 @@ describe('grid-marquee', () => {
     };
     window.IntersectionObserver = mockIntersectionObserver;
     block = document.querySelector('.grid-marquee');
-    decorate(block);
+    await decorate(block);
   });
   after(() => {
     window.IntersectionObserver = oldIO;
