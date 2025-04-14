@@ -1,6 +1,20 @@
 import { getLibs } from '../utils.js';
 import { debounce } from '../utils/hofs.js';
 
+const nextSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="Slider Button - Arrow - Right">
+    <circle id="Ellipse 24477" cx="16" cy="16" r="16" fill="#FFFFFF"/>
+    <path id="chevron-right" d="M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
+`;
+const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="Slider Button - Arrow - Left">
+    <circle id="Ellipse 24477" cx="16" cy="16" r="16" transform="matrix(-1 0 0 1 32 0)" fill="#FFFFFF"/>
+    <path id="chevron-right" d="M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>`;
+
 const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
@@ -48,31 +62,23 @@ function initializeCarousel(selector, parent) {
     role: 'region',
     'aria-label': ariaLabel,
   });
-
-  const faderLeft = createTag('div', { class: 'basic-carousel-fader-left arrow-hidden' });
-  const faderRight = createTag('div', { class: 'basic-carousel-fader-right arrow-hidden' });
-  const arrowLeft = createTag('a', {
-    class: 'button basic-carousel-arrow basic-carousel-arrow-left',
-    'aria-label': 'Scroll carousel left',
-  });
-  const arrowRight = createTag('a', {
-    class: 'button basic-carousel-arrow basic-carousel-arrow-right',
-    'aria-label': 'Scroll carousel right',
-  });
+  const faderLeft = createTag('button', {
+    class: 'prev',
+    'aria-label': 'Next',
+  }, prevSVGHTML);
+  const faderRight = createTag('button', {
+    class: 'next',
+    'aria-label': 'Previous',
+  }, nextSVGHTML);
+  const control = createTag('div', { class: 'gallery-control' });
 
   platform.append(...carouselContent);
+  control.append(faderLeft, faderRight);
+  container.append(platform, control);
+  parent.append(container); 
 
-  container.append(platform, faderLeft, faderRight);
-  faderLeft.append(arrowLeft);
-  faderRight.append(arrowRight);
-  parent.append(container);
-
-  const leftTrigger = createTag('div', { class: 'basic-carousel-left-trigger' });
-  const rightTrigger = createTag('div', { class: 'basic-carousel-right-trigger' });
-
-  platform.prepend(leftTrigger);
-  platform.append(rightTrigger);
-  const elements = platform.querySelectorAll('.template.basic-carousel-element');
+ 
+  const elements = platform.querySelectorAll(selector);
 
   const determineScrollCount = () => {
     if (platform.closest('.four')) return 4;
@@ -85,7 +91,7 @@ function initializeCarousel(selector, parent) {
   const updateCarousel = () => {
     if (scrolling) return;
     scrolling = true;
-
+    console.log(elements[0])
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
 
@@ -136,6 +142,7 @@ function initializeCarousel(selector, parent) {
     });
 
     faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
+    console.log(currentIndex + scrollCount >= elements.length, currentIndex , scrollCount, elements.length)
     faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
   };
 

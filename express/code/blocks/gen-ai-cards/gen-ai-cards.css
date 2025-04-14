@@ -7,6 +7,11 @@
   padding: 0 28px;
   max-width: 1440px;
   margin: auto;
+  --card-width: 292px;
+  --card-padding: 12px;
+  --card-gap: 8px;
+  --blue-background: #EDEEFF;
+  
 }
 
 .gen-ai-cards.homepage {
@@ -72,24 +77,32 @@
   justify-content: center;
   align-items: center;
 }
-
+ 
 .gen-ai-cards .card {
   position: relative;
+  flex-direction: column;
+  display: flex;
   height: 347px;
-  width: 406px;
+  min-width: var(--card-width);
+  max-width: var(--card-width);
+  padding: var(--card-padding);
+  gap: var(--card-gap);
   border-radius: 8px;
   overflow: hidden;
   margin: 0px;
   background-color: #f4f4fd;
+  display: flex;  
+  justify-content: space-between;
+  align-items: flex-start;
+  
 }
-
-.gen-ai-cards.homepage .card {
-  border: 2px solid #E1E1E1;
-  background: var(--color-white);
+.gen-ai-cards .card:first-of-type {
+  border-radius: 8px;
+  background: var(--blue-background);
 }
 
 .gen-ai-cards.homepage .carousel-element.card {
-  width: 292px;
+  width: var(--card-width);
   height: 396px;
   flex-direction: column;
 }
@@ -99,8 +112,7 @@
 }
 
 .gen-ai-cards .card .text-wrapper {
-  text-align: left;
-  margin: 20px 15px 16px 15px;
+  text-align: left; 
 }
 
 .gen-ai-cards .card .text-wrapper p {
@@ -111,6 +123,13 @@
   font-size: var(--body-font-size-l);
   line-height: var(--body-font-size-m);
   font-weight: 700;
+  color: #212121;
+  /* Large Screen/Title/M */
+  font-family: "Adobe Clean";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%; /* 20.8px */
 }
 
 .gen-ai-cards .card .text-wrapper .tag {
@@ -126,17 +145,20 @@
 .gen-ai-cards .card .text-wrapper p.cta-card-desc {
   font-size: var(--body-font-size-s);
   line-height: var(--body-font-size-l);
-  margin-top: 10px;
+  color: #212121;
+
+  /* Large Screen/Body/S */
+  font-family: "Adobe Clean";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%; /* 18.2px */
 }
 
-.gen-ai-cards .card .media-wrapper {
-  position: absolute;
-  border-radius: 16px;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
-  width: 374px;
-  height: 246px;
+.gen-ai-cards .card .media-wrapper { 
+  border-radius: 16px; 
+  bottom: 16px; 
+ 
   overflow: hidden;
 }
 
@@ -174,7 +196,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 
 .gen-ai-cards .card .gen-ai-input-form {
   position: absolute;
-  width: 352px;
+  width: calc(var(--card-width) - var(--card-padding));
   height: 55px;
   padding: 8px;
   background-color: var(--color-white);
@@ -363,6 +385,12 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     justify-content: center;
     align-items: center;
     gap: 24px; 
+  }
+
+  .gen-ai-cards .card {
+    --card-width: 400px;
+    --card-padding: 16px;
+    --card-gap: 16px;
   }
 
  

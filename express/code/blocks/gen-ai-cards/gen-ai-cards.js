@@ -1,5 +1,6 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
-import buildCarousel from '../../scripts/widgets/carousel.js';
+import buildCarousel from '../../scripts/widgets/basic-carousel.js';
+import { createControl } from '../discover-cards/discover-cards.js';
 
 let createTag; let getConfig;
 const promptTokenRegex = /(?:\{\{|%7B%7B)?prompt(?:-|\+|%20|\s)text(?:\}\}|%7D%7D)?/;
@@ -231,5 +232,7 @@ export default async function decorate(block) {
   const payload = constructPayload(block);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
-  await buildCarousel('', block.querySelector('.gen-ai-cards-cards'));
+  const cardContainer = block.querySelector('.gen-ai-cards-cards');
+  const cards = cardContainer.querySelectorAll('.card'); 
+  await buildCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
 }
