@@ -48,10 +48,6 @@ main .section>.simplified-pricing-cards-wrapper {
 
 }
 
-.simplified-pricing-cards .card:first-of-type {
-    background-color: #F8F8F8;
-}
-
 .simplified-pricing-cards .card.gradient-promo {
     background: linear-gradient(var(--color-white) 0 0) padding-box,
     linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) border-box;
