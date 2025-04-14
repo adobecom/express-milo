@@ -1,20 +1,37 @@
-/**
- * AI Query Component
- * A vanilla JS component that looks like a typical AI query page
- * Makes webhook calls and listens for responses
- */
+import { getIconElementDeprecated } from "../../scripts/utils.js";
 
-export default function decorate(block) {
+function formatBoldText() {
+  const element = document.querySelector('.ai-query-response-content');
+  let html = element.innerHTML; 
+  html = html.replace(/\*\*(.*?)\*\*/g, '<span class="custom-bold">$1</span>');
+  element.innerHTML = html;
+}
+
+function formatLinks () {
+  const element = document.querySelector('.ai-query-response-content');
+  let html = element.innerHTML; 
+  const links = html.match(/https?:\/\/[^\s]+/g);
+  if (links) {
+    links.forEach(link => {
+      html = html.replace(link, `<a href="${link}" target="_blank">${link}</a>`);
+    });
+  }
+  element.innerHTML = html;
+} 
+
+export default async function decorate(block) {
+    const expressLogo = await getIconElementDeprecated('adobe-express');
+    console.log(expressLogo);
     // Define the HTML structure as a string
     const htmlTemplate = `
       <div class="ai-query-container">
         <div class="ai-query-header">
-          <h1>AI Assistant</h1>
-          <p>Ask a question or enter a prompt below to get a response from the AI.</p>
+          <h1>Express Helpdesk</h1>
+          <div id="express-logo"></div>
         </div>
         
         <div class="ai-query-input">
-          <textarea class="ai-query-textarea" placeholder="Type your question or prompt here..."></textarea>
+          <textarea class="ai-query-textarea" placeholder="Ask anything about Express / Milo..."></textarea>
           <button class="ai-query-button">Submit</button>
           <div class="ai-query-status"></div>
         </div>
@@ -30,6 +47,7 @@ export default function decorate(block) {
   
     // Set the HTML content
     block.innerHTML = htmlTemplate;
+    block.querySelector('#express-logo').appendChild(expressLogo);
   
     // Get DOM elements
     const queryTextarea = block.querySelector('.ai-query-textarea');
@@ -159,6 +177,9 @@ export default function decorate(block) {
     function updateResponseContent(content) {
       // Replace newlines with HTML breaks for proper display
       responseContent.innerHTML = content.replace(/\n/g, '<br>');
+
+      formatBoldText();
+      // formatLinks();
     }
   
     /**
