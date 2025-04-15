@@ -7,11 +7,15 @@
   padding: 0 28px;
   max-width: 1440px;
   margin: auto;
+  --card-height: 315px;
   --card-width: 292px;
   --card-padding: 12px;
   --card-gap: 8px;
   --blue-background: #EDEEFF;
-  
+  gap: var(--Spacing-spacing-400, 24px);
+  display: flex;
+  flex-direction: column;
+ 
 }
 
 .gen-ai-cards.homepage {
@@ -30,10 +34,15 @@
 
 .gen-ai-cards .gen-ai-cards-heading-section {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  min-width: 300px;
+  max-width: var(--Global-Container-container-max-width, 599px);
+  padding-right: var(--Global-Container-container-padding-side, 16px);
   justify-content: space-between;
-  margin: auto auto 32px;
+  align-items: flex-end;
+  align-content: flex-end;
+  row-gap: var(--Spacing-spacing-200, 12px);
+  align-self: stretch;
+  flex-wrap: wrap;
 }
 
 .gen-ai-cards .gen-ai-cards-heading-section h2 {
@@ -82,12 +91,12 @@
   position: relative;
   flex-direction: column;
   display: flex;
-  height: 347px;
+  height: var(--card-height);
   min-width: var(--card-width);
   max-width: var(--card-width);
   padding: var(--card-padding);
   gap: var(--card-gap);
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   margin: 0px;
   background-color: #f4f4fd;
@@ -158,7 +167,7 @@
 .gen-ai-cards .card .media-wrapper { 
   border-radius: 16px; 
   bottom: 16px; 
- 
+  height: 100%;
   overflow: hidden;
 }
 
@@ -197,7 +206,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 .gen-ai-cards .card .gen-ai-input-form {
   position: absolute;
   width: calc(var(--card-width) - var(--card-padding));
-  height: 55px;
+  /* height: 55px; */
   padding: 8px;
   background-color: var(--color-white);
   border-radius: 8px;
@@ -208,6 +217,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   transform: translate(-50%, calc(-100% - 30px));
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .gen-ai-cards .card .gen-ai-input-form input {
@@ -217,13 +227,21 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   resize: none;
-  width: 230px;
+ 
+}
+
+.gen-ai-cards .card .gen-ai-input-form input:focus {
+  outline: none;
+  width: 100%;
+  flex-grow: 1;
+  padding-bottom: 10px;
 }
 
 .gen-ai-cards .gen-ai-input:active,
 .gen-ai-cards .gen-ai-input:focus-visible {
   border: none;
   outline: none;
+
 }
 
 .gen-ai-cards .card .gen-ai-input-form input::placeholder {
@@ -390,21 +408,33 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   .gen-ai-cards .card {
     --card-width: 400px;
     --card-padding: 16px;
-    --card-gap: 16px;
+    margin: 0px;
+
   }
 
- 
-}
+
+  .gen-ai-cards .gen-ai-cards-cards {
+    width: 100%;
+  }
+  
+  .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper{
+    max-width: 600px;
+    min-width: 500px;
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section {
+    max-width: unset;
+  } 
 
 @media (min-width: 1280px) {
   .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
-    padding-bottom: 10px;
     padding-left: 30px;
   }
   
   .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
     flex-direction: row;
     align-items: flex-end;
+  
   }
  
   .gen-ai-cards.homepage .gen-ai-cards-heading {
@@ -431,14 +461,41 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     width: 380px;
     height: 392px;
   }
+
   .gen-ai-cards.homepage .card .text-wrapper {
     text-align: left;
     margin: 20px 15px 15px;
+
   }
   main .gen-ai-cards.homepage .gen-ai-cards-heading {
     font-size: var(--heading-font-size-m);
   }
+
+
+  .gen-ai-cards .gen-ai-cards-cards {
+    width: 100%;
+    margin-left: -20px;
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper{
+    max-width: 800px;
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section {
+    max-width: unset;
+  }
+
+  .gen-ai-cards input {
+    width: 230px;
+  }
+
+  .gen-ai-cards .card {
+    border-radius: 16px;
+    --card-gap: 12px; 
+  }
+
 }
+
 .gen-ai-cards.homepage .card .text-wrapper {
   flex-grow: 1;
 }
@@ -456,4 +513,31 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.gen-ai-cards .card:first-of-type::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.gen-ai-cards .card .gen-ai-input-form input:focus {
+  animation: Ease-in 300ms;
+} 
+   
+.gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
+   outline: 2px solid var(--color-info-accent);
+   outline-offset: 2px;
+}
+
+.gen-ai-cards .basic-carousel-platform {
+  padding-top: 0px;
+  height: unset;
+  gap: 16px;
+}
+
+.gen-ai-cards .basic-carousel-platform .card {
+  margin: 0px;
 }

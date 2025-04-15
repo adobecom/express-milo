@@ -91,7 +91,6 @@ function initializeCarousel(selector, parent) {
   const updateCarousel = () => {
     if (scrolling) return;
     scrolling = true;
-    console.log(elements[0])
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
 
@@ -105,9 +104,7 @@ function initializeCarousel(selector, parent) {
       }
     }
 
-    const newScrollPos = window.innerWidth <= smalLViewport
-      ? currentIndex * elementWidth - (platformWidth - elementWidth) / 2
-      : currentIndex * elementWidth;
+    const newScrollPos =  currentIndex * elementWidth - (platformWidth - elementWidth) / 2
 
     platform.scrollTo({
       left: newScrollPos,
