@@ -1,3 +1,4 @@
+/* Mobile Styles (Default) */
 .section .gen-ai-cards-wrapper {
   max-width: none;
   margin: auto;
@@ -15,21 +16,17 @@
   gap: var(--Spacing-spacing-400, 24px);
   display: flex;
   flex-direction: column;
- 
 }
 
 .gen-ai-cards.homepage {
   max-width: unset;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .gen-ai-cards:first-child {
   padding-top: 60px;
-}
-
-.gen-ai-cards.homepage {
-  padding-left: 0;
-  padding-right: 0;
 }
 
 .gen-ai-cards .gen-ai-cards-heading-section {
@@ -51,6 +48,7 @@
   margin-bottom: 8px;
   font-size: var(--heading-font-size-m);
 }
+
 .gen-ai-cards .gen-ai-cards-heading-section p {
   text-align: left;
   margin: 0;
@@ -71,7 +69,7 @@
   color: var(--body-color);
   text-decoration: underline;
 }
- 
+
 .gen-ai-cards.homepage .gen-ai-cards-heading-section .gen-ai-cards-link {
   padding-top: 8px;
 }
@@ -86,7 +84,7 @@
   justify-content: center;
   align-items: center;
 }
- 
+
 .gen-ai-cards .card {
   position: relative;
   flex-direction: column;
@@ -103,8 +101,8 @@
   display: flex;  
   justify-content: space-between;
   align-items: flex-start;
-  
 }
+
 .gen-ai-cards .card:first-of-type {
   border-radius: 8px;
   background: var(--blue-background);
@@ -133,12 +131,11 @@
   line-height: var(--body-font-size-m);
   font-weight: 700;
   color: #212121;
-  /* Large Screen/Title/M */
   font-family: "Adobe Clean";
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
-  line-height: 130%; /* 20.8px */
+  line-height: 130%;
 }
 
 .gen-ai-cards .card .text-wrapper .tag {
@@ -155,13 +152,11 @@
   font-size: var(--body-font-size-s);
   line-height: var(--body-font-size-l);
   color: #212121;
-
-  /* Large Screen/Body/S */
   font-family: "Adobe Clean";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 130%; /* 18.2px */
+  line-height: 130%;
 }
 
 .gen-ai-cards .card .media-wrapper { 
@@ -206,7 +201,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 .gen-ai-cards .card .gen-ai-input-form {
   position: absolute;
   width: calc(var(--card-width) - var(--card-padding));
-  /* height: 55px; */
   padding: 8px;
   background-color: var(--color-white);
   border-radius: 8px;
@@ -227,7 +221,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   resize: none;
- 
 }
 
 .gen-ai-cards .card .gen-ai-input-form input:focus {
@@ -241,7 +234,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 .gen-ai-cards .gen-ai-input:focus-visible {
   border: none;
   outline: none;
-
 }
 
 .gen-ai-cards .card .gen-ai-input-form input::placeholder {
@@ -304,7 +296,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .card .links-wrapper a:hover {
-  /* 90% white to align with products */
   background-color: #e6e6e6;
 }
 
@@ -371,6 +362,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
 .gen-ai-cards.homepage .carousel-container {
   scroll-padding-left: 20px;
 }
+
 .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2){
   margin-left: 20px;
 }
@@ -379,121 +371,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-left.arrow-hidde
 main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidden {
   opacity: 0.5;
   pointer-events: none;
-}
-
-@media (min-width: 768px) {
-  .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
-    flex-direction: row;
-    align-items: flex-end;
-  }
-
-  .gen-ai-cards .gen-ai-cards-heading-section h2,
-  .gen-ai-cards .gen-ai-cards-heading-section p {
-    text-align: left; 
-  }
-
-  .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
-    min-width: 180px;
-  }
-
-  .gen-ai-cards {
-    padding: 0 28px; 
-    padding: var(--Spacing-spacing-500, 32px) var(--Spacing-spacing-0, 0px) var(--Spacing-spacing-600, 40px) var(--Spacing-spacing-400, 24px);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 24px; 
-  }
-
-  .gen-ai-cards .card {
-    --card-width: 400px;
-    --card-padding: 16px;
-    margin: 0px;
-
-  }
-
-
-  .gen-ai-cards .gen-ai-cards-cards {
-    width: 100%;
-  }
-  
-  .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper{
-    max-width: 600px;
-    min-width: 500px;
-  }
-
-  .gen-ai-cards .gen-ai-cards-heading-section {
-    max-width: unset;
-  } 
-}
-@media (min-width: 1280px) {
-  .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
-    padding-left: 30px;
-  }
-  
-  .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
-    flex-direction: row;
-    align-items: flex-end;
-  
-  }
- 
-  .gen-ai-cards.homepage .gen-ai-cards-heading {
-    font-size: 36px;
-  }
-
-  .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-    margin-left: 8px;
-  }
-
-  .gen-ai-cards .carousel-container .carousel-fader-left,
-  .gen-ai-cards .carousel-container .carousel-fader-right{
-      background: unset;
-  }
-
-  .gen-ai-cards .carousel-container .carousel-platform {
-    gap: 22px;
-  }
-
-  .gen-ai-cards.homepage .carousel-element.card .media-wrapper {
-    width: 352px;
-  }
-  .gen-ai-cards.homepage .carousel-element.card {
-    width: 380px;
-    height: 392px;
-  }
-
-  .gen-ai-cards.homepage .card .text-wrapper {
-    text-align: left;
-    margin: 20px 15px 15px;
-
-  }
-  main .gen-ai-cards.homepage .gen-ai-cards-heading {
-    font-size: var(--heading-font-size-m);
-  }
-
-
-  .gen-ai-cards .gen-ai-cards-cards {
-    width: 100%;
-    margin-left: -20px;
-  }
-
-  .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper{
-    max-width: 800px;
-  }
-
-  .gen-ai-cards .gen-ai-cards-heading-section {
-    max-width: unset;
-  }
-
-  .gen-ai-cards input {
-    width: 230px;
-  }
-
-  .gen-ai-cards .card {
-    border-radius: 16px;
-    --card-gap: 12px; 
-  }
-
 }
 
 .gen-ai-cards.homepage .card .text-wrapper {
@@ -525,11 +402,11 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 
 .gen-ai-cards .card .gen-ai-input-form input:focus {
   animation: Ease-in 300ms;
-} 
-   
+}
+
 .gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
-   outline: 2px solid var(--color-info-accent);
-   outline-offset: 2px;
+  outline: 2px solid var(--color-info-accent);
+  outline-offset: 2px;
 }
 
 .gen-ai-cards .basic-carousel-container .basic-carousel-platform{
@@ -559,4 +436,117 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 
 .gen-ai-cards .card.has-beta-tag {
   background: var(--Palette-indigo-100, #EDEEFF);
+}
+
+/* Tablet Styles (min-width: 768px) */
+@media (min-width: 768px) {
+  .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section h2,
+  .gen-ai-cards .gen-ai-cards-heading-section p {
+    text-align: left; 
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
+    min-width: 180px;
+  }
+
+  .gen-ai-cards {
+    padding: var(--Spacing-spacing-500, 32px) var(--Spacing-spacing-0, 0px) var(--Spacing-spacing-600, 40px) var(--Spacing-spacing-400, 24px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px; 
+  }
+
+  .gen-ai-cards .card {
+    --card-width: 400px;
+    --card-padding: 16px;
+    margin: 0px;
+  }
+
+  .gen-ai-cards .gen-ai-cards-cards {
+    width: 100%;
+  }
+  
+  .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper{
+    max-width: 600px;
+    min-width: 500px;
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section {
+    max-width: unset;
+  }
+}
+
+/* Desktop Styles (min-width: 1280px) */
+@media (min-width: 1280px) {
+  .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
+    padding-left: 30px;
+  }
+  
+  .gen-ai-cards:not(.homepage) .gen-ai-cards-heading-section {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+ 
+  .gen-ai-cards.homepage .gen-ai-cards-heading {
+    font-size: 36px;
+  }
+
+  .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
+    margin-left: 8px;
+  }
+
+  .gen-ai-cards .carousel-container .carousel-fader-left,
+  .gen-ai-cards .carousel-container .carousel-fader-right{
+    background: unset;
+  }
+
+  .gen-ai-cards .carousel-container .carousel-platform {
+    gap: 22px;
+  }
+
+  .gen-ai-cards.homepage .carousel-element.card .media-wrapper {
+    width: 352px;
+  }
+
+  .gen-ai-cards.homepage .carousel-element.card {
+    width: 380px;
+    height: 392px;
+  }
+
+  .gen-ai-cards.homepage .card .text-wrapper {
+    text-align: left;
+    margin: 20px 15px 15px;
+  }
+
+  main .gen-ai-cards.homepage .gen-ai-cards-heading {
+    font-size: var(--heading-font-size-m);
+  }
+
+  .gen-ai-cards .gen-ai-cards-cards {
+    width: 100%;
+    margin-left: -20px;
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper{
+    max-width: 800px;
+  }
+
+  .gen-ai-cards .gen-ai-cards-heading-section {
+    max-width: unset;
+  }
+
+  .gen-ai-cards input {
+    width: 230px;
+  }
+
+  .gen-ai-cards .card {
+    border-radius: 16px;
+    --card-gap: 12px; 
+  }
 }
