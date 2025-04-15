@@ -896,7 +896,8 @@ main.with-holiday-templates-banner {
   background: var(--color-gray-100);
   position: sticky;
   z-index: 1;
-  top: 64px;
+  /* might get overridden by inline style with localnav */
+  top: var(--global-height-nav);
 }
 
 .template-x.print .toolbar-wrapper,
@@ -2725,7 +2726,7 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     position: absolute;
     left: 28px;
     top: 120px;
-    height: calc(100% - 64px);
+    height: calc(100% - var(--global-height-nav));
     max-height: unset;
     overflow: hidden;
     min-width: unset;

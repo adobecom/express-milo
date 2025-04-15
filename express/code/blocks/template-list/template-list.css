@@ -2286,7 +2286,7 @@
     position: absolute;
     left: 0;
     /* top: 64px; */
-    height: calc(100% - 64px);
+    height: calc(100% - var(--global-height-nav));
     max-height: unset;
     overflow: hidden;
     min-width: unset;
