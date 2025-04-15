@@ -541,3 +541,22 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 .gen-ai-cards .basic-carousel-platform .card {
   margin: 0px;
 }
+
+.gen-ai-cards .card .beta-tag {
+  color: var(--Content-Accent-default, #5258E4);
+  font-family: "Adobe Clean";
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  position: absolute;
+  padding: 0.5px 4px;
+  border-radius: 3px;
+  background: var(--Palette-indigo-200, #E0E2FF);
+  margin-left: 4px;
+  margin-top: 2px;
+}
+
+.gen-ai-cards .card.has-beta-tag {
+  background: var(--Palette-indigo-100, #EDEEFF);
+}

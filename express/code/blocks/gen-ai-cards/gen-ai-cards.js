@@ -119,10 +119,13 @@ function removeLazyAfterNeighborLoaded(image, lastImage) {
 async function decorateCards(block, { actions }) {
   const cards = createTag('div', { class: 'gen-ai-cards-cards' });
   let searchBranchLinks;
+  let betaTagPlaceholder;
 
   await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
     searchBranchLinks = await mod.replaceKey('search-branch-links', getConfig());
     searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks.replace(/\s/g, '')?.split(',');
+    betaTagPlaceholder = await mod.replaceKey('beta-tag', getConfig());
+    betaTagPlaceholder = betaTagPlaceholder === 'beta tag' ? 'BETA' : betaTagPlaceholder;
     return mod.replaceKey();
   });
 
@@ -132,11 +135,14 @@ async function decorateCards(block, { actions }) {
       ctaLinks,
       text,
       title,
+      betaTag,
     } = cta;
     const card = createTag('div', { class: 'card' });
     const linksWrapper = createTag('div', { class: 'links-wrapper' });
     const mediaWrapper = createTag('div', { class: 'media-wrapper' });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
+
+ 
 
     card.append(textWrapper, mediaWrapper, linksWrapper);
     if (image) {
@@ -170,11 +176,18 @@ async function decorateCards(block, { actions }) {
     }
 
     const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h4' });
+
+    if (betaTag) {
+      addBetaTag(card, titleText, betaTagPlaceholder);
+    }
+
+   
     textWrapper.append(titleText);
     const desc = createTag('p', { class: 'cta-card-desc' });
     desc.textContent = text;
     textWrapper.append(desc);
 
+   
     cards.append(card);
   });
 
@@ -197,6 +210,7 @@ function constructPayload(block) {
   };
 
   rows.forEach((row) => {
+    console.log(row.innerHTML)
     const ctaObj = {
       image: row.querySelector(':scope > div:nth-of-type(1) picture'),
       videoLink: row.querySelector(':scope > div:nth-of-type(1) a'),
@@ -204,12 +218,20 @@ function constructPayload(block) {
       text: row.querySelector(':scope > div:nth-of-type(2) p:not(.button-container):not(:has(strong)):not(:has(em)):not(:empty)')?.textContent.trim(),
       subtext: row.querySelector(':scope > div:nth-of-type(2) p:not(.button-container) em')?.textContent.trim(),
       ctaLinks: row.querySelectorAll(':scope > div:nth-of-type(2) a'),
+      betaTag: row.innerHTML.includes('#_beta'),
     };
 
     payload.actions.push(ctaObj);
   });
 
   return payload;
+}
+
+function addBetaTag (card, title, betaPlaceholder) {
+  const betaTag = createTag('span', { class: 'beta-tag' });
+  betaTag.textContent =  betaPlaceholder
+  title.append(betaTag);
+  card.classList.add('has-beta-tag');
 }
 
 export default async function decorate(block) {
