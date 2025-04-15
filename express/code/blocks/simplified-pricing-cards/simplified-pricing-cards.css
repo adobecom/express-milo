@@ -349,6 +349,7 @@ main .section>.simplified-pricing-cards-wrapper {
     left: -105px; 
     margin-bottom: 5px;
     user-select: text;
+    pointer-events: none;
     transition: bottom 0.5s;
 }
 
