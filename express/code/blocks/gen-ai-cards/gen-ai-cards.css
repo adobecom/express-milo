@@ -425,7 +425,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   .gen-ai-cards .gen-ai-cards-heading-section {
     max-width: unset;
   } 
-
+}
 @media (min-width: 1280px) {
   .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
     padding-left: 30px;
@@ -532,7 +532,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
    outline-offset: 2px;
 }
 
-.gen-ai-cards .basic-carousel-container .basic-carousel-platform  {
+.gen-ai-cards .basic-carousel-container .basic-carousel-platform{
   padding-top: 0px;
   height: unset;
   gap: 16px;
