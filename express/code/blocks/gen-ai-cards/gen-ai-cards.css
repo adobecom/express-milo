@@ -9,7 +9,7 @@
   max-width: 1440px;
   margin: auto;
   --card-height: 315px;
-  --card-width: 315px;
+  --card-width: 291px;
   --card-padding: 12px;
   --card-gap: 8px;
   --blue-background: #EDEEFF;
@@ -101,6 +101,7 @@
   display: flex;  
   justify-content: space-between;
   align-items: flex-start;
+  transition: width 0.3s ease-in-out, min-width 0.3s ease-in-out, max-width 0.3s ease-in-out;
 }
 
 .gen-ai-cards .card:first-of-type {
@@ -221,6 +222,9 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   resize: none;
+   -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .gen-ai-cards .card .gen-ai-input-form input:focus {
@@ -228,6 +232,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   width: 100%;
   flex-grow: 1;
   padding-bottom: 10px;
+ 
 }
 
 .gen-ai-cards .gen-ai-input:active,
@@ -463,7 +468,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards .card {
-    --card-width: 400px;
+    --card-width: 368px;
     --card-padding: 16px;
     margin: 0px;
   }
