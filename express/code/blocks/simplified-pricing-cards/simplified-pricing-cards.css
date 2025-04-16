@@ -48,8 +48,12 @@ main .section>.simplified-pricing-cards-wrapper {
 
 }
 
+.simplified-pricing-cards.first-card-white .card:first-of-type {
+  background-color: var(--color-white);
+}
+
 .simplified-pricing-cards .card:first-of-type {
-    background-color: #F8F8F8;
+  background-color: var(--color-gray-100);
 }
 
 .simplified-pricing-cards .card.gradient-promo {
