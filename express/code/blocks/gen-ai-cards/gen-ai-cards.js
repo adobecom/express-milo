@@ -209,7 +209,6 @@ function constructPayload(block) {
   };
 
   rows.forEach((row) => {
-    console.log(row.innerHTML)
     const ctaObj = {
       image: row.querySelector(':scope > div:nth-of-type(1) picture'),
       videoLink: row.querySelector(':scope > div:nth-of-type(1) a'),
