@@ -85,18 +85,6 @@
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
   --block-lg-max-width: 1024px;
-
-  /* Spacing */
-  --spacing-100: 8px;
-  --spacing-200: 12px;
-  --spacing-300: 16px;
-  --spacing-400: 24px;
-  --spacing-500: 32px;
-  --spacing-600: 40px;
-  --spacing-700: 48px;
-  --spacing-800: 64px;
-  --spacing-900: 80px;
-  --spacing-1000: 96px;
 }
 
 @media (min-width: 900px) {
@@ -755,8 +743,8 @@ main .section:not(.xxxl-spacing-static,
   padding-bottom: 40px;
 }
 
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.button.same-fcta,
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.con-button.same-fcta,
+main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner) a.button.same-fcta,
+main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner) a.con-button.same-fcta,
 #hero a.same-fcta {
   display: none;
 }

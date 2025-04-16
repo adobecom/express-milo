@@ -493,7 +493,6 @@ function renameConflictingBlocks(area, selector) {
     const columnBlock = section.querySelectorAll('div.columns');
     columnBlock.forEach((column) => {
       if (column.classList[0] !== 'columns') return;
-      if (column.classList.contains('milo')) return;
       column.classList.replace('columns', 'ax-columns');
     });
   };

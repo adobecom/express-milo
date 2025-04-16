@@ -1,120 +1,15 @@
-/* Base styles for quotes wrapper */
 .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
   max-width: 375px;
-  margin: auto;
 }
 
-/* Carousel specific styles */
-.quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
-  max-width: unset;
-}
-
-.quotes-wrapper .quote .author-content .summary p {
-  font-size: 12px;
-}
-
-.quotes:not(.carousel) .quote .content {
-  padding-top: 28px;
-  font-size: 1rem;
-  text-align: left;
-  flex-grow: 1;
-}
-
-.template.basic-carousel-element.quote {
-  width: 100%;
-  max-height: 318px;
-  margin-bottom: var(--spacing-400);
-}
-
-.quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-  margin-left: 16px;
-  margin-right: 16px;
-}
-
-.quotes-wrapper .basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
-  margin-left: 0;
-  margin-right: 16px;
-}
-
-.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
-  scroll-padding-left: 16px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: auto;
-}
-
-.quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow::before,
-.quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow::before {
-  opacity: 0.7;
-  border-radius: 2px;
-} 
-
-.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow::before {
-  border-top: solid 3px var(--color-black);
-  border-right: solid 3px var(--color-black);
-  border-radius: 2px;
-  margin-top: 11px;
-}
-
-.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-left::before {
-  margin-left: 12px;
-}
-
-.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-right::before {
-  margin-left: 10px;
-}
-
-.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left {
-  right: 29px;
-}
-
-.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right {
-  padding-right: 10px;
-}
-  
-.quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow {
-  margin: 0 0px;
-  background: #FFFFFF;
-  padding-bottom: 1px;
-  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.2);
-  width: 32px;
-  height: 32px;
-}
-
-.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
-  max-width: 100%;
-  height: auto;
-  min-height: 0;
-  margin: auto;
-  display: flex;
-  align-items: stretch;
-  background: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0) 50%);
-}
-
-/* Quote card styles */
-.quotes.carousel .quote {
-  display: flex;
-  min-height: 0;
-  width: 348px;
-  min-width: 300px;
-  max-width: 348px;
-  padding: var(--spacing-400);
-  flex-direction: column;
-  gap: 16px;
-  border-radius: var(--Marquee-grid-Card-Card-Radius, 16px);
-  background: var(--Alias-background-app-frame-layer-1, #F8F8F8);
-  /* Drop shadow/emphasized-default */
-  box-shadow: 0px 1px 6px 0px var(--Alias-drop-shadow-emphasized-default, rgba(0, 0, 0, 0.12));
-  flex: 1 1 auto;
-}
-
-/* Section spacing */
 .section:has(.quotes)>div>h2 {
   margin-top: 80px;
 }
 
-/* Quotes container styles */
+.quotes-wrapper {
+  margin: auto;
+}
+
 .quotes {
   margin-top: 40px;
   padding-bottom: 40px;
@@ -128,13 +23,6 @@
   padding-bottom: 80px;
 }
 
-.section .quotes-wrapper .quotes.carousel {
-  margin-top: var(--spacing-600);
-  padding-bottom: 0;
-  margin-bottom: 84px;
-}
-
-/* Singular quote styles */
 .quotes.singular {
   margin: 0 auto;
   padding-bottom: 0;
@@ -152,59 +40,25 @@
   background: var(--color-white);
 }
 
-/* Author styles */
+.quotes .quote .content {
+  padding-top: 28px;
+  font-size: 1rem;
+  text-align: left;
+  flex-grow: 1;
+}
+
 .quotes .quote .author .author-content {
   display: flex;
   align-items: center;
 }
 
-.quotes.quotes:not(.carousel) .quote .author .author-content {
-  display: flex;
-  align-items: flex-start;
-}
-
-.quotes .quote .author .author-content img {
-  margin-bottom: 16px;
-}
-
-.template.basic-carousel-element.quote {
-  transition: background-color 300ms ease;
-}
-
-.template.basic-carousel-element.quote:hover {
-  background-color: #FFFFFF;
-}
-
-.quotes.carousel .quote .author-content {
-  flex-direction: column;
-}
-
-.quotes.carousel .basic-carousel-element.quote .author:after {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 1px;
-  margin-top: var(--spacing-300);
-  background-color: #C6C6C6;
-}
-
-.quotes:not(.carousel) .quote .author .summary {
+.quotes .quote .author .summary {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 8px;
 }
 
-.quotes .quote .author-content .image {
-  padding-right: 10px;
-}
-
-.quotes-ratings-wrapper .quote .author .image {
-  padding-right: 0;
-}
-
-/* Quote content styles */
 .quotes .quote .content::before {
   content: '“';
   display: block;
@@ -216,58 +70,27 @@
   font-weight: 900;
 }
 
-.quotes.carousel .quote .content::before {
-  display: none;
-}
-
 .quotes .quote p {
   margin: 32px 0;
 }
 
-/* Author section styles */
-.quotes:not(.carousel) .quote .author {
+.quotes .quote .author {
+  display: flex;
   flex-wrap: nowrap;
-  align-items: self-start;
-  align-self: baseline;
   margin-top: 16px;
+  align-items: center;
+  align-self: baseline;
 }
 
-.quotes.carousel .quote .author {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0;
-}
-
-.quotes.carousel .quote .author {
-  display: flex;
-  margin-top: 0;
-  align-items: center;
-}
-.quotes.carousel .quote .author > p {
-  display: none;
-}
 .quotes .quote .author hr {
   display: none;
 }
 
-.quotes.carousel .quote .author .summary p:first-of-type {
-  font-size: var(--body-font-size-s);
-}
-
-.quotes.carousel .quote .author .summary p:nth-of-type(2) {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.quotes.carousel .quotes-ratings-wrapper .quote .content {
-  text-align: center;
+.quotes .quote .author .image {
+  padding-right: 10px;
 }
 
 .quotes .quote .author .image img {
-  object-fit: cover;
   width: 42px;
   height: 42px;
   max-width: unset;
@@ -275,7 +98,6 @@
   box-sizing: border-box;
 }
 
-/* Singular quote layout */
 main div:has(> .quotes-wrapper .singular.quotes) {
   padding-top: 0;
 }
@@ -314,21 +136,6 @@ main .quotes.singular .quote-container .mobile-container .quote {
   }
   main .quotes.singular .quote-container .mobile-container {
     display: none;
-  }
-  .section .quotes-wrapper .quotes.carousel {
-    margin-top: 80px;
-    padding-bottom: 0;
-    margin-bottom: 124px;
-  }
-  .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-    margin-left: var(--spacing-500);
-  }
-}
-
-@media (hover: hover) {
-  .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-left:hover,
-  .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow-right:hover {
-    background: #D5D5D5;
   }
 }
 
@@ -419,351 +226,12 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   margin-right: 15px;
 }
 
-/* Ratings styles */
-.quotes.carousel .quotes-ratings-wrapper .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--spacing-500);
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
-}
-
-.quotes.carousel .quotes-ratings-wrapper .container div:first-child {
-  width: 100%;
-}
-
-.quotes.carousel .quotes-ratings-wrapper h2 {
-  font-size: var(--heading-font-size-s);
-  font-weight: 900;
-  line-height: 130%;
-  margin-bottom: var(--spacing-400);
-  padding-left: 16px;
-}
-
-.quotes.carousel .ratings-container {
-  max-width: 222px;
-  margin-bottom: var(--spacing-500);
-}
-
-.quotes.carousel .rating-stars {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  margin-bottom: var(--spacing-200);
-}
-
-.quotes.carousel .rating-votes {
-  display: flex;
-}
-
-.quotes.carousel .ratings-container .rating-average {
-  color: #000;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 900;
-  line-height: 130%;
-}
-
-.quotes.carousel .ratings-container .rating-count {
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-  color: #000;
-  font-size: 14px;
-}
-.quotes.carousel .no-slider, 
-.quotes.carousel .no-slider a {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 130%;
-  text-align: center;
-}
-.quotes.carousel .no-slider a {
-  text-decoration: underline;
-  color: var(--color-black);
-}
-
-.quotes.carousel .ratings .slider-comment textarea {
-  resize: none;
-  border: 2px solid var(--color-gray-400);
-  border-radius: 6px;
-  padding: 10px;
-  font-family: var(--body-font-family);
-  font-size: var(--body-font-size-m);
-  color: var(--body-color);
-  margin: 16px 0;
-  background: var(--color-white);
-  width: 100%;
-  box-sizing: border-box;
-  text-align: left;
-}
-
-.quotes.carousel .ratings .slider-comment textarea.invalid {
-  border-color: rgb(229, 151, 0);
-}
-
-.quotes.carousel .ratings .slider-comment input[type="submit"] {
-  background-color: #f0f0f0;
-  border-color: #f0f0f0;
-  outline: none;
-  box-shadow: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  font-family: var(--body-font-family);
-  font-size: var(--body-font-size-m);
-  line-height: var(--body-line-height);
-  color: var(--body-color);
-  font-weight: 700;
-  font-style: normal;
-  text-align: center;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-  margin: 0;
-  padding: 13px 1.5em 13px 1.5em;
-  border-radius: 27px;
-  transition: background-color 0.3s, color 0.3s, border 0.3s;
-  border: 2px solid var(--color-gray-200);
-  background: var(--color-gray-200);
-}
-
-/* Hover ratings styles */
-.quotes.ratings .hover-ratings {
-  position: relative;
-  display: inline-block;
-}
-
-.quotes.ratings .hover-stars {
-  position: relative;
-  display: flex;
-  gap: 4px;
-  margin-bottom: 20px;
-}
-
-.quotes.ratings .hover-stars .timer {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.quotes.ratings .hover-stars .timer .lottie {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.quotes.ratings .hover-star {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  position: relative;
-}
-
-.quotes.ratings .hover-star:hover {
-  transform: scale(1.1);
-}
-
-.quotes.ratings .hover-star .icon {
-  width: 24px;
-  height: 24px;
-  color: var(--color-gray-200);
-  transition: color 0.2s ease;
-  position: relative;
-  z-index: 1;
-}
-
-/* Icon styles */
-main .quotes.ratings .icon {
-  width: 24px;
-  height: 24px;
-}
-
-main .quotes.carousel .ratings .icon.icon-star,
-main .quotes.carousel .ratings button.selected .icon.icon-star {
-  color: var(--color-info-accent);
-}
-
-.quotes.ratings .hover-star:not(.hover) .icon.icon-star {
-  color: var(--color-gray-200);
-}
-
-.quotes.ratings .hover-star:hover .icon,
-.quotes.ratings .hover-star.hover .icon {
-  color: var(--color-info-accent);
-}
-
-.quotes.ratings .hover-star.selected .icon {
-  color: var(--color-info-accent);
-}
-
-/* Tooltip styles */
-.quotes.ratings .hover-tooltip {
-  display: none;
-  visibility: hidden;
-  height: 0;
-}
-
-/* Form styles */
-.quotes.ratings textarea {
-  width: 100%;
-  min-height: 100px;
-  padding: 8px;
-  border: 1px solid var(--color-gray-200);
-  border-radius: 4px;
-  resize: vertical;
-}
-
-.quotes.ratings textarea.invalid {
-  border-color: #dc3545;
-  background-color: #fff8f8;
-}
-
-.quotes.ratings textarea[aria-label] {
-  margin-bottom: 16px;
-}
-
-/* Preserve existing hover state for slider variant */
-.quotes.ratings .slider-bottom .stars:hover {
-  color: var(--color-info-accent);
-}
-
-/* Ensure proper spacing in carousel context */
-.quotes.carousel .quotes.ratings .hover-ratings {
-  margin: 0;
-}
-
-.quotes.carousel .quotes.ratings .hover-stars {
-  justify-content: center;
-}
-
-.quotes.carousel .ratings:has(.hover-ratings) {
-  width: 100%;
-}
-
 @media (min-width: 768px) {
-  
   main .quotes.singular .quote {
     width: 83.3%;
     max-width: 968px;
     min-height: 315px;
   }
-  .quotes.ratings .hover-stars .timer {
-    right: -50px;
-  }
-  .quotes.carousel .quotes-ratings-wrapper .container {
-    flex-direction: row;
-    max-width: 1300px;
-    width: unset;
-    display: block;
-    margin: auto;
-  }
-
-  .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
-    width: 75%;
-  }
- 
-  .quotes.carousel .ratings:not(.submitted) {
-    display: flex;
-    width: 25%;
-    min-width: 300px;
-    align-items: center;
-    justify-content: center;
-  }
- 
-  .quotes.carousel .ratings:has(.hover-ratings) {
-    width: 100%;
-  }
-  
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    font-size: 36px;
-    font-weight: 900;
-    line-height: 130%;
-    margin-bottom: var(--spacing-500);
-    width: max-content;
-  }
-  .quotes.carousel .ratings-container .rating-average {
-    color: #000;
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 900;
-    line-height: 130%;
-    margin-bottom: 0;
-  }
-  
-  .quotes.carousel .ratings-container .rating-count {
-    margin-left: 10px;
-    font-size: 18px;
-  }
-
-  .quotes.ratings .hover-tooltip {
-    position: absolute;
-    top: -48px;
-    transform: translateX(-50%);
-    background-color: #2c2c2c;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 14px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
-    pointer-events: none;
-    z-index: 100;
-    display: none;
-  }
-  
-  .quotes.ratings .hover-tooltip[style*="display: block"] {
-    opacity: 1;
-    display: block;
-    visibility: visible;
-    height: auto;
-  }
-  
-  .quotes.ratings .hover-tooltip .tooltip-content {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .quotes.ratings .hover-tooltip .tooltip-image {
-    display: flex;
-    align-items: center;
-    min-width: 20px;
-  }
-  
-  .quotes.ratings .hover-tooltip .tooltip-image .icon {
-    width: 20px;
-    height: 20px;
-    color: var(--color-white);
-    fill: var(--color-white);
-  }
-  
-  .quotes.ratings .hover-tooltip .tooltip-text {
-    color: var(--color-white);
-  }
-
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    font-size: var(--heading-font-size-m);
-    padding-left: 32px;
-  }
-
 }
 
 @media (min-width: 1280px) {
@@ -773,18 +241,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   main .quotes.singular .quote-details {
     font-size: 28px;
-  }
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    font-size: var(--heading-font-size-l);
-  }
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    padding-left: 40px;
-  }
-  .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin: auto;
   }
 }
 
@@ -801,10 +257,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   line-height: 1.2;
 }
 
-.quotes.carousel .quote .author .summary p {
-  text-align: center;
-}
-
 .quotes h2,
 .quotes h3,
 .quotes h4,
@@ -817,7 +269,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     max-width: 724px;
   }
 
-  .quotes:not(.carousel) {
+  .quotes {
     flex-direction: row;
     gap: 16px;
   }
@@ -830,8 +282,5 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
 @media (min-width: 1200px) {
   .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
     max-width: 1024px;
-  }
-  .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-    margin-left: 40px;
   }
 }

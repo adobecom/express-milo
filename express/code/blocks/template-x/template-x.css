@@ -127,7 +127,7 @@ main.with-holiday-templates-banner > div.section:has(.template-x) {
   white-space: nowrap;
 }
 
-main .template-x.sixcols:not(.print) .masonry-col, main .template-x.fullwidth:not(.print) .masonry-col {
+main .template-x.sixcols .masonry-col, main .template-x.fullwidth .masonry-col {
   max-width: 175px;
 }
 
@@ -229,18 +229,8 @@ main .template-x.sixcols:not(.print) .masonry-col, main .template-x.fullwidth:no
   min-height: 700px;
 }
 
-.template-x[class*="lg-view"] > .template-x-inner-wrapper > .masonry-col {
-  max-width: 335px;
-  text-align: center;
-}
-
-.template-x[class*="md-view"] > .template-x-inner-wrapper > .masonry-col {
-  max-width: 260px;
-  text-align: center;
-}
-
-.template-x[class*="sm-view"] > .template-x-inner-wrapper > .masonry-col {
-  max-width: 170px;
+.template-x.fullwidth.lg-view > .template-x-inner-wrapper > .masonry-col {
+  max-width: 352px;
   text-align: center;
 }
 
@@ -524,7 +514,7 @@ main.with-holiday-templates-banner {
   top: 4px;
 }
 
-.template-x.sixcols:not(.horizontal):not(.print) .template,
+.template-x.sixcols:not(.horizontal) .template,
 .template-x.fullwidth .template {
   position: relative;
   display: inline-flex;
@@ -532,22 +522,9 @@ main.with-holiday-templates-banner {
   margin: 5px;
 }
 
-.template-x.print[class*="lg-view"] .template {
-  min-width: 328px;
-}
-
-@media (min-width: 900px) {
-  .template-x.print[class*="lg-view"] .template,
-  .template-x.print[class*="md-view"] .template,
-  .template-x.print[class*="sm-view"] .template {
-    min-width: initial;
-    width: 92%;
-  }
-}
-
-.template-x[class*="lg-view"] .template,
-.template-x[class*="md-view"] .template,
-.template-x[class*="sm-view"] .template {
+.template-x.fullwidth.lg-view .template,
+.template-x.fullwidth.md-view .template,
+.template-x.fullwidth.sm-view .template {
   width: 92%;
 }
 
@@ -686,10 +663,6 @@ main.with-holiday-templates-banner {
   padding: 0;
 }
 
-.template-x.print .template.placeholder {
-  margin-top: 0;
-}
-
 .template-x.horizontal .template.placeholder,
 .template-x.horizontal.fullwidth .template.placeholder {
   margin: 0 11px;
@@ -766,28 +739,8 @@ main.with-holiday-templates-banner {
   height: 44px;
 }
 
-.template-x.print .template.placeholder > div:first-of-type > img,
-.template-x.print .template.placeholder > div:first-of-type > svg {
-  position: relative;
-  bottom: 50px;
-  width: 44px;
-  height: 44px;
-}
-
-
-.template-x.print.md-view .template.placeholder > div:first-of-type > img,
-.template-x.print.md-view .template.placeholder > div:first-of-type > svg {
-  position: relative;
-  bottom: 25px;
-  width: 44px;
-  height: 44px;
-}
-
-.template-x.print.sm-view .template.placeholder > div:first-of-type > img,
-.template-x.print.sm-view .template.placeholder > div:first-of-type > svg {
-  position: relative;
-  bottom: 0px;
-  width: 44px;
+.template-x.holiday.light-text svg {
+  fill: var(--color-white);
 }
 
 .template-x.holiday.dark-text svg {
@@ -880,9 +833,13 @@ main.with-holiday-templates-banner {
   font-size: 18px;
 }
 
-.template-x.fullwidth.lg-view > .template-x-inner-wrapper > .masonry-col,
-.template-x.print.lg-view > .template-x-inner-wrapper > .masonry-col {
+.template-x.fullwidth.lg-view > .template-x-inner-wrapper > .masonry-col {
   max-width: 335px;
+  text-align: center;
+}
+
+.template-x.fullwidth.md-view > .template-x-inner-wrapper > .masonry-col {
+  max-width: 156px;
   text-align: center;
 }
 
@@ -2095,9 +2052,6 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 .template-x.print .share-icon-wrapper {
   display: none;
 }
-.template-x.print .template .still-wrapper .image-wrapper .media-type-icon {
-  display: none;
-}
 
 .template-x.t-shirt .template .still-wrapper .image-wrapper {
   background: url('tshirt.png') no-repeat center center;
@@ -2105,7 +2059,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   border-radius: 10px;
 }
 
-.template-x.print.sixcols:not(.horizontal):not(.print) .template:not(.placeholder) .button-container {
+.template-x.print.sixcols:not(.horizontal) .template:not(.placeholder) .button-container {
   width: 195px;
 }
 
@@ -2128,7 +2082,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   display: table;
   content: ' ';
   position: absolute;
-  top: 19%;
+  top: 20%;
   width: 118px;
   height: 155px;
   padding: 6px;
@@ -2140,17 +2094,8 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 }
 
 .template-x.print .template.placeholder div:nth-of-type(2) {
-  bottom: 320px;
+  bottom: 80px
 }
-
-.template-x.print.md-view .template.placeholder div:nth-of-type(2) {
-  bottom: 200px;
-}
-
-.template-x.print.sm-view .template.placeholder div:nth-of-type(2) {
-  bottom: 50px;
-}
-
 
 .template-x.print .template.placeholder::after {
   display: table;
@@ -2549,6 +2494,11 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     text-align: center;
   }
 
+  .template-x.fullwidth.md-view > .template-x-inner-wrapper > .masonry-col {
+    max-width: 200px;
+    text-align: center;
+  }
+
   .template-x.fullwidth.sm-view > .template-x-inner-wrapper > .masonry-col {
     max-width: 163px;
     text-align: center;
@@ -2616,13 +2566,12 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
     text-align: left;
   }
 
-  .template-x.sixcols:not(.horizontal):not(.print) > .template-x-inner-wrapper > .masonry-col,
+  .template-x.sixcols:not(.horizontal) > .template-x-inner-wrapper > .masonry-col,
   .template-x.fullwidth > .template-x-inner-wrapper > .masonry-col {
     max-width: 180px;
   }
 
-  .template-x.fullwidth.md-view > .template-x-inner-wrapper > .masonry-col,
-  .template-x.print.fullwidth.md-view > .template-x-inner-wrapper > .masonry-col {
+  .template-x.fullwidth.md-view > .template-x-inner-wrapper > .masonry-col {
     max-width: 260px;
     text-align: center;
   }
@@ -3072,18 +3021,4 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
-}
-
-.template-x[class*="lg-view"] .template.placeholder {
-  width: 328px;
-}
-
-@media (min-width: 900px) { 
-  .template-x[class*="md-view"] .template.placeholder {
-    width: 227.33px;
-  }
-}
-
-.template-x[class*="sm-view"] .template.placeholder {
-  width: 165px;
 }

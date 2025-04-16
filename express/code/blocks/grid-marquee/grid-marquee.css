@@ -359,9 +359,6 @@ main .section .grid-marquee h1 {
     max-width: 1600px;
     padding-bottom: 40px;
   }
-  .grid-marquee .headline.no-cta {
-    padding-bottom: 0;
-  }
   main .section .grid-marquee .headline h1 {
     font-size: var(--heading-font-size-xl);
   }

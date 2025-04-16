@@ -232,14 +232,9 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   border-radius: 8px;
 }
 
-.gen-ai-cards.homepage.spotlight .card .media-wrapper {
+.gen-ai-cards.homepage .card .media-wrapper {
   width: 268px;
   height: 228px;
-}
-
-.gen-ai-cards.homepage .card .media-wrapper {
-  width: 262px;
-  height: 274px;
 }
 
 .gen-ai-cards .card .media-wrapper picture img {
@@ -410,15 +405,8 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
   font-size: var(--heading-font-size-m);
 }
 
-.gen-ai-cards.homepage:not(.spotlight) .gen-ai-cards-heading-section h2,
-.gen-ai-cards.homepage:not(.spotlight) .gen-ai-cards-heading-section p {
-  text-align: center;
-  max-width: none;
-}
-
-.gen-ai-cards.homepage.spotlight .gen-ai-cards-heading-section h2,
-.gen-ai-cards.homepage.spotlight .gen-ai-cards-heading-section p {
-  text-align: left;
+.gen-ai-cards.homepage .gen-ai-cards-heading-section h2,
+.gen-ai-cards .gen-ai-cards-heading-section p {
   max-width: none;
 }
 
@@ -448,8 +436,8 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   position: relative;
 }
 
-.gen-ai-cards.homepage:not(.spotlight) .carousel-element.card {
-  height: unset;
+.gen-ai-cards.homepage .carousel-element.card {
+  height: 325px;
   display: flex;
   flex-direction: column;
   gap: 10px;
