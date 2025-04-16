@@ -141,8 +141,6 @@ async function decorateCards(block, { actions }) {
     const mediaWrapper = createTag('div', { class: 'media-wrapper' });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
 
- 
-
     card.append(textWrapper, mediaWrapper, linksWrapper);
     if (image) {
       mediaWrapper.append(image);
@@ -180,13 +178,11 @@ async function decorateCards(block, { actions }) {
       addBetaTag(card, titleText, betaTagPlaceholder);
     }
 
-   
     textWrapper.append(titleText);
     const desc = createTag('p', { class: 'cta-card-desc' });
     desc.textContent = text;
     textWrapper.append(desc);
 
-   
     cards.append(card);
   });
 
@@ -225,9 +221,9 @@ function constructPayload(block) {
   return payload;
 }
 
-function addBetaTag (card, title, betaPlaceholder) {
+function addBetaTag(card, title, betaPlaceholder) {
   const betaTag = createTag('span', { class: 'beta-tag' });
-  betaTag.textContent =  betaPlaceholder
+  betaTag.textContent = betaPlaceholder;
   title.append(betaTag);
   card.classList.add('has-beta-tag');
 }
@@ -253,6 +249,6 @@ export default async function decorate(block) {
   decorateHeading(block, payload);
   await decorateCards(block, payload);
   const cardContainer = block.querySelector('.gen-ai-cards-cards');
-  const cards = cardContainer.querySelectorAll('.card'); 
+  const cards = cardContainer.querySelectorAll('.card');
   await buildCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
 }

@@ -75,9 +75,8 @@ function initializeCarousel(selector, parent) {
   platform.append(...carouselContent);
   control.append(faderLeft, faderRight);
   container.append(platform, control);
-  parent.append(container); 
+  parent.append(container);
 
- 
   const elements = platform.querySelectorAll(selector);
 
   const determineScrollCount = () => {
@@ -104,7 +103,7 @@ function initializeCarousel(selector, parent) {
       }
     }
 
-    const newScrollPos =  currentIndex * elementWidth - (platformWidth - elementWidth) / 2
+    const newScrollPos = currentIndex * elementWidth - (platformWidth - elementWidth) / 2;
 
     platform.scrollTo({
       left: newScrollPos,
@@ -139,7 +138,6 @@ function initializeCarousel(selector, parent) {
     });
 
     faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
-    console.log(currentIndex + scrollCount >= elements.length, currentIndex , scrollCount, elements.length)
     faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
   };
 
