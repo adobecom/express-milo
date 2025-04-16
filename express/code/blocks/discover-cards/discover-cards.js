@@ -28,7 +28,7 @@ const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"
 </svg>`;
 const scrollPadding = 16;
 
-export function createControl(items, container) {
+function createControl(items, container) {
   const control = createTag('div', { class: 'gallery-control loading' });
   const status = createTag('div', { class: 'status' });
   const prevButton = createTag('button', {
