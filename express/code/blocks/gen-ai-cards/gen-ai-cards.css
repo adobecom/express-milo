@@ -9,13 +9,15 @@
   max-width: 1440px;
   margin: auto;
   --card-height: 315px;
-  --card-width: 291px;
+  --card-width: 292px;
   --card-padding: 12px;
   --card-gap: 8px;
+  --input-form-width: 244px;
   --blue-background: #EDEEFF;
   gap: var(--Spacing-spacing-400, 24px);
   display: flex;
   flex-direction: column;
+  
 }
 
 .gen-ai-cards.homepage {
@@ -86,6 +88,7 @@
 }
 
 .gen-ai-cards .card {
+  box-sizing: border-box;
   position: relative;
   flex-direction: column;
   display: flex;
@@ -110,7 +113,7 @@
 }
 
 .gen-ai-cards.homepage .carousel-element.card {
-  width: var(--card-width);
+  /* width: var(--card-width); */
   height: 396px;
   flex-direction: column;
 }
@@ -201,7 +204,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 
 .gen-ai-cards .card .gen-ai-input-form {
   position: absolute;
-  width: calc(var(--card-width) - var(--card-padding));
+  width: var(--input-form-width); 
   padding: 8px;
   background-color: var(--color-white);
   border-radius: 8px;
@@ -263,7 +266,9 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   font-size: var(--body-font-size-s);
   line-height: var(--body-font-size-s);
   font-weight: 700;
-  padding: 10px 1.5em 10px 1.5em;
+  display: flex;
+  padding: 3px 12px 5px 12px;
+  align-items: flex-start;
   border-radius: 22px;
   cursor: pointer;
   transition: background-color .2s;
@@ -468,7 +473,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards .card {
-    --card-width: 368px;
+    --card-width: 292px;
     --card-padding: 16px;
     margin: 0px;
   }
@@ -546,12 +551,25 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     max-width: unset;
   }
 
-  .gen-ai-cards input {
-    width: 230px;
+  .gen-ai-cards .card .gen-ai-input-form {
+    padding: 12px;
   }
 
+  .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit { 
+    padding: 6px 16px 8px 16px;  
+ 
+font-family: "Adobe Clean";
+font-size: 14px;
+font-style: normal;
+font-weight: 700;
+line-height: 130%; 
+  }
+
+  
   .gen-ai-cards .card {
     border-radius: 16px;
     --card-gap: 12px; 
+    --card-width: 400px;
+    --input-form-width: 340px;
   }
 }
