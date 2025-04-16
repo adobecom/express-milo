@@ -1,6 +1,5 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/basic-carousel.js';
-import { createControl } from '../discover-cards/discover-cards.js';
 
 let createTag; let getConfig;
 const promptTokenRegex = /(?:\{\{|%7B%7B)?prompt(?:-|\+|%20|\s)text(?:\}\}|%7D%7D)?/;
