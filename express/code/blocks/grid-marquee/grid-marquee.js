@@ -7,11 +7,14 @@ const largeMQ = window.matchMedia('(min-width: 1280px)');
 const mediumMQ = window.matchMedia('(min-width: 768px)');
 const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+const APPLE = 'apple';
+const GOOGLE = 'google';
+
 function drawerOff() {
   if (!currDrawer) return;
   currDrawer.closest('.card').setAttribute('aria-expanded', false);
   currDrawer.classList.add('hide');
-  currDrawer.querySelector('video')?.pause()?.catch(() => {});
+  currDrawer.querySelector('video')?.pause()?.catch(() => { });
   currDrawer = null;
   if (!largeMQ.matches) document.body.classList.remove('disable-scroll');
 }
@@ -22,7 +25,7 @@ function drawerOn(drawer) {
   const video = drawer.querySelector('video');
   if (video && !reduceMotionMQ.matches) {
     video.muted = true;
-    video.play().catch(() => {});
+    video.play().catch(() => { });
   }
   currDrawer = drawer;
   if (!largeMQ.matches) document.body.classList.add('disable-scroll');
@@ -185,45 +188,95 @@ async function formatDynamicCartLink(a) {
 }
 
 function decorateHeadline(headline) {
+  headline.classList.add('headline');
   const ctas = headline.querySelectorAll('a');
-  if (!ctas.length) return headline;
+  if (!ctas.length) {
+    headline.classList.add('no-cta');
+    return headline;
+  }
   ctas[0].parentElement.classList.add('ctas');
   ctas.forEach((cta) => {
     cta.classList.add('button');
     formatDynamicCartLink(cta);
   });
   ctas[0].classList.add('primaryCTA');
-  headline.classList.add('headline');
   return headline;
 }
 
-async function makeRating(store) {
-  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-  const ratings = (await replaceKey('app-store-ratings', getConfig()))?.split(';') || [];
+async function makeRating(
+  store,
+  ratingPlaceholder,
+  starsPlaceholder,
+  playStoreLabelPlaceholder,
+  appleStoreLabelPlaceholder,
+) {
+  const ratings = ratingPlaceholder?.split(';') || [];
   const link = ratings[2]?.trim();
   if (!link) {
     return null;
   }
-  const [score, cnt] = ratings[['apple', 'google'].indexOf(store)].split(',').map((str) => str.trim());
-  const storeLink = createTag('a', { href: link }, getIconElementDeprecated(`${store}-store`));
+
+  const storeTypeIndex = [APPLE, GOOGLE].indexOf(store);
+  const [score, cnt] = ratings[storeTypeIndex].split(',').map((str) => str.trim());
+  const ariaLabel = store === APPLE ? appleStoreLabelPlaceholder : playStoreLabelPlaceholder;
+  const storeLink = createTag('a', {
+    href: link,
+  }, getIconElementDeprecated(`${store}-store`));
+  storeLink.setAttribute('aria-label', ariaLabel);
   const { default: trackBranchParameters } = await import('../../scripts/branchlinks.js');
   await trackBranchParameters([storeLink]);
-  return createTag('div', { class: 'ratings-container' }, [score, getIconElementDeprecated('star'), cnt, storeLink]);
+
+  const star = getIconElementDeprecated('star');
+  star.setAttribute('role', 'img');
+  star.setAttribute('aria-label', starsPlaceholder);
+  return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
 }
 
-function makeRatings() {
+async function makeRatings(
+  ratingPlaceholder,
+  starsPlaceholder,
+  playStoreLabelPlaceholder,
+  appleStoreLabelPlaceholder,
+) {
   const ratings = createTag('div', { class: 'ratings' });
   const userAgent = getMobileOperatingSystem();
-  const cb = (el) => el && ratings.append(el);
-  // eslint-disable-next-line chai-friendly/no-unused-expressions
-  userAgent !== 'Android' && makeRating('apple').then(cb);
-  // eslint-disable-next-line chai-friendly/no-unused-expressions
-  userAgent !== 'iOS' && makeRating('google').then(cb);
+  if (userAgent !== 'Android') {
+    const appleElement = await makeRating(
+      'apple',
+      ratingPlaceholder,
+      starsPlaceholder,
+      playStoreLabelPlaceholder,
+      appleStoreLabelPlaceholder,
+    );
+    appleElement && ratings.append(appleElement);
+  }
+  if (userAgent !== 'iOS') {
+    const googleElement = await makeRating(
+      'google',
+      ratingPlaceholder,
+      starsPlaceholder,
+      playStoreLabelPlaceholder,
+      appleStoreLabelPlaceholder,
+    );
+    googleElement && ratings.append(googleElement);
+  }
   return ratings;
 }
 
 export default async function init(el) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
+  const [ratingPlaceholder,
+    starsPlaceholder,
+    playStoreLabelPlaceholder,
+    appleStoreLabelPlaceholder] = await Promise.all(
+    [
+      replaceKey('app-store-ratings', getConfig()),
+      replaceKey('app-store-stars', getConfig()),
+      replaceKey('app-store-ratings-play-store', getConfig()),
+      replaceKey('app-store-ratings-apple-store', getConfig()),
+    ],
+  );
   const rows = [...el.querySelectorAll(':scope > div')];
   const [headline, background, items, foreground] = [rows[0], rows[1], rows.slice(2), createTag('div', { class: 'foreground' })];
   const logo = getIconElementDeprecated('adobe-express-logo');
@@ -231,7 +284,12 @@ export default async function init(el) {
   const cards = items.map((item) => toCard(item));
   const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
   [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
-  foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [makeRatings()] : []));
+  foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [await makeRatings(
+    ratingPlaceholder,
+    starsPlaceholder,
+    playStoreLabelPlaceholder,
+    appleStoreLabelPlaceholder,
+  )] : []));
   background.classList.add('background');
   el.append(foreground);
   new IntersectionObserver((entries, ob) => {

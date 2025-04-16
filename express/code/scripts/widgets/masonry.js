@@ -30,7 +30,7 @@ export class Masonry {
     const block = this.needBackwardCompatibility() ? this.wrapper : this.wrapper.parentElement;
     let result = 1;
     let colWidth = 264;
-    if (block.classList.contains('sixcols')) {
+    if (block.classList.contains('sixcols') || block.classList.contains('fullwidth')) {
       colWidth = 175;
     }
     if (block.classList.contains('fullwidth')) {
