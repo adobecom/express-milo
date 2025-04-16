@@ -460,13 +460,13 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   outline-offset: 2px;
 }
 
-.gen-ai-cards .basic-carousel-container .basic-carousel-platform {
+.gen-ai-cards .compact-nav-carousel-container .compact-nav-carousel-platform {
   padding-top: 0px;
   height: unset;
   gap: 16px;
 }
 
-.gen-ai-cards .basic-carousel-platform .card {
+.gen-ai-cards .compact-nav-carousel-platform .card {
   margin: 0px;
 }
 
