@@ -248,7 +248,5 @@ export default async function decorate(block) {
   const payload = constructPayload(block);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
-  const cardContainer = block.querySelector('.gen-ai-cards-cards');
-  const cards = cardContainer.querySelectorAll('.card');
   await buildCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
 }
