@@ -26,7 +26,6 @@ function initializeCarousel(selector, parent) {
 
   let touchStartY = 0;
   let touchEndY = 0;
-  let isHorizontalMove = false;
   let scrolling = false;
   const carouselContent = selector
     ? parent.querySelectorAll(selector)

@@ -106,7 +106,7 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
     }
   });
 
-  genAISubmit.addEventListener('touchstart', (e) => {
+  genAISubmit.addEventListener('touchstart', () => {
     genAIInput.focus();
     handleGenAISubmit(genAIForm, ctaLinks[0].href);
   });
