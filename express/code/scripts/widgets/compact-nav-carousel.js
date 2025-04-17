@@ -157,12 +157,10 @@ function initializeCarousel(selector, parent) {
   platform.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchEndX = touchStartX;
-    e.preventDefault();
   });
 
   platform.addEventListener('touchmove', (e) => {
     touchEndX = e.touches[0].clientX;
-    e.preventDefault();
   });
 
   platform.addEventListener('touchend', (e) => {
