@@ -36,7 +36,6 @@
   --spacing-border-radius-large: 16px;
   
   /* Media Wrapper Dimensions */
-  --media-wrapper-width: 268px;
   --media-wrapper-height: 228px;
   --media-wrapper-desktop-width: 352px;
   
@@ -220,7 +219,7 @@
 
 .gen-ai-cards .card .media-wrapper {
   border-radius: var(--spacing-border-radius-large);
-  height: 100%;
+  height: var(--media-wrapper-height);
   overflow: hidden;
 }
 
@@ -274,7 +273,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   transform: translate(-50%, calc(-100% - 30px));
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+
 }
 
 .gen-ai-cards .card .gen-ai-input-form input {
@@ -295,6 +294,10 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   flex-grow: 1;
   padding-bottom: 10px;
 
+}
+
+.gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
+  flex-wrap: wrap;
 }
 
 .gen-ai-cards .gen-ai-input:active,

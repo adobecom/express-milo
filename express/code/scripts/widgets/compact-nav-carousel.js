@@ -19,7 +19,7 @@ const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
 function initializeCarousel(selector, parent) {
-  let currentIndex = window.innerWidth <= smalLViewport ? 1 : 0;
+  let currentIndex = window.innerWidth <= smalLViewport ? 0 : 1;
   let scrollCount = 1;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -132,7 +132,7 @@ function initializeCarousel(selector, parent) {
 
     elements.forEach((el, index) => {
       el.addEventListener('focus', () => {
-        currentIndex = index;
+        currentIndex = index; 
         updateCarousel();
       });
     });
@@ -239,7 +239,7 @@ function initializeCarousel(selector, parent) {
     }
   }));
 
-  updateCarousel();
+  window.innerWidth <= smalLViewport  && updateCarousel();
 }
 
 export async function onBasicCarouselCSSLoad(selector, parent) {
