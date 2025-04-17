@@ -594,7 +594,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards.homepage .carousel-element.card .media-wrapper {
-    width: var(--media-wrapper-desktop-width);
+    width: 100%;
   }
 
   .gen-ai-cards.homepage .carousel-element.card {
