@@ -317,6 +317,11 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   pointer-events: none;
 }
 
+.gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
+  margin-left: 8px;
+}
+
+
 .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit {
   color: var(--color-white);
   background-color: var(--color-info-accent);
@@ -439,10 +444,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
   scroll-padding-left: 20px;
 }
 
-.gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-  margin-left: 20px;
-}
-
 main .gen-ai-cards.homepage .carousel-container .carousel-fader-left.arrow-hidden,
 main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidden {
   opacity: 0.5;
@@ -551,11 +552,11 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     --heading-min-width: 500px;
     --heading-max-width: 600px;
   }
-/* 
-  .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper {
-    max-width: 600px;
-    min-width: 500px;
-  } */
+
+.gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
+  margin-left: 20px;
+}
+
 
 }
 

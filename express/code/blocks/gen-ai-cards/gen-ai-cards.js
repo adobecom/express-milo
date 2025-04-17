@@ -49,8 +49,7 @@ export function decorateHeading(block, payload) {
     payload.subHeadings.forEach((p) => {
       headingTextWrapper.append(p);
     });
-  }
-console.log( payload.legalLink.href)
+  } 
   if (payload.legalLink.href) {
     const legalButton = createTag('a', {
       class: 'gen-ai-cards-link',
@@ -105,6 +104,12 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
       e.preventDefault();
       handleGenAISubmit(genAIForm, ctaLinks[0].href);
     }
+  });
+
+  genAIForm.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    console.log('touchstart');
+    genAIInput.focus()
   });
 
   genAIForm.addEventListener('submit', (e) => {
