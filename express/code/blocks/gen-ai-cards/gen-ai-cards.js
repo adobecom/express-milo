@@ -49,7 +49,7 @@ export function decorateHeading(block, payload) {
     payload.subHeadings.forEach((p) => {
       headingTextWrapper.append(p);
     });
-  } 
+  }
   if (payload.legalLink.href) {
     const legalButton = createTag('a', {
       class: 'gen-ai-cards-link',
@@ -107,7 +107,7 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
   });
 
   genAISubmit.addEventListener('touchstart', (e) => {
-    genAIInput.focus()
+    genAIInput.focus();
     handleGenAISubmit(genAIForm, ctaLinks[0].href);
   });
 
@@ -260,5 +260,4 @@ export default async function decorate(block) {
   } else {
     await buildCompactCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
   }
-   
 }
