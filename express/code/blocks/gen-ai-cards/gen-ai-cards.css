@@ -405,10 +405,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
   pointer-events: none;
 }
 
-.gen-ai-cards.homepage .gen-ai-cards-heading-section {
-  margin: 0 20px 20px;
-}
-
 .gen-ai-cards.homepage .gen-ai-cards-heading-section p {
   font-size: 16px;
 }
