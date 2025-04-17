@@ -1,5 +1,6 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
-import buildCarousel from '../../scripts/widgets/compact-nav-carousel.js';
+import buildCompactCarousel from '../../scripts/widgets/compact-nav-carousel.js';
+import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let createTag; let getConfig;
 const promptTokenRegex = /(?:\{\{|%7B%7B)?prompt(?:-|\+|%20|\s)text(?:\}\}|%7D%7D)?/;
@@ -49,14 +50,15 @@ export function decorateHeading(block, payload) {
       headingTextWrapper.append(p);
     });
   }
-
-  if (payload.legalLink.href !== '') {
+console.log( payload.legalLink.href)
+  if (payload.legalLink.href) {
     const legalButton = createTag('a', {
       class: 'gen-ai-cards-link',
       href: payload.legalLink.href,
     });
     legalButton.textContent = payload.legalLink.text;
     headingSection.append(legalButton);
+    headingSection.classList.add('has-legal-link');
   }
 
   block.append(headingSection);
@@ -248,5 +250,11 @@ export default async function decorate(block) {
   const payload = constructPayload(block);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
-  await buildCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
+  console.log(block.classList.contains('homepage'));
+  if (block.classList.contains('homepage')) {
+    await buildCarousel('', block.querySelector('.gen-ai-cards-cards'));
+  } else {
+    await buildCompactCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
+  }
+   
 }
