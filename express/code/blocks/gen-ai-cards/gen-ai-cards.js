@@ -4,6 +4,13 @@ import buildCarousel from '../../scripts/widgets/compact-nav-carousel.js';
 let createTag; let getConfig;
 const promptTokenRegex = /(?:\{\{|%7B%7B)?prompt(?:-|\+|%20|\s)text(?:\}\}|%7D%7D)?/;
 
+function addBetaTag(card, title, betaPlaceholder) {
+  const betaTag = createTag('span', { class: 'beta-tag' });
+  betaTag.textContent = betaPlaceholder;
+  title.append(betaTag);
+  card.classList.add('has-beta-tag');
+}
+
 export function decorateTextWithTag(textSource, options = {}) {
   const {
     baseT,
@@ -219,13 +226,6 @@ function constructPayload(block) {
   });
 
   return payload;
-}
-
-function addBetaTag(card, title, betaPlaceholder) {
-  const betaTag = createTag('span', { class: 'beta-tag' });
-  betaTag.textContent = betaPlaceholder;
-  title.append(betaTag);
-  card.classList.add('has-beta-tag');
 }
 
 export default async function decorate(block) {
