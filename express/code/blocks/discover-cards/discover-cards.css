@@ -62,11 +62,16 @@ main .section .discover-cards {
   scroll-behavior: smooth;
   padding: 3px 16px;
   margin-top: 29px;
-  justify-content: center;
-  width: fit-content;
   max-width: 100vw;
   margin-left: auto;
   margin-right: auto;
+}
+
+@media (min-width: 1300px) {
+  .discover-cards.flip .cards-container.gallery {
+    justify-content: center;
+    width: fit-content;
+  }
 }
 
 /* Switch to left-aligned on smaller screens */
@@ -206,7 +211,7 @@ main .section .discover-cards {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 250px;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 .gallery::-webkit-scrollbar {
