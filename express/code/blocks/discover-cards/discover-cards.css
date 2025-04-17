@@ -13,6 +13,7 @@ main .section .discover-cards {
     background-position: center;
     background-repeat: no-repeat;
 }
+
 .discover-cards .sub-header {
     font-weight: 400;
     font-size: 16px;
@@ -49,6 +50,10 @@ main .section .discover-cards {
 .discover-cards.flip h1, 
 .discover-cards.flip h2 {
   font-size: var(--heading-font-size-s);
+}
+.discover-cards.xl-heading h1,
+.discover-cards.xl-heading h2 {
+  font-size: var(--heading-font-size-m);
 }
 /* Default style - centered */
 .discover-cards.flip .cards-container.gallery {
