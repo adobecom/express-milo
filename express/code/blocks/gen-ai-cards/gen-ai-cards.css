@@ -73,12 +73,12 @@
 .gen-ai-cards .gen-ai-cards-heading-section {
   display: flex;
   min-width: 300px;
-  max-width: var(--Global-Container-container-max-width, 599px);
-  padding-right: var(--Global-Container-container-padding-side, 16px);
+  max-width:  599px;
+  padding-right:  16px;
   justify-content: space-between;
   align-items: flex-end;
   align-content: flex-end;
-  row-gap: var(--Spacing-spacing-200, 12px);
+  row-gap: 12px;
   align-self: stretch;
   flex-wrap: wrap;
 }
@@ -176,7 +176,6 @@
   line-height: var(--body-font-size-m);
   font-weight: 700;
   color: var(--color-text-primary);
-  font-family: "Adobe Clean";
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -197,7 +196,6 @@
   font-size: var(--body-font-size-s);
   line-height: var(--body-font-size-l);
   color: var(--color-text-primary);
-  font-family: "Adobe Clean";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -484,7 +482,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 
 .gen-ai-cards .card .beta-tag {
   color: var(--Content-Accent-default, #5258E4);
-  font-family: "Adobe Clean";
   font-size: var(--font-size-beta);
   font-style: normal;
   font-weight: 700;
@@ -610,13 +607,11 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 
   .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit {
     padding: 6px 16px 8px 16px;
-    font-family: "Adobe Clean";
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: 130%;
   }
-
 
   .gen-ai-cards .card {
     border-radius: 16px;
