@@ -178,7 +178,7 @@ function initializeCarousel(selector, parent) {
     // If movement is more horizontal than vertical and exceeds a threshold
     if (deltaX > deltaY && deltaX > 10) {
       isHorizontalMove = true;
-      e.preventDefault(); // Only prevent default for horizontal moves
+   //   e.preventDefault(); // Only prevent default for horizontal moves
     }
   });
 
