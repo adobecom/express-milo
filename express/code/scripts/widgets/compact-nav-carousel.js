@@ -162,7 +162,6 @@ function initializeCarousel(selector, parent) {
     touchStartY = e.touches[0].clientY;
     touchEndX = touchStartX;
     touchEndY = touchStartY;
-    isHorizontalMove = false; // Reset the direction flag
   });
 
   platform.addEventListener('touchmove', (e) => {
