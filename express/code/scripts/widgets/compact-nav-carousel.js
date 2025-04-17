@@ -23,6 +23,10 @@ function initializeCarousel(selector, parent) {
   let scrollCount = 1;
   let touchStartX = 0;
   let touchEndX = 0;
+   
+  let touchStartY = 0; 
+  let touchEndY = 0;
+  let isHorizontalMove = false;
   let scrolling = false;
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
@@ -154,13 +158,28 @@ function initializeCarousel(selector, parent) {
     updateCarousel();
   });
 
+  
   platform.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
     touchEndX = touchStartX;
+    touchEndY = touchStartY;
+    isHorizontalMove = false; // Reset the direction flag
   });
-
+  
   platform.addEventListener('touchmove', (e) => {
     touchEndX = e.touches[0].clientX;
+    touchEndY = e.touches[0].clientY;
+    
+    // Calculate horizontal and vertical movement
+    const deltaX = Math.abs(touchEndX - touchStartX);
+    const deltaY = Math.abs(touchEndY - touchStartY);
+    
+    // If movement is more horizontal than vertical and exceeds a threshold
+    if (deltaX > deltaY && deltaX > 10) {
+      isHorizontalMove = true;
+      e.preventDefault(); // Only prevent default for horizontal moves
+    }
   });
 
   platform.addEventListener('touchend', (e) => {
