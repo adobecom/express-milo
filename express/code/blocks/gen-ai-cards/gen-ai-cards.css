@@ -610,11 +610,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     font-size: var(--heading-font-size-m);
   }
 
-  .gen-ai-cards .gen-ai-cards-cards {
-    width: 100%;
-    margin-left: -20px;
-  } 
-
   .gen-ai-cards .card .gen-ai-input-form {
     padding: 12px;
   }
