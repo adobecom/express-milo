@@ -231,7 +231,6 @@ function addTOCEntries(toc, config, doc) {
     }
   });
 
-  if (getDeviceType() !== DESKTOP) handleTOCCloning(toc, tocEntries);
   return tocEntries;
 }
 
@@ -359,7 +358,7 @@ export default async function setTOCSEO() {
   const tocEntries = addTOCEntries(toc, config, doc);
   addHoverEffect(tocEntries);
 
-  // Create mobile TOC immediately
+  // Create mobile TOC
   handleTOCCloning(toc, tocEntries);
 
   // Set up desktop behaviors
