@@ -153,9 +153,10 @@ function handleTOCCloning(toc, tocEntries) {
 
     tocClone.insertBefore(titleWrapper, tocClone.firstChild);
 
-    const tocContent = document.createElement('div');
-    tocContent.className = 'toc-content';
-    tocContent.id = 'mobile-toc-content'; // ID to match aria-controls
+    const tocContent = createTag('ul', {
+      class: 'toc-content',
+      id: 'mobile-toc-content',
+    });
 
     tocClone.querySelectorAll('.toc-entry').forEach((entry) => {
       tocContent.appendChild(entry);
