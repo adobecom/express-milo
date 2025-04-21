@@ -48,11 +48,7 @@ function initButton($block, $buttons, $sections, index) {
       console.log($buttons[newIndex])
       updateBackgroundSize(newIndex);
     };
-    
-    if (index === getDefatultToggleIndex($block)) {
-      setActiveButton(index);
-    }
-    
+
     const handleSectionChange = () => {
       const $activeButton = $block.querySelector('.content-toggle-button.carousel-element.active');
       const blockPosition = $block.getBoundingClientRect().top;
@@ -63,8 +59,10 @@ function initButton($block, $buttons, $sections, index) {
         $sections.forEach(($section) => {
           if ($buttons[index].innerText.toLowerCase() === $section.dataset.toggle.toLowerCase()) {
             $section.style.display = 'block';
+            $section.style.height = 'auto';
           } else {
             $section.style.display = 'none';
+            $section.style.height = '0px';
           }
         });
         if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
@@ -75,6 +73,13 @@ function initButton($block, $buttons, $sections, index) {
         }
       }
     }
+    
+    if (index === getDefatultToggleIndex($block)) {
+      setActiveButton(index);
+      handleSectionChange();
+    }
+    
+ 
  
     $buttons[index].addEventListener('click', () => {
       handleSectionChange();
@@ -87,6 +92,8 @@ function initButton($block, $buttons, $sections, index) {
         }
       }
     });
+
+    
   
 }
 
