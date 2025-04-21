@@ -168,6 +168,7 @@ function handleTOCCloning(toc, tocEntries) {
       'aria-expanded': 'false',
       'aria-controls': 'mobile-toc-content',
       type: 'button',
+      id: 'mobile-toc-button',
     });
 
     const tocTitle = tocClone.querySelector('.toc-title');
@@ -415,7 +416,7 @@ export default async function setTOCSEO() {
   desktopSkipLink.textContent = 'Skip to Table of Contents';
 
   const mobileSkipLink = createTag('a', {
-    href: '#mobile-toc',
+    href: '#mobile-toc-button',
     class: 'skip-link mobile-skip-link',
     'aria-label': 'Skip to Mobile Table of Contents',
   });
