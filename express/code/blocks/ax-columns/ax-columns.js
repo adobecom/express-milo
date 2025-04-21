@@ -184,7 +184,7 @@ function addHeaderClass(block, size) {
   if (parentDiv) {
     const parentHeader = parentDiv.querySelector('h1, h2, h3, h4, h5, h6');
     if (parentHeader) {
-      parentHeader.parentElement.classList.add(`columns-${size}-header`);
+      parentHeader.parentElement.classList.add(`columns-${size}-heading`);
     }
   }
 }
@@ -211,11 +211,11 @@ export default async function decorate(block) {
     }
   }
 
-  if (block.classList.contains('m-header')) {
+  if (block.classList.contains('m-heading')) {
     addHeaderClass(block, 'm');
   }
 
-  if (block.classList.contains('xl-header')) {
+  if (block.classList.contains('xl-heading')) {
     addHeaderClass(block, 'xl');
   }
 
