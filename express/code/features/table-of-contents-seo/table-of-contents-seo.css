@@ -175,30 +175,23 @@ main .section .mobile-toc {
     transform: rotate(135deg);
 }
 
+/* Put these media queries last in the file to give them highest precedence */
 @media (max-width: 599px) {
-  .table-of-contents-seo {
+  .table-of-contents-seo.mobile-view {
     display: none;
   }
 
-  .mobile-toc {
+  .mobile-toc:not(.desktop-view) {
     display: block;
   }
 }
 
 @media (min-width: 600px) {
-  .table-of-contents-seo {
+  .table-of-contents-seo:not(.mobile-view) {
     display: block;
   }
 
-  .mobile-toc {
+  .mobile-toc.desktop-view {
     display: none;
   }
-}
-
-.table-of-contents-seo.mobile-view {
-  display: none !important;
-}
-
-.mobile-toc.desktop-view {
-  display: none !important;
 }

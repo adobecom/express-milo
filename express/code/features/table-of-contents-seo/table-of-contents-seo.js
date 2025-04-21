@@ -171,9 +171,6 @@ function handleTOCCloning(toc, tocEntries) {
     const sticky = tocClone.offsetTop - MOBILE_NAV_HEIGHT;
     window.addEventListener('scroll', () => toggleSticky(tocClone, sticky));
   }
-
-  const originalTOC = document.querySelector('.table-of-contents-seo');
-  if (originalTOC) originalTOC.style.display = 'none';
 }
 
 function setupTOCItem(tocItem, tocCounter, headingText, headingId) {
@@ -261,7 +258,6 @@ function setTOCPosition(toc, tocContainer) {
     : `${targetTop}px`;
 
   tocContainer.style.position = targetTop <= window.scrollY + viewportMidpoint ? 'fixed' : 'absolute';
-  tocContainer.style.display = 'block';
 
   const footer = document.querySelector('footer');
 
@@ -287,15 +283,11 @@ function handleSetTOCPos(toc, tocContainer) {
 }
 
 function applyTOCBehavior(toc, tocContainer) {
-  document.querySelectorAll('.mobile-toc').forEach((mobileToc) => {
-    mobileToc.style.display = 'none';
-  });
   handleSetTOCPos(toc, tocContainer);
 }
 
 function initializeTOCContainer() {
   const tocContainer = document.querySelector('.table-of-contents-seo');
-  tocContainer.style.display = 'none';
   return tocContainer;
 }
 
@@ -389,13 +381,11 @@ export default async function setTOCSEO() {
       tocSEO.classList.add('mobile-view');
       if (mobileTOC) {
         mobileTOC.classList.remove('desktop-view');
-        mobileTOC.style.display = 'block';
       }
     } else {
       tocSEO.classList.remove('mobile-view');
       if (mobileTOC) {
         mobileTOC.classList.add('desktop-view');
-        mobileTOC.style.display = 'none';
       }
       setTOCPosition(toc, tocContainer);
     }
