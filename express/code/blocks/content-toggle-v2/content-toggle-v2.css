@@ -1,59 +1,77 @@
- 
+/* Root Variables */
+main .section .content-toggle-v2 {
+    /* Spacing */
+    --spacing-padding: 13px;
+    --spacing-button-padding: 12px;
+    --spacing-gap: 8px;
+    --spacing-button-gap: 6px;
+    
+    /* Colors */
+    --color-background: #F3F3F3;
+    --color-text: #505050;
+    --color-text-active: white;
+    --color-background-active: #292929;
+    
+    /* Typography */
+    --font-family: "Adobe Clean";
+    --font-size: 16px;
+    --font-weight: 700;
+    --line-height: 130%;
+    
+    /* Dimensions */
+    --button-height: 40px;
+    --button-min-width: 44px;
+    --button-max-width: 256px;
+    --container-max-width: 1200px;
+    
+    /* Border Radius */
+    --border-radius-container: 8px;
+    --border-radius-button: 6px;
+}
+
+/* Base Styles */
 main .section .content-toggle-v2 {
     margin: 0 auto;
-    padding: 0 13px;
+    padding: 0 var(--spacing-padding);
     max-width: max-content;
 }
 
 main .content-toggle-v2 .carousel-container {
-    border-radius: var(--Radius-corner-radius-100, 8px);
-    background: var(--Palette-gray-75, #F3F3F3);
+    border-radius: var(--border-radius-container);
+    background: var(--color-background);
     display: flex;
-    max-width: 1200px;
+    max-width: var(--container-max-width);
     align-items: center;
-    gap: var(--Spacing-spacing-100, 8px);
-}   
-
-main .content-toggle-v2 .carousel-container .content-toggle-button {
-    font-family: Family/Title;
-    font-weight: 700;
-    font-size: Global/Typography/Family/Title/M;
-    line-height: 130%;
-    letter-spacing: 0%;
-    vertical-align: middle; 
-    display: flex;
-    height: 40px;
-    min-width: 44px;
-    max-width: 256px;
-    padding: 0px var(--Spacing-spacing-200, 12px);
-    justify-content: center;
-    align-items: center;
-    gap: var(--Spacing-sx-spacing-80, 6px);
-    border: none;
-    color: var(--Palette-gray-700, var(--Palette-gray-700, #505050));
-    /* Express web/Titles/M */
-    font-family: var(--Family-Title, "Adobe Clean");
-    font-size: var(--Global-Typography-Family-Title-M, 16px);
-    font-style: normal;
-    font-weight: 700;
-    line-height: 130%; /* 20.8px */
+    gap: var(--spacing-gap);
 }
 
+/* Button Styles */
+main .content-toggle-v2 .carousel-container .content-toggle-button {
+    font-family: var(--font-family);
+    font-weight: var(--font-weight);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    letter-spacing: 0%;
+    vertical-align: middle;
+    display: flex;
+    height: var(--button-height);
+    min-width: var(--button-min-width);
+    max-width: var(--button-max-width);
+    padding: 0 var(--spacing-button-padding);
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-button-gap);
+    border: none;
+    color: var(--color-text);
+}
 
 main .content-toggle-v2 .content-toggle-button.active {
-    display: flex;
-    height: 40px;
-    min-width: 44px;
-    max-width: 256px;
-    padding: 0px var(--Spacing-spacing-200, 12px);
-    justify-content: center;
-    align-items: center;
-    gap: var(--Spacing-sx-spacing-80, 6px);
-    border-radius: var(--Radius-corner-radius-80, 6px);
-    background: var(--Palette-gray-800, #292929);
-    color: white;
+    border-radius: var(--border-radius-button);
+    background: var(--color-background-active);
+    color: var(--color-text-active);
 }
 
+/* Container Styles */
 main .content-toggle-v2 .content-toggle-carousel-container {
     padding: 0;
 }
