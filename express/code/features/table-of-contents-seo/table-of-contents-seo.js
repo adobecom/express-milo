@@ -235,7 +235,7 @@ function handleTOCCloning(toc, tocEntries) {
 function setupTOCItem(tocItem, tocCounter, headingText, headingId) {
   tocItem.innerHTML = `
     <span class="toc-number">${tocCounter}</span>
-    <a href="#${headingId}" daa-ll="${headingText}-${tocCounter}--">
+    <a href="#${headingId}" daa-ll="${headingText}-${tocCounter}--table-of-contents">
       ${headingText}
     </a>
   `;
