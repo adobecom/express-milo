@@ -134,19 +134,25 @@ function handleTOCCloning(toc, tocEntries) {
   if (mainElement) {
     const tocClone = toc.cloneNode(true);
     tocClone.classList.add('mobile-toc');
+    tocClone.setAttribute('role', 'navigation');
+    tocClone.setAttribute('aria-label', 'Table of Contents');
 
     const titleWrapper = createTag('button', {
       class: 'toc-title-wrapper',
-      'aria-expanded': 'false', // Initial state is collapsed
-      'aria-controls': 'mobile-toc-content', // Links button to content it controls
-      type: 'button', // Explicit button type
+      'aria-expanded': 'false',
+      'aria-controls': 'mobile-toc-content',
+      type: 'button',
     });
 
     const tocTitle = tocClone.querySelector('.toc-title');
+    if (tocTitle) {
+      tocTitle.setAttribute('role', 'heading');
+      tocTitle.setAttribute('aria-level', '2');
+    }
 
     const tocChevron = document.createElement('span');
     tocChevron.className = 'toc-chevron';
-    tocChevron.setAttribute('aria-hidden', 'true'); // Hide icon from screen readers
+    tocChevron.setAttribute('aria-hidden', 'true');
 
     titleWrapper.appendChild(tocTitle);
     titleWrapper.appendChild(tocChevron);
@@ -156,6 +162,20 @@ function handleTOCCloning(toc, tocEntries) {
     const tocContent = createTag('ul', {
       class: 'toc-content',
       id: 'mobile-toc-content',
+      'aria-label': 'Table of Contents Sections',
+    });
+
+    const entries = tocClone.querySelectorAll('.toc-entry');
+    entries.forEach((entry) => {
+      const li = document.createElement('li');
+
+      Array.from(entry.attributes).forEach((attr) => {
+        li.setAttribute(attr.name, attr.value);
+      });
+
+      li.innerHTML = entry.innerHTML;
+
+      entry.parentNode.replaceChild(li, entry);
     });
 
     tocClone.querySelectorAll('.toc-entry').forEach((entry) => {
