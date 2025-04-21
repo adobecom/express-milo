@@ -51,8 +51,8 @@ main .section .discover-cards {
 .discover-cards.flip h2 {
   font-size: var(--heading-font-size-s);
 }
-.discover-cards.xl-heading h1,
-.discover-cards.xl-heading h2 {
+.discover-cards.m-heading h1,
+.discover-cards.m-heading h2 {
   font-size: var(--heading-font-size-m);
 }
 /* Default style - centered */
