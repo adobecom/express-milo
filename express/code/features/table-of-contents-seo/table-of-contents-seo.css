@@ -175,8 +175,30 @@ main .section .mobile-toc {
     transform: rotate(135deg);
 }
 
+@media (max-width: 599px) {
+  .table-of-contents-seo {
+    display: none;
+  }
+
+  .mobile-toc {
+    display: block;
+  }
+}
+
 @media (min-width: 600px) {
-    .table-of-contents-seo {
-        display: block;
-    }
+  .table-of-contents-seo {
+    display: block;
+  }
+
+  .mobile-toc {
+    display: none;
+  }
+}
+
+.table-of-contents-seo.mobile-view {
+  display: none !important;
+}
+
+.mobile-toc.desktop-view {
+  display: none !important;
 }

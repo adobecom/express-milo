@@ -165,7 +165,7 @@ function handleTOCCloning(toc, tocEntries) {
 
     const clonedTOCEntries = tocContent.querySelectorAll('.toc-entry');
     clonedTOCEntries.forEach((tocEntry, index) => {
-      addTOCItemClickEvent(tocEntry, tocEntries[index].heading);
+      addTOCItemClickEvent(tocEntry, tocEntries[index]?.heading);
     });
 
     const sticky = tocClone.offsetTop - MOBILE_NAV_HEIGHT;
@@ -358,18 +358,52 @@ export default async function setTOCSEO() {
   const toc = createTag('div', { class: 'toc' });
   if (config.title) addTOCTitle(toc, config);
 
-  let tocEntries;
-  if (getDeviceType() === DESKTOP) {
-    tocEntries = addTOCEntries(toc, config, doc);
-    addHoverEffect(tocEntries);
-    tocSEO.appendChild(toc);
-    doc.appendChild(tocSEO);
-    const tocContainer = initializeTOCContainer();
-    applyTOCBehavior(toc, tocContainer);
-    handleActiveTOCHighlighting(tocEntries);
-  } else {
-    setTimeout(() => {
-      tocEntries = addTOCEntries(toc, config, doc);
-    }, 50);
-  }
+  // Create both TOCs immediately
+  tocSEO.appendChild(toc);
+  doc.appendChild(tocSEO);
+  const tocContainer = initializeTOCContainer();
+
+  // Create TOC entries for desktop version
+  const tocEntries = addTOCEntries(toc, config, doc);
+  addHoverEffect(tocEntries);
+
+  // Create mobile TOC immediately
+  handleTOCCloning(toc, tocEntries);
+
+  // Set up desktop behaviors
+  applyTOCBehavior(toc, tocContainer);
+  handleActiveTOCHighlighting(tocEntries);
+
+  let currentMode = null;
+
+  // Handle responsive behavior
+  const handleResize = () => {
+    const isMobile = window.innerWidth < MOBILE_SIZE;
+    const mobileTOC = document.querySelector('.mobile-toc');
+
+    // Only update if the mode has changed
+    if (currentMode === isMobile) return;
+    currentMode = isMobile;
+
+    if (isMobile) {
+      tocSEO.classList.add('mobile-view');
+      if (mobileTOC) {
+        mobileTOC.classList.remove('desktop-view');
+        mobileTOC.style.display = 'block';
+      }
+    } else {
+      tocSEO.classList.remove('mobile-view');
+      if (mobileTOC) {
+        mobileTOC.classList.add('desktop-view');
+        mobileTOC.style.display = 'none';
+      }
+      setTOCPosition(toc, tocContainer);
+    }
+  };
+
+  // Initial setup
+  handleResize();
+
+  // Listen for viewport changes
+  window.addEventListener('resize', debounce(handleResize, 100));
 }
