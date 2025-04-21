@@ -1,21 +1,10 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { debounce } from '../../scripts/utils/hofs.js';
 
 let createTag; let getMetadata;
 
 const MOBILE_SIZE = 600;
 const MOBILE_NAV_HEIGHT = 65;
-const MOBILE = 'MOBILE';
-const DESKTOP = 'DESKTOP';
-const getDeviceType = (() => {
-  let deviceType = window.innerWidth >= MOBILE_SIZE ? DESKTOP : MOBILE;
-  const updateDeviceType = () => {
-    deviceType = window.innerWidth >= MOBILE_SIZE ? DESKTOP : MOBILE;
-  };
-  window.addEventListener('resize', debounce(updateDeviceType, 100));
-  return () => deviceType;
-})();
 
 function setBoldStyle(element) {
   const tocNumber = element.querySelector('.toc-number');
@@ -105,18 +94,16 @@ function addTOCItemClickEvent(tocItem, heading) {
       const offsetPosition = headerRect.top + window.scrollY - headerOffset - MOBILE_NAV_HEIGHT;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     } else {
-      console.error(`Element with id "${targetHeading.id}" not found.`);
+      window.lana.log(`Element with id "${targetHeading.id}" not found.`);
     }
     document.querySelector('.toc-content')?.classList.toggle('open');
   }
 
-  // Add click event
   tocItem.addEventListener('click', (event) => {
     event.preventDefault();
     scrollToHeading(heading);
   });
 
-  // Add keyboard support
   tocItem.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -124,7 +111,6 @@ function addTOCItemClickEvent(tocItem, heading) {
     }
   });
 
-  // Add focus events for visual indicator
   tocItem.addEventListener('focus', () => {
     tocItem.classList.add('toc-focus');
   });
@@ -133,7 +119,6 @@ function addTOCItemClickEvent(tocItem, heading) {
     tocItem.classList.remove('toc-focus');
   });
 
-  // Make the element focusable
   tocItem.setAttribute('tabindex', '0');
 }
 
