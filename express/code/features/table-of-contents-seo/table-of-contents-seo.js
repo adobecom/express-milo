@@ -404,6 +404,6 @@ export default async function setTOCSEO() {
   // Initial setup
   handleResize();
 
-  // Listen for viewport changes
-  window.addEventListener('resize', debounce(handleResize, 100));
+  // Listen for viewport changes - no debounce needed
+  window.addEventListener('resize', handleResize);
 }
