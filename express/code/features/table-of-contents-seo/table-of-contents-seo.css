@@ -131,6 +131,8 @@ main .section .mobile-toc {
     align-items: center;
     cursor: pointer;
     padding: 10px;
+    width: 100%;
+    border: none;
 }
 
 .mobile-toc .toc-content {

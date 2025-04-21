@@ -135,13 +135,18 @@ function handleTOCCloning(toc, tocEntries) {
     const tocClone = toc.cloneNode(true);
     tocClone.classList.add('mobile-toc');
 
-    const titleWrapper = document.createElement('div');
-    titleWrapper.classList.add('toc-title-wrapper');
+    const titleWrapper = createTag('button', {
+      class: 'toc-title-wrapper',
+      'aria-expanded': 'false', // Initial state is collapsed
+      'aria-controls': 'mobile-toc-content', // Links button to content it controls
+      type: 'button', // Explicit button type
+    });
 
     const tocTitle = tocClone.querySelector('.toc-title');
 
     const tocChevron = document.createElement('span');
     tocChevron.className = 'toc-chevron';
+    tocChevron.setAttribute('aria-hidden', 'true'); // Hide icon from screen readers
 
     titleWrapper.appendChild(tocTitle);
     titleWrapper.appendChild(tocChevron);
@@ -150,6 +155,7 @@ function handleTOCCloning(toc, tocEntries) {
 
     const tocContent = document.createElement('div');
     tocContent.className = 'toc-content';
+    tocContent.id = 'mobile-toc-content'; // ID to match aria-controls
 
     tocClone.querySelectorAll('.toc-entry').forEach((entry) => {
       tocContent.appendChild(entry);
@@ -159,8 +165,16 @@ function handleTOCCloning(toc, tocEntries) {
     mainElement.insertAdjacentElement('afterend', tocClone);
 
     titleWrapper.addEventListener('click', () => {
-      tocContent.classList.toggle('open');
+      const isExpanded = tocContent.classList.toggle('open');
       tocChevron.classList.toggle('up');
+      titleWrapper.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    });
+
+    titleWrapper.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        titleWrapper.click();
+      }
     });
 
     const clonedTOCEntries = tocContent.querySelectorAll('.toc-entry');
