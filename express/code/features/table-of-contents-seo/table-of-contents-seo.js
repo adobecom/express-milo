@@ -96,19 +96,45 @@ function assignHeadingIdIfNeeded(heading, headingText) {
 }
 
 function addTOCItemClickEvent(tocItem, heading) {
-  tocItem.addEventListener('click', (event) => {
-    event.preventDefault();
-    const headerElement = document.getElementById(heading.id);
+  // Helper function to scroll to heading
+  function scrollToHeading(targetHeading) {
+    const headerElement = document.getElementById(targetHeading.id);
     if (headerElement) {
       const headerRect = headerElement.getBoundingClientRect();
       const headerOffset = 70;
       const offsetPosition = headerRect.top + window.scrollY - headerOffset - MOBILE_NAV_HEIGHT;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     } else {
-      console.error(`Element with id "${heading.id}" not found.`);
+      console.error(`Element with id "${targetHeading.id}" not found.`);
     }
     document.querySelector('.toc-content')?.classList.toggle('open');
+  }
+
+  // Add click event
+  tocItem.addEventListener('click', (event) => {
+    event.preventDefault();
+    scrollToHeading(heading);
   });
+
+  // Add keyboard support
+  tocItem.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      scrollToHeading(heading);
+    }
+  });
+
+  // Add focus events for visual indicator
+  tocItem.addEventListener('focus', () => {
+    tocItem.classList.add('toc-focus');
+  });
+
+  tocItem.addEventListener('blur', () => {
+    tocItem.classList.remove('toc-focus');
+  });
+
+  // Make the element focusable
+  tocItem.setAttribute('tabindex', '0');
 }
 
 function findCorrespondingHeading(headingText, doc) {
