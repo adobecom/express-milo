@@ -46,6 +46,24 @@ main .section .ax-columns.enterprise .column h2 {
   max-width: 375px;
 }
 
+.content.columns-m-header h1,
+.content.columns-m-header h2,
+.content.columns-m-header h3,
+.content.columns-m-header h4,
+.content.columns-m-header h5,
+.content.columns-m-header h6 {
+  font-size: var(--heading-font-size-m);
+}
+
+.content.columns-s-header h1,
+.content.columns-s-header h2,
+.content.columns-s-header h3,
+.content.columns-s-header h4,
+.content.columns-s-header h5,
+.content.columns-s-header h6 {
+  font-size: var(--heading-font-size-s);
+}
+
 .section:has(.ax-columns.bg)::before {
   content: '';
   position: absolute;
