@@ -52,16 +52,16 @@ main .section .ax-columns.enterprise .column h2 {
 .content.columns-m-header h4,
 .content.columns-m-header h5,
 .content.columns-m-header h6 {
-  font-size: var(--heading-font-size-m);
+  font-size: var(--body-font-size-l);
 }
 
-.content.columns-s-header h1,
-.content.columns-s-header h2,
-.content.columns-s-header h3,
-.content.columns-s-header h4,
-.content.columns-s-header h5,
-.content.columns-s-header h6 {
-  font-size: var(--heading-font-size-s);
+.content.columns-xl-header h1,
+.content.columns-xl-header h2,
+.content.columns-xl-header h3,
+.content.columns-xl-header h4,
+.content.columns-xl-header h5,
+.content.columns-xl-header h6 {
+  font-size: var(--body-font-size-xxl);
 }
 
 .section:has(.ax-columns.bg)::before {
@@ -887,6 +887,23 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
     padding: 0 55px 60px;
     max-width: 1100px;
+  }
+  .content.columns-m-header h1,
+  .content.columns-m-header h2,
+  .content.columns-m-header h3,
+  .content.columns-m-header h4,
+  .content.columns-m-header h5,
+  .content.columns-m-header h6 {
+    font-size: var(--heading-font-size-s);
+  }
+
+  .content.columns-xl-header h1,
+  .content.columns-xl-header h2,
+  .content.columns-xl-header h3,
+  .content.columns-xl-header h4,
+  .content.columns-xl-header h5,
+  .content.columns-xl-header h6 {
+    font-size: var(--heading-font-size-m);
   }
 }
 

@@ -211,12 +211,12 @@ export default async function decorate(block) {
     }
   }
 
-  if (block.classList.contains('s-header')) {
-    addHeaderClass(block, 's');
-  }
-
   if (block.classList.contains('m-header')) {
     addHeaderClass(block, 'm');
+  }
+
+  if (block.classList.contains('xl-header')) {
+    addHeaderClass(block, 'xl');
   }
 
   if (block.classList.contains('narrow')) {
