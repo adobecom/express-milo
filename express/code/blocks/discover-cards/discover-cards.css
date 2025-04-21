@@ -58,7 +58,6 @@ main .section .discover-cards {
 /* Default style - centered */
 .discover-cards.flip .cards-container.gallery {
   display: grid;
-  /* grid-auto-flow: column; */
   grid-auto-columns: 250px;
   gap: 16px;
   overflow-x: scroll;
@@ -213,7 +212,7 @@ main .section .discover-cards {
 
 .discover-cards.flip .gallery {
   display: grid;
-  grid-auto-flow: column;  
+  grid-auto-flow: column;
   grid-auto-columns: 250px;
 }
 
