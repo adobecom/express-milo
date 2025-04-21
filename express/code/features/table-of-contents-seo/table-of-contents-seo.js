@@ -406,8 +406,35 @@ export default async function setTOCSEO() {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const doc = document.querySelector('main');
   const config = buildMetadataConfigObject();
-  const tocSEO = createTag('div', { class: 'table-of-contents-seo' });
-  const toc = createTag('div', { class: 'toc' });
+
+  const desktopSkipLink = createTag('a', {
+    href: '#desktop-toc',
+    class: 'skip-link desktop-skip-link',
+    'aria-label': 'Skip to Table of Contents',
+  });
+  desktopSkipLink.textContent = 'Skip to Table of Contents';
+
+  const mobileSkipLink = createTag('a', {
+    href: '#mobile-toc',
+    class: 'skip-link mobile-skip-link',
+    'aria-label': 'Skip to Mobile Table of Contents',
+  });
+  mobileSkipLink.textContent = 'Skip to Mobile Table of Contents';
+
+  // Add skip links to the document
+  document.body.insertBefore(desktopSkipLink, document.body.firstChild);
+  document.body.insertBefore(mobileSkipLink, document.body.firstChild);
+
+  const tocSEO = createTag('div', {
+    class: 'table-of-contents-seo',
+    id: 'desktop-toc',
+  });
+  const toc = createTag('div', {
+    class: 'toc',
+    tabindex: '0',
+    role: 'navigation',
+    'aria-label': 'Table of Contents',
+  });
   if (config.title) addTOCTitle(toc, config);
 
   // Create both TOCs immediately
@@ -428,12 +455,10 @@ export default async function setTOCSEO() {
 
   let currentMode = null;
 
-  // Handle responsive behavior
   const handleResize = () => {
     const isMobile = window.innerWidth < MOBILE_SIZE;
     const mobileTOC = document.querySelector('.mobile-toc');
 
-    // Only update if the mode has changed
     if (currentMode === isMobile) return;
     currentMode = isMobile;
 
@@ -441,19 +466,30 @@ export default async function setTOCSEO() {
       tocSEO.classList.add('mobile-view');
       if (mobileTOC) {
         mobileTOC.classList.remove('desktop-view');
+        mobileTOC.id = 'mobile-toc';
       }
+      mobileSkipLink.classList.remove('hidden');
+      desktopSkipLink.classList.add('hidden');
     } else {
       tocSEO.classList.remove('mobile-view');
       if (mobileTOC) {
         mobileTOC.classList.add('desktop-view');
       }
       setTOCPosition(toc, tocContainer);
+      desktopSkipLink.classList.remove('hidden');
+      mobileSkipLink.classList.add('hidden');
     }
   };
 
-  // Initial setup
   handleResize();
 
-  // Listen for viewport changes - no debounce needed
   window.addEventListener('resize', handleResize);
+
+  toc.addEventListener('focus', () => {
+    toc.classList.add('toc-focused');
+  });
+
+  toc.addEventListener('blur', () => {
+    toc.classList.remove('toc-focused');
+  });
 }

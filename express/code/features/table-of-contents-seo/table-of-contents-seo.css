@@ -197,3 +197,33 @@ main .section .mobile-toc {
     display: none;
   }
 }
+
+/* Skip links for accessibility */
+.skip-link {
+  position: absolute;
+  top: -45px;
+  left: 0;
+  background: white;
+  color: black;
+  padding: 8px;
+  z-index: 100;
+  text-decoration: none;
+  transition: top 0.3s ease;
+  border: 1px solid #ccc;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+.skip-link.hidden {
+  display: none;
+}
+
+/* Focus styles for TOC */
+.toc-focused {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
