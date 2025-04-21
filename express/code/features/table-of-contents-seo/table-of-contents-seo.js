@@ -85,7 +85,6 @@ function assignHeadingIdIfNeeded(heading, headingText) {
 }
 
 function addTOCItemClickEvent(tocItem, heading) {
-  // Helper function to scroll to heading
   function scrollToHeading(targetHeading) {
     const headerElement = document.getElementById(targetHeading.id);
     if (headerElement) {
@@ -348,19 +347,16 @@ function applyTOCBehavior(toc, tocContainer) {
   const titleWrapper = toc.querySelector('.toc-title-wrapper');
 
   if (titleWrapper && tocContent) {
-    // Ensure proper ARIA attributes
     titleWrapper.setAttribute('aria-expanded', 'false');
     titleWrapper.setAttribute('aria-controls', 'desktop-toc-content');
     tocContent.id = 'desktop-toc-content';
 
-    // Add click event listener
     titleWrapper.addEventListener('click', () => {
       const isExpanded = tocContent.classList.toggle('open');
       tocChevron.classList.toggle('up');
       titleWrapper.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
     });
 
-    // Add keyboard event listener
     titleWrapper.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -368,7 +364,6 @@ function applyTOCBehavior(toc, tocContainer) {
       }
     });
 
-    // Add escape key handler
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && tocContent.classList.contains('open')) {
         tocContent.classList.remove('open');
@@ -471,19 +466,15 @@ export default async function setTOCSEO() {
   });
   if (config.title) addTOCTitle(toc, config);
 
-  // Create both TOCs immediately
   tocSEO.appendChild(toc);
   doc.appendChild(tocSEO);
   const tocContainer = initializeTOCContainer();
 
-  // Create TOC entries for desktop version
   const tocEntries = addTOCEntries(toc, config, doc);
   addHoverEffect(tocEntries);
 
-  // Create mobile TOC
   handleTOCCloning(toc, tocEntries);
 
-  // Set up desktop behaviors
   applyTOCBehavior(toc, tocContainer);
   handleActiveTOCHighlighting(tocEntries);
 
