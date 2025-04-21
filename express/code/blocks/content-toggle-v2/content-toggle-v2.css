@@ -1,0 +1,59 @@
+ 
+main .section .content-toggle-v2 {
+    margin: 0 auto;
+    padding: 0 13px;
+    max-width: max-content;
+}
+
+main .content-toggle-v2 .carousel-container {
+    border-radius: var(--Radius-corner-radius-100, 8px);
+    background: var(--Palette-gray-75, #F3F3F3);
+    display: flex;
+    max-width: 1200px;
+    align-items: center;
+    gap: var(--Spacing-spacing-100, 8px);
+}   
+
+main .content-toggle-v2 .carousel-container .content-toggle-button {
+    font-family: Family/Title;
+    font-weight: 700;
+    font-size: Global/Typography/Family/Title/M;
+    line-height: 130%;
+    letter-spacing: 0%;
+    vertical-align: middle; 
+    display: flex;
+    height: 40px;
+    min-width: 44px;
+    max-width: 256px;
+    padding: 0px var(--Spacing-spacing-200, 12px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--Spacing-sx-spacing-80, 6px);
+    border: none;
+    color: var(--Palette-gray-700, var(--Palette-gray-700, #505050));
+    /* Express web/Titles/M */
+    font-family: var(--Family-Title, "Adobe Clean");
+    font-size: var(--Global-Typography-Family-Title-M, 16px);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%; /* 20.8px */
+}
+
+
+main .content-toggle-v2 .content-toggle-button.active {
+    display: flex;
+    height: 40px;
+    min-width: 44px;
+    max-width: 256px;
+    padding: 0px var(--Spacing-spacing-200, 12px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--Spacing-sx-spacing-80, 6px);
+    border-radius: var(--Radius-corner-radius-80, 6px);
+    background: var(--Palette-gray-800, #292929);
+    color: white;
+}
+
+main .content-toggle-v2 .content-toggle-carousel-container {
+    padding: 0;
+}
