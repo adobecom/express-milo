@@ -177,7 +177,6 @@ main .section .mobile-toc {
     transform: rotate(135deg);
 }
 
-/* Put these media queries last in the file to give them highest precedence */
 @media (max-width: 599px) {
   .table-of-contents-seo.mobile-view {
     display: none;
@@ -198,7 +197,6 @@ main .section .mobile-toc {
   }
 }
 
-/* Skip links for accessibility */
 .skip-link {
   position: absolute;
   top: -45px;
@@ -222,7 +220,6 @@ main .section .mobile-toc {
   display: none;
 }
 
-/* Focus styles for TOC */
 .toc-focused {
   outline: 2px solid #0066cc;
   outline-offset: 2px;
