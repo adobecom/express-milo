@@ -197,16 +197,28 @@ function handleTOCCloning(toc, tocEntries) {
     tocClone.appendChild(tocContent);
     mainElement.insertAdjacentElement('afterend', tocClone);
 
+    // Add click event listener for the title wrapper
     titleWrapper.addEventListener('click', () => {
       const isExpanded = tocContent.classList.toggle('open');
       tocChevron.classList.toggle('up');
       titleWrapper.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
     });
 
+    // Add keyboard event listener for the title wrapper
     titleWrapper.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         titleWrapper.click();
+      }
+    });
+
+    // Add escape key handler to close the TOC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && tocContent.classList.contains('open')) {
+        tocContent.classList.remove('open');
+        tocChevron.classList.remove('up');
+        titleWrapper.setAttribute('aria-expanded', 'false');
+        titleWrapper.focus();
       }
     });
 
@@ -330,6 +342,42 @@ function handleSetTOCPos(toc, tocContainer) {
 
 function applyTOCBehavior(toc, tocContainer) {
   handleSetTOCPos(toc, tocContainer);
+
+  const tocContent = toc.querySelector('.toc-content');
+  const tocChevron = toc.querySelector('.toc-chevron');
+  const titleWrapper = toc.querySelector('.toc-title-wrapper');
+
+  if (titleWrapper && tocContent) {
+    // Ensure proper ARIA attributes
+    titleWrapper.setAttribute('aria-expanded', 'false');
+    titleWrapper.setAttribute('aria-controls', 'desktop-toc-content');
+    tocContent.id = 'desktop-toc-content';
+
+    // Add click event listener
+    titleWrapper.addEventListener('click', () => {
+      const isExpanded = tocContent.classList.toggle('open');
+      tocChevron.classList.toggle('up');
+      titleWrapper.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    });
+
+    // Add keyboard event listener
+    titleWrapper.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        titleWrapper.click();
+      }
+    });
+
+    // Add escape key handler
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && tocContent.classList.contains('open')) {
+        tocContent.classList.remove('open');
+        tocChevron.classList.remove('up');
+        titleWrapper.setAttribute('aria-expanded', 'false');
+        titleWrapper.focus();
+      }
+    });
+  }
 }
 
 function initializeTOCContainer() {
