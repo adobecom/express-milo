@@ -69,7 +69,7 @@ function initializeCarousel(selector, parent) {
     'aria-label': ariaLabel,
   });
   const faderLeft = createTag('button', {
-    class: 'prev',
+    class: 'prev arrow-hidden',
     'aria-label': 'Next',
   }, prevSVGHTML);
   const faderRight = createTag('button', {
