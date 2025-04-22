@@ -24,23 +24,23 @@ function adjustCompactNavPosition(platform) {
 
   // Get the element's position relative to the viewport
   const rect = platform.getBoundingClientRect();
-  
+
   // Calculate the lower left corner position
   const lowerLeftX = rect.left;
   const lowerLeftY = rect.bottom;
-  
+
   // Set the left attribute to the negative of the x value
- // platform.style.left = `-${lowerLeftX}px`;
+  // platform.style.left = `-${lowerLeftX}px`;
 
   platform.style.setProperty('--carousel-offset-large-screen', `${lowerLeftX}px`);
-  
+
   // Optional: Log the position for debugging
   console.log('Lower left corner position:', { x: lowerLeftX, y: lowerLeftY });
 }
 
 function initializeCarousel(selector, parent) {
   const isMobile = window.innerWidth <= smalLViewport;
-  console.log()
+  console.log();
   let currentIndex = isMobile ? 0 : 1;
   let scrollCount = 1;
   let touchStartX = 0;
@@ -49,7 +49,7 @@ function initializeCarousel(selector, parent) {
   let touchStartY = 0;
   let touchEndY = 0;
   let scrolling = false;
-  
+
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
@@ -194,15 +194,6 @@ function initializeCarousel(selector, parent) {
     touchEndX = e.touches[0].clientX;
     touchEndY = e.touches[0].clientY;
 
-    // Calculate horizontal and vertical movement
-    const deltaX = Math.abs(touchEndX - touchStartX);
-    const deltaY = Math.abs(touchEndY - touchStartY);
-
-    // If movement is more horizontal than vertical and exceeds a threshold
-    if (deltaX > deltaY && deltaX > 10) {
-      isHorizontalMove = true;
-      //   e.preventDefault(); // Only prevent default for horizontal moves
-    }
   });
 
   platform.addEventListener('touchend', (e) => {
@@ -281,7 +272,7 @@ function initializeCarousel(selector, parent) {
 
   // Add position adjustment
   adjustCompactNavPosition(platform);
-  
+
   // Add resize listener for position adjustment
   window.addEventListener('resize', debounce(() => {
     adjustCompactNavPosition(platform);
