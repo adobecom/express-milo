@@ -18,8 +18,7 @@
   .compact-nav-carousel-container .compact-nav-carousel-platform {
     position: relative;
     left: 0;
-    width: max-content;
-    max-width: 100%;
+    width: max-content; 
     height: 360px;
     max-height: 500px; 
     display: flex;
