@@ -515,9 +515,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   margin-top: 2px;
 }
 
-.gen-ai-cards .compact-nav-carousel-container .compact-nav-carousel-platform .card:last-child{
-  margin-right: 16px;
-}
 
 .gen-ai-cards .card.has-beta-tag {
   background: var(--Palette-indigo-100, #EDEEFF);
