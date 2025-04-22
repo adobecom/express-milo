@@ -82,7 +82,7 @@
   display: flex;
   min-width: var(--heading-min-width);
   max-width: var(--heading-max-width);  
-  margin: 0 20px 20px;
+  margin: 0;
   justify-content: space-between;
   align-items: flex-end;
   align-content: flex-end;
@@ -107,6 +107,10 @@
 .gen-ai-cards .gen-ai-cards-heading-section p {
   text-align: left;
   margin: 0; 
+}
+
+.gen-ai-cards.homepage .gen-ai-cards-heading-section.homepage {
+  margin: 0 20px 20px;
 }
 
 .gen-ai-cards .gen-ai-cards-heading-section .text-wrapper {
