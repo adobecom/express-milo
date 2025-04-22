@@ -12,9 +12,7 @@
     --four-ele-template-width: 207px;
     --basic-carousel-fader-width: 53px;
     --carousel-offset: 16px;
-  
-    width: 100vw;
-    left: calc(-1 *var(--carousel-offset));
+
   }
   
   .compact-nav-carousel-container .compact-nav-carousel-platform {
@@ -35,6 +33,9 @@
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     border-radius: 8px;
+      
+    width: 100vw;
+    left: calc(-1 *var(--carousel-offset));
   }
 
 
@@ -392,7 +393,7 @@
 
   @media (min-width: 768px) {
 
-    .compact-nav-carousel-container {
+    .compact-nav-carousel-platform {
       --carousel-offset: 24px;
       left: calc(-1 *var(--carousel-offset));
     }
@@ -404,13 +405,24 @@
 
   @media (min-width: 1280px) {
 
-    .compact-nav-carousel-container {
-      --carousel-offset: 32px;
+    .compact-nav-carousel-platform {
+      --carousel-offset: 24px;
       left: calc(-1 *var(--carousel-offset));
     }
  
     .compact-nav-carousel-container .gallery-control  {
       padding: 24px 24px 0px 40px;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .compact-nav-carousel-container .compact-nav-carousel-platform {
+      max-width: unset;
+      width: 100vw;
+      left: calc(-1 * var(--carousel-offset-large-screen));
+    }
+    .compact-nav-carousel-container .compact-nav-carousel-platform .card:first-child {
+      margin-left: calc(  var(--carousel-offset-large-screen ));
     }
   }
 

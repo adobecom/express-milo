@@ -18,9 +18,29 @@ const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"
 const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
+
+function adjustCompactNavPosition(platform) {
+  if (!platform) return;
+
+  // Get the element's position relative to the viewport
+  const rect = platform.getBoundingClientRect();
+  
+  // Calculate the lower left corner position
+  const lowerLeftX = rect.left;
+  const lowerLeftY = rect.bottom;
+  
+  // Set the left attribute to the negative of the x value
+ // platform.style.left = `-${lowerLeftX}px`;
+
+  platform.style.setProperty('--carousel-offset-large-screen', `${lowerLeftX}px`);
+  
+  // Optional: Log the position for debugging
+  console.log('Lower left corner position:', { x: lowerLeftX, y: lowerLeftY });
+}
+
 function initializeCarousel(selector, parent) {
   const isMobile = window.innerWidth <= smalLViewport;
-
+  console.log()
   let currentIndex = isMobile ? 0 : 1;
   let scrollCount = 1;
   let touchStartX = 0;
@@ -258,6 +278,14 @@ function initializeCarousel(selector, parent) {
       updateCarousel();
     }
   }));
+
+  // Add position adjustment
+  adjustCompactNavPosition(platform);
+  
+  // Add resize listener for position adjustment
+  window.addEventListener('resize', debounce(() => {
+    adjustCompactNavPosition(platform);
+  }, 250));
 
   isMobile && updateCarousel();
 }
