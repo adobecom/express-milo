@@ -378,13 +378,13 @@
 
   @media (min-width: 768px) {
     .compact-nav-carousel-container .gallery-control  {
-      padding: 32px 32px 0 32px;
+      padding: 32px 16px 0 32px;
     }
   }
 
   @media (min-width: 1280px) {
  
     .compact-nav-carousel-container .gallery-control  {
-      padding: 24px 40px 0px 40px;
+      padding: 24px 24px 0px 40px;
     }
   }
