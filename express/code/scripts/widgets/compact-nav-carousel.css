@@ -33,6 +33,7 @@
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    border-radius: 8px;
   }
   
   .compact-nav-carousel-container:not(.controls-hidden) .compact-nav-carousel-platform::-webkit-scrollbar,
@@ -141,6 +142,11 @@
     transform: rotate(45deg);
   }
   
+  .compact-nav-carousel-container  .gallery-control button.arrow-hidden {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   .compact-nav-carousel-container.controls-hidden .compact-nav-carousel-platform {
     scroll-snap-type: none;
   }

@@ -19,7 +19,9 @@ const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
 function initializeCarousel(selector, parent) {
-  let currentIndex = window.innerWidth <= smalLViewport ? 0 : 1;
+  const isMobile = window.innerWidth <= smalLViewport;
+
+  let currentIndex = isMobile ? 0 : 1;
   let scrollCount = 1;
   let touchStartX = 0;
   let touchEndX = 0;
@@ -27,6 +29,7 @@ function initializeCarousel(selector, parent) {
   let touchStartY = 0;
   let touchEndY = 0;
   let scrolling = false;
+  
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
@@ -88,7 +91,7 @@ function initializeCarousel(selector, parent) {
     if (platform.closest('.two')) return 2;
     return 1;
   };
-  scrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
+  scrollCount = isMobile ? 1 : determineScrollCount();
 
   const updateCarousel = () => {
     if (scrolling) return;
@@ -96,7 +99,7 @@ function initializeCarousel(selector, parent) {
     const elementWidth = elements[0].offsetWidth;
     const platformWidth = platform.offsetWidth;
 
-    if (window.innerWidth <= smalLViewport) {
+    if (isMobile) {
       for (const element of elements) {
         const buttonContainer = element.querySelector('.button-container.singleton-hover');
         if (buttonContainer) {
@@ -113,7 +116,7 @@ function initializeCarousel(selector, parent) {
       behavior: 'smooth',
     });
 
-    if (window.innerWidth <= smalLViewport) {
+    if (isMobile) {
       elements.forEach((el, index) => {
         if (determineScrollCount() === 1) {
           el.style.opacity = '1';
@@ -139,8 +142,11 @@ function initializeCarousel(selector, parent) {
         updateCarousel();
       });
     });
-
-    faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
+    if (isMobile) {
+      faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
+    } else {
+      faderLeft.classList.toggle('arrow-hidden', currentIndex === 1);
+    }
     faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
   };
 
@@ -246,14 +252,14 @@ function initializeCarousel(selector, parent) {
   });
 
   window.addEventListener('resize', debounce(() => {
-    const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
+    const newScrollCount = isMobile ? 1 : determineScrollCount();
     if (newScrollCount !== scrollCount) {
       scrollCount = newScrollCount;
       updateCarousel();
     }
   }));
 
-  window.innerWidth <= smalLViewport && updateCarousel();
+  isMobile && updateCarousel();
 }
 
 export async function onBasicCarouselCSSLoad(selector, parent) {
