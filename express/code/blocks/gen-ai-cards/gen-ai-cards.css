@@ -4,8 +4,14 @@
   margin: auto;
 }
 
+.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+  .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .gen-ai-cards.homepage:first-child {
+  padding-top: 60px;
+}
+
 .gen-ai-cards {
-  padding: 0 28px;
+ 
+  padding: 24px 0px 40px 16px;
   max-width: 1440px;
   margin: auto;
   /* Card dimensions */
@@ -62,17 +68,12 @@
 .gen-ai-cards.homepage {
   max-width: unset;
   padding-left: 0;
+  gap: unset;
   padding-right: 0;
   --color-border: rgb(225, 225, 225); 
   --color-background-light : rbg(255,255,255)
-
-
 }
 
-.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
-  .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .gen-ai-cards:first-child {
-  padding-top: 60px;
-}
 
 .gen-ai-cards .gen-ai-cards-heading-section {
   --heading-min-width: unset;
@@ -81,7 +82,7 @@
   display: flex;
   min-width: var(--heading-min-width);
   max-width: var(--heading-max-width);  
-  padding-right:  16px;
+  margin: 0 20px 20px;
   justify-content: space-between;
   align-items: flex-end;
   align-content: flex-end;
