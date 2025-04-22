@@ -515,6 +515,10 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   margin-top: 2px;
 }
 
+.gen-ai-cards .compact-nav-carousel-container .compact-nav-carousel-platform .card:last-child{
+  margin-right: 16px;
+}
+
 .gen-ai-cards .card.has-beta-tag {
   background: var(--Palette-indigo-100, #EDEEFF);
 }
@@ -558,9 +562,9 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     --heading-max-width: 600px;
   }
 
-.gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-  margin-left: 20px;
-}
+  .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
+    margin-left: 20px;
+  }
 
 
 }
@@ -656,6 +660,3 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
    
 }
 
-.gen-ai-cards .compact-nav-carousel-container .compact-nav-carousel-platform .card:last-child{
-  margin-right: 16px;
-}
