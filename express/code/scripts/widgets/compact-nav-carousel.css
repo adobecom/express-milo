@@ -20,9 +20,7 @@
     width: max-content;
     max-width: 100%;
     height: 360px;
-    max-height: 500px;
-    padding-top: 4px;
-    padding-bottom: 6px;
+    max-height: 500px; 
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -382,5 +380,12 @@
   @media (min-width: 768px) {
     .compact-nav-carousel-container .gallery-control  {
       padding: 32px 32px 0 32px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+ 
+    .compact-nav-carousel-container .gallery-control  {
+      padding: 24px 40px 0px 40px;
     }
   }
