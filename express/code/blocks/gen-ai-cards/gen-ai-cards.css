@@ -149,7 +149,7 @@
   position: relative;
   flex-direction: column;
   display: flex;
-  height: var(--card-height);
+  min-height: var(--card-height);
   min-width: var(--card-width);
   max-width: var(--card-width);
   padding: var(--card-padding);
@@ -267,7 +267,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 
 .gen-ai-cards .card .gen-ai-input-form {
   position: absolute;
-  width: var(--input-form-width);
+  min-width: var(--input-form-width);
   padding: 8px;
   background-color: var(--color-white);
   border-radius: 8px;
@@ -347,8 +347,8 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .card.gen-ai-action .gen-ai-input-form .gen-ai-submit {
-  left: 56px;
-  bottom: 24px;
+  /* left: 56px;
+  bottom: 24px; */
 }
 
 .gen-ai-cards .gen-ai-input-form .gen-ai-submit:not(:disabled):hover {
@@ -657,3 +657,9 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
    
 }
 
+
+
+.gen-ai-cards .gen-ai-cards-link:hover{
+   color: var(--color-info-accent);
+   text-decoration: underline;
+}
