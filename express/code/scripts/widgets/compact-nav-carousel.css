@@ -404,6 +404,14 @@
 
   @media (min-width: 1280px) {
 
+    .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
+      padding-right: 30px;
+    }
+
+  .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
+    min-width: unset;
+  }
+
     .compact-nav-carousel-platform {
       --carousel-offset: 24px;
       left: calc(-1 *var(--carousel-offset));
@@ -422,6 +430,10 @@
     }
     .compact-nav-carousel-container .compact-nav-carousel-platform .card:first-child {
       margin-left: calc(  var(--carousel-offset-large-screen ));
+    }
+
+    .compact-nav-carousel-container .compact-nav-carousel-platform .card:last-child {
+      margin-right: calc(  var(--carousel-offset-large-screen ));
     }
   }
 
