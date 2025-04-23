@@ -24,7 +24,7 @@
   
   /* Colors */
   --color-text-primary: #212121;
-  --color-background-light: #f4f4fd;
+  --color-background-light: #E0E2FF;
   --color-hover-light: #e6e6e6;
   --color-border: none;
   
@@ -510,14 +510,9 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   position: absolute;
   padding: 0.5px 4px;
   border-radius: var(--spacing-border-radius-small);
-  background: var(--Palette-indigo-200, #E0E2FF);
+  background: var(--color-background-light);
   margin-left: 4px;
   margin-top: 2px;
-}
-
-
-.gen-ai-cards .card.has-beta-tag {
-  background: var(--Palette-indigo-100, #EDEEFF);
 }
 
 /* Tablet Styles (min-width: 768px) */
