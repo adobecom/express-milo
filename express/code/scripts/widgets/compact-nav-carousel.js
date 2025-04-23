@@ -278,7 +278,7 @@ function initializeCarousel(selector, parent) {
     adjustCompactNavPosition(platform);
   }, 250));
 
-  isMobile && updateCarousel();
+  updateCarousel();
 }
 
 export async function onBasicCarouselCSSLoad(selector, parent) {
