@@ -197,24 +197,12 @@ function initializeCarousel(selector, parent) {
   });
 
   platform.addEventListener('touchend', (e) => {
-    const swipeDistance = touchEndX - touchStartX;
 
-    if (Math.abs(swipeDistance) > 50) {
-      if (swipeDistance > 0) {
-        if (currentIndex > 0) {
-          currentIndex -= 1;
-          updateCarousel();
-        }
-      } else if (currentIndex + 1 < elements.length) {
-        currentIndex += 1;
-        updateCarousel();
-      }
-      return;
-    }
     const tappedElement = document.elementFromPoint(
       e.changedTouches[0].clientX,
       e.changedTouches[0].clientY,
     );
+    
     const isBtn = tappedElement.querySelector('.button-container.singleton-hover');
     const isCard = tappedElement.closest('.template.compact-nav-carousel-element');
     if (tappedElement) {
