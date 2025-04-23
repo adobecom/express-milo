@@ -278,10 +278,10 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   transform: translate(-50%, calc(-100% - 30px));
   display: flex;
   justify-content: space-between;
-
 }
 
 .gen-ai-cards .card .gen-ai-input-form input {
+  flex-grow: 1;
   box-sizing: border-box;
   border-radius: 8px;
   border: none;
