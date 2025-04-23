@@ -30,9 +30,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    border-radius: 8px;
-      
+    scroll-behavior: smooth; 
     width: 100vw;
     left: calc(-1 *var(--carousel-offset));
   }
