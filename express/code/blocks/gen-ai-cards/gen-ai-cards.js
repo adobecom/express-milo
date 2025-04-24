@@ -1,5 +1,5 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
-import buildCompactCarousel from '../../scripts/widgets/compact-nav-carousel.js';
+import buildCompactNavCarousel from '../../scripts/widgets/compact-nav-carousel.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let createTag; let getConfig;
@@ -252,6 +252,6 @@ export default async function decorate(block) {
   if (block.classList.contains('homepage')) {
     await buildCarousel('', block.querySelector('.gen-ai-cards-cards'));
   } else {
-    await buildCompactCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
+    await buildCompactNavCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
   }
 }

@@ -149,7 +149,7 @@ export async function onBasicCarouselCSSLoad(selector, parent) {
   initializeCarousel(selector, parent);
 }
 
-export default async function buildBasicCarousel(selector, parent, options = {}) {
+export default async function buildCompactNavCarousel(selector, parent, options = {}) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig, loadStyle } = utils);
   });

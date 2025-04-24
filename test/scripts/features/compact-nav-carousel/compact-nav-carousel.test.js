@@ -6,7 +6,7 @@ const imports = await Promise.all([
   import('../../../../express/code/scripts/widgets/compact-nav-carousel.js'),
 ]);
 
-const { default: buildBasicCarousel, windowHelper } = imports[1];
+const { default: buildCompactNavCarousel, windowHelper } = imports[1];
 const testBody = await readFile({ path: './mocks/body.html' });
 
 function scrollToRight() {
@@ -22,7 +22,7 @@ describe('Compact Nav Carousel', () => {
     window.isTestEnv = true;
     document.body.innerHTML = testBody;
     block = document.querySelector('.gen-ai-cards');
-    await buildBasicCarousel('.card', block, {});
+    await buildCompactNavCarousel('.card', block, {});
   });
 
   it('should have all things', async () => {
