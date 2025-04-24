@@ -759,12 +759,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   text-align: center;
 }
 
-.ax-columns.seo
-  .button-container.free-plan-container
-  .free-plan-widget {
-  background-color: transparent;
-}
-
 .ax-columns.seo h1 em {
   font-style: normal;
   background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
@@ -842,6 +836,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 :lang(ja) .ax-columns h2.columns-heading-x-long {
   font-size: var(--heading-font-size-m);
 }
+
+.ax-columns.seo
+  .button-container.free-plan-container {
+    display: none;
+  }
 
 @media (max-width: 600px) {
   :lang(ja) .ax-columns h2 {
@@ -1128,6 +1127,18 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   main .ax-columns .columns-video {
     min-height: 356px;
+  }
+
+  .ax-columns.seo
+  .button-container.free-plan-container   {
+    display: flex;
+  }
+
+  .ax-columns.seo
+  .button-container.free-plan-container
+  .free-plan-widget {
+    background-color: transparent;
+    margin-left: 0;
   }
 }
 
