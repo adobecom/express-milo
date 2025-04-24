@@ -765,6 +765,18 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   background-color: transparent;
 }
 
+.ax-columns.seo h1 em {
+  font-style: normal;
+  background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
+  background-size: 400% 400%;
+  -webkit-animation: buttonGradient 45s ease infinite;
+  -moz-animation: buttonGradient 45s ease infinite;
+  animation: buttonGradient 45s ease infinite;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .ax-columns
   .button-container.free-plan-container.stacked
   .free-plan-widget {
