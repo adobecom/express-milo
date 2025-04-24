@@ -759,6 +759,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   text-align: center;
 }
 
+.ax-columns.seo
+  .button-container.free-plan-container
+  .free-plan-widget {
+  background-color: transparent;
+}
 
 .ax-columns
   .button-container.free-plan-container.stacked
