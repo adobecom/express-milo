@@ -840,7 +840,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.seo
   .button-container.free-plan-container {
     display: none;
-  }
+}
+
+.section .ax-columns.seo {
+  max-width: 900px;
+}
 
 @media (max-width: 600px) {
   :lang(ja) .ax-columns h2 {
@@ -885,6 +889,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
     padding: 0 55px 60px;
     max-width: 1100px;
+  }
+  .ax-columns.seo h1,
+  .ax-columns.seo p {
+    text-align: center;
   }
 }
 
@@ -1127,6 +1135,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   main .ax-columns .columns-video {
     min-height: 356px;
+  }
+
+  .ax-columns.seo h1,
+  .ax-columns.seo p {
+    text-align: left;
   }
 
   .ax-columns.seo
