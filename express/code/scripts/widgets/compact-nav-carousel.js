@@ -27,10 +27,7 @@ function adjustCompactNavPosition(platform) {
 }
 
 function initializeCarousel(selector, parent) {
-  const isMobile = window.innerWidth <= smalLViewport;
-  let sign = 1;
-  let currentIndex = isMobile ? 0 : 1;
-  let scrollCount = 1;
+  let sign = 1; 
   let scrolling = false;
 
   const carouselContent = selector
@@ -88,14 +85,6 @@ function initializeCarousel(selector, parent) {
 
   const elements = platform.querySelectorAll(selector);
 
-  const determineScrollCount = () => {
-    if (platform.closest('.four')) return 4;
-    if (platform.closest('.three')) return 3;
-    if (platform.closest('.two')) return 2;
-    return 1;
-  };
-  scrollCount = isMobile ? 1 : determineScrollCount();
-
   const updateCarousel = () => {
     if (scrolling) return;
     scrolling = true;
@@ -111,35 +100,26 @@ function initializeCarousel(selector, parent) {
       scrolling = false;
     }, 300);
 
-    elements.forEach((el, index) => {
+    elements.forEach((el) => {
       el.addEventListener('focus', () => {
-        currentIndex = index;
+        el.scrollIntoView({ behavior: 'smooth' , block: 'nearest', inline: 'center' });
         updateCarousel();
       });
     });
   };
 
   faderLeft.addEventListener('click', () => {
-    if (scrolling || currentIndex === 0) return;
-    currentIndex -= scrollCount;
     sign = -1;
-    currentIndex = Math.max(0, currentIndex);
     updateCarousel();
   });
 
   faderRight.addEventListener('click', () => {
-    if (scrolling || currentIndex + scrollCount >= elements.length) return;
-    currentIndex += scrollCount;
     sign = 1;
     updateCarousel();
   });
 
   window.addEventListener('resize', debounce(() => {
-    const newScrollCount = isMobile ? 1 : determineScrollCount();
-    if (newScrollCount !== scrollCount) {
-      scrollCount = newScrollCount;
-      updateCarousel();
-    }
+    updateCarousel();
   }));
 
   platform.addEventListener('scroll', () => {
