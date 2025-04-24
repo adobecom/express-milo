@@ -6,7 +6,7 @@ const imports = await Promise.all([
   import('../../../../express/code/scripts/widgets/compact-nav-carousel.js'),
 ]);
 
-const { default: buildCompactNavCarousel, windowHelper } = imports[1];
+const { default: buildCompactNavCarousel  } = imports[1];
 const testBody = await readFile({ path: './mocks/body.html' });
 
 function scrollToRight() {
