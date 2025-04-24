@@ -292,7 +292,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   -moz-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-
+.gen-ai-cards .card .gen-ai-input-form:has(button:focus) input, 
 .gen-ai-cards .card .gen-ai-input-form input:focus {
   outline: none;
   width: 100%;
@@ -300,7 +300,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   padding-bottom: 10px;
 
 }
-
+.gen-ai-cards .card .gen-ai-input-form:has(button:focus) ,
 .gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
   flex-wrap: wrap;
 }
