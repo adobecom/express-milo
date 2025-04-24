@@ -27,7 +27,7 @@ function adjustCompactNavPosition(platform) {
 }
 
 function initializeCarousel(selector, parent) {
-  let sign = 1; 
+  let sign = 1;
   let scrolling = false;
 
   const carouselContent = selector
@@ -40,9 +40,6 @@ function initializeCarousel(selector, parent) {
     el.setAttribute('role', 'group');
     el.setAttribute('aria-label', `Item ${index + 1} of ${carouselContent.length}`);
 
-    el.addEventListener('focus', () => {
-      currentIndex = index;
-    });
     el.addEventListener('mouseleave', () => {
       if (window.innerWidth > smalLViewport) {
         const isHover = el.querySelector('.button-container.singleton-hover');
@@ -88,7 +85,7 @@ function initializeCarousel(selector, parent) {
   const updateCarousel = () => {
     if (scrolling) return;
     scrolling = true;
-    const elementWidth = elements[0].offsetWidth; 
+    const elementWidth = elements[0].offsetWidth;
     platform.scrollBy({
       left: (sign * elementWidth),
       behavior: 'smooth',
@@ -100,7 +97,7 @@ function initializeCarousel(selector, parent) {
 
     elements.forEach((el) => {
       el.addEventListener('focus', () => {
-        el.scrollIntoView({ behavior: 'smooth' , block: 'nearest', inline: 'center' });
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         updateCarousel();
       });
     });
