@@ -1,8 +1,16 @@
 import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import buildCompactNavCarousel from '../../scripts/widgets/compact-nav-carousel.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let createTag; let getConfig;
 const promptTokenRegex = /(?:\{\{|%7B%7B)?prompt(?:-|\+|%20|\s)text(?:\}\}|%7D%7D)?/;
+
+function addBetaTag(card, title, betaPlaceholder) {
+  const betaTag = createTag('span', { class: 'beta-tag' });
+  betaTag.textContent = betaPlaceholder;
+  title.append(betaTag);
+  card.classList.add('has-beta-tag');
+}
 
 export function decorateTextWithTag(textSource, options = {}) {
   const {
@@ -42,14 +50,14 @@ export function decorateHeading(block, payload) {
       headingTextWrapper.append(p);
     });
   }
-
-  if (payload.legalLink.href !== '') {
+  if (payload.legalLink.href) {
     const legalButton = createTag('a', {
       class: 'gen-ai-cards-link',
       href: payload.legalLink.href,
     });
     legalButton.textContent = payload.legalLink.text;
     headingSection.append(legalButton);
+    headingSection.classList.add('has-legal-link');
   }
 
   block.append(headingSection);
@@ -118,10 +126,13 @@ function removeLazyAfterNeighborLoaded(image, lastImage) {
 async function decorateCards(block, { actions }) {
   const cards = createTag('div', { class: 'gen-ai-cards-cards' });
   let searchBranchLinks;
+  let betaTagPlaceholder;
 
   await import(`${getLibs()}/features/placeholders.js`).then(async (mod) => {
     searchBranchLinks = await mod.replaceKey('search-branch-links', getConfig());
     searchBranchLinks = searchBranchLinks === 'search branch links' ? '' : searchBranchLinks.replace(/\s/g, '')?.split(',');
+    betaTagPlaceholder = await mod.replaceKey('beta-tag', getConfig());
+    betaTagPlaceholder = betaTagPlaceholder === 'beta tag' ? 'BETA' : betaTagPlaceholder;
     return mod.replaceKey();
   });
 
@@ -131,6 +142,7 @@ async function decorateCards(block, { actions }) {
       ctaLinks,
       text,
       title,
+      betaTag,
     } = cta;
     const card = createTag('div', { class: 'card' });
     const linksWrapper = createTag('div', { class: 'links-wrapper' });
@@ -169,6 +181,11 @@ async function decorateCards(block, { actions }) {
     }
 
     const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h4' });
+
+    if (betaTag) {
+      addBetaTag(card, titleText, betaTagPlaceholder);
+    }
+
     textWrapper.append(titleText);
     const desc = createTag('p', { class: 'cta-card-desc' });
     desc.textContent = text;
@@ -203,6 +220,7 @@ function constructPayload(block) {
       text: row.querySelector(':scope > div:nth-of-type(2) p:not(.button-container):not(:has(strong)):not(:has(em)):not(:empty)')?.textContent.trim(),
       subtext: row.querySelector(':scope > div:nth-of-type(2) p:not(.button-container) em')?.textContent.trim(),
       ctaLinks: row.querySelectorAll(':scope > div:nth-of-type(2) a'),
+      betaTag: row.innerHTML.includes('#_beta'),
     };
 
     payload.actions.push(ctaObj);
@@ -231,5 +249,9 @@ export default async function decorate(block) {
   const payload = constructPayload(block);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
-  await buildCarousel('', block.querySelector('.gen-ai-cards-cards'));
+  if (block.classList.contains('homepage')) {
+    await buildCarousel('', block.querySelector('.gen-ai-cards-cards'));
+  } else {
+    await buildCompactNavCarousel('.card', block.querySelector('.gen-ai-cards-cards'), {});
+  }
 }
