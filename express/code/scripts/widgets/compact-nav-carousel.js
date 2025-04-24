@@ -100,10 +100,10 @@ function initializeCarousel(selector, parent) {
     if (scrolling) return;
     scrolling = true;
     const elementWidth = elements[0].offsetWidth;
-    const platformWidth = platform.offsetWidth; 
+    const platformWidth = platform.offsetWidth;
 
     platform.scrollBy({
-      left:  sign * (platformWidth - elementWidth) / 2,
+      left: (sign * (platformWidth - elementWidth)) / 2,
       behavior: 'smooth',
     });
 
@@ -144,7 +144,7 @@ function initializeCarousel(selector, parent) {
 
   platform.addEventListener('scroll', () => {
     const isAtMinimumScroll = platform.scrollLeft <= 0;
-    const isAtMaximumScroll = platform.scrollLeft + platform.clientWidth >= platform.scrollWidth; 
+    const isAtMaximumScroll = platform.scrollLeft + platform.clientWidth >= platform.scrollWidth;
     faderLeft.classList.toggle('arrow-hidden', isAtMinimumScroll);
     faderRight.classList.toggle('arrow-hidden', isAtMaximumScroll);
   });

@@ -249,7 +249,6 @@ export default async function decorate(block) {
   const payload = constructPayload(block);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
-  console.log(block.classList.contains('homepage'));
   if (block.classList.contains('homepage')) {
     await buildCarousel('', block.querySelector('.gen-ai-cards-cards'));
   } else {
