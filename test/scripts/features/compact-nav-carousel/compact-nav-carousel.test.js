@@ -26,17 +26,17 @@ describe('Compact Nav Carousel', () => {
   });
 
   it('should have all things', async () => {
-    expect(block).to.exist; 
-    
+    expect(block).to.exist;
+
     setTimeout(() => {
       console.log(block.querySelector('.gallery-control'));
       expect(block.querySelector('.gallery-control')).to.exist;
-      expect(document.querySelectorAll('.card').length).to.equal(6); 
+      expect(document.querySelectorAll('.card').length).to.equal(6);
       expect(document.querySelector('button.prev')).to.exist;
       expect(document.querySelector('button.next')).to.exist;
       expect(document.querySelector('.compact-nav-carousel-platform')).to.exist;
       expect(document.querySelector('button.prev')).to.exist;
-      
+
       // Scroll to right
       scrollToRight();
     }, 1000);

@@ -24,9 +24,8 @@ describe('Gen AI Cards', () => {
   });
 
   it('should have all things', async () => {
- 
     for (const block of blocks) {
-        console.log(block)
+      console.log(block);
       expect(block).to.exist;
       expect(block.querySelector('.gen-ai-cards-heading-section')).to.exist;
       expect(block.querySelectorAll('.card').length).to.equal(5);
@@ -46,7 +45,7 @@ describe('Gen AI Cards', () => {
         expect(card.querySelector('.text-wrapper .cta-card-title')).to.exist;
         expect(card.querySelector('.media-wrapper picture')).to.exist;
       }
-      const ctaCard = cards[1]
+      const ctaCard = cards[1];
       const cta = ctaCard.querySelector('.links-wrapper a');
       expect(cta).to.exist;
       expect(cta.textContent).to.exist;
@@ -73,7 +72,7 @@ describe('Gen AI Cards', () => {
   it('should toggle submit button disabled based on input content', async () => {
     for (const block of blocks) {
       const cards = Array.from(block.querySelectorAll('.card'));
-      const card = cards[0]
+      const card = cards[0];
       const form = card.querySelector('.gen-ai-input-form');
       const input = form.querySelector('input');
       const button = form.querySelector('button');

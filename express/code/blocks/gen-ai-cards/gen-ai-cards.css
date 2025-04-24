@@ -326,9 +326,8 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-  margin-left: 8px;
+  margin-left: 24px;
 }
-
 
 .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit {
   color: var(--color-white);
@@ -344,11 +343,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   border-radius: 22px;
   cursor: pointer;
   transition: background-color .2s;
-}
-
-.gen-ai-cards .card.gen-ai-action .gen-ai-input-form .gen-ai-submit {
-  /* left: 56px;
-  bottom: 24px; */
 }
 
 .gen-ai-cards .gen-ai-input-form .gen-ai-submit:not(:disabled):hover {
