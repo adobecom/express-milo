@@ -21,33 +21,16 @@ let getConfig;
 
 function adjustCompactNavPosition(platform) {
   if (!platform) return;
-
-  // Get the element's position relative to the viewport
   const rect = platform.getBoundingClientRect();
-
-  // Calculate the lower left corner position
   const lowerLeftX = rect.left;
-  const lowerLeftY = rect.bottom;
-
-  // Set the left attribute to the negative of the x value
-  // platform.style.left = `-${lowerLeftX}px`;
-
   platform.style.setProperty('--carousel-offset-large-screen', `${lowerLeftX}px`);
-
-  // Optional: Log the position for debugging
-  console.log('Lower left corner position:', { x: lowerLeftX, y: lowerLeftY });
 }
 
 function initializeCarousel(selector, parent) {
   const isMobile = window.innerWidth <= smalLViewport;
-  console.log();
+  let sign = 1;
   let currentIndex = isMobile ? 0 : 1;
   let scrollCount = 1;
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  let touchStartY = 0;
-  let touchEndY = 0;
   let scrolling = false;
 
   const carouselContent = selector
@@ -117,40 +100,12 @@ function initializeCarousel(selector, parent) {
     if (scrolling) return;
     scrolling = true;
     const elementWidth = elements[0].offsetWidth;
-    const platformWidth = platform.offsetWidth;
+    const platformWidth = platform.offsetWidth; 
 
-    if (isMobile) {
-      for (const element of elements) {
-        const buttonContainer = element.querySelector('.button-container.singleton-hover');
-        if (buttonContainer) {
-          buttonContainer.classList.remove('singleton-hover');
-          break;
-        }
-      }
-    }
-
-    const newScrollPos = currentIndex * elementWidth - (platformWidth - elementWidth) / 2;
-
-    platform.scrollTo({
-      left: newScrollPos,
+    platform.scrollBy({
+      left:  sign * (platformWidth - elementWidth) / 2,
       behavior: 'smooth',
     });
-
-    if (isMobile) {
-      elements.forEach((el, index) => {
-        if (determineScrollCount() === 1) {
-          el.style.opacity = '1';
-        } else if (index === currentIndex) {
-          el.style.opacity = '1';
-        } else if (index === currentIndex - 1 || index === currentIndex + 1) {
-          el.style.opacity = '0.5';
-        }
-      });
-    } else {
-      elements.forEach((el) => {
-        el.style.opacity = '';
-      });
-    }
 
     setTimeout(() => {
       scrolling = false;
@@ -162,17 +117,12 @@ function initializeCarousel(selector, parent) {
         updateCarousel();
       });
     });
-    if (isMobile) {
-      faderLeft.classList.toggle('arrow-hidden', currentIndex === 0);
-    } else {
-      faderLeft.classList.toggle('arrow-hidden', currentIndex === 1);
-    }
-    faderRight.classList.toggle('arrow-hidden', currentIndex + scrollCount >= elements.length);
   };
 
   faderLeft.addEventListener('click', () => {
     if (scrolling || currentIndex === 0) return;
     currentIndex -= scrollCount;
+    sign = -1;
     currentIndex = Math.max(0, currentIndex);
     updateCarousel();
   });
@@ -180,85 +130,8 @@ function initializeCarousel(selector, parent) {
   faderRight.addEventListener('click', () => {
     if (scrolling || currentIndex + scrollCount >= elements.length) return;
     currentIndex += scrollCount;
+    sign = 1;
     updateCarousel();
-  });
-
-  platform.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchEndX = touchStartX;
-    touchEndY = touchStartY;
-  });
-
-  platform.addEventListener('touchmove', (e) => {
-    touchEndX = e.touches[0].clientX;
-    touchEndY = e.touches[0].clientY;
-
-  });
-
-  platform.addEventListener('touchend', (e) => {
-    const swipeDistance = touchEndX - touchStartX;
-
-    if (Math.abs(swipeDistance) > 50) {
-      if (swipeDistance > 0) {
-        if (currentIndex > 0) {
-          currentIndex -= 1; 
-        }
-      } else if (currentIndex + 1 < elements.length) {
-        currentIndex += 1; 
-      }
-      return;
-    }
-    const tappedElement = document.elementFromPoint(
-      e.changedTouches[0].clientX,
-      e.changedTouches[0].clientY,
-    );
-    
-    const isBtn = tappedElement.querySelector('.button-container.singleton-hover');
-    const isCard = tappedElement.closest('.template.compact-nav-carousel-element');
-    if (tappedElement) {
-      const shareIconWrapper = tappedElement.closest('.share-icon-wrapper');
-      const linkHref = isCard?.querySelector('a')?.href || isBtn?.querySelector('a')?.href;
-      if (linkHref && shareIconWrapper) {
-        e.stopPropagation();
-        navigator.clipboard.writeText(linkHref).then(() => {
-          const tooltip = shareIconWrapper.querySelector('.shared-tooltip');
-          if (tooltip) {
-            tooltip.classList.add('display-tooltip');
-            setTimeout(() => tooltip.classList.remove('display-tooltip'), 2000);
-          }
-        }).catch((err) => {
-          window.lana?.log('Failed to copy link:', err);
-        });
-        return;
-      }
-      if (isCard && linkHref) {
-        const isHoverActive = isCard?.querySelector('.button-container.singleton-hover');
-        if (isHoverActive && linkHref) {
-          window.location.href = linkHref;
-        }
-        const tappedIndex = Array.from(elements).indexOf(isCard);
-        if (tappedIndex !== -1) {
-          if (tappedIndex < currentIndex) {
-            currentIndex = Math.max(0, tappedIndex);
-            updateCarousel();
-          } else if (tappedIndex > currentIndex) {
-            currentIndex = Math.min(elements.length - 1, tappedIndex);
-            updateCarousel();
-          } else {
-            const btnContainer = isCard.querySelector('.button-container');
-            if (btnContainer) {
-              btnContainer.dispatchEvent(new Event('carouseltapstart'));
-              setTimeout(() => {
-                btnContainer.dispatchEvent(new Event('carouseltapend'));
-              }, 0);
-            }
-          }
-        }
-      } else if (isBtn && linkHref) {
-        window.location.href = linkHref;
-      }
-    }
   });
 
   window.addEventListener('resize', debounce(() => {
@@ -269,6 +142,13 @@ function initializeCarousel(selector, parent) {
     }
   }));
 
+  platform.addEventListener('scroll', () => {
+    const isAtMinimumScroll = platform.scrollLeft <= 0;
+    const isAtMaximumScroll = platform.scrollLeft + platform.clientWidth >= platform.scrollWidth; 
+    faderLeft.classList.toggle('arrow-hidden', isAtMinimumScroll);
+    faderRight.classList.toggle('arrow-hidden', isAtMaximumScroll);
+  });
+
   // Add position adjustment
   adjustCompactNavPosition(platform);
 
@@ -276,8 +156,6 @@ function initializeCarousel(selector, parent) {
   window.addEventListener('resize', debounce(() => {
     adjustCompactNavPosition(platform);
   }, 250));
-
-  updateCarousel();
 }
 
 export async function onBasicCarouselCSSLoad(selector, parent) {
