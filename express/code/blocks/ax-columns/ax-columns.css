@@ -1119,6 +1119,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 1024px;
   }
 
+  .section .ax-columns.seo {
+    max-width: 1440px;
+  }
+
   .section .ax-columns, .ax-columns.top.center, .ax-columns.light {
     max-width: 1024px;
   }
