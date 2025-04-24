@@ -82,7 +82,7 @@
   display: flex;
   min-width: var(--heading-min-width);
   max-width: var(--heading-max-width);  
-  margin: 0;
+  margin-right: 16px;
   justify-content: space-between;
   align-items: flex-end;
   align-content: flex-end;
@@ -109,7 +109,7 @@
   margin: 0; 
 }
 
-.gen-ai-cards.homepage .gen-ai-cards-heading-section.homepage {
+.gen-ai-cards.homepage .gen-ai-cards-heading-section{
   margin: 0 20px 20px;
 }
 
