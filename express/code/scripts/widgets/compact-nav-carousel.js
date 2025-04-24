@@ -88,11 +88,9 @@ function initializeCarousel(selector, parent) {
   const updateCarousel = () => {
     if (scrolling) return;
     scrolling = true;
-    const elementWidth = elements[0].offsetWidth;
-    const platformWidth = platform.offsetWidth;
-
+    const elementWidth = elements[0].offsetWidth; 
     platform.scrollBy({
-      left: (sign * (platformWidth - elementWidth)) / 2,
+      left: (sign * elementWidth),
       behavior: 'smooth',
     });
 
