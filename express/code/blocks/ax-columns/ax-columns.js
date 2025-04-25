@@ -179,6 +179,24 @@ const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
   content.parentElement.prepend(links[0]);
 };
 
+function createCornerOverlays(cell) {
+  const overlays = [
+    { src: '/express/code/blocks/ax-columns/img/resize-button.png', class: 'top-left' },
+    { src: '/express/code/blocks/ax-columns/img/users_ui_mockup.png', class: 'top-right' },
+    { src: '/express/code/blocks/ax-columns/img/ai-image-edit.png', class: 'bottom-left' },
+    { src: '/express/code/blocks/ax-columns/img/gen-ai-panel.png', class: 'bottom-right' },
+  ];
+
+  overlays.forEach((overlay) => {
+    const img = createTag('img', {
+      class: `corner-overlay ${overlay.class}`,
+      src: overlay.src,
+      alt: '',
+    });
+    cell.appendChild(img);
+  });
+}
+
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getMetadata, getConfig } = utils);
@@ -321,6 +339,7 @@ export default async function decorate(block) {
         && childEls.length > 0;
       if (isPictureColumn) {
         cell.classList.add('column-picture');
+        createCornerOverlays(cell);
       }
 
       const $pars = cell.querySelectorAll('p');
