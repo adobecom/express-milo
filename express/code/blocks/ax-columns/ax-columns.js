@@ -209,8 +209,8 @@ function setupCornerOverlayAnimation(cell) {
       bottomRightOverlay.style.transform = 'none';
 
       // Reset top right
-      topRightOverlay.style.top = '16px';
-      topRightOverlay.style.right = '16px';
+      topRightOverlay.style.top = '60px';
+      topRightOverlay.style.right = '-30px';
       topRightOverlay.style.transform = 'none';
 
       // Reset top left

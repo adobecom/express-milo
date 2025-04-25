@@ -1481,20 +1481,18 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   position: absolute;
   bottom: -30px;
   right: -30px;
-  width: 80px !important;
-  height: 80px !important;
+  width: 120px;
+  height: auto;
   object-fit: contain;
   transition: none;
-  /* Ensure no transition or animation on hover */
-  animation: none;
 }
 
 .corner-overlay.top-right {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 80px !important;
-  height: 80px !important;
+  top: 60px;
+  right: -30px;
+  width: 90px;
+  height: auto;
   object-fit: contain;
   transition: none;
 }
