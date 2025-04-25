@@ -239,6 +239,8 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns.seo .column-picture {
   max-width: 571px;
   max-height: 355px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .column-picture .corner-overlay {
