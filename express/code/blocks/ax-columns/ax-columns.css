@@ -256,23 +256,30 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .column-picture .corner-overlay.top-left {
-  top: 16px;
-  left: 16px;
+  top: -30px;
+  left: 139px;
+  width: 117px;
+  height: auto;
 }
 
 .column-picture .corner-overlay.top-right {
-  top: 16px;
-  right: 16px;
+  top: 59px;
+  right: -30px;
 }
 
 .column-picture .corner-overlay.bottom-left {
-  bottom: 16px;
-  left: 16px;
+  bottom: -20px;
+  left: -25px;
+  height: 120px;
+  width: auto;
 }
 
 .column-picture .corner-overlay.bottom-right {
   bottom: 16px;
-  right: 16px;
+  right: -40px;
+  width: 120px;
+  height: auto;
+  bottom: -31px;
 }
 
 .section .ax-columns h1 {
