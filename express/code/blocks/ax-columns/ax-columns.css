@@ -1137,6 +1137,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     min-height: 356px;
   }
 
+  .ax-columns.seo .columns {
+    text-align: left;
+  }
+
   .ax-columns.seo h1,
   .ax-columns.seo p {
     text-align: left;
