@@ -256,10 +256,13 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .column-picture .corner-overlay.top-left {
-  top: -30px;
-  left: 139px;
-  width: 117px;
-  height: auto;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: contain;
+  transition: none;
 }
 
 .column-picture .corner-overlay.top-right {
@@ -1511,6 +1514,35 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   100% {
     top: 16px;
     right: 16px;
+    transform: none;
+  }
+}
+
+.corner-overlay.top-left {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: contain;
+  transition: none;
+}
+
+.column-picture.animating-out .corner-overlay.top-left {
+  animation-name: animate-to-corner-top-left;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes animate-to-corner-top-left {
+  0% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  100% {
+    top: 16px;
+    left: 16px;
     transform: none;
   }
 }
