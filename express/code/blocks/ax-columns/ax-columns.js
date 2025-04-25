@@ -218,6 +218,11 @@ function setupCornerOverlayAnimation(cell) {
       cursorOverlay.style.bottom = '-15px';
       cursorOverlay.style.left = '80%';
       cursorOverlay.style.transform = 'translateX(-50%)';
+
+      // Reset top left
+      topLeftOverlay.style.top = '-30px';
+      topLeftOverlay.style.left = '120px';
+      topLeftOverlay.style.transform = 'none';
     }, 250);
   });
 }
