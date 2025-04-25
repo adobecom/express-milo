@@ -257,10 +257,10 @@ main .section .ax-columns.enterprise .column h2 {
 
 .column-picture .corner-overlay.top-left {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  width: 80px !important;
-  height: 80px !important;
+  top: -30px;
+  left: 120px;
+  width: 120px;
+  height: auto;
   object-fit: contain;
   transition: none;
 }
@@ -1526,10 +1526,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .corner-overlay.top-left {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  width: 80px !important;
-  height: 80px !important;
+  top: -30px;
+  left: 120px;
+  width: 80px;
+  height: auto;
   object-fit: contain;
   transition: none;
 }
@@ -1547,8 +1547,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     transform: translate(-50%, -50%);
   }
   100% {
-    top: 16px;
-    left: 16px;
+    top: -30px;
+    left: 120px;
     transform: none;
   }
 }
