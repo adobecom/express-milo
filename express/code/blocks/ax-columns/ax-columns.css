@@ -236,6 +236,11 @@ main .section .ax-columns.enterprise .column h2 {
   position: relative;
 }
 
+.ax-columns.seo .column-picture {
+  max-width: 571px;
+  max-height: 355px;
+}
+
 .column-picture .corner-overlay {
   position: absolute;
   width: 80px; /* Adjust size as needed */
