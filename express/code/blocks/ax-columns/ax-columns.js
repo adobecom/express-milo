@@ -183,6 +183,7 @@ function setupCornerOverlayAnimation(cell) {
   const bottomLeftOverlay = cell.querySelector('.corner-overlay.bottom-left');
   const bottomRightOverlay = cell.querySelector('.corner-overlay.bottom-right');
   const topRightOverlay = cell.querySelector('.corner-overlay.top-right');
+  const topLeftOverlay = cell.querySelector('.corner-overlay.top-left');
 
   // On mouse enter - only move bottom left to center
   cell.addEventListener('mouseenter', () => {
@@ -207,10 +208,15 @@ function setupCornerOverlayAnimation(cell) {
       bottomRightOverlay.style.right = '-30px';
       bottomRightOverlay.style.transform = 'none';
 
-      // Reset top right to its original position
+      // Reset top right
       topRightOverlay.style.top = '16px';
       topRightOverlay.style.right = '16px';
       topRightOverlay.style.transform = 'none';
+
+      // Reset top left
+      topLeftOverlay.style.top = '16px';
+      topLeftOverlay.style.left = '16px';
+      topLeftOverlay.style.transform = 'none';
     }, 250);
   });
 }
