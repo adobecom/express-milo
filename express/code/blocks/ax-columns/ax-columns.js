@@ -183,15 +183,12 @@ function setupCornerOverlayAnimation(cell) {
   const bottomLeftOverlay = cell.querySelector('.corner-overlay.bottom-left');
   const bottomRightOverlay = cell.querySelector('.corner-overlay.bottom-right');
 
-  // On mouse enter - instantly move both to center
+  // On mouse enter - only move bottom left to center
   cell.addEventListener('mouseenter', () => {
     bottomLeftOverlay.style.bottom = '50%';
     bottomLeftOverlay.style.left = '50%';
     bottomLeftOverlay.style.transform = 'translate(-50%, 50%)';
-
-    bottomRightOverlay.style.bottom = '50%';
-    bottomRightOverlay.style.right = '50%';
-    bottomRightOverlay.style.transform = 'translate(50%, 50%)';
+    // Remove bottom right movement on mouseenter
   });
 
   // On mouse leave - animate both back to corners

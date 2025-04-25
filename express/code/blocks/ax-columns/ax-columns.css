@@ -272,8 +272,8 @@ main .section .ax-columns.enterprise .column h2 {
   position: absolute;
   bottom: -30px;
   left: -30px;
-  width: 94px !important;
-  height: 208px !important;
+  width: 94px;
+  height: 208px
   object-fit: contain;
   transition: none;
 }
@@ -1471,6 +1471,19 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 @keyframes corner-in-5 {
   0% { transform: translate(-50%, 0); bottom: 16px; }
+}
+
+/* Base positioning for bottom right */
+.corner-overlay.bottom-right {
+  position: absolute;
+  bottom: -30px;
+  right: -30px;
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: contain;
+  transition: none;
+  /* Ensure no transition or animation on hover */
+  animation: none;
 }
 
 
