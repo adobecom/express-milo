@@ -179,6 +179,27 @@ const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
   content.parentElement.prepend(links[0]);
 };
 
+function setupCornerOverlayAnimation(cell) {
+  const bottomLeftOverlay = cell.querySelector('.corner-overlay.bottom-left');
+
+  cell.addEventListener('mouseenter', () => {
+    bottomLeftOverlay.style.bottom = '50%';
+    bottomLeftOverlay.style.left = '50%';
+    bottomLeftOverlay.style.transform = 'translate(-50%, 50%)';
+  });
+
+  cell.addEventListener('mouseleave', () => {
+    cell.classList.add('animating-out');
+
+    setTimeout(() => {
+      cell.classList.remove('animating-out');
+      bottomLeftOverlay.style.bottom = '-30px';
+      bottomLeftOverlay.style.left = '-30px';
+      bottomLeftOverlay.style.transform = 'none';
+    }, 250);
+  });
+}
+
 function createCornerOverlays(cell) {
   const overlays = [
     { src: '/express/code/blocks/ax-columns/img/resize-button.png', class: 'top-left' },
@@ -198,6 +219,9 @@ function createCornerOverlays(cell) {
     });
     cell.appendChild(img);
   });
+
+  // Set up the animation handlers
+  setupCornerOverlayAnimation(cell);
 }
 
 export default async function decorate(block) {
