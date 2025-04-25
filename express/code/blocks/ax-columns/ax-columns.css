@@ -233,6 +233,41 @@ main .section .ax-columns.enterprise .column h2 {
 
 .ax-columns .column-picture {
   margin: 15px 0;
+  position: relative;
+}
+
+.column-picture .corner-overlay {
+  position: absolute;
+  width: 80px; /* Adjust size as needed */
+  height: 80px;
+  object-fit: contain;
+  z-index: 1;
+  transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+/* Add hover state to hide overlays */
+.column-picture:hover .corner-overlay {
+  opacity: 0;
+}
+
+.column-picture .corner-overlay.top-left {
+  top: 16px;
+  left: 16px;
+}
+
+.column-picture .corner-overlay.top-right {
+  top: 16px;
+  right: 16px;
+}
+
+.column-picture .corner-overlay.bottom-left {
+  bottom: 16px;
+  left: 16px;
+}
+
+.column-picture .corner-overlay.bottom-right {
+  bottom: 16px;
+  right: 16px;
 }
 
 .section .ax-columns h1 {
@@ -507,7 +542,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .columns-video .column-picture {
-  position: relative;
+  position: initial;
 }
 
 .columns-video .column-picture img {
