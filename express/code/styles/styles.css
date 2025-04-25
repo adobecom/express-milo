@@ -40,11 +40,6 @@
   --palette-indigo-1000: #4046CA;
   --background-positive-default: #007A4D;
 
-  /* header */
-  --header-height: 65px;
-  --breadcrumbs-height: 43px;
-  --brand-header-height: 79px;
-
   /* body */
   --body-background-color: var(--color-white);
   --body-alt-background-color: var(--color-gray-200);
