@@ -267,11 +267,35 @@ main .section .ax-columns.enterprise .column h2 {
   right: -30px;
 }
 
-.column-picture .corner-overlay.bottom-left {
-  bottom: -20px;
-  left: -25px;
-  height: 120px;
-  width: auto;
+/* Base positioning */
+.corner-overlay.bottom-left {
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 94px !important;
+  height: 208px !important;
+  object-fit: contain;
+  transition: none;
+}
+
+/* Only animate on mouseout */
+.column-picture.animating-out .corner-overlay.bottom-left {
+  animation-name: animate-to-corner;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes animate-to-corner {
+  0% {
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+  }
+  100% {
+    bottom: -30px;
+    left: -30px;
+    transform: none;
+  }
 }
 
 .column-picture .corner-overlay.bottom-right {
@@ -1427,4 +1451,5 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 @keyframes corner-in-5 {
   0% { transform: translate(-50%, 0); bottom: 16px; }
 }
+
 
