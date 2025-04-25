@@ -1455,30 +1455,33 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   padding: 20px;
 }
 
-.corner-overlay.bottom-center {
-  animation-name: corner-out-5;
-  bottom: 0;
-  left: 75%;
+.column-picture .corner-overlay.bottom-center {
+  position: absolute;
+  bottom: -15px;
+  left: 80%;
   transform: translateX(-50%);
   width: 26px;
   height: 26px;
+  transition: none;
 }
 
-.column-picture:hover .corner-overlay.bottom-center {
-  animation-name: corner-in-5;
-  bottom: 50%;
-  left: 50%;
-  transform: translate(-50%, 50%);
+.column-picture.animating-out .corner-overlay.bottom-center {
+  animation-name: animate-to-corner-center;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
 }
 
-@keyframes corner-out-5 {
-  0%  { transform: translate(-50%, -50%); bottom: 50%; }
-  60% { transform: translate(-50%, 20px); }
-  80% { transform: translate(-50%, -5px); }
-}
-
-@keyframes corner-in-5 {
-  0% { transform: translate(-50%, 0); bottom: 16px; }
+@keyframes animate-to-corner-center {
+  0% {
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+  }
+  100% {
+    bottom: -15px;
+    left: 80%;
+    transform: translateX(-50%);
+  }
 }
 
 /* Base positioning for bottom right */
