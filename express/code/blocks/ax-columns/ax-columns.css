@@ -266,8 +266,13 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .column-picture .corner-overlay.top-right {
-  top: 59px;
+  position: absolute;
+  top: 60px;
   right: -30px;
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+  transition: none;
 }
 
 /* Base positioning */
@@ -1491,7 +1496,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   position: absolute;
   top: 60px;
   right: -30px;
-  width: 90px;
+  width: 140px;
   height: auto;
   object-fit: contain;
   transition: none;
@@ -1510,8 +1515,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     transform: translate(50%, -50%);
   }
   100% {
-    top: 16px;
-    right: 16px;
+    top: 60px;
+    right: -30px;
     transform: none;
   }
 }
