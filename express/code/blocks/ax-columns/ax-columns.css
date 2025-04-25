@@ -1149,13 +1149,15 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.seo
   .button-container.free-plan-container   {
     display: flex;
+    align-items: start;
   }
 
   .ax-columns.seo
   .button-container.free-plan-container
   .free-plan-widget {
     background-color: transparent;
-    margin-left: 0;
+    margin-top: 10px;
+    padding-left: 0;
   }
 }
 
@@ -1299,6 +1301,17 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .section .ax-columns.xl-heading h1 {
     font-size: var(--heading-font-size-xl);
+  }
+
+  .ax-columns.seo
+  .button-container.free-plan-container
+  .free-plan-widget {
+    margin-top: unset;
+    padding-left: unset;
+  }
+
+  .ax-columns.seo .button-container.free-plan-container {
+    align-items: center;
   }
 }
 
