@@ -273,7 +273,7 @@ main .section .ax-columns.enterprise .column h2 {
   bottom: -30px;
   left: -30px;
   width: 94px;
-  height: 208px
+  height: 208px;
   object-fit: contain;
   transition: none;
 }
@@ -1484,6 +1484,35 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   transition: none;
   /* Ensure no transition or animation on hover */
   animation: none;
+}
+
+.corner-overlay.top-right {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 80px !important;
+  height: 80px !important;
+  object-fit: contain;
+  transition: none;
+}
+
+.column-picture.animating-out .corner-overlay.top-right {
+  animation-name: animate-to-corner-top-right;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+}
+
+@keyframes animate-to-corner-top-right {
+  0% {
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+  }
+  100% {
+    top: 16px;
+    right: 16px;
+    transform: none;
+  }
 }
 
 

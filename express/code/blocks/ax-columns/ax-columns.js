@@ -182,16 +182,16 @@ const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
 function setupCornerOverlayAnimation(cell) {
   const bottomLeftOverlay = cell.querySelector('.corner-overlay.bottom-left');
   const bottomRightOverlay = cell.querySelector('.corner-overlay.bottom-right');
+  const topRightOverlay = cell.querySelector('.corner-overlay.top-right');
 
   // On mouse enter - only move bottom left to center
   cell.addEventListener('mouseenter', () => {
     bottomLeftOverlay.style.bottom = '50%';
     bottomLeftOverlay.style.left = '50%';
     bottomLeftOverlay.style.transform = 'translate(-50%, 50%)';
-    // Remove bottom right movement on mouseenter
   });
 
-  // On mouse leave - animate both back to corners
+  // On mouse leave - animate elements back to positions
   cell.addEventListener('mouseleave', () => {
     cell.classList.add('animating-out');
 
@@ -206,6 +206,11 @@ function setupCornerOverlayAnimation(cell) {
       bottomRightOverlay.style.bottom = '-30px';
       bottomRightOverlay.style.right = '-30px';
       bottomRightOverlay.style.transform = 'none';
+
+      // Reset top right to its original position
+      topRightOverlay.style.top = '16px';
+      topRightOverlay.style.right = '16px';
+      topRightOverlay.style.transform = 'none';
     }, 250);
   });
 }
