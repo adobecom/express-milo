@@ -236,8 +236,8 @@ export async function fetchPlanOnePlans(planUrl) {
     }
 
     const offer = await getOfferOnePlans(plan.offerId);
-
-    if (offer) {
+    const foundOffer = Object.keys(offer).length > 0;
+    if (foundOffer) {
       plan.currency = offer.currency;
       plan.price = offer.unitPrice;
       plan.basePrice = offer.basePrice;
@@ -266,6 +266,10 @@ export async function fetchPlanOnePlans(planUrl) {
         );
       }
       plan.y2p = offer.y2p;
+    } else {
+      const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+      plan.country = await getCountry();
+      [plan.lang] = getConfig().locale.ietf.split('-');
     }
     window.pricingPlans[planUrl] = plan;
   }
