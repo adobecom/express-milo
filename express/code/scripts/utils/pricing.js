@@ -267,7 +267,7 @@ export async function fetchPlanOnePlans(planUrl) {
       }
       plan.y2p = offer.y2p;
     } else {
-      const [country, { getConfig }] = await Promise.all([getCountry, import(`${getLibs()}/utils/utils.js`)]);
+      const [country, { getConfig }] = await Promise.all([getCountry(), import(`${getLibs()}/utils/utils.js`)]);
       plan.country = country;
       [plan.lang] = getConfig().locale.ietf.split('-');
     }
