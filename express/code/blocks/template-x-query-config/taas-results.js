@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
 
+const base = 'https://www.adobe.com/express-search-api-v3';
 class TAASResults extends LitElement {
   static styles = css`
     form {
       display: flex;
-      flex-direction: column;
     }
   `;
 
