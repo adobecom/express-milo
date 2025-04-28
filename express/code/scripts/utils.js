@@ -411,7 +411,7 @@ function hideQuickActionsOnDevices() {
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
   const isMobile = document.body.dataset.device === 'mobile';
-  const isQualifiedBrowser = (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent));
+  const isQualifiedBrowser = !/Safari/.test(userAgent) || /Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent);
   if (isMobile || !isQualifiedBrowser) {
     fqaMeta.setAttribute('name', 'fqa-off');
   } else {
