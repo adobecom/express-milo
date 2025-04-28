@@ -178,7 +178,7 @@ main .content-toggle-v2 .carousel-container a.button.carousel-arrow-right::befor
   border-right: solid 3px var(--color-gray-700);
 }
 
-main .content-toggle-v2 .carousel-container .content-toggle-button:focus{
+main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible{
     outline: 2px solid  #4B75FF; 
      outline-offset: -2px;
     border-radius: var(--border-radius-button);
@@ -207,5 +207,8 @@ main .content-toggle-v2 .content-toggle-button.active:hover {
     background: var(--color-background-active);
     color: var(--color-text-active);
     border-radius: var(--border-radius-button);
+}
+main .content-toggle-v2 .carousel-container .content-toggle-button.active:focus-visible{
+    outline: none;
 }
  
