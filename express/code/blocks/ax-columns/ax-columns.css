@@ -271,7 +271,7 @@ main .section .ax-columns.enterprise .column h2 {
   position: absolute;
   top: 60px;
   right: -30px;
-  width: 100px;
+  width: 85px;
   height: auto;
   object-fit: contain;
   transition: none;
@@ -282,8 +282,8 @@ main .section .ax-columns.enterprise .column h2 {
   position: absolute;
   bottom: -30px;
   left: -30px;
-  width: 94px;
-  height: 208px;
+  width: 70px;
+  height: auto;
   object-fit: contain;
   transition: none;
 }
@@ -332,7 +332,7 @@ main .section .ax-columns.enterprise .column h2 {
 .column-picture .corner-overlay.bottom-right {
   bottom: 16px;
   right: -40px;
-  width: 120px;
+  width: 110px;
   height: auto;
   bottom: -31px;
 }
