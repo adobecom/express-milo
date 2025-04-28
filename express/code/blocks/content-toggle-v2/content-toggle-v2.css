@@ -36,10 +36,6 @@ main .section .content-toggle-v2 {
     max-width: max-content;
 } 
 
-main .section .content-toggle-v2 .carousel-container .carousel-platform {
-    padding: var(--carousel-platform-padding);
-}
-
 main .content-toggle-v2 .carousel-container {
     border-radius: var(--border-radius-container);
     background: var(--color-background);
@@ -47,9 +43,18 @@ main .content-toggle-v2 .carousel-container {
     max-width: var(--container-max-width);
     align-items: center;
     gap: var(--spacing-gap);
-    padding: 0px 0px 0px 2px;
+    padding: 0px;
     margin: 0;
+    height: var(--button-height);
     width: unset;
+}
+main .content-toggle-v2 .carousel-container .carousel-platform .carousel-right-trigger,
+main .content-toggle-v2 .carousel-container .carousel-platform .carousel-left-trigger {
+    width: 0px;
+}
+
+main .content-toggle-v2 .carousel-container .carousel-right-trigger {
+    border-radius: 0 var(--border-radius-container) var(--border-radius-container) 0;
 }
 
 main .content-toggle-v2  .content-toggle-carousel-container {
@@ -77,22 +82,22 @@ main .content-toggle-v2 .carousel-container .content-toggle-button {
     background: none; 
 }
 
-main .content-toggle-v2 .content-toggle-button.active {
-    border-radius: var(--border-radius-button);
-    background: var(--color-background-active);
-    color: var(--color-text-active);
-}
- 
 main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-left {
     background: linear-gradient(90deg, #F5F5F5 70%, rgba(245, 245, 245, 0.00) 100%);
     border-radius: var(--border-radius-container) 0 0 var(--border-radius-container);
-    width: 30px;
+ 
 }
 
-main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-right {
+main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-right { 
     background: linear-gradient(270deg, #F5F5F5 44.97%, rgba(245, 245, 245, 0.00) 84.05%);
     border-radius: 0 var(--border-radius-container) var(--border-radius-container) 0;
-    width: 30px;
+ 
+}
+
+main .content-toggle-v2 .carousel-container {
+    padding: 2px;
+    box-sizing: border-box;
+    height: 40px;
 }
 
 @media screen and (min-width: 768px) {
@@ -100,6 +105,13 @@ main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-right
         padding: 0 var(--spacing-padding);
         max-width: max-content;
         --button-height: 40px; 
+            --spacing-button-padding-vertical: 8px; 
+    }
+
+    main .content-toggle-v2 .carousel-container {
+        padding: 2px;
+        box-sizing: border-box;
+        height: 44px;
     }
 }
 
@@ -110,6 +122,12 @@ main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-right
     }
 }
 
+
+
+main .content-toggle-v2 .carousel-container .carousel-platform {
+    padding: 0px;
+}
+
 main .content-toggle-v2 .carousel-container a.button.carousel-arrow::before {
     content: '';
     position: absolute;
@@ -118,8 +136,8 @@ main .content-toggle-v2 .carousel-container a.button.carousel-arrow::before {
     border-radius: 2px;
     width: 12px;
     height: 12px;
-    border-top: solid 2px var(--color-gray-700);
-    border-right: solid 2px var(--color-gray-700);
+    border-top: solid 2.5px var(--color-gray-700);
+    border-right: solid 2.5px var(--color-gray-700);
   }
   
   main .content-toggle-v2 .carousel-container a.button.carousel-arrow {
@@ -128,12 +146,13 @@ main .content-toggle-v2 .carousel-container a.button.carousel-arrow::before {
   }
 
   main .content-toggle-v2 .carousel-container a.button.carousel-arrow.carousel-arrow-left {
-  margin: 0px 5px;
-
+     margin: 0px 5px;
+      width: 24px;
   }
 
   main .content-toggle-v2 .carousel-container a.button.carousel-arrow.carousel-arrow-right {
     margin: 0px 5px; 
+    width: 24px;
   }
 
   main .content-toggle-v2 .carousel-container a.button.carousel-arrow-left::before {
@@ -157,3 +176,33 @@ main .content-toggle-v2 .carousel-container a.button.carousel-arrow-right::befor
   border-top: solid 3px var(--color-gray-700);
   border-right: solid 3px var(--color-gray-700);
 }
+
+main .content-toggle-v2 .carousel-container .content-toggle-button:focus{
+    border: 2px solid  #4B75FF; 
+    border-radius: var(--border-radius-button);
+   
+}
+
+main .content-toggle-v2 .carousel-container .content-toggle-button:hover{
+    background: var(--Palette-gray-200, #E1E1E1);
+     border-radius: var(--border-radius-button);
+}
+
+main .content-toggle-v2 .carousel-container .content-toggle-button:disabled{
+    background: var(--Alias-background-disabled-static-white, rgba(255, 255, 255, 0.10));
+     border-radius: var(--border-radius-button);
+}
+main .content-toggle-v2 .content-toggle-button.active:focus {
+    border-radius: var(--border-radius-button);
+    background: var(--color-background-active);
+    color: var(--color-text-active);
+
+}
+
+main .content-toggle-v2 .content-toggle-button.active {
+    border: none;
+    background: var(--color-background-active);
+    color: var(--color-text-active);
+    border-radius: var(--border-radius-button);
+}
+ 
