@@ -410,11 +410,16 @@ function hideQuickActionsOnDevices() {
   document.body.dataset.device = userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
-  if (document.body.dataset.device === 'mobile'
-    || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
+  const isMobile = document.body.dataset.device === 'mobile';
+  const isQualifiedBrowser = (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent));
+  if (isMobile || !isQualifiedBrowser) {
     fqaMeta.setAttribute('name', 'fqa-off');
   } else {
     fqaMeta.setAttribute('name', 'fqa-on');
+    const audienceFqaMeta = document.createElement('meta');
+    audienceFqaMeta.setAttribute('content', 'on');
+    audienceFqaMeta.setAttribute('name', isMobile ? 'mobile-fqa-qualified' : 'desktop-fqa-qualified');
+    document.head.append(audienceFqaMeta);
   }
   document.head.append(fqaMeta);
 }
@@ -440,7 +445,7 @@ export function preDecorateSections(area) {
             || urlParams.get(`${sectionMeta.showwith}`);
         }
         const showwith = sectionMeta.showwith.toLowerCase();
-        if ((showwith === 'fqa-off' || showwith === 'fqa-on')) hideQuickActionsOnDevices();
+        if (['fqa-off', 'fqa-on', 'mobile-fqa-qualified', 'desktop-fqa-qualified'].includes(showwith)) hideQuickActionsOnDevices();
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
