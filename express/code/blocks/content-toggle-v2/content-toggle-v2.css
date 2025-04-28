@@ -8,7 +8,7 @@ main .section .content-toggle-v2 {
     --spacing-button-gap: 6px;
     
     /* Colors */
-    --color-background: #F8F8F8;
+    --color-background: #f5f5f5;
     --color-text: #505050;
     --color-text-active: white;
     --color-background-active: #292929;
@@ -126,6 +126,7 @@ main .content-toggle-v2 .carousel-container {
 
 main .content-toggle-v2 .carousel-container .carousel-platform {
     padding: 0px;
+    gap: 2px;
 }
 
 main .content-toggle-v2 .carousel-container a.button.carousel-arrow::before {
@@ -178,7 +179,8 @@ main .content-toggle-v2 .carousel-container a.button.carousel-arrow-right::befor
 }
 
 main .content-toggle-v2 .carousel-container .content-toggle-button:focus{
-    border: 2px solid  #4B75FF; 
+    outline: 2px solid  #4B75FF; 
+     outline-offset: -2px;
     border-radius: var(--border-radius-button);
    
 }
@@ -199,7 +201,8 @@ main .content-toggle-v2 .content-toggle-button.active:focus {
 
 }
 
-main .content-toggle-v2 .content-toggle-button.active {
+main .content-toggle-v2 .content-toggle-button.active,
+main .content-toggle-v2 .content-toggle-button.active:hover {
     border: none;
     background: var(--color-background-active);
     color: var(--color-text-active);
