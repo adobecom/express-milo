@@ -243,100 +243,6 @@ main .section .ax-columns.enterprise .column h2 {
   max-height: 355px;
 }
 
-.column-picture .corner-overlay {
-  position: absolute;
-  width: 80px; /* Adjust size as needed */
-  height: 80px;
-  object-fit: contain;
-  z-index: 1;
-  transition: opacity 0.3s ease; /* Smooth transition for opacity */
-}
-
-/* Add hover state to hide overlays */
-.column-picture:hover .corner-overlay {
-  opacity: 0;
-}
-
-.column-picture .corner-overlay.top-left {
-  position: absolute;
-  top: -30px;
-  left: 120px;
-  width: 120px;
-  height: auto;
-  object-fit: contain;
-  transition: none;
-}
-
-.column-picture .corner-overlay.top-right {
-  position: absolute;
-  top: 60px;
-  right: -30px;
-  width: 85px;
-  height: auto;
-  object-fit: contain;
-  transition: none;
-}
-
-/* Base positioning */
-.corner-overlay.bottom-left {
-  position: absolute;
-  bottom: -30px;
-  left: -30px;
-  width: 70px;
-  height: auto;
-  object-fit: contain;
-  transition: none;
-}
-
-/* Animation for both bottom overlays */
-.column-picture.animating-out .corner-overlay.bottom-left,
-.column-picture.animating-out .corner-overlay.bottom-right {
-  animation-duration: 0.25s;
-  animation-timing-function: ease-out;
-}
-
-.column-picture.animating-out .corner-overlay.bottom-left {
-  animation-name: animate-to-corner-left;
-}
-
-.column-picture.animating-out .corner-overlay.bottom-right {
-  animation-name: animate-to-corner-right;
-}
-
-@keyframes animate-to-corner-left {
-  0% {
-    bottom: 50%;
-    left: 50%;
-    transform: translate(-50%, 50%);
-  }
-  100% {
-    bottom: -30px;
-    left: -30px;
-    transform: none;
-  }
-}
-
-@keyframes animate-to-corner-right {
-  0% {
-    bottom: 50%;
-    right: 50%;
-    transform: translate(50%, 50%);
-  }
-  100% {
-    bottom: -30px;
-    right: -30px;
-    transform: none;
-  }
-}
-
-.column-picture .corner-overlay.bottom-right {
-  bottom: 16px;
-  right: -40px;
-  width: 110px;
-  height: auto;
-  bottom: -31px;
-}
-
 .section .ax-columns h1 {
   font-size: var(--heading-font-size-xxl);
   line-height: 1.06;
@@ -987,6 +893,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   padding: 0 35px 60px;
 }
 
+.column-picture .corner-overlay {
+  display: none;
+}
+
 @media (min-width: 600px) {
   .section.long-form:has(.ax-columns:not(.fullsize, .centered)) .content {
     padding: 0 55px 60px;
@@ -999,6 +909,101 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.seo p {
     text-align: center;
   }
+
+  .column-picture .corner-overlay {
+    display: block;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Add hover state to hide overlays */
+  .column-picture:hover .corner-overlay {
+    opacity: 0;
+  }
+
+  .column-picture .corner-overlay.top-left {
+    position: absolute;
+    top: -30px;
+    left: 120px;
+    width: 120px;
+    height: auto;
+    object-fit: contain;
+    transition: none;
+  }
+
+  .column-picture .corner-overlay.top-right {
+    position: absolute;
+    top: 60px;
+    right: -30px;
+    width: 85px;
+    height: auto;
+    object-fit: contain;
+    transition: none;
+  }
+
+  /* Base positioning */
+  .corner-overlay.bottom-left {
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 70px;
+    height: auto;
+    object-fit: contain;
+    transition: none;
+  }
+
+  .column-picture .corner-overlay.bottom-right {
+    right: -40px;
+    width: 110px;
+    height: auto;
+    bottom: -31px;
+  }
+
+  /* Animation for both bottom overlays */
+  .column-picture.animating-out .corner-overlay.bottom-left,
+  .column-picture.animating-out .corner-overlay.bottom-right {
+    animation-duration: 0.25s;
+    animation-timing-function: ease-out;
+  }
+
+  .column-picture.animating-out .corner-overlay.bottom-left {
+    animation-name: animate-to-corner-left;
+  }
+
+  .column-picture.animating-out .corner-overlay.bottom-right {
+    animation-name: animate-to-corner-right;
+  }
+
+  @keyframes animate-to-corner-left {
+    0% {
+      bottom: 50%;
+      left: 50%;
+      transform: translate(-50%, 50%);
+    }
+    100% {
+      bottom: -30px;
+      left: -30px;
+      transform: none;
+    }
+  }
+
+  @keyframes animate-to-corner-right {
+    0% {
+      bottom: 50%;
+      right: 50%;
+      transform: translate(50%, 50%);
+    }
+    100% {
+      bottom: -30px;
+      right: -30px;
+      transform: none;
+    }
+  }
+
 }
 
 @media (min-width: 900px) and (max-width: 1200px) {
