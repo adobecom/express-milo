@@ -8,7 +8,7 @@ main .section .content-toggle-v2 {
     --spacing-button-gap: 6px;
     
     /* Colors */
-    --color-background: #E9E9E9;
+    --color-background: #F8F8F8;
     --color-text: #505050;
     --color-text-active: white;
     --color-background-active: #292929;
@@ -182,7 +182,7 @@ main .content-toggle-v2 .carousel-container .content-toggle-button:focus{
     border-radius: var(--border-radius-button);
    
 }
-
+main .content-toggle-v2 .carousel-container .content-toggle-button:active,
 main .content-toggle-v2 .carousel-container .content-toggle-button:hover{
     background: var(--Palette-gray-200, #E1E1E1);
      border-radius: var(--border-radius-button);
