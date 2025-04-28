@@ -854,6 +854,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   max-width: 900px;
 }
 
+.ax-columns.seo .column {
+  text-align: left;
+}
+
 @media (max-width: 600px) {
   :lang(ja) .ax-columns h2 {
     font-size: var(--heading-font-size-l);
@@ -1004,6 +1008,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     }
   }
 
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+  .ax-columns.seo .column {
+    text-align: center;
+  }
 }
 
 @media (min-width: 900px) and (max-width: 1200px) {
