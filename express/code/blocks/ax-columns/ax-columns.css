@@ -1273,11 +1273,23 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     text-align: left;
   }
 
+  .ax-columns.seo p {
+    margin-bottom: 0;
+  }
+
   .ax-columns.seo
-  .button-container.free-plan-container   {
+  .button-container.free-plan-container {
     display: flex;
     align-items: start;
   }
+
+  .ax-columns.seo
+  .button-container.free-plan-container a.button {
+    width: 137px;
+    height: 48px;
+    font-size: var(--body-font-size-l);
+  }
+
 
   .ax-columns.seo
   .button-container.free-plan-container
@@ -1442,6 +1454,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.seo .button-container.free-plan-container {
     align-items: center;
+    margin-top: 0;
   }
 }
 
