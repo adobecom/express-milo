@@ -48,7 +48,6 @@ main .content-toggle-v2 .carousel-container {
     height: var(--button-height);
     width: unset;
 }
-main .content-toggle-v2 .carousel-container .carousel-platform .carousel-right-trigger,
 main .content-toggle-v2 .carousel-container .carousel-platform .carousel-left-trigger {
     width: 0px;
 }
