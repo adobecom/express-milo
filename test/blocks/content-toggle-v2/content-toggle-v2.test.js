@@ -45,7 +45,7 @@ describe('Content Toggle V2', async () => {
 
   it('should have all things', async () => {
     await decorateArea(document);
-    await setTimeout(100);
+    await setTimeout(1000);
     await decorate(contentToggleV2);
 
     // Wait for the decoration to complete
@@ -61,8 +61,9 @@ describe('Content Toggle V2', async () => {
 
   it('should handle keyboard navigation and activation', async () => {
     await decorateArea(document);
+    await setTimeout(1000);
     await decorate(contentToggleV2);
-    await setTimeout(100);
+   
 
     const carouselButtons = contentToggleV2
       .querySelectorAll('button.content-toggle-button');
