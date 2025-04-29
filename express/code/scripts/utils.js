@@ -416,7 +416,7 @@ function hideQuickActionsOnDevices() {
     fqaMeta.setAttribute('name', 'fqa-off');
   } else {
     if (!isMobile) {
-      // legacy setup for desktop + non_safari
+      // legacy setup for desktop + non_safari == desktop-fqa-qualified
       fqaMeta.setAttribute('name', 'fqa-on');
     }
     const audienceFqaMeta = document.createElement('meta');
