@@ -1,9 +1,5 @@
 import { getLibs, readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
-import { trackButtonClick } from '../../scripts/instrument.js';
-import { handleChevron } from '../link-blade/link-blade.js';
 import createCarousel from '../../scripts/widgets/carousel.js';
-
-let createTag;
 
 function getDefatultToggleIndex(block) {
   const enclosingMain = block.closest('main');
@@ -15,38 +11,10 @@ function getDefatultToggleIndex(block) {
 }
 
 function initButton(block, buttons, sections, index) {
-  let currentResizeObserver = null;
-
-  const updateBackgroundSize = (activeIndex) => {
-    requestAnimationFrame(() => {
-      const activeButton = buttons[activeIndex];
-      if (activeButton.getBoundingClientRect().width === 0) {
-        requestAnimationFrame(() => updateBackgroundSize(activeIndex));
-        return;
-      }
-      const buttonWidth = activeButton.getBoundingClientRect().width + 5;
-      let leftOffset = activeIndex * 10;
-
-      for (let i = 0; i < activeIndex; i += 1) {
-        leftOffset += buttons[i].getBoundingClientRect().width;
-      }
-    });
-  };
 
   const setActiveButton = (newIndex) => {
-    if (currentResizeObserver) {
-      currentResizeObserver.disconnect();
-    }
-
-    currentResizeObserver = new ResizeObserver(() => {
-      updateBackgroundSize(newIndex);
-    });
-    currentResizeObserver.observe(buttons[newIndex]);
-
     buttons.forEach((btn) => btn.classList.remove('active'));
     buttons[newIndex].classList.add('active');
-    console.log(buttons[newIndex]);
-    updateBackgroundSize(newIndex);
   };
 
   const handleSectionChange = () => {
@@ -94,7 +62,6 @@ function initButton(block, buttons, sections, index) {
 
 function decorateSectionMetadata(section) {
   const metadataDiv = section.querySelector(':scope > .section-metadata');
-
   if (metadataDiv) {
     const meta = readBlockConfig(metadataDiv);
     const keys = Object.keys(meta);
@@ -112,7 +79,7 @@ function decorteSectionsMetadata() {
 }
 
 export default async function decorate(block) {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
   addTempWrapperDeprecated(block, 'content-toggle');
   decorteSectionsMetadata();
 
@@ -120,29 +87,13 @@ export default async function decorate(block) {
   if (enclosingMain) {
     const row = block.querySelector('div');
     const items = block.querySelector('ul');
-
     items.classList.add('content-toggle-carousel-container');
 
-    // First create the carousel with li elements
-
-    // Now transform the li elements into button elements
     const toggles = row.querySelectorAll('li');
     toggles.forEach((toggle) => {
-      // Create a new button element
       const button = document.createElement('button');
-
-      // Copy content and classes
       button.innerHTML = toggle.innerHTML;
-      button.className = `{toggle.className} content-toggle-button`;
-
-      // Copy any attributes (except for tag-specific ones)
-      Array.from(toggle.attributes).forEach((attr) => {
-        if (attr.name !== 'class') { // Skip class as we've already handled it
-          button.setAttribute(attr.name, attr.value);
-        }
-      });
-
-      // Replace the li with the button
+      button.className = `${toggle.className} content-toggle-button`;
       toggle.parentNode.replaceChild(button, toggle);
     });
 

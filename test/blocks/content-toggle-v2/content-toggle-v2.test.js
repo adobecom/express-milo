@@ -1,99 +1,105 @@
 import { readFile } from '@web/test-runner-commands';
-import sinon from 'sinon';
 import { expect } from '@esm-bundle/chai';
 
 const imports = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
   import('../../../express/code/blocks/content-toggle-v2/content-toggle-v2.js'),
   import('../../../express/code/scripts/utils.js'),
-]);
-
+]); 
 const { default: decorate, windowHelper} = imports[1];
 const {decorateArea} = imports[2];
+
 const testBody = await readFile({ path: './mocks/body.html' });
 
-describe('Content Toggle V2', () => {
-  let carouselPlatform;
-  before(async () => {
+function removeMainDivDisplayNone() {
+  // Get all style sheets
+  const styleSheets = Array.from(document.styleSheets);
+  
+  // Find the main stylesheet
+  const mainStylesheet = styleSheets.find(sheet => 
+    sheet.href && sheet.href.includes('main.css')
+  );
+
+  if (mainStylesheet) {
+    try {
+      // Try to insert the new rule
+      mainStylesheet.insertRule(`
+        main > div {
+          display: block !important;
+        }
+      `, mainStylesheet.cssRules.length);
+    } catch (e) {
+      console.error('Error modifying stylesheet:', e);
+    }
+  }
+}
+
+describe('Content Toggle V2', async () => {
+  let contentToggleV2;
+  before(() => { 
     window.isTestEnv = true;
     document.body.innerHTML = testBody;
-    const contentToggleV2 = document.querySelector('.content-toggle-v2');
-    console.log(decorateArea);
-    await decorateArea(document.body);
-    await decorate(contentToggleV2);
-  });
-  afterEach(() => {
-    window.placeholders = undefined;
+    window.placeholders = { 'search-branch-links': 'https://adobesparkpost.app.link/c4bWARQhWAb' };
+    contentToggleV2 = document.querySelector('.content-toggle-v2');
+    removeMainDivDisplayNone();
   });
 
   it('should have all things', async () => {
-    const contentToggleV2 = document.querySelector('.content-toggle-v2');
-    expect(contentToggleV2).to.exist;
-    setTimeout(() => {
-      carouselPlatform = contentToggleV2.querySelector('.carousel-platform');
-      expect(contentToggleV2.querySelector('.carousel-container')).to.exist;
-      expect(carouselPlatform).to.exist;
-      expect(contentToggleV2.querySelectorAll('button.content-toggle-button')).lengthOf(9);
-    }, 100);
-
-  });
-  it('should toggle content ', async () => {
-    const contentToggleV2 = document.querySelector('.content-toggle-v2');
-    const carouselButtons = contentToggleV2.querySelectorAll('button.content-toggle-button');
-   
-    console.log(carouselPlatform);
+    await decorateArea(document);
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await decorate(contentToggleV2);
     
-    setTimeout(() => {
-      carouselButtons[2].click(); 
-      expect(carouselPlatform.querySelector('.content-toggle-button.active')).to.exist;
-    }, 100);
-
+    // Wait for the decoration to complete
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    const carouselButtons = contentToggleV2.querySelectorAll('button.content-toggle-button');
+    const carouselContainer = contentToggleV2.querySelector('.carousel-container');
+    const carouselPlatform = carouselContainer?.querySelector('.carousel-platform');
+    
+    expect(carouselContainer).to.exist;
+    expect(carouselPlatform).to.exist;
+    expect(contentToggleV2.querySelectorAll('button.content-toggle-button')).lengthOf(9);
   });
 
-//   function decodeHTMLEntities(text) {
-//     const textArea = document.createElement('textarea');
-//     textArea.innerHTML = text;
-//     return textArea.value;
-//   }
+  it('should handle keyboard navigation and activation', async () => {
+    await decorateArea(document);
+    await decorate(contentToggleV2);
+    await new Promise(resolve => setTimeout(resolve, 100));
 
-//   it('should toggle submit button disabled based on input content', async () => {
-//     for (const block of blocks) {
-//       const cards = Array.from(block.querySelectorAll('.card'));
-//       const card = cards[0];
-//       const form = card.querySelector('.gen-ai-input-form');
-//       const input = form.querySelector('input');
-//       const button = form.querySelector('button');
-//       const stub = sinon.stub(windowHelper, 'redirect');
-//       expect(button.disabled).to.be.true;
-//       const enterEvent = new KeyboardEvent('keyup', {
-//         key: 'Enter',
-//         code: 'Enter',
-//         keyCode: 13,
-//         which: 13,
-//         bubbles: true,
-//         cancelable: true,
-//       });
-//       input.dispatchEvent(enterEvent);
-//       expect(button.disabled).to.be.true;
-//       expect(stub.called).to.be.false;
-//       form.dispatchEvent(new Event('submit'));
-//       expect(stub.called).to.be.false;
+    const carouselButtons = contentToggleV2.querySelectorAll('button.content-toggle-button');
+    const carouselPlatform = contentToggleV2.querySelector('.carousel-container .carousel-platform');
 
-//       input.value = 'test';
-//       input.dispatchEvent(new Event('input'));
-//       expect(button.disabled).to.be.false;
+    // Test tab navigation
+    carouselButtons[0].focus();
+    expect(document.activeElement).to.equal(carouselButtons[0]);
 
-//       input.value = '';
-//       input.dispatchEvent(new Event('input'));
-//       expect(button.disabled).to.be.true;
-//       input.value = 'fakeInput';
-//       input.dispatchEvent(enterEvent);
-//       expect(stub.called).to.be.true;
-//       expect(decodeHTMLEntities(stub.firstCall.args[0])).to.equal(
-//         decodeHTMLEntities('https://new.express.adobe.com/new?category=media&#x26;prompt=fakeInput&#x26;action=text+to+image&#x26;width=1080&#x26;height=1080'),
-//       );
+    // Tab to button 4
+    for (let i = 0; i < 4; i++) {
+      const tabEvent = new KeyboardEvent('keydown', {
+        key: 'Tab',
+        code: 'Tab',
+        keyCode: 9,
+        which: 9,
+        bubbles: true,
+        cancelable: true,
+      });
+      document.activeElement.dispatchEvent(tabEvent);
+    }
 
-//       stub.restore();
-//     }
-//   });
+    expect(document.activeElement).to.equal(carouselButtons[3]);
+
+    // Test enter key activation
+    const enterEvent = new KeyboardEvent('keydown', {
+      key: 'Enter',
+      code: 'Enter',
+      keyCode: 13,
+      which: 13,
+      bubbles: true,
+      cancelable: true,
+    });
+    document.activeElement.dispatchEvent(enterEvent);
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+    expect(carouselPlatform.querySelector('.content-toggle-button.active')).to.equal(carouselButtons[3]);
+  });
 });
