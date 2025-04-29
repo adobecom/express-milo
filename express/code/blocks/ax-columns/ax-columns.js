@@ -241,6 +241,8 @@ function createCornerOverlays(cell) {
       class: `corner-overlay ${overlay.class}`,
       src: overlay.src,
       alt: '',
+      fetchpriority: 'low',
+      loading: 'eager',
       ...(overlay.width && { width: overlay.width }),
       ...(overlay.height && { height: overlay.height }),
     });
