@@ -180,49 +180,13 @@ const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
 };
 
 function setupCornerOverlayAnimation(cell) {
-  const bottomLeftOverlay = cell.querySelector('.corner-overlay.bottom-left');
-  const bottomRightOverlay = cell.querySelector('.corner-overlay.bottom-right');
-  const topRightOverlay = cell.querySelector('.corner-overlay.top-right');
-  const topLeftOverlay = cell.querySelector('.corner-overlay.top-left');
-  const cursorOverlay = cell.querySelector('.corner-overlay.bottom-center');
-
-  // On mouse enter - only move bottom left to center
-  cell.addEventListener('mouseenter', () => {
-    bottomLeftOverlay.style.bottom = '50%';
-    bottomLeftOverlay.style.left = '50%';
-    bottomLeftOverlay.style.transform = 'translate(-50%, 50%)';
-  });
-
   // On mouse leave - animate elements back to positions
   cell.addEventListener('mouseleave', () => {
     cell.classList.add('animating-out');
 
     setTimeout(() => {
       cell.classList.remove('animating-out');
-      // Reset bottom left
-      bottomLeftOverlay.style.bottom = '-30px';
-      bottomLeftOverlay.style.left = '-30px';
-      bottomLeftOverlay.style.transform = 'none';
-
-      // Reset bottom right
-      bottomRightOverlay.style.bottom = '-30px';
-      bottomRightOverlay.style.right = '-30px';
-      bottomRightOverlay.style.transform = 'none';
-
-      // Reset top right
-      topRightOverlay.style.top = '60px';
-      topRightOverlay.style.right = '-30px';
-      topRightOverlay.style.transform = 'none';
-
-      // Reset cursor
-      cursorOverlay.style.bottom = '-15px';
-      cursorOverlay.style.left = '80%';
-      cursorOverlay.style.transform = 'translateX(-50%)';
-
-      // Reset top left
-      topLeftOverlay.style.top = '-30px';
-      topLeftOverlay.style.left = '120px';
-      topLeftOverlay.style.transform = 'none';
+      cell.classList.add('reset-position');
     }, 250);
   });
 }

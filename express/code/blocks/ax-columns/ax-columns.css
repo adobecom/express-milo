@@ -1015,6 +1015,36 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     }
   }
 
+  /* Reset position class for corner overlays */
+  .column-picture.reset-position .corner-overlay.bottom-left {
+    bottom: -30px;
+    left: -30px;
+    transform: none;
+  }
+
+  .column-picture.reset-position .corner-overlay.bottom-right {
+    bottom: -30px;
+    right: -30px;
+    transform: none;
+  }
+
+  .column-picture.reset-position .corner-overlay.top-right {
+    top: 60px;
+    right: -30px;
+    transform: none;
+  }
+
+  .column-picture.reset-position .corner-overlay.bottom-center {
+    bottom: -15px;
+    left: 80%;
+    transform: translateX(-50%);
+  }
+
+  .column-picture.reset-position .corner-overlay.top-left {
+    top: -30px;
+    left: 120px;
+    transform: none;
+  }
 }
 
 @media (min-width: 600px) and (max-width: 899px) {
