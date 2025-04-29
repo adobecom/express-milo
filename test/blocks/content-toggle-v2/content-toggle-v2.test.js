@@ -63,7 +63,6 @@ describe('Content Toggle V2', async () => {
     await decorateArea(document);
     await setTimeout(1000);
     await decorate(contentToggleV2);
-   
 
     const carouselButtons = contentToggleV2
       .querySelectorAll('button.content-toggle-button');
