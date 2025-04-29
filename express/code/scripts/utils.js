@@ -422,7 +422,7 @@ function hideQuickActionsOnDevices() {
   const audienceFqaMeta = document.createElement('meta');
   audienceFqaMeta.setAttribute('content', 'on');
   if (isQualifiedBrowser) {
-    audienceFqaMeta.setAttribute('name', isMobile ? 'mobile-fqa-qualified' : 'desktop-fqa-qualified');
+    audienceFqaMeta.setAttribute('name', `fqa-qualified-${isMobile ? 'mobile' : 'desktop'}`);
   } else {
     audienceFqaMeta.setAttribute('name', 'fqa-non-qualified');
   }
@@ -450,7 +450,7 @@ export function preDecorateSections(area) {
             || urlParams.get(`${sectionMeta.showwith}`);
         }
         const showwith = sectionMeta.showwith.toLowerCase();
-        if (['fqa-off', 'fqa-on', 'fqa-non-qualified', 'mobile-fqa-qualified', 'desktop-fqa-qualified'].includes(showwith)) hideQuickActionsOnDevices();
+        if (['fqa-off', 'fqa-on', 'fqa-non-qualified', 'fqa-qualified-mobile', 'fqa-qualified-desktop'].includes(showwith)) hideQuickActionsOnDevices();
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
