@@ -30,7 +30,7 @@ main .section .content-toggle-v2 {
     --border-radius-button: 8px;
 
     --carousel-platform-padding: 2px;
-
+    --carousel-container-height: 40px;
     margin: 0 auto;
     padding: 0 var(--spacing-padding);
     max-width: max-content;
@@ -44,9 +44,9 @@ main .content-toggle-v2 .carousel-container {
     max-width: var(--container-max-width);
     align-items: center;
     gap: var(--spacing-gap);
-    padding: 2px;
+    padding: var(--carousel-platform-padding);
     margin: 0;
-    height: 40px;
+    height: var(--carousel-container-height);
     width: unset;
     box-sizing: border-box;
 }
@@ -186,12 +186,6 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
         max-width: max-content;
         --button-height: 40px;
         --spacing-button-padding-vertical: 8px;
-    }
-
-    main .content-toggle-v2 .carousel-container {
-        padding: 2px;
-        box-sizing: border-box;
-        height: 44px;
     }
 }
 
