@@ -404,9 +404,8 @@ export function readBlockConfig(block) {
   return config;
 }
 
-function hideQuickActionsOnDevices() {
+export function hideQuickActionsOnDevices(userAgent) {
   if (getMetadata('fqa-off') || !!getMetadata('fqa-on')) return;
-  const { userAgent } = navigator;
   document.body.dataset.device = userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
@@ -450,7 +449,7 @@ export function preDecorateSections(area) {
             || urlParams.get(`${sectionMeta.showwith}`);
         }
         const showwith = sectionMeta.showwith.toLowerCase();
-        if (['fqa-off', 'fqa-on', 'fqa-non-qualified', 'fqa-qualified-mobile', 'fqa-qualified-desktop'].includes(showwith)) hideQuickActionsOnDevices();
+        if (['fqa-off', 'fqa-on', 'fqa-non-qualified', 'fqa-qualified-mobile', 'fqa-qualified-desktop'].includes(showwith)) hideQuickActionsOnDevices(navigator.userAgent);
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
