@@ -46,8 +46,8 @@ describe('Pricing offer format for segmentation link', () => {
     window.fetch = sinon.stub();
     window.fetch.onFirstCall().returns(mockRes({
       payload: {
-        country: 'in',
-        state: 'up',
+        country: 'IN',
+        state: 'UP',
         'Accept-Language': 'en-US,en;q=0.9',
       },
     }));
@@ -71,7 +71,7 @@ describe('Pricing offer format for segmentation link', () => {
     window.fetch = sinon.stub();
     window.fetch.onFirstCall().returns(mockRes({
       payload: {
-        country: 'jp',
+        country: 'JP',
         state: '13',
         'Accept-Language': 'en-US,en;q=0.9',
       },
