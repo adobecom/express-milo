@@ -1,4 +1,4 @@
-import { getLibs, readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import createCarousel from '../../scripts/widgets/carousel.js';
 
 function getDefatultToggleIndex(block) {
@@ -11,7 +11,6 @@ function getDefatultToggleIndex(block) {
 }
 
 function initButton(block, buttons, sections, index) {
-
   const setActiveButton = (newIndex) => {
     buttons.forEach((btn) => btn.classList.remove('active'));
     buttons[newIndex].classList.add('active');
@@ -79,7 +78,6 @@ function decorteSectionsMetadata() {
 }
 
 export default async function decorate(block) {
-  const { createTag } = await import(`${getLibs()}/utils/utils.js`);
   addTempWrapperDeprecated(block, 'content-toggle');
   decorteSectionsMetadata();
 
