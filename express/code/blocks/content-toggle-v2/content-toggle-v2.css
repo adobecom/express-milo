@@ -34,8 +34,9 @@ main .section .content-toggle-v2 {
     margin: 0 auto;
     padding: 0 var(--spacing-padding);
     max-width: max-content;
-} 
+}
 
+/* Container Styles */
 main .content-toggle-v2 .carousel-container {
     border-radius: var(--border-radius-container);
     background: var(--color-background);
@@ -43,23 +44,24 @@ main .content-toggle-v2 .carousel-container {
     max-width: var(--container-max-width);
     align-items: center;
     gap: var(--spacing-gap);
-    padding: 0px;
+    padding: 2px;
     margin: 0;
-    height: var(--button-height);
+    height: 40px;
     width: unset;
-}
-main .content-toggle-v2 .carousel-container .carousel-platform .carousel-left-trigger {
-    width: 0px;
+    box-sizing: border-box;
 }
 
-main .content-toggle-v2 .carousel-container .carousel-right-trigger {
-    border-radius: 0 var(--border-radius-container) var(--border-radius-container) 0;
-}
-
-main .content-toggle-v2  .content-toggle-carousel-container {
+main .content-toggle-v2 .content-toggle-carousel-container {
     padding: 0;
     margin: 0;
 }
+
+/* Platform Styles */
+main .content-toggle-v2 .carousel-container .carousel-platform {
+    padding: 0px;
+    gap: 2px;
+}
+
 /* Button Styles */
 main .content-toggle-v2 .carousel-container .content-toggle-button {
     font-family: var(--font-family);
@@ -78,33 +80,112 @@ main .content-toggle-v2 .carousel-container .content-toggle-button {
     gap: var(--spacing-button-gap);
     border: none;
     color: var(--color-text);
-    background: none; 
+    background: none;
 }
 
+/* Button States */
+main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible {
+    outline: 2px solid #4B75FF;
+    outline-offset: -2px;
+    border-radius: var(--border-radius-button);
+}
+
+main .content-toggle-v2 .carousel-container .content-toggle-button:active,
+main .content-toggle-v2 .carousel-container .content-toggle-button:hover {
+    background: var(--Palette-gray-200, #E1E1E1);
+    border-radius: var(--border-radius-button);
+}
+
+main .content-toggle-v2 .carousel-container .content-toggle-button:disabled {
+    background: var(--Alias-background-disabled-static-white, rgba(255, 255, 255, 0.10));
+    border-radius: var(--border-radius-button);
+}
+
+main .content-toggle-v2 .content-toggle-button.active:focus {
+    border-radius: var(--border-radius-button);
+    background: var(--color-background-active);
+    color: var(--color-text-active);
+}
+
+main .content-toggle-v2 .content-toggle-button.active,
+main .content-toggle-v2 .content-toggle-button.active:hover {
+    border: none;
+    background: var(--color-background-active);
+    color: var(--color-text-active);
+    border-radius: var(--border-radius-button);
+}
+
+main .content-toggle-v2 .carousel-container .content-toggle-button.active:focus-visible {
+    outline: none;
+}
+
+/* Carousel Faders */
 main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-left {
     background: linear-gradient(90deg, #F5F5F5 70%, rgba(245, 245, 245, 0.00) 100%);
     border-radius: var(--border-radius-container) 0 0 var(--border-radius-container);
- 
 }
 
-main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-right { 
+main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-right {
     background: linear-gradient(270deg, #F5F5F5 44.97%, rgba(245, 245, 245, 0.00) 84.05%);
     border-radius: 0 var(--border-radius-container) var(--border-radius-container) 0;
- 
 }
 
-main .content-toggle-v2 .carousel-container {
-    padding: 2px;
-    box-sizing: border-box;
-    height: 40px;
+/* Carousel Arrows */
+main .content-toggle-v2 .carousel-container a.button.carousel-arrow {
+    background: none;
+    box-shadow: none;
 }
 
+main .content-toggle-v2 .carousel-container a.button.carousel-arrow::before {
+    content: '';
+    position: absolute;
+    margin-top: 9px;
+    background: none;
+    border-radius: 2px;
+    width: 12px;
+    height: 12px;
+    border-top: solid 2.5px var(--color-gray-700);
+    border-right: solid 2.5px var(--color-gray-700);
+}
+
+main .content-toggle-v2 .carousel-container a.button.carousel-arrow.carousel-arrow-left {
+    margin: 0px 5px;
+    width: 24px;
+}
+
+main .content-toggle-v2 .carousel-container a.button.carousel-arrow.carousel-arrow-right {
+    margin: 0px 5px;
+    width: 24px;
+}
+
+main .content-toggle-v2 .carousel-container a.button.carousel-arrow-left::before {
+    margin-left: 5px;
+    transform: rotate(45deg) scale(-1);
+}
+
+main .content-toggle-v2 .carousel-container a.button.carousel-arrow-right::before {
+    margin-left: 5px;
+}
+
+main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-arrow::before {
+    content: '';
+    position: absolute;
+    margin-top: 9px;
+    background: none;
+    border-radius: 2px;
+    width: 12px;
+    height: 12px;
+    border-top: solid 3px var(--color-gray-700);
+    border-right: solid 3px var(--color-gray-700);
+}
+
+/* Media Queries */
 @media screen and (min-width: 768px) {
     main .section .content-toggle-v2 {
         padding: 0 var(--spacing-padding);
         max-width: max-content;
-        --button-height: 40px; 
-            --spacing-button-padding-vertical: 8px; 
+        --button-height: 40px;
+        --spacing-button-padding-vertical: 8px;
     }
 
     main .content-toggle-v2 .carousel-container {
@@ -119,95 +200,4 @@ main .content-toggle-v2 .carousel-container {
         padding: 0 var(--spacing-padding);
         max-width: max-content;
     }
-}
-
-
-
-main .content-toggle-v2 .carousel-container .carousel-platform {
-    padding: 0px;
-    gap: 2px;
-}
-
-main .content-toggle-v2 .carousel-container a.button.carousel-arrow::before {
-    content: '';
-    position: absolute;
-    margin-top: 9px;
-    background: none;
-    border-radius: 2px;
-    width: 12px;
-    height: 12px;
-    border-top: solid 2.5px var(--color-gray-700);
-    border-right: solid 2.5px var(--color-gray-700);
-  }
-  
-  main .content-toggle-v2 .carousel-container a.button.carousel-arrow {
-    background: none;
-    box-shadow: none;
-  }
-
-  main .content-toggle-v2 .carousel-container a.button.carousel-arrow.carousel-arrow-left {
-     margin: 0px 5px;
-      width: 24px;
-  }
-
-  main .content-toggle-v2 .carousel-container a.button.carousel-arrow.carousel-arrow-right {
-    margin: 0px 5px; 
-    width: 24px;
-  }
-
-  main .content-toggle-v2 .carousel-container a.button.carousel-arrow-left::before {
-    margin-left: 5px;
-    transform: rotate(45deg) scale(-1);
-}
-
-main .content-toggle-v2 .carousel-container a.button.carousel-arrow-right::before {
-    margin-left: 5px; 
-}
-
-
- main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-arrow::before {
-  content: '';
-  position: absolute;
-  margin-top: 9px;
-  background: none;
-  border-radius: 2px;
-  width: 12px;
-  height: 12px;
-  border-top: solid 3px var(--color-gray-700);
-  border-right: solid 3px var(--color-gray-700);
-}
-
-main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible{
-    outline: 2px solid  #4B75FF; 
-     outline-offset: -2px;
-    border-radius: var(--border-radius-button);
-   
-}
-main .content-toggle-v2 .carousel-container .content-toggle-button:active,
-main .content-toggle-v2 .carousel-container .content-toggle-button:hover{
-    background: var(--Palette-gray-200, #E1E1E1);
-     border-radius: var(--border-radius-button);
-}
-
-main .content-toggle-v2 .carousel-container .content-toggle-button:disabled{
-    background: var(--Alias-background-disabled-static-white, rgba(255, 255, 255, 0.10));
-     border-radius: var(--border-radius-button);
-}
-main .content-toggle-v2 .content-toggle-button.active:focus {
-    border-radius: var(--border-radius-button);
-    background: var(--color-background-active);
-    color: var(--color-text-active);
-
-}
-
-main .content-toggle-v2 .content-toggle-button.active,
-main .content-toggle-v2 .content-toggle-button.active:hover {
-    border: none;
-    background: var(--color-background-active);
-    color: var(--color-text-active);
-    border-radius: var(--border-radius-button);
-}
-main .content-toggle-v2 .carousel-container .content-toggle-button.active:focus-visible{
-    outline: none;
-}
- 
+} 
