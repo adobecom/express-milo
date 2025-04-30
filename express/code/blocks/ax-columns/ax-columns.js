@@ -359,7 +359,7 @@ export default async function decorate(block) {
         && childEls.length > 0;
       if (isPictureColumn) {
         cell.classList.add('column-picture');
-        createCornerOverlays(cell);
+        block.classList.contains('marquee') && createCornerOverlays(cell);
       }
 
       const $pars = cell.querySelectorAll('p');
