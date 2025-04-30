@@ -16,10 +16,11 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
 const { default: decorate } = await import('../../../express/code/blocks/ax-columns/ax-columns.js');
 
 // eslint-disable-next-line max-len
-const [buttonLight, color, fullsize, highlight, icon, iconWithSibling, iconList, notHighlight, numbered30, offer, offerIcon, picture, video] = await Promise.all(
+const [buttonLight, color, fullsize, highlight, icon, iconWithSibling, iconList, notHighlight, numbered30, offer, offerIcon, picture, video, marquee] = await Promise.all(
   [readFile({ path: './mocks/button-light.html' }), readFile({ path: './mocks/color.html' }), readFile({ path: './mocks/fullsize.html' }), readFile({ path: './mocks/highlight.html' }),
     readFile({ path: './mocks/icon.html' }), readFile({ path: './mocks/icon-with-sibling.html' }), readFile({ path: './mocks/icon-list.html' }), readFile({ path: './mocks/not-highlight.html' }), readFile({ path: './mocks/numbered-30.html' }),
-    readFile({ path: './mocks/offer.html' }), readFile({ path: './mocks/offer-icon.html' }), readFile({ path: './mocks/picture.html' }), readFile({ path: './mocks/video.html' })],
+    readFile({ path: './mocks/offer.html' }), readFile({ path: './mocks/offer-icon.html' }), readFile({ path: './mocks/picture.html' }), readFile({ path: './mocks/video.html' }),
+    readFile({ path: './mocks/marquee.html' })],
 );
 
 describe('Columns', () => {
@@ -165,5 +166,40 @@ describe('Columns', () => {
 
     const button = columns.querySelector('.button');
     expect(button.classList.contains('dark')).to.be.true;
+  });
+
+  it('Should add all corner-overlay elements when block has marquee class', async () => {
+    document.body.innerHTML = marquee;
+    const columns = document.querySelector('.ax-columns');
+    await decorate(columns);
+
+    const pictureColumn = columns.querySelector('.column-picture');
+    expect(pictureColumn).to.exist;
+
+    const overlays = [
+      '.corner-overlay.top-left',
+      '.corner-overlay.top-right',
+      '.corner-overlay.bottom-left',
+      '.corner-overlay.bottom-right',
+      '.corner-overlay.bottom-center',
+    ];
+    overlays.forEach((selector) => {
+      const el = pictureColumn.querySelector(selector);
+      expect(el).to.exist;
+    });
+
+    expect(pictureColumn.querySelectorAll('.corner-overlay').length).to.equal(5);
+  });
+
+  it('Should not add corner-overlay elements on mobile', async () => {
+    document.body.dataset.device = 'mobile';
+    document.body.innerHTML = marquee;
+    const columns = document.querySelector('.ax-columns');
+    await decorate(columns);
+
+    const pictureColumn = columns.querySelector('.column-picture');
+    expect(pictureColumn).to.exist;
+
+    expect(pictureColumn.querySelector('.corner-overlay').length).to.be.undefined;
   });
 });
