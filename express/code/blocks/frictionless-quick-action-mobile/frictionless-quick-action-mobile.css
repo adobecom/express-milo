@@ -68,6 +68,10 @@
     height: 100%;
 }
 
+.frictionless-quick-action-mobile .animation-container img {
+  width: 100%;
+}
+
 .frictionless-quick-action-mobile .animation-container.hide {
     display: none;
 }
