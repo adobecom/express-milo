@@ -14,7 +14,8 @@ const GOOGLE = 'google';
  * @param {string} playStoreLabelPlaceholder - Placeholder for Play Store link aria-label
  * @param {string} appleStoreLabelPlaceholder - Placeholder for Apple Store link aria-label
  * @param {string} customURL - Optional custom URL for the store link
- * @returns {Promise<HTMLElement|null>} The ratings container element or null if no link is available
+ * @returns {Promise<HTMLElement|null>} The ratings container
+ *  element or null if no link is available
  */
 async function makeRating(
   store,
