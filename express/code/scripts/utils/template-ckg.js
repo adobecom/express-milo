@@ -58,8 +58,10 @@ function replaceLinkPill(linkPill, data) {
   if (data) {
     const sanitizedUrl = sanitizeHTML(data.url);
     const sanitizedShortTitle = sanitizeHTML(data['short-title']);
-    clone.innerHTML = clone.innerHTML.replace('/express/templates/default', sanitizedUrl);
-    clone.innerHTML = clone.innerHTML.replaceAll('Default', sanitizedShortTitle);
+    const a = clone.querySelector('a');
+    a.textContent = a.textContent.replaceAll('Default', sanitizedShortTitle);
+    a.title = a.textContent.replaceAll('Default', sanitizedShortTitle);
+    a.href = a.href.replace('/express/templates/default', sanitizedUrl);
   }
   if (data?.url && isSearch(data.url)) {
     clone.querySelectorAll('a').forEach((a) => {
@@ -144,10 +146,10 @@ async function updateLinkList(container, linkPill, list) {
       };
 
       clone = replaceLinkPill(linkPill, pageData);
-      clone.innerHTML = clone.innerHTML
-        .replaceAll('Default', sanitizeHTML(d.displayValue))
-        .replace('/express/templates/default', sanitizeHTML(d.pathname));
       const innerLink = clone.querySelector('a');
+      innerLink.textContent = innerLink.textContent.replaceAll('Default', sanitizeHTML(d.displayValue));
+      innerLink.title = innerLink.textContent.replaceAll('Default', sanitizeHTML(d.displayValue));
+      innerLink.href = innerLink.href.replace('/express/templates/default', sanitizeHTML(d.pathname));
       if (innerLink) {
         const url = new URL(innerLink.href, window.location.href);
         if (!url.searchParams.get('searchId')) {
