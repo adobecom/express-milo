@@ -45,11 +45,13 @@ describe('Content Toggle V2', async () => {
 
   it('should have all things', async () => {
     await decorateArea(document);
-    await setTimeout(1000);
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((resolve) => setTimeout(resolve, 100));
     await decorate(contentToggleV2);
 
     // Wait for the decoration to complete
-    await setTimeout(100);
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     const carouselContainer = contentToggleV2.querySelector('.carousel-container');
     const carouselPlatform = carouselContainer?.querySelector('.carousel-platform');
@@ -61,7 +63,8 @@ describe('Content Toggle V2', async () => {
 
   it('should handle keyboard navigation and activation', async () => {
     await decorateArea(document);
-    await setTimeout(1000);
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((resolve) => setTimeout(resolve, 100));
     await decorate(contentToggleV2);
 
     const carouselButtons = contentToggleV2
@@ -83,7 +86,8 @@ describe('Content Toggle V2', async () => {
     // targetButton.dispatchEvent(clickEvent);
     targetButton.focus();
     targetButton.dispatchEvent(event);
-    await setTimeout(100);
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     carouselButtons[5].click();
     // Verify the button was activated
