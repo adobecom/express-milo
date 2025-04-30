@@ -1,4 +1,3 @@
-
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let createTag;
