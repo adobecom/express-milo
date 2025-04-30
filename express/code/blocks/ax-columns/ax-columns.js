@@ -211,10 +211,6 @@ export default async function decorate(block) {
     }
   }
 
-  if (block.classList.contains('m-heading')) {
-    addHeaderClass(block, 'm');
-  }
-
   if (block.classList.contains('xl-heading')) {
     addHeaderClass(block, 'xl');
   }
