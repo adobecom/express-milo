@@ -4,7 +4,7 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 let createTag; let getMetadata;
 
 const MOBILE_SIZE = 600;
-const MOBILE_NAV_HEIGHT = 65;
+let MOBILE_NAV_HEIGHT;
 
 function setBoldStyle(element) {
   const tocNumber = element.querySelector('.toc-number');
@@ -435,6 +435,13 @@ export default async function setTOCSEO() {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const doc = document.querySelector('main');
   const config = buildMetadataConfigObject();
+
+  try {
+    const { getGnavHeight } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
+    MOBILE_NAV_HEIGHT = getGnavHeight();
+  } catch (e) {
+    window.lana?.log(`Error getting gnav height ${e}`);
+  }
 
   const desktopSkipLink = createTag('a', {
     href: '#desktop-toc',
