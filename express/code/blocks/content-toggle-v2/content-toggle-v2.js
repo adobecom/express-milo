@@ -110,7 +110,7 @@ function decorteSectionsMetadata() {
  * Main decorator function for the content toggle block
  * @param {HTMLElement} block - The content toggle block element
  */
-export default async function decorate(block) {
+export default function decorate(block) {
   // Add wrapper and decorate section metadata
   addTempWrapperDeprecated(block, 'content-toggle');
   decorteSectionsMetadata();
@@ -132,7 +132,7 @@ export default async function decorate(block) {
     });
 
     // Initialize carousel and get sections
-    await createCarousel('button', items);
+    createCarousel('button', items);
     const sections = enclosingMain.querySelectorAll('[data-toggle]');
     const buttons = row.querySelectorAll('.content-toggle-button');
 
