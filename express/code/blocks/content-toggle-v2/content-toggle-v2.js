@@ -132,7 +132,7 @@ export default async function decorate(block) {
     });
 
     // Initialize carousel and get sections
-    createCarousel('button', items);
+    await createCarousel('button', items);
     const sections = enclosingMain.querySelectorAll('[data-toggle]');
     const buttons = row.querySelectorAll('.content-toggle-button');
 
