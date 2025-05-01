@@ -46,6 +46,15 @@ main .section .ax-columns.enterprise .column h2 {
   max-width: 375px;
 }
 
+.content.columns-xl-heading h1,
+.content.columns-xl-heading h2,
+.content.columns-xl-heading h3,
+.content.columns-xl-heading h4,
+.content.columns-xl-heading h5,
+.content.columns-xl-heading h6 {
+  font-size: var(--heading-font-size-s);
+}
+
 .section:has(.ax-columns.bg)::before {
   content: '';
   position: absolute;
@@ -1111,6 +1120,15 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   main .ax-columns .columns-video {
     min-height: 356px;
+  }
+
+  .content.columns-xl-heading h1,
+  .content.columns-xl-heading h2,
+  .content.columns-xl-heading h3,
+  .content.columns-xl-heading h4,
+  .content.columns-xl-heading h5,
+  .content.columns-xl-heading h6 {
+    font-size: var(--heading-font-size-m);
   }
 }
 

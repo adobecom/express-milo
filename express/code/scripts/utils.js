@@ -404,19 +404,28 @@ export function readBlockConfig(block) {
   return config;
 }
 
-function hideQuickActionsOnDevices() {
+export function hideQuickActionsOnDevices(userAgent) {
   if (getMetadata('fqa-off') || !!getMetadata('fqa-on')) return;
-  const { userAgent } = navigator;
   document.body.dataset.device = userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
-  if (document.body.dataset.device === 'mobile'
-    || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
-    fqaMeta.setAttribute('name', 'fqa-off');
+  const isMobile = document.body.dataset.device === 'mobile';
+  // safari won't work either mobile or desktop
+  const isQualifiedBrowser = !/Safari/.test(userAgent) || /Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent);
+  if (isMobile || !isQualifiedBrowser) {
+    fqaMeta.setAttribute('name', 'fqa-off'); // legacy setup for mobile or desktop_safari
   } else {
-    fqaMeta.setAttribute('name', 'fqa-on');
+    fqaMeta.setAttribute('name', 'fqa-on'); // legacy setup for desktop or non_safari
   }
-  document.head.append(fqaMeta);
+  // up-to-date setup that supports mobile frictionless
+  const audienceFqaMeta = document.createElement('meta');
+  audienceFqaMeta.setAttribute('content', 'on');
+  if (isQualifiedBrowser) {
+    audienceFqaMeta.setAttribute('name', `fqa-qualified-${isMobile ? 'mobile' : 'desktop'}`);
+  } else {
+    audienceFqaMeta.setAttribute('name', 'fqa-non-qualified');
+  }
+  document.head.append(fqaMeta, audienceFqaMeta);
 }
 
 export function preDecorateSections(area) {
@@ -440,7 +449,7 @@ export function preDecorateSections(area) {
             || urlParams.get(`${sectionMeta.showwith}`);
         }
         const showwith = sectionMeta.showwith.toLowerCase();
-        if ((showwith === 'fqa-off' || showwith === 'fqa-on')) hideQuickActionsOnDevices();
+        if (['fqa-off', 'fqa-on', 'fqa-non-qualified', 'fqa-qualified-mobile', 'fqa-qualified-desktop'].includes(showwith)) hideQuickActionsOnDevices(navigator.userAgent);
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
