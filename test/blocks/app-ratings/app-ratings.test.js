@@ -11,23 +11,31 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   mod.setConfig(conf);
 });
 const { default: decorate } = await import('../../../express/code/blocks/app-ratings/app-ratings.js');
-const body = await readFile({ path: './mocks/body.html' });
-document.body.innerHTML = body;
+
 describe('App Ratings', () => {
-  before(() => {
+  before(async () => {
+    const body = await readFile({ path: './mocks/body.html' });
+    document.body.innerHTML = body;
     window.isTestEnv = true;
     window.placeholders = {
-      'app-store-ratings': 'Test',
-      'app-store-stars': 'Test',
-      'app-store-ratings-play-store': 'Test',
-      'app-store-ratings-apple-store': 'Test',
+      'app-store-ratings': '4.9, 233.8k ratings; 4.6, 117k ratings; https://adobesparkpost.app.link/GJrBPFUWBBb',
+      'app-store-stars': 'Stars',
+      'app-store-ratings-play-store': 'app-store-ratings-play-store',
+      'app-store-ratings-apple-store': 'app-store-ratings-apple-store',
     };
   });
 
+  after(async () => {
+    document.body.innerHTML = '';
+  });
+
   it('App Ratings exists', async () => {
-    const block = document.getElementsByClassName('app-ratings')[0];
-    await decorate(block);
-    const googleRating = block.querySelector('.ratings');
-    expect(googleRating).to.exist;
+    const blocks = document.getElementsByClassName('app-ratings');
+    expect(blocks.length).to.equal(1);
+    for (const block of blocks) {
+      await decorate(block);
+      const googleRating = block.querySelector('.ratings');
+      expect(googleRating).to.exist;
+    }
   });
 });
