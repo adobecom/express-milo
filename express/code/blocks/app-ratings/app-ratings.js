@@ -6,17 +6,6 @@ let getConfig;
 const APPLE = 'apple';
 const GOOGLE = 'google';
 
-/**
- * Creates a ratings container for a specific store (Apple or Google)
- * @param {string} store - 'apple' or 'google'
- * @param {string} ratingPlaceholder - Placeholder string for ratings (e.g., '4.8, 1M; 4.7, 2M; https://store.link')
- * @param {string} starsPlaceholder - Placeholder for the aria-label of the star icon
- * @param {string} playStoreLabelPlaceholder - Placeholder for Play Store link aria-label
- * @param {string} appleStoreLabelPlaceholder - Placeholder for Apple Store link aria-label
- * @param {string} customURL - Optional custom URL for the store link
- * @returns {Promise<HTMLElement|null>} The ratings container
- *  element or null if no link is available
- */
 async function makeRating(
   store,
   ratingPlaceholder,
@@ -47,15 +36,6 @@ async function makeRating(
   return createTag('div', { class: 'ratings-container' }, [score, star, cnt, storeLink]);
 }
 
-/**
- * Creates the ratings block for both Apple and Google stores, depending on device
- * @param {string} ratingPlaceholder
- * @param {string} starsPlaceholder
- * @param {string} playStoreLabelPlaceholder
- * @param {string} appleStoreLabelPlaceholder
- * @param {string} customURL
- * @returns {Promise<HTMLElement>} The ratings block element
- */
 async function makeRatings(
   ratingPlaceholder,
   starsPlaceholder,
@@ -90,11 +70,6 @@ async function makeRatings(
   return ratings;
 }
 
-/**
- * Main decorator function for the app ratings block
- * Dynamically loads utilities, fetches placeholders, and renders the ratings UI
- * @param {HTMLElement} block - The app ratings block element
- */
 export default async function decorate(block) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
