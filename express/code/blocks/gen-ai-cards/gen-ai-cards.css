@@ -67,7 +67,6 @@
 
 .gen-ai-cards.homepage {
   max-width: unset;
-  padding-left: 0;
   gap: unset;
   padding-right: 0;
   --color-border: rgb(225, 225, 225); 
