@@ -39,7 +39,7 @@ function initButton(block, buttons, sections, index) {
         });
       }
     }
-  }; 
+  };
 
   if (index === getDefatultToggleIndex(block)) {
     setActiveButton(index);
@@ -98,7 +98,7 @@ export default function decorate(block) {
     createCarousel('button', items);
     const sections = enclosingMain.querySelectorAll('[data-toggle]');
     const buttons = row.querySelectorAll('.content-toggle-button');
-    
+
     for (let i = 0; i < buttons.length; i += 1) {
       initButton(block, buttons, sections, i);
     }
