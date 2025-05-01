@@ -25,6 +25,10 @@ describe('App Ratings', () => {
     };
   });
 
+  after(async () => {
+    document.body.innerHTML = '';
+  });
+
   it('App Ratings exists', async () => {
     const blocks = document.getElementsByClassName('app-ratings');
     expect(blocks.length).to.equal(1);
