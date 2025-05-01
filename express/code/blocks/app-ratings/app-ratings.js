@@ -113,7 +113,7 @@ export default async function decorate(block) {
   let customURL;
   const customUrlElement = block.querySelector(':scope > div a');
   if (customUrlElement) {
-    customURL =  customUrlElement.getAttribute('href');
+    customURL = customUrlElement.getAttribute('href');
   }
 
   block.append(await makeRatings(
@@ -121,7 +121,7 @@ export default async function decorate(block) {
     starsPlaceholder,
     playStoreLabelPlaceholder,
     appleStoreLabelPlaceholder,
-    customURL
+    customURL,
   ));
 
   if (customUrlElement) {
