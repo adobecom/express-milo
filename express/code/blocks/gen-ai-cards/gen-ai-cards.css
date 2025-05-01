@@ -69,6 +69,7 @@
   max-width: unset;
   gap: unset;
   padding-right: 0;
+  padding-left: 0;
   --color-border: rgb(225, 225, 225); 
   --color-background-light : rbg(255,255,255)
 }
