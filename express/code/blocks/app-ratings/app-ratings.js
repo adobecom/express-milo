@@ -98,7 +98,6 @@ async function makeRatings(
 export default async function decorate(block) {
   // Dynamically import utilities from the shared library
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  console.log(getLibs());
   const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
   const [ratingPlaceholder,
     starsPlaceholder,
