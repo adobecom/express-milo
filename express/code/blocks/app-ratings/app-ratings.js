@@ -96,7 +96,6 @@ async function makeRatings(
  * @param {HTMLElement} block - The app ratings block element
  */
 export default async function decorate(block) {
-  // Dynamically import utilities from the shared library
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
   const [ratingPlaceholder,
@@ -112,9 +111,9 @@ export default async function decorate(block) {
   );
 
   let customURL;
-  const content = block.querySelector(':scope > div a');
-  if (content) {
-    customURL = content.getAttribute('href');
+  const customUrlElement = block.querySelector(':scope > div a');
+  if (customUrlElement) {
+    customURL =  customUrlElement.getAttribute('href');
   }
 
   block.append(await makeRatings(
@@ -125,7 +124,7 @@ export default async function decorate(block) {
     customURL,
   ));
 
-  if (content) {
-    content.remove();
+  if (customUrlElement) {
+    customUrlElement.remove();
   }
 }
