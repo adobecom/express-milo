@@ -52,7 +52,7 @@ main .section .ax-columns.enterprise .column h2 {
 .content.columns-xl-heading h4,
 .content.columns-xl-heading h5,
 .content.columns-xl-heading h6 {
-  font-size: var(--heading-font-size-m);
+  font-size: var(--heading-font-size-s);
 }
 
 .section:has(.ax-columns.bg)::before {
@@ -1128,8 +1128,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .content.columns-xl-heading h4,
   .content.columns-xl-heading h5,
   .content.columns-xl-heading h6 {
-    font-size: var(--heading-font-size-l);
-}
+    font-size: var(--heading-font-size-m);
+  }
 }
 
 @media (min-width: 1200px) {
