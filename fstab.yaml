@@ -1,6 +1,7 @@
 mountpoints:
   /:
-    url: https://adobe.sharepoint.com/:f:/r/sites/adobecom/Express/website
+    url: https://content.da.live/adobecom/da-express-milo/
+    type: markup
 
 folders:
   /express/templates/: /express/templates/default
