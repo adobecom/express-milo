@@ -1,5 +1,8 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable indent */
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
+import { getIconElementDeprecated } from '../../scripts/utils.js';
 
 const supportedLanguages = [
   'ar-SA',
@@ -45,6 +48,7 @@ class TAASForm extends LitElement {
     tasks: { type: String },
     topics: { type: String },
     license: { type: String },
+    behaviors: { type: String },
     prefLang: { type: String },
     prefRegion: { type: String },
   };
@@ -55,10 +59,12 @@ class TAASForm extends LitElement {
     this.limit = 70;
     this.start = 0;
     this.q = '';
+    this.orderBy = '';
     this.language = '';
     this.tasks = '';
     this.topics = '';
     this.license = '';
+    this.behaviors = '';
     this.prefLang = '';
     this.prefRegion = '';
   }
@@ -67,6 +73,25 @@ class TAASForm extends LitElement {
     form {
       display: flex;
       flex-direction: column;
+      gap: 10px;
+    }
+    form label {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .hidden {
+      display: none;
+    }
+    button.info-button {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+    }
+    button[type='submit'] {
+      align-self: flex-start;
     }
   `;
 
@@ -74,40 +99,115 @@ class TAASForm extends LitElement {
     const formData = new FormData(e.target);
   }
 
+  toggleInfoContent(fieldName) {
+    const infoContent = this.shadowRoot.querySelector(
+      `[data-info-content="${fieldName}"]`
+    );
+    infoContent.classList?.toggle('hidden');
+  }
+
+  getInfo(fieldName, content) {
+    const infoButton = html`
+      <button
+        type="button"
+        class="info-button"
+        aria-label="Show information for ${fieldName}"
+        @click=${() => this.toggleInfoContent(fieldName)}
+      >
+        ${getIconElementDeprecated('info', 16, fieldName, 'info-icon')}
+      </button>
+    `;
+    const infoContent = html`
+      <div
+        class="info-content hidden"
+        tabindex="0"
+        data-info-content="${fieldName}"
+      >
+        <small>${content}</small>
+      </div>
+    `;
+    return [infoButton, infoContent];
+  }
+
   render() {
+    const [collectionInfoButton, collectionInfoContent] = this.getInfo(
+      'collectionId',
+      'Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another common is the popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852).'
+    );
+    const [limitInfoButton, limitInfoContent] = this.getInfo(
+      'limit',
+      'Number of results to return. Leave empty to use the default limit (e.g. 10).'
+    );
+    const [startInfoButton, startInfoContent] = this.getInfo(
+      'start',
+      'Starting index for the results'
+    );
+    const [orderByInfoButton, orderByInfoContent] = this.getInfo(
+      'orderBy',
+      'Select by which method results would be ordered'
+    );
+    const [qInfoButton, qInfoContent] = this.getInfo('q', 'Search query');
+    const [languageInfoButton, languageInfoContent] = this.getInfo(
+      'language',
+      'Filter by language'
+    );
+    const [tasksInfoButton, tasksInfoContent] = this.getInfo(
+      'tasks',
+      'Filter by tasks'
+    );
+    const [topicsInfoButton, topicsInfoContent] = this.getInfo(
+      'topics',
+      'Filter by topics'
+    );
+    const [licenseInfoButton, licenseInfoContent] = this.getInfo(
+      'license',
+      'Filter by license'
+    );
+    const [behaviorsInfoButton, behaviorsInfoContent] = this.getInfo(
+      'behaviors',
+      'Filter by behaviors'
+    );
+    const [prefLangInfoButton, prefLangInfoContent] = this.getInfo(
+      'prefLang',
+      'Boost templates that are in this language'
+    );
+    const [prefRegionInfoButton, prefRegionInfoContent] = this.getInfo(
+      'prefRegion',
+      'Boost templates that are in this country'
+    );
+
     return html`<form @submit=${this.handleSubmit}>
+        <label>
+          Q:
+          <input name="q" type="text" />
+          ${qInfoButton}
+        </label>
+        ${qInfoContent}
+
         <label>
           Collection ID:
           <input
             name="collectionID"
             type="text"
+            title="Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another common is the popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852)."
             .value=${this.collectionId}
             .input=${(e) => (this.collectionID = e.target.value)}
           />
+          ${collectionInfoButton}
         </label>
-        <p id="limit-desc">
-          <small
-            >Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another option is the
-            popular collection</small
-          >
-        </p>
+        ${collectionInfoContent}
 
         <label>
           Limit:
           <input
             name="limit"
             type="number"
-            aria-describedby="limit-desc"
             .value=${this.limit}
             .input=${(e) => (this.limit = Number(e.target.value))}
           />
+          ${limitInfoButton}
         </label>
-        <p id="limit-desc">
-          <small
-            >Number of results to return. Leave empty to use the default limit
-            (e.g. 10).</small
-          >
-        </p>
+        ${limitInfoContent}
 
         <label>
           Start:
@@ -117,116 +217,95 @@ class TAASForm extends LitElement {
             .value=${this.start}
             .input=${(e) => (this.start = Number(e.target.value))}
           />
+          ${startInfoButton}
         </label>
-
-        <fieldset class="form-group">
-          <legend>Order by</legend>
-          <label
-            ><input type="radio" name="order-by" value="relevancy" />
-            Default by Relevancy</label
-          ><br />
-          <label
-            ><input type="radio" name="order-by" value="-remixCount" />
-            Descending by Remix Count</label
-          ><br />
-          <label
-            ><input type="radio" name="order-by" value="+remixCount" />
-            Ascending by Remix Count</label
-          ><br />
-          <label
-            ><input type="radio" name="order-by" value="-createDate" />
-            Descending by Create Date (Newest first)</label
-          >
-          <label
-            ><input type="radio" name="order-by" value="+createDate" />
-            Descending by Create Date (Oldest first)</label
-          >
-          <p><small>Select by which method results would be ordered.</small></p>
-        </fieldset>
+        ${startInfoContent}
 
         <label>
-          Q:
-          <input name="q" type="text" />
+          Order by:
+          <select
+            name="order-by"
+            @change=${(e) => (this.orderBy = e.target.value)}
+          >
+            <option value="">Relevancy (Default)</option>
+            <option value="-remixCount">Descending by Remix Count</option>
+            <option value="+remixCount">Ascending by Remix Count</option>
+            <option value="-createDate">
+              Descending by Create Date (Newest first)
+            </option>
+            <option value="+createDate">
+              Ascending by Create Date (Oldest first)
+            </option>
+          </select>
+          ${orderByInfoButton}
         </label>
+        ${orderByInfoContent}
 
         <h2>Filters:</h2>
         <label>
           Language:
           <input name="language" type="text" />
+          ${languageInfoButton}
         </label>
+        ${languageInfoContent}
 
         <label>
           Tasks:
           <input name="tasks" type="text" />
+          ${tasksInfoButton}
         </label>
+        ${tasksInfoContent}
 
         <label>
           Topics:
           <input name="topics" type="text" />
+          ${topicsInfoButton}
         </label>
+        ${topicsInfoContent}
 
-        <fieldset class="form-group full-width">
-          <legend>Behaviors</legend>
-          <label
-            ><input type="radio" name="behaviors" value="" /> All
-            (Default)</label
-          ><br />
-          <label
-            ><input type="radio" name="behaviors" value="still" /> Still</label
-          ><br />
-          <label
-            ><input type="radio" name="behaviors" value="animated" />
-            Animated</label
-          ><br />
-          <label
-            ><input type="radio" name="behaviors" value="video" /> Video</label
-          ><br />
-          <label
-            ><input type="radio" name="behaviors" value="animated,video" />
-            Animated + Video</label
+        <label>
+          Behaviors:
+          <select
+            name="behaviors"
+            @change=${(e) => (this.behaviors = e.target.value)}
           >
-          <p>
-            <small
-              >Select one behavior filter. Choose "All" to include all
-              types.</small
-            >
-          </p>
-        </fieldset>
+            <option value="">All (Default)</option>
+            <option value="still">Still</option>
+            <option value="animated">Animated</option>
+            <option value="video">Video</option>
+            <option value="animated+video">Animated + Video</option>
+          </select>
+          ${behaviorsInfoButton}
+        </label>
+        ${behaviorsInfoContent}
 
-        <fieldset class="form-group full-width">
-          <legend>Licensing Category</legend>
-          <label
-            ><input type="radio" name="licensingCategory" value="" /> Mixed
-            (Free and Premium)</label
-          ><br />
-          <label
-            ><input type="radio" name="licensingCategory" value="free" />
-            Free</label
-          ><br />
-          <label
-            ><input type="radio" name="licensingCategory" value="premium" />
-            Premium</label
+        <label>
+          Licensing Category:
+          <select
+            name="license"
+            @change=${(e) => (this.license = e.target.value)}
           >
-          <p>
-            <small
-              >Select a category to filter results. Choose "Mixed" to include
-              both Free and Premium.</small
-            >
-          </p>
-        </fieldset>
+            <option value="">Mixed (Default)</option>
+            <option value="free">Free only</option>
+            <option value="premium">Premium only</option>
+          </select>
+          ${licenseInfoButton}
+        </label>
+        ${licenseInfoContent}
+
         <h2>Boosting:</h2>
         <label>
           Preferred Language Boosting:
           <input name="pref-lang" />
-          <p><small>boost templates that are in this language</small></p>
+          ${prefLangInfoButton}
         </label>
+        ${prefLangInfoContent}
         <label>
           Preferred Region Boosting:
           <input name="pref-region" />
-          <p>
-            <small>boost templates that are in this country</small>
-          </p>
+          ${prefRegionInfoButton}
         </label>
+        ${prefRegionInfoContent}
 
         <button type="submit">Generate</button>
       </form>
