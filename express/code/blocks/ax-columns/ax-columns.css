@@ -1152,6 +1152,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .content.columns-xl-heading h6 {
     font-size: var(--heading-font-size-m);
   }
+  
+  .ax-columns.width-2-columns:nth-of-type(odd) > div {
+    flex-direction: row-reverse;
+  }
 }
 
 @media (min-width: 1200px) {
