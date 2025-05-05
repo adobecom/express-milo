@@ -8,7 +8,7 @@ let createTag;
 
 class TemplatesAsAService extends LitElement {
   static properties = {
-    formData: { type: Object },
+    recipe: { type: String },
   };
 
   static styles = css`
@@ -19,17 +19,17 @@ class TemplatesAsAService extends LitElement {
 
   constructor() {
     super();
-    this.formData = null;
+    this.recipe = null;
   }
 
-  handleFormSubmit(e) {
-    this.formData = e.detail;
+  handleGenerateRecipe(e) {
+    this.recipe = e.detail;
   }
 
   render() {
     return html`<div id="taas-container">
-      <taas-form @taas-form-submit=${this.handleFormSubmit}></taas-form>
-      <taas-results .formData=${this.formData}></taas-results>
+      <taas-form @taas-generate-recipe=${this.handleGenerateRecipe}></taas-form>
+      <taas-results .recipe=${this.recipe}></taas-results>
     </div>`;
   }
 }
