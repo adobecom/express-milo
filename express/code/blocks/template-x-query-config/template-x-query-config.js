@@ -7,9 +7,8 @@ import './taas-results.js';
 let createTag;
 
 class TemplatesAsAService extends LitElement {
-  static props = {
-    test: {},
-    config: {},
+  static properties = {
+    formData: { type: Object },
   };
 
   static styles = css`
@@ -20,12 +19,17 @@ class TemplatesAsAService extends LitElement {
 
   constructor() {
     super();
-    this.test = 'testing';
+    this.formData = null;
+  }
+
+  handleFormSubmit(e) {
+    this.formData = e.detail;
   }
 
   render() {
     return html`<div id="taas-container">
-      <taas-form></taas-form> <taas-results></taas-results>
+      <taas-form @taas-form-submit=${this.handleFormSubmit}></taas-form>
+      <taas-results .formData=${this.formData}></taas-results>
     </div>`;
   }
 }

@@ -1,42 +1,9 @@
+/* eslint-disable quotes */
 /* eslint-disable comma-dangle */
 /* eslint-disable indent */
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
 import { getIconElementDeprecated } from '../../scripts/utils.js';
-
-const supportedLanguages = [
-  'ar-SA',
-  'cs-CZ',
-  'da-DK',
-  'de-DE',
-  'es-ES',
-  'el-GR',
-  'en-US',
-  'fi-FI',
-  'fil-PH',
-  'fr-FR',
-  'hi-IN',
-  'id-ID',
-  'it-IT',
-  'i-DEFAULT',
-  'ja-JP',
-  'ko-KR',
-  'MS-MY',
-  'nb-NO',
-  'nl-NL',
-  'pl-PL',
-  'pt-BR',
-  'ro-RO',
-  'ru-RU',
-  'sv-SE',
-  'th-TH',
-  'tr-TR',
-  'uk-UA',
-  'vi-VN',
-  'zh-Hant-TW',
-  'zh-Hans-CN',
-];
-const supportedRegions = [];
 
 class TAASForm extends LitElement {
   static properties = {
@@ -93,10 +60,16 @@ class TAASForm extends LitElement {
     button[type='submit'] {
       align-self: flex-start;
     }
+
+    h2 {
+      margin: 0px;
+    }
   `;
 
   handleSubmit(e) {
+    e.preventDefault();
     const formData = new FormData(e.target);
+    this.dispatchEvent(new CustomEvent('taas-form-submit', { detail: Object.fromEntries(formData), bubbles: true, composed: true }));
   }
 
   toggleInfoContent(fieldName) {
@@ -136,7 +109,7 @@ class TAASForm extends LitElement {
     );
     const [limitInfoButton, limitInfoContent] = this.getInfo(
       'limit',
-      'Number of results to return. Leave empty to use the default limit (e.g. 10).'
+      'Number of results to return'
     );
     const [startInfoButton, startInfoContent] = this.getInfo(
       'start',
@@ -146,10 +119,10 @@ class TAASForm extends LitElement {
       'orderBy',
       'Select by which method results would be ordered'
     );
-    const [qInfoButton, qInfoContent] = this.getInfo('q', 'Search query');
+    const [qInfoButton, qInfoContent] = this.getInfo('q', 'Search query. This is more flexible and ambiguous than using filters but also less precise.');
     const [languageInfoButton, languageInfoContent] = this.getInfo(
       'language',
-      'Filter by language'
+      `Available values : AR_SA, BN_IN, CS_CZ, DA_DK, DE_DE, EL_GR, EN_US, ES_ES, FIL_PH, FI_FI, FR_FR, HI_IN, ID_ID, IT_IT, I_DEFAULT, JA_JP, KO_KR, MS_MY, NB_NO, NL_NL, PL_PL, PT_BR, RO_RO, RU_RU, SV_SE, TA_IN, TH_TH, TR_TR, UK_UA, VI_VN, ZH_HANS_CN, ZH_HANT_TW`
     );
     const [tasksInfoButton, tasksInfoContent] = this.getInfo(
       'tasks',
@@ -159,21 +132,13 @@ class TAASForm extends LitElement {
       'topics',
       'Filter by topics'
     );
-    const [licenseInfoButton, licenseInfoContent] = this.getInfo(
-      'license',
-      'Filter by license'
-    );
-    const [behaviorsInfoButton, behaviorsInfoContent] = this.getInfo(
-      'behaviors',
-      'Filter by behaviors'
-    );
     const [prefLangInfoButton, prefLangInfoContent] = this.getInfo(
       'prefLang',
       'Boost templates that are in this language'
     );
     const [prefRegionInfoButton, prefRegionInfoContent] = this.getInfo(
       'prefRegion',
-      'Boost templates that are in this country'
+      `Available values : AD, AE, AF, AG, AI, AL, AM, AN, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, BG, BH, BI, BJ, BL, BM, BN, BO, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CD, CF, CG, CH, CI, CK, CL, CM, CN, CO, CR, CU, CV, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IQ, IR, IS, IT, JE, JM, JO, JP, KE, KG, KH, KI, KM, KN, KR, KV, KW, KY, KZ, LA, LB, LC, LI, LK, LR, LS, LT, LU, LV, LY, MA, MC, MD, ME, MF, MG, MH, MK, ML, MM, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, MX, MY, MZ, NA, NC, NE, NF, NG, NI, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, PK, PL, PM, PN, PR, PS, PT, PW, PY, QA, RE, RO, RS, RU, RW, SA, SB, SC, SD, SE, SG, SH, SI, SJ, SK, SL, SM, SN, SO, SR, ST, SV, SY, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VE, VG, VI, VN, VU, WF, WS, YE, YT, ZA, ZM, ZW, ZZ`
     );
 
     return html`<form @submit=${this.handleSubmit}>
@@ -275,9 +240,7 @@ class TAASForm extends LitElement {
             <option value="video">Video</option>
             <option value="animated+video">Animated + Video</option>
           </select>
-          ${behaviorsInfoButton}
         </label>
-        ${behaviorsInfoContent}
 
         <label>
           Licensing Category:
@@ -289,9 +252,7 @@ class TAASForm extends LitElement {
             <option value="free">Free only</option>
             <option value="premium">Premium only</option>
           </select>
-          ${licenseInfoButton}
         </label>
-        ${licenseInfoContent}
 
         <h2>Boosting:</h2>
         <label>
@@ -309,16 +270,7 @@ class TAASForm extends LitElement {
 
         <button type="submit">Generate</button>
       </form>
-      <div>For authors, copy this identifier:</div>
-      <div>
-        {collectionIdParam}{qParam}{limitParam}{startParam}{sortParam}{filterStr}
-      </div>
-      <div>
-        For developers debugging, this is the API call:
-        <div>
-          {base}?{collectionIdParam}{queryParam}{qParam}{limitParam}{startParam}{sortParam}{filterStr}
-        </div>
-      </div> `;
+`;
   }
 }
 
