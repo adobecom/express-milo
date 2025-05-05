@@ -3,6 +3,7 @@ main .section .content-toggle-v2 {
     --line-height: 130%;
     --button-height: 36px;
     --button-min-width: 44px;
+    --unselected-button-color: #505050;
     --button-max-width: 256px;
     --container-max-width: 1200px;
     --spacing-padding: var(--spacing-300);
@@ -16,6 +17,7 @@ main .section .content-toggle-v2 {
     margin: 0 auto;
     padding: 0 var(--spacing-padding);
     max-width: max-content;
+    font-family: 'adobe-clean';
 }
 
 main .content-toggle-v2 .carousel-container {
@@ -43,11 +45,12 @@ main .content-toggle-v2 .carousel-container .carousel-platform {
 }
 
 main .content-toggle-v2 .carousel-container .content-toggle-button {
+    font-family: var(--body-font-family);
     font-size: var(--body-font-size-m);
     font-weight: var(--font-weight);
     line-height: var(--line-height);
     letter-spacing: 0%;
-    color: var(--color-gray-500);
+    color: var(--unselected-button-color);
     display: flex;
     justify-content: center;
     align-items: center;
