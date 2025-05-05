@@ -31,6 +31,10 @@ export function convertFilterParams(params) {
   }
 }
 
+/**
+ * Extract and delete header params
+ * @param {URLSearchParams} params
+ */
 export function extractHeaderParams(params) {
   const headers = {};
   if (params.get('prefLang')) {
@@ -44,6 +48,14 @@ export function extractHeaderParams(params) {
   return headers;
 }
 
+export function recipe2ApiQuery(recipe) {
+  const params = new URLSearchParams(recipe);
+  params.set('queryType', 'search');
+  convertFilterParams(params);
+  const headers = extractHeaderParams(params);
+  return { url: `${base}?${params.toString()}`, headers };
+}
+
 /**
  * Fetch results
  * @param {string} recipe
@@ -51,14 +63,9 @@ export function extractHeaderParams(params) {
  * fetchResults('q=chicago&topics=cats&tasks=flyer&language=en-us&license=free&behaviors=still&limit=11&collectionId=urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418&prefLang=en-us&prefRegion=us&start=1')
  */
 export async function fetchResults(recipe) {
-  const params = new URLSearchParams(recipe);
-  params.set('queryType', 'search');
-  convertFilterParams(params);
-  const headers = extractHeaderParams(params);
-  console.log('params and headers', params.toString(), headers);
-  const response = await fetch(`${base}?${params.toString()}`, { headers });
+  const { url, headers } = recipe2ApiQuery(recipe);
+  const response = await fetch(url, { headers });
   const data = await response.json();
-  console.log(data);
   return data;
 }
 
@@ -89,15 +96,14 @@ class TAASResults extends LitElement {
   }
 
   render() {
-    return html`<div>For authors, copy this recipe:</div>
-      <div>
+    const { url, headers } = recipe2ApiQuery(this.recipe);
+    return html`<div>Recipe:
         ${this.recipe}
       </div>
       <div>
-        For developers debugging, this is the request:
-        <div>
-          {base}?{collectionIdParam}{queryParam}{qParam}{limitParam}{startParam}{sortParam}{filterStr}
-        </div>
+        <h3>API Query for developers debugging:</h3>
+        <div>URL: ${url}</div>
+        <div>Headers: ${JSON.stringify(headers, null, 2)}</div>
       </div>`;
   }
 }
