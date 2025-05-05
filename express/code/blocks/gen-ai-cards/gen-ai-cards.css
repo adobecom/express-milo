@@ -579,7 +579,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-    margin-left: 16px;
+    margin-left: var(--spacing-300);
   }
 
   .gen-ai-cards .carousel-container .carousel-fader-left,
