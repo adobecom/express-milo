@@ -177,14 +177,12 @@ main .section .mobile-toc {
     transform: rotate(135deg);
 }
 
-@media (max-width: 599px) {
-  .table-of-contents-seo.mobile-view {
-    display: none;
-  }
+.table-of-contents-seo.mobile-view {
+  display: none;
+}
 
-  .mobile-toc:not(.desktop-view) {
-    display: block;
-  }
+.mobile-toc:not(.desktop-view) {
+  display: block;
 }
 
 @media (min-width: 600px) {
