@@ -1164,6 +1164,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 600px;
     height: 100%;
     position: relative;
+    clip-path: inset(1px 1px);
   }
 
   .ax-columns.fullsize + h2 {
