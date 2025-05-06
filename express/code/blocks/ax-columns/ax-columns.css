@@ -1499,7 +1499,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.marquee .button-container.free-plan-container {
     align-items: center;
-    margin-top: 0;
+    margin-top: 12px;
   }
 }
 
