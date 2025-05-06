@@ -255,6 +255,10 @@ main .section .ax-columns.enterprise .column h2 {
   line-height: 1.06;
 }
 
+.section .ax-columns.marquee h1.columns-heading-long {
+  font-size: var(--heading-font-size-m);
+}
+
 .section .ax-columns h1.columns-heading-long {
   font-size: var(--heading-font-size-xl);
 }
@@ -916,6 +920,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.marquee .column-picture {
     max-width: 500px;
   }
+
+  .section .ax-columns.marquee h1.columns-heading-long {
+    font-size: var(--heading-font-size-l);
+  }
+
   .ax-columns.marquee h1,
   .ax-columns.marquee p {
     text-align: center;
@@ -1327,6 +1336,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     top: -30px;
     left: 120px;
     transform: none;
+  }
+
+  .section .ax-columns.marquee h1.columns-heading-long {
+    font-size: var(--heading-font-size-xl);
   }
 }
 
