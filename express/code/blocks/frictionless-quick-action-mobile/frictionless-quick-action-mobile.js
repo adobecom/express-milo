@@ -297,6 +297,7 @@ export default async function decorate(block) {
   const rows = Array.from(block.children);
   const [quickActionRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'quick-action');
   quickActionRow?.remove();
+  // TODO: remove fallback row once authoring is done
   const [fallbackRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'fallback');
   fallbackRow?.remove();
   if (fallbackRow && getMobileOperatingSystem() !== 'Android') {
@@ -347,19 +348,20 @@ export default async function decorate(block) {
   };
 
   const dropzone = createTag('button', { class: 'dropzone hide', id: 'mobile-fqa-upload' });
-  const [animationContainer, dropzoneContent] = rows[1].children;
+  const [animationContainer, dropzoneContent] = dropzoneContainer.children;
   while (dropzoneContent.firstChild) dropzone.append(dropzoneContent.firstChild);
   dropzoneContent.replaceWith(dropzone);
   animationContainer.classList.add('animation-container');
   const animation = animationContainer.querySelector('a');
-
+  const animationEnd = () => {
+    dropzone.classList.remove('hide');
+    animationContainer.classList.add('hide');
+  };
   if (animation && animation.href.includes('.mp4')) {
     const video = transformLinkToAnimation(animation, false);
-    video.addEventListener('ended', () => {
-      dropzone.classList.remove('hide');
-      animationContainer.classList.add('hide');
-    });
-    // click to skip animation
+    video.addEventListener('ended', animationEnd);
+  } else if (animationContainer.querySelector('picture')) {
+    setTimeout(animationEnd, 3000);
   }
   const dropzoneText = createTag('div', { class: 'text' });
   while (dropzone.firstChild) {

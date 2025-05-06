@@ -179,6 +179,16 @@ const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
   content.parentElement.prepend(links[0]);
 };
 
+function addHeaderClass(block, size) {
+  const parentDiv = block.parentElement;
+  if (parentDiv) {
+    const parentHeader = parentDiv.querySelector('h1, h2, h3, h4, h5, h6');
+    if (parentHeader) {
+      parentHeader.parentElement.classList.add(`columns-${size}-heading`);
+    }
+  }
+}
+
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getMetadata, getConfig } = utils);
@@ -199,6 +209,10 @@ export default async function decorate(block) {
     if (columnsWrapper && bgImgURL) {
       columnsWrapper.style.setProperty('--bg-image', `url("${bgImgURL}")`);
     }
+  }
+
+  if (block.classList.contains('xl-heading')) {
+    addHeaderClass(block, 'xl');
   }
 
   if (block.classList.contains('narrow')) {
