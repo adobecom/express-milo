@@ -1,21 +1,10 @@
-main .section .content-toggle-v2 {
-    --font-weight: 700;
-    --line-height: 130%;
+main .section .content-toggle-v2 { 
     --button-height: 36px;
-    --button-min-width: 44px;
-    --unselected-button-color: #505050;
-    --button-max-width: 256px;
-    --container-max-width: 1200px;
-    --spacing-padding: var(--spacing-300);
-    --spacing-button-padding-vertical: 6px;
-    --spacing-button-padding-horizontal: var(--spacing-200);
-    --spacing-gap: var(--spacing-100);
-    --spacing-button-gap: 6px;
-    --border-radius-container: 8px;
-    --border-radius-button: 8px;
-    --carousel-platform-padding: 2px;
+    --spacing-button-padding-vertical: var(--spacing-200);
+    --button-exterior-padding: 2px;
+    --button-border-radius: 8px;
     margin: 0 auto;
-    padding: 0 var(--spacing-padding);
+    padding: 0 var(--spacing-300);
     max-width: max-content;
     font-family: 'adobe-clean';
 }
@@ -23,14 +12,14 @@ main .section .content-toggle-v2 {
 main .content-toggle-v2 .carousel-container {
     display: flex;
     align-items: center;
-    max-width: var(--container-max-width);
+    max-width: 1200px;
     width: unset;
-    height: 40px;
-    margin: 0;
-    padding: 2px;
+    height: calc(var(--button-height) + var(--button-exterior-padding) * 2);
+    padding: var(--button-exterior-padding);
     box-sizing: border-box;
     gap: var(--spacing-gap);
-    border-radius: var(--border-radius-container);
+    border-radius: var(--button-border-radius);;
+    margin: 0;
     background: var(--color-gray-150);
 }
 
@@ -47,19 +36,18 @@ main .content-toggle-v2 .carousel-container .carousel-platform {
 main .content-toggle-v2 .carousel-container .content-toggle-button {
     font-family: var(--body-font-family);
     font-size: var(--body-font-size-m);
-    font-weight: var(--font-weight);
-    line-height: var(--line-height);
+    font-weight: 700;
+    line-height: 130%;
     letter-spacing: 0%;
-    color: var(--unselected-button-color);
+    color: #505050;
     display: flex;
     justify-content: center;
     align-items: center;
     vertical-align: middle;
     height: var(--button-height);
-    min-width: var(--button-min-width);
-    max-width: var(--button-max-width);
-    padding: var(--spacing-button-padding-vertical) var(--spacing-button-padding-horizontal);
-    gap: var(--spacing-button-gap);
+    min-width: 44px;
+    max-width: 256px;
+    padding: var(--spacing-200) var(--spacing-200);
     border: none;
     background: none;
 }
@@ -67,22 +55,22 @@ main .content-toggle-v2 .carousel-container .content-toggle-button {
 main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible {
     outline: 2px solid #4B75FF;
     outline-offset: -2px;
-    border-radius: var(--border-radius-button);
+    border-radius: var(--button-border-radius);;
 }
 
 main .content-toggle-v2 .carousel-container .content-toggle-button:active,
 main .content-toggle-v2 .carousel-container .content-toggle-button:hover {
     background: var(--color-gray-200);
-    border-radius: var(--border-radius-button);
+    border-radius: var(--button-border-radius);;
 }
 
 main .content-toggle-v2 .carousel-container .content-toggle-button:disabled {
     background: var(--color-gray-100);
-    border-radius: var(--border-radius-button);
+    border-radius: var(--button-border-radius);;
 }
 
 main .content-toggle-v2 .content-toggle-button.active:focus {
-    border-radius: var(--border-radius-button);
+    border-radius: var(--button-border-radius);;
     background: var(--color-gray-800);
     color: var(--color-white);
 }
@@ -92,38 +80,28 @@ main .content-toggle-v2 .content-toggle-button.active:hover {
     border: none;
     background: var(--color-gray-800);
     color: var(--color-white);
-    border-radius: var(--border-radius-button);
+    border-radius: var(--button-border-radius);;
 }
 
 main .content-toggle-v2 .carousel-container .content-toggle-button.active:focus-visible {
     outline: none;
 }
 
+/* Block specific modification to scripts/widgets/carousel.js */
+
 main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-left {
     background: linear-gradient(90deg, var(--color-gray-150) 70%, rgba(245, 245, 245, 0.00) 100%);
-    border-radius: var(--border-radius-container) 0 0 var(--border-radius-container);
+    border-radius: var(--button-border-radius) 0 0 var(--button-border-radius);
 }
 
 main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-right {
     background: linear-gradient(270deg, var(--color-gray-150) 44.97%, rgba(245, 245, 245, 0.00) 84.05%);
-    border-radius: 0 var(--border-radius-container) var(--border-radius-container) 0;
+    border-radius: 0 var(--button-border-radius) var(--button-border-radius) 0;
 }
 
 main .content-toggle-v2 .carousel-container a.button.carousel-arrow {
     background: none;
     box-shadow: none;
-}
-
-main .content-toggle-v2 .carousel-container a.button.carousel-arrow::before {
-    content: '';
-    position: absolute;
-    margin-top: 9px;
-    width: 12px;
-    height: 12px;
-    background: none;
-    border-radius: 2px;
-    border-top: solid 2.5px var(--color-gray-700);
-    border-right: solid 2.5px var(--color-gray-700);
 }
 
 main .content-toggle-v2 .carousel-container a.button.carousel-arrow.carousel-arrow-left {
@@ -159,22 +137,7 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
 
 @media screen and (min-width: 768px) {
     main .section .content-toggle-v2 {
-        padding: 0 var(--spacing-padding);
-        max-width: max-content;
         --button-height: 40px;
-        --spacing-button-padding-vertical: 8px;
-    }
-
-    main .content-toggle-v2 .carousel-container {
-        padding: 2px;
-        box-sizing: border-box;
-        height: 44px;
+        --spacing-button-padding-vertical: var(--spacing-300);
     }
 }
-
-@media screen and (min-width: 1280px) {
-    main .section .content-toggle-v2 {
-        padding: 0 var(--spacing-padding);
-        max-width: max-content;
-    }
-} 
