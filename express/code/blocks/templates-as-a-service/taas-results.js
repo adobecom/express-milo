@@ -1,8 +1,11 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
 
 export const base = 'https://www.adobe.com/express-search-api-v3';
+const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
 
 /**
  * Convert filter params
@@ -116,6 +119,13 @@ export function recipe2ApiQuery(recipe) {
  */
 
 /**
+ * @typedef {Object} TemplateInfo
+ * @property {string} src - The source URL of the template
+ * @property {string} poster - The poster URL of the template
+ * @property {string} title - The title of the template
+ */
+
+/**
  * Fetch results from the Adobe Express Search API
  * @param {string} recipe - The search recipe string containing query parameters
  * @example
@@ -138,20 +148,113 @@ function isVideoTemplate(template) {
 }
 
 /**
+ * @param {Template} template
+ * @returns {string}
+ */
+function getImageSrc(template) {
+  const thumbnail = template.pages[0].rendition.image?.thumbnail;
+  const componentLinkHref =
+    template._links['http://ns.adobe.com/adobecloud/rel/component'].href;
+  const renditionLinkHref =
+    template._links['http://ns.adobe.com/adobecloud/rel/rendition'].href;
+  const { mediaType, componentId, hzRevision } = thumbnail;
+  if (mediaType === 'image/webp') {
+    // webp only supported by componentLink
+    return componentLinkHref.replace(
+      '{&revision,component_id}',
+      `&revision=${hzRevision || 0}&component_id=${componentId}`
+    );
+  }
+
+  return renditionLinkHref.replace(
+    '{&page,size,type,fragment}',
+    `&type=${mediaType}&fragment=id=${componentId}`
+  );
+}
+
+/**
+ * @param {VideoTemplate} template
+ * @returns {Promise<{src: string, poster: string}>}
+ */
+async function getVideo(template) {
+  const videoThumbnail = template.pages[0].rendition.video.thumbnail;
+  const renditionLinkHref =
+    template._links['http://ns.adobe.com/adobecloud/rel/rendition'].href;
+  const { componentId } = videoThumbnail;
+  const preLink = renditionLinkHref.replace(
+    '{&page,size,type,fragment}',
+    `&type=${videoMetadataType}&fragment=id=${componentId}`
+  );
+  const backupPosterSrc = getImageSrc(template);
+  try {
+    const response = await fetch(preLink);
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    const {
+      renditionsStatus: { state },
+      posterframe,
+      renditions,
+    } = await response.json();
+    if (state !== 'COMPLETED') throw new Error('Video not ready');
+
+    const mp4Rendition = renditions.find((r) => r.videoContainer === 'MP4');
+    if (!mp4Rendition?.url) throw new Error('No MP4 rendition found');
+
+    return {
+      src: mp4Rendition.url,
+      poster: posterframe?.url || backupPosterSrc,
+    };
+  } catch (err) {
+    console.error('in getting video url: ', err, JSON.stringify(template));
+    return { src: backupPosterSrc };
+  }
+}
+
+/**
+ * @param {Template|VideoTemplate} template
+ * @returns {Promise<TemplateInfo>}
+ */
+async function getTemplateInfo(template) {
+  if (isVideoTemplate(template)) {
+    const videoInfo = await getVideo(template);
+    return {
+      ...videoInfo,
+      title: template?.['dc:title']?.['i-default'] ?? 'Adobe Express Template',
+    };
+  }
+  return {
+    src: getImageSrc(template),
+    title: template?.['dc:title']?.['i-default'] ?? 'Adobe Express Template',
+  };
+}
+
+/**
  * Render a template
+ * @param {TemplateInfo} templateInfo
  * @param {Template|VideoTemplate} template
  */
-function renderTemplate(template) {
-  if (isVideoTemplate(template)) {
+function renderTemplate(templateInfo) {
+  const isVideo = !!templateInfo.poster;
+  if (isVideo) {
     return html`
-      <div>
-        <h3>${template.name}</h3>
-      </div>
-    `;
+    <div>
+    <video
+      muted
+      playsInline
+      autoPlay
+      loop
+      preload="auto"
+      poster=${templateInfo.poster}
+    >
+      <source src=${templateInfo.src}></source>
+  </video>
+    </div>
+  `;
   }
   return html`
     <div>
-      <h3>${template.name}</h3>
+      <img src="${templateInfo.src}" alt="${templateInfo.title}" />
     </div>
   `;
 }
@@ -167,6 +270,10 @@ class TAASResults extends LitElement {
     form {
       display: flex;
     }
+    #results {
+      display: flex;
+      flex-wrap: wrap;
+    }
   `;
 
   constructor() {
@@ -178,6 +285,9 @@ class TAASResults extends LitElement {
   async handleGenerate() {
     this.loading = true;
     const data = await fetchResults(this.recipe);
+    data.processedItems = await Promise.all(
+      data.items.map((item) => getTemplateInfo(item))
+    );
     console.log(data);
     this.results = data;
     this.loading = false;
@@ -196,10 +306,9 @@ class TAASResults extends LitElement {
     if (this.results.items.length === 0) {
       return html`<div>No results found</div>`;
     }
-    return html`
-      <div id="results">
-        ${this.results.items.map(renderTemplate).join('')}
-      </div>`;
+    return html` <div id="results">
+      ${this.results.processedItems.map(renderTemplate)}
+    </div>`;
   }
 
   render() {
