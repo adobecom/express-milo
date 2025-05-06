@@ -6,7 +6,6 @@ main .section .content-toggle-v2 {
     margin: 0 auto;
     padding: 0 var(--spacing-300);
     max-width: max-content;
-    font-family: 'adobe-clean';
 }
 
 main .content-toggle-v2 .carousel-container {
@@ -33,12 +32,13 @@ main .content-toggle-v2 .carousel-container .carousel-platform {
     gap: 2px;
 }
 
+/* Button + focus states */
+
 main .content-toggle-v2 .carousel-container .content-toggle-button {
     font-family: var(--body-font-family);
     font-size: var(--body-font-size-m);
     font-weight: 700;
     line-height: 130%;
-    letter-spacing: 0%;
     color: #505050;
     display: flex;
     justify-content: center;
