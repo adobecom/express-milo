@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable quotes */
 /* eslint-disable comma-dangle */
 /* eslint-disable indent */
@@ -7,7 +8,8 @@ import { getIconElementDeprecated } from '../../scripts/utils.js';
 
 const defaultCollectionId =
   'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418';
-class TAASForm extends LitElement {
+
+class RecipeEditor extends LitElement {
   static properties = {
     collectionId: { type: String },
     limit: { type: Number },
@@ -21,6 +23,7 @@ class TAASForm extends LitElement {
     behaviors: { type: String },
     prefLang: { type: String },
     prefRegion: { type: String },
+    recipe: { type: String },
   };
 
   constructor() {
@@ -37,6 +40,29 @@ class TAASForm extends LitElement {
     this.behaviors = '';
     this.prefLang = '';
     this.prefRegion = '';
+    this.recipe = '';
+  }
+
+  notifyRecipeChanged() {
+    this.dispatchEvent(
+      new CustomEvent('recipe-changed', {
+        detail: this.recipe,
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  firstUpdated() {
+    this.form2Recipe();
+    this.notifyRecipeChanged();
+  }
+
+  handleFieldChange(e) {
+    const { name, value, type } = e.target;
+    this[name] = type === 'number' ? Number(value) : value;
+    this.form2Recipe();
+    this.notifyRecipeChanged();
   }
 
   static styles = css`
@@ -67,9 +93,13 @@ class TAASForm extends LitElement {
     h2 {
       margin: 0px;
     }
+
+    textarea[name='recipe'] {
+      width: 100%;
+    }
   `;
 
-  extractRecipe() {
+  form2Recipe() {
     const collectionId = `collectionId=${
       this.collectionId || defaultCollectionId
     }`;
@@ -98,20 +128,48 @@ class TAASForm extends LitElement {
     ]
       .filter(Boolean)
       .join('&');
-    console.log('extractRecipe', recipe);
-    return recipe;
+    this.recipe = recipe;
   }
 
-  handleGenerate(e) {
-    e.preventDefault();
-    const recipe = this.extractRecipe();
-    this.dispatchEvent(
-      new CustomEvent('taas-generate-recipe', {
-        detail: recipe,
-        bubbles: true,
-        composed: true,
-      })
-    );
+  recipe2Form() {
+    const params = new URLSearchParams(this.recipe);
+    if (params.has('collectionId')) {
+      this.collectionId = params.get('collectionId');
+    }
+    if (params.has('limit')) {
+      this.limit = params.get('limit');
+    }
+    if (params.has('start')) {
+      this.start = params.get('start');
+    }
+    if (params.has('orderBy')) {
+      this.orderBy = params.get('orderBy');
+    }
+    if (params.has('q')) {
+      this.q = params.get('q');
+    }
+    if (params.has('language')) {
+      this.language = params.get('language');
+    }
+    if (params.has('tasks')) {
+      this.tasks = params.get('tasks');
+    }
+    if (params.has('topics')) {
+      this.topics = params.get('topics');
+    }
+    if (params.has('license')) {
+      this.license = params.get('license');
+    }
+    if (params.has('behaviors')) {
+      this.behaviors = params.get('behaviors');
+    }
+    if (params.has('prefLang')) {
+      this.prefLang = params.get('prefLang');
+    }
+    if (params.has('prefRegion')) {
+      this.prefRegion = params.get('prefRegion');
+    }
+    return params;
   }
 
   toggleInfoContent(fieldName) {
@@ -142,6 +200,13 @@ class TAASForm extends LitElement {
       </div>
     `;
     return [infoButton, infoContent];
+  }
+
+  willUpdate(changedProperties) {
+    if (changedProperties.has('recipe') && this.recipe) {
+      // Only update form if recipe changed from outside
+      this.recipe2Form();
+    }
   }
 
   render() {
@@ -186,14 +251,15 @@ class TAASForm extends LitElement {
       `Available values : AD, AE, AF, AG, AI, AL, AM, AN, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, BG, BH, BI, BJ, BL, BM, BN, BO, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CD, CF, CG, CH, CI, CK, CL, CM, CN, CO, CR, CU, CV, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IQ, IR, IS, IT, JE, JM, JO, JP, KE, KG, KH, KI, KM, KN, KR, KV, KW, KY, KZ, LA, LB, LC, LI, LK, LR, LS, LT, LU, LV, LY, MA, MC, MD, ME, MF, MG, MH, MK, ML, MM, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, MX, MY, MZ, NA, NC, NE, NF, NG, NI, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, PK, PL, PM, PN, PR, PS, PT, PW, PY, QA, RE, RO, RS, RU, RW, SA, SB, SC, SD, SE, SG, SH, SI, SJ, SK, SL, SM, SN, SO, SR, ST, SV, SY, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VE, VG, VI, VN, VU, WF, WS, YE, YT, ZA, ZM, ZW, ZZ`
     );
 
-    return html`<form @submit=${this.handleGenerate}>
+    return html`<form>
+      <h2>Search Parameters:</h2>
       <label>
         Q:
         <input
           name="q"
           type="text"
           .value=${this.q}
-          @input=${(e) => (this.q = e.target.value)}
+          @input=${this.handleFieldChange}
         />
         ${qInfoButton}
       </label>
@@ -202,11 +268,11 @@ class TAASForm extends LitElement {
       <label>
         Collection ID:
         <input
-          name="collectionID"
+          name="collectionId"
           type="text"
           title="Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another common is the popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852)."
           .value=${this.collectionId}
-          @input=${(e) => (this.collectionID = e.target.value)}
+          @input=${this.handleFieldChange}
         />
         ${collectionInfoButton}
       </label>
@@ -218,7 +284,7 @@ class TAASForm extends LitElement {
           name="limit"
           type="number"
           .value=${this.limit}
-          @input=${(e) => (this.limit = Number(e.target.value))}
+          @input=${this.handleFieldChange}
         />
         ${limitInfoButton}
       </label>
@@ -230,7 +296,7 @@ class TAASForm extends LitElement {
           name="start"
           type="number"
           .value=${this.start}
-          @input=${(e) => (this.start = Number(e.target.value))}
+          @input=${this.handleFieldChange}
         />
         ${startInfoButton}
       </label>
@@ -239,8 +305,8 @@ class TAASForm extends LitElement {
       <label>
         Order by:
         <select
-          name="order-by"
-          @change=${(e) => (this.orderBy = e.target.value)}
+          name="orderBy"
+          @change=${this.handleFieldChange}
         >
           <option value="">Relevancy (Default)</option>
           <option value="-remixCount">Descending by Remix Count</option>
@@ -263,7 +329,7 @@ class TAASForm extends LitElement {
           name="language"
           type="text"
           .value=${this.language}
-          @input=${(e) => (this.language = e.target.value)}
+          @input=${this.handleFieldChange}
         />
         ${languageInfoButton}
       </label>
@@ -275,7 +341,7 @@ class TAASForm extends LitElement {
           name="tasks"
           type="text"
           .value=${this.tasks}
-          @input=${(e) => (this.tasks = e.target.value)}
+          @input=${this.handleFieldChange}
         />
         ${tasksInfoButton}
       </label>
@@ -287,7 +353,7 @@ class TAASForm extends LitElement {
           name="topics"
           type="text"
           .value=${this.topics}
-          @input=${(e) => (this.topics = e.target.value)}
+          @input=${this.handleFieldChange}
         />
         ${topicsInfoButton}
       </label>
@@ -297,7 +363,7 @@ class TAASForm extends LitElement {
         Behaviors:
         <select
           name="behaviors"
-          @change=${(e) => (this.behaviors = e.target.value)}
+          @change=${this.handleFieldChange}
         >
           <option value="">All (Default)</option>
           <option value="still">Still</option>
@@ -311,7 +377,7 @@ class TAASForm extends LitElement {
         Licensing Category:
         <select
           name="license"
-          @change=${(e) => (this.license = e.target.value)}
+          @change=${this.handleFieldChange}
         >
           <option value="">Mixed (Default)</option>
           <option value="free">Free only</option>
@@ -323,9 +389,9 @@ class TAASForm extends LitElement {
       <label>
         Preferred Language Boosting:
         <input
-          name="pref-lang"
+          name="prefLang"
           .value=${this.prefLang}
-          @input=${(e) => (this.prefLang = e.target.value)}
+          @input=${this.handleFieldChange}
         />
         ${prefLangInfoButton}
       </label>
@@ -333,17 +399,24 @@ class TAASForm extends LitElement {
       <label>
         Preferred Region Boosting:
         <input
-          name="pref-region"
+          name="prefRegion"
           .value=${this.prefRegion}
-          @input=${(e) => (this.prefRegion = e.target.value)}
+          @input=${this.handleFieldChange}
         />
         ${prefRegionInfoButton}
       </label>
       ${prefRegionInfoContent}
 
-      <button type="submit">Generate</button>
+      <label>
+        Recipe:
+        <textarea
+          name="recipe"
+          .value=${this.recipe}
+          @input=${this.handleFieldChange}
+        />
+      </label>
     </form> `;
   }
 }
 
-customElements.define('taas-form', TAASForm);
+customElements.define('recipe-editor', RecipeEditor);

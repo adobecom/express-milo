@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
 import { getLibs } from '../../scripts/utils.js';
-import './taas-form.js';
+import './recipe-editor.js';
 import './taas-results.js';
 
 let createTag;
@@ -12,25 +12,30 @@ class TemplatesAsAService extends LitElement {
   };
 
   static styles = css`
-    #taas-container {
+    #templates-as-a-service {
       display: flex;
     }
   `;
 
   constructor() {
     super();
-    this.recipe = null;
+    this.recipe = '';
   }
 
-  handleGenerateRecipe(e) {
+  handleRecipeChanged(e) {
     this.recipe = e.detail;
   }
 
   render() {
-    return html`<div id="taas-container">
-      <taas-form @taas-generate-recipe=${this.handleGenerateRecipe}></taas-form>
+    return html`
+    <div id="templates-as-a-service">
+      <recipe-editor
+        .recipe=${this.recipe}
+        @recipe-changed=${this.handleRecipeChanged}
+      ></recipe-editor>
       <taas-results .recipe=${this.recipe}></taas-results>
-    </div>`;
+    </div>
+    `;
   }
 }
 
