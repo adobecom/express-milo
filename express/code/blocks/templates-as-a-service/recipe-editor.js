@@ -70,6 +70,10 @@ class RecipeEditor extends LitElement {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      max-width: 30vw;
     }
     form label {
       display: flex;
