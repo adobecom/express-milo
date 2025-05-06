@@ -179,44 +179,6 @@ const decoratePrimaryCTARow = (rowNum, cellNum, cell) => {
   content.parentElement.prepend(links[0]);
 };
 
-function setupCornerOverlayAnimation(cell) {
-  // On mouse leave - animate elements back to positions
-  cell.addEventListener('mouseleave', () => {
-    cell.classList.add('animating-out');
-
-    setTimeout(() => {
-      cell.classList.remove('animating-out');
-      cell.classList.add('reset-position');
-    }, 250);
-  });
-}
-
-function createCornerOverlays(cell) {
-  const overlays = [
-    { src: '/express/code/blocks/ax-columns/img/resize-button.png', class: 'top-left' },
-    { src: '/express/code/blocks/ax-columns/img/users_ui_mockup.png', class: 'top-right' },
-    { src: '/express/code/blocks/ax-columns/img/ai-image-edit.png', class: 'bottom-left', width: 47, height: 104 },
-    { src: '/express/code/blocks/ax-columns/img/gen-ai-panel.png', class: 'bottom-right' },
-    { src: '/express/code/blocks/ax-columns/img/cursor-small.svg', class: 'bottom-center', width: 26, height: 26 },
-  ];
-
-  overlays.forEach((overlay) => {
-    const img = createTag('img', {
-      class: `corner-overlay ${overlay.class}`,
-      src: overlay.src,
-      alt: '',
-      fetchpriority: 'low',
-      loading: 'eager',
-      ...(overlay.width && { width: overlay.width }),
-      ...(overlay.height && { height: overlay.height }),
-    });
-    cell.appendChild(img);
-  });
-
-  // Set up the animation handlers
-  setupCornerOverlayAnimation(cell);
-}
-
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getMetadata, getConfig } = utils);
@@ -359,7 +321,6 @@ export default async function decorate(block) {
         && childEls.length > 0;
       if (isPictureColumn) {
         cell.classList.add('column-picture');
-        block.classList.contains('marquee') && createCornerOverlays(cell);
       }
 
       const $pars = cell.querySelectorAll('p');
