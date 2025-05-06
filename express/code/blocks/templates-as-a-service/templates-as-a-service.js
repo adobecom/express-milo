@@ -12,8 +12,12 @@ class TemplatesAsAService extends LitElement {
   };
 
   static styles = css`
-    #templates-as-a-service {
-      display: flex;
+    @media (min-width: 1024px) {
+      #templates-as-a-service {
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+      }
     }
   `;
 

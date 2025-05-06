@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable no-nested-ternary */
 /* eslint-disable comma-dangle */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable max-len */
@@ -238,7 +240,7 @@ function renderTemplate(templateInfo) {
   const isVideo = !!templateInfo.poster;
   if (isVideo) {
     return html`
-    <div>
+    <div class="template video">
     <video
       muted
       playsInline
@@ -253,7 +255,7 @@ function renderTemplate(templateInfo) {
   `;
   }
   return html`
-    <div>
+    <div class="template">
       <img src="${templateInfo.src}" alt="${templateInfo.title}" />
     </div>
   `;
@@ -267,12 +269,54 @@ class TAASResults extends LitElement {
   };
 
   static styles = css`
-    form {
+    :host {
       display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #generate-button {
+      align-self: flex-start;
+      color: #fff;
+      background-color: #5c5ce0;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 50rem;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: 'Adobe Clean', sans-serif;
     }
     #results {
       display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      max-width: 65vw;
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+    .templates {
+      display: flex;
       flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .template {
+      max-height: 280px;
+      max-width: 280px;
+      border: 1px solid #ccc;
+    }
+    .template img,
+    .template video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #query {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      max-width: 65vw;
     }
   `;
 
@@ -282,18 +326,21 @@ class TAASResults extends LitElement {
     this.loading = false;
   }
 
+  get $results() {
+    return this.shadowRoot.getElementById('results');
+  }
+
   async handleGenerate() {
     this.loading = true;
     const data = await fetchResults(this.recipe);
     data.processedItems = await Promise.all(
       data.items.map((item) => getTemplateInfo(item))
     );
-    console.log(data);
     this.results = data;
     this.loading = false;
   }
 
-  renderResults() {
+  renderTemplates() {
     if (this.loading) {
       return html`<div>Loading...</div>`;
     }
@@ -306,21 +353,35 @@ class TAASResults extends LitElement {
     if (this.results.items.length === 0) {
       return html`<div>No results found</div>`;
     }
-    return html` <div id="results">
+    return html` <div class="templates">
       ${this.results.processedItems.map(renderTemplate)}
     </div>`;
   }
 
-  render() {
+  renderQuery() {
     const { url, headers } = recipe2ApiQuery(this.recipe);
-    return html` <button @click=${this.handleGenerate}>Generate</button>
+    return html`
       <div>
         <h3>API Query for developers debugging:</h3>
-        <div>URL: ${url}</div>
-        <div>Headers: ${JSON.stringify(headers, null, 2)}</div>
+        <code>${url} <br />Headers: ${JSON.stringify(headers, null, 2)}</code>
       </div>
-      ${this.renderResults()}
-    </div>`;
+    `;
+  }
+
+  render() {
+    return html`
+      <div id="query">${this.renderQuery()}</div>
+      <div id="results">
+        <button @click=${this.handleGenerate} id="generate-button">
+          ${this.loading
+            ? 'Generating...'
+            : this.results
+            ? 'Regenerate'
+            : 'Generate'}
+        </button>
+        ${this.renderTemplates()}
+      </div>
+    `;
   }
 }
 
