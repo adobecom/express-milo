@@ -1202,6 +1202,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     width: 137px;
     height: 48px;
     font-size: var(--body-font-size-l);
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
 
