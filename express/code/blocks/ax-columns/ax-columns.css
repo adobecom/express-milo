@@ -1152,7 +1152,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.fullsize .column.hero-animation-overlay {
     position: relative;
-    height: 610px;
+    padding-left: 0;
   }
 
   .ax-columns.fullsize .column.columns-picture > p,
@@ -1161,9 +1161,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns.fullsize .column video {
-    position: absolute;
     left: 0;
     max-width: 600px;
+    height: 100%;
+    position: relative;
+    clip-path: inset(1px 1px);
   }
 
   .ax-columns.fullsize + h2 {
