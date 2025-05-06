@@ -1,0 +1,2047 @@
+{
+  "metadata": {
+      "totalHits": 270136,
+      "start": "0",
+      "limit": 10,
+      "tracking": {
+          "query_intent": "nonVideo",
+          "adobe_one_video_recall_100": 8,
+          "adobe_one_video_recall_20": 8,
+          "adobe_one_rescore": 0
+      }
+  },
+  "items": [
+      {
+          "id": "urn:aaid:sc:VA6C2:e579d071-d65f-58ee-ba59-e8943810f1d7",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_content/4d6c8118-b225-4188-b8a9-16659a4f538d",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2023-11-11T02:17:04.739Z",
+          "modifyDate": "2023-11-11T02:17:06.715Z",
+          "name": "4d6c8118-b225-4188-b8a9-16659a4f538d",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Black Education Day Video"
+          },
+          "etags": "\"dfa72c5715e64e33a4ef07f395460906\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated",
+              "video"
+          ],
+          "topics": [
+              "academic",
+              "chalk",
+              "chalkboard",
+              "doodle",
+              "school",
+              "seasonal",
+              "student",
+              "teacher",
+              "text effect"
+          ],
+          "availabilityDate": "2025-02-24T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Norah Stone"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "6AF221A5638554DF0A495C7B@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "video",
+                      "size": {
+                          "name": "1920x1080px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "gray",
+                          "coverage": 0.1226,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 139,
+                              "g": 139,
+                              "b": 138
+                          }
+                      },
+                      {
+                          "name": "black",
+                          "coverage": 0.0644,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 43,
+                              "g": 42,
+                              "b": 41
+                          }
+                      },
+                      {
+                          "name": "orange",
+                          "coverage": 0.0591,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 220,
+                              "g": 181,
+                              "b": 131
+                          }
+                      },
+                      {
+                          "name": "dark gray",
+                          "coverage": 0.6711,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 60,
+                              "g": 60,
+                              "b": 60
+                          }
+                      },
+                      {
+                          "name": "khaki",
+                          "coverage": 0.0829,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 198,
+                              "g": 154,
+                              "b": 101
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "8db443b0-89f4-491f-8d99-ec4ba95ac4eb",
+                              "hzRevision": "068cd547-d53d-4a62-9fb7-b27a1f7a001c",
+                              "width": 500,
+                              "height": 281,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "5a5a7aa1-8b9c-40d4-89cf-16c02d5c5910",
+                              "hzRevision": "3126d8fc-df25-4691-9f84-750d8907a965",
+                              "width": 1200,
+                              "height": 675,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "5a44e2b6-d831-4a3b-8606-b60323c811be",
+                              "hzRevision": "b0bec764-418a-4211-afb0-da3e0449ad70",
+                              "width": 500,
+                              "height": 281,
+                              "mediaType": "video/mp4",
+                              "duration": 4
+                          },
+                          "preview": {
+                              "componentId": "7a916402-a6b5-41c5-979a-88b504f02ec6",
+                              "hzRevision": "9db25317-a1fe-4c06-bef5-cd46fb2170d2",
+                              "width": 1200,
+                              "height": 675,
+                              "mediaType": "video/mp4",
+                              "duration": 4
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/PBH8b8xfxFb"
+          },
+          "stats": {
+              "remixCount": 45354
+          },
+          "styles": [
+              "handmade"
+          ],
+          "segments": [
+              "k-12",
+              "non-profit",
+              "personal"
+          ],
+          "moods": [
+              "happy"
+          ],
+          "internalTags": [
+              "CCEX-131502",
+              "gen ai text effect"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:4d6c8118-b225-4188-b8a9-16659a4f538d",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:e579d071-d65f-58ee-ba59-e8943810f1d7/rendition?assetType=TEMPLATE&etag=dfa72c5715e64e33a4ef07f395460906{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:e579d071-d65f-58ee-ba59-e8943810f1d7/primary?assetType=TEMPLATE&etag=dfa72c5715e64e33a4ef07f395460906",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:e579d071-d65f-58ee-ba59-e8943810f1d7/manifest?assetType=TEMPLATE&etag=dfa72c5715e64e33a4ef07f395460906",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:e579d071-d65f-58ee-ba59-e8943810f1d7/component?assetType=TEMPLATE&etag=dfa72c5715e64e33a4ef07f395460906{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:e579d071-d65f-58ee-ba59-e8943810f1d7?assetType=TEMPLATE&etag=dfa72c5715e64e33a4ef07f395460906{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:9140fdd0-00a3-414d-b3f8-85f63bf5a445",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:576aa010-9a4a-4423-9bc9-94093759de4c",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:576aa010-9a4a-4423-9bc9-94093759de4c"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/happy_ending/9ded83a9-d7a7-4886-b35c-a1ef18e0549b",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2023-05-25T18:16:15.696Z",
+          "modifyDate": "2025-01-29T02:11:16.598Z",
+          "name": "9ded83a9-d7a7-4886-b35c-a1ef18e0549b",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "White Camcorder Summer Adventure Instagram Reel"
+          },
+          "etags": "\"3b331f52133f440b9ca36f76ac92aafc\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated",
+              "video"
+          ],
+          "topics": [
+              "adventure",
+              "beach",
+              "camcorder",
+              "explore",
+              "holiday",
+              "island",
+              "memories",
+              "summer",
+              "sun",
+              "travel",
+              "trip",
+              "vhs"
+          ],
+          "availabilityDate": "2025-02-13T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Designer4 HappyEnding"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "124C283C641CB4770A495C4B@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "instagram-reel",
+                      "size": {
+                          "name": "1080x1920px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "dark blue",
+                          "coverage": 0.235,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 39,
+                              "g": 52,
+                              "b": 64
+                          }
+                      },
+                      {
+                          "name": "gray",
+                          "coverage": 0.1272,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 154,
+                              "g": 153,
+                              "b": 154
+                          }
+                      },
+                      {
+                          "name": "dark green",
+                          "coverage": 0.095,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 21,
+                              "g": 59,
+                              "b": 31
+                          }
+                      },
+                      {
+                          "name": "light blue",
+                          "coverage": 0.4558,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 140,
+                              "g": 184,
+                              "b": 215
+                          }
+                      },
+                      {
+                          "name": "black",
+                          "coverage": 0.0871,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 14,
+                              "g": 17,
+                              "b": 19
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "025c7b9f-1413-471e-a6b5-bce4a91cb521",
+                              "hzRevision": "5df2d695-a182-4f91-bd53-ee08e4362aba",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "59bea655-88c3-41f7-9a4f-d10955de53ea",
+                              "hzRevision": "33cf704b-f08e-4c8e-ac13-d992a5f68b1c",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "140f6d99-2617-46d9-9cbe-466014787b29",
+                              "hzRevision": "4b35eaae-a292-4510-a1fe-0d6eb6ddb260",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "video/mp4",
+                              "duration": 10
+                          },
+                          "preview": {
+                              "componentId": "d78bdd3b-2409-43b0-831f-6a83a8f15d72",
+                              "hzRevision": "544dee52-6e54-4ac2-b5c5-7db43a0441b9",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "video/mp4",
+                              "duration": 10
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/FAkSkOBHXQb"
+          },
+          "stats": {
+              "remixCount": 45700
+          },
+          "styles": [
+              "retro",
+              "simple"
+          ],
+          "segments": [
+              "personal"
+          ],
+          "moods": [
+              "happy",
+              "joyful"
+          ],
+          "internalTags": [
+              "CCEX-168662",
+              "uk travel-toursim"
+          ],
+          "sourceAssetId": "urn:aaid:sc:EU:9ded83a9-d7a7-4886-b35c-a1ef18e0549b",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:9140fdd0-00a3-414d-b3f8-85f63bf5a445/rendition?assetType=TEMPLATE&etag=3b331f52133f440b9ca36f76ac92aafc{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:9140fdd0-00a3-414d-b3f8-85f63bf5a445/primary?assetType=TEMPLATE&etag=3b331f52133f440b9ca36f76ac92aafc",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:9140fdd0-00a3-414d-b3f8-85f63bf5a445/manifest?assetType=TEMPLATE&etag=3b331f52133f440b9ca36f76ac92aafc",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:9140fdd0-00a3-414d-b3f8-85f63bf5a445/component?assetType=TEMPLATE&etag=3b331f52133f440b9ca36f76ac92aafc{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:9140fdd0-00a3-414d-b3f8-85f63bf5a445?assetType=TEMPLATE&etag=3b331f52133f440b9ca36f76ac92aafc{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:a68cfec6-2617-4106-91da-15e754f1fe56",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:576aa010-9a4a-4423-9bc9-94093759de4c",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:576aa010-9a4a-4423-9bc9-94093759de4c"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/happy_ending/a44a91cc-eb20-4400-b4db-de9c2512c836",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2023-05-25T18:17:38.074Z",
+          "modifyDate": "2025-01-29T02:08:08.617Z",
+          "name": "a44a91cc-eb20-4400-b4db-de9c2512c836",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "White Summer Throwback Instagram Reel"
+          },
+          "etags": "\"3474c7cd1ab34c7caca88a6bbbbb9881\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated",
+              "video"
+          ],
+          "topics": [
+              "explore",
+              "holiday",
+              "memories",
+              "road trip",
+              "summer",
+              "throwback",
+              "travel",
+              "trip",
+              "van"
+          ],
+          "availabilityDate": "2025-02-12T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Designer4 HappyEnding"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "124C283C641CB4770A495C4B@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "instagram-reel",
+                      "size": {
+                          "name": "1080x1920px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "brown",
+                          "coverage": 0.3298,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 146,
+                              "g": 112,
+                              "b": 78
+                          }
+                      },
+                      {
+                          "name": "mud green",
+                          "coverage": 0.1159,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 76,
+                              "g": 66,
+                              "b": 36
+                          }
+                      },
+                      {
+                          "name": "dark green",
+                          "coverage": 0.176,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 38,
+                              "g": 58,
+                              "b": 58
+                          }
+                      },
+                      {
+                          "name": "khaki",
+                          "coverage": 0.1979,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 172,
+                              "g": 135,
+                              "b": 100
+                          }
+                      },
+                      {
+                          "name": "black",
+                          "coverage": 0.1803,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 23,
+                              "g": 32,
+                              "b": 28
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "8095a20a-a19e-4b29-a543-da716d0f3a1d",
+                              "hzRevision": "320673cd-f8bc-4ef9-88a0-ddb60a43c960",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "621a57af-d054-4ed4-8682-28cccfec1443",
+                              "hzRevision": "251f2d08-5298-4c59-a6bc-c923336d7b41",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "359de1bb-cbbf-4e1d-b760-2144a4b83e65",
+                              "hzRevision": "71161df9-18fd-41eb-afec-de5f8e7718dd",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "video/mp4",
+                              "duration": 14
+                          },
+                          "preview": {
+                              "componentId": "8156867d-e38b-4e2f-b14b-892a06f63f5e",
+                              "hzRevision": "7c165dd8-6989-48fe-a72e-2904701a8079",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "video/mp4",
+                              "duration": 14
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/bMZJUdpeWQb"
+          },
+          "stats": {
+              "remixCount": 25137
+          },
+          "styles": [
+              "elegant",
+              "simple"
+          ],
+          "segments": [
+              "personal"
+          ],
+          "moods": [
+              "happy"
+          ],
+          "internalTags": [
+              "CCEX-168662"
+          ],
+          "sourceAssetId": "urn:aaid:sc:EU:a44a91cc-eb20-4400-b4db-de9c2512c836",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:a68cfec6-2617-4106-91da-15e754f1fe56/rendition?assetType=TEMPLATE&etag=3474c7cd1ab34c7caca88a6bbbbb9881{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:a68cfec6-2617-4106-91da-15e754f1fe56/primary?assetType=TEMPLATE&etag=3474c7cd1ab34c7caca88a6bbbbb9881",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:a68cfec6-2617-4106-91da-15e754f1fe56/manifest?assetType=TEMPLATE&etag=3474c7cd1ab34c7caca88a6bbbbb9881",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:a68cfec6-2617-4106-91da-15e754f1fe56/component?assetType=TEMPLATE&etag=3474c7cd1ab34c7caca88a6bbbbb9881{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:a68cfec6-2617-4106-91da-15e754f1fe56?assetType=TEMPLATE&etag=3474c7cd1ab34c7caca88a6bbbbb9881{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:483b9cc4-47d8-5336-a3ab-fa1146b9fa06",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_content/9b2a1791-b8a5-42bb-8215-ac60daade249",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2023-10-18T20:39:47.251Z",
+          "modifyDate": "2025-02-10T20:50:41.685Z",
+          "name": "9b2a1791-b8a5-42bb-8215-ac60daade249",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Green Sci Fi Movie Instagram Story Video"
+          },
+          "dc:description": {
+              "i-default": ""
+          },
+          "etags": "\"b7998e209a08457fadc18fc748b35e60\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated",
+              "video"
+          ],
+          "topics": [
+              "cinema",
+              "film",
+              "galaxy",
+              "marketing",
+              "neon",
+              "space",
+              "stars",
+              "text effect",
+              "text to image"
+          ],
+          "availabilityDate": "2025-02-21T00:00:00.000Z",
+          "licensingCategory": "premium",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Norah Stone"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "6AF221A5638554DF0A495C7B@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "instagram-story",
+                      "size": {
+                          "name": "1080x1920px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "bright green",
+                          "coverage": 0.0199,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 96,
+                              "g": 223,
+                              "b": 100
+                          }
+                      },
+                      {
+                          "name": "black",
+                          "coverage": 0.0445,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 3,
+                              "g": 16,
+                              "b": 2
+                          }
+                      },
+                      {
+                          "name": "green",
+                          "coverage": 0.0725,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 44,
+                              "g": 155,
+                              "b": 49
+                          }
+                      },
+                      {
+                          "name": "dark green",
+                          "coverage": 0.8162,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 10,
+                              "g": 53,
+                              "b": 5
+                          }
+                      },
+                      {
+                          "name": "emerald",
+                          "coverage": 0.0469,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 89,
+                              "g": 160,
+                              "b": 96
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "e309734e-93f3-448d-9bb8-56a9af2224a9",
+                              "hzRevision": "33543be0-3e8c-4a77-8b2f-eaf4825e6c9b",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "10250b1f-0ce5-47a7-89f5-3c9e2a13c8d3",
+                              "hzRevision": "93042194-41fc-420a-aff7-a6e1d0ada5bf",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "b8bb9e38-42c9-49f7-989f-9435e6b12f68",
+                              "hzRevision": "c8b737b3-225b-4527-8acd-db2a35964afd",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "video/mp4",
+                              "duration": 6
+                          },
+                          "preview": {
+                              "componentId": "97cdd0b3-c527-4901-94f4-b7d670d2415e",
+                              "hzRevision": "5f9e0d08-3a0a-47f8-89fd-0f124274ba62",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "video/mp4",
+                              "duration": 6
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/JK0fNOBLaRb"
+          },
+          "stats": {
+              "remixCount": 16216
+          },
+          "styles": [
+              "edgy",
+              "modern"
+          ],
+          "segments": [
+              "personal",
+              "small-business"
+          ],
+          "moods": [
+              "dark"
+          ],
+          "internalTags": [
+              "CCEX-131502",
+              "gen ai text effect"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:9b2a1791-b8a5-42bb-8215-ac60daade249",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:483b9cc4-47d8-5336-a3ab-fa1146b9fa06/rendition?assetType=TEMPLATE&etag=b7998e209a08457fadc18fc748b35e60{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:483b9cc4-47d8-5336-a3ab-fa1146b9fa06/primary?assetType=TEMPLATE&etag=b7998e209a08457fadc18fc748b35e60",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:483b9cc4-47d8-5336-a3ab-fa1146b9fa06/manifest?assetType=TEMPLATE&etag=b7998e209a08457fadc18fc748b35e60",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:483b9cc4-47d8-5336-a3ab-fa1146b9fa06/component?assetType=TEMPLATE&etag=b7998e209a08457fadc18fc748b35e60{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:483b9cc4-47d8-5336-a3ab-fa1146b9fa06?assetType=TEMPLATE&etag=b7998e209a08457fadc18fc748b35e60{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:22541075-a3f8-5a93-99f4-479f4a479c43",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_content/96d870a9-ce7b-4798-a2a0-1a80c4be2a0b",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2025-03-27T20:05:40.964Z",
+          "modifyDate": "2025-03-27T21:12:21.323Z",
+          "name": "96d870a9-ce7b-4798-a2a0-1a80c4be2a0b",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Colorful Happy Spring for April Fools"
+          },
+          "etags": "\"b55bcec2bdbb4443a01a157e8403df9f\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated"
+          ],
+          "topics": [
+              "april",
+              "aprilfools",
+              "fools",
+              "joke",
+              "meme",
+              "spring"
+          ],
+          "availabilityDate": "2025-03-27T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Min Bae"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "13422713641CB3C90A495C79@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "instagram-square-post",
+                      "size": {
+                          "name": "1080x1080px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "dark green",
+                          "coverage": 0.2234,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 25,
+                              "g": 76,
+                              "b": 17
+                          }
+                      },
+                      {
+                          "name": "olive",
+                          "coverage": 0.1894,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 153,
+                              "g": 168,
+                              "b": 18
+                          }
+                      },
+                      {
+                          "name": "light blue",
+                          "coverage": 0.2664,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 110,
+                              "g": 190,
+                              "b": 238
+                          }
+                      },
+                      {
+                          "name": "white",
+                          "coverage": 0.1677,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 250,
+                              "g": 250,
+                              "b": 250
+                          }
+                      },
+                      {
+                          "name": "cyan",
+                          "coverage": 0.1531,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 170,
+                              "g": 228,
+                              "b": 244
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "b15bf628-8a88-42b1-9de3-dc4139d4081c",
+                              "hzRevision": "78ef77c0-076a-4252-9e62-511b15db5e6d",
+                              "width": 500,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "31329cbd-f224-4b24-9426-578db69f03c9",
+                              "hzRevision": "767c8388-8cd6-400c-8496-9ea6edaa59df",
+                              "width": 1080,
+                              "height": 1080,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "f9922758-3217-4cc1-95a5-bc10dca9acde",
+                              "hzRevision": "d67206f6-7867-494d-98af-868708030dcd",
+                              "width": 500,
+                              "height": 500,
+                              "mediaType": "video/mp4",
+                              "duration": 6
+                          },
+                          "preview": {
+                              "componentId": "c6597eb3-05a8-49d6-a876-fb67b8e07f46",
+                              "hzRevision": "99dffd04-9bcc-404b-9bc2-8dd6f846c063",
+                              "width": 1080,
+                              "height": 1080,
+                              "mediaType": "video/mp4",
+                              "duration": 6
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/kmFeWysv5Rb"
+          },
+          "stats": {
+              "remixCount": 7740
+          },
+          "styles": [
+              "bold",
+              "bright"
+          ],
+          "segments": [
+              "personal"
+          ],
+          "moods": [
+              "happy",
+              "joyful",
+              "playful"
+          ],
+          "internalTags": [
+              "2025 adobe trend warp and wonder",
+              "2025q2 sm us april fools",
+              "gen ai text effect"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:96d870a9-ce7b-4798-a2a0-1a80c4be2a0b",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:22541075-a3f8-5a93-99f4-479f4a479c43/rendition?assetType=TEMPLATE&etag=b55bcec2bdbb4443a01a157e8403df9f{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:22541075-a3f8-5a93-99f4-479f4a479c43/primary?assetType=TEMPLATE&etag=b55bcec2bdbb4443a01a157e8403df9f",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:22541075-a3f8-5a93-99f4-479f4a479c43/manifest?assetType=TEMPLATE&etag=b55bcec2bdbb4443a01a157e8403df9f",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:22541075-a3f8-5a93-99f4-479f4a479c43/component?assetType=TEMPLATE&etag=b55bcec2bdbb4443a01a157e8403df9f{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:22541075-a3f8-5a93-99f4-479f4a479c43?assetType=TEMPLATE&etag=b55bcec2bdbb4443a01a157e8403df9f{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:8f832a2b-c772-5a93-af71-ecc284264d9e",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:9a95c444-ed0d-42fb-bfbb-2cb624fbbec6",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:9a95c444-ed0d-42fb-bfbb-2cb624fbbec6"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_content_partnerships/1a5fc145-6567-5c89-aa69-1d069752bd5d",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2025-04-07T19:06:24.650Z",
+          "modifyDate": "2025-04-07T19:06:24.882Z",
+          "name": "1a5fc145-6567-5c89-aa69-1d069752bd5d",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Purple, Gray and Yellow Custom Jersey Instagram Story"
+          },
+          "etags": "\"2aaaa26386c04827bba1b178c16c5606\"",
+          "assetType": "Template",
+          "behaviors": [
+              "still"
+          ],
+          "topics": [
+              "fan",
+              "football",
+              "hard in the paint",
+              "jersey",
+              "real madrid",
+              "soccer",
+              "sports",
+              "uniform"
+          ],
+          "availabilityDate": "2025-04-07T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Min Bae"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "13422713641CB3C90A495C79@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "instagram-story",
+                      "size": {
+                          "name": "1080x1920px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "white",
+                          "coverage": 0.3742,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 247,
+                              "g": 247,
+                              "b": 247
+                          }
+                      },
+                      {
+                          "name": "dark gray",
+                          "coverage": 0.104,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 56,
+                              "g": 56,
+                              "b": 57
+                          }
+                      },
+                      {
+                          "name": "violet",
+                          "coverage": 0.1897,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 156,
+                              "g": 111,
+                              "b": 248
+                          }
+                      },
+                      {
+                          "name": "gray",
+                          "coverage": 0.2038,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 130,
+                              "g": 130,
+                              "b": 130
+                          }
+                      },
+                      {
+                          "name": "black",
+                          "coverage": 0.1282,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 14,
+                              "g": 14,
+                              "b": 14
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "fd156242-8343-47e1-b58d-ae7ff96e215f",
+                              "hzRevision": "34474410-a0e2-46ea-bcb4-c42968763e49",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "ee68ba72-d998-4950-bd51-dfb3d39828d4",
+                              "hzRevision": "e9cc60ed-6c10-462f-9744-28d6441902dc",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/MxHMP4YLnSb"
+          },
+          "stats": {
+              "remixCount": 4019
+          },
+          "styles": [
+              "bold",
+              "contemporary",
+              "gritty"
+          ],
+          "segments": [
+              "personal"
+          ],
+          "moods": [
+              "gritty",
+              "joyful",
+              "playful"
+          ],
+          "internalTags": [
+              "2025q2 uk real madrid hard in the paint"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:1a5fc145-6567-5c89-aa69-1d069752bd5d",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:8f832a2b-c772-5a93-af71-ecc284264d9e/rendition?assetType=TEMPLATE&etag=2aaaa26386c04827bba1b178c16c5606{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:8f832a2b-c772-5a93-af71-ecc284264d9e/primary?assetType=TEMPLATE&etag=2aaaa26386c04827bba1b178c16c5606",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:8f832a2b-c772-5a93-af71-ecc284264d9e/manifest?assetType=TEMPLATE&etag=2aaaa26386c04827bba1b178c16c5606",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:8f832a2b-c772-5a93-af71-ecc284264d9e/component?assetType=TEMPLATE&etag=2aaaa26386c04827bba1b178c16c5606{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:8f832a2b-c772-5a93-af71-ecc284264d9e?assetType=TEMPLATE&etag=2aaaa26386c04827bba1b178c16c5606{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:52501654-ebbd-57c4-867f-17ce8cc00dd8",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_content/dca5de3a-6415-4c88-bdf5-5f0d5b1494d9",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2023-07-26T18:06:25.569Z",
+          "modifyDate": "2025-02-18T18:19:46.268Z",
+          "name": "dca5de3a-6415-4c88-bdf5-5f0d5b1494d9",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Black Behind The Scenes TikTok Video"
+          },
+          "etags": "\"f4f08366f86a4d90a782607bb0d93f22\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated",
+              "video"
+          ],
+          "topics": [
+              "behind the scenes",
+              "bts",
+              "cinema",
+              "collage",
+              "film",
+              "film frame",
+              "videography"
+          ],
+          "availabilityDate": "2025-02-21T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Min Bae"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "13422713641CB3C90A495C79@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "features": [
+                      "audio"
+                  ],
+                  "task": {
+                      "name": "tiktok-video",
+                      "size": {
+                          "name": "1080x1920px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "dark blue",
+                          "coverage": 0.2164,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 30,
+                              "g": 49,
+                              "b": 63
+                          }
+                      },
+                      {
+                          "name": "royal blue",
+                          "coverage": 0.0712,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 72,
+                              "g": 101,
+                              "b": 125
+                          }
+                      },
+                      {
+                          "name": "dark green",
+                          "coverage": 0.141,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 32,
+                              "g": 63,
+                              "b": 64
+                          }
+                      },
+                      {
+                          "name": "black",
+                          "coverage": 0.4949,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 8,
+                              "g": 11,
+                              "b": 11
+                          }
+                      },
+                      {
+                          "name": "dark gray",
+                          "coverage": 0.0765,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 69,
+                              "g": 71,
+                              "b": 66
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "f8a22e59-fe28-4b03-b804-4cb2697bbb21",
+                              "hzRevision": "aa8dc8ba-1b2e-43a9-91d3-d122fd974f91",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "c568c283-7d64-4745-a725-8b44fe62aa5a",
+                              "hzRevision": "1298a028-5d52-4d8d-af09-eec93de9ce96",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "b3ce2dec-5e1a-4cda-a129-30462ace1ec5",
+                              "hzRevision": "b2071586-2397-4878-abef-efc0be4d71f2",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "video/mp4",
+                              "duration": 8
+                          },
+                          "preview": {
+                              "componentId": "3863c6a5-ecb8-4e1e-af18-33645454e920",
+                              "hzRevision": "e3c9f712-33a6-4c02-93e0-b08ebe9a8b01",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "video/mp4",
+                              "duration": 8
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/wQ8fuDy3aRb"
+          },
+          "stats": {
+              "remixCount": 10406
+          },
+          "styles": [
+              "gritty",
+              "grunge"
+          ],
+          "segments": [
+              "personal"
+          ],
+          "moods": [
+              "gritty"
+          ],
+          "internalTags": [
+              "CCEX-131502"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:dca5de3a-6415-4c88-bdf5-5f0d5b1494d9",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:52501654-ebbd-57c4-867f-17ce8cc00dd8/rendition?assetType=TEMPLATE&etag=f4f08366f86a4d90a782607bb0d93f22{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:52501654-ebbd-57c4-867f-17ce8cc00dd8/primary?assetType=TEMPLATE&etag=f4f08366f86a4d90a782607bb0d93f22",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:52501654-ebbd-57c4-867f-17ce8cc00dd8/manifest?assetType=TEMPLATE&etag=f4f08366f86a4d90a782607bb0d93f22",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:52501654-ebbd-57c4-867f-17ce8cc00dd8/component?assetType=TEMPLATE&etag=f4f08366f86a4d90a782607bb0d93f22{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:52501654-ebbd-57c4-867f-17ce8cc00dd8?assetType=TEMPLATE&etag=f4f08366f86a4d90a782607bb0d93f22{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:d0117ca3-a385-5e58-b1d5-b6056375bdbd",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:5542a364-d3c4-4c11-9716-ea2cea4356e4",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:5542a364-d3c4-4c11-9716-ea2cea4356e4"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_community_and_ambassadors/8d828c2c-5ecc-5a66-9ad9-1ef1530d3a57",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2025-03-05T03:03:01.437Z",
+          "modifyDate": "2025-03-07T20:28:17.129Z",
+          "name": "8d828c2c-5ecc-5a66-9ad9-1ef1530d3a57",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Blue and Green Branding Tips Instagram Reel"
+          },
+          "etags": "\"7384b7fa2a16437bb1ff03b66864a005\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated",
+              "video"
+          ],
+          "topics": [
+              "brand strategy",
+              "branding tips",
+              "business growth",
+              "gradient",
+              "marketing",
+              "nicte cuevas",
+              "social media engagement",
+              "tips"
+          ],
+          "availabilityDate": "2025-03-07T00:00:00.000Z",
+          "licensingCategory": "premium",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "vendor": "Adobe Express",
+              "submittedBy": "6F941E7567B9038E0A495C9F@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "features": [
+                      "audio"
+                  ],
+                  "task": {
+                      "name": "instagram-reel",
+                      "size": {
+                          "name": "1080x1920px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "cyan",
+                          "coverage": 0.2496,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 11,
+                              "g": 212,
+                              "b": 208
+                          }
+                      },
+                      {
+                          "name": "blue",
+                          "coverage": 0.2764,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 17,
+                              "g": 112,
+                              "b": 199
+                          }
+                      },
+                      {
+                          "name": "light blue",
+                          "coverage": 0.2408,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 12,
+                              "g": 141,
+                              "b": 191
+                          }
+                      },
+                      {
+                          "name": "beige",
+                          "coverage": 0.0999,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 241,
+                              "g": 220,
+                              "b": 196
+                          }
+                      },
+                      {
+                          "name": "turquoise",
+                          "coverage": 0.1333,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 13,
+                              "g": 143,
+                              "b": 195
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "6f76f2e1-431c-4d7c-8b7c-f0cb136c9734",
+                              "hzRevision": "3561e3d9-67b6-4204-805e-420f6d73674a",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "a91a0764-e80b-492b-9cb6-341b8ff1c496",
+                              "hzRevision": "e9213246-2f40-4f1c-b6df-8ee9dd2832aa",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "e693c5f3-09d6-4351-bd56-bd058004783a",
+                              "hzRevision": "b11c2d58-1266-4620-943b-8e3d1e2fdadc",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "video/mp4",
+                              "duration": 12
+                          },
+                          "preview": {
+                              "componentId": "fa8c2f43-32ad-49ca-9fbb-d8acd0885bcb",
+                              "hzRevision": "ed7d7568-ac85-47cd-a55e-3ae2ab8d7738",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "video/mp4",
+                              "duration": 12
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/DDrtI4EiyRb"
+          },
+          "stats": {
+              "remixCount": 3294
+          },
+          "styles": [
+              "bold",
+              "bright"
+          ],
+          "segments": [
+              "non-profit",
+              "personal",
+              "small-business"
+          ],
+          "moods": [
+              "happy",
+              "joyful"
+          ],
+          "internalTags": [
+              "nicte cuevas",
+              "nictecuevas",
+              "2025q1 nicte cuevas"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:8d828c2c-5ecc-5a66-9ad9-1ef1530d3a57",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:d0117ca3-a385-5e58-b1d5-b6056375bdbd/rendition?assetType=TEMPLATE&etag=7384b7fa2a16437bb1ff03b66864a005{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:d0117ca3-a385-5e58-b1d5-b6056375bdbd/primary?assetType=TEMPLATE&etag=7384b7fa2a16437bb1ff03b66864a005",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:d0117ca3-a385-5e58-b1d5-b6056375bdbd/manifest?assetType=TEMPLATE&etag=7384b7fa2a16437bb1ff03b66864a005",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/restricted/urn:aaid:sc:VA6C2:d0117ca3-a385-5e58-b1d5-b6056375bdbd/component?assetType=TEMPLATE&etag=7384b7fa2a16437bb1ff03b66864a005{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:d0117ca3-a385-5e58-b1d5-b6056375bdbd?assetType=TEMPLATE&etag=7384b7fa2a16437bb1ff03b66864a005{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:4808fa3c-431c-55bf-a1cf-01b5b5896bd7",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:327068ba-43e5-46ab-94e2-a21c39c249b8"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_content/21708c5a-ccd8-53df-8265-f2e0c845f9ab",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2025-04-04T21:18:14.394Z",
+          "modifyDate": "2025-04-17T18:30:12.421Z",
+          "name": "21708c5a-ccd8-53df-8265-f2e0c845f9ab",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Green Sustainability Research Project Graph Poster"
+          },
+          "etags": "\"18a49ae0048a40f3805d82946a1143a3\"",
+          "assetType": "Template",
+          "behaviors": [
+              "still"
+          ],
+          "topics": [
+              "business",
+              "carbon footprint",
+              "chart",
+              "climate change",
+              "data analysis",
+              "diagram",
+              "earth",
+              "ecofriendly",
+              "environmental",
+              "ethical",
+              "expert",
+              "project",
+              "research",
+              "strategy",
+              "sustainability"
+          ],
+          "availabilityDate": "2025-04-17T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "vendor": "Adobe Express",
+              "submittedBy": "70375D2566B058C50A495E7E@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "poster",
+                      "size": {
+                          "name": "tabloid"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "dark green",
+                          "coverage": 0.2609,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 42,
+                              "g": 119,
+                              "b": 125
+                          }
+                      },
+                      {
+                          "name": "emerald",
+                          "coverage": 0.0193,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 49,
+                              "g": 122,
+                              "b": 126
+                          }
+                      },
+                      {
+                          "name": "off white",
+                          "coverage": 0.0437,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 218,
+                              "g": 231,
+                              "b": 231
+                          }
+                      },
+                      {
+                          "name": "white",
+                          "coverage": 0.5119,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 246,
+                              "g": 250,
+                              "b": 248
+                          }
+                      },
+                      {
+                          "name": "cyan",
+                          "coverage": 0.1641,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 173,
+                              "g": 204,
+                              "b": 203
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "7e1e69e1-be0b-4570-aac6-4ee9368bd6c6",
+                              "hzRevision": "4d004df0-8951-40a7-9d29-63d5f8ed59c0",
+                              "width": 324,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "6fd54d8d-c3ce-4d6a-8354-0e7faae47db6",
+                              "hzRevision": "3696980a-05a4-4292-9b69-b776fe465cf5",
+                              "width": 776,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/6GifglycESb"
+          },
+          "stats": {
+              "remixCount": 1557
+          },
+          "styles": [
+              "geometric",
+              "professional"
+          ],
+          "segments": [
+              "hed",
+              "personal"
+          ],
+          "moods": [
+              "neutral"
+          ],
+          "internalTags": [
+              "2025 chart feature",
+              "2025 resubmitted net-new"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:21708c5a-ccd8-53df-8265-f2e0c845f9ab",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:4808fa3c-431c-55bf-a1cf-01b5b5896bd7/rendition?assetType=TEMPLATE&etag=18a49ae0048a40f3805d82946a1143a3{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:4808fa3c-431c-55bf-a1cf-01b5b5896bd7/primary?assetType=TEMPLATE&etag=18a49ae0048a40f3805d82946a1143a3",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:4808fa3c-431c-55bf-a1cf-01b5b5896bd7/manifest?assetType=TEMPLATE&etag=18a49ae0048a40f3805d82946a1143a3",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:4808fa3c-431c-55bf-a1cf-01b5b5896bd7/component?assetType=TEMPLATE&etag=18a49ae0048a40f3805d82946a1143a3{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:4808fa3c-431c-55bf-a1cf-01b5b5896bd7?assetType=TEMPLATE&etag=18a49ae0048a40f3805d82946a1143a3{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      },
+      {
+          "id": "urn:aaid:sc:VA6C2:5e8c9873-ef30-5567-a18e-3f36b23c3b47",
+          "parentDirectoryId": "urn:aaid:sc:VA6C2:9a95c444-ed0d-42fb-bfbb-2cb624fbbec6",
+          "ancestorAssetIds": [
+              "urn:aaid:directory:b5accaca-1f2d-4311-aa12-e9c537a8fad8",
+              "urn:aaid:directory:61acb9e9-a107-48e0-9e73-80c8031ede18",
+              "urn:aaid:sc:VA6C2:74c05c10-0945-5dd6-9c3d-22851a3d1903",
+              "urn:aaid:sc:VA6C2:b2b850c0-cab8-48be-89db-78909574db16",
+              "urn:aaid:sc:VA6C2:0fabaa0d-a1f7-4cbd-b603-89c6dc35a48a",
+              "urn:aaid:sc:VA6C2:74c60171-633c-4451-867e-d49e5f4e5884",
+              "urn:aaid:sc:VA6C2:1bb25287-eae8-476e-8dab-5c191e525e61",
+              "urn:aaid:sc:VA6C2:9a95c444-ed0d-42fb-bfbb-2cb624fbbec6"
+          ],
+          "path": "/content/assets/content/approved/ccx/template/ccx_content_partnerships/adee5b26-9ead-554c-b3ed-a38d6688c50f",
+          "contentType": "application/vnd.adobe.hz.express+dcx",
+          "createDate": "2025-04-07T19:14:01.433Z",
+          "modifyDate": "2025-04-07T19:14:01.706Z",
+          "name": "adee5b26-9ead-554c-b3ed-a38d6688c50f",
+          "status": "approved",
+          "dc:title": {
+              "i-default": "Dark Gray and White Art Display Gen AI Background Instagram Story"
+          },
+          "etags": "\"8b01e389251f40c1aeb194c44c3082e9\"",
+          "assetType": "Template",
+          "behaviors": [
+              "animated"
+          ],
+          "topics": [
+              "art",
+              "football",
+              "frame",
+              "genai",
+              "hard in the paint",
+              "real madrid",
+              "soccer"
+          ],
+          "availabilityDate": "2025-04-07T00:00:00.000Z",
+          "licensingCategory": "free",
+          "language": "en-US",
+          "applicableRegions": [
+              "ZZ"
+          ],
+          "attribution": {
+              "creators": [
+                  {
+                      "name": "Min Bae"
+                  }
+              ],
+              "vendor": "Adobe Express",
+              "submittedBy": "13422713641CB3C90A495C79@c0b827b66271908b495fe8.e"
+          },
+          "pages": [
+              {
+                  "task": {
+                      "name": "instagram-story",
+                      "size": {
+                          "name": "1080x1920px"
+                      }
+                  },
+                  "extractedColors": [
+                      {
+                          "name": "white",
+                          "coverage": 0.2774,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 240,
+                              "g": 240,
+                              "b": 241
+                          }
+                      },
+                      {
+                          "name": "black",
+                          "coverage": 0.532,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 23,
+                              "g": 23,
+                              "b": 24
+                          }
+                      },
+                      {
+                          "name": "dark gray",
+                          "coverage": 0.0329,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 69,
+                              "g": 68,
+                              "b": 72
+                          }
+                      },
+                      {
+                          "name": "gray",
+                          "coverage": 0.0785,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 147,
+                              "g": 146,
+                              "b": 152
+                          }
+                      },
+                      {
+                          "name": "off white",
+                          "coverage": 0.0792,
+                          "mode": "RGB",
+                          "value": {
+                              "r": 224,
+                              "g": 222,
+                              "b": 234
+                          }
+                      }
+                  ],
+                  "rendition": {
+                      "image": {
+                          "thumbnail": {
+                              "componentId": "a6430f48-e7d6-4322-8448-d8e53dc8fe05",
+                              "hzRevision": "5c1d1270-1882-49bb-8529-101b6c0c6bfb",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "image/webp"
+                          },
+                          "preview": {
+                              "componentId": "0ea0dca6-5182-43e1-9356-b5c256163353",
+                              "hzRevision": "41139d3c-2a00-4554-9255-a90dac4186f7",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "image/webp"
+                          }
+                      },
+                      "video": {
+                          "thumbnail": {
+                              "componentId": "56216e83-de78-4251-b522-ce78026ba539",
+                              "hzRevision": "b284c0ae-7279-4dc2-93bd-a3cc997daefc",
+                              "width": 281,
+                              "height": 500,
+                              "mediaType": "video/mp4",
+                              "duration": 5
+                          },
+                          "preview": {
+                              "componentId": "32c99966-9da2-4a16-9813-096bb604e8bf",
+                              "hzRevision": "4c57e035-be86-4629-ae5c-217f35c9ac4f",
+                              "width": 675,
+                              "height": 1200,
+                              "mediaType": "video/mp4",
+                              "duration": 5
+                          }
+                      }
+                  }
+              }
+          ],
+          "customLinks": {
+              "branchUrl": "https://adobesparkpost.app.link/9QawD9YLnSb"
+          },
+          "stats": {
+              "remixCount": 2098
+          },
+          "styles": [
+              "bold",
+              "contemporary",
+              "gritty"
+          ],
+          "segments": [
+              "personal"
+          ],
+          "moods": [
+              "gritty",
+              "joyful",
+              "playful"
+          ],
+          "internalTags": [
+              "2025q2 uk real madrid hard in the paint"
+          ],
+          "sourceAssetId": "urn:aaid:sc:VA6C2:adee5b26-9ead-554c-b3ed-a38d6688c50f",
+          "_links": {
+              "http://ns.adobe.com/adobecloud/rel/rendition": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:5e8c9873-ef30-5567-a18e-3f36b23c3b47/rendition?assetType=TEMPLATE&etag=8b01e389251f40c1aeb194c44c3082e9{&page,size,type,fragment}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/primary": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:5e8c9873-ef30-5567-a18e-3f36b23c3b47/primary?assetType=TEMPLATE&etag=8b01e389251f40c1aeb194c44c3082e9",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/manifest": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:5e8c9873-ef30-5567-a18e-3f36b23c3b47/manifest?assetType=TEMPLATE&etag=8b01e389251f40c1aeb194c44c3082e9",
+                  "templated": false,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/adobecloud/rel/component": {
+                  "href": "https://design-assets.adobeprojectm.com/content/download/express/public/urn:aaid:sc:VA6C2:5e8c9873-ef30-5567-a18e-3f36b23c3b47/component?assetType=TEMPLATE&etag=8b01e389251f40c1aeb194c44c3082e9{&revision,component_id}",
+                  "templated": true,
+                  "mode": "id",
+                  "name": "ACP"
+              },
+              "http://ns.adobe.com/ccexpress/rel/similar": {
+                  "href": "https://design-assets.adobeprojectm.com/v3/content/similar/urn:aaid:sc:VA6C2:5e8c9873-ef30-5567-a18e-3f36b23c3b47?assetType=TEMPLATE&etag=8b01e389251f40c1aeb194c44c3082e9{&q,orderBy,limit,filters*,featureFlags,facets,facetLimit,select,interleaveRatio,availabilityStart,availabilityEnd}",
+                  "templated": true,
+                  "name": "ACP"
+              }
+          }
+      }
+  ],
+  "_links": {
+      "next": {
+          "href": "https://express-search.hz.adobe.com/v3/content?collectionId=urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418&queryType=search&limit=10&start=10&availabilityEnd=2025-05-05",
+          "templated": false,
+          "name": "ACP"
+      }
+  },
+  "status": {
+      "httpCode": 200
+  }
+}
