@@ -63,7 +63,7 @@ const assertToggleButton = async (block) => {
   const toggleButton = block.querySelector('.toggle-row');
   expect(toggleButton).to.exist;
   expect(toggleButton.textContent.trim()).to.equal('view all features');
-  
+
   // Test toggle functionality
   toggleButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
   toggleButton.dispatchEvent(new MouseEvent('click', {
@@ -72,7 +72,7 @@ const assertToggleButton = async (block) => {
     view: window,
   }));
   expect(block.querySelectorAll('.additional-row.collapsed').length).to.equal(4);
-  
+
   toggleButton.dispatchEvent(new MouseEvent('click', {
     bubbles: true,
     cancelable: true,
@@ -83,11 +83,11 @@ const assertToggleButton = async (block) => {
 
 describe('Pricing Table', () => {
   let block;
-  
+
   before(async () => {
     block = await setupTest('./mocks/body.html');
   });
-  
+
   afterEach(cleanupTest);
 
   it('should render the correct number of rows', async () => {
@@ -105,11 +105,11 @@ describe('Pricing Table', () => {
 
 describe('Pricing Table Single Section', () => {
   let block;
-  
+
   before(async () => {
     block = await setupTest('./mocks/single-section.html');
   });
-  
+
   afterEach(cleanupTest);
 
   it('should render the correct number of rows', async () => {
