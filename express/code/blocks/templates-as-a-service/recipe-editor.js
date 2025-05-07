@@ -60,8 +60,13 @@ class RecipeEditor extends LitElement {
 
   handleFieldChange(e) {
     const { name, value, type } = e.target;
-    this[name] = type === 'number' ? Number(value) : value;
-    this.form2Recipe();
+    if (name === 'recipe') {
+      this.recipe = value;
+      this.recipe2Form();
+    } else {
+      this[name] = type === 'number' ? Number(value) : value;
+      this.form2Recipe();
+    }
     this.notifyRecipeChanged();
   }
 
@@ -108,6 +113,20 @@ class RecipeEditor extends LitElement {
       font-family: 'Adobe Clean', sans-serif;
     }
 
+    .copied {
+      position: absolute;
+      top: -25px;
+      left: 60px;
+      background-color: #000;
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .copy-button-container {
+      position: relative;
+    }
+
     .recipe {
       display: flex;
       flex-direction: column;
@@ -143,6 +162,7 @@ class RecipeEditor extends LitElement {
     const topics = this.topics ? `topics=${this.topics}` : '';
     const license = this.license ? `license=${this.license}` : '';
     const behaviors = this.behaviors ? `behaviors=${this.behaviors}` : '';
+    const orderBy = this.orderBy ? `orderBy=${this.orderBy}` : '';
     const prefLang = this.prefLang ? `prefLang=${this.prefLang}` : '';
     const prefRegion = this.prefRegion ? `prefRegion=${this.prefRegion}` : '';
     const recipe = [
@@ -152,6 +172,7 @@ class RecipeEditor extends LitElement {
       language,
       license,
       behaviors,
+      orderBy,
       limit,
       collectionId,
       prefLang,
@@ -234,6 +255,14 @@ class RecipeEditor extends LitElement {
     return [infoButton, infoContent];
   }
 
+  copyRecipe() {
+    navigator.clipboard.writeText(this.recipe);
+    this.shadowRoot.querySelector('.copied').classList.remove('hidden');
+    setTimeout(() => {
+      this.shadowRoot.querySelector('.copied').classList.add('hidden');
+    }, 2000);
+  }
+
   willUpdate(changedProperties) {
     if (changedProperties.has('recipe') && this.recipe) {
       // Only update form if recipe changed from outside
@@ -294,6 +323,10 @@ class RecipeEditor extends LitElement {
           .value=${this.recipe}
           @input=${this.handleFieldChange}
         ></textarea>
+        <div class="copy-button-container">
+          <button @click=${this.copyRecipe}>Copy</button>
+          <p class="copied hidden">Copied to clipboard!</p>
+        </div>
       </div>
 
       <form>
@@ -409,7 +442,7 @@ class RecipeEditor extends LitElement {
             <option value="still">Still</option>
             <option value="animated">Animated</option>
             <option value="video">Video</option>
-            <option value="animated+video">Animated + Video</option>
+            <option value="animated,video">Animated + Video</option>
           </select>
         </label>
 
