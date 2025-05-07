@@ -29,6 +29,10 @@
   margin-right: 8px;
 }
 
+.pricing-table .additional-row.collapsed {
+  display: none;
+}
+
 /* links stay links by default in cells */
 .pricing-table .row:not(.row-heading) .col a.button,
 .pricing-table .row:not(.row-heading) .col a.button:hover,
@@ -170,6 +174,7 @@
   .pricing-table.single-section .col-wrapper {
     height: 36px;
   }
+
   .pricing-table.single-section .additional-row .col-2.collapsed,
   .pricing-table.single-section .additional-row .col-3.collapsed {
     display: none;
