@@ -66,6 +66,11 @@ class RecipeEditor extends LitElement {
   }
 
   static styles = css`
+    :host {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
     form {
       display: flex;
       flex-direction: column;
@@ -74,6 +79,8 @@ class RecipeEditor extends LitElement {
       padding: 1rem;
       border-radius: 0.5rem;
       max-width: 30vw;
+      font-family: 'Adobe Clean', sans-serif;
+      font-size: 1rem;
     }
     form label {
       display: flex;
@@ -94,12 +101,33 @@ class RecipeEditor extends LitElement {
       align-self: flex-start;
     }
 
-    h2 {
+    h2,
+    h3,
+    h4 {
       margin: 0px;
+      font-family: 'Adobe Clean', sans-serif;
+    }
+
+    .recipe {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      max-width: 30vw;
     }
 
     textarea[name='recipe'] {
-      width: 100%;
+      padding: 0.5rem;
+      min-height: 100px;
+      font-family: 'Adobe Clean', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      word-break: break-all;
+    }
+    input {
+      font-size: 1rem;
     }
   `;
 
@@ -255,171 +283,168 @@ class RecipeEditor extends LitElement {
       `Available values : AD, AE, AF, AG, AI, AL, AM, AN, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, BG, BH, BI, BJ, BL, BM, BN, BO, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CD, CF, CG, CH, CI, CK, CL, CM, CN, CO, CR, CU, CV, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IQ, IR, IS, IT, JE, JM, JO, JP, KE, KG, KH, KI, KM, KN, KR, KV, KW, KY, KZ, LA, LB, LC, LI, LK, LR, LS, LT, LU, LV, LY, MA, MC, MD, ME, MF, MG, MH, MK, ML, MM, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, MX, MY, MZ, NA, NC, NE, NF, NG, NI, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, PK, PL, PM, PN, PR, PS, PT, PW, PY, QA, RE, RO, RS, RU, RW, SA, SB, SC, SD, SE, SG, SH, SI, SJ, SK, SL, SM, SN, SO, SR, ST, SV, SY, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VE, VG, VI, VN, VU, WF, WS, YE, YT, ZA, ZM, ZW, ZZ`
     );
 
-    return html`<form>
-      <h2>Search Parameters:</h2>
-      <label>
-        Q:
-        <input
-          name="q"
-          type="text"
-          .value=${this.q}
-          @input=${this.handleFieldChange}
-        />
-        ${qInfoButton}
-      </label>
-      ${qInfoContent}
-
-      <label>
-        Collection ID:
-        <input
-          name="collectionId"
-          type="text"
-          title="Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another common is the popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852)."
-          .value=${this.collectionId}
-          @input=${this.handleFieldChange}
-        />
-        ${collectionInfoButton}
-      </label>
-      ${collectionInfoContent}
-
-      <label>
-        Limit:
-        <input
-          name="limit"
-          type="number"
-          .value=${this.limit}
-          @input=${this.handleFieldChange}
-        />
-        ${limitInfoButton}
-      </label>
-      ${limitInfoContent}
-
-      <label>
-        Start:
-        <input
-          name="start"
-          type="number"
-          .value=${this.start}
-          @input=${this.handleFieldChange}
-        />
-        ${startInfoButton}
-      </label>
-      ${startInfoContent}
-
-      <label>
-        Order by:
-        <select
-          name="orderBy"
-          @change=${this.handleFieldChange}
-        >
-          <option value="">Relevancy (Default)</option>
-          <option value="-remixCount">Descending by Remix Count</option>
-          <option value="+remixCount">Ascending by Remix Count</option>
-          <option value="-createDate">
-            Descending by Create Date (Newest first)
-          </option>
-          <option value="+createDate">
-            Ascending by Create Date (Oldest first)
-          </option>
-        </select>
-        ${orderByInfoButton}
-      </label>
-      ${orderByInfoContent}
-
-      <h2>Filters (comma separated):</h2>
-      <label>
-        Language:
-        <input
-          name="language"
-          type="text"
-          .value=${this.language}
-          @input=${this.handleFieldChange}
-        />
-        ${languageInfoButton}
-      </label>
-      ${languageInfoContent}
-
-      <label>
-        Tasks:
-        <input
-          name="tasks"
-          type="text"
-          .value=${this.tasks}
-          @input=${this.handleFieldChange}
-        />
-        ${tasksInfoButton}
-      </label>
-      ${tasksInfoContent}
-
-      <label>
-        Topics:
-        <input
-          name="topics"
-          type="text"
-          .value=${this.topics}
-          @input=${this.handleFieldChange}
-        />
-        ${topicsInfoButton}
-      </label>
-      ${topicsInfoContent}
-
-      <label>
-        Behaviors:
-        <select
-          name="behaviors"
-          @change=${this.handleFieldChange}
-        >
-          <option value="">All (Default)</option>
-          <option value="still">Still</option>
-          <option value="animated">Animated</option>
-          <option value="video">Video</option>
-          <option value="animated+video">Animated + Video</option>
-        </select>
-      </label>
-
-      <label>
-        Licensing Category:
-        <select
-          name="license"
-          @change=${this.handleFieldChange}
-        >
-          <option value="">Mixed (Default)</option>
-          <option value="free">Free only</option>
-          <option value="premium">Premium only</option>
-        </select>
-      </label>
-
-      <h2>Boosting:</h2>
-      <label>
-        Preferred Language Boosting:
-        <input
-          name="prefLang"
-          .value=${this.prefLang}
-          @input=${this.handleFieldChange}
-        />
-        ${prefLangInfoButton}
-      </label>
-      ${prefLangInfoContent}
-      <label>
-        Preferred Region Boosting:
-        <input
-          name="prefRegion"
-          .value=${this.prefRegion}
-          @input=${this.handleFieldChange}
-        />
-        ${prefRegionInfoButton}
-      </label>
-      ${prefRegionInfoContent}
-
-      <label>
-        Recipe:
+    return html`
+      <div class="recipe">
+        <h2>Recipe to Form:</h2>
         <textarea
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
           name="recipe"
           .value=${this.recipe}
           @input=${this.handleFieldChange}
-        />
-      </label>
-    </form> `;
+        ></textarea>
+      </div>
+
+      <form>
+        <h2>Form to Recipe:</h2>
+        <h4>Search Parameters:</h4>
+        <label>
+          Q:
+          <input
+            name="q"
+            type="text"
+            .value=${this.q}
+            @input=${this.handleFieldChange}
+          />
+          ${qInfoButton}
+        </label>
+        ${qInfoContent}
+
+        <label>
+          Collection ID:
+          <input
+            name="collectionId"
+            type="text"
+            title="Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another common is the popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852)."
+            .value=${this.collectionId}
+            @input=${this.handleFieldChange}
+          />
+          ${collectionInfoButton}
+        </label>
+        ${collectionInfoContent}
+
+        <label>
+          Limit:
+          <input
+            name="limit"
+            type="number"
+            .value=${this.limit}
+            @input=${this.handleFieldChange}
+          />
+          ${limitInfoButton}
+        </label>
+        ${limitInfoContent}
+
+        <label>
+          Start:
+          <input
+            name="start"
+            type="number"
+            .value=${this.start}
+            @input=${this.handleFieldChange}
+          />
+          ${startInfoButton}
+        </label>
+        ${startInfoContent}
+
+        <label>
+          Order by:
+          <select name="orderBy" @change=${this.handleFieldChange}>
+            <option value="">Relevancy (Default)</option>
+            <option value="-remixCount">Descending by Remix Count</option>
+            <option value="+remixCount">Ascending by Remix Count</option>
+            <option value="-createDate">
+              Descending by Create Date (Newest first)
+            </option>
+            <option value="+createDate">
+              Ascending by Create Date (Oldest first)
+            </option>
+          </select>
+          ${orderByInfoButton}
+        </label>
+        ${orderByInfoContent}
+
+        <h4>Filters (comma separated):</h4>
+        <label>
+          Language:
+          <input
+            name="language"
+            type="text"
+            .value=${this.language}
+            @input=${this.handleFieldChange}
+          />
+          ${languageInfoButton}
+        </label>
+        ${languageInfoContent}
+
+        <label>
+          Tasks:
+          <input
+            name="tasks"
+            type="text"
+            .value=${this.tasks}
+            @input=${this.handleFieldChange}
+          />
+          ${tasksInfoButton}
+        </label>
+        ${tasksInfoContent}
+
+        <label>
+          Topics:
+          <input
+            name="topics"
+            type="text"
+            .value=${this.topics}
+            @input=${this.handleFieldChange}
+          />
+          ${topicsInfoButton}
+        </label>
+        ${topicsInfoContent}
+
+        <label>
+          Behaviors:
+          <select name="behaviors" @change=${this.handleFieldChange}>
+            <option value="">All (Default)</option>
+            <option value="still">Still</option>
+            <option value="animated">Animated</option>
+            <option value="video">Video</option>
+            <option value="animated+video">Animated + Video</option>
+          </select>
+        </label>
+
+        <label>
+          Licensing Category:
+          <select name="license" @change=${this.handleFieldChange}>
+            <option value="">Mixed (Default)</option>
+            <option value="free">Free only</option>
+            <option value="premium">Premium only</option>
+          </select>
+        </label>
+
+        <h4>Boosting:</h4>
+        <label>
+          Preferred Language Boosting:
+          <input
+            name="prefLang"
+            .value=${this.prefLang}
+            @input=${this.handleFieldChange}
+          />
+          ${prefLangInfoButton}
+        </label>
+        ${prefLangInfoContent}
+        <label>
+          Preferred Region Boosting:
+          <input
+            name="prefRegion"
+            .value=${this.prefRegion}
+            @input=${this.handleFieldChange}
+          />
+          ${prefRegionInfoButton}
+        </label>
+        ${prefRegionInfoContent}
+      </form>
+    `;
   }
 }
 

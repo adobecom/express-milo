@@ -318,6 +318,9 @@ class TAASResults extends LitElement {
       border-radius: 0.5rem;
       max-width: 65vw;
     }
+    h2 {
+      margin: 0;
+    }
   `;
 
   constructor() {
@@ -345,7 +348,7 @@ class TAASResults extends LitElement {
       return html`<div>Loading...</div>`;
     }
     if (!this.results) {
-      return html`<div>Click "Generate" to see results</div>`;
+      return html`<small>Click "Generate" to see results</small>`;
     }
     if (this.results.status.httpCode !== 200) {
       return html`<div>Error: ${this.results.status.httpCode}</div>`;
@@ -362,7 +365,7 @@ class TAASResults extends LitElement {
     const { url, headers } = recipe2ApiQuery(this.recipe);
     return html`
       <div>
-        <h3>API Query for developers debugging:</h3>
+        <h2>API Query: (ignore if you're not a developer)</h2>
         <code>${url} <br />Headers: ${JSON.stringify(headers, null, 2)}</code>
       </div>
     `;
@@ -372,6 +375,7 @@ class TAASResults extends LitElement {
     return html`
       <div id="query">${this.renderQuery()}</div>
       <div id="results">
+        <h2>Results:</h2>
         <button @click=${this.handleGenerate} id="generate-button">
           ${this.loading
             ? 'Generating...'
