@@ -372,10 +372,14 @@ class TAASResults extends LitElement {
   }
 
   render() {
+    const totalResults = this.results?.metadata?.totalHits
+      ? html`Total results: ${this.results?.metadata?.totalHits}`
+      : '';
     return html`
       <div id="query">${this.renderQuery()}</div>
       <div id="results">
         <h2>Results:</h2>
+        ${totalResults}
         <button @click=${this.handleGenerate} id="generate-button">
           ${this.loading
             ? 'Generating...'

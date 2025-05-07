@@ -84,6 +84,7 @@ class RecipeEditor extends LitElement {
       padding: 1rem;
       border-radius: 0.5rem;
       max-width: 30vw;
+      min-width: 340px;
       font-family: 'Adobe Clean', sans-serif;
       font-size: 1rem;
     }
@@ -113,6 +114,10 @@ class RecipeEditor extends LitElement {
       font-family: 'Adobe Clean', sans-serif;
     }
 
+    h4 {
+      padding-top: 1rem;
+    }
+
     .copied {
       position: absolute;
       top: -25px;
@@ -135,6 +140,7 @@ class RecipeEditor extends LitElement {
       padding: 1rem;
       border-radius: 0.5rem;
       max-width: 30vw;
+      min-width: 340px;
     }
 
     textarea[name='recipe'] {
@@ -144,6 +150,7 @@ class RecipeEditor extends LitElement {
       font-size: 1rem;
       line-height: 1.5;
       word-break: break-all;
+      max-width: calc(100% - 1rem);
     }
     input {
       font-size: 1rem;
@@ -220,7 +227,7 @@ class RecipeEditor extends LitElement {
       this.prefLang = params.get('prefLang');
     }
     if (params.has('prefRegion')) {
-      this.prefRegion = params.get('prefRegion');
+      this.prefRegion = params.get('prefRegion').toUpperCase();
     }
     return params;
   }
@@ -293,19 +300,13 @@ class RecipeEditor extends LitElement {
     );
     const [languageInfoButton, languageInfoContent] = this.getInfo(
       'language',
-      `Available values : AR_SA, BN_IN, CS_CZ, DA_DK, DE_DE, EL_GR, EN_US, ES_ES, FIL_PH, FI_FI, FR_FR, HI_IN, ID_ID, IT_IT, I_DEFAULT, JA_JP, KO_KR, MS_MY, NB_NO, NL_NL, PL_PL, PT_BR, RO_RO, RU_RU, SV_SE, TA_IN, TH_TH, TR_TR, UK_UA, VI_VN, ZH_HANS_CN, ZH_HANT_TW`
-    );
-    const [tasksInfoButton, tasksInfoContent] = this.getInfo(
-      'tasks',
-      'Filter by tasks'
-    );
-    const [topicsInfoButton, topicsInfoContent] = this.getInfo(
-      'topics',
-      'Filter by topics'
+      `Available values : ar-SA, bn-IN, cs-CZ, da-DK, de-DE, el-GR, en-US, es-ES, fil-P,fi-FI, fr-FR,hi-IN,
+        id-ID, it-IT, ja-JP, ko-KR, ms-MY, nb-NO, nl-NL, pl-PL, pt-BR, ro-RO, ru-RU, sv-SE, ta-IN, th-TH,
+        tr-TR, uk-UA, vi-VN, zh-Hans-CN, zh-Hant-TW`
     );
     const [prefLangInfoButton, prefLangInfoContent] = this.getInfo(
       'prefLang',
-      'Boost templates that are in this language'
+      'Boost templates that are in this language. Useful when your results have a mix of languages. Same list as the one for language filter.'
     );
     const [prefRegionInfoButton, prefRegionInfoContent] = this.getInfo(
       'prefRegion',
@@ -385,13 +386,13 @@ class RecipeEditor extends LitElement {
           Order by:
           <select name="orderBy" @change=${this.handleFieldChange}>
             <option value="">Relevancy (Default)</option>
-            <option value="-remixCount">Descending by Remix Count</option>
-            <option value="+remixCount">Ascending by Remix Count</option>
+            <option value="-remixCount">Descending Remix Count</option>
+            <option value="+remixCount">Ascending Remix Count</option>
             <option value="-createDate">
-              Descending by Create Date (Newest first)
+              Descending Create Date (New first)
             </option>
             <option value="+createDate">
-              Ascending by Create Date (Oldest first)
+              Ascending Create Date (Old first)
             </option>
           </select>
           ${orderByInfoButton}
@@ -419,9 +420,7 @@ class RecipeEditor extends LitElement {
             .value=${this.tasks}
             @input=${this.handleFieldChange}
           />
-          ${tasksInfoButton}
         </label>
-        ${tasksInfoContent}
 
         <label>
           Topics:
@@ -431,9 +430,7 @@ class RecipeEditor extends LitElement {
             .value=${this.topics}
             @input=${this.handleFieldChange}
           />
-          ${topicsInfoButton}
         </label>
-        ${topicsInfoContent}
 
         <label>
           Behaviors:
