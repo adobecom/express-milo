@@ -50,38 +50,28 @@ function createMetadataMap() {
 
 function createToolData(metadataMap, index, eligible) {
   const prefix = `fork-cta-${index}`;
-  console.log(`${prefix}-icon-frictionless`, eligible && metadataMap[`${prefix}-icon-frictionless`])
   const iconMetadata = (eligible && metadataMap[`${prefix}-icon-frictionless`]) || metadataMap[`${prefix}-icon`];
   const iconTextMetadata = (eligible && metadataMap[`${prefix}-icon-text-frictionless`]) || metadataMap[`${prefix}-icon-text`];
-  const hrefMetadata = (eligible && metadataMap[`${prefix}-link-frictionless`]) || metadataMap[`${prefix}-link`];
-  const textMetadata = (eligible && metadataMap[`${prefix}-text-frictionless`]) || metadataMap[`${prefix}-text`];
+  const hrefMetadata = (eligible && metadataMap[`${prefix}-link-frictionless`]) || metadataMap[`${prefix}-link`] || '';
+  const textMetadata = (eligible && metadataMap[`${prefix}-text-frictionless`]) || metadataMap[`${prefix}-text`] || '';
+
   const iconElement = !iconMetadata || iconMetadata === 'null'
     ? createTag('div', { class: 'mobile-gating-icon-empty' })
     : getIconElementDeprecated(iconMetadata);
 
-  const completeSet = {
-    icon: iconElement,
-    iconText: iconTextMetadata || '',
-    href: hrefMetadata,
-    text: textMetadata,
-  };
-
-  const { href, text, icon, iconText } = completeSet;
-  const aTag = createTag('a', { title: text, href });
-  console.log(completeSet)
-  // Handle mobile-fqa upload special case
-  if (href.toLowerCase().trim() === '#mobile-fqa-upload') {
+  const aTag = createTag('a', { title: textMetadata, href: hrefMetadata });
+  if (hrefMetadata.toLowerCase().trim() === '#mobile-fqa-upload') {
     aTag.addEventListener('click', (e) => {
       e.preventDefault();
       document.getElementById('mobile-fqa-upload').click();
     });
   }
+  aTag.textContent = textMetadata;
 
-  aTag.textContent = text;
   return {
-    icon,
+    icon: iconElement,
     anchor: aTag,
-    iconText,
+    iconText: iconTextMetadata || '',
   };
 }
 
