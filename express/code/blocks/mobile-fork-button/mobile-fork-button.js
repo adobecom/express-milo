@@ -16,10 +16,12 @@ const getTextWidth = (text, font) => {
 function buildAction(entry, buttonType) {
   const wrapper = createTag('div', { class: 'floating-button-inner-row mobile-gating-row' });
   const text = createTag('div', { class: 'mobile-gating-text' });
-  text.textContent = entry.iconText;
-  const a = entry.anchor;
-  a.classList.add(buttonType, 'button', 'mobile-gating-link');
-  wrapper.append(entry.icon, text, a);
+  text.textContent = entry?.iconText;
+  const a = entry?.anchor;
+  if (a) {
+    a.classList.add(buttonType, 'button', 'mobile-gating-link');
+    wrapper.append(entry?.icon || null, text, a);
+  } 
   return wrapper;
 }
 
@@ -27,7 +29,7 @@ function buildMobileGating(block, data) {
   block.children[0].remove();
   const header = createTag('div', {
     class:
-        'mobile-gating-header',
+      'mobile-gating-header',
   });
   header.textContent = data.forkButtonHeader;
   block.append(header, buildAction(data.tools[0], 'accent'), buildAction(data.tools[1], 'outline'));
@@ -48,12 +50,41 @@ function androidCheck() {
   return getMobileOperatingSystem() === 'Android';
 }
 
-function collectFloatingButtonData() {
-  const metadataMap = Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
+function createMetadataMap() {
+  return Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
     if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
     return acc;
   }, {});
+}
+
+function createToolData(metadataMap, index) {
+  const prefix = `fork-cta-${index}`;
+  const iconMetadata = metadataMap[`${prefix}-icon`];
+  const iconTextMetadata = metadataMap[`${prefix}-icon-text`];
+  const hrefMetadata = metadataMap[`${prefix}-link`];
+  const textMetadata = metadataMap[`${prefix}-text`];
+
+  const iconElement = !iconMetadata || iconMetadata === 'null'
+    ? createTag('div', { class: 'mobile-gating-icon-empty' })
+    : getIconElementDeprecated(iconMetadata);
+
+  const aTag = createTag('a', { 
+    title: textMetadata, 
+    href: hrefMetadata 
+  });
+  aTag.textContent = textMetadata;
+
+  return {
+    icon: iconElement,
+    iconText: iconTextMetadata,
+    anchor: aTag
+  };
+}
+
+function collectFloatingButtonData() {
+  const metadataMap = createMetadataMap();
   const getMetadataLocal = (key) => metadataMap[key];
+
   const data = {
     scrollState: 'withLottie',
     showAppStoreBadge: ['on'].includes(getMetadataLocal('show-floating-cta-app-store-badge')?.toLowerCase()),
@@ -72,35 +103,11 @@ function collectFloatingButtonData() {
     live: getMetadataLocal('floating-cta-live'),
     forkButtonHeader: getMetadataLocal('fork-button-header'),
   };
-
   for (let i = 1; i < 3; i += 1) {
-    const prefix = `fork-cta-${i}`;
-    const iconMetadata = getMetadataLocal(`${prefix}-icon`);
-    const iconTextMetadata = getMetadataLocal(`${prefix}-icon-text`);
-    const hrefMetadata = getMetadataLocal(`${prefix}-link`);
-    const textMetadata = getMetadataLocal(`${prefix}-text`);
-    if (!iconMetadata) break;
-    const completeSet = {
-      icon: getIconElementDeprecated(iconMetadata),
-      iconText: iconTextMetadata,
-      href: hrefMetadata,
-      text: textMetadata,
-    };
-
-    if (Object.values(completeSet).every((val) => !!val)) {
-      const {
-        href, text, icon, iconText,
-      } = completeSet;
-      const aTag = createTag('a', { title: text, href });
-      aTag.textContent = text;
-      if (getTextWidth(text, 16) > LONG_TEXT_CUTOFF) {
-        data.longText = true;
-      }
-      data.tools.push({
-        icon,
-        anchor: aTag,
-        iconText,
-      });
+    const toolData = createToolData(metadataMap, i);
+    data.tools.push(toolData);
+    if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {
+      data.longText = true;
     }
   }
 
@@ -121,7 +128,6 @@ export default async function decorate(block) {
   if (audience === 'mobile') {
     block.closest('.section').remove();
   }
-
   const data = collectFloatingButtonData();
   const blockWrapper = await createMultiFunctionButton(block, data, audience);
   const blockLinks = blockWrapper.querySelectorAll('a');

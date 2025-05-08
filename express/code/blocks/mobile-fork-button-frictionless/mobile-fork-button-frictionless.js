@@ -41,11 +41,52 @@ export async function createMultiFunctionButton(block, data, audience) {
   return buttonWrapper;
 }
 
-function collectFloatingButtonData(eligible) {
-  const metadataMap = Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
+function createMetadataMap() {
+  return Array.from(document.head.querySelectorAll('meta')).reduce((acc, meta) => {
     if (meta?.name && !meta.property) acc[meta.name] = meta.content || '';
     return acc;
   }, {});
+}
+
+function createToolData(metadataMap, index, eligible) {
+  const prefix = `fork-cta-${index}`;
+  console.log(`${prefix}-icon-frictionless`, eligible && metadataMap[`${prefix}-icon-frictionless`])
+  const iconMetadata = (eligible && metadataMap[`${prefix}-icon-frictionless`]) || metadataMap[`${prefix}-icon`];
+  const iconTextMetadata = (eligible && metadataMap[`${prefix}-icon-text-frictionless`]) || metadataMap[`${prefix}-icon-text`];
+  const hrefMetadata = (eligible && metadataMap[`${prefix}-link-frictionless`]) || metadataMap[`${prefix}-link`];
+  const textMetadata = (eligible && metadataMap[`${prefix}-text-frictionless`]) || metadataMap[`${prefix}-text`];
+  const iconElement = !iconMetadata || iconMetadata === 'null'
+    ? createTag('div', { class: 'mobile-gating-icon-empty' })
+    : getIconElementDeprecated(iconMetadata);
+
+  const completeSet = {
+    icon: iconElement,
+    iconText: iconTextMetadata || '',
+    href: hrefMetadata,
+    text: textMetadata,
+  };
+
+  const { href, text, icon, iconText } = completeSet;
+  const aTag = createTag('a', { title: text, href });
+  console.log(completeSet)
+  // Handle mobile-fqa upload special case
+  if (href.toLowerCase().trim() === '#mobile-fqa-upload') {
+    aTag.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('mobile-fqa-upload').click();
+    });
+  }
+
+  aTag.textContent = text;
+  return {
+    icon,
+    anchor: aTag,
+    iconText,
+  };
+}
+
+function collectFloatingButtonData(eligible) {
+  const metadataMap = createMetadataMap();
   const getMetadataLocal = (key) => metadataMap[key];
   const data = {
     scrollState: 'withLottie',
@@ -65,43 +106,14 @@ function collectFloatingButtonData(eligible) {
     live: getMetadataLocal('floating-cta-live'),
     forkButtonHeader: getMetadataLocal('fork-button-header'),
   };
-
+ 
   for (let i = 1; i < 3; i += 1) {
-    const prefix = `fork-cta-${i}`;
-    const iconMetadata = (eligible && getMetadataLocal(`${prefix}-icon-frictionless`)) || getMetadataLocal(`${prefix}-icon`);
-    const iconTextMetadata = (eligible && getMetadataLocal(`${prefix}-icon-text-frictionless`)) || getMetadataLocal(`${prefix}-icon-text`);
-    const hrefMetadata = (eligible && getMetadataLocal(`${prefix}-link-frictionless`)) || getMetadataLocal(`${prefix}-link`);
-    const textMetadata = (eligible && getMetadataLocal(`${prefix}-text-frictionless`)) || getMetadataLocal(`${prefix}-text`);
-    if (!iconMetadata) break;
-    const completeSet = {
-      icon: getIconElementDeprecated(iconMetadata),
-      iconText: iconTextMetadata,
-      href: hrefMetadata,
-      text: textMetadata,
-    };
-
-    if (Object.values(completeSet).every((val) => !!val)) {
-      const {
-        href, text, icon, iconText,
-      } = completeSet;
-      const aTag = createTag('a', { title: text, href });
-      if (href.toLowerCase().trim() === '#mobile-fqa-upload') {
-        // mobile-fork-button-frictionless pairs with mobile-fqa
-        // temporary solution before a nicer way for cross-block interactions is found
-        aTag.addEventListener('click', (e) => {
-          e.preventDefault();
-          document.getElementById('mobile-fqa-upload').click();
-        });
-      }
-      aTag.textContent = text;
-      if (getTextWidth(text, 16) > LONG_TEXT_CUTOFF) {
+    const toolData = createToolData(metadataMap, i, eligible);
+    if (toolData) {
+      data.tools.push(toolData);
+      if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {
         data.longText = true;
       }
-      data.tools.push({
-        icon,
-        anchor: aTag,
-        iconText,
-      });
     }
   }
   return data;
