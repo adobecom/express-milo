@@ -3086,17 +3086,15 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
 }
 
 
-
 main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-bottom: 0;
 }
-.template-x.horizontal.fullwidth.tabbed {
+main .template-x.horizontal.fullwidth.tabbed {
   max-width: 1440px; 
   max-width: 1440px;
   margin: auto 16px;
-  padding: 24px 0px ;
+  padding: 24px 0px 16px 0px ;
 }
-
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs{
    gap: 16px;
@@ -3130,7 +3128,6 @@ main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel
   padding-right: 0;
   max-width: 100%;
   max-height: 200px;
-  padding-bottom: 0;
   box-sizing: content-box;
 }
 main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel-container {
