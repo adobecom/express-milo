@@ -3124,7 +3124,7 @@ main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper {
 }
 
 main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel-platform {
-  margin-left: -12px;
+  margin-left: -10px;
   padding-right: 0;
   max-width: 100%;
   max-height: 200px;
