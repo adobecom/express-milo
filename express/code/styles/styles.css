@@ -1257,10 +1257,11 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 .ax-grid-container {
   margin-left: var(--ax-grid-margin);
   margin-right: var(--ax-grid-margin);
-  gap: var(--ax-grid-gutter);
-  display: flex;
-  flex-wrap: wrap;
   box-sizing: border-box;
+  display: flex;
+  gap: var(--ax-grid-gutter);
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .ax-grid-col-1  { width: calc(var(--ax-grid-column-width) * 1 + var(--ax-grid-gutter) * 0); }
