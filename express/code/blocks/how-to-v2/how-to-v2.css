@@ -89,10 +89,9 @@
 .how-to-v2 .steps-content .steps-content-backg {
   position: absolute;
   width: 100%;
-  top: -24vw;
   z-index: -1;
   height: 100%;
-  transform: scale(0.9);
+  transform: scale(1.5);
 }
 
 .how-to-v2 ol.steps {
@@ -196,11 +195,25 @@ main .section > .content:has( + .how-to-v2) h2 {
     padding-left: 20px;
   }
 
-  .how-to-v2 .steps-content .steps-content-backg {
-    left: -90px;
-    width: 67%;
-    transform: scale(0.9);
-    top: -68px;
-  }
+}
+
+.how-to-v2 .media-wrapper {
+  flex: 1 1 50%;
+  position: relative;
+  padding: 40px;  /* Adjust this value to control the white space */
+}
+
+.how-to-v2 .steps-content-backg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.how-to-v2 .media-container {
+  position: relative;
+  z-index: 1;
 }
 

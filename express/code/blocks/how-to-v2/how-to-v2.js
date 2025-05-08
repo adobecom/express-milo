@@ -95,19 +95,28 @@ export default function decorate(block) {
   if (hasBackground) {
     // So that background image goes beyond container
     rows.shift();
+    const mediaWrapper = createTag('div', { class: 'media-wrapper' });
     const stepsContentBackground = createTag('div', { class: 'steps-content-backg' });
     const stepsContentBackgroundImg = createTag('img', { class: 'steps-content-backg-image' });
-    stepsContent.append(stepsContentBackground);
     stepsContentBackground.append(stepsContentBackgroundImg);
     stepsContentBackgroundImg.src = backgroundURL;
-  }
+    mediaWrapper.append(stepsContentBackground);
 
-  const mediaData = rows.shift();
-  const mediaEl = mediaData.querySelector('picture') || mediaData.querySelector('a');
-  block.removeChild(block.children[0]);
-  const mediaContainerEl = createTag('div', { class: 'media-container' });
-  mediaContainerEl.append(mediaEl);
-  stepsContent.append(mediaContainerEl);
+    const mediaContainerEl = createTag('div', { class: 'media-container' });
+    const mediaData = rows.shift();
+    const mediaEl = mediaData.querySelector('picture') || mediaData.querySelector('a');
+    block.removeChild(block.children[0]);
+    mediaContainerEl.append(mediaEl);
+    mediaWrapper.append(mediaContainerEl);
+    stepsContent.append(mediaWrapper);
+  } else {
+    const mediaContainerEl = createTag('div', { class: 'media-container' });
+    const mediaData = rows.shift();
+    const mediaEl = mediaData.querySelector('picture') || mediaData.querySelector('a');
+    block.removeChild(block.children[0]);
+    mediaContainerEl.append(mediaEl);
+    stepsContent.append(mediaContainerEl);
+  }
 
   block.append(stepsContent);
   buildAccordion(block, rows, stepsContent);
