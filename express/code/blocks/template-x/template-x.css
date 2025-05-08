@@ -3191,6 +3191,10 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
     width: 100%;
     bottom: 0;
   }
+
+  main .template-x.horizontal.tabbed.fullwidth .carousel-fader-right{
+    margin-left: 0px;
+  }
  }
 
  @media (min-width: 1440px) {
