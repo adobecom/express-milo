@@ -3090,8 +3090,6 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
 main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-bottom: 0;
 }
-
-
 .template-x.horizontal.fullwidth.tabbed {
   max-width: 1440px; 
   max-width: 1440px;
@@ -3101,11 +3099,10 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs{
-  gap: 16px;
+   gap: 16px;
    width: min-content;
    background: transparent;
    position: relative;
-  
  }
 
  main .template-x.horizontal.tabbed.fullwidth .template-tabs button {
