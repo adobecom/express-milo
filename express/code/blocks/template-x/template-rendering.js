@@ -246,12 +246,13 @@ function renderCTA(branchUrl) {
   return btnEl;
 }
 
-function renderCTALink(branchUrl) {
+function renderCTALink(branchUrl, template) {
   const linkEl = createTag('a', {
     href: `${branchUrl}${mv}${sdid}${source}${action}`,
     class: 'cta-link',
     tabindex: '-1',
   });
+  linkEl.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
   return linkEl;
 }
 
@@ -472,7 +473,7 @@ function renderHoverWrapper(template) {
     source = `&source=${props.source}` || '';
     action = `&action=${props.action}` || '';
     cta = renderCTA(template.customLinks.branchUrl);
-    ctaLink = renderCTALink(template.customLinks.branchUrl);
+    ctaLink = renderCTALink(template.customLinks.branchUrl, template);
   }
 
   cta.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
