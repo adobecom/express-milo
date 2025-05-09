@@ -1,4 +1,4 @@
-import { getLibs, fixIcons, readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, fixIcons, readBlockConfig, addTempWrapperDeprecated, convertToInlineSVG } from '../../scripts/utils.js';
 import { sendEventToAnalytics, textToName } from '../../scripts/instrument.js';
 
 let createTag;
@@ -25,8 +25,13 @@ function decorateButton(block, toggle) {
   }
 
   if (icons.length > 0) {
-    icons.forEach((icon) => {
-      iconsWrapper.append(icon);
+    icons.forEach(async (icon) => {
+      if (icon.src.endsWith('.svg')) {
+        const svg = await convertToInlineSVG(icon);
+        iconsWrapper.append(svg);
+      } else {
+        iconsWrapper.append(icon);
+      }
     });
   }
 
@@ -137,6 +142,13 @@ function decorateSectionMetadata(section) {
         section.setAttribute(`data-${key}`, meta[key]);
       }
     });
+  }
+  const toggleText = section.querySelector('.section-metadata strong');
+  if (toggleText) {
+    const text = toggleText.textContent.trim();
+    if (text.includes('Toggle') || text.includes('toggle')) {
+      section.classList.add('toggle');
+    }
   }
 }
 
