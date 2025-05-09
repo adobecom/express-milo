@@ -62,7 +62,7 @@ export function recipe2ApiQuery(recipe) {
   params.set('queryType', 'search');
   convertFilterParams(params);
   const headers = extractHeaderParams(params);
-  return { url: `${base}?${params.toString()}`, headers };
+  return { url: `${base}?${decodeURIComponent(params.toString())}`, headers };
 }
 
 /**
