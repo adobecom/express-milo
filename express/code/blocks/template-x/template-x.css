@@ -3090,7 +3090,7 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-bottom: 0;
 }
 main .template-x.horizontal.fullwidth.tabbed {
-  max-width: 1440px;
+  max-width: var(--block-wd-max-width);
   margin: auto  var(--spacing-300);
   padding: var(--spacing-400) 0px var(--spacing-300) 0px ;
 }
