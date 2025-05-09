@@ -80,6 +80,7 @@
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
   --block-lg-max-width: 1024px;
+  --block-wd-max-width: 1440px; 
 
   /* Spacing */
   --spacing-100: 8px;
