@@ -919,7 +919,7 @@ main.with-holiday-templates-banner {
   gap: 16px;
 }
 
-.template-x .toolbar-wrapper.with-box-shadow {
+.template-x:not(.blade-carousel) .toolbar-wrapper.with-box-shadow {
   box-shadow: 0 4px 8px 2px rgb(102 102 102 / 10%);
 }
 
@@ -2809,6 +2809,10 @@ nav ol.templates-breadcrumbs li:not(:first-child):before {
   .template-x.fullwidth.with-categories-list .template-x-inner-wrapper {
     min-height: 600px;
     padding-left: 56px;
+  }
+  
+  .template-x.fullwidth.with-categories-list.blade-carousel .template-x-inner-wrapper {
+    min-height: auto;
   }
 
   .template-x.horizontal .carousel-container {
