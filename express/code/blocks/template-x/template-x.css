@@ -3090,17 +3090,17 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
   margin-bottom: 0;
 }
 main .template-x.horizontal.fullwidth.tabbed {
-  max-width: 1440px; 
   max-width: 1440px;
-  margin: auto 16px;
-  padding: 24px 0px 16px 0px ;
+  margin: auto  var(--spacing-300);
+  padding: var(--spacing-400) 0px var(--spacing-300) 0px ;
 }
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs{
-   gap: 16px;
+   gap:  var(--spacing-300);
    width: min-content;
    background: transparent;
    position: relative;
+   padding-bottom: var(--spacing-100);
  }
 
  main .template-x.horizontal.tabbed.fullwidth .template-tabs button {
@@ -3127,8 +3127,8 @@ main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel
   margin-left: -10px;
   padding-right: 0;
   max-width: 100%;
-  max-height: 200px;
-  box-sizing: content-box;
+  max-height: calc(200px + 2*var(--spacing-400));
+ 
 }
 main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel-container {
   margin-bottom: 0;
@@ -3149,7 +3149,7 @@ main .template-x.horizontal.tabbed.fullwidth .template-tabs button:nth-child(1){
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs button.template-tab-button {
   margin: 0;
-  padding: 8px;
+  padding: var(--spacing-100);
 }
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs button.template-tab-button:first-of-type{
@@ -3161,26 +3161,41 @@ main .template-x.horizontal.tabbed.fullwidth .media-wrapper video {
 }
 
 main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
-  margin-top: 24px;
+  margin-top: var(--spacing-300);
   margin-bottom: 0px;
 }
 
 @media (min-width: 768px) {
   main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
-    margin-top: 24px;
+    margin-top:  var(--spacing-400);
     margin-bottom: 0px;
   }
 
   main .template-x.horizontal.tabbed.fullwidth {
-     margin: auto 32px;
+     margin: auto var(--spacing-500)
+  }
+
+  main .template-x.horizontal.tabbed.fullwidth .template-tabs {
+    padding-bottom: 0;
+  }
+
+  main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper {
+    float: right;
+    position: absolute;
+    right: 0;
+    margin-top: 0;
+    top: 150px;
+  }
+  main .template-x.horizontal.tabbed.fullwidth .text-wrapper{
+    max-width: 696px;
   }
 }
 
 @media (min-width: 1280px) {
   main .template-x.horizontal.tabbed.fullwidth {
-      margin-left: 40px;
-      margin-right: 40px;
-      padding-bottom: 40px
+      margin-left: var(--spacing-600);
+      margin-right: var(--spacing-600);
+      padding-bottom: var(--spacing-600);
   }
 
   main .template-x.horizontal.tabbed.fullwidth .template-tabs::after{
@@ -3191,6 +3206,12 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
     width: 100%;
     bottom: 0;
   }
+
+  main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper {
+    position: relative;
+    top:  unset;
+    right: unset;
+  } 
 
   main .template-x.horizontal.tabbed.fullwidth .carousel-fader-right{
     margin-left: 0px;
