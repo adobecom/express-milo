@@ -47,7 +47,7 @@ export function extractHeaderParams(params) {
     params.delete('prefLang');
   }
   if (params.get('prefRegion')) {
-    headers['x-express-ims-region-code'] = params.get('prefRegion');
+    headers['x-express-pref-region-code'] = params.get('prefRegion');
     params.delete('prefRegion');
   }
   return headers;
