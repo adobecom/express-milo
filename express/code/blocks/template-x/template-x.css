@@ -3124,8 +3124,8 @@ main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper {
 }
 
 main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel-platform {
-  margin-left: -10px;
-  padding-right: 0;
+  padding-left: 0px;
+  padding-right: 0px;
   max-width: 100%;
   max-height: calc(200px + 2*var(--spacing-400));
  
@@ -3189,15 +3189,11 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
   main .template-x.horizontal.tabbed.fullwidth .text-wrapper{
     max-width: 696px;
   }
-}
-
-@media (min-width: 1280px) {
-  main .template-x.horizontal.tabbed.fullwidth {
-      margin-left: var(--spacing-600);
-      margin-right: var(--spacing-600);
-      padding-bottom: var(--spacing-600);
+  
+  main .template-x.horizontal.tabbed.fullwidth .carousel-container {
+    margin-left: 0;
+    margin-right: 0;
   }
-
   main .template-x.horizontal.tabbed.fullwidth .template-tabs::after{
     content: '';
     position: absolute;
@@ -3205,6 +3201,15 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
     border-radius: 1.5px;
     width: 100%;
     bottom: 0;
+  }
+
+}
+
+@media (min-width: 1280px) {
+  main .template-x.horizontal.tabbed.fullwidth {
+      margin-left: var(--spacing-600);
+      margin-right: var(--spacing-600);
+      padding-bottom: var(--spacing-600);
   }
 
   main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper {
@@ -3215,6 +3220,9 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
 
   main .template-x.horizontal.tabbed.fullwidth .carousel-fader-right{
     margin-left: 0px;
+  }
+  main .template-x.horizontal.tabbed.fullwidth .text-wrapper{
+    max-width: unset;
   }
  }
 

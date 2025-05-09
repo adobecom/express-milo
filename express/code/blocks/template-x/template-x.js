@@ -1651,7 +1651,16 @@ function renderFallbackMsgWrapper(block, { fallbackMsg }) {
   }
 }
 
-async function handleTabClick(block, props, templatesWrapper, tabsWrapper, tabBtn, task, index, tabConfigs) {
+async function handleTabClick(
+  block,
+  props,
+  templatesWrapper,
+  tabsWrapper,
+  tabBtn,
+  task,
+  index,
+  tabConfigs,
+) {
   templatesWrapper.style.opacity = 0;
   const {
     templates: newTemplates,
@@ -1749,14 +1758,32 @@ async function buildTemplateList(block, props, type = []) {
 
         if (props.filters.tasks === task) {
           tabBtn.classList.add('active');
-          activeTabIndex = index
+          activeTabIndex = index;
         }
-        tabBtn.addEventListener('click', () => handleTabClick(block, props, templatesWrapper, tabsWrapper, tabBtn, task, index, tabConfigs), { passive: true });
+        tabBtn.addEventListener('click', () => handleTabClick(
+          block,
+          props,
+          templatesWrapper,
+          tabsWrapper,
+          tabBtn,
+          task,
+          index,
+          tabConfigs,
+        ), { passive: true });
       });
-      
+
       if (activeTabIndex < 0 && tabBtns.length > 0) {
         tabBtns[0].classList.add('active');
-        await handleTabClick(block, props, templatesWrapper, tabsWrapper, tabBtns[0], taskNames[0][0][0], 0, tabConfigs);
+        await handleTabClick(
+          block,
+          props,
+          templatesWrapper,
+          tabsWrapper,
+          tabBtns[0],
+          taskNames[0][0][0],
+          0,
+          tabConfigs,
+        );
       }
 
       document.dispatchEvent(new CustomEvent('linkspopulated', { detail: tabBtns }));
