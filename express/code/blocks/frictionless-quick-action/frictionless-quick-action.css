@@ -1,3 +1,8 @@
+:root {
+    --frictionless-quick-action-video-width: 444px;
+    --frictionless-quick-action-video-height: 455px;
+}
+
 .frictionless-quick-action {
     padding: 40px 20px;
     max-width: none;
@@ -52,13 +57,18 @@
     flex-wrap: wrap;
 }
 
+.frictionless-quick-action .fqa-container .button-container.hero-animation-overlay {
+    width: var(--frictionless-quick-action-video-width);
+    min-height: var(--frictionless-quick-action-video-height);
+}
+
 .frictionless-quick-action .fqa-container > div:nth-child(2) {
     margin-top: 26px;
 }
 
 .frictionless-quick-action video,
 .frictionless-quick-action img:not(.icon) {
-    max-width: 444px;
+    max-width: var(--frictionless-quick-action-video-width);
 }
 
 .frictionless-quick-action .dropzone-container {
