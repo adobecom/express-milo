@@ -53,6 +53,10 @@
     position: relative;
 }
 
+.cta-carousel .card:focus-within {
+    border: 2px var(--color-info-accent) solid;
+}
+
 .cta-carousel .card.coming-soon {
     pointer-events: none;
 }
@@ -238,6 +242,7 @@
     position: absolute;
     height: 100%;
     width: 100%;
+    z-index: 9;
 }
 
 .cta-carousel .card .card-sleeve .links-wrapper a:nth-of-type(1):not(.clickable-overlay) {
