@@ -1,0 +1,12 @@
+.ax-grid-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ax-grid-demo .bar {
+  background-color: aqua;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
