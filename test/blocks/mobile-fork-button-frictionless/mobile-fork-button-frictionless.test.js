@@ -9,7 +9,7 @@ import { buildAutoBlocks } from '../../../express/code/scripts/utils.js';
 
 const imports = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
-  import('../../../express/code/blocks/mobile-fork-button/mobile-fork-button.js'),
+  import('../../../express/code/blocks/mobile-fork-button-frictionless/mobile-fork-button-frictionless.js'),
 ]);
 const { default: decorate } = imports[1];
 
@@ -17,7 +17,7 @@ function setDocumentMetadata(includeForkCta2 = true) {
   const metadata = {
     'floating-cta-live': 'Y',
     'show-floating-cta': 'yes',
-    'mobile-floating-cta': 'mobile-fork-button',
+    'mobile-floating-cta': 'mobile-fork-button-frictionless',
     'desktop-floating-cta': 'floating-button',
     'main-cta-link': 'https://www.adobe.com/express/create',
     'main-cta-text': 'Get the full experience in the app.',
@@ -44,7 +44,7 @@ function setDocumentMetadata(includeForkCta2 = true) {
   });
 }
 
-describe('Mobile Fork Button', () => {
+describe('Mobile Fork Button Frictionless', () => {
   beforeEach(async () => {
     window.isTestEnv = true;
     window.hlx = {};
