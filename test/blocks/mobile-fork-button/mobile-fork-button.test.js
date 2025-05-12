@@ -27,8 +27,6 @@ function setDocumentMetadata(includeForkCta2 = true) {
     'fork-cta-1-icon-text': 'Adobe Express',
     'floating-cta-device-and-ram-check': 'no',
     'fallback-text': '((mobile-gating-fallback-text))',
-    'show-floating-cta': 'Yes',
-
   };
 
   if (includeForkCta2) {

@@ -21,7 +21,7 @@ function buildAction(entry, buttonType) {
   if (a) {
     a.classList.add(buttonType, 'button', 'mobile-gating-link');
     wrapper.append(entry?.icon || null, text, a);
-  } 
+  }
   return wrapper;
 }
 
@@ -68,16 +68,16 @@ function createToolData(metadataMap, index) {
     ? createTag('div', { class: 'mobile-gating-icon-empty' })
     : getIconElementDeprecated(iconMetadata);
 
-  const aTag = createTag('a', { 
-    title: textMetadata, 
-    href: hrefMetadata 
+  const aTag = createTag('a', {
+    title: textMetadata,
+    href: hrefMetadata,
   });
   aTag.textContent = textMetadata;
 
   return {
     icon: iconElement,
     iconText: iconTextMetadata,
-    anchor: aTag
+    anchor: aTag,
   };
 }
 

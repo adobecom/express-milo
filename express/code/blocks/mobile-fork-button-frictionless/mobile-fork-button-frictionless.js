@@ -96,7 +96,7 @@ function collectFloatingButtonData(eligible) {
     live: getMetadataLocal('floating-cta-live'),
     forkButtonHeader: getMetadataLocal('fork-button-header'),
   };
- 
+
   for (let i = 1; i < 3; i += 1) {
     const toolData = createToolData(metadataMap, i, eligible);
     if (toolData) {
