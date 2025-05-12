@@ -47,7 +47,7 @@ function initToggleTriggers(parent) {
       }
 
       if (entry.target === rightTrigger) {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting || isAtRightmostScroll(platform)) {
           rightControl.classList.add('arrow-hidden');
           platform.classList.remove('right-fader');
         } else {
@@ -63,6 +63,10 @@ function initToggleTriggers(parent) {
   slideObserver.observe(leftTrigger);
   slideObserver.observe(rightTrigger);
   // todo: should unobserve triggers where/when appropriate...
+}
+
+function isAtRightmostScroll(element) {
+  return element.scrollLeft + element.clientWidth >= element.scrollWidth;
 }
 
 function onCarouselCSSLoad(selector, parent, options) {
@@ -95,6 +99,14 @@ function onCarouselCSSLoad(selector, parent, options) {
   faderLeft.append(arrowLeft);
   faderRight.append(arrowRight);
   parent.append(container);
+
+  platform.addEventListener('scroll', () => {
+    if (isAtRightmostScroll(platform)) {
+      container.querySelector('.carousel-arrow-right').style.display = 'none';
+    } else {
+      container.querySelector('.carousel-arrow-right').style.display = 'block';
+    }
+  });
 
   // Scroll the carousel by clicking on the controls
   const moveCarousel = (increment) => {
