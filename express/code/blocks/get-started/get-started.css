@@ -27,6 +27,10 @@
   scrollbar-width: none;
 }
 
+.get-started .tablist-container::-webkit-scrollbar {
+  display: none;
+}
+
 .get-started [role='tablist'] {
   display: flex;
   gap: 4px;
@@ -36,10 +40,6 @@
   background-color: var(--color-white);
   margin: 0 auto;
   width: max-content;
-}
-
-.get-started [role='tablist']::-webkit-scrollbar {
-  display: none;
 }
 
 .get-started [role='tab'] {
