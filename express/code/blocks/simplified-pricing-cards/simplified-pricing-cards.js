@@ -159,12 +159,11 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
 }
 
 async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow) {
-  const accessbilePriceAira = await replaceKeyArray([
+  const { priceReduced, priceWas, priceNow } = await replaceKeyArray([
     'price-reduced',
     'price-was',
     'price-now',
   ], getConfig());
-  console.log(accessbilePriceAira);
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
   if (response.price?.length > 6) {
@@ -174,27 +173,27 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
   if (basePrice.innerHTML !== '') {
     price.classList.add('price-active');
 
-    const priceReduced = createTag('p');
-    
+    const priceReducedElement = createTag('p');
+
     const reducedText = createTag('span', { class: 'visually-hidden' });
-    reducedText.textContent = accessbilePriceAira[0];
-    priceReduced.appendChild(reducedText);
-    
+    reducedText.textContent = priceReduced;
+    priceReducedElement.appendChild(reducedText);
+
     const del = createTag('del');
     const wasText = createTag('span', { class: 'visually-hidden' });
-    wasText.textContent = accessbilePriceAira[1];
+    wasText.textContent = priceWas;
     del.appendChild(wasText);
     del.appendChild(basePrice.cloneNode(true));
-    
+
     const ins = createTag('ins');
     const nowText = createTag('span', { class: 'visually-hidden' });
-    nowText.textContent = accessbilePriceAira[2];
+    nowText.textContent = priceNow;
     ins.appendChild(nowText);
     ins.appendChild(price.cloneNode(true));
-    
-    priceReduced.appendChild(del);
-    priceReduced.appendChild(ins);
-    priceRow.append(priceReduced, priceSuffix);
+
+    priceReducedElement.appendChild(del);
+    priceReducedElement.appendChild(ins);
+    priceRow.append(priceReducedElement, priceSuffix);
   } else {
     price.classList.remove('price-active');
     priceRow.append(basePrice, price, priceSuffix);
@@ -223,7 +222,7 @@ async function createPricingSection(
     );
     handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
     handleRawPrice(price, basePrice, response, priceSuffix, priceRow, placeholderArr);
-   
+
     handleTooltip(pricingArea);
     handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
     pricingArea.prepend(priceRow);
