@@ -293,7 +293,7 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
 }
 
 async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow) {
-  const { priceReduced, priceWas, priceNow } = await replaceKeyArray([
+  const [priceReduced, priceWas, priceNow] = await replaceKeyArray([
     'price-reduced',
     'price-was',
     'price-now',
