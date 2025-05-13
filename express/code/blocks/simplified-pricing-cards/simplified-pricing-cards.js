@@ -168,13 +168,27 @@ function handleRawPrice(price, basePrice, response, priceSuffix, priceRow, place
   if (basePrice.innerHTML !== '') {
     price.classList.add('price-active');
 
-    const priceReduced = document.createElement('p');
-    priceReduced.innerHTML = '<span class="visually-hidden">Price reduced! </span> <del><span class="visually-hidden">was </span>' +
-    basePrice.outerHTML + '</del> <ins><span class="visually-hidden">now </span>' + 
-    price.outerHTML + '</ins>';
-
+    const priceReduced = createTag('p');
+    
+    const reducedText = createTag('span', { class: 'visually-hidden' });
+    reducedText.textContent = 'Price reduced!';
+    priceReduced.appendChild(reducedText);
+    
+    const del = createTag('del');
+    const wasText = createTag('span', { class: 'visually-hidden' });
+    wasText.textContent = 'was ';
+    del.appendChild(wasText);
+    del.appendChild(basePrice.cloneNode(true));
+    
+    const ins = createTag('ins');
+    const nowText = createTag('span', { class: 'visually-hidden' });
+    nowText.textContent = 'now ';
+    ins.appendChild(nowText);
+    ins.appendChild(price.cloneNode(true));
+    
+    priceReduced.appendChild(del);
+    priceReduced.appendChild(ins);
     priceRow.append(priceReduced, priceSuffix);
- 
   } else {
     price.classList.remove('price-active');
     priceRow.append(basePrice, price, priceSuffix);
@@ -203,7 +217,7 @@ async function createPricingSection(
       response,
     );
     handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-    handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+    handleRawPrice(price, basePrice, response, priceSuffix, priceRow, placeholderArr);
    
     handleTooltip(pricingArea);
     handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
