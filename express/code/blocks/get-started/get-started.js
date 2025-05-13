@@ -1,4 +1,4 @@
-import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated, convertToInlineSVG } from '../../scripts/utils.js';
 
 let createTag;
 
@@ -14,7 +14,11 @@ export default async function init(el) {
   if (!section) return;
   section.classList.add('get-started');
 
-  const tabList = el.querySelector('ol');
+  const [headlineContainer, tabListContainer] = el.querySelectorAll(':scope > div');
+  headlineContainer.querySelector('h2').classList.add('headline');
+  tabListContainer.classList.add('tablist-container');
+
+  const tabList = tabListContainer.querySelector('ol');
   tabList.setAttribute('role', 'tablist');
   const listItems = [...tabList.querySelectorAll('li')];
 
@@ -44,7 +48,9 @@ export default async function init(el) {
     });
     const icon = listItem.querySelector('.icon');
     const match = icon && iconRegex.exec(icon.className);
-    match?.[1] && icon.append(getIconElementDeprecated(match[1]));
+    if (match?.[1]) {
+      convertToInlineSVG(getIconElementDeprecated(match[1])).then((svg) => icon.append(svg));
+    }
     tab.append(icon, listItem.textContent);
     activeTab ||= tab;
     tab.addEventListener('click', () => {
