@@ -67,6 +67,7 @@
 .how-to-v2 picture img {
   border-radius: 16px;
   overflow: hidden;
+  max-width: 533px;
 }
 
 .how-to-v2 em {
