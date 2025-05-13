@@ -15,7 +15,7 @@ export default async function init(el) {
   section.classList.add('get-started');
 
   const [headlineContainer, tabListContainer] = el.querySelectorAll(':scope > div');
-  headlineContainer.querySelector('h2').classList.add('headline');
+  headlineContainer.classList.add('headline-container');
   tabListContainer.classList.add('tablist-container');
 
   const tabList = tabListContainer.querySelector('ol');

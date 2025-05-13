@@ -14,7 +14,7 @@
   position: relative;
 }
 
-.get-started .headline {
+.get-started .headline-container h2 {
   font-size: var(--body-font-size-xl);
   font-weight: 700;
   text-align: center;
@@ -22,19 +22,18 @@
 }
 
 .get-started .tablist-container {
-  margin-left: var(--ax-grid-margin);
-  margin-right: var(--ax-grid-margin);
+  padding: 4px var(--ax-grid-margin);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .get-started [role='tablist'] {
   display: flex;
   gap: 4px;
-  padding: 4px;
+  padding: 0;
   border-radius: 8px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
   background-color: var(--color-white);
-  overflow-x: auto;
-  scrollbar-width: none;
   margin: 0 auto;
   width: max-content;
 }
