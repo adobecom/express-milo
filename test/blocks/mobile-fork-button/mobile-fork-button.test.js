@@ -63,6 +63,11 @@ describe('Mobile Fork Button', () => {
     });
   });
 
+  afterEach(() => {
+    window.placeholders = undefined;
+    document.body.innerHTML = '';
+  });
+
   it('renders button with both fork-cta-1 and fork-cta-2 metadata', async () => {
     setDocumentMetadata(true);
     await buildAutoBlocks();
