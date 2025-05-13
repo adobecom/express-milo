@@ -210,6 +210,7 @@ main .section > .content:has( + .how-to-v2) h2 {
   .how-to-v2 .steps-content .steps-content-backg {
     transform: scale(1.3);
     top: -100px;
+    width: 110%;
   }
 }
 
