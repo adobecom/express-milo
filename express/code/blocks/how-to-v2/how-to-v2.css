@@ -96,7 +96,7 @@ main .section:has(.how-to-v2) .content em {
   flex-direction: column;
   padding: 0 16px;
   position: relative;
-  margin-top: 20px;
+  margin-top: 4px;
   margin-bottom: 40px;
 }
 
@@ -110,7 +110,7 @@ main .section:has(.how-to-v2) .content em {
 }
 
 .how-to-v2 ol.steps {
-  margin: 6px 0 0;
+  margin: 14px 0 0;
   padding: 0;
 }
 
