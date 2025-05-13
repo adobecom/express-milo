@@ -318,6 +318,7 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
     wasText.textContent = priceWas;
     del.appendChild(wasText);
     del.appendChild(basePrice.cloneNode(true));
+
     const ins = createTag('ins');
     const nowText = createTag('span', { class: 'visually-hidden' });
     nowText.textContent = priceNow;
