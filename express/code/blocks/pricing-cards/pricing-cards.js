@@ -292,13 +292,45 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
   }
 }
 
-function handleRawPrice(price, basePrice, response) {
+async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow) {
+  const accessbilePriceAira = await replaceKeyArray([
+    'price-reduced',
+    'price-was',
+    'price-now',
+  ], getConfig());
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
+  if (response.price?.length > 6) {
+    price.classList.add('long-price');
+    basePrice.classList.add('long-price');
+  }
   if (basePrice.innerHTML !== '') {
     price.classList.add('price-active');
+
+    const priceReduced = createTag('p');
+    
+    const reducedText = createTag('span', { class: 'visually-hidden' });
+    reducedText.textContent = accessbilePriceAira[0];
+    priceReduced.appendChild(reducedText);
+    
+    const del = createTag('del');
+    const wasText = createTag('span', { class: 'visually-hidden' });
+    wasText.textContent = accessbilePriceAira[1];
+    del.appendChild(wasText);
+    del.appendChild(basePrice.cloneNode(true));
+    
+    const ins = createTag('ins');
+    const nowText = createTag('span', { class: 'visually-hidden' });
+    nowText.textContent = accessbilePriceAira[2];
+    ins.appendChild(nowText);
+    ins.appendChild(price.cloneNode(true));
+    
+    priceReduced.appendChild(del);
+    priceReduced.appendChild(ins);
+    priceRow.append(priceReduced, priceSuffix);
   } else {
     price.classList.remove('price-active');
+    priceRow.append(basePrice, price, priceSuffix);
   }
 }
 
@@ -391,8 +423,6 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const basePrice = createTag('span', { class: 'pricing-base-price' });
   const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
 
-  priceRow.append(basePrice, price, priceSuffix);
-
   const response = await fetchPlanOnePlans(priceEl?.href);
   if (response.term && groupID) {
     BlockMediator.set(groupID, response.term);
@@ -405,8 +435,8 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
 
   const isPremiumCard = response.ooAvailable || false;
   const savePercentElem = pricingArea.querySelector('.card-offer');
-  handleRawPrice(price, basePrice, response);
   handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
+  handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
   handleTooltip(pricingArea);
   handleSavePercentage(savePercentElem, isPremiumCard, response);
   handleSpecialPromo(specialPromo, isPremiumCard, response, legacyVersion);

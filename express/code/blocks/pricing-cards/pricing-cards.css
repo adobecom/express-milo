@@ -575,3 +575,8 @@ End border style variants
     height: unset;
   }
 }
+
+.pricing-cards ins,
+.pricing-cards del {
+  text-decoration: none;
+}
