@@ -96,6 +96,7 @@ main .section:has(.how-to-v2) .content em {
   padding: 0 24px;
   position: relative;
   margin-top: 20px;
+  margin-bottom: 40px;
 }
 
 .how-to-v2 .steps-content .steps-content-backg {
