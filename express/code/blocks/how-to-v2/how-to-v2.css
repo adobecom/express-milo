@@ -68,6 +68,7 @@
   border-radius: 16px;
   overflow: hidden;
   max-width: 533px;
+  width: 100%;
 }
 
 main .section:has(.how-to-v2) .content em {
