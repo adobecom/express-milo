@@ -94,7 +94,7 @@ main .section:has(.how-to-v2) .content em {
 .how-to-v2 .steps-content {
   display: flex;
   flex-direction: column;
-  padding: 0 24px;
+  padding: 0 16px;
   position: relative;
   margin-top: 20px;
   margin-bottom: 40px;
