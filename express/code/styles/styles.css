@@ -1225,3 +1225,7 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 .marquee.light.xxl-button a:not(.con-button) {
   text-decoration: underline;
 }
+
+.visually-hidden {
+  position:absolute; left:-9999px;
+}

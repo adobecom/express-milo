@@ -158,7 +158,13 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
   }
 }
 
-function handleRawPrice(price, basePrice, response, priceSuffix, priceRow, placeholderArr) {
+async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow) {
+  const accessbilePriceAira = await replaceKeyArray([
+    'price-reduced',
+    'price-was',
+    'price-now',
+  ], getConfig());
+  console.log(accessbilePriceAira);
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
   if (response.price?.length > 6) {
@@ -171,18 +177,18 @@ function handleRawPrice(price, basePrice, response, priceSuffix, priceRow, place
     const priceReduced = createTag('p');
     
     const reducedText = createTag('span', { class: 'visually-hidden' });
-    reducedText.textContent = 'Price reduced!';
+    reducedText.textContent = accessbilePriceAira[0];
     priceReduced.appendChild(reducedText);
     
     const del = createTag('del');
     const wasText = createTag('span', { class: 'visually-hidden' });
-    wasText.textContent = 'was ';
+    wasText.textContent = accessbilePriceAira[1];
     del.appendChild(wasText);
     del.appendChild(basePrice.cloneNode(true));
     
     const ins = createTag('ins');
     const nowText = createTag('span', { class: 'visually-hidden' });
-    nowText.textContent = 'now ';
+    nowText.textContent = accessbilePriceAira[2];
     ins.appendChild(nowText);
     ins.appendChild(price.cloneNode(true));
     
@@ -195,7 +201,6 @@ function handleRawPrice(price, basePrice, response, priceSuffix, priceRow, place
   }
 }
 
- 
 async function createPricingSection(
   pricingArea,
   ctaGroup,

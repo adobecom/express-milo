@@ -644,6 +644,7 @@ main .section>.simplified-pricing-cards-wrapper {
     }
 }
 
-.simplified-pricing-cards .visually-hidden {
-    position:absolute; left:-9999px;
+.simplified-pricing-cards ins,
+.simplified-pricing-cards del {
+  text-decoration: none;
 }
