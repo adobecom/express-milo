@@ -11,6 +11,7 @@
 
 .get-started {
   padding-top: 40px;
+  position: relative;
 }
 
 .get-started .headline {
@@ -100,8 +101,9 @@
     font-size: var(--body-font-size-l );
   }
   .section.get-started [role='tabpanel'] {
-    position: relative;
     margin: -28px var(--ax-grid-margin) 0 var(--ax-grid-margin);
-    z-index: -1;
+  }
+  .get-started {
+    z-index: 1;
   }
 }
