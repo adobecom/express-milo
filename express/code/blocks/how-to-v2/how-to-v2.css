@@ -51,7 +51,7 @@
   font-weight: 400;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.21s ease-out;
+  transition: max-height 0.3s ease-out;
 }
 
 .how-to-v2 ol li .detail-text {
