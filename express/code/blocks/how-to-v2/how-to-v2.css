@@ -95,6 +95,7 @@ main .section:has(.how-to-v2) .content em {
   flex-direction: column;
   padding: 0 24px;
   position: relative;
+  margin-top: 20px;
 }
 
 .how-to-v2 .steps-content .steps-content-backg {
