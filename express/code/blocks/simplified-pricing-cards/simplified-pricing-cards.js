@@ -158,20 +158,30 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
   }
 }
 
-function handleRawPrice(price, basePrice, response) {
+function handleRawPrice(price, basePrice, response, priceSuffix, priceRow, placeholderArr) {
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
-  if (basePrice.innerHTML !== '') {
-    price.classList.add('price-active');
-  } else {
-    price.classList.remove('price-active');
-  }
   if (response.price?.length > 6) {
     price.classList.add('long-price');
     basePrice.classList.add('long-price');
   }
+  if (basePrice.innerHTML !== '') {
+    price.classList.add('price-active');
+
+    const priceReduced = document.createElement('p');
+    priceReduced.innerHTML = '<span class="visually-hidden">Price reduced! </span> <del><span class="visually-hidden">was </span>' +
+    basePrice.outerHTML + '</del> <ins><span class="visually-hidden">now </span>' + 
+    price.outerHTML + '</ins>';
+
+    priceRow.append(priceReduced, priceSuffix);
+ 
+  } else {
+    price.classList.remove('price-active');
+    priceRow.append(basePrice, price, priceSuffix);
+  }
 }
 
+ 
 async function createPricingSection(
   pricingArea,
   ctaGroup,
@@ -192,12 +202,11 @@ async function createPricingSection(
       placeholderArr,
       response,
     );
-    handleRawPrice(price, basePrice, response);
     handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
+    handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+   
     handleTooltip(pricingArea);
     handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
-
-    priceRow.append(basePrice, price, priceSuffix);
     pricingArea.prepend(priceRow);
     priceEl?.parentNode?.remove();
     pricingSuffixTextElem?.remove();

@@ -195,11 +195,14 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 .simplified-pricing-cards .pricing-base-price,
-.simplified-pricing-cards .pricing-base-price>*,
+.simplified-pricing-cards .pricing-base-price>*
+.simplified-pricing-cards .pricing-base-price del *,
 .simplified-pricing-cards .pricing-price,
-.simplified-pricing-cards .pricing-price>* {
+.simplified-pricing-cards .pricing-price>*
+.simplified-pricing-cards .pricing-price ins * {
     font-size: 18px;
     font-weight: 700;
+    text-decoration: none;
 
 }
 
@@ -220,23 +223,21 @@ main .section>.simplified-pricing-cards-wrapper {
     font-size: 18px;
 }
 
-.simplified-pricing-cards .pricing-base-price.long-price>strong,
-.simplified-pricing-cards .pricing-price.long-price>strong {
+.simplified-pricing-cards .pricing-base-price.long-price strong,
+.simplified-pricing-cards .pricing-price.long-price strong {
     font-size: var(--header-size)
 }
 
-
-.simplified-pricing-cards .pricing-base-price>strong {
+.simplified-pricing-cards .pricing-base-price strong {
     text-decoration: line-through;
     padding-right: 4px;
     font-size: var(--header-size);
 }
 
-.simplified-pricing-cards .pricing-price>strong {
+.simplified-pricing-cards .pricing-price strong {
     padding-right: 4px;
     padding-left: 4px;
     font-size: var(--header-size);
-;
 }
 
 .pricing-cards-wrapper+.content .button-container {
@@ -641,4 +642,8 @@ main .section>.simplified-pricing-cards-wrapper {
     .simplified-pricing-cards .pricing-footer div{
         width: unset;
     }
+}
+
+.simplified-pricing-cards .visually-hidden {
+    position:absolute; left:-9999px;
 }
