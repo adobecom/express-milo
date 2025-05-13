@@ -217,7 +217,7 @@ export default async function init(el) {
   const rows = Array.from(el.children);
   let sectionItem = 0;
   const viewAllFeatures = await replaceKey('view-all-features', getConfig());
-  const ariaLabelForCheckIcon = await replaceKey('aria-label-pricing-icon-check', getConfig()) || 'yeeees';
+  const ariaLabelForCheckIcon = await replaceKey('aria-label-pricing-icon-check', getConfig()) || 'yes';
   const ariaLabelForCrossIcon = await replaceKey('aria-label-pricing-icon-cross', getConfig()) || 'no';
 
   const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon}></span>`;
