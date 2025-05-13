@@ -9,6 +9,10 @@
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
 }
 
+.get-started {
+  padding-top: 40px;
+}
+
 .get-started .headline {
   font-size: var(--body-font-size-xl);
   font-weight: 700;
