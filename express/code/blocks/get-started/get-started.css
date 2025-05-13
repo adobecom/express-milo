@@ -32,6 +32,7 @@
   padding: 4px;
   border-radius: 8px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  background-color: var(--color-white);
   overflow-x: auto;
   scrollbar-width: none;
   margin: 0 auto;
