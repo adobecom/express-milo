@@ -18,6 +18,10 @@ export default async function init(el) {
     cta.classList.add('cta');
     [...cta.querySelectorAll('a')].forEach((a) => {
       a.classList.add('button', 'primary');
+      const parent = a.parentElement;
+      if (parent.tagName === 'P' && parent.firstChild === parent.lastChild) {
+        parent.replaceWith(a);
+      }
     });
   });
 }
