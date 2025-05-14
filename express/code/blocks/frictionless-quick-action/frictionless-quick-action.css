@@ -204,3 +204,10 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
         height: 1000px;
     }
 }
+
+@media (max-width: 320px) {
+    .frictionless-quick-action .fqa-container p {
+        width: 300px;
+        margin: auto;
+    }
+}
