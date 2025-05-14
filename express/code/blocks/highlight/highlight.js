@@ -5,6 +5,7 @@ export default async function decorate(block) {
     row.classList.add('icon-row');
 
     row.setAttribute('role', 'listitem');
+    row.setAttribute('tabindex', '0');
 
     const textDiv = row.children[1];
     if (textDiv) {
@@ -15,7 +16,7 @@ export default async function decorate(block) {
 
       const img = row.querySelector('img');
       if (img) {
-        img.setAttribute('alt', textContent);
+        img.setAttribute('role', 'presentation');
       }
     }
 
