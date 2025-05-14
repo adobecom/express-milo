@@ -1,20 +1,23 @@
-.section.get-started [role='tabpanel'].hide {
+.section.get-started-section [role='tabpanel'].hide {
   display: none;
 }
-.section.get-started [role='tabpanel'] {
+.section.get-started-section [role='tabpanel'] {
   margin: 20px var(--ax-grid-margin) 0 var(--ax-grid-margin);
   box-sizing: border-box;
   background: #f8f8f8;
   border-radius: 16px;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  padding: 24px 16px;
 }
 
 .get-started {
   padding-top: 40px;
+  padding-left: var(--ax-grid-margin);
+  padding-right: var(--ax-grid-margin);
   position: relative;
 }
 
-.get-started .headline-container h2 {
+.get-started .get-started-headline-container h2 {
   font-size: var(--body-font-size-xl);
   font-weight: 700;
   text-align: center;
@@ -22,9 +25,14 @@
 }
 
 .get-started .tablist-container {
-  padding: 4px var(--ax-grid-margin);
+  padding: 4px 0;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
   overflow-x: auto;
   scrollbar-width: none;
+  width: max-content;
+  max-width: 100%;
+  margin: auto;
 }
 
 .get-started .tablist-container::-webkit-scrollbar {
@@ -35,10 +43,8 @@
   display: flex;
   gap: 4px;
   padding: 0;
-  border-radius: 8px;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
   background-color: var(--color-white);
-  margin: 0 auto;
+  margin: 0;
   width: max-content;
 }
 
@@ -100,8 +106,9 @@
   .get-started [role='tab'] {
     font-size: var(--body-font-size-l );
   }
-  .section.get-started [role='tabpanel'] {
+  .section.get-started-section [role='tabpanel'] {
     margin: -28px var(--ax-grid-margin) 0 var(--ax-grid-margin);
+    padding: 64px 32px 48px;
   }
   .get-started {
     z-index: 1;

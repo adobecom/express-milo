@@ -12,10 +12,10 @@ export default async function init(el) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const section = findSection(el);
   if (!section) return;
-  section.classList.add('get-started');
+  section.classList.add('get-started-section');
 
   const [headlineContainer, tabListContainer] = el.querySelectorAll(':scope > div');
-  headlineContainer.classList.add('headline-container');
+  headlineContainer.classList.add('get-started-headline-container');
   tabListContainer.classList.add('tablist-container');
 
   const tabList = tabListContainer.querySelector('ol');

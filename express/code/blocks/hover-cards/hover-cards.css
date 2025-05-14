@@ -1,5 +1,4 @@
 .hover-cards .headline-container {
-  padding-left: var(--ax-grid-margin);
   padding-bottom: 32px;
 }
 
@@ -17,7 +16,7 @@
 }
 
 .hover-cards .scroll-container {
-  padding: 4px var(--ax-grid-margin);
+  padding: 4px 4px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -30,6 +29,8 @@
   display: flex;
   gap: 16px;
   align-items: center;
+  margin: auto;
+  width: max-content;
 }
 
 .hover-cards .card {
@@ -41,6 +42,7 @@
   align-items: center;
   gap: 12px;
   min-width: 260px;
+  background-color: var(--color-white);
 }
 
 .hover-cards .card:hover {
@@ -57,13 +59,14 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px; 
-  padding: 0 0 0 16px;
+  padding: 0 16px 16px;
   box-sizing: border-box;
   width: 100%;
 }
 
 .hover-cards .card .cta .button {
   white-space: nowrap;
+  margin: 0;
 }
 
 .hover-cards .card .cta p {
@@ -89,7 +92,6 @@
     padding-bottom: 8px;
   }
   .hover-cards .headline-container {
-    padding-left: var(--ax-grid-margin);
     padding-bottom: 20px;
   }
   .hover-cards .card {
@@ -102,6 +104,6 @@
     padding-bottom: 36px;
   }
   .hover-cards .card {
-    min-width: 373px;
+    min-width: 401px;
   }
 }
