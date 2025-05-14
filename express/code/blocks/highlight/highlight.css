@@ -1,8 +1,8 @@
 .highlight {
   margin: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
@@ -29,6 +29,7 @@
 
 @media (min-width: 768px) {
   .highlight {
+    display: flex;
     flex-direction: row;
     align-items: center;
     width: auto;
