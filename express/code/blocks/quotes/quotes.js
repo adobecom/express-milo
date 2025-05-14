@@ -302,8 +302,13 @@ export default async function decorate($block) {
     $quoteDetails.append($quoteComment);
 
     const $review = $quoteSelected.children[0];
-
-    $quoteComment.append($review.textContent);
+    const $blockquote = createTag('blockquote');
+    const $p = createTag('p');
+    const $q = createTag('q');
+    $q.textContent = $review.textContent;
+    $p.appendChild($q);
+    $blockquote.appendChild($p);
+    $quoteComment.append($blockquote);
 
     const authorDescription = $quoteSelected.children[1].textContent;
 

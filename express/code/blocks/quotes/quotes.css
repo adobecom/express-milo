@@ -140,6 +140,14 @@
   padding-bottom: 0;
 }
 
+.quotes.singular .quote-comment p {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: left;
+  line-height: initial;
+}
+
 .quotes .quote {
   box-sizing: border-box;
   border-radius: 20px;
