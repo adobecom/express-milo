@@ -60,7 +60,7 @@
   }
 
   .highlight .icon-row + .icon-row {
-    padding-left: 20px;
+    padding-left: 10px;
   }
 
   .highlight > :first-child {
@@ -75,5 +75,8 @@
 @media (min-width: 900px) {
   .highlight {
     padding: 12px 40px;
+  }
+  .highlight .icon-row + .icon-row {
+    padding-left: 20px;
   }
 }
