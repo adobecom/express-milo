@@ -47,7 +47,7 @@
 
 .hover-cards .card:hover {
   --hover-img: none;
-  background: var(--hover-img) no-repeat center / 100% auto;
+  background: var(--hover-img) #FFF 50% / cover no-repeat;
 }
 
 .hover-cards .card p {
