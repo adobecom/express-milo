@@ -31,6 +31,14 @@ function pickRandomFromArray(arr) {
   return arr[Math.floor(arr.length * Math.random())];
 }
 
+function createQuoteContent($card) {
+  const $blockquote = createTag('blockquote', { class: 'content' });
+  const $p = createTag('p', { class: 'inner-content' });
+  $p.textContent = $card.firstElementChild.textContent;
+  $blockquote.appendChild($p);
+  $card.firstElementChild.replaceWith($blockquote);
+}
+
 async function createQuotesRatings({
   sheet,
   isCarouselVariant = false,
@@ -303,7 +311,7 @@ export default async function decorate($block) {
 
     const $review = $quoteSelected.children[0];
     const $blockquote = createTag('blockquote');
-    const $p = createTag('p'); 
+    const $p = createTag('p');
     $p.textContent = $review.textContent;
     $blockquote.appendChild($p);
     $quoteComment.append($blockquote);
@@ -460,12 +468,4 @@ export default async function decorate($block) {
       createQuoteContent($card);
     });
   }
-}
-
-function createQuoteContent($card) {
-  const $blockquote = createTag('blockquote', { class: 'content' });
-  const $p = createTag('p', { class: 'inner-content' });
-  $p.textContent = $card.firstElementChild.textContent;
-  $blockquote.appendChild($p);
-  $card.firstElementChild.replaceWith($blockquote);
 }
