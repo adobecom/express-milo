@@ -37,9 +37,7 @@
     flex-direction: row;
     align-items: center;
     width: auto;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    margin: 20px;
+    padding: 12px 32px;
     flex: 1;
   }
 
