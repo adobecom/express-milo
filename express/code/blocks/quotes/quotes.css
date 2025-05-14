@@ -837,12 +837,12 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
 }
 
 
-.quotes .quote .content {
+.quotes .quote blockquote.content {
   text-align: center;
   margin: 0;
 }
 
-.quotes .quote .content .inner-content {
+.quotes .quote blockquote.content .inner-content {
   text-align: left;
   margin: 0;
   line-height: 20px;
