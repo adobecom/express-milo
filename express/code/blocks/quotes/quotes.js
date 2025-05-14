@@ -303,10 +303,8 @@ export default async function decorate($block) {
 
     const $review = $quoteSelected.children[0];
     const $blockquote = createTag('blockquote');
-    const $p = createTag('p');
-    const $q = createTag('q');
-    $q.textContent = $review.textContent;
-    $p.appendChild($q);
+    const $p = createTag('p'); 
+    $p.textContent = $review.textContent;
     $blockquote.appendChild($p);
     $quoteComment.append($blockquote);
 
