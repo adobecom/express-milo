@@ -140,6 +140,14 @@
   padding-bottom: 0;
 }
 
+.quotes.singular .quote-comment p {
+  margin: 0;
+  font-size: 22px;
+  font-weight: var(--heading-font-weight);
+  text-align: left;
+  line-height: initial;
+}
+
 .quotes .quote {
   box-sizing: border-box;
   border-radius: 20px;
@@ -834,4 +842,17 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: 40px;
   }
+}
+
+
+.quotes .quote blockquote.content {
+  text-align: center;
+  margin: 0;
+}
+
+.quotes .quote blockquote.content .inner-content {
+  text-align: left;
+  margin: 0;
+  line-height: 20px;
+  font-size: var(--body-font-size-m);
 }
