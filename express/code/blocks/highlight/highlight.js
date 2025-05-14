@@ -1,19 +1,19 @@
 export default async function decorate(block) {
-  console.log('block', block);
   const rows = Array.from(block.children);
 
   rows.slice(0).forEach((row) => {
     row.classList.add('icon-row');
-
     row.setAttribute('role', 'listitem');
-    row.setAttribute('tabindex', '0');
 
     const textDiv = row.children[1];
     if (textDiv) {
-      textDiv.classList.add('text');
-      const textContent = textDiv.textContent.trim();
-
-      row.setAttribute('aria-label', textContent);
+      // Create an h3 element
+      const h3 = document.createElement('h3');
+      h3.classList.add('text');
+      h3.textContent = textDiv.textContent.trim();
+      h3.setAttribute('aria-label', h3.textContent);
+      h3.setAttribute('tabindex', '0');
+      textDiv.replaceWith(h3);
 
       const img = row.querySelector('img');
       if (img) {
