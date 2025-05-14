@@ -32,10 +32,13 @@ function handleToggleMore(btn) {
   }
 }
 
-function handleHeading(headingRow, headingCols) {
+function handleHeading(headingRow, headingCols, rowCount) {
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
-
+  const parent = headingRow.parentElement;
+  parent.setAttribute('role', 'grid');
+  parent.setAttribute('aria-rowcount', rowCount);
+  parent.setAttribute('aria-colcount', headingCols.length);
   headingCols.forEach(async (col) => {
     col.classList.add('col-heading');
     const elements = col.children;
@@ -128,10 +131,14 @@ function handleSection(sectionParams) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
     rowCols[0].setAttribute('role', 'rowheader');
+    rowCols[0].setAttribute('aria-colindex', index + 1);
+    rowCols[0].setAttribute('aria-label', 'rowheader');
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
   } else {
     row.classList.add('section-row');
+    row.setAttribute('role', 'row');
+    row.setAttribute('aria-rowindex', index + 1);
     rowCols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
 
@@ -213,7 +220,7 @@ export default async function init(el) {
 
   const blockId = getId();
   el.id = `pricing-table-${blockId + 1}`;
-  el.setAttribute('role', 'table');
+  el.setAttribute('role', 'grid');
   const visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
   const rows = Array.from(el.children);
   let sectionItem = 0;
@@ -244,7 +251,8 @@ export default async function init(el) {
       cols.forEach((col, cdx) => {
         col.dataset.colIndex = cdx + 1;
         col.classList.add('col', `col-${cdx + 1}`);
-        col.setAttribute('role', 'cell');
+        col.setAttribute('role', cdx === 0 ? 'rowheader' : 'gridcell');
+        col.setAttribute('aria-colindex', cdx + 1);
       });
 
       if (isSingleSectionVariant && isAdditional && cols.length > 1) {
@@ -332,7 +340,7 @@ export default async function init(el) {
     }
   }
 
-  handleHeading(rows[0], headingChildren);
+  handleHeading(rows[0], headingChildren, rows.length);
   assignEvents(el);
 
   const handleResize = () => {
