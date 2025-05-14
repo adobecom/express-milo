@@ -63,3 +63,9 @@
     margin-right: auto;
   }
 }
+
+@media (min-width: 900px) {
+  .highlight {
+    padding: 12px 40px;
+  }
+}
