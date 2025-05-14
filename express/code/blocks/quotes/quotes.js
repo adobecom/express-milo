@@ -31,12 +31,12 @@ function pickRandomFromArray(arr) {
   return arr[Math.floor(arr.length * Math.random())];
 }
 
-function createQuoteContent($card) {
-  const $blockquote = createTag('blockquote', { class: 'content' });
+function createQuoteContent(textContent, addContentClass = false) {
+  const $blockquote = createTag('blockquote', { class: addContentClass ? 'content' : '' });
   const $p = createTag('p', { class: 'inner-content' });
-  $p.textContent = $card.firstElementChild.textContent;
+  $p.textContent = textContent;
   $blockquote.appendChild($p);
-  $card.firstElementChild.replaceWith($blockquote);
+  return $blockquote;
 }
 
 async function createQuotesRatings({
@@ -309,12 +309,9 @@ export default async function decorate($block) {
     const $quoteComment = createTag('div', { class: 'quote-comment' });
     $quoteDetails.append($quoteComment);
 
-    const $review = $quoteSelected.children[0];
-    const $blockquote = createTag('blockquote');
-    const $p = createTag('p');
-    $p.textContent = $review.textContent;
-    $blockquote.appendChild($p);
-    $quoteComment.append($blockquote);
+    $quoteComment.append(createQuoteContent(
+      $quoteSelected.firstElementChild.textContent,
+    ));
 
     const authorDescription = $quoteSelected.children[1].textContent;
 
@@ -403,8 +400,8 @@ export default async function decorate($block) {
         $author.appendChild($authorContent);
       }
 
-      createQuoteContent($card);
-
+      const $blockquote = createQuoteContent($card.firstElementChild.textContent, true);
+      $card.firstElementChild.replaceWith($blockquote);
       // Move author before content
       if ($card.children.length > 1) {
         $card.insertBefore($card.children[1], $card.firstElementChild);
@@ -465,7 +462,8 @@ export default async function decorate($block) {
         $author.appendChild($authorContent);
       }
 
-      createQuoteContent($card);
+      const $blockquote = createQuoteContent($card.firstElementChild.textContent, true);
+      $card.firstElementChild.replaceWith($blockquote);
     });
   }
 }
