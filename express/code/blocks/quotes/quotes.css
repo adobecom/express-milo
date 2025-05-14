@@ -835,3 +835,16 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     margin-left: 40px;
   }
 }
+
+
+.quotes .quote .content {
+  text-align: center;
+  margin: 0;
+}
+
+.quotes .quote .content .inner-content {
+  text-align: left;
+  margin: 0;
+  line-height: 20px;
+  font-size: var(--body-font-size-m);
+}

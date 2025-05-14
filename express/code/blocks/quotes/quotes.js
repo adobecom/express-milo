@@ -391,7 +391,12 @@ export default async function decorate($block) {
         $authorContent.appendChild($authorSummary);
         $author.appendChild($authorContent);
       }
-      $card.firstElementChild.classList.add('content');
+
+      const $blockquote = createTag('blockquote', { class: 'content' });
+      const $p = createTag('p', { class: 'inner-content' });
+      $p.textContent = $card.firstElementChild.textContent;
+      $blockquote.appendChild($p);
+      $card.firstElementChild.replaceWith($blockquote);
 
       // Move author before content
       if ($card.children.length > 1) {
@@ -452,7 +457,12 @@ export default async function decorate($block) {
         // Append the author content container to author
         $author.appendChild($authorContent);
       }
-      $card.firstElementChild.classList.add('content');
+
+      const $blockquote = createTag('blockquote', { class: 'content' });
+      const $p = createTag('p', { class: 'inner-content' });
+      $p.textContent = $card.firstElementChild.textContent;
+      $blockquote.appendChild($p);
+      $card.firstElementChild.replaceWith($blockquote);
     });
   }
 }
