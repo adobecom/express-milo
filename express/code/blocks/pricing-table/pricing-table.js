@@ -111,9 +111,7 @@ function handleSection(sectionParams) {
     row,
     index,
     allRows,
-    rowCols,
-    isToggle,
-    firstSection,
+    rowCols, 
   } = sectionParams;
 
   const previousRow = allRows[index - 1];
@@ -195,8 +193,13 @@ const getId = (function idSetups() {
 }());
 
 let headerCols;
+let globalRows;
+let visibleCount;
+let globalIsSingleSectionVariant;
+let viewAllFeatures;
+let globalSectionRows;
 
-function handleSingleSectionVariant({ row, sectionItem, viewAllFeatures, createTag }) {
+function handleSingleSectionVariant({ row, sectionItem}) {
   const viewAllText = viewAllFeatures ?? 'View all features';
   const isFirstSection = sectionItem === 4;
 
@@ -234,13 +237,8 @@ function handleSingleSectionVariant({ row, sectionItem, viewAllFeatures, createT
   row.appendChild(toggleBtn);
 }
 
-function createToggleRow({
-  isAdditional,
-  viewAllFeatures,
-  createTag
-}) { 
+function createToggleRow() { 
   const toggleRow = createTag('button', { class: 'toggle-row' });
-  if (!isAdditional) toggleRow.classList.add('desktop-hide');
 
   const viewAllText = viewAllFeatures ?? 'View all features';
   const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
@@ -252,21 +250,16 @@ function createToggleRow({
   });
   toggleRow.append(toggleOverflowContent);
 
-  const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': firstSection });
+  const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': false });
   toggleRow.prepend(toggleIconTag);
   return toggleRow;
 }
 
 function decorateRow({
   row,
-  index,
-  rows,
+  index, 
   sectionItem,
-  visibleCount,
   isSingleSectionVariant,
-  viewAllFeatures,
-  createTag,
-  firstSection,
   sectionRows
 }) {
   row.classList.add('row', `row-${index + 1}`);
@@ -293,34 +286,24 @@ function decorateRow({
     });
 
     if (isSingleSectionVariant && isAdditional) {
-      handleSingleSectionVariant({ row, sectionItem, viewAllFeatures, createTag });
+      handleSingleSectionVariant({ row, sectionItem});
     }
     if (sectionItem % 2 === 0) row.classList.add('shaded');
   } else {
     const toggleRow = createToggleRow({
       isAdditional,
-      viewAllFeatures,
-      createTag
-    })
-    // if (nextRow) {
-    //   rows.splice(index + 1, 0, toggleRow);
-    //   row.parentElement.insertBefore(toggleRow, nextRow);
-    // } else {
-    //   rows.push(toggleRow);
-    //   row.parentElement.append(toggleRow);
-    //}
+    });
   }
 
-
   if (isAdditional) row.classList.add('additional-row');
-  sectionRows.push(row)
+  sectionRows.push(row);
   return { cols, isToggle, sectionItem };
 }
 
 export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
-  const isSingleSectionVariant = el.classList.contains('single-section');
+  globalIsSingleSectionVariant = el.classList.contains('single-section');
   let deviceBySize = defineDeviceByScreenSize();
 
   addTempWrapperDeprecated(el, 'pricing-table');
@@ -332,56 +315,44 @@ export default async function init(el) {
   const blockId = getId();
   el.id = `pricing-table-${blockId + 1}`;
   el.setAttribute('role', 'grid');
-  const visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
-  const rows = Array.from(el.children);
-  let sectionItem = 0;
-  const viewAllFeatures = await replaceKey('view-all-features', getConfig());
+  visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
+
+  globalRows = Array.from(el.children); 
+  viewAllFeatures = await replaceKey('view-all-features', getConfig());
+  globalSectionRows = [];
 
   let headingChildren;
-  let firstSection = true;
-  let sectionRows = []
-  for (let index = 0; index < rows.length; index += 1) {
-    const row = rows[index];
-    const { cols, isToggle, sectionItem: newSectionItem } = decorateRow({
+  for (let index = 0; index < globalRows.length; index += 1) {
+    const row = globalRows[index];
+    const { cols, isToggle } = decorateRow({
       row,
       index,
-      rows,
-      sectionItem,
-      visibleCount,
-      isSingleSectionVariant,
-      viewAllFeatures,
-      createTag,
-      firstSection,
-      sectionRows
-    });
-    sectionItem = newSectionItem;
+      isSingleSectionVariant: globalIsSingleSectionVariant,
+      sectionRows: globalSectionRows
+    }); 
     if (index === 0) headingChildren = cols;
 
     const sectionParams = {
       row,
       index,
-      allRows: rows,
+      allRows: globalRows,
       rowCols: cols,
       isToggle,
-      firstSection,
-
     };
     handleSection(sectionParams);
     // eslint-disable-next-line no-await-in-loop
     await yieldToMain();
 
-    if (isToggle) {
-      firstSection = false;
-    }
+
   }
-  headerCols = headingChildren
-  handleHeading(rows[0], headingChildren, rows.length);
+  headerCols = headingChildren;
+  handleHeading(globalRows[0], headingChildren, globalRows.length);
   assignEvents(el);
 
   const handleResize = () => {
     const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
     const toggleRows = el.querySelectorAll('.toggle-row');
-    if (isSingleSectionVariant) {
+    if (globalIsSingleSectionVariant) {
       const newDeviceSize = defineDeviceByScreenSize();
       if (deviceBySize !== newDeviceSize) {
         deviceBySize = newDeviceSize;
@@ -420,15 +391,15 @@ export default async function init(el) {
       }
       const gnav = document.querySelector('header');
       const gnavHeight = gnav.offsetHeight;
-      const { top } = rows[0].getBoundingClientRect();
-      if (top <= gnavHeight && !rows[0].classList.contains('stuck')) {
-        rows[0].style.top = `${gnavHeight}px`;
-      } else if (rows[0].classList.contains('stuck') && top > gnavHeight) {
-        rows[0].classList.remove('stuck');
+      const { top } = globalRows[0].getBoundingClientRect();
+      if (top <= gnavHeight && !globalRows[0].classList.contains('stuck')) {
+        globalRows[0].style.top = `${gnavHeight}px`;
+      } else if (globalRows[0].classList.contains('stuck') && top > gnavHeight) {
+        globalRows[0].classList.remove('stuck');
       }
-      const p = rows[1].getBoundingClientRect();
+      const p = globalRows[1].getBoundingClientRect();
       if (top >= p.top && top > 0) {
-        rows[0].classList.add('stuck');
+        globalRows[0].classList.add('stuck');
       }
     };
     window.addEventListener('scroll', debounce(scrollHandler, 16), { passive: true });
