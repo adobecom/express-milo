@@ -27,6 +27,7 @@
 .get-started .tablist-container {
   padding: 4px 0;
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  background-color: var(--color-white);
   border-radius: 8px;
   overflow-x: auto;
   scrollbar-width: none;
@@ -43,7 +44,6 @@
   display: flex;
   gap: 4px;
   padding: 0;
-  background-color: var(--color-white);
   margin: 0;
   width: max-content;
 }
@@ -103,6 +103,9 @@
 }
 
 @media (min-width: 600px) {
+  .get-started .get-started-headline-container h2 {
+    font-size: var(--heading-font-size-m);
+  }
   .get-started [role='tab'] {
     font-size: var(--body-font-size-l );
   }
@@ -112,5 +115,11 @@
   }
   .get-started {
     z-index: 1;
+  }
+}
+
+@media (min-width: 1200px) {
+  .section.get-started-section [role='tabpanel'] {
+    /* max-width: var(--); */
   }
 }
