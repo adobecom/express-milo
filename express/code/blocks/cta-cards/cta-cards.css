@@ -90,6 +90,9 @@
   .cta-cards .headline-container h2 {
     font-size: var(--heading-font-size-s );
   }
+  .cta-cards .cards-container {
+    gap: 16px;
+  }
 }
 
 @media (min-width: 1200px) {
