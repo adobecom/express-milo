@@ -1030,3 +1030,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table .row.section-row.additional-content.collapsed {
   display: none;
 }
+
+.pricing-table .screen-reader-header-content {
+  opacity: 0;
+}
