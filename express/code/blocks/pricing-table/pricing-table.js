@@ -32,6 +32,15 @@ function handleToggleMore(btn) {
   }
 }
 
+function addAccssibleRowHeaders(row, headerCols) {}
+//   const headerRow = row.querySelector('.row-heading')
+//   headerRow.setAttribute('role', 'rowheader');
+//   headerRow.setAttribute('aria-label', 'rowheader');
+//   headerRow.setAttribute('aria-colindex', 1);
+  
+// }
+
+
 function handleHeading(headingRow, headingCols, rowCount) {
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
@@ -133,6 +142,8 @@ function handleSection(sectionParams) {
     rowCols[0].setAttribute('role', 'rowheader');
     rowCols[0].setAttribute('aria-colindex', index + 1);
     rowCols[0].setAttribute('aria-label', 'rowheader');
+
+    addAccssibleRowHeaders(row, headerCols)
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
   } else {
@@ -206,6 +217,120 @@ const getId = (function idSetups() {
   return () => gen.next().value;
 }());
 
+let headerCols;
+
+function handleSingleSectionVariant({ row, sectionItem, viewAllFeatures, createTag }) {
+  const viewAllText = viewAllFeatures ?? 'View all features';
+  const isFirstSection = sectionItem === 4;
+
+  const toggleBtn = createTag('button', {
+    class: 'toggle-row toggle-content col col-1',
+    'aria-expanded': isFirstSection ? 'true' : 'false',
+  }, viewAllText);
+
+  const toggleIconTag = createTag('span', {
+    class: 'icon expand',
+    'aria-expanded': isFirstSection ? 'true' : 'false',
+  });
+
+  toggleBtn.prepend(toggleIconTag);
+
+  const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
+  if (!isFirstSection) {
+    colsToToggle.forEach((col) => {
+      col.classList.add('collapsed');
+    });
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'false';
+    toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
+    colsToToggle.forEach((col) => {
+      if (!isExpanded) {
+        col.classList.add('collapsed');
+      } else {
+        col.classList.remove('collapsed');
+      }
+    });
+  });
+
+  row.appendChild(toggleBtn);
+}
+
+function decorateRow({
+  row,
+  index,
+  rows,
+  sectionItem,
+  visibleCount,
+  isSingleSectionVariant,
+  viewAllFeatures,
+  createTag,
+  firstSection,
+  sectionRows
+}) {
+  row.classList.add('row', `row-${index + 1}`);
+  if (row.tagName !== 'BUTTON') row.setAttribute('role', 'row');
+  const cols = Array.from(row.children);
+
+  let isAdditional = false;
+  const isToggle = row.classList.contains('toggle-row');
+
+  if (!isToggle) {
+    if (cols.length <= 1) {
+      if (!cols[0]?.innerHTML) {
+        cols.shift().remove();
+      } else {
+        sectionItem = 0;
+      }
+    }
+    if (sectionItem > visibleCount) isAdditional = true;
+    sectionItem += 1;
+    cols.forEach((col, cdx) => {
+      col.dataset.colIndex = cdx + 1;
+      col.classList.add('col', `col-${cdx + 1}`);
+      col.setAttribute('role', cdx === 0 ? 'rowheader' : 'gridcell');
+      col.setAttribute('aria-colindex', cdx + 1);
+    });
+
+    if (isSingleSectionVariant && isAdditional && cols.length > 1) {
+      handleSingleSectionVariant({ row, sectionItem, viewAllFeatures, createTag });
+    }
+
+    if (sectionItem % 2 === 0 && cols.length > 1) row.classList.add('shaded');
+  } else {
+    row.setAttribute('tabindex', 0);
+  }
+
+  const nextRow = rows[index + 1];
+  if (!isSingleSectionVariant && index > 0 && !isToggle && cols.length > 1
+    && (!nextRow || Array.from(nextRow.children).length <= 1)) {
+    const toggleRow = createTag('button', { class: 'toggle-row' });
+    if (!isAdditional) toggleRow.classList.add('desktop-hide');
+
+    const viewAllText = viewAllFeatures ?? 'View all features';
+    const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
+
+    toggleOverflowContent.addEventListener('click', () => {
+      const buttonEl = toggleOverflowContent.querySelector('span.expand');
+      const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
+      sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
+    });
+    toggleRow.append(toggleOverflowContent);
+
+    // if (nextRow) {
+    //   rows.splice(index + 1, 0, toggleRow);
+    //   row.parentElement.insertBefore(toggleRow, nextRow);
+    // } else {
+    //   rows.push(toggleRow);
+    //   row.parentElement.append(toggleRow);
+    // }
+  }
+  if (isAdditional && cols.length > 1) row.classList.add('additional-row');
+  sectionRows.push(row)
+  return { cols, isToggle, sectionItem };
+}
+
 export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
@@ -228,101 +353,24 @@ export default async function init(el) {
 
   let headingChildren;
   let firstSection = true;
+  let sectionRows = []
   for (let index = 0; index < rows.length; index += 1) {
     const row = rows[index];
-    row.classList.add('row', `row-${index + 1}`);
-    if (row.tagName !== 'BUTTON') row.setAttribute('role', 'row');
-    const cols = Array.from(row.children);
+    const { cols, isToggle, sectionItem: newSectionItem } = decorateRow({
+      row,
+      index,
+      rows,
+      sectionItem,
+      visibleCount,
+      isSingleSectionVariant,
+      viewAllFeatures,
+      createTag,
+      firstSection,
+      sectionRows
+    });
+    sectionItem = newSectionItem;
     if (index === 0) headingChildren = cols;
 
-    let isAdditional = false;
-    const isToggle = row.classList.contains('toggle-row');
-
-    if (!isToggle) {
-      if (cols.length <= 1) {
-        if (!cols[0]?.innerHTML) {
-          cols.shift().remove();
-        } else {
-          sectionItem = 0;
-        }
-      }
-      if (sectionItem > visibleCount) isAdditional = true;
-      sectionItem += 1;
-      cols.forEach((col, cdx) => {
-        col.dataset.colIndex = cdx + 1;
-        col.classList.add('col', `col-${cdx + 1}`);
-        col.setAttribute('role', cdx === 0 ? 'rowheader' : 'gridcell');
-        col.setAttribute('aria-colindex', cdx + 1);
-      });
-
-      if (isSingleSectionVariant && isAdditional && cols.length > 1) {
-        const viewAllText = viewAllFeatures ?? 'View all features';
-        const isFirstSection = sectionItem === 4;
-
-        const toggleBtn = createTag('button', {
-          class: 'toggle-row toggle-content col col-1',
-          'aria-expanded': isFirstSection ? 'true' : 'false',
-        }, viewAllText);
-
-        const toggleIconTag = createTag('span', {
-          class: 'icon expand',
-          'aria-expanded': isFirstSection ? 'true' : 'false',
-        });
-
-        toggleBtn.prepend(toggleIconTag);
-
-        const colsToToggle = row.querySelectorAll('[data-col-index="2"], [data-col-index="3"]');
-        if (!isFirstSection) {
-          colsToToggle.forEach((col) => {
-            col.classList.add('collapsed');
-          });
-        }
-
-        toggleBtn.addEventListener('click', () => {
-          const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'false';
-          toggleBtn.setAttribute('aria-expanded', isExpanded.toString());
-          colsToToggle.forEach((col) => {
-            if (!isExpanded) {
-              col.classList.add('collapsed');
-            } else {
-              col.classList.remove('collapsed');
-            }
-          });
-        });
-
-        row.appendChild(toggleBtn);
-      }
-
-      if (sectionItem % 2 === 0 && cols.length > 1) row.classList.add('shaded');
-    } else {
-      row.setAttribute('tabindex', 0);
-    }
-
-    const nextRow = rows[index + 1];
-    if (!isSingleSectionVariant && index > 0 && !isToggle && cols.length > 1
-      && (!nextRow || Array.from(nextRow.children).length <= 1)) {
-      const toggleRow = createTag('button', { class: 'toggle-row' });
-      if (!isAdditional) toggleRow.classList.add('desktop-hide');
-
-      const viewAllText = viewAllFeatures ?? 'View all features';
-      const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
-
-      toggleOverflowContent.addEventListener('click', () => {
-        const buttonEl = toggleOverflowContent.querySelector('span.expand');
-        const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
-        sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
-      });
-      toggleRow.append(toggleOverflowContent);
-
-      if (nextRow) {
-        rows.splice(index + 1, 0, toggleRow);
-        el.insertBefore(toggleRow, nextRow);
-      } else {
-        rows.push(toggleRow);
-        el.append(toggleRow);
-      }
-    }
-    if (isAdditional && cols.length > 1) row.classList.add('additional-row');
     const sectionParams = {
       row,
       index,
@@ -330,6 +378,7 @@ export default async function init(el) {
       rowCols: cols,
       isToggle,
       firstSection,
+
     };
     handleSection(sectionParams);
     // eslint-disable-next-line no-await-in-loop
@@ -339,7 +388,7 @@ export default async function init(el) {
       firstSection = false;
     }
   }
-
+  headerCols = headingChildren
   handleHeading(rows[0], headingChildren, rows.length);
   assignEvents(el);
 
