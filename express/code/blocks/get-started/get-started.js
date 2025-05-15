@@ -49,7 +49,10 @@ export default async function init(el) {
     const icon = listItem.querySelector('.icon');
     const match = icon && iconRegex.exec(icon.className);
     if (match?.[1]) {
-      convertToInlineSVG(getIconElementDeprecated(match[1])).then((svg) => icon.append(svg));
+      convertToInlineSVG(getIconElementDeprecated(match[1])).then((svg) => {
+        icon.setAttribute('aria-hidden', 'true');
+        icon.append(svg);
+      });
     }
     tab.append(icon, listItem.textContent);
     activeTab ||= tab;
