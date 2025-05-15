@@ -268,8 +268,8 @@
 
 .quotes .quote .author .image img {
   object-fit: cover;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   max-width: unset;
   border-radius: 21px;
   box-sizing: border-box;
