@@ -32,16 +32,17 @@ function handleToggleMore(btn) {
   }
 }
 
-function addAccssibleRowHeaders(row, headerCols) {}
+function addAccssibleRowHeaders(row, headerCols) { }
 //   const headerRow = row.querySelector('.row-heading')
 //   headerRow.setAttribute('role', 'rowheader');
 //   headerRow.setAttribute('aria-label', 'rowheader');
 //   headerRow.setAttribute('aria-colindex', 1);
-  
+
 // }
 
 
 function handleHeading(headingRow, headingCols, rowCount) {
+  headingRow.classList.add('row-heading', 'table-start-row');
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
   const parent = headingRow.parentElement;
@@ -111,54 +112,54 @@ function handleSection(sectionParams) {
     row,
     index,
     allRows,
-    rowCols, 
+    cols,
   } = sectionParams;
 
-  const previousRow = allRows[index - 1];
-  const nextRow = allRows[index + 1];
-  if (!nextRow) row.classList.add('table-end-row');
-  if (rowCols.length === 0) {
-    row.classList.add('blank-row');
-    row.removeAttribute('role');
-    if (index > 0) previousRow.classList.add('table-end-row');
-    if (nextRow) nextRow.classList.add('table-start-row');
-  } else if (rowCols.length === 1) {
-    row.classList.add('section-header-row');
-    rowCols[0].classList.add('section-head-title');
-    rowCols[0].setAttribute('role', 'rowheader');
-    rowCols[0].setAttribute('aria-colindex', index + 1);
-    rowCols[0].setAttribute('aria-label', 'rowheader');
-    addAccssibleRowHeaders(row, headerCols)
-  } else if (index === 0) {
-    row.classList.add('row-heading', 'table-start-row');
-  } else {
-    row.classList.add('section-row');
-    row.setAttribute('role', 'row');
-    row.setAttribute('aria-rowindex', index + 1);
-    rowCols.forEach((col, idx) => {
-      decorateButtonsDeprecated(col);
-      if (idx === 0) {
-        if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
-        return;
-      }
-      const dim = col.querySelectorAll('em').length > 0;
-      if (dim) {
-        col.classList.add('dim');
-      }
-      const child = col.children?.[0] || col;
-      if (!child.innerHTML || child.textContent === '-') {
-        col.classList.add('excluded-feature');
-        child.innerHTML = EXCLUDE_ICON;
-        child.classList.add('icon-container');
-      } else if (child.textContent === '+') {
-        col.classList.add('included-feature');
-        child.innerHTML = INCLUDE_ICON;
-        child.classList.add('icon-container');
-      } else if (!col.children.length) {
-        child.innerHTML = `<p >${col.innerHTML}</p>`;
-      }
-    });
-  }
+  // const previousRow = allRows[index - 1];
+  // const nextRow = allRows[index + 1];
+  // if (!nextRow) row.classList.add('table-end-row');
+  // if (cols.length === 0) {
+  //   row.classList.add('blank-row');
+  //   row.removeAttribute('role');
+  //   if (index > 0) previousRow.classList.add('table-end-row');
+  //   if (nextRow) nextRow.classList.add('table-start-row');
+  // } else if (cols.length === 1) {
+  //   row.classList.add('section-header-row');
+  //   cols[0].classList.add('section-head-title');
+  //   cols[0].setAttribute('role', 'rowheader');
+  //   cols[0].setAttribute('aria-colindex', index + 1);
+  //   cols[0].setAttribute('aria-label', 'rowheader');
+  //   addAccssibleRowHeaders(row, headerCols)
+  // } else if (index === 0) {
+  //   row.classList.add('row-heading', 'table-start-row');
+  // } else {
+  //   row.classList.add('section-row');
+  //   row.setAttribute('role', 'row');
+  //   row.setAttribute('aria-rowindex', index + 1);
+  //   cols.forEach((col, idx) => {
+  //     decorateButtonsDeprecated(col);
+  //     if (idx === 0) {
+  //       if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
+  //       return;
+  //     }
+  //     const dim = col.querySelectorAll('em').length > 0;
+  //     if (dim) {
+  //       col.classList.add('dim');
+  //     }
+  //     const child = col.children?.[0] || col;
+  //     if (!child.innerHTML || child.textContent === '-') {
+  //       col.classList.add('excluded-feature');
+  //       child.innerHTML = EXCLUDE_ICON;
+  //       child.classList.add('icon-container');
+  //     } else if (child.textContent === '+') {
+  //       col.classList.add('included-feature');
+  //       child.innerHTML = INCLUDE_ICON;
+  //       child.classList.add('icon-container');
+  //     } else if (!col.children.length) {
+  //       child.innerHTML = `<p >${col.innerHTML}</p>`;
+  //     }
+  //   });
+  // }
 }
 
 const assignEvents = (tableEl) => {
@@ -195,11 +196,11 @@ const getId = (function idSetups() {
 let headerCols;
 let globalRows;
 let visibleCount;
-let globalIsSingleSectionVariant;
+let isSingleSectionVariant;
 let viewAllFeatures;
-let globalSectionRows;
+let sectionRows;
 
-function handleSingleSectionVariant({ row, sectionItem}) {
+function handleSingleSectionVariant({ row, sectionItem }) {
   const viewAllText = viewAllFeatures ?? 'View all features';
   const isFirstSection = sectionItem === 4;
 
@@ -237,7 +238,7 @@ function handleSingleSectionVariant({ row, sectionItem}) {
   row.appendChild(toggleBtn);
 }
 
-function createToggleRow() { 
+function createToggleRow() {
   const toggleRow = createTag('button', { class: 'toggle-row' });
 
   const viewAllText = viewAllFeatures ?? 'View all features';
@@ -257,53 +258,82 @@ function createToggleRow() {
 
 function decorateRow({
   row,
-  index, 
+  index,
   sectionItem,
-  isSingleSectionVariant,
-  sectionRows
+  isSingleSectionVariant
 }) {
   row.classList.add('row', `row-${index + 1}`);
   row.setAttribute('role', 'row');
+  row.setAttribute('aria-rowindex', index + 1);
+
   const cols = Array.from(row.children);
-  let isAdditional = false;
-  const isToggle = row.classList.contains('toggle-row');
+  if (cols.length <= 1) {
+    if (!cols[0]?.innerHTML) {
+      cols.shift().remove();
+    }  
+  }
+  cols.forEach((col, cdx) => {
+    col.dataset.colIndex = cdx + 1;
+    col.classList.add('col', `col-${cdx + 1}`);
+    col.setAttribute('role', cdx === 0 ? 'rowheader' : 'gridcell');
+    col.setAttribute('aria-colindex', cdx + 1);
+  });
 
-  if (!isToggle) {
-    if (cols.length <= 1) {
-      if (!cols[0]?.innerHTML) {
-        cols.shift().remove();
-      } else {
-        sectionItem = 0;
-      }
-    }
-    if (sectionItem > visibleCount) isAdditional = true;
-    sectionItem += 1;
-    cols.forEach((col, cdx) => {
-      col.dataset.colIndex = cdx + 1;
-      col.classList.add('col', `col-${cdx + 1}`);
-      col.setAttribute('role', cdx === 0 ? 'rowheader' : 'gridcell');
-      col.setAttribute('aria-colindex', cdx + 1);
-    });
 
-    if (isSingleSectionVariant && isAdditional) {
-      handleSingleSectionVariant({ row, sectionItem});
-    }
-    if (sectionItem % 2 === 0) row.classList.add('shaded');
+  if (isSingleSectionVariant) {
+    handleSingleSectionVariant({ row, sectionItem });
+  }
+  if (sectionItem % 2 === 0) row.classList.add('shaded');
+
+  let sectionEnd = false;
+
+  if (cols.length === 0) {
+    row.classList.add('blank-row');
+    row.removeAttribute('role');
+    row.classList.add('table-end-row');
+    row.appendChild(createToggleRow());
+    sectionEnd = true;
+  } else if (cols.length === 1) {
+    row.classList.add('table-start-row');
+    row.classList.add('section-header-row');
+    cols[0].classList.add('section-head-title');
+    cols[0].setAttribute('role', 'rowheader');
+    cols[0].setAttribute('aria-colindex', index + 1);
+    cols[0].setAttribute('aria-label', 'rowheader');
+    addAccssibleRowHeaders(row, headerCols)
   } else {
-    const toggleRow = createToggleRow({
-      isAdditional,
+    row.classList.add('section-row');
+    cols.forEach((col, idx) => {
+      decorateButtonsDeprecated(col);
+      if (idx === 0) {
+        if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
+        return;
+      }
+      const dim = col.querySelectorAll('em').length > 0;
+      if (dim) {
+        col.classList.add('dim');
+      }
+      const child = col.children?.[0] || col;
+      if (!child.innerHTML || child.textContent === '-') {
+        col.classList.add('excluded-feature');
+        child.innerHTML = EXCLUDE_ICON;
+        child.classList.add('icon-container');
+      } else if (child.textContent === '+') {
+        col.classList.add('included-feature');
+        child.innerHTML = INCLUDE_ICON;
+        child.classList.add('icon-container');
+      } else if (!col.children.length) {
+        child.innerHTML = `<p >${col.innerHTML}</p>`;
+      }
     });
   }
-
-  if (isAdditional) row.classList.add('additional-row');
-  sectionRows.push(row);
-  return { cols, isToggle, sectionItem };
+  return { sectionEnd };
 }
 
 export default async function init(el) {
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
-  globalIsSingleSectionVariant = el.classList.contains('single-section');
+  isSingleSectionVariant = el.classList.contains('single-section');
   let deviceBySize = defineDeviceByScreenSize();
 
   addTempWrapperDeprecated(el, 'pricing-table');
@@ -317,42 +347,35 @@ export default async function init(el) {
   el.setAttribute('role', 'grid');
   visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
 
-  globalRows = Array.from(el.children); 
+  globalRows = Array.from(el.children);
   viewAllFeatures = await replaceKey('view-all-features', getConfig());
-  globalSectionRows = [];
-
-  let headingChildren;
-  for (let index = 0; index < globalRows.length; index += 1) {
+  sectionRows = [];
+  const sectionTables = []
+  let headingChildren = Array.from(globalRows[0].children);
+  decorateRow({
+    row: globalRows[0],
+    index: 0, 
+  });
+  for (let index = 2; index < globalRows.length; index += 1) {
     const row = globalRows[index];
-    const { cols, isToggle } = decorateRow({
+    const { sectionEnd } = decorateRow({
       row,
-      index,
-      isSingleSectionVariant: globalIsSingleSectionVariant,
-      sectionRows: globalSectionRows
-    }); 
-    if (index === 0) headingChildren = cols;
-
-    const sectionParams = {
-      row,
-      index,
-      allRows: globalRows,
-      rowCols: cols,
-      isToggle,
-    };
-    handleSection(sectionParams);
-    // eslint-disable-next-line no-await-in-loop
+      index, 
+    });
+    if (sectionEnd) {
+      sectionTables.push(sectionRows);
+      sectionRows = [];
+    }
     await yieldToMain();
-
-
   }
-  headerCols = headingChildren;
+
   handleHeading(globalRows[0], headingChildren, globalRows.length);
   assignEvents(el);
 
   const handleResize = () => {
     const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
     const toggleRows = el.querySelectorAll('.toggle-row');
-    if (globalIsSingleSectionVariant) {
+    if (isSingleSectionVariant) {
       const newDeviceSize = defineDeviceByScreenSize();
       if (deviceBySize !== newDeviceSize) {
         deviceBySize = newDeviceSize;
