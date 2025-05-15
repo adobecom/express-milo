@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 
 import { readFile } from '@web/test-runner-commands';
-import { expect } from '@esm-bundle/chai'; 
+import { expect } from '@esm-bundle/chai';
 import { buildAutoBlocks } from '../../../express/code/scripts/utils.js';
 
 const imports = await Promise.all([
