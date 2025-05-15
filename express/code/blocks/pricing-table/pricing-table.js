@@ -257,6 +257,26 @@ function handleSingleSectionVariant({ row, sectionItem, viewAllFeatures, createT
   row.appendChild(toggleBtn);
 }
 
+function createToggleRow({
+  isAdditional,
+  viewAllFeatures,
+  createTag
+}) { 
+  const toggleRow = createTag('button', { class: 'toggle-row' });
+  if (!isAdditional) toggleRow.classList.add('desktop-hide');
+
+  const viewAllText = viewAllFeatures ?? 'View all features';
+  const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
+
+  toggleOverflowContent.addEventListener('click', () => {
+    const buttonEl = toggleOverflowContent.querySelector('span.expand');
+    const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
+    sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
+  });
+  toggleRow.append(toggleOverflowContent);
+  return toggleRow;
+}
+
 function decorateRow({
   row,
   index,
@@ -305,26 +325,19 @@ function decorateRow({
   const nextRow = rows[index + 1];
   if (!isSingleSectionVariant && index > 0 && !isToggle && cols.length > 1
     && (!nextRow || Array.from(nextRow.children).length <= 1)) {
-    const toggleRow = createTag('button', { class: 'toggle-row' });
-    if (!isAdditional) toggleRow.classList.add('desktop-hide');
-
-    const viewAllText = viewAllFeatures ?? 'View all features';
-    const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
-
-    toggleOverflowContent.addEventListener('click', () => {
-      const buttonEl = toggleOverflowContent.querySelector('span.expand');
-      const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
-      sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
-    });
-    toggleRow.append(toggleOverflowContent);
-
-    // if (nextRow) {
-    //   rows.splice(index + 1, 0, toggleRow);
-    //   row.parentElement.insertBefore(toggleRow, nextRow);
-    // } else {
-    //   rows.push(toggleRow);
-    //   row.parentElement.append(toggleRow);
-    // }
+   
+      const toggleRow = createToggleRow({
+        isAdditional,
+        viewAllFeatures,
+        createTag
+      })
+    if (nextRow) {
+      rows.splice(index + 1, 0, toggleRow);
+      row.parentElement.insertBefore(toggleRow, nextRow);
+    } else {
+      rows.push(toggleRow);
+      row.parentElement.append(toggleRow);
+    }
   }
   if (isAdditional && cols.length > 1) row.classList.add('additional-row');
   sectionRows.push(row)
