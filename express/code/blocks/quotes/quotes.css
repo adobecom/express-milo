@@ -258,7 +258,7 @@
 }
 
 .quotes.carousel .quote .author .summary p:nth-of-type(2) {
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   font-weight: bold;
 }
 
