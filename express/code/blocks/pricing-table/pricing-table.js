@@ -14,33 +14,6 @@ function defineDeviceByScreenSize() {
   return 'MOBILE';
 }
 
-function handleToggleMore(btn) {
-  let prevElement = btn.previousElementSibling;
-  const icon = btn.querySelector('.icon.expand');
-  const expanded = icon?.getAttribute('aria-expanded') === 'false';
-  icon?.setAttribute('aria-expanded', expanded.toString());
-  while (prevElement && !prevElement.classList.contains('section-header-row') && !prevElement.classList.contains('spacer-row')) {
-    if (expanded) {
-      btn.classList.remove('collapsed');
-      prevElement.classList.remove('collapsed');
-    } else {
-      btn.classList.add('collapsed');
-      prevElement.classList.add('collapsed');
-    }
-
-    prevElement = prevElement.previousElementSibling;
-  }
-}
-
-function addAccssibleRowHeaders(row, headerCols) { }
-//   const headerRow = row.querySelector('.row-heading')
-//   headerRow.setAttribute('role', 'rowheader');
-//   headerRow.setAttribute('aria-label', 'rowheader');
-//   headerRow.setAttribute('aria-colindex', 1);
-
-// }
-
-
 function handleHeading(headingRow, headingCols, rowCount) {
   headingRow.classList.add('row-heading', 'table-start-row');
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
@@ -107,81 +80,25 @@ function handleHeading(headingRow, headingCols, rowCount) {
 const EXCLUDE_ICON = '<span class="feat-icon cross"></span>';
 const INCLUDE_ICON = '<span class="feat-icon check"></span>';
 
-function handleSection(sectionParams) {
-  const {
-    row,
-    index,
-    allRows,
-    cols,
-  } = sectionParams;
-
-  // const previousRow = allRows[index - 1];
-  // const nextRow = allRows[index + 1];
-  // if (!nextRow) row.classList.add('table-end-row');
-  // if (cols.length === 0) {
-  //   row.classList.add('blank-row');
-  //   row.removeAttribute('role');
-  //   if (index > 0) previousRow.classList.add('table-end-row');
-  //   if (nextRow) nextRow.classList.add('table-start-row');
-  // } else if (cols.length === 1) {
-  //   row.classList.add('section-header-row');
-  //   cols[0].classList.add('section-head-title');
-  //   cols[0].setAttribute('role', 'rowheader');
-  //   cols[0].setAttribute('aria-colindex', index + 1);
-  //   cols[0].setAttribute('aria-label', 'rowheader');
-  //   addAccssibleRowHeaders(row, headerCols)
-  // } else if (index === 0) {
-  //   row.classList.add('row-heading', 'table-start-row');
-  // } else {
-  //   row.classList.add('section-row');
-  //   row.setAttribute('role', 'row');
-  //   row.setAttribute('aria-rowindex', index + 1);
-  //   cols.forEach((col, idx) => {
-  //     decorateButtonsDeprecated(col);
-  //     if (idx === 0) {
-  //       if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
-  //       return;
-  //     }
-  //     const dim = col.querySelectorAll('em').length > 0;
-  //     if (dim) {
-  //       col.classList.add('dim');
-  //     }
-  //     const child = col.children?.[0] || col;
-  //     if (!child.innerHTML || child.textContent === '-') {
-  //       col.classList.add('excluded-feature');
-  //       child.innerHTML = EXCLUDE_ICON;
-  //       child.classList.add('icon-container');
-  //     } else if (child.textContent === '+') {
-  //       col.classList.add('included-feature');
-  //       child.innerHTML = INCLUDE_ICON;
-  //       child.classList.add('icon-container');
-  //     } else if (!col.children.length) {
-  //       child.innerHTML = `<p >${col.innerHTML}</p>`;
-  //     }
-  //   });
-  // }
-}
-
 const assignEvents = (tableEl) => {
   const buttons = tableEl.querySelectorAll('.toggle-row');
   if (!buttons?.length) return;
 
-  buttons.forEach((btn) => {
-    btn.classList.add('point-cursor');
-    btn.addEventListener('click', () => handleToggleMore(btn));
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        handleToggleMore(btn);
-      }
-    });
-  });
+  // buttons.forEach((btn) => {
+  //   btn.classList.add('point-cursor');
+  //   btn.addEventListener('click', () => handleToggleMore(btn));
+  //   btn.addEventListener('keydown', (e) => {
+  //     if (e.key === 'Enter' || e.key === ' ') {
+  //       e.preventDefault();
+  //       handleToggleMore(btn);
+  //     }
+  //   });
+  // });
 
   const linksPopulated = new CustomEvent('linkspopulated', { detail: buttons });
   document.dispatchEvent(linksPopulated);
 };
 
-// multiple live on same page
 const getId = (function idSetups() {
   const gen = (function* g() {
     let id = 0;
@@ -238,8 +155,31 @@ function handleSingleSectionVariant({ row, sectionItem }) {
   row.appendChild(toggleBtn);
 }
 
-function createToggleRow() {
-  const toggleRow = createTag('button', { class: 'toggle-row' });
+function toggleContent(element) {
+  const pricingTable = element.closest('.pricing-table');
+  if (!pricingTable) return;
+  const toggleRow = pricingTable.querySelector('.toggle-row');
+  if (!toggleRow) return; 
+  
+  const rows = pricingTable.querySelectorAll('.additional-content');
+  const isCurrentlyCollapsed = rows[0]?.classList.contains('collapsed');
+
+  rows.forEach((row) => {
+    row.classList.toggle('collapsed', !isCurrentlyCollapsed);
+  });
+  const icon = pricingTable.querySelector('.icon.expand');
+  toggleRow.setAttribute('aria-expanded', isCurrentlyCollapsed);
+  toggleRow.classList.toggle('collapsed', !isCurrentlyCollapsed);
+  icon?.setAttribute('aria-expanded', isCurrentlyCollapsed ? 'true' : 'false');
+}
+
+function createToggleRow(row, sectionLength, index, rows) {
+  if (sectionLength <= visibleCount + 1) {
+    rows[index -1].classList.add('table-end-row');
+    row.classList.add('null-row');
+    return;
+  }
+  const toggleButton = createTag('button', { class: 'toggle-row' });
 
   const viewAllText = viewAllFeatures ?? 'View all features';
   const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
@@ -249,18 +189,50 @@ function createToggleRow() {
     const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
     sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
   });
-  toggleRow.append(toggleOverflowContent);
 
   const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': false });
-  toggleRow.prepend(toggleIconTag);
-  return toggleRow;
+  toggleOverflowContent.insertAdjacentElement('afterbegin',toggleIconTag,);
+  toggleButton.appendChild(toggleOverflowContent);
+  row.appendChild(toggleButton);
+  row.classList.add('table-end-row', 'toggle-row');
+}
+
+export default async function init(el) {
+  await fixIcons(el);
+  splitAndAddVariantsWithDash(el);
+  isSingleSectionVariant = el.classList.contains('single-section');
+  let deviceBySize = defineDeviceByScreenSize();
+
+  
+  addTempWrapperDeprecated(el, 'pricing-table');
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
+  verifyTableIntegrity(el);
+  const blockId = getId();
+  el.id = `pricing-table-${blockId + 1}`;
+  el.setAttribute('role', 'grid');
+  visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
+
+  globalRows = Array.from(el.children);
+  viewAllFeatures = await replaceKey('view-all-features', getConfig());
+  sectionRows = [];
+
+  const sectionTables = processAllSections(globalRows);
+
+  insertSectionTablesIntoDOM(el, sectionTables);
+
+  setupEventListeners(el, deviceBySize);
+
+  handleResize(el, deviceBySize);
 }
 
 function decorateRow({
   row,
   index,
-  sectionItem,
-  isSingleSectionVariant
+  sectionLength = 0,
+  isSingleSectionVariant = false,
 }) {
   row.classList.add('row', `row-${index + 1}`);
   row.setAttribute('role', 'row');
@@ -270,7 +242,7 @@ function decorateRow({
   if (cols.length <= 1) {
     if (!cols[0]?.innerHTML) {
       cols.shift().remove();
-    }  
+    }
   }
   cols.forEach((col, cdx) => {
     col.dataset.colIndex = cdx + 1;
@@ -279,19 +251,16 @@ function decorateRow({
     col.setAttribute('aria-colindex', cdx + 1);
   });
 
-
-  if (isSingleSectionVariant) {
-    handleSingleSectionVariant({ row, sectionItem });
+  if (sectionLength && isSingleSectionVariant) {
+    handleSingleSectionVariant({ row, sectionLength });
   }
-  if (sectionItem % 2 === 0) row.classList.add('shaded');
+  if (sectionLength % 2 === 0) row.classList.add('shaded');
 
   let sectionEnd = false;
+  let sectionStart = false;
 
   if (cols.length === 0) {
-    row.classList.add('blank-row');
-    row.removeAttribute('role');
-    row.classList.add('table-end-row');
-    row.appendChild(createToggleRow());
+    createToggleRow(row, sectionLength, index, globalRows)
     sectionEnd = true;
   } else if (cols.length === 1) {
     row.classList.add('table-start-row');
@@ -300,9 +269,15 @@ function decorateRow({
     cols[0].setAttribute('role', 'rowheader');
     cols[0].setAttribute('aria-colindex', index + 1);
     cols[0].setAttribute('aria-label', 'rowheader');
-    addAccssibleRowHeaders(row, headerCols)
+   // addAccssibleRowHeaders(row, headerCols);
+    sectionStart = true;
+  } else if (index === 0) {
+    row.classList.add('row-heading', 'table-start-row');
   } else {
     row.classList.add('section-row');
+    if (sectionLength > visibleCount) {
+      row.classList.add('additional-content');
+    }
     cols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
       if (idx === 0) {
@@ -323,108 +298,183 @@ function decorateRow({
         child.innerHTML = INCLUDE_ICON;
         child.classList.add('icon-container');
       } else if (!col.children.length) {
-        child.innerHTML = `<p >${col.innerHTML}</p>`;
+        child.innerHTML = `<p>${col.innerHTML}</p>`;
       }
     });
   }
-  return { sectionEnd };
+
+  return { sectionEnd, sectionStart };
 }
 
-export default async function init(el) {
-  await fixIcons(el);
-  splitAndAddVariantsWithDash(el);
-  isSingleSectionVariant = el.classList.contains('single-section');
-  let deviceBySize = defineDeviceByScreenSize();
+function verifyTableIntegrity(el) {
+  const rows = Array.from(el.closest('.pricing-table').children);
+  const lastRow = rows[rows.length - 1];
+  if (lastRow.children.length > 0 ) {
+      const newRow = createTag('div');
+      const newCol = createTag('div');
+      newRow.appendChild(newCol);
+      el.closest('.pricing-table').appendChild(newRow);
+  }
+}
 
-  addTempWrapperDeprecated(el, 'pricing-table');
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
+function processAllSections(allRows) {
+  const sectionTables = [];
+  let currentSection = [];
+  let inSection = false;
 
-  const blockId = getId();
-  el.id = `pricing-table-${blockId + 1}`;
-  el.setAttribute('role', 'grid');
-  visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
-
-  globalRows = Array.from(el.children);
-  viewAllFeatures = await replaceKey('view-all-features', getConfig());
-  sectionRows = [];
-  const sectionTables = []
-  let headingChildren = Array.from(globalRows[0].children);
+  const headingRow = allRows[0];
+  const headingChildren = Array.from(headingRow.children);
   decorateRow({
-    row: globalRows[0],
-    index: 0, 
+    row: headingRow,
+    index: 0,
   });
-  for (let index = 2; index < globalRows.length; index += 1) {
-    const row = globalRows[index];
-    const { sectionEnd } = decorateRow({
+  handleHeading(headingRow, headingChildren, allRows.length);
+
+  for (let index = 1; index < allRows.length; index += 1) {
+    const row = allRows[index];
+    const { sectionEnd, sectionStart } = decorateRow({
       row,
-      index, 
+      index,
+      sectionLength: currentSection.length,
+      isSingleSectionVariant,
     });
-    if (sectionEnd) {
-      sectionTables.push(sectionRows);
-      sectionRows = [];
+
+    if (sectionStart) {
+      if (inSection && currentSection.length > 0) {
+        sectionTables.push([...currentSection]);
+        currentSection = [];
+      }
+      inSection = true;
+      currentSection.push(row);
+    } else if (sectionEnd) {
+      currentSection.push(row);
+      sectionTables.push([...currentSection]);
+      currentSection = [];
+      inSection = false;
+    } else if (inSection) {
+      currentSection.push(row);
+    } else if (index > 0) {
+      if (currentSection.length === 0) {
+        currentSection = [row];
+        inSection = true;
+      } else {
+        currentSection.push(row);
+      }
     }
-    await yieldToMain();
   }
 
-  handleHeading(globalRows[0], headingChildren, globalRows.length);
-  assignEvents(el);
+  if (currentSection.length > 0) {
+    sectionTables.push(currentSection);
+  }
 
-  const handleResize = () => {
-    const collapisbleRows = el.querySelectorAll('.section-row, .toggle-row');
-    const toggleRows = el.querySelectorAll('.toggle-row');
-    if (isSingleSectionVariant) {
-      const newDeviceSize = defineDeviceByScreenSize();
-      if (deviceBySize !== newDeviceSize) {
-        deviceBySize = newDeviceSize;
+  return sectionTables;
+}
 
-        if (newDeviceSize === 'DESKTOP') {
-          el.classList.remove('single-section');
-        } else {
-          el.classList.add('single-section');
-        }
+function insertSectionTablesIntoDOM(parentEl, sectionTables) {
+  const headingRow = parentEl.firstElementChild;
+  while (parentEl.children.length > 1) {
+    parentEl.removeChild(parentEl.lastElementChild);
+  }
 
-        collapisbleRows.forEach((collapisbleRow) => {
-          collapisbleRow.classList.add('collapsed');
-        });
-      }
-      toggleRows.forEach((toggleRow) => {
-        toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
-      });
-    } else {
-      toggleRows.forEach((toggleRow) => {
-        toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
-      });
+  sectionTables.forEach((section, sectionIndex) => {
+    if (section.length === 0) return;
+    const pricingTableDiv = createTag('div', {
+      class: `pricing-table section-${sectionIndex + 1}`,
+      role: 'grid',
+    });
+
+    if (section.length > 0 && section[0].children.length > 0) {
+      pricingTableDiv.setAttribute('aria-rowcount', section.length);
+      pricingTableDiv.setAttribute('aria-colcount', section[0].children.length);
     }
-  };
+    section.forEach(row => {
+      pricingTableDiv.appendChild(row);
+    });
+    parentEl.appendChild(pricingTableDiv);
+    if (sectionIndex > 0 ) {
+      toggleContent(pricingTableDiv);
+    }
+
+    const btn = pricingTableDiv.querySelector('.toggle-row');
+    if (btn) {
+      btn.classList.add('point-cursor');
+      btn.addEventListener('click', () =>toggleContent(btn));
+       btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleContent(btn);
+      }
+    });
+    }
+  });
+}
+
+function setupEventListeners(el, initialDeviceSize) {
+  let deviceBySize = initialDeviceSize;
 
   window.addEventListener('resize', debounce(() => {
     if (deviceBySize === defineDeviceByScreenSize()) return;
     deviceBySize = defineDeviceByScreenSize();
-    handleResize();
+    handleResize(el, deviceBySize);
   }, 100));
 
   if (el.classList.contains('sticky')) {
-    const scrollHandler = () => {
-      if (deviceBySize === 'MOBILE') return;
-      if (el.closest('div.tabpanel')?.getAttribute('hidden')) {
-        return;
-      }
-      const gnav = document.querySelector('header');
-      const gnavHeight = gnav.offsetHeight;
-      const { top } = globalRows[0].getBoundingClientRect();
-      if (top <= gnavHeight && !globalRows[0].classList.contains('stuck')) {
-        globalRows[0].style.top = `${gnavHeight}px`;
-      } else if (globalRows[0].classList.contains('stuck') && top > gnavHeight) {
-        globalRows[0].classList.remove('stuck');
-      }
-      const p = globalRows[1].getBoundingClientRect();
-      if (top >= p.top && top > 0) {
-        globalRows[0].classList.add('stuck');
-      }
-    };
-    window.addEventListener('scroll', debounce(scrollHandler, 16), { passive: true });
+    setupStickyHeaderBehavior(el, deviceBySize);
   }
+}
+
+function handleResize(el, deviceBySize) {
+  const pricingTables = el.querySelectorAll('.pricing-table-section');
+
+  pricingTables.forEach(table => {
+    const collapisbleRows = table.querySelectorAll('.section-row, .toggle-row');
+    const toggleRows = table.querySelectorAll('.toggle-row');
+
+    if (isSingleSectionVariant) {
+      if (deviceBySize === 'DESKTOP') {
+        table.classList.remove('single-section');
+      } else {
+        table.classList.add('single-section');
+      }
+
+      collapisbleRows.forEach((collapisbleRow) => {
+        collapisbleRow.classList.add('collapsed');
+      });
+    }
+
+    toggleRows.forEach((toggleRow) => {
+      toggleRow.querySelector('.icon.expand').setAttribute('aria-expanded', false);
+    });
+  });
+}
+
+function setupStickyHeaderBehavior(el, deviceBySize) {
+  const scrollHandler = () => {
+    if (deviceBySize === 'MOBILE') return;
+
+    const headingRow = el.querySelector('.row-heading');
+    if (!headingRow || el.closest('div.tabpanel')?.getAttribute('hidden')) {
+      return;
+    }
+
+    const gnav = document.querySelector('header');
+    const gnavHeight = gnav.offsetHeight;
+    const { top } = headingRow.getBoundingClientRect();
+
+    if (top <= gnavHeight && !headingRow.classList.contains('stuck')) {
+      headingRow.style.top = `${gnavHeight}px`;
+    } else if (headingRow.classList.contains('stuck') && top > gnavHeight) {
+      headingRow.classList.remove('stuck');
+    }
+
+    const nextRow = headingRow.nextElementSibling;
+    if (nextRow) {
+      const p = nextRow.getBoundingClientRect();
+      if (top >= p.top && top > 0) {
+        headingRow.classList.add('stuck');
+      }
+    }
+  };
+
+  window.addEventListener('scroll', debounce(scrollHandler, 16), { passive: true });
 }

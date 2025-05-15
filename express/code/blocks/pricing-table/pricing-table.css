@@ -133,12 +133,15 @@
 .pricing-table .icon.expand {
   background-color: transparent;
   border: 0;
-  background-image: url('/express/code/icons/expand.svg');
+  background-image: url(/express/code/icons/expand.svg);
   background-repeat: no-repeat;
   background-position: center right;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
+  position: relative;
   cursor: pointer;
+  margin: auto 0 auto 0;
+  display: block;
 }
 
 .pricing-table .section-head-title:hover .icon.expand {
@@ -235,10 +238,13 @@
     align-items: center;
     color: var(--color-info-accent);
     gap: 8px;
+    background: none;
     font-weight: 700;
     height: 100%;
     box-sizing: border-box;
+    gap: 10px;
   }
+  
   .pricing-table.single-section .row:not(.row-heading) {
     padding: 24px 0;
   }
@@ -433,6 +439,17 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   height: 24px;
   width: 24px;
 }
+
+.pricing-table button.toggle-row {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.pricing-table .row.null-row {
+  display: none;
+}
+
 /* Table Borders */
 .pricing-table .col {
   border: var(--border-width) solid var(--border-color);
@@ -762,7 +779,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   /* /Table Feature Row Content */
 
   /* Collapsed Rows */
-  .pricing-table .row.section-row.collapsed {
+  .pricing-table .row.section-row.additional-content.collapsed {
     display: none;
   }
   /* /Collapsed Rows */
@@ -1009,3 +1026,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   } 
 }
 
+
+.pricing-table .row.section-row.additional-content.collapsed {
+  display: none;
+}
