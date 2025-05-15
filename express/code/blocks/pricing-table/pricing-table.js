@@ -124,25 +124,12 @@ function handleSection(sectionParams) {
     row.removeAttribute('role');
     if (index > 0) previousRow.classList.add('table-end-row');
     if (nextRow) nextRow.classList.add('table-start-row');
-  } else if (isToggle) {
-    const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': firstSection });
-    row.querySelector('.toggle-content').prepend(toggleIconTag);
-    row.classList.add('collapsed');
-    let prevRow = previousRow;
-    let i = index;
-    // TODO: clean up this func please...
-    while (prevRow && !prevRow.classList.contains('section-header-row') && !prevRow.classList.contains('blank-row')) {
-      if (!firstSection) prevRow.classList.add('collapsed');
-      i -= 1;
-      prevRow = allRows[i].previousElementSibling;
-    }
   } else if (rowCols.length === 1) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
     rowCols[0].setAttribute('role', 'rowheader');
     rowCols[0].setAttribute('aria-colindex', index + 1);
     rowCols[0].setAttribute('aria-label', 'rowheader');
-
     addAccssibleRowHeaders(row, headerCols)
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
@@ -152,17 +139,14 @@ function handleSection(sectionParams) {
     row.setAttribute('aria-rowindex', index + 1);
     rowCols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
-
       if (idx === 0) {
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
       }
-
       const dim = col.querySelectorAll('em').length > 0;
       if (dim) {
         col.classList.add('dim');
       }
-
       const child = col.children?.[0] || col;
       if (!child.innerHTML || child.textContent === '-') {
         col.classList.add('excluded-feature');
@@ -176,13 +160,6 @@ function handleSection(sectionParams) {
         child.innerHTML = `<p >${col.innerHTML}</p>`;
       }
     });
-    if (nextRow?.classList.contains('toggle-row')) {
-      row.classList.add('table-end-row');
-
-      if (!nextRow.classList.contains('desktop-hide')) {
-        row.classList.add('connect-to-toggle');
-      }
-    }
   }
 }
 
@@ -274,6 +251,9 @@ function createToggleRow({
     sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
   });
   toggleRow.append(toggleOverflowContent);
+
+  const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': firstSection });
+  toggleRow.prepend(toggleIconTag);
   return toggleRow;
 }
 
@@ -290,9 +270,8 @@ function decorateRow({
   sectionRows
 }) {
   row.classList.add('row', `row-${index + 1}`);
-  if (row.tagName !== 'BUTTON') row.setAttribute('role', 'row');
+  row.setAttribute('role', 'row');
   const cols = Array.from(row.children);
-
   let isAdditional = false;
   const isToggle = row.classList.contains('toggle-row');
 
@@ -313,33 +292,27 @@ function decorateRow({
       col.setAttribute('aria-colindex', cdx + 1);
     });
 
-    if (isSingleSectionVariant && isAdditional && cols.length > 1) {
+    if (isSingleSectionVariant && isAdditional) {
       handleSingleSectionVariant({ row, sectionItem, viewAllFeatures, createTag });
     }
-
-    if (sectionItem % 2 === 0 && cols.length > 1) row.classList.add('shaded');
+    if (sectionItem % 2 === 0) row.classList.add('shaded');
   } else {
-    row.setAttribute('tabindex', 0);
+    const toggleRow = createToggleRow({
+      isAdditional,
+      viewAllFeatures,
+      createTag
+    })
+    // if (nextRow) {
+    //   rows.splice(index + 1, 0, toggleRow);
+    //   row.parentElement.insertBefore(toggleRow, nextRow);
+    // } else {
+    //   rows.push(toggleRow);
+    //   row.parentElement.append(toggleRow);
+    //}
   }
 
-  const nextRow = rows[index + 1];
-  if (!isSingleSectionVariant && index > 0 && !isToggle && cols.length > 1
-    && (!nextRow || Array.from(nextRow.children).length <= 1)) {
-   
-      const toggleRow = createToggleRow({
-        isAdditional,
-        viewAllFeatures,
-        createTag
-      })
-    if (nextRow) {
-      rows.splice(index + 1, 0, toggleRow);
-      row.parentElement.insertBefore(toggleRow, nextRow);
-    } else {
-      rows.push(toggleRow);
-      row.parentElement.append(toggleRow);
-    }
-  }
-  if (isAdditional && cols.length > 1) row.classList.add('additional-row');
+
+  if (isAdditional) row.classList.add('additional-row');
   sectionRows.push(row)
   return { cols, isToggle, sectionItem };
 }
