@@ -255,6 +255,7 @@
 
 .quotes.carousel .quote .author .summary p:first-of-type {
   font-size: var(--body-font-size-s);
+  margin-bottom: 4px;
 }
 
 .quotes.carousel .quote .author .summary p:nth-of-type(2) {
