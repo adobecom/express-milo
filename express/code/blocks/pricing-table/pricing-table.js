@@ -19,11 +19,12 @@ function handleHeading(headingRow, headingCols, rowCount) {
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
   const parent = headingRow.parentElement;
-  parent.setAttribute('role', 'grid');
-  parent.setAttribute('aria-rowcount', rowCount);
-  parent.setAttribute('aria-colcount', headingCols.length);
-  headingCols.forEach(async (col) => {
+  parent.setAttribute('role', 'table');
+  parent.setAttribute('aria-label', 'Pricing Table');
+  headingCols.forEach(async (col, index) => {
     col.classList.add('col-heading');
+    col.setAttribute('role', 'columnheader');
+    col.setAttribute('scope', 'col');
     const elements = col.children;
     if (!elements?.length) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
@@ -64,6 +65,7 @@ function handleHeading(headingRow, headingCols, rowCount) {
     const colIndex = col.getAttribute('data-col-index');
     const colItems = headingRow.parentElement.querySelectorAll(`.section-row > .col[data-col-index="${colIndex}"]`);
     colItems.forEach((colItem) => {
+      colItem.setAttribute('role', 'cell');
       const colWrapper = document.createElement('div');
       colWrapper.classList.add('col-wrapper');
       const colContent = document.createElement('div');
@@ -77,23 +79,12 @@ function handleHeading(headingRow, headingCols, rowCount) {
   });
 }
 
-const EXCLUDE_ICON = '<span class="feat-icon cross"></span>';
-const INCLUDE_ICON = '<span class="feat-icon check"></span>';
+const EXCLUDE_ICON = '<span class="feat-icon cross" aria-label="Not included"></span>';
+const INCLUDE_ICON = '<span class="feat-icon check" aria-label="Included"></span>';
 
 const assignEvents = (tableEl) => {
   const buttons = tableEl.querySelectorAll('.toggle-row');
   if (!buttons?.length) return;
-
-  // buttons.forEach((btn) => {
-  //   btn.classList.add('point-cursor');
-  //   btn.addEventListener('click', () => handleToggleMore(btn));
-  //   btn.addEventListener('keydown', (e) => {
-  //     if (e.key === 'Enter' || e.key === ' ') {
-  //       e.preventDefault();
-  //       handleToggleMore(btn);
-  //     }
-  //   });
-  // });
 
   const linksPopulated = new CustomEvent('linkspopulated', { detail: buttons });
   document.dispatchEvent(linksPopulated);
@@ -124,6 +115,7 @@ function handleSingleSectionVariant({ row, sectionItem }) {
   const toggleBtn = createTag('button', {
     class: 'toggle-row toggle-content col col-1',
     'aria-expanded': isFirstSection ? 'true' : 'false',
+    'aria-label': viewAllText,
   }, viewAllText);
 
   const toggleIconTag = createTag('span', {
@@ -179,10 +171,18 @@ function createToggleRow(row, sectionLength, index, rows) {
     row.classList.add('null-row');
     return;
   }
-  const toggleButton = createTag('button', { class: 'toggle-row' });
+  const toggleButton = createTag('button', { 
+    class: 'toggle-row',
+    role: 'button',
+    'aria-expanded': 'false'
+  });
 
   const viewAllText = viewAllFeatures ?? 'View all features';
-  const toggleOverflowContent = createTag('div', { class: 'toggle-content col', role: 'cell', 'aria-label': viewAllText }, viewAllText);
+  const toggleOverflowContent = createTag('div', { 
+    class: 'toggle-content col', 
+    role: 'cell',
+    'aria-label': viewAllText 
+  }, viewAllText);
 
   toggleOverflowContent.addEventListener('click', () => {
     const buttonEl = toggleOverflowContent.querySelector('span.expand');
@@ -190,7 +190,11 @@ function createToggleRow(row, sectionLength, index, rows) {
     sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
   });
 
-  const toggleIconTag = createTag('span', { class: 'icon expand', 'aria-expanded': false });
+  const toggleIconTag = createTag('span', { 
+    class: 'icon expand', 
+    'aria-expanded': 'false',
+    'aria-hidden': 'true'
+  });
   toggleOverflowContent.insertAdjacentElement('afterbegin',toggleIconTag,);
   toggleButton.appendChild(toggleOverflowContent);
   row.appendChild(toggleButton);
@@ -212,7 +216,8 @@ export default async function init(el) {
   verifyTableIntegrity(el);
   const blockId = getId();
   el.id = `pricing-table-${blockId + 1}`;
-  el.setAttribute('role', 'grid');
+  el.setAttribute('role', 'table');
+  el.setAttribute('aria-label', 'Pricing Table');
   visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
 
   globalRows = Array.from(el.children);
@@ -236,7 +241,6 @@ function decorateRow({
 }) {
   row.classList.add('row', `row-${index + 1}`);
   row.setAttribute('role', 'row');
-  row.setAttribute('aria-rowindex', index + 1);
 
   const cols = Array.from(row.children);
   if (cols.length <= 1) {
@@ -247,8 +251,12 @@ function decorateRow({
   cols.forEach((col, cdx) => {
     col.dataset.colIndex = cdx + 1;
     col.classList.add('col', `col-${cdx + 1}`);
-    col.setAttribute('role', cdx === 0 ? 'rowheader' : 'gridcell');
-    col.setAttribute('aria-colindex', cdx + 1);
+    if (cdx === 0) {
+      col.setAttribute('role', 'rowheader');
+      col.setAttribute('scope', 'row');
+    } else {
+      col.setAttribute('role', 'cell');
+    }
   });
 
   if (sectionLength && isSingleSectionVariant) {
@@ -267,9 +275,7 @@ function decorateRow({
     row.classList.add('section-header-row');
     cols[0].classList.add('section-head-title');
     cols[0].setAttribute('role', 'rowheader');
-    cols[0].setAttribute('aria-colindex', index + 1);
-    cols[0].setAttribute('aria-label', 'rowheader');
-   // addAccssibleRowHeaders(row, headerCols);
+    cols[0].setAttribute('scope', 'rowgroup');
     sectionStart = true;
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
@@ -380,13 +386,10 @@ function insertSectionTablesIntoDOM(parentEl, sectionTables) {
     if (section.length === 0) return;
     const pricingTableDiv = createTag('div', {
       class: `pricing-table section-${sectionIndex + 1}`,
-      role: 'grid',
+      role: 'table',
+      'aria-label': `Pricing Table Section ${sectionIndex + 1}`
     });
 
-    if (section.length > 0 && section[0].children.length > 0) {
-      pricingTableDiv.setAttribute('aria-rowcount', section.length);
-      pricingTableDiv.setAttribute('aria-colcount', section[0].children.length);
-    }
     section.forEach(row => {
       pricingTableDiv.appendChild(row);
     });
