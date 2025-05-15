@@ -21,7 +21,7 @@
   scrollbar-width: none;
 }
 
-.get-started .scroll-container::-webkit-scrollbar {
+.hover-cards .scroll-container::-webkit-scrollbar {
   display: none;
 }
 
