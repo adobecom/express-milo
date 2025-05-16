@@ -48,11 +48,6 @@ function initButton($block, $buttons, $sections, index) {
           requestAnimationFrame(() => updateBackgroundSize(activeIndex));
           return;
         }
-        let leftOffset = activeIndex * 10;
-
-        for (let i = 0; i < activeIndex; i += 1) {
-          leftOffset += $buttons[i].getBoundingClientRect().width;
-        }
       });
     };
 
@@ -130,7 +125,7 @@ export default async function decorate(block) {
     const $toggleContainer = block.querySelector('ul');
     block.innerHTML = '';
 
-    Array.from($toggleContainer.children).forEach(($toggle, index) => {
+    Array.from($toggleContainer.children).forEach(($toggle) => {
       decorateButton(block, $toggle);
     });
     const $buttons = block.querySelectorAll('.content-toggle-button');
