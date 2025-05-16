@@ -12,10 +12,12 @@ main .section .content-toggle-wrapper {
     margin: 0 auto;
     padding: 0 13px;
     max-width: max-content;
+    overflow-x: scroll;
 }
 
 main .content-toggle {
     position: relative;
+    width: fit-content;
     display: flex;
     justify-content: center;
     background-color: #EDEDED;

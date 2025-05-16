@@ -81,6 +81,22 @@ function initButton($block, $sections, index) {
       setActiveButton(index);
     }
 
+    // Add focus event listener to scroll button into view
+    $buttons[index].addEventListener('focus', () => {
+      const $wrapper = $block.closest('.content-toggle-wrapper');
+      const buttonRect = $buttons[index].getBoundingClientRect();
+      const wrapperRect = $wrapper.getBoundingClientRect();
+      
+      // Calculate if button is outside wrapper's visible area
+      if (buttonRect.left < wrapperRect.left) {
+        // Button is too far left, scroll it into view
+        $wrapper.scrollLeft += buttonRect.left - wrapperRect.left - 10; // 10px padding
+      } else if (buttonRect.right > wrapperRect.right) {
+        // Button is too far right, scroll it into view
+        $wrapper.scrollLeft += buttonRect.right - wrapperRect.right + 10; // 10px padding
+      }
+    });
+
     $buttons[index].addEventListener('click', () => {
       const $activeButton = $block.querySelector('button.active');
       const blockPosition = $block.getBoundingClientRect().top;
