@@ -20,7 +20,7 @@ main .content-toggle {
     position: relative;
     display: flex;
     justify-content: center;
-    background-color: #EDEDED;
+    background-color: #ededed;
     border-radius: 100px;
     padding: 6px;
     margin-top: 10px;
@@ -50,31 +50,25 @@ main .content-toggle .content-toggle-button {
     user-select: none;
     border: none;
     font-family: var(--body-font-family);
-    color: black;
+    color: var(--color-gray-900);
 }
 
 main .content-toggle-button.active {
     margin: 0 8px;
     border-radius: 100px;
-    background-color: white;
-    color: #000000;
+    background-color: var(--color-white);
+    color: var(--color-gray-900);
     transition: 0.2s;
 }
 
 main .content-toggle.dark .content-toggle-button.active {
-    color: white;
+    color: var(--color-white);
     transition: 0.5s;
 }
 
-
-main .content-toggle.dark .content-toggle-button.active {
-    color: white;
-    transition: 0.5s;
-}
-
-main .content-toggle.dark .toggle-background  {
-    background-color: #242424;
-    color: #FFFFFF;
+main .content-toggle.dark .content-toggle-button {
+    background-color: var(--color-gray-900);
+    color: var(--color-white);
     transition: 0.2s;
 }
 
@@ -89,7 +83,7 @@ main .content-toggle .tag {
     font-size: 12px;
     font-weight: 400;
     background-color: #33AB84;
-    color: white;
+    color: var(--color-white);
     height: 20px;
     width: 61px;
     border-radius: 4px;
