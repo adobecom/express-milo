@@ -46,7 +46,6 @@ function initButton($block, $buttons, $sections, index) {
         const activeButton = $buttons[activeIndex];
         if (activeButton.getBoundingClientRect().width === 0) {
           requestAnimationFrame(() => updateBackgroundSize(activeIndex));
-          return;
         }
       });
     };
