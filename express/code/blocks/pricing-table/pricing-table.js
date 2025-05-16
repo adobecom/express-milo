@@ -91,9 +91,6 @@ function handleHeading(headingRow, headingCols) {
   });
 }
 
-const EXCLUDE_ICON = '<span class="feat-icon cross"></span>';
-const INCLUDE_ICON = '<span class="feat-icon check"></span>';
-
 function handleSection(sectionParams) {
   const {
     row,
@@ -102,6 +99,8 @@ function handleSection(sectionParams) {
     rowCols,
     isToggle,
     firstSection,
+    INCLUDE_ICON,
+    EXCLUDE_ICON,
   } = sectionParams;
 
   const previousRow = allRows[index - 1];
@@ -218,6 +217,11 @@ export default async function init(el) {
   const rows = Array.from(el.children);
   let sectionItem = 0;
   const viewAllFeatures = await replaceKey('view-all-features', getConfig());
+  const ariaLabelForCheckIcon = await replaceKey('aria-label-pricing-icon-check', getConfig()) || 'yes';
+  const ariaLabelForCrossIcon = await replaceKey('aria-label-pricing-icon-cross', getConfig()) || 'no';
+
+  const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon}></span>`;
+  const EXCLUDE_ICON = `<span class="feat-icon cross" aria-label=${ariaLabelForCrossIcon}></span>`;
 
   let headingChildren;
   let firstSection = true;
@@ -322,6 +326,8 @@ export default async function init(el) {
       rowCols: cols,
       isToggle,
       firstSection,
+      INCLUDE_ICON,
+      EXCLUDE_ICON,
     };
     handleSection(sectionParams);
     // eslint-disable-next-line no-await-in-loop
