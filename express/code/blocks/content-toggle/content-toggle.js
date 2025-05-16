@@ -39,7 +39,6 @@ function initButton($block, $buttons, $sections, index) {
   const $enclosingMain = $block.closest('main');
 
   if ($enclosingMain) {
-    const $buttons = $block.querySelectorAll('.content-toggle-button');
     let currentResizeObserver = null;
 
     const updateBackgroundSize = (activeIndex) => {
@@ -136,8 +135,8 @@ export default async function decorate(block) {
     
     });
     const $buttons = block.querySelectorAll('.content-toggle-button');
-    $buttons.forEach(($button, index) => {
-      initButton(block, $button, $sections, index);
+    $buttons.forEach((_, index) => {
+      initButton(block, $buttons,$sections, index);
     });
 
     if ($sections) {
