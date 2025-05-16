@@ -4,8 +4,18 @@ import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 import { sendEventToAnalytics } from '../../scripts/instrument.js';
 
+const EXCLUDE_ICON = '<span class="feat-icon cross" aria-label="Not included" role="img"></span>';
+const INCLUDE_ICON = '<span class="feat-icon check" aria-label="Included" role="img"></span>';
+
 let createTag; let getConfig;
 let replaceKey;
+
+let headerCols;
+let globalRows;
+let visibleCount;
+let isSingleSectionVariant;
+let viewAllFeatures;
+let sectionRows;
 
 const MOBILE_SIZE = 981;
 function defineDeviceByScreenSize() {
@@ -14,17 +24,21 @@ function defineDeviceByScreenSize() {
   return 'MOBILE';
 }
 
+function createAccessibleHeader(headerRow) {
+  headerCols.forEach((col, index) => {
+    if (index === 0) return;
+    const newCol = col.cloneNode(true);
+    newCol.classList.add('screen-reader-header-content');
+    headerRow.appendChild(newCol);
+  });
+}
+
 function handleHeading(headingRow, headingCols, rowCount) {
-  headingRow.classList.add('row-heading', 'table-start-row');
+  headingRow.classList.add('row-heading', 'table-start-row', 'row');
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
-  const parent = headingRow.parentElement;
-  parent.setAttribute('role', 'table');
-  parent.setAttribute('aria-label', 'Pricing Table');
   headingCols.forEach(async (col, index) => {
-    col.classList.add('col-heading');
-    col.setAttribute('role', 'columnheader');
-    col.setAttribute('scope', 'col');
+    col.classList.add('col-heading', 'col');
     const elements = col.children;
     if (!elements?.length) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
@@ -65,7 +79,6 @@ function handleHeading(headingRow, headingCols, rowCount) {
     const colIndex = col.getAttribute('data-col-index');
     const colItems = headingRow.parentElement.querySelectorAll(`.section-row > .col[data-col-index="${colIndex}"]`);
     colItems.forEach((colItem) => {
-      colItem.setAttribute('role', 'cell');
       const colWrapper = document.createElement('div');
       colWrapper.classList.add('col-wrapper');
       const colContent = document.createElement('div');
@@ -77,10 +90,8 @@ function handleHeading(headingRow, headingCols, rowCount) {
       colItem.append(colWrapper);
     });
   });
+  headerCols = headingCols;
 }
-
-const EXCLUDE_ICON = '<span class="feat-icon cross" aria-label="Not included"></span>';
-const INCLUDE_ICON = '<span class="feat-icon check" aria-label="Included"></span>';
 
 const assignEvents = (tableEl) => {
   const buttons = tableEl.querySelectorAll('.toggle-row');
@@ -101,12 +112,7 @@ const getId = (function idSetups() {
   return () => gen.next().value;
 }());
 
-let headerCols;
-let globalRows;
-let visibleCount;
-let isSingleSectionVariant;
-let viewAllFeatures;
-let sectionRows;
+
 
 function handleSingleSectionVariant({ row, sectionItem }) {
   const viewAllText = viewAllFeatures ?? 'View all features';
@@ -162,6 +168,7 @@ function toggleContent(element) {
   const icon = pricingTable.querySelector('.icon.expand');
   toggleRow.setAttribute('aria-expanded', isCurrentlyCollapsed);
   toggleRow.classList.toggle('collapsed', !isCurrentlyCollapsed);
+  
   icon?.setAttribute('aria-expanded', isCurrentlyCollapsed ? 'true' : 'false');
 }
 
@@ -197,7 +204,10 @@ function createToggleRow(row, sectionLength, index, rows) {
   });
   toggleOverflowContent.insertAdjacentElement('afterbegin',toggleIconTag,);
   toggleButton.appendChild(toggleOverflowContent);
-  row.appendChild(toggleButton);
+  const toggleCell = createTag('div', { class: 'toggle-cell col'});
+  toggleCell.setAttribute('role', 'cell');
+  toggleCell.appendChild(toggleButton);
+  row.appendChild(toggleCell);
   row.classList.add('table-end-row', 'toggle-row');
 }
 
@@ -216,8 +226,7 @@ export default async function init(el) {
   verifyTableIntegrity(el);
   const blockId = getId();
   el.id = `pricing-table-${blockId + 1}`;
-  el.setAttribute('role', 'table');
-  el.setAttribute('aria-label', 'Pricing Table');
+
   visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
 
   globalRows = Array.from(el.children);
@@ -226,7 +235,12 @@ export default async function init(el) {
 
   const sectionTables = processAllSections(globalRows);
 
-  insertSectionTablesIntoDOM(el, sectionTables);
+  if (! isSingleSectionVariant) {
+    insertSectionTablesIntoDOM(el, sectionTables);
+  } else {
+    el.setAttribute('role', 'table');
+    el.setAttribute('aria-label', 'Pricing Table');
+  }
 
   setupEventListeners(el, deviceBySize);
 
@@ -241,6 +255,7 @@ function decorateRow({
 }) {
   row.classList.add('row', `row-${index + 1}`);
   row.setAttribute('role', 'row');
+  if (sectionLength % 2 === 0) row.classList.add('shaded');
 
   const cols = Array.from(row.children);
   if (cols.length <= 1) {
@@ -262,11 +277,9 @@ function decorateRow({
   if (sectionLength && isSingleSectionVariant) {
     handleSingleSectionVariant({ row, sectionLength });
   }
-  if (sectionLength % 2 === 0) row.classList.add('shaded');
 
   let sectionEnd = false;
   let sectionStart = false;
-
   if (cols.length === 0) {
     createToggleRow(row, sectionLength, index, globalRows)
     sectionEnd = true;
@@ -274,8 +287,9 @@ function decorateRow({
     row.classList.add('table-start-row');
     row.classList.add('section-header-row');
     cols[0].classList.add('section-head-title');
-    cols[0].setAttribute('role', 'rowheader');
-    cols[0].setAttribute('scope', 'rowgroup');
+    cols[0].setAttribute('role', 'columnheader');
+    cols[0].setAttribute('scope', 'col');
+    createAccessibleHeader(row);
     sectionStart = true;
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
@@ -330,10 +344,10 @@ function processAllSections(allRows) {
 
   const headingRow = allRows[0];
   const headingChildren = Array.from(headingRow.children);
-  decorateRow({
-    row: headingRow,
-    index: 0,
-  });
+  // decorateRow({
+  //   row: headingRow,
+  //   index: 0,
+  // });
   handleHeading(headingRow, headingChildren, allRows.length);
 
   for (let index = 1; index < allRows.length; index += 1) {
