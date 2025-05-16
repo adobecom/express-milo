@@ -5,6 +5,7 @@
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
+import { defaultCollectionId, popularCollectionId } from './recipe-editor.js';
 
 export const base = 'https://www.adobe.com/express-search-api-v3';
 const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
@@ -14,6 +15,19 @@ const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
  * @param {URLSearchParams} params
  */
 export function convertFilterParams(params) {
+  if (params.has('collection')) {
+    if (params.get('collection') === 'default') {
+      params.set('collectionId', `${defaultCollectionId}`);
+    } else if (params.get('collection') === 'popular') {
+      params.set('collectionId', `${popularCollectionId}`);
+    }
+    params.delete('collection');
+  }
+  if (params.get('collectionId')) {
+    params.set('collectionId', `${params.get('collectionId')}`);
+  } else {
+    params.set('collectionId', `${defaultCollectionId}`);
+  }
   if (params.get('license')) {
     params.append('filters', `licensingCategory==${params.get('license')}`);
     params.delete('license');
