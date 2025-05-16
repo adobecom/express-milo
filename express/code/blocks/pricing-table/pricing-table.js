@@ -33,8 +33,9 @@ function createAccessibleHeader(headerRow) {
   });
 }
 
-function handleHeading(headingRow, headingCols, rowCount) {
+function handleHeading(headingRow, headingCols) {
   headingRow.classList.add('row-heading', 'table-start-row', 'row');
+  headingRow.setAttribute('role', '');
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
   headingCols.forEach(async (col, index) => {
@@ -76,6 +77,7 @@ function handleHeading(headingRow, headingCols, rowCount) {
       div.append(e);
     });
     col.replaceChildren(div);
+
     const colIndex = col.getAttribute('data-col-index');
     const colItems = headingRow.parentElement.querySelectorAll(`.section-row > .col[data-col-index="${colIndex}"]`);
     colItems.forEach((colItem) => {
@@ -88,6 +90,7 @@ function handleHeading(headingRow, headingCols, rowCount) {
       });
       colWrapper.append(colLabel.cloneNode(true), colContent);
       colItem.append(colWrapper);
+      console.log(colItem,colWrapper,colContent,colItem);
     });
   });
   headerCols = headingCols;
@@ -187,7 +190,6 @@ function createToggleRow(row, sectionLength, index, rows) {
   const viewAllText = viewAllFeatures ?? 'View all features';
   const toggleOverflowContent = createTag('div', { 
     class: 'toggle-content col', 
-    role: 'cell',
     'aria-label': viewAllText 
   }, viewAllText);
 
@@ -257,6 +259,7 @@ function decorateRow({
   row.setAttribute('role', 'row');
   if (sectionLength % 2 === 0) row.classList.add('shaded');
 
+  wrapColumnCells(row);
   const cols = Array.from(row.children);
   if (cols.length <= 1) {
     if (!cols[0]?.innerHTML) {
@@ -344,13 +347,14 @@ function processAllSections(allRows) {
 
   const headingRow = allRows[0];
   const headingChildren = Array.from(headingRow.children);
-  // decorateRow({
-  //   row: headingRow,
-  //   index: 0,
-  // });
+
+  decorateRow({
+    row: headingRow,
+    index: 0,
+  });
   handleHeading(headingRow, headingChildren, allRows.length);
 
-  for (let index = 1; index < allRows.length; index += 1) {
+  for (let index = 2; index < allRows.length; index += 1) {
     const row = allRows[index];
     const { sectionEnd, sectionStart } = decorateRow({
       row,
@@ -391,7 +395,6 @@ function processAllSections(allRows) {
 }
 
 function insertSectionTablesIntoDOM(parentEl, sectionTables) {
-  const headingRow = parentEl.firstElementChild;
   while (parentEl.children.length > 1) {
     parentEl.removeChild(parentEl.lastElementChild);
   }

@@ -11,15 +11,11 @@
   display: grid;
 }
 
-.pricing-table .col {
-  min-height: 27px;
-  position: relative;
-}
-
 .pricing-table .col,
 .pricing-table .col p {
   font-size: var(--body-font-size-s);
   line-height: 130%;
+  min-height: 27px;
 }
 
 .pricing-table .col p {
@@ -649,8 +645,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   position: relative;
 }
 
-.pricing-table .icon-container .col-content:after,
-.pricing-table .icon-container:after {
+.pricing-table .col.icon-container .col-content:after,
+.pricing-table .col .col-content .icon-container:after {
   content: '';
   display: block;
   position: absolute;
@@ -1040,5 +1036,9 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 }
 
 .pricing-table .screen-reader-header-content > * {
-  opacity: 0;
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
