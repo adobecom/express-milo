@@ -6,11 +6,14 @@
 import { html, LitElement, css } from './lit.min.js';
 import { getIconElementDeprecated } from '../../scripts/utils.js';
 
-const defaultCollectionId =
+export const defaultCollectionId =
   'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418';
+export const popularCollectionId = 
+  'urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852';
 
 class RecipeEditor extends LitElement {
   static properties = {
+    collection: { type: String },
     collectionId: { type: String },
     limit: { type: Number },
     start: { type: Number },
@@ -28,6 +31,7 @@ class RecipeEditor extends LitElement {
 
   constructor() {
     super();
+    this.collection = 'default';
     this.collectionId = '';
     this.limit = 10;
     this.start = 0;
@@ -68,6 +72,18 @@ class RecipeEditor extends LitElement {
       this.form2Recipe();
     }
     this.notifyRecipeChanged();
+
+    if (name === 'collectionId' || name === 'collection') {
+      const collectionIdInput = this.shadowRoot.querySelector('input[name="collectionId"]');
+      const errorMessage = this.shadowRoot.querySelector('.collection-id-error');
+      if (this.collection === 'custom' && !this.collectionId) {
+        collectionIdInput.setCustomValidity('Collection ID is required when using a custom collection');
+        if (errorMessage) errorMessage.classList.remove('hidden');
+      } else {
+        collectionIdInput.setCustomValidity('');
+        if (errorMessage) errorMessage.classList.add('hidden');
+      }
+    }
   }
 
   static styles = css`
@@ -155,12 +171,22 @@ class RecipeEditor extends LitElement {
     input {
       font-size: 1rem;
     }
+
+    input:invalid {
+      border: 1px solid red;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.8rem;
+      margin-top: -5px;
+      margin-left: 10px;
+    }
   `;
 
   form2Recipe() {
-    const collectionId = `collectionId=${
-      this.collectionId || defaultCollectionId
-    }`;
+    const collection = this.collection === 'custom' ? '' : `collection=${this.collection}`;
+    const collectionId = this.collection === 'custom' ? `collectionId=${this.collectionId}` : '';
     const limit = this.limit ? `limit=${this.limit}` : '';
     const start = this.start ? `start=${this.start}` : '';
     const q = this.q ? `q=${this.q}` : '';
@@ -181,6 +207,7 @@ class RecipeEditor extends LitElement {
       behaviors,
       orderBy,
       limit,
+      collection,
       collectionId,
       prefLang,
       prefRegion,
@@ -194,7 +221,21 @@ class RecipeEditor extends LitElement {
   recipe2Form() {
     const params = new URLSearchParams(this.recipe);
     if (params.has('collectionId')) {
-      this.collectionId = params.get('collectionId');
+      if (params.get('collectionId') === defaultCollectionId) {
+        this.collection = 'default';
+        this.collectionId = '';
+      } else if (params.get('collectionId') === popularCollectionId) {
+        this.collection = 'popular';
+        this.collectionId = '';
+      } else {
+        this.collection = 'custom';
+      }
+    } else if (params.has('collection') && ['default', 'popular'].includes(params.get('collection'))) {
+      this.collection = params.get('collection');
+      this.collectionId = '';
+    } else {
+      this.collection = 'default';
+      this.collectionId = '';
     }
     if (params.has('limit')) {
       this.limit = params.get('limit');
@@ -279,8 +320,8 @@ class RecipeEditor extends LitElement {
 
   render() {
     const [collectionInfoButton, collectionInfoContent] = this.getInfo(
-      'collectionId',
-      'Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another common is the popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852).'
+      'collection',
+      `Predefined collections. Select Customized to use specific Collection ID. Defaults to the global collection (${defaultCollectionId}). You can also use the Popular collection (${popularCollectionId}).`
     );
     const [limitInfoButton, limitInfoContent] = this.getInfo(
       'limit',
@@ -346,17 +387,33 @@ class RecipeEditor extends LitElement {
         ${qInfoContent}
 
         <label>
+          Collection:
+          <select name="collection" @change=${this.handleFieldChange}>
+            <option value="default" ?selected=${this.collection === 'default'}>Default</option>
+            <option value="popular" ?selected=${this.collection === 'popular'}>Popular</option>
+            <option value="custom" ?selected=${this.collection === 'custom'}>
+              Use Custom collection ID
+            </option>
+          </select>
+          ${collectionInfoButton}
+        </label>
+        ${collectionInfoContent}
+
+        <label>
           Collection ID:
           <input
             name="collectionId"
             type="text"
             title="Optional. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). Another common is the popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852)."
             .value=${this.collectionId}
+            ?disabled=${this.collection !== "custom"}
+            ?required=${this.collection === "custom"}
             @input=${this.handleFieldChange}
           />
-          ${collectionInfoButton}
         </label>
-        ${collectionInfoContent}
+        <div class="error-message collection-id-error hidden">
+          Collection ID is required when using a custom collection
+        </div>
 
         <label>
           Limit:
@@ -385,13 +442,13 @@ class RecipeEditor extends LitElement {
         <label>
           Order by:
           <select name="orderBy" @change=${this.handleFieldChange}>
-            <option value="">Relevancy (Default)</option>
-            <option value="-remixCount">Descending Remix Count</option>
-            <option value="+remixCount">Ascending Remix Count</option>
-            <option value="-createDate">
+            <option value="" ?selected=${this.orderBy === ''}>Relevancy (Default)</option>
+            <option value="-remixCount" ?selected=${this.orderBy === '-remixCount'}>Descending Remix Count</option>
+            <option value="+remixCount" ?selected=${this.orderBy === '+remixCount'}>Ascending Remix Count</option>
+            <option value="-createDate" ?selected=${this.orderBy === '-createDate'}>
               Descending Create Date (New first)
             </option>
-            <option value="+createDate">
+            <option value="+createDate" ?selected=${this.orderBy === '+createDate'}>
               Ascending Create Date (Old first)
             </option>
           </select>
@@ -435,20 +492,20 @@ class RecipeEditor extends LitElement {
         <label>
           Behaviors:
           <select name="behaviors" @change=${this.handleFieldChange}>
-            <option value="">All (Default)</option>
-            <option value="still">Still</option>
-            <option value="animated">Animated</option>
-            <option value="video">Video</option>
-            <option value="animated,video">Animated + Video</option>
+            <option value="" ?selected=${this.behaviors === ''}>All (Default)</option>
+            <option value="still" ?selected=${this.behaviors === 'still'}>Still</option>
+            <option value="animated" ?selected=${this.behaviors === 'animated'}>Animated</option>
+            <option value="video" ?selected=${this.behaviors === 'video'}>Video</option>
+            <option value="animated,video" ?selected=${this.behaviors === 'animated,video'}>Animated + Video</option>
           </select>
         </label>
 
         <label>
           Licensing Category:
           <select name="license" @change=${this.handleFieldChange}>
-            <option value="">Mixed (Default)</option>
-            <option value="free">Free only</option>
-            <option value="premium">Premium only</option>
+            <option value="" ?selected=${this.license === ''}>Mixed (Default)</option>
+            <option value="free" ?selected=${this.license === 'free'}>Free only</option>
+            <option value="premium" ?selected=${this.license === 'premium'}>Premium only</option>
           </select>
         </label>
 
