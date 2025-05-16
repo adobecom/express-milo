@@ -50,14 +50,14 @@ main .content-toggle .content-toggle-button {
     user-select: none;
     border: none;
     font-family: var(--body-font-family);
-    color: var(--color-gray-900);
+    color: var(--color-gray-800);
 }
 
 main .content-toggle-button.active {
     margin: 0 8px;
     border-radius: 100px;
     background-color: var(--color-white);
-    color: var(--color-gray-900);
+    color: var(--color-gray-800);
     transition: 0.2s;
 }
 
@@ -65,9 +65,9 @@ main .content-toggle.dark .content-toggle-button.active {
     color: var(--color-white);
     transition: 0.5s;
 }
-
-main .content-toggle.dark .content-toggle-button {
-    background-color: var(--color-gray-900);
+ 
+main .content-toggle.dark .content-toggle-button.active {
+    background-color: var(--color-gray-800);
     color: var(--color-white);
     transition: 0.2s;
 }
