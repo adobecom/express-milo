@@ -182,6 +182,11 @@
   margin-left: 0;
 }
 
+.section .link-list-wrapper:has(.link-list.inline) {
+  margin: 0;
+  max-width: initial;
+}
+
 .section .link-list.inline {
   margin: 0 auto;
 }
@@ -192,7 +197,8 @@
   line-height: 1.3;
   margin-bottom: 0;
   padding-left: 0;
-  color: var(--color-gray-800);
+  color: #131313;
+  white-space: nowrap;
 }
 
 .section .link-list.inline .button-container {
@@ -204,11 +210,22 @@
   background-color: var(--color-white);
   line-height: 1.3;
   font-weight: 700;
-  color: #242424;
+  color: #292929;
   border-radius: 8px;
   padding: 8px 12px;
   border: 2px solid rgba(0, 0, 0, 0.15);
   background: rgba(0, 0, 0, 0.00);
+}
+
+@media (min-width: 600px) {
+  .section .link-list.inline {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section .link-list.inline .carousel-container {
+    min-width: 0;
+  }
 }
 
 @media (min-width: 900px) {
@@ -229,6 +246,9 @@
 
   .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
      max-width: 830px;
+  }
+  .section .link-list-wrapper:has(.link-list.inline) {
+    max-width: initial;
   }
 
   .section .link-list-wrapper {
@@ -265,6 +285,9 @@
 @media (min-width: 1200px) {
   .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
     max-width: 1024px;
+  }
+  .section .link-list-wrapper:has(.link-list.inline) {
+    max-width: initial;
   }
 
   .section .link-list-wrapper {
