@@ -207,6 +207,10 @@
   background: unset;
 }
 
+.faqv2.expandable.longform .faqv2-accordion.expandable.header-accordion {
+  box-shadow: none;
+}
+
 /* border-radius: 8px 8px 0 0; */
 .faqv2-accordion.expandable.sub-header-accordion {
   height: 0;
