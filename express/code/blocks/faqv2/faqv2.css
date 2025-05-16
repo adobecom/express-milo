@@ -272,6 +272,10 @@
   opacity: 1;
 }
 
+.faqv2.longform .faqv2-accordion.expandable.sub-header-accordion.collapsed::before {
+  opacity: 0;
+}
+
 .faqv2-accordion.expandable.sub-header-accordion.collapsed::after {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
