@@ -484,8 +484,6 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
-    padding: 30px 10px;
-    max-width: 90%;
     border-radius: 16px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
     margin-top: 25px;
