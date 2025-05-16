@@ -247,10 +247,12 @@ function renderCTA(branchUrl) {
 }
 
 function renderCTALink(branchUrl, template) {
+  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const linkEl = createTag('a', {
     href: `${branchUrl}${mv}${sdid}${source}${action}`,
     class: 'cta-link',
     tabindex: '-1',
+    'aria-label': `${btnTitle} ${getTemplateTitle(template)}`,
   });
   linkEl.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
   return linkEl;
@@ -476,7 +478,7 @@ function renderHoverWrapper(template) {
     ctaLink = renderCTALink(template.customLinks.branchUrl, template);
   }
 
-  cta.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
+  cta.setAttribute('aria-label', `${editThisTemplate} ${getTemplateTitle(template)}`);
   ctaLink.append(mediaWrapper);
 
   btnContainer.append(cta);
