@@ -12,9 +12,11 @@ main .section .content-toggle-wrapper {
     margin: 0 auto;
     padding: 0 13px;
     max-width: max-content;
+    overflow-x: scroll;
 }
 
 main .content-toggle {
+    width: fit-content;
     position: relative;
     display: flex;
     justify-content: center;
@@ -51,12 +53,26 @@ main .content-toggle .content-toggle-button {
     color: black;
 }
 
+main .content-toggle-button.active {
+    margin: 0 8px;
+    border-radius: 100px;
+    background-color: white;
+    color: #000000;
+    transition: 0.2s;
+}
+
 main .content-toggle.dark .content-toggle-button.active {
     color: white;
     transition: 0.5s;
 }
 
-main .content-toggle .toggle-background  {
+
+main .content-toggle.dark .content-toggle-button.active {
+    color: white;
+    transition: 0.5s;
+}
+
+/* main .content-toggle .toggle-background  {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -66,7 +82,7 @@ main .content-toggle .toggle-background  {
     background-color: white;
     color: #000000;
     transition: 0.2s;
-}
+} */
 
 main .content-toggle.dark .toggle-background  {
     background-color: #242424;

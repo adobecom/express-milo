@@ -35,12 +35,11 @@ function getDefatultToggleIndex($block) {
   return defaultIndex;
 }
 
-function initButton($block, $sections, index) {
+function initButton($block, $buttons, $sections, index) {
   const $enclosingMain = $block.closest('main');
 
   if ($enclosingMain) {
     const $buttons = $block.querySelectorAll('.content-toggle-button');
-    const $toggleBackground = $block.querySelector('.toggle-background');
     let currentResizeObserver = null;
 
     const updateBackgroundSize = (activeIndex) => {
@@ -50,15 +49,11 @@ function initButton($block, $sections, index) {
           requestAnimationFrame(() => updateBackgroundSize(activeIndex));
           return;
         }
-        const buttonWidth = activeButton.getBoundingClientRect().width + 5;
         let leftOffset = activeIndex * 10;
 
         for (let i = 0; i < activeIndex; i += 1) {
           leftOffset += $buttons[i].getBoundingClientRect().width;
         }
-
-        $toggleBackground.style.left = `${leftOffset}px`;
-        $toggleBackground.style.width = `${buttonWidth}px`;
       });
     };
 
@@ -70,8 +65,8 @@ function initButton($block, $sections, index) {
       currentResizeObserver = new ResizeObserver(() => {
         updateBackgroundSize(newIndex);
       });
-      currentResizeObserver.observe($buttons[newIndex]);
 
+      currentResizeObserver.observe($buttons[newIndex]);
       $buttons.forEach(($btn) => $btn.classList.remove('active'));
       $buttons[newIndex].classList.add('active');
       updateBackgroundSize(newIndex);
@@ -133,16 +128,16 @@ export default async function decorate(block) {
   const $enclosingMain = block.closest('main');
   if ($enclosingMain) {
     const $sections = $enclosingMain.querySelectorAll('[data-toggle]');
-    const $toggleContainer = block.querySelector('ul');
-    const $toggleBackground = createTag('div', { class: 'toggle-background' });
-
+    const $toggleContainer = block.querySelector('ul'); 
     block.innerHTML = '';
-
-    block.prepend($toggleBackground);
 
     Array.from($toggleContainer.children).forEach(($toggle, index) => {
       decorateButton(block, $toggle);
-      initButton(block, $sections, index);
+    
+    });
+    const $buttons = block.querySelectorAll('.content-toggle-button');
+    $buttons.forEach(($button, index) => {
+      initButton(block, $button, $sections, index);
     });
 
     if ($sections) {
