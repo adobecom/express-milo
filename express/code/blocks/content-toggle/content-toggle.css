@@ -19,13 +19,13 @@ main .content-toggle {
     width: fit-content;
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     background-color: #ededed;
     border-radius: 100px;
     padding: 6px;
     margin-top: 10px;
     margin-bottom: 24px;
-    height: 64px;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;

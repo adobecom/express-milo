@@ -127,16 +127,15 @@ export default async function decorate(block) {
   const $enclosingMain = block.closest('main');
   if ($enclosingMain) {
     const $sections = $enclosingMain.querySelectorAll('[data-toggle]');
-    const $toggleContainer = block.querySelector('ul'); 
+    const $toggleContainer = block.querySelector('ul');
     block.innerHTML = '';
 
     Array.from($toggleContainer.children).forEach(($toggle, index) => {
       decorateButton(block, $toggle);
-    
     });
     const $buttons = block.querySelectorAll('.content-toggle-button');
     $buttons.forEach((_, index) => {
-      initButton(block, $buttons,$sections, index);
+      initButton(block, $buttons, $sections, index);
     });
 
     if ($sections) {
