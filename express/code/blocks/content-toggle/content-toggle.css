@@ -72,18 +72,6 @@ main .content-toggle.dark .content-toggle-button.active {
     transition: 0.5s;
 }
 
-/* main .content-toggle .toggle-background  {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 60px;
-    margin: 0 8px;
-    border-radius: 100px;
-    background-color: white;
-    color: #000000;
-    transition: 0.2s;
-} */
-
 main .content-toggle.dark .toggle-background  {
     background-color: #242424;
     color: #FFFFFF;
