@@ -183,7 +183,6 @@
 }
 
 .section .link-list-wrapper:has(.link-list.inline) {
-  margin: 0;
   max-width: initial;
 }
 
