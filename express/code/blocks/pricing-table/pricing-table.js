@@ -259,7 +259,6 @@ function decorateRow({
   row.setAttribute('role', 'row');
   if (sectionLength % 2 === 0) row.classList.add('shaded');
 
-  wrapColumnCells(row);
   const cols = Array.from(row.children);
   if (cols.length <= 1) {
     if (!cols[0]?.innerHTML) {
