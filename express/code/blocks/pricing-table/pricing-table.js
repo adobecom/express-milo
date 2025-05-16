@@ -90,7 +90,6 @@ function handleHeading(headingRow, headingCols) {
       });
       colWrapper.append(colLabel.cloneNode(true), colContent);
       colItem.append(colWrapper);
-      console.log(colItem,colWrapper,colContent,colItem);
     });
   });
   headerCols = headingCols;
