@@ -1,0 +1,12 @@
+.template-x-carousel-toolbar .headline-container h2 {
+  line-height: 1.3;
+  font-size: var(--body-font-size-xl);
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+
+.template-x-carousel-toolbar .headline-container p {
+  line-height: 1.3;
+  font-size: var(--body-font-size-m);
+  margin: 0;
+}
