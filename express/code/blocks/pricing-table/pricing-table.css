@@ -1014,3 +1014,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   }
 }
 
+
+.pricing-table .screen-reader-header-content {
+  color: transparent;
+}
+
