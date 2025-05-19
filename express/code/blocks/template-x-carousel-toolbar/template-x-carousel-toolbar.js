@@ -3,10 +3,10 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 let createTag; let getConfig;
 let replaceKey;
 
-function buildDropdown(optionKeys) {
+function createDropdown(optionKeys) {
   let currentIndex = 0;
   const select = createTag('div', { class: 'select', role: 'combobox', 'aria-haspopup': 'listbox', 'aria-expanded': 'false', tabindex: '0' });
-  const selected = createTag('div', { class: 'selected-option' }, [getIconElementDeprecated('template-lightning'), optionKeys[0]]);
+  const selectedOption = createTag('div', { class: 'selected-option' }, [getIconElementDeprecated('template-lightning'), optionKeys[0]]);
   const options = optionKeys.map((key) => (createTag('li', { class: 'option', role: 'option' }, [getIconElementDeprecated('template-lightning'), key])));
   options[0].setAttribute('aria-selected', 'true');
   const optionList = createTag('ul', { class: 'options', role: 'listbox', tabindex: -1 }, options);
@@ -15,7 +15,8 @@ function buildDropdown(optionKeys) {
     options[currentIndex].classList.add('hovered');
     options[currentIndex].scrollIntoView({ block: 'nearest' });
   }
-  select.append(selected, optionList);
+  const selectedOptionWrapper = createTag('div', { class: 'selected-option-wrapper' }, [selectedOption, getIconElementDeprecated('drop-down-arrow')]);
+  select.append(selectedOptionWrapper, optionList);
 
   select.addEventListener('click', () => {
     const expanded = select.getAttribute('aria-expanded') === 'true';
@@ -70,7 +71,7 @@ function buildDropdown(optionKeys) {
       e.stopPropagation();
       options.forEach((o) => o.setAttribute('aria-selected', 'false'));
       opt.setAttribute('aria-selected', 'true');
-      selected.innerHTML = opt.innerHTML;
+      selectedOption.innerHTML = opt.innerHTML;
       currentIndex = index;
       select.setAttribute('aria-expanded', 'false');
     });
@@ -88,15 +89,21 @@ function buildDropdown(optionKeys) {
   return select;
 }
 
+function createTemplates(recipe) {
+  const templatesContainer = createTag('div', { class: 'templates-container' });
+}
+
 export default async function init(el) {
   [{ createTag, getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
-  const [headlineRow] = el.children;
+  const [headlineRow, recipeRow] = el.children;
   headlineRow.classList.add('headline-container');
+  const recipe = recipeRow.textContent.trim().toLowerCase();
+  recipeRow.remove();
   const [popular, newTemplates] = await Promise.all(
     [
       replaceKey('popular', getConfig()),
       replaceKey('new-templates', getConfig()),
     ],
   );
-  el.append(buildDropdown([popular, newTemplates]));
+  el.append(createDropdown([popular, newTemplates]), createTemplates(recipe));
 }
