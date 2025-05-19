@@ -1007,5 +1007,10 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   .pricing-table.single-section .table-end-row:last-of-type{
     border-bottom: unset;
   } 
+
+
+  .pricing-table button.row.toggle-row {
+    display: none;
+  }
 }
 
