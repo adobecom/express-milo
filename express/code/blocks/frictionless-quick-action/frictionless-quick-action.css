@@ -82,6 +82,7 @@
 }
 
 .frictionless-quick-action .dropzone-bg {
+    display: none;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -198,6 +199,12 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     display: flex;
     align-items: center;
     cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .frictionless-quick-action .dropzone-bg{
+        display: block;
+    }
 }
 
 @media (min-width: 1200) {
