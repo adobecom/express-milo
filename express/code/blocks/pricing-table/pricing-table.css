@@ -663,9 +663,13 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   background-color: unset;
 }
 
-.pricing-table.vertical-shading .row-heading .col:nth-child(2n),
+
 .pricing-table.vertical-shading .col:nth-child(2n) {
   background: var(--shaded-color);
+}
+
+.pricing-table.vertical-shading .col.screen-reader-header-content {
+background-color: unset;
 }
 /* /Table Section Rows */
 
