@@ -15,7 +15,6 @@
 .pricing-table .col p {
   font-size: var(--body-font-size-s);
   line-height: 130%;
-  min-height: 27px;
 }
 
 .pricing-table .col p {
@@ -493,7 +492,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 .pricing-table .row.row-heading .col {
   display: flex;
 }
-.pricing-table .row.row-heading .col.col-1 {
+.pricing-table .row.row-heading .col-heading {
   flex-direction: column;
   justify-content: center;
   align-items: start;
@@ -583,6 +582,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   justify-content: center;
   align-items: center;
   text-align: center;
+  gap: 12px;
 }
 
 .pricing-table .row.section-row .col .col-content {
@@ -1035,10 +1035,6 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   display: none;
 }
 
-.pricing-table .screen-reader-header-content > * {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+.pricing-table .screen-reader-header-content {
+    color: transparent;
 }

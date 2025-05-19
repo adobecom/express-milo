@@ -28,18 +28,21 @@ function createAccessibleHeader(headerRow) {
   headerCols.forEach((col, index) => {
     if (index === 0) return;
     const newCol = col.cloneNode(true);
+    newCol.innerHTML = ''
+    newCol.innerText = col.querySelector('p').textContent;
     newCol.classList.add('screen-reader-header-content');
+    newCol.setAttribute('role', 'columnheader')
     headerRow.appendChild(newCol);
   });
 }
 
 function handleHeading(headingRow, headingCols) {
   headingRow.classList.add('row-heading', 'table-start-row', 'row');
-  headingRow.setAttribute('role', '');
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
   headingCols.forEach(async (col, index) => {
     col.classList.add('col-heading', 'col');
+    col.dataset.colIndex = index + 1;
     const elements = col.children;
     if (!elements?.length) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
@@ -95,7 +98,7 @@ function handleHeading(headingRow, headingCols) {
   headerCols = headingCols;
 }
 
-const assignEvents = (tableEl) => {
+const fireLinksPopulatedEvent = (tableEl) => {
   const buttons = tableEl.querySelectorAll('.toggle-row');
   if (!buttons?.length) return;
 
@@ -113,8 +116,6 @@ const getId = (function idSetups() {
   }());
   return () => gen.next().value;
 }());
-
-
 
 function handleSingleSectionVariant({ row, sectionItem }) {
   const viewAllText = viewAllFeatures ?? 'View all features';
@@ -212,58 +213,37 @@ function createToggleRow(row, sectionLength, index, rows) {
   row.classList.add('table-end-row', 'toggle-row');
 }
 
-export default async function init(el) {
-  await fixIcons(el);
-  splitAndAddVariantsWithDash(el);
-  isSingleSectionVariant = el.classList.contains('single-section');
-  let deviceBySize = defineDeviceByScreenSize();
-
-  
-  addTempWrapperDeprecated(el, 'pricing-table');
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
-  verifyTableIntegrity(el);
-  const blockId = getId();
-  el.id = `pricing-table-${blockId + 1}`;
-
-  visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
-
-  globalRows = Array.from(el.children);
-  viewAllFeatures = await replaceKey('view-all-features', getConfig());
-  sectionRows = [];
-
-  const sectionTables = processAllSections(globalRows);
-
-  if (! isSingleSectionVariant) {
-    insertSectionTablesIntoDOM(el, sectionTables);
-  } else {
-    el.setAttribute('role', 'table');
-    el.setAttribute('aria-label', 'Pricing Table');
-  }
-
-  setupEventListeners(el, deviceBySize);
-
-  handleResize(el, deviceBySize);
-}
-
-function decorateRow({
+export function decorateRow({
   row,
   index,
   sectionLength = 0,
   isSingleSectionVariant = false,
-}) {
-  row.classList.add('row', `row-${index + 1}`);
-  row.setAttribute('role', 'row');
-  if (sectionLength % 2 === 0) row.classList.add('shaded');
-
-  const cols = Array.from(row.children);
-  if (cols.length <= 1) {
-    if (!cols[0]?.innerHTML) {
-      cols.shift().remove();
-    }
+}) { 
+  const cols = prepareRowBase({ row, index, sectionLength }); 
+  setupColumnRoles(row,cols);
+  if (sectionLength && isSingleSectionVariant) {
+    handleSingleSectionVariant({ row, sectionLength });
   }
+  return handleSectionAttributes({
+    row,
+    cols,
+    index,
+    sectionLength,
+  });
+}
+
+function prepareRowBase({ row, index, sectionLength }) {
+  row.classList.add('row', `row-${index + 1}`);
+  if (sectionLength % 2 === 0) row.classList.add('shaded');
+  const cols = Array.from(row.children);
+  if (cols.length <= 1 && !cols[0]?.innerHTML) {
+    cols.shift().remove();
+  }
+  return cols;
+}
+
+function setupColumnRoles(row,cols) {
+  row.setAttribute('role', 'row')
   cols.forEach((col, cdx) => {
     col.dataset.colIndex = cdx + 1;
     col.classList.add('col', `col-${cdx + 1}`);
@@ -274,57 +254,78 @@ function decorateRow({
       col.setAttribute('role', 'cell');
     }
   });
+}
 
-  if (sectionLength && isSingleSectionVariant) {
-    handleSingleSectionVariant({ row, sectionLength });
-  }
-
+function handleSectionAttributes({ row, cols, index, sectionLength }) {
   let sectionEnd = false;
   let sectionStart = false;
+ 
   if (cols.length === 0) {
-    createToggleRow(row, sectionLength, index, globalRows)
+    createToggleRow(row, sectionLength, index, globalRows);
     sectionEnd = true;
+ 
   } else if (cols.length === 1) {
-    row.classList.add('table-start-row');
-    row.classList.add('section-header-row');
-    cols[0].classList.add('section-head-title');
-    cols[0].setAttribute('role', 'columnheader');
-    cols[0].setAttribute('scope', 'col');
-    createAccessibleHeader(row);
-    sectionStart = true;
+    decorateSectionHeaderRow(row, cols[0]);
+    sectionStart = true; 
   } else if (index === 0) {
-    row.classList.add('row-heading', 'table-start-row');
+    row.classList.add('row-heading', 'table-start-row'); 
   } else {
-    row.classList.add('section-row');
-    if (sectionLength > visibleCount) {
-      row.classList.add('additional-content');
-    }
-    cols.forEach((col, idx) => {
-      decorateButtonsDeprecated(col);
-      if (idx === 0) {
-        if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
-        return;
-      }
-      const dim = col.querySelectorAll('em').length > 0;
-      if (dim) {
-        col.classList.add('dim');
-      }
-      const child = col.children?.[0] || col;
-      if (!child.innerHTML || child.textContent === '-') {
-        col.classList.add('excluded-feature');
-        child.innerHTML = EXCLUDE_ICON;
-        child.classList.add('icon-container');
-      } else if (child.textContent === '+') {
-        col.classList.add('included-feature');
-        child.innerHTML = INCLUDE_ICON;
-        child.classList.add('icon-container');
-      } else if (!col.children.length) {
-        child.innerHTML = `<p>${col.innerHTML}</p>`;
-      }
-    });
+    decorateFeatureRow({ row, cols, sectionLength });
   }
-
   return { sectionEnd, sectionStart };
+}
+
+function decorateSectionHeaderRow(row, headerCol) {
+  row.classList.add('table-start-row', 'section-header-row');
+  headerCol.classList.add('section-head-title');
+  headerCol.setAttribute('role', 'columnheader');
+  headerCol.setAttribute('scope', 'col');
+  createAccessibleHeader(row);
+}
+
+function decorateFeatureRow({ row, cols, sectionLength }) {
+  row.classList.add('section-row');
+  if (sectionLength > visibleCount) {
+    row.classList.add('additional-content');
+  }
+  cols.forEach((col, idx) => {
+    if (idx === 0) {
+      ensureParagraphWrapper(col);
+      return;
+    }
+    decorateButtonsDeprecated(col);
+    decorateFeatureCell(col);
+  });
+}
+
+function ensureParagraphWrapper(col) {
+  if (!col.children?.length || col.querySelector(':scope > sup')) {
+    col.innerHTML = `<p>${col.innerHTML}</p>`;
+  }
+}
+
+function decorateFeatureCell(col) {
+  const child = col.children?.[0] || col; 
+  if (!child.innerHTML || child.textContent.trim() === '-') {
+    applyIconCell(col, child, 'excluded-feature', EXCLUDE_ICON);
+    return;
+  }
+  if (child.textContent.trim() === '+') {
+    applyIconCell(col, child, 'included-feature', INCLUDE_ICON);
+    return;
+  }
+  if (col.querySelectorAll('em').length > 0) {
+    col.classList.add('dim');
+  }
+  if (!col.children.length) {
+    child.innerHTML = `<p>${col.innerHTML}</p>`;
+  }
+}
+
+function applyIconCell(col, child, className, iconMarkup) {
+  col.classList.add(className);
+  child.innerHTML = iconMarkup;
+  child.classList.add('icon-container');
 }
 
 function verifyTableIntegrity(el) {
@@ -346,10 +347,6 @@ function processAllSections(allRows) {
   const headingRow = allRows[0];
   const headingChildren = Array.from(headingRow.children);
 
-  decorateRow({
-    row: headingRow,
-    index: 0,
-  });
   handleHeading(headingRow, headingChildren, allRows.length);
 
   for (let index = 2; index < allRows.length; index += 1) {
@@ -495,4 +492,39 @@ function setupStickyHeaderBehavior(el, deviceBySize) {
   };
 
   window.addEventListener('scroll', debounce(scrollHandler, 16), { passive: true });
+}
+
+export default async function init(el) {
+  await fixIcons(el);
+  splitAndAddVariantsWithDash(el);
+  isSingleSectionVariant = el.classList.contains('single-section');
+  let deviceBySize = defineDeviceByScreenSize();
+
+  
+  addTempWrapperDeprecated(el, 'pricing-table');
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
+  verifyTableIntegrity(el);
+  const blockId = getId();
+  el.id = `pricing-table-${blockId + 1}`;
+
+  visibleCount = parseInt(Array.from(el.classList).find((c) => /^show(\d+)/i.test(c))?.substring(4) ?? '3', 10);
+
+  globalRows = Array.from(el.children);
+  viewAllFeatures = await replaceKey('view-all-features', getConfig());
+  sectionRows = [];
+
+  const sectionTables = processAllSections(globalRows);
+
+  if (! isSingleSectionVariant) {
+    insertSectionTablesIntoDOM(el, sectionTables);
+  } else {
+    el.setAttribute('role', 'table');
+    el.setAttribute('aria-label', 'Pricing Table');
+  }
+  setupEventListeners(el, deviceBySize);
+  handleResize(el, deviceBySize);
+  fireLinksPopulatedEvent(el)
 }
