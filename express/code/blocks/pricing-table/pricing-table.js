@@ -32,7 +32,21 @@ function handleToggleMore(btn) {
   }
 }
 
-function handleHeading(headingRow, headingCols) {
+function createAccessibleHeader(headerRow) {
+  headingCols.forEach((col, index) => {
+    if (index === 0) return;
+    const newCol = col.cloneNode(true);
+    newCol.innerHTML = ''
+    newCol.innerText = col.querySelector('p').textContent;
+    newCol.classList.add('screen-reader-header-content');
+    newCol.setAttribute('role', 'columnheader')
+    headerRow.appendChild(newCol);
+  });
+}
+
+let headingCols;
+
+function handleHeading(headingRow) {
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
 
@@ -127,6 +141,7 @@ function handleSection(sectionParams) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
     rowCols[0].setAttribute('role', 'rowheader');
+    createAccessibleHeader(row);
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
   } else {
@@ -223,14 +238,16 @@ export default async function init(el) {
   const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon}></span>`;
   const EXCLUDE_ICON = `<span class="feat-icon cross" aria-label=${ariaLabelForCrossIcon}></span>`;
 
-  let headingChildren;
+
   let firstSection = true;
   for (let index = 0; index < rows.length; index += 1) {
     const row = rows[index];
     row.classList.add('row', `row-${index + 1}`);
     if (row.tagName !== 'BUTTON') row.setAttribute('role', 'row');
     const cols = Array.from(row.children);
-    if (index === 0) headingChildren = cols;
+    if (index === 0) {
+      headingCols = cols;
+    }
 
     let isAdditional = false;
     const isToggle = row.classList.contains('toggle-row');
@@ -338,7 +355,8 @@ export default async function init(el) {
     }
   }
 
-  handleHeading(rows[0], headingChildren);
+ 
+  handleHeading(rows[0]);
   assignEvents(el);
 
   const handleResize = () => {
