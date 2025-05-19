@@ -41,7 +41,7 @@ export function decorateHeading(block, payload) {
       headingTextWrapper.append(p);
     });
   }
-  if (payload.viewAllLink.href !== '') {
+  if (payload?.viewAllLink !== null) {
     const viewAllButton = payload.viewAllLink;
     viewAllButton.className = 'cta-carousel-link';
     headingSection.append(viewAllButton);
