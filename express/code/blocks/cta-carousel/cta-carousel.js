@@ -225,8 +225,6 @@ function constructPayload(block) {
   const rows = Array.from(block.children);
   block.innerHTML = '';
   const headingDiv = rows.shift();
-  console.log(headingDiv.querySelector('a.button'))
-  console.log(headingDiv.querySelector('a.button')?.textContent)
 
   const payload = {
     heading: headingDiv.querySelector('h2, h3, h4, h5, h6')?.textContent?.trim(),
