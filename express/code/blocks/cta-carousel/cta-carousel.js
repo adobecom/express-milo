@@ -229,7 +229,7 @@ function constructPayload(block) {
   const payload = {
     heading: headingDiv.querySelector('h2, h3, h4, h5, h6')?.textContent?.trim(),
     subHeadings: headingDiv.querySelectorAll('p:not(.button-container)'),
-    viewAllLink: headingDiv.querySelector('a.button') ,
+    viewAllLink: headingDiv.querySelector('a.button'),
     actions: [],
   };
 
