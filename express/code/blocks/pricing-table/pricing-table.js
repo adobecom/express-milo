@@ -37,7 +37,7 @@ function createAccessibleHeader(headerRow) {
 }
 
 function handleHeading(headingRow, headingCols) {
-  headingRow.classList.add('row-heading', 'table-start-row', 'row');
+  headingRow.classList.add('row-heading', 'table-start-row', 'row', 'table-end-row');
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
   headingCols.forEach(async (col, index) => {
@@ -156,62 +156,76 @@ function handleSingleSectionVariant({ row, sectionItem }) {
   row.appendChild(toggleBtn);
 }
 
-function toggleContent(element) {
-  const pricingTable = element.closest('.pricing-table');
-  if (!pricingTable) return;
-  const toggleRow = pricingTable.querySelector('.toggle-row');
-  if (!toggleRow) return; 
+// function toggleContent(element) {
+//   const pricingTable = element.closest('.pricing-table');
+//   if (!pricingTable) return;
+//   const toggleRow = pricingTable.querySelector('.toggle-row');
+//   if (!toggleRow) return; 
   
-  const rows = pricingTable.querySelectorAll('.additional-content');
-  const isCurrentlyCollapsed = rows[0]?.classList.contains('collapsed');
+//   const rows = pricingTable.querySelectorAll('.additional-content');
+//   const isCurrentlyCollapsed = rows[0]?.classList.contains('collapsed');
 
-  rows.forEach((row) => {
-    row.classList.toggle('collapsed', !isCurrentlyCollapsed);
-  });
-  const icon = pricingTable.querySelector('.icon.expand');
-  toggleRow.setAttribute('aria-expanded', isCurrentlyCollapsed);
-  toggleRow.classList.toggle('collapsed', !isCurrentlyCollapsed);
+//   rows.forEach((row) => {
+//     row.classList.toggle('collapsed', !isCurrentlyCollapsed);
+//   });
+//   const icon = pricingTable.querySelector('.icon.expand');
+//   toggleRow.setAttribute('aria-expanded', isCurrentlyCollapsed);
+//   toggleRow.classList.toggle('collapsed', !isCurrentlyCollapsed);
   
-  icon?.setAttribute('aria-expanded', isCurrentlyCollapsed ? 'true' : 'false');
-}
+//   icon?.setAttribute('aria-expanded', isCurrentlyCollapsed ? 'true' : 'false');
+// }
 
 function createToggleRow(row, sectionLength, index, rows) {
-  if (sectionLength <= visibleCount + 1) {
-    rows[index -1].classList.add('table-end-row');
-    row.classList.add('null-row');
-    return;
-  }
-  const toggleButton = createTag('button', { 
-    class: 'toggle-row',
-    role: 'button',
-    'aria-expanded': 'false'
-  });
+  row.classList.add('null-row')
+  rows[index - 1].classList.add('table-end-row')
+  // if (sectionLength <= visibleCount + 1) {
+  //   rows[index -1].classList.add('table-end-row');
+  //   row.classList.add('null-row');
+  //   return;
+  // }
+  // const toggleButton = createTag('button', { 
+  //   class: 'toggle-row',
+  //   role: 'button',
+  //   'aria-expanded': 'false'
+  // });
 
-  const viewAllText = viewAllFeatures ?? 'View all features';
-  const toggleOverflowContent = createTag('div', { 
-    class: 'toggle-content col', 
-    'aria-label': viewAllText 
-  }, viewAllText);
+  // const viewAllText = viewAllFeatures ?? 'View all features';
+  // const toggleOverflowContent = createTag('div', { 
+  //   class: 'toggle-content col', 
+  //   'aria-label': viewAllText 
+  // }, viewAllText);
 
-  toggleOverflowContent.addEventListener('click', () => {
-    const buttonEl = toggleOverflowContent.querySelector('span.expand');
-    const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
-    sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
-  });
+  // toggleOverflowContent.addEventListener('click', () => {
+  //   const buttonEl = toggleOverflowContent.querySelector('span.expand');
+  //   const action = buttonEl && buttonEl.getAttribute('aria-expanded') === 'true' ? 'closed' : 'opened';
+  //   sendEventToAnalytics(`adobe.com:express:cta:pricing:tableToggle:${action || ''}`);
+  // });
 
-  const toggleIconTag = createTag('span', { 
-    class: 'icon expand', 
-    'aria-expanded': 'false',
-    'aria-hidden': 'true'
-  });
-  toggleOverflowContent.insertAdjacentElement('afterbegin',toggleIconTag,);
-  toggleButton.appendChild(toggleOverflowContent);
-  const toggleCell = createTag('div', { class: 'toggle-cell col'});
-  toggleCell.setAttribute('role', 'cell');
-  toggleCell.appendChild(toggleButton);
-  row.appendChild(toggleCell);
-  row.classList.add('table-end-row', 'toggle-row');
+  // const toggleIconTag = createTag('span', { 
+  //   class: 'icon expand', 
+  //   'aria-expanded': 'false',
+  //   'aria-hidden': 'true'
+  // });
+  // toggleOverflowContent.insertAdjacentElement('afterbegin',toggleIconTag,);
+  // toggleButton.appendChild(toggleOverflowContent);
+  // const toggleCell = createTag('div', { class: 'toggle-cell col'});
+  // toggleCell.setAttribute('role', 'cell');
+  // toggleCell.appendChild(toggleButton);
+  // row.appendChild(toggleCell);
+  // row.classList.add('table-end-row', 'toggle-row');
+
+    //   row.classList.add('point-cursor');
+    //   row.addEventListener('click', () =>toggleContent(row));
+    //    row.addEventListener('keydown', (e) => {
+    //   if (e.key === 'Enter' || e.key === ' ') {
+    //     e.preventDefault();
+    //     toggleContent(row);
+    //   }
+    //  });
+
 }
+
+/* Toggle Row functionality disabled until accessibility workaround is discovered */
 
 export function decorateRow({
   row,
@@ -234,7 +248,7 @@ export function decorateRow({
 
 function prepareRowBase({ row, index, sectionLength }) {
   row.classList.add('row', `row-${index + 1}`);
-  if (sectionLength % 2 === 0) row.classList.add('shaded');
+  if (sectionLength % 2 === 1) row.classList.add('shaded');
   const cols = Array.from(row.children);
   if (cols.length <= 1 && !cols[0]?.innerHTML) {
     cols.shift().remove();
@@ -406,21 +420,9 @@ function insertSectionTablesIntoDOM(parentEl, sectionTables) {
       pricingTableDiv.appendChild(row);
     });
     parentEl.appendChild(pricingTableDiv);
-    if (sectionIndex > 0 ) {
-      toggleContent(pricingTableDiv);
-    }
-
-    const btn = pricingTableDiv.querySelector('.toggle-row');
-    if (btn) {
-      btn.classList.add('point-cursor');
-      btn.addEventListener('click', () =>toggleContent(btn));
-       btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleContent(btn);
-      }
-    });
-    }
+    // if (sectionIndex > 0 ) {
+    //   toggleContent(pricingTableDiv);
+    // }
   });
 }
 
