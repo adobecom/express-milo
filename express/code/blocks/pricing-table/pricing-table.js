@@ -235,10 +235,9 @@ export default async function init(el) {
   const ariaLabelForCheckIcon = await replaceKey('aria-label-pricing-icon-check', getConfig()) || 'yes';
   const ariaLabelForCrossIcon = await replaceKey('aria-label-pricing-icon-cross', getConfig()) || 'no';
 
-  const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon}></span>`;
-  const EXCLUDE_ICON = `<span class="feat-icon cross" aria-label=${ariaLabelForCrossIcon}></span>`;
-
-
+  const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon} role="img"></span>`;
+  const EXCLUDE_ICON = `<span class="feat-icon cross" aria-label=${ariaLabelForCrossIcon} role="img"></span>`;
+  
   let firstSection = true;
   for (let index = 0; index < rows.length; index += 1) {
     const row = rows[index];
