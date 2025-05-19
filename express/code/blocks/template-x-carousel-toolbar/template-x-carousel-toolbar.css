@@ -10,3 +10,47 @@
   font-size: var(--body-font-size-m);
   margin: 0;
 }
+
+.template-x-carousel-toolbar .hidden {
+  display: none;
+}
+
+.template-x-carousel-toolbar .select {
+  position: relative;
+  width: 200px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  cursor: pointer;
+  background: white;
+}
+
+.template-x-carousel-toolbar .select[aria-expanded="false"] .options {
+  display: none;
+}
+
+.template-x-carousel-toolbar .options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  background: white;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.template-x-carousel-toolbar .option {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.template-x-carousel-toolbar .option[aria-selected="true"] {
+  color: #5258E4;
+}
+
+.template-x-carousel-toolbar .option.hovered {
+  background-color: #e1e1e1;
+}
