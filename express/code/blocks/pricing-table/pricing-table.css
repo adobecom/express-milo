@@ -659,7 +659,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   opacity: 0.75;
 }
 
-
+.pricing-table .icon-container.excluded-feature .col-content .icon-container:after,
 .pricing-table .icon-container.excluded-feature .col-content:after,
 .pricing-table .col.dim .icon-container:after,
 .pricing-table .excluded-feature .icon-container:after {
