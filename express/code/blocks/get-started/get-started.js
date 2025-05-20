@@ -10,8 +10,10 @@ function decorateSectionMetadata(section) {
   const meta = readBlockConfig(metadataDiv);
   const keys = Object.keys(meta);
   keys.filter((key) => key.trim().toLowerCase() === 'get-started').forEach((key) => {
+    const val = meta[key].trim().toLowerCase();
     section.setAttribute('role', 'tabpanel');
     section.setAttribute('data-get-started', meta[key].trim().toLowerCase());
+    section.setAttribute('id', `get-started-${val}`);
   });
 }
 
@@ -25,19 +27,20 @@ export default async function init(el) {
   headlineContainer.classList.add('get-started-headline-container');
   tabListContainer.classList.add('tablist-container');
 
-  const sections = enclosingMain.querySelectorAll('[data-get-started]');
+  const sections = [...enclosingMain.querySelectorAll('[data-get-started]')];
 
   const tabList = tabListContainer.querySelector('ul');
   tabList.setAttribute('role', 'tablist');
   const listItems = [...tabList.querySelectorAll('li')];
 
-  // TODO: aria-controls
   let activeTab = null;
   const tabs = listItems.map((listItem, index) => {
+    const text = listItem.textContent.trim().toLowerCase();
     const tab = createTag('button', {
       role: 'tab',
       'aria-selected': index === 0,
-      'data-text': listItem.textContent.trim().toLowerCase(),
+      'data-text': text,
+      'aria-controls': sections.filter((section) => section.getAttribute('data-get-started') === text)[0].id,
     });
     const icon = listItem.querySelector('.icon');
     const match = icon && iconRegex.exec(icon.className);
@@ -47,7 +50,7 @@ export default async function init(el) {
         icon.append(svg);
       });
     }
-    tab.append(icon, listItem.textContent);
+    tab.append(icon, text);
     activeTab ||= tab;
     tab.addEventListener('click', () => {
       if (tab === activeTab) return;
@@ -65,9 +68,8 @@ export default async function init(el) {
     return tab;
   });
 
-  listItems.forEach((li, i) => {
-    li.innerHTML = '';
-    li.append(tabs[i]);
+  tabs.forEach((tab, i) => {
+    listItems[i].replaceChildren(tab);
   });
 
   if (sections) {
