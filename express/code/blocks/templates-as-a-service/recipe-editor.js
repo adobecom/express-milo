@@ -5,11 +5,7 @@
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
 import { getIconElementDeprecated } from '../../scripts/utils.js';
-
-export const defaultCollectionId =
-  'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418';
-export const popularCollectionId = 
-  'urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852';
+import { defaultCollectionId, popularCollectionId } from '../../scripts/template-utils.js';
 
 class RecipeEditor extends LitElement {
   static properties = {

@@ -34,11 +34,11 @@ function createDropdown(optionKeys) {
     const expanded = select.getAttribute('aria-expanded') === 'true';
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      if (!expanded) {
-        select.click();
-      } else {
+      if (expanded) {
         currentIndex = (currentIndex + 1) % options.length;
         updateFocus();
+      } else {
+        select.click();
       }
     }
     if (e.key === 'ArrowUp') {
@@ -82,15 +82,14 @@ function createDropdown(optionKeys) {
   });
   document.addEventListener('click', (e) => {
     if (select.contains(e.target)) return;
-    if (select.getAttribute('aria-expanded') === 'true') {
-      select.click();
-    }
+    select.getAttribute('aria-expanded') === 'true' && select.click();
   });
   return select;
 }
 
 function createTemplates(recipe) {
-  const templatesContainer = createTag('div', { class: 'templates-container' });
+  const templatesContainer = createTag('div', { class: 'templates-container' }, recipe);
+  return templatesContainer;
 }
 
 export default async function init(el) {
