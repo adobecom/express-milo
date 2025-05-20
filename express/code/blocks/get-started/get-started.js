@@ -1,50 +1,43 @@
-import { getLibs, getIconElementDeprecated, convertToInlineSVG } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated, convertToInlineSVG, readBlockConfig } from '../../scripts/utils.js';
 
 let createTag;
 
 const iconRegex = /icon-\s*([^\s]+)/;
 
-function findSection(el) {
-  return (!el || el.classList.contains('section')) ? el : findSection(el.parentElement);
+function decorateSectionMetadata(section) {
+  const metadataDiv = section.querySelector(':scope > .section-metadata');
+  if (!metadataDiv) return;
+  const meta = readBlockConfig(metadataDiv);
+  const keys = Object.keys(meta);
+  keys.filter((key) => key.trim().toLowerCase() === 'get-started').forEach((key) => {
+    section.setAttribute('role', 'tabpanel');
+    section.setAttribute('data-get-started', meta[key].trim().toLowerCase());
+  });
 }
 
 export default async function init(el) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const section = findSection(el);
-  if (!section) return;
-  section.classList.add('get-started-section');
+  const enclosingMain = el.closest('main');
+  if (!enclosingMain) return;
+  [...enclosingMain.querySelectorAll('.section')].forEach(decorateSectionMetadata);
 
   const [headlineContainer, tabListContainer] = el.querySelectorAll(':scope > div');
   headlineContainer.classList.add('get-started-headline-container');
   tabListContainer.classList.add('tablist-container');
 
-  const tabList = tabListContainer.querySelector('ol');
+  const sections = enclosingMain.querySelectorAll('[data-get-started]');
+
+  const tabList = tabListContainer.querySelector('ul');
   tabList.setAttribute('role', 'tablist');
   const listItems = [...tabList.querySelectorAll('li')];
 
-  const panels = [];
-  const nodes = section.children;
-  [...nodes].forEach((node) => {
-    if (/^\$\d+\$$/.exec(node.textContent.trim())) {
-      node.remove();
-      const panel = createTag('div', { role: 'tabpanel', id: `panel-${listItems[panels.length].textContent}` });
-      panels.push(panel);
-      section.append(panel);
-    } else if (panels.length > 0) {
-      panels[panels.length - 1].append(node);
-    }
-  });
-  panels.forEach((panel, i) => {
-    i > 0 && panel.classList.add('hide');
-  });
-
-  // TODO: add aria-controls to the button
+  // TODO: aria-controls
   let activeTab = null;
   const tabs = listItems.map((listItem, index) => {
     const tab = createTag('button', {
       role: 'tab',
       'aria-selected': index === 0,
-      'aria-controls': panels[index]?.id,
+      'data-text': listItem.textContent.trim().toLowerCase(),
     });
     const icon = listItem.querySelector('.icon');
     const match = icon && iconRegex.exec(icon.className);
@@ -60,12 +53,28 @@ export default async function init(el) {
       if (tab === activeTab) return;
       tab.setAttribute('aria-selected', true);
       activeTab.setAttribute('aria-selected', false);
-      panels.forEach((panel) => {
-        panel === panels[index] ? panel.classList.remove('hide') : panel.classList.add('hide');
+      sections.forEach((section) => {
+        if (tab.dataset.text === section.getAttribute('data-get-started')) {
+          section.classList.remove('hide');
+        } else {
+          section.classList.add('hide');
+        }
       });
       activeTab = tab;
     });
     return tab;
   });
-  listItems.forEach((listItem, i) => listItem.replaceWith(tabs[i]));
+
+  listItems.forEach((li, i) => {
+    li.innerHTML = '';
+    li.append(tabs[i]);
+  });
+
+  if (sections) {
+    sections.forEach((section, index) => {
+      if (index > 0) {
+        section.classList.add('hide');
+      }
+    });
+  }
 }
