@@ -4,16 +4,16 @@ let createTag;
 
 const iconRegex = /icon-\s*([^\s]+)/;
 
-function decorateSectionMetadata(section) {
+function tagPanels(section) {
   const metadataDiv = section.querySelector(':scope > .section-metadata');
   if (!metadataDiv) return;
   const meta = readBlockConfig(metadataDiv);
   const keys = Object.keys(meta);
-  keys.filter((key) => key.trim().toLowerCase() === 'get-started').forEach((key) => {
+  keys.filter((key) => key.trim().toLowerCase() === 'ax-panel').forEach((key) => {
     const val = meta[key].trim().toLowerCase();
     section.setAttribute('role', 'tabpanel');
-    section.setAttribute('data-get-started', meta[key].trim().toLowerCase());
-    section.setAttribute('id', `get-started-${val}`);
+    section.setAttribute('data-ax-panel', val);
+    section.setAttribute('id', `ax-panel-${val}`);
   });
 }
 
@@ -21,13 +21,13 @@ export default async function init(el) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const enclosingMain = el.closest('main');
   if (!enclosingMain) return;
-  [...enclosingMain.querySelectorAll('.section')].forEach(decorateSectionMetadata);
+  [...enclosingMain.querySelectorAll('.section')].forEach((section) => tagPanels(section));
 
   const [headlineContainer, tabListContainer] = el.querySelectorAll(':scope > div');
-  headlineContainer.classList.add('get-started-headline-container');
+  headlineContainer.classList.add('ax-panels-headline-container');
   tabListContainer.classList.add('tablist-container');
 
-  const sections = [...enclosingMain.querySelectorAll('[data-get-started]')];
+  const sections = [...enclosingMain.querySelectorAll('[data-ax-panel]')];
 
   const tabList = tabListContainer.querySelector('ul');
   tabList.setAttribute('role', 'tablist');
@@ -40,7 +40,7 @@ export default async function init(el) {
       role: 'tab',
       'aria-selected': index === 0,
       'data-text': text,
-      'aria-controls': sections.filter((section) => section.getAttribute('data-get-started') === text)[0].id,
+      'aria-controls': sections.filter((section) => section.getAttribute('data-ax-panel') === text)[0].id,
     });
     const icon = listItem.querySelector('.icon');
     const match = icon && iconRegex.exec(icon.className);
@@ -57,7 +57,7 @@ export default async function init(el) {
       tab.setAttribute('aria-selected', true);
       activeTab.setAttribute('aria-selected', false);
       sections.forEach((section) => {
-        if (tab.dataset.text === section.getAttribute('data-get-started')) {
+        if (tab.dataset.text === section.getAttribute('data-ax-panel')) {
           section.classList.remove('hide');
         } else {
           section.classList.add('hide');
