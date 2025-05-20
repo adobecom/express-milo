@@ -1,5 +1,6 @@
 .frictionless-quick-action-mobile {
     --animation-h: 260px;
+    --quick-action-container-h: 667px;
 }
 
 .section .frictionless-quick-action-mobile {
@@ -43,7 +44,7 @@
     width: 100%;
     margin: auto;
     transition: opacity 0.2s;
-    height: 667px;
+    height: var(--quick-action-container-h);
 }
 
 .frictionless-quick-action-mobile video,
