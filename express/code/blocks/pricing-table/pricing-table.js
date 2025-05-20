@@ -33,7 +33,7 @@ function handleToggleMore(btn) {
 }
 
 function getHeaderId(el) {
-  return el.querySelector('p')?.textContent.trim().replaceAll(" ", "-") || el.textContent.trim().replaceAll(" ", "-");
+  return el.querySelector('p')?.textContent?.trim().replaceAll(" ", "-") || el.textContent?.trim().replaceAll(" ", "-");
 }
 
 let headingCols;
@@ -157,13 +157,13 @@ function handleSection(sectionParams) {
         col.classList.add('dim');
       }
 
-
-
-      const subHeader = getHeaderId(previousHeaderRow)
-      const rowHeader = getHeaderId( rowCols[0])
-      const colHeader = getHeaderId(headingCols[idx])
-      if (subHeader) {
-        col.setAttribute('headers', `${subHeader} ${rowHeader} ${colHeader}`);
+      if (previousHeaderRow) {
+        const subHeader = getHeaderId(previousHeaderRow)
+        const rowHeader = getHeaderId( rowCols[0])
+        const colHeader = getHeaderId(headingCols[idx])
+        if (subHeader) {
+          col.setAttribute('headers', `${subHeader} ${rowHeader} ${colHeader}`);
+        }
       }
 
       const child = col.children?.[0] || col;
@@ -181,10 +181,6 @@ function handleSection(sectionParams) {
     });
     if (nextRow?.classList.contains('toggle-row')) {
       row.classList.add('table-end-row');
-
-      if (!nextRow.classList.contains('desktop-hide')) {
-        row.classList.add('connect-to-toggle');
-      }
     }
   }
 }

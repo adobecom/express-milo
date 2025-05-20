@@ -29,10 +29,6 @@
   margin-right: 8px;
 }
 
-.pricing-table .additional-row.collapsed {
-  display: none;
-}
-
 /* links stay links by default in cells */
 .pricing-table .row:not(.row-heading) .col a.button,
 .pricing-table .row:not(.row-heading) .col a.button:hover,
