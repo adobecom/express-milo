@@ -1,6 +1,7 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { fetchResults } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
+import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let createTag; let getConfig;
 let replaceKey;
@@ -90,10 +91,12 @@ function createDropdown(optionKeys) {
 }
 
 async function createTemplates(recipe) {
-  const templatesContainer = createTag('div', { class: 'templates-container' }, recipe);
+  const templatesContainer = createTag('div', { class: 'templates-container' });
   const res = await fetchResults(recipe);
   const templates = await Promise.all(res.items.map((item) => renderTemplate(item)));
-  console.log(templates);
+  templates.forEach((tplt) => tplt.classList.add('template'));
+  templatesContainer.append(...templates);
+  await buildCarousel(':scope > .template', templatesContainer);
   return templatesContainer;
 }
 
