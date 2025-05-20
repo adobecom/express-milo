@@ -50,7 +50,7 @@ export default async function init(el) {
         icon.append(svg);
       });
     }
-    tab.append(icon, text);
+    tab.append(icon, listItem.textContent);
     activeTab ||= tab;
     tab.addEventListener('click', () => {
       if (tab === activeTab) return;
