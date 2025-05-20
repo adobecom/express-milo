@@ -5,7 +5,7 @@
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
-import { recipe2ApiQuery, fetchResults } from '../../scripts/template-utils.js';
+import { recipe2ApiQuery, fetchResults, extractComponentLinkHref, extractRenditionLinkHref, containsVideo } from '../../scripts/template-utils.js';
 
 const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
 
@@ -72,21 +72,13 @@ const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
  */
 
 /**
- * @param {Template|VideoTemplate} template
- * @returns {boolean}
- */
-function isVideoTemplate(template) {
-  return !!template.pages?.[0]?.rendition?.video;
-}
-
-/**
  * @param {Template} template
  * @returns {string}
  */
 function getImageSrc(template) {
   const thumbnail = template.pages[0].rendition.image?.thumbnail;
-  const componentLinkHref = template._links['http://ns.adobe.com/adobecloud/rel/component'].href;
-  const renditionLinkHref = template._links['http://ns.adobe.com/adobecloud/rel/rendition'].href;
+  const componentLinkHref = extractComponentLinkHref(template);
+  const renditionLinkHref = extractRenditionLinkHref(template);
   const { mediaType, componentId, hzRevision } = thumbnail;
   if (mediaType === 'image/webp') {
     // webp only supported by componentLink
@@ -145,7 +137,7 @@ async function getVideo(template) {
  * @returns {Promise<TemplateInfo>}
  */
 async function getTemplateInfo(template) {
-  if (isVideoTemplate(template)) {
+  if (containsVideo(template)) {
     const videoInfo = await getVideo(template);
     return {
       ...videoInfo,
