@@ -1,4 +1,6 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
+import { fetchResults } from '../../scripts/template-utils.js';
+import renderTemplate from '../template-x/template-rendering.js';
 
 let createTag; let getConfig;
 let replaceKey;
@@ -87,8 +89,11 @@ function createDropdown(optionKeys) {
   return select;
 }
 
-function createTemplates(recipe) {
+async function createTemplates(recipe) {
   const templatesContainer = createTag('div', { class: 'templates-container' }, recipe);
+  const res = await fetchResults(recipe);
+  const templates = await Promise.all(res.items.map((item) => renderTemplate(item)));
+  console.log(templates);
   return templatesContainer;
 }
 
@@ -104,5 +109,6 @@ export default async function init(el) {
       replaceKey('new-templates', getConfig()),
     ],
   );
-  el.append(createDropdown([popular, newTemplates]), createTemplates(recipe));
+  const templates = await createTemplates(recipe); // TODO: lazy load
+  el.append(createDropdown([popular, newTemplates]), templates);
 }
