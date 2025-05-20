@@ -164,9 +164,11 @@
   transition: opacity .3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
-  /* z-index: 1; */
   display: flex;
   flex-direction: column-reverse;
+  background-color: var(--color-white);
+  padding: 8px;
+  box-shadow: 0 0 6px #00000029;
 }
 
 .template-x-carousel-toolbar .template:hover:not(.placeholder) .button-container {
@@ -273,4 +275,22 @@
   left: 8px;
   border-radius: 50%;
   box-shadow: 0 0 5px #00000033;
+}
+
+.template-x-carousel-toolbar .template:not(.placeholder) .template-link {
+  opacity: 0;
+  transition: opacity .4s ease-in-out .2s;
+  will-change: opacity;
+}
+
+.template-x-carousel-toolbar .template:hover:not(.placeholder) .button-container{
+  opacity: 1;
+  pointer-events: initial;
+  z-index: 2;
+}
+
+.template-x-carousel-toolbar .template:hover:not(.placeholder) .button-container:not(.singleton-hover) {
+  opacity: 0;
+  pointer-events: initial;
+  z-index: 2;
 }
