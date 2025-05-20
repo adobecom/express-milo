@@ -32,17 +32,6 @@ function handleToggleMore(btn) {
   }
 }
 
-function createAccessibleHeader(headerRow) {
-  headingCols.forEach((col, index) => {
-    if (index === 0) return;
-    const newCol = col.cloneNode(true);
-    newCol.innerHTML = ''
-    newCol.innerText = col.querySelector('p').textContent;
-    newCol.classList.add('screen-reader-header-content');
-    newCol.setAttribute('role', 'columnheader')
-    headerRow.appendChild(newCol);
-  });
-}
 
 let headingCols;
 
@@ -57,6 +46,7 @@ function handleHeading(headingRow) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
       return;
     }
+    col.setAttribute('id', col.textContent);
     await decorateButtonsDeprecated(col, 'button-l');
     const buttonsWrapper = createTag('div', { class: 'buttons-wrapper' });
     const buttons = col.querySelectorAll('.button, .con-button');
@@ -105,6 +95,8 @@ function handleHeading(headingRow) {
   });
 }
 
+let previousHeaderRow;
+
 function handleSection(sectionParams) {
   const {
     row,
@@ -141,15 +133,19 @@ function handleSection(sectionParams) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
     rowCols[0].setAttribute('role', 'rowheader');
-    createAccessibleHeader(row);
+    row.setAttribute('id', row.textContent)
+    row.setAttribute('colspan', headingCols.length);
+    row.setAttribute('scope', 'colgroup');
+    previousHeaderRow = row;
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
   } else {
     row.classList.add('section-row');
     rowCols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
-
       if (idx === 0) {
+        const subHeader = col.closest('.section-header-row')?.textContent;
+        col.setAttribute('headers', subHeader);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
       }
@@ -157,6 +153,15 @@ function handleSection(sectionParams) {
       const dim = col.querySelectorAll('em').length > 0;
       if (dim) {
         col.classList.add('dim');
+      }
+
+
+
+      const subHeader = previousHeaderRow?.textContent;
+      const rowHeader = rowCols[0].textContent;
+      const colHeader = headingCols[idx].textContent;
+      if (subHeader) {
+        col.setAttribute('headers', `${subHeader} ${rowHeader} ${colHeader}`);
       }
 
       const child = col.children?.[0] || col;
