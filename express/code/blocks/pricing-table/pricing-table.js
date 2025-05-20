@@ -4,6 +4,12 @@ import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 import { sendEventToAnalytics } from '../../scripts/instrument.js';
 
+let createTag; 
+let getConfig;
+let replaceKey;
+let headingCols;
+let previousHeaderRow;
+
 const MOBILE_SIZE = 981;
 function defineDeviceByScreenSize() {
   const screenWidth = window.innerWidth;
@@ -209,13 +215,6 @@ const getId = (function idSetups() {
   }());
   return () => gen.next().value;
 }());
-
-
-let createTag; 
-let getConfig;
-let replaceKey;
-let headingCols;
-let previousHeaderRow;
 
 export default async function init(el) {
   headingCols = undefined;
