@@ -4,7 +4,7 @@ import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 import { sendEventToAnalytics } from '../../scripts/instrument.js';
 
-let createTag; 
+let createTag;
 let getConfig;
 let replaceKey;
 let headingCols;
@@ -98,7 +98,6 @@ function handleHeading(headingRow) {
     });
   });
 }
-
 
 function handleSection(sectionParams) {
   const {
