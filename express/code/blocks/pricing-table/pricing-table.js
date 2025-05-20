@@ -33,7 +33,7 @@ function handleToggleMore(btn) {
 }
 
 function getHeaderId(el) {
-  return el.querySelector('p')?.textContent?.trim().replaceAll(" ", "-") || el.textContent?.trim().replaceAll(" ", "-");
+  return el.querySelector('p')?.textContent?.trim().replaceAll(' ', '-') || el.textContent?.trim().replaceAll(' ', '-');
 }
 
 let headingCols;
@@ -135,7 +135,7 @@ function handleSection(sectionParams) {
   } else if (rowCols.length === 1) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
-    row.setAttribute('id',  getHeaderId(row));
+    row.setAttribute('id', getHeaderId(row));
     row.setAttribute('colspan', headingCols.length);
     row.setAttribute('scope', 'colgroup');
     previousHeaderRow = row;
@@ -146,7 +146,7 @@ function handleSection(sectionParams) {
     rowCols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
       if (idx === 0) {
-        const subHeader = getHeaderId(col)
+        const subHeader = getHeaderId(col);
         col.setAttribute('headers', subHeader);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
@@ -158,9 +158,9 @@ function handleSection(sectionParams) {
       }
 
       if (previousHeaderRow) {
-        const subHeader = getHeaderId(previousHeaderRow)
-        const rowHeader = getHeaderId( rowCols[0])
-        const colHeader = getHeaderId(headingCols[idx])
+        const subHeader = getHeaderId(previousHeaderRow);
+        const rowHeader = getHeaderId(rowCols[0]);
+        const colHeader = getHeaderId(headingCols[idx]);
         if (subHeader) {
           col.setAttribute('headers', `${subHeader} ${rowHeader} ${colHeader}`);
         }
@@ -199,7 +199,6 @@ const assignEvents = (tableEl) => {
       }
     });
   });
-
 
   const linksPopulated = new CustomEvent('linkspopulated', { detail: buttons });
   document.dispatchEvent(linksPopulated);
@@ -241,7 +240,7 @@ export default async function init(el) {
 
   const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon} role="img"></span>`;
   const EXCLUDE_ICON = `<span class="feat-icon cross" aria-label=${ariaLabelForCrossIcon} role="img"></span>`;
-  
+
   let firstSection = true;
   for (let index = 0; index < rows.length; index += 1) {
     const row = rows[index];
@@ -358,7 +357,6 @@ export default async function init(el) {
     }
   }
 
- 
   handleHeading(rows[0]);
   assignEvents(el);
 
