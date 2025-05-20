@@ -83,3 +83,194 @@
 .template-x-carousel-toolbar .option.hovered {
   background-color: #e1e1e1;
 }
+
+/* carousel styles */
+
+.template-x-carousel-toolbar .carousel-container .carousel-platform {
+  align-items: flex-start;
+  gap: 22px;
+}
+
+/* individual templates styles */
+
+.template-x-carousel-toolbar .template p {
+  margin: 0;
+}
+
+.template-x-carousel-toolbar .template {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 32px 0;
+  justify-content: flex-end;
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+  text-decoration: unset;
+  position: relative;
+  border-radius: 14px;
+  width: 140px;
+}
+
+.template-x-carousel-toolbar .template:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-info-accent);
+}
+
+
+.template-x-carousel-toolbar .template > div:first-child > a:any-link {
+  padding-left: 0;
+}
+
+.template-x-carousel-toolbar .template img, .template-x-carousel-toolbar .template video {
+  border-radius: 12px;
+}
+
+.template-x-carousel-toolbar .template img:not(.icon),
+.template-x-carousel-toolbar .template video {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  object-fit: cover;
+  display: block;
+}
+
+.template-x-carousel-toolbar .template .media-wrapper img.hidden,
+.template-x-carousel-toolbar .template .media-wrapper video.hidden {
+  opacity: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.template-x-carousel-toolbar .template .media-wrapper video {
+  clip-path: inset(0 0 3px 0);
+}
+
+
+.template-x-carousel-toolbar .template:not(.placeholder) .button-container {
+  position: absolute;
+  width: 120%;
+  max-width: 90vw;
+  border-radius: 20px;
+  min-height: 120%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  text-align: center;
+  transition: opacity .3s ease-in-out;
+  will-change: opacity;
+  pointer-events: none;
+  /* z-index: 1; */
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.template-x-carousel-toolbar .template:hover:not(.placeholder) .button-container {
+  opacity: 1;
+  pointer-events: initial;
+  z-index: 1;
+}
+
+
+.template-x-carousel-toolbar .template .button-container .media-wrapper .icon-share-arrow {
+  cursor: pointer;
+  pointer-events: auto;
+  width: 12px;
+  height: 12px;
+  padding: 4px;
+  background-color: white;
+  overflow: visible;
+}
+
+.template-x-carousel-toolbar .template .button-container .media-wrapper .share-icon-wrapper {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border-radius: 50%;
+  height: 20px;
+}
+
+.template-x-carousel-toolbar .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
+  visibility: hidden;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 130px;
+  background-color: var(--background-positive-default);
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(100% + 12px);
+  font-size: var(--body-font-size-s);
+}
+
+.template-x-carousel-toolbar .template .button-container a.button,
+.template-x-carousel-toolbar .template a.con-button {
+  max-width: 100%;
+  margin: 6px 6px 0;
+  box-sizing: border-box;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.template-x-carousel-toolbar .template .button-container a.cta-link,
+.template-x-carousel-toolbar .template a.con-button {
+  display: block;
+  width: 100%;
+  height: calc(100% - 34px);
+  white-space: nowrap;
+  font-weight: var(--body-font-weight);
+}
+
+.template-x-carousel-toolbar .template .button-container .media-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+
+.template-x-carousel-toolbar .template .still-wrapper .image-wrapper .free-tag {
+  position: absolute;
+  height: 24px;
+  display: flex;
+  border-radius: 1000px;
+  align-items: center;
+  font-weight: 500;
+  width: max-content;
+  top: 8px;
+  right: 8px;
+  color: var(--color-white);
+  font-size: 12px;
+  line-height: 16px;
+  padding: 0 12px;
+  background: #000000B3;
+}
+
+.template-x-carousel-toolbar .template .still-wrapper .image-wrapper .icon-premium {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  bottom: 8px;
+  right: 8px;
+}
+
+.template-x-carousel-toolbar .template .still-wrapper .image-wrapper .media-type-icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  bottom: 8px;
+  left: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #00000033;
+}
