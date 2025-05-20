@@ -135,7 +135,6 @@ function handleSection(sectionParams) {
   } else if (rowCols.length === 1) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
-    rowCols[0].setAttribute('role', 'rowheader');
     row.setAttribute('id',  getHeaderId(row));
     row.setAttribute('colspan', headingCols.length);
     row.setAttribute('scope', 'colgroup');
@@ -204,7 +203,7 @@ const assignEvents = (tableEl) => {
       }
     });
   });
-  
+
 
   const linksPopulated = new CustomEvent('linkspopulated', { detail: buttons });
   document.dispatchEvent(linksPopulated);
