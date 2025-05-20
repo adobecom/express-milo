@@ -468,10 +468,10 @@ function renderHoverWrapper(template) {
     cta = renderPrintCTA(template);
     ctaLink = renderPrintCTALink(template);
   } else {
-    mv = `?mv=${props.mv}` || '';
-    sdid = `&sdid=${props.sdid}` || '';
-    source = `&source=${props.source}` || '';
-    action = `&action=${props.action}` || '';
+    mv = props.mv ? `?mv=${props.mv}` : '';
+    sdid = props.sdid ? `&sdid=${props.sdid}` : '';
+    source = props.source ? `&source=${props.source}` : '';
+    action = props.action ? `&action=${props.action}` : '';
     cta = renderCTA(template.customLinks.branchUrl);
     ctaLink = renderCTALink(template.customLinks.branchUrl, template);
   }
