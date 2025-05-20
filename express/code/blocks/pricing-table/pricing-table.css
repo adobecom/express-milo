@@ -1006,16 +1006,8 @@ background-color: unset;
   }
   .pricing-table.single-section .table-end-row:last-of-type{
     border-bottom: unset;
-  } 
-
-
+  }
   .pricing-table button.row.toggle-row {
     display: none;
   }
 }
-
-
-.pricing-table .screen-reader-header-content {
-  color: transparent;
-}
-
