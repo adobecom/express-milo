@@ -108,6 +108,7 @@ main .section .cards.large .card .card-content {
   padding: 32px 32px 8px 32px;
 }
 
+main .section .cards.large .card .card-content h3,
 main .section .cards.large .card .card-content h2 {
   text-align: left;
   font-size: 1.375rem;
@@ -156,7 +157,8 @@ main .section .cards.large .card .card-content li {
   main .section .cards .card .card-content {
     padding: 16px 16px 8px 16px;
   }
-
+  
+  main .section .cards .card .card-content h3,
   main .section .cards .card .card-content h2 {
     text-align: center;
     font-size: 1.25rem;
