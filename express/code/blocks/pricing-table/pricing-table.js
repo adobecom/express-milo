@@ -32,6 +32,9 @@ function handleToggleMore(btn) {
   }
 }
 
+function getHeaderId(el) {
+  return el.querySelector('p')?.textContent.trim().replaceAll(" ", "-") || el.textContent.trim().replaceAll(" ", "-");
+}
 
 let headingCols;
 
@@ -46,7 +49,7 @@ function handleHeading(headingRow) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
       return;
     }
-    col.setAttribute('id', col.textContent);
+    col.setAttribute('id', getHeaderId(col));
     await decorateButtonsDeprecated(col, 'button-l');
     const buttonsWrapper = createTag('div', { class: 'buttons-wrapper' });
     const buttons = col.querySelectorAll('.button, .con-button');
@@ -133,7 +136,7 @@ function handleSection(sectionParams) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
     rowCols[0].setAttribute('role', 'rowheader');
-    row.setAttribute('id', row.textContent)
+    row.setAttribute('id',  getHeaderId(row));
     row.setAttribute('colspan', headingCols.length);
     row.setAttribute('scope', 'colgroup');
     previousHeaderRow = row;
@@ -144,7 +147,7 @@ function handleSection(sectionParams) {
     rowCols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
       if (idx === 0) {
-        const subHeader = col.closest('.section-header-row')?.textContent;
+        const subHeader = getHeaderId(col)
         col.setAttribute('headers', subHeader);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
@@ -157,9 +160,9 @@ function handleSection(sectionParams) {
 
 
 
-      const subHeader = previousHeaderRow?.textContent;
-      const rowHeader = rowCols[0].textContent;
-      const colHeader = headingCols[idx].textContent;
+      const subHeader = getHeaderId(previousHeaderRow)
+      const rowHeader = getHeaderId( rowCols[0])
+      const colHeader = getHeaderId(headingCols[idx])
       if (subHeader) {
         col.setAttribute('headers', `${subHeader} ${rowHeader} ${colHeader}`);
       }
