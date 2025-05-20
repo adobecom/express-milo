@@ -204,6 +204,7 @@ const assignEvents = (tableEl) => {
       }
     });
   });
+  
 
   const linksPopulated = new CustomEvent('linkspopulated', { detail: buttons });
   document.dispatchEvent(linksPopulated);
