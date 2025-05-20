@@ -5,79 +5,9 @@
 /* eslint-disable max-len */
 /* eslint-disable class-methods-use-this */
 import { html, LitElement, css } from './lit.min.js';
-import { defaultCollectionId, popularCollectionId } from './recipe-editor.js';
+import { recipe2ApiQuery, fetchResults } from '../../scripts/template-utils.js';
 
-export const base = 'https://www.adobe.com/express-search-api-v3';
 const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
-
-/**
- * Convert filter params
- * @param {URLSearchParams} params
- */
-export function convertFilterParams(params) {
-  if (params.has('collection')) {
-    if (params.get('collection') === 'default') {
-      params.set('collectionId', `${defaultCollectionId}`);
-    } else if (params.get('collection') === 'popular') {
-      params.set('collectionId', `${popularCollectionId}`);
-    }
-    params.delete('collection');
-  }
-  if (params.get('collectionId')) {
-    params.set('collectionId', `${params.get('collectionId')}`);
-  } else {
-    params.set('collectionId', `${defaultCollectionId}`);
-  }
-  if (params.get('license')) {
-    params.append('filters', `licensingCategory==${params.get('license')}`);
-    params.delete('license');
-  }
-  if (params.get('behaviors')) {
-    params.append('filters', `behaviors==${params.get('behaviors')}`);
-    params.delete('behaviors');
-  }
-  if (params.get('tasks')) {
-    params.append('filters', `pages.task.name==${params.get('tasks')}`);
-    params.delete('tasks');
-  }
-  if (params.get('topics')) {
-    params.append('filters', `topics==${params.get('topics')}`);
-    params.delete('topics');
-  }
-  if (params.get('language')) {
-    params.append('filters', `language==${params.get('language')}`);
-    params.delete('language');
-  }
-}
-
-/**
- * Extract and delete header params
- * @param {URLSearchParams} params
- */
-export function extractHeaderParams(params) {
-  const headers = {};
-  if (params.get('prefLang')) {
-    headers['x-express-pref-lang'] = params.get('prefLang');
-    params.delete('prefLang');
-  }
-  if (params.get('prefRegion')) {
-    headers['x-express-pref-region-code'] = params.get('prefRegion');
-    params.delete('prefRegion');
-  }
-  return headers;
-}
-
-/**
- * @param {string} recipe
- * @returns {Object} url and headers
- */
-export function recipe2ApiQuery(recipe) {
-  const params = new URLSearchParams(recipe);
-  params.set('queryType', 'search');
-  convertFilterParams(params);
-  const headers = extractHeaderParams(params);
-  return { url: `${base}?${decodeURIComponent(params.toString())}`, headers };
-}
 
 /**
  * @typedef {Object} TemplateThumbnail
@@ -142,20 +72,6 @@ export function recipe2ApiQuery(recipe) {
  */
 
 /**
- * Fetch results from the Adobe Express Search API
- * @param {string} recipe - The search recipe string containing query parameters
- * @example
- * fetchResults('q=chicago&topics=cats&tasks=flyer&language=en-us&license=free&behaviors=still&limit=11&collectionId=urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418&prefLang=en-us&prefRegion=us&start=1')
- * @returns {Promise<APIResponse>} Promise that resolves to the API response containing items and metadata
- */
-export async function fetchResults(recipe) {
-  const { url, headers } = recipe2ApiQuery(recipe);
-  const response = await fetch(url, { headers });
-  const data = await response.json();
-  return data;
-}
-
-/**
  * @param {Template|VideoTemplate} template
  * @returns {boolean}
  */
@@ -169,10 +85,8 @@ function isVideoTemplate(template) {
  */
 function getImageSrc(template) {
   const thumbnail = template.pages[0].rendition.image?.thumbnail;
-  const componentLinkHref =
-    template._links['http://ns.adobe.com/adobecloud/rel/component'].href;
-  const renditionLinkHref =
-    template._links['http://ns.adobe.com/adobecloud/rel/rendition'].href;
+  const componentLinkHref = template._links['http://ns.adobe.com/adobecloud/rel/component'].href;
+  const renditionLinkHref = template._links['http://ns.adobe.com/adobecloud/rel/rendition'].href;
   const { mediaType, componentId, hzRevision } = thumbnail;
   if (mediaType === 'image/webp') {
     // webp only supported by componentLink
@@ -194,8 +108,7 @@ function getImageSrc(template) {
  */
 async function getVideo(template) {
   const videoThumbnail = template.pages[0].rendition.video.thumbnail;
-  const renditionLinkHref =
-    template._links['http://ns.adobe.com/adobecloud/rel/rendition'].href;
+  const renditionLinkHref = template._links['http://ns.adobe.com/adobecloud/rel/rendition'].href;
   const { componentId } = videoThumbnail;
   const preLink = renditionLinkHref.replace(
     '{&page,size,type,fragment}',
