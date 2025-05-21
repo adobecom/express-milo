@@ -39,7 +39,7 @@ export default async function decorate($block) {
         });
         const $pictureContainer = $cells[0];
         const img = $pictureContainer.querySelector('img');
-      
+
         if (img) img.removeAttribute('loading');
         const $linkContainer = $cells[1];
         const $iconSvgContainer = $cells[2];
