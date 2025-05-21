@@ -14,8 +14,8 @@ Resolves: [MWPW-NUMBER](https://jira.corp.adobe.com/browse/MWPW-NUMBER)
 
 | Environment | URL |
 |-------------|-----|
-| **Before**  | https://main--express-milo--adobecom.aem.page/express/ |
-| **After**   | https://<branch>--express-milo--adobecom.aem.page/express/?martech=off |
+| **Before**  | https://main--express-milo--adobecom.hlx.page/express/ |
+| **After**   | https://<branch>--express-milo--adobecom.hlx.page/express/?martech=off |
 
 ---
 
@@ -31,7 +31,7 @@ Please include:
 
 List any areas or URLs that could be affected by this change:
 
-- https://<branch>--express-milo--adobecom.aem.live/express/?martech=off
+- https://<branch>--express-milo--adobecom.hlx.live/express/?martech=off
 
 ---
 
