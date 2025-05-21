@@ -96,8 +96,7 @@
   /* current ax-grid system */
   --ax-grid-margin: 20px;
   --ax-grid-gutter: 16px;
-  --ax-grid-page-max-width: 100%;
-  --ax-grid-container-width: calc(var(--ax-grid-page-max-width) - (2 * var(--ax-grid-margin)));
+  --ax-grid-container-width: 100%;
   --ax-grid-column-width: calc((var(--ax-grid-container-width) - var(--ax-grid-gutter) * 11) / 12);
   --ax-grid-1-col-width: calc(var(--ax-grid-column-width) * 1 + var(--ax-grid-gutter) * 0);
   --ax-grid-2-col-width: calc(var(--ax-grid-column-width) * 2 + var(--ax-grid-gutter) * 1);
@@ -129,7 +128,7 @@
 
 @media (min-width: 1680px) {
   :root {
-    --ax-grid-page-max-width: min(1600px, 100%);
+    --ax-grid-container-width: min(1600px, 100%);
   }
 }
 
