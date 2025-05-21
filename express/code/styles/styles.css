@@ -98,9 +98,20 @@
   /* current ax-grid system */
   --ax-grid-margin: 20px;
   --ax-grid-gutter: 16px;
-  --ax-grid-page-max-width: 100%;
-  --ax-grid-container-width: calc(var(--ax-grid-page-max-width) - (2 * var(--ax-grid-margin)));
+  --ax-grid-container-width: 100%;
   --ax-grid-column-width: calc((var(--ax-grid-container-width) - var(--ax-grid-gutter) * 11) / 12);
+  --ax-grid-1-col-width: calc(var(--ax-grid-column-width) * 1 + var(--ax-grid-gutter) * 0);
+  --ax-grid-2-col-width: calc(var(--ax-grid-column-width) * 2 + var(--ax-grid-gutter) * 1);
+  --ax-grid-3-col-width: calc(var(--ax-grid-column-width) * 3 + var(--ax-grid-gutter) * 2);
+  --ax-grid-4-col-width: calc(var(--ax-grid-column-width) * 4 + var(--ax-grid-gutter) * 3);
+  --ax-grid-5-col-width: calc(var(--ax-grid-column-width) * 5 + var(--ax-grid-gutter) * 4);
+  --ax-grid-6-col-width: calc(var(--ax-grid-column-width) * 6 + var(--ax-grid-gutter) * 5);
+  --ax-grid-7-col-width: calc(var(--ax-grid-column-width) * 7 + var(--ax-grid-gutter) * 6);
+  --ax-grid-8-col-width: calc(var(--ax-grid-column-width) * 8 + var(--ax-grid-gutter) * 7);
+  --ax-grid-9-col-width: calc(var(--ax-grid-column-width) * 9 + var(--ax-grid-gutter) * 8);
+  --ax-grid-10-col-width: calc(var(--ax-grid-column-width) * 10 + var(--ax-grid-gutter) * 9);
+  --ax-grid-11-col-width: calc(var(--ax-grid-column-width) * 11 + var(--ax-grid-gutter) * 10);
+  --ax-grid-12-col-width: calc(var(--ax-grid-column-width) * 12 + var(--ax-grid-gutter) * 11);
 }
 
 @media (min-width: 600px) {
@@ -119,7 +130,7 @@
 
 @media (min-width: 1680px) {
   :root {
-    --ax-grid-page-max-width: min(1600px, 100%);
+    --ax-grid-container-width: min(1600px, 100%);
   }
 }
 
@@ -1265,16 +1276,15 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   justify-content: center;
   flex-wrap: wrap;
 }
-
-.ax-grid-col-1  { width: calc(var(--ax-grid-column-width) * 1 + var(--ax-grid-gutter) * 0); }
-.ax-grid-col-2  { width: calc(var(--ax-grid-column-width) * 2 + var(--ax-grid-gutter) * 1); }
-.ax-grid-col-3  { width: calc(var(--ax-grid-column-width) * 3 + var(--ax-grid-gutter) * 2); }
-.ax-grid-col-4  { width: calc(var(--ax-grid-column-width) * 4 + var(--ax-grid-gutter) * 3); }
-.ax-grid-col-5  { width: calc(var(--ax-grid-column-width) * 5 + var(--ax-grid-gutter) * 4); }
-.ax-grid-col-6  { width: calc(var(--ax-grid-column-width) * 6 + var(--ax-grid-gutter) * 5); }
-.ax-grid-col-7  { width: calc(var(--ax-grid-column-width) * 7 + var(--ax-grid-gutter) * 6); }
-.ax-grid-col-8  { width: calc(var(--ax-grid-column-width) * 8 + var(--ax-grid-gutter) * 7); }
-.ax-grid-col-9  { width: calc(var(--ax-grid-column-width) * 9 + var(--ax-grid-gutter) * 8); }
-.ax-grid-col-10 { width: calc(var(--ax-grid-column-width) * 10 + var(--ax-grid-gutter) * 9); }
-.ax-grid-col-11 { width: calc(var(--ax-grid-column-width) * 11 + var(--ax-grid-gutter) * 10); }
-.ax-grid-col-12 { width: calc(var(--ax-grid-column-width) * 12 + var(--ax-grid-gutter) * 11); }
+.ax-grid-col-1  { width: var(--ax-grid-1-col-width); }
+.ax-grid-col-2  { width: var(--ax-grid-2-col-width); }
+.ax-grid-col-3  { width: var(--ax-grid-3-col-width); }
+.ax-grid-col-4  { width: var(--ax-grid-4-col-width); }
+.ax-grid-col-5  { width: var(--ax-grid-5-col-width); }
+.ax-grid-col-6  { width: var(--ax-grid-6-col-width); }
+.ax-grid-col-7  { width: var(--ax-grid-7-col-width); }
+.ax-grid-col-8  { width: var(--ax-grid-8-col-width); }
+.ax-grid-col-9  { width: var(--ax-grid-9-col-width); }
+.ax-grid-col-10 { width: var(--ax-grid-10-col-width); }
+.ax-grid-col-11 { width: var(--ax-grid-11-col-width); }
+.ax-grid-col-12 { width: var(--ax-grid-12-col-width); }
