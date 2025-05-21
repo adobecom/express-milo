@@ -125,6 +125,11 @@
 
 .section:has(.faqv2.expandable) picture.section-background {
   height: 750px;
+  opacity: 0.5;
+}
+
+.faqv2.expandable.longform .faqv2-accordions-col {
+  opacity: 0.8;
 }
 
 .faqv2.expandable.longform .faqv2-accordions-col .faqv2-wrapper:first-child {
