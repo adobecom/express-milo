@@ -39,6 +39,7 @@ export default async function decorate($block) {
         });
         const $pictureContainer = $cells[0];
         const img = $pictureContainer.querySelector('img');
+      
         if (img) img.removeAttribute('loading');
         const $linkContainer = $cells[1];
         const $iconSvgContainer = $cells[2];
@@ -46,6 +47,7 @@ export default async function decorate($block) {
         let $iconDiv = null;
         if (icon) {
           $iconDiv = createTag('div', { class: 'make-a-project-icon' });
+          icon?.removeAttribute('alt');
           $iconDiv.appendChild($iconSvgContainer);
         }
         const $numbersContainer = $cells[3];
