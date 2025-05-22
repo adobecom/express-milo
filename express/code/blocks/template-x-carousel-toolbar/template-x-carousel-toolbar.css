@@ -1,6 +1,11 @@
 .template-x-carousel-toolbar {
-  --template-expand-bottom-length: 54px;
+  --template-expand-top-len: 8px;
+  --template-expand-bot-len: 54px;
+  --template-total-expand-len: calc(var(--template-expand-top-len) + var(--template-expand-bot-len));
   --template-height: 200px;
+  --template-expand-ratio: 20%;
+  --template-top-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-top-len));
+  --template-bot-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-bot-len));
   display: flex;
   flex-direction: column-reverse;
   padding-bottom: 24px;
@@ -10,6 +15,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding-top: 16px;
 }
 
 .template-x-carousel-toolbar .headline-container h2,
@@ -31,10 +37,12 @@
 }
 
 .template-x-carousel-toolbar .select {
+  z-index: 1;
   position: relative;
   cursor: pointer;
   background: #e1e1e1;
   width: max-content;
+  height: max-content;
   border-radius: 10px;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
 }
@@ -107,14 +115,9 @@
   align-items: flex-start;
   gap: 22px;
   /* avoid capping from .button-container */
-  padding: 8px 0 var(--template-expand-bottom-length);
+  padding: var(--template-top-gap) 0 var(--template-bot-gap);
   /* cancel the padding */
-  margin: -8px 0 calc(0 - var(--template-expand-bottom-length));
-}
-
-.template-x-carousel-toolbar .carousel-container .carousel-fader-left,
-.template-x-carousel-toolbar .carousel-container .carousel-fader-right {
-  height: calc(100% - var(--template-expand-bottom-length));
+  margin: calc(-1 * var(--template-top-gap)) 0 calc(-1 * var(--template-bot-gap));
 }
 
 /* individual templates styles */
@@ -180,7 +183,9 @@
 .template-x-carousel-toolbar .template:not(.placeholder) .button-container {
   position: absolute;
   max-width: 90vw;
-  width: 100%;
+  
+  width: calc(100% + var(--template-expand-ratio));
+
   border-radius: 20px;
   top: 50%;
   left: 50%;
@@ -307,4 +312,18 @@
   opacity: 0;
   transition: opacity .4s ease-in-out .2s;
   will-change: opacity;
+}
+
+@media (min-width: 600px) {
+  .template-x-carousel-toolbar {
+    flex-direction: column;
+  }
+  .template-x-carousel-toolbar .headline-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 0;
+    padding-bottom: 40px;
+    padding-right: 60px;
+  }
 }
