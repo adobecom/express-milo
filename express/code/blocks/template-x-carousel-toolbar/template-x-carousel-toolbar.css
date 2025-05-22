@@ -144,6 +144,11 @@
   box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-info-accent);
 }
 
+.template-x-carousel-toolbar .template .button-container:focus-within {
+  visibility: visible;
+  opacity: 1;
+}
+
 .template-x-carousel-toolbar .template .image-wrapper {
   height: var(--template-height);
 }
@@ -180,7 +185,7 @@
   clip-path: inset(0 0 3px 0);
 }
 
-.template-x-carousel-toolbar .template:not(.placeholder) .button-container {
+.template-x-carousel-toolbar .template .button-container {
   position: absolute;
   max-width: 90vw;
   
@@ -203,7 +208,7 @@
   box-shadow: 0 0 6px #00000029;
 }
 
-.template-x-carousel-toolbar .template:hover:not(.placeholder) .button-container {
+.template-x-carousel-toolbar .template:hover .button-container {
   opacity: 1;
   pointer-events: initial;
   z-index: 1;
@@ -306,12 +311,6 @@
   left: 8px;
   border-radius: 50%;
   box-shadow: 0 0 5px #00000033;
-}
-
-.template-x-carousel-toolbar .template:not(.placeholder) .template-link {
-  opacity: 0;
-  transition: opacity .4s ease-in-out .2s;
-  will-change: opacity;
 }
 
 @media (min-width: 600px) {
