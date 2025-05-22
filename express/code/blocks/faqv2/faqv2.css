@@ -520,6 +520,7 @@
     margin-top: 25px;
     background: rgba(255, 255, 255, 0.65);
     max-width: 1300px;
+    min-height: 600px;
   }
 
   .faqv2.longform .faqv2-longform-header-container {
