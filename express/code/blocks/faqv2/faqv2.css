@@ -124,7 +124,7 @@
 }
 
 .section:has(.faqv2.expandable) picture.section-background {
-  height: 750px;
+  height: 100%;
   opacity: 0.5;
 }
 
