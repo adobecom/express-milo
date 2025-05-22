@@ -59,6 +59,7 @@
   height: 220px;
   width: auto;
   max-width: 268px;
+  object-fit: cover;
 }
 
 .cta-cards .text-container {

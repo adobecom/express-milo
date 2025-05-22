@@ -3,19 +3,16 @@
   --template-expand-bot-len: 54px;
   --template-total-expand-len: calc(var(--template-expand-top-len) + var(--template-expand-bot-len));
   --template-height: 200px;
-  --template-expand-ratio: 20%;
-  --template-top-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-top-len));
-  --template-bot-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-bot-len));
   display: flex;
-  flex-direction: column-reverse;
-  padding-bottom: 24px;
+  flex-direction: column;
+  padding-bottom: 40px;
 }
 
 .template-x-carousel-toolbar .headline-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-top: 16px;
+  padding-bottom: 40px;
 }
 
 .template-x-carousel-toolbar .headline-container h2,
@@ -115,9 +112,9 @@
   align-items: flex-start;
   gap: 22px;
   /* avoid capping from .button-container */
-  padding: var(--template-top-gap) 0 var(--template-bot-gap);
+  padding: var(--template-expand-top-len) 0 var(--template-expand-bot-len);
   /* cancel the padding */
-  margin: calc(-1 * var(--template-top-gap)) 0 calc(-1 * var(--template-bot-gap));
+  margin: calc(-1 * var(--template-expand-top-len)) 0 calc(-1 * var(--template-expand-bot-len));
 }
 
 /* individual templates styles */
@@ -189,7 +186,7 @@
   position: absolute;
   max-width: 90vw;
   
-  width: calc(100% + var(--template-expand-ratio));
+  width: 100%;
 
   border-radius: 20px;
   top: 50%;
@@ -254,7 +251,8 @@
 .template-x-carousel-toolbar .template .button-container a.button,
 .template-x-carousel-toolbar .template a.con-button {
   max-width: 100%;
-  margin: 6px 6px 0;
+  width: max-content;
+  margin: 6px auto 0;
   box-sizing: border-box;
   display: block;
   white-space: nowrap;
@@ -314,15 +312,12 @@
 }
 
 @media (min-width: 600px) {
-  .template-x-carousel-toolbar {
-    flex-direction: column;
-  }
   .template-x-carousel-toolbar .headline-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding-top: 0;
-    padding-bottom: 40px;
-    padding-right: 60px;
+    /* padding-bottom: 40px;
+    padding-right: 60px; */
   }
 }
