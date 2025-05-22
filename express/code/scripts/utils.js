@@ -265,7 +265,7 @@ export async function fixIcons(el = document) {
     ({ replaceKey } = placeholders);
   });
   /* new icons handling */
-  el.querySelectorAll('img').forEach(($img) => {
+  el.querySelectorAll('img').forEach(async ($img) => {
     const alt = $img.getAttribute('alt');
     if (alt) {
       const lowerAlt = alt.toLowerCase();
@@ -279,10 +279,10 @@ export async function fixIcons(el = document) {
             return null;
           });
         let altText = null;
-        if (replaceKey(icon, getConfig())) {
-          altText = replaceKey(icon, getConfig());
-        } else if (replaceKey(mobileIcon, getConfig())) {
-          altText = replaceKey(mobileIcon, getConfig());
+        if (await replaceKey(icon, getConfig())) {
+          altText = await replaceKey(icon, getConfig());
+        } else if (await replaceKey(mobileIcon, getConfig())) {
+          altText = await replaceKey(mobileIcon, getConfig());
         }
         const $picture = $img.closest('picture');
         const $block = $picture.closest('.section > div');
