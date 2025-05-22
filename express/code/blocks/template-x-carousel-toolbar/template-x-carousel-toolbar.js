@@ -6,12 +6,37 @@ import buildCarousel from '../../scripts/widgets/carousel.js';
 let createTag; let getConfig;
 let replaceKey;
 
-function createDropdown(optionKeys) {
-  let currentIndex = 0;
+async function createTemplates(recipe) {
+  const res = await fetchResults(recipe);
+  const templates = await Promise.all(res.items.map((item) => renderTemplate(item)));
+  templates.forEach((tplt) => tplt.classList.add('template'));
+  return templates;
+}
+
+async function createTemplatesContainer(recipe) {
+  const templatesContainer = createTag('div', { class: 'templates-container' });
+  templatesContainer.append(...(await createTemplates(recipe)));
+  await buildCarousel(':scope > .template', templatesContainer);
+  return {
+    templatesContainer,
+    updateTemplates: async (newRecipe) => {
+      templatesContainer.replaceChildren(...(await createTemplates(newRecipe)));
+      buildCarousel(':scope > .template', templatesContainer);
+    },
+  };
+}
+
+async function createFromScratch() {
+  const fromScratchText = await replaceKey('start-from-scratch', getConfig());
+  console.log(fromScratchText);
+}
+
+function createDropdown(sortOptions, defaultIndex, updateTemplates) {
+  let currentIndex = defaultIndex;
   const select = createTag('div', { class: 'select', role: 'combobox', 'aria-haspopup': 'listbox', 'aria-expanded': 'false', tabindex: '0' });
-  const selectedOption = createTag('div', { class: 'selected-option' }, [getIconElementDeprecated('template-lightning'), optionKeys[0]]);
-  const options = optionKeys.map((key) => (createTag('li', { class: 'option', role: 'option' }, [getIconElementDeprecated('template-lightning'), key])));
-  options[0].setAttribute('aria-selected', 'true');
+  const selectedOption = createTag('div', { class: 'selected-option' }, [getIconElementDeprecated('template-lightning'), sortOptions[defaultIndex].text]);
+  const options = sortOptions.map(({ text }) => (createTag('li', { class: 'option', role: 'option' }, [getIconElementDeprecated('template-lightning'), text])));
+  options[defaultIndex].setAttribute('aria-selected', 'true');
   const optionList = createTag('ul', { class: 'options', role: 'listbox', tabindex: -1 }, options);
   function updateFocus() {
     options.forEach((o) => o.classList.remove('hovered'));
@@ -72,11 +97,13 @@ function createDropdown(optionKeys) {
   options.forEach((opt, index) => {
     opt.addEventListener('click', (e) => {
       e.stopPropagation();
+      if (opt.getAttribute('aria-selected') === 'true') return;
       options.forEach((o) => o.setAttribute('aria-selected', 'false'));
       opt.setAttribute('aria-selected', 'true');
       selectedOption.innerHTML = opt.innerHTML;
       currentIndex = index;
       select.setAttribute('aria-expanded', 'false');
+      updateTemplates(sortOptions[index].recipe);
     });
     opt.addEventListener('mouseenter', () => {
       currentIndex = index;
@@ -90,28 +117,46 @@ function createDropdown(optionKeys) {
   return select;
 }
 
-async function createTemplates(recipe) {
-  const templatesContainer = createTag('div', { class: 'templates-container' });
-  const res = await fetchResults(recipe);
-  const templates = await Promise.all(res.items.map((item) => renderTemplate(item)));
-  templates.forEach((tplt) => tplt.classList.add('template'));
-  templatesContainer.append(...templates);
-  await buildCarousel(':scope > .template', templatesContainer);
-  return templatesContainer;
+const sortConfig = {
+  popular: '-remixCount',
+  'new-templates': '-createDate',
+};
+
+export async function extractSort(recipe) {
+  if (!recipe) return null;
+  const recipeParams = new URLSearchParams(recipe);
+  if (!recipeParams.has('orderBy')) return null;
+  const order = recipeParams.get('orderBy');
+  if (!Object.values(sortConfig).includes(order)) return null;
+  const sortKeys = Object.keys(sortConfig);
+  const defaultIndex = sortKeys.indexOf(sortKeys.find((key) => sortConfig[key] === order));
+  const sortOptionTexts = await Promise.all(sortKeys.map((key) => replaceKey(key, getConfig())));
+  const sortOptions = sortKeys.map((key, i) => {
+    const sortedRecipe = new URLSearchParams(recipeParams);
+    sortedRecipe.set('orderBy', sortConfig[key]);
+    return {
+      text: sortOptionTexts[i],
+      recipe: sortedRecipe.toString(),
+    };
+  });
+  return { sortOptions, defaultIndex };
 }
 
 export default async function init(el) {
   [{ createTag, getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
   const [headlineRow, recipeRow] = el.children;
   headlineRow.classList.add('headline-container');
-  const recipe = recipeRow.textContent.trim().toLowerCase();
+  const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
-  const [popular, newTemplates] = await Promise.all(
-    [
-      replaceKey('popular', getConfig()),
-      replaceKey('new-templates', getConfig()),
-    ],
-  );
-  const templates = await createTemplates(recipe); // TODO: lazy load
-  el.append(createDropdown([popular, newTemplates]), templates);
+
+  // TODO: lazy load templates
+  const [
+    { templatesContainer, updateTemplates },
+    sortSetup,
+  ] = await Promise.all([createTemplatesContainer(recipe), extractSort(recipe)]);
+  const { sortOptions, defaultIndex } = sortSetup || {};
+  sortOptions && headlineRow.append(createDropdown(sortOptions, defaultIndex, updateTemplates));
+
+  el.append(templatesContainer);
+  createFromScratch();
 }
