@@ -31,6 +31,14 @@ function pickRandomFromArray(arr) {
   return arr[Math.floor(arr.length * Math.random())];
 }
 
+function createQuoteContent(textContent, addContentClass = false) {
+  const $blockquote = createTag('blockquote', { class: addContentClass ? 'content' : '' });
+  const $p = createTag('p', { class: 'inner-content' });
+  $p.textContent = textContent;
+  $blockquote.appendChild($p);
+  return $blockquote;
+}
+
 async function createQuotesRatings({
   sheet,
   isCarouselVariant = false,
@@ -301,9 +309,9 @@ export default async function decorate($block) {
     const $quoteComment = createTag('div', { class: 'quote-comment' });
     $quoteDetails.append($quoteComment);
 
-    const $review = $quoteSelected.children[0];
-
-    $quoteComment.append($review.textContent);
+    $quoteComment.append(createQuoteContent(
+      $quoteSelected.firstElementChild.textContent,
+    ));
 
     const authorDescription = $quoteSelected.children[1].textContent;
 
@@ -391,8 +399,9 @@ export default async function decorate($block) {
         $authorContent.appendChild($authorSummary);
         $author.appendChild($authorContent);
       }
-      $card.firstElementChild.classList.add('content');
 
+      const $blockquote = createQuoteContent($card.firstElementChild.textContent, true);
+      $card.firstElementChild.replaceWith($blockquote);
       // Move author before content
       if ($card.children.length > 1) {
         $card.insertBefore($card.children[1], $card.firstElementChild);
@@ -452,7 +461,9 @@ export default async function decorate($block) {
         // Append the author content container to author
         $author.appendChild($authorContent);
       }
-      $card.firstElementChild.classList.add('content');
+
+      const $blockquote = createQuoteContent($card.firstElementChild.textContent, true);
+      $card.firstElementChild.replaceWith($blockquote);
     });
   }
 }
