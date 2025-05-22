@@ -120,6 +120,13 @@
   margin: calc(-1 * var(--template-top-gap)) 0 calc(-1 * var(--template-bot-gap));
 }
 
+.template-x-carousel-toolbar .carousel-container .carousel-platform.left-fader.right-fader,
+.template-x-carousel-toolbar .carousel-container .carousel-platform.left-fader:not(.right-fader),
+.template-x-carousel-toolbar .carousel-container .carousel-platform.right-fader:not(.left-fader) {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
 /* individual templates styles */
 
 .template-x-carousel-toolbar .template p {
