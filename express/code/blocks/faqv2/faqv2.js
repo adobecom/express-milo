@@ -65,11 +65,11 @@ function buildTableLayout(block) {
     subHeaderAccordion.appendChild(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
-      const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
+      const isOpen = subHeaderAccordion.classList.toggle('open');
       if (!isLongFormVariant) {
-        headerAccordion.classList.toggle('rounded-corners', isCollapsed);
+        headerAccordion.classList.toggle('rounded-corners', isOpen);
       }
-      iconElement.src = isCollapsed
+      iconElement.src = isOpen
         ? `${config.codeRoot}/icons/minus-heavy.svg`
         : `${config.codeRoot}/icons/plus-heavy.svg`;
     });
@@ -113,7 +113,7 @@ async function buildOriginalLayout(block) {
     const accordion = createTag('div', { class: 'faqv2-accordion' });
 
     if (index >= visibleCount) {
-      accordion.classList.add('collapsed');
+      accordion.classList.add('open');
     }
 
     block.append(accordion);
@@ -147,7 +147,7 @@ async function buildOriginalLayout(block) {
     const hiddenItems = block.querySelectorAll('.faqv2-accordion');
     hiddenItems.forEach((item, index) => {
       if (index >= visibleCount) {
-        item.classList.toggle('collapsed');
+        item.classList.toggle('open');
       }
     });
 
