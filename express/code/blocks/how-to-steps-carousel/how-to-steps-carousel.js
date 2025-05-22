@@ -52,12 +52,16 @@ function activate(block, target) {
   // de-activate all
   block.querySelectorAll('.tip, .tip-number').forEach((item) => {
     item.classList.remove('active');
+    item.setAttribute('aria-selected', 'false');
   });
 
   // get index of the target
   const i = parseInt(target.getAttribute('data-tip-index'), 10);
   // activate corresponding number and tip
-  block.querySelectorAll(`.tip-${i}`).forEach((elem) => elem.classList.add('active'));
+  block.querySelectorAll(`.tip-${i}`).forEach((elem) => {
+    elem.classList.add('active');
+    elem.setAttribute('aria-selected', 'true');
+  });
 }
 
 function initRotation(howToWindow, howToDocument) {
@@ -104,7 +108,8 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
     step: [],
   };
 
-  const numbers = createTag('div', { class: 'tip-numbers', 'aria-role': 'tablist' });
+  const numbers = createTag('nav', { class: 'tip-numbers'});
+  numbers.setAttribute('role', 'tablist');
   block.prepend(numbers);
   const tips = createTag('div', { class: 'tips' });
   block.append(tips);
@@ -137,12 +142,12 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
       },
     });
 
-    const number = createTag('div', {
+    const number = createTag('button', {
       class: `tip-number tip-${i + 1}`,
       tabindex: '0',
       title: `${i + 1}`,
-      'aria-role': 'tab',
     });
+    number.setAttribute('role', 'tab');
     number.innerHTML = `<span>${i + 1}</span>`;
     number.setAttribute('data-tip-index', i + 1);
 
