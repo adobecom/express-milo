@@ -463,6 +463,10 @@
     opacity: 0.5;
   }
 
+  .section:has(.faqv2.expandable) picture.section-background {
+    opacity: 1;
+  }
+
   .faqv2.expandable.longform .faqv2-wrapper {
     box-shadow: unset;
   }
