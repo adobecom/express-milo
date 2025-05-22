@@ -3,9 +3,12 @@
   --template-expand-bot-len: 54px;
   --template-total-expand-len: calc(var(--template-expand-top-len) + var(--template-expand-bot-len));
   --template-height: 200px;
-  --template-expand-ratio: 20%;
-  --template-top-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-top-len));
-  --template-bot-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-bot-len));
+  /* --template-expand-ratio: 20%; */
+  --template-expand-ratio: 0%;
+  /* --template-top-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-top-len));
+  --template-bot-gap: calc(10% - calc(0.2 * var(--template-total-expand-len)) + var(--template-expand-bot-len)); */
+  --template-top-gap: var(--template-expand-top-len);
+  --template-bot-gap: var(--template-expand-bot-len);
   display: flex;
   flex-direction: column-reverse;
   padding-bottom: 24px;
@@ -117,7 +120,7 @@
   /* avoid capping from .button-container */
   padding: var(--template-top-gap) 0 var(--template-bot-gap);
   /* cancel the padding */
-  margin: calc(-1 * var(--template-top-gap)) 0 calc(-1 * var(--template-bot-gap));
+  /* margin: calc(-1 * var(--template-top-gap)) 0 calc(-1 * var(--template-bot-gap)); */
 }
 
 /* individual templates styles */
