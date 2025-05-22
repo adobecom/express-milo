@@ -108,7 +108,7 @@ function buildHowToStepsCarousel(section, block, howToDocument, rows, howToWindo
     step: [],
   };
 
-  const numbers = createTag('nav', { class: 'tip-numbers'});
+  const numbers = createTag('nav', { class: 'tip-numbers' });
   numbers.setAttribute('role', 'tablist');
   block.prepend(numbers);
   const tips = createTag('div', { class: 'tips' });
