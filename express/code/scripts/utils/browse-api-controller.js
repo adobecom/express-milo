@@ -33,10 +33,6 @@ export default async function getData() {
     .map((s) => s && String(s[0]).toUpperCase() + String(s).slice(1))
     .reverse()
     .join(' ');
-  if (textQuery === 'Search') {
-    // turn off for search pages
-    return null;
-  }
   const data = {
     experienceId,
     querySuggestion: {
