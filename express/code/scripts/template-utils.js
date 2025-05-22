@@ -1,18 +1,11 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-unused-vars */
-import { getLibs, getIconElementDeprecated } from './utils.js';
-
-let createTag; let getConfig;
-let getMetadata; let replaceKeyArray;
-let tagCopied; let editThisTemplate;
-let free; let sharePlaceholder;
-
 export const base = 'https://www.adobe.com/express-search-api-v3';
 
 export const defaultCollectionId = 'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418';
 export const popularCollectionId = 'urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852';
 
-export function convertFilterParams(params) {
+export function recipe2ApiQuery(recipe) {
+  const params = new URLSearchParams(recipe);
   if (params.has('collection')) {
     if (params.get('collection') === 'default') {
       params.set('collectionId', `${defaultCollectionId}`);
@@ -46,9 +39,7 @@ export function convertFilterParams(params) {
     params.append('filters', `language==${params.get('language')}`);
     params.delete('language');
   }
-}
 
-export function extractHeaderParams(params) {
   const headers = {};
   if (params.get('prefLang')) {
     headers['x-express-pref-lang'] = params.get('prefLang');
@@ -58,14 +49,8 @@ export function extractHeaderParams(params) {
     headers['x-express-pref-region-code'] = params.get('prefRegion');
     params.delete('prefRegion');
   }
-  return headers;
-}
 
-export function recipe2ApiQuery(recipe) {
-  const params = new URLSearchParams(recipe);
   params.set('queryType', 'search');
-  convertFilterParams(params);
-  const headers = extractHeaderParams(params);
   return { url: `${base}?${decodeURIComponent(params.toString())}`, headers };
 }
 
@@ -124,77 +109,3 @@ export function getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page)
 export function containsVideo(pages) {
   return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
 }
-
-function getStillWrapperIcons(template) {
-  let planIcon = null;
-  if (template.licensingCategory === 'free') {
-    planIcon = createTag('span', { class: 'free-tag' });
-    planIcon.append(free === 'free' ? 'Free' : free);
-  } else {
-    planIcon = getIconElementDeprecated('premium');
-  }
-  let videoIcon = '';
-  if (!containsVideo(template.pages) && template.pages.length > 1) {
-    videoIcon = getIconElementDeprecated('multipage-static-badge');
-  }
-
-  if (containsVideo(template.pages) && template.pages.length === 1) {
-    videoIcon = getIconElementDeprecated('video-badge');
-  }
-
-  if (containsVideo(template.pages) && template.pages.length > 1) {
-    videoIcon = getIconElementDeprecated('multipage-video-badge');
-  }
-  if (videoIcon) videoIcon.classList.add('media-type-icon');
-  return { planIcon, videoIcon };
-}
-
-function renderStillWrapper(template) {
-  const stillWrapper = createTag('div', { class: 'still-wrapper' });
-
-  const templateTitle = getTemplateTitle(template);
-  const renditionLinkHref = extractRenditionLinkHref(template);
-  const componentLinkHref = extractComponentLinkHref(template);
-
-  const thumbnailImageHref = getImageThumbnailSrc(
-    renditionLinkHref,
-    componentLinkHref,
-    template.pages[0],
-  );
-
-  const imgWrapper = createTag('div', { class: 'image-wrapper' });
-
-  const img = createTag('img', {
-    src: thumbnailImageHref,
-    alt: templateTitle,
-  });
-  imgWrapper.append(img);
-
-  const { planIcon, videoIcon } = getStillWrapperIcons(template);
-  img.onload = (e) => {
-    if (e.eventPhase >= Event.AT_TARGET) {
-      imgWrapper.append(planIcon);
-      imgWrapper.append(videoIcon);
-    }
-  };
-
-  stillWrapper.append(imgWrapper);
-  return stillWrapper;
-}
-
-// export async function renderTemplate(template) {
-//   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-//     ({ createTag, getConfig, getMetadata } = utils);
-//     ({ replaceKeyArray } = placeholders);
-//   });
-//   [tagCopied, editThisTemplate, free, sharePlaceholder] = await replaceKeyArray(['tag-copied', 'edit-this-template', 'free', 'share'], getConfig());
-//   const tmpltEl = createTag('div');
-//   if (template.assetType === 'Webpage_Template') {
-//     // webpage_template has no pages
-//     template.pages = [{}];
-//   }
-
-//   tmpltEl.append(renderStillWrapper(template));
-//   tmpltEl.append(renderHoverWrapper(template));
-//   return tmpltEl;
-// }
