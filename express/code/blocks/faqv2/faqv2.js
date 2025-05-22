@@ -65,6 +65,21 @@ function buildTableLayout(block) {
     subHeaderAccordion.appendChild(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
+      // Close all other open accordions first
+      const allSubHeaders = block.querySelectorAll('.sub-header-accordion');
+      const allHeaders = block.querySelectorAll('.header-accordion');
+      const allIcons = block.querySelectorAll('.toggle-icon');
+
+      allSubHeaders.forEach((accordion, idx) => {
+        if (accordion !== subHeaderAccordion) {
+          accordion.classList.remove('open');
+          if (!isLongFormVariant) {
+            allHeaders[idx].classList.remove('rounded-corners');
+          }
+          allIcons[idx].src = `${config.codeRoot}/icons/plus-heavy.svg`;
+        }
+      });
+
       const isOpen = subHeaderAccordion.classList.toggle('open');
       if (!isLongFormVariant) {
         headerAccordion.classList.toggle('rounded-corners', isOpen);
