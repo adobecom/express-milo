@@ -46,11 +46,11 @@ function buildAccordion(block, rows, stepsContent) {
 
     const detailText = stepDetail;
     detailText && detailText.classList.add('detail-text');
-
+    const ariaLabelStepTitle = newStepTitle.innerText.replace(/^\d+\.\s*/, '');
     const detailContainer = createTag('div', {
       class: 'detail-container',
       id: detailId,
-      'aria-labelledby': titleId,
+      'aria-labelledby': ariaLabelStepTitle,
     });
 
     if (i !== 0) {
