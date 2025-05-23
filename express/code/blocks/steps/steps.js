@@ -14,7 +14,7 @@ export function addBlockClasses(block, classNames) {
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addBlockClasses(block, ['step-image', 'step-description']);
-  fixIcons(block);
+  fixIcons(block, false);
 
   const section = block.closest('.section');
   const heading = section.querySelector('h2, h3, h4');

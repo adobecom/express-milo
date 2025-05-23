@@ -77,8 +77,8 @@ export async function getRedirectUri() {
     return url && branchLinkOriginPattern.test(new URL(url).origin);
   }
   const url = getMetadata('pep-destination')
-      || BlockMediator.default.get('primaryCtaUrl')
-      || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
+    || BlockMediator.default.get('primaryCtaUrl')
+    || document.querySelector('a.button.xlarge.same-fcta, a.primaryCTA')?.href;
   return isBranchLink(url) && url;
 }
 
@@ -252,7 +252,7 @@ export function getIconElementDeprecated(icons, size, alt, additionalClassName, 
   return icon;
 }
 
-export async function fixIcons(el = document) {
+export async function fixIcons(el = document, showAltText = true) {
   /* backwards compatible icon handling, deprecated */
   el.querySelectorAll('svg use[href^="./_icons_"]').forEach(($use) => {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
@@ -267,40 +267,44 @@ export async function fixIcons(el = document) {
   /* new icons handling */
   el.querySelectorAll('img').forEach(async ($img) => {
     const alt = $img.getAttribute('alt');
-    if (alt) {
-      const lowerAlt = alt.toLowerCase();
-      if (lowerAlt.includes('icon:')) {
-        const [icon, mobileIcon] = lowerAlt
-          .split(';')
-          .map((i) => {
-            if (i) {
-              return toClassName(i.split(':')[1].trim());
-            }
-            return null;
-          });
-        let altText = null;
-        if (await replaceKey(icon, getConfig())) {
-          altText = await replaceKey(icon, getConfig());
-        } else if (await replaceKey(mobileIcon, getConfig())) {
-          altText = await replaceKey(mobileIcon, getConfig());
+    const lowerAlt = alt?.toLowerCase();
+    if (!lowerAlt?.includes('icon:')) return;
+
+    const [icon, mobileIcon] = lowerAlt
+      .split(';')
+      .map((i) => {
+        if (i) {
+          return toClassName(i.split(':')[1].trim());
         }
-        const $picture = $img.closest('picture');
-        const $block = $picture.closest('.section > div');
-        let size = 44;
-        if ($block) {
-          const blockName = $block.classList[0];
-          // use small icons in .columns (except for .columns.offer)
-          if (blockName === 'columns') {
-            size = $block.classList.contains('offer') ? 44 : 22;
-          } else if (blockName === 'toc') {
-            // ToC block has its own logic
-            return;
-          }
-        }
-        $picture.parentElement
-          .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
+        return null;
+      });
+
+    let altText = null;
+    if (showAltText) {
+      const iconPlaceholder = await replaceKey(icon, getConfig());
+      const mobileIconPlaceholder = await replaceKey(mobileIcon, getConfig());
+      if (iconPlaceholder) {
+        altText = iconPlaceholder;
+      } else if (mobileIconPlaceholder) {
+        altText = mobileIconPlaceholder;
       }
     }
+
+    const $picture = $img.closest('picture');
+    const $block = $picture.closest('.section > div');
+    let size = 44;
+    if ($block) {
+      const blockName = $block.classList[0];
+      // use small icons in .columns (except for .columns.offer)
+      if (blockName === 'columns') {
+        size = $block.classList.contains('offer') ? 44 : 22;
+      } else if (blockName === 'toc') {
+        // ToC block has its own logic
+        return;
+      }
+    }
+    $picture.parentElement
+      .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
   });
 }
 
@@ -325,13 +329,13 @@ export async function decorateButtonsDeprecated(el, size) {
       const { hash } = new URL($a.href);
 
       if (originalHref !== linkText
-          && !(linkText.startsWith('https') && linkText.includes('/media_'))
-          && !/hlx\.blob\.core\.windows\.net/.test(linkText)
-          && !/aem\.blob\.core\.windows\.net/.test(linkText)
-          && !linkText.endsWith(' >')
-          && !(hash === '#embed-video')
-          && !linkText.endsWith(' ›')
-          && !linkText.endsWith('.svg')) {
+        && !(linkText.startsWith('https') && linkText.includes('/media_'))
+        && !/hlx\.blob\.core\.windows\.net/.test(linkText)
+        && !/aem\.blob\.core\.windows\.net/.test(linkText)
+        && !linkText.endsWith(' >')
+        && !(hash === '#embed-video')
+        && !linkText.endsWith(' ›')
+        && !linkText.endsWith('.svg')) {
         const $up = $a.parentElement;
         const $twoup = $a.parentElement.parentElement;
         if (!$a.querySelector('img')) {
@@ -340,12 +344,12 @@ export async function decorateButtonsDeprecated(el, size) {
             $up.classList.add('button-container');
           }
           if ($up.childNodes.length === 1 && $up.tagName === 'STRONG'
-              && $twoup.children.length === 1 && $twoup.tagName === 'P') {
+            && $twoup.children.length === 1 && $twoup.tagName === 'P') {
             $a.classList.add('button', 'accent');
             $twoup.classList.add('button-container');
           }
           if ($up.childNodes.length === 1 && $up.tagName === 'EM'
-              && $twoup.children.length === 1 && $twoup.tagName === 'P') {
+            && $twoup.children.length === 1 && $twoup.tagName === 'P') {
             $a.classList.add('button', 'accent', 'light');
             $twoup.classList.add('button-container');
           }
