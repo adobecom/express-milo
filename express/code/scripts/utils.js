@@ -252,7 +252,7 @@ export function getIconElementDeprecated(icons, size, alt, additionalClassName, 
   return icon;
 }
 
-export async function fixIcons(el = document, ariaHidden = false) {
+export async function fixIcons(el = document, presentational = false) {
   /* backwards compatible icon handling, deprecated */
   el.querySelectorAll('svg use[href^="./_icons_"]').forEach(($use) => {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
@@ -303,8 +303,8 @@ export async function fixIcons(el = document, ariaHidden = false) {
       }
     }
     const iconElement = getIconElementDeprecated([icon, mobileIcon], size, altText);
-    if (ariaHidden) {
-      iconElement.setAttribute('aria-hidden', 'true');
+    if (presentational) {
+      iconElement.setAttribute('role', 'presentation');
     }
     $picture.parentElement
       .replaceChild(iconElement, $picture);
