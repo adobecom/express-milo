@@ -252,7 +252,7 @@ export function getIconElementDeprecated(icons, size, alt, additionalClassName, 
   return icon;
 }
 
-export async function fixIcons(el = document, showAltText = true) {
+export async function fixIcons(el = document, ariaHidden = false) {
   /* backwards compatible icon handling, deprecated */
   el.querySelectorAll('svg use[href^="./_icons_"]').forEach(($use) => {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
@@ -280,14 +280,13 @@ export async function fixIcons(el = document, showAltText = true) {
       });
 
     let altText = null;
-    if (showAltText) {
-      const iconPlaceholder = await replaceKey(icon, getConfig());
-      const mobileIconPlaceholder = await replaceKey(mobileIcon, getConfig());
-      if (iconPlaceholder) {
-        altText = iconPlaceholder;
-      } else if (mobileIconPlaceholder) {
-        altText = mobileIconPlaceholder;
-      }
+
+    const iconPlaceholder = await replaceKey(icon, getConfig());
+    const mobileIconPlaceholder = await replaceKey(mobileIcon, getConfig());
+    if (iconPlaceholder) {
+      altText = iconPlaceholder;
+    } else if (mobileIconPlaceholder) {
+      altText = mobileIconPlaceholder;
     }
 
     const $picture = $img.closest('picture');
@@ -303,8 +302,13 @@ export async function fixIcons(el = document, showAltText = true) {
         return;
       }
     }
+    const iconElement = getIconElementDeprecated([icon, mobileIcon], size, altText);
+    if (ariaHidden) {
+      iconElement.setAttribute('aria-hidden', 'true');
+    }
     $picture.parentElement
-      .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
+      .replaceChild(iconElement, $picture);
+
   });
 }
 
