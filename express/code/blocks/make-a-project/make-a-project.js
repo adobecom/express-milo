@@ -5,7 +5,7 @@ import buildCarousel from '../../scripts/widgets/carousel.js';
 let createTag;
 
 export default async function decorate($block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), fixIcons($block,true)]).then(([utils]) => {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), fixIcons($block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
   addTempWrapperDeprecated($block, 'make-a-project');
