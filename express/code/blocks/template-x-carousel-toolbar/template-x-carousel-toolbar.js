@@ -45,6 +45,10 @@ function createDropdown(sortOptions, defaultIndex, updateTemplates) {
   }
   const selectedOptionWrapper = createTag('div', { class: 'selected-option-wrapper' }, [selectedOption, getIconElementDeprecated('drop-down-arrow')]);
   select.append(selectedOptionWrapper, optionList);
+  const optionListProxy = optionList.cloneNode(true);
+  optionListProxy.setAttribute('aria-hidden', 'true');
+  optionListProxy.classList.add('sizing-proxy');
+  select.append(optionListProxy);
 
   select.addEventListener('click', () => {
     const expanded = select.getAttribute('aria-expanded') === 'true';
@@ -97,7 +101,10 @@ function createDropdown(sortOptions, defaultIndex, updateTemplates) {
   options.forEach((opt, index) => {
     opt.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (opt.getAttribute('aria-selected') === 'true') return;
+      if (opt.getAttribute('aria-selected') === 'true') {
+        select.click();
+        return;
+      }
       options.forEach((o) => o.setAttribute('aria-selected', 'false'));
       opt.setAttribute('aria-selected', 'true');
       selectedOption.innerHTML = opt.innerHTML;
