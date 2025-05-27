@@ -665,7 +665,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 }
 
 .pricing-table.vertical-shading .col.screen-reader-header-content {
-background-color: unset;
+  background-color: unset;
 }
 /* /Table Section Rows */
 
