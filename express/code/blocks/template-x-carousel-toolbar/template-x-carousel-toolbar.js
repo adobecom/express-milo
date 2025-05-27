@@ -6,6 +6,8 @@ import buildCarousel from '../../scripts/widgets/carousel.js';
 let createTag; let getConfig;
 let replaceKey;
 
+const fromScratchFallbackLink = 'https://adobesparkpost.app.link/c4bWARQhWAb';
+
 async function createTemplates(recipe) {
   const res = await fetchResults(recipe);
   const templates = await Promise.all(res.items.map((item) => renderTemplate(item)));
@@ -13,10 +15,30 @@ async function createTemplates(recipe) {
   return templates;
 }
 
+async function createFromScratch() {
+  const [fromScratchText, searchBranchLinks] = await Promise.all([
+    replaceKey('start-from-scratch', getConfig()),
+    replaceKey('search-branch-links', getConfig()),
+  ]);
+  const fromScratchHref = searchBranchLinks.split(',')[0]?.trim() || fromScratchFallbackLink;
+  const fromScratchBorder = createTag('div', { class: 'from-scratch-border' });
+  const fromScratchContainer = createTag('a', {
+    class: 'from-scratch-container',
+    rel: 'nofollow',
+    target: '_self',
+    href: fromScratchHref,
+  }, fromScratchBorder);
+  const svg = getIconElementDeprecated('blank');
+  const text = createTag('div', { class: 'from-scratch-text' }, fromScratchText);
+  fromScratchBorder.append(svg, text);
+  return fromScratchContainer;
+}
+
 async function createTemplatesContainer(recipe) {
   const templatesContainer = createTag('div', { class: 'templates-container' });
-  templatesContainer.append(...(await createTemplates(recipe)));
-  await buildCarousel(':scope > .template', templatesContainer);
+  const [scratch, templates] = await Promise.all([createFromScratch(), createTemplates(recipe)]);
+  templatesContainer.append(scratch, ...templates);
+  await buildCarousel(':scope > .template, :scope > .from-scratch-container', templatesContainer);
   return {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
@@ -24,11 +46,6 @@ async function createTemplatesContainer(recipe) {
       buildCarousel(':scope > .template', templatesContainer);
     },
   };
-}
-
-async function createFromScratch() {
-  const fromScratchText = await replaceKey('start-from-scratch', getConfig());
-  console.log(fromScratchText);
 }
 
 function createDropdown(sortOptions, defaultIndex, updateTemplates) {
