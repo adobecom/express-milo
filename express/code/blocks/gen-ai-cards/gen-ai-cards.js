@@ -91,7 +91,7 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
     
   });
 
-  genAISubmit.setAttribute('aria-label',  `${title} Submit: ${subtext || ''}`)
+  genAISubmit.setAttribute('aria-label',  `${title} Submit`)
 
   genAIForm.append(genAIInput, genAISubmit);
 
