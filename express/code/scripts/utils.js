@@ -824,7 +824,7 @@ export async function convertToInlineSVG(img) {
     const svgElement = svgDoc.querySelector('svg');
 
     if (!svgElement) {
-      console.warn('No SVG element found in the file');
+      window.lana?.log(`No SVG element found in file ${img.src}`);
       return img;
     }
 
@@ -839,7 +839,7 @@ export async function convertToInlineSVG(img) {
     }
 
     // Copy over any data attributes
-    Array.from(img.attributes).forEach(attr => {
+    Array.from(img.attributes).forEach((attr) => {
       if (attr.name.startsWith('data-')) {
         svgElement.setAttribute(attr.name, attr.value);
       }
@@ -851,7 +851,7 @@ export async function convertToInlineSVG(img) {
 
     return svgElement;
   } catch (error) {
-    console.error('Error converting SVG:', error);
+    window.lana?.log(`Error converting SVG: ${error}`);
     return img;
   }
 }
