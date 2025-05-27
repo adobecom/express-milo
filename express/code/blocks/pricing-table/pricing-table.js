@@ -36,7 +36,8 @@ function handleToggleMore(btn) {
 }
 
 function getHeaderId(el) {
-  return el.querySelector('p')?.textContent?.trim().replaceAll(' ', '-') || el.textContent?.trim().replaceAll(' ', '-');
+  const text = el.querySelector('p')?.textContent || el.textContent || '';
+  return text.trim().replaceAll(' ', '-');
 }
 
 function handleHeading(headingRow) {
@@ -216,8 +217,6 @@ const getId = (function idSetups() {
 }());
 
 export default async function init(el) {
-  headingCols = undefined;
-  previousHeaderRow = undefined;
   await fixIcons(el);
   splitAndAddVariantsWithDash(el);
   const isSingleSectionVariant = el.classList.contains('single-section');
