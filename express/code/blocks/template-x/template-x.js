@@ -366,77 +366,27 @@ function updateLoadMoreButton(props, loadMore) {
   }
 }
 
-async function decorateNewTemplates(
-  block,
-  props,
-  options = { reDrawMasonry: false, reDrawCarousel: false },
-) {
+async function decorateNewTemplates(block, props, options = { reDrawMasonry: false }) {
   const { templates: newTemplates } = await fetchAndRenderTemplates(props);
   updateImpressionCache({ result_count: props.total });
   const loadMore = block.parentElement.querySelector('.load-more');
 
-  if (block.classList.contains('blade-carousel')) {
-    const carouselPlatform = block.querySelector('.carousel-platform');
-    const rightTrigger = carouselPlatform.querySelector('.carousel-right-trigger');
-    props.templates = props.templates.concat(newTemplates);
-    // Add new templates before the right trigger with proper structure
-    newTemplates.forEach((template) => {
-      // Ensure template has both classes
-      template.classList.add('template', 'carousel-element');
-      
-      // Ensure proper media wrapper structure
-      // const mediaWrapper = template.querySelector('.media-wrapper');
-      // if (mediaWrapper) {
-      //   const img = mediaWrapper.querySelector('img');
-      //   if (img) {
-      //     // Reconstruct media wrapper with share functionality
-      //     const shareWrapper = createTag('div', { class: 'share-icon-wrapper' });
-      //     const srOnly = createTag('div', { class: 'sr-only', 'aria-live': 'polite' });
-      //     const shareIcon = createTag('img', {
-      //       class: 'icon icon-share-arrow',
-      //       src: '/express/code/icons/share-arrow.svg',
-      //       alt: 'share-arrow',
-      //       tabindex: '0',
-      //       role: 'button',
-      //       'aria-label': `Share ${img.alt}`
-      //     });
-      //     const tooltip = createTag('div', {
-      //       class: 'shared-tooltip',
-      //       role: 'tooltip',
-      //       tabindex: '-1',
-      //       'aria-label': 'Copied to clipboard'
-      //     });
-      //     const checkmark = createTag('img', {
-      //       class: 'icon icon-checkmark-green',
-      //       src: '/express/code/icons/checkmark-green.svg',
-      //       alt: 'checkmark-green'
-      //     });
-      //     tooltip.append(checkmark, 'Copied to clipboard');
-      //     shareWrapper.append(srOnly, shareIcon, tooltip);
-      //     mediaWrapper.append(shareWrapper);
-      //   }
-      // }
-      
-      carouselPlatform.insertBefore(template, rightTrigger);
-    });
+  props.templates = props.templates.concat(newTemplates);
+  populateTemplates(block, props, newTemplates);
+
+  const newCells = Array.from(block.querySelectorAll('.template:not(.appear)'));
+
+  const templateLinks = block.querySelectorAll('.template:not(.appear) .button-container > a, a.template.placeholder');
+  templateLinks.isSearchOverride = true;
+  const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
+  document.dispatchEvent(linksPopulated);
+
+  if (options.reDrawMasonry) {
+    props.masonry.cells = [props.masonry.cells[0]].concat(newCells);
   } else {
-    props.templates = props.templates.concat(newTemplates);
-    populateTemplates(block, props, newTemplates);
-
-    const newCells = Array.from(block.querySelectorAll('.template:not(.appear)'));
-
-    const templateLinks = block.querySelectorAll('.template:not(.appear) .button-container > a, a.template.placeholder');
-    templateLinks.isSearchOverride = true;
-    const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
-    document.dispatchEvent(linksPopulated);
-
-    if (options.reDrawMasonry) {
-      props.masonry.cells = [props.masonry.cells[0]].concat(newCells);
-    } else {
-      props.masonry.cells = props.masonry.cells.concat(newCells);
-    }
-    props.masonry.draw(newCells);
+    props.masonry.cells = props.masonry.cells.concat(newCells);
   }
+  props.masonry.draw(newCells);
 
   if (loadMore) {
     updateLoadMoreButton(props, loadMore);
@@ -486,9 +436,8 @@ async function attachFreeInAppPills(block) {
   }
 }
 
-async function makeTemplateFunctions(type = []) {
+async function makeTemplateFunctions() {
   const [templateFilterPremium, templateFilterPremiumIcons, templateFilterAnimated, templateFilterAnimatedIcons, templateXSort, templateXSortIcons] = await replaceKeyArray(['template-filter-premium', 'template-filter-premium-icons', 'template-filter-animated', 'template-filter-animated-icons', 'template-x-sort', 'template-x-sort-icons'], getConfig());
-
   const functions = {
     premium: {
       placeholders: JSON.parse(templateFilterPremium !== 'template filter premium' ? templateFilterPremium : '{}'),
@@ -560,7 +509,7 @@ function updateFilterIcon(block) {
   });
 }
 
-async function decorateFunctionsContainer(block, functions, type = []) {
+async function decorateFunctionsContainer(block, functions) {
   const functionsContainer = createTag('div', { class: 'functions-container' });
   const functionContainerMobile = createTag('div', { class: 'functions-drawer' });
 
@@ -647,21 +596,7 @@ async function decorateFunctionsContainer(block, functions, type = []) {
     sortButton.className = 'filter-mobile-option-heading';
   }
 
-  // Handle blade-carousel specific changes
-  if (type.includes('blade-carousel')) {
-    // Move template title to wrapper-content-search
-    const templateTitle = block.querySelector('.template-title');
-    const contentWrapper = block.querySelector('.wrapper-content-search');
-    if (templateTitle && contentWrapper) {
-      contentWrapper.prepend(templateTitle);
-    }
-  }
-
-  return {
-    mobile: functionContainerMobile,
-    desktop: functionsContainer,
-    viewsWrapper: type.includes('blade-carousel') ? null : createTag('div', { class: 'views' }),
-  };
+  return { mobile: functionContainerMobile, desktop: functionsContainer };
 }
 
 function updateLottieStatus(block) {
@@ -832,8 +767,7 @@ async function decorateCategoryList(block, props) {
 
   if (variant.includes('flyer')
   || variant.includes('t-shirt')
-  || variant.includes('print')
-  || variant.includes('blade-carousel')) {
+  || variant.includes('print')) {
     categoriesDesktopWrapper.remove();
   }
 }
@@ -987,6 +921,30 @@ function updateQuery(functionWrapper, props, option) {
   }
 }
 
+async function redrawTemplates(block, props, toolBar) {
+  const heading = toolBar.querySelector('h2');
+  const currentTotal = props.total.toLocaleString('en-US');
+  props.templates = [props.templates[0]];
+  props.start = '';
+  block.querySelectorAll('.template:not(.placeholder)').forEach((card) => {
+    card.remove();
+  });
+
+  await decorateNewTemplates(block, props, { reDrawMasonry: true });
+
+  heading.textContent = heading.textContent.replace(`${currentTotal}`, props.total.toLocaleString('en-US'));
+  updateOptionsStatus(block, props, toolBar);
+  if (block.querySelectorAll('.template').length <= 0) {
+    const $viewButtons = toolBar.querySelectorAll('.view-toggle-button');
+    $viewButtons.forEach((button) => {
+      button.classList.remove('active');
+    });
+    ['sm-view', 'md-view', 'lg-view'].forEach((className) => {
+      block.classList.remove(className);
+    });
+  }
+}
+
 function parseOrderBy(queryString) {
   let orderType = 'relevancy';
   let orderDirection = 'descending';
@@ -1015,119 +973,107 @@ function parseOrderBy(queryString) {
 }
 
 async function initFilterSort(block, props, toolBar) {
-  const functionsContainer = toolBar.querySelector('.functions-container');
+  const buttons = toolBar.querySelectorAll('.button-wrapper');
   const applyFilterButton = toolBar.querySelector('.apply-filter-button');
-  const existingProps = { ...props, filters: { ...props.filters } };
+  let existingProps = { ...props, filters: { ...props.filters } };
 
-  // Define event handlers first
-  const handleContainerClick = (e) => {
-    const button = e.target.closest('.button-wrapper');
-    const option = e.target.closest('.option-button');
-    
-    if (button && !button.classList.contains('in-drawer')) {
+  if (buttons.length > 0) {
+    buttons.forEach((button) => {
       const wrapper = button.parentElement;
-      const otherButtons = functionsContainer.querySelectorAll('.button-wrapper');
-      
-      otherButtons.forEach((b) => {
-        if (button !== b) {
-          b.parentElement.classList.remove('opened');
-        }
-      });
-      
-      wrapper.classList.toggle('opened');
-    }
-    
-    if (option) {
-      e.stopPropagation();
-      const wrapper = option.closest('.function-wrapper');
       const currentOption = wrapper.querySelector('span.current-option');
-      const options = wrapper.querySelectorAll('.option-button');
-      
-      // Update UI
-      options.forEach((o) => {
-        if (option !== o) {
-          o.classList.remove('active');
+      const optionsList = button.nextElementSibling;
+      const options = optionsList.querySelectorAll('.option-button');
+
+      button.addEventListener('click', () => {
+        existingProps = { ...props, filters: { ...props.filters } };
+        if (!button.classList.contains('in-drawer')) {
+          buttons.forEach((b) => {
+            if (button !== b) {
+              b.parentElement.classList.remove('opened');
+            }
+          });
+
+          wrapper.classList.toggle('opened');
         }
-      });
-      option.classList.add('active');
-      
-      if (currentOption) {
-        currentOption.textContent = option.textContent;
-      }
-      
-      // Update props
-      updateQuery(wrapper, props, option);
-      updateFilterIcon(block);
-      
-      // Close the dropdown after selection
-      wrapper.classList.remove('opened');
-      
-      // Redraw if needed
-      if (!option.closest('.in-drawer') && JSON.stringify(props) !== JSON.stringify(existingProps)) {
-        const sortObj = parseOrderBy(props.sort);
-        updateImpressionCache({
-          ...gatherPageImpression(props),
-          ...{
-            search_type: 'adjust-filter',
-            search_keyword: 'change filters, no keyword found',
-            sort_type: sortObj.orderType,
-            sort_order: sortObj.orderDirection,
-            content_category: 'templates',
-          },
+      }, { passive: true });
+
+      options.forEach((option) => {
+        const updateOptions = () => {
+          buttons.forEach((b) => {
+            b.parentElement.classList.remove('opened');
+          });
+
+          if (currentOption) {
+            currentOption.textContent = option.textContent;
+          }
+
+          options.forEach((o) => {
+            if (option !== o) {
+              o.classList.remove('active');
+            }
+          });
+          option.classList.add('active');
+        };
+
+        option.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          updateOptions();
+          updateQuery(wrapper, props, option);
+          updateFilterIcon(block);
+
+          if (!button.classList.contains('in-drawer') && JSON.stringify(props) !== JSON.stringify(existingProps)) {
+            const sortObj = parseOrderBy(props.sort);
+            updateImpressionCache({
+              ...gatherPageImpression(props),
+              ...{
+                search_type: 'adjust-filter',
+                search_keyword: 'change filters, no keyword found',
+                sort_type: sortObj.orderType,
+                sort_order: sortObj.orderDirection,
+                content_category: 'templates',
+              },
+            });
+            trackSearch('search-inspire');
+            await redrawTemplates(block, props, toolBar);
+            trackSearch('view-search-result', BlockMediator.get('templateSearchSpecs').search_id);
+          }
         });
-        trackSearch('search-inspire');
-        redrawTemplates(block, props, toolBar).then(() => {
-          trackSearch('view-search-result', BlockMediator.get('templateSearchSpecs').search_id);
-        });
-      }
-    }
-  };
+      });
 
-  const handleDocumentClick = (e) => {
-    const wrapper = e.target.closest('.function-wrapper');
-    if (!wrapper) {
-      functionsContainer.querySelectorAll('.function-wrapper').forEach((w) => {
-        w.classList.remove('opened');
+      document.addEventListener('click', (e) => {
+        const { target } = e;
+        if (target !== wrapper && !wrapper.contains(target) && !button.classList.contains('in-drawer')) {
+          wrapper.classList.remove('opened');
+        }
+      }, { passive: true });
+    });
+
+    if (applyFilterButton) {
+      applyFilterButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (JSON.stringify(props) !== JSON.stringify(existingProps)) {
+          const sortObj = parseOrderBy(props.sort);
+          updateImpressionCache({
+            ...gatherPageImpression(props),
+            ...{
+              search_type: 'adjust-filter',
+              search_keyword: 'change filters, no keyword found',
+              sort_type: sortObj.orderType,
+              sort_order: sortObj.orderDirection,
+              content_category: 'templates',
+            },
+          });
+          trackSearch('search-inspire');
+          await redrawTemplates(block, props, toolBar);
+        }
+
+        closeDrawer(toolBar);
       });
     }
-  };
 
-  const handleApplyClick = async (e) => {
-    e.preventDefault();
-    if (JSON.stringify(props) !== JSON.stringify(existingProps)) {
-      const sortObj = parseOrderBy(props.sort);
-      updateImpressionCache({
-        ...gatherPageImpression(props),
-        ...{
-          search_type: 'adjust-filter',
-          search_keyword: 'change filters, no keyword found',
-          sort_type: sortObj.orderType,
-          sort_order: sortObj.orderDirection,
-          content_category: 'templates',
-        },
-      });
-      trackSearch('search-inspire');
-      await redrawTemplates(block, props, toolBar);
-    }
-    closeDrawer(toolBar);
-  };
-
-  // Clean up existing event listeners
-  functionsContainer.removeEventListener('click', handleContainerClick);
-  document.removeEventListener('click', handleDocumentClick);
-  if (applyFilterButton) {
-    applyFilterButton.removeEventListener('click', handleApplyClick);
+    // sync current filter & sorting method with toolbar current options
+    updateOptionsStatus(block, props, toolBar);
   }
-
-  // Add new event listeners
-  functionsContainer.addEventListener('click', handleContainerClick, { passive: true });
-  document.addEventListener('click', handleDocumentClick, { passive: true });
-  if (applyFilterButton) {
-    applyFilterButton.addEventListener('click', handleApplyClick);
-  }
-
-  // Sync current filter & sorting method with toolbar current options
-  updateOptionsStatus(block, props, toolBar);
 }
 
 function getPlaceholderWidth(block) {
@@ -1196,9 +1142,7 @@ function toggleMasonryView(block, props, button, toggleButtons) {
     block.classList.add(`${button.dataset.view}-view`);
     blockWrapper.classList.add(`${button.dataset.view}-view`);
 
-    if (props.masonry) {
-      props.masonry.draw();
-    }
+    props.masonry.draw();
   }
 
   const placeholder = block.querySelector('.template.placeholder');
@@ -1241,7 +1185,7 @@ function initToolbarShadow(toolbar) {
   });
 }
 
-async function decorateToolbar(block, props, type = []) {
+async function decorateToolbar(block, props) {
   const sectionHeading = createTag('h2');
   const tBarWrapper = createTag('div', { class: 'toolbar-wrapper' });
   const tBar = createTag('div', { class: 'api-templates-toolbar' });
@@ -1254,9 +1198,7 @@ async function decorateToolbar(block, props, type = []) {
 
   block.prepend(tBarWrapper);
   try {
-    const { getGnavHeight } = await import(
-      `${getLibs()}/blocks/global-navigation/utilities/utilities.js`
-    );
+    const { getGnavHeight } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
     const gnavHeight = getGnavHeight();
     tBarWrapper.style.top = `${gnavHeight}px`;
   } catch (e) {
@@ -1268,27 +1210,22 @@ async function decorateToolbar(block, props, type = []) {
   contentWrapper.append(sectionHeading);
 
   if (tBar) {
-    const functionsObj = await makeTemplateFunctions(type);
-    const { mobile, desktop, viewsWrapper } = await decorateFunctionsContainer(
-      block,
-      functionsObj,
-      type,
-    );
+    const viewsWrapper = createTag('div', { class: 'views' });
 
-    if (viewsWrapper) {
-      const smView = createTag('a', { class: 'view-toggle-button small-view', 'data-view': 'sm' });
-      smView.append(getIconElementDeprecated('small_grid'));
-      const mdView = createTag('a', { class: 'view-toggle-button medium-view', 'data-view': 'md' });
-      mdView.append(getIconElementDeprecated('medium_grid'));
-      const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
-      lgView.append(getIconElementDeprecated('large_grid'));
+    const smView = createTag('a', { class: 'view-toggle-button small-view', 'data-view': 'sm' });
+    smView.append(getIconElementDeprecated('small_grid'));
+    const mdView = createTag('a', { class: 'view-toggle-button medium-view', 'data-view': 'md' });
+    mdView.append(getIconElementDeprecated('medium_grid'));
+    const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
+    lgView.append(getIconElementDeprecated('large_grid'));
 
-      viewsWrapper.append(smView, mdView, lgView);
-      functionsWrapper.append(viewsWrapper);
-    }
+    const functionsObj = await makeTemplateFunctions();
+    const functions = await decorateFunctionsContainer(block, functionsObj);
 
-    functionsWrapper.append(desktop);
-    tBar.append(contentWrapper, functionsWrapper, mobile);
+    viewsWrapper.append(smView, mdView, lgView);
+    functionsWrapper.append(viewsWrapper, functions.desktop);
+
+    tBar.append(contentWrapper, functionsWrapper, functions.mobile);
 
     initDrawer(block, props, tBar);
     initFilterSort(block, props, tBar);
@@ -1776,6 +1713,7 @@ async function buildTemplateList(block, props, type = []) {
     renderFallbackMsgWrapper(block, props);
     const blockInnerWrapper = createTag('div', { class: 'template-x-inner-wrapper' });
     block.append(blockInnerWrapper);
+    props.templates = props.templates.concat(templates);
     props.templates.forEach((template) => {
       blockInnerWrapper.append(template);
     });
@@ -1864,7 +1802,7 @@ async function buildTemplateList(block, props, type = []) {
   }
 
   if (templates && props.toolBar) {
-    await decorateToolbar(block, props, type);
+    await decorateToolbar(block, props);
     await decorateCategoryList(block, props);
   }
 
@@ -1890,7 +1828,7 @@ async function buildTemplateList(block, props, type = []) {
   }
 }
 
-function determineTemplateXType(props, block) {
+function determineTemplateXType(props) {
   // todo: build layers of aspects based on props conditions - i.e. orientation -> style -> use case
   const type = [];
 
@@ -1909,100 +1847,9 @@ function determineTemplateXType(props, block) {
   if (props.print && props.print) type.push('print');
   if (props.print && props.print.toLowerCase() === 'flyer') type.push('flyer');
   if (props.print && props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
-  if (block.classList.contains('blade-carousel')) type.push('blade-carousel');
 
   variant = type;
   return type;
-}
-
-async function redrawTemplates(block, props, toolBar) {
-  const isCarousel = block.classList.contains('blade-carousel');
-  
-  if (isCarousel) {
-    // Find the original carousel container
-    const carouselContainer = block.querySelector('.carousel-container');
-    if (!carouselContainer) return;
-
-    // Store the original carousel platform for structure reference
-    const originalPlatform = carouselContainer.querySelector('.carousel-platform');
-    if (!originalPlatform) return;
-
-    // Keep reference to navigation elements
-    const faderLeft = originalPlatform.querySelector('.carousel-fader-left');
-    const faderRight = originalPlatform.querySelector('.carousel-fader-right');
-    
-    // Clear only the template elements, keeping carousel structure
-    originalPlatform.querySelectorAll('.template').forEach((template) => template.remove());
-
-    // Reset props templates array while keeping placeholder if it exists
-    const placeholder = originalPlatform.querySelector('.template.placeholder');
-    props.templates = placeholder ? [placeholder] : [];
-    props.start = '';
-
-    // Get new templates
-    await decorateNewTemplates(block, props, { reDrawCarousel: true });
-
-    // Ensure proper carousel structure
-    if (faderLeft) originalPlatform.appendChild(faderLeft);
-    if (faderRight) originalPlatform.appendChild(faderRight);
-
-    // Remove any duplicate carousel containers
-    block.querySelectorAll('.carousel-container').forEach((container, index) => {
-      if (index > 0) container.remove();
-    });
-
-    // Reinitialize carousel
-    buildCarousel(':scope > .template', originalPlatform);
-  } else {
-    // Original non-carousel behavior
-    const heading = toolBar.querySelector('h2');
-    const lang = getConfig().locale.ietf;
-    const currentTotal = props.total.toLocaleString(lang);
-    
-    // Reset templates while preserving the first one (placeholder)
-    props.templates = [props.templates[0]];
-    props.start = '';
-    
-    // Remove existing templates except placeholder
-    block.querySelectorAll('.template:not(.placeholder)').forEach((card) => {
-      card.remove();
-    });
-
-    // Get and render new templates
-    await decorateNewTemplates(block, props, { reDrawMasonry: true });
-
-    // Update heading and UI state
-    if (heading) {
-      heading.textContent = heading.textContent.replace(`${currentTotal}`, props.total.toLocaleString(lang));
-    }
-    updateOptionsStatus(block, props, toolBar);
-
-    // Handle view buttons if no templates
-    if (block.querySelectorAll('.template').length <= 0) {
-      const viewButtons = toolBar.querySelectorAll('.view-toggle-button');
-      viewButtons.forEach((button) => {
-        button.classList.remove('active');
-      });
-      ['sm-view', 'md-view', 'lg-view'].forEach((className) => {
-        block.classList.remove(className);
-      });
-    }
-  }
-
-  // Update UI state without reinitializing handlers
-  updateOptionsStatus(block, props, toolBar);
-  if (!isCarousel) {
-    // Reattach click handlers for dropdowns
-    const functionsContainer = toolBar.querySelector('.functions-container');
-    functionsContainer.querySelectorAll('.function-wrapper').forEach((wrapper) => {
-      const button = wrapper.querySelector('.button-wrapper');
-      if (button) {
-        button.addEventListener('click', () => {
-          wrapper.classList.toggle('opened');
-        }, { passive: true });
-      }
-    });
-  }
 }
 
 export default async function decorate(block) {
@@ -2013,5 +1860,5 @@ export default async function decorate(block) {
   block.dataset.blockName = 'template-x';
   const props = constructProps(block);
   block.innerHTML = '';
-  await buildTemplateList(block, props, determineTemplateXType(props, block));
+  await buildTemplateList(block, props, determineTemplateXType(props));
 }
