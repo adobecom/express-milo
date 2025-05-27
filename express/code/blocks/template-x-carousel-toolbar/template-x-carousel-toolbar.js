@@ -1,8 +1,7 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { fetchResults } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
-import buildCarousel from '../../scripts/widgets/carousel.js';
-// import buildCompactCarousel from '../../scripts/widgets/compact-nav-carousel.js';
+import buildUniversalCarousel from '../../scripts/widgets/universal-carousel/universal-carousel.js';
 
 let createTag; let getConfig;
 let replaceKey;
@@ -39,13 +38,14 @@ async function createTemplatesContainer(recipe) {
   const templatesContainer = createTag('div', { class: 'templates-container' });
   const [scratch, templates] = await Promise.all([createFromScratch(), createTemplates(recipe)]);
   templatesContainer.append(scratch, ...templates);
-  await buildCarousel(':scope > .template, :scope > .from-scratch-container', templatesContainer);
+  const { control } = await buildUniversalCarousel([scratch, ...templates], templatesContainer);
   return {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
       templatesContainer.replaceChildren(...(await createTemplates(newRecipe)));
-      buildCarousel(':scope > .template, :scope > .from-scratch-container', templatesContainer);
+      // buildCarousel(':scope > .template, :scope > .from-scratch-container', templatesContainer);
     },
+    control,
   };
 }
 
@@ -176,12 +176,12 @@ export default async function init(el) {
 
   // TODO: lazy load templates
   const [
-    { templatesContainer, updateTemplates },
+    { templatesContainer, updateTemplates, control },
     sortSetup,
   ] = await Promise.all([createTemplatesContainer(recipe), extractSort(recipe)]);
   const { sortOptions, defaultIndex } = sortSetup || {};
   sortOptions && headlineRow.append(createDropdown(sortOptions, defaultIndex, updateTemplates));
 
-  el.append(templatesContainer);
+  el.append(templatesContainer, control);
   createFromScratch();
 }

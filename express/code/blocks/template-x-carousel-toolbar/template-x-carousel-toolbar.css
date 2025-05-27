@@ -56,13 +56,12 @@
 .template-x-carousel-toolbar .select .icon-drop-down-arrow {
   height: 8px;
   width: 8px;
-  padding-right: 8px;
+  padding: 0 12px 0 8px;
 }
 
 .template-x-carousel-toolbar .select[aria-expanded="true"] .icon-drop-down-arrow {
   transform: rotate(180deg);
-  padding-right: 0;
-  padding-left: 8px;
+  padding: 0 8px 0 12px;
 }
 
 .template-x-carousel-toolbar .select[aria-expanded="false"] .options {
@@ -76,7 +75,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
 }
 
 .template-x-carousel-toolbar .options {
@@ -126,10 +124,7 @@
 }
 
 /* carousel styles */
-.template-x-carousel-toolbar .carousel-container{
-  margin: 0;
-}
-.template-x-carousel-toolbar .carousel-container .carousel-platform {
+.template-x-carousel-toolbar .templates-container {
   align-items: flex-start;
   gap: 22px;
   /* avoid capping from .button-container */
@@ -169,6 +164,7 @@
 
 .template-x-carousel-toolbar .template .image-wrapper {
   height: var(--template-height);
+  width: auto;
 }
 
 .template-x-carousel-toolbar .template > div:first-child > a:any-link {
@@ -337,6 +333,7 @@
   position: relative;
   height: var(--template-height);
   width: var(--from-scratch-width);
+  flex: 0 0 auto;
   background-color: var(--color-white);
   padding: 10px;
   box-sizing: border-box;
