@@ -2,6 +2,7 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { fetchResults } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
+// import buildCompactCarousel from '../../scripts/widgets/compact-nav-carousel.js';
 
 let createTag; let getConfig;
 let replaceKey;
@@ -43,7 +44,7 @@ async function createTemplatesContainer(recipe) {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
       templatesContainer.replaceChildren(...(await createTemplates(newRecipe)));
-      buildCarousel(':scope > .template', templatesContainer);
+      buildCarousel(':scope > .template, :scope > .from-scratch-container', templatesContainer);
     },
   };
 }
