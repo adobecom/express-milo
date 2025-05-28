@@ -100,6 +100,11 @@ main .section:has(.how-to-v2) .content em {
   margin-bottom: var(--spacing-600);
 }
 
+.how-to-v2 .steps-content .media-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .how-to-v2 .steps-content .steps-content-backg {
   position: absolute;
   width: 100%;
