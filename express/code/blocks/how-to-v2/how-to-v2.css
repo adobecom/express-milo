@@ -184,7 +184,7 @@ main .section > .content:has( + .how-to-v2) h2 {
   }
 
   main .section > .content:has( + .how-to-v2) h2 {
-    font-size: 36px;
+    font-size: var(--heading-font-size-l);
   }
 
   .how-to-v2 .steps-content {
