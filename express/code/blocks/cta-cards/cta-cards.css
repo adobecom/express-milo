@@ -26,19 +26,12 @@
   font-size: var(--body-font-size-m);
 }
 
-.cta-cards .scroll-container {
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.cta-cards .scroll-container::-webkit-scrollbar {
-  display: none;
-}
-
-
-.cta-cards .cards-container {
-  display: flex;
+.cta-cards .gallery {
   gap: 8px;
+}
+
+.cta-cards .gallery-control {
+  padding-top: 16px;
 }
 
 .cta-cards .card {

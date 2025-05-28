@@ -1,7 +1,7 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { fetchResults } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
-import buildUniversalCarousel from '../../scripts/widgets/universal-carousel/universal-carousel.js';
+import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
 let createTag; let getConfig;
 let replaceKey;
@@ -34,18 +34,27 @@ async function createFromScratch() {
   return fromScratchContainer;
 }
 
-async function createTemplatesContainer(recipe) {
+async function createTemplatesContainer(recipe, el) {
   const templatesContainer = createTag('div', { class: 'templates-container' });
   const [scratch, templates] = await Promise.all([createFromScratch(), createTemplates(recipe)]);
   templatesContainer.append(scratch, ...templates);
-  const { control } = await buildUniversalCarousel([scratch, ...templates], templatesContainer);
+  const { control: initialControl } = await buildGallery(
+    [scratch, ...templates],
+    templatesContainer,
+  );
+  initialControl.classList.add('oldcontrol');
   return {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
-      templatesContainer.replaceChildren(...(await createTemplates(newRecipe)));
-      // buildCarousel(':scope > .template, :scope > .from-scratch-container', templatesContainer);
+      const newTemplates = await createTemplates(newRecipe);
+      templatesContainer.replaceChildren(scratch, ...newTemplates);
+      const { control: newControl } = await buildGallery(
+        [scratch, ...newTemplates],
+        templatesContainer,
+      );
+      el.replaceChild(newControl, el.querySelector('.gallery-control'));
     },
-    control,
+    control: initialControl,
   };
 }
 
@@ -178,7 +187,7 @@ export default async function init(el) {
   const [
     { templatesContainer, updateTemplates, control },
     sortSetup,
-  ] = await Promise.all([createTemplatesContainer(recipe), extractSort(recipe)]);
+  ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
   const { sortOptions, defaultIndex } = sortSetup || {};
   sortOptions && headlineRow.append(createDropdown(sortOptions, defaultIndex, updateTemplates));
 
