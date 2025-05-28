@@ -15,7 +15,6 @@ const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"
   </g>
 </svg>`;
 
-const scrollPadding = 16;
 let createTag; let loadStyle;
 
 function createControl(items, container) {
@@ -38,7 +37,7 @@ function createControl(items, container) {
     if (first + inc < 0 || first + inc >= len) return; // no looping
     const target = items[(first + inc + len) % len];
     target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-  }, 200);
+  }, 30);
   prevButton.addEventListener('click', () => pageInc(-1));
   nextButton.addEventListener('click', () => pageInc(1));
 
@@ -53,7 +52,7 @@ function createControl(items, container) {
       container.classList.remove('gallery--all-displayed');
     }
     control.classList.remove('loading');
-  }, 300);
+  }, 30);
 
   const reactToChange = (entries) => {
     entries.forEach((entry) => {
@@ -66,7 +65,7 @@ function createControl(items, container) {
 
   const scrollObserver = new IntersectionObserver((entries) => {
     reactToChange(entries);
-  }, { root: container, threshold: 1, rootMargin: `0px ${scrollPadding}px 0px ${scrollPadding}px` });
+  }, { root: container, threshold: 1 });
 
   items.forEach((item) => scrollObserver.observe(item));
 

@@ -42,7 +42,6 @@ async function createTemplatesContainer(recipe, el) {
     [scratch, ...templates],
     templatesContainer,
   );
-  initialControl.classList.add('oldcontrol');
   return {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
@@ -52,7 +51,10 @@ async function createTemplatesContainer(recipe, el) {
         [scratch, ...newTemplates],
         templatesContainer,
       );
-      el.replaceChild(newControl, el.querySelector('.gallery-control'));
+      const oldControl = el.querySelector('.gallery-control');
+      // hack to reduce cls. TODO: implement updateItems() for gallery
+      newControl.style.display = 'flex';
+      oldControl.replaceWith(newControl);
     },
     control: initialControl,
   };
