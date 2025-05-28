@@ -1,12 +1,10 @@
 import { getLibs } from '../../scripts/utils.js';
+import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
 export default async function init(el) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
   const [headlineRow, ...cards] = el.children;
   headlineRow.classList.add('headline-container');
-  const cardsContainer = createTag('div', { class: 'cards-container' }, cards);
-  const scrollContainer = createTag('div', { class: 'scroll-container' }, cardsContainer);
-  el.append(scrollContainer);
   cards.forEach((card) => {
     card.classList.add('card');
     const [media, textContainer] = card.children;
@@ -20,4 +18,7 @@ export default async function init(el) {
       }
     });
   });
+  const cardsContainer = createTag('div', { class: 'cards-container' }, cards);
+  const { control } = await buildGallery(cards, cardsContainer);
+  el.append(cardsContainer, control);
 }

@@ -123,8 +123,8 @@
   background-color: #e1e1e1;
 }
 
-/* carousel styles */
-.template-x-carousel-toolbar .templates-container {
+/* gallery styles */
+.template-x-carousel-toolbar .gallery {
   align-items: flex-start;
   gap: 22px;
   /* avoid capping from .button-container */
@@ -132,9 +132,11 @@
   /* cancel the padding */
   margin: calc(-1 * var(--template-expand-top-len)) 0 calc(-1 * var(--template-expand-bot-len));
 }
+.template-x-carousel-toolbar .gallery-control {
+  padding-top: 24px;
+}
 
 /* individual templates styles */
-
 .template-x-carousel-toolbar .template p {
   margin: 0;
 }

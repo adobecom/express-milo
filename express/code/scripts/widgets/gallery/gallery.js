@@ -19,7 +19,7 @@ const scrollPadding = 16;
 let createTag; let loadStyle;
 
 function createControl(items, container) {
-  const control = createTag('div', { class: 'universal-carousel-control loading' });
+  const control = createTag('div', { class: 'gallery-control loading' });
   const prevButton = createTag('button', {
     class: 'prev',
     'aria-label': 'Next', // TODO: localize
@@ -47,10 +47,10 @@ function createControl(items, container) {
     nextButton.disabled = last === items.length - 1;
     if (items.length === last - first + 1) {
       control.classList.add('hide');
-      container.classList.add('universal-carousel--all-displayed');
+      container.classList.add('gallery--all-displayed');
     } else {
       control.classList.remove('hide');
-      container.classList.remove('universal-carousel--all-displayed');
+      container.classList.remove('gallery--all-displayed');
     }
     control.classList.remove('loading');
   }, 300);
@@ -77,19 +77,17 @@ function createControl(items, container) {
 export default async function buildGallery(
   items,
   container = items?.[0]?.parentNode,
-  root = container?.parentNode,
 ) {
   ({ createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`));
   const control = createControl([...items], container);
   await new Promise((res) => {
-    loadStyle('/express/code/scripts/widgets/universal-carousel/universal-carousel.css', res);
+    loadStyle('/express/code/scripts/widgets/gallery/gallery.css', res);
   });
-  container.classList.add('universal-carousel');
+  container.classList.add('gallery');
   container.setAttribute('aria-roledescription', 'carousel');
   container.setAttribute('role', 'group');
   [...items].forEach((item) => {
-    item.classList.add('universal-carousel--item');
+    item.classList.add('gallery--item');
   });
-  root?.append(control);
   return { control };
 }

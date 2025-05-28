@@ -1,4 +1,4 @@
-.universal-carousel {
+.gallery {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: scroll;
@@ -7,35 +7,35 @@
   scroll-behavior: smooth;
 }
 
-.universal-carousel::-webkit-scrollbar {
+.gallery::-webkit-scrollbar {
   display: none;
 }
 
-.universal-carousel.center.universal-carousel--all-displayed {
+.gallery.center.gallery--all-displayed {
   justify-content: center;
 }
 
-.universal-carousel--item {
+.gallery--item {
   scroll-snap-align: start;
 }
 
-.universal-carousel-control {
+.gallery-control {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
   align-items: center;
 }
 
-.universal-carousel-control.hide,
-.universal-carousel-control .hide {
+.gallery-control.hide,
+.gallery-control .hide {
   display: none;
 }
 
-.universal-carousel-control.loading {
+.gallery-control.loading {
   visibility: hidden;
 }
 
-.universal-carousel-control button {
+.gallery-control button {
   all: unset;
   cursor: pointer;
   height: 2rem;
@@ -43,18 +43,18 @@
   border-radius: 50px;
 }
 
-.universal-carousel-control button:focus {
+.gallery-control button:focus {
   outline: revert;
 }
 
-.universal-carousel-control button:hover:not(:disabled) circle {
+.gallery-control button:hover:not(:disabled) circle {
   fill: var(--color-gray-300);
 }
 
-.universal-carousel-control button:disabled {
+.gallery-control button:disabled {
   cursor: auto;
 }
 
-.universal-carousel-control button:disabled path {
+.gallery-control button:disabled path {
   stroke: var(--color-gray-300);
 }

@@ -16,22 +16,12 @@
   padding-bottom: 8px;
 }
 
-.hover-cards .scroll-container {
-  padding: 4px 4px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.hover-cards .scroll-container::-webkit-scrollbar {
-  display: none;
-}
-
-.hover-cards .cards-container {
-  display: flex;
+.hover-cards .gallery {
   gap: 16px;
-  align-items: center;
-  margin: auto;
-  width: max-content;
+}
+
+.hover-cards .gallery-control {
+  padding-top: 16px;
 }
 
 .hover-cards .card {
