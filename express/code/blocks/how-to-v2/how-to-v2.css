@@ -40,7 +40,7 @@
 
 .how-to-v2 ol li h3 {
   text-align: left;
-  font-size: 18px;
+  font-size: var(--body-font-size-l);
   line-height: 23px;
   font-weight: 700;
 }
