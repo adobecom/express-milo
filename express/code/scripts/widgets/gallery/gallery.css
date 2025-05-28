@@ -11,7 +11,7 @@
   display: none;
 }
 
-.gallery.center.gallery--all-displayed {
+.gallery.centered.gallery--all-displayed {
   justify-content: center;
 }
 

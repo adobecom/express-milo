@@ -22,7 +22,7 @@ export default async function init(el) {
       }
     });
   });
-  const cardsContainer = createTag('div', { class: 'cards-container' }, cards);
+  const cardsContainer = createTag('div', { class: 'cards-container centered' }, cards);
   const { control } = await buildGallery(cards, cardsContainer);
   el.append(cardsContainer, control);
 }
