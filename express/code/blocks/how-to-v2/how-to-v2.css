@@ -97,7 +97,7 @@ main .section:has(.how-to-v2) .content em {
   padding: 0 var(--spacing-300);
   position: relative;
   margin-top: 4px;
-  margin-bottom: 40px;
+  margin-bottom: var(--spacing-600);
 }
 
 .how-to-v2 .steps-content .steps-content-backg {
