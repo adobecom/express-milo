@@ -48,11 +48,6 @@
     flex: 1;
   }
 
-  .highlight .icon-row {
-    flex-direction: row;
-    text-align: left;
-  }
-
   .highlight .icon-row .text {
     padding-left: 8px;
     margin-top: 0;
@@ -78,5 +73,9 @@
   }
   .highlight .icon-row + .icon-row {
     padding-left: 20px;
+  }
+   .highlight .icon-row {
+    flex-direction: row;
+    text-align: left;
   }
 }
