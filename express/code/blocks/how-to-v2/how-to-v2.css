@@ -112,9 +112,9 @@ main .section:has(.how-to-v2) .content em {
   content: '';
   position: absolute;
   width: 170%;
-  height: 120%;
+  height: 135%;
   left: -175px;
-  top: -35px;
+  top: -60px;
   z-index: -1;
   background-image: 
     linear-gradient(to bottom, transparent 85%, white 100%),
@@ -234,8 +234,8 @@ main .section > .content:has( + .how-to-v2) h2 {
   .how-to-v2 .steps-content .media-container::before {
     width: 70vw;
     max-width: 850px;
-    height: 65vh;
-    max-height: 700px;
+    height: calc(55vh + (20 * (100vw - 768px) / 432));
+    max-height: 760px;
     top: -150px;
     background-image: 
       linear-gradient(to bottom, transparent 85%, white 100%),
@@ -245,6 +245,12 @@ main .section > .content:has( + .how-to-v2) h2 {
       var(--background-image);
     background-size: cover;
     background-position: center;
+  }
+}
+
+@media (min-width: 1200px) {
+  .how-to-v2 .steps-content .media-container::before {
+    height: 70vh;
   }
 }
 
