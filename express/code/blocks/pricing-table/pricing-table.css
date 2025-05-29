@@ -29,10 +29,6 @@
   margin-right: 8px;
 }
 
-.pricing-table .additional-row.collapsed {
-  display: none;
-}
-
 /* links stay links by default in cells */
 .pricing-table .row:not(.row-heading) .col a.button,
 .pricing-table .row:not(.row-heading) .col a.button:hover,
@@ -663,9 +659,13 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   background-color: unset;
 }
 
-.pricing-table.vertical-shading .row-heading .col:nth-child(2n),
+
 .pricing-table.vertical-shading .col:nth-child(2n) {
   background: var(--shaded-color);
+}
+
+.pricing-table.vertical-shading .col.screen-reader-header-content {
+  background-color: unset;
 }
 /* /Table Section Rows */
 
@@ -1006,6 +1006,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   }
   .pricing-table.single-section .table-end-row:last-of-type{
     border-bottom: unset;
-  } 
+  }
+  .pricing-table button.row.toggle-row {
+    display: none;
+  }
 }
-
