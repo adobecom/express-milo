@@ -93,13 +93,8 @@ export default function decorate(block) {
   const stepsContent = createTag('div', { class: 'steps-content' });
 
   if (hasBackground) {
-    // So that background image goes beyond container
     rows.shift();
-    const stepsContentBackground = createTag('div', { class: 'steps-content-backg' });
-    const stepsContentBackgroundImg = createTag('img', { class: 'steps-content-backg-image' });
-    stepsContent.append(stepsContentBackground);
-    stepsContentBackground.append(stepsContentBackgroundImg);
-    stepsContentBackgroundImg.src = backgroundURL;
+    block.style.setProperty('--background-image', `url('${backgroundURL}')`);
   }
 
   const mediaData = rows.shift();

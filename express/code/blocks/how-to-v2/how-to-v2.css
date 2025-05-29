@@ -103,15 +103,22 @@ main .section:has(.how-to-v2) .content em {
 .how-to-v2 .steps-content .media-container {
   margin-left: auto;
   margin-right: auto;
+  position: relative;
 }
 
-.how-to-v2 .steps-content .steps-content-backg {
+.how-to-v2 .steps-content .media-container::before {
+  content: '';
   position: absolute;
-  width: 100%;
-  top: -24vw;
-  z-index: -1;
+  width: 200%;
   height: 100%;
+  top: -24vw;
+  left: -50%;
+  z-index: -1;
   transform: scale(0.9);
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
 }
 
 .how-to-v2 ol.steps {
@@ -219,10 +226,11 @@ main .section > .content:has( + .how-to-v2) h2 {
     padding-left: 20px;
   }
 
-  .how-to-v2 .steps-content .steps-content-backg {
-    transform: scale(1.3);
-    top: -100px;
-    width: 110%;
+  .how-to-v2 .steps-content .media-container::before {
+    width: 70vw;
+    max-width: 1000px;
+    height: 50vh;
+    top: -65px;
   }
 }
 
