@@ -69,7 +69,7 @@ function createControl(items, container) {
 
   const scrollObserver = new IntersectionObserver((entries) => {
     reactToChange(entries);
-  }, { root: container, threshold: 1 });
+  }, { root: container, threshold: 0.99 });
 
   items.forEach((item) => scrollObserver.observe(item));
 
