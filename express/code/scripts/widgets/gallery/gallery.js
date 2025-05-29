@@ -59,7 +59,11 @@ function createControl(items, container) {
       intersecting[items.indexOf(entry.target)] = entry.isIntersecting;
     });
     const [first, last] = [intersecting.indexOf(true), intersecting.lastIndexOf(true)];
-    if (first === -1) return; // middle of swapping only page
+    if (first === -1) {
+      // middle of swapping only page or shrinking when centered
+      container.classList.remove('gallery--all-displayed');
+      return;
+    }
     updateDOM(first, last);
   };
 
