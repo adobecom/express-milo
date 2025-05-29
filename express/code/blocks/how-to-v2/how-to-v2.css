@@ -109,16 +109,19 @@ main .section:has(.how-to-v2) .content em {
 .how-to-v2 .steps-content .media-container::before {
   content: '';
   position: absolute;
-  width: 200%;
-  height: 100%;
-  top: -24vw;
-  left: -50%;
+  width: 170%;
+  height: 112%;
+  left: -175px;
+  top: -25px;
   z-index: -1;
-  transform: scale(0.9);
-  background-image: var(--background-image);
+  background-image: 
+    linear-gradient(to bottom, transparent 85%, white 100%),
+    linear-gradient(to right, transparent 85%, white 100%),
+    linear-gradient(to left, transparent 85%, white 100%),
+    linear-gradient(to top, transparent 85%, white 100%),
+    var(--background-image);
   background-size: cover;
   background-position: center;
-  pointer-events: none;
 }
 
 .how-to-v2 ol.steps {
@@ -228,9 +231,18 @@ main .section > .content:has( + .how-to-v2) h2 {
 
   .how-to-v2 .steps-content .media-container::before {
     width: 70vw;
-    max-width: 1000px;
-    height: 50vh;
+    max-width: 850px;
+    height: 52vh;
+    max-height: 460px;
     top: -65px;
+    background-image: 
+      linear-gradient(to bottom, transparent 85%, white 100%),
+      linear-gradient(to right, transparent 85%, white 100%),
+      linear-gradient(to left, transparent 85%, white 100%),
+      linear-gradient(to top, transparent 85%, white 100%),
+      var(--background-image);
+    background-size: cover;
+    background-position: center;
   }
 }
 
