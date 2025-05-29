@@ -168,7 +168,7 @@ main .section:has(.how-to-v2) .content em {
 
 main .section > .content:has( + .how-to-v2) h2 {
   font-size: 22px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 }
 
 @media (min-width: 400px) {
