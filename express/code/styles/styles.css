@@ -455,7 +455,7 @@ main a.button.gradient:any-link:active,
 main a.button.gradient:any-link:focus {
   color: var(--color-white);
   border-color: transparent;
-  background: linear-gradient(96deg, var(#9C28AF) 0%, var(#6338EE) 66%, var( #274DEA) 100%);
+  background: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
   background-size: 400% 400%;
   transition: background-color 0.3s, color 0.3s, border 0.3s;
   -webkit-animation: buttonGradient 45s ease infinite;
