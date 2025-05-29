@@ -69,7 +69,7 @@ body.branch-banner-is-active .floating-button-wrapper .floating-button {
     pointer-events: auto;
     border-radius: 27px;
     border-color: transparent;
-    background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
+    background:  var(--S2-Buttons-Premium-Hover, linear-gradient(96deg, var(--Palette-static-fuchsia-1000, #9C28AF) 0%, var(--Palette-static-indigo-1000, #6338EE) 66%, var(--Palette-static-blue-1000, #274DEA) 100%));
     background-size: 400% 400%;
     -webkit-animation: buttonGradient 45s ease infinite;
     -moz-animation: buttonGradient 45s ease infinite;
