@@ -38,15 +38,9 @@
 }
 
 .frictionless-quick-action h1 em {
-    background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
-    background-size: 400% 400%;
-    -webkit-animation: quickActionGradient 45s ease infinite;
-    -moz-animation: quickActionGradient 45s ease infinite;
-    animation: quickActionGradient 45s ease infinite;
     -webkit-background-clip: text;
     background-clip: text;
     font-style: normal;
-    -webkit-text-fill-color: transparent;
 }
 
 .frictionless-quick-action .fqa-container {
