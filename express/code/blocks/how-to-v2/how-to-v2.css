@@ -185,7 +185,7 @@ main .section > .content:has( + .how-to-v2) h2 {
   }
   
   .how-to-v2 ol li h3 {
-    font-size: 22px;
+    font-size: var(--heading-font-size-s);
     line-height: 28px;
   }
 }
