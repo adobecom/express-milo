@@ -365,7 +365,10 @@ export default async function decorate(block) {
   if (animation && animation.href.includes('.mp4')) {
     animationContainer.append(
       createAccessibilityVideoControls(
-        transformLinkToAnimation(animation), videoLabels, federatedRootPath),
+        transformLinkToAnimation(animation),
+        videoLabels,
+        federatedRootPath,
+      ),
     );
   }
 
