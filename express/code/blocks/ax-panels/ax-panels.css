@@ -127,7 +127,7 @@
 
 @media (min-width: 1200px) {
   .section[data-ax-panel][role='tabpanel'] {
-    max-width: var(--ax-grid-11-col-width);
+    max-width: var(--ax-grid-10-col-width);
     margin-left: auto;
     margin-right: auto;
   }
