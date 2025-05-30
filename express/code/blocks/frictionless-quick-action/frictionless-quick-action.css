@@ -242,7 +242,7 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
   .video-controls-wrapper .icon {
     width: 24px;
     height: 24px;
-    fill: #fff;
+    fill: var(--color-white);
   }
   
   .video-controls-wrapper[aria-pressed="true"] .accessibility-control.icon-play-video.isHidden {
