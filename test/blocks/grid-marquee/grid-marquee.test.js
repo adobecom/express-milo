@@ -10,13 +10,26 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
 });
 const [{ default: decorate }] = await Promise.all([import('../../../express/code/blocks/grid-marquee/grid-marquee.js')]);
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
+function setDocumentMetadata() {
+  const metadata = {
+    'mweb-card-chevron' : 'true',
+  }
+
+    Object.entries(metadata).forEach(([name, content]) => {
+    const meta = document.createElement('meta');
+    meta.name = name;
+    meta.content = content;
+    document.head.appendChild(meta);
+  });
+};
 describe('grid-marquee', () => {
   let block;
   const oldIO = window.IntersectionObserver;
   const cbs = [];
+  setDocumentMetadata();
   before(async () => {
     window.placeholders = {
-      'app-store-ratings':
+      'app-store- ':
         '4.9, 233.8k ratings; 4.6, 117k ratings; https://adobesparkpost.app.link/GJrBPFUWBBb',
       'app-store-stars': 'test',
       'app-store-ratings-play-store': 'test',
@@ -55,7 +68,9 @@ describe('grid-marquee', () => {
     const cardsContainer = block.querySelector('.cards-container');
     const cards = [...cardsContainer.querySelectorAll('.card')];
     cards.forEach((card) => {
-      expect(card.querySelector('.face')).to.exist;
+      const face = card.querySelector('.face');
+      expect(face).to.exist;
+      expect(face.querySelector('svg')).to.exist;
     });
   });
   it('creates drawer when in view', async () => {
