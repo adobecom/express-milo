@@ -37,7 +37,7 @@ function handleToggleMore(btn) {
 
 function getHeaderId(el) {
   const text = el.querySelector('p')?.textContent || el.textContent || '';
- 
+
   return text.trim().replaceAll(' ', '-');
 }
 
@@ -52,14 +52,17 @@ function handleHeading(headingRow) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
       return;
     }
-    
-    const p =  Array.from(col.querySelectorAll('p')).map((p) => p.textContent.trim()).filter((p) => p !== '');
-    if (p.length > 0) {
-      col.setAttribute('id', p[0]);
-      col.setAttribute('role', 'columnheader');  
+
+    const columnHeader = Array.from(col.querySelectorAll('p')).map((p) => p.textContent.trim()).filter((p) => p !== '');
+    if (columnHeader.length > 0) {
+      col.setAttribute('id', columnHeader[0]);
+      col.setAttribute('role', 'columnheader');
     }
-    
-   
+
+    col.querySelectorAll('img').forEach((img) => {
+      img.setAttribute('alt', '');
+    });
+
     await decorateButtonsDeprecated(col, 'button-l');
     const buttonsWrapper = createTag('div', { class: 'buttons-wrapper' });
     const buttons = col.querySelectorAll('.button, .con-button');
