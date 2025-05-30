@@ -569,7 +569,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   font-weight: 600;
 }
 .pricing-table .row.section-row .col .col-content em{
-  color: gray;
+  color:  var(--color-gray-600);
 }
 
 .pricing-table .row.section-row .col.included-feature .col-content {
