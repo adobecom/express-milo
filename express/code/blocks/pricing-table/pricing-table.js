@@ -146,7 +146,8 @@ function handleSection(sectionParams) {
   } else if (rowCols.length === 1) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
-    row.setAttribute('id', getHeaderId(row));
+    rowCols[0].setAttribute('role', 'rowheader');
+    // rowCols[0].setAttribute('id', getHeaderId(row));
     row.setAttribute('colspan', headingCols.length);
     row.setAttribute('scope', 'colgroup');
     previousHeaderRow = row;
@@ -159,6 +160,8 @@ function handleSection(sectionParams) {
       if (idx === 0) {
         const subHeader = getHeaderId(col);
         col.setAttribute('aria-labelledby', subHeader);
+        col.setAttribute('role', 'rowheader');
+        // col.setAttribute('id', index + ":" + idx);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
       }
