@@ -38,6 +38,10 @@
   margin: auto;
 }
 
+.ax-panels [role='tablist'] li {
+  list-style: none;
+}
+
 .ax-panels .tablist-container::-webkit-scrollbar {
   display: none;
 }
