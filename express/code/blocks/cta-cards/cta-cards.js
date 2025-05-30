@@ -3,8 +3,8 @@ import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
 export default async function init(el) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-  const [headlineRow, ...cards] = el.children;
-  headlineRow.classList.add('headline-container');
+  const [headingRow, ...cards] = el.children;
+  headingRow.classList.add('heading-container');
   cards.forEach((card) => {
     card.classList.add('card');
     const [media, textContainer] = card.children;

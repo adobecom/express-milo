@@ -23,8 +23,8 @@ export default async function init(el) {
   if (!enclosingMain) return;
   [...enclosingMain.querySelectorAll('.section')].forEach((section) => tagPanels(section));
 
-  const [headlineContainer, tabListContainer] = el.querySelectorAll(':scope > div');
-  headlineContainer.classList.add('ax-panels-headline-container');
+  const [headingContainer, tabListContainer] = el.querySelectorAll(':scope > div');
+  headingContainer.classList.add('ax-panels-heading-container');
   tabListContainer.classList.add('tablist-container');
 
   const sections = [...enclosingMain.querySelectorAll('[data-ax-panel]')];

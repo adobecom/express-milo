@@ -3,10 +3,10 @@ import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
 export default async function init(el) {
   const { createTag } = await import(`${getLibs()}/utils/utils.js`);
-  const [headlineRow, hoverContainer, ...cards] = el.children;
+  const [headingRow, hoverContainer, ...cards] = el.children;
   const pic = hoverContainer.querySelector('picture');
   hoverContainer.remove();
-  headlineRow.classList.add('headline-container');
+  headingRow.classList.add('heading-container');
   cards.forEach((card) => {
     card.classList.add('card');
     card.prepend(pic.cloneNode(true));

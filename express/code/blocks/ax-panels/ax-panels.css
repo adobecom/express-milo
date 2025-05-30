@@ -18,8 +18,8 @@
   position: relative;
 }
 
-.ax-panels .ax-panels-headline-container h2,
-.ax-panels .ax-panels-headline-container h3 {
+.ax-panels .ax-panels-heading-container h2,
+.ax-panels .ax-panels-heading-container h3 {
   font-size: var(--body-font-size-xl);
   font-weight: 700;
   text-align: center;
@@ -105,8 +105,8 @@
 }
 
 @media (min-width: 600px) {
-  .ax-panels .ax-panels-headline-container h2,
-  .ax-panels .ax-panels-headline-container h3 {
+  .ax-panels .ax-panels-heading-container h2,
+  .ax-panels .ax-panels-heading-container h3 {
     font-size: var(--heading-font-size-m);
   }
   .ax-panels [role='tab'] {
