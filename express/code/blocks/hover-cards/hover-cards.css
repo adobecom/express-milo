@@ -1,16 +1,16 @@
-.hover-cards .headline-container {
+.hover-cards .heading-container {
   padding-bottom: 32px;
 }
 
-.hover-cards .headline-container p {
+.hover-cards .heading-container p {
   font-size: var(--body-font-size-m);
   line-height: 1.3;
   color: #242424;
   margin: 0;
 }
 
-.hover-cards .headline-container h2,
-.hover-cards .headline-container h3 {
+.hover-cards .heading-container h2,
+.hover-cards .heading-container h3 {
   font-size: var(--body-font-size-xl);
   color: #131313;
   padding-bottom: 8px;
@@ -85,12 +85,12 @@
 }
 
 @media (min-width: 600px) {
-  .hover-cards .headline-container h2,
-  .hover-cards .headline-container h3 {
+  .hover-cards .heading-container h2,
+  .hover-cards .heading-container h3 {
     font-size: var(--heading-font-size-s);
     padding-bottom: 8px;
   }
-  .hover-cards .headline-container {
+  .hover-cards .heading-container {
     padding-bottom: 20px;
   }
   .hover-cards .card {
@@ -99,7 +99,7 @@
 }
 
 @media (min-width: 1200px) {
-  .hover-cards .headline-container {
+  .hover-cards .heading-container {
     padding-bottom: 36px;
   }
   .hover-cards .card {

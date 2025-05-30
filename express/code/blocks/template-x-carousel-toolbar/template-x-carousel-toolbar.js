@@ -180,8 +180,8 @@ export async function extractSort(recipe) {
 
 export default async function init(el) {
   [{ createTag, getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
-  const [headlineRow, recipeRow] = el.children;
-  headlineRow.classList.add('headline-container');
+  const [headingRow, recipeRow] = el.children;
+  headingRow.classList.add('heading-container');
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
 
@@ -191,7 +191,7 @@ export default async function init(el) {
     sortSetup,
   ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
   const { sortOptions, defaultIndex } = sortSetup || {};
-  sortOptions && headlineRow.append(createDropdown(sortOptions, defaultIndex, updateTemplates));
+  sortOptions && headingRow.append(createDropdown(sortOptions, defaultIndex, updateTemplates));
 
   el.append(templatesContainer, control);
   createFromScratch();
