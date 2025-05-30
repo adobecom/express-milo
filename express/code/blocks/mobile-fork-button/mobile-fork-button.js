@@ -107,7 +107,7 @@ function collectFloatingButtonData() {
   };
 
   for (let i = 1; i < 3; i += 1) {
-  const toolData = createToolData(metadataMap, i);
+    const toolData = createToolData(metadataMap, i);
     data.tools.push(toolData);
     if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {
       data.longText = true;
