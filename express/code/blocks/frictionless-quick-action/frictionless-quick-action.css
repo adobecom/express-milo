@@ -53,6 +53,7 @@
 
 .frictionless-quick-action .fqa-container .button-container.hero-animation-overlay {
     position: relative;
+    right: 5px;
     width: var(--frictionless-quick-action-video-width);
     min-height: var(--frictionless-quick-action-video-height);
 }
