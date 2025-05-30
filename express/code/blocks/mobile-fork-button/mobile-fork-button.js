@@ -107,33 +107,10 @@ function collectFloatingButtonData() {
   };
 
   for (let i = 1; i < 3; i += 1) {
-    const prefix = `fork-cta-${i}`;
-    const iconMetadata = getMetadataLocal(`${prefix}-icon`);
-    const iconTextMetadata = getMetadataLocal(`${prefix}-icon-text`);
-    const hrefMetadata = getMetadataLocal(`${prefix}-link`);
-    const textMetadata = getMetadataLocal(`${prefix}-text`);
-    if (!iconMetadata) break;
-    const completeSet = {
-      icon: getIconElementDeprecated(iconMetadata),
-      iconText: iconTextMetadata,
-      href: hrefMetadata,
-      text: textMetadata,
-    };
-
-    if (Object.values(completeSet).every((val) => !!val)) {
-      const {
-        href, text, icon, iconText,
-      } = completeSet;
-      const aTag = createTag('a', { title: text, href });
-      aTag.textContent = text;
-      if (getTextWidth(text, 16) > LONG_TEXT_CUTOFF) {
-        data.longText = true;
-      }
-      data.tools.push({
-        icon,
-        anchor: aTag,
-        iconText,
-      });
+  const toolData = createToolData(metadataMap, i);
+    data.tools.push(toolData);
+    if (getTextWidth(toolData.anchor.textContent, 16) > LONG_TEXT_CUTOFF) {
+      data.longText = true;
     }
   }
 
