@@ -135,8 +135,6 @@ async function mWebStickyCTA() {
 }
 
 function mWebOverlayScroll() {
-  // This is to make scroll work when switching between mobile and desktop.
-  // May need rewrite for RTP.
   const mobileForkButton = document.querySelector('.mobile-fork-button.mweb-mobile-fork');
   if (mobileForkButton
     && window.getComputedStyle(mobileForkButton, null).display !== 'none') {
@@ -170,8 +168,8 @@ function mWebCloseEvents() {
 
 function mWebVariant() {
   const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const hasCta1 = getMetadata('cta-1-icon') || getMetadata('cta-1-link');
-  if (!hasCta1 || !isMobileDevice) return;
+  const hasData = getMetadata('cta-1-text') && getMetadata('cta-1-link');
+  if (!hasData || !isMobileDevice) return;
   mWebBuildElements();
   mWebCloseEvents();
   mWebOverlayScroll();

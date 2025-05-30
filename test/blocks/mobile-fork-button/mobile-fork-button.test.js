@@ -11,7 +11,7 @@ const imports = await Promise.all([
 ]);
 const { default: decorate } = imports[1];
 
-function setDocumentMetadata(includeForkCta2 = true) {
+function setDocumentMetadata(includeForkCta2 = true, includForkCta3 = false) {
   const metadata = {
     'floating-cta-live': 'Y',
     'show-floating-cta': 'yes',
@@ -33,6 +33,12 @@ function setDocumentMetadata(includeForkCta2 = true) {
     metadata['fork-cta-2-link'] = 'https://www.google.com';
     metadata['fork-cta-2-icon-text'] = 'Test';
   }
+
+  if (includForkCta3) {
+    metadata['cta-1-text'] = 'Create in web now';
+    metadata['cta-1-link'] = 'https://adobesparkpost-web.app.link/';
+  }
+  
 
   Object.entries(metadata).forEach(([name, content]) => {
     const meta = document.createElement('meta');
@@ -77,6 +83,7 @@ describe('Mobile Fork Button', () => {
 
     const blockWrapper = document.querySelector('.floating-button.block');
     const rows = blockWrapper.querySelectorAll('.mobile-gating-row');
+
     expect(rows.length).to.equal(2);
 
     const firstRow = rows[0];
@@ -86,5 +93,35 @@ describe('Mobile Fork Button', () => {
     const secondRow = rows[1];
     expect(secondRow.querySelector('a').textContent).to.equal('Free Version');
     expect(secondRow.querySelector('.mobile-gating-text').textContent).to.equal('Test');
+
+  });
+
+  it('renders button with both fork-cta-1 and fork-cta-2 metadata and fork-cta-3 metadata', async () => {
+    setDocumentMetadata(true, true);
+    await buildAutoBlocks();
+    const b = document.querySelector('.floating-button');
+
+    await decorate(b);
+
+    const blockWrapper = document.querySelector('.floating-button.block');
+    const rows = blockWrapper.querySelectorAll('.mobile-gating-row');
+
+    expect(rows.length).to.equal(2);
+
+    const firstRow = rows[0];
+    expect(firstRow.querySelector('a').textContent).to.equal('Get Free App');
+    expect(firstRow.querySelector('.mobile-gating-text').textContent).to.equal('Adobe Express');
+
+    const secondRow = rows[1];
+    expect(secondRow.querySelector('a').textContent).to.equal('Free Version');
+    expect(secondRow.querySelector('.mobile-gating-text').textContent).to.equal('Test');
+
+    const closeButton = blockWrapper.querySelector('.mweb-close');
+    expect(closeButton).to.exist;
+    expect(document.body.style.overflow).to.equal('hidden');
+    closeButton.click();
+    expect(document.body.style.overflow).to.equal('');
+    const newWrapper = document.querySelector('.floating-button.meta-powered');
+    expect(newWrapper).to.exist;
   });
 });
