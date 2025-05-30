@@ -48,8 +48,7 @@ function handleHeading(headingRow) {
       return;
     }
 
-   
-    col.setAttribute('id', 0 + ":" + colIdx);
+    col.setAttribute('id', `${0}:${colIdx}`);
     col.setAttribute('role', 'columnheader');
 
     col.querySelectorAll('img').forEach((img) => {
@@ -140,8 +139,8 @@ function handleSection(sectionParams) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
     rowCols[0].setAttribute('role', 'rowheader');
-    rowCols[0].setAttribute('id', index + ":" + 0);
-    previousHeaderRowHeadingId =  index + ":" + 0;
+    rowCols[0].setAttribute('id', `${index}:${0}`);
+    previousHeaderRowHeadingId = `${index}:${0}`;
     previousHeaderRow = row;
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
@@ -152,7 +151,7 @@ function handleSection(sectionParams) {
       if (idx === 0) {
         col.setAttribute('aria-labelledby', previousHeaderRowHeadingId);
         col.setAttribute('role', 'rowheader');
-        col.setAttribute('id', index + ":" + idx);
+        col.setAttribute('id', `${index}:${idx}`);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
       }
@@ -163,7 +162,7 @@ function handleSection(sectionParams) {
       }
 
       if (previousHeaderRow) {
-        col.setAttribute('aria-labelledby', `${index +":" + 0} ${0 + ":" + idx}`);
+        col.setAttribute('aria-labelledby', `${`${index}:${0}`} ${`${0}:${idx}`}`);
       }
 
       const child = col.children?.[0] || col;
