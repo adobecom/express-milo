@@ -1,10 +1,8 @@
-import {
-  addAnimationToggle,
-  transformLinkToAnimation,
-} from '../../scripts/utils/media.js';
+import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
+import createAccessibilityVideoControls from '../../scripts/utils/ax-video-controls.js';
 
 let createTag; let getConfig;
 let getMetadata;
@@ -328,6 +326,7 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 export default async function decorate(block) {
   const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
+
     decorateButtonsDeprecated(block)]);
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
   globalNavSelector = gNavUtils?.selectors.globalNav;
@@ -352,9 +351,11 @@ export default async function decorate(block) {
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });
 
   if (animation && animation.href.includes('.mp4')) {
-    transformLinkToAnimation(animation);
-    addAnimationToggle(animationContainer);
+    animationContainer.append(
+      createAccessibilityVideoControls(transformLinkToAnimation(animation)),
+    );
   }
+
   if (cta) cta.classList.add('xlarge');
   dropzone.classList.add('dropzone');
 

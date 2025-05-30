@@ -94,18 +94,17 @@ export function linkImage($elem) {
 }
 
 export function toggleVideo(target) {
-  const videos = target.querySelectorAll('video');
-  const paused = videos[0] ? videos[0].paused : false;
-  videos.forEach((video) => {
-    if (paused) {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // ignore
-        });
-      }
-    } else video.pause();
-  });
+  const video = target.closest('.fqa-container').querySelector('video');
+  const paused = video ? video.paused : false;
+
+  if (paused) {
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // ignore
+      });
+    }
+  } else video.pause();
 }
 
 export function addAnimationToggle(target) {

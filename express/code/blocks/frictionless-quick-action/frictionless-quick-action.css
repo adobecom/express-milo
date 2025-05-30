@@ -52,6 +52,7 @@
 }
 
 .frictionless-quick-action .fqa-container .button-container.hero-animation-overlay {
+    position: relative;
     width: var(--frictionless-quick-action-video-width);
     min-height: var(--frictionless-quick-action-video-height);
 }
@@ -212,3 +213,42 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     margin-left: auto;
     margin-right: auto;
 }
+
+.video-controls-wrapper {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--color-gray-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+  }
+  
+  .video-controls-wrapper:hover {
+    background-color: var(--color-black);
+  }
+  
+  .video-controls-wrapper:focus {
+    outline: 2px solid #1473e6;
+    outline-offset: 2px;
+  }
+  
+  .video-controls-wrapper .icon {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+  }
+  
+  .video-controls-wrapper[aria-pressed="true"] .accessibility-control.icon-play-video.isHidden {
+    display: none;
+  }
+  
+  .video-controls-wrapper[aria-pressed="false"] .accessibility-control.icon-pause-video {
+    display: none;
+  }
