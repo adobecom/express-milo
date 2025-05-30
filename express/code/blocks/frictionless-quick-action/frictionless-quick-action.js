@@ -324,12 +324,15 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 }
 
 export default async function decorate(block) {
-  const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
+  const [utils, gNavUtils, federated] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
-
+    import(`${getLibs()}/utils/federated.js`),
     decorateButtonsDeprecated(block)]);
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
+  const { getFederatedContentRoot } = federated;
+
   globalNavSelector = gNavUtils?.selectors.globalNav;
+  const federatedRootPath = getFederatedContentRoot();
 
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
@@ -352,7 +355,7 @@ export default async function decorate(block) {
 
   if (animation && animation.href.includes('.mp4')) {
     animationContainer.append(
-      createAccessibilityVideoControls(transformLinkToAnimation(animation)),
+      createAccessibilityVideoControls(transformLinkToAnimation(animation), federatedRootPath),
     );
   }
 
