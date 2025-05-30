@@ -158,7 +158,7 @@ function handleSection(sectionParams) {
       decorateButtonsDeprecated(col);
       if (idx === 0) {
         const subHeader = getHeaderId(col);
-        col.setAttribute('headers', subHeader);
+        col.setAttribute('aria-labelledby', subHeader);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
       }
@@ -173,7 +173,7 @@ function handleSection(sectionParams) {
         const rowHeader = getHeaderId(rowCols[0]);
         const colHeader = getHeaderId(headingCols[idx]);
         if (subHeader) {
-          col.setAttribute('headers', `${subHeader} ${rowHeader} ${colHeader}`);
+          col.setAttribute('aria-labelledby', `${subHeader} ${rowHeader} ${colHeader}`);
         }
       }
 
