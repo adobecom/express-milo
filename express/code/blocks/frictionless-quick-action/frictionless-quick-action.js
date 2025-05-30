@@ -328,8 +328,17 @@ export default async function decorate(block) {
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
     import(`${getLibs()}/utils/federated.js`),
     decorateButtonsDeprecated(block)]);
+
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
   const { getFederatedContentRoot } = federated;
+
+  /** Localization for video labels */
+  const { replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`);
+  const [playAnimation, pauseAnimation] = await replaceKeyArray(['play-animation', 'pause-animation'], getConfig());
+  const videoLabels = {
+    playMotion: playAnimation || 'Play',
+    pauseMotion: pauseAnimation || 'Pause',
+  };
 
   globalNavSelector = gNavUtils?.selectors.globalNav;
   const federatedRootPath = getFederatedContentRoot();
@@ -355,7 +364,8 @@ export default async function decorate(block) {
 
   if (animation && animation.href.includes('.mp4')) {
     animationContainer.append(
-      createAccessibilityVideoControls(transformLinkToAnimation(animation), federatedRootPath),
+      createAccessibilityVideoControls(
+        transformLinkToAnimation(animation), videoLabels, federatedRootPath),
     );
   }
 

@@ -1,20 +1,12 @@
 import { createTag } from '../utils.js';
 import { addAnimationToggle } from './media.js';
 
-const videoLabels = {
-  playMotion: 'Play',
-  pauseMotion: 'Pause',
-  pauseIcon: 'Pause icon',
-  playIcon: 'Play icon',
-};
-
-/** hardcoding this here rather than making createAccessibilityVideoControls async
- * to get the fedRoot path.
- */
+/** Adding a backup here for the rootPath */
 const federatedAccessibilityIconsPath = 'https://main--federal--adobecom.aem.live';
 
 export default function createAccessibilityVideoControls(
   videoElement,
+  videoLabels,
   federatedRootPath = federatedAccessibilityIconsPath,
 ) {
   const controlsWrapper = createTag('div', {
@@ -26,8 +18,8 @@ export default function createAccessibilityVideoControls(
 
   // Add play and pause icons
   controlsWrapper.append(
-    createTag('img', { alt: videoLabels.pauseIcon, src: `${federatedRootPath}/federal/assets/svgs/accessibility-pause.svg`, class: 'accessibility-control icon-pause-video' }),
-    createTag('img', { alt: videoLabels.playIcon, src: `${federatedRootPath}/federal/assets/svgs/accessibility-play.svg`, class: 'accessibility-control icon-play-video isHidden' }),
+    createTag('img', { alt: '', src: `${federatedRootPath}/federal/assets/svgs/accessibility-pause.svg`, class: 'accessibility-control icon-pause-video' }),
+    createTag('img', { alt: '', src: `${federatedRootPath}/federal/assets/svgs/accessibility-play.svg`, class: 'accessibility-control icon-play-video isHidden' }),
   );
 
   // Add keyboard support
