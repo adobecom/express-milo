@@ -31,17 +31,23 @@ export default async function init(el) {
 
   const tabList = tabListContainer.querySelector('ul');
   tabList.setAttribute('role', 'tablist');
-  const listItems = [...tabList.querySelectorAll('li')];
+  const headingId = headingContainer.querySelector('h2,h3')?.id;
+  headingId && tabList.setAttribute('aria-labelledby', headingId);
 
   let activeTab = null;
-  const tabs = listItems.map((listItem, index) => {
-    const text = listItem.textContent.trim().toLowerCase();
+  const tabs = [...tabList.querySelectorAll('li')].map((listItem, index) => {
+    const tabVal = listItem.textContent.trim().toLowerCase();
+    const tabId = `ax-panel-tab-${tabVal}`;
+    const controlledSection = sections.filter((section) => section.id === `ax-panel-${tabVal}`)[0];
     const tab = createTag('button', {
       role: 'tab',
       'aria-selected': index === 0,
-      'data-text': text,
-      'aria-controls': sections.filter((section) => section.getAttribute('data-ax-panel') === text)[0].id,
+      id: tabId,
+      'aria-controls': controlledSection.id,
+      tabIndex: index > 0 ? '-1' : '0',
     });
+    controlledSection.setAttribute('aria-labelledby', tabId);
+    if (index > 0) controlledSection.classList.add('hide');
     const icon = listItem.querySelector('.icon');
     const match = icon && iconRegex.exec(icon.className);
     if (match?.[1]) {
@@ -55,9 +61,11 @@ export default async function init(el) {
     tab.addEventListener('click', () => {
       if (tab === activeTab) return;
       tab.setAttribute('aria-selected', true);
+      tab.setAttribute('tabIndex', '0');
       activeTab.setAttribute('aria-selected', false);
+      activeTab.setAttribute('tabIndex', '-1');
       sections.forEach((section) => {
-        if (tab.dataset.text === section.getAttribute('data-ax-panel')) {
+        if (tab.getAttribute('aria-controls') === section.id) {
           section.classList.remove('hide');
         } else {
           section.classList.add('hide');
@@ -65,18 +73,16 @@ export default async function init(el) {
       });
       activeTab = tab;
     });
+    listItem.replaceChildren(tab);
     return tab;
   });
 
-  tabs.forEach((tab, i) => {
-    listItems[i].replaceChildren(tab);
+  tabList.addEventListener('keydown', (e) => {
+    if (!['ArrowRight', 'ArrowLeft'].includes(e.key)) return;
+    const currTabIndex = tabs.findIndex((tab) => tab === document.activeElement);
+    if (currTabIndex === -1) return;
+    e.preventDefault();
+    const nextTabIndex = currTabIndex + (e.key === 'ArrowLeft' ? -1 : 1);
+    tabs[nextTabIndex].focus();
   });
-
-  if (sections) {
-    sections.forEach((section, index) => {
-      if (index > 0) {
-        section.classList.add('hide');
-      }
-    });
-  }
 }
