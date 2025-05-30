@@ -12,16 +12,16 @@ const [{ default: decorate }] = await Promise.all([import('../../../express/code
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 function setDocumentMetadata() {
   const metadata = {
-    'mweb-card-chevron' : 'true',
-  }
+    'mweb-card-chevron': 'true',
+  };
 
-    Object.entries(metadata).forEach(([name, content]) => {
+  Object.entries(metadata).forEach(([name, content]) => {
     const meta = document.createElement('meta');
     meta.name = name;
     meta.content = content;
     document.head.appendChild(meta);
   });
-};
+}
 describe('grid-marquee', () => {
   let block;
   const oldIO = window.IntersectionObserver;

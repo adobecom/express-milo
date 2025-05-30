@@ -38,7 +38,6 @@ function setDocumentMetadata(includeForkCta2 = true, includForkCta3 = false) {
     metadata['cta-1-text'] = 'Create in web now';
     metadata['cta-1-link'] = 'https://adobesparkpost-web.app.link/';
   }
-  
 
   Object.entries(metadata).forEach(([name, content]) => {
     const meta = document.createElement('meta');
@@ -93,7 +92,6 @@ describe('Mobile Fork Button', () => {
     const secondRow = rows[1];
     expect(secondRow.querySelector('a').textContent).to.equal('Free Version');
     expect(secondRow.querySelector('.mobile-gating-text').textContent).to.equal('Test');
-
   });
 
   it('renders button with both fork-cta-1 and fork-cta-2 metadata and fork-cta-3 metadata', async () => {
