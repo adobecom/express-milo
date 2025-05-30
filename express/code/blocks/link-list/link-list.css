@@ -216,6 +216,12 @@
   background: rgba(0, 0, 0, 0.00);
 }
 
+.section .link-list.square .button-container:hover .button,
+.section .link-list.square .button-container:focus-within .button {
+  background-color: #e1e1e1;
+  transition: background-color .1s ease-out;
+}
+
 @media (min-width: 600px) {
   .section .link-list.inline {
     display: flex;
