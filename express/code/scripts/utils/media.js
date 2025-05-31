@@ -94,7 +94,7 @@ export function linkImage($elem) {
 }
 
 export function toggleVideo(target) {
-  const video = target.closest('.fqa-container').querySelector('video');
+  const video = target?.closest('.fqa-container')?.querySelector('video');
   const paused = video ? video.paused : false;
 
   if (paused) {
@@ -104,7 +104,7 @@ export function toggleVideo(target) {
         // ignore
       });
     }
-  } else video.pause();
+  } else video?.pause();
 }
 
 export function addAnimationToggle(target) {
