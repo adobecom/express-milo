@@ -215,9 +215,8 @@ async function createPricingSection(
     if (a.textContent.includes(SALES_NUMBERS)) {
       formatSalesPhoneNumber([a], SALES_NUMBERS);
     }
-    a.setAttribute('aria-label', a.textContent.trim() + ' ' + header.textContent.trim());
+    a.setAttribute('aria-label', `${a.textContent.trim()} ${header.textContent.trim()}`);
   });
-  
 }
 
 function decorateHeader(header, planExplanation) {
