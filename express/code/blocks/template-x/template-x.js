@@ -101,18 +101,20 @@ async function processContentRow(block, props) {
   const textWrapper = createTag('div', { class: 'text-wrapper' });
   textWrapper.innerHTML = props.contentRow.outerHTML;
   templateTitle.append(textWrapper);
-
   const aTags = templateTitle.querySelectorAll(':scope a');
 
   if (aTags.length > 0) {
     templateTitle.classList.add('with-link');
     aTags.forEach((aTag) => {
       aTag.className = 'template-title-link';
-
       const p = aTag.closest('p');
+      const h4 = templateTitle.querySelector('h4');
       if (p) {
         templateTitle.append(p);
         p.className = 'view-all-link-wrapper';
+      }
+      if (h4) {
+        aTag.setAttribute('aria-label', aTag.textContent.trim() + ' ' + h4.textContent.trim());
       }
     });
 
