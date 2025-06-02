@@ -447,8 +447,8 @@ async function createPricingSection(
       a.parentNode.remove();
     }
 
-    a.setAttribute('aria-label', a.textContent.trim() + ' ' + header.textContent.trim());
-    
+    a.setAttribute('aria-label', `${a.textContent.trim()} ${header.textContent.trim()}`);
+
     formatDynamicCartLink(a);
     ctaGroup.append(a);
   });
