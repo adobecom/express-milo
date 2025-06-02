@@ -173,6 +173,7 @@ function handleRawPrice(price, basePrice, response) {
 }
 
 async function createPricingSection(
+  header,
   pricingArea,
   ctaGroup,
 ) {
@@ -214,7 +215,9 @@ async function createPricingSection(
     if (a.textContent.includes(SALES_NUMBERS)) {
       formatSalesPhoneNumber([a], SALES_NUMBERS);
     }
+    a.setAttribute('aria-label', a.textContent.trim() + ' ' + header.textContent.trim());
   });
+  
 }
 
 function decorateHeader(header, planExplanation) {
@@ -292,6 +295,7 @@ export default async function init(el) {
     decorateCardBorder(card, rows[1].children[0]);
     decorateHeader(rows[0].children[0], rows[2].children[0]);
     await createPricingSection(
+      rows[0].children[0],
       rows[3].children[0],
       rows[4].children[0],
     );
