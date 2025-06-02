@@ -278,14 +278,6 @@ export async function fixIcons(el = document) {
             }
             return null;
           });
-        let altText = null;
-        const iconConfig = await replaceKey(icon, getConfig()); 
-        const mobileIconConfig = await replaceKey(mobileIcon, getConfig());
-        if (iconConfig) {
-          altText = iconConfig;
-        } else if (mobileIconConfig) {
-          altText = mobileIconConfig;
-        }
         const $picture = $img.closest('picture');
         const $block = $picture.closest('.section > div');
         let size = 44;
@@ -300,7 +292,7 @@ export async function fixIcons(el = document) {
           }
         }
         $picture.parentElement
-          .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
+          .replaceChild(getIconElementDeprecated([icon, mobileIcon], size), $picture);
       }
     }
   });
