@@ -114,7 +114,7 @@ async function processContentRow(block, props) {
         p.className = 'view-all-link-wrapper';
       }
       if (h4) {
-        aTag.setAttribute('aria-label', aTag.textContent.trim() + ' ' + h4.textContent.trim());
+        aTag.setAttribute('aria-label', `${aTag.textContent.trim()} ${h4.textContent.trim()}`);
       }
     });
 
