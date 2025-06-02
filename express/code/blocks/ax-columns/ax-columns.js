@@ -42,6 +42,11 @@ function transformToVideoColumn(cell, aTag, block) {
       const buttonContainer = button.closest('.button-container');
       if (buttonContainer) buttonContainer.remove();
       else button.remove();
+    } else {
+      const header = parent.querySelector('h1, h2, h3, h4, h5, h6');
+      if (header) {
+        button.setAttribute('aria-label', header.textContent.trim());
+      }
     }
   });
   aTag.setAttribute('rel', 'nofollow');
