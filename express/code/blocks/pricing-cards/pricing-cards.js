@@ -446,9 +446,9 @@ async function createPricingSection(
     if (a.parentNode.tagName.toLowerCase() === 'p') {
       a.parentNode.remove();
     }
-
-    a.setAttribute('aria-label', `${a.textContent.trim()} ${header.textContent.trim()}`);
-
+    
+    const headerText = header?.querySelector('h2')?.textContent;
+    a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
     formatDynamicCartLink(a);
     ctaGroup.append(a);
   });
