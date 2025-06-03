@@ -808,6 +808,19 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   background-color: transparent;
 }
 
+.ax-columns.marquee
+  .button-container.free-plan-container
+  .free-plan-widget {
+    font-size: 14px;
+    margin-left: 15px;
+}
+
+.ax-columns.marquee
+  .button-container.free-plan-container
+  .free-plan-widget.plan-widget-tag {
+    padding-bottom: 4px;
+}
+
 
 .ax-columns.center.button-container.free-plan-container.stacked
   .free-plan-widget {
