@@ -99,19 +99,13 @@ function buildTableLayout(block) {
         }
       });
     } else {
-      // Original non-longform code
-      const headerAccordion = createTag('div', {
-        class: 'faqv2-accordion expandable header-accordion',
-        'aria-expanded': index === 0,
-        'aria-label': 'Expand quotes',
-        role: 'button',
-        tabIndex: 0,
-      });
-      rowWrapper.appendChild(headerAccordion);
+      // Non-longform version using the same structure
+      const toggle = createTag('div', { class: 'faqv2-toggle' });
+      rowWrapper.appendChild(toggle);
 
-      const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
+      const headerDiv = createTag('h3', { class: 'faqv2-header' });
       headerDiv.innerHTML = header;
-      headerAccordion.appendChild(headerDiv);
+      toggle.appendChild(headerDiv);
 
       const iconElement = createTag('img', {
         src: `${config.codeRoot}/icons/plus-heavy.svg`,
@@ -120,46 +114,48 @@ function buildTableLayout(block) {
       });
       headerDiv.appendChild(iconElement);
 
-      const subHeaderAccordion = createTag('div', {
-        class: `faqv2-accordion expandable sub-header-accordion${index === 0 ? ' open' : ''}`,
-      });
-      rowWrapper.appendChild(subHeaderAccordion);
-      const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
-      subHeaderDiv.innerHTML = subHeader;
-      subHeaderAccordion.appendChild(subHeaderDiv);
+      const content = createTag('div', { class: 'faqv2-content' });
+      content.innerHTML = subHeader;
+      toggle.appendChild(content);
 
-      if (index === 0 && !isLongFormVariant) {
-        headerAccordion.classList.add('rounded-corners');
-      }
+      // Set initial state
+      content.style.maxHeight = '0';
+      content.style.overflow = 'hidden';
 
       headerDiv.addEventListener('click', () => {
-        const allSubHeaders = block.querySelectorAll('.sub-header-accordion');
-        const allHeaders = block.querySelectorAll('.header-accordion');
-        const allIcons = block.querySelectorAll('.toggle-icon');
+        const isOpen = content.classList.contains('open');
 
-        allSubHeaders.forEach((accordion, idx) => {
-          if (accordion !== subHeaderAccordion) {
-            accordion.classList.remove('open');
-            if (!isLongFormVariant) {
-              allHeaders[idx].classList.remove('rounded-corners');
-            }
+        // Close all other accordions first
+        const allContents = block.querySelectorAll('.faqv2-content');
+        const allIcons = block.querySelectorAll('.toggle-icon');
+        allContents.forEach((otherContent, idx) => {
+          if (otherContent !== content && otherContent.classList.contains('open')) {
+            otherContent.style.maxHeight = `${otherContent.scrollHeight}px`;
+            otherContent.offsetHeight; // Force reflow
+            otherContent.classList.remove('open');
+            otherContent.style.maxHeight = '0';
             allIcons[idx].src = `${config.codeRoot}/icons/plus-heavy.svg`;
           }
         });
 
-        const isOpen = subHeaderAccordion.classList.toggle('open');
-        if (!isLongFormVariant) {
-          headerAccordion.classList.toggle('rounded-corners', isOpen);
-        }
-        iconElement.src = isOpen
-          ? `${config.codeRoot}/icons/minus-heavy.svg`
-          : `${config.codeRoot}/icons/plus-heavy.svg`;
-      });
-
-      headerAccordion.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          headerDiv.click();
+        if (!isOpen) {
+          // Set height to 0 first
+          content.style.maxHeight = '0';
+          // Force a reflow
+          content.offsetHeight;
+          // Add open class and set to actual height
+          content.classList.add('open');
+          content.style.maxHeight = `${content.scrollHeight}px`;
+          iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
+        } else {
+          // Set to actual height first
+          content.style.maxHeight = `${content.scrollHeight}px`;
+          // Force a reflow
+          content.offsetHeight;
+          // Remove open class and set to 0
+          content.classList.remove('open');
+          content.style.maxHeight = '0';
+          iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
         }
       });
     }
