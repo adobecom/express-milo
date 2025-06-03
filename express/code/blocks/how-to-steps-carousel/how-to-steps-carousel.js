@@ -56,8 +56,6 @@ function activate(block, target) {
       item.setAttribute('aria-selected', 'false');
     }
   });
-
-  console.log( block.querySelectorAll('.tip'))
   // get index of the target
   const i = parseInt(target.getAttribute('data-tip-index'), 10);
   // activate corresponding number and tip
