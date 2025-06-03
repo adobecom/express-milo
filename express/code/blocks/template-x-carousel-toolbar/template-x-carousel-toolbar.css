@@ -354,12 +354,13 @@
   box-sizing: border-box;
 }
 
-.template-x-carousel-toolbar .from-scratch-border svg {
+.template-x-carousel-toolbar .from-scratch-border img {
   position: absolute;
   bottom: 50%;
   transform: translateY(50%);
-  width: 22px;
-  height: 22px;
+  width: 60px;
+  height: 60px;
+  padding-bottom: 30px;
 }
 
 .template-x-carousel-toolbar .from-scratch-text {

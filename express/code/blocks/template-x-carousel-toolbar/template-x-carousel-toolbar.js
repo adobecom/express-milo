@@ -28,7 +28,7 @@ async function createFromScratch() {
     target: '_self',
     href: fromScratchHref,
   }, fromScratchBorder);
-  const svg = getIconElementDeprecated('blank');
+  const svg = getIconElementDeprecated('start-from-scratch');
   const text = createTag('div', { class: 'from-scratch-text' }, fromScratchText);
   fromScratchBorder.append(svg, text);
   return fromScratchContainer;
