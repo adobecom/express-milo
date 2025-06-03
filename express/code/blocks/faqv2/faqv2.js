@@ -79,20 +79,17 @@ function buildTableLayout(block) {
         });
 
         if (!isOpen) {
-          // Set height to 0 first
+          // Calculate height before adding open class
+          content.style.maxHeight = 'none';
+          const height = content.scrollHeight;
           content.style.maxHeight = '0';
-          // Force a reflow
-          content.offsetHeight;
-          // Add open class and set to actual height
+          content.offsetHeight; // Force reflow
           content.classList.add('open');
-          content.style.maxHeight = `${content.scrollHeight}px`;
+          content.style.maxHeight = `${height}px`;
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
         } else {
-          // Set to actual height first
           content.style.maxHeight = `${content.scrollHeight}px`;
-          // Force a reflow
-          content.offsetHeight;
-          // Remove open class and set to 0
+          content.offsetHeight; // Force reflow
           content.classList.remove('open');
           content.style.maxHeight = '0';
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
@@ -139,20 +136,17 @@ function buildTableLayout(block) {
         });
 
         if (!isOpen) {
-          // Set height to 0 first
+          // Calculate height before adding open class
+          content.style.maxHeight = 'none';
+          const height = content.scrollHeight;
           content.style.maxHeight = '0';
-          // Force a reflow
-          content.offsetHeight;
-          // Add open class and set to actual height
+          content.offsetHeight; // Force reflow
           content.classList.add('open');
-          content.style.maxHeight = `${content.scrollHeight}px`;
+          content.style.maxHeight = `${height}px`;
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
         } else {
-          // Set to actual height first
           content.style.maxHeight = `${content.scrollHeight}px`;
-          // Force a reflow
-          content.offsetHeight;
-          // Remove open class and set to 0
+          content.offsetHeight; // Force reflow
           content.classList.remove('open');
           content.style.maxHeight = '0';
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
