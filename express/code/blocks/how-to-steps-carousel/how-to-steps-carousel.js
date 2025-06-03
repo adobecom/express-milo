@@ -65,8 +65,6 @@ function activate(block, target) {
       elem.setAttribute('aria-selected', 'true');
     }
   });
-
-
 }
 
 function initRotation(howToWindow, howToDocument) {
