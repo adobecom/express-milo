@@ -722,7 +722,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   max-height: 40vh;
   margin-bottom: 40px;
   max-width: 370px;
+}
+
+.ax-columns .hero-animation-overlay video {
   border-radius: 8px;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
 }
 
 .ax-columns.fullsize
