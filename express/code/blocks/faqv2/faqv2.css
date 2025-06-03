@@ -722,4 +722,14 @@
   padding-top: 16px;
   padding-left: 18px;
   padding-right: 30px;
+  background-color: #FAFAFA;
+}
+
+.faqv2.expandable .faqv2-content.open + .faqv2-header,
+.faqv2.expandable .faqv2-header + .faqv2-content.open {
+  background-color: #FAFAFA;
+}
+
+.faqv2.expandable .faqv2-toggle:has(.faqv2-content.open) {
+  background-color: #FAFAFA;
 }
