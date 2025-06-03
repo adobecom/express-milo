@@ -29,6 +29,19 @@
 
 .faqv2.expandable .faqv2-wrapper {
   margin: 16px auto 6px auto;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+.faqv2.expandable:not(.longform) .faqv2-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, #FF4885 0.58%, #FC7D00 99.99%), linear-gradient(180deg, #D600C4 20%, #4B2BEE 100%);
+  border-radius: 8px 0 0 8px;
 }
 
 .faqv2 .has-background picture img {
