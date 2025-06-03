@@ -45,7 +45,7 @@ function transformToVideoColumn(cell, aTag, block) {
     } else {
       const header = parent?.querySelector('h1, h2, h3, h4, h5, h6');
       if (header) {
-        button.setAttribute('aria-label', header.textContent.trim() + ' ' + button.textContent.trim());
+        button.setAttribute('aria-label', `${header.textContent.trim()} ${button.textContent.trim()}`);
       }
     }
   });
