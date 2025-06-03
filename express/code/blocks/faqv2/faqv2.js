@@ -34,13 +34,13 @@ function buildTableLayout(block) {
     };
   });
 
-  collapsibleRows.forEach(({ header, subHeader }) => {
+  collapsibleRows.forEach(({ header, subHeader }, index) => {
     const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
     container.appendChild(rowWrapper);
 
     const headerAccordion = createTag('div', {
       class: 'faqv2-accordion expandable header-accordion',
-      'aria-expanded': false,
+      'aria-expanded': index === 0,
       'aria-label': 'Expand quotes',
       role: 'button',
       tabIndex: 0,
@@ -52,17 +52,23 @@ function buildTableLayout(block) {
     headerAccordion.appendChild(headerDiv);
 
     const iconElement = createTag('img', {
-      src: `${config.codeRoot}/icons/plus-heavy.svg`,
+      src: index === 0 ? `${config.codeRoot}/icons/minus-heavy.svg` : `${config.codeRoot}/icons/plus-heavy.svg`,
       alt: 'toggle-icon',
       class: 'toggle-icon',
     });
     headerDiv.appendChild(iconElement);
 
-    const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
+    const subHeaderAccordion = createTag('div', {
+      class: `faqv2-accordion expandable sub-header-accordion${index === 0 ? ' open' : ''}`,
+    });
     rowWrapper.appendChild(subHeaderAccordion);
     const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
     subHeaderDiv.innerHTML = subHeader;
     subHeaderAccordion.appendChild(subHeaderDiv);
+
+    if (index === 0 && !isLongFormVariant) {
+      headerAccordion.classList.add('rounded-corners');
+    }
 
     headerDiv.addEventListener('click', () => {
       // Close all other open accordions first
