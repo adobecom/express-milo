@@ -29,8 +29,8 @@ function buildTableLayout(block) {
   const collapsibleRows = rows.map((row) => {
     const cells = [...row.children];
     return {
-      header: cells[0]?.textContent.trim(),
-      subHeader: cells[1]?.textContent,
+      header: cells[0]?.innerHTML.trim(),
+      subHeader: cells[1]?.innerHTML,
     };
   });
 
@@ -48,7 +48,7 @@ function buildTableLayout(block) {
     rowWrapper.appendChild(headerAccordion);
 
     const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
-    headerDiv.textContent = header;
+    headerDiv.innerHTML = header;
     headerAccordion.appendChild(headerDiv);
 
     const iconElement = createTag('img', {
@@ -61,7 +61,7 @@ function buildTableLayout(block) {
     const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
     rowWrapper.appendChild(subHeaderAccordion);
     const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
-    subHeaderDiv.textContent = subHeader;
+    subHeaderDiv.innerHTML = subHeader;
     subHeaderAccordion.appendChild(subHeaderDiv);
 
     headerDiv.addEventListener('click', () => {
