@@ -948,15 +948,14 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.marquee p {
     text-align: center;
   }
-  
-  .ax-columns.marquee .column p {
-    font-size: 16px;
-  }
 }
 
 @media (min-width: 600px) and (max-width: 899px) {
   .ax-columns.marquee .column {
     text-align: center;
+  }
+  .ax-columns.marquee .column p {
+    font-size: 16px;
   }
 }
 
@@ -1249,6 +1248,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .content.columns-xl-heading h5,
   .content.columns-xl-heading h6 {
     font-size: var(--heading-font-size-m);
+  }
+  .ax-columns.marquee .column p {
+    font-size: 18px;
   }
 }
 
