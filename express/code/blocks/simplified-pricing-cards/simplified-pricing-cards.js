@@ -215,7 +215,8 @@ async function createPricingSection(
     if (a.textContent.includes(SALES_NUMBERS)) {
       formatSalesPhoneNumber([a], SALES_NUMBERS);
     }
-    a.setAttribute('aria-label', `${a.textContent.trim()} ${header.textContent.trim()}`);
+    const headerText = header?.querySelector('h2')?.textContent;
+    a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
   });
 }
 
