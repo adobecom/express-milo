@@ -152,6 +152,13 @@ function buildTableLayout(block) {
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
         }
       });
+
+      // Open first accordion by default after a small delay
+      if (index === 0) {
+        setTimeout(() => {
+          headerDiv.click();
+        }, 100);
+      }
     }
   });
 
