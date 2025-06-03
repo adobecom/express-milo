@@ -167,9 +167,8 @@ function mWebCloseEvents() {
 }
 
 function mWebVariant() {
-  const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const hasData = getMetadata('cta-1-text') && getMetadata('cta-1-link');
-  if (!hasData || !isMobileDevice) return;
+  if (!hasData || document.body.dataset?.device !== 'mobile') return;
   mWebBuildElements();
   mWebCloseEvents();
   mWebOverlayScroll();
