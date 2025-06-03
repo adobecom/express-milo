@@ -22,12 +22,21 @@ async function fetchPromotion(name) {
 export default async function decorate($block) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const name = $block.textContent.trim();
+
   if (!name) return;
 
   const html = await fetchPromotion(name);
   if (html) {
     const div = createTag('div');
     div.innerHTML = html;
+
+    /** Add text content to link title if not provided
+     * We are
+     */
+    const link = div.querySelector('a');
+    const titleFromH3 = div.querySelector('h3')?.textContent || '';
+    const [linkText, linkContext] = link.textContent.split('|');
+    if (linkContext) link.title = `${linkText} || ${titleFromH3.toLowerCase()}`;
 
     normalizeHeadings(div, ['h2', 'h3']);
 

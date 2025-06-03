@@ -320,6 +320,7 @@ export async function decorateButtonsDeprecated(el, size) {
       // propagates to buttons.
       $a.innerHTML = $a.innerHTML.replaceAll('<u>', '').replaceAll('</u>', '');
     }
+
     $a.title = $a.title || linkText;
     try {
       const { hash } = new URL($a.href);
