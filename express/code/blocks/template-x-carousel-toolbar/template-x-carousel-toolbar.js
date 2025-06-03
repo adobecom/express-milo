@@ -180,19 +180,25 @@ export async function extractSort(recipe) {
 
 export default async function init(el) {
   [{ createTag, getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
-  const [headingRow, recipeRow] = el.children;
-  headingRow.classList.add('heading-container');
+  const [toolbar, recipeRow] = el.children;
+  const heading = toolbar.querySelector('h1,h2,h3');
+  heading.classList.add('heading');
+  el.prepend(heading);
+  toolbar.classList.add('toolbar');
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
 
   // TODO: lazy load templates
   const [
-    { templatesContainer, updateTemplates, control },
+    { templatesContainer, updateTemplates, control: galleryControl },
     sortSetup,
   ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
   const { sortOptions, defaultIndex } = sortSetup || {};
-  sortOptions && headingRow.append(createDropdown(sortOptions, defaultIndex, updateTemplates));
-
-  el.append(templatesContainer, control);
+  const dropdown = createDropdown(sortOptions, defaultIndex, updateTemplates);
+  const controlsContainer = createTag('div', { class: 'controls-container' }, [dropdown, galleryControl]);
+  sortOptions && controlsContainer.append(dropdown);
+  controlsContainer.append(galleryControl);
+  toolbar.append(controlsContainer);
+  el.append(templatesContainer);
   createFromScratch();
 }
