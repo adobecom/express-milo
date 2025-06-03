@@ -55,27 +55,23 @@ main .section .ax-columns.enterprise .column h2 {
   font-size: var(--heading-font-size-s);
 }
 
-.section:has(.ax-columns.bg)::before {
+.hero-animation-overlay::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(
-      to bottom,
-      white 0%, 
-      white 10%, 
-      rgba(255,255,255,0) 30%, 
-      rgba(255,255,255,0) 70%, 
-      white 90%, 
-      white 100%
-    ),
-    var(--bg-image, none);
+  width: 60vw;
+  height: 78vh;
+  right: -73px;
+  top: -128px;
+  z-index: -1;
+  background-image: 
+    linear-gradient(to bottom, transparent 85%, white 100%),
+    linear-gradient(to right, transparent 85%, white 100%),
+    linear-gradient(to left, transparent 85%, white 100%),
+    linear-gradient(to top, transparent 85%, white 100%),
+    var(--bg-image);
   background-size: cover;
   background-position: center;
-  z-index: -1;
+  opacity: 0.5;
 }
 
 .section:not(:has(> .ax-columns:not(.centered))) > .ax-columns.centered {
@@ -726,6 +722,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   max-height: 40vh;
   margin-bottom: 40px;
   max-width: 370px;
+  border-radius: 8px;
 }
 
 .ax-columns.fullsize
