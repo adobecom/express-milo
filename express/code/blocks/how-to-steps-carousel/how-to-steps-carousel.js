@@ -52,16 +52,23 @@ function activate(block, target) {
   // de-activate all
   block.querySelectorAll('.tip, .tip-number').forEach((item) => {
     item.classList.remove('active');
-    item.setAttribute('aria-selected', 'false');
+    if (item.tagName === 'BUTTON') {
+      item.setAttribute('aria-selected', 'false');
+    }
   });
 
+  console.log( block.querySelectorAll('.tip'))
   // get index of the target
   const i = parseInt(target.getAttribute('data-tip-index'), 10);
   // activate corresponding number and tip
   block.querySelectorAll(`.tip-${i}`).forEach((elem) => {
     elem.classList.add('active');
-    elem.setAttribute('aria-selected', 'true');
+    if (elem.tagName === 'BUTTON') {
+      elem.setAttribute('aria-selected', 'true');
+    }
   });
+
+
 }
 
 function initRotation(howToWindow, howToDocument) {
