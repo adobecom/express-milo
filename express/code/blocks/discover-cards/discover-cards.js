@@ -135,11 +135,8 @@ export default async function decorate(block) {
   cardsWrapper.setAttribute('aria-label', `${numCards} cards in this section`);
 
   const cardParagraphs = [[]];
-  cards.forEach((card, index) => {
+  cards.forEach((card) => {
     card.classList.add('card');
-
-    card.setAttribute('aria-setsize', numCards);
-    card.setAttribute('aria-posinset', index + 1);
 
     const cardDivs = [...card.children];
 
