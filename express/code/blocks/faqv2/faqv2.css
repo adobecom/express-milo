@@ -620,3 +620,39 @@
     height: 80px;
   }
 }
+
+.faqv2.expandable.longform .faqv2-toggle {
+  padding: 16px 0;
+}
+
+.faqv2.expandable.longform .faqv2-toggle:not(:last-child) {
+  border-bottom: 1px solid #8F8F8F;
+}
+
+.faqv2.expandable.longform .faqv2-header {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-gray-800);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 16px;
+  margin-bottom: 16px;
+}
+
+.faqv2.expandable.longform .faqv2-content {
+  overflow: hidden;
+  transition: max-height 300ms ease-out;
+  margin-top: 0;
+  padding-top: 16px;
+  padding-left: 18px;
+  padding-right: 60px;
+}
+
+.faqv2.expandable.longform .faqv2-content.open {
+  margin-top: 0;
+  padding-top: 16px;
+  padding-left: 18px;
+  padding-right: 60px;
+}
