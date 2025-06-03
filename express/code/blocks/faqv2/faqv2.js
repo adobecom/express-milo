@@ -48,7 +48,7 @@ function buildTableLayout(block) {
       toggle.appendChild(headerDiv);
 
       const iconElement = createTag('img', {
-        src: index === 0 ? `${config.codeRoot}/icons/minus-heavy.svg` : `${config.codeRoot}/icons/plus-heavy.svg`,
+        src: `${config.codeRoot}/icons/plus-heavy.svg`,
         alt: 'toggle-icon',
         class: 'toggle-icon',
       });
@@ -59,16 +59,8 @@ function buildTableLayout(block) {
       toggle.appendChild(content);
 
       // Set initial state
-      if (index === 0) {
-        content.classList.add('open');
-        // Use requestAnimationFrame to ensure content is rendered
-        requestAnimationFrame(() => {
-          content.style.maxHeight = `${content.scrollHeight}px`;
-        });
-      } else {
-        content.style.maxHeight = '0';
-        content.style.overflow = 'hidden';
-      }
+      content.style.maxHeight = '0';
+      content.style.overflow = 'hidden';
 
       headerDiv.addEventListener('click', () => {
         const isOpen = content.classList.contains('open');
@@ -122,7 +114,7 @@ function buildTableLayout(block) {
       headerAccordion.appendChild(headerDiv);
 
       const iconElement = createTag('img', {
-        src: index === 0 ? `${config.codeRoot}/icons/minus-heavy.svg` : `${config.codeRoot}/icons/plus-heavy.svg`,
+        src: `${config.codeRoot}/icons/plus-heavy.svg`,
         alt: 'toggle-icon',
         class: 'toggle-icon',
       });
