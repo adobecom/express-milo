@@ -33,6 +33,10 @@
   position: relative;
 }
 
+.faqv2.expandable:not(.longform) .faqv2-toggle {
+  padding: 12px 0 0;
+}
+
 .faqv2.expandable:not(.longform) .faqv2-wrapper::before {
   content: '';
   position: absolute;
@@ -704,7 +708,6 @@
   justify-content: space-between;
   align-items: center;
   padding-right: 16px;
-  margin-bottom: 16px;
 }
 
 .faqv2.expandable .faqv2-content {
@@ -722,6 +725,7 @@
   padding-top: 16px;
   padding-left: 18px;
   padding-right: 30px;
+  padding-bottom: 16px;
   background-color: #FAFAFA;
 }
 
