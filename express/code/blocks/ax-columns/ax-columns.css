@@ -790,7 +790,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .ax-columns.marquee h1 em {
   font-style: normal;
-  background: linear-gradient(320deg, #7C84F3, #FF4DD2, #FF993B, #FF4DD2, #7C84F3, #FF4DD2, #FF993B);
+  background: linear-gradient(113deg, #D600C4 27.32%, #4B2BEE 46.59%);
   background-size: 400% 400%;
   -webkit-animation: buttonGradient 45s ease infinite;
   -moz-animation: buttonGradient 45s ease infinite;
