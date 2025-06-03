@@ -722,13 +722,16 @@
 
 .faqv2.expandable:not(.longform) .faqv2-content.open {
   margin-top: 0;
-  padding-top: 16px;
-  padding-left: 18px;
-  padding-right: 30px;
-  padding-bottom: 16px;
+  padding: 16px 30px 16px 18px;
   background-color: #FAFAFA;
 }
 
 .faqv2.expandable:not(.longform) .faqv2-toggle:has(.faqv2-content.open) {
   background-color: #FAFAFA;
+}
+
+.faqv2 .toggle-icon {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.3s ease;
 }
