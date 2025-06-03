@@ -67,6 +67,7 @@ function buildTableLayout(block) {
         });
       } else {
         content.style.maxHeight = '0';
+        content.style.overflow = 'hidden';
       }
 
       headerDiv.addEventListener('click', () => {
