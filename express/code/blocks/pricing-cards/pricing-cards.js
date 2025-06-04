@@ -341,19 +341,19 @@ function handleTooltip(pricingArea) {
   tooltipDiv.innerHTML = tooltipDiv.innerHTML.replace(pattern, '');
   const tooltipText = tooltip[2];
   tooltipDiv.classList.add('tooltip');
-  const span = createTag('div', { class: 'tooltip-text' });
-  span.innerText = tooltipText;
+  const tooltipTextElement = createTag('div', { class: 'tooltip-text' });
+  tooltipTextElement.innerText = tooltipText;
   const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
-  icon.append(span);
   const iconWrapper = createTag('button');
   icon.setAttribute('tabindex', 0);
   iconWrapper.setAttribute('aria-label', tooltipText);
   iconWrapper.append(icon);
-  iconWrapper.append(span);
+  iconWrapper.append(tooltipTextElement);
   tooltipDiv.append(iconWrapper);
 
   iconWrapper.addEventListener('mouseover', () => {
     iconWrapper.classList.add('hover');
+    tooltipTextElement.classList.add('hover');
   });
 
   iconWrapper.addEventListener('mouseleave', () => {
@@ -362,18 +362,21 @@ function handleTooltip(pricingArea) {
     }, 500);
   });
 
-  span.addEventListener('mouseenter', () => {
-    span.classList.add('hover');
+  tooltipTextElement.addEventListener('mouseenter', () => {
+    tooltipTextElement.classList.add('hover');
   });
 
-  span.addEventListener('mouseleave', () => {
-    span.classList.remove('hover');
+  tooltipTextElement.addEventListener('mouseleave', () => {
+    setTimeout(() => {
+      console.log('mouseleave', document.activeElement);
+      tooltipTextElement.classList.remove('hover');
+    }, 500);  
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.activeElement.blur();
-      span.classList.remove('hover');
+      tooltipTextElement.classList.remove('hover');
       iconWrapper.classList.remove('hover');
     }
   });

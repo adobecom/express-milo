@@ -198,6 +198,7 @@ End border style variants
   user-select: text;
   transition: bottom 0.5s;
   width: 100%;
+  pointer-events: none;
 }
 
 .pricing-cards .tooltip>button {
@@ -215,6 +216,7 @@ End border style variants
 
 .pricing-cards .tooltip-text.hover {
   opacity: 1;
+  pointer-events: all;
 } 
 
 .pricing-cards .tooltip-text::after {
