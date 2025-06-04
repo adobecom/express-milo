@@ -416,6 +416,10 @@ main .section .ax-columns.enterprise .column h2 {
   float: none;
 }
 
+.ax-columns.marquee .button-container {
+  display: none;
+}
+
 .ax-columns.center .icon {
   float: none;
 }
