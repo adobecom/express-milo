@@ -258,7 +258,7 @@ export async function fixIcons(el = document) {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
   });
   /* new icons handling */
-  el.querySelectorAll('img').forEach( async ($img) => {
+  el.querySelectorAll('img').forEach(async ($img) => {
     const alt = $img.getAttribute('alt');
     if (alt) {
       const lowerAlt = alt.toLowerCase();
@@ -285,7 +285,7 @@ export async function fixIcons(el = document) {
           }
         }
         const iconElement = getIconElementDeprecated([icon, mobileIcon], size);
-        iconElement.setAttribute('alt', "");
+        iconElement.setAttribute('alt', '');
         $picture.parentElement
           .replaceChild(iconElement, $picture);
       }
