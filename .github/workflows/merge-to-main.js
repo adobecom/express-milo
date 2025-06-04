@@ -125,7 +125,7 @@ const mergeToMain = async (pr) => {
       owner,
       repo,
       pull_number: number,
-      merge_method: 'squash',
+      merge_method: 'merge',
     });
     console.log(`Successfully merged PR #${number} to main`);
     return true;
