@@ -285,7 +285,7 @@ export async function fixIcons(el = document) {
           }
         }
         const iconElement = getIconElementDeprecated([icon, mobileIcon], size);
-        iconElement.setAttribute('alt', '');
+        iconElement.setAttribute('alt', "");
         $picture.parentElement
           .replaceChild(iconElement, $picture);
       }
