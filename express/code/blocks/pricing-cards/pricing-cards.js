@@ -373,9 +373,11 @@ function handleTooltip(pricingArea) {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.activeElement.blur();
+      span.classList.remove('hover');
       iconWrapper.classList.remove('hover');
     }
   });
+
 }
 
 async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
