@@ -76,6 +76,7 @@ export function handleTooltip(pricingArea) {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.activeElement.blur();
+      tooltipDiv.classList.remove('hover');
       iconWrapper.classList.remove('hover');
     }
   });
