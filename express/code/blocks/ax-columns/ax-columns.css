@@ -1249,9 +1249,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.marquee .column-picture::before {
     content: '';
     position: absolute;
-    width: 50vw;
+    width: 55vw;
     height: 70vh;
-    right: -15vw;
+    right: -10vw;
     top: -100px;
     z-index: -1;
     background-image: 
