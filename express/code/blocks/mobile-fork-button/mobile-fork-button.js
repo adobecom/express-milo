@@ -168,7 +168,8 @@ function mWebCloseEvents() {
 
 function mWebVariant() {
   const hasData = getMetadata('cta-1-text') && getMetadata('cta-1-link');
-  if (!hasData || document.body.dataset?.device !== 'mobile') return;
+
+  if (!hasData || getMobileOperatingSystem() !== 'Android') return;
   mWebBuildElements();
   mWebCloseEvents();
   mWebOverlayScroll();
@@ -196,6 +197,5 @@ export default async function decorate(block) {
     document.dispatchEvent(linksPopulated);
   }
   if (data.longText) blockWrapper.classList.add('long-text');
-
   mWebVariant();
 }
