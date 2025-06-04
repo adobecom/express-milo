@@ -1246,13 +1246,13 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     font-size: 18px;
   }
   
-  .hero-animation-overlay::before {
+  .ax-columns.marquee .column-picture::before {
     content: '';
     position: absolute;
-    width: 60vw;
-    height: 78vh;
-    right: -73px;
-    top: -128px;
+    width: 50vw;
+    height: 70vh;
+    right: -15vw;
+    top: -100px;
     z-index: -1;
     background-image: 
       linear-gradient(to bottom, transparent 85%, white 100%),
