@@ -1240,6 +1240,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .section .ax-columns.marquee h1.columns-heading-long {
     font-size: var(--heading-font-size-xl);
+  }
 
   .content.columns-xl-heading h1,
   .content.columns-xl-heading h2,
