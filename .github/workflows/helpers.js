@@ -93,6 +93,25 @@ const isWithinRCP = ({ offset = 0, excludeShortRCP = false } = {}) => {
 };
 
 const getLocalConfigs = () => {
+  // Skip .env check in GitHub Actions
+  if (process.env.GITHUB_ACTIONS) {
+    return {
+      github: {
+        rest: new Octokit({ auth: process.env.GITHUB_TOKEN }),
+        repos: {
+          createDispatchEvent: () => console.log('local mock createDispatch'),
+        },
+      },
+      context: {
+        repo: {
+          owner: process.env.GITHUB_REPOSITORY_OWNER,
+          repo: process.env.GITHUB_REPOSITORY.split('/')[1],
+        },
+      },
+    };
+  }
+
+  // Local development check
   if (!owner || !repo || !auth) {
     throw new Error(`Create a .env file on the root of the project with credentials.
 Then run: node --env-file=.env .github/workflows/update-ims.js`);
