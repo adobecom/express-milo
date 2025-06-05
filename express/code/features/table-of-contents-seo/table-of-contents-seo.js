@@ -1,21 +1,10 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { debounce } from '../../scripts/utils/hofs.js';
 
 let createTag; let getMetadata;
 
 const MOBILE_SIZE = 600;
-const MOBILE_NAV_HEIGHT = 65;
-const MOBILE = 'MOBILE';
-const DESKTOP = 'DESKTOP';
-const getDeviceType = (() => {
-  let deviceType = window.innerWidth >= MOBILE_SIZE ? DESKTOP : MOBILE;
-  const updateDeviceType = () => {
-    deviceType = window.innerWidth >= MOBILE_SIZE ? DESKTOP : MOBILE;
-  };
-  window.addEventListener('resize', debounce(updateDeviceType, 100));
-  return () => deviceType;
-})();
+let MOBILE_NAV_HEIGHT;
 
 function setBoldStyle(element) {
   const tocNumber = element.querySelector('.toc-number');
@@ -96,19 +85,40 @@ function assignHeadingIdIfNeeded(heading, headingText) {
 }
 
 function addTOCItemClickEvent(tocItem, heading) {
-  tocItem.addEventListener('click', (event) => {
-    event.preventDefault();
-    const headerElement = document.getElementById(heading.id);
+  function scrollToHeading(targetHeading) {
+    const headerElement = document.getElementById(targetHeading.id);
     if (headerElement) {
       const headerRect = headerElement.getBoundingClientRect();
       const headerOffset = 70;
       const offsetPosition = headerRect.top + window.scrollY - headerOffset - MOBILE_NAV_HEIGHT;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     } else {
-      console.error(`Element with id "${heading.id}" not found.`);
+      window.lana.log(`Element with id "${targetHeading.id}" not found.`);
     }
     document.querySelector('.toc-content')?.classList.toggle('open');
+  }
+
+  tocItem.addEventListener('click', (event) => {
+    event.preventDefault();
+    scrollToHeading(heading);
   });
+
+  tocItem.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      scrollToHeading(heading);
+    }
+  });
+
+  tocItem.addEventListener('focus', () => {
+    tocItem.classList.add('toc-focus');
+  });
+
+  tocItem.addEventListener('blur', () => {
+    tocItem.classList.remove('toc-focus');
+  });
+
+  tocItem.setAttribute('tabindex', '0');
 }
 
 function findCorrespondingHeading(headingText, doc) {
@@ -134,22 +144,50 @@ function handleTOCCloning(toc, tocEntries) {
   if (mainElement) {
     const tocClone = toc.cloneNode(true);
     tocClone.classList.add('mobile-toc');
+    tocClone.setAttribute('role', 'navigation');
+    tocClone.setAttribute('aria-label', 'Table of Contents');
 
-    const titleWrapper = document.createElement('div');
-    titleWrapper.classList.add('toc-title-wrapper');
+    const titleWrapper = createTag('button', {
+      class: 'toc-title-wrapper',
+      'aria-expanded': 'false',
+      'aria-controls': 'mobile-toc-content',
+      type: 'button',
+      id: 'mobile-toc-button',
+    });
 
     const tocTitle = tocClone.querySelector('.toc-title');
+    if (tocTitle) {
+      tocTitle.setAttribute('role', 'heading');
+      tocTitle.setAttribute('aria-level', '2');
+    }
 
     const tocChevron = document.createElement('span');
     tocChevron.className = 'toc-chevron';
+    tocChevron.setAttribute('aria-hidden', 'true');
 
     titleWrapper.appendChild(tocTitle);
     titleWrapper.appendChild(tocChevron);
 
     tocClone.insertBefore(titleWrapper, tocClone.firstChild);
 
-    const tocContent = document.createElement('div');
-    tocContent.className = 'toc-content';
+    const tocContent = createTag('ul', {
+      class: 'toc-content',
+      id: 'mobile-toc-content',
+      'aria-label': 'Table of Contents Sections',
+    });
+
+    const entries = tocClone.querySelectorAll('.toc-entry');
+    entries.forEach((entry) => {
+      const li = document.createElement('li');
+
+      Array.from(entry.attributes).forEach((attr) => {
+        li.setAttribute(attr.name, attr.value);
+      });
+
+      li.innerHTML = entry.innerHTML;
+
+      entry.parentNode.replaceChild(li, entry);
+    });
 
     tocClone.querySelectorAll('.toc-entry').forEach((entry) => {
       tocContent.appendChild(entry);
@@ -158,28 +196,45 @@ function handleTOCCloning(toc, tocEntries) {
     tocClone.appendChild(tocContent);
     mainElement.insertAdjacentElement('afterend', tocClone);
 
+    // Add click event listener for the title wrapper
     titleWrapper.addEventListener('click', () => {
-      tocContent.classList.toggle('open');
+      const isExpanded = tocContent.classList.toggle('open');
       tocChevron.classList.toggle('up');
+      titleWrapper.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    });
+
+    // Add keyboard event listener for the title wrapper
+    titleWrapper.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        titleWrapper.click();
+      }
+    });
+
+    // Add escape key handler to close the TOC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && tocContent.classList.contains('open')) {
+        tocContent.classList.remove('open');
+        tocChevron.classList.remove('up');
+        titleWrapper.setAttribute('aria-expanded', 'false');
+        titleWrapper.focus();
+      }
     });
 
     const clonedTOCEntries = tocContent.querySelectorAll('.toc-entry');
     clonedTOCEntries.forEach((tocEntry, index) => {
-      addTOCItemClickEvent(tocEntry, tocEntries[index].heading);
+      addTOCItemClickEvent(tocEntry, tocEntries[index]?.heading);
     });
 
     const sticky = tocClone.offsetTop - MOBILE_NAV_HEIGHT;
     window.addEventListener('scroll', () => toggleSticky(tocClone, sticky));
   }
-
-  const originalTOC = document.querySelector('.table-of-contents-seo');
-  if (originalTOC) originalTOC.style.display = 'none';
 }
 
 function setupTOCItem(tocItem, tocCounter, headingText, headingId) {
   tocItem.innerHTML = `
     <span class="toc-number">${tocCounter}</span>
-    <a href="#${headingId}" daa-ll="${headingText}-${tocCounter}--">
+    <a href="#${headingId}" daa-ll="${headingText}-${tocCounter}--table-of-contents">
       ${headingText}
     </a>
   `;
@@ -234,7 +289,6 @@ function addTOCEntries(toc, config, doc) {
     }
   });
 
-  if (getDeviceType() !== DESKTOP) handleTOCCloning(toc, tocEntries);
   return tocEntries;
 }
 
@@ -261,7 +315,6 @@ function setTOCPosition(toc, tocContainer) {
     : `${targetTop}px`;
 
   tocContainer.style.position = targetTop <= window.scrollY + viewportMidpoint ? 'fixed' : 'absolute';
-  tocContainer.style.display = 'block';
 
   const footer = document.querySelector('footer');
 
@@ -287,15 +340,43 @@ function handleSetTOCPos(toc, tocContainer) {
 }
 
 function applyTOCBehavior(toc, tocContainer) {
-  document.querySelectorAll('.mobile-toc').forEach((mobileToc) => {
-    mobileToc.style.display = 'none';
-  });
   handleSetTOCPos(toc, tocContainer);
+
+  const tocContent = toc.querySelector('.toc-content');
+  const tocChevron = toc.querySelector('.toc-chevron');
+  const titleWrapper = toc.querySelector('.toc-title-wrapper');
+
+  if (titleWrapper && tocContent) {
+    titleWrapper.setAttribute('aria-expanded', 'false');
+    titleWrapper.setAttribute('aria-controls', 'desktop-toc-content');
+    tocContent.id = 'desktop-toc-content';
+
+    titleWrapper.addEventListener('click', () => {
+      const isExpanded = tocContent.classList.toggle('open');
+      tocChevron.classList.toggle('up');
+      titleWrapper.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    });
+
+    titleWrapper.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        titleWrapper.click();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && tocContent.classList.contains('open')) {
+        tocContent.classList.remove('open');
+        tocChevron.classList.remove('up');
+        titleWrapper.setAttribute('aria-expanded', 'false');
+        titleWrapper.focus();
+      }
+    });
+  }
 }
 
 function initializeTOCContainer() {
   const tocContainer = document.querySelector('.table-of-contents-seo');
-  tocContainer.style.display = 'none';
   return tocContainer;
 }
 
@@ -354,22 +435,93 @@ export default async function setTOCSEO() {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const doc = document.querySelector('main');
   const config = buildMetadataConfigObject();
-  const tocSEO = createTag('div', { class: 'table-of-contents-seo' });
-  const toc = createTag('div', { class: 'toc' });
+
+  try {
+    const { getGnavHeight } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
+    MOBILE_NAV_HEIGHT = getGnavHeight();
+  } catch (e) {
+    window.lana?.log(`Error getting gnav height ${e}`);
+  }
+
+  const desktopSkipLink = createTag('a', {
+    href: '#desktop-toc',
+    class: 'skip-link desktop-skip-link',
+    'aria-label': 'Skip to Table of Contents',
+  });
+  desktopSkipLink.textContent = 'Skip to Table of Contents';
+
+  const mobileSkipLink = createTag('a', {
+    href: '#mobile-toc-button',
+    class: 'skip-link mobile-skip-link',
+    'aria-label': 'Skip to Mobile Table of Contents',
+  });
+  mobileSkipLink.textContent = 'Skip to Mobile Table of Contents';
+
+  // Add skip links to the document
+  document.body.insertBefore(desktopSkipLink, document.body.firstChild);
+  document.body.insertBefore(mobileSkipLink, document.body.firstChild);
+
+  const tocSEO = createTag('div', {
+    class: 'table-of-contents-seo',
+    id: 'desktop-toc',
+  });
+  const toc = createTag('div', {
+    class: 'toc',
+    tabindex: '0',
+    role: 'navigation',
+    'aria-label': 'Table of Contents',
+  });
   if (config.title) addTOCTitle(toc, config);
 
-  let tocEntries;
-  if (getDeviceType() === DESKTOP) {
-    tocEntries = addTOCEntries(toc, config, doc);
-    addHoverEffect(tocEntries);
-    tocSEO.appendChild(toc);
-    doc.appendChild(tocSEO);
-    const tocContainer = initializeTOCContainer();
-    applyTOCBehavior(toc, tocContainer);
-    handleActiveTOCHighlighting(tocEntries);
-  } else {
-    setTimeout(() => {
-      tocEntries = addTOCEntries(toc, config, doc);
-    }, 50);
-  }
+  tocSEO.appendChild(toc);
+  doc.appendChild(tocSEO);
+  const tocContainer = initializeTOCContainer();
+
+  const tocEntries = addTOCEntries(toc, config, doc);
+  addHoverEffect(tocEntries);
+
+  handleTOCCloning(toc, tocEntries);
+
+  applyTOCBehavior(toc, tocContainer);
+  handleActiveTOCHighlighting(tocEntries);
+
+  let currentMode = null;
+
+  const handleResize = () => {
+    const isMobile = window.innerWidth < MOBILE_SIZE;
+    const mobileTOC = document.querySelector('.mobile-toc');
+
+    if (currentMode === isMobile) return;
+    currentMode = isMobile;
+
+    if (isMobile) {
+      tocSEO.classList.add('mobile-view');
+      if (mobileTOC) {
+        mobileTOC.classList.remove('desktop-view');
+        mobileTOC.id = 'mobile-toc';
+      }
+      mobileSkipLink.classList.remove('hidden');
+      desktopSkipLink.classList.add('hidden');
+    } else {
+      tocSEO.classList.remove('mobile-view');
+      if (mobileTOC) {
+        mobileTOC.classList.add('desktop-view');
+      }
+      setTOCPosition(toc, tocContainer);
+      desktopSkipLink.classList.remove('hidden');
+      mobileSkipLink.classList.add('hidden');
+    }
+  };
+
+  handleResize();
+
+  window.addEventListener('resize', handleResize);
+
+  toc.addEventListener('focus', () => {
+    toc.classList.add('toc-focused');
+  });
+
+  toc.addEventListener('blur', () => {
+    toc.classList.remove('toc-focused');
+  });
 }

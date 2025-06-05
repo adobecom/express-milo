@@ -18,6 +18,7 @@
   --color-gray-600: #686868;
   --color-gray-700: #444;
   --color-gray-800: #242424;
+  --color-blue-600: #0066CC;
   --color-black: #000;
   --color-brand-title: #000b1d;
   --color-info-accent: #5c5ce0;
@@ -80,6 +81,7 @@
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
   --block-lg-max-width: 1024px;
+  --block-wd-max-width: 1440px; 
 
   /* Spacing */
   --spacing-100: 8px;
@@ -92,6 +94,8 @@
   --spacing-800: 64px;
   --spacing-900: 80px;
   --spacing-1000: 96px;
+  
+  --S2-Buttons-Premium: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
 
   /* current ax-grid system */
   --ax-grid-margin: 20px;
@@ -490,16 +494,7 @@ main a.button.gradient:any-link:active,
 main a.button.gradient:any-link:focus {
   color: var(--color-white);
   border-color: transparent;
-  background: linear-gradient(
-          320deg,
-          #7c84f3,
-          #ff4dd2,
-          #ff993b,
-          #ff4dd2,
-          #7c84f3,
-          #ff4dd2,
-          #ff993b
-  );
+  background: var(--S2-Buttons-Premium);
   background-size: 400% 400%;
   transition: background-color 0.3s, color 0.3s, border 0.3s;
   -webkit-animation: buttonGradient 45s ease infinite;

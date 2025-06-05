@@ -170,6 +170,7 @@
   .pricing-table.single-section .col-wrapper {
     height: 36px;
   }
+
   .pricing-table.single-section .additional-row .col-2.collapsed,
   .pricing-table.single-section .additional-row .col-3.collapsed {
     display: none;
@@ -568,7 +569,7 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   font-weight: 600;
 }
 .pricing-table .row.section-row .col .col-content em{
-  color: gray;
+  color:  var(--color-gray-600);
 }
 
 .pricing-table .row.section-row .col.included-feature .col-content {
@@ -658,9 +659,13 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   background-color: unset;
 }
 
-.pricing-table.vertical-shading .row-heading .col:nth-child(2n),
+
 .pricing-table.vertical-shading .col:nth-child(2n) {
   background: var(--shaded-color);
+}
+
+.pricing-table.vertical-shading .col.screen-reader-header-content {
+  background-color: unset;
 }
 /* /Table Section Rows */
 
@@ -1001,6 +1006,8 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
   }
   .pricing-table.single-section .table-end-row:last-of-type{
     border-bottom: unset;
-  } 
+  }
+  .pricing-table button.row.toggle-row {
+    display: none;
+  }
 }
-
