@@ -631,10 +631,6 @@ export default async function init(el) {
 
   const decoratedCardEls = [...cardsContainer.querySelectorAll('.card')];
   const synchedItems = groups.flat();
-  synchedItems.forEach((item) => {
-    // elements with js-controlled heights need border-box
-    if (item) item.style.boxSizing = 'border-box';
-  });
   const undoSyncHeights = () => {
     synchedItems.forEach((item) => {
       item.style?.removeProperty('min-height');

@@ -32,7 +32,11 @@ Legacy CSS for cards and special promo
   align-items: center;
 }
 
-.pricing-cards .card .card-header h3 {
+.pricing-cards .card > * {
+  box-sizing: border-box;
+}
+
+.pricing-cards .card .card-header h2 {
   font-weight: var(--heading-font-weight);
   line-height: var(--heading-line-height);
   font-size: 1.75rem;
