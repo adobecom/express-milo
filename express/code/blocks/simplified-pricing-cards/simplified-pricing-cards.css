@@ -281,24 +281,6 @@ main .section>.simplified-pricing-cards-wrapper {
     width: 100%;
 }
 
-
-.simplified-pricing-cards .tooltip {
-    position: relative;
-    display: inline;
-}
-
-.simplified-pricing-cards .tooltip span {
-    position: relative;
-}
-
-.simplified-pricing-cards .tooltip  button.hover .tooltip-text {
-    opacity: 1;
-} 
-
-.simplified-pricing-cards .tooltip-text.hover {
-    opacity: 1;
-} 
-
 .simplified-pricing-cards .toggle-switch {
     display: block;
     font-weight: 600;
@@ -330,16 +312,11 @@ main .section>.simplified-pricing-cards-wrapper {
 }
 
 /* Tooltip CSS */
-
+.simplified-pricing-cards .tooltip  button.hover .tooltip-text,
 .simplified-pricing-cards .tooltip > button:focus-within .tooltip-text,
 .simplified-pricing-cards .tooltip-text.hover {
     opacity: 1;
     pointer-events: all;
-}
-
-.simplified-pricing-cards .tooltip-icon {
-    position: relative;
-    top: 2px;
 }
 
 .simplified-pricing-cards .tooltip-text {
@@ -396,6 +373,21 @@ main .section>.simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .tooltip-text.overflow-right::after {
     left: inherit;
     right: 20px;
+}
+
+
+.simplified-pricing-cards .tooltip-icon {
+    position: relative;
+    top: 2px;
+}
+
+.simplified-pricing-cards .tooltip {
+    position: relative;
+    display: inline;
+}
+
+.simplified-pricing-cards .tooltip span {
+    position: relative;
 }
 
 .simplified-pricing-cards .card-wrapper .card.hide .plan-explanation,
