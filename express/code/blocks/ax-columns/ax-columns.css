@@ -244,6 +244,11 @@ main .section .ax-columns.enterprise .column h2 {
   transition: transform 0.3s ease;
 }
 
+.ax-columns.marquee .column  {
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .ax-columns.marquee .column-picture {
   max-width: 70vw;
   margin-left: auto;
