@@ -237,7 +237,7 @@ export default async function decorate(block) {
 
   const rows = Array.from(block.children);
 
-  if (block.classList.contains('bg')) {
+  if (block.classList.contains('marquee')) {
     const background = rows.shift();
     const bgImgURL = background?.querySelector('img')?.src;
     block.firstElementChild?.remove();
