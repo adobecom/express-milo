@@ -19,7 +19,7 @@
     left: -105px;
     margin-bottom: 5px;
     user-select: text;
-    pointer-events: all;
+    pointer-events: none;
     transition: bottom 0.5s;
 }
 

@@ -1,7 +1,6 @@
 import {
   getLibs,
   yieldToMain,
-  getIconElementDeprecated,
   fixIcons,
   addTempWrapperDeprecated, decorateButtonsDeprecated,
 } from '../../scripts/utils.js';
