@@ -70,7 +70,6 @@ describe('grid-marquee', () => {
     cards.forEach((card) => {
       const face = card.querySelector('.face');
       expect(face).to.exist;
-      expect(face.querySelector('svg')).to.exist;
     });
   });
   it('creates drawer when in view', async () => {
@@ -144,5 +143,27 @@ describe('grid-marquee', () => {
   });
   it('displays ratings for ratings variant', () => {
     expect(block.querySelector('.ratings img')).to.exist;
+  });
+});
+
+Object.defineProperty(navigator, 'userAgent', {
+  value: 'Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36',
+  configurable: true,
+});
+
+describe('grid-marquee for android', () => {
+  let block;
+  // Test Android
+  before(async () => {
+    block = document.querySelector('.grid-marquee');
+    await decorate(block);
+  });
+  it('Adds chevrons', () => {
+    const cardsContainer = block.querySelector('.cards-container');
+    const cards = [...cardsContainer.querySelectorAll('.card')];
+    cards.forEach((card) => {
+      const face = card.querySelector('.face');
+      expect(face.querySelector('svg')).to.exist;
+    });
   });
 });
