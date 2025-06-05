@@ -64,7 +64,6 @@
   overflow: hidden;
   transition: max-height 300ms ease-out;
   margin-top: 0;
-  padding-top: 16px;
   padding-left: 18px;
   padding-right: 30px;
   max-height: 0;
@@ -72,7 +71,6 @@
 
 .faqv2.expandable.longform .faqv2-content.open {
   margin-top: 0;
-  padding-top: 16px;
   padding-left: 18px;
   padding-right: 30px;
 }
@@ -488,16 +486,14 @@
     overflow: hidden;
     transition: max-height 300ms ease-out;
     margin-top: 0;
-    padding-top: 16px;
-    padding-left: 18px;
+    padding-left: 21px;
     padding-right: 60px;
     max-height: 0;
   }
   
   .faqv2.expandable.longform .faqv2-content.open {
     margin-top: 0;
-    padding-top: 16px;
-    padding-left: 18px;
+    padding-left: 21px;
     padding-right: 60px;
   }
 }
