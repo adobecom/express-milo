@@ -58,15 +58,20 @@ export function handleTooltip(pricingArea) {
   iconWrapper.addEventListener('click', adjustElementPosition);
   window.addEventListener('resize', adjustElementPosition);
 
-  icon.addEventListener('mouseover', () => {
+  icon.addEventListener('mouseover', () => {  
     iconWrapper.classList.add('hover');
-    tooltipTextElement.classList.add('hover');
   });
 
-  icon.addEventListener('mouseleave', () => {
+  icon.addEventListener('mouseleave', () => { 
     setTimeout(() => {
       iconWrapper.classList.remove('hover');
     }, 500);
+  });
+
+  tooltipTextElement.addEventListener('mouseover', () => {
+    if (iconWrapper.classList.contains('hover')) {
+      tooltipTextElement.classList.add('hover');
+    }
   });
 
   tooltipTextElement.addEventListener('mouseleave', () => {
@@ -78,8 +83,7 @@ export function handleTooltip(pricingArea) {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.activeElement.blur();
-      tooltipTextElement.classList.remove('hover');
-      iconWrapper.classList.remove('hover');
+      tooltipTextElement.classList.remove('hover'); 
     }
   });
 }
