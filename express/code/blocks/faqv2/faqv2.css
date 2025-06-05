@@ -682,7 +682,6 @@
   justify-content: space-between;
   align-items: center;
   padding-right: 16px;
-  margin-bottom: 16px;
 }
 
 .faqv2.expandable .faqv2-toggle:not(:last-child) {
