@@ -14,10 +14,10 @@ module.exports = {
     'no-await-in-loop': 0,
     'max-statements-per-line': ['error', { max: 2 }],
     'import/extensions': ['error', { js: 'always' }],
-    'object-curly-newline': "off",
+    'object-curly-newline': 'off',
     'no-return-assign': ['error', 'except-parens'],
     'no-unused-expressions': 0,
-    'chai-friendly/no-unused-expressions': "off",
+    'chai-friendly/no-unused-expressions': 'off',
     'import/no-cycle': 1,
     'import/no-extraneous-dependencies': 0,
     'no-restricted-syntax': 0,
@@ -26,6 +26,17 @@ module.exports = {
     {
       files: ['test/**/*.js'],
       rules: { 'no-console': 'off' },
+    },
+    {
+      // Overrides for nala test
+      files: ['nala/**/*.cjs', 'nala/**/*.test.cjs'],
+      rules: {
+        'no-console': 0,
+        'import/no-extraneous-dependencies': 0,
+        'max-len': 0,
+        'chai-friendly/no-unused-expressions': 0,
+        'no-plusplus': 0,
+      },
     },
   ],
   plugins: [
