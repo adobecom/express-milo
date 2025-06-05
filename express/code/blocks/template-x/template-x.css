@@ -2332,11 +2332,12 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   align-items: center;
   gap: 4px;
   min-width: 130px;
+  width: fit-content;
   background-color: var(--background-positive-default);
   color: white;
   text-align: center;
   border-radius: 6px;
-  padding: 6px;
+  padding: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
   left: calc(100% + 12px);
