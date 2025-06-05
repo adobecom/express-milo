@@ -179,8 +179,11 @@ End border style variants
   right: -20px;
 }
 
-.pricing-cards .tooltip > button:focus-within .tooltip-text {
-  opacity: 1;
+.pricing-cards .tooltip  button.hover .tooltip-text,
+.pricing-cards .tooltip > button:focus-within .tooltip-text,
+.pricing-cards .tooltip-text.hover {
+    opacity: 1;
+    pointer-events: visible;
 }
 
 .pricing-cards .tooltip-text {
@@ -208,16 +211,6 @@ End border style variants
   font-family: "adobe-clean";
   position: relative;
 }
-
-
-.pricing-cards .tooltip  button.hover .tooltip-text {
-  opacity: 1;
-} 
-
-.pricing-cards .tooltip-text.hover {
-  opacity: 1;
-  pointer-events: all;
-} 
 
 .pricing-cards .tooltip-text::after {
   content: '';
@@ -255,10 +248,6 @@ End border style variants
   position: relative;
 }
 
-.pricing-cards .tooltip .icon:hover~.tooltip-text {
-  opacity: 1;
-  pointer-events: visible;
-}
 
 .pricing-cards .card-border .hide {
   display: none;

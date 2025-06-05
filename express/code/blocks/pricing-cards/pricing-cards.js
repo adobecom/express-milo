@@ -323,64 +323,68 @@ function adjustElementPosition() {
   }
 }
 
-function handleTooltip(pricingArea) {
+export function handleTooltip(pricingArea) {
   const elements = pricingArea.querySelectorAll('p');
-  const pattern = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
-  let tooltip;
-  let tooltipDiv;
+  const tooltipPattern = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
+  let tooltipMatch;
+  let tooltipContainer;
 
   Array.from(elements).forEach((p) => {
-    const res = pattern.exec(p.textContent);
-    if (res) {
-      tooltip = res;
-      tooltipDiv = p;
+    const match = tooltipPattern.exec(p.textContent);
+    if (match) {
+      tooltipMatch = match;
+      tooltipContainer = p;
     }
   });
-  if (!tooltip) return;
+  if (!tooltipMatch) return;
 
-  tooltipDiv.innerHTML = tooltipDiv.innerHTML.replace(pattern, '');
-  const tooltipText = tooltip[2];
-  tooltipDiv.classList.add('tooltip');
-  const tooltipTextElement = createTag('div', { class: 'tooltip-text' });
-  tooltipTextElement.innerText = tooltipText;
-  const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
-  const iconWrapper = createTag('button');
-  icon.setAttribute('tabindex', 0);
-  iconWrapper.setAttribute('aria-label', tooltipText);
-  iconWrapper.append(icon);
-  iconWrapper.append(tooltipTextElement);
-  tooltipDiv.append(iconWrapper);
+  tooltipContainer.innerHTML = tooltipContainer.innerHTML.replace(tooltipPattern, '');
+  const tooltipContent = tooltipMatch[2];
+  tooltipContainer.classList.add('tooltip');
+  
+  const tooltipPopup = createTag('div', { class: 'tooltip-text' });
+  tooltipPopup.innerText = tooltipContent;
+  
+  const infoIcon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
+  const tooltipButton = createTag('button');
+  tooltipButton.setAttribute('aria-label', tooltipContent);
+  infoIcon.setAttribute('tabindex', 0);
+  
+  tooltipButton.append(infoIcon);
+  tooltipButton.append(tooltipPopup);
+  tooltipContainer.append(tooltipButton);
+  
+  tooltipButton.addEventListener('click', adjustElementPosition);
+  window.addEventListener('resize', adjustElementPosition);
 
-  iconWrapper.addEventListener('mouseover', () => {
-    iconWrapper.classList.add('hover');
-    tooltipTextElement.classList.add('hover');
+  infoIcon.addEventListener('mouseover', () => {
+    tooltipButton.classList.add('hover');
   });
 
-  iconWrapper.addEventListener('mouseleave', () => {
+  infoIcon.addEventListener('mouseleave', () => {
     setTimeout(() => {
-      iconWrapper.classList.remove('hover');
+      tooltipButton.classList.remove('hover');
     }, 500);
   });
 
-  tooltipTextElement.addEventListener('mouseenter', () => {
-    tooltipTextElement.classList.add('hover');
+  tooltipPopup.addEventListener('mouseover', () => {
+    if (tooltipButton.classList.contains('hover')) {
+      tooltipPopup.classList.add('hover');
+    }
   });
 
-  tooltipTextElement.addEventListener('mouseleave', () => {
+  tooltipPopup.addEventListener('mouseleave', () => {
     setTimeout(() => {
-      console.log('mouseleave', document.activeElement);
-      tooltipTextElement.classList.remove('hover');
-    }, 500);  
+      tooltipPopup.classList.remove('hover');
+    }, 500);
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.activeElement.blur();
-      tooltipTextElement.classList.remove('hover');
-      iconWrapper.classList.remove('hover');
+      tooltipPopup.classList.remove('hover');
     }
   });
-
 }
 
 async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
