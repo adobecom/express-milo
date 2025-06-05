@@ -13,6 +13,7 @@ import {
   fetchPlanOnePlans,
 } from '../../scripts/utils/pricing.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
+import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let placeholders;
@@ -34,6 +35,7 @@ const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '[[year-2-pricing-token]]';
 const BASE_PRICING_TOKEN = '[[base-pricing-token]]';
+const TOOLTIP_PATTERN = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
 
 const PLANS = ['monthly', 'annually'];
 const SPECIAL_PLAN = 'annual-billed-monthly';
@@ -304,89 +306,6 @@ function handleRawPrice(price, basePrice, response) {
   }
 }
 
-function adjustElementPosition() {
-  const elements = document.querySelectorAll('.tooltip-text');
-
-  if (elements.length === 0) return;
-  for (const element of elements) {
-    const rect = element.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-      element.classList.remove('overflow-left');
-      element.classList.add('overflow-right');
-    } else if (rect.left < 0) {
-      element.classList.remove('overflow-right');
-      element.classList.add('overflow-left');
-    } else {
-      element.classList.remove('overflow-right');
-      element.classList.remove('overflow-left');
-    }
-  }
-}
-
-export function handleTooltip(pricingArea) {
-  const elements = pricingArea.querySelectorAll('p');
-  const tooltipPattern = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
-  let tooltipMatch;
-  let tooltipContainer;
-
-  Array.from(elements).forEach((p) => {
-    const match = tooltipPattern.exec(p.textContent);
-    if (match) {
-      tooltipMatch = match;
-      tooltipContainer = p;
-    }
-  });
-  if (!tooltipMatch) return;
-
-  tooltipContainer.innerHTML = tooltipContainer.innerHTML.replace(tooltipPattern, '');
-  const tooltipContent = tooltipMatch[2];
-  tooltipContainer.classList.add('tooltip');
-  
-  const tooltipPopup = createTag('div', { class: 'tooltip-text' });
-  tooltipPopup.innerText = tooltipContent;
-  
-  const infoIcon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
-  const tooltipButton = createTag('button');
-  tooltipButton.setAttribute('aria-label', tooltipContent);
-  infoIcon.setAttribute('tabindex', 0);
-  
-  tooltipButton.append(infoIcon);
-  tooltipButton.append(tooltipPopup);
-  tooltipContainer.append(tooltipButton);
-  
-  tooltipButton.addEventListener('click', adjustElementPosition);
-  window.addEventListener('resize', adjustElementPosition);
-
-  infoIcon.addEventListener('mouseover', () => {
-    tooltipButton.classList.add('hover');
-  });
-
-  infoIcon.addEventListener('mouseleave', () => {
-    setTimeout(() => {
-      tooltipButton.classList.remove('hover');
-    }, 500);
-  });
-
-  tooltipPopup.addEventListener('mouseover', () => {
-    if (tooltipButton.classList.contains('hover')) {
-      tooltipPopup.classList.add('hover');
-    }
-  });
-
-  tooltipPopup.addEventListener('mouseleave', () => {
-    setTimeout(() => {
-      tooltipPopup.classList.remove('hover');
-    }, 500);
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.activeElement.blur();
-      tooltipPopup.classList.remove('hover');
-    }
-  });
-}
-
 async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
   const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
@@ -418,7 +337,7 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const savePercentElem = pricingArea.querySelector('.card-offer');
   handleRawPrice(price, basePrice, response);
   handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-  handleTooltip(pricingArea);
+  handleTooltip(pricingArea, TOOLTIP_PATTERN);
   handleSavePercentage(savePercentElem, isPremiumCard, response);
   handleSpecialPromo(specialPromo, isPremiumCard, response, legacyVersion);
   handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
