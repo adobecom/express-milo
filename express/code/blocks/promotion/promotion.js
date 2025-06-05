@@ -36,7 +36,9 @@ export default async function decorate($block) {
     const link = div.querySelector('a');
     const titleFromH3 = div.querySelector('h3')?.textContent || '';
     const [linkText, linkContext] = link.textContent.split('|');
-    if (linkContext) link.title = `${linkText} || ${titleFromH3.toLowerCase()}`;
+    const backupAruaLabelContext = `${linkText.trimStart()} ${titleFromH3}`;
+
+    link.setAttribute('aria-label', `${linkContext || backupAruaLabelContext}`);
 
     normalizeHeadings(div, ['h2', 'h3']);
 
