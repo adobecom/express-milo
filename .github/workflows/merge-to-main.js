@@ -11,6 +11,7 @@ const PR_TITLE = '[Release] Stage to Main';
 const REQUIRED_APPROVALS = process.env.REQUIRED_APPROVALS ? Number(process.env.REQUIRED_APPROVALS) : 2;
 const STAGE = 'stage';
 const PROD = 'main';
+const QA_APPROVED_LABEL = 'QA Approved';
 
 // Check configuration
 const CHECK_CONFIG = {
@@ -90,7 +91,7 @@ const getStageToMainPR = async () => {
 };
 
 const mergeToMain = async (pr) => {
-  const { number, title, checks, reviews } = pr;
+  const { number, title, checks, reviews, labels } = pr;
 
   // Check for failing checks
   if (hasFailingChecks(checks)) {
@@ -110,6 +111,15 @@ const mergeToMain = async (pr) => {
   if (approvals.length < REQUIRED_APPROVALS) {
     await commentOnPR(
       `Cannot merge to main due to insufficient approvals. Required: ${REQUIRED_APPROVALS} approvals`,
+      number
+    );
+    return false;
+  }
+
+  // Check for QA Approved label
+  if (!labels.includes(QA_APPROVED_LABEL)) {
+    await commentOnPR(
+      `Cannot merge to main: Missing "${QA_APPROVED_LABEL}" label. Please ensure QA has approved the changes.`,
       number
     );
     return false;
