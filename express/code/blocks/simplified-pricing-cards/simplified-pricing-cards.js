@@ -96,7 +96,7 @@ function equalizeHeights(el) {
     const headers = el.querySelectorAll(className);
     let maxHeight = 0;
     headers.forEach((placeholder) => {
-      placeholder.style.height = 'unset';
+      placeholder.style.minHeight = 'unset';
     });
     if (window.screen.width > 1279) {
       headers.forEach((header) => {
@@ -107,7 +107,7 @@ function equalizeHeights(el) {
       });
       headers.forEach((placeholder) => {
         if (maxHeight > 0) {
-          placeholder.style.height = `${maxHeight}px`;
+          placeholder.style.minHeight = `${maxHeight}px`;
         }
       });
     }
