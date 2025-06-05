@@ -150,7 +150,7 @@ function createToggle(pricingSections, groupID, adjElemPos, header) {
       plan: basePlan,
       role: 'radio',
       'aria-checked': isDefault.toString(),
-      'aria-labelledby': headerId,
+      'aria-label': header.querySelector('h2').textContent.trim() + ' ' + label
     });
 
     button.appendChild(createTag('span'));
