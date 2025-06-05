@@ -170,7 +170,7 @@ main .section .ax-columns.enterprise .column h2 {
 
 .section .ax-columns p {
   margin: 16px 0;
-  font-size: var(--body-font-size-l);
+  font-size: var(--body-font-size-m);
   line-height: 1.33;
 }
 
