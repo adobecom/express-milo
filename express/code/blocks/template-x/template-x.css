@@ -2342,6 +2342,10 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   transform: translateY(-50%);
   left: calc(100% + 12px);
   font-size: var(--body-font-size-s);
+  width: max-content;
+  max-width: 200px;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
