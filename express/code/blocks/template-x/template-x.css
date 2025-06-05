@@ -2332,7 +2332,6 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   align-items: center;
   gap: 4px;
   min-width: 130px;
-  width: fit-content;
   background-color: var(--background-positive-default);
   color: white;
   text-align: center;
