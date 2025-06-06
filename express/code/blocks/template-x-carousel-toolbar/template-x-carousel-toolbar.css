@@ -17,12 +17,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--toolbar-gap);
-  padding-bottom: 40px;
+  padding-bottom: calc(40px - var(--template-expand-top-len));
 }
 
 .template-x-carousel-toolbar .heading {
   line-height: 1.3;
-  font-size: var(--heading-font-size-s);
+  font-size: var(--body-font-size-xl);
   font-weight: 900;
   padding-bottom: 8px;
 }
@@ -40,6 +40,7 @@
 .template-x-carousel-toolbar .controls-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: var(--toolbar-gap);
 }
 
@@ -376,11 +377,13 @@
 }
 
 @media (min-width: 600px) {
+  .template-x-carousel-toolbar .heading {
+    font-size: var(--heading-font-size-s);
+  }
   .template-x-carousel-toolbar .toolbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-end;
     padding-top: 0;
   }
 }

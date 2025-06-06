@@ -1,5 +1,9 @@
+.hover-cards {
+  --box-shadow-vertical-offset: 7px;
+}
+
 .hover-cards .heading-container {
-  padding-bottom: 32px;
+  padding-bottom: calc(32px - var(--box-shadow-vertical-offset));
 }
 
 .hover-cards .heading-container p {
@@ -18,6 +22,7 @@
 
 .hover-cards .gallery {
   gap: 16px;
+  padding: var(--box-shadow-vertical-offset) 0;
 }
 
 .hover-cards .gallery-control {
@@ -27,8 +32,9 @@
 .hover-cards .card {
   border-radius: 8px;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   min-width: 260px;
+  max-width: 405px;
   background-color: var(--color-white);
   position: relative;
 }
@@ -62,6 +68,7 @@
 }
 
 .hover-cards .card .cta .button {
+  overflow: visible;
   white-space: nowrap;
   margin: 0;
 }
@@ -91,18 +98,12 @@
     padding-bottom: 8px;
   }
   .hover-cards .heading-container {
-    padding-bottom: 20px;
-  }
-  .hover-cards .card {
-    min-width: 346px;
+    padding-bottom: calc(20px - var(--box-shadow-vertical-offset));
   }
 }
 
 @media (min-width: 1200px) {
   .hover-cards .heading-container {
-    padding-bottom: 36px;
-  }
-  .hover-cards .card {
-    min-width: 401px;
+    padding-bottom: calc(36px - var(--box-shadow-vertical-offset));
   }
 }
