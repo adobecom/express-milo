@@ -95,6 +95,11 @@
   --spacing-900: 80px;
   --spacing-1000: 96px;
 
+  --S2-Floating-CTA: linear-gradient(98deg, #5D66EF 3.22%, #D600C4 101.72%);
+  --S2-Floating-CTA-Hover: linear-gradient(98deg, #4B2BEE 3.22%, #A8007E 101.72%);
+  --S2-Floating-CTA-Down: linear-gradient(98deg, #4826DB 3.22%, #880765 101.72%);
+
+
   --S2-Buttons-Premium: linear-gradient(96deg, #B539C8 0%,  #7155FA 66%,  #3B63FB 100%);
   --S2-Buttons-Premium-Hover: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
   --S2-Buttons-Premium-Down: linear-gradient(96deg, #871B9A 0%, #5424DB 66%, #1D3ECF 100%);
@@ -518,7 +523,7 @@ main a.con-button.wide {
 main a.button.gradient:any-link {
   color: var(--color-white);
   border-color: transparent;
-  background: var(--S2-Buttons-Premium);
+  background: var(--S2-Floating-CTA);
   background-size: 400% 400%;
   transition: background-color 0.3s, color 0.3s, border 0.3s;
   -webkit-animation: buttonGradient 45s ease infinite;
@@ -528,17 +533,17 @@ main a.button.gradient:any-link {
 }
 
 main a.button.gradient:any-link:hover {
-  background: var(--S2-Buttons-Premium-Hover);
+  background: var(--S2-Floating-CTA-Hover);
 }
 
 main a.button.gradient:any-link:focus {
   outline: 2px solid var(--color-info-accent);
   outline-offset: 2px;
-  background: var(--S2-Buttons-Premium-Hover);
+  background: var(--S2-Floating-CTA-Hover);
 }
 
 main a.button.gradient:any-link:active {
-  background: var(--S2-Buttons-Premium-Down);
+  background: var(--S2-Floating-CTA-Down);
 }
 
 main a.button>svg {
