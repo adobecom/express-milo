@@ -81,7 +81,7 @@
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
   --block-lg-max-width: 1024px;
-  --block-wd-max-width: 1440px; 
+  --block-wd-max-width: 1440px;
 
   /* Spacing */
   --spacing-100: 8px;
@@ -94,9 +94,10 @@
   --spacing-800: 64px;
   --spacing-900: 80px;
   --spacing-1000: 96px;
-  
-  --S2-Buttons-Premium: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
 
+  --S2-Buttons-Premium: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
+  --S2-Buttons-Premium-Hover: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
+  --S2-Buttons-Premium-Down: linear-gradient(96deg, #871B9A 0%, #5424DB 66%, #1D3ECF 100%);
   /* current ax-grid system */
   --ax-grid-margin: 20px;
   --ax-grid-gutter: 16px;
@@ -155,7 +156,13 @@ body {
 }
 
 body[data-device="mobile"] {
-  main h1, main h2, main h3, main h4, main h5, main h6 {
+
+  main h1,
+  main h2,
+  main h3,
+  main h4,
+  main h5,
+  main h6 {
     hyphens: none;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -169,7 +176,7 @@ body[data-device="mobile"] {
 
 :root:lang(ja) {
   --body-font-family: adobe-clean-han-japanese, 'Adobe Clean', adobe-clean,
-  'Trebuchet MS', sans-serif;
+    'Trebuchet MS', sans-serif;
 }
 
 :is(p):lang(ja) {
@@ -182,7 +189,7 @@ body[data-device="mobile"] main .floating-button-wrapper[data-audience="mobile"]
 }
 
 /* gnav */
-body > header {
+body>header {
   box-sizing: content-box;
   padding-bottom: 0;
   background-repeat: no-repeat;
@@ -202,16 +209,16 @@ main {
 }
 
 main .section:not([data-padding='none']):not(.xxxl-spacing-static,
-.xxl-spacing-static,
-.xl-spacing-static,
-.xxxl-spacing,
-.xxl-spacing,
-.xl-spacing,
-.l-spacing,
-.m-spacing,
-.s-spacing,
-.xs-spacing,
-.xxs-spacing) > .content:first-child {
+  .xxl-spacing-static,
+  .xl-spacing-static,
+  .xxxl-spacing,
+  .xxl-spacing,
+  .xl-spacing,
+  .l-spacing,
+  .m-spacing,
+  .s-spacing,
+  .xs-spacing,
+  .xxs-spacing)>.content:first-child {
   padding-top: 60px;
 }
 
@@ -219,11 +226,14 @@ main .content h2 {
   margin-top: 80px;
 }
 
-main ol, main ul {
+main ol,
+main ul {
   text-align: left;
 }
 
-main a, main a:hover, main u {
+main a,
+main a:hover,
+main u {
   text-decoration: none;
 }
 
@@ -231,7 +241,8 @@ main video {
   max-width: 100%;
 }
 
-main a.button:any-link, main a.con-button:any-link {
+main a.button:any-link,
+main a.con-button:any-link {
   text-decoration: none;
   border-radius: 18px;
   padding: 5px 1.2em 6px;
@@ -251,12 +262,13 @@ main a.button:any-link, main a.con-button:any-link {
   min-height: initial;
 }
 
-main svg.icon-milo, main img.icon-milo {
+main svg.icon-milo,
+main img.icon-milo {
   top: 0.15em !important;
 }
 
 
-.text-block .foreground > .cta-container .body-m.action-area a {
+.text-block .foreground>.cta-container .body-m.action-area a {
   margin: unset;
 }
 
@@ -294,7 +306,9 @@ main .xxl-button a.con-button:any-link {
   line-height: var(--body-line-height);
 }
 
-main a.button.small:any-link, main a.con-button.small:any-link, main .small a.con-button:any-link  {
+main a.button.small:any-link,
+main a.con-button.small:any-link,
+main .small a.con-button:any-link {
   padding: 4px 1em;
   border-radius: 15px;
   font-size: var(--body-font-size-xs);
@@ -338,21 +352,24 @@ main a.button.primaryCTA:focus {
   color: var(--color-white);
   outline: none;
   box-shadow: 0 0 0 2px var(--color-white),
-  0 0 0 4px var(--color-info-accent-hover);
+    0 0 0 4px var(--color-info-accent-hover);
 }
 
-main a.button.primary:any-link, main .dark a.con-button.outline:any-link {
+main a.button.primary:any-link,
+main .dark a.con-button.outline:any-link {
   color: var(--color-white);
   background-color: var(--color-info-primary);
   border-color: var(--color-info-primary);
 }
 
-main a.button.primary:any-link:hover, main a.con-button.outline:any-link:hover {
+main a.button.primary:any-link:hover,
+main a.con-button.outline:any-link:hover {
   background-color: var(--color-info-primary-hover);
   border-color: var(--color-info-primary-hover);
 }
 
-main a.button.primary:any-link:active, main a.con-button.outline:any-link:active {
+main a.button.primary:any-link:active,
+main a.con-button.outline:any-link:active {
   background-color: var(--color-info-primary-down);
   border-color: var(--color-info-primary-down);
 }
@@ -380,29 +397,31 @@ main a.button.secondary:any-link:active {
   border-color: var(--color-info-secondary-down);
 }
 
-main a.button.secondary:focus{
+main a.button.secondary:focus {
   background-color: var(--color-gray-700);
   border-color: var(--color-gray-500);
   color: var(--color-white);
 }
 
-main a.button.reverse:any-link, main a.con-button.outline:any-link {
+main a.button.reverse:any-link,
+main a.con-button.outline:any-link {
   color: var(--color-black);
   background-color: var(--color-white);
 }
 
-main a.button.reverse:any-link:hover, main a.con-button.outline:any-link:hover {
+main a.button.reverse:any-link:hover,
+main a.con-button.outline:any-link:hover {
   background-color: var(--color-info-secondary-hover);
 }
 
-main a.button.reverse:any-link:active, main a.con-button.outline:any-link:active {
+main a.button.reverse:any-link:active,
+main a.con-button.outline:any-link:active {
   background-color: var(--color-info-secondary-down);
 }
 
 main a.button.reverse:focus,
 main a.button.reverse.accent:any-link:focus,
-main a.button.reverse.primaryCTA:any-link:focus
-{
+main a.button.reverse.primaryCTA:any-link:focus {
   background-color: var(--color-info-accent-hover);
   border-color: var(--color-info-accent-hover);
   color: var(--color-white);
@@ -414,8 +433,7 @@ main a.button.reverse.primaryCTA:any-link {
 }
 
 main a.button.reverse.accent:any-link:hover,
-main a.button.reverse.primaryCTA:any-link:hover
-{
+main a.button.reverse.primaryCTA:any-link:hover {
   background-color: var(--color-info-accent-reverse);
 }
 
@@ -424,19 +442,22 @@ main a.button.reverse.primaryCTA:any-link:active {
   background-color: var(--color-info-accent-reverse-down);
 }
 
-main a.button.dark:any-link, main a.con-button.dark:any-link {
+main a.button.dark:any-link,
+main a.con-button.dark:any-link {
   color: var(--color-black);
   background-color: var(--color-white);
   border-color: var(--color-white);
 }
 
-main a.button.dark:any-link:hover, main a.con-button.dark:any-link:hover {
+main a.button.dark:any-link:hover,
+main a.con-button.dark:any-link:hover {
   color: var(--color-black);
   background-color: var(--color-gray-100);
   border-color: var(--color-gray-100);
 }
 
-main a.button.dark:any-link:active, main a.con-button.dark:any-link:active {
+main a.button.dark:any-link:active,
+main a.con-button.dark:any-link:active {
   color: var(--color-black);
   background-color: var(--color-gray-200);
   border-color: var(--color-gray-200);
@@ -451,47 +472,50 @@ main a.con-button.outline:any-link:focus {
   border-color: var(--color-info-primary-hover);
   color: var(--color-white);
   box-shadow: 0 0 0 2px var(--color-white),
-  0 0 0 4px var(--color-info-accent-hover);
+    0 0 0 4px var(--color-info-accent-hover);
 }
 
 main a.con-button.outline:any-link:active {
   background-color: var(--color-info-secondary-hover);
   box-shadow: 0 0 0 2px var(--color-white),
-  0 0 0 4px var(--color-info-accent-hover);
+    0 0 0 4px var(--color-info-accent-hover);
 }
 
-main a.button.dark.reverse:any-link, main .dark a.con-button.outline:any-link {
+main a.button.dark.reverse:any-link,
+main .dark a.con-button.outline:any-link {
   color: var(--color-white);
   background-color: transparent;
   border-color: var(--color-white);
 }
 
-main a.button.dark.reverse:any-link:hover, main .dark a.con-button.outline:any-link:hover {
+main a.button.dark.reverse:any-link:hover,
+main .dark a.con-button.outline:any-link:hover {
   color: var(--color-white);
   background-color: rgba(0, 0, 0, 0.1);
   border-color: var(--color-gray-100);
 }
 
-main a.button.dark.reverse:any-link:active, main .dark a.con-button.outline:any-link:active {
+main a.button.dark.reverse:any-link:active,
+main .dark a.con-button.outline:any-link:active {
   color: var(--color-white);
   background-color: rgba(0, 0, 0, 0.2);
   border-color: var(--color-gray-200);
 }
 
-main a.button.dark.reverse:any-link:focus, main .dark a.con-button.outline:any-link:focus {
+main a.button.dark.reverse:any-link:focus,
+main .dark a.con-button.outline:any-link:focus {
   background-color: var(--color-white);
   border-color: var(--color-white);
   color: var(--color-info-accent-hover);
 }
 
-main a.button.wide, main a.con-button.wide {
+main a.button.wide,
+main a.con-button.wide {
   display: block;
 }
 
-main a.button.gradient:any-link,
-main a.button.gradient:any-link:hover,
-main a.button.gradient:any-link:active,
-main a.button.gradient:any-link:focus {
+
+main a.button.gradient:any-link {
   color: var(--color-white);
   border-color: transparent;
   background: var(--S2-Buttons-Premium);
@@ -502,7 +526,21 @@ main a.button.gradient:any-link:focus {
   animation: buttonGradient 45s ease infinite;
 }
 
-main a.button > svg {
+
+main a.button.gradient:any-link:hover {
+  background: var(--S2-Buttons-Premium-Hover);
+}
+
+main a.button.gradient:any-link:focus {
+  border: 2px solid var(--Alias-focus-indicator-default, #4B75FF);
+  background: var(--S2-Buttons-Premium-Hover);
+}
+
+main a.button.gradient:any-link:active {
+  background: var(--S2-Buttons-Premium-Down);
+}
+
+main a.button>svg {
   float: left;
   display: inline;
   width: 20px;
@@ -512,7 +550,7 @@ main a.button > svg {
   color: currentColor;
 }
 
-main a.button > svg > use {
+main a.button>svg>use {
   fill: currentColor;
   color: currentColor;
 }
@@ -525,7 +563,8 @@ main h5,
 main h6 {
   font-weight: var(--heading-font-weight);
   line-height: var(--heading-line-height);
-  -webkit-hyphens: auto; /* safari */
+  -webkit-hyphens: auto;
+  /* safari */
   hyphens: auto;
   margin-block-start: 0;
   margin-block-end: 0;
@@ -628,7 +667,7 @@ main #hero .hero-bg img {
   object-fit: cover;
 }
 
-main #hero > div {
+main #hero>div {
   padding: 0;
   margin: auto;
 }
@@ -657,7 +696,8 @@ main .section.secondary {
   background-color: var(--color-gray-100);
 }
 
-main .section p.button-container, main .section .content p.button-container {
+main .section p.button-container,
+main .section .content p.button-container {
   text-align: center;
   margin-top: 16px;
   margin-bottom: 0;
@@ -750,50 +790,51 @@ main .free-plan-widget .plan-widget-tag img.icon.icon-checkmark {
   margin-right: 4px;
 }
 
-:lang(ja) main .section > .content  {
+:lang(ja) main .section>.content {
   text-align: left;
   padding: 60px 20px 0;
 }
 
-:lang(ja) main .section > .content.center  {
+:lang(ja) main .section>.content.center {
   text-align: center;
   padding: 60px 20px 0;
 }
 
-main .section > .content {
+main .section>.content {
   text-align: center;
   max-width: 375px;
 }
 
-main .section .content p, main .section p {
+main .section .content p,
+main .section p {
   margin: 32px 0;
 }
 
 main .section:not(.xxxl-spacing-static,
-.xxl-spacing-static,
-.xl-spacing-static,
-.xxxl-spacing,
-.xxl-spacing,
-.xl-spacing,
-.l-spacing,
-.m-spacing,
-.s-spacing,
-.xs-spacing,
-.xxs-spacing):last-of-type>.content:not(:has(+ .template-list-wrapper)) {
+  .xxl-spacing-static,
+  .xl-spacing-static,
+  .xxxl-spacing,
+  .xxl-spacing,
+  .xl-spacing,
+  .l-spacing,
+  .m-spacing,
+  .s-spacing,
+  .xs-spacing,
+  .xxs-spacing):last-of-type>.content:not(:has(+ .template-list-wrapper)) {
   padding-bottom: 40px;
 }
 
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.button.same-fcta,
-main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.con-button.same-fcta,
+main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.button.same-fcta,
+main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.con-button.same-fcta,
 #hero a.same-fcta {
   display: none;
 }
 
 /* Store icons */
-main  img.icon-apple-store,
-main  img.icon-google-store,
-main  img.icon-galaxy-store,
-main  img.icon-microsoft-store {
+main img.icon-apple-store,
+main img.icon-google-store,
+main img.icon-galaxy-store,
+main img.icon-microsoft-store {
   height: 70px;
   width: auto;
   margin: 8px;
@@ -806,42 +847,48 @@ main .lottie {
 }
 
 /* Japanese font sizing styles */
-main :lang(ja) h1.heading-long, main :lang(ja) #hero h1.heading-long {
+main :lang(ja) h1.heading-long,
+main :lang(ja) #hero h1.heading-long {
   font-size: var(--heading-font-size-xl);
 }
 
-main :lang(ja) h1.heading-very-long, main :lang(ja) #hero h1.heading-very-long {
+main :lang(ja) h1.heading-very-long,
+main :lang(ja) #hero h1.heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-main :lang(ja) h1.heading-x-long, main :lang(ja) #hero h1.heading-x-long {
+main :lang(ja) h1.heading-x-long,
+main :lang(ja) #hero h1.heading-x-long {
   font-size: var(--heading-font-size-l);
 }
 
-main :lang(ja) h2.heading-long, main :lang(ja) #hero h2.heading-long {
+main :lang(ja) h2.heading-long,
+main :lang(ja) #hero h2.heading-long {
   font-size: var(--heading-font-size-l);
 }
 
-main :lang(ja) h2.heading-very-long, main :lang(ja) #hero h2.heading-very-long {
+main :lang(ja) h2.heading-very-long,
+main :lang(ja) #hero h2.heading-very-long {
   font-size: var(--heading-font-size-l);
 }
 
-main :lang(ja) h2.heading-x-long, main :lang(ja) #hero h2.heading-x-long {
+main :lang(ja) h2.heading-x-long,
+main :lang(ja) #hero h2.heading-x-long {
   font-size: var(--heading-font-size-m);
 }
 
-main .section.blog-content > .content *:is(h1, h2) {
+main .section.blog-content>.content *:is(h1, h2) {
   font-size: 32px;
 }
 
-main .section.blog-content > .content *:is(h1, h2, h3, h4, h5, h6),
-main .section.blog-content > .content > p  {
+main .section.blog-content>.content *:is(h1, h2, h3, h4, h5, h6),
+main .section.blog-content>.content>p {
   margin-left: 20px;
   margin-right: 20px;
   text-align: left;
 }
 
-main .section.blog-content > .content > p {
+main .section.blog-content>.content>p {
   font-size: var(--body-font-size-m);
 }
 
@@ -858,7 +905,7 @@ main .section.blog-content > .content > p {
     font-size: var(--heading-font-size-m);
   }
 
-  main h1 + h5 {
+  main h1+h5 {
     font-size: var(--body-font-size-xxl);
     font-weight: var(--body-font-weight);
     margin-top: 32px;
@@ -885,35 +932,39 @@ main .section.blog-content > .content > p {
     margin: 24px 15px 0;
   }
 
-  main .section.blog-content > .content {
+  main .section.blog-content>.content {
     max-width: 648px
   }
 
-  main .section.blog-content.narrow > .content {
+  main .section.blog-content.narrow>.content {
     max-width: 540px
   }
-  
-  main .section.blog-content > .content > p {
+
+  main .section.blog-content>.content>p {
     font-size: var(--body-font-size-xl);
   }
 }
 
 @media (max-width: 600px) {
-  main :lang(ja) h2.heading-long, :lang(ja) #hero h2.heading-long {
+
+  main :lang(ja) h2.heading-long,
+  :lang(ja) #hero h2.heading-long {
     font-size: var(--heading-font-size-l);
   }
 
-  main :lang(ja) h2.heading-very-long, :lang(ja) #hero h2.heading-very-long {
+  main :lang(ja) h2.heading-very-long,
+  :lang(ja) #hero h2.heading-very-long {
     font-size: var(--heading-font-size-m);
   }
 
-  main :lang(ja) h2.heading-x-long, :lang(ja) #hero h2.heading-x-long {
+  main :lang(ja) h2.heading-x-long,
+  :lang(ja) #hero h2.heading-x-long {
     font-size: var(--heading-font-size-m);
   }
 }
 
 @media (min-width: 900px) {
-  main h5 + main p {
+  main h5+main p {
     text-align: unset;
   }
 
@@ -950,34 +1001,36 @@ main .section.blog-content > .content > p {
     text-align: left;
   }
 
-  main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
-  main .section > div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
+  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
+  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
     display: inline-block;
   }
 
-  main .section > .content {
+  main .section>.content {
     max-width: 830px;
   }
 
-  main .section.blog-content > .content *:is(h1, h2, h3, h4, h5, h6),
-  main .section.blog-content > .content > p  {
+  main .section.blog-content>.content *:is(h1, h2, h3, h4, h5, h6),
+  main .section.blog-content>.content>p {
     margin-left: unset;
     margin-right: unset;
   }
 
-  main .section.blog-content.narrow > .content {
+  main .section.blog-content.narrow>.content {
     max-width: 875px
   }
 }
 
 @media (min-width: 1200px) {
+
   main h1,
   main h2,
   main h3,
   main h4,
   main h5,
   main h6 {
-    -webkit-hyphens: unset; /* safari */
+    -webkit-hyphens: unset;
+    /* safari */
     hyphens: unset;
   }
 
@@ -990,7 +1043,7 @@ main .section.blog-content > .content > p {
     margin: 0;
   }
 
-  main #hero .columns > div > div {
+  main #hero .columns>div>div {
     margin: 8px;
   }
 
@@ -1009,7 +1062,7 @@ main .section.blog-content > .content > p {
     margin: 0 auto;
   }
 
-  main .button-container.free-plan-container a.button + .free-plan-widget {
+  main .button-container.free-plan-container a.button+.free-plan-widget {
     margin-left: 24px;
   }
 
@@ -1027,12 +1080,12 @@ main .section.blog-content > .content > p {
     flex-direction: row;
   }
 
-  main .button-container.free-plan-container.stacked .free-plan-widget > div {
+  main .button-container.free-plan-container.stacked .free-plan-widget>div {
     margin-right: 16px;
   }
 
-  main .template-list-fourcols-container > div,
-  main .template-list-horizontal-container > div {
+  main .template-list-fourcols-container>div,
+  main .template-list-horizontal-container>div {
     max-width: 1200px;
   }
 
@@ -1041,7 +1094,7 @@ main .section.blog-content > .content > p {
     max-width: 400px;
   }
 
-  main .section > .content {
+  main .section>.content {
     max-width: 1024px;
   }
 }
@@ -1097,13 +1150,13 @@ main .section.long-form .content h4 {
 }
 
 /*Styles can be removed once we stop using block transpilations*/
-main .marquee.transpiled p.action-area > span {
+main .marquee.transpiled p.action-area>span {
   display: flex;
   flex-direction: column;
   text-align: center;
 }
 
-main .marquee.transpiled p.action-area > span > a {
+main .marquee.transpiled p.action-area>span>a {
   margin: 0;
 }
 
@@ -1146,11 +1199,11 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) {
   padding-bottom: 0;
 }
 
-body:not(.blog) main #hero:not(:has(.hero-bg)) + .section {
+body:not(.blog) main #hero:not(:has(.hero-bg))+.section {
   padding-top: 0;
 }
 
-body:not(.blog) main #hero:not(:has(.hero-bg)) > div {
+body:not(.blog) main #hero:not(:has(.hero-bg))>div {
   max-width: 1024px;
 }
 
@@ -1269,15 +1322,51 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   justify-content: center;
   flex-wrap: wrap;
 }
-.ax-grid-col-1  { width: var(--ax-grid-1-col-width); }
-.ax-grid-col-2  { width: var(--ax-grid-2-col-width); }
-.ax-grid-col-3  { width: var(--ax-grid-3-col-width); }
-.ax-grid-col-4  { width: var(--ax-grid-4-col-width); }
-.ax-grid-col-5  { width: var(--ax-grid-5-col-width); }
-.ax-grid-col-6  { width: var(--ax-grid-6-col-width); }
-.ax-grid-col-7  { width: var(--ax-grid-7-col-width); }
-.ax-grid-col-8  { width: var(--ax-grid-8-col-width); }
-.ax-grid-col-9  { width: var(--ax-grid-9-col-width); }
-.ax-grid-col-10 { width: var(--ax-grid-10-col-width); }
-.ax-grid-col-11 { width: var(--ax-grid-11-col-width); }
-.ax-grid-col-12 { width: var(--ax-grid-12-col-width); }
+
+.ax-grid-col-1 {
+  width: var(--ax-grid-1-col-width);
+}
+
+.ax-grid-col-2 {
+  width: var(--ax-grid-2-col-width);
+}
+
+.ax-grid-col-3 {
+  width: var(--ax-grid-3-col-width);
+}
+
+.ax-grid-col-4 {
+  width: var(--ax-grid-4-col-width);
+}
+
+.ax-grid-col-5 {
+  width: var(--ax-grid-5-col-width);
+}
+
+.ax-grid-col-6 {
+  width: var(--ax-grid-6-col-width);
+}
+
+.ax-grid-col-7 {
+  width: var(--ax-grid-7-col-width);
+}
+
+.ax-grid-col-8 {
+  width: var(--ax-grid-8-col-width);
+}
+
+.ax-grid-col-9 {
+  width: var(--ax-grid-9-col-width);
+}
+
+.ax-grid-col-10 {
+  width: var(--ax-grid-10-col-width);
+}
+
+.ax-grid-col-11 {
+  width: var(--ax-grid-11-col-width);
+}
+
+.ax-grid-col-12 {
+  width: var(--ax-grid-12-col-width);
+}
