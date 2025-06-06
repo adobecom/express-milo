@@ -253,5 +253,9 @@ main .section:has(.how-to-v2) .content em {
     margin-top: 20px;
     font-size: var(--heading-font-size-l);
   }
+  .how-to-v2 {
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
+  }
 }
 
