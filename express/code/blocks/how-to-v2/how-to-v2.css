@@ -116,6 +116,8 @@ main .section:has(.how-to-v2) .content em {
   margin-left: auto;
   margin-right: auto;
   position: relative;
+  padding-left: 24px; 
+  padding-right: 24px;
 }
 
 .how-to-v2 .steps-content .media-container::before {
@@ -225,7 +227,7 @@ main .section:has(.how-to-v2) .content em {
   }
 
   .how-to-v2 .steps-content .steps {
-    padding-left: 48px;
+    padding-left: 24px;
   }
 
   .how-to-v2 .steps-content .media-container::before {
