@@ -29,6 +29,9 @@ let getMetadata; let createTag;
 let getConfig;
 let variant;
 
+// currently running experiment
+const TWO_ROW = 'tworow';
+
 function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
 }
@@ -383,12 +386,14 @@ async function decorateNewTemplates(block, props, options = { reDrawMasonry: fal
   const linksPopulated = new CustomEvent('linkspopulated', { detail: templateLinks });
   document.dispatchEvent(linksPopulated);
 
-  if (options.reDrawMasonry) {
-    props.masonry.cells = [props.masonry.cells[0]].concat(newCells);
-  } else {
-    props.masonry.cells = props.masonry.cells.concat(newCells);
+  if (props.masonry) {
+    if (options.reDrawMasonry) {
+      props.masonry.cells = [props.masonry.cells[0]].concat(newCells);
+    } else {
+      props.masonry.cells = props.masonry.cells.concat(newCells);
+    }
+    props.masonry.draw(newCells);
   }
-  props.masonry.draw(newCells);
 
   if (loadMore) {
     updateLoadMoreButton(props, loadMore);
@@ -932,7 +937,7 @@ async function redrawTemplates(block, props, toolBar) {
     card.remove();
   });
 
-  await decorateNewTemplates(block, props, { reDrawMasonry: true });
+  await decorateNewTemplates(block, props, { reDrawMasonry: !block.classList.contains(TWO_ROW) });
 
   heading.textContent = heading.textContent.replace(`${currentTotal}`, props.total.toLocaleString('en-US'));
   updateOptionsStatus(block, props, toolBar);
@@ -1160,10 +1165,17 @@ function toggleMasonryView(block, props, button, toggleButtons) {
   }
 }
 
+const views = ['sm', 'md', 'lg'];
+function getInitialViewIndex(props) {
+  const authoredViewIndex = views.findIndex(
+    (size) => props.initialTemplateView?.toLowerCase().trim() === size,
+  );
+  return authoredViewIndex === -1 ? 0 : authoredViewIndex;
+}
+
 function initViewToggle(block, props, toolBar) {
   const toggleButtons = toolBar.querySelectorAll('.view-toggle-button ');
-  const authoredViewIndex = ['sm', 'md', 'lg'].findIndex((size) => props.initialTemplateView?.toLowerCase().trim() === size);
-  const initViewIndex = authoredViewIndex === -1 ? 0 : authoredViewIndex;
+  const initViewIndex = getInitialViewIndex(props);
 
   toggleButtons.forEach((button, index) => {
     if (index === initViewIndex) {
@@ -1185,6 +1197,18 @@ function initToolbarShadow(toolbar) {
       toolbarWrapper.classList.remove('with-box-shadow');
     }
   });
+}
+
+function buildViewsWrapper() {
+  const viewsWrapper = createTag('div', { class: 'views' });
+  const smView = createTag('a', { class: 'view-toggle-button small-view', 'data-view': 'sm' });
+  smView.append(getIconElementDeprecated('small_grid'));
+  const mdView = createTag('a', { class: 'view-toggle-button medium-view', 'data-view': 'md' });
+  mdView.append(getIconElementDeprecated('medium_grid'));
+  const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
+  lgView.append(getIconElementDeprecated('large_grid'));
+  viewsWrapper.append(smView, mdView, lgView);
+  return viewsWrapper;
 }
 
 async function decorateToolbar(block, props) {
@@ -1212,26 +1236,24 @@ async function decorateToolbar(block, props) {
   contentWrapper.append(sectionHeading);
 
   if (tBar) {
-    const viewsWrapper = createTag('div', { class: 'views' });
-
-    const smView = createTag('a', { class: 'view-toggle-button small-view', 'data-view': 'sm' });
-    smView.append(getIconElementDeprecated('small_grid'));
-    const mdView = createTag('a', { class: 'view-toggle-button medium-view', 'data-view': 'md' });
-    mdView.append(getIconElementDeprecated('medium_grid'));
-    const lgView = createTag('a', { class: 'view-toggle-button large-view', 'data-view': 'lg' });
-    lgView.append(getIconElementDeprecated('large_grid'));
+    const viewsWrapper = buildViewsWrapper();
 
     const functionsObj = await makeTemplateFunctions();
     const functions = await decorateFunctionsContainer(block, functionsObj);
 
-    viewsWrapper.append(smView, mdView, lgView);
-    functionsWrapper.append(viewsWrapper, functions.desktop);
+    if (!block.classList.contains(TWO_ROW)) functionsWrapper.append(viewsWrapper);
+    functionsWrapper.append(functions.desktop);
 
     tBar.append(contentWrapper, functionsWrapper, functions.mobile);
 
     initDrawer(block, props, tBar);
     initFilterSort(block, props, tBar);
-    initViewToggle(block, props, tBar);
+    if (block.classList.contains(TWO_ROW)) {
+      const initialViewIndex = getInitialViewIndex(props);
+      block.classList.add(`${views[initialViewIndex]}-view`);
+    } else {
+      initViewToggle(block, props, tBar);
+    }
     initToolbarShadow(tBar);
   }
 }
@@ -1707,6 +1729,7 @@ async function buildTemplateList(block, props, type = []) {
   if (!props.templateStats) {
     await processContentRow(block, props);
   }
+  if (props.experiment) block.classList.add(props.experiment);
 
   const { templates, fallbackMsg } = await fetchAndRenderTemplates(props);
 
@@ -1805,7 +1828,7 @@ async function buildTemplateList(block, props, type = []) {
 
   if (templates && props.toolBar) {
     await decorateToolbar(block, props);
-    await decorateCategoryList(block, props);
+    if (!block.classList.contains(TWO_ROW)) await decorateCategoryList(block, props);
   }
 
   if (props.toolBar && props.searchBar) {
@@ -1819,7 +1842,7 @@ async function buildTemplateList(block, props, type = []) {
   if (templates && props.orientation && props.orientation.toLowerCase() === 'horizontal') {
     const innerWrapper = block.querySelector('.template-x-inner-wrapper');
     if (innerWrapper) {
-      buildCarousel(':scope > .template', innerWrapper);
+      if (!block.classList.contains(TWO_ROW)) buildCarousel(':scope > .template', innerWrapper);
     } else {
       block.remove();
     }
