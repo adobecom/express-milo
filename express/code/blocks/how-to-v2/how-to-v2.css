@@ -197,9 +197,6 @@ main .section:has(.how-to-v2) .content em {
   .how-to-v2 {
     padding-left: var(--spacing-400);
     padding-right: var(--spacing-400);
-  }
-
-  .how-to-v2 {
     max-width: 1252px;
     margin: auto;
   }
