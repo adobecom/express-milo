@@ -1,3 +1,6 @@
+:root {
+  --ax-panels-box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+}
 .section[data-ax-panel][role='tabpanel'].hide {
   display: none;
 }
@@ -7,12 +10,12 @@
   background: #f8f8f8;
   border: 2px solid var(--color-white);
   border-radius: 16px;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
-  padding: 16px;
+  box-shadow: var(--ax-panels-box-shadow);
+  padding: 24px 16px 16px;
 }
 
 .ax-panels {
-  padding-top: 40px;
+  padding-top: 64px;
   padding-left: var(--ax-grid-margin);
   padding-right: var(--ax-grid-margin);
   position: relative;
@@ -28,7 +31,7 @@
 
 .ax-panels .tablist-container {
   padding: 4px 0;
-  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--ax-panels-box-shadow);
   background-color: var(--color-white);
   border-radius: 8px;
   overflow-x: auto;
@@ -109,6 +112,10 @@
 }
 
 @media (min-width: 600px) {
+  :root {
+    --ax-panels-fold: -28px;
+    --ax-panels-fold: -28px;
+  }
   .ax-panels .ax-panels-heading-container h2,
   .ax-panels .ax-panels-heading-container h3 {
     font-size: var(--heading-font-size-m);
@@ -117,7 +124,7 @@
     font-size: var(--body-font-size-l );
   }
   .section[data-ax-panel][role='tabpanel'] {
-    margin: -28px var(--ax-grid-margin) 0 var(--ax-grid-margin);
+    margin: var(--ax-panels-fold) var(--ax-grid-margin) 64px var(--ax-grid-margin);
     padding: 64px 32px 48px;
   }
   .ax-panels {
@@ -130,5 +137,8 @@
     max-width: var(--ax-grid-10-col-width);
     margin-left: auto;
     margin-right: auto;
+  }
+  .ax-panels .ax-panels-heading-container h2, .ax-panels .ax-panels-heading-container h3 {
+    padding-bottom: 32px;
   }
 }
