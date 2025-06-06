@@ -4,6 +4,7 @@ sitemaps:
   website:
     origin: https://www.adobe.com
     lastmod: YYYY-MM-DD
+    default: en
     languages:
       default:
         source: /express/query-index.json
@@ -99,6 +100,7 @@ sitemaps:
   blogs:
     origin: https://www.adobe.com
     lastmod: YYYY-MM-DD
+    default: en
     languages:
       default:
         source: /express/learn/blog/query-index.json
@@ -148,6 +150,7 @@ sitemaps:
 
   seo-templates:
     origin: https://www.adobe.com
+    default: en
     languages:
       default:
         source: /express/templates/default/metadata.json?sheet=sitemap
@@ -217,6 +220,7 @@ sitemaps:
 
   colors:
     origin: https://www.adobe.com
+    default: en
     languages:
       default:
         source: /express/colors/default/metadata.json?sheet=sitemap
