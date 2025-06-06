@@ -6,7 +6,7 @@
 }
 
 .how-to-v2 h2 {
-  font-size: 22px;
+  font-size: var(--heading-font-size-s);
   text-align: center;
   padding: 0 24px;
   margin-bottom: 20px;
@@ -59,7 +59,7 @@ main .section > .content:has( + .how-to-v2) h2 {
 }
 
 .how-to-v2 ol li .detail-container {
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 20.8px;
   font-weight: 400;
   max-height: 0;
@@ -116,7 +116,7 @@ main .section:has(.how-to-v2) .content em {
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  padding: 24px; 
+  padding: var(--spacing-400);
 }
 
 .how-to-v2 .steps-content .media-container::before {
@@ -188,7 +188,7 @@ main .section:has(.how-to-v2) .content em {
 
 @media (min-width: 768px) {
   .how-to-v2 h2 {
-    font-size: 28px;
+    font-size: var(--heading-font-size-m);
   }
 
   main .section > .content:has( + .how-to-v2) h2 {
