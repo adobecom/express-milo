@@ -95,7 +95,7 @@
   --spacing-900: 80px;
   --spacing-1000: 96px;
 
-  --S2-Buttons-Premium: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
+  --S2-Buttons-Premium: linear-gradient(96deg, #B539C8 0%,  #7155FA 66%,  #3B63FB 100%);
   --S2-Buttons-Premium-Hover: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
   --S2-Buttons-Premium-Down: linear-gradient(96deg, #871B9A 0%, #5424DB 66%, #1D3ECF 100%);
   /* current ax-grid system */
