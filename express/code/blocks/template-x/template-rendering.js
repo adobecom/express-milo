@@ -167,7 +167,9 @@ function renderShareWrapper(templateInfo) {
   });
   const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   tooltip.append(checkmarkIcon);
-  tooltip.append(text);
+  const textEl = createTag('span', { class: 'text' });
+  textEl.textContent = text;
+  tooltip.append(textEl);
   wrapper.append(shareIcon);
   wrapper.append(tooltip);
   return wrapper;
