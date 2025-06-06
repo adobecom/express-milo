@@ -10,6 +10,31 @@ main  .floating-button-wrapper.mobile-fork-button, main .mobile-fork-button {
 main .mobile-fork-button.long-text {
     --mfb-font-size: 14px;
 }
+main .mobile-fork-button.mweb-mobile-fork::after {
+    content: '';
+    position: fixed;
+    pointer-events: initial;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .44);
+}
+
+main .mobile-fork-button a.mweb-close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11;
+    top: -8px;
+    right: -8px;
+    width: 32px;
+    height: 32px;
+    background-color: #fff;
+    border-radius: 50px;
+    box-shadow: 0px 0px 12px 0px #00000029;
+}
 
 main .mobile-gating-text {
     height: fit-content;
