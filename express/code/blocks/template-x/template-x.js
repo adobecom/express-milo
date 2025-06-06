@@ -1848,6 +1848,8 @@ function determineTemplateXType(props) {
   if (props.print && props.print.toLowerCase() === 'flyer') type.push('flyer');
   if (props.print && props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
 
+  if (props.experiment) type.push(props.experiment);
+
   variant = type;
   return type;
 }
