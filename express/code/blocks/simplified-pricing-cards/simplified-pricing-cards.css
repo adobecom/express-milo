@@ -141,7 +141,7 @@ main .section>.simplified-pricing-cards-wrapper {
     color: var(--color-white);
     display: block;
     margin-right: 5px;
-    background: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) border-box;
+    background: var(--S2-Buttons-Premium) border-box;
 }
 
 .simplified-pricing-cards .card-header p:nth-of-type(2) {
