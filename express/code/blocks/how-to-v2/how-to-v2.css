@@ -225,7 +225,7 @@ main .section:has(.how-to-v2) .content em {
   }
 
   .how-to-v2 .steps-content .steps {
-    padding-left: 20px;
+    padding-left: 48px;
   }
 
   .how-to-v2 .steps-content .media-container::before {
