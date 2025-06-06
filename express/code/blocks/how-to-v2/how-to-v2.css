@@ -1,6 +1,8 @@
 .how-to-v2 {
-  padding-left: var(--spacing-400);
-  padding-right: var(--spacing-400);
+  padding-left: var(--spacing-300);
+  padding-right: var(--spacing-300);
+  margin: 0;
+  max-width: unset;
 }
 
 .how-to-v2 h2 {
@@ -8,6 +10,12 @@
   text-align: center;
   padding: 0 24px;
   margin-bottom: 20px;
+}
+
+main .section > .content:has( + .how-to-v2) h2 {
+  font-size: var(--heading-font-size-s);
+  padding-bottom: var(--spacing-600);
+  margin-top: -12px;
 }
 
 .how-to-v2 ol {
@@ -164,26 +172,11 @@ main .section:has(.how-to-v2) .content em {
   height: unset;
 }
 
-.how-to-v2 {
-  /* note we don't set margin here because background gradient has to go past into this container */
-  margin: 0;
-  max-width: unset;
-}
-
-main .section > .content:has( + .how-to-v2) h2 {
-  font-size: var(--heading-font-size-s);
-  padding-bottom: var(--spacing-600);
-}
-
 @media (min-width: 400px) {
   main:has(.how-to-v2) .content {
     max-width: unset;
     margin-left: 20px;
     margin-right: 20px;
-  }
-
-  main .section > .content:has( + .how-to-v2) h2 {
-    font-size: var(--heading-font-size-m);
   }
   
   .how-to-v2 ol li h3 {
@@ -195,6 +188,15 @@ main .section > .content:has( + .how-to-v2) h2 {
 @media (min-width: 768px) {
   .how-to-v2 h2 {
     font-size: 28px;
+  }
+
+  main .section > .content:has( + .how-to-v2) h2 {
+    font-size: var(--heading-font-size-m);
+  }
+
+  .how-to-v2 {
+    padding-left: var(--spacing-400);
+    padding-right: var(--spacing-400);
   }
 
   .how-to-v2 {
