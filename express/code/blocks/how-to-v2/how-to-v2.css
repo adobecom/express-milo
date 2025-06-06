@@ -104,8 +104,6 @@ main .section:has(.how-to-v2) .content em {
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  padding-left: 40px;
-  padding-right: 20px;
 }
 
 .how-to-v2 .steps-content .media-container::before {
