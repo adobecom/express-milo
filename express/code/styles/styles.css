@@ -524,15 +524,16 @@ main a.button.gradient:any-link {
   -webkit-animation: buttonGradient 45s ease infinite;
   -moz-animation: buttonGradient 45s ease infinite;
   animation: buttonGradient 45s ease infinite;
+  border: none;
 }
-
 
 main a.button.gradient:any-link:hover {
   background: var(--S2-Buttons-Premium-Hover);
 }
 
 main a.button.gradient:any-link:focus {
-  border: 2px solid var(--Alias-focus-indicator-default, #4B75FF);
+  outline: 2px solid var(--color-info-accent);
+  outline-offset: 2px;
   background: var(--S2-Buttons-Premium-Hover);
 }
 
