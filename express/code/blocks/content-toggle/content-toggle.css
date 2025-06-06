@@ -16,10 +16,8 @@ main .section .content-toggle-wrapper {
 }
 
 main .content-toggle {
-    width: fit-content;
     position: relative;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     background-color: #ededed;
     border-radius: 100px;
