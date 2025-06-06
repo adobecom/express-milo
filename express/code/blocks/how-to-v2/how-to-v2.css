@@ -1,6 +1,6 @@
 .how-to-v2 {
-  padding-left: 40px;
-  padding-right: 40px;
+  padding-left: var(--spacing-400);
+  padding-right: var(--spacing-400);
 }
 
 .how-to-v2 h2 {
@@ -172,7 +172,7 @@ main .section:has(.how-to-v2) .content em {
 
 main .section > .content:has( + .how-to-v2) h2 {
   font-size: var(--heading-font-size-s);
-  padding-bottom: 40px;
+  padding-bottom: var(--spacing-600);
 }
 
 @media (min-width: 400px) {
@@ -211,7 +211,7 @@ main .section > .content:has( + .how-to-v2) h2 {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: 80px;
+    margin-bottom: var(--spacing-900);
   }
 
   .how-to-v2 .steps-content > * {
