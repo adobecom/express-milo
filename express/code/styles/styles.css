@@ -541,6 +541,12 @@ main a.button.gradient:any-link:active {
   background: var(--S2-Buttons-Premium-Down);
 }
 
+main a.button.gradient.disabled:any-link {
+  color: var(--color-gray-500);
+  background: var(--color-gray-200);
+  pointer-events: none;
+}
+ 
 main a.button>svg {
   float: left;
   display: inline;
