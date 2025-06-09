@@ -181,13 +181,10 @@ main .section .discover-cards {
     .discover-cards .cards-container .card:first-child {
         margin-left: 60px;
     }
-}
-
-@media (min-width: 1000px) {
-  .discover-cards.flip h1,
-  .discover-cards.flip h2 {
-    font-size: var(--heading-font-size-l);
-  }
+    .discover-cards.flip h1,
+    .discover-cards.flip h2 {
+      font-size: var(--heading-font-size-m);
+    }
 }
 
 @media (min-width: 1680px) {
