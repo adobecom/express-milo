@@ -185,6 +185,10 @@ main .section .discover-cards {
     .discover-cards.flip h2 {
       font-size: var(--heading-font-size-m);
     }
+    .discover-cards.flip {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
 }
 
 @media (min-width: 1680px) {
