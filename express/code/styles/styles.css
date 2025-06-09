@@ -96,8 +96,8 @@
   --spacing-1000: 96px;
 
   --S2-Floating-CTA: linear-gradient(98deg, #5D66EF 3.22%, #D600C4 101.72%);
-  --S2-Floating-CTA-Hover: linear-gradient(98deg, #4B2BEE 3.22%, #A8007E 101.72%);
-  --S2-Floating-CTA-Down: linear-gradient(98deg, #4826DB 3.22%, #880765 101.72%);
+  --S2-Floating-CTA-Hover:linear-gradient(97.82deg, #4b2bee, #a8007e);
+  --S2-Floating-CTA-Down: linear-gradient(97.82deg, #4826db, #880765);
 
 
   --S2-Buttons-Premium: linear-gradient(96deg, #B539C8 0%,  #7155FA 66%,  #3B63FB 100%);
@@ -539,7 +539,7 @@ main a.button.gradient:any-link:hover {
 main a.button.gradient:any-link:focus {
   outline: 2px solid var(--color-info-accent);
   outline-offset: 2px;
-  background: var(--S2-Floating-CTA-Hover);
+  background: var(--S2-Floating-CTA);
 }
 
 main a.button.gradient:any-link:active {
