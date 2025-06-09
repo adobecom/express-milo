@@ -136,7 +136,7 @@ function createToggle(pricingSections, groupID, adjElemPos, header) {
     'aria-labelledby': headerId,
   });
 
-  const groupLabel = createTag('strong', {},subDesc);
+  const groupLabel = createTag('strong', {}, subDesc);
   toggleWrapper.appendChild(groupLabel);
 
   const buttons = PLANS.map((basePlan, i) => {
@@ -150,7 +150,7 @@ function createToggle(pricingSections, groupID, adjElemPos, header) {
       plan: basePlan,
       role: 'radio',
       'aria-checked': isDefault.toString(),
-      'aria-label': header.querySelector('h2').textContent.trim() + ' ' + label
+      'aria-label': `${header.querySelector('h2').textContent.trim()} ${label}`,
     });
 
     button.appendChild(createTag('span'));
