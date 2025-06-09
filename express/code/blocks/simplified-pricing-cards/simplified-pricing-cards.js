@@ -94,20 +94,20 @@ function equalizeHeights(el) {
   if (cardCount === 1) return;
   for (const className of classNames) {
     const headers = el.querySelectorAll(className);
-    let maxHeight = 0;
+    let minHeight = 0;
     headers.forEach((placeholder) => {
-      placeholder.style.height = 'unset';
+      placeholder.style.minHeight = 'unset';
     });
     if (window.screen.width > 1279) {
       headers.forEach((header) => {
         if (header.checkVisibility()) {
           const height = getHeightWithoutPadding(header);
-          maxHeight = Math.max(maxHeight, height);
+          minHeight = Math.max(minHeight, height);
         }
       });
       headers.forEach((placeholder) => {
-        if (maxHeight > 0) {
-          placeholder.style.height = `${maxHeight}px`;
+        if (minHeight > 0) {
+          placeholder.style.minHeight = `${minHeight}px`;
         }
       });
     }
