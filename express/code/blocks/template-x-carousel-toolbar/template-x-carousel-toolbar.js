@@ -159,13 +159,9 @@ const sortConfig = {
 };
 
 export async function extractSort(recipe) {
-  if (!recipe) return null;
   const recipeParams = new URLSearchParams(recipe);
-  if (!recipeParams.has('orderBy')) return null;
-  const order = recipeParams.get('orderBy');
-  if (!Object.values(sortConfig).includes(order)) return null;
   const sortKeys = Object.keys(sortConfig);
-  const defaultIndex = sortKeys.indexOf(sortKeys.find((key) => sortConfig[key] === order));
+  const sortValues = Object.values(sortConfig);
   const sortOptionTexts = await Promise.all(sortKeys.map((key) => replaceKey(key, getConfig())));
   const sortOptions = sortKeys.map((key, i) => {
     const sortedRecipe = new URLSearchParams(recipeParams);
@@ -175,6 +171,9 @@ export async function extractSort(recipe) {
       recipe: sortedRecipe.toString(),
     };
   });
+  const defaultIndex = Math.max(0, sortValues.indexOf(
+    (sortValues.includes(recipeParams.get('orderBy'))),
+  ));
   return { sortOptions, defaultIndex };
 }
 
