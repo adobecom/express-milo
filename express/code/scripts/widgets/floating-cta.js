@@ -177,7 +177,11 @@ export async function createFloatingButton(block, audience, data) {
     floatButtonWrapper.dataset.sectionStatus = 'loaded';
   }
 
+<<<<<<< Updated upstream
   floatButtonInnerWrapper.append( floatButtonLink);
+=======
+  floatButtonInnerWrapper.append(floatButtonLink);
+>>>>>>> Stashed changes
   floatButton.append(floatButtonInnerWrapper);
   floatButtonWrapper.append(floatButton);
   main.append(floatButtonWrapper);
