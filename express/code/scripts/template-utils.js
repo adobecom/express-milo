@@ -106,6 +106,6 @@ export function getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page)
   );
 }
 
-export function containsVideo(pages) {
-  return pages.some((page) => !!page?.rendition?.video?.thumbnail?.componentId);
+export function containsVideo(page) {
+  return !!page?.rendition?.video?.thumbnail?.componentId;
 }
