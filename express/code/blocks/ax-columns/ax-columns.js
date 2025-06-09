@@ -203,7 +203,7 @@ function setupCornerOverlayAnimation(cell) {
 function createCornerOverlays(cell) {
   const overlays = [
     { src: '/express/code/blocks/ax-columns/img/resize-button.png', class: 'top-left' },
-    { src: '/express/code/blocks/ax-columns/img/users_ui_mockup.png', class: 'top-right' },
+    { src: '/express/code/blocks/ax-columns/img/users.png', class: 'top-right' },
     { src: '/express/code/blocks/ax-columns/img/ai-image-edit.png', class: 'bottom-left', width: 47, height: 104 },
     { src: '/express/code/blocks/ax-columns/img/gen-ai-panel.png', class: 'bottom-right' },
     { src: '/express/code/blocks/ax-columns/img/cursor-small.svg', class: 'bottom-center', width: 26, height: 26 },
