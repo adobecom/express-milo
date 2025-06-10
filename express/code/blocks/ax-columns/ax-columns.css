@@ -997,13 +997,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 }
 
-@media (max-width: 899px) {
-  .ax-columns .column-picture {
-    display: none;
-  }
-}
-
-
 @media (min-width: 900px) {
   main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
     font-size: 36px;

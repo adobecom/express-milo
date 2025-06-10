@@ -372,6 +372,9 @@ export default async function decorate(block) {
       if (isPictureColumn) {
         cell.classList.add('column-picture');
         block.classList.contains('marquee') && createCornerOverlays(cell);
+        if (window.innerWidth <= 899) {
+          cell.querySelector('img').src = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+        }
       }
 
       const $pars = cell.querySelectorAll('p');
