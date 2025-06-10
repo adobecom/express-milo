@@ -74,7 +74,9 @@
     padding: 24px 0;
     border-radius: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    height: 284px;
+    min-height: 284px;
+    display: flex;
+    flex-direction: column; 
 }
 
 .frictionless-quick-action .dropzone-bg {
@@ -96,8 +98,7 @@
 }
 
 .frictionless-quick-action .dropzone {
-    height: 100%;
-    width: 100%;
+    flex-grow: 1;
     position: relative;
 }
 
