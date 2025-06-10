@@ -4,8 +4,9 @@ sitemaps:
   website:
     origin: https://www.adobe.com
     lastmod: YYYY-MM-DD
+    default: en
     languages:
-      default:
+      us:
         source: /express/query-index.json
         destination: /express/sitemap.xml
         hreflang: en
@@ -99,8 +100,9 @@ sitemaps:
   blogs:
     origin: https://www.adobe.com
     lastmod: YYYY-MM-DD
+    default: en
     languages:
-      default:
+      us:
         source: /express/learn/blog/query-index.json
         destination: /express/blog/sitemap.xml
         hreflang: en
@@ -148,8 +150,9 @@ sitemaps:
 
   seo-templates:
     origin: https://www.adobe.com
+    default: en
     languages:
-      default:
+      us:
         source: /express/templates/default/metadata.json?sheet=sitemap
         destination: /express/templates/sitemap.xml
         hreflang: en
@@ -217,8 +220,9 @@ sitemaps:
 
   colors:
     origin: https://www.adobe.com
+    default: en
     languages:
-      default:
+      us:
         source: /express/colors/default/metadata.json?sheet=sitemap
         destination: /express/colors/sitemap.xml
         hreflang: en

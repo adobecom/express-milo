@@ -1,0 +1,47 @@
+name: Merge to Main
+
+on:
+  # Run every 4 hours
+  schedule:
+    - cron: '0 */4 * * *'
+  # Allow manual triggering
+  workflow_dispatch:
+  # Allow triggering via repository dispatch
+  repository_dispatch:
+    types: [merge-to-main]
+
+env:
+  REQUIRED_APPROVALS: ${{ secrets.REQUIRED_APPROVALS }}
+  MAX_PRS_PER_BATCH: ${{ secrets.MAX_PRS_PER_BATCH }}
+  MAIN_RCP_OFFSET_DAYS: ${{ secrets.MAIN_RCP_OFFSET_DAYS }}
+
+jobs:
+  merge-to-main:
+    runs-on: ubuntu-latest
+    environment: express_pr_merge
+    if: github.repository_owner == 'adobecom'
+    steps:
+      - name: Create GitHub App token
+        uses: actions/create-github-app-token@v1
+        id: generate-token
+        with:
+          app-id: ${{ secrets.EXPRESS_MERGE_APP_ID }}
+          private-key: ${{ secrets.EXPRESS_MERGE_PRIVATE_KEY }}
+          token-id: express-merge-token
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run merge script
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          LOCAL_RUN: false
+        run: node .github/workflows/merge-to-main.js 
