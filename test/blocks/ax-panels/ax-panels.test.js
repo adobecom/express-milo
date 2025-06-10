@@ -1,6 +1,5 @@
-import { readFile, sendKeys } from '@web/test-runner-commands';
+import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { delay } from '../../helpers/waitfor.js';
 
 const imports = await Promise.all([import('../../../express/code/scripts/utils.js'), import('../../../express/code/scripts/scripts.js')]);
 const { getLibs } = imports[0];
