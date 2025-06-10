@@ -80,7 +80,7 @@ main .section > .content:has( + .how-to-v2) h2 {
 .how-to-v2 picture img {
   border-radius: 16px;
   overflow: hidden;
-  max-width: 533px;
+  max-width: 400px;
   width: 100%;
 }
 
@@ -251,6 +251,11 @@ main .section:has(.how-to-v2) .content em {
       var(--background-image);
     background-size: cover;
     background-position: center;
+  }
+
+  .how-to-v2 .milo-video,
+  .how-to-v2 picture img {
+    max-width: 450px;
   }
 }
 
