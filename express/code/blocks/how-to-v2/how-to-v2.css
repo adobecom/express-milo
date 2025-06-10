@@ -274,5 +274,9 @@ main .section:has(.how-to-v2) .content em {
     padding-left: var(--spacing-600);
     padding-right: var(--spacing-600);
   }
+  .how-to-v2 .milo-video,
+  .how-to-v2 picture img {
+    max-width: 533px;
+  }
 }
 
