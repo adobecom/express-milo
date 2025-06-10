@@ -1,29 +1,29 @@
 .cta-cards .heading-container {
+  padding-bottom: var(--spacing-600);
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--spacing-300);
-  padding-bottom: var(--spacing-600);
+  justify-content: space-between;
 }
 
 .cta-cards .heading-container h2,
 .cta-cards .heading-container h3 {
-  color: #131313;
-  line-height: 1.3;
-  font-size: var(--body-font-size-xl);
   padding-bottom: var(--spacing-100);
+  font-size: var(--body-font-size-xl);
+  line-height: 1.3;
+  color: #131313;
 }
 
 .cta-cards .heading-container a {
-  color: var(--color-grey-800);
   line-height: 1.3;
   text-decoration: underline;
+  color: var(--color-grey-800);
 }
 
 .cta-cards .heading-container p {
   margin: 0;
-  line-height: 1.3;
   font-size: var(--body-font-size-m);
+  line-height: 1.3;
 }
 
 .cta-cards .gallery {
@@ -35,24 +35,24 @@
 }
 
 .cta-cards .card {
-  background-color: var(--color-white);
+  position: relative;
+  padding: var(--spacing-200);
   border: 2px solid #D5D5D5;
   border-radius: 8px;
-  padding: var(--spacing-200);
   display: flex;
-  gap: var(--spacing-100);
   flex-direction: column-reverse;
   justify-content: space-between;
-  position: relative;
+  gap: var(--spacing-100);
+  background-color: var(--color-white);
 }
 
 .cta-cards .media img {
   display: block;
-  border-radius: 12px;
   height: 220px;
   width: auto;
   max-width: 268px;
   object-fit: cover;
+  border-radius: 12px;
 }
 
 .cta-cards .text-container {
