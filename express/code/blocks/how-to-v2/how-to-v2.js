@@ -77,10 +77,11 @@ function buildAccordion(block, rows, stepsContent) {
 
   stepsContent.append(list);
 
-  // set this in the next event cycle when scrollHeight has been established
+  // Trigger click on first step's title after a small delay
   setTimeout(() => {
-    setStepDetails(block, indexOpenedStep);
-  }, 0);
+    const firstStepTitle = list.querySelector('h3');
+    firstStepTitle.click();
+  }, 100);
 }
 
 export default function decorate(block) {
