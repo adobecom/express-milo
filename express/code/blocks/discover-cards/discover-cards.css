@@ -189,6 +189,12 @@ main .section .discover-cards {
       padding-top: 64px;
       padding-bottom: 64px;
     }
+    .discover-cards.flip .cards-container.gallery {
+      padding-left: 32px;
+      padding-right: 32px;
+      scroll-padding-left: 32px;
+      scroll-padding-right: 32px;
+    }
 }
 
 @media (min-width: 900px) { 
