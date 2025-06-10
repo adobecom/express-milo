@@ -1,7 +1,7 @@
 import { expect } from '@esm-bundle/chai';
 import { readFile } from '@web/test-runner-commands';
 import sinon from 'sinon';
-import { mockRes } from '../helpers/test-utilities.js';
+import { mockRes } from '../blocks/test-utilities.js';
 import { setLibs, hideQuickActionsOnDevices, getIconElementDeprecated, convertToInlineSVG } from '../../express/code/scripts/utils.js';
 
 describe('Libs', () => {
