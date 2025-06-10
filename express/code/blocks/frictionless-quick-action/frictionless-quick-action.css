@@ -64,10 +64,6 @@
     max-width: 638px;
 }
 
-.frictionless-quick-action video,
-.frictionless-quick-action img:not(.icon) {
-    max-width: var(--frictionless-quick-action-video-width);
-}
 
 .frictionless-quick-action .dropzone-container {
     cursor: pointer;
@@ -80,7 +76,6 @@
 }
 
 .frictionless-quick-action .dropzone-bg {
-    display: none;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -203,6 +198,11 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     .frictionless-quick-action .dropzone-bg{
         display: block;
     }
+    .frictionless-quick-action video,
+    .frictionless-quick-action img:not(.icon) {
+        max-width: var(--frictionless-quick-action-video-width);
+    }
+
 }
 
 @media (min-width: 1200) {
