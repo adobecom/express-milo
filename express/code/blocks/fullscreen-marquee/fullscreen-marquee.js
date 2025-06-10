@@ -56,6 +56,11 @@ async function addMarqueeCenterCTA(block, appFrame) {
   const cta = buttons[0];
 
   const highlightCta = cta.cloneNode(true);
+  highlightCta.setAttribute('href', '#');
+  highlightCta.setAttribute('aria-hidden', 'true');
+  highlightCta.setAttribute('role', 'presentation');
+  highlightCta.setAttribute('tabindex', '-1');
+
   const appHighlight = createTag('a', {
     class: 'fullscreen-marquee-app-frame-highlight',
     href: cta.href,
