@@ -71,19 +71,29 @@ main .section .discover-cards {
   max-width: 100vw;
   margin-left: auto;
   margin-right: auto;
+  justify-content: center;
 }
 
+/* Ensure single card is always centered */
+.discover-cards.flip .cards-container.gallery:has(.gallery--item:only-child) {
+  justify-content: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Left align on smaller screens when there are 3+ cards */
+@media (max-width: 1050px) {
+  .discover-cards.flip .cards-container.gallery:has(.gallery--item:nth-child(3)) {
+    justify-content: start;
+  }
+}
+
+/* Center align on larger screens */
 @media (min-width: 1300px) {
   .discover-cards.flip .cards-container.gallery {
     justify-content: center;
     width: fit-content;
-  }
-}
-
-/* Switch to left-aligned on smaller screens */
-@media (max-width: 1050px) {
-  .discover-cards.flip .cards-container.gallery {
-    justify-content: start;
   }
 }
 
