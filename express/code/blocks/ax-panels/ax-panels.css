@@ -6,7 +6,7 @@
 }
 .section[data-ax-panel][role='tabpanel'] {
   box-sizing: border-box;
-  margin: 20px var(--ax-grid-margin) 0 var(--ax-grid-margin);
+  margin: 20px var(--ax-grid-margin) var(--spacing-400) var(--ax-grid-margin);
   border: 2px solid var(--color-white);
   border-radius: 16px;
   box-shadow: var(--ax-panels-box-shadow);
