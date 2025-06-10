@@ -4,6 +4,7 @@
   flex-wrap: wrap;
   gap: var(--spacing-300);
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 .cta-cards .heading-container h2,
