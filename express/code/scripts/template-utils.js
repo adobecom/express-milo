@@ -14,9 +14,7 @@ export function recipe2ApiQuery(recipe) {
     }
     params.delete('collection');
   }
-  if (params.get('collectionId')) {
-    params.set('collectionId', `${params.get('collectionId')}`);
-  } else {
+  if (!params.get('collectionId')) {
     params.set('collectionId', `${defaultCollectionId}`);
   }
   if (params.get('license')) {
@@ -77,35 +75,4 @@ export function extractRenditionLinkHref(template) {
 
 export function extractComponentLinkHref(template) {
   return template._links?.['http://ns.adobe.com/adobecloud/rel/component']?.href;
-}
-
-export function getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page) {
-  const thumbnail = page?.rendition?.image?.thumbnail;
-  if (!thumbnail) {
-    // webpages
-    return renditionLinkHref.replace('{&page,size,type,fragment}', '');
-  }
-  const {
-    mediaType,
-    componentId,
-    width,
-    height,
-    hzRevision,
-  } = thumbnail;
-  if (mediaType === 'image/webp') {
-    // webp only supported by componentLink
-    return componentLinkHref.replace(
-      '{&revision,component_id}',
-      `&revision=${hzRevision || 0}&component_id=${componentId}`,
-    );
-  }
-
-  return renditionLinkHref.replace(
-    '{&page,size,type,fragment}',
-    `&size=${Math.max(width, height)}&type=${mediaType}&fragment=id=${componentId}`,
-  );
-}
-
-export function containsVideo(page) {
-  return !!page?.rendition?.video?.thumbnail?.componentId;
 }

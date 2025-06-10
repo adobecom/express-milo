@@ -199,5 +199,4 @@ export default async function init(el) {
   controlsContainer.append(galleryControl);
   toolbar.append(controlsContainer);
   el.append(templatesContainer);
-  createFromScratch();
 }
