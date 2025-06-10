@@ -11,14 +11,15 @@
   border: 2px solid var(--color-white);
   border-radius: 16px;
   box-shadow: var(--ax-panels-box-shadow);
-  padding: 24px 16px 16px;
+  padding: var(--spacing-400) var(--spacing-300) var(--spacing-300);
 }
 
 .ax-panels {
-  padding-top: 64px;
+  padding-top: var(--spacing-800);
   padding-left: var(--ax-grid-margin);
   padding-right: var(--ax-grid-margin);
   position: relative;
+  --white-background: #e1e1e1;
 }
 
 .ax-panels .ax-panels-heading-container h2,
@@ -26,7 +27,7 @@
   font-size: var(--body-font-size-xl);
   font-weight: 700;
   text-align: center;
-  padding-bottom: 16px;
+  padding-bottom: var(--spacing-300);
 }
 
 .ax-panels .tablist-container {
@@ -67,7 +68,7 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
   border-radius: 6px;
-  padding: 12px 14px;
+  padding: var(--spacing-200) 14px;
   line-height: 1.3;
   border: 0;
   background-color: var(--color-white);
@@ -76,7 +77,7 @@
 }
 
 .ax-panels [role='tab']:hover {
-  background-color: #e1e1e1;
+  background-color: var(--white-background);
 }
 
 .ax-panels [role='tab'][aria-selected='true'] {
@@ -103,7 +104,7 @@
   left: -6px;
   bottom: 0;
   width: 2px;
-  background-color: #e1e1e1;  
+  background-color: var(--white-background);
 }
 
 .ax-panels .icon {
@@ -124,8 +125,8 @@
     font-size: var(--body-font-size-l );
   }
   .section[data-ax-panel][role='tabpanel'] {
-    margin: var(--ax-panels-fold) var(--ax-grid-margin) 64px var(--ax-grid-margin);
-    padding: 64px 32px 48px;
+    margin: var(--ax-panels-fold) var(--ax-grid-margin) var(--spacing-800) var(--ax-grid-margin);
+    padding: var(--spacing-800) var(--spacing-500) var(--spacing-700);
   }
   .ax-panels {
     z-index: 1;
@@ -139,6 +140,6 @@
     margin-right: auto;
   }
   .ax-panels .ax-panels-heading-container h2, .ax-panels .ax-panels-heading-container h3 {
-    padding-bottom: 32px;
+    padding-bottom: var(--spacing-500);
   }
 }
