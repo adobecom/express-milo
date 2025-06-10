@@ -77,7 +77,6 @@ function buildAccordion(block, rows, stepsContent) {
 
   stepsContent.append(list);
 
-  // Trigger click on first step's title after a small delay
   setTimeout(() => {
     const firstStepTitle = list.querySelector('h3');
     firstStepTitle.click();
