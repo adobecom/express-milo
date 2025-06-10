@@ -60,9 +60,16 @@ async function createTemplatesContainer(recipe, el) {
   };
 }
 
-function createDropdown(sortOptions, defaultIndex, updateTemplates) {
+function createDropdown(sortOptions, defaultIndex, updateTemplates, sortPlaceholderText) {
   let currentIndex = defaultIndex;
-  const select = createTag('div', { class: 'select', role: 'combobox', 'aria-haspopup': 'listbox', 'aria-expanded': 'false', tabindex: '0' });
+  const select = createTag('div', {
+    class: 'select',
+    role: 'combobox',
+    'aria-haspopup': 'listbox',
+    'aria-label': sortPlaceholderText,
+    'aria-expanded': 'false',
+    tabindex: '0',
+  });
   const selectedOption = createTag('div', { class: 'selected-option' }, [getIconElementDeprecated('template-lightning'), sortOptions[defaultIndex].text]);
   const options = sortOptions.map(({ text }) => (createTag('li', { class: 'option', role: 'option' }, [getIconElementDeprecated('template-lightning'), text])));
   options[defaultIndex].setAttribute('aria-selected', 'true');
@@ -162,7 +169,12 @@ export async function extractSort(recipe) {
   const recipeParams = new URLSearchParams(recipe);
   const sortKeys = Object.keys(sortConfig);
   const sortValues = Object.values(sortConfig);
-  const sortOptionTexts = await Promise.all(sortKeys.map((key) => replaceKey(key, getConfig())));
+  // const [sortPlaceholderText, ...sortOptionTexts] = await Promise.all(
+  const ha = await Promise.all([
+    replaceKey('sort', getConfig()),
+    ...(sortKeys.map((key) => replaceKey(key, getConfig()))),
+  ]);
+  const [sortPlaceholderText, ...sortOptionTexts] = ha;
   const sortOptions = sortKeys.map((key, i) => {
     const sortedRecipe = new URLSearchParams(recipeParams);
     sortedRecipe.set('orderBy', sortConfig[key]);
@@ -174,7 +186,7 @@ export async function extractSort(recipe) {
   const defaultIndex = Math.max(0, sortValues.indexOf(
     (sortValues.includes(recipeParams.get('orderBy'))),
   ));
-  return { sortOptions, defaultIndex };
+  return { sortOptions, defaultIndex, sortPlaceholderText };
 }
 
 export default async function init(el) {
@@ -192,8 +204,8 @@ export default async function init(el) {
     { templatesContainer, updateTemplates, control: galleryControl },
     sortSetup,
   ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
-  const { sortOptions, defaultIndex } = sortSetup || {};
-  const dropdown = createDropdown(sortOptions, defaultIndex, updateTemplates);
+  const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
+  const dropdown = createDropdown(sortOptions, defaultIndex, updateTemplates, sortPlaceholderText);
   const controlsContainer = createTag('div', { class: 'controls-container' }, [dropdown, galleryControl]);
   sortOptions && controlsContainer.append(dropdown);
   controlsContainer.append(galleryControl);

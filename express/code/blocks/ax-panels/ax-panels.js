@@ -83,7 +83,7 @@ export default async function init(el) {
     }
     tab.append(icon, listItem.textContent);
     tab.addEventListener('click', () => activateTab(tab));
-    listItem.replaceChildren(tab);
+    listItem.replaceWith(tab);
     return tab;
   });
 
