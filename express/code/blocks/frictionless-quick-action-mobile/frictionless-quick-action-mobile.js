@@ -19,6 +19,9 @@ const JPG = 'jpg';
 const JPEG = 'jpeg';
 const PNG = 'png';
 const WEBP = 'webp';
+const MP4 = 'mp4';
+const WEBM = 'webm';
+
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
   max_size: 40 * 1024 * 1024,
@@ -54,6 +57,13 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
+  'convert-to-gif': { ...getBaseVideoCfg(MP4, WEBM) },
+  'crop-video': { ...getBaseVideoCfg(MP4, WEBM) },
+  'trim-video': { ...getBaseVideoCfg(MP4, WEBM) },
+  'resize-video': { ...getBaseVideoCfg(MP4, WEBM) },
+  'merge-videos': { ...getBaseVideoCfg(MP4, WEBM) },
+  'convert-to-mp4': { ...getBaseVideoCfg(MP4, WEBM) },
+  'caption-video': { ...getBaseVideoCfg(MP4, WEBM) },
 };
 
 function fadeIn(element) {
@@ -136,6 +146,15 @@ export async function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
+  
+  const videoDocConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'video',
+    },
+  };
+
   const appConfig = {
     metaData: { isFrictionlessQa: 'true' },
     receiveQuickActionErrors: false,
@@ -181,6 +200,31 @@ export async function runQuickAction(quickAction, data, block) {
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    // video quick action
+    case 'convert-to-gif':
+      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-video':
+      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'trim-video':
+      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-video':
+      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'merge-videos':
+      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-mp4':
+      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'animate-from-audio':
+      ccEverywhere.quickAction.animateFromAudio(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'caption-video':
+      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     default: break;
   }
