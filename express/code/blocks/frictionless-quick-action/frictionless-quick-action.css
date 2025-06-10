@@ -155,6 +155,22 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     height: 1080px;
 }
 
+.frictionless-quick-action .quick-action-container#convert-to-gif-container {
+    height: 770px;
+}
+
+.frictionless-quick-action .quick-action-container#trim-video-container {
+    height: 710px;
+}
+
+.frictionless-quick-action .quick-action-container#resize-video-container {
+    height: 940px;
+}
+
+.frictionless-quick-action .quick-action-container#caption-video-container {
+    height: 1231px;
+}
+
 .frictionless-quick-action > div.hidden {
     visibility: hidden;
     position: absolute;
