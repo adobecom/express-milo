@@ -4,6 +4,10 @@ let createTag;
 
 const iconRegex = /icon-\s*([^\s]+)/;
 
+function convertToId(text) {
+  return text?.trim().toLowerCase().replaceAll(' ', '-');
+}
+
 function tagPanels(main) {
   const sections = [...main.querySelectorAll('.section')];
   const panels = [];
@@ -15,7 +19,7 @@ function tagPanels(main) {
     let isPanel = false;
     keys.filter((key) => key.trim().toLowerCase() === 'ax-panel').forEach((key) => {
       isPanel = true;
-      const val = meta[key].trim().toLowerCase();
+      const val = convertToId(meta[key]);
       section.setAttribute('role', 'tabpanel');
       section.setAttribute('id', `ax-panel-${val}`);
       section.setAttribute('data-ax-panel', val);
@@ -57,7 +61,7 @@ export default async function init(el) {
   };
 
   tabs = [...tabList.querySelectorAll('li')].map((listItem, index) => {
-    const tabVal = listItem.textContent.trim().toLowerCase();
+    const tabVal = convertToId(listItem.textContent);
     const tabId = `ax-panel-tab-${tabVal}`;
     const controlledPanel = panels.filter((panel) => panel.id === `ax-panel-${tabVal}`)[0];
     const tab = createTag('button', {

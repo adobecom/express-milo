@@ -14,8 +14,10 @@ export default async function init(el) {
     bgPic.classList.add('bg-pic');
     media.classList.add('media');
     cta.classList.add('cta');
+    const cardText = card.querySelector('p').textContent;
     [...cta.querySelectorAll('a')].forEach((a) => {
       a.classList.add('button', 'primary');
+      cardText && a.setAttribute('aria-label', `${cardText}-${a.textContent}`);
       const parent = a.parentElement;
       if (parent.tagName === 'P' && parent.firstChild === parent.lastChild) {
         parent.replaceWith(a);

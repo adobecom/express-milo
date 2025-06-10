@@ -10,8 +10,10 @@ export default async function init(el) {
     const [media, textContainer] = card.children;
     media.classList.add('media');
     textContainer.classList.add('text-container');
+    const cardText = card.querySelector('strong').textContent;
     [...textContainer.querySelectorAll('a')].forEach((a) => {
       a.classList.add('button', 'primary', 'reverse');
+      cardText && a.setAttribute('aria-label', `${cardText}-${a.textContent}`);
       const parent = a.parentElement;
       if (parent.tagName === 'P' && parent.firstChild === parent.lastChild) {
         parent.replaceWith(a);
