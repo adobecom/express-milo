@@ -7,22 +7,22 @@
 }
 
 .hover-cards .heading-container p {
-  font-size: var(--body-font-size-m);
-  line-height: 1.3;
-  color: var(--color-gray-800);
   margin: 0;
+  font-size: var(--body-font-size-m);
+  color: var(--color-gray-800);
+  line-height: 1.3;
 }
 
 .hover-cards .heading-container h2,
 .hover-cards .heading-container h3 {
+  padding-bottom: var(--spacing-100);
   font-size: var(--body-font-size-xl);
   color: #131313;
-  padding-bottom: var(--spacing-100);
 }
 
 .hover-cards .gallery {
-  gap: var(--spacing-300);
   padding: var(--box-shadow-vertical-offset) 0;
+  gap: var(--spacing-300);
 }
 
 .hover-cards .gallery-control {
@@ -30,13 +30,13 @@
 }
 
 .hover-cards .card {
-  border-radius: 8px;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
-  flex: 1 1 auto;
+  position: relative;
   min-width: 260px;
   max-width: 405px;
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  flex: 1 1 auto;
   background-color: var(--color-white);
-  position: relative;
 }
 
 .hover-cards .card .bg-pic img {
@@ -58,19 +58,19 @@
 
 .hover-cards .card .cta {
   position: relative;
+  padding: var(--spacing-200) var(--spacing-300) var(--spacing-300);
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px; 
-  padding: var(--spacing-200) var(--spacing-300) var(--spacing-300);
-  box-sizing: border-box;
-  width: 100%;
 }
 
 .hover-cards .card .cta .button {
+  margin: 0;
   overflow: visible;
   white-space: nowrap;
-  margin: 0;
 }
 
 .hover-cards .card .cta p {
@@ -80,10 +80,10 @@
 
 .hover-cards .card .media {
   position: relative;
+  padding: var(--spacing-300) var(--spacing-300) 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: var(--spacing-300) var(--spacing-300) 0;
 }
 
 .hover-cards .card .media img {
@@ -94,8 +94,8 @@
 @media (min-width: 600px) {
   .hover-cards .heading-container h2,
   .hover-cards .heading-container h3 {
-    font-size: var(--heading-font-size-s);
     padding-bottom: var(--spacing-100);
+    font-size: var(--heading-font-size-s);
   }
   .hover-cards .heading-container {
     padding-bottom: calc(20px - var(--box-shadow-vertical-offset));
