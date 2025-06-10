@@ -76,3 +76,7 @@ export function extractRenditionLinkHref(template) {
 export function extractComponentLinkHref(template) {
   return template._links?.['http://ns.adobe.com/adobecloud/rel/component']?.href;
 }
+
+export function containsVideo(page) {
+  return !!page?.rendition?.video?.thumbnail?.componentId;
+}
