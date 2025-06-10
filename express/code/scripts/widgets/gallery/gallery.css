@@ -16,12 +16,13 @@
 
 .gallery--item {
   scroll-snap-align: start;
+  max-width: 100%;
 }
 
 .gallery-control {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--spacing-100);
   align-items: center;
 }
 
