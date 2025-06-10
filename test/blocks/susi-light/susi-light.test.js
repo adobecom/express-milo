@@ -4,7 +4,7 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
-import { mockRes } from '../test-utilities.js';
+import { mockRes } from '../../helpers/test-utilities.js';
 import { delay } from '../../helpers/waitfor.js';
 
 const originalFetch = window.fetch;

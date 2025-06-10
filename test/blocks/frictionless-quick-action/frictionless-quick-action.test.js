@@ -2,7 +2,7 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 import sinon from 'sinon';
-import { mockRes } from '../test-utilities.js';
+import { mockRes } from '../../helpers/test-utilities.js';
 
 const imports = await Promise.all([import('../../../express/code/scripts/utils.js'), import('../../../express/code/scripts/scripts.js'), import('../../../express/code/blocks/frictionless-quick-action/frictionless-quick-action.js')]);
 const { getLibs, createTag } = imports[0];
