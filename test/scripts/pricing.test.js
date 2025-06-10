@@ -1,6 +1,6 @@
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
-import { mockRes } from '../blocks/test-utilities.js';
+import { mockRes } from '../helpers/test-utilities.js';
 import { fetchPlanOnePlans } from '../../express/code/scripts/utils/pricing.js';
 
 const imports = await Promise.all([import('../../express/code/scripts/utils.js'), import('../../express/code/scripts/scripts.js')]);
