@@ -302,7 +302,7 @@
 
 .template-x-carousel-toolbar .template .shared-tooltip.flipped {
   left: unset;
-  right: calc(100% + var(--sizing-200));
+  right: calc(100% + var(--spacing-200));
 }
 
 .template-x-carousel-toolbar .template .shared-tooltip::after {
