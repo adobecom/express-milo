@@ -2307,7 +2307,7 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   padding: 2px 6px 4px;
 }
 
-.template-x .template .button-container .media-wrapper .icon-share-arrow {
+.template-x .template .button-container .icon-share-arrow {
   cursor: pointer;
   pointer-events: auto;
   width: 16px;
@@ -2317,15 +2317,30 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   overflow: visible;
 }
 
-.template-x .template .button-container .media-wrapper .share-icon-wrapper {
+.template-x .template .button-container .share-icon-wrapper {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 16px;
+  right: 16px;
   border-radius: 50%;
   height: 20px;
+  opacity: 1;
+  pointer-events: initial;
+  float: right;
+  position: absolute;
 }
 
-.template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
+.template-x.horizontal .template .button-container > .share-icon-wrapper {
+  top: 12px;
+  right: 12px;
+}
+
+
+.template-x.horizontal.mini .template .button-container > .share-icon-wrapper {
+  top: 8px;
+  right: 8px;
+}
+
+.template-x .template .button-container .share-icon-wrapper .shared-tooltip {
   visibility: hidden;
   position: absolute;
   display: flex;
@@ -2343,12 +2358,22 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   font-size: var(--body-font-size-s);
 }
 
-.template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {
+.template-x .template .button-container .share-icon-wrapper .icon-share-arrow {
+  cursor: pointer;
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  padding: 4px;
+  background-color: white;
+  overflow: visible;
+}
+
+.template-x.horizontal .template:nth-last-of-type(2) .button-container .share-icon-wrapper .shared-tooltip {
   left: unset;
   right: calc(100% + 12px);
 }
 
-.template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip .icon-checkmark-green {
+.template-x .template .button-container .share-icon-wrapper .shared-tooltip .icon-checkmark-green {
   width: 10px;
   height: 10px;
   border-radius: 30px;
@@ -2356,16 +2381,16 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   padding: 2px;
 }
 
-.template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.display-tooltip {
+.template-x .template .button-container .share-icon-wrapper .shared-tooltip.display-tooltip {
   visibility: visible;
 }
 
-.template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped {
+.template-x .template .button-container .share-icon-wrapper .shared-tooltip.flipped {
   left: unset;
   right: calc(100% + 12px);
 }
 
-.template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
+.template-x .template .button-container .share-icon-wrapper .shared-tooltip::after {
   content: " ";
   position: absolute;
   top: 50%;
@@ -2376,13 +2401,13 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   border-color: transparent var(--background-positive-default) transparent transparent;
 }
 
-.template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip::after {
+.template-x.horizontal .template:nth-last-of-type(2) .button-container .share-icon-wrapper .shared-tooltip::after {
   right: unset;
   left: 100%;
   border-color: transparent transparent transparent var(--background-positive-default);
 }
 
-.template-x .template .button-container .media-wrapper .share-icon-wrapper .shared-tooltip.flipped::after {
+.template-x .template .button-container .share-icon-wrapper .shared-tooltip.flipped::after {
   right: unset;
   left: 100%;
   transform: rotate(180deg);
@@ -3232,3 +3257,38 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
   }
  }
 
+ 
+/* .template-x .template .button-container > .share-icon-wrapper {
+  position: absolute;
+  top: 16px;  
+  right: 16px;  
+  border-radius: 50%;
+  height: 20px;
+  z-index: 2; 
+}
+
+.template-x .template .button-container .share-icon-wrapper .icon-share-arrow {
+  cursor: pointer;
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  padding: 4px;
+  background-color: white;
+  overflow: visible;
+}
+
+.template-x .template:hover:not(.placeholder) .button-container > .share-icon-wrapper {
+  opacity: 1;
+  pointer-events: initial;
+  float: right;
+}
+
+.template-x.horizontal .template .button-container > .share-icon-wrapper {
+  top: 12px;
+  right: 12px;
+}
+
+.template-x.horizontal.mini .template .button-container > .share-icon-wrapper {
+  top: 8px;
+  right: 8px;
+} */
