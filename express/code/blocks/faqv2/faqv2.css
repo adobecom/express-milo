@@ -22,7 +22,7 @@
 }
 
 .faqv2.expandable.longform .faqv2-wrapper .faqv2-toggle {
-  padding-left: 24px;
+  padding-left: var(--spacing-400);
 }
 
 .faqv2.expandable {
@@ -73,7 +73,7 @@
 .faqv2.expandable.longform .faqv2-content.open {
   margin-top: 0;
   padding-right: 30px;
-  padding-bottom: 32px;
+  padding-bottom: var(--spacing-500);
   line-height: 130%;
 
 }
@@ -375,7 +375,7 @@
 
 .faqv2.expandable .faqv2-accordion.title {
   margin-top: 64px;
-  padding: 0 16px 24px;
+  padding: 0 16px var(--spacing-400);
 }
 
 .faqv2-grey-bg {
@@ -419,7 +419,7 @@
 }
 
 .faqv2.expandable.longform .faqv2-wrapper:first-child .faqv2-header {
-  padding-top: 32px;
+  padding-top: var(--spacing-500);
 }
 
 
@@ -508,7 +508,7 @@
   }
 
   .faqv2.longform.expandable .faqv2-header {
-    padding-top: 24px;
+    padding-top: var(--spacing-400);
   }
 
   .faqv2.expandable.longform .faqv2-wrapper:not(:last-child)::after {
@@ -521,14 +521,14 @@
   }
 
   .faqv2.expandable.longform .faqv2-header {
-    font-size: 22px;
+    font-size: var(--heading-font-size-s);
     font-weight: 700;
     color: var(--color-gray-800);
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: 16px;
+    padding-right: var(--spacing-300);
     padding-left: 0;
   }
   .section:has(.faqv2.expandable) picture.section-background {
