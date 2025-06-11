@@ -179,4 +179,3 @@ export function linkImage($elem) {
     $parent.append($a);
   }
 }
-
