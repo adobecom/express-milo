@@ -21,6 +21,10 @@
   position: relative;
 }
 
+.faqv2.expandable.longform .faqv2-wrapper .faqv2-toggle {
+  padding-left: 24px;
+}
+
 .faqv2.expandable {
   margin-bottom: 64px;
 }
@@ -406,6 +410,10 @@
   display: none;
 }
 
+.faqv2.longform.expandable .faqv2-header {
+  padding-left: 0;
+}
+
 @media (min-width: 400px) {
   .faqv2-header {
     font-size: var(--body-font-size-m);
@@ -494,6 +502,18 @@
 @media (min-width: 900px) {
   .faqv2 .has-background picture img {
     opacity: 0.5;
+  }
+
+  .faqv2.expandable.longform .faqv2-header {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-gray-800);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 16px;
+    padding-left: 0;
   }
 
   .section:has(.faqv2.expandable) picture.section-background {
@@ -656,18 +676,6 @@
 
 .faqv2.expandable.longform .faqv2-toggle:not(:last-child) {
   border-bottom: 1px solid #8F8F8F;
-}
-
-.faqv2.expandable.longform .faqv2-header {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--color-gray-800);
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 16px;
-  padding-left: 0;
 }
 
 .faqv2.expandable .faqv2-toggle:not(:last-child) {
