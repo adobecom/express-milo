@@ -58,7 +58,10 @@ const QA_CONFIGS = {
   'merge-videos': { ...getBaseVideoCfg(MP4, WEBM) },
   'convert-to-mp4': { ...getBaseVideoCfg(MP4, WEBM) },
   'caption-video': { ...getBaseVideoCfg(MP4, WEBM) },
-  'animate-from-audio': { ...getBaseVideoCfg(MP4, WEBM) },
+  'animate-from-audio': {
+    ...getBaseVideoCfg(MP4, WEBM),
+    input_check: () => true,
+  },
 };
 
 function fade(element, action) {
@@ -432,7 +435,7 @@ export default async function decorate(block) {
 
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();
-    if (quickAction === 'generate-qr-code') {
+    if (quickAction === 'generate-qr-code' || quickAction === 'animate-from-audio') {
       startSDK('', quickAction, block);
     } else {
       inputElement.click();
