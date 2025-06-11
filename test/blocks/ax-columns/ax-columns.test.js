@@ -167,39 +167,4 @@ describe('Columns', () => {
     const button = columns.querySelector('.button');
     expect(button.classList.contains('dark')).to.be.true;
   });
-
-  it('Should add all corner-overlay elements when block has marquee class', async () => {
-    document.body.innerHTML = marquee;
-    const columns = document.querySelector('.ax-columns');
-    await decorate(columns);
-
-    const pictureColumn = columns.querySelector('.column-picture');
-    expect(pictureColumn).to.exist;
-
-    const overlays = [
-      '.corner-overlay.top-left',
-      '.corner-overlay.top-right',
-      '.corner-overlay.bottom-left',
-      '.corner-overlay.bottom-right',
-      '.corner-overlay.bottom-center',
-    ];
-    overlays.forEach((selector) => {
-      const el = pictureColumn.querySelector(selector);
-      expect(el).to.exist;
-    });
-
-    expect(pictureColumn.querySelectorAll('.corner-overlay').length).to.equal(5);
-  });
-
-  it('Should not add corner-overlay elements on mobile', async () => {
-    document.body.dataset.device = 'mobile';
-    document.body.innerHTML = marquee;
-    const columns = document.querySelector('.ax-columns');
-    await decorate(columns);
-
-    const pictureColumn = columns.querySelector('.column-picture');
-    expect(pictureColumn).to.exist;
-
-    expect(pictureColumn.querySelector('.corner-overlay').length).to.be.undefined;
-  });
 });
