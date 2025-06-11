@@ -185,7 +185,8 @@
   content: '';
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: calc(100% - 48px);
+  left: 24px;
   border-bottom: 1px solid #8F8F8F;
 }
 
@@ -499,6 +500,15 @@
 @media (min-width: 900px) {
   .faqv2 .has-background picture img {
     opacity: 0.5;
+  }
+
+  .faqv2.expandable.longform .faqv2-wrapper:not(:last-child)::after {
+    width: 100%;
+    left: unset;
+  }
+
+  .faqv2.expandable.longform .faqv2-wrapper .faqv2-toggle {
+    padding-left: 0;
   }
 
   .faqv2.expandable.longform .faqv2-header {
