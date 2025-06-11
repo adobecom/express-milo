@@ -177,7 +177,7 @@ async function buildB2B(el) {
   const title = rows[2]?.textContent?.trim();
   const footer = rows[3];
   footer.classList.add('footer', 'susi-banner');
-  const variant = 'edu-express';
+  const variant = 'standard';
   const params = buildSUSIParams({
     client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
   });
