@@ -413,6 +413,7 @@
 
 .faqv2.longform.expandable .faqv2-header {
   padding-left: 0;
+  padding-top: 32px;
 }
 
 @media (min-width: 400px) {
@@ -654,7 +655,6 @@
 }
 
 @media (min-width: 1280px) {
-
   .faqv2 .faqv2-header {
     font-size: var(--body-font-size-l);
   }
