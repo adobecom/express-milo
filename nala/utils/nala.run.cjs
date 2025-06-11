@@ -69,15 +69,15 @@ function parseArgs(args) {
       parsedParams.tag = value;
     } else if (arg.startsWith('@')) {
       parsedParams.tag += parsedParams.tag ? ` ${arg.substring(1)}` : arg.substring(1);
-    } else if (arg.endsWith('.test.js')) {
+    } else if (arg.endsWith('.test.cjs')) {
       parsedParams.test = arg;
-    } else if (arg.endsWith('.config.js')) {
+    } else if (arg.endsWith('.config.cjs')) {
       parsedParams.config = arg;
     } else if (['ui', 'debug', 'headless', 'headed'].includes(arg)) {
       parsedParams.mode = arg;
     } else if (arg.startsWith('repo=')) {
       const repo = arg.split('=')[1];
-      parsedParams.repo = repo || 'milo';
+      parsedParams.repo = repo || 'express-milo';
     } else if (arg.startsWith('owner=')) {
       const owner = arg.split('=')[1];
       parsedParams.owner = owner || 'adobecom';
@@ -94,7 +94,7 @@ function parseArgs(args) {
   return parsedParams;
 }
 
-function getLocalTestLiveUrl(env, milolibs, repo = 'milo', owner = 'adobecom') {
+function getLocalTestLiveUrl(env, milolibs, repo = 'express-milo', owner = 'adobecom') {
   if (milolibs) {
     process.env.MILO_LIBS = `?milolibs=${milolibs}`;
     if (env === 'local') {
