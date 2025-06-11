@@ -1281,3 +1281,43 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 .ax-grid-col-10 { width: var(--ax-grid-10-col-width); }
 .ax-grid-col-11 { width: var(--ax-grid-11-col-width); }
 .ax-grid-col-12 { width: var(--ax-grid-12-col-width); }
+
+/* video controls for accessibility */
+.video-controls-wrapper {
+  position: absolute;
+  bottom: 15px;
+  right: 35px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--color-gray-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 2;
+}
+
+.video-controls-wrapper:hover {
+  background-color: var(--color-black);
+}
+
+.video-controls-wrapper:focus {
+  outline: 2px solid #1473e6;
+  outline-offset: 2px;
+}
+
+.video-controls-wrapper .icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-white);
+}
+
+.video-controls-wrapper[aria-pressed="true"] .accessibility-control.icon-play-video.isHidden {
+  display: none;
+}
+
+.video-controls-wrapper[aria-pressed="false"] .accessibility-control.icon-pause-video {
+  display: none;
+}
