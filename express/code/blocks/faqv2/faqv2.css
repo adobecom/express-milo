@@ -75,6 +75,7 @@
   padding-right: 30px;
   padding-bottom: 32px;
   line-height: 130%;
+
 }
 
 .faqv2.bold {
@@ -499,7 +500,6 @@
     padding-right: 60px;
     max-height: 0;
   }
-
 }
 
 @media (min-width: 900px) {
@@ -531,7 +531,6 @@
     padding-right: 16px;
     padding-left: 0;
   }
-
   .section:has(.faqv2.expandable) picture.section-background {
     opacity: 1;
   }

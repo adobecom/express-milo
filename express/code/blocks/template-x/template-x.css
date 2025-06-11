@@ -2310,8 +2310,8 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
 .template-x .template .button-container .media-wrapper .icon-share-arrow {
   cursor: pointer;
   pointer-events: auto;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   padding: 4px;
   background-color: white;
   overflow: visible;
@@ -2331,7 +2331,7 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   display: flex;
   align-items: center;
   gap: 4px;
-  width: 130px;
+  min-width: 130px;
   background-color: var(--background-positive-default);
   color: white;
   text-align: center;
