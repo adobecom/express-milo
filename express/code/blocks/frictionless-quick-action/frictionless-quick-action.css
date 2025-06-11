@@ -114,6 +114,10 @@
     line-height: var(--heading-line-height);
 }
 
+.frictionless-quick-action[data-frictionlesstype='animate-from-audio'] .dropzone-bg + p {
+    padding: 0;
+}
+
 .frictionless-quick-action .dropzone-bg + p em {
     font-style: normal;
     color: var(--color-info-accent);
