@@ -73,6 +73,7 @@
 .faqv2.expandable.longform .faqv2-content.open {
   margin-top: 0;
   padding-right: 30px;
+  padding-bottom: 32px;
 }
 
 .faqv2.bold {
@@ -491,12 +492,7 @@
     padding-right: 60px;
     max-height: 0;
   }
-  
-  .faqv2.expandable.longform .faqv2-content.open {
-    margin-top: 0;
-    padding-right: 60px;
-    padding-bottom: 32px;
-  }
+
 }
 
 @media (min-width: 900px) {
