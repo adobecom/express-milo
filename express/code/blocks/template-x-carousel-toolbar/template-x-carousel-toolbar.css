@@ -328,9 +328,7 @@
   transform: rotate(180deg);
 }
 
-.template-x-carousel-toolbar .template .button-container a.button,
-.template-x-carousel-toolbar .template .button-container a.cta-link,
-.template-x-carousel-toolbar .template a.con-button {
+.template-x-carousel-toolbar .template .button-container a.button {
   display: block;
   margin: 6px auto 0;
   box-sizing: border-box;
@@ -339,6 +337,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.template-x-carousel-toolbar .template .button-container a.cta-link {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
   font-weight: var(--body-font-weight);
 }
 
