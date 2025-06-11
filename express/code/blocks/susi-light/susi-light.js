@@ -97,6 +97,23 @@ function createSUSIComponent({ variant, config, authParams, destURL }) {
   return susi;
 }
 
+function redirectIfLoggedIn(destURL) {
+  const goDest = () => {
+    sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
+    window.location.assign(destURL);
+  };
+  if (window.adobeIMS) {
+    window.adobeIMS.isSignedInUser() && goDest();
+  } else {
+    loadIms()
+      .then(() => {
+        /* c8 ignore next */
+        window.adobeIMS?.isSignedInUser() && goDest();
+      })
+      .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
+  }
+}
+
 function buildSUSIParams({ client_id, variant, destURL, locale, title, hideIcon }) {
   const params = {
     variant,
@@ -130,14 +147,88 @@ function sanitizeId(input) {
     .replace(/[^\w-]/g, '');
 }
 
+async function buildEdu(el) {
+  const noRedirect = el.classList.contains('no-redirect');
+  const locale = getConfig().locale.ietf.toLowerCase();
+  const { imsClientId } = getConfig();
+  const rows = el.querySelectorAll(':scope > div > div');
+  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+  const title = rows[2]?.textContent?.trim();
+  const variant = 'edu-express';
+  const params = buildSUSIParams({
+    client_id, variant, destURL: getDestURL(redirectUrl), locale, title,
+  });
+  if (!noRedirect) {
+    redirectIfLoggedIn(params.destURL);
+  }
+  await loadSUSIScripts();
+  return createSUSIComponent(params);
+}
+
+// wrap susi component with custom logo + footer
+async function buildB2B(el) {
+  const noRedirect = el.classList.contains('no-redirect');
+  const locale = getConfig().locale.ietf.toLowerCase();
+  const { imsClientId } = getConfig();
+  const rows = el.querySelectorAll(':scope > div > div');
+  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+  const title = rows[2]?.textContent?.trim();
+  const footer = rows[3];
+  footer.classList.add('footer', 'susi-banner');
+  const variant = 'edu-express';
+  const params = buildSUSIParams({
+    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
+  });
+  if (!noRedirect) {
+    redirectIfLoggedIn(params.destURL);
+  }
+  const susiScriptReady = loadSUSIScripts();
+  await susiScriptReady;
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add('express-logo');
+  logo.height = 24;
+  const titleDiv = createTag('div', { class: 'title' }, title);
+  const wrapper = createTag('div', { class: 'susi-b2b' }, [logo, titleDiv, createSUSIComponent(params)]);
+  footer && wrapper.append(footer);
+  return wrapper;
+}
+
+// each tab wraps susi component with custom logo + footer
 let tabsId = 0;
-function buildSUSITabs(el, options) {
-  tabsId += 1;
+function buildSUSITabs(el) {
+  const locale = getConfig().locale.ietf.toLowerCase();
+  const { imsClientId } = getConfig();
+  const noRedirect = el.classList.contains('no-redirect');
   const rows = [...el.children];
+  const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
+  const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
+  const footers = rows[5] ? [...rows[5].querySelectorAll('div')] : [];
+  const tabParams = tabNames.map((tabName, index) => ({
+    tabName,
+    ...buildSUSIParams({
+      client_id: client_ids[index],
+      variant: variants[index],
+      destURL: getDestURL(redirectUrls[index]),
+      locale,
+      title: '', // rm titles
+      hideIcon: true,
+    }),
+    footer: footers[index] ?? null,
+  }));
+  if (!noRedirect) {
+    // redirect to first one if logged in
+    redirectIfLoggedIn(tabParams[0].destURL);
+  }
+
+  tabsId += 1;
   const wrapper = createTag('div', { class: 'susi-tabs' });
   const tabList = createTag('div', { role: 'tablist' });
   const susiScriptReady = loadSUSIScripts();
-  const panels = options.map((option, i) => {
+  const panels = tabParams.map((option, i) => {
     const { footer, tabName, variant } = option;
     const susiWrapper = createTag('div', { class: 'susi-wrapper' });
     const panel = createTag('div', { role: 'tabpanel', class: variant }, susiWrapper);
@@ -189,70 +280,23 @@ function buildSUSITabs(el, options) {
   return wrapper;
 }
 
-function redirectIfLoggedIn(destURL) {
-  const goDest = () => {
-    sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
-    window.location.assign(destURL);
-  };
-  if (window.adobeIMS) {
-    window.adobeIMS.isSignedInUser() && goDest();
-  } else {
-    loadIms()
-      .then(() => {
-        /* c8 ignore next */
-        window.adobeIMS?.isSignedInUser() && goDest();
-      })
-      .catch((e) => { window.lana?.log(`Unable to load IMS in susi-light: ${e}`); });
-  }
-}
-
 export default async function init(el) {
   ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
 
   const isTabs = el.classList.contains('tabs');
-  const noRedirect = el.classList.contains('no-redirect');
+  const isBusiness = el.classList.contains('b2b');
 
-  // only edu variant shows single
-  if (!isTabs) {
-    const rows = el.querySelectorAll(':scope > div > div');
-    const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
-    const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
-    const title = rows[2]?.textContent?.trim();
-    const variant = 'edu-express';
-    const params = buildSUSIParams({
-      client_id, variant, destURL: getDestURL(redirectUrl), locale, title,
-    });
-    if (!noRedirect) {
-      redirectIfLoggedIn(params.destURL);
-    }
-    await loadSUSIScripts();
-    el.replaceChildren(createSUSIComponent(params));
+  // default edu
+  if (!isTabs && !isBusiness) {
+    const edu = await buildEdu(el);
+    el.replaceChildren(edu);
     return;
   }
-  const rows = [...el.children];
-  const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
-  const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
-  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
-  const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
-  const footers = rows[5] ? [...rows[5].querySelectorAll('div')] : [];
-  const tabParams = tabNames.map((tabName, index) => ({
-    tabName,
-    ...buildSUSIParams({
-      client_id: client_ids[index],
-      variant: variants[index],
-      destURL: getDestURL(redirectUrls[index]),
-      locale,
-      title: '', // rm titles
-      hideIcon: true,
-    }),
-    footer: footers[index] ?? null,
-  }));
-  if (!noRedirect) {
-    // redirect to first one if logged in
-    redirectIfLoggedIn(tabParams[0].destURL);
+
+  if (isBusiness) {
+    el.replaceChildren(await (buildB2B(el)));
+  } else {
+    el.replaceChildren(buildSUSITabs(el));
   }
-  el.replaceChildren(buildSUSITabs(el, tabParams));
 }
