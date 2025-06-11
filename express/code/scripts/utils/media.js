@@ -1,4 +1,7 @@
-import { createTag } from '../utils.js';
+import { createTag, getLibs } from '../utils.js';
+
+/** Adding a backup here for the rootPath for createAccessibilityVideoControls function */
+const federatedAccessibilityIconsPath = 'https://main--federal--adobecom.aem.live';
 
 export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
   const url = new URL(src, window.location.href);
@@ -32,6 +35,87 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
   });
 
   return picture;
+}
+
+export function toggleVideo(target) {
+  const video = target?.closest('.hero-animation-overlay')?.querySelector('video');
+  const paused = video ? video.paused : false;
+
+  if (paused) {
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // ignore
+      });
+    }
+  } else video?.pause();
+}
+
+export function addAnimationToggle(target) {
+  target.addEventListener('click', () => {
+    toggleVideo(target);
+  }, true);
+  target.addEventListener('keypress', (e) => {
+    if (e.key !== 'Enter' && e.keyCode !== 32 && e.key !== ' ') {
+      return;
+    }
+    e.preventDefault();
+    toggleVideo(target);
+  }, true);
+}
+
+export async function createAccessibilityVideoControls(videoElement) {
+  const videoContainer = videoElement?.closest('.hero-animation-overlay');
+  const [federated] = await Promise.all([import(`${getLibs()}/utils/federated.js`)]);
+
+  const { getFederatedContentRoot } = federated;
+
+  /** Localization for video labels */
+  const { replaceKeyArray } = await import(`${getLibs()}/features/placeholders.js`);
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const [playAnimation, pauseAnimation] = await replaceKeyArray(['play-animation', 'pause-animation'], getConfig());
+  const videoLabels = {
+    playMotion: playAnimation || 'Play',
+    pauseMotion: pauseAnimation || 'Pause',
+  };
+
+  const federatedRootPath = getFederatedContentRoot() || federatedAccessibilityIconsPath;
+
+  const controlsWrapper = createTag('div', {
+    class: 'video-controls-wrapper',
+    tabIndex: '0',
+    role: 'button',
+    'aria-pressed': 'true',
+  });
+
+  // Add play and pause icons
+  controlsWrapper.append(
+    createTag('img', { alt: '', src: `${federatedRootPath}/federal/assets/svgs/accessibility-pause.svg`, class: 'accessibility-control icon-pause-video' }),
+    createTag('img', { alt: '', src: `${federatedRootPath}/federal/assets/svgs/accessibility-play.svg`, class: 'accessibility-control icon-play-video isHidden' }),
+  );
+
+  // Add keyboard support
+  controlsWrapper.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' || e.code === 'Enter') {
+      e.preventDefault();
+      controlsWrapper.click();
+    }
+  });
+
+  // Update button state when video state changes
+  videoElement.addEventListener('play', () => {
+    controlsWrapper.setAttribute('aria-pressed', 'true');
+    controlsWrapper.setAttribute('aria-label', videoLabels.playMotion);
+  });
+
+  videoElement.addEventListener('pause', () => {
+    controlsWrapper.setAttribute('aria-pressed', 'false');
+    controlsWrapper.setAttribute('aria-label', videoLabels.pauseMotion);
+  });
+
+  videoContainer.appendChild(controlsWrapper);
+  addAnimationToggle(controlsWrapper);
+  return videoElement;
 }
 
 export function transformLinkToAnimation($a, $videoLooping = true) {
@@ -78,6 +162,9 @@ export function transformLinkToAnimation($a, $videoLooping = true) {
       });
     }
   });
+  createAccessibilityVideoControls($video);
+  // addAnimationToggle($video);
+
   return $video;
 }
 
@@ -93,29 +180,3 @@ export function linkImage($elem) {
   }
 }
 
-export function toggleVideo(target) {
-  const video = target?.closest('.fqa-container')?.querySelector('video');
-  const paused = video ? video.paused : false;
-
-  if (paused) {
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // ignore
-      });
-    }
-  } else video?.pause();
-}
-
-export function addAnimationToggle(target) {
-  target.addEventListener('click', () => {
-    toggleVideo(target);
-  }, true);
-  target.addEventListener('keypress', (e) => {
-    if (e.key !== 'Enter' && e.keyCode !== 32 && e.key !== ' ') {
-      return;
-    }
-    e.preventDefault();
-    toggleVideo(target);
-  }, true);
-}
