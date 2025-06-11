@@ -58,6 +58,7 @@ const QA_CONFIGS = {
   'merge-videos': { ...getBaseVideoCfg(MP4, WEBM) },
   'convert-to-mp4': { ...getBaseVideoCfg(MP4, WEBM) },
   'caption-video': { ...getBaseVideoCfg(MP4, WEBM) },
+  'animate-from-audio': { ...getBaseVideoCfg(MP4, WEBM) },
 };
 
 function fade(element, action) {
