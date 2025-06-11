@@ -140,6 +140,7 @@ function addCardInteractions(card, drawer) {
     drawerOff();
   });
 }
+
 function toCard(drawer) {
   const titleText = drawer.querySelector('strong').textContent.trim();
   const [face, ...panels] = [...drawer.querySelectorAll(':scope > div')];
@@ -304,3 +305,10 @@ export default async function init(el) {
     drawerOff();
   });
 }
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && currDrawer) {
+    e.preventDefault();
+    drawerOff();
+  }
+});
+
