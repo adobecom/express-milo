@@ -18,8 +18,6 @@
   opacity: 0.8;
   margin-bottom: 0;
   border-radius: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
   position: relative;
 }
 
@@ -64,14 +62,12 @@
   overflow: hidden;
   transition: max-height 300ms ease-out;
   margin-top: 0;
-  padding-left: 18px;
   padding-right: 30px;
   max-height: 0;
 }
 
 .faqv2.expandable.longform .faqv2-content.open {
   margin-top: 0;
-  padding-left: 18px;
   padding-right: 30px;
 }
 
@@ -184,9 +180,7 @@
   content: '';
   position: absolute;
   bottom: 0;
-  left: 3%;
-  right: 5%;
-  width: 90%;
+  width: 100%;
   border-bottom: 1px solid #8F8F8F;
 }
 
@@ -486,15 +480,14 @@
     overflow: hidden;
     transition: max-height 300ms ease-out;
     margin-top: 0;
-    padding-left: 21px;
     padding-right: 60px;
     max-height: 0;
   }
   
   .faqv2.expandable.longform .faqv2-content.open {
     margin-top: 0;
-    padding-left: 21px;
     padding-right: 60px;
+    padding-bottom: 32px;
   }
 }
 
@@ -661,10 +654,6 @@
   }
 }
 
-.faqv2.expandable.longform .faqv2-toggle {
-  padding: 16px 0;
-}
-
 .faqv2.expandable.longform .faqv2-toggle:not(:last-child) {
   border-bottom: 1px solid #8F8F8F;
 }
@@ -678,6 +667,7 @@
   justify-content: space-between;
   align-items: center;
   padding-right: 16px;
+  padding-left: 0;
 }
 
 .faqv2.expandable .faqv2-toggle:not(:last-child) {
@@ -700,7 +690,6 @@
   transition: max-height 300ms ease-out;
   margin-top: 0;
   padding-top: 0;
-  padding-left: 21px;
   padding-right: 30px;
   max-height: 0;
 }
