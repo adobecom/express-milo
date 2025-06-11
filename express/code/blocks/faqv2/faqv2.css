@@ -415,8 +415,12 @@
 
 .faqv2.longform.expandable .faqv2-header {
   padding-left: 0;
+}
+
+.faqv2.expandable.longform .faqv2-wrapper:first-child .faqv2-header {
   padding-top: 32px;
 }
+
 
 @media (min-width: 400px) {
   .faqv2-header {
