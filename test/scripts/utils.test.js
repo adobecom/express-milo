@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
-import { setLibs, hideQuickActionsOnDevices } from '../../express/code/scripts/utils.js';
+import { readFile } from '@web/test-runner-commands';
+import sinon from 'sinon';
+import { mockRes } from '../blocks/test-utilities.js';
+import { setLibs, hideQuickActionsOnDevices, getIconElementDeprecated, convertToInlineSVG } from '../../express/code/scripts/utils.js';
 
 describe('Libs', () => {
   it('Default Libs', () => {
@@ -67,5 +70,31 @@ describe('Label Metadata for Frictionless', () => {
   it('labels non-Safari desktop as fqa-qualified-desktop', () => {
     hideQuickActionsOnDevices('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36');
     expect(document.querySelector('meta[name="fqa-qualified-desktop"]')).to.exist;
+  });
+});
+
+describe('SVG Inline Conversion', () => {
+  let oldFetch;
+  before(async () => {
+    oldFetch = window.fetch;
+    const svgContent = await readFile({ path: '../../express/code/icons/template-lightning.svg' });
+    sinon.stub(window, 'fetch').callsFake(async (url) => {
+      console.log('url', url);
+      return mockRes({ payload: svgContent });
+    });
+  });
+  after(() => {
+    window.fetch = oldFetch;
+  });
+  it('converts img to inline svg', async () => {
+    const icon = getIconElementDeprecated('template-lightning');
+    icon.setAttribute('data-test', 'ha');
+    const svg = await convertToInlineSVG(icon);
+    expect(svg.tagName).to.equal('svg');
+    expect(svg.classList.contains('icon')).to.be.true;
+    expect(svg.classList.contains('icon-template-lightning')).to.be.true;
+    expect(svg.getAttribute('width')).to.equal('18');
+    expect(svg.getAttribute('height')).to.equal('18');
+    expect(svg.getAttribute('data-test')).equal('ha');
   });
 });
