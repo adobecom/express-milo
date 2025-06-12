@@ -535,6 +535,7 @@
 
   .faqv2.expandable.longform .faqv2-wrapper {
     box-shadow: unset;
+    background-color: unset;
   }
 
   .faqv2.expandable.longform .faqv2-accordions-col {
