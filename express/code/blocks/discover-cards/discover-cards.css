@@ -103,12 +103,6 @@ main .section .discover-cards {
 }
 .discover-cards .center-title {
     text-align: center;
-}
-.discover-cards .center-title h2,
-.discover-cards .center-title h3,
-.discover-cards .center-title h4,
-.discover-cards .center-title h5,
-.discover-cards .center-title h6 {
     font-size: 22px;
     padding-left: 10px;
     padding-right: 10px;
@@ -159,11 +153,7 @@ main .section .discover-cards {
 }
 
 @media (min-width: 600px) {
-  .discover-cards .center-title h2,
-  .discover-cards .center-title h3,
-  .discover-cards .center-title h4,
-  .discover-cards .center-title h5,
-  .discover-cards .center-title h6 {
+  .discover-cards .center-title {
         font-size: 36px;
         margin-top: 50px;
         margin-bottom: 20px;
