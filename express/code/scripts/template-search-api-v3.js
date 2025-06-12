@@ -96,7 +96,7 @@ function formatFilterString(filters) {
     if (langFilter) str += `&filters=language==${langFilter}`;
 
     // No Region Filter as template region tagging is still inconsistent.
-    // We still have Region Boosting via x-express-pref-region-code header
+    // We still have Region Boosting via x-express-ims-region-code header
     // const regionFilter = extractRegions(locales).join(',');
     // if (regionFilter) str += `&filters=applicableRegions==${regionFilter}`;
   }
@@ -248,7 +248,7 @@ async function fetchSearchUrl({
   const headers = {};
   const prefLang = getConfig().locales?.[langs[0] === 'en' ? '' : langs[0]]?.ietf;
   const [prefRegion] = extractRegions(filters.locales);
-  headers['x-express-pref-region-code'] = prefRegion; // Region Boosting
+  headers['x-express-ims-region-code'] = prefRegion; // Region Boosting
   if (prefLang && supportedLanguages.includes(prefLang)) {
     headers['x-express-pref-lang'] = prefLang; // Language Boosting
   }
