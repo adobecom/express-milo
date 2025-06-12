@@ -491,7 +491,7 @@ function renderHoverWrapper(template) {
   btnContainer.append(cta);
   btnContainer.append(ctaLink);
   btnContainer.append(shareWrapper); // Append as sibling instead of inside ctaLink
-  
+
   btnContainer.addEventListener('mouseenter', enterHandler);
   btnContainer.addEventListener('mouseleave', leaveHandler);
 
