@@ -661,11 +661,8 @@
   }
 
   .faqv2.expandable {
+    margin-top: 80px;
     margin-bottom: 80px;
-  }
-  .faqv2.expandable.longform {
-    padding-top: 80px;
-    padding-bottom: 80px;
   }
   .faqv2.expandable .faqv2-accordion.title {
     margin-top: 80px;
