@@ -103,7 +103,7 @@ main .section .discover-cards {
 }
 .discover-cards .center-title {
     text-align: center;
-    font-size: 22px;
+    font-size: var(--heading-font-size-s);
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -154,7 +154,7 @@ main .section .discover-cards {
 
 @media (min-width: 600px) {
   .discover-cards .center-title {
-        font-size: 36px;
+        font-size: var(--heading-font-size-l);
         margin-top: 50px;
         margin-bottom: 20px;
     }
