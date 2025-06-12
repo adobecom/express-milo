@@ -588,7 +588,6 @@
     width: 100%;
     border-radius: 16px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.16);
-    margin-top: 25px;
     background: rgba(255, 255, 255, 0.65);
     max-width: 1300px;
     min-height: 600px;
@@ -663,6 +662,10 @@
 
   .faqv2.expandable {
     margin-bottom: 80px;
+  }
+  .faqv2.expandable.longform {
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
   .faqv2.expandable .faqv2-accordion.title {
     margin-top: 80px;
