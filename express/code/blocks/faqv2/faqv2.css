@@ -11,7 +11,6 @@
   margin: 0 auto 6px auto;
   border-radius: 8px;
   background: var(--color-white);
-  width: 92%;
 }
 
 .faqv2.expandable.longform .faqv2-wrapper {
@@ -369,7 +368,7 @@
 }
 
 .faqv2.expandable .faqv2-accordion.title {
-  padding: 0 16px var(--spacing-400);
+  /* padding: 0 16px var(--spacing-400); */
 }
 
 .faqv2.expandable.longform .faqv2-accordion.title {
@@ -485,8 +484,7 @@
   .faqv2.expandable {
     width: unset;
     max-width: 1024px;
-    margin-top: 64px;
-    margin-bottom: 64px;
+    margin: 64px 40px;
   }
   .faqv2.expandable .faqv2-accordion.title {
     font-size: var(--heading-font-size-m);
