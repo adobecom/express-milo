@@ -489,8 +489,8 @@
   }
   .faqv2.expandable .faqv2-accordion.title {
     font-size: var(--heading-font-size-m);
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
   }
   .faqv2.expandable.longform .faqv2-content {
     overflow: hidden;
