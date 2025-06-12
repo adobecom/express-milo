@@ -2,7 +2,6 @@
   --color-light-grey: #717171;
   position: relative;
   z-index: 1;
-  width: 100%;
   height: auto;
   margin-bottom: 25px;
 }
@@ -24,7 +23,7 @@
 }
 
 .faqv2.expandable {
-  margin-bottom: 64px;
+  margin: 64px 40px;
 }
 
 .faqv2.expandable .faqv2-wrapper {
@@ -359,7 +358,6 @@
 .faqv2-accordion.title {
   font-size: 22px;
   font-weight: 800;
-  margin: 20px 0 10px 0;
   padding-left: 0;
   height: 50px;
   border: none;
@@ -368,7 +366,10 @@
 }
 
 .faqv2.expandable .faqv2-accordion.title {
-  /* padding: 0 16px var(--spacing-400); */
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 0;
+  margin-bottom: 0;
 }
 
 .faqv2.expandable.longform .faqv2-accordion.title {
@@ -418,7 +419,6 @@
 .faqv2.expandable.longform .faqv2-wrapper:first-child .faqv2-header {
   padding-top: var(--spacing-500);
 }
-
 
 @media (min-width: 400px) {
   .faqv2-header {
