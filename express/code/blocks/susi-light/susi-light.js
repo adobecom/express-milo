@@ -114,7 +114,15 @@ function redirectIfLoggedIn(destURL) {
   }
 }
 
-function buildSUSIParams({ client_id, variant, destURL, locale, title, hideIcon }) {
+function buildSUSIParams({
+  client_id,
+  variant,
+  destURL,
+  locale,
+  title,
+  hideIcon,
+  layout,
+}) {
   const params = {
     variant,
     authParams: {
@@ -130,11 +138,15 @@ function buildSUSIParams({ client_id, variant, destURL, locale, title, hideIcon 
       fullWidth: true,
     },
   };
+  // '' for no title
   if (title !== undefined) {
     params.config.title = title;
   }
   if (hideIcon) {
     params.config.hideIcon = true;
+  }
+  if (layout) {
+    params.config.layout = layout;
   }
   return params;
 }
@@ -179,7 +191,7 @@ async function buildB2B(el) {
   footer.classList.add('footer', 'susi-banner');
   const variant = 'standard';
   const params = buildSUSIParams({
-    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
+    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true, layout: 'emailAndSocial',
   });
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
