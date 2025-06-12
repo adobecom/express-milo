@@ -159,10 +159,6 @@
   opacity: 0.5;
 }
 
-.faqv2.expandable.longform .faqv2-accordions-col {
-  opacity: 0.8;
-}
-
 .faqv2.expandable.longform .faqv2-accordions-col .faqv2-wrapper:first-child {
   border-radius: 16px 16px 0 0;
   box-shadow: 
