@@ -99,6 +99,7 @@
 }
 
 .how-to-steps-carousel .tip-number {
+  border: none;
   width: 34px;
   min-width: 34px;
   height: 34px;
