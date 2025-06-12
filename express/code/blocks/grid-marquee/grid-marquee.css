@@ -86,6 +86,7 @@ main .section .grid-marquee h1 {
 }
 
 .grid-marquee .face {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -94,6 +95,12 @@ main .section .grid-marquee h1 {
 .grid-marquee .face p {
   margin: 0;
   line-height: 20.8px;
+}
+
+.grid-marquee .face .mweb-card-chevron {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
 }
 
 .grid-marquee .face strong {
