@@ -120,9 +120,9 @@ export default async function decorate(block) {
   });
   const firstChild = block.querySelector(':scope > div:first-child');
 
-  if (firstChild && firstChild.querySelector('h1, h2, h3')) {
+  if (firstChild && firstChild.querySelector('h2, h3, h4, h5, h6')) {
     firstChild.classList.add('center-title');
-    const header = firstChild.querySelector('h1, h2, h3');
+    const header = firstChild.querySelector('h2, h3, h4, h5, h6');
     header.setAttribute('aria-label', `${header.textContent.trim()} cards`);
     block.insertBefore(firstChild, block.firstChild);
   }
