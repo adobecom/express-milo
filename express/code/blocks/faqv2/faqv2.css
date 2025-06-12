@@ -369,7 +369,6 @@
 }
 
 .faqv2.expandable .faqv2-accordion.title {
-  margin-top: 64px;
   padding: 0 16px var(--spacing-400);
 }
 
@@ -486,11 +485,11 @@
   .faqv2.expandable {
     width: unset;
     max-width: 1024px;
+    margin-top: 64px;
+    margin-bottom: 64px;
   }
   .faqv2.expandable .faqv2-accordion.title {
     font-size: var(--heading-font-size-m);
-    padding-left: var(--spacing-600);
-    padding-right: var(--spacing-600);
   }
   .faqv2.expandable.longform .faqv2-content {
     overflow: hidden;
