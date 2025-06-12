@@ -378,6 +378,10 @@
   padding: 0 16px var(--spacing-400);
 }
 
+.faqv2.expandable.longform .faqv2-accordion.title {
+  text-align: left;
+}
+
 .faqv2-grey-bg {
   background-color: var(color-gray-200);
 }
