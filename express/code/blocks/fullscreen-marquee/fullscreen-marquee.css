@@ -254,6 +254,10 @@
   padding-right: 10px;
 }
 
+.fullscreen-marquee .fullscreen-marquee-app-frame-highlight .quick-link {
+  pointer-events: none;
+}
+
 /* disable budoux on small screens  */
 @media (max-width: 600px) {
   h1.budoux {
@@ -320,3 +324,5 @@
     margin-bottom: 0;
   }
 }
+
+
