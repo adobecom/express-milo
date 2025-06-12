@@ -3256,39 +3256,3 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
     margin: auto;
   }
  }
-
- 
-/* .template-x .template .button-container > .share-icon-wrapper {
-  position: absolute;
-  top: 16px;  
-  right: 16px;  
-  border-radius: 50%;
-  height: 20px;
-  z-index: 2; 
-}
-
-.template-x .template .button-container .share-icon-wrapper .icon-share-arrow {
-  cursor: pointer;
-  pointer-events: auto;
-  width: 16px;
-  height: 16px;
-  padding: 4px;
-  background-color: white;
-  overflow: visible;
-}
-
-.template-x .template:hover:not(.placeholder) .button-container > .share-icon-wrapper {
-  opacity: 1;
-  pointer-events: initial;
-  float: right;
-}
-
-.template-x.horizontal .template .button-container > .share-icon-wrapper {
-  top: 12px;
-  right: 12px;
-}
-
-.template-x.horizontal.mini .template .button-container > .share-icon-wrapper {
-  top: 8px;
-  right: 8px;
-} */
