@@ -6,7 +6,8 @@ import {
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 
-let replaceKey; let getConfig;
+let replaceKey;
+let getConfig;
 let loadScript;
 
 let ccEverywhere;
@@ -19,8 +20,23 @@ const JPG = 'jpg';
 const JPEG = 'jpeg';
 const PNG = 'png';
 const WEBP = 'webp';
-const MP4 = 'mp4';
-const WEBM = 'webm';
+const VIDEO_FORMATS = [
+  'mov',
+  'mp4',
+  'crm',
+  'avi',
+  'm2ts',
+  '3gp',
+  'f4v',
+  'mpeg',
+  'm2t',
+  'm2p',
+  'm1v',
+  'mpg',
+  'wmv',
+  'tts',
+  '264',
+];
 
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
@@ -57,13 +73,17 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
-  'convert-to-gif': { ...getBaseVideoCfg(MP4, WEBM) },
-  'crop-video': { ...getBaseVideoCfg(MP4, WEBM) },
-  'trim-video': { ...getBaseVideoCfg(MP4, WEBM) },
-  'resize-video': { ...getBaseVideoCfg(MP4, WEBM) },
-  'merge-videos': { ...getBaseVideoCfg(MP4, WEBM) },
-  'convert-to-mp4': { ...getBaseVideoCfg(MP4, WEBM) },
-  'caption-video': { ...getBaseVideoCfg(MP4, WEBM) },
+  'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
+  'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'animate-from-audio': {
+    ...getBaseVideoCfg(VIDEO_FORMATS),
+    input_check: () => true,
+  },
 };
 
 function fadeIn(element) {
@@ -82,16 +102,20 @@ function fadeOut(element) {
 
 function selectElementByTagPrefix(p) {
   const allEls = document.body.querySelectorAll(':scope > *');
-  return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
+  return Array.from(allEls).find((e) =>
+    e.tagName.toLowerCase().startsWith(p.toLowerCase())
+  );
 }
 
 const downloadKey = 'download-to-phone';
 const editKey = 'edit-in-adobe-express-for-free';
 export async function runQuickAction(quickAction, data, block) {
   let downloadText = await replaceKey(downloadKey, getConfig());
-  if (downloadText === downloadKey.replaceAll('-', ' ')) downloadText = 'Download to Phone';
+  if (downloadText === downloadKey.replaceAll('-', ' '))
+    downloadText = 'Download to Phone';
   let editText = await replaceKey(editKey, getConfig());
-  if (editText === editKey.replaceAll('-', ' ')) editText = 'Edit in Adobe Express for free';
+  if (editText === editKey.replaceAll('-', ' '))
+    editText = 'Edit in Adobe Express for free';
   const exportConfig = [
     {
       id: 'download-button',
@@ -126,7 +150,10 @@ export async function runQuickAction(quickAction, data, block) {
   ];
 
   const id = `${quickAction}-container`;
-  quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
+  quickActionContainer = createTag('div', {
+    id,
+    class: 'quick-action-container',
+  });
   block.append(quickActionContainer);
   const divs = block.querySelectorAll(':scope > div');
   if (divs[1]) [, uploadContainer] = divs;
@@ -146,7 +173,7 @@ export async function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  
+
   const videoDocConfig = {
     asset: {
       data,
@@ -180,53 +207,129 @@ export async function runQuickAction(quickAction, data, block) {
   if (!ccEverywhere) return;
   switch (quickAction) {
     case 'convert-to-jpg':
-      ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.convertToJPEG(
+        docConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'convert-to-png':
-      ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.convertToPNG(
+        docConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'convert-to-svg':
       exportConfig.pop();
-      ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.convertToSVG(
+        docConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'crop-image':
-      ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.cropImage(
+        docConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'resize-image':
-      ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.resizeImage(
+        docConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'remove-background':
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.removeBackground(
+        docConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'generate-qr-code':
-      ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.generateQRCode(
+        {},
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     // video quick action
     case 'convert-to-gif':
-      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.convertToGIF(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'crop-video':
-      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.cropVideo(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'trim-video':
-      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.trimVideo(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'resize-video':
-      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.resizeVideo(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'merge-videos':
-      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.mergeVideos(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'convert-to-mp4':
-      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.convertToMP4(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'animate-from-audio':
-      ccEverywhere.quickAction.animateFromAudio(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.animateFromAudio(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
     case 'caption-video':
-      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.captionVideo(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig
+      );
       break;
-    default: break;
+    default:
+      break;
   }
 }
 
@@ -242,7 +345,9 @@ async function startSDK(data = '', quickAction, block) {
       window.lana.log('Invalid SDK URL');
     }
   }
-  const CDN_URL = valid ? urlOverride : 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
+  const CDN_URL = valid
+    ? urlOverride
+    : 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
   const clientId = 'AdobeExpressWeb';
 
   await loadScript(CDN_URL);
@@ -271,7 +376,9 @@ async function startSDK(data = '', quickAction, block) {
       }),
     };
 
-    ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
+    ccEverywhere = await window.CCEverywhere.initialize(
+      ...Object.values(ccEverywhereConfig)
+    );
   }
 
   runQuickAction(quickAction, data, block);
@@ -284,7 +391,11 @@ function showErrorToast(block, msg) {
   if (!toast) {
     toast = createTag('div', { class: 'error-toast hide' });
     toast.prepend(getIconElementDeprecated('error'));
-    const close = createTag('button', {}, getIconElementDeprecated('close-white'));
+    const close = createTag(
+      'button',
+      {},
+      getIconElementDeprecated('close-white')
+    );
     close.addEventListener('click', hideToast);
     toast.append(close);
     block.append(toast);
@@ -319,8 +430,13 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 }
 
 async function injectFreePlan(container) {
-  const { buildFreePlanWidget } = await import('../../scripts/widgets/free-plan.js');
-  const freePlan = await buildFreePlanWidget({ typeKey: 'features', checkmarks: true });
+  const { buildFreePlanWidget } = await import(
+    '../../scripts/widgets/free-plan.js'
+  );
+  const freePlan = await buildFreePlanWidget({
+    typeKey: 'features',
+    checkmarks: true,
+  });
   container.append(freePlan);
   return container;
 }
@@ -339,18 +455,28 @@ function decorateExtra(extraContainer) {
 }
 
 export default async function decorate(block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+  await Promise.all([
+    import(`${getLibs()}/utils/utils.js`),
+    import(`${getLibs()}/features/placeholders.js`),
+  ]).then(([utils, placeholders]) => {
     ({ getConfig, loadScript } = utils);
     ({ replaceKey } = placeholders);
   });
   const rows = Array.from(block.children);
-  const [quickActionRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'quick-action');
+  const [quickActionRow] = rows.filter(
+    (row) =>
+      row.children[0]?.textContent?.toLowerCase()?.trim() === 'quick-action'
+  );
   quickActionRow?.remove();
   // TODO: remove fallback row once authoring is done
-  const [fallbackRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'fallback');
+  const [fallbackRow] = rows.filter(
+    (row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'fallback'
+  );
   fallbackRow?.remove();
   if (fallbackRow && getMobileOperatingSystem() !== 'Android') {
-    const fallbackBlock = fallbackRow.querySelector(':scope > div:last-child > div');
+    const fallbackBlock = fallbackRow.querySelector(
+      ':scope > div:last-child > div'
+    );
     block.replaceWith(fallbackBlock);
     return fallbackBlock;
   }
@@ -396,9 +522,13 @@ export default async function decorate(block) {
     }
   };
 
-  const dropzone = createTag('button', { class: 'dropzone hide', id: 'mobile-fqa-upload' });
+  const dropzone = createTag('button', {
+    class: 'dropzone hide',
+    id: 'mobile-fqa-upload',
+  });
   const [animationContainer, dropzoneContent] = dropzoneContainer.children;
-  while (dropzoneContent.firstChild) dropzone.append(dropzoneContent.firstChild);
+  while (dropzoneContent.firstChild)
+    dropzone.append(dropzoneContent.firstChild);
   dropzoneContent.replaceWith(dropzone);
   animationContainer.classList.add('animation-container');
   const animation = animationContainer.querySelector('a');
@@ -418,7 +548,10 @@ export default async function decorate(block) {
   }
   dropzone.classList.add('dropzone');
   dropzone.append(createTag('div', { class: 'border-wrapper' }, dropzoneText));
-  const inputElement = createTag('input', { type: 'file', accept: QA_CONFIGS[quickAction].accept });
+  const inputElement = createTag('input', {
+    type: 'file',
+    accept: QA_CONFIGS[quickAction].accept,
+  });
   inputElement.onchange = () => {
     const file = inputElement.files[0];
     startSDKWithUnconvertedFile(file, quickAction, block);
@@ -436,26 +569,32 @@ export default async function decorate(block) {
     }
   });
 
-  window.addEventListener('popstate', (e) => {
-    const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
-    const correctState = e.state?.hideFrictionlessQa;
-    const embedElsFound = quickActionContainer || editorModal;
-    window.history.pushState({ hideFrictionlessQa: true }, '', '');
-    if (correctState || embedElsFound) {
-      quickActionContainer?.remove();
-      editorModal?.remove();
-      document.body.classList.remove('editor-modal-loaded');
-      inputElement.value = '';
-      ui2Landing();
-      document.body.dataset.suppressfloatingcta = 'false';
-    }
-  }, { passive: true });
+  window.addEventListener(
+    'popstate',
+    (e) => {
+      const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
+      const correctState = e.state?.hideFrictionlessQa;
+      const embedElsFound = quickActionContainer || editorModal;
+      window.history.pushState({ hideFrictionlessQa: true }, '', '');
+      if (correctState || embedElsFound) {
+        quickActionContainer?.remove();
+        editorModal?.remove();
+        document.body.classList.remove('editor-modal-loaded');
+        inputElement.value = '';
+        ui2Landing();
+        document.body.dataset.suppressfloatingcta = 'false';
+      }
+    },
+    { passive: true }
+  );
 
   block.dataset.frictionlesstype = quickAction;
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
-  import('../../scripts/instrument.js').then(({ sendFrictionlessEventToAdobeAnaltics }) => {
-    sendFrictionlessEventToAdobeAnaltics(block);
-  });
+  import('../../scripts/instrument.js').then(
+    ({ sendFrictionlessEventToAdobeAnaltics }) => {
+      sendFrictionlessEventToAdobeAnaltics(block);
+    }
+  );
   return block;
 }
