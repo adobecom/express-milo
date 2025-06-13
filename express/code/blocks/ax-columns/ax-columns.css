@@ -1139,8 +1139,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.marquee .column.column-picture {
     padding-left: 0;
     padding-right: 0;
+    margin-right: 32px;
   }
-
 
     .ax-columns
     .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay) {
