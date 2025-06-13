@@ -303,6 +303,10 @@ main .section .ax-columns.enterprise .column h2 {
   text-align: left;
 }
 
+.section .ax-columns.marquee .column p {
+  max-width: 530px;
+}
+
 .section .ax-columns.marquee h1.columns-heading-long {
   font-size: var(--heading-font-size-m);
 }
