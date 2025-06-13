@@ -1067,8 +1067,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     width: 100vw;
   }
 
-  .ax-columns.marquee {
-    margin: 0;
+  .section .ax-columns.marquee {
+    max-width: unset;
+    margin: 0
   }
 
 
