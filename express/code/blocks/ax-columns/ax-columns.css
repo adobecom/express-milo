@@ -260,6 +260,7 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns.marquee .column  {
   padding-left: 0;
   padding-right: 0;
+  text-align: left;
 }
 
 .ax-columns.marquee .column-picture {
@@ -934,12 +935,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   max-width: 900px;
 }
 
-.ax-columns.marquee .column {
-  text-align: left;
-}
-
 .column-picture .corner-overlay {
   display: none;
+}
+
+.section .ax-columns.marquee h1.columns-heading-long {
+  font-size: var(--heading-font-size-m);
 }
 
 @media (max-width: 600px) {
@@ -989,10 +990,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.marquee .column-picture {
     max-width: 520px;
     padding: 0;
-  }
-
-  .section .ax-columns.marquee h1.columns-heading-long {
-    font-size: var(--heading-font-size-l);
   }
 
   .ax-columns.marquee h1,
@@ -1313,7 +1310,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section .ax-columns.marquee h1.columns-heading-long {
-    font-size: var(--heading-font-size-xl);
+    font-size: var(--heading-font-size-l);
   }
 
   .content.columns-xl-heading h1,
