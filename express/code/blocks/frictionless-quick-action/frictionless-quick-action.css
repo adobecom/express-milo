@@ -74,14 +74,15 @@
     display: flex;
     flex-direction: column; 
 }
-
-.frictionless-quick-action .dropzone-bg {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0px;
-}
+/* 
+    .frictionless-quick-action .dropzone-bg {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        background-image: url('/express/code/icons/dash-rectangle.svg');
+    } */
 
 .frictionless-quick-action .dropzone-container.highlight .dropzone-bg {
     filter: invert(0%) sepia(0%) saturate(7500%) hue-rotate(327deg) brightness(6%) contrast(104%);
@@ -95,9 +96,14 @@
 .frictionless-quick-action .dropzone {
     flex-grow: 1;
     position: relative;
+    background-image: url('/express/code/icons/dash-rectangle.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 90% 100%
 }
 
-.frictionless-quick-action .dropzone-bg + p {
+.frictionless-quick-action .dropzone > p:first-of-type {
     margin: 0;
     padding: 39px 24px 0 24px;
     font-size: var(--heading-font-size-m);
@@ -105,7 +111,7 @@
     line-height: var(--heading-line-height);
 }
 
-.frictionless-quick-action .dropzone-bg + p em {
+.frictionless-quick-action  .dropzone > p:first-of-type em {
     font-style: normal;
     color: var(--color-info-accent);
 }
