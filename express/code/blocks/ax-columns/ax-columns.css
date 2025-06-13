@@ -1063,6 +1063,14 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 836px;
   }
 
+  .section:has(.ax-columns.marquee) {
+    width: 100vw;
+  }
+
+  .ax-columns.marquee {
+    margin: 0;
+  }
+
 
     .ax-columns:not(.marquee)
     .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(
