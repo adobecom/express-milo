@@ -1064,20 +1064,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
 
-    .ax-columns
+    .ax-columns:not(.marquee)
     .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(
       .text
     ) {
     padding-right: 16px;
   }
-
-  .ax-columns.marquee
-  .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(
-    .text
-  ) {
-    padding-right: 48px;
-  }
-
 
     .ax-columns
     .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay):not(
@@ -1448,6 +1440,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     left: 120px;
     transform: none;
   }
+
 }
 
 @media (min-width: 1200px) {
