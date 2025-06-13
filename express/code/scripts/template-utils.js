@@ -49,7 +49,9 @@ export function recipe2ApiQuery(recipe) {
   }
 
   params.set('queryType', 'search');
-  return { url: `${base}?${decodeURIComponent(params.toString())}`, headers };
+  // workaround to prevent akamai prod cache pollution causing cors issues in aem envs
+  const envParam = new URL(base).host === window.location.host ? '' : '&ax-env=stage';
+  return { url: `${base}?${decodeURIComponent(params.toString())}${envParam}`, headers };
 }
 
 export async function fetchResults(recipe) {
