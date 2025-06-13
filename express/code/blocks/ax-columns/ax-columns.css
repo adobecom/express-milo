@@ -1136,7 +1136,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.marquee .column.column-picture {
     padding-left: 0;
     padding-right: 0;
-    margin: 28px 32px 28px 0;
+    margin: 28px 32px 28px 28px;
   }
 
     .ax-columns
@@ -1479,7 +1479,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 1122px;
   }
 
-  .ax-columns:not(.fullsize)
+  .ax-columns:not(.fullsize):not(.marquee) 
     .column:not(.column-picture):not(.hero-animation-overlay):not(.text) {
     padding: 40px;
   }
