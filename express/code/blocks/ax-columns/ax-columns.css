@@ -371,7 +371,7 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .section .ax-columns.marquee > div {
-  gap: 48px;
+  gap: 32px;
   padding: 0;
 }
 
@@ -1032,6 +1032,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
     font-size: 36px;
     padding-top: 48px;
+  }
+
+  .section .ax-columns.marquee > div {
+    gap: 48px;
   }
   
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
