@@ -351,6 +351,10 @@ main .section .ax-columns.enterprise .column h2 {
   padding: 40px 0;
 }
 
+.section .ax-columns.marquee > div {
+  gap: 48px;
+}
+
 .section .ax-columns.center .column, .ax-columns.enterprise .column {
   text-align: center;
 }
