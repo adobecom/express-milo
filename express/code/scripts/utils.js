@@ -257,13 +257,6 @@ export async function fixIcons(el = document) {
   el.querySelectorAll('svg use[href^="./_icons_"]').forEach(($use) => {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
   });
-
-  let replaceKey;
-  let getConfig;
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
   /* new icons handling */
   el.querySelectorAll('img').forEach(($img) => {
     const alt = $img.getAttribute('alt');
@@ -278,12 +271,6 @@ export async function fixIcons(el = document) {
             }
             return null;
           });
-        let altText = null;
-        if (replaceKey(icon, getConfig())) {
-          altText = replaceKey(icon, getConfig());
-        } else if (replaceKey(mobileIcon, getConfig())) {
-          altText = replaceKey(mobileIcon, getConfig());
-        }
         const $picture = $img.closest('picture');
         const $block = $picture.closest('.section > div');
         let size = 44;
@@ -297,8 +284,10 @@ export async function fixIcons(el = document) {
             return;
           }
         }
+        const iconElement = getIconElementDeprecated([icon, mobileIcon], size);
+        iconElement.setAttribute('alt', '');
         $picture.parentElement
-          .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
+          .replaceChild(iconElement, $picture);
       }
     }
   });
