@@ -1,4 +1,4 @@
-import { getLibs,addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
