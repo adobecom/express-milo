@@ -231,16 +231,23 @@ main .section .discover-cards {
     }
 }
 
+.discover-cards .gallery,
 .discover-cards.flip .gallery {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 250px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--spacing-300);
   overflow-x: scroll;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   padding: 0 var(--spacing-300);
   scroll-padding: 0 var(--spacing-300);
+}
+
+.discover-cards.flip .gallery {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 250px;
 }
 
 .discover-cards .gallery::-webkit-scrollbar {
