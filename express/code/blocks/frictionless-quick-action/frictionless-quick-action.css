@@ -81,7 +81,6 @@
     width: 100%;
     height: 100%;
     left: 0px;
-    background: url("/express/code/icons/dash-rectangle.svg") center center / 91% no-repeat;
 }
 
 .frictionless-quick-action .dropzone-container.highlight .dropzone-bg {
@@ -199,8 +198,7 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     .frictionless-quick-action .dropzone-bg{
         display: block;
     }
-    .frictionless-quick-action video,
-    .frictionless-quick-action img:not(.icon) {
+    .frictionless-quick-action video {
         max-width: var(--frictionless-quick-action-video-width);
     }
 

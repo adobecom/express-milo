@@ -356,7 +356,7 @@ export default async function decorate(block) {
   const animationContainer = actionAndAnimationRow[0];
   const animation = animationContainer.querySelector('a');
   const dropzone = actionAndAnimationRow[1];
-  const dropzoneBackground = createTag('div', { class: 'dropzone-bg' });
+  const dropzoneBackground = createTag('img', { class: 'dropzone-bg', src:  '/express/code/icons/dash-rectangle.svg' });
   const cta = dropzone.querySelector('a.button, a.con-button');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
