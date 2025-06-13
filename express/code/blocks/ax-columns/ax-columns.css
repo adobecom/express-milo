@@ -1288,8 +1288,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.marquee
   .button-container.free-plan-container {
-    display: flex;
-    align-items: start;
+    /* display: flex;
+    align-items: start; */
+    display: none;
   }
 
   .ax-columns.marquee
@@ -1460,6 +1461,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 @media (min-width: 1200px) {
   .section:has(.ax-columns) > .content {
     max-width: 1024px;
+  }
+
+  .ax-columns.marquee
+  .button-container.free-plan-container {
+    display: flex;
+    align-items: start;
   }
 
   .section .ax-columns.marquee {
