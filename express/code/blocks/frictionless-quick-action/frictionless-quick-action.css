@@ -98,6 +98,10 @@
     padding-right: 36px;
 }
 
+.frictionless-quick-action .dropzone > p:last-of-type {
+    padding-bottom: 5px;
+}
+
 .frictionless-quick-action .dropzone > p:first-of-type {
     margin: 0;
     padding: 39px 24px 0 24px;
