@@ -43,12 +43,16 @@ export const getBaseImgCfg = (...types) => ({
   accept: types.map((type) => `.${type}`).join(', '),
   input_check: (input) => types.map((type) => `image/${type}`).includes(input),
 });
-export const getBaseVideoCfg = (...types) => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `video/${type}`).includes(input),
-});
+export const getBaseVideoCfg = (...types) => {
+  const formats = Array.isArray(types[0]) ? types[0] : types;
+  return {
+    group: 'video',
+    max_size: 1024 * 1024 * 1024,
+    accept: formats.map((type) => `.${type}`).join(', '),
+    input_check: (input) =>
+      formats.map((type) => `video/${type}`).includes(input),
+  };
+};
 const QA_CONFIGS = {
   'convert-to-jpg': {
     ...getBaseImgCfg(PNG, WEBP),
@@ -448,7 +452,7 @@ export default async function decorate(block) {
     e.preventDefault();
     dropzone.classList.remove('hide');
     animationContainer.classList.add('hide');
-    if (quickAction === 'generate-qr-code') {
+    if (quickAction === 'generate-qr-code'  || quickAction === 'animate-from-audio') {
       startSDK('', quickAction, block);
     } else {
       inputElement.click();
