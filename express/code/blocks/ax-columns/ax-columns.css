@@ -761,6 +761,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns .column.column-picture {
   padding-left: 8px;
   padding-right: 8px;
+  margin: auto;
 }
 
 .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
@@ -986,7 +987,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 1100px;
   }
   .ax-columns.marquee .column-picture {
-    max-width: 500px;
+    max-width: 520px;
+    padding: 0;
   }
 
   .section .ax-columns.marquee h1.columns-heading-long {
