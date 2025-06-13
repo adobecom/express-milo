@@ -10,6 +10,10 @@
   padding-top: 0;
 }
 
+.section:has(.ax-columns.marquee) {
+  padding-top: 40px;
+}
+
 .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing).long-form .ax-columns:last-child {
   padding-bottom: 40px;
@@ -44,6 +48,11 @@ main .section .ax-columns.enterprise .column h2 {
   max-width: 350px;
   line-height: initial;
   word-wrap: normal;
+}
+
+.ax-columns.marquee.width-2-columns {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .ax-columns.centered {
