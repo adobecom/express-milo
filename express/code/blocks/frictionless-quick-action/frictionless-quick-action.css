@@ -90,7 +90,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 90% 100%
+    background-size: calc(100% - 48px) 100%;
 }
 
 .frictionless-quick-action .dropzone > * {
