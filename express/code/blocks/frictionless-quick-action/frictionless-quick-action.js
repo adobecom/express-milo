@@ -46,8 +46,7 @@ export const getBaseVideoCfg = (...types) => {
     group: 'video',
     max_size: 1024 * 1024 * 1024,
     accept: formats.map((type) => `.${type}`).join(', '),
-    input_check: (input) =>
-      formats.map((type) => `video/${type}`).includes(input),
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
   };
 };
 

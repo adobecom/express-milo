@@ -49,8 +49,7 @@ export const getBaseVideoCfg = (...types) => {
     group: 'video',
     max_size: 1024 * 1024 * 1024,
     accept: formats.map((type) => `.${type}`).join(', '),
-    input_check: (input) =>
-      formats.map((type) => `video/${type}`).includes(input),
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
   };
 };
 const QA_CONFIGS = {
@@ -169,7 +168,7 @@ export async function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
-  
+
   const videoDocConfig = {
     asset: {
       data,
@@ -244,7 +243,12 @@ export async function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     case 'animate-from-audio':
-      ccEverywhere.quickAction.animateFromAudio(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.animateFromAudio(
+        videoDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig,
+      );
       break;
     case 'caption-video':
       ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
@@ -452,7 +456,7 @@ export default async function decorate(block) {
     e.preventDefault();
     dropzone.classList.remove('hide');
     animationContainer.classList.add('hide');
-    if (quickAction === 'generate-qr-code'  || quickAction === 'animate-from-audio') {
+    if (quickAction === 'generate-qr-code' || quickAction === 'animate-from-audio') {
       startSDK('', quickAction, block);
     } else {
       inputElement.click();
