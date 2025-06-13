@@ -297,6 +297,12 @@ main .section .ax-columns.enterprise .column h2 {
   line-height: 1.06;
 }
 
+.section .ax-columns.marquee .column,
+.section .ax-columns.marquee .column h1,
+.section .ax-columns.marquee .column p {
+  text-align: left;
+}
+
 .section .ax-columns.marquee h1.columns-heading-long {
   font-size: var(--heading-font-size-m);
 }
