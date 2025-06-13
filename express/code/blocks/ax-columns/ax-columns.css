@@ -1448,10 +1448,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     left: 120px;
     transform: none;
   }
-
-  .ax-columns.marquee .column-picture {
-    margin-right: 16px;
-  }
 }
 
 @media (min-width: 1200px) {
@@ -1462,10 +1458,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .section .ax-columns.marquee {
     width: 100%;
     max-width: 100%;
-  }
-
-  .ax-columns.marquee .column-picture {
-    margin-right: 96px;
   }
 
   .section .ax-columns, .ax-columns.top.center, .ax-columns.light {
