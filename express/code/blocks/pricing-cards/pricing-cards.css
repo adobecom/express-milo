@@ -32,6 +32,10 @@ Legacy CSS for cards and special promo
   align-items: center;
 }
 
+.pricing-cards .card > * {
+  box-sizing: border-box;
+}
+
 .pricing-cards .card .card-header h2 {
   font-weight: var(--heading-font-weight);
   line-height: var(--heading-line-height);
@@ -178,8 +182,11 @@ End border style variants
   right: -20px;
 }
 
-.pricing-cards .tooltip > button:focus-within .tooltip-text {
-  opacity: 1;
+.pricing-cards .tooltip  button.hover .tooltip-text,
+.pricing-cards .tooltip > button:focus-within .tooltip-text,
+.pricing-cards .tooltip-text.hover {
+    opacity: 1;
+    pointer-events: visible;
 }
 
 .pricing-cards .tooltip-text {
@@ -197,6 +204,7 @@ End border style variants
   user-select: text;
   transition: bottom 0.5s;
   width: 100%;
+  pointer-events: none;
 }
 
 .pricing-cards .tooltip>button {
@@ -206,15 +214,6 @@ End border style variants
   font-family: "adobe-clean";
   position: relative;
 }
-
-
-.pricing-cards .tooltip  button.hover .tooltip-text {
-  opacity: 1;
-} 
-
-.pricing-cards .tooltip-text.hover {
-  opacity: 1;
-} 
 
 .pricing-cards .tooltip-text::after {
   content: '';
@@ -252,10 +251,6 @@ End border style variants
   position: relative;
 }
 
-.pricing-cards .tooltip .icon:hover~.tooltip-text {
-  opacity: 1;
-  pointer-events: visible;
-}
 
 .pricing-cards .card-border .hide {
   display: none;
