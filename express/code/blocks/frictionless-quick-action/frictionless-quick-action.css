@@ -93,6 +93,11 @@
     background-size: 90% 100%
 }
 
+.frictionless-quick-action .dropzone > * {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
 .frictionless-quick-action .dropzone > p:first-of-type {
     margin: 0;
     padding: 39px 24px 0 24px;
