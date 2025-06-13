@@ -373,9 +373,48 @@ export default async function decorate(block) {
       if (isPictureColumn) {
         cell.classList.add('column-picture');
         block.classList.contains('marquee') && createCornerOverlays(cell);
+        const picture = cell.querySelector('picture');
+        const img = picture.querySelector('img');
+        const sources = picture.querySelectorAll('source');
+
+        // Store original sources before potentially changing them
+        img.dataset.originalSrc = img.src;
+        sources.forEach((source) => {
+          source.dataset.originalSrcset = source.srcset;
+        });
+
+        // Track previous width to detect breakpoint crossing
+        let previousWidth = window.innerWidth;
+
         if (window.innerWidth <= 899) {
-          cell.querySelector('img').src = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+          img.src = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+          sources.forEach((source) => {
+            source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+          });
         }
+
+        // Add resize listener to handle image switching
+        window.addEventListener('resize', () => {
+          const currentWidth = window.innerWidth;
+          const crossingBreakpoint = (previousWidth <= 899 && currentWidth > 899)
+                                   || (previousWidth > 899 && currentWidth <= 899);
+
+          if (crossingBreakpoint) {
+            if (currentWidth <= 899) {
+              img.src = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+              sources.forEach((source) => {
+                source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+              });
+            } else {
+              img.src = img.dataset.originalSrc;
+              sources.forEach((source) => {
+                source.srcset = source.dataset.originalSrcset;
+              });
+            }
+          }
+
+          previousWidth = currentWidth;
+        });
       }
 
       const $pars = cell.querySelectorAll('p');

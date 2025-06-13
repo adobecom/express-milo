@@ -10,9 +10,13 @@
   padding-top: 0;
 }
 
+.section:has(.ax-columns.marquee) {
+  padding-top: var(--spacing-600);
+}
+
 .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing).long-form .ax-columns:last-child {
-  padding-bottom: 40px;
+  padding-bottom: var(--spacing-600);
 }
 
 .section:has(.ax-columns) > .content {
@@ -44,6 +48,11 @@ main .section .ax-columns.enterprise .column h2 {
   max-width: 350px;
   line-height: initial;
   word-wrap: normal;
+}
+
+.ax-columns.marquee.width-2-columns {
+  padding-left: var(--spacing-300);
+  padding-right: var(--spacing-300);
 }
 
 .ax-columns.centered {
@@ -79,19 +88,19 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .section:not(:has(> .ax-columns:not(.centered))) > .ax-columns.centered {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .section:has(.ax-columns.enterprise) .content h2 {
   margin-top: 0;
-  padding-top: 80px;
+  padding-top: var(--spacing-900);
 }
 
 
 .section .ax-columns.enterprise {
-  padding-left: 80px;
-  padding-right: 80px;
+  padding-left: var(--spacing-900);
+  padding-right: var(--spacing-900);
   max-width: unset;
 }
 
@@ -102,7 +111,7 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns .express-logo.icon {
   width: unset;
   height: 30px;
-  padding-bottom: 8px;
+  padding-bottom: var(--spacing-100);
   float: unset;
 }
 
@@ -113,7 +122,7 @@ main .section .ax-columns.enterprise .column h2 {
 
 .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns.highlight:empty:first-child {
-  padding-top: 0px;
+  padding-top: 0;
 }
 
 .ax-columns.top.center, .ax-columns.fullsize.center, .ax-columns.light, .ax-columns.fullsize.center {
@@ -126,7 +135,7 @@ main .section .ax-columns.enterprise .column h2 {
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .ax-columns:last-child,
 .section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .content:last-child {
-  padding-bottom: 40px;
+  padding-bottom: var(--spacing-600);
 }
 
 .ax-columns h1,
@@ -173,7 +182,7 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .section .ax-columns p {
-  margin: 16px 0;
+  margin: var(--spacing-300) 0;
   font-size: var(--body-font-size-m);
   line-height: 1.33;
 }
@@ -202,7 +211,7 @@ main .section .ax-columns.enterprise .column h2 {
 
 .section > .ax-columns p.button-container, .section > .ax-columns .con-button {
   margin: 0;
-  margin-top: 40px;
+  margin-top: var(--spacing-600);
 }
 
 .section > .ax-columns .button-container a {
@@ -233,7 +242,7 @@ main .section .ax-columns.enterprise .column h2 {
   display: inline-block;
   width: 18px;
   height: 20px;
-  margin-right: 16px;
+  margin-right: var(--spacing-300);
   vertical-align: sub;
   top: 1px;
   position: relative;
@@ -243,14 +252,15 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns .column-picture {
   margin: 15px 0;
   position: relative;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: var(--spacing-100);
+  padding-right: var(--spacing-100);
   transition: transform 0.3s ease;
 }
 
 .ax-columns.marquee .column  {
   padding-left: 0;
   padding-right: 0;
+  text-align: left;
 }
 
 .ax-columns.marquee .column-picture {
@@ -286,6 +296,16 @@ main .section .ax-columns.enterprise .column h2 {
 .section .ax-columns h1 {
   font-size: var(--heading-font-size-xxl);
   line-height: 1.06;
+}
+
+.section .ax-columns.marquee .column,
+.section .ax-columns.marquee .column h1,
+.section .ax-columns.marquee .column p {
+  text-align: left;
+}
+
+.section .ax-columns.marquee .column p {
+  max-width: 530px;
 }
 
 .section .ax-columns.marquee h1.columns-heading-long {
@@ -324,7 +344,7 @@ main .section .ax-columns.enterprise .column h2 {
 .section .ax-columns h6 {
   font-size: var(--heading-font-size-m);
   line-height: 1.14;
-  margin-top: 32px;
+  margin-top: var(--spacing-500);
 }
 
 .section .ax-columns h2 + h2,
@@ -348,7 +368,12 @@ main .section .ax-columns.enterprise .column h2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 40px 0;
+  padding: var(--spacing-600) 0;
+}
+
+.section .ax-columns.marquee > div {
+  gap: 32px;
+  padding: 0;
 }
 
 .section .ax-columns.center .column, .ax-columns.enterprise .column {
@@ -403,10 +428,10 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns > div span.num {
   position: relative;
   font-weight: 900;
-  font-size: 36px;
+  font-size: var(--heading-font-size-l);
   line-height: 39px;
   top: 0;
-  margin-right: 12px;
+  margin-right: var(--spacing-200);
 }
 
 .ax-columns > div span.num + * {
@@ -415,7 +440,7 @@ main .section .ax-columns.enterprise .column h2 {
 
 .ax-columns .icon {
   height: 24px;
-  margin-right: 12px;
+  margin-right: var(--spacing-200);
   float: left;
 }
 
@@ -456,24 +481,24 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns .social.icon {
   width: 32px;
   height: 32px;
-  margin-right: 24px;
+  margin-right: var(--spacing-400);
 }
 
 .ax-columns .column hr {
-  margin-top: 32px;
+  margin-top: var(--spacing-500);
 }
 
 .ax-columns .column .columns-iconlist {
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
-  margin-bottom: 40px;
+  margin-top: var(--spacing-100);
+  margin-bottom: var(--spacing-600);
 }
 
 .ax-columns .column .columns-iconlist > div {
   display: flex;
   align-items: center;
-  margin-top: 32px;
+  margin-top: var(--spacing-500);
 }
 
 .ax-columns .column .columns-iconlist p {
@@ -547,7 +572,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .section:first-child:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child > div.columns-video {
-  padding: 40px 0;
+  padding: var(--spacing-600) 0;
 }
 
 .ax-columns.highlight > div:first-child {
@@ -600,7 +625,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .section:has(.ax-columns.highlight) h4 {
-  margin: 16px 0;
+  margin: var(--spacing-300) 0;
   font-size: var(--heading-font-size-m);
 }
 
@@ -611,7 +636,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.highlight
   .column:not(.column-picture):not(.hero-animation-overlay) {
-  padding: 20px 16px;
+  padding: 20px var(--spacing-300);
 }
 
 .ax-columns.highlight .column h5 {
@@ -646,7 +671,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.highlight .column .columns-iconlist > div {
-  margin-top: 8px;
+  margin-top: var(--spacing-100);
 }
 
 .ax-columns.highlight .column p {
@@ -658,11 +683,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.offer .column:not(:first-child) {
-  padding-top: 40px;
+  padding-top: var(--spacing-600);
 }
 
 .ax-columns.offer > div p.button-container, .ax-columns.offer > div a.con-button {
-  margin-bottom: 40px;
+  margin-bottom: var(--spacing-600);
 }
 
 /* sub title */
@@ -670,7 +695,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   font-size: var(--body-font-size-xl);
   font-weight: 600;
   line-height: var(--body-line-height);
-  margin: 80px 0 0;
+  margin: var(--spacing-900) 0 0;
 }
 
 .ax-columns.offer .columns-offer-icon .icon {
@@ -703,8 +728,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns .column {
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: var(--spacing-500);
+  padding-right: var(--spacing-500);
 }
 
 .ax-columns.fullsize .column-picture,
@@ -713,15 +738,15 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize > div > div p {
-  margin: 16px 0;
+  margin: var(--spacing-300) 0;
 }
 
 .ax-columns.fullsize > div > div .button-container, .ax-columns.fullsize > div > div a.con-button {
-  margin: 16px 0;
+  margin: var(--spacing-300) 0;
 }
 
 .ax-columns.fullsize > div > div .button-container a {
-  margin: 16px 0 0 0;
+  margin: var(--spacing-300) 0 0 0;
 }
 
 .ax-columns.fullsize .has-brand > div p:first-child {
@@ -729,20 +754,21 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize .column {
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: var(--spacing-400);
+  padding-right: var(--spacing-400);
   width: calc(100% - 48px);
 }
 
 .ax-columns .column.column-picture {
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: var(--spacing-100);
+  padding-right: var(--spacing-100);
+  margin: auto;
 }
 
 .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
   transform: none;
   left: 0;
-  padding-left: 32px;
+  padding-left: var(--spacing-500);
 }
 
 .ax-columns.fullsize .hero-animation-overlay {
@@ -753,7 +779,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .ax-columns.fullsize .hero-animation-overlay video {
   max-height: 40vh;
-  margin-bottom: 40px;
+  margin-bottom: var(--spacing-600);
   max-width: 370px;
 }
 
@@ -765,12 +791,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.fullsize
   .has-brand
   > div:not(.column-picture):not(.hero-animation-overlay) {
-  padding-top: 16px;
+  padding-top: var(--spacing-300);
 }
 
 .ax-columns.highlight .column.column-picture {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 /* Custom color variant */
@@ -790,7 +816,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.color > div {
-  padding: 80px 0 0 0;
+  padding: var(--spacing-900) 0 0 0;
   gap: 15px;
 }
 
@@ -825,7 +851,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .button-container.free-plan-container.stacked
   .free-plan-widget {
   margin-top: 0;
-  padding: 16px 0;
+  padding: var(--spacing-300) 0;
   background-color: transparent;
 }
 
@@ -845,7 +871,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .ax-columns.center.button-container.free-plan-container.stacked
   .free-plan-widget {
-  padding-left: 24px;
+  padding-left: var(--spacing-400);
 }
 
 .ax-columns.fullsize.top {
@@ -853,7 +879,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize.top > div {
-  padding: 40px 0;
+  padding: var(--spacing-600) 0;
 }
 
 .ax-columns.fullsize.top .column {
@@ -862,7 +888,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize.top .column .columns-iconlist > div {
-  margin-top: 12px;
+  margin-top: var(--spacing-200);
 }
 
 .ax-columns.fullsize.top .column .columns-iconlist p {
@@ -876,7 +902,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .columns-iconlist
   .columns-iconlist-icon
   img.icon {
-  margin-right: 8px;
+  margin-right: var(--spacing-100);
 }
 
 
@@ -884,7 +910,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .column
   .columns-iconlist
   .columns-iconlist-description {
-  margin-left: 8px;
+  margin-left: var(--spacing-100);
 }
 
 /* Japanese font sizing styles */
@@ -909,12 +935,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   max-width: 900px;
 }
 
-.ax-columns.marquee .column {
-  text-align: left;
-}
-
 .column-picture .corner-overlay {
   display: none;
+}
+
+.section .ax-columns.marquee h1.columns-heading-long {
+  font-size: var(--heading-font-size-m);
 }
 
 @media (max-width: 600px) {
@@ -941,8 +967,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section .ax-columns.minimum-padding {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: var(--spacing-300);
+    padding-right: var(--spacing-300);
     text-align: left;
     max-width: unset;
   }
@@ -962,11 +988,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 1100px;
   }
   .ax-columns.marquee .column-picture {
-    max-width: 500px;
-  }
-
-  .section .ax-columns.marquee h1.columns-heading-long {
-    font-size: var(--heading-font-size-l);
+    max-width: 520px;
+    padding: 0;
   }
 
   .ax-columns.marquee h1,
@@ -1005,7 +1028,16 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 @media (min-width: 900px) {
   main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
     font-size: 36px;
-    padding-top: 48px;
+    padding-top: var(--spacing-700);
+  }
+
+  .section .ax-columns.marquee > div {
+    gap: 48px;
+  }
+
+  .ax-columns.marquee.width-2-columns {
+    padding-left: var(--spacing-500);
+    padding-right: var(--spacing-500);
   }
   
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
@@ -1020,41 +1052,42 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns .column {
     margin: 0;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: var(--spacing-500);
+    padding-right: var(--spacing-500);
   }
 
   .section:has(.ax-columns) > .content {
     max-width: 836px;
   }
 
+  .section:has(.ax-columns.marquee) {
+    width: 100vw;
+  }
 
-    .ax-columns
+  .section .ax-columns.marquee {
+    max-width: unset;
+    margin: 0
+  }
+
+
+    .ax-columns:not(.marquee)
     .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(
       .text
     ) {
-    padding-right: 16px;
+    padding-right: var(--spacing-300);
   }
-
-  .ax-columns.marquee
-  .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(
-    .text
-  ) {
-    padding-right: 48px;
-  }
-
 
     .ax-columns
     .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay):not(
       .text
     ) {
-    padding-left: 16px;
+    padding-left: var(--spacing-300);
   }
 
 
     .ax-columns.highlight
     .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay) {
-    padding-left: 32px;
+    padding-left: var(--spacing-500);
   }
 
   .ax-columns.color .column {
@@ -1079,12 +1112,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns.fullsize > div > div p {
-    margin: 16px 0;
+    margin: var(--spacing-300) 0;
   }
 
   .ax-columns.fullsize > div > div .button-container, .ax-columns.fullsize > div > div a.con-button {
     margin: 0;
-    margin-top: 40px;
+    margin-top: var(--spacing-600);
   }
 
   .ax-columns.fullsize > div > div .button-container a {
@@ -1092,18 +1125,23 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns.fullsize .has-brand > div p:first-child {
-    margin: 16px 0;
+    margin: var(--spacing-300) 0;
   }
 
   .ax-columns .column.column-picture {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: var(--spacing-100);
+    padding-right: var(--spacing-100);
   }
 
+  .ax-columns.marquee .column.column-picture {
+    padding-left: 0;
+    padding-right: 0;
+    margin: 28px 32px 28px 28px;
+  }
 
     .ax-columns
     .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay) {
-    padding-left: 16px;
+    padding-left: var(--spacing-300);
   }
 
   .collapsible-card-wrapper + .columns-wrapper .ax-columns > div {
@@ -1142,8 +1180,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .section .ax-columns, .ax-columns.top.center, .ax-columns.fullsize.center, .ax-columns.light, .ax-columns.fullsize.center {
     max-width: 836px;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: var(--spacing-500);
+    padding-right: var(--spacing-500);
   }
 
   .section .ax-columns.extra-wide {
@@ -1247,8 +1285,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.marquee
   .button-container.free-plan-container {
-    display: flex;
-    align-items: start;
+    display: none;
   }
 
   .ax-columns.marquee
@@ -1271,7 +1308,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section .ax-columns.marquee h1.columns-heading-long {
-    font-size: var(--heading-font-size-xl);
+    font-size: var(--heading-font-size-l);
   }
 
   .content.columns-xl-heading h1,
@@ -1414,9 +1451,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     transform: none;
   }
 
-  .ax-columns.marquee .column-picture {
-    margin-right: 16px;
-  }
 }
 
 @media (min-width: 1200px) {
@@ -1424,13 +1458,22 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 1024px;
   }
 
-  .section .ax-columns.marquee {
-    width: 100%;
-    max-width: 100%;
+  .ax-columns.marquee
+  .button-container.free-plan-container {
+    display: flex;
+    align-items: start;
   }
 
-  .ax-columns.marquee .column-picture {
-    margin-right: 96px;
+  .section:has(.ax-columns.marquee) {
+    padding-top: var(--spacing-900);
+    padding-bottom: var(--spacing-900);
+  }
+
+  .section .ax-columns.marquee {
+    margin: auto;
+    max-width: 1400px;
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
   }
 
   .section .ax-columns, .ax-columns.top.center, .ax-columns.light {
@@ -1441,9 +1484,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     max-width: 1122px;
   }
 
-  .ax-columns:not(.fullsize)
+  .ax-columns:not(.fullsize):not(.marquee) 
     .column:not(.column-picture):not(.hero-animation-overlay):not(.text) {
-    padding: 40px;
+    padding: var(--spacing-600);
   }
 
   .ax-columns.fullsize .column.hero-animation-overlay {
@@ -1477,7 +1520,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.offer .column {
     width: 490px;
-    padding: 40px 0;
+    padding: var(--spacing-600) 0;
   }
 
   .ax-columns.offer .column:not(:first-child) {
@@ -1498,7 +1541,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns.fullsize.top > div {
-    padding: 80px 0;
+    padding: var(--spacing-900) 0;
   }
 
   :lang(ja) .section .ax-columns h1 {
@@ -1580,7 +1623,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.marquee .button-container.free-plan-container {
     align-items: center;
-    margin-top: 12px;
+    margin-top: var(--spacing-200);
   }
 
   .ax-columns.marquee .column-picture::before {
@@ -1624,7 +1667,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.slim-padding > div {
-  padding: 0px;
+  padding: 0;
 }
 
 .ax-columns.slim-padding .column {
@@ -1727,7 +1770,5 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     left: 120px;
     transform: none;
   }
-
-  
 }
 
