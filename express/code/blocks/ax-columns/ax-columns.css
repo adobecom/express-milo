@@ -1467,9 +1467,10 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section .ax-columns.marquee {
-    width: 100%;
     margin: auto;
     max-width: 1400px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 
   .section .ax-columns, .ax-columns.top.center, .ax-columns.light {
