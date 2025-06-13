@@ -1037,6 +1037,11 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .section .ax-columns.marquee > div {
     gap: 48px;
   }
+
+  .ax-columns.marquee.width-2-columns {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
   
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
     padding-left: 0;
