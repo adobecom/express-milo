@@ -86,6 +86,7 @@ export async function createAccessibilityVideoControls(videoElement) {
     tabIndex: '0',
     role: 'button',
     'aria-pressed': 'true',
+    'aria-label': videoLabels.pauseMotion,
   });
 
   // Add play and pause icons
@@ -105,12 +106,12 @@ export async function createAccessibilityVideoControls(videoElement) {
   // Update button state when video state changes
   videoElement.addEventListener('play', () => {
     controlsWrapper.setAttribute('aria-pressed', 'true');
-    controlsWrapper.setAttribute('aria-label', videoLabels.playMotion);
+    controlsWrapper.setAttribute('aria-label', videoLabels.pauseMotion);
   });
 
   videoElement.addEventListener('pause', () => {
     controlsWrapper.setAttribute('aria-pressed', 'false');
-    controlsWrapper.setAttribute('aria-label', videoLabels.pauseMotion);
+    controlsWrapper.setAttribute('aria-label', videoLabels.playMotion);
   });
 
   videoContainer.appendChild(controlsWrapper);
