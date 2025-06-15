@@ -6,6 +6,10 @@ let createTag;
  * @param {HTMLDivElement} $block
  */
 export default async function decorate($block) {
+  /** removing the highlight variant only  */
+  const isAxColumnsHighlight = $block?.parentElement?.querySelector('.highlight');
+  if (isAxColumnsHighlight) return $block?.parentElement?.remove();
+
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated($block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
@@ -27,4 +31,6 @@ export default async function decorate($block) {
       }
     });
   });
+
+  return $block;
 }
