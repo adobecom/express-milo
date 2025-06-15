@@ -464,7 +464,7 @@ function readBraces(inputString, card) {
 
   if (matches.length > 0) {
     const [token, promoType] = matches[matches.length - 1];
-    const specialPromo = createTag('div');
+    const specialPromo = createTag('h2');
     specialPromo.textContent = inputString.split(token)[0].trim();
     card.classList.add(promoType.replaceAll(' ', ''));
     card.append(specialPromo);
@@ -475,7 +475,7 @@ function readBraces(inputString, card) {
 // Function for decorating a legacy header / promo.
 function decorateLegacyHeader(header, card) {
   header.classList.add('card-header');
-  const h2 = header.querySelector('h2');
+  const h2 = header.querySelector('h3');
   const h2Text = h2.textContent.trim();
   h2.innerHTML = '';
   const headerConfig = /\((.+)\)/.exec(h2Text);
@@ -513,19 +513,28 @@ function decorateLegacyHeader(header, card) {
 
 function decorateHeader(header, borderParams, card, cardBorder) {
   const h2 = header.querySelector('h2');
+  const headerImage = h2?.querySelector('img');
+  const h2Text = h2?.innerText.trim();
+  const h3 = createTag('h3');
+  h3.innerText = h2Text;
+
+  if (headerImage) h3.append(headerImage);
+  header.append(h3);
+  h2?.remove();
+
   // The raw text extracted from the word doc
   header.classList.add('card-header');
   const specialPromo = readBraces(borderParams?.innerText, cardBorder);
   const premiumIcon = header.querySelector('img');
   // Finds the headcount, removes it from the original string and creates an icon with the hc
   const extractHeadCountExp = /(>?)\(\d+(.*?)\)/;
-  if (extractHeadCountExp.test(h2.innerText)) {
+  if (extractHeadCountExp.test(h3.innerText)) {
     const headCntDiv = createTag('div', { class: 'head-cnt', alt: '' });
-    const headCount = h2.innerText
+    const headCount = h3.innerText
       .match(extractHeadCountExp)[0]
       .replace(')', '')
       .replace('(', '');
-    [h2.innerText] = h2.innerText.split(extractHeadCountExp);
+    [h3.innerText] = h3.innerText.split(extractHeadCountExp);
     headCntDiv.textContent = headCount;
     headCntDiv.prepend(
       createTag('img', {
@@ -535,7 +544,7 @@ function decorateHeader(header, borderParams, card, cardBorder) {
     );
     header.append(headCntDiv);
   }
-  if (premiumIcon) h2.append(premiumIcon);
+  if (premiumIcon) h3.append(premiumIcon);
   header.querySelectorAll('p').forEach((p) => {
     if (p.innerHTML.trim() === '') p.remove();
   });
