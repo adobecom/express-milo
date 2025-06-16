@@ -3,7 +3,6 @@
   position: relative;
   z-index: 1;
   height: auto;
-  margin-bottom: 25px;
 }
 
 .faqv2-wrapper {
@@ -145,7 +144,7 @@
 }
 
 .section.has-background {
-  padding: var(--spacing-800) var(--spacing-600);
+  padding: var(--spacing-600) var(--spacing-400);
 }
 
 .section.has-background:has(.faqv2.expandable) {
@@ -370,7 +369,7 @@
   padding-top: 0;
   padding-bottom: 0;
   padding-right: 0;
-  margin-bottom: 0;
+  margin-bottom: var(--spacing-500);
 }
 
 .faqv2.expandable.longform .faqv2-accordion.title {
@@ -492,6 +491,7 @@
   }
   .faqv2.expandable .faqv2-accordion.title {
     font-size: var(--heading-font-size-m);
+    margin-bottom: var(--spacing-500);
   }
   .faqv2.expandable.longform .faqv2-content {
     overflow: hidden;
@@ -553,7 +553,6 @@
   .faqv2 {
     width: 840px;
     margin: auto;
-    margin-bottom: 25px;
   }
 
   .faqv2.bold {
