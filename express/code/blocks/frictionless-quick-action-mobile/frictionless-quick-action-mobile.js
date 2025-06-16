@@ -259,6 +259,9 @@ export async function runQuickAction(quickAction, data, block) {
       break;
     default: break;
   }
+
+  // scroll to the top of quick action container
+  quickActionContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
 // eslint-disable-next-line default-param-last
