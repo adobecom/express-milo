@@ -66,11 +66,12 @@
   .highlight {
     padding: 12px 40px;
   }
-  .highlight .icon-row + .icon-row {
-    padding-left: 20px;
+  .highlight .icon-row .text {
+    padding-left: 8px;
   }
    .highlight .icon-row {
     flex-direction: row;
     text-align: left;
+    padding-left: 40px;
   }
 }
