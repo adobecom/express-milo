@@ -664,7 +664,7 @@
   }
 
   .faqv2.expandable .faqv2-accordion.title {
-    margin-top: 80px;
+    margin-top: var(--spacing-900);
     font-size: var(--heading-font-size-l);
   }
 
