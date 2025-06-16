@@ -262,7 +262,7 @@ main .section:has(.how-to-v2) .content em {
 
 @media (min-width: 1200px) {
   .how-to-v2 .steps-content .media-container::before {
-    height: 70vh;
+    height: 60vh;
   }
   main .section > .content:has( + .how-to-v2) h2 {
     margin-top: 20px;
