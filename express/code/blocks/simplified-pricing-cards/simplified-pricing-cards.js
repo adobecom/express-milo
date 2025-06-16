@@ -176,7 +176,7 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
     const priceReducedElement = createTag('p');
 
     const reducedText = createTag('span', { class: 'visually-hidden' });
-    reducedText.textContent = priceReduced; 
+    reducedText.textContent = priceReduced;
     priceReducedElement.appendChild(reducedText);
 
     const del = createTag('del');
