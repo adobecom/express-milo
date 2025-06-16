@@ -387,9 +387,9 @@ export default async function decorate(block) {
         let previousWidth = window.innerWidth;
 
         if (window.innerWidth <= 899) {
-          img.src = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+          img.src = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
           sources.forEach((source) => {
-            source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+            source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
           });
         }
 
@@ -401,9 +401,9 @@ export default async function decorate(block) {
 
           if (crossingBreakpoint) {
             if (currentWidth <= 899) {
-              img.src = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+              img.src = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
               sources.forEach((source) => {
-                source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+                source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
               });
             } else {
               img.src = img.dataset.originalSrc;
