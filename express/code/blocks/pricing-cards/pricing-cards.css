@@ -91,7 +91,7 @@ Border style variants
 }
 
 .pricing-cards .gradient-promo {
-  background: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) !important;
+  background: var(--S2-Buttons-Premium) !important;
   padding: 12px 2px 4px 2px;
   border-radius: 10px;
   background: var(--color-white);
