@@ -247,21 +247,13 @@ export async function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     case 'animate-from-audio':
-      ccEverywhere.quickAction.animateFromAudio(
-        videoDocConfig,
-        appConfig,
-        exportConfig,
-        contConfig,
-      );
+      ccEverywhere.quickAction.animateFromAudio({}, appConfig, exportConfig, contConfig);
       break;
     case 'caption-video':
       ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     default: break;
   }
-
-  // scroll to the top of quick action container
-  quickActionContainer.scrollIntoView({ behavior: 'smooth' });
 }
 
 // eslint-disable-next-line default-param-last
