@@ -176,22 +176,21 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
     const priceReducedElement = createTag('p');
 
     const reducedText = createTag('span', { class: 'visually-hidden' });
-    reducedText.textContent = priceReduced;
+    reducedText.textContent = priceReduced; 
     priceReducedElement.appendChild(reducedText);
 
     const del = createTag('del');
     const wasText = createTag('span', { class: 'visually-hidden' });
     wasText.textContent = priceWas;
-    del.appendChild(wasText);
+    priceReducedElement.appendChild(wasText);
     del.appendChild(basePrice.cloneNode(true));
+    priceReducedElement.appendChild(del);
 
     const ins = createTag('ins');
     const nowText = createTag('span', { class: 'visually-hidden' });
     nowText.textContent = priceNow;
-    ins.appendChild(nowText);
+    priceReducedElement.appendChild(nowText);
     ins.appendChild(price.cloneNode(true));
-
-    priceReducedElement.appendChild(del);
     priceReducedElement.appendChild(ins);
     priceRow.append(priceReducedElement, priceSuffix);
   } else {
