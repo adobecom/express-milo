@@ -84,19 +84,18 @@ End legacy CSS
 /*
 Border style variants
 */
-.pricing-cards .gradient-promo>h2{
+
+.pricing-cards .gradient-promo>div:first-of-type {
   margin-left: 4px;
   color: var(--color-white);
   font-weight: 400;
   padding-bottom: 12px;
   line-height: 1.5rem;
   text-align: center;
-  font-size: 1rem;
-  margin-top: 0px !important;
 }
 
 .pricing-cards .gradient-promo {
-  background: var(--S2-Buttons-Premium) !important;
+  background: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) !important;
   padding: 12px 2px 4px 2px;
   border-radius: 10px;
   background: var(--color-white);
@@ -265,12 +264,11 @@ End border style variants
 }
 
 
-.pricing-cards .card-border .card .card-header h3 {
+.pricing-cards .card-border .card .card-header h2 {
   display: flex;
   flex-direction: row-reverse;
   gap: 8px;
   text-align: left;
-  font-size: 1.75rem;
 }
 
 .pricing-cards .card-header img {

@@ -167,9 +167,7 @@ function renderShareWrapper(templateInfo) {
   });
   const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   tooltip.append(checkmarkIcon);
-  const textEl = createTag('span', { class: 'text' });
-  textEl.textContent = text;
-  tooltip.append(textEl);
+  tooltip.append(text);
   wrapper.append(shareIcon);
   wrapper.append(tooltip);
   return wrapper;
@@ -256,6 +254,7 @@ function renderCTALink(branchUrl, template) {
     tabindex: '-1',
     'aria-label': `${btnTitle} ${getTemplateTitle(template)}`,
   });
+  linkEl.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
   return linkEl;
 }
 
