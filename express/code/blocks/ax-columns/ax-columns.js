@@ -230,6 +230,10 @@ export default async function decorate(block) {
     ({ createTag, getMetadata, getConfig } = utils);
   });
 
+  const { miloLibs, codeRoot } = getConfig();
+  const base = miloLibs || codeRoot;
+  const mobileImagePath = `${base}/blocks/ax-columns/img/marquee-mobile.png`;
+
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
@@ -387,9 +391,9 @@ export default async function decorate(block) {
         let previousWidth = window.innerWidth;
 
         if (window.innerWidth <= 899) {
-          img.src = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
+          img.src = mobileImagePath;
           sources.forEach((source) => {
-            source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
+            source.srcset = mobileImagePath;
           });
         }
 
@@ -401,9 +405,9 @@ export default async function decorate(block) {
 
           if (crossingBreakpoint) {
             if (currentWidth <= 899) {
-              img.src = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
+              img.src = mobileImagePath;
               sources.forEach((source) => {
-                source.srcset = '/express/code/blocks/ax-columns/img/marquee-mobile.png';
+                source.srcset = mobileImagePath;
               });
             } else {
               img.src = img.dataset.originalSrc;
