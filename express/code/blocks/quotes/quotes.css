@@ -324,8 +324,8 @@ main .quotes.singular .quote-container .mobile-container .quote {
   }
   .section .quotes-wrapper .quotes.carousel {
     margin-top: 80px;
+    margin-bottom: 80px;
     padding-bottom: 0;
-    margin-bottom: 124px;
   }
   .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: var(--spacing-500);
@@ -678,7 +678,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     flex-direction: row;
     max-width: 1300px;
     width: unset;
-    display: block;
     margin: auto;
   }
 
