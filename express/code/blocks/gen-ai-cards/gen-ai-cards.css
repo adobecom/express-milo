@@ -67,9 +67,9 @@
 
 .gen-ai-cards.homepage {
   max-width: unset;
-  padding-left: 0;
   gap: unset;
   padding-right: 0;
+  padding-left: 0;
   --color-border: rgb(225, 225, 225); 
   --color-background-light : rbg(255,255,255)
 }
@@ -174,8 +174,6 @@
 }
 
 .gen-ai-cards.homepage .carousel-element.card {
-  /* width: var(--card-width); */
-  height: 396px;
   flex-direction: column;
 }
 
@@ -581,7 +579,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-    margin-left: 8px;
+    margin-left: var(--spacing-300);
   }
 
   .gen-ai-cards .carousel-container .carousel-fader-left,
@@ -598,8 +596,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards.homepage .carousel-element.card {
-    width: var(--card-width-desktop);
-    height: var(--card-height-desktop);
+    width: var(--card-width-desktop); 
   }
 
   .gen-ai-cards.homepage .card .text-wrapper {

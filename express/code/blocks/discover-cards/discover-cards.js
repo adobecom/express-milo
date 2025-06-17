@@ -108,6 +108,7 @@ export async function buildGallery(
   container.classList.add('gallery');
   [...items].forEach((item) => {
     item.classList.add('gallery--item');
+    item.setAttribute('tabindex', '0');
   });
   root.append(control);
 }
@@ -119,9 +120,9 @@ export default async function decorate(block) {
   });
   const firstChild = block.querySelector(':scope > div:first-child');
 
-  if (firstChild && firstChild.querySelector('h1, h2, h3')) {
-    firstChild.classList.add('center-title');
-    const header = firstChild.querySelector('h1, h2, h3');
+  if (firstChild && firstChild.querySelector('h2, h3, h4, h5, h6')) {
+    const header = firstChild.querySelector('h2, h3, h4, h5, h6');
+    header.classList.add('center-title');
     header.setAttribute('aria-label', `${header.textContent.trim()} cards`);
     block.insertBefore(firstChild, block.firstChild);
   }
@@ -134,11 +135,8 @@ export default async function decorate(block) {
   cardsWrapper.setAttribute('aria-label', `${numCards} cards in this section`);
 
   const cardParagraphs = [[]];
-  cards.forEach((card, index) => {
+  cards.forEach((card) => {
     card.classList.add('card');
-
-    card.setAttribute('aria-setsize', numCards);
-    card.setAttribute('aria-posinset', index + 1);
 
     const cardDivs = [...card.children];
 

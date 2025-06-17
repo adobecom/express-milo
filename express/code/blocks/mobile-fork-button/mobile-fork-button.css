@@ -19,7 +19,7 @@ main .mobile-gating-text {
     font-weight: 400;
     font-size: var(--mfb-font-size);
 }
-
+main .mobile-fork-button .floating-button .mobile-gating-row .mobile-gating-icon-empty,
 main .mobile-gating-text, main .mobile-fork-button .floating-button .mobile-gating-row .icon{
     width: 22px;
     height: 22px;

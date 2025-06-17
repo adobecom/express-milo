@@ -29,58 +29,146 @@ function buildTableLayout(block) {
   const collapsibleRows = rows.map((row) => {
     const cells = [...row.children];
     return {
-      header: cells[0]?.textContent.trim(),
-      subHeader: cells[1]?.textContent,
+      header: cells[0]?.innerHTML.trim(),
+      subHeader: cells[1]?.innerHTML,
     };
   });
 
-  collapsibleRows.forEach(({ header, subHeader }) => {
+  collapsibleRows.forEach(({ header, subHeader }, index) => {
     const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
     container.appendChild(rowWrapper);
 
-    const headerAccordion = createTag('div', {
-      class: 'faqv2-accordion expandable header-accordion',
-      'aria-expanded': false,
-      'aria-label': 'Expand quotes',
-      role: 'button',
-      tabIndex: 0,
-    });
-    rowWrapper.appendChild(headerAccordion);
+    if (isLongFormVariant) {
+      // Simple toggle for longform
+      const toggle = createTag('div', { class: 'faqv2-toggle' });
+      rowWrapper.appendChild(toggle);
 
-    const headerDiv = createTag('h3', { class: 'faqv2-header expandable' });
-    headerDiv.textContent = header;
-    headerAccordion.appendChild(headerDiv);
+      const headerDiv = createTag('h3', { class: 'faqv2-header' });
+      headerDiv.innerHTML = header;
+      toggle.appendChild(headerDiv);
 
-    const iconElement = createTag('img', {
-      src: `${config.codeRoot}/icons/plus-heavy.svg`,
-      alt: 'toggle-icon',
-      class: 'toggle-icon',
-    });
-    headerDiv.appendChild(iconElement);
+      const iconElement = createTag('img', {
+        src: `${config.codeRoot}/icons/plus-heavy.svg`,
+        alt: 'toggle-icon',
+        class: 'toggle-icon',
+      });
+      headerDiv.appendChild(iconElement);
 
-    const subHeaderAccordion = createTag('div', { class: 'faqv2-accordion expandable sub-header-accordion' });
-    rowWrapper.appendChild(subHeaderAccordion);
-    const subHeaderDiv = createTag('div', { class: 'faqv2-sub-header expandable' });
-    subHeaderDiv.textContent = subHeader;
-    subHeaderAccordion.appendChild(subHeaderDiv);
+      const content = createTag('div', { class: 'faqv2-content' });
+      content.innerHTML = subHeader;
+      toggle.appendChild(content);
 
-    headerDiv.addEventListener('click', () => {
-      const isCollapsed = subHeaderAccordion.classList.toggle('collapsed');
-      if (!isLongFormVariant) {
-        headerAccordion.classList.toggle('rounded-corners', isCollapsed);
+      // Set initial state
+      content.style.maxHeight = '0';
+      content.style.overflow = 'hidden';
+
+      headerDiv.addEventListener('click', () => {
+        const isOpen = content.classList.contains('open');
+
+        // Close all other accordions first
+        const allContents = block.querySelectorAll('.faqv2-content');
+        const allIcons = block.querySelectorAll('.toggle-icon');
+        allContents.forEach((otherContent, idx) => {
+          if (otherContent !== content && otherContent.classList.contains('open')) {
+            otherContent.style.maxHeight = `${otherContent.scrollHeight}px`;
+            otherContent.offsetHeight; // Force reflow
+            otherContent.classList.remove('open');
+            otherContent.style.maxHeight = '0';
+            allIcons[idx].src = `${config.codeRoot}/icons/plus-heavy.svg`;
+          }
+        });
+
+        if (!isOpen) {
+          // Calculate height before adding open class
+          content.style.maxHeight = 'none';
+          const height = content.scrollHeight;
+          content.style.maxHeight = '0';
+          content.offsetHeight; // Force reflow
+          content.classList.add('open');
+          content.style.maxHeight = `${height}px`;
+          iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
+        } else {
+          content.style.maxHeight = `${content.scrollHeight}px`;
+          content.offsetHeight; // Force reflow
+          content.classList.remove('open');
+          content.style.maxHeight = '0';
+          iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
+        }
+      });
+
+      // Open first accordion by default after a small delay
+      if (index === 0) {
+        setTimeout(() => {
+          headerDiv.click();
+        }, 100);
       }
-      iconElement.src = isCollapsed
-        ? `${config.codeRoot}/icons/minus-heavy.svg`
-        : `${config.codeRoot}/icons/plus-heavy.svg`;
-    });
+    } else {
+      // Non-longform version using the same structure
+      const toggle = createTag('div', { class: 'faqv2-toggle' });
+      rowWrapper.appendChild(toggle);
 
-    headerAccordion.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        headerDiv.click();
+      const headerDiv = createTag('h3', { class: 'faqv2-header' });
+      headerDiv.innerHTML = header;
+      toggle.appendChild(headerDiv);
+
+      const iconElement = createTag('img', {
+        src: `${config.codeRoot}/icons/plus-heavy.svg`,
+        alt: 'toggle-icon',
+        class: 'toggle-icon',
+      });
+      headerDiv.appendChild(iconElement);
+
+      const content = createTag('div', { class: 'faqv2-content' });
+      content.innerHTML = subHeader;
+      toggle.appendChild(content);
+
+      // Set initial state
+      content.style.maxHeight = '0';
+      content.style.overflow = 'hidden';
+
+      headerDiv.addEventListener('click', () => {
+        const isOpen = content.classList.contains('open');
+
+        // Close all other accordions first
+        const allContents = block.querySelectorAll('.faqv2-content');
+        const allIcons = block.querySelectorAll('.toggle-icon');
+        allContents.forEach((otherContent, idx) => {
+          if (otherContent !== content && otherContent.classList.contains('open')) {
+            otherContent.style.maxHeight = `${otherContent.scrollHeight}px`;
+            otherContent.offsetHeight; // Force reflow
+            otherContent.classList.remove('open');
+            otherContent.style.maxHeight = '0';
+            allIcons[idx].src = `${config.codeRoot}/icons/plus-heavy.svg`;
+          }
+        });
+
+        if (!isOpen) {
+          // Calculate height before adding open class
+          content.style.maxHeight = 'none';
+          const height = content.scrollHeight;
+          content.style.maxHeight = '0';
+          content.offsetHeight; // Force reflow
+          content.classList.add('open');
+          content.style.maxHeight = `${height}px`;
+          iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
+        } else {
+          content.style.maxHeight = `${content.scrollHeight}px`;
+          content.offsetHeight; // Force reflow
+          content.classList.remove('open');
+          content.style.maxHeight = '0';
+          iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
+        }
+      });
+
+      // Open first accordion by default after a small delay
+      if (index === 0) {
+        setTimeout(() => {
+          headerDiv.click();
+        }, 100);
       }
-    });
+    }
   });
+
   block.replaceChildren(...parentContainer.childNodes);
 }
 
@@ -113,7 +201,7 @@ async function buildOriginalLayout(block) {
     const accordion = createTag('div', { class: 'faqv2-accordion' });
 
     if (index >= visibleCount) {
-      accordion.classList.add('collapsed');
+      accordion.classList.add('open');
     }
 
     block.append(accordion);
@@ -147,7 +235,7 @@ async function buildOriginalLayout(block) {
     const hiddenItems = block.querySelectorAll('.faqv2-accordion');
     hiddenItems.forEach((item, index) => {
       if (index >= visibleCount) {
-        item.classList.toggle('collapsed');
+        item.classList.toggle('open');
       }
     });
 

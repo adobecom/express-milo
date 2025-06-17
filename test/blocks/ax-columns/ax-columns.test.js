@@ -16,10 +16,11 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
 const { default: decorate } = await import('../../../express/code/blocks/ax-columns/ax-columns.js');
 
 // eslint-disable-next-line max-len
-const [buttonLight, color, fullsize, highlight, icon, iconWithSibling, iconList, notHighlight, numbered30, offer, offerIcon, picture, video] = await Promise.all(
+const [buttonLight, color, fullsize, highlight, icon, iconWithSibling, iconList, notHighlight, numbered30, offer, offerIcon, picture, video, marquee] = await Promise.all(
   [readFile({ path: './mocks/button-light.html' }), readFile({ path: './mocks/color.html' }), readFile({ path: './mocks/fullsize.html' }), readFile({ path: './mocks/highlight.html' }),
     readFile({ path: './mocks/icon.html' }), readFile({ path: './mocks/icon-with-sibling.html' }), readFile({ path: './mocks/icon-list.html' }), readFile({ path: './mocks/not-highlight.html' }), readFile({ path: './mocks/numbered-30.html' }),
-    readFile({ path: './mocks/offer.html' }), readFile({ path: './mocks/offer-icon.html' }), readFile({ path: './mocks/picture.html' }), readFile({ path: './mocks/video.html' })],
+    readFile({ path: './mocks/offer.html' }), readFile({ path: './mocks/offer-icon.html' }), readFile({ path: './mocks/picture.html' }), readFile({ path: './mocks/video.html' }),
+    readFile({ path: './mocks/marquee.html' })],
 );
 
 describe('Columns', () => {
