@@ -32,7 +32,7 @@ Legacy CSS for cards and special promo
   align-items: center;
 }
 
-.pricing-cards .card .card-header h2 {
+.pricing-cards .card .card-header h3 {
   font-weight: var(--heading-font-weight);
   line-height: var(--heading-line-height);
   font-size: 1.75rem;
@@ -80,14 +80,15 @@ End legacy CSS
 /*
 Border style variants
 */
-
-.pricing-cards .gradient-promo>div:first-of-type {
+.pricing-cards .gradient-promo>h2{
   margin-left: 4px;
   color: var(--color-white);
   font-weight: 400;
   padding-bottom: 12px;
   line-height: 1.5rem;
   text-align: center;
+  font-size: 1rem;
+  margin-top: 0px !important;
 }
 
 .pricing-cards .gradient-promo {
@@ -269,11 +270,12 @@ End border style variants
 }
 
 
-.pricing-cards .card-border .card .card-header h2 {
+.pricing-cards .card-border .card .card-header h3 {
   display: flex;
   flex-direction: row-reverse;
   gap: 8px;
   text-align: left;
+  font-size: 1.75rem;
 }
 
 .pricing-cards .card-header img {
