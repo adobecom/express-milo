@@ -82,10 +82,6 @@ const QA_CONFIGS = {
   'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
   'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'animate-from-audio': {
-    ...getBaseVideoCfg(VIDEO_FORMATS),
-    input_check: () => true,
-  },
 };
 
 function fadeIn(element) {
@@ -245,9 +241,6 @@ export async function runQuickAction(quickAction, data, block) {
       break;
     case 'convert-to-mp4':
       ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'animate-from-audio':
-      ccEverywhere.quickAction.animateFromAudio({}, appConfig, exportConfig, contConfig);
       break;
     case 'caption-video':
       ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
@@ -455,7 +448,7 @@ export default async function decorate(block) {
     e.preventDefault();
     dropzone.classList.remove('hide');
     animationContainer.classList.add('hide');
-    if (quickAction === 'generate-qr-code' || quickAction === 'animate-from-audio') {
+    if (quickAction === 'generate-qr-code') {
       startSDK('', quickAction, block);
     } else {
       inputElement.click();
