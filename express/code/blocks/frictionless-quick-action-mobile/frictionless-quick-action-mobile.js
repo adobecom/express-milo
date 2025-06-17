@@ -108,11 +108,22 @@ const downloadKey = 'download-to-phone';
 const editKey = 'edit-in-adobe-express-for-free';
 
 function createLocaleDropdown() {
-  const localeDropdown = createTag('select', {
-    class: 'locale-dropdown',
-    id: 'locale-select',
-    name: 'locale-select',
+  const dropdown = createTag('div', { class: 'custom-dropdown' });
+
+  // Create the dropdown button
+  const dropdownBtn = createTag('button', {
+    class: 'dropdown-btn',
+    type: 'button',
   });
+
+  const buttonText = createTag('span', { class: 'dropdown-text' }, 'English (US)');
+  const chevronIcon = createTag('span', { class: 'dropdown-chevron' }, '▼');
+
+  dropdownBtn.append(buttonText, chevronIcon);
+
+  // Create the dropdown content container
+  const dropdownContent = createTag('div', { class: 'dropdown-content' });
+
   const locales = [
     { code: 'zh-hk', label: 'Chinese (Hong Kong)' },
     { code: 'cmn-hans', label: 'Chinese (Simplified)' },
@@ -136,19 +147,41 @@ function createLocaleDropdown() {
 
   // Add all locale options
   locales.forEach((locale) => {
-    const option = createTag('option', { value: locale.code }, locale.label);
-    localeDropdown.append(option);
+    const option = createTag('a', {
+      href: '#',
+      class: 'dropdown-option',
+      'data-value': locale.code,
+    }, locale.label);
+
+    option.addEventListener('click', (e) => {
+      e.preventDefault();
+      buttonText.textContent = locale.label;
+      selectedVideoLanguage = locale.code;
+      dropdownContent.classList.remove('show');
+      chevronIcon.style.transform = 'rotate(0deg)';
+    });
+
+    dropdownContent.append(option);
   });
 
-  // Set the dropdown value default to en-us
-  localeDropdown.value = 'en-us';
-
-  // Add event listener for locale change
-  localeDropdown.addEventListener('change', (e) => {
-    selectedVideoLanguage = e.target.value;
+  // Toggle dropdown on button click
+  dropdownBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    dropdownContent.classList.toggle('show');
+    const isOpen = dropdownContent.classList.contains('show');
+    chevronIcon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
   });
 
-  return localeDropdown;
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!dropdown.contains(e.target)) {
+      dropdownContent.classList.remove('show');
+      chevronIcon.style.transform = 'rotate(0deg)';
+    }
+  });
+
+  dropdown.append(dropdownBtn, dropdownContent);
+  return dropdown;
 }
 
 function createLocaleDropdownWrapper() {
