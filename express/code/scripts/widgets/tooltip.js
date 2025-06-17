@@ -55,14 +55,18 @@ function buildTooltip(pricingArea, tooltipPattern) {
   const infoIcon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
   const tooltipButton = createTag('button');
   tooltipButton.setAttribute('aria-label', tooltipContent);
-  infoIcon.setAttribute('tabindex', 0);
 
   tooltipButton.append(infoIcon);
   tooltipButton.append(tooltipPopup);
   tooltipContainer.append(tooltipButton);
 
   let isTooltipVisible = false;
+  let hideTimeout;
+  let isMouseOverIcon = false;
+  let isMouseOverTooltip = false;
+
   const showTooltip = () => {
+    clearTimeout(hideTimeout);
     isTooltipVisible = true;
     tooltipButton.classList.add('hover');
     tooltipPopup.classList.add('hover');
@@ -72,6 +76,15 @@ function buildTooltip(pricingArea, tooltipPattern) {
     isTooltipVisible = false;
     tooltipButton.classList.remove('hover');
     tooltipPopup.classList.remove('hover');
+  };
+
+  const checkAndHideTooltip = () => {
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      if (!isMouseOverIcon && !isMouseOverTooltip) {
+        hideTooltip();
+      }
+    }, 300);
   };
 
   const toggleTooltip = () => {
@@ -88,21 +101,25 @@ function buildTooltip(pricingArea, tooltipPattern) {
     toggleTooltip();
   });
 
-  window.addEventListener('resize', adjustElementPosition);
-
-  infoIcon.addEventListener('mouseover', showTooltip);
-  infoIcon.addEventListener('mouseleave', () => {
-    setTimeout(hideTooltip, 500);
+  window.addEventListener('resize', adjustElementPosition); 
+  infoIcon.addEventListener('mouseenter', () => {
+    isMouseOverIcon = true;
+    showTooltip();
   });
 
-  tooltipPopup.addEventListener('mouseover', () => {
-    if (tooltipButton.classList.contains('hover')) {
-      tooltipPopup.classList.add('hover');
-    }
+  infoIcon.addEventListener('mouseleave', () => {
+    isMouseOverIcon = false;
+    checkAndHideTooltip();
+  });
+ 
+  tooltipPopup.addEventListener('mouseenter', () => {
+    isMouseOverTooltip = true;
+    clearTimeout(hideTimeout);
   });
 
   tooltipPopup.addEventListener('mouseleave', () => {
-    setTimeout(hideTooltip, 500);
+    isMouseOverTooltip = false;
+    checkAndHideTooltip();
   });
 
   tooltipButton.addEventListener('touchstart', (e) => {
