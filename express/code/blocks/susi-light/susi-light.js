@@ -181,6 +181,7 @@ async function buildEdu(el) {
 // wrap susi component with custom logo + footer
 async function buildB2B(el) {
   const noRedirect = el.classList.contains('no-redirect');
+  const emailFirst = el.classList.contains('email-first');
   const locale = getConfig().locale.ietf.toLowerCase();
   const { imsClientId } = getConfig();
   const rows = el.querySelectorAll(':scope > div > div');
@@ -190,9 +191,13 @@ async function buildB2B(el) {
   const footer = rows[3];
   footer.classList.add('footer', 'susi-banner');
   const variant = 'standard';
-  const params = buildSUSIParams({
-    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true, layout: 'emailAndSocial',
-  });
+  const susiConfigs = {
+    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
+  };
+  if (emailFirst) {
+    susiConfigs.layout = 'emailAndSocial';
+  }
+  const params = buildSUSIParams(susiConfigs);
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
   }
