@@ -145,12 +145,17 @@ function createToggle(pricingSections, groupID, adjElemPos, header) {
       : basePlan;
     const label = placeholders?.[planLabelID];
     const isDefault = i === 0;
+    let associatedHeaderLabel = '';
+    const associatedHeader = header.querySelectorAll('h2, h3');
+    if (associatedHeader.length > 0) {
+      associatedHeaderLabel = associatedHeader[0].textContent.trim();
+    }
     const button = createTag('button', {
       class: isDefault ? 'checked' : '',
       plan: basePlan,
       role: 'radio',
       'aria-checked': isDefault.toString(),
-      'aria-label': `${header.querySelector('h2').textContent.trim()} ${label}`,
+      'aria-label': `${associatedHeaderLabel} ${label}`,
     });
 
     button.appendChild(createTag('span'));
