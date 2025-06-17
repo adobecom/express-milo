@@ -266,7 +266,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .card .gen-ai-input-form {
-  /* position: absolute; */
   min-width: var(--input-form-width);
   padding: 8px;
   background-color: var(--color-white);
@@ -275,7 +274,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   border: 2px solid var(--color-info-accent);
   left: 50%;
   top: 100%;
-  /* transform: translate(-50%, calc(-100% - 30px)); */
   display: flex;
   justify-content: space-between;
 }
@@ -293,7 +291,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   transition: all 0.3s ease-in-out;
 }
 .gen-ai-cards .card .gen-ai-input-form:has(button:focus) input, 
-.gen-ai-cards .card .gen-ai-input-form input:focus {
+.gen-ai-cards .card .gen-ai-input-form input {
   outline: none;
   width: 100%;
   flex-grow: 1;
@@ -301,7 +299,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 
 }
 .gen-ai-cards .card .gen-ai-input-form:has(button:focus) ,
-.gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
+.gen-ai-cards .card .gen-ai-input-form {
   flex-wrap: wrap;
 }
 
@@ -355,13 +353,12 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .card .links-wrapper {
-  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   left: 50%;
   bottom: 40px;
-  transform: translate(-50%, 0);
+  padding-bottom: 8px;
 }
 
 .gen-ai-cards .card .links-wrapper a {
@@ -623,7 +620,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards .card {
-    border-radius: 16px;
     --card-gap: 12px;
     --card-width: 400px;
     --input-form-width: 340px;

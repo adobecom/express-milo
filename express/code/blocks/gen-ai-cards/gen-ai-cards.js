@@ -80,14 +80,14 @@ function handleGenAISubmit(form, link) {
 
 function buildGenAIForm({ title, ctaLinks, subtext }) {
   const genAIForm = createTag('form', { class: 'gen-ai-input-form' });
-  const genAILabel = createTag('label', { for: 'gen-ai-input' });
+  // const genAILabel = createTag('label', { for: 'gen-ai-input' });
   // genAILabel.textContent = subtext || '';
   const genAIInput = createTag('input', {
     'aria-label': `${title}: ${subtext || ''}`,
     placeholder: subtext || '',
     type: 'text',
     enterKeyhint: 'enter',
-    id: 'gen-ai-input',
+    // id: 'gen-ai-input',
   });
   const genAISubmit = createTag('button', {
     class: 'gen-ai-submit',
@@ -95,7 +95,7 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
     disabled: true,
   });
 
-  genAIForm.append(genAILabel, genAIInput, genAISubmit);
+  genAIForm.append(genAIInput, genAISubmit);
 
   genAISubmit.textContent = ctaLinks[0].textContent;
   genAISubmit.disabled = genAIInput.value === '';
@@ -252,7 +252,6 @@ export default async function decorate(block) {
   }
 
   const payload = constructPayload(block);
-  console.log('Payload constructed:', payload);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
   if (block.classList.contains('homepage')) {
