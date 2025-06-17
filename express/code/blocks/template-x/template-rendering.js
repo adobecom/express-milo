@@ -256,7 +256,6 @@ function renderCTALink(branchUrl, template) {
     tabindex: '-1',
     'aria-label': `${btnTitle} ${getTemplateTitle(template)}`,
   });
-  linkEl.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
   return linkEl;
 }
 
