@@ -230,9 +230,8 @@ export default async function decorate(block) {
     ({ createTag, getMetadata, getConfig } = utils);
   });
 
-  const { miloLibs, codeRoot } = getConfig();
-  const base = miloLibs || codeRoot;
-  const mobileImagePath = `${base}/blocks/ax-columns/img/marquee-mobile.png`;
+  const { codeRoot } = getConfig();
+  const mobileImagePath = `${codeRoot}/blocks/ax-columns/img/marquee-mobile.png`;
 
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
