@@ -127,15 +127,14 @@ function tagFreePlan(cardContainer) {
   });
 }
 
-function createToggle(pricingSections, groupID, adjElemPos) {
+function createToggle(pricingSections, groupID, adjElemPos, header) {
   const subDesc = placeholders?.['subscription-type'] || 'Subscription Type:';
   const toggleWrapper = createTag('div', {
     class: 'billing-toggle',
     role: 'radiogroup',
-    'aria-labelledby': groupID,
   });
 
-  const groupLabel = createTag('strong', { id: groupID }, subDesc);
+  const groupLabel = createTag('strong', {}, subDesc);
   toggleWrapper.appendChild(groupLabel);
 
   const buttons = PLANS.map((basePlan, i) => {
@@ -143,20 +142,23 @@ function createToggle(pricingSections, groupID, adjElemPos) {
       ? SPECIAL_PLAN
       : basePlan;
     const label = placeholders?.[planLabelID];
-    const buttonID = `${groupID}:${basePlan}`;
     const isDefault = i === 0;
+    let associatedHeaderLabel = '';
+    const associatedHeader = header.querySelectorAll('h2, h3');
+    if (associatedHeader.length > 0) {
+      associatedHeaderLabel = associatedHeader[0].textContent.trim();
+    }
     const button = createTag('button', {
       class: isDefault ? 'checked' : '',
-      id: buttonID,
       plan: basePlan,
       role: 'radio',
       'aria-checked': isDefault.toString(),
-      'aria-labelledby': buttonID,
+      'aria-label': `${associatedHeaderLabel} ${label}`,
     });
 
     button.appendChild(createTag('span'));
 
-    button.appendChild(createTag('div', { id: `${buttonID}:radio` }, label));
+    button.appendChild(createTag('div', { }, label));
 
     button.addEventListener('click', () => {
       togglePlan(pricingSections, buttons, i);
@@ -614,6 +616,7 @@ async function decorateCard({
     [mPricingSection, yPricingSection],
     groupID,
     adjustElementPosition,
+    header,
   );
   card.append(toggle, mPricingSection, yPricingSection);
   decorateBasicTextSection(featureList, 'card-feature-list', card);
