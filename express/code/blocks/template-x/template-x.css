@@ -2331,7 +2331,7 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   display: flex;
   align-items: center;
   gap: 4px;
-  width: 130px;
+  min-width: 130px;
   background-color: var(--background-positive-default);
   color: white;
   text-align: center;

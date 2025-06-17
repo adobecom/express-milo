@@ -4,8 +4,12 @@ import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 import { sendEventToAnalytics } from '../../scripts/instrument.js';
 
-let createTag; let getConfig;
+let createTag;
+let getConfig;
 let replaceKey;
+let headingCols;
+let previousHeaderRow;
+let previousHeaderRowHeadingId;
 
 const MOBILE_SIZE = 981;
 function defineDeviceByScreenSize() {
@@ -32,17 +36,25 @@ function handleToggleMore(btn) {
   }
 }
 
-function handleHeading(headingRow, headingCols) {
+function handleHeading(headingRow) {
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
 
-  headingCols.forEach(async (col) => {
+  headingCols.forEach(async (col, colIdx) => {
     col.classList.add('col-heading');
     const elements = col.children;
     if (!elements?.length) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
       return;
     }
+
+    col.setAttribute('id', `${0}:${colIdx}`);
+    col.setAttribute('role', 'columnheader');
+
+    col.querySelectorAll('img').forEach((img) => {
+      img.setAttribute('alt', '');
+    });
+
     await decorateButtonsDeprecated(col, 'button-l');
     const buttonsWrapper = createTag('div', { class: 'buttons-wrapper' });
     const buttons = col.querySelectorAll('.button, .con-button');
@@ -127,14 +139,19 @@ function handleSection(sectionParams) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
     rowCols[0].setAttribute('role', 'rowheader');
+    rowCols[0].setAttribute('id', `${index}:${0}`);
+    previousHeaderRowHeadingId = `${index}:${0}`;
+    previousHeaderRow = row;
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
   } else {
     row.classList.add('section-row');
     rowCols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
-
       if (idx === 0) {
+        col.setAttribute('aria-labelledby', previousHeaderRowHeadingId);
+        col.setAttribute('role', 'rowheader');
+        col.setAttribute('id', `${index}:${idx}`);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
       }
@@ -142,6 +159,10 @@ function handleSection(sectionParams) {
       const dim = col.querySelectorAll('em').length > 0;
       if (dim) {
         col.classList.add('dim');
+      }
+
+      if (previousHeaderRow) {
+        col.setAttribute('aria-labelledby', `${`${index}:${0}`} ${`${0}:${idx}`}`);
       }
 
       const child = col.children?.[0] || col;
@@ -159,10 +180,6 @@ function handleSection(sectionParams) {
     });
     if (nextRow?.classList.contains('toggle-row')) {
       row.classList.add('table-end-row');
-
-      if (!nextRow.classList.contains('desktop-hide')) {
-        row.classList.add('connect-to-toggle');
-      }
     }
   }
 }
@@ -220,17 +237,18 @@ export default async function init(el) {
   const ariaLabelForCheckIcon = await replaceKey('aria-label-pricing-icon-check', getConfig()) || 'yes';
   const ariaLabelForCrossIcon = await replaceKey('aria-label-pricing-icon-cross', getConfig()) || 'no';
 
-  const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon}></span>`;
-  const EXCLUDE_ICON = `<span class="feat-icon cross" aria-label=${ariaLabelForCrossIcon}></span>`;
+  const INCLUDE_ICON = `<span class="feat-icon check" aria-label=${ariaLabelForCheckIcon} role="img"></span>`;
+  const EXCLUDE_ICON = `<span class="feat-icon cross" aria-label=${ariaLabelForCrossIcon} role="img"></span>`;
 
-  let headingChildren;
   let firstSection = true;
   for (let index = 0; index < rows.length; index += 1) {
     const row = rows[index];
     row.classList.add('row', `row-${index + 1}`);
     if (row.tagName !== 'BUTTON') row.setAttribute('role', 'row');
     const cols = Array.from(row.children);
-    if (index === 0) headingChildren = cols;
+    if (index === 0) {
+      headingCols = cols;
+    }
 
     let isAdditional = false;
     const isToggle = row.classList.contains('toggle-row');
@@ -338,7 +356,7 @@ export default async function init(el) {
     }
   }
 
-  handleHeading(rows[0], headingChildren);
+  handleHeading(rows[0]);
   assignEvents(el);
 
   const handleResize = () => {

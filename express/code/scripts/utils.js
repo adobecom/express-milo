@@ -814,3 +814,44 @@ export function decorateArea(area = document) {
 
   decorateCommerceLinks(area);
 }
+
+export async function convertToInlineSVG(img) {
+  try {
+    const response = await fetch(img.src);
+    const svgText = await response.text();
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+    const svgElement = svgDoc.querySelector('svg');
+
+    if (!svgElement) {
+      window.lana?.log(`No SVG element found in file ${img.src}`);
+      return img;
+    }
+
+    // Preserve original classes and add them to the SVG
+    if (img.className) {
+      svgElement.classList.add(...img.className.split(' '));
+    }
+
+    // Preserve original ID if it exists
+    if (img.id) {
+      svgElement.id = img.id;
+    }
+
+    // Copy over any data attributes
+    Array.from(img.attributes).forEach((attr) => {
+      if (attr.name.startsWith('data-')) {
+        svgElement.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    // Set width and height if specified
+    if (img.width) svgElement.setAttribute('width', img.width);
+    if (img.height) svgElement.setAttribute('height', img.height);
+
+    return svgElement;
+  } catch (error) {
+    window.lana?.log(`Error converting SVG: ${error}`);
+    return img;
+  }
+}
