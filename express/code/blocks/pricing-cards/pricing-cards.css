@@ -32,7 +32,11 @@ Legacy CSS for cards and special promo
   align-items: center;
 }
 
-.pricing-cards .card .card-header h3 {
+.pricing-cards .card > * {
+  box-sizing: border-box;
+}
+
+.pricing-cards .card .card-header h2 {
   font-weight: var(--heading-font-weight);
   line-height: var(--heading-line-height);
   font-size: 1.75rem;
@@ -80,19 +84,18 @@ End legacy CSS
 /*
 Border style variants
 */
-.pricing-cards .gradient-promo>h2{
+
+.pricing-cards .gradient-promo>div:first-of-type {
   margin-left: 4px;
   color: var(--color-white);
   font-weight: 400;
   padding-bottom: 12px;
   line-height: 1.5rem;
   text-align: center;
-  font-size: 1rem;
-  margin-top: 0px !important;
 }
 
 .pricing-cards .gradient-promo {
-  background: var(--S2-Buttons-Premium) !important;
+  background: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) !important;
   padding: 12px 2px 4px 2px;
   border-radius: 10px;
   background: var(--color-white);
@@ -179,8 +182,11 @@ End border style variants
   right: -20px;
 }
 
-.pricing-cards .tooltip > button:focus-within .tooltip-text {
-  opacity: 1;
+.pricing-cards .tooltip  button.hover .tooltip-text,
+.pricing-cards .tooltip > button:focus-within .tooltip-text,
+.pricing-cards .tooltip-text.hover {
+    opacity: 1;
+    pointer-events: visible;
 }
 
 .pricing-cards .tooltip-text {
@@ -208,16 +214,6 @@ End border style variants
   font-family: "adobe-clean";
   position: relative;
 }
-
-
-.pricing-cards .tooltip  button.hover .tooltip-text {
-  opacity: 1;
-} 
-
-.pricing-cards .tooltip-text.hover {
-  opacity: 1;
-  pointer-events: all;
-} 
 
 .pricing-cards .tooltip-text::after {
   content: '';
@@ -255,10 +251,6 @@ End border style variants
   position: relative;
 }
 
-.pricing-cards .tooltip .icon:hover~.tooltip-text {
-  opacity: 1;
-  pointer-events: visible;
-}
 
 .pricing-cards .card-border .hide {
   display: none;
@@ -272,12 +264,11 @@ End border style variants
 }
 
 
-.pricing-cards .card-border .card .card-header h3 {
+.pricing-cards .card-border .card .card-header h2 {
   display: flex;
   flex-direction: row-reverse;
   gap: 8px;
   text-align: left;
-  font-size: 1.75rem;
 }
 
 .pricing-cards .card-header img {

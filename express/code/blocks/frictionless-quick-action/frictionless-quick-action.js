@@ -356,6 +356,7 @@ export default async function decorate(block) {
   const animationContainer = actionAndAnimationRow[0];
   const animation = animationContainer.querySelector('a');
   const dropzone = actionAndAnimationRow[1];
+  const dropzoneBackground = createTag('div', { class: 'dropzone-bg' });
   const cta = dropzone.querySelector('a.button, a.con-button');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
@@ -374,6 +375,7 @@ export default async function decorate(block) {
   if (cta) cta.classList.add('xlarge');
   dropzone.classList.add('dropzone');
 
+  dropzone.prepend(dropzoneBackground);
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
   actionColumn.append(dropzoneContainer, gtcText);

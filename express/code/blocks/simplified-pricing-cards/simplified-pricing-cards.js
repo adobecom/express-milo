@@ -1,9 +1,10 @@
-import { getLibs, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
 import { debounce } from '../../scripts/utils/hofs.js';
+import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let formatSalesPhoneNumber;
@@ -11,78 +12,6 @@ let replaceKeyArray; let formatSalesPhoneNumber;
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '((year-2-pricing-token))';
-
-export function adjustElementPosition() {
-  const elements = document.querySelectorAll('.tooltip-text');
-
-  if (elements.length === 0) return;
-  for (const element of elements) {
-    const rect = element.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-      element.classList.remove('overflow-left');
-      element.classList.add('overflow-right');
-    } else if (rect.left < 0) {
-      element.classList.remove('overflow-right');
-      element.classList.add('overflow-left');
-    }
-  }
-}
-
-export function handleTooltip(pricingArea) {
-  const elements = pricingArea.querySelectorAll('p');
-  const pattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g;
-  let tooltip;
-  let tooltipDiv;
-
-  Array.from(elements).forEach((p) => {
-    const res = pattern.exec(p.textContent);
-    if (res) {
-      tooltip = res;
-      tooltipDiv = p;
-    }
-  });
-  if (!tooltip) return;
-
-  tooltipDiv.innerHTML = tooltipDiv.innerHTML.replace(pattern, '');
-  const tooltipText = tooltip[2];
-  tooltipDiv.classList.add('tooltip');
-  const tooltipTextElement = createTag('div', { class: 'tooltip-text' });
-  tooltipTextElement.innerText = tooltipText;
-  const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
-  const iconWrapper = createTag('button');
-  iconWrapper.setAttribute('aria-label', tooltipText);
-  icon.setAttribute('tabindex', 0);
-  iconWrapper.append(icon);
-  iconWrapper.append(tooltipTextElement);
-  tooltipDiv.append(iconWrapper);
-  iconWrapper.addEventListener('click', adjustElementPosition);
-  window.addEventListener('resize', adjustElementPosition);
-
-  icon.addEventListener('mouseover', () => {
-    iconWrapper.classList.add('hover');
-    tooltipTextElement.classList.add('hover');
-  });
-
-  icon.addEventListener('mouseleave', () => {
-    setTimeout(() => {
-      iconWrapper.classList.remove('hover');
-    }, 500);
-  });
-
-  tooltipTextElement.addEventListener('mouseleave', () => {
-    setTimeout(() => {
-      tooltipTextElement.classList.remove('hover');
-    }, 500);
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.activeElement.blur();
-      tooltipTextElement.classList.remove('hover');
-      iconWrapper.classList.remove('hover');
-    }
-  });
-}
 
 function getHeightWithoutPadding(element) {
   const styles = window.getComputedStyle(element);
@@ -99,7 +28,7 @@ function equalizeHeights(el) {
     const headers = el.querySelectorAll(className);
     let maxHeight = 0;
     headers.forEach((placeholder) => {
-      placeholder.style.height = 'unset';
+      placeholder.style.minHeight = 'unset';
     });
     if (window.screen.width > 1279) {
       headers.forEach((header) => {
@@ -110,7 +39,7 @@ function equalizeHeights(el) {
       });
       headers.forEach((placeholder) => {
         if (maxHeight > 0) {
-          placeholder.style.height = `${maxHeight}px`;
+          placeholder.style.minHeight = `${maxHeight}px`;
         }
       });
     }
@@ -176,7 +105,6 @@ function handleRawPrice(price, basePrice, response) {
 }
 
 async function createPricingSection(
-  header,
   pricingArea,
   ctaGroup,
 ) {
@@ -218,8 +146,6 @@ async function createPricingSection(
     if (a.textContent.includes(SALES_NUMBERS)) {
       formatSalesPhoneNumber([a], SALES_NUMBERS);
     }
-    const headerText = header?.querySelector('h2')?.textContent;
-    a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
   });
 }
 
@@ -298,7 +224,6 @@ export default async function init(el) {
     decorateCardBorder(card, rows[1].children[0]);
     decorateHeader(rows[0].children[0], rows[2].children[0]);
     await createPricingSection(
-      rows[0].children[0],
       rows[3].children[0],
       rows[4].children[0],
     );
