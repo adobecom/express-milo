@@ -23,6 +23,8 @@ import {
 let createTag; let getMetadata;
 let getConfig;
 
+const isTabletOrMobile = 899;
+
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
     .filter((header) => header.textContent.includes('-'))
@@ -389,7 +391,7 @@ export default async function decorate(block) {
         // Track previous width to detect breakpoint crossing
         let previousWidth = window.innerWidth;
 
-        if (window.innerWidth <= 899) {
+        if (window.innerWidth <= isTabletOrMobile) {
           img.src = mobileImagePath;
           sources.forEach((source) => {
             source.srcset = mobileImagePath;
@@ -399,8 +401,9 @@ export default async function decorate(block) {
         // Add resize listener to handle image switching
         window.addEventListener('resize', () => {
           const currentWidth = window.innerWidth;
-          const crossingBreakpoint = (previousWidth <= 899 && currentWidth > 899)
-                                   || (previousWidth > 899 && currentWidth <= 899);
+          const crossingBreakpoint = (
+            previousWidth <= isTabletOrMobile && currentWidth > isTabletOrMobile)
+            || (previousWidth > isTabletOrMobile && currentWidth <= isTabletOrMobile);
 
           if (crossingBreakpoint) {
             if (currentWidth <= 899) {
