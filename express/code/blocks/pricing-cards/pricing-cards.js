@@ -128,14 +128,15 @@ function tagFreePlan(cardContainer) {
   });
 }
 
-function createToggle(pricingSections, groupID, adjElemPos, header) {
+function createToggle(pricingSections, groupID, adjElemPos) {
   const subDesc = placeholders?.['subscription-type'] || 'Subscription Type:';
   const toggleWrapper = createTag('div', {
     class: 'billing-toggle',
     role: 'radiogroup',
+    'aria-labelledby': groupID,
   });
 
-  const groupLabel = createTag('strong', {}, subDesc);
+  const groupLabel = createTag('strong', { id: groupID }, subDesc);
   toggleWrapper.appendChild(groupLabel);
 
   const buttons = PLANS.map((basePlan, i) => {
@@ -143,23 +144,20 @@ function createToggle(pricingSections, groupID, adjElemPos, header) {
       ? SPECIAL_PLAN
       : basePlan;
     const label = placeholders?.[planLabelID];
+    const buttonID = `${groupID}:${basePlan}`;
     const isDefault = i === 0;
-    let associatedHeaderLabel = '';
-    const associatedHeader = header.querySelectorAll('h2, h3');
-    if (associatedHeader.length > 0) {
-      associatedHeaderLabel = associatedHeader[0].textContent.trim();
-    }
     const button = createTag('button', {
       class: isDefault ? 'checked' : '',
+      id: buttonID,
       plan: basePlan,
       role: 'radio',
       'aria-checked': isDefault.toString(),
-      'aria-label': `${associatedHeaderLabel} ${label}`,
+      'aria-labelledby': buttonID,
     });
 
     button.appendChild(createTag('span'));
 
-    button.appendChild(createTag('div', { }, label));
+    button.appendChild(createTag('div', { id: `${buttonID}:radio` }, label));
 
     button.addEventListener('click', () => {
       togglePlan(pricingSections, buttons, i);
@@ -349,7 +347,6 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
 }
 
 async function createPricingSection(
-  header,
   pricingArea,
   ctaGroup,
   specialPromo,
@@ -375,9 +372,6 @@ async function createPricingSection(
     if (a.parentNode.tagName.toLowerCase() === 'p') {
       a.parentNode.remove();
     }
-
-    const headerText = header?.querySelector('h2')?.textContent;
-    a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
     formatDynamicCartLink(a);
     ctaGroup.append(a);
   });
@@ -397,7 +391,7 @@ function readBraces(inputString, card) {
 
   if (matches.length > 0) {
     const [token, promoType] = matches[matches.length - 1];
-    const specialPromo = createTag('h2');
+    const specialPromo = createTag('div');
     specialPromo.textContent = inputString.split(token)[0].trim();
     card.classList.add(promoType.replaceAll(' ', ''));
     card.append(specialPromo);
@@ -408,7 +402,7 @@ function readBraces(inputString, card) {
 // Function for decorating a legacy header / promo.
 function decorateLegacyHeader(header, card) {
   header.classList.add('card-header');
-  const h2 = header.querySelector('h3');
+  const h2 = header.querySelector('h2');
   const h2Text = h2.textContent.trim();
   h2.innerHTML = '';
   const headerConfig = /\((.+)\)/.exec(h2Text);
@@ -446,28 +440,19 @@ function decorateLegacyHeader(header, card) {
 
 function decorateHeader(header, borderParams, card, cardBorder) {
   const h2 = header.querySelector('h2');
-  const headerImage = h2?.querySelector('img');
-  const h2Text = h2?.innerText.trim();
-  const h3 = createTag('h3');
-  h3.innerText = h2Text;
-
-  if (headerImage) h3.append(headerImage);
-  header.append(h3);
-  h2?.remove();
-
   // The raw text extracted from the word doc
   header.classList.add('card-header');
   const specialPromo = readBraces(borderParams?.innerText, cardBorder);
   const premiumIcon = header.querySelector('img');
   // Finds the headcount, removes it from the original string and creates an icon with the hc
   const extractHeadCountExp = /(>?)\(\d+(.*?)\)/;
-  if (extractHeadCountExp.test(h3.innerText)) {
+  if (extractHeadCountExp.test(h2.innerText)) {
     const headCntDiv = createTag('div', { class: 'head-cnt', alt: '' });
-    const headCount = h3.innerText
+    const headCount = h2.innerText
       .match(extractHeadCountExp)[0]
       .replace(')', '')
       .replace('(', '');
-    [h3.innerText] = h3.innerText.split(extractHeadCountExp);
+    [h2.innerText] = h2.innerText.split(extractHeadCountExp);
     headCntDiv.textContent = headCount;
     headCntDiv.prepend(
       createTag('img', {
@@ -477,7 +462,7 @@ function decorateHeader(header, borderParams, card, cardBorder) {
     );
     header.append(headCntDiv);
   }
-  if (premiumIcon) h3.append(premiumIcon);
+  if (premiumIcon) h2.append(premiumIcon);
   header.querySelectorAll('p').forEach((p) => {
     if (p.innerHTML.trim() === '') p.remove();
   });
@@ -537,8 +522,8 @@ async function decorateCard({
   decorateBasicTextSection(explain, 'card-explain', card);
   const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
   const [mPricingSection, yPricingSection] = await Promise.all([
-    createPricingSection(header, mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
-    createPricingSection(header, yPricingRow, yCtaGroup, null),
+    createPricingSection(mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
+    createPricingSection(yPricingRow, yCtaGroup, null),
   ]);
   mPricingSection.classList.add('monthly');
   yPricingSection.classList.add('annually', 'hide');
@@ -547,7 +532,6 @@ async function decorateCard({
     [mPricingSection, yPricingSection],
     groupID,
     adjustElementPosition,
-    header,
   );
   card.append(toggle, mPricingSection, yPricingSection);
   decorateBasicTextSection(featureList, 'card-feature-list', card);

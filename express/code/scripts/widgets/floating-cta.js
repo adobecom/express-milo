@@ -171,13 +171,14 @@ export async function createFloatingButton(block, audience, data) {
   });
   [...block.classList].filter((c) => c === 'closed').forEach((c) => floatButtonWrapper.classList.add(c));
   const floatButtonInnerWrapper = createTag('div', { class: 'floating-button-inner-wrapper' });
+  const floatButtonBackground = createTag('div', { class: 'floating-button-background' });
 
   if (audience) {
     floatButtonWrapper.dataset.audience = audience;
     floatButtonWrapper.dataset.sectionStatus = 'loaded';
   }
 
-  floatButtonInnerWrapper.append(floatButtonLink);
+  floatButtonInnerWrapper.append(floatButtonBackground, floatButtonLink);
   floatButton.append(floatButtonInnerWrapper);
   floatButtonWrapper.append(floatButton);
   main.append(floatButtonWrapper);

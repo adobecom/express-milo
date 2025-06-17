@@ -216,6 +216,7 @@
 .quotes .quote .content::before {
   content: '“';
   display: block;
+  position: absolute;
   margin-top: -15px;
   width: 36px;
   text-align: left;

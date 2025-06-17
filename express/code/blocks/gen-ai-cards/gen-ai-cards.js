@@ -79,7 +79,7 @@ function handleGenAISubmit(form, link) {
 function buildGenAIForm({ title, ctaLinks, subtext }) {
   const genAIForm = createTag('form', { class: 'gen-ai-input-form' });
   const genAIInput = createTag('input', {
-    'aria-label': `${subtext || ''}`,
+    'aria-label': `${title}: ${subtext || ''}`,
     placeholder: subtext || '',
     type: 'text',
     enterKeyhint: 'enter',
@@ -88,10 +88,7 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
     class: 'gen-ai-submit',
     type: 'submit',
     disabled: true,
-
   });
-
-  genAISubmit.setAttribute('aria-label', `${title}`);
 
   genAIForm.append(genAIInput, genAISubmit);
 
