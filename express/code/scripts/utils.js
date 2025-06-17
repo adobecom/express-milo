@@ -257,13 +257,6 @@ export async function fixIcons(el = document) {
   el.querySelectorAll('svg use[href^="./_icons_"]').forEach(($use) => {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
   });
-
-  let replaceKey;
-  let getConfig;
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
   /* new icons handling */
   el.querySelectorAll('img').forEach(($img) => {
     const alt = $img.getAttribute('alt');
@@ -278,12 +271,6 @@ export async function fixIcons(el = document) {
             }
             return null;
           });
-        let altText = null;
-        if (replaceKey(icon, getConfig())) {
-          altText = replaceKey(icon, getConfig());
-        } else if (replaceKey(mobileIcon, getConfig())) {
-          altText = replaceKey(mobileIcon, getConfig());
-        }
         const $picture = $img.closest('picture');
         const $block = $picture.closest('.section > div');
         let size = 44;
@@ -297,8 +284,10 @@ export async function fixIcons(el = document) {
             return;
           }
         }
+        const iconElement = getIconElementDeprecated([icon, mobileIcon], size);
+        iconElement.setAttribute('alt', '');
         $picture.parentElement
-          .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
+          .replaceChild(iconElement, $picture);
       }
     }
   });
@@ -813,4 +802,45 @@ export function decorateArea(area = document) {
   });
 
   decorateCommerceLinks(area);
+}
+
+export async function convertToInlineSVG(img) {
+  try {
+    const response = await fetch(img.src);
+    const svgText = await response.text();
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+    const svgElement = svgDoc.querySelector('svg');
+
+    if (!svgElement) {
+      window.lana?.log(`No SVG element found in file ${img.src}`);
+      return img;
+    }
+
+    // Preserve original classes and add them to the SVG
+    if (img.className) {
+      svgElement.classList.add(...img.className.split(' '));
+    }
+
+    // Preserve original ID if it exists
+    if (img.id) {
+      svgElement.id = img.id;
+    }
+
+    // Copy over any data attributes
+    Array.from(img.attributes).forEach((attr) => {
+      if (attr.name.startsWith('data-')) {
+        svgElement.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    // Set width and height if specified
+    if (img.width) svgElement.setAttribute('width', img.width);
+    if (img.height) svgElement.setAttribute('height', img.height);
+
+    return svgElement;
+  } catch (error) {
+    window.lana?.log(`Error converting SVG: ${error}`);
+    return img;
+  }
 }

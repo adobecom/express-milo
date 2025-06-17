@@ -1,8 +1,21 @@
+.how-to-v2 {
+  padding-left: var(--spacing-300);
+  padding-right: var(--spacing-300);
+  margin: 0;
+  max-width: unset;
+}
+
 .how-to-v2 h2 {
-  font-size: 22px;
+  font-size: var(--heading-font-size-s);
   text-align: center;
   padding: 0 24px;
   margin-bottom: 20px;
+}
+
+main .section > .content:has( + .how-to-v2) h2 {
+  font-size: var(--heading-font-size-s);
+  margin-top: -12px;
+  padding-bottom: var(--spacing-200);
 }
 
 .how-to-v2 ol {
@@ -26,7 +39,7 @@
 }
 
 .how-to-v2 ol li .step-content {
-  padding: 8px 16px;
+  padding: 8px 26px;
   margin: 0;
 }
 
@@ -40,18 +53,18 @@
 
 .how-to-v2 ol li h3 {
   text-align: left;
-  font-size: 16px;
+  font-size: var(--body-font-size-l);
   line-height: 23px;
   font-weight: 700;
 }
 
 .how-to-v2 ol li .detail-container {
-  font-size: 16px;
+  font-size: var(--body-font-size-m);
   line-height: 20.8px;
   font-weight: 400;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.21s ease-out;
+  transition: max-height 0.3s ease-out;
 }
 
 .how-to-v2 ol li .detail-text {
@@ -67,6 +80,18 @@
 .how-to-v2 picture img {
   border-radius: 16px;
   overflow: hidden;
+  max-width: 400px;
+  width: 100%;
+}
+
+main .section:has(.how-to-v2) .content em {
+  font-style: normal;
+  background: linear-gradient(140.08deg, #FF4DD2 67.54%, #FF993B 76.42%);
+  background-size: 108% 108%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
 }
 
 .how-to-v2 em {
@@ -82,25 +107,46 @@
 .how-to-v2 .steps-content {
   display: flex;
   flex-direction: column;
-  padding: 0 24px;
   position: relative;
+  margin-top: 4px;
+  margin-bottom: var(--spacing-900);
 }
 
-.how-to-v2 .steps-content .steps-content-backg {
+.how-to-v2 .steps-content:has(.media-container .milo-video) {
+  display: block;
+}
+
+.how-to-v2 .steps-content .media-container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  padding: var(--spacing-400);
+}
+
+.how-to-v2 .steps-content .media-container::before {
+  content: '';
   position: absolute;
-  width: 100%;
-  top: -24vw;
+  width: 170%;
+  height: 135%;
+  left: -175px;
+  top: -60px;
   z-index: -1;
-  height: 100%;
-  transform: scale(0.9);
+  background-image: 
+    linear-gradient(to bottom, transparent 85%, white 100%),
+    linear-gradient(to right, transparent 85%, white 100%),
+    linear-gradient(to left, transparent 85%, white 100%),
+    linear-gradient(to top, transparent 85%, white 100%),
+    var(--background-image);
+  background-size: cover;
+  background-position: center;
 }
 
 .how-to-v2 ol.steps {
-  margin: 6px 0 0;
+  margin: 12px 0 0;
   padding: 0;
 }
 
-.how-to-v2 ol.steps .step .step-content h3:not(:has(picture), :has(.milo-video)):hover {
+.how-to-v2 ol.steps .step .step-content:has(.detail-container.closed) h3:not(:has(picture), :has(.milo-video)):hover {
   background-color: var(--color-gray-100);
   margin: -8px 0 -8px -16px; 
   padding: 8px 0 8px 16px;
@@ -131,15 +177,9 @@
   height: unset;
 }
 
-.how-to-v2 {
-  /* note we don't set margin here because background gradient has to go past into this container */
-  margin: 0;
-  max-width: unset;
-}
-
-main .section > .content:has( + .how-to-v2) h2 {
-  font-size: 22px;
-  padding-bottom: 20px;
+.how-to-v2 .milo-video {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (min-width: 400px) {
@@ -148,33 +188,34 @@ main .section > .content:has( + .how-to-v2) h2 {
     margin-left: 20px;
     margin-right: 20px;
   }
-
-  main .section > .content:has( + .how-to-v2) h2 {
-    font-size: 36px;
-  }
-  
-  .how-to-v2 ol li h3 {
-    font-size: 22px;
-    line-height: 28px;
-  }
 }
 
 @media (min-width: 768px) {
   .how-to-v2 h2 {
-    font-size: 28px;
+    font-size: var(--heading-font-size-m);
+  }
+
+  main .section > .content:has( + .how-to-v2) h2 {
+    font-size: var(--heading-font-size-m);
   }
 
   .how-to-v2 {
-    max-width: 950px;
+    padding-left: var(--spacing-500);
+    padding-right: var(--spacing-500);
+    max-width: 1252px;
     margin: auto;
   }
 
   .how-to-v2 .steps-content {
     display: flex;
     flex-direction: row;
-    padding: 0 24px;
     justify-content: center;
     align-items: center;
+    margin-bottom: var(--spacing-900);
+  }
+
+  .how-to-v2 .steps-content:has(.media-container .milo-video) {
+    display: flex;
   }
 
   .how-to-v2 .steps-content > * {
@@ -193,14 +234,49 @@ main .section > .content:has( + .how-to-v2) h2 {
   }
 
   .how-to-v2 .steps-content .steps {
-    padding-left: 20px;
+    padding-left: 24px;
   }
 
-  .how-to-v2 .steps-content .steps-content-backg {
-    left: -90px;
-    width: 67%;
-    transform: scale(0.9);
-    top: -68px;
+  .how-to-v2 .steps-content .media-container::before {
+    width: 70vw;
+    max-width: 850px;
+    height: calc(55vh + (20 * (100vw - 768px) / 432));
+    max-height: 760px;
+    top: -150px;
+    background-image: 
+      linear-gradient(to bottom, transparent 85%, white 100%),
+      linear-gradient(to right, transparent 85%, white 100%),
+      linear-gradient(to left, transparent 85%, white 100%),
+      linear-gradient(to top, transparent 85%, white 100%),
+      var(--background-image);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .how-to-v2 .milo-video,
+  .how-to-v2 picture img {
+    max-width: 450px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .how-to-v2 .steps-content .media-container::before {
+    height: 70vh;
+  }
+  main .section > .content:has( + .how-to-v2) h2 {
+    margin-top: 20px;
+    font-size: var(--heading-font-size-l);
+  }
+  .how-to-v2 ol li h3 {
+    font-size: 22px;
+  }
+  .how-to-v2 {
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
+  }
+  .how-to-v2 .milo-video,
+  .how-to-v2 picture img {
+    max-width: 533px;
   }
 }
 

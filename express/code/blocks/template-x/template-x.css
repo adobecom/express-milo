@@ -2331,16 +2331,20 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   display: flex;
   align-items: center;
   gap: 4px;
-  width: 130px;
+  min-width: 130px;
   background-color: var(--background-positive-default);
   color: white;
   text-align: center;
   border-radius: 6px;
-  padding: 6px;
+  padding: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
   left: calc(100% + 12px);
   font-size: var(--body-font-size-s);
+  width: max-content;
+  max-width: 200px;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .template-x.horizontal .template:nth-last-of-type(2) .button-container .media-wrapper .share-icon-wrapper .shared-tooltip {

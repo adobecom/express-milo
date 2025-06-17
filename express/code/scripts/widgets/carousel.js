@@ -11,10 +11,17 @@ function initToggleTriggers(parent) {
   if (!parent) return;
 
   const isInHiddenSection = () => {
+    // optimization to avoid flashing on tab switch
     const parentSection = parent.closest('.section');
     if (!parentSection) return false;
-
-    return parentSection.dataset.toggle && parentSection.style.display === 'none';
+    // 2 tabs block: ax-panels and content-toggle
+    if (parentSection.dataset.toggle && parentSection.style.display === 'none') {
+      return true;
+    }
+    if (parentSection.getAttribute('data-ax-panel') && parentSection.classList.contains('hide')) {
+      return true;
+    }
+    return false;
   };
 
   const leftControl = parent.querySelector('.carousel-fader-left');

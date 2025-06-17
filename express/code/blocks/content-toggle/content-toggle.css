@@ -12,18 +12,20 @@ main .section .content-toggle-wrapper {
     margin: 0 auto;
     padding: 0 13px;
     max-width: max-content;
+    overflow-x: scroll;
 }
 
 main .content-toggle {
+    width: fit-content;
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    background-color: #EDEDED;
+    background-color: #ededed;
     border-radius: 100px;
     padding: 6px;
     margin-top: 10px;
     margin-bottom: 24px;
-    height: 64px;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;
@@ -48,29 +50,25 @@ main .content-toggle .content-toggle-button {
     user-select: none;
     border: none;
     font-family: var(--body-font-family);
-    color: black;
+    color: var(--color-gray-800);
 }
 
-main .content-toggle.dark .content-toggle-button.active {
-    color: white;
-    transition: 0.5s;
-}
-
-main .content-toggle .toggle-background  {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 60px;
+main .content-toggle-button.active {
     margin: 0 8px;
     border-radius: 100px;
-    background-color: white;
-    color: #000000;
+    background-color: var(--color-white);
+    color: var(--color-gray-800);
     transition: 0.2s;
 }
 
-main .content-toggle.dark .toggle-background  {
-    background-color: #242424;
-    color: #FFFFFF;
+main .content-toggle.dark .content-toggle-button.active {
+    color: var(--color-white);
+    transition: 0.5s;
+}
+ 
+main .content-toggle.dark .content-toggle-button.active {
+    background-color: var(--color-gray-800);
+    color: var(--color-white);
     transition: 0.2s;
 }
 
@@ -85,7 +83,7 @@ main .content-toggle .tag {
     font-size: 12px;
     font-weight: 400;
     background-color: #33AB84;
-    color: white;
+    color: var(--color-white);
     height: 20px;
     width: 61px;
     border-radius: 4px;
