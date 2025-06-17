@@ -23,10 +23,14 @@ const onError = (e) => {
   window.lana?.log('on error:', e);
 };
 
-export function loadSUSIScripts() {
-  const CDN_URL = `https://auth-light.identity${isStage ? '-stage' : ''}.adobe.com/sentry/wrapper.js`;
-  return loadScript(CDN_URL);
-}
+// easier to mock in unit test
+export const SUSIUtils = {
+  loadSUSIScripts: () => {
+    const CDN_URL = `https://auth-light.identity${isStage ? '-stage' : ''}.adobe.com/sentry/wrapper.js`;
+    return loadScript(CDN_URL);
+  },
+  loadIms,
+};
 
 function getDestURL(url) {
   let destURL;
@@ -105,7 +109,7 @@ function redirectIfLoggedIn(destURL) {
   if (window.adobeIMS) {
     window.adobeIMS.isSignedInUser() && goDest();
   } else {
-    loadIms()
+    SUSIUtils.loadIms()
       .then(() => {
         /* c8 ignore next */
         window.adobeIMS?.isSignedInUser() && goDest();
@@ -174,7 +178,7 @@ async function buildEdu(el) {
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
   }
-  await loadSUSIScripts();
+  await SUSIUtils.loadSUSIScripts();
   return createSUSIComponent(params);
 }
 
@@ -201,7 +205,7 @@ async function buildB2B(el) {
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
   }
-  const susiScriptReady = loadSUSIScripts();
+  const susiScriptReady = SUSIUtils.loadSUSIScripts();
   await susiScriptReady;
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
@@ -244,7 +248,7 @@ function buildSUSITabs(el) {
   tabsId += 1;
   const wrapper = createTag('div', { class: 'susi-tabs' });
   const tabList = createTag('div', { role: 'tablist' });
-  const susiScriptReady = loadSUSIScripts();
+  const susiScriptReady = SUSIUtils.loadSUSIScripts();
   const panels = tabParams.map((option, i) => {
     const { footer, tabName, variant } = option;
     const susiWrapper = createTag('div', { class: 'susi-wrapper' });
