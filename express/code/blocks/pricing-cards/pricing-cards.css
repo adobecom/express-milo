@@ -160,7 +160,7 @@ Border style variants
   position: relative;
   top: -20px;
 }
-
+  
 .pricing-cards .card-border .hide {
   display: none;
 }
@@ -479,4 +479,13 @@ Border style variants
   .pricing-cards .billing-toggle.suppressed-billing-toggle {
     height: unset;
   }
+}
+
+.pricing-cards ins,
+.pricing-cards del {
+  text-decoration: none;
+}
+
+.pricing-cards .visually-hidden {
+  clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px;
 }
