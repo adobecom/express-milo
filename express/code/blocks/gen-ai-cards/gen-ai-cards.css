@@ -147,6 +147,7 @@
 }
 
 .gen-ai-cards .card {
+  height: 415px;
   box-sizing: border-box;
   position: relative;
   flex-direction: column;
