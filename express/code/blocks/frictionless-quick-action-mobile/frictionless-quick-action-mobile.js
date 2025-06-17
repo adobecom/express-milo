@@ -113,9 +113,7 @@ export async function runQuickAction(quickAction, data, block) {
   const exportConfig = [
     {
       id: 'download-button',
-      ...(QA_CONFIGS[quickAction].group === 'video'
-        ? {}
-        : { label: downloadText }),
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: downloadText }),
       action: {
         target: 'download',
       },
@@ -130,9 +128,7 @@ export async function runQuickAction(quickAction, data, block) {
     },
     {
       id: 'edit-in-express',
-      ...(QA_CONFIGS[quickAction].group === 'video'
-        ? {}
-        : { label: editText }),
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
       action: {
         target: 'express',
       },
