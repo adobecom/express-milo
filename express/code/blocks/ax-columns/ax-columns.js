@@ -1,4 +1,5 @@
 import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { debounce } from '../../scripts/utils/hofs.js';
 
 import {
   addAnimationToggle,
@@ -22,6 +23,8 @@ import {
 
 let createTag; let getMetadata;
 let getConfig;
+
+const isTabletOrMobile = 899;
 
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
@@ -235,6 +238,9 @@ export default async function decorate(block) {
     ({ createTag, getMetadata, getConfig } = utils);
   });
 
+  const { codeRoot } = getConfig();
+  const mobileImagePath = `${codeRoot}/blocks/ax-columns/img/marquee-mobile.png`;
+
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
@@ -378,9 +384,48 @@ export default async function decorate(block) {
       if (isPictureColumn) {
         cell.classList.add('column-picture');
         block.classList.contains('marquee') && createCornerOverlays(cell);
-        if (window.innerWidth <= 899) {
-          cell.querySelector('img').src = '/express/code/blocks/ax-columns/img/marquee-mobile-tablet.png';
+        const picture = cell.querySelector('picture');
+        const img = picture.querySelector('img');
+        const sources = picture.querySelectorAll('source');
+
+        // Store original sources before potentially changing them
+        img.dataset.originalSrc = img.src;
+        sources.forEach((source) => {
+          source.dataset.originalSrcset = source.srcset;
+        });
+
+        // Track previous width to detect breakpoint crossing
+        let previousWidth = window.innerWidth;
+
+        if (window.innerWidth <= isTabletOrMobile) {
+          img.src = mobileImagePath;
+          sources.forEach((source) => {
+            source.srcset = mobileImagePath;
+          });
         }
+
+        // Add resize listener to handle image switching
+        window.addEventListener('resize', debounce(() => {
+          const currentWidth = window.innerWidth;
+          const crossingBreakpoint = (
+            previousWidth <= isTabletOrMobile && currentWidth > isTabletOrMobile)
+            || (previousWidth > isTabletOrMobile && currentWidth <= isTabletOrMobile);
+
+          if (crossingBreakpoint) {
+            if (currentWidth <= 899) {
+              img.src = mobileImagePath;
+              sources.forEach((source) => {
+                source.srcset = mobileImagePath;
+              });
+            } else {
+              img.src = img.dataset.originalSrc;
+              sources.forEach((source) => {
+                source.srcset = source.dataset.originalSrcset;
+              });
+            }
+          }
+          previousWidth = currentWidth;
+        }, 250));
       }
 
       const $pars = cell.querySelectorAll('p');
