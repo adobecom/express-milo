@@ -422,6 +422,7 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
 }
 
 async function createPricingSection(
+  header,
   pricingArea,
   ctaGroup,
   specialPromo,
@@ -447,6 +448,9 @@ async function createPricingSection(
     if (a.parentNode.tagName.toLowerCase() === 'p') {
       a.parentNode.remove();
     }
+
+    const headerText = header?.querySelector('h2')?.textContent;
+    a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
     formatDynamicCartLink(a);
     ctaGroup.append(a);
   });
@@ -606,8 +610,8 @@ async function decorateCard({
   decorateBasicTextSection(explain, 'card-explain', card);
   const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
   const [mPricingSection, yPricingSection] = await Promise.all([
-    createPricingSection(mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
-    createPricingSection(yPricingRow, yCtaGroup, null),
+    createPricingSection(header, mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
+    createPricingSection(header, yPricingRow, yCtaGroup, null),
   ]);
   mPricingSection.classList.add('monthly');
   yPricingSection.classList.add('annually', 'hide');
