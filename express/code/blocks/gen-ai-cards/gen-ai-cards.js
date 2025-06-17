@@ -41,7 +41,7 @@ export function decorateTextWithTag(textSource, options = {}) {
 export function decorateHeading(block, payload) {
   const headingSection = createTag('div', { class: 'gen-ai-cards-heading-section' });
   const headingTextWrapper = createTag('div', { class: 'text-wrapper' });
-  const heading = createTag('h3', { class: 'gen-ai-cards-heading' });
+  const heading = createTag('h2', { class: 'gen-ai-cards-heading' });
 
   heading.textContent = payload.heading;
   headingSection.append(headingTextWrapper);
@@ -184,7 +184,7 @@ async function decorateCards(block, { actions }) {
       }
     }
 
-    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h4' });
+    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h3' });
 
     if (betaTag) {
       addBetaTag(card, titleText, betaTagPlaceholder);
