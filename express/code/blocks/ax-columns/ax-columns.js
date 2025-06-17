@@ -1,4 +1,5 @@
 import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { debounce } from '../../scripts/utils/hofs.js';
 
 import {
   addAnimationToggle,
@@ -23,6 +24,8 @@ import {
 let createTag; let getMetadata;
 let getConfig;
 
+const isTabletOrMobile = 899;
+
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
     .filter((header) => header.textContent.includes('-'))
@@ -42,6 +45,11 @@ function transformToVideoColumn(cell, aTag, block) {
       const buttonContainer = button.closest('.button-container');
       if (buttonContainer) buttonContainer.remove();
       else button.remove();
+    } else {
+      const header = parent?.querySelector('h1, h2, h3, h4, h5, h6');
+      if (header) {
+        button.setAttribute('aria-label', `${button.textContent.trim()} ${header.textContent.trim()}`);
+      }
     }
   });
   aTag.setAttribute('rel', 'nofollow');
@@ -189,10 +197,50 @@ function addHeaderClass(block, size) {
   }
 }
 
+function setupCornerOverlayAnimation(cell) {
+  cell.addEventListener('mouseleave', () => {
+    cell.classList.add('animating-out');
+
+    setTimeout(() => {
+      cell.classList.remove('animating-out');
+      cell.classList.add('reset-position');
+    }, 250);
+  });
+}
+
+function createCornerOverlays(cell) {
+  const overlays = [
+    { src: '/express/code/blocks/ax-columns/img/resize-button.png', class: 'top-left' },
+    { src: '/express/code/blocks/ax-columns/img/users.png', class: 'top-right' },
+    { src: '/express/code/blocks/ax-columns/img/ai-image-edit.png', class: 'bottom-left', width: 47, height: 104 },
+    { src: '/express/code/blocks/ax-columns/img/gen-ai-panel.png', class: 'bottom-right' },
+    { src: '/express/code/blocks/ax-columns/img/cursor-small.svg', class: 'bottom-center', width: 26, height: 26 },
+  ];
+
+  overlays.forEach((overlay) => {
+    const img = createTag('img', {
+      class: `corner-overlay ${overlay.class}`,
+      src: overlay.src,
+      alt: '',
+      fetchpriority: 'low',
+      loading: 'eager',
+      ...(overlay.width && { width: overlay.width }),
+      ...(overlay.height && { height: overlay.height }),
+    });
+    cell.appendChild(img);
+  });
+
+  setupCornerOverlayAnimation(cell);
+}
+
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getMetadata, getConfig } = utils);
   });
+
+  const { codeRoot } = getConfig();
+  const mobileImagePath = `${codeRoot}/blocks/ax-columns/img/marquee-mobile.png`;
+
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
@@ -201,7 +249,7 @@ export default async function decorate(block) {
 
   const rows = Array.from(block.children);
 
-  if (block.classList.contains('bg')) {
+  if (block.classList.contains('marquee')) {
     const background = rows.shift();
     const bgImgURL = background?.querySelector('img')?.src;
     block.firstElementChild?.remove();
@@ -335,6 +383,49 @@ export default async function decorate(block) {
         && childEls.length > 0;
       if (isPictureColumn) {
         cell.classList.add('column-picture');
+        block.classList.contains('marquee') && createCornerOverlays(cell);
+        const picture = cell.querySelector('picture');
+        const img = picture.querySelector('img');
+        const sources = picture.querySelectorAll('source');
+
+        // Store original sources before potentially changing them
+        img.dataset.originalSrc = img.src;
+        sources.forEach((source) => {
+          source.dataset.originalSrcset = source.srcset;
+        });
+
+        // Track previous width to detect breakpoint crossing
+        let previousWidth = window.innerWidth;
+
+        if (window.innerWidth <= isTabletOrMobile) {
+          img.src = mobileImagePath;
+          sources.forEach((source) => {
+            source.srcset = mobileImagePath;
+          });
+        }
+
+        // Add resize listener to handle image switching
+        window.addEventListener('resize', debounce(() => {
+          const currentWidth = window.innerWidth;
+          const crossingBreakpoint = (
+            previousWidth <= isTabletOrMobile && currentWidth > isTabletOrMobile)
+            || (previousWidth > isTabletOrMobile && currentWidth <= isTabletOrMobile);
+
+          if (crossingBreakpoint) {
+            if (currentWidth <= 899) {
+              img.src = mobileImagePath;
+              sources.forEach((source) => {
+                source.srcset = mobileImagePath;
+              });
+            } else {
+              img.src = img.dataset.originalSrc;
+              sources.forEach((source) => {
+                source.srcset = source.dataset.originalSrcset;
+              });
+            }
+          }
+          previousWidth = currentWidth;
+        }, 250));
       }
 
       const $pars = cell.querySelectorAll('p');

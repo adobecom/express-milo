@@ -46,11 +46,11 @@ function buildAccordion(block, rows, stepsContent) {
 
     const detailText = stepDetail;
     detailText && detailText.classList.add('detail-text');
-
+    const ariaLabelStepTitle = newStepTitle.innerText.replace(/^\d+\.\s*/, '');
     const detailContainer = createTag('div', {
       class: 'detail-container',
       id: detailId,
-      'aria-labelledby': titleId,
+      'aria-labelledby': ariaLabelStepTitle,
     });
 
     if (i !== 0) {
@@ -77,10 +77,10 @@ function buildAccordion(block, rows, stepsContent) {
 
   stepsContent.append(list);
 
-  // set this in the next event cycle when scrollHeight has been established
   setTimeout(() => {
-    setStepDetails(block, indexOpenedStep);
-  }, 0);
+    const firstStepTitle = list.querySelector('h3');
+    firstStepTitle.click();
+  }, 100);
 }
 
 export default function decorate(block) {
@@ -93,13 +93,8 @@ export default function decorate(block) {
   const stepsContent = createTag('div', { class: 'steps-content' });
 
   if (hasBackground) {
-    // So that background image goes beyond container
     rows.shift();
-    const stepsContentBackground = createTag('div', { class: 'steps-content-backg' });
-    const stepsContentBackgroundImg = createTag('img', { class: 'steps-content-backg-image' });
-    stepsContent.append(stepsContentBackground);
-    stepsContentBackground.append(stepsContentBackgroundImg);
-    stepsContentBackgroundImg.src = backgroundURL;
+    block.style.setProperty('--background-image', `url('${backgroundURL}')`);
   }
 
   const mediaData = rows.shift();
