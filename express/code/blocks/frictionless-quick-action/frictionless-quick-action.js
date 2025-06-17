@@ -3,10 +3,12 @@ import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '..
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
 import createAccessibilityVideoControls from '../../scripts/utils/ax-video-controls.js';
+import { createLocaleDropdownWrapper } from '../../scripts/widgets/locale-dropdown.js';
 
 let createTag; let getConfig;
 let getMetadata;
 let loadScript; let globalNavSelector;
+let selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 let ccEverywhere;
 let quickActionContainer;
@@ -197,7 +199,10 @@ export function runQuickAction(quickAction, data, block) {
   };
 
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
+    metaData: {
+      isFrictionlessQa: 'true',
+      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+    },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -381,6 +386,17 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
   showErrorToast(block, msg);
 }
 
+function createCaptionLocaleDropdown() {
+  const { wrapper } = createLocaleDropdownWrapper({
+    label: 'Language spoken in video',
+    defaultValue: 'en-us',
+    onChange: (code) => {
+      selectedVideoLanguage = code;
+    },
+  });
+  return wrapper;
+}
+
 export default async function decorate(block) {
   const [utils, gNavUtils, federated] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
@@ -443,6 +459,12 @@ export default async function decorate(block) {
     startSDKWithUnconvertedFile(file, quickAction, block);
   };
   block.append(inputElement);
+
+  // Add locale dropdown for caption-video
+  if (quickAction === 'caption-video') {
+    const localeDropdownWrapper = createCaptionLocaleDropdown();
+    dropzoneContainer.before(localeDropdownWrapper);
+  }
 
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();

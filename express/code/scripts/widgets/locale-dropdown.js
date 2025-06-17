@@ -40,7 +40,7 @@ export function createLocaleDropdown(options = {}) {
   const buttonText = createTag(
     'span',
     { class: 'dropdown-text' },
-    defaultLocale?.label || 'English (US)'
+    defaultLocale?.label || 'English (US)',
   );
   const chevronIcon = createTag('span', { class: 'dropdown-chevron' }, '▼');
 
@@ -50,13 +50,14 @@ export function createLocaleDropdown(options = {}) {
   const dropdownContent = createTag('div', { class: 'dropdown-content' });
 
   // Add all locale options
-  LOCALES.forEach((locale) => {
+  LOCALES.forEach((locale, index) => {
     const option = createTag(
-      'a',
+      'div',
       {
-        href: '#',
         class: 'dropdown-option',
         'data-value': locale.code,
+        role: 'button',
+        tabindex: index + 1,
       },
       locale.label,
     );
@@ -70,6 +71,14 @@ export function createLocaleDropdown(options = {}) {
 
       // Call the onChange callback
       onChange(locale.code, locale.label);
+    });
+
+    // Add keyboard support
+    option.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        option.click();
+      }
     });
 
     dropdownContent.append(option);
@@ -113,7 +122,7 @@ export function createLocaleDropdownWrapper(options = {}) {
       for: labelId,
       class: 'locale-dropdown-label',
     },
-    label
+    label,
   );
 
   const dropdown = createLocaleDropdown(dropdownOptions);
