@@ -11,9 +11,10 @@ let loadScript;
 
 let ccEverywhere;
 let quickActionContainer;
-let uploadContainer;
 let ui2SDK;
 let ui2Landing;
+let localeDropdownWrapper;
+let selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 const JPG = 'jpg';
 const JPEG = 'jpeg';
@@ -105,11 +106,71 @@ function selectElementByTagPrefix(p) {
 
 const downloadKey = 'download-to-phone';
 const editKey = 'edit-in-adobe-express-for-free';
+
+function createLocaleDropdown() {
+  const localeDropdown = createTag('select', {
+    class: 'locale-dropdown',
+    id: 'locale-select',
+    name: 'locale-select',
+  });
+  const locales = [
+    { code: 'zh-hk', label: 'Chinese (Hong Kong)' },
+    { code: 'cmn-hans', label: 'Chinese (Simplified)' },
+    { code: 'cmn-hant', label: 'Chinese (Traditional)' },
+    { code: 'da-dk', label: 'Danish' },
+    { code: 'nl-nl', label: 'Dutch' },
+    { code: 'en-gb', label: 'English (UK)' },
+    { code: 'en-us', label: 'English (US)' },
+    { code: 'fr-fr', label: 'French' },
+    { code: 'de-de', label: 'German' },
+    { code: 'hi-in', label: 'Hindi' },
+    { code: 'it-it', label: 'Italian' },
+    { code: 'ja-jp', label: 'Japanese' },
+    { code: 'ko-kr', label: 'Korean' },
+    { code: 'nb-no', label: 'Norwegian' },
+    { code: 'pt-pt', label: 'Portuguese' },
+    { code: 'ru-ru', label: 'Russian' },
+    { code: 'es-es', label: 'Spanish' },
+    { code: 'sv-se', label: 'Swedish' },
+  ];
+
+  // Add all locale options
+  locales.forEach((locale) => {
+    const option = createTag('option', { value: locale.code }, locale.label);
+    localeDropdown.append(option);
+  });
+
+  // Set the dropdown value default to en-us
+  localeDropdown.value = 'en-us';
+
+  // Add event listener for locale change
+  localeDropdown.addEventListener('change', (e) => {
+    selectedVideoLanguage = e.target.value;
+  });
+
+  return localeDropdown;
+}
+
+function createLocaleDropdownWrapper() {
+  const wrapper = createTag('div', { class: 'locale-dropdown-wrapper' });
+
+  // Create label
+  const label = createTag('label', {
+    for: 'locale-select',
+    class: 'locale-dropdown-label',
+  }, 'Language spoken in video');
+
+  const localeDropdown = createLocaleDropdown();
+  wrapper.append(label, localeDropdown);
+  return wrapper;
+}
+
 export async function runQuickAction(quickAction, data, block) {
   let downloadText = await replaceKey(downloadKey, getConfig());
   if (downloadText === downloadKey.replaceAll('-', ' ')) downloadText = 'Download to Phone';
   let editText = await replaceKey(editKey, getConfig());
   if (editText === editKey.replaceAll('-', ' ')) editText = 'Edit in Adobe Express for free';
+
   const exportConfig = [
     {
       id: 'download-button',
@@ -146,8 +207,7 @@ export async function runQuickAction(quickAction, data, block) {
   const id = `${quickAction}-container`;
   quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
   block.append(quickActionContainer);
-  const divs = block.querySelectorAll(':scope > div');
-  if (divs[1]) [, uploadContainer] = divs;
+
   ui2SDK();
 
   const contConfig = {
@@ -174,7 +234,10 @@ export async function runQuickAction(quickAction, data, block) {
   };
 
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
+    metaData: {
+      isFrictionlessQa: 'true',
+      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+    },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -393,8 +456,9 @@ export default async function decorate(block) {
   block.prepend(logo);
 
   ui2SDK = () => {
-    fadeOut(uploadContainer);
+    fadeOut(dropzoneContainer);
     fadeOut(extraContainer);
+    fadeOut(localeDropdownWrapper);
     logo.classList.add('hide');
     if (postUploadHeadlineText) {
       h1.textContent = postUploadHeadlineText;
@@ -402,8 +466,9 @@ export default async function decorate(block) {
     }
   };
   ui2Landing = () => {
-    fadeIn(uploadContainer);
+    fadeIn(dropzoneContainer);
     fadeIn(extraContainer);
+    fadeIn(localeDropdownWrapper);
     logo.classList.remove('hide');
     if (postUploadHeadlineText) {
       h1.textContent = landingHeadlineText;
@@ -420,6 +485,12 @@ export default async function decorate(block) {
   const animationEnd = () => {
     dropzone.classList.remove('hide');
     animationContainer.classList.add('hide');
+
+    // Add locale dropdown for caption-video
+    if (quickAction === 'caption-video') {
+      localeDropdownWrapper = createLocaleDropdownWrapper();
+      dropzoneContainer.before(localeDropdownWrapper);
+    }
   };
   if (animation && animation.href.includes('.mp4')) {
     const video = transformLinkToAnimation(animation, false);
