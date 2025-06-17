@@ -129,11 +129,9 @@ function tagFreePlan(cardContainer) {
 
 function createToggle(pricingSections, groupID, adjElemPos, header) {
   const subDesc = placeholders?.['subscription-type'] || 'Subscription Type:';
-  const headerId = header.querySelector('h2').id;
   const toggleWrapper = createTag('div', {
     class: 'billing-toggle',
-    role: 'radiogroup',
-    'aria-labelledby': headerId,
+    role: 'radiogroup'
   });
 
   const groupLabel = createTag('strong', {}, subDesc);
