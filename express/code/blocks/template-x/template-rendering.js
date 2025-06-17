@@ -421,8 +421,6 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(templateInfo);
-      mediaWrapper.append(shareWrapper);
     }
     renderedMedia.hover();
     currentHoveredElement?.classList.remove('singleton-hover');
@@ -440,8 +438,6 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(templateInfo);
-      mediaWrapper.append(shareWrapper);
       renderedMedia.hover();
     }
     currentHoveredElement?.classList.remove('singleton-hover');
@@ -482,8 +478,21 @@ function renderHoverWrapper(template) {
   cta.setAttribute('aria-label', `${editThisTemplate} ${getTemplateTitle(template)}`);
   ctaLink.append(mediaWrapper);
 
+  // Create shareWrapper separately
+  const templateTitle = getTemplateTitle(template);
+  const { branchUrl } = template.customLinks;
+  const templateInfo = {
+    templateTitle,
+    branchUrl,
+    renditionLinkHref: extractRenditionLinkHref(template),
+    componentLinkHref: extractComponentLinkHref(template),
+  };
+  const shareWrapper = renderShareWrapper(templateInfo);
+
   btnContainer.append(cta);
   btnContainer.append(ctaLink);
+  btnContainer.append(shareWrapper);
+
   btnContainer.addEventListener('mouseenter', enterHandler);
   btnContainer.addEventListener('mouseleave', leaveHandler);
 
