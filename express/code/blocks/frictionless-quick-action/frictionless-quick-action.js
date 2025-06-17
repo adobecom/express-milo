@@ -355,7 +355,7 @@ export default async function decorate(block) {
   const actionAndAnimationRow = rows[1].children;
   const animationContainer = actionAndAnimationRow[0];
   const animation = animationContainer.querySelector('a');
-  const dropzone = actionAndAnimationRow[1]; 
+  const dropzone = actionAndAnimationRow[1];
   const cta = dropzone.querySelector('a.button, a.con-button');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
@@ -373,7 +373,7 @@ export default async function decorate(block) {
 
   if (cta) cta.classList.add('xlarge');
   dropzone.classList.add('dropzone');
- 
+
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
   actionColumn.append(dropzoneContainer, gtcText);
