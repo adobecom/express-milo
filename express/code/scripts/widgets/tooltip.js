@@ -101,7 +101,7 @@ function buildTooltip(pricingArea, tooltipPattern) {
     toggleTooltip();
   });
 
-  window.addEventListener('resize', adjustElementPosition); 
+  window.addEventListener('resize', adjustElementPosition);
   infoIcon.addEventListener('mouseenter', () => {
     isMouseOverIcon = true;
     showTooltip();
@@ -111,7 +111,7 @@ function buildTooltip(pricingArea, tooltipPattern) {
     isMouseOverIcon = false;
     checkAndHideTooltip();
   });
- 
+
   tooltipPopup.addEventListener('mouseenter', () => {
     isMouseOverTooltip = true;
     clearTimeout(hideTimeout);
