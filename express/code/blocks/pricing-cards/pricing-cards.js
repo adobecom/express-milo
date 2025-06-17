@@ -470,8 +470,14 @@ function readBraces(inputString, card) {
 
   if (matches.length > 0) {
     const [token, promoType] = matches[matches.length - 1];
-    const specialPromo = createTag('h2');
-    specialPromo.textContent = inputString.split(token)[0].trim();
+    let specialPromo = createTag('div');
+    const textContent = inputString?.split(token)[0]?.trim();
+
+    if (textContent) {
+      specialPromo = createTag('h2');
+      specialPromo.textContent = textContent;
+    }
+
     card.classList.add(promoType.replaceAll(' ', ''));
     card.append(specialPromo);
     return specialPromo;
@@ -481,7 +487,7 @@ function readBraces(inputString, card) {
 // Function for decorating a legacy header / promo.
 function decorateLegacyHeader(header, card) {
   header.classList.add('card-header');
-  const h2 = header.querySelector('h3');
+  const h2 = header.querySelector('h2');
   const h2Text = h2.textContent.trim();
   h2.innerHTML = '';
   const headerConfig = /\((.+)\)/.exec(h2Text);
