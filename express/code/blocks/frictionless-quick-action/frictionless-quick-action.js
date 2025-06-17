@@ -388,7 +388,6 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
 
 function createCaptionLocaleDropdown() {
   const { wrapper } = createLocaleDropdownWrapper({
-    label: 'Language spoken in video',
     defaultValue: 'en-us',
     onChange: (code) => {
       selectedVideoLanguage = code;

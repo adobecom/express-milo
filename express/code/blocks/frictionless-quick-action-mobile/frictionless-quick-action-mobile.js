@@ -110,7 +110,6 @@ const editKey = 'edit-in-adobe-express-for-free';
 
 function createCaptionLocaleDropdown() {
   const { wrapper } = createLocaleDropdownWrapper({
-    label: 'Language spoken in video',
     defaultValue: 'en-us',
     onChange: (code) => {
       selectedVideoLanguage = code;
