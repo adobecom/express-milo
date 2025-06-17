@@ -1,3 +1,5 @@
+@import url('../../scripts/widgets/locale-dropdown.css');
+
 .frictionless-quick-action-mobile {
     --animation-h: 260px;
     --quick-action-container-h: 667px;
