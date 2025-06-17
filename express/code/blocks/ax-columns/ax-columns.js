@@ -1,4 +1,5 @@
 import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { debounce } from '../../scripts/utils/hofs.js';
 
 import {
   addAnimationToggle,
@@ -399,7 +400,7 @@ export default async function decorate(block) {
         }
 
         // Add resize listener to handle image switching
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize', debounce(() => {
           const currentWidth = window.innerWidth;
           const crossingBreakpoint = (
             previousWidth <= isTabletOrMobile && currentWidth > isTabletOrMobile)
@@ -418,9 +419,8 @@ export default async function decorate(block) {
               });
             }
           }
-
           previousWidth = currentWidth;
-        });
+        }, 250));
       }
 
       const $pars = cell.querySelectorAll('p');
