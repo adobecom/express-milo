@@ -19,6 +19,8 @@ export function decorateTextWithTag(textSource, options = {}) {
     baseClass,
     tagClass,
   } = options;
+
+  console.log('decorateTextWithTag', textSource, options);
   const text = createTag(baseT || 'p', { class: baseClass || '' });
   const tagText = textSource?.match(/\[(.*?)]/);
 
@@ -39,7 +41,7 @@ export function decorateTextWithTag(textSource, options = {}) {
 export function decorateHeading(block, payload) {
   const headingSection = createTag('div', { class: 'gen-ai-cards-heading-section' });
   const headingTextWrapper = createTag('div', { class: 'text-wrapper' });
-  const heading = createTag('h2', { class: 'gen-ai-cards-heading' });
+  const heading = createTag('h3', { class: 'gen-ai-cards-heading' });
 
   heading.textContent = payload.heading;
   headingSection.append(headingTextWrapper);
@@ -78,11 +80,14 @@ function handleGenAISubmit(form, link) {
 
 function buildGenAIForm({ title, ctaLinks, subtext }) {
   const genAIForm = createTag('form', { class: 'gen-ai-input-form' });
+  const genAILabel = createTag('label', { for: 'gen-ai-input' });
+  // genAILabel.textContent = subtext || '';
   const genAIInput = createTag('input', {
     'aria-label': `${title}: ${subtext || ''}`,
     placeholder: subtext || '',
     type: 'text',
     enterKeyhint: 'enter',
+    id: 'gen-ai-input',
   });
   const genAISubmit = createTag('button', {
     class: 'gen-ai-submit',
@@ -90,7 +95,7 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
     disabled: true,
   });
 
-  genAIForm.append(genAIInput, genAISubmit);
+  genAIForm.append(genAILabel, genAIInput, genAISubmit);
 
   genAISubmit.textContent = ctaLinks[0].textContent;
   genAISubmit.disabled = genAIInput.value === '';
@@ -148,8 +153,7 @@ async function decorateCards(block, { actions }) {
     const linksWrapper = createTag('div', { class: 'links-wrapper' });
     const mediaWrapper = createTag('div', { class: 'media-wrapper' });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
-
-    card.append(textWrapper, mediaWrapper, linksWrapper);
+    card.append(mediaWrapper, textWrapper, linksWrapper);
     if (image) {
       mediaWrapper.append(image);
       if (i > 0) {
@@ -187,6 +191,7 @@ async function decorateCards(block, { actions }) {
     }
 
     textWrapper.append(titleText);
+    console.log('textWrapper', textWrapper, text);
     const desc = createTag('p', { class: 'cta-card-desc' });
     desc.textContent = text;
     textWrapper.append(desc);
@@ -247,6 +252,7 @@ export default async function decorate(block) {
   }
 
   const payload = constructPayload(block);
+  console.log('Payload constructed:', payload);
   decorateHeading(block, payload);
   await decorateCards(block, payload);
   if (block.classList.contains('homepage')) {
