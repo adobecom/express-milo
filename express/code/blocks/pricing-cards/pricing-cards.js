@@ -1,7 +1,6 @@
 import {
   getLibs,
   yieldToMain,
-  getIconElementDeprecated,
   fixIcons,
   addTempWrapperDeprecated, decorateButtonsDeprecated,
 } from '../../scripts/utils.js';
@@ -336,7 +335,7 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const isPremiumCard = response.ooAvailable || false;
   const savePercentElem = pricingArea.querySelector('.card-offer');
   handleRawPrice(price, basePrice, response);
-  
+
   handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
   handleTooltip(pricingArea, TOOLTIP_PATTERN);
   handleSavePercentage(savePercentElem, isPremiumCard, response);
