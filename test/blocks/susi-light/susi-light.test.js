@@ -22,7 +22,6 @@ describe('Susi-light', async () => {
   const blocks = [...document.querySelectorAll('.susi-light')];
   const originalFetch = window.fetch;
   const originalLoadSUSI = SUSIUtils.loadSUSIScripts;
-  const originalLoadIMS = SUSIUtils.loadIms;
   before(async () => {
     window.fetch = sinon.stub().callsFake((url) => {
       if (/geo2/.test(url)) {
@@ -35,7 +34,6 @@ describe('Susi-light', async () => {
       return {};
     });
     SUSIUtils.loadSUSIScripts = () => Promise.resolve(null);
-    SUSIUtils.loadIms = () => Promise.resolve(null);
     await Promise.all(blocks.map((block) => decorate(block)));
     await delay(310);
   });
@@ -43,7 +41,6 @@ describe('Susi-light', async () => {
   after(() => {
     window.fetch = originalFetch;
     SUSIUtils.loadSUSIScripts = originalLoadSUSI;
-    SUSIUtils.loadIms = originalLoadIMS;
   });
 
   it('decorates susi-light with required properties', () => {

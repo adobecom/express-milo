@@ -29,7 +29,6 @@ export const SUSIUtils = {
     const CDN_URL = `https://auth-light.identity${isStage ? '-stage' : ''}.adobe.com/sentry/wrapper.js`;
     return loadScript(CDN_URL);
   },
-  loadIms,
 };
 
 function getDestURL(url) {
@@ -109,7 +108,7 @@ function redirectIfLoggedIn(destURL) {
   if (window.adobeIMS) {
     window.adobeIMS.isSignedInUser() && goDest();
   } else {
-    SUSIUtils.loadIms()
+    loadIms()
       .then(() => {
         /* c8 ignore next */
         window.adobeIMS?.isSignedInUser() && goDest();
