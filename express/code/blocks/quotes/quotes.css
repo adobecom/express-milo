@@ -432,6 +432,10 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   width: 100%;
 }
 
+.quotes.carousel .quotes-ratings-wrapper .basic-carousel.carousel-play-pause {
+  margin-top: var(--spacing-500);
+}
+
 .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
   width: 100%;
 }
