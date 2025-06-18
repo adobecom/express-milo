@@ -3,6 +3,10 @@
     --frictionless-quick-action-video-height: 455px;
 }
 
+.frictionless-quick-action video, .frictionless-quick-action img:not(.icon) {
+    max-width: var(--frictionless-quick-action-video-width);
+}
+
 .frictionless-quick-action {
     padding: 40px 20px;
     max-width: none;
@@ -64,26 +68,15 @@
     max-width: 638px;
 }
 
-.frictionless-quick-action video,
-.frictionless-quick-action img:not(.icon) {
-    max-width: var(--frictionless-quick-action-video-width);
-}
 
 .frictionless-quick-action .dropzone-container {
     cursor: pointer;
     padding: 24px 0;
     border-radius: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    height: 284px;
-}
-
-.frictionless-quick-action .dropzone-bg {
-    display: none;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0px;
-    background: url("/express/code/icons/dash-rectangle.svg") center center / 91% no-repeat;
+    min-height: 284px;
+    display: flex;
+    flex-direction: column; 
 }
 
 .frictionless-quick-action .dropzone-container.highlight .dropzone-bg {
@@ -96,12 +89,29 @@
 }
 
 .frictionless-quick-action .dropzone {
-    height: 100%;
-    width: 100%;
+    flex-grow: 1;
     position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: calc(100% - 48px) 100%;
 }
 
-.frictionless-quick-action .dropzone-bg + p {
+.frictionless-quick-action .dropzone > * {
+    padding-left: 36px;
+    padding-right: 36px;
+}
+
+.frictionless-quick-action .dropzone > * {
+    padding-left: 36px;
+    padding-right: 36px;
+}
+
+.frictionless-quick-action .dropzone > p:last-of-type {
+    padding-bottom: 5px;
+}
+
+.frictionless-quick-action .dropzone > p:first-of-type {
     margin: 0;
     padding: 39px 24px 0 24px;
     font-size: var(--heading-font-size-m);
@@ -109,7 +119,7 @@
     line-height: var(--heading-line-height);
 }
 
-.frictionless-quick-action .dropzone-bg + p em {
+.frictionless-quick-action  .dropzone > p:first-of-type em {
     font-style: normal;
     color: var(--color-info-accent);
 }
@@ -132,8 +142,9 @@
     background-color: unset;
     flex-direction: row;
     padding: unset;
-    margin: 16px auto 0 auto;
+    margin: 16px auto 8px auto;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .frictionless-quick-action .free-plan-widget > div {
@@ -198,9 +209,13 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
 }
 
 @media (min-width: 768px) {
-    .frictionless-quick-action .dropzone-bg{
-        display: block;
+    .frictionless-quick-action .dropzone{
+        background-image: url('/express/code/icons/dash-rectangle.svg');
     }
+    .frictionless-quick-action video {
+        max-width: var(--frictionless-quick-action-video-width);
+    }
+
 }
 
 @media (min-width: 1200) {
@@ -214,42 +229,3 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     margin-left: auto;
     margin-right: auto;
 }
-
-.video-controls-wrapper {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background-color: var(--color-gray-700);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    z-index: 2;
-  }
-  
-  .video-controls-wrapper:hover {
-    background-color: var(--color-black);
-  }
-  
-  .video-controls-wrapper:focus {
-    outline: 2px solid #1473e6;
-    outline-offset: 2px;
-  }
-  
-  .video-controls-wrapper .icon {
-    width: 24px;
-    height: 24px;
-    fill: var(--color-white);
-  }
-  
-  .video-controls-wrapper[aria-pressed="true"] .accessibility-control.icon-play-video.isHidden {
-    display: none;
-  }
-  
-  .video-controls-wrapper[aria-pressed="false"] .accessibility-control.icon-pause-video {
-    display: none;
-  }
