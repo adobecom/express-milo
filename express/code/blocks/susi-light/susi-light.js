@@ -192,7 +192,7 @@ async function buildB2B(el) {
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
   const footer = rows[3];
-  footer.classList.add('footer', 'susi-banner');
+  footer?.classList.add('footer', 'susi-banner');
   const variant = 'standard';
   const susiConfigs = {
     client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
