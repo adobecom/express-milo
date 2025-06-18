@@ -47,17 +47,20 @@ export function createLocaleDropdown(options = {}) {
   dropdownBtn.append(buttonText, chevronIcon);
 
   // Create the dropdown content container
-  const dropdownContent = createTag('div', { class: 'dropdown-content' });
+  const dropdownContent = createTag('div', {
+    class: 'dropdown-content',
+    role: 'listbox',
+  });
 
   // Add all locale options
-  LOCALES.forEach((locale, index) => {
+  LOCALES.forEach((locale) => {
     const option = createTag(
       'div',
       {
         class: 'dropdown-option',
         'data-value': locale.code,
-        role: 'button',
-        tabindex: index + 1,
+        role: 'option',
+        tabindex: 0,
       },
       locale.label,
     );
