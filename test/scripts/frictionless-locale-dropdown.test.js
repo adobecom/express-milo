@@ -206,13 +206,12 @@ describe('Locale Dropdown Widget', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
 
-      const dropdownContent = dropdown.querySelector('.dropdown-content');
-      expect(dropdownContent.getAttribute('role')).to.equal('listbox');
-
       const options = dropdown.querySelectorAll('.dropdown-option');
-      options.forEach((option) => {
-        expect(option.getAttribute('role')).to.equal('option');
-        expect(option.getAttribute('tabindex')).to.equal('0');
+      options.forEach((option, index) => {
+        expect(option.getAttribute('role')).to.equal('button');
+        expect(option.getAttribute('tabindex')).to.equal(
+          (index + 1).toString(),
+        );
         expect(option.getAttribute('data-value')).to.exist;
       });
     });
