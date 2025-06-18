@@ -201,6 +201,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
+  padding-bottom: 8px;
 }
 
 .gen-ai-cards .card .text-wrapper .tag {
