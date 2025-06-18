@@ -5,7 +5,7 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
-import { createLocaleDropdownWrapper } from '../../scripts/widgets/locale-dropdown.js';
+import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 
 let replaceKey; let getConfig;
 let loadScript;

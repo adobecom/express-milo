@@ -4,7 +4,7 @@ import {
   LOCALES,
   createLocaleDropdown,
   createLocaleDropdownWrapper,
-} from '../../express/code/scripts/widgets/locale-dropdown.js';
+} from '../../express/code/scripts/widgets/frictionless-locale-dropdown.js';
 
 describe('Locale Dropdown Widget', () => {
   let container;
