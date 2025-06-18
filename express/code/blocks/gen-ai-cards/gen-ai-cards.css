@@ -362,6 +362,10 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   padding-bottom: 8px;
 }
 
+.gen-ai-cards .card.compact-nav-carousel-element:not(.gen-ai-action) .text-wrapper {
+  padding-bottom: 2.5rem;
+}
+
 .gen-ai-cards .card .links-wrapper a {
   margin: 4px auto;
   width: max-content;
