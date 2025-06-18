@@ -20,7 +20,6 @@ export function decorateTextWithTag(textSource, options = {}) {
     tagClass,
   } = options;
 
-  console.log('decorateTextWithTag', textSource, options);
   const text = createTag(baseT || 'p', { class: baseClass || '' });
   const tagText = textSource?.match(/\[(.*?)]/);
 
@@ -80,14 +79,11 @@ function handleGenAISubmit(form, link) {
 
 function buildGenAIForm({ title, ctaLinks, subtext }) {
   const genAIForm = createTag('form', { class: 'gen-ai-input-form' });
-  // const genAILabel = createTag('label', { for: 'gen-ai-input' });
-  // genAILabel.textContent = subtext || '';
   const genAIInput = createTag('input', {
     'aria-label': `${title}: ${subtext || ''}`,
     placeholder: subtext || '',
     type: 'text',
     enterKeyhint: 'enter',
-    // id: 'gen-ai-input',
   });
   const genAISubmit = createTag('button', {
     class: 'gen-ai-submit',
@@ -191,7 +187,6 @@ async function decorateCards(block, { actions }) {
     }
 
     textWrapper.append(titleText);
-    console.log('textWrapper', textWrapper, text);
     const desc = createTag('p', { class: 'cta-card-desc' });
     desc.textContent = text;
     textWrapper.append(desc);
