@@ -193,8 +193,10 @@ export default async function init(el) {
   [{ createTag, getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
   const [toolbar, recipeRow] = el.children;
   const heading = toolbar.querySelector('h1,h2,h3');
-  heading.classList.add('heading');
-  el.prepend(heading);
+  if (heading) {
+    heading.classList.add('heading');
+    el.prepend(heading);
+  }
   toolbar.classList.add('toolbar');
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
