@@ -21,98 +21,452 @@ export const LOCALES = [
   { code: 'sv-se', label: 'Swedish' },
 ];
 
+// Actions for keyboard navigation
+const SelectActions = {
+  Close: 0,
+  CloseSelect: 1,
+  First: 2,
+  Last: 3,
+  Next: 4,
+  Open: 5,
+  PageDown: 6,
+  PageUp: 7,
+  Previous: 8,
+  Select: 9,
+  Type: 10,
+};
+
+// Helper functions
+function filterOptions(options = [], filter = '', exclude = []) {
+  return options.filter((option) => {
+    const matches = option.label.toLowerCase().indexOf(filter.toLowerCase()) === 0;
+    return matches && exclude.indexOf(option.label) < 0;
+  });
+}
+
+function getActionFromKey(event, menuOpen) {
+  const { key, altKey, ctrlKey, metaKey } = event;
+  const openKeys = ['ArrowDown', 'ArrowUp', 'Enter', ' '];
+
+  // Handle opening when closed
+  if (!menuOpen && openKeys.includes(key)) {
+    return SelectActions.Open;
+  }
+
+  // Home and end move the selected option when open or closed
+  if (key === 'Home') {
+    return SelectActions.First;
+  }
+  if (key === 'End') {
+    return SelectActions.Last;
+  }
+
+  // Handle typing characters when open or closed
+  if (
+    key === 'Backspace'
+    || key === 'Clear'
+    || (key.length === 1 && key !== ' ' && !altKey && !ctrlKey && !metaKey)
+  ) {
+    return SelectActions.Type;
+  }
+
+  // Handle keys when open
+  if (menuOpen) {
+    if (key === 'ArrowUp' && altKey) {
+      return SelectActions.CloseSelect;
+    }
+    if (key === 'ArrowDown' && !altKey) {
+      return SelectActions.Next;
+    }
+    if (key === 'ArrowUp') {
+      return SelectActions.Previous;
+    }
+    if (key === 'PageUp') {
+      return SelectActions.PageUp;
+    }
+    if (key === 'PageDown') {
+      return SelectActions.PageDown;
+    }
+    if (key === 'Escape') {
+      return SelectActions.Close;
+    }
+    if (key === 'Enter' || key === ' ') {
+      return SelectActions.CloseSelect;
+    }
+  }
+
+  return null;
+}
+
+function getIndexByLetter(options, filter, startIndex = 0) {
+  const orderedOptions = [
+    ...options.slice(startIndex),
+    ...options.slice(0, startIndex),
+  ];
+  const firstMatch = filterOptions(orderedOptions, filter)[0];
+  const allSameLetter = (array) => array.every((letter) => letter === array[0]);
+
+  // First check if there is an exact match for the typed string
+  if (firstMatch) {
+    return options.findIndex((opt) => opt.label === firstMatch.label);
+  }
+
+  // If the same letter is being repeated, cycle through first-letter matches
+  if (allSameLetter(filter.split(''))) {
+    const matches = filterOptions(options, filter[0]);
+    const matchIndex = matches.findIndex(
+      (opt) => opt.label === options[startIndex]?.label,
+    );
+    const nextMatch = matches[(matchIndex + 1) % matches.length];
+    return options.findIndex((opt) => opt.label === nextMatch.label);
+  }
+
+  // No matches
+  return -1;
+}
+
+function isScrollable(element) {
+  return element && element.clientHeight < element.scrollHeight;
+}
+
+function maintainScrollVisibility(activeElement, scrollParent) {
+  const { offsetHeight, offsetTop } = activeElement;
+  const { offsetHeight: parentOffsetHeight, scrollTop } = scrollParent;
+
+  const isAbove = offsetTop < scrollTop;
+  const isBelow = offsetTop + offsetHeight > scrollTop + parentOffsetHeight;
+
+  if (isAbove) {
+    scrollParent.scrollTop = offsetTop;
+  } else if (isBelow) {
+    scrollParent.scrollTop = offsetTop - parentOffsetHeight + offsetHeight;
+  }
+}
+
+function isElementInViewport(element, container) {
+  if (!element || !container) return true;
+
+  const elementRect = element.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+
+  return (
+    elementRect.top >= containerRect.top
+    && elementRect.bottom <= containerRect.bottom
+  );
+}
+
+// ARIA Combobox Class
+class LocaleCombobox {
+  constructor(element, options = {}) {
+    this.el = element;
+    this.comboEl = element.querySelector('[role="combobox"]');
+    this.listboxEl = element.querySelector('[role="listbox"]');
+    this.idBase = this.comboEl.id || 'combobox';
+    this.options = LOCALES;
+    this.filteredOptions = LOCALES;
+    this.activeIndex = 0;
+    this.open = false;
+    this.searchString = '';
+    this.searchTimeout = null;
+    this.ignoreBlur = false;
+    this.defaultValue = options.defaultValue || 'en-us';
+    this.onChange = options.onChange || (() => {});
+
+    // Initialize with default value
+    const defaultLocale = this.options.find(
+      (opt) => opt.code === this.defaultValue,
+    );
+    if (defaultLocale) {
+      this.comboEl.textContent = defaultLocale.label;
+      this.comboEl.setAttribute('data-value', defaultLocale.code);
+    }
+
+    this.init();
+  }
+
+  init() {
+    // Set up initial ARIA attributes
+    this.comboEl.setAttribute('aria-expanded', 'false');
+    this.comboEl.setAttribute('aria-haspopup', 'listbox');
+    this.comboEl.setAttribute('aria-controls', this.listboxEl.id);
+    this.comboEl.setAttribute('tabindex', '0');
+
+    // Create options
+    this.createOptions();
+
+    // Set up event listeners
+    this.comboEl.addEventListener('blur', this.onComboBlur.bind(this));
+    this.comboEl.addEventListener('click', this.onComboClick.bind(this));
+    this.comboEl.addEventListener('keydown', this.onComboKeyDown.bind(this));
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', this.onDocumentClick.bind(this));
+  }
+
+  createOptions() {
+    this.listboxEl.innerHTML = '';
+    this.options.forEach((option, index) => {
+      const optionEl = createTag(
+        'div',
+        {
+          role: 'option',
+          id: `${this.idBase}-${index}`,
+          class: 'combobox-option',
+          'aria-selected': 'false',
+        },
+        option.label,
+      );
+
+      optionEl.addEventListener('click', () => this.onOptionClick(index));
+      optionEl.addEventListener('mousedown', this.onOptionMouseDown.bind(this));
+
+      this.listboxEl.appendChild(optionEl);
+    });
+  }
+
+  onComboBlur() {
+    if (this.ignoreBlur) {
+      this.ignoreBlur = false;
+      return;
+    }
+    this.updateMenuState(false);
+  }
+
+  onComboClick() {
+    this.updateMenuState(!this.open, false);
+  }
+
+  onComboKeyDown(event) {
+    const { key } = event;
+    const max = this.options.length - 1;
+
+    const action = getActionFromKey(event, this.open);
+
+    switch (action) {
+      case SelectActions.Last:
+      case SelectActions.First:
+        this.updateMenuState(true);
+      // Fall through
+      case SelectActions.Next:
+      case SelectActions.Previous: {
+        event.preventDefault();
+        let newIndex;
+        if (action === SelectActions.First) {
+          newIndex = 0;
+        } else if (action === SelectActions.Last) {
+          newIndex = max;
+        } else if (action === SelectActions.Next) {
+          newIndex = Math.min(max, this.activeIndex + 1);
+        } else {
+          newIndex = Math.max(0, this.activeIndex - 1);
+        }
+        return this.onOptionChange(newIndex);
+      }
+      case SelectActions.PageUp:
+        event.preventDefault();
+        if (this.open) {
+          this.onOptionChange(Math.max(0, this.activeIndex - 10));
+        }
+        return undefined;
+      case SelectActions.PageDown:
+        event.preventDefault();
+        if (this.open) {
+          this.onOptionChange(Math.min(max, this.activeIndex + 10));
+        }
+        return undefined;
+      case SelectActions.CloseSelect:
+        event.preventDefault();
+        this.selectOption(this.activeIndex);
+        return this.updateMenuState(false);
+      case SelectActions.Close:
+        event.preventDefault();
+        return this.updateMenuState(false);
+      case SelectActions.Open:
+        event.preventDefault();
+        return this.updateMenuState(true);
+      case SelectActions.Type: {
+        this.updateMenuState(true);
+        this.searchString += key.toLowerCase();
+        this.searchTimeout = window.setTimeout(() => {
+          this.searchString = '';
+        }, 500);
+
+        const searchIndex = getIndexByLetter(
+          this.options,
+          this.searchString,
+          this.activeIndex + 1,
+        );
+
+        if (searchIndex >= 0) {
+          this.onOptionChange(searchIndex);
+        } else {
+          window.clearTimeout(this.searchTimeout);
+          this.searchString = '';
+        }
+        return undefined;
+      }
+      default:
+        return undefined;
+    }
+  }
+
+  onOptionChange(index) {
+    // Update state
+    this.activeIndex = index;
+
+    // Update aria-activedescendant for keyboard navigation
+    this.comboEl.setAttribute(
+      'aria-activedescendant',
+      `${this.idBase}-${index}`,
+    );
+
+    // Update visual highlight for keyboard navigation only
+    const options = this.listboxEl.querySelectorAll('[role="option"]');
+    [...options].forEach((optionEl) => {
+      optionEl.classList.remove('option-current');
+    });
+
+    if (options[index]) {
+      options[index].classList.add('option-current');
+
+      // Smooth scroll management
+      if (isScrollable(this.listboxEl)) {
+        maintainScrollVisibility(options[index], this.listboxEl);
+      }
+    }
+  }
+
+  onOptionClick(index) {
+    this.onOptionChange(index);
+    this.selectOption(index);
+    this.updateMenuState(false);
+  }
+
+  onOptionMouseDown() {
+    // Prevent blur when clicking on options
+    this.ignoreBlur = true;
+  }
+
+  selectOption(index) {
+    // Update state
+    this.activeIndex = index;
+
+    // Update displayed value
+    const selected = this.options[index];
+    this.comboEl.textContent = selected.label;
+    this.comboEl.setAttribute('data-value', selected.code);
+
+    // Update aria-selected on the actual selected option
+    const options = this.listboxEl.querySelectorAll('[role="option"]');
+    [...options].forEach((optionEl) => {
+      optionEl.setAttribute('aria-selected', 'false');
+    });
+
+    if (options[index]) {
+      options[index].setAttribute('aria-selected', 'true');
+    }
+
+    // Call the onChange callback
+    this.onChange(selected.code, selected.label);
+  }
+
+  updateMenuState(open, callFocus = true) {
+    if (this.open === open) {
+      return;
+    }
+
+    // Update state
+    this.open = open;
+
+    // Update aria-expanded and styles
+    this.comboEl.setAttribute('aria-expanded', `${open}`);
+    open ? this.el.classList.add('open') : this.el.classList.remove('open');
+
+    // Update activedescendant
+    const activeID = open ? `${this.idBase}-${this.activeIndex}` : '';
+    this.comboEl.setAttribute('aria-activedescendant', activeID);
+
+    if (activeID === '' && !isElementInViewport(this.comboEl, this.el)) {
+      this.comboEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Move focus back to the combobox, if needed
+    if (callFocus) {
+      this.comboEl.focus();
+    }
+
+    // Update option highlight when opening
+    if (open) {
+      this.onOptionChange(this.activeIndex);
+    }
+  }
+
+  onDocumentClick(event) {
+    if (!this.el.contains(event.target)) {
+      this.updateMenuState(false);
+    }
+  }
+}
+
 export function createLocaleDropdown(options = {}) {
   const {
     defaultValue = 'en-us',
     onChange = () => {},
-    className = 'custom-dropdown',
+    className = 'locale-combobox',
+    id = 'locale-combobox',
   } = options;
 
-  const dropdown = createTag('div', { class: className });
+  // Find default locale
+  const defaultLocale = LOCALES.find((locale) => locale.code === defaultValue);
 
-  // Create the dropdown button
-  const dropdownBtn = createTag('button', {
-    class: 'dropdown-btn',
-    type: 'button',
+  // Create container
+  const container = createTag('div', {
+    class: className,
+    id: `${id}-container`,
   });
 
-  const defaultLocale = LOCALES.find((locale) => locale.code === defaultValue);
-  const buttonText = createTag(
-    'span',
-    { class: 'dropdown-text' },
+  // Create combobox element
+  const combobox = createTag(
+    'div',
+    {
+      role: 'combobox',
+      id,
+      class: 'combobox-input',
+      'aria-expanded': 'false',
+      'aria-haspopup': 'listbox',
+      'aria-controls': `${id}-listbox`,
+      'data-value': defaultValue,
+      tabindex: '0',
+    },
     defaultLocale?.label || 'English (US)',
   );
-  const chevronIcon = createTag('span', { class: 'dropdown-chevron' }, '▼');
 
-  dropdownBtn.append(buttonText, chevronIcon);
-
-  // Create the dropdown content container
-  const dropdownContent = createTag('div', {
-    class: 'dropdown-content',
+  // Create listbox
+  const listbox = createTag('div', {
     role: 'listbox',
+    id: `${id}-listbox`,
+    class: 'combobox-listbox',
+    'aria-label': 'Language options',
   });
 
-  // Add all locale options
-  LOCALES.forEach((locale) => {
-    const option = createTag(
-      'div',
-      {
-        class: 'dropdown-option',
-        'data-value': locale.code,
-        role: 'option',
-        tabindex: 0,
-      },
-      locale.label,
-    );
+  container.append(combobox, listbox);
 
-    option.addEventListener('click', (e) => {
-      e.preventDefault();
-      buttonText.textContent = locale.label;
-      dropdown.dataset.value = locale.code;
-      dropdownContent.classList.remove('show');
-      chevronIcon.style.transform = 'rotate(0deg)';
-
-      // Call the onChange callback
-      onChange(locale.code, locale.label);
-    });
-
-    // Add keyboard support
-    option.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        option.click();
-      }
-    });
-
-    dropdownContent.append(option);
+  // Initialize the combobox
+  const comboboxInstance = new LocaleCombobox(container, {
+    defaultValue,
+    onChange,
   });
 
-  // Toggle dropdown on button click
-  dropdownBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    dropdownContent.classList.toggle('show');
-    const isOpen = dropdownContent.classList.contains('show');
-    chevronIcon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!dropdown.contains(e.target)) {
-      dropdownContent.classList.remove('show');
-      chevronIcon.style.transform = 'rotate(0deg)';
-    }
-  });
-
-  dropdown.append(dropdownBtn, dropdownContent);
-  dropdown.dataset.value = defaultValue;
-
-  return dropdown;
+  // Return container and instance for external access
+  container.comboboxInstance = comboboxInstance;
+  return container;
 }
 
 export function createLocaleDropdownWrapper(options = {}) {
   const {
     label = 'Language spoken in video',
-    labelId = 'locale-select',
+    labelId = 'locale-select-label',
+    comboboxId = 'locale-select',
     ...dropdownOptions
   } = options;
 
@@ -122,13 +476,21 @@ export function createLocaleDropdownWrapper(options = {}) {
   const labelElement = createTag(
     'label',
     {
-      for: labelId,
+      id: labelId,
       class: 'locale-dropdown-label',
     },
     label,
   );
 
-  const dropdown = createLocaleDropdown(dropdownOptions);
+  const dropdown = createLocaleDropdown({
+    ...dropdownOptions,
+    id: comboboxId,
+  });
+
+  // Associate label with combobox
+  const comboboxEl = dropdown.querySelector('[role="combobox"]');
+  comboboxEl.setAttribute('aria-labelledby', labelId);
+
   wrapper.append(labelElement, dropdown);
 
   return { wrapper, dropdown };
