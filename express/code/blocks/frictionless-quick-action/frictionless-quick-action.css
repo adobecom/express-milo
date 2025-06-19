@@ -5,6 +5,10 @@
     --frictionless-quick-action-video-height: 455px;
 }
 
+.frictionless-quick-action video, .frictionless-quick-action img:not(.icon) {
+    max-width: var(--frictionless-quick-action-video-width);
+}
+
 .frictionless-quick-action {
     padding: 40px 20px;
     max-width: none;
