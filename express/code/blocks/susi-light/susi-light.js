@@ -185,6 +185,7 @@ async function buildEdu(el) {
 async function buildB2B(el) {
   const noRedirect = el.classList.contains('no-redirect');
   const emailFirst = el.classList.contains('email-first');
+  const emailOnly = el.classList.contains('email-only');
   const locale = getConfig().locale.ietf.toLowerCase();
   const { imsClientId } = getConfig();
   const rows = el.querySelectorAll(':scope > div > div');
@@ -199,6 +200,8 @@ async function buildB2B(el) {
   };
   if (emailFirst) {
     susiConfigs.layout = 'emailAndSocial';
+  } else if (emailOnly) {
+    susiConfigs.layout = 'emailOnly';
   }
   const params = buildSUSIParams(susiConfigs);
   if (!noRedirect) {
