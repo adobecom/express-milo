@@ -49,9 +49,18 @@ main .section .discover-cards {
   border: none;
 }
 
-.discover-cards.flip h1, 
-.discover-cards.flip h2 {
+.discover-cards.flip .flip-card-front p,
+.discover-cards.flip .flip-card-front h1,
+.discover-cards.flip .flip-card-front h2,
+.discover-cards.flip .flip-card-front h3,
+.discover-cards.flip .flip-card-front h4,
+.discover-cards.flip .flip-card-front h5,
+.discover-cards.flip .flip-card-front h6 {
   font-size: var(--heading-font-size-s);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  margin-top: 20px;
 }
 .discover-cards.xl-heading h1,
 .discover-cards.xl-heading h2 {
@@ -116,7 +125,7 @@ main .section .discover-cards {
     align-items: center;
 }
 .discover-cards.flip .gallery-control {
-  padding-top: var(--spacing-500);
+  padding-top: var(--spacing-600);
 }
 .discover-cards .gallery-control .status {
     display: none;
@@ -200,7 +209,7 @@ main .section .discover-cards {
     }
     .discover-cards.flip {
       padding-top: var(--spacing-800);
-      padding-bottom: var(--spacing-800);
+      padding-bottom: 104px;
     }
     .discover-cards.flip .cards-container.gallery {
       padding-left: var(--spacing-500);
