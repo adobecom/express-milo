@@ -182,8 +182,6 @@ class LocaleCombobox {
     if (defaultLocale) {
       this.comboEl.textContent = defaultLocale.label;
       this.comboEl.setAttribute('data-value', defaultLocale.code);
-      // Call onChange with initial value
-      this.onChange(defaultLocale.code, defaultLocale.label);
     }
 
     this.open = false;
