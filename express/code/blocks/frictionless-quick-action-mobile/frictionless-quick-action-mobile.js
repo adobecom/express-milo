@@ -5,32 +5,55 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
+import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 
 let replaceKey; let getConfig;
 let loadScript;
 
 let ccEverywhere;
 let quickActionContainer;
-let uploadContainer;
 let ui2SDK;
 let ui2Landing;
+let localeDropdownWrapper;
+let selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 const JPG = 'jpg';
 const JPEG = 'jpeg';
 const PNG = 'png';
 const WEBP = 'webp';
+const VIDEO_FORMATS = [
+  'mov',
+  'mp4',
+  'crm',
+  'avi',
+  'm2ts',
+  '3gp',
+  'f4v',
+  'mpeg',
+  'm2t',
+  'm2p',
+  'm1v',
+  'mpg',
+  'wmv',
+  'tts',
+  '264',
+];
+
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
   max_size: 40 * 1024 * 1024,
   accept: types.map((type) => `.${type}`).join(', '),
   input_check: (input) => types.map((type) => `image/${type}`).includes(input),
 });
-export const getBaseVideoCfg = (...types) => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `video/${type}`).includes(input),
-});
+export const getBaseVideoCfg = (...types) => {
+  const formats = Array.isArray(types[0]) ? types[0] : types;
+  return {
+    group: 'video',
+    max_size: 1024 * 1024 * 1024,
+    accept: formats.map((type) => `.${type}`).join(', '),
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
+  };
+};
 const QA_CONFIGS = {
   'convert-to-jpg': {
     ...getBaseImgCfg(PNG, WEBP),
@@ -54,6 +77,13 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
+  'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
+  'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
 };
 
 function fadeIn(element) {
@@ -77,15 +107,27 @@ function selectElementByTagPrefix(p) {
 
 const downloadKey = 'download-to-phone';
 const editKey = 'edit-in-adobe-express-for-free';
+
+function createCaptionLocaleDropdown() {
+  const { wrapper } = createLocaleDropdownWrapper({
+    defaultValue: 'en-us',
+    onChange: (code) => {
+      selectedVideoLanguage = code;
+    },
+  });
+  return wrapper;
+}
+
 export async function runQuickAction(quickAction, data, block) {
   let downloadText = await replaceKey(downloadKey, getConfig());
   if (downloadText === downloadKey.replaceAll('-', ' ')) downloadText = 'Download to Phone';
   let editText = await replaceKey(editKey, getConfig());
   if (editText === editKey.replaceAll('-', ' ')) editText = 'Edit in Adobe Express for free';
+
   const exportConfig = [
     {
       id: 'download-button',
-      label: downloadText,
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: downloadText }),
       action: {
         target: 'download',
       },
@@ -100,7 +142,7 @@ export async function runQuickAction(quickAction, data, block) {
     },
     {
       id: 'edit-in-express',
-      label: editText,
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
       action: {
         target: 'express',
       },
@@ -118,8 +160,7 @@ export async function runQuickAction(quickAction, data, block) {
   const id = `${quickAction}-container`;
   quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
   block.append(quickActionContainer);
-  const divs = block.querySelectorAll(':scope > div');
-  if (divs[1]) [, uploadContainer] = divs;
+
   ui2SDK();
 
   const contConfig = {
@@ -136,8 +177,20 @@ export async function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
+
+  const videoDocConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'video',
+    },
+  };
+
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
+    metaData: {
+      isFrictionlessQa: 'true',
+      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+    },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -181,6 +234,28 @@ export async function runQuickAction(quickAction, data, block) {
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    // video quick action
+    case 'convert-to-gif':
+      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-video':
+      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'trim-video':
+      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-video':
+      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'merge-videos':
+      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-mp4':
+      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'caption-video':
+      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     default: break;
   }
@@ -334,8 +409,9 @@ export default async function decorate(block) {
   block.prepend(logo);
 
   ui2SDK = () => {
-    fadeOut(uploadContainer);
+    fadeOut(dropzoneContainer);
     fadeOut(extraContainer);
+    fadeOut(localeDropdownWrapper);
     logo.classList.add('hide');
     if (postUploadHeadlineText) {
       h1.textContent = postUploadHeadlineText;
@@ -343,8 +419,9 @@ export default async function decorate(block) {
     }
   };
   ui2Landing = () => {
-    fadeIn(uploadContainer);
+    fadeIn(dropzoneContainer);
     fadeIn(extraContainer);
+    fadeIn(localeDropdownWrapper);
     logo.classList.remove('hide');
     if (postUploadHeadlineText) {
       h1.textContent = landingHeadlineText;
@@ -361,6 +438,12 @@ export default async function decorate(block) {
   const animationEnd = () => {
     dropzone.classList.remove('hide');
     animationContainer.classList.add('hide');
+
+    // Add locale dropdown for caption-video
+    if (quickAction === 'caption-video') {
+      localeDropdownWrapper = createCaptionLocaleDropdown();
+      dropzoneContainer.before(localeDropdownWrapper);
+    }
   };
   if (animation && animation.href.includes('.mp4')) {
     const video = transformLinkToAnimation(animation, false);

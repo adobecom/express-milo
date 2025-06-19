@@ -2,10 +2,12 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
+import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 
 let createTag; let getConfig;
 let getMetadata;
 let loadScript; let globalNavSelector;
+let selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 let ccEverywhere;
 let quickActionContainer;
@@ -15,18 +17,39 @@ const JPG = 'jpg';
 const JPEG = 'jpeg';
 const PNG = 'png';
 const WEBP = 'webp';
+const VIDEO_FORMATS = [
+  'mov',
+  'mp4',
+  'crm',
+  'avi',
+  'm2ts',
+  '3gp',
+  'f4v',
+  'mpeg',
+  'm2t',
+  'm2p',
+  'm1v',
+  'mpg',
+  'wmv',
+  'tts',
+  '264',
+];
+
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
   max_size: 40 * 1024 * 1024,
   accept: types.map((type) => `.${type}`).join(', '),
   input_check: (input) => types.map((type) => `image/${type}`).includes(input),
 });
-export const getBaseVideoCfg = (...types) => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `video/${type}`).includes(input),
-});
+export const getBaseVideoCfg = (...types) => {
+  const formats = Array.isArray(types[0]) ? types[0] : types;
+  return {
+    group: 'video',
+    max_size: 1024 * 1024 * 1024,
+    accept: formats.map((type) => `.${type}`).join(', '),
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
+  };
+};
 
 const EXPERIMENTAL_VARIANTS = [
   'qa-in-product-variant1', 'qa-in-product-variant2', 'qa-nba', 'qa-in-product-control',
@@ -47,6 +70,13 @@ const QA_CONFIGS = {
   'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
+  'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
 };
 
 function fade(element, action) {
@@ -159,8 +189,19 @@ export function runQuickAction(quickAction, data, block) {
     },
   };
 
+  const videoDocConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'video',
+    },
+  };
+
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
+    metaData: {
+      isFrictionlessQa: 'true',
+      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+    },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -214,6 +255,28 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    // video quick action
+    case 'convert-to-gif':
+      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-video':
+      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'trim-video':
+      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-video':
+      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'merge-videos':
+      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-mp4':
+      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'caption-video':
+      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     // Experiment code, remove after done
     case 'qa-nba':
@@ -322,6 +385,16 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
   showErrorToast(block, msg);
 }
 
+function createCaptionLocaleDropdown() {
+  const { wrapper } = createLocaleDropdownWrapper({
+    defaultValue: 'en-us',
+    onChange: (code) => {
+      selectedVideoLanguage = code;
+    },
+  });
+  return wrapper;
+}
+
 export default async function decorate(block) {
   const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
@@ -365,6 +438,12 @@ export default async function decorate(block) {
     startSDKWithUnconvertedFile(file, quickAction, block);
   };
   block.append(inputElement);
+
+  // Add locale dropdown for caption-video
+  if (quickAction === 'caption-video') {
+    const localeDropdownWrapper = createCaptionLocaleDropdown();
+    dropzoneContainer.before(localeDropdownWrapper);
+  }
 
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();

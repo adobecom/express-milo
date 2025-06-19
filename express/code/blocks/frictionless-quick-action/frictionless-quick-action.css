@@ -1,3 +1,5 @@
+@import '../../scripts/widgets/frictionless-locale-dropdown.css';
+
 :root {
     --frictionless-quick-action-video-width: 444px;
     --frictionless-quick-action-video-height: 455px;
@@ -164,6 +166,22 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
 
 .frictionless-quick-action .quick-action-container#resize-image-container {
     height: 1080px;
+}
+
+.frictionless-quick-action .quick-action-container#convert-to-gif-container {
+    height: 770px;
+}
+
+.frictionless-quick-action .quick-action-container#trim-video-container {
+    height: 710px;
+}
+
+.frictionless-quick-action .quick-action-container#resize-video-container {
+    height: 940px;
+}
+
+.frictionless-quick-action .quick-action-container#caption-video-container {
+    height: 1231px;
 }
 
 .frictionless-quick-action > div.hidden {
