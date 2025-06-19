@@ -1,5 +1,4 @@
 import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
-import { debounce } from '../../scripts/utils/hofs.js';
 
 import {
   addAnimationToggle,
@@ -23,8 +22,6 @@ import {
 
 let createTag; let getMetadata;
 let getConfig;
-
-const isTabletOrMobile = 899;
 
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
@@ -237,9 +234,6 @@ export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getMetadata, getConfig } = utils);
   });
-
-  const { codeRoot } = getConfig();
-  const mobileImagePath = `${codeRoot}/blocks/ax-columns/img/marquee-mobile.png`;
 
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
