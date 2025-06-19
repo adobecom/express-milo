@@ -1423,3 +1423,11 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 .video-controls-wrapper[aria-pressed="false"] .accessibility-control.icon-pause-video {
   display: none;
 }
+
+.hero-animation-overlay.column > .video-container {
+  position: relative;
+}
+
+.hero-animation-overlay.column > .video-container > .video-controls-wrapper{
+  right: 15px;
+}
