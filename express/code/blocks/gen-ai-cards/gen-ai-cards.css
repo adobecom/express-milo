@@ -488,10 +488,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   width: 100%;
 }
 
-/* .gen-ai-cards .card .gen-ai-input-form input:focus {
-  animation: Ease-in 300ms;
-} */
-
 .gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
   outline: 2px solid var(--color-info-accent);
   outline-offset: 2px;
