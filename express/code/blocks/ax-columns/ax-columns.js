@@ -297,6 +297,9 @@ export default async function decorate(block) {
     }
   }
 
+  // Track picture cells across all rows
+  let pictureCellCount = 0;
+
   rows.forEach((row, rowNum) => {
     const cells = Array.from(row.children);
 
@@ -381,54 +384,18 @@ export default async function decorate(block) {
       const childEls = [...cell.children];
       const isPictureColumn = childEls.every((el) => ['BR', 'PICTURE'].includes(el.tagName))
         && childEls.length > 0;
+
       if (isPictureColumn) {
+        pictureCellCount += 1;
         cell.classList.add('column-picture');
+
+        // Add mobile class to the second picture cell
+        if (pictureCellCount === 2) {
+          cell.classList.add('column-picture-mobile');
+        }
+
         const isMarquee = block.classList.contains('marquee');
         isMarquee && createCornerOverlays(cell);
-        const picture = cell.querySelector('picture');
-        const img = picture.querySelector('img');
-        const sources = picture.querySelectorAll('source');
-
-        if (isMarquee) {
-          // Store original sources before potentially changing them
-          img.dataset.originalSrc = img.src;
-          sources.forEach((source) => {
-            source.dataset.originalSrcset = source.srcset;
-          });
-
-          // Track previous width to detect breakpoint crossing
-          let previousWidth = window.innerWidth;
-
-          if (window.innerWidth <= isTabletOrMobile) {
-            img.src = mobileImagePath;
-            sources.forEach((source) => {
-              source.srcset = mobileImagePath;
-            });
-          }
-
-          // Add resize listener to handle image switching
-          window.addEventListener('resize', debounce(() => {
-            const currentWidth = window.innerWidth;
-            const crossingBreakpoint = (
-              previousWidth <= isTabletOrMobile && currentWidth > isTabletOrMobile)
-            || (previousWidth > isTabletOrMobile && currentWidth <= isTabletOrMobile);
-
-            if (crossingBreakpoint) {
-              if (currentWidth <= isTabletOrMobile) {
-                img.src = mobileImagePath;
-                sources.forEach((source) => {
-                  source.srcset = mobileImagePath;
-                });
-              } else {
-                img.src = img.dataset.originalSrc;
-                sources.forEach((source) => {
-                  source.srcset = source.dataset.originalSrcset;
-                });
-              }
-            }
-            previousWidth = currentWidth;
-          }, 100));
-        }
       }
 
       const $pars = cell.querySelectorAll('p');
