@@ -222,7 +222,7 @@ describe('Locale Combobox Widget', () => {
       expect(dropdown).to.be.instanceOf(HTMLElement);
       const label = wrapper.querySelector('.locale-dropdown-label');
       expect(label).to.exist;
-      expect(label.textContent).to.equal('Language spoken in video');
+      expect(label.textContent).to.equal('Choose the language spoken in video');
       const combobox = wrapper.querySelector('[role="combobox"]');
       expect(combobox).to.exist;
     });
