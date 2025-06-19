@@ -57,7 +57,6 @@ main .section .discover-cards {
 .discover-cards.flip .flip-card-front h5,
 .discover-cards.flip .flip-card-front h6 {
   font-size: var(--heading-font-size-s);
-  font-style: normal;
   font-weight: 700;
   line-height: 130%;
   margin-top: 20px;
@@ -339,7 +338,7 @@ main .section .discover-cards {
   backface-visibility: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
   border-radius: 16px;
-  padding: var(--spacing-500);
+  padding: var(--spacing-500) var(--spacing-400);
   box-sizing: border-box;
 }
 .discover-cards.flip .flip-card-back {
@@ -355,7 +354,7 @@ main .section .discover-cards {
   top: 24px;
   left: 16px;
   right: 16px;
-  bottom: 48px;
+  bottom: 24px;
   overflow-y: auto;
   padding: 0;
   line-height: 1.3;
