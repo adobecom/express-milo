@@ -2,12 +2,11 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
-import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 
 let createTag; let getConfig;
 let getMetadata;
 let loadScript; let globalNavSelector;
-let selectedVideoLanguage = 'en-us'; // Default to English (US)
+const selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 let ccEverywhere;
 let quickActionContainer;
@@ -385,16 +384,6 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
   showErrorToast(block, msg);
 }
 
-function createCaptionLocaleDropdown() {
-  const { wrapper } = createLocaleDropdownWrapper({
-    defaultValue: 'en-us',
-    onChange: (code) => {
-      selectedVideoLanguage = code;
-    },
-  });
-  return wrapper;
-}
-
 export default async function decorate(block) {
   const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
@@ -438,12 +427,6 @@ export default async function decorate(block) {
     startSDKWithUnconvertedFile(file, quickAction, block);
   };
   block.append(inputElement);
-
-  // Add locale dropdown for caption-video
-  if (quickAction === 'caption-video') {
-    const localeDropdownWrapper = createCaptionLocaleDropdown();
-    dropzoneContainer.before(localeDropdownWrapper);
-  }
 
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();

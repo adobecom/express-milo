@@ -5,7 +5,6 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
-import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 
 let replaceKey; let getConfig;
 let loadScript;
@@ -15,7 +14,7 @@ let quickActionContainer;
 let ui2SDK;
 let ui2Landing;
 let localeDropdownWrapper;
-let selectedVideoLanguage = 'en-us'; // Default to English (US)
+const selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 const JPG = 'jpg';
 const JPEG = 'jpeg';
@@ -107,16 +106,6 @@ function selectElementByTagPrefix(p) {
 
 const downloadKey = 'download-to-phone';
 const editKey = 'edit-in-adobe-express-for-free';
-
-function createCaptionLocaleDropdown() {
-  const { wrapper } = createLocaleDropdownWrapper({
-    defaultValue: 'en-us',
-    onChange: (code) => {
-      selectedVideoLanguage = code;
-    },
-  });
-  return wrapper;
-}
 
 export async function runQuickAction(quickAction, data, block) {
   let downloadText = await replaceKey(downloadKey, getConfig());
@@ -438,12 +427,6 @@ export default async function decorate(block) {
   const animationEnd = () => {
     dropzone.classList.remove('hide');
     animationContainer.classList.add('hide');
-
-    // Add locale dropdown for caption-video
-    if (quickAction === 'caption-video') {
-      localeDropdownWrapper = createCaptionLocaleDropdown();
-      dropzoneContainer.before(localeDropdownWrapper);
-    }
   };
   if (animation && animation.href.includes('.mp4')) {
     const video = transformLinkToAnimation(animation, false);
