@@ -41,6 +41,12 @@
   --palette-indigo-1000: #4046CA;
   --background-positive-default: #007A4D;
 
+  /* new styles with similar names and shades */
+  --color-background-accent-default: #5258E4;
+  --color-background-accent-hover: #4046CA;
+  --color-background-accent-down: #3236A8;
+  --color-background-accent-focus: var(--color-background-accent-hover);
+
   /* body */
   --body-background-color: var(--color-white);
   --body-alt-background-color: var(--color-gray-200);
