@@ -11,9 +11,9 @@ let loadScript;
 
 let ccEverywhere;
 let quickActionContainer;
+let uploadContainer;
 let ui2SDK;
 let ui2Landing;
-let localeDropdownWrapper;
 const selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 const JPG = 'jpg';
@@ -149,6 +149,8 @@ export async function runQuickAction(quickAction, data, block) {
   const id = `${quickAction}-container`;
   quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
   block.append(quickActionContainer);
+  const divs = block.querySelectorAll(':scope > div');
+  if (divs[1]) [, uploadContainer] = divs;
 
   ui2SDK();
 
@@ -398,9 +400,8 @@ export default async function decorate(block) {
   block.prepend(logo);
 
   ui2SDK = () => {
-    fadeOut(dropzoneContainer);
+    fadeOut(uploadContainer);
     fadeOut(extraContainer);
-    fadeOut(localeDropdownWrapper);
     logo.classList.add('hide');
     if (postUploadHeadlineText) {
       h1.textContent = postUploadHeadlineText;
@@ -408,9 +409,8 @@ export default async function decorate(block) {
     }
   };
   ui2Landing = () => {
-    fadeIn(dropzoneContainer);
+    fadeIn(uploadContainer);
     fadeIn(extraContainer);
-    fadeIn(localeDropdownWrapper);
     logo.classList.remove('hide');
     if (postUploadHeadlineText) {
       h1.textContent = landingHeadlineText;
