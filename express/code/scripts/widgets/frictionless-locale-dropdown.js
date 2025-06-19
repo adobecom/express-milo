@@ -464,7 +464,7 @@ export function createLocaleDropdown(options = {}) {
 
 export function createLocaleDropdownWrapper(options = {}) {
   const {
-    label = 'Language spoken in video',
+    label = 'Choose the language spoken in video',
     labelId = 'locale-select-label',
     comboboxId = 'locale-select',
     ...dropdownOptions
@@ -474,7 +474,7 @@ export function createLocaleDropdownWrapper(options = {}) {
 
   // Create label
   const labelElement = createTag(
-    'label',
+    'h2',
     {
       id: labelId,
       class: 'locale-dropdown-label',
@@ -490,6 +490,7 @@ export function createLocaleDropdownWrapper(options = {}) {
   // Associate label with combobox
   const comboboxEl = dropdown.querySelector('[role="combobox"]');
   comboboxEl.setAttribute('aria-labelledby', labelId);
+  comboboxEl.setAttribute('id', comboboxId);
 
   wrapper.append(labelElement, dropdown);
 
