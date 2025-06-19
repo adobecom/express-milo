@@ -9,6 +9,11 @@
   min-height: 462px;
 }
 
+.section.ax-login-page .susi-light .express-logo,
+.dialog-modal .susi-light .express-logo {
+  padding-top: 32px;
+}
+
 .susi-light {
   display: flex;
   align-items: center;
@@ -28,7 +33,6 @@
 .susi-b2b .express-logo {
   width: unset;
   height: 24px;
-  padding-top: 32px;
 }
 
 .susi-tabs .title,
