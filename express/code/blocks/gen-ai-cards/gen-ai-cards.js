@@ -19,6 +19,7 @@ export function decorateTextWithTag(textSource, options = {}) {
     baseClass,
     tagClass,
   } = options;
+
   const text = createTag(baseT || 'p', { class: baseClass || '' });
   const tagText = textSource?.match(/\[(.*?)]/);
 
@@ -151,8 +152,7 @@ async function decorateCards(block, { actions }) {
     const linksWrapper = createTag('div', { class: 'links-wrapper' });
     const mediaWrapper = createTag('div', { class: 'media-wrapper' });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
-
-    card.append(textWrapper, mediaWrapper, linksWrapper);
+    card.append(mediaWrapper, textWrapper, linksWrapper);
     if (image) {
       mediaWrapper.append(image);
       if (i > 0) {
@@ -183,7 +183,7 @@ async function decorateCards(block, { actions }) {
       }
     }
 
-    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h4' });
+    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h3' });
 
     if (betaTag) {
       addBetaTag(card, titleText, betaTagPlaceholder);
