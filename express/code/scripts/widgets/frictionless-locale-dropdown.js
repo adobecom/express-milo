@@ -164,22 +164,32 @@ class LocaleCombobox {
     this.idBase = this.comboEl.id || 'combobox';
     this.options = LOCALES;
     this.filteredOptions = LOCALES;
-    this.activeIndex = 0;
+    this.defaultValue = options.defaultValue || 'en-us';
+    this.onChange = options.onChange || (() => {});
+
+    // Find default locale
+    const defaultLocale = this.options.find(
+      (opt) => opt.code === this.defaultValue,
+    );
+
+    // Set initial active index to the default value
+    this.activeIndex = this.options.findIndex(
+      (opt) => opt.code === this.defaultValue,
+    );
+    if (this.activeIndex === -1) this.activeIndex = 0;
+
+    // Initialize with default value
+    if (defaultLocale) {
+      this.comboEl.textContent = defaultLocale.label;
+      this.comboEl.setAttribute('data-value', defaultLocale.code);
+      // Call onChange with initial value
+      this.onChange(defaultLocale.code, defaultLocale.label);
+    }
+
     this.open = false;
     this.searchString = '';
     this.searchTimeout = null;
     this.ignoreBlur = false;
-    this.defaultValue = options.defaultValue || 'en-us';
-    this.onChange = options.onChange || (() => {});
-
-    // Initialize with default value
-    const defaultLocale = this.options.find(
-      (opt) => opt.code === this.defaultValue,
-    );
-    if (defaultLocale) {
-      this.comboEl.textContent = defaultLocale.label;
-      this.comboEl.setAttribute('data-value', defaultLocale.code);
-    }
 
     this.init();
   }
@@ -193,6 +203,12 @@ class LocaleCombobox {
 
     // Create options
     this.createOptions();
+
+    // Set initial selected state
+    const options = this.listboxEl.querySelectorAll('[role="option"]');
+    if (options[this.activeIndex]) {
+      options[this.activeIndex].setAttribute('aria-selected', 'true');
+    }
 
     // Set up event listeners
     this.comboEl.addEventListener('blur', this.onComboBlur.bind(this));
