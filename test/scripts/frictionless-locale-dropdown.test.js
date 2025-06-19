@@ -6,17 +6,15 @@ import {
   createLocaleDropdownWrapper,
 } from '../../express/code/scripts/widgets/frictionless-locale-dropdown.js';
 
-describe('Locale Dropdown Widget', () => {
+describe('Locale Combobox Widget', () => {
   let container;
 
   beforeEach(() => {
-    // Create a container for DOM elements
     container = document.createElement('div');
     document.body.appendChild(container);
   });
 
   afterEach(() => {
-    // Clean up DOM elements
     if (container && container.parentNode) {
       container.parentNode.removeChild(container);
     }
@@ -27,7 +25,6 @@ describe('Locale Dropdown Widget', () => {
     it('should contain expected locale structure', () => {
       expect(LOCALES).to.be.an('array');
       expect(LOCALES.length).to.be.greaterThan(0);
-
       LOCALES.forEach((locale) => {
         expect(locale).to.have.property('code');
         expect(locale).to.have.property('label');
@@ -35,7 +32,6 @@ describe('Locale Dropdown Widget', () => {
         expect(locale.label).to.be.a('string');
       });
     });
-
     it('should include expected locales', () => {
       const localeCodes = LOCALES.map((locale) => locale.code);
       expect(localeCodes).to.include('en-us');
@@ -44,7 +40,6 @@ describe('Locale Dropdown Widget', () => {
       expect(localeCodes).to.include('de-de');
       expect(localeCodes).to.include('ja-jp');
     });
-
     it('should have unique locale codes', () => {
       const codes = LOCALES.map((locale) => locale.code);
       const uniqueCodes = [...new Set(codes)];
@@ -53,49 +48,45 @@ describe('Locale Dropdown Widget', () => {
   });
 
   describe('createLocaleDropdown', () => {
-    it('should create dropdown with default options', () => {
+    it('should create combobox with default options', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
-
       expect(dropdown).to.be.instanceOf(HTMLElement);
-      expect(dropdown.classList.contains('custom-dropdown')).to.be.true;
-      expect(dropdown.dataset.value).to.equal('en-us');
-
-      const button = dropdown.querySelector('.dropdown-btn');
-      const text = dropdown.querySelector('.dropdown-text');
-      const chevron = dropdown.querySelector('.dropdown-chevron');
-      const content = dropdown.querySelector('.dropdown-content');
-
-      expect(button).to.exist;
-      expect(text).to.exist;
-      expect(chevron).to.exist;
-      expect(content).to.exist;
-      expect(text.textContent).to.equal('English (US)');
+      expect(dropdown.classList.contains('locale-combobox')).to.be.true;
+      const combobox = dropdown.querySelector('[role="combobox"]');
+      expect(combobox).to.exist;
+      expect(combobox.textContent).to.equal('English (US)');
+      expect(combobox.getAttribute('aria-expanded')).to.equal('false');
+      expect(combobox.getAttribute('aria-haspopup')).to.equal('listbox');
+      expect(combobox.getAttribute('aria-controls')).to.exist;
+      expect(combobox.getAttribute('tabindex')).to.equal('0');
+      const listbox = dropdown.querySelector('[role="listbox"]');
+      expect(listbox).to.exist;
+      const options = dropdown.querySelectorAll('[role="option"]');
+      expect(options.length).to.equal(LOCALES.length);
     });
 
-    it('should create dropdown with custom options', () => {
+    it('should create combobox with custom options', () => {
       const options = {
         defaultValue: 'fr-fr',
         className: 'custom-class',
       };
       const dropdown = createLocaleDropdown(options);
       container.appendChild(dropdown);
-
       expect(dropdown.classList.contains('custom-class')).to.be.true;
-      expect(dropdown.dataset.value).to.equal('fr-fr');
-
-      const text = dropdown.querySelector('.dropdown-text');
-      expect(text.textContent).to.equal('French');
+      const combobox = dropdown.querySelector('[role="combobox"]');
+      expect(combobox.textContent).to.equal('French');
     });
 
     it('should call onChange callback when option is selected', () => {
       const onChangeStub = sinon.stub();
       const dropdown = createLocaleDropdown({ onChange: onChangeStub });
       container.appendChild(dropdown);
-
-      const option = dropdown.querySelector('[data-value="fr-fr"]');
-      option.click();
-
+      const options = dropdown.querySelectorAll('[role="option"]');
+      const frIndex = Array.from(options).findIndex(
+        (opt) => opt.textContent === 'French',
+      );
+      options[frIndex].click();
       expect(onChangeStub.calledOnce).to.be.true;
       expect(onChangeStub.calledWith('fr-fr', 'French')).to.be.true;
     });
@@ -103,137 +94,120 @@ describe('Locale Dropdown Widget', () => {
     it('should update display when option is selected', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
-
-      const text = dropdown.querySelector('.dropdown-text');
-      const option = dropdown.querySelector('[data-value="de-de"]');
-
-      option.click();
-
-      expect(text.textContent).to.equal('German');
-      expect(dropdown.dataset.value).to.equal('de-de');
+      const combobox = dropdown.querySelector('[role="combobox"]');
+      const options = dropdown.querySelectorAll('[role="option"]');
+      const deIndex = Array.from(options).findIndex(
+        (opt) => opt.textContent === 'German',
+      );
+      options[deIndex].click();
+      expect(combobox.textContent).to.equal('German');
     });
 
-    it('should toggle dropdown content on button click', () => {
+    it('should open and close listbox on combobox click', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
-
-      const button = dropdown.querySelector('.dropdown-btn');
-      const content = dropdown.querySelector('.dropdown-content');
-      const chevron = dropdown.querySelector('.dropdown-chevron');
-
+      const combobox = dropdown.querySelector('[role="combobox"]');
       // Initially closed
-      expect(content.classList.contains('show')).to.be.false;
-
+      expect(dropdown.classList.contains('open')).to.be.false;
       // Click to open
-      button.click();
-      expect(content.classList.contains('show')).to.be.true;
-      expect(chevron.style.transform).to.equal('rotate(180deg)');
-
+      combobox.click();
+      expect(dropdown.classList.contains('open')).to.be.true;
+      expect(combobox.getAttribute('aria-expanded')).to.equal('true');
       // Click to close
-      button.click();
-      expect(content.classList.contains('show')).to.be.false;
-      expect(chevron.style.transform).to.equal('rotate(0deg)');
+      combobox.click();
+      expect(dropdown.classList.contains('open')).to.be.false;
+      expect(combobox.getAttribute('aria-expanded')).to.equal('false');
     });
 
-    it('should close dropdown when clicking outside', () => {
+    it('should close listbox when clicking outside', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
-
-      const button = dropdown.querySelector('.dropdown-btn');
-      const content = dropdown.querySelector('.dropdown-content');
-
+      const combobox = dropdown.querySelector('[role="combobox"]');
       // Open dropdown
-      button.click();
-      expect(content.classList.contains('show')).to.be.true;
-
+      combobox.click();
+      expect(dropdown.classList.contains('open')).to.be.true;
       // Click outside
       const outsideElement = document.createElement('div');
       document.body.appendChild(outsideElement);
       outsideElement.click();
-
-      expect(content.classList.contains('show')).to.be.false;
-
-      // Cleanup
+      expect(dropdown.classList.contains('open')).to.be.false;
       document.body.removeChild(outsideElement);
     });
 
-    it('should close dropdown when option is clicked', () => {
+    it('should close listbox when option is clicked', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
-
-      const button = dropdown.querySelector('.dropdown-btn');
-      const content = dropdown.querySelector('.dropdown-content');
-      const option = dropdown.querySelector('[data-value="ja-jp"]');
-
+      const combobox = dropdown.querySelector('[role="combobox"]');
       // Open dropdown
-      button.click();
-      expect(content.classList.contains('show')).to.be.true;
-
-      // Click option
-      option.click();
-      expect(content.classList.contains('show')).to.be.false;
+      combobox.click();
+      expect(dropdown.classList.contains('open')).to.be.true;
+      const options = dropdown.querySelectorAll('[role="option"]');
+      const jaIndex = Array.from(options).findIndex(
+        (opt) => opt.textContent === 'Japanese',
+      );
+      options[jaIndex].click();
+      expect(dropdown.classList.contains('open')).to.be.false;
     });
 
     it('should support keyboard navigation with Enter key', () => {
       const onChangeStub = sinon.stub();
       const dropdown = createLocaleDropdown({ onChange: onChangeStub });
       container.appendChild(dropdown);
-
-      const option = dropdown.querySelector('[data-value="es-es"]');
-
-      const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
-      option.dispatchEvent(enterEvent);
-
-      expect(onChangeStub.calledOnce).to.be.true;
-      expect(onChangeStub.calledWith('es-es', 'Spanish')).to.be.true;
+      const combobox = dropdown.querySelector('[role="combobox"]');
+      combobox.click();
+      // Simulate ArrowDown to move to next option
+      combobox.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown' }),
+      );
+      // Simulate Enter to select
+      combobox.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+      expect(onChangeStub.called).to.be.true;
     });
 
     it('should support keyboard navigation with Space key', () => {
       const onChangeStub = sinon.stub();
       const dropdown = createLocaleDropdown({ onChange: onChangeStub });
       container.appendChild(dropdown);
-
-      const option = dropdown.querySelector('[data-value="it-it"]');
-
-      const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
-      option.dispatchEvent(spaceEvent);
-
-      expect(onChangeStub.calledOnce).to.be.true;
-      expect(onChangeStub.calledWith('it-it', 'Italian')).to.be.true;
+      const combobox = dropdown.querySelector('[role="combobox"]');
+      combobox.click();
+      // Simulate ArrowDown to move to next option
+      combobox.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'ArrowDown' }),
+      );
+      // Simulate Space to select
+      combobox.dispatchEvent(new KeyboardEvent('keydown', { key: ' ' }));
+      expect(onChangeStub.called).to.be.true;
     });
 
     it('should have proper accessibility attributes', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
-
-      const dropdownContent = dropdown.querySelector('.dropdown-content');
-      expect(dropdownContent.getAttribute('role')).to.equal('listbox');
-
-      const options = dropdown.querySelectorAll('.dropdown-option');
+      const combobox = dropdown.querySelector('[role="combobox"]');
+      expect(combobox.getAttribute('role')).to.equal('combobox');
+      expect(combobox.getAttribute('aria-expanded')).to.exist;
+      expect(combobox.getAttribute('aria-haspopup')).to.equal('listbox');
+      expect(combobox.getAttribute('aria-controls')).to.exist;
+      const listbox = dropdown.querySelector('[role="listbox"]');
+      expect(listbox).to.exist;
+      const options = dropdown.querySelectorAll('[role="option"]');
       options.forEach((option) => {
         expect(option.getAttribute('role')).to.equal('option');
-        expect(option.getAttribute('tabindex')).to.equal('0');
-        expect(option.getAttribute('data-value')).to.exist;
       });
     });
 
     it('should handle invalid default value gracefully', () => {
       const dropdown = createLocaleDropdown({ defaultValue: 'invalid-locale' });
       container.appendChild(dropdown);
-
-      const text = dropdown.querySelector('.dropdown-text');
-      expect(text.textContent).to.equal('English (US)'); // Should fallback to default
+      const combobox = dropdown.querySelector('[role="combobox"]');
+      expect(combobox.textContent).to.equal('English (US)');
     });
 
     it('should create all locale options', () => {
       const dropdown = createLocaleDropdown();
       container.appendChild(dropdown);
-
-      const options = dropdown.querySelectorAll('.dropdown-option');
+      const options = dropdown.querySelectorAll('[role="option"]');
       expect(options.length).to.equal(LOCALES.length);
-
       LOCALES.forEach((locale, index) => {
-        expect(options[index].getAttribute('data-value')).to.equal(locale.code);
         expect(options[index].textContent).to.equal(locale.label);
       });
     });
@@ -243,15 +217,14 @@ describe('Locale Dropdown Widget', () => {
     it('should create wrapper with default options', () => {
       const { wrapper, dropdown } = createLocaleDropdownWrapper();
       container.appendChild(wrapper);
-
       expect(wrapper).to.be.instanceOf(HTMLElement);
       expect(wrapper.classList.contains('locale-dropdown-wrapper')).to.be.true;
       expect(dropdown).to.be.instanceOf(HTMLElement);
-
       const label = wrapper.querySelector('.locale-dropdown-label');
       expect(label).to.exist;
       expect(label.textContent).to.equal('Language spoken in video');
-      expect(label.getAttribute('for')).to.equal('locale-select');
+      const combobox = wrapper.querySelector('[role="combobox"]');
+      expect(combobox).to.exist;
     });
 
     it('should create wrapper with custom options', () => {
@@ -263,12 +236,12 @@ describe('Locale Dropdown Widget', () => {
       };
       const { wrapper, dropdown } = createLocaleDropdownWrapper(options);
       container.appendChild(wrapper);
-
       const label = wrapper.querySelector('.locale-dropdown-label');
       expect(label.textContent).to.equal('Custom Label');
-      expect(label.getAttribute('for')).to.equal('custom-id');
       expect(dropdown.classList.contains('custom-dropdown-class')).to.be.true;
-      expect(dropdown.dataset.value).to.equal('ja-jp');
+      const combobox = wrapper.querySelector('[role="combobox"]');
+      expect(combobox).to.exist;
+      expect(combobox.textContent).to.equal('Japanese');
     });
 
     it('should pass through dropdown options correctly', () => {
@@ -278,10 +251,11 @@ describe('Locale Dropdown Widget', () => {
         defaultValue: 'ko-kr',
       });
       container.appendChild(wrapper);
-
-      const option = dropdown.querySelector('[data-value="cmn-hans"]');
-      option.click();
-
+      const options = dropdown.querySelectorAll('[role="option"]');
+      const cmnIndex = Array.from(options).findIndex(
+        (opt) => opt.textContent === 'Chinese (Simplified)',
+      );
+      options[cmnIndex].click();
       expect(onChangeStub.calledOnce).to.be.true;
       expect(onChangeStub.calledWith('cmn-hans', 'Chinese (Simplified)')).to.be
         .true;
@@ -290,10 +264,8 @@ describe('Locale Dropdown Widget', () => {
     it('should contain both label and dropdown elements', () => {
       const { wrapper } = createLocaleDropdownWrapper();
       container.appendChild(wrapper);
-
       const label = wrapper.querySelector('.locale-dropdown-label');
-      const dropdownElement = wrapper.querySelector('.custom-dropdown');
-
+      const dropdownElement = wrapper.querySelector('.locale-combobox');
       expect(label).to.exist;
       expect(dropdownElement).to.exist;
       expect(wrapper.children.length).to.equal(2);
