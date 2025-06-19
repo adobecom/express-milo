@@ -203,7 +203,7 @@ main .section .discover-cards {
     }
     .discover-cards.flip {
       padding-top: var(--spacing-800);
-      padding-bottom: 104px;
+      padding-bottom: var(--spacing-800);
     }
     .discover-cards.flip .cards-container.gallery {
       padding-left: var(--spacing-500);
