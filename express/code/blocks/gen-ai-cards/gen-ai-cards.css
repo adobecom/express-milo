@@ -351,7 +351,9 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .gen-ai-input-form .gen-ai-submit:focus {
-  background-color: var(--color-info-accent-hover);
+  background-color: var(--color-background-accent-hover);
+  outline: 2px solid var(--color-background-accent-hover);
+  outline-offset: 2px;
 }
 
 .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit:disabled {
