@@ -1,3 +1,8 @@
+.cta-cards {
+  max-width: var(--ax-grid-10-col-width);
+  margin: auto;
+}
+
 .cta-cards .heading-container {
   padding-bottom: var(--spacing-600);
   display: flex;

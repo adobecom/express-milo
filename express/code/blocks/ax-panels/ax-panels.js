@@ -56,7 +56,7 @@ export default async function init(el) {
     tab.setAttribute('tabIndex', '0');
     tab.focus();
     panels.forEach((panel) => panel.classList.add('hide'));
-    document.getElementById(tab.getAttribute('aria-controls')).classList.remove('hide');
+    document.getElementById(tab.getAttribute('aria-controls'))?.classList?.remove('hide');
     tab.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
   };
 
@@ -68,11 +68,11 @@ export default async function init(el) {
       role: 'tab',
       'aria-selected': index === 0,
       id: tabId,
-      'aria-controls': controlledPanel.id,
+      'aria-controls': controlledPanel?.id,
       tabIndex: index > 0 ? '-1' : '0',
     });
-    controlledPanel.setAttribute('aria-labelledby', tabId);
-    if (index > 0) controlledPanel.classList.add('hide');
+    controlledPanel?.setAttribute('aria-labelledby', tabId);
+    if (index > 0) controlledPanel?.classList.add('hide');
     const icon = listItem.querySelector('.icon');
     const match = icon && iconRegex.exec(icon.className);
     if (match?.[1]) {
