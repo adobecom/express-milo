@@ -101,7 +101,7 @@
 .gen-ai-cards .gen-ai-cards-heading-section h2 {
   text-align: left; 
   margin-bottom: 8px;
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size-m);
   line-height: 2.925rem;
   max-width: 800px;
 }
@@ -253,7 +253,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage.spotlight .card .media-wrapper {
-  width: 268px;
+  width: 100%;
   height: 228px;
 }
 
@@ -279,6 +279,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   top: 100%;
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .gen-ai-cards .card .gen-ai-input-form input {
@@ -327,7 +328,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-  margin-left: 24px;
+  margin-left: 20px;
 }
 
 .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit {
@@ -370,6 +371,10 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   padding-bottom: 8px;
 }
 
+.gen-ai-cards.homepage .card .links-wrapper {
+ padding-bottom: unset;
+}
+
 .gen-ai-cards .card .links-wrapper a {
   margin: 4px auto;
   width: max-content;
@@ -402,6 +407,10 @@ main .gen-ai-cards.homepage .carousel-container .carousel-platform.right-fader:n
   mask-image: none;
 }
 
+main .gen-ai-cards.homepage .carousel-container .carousel-platform.left-fader {
+  padding-right: 20px;
+}
+
 main .gen-ai-cards.homepage .carousel-container .carousel-fader-left {
   align-items: end;
   top: 45px;
@@ -422,7 +431,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
 }
 
 .gen-ai-cards.homepage .gen-ai-cards-heading {
-  font-size: var(--font-size-heading-mobile);
+  font-size: var(--heading-font-size-m);
   text-align: center;
 }
 
@@ -632,7 +641,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   main .gen-ai-cards.homepage .gen-ai-cards-heading {
-    font-size: var(--heading-font-size-m);
+    font-size: var(--heading-font-size-l);
   }
 
   .gen-ai-cards .card .gen-ai-input-form {
