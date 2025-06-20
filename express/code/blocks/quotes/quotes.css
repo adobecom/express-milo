@@ -781,15 +781,16 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   .quotes.carousel .quotes-ratings-wrapper h2 {
     font-size: var(--heading-font-size-l);
-  }
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    padding-left: 40px;
+    padding-left: var(--spacing-600);
   }
   .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin: auto;
+  }
+  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+    padding: var(--spacing-900) var(--spacing-600);
   }
 }
 
