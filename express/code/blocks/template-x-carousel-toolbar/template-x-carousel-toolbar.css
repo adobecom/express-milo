@@ -11,6 +11,8 @@
   --toolbar-gap: 20px;
 
   padding-bottom: var(--template-expand-bot-len);
+  max-width: var(--ax-grid-10-col-width);
+  margin: auto;
   display: flex;
   flex-direction: column; 
 }
