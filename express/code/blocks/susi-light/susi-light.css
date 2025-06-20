@@ -19,6 +19,7 @@
   align-items: center;
   justify-content: center;
   line-height: initial;
+  --susi-grey: #e6e6e6;
 }
 
 .susi-tabs,
@@ -51,7 +52,7 @@
   padding: 4px;
   display: flex;
   gap: 4px;
-  background-color: #e6e6e6;
+  background-color: var(--susi-grey);
 }
 
 .susi-tabs [role='tablist']:has(:first-child:last-child) {
@@ -64,7 +65,7 @@
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
   font-weight: 700;
-  background-color: #e6e6e6;
+  background-color: var(--susi-grey);
   color: #222222;
   line-height: 130%;
   cursor: pointer;
