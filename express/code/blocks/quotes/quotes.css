@@ -781,7 +781,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     margin: auto;
   }
   .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
-    padding: var(--spacing-900) var(--spacing-600);
+    padding: var(--spacing-900) var(--spacing-600) 0;
   }
   .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: var(--spacing-600);

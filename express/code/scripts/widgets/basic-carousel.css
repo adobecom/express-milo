@@ -265,6 +265,13 @@
   }
 }
 
+@media (min-width: 1280px) {
+  .basic-carousel-controls-wrapper {
+    padding-bottom: var(--spacing-900);
+  }
+}
+
+
 @media (min-width: 900px) {
   .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {
     display: none;
