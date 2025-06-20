@@ -255,6 +255,15 @@
   }
 }
 
+@media (min-width: 768px) {
+  .basic-carousel-controls-wrapper {
+    padding-bottom: var(--spacing-800);
+  }
+  .basic-carousel-container .basic-carousel-fader-right {
+    padding-right: var(--spacing-500);
+  }
+}
+
 @media (min-width: 900px) {
   .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {
     display: none;

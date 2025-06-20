@@ -68,14 +68,6 @@
   margin-left: 10px;
 }
 
-/* .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left {
-  right: 29px;
-} */
-
-.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right {
-  padding-right: var(--spacing-400);
-}
-  
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow {
   margin: 0 0px;
   background: #FFFFFF;
@@ -327,7 +319,6 @@ main .quotes.singular .quote-container .mobile-container .quote {
   }
   .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
     padding-top: var(--spacing-800);
-    padding-bottom: var(--spacing-800);
     padding-left: var(--spacing-600);
     padding-right: var(--spacing-600);
   }
