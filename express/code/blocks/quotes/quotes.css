@@ -7,6 +7,10 @@
 /* Carousel specific styles */
 .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
+  padding-top: var(--spacing-700);
+  padding-bottom: var(--spacing-700);
+  padding-left: var(--spacing-400);
+  padding-right: var(--spacing-400);
 }
 
 .quotes-wrapper .quote .author-content .summary p {
@@ -116,8 +120,6 @@
 
 /* Quotes container styles */
 .quotes {
-  margin-top: 40px;
-  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -129,9 +131,7 @@
 }
 
 .section .quotes-wrapper .quotes.carousel {
-  margin-top: var(--spacing-600);
-  padding-bottom: 0;
-  margin-bottom: 84px;
+  margin: 0 -24px;
 }
 
 /* Singular quote styles */
@@ -447,7 +447,7 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   font-weight: 900;
   line-height: 130%;
   margin-bottom: var(--spacing-400);
-  padding-left: 16px;
+  padding-left: var(--spacing-400);
 }
 
 .quotes.carousel .ratings-container {
