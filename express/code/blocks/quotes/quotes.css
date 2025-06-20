@@ -31,7 +31,7 @@
 }
 
 .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-  margin-left: 16px;
+  margin-left: 24px;
   margin-right: 16px;
 }
 
@@ -101,7 +101,7 @@
   display: flex;
   min-height: 0;
   width: 348px;
-  min-width: 300px;
+  min-width: 348px;
   max-width: 348px;
   padding: var(--spacing-400);
   flex-direction: column;
@@ -432,7 +432,6 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--spacing-500);
   margin-left: 0;
   margin-right: 0;
   margin-bottom: 0;
