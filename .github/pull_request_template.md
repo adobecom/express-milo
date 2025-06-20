@@ -12,7 +12,7 @@ Resolves: [MWPW-NUMBER](https://jira.corp.adobe.com/browse/MWPW-NUMBER)
 
 ## Test URLs
 
-| Environment | URL |
+| Env | URL |
 |-------------|-----|
 | **Before**  | https://main--express-milo--adobecom.aem.page/express/ |
 | **After**   | https://<branch>--express-milo--adobecom.aem.page/express/?martech=off |
@@ -21,15 +21,12 @@ Resolves: [MWPW-NUMBER](https://jira.corp.adobe.com/browse/MWPW-NUMBER)
 
 ## Verification Steps
 
-Please include:
 - Steps to reproduce the issue or view the new feature.
 - What to expect **before** and **after** the change.
 
 ---
 
 ## Potential Regressions
-
-List any areas or URLs that could be affected by this change:
 
 - https://<branch>--express-milo--adobecom.aem.live/express/?martech=off
 
