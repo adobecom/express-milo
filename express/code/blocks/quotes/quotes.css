@@ -323,7 +323,13 @@ main .quotes.singular .quote-container .mobile-container .quote {
     display: none;
   }
   .section .quotes-wrapper .quotes.carousel {
-    padding-bottom: 0;
+    margin: 0px -40px;
+  }
+  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+    padding-top: var(--spacing-800);
+    padding-bottom: var(--spacing-800);
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
   }
   .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: var(--spacing-500);
@@ -696,9 +702,10 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   
   .quotes.carousel .quotes-ratings-wrapper h2 {
-    font-size: 36px;
+    font-size: var(--heading-font-size-m);
     font-weight: 900;
     line-height: 130%;
+    padding-left: var(--spacing-600);
     margin-bottom: var(--spacing-500);
     width: max-content;
   }
@@ -762,12 +769,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   .quotes.ratings .hover-tooltip .tooltip-text {
     color: var(--color-white);
   }
-
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    font-size: var(--heading-font-size-m);
-    padding-left: 32px;
-  }
-
 }
 
 @media (min-width: 1280px) {
