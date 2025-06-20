@@ -670,7 +670,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   .quotes.carousel .quotes-ratings-wrapper .container {
     flex-direction: row;
-    max-width: 1300px;
+    max-width: 1410px;
     width: unset;
     display: block;
     margin: auto;
@@ -779,6 +779,12 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     flex-direction: column;
     width: 100%;
     margin: auto;
+  }
+  .quotes-wrapper:has(.quotes.carousel) {
+    max-width: 1410px;
+  }
+  .quotes-ratings-wrapper .container {
+    margin-left: 0;
   }
   .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
     padding: var(--spacing-900) var(--spacing-600) 0;
