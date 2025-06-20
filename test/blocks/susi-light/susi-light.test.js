@@ -4,17 +4,15 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
-import { mockRes } from '../test-utilities.js';
 import { delay } from '../../helpers/waitfor.js';
 
-const originalFetch = window.fetch;
 const locales = { '': { ietf: 'en-US', tk: 'hah7vzn.css' } };
 
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 const imports = await Promise.all([import('../../../express/code/scripts/utils.js'), import('../../../express/code/scripts/scripts.js'), import(
   '../../../express/code/blocks/susi-light/susi-light.js'
 )]);
-const [{ getLibs }, _, { default: decorate }] = imports;
+const [{ getLibs }, _, { default: decorate, SUSIUtils }] = imports;
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   const conf = { locales };
   mod.setConfig(conf);
@@ -22,14 +20,27 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
 
 describe('Susi-light', async () => {
   const blocks = [...document.querySelectorAll('.susi-light')];
+  const originalFetch = window.fetch;
+  const originalLoadSUSI = SUSIUtils.loadSUSIScripts;
   before(async () => {
-    window.fetch = sinon.stub().callsFake(() => mockRes({}));
+    window.fetch = sinon.stub().callsFake((url) => {
+      if (/geo2/.test(url)) {
+        return {
+          country: 'US',
+          state: 'CA',
+          'Accept-Language': 'en-US,en;q=0.9',
+        };
+      }
+      return {};
+    });
+    SUSIUtils.loadSUSIScripts = () => Promise.resolve(null);
     await Promise.all(blocks.map((block) => decorate(block)));
     await delay(310);
   });
 
   after(() => {
     window.fetch = originalFetch;
+    SUSIUtils.loadSUSIScripts = originalLoadSUSI;
   });
 
   it('decorates susi-light with required properties', () => {
@@ -46,8 +57,18 @@ describe('Susi-light', async () => {
     for (const block of blocks) {
       const component = block.querySelector('susi-sentry-light');
       expect(component).to.exist;
-      expect(!!component.shadowRoot).to.be.true;
     }
+  });
+
+  describe('susi-light b2b variant', () => {
+    const block = document.querySelector('.susi-light.b2b');
+    it('decorates susi-light with required properties', () => {
+      expect(block).to.exist;
+      const component = block.querySelector('susi-sentry-light');
+      expect(component.variant).to.equal('standard');
+      expect(component.config.hideIcon).to.equal(true);
+      expect(component.config.layout).to.equal('emailAndSocial');
+    });
   });
 
   describe('susi-light tabs variant', () => {
