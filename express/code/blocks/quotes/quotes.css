@@ -8,7 +8,6 @@
 .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
   padding-top: var(--spacing-700);
-  padding-bottom: var(--spacing-700);
   padding-left: var(--spacing-400);
   padding-right: var(--spacing-400);
 }
@@ -69,12 +68,12 @@
   margin-left: 10px;
 }
 
-.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left {
+/* .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left {
   right: 29px;
-}
+} */
 
 .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right {
-  padding-right: 10px;
+  padding-right: var(--spacing-400);
 }
   
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow {
@@ -132,6 +131,7 @@
 
 .section .quotes-wrapper .quotes.carousel {
   margin: 0 -24px;
+  padding-bottom: 0;
 }
 
 /* Singular quote styles */
