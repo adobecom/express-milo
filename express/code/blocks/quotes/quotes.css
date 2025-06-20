@@ -323,9 +323,7 @@ main .quotes.singular .quote-container .mobile-container .quote {
     display: none;
   }
   .section .quotes-wrapper .quotes.carousel {
-    margin-top: 80px;
     padding-bottom: 0;
-    margin-bottom: 124px;
   }
   .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: var(--spacing-500);
