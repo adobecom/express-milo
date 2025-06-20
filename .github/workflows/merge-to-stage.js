@@ -18,6 +18,7 @@ const LABELS = {
   readyForStage: 'Ready for Stage',
   readyForReview: 'Ready for Review',
   zeroImpact: 'zero-impact',
+  qaApproved: 'QA Approved',
 };
 
 // Check configuration
@@ -106,9 +107,9 @@ const getPRs = async () => {
     .then(({ data }) => data);
   await Promise.all(prs.map((pr) => addLabels({ pr, github, owner, repo })));
   
-  // Filter PRs that have Ready for Stage but not Ready for Review
+  // Filter PRs that have Ready for Stage OR QA Approved but not Ready for Review
   prs = prs.filter((pr) => 
-    pr.labels.includes(LABELS.readyForStage) && 
+    (pr.labels.includes(LABELS.readyForStage) || pr.labels.includes(LABELS.qaApproved)) && 
     !pr.labels.includes(LABELS.readyForReview)
   );
 

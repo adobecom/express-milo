@@ -144,6 +144,16 @@ const slackNotification = (text, webhook) => {
   });
 };
 
+const workingHours = () => {
+  const now = new Date();
+  const day = now.getUTCDay();
+  const hour = now.getUTCHours();
+  const isSunday = day === 0;
+  const isSaturday = day === 6;
+  const isFriday = day === 5;
+  return hour >= 8 && hour <= 20 && !isFriday && !isSaturday && !isSunday;
+};
+
 const addLabels = ({ pr, github, owner, repo }) =>
   github.rest.issues
     .listLabelsOnIssue({ owner, repo, issue_number: pr.number })
@@ -197,6 +207,7 @@ export {
   isShortRCP,
   isWithinRCP,
   RCPDates,
+  workingHours,
 };
 
 export const pulls = { addLabels, addFiles, getChecks, getReviews };

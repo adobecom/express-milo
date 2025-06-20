@@ -1,7 +1,8 @@
 import {
   getLocalConfigs,
   isWithinRCP,
-  pulls
+  pulls,
+  workingHours
 } from './helpers.js';
 
 const { addLabels, addFiles, getChecks, getReviews } = pulls;
@@ -159,6 +160,10 @@ const main = async (params) => {
   
   if (isWithinRCP({ offset: process.env.MAIN_RCP_OFFSET_DAYS || 2, excludeShortRCP: true })) {
     return console.log('Stopped, within RCP period.');
+  }
+
+  if (!workingHours()) {
+    return console.log('Stopped, outside working hours.');
   }
 
   try {
