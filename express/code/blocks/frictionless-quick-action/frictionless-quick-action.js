@@ -137,6 +137,28 @@ function frictionlessQAExperiment(
   }
 }
 
+let timeoutId = null;
+function showErrorToast(block, msg) {
+  let toast = block.querySelector('.error-toast');
+  const hideToast = () => toast.classList.add('hide');
+  if (!toast) {
+    toast = createTag('div', { class: 'error-toast hide' });
+    toast.prepend(getIconElementDeprecated('error'));
+    const close = createTag(
+      'button',
+      {},
+      getIconElementDeprecated('close-white'),
+    );
+    close.addEventListener('click', hideToast);
+    toast.append(close);
+    block.append(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.remove('hide');
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(hideToast, 6000);
+}
+
 // eslint-disable-next-line default-param-last
 export function runQuickAction(quickAction, data, block) {
   // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
@@ -201,7 +223,7 @@ export function runQuickAction(quickAction, data, block) {
       isFrictionlessQa: 'true',
       ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
     },
-    receiveQuickActionErrors: false,
+    receiveQuickActionErrors: true,
     callbacks: {
       onIntentChange: () => {
         quickActionContainer?.remove();
@@ -217,6 +239,12 @@ export function runQuickAction(quickAction, data, block) {
       },
       onCancel: () => {
         window.history.back();
+      },
+      onError: (error) => {
+        // eslint-disable-next-line no-underscore-dangle
+        showErrorToast(block, `${error._customData} Please try again.`);
+        quickActionContainer?.remove();
+        fade(uploadContainer, 'in');
       },
     },
   };
@@ -340,24 +368,6 @@ async function startSDK(data = '', quickAction, block) {
   }
 
   runQuickAction(quickAction, data, block);
-}
-
-let timeoutId = null;
-function showErrorToast(block, msg) {
-  let toast = block.querySelector('.error-toast');
-  const hideToast = () => toast.classList.add('hide');
-  if (!toast) {
-    toast = createTag('div', { class: 'error-toast hide' });
-    toast.prepend(getIconElementDeprecated('error'));
-    const close = createTag('button', {}, getIconElementDeprecated('close-white'));
-    close.addEventListener('click', hideToast);
-    toast.append(close);
-    block.append(toast);
-  }
-  toast.textContent = msg;
-  toast.classList.remove('hide');
-  clearTimeout(timeoutId);
-  timeoutId = setTimeout(hideToast, 6000);
 }
 
 async function startSDKWithUnconvertedFile(file, quickAction, block) {
