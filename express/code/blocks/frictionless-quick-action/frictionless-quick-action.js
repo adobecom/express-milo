@@ -395,7 +395,6 @@ function createCaptionLocaleDropdown() {
   return wrapper;
 }
 
-
 function createStep(number, content) {
   const step = createTag('div', { class: 'step', 'data-step': number });
   const stepNumber = createTag('div', { class: 'step-number' }, number);
