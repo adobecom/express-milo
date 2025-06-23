@@ -427,9 +427,6 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
 }
 
 .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
@@ -441,7 +438,6 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   font-weight: 900;
   line-height: 130%;
   margin-bottom: var(--spacing-400);
-  padding-left: var(--spacing-400);
 }
 
 .quotes.carousel .ratings-container {
@@ -459,6 +455,7 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
 
 .quotes.carousel .rating-votes {
   display: flex;
+  justify-content: center;
 }
 
 .quotes.carousel .ratings-container .rating-average {
