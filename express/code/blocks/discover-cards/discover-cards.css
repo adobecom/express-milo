@@ -71,7 +71,7 @@ main .section .discover-cards {
   max-width: 100vw;
   margin-left: auto;
   margin-right: auto;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* Ensure single card is always centered */
@@ -207,6 +207,7 @@ main .section .discover-cards {
       padding-right: var(--spacing-500);
       scroll-padding-left: var(--spacing-500);
       scroll-padding-right: var(--spacing-500);
+      justify-content: center;
     }
 }
 
