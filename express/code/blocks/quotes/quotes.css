@@ -669,7 +669,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     flex-direction: row;
     max-width: 1410px;
     width: unset;
-    display: block;
+    display: flex;
     margin: auto;
   }
 
@@ -695,7 +695,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     line-height: 130%;
     padding-left: var(--spacing-600);
     margin-bottom: var(--spacing-500);
-    width: max-content;
+    max-width: 495px;
   }
   .quotes.carousel .ratings-container .rating-average {
     color: #000;
