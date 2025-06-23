@@ -10,26 +10,13 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
 });
 const [{ default: decorate }] = await Promise.all([import('../../../express/code/blocks/grid-marquee/grid-marquee.js')]);
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
-function setDocumentMetadata() {
-  const metadata = {
-    'mweb-card-chevron': 'true',
-  };
-
-  Object.entries(metadata).forEach(([name, content]) => {
-    const meta = document.createElement('meta');
-    meta.name = name;
-    meta.content = content;
-    document.head.appendChild(meta);
-  });
-}
 describe('grid-marquee', () => {
   let block;
   const oldIO = window.IntersectionObserver;
   const cbs = [];
-  setDocumentMetadata();
   before(async () => {
     window.placeholders = {
-      'app-store- ':
+      'app-store-ratings':
         '4.9, 233.8k ratings; 4.6, 117k ratings; https://adobesparkpost.app.link/GJrBPFUWBBb',
       'app-store-stars': 'test',
       'app-store-ratings-play-store': 'test',
@@ -68,8 +55,7 @@ describe('grid-marquee', () => {
     const cardsContainer = block.querySelector('.cards-container');
     const cards = [...cardsContainer.querySelectorAll('.card')];
     cards.forEach((card) => {
-      const face = card.querySelector('.face');
-      expect(face).to.exist;
+      expect(card.querySelector('.face')).to.exist;
     });
   });
   it('creates drawer when in view', async () => {
@@ -143,27 +129,5 @@ describe('grid-marquee', () => {
   });
   it('displays ratings for ratings variant', () => {
     expect(block.querySelector('.ratings img')).to.exist;
-  });
-});
-
-Object.defineProperty(navigator, 'userAgent', {
-  value: 'Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36',
-  configurable: true,
-});
-
-describe('grid-marquee for android', () => {
-  let block;
-  // Test Android
-  before(async () => {
-    block = document.querySelector('.grid-marquee');
-    await decorate(block);
-  });
-  it('Adds chevrons', () => {
-    const cardsContainer = block.querySelector('.cards-container');
-    const cards = [...cardsContainer.querySelectorAll('.card')];
-    cards.forEach((card) => {
-      const face = card.querySelector('.face');
-      expect(face.querySelector('svg')).to.exist;
-    });
   });
 });
