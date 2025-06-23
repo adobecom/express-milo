@@ -488,7 +488,7 @@ export function createLocaleDropdownWrapper(options = {}) {
 
   // Create label
   const labelElement = createTag(
-    'h2',
+    'p',
     {
       id: labelId,
       class: 'locale-dropdown-label',
