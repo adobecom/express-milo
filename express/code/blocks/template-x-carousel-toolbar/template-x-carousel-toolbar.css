@@ -188,7 +188,6 @@
 .template-x-carousel-toolbar .template img:not(.icon),
 .template-x-carousel-toolbar .template video {
   display: block;
-  width: 100%;
   height: 100%;
   pointer-events: none;
   object-fit: cover;
@@ -350,7 +349,7 @@
 
 .template-x-carousel-toolbar .template .media-wrapper {
   position: relative;
-  height: 100%;
+  height: var(--template-height);
   width: 100%;
 }
 
