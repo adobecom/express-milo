@@ -318,9 +318,9 @@ main .quotes.singular .quote-container .mobile-container .quote {
     margin: 0px -40px;
   }
   .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
-    padding-top: var(--spacing-800);
-    padding-left: var(--spacing-600);
-    padding-right: var(--spacing-600);
+    padding-top: var(--spacing-600);
+    padding-left: var(--spacing-500);
+    padding-right: var(--spacing-500);
   }
   .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: var(--spacing-600);
@@ -668,11 +668,10 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     right: -50px;
   }
   .quotes.carousel .quotes-ratings-wrapper .container {
-    flex-direction: row;
     max-width: 1410px;
     width: unset;
-    display: flex;
-    margin: auto;
+    margin-left: 40px;
+    display: block;
   }
 
   .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
@@ -695,7 +694,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     font-size: var(--heading-font-size-m);
     font-weight: 900;
     line-height: 130%;
-    padding-left: var(--spacing-600);
     margin-bottom: var(--spacing-500);
     max-width: 495px;
   }
