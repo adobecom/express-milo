@@ -170,6 +170,53 @@
   transform: rotate(45deg);
 }
 
+/* Play/Pause button styling */
+.basic-carousel-play-pause {
+  display: flex;
+  align-items: center;
+}
+
+.basic-carousel-play-pause-button {
+  cursor: pointer;
+  display: block;
+  width: 32px;
+  height: 32px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
+  border-radius: 50%;
+  pointer-events: auto;
+  position: relative;
+}
+
+/* Play icon (right-pointing triangle) - shown when playing */
+.basic-carousel-play-pause-button.playing::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid var(--color-black);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  margin-left: 1px; /* Slight adjustment to center the triangle */
+}
+
+/* Pause icon (two vertical bars) - shown when paused */
+.basic-carousel-play-pause-button.paused::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px;
+  height: 11px;
+  border-radius: 2px;
+  background: var(--color-black);
+  box-shadow: 4px 0 0 var(--color-black);
+}
+
 .basic-carousel-container.controls-hidden .basic-carousel-platform {
   scroll-snap-type: none;
 }
@@ -277,6 +324,9 @@
     display: none;
   }
   .basic-carousel-container a.button.basic-carousel-arrow {
+    margin: 0 10px;
+  }
+  .basic-carousel-play-pause-button {
     margin: 0 10px;
   }
   .basic-carousel-container.controls-hidden .basic-carousel-platform {
