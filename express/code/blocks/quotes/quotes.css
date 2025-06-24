@@ -83,7 +83,7 @@
   min-height: 0;
   margin: auto;
   display: flex;
-  align-items: stretch;
+  align-items: end;
   background: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0) 50%);
 }
 
