@@ -162,7 +162,7 @@
   margin: 0px;
   background-color: var(--color-background-light);
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: flex-start;
   transition: width var(--transition-duration) var(--transition-timing), 
               min-width var(--transition-duration) var(--transition-timing), 
@@ -190,6 +190,18 @@
 
 .gen-ai-cards .card .text-wrapper p {
   margin: 0;
+}
+.gen-ai-cards .card .content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.gen-ai-cards:not(.homepage) .card .content-wrapper,
+.gen-ai-cards.homepage.spotlight .card .content-wrapper {
+  height: 100%;
 }
 
 .gen-ai-cards .card .text-wrapper .cta-card-title {
@@ -278,7 +290,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   left: 50%;
   top: 100%;
   display: flex;
-  justify-content: space-between;
   width: 100%;
 }
 
@@ -372,7 +383,8 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage .card .links-wrapper {
- padding-bottom: unset;
+  padding-bottom: unset;
+  padding-top: 10px;
 }
 
 .gen-ai-cards .card .links-wrapper a {
