@@ -326,9 +326,6 @@
   .basic-carousel-container a.button.basic-carousel-arrow {
     margin: 0 10px;
   }
-  .basic-carousel-play-pause-button {
-    margin: 0 10px;
-  }
   .basic-carousel-container.controls-hidden .basic-carousel-platform {
     scroll-snap-type: x mandatory;
   }
