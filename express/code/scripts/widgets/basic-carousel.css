@@ -188,8 +188,8 @@
   position: relative;
 }
 
-/* Play icon (right-pointing triangle) - shown when playing */
-.basic-carousel-play-pause-button.playing::before {
+/* Play icon (right-pointing triangle) - shown when paused */
+.basic-carousel-play-pause-button.paused::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -203,8 +203,8 @@
   margin-left: 1px; /* Slight adjustment to center the triangle */
 }
 
-/* Pause icon (two vertical bars) - shown when paused */
-.basic-carousel-play-pause-button.paused::before {
+/* Pause icon (two vertical bars) - shown when playing */
+.basic-carousel-play-pause-button.playing::before {
   content: '';
   position: absolute;
   top: 50%;
