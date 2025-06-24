@@ -222,17 +222,27 @@ function initializeCarousel(selector, parent) {
     playPauseButton.setAttribute('daa-ll', 'Pause carousel');
 
     const moveNext = () => {
-      // Check if right trigger is intersecting (meaning we're at the end)
-      const rightTriggerRect = rightTrigger.getBoundingClientRect();
+      // Find the rightmost visible element and scroll to show it
       const containerRect = container.getBoundingClientRect();
-      const isAtEnd = rightTriggerRect.left <= containerRect.right;
+      const rightmostVisible = Array.from(elements).reverse().find((el) => {
+        const elRect = el.getBoundingClientRect();
+        return elRect.right <= containerRect.right;
+      });
 
-      if (isAtEnd) {
-        currentSetIndex = 0;
-        updateCarousel(true);
+      if (rightmostVisible) {
+        const elementWidth = elements[0].offsetWidth;
+        const platformWidth = platform.offsetWidth;
+        const targetScrollPos = rightmostVisible.offsetLeft - (platformWidth - elementWidth) / 2;
+        platform.scrollTo({
+          left: Math.max(0, targetScrollPos),
+          behavior: 'smooth',
+        });
       } else {
-        currentSetIndex += 1;
-        updateCarousel();
+        // If no rightmost visible element found, we're at the end - reset to beginning
+        platform.scrollTo({
+          left: 0,
+          behavior: 'smooth',
+        });
       }
     };
 
@@ -280,31 +290,44 @@ function initializeCarousel(selector, parent) {
   // Update click handlers for grid layout
   faderLeft.addEventListener('click', () => {
     if (scrolling) return;
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      if (platform.scrollLeft <= 0) return;
-      currentSetIndex = Math.max(0, currentSetIndex - 1);
-    } else {
-      if (currentSetIndex === 0) return;
-      currentSetIndex -= scrollCount;
-      currentSetIndex = Math.max(0, currentSetIndex);
+
+    // Find the leftmost visible element and scroll to show it
+    const containerRect = container.getBoundingClientRect();
+    const leftmostVisible = Array.from(elements).find((el) => {
+      const elRect = el.getBoundingClientRect();
+      return elRect.left >= containerRect.left;
+    });
+
+    if (leftmostVisible) {
+      const elementWidth = elements[0].offsetWidth;
+      const platformWidth = platform.offsetWidth;
+      const targetScrollPos = leftmostVisible.offsetLeft - (platformWidth - elementWidth) / 2;
+      platform.scrollTo({
+        left: Math.max(0, targetScrollPos),
+        behavior: 'smooth',
+      });
     }
-    updateCarousel();
   });
 
   faderRight.addEventListener('click', () => {
     if (scrolling) return;
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      const maxScroll = platform.scrollWidth - platform.offsetWidth;
-      if (platform.scrollLeft >= maxScroll) return;
 
-      const templatesPerRow = Math.floor(elements.length / 2);
-      const maxIndex = templatesPerRow + 2;
-      currentSetIndex = Math.min(maxIndex, currentSetIndex + 1);
-    } else {
-      if (currentSetIndex + scrollCount >= elements.length) return;
-      currentSetIndex += scrollCount;
+    // Find the rightmost visible element and scroll to show it
+    const containerRect = container.getBoundingClientRect();
+    const rightmostVisible = Array.from(elements).reverse().find((el) => {
+      const elRect = el.getBoundingClientRect();
+      return elRect.right <= containerRect.right;
+    });
+
+    if (rightmostVisible) {
+      const elementWidth = elements[0].offsetWidth;
+      const platformWidth = platform.offsetWidth;
+      const targetScrollPos = rightmostVisible.offsetLeft - (platformWidth - elementWidth) / 2;
+      platform.scrollTo({
+        left: Math.max(0, targetScrollPos),
+        behavior: 'smooth',
+      });
     }
-    updateCarousel();
   });
 
   // Don't call preventDefault() here to allow normal scrolling
@@ -351,13 +374,39 @@ function initializeCarousel(selector, parent) {
 
     if (Math.abs(swipeDistance) > 50) {
       if (swipeDistance > 0) {
-        if (currentSetIndex > 0) {
-          currentSetIndex -= 1;
-          updateCarousel();
+        // Swipe right - find leftmost visible element
+        const containerRect = container.getBoundingClientRect();
+        const leftmostVisible = Array.from(elements).find((el) => {
+          const elRect = el.getBoundingClientRect();
+          return elRect.left >= containerRect.left;
+        });
+
+        if (leftmostVisible) {
+          const elementWidth = elements[0].offsetWidth;
+          const platformWidth = platform.offsetWidth;
+          const targetScrollPos = leftmostVisible.offsetLeft - (platformWidth - elementWidth) / 2;
+          platform.scrollTo({
+            left: Math.max(0, targetScrollPos),
+            behavior: 'smooth',
+          });
         }
-      } else if (currentSetIndex + 1 < elements.length) {
-        currentSetIndex += 1;
-        updateCarousel();
+      } else {
+        // Swipe left - find rightmost visible element
+        const containerRect = container.getBoundingClientRect();
+        const rightmostVisible = Array.from(elements).reverse().find((el) => {
+          const elRect = el.getBoundingClientRect();
+          return elRect.right <= containerRect.right;
+        });
+
+        if (rightmostVisible) {
+          const elementWidth = elements[0].offsetWidth;
+          const platformWidth = platform.offsetWidth;
+          const targetScrollPos = rightmostVisible.offsetLeft - (platformWidth - elementWidth) / 2;
+          platform.scrollTo({
+            left: Math.max(0, targetScrollPos),
+            behavior: 'smooth',
+          });
+        }
       }
       return;
     }
