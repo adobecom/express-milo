@@ -257,3 +257,14 @@
         height: 1000px;
     }
 }
+
+.frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .locale-dropdown-wrapper {
+    width: 100%;
+    align-items: center;
+    margin-block: var(--spacing-600);
+}
+
+.frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .locale-dropdown-wrapper #locale-select-label {
+    margin: 0;
+    font-size: var(--body-font-size-m);
+}

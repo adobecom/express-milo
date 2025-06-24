@@ -13,7 +13,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-  width: fit-content;
   margin-block-end: 16px;
   padding: 0;
   box-sizing: border-box;
