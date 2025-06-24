@@ -6,6 +6,7 @@
     margin-right: 20px;
     margin-top: 60px;
     text-align: center;
+    max-width: 1328px;
 }
 
 .wayfinder.narrow {
@@ -95,9 +96,10 @@
     margin: auto;
 }
 
-@media (min-width: 540px) {
+@media (min-width: 768px) {
     .wayfinder {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         margin: 30px auto auto auto;
@@ -124,6 +126,10 @@
 }
 
 @media (min-width: 1200px) {
+    .wayfinder {
+        flex-direction: row;
+    }
+
     .wayfinder div {
         display: flex;
         width: fit-content;
