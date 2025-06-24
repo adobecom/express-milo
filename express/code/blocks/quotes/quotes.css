@@ -7,9 +7,9 @@
 /* Carousel specific styles */
 .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
-  padding-top: var(--spacing-700);
-  padding-left: var(--spacing-400);
-  padding-right: var(--spacing-400);
+  padding-top: var(--spacing-600);
+  padding-left: var(--spacing-300);
+  padding-right: var(--spacing-300);
 }
 
 .quotes-wrapper .quote .author-content .summary p {
@@ -427,6 +427,8 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  max-width: 475px;
+  margin-left: 24px;
 }
 
 .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
