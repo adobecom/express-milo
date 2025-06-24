@@ -315,6 +315,7 @@
 @media (min-width: 1280px) {
   .basic-carousel-controls-wrapper {
     padding-bottom: var(--spacing-900);
+    max-width: 1300px;
   }
 }
 
