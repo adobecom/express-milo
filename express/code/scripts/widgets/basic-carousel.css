@@ -210,11 +210,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 3px;
-  height: 11px;
-  border-radius: 2px;
+  width: 2px;
+  height: 12px;
   background: var(--color-black);
-  box-shadow: 4px 0 0 var(--color-black);
+  box-shadow: 6px 0 0 var(--color-black);
+  margin-left: -2px; /* Nudge left to better center the pause icon */
 }
 
 .basic-carousel-container.controls-hidden .basic-carousel-platform {
