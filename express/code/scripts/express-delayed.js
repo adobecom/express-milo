@@ -21,7 +21,7 @@ function preloadSUSILight() {
     preloadTag.setAttribute('data-stage', 'true');
   }
   import('../blocks/susi-light/susi-light.js')
-    .then((mod) => mod.loadSUSIScripts())
+    .then((mod) => mod.SUSIUtils.loadSUSIScripts())
     .then(() => {
       document.head.append(preloadTag);
     });

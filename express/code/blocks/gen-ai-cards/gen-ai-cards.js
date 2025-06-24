@@ -19,6 +19,7 @@ export function decorateTextWithTag(textSource, options = {}) {
     baseClass,
     tagClass,
   } = options;
+
   const text = createTag(baseT || 'p', { class: baseClass || '' });
   const tagText = textSource?.match(/\[(.*?)]/);
 
@@ -79,7 +80,7 @@ function handleGenAISubmit(form, link) {
 function buildGenAIForm({ title, ctaLinks, subtext }) {
   const genAIForm = createTag('form', { class: 'gen-ai-input-form' });
   const genAIInput = createTag('input', {
-    'aria-label': `${title}: ${subtext || ''}`,
+    'aria-label': `${subtext || ''}`,
     placeholder: subtext || '',
     type: 'text',
     enterKeyhint: 'enter',
@@ -88,7 +89,10 @@ function buildGenAIForm({ title, ctaLinks, subtext }) {
     class: 'gen-ai-submit',
     type: 'submit',
     disabled: true,
+
   });
+
+  genAISubmit.setAttribute('aria-label', `${title}`);
 
   genAIForm.append(genAIInput, genAISubmit);
 
@@ -148,8 +152,7 @@ async function decorateCards(block, { actions }) {
     const linksWrapper = createTag('div', { class: 'links-wrapper' });
     const mediaWrapper = createTag('div', { class: 'media-wrapper' });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
-
-    card.append(textWrapper, mediaWrapper, linksWrapper);
+    card.append(mediaWrapper, textWrapper, linksWrapper);
     if (image) {
       mediaWrapper.append(image);
       if (i > 0) {
@@ -180,7 +183,7 @@ async function decorateCards(block, { actions }) {
       }
     }
 
-    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h4' });
+    const titleText = decorateTextWithTag(title, { tagT: 'sup', baseClass: 'cta-card-title', baseT: 'h3' });
 
     if (betaTag) {
       addBetaTag(card, titleText, betaTagPlaceholder);

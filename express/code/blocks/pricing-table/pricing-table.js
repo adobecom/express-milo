@@ -9,6 +9,7 @@ let getConfig;
 let replaceKey;
 let headingCols;
 let previousHeaderRow;
+let previousHeaderRowHeadingId;
 
 const MOBILE_SIZE = 981;
 function defineDeviceByScreenSize() {
@@ -35,23 +36,25 @@ function handleToggleMore(btn) {
   }
 }
 
-function getHeaderId(el) {
-  const text = el.querySelector('p')?.textContent || el.textContent || '';
-  return text.trim().replaceAll(' ', '-');
-}
-
 function handleHeading(headingRow) {
   if (headingCols.length > 3) headingRow.parentElement.classList.add('many-cols');
   else if (headingCols.length < 3) headingRow.parentElement.classList.add('few-cols');
 
-  headingCols.forEach(async (col) => {
+  headingCols.forEach(async (col, colIdx) => {
     col.classList.add('col-heading');
     const elements = col.children;
     if (!elements?.length) {
       col.innerHTML = `<p class="tracking-header">${col.innerHTML}</p>`;
       return;
     }
-    col.setAttribute('id', getHeaderId(col));
+
+    col.setAttribute('id', `${0}:${colIdx}`);
+    col.setAttribute('role', 'columnheader');
+
+    col.querySelectorAll('img').forEach((img) => {
+      img.setAttribute('alt', '');
+    });
+
     await decorateButtonsDeprecated(col, 'button-l');
     const buttonsWrapper = createTag('div', { class: 'buttons-wrapper' });
     const buttons = col.querySelectorAll('.button, .con-button');
@@ -135,9 +138,9 @@ function handleSection(sectionParams) {
   } else if (rowCols.length === 1) {
     row.classList.add('section-header-row');
     rowCols[0].classList.add('section-head-title');
-    row.setAttribute('id', getHeaderId(row));
-    row.setAttribute('colspan', headingCols.length);
-    row.setAttribute('scope', 'colgroup');
+    rowCols[0].setAttribute('role', 'rowheader');
+    rowCols[0].setAttribute('id', `${index}:${0}`);
+    previousHeaderRowHeadingId = `${index}:${0}`;
     previousHeaderRow = row;
   } else if (index === 0) {
     row.classList.add('row-heading', 'table-start-row');
@@ -146,8 +149,9 @@ function handleSection(sectionParams) {
     rowCols.forEach((col, idx) => {
       decorateButtonsDeprecated(col);
       if (idx === 0) {
-        const subHeader = getHeaderId(col);
-        col.setAttribute('headers', subHeader);
+        col.setAttribute('aria-labelledby', previousHeaderRowHeadingId);
+        col.setAttribute('role', 'rowheader');
+        col.setAttribute('id', `${index}:${idx}`);
         if (!col.children?.length || col.querySelector(':scope > sup')) col.innerHTML = `<p>${col.innerHTML}</p>`;
         return;
       }
@@ -158,12 +162,7 @@ function handleSection(sectionParams) {
       }
 
       if (previousHeaderRow) {
-        const subHeader = getHeaderId(previousHeaderRow);
-        const rowHeader = getHeaderId(rowCols[0]);
-        const colHeader = getHeaderId(headingCols[idx]);
-        if (subHeader) {
-          col.setAttribute('headers', `${subHeader} ${rowHeader} ${colHeader}`);
-        }
+        col.setAttribute('aria-labelledby', `${`${index}:${0}`} ${`${0}:${idx}`}`);
       }
 
       const child = col.children?.[0] || col;

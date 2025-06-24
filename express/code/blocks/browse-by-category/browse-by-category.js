@@ -17,6 +17,7 @@ export function decorateHeading(block, payload) {
 
   if (payload.viewAllLink.href !== '') {
     const viewAllButton = createTag('a', { class: 'browse-by-category-link', href: payload.viewAllLink.href });
+    viewAllButton.setAttribute('aria-label', `${payload.viewAllLink.text} ${payload.heading}`);
     viewAllButton.textContent = payload.viewAllLink.text;
     viewAllButtonWrapper.append(viewAllButton);
   }

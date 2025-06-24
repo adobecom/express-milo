@@ -1,0 +1,42 @@
+name: Merge to stage
+
+on:
+  schedule:
+    - cron: '0 */4 * * *' # Run every 4 hours
+  workflow_dispatch: # Allow manual trigger
+  repository_dispatch:
+    types: [merge-to-stage]
+
+env:
+  REQUIRED_APPROVALS: ${{ secrets.REQUIRED_APPROVALS }}
+  MAX_PRS_PER_BATCH: ${{ secrets.MAX_PRS_PER_BATCH }}
+  STAGE_RCP_OFFSET_DAYS: ${{ secrets.STAGE_RCP_OFFSET_DAYS }}
+
+jobs:
+  merge-to-stage:
+    runs-on: ubuntu-latest
+    environment: express_pr_merge
+
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: express-merge-token
+        with:
+          app-id: ${{ secrets.EXPRESS_MERGE_APP_ID }}
+          private-key: ${{ secrets.EXPRESS_MERGE_PRIVATE_KEY }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run merge script
+        env:
+          GITHUB_TOKEN: ${{ steps.express-merge-token.outputs.token }}
+          LOCAL_RUN: false
+        run: node .github/workflows/merge-to-stage.js

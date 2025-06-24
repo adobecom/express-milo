@@ -1,0 +1,19 @@
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="UI Elements/Small Cursor">
+    <g id="Cursor - Small" filter="url(#filter0_d_5912_16034)">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5591 21.125L3.88379 2.32227L22.272 10.0128L14.4849 13.3035L11.5591 21.125Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5591 21.125L3.88379 2.32227L22.272 10.0128L14.4849 13.3035L11.5591 21.125Z" stroke="black" stroke-width="1.18827" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <defs>
+    <filter id="filter0_d_5912_16034" x="0.913134" y="0.539846" width="24.3295" height="24.7441" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="1.18827"/>
+      <feGaussianBlur stdDeviation="1.18827"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.160784 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_5912_16034"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_5912_16034" result="shape"/>
+    </filter>
+  </defs>
+</svg>
