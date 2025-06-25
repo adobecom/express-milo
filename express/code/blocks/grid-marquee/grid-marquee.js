@@ -157,6 +157,17 @@ function toCard(drawer) {
   }, [face, drawer]);
 
   face.classList.add('face');
+  
+  // Unwrap images from paragraph tags for better semantic HTML
+  face.querySelectorAll('p img').forEach((img) => {
+    const p = img.parentElement;
+    if (p.tagName === 'P' && p.children.length === 1) {
+      // Only unwrap if the paragraph contains only the image
+      p.parentNode.insertBefore(img, p);
+      p.remove();
+    }
+  });
+  
   addCardInteractions(card, drawer);
   const lazyCB = () => decorateDrawer(videoAnchor.href, face.querySelector('img').src, titleText, panels, panelsFrag, drawer);
   drawer.classList.add('drawer', 'hide');
