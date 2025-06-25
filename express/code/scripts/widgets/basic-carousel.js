@@ -118,9 +118,9 @@ function initializeCarousel(selector, parent) {
   if (hasPlayPause) {
     playPauseControl = createTag('div', { class: 'basic-carousel-play-pause' });
     playPauseButton = createTag('a', {
-      class: 'button basic-carousel-control basic-carousel-play-pause-button playing',
-      'aria-label': 'Pause carousel',
-      'daa-ll': 'Pause carousel',
+      class: 'button basic-carousel-control basic-carousel-play-pause-button paused',
+      'aria-label': 'Play carousel',
+      'daa-ll': 'Play carousel',
     });
     playPauseControl.appendChild(playPauseButton);
     // Add pla/pause button first
@@ -178,9 +178,6 @@ function initializeCarousel(selector, parent) {
         startAutoPlay();
       }
     });
-
-    // Start auto-play by default
-    startAutoPlay();
   }
 
   // Pause on user interaction with arrows
