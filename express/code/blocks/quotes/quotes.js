@@ -410,23 +410,6 @@ export default async function decorate($block) {
       $carouselContainer.appendChild($card);
     });
 
-    if ($rows.length > 0) {
-      const lastElement = $carouselContainer.querySelector('.template.basic-carousel-element:last-child');
-      if (lastElement) {
-        const updateMargin = () => {
-          const marginRight = window.innerWidth >= 768 ? '40px' : '24px';
-          lastElement.style.marginRight = marginRight;
-        };
-        updateMargin();
-        let resizeTimeout;
-        const debouncedResizeHandler = () => {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(updateMargin, 250);
-        };
-        window.addEventListener('resize', debouncedResizeHandler);
-      }
-    }
-
     // Initialize the carousel after ensuring CSS is loaded
     const config = getConfig();
     await new Promise((resolve) => {

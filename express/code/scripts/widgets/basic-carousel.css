@@ -66,6 +66,13 @@
   pointer-events: auto;
 }
 
+.basic-carousel-platform::after {
+  content: "";
+  flex: 0 0 16px;
+  display: block;
+  height: 1px;
+}
+
 /* Focus styles for arrow buttons */
 .basic-carousel-container a.button.basic-carousel-arrow:focus {
   outline: 2px solid #724CDC;
@@ -332,6 +339,12 @@ main a.basic-carousel-play-pause-button:focus {
     padding-top: var(--spacing-400);
     padding-bottom: var(--spacing-800);
     padding-right: var(--spacing-500);
+  }
+  .basic-carousel-platform::after {
+    content: "";
+    flex: 0 0 24px;
+    display: block;
+    height: 1px;
   }
 }
 
