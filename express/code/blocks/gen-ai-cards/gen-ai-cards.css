@@ -162,7 +162,6 @@
   margin: 0px;
   background-color: var(--color-background-light);
   display: flex;
-  /* justify-content: space-between; */
   align-items: flex-start;
   transition: width var(--transition-duration) var(--transition-timing), 
               min-width var(--transition-duration) var(--transition-timing), 
