@@ -101,7 +101,7 @@
 .gen-ai-cards .gen-ai-cards-heading-section h2 {
   text-align: left; 
   margin-bottom: 8px;
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size-m);
   line-height: 2.925rem;
   max-width: 800px;
 }
@@ -162,7 +162,7 @@
   margin: 0px;
   background-color: var(--color-background-light);
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: flex-start;
   transition: width var(--transition-duration) var(--transition-timing), 
               min-width var(--transition-duration) var(--transition-timing), 
@@ -190,6 +190,18 @@
 
 .gen-ai-cards .card .text-wrapper p {
   margin: 0;
+}
+.gen-ai-cards .card .content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.gen-ai-cards:not(.homepage) .card .content-wrapper,
+.gen-ai-cards.homepage.spotlight .card .content-wrapper {
+  height: 100%;
 }
 
 .gen-ai-cards .card .text-wrapper .cta-card-title {
@@ -253,7 +265,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage.spotlight .card .media-wrapper {
-  width: 268px;
+  width: 100%;
   height: 228px;
 }
 
@@ -278,7 +290,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   left: 50%;
   top: 100%;
   display: flex;
-  justify-content: space-between;
+  width: 100%;
 }
 
 .gen-ai-cards .card .gen-ai-input-form input {
@@ -327,7 +339,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-  margin-left: 24px;
+  margin-left: 20px;
 }
 
 .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit {
@@ -370,6 +382,11 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   padding-bottom: 8px;
 }
 
+.gen-ai-cards.homepage .card .links-wrapper {
+  padding-bottom: unset;
+  padding-top: 10px;
+}
+
 .gen-ai-cards .card .links-wrapper a {
   margin: 4px auto;
   width: max-content;
@@ -402,6 +419,10 @@ main .gen-ai-cards.homepage .carousel-container .carousel-platform.right-fader:n
   mask-image: none;
 }
 
+main .gen-ai-cards.homepage .carousel-container .carousel-platform.left-fader {
+  padding-right: 20px;
+}
+
 main .gen-ai-cards.homepage .carousel-container .carousel-fader-left {
   align-items: end;
   top: 45px;
@@ -422,7 +443,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
 }
 
 .gen-ai-cards.homepage .gen-ai-cards-heading {
-  font-size: var(--font-size-heading-mobile);
+  font-size: var(--heading-font-size-m);
   text-align: center;
 }
 
@@ -632,7 +653,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   main .gen-ai-cards.homepage .gen-ai-cards-heading {
-    font-size: var(--heading-font-size-m);
+    font-size: var(--heading-font-size-l);
   }
 
   .gen-ai-cards .card .gen-ai-input-form {
