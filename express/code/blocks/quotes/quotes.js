@@ -410,11 +410,20 @@ export default async function decorate($block) {
       $carouselContainer.appendChild($card);
     });
 
-    // Add margin-right to the last template element for better spacing
     if ($rows.length > 0) {
       const lastElement = $carouselContainer.querySelector('.template.basic-carousel-element:last-child');
       if (lastElement) {
-        lastElement.style.marginRight = '24px';
+        const updateMargin = () => {
+          const marginRight = window.innerWidth >= 768 ? '40px' : '24px';
+          lastElement.style.marginRight = marginRight;
+        };
+        updateMargin();
+        let resizeTimeout;
+        const debouncedResizeHandler = () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(updateMargin, 250);
+        };
+        window.addEventListener('resize', debouncedResizeHandler);
       }
     }
 
