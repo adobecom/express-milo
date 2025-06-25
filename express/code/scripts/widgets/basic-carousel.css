@@ -195,9 +195,20 @@
 }
 
 /* Focus styles for play/pause button */
-.basic-carousel-play-pause-button:focus {
+main a.basic-carousel-play-pause-button:focus {
   outline: 2px solid #724CDC;
   outline-offset: 2px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
+  background-color: unset;
+}
+
+/* Active state - when clicked */
+.basic-carousel-play-pause-button:active {
+  outline: 2px solid #724CDC;
+  outline-offset: 2px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
 }
 
 /* Play icon (right-pointing triangle) - shown when paused */
