@@ -1,12 +1,19 @@
 .wayfinder {
     border: 2px solid black;
     border-radius: 20px;
-    padding: 16px 20px 12px 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    padding: 16px 20px 16px 20px;
     margin-top: 60px;
     text-align: center;
     max-width: 1328px;
+}
+
+main .wayfinder h1, main .wayfinder h2, main .wayfinder h3, main .wayfinder h4, main .wayfinder h5, main .wayfinder h6 {
+  font-family: "Adobe Clean";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%; /* 20.8px */
+  margin: 16px 0;
 }
 
 .wayfinder.narrow {
@@ -27,13 +34,6 @@
 }
 
 .wayfinder.gradient {
-    background: linear-gradient(
-            90.93deg,
-            #aa5ef6 0.23%,
-            #ef67f0 39.65%,
-            #ff4fed 59.89%,
-            #f69634 108.11%
-    );
     color: black;
     border: 2px solid white;
 }
@@ -50,7 +50,7 @@
     border-color: white;
 }
 
-.wayfinder .text-row{
+.wayfinder .text-row p {
     margin: auto;
     font-size: 16px;
 }
@@ -103,23 +103,23 @@
         justify-content: center;
         align-items: center;
         margin: 30px auto auto auto;
-        max-width: 90%;
         padding: 10px;
-
     }
 
     .wayfinder .text-row {
         margin: initial;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .wayfinder .text-row div {
-
+      display: flex;
         gap: 16px;
     }
 
     .wayfinder .cta-row {
         display: flex;
+        position: relative;
+        top: 2px;
         margin-left: 10px;
         overflow-x: scroll;
     }
