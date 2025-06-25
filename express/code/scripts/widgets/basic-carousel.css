@@ -66,6 +66,12 @@
   pointer-events: auto;
 }
 
+/* Focus styles for arrow buttons */
+.basic-carousel-container a.button.basic-carousel-arrow:focus {
+  outline: 2px solid #724CDC;
+  outline-offset: 2px;
+}
+
 .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle) {
   max-width: unset;
 }
@@ -186,6 +192,12 @@
   border-radius: 50%;
   pointer-events: auto;
   position: relative;
+}
+
+/* Focus styles for play/pause button */
+.basic-carousel-play-pause-button:focus {
+  outline: 2px solid #724CDC;
+  outline-offset: 2px;
 }
 
 /* Play icon (right-pointing triangle) - shown when paused */

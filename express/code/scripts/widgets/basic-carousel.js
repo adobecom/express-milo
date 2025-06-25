@@ -66,10 +66,12 @@ function initializeCarousel(selector, parent) {
   const arrowLeft = createTag('a', {
     class: 'button basic-carousel-arrow basic-carousel-arrow-left',
     'aria-label': 'Scroll carousel left',
+    tabindex: '0',
   });
   const arrowRight = createTag('a', {
     class: 'button basic-carousel-arrow basic-carousel-arrow-right',
     'aria-label': 'Scroll carousel right',
+    tabindex: '0',
   });
 
   platform.append(...carouselContent);
@@ -121,6 +123,7 @@ function initializeCarousel(selector, parent) {
       class: 'button basic-carousel-control basic-carousel-play-pause-button paused',
       'aria-label': 'Play carousel',
       'daa-ll': 'Play carousel',
+      tabindex: '0',
     });
     playPauseControl.appendChild(playPauseButton);
     // Add pla/pause button first
@@ -202,6 +205,38 @@ function initializeCarousel(selector, parent) {
     const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
     moveCarousel(-increment);
   });
+
+  // Keyboard event handlers for accessibility
+  arrowLeft.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      pauseOnUserInteraction();
+      const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
+      moveCarousel(increment);
+    }
+  });
+
+  arrowRight.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      pauseOnUserInteraction();
+      const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
+      moveCarousel(-increment);
+    }
+  });
+
+  if (hasPlayPause) {
+    playPauseButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (isPlaying) {
+          stopAutoPlay();
+        } else {
+          startAutoPlay();
+        }
+      }
+    });
+  }
 
   // Touch handling
   let touchStartX = 0;
