@@ -263,7 +263,11 @@ main .section .ax-columns.enterprise .column h2 {
   text-align: left;
 }
 
-.ax-columns.marquee .column-picture {
+.ax-columns.marquee .column-picture:not(.column-picture-mobile) {
+  display: none;
+}
+
+.ax-columns.marquee .column-picture-mobile {
   max-width: 70vw;
   margin-left: auto;
   margin-right: auto;
@@ -1029,6 +1033,14 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
     font-size: 36px;
     padding-top: var(--spacing-700);
+  }
+
+  .ax-columns.marquee .column-picture:not(.column-picture-mobile) {
+    display: block;
+  }
+
+  .ax-columns.marquee .column-picture-mobile {
+    display: none;
   }
 
   .section .ax-columns.marquee > div {
