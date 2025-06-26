@@ -110,6 +110,7 @@
 
 /* Quotes container styles */
 .quotes {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;
