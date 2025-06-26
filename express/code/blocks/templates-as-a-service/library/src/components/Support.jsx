@@ -4,6 +4,7 @@ export default function Support({ recipe }) {
   const { url, headers } = recipe2ApiQuery(recipe);
   return (
     <div className="border-grey rounded p-1">
+      <h2>Support</h2>
       <p>
         For Authoring questions, copy the recipe and ask in{' '}
         <a href="https://adobe.enterprise.slack.com/archives/C04UH0M1CRG">

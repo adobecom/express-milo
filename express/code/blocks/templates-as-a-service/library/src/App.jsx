@@ -28,9 +28,7 @@ function App() {
           <Form formData={formData} onFormChange={onFormChange} />
         </div>
         <div className="right-container flex flex-col gap-1">
-          <h2>Support</h2>
           <Support recipe={recipe} />
-          <h2>Results</h2>
           <Results recipe={recipe} />
         </div>
       </div>

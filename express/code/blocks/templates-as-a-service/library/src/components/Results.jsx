@@ -31,6 +31,7 @@ export default function Results({ recipe }) {
 
   return (
     <div className="border-grey rounded p-1 gap-1">
+      <h2>Results</h2>
       <Button
         generateResults={generateResults}
         loading={loading}
@@ -46,7 +47,9 @@ export default function Results({ recipe }) {
       )}
       {results?.items?.length > 0 && (
         <div className="flex flex-wrap gap-2 templates">
-          {results.items.map((item) => <Template key={item.id} data={item} />)}
+          {results.items.map((item) => (
+            <Template key={item.id} data={item} />
+          ))}
         </div>
       )}
     </div>

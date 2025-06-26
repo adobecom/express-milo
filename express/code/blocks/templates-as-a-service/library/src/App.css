@@ -3,6 +3,36 @@
   font-family: 'Adobe Clean', sans-serif;
 }
 
+.app-container h1 {
+  font-size: 1.75rem;
+  padding-bottom: 1rem;
+  font-weight: 700;
+}
+
+.app-container h2 {
+  font-size: 1.5rem;
+}
+
+.app-container h4 {
+  font-size: 1rem;
+}
+
+.app-container p {
+  margin: 0;
+}
+
+.right-container button {
+  align-self: flex-start;
+  color: rgb(255, 255, 255);
+  background-color: rgb(92, 92, 224);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 50rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: "Adobe Clean", sans-serif;
+}
+
 .m-auto {
   margin: auto;
 }
@@ -48,10 +78,18 @@ textarea {
 }
 
 form label {
+  position: relative;
   display: flex;
   gap: 10px;
   align-items: center;
   margin-bottom: .75rem;
+}
+
+form .info-content {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  z-index: 1;
 }
 
 form input,

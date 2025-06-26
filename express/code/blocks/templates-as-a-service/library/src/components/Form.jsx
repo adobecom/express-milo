@@ -1,36 +1,74 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import React from 'react';
 
-export default function Form({ formData, onFormChange }) {
-  const [showInfo, setShowInfo] = useState({});
-
-  const toggleInfo = (fieldName) => {
-    setShowInfo((prev) => ({
-      ...prev,
-      [fieldName]: !prev[fieldName],
-    }));
-  };
-
-  const InfoButton = ({ fieldName, content }) => (
+const InfoButton = React.memo(({ fieldName, content, activeInfo, onToggle }) => {
+  console.log(`InfoButton "${fieldName}" rendered - activeInfo: ${activeInfo}`);
+  return (
     <>
       <button
         type="button"
         className="info-button"
         aria-label={`Show information for ${fieldName}`}
-        onClick={() => toggleInfo(fieldName)}
+        onClick={() => onToggle(fieldName)}
       >
-        ℹ️
+        ？
       </button>
-      {showInfo[fieldName] && (
+      {activeInfo === fieldName && (
         <div className="info-content" tabIndex="0">
           <small>{content}</small>
         </div>
       )}
     </>
   );
+});
+
+const useInfoTimer = () => {
+  const [activeInfo, setActiveInfo] = useState(null);
+  const timerRef = useRef(null);
+
+  const showInfo = useCallback((fieldName) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setActiveInfo(fieldName);
+    timerRef.current = setTimeout(() => setActiveInfo(null), 5000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  return [activeInfo, showInfo];
+};
+
+export default function Form({ formData, onFormChange }) {
+  const [activeInfo, showInfo] = useInfoTimer();
+  const [testCounter, setTestCounter] = useState(0); // To trigger re-renders
+
+  const renderInfoButton = (fieldName, content) => {
+    return (
+      <InfoButton
+        fieldName={fieldName}
+        content={content}
+        activeInfo={activeInfo === fieldName ? fieldName : null}
+        onToggle={showInfo}
+      />
+    );
+  };
 
   return (
     <form className="border-grey rounded p-1 gap-1">
       <h2>Form to Recipe:</h2>
+      
+      {/* Test button to trigger re-renders */}
+      <button 
+        type="button" 
+        onClick={() => setTestCounter(c => c + 1)}
+        style={{ marginBottom: '10px' }}
+      >
+        Trigger Re-render (Counter: {testCounter})
+      </button>
+      
       <h4>Search Parameters</h4>
 
       <label>
@@ -41,10 +79,10 @@ export default function Form({ formData, onFormChange }) {
           value={formData.q}
           onChange={(e) => onFormChange('q', e.target.value)}
         />
-        <InfoButton
-          fieldName="q"
-          content="Search query. This is more flexible and ambiguous than using filters but also less precise."
-        />
+        {renderInfoButton(
+          'q',
+          'Search query. This is more flexible and ambiguous than using filters but also less precise.'
+        )}
       </label>
 
       <label>
@@ -58,10 +96,10 @@ export default function Form({ formData, onFormChange }) {
           <option value="popular">Popular</option>
           <option value="custom">Use Custom collection ID</option>
         </select>
-        <InfoButton
-          fieldName="collection"
-          content="Predefined collections. Select Customized to use specific Collection ID. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). You can also use the Popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852)."
-        />
+        {renderInfoButton(
+          'collection',
+          'Predefined collections. Select Customized to use specific Collection ID. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). You can also use the Popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852).'
+        )}
       </label>
 
       <label>
@@ -90,7 +128,7 @@ export default function Form({ formData, onFormChange }) {
           value={formData.limit}
           onChange={(e) => onFormChange('limit', e.target.value)}
         />
-        <InfoButton fieldName="limit" content="Number of results to return" />
+        {renderInfoButton('limit', 'Number of results to return')}
       </label>
 
       <label>
@@ -101,10 +139,7 @@ export default function Form({ formData, onFormChange }) {
           value={formData.start}
           onChange={(e) => onFormChange('start', e.target.value)}
         />
-        <InfoButton
-          fieldName="start"
-          content="Starting index for the results"
-        />
+        {renderInfoButton('start', 'Starting index for the results')}
       </label>
 
       <label>
@@ -122,10 +157,10 @@ export default function Form({ formData, onFormChange }) {
           </option>
           <option value="+createDate">Ascending Create Date (Old first)</option>
         </select>
-        <InfoButton
-          fieldName="orderBy"
-          content="Select by which method results would be ordered"
-        />
+        {renderInfoButton(
+          'orderBy',
+          'Select by which method results would be ordered'
+        )}
       </label>
 
       <h4>Filters (comma separated):</h4>
@@ -138,10 +173,10 @@ export default function Form({ formData, onFormChange }) {
           value={formData.language}
           onChange={(e) => onFormChange('language', e.target.value)}
         />
-        <InfoButton
-          fieldName="language"
-          content="Available values : ar-SA, bn-IN, cs-CZ, da-DK, de-DE, el-GR, en-US, es-ES, fil-P,fi-FI, fr-FR,hi-IN, id-ID, it-IT, ja-JP, ko-KR, ms-MY, nb-NO, nl-NL, pl-PL, pt-BR, ro-RO, ru-RU, sv-SE, ta-IN, th-TH, tr-TR, uk-UA, vi-VN, zh-Hans-CN, zh-Hant-TW"
-        />
+        {renderInfoButton(
+          'language',
+          'Available values : ar-SA, bn-IN, cs-CZ, da-DK, de-DE, el-GR, en-US, es-ES, fil-P,fi-FI, fr-FR,hi-IN, id-ID, it-IT, ja-JP, ko-KR, ms-MY, nb-NO, nl-NL, pl-PL, pt-BR, ro-RO, ru-RU, sv-SE, ta-IN, th-TH, tr-TR, uk-UA, vi-VN, zh-Hans-CN, zh-Hant-TW'
+        )}
       </label>
 
       <label>
@@ -199,12 +234,12 @@ export default function Form({ formData, onFormChange }) {
         <input
           name="prefLang"
           value={formData.prefLang}
-          onChange={onFormChange}
+          onChange={(e) => onFormChange('prefLang', e.target.value)}
         />
-        <InfoButton
-          fieldName="prefLang"
-          content="Boost templates that are in this language. Useful when your results have a mix of languages. Same list as the one for language filter."
-        />
+        {renderInfoButton(
+          'prefLang',
+          'Boost templates that are in this language. Useful when your results have a mix of languages. Same list as the one for language filter.'
+        )}
       </label>
 
       <label>
@@ -212,12 +247,12 @@ export default function Form({ formData, onFormChange }) {
         <input
           name="prefRegion"
           value={formData.prefRegion}
-          onChange={onFormChange}
+          onChange={(e) => onFormChange('prefRegion', e.target.value)}
         />
-        <InfoButton
-          fieldName="prefRegion"
-          content="Available values : AD, AE, AF, AG, AI, AL, AM, AN, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, BG, BH, BI, BJ, BL, BM, BN, BO, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CD, CF, CG, CH, CI, CK, CL, CM, CN, CO, CR, CU, CV, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IQ, IR, IS, IT, JE, JM, JO, JP, KE, KG, KH, KI, KM, KN, KR, KV, KW, KY, KZ, LA, LB, LC, LI, LK, LR, LS, LT, LU, LV, LY, MA, MC, MD, ME, MF, MG, MH, MK, ML, MM, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, MX, MY, MZ, NA, NC, NE, NF, NG, NI, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, PK, PL, PM, PN, PR, PS, PT, PW, PY, QA, RE, RO, RS, RU, RW, SA, SB, SC, SD, SE, SG, SH, SI, SJ, SK, SL, SM, SN, SO, SR, ST, SV, SY, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VE, VG, VI, VN, VU, WF, WS, YE, YT, ZA, ZM, ZW, ZZ"
-        />
+        {renderInfoButton(
+          'prefRegion',
+          'Available values :  AD, AE, AF, AG, AI, AL, AM, AN, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, BG, BH, BI, BJ, BL, BM, BN, BO, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CD, CF, CG, CH, CI, CK, CL, CM, CN, CO, CR, CU, CV, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IQ, IR, IS, IT, JE, JM, JO, JP, KE, KG, KH, KI, KM, KN, KR, KV, KW, KY, KZ, LA, LB, LC, LI, LK, LR, LS, LT, LU, LV, LY, MA, MC, MD, ME, MF, MG, MH, MK, ML, MM, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, MX, MY, MZ, NA, NC, NE, NF, NG, NI, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, PK, PL, PM, PN, PR, PS, PT, PW, PY, QA, RE, RO, RS, RU, RW, SA, SB, SC, SD, SE, SG, SH, SI, SJ, SK, SL, SM, SN, SO, SR, ST, SV, SY, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VE, VG, VI, VN, VU, WF, WS, YE, YT, ZA, ZM, ZW, ZZ'
+        )}
       </label>
     </form>
   );
