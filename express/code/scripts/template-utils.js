@@ -79,6 +79,6 @@ export function extractComponentLinkHref(template) {
   return template._links?.['http://ns.adobe.com/adobecloud/rel/component']?.href;
 }
 
-export function containsVideo(page) {
-  return !!page?.rendition?.video?.thumbnail?.componentId;
+export function containsVideo(template) {
+  return !!template?.pages.some((page) => page?.rendition?.video?.thumbnail?.componentId);
 }
