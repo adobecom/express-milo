@@ -111,11 +111,11 @@
 /* Quotes container styles */
 .quotes {
   margin-top: 40px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
-
 
 .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .quotes:last-child {
