@@ -70,7 +70,7 @@ export default async function decorate(block) {
   const headingDiv = rows.shift();
 
   const payload = {
-    heading: headingDiv.querySelector('h4') ? headingDiv.querySelector('h4').textContent.trim() : '',
+    heading: headingDiv.querySelector('h2, h3, h4') ? headingDiv.querySelector('h2, h3, h4').textContent.trim() : '',
     viewAllLink: {
       text: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').textContent.trim() : '',
       href: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').href : '',
