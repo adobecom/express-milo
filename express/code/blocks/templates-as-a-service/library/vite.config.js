@@ -13,6 +13,7 @@ export default defineConfig({
   },
   define: {
     'process.env.NODE_ENV': '"production"',
+    'process.env.INCLUDE_EXTERNAL_STYLES': '"false"',
     global: 'globalThis'
   }
 })

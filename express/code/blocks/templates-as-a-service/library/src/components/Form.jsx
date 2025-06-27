@@ -1,8 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import React from 'react';
+import { useState, useRef, useEffect, useCallback, memo } from 'react';
 
-const InfoButton = React.memo(({ fieldName, content, activeInfo, onToggle }) => {
-  console.log(`InfoButton "${fieldName}" rendered - activeInfo: ${activeInfo}`);
+const InfoButton = memo(({ fieldName, content, activeInfo, onToggle }) => {
   return (
     <>
       <button
@@ -43,7 +41,6 @@ const useInfoTimer = () => {
 
 export default function Form({ formData, onFormChange }) {
   const [activeInfo, showInfo] = useInfoTimer();
-  const [testCounter, setTestCounter] = useState(0); // To trigger re-renders
 
   const renderInfoButton = (fieldName, content) => {
     return (
@@ -59,16 +56,6 @@ export default function Form({ formData, onFormChange }) {
   return (
     <form className="border-grey rounded p-1 gap-1">
       <h2>Form to Recipe:</h2>
-      
-      {/* Test button to trigger re-renders */}
-      <button 
-        type="button" 
-        onClick={() => setTestCounter(c => c + 1)}
-        style={{ marginBottom: '10px' }}
-      >
-        Trigger Re-render (Counter: {testCounter})
-      </button>
-      
       <h4>Search Parameters</h4>
 
       <label>

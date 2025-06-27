@@ -1,5 +1,7 @@
 import './App.css';
-import '../../../../styles/styles.css';
+if (import.meta.env.DEV) {
+  import('./dev-styles.css');
+}
 import Recipe from './components/Recipe';
 import Form from './components/Form';
 import Support from './components/Support';
