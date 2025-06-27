@@ -14,23 +14,45 @@ let quickActionContainer;
 let uploadContainer;
 let ui2SDK;
 let ui2Landing;
+const selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 const JPG = 'jpg';
 const JPEG = 'jpeg';
 const PNG = 'png';
 const WEBP = 'webp';
+const VIDEO_FORMATS = [
+  'mov',
+  'mp4',
+  'crm',
+  'avi',
+  'm2ts',
+  '3gp',
+  'f4v',
+  'mpeg',
+  'm2t',
+  'm2p',
+  'm1v',
+  'mpg',
+  'wmv',
+  'tts',
+  '264',
+];
+
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
   max_size: 40 * 1024 * 1024,
   accept: types.map((type) => `.${type}`).join(', '),
   input_check: (input) => types.map((type) => `image/${type}`).includes(input),
 });
-export const getBaseVideoCfg = (...types) => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `video/${type}`).includes(input),
-});
+export const getBaseVideoCfg = (...types) => {
+  const formats = Array.isArray(types[0]) ? types[0] : types;
+  return {
+    group: 'video',
+    max_size: 1024 * 1024 * 1024,
+    accept: formats.map((type) => `.${type}`).join(', '),
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
+  };
+};
 const QA_CONFIGS = {
   'convert-to-jpg': {
     ...getBaseImgCfg(PNG, WEBP),
@@ -54,6 +76,13 @@ const QA_CONFIGS = {
     ...getBaseImgCfg(JPG, JPEG, PNG),
     input_check: () => true,
   },
+  'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
+  'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
 };
 
 function fadeIn(element) {
@@ -75,17 +104,41 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
+let timeoutId = null;
+function showErrorToast(block, msg) {
+  let toast = block.querySelector('.error-toast');
+  const hideToast = () => toast.classList.add('hide');
+  if (!toast) {
+    toast = createTag('div', { class: 'error-toast hide' });
+    toast.prepend(getIconElementDeprecated('error'));
+    const close = createTag(
+      'button',
+      {},
+      getIconElementDeprecated('close-white'),
+    );
+    close.addEventListener('click', hideToast);
+    toast.append(close);
+    block.append(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.remove('hide');
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(hideToast, 6000);
+}
+
 const downloadKey = 'download-to-phone';
 const editKey = 'edit-in-adobe-express-for-free';
+
 export async function runQuickAction(quickAction, data, block) {
   let downloadText = await replaceKey(downloadKey, getConfig());
   if (downloadText === downloadKey.replaceAll('-', ' ')) downloadText = 'Download to Phone';
   let editText = await replaceKey(editKey, getConfig());
   if (editText === editKey.replaceAll('-', ' ')) editText = 'Edit in Adobe Express for free';
+
   const exportConfig = [
     {
       id: 'download-button',
-      label: downloadText,
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: downloadText }),
       action: {
         target: 'download',
       },
@@ -100,7 +153,7 @@ export async function runQuickAction(quickAction, data, block) {
     },
     {
       id: 'edit-in-express',
-      label: editText,
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
       action: {
         target: 'express',
       },
@@ -120,6 +173,7 @@ export async function runQuickAction(quickAction, data, block) {
   block.append(quickActionContainer);
   const divs = block.querySelectorAll(':scope > div');
   if (divs[1]) [, uploadContainer] = divs;
+
   ui2SDK();
 
   const contConfig = {
@@ -136,9 +190,21 @@ export async function runQuickAction(quickAction, data, block) {
       type: 'image',
     },
   };
+
+  const videoDocConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'video',
+    },
+  };
+
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
-    receiveQuickActionErrors: false,
+    metaData: {
+      isFrictionlessQa: 'true',
+      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+    },
+    receiveQuickActionErrors: true,
     callbacks: {
       onIntentChange: () => {
         quickActionContainer?.remove();
@@ -154,6 +220,12 @@ export async function runQuickAction(quickAction, data, block) {
       },
       onCancel: () => {
         window.history.back();
+      },
+      onError: (error) => {
+        // eslint-disable-next-line no-underscore-dangle
+        showErrorToast(block, `${error._customData} Please try again.`);
+        quickActionContainer?.remove();
+        ui2Landing();
       },
     },
   };
@@ -181,6 +253,28 @@ export async function runQuickAction(quickAction, data, block) {
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    // video quick action
+    case 'convert-to-gif':
+      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-video':
+      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'trim-video':
+      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-video':
+      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'merge-videos':
+      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-mp4':
+      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'caption-video':
+      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     default: break;
   }
@@ -231,24 +325,6 @@ async function startSDK(data = '', quickAction, block) {
   }
 
   runQuickAction(quickAction, data, block);
-}
-
-let timeoutId = null;
-function showErrorToast(block, msg) {
-  let toast = block.querySelector('.error-toast');
-  const hideToast = () => toast.classList.add('hide');
-  if (!toast) {
-    toast = createTag('div', { class: 'error-toast hide' });
-    toast.prepend(getIconElementDeprecated('error'));
-    const close = createTag('button', {}, getIconElementDeprecated('close-white'));
-    close.addEventListener('click', hideToast);
-    toast.append(close);
-    block.append(toast);
-  }
-  toast.textContent = msg;
-  toast.classList.remove('hide');
-  clearTimeout(timeoutId);
-  timeoutId = setTimeout(hideToast, 6000);
 }
 
 async function startSDKWithUnconvertedFile(file, quickAction, block) {
