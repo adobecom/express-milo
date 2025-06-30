@@ -50,6 +50,19 @@ export const getBaseVideoCfg = (...types) => {
   };
 };
 
+export const getMergeVideosCfg = () => ({
+  group: 'video',
+  max_size: 1024 * 1024 * 1024, // Use video max size (1GB)
+  accept: [...VIDEO_FORMATS, JPG, JPEG, PNG]
+    .map((type) => `.${type}`)
+    .join(', '),
+  input_check: (input) => {
+    const videoTypes = VIDEO_FORMATS.map((type) => `video/${type}`);
+    const imageTypes = [JPG, JPEG, PNG].map((type) => `image/${type}`);
+    return [...videoTypes, ...imageTypes].includes(input);
+  },
+});
+
 const EXPERIMENTAL_VARIANTS = [
   'qa-in-product-variant1', 'qa-in-product-variant2', 'qa-nba', 'qa-in-product-control',
 ];
@@ -73,7 +86,7 @@ const QA_CONFIGS = {
   'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
+  'merge-videos': getMergeVideosCfg(),
   'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
 };
