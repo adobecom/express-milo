@@ -143,7 +143,7 @@ export function runQuickAction(quickAction, data, block) {
   // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
   const exportConfig = [
     {
-      id: 'download-button',
+      id: 'downloadExportOption',
       // label: 'Download',
       action: { target: 'download' },
       style: { uiType: 'button' },
