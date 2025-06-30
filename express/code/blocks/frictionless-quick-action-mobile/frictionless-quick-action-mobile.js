@@ -137,7 +137,7 @@ export async function runQuickAction(quickAction, data, block) {
 
   const exportConfig = [
     {
-      id: 'download-button',
+      id: 'downloadExportOption',
       ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: downloadText }),
       action: {
         target: 'download',
