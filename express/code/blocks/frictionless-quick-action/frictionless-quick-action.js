@@ -34,25 +34,6 @@ const VIDEO_FORMATS = [
   '264',
 ];
 
-const VIDEO_MIME_TYPES = {
-  mov: 'video/quicktime',
-  mp4: 'video/mp4',
-  crm: 'video/x-ms-crm',
-  avi: 'video/x-msvideo',
-  m2ts: 'video/mp2t',
-  '3gp': 'video/3gpp',
-  f4v: 'video/x-f4v',
-  mpeg: 'video/mpeg',
-  m2t: 'video/mp2t',
-  m2p: 'video/mp2p',
-  m1v: 'video/mpeg',
-  mpg: 'video/mpeg',
-  wmv: 'video/x-ms-wmv',
-  tts: 'video/tts',
-  // eslint-disable-next-line quote-props
-  '264': 'video/h264',
-};
-
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
   max_size: 40 * 1024 * 1024,
@@ -65,10 +46,7 @@ export const getBaseVideoCfg = (...types) => {
     group: 'video',
     max_size: 1024 * 1024 * 1024,
     accept: formats.map((type) => `.${type}`).join(', '),
-    input_check: (input) => {
-      const supportedMimeTypes = formats.map((type) => VIDEO_MIME_TYPES[type]).filter(Boolean);
-      return supportedMimeTypes.includes(input);
-    },
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
   };
 };
 
@@ -79,9 +57,9 @@ export const getMergeVideosCfg = () => ({
     .map((type) => `.${type}`)
     .join(', '),
   input_check: (input) => {
-    const videoMimeTypes = VIDEO_FORMATS.map((type) => VIDEO_MIME_TYPES[type]).filter(Boolean);
+    const videoTypes = VIDEO_FORMATS.map((type) => `video/${type}`);
     const imageTypes = [JPG, JPEG, PNG].map((type) => `image/${type}`);
-    return [...videoMimeTypes, ...imageTypes].includes(input);
+    return [...videoTypes, ...imageTypes].includes(input);
   },
 });
 

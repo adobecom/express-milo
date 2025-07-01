@@ -53,20 +53,6 @@ export const getBaseVideoCfg = (...types) => {
     input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
   };
 };
-
-export const getMergeVideosCfg = () => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024, // Use video max size (1GB)
-  accept: [...VIDEO_FORMATS, JPG, JPEG, PNG]
-    .map((type) => `.${type}`)
-    .join(', '),
-  input_check: (input) => {
-    const videoTypes = VIDEO_FORMATS.map((type) => `video/${type}`);
-    const imageTypes = [JPG, JPEG, PNG].map((type) => `image/${type}`);
-    return [...videoTypes, ...imageTypes].includes(input);
-  },
-});
-
 const QA_CONFIGS = {
   'convert-to-jpg': {
     ...getBaseImgCfg(PNG, WEBP),
@@ -94,7 +80,7 @@ const QA_CONFIGS = {
   'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'merge-videos': getMergeVideosCfg(),
+  'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
   'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
 };
