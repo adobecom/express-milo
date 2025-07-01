@@ -65,7 +65,8 @@ export function addAnimationToggle(target) {
 }
 
 export async function createAccessibilityVideoControls(videoElement) {
-  const videoContainer = videoElement?.closest('.hero-animation-overlay');
+  const videoContainer = createTag('div', { class: 'video-container' });
+  const videoAnimation = videoElement?.closest('.hero-animation-overlay');
   const [federated] = await Promise.all([import(`${getLibs()}/utils/federated.js`)]);
 
   const { getFederatedContentRoot } = federated;
@@ -114,12 +115,14 @@ export async function createAccessibilityVideoControls(videoElement) {
     controlsWrapper.setAttribute('aria-label', videoLabels.playMotion);
   });
 
+  videoContainer.appendChild(videoElement);
   videoContainer.appendChild(controlsWrapper);
+  videoAnimation.appendChild(videoContainer);
   addAnimationToggle(controlsWrapper);
   return videoElement;
 }
 
-export function transformLinkToAnimation($a, $videoLooping = true) {
+export function transformLinkToAnimation($a, $videoLooping = true, hasControls = true) {
   if (!$a || !$a.href || !$a.href.endsWith('.mp4')) {
     return null;
   }
@@ -163,7 +166,8 @@ export function transformLinkToAnimation($a, $videoLooping = true) {
       });
     }
   });
-  createAccessibilityVideoControls($video);
+  // TODO: make this authorable or edit all blocks that use this func
+  if (hasControls) createAccessibilityVideoControls($video);
   // addAnimationToggle($video);
 
   return $video;
