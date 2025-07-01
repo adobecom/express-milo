@@ -2,135 +2,30 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
+import {
+  QA_CONFIGS,
+  EXPERIMENTAL_VARIANTS,
+  fadeIn,
+  fadeOut,
+  createDocConfig,
+  createContainerConfig,
+  selectElementByTagPrefix,
+  createSDKConfig,
+  createDefaultExportConfig,
+  executeQuickAction,
+  getErrorMsg,
+} from '../../scripts/utils/frictionless-utils.js';
 
-let createTag; let getConfig;
+let createTag;
+let getConfig;
 let getMetadata;
-let loadScript; let globalNavSelector;
+let loadScript;
+let globalNavSelector;
 const selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 let ccEverywhere;
 let quickActionContainer;
 let uploadContainer;
-
-const JPG = 'jpg';
-const JPEG = 'jpeg';
-const PNG = 'png';
-const WEBP = 'webp';
-const VIDEO_FORMATS = [
-  'mov',
-  'mp4',
-  'crm',
-  'avi',
-  'm2ts',
-  '3gp',
-  'f4v',
-  'mpeg',
-  'm2t',
-  'm2p',
-  'm1v',
-  'mpg',
-  'wmv',
-  'tts',
-  '264',
-];
-
-const VIDEO_MIME_TYPES = {
-  mov: 'video/quicktime',
-  mp4: 'video/mp4',
-  crm: 'video/x-ms-crm',
-  avi: 'video/x-msvideo',
-  m2ts: 'video/mp2t',
-  '3gp': 'video/3gpp',
-  f4v: 'video/x-f4v',
-  mpeg: 'video/mpeg',
-  m2t: 'video/mp2t',
-  m2p: 'video/mp2p',
-  m1v: 'video/mpeg',
-  mpg: 'video/mpeg',
-  wmv: 'video/x-ms-wmv',
-  tts: 'video/tts',
-  // eslint-disable-next-line quote-props
-  '264': 'video/h264',
-};
-
-export const getBaseImgCfg = (...types) => ({
-  group: 'image',
-  max_size: 40 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `image/${type}`).includes(input),
-});
-export const getBaseVideoCfg = (...types) => {
-  const formats = Array.isArray(types[0]) ? types[0] : types;
-  return {
-    group: 'video',
-    max_size: 1024 * 1024 * 1024,
-    accept: formats.map((type) => `.${type}`).join(', '),
-    input_check: (input) => {
-      const supportedMimeTypes = formats.map((type) => VIDEO_MIME_TYPES[type]).filter(Boolean);
-      return supportedMimeTypes.includes(input);
-    },
-  };
-};
-
-export const getMergeVideosCfg = () => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024, // Use video max size (1GB)
-  accept: [...VIDEO_FORMATS, JPG, JPEG, PNG]
-    .map((type) => `.${type}`)
-    .join(', '),
-  input_check: (input) => {
-    const videoMimeTypes = VIDEO_FORMATS.map((type) => VIDEO_MIME_TYPES[type]).filter(Boolean);
-    const imageTypes = [JPG, JPEG, PNG].map((type) => `image/${type}`);
-    return [...videoMimeTypes, ...imageTypes].includes(input);
-  },
-});
-
-const EXPERIMENTAL_VARIANTS = [
-  'qa-in-product-variant1', 'qa-in-product-variant2', 'qa-nba', 'qa-in-product-control',
-];
-
-const QA_CONFIGS = {
-  'convert-to-jpg': { ...getBaseImgCfg(PNG, WEBP) },
-  'convert-to-png': { ...getBaseImgCfg(JPG, JPEG, WEBP) },
-  'convert-to-svg': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'crop-image': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'resize-image': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
-  'remove-background': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'generate-qr-code': {
-    ...getBaseImgCfg(JPG, JPEG, PNG),
-    input_check: () => true,
-  },
-  'qa-in-product-variant1': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'merge-videos': getMergeVideosCfg(),
-  'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-};
-
-function fade(element, action) {
-  if (action === 'in') {
-    element.classList.remove('hidden');
-    setTimeout(() => {
-      element.classList.remove('transparent');
-    }, 10);
-  } else if (action === 'out') {
-    element.classList.add('transparent');
-    setTimeout(() => {
-      element.classList.add('hidden');
-    }, 200);
-  }
-}
-
-function selectElementByTagPrefix(p) {
-  const allEls = document.body.querySelectorAll(':scope > *');
-  return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
-}
 
 function frictionlessQAExperiment(
   quickAction,
@@ -195,74 +90,31 @@ function showErrorToast(block, msg) {
 }
 
 // eslint-disable-next-line default-param-last
-export function runQuickAction(quickAction, data, block) {
+export function runQuickAction(quickActionId, data, block) {
   // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
-  const exportConfig = [
-    {
-      id: 'downloadExportOption',
-      // label: 'Download',
-      action: { target: 'download' },
-      style: { uiType: 'button' },
-      buttonStyle: {
-        variant: 'secondary',
-        treatment: 'fill',
-        size: 'xl',
-      },
-    },
-    {
-      id: 'edit-in-express',
-      // label: 'Edit in Adobe Express for free',
-      action: { target: 'express' },
-      style: { uiType: 'button' },
-      buttonStyle: {
-        variant: 'primary',
-        treatment: 'fill',
-        size: 'xl',
-      },
-    },
-  ];
+  const exportConfig = createDefaultExportConfig();
 
-  const id = `${quickAction}-container`;
+  const id = `${quickActionId}-container`;
   quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
   block.append(quickActionContainer);
   const divs = block.querySelectorAll(':scope > div');
   if (divs[1]) [, uploadContainer] = divs;
-  fade(uploadContainer, 'out');
+  fadeOut(uploadContainer);
 
-  const contConfig = {
-    mode: 'inline',
-    parentElementId: `${quickAction}-container`,
-    backgroundColor: 'transparent',
-    hideCloseButton: true,
-    padding: 0,
-  };
-
-  const docConfig = {
-    asset: {
-      data,
-      dataType: 'base64',
-      type: 'image',
-    },
-  };
-
-  const videoDocConfig = {
-    asset: {
-      data,
-      dataType: 'base64',
-      type: 'video',
-    },
-  };
+  const contConfig = createContainerConfig(quickActionId);
+  const docConfig = createDocConfig(data, 'image');
+  const videoDocConfig = createDocConfig(data, 'video');
 
   const appConfig = {
     metaData: {
       isFrictionlessQa: 'true',
-      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+      ...(quickActionId === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
     },
     receiveQuickActionErrors: true,
     callbacks: {
       onIntentChange: () => {
         quickActionContainer?.remove();
-        fade(uploadContainer, 'in');
+        fadeIn(uploadContainer);
         document.body.classList.add('editor-modal-loaded');
         window.history.pushState({ hideFrictionlessQa: true }, '', '');
         return {
@@ -279,7 +131,7 @@ export function runQuickAction(quickAction, data, block) {
         // eslint-disable-next-line no-underscore-dangle
         showErrorToast(block, `${error._customData} Please try again.`);
         quickActionContainer?.remove();
-        fade(uploadContainer, 'in');
+        fadeIn(uploadContainer);
       },
     },
   };
@@ -289,72 +141,41 @@ export function runQuickAction(quickAction, data, block) {
   const isStage = urlParams.get('hzenv') === 'stage';
 
   if (!ccEverywhere) return;
-  switch (quickAction) {
-    case 'convert-to-jpg':
-      ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'convert-to-png':
-      ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'convert-to-svg':
-      exportConfig.pop();
-      ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'crop-image':
-      ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'resize-image':
-      ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'remove-background':
 
-      if (variant && isStage) {
-        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
-        break;
-      }
-
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'generate-qr-code':
-      ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
-      break;
-    // video quick action
-    case 'convert-to-gif':
-      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'crop-video':
-      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'trim-video':
-      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'resize-video':
-      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'merge-videos':
-      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'convert-to-mp4':
-      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'caption-video':
-      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
-      break;
-    // Experiment code, remove after done
-    case 'qa-nba':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-control':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-variant1':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-variant2':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    default: break;
+  // Handle experimental variants for remove-background
+  if (quickActionId === 'remove-background' && variant && isStage) {
+    frictionlessQAExperiment(
+      variant,
+      docConfig,
+      appConfig,
+      exportConfig,
+      contConfig,
+    );
+    return;
   }
+
+  // Handle experimental variants
+  if (EXPERIMENTAL_VARIANTS.includes(quickActionId)) {
+    frictionlessQAExperiment(
+      quickActionId,
+      docConfig,
+      appConfig,
+      exportConfig,
+      contConfig,
+    );
+    return;
+  }
+
+  // Execute the quick action using the helper function
+  executeQuickAction(
+    ccEverywhere,
+    quickActionId,
+    docConfig,
+    appConfig,
+    exportConfig,
+    contConfig,
+    videoDocConfig,
+  );
 }
 
 // eslint-disable-next-line default-param-last
@@ -370,7 +191,6 @@ async function startSDK(data = '', quickAction, block) {
     }
   }
   const CDN_URL = valid ? urlOverride : 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
-  const clientId = 'AdobeExpressWeb';
 
   await loadScript(CDN_URL);
   if (!window.CCEverywhere) {
@@ -378,27 +198,7 @@ async function startSDK(data = '', quickAction, block) {
   }
 
   if (!ccEverywhere) {
-    let { ietf } = getConfig().locale;
-    const country = urlParams.get('country');
-    if (country) ietf = getConfig().locales[country]?.ietf;
-    if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
-    else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
-    // query parameter URL for overriding the cc everywhere
-    // iframe source URL, used for testing new experiences
-    const isStageEnv = urlParams.get('hzenv') === 'stage';
-
-    const ccEverywhereConfig = {
-      hostInfo: {
-        clientId,
-        appName: 'express',
-      },
-      configParams: {
-        locale: ietf?.replace('-', '_'),
-        env: isStageEnv ? 'stage' : 'prod',
-      },
-      authOption: () => ({ mode: 'delayed' }),
-    };
-
+    const ccEverywhereConfig = createSDKConfig(getConfig, urlParams);
     ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
   }
 
@@ -420,12 +220,7 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
     return;
   }
   const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-  let msg;
-  if (!QA_CONFIGS[quickAction].input_check(file.type)) {
-    msg = await replaceKey('file-type-not-supported', getConfig());
-  } else {
-    msg = await replaceKey('file-size-not-supported', getConfig());
-  }
+  const msg = await getErrorMsg(file, quickAction, replaceKey, getConfig);
   showErrorToast(block, msg);
 }
 
@@ -531,7 +326,7 @@ export default async function decorate(block) {
       editorModal?.remove();
       document.body.classList.remove('editor-modal-loaded');
       inputElement.value = '';
-      fade(uploadContainer, 'in');
+      fadeIn(uploadContainer);
       document.body.dataset.suppressfloatingcta = 'false';
     }
   }, { passive: true });
