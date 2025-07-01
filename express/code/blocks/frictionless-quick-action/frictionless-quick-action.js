@@ -2,10 +2,12 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
+import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 
 let createTag; let getConfig;
 let getMetadata;
 let loadScript; let globalNavSelector;
+let selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 let ccEverywhere;
 let quickActionContainer;
@@ -15,18 +17,39 @@ const JPG = 'jpg';
 const JPEG = 'jpeg';
 const PNG = 'png';
 const WEBP = 'webp';
+const VIDEO_FORMATS = [
+  'mov',
+  'mp4',
+  'crm',
+  'avi',
+  'm2ts',
+  '3gp',
+  'f4v',
+  'mpeg',
+  'm2t',
+  'm2p',
+  'm1v',
+  'mpg',
+  'wmv',
+  'tts',
+  '264',
+];
+
 export const getBaseImgCfg = (...types) => ({
   group: 'image',
   max_size: 40 * 1024 * 1024,
   accept: types.map((type) => `.${type}`).join(', '),
   input_check: (input) => types.map((type) => `image/${type}`).includes(input),
 });
-export const getBaseVideoCfg = (...types) => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `video/${type}`).includes(input),
-});
+export const getBaseVideoCfg = (...types) => {
+  const formats = Array.isArray(types[0]) ? types[0] : types;
+  return {
+    group: 'video',
+    max_size: 1024 * 1024 * 1024,
+    accept: formats.map((type) => `.${type}`).join(', '),
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
+  };
+};
 
 const EXPERIMENTAL_VARIANTS = [
   'qa-in-product-variant1', 'qa-in-product-variant2', 'qa-nba', 'qa-in-product-control',
@@ -47,6 +70,13 @@ const QA_CONFIGS = {
   'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'merge-videos': { ...getBaseVideoCfg([...VIDEO_FORMATS, JPG, JPEG, PNG]) },
+  'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
 };
 
 function fade(element, action) {
@@ -113,7 +143,7 @@ export function runQuickAction(quickAction, data, block) {
   // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
   const exportConfig = [
     {
-      id: 'download-button',
+      id: 'downloadExportOption',
       // label: 'Download',
       action: { target: 'download' },
       style: { uiType: 'button' },
@@ -159,8 +189,19 @@ export function runQuickAction(quickAction, data, block) {
     },
   };
 
+  const videoDocConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'video',
+    },
+  };
+
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
+    metaData: {
+      isFrictionlessQa: 'true',
+      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+    },
     receiveQuickActionErrors: false,
     callbacks: {
       onIntentChange: () => {
@@ -214,6 +255,28 @@ export function runQuickAction(quickAction, data, block) {
       break;
     case 'generate-qr-code':
       ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    // video quick action
+    case 'convert-to-gif':
+      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-video':
+      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'trim-video':
+      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-video':
+      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'merge-videos':
+      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-mp4':
+      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'caption-video':
+      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     // Experiment code, remove after done
     case 'qa-nba':
@@ -322,10 +385,29 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
   showErrorToast(block, msg);
 }
 
+function createCaptionLocaleDropdown() {
+  const { wrapper } = createLocaleDropdownWrapper({
+    defaultValue: 'en-us',
+    onChange: (code) => {
+      selectedVideoLanguage = code;
+    },
+  });
+  return wrapper;
+}
+
+function createStep(number, content) {
+  const step = createTag('div', { class: 'step', 'data-step': number });
+  const stepNumber = createTag('div', { class: 'step-number' }, number);
+  step.append(stepNumber, content);
+  return step;
+}
+
 export default async function decorate(block) {
-  const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
+  const [utils, gNavUtils] = await Promise.all([
+    import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
-    decorateButtonsDeprecated(block)]);
+    decorateButtonsDeprecated(block),
+  ]);
 
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
 
@@ -333,7 +415,10 @@ export default async function decorate(block) {
 
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
-  const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
+  const quickActionRow = rows.filter(
+    (r) => r.children
+      && r.children[0].textContent.toLowerCase().trim() === 'quick-action',
+  );
   const quickAction = quickActionRow?.[0].children[1]?.textContent;
   if (!quickAction) {
     throw new Error('Invalid Quick Action Type.');
@@ -345,6 +430,7 @@ export default async function decorate(block) {
   const animation = animationContainer.querySelector('a');
   const dropzone = actionAndAnimationRow[1];
   const cta = dropzone.querySelector('a.button, a.con-button');
+  const dropzoneHint = dropzone.querySelector('p:first-child');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });
@@ -353,12 +439,33 @@ export default async function decorate(block) {
     animationContainer.append(transformLinkToAnimation(animation));
   }
 
+  const captionVideoDropzoneActionColumn = createTag('div', { class: 'caption-video-dropzone-action-column' });
+  // Add locale dropdown for caption-video
+  if (quickAction === 'caption-video') {
+    const localeDropdownWrapper = createCaptionLocaleDropdown();
+    const step1 = createStep('1', localeDropdownWrapper);
+    actionColumn.append(step1);
+
+    const dropzoneHintClone = dropzoneHint.cloneNode(true);
+    dropzoneHintClone.classList.add('caption-video-dropzone-hint');
+    captionVideoDropzoneActionColumn.append(dropzoneHintClone);
+    dropzoneHint.classList.add('hidden');
+  }
+
   if (cta) cta.classList.add('xlarge');
   dropzone.classList.add('dropzone');
 
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
-  actionColumn.append(dropzoneContainer, gtcText);
+
+  if (quickAction === 'caption-video') {
+    captionVideoDropzoneActionColumn.append(dropzoneContainer, gtcText);
+    const step2 = createStep('2', captionVideoDropzoneActionColumn);
+    actionColumn.append(step2);
+  } else {
+    actionColumn.append(dropzoneContainer, gtcText);
+  }
+
   const inputElement = createTag('input', { type: 'file', accept: QA_CONFIGS[quickAction].accept });
   inputElement.onchange = () => {
     const file = inputElement.files[0];
@@ -401,33 +508,44 @@ export default async function decorate(block) {
     dropzoneContainer.addEventListener(eventName, unhighlight, false);
   });
 
-  dropzoneContainer.addEventListener('drop', async (e) => {
-    const dt = e.dataTransfer;
-    const { files } = dt;
+  dropzoneContainer.addEventListener(
+    'drop',
+    async (e) => {
+      const dt = e.dataTransfer;
+      const { files } = dt;
 
-    await Promise.all(
-      [...files].map((file) => startSDKWithUnconvertedFile(file, quickAction, block)),
-    );
-    document.body.dataset.suppressfloatingcta = 'true';
-  }, false);
+      await Promise.all(
+        [...files].map((file) => startSDKWithUnconvertedFile(file, quickAction, block)),
+      );
+      document.body.dataset.suppressfloatingcta = 'true';
+    },
+    false,
+  );
 
-  const freePlanTags = await buildFreePlanWidget({ typeKey: 'branded', checkmarks: true });
+  const freePlanTags = await buildFreePlanWidget({
+    typeKey: 'branded',
+    checkmarks: true,
+  });
   dropzone.append(freePlanTags);
 
-  window.addEventListener('popstate', (e) => {
-    const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
-    const correctState = e.state?.hideFrictionlessQa;
-    const embedElsFound = quickActionContainer || editorModal;
-    window.history.pushState({ hideFrictionlessQa: true }, '', '');
-    if (correctState || embedElsFound) {
-      quickActionContainer?.remove();
-      editorModal?.remove();
-      document.body.classList.remove('editor-modal-loaded');
-      inputElement.value = '';
-      fade(uploadContainer, 'in');
-      document.body.dataset.suppressfloatingcta = 'false';
-    }
-  }, { passive: true });
+  window.addEventListener(
+    'popstate',
+    (e) => {
+      const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
+      const correctState = e.state?.hideFrictionlessQa;
+      const embedElsFound = quickActionContainer || editorModal;
+      window.history.pushState({ hideFrictionlessQa: true }, '', '');
+      if (correctState || embedElsFound) {
+        quickActionContainer?.remove();
+        editorModal?.remove();
+        document.body.classList.remove('editor-modal-loaded');
+        inputElement.value = '';
+        fade(uploadContainer, 'in');
+        document.body.dataset.suppressfloatingcta = 'false';
+      }
+    },
+    { passive: true },
+  );
 
   if (EXPERIMENTAL_VARIANTS.includes(quickAction)) {
     block.dataset.frictionlesstype = 'remove-background';
@@ -437,7 +555,9 @@ export default async function decorate(block) {
 
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
-  if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
+  if (
+    ['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())
+  ) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');
     block.prepend(logo);
