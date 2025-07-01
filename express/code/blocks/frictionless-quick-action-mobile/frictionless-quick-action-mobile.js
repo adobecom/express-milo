@@ -5,18 +5,6 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
-import {
-  QA_CONFIGS,
-  fadeIn,
-  fadeOut,
-  selectElementByTagPrefix,
-  createContainerConfig,
-  createDocConfig,
-  createSDKConfig,
-  createMobileExportConfig,
-  executeQuickAction,
-  getErrorMsg,
-} from '../../scripts/utils/frictionless-utils.js';
 
 let replaceKey; let getConfig;
 let loadScript;
@@ -27,6 +15,108 @@ let uploadContainer;
 let ui2SDK;
 let ui2Landing;
 const selectedVideoLanguage = 'en-us'; // Default to English (US)
+
+const JPG = 'jpg';
+const JPEG = 'jpeg';
+const PNG = 'png';
+const WEBP = 'webp';
+const VIDEO_FORMATS = [
+  'mov',
+  'mp4',
+  'crm',
+  'avi',
+  'm2ts',
+  '3gp',
+  'f4v',
+  'mpeg',
+  'm2t',
+  'm2p',
+  'm1v',
+  'mpg',
+  'wmv',
+  'tts',
+  '264',
+];
+
+export const getBaseImgCfg = (...types) => ({
+  group: 'image',
+  max_size: 40 * 1024 * 1024,
+  accept: types.map((type) => `.${type}`).join(', '),
+  input_check: (input) => types.map((type) => `image/${type}`).includes(input),
+});
+export const getBaseVideoCfg = (...types) => {
+  const formats = Array.isArray(types[0]) ? types[0] : types;
+  return {
+    group: 'video',
+    max_size: 1024 * 1024 * 1024,
+    accept: formats.map((type) => `.${type}`).join(', '),
+    input_check: (input) => formats.map((type) => `video/${type}`).includes(input),
+  };
+};
+
+export const getMergeVideosCfg = () => ({
+  group: 'video',
+  max_size: 1024 * 1024 * 1024, // Use video max size (1GB)
+  accept: [...VIDEO_FORMATS, JPG, JPEG, PNG]
+    .map((type) => `.${type}`)
+    .join(', '),
+  input_check: (input) => {
+    const videoTypes = VIDEO_FORMATS.map((type) => `video/${type}`);
+    const imageTypes = [JPG, JPEG, PNG].map((type) => `image/${type}`);
+    return [...videoTypes, ...imageTypes].includes(input);
+  },
+});
+
+const QA_CONFIGS = {
+  'convert-to-jpg': {
+    ...getBaseImgCfg(PNG, WEBP),
+  },
+  'convert-to-png': {
+    ...getBaseImgCfg(JPG, JPEG, WEBP),
+  },
+  'convert-to-svg': {
+    ...getBaseImgCfg(JPG, JPEG, PNG),
+  },
+  'crop-image': {
+    ...getBaseImgCfg(JPG, JPEG, PNG),
+  },
+  'resize-image': {
+    ...getBaseImgCfg(JPG, JPEG, PNG, WEBP),
+  },
+  'remove-background': {
+    ...getBaseImgCfg(JPG, JPEG, PNG),
+  },
+  'generate-qr-code': {
+    ...getBaseImgCfg(JPG, JPEG, PNG),
+    input_check: () => true,
+  },
+  'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'resize-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'merge-videos': getMergeVideosCfg(),
+  'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+};
+
+function fadeIn(element) {
+  element.classList.remove('hidden');
+  setTimeout(() => {
+    element.classList.remove('transparent');
+  }, 10);
+}
+
+function fadeOut(element) {
+  element.classList.add('transparent');
+  setTimeout(() => {
+    element.classList.add('hidden');
+  }, 200);
+}
+
+function selectElementByTagPrefix(p) {
+  const allEls = document.body.querySelectorAll(':scope > *');
+  return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
+}
 
 let timeoutId = null;
 function showErrorToast(block, msg) {
@@ -50,21 +140,49 @@ function showErrorToast(block, msg) {
   timeoutId = setTimeout(hideToast, 6000);
 }
 
-async function getExportTexts() {
-  const downloadKey = 'download-to-phone';
-  const editKey = 'edit-in-adobe-express-for-free';
+const downloadKey = 'download-to-phone';
+const editKey = 'edit-in-adobe-express-for-free';
+
+export async function runQuickAction(quickAction, data, block) {
   let downloadText = await replaceKey(downloadKey, getConfig());
   if (downloadText === downloadKey.replaceAll('-', ' ')) downloadText = 'Download to Phone';
   let editText = await replaceKey(editKey, getConfig());
   if (editText === editKey.replaceAll('-', ' ')) editText = 'Edit in Adobe Express for free';
-  return { downloadText, editText };
-}
 
-export async function runQuickAction(quickActionId, data, block) {
-  const { downloadText, editText } = await getExportTexts();
-  const exportConfig = await createMobileExportConfig(quickActionId, downloadText, editText);
+  const exportConfig = [
+    {
+      id: 'downloadExportOption',
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: downloadText }),
+      action: {
+        target: 'download',
+      },
+      style: {
+        uiType: 'button',
+      },
+      buttonStyle: {
+        variant: 'secondary',
+        treatment: 'fill',
+        size: 'xl',
+      },
+    },
+    {
+      id: 'edit-in-express',
+      ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
+      action: {
+        target: 'express',
+      },
+      style: {
+        uiType: 'button',
+      },
+      buttonStyle: {
+        variant: 'primary',
+        treatment: 'fill',
+        size: 'xl',
+      },
+    },
+  ];
 
-  const id = `${quickActionId}-container`;
+  const id = `${quickAction}-container`;
   quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
   block.append(quickActionContainer);
   const divs = block.querySelectorAll(':scope > div');
@@ -72,14 +190,33 @@ export async function runQuickAction(quickActionId, data, block) {
 
   ui2SDK();
 
-  const contConfig = createContainerConfig(quickActionId);
-  const docConfig = createDocConfig(data, 'image');
-  const videoDocConfig = createDocConfig(data, 'video');
+  const contConfig = {
+    mode: 'inline',
+    parentElementId: `${quickAction}-container`,
+    backgroundColor: 'transparent',
+    hideCloseButton: true,
+  };
+
+  const docConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'image',
+    },
+  };
+
+  const videoDocConfig = {
+    asset: {
+      data,
+      dataType: 'base64',
+      type: 'video',
+    },
+  };
 
   const appConfig = {
     metaData: {
       isFrictionlessQa: 'true',
-      ...(quickActionId === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+      ...(quickAction === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
     },
     receiveQuickActionErrors: true,
     callbacks: {
@@ -108,17 +245,53 @@ export async function runQuickAction(quickActionId, data, block) {
   };
 
   if (!ccEverywhere) return;
-
-  // Execute the quick action using the helper function
-  executeQuickAction(
-    ccEverywhere,
-    quickActionId,
-    docConfig,
-    appConfig,
-    exportConfig,
-    contConfig,
-    videoDocConfig,
-  );
+  switch (quickAction) {
+    case 'convert-to-jpg':
+      ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-png':
+      ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-svg':
+      exportConfig.pop();
+      ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-image':
+      ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-image':
+      ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'remove-background':
+      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'generate-qr-code':
+      ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
+      break;
+    // video quick action
+    case 'convert-to-gif':
+      ccEverywhere.quickAction.convertToGIF(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'crop-video':
+      ccEverywhere.quickAction.cropVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'trim-video':
+      ccEverywhere.quickAction.trimVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'resize-video':
+      ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'merge-videos':
+      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'convert-to-mp4':
+      ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    case 'caption-video':
+      ccEverywhere.quickAction.captionVideo(videoDocConfig, appConfig, exportConfig, contConfig);
+      break;
+    default: break;
+  }
 }
 
 // eslint-disable-next-line default-param-last
@@ -134,6 +307,7 @@ async function startSDK(data = '', quickAction, block) {
     }
   }
   const CDN_URL = valid ? urlOverride : 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
+  const clientId = 'AdobeExpressWeb';
 
   await loadScript(CDN_URL);
   if (!window.CCEverywhere) {
@@ -141,7 +315,26 @@ async function startSDK(data = '', quickAction, block) {
   }
   document.body.dataset.suppressfloatingcta = 'true';
   if (!ccEverywhere) {
-    const ccEverywhereConfig = createSDKConfig(getConfig, urlParams);
+    let { ietf } = getConfig().locale;
+    const country = urlParams.get('country');
+    if (country) ietf = getConfig().locales[country]?.ietf;
+    if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
+    else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
+
+    const ccEverywhereConfig = {
+      hostInfo: {
+        clientId,
+        appName: 'express',
+      },
+      configParams: {
+        locale: ietf?.replace('-', '_'),
+        env: urlParams.get('hzenv') === 'stage' ? 'stage' : 'prod',
+      },
+      authOption: () => ({
+        mode: 'delayed',
+      }),
+    };
+
     ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
   }
 
@@ -162,7 +355,12 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
     reader.readAsDataURL(file);
     return;
   }
-  const msg = await getErrorMsg(file, quickAction, replaceKey, getConfig);
+  let msg;
+  if (!QA_CONFIGS[quickAction].input_check(file.type)) {
+    msg = await replaceKey('file-type-not-supported', getConfig());
+  } else {
+    msg = await replaceKey('file-size-not-supported', getConfig());
+  }
   showErrorToast(block, msg);
 }
 
