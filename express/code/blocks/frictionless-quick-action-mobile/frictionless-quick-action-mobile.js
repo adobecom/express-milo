@@ -234,7 +234,7 @@ export async function runQuickAction(quickAction, data, block) {
   const videoDocConfig = {
     asset: {
       data,
-      dataType: 'base64',
+      dataType: 'blob',
       type: 'video',
     },
   };
@@ -371,6 +371,12 @@ async function startSDKWithUnconvertedFile(file, quickAction, block) {
   if (!file) return;
   const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
   if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
+    const isVideo = QA_CONFIGS[quickAction].group === 'video';
+    if (isVideo) {
+      window.history.pushState({ hideFrictionlessQa: true }, '', '');
+      startSDK(file, quickAction, block);
+      return;
+    }
     const reader = new FileReader();
     reader.onloadend = () => {
       window.history.pushState({ hideFrictionlessQa: true }, '', '');
