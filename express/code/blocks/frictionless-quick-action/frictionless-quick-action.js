@@ -253,6 +253,14 @@ export function runQuickAction(quickAction, data, block) {
     },
   };
 
+  const mergeVideosDocConfig = {
+    assets: [{
+      data,
+      dataType: 'blob',
+      type: 'video',
+    }],
+  };
+
   const appConfig = {
     metaData: {
       isFrictionlessQa: 'true',
@@ -332,7 +340,12 @@ export function runQuickAction(quickAction, data, block) {
       ccEverywhere.quickAction.resizeVideo(videoDocConfig, appConfig, exportConfig, contConfig);
       break;
     case 'merge-videos':
-      ccEverywhere.quickAction.mergeVideos(videoDocConfig, appConfig, exportConfig, contConfig);
+      ccEverywhere.quickAction.mergeVideos(
+        mergeVideosDocConfig,
+        appConfig,
+        exportConfig,
+        contConfig,
+      );
       break;
     case 'convert-to-mp4':
       ccEverywhere.quickAction.convertToMP4(videoDocConfig, appConfig, exportConfig, contConfig);
