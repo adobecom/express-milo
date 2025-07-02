@@ -13,7 +13,7 @@ import {
   selectElementByTagPrefix,
   createDefaultExportConfig,
   executeQuickAction,
-  processFileForQuickAction,
+  processFilesForQuickAction,
   loadAndInitializeCCEverywhere,
   getErrorMsg,
 } from '../../scripts/utils/frictionless-utils.js';
@@ -104,8 +104,8 @@ export function runQuickAction(quickActionId, data, block) {
   fadeOut(uploadContainer);
 
   const contConfig = createContainerConfig(quickActionId);
-  const docConfig = createDocConfig(data, 'image');
-  const videoDocConfig = quickActionId === 'merge-videos' ? createMergeVideosDocConfig(data) : createDocConfig(data, 'video');
+  const docConfig = createDocConfig(data[0], 'image');
+  const videoDocConfig = quickActionId === 'merge-videos' ? createMergeVideosDocConfig(data) : createDocConfig(data[0], 'video');
 
   const appConfig = {
     metaData: {
@@ -181,20 +181,27 @@ export function runQuickAction(quickActionId, data, block) {
 }
 
 // eslint-disable-next-line default-param-last
-async function startSDK(data = '', quickAction, block) {
+async function startSDK(data = [''], quickAction, block) {
   if (!ccEverywhere) {
     ccEverywhere = await loadAndInitializeCCEverywhere(getConfig);
   }
   runQuickAction(quickAction, data, block);
 }
 
-async function startSDKWithUnconvertedFile(file, quickAction, block) {
-  const data = await processFileForQuickAction(file, quickAction);
-  if (!data) {
-    const msg = await getErrorMsg(file, quickAction, replaceKey, getConfig);
+async function startSDKWithUnconvertedFiles(files, quickAction, block) {
+  let data = await processFilesForQuickAction(files, quickAction);
+  if (!data[0]) {
+    const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
     showErrorToast(block, msg);
     return;
   }
+
+  if (data.some((item) => !item)) {
+    const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
+    showErrorToast(block, msg);
+    data = data.filter((item) => item);
+  }
+
   startSDK(data, quickAction, block);
 }
 
@@ -237,17 +244,25 @@ export default async function decorate(block) {
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
   actionColumn.append(dropzoneContainer, gtcText);
-  const inputElement = createTag('input', { type: 'file', accept: QA_CONFIGS[quickAction].accept });
+  const inputElement = createTag('input', {
+    type: 'file',
+    accept: QA_CONFIGS[quickAction].accept,
+    ...(quickAction === 'merge-videos' && { multiple: true }),
+  });
   inputElement.onchange = () => {
-    const file = inputElement.files[0];
-    startSDKWithUnconvertedFile(file, quickAction, block);
+    if (quickAction === 'merge-videos' && inputElement.files.length > 1) {
+      startSDKWithUnconvertedFiles(inputElement.files, quickAction, block);
+    } else {
+      const file = inputElement.files[0];
+      startSDKWithUnconvertedFiles([file], quickAction, block);
+    }
   };
   block.append(inputElement);
 
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();
     if (quickAction === 'generate-qr-code') {
-      startSDK('', quickAction, block);
+      startSDK([''], quickAction, block);
     } else {
       inputElement.click();
     }
@@ -282,10 +297,14 @@ export default async function decorate(block) {
   dropzoneContainer.addEventListener('drop', async (e) => {
     const dt = e.dataTransfer;
     const { files } = dt;
+    if (quickAction === 'merge-videos' && files.length > 1) {
+      startSDKWithUnconvertedFiles(files, quickAction, block);
+    } else {
+      await Promise.all(
+        [...files].map((file) => startSDKWithUnconvertedFiles([file], quickAction, block)),
+      );
+    }
 
-    await Promise.all(
-      [...files].map((file) => startSDKWithUnconvertedFile(file, quickAction, block)),
-    );
     document.body.dataset.suppressfloatingcta = 'true';
   }, false);
 

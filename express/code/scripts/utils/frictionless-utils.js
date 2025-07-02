@@ -147,14 +147,16 @@ export function createDocConfig(data, type = 'image') {
 }
 
 export function createMergeVideosDocConfig(data) {
+  const assets = [];
+  for (const file of data) {
+    assets.push({
+      data: file,
+      dataType: 'blob',
+      type: 'video',
+    });
+  }
   return {
-    assets: [
-      {
-        data,
-        dataType: 'blob',
-        type: 'video',
-      },
-    ],
+    assets,
   };
 }
 
@@ -322,9 +324,12 @@ export function executeQuickAction(
   }
 }
 
-export async function getErrorMsg(file, quickAction, replaceKey, getConfig) {
+export async function getErrorMsg(files, quickAction, replaceKey, getConfig) {
   let msg;
-  if (!QA_CONFIGS[quickAction].input_check(file.type)) {
+  const isNotValid = Array.from(files).some(
+    (file) => !QA_CONFIGS[quickAction].input_check(file.type),
+  );
+  if (isNotValid) {
     msg = await replaceKey('file-type-not-supported', getConfig());
   } else {
     msg = await replaceKey('file-size-not-supported', getConfig());
@@ -354,6 +359,13 @@ export async function processFileForQuickAction(
     return onloadend(reader.result)();
   }
   return undefined;
+}
+
+export async function processFilesForQuickAction(files, quickAction) {
+  const data = await Promise.all(
+    Array.from(files).map((file) => processFileForQuickAction(file, quickAction)),
+  );
+  return data;
 }
 
 export function createSDKConfig(getConfig, urlParams) {
