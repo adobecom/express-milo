@@ -342,21 +342,22 @@ export async function processFileForQuickAction(
   quickAction,
 ) {
   const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
-  const onloadend = (data) => () => {
-    window.history.pushState({ hideFrictionlessQa: true }, '', '');
-    return data;
-  };
 
   if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
     const isVideo = QA_CONFIGS[quickAction].group === 'video';
     if (isVideo) {
-      return onloadend(file)();
+      window.history.pushState({ hideFrictionlessQa: true }, '', '');
+      return file;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = onloadend(reader.result);
-    reader.readAsDataURL(file);
-    return onloadend(reader.result)();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        window.history.pushState({ hideFrictionlessQa: true }, '', '');
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
   }
   return undefined;
 }
