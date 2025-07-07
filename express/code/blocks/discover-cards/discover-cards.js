@@ -120,9 +120,9 @@ export default async function decorate(block) {
   });
   const firstChild = block.querySelector(':scope > div:first-child');
 
-  if (firstChild && firstChild.querySelector('h1, h2, h3')) {
-    firstChild.classList.add('center-title');
-    const header = firstChild.querySelector('h1, h2, h3');
+  if (firstChild && firstChild.querySelector('h2, h3, h4, h5, h6')) {
+    const header = firstChild.querySelector('h2, h3, h4, h5, h6');
+    header.classList.add('center-title');
     header.setAttribute('aria-label', `${header.textContent.trim()} cards`);
     block.insertBefore(firstChild, block.firstChild);
   }
@@ -148,7 +148,7 @@ export default async function decorate(block) {
         } else {
           const [titleDiv, detailsDiv] = element.children;
           if (titleDiv && detailsDiv) {
-            card.cardTitle = titleDiv.textContent.trim();
+            card.cardTitle = titleDiv;
             card.cardDetails = detailsDiv.textContent.trim();
           }
         }

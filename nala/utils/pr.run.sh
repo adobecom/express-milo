@@ -90,7 +90,7 @@ npx playwright install --with-deps
 # Run Playwright tests on the specific projects using root-level playwright.config.js
 # This will be changed later
 echo "*** Running tests on specific projects ***"
-npx playwright test --config=./playwright.config.js ${TAGS} ${EXCLUDE_TAGS} --project=express-live-chromium --project=express-live-firefox --project=express-live-webkit ${REPORTER} || EXIT_STATUS=$?
+npx playwright test --config=./playwright.config.cjs ${TAGS} ${EXCLUDE_TAGS} --project=express-live-chromium --project=express-live-firefox --project=express-live-webkit ${REPORTER} || EXIT_STATUS=$?
 
 # Check if tests passed or failed
 if [ $EXIT_STATUS -ne 0 ]; then

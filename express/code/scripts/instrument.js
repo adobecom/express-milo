@@ -429,8 +429,23 @@ export default async function martechLoadedCB() {
 
         document.dispatchEvent(new Event('context_loaded'));
       };
-      // TODO: What the heck is this?  This needs to be behind one trust and cmp
-      loadScript(`https://adobe.demdex.net/event?d_dst=1&d_rtbd=json&d_cb=setAudienceManagerSegments&d_cts=2&d_mid=${ecid}`);
+      const events = ['adobePrivacy:PrivacyConsent', 'adobePrivacy:PrivacyCustom', 'adobePrivacy:PrivacyReject'];
+      function checkConsent() {
+        const activeGroups = window.adobePrivacy?.activeCookieGroups();
+        if (activeGroups?.includes('C0004')) {
+          loadScript(`https://adobe.demdex.net/event?d_dst=1&d_rtbd=json&d_cb=setAudienceManagerSegments&d_cts=2&d_mid=${ecid}`);
+          return true;
+        }
+        return false;
+      }
+      const consentCB = () => {
+        if (checkConsent()) {
+          events.forEach((event) => window.removeEventListener(event, consentCB));
+        }
+      };
+      if (!checkConsent()) {
+        events.forEach((event) => window.addEventListener(event, consentCB));
+      }
     };
 
     await _satellite.alloyConfigurePromise;
