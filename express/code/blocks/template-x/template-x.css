@@ -2254,7 +2254,7 @@ main .template-x .api-templates-toolbar .search-bar-wrapper.collapsed .search-dr
   opacity: 0;
   background-color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   justify-content: space-between;
   padding: 8px;
@@ -3260,3 +3260,26 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
     margin: auto;
   }
  }
+
+/* No-overflow class to prevent carousel overflow */
+
+.template-x.discover {
+    overflow: hidden;
+    max-width: 100%;
+    width: 100%;
+}
+
+.template-x.discover > *:not(.template-x.horizontal) {
+  padding: 0px;
+  margin-left: -10px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.template-x.discover .carousel-platform {
+  padding: 0px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: scroll;
+}

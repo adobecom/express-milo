@@ -3,6 +3,7 @@
   position: relative;
   z-index: 1;
   height: auto;
+  width: 100%;
 }
 
 .faqv2-wrapper {
@@ -475,7 +476,6 @@
 @media (min-width: 600px) {
   .faqv2, 
   .faqv2.bold {
-    width: 540px;
     margin: auto;
   }
   .faqv2 .faqv2-accordion,
@@ -549,18 +549,6 @@
   .faqv2.expandable.longform .faqv2-accordions-col .faqv2-wrapper:last-child {
     box-shadow: none;
   }
-
-  .faqv2 {
-    width: 840px;
-    margin: auto;
-  }
-
-  .faqv2.bold {
-    width: 860px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .faqv2.bold .faqv2-header {
     font-size: var(--body-font-size-m);
     font-weight: normal;
