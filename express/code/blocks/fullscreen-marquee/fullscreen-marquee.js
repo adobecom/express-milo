@@ -12,7 +12,7 @@ function buildContent(content) {
   if (contentLink && contentLink.href.endsWith('.mp4')) {
     const video = new URL(contentLink.textContent.trim());
     const looping = ['true', 'yes', 'on'].includes(video.searchParams.get('loop'));
-    formattedContent = transformLinkToAnimation(contentLink, looping);
+    formattedContent = transformLinkToAnimation(contentLink, looping, false);
   } else {
     const contentImage = content.querySelector('picture');
 
@@ -56,6 +56,11 @@ async function addMarqueeCenterCTA(block, appFrame) {
   const cta = buttons[0];
 
   const highlightCta = cta.cloneNode(true);
+  highlightCta.setAttribute('href', '#');
+  highlightCta.setAttribute('aria-hidden', 'true');
+  highlightCta.setAttribute('role', 'presentation');
+  highlightCta.setAttribute('tabindex', '-1');
+
   const appHighlight = createTag('a', {
     class: 'fullscreen-marquee-app-frame-highlight',
     href: cta.href,

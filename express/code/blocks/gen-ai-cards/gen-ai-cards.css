@@ -102,6 +102,8 @@
   text-align: left; 
   margin-bottom: 8px;
   font-size: var(--heading-font-size-m);
+  line-height: 2.925rem;
+  max-width: 800px;
 }
 
 .gen-ai-cards .gen-ai-cards-heading-section p {
@@ -145,6 +147,7 @@
 }
 
 .gen-ai-cards .card {
+  height: 415px;
   box-sizing: border-box;
   position: relative;
   flex-direction: column;
@@ -159,7 +162,6 @@
   margin: 0px;
   background-color: var(--color-background-light);
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
   transition: width var(--transition-duration) var(--transition-timing), 
               min-width var(--transition-duration) var(--transition-timing), 
@@ -188,6 +190,18 @@
 .gen-ai-cards .card .text-wrapper p {
   margin: 0;
 }
+.gen-ai-cards .card .content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.gen-ai-cards:not(.homepage) .card .content-wrapper,
+.gen-ai-cards.homepage.spotlight .card .content-wrapper {
+  height: 100%;
+}
 
 .gen-ai-cards .card .text-wrapper .cta-card-title {
   font-size: var(--body-font-size-l);
@@ -198,6 +212,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
+  padding-bottom: 8px;
 }
 
 .gen-ai-cards .card .text-wrapper .tag {
@@ -223,6 +238,7 @@
 .gen-ai-cards .card .media-wrapper {
   border-radius: var(--spacing-border-radius-large);
   height: var(--media-wrapper-height);
+  min-height: var(--media-wrapper-height);;
   overflow: hidden;
 }
 
@@ -248,7 +264,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage.spotlight .card .media-wrapper {
-  width: 268px;
+  width: 100%;
   height: 228px;
 }
 
@@ -264,7 +280,6 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .card .gen-ai-input-form {
-  position: absolute;
   min-width: var(--input-form-width);
   padding: 8px;
   background-color: var(--color-white);
@@ -273,9 +288,8 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   border: 2px solid var(--color-info-accent);
   left: 50%;
   top: 100%;
-  transform: translate(-50%, calc(-100% - 30px));
   display: flex;
-  justify-content: space-between;
+  width: 100%;
 }
 
 .gen-ai-cards .card .gen-ai-input-form input {
@@ -291,7 +305,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   transition: all 0.3s ease-in-out;
 }
 .gen-ai-cards .card .gen-ai-input-form:has(button:focus) input, 
-.gen-ai-cards .card .gen-ai-input-form input:focus {
+.gen-ai-cards .card .gen-ai-input-form input {
   outline: none;
   width: 100%;
   flex-grow: 1;
@@ -299,7 +313,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 
 }
 .gen-ai-cards .card .gen-ai-input-form:has(button:focus) ,
-.gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
+.gen-ai-cards .card .gen-ai-input-form {
   flex-wrap: wrap;
 }
 
@@ -324,12 +338,12 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-  margin-left: 24px;
+  margin-left: 20px;
 }
 
 .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit {
   color: var(--color-white);
-  background-color: var(--color-info-accent);
+  background-color: var(--color-background-accent-default);
   border-style: none;
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-s);
@@ -343,8 +357,14 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   transition: background-color .2s;
 }
 
-.gen-ai-cards .gen-ai-input-form .gen-ai-submit:not(:disabled):hover {
-  background-color: var(--color-info-accent-hover);
+.gen-ai-cards .gen-ai-input-form .gen-ai-submit:hover {
+  background-color: var(--color-background-accent-hover);
+}
+
+.gen-ai-cards .gen-ai-input-form .gen-ai-submit:focus {
+  background-color: var(--color-background-accent-hover);
+  outline: 2px solid var(--color-background-accent-hover);
+  outline-offset: 2px;
 }
 
 .gen-ai-cards .card .gen-ai-input-form .gen-ai-submit:disabled {
@@ -353,29 +373,40 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .card .links-wrapper {
-  position: absolute;
   display: flex;
   flex-direction: column;
   justify-content: center;
   left: 50%;
   bottom: 40px;
-  transform: translate(-50%, 0);
+  padding-bottom: 8px;
+}
+
+.gen-ai-cards.homepage .card .links-wrapper {
+  padding-bottom: unset;
+  padding-top: 10px;
 }
 
 .gen-ai-cards .card .links-wrapper a {
   margin: 4px auto;
   width: max-content;
-  color: var(--body-color);
+  color: var(--color-white);
   border: var(--form-border-width) solid var(--color-border-black);
+  background-color: var(--color-background-accent-default);
 }
 
 .gen-ai-cards .card .links-wrapper a:hover {
-  background-color: var(--color-hover-light);
+  background-color: var(--color-background-accent-hover);
 }
 
-.gen-ai-cards .card .links-wrapper a:not(:hover) {
-  background-color: var(--color-white);
+.gen-ai-cards .card .links-wrapper a:focus {
+  background-color: var(--color-background-accent-hover);
+  outline: 2px solid var(--color-background-accent-hover);
+  outline-offset: 2px;
 }
+
+/* .gen-ai-cards .card .links-wrapper a:not(:hover) {
+  background-color: var(--color-info-accent-default);
+} */
 
 main .gen-ai-cards.homepage .carousel-container .carousel-platform.left-fader:not(.right-fader) {
   -webkit-mask-image: none;
@@ -385,6 +416,10 @@ main .gen-ai-cards.homepage .carousel-container .carousel-platform.left-fader:no
 main .gen-ai-cards.homepage .carousel-container .carousel-platform.right-fader:not(.left-fade) {
   -webkit-mask-image: none;
   mask-image: none;
+}
+
+main .gen-ai-cards.homepage .carousel-container .carousel-platform.left-fader {
+  padding-right: 20px;
 }
 
 main .gen-ai-cards.homepage .carousel-container .carousel-fader-left {
@@ -407,7 +442,8 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
 }
 
 .gen-ai-cards.homepage .gen-ai-cards-heading {
-  font-size: var(--font-size-heading-mobile);
+  font-size: var(--heading-font-size-m);
+  text-align: center;
 }
 
 .section .gen-ai-cards-wrapper.homepage {
@@ -420,11 +456,12 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
   max-width: none;
 }
 
-.gen-ai-cards.homepage .gen-ai-cards-heading-section h2 {
-  font-size: var(--heading-font-size-m);
+.gen-ai-cards.homepage .gen-ai-cards-heading-section h3 {
+  font-size: var(--heading-font-size-l);
+  line-height: 2.925rem;
 }
 
-.gen-ai-cards.homepage:not(.spotlight) .gen-ai-cards-heading-section h2,
+.gen-ai-cards.homepage:not(.spotlight) .gen-ai-cards-heading-section h3,
 .gen-ai-cards.homepage:not(.spotlight) .gen-ai-cards-heading-section p {
   text-align: center;
   max-width: none;
@@ -473,10 +510,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   width: 100%;
 }
 
-.gen-ai-cards .card .gen-ai-input-form input:focus {
-  animation: Ease-in 300ms;
-}
-
 .gen-ai-cards .card .gen-ai-input-form:has(input:focus) {
   outline: 2px solid var(--color-info-accent);
   outline-offset: 2px;
@@ -518,7 +551,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
     align-items: flex-end;
   }
 
-  .gen-ai-cards .gen-ai-cards-heading-section h2,
+  .gen-ai-cards .gen-ai-cards-heading-section h3,
   .gen-ai-cards .gen-ai-cards-heading-section p {
     text-align: left;
   }
@@ -563,8 +596,23 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 }
 
+@media (max-width: 1199px) {
+  .gen-ai-cards .card.compact-nav-carousel-element:not(.gen-ai-action) .text-wrapper > .cta-card-title > p {
+    padding-bottom: 30px;
+  }
+
+  .gen-ai-cards .card.compact-nav-carousel-element:not(.gen-ai-action) .links-wrapper {
+    padding-bottom: 0px;
+  }
+}
+
+
 /* Desktop Styles (min-width: 1280px) */
 @media (min-width: 1280px) {
+  .gen-ai-cards .card.compact-nav-carousel-element:not(.gen-ai-action) .text-wrapper {
+    padding-bottom: 2.5rem;
+  }
+
   .gen-ai-cards .gen-ai-cards-heading-section .gen-ai-cards-link {
     padding-left: 30px;
   }
@@ -604,7 +652,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   main .gen-ai-cards.homepage .gen-ai-cards-heading {
-    font-size: var(--heading-font-size-m);
+    font-size: var(--heading-font-size-l);
   }
 
   .gen-ai-cards .card .gen-ai-input-form {
@@ -620,7 +668,6 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards .card {
-    border-radius: 16px;
     --card-gap: 12px;
     --card-width: 400px;
     --input-form-width: 340px;

@@ -1,7 +1,4 @@
-import {
-  addAnimationToggle,
-  transformLinkToAnimation,
-} from '../../scripts/utils/media.js';
+import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
@@ -329,7 +326,9 @@ export default async function decorate(block) {
   const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
     decorateButtonsDeprecated(block)]);
+
   ({ createTag, getMetadata, loadScript, getConfig } = utils);
+
   globalNavSelector = gNavUtils?.selectors.globalNav;
 
   const rows = Array.from(block.children);
@@ -345,20 +344,18 @@ export default async function decorate(block) {
   const animationContainer = actionAndAnimationRow[0];
   const animation = animationContainer.querySelector('a');
   const dropzone = actionAndAnimationRow[1];
-  const dropzoneBackground = createTag('div', { class: 'dropzone-bg' });
   const cta = dropzone.querySelector('a.button, a.con-button');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });
 
   if (animation && animation.href.includes('.mp4')) {
-    transformLinkToAnimation(animation);
-    addAnimationToggle(animationContainer);
+    animationContainer.append(transformLinkToAnimation(animation));
   }
+
   if (cta) cta.classList.add('xlarge');
   dropzone.classList.add('dropzone');
 
-  dropzone.prepend(dropzoneBackground);
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
   actionColumn.append(dropzoneContainer, gtcText);

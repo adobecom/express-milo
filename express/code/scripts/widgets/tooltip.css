@@ -1,0 +1,78 @@
+/* Tooltip CSS */
+.tooltip button.hover.tooltip-text,
+.tooltip button:focus .tooltip-text,
+.tooltip-text.hover {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.tooltip-text {
+    opacity: 0;
+    padding: 8px;
+    z-index: 10;
+    background-color: var(--color-gray-800);
+    color: var(--color-white);
+    border-radius: 8px;
+    position: absolute;
+    bottom: 100%;
+    width: 200px;
+    left: -105px;
+    margin-bottom: 5px;
+    user-select: text;
+    pointer-events: none;
+    transition: bottom 0.5s;
+
+}
+
+.tooltip>button {
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    font-family: "adobe-clean";
+    position: relative;
+}
+
+.tooltip-text.overflow-left {
+    right: inherit;
+    left: -20px;
+}
+
+.tooltip-text.overflow-right {
+    left: inherit;
+    right: -20px;
+}
+
+.tooltip-text::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 107px;
+    border-top-color: var(--color-black);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+}
+
+.tooltip-text.overflow-left::after {
+    right: inherit;
+    left: 23px;
+}
+
+.tooltip-text.overflow-right::after {
+    left: inherit;
+    right: 20px;
+}
+
+.tooltip-icon {
+    position: relative;
+    top: 2px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline;
+}
+
+.tooltip span {
+    position: relative;
+}
