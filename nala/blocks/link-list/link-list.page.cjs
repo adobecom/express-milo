@@ -5,7 +5,7 @@ export default class LinkList {
     // section and link-list wrapper
     this.section = page.locator('.section').nth(nth);
     this.linkList = page.locator('.link-list').nth(nth);
-    
+
     // Variant locators
     this.variants = {
       centered: page.locator('.link-list.centered').nth(nth),

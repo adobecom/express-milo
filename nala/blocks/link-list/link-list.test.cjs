@@ -44,7 +44,7 @@ test.describe('Express Link List Block test suite', () => {
     });
   });
 
-    // Test 1 : Link List large
+  // Test 1 : Link List large
   test(`${features[1].name},${features[1].tags}`, async ({ page, baseURL }) => {
     const { data } = features[1];
     const testUrl = `${baseURL}${features[1].path}${miloLibs}`;
@@ -72,7 +72,7 @@ test.describe('Express Link List Block test suite', () => {
     });
   });
 
-    // Test 2 : Link List shaded
+  // Test 2 : Link List shaded
   test(`${features[2].name},${features[2].tags}`, async ({ page, baseURL }) => {
     const { data } = features[2];
     const testUrl = `${baseURL}${features[2].path}${miloLibs}`;
@@ -100,7 +100,7 @@ test.describe('Express Link List Block test suite', () => {
     });
   });
 
-    // Test 3 : Link List leftalign
+  // Test 3 : Link List leftalign
   test(`${features[3].name},${features[3].tags}`, async ({ page, baseURL }) => {
     const { data } = features[3];
     const testUrl = `${baseURL}${features[3].path}${miloLibs}`;

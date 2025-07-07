@@ -32,7 +32,7 @@ module.exports = {
       },
       tags: '@link-list @link-list-shaded @express @smoke @regression @t3',
     },
-        {
+    {
       tcid: '3',
       name: '@link-list leftalign',
       path: '/drafts/nala/blocks/link-list/link-list-leftalign',
