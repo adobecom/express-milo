@@ -1,6 +1,7 @@
 import {
   defaultCollectionId,
   popularCollectionId,
+  TOPICS_SEPARATOR
 } from '../../../../../scripts/template-utils.js';
 
 export const initialFormData = {
@@ -13,7 +14,7 @@ export const initialFormData = {
   // filters
   language: '',
   tasks: '',
-  topics: '',
+  topics: [''],
   license: '',
   behaviors: '',
   // boosting
@@ -50,7 +51,9 @@ export function recipe2Form(recipe) {
   if (params.get('q')) formData.q = params.get('q');
   if (params.get('language')) formData.language = params.get('language');
   if (params.get('tasks')) formData.tasks = params.get('tasks');
-  if (params.get('topics')) formData.topics = params.get('topics');
+  if (params.get('topics')) {
+    formData.topics = params.get('topics').split(TOPICS_SEPARATOR);
+  }
   if (params.get('license')) formData.license = params.get('license');
   if (params.get('behaviors')) formData.behaviors = params.get('behaviors');
   if (params.get('prefLang')) formData.prefLang = params.get('prefLang');
@@ -70,7 +73,8 @@ export function form2Recipe(formData) {
   const q = formData.q ? `q=${formData.q}` : '';
   const language = formData.language ? `language=${formData.language}` : '';
   const tasks = formData.tasks ? `tasks=${formData.tasks}` : '';
-  const topics = formData.topics ? `topics=${formData.topics}` : '';
+  const joinedTopics = formData.topics.filter(Boolean).join(TOPICS_SEPARATOR);
+  const topics = joinedTopics ? `topics=${joinedTopics}` : '';
   const license = formData.license ? `license=${formData.license}` : '';
   const behaviors = formData.behaviors ? `behaviors=${formData.behaviors}` : '';
   const orderBy = formData.orderBy ? `orderBy=${formData.orderBy}` : '';

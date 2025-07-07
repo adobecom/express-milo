@@ -1,7 +1,12 @@
 import { useState } from 'react';
+import { form2Recipe } from '../utils/recipe-form-utils';
+import { useFormData, useFormDispatch, ACTION_TYPES } from '../utils/form-hooks';
 
-export default function Recipe({ recipe, onRecipeChange }) {
+export default function Recipe() {
   const [showCopied, setShowCopied] = useState(false);
+  const formData = useFormData();
+  const recipe = form2Recipe(formData);
+  const formDispatch = useFormDispatch();
 
   const copyRecipe = () => {
     navigator.clipboard.writeText(recipe);
@@ -17,7 +22,9 @@ export default function Recipe({ recipe, onRecipeChange }) {
         autoCapitalize="off"
         spellCheck="false"
         value={recipe}
-        onChange={(e) => onRecipeChange(e.target.value)}
+        onChange={(e) =>
+          formDispatch({ type: ACTION_TYPES.UPDATE_RECIPE, payload: { value: e.target.value } })
+        }
       />
       <div className="copy-button-container">
         <button onClick={copyRecipe}>Copy</button>

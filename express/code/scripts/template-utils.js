@@ -3,6 +3,7 @@ export const base = 'https://www.adobe.com/express-search-api-v3';
 
 export const defaultCollectionId = 'urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418';
 export const popularCollectionId = 'urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852';
+export const TOPICS_SEPARATOR = ' AND '; // allows joining topics groups
 
 export function recipe2ApiQuery(recipe) {
   const params = new URLSearchParams(recipe);
@@ -30,7 +31,9 @@ export function recipe2ApiQuery(recipe) {
     params.delete('tasks');
   }
   if (params.get('topics')) {
-    params.append('filters', `topics==${params.get('topics')}`);
+    params.get('topics').split(TOPICS_SEPARATOR).forEach((group) => {
+      params.append('filters', `topics==${group}`);
+    });
     params.delete('topics');
   }
   if (params.get('language')) {

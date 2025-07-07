@@ -1,4 +1,10 @@
 import { useState, useRef, useEffect, useCallback, memo } from 'react';
+import {
+  ACTION_TYPES,
+  useFormData,
+  useFormDispatch,
+} from '../utils/form-hooks';
+import TopicsGroups from './TopicsGroups';
 
 const InfoButton = memo(({ fieldName, content, activeInfo, onToggle }) => {
   return (
@@ -20,7 +26,7 @@ const InfoButton = memo(({ fieldName, content, activeInfo, onToggle }) => {
   );
 });
 
-const useInfoTimer = () => {
+function useInfoTimer() {
   const [activeInfo, setActiveInfo] = useState(null);
   const timerRef = useRef(null);
 
@@ -37,10 +43,12 @@ const useInfoTimer = () => {
   }, []);
 
   return [activeInfo, showInfo];
-};
+}
 
-export default function Form({ formData, onFormChange }) {
+export default function Form() {
   const [activeInfo, showInfo] = useInfoTimer();
+  const formData = useFormData();
+  const formDispatch = useFormDispatch();
 
   const renderInfoButton = (fieldName, content) => {
     return (
@@ -64,7 +72,12 @@ export default function Form({ formData, onFormChange }) {
           name="q"
           type="text"
           value={formData.q}
-          onChange={(e) => onFormChange('q', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'q', value: e.target.value },
+            })
+          }
         />
         {renderInfoButton(
           'q',
@@ -77,7 +90,12 @@ export default function Form({ formData, onFormChange }) {
         <select
           name="collection"
           value={formData.collection}
-          onChange={(e) => onFormChange('collection', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'collection', value: e.target.value },
+            })
+          }
         >
           <option value="default">Default</option>
           <option value="popular">Popular</option>
@@ -98,7 +116,12 @@ export default function Form({ formData, onFormChange }) {
           value={formData.collectionId}
           disabled={formData.collection !== 'custom'}
           required={formData.collection === 'custom'}
-          onChange={(e) => onFormChange('collectionId', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'collectionId', value: e.target.value },
+            })
+          }
         />
       </label>
       {formData.collection === 'custom' && !formData.collectionId && (
@@ -113,7 +136,12 @@ export default function Form({ formData, onFormChange }) {
           name="limit"
           type="number"
           value={formData.limit}
-          onChange={(e) => onFormChange('limit', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'limit', value: e.target.value },
+            })
+          }
         />
         {renderInfoButton('limit', 'Number of results to return')}
       </label>
@@ -124,7 +152,12 @@ export default function Form({ formData, onFormChange }) {
           name="start"
           type="number"
           value={formData.start}
-          onChange={(e) => onFormChange('start', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'start', value: e.target.value },
+            })
+          }
         />
         {renderInfoButton('start', 'Starting index for the results')}
       </label>
@@ -134,7 +167,12 @@ export default function Form({ formData, onFormChange }) {
         <select
           name="orderBy"
           value={formData.orderBy}
-          onChange={(e) => onFormChange('orderBy', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'orderBy', value: e.target.value },
+            })
+          }
         >
           <option value="">Relevancy (Default)</option>
           <option value="-remixCount">Descending Remix Count</option>
@@ -158,7 +196,12 @@ export default function Form({ formData, onFormChange }) {
           name="language"
           type="text"
           value={formData.language}
-          onChange={(e) => onFormChange('language', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'language', value: e.target.value },
+            })
+          }
         />
         {renderInfoButton(
           'language',
@@ -172,26 +215,28 @@ export default function Form({ formData, onFormChange }) {
           name="tasks"
           type="text"
           value={formData.tasks}
-          onChange={(e) => onFormChange('tasks', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'tasks', value: e.target.value },
+            })
+          }
         />
       </label>
 
-      <label>
-        Topics:
-        <input
-          name="topics"
-          type="text"
-          value={formData.topics}
-          onChange={(e) => onFormChange('topics', e.target.value)}
-        />
-      </label>
+      <TopicsGroups />
 
       <label>
         Behaviors:
         <select
           name="behaviors"
           value={formData.behaviors}
-          onChange={(e) => onFormChange('behaviors', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'behaviors', value: e.target.value },
+            })
+          }
         >
           <option value="">All (Default)</option>
           <option value="still">Still</option>
@@ -206,7 +251,12 @@ export default function Form({ formData, onFormChange }) {
         <select
           name="license"
           value={formData.license}
-          onChange={(e) => onFormChange('license', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'license', value: e.target.value },
+            })
+          }
         >
           <option value="">Mixed (Default)</option>
           <option value="free">Free only</option>
@@ -221,7 +271,12 @@ export default function Form({ formData, onFormChange }) {
         <input
           name="prefLang"
           value={formData.prefLang}
-          onChange={(e) => onFormChange('prefLang', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'prefLang', value: e.target.value },
+            })
+          }
         />
         {renderInfoButton(
           'prefLang',
@@ -234,7 +289,12 @@ export default function Form({ formData, onFormChange }) {
         <input
           name="prefRegion"
           value={formData.prefRegion}
-          onChange={(e) => onFormChange('prefRegion', e.target.value)}
+          onChange={(e) =>
+            formDispatch({
+              type: ACTION_TYPES.UPDATE_FORM,
+              payload: { field: 'prefRegion', value: e.target.value },
+            })
+          }
         />
         {renderInfoButton(
           'prefRegion',
