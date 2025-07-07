@@ -75,12 +75,17 @@ function selectElementByTagPrefix(p) {
   return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
 }
 
-export function runQuickAction(quickAction, data, block) {
-  // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
+const downloadKey = 'download-to-phone';
+const editKey = 'edit-in-adobe-express-for-free';
+export async function runQuickAction(quickAction, data, block) {
+  let downloadText = await replaceKey(downloadKey, getConfig());
+  if (downloadText === downloadKey.replaceAll('-', ' ')) downloadText = 'Download to Phone';
+  let editText = await replaceKey(editKey, getConfig());
+  if (editText === editKey.replaceAll('-', ' ')) editText = 'Edit in Adobe Express for free';
   const exportConfig = [
     {
       id: 'download-button',
-      label: 'Download to Phone',
+      label: downloadText,
       action: {
         target: 'download',
       },
@@ -95,7 +100,7 @@ export function runQuickAction(quickAction, data, block) {
     },
     {
       id: 'edit-in-express',
-      label: 'Edit in Adobe Express for free',
+      label: editText,
       action: {
         target: 'express',
       },
