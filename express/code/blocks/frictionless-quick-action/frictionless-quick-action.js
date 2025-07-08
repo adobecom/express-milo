@@ -2,71 +2,32 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
+import {
+  QA_CONFIGS,
+  EXPERIMENTAL_VARIANTS,
+  fadeIn,
+  fadeOut,
+  createDocConfig,
+  createMergeVideosDocConfig,
+  createContainerConfig,
+  selectElementByTagPrefix,
+  createDefaultExportConfig,
+  executeQuickAction,
+  processFilesForQuickAction,
+  loadAndInitializeCCEverywhere,
+  getErrorMsg,
+} from '../../scripts/utils/frictionless-utils.js';
 
-let createTag; let getConfig;
+let createTag;
+let getConfig;
 let getMetadata;
-let loadScript; let globalNavSelector;
+let globalNavSelector;
+let replaceKey;
+const selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 let ccEverywhere;
 let quickActionContainer;
 let uploadContainer;
-
-const JPG = 'jpg';
-const JPEG = 'jpeg';
-const PNG = 'png';
-const WEBP = 'webp';
-export const getBaseImgCfg = (...types) => ({
-  group: 'image',
-  max_size: 40 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `image/${type}`).includes(input),
-});
-export const getBaseVideoCfg = (...types) => ({
-  group: 'video',
-  max_size: 1024 * 1024 * 1024,
-  accept: types.map((type) => `.${type}`).join(', '),
-  input_check: (input) => types.map((type) => `video/${type}`).includes(input),
-});
-
-const EXPERIMENTAL_VARIANTS = [
-  'qa-in-product-variant1', 'qa-in-product-variant2', 'qa-nba', 'qa-in-product-control',
-];
-
-const QA_CONFIGS = {
-  'convert-to-jpg': { ...getBaseImgCfg(PNG, WEBP) },
-  'convert-to-png': { ...getBaseImgCfg(JPG, JPEG, WEBP) },
-  'convert-to-svg': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'crop-image': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'resize-image': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
-  'remove-background': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'generate-qr-code': {
-    ...getBaseImgCfg(JPG, JPEG, PNG),
-    input_check: () => true,
-  },
-  'qa-in-product-variant1': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-  'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
-};
-
-function fade(element, action) {
-  if (action === 'in') {
-    element.classList.remove('hidden');
-    setTimeout(() => {
-      element.classList.remove('transparent');
-    }, 10);
-  } else if (action === 'out') {
-    element.classList.add('transparent');
-    setTimeout(() => {
-      element.classList.add('hidden');
-    }, 200);
-  }
-}
-
-function selectElementByTagPrefix(p) {
-  const allEls = document.body.querySelectorAll(':scope > *');
-  return Array.from(allEls).find((e) => e.tagName.toLowerCase().startsWith(p.toLowerCase()));
-}
 
 function frictionlessQAExperiment(
   quickAction,
@@ -108,64 +69,54 @@ function frictionlessQAExperiment(
   }
 }
 
-// eslint-disable-next-line default-param-last
-export function runQuickAction(quickAction, data, block) {
-  // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
-  const exportConfig = [
-    {
-      id: 'download-button',
-      // label: 'Download',
-      action: { target: 'download' },
-      style: { uiType: 'button' },
-      buttonStyle: {
-        variant: 'secondary',
-        treatment: 'fill',
-        size: 'xl',
-      },
-    },
-    {
-      id: 'edit-in-express',
-      // label: 'Edit in Adobe Express for free',
-      action: { target: 'express' },
-      style: { uiType: 'button' },
-      buttonStyle: {
-        variant: 'primary',
-        treatment: 'fill',
-        size: 'xl',
-      },
-    },
-  ];
+let timeoutId = null;
+function showErrorToast(block, msg) {
+  let toast = block.querySelector('.error-toast');
+  const hideToast = () => toast.classList.add('hide');
+  if (!toast) {
+    toast = createTag('div', { class: 'error-toast hide' });
+    toast.prepend(getIconElementDeprecated('error'));
+    const close = createTag(
+      'button',
+      {},
+      getIconElementDeprecated('close-white'),
+    );
+    close.addEventListener('click', hideToast);
+    toast.append(close);
+    block.append(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.remove('hide');
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(hideToast, 6000);
+}
 
-  const id = `${quickAction}-container`;
+// eslint-disable-next-line default-param-last
+export function runQuickAction(quickActionId, data, block) {
+  // TODO: need the button labels from the placeholders sheet if the SDK default doens't work.
+  const exportConfig = createDefaultExportConfig();
+
+  const id = `${quickActionId}-container`;
   quickActionContainer = createTag('div', { id, class: 'quick-action-container' });
   block.append(quickActionContainer);
   const divs = block.querySelectorAll(':scope > div');
   if (divs[1]) [, uploadContainer] = divs;
-  fade(uploadContainer, 'out');
+  fadeOut(uploadContainer);
 
-  const contConfig = {
-    mode: 'inline',
-    parentElementId: `${quickAction}-container`,
-    backgroundColor: 'transparent',
-    hideCloseButton: true,
-    padding: 0,
-  };
-
-  const docConfig = {
-    asset: {
-      data,
-      dataType: 'base64',
-      type: 'image',
-    },
-  };
+  const contConfig = createContainerConfig(quickActionId);
+  const docConfig = createDocConfig(data[0], 'image');
+  const videoDocConfig = quickActionId === 'merge-videos' ? createMergeVideosDocConfig(data) : createDocConfig(data[0], 'video');
 
   const appConfig = {
-    metaData: { isFrictionlessQa: 'true' },
-    receiveQuickActionErrors: false,
+    metaData: {
+      isFrictionlessQa: 'true',
+      ...(quickActionId === 'caption-video' && { videoLanguage: selectedVideoLanguage }),
+    },
+    receiveQuickActionErrors: true,
     callbacks: {
       onIntentChange: () => {
         quickActionContainer?.remove();
-        fade(uploadContainer, 'in');
+        fadeIn(uploadContainer);
         document.body.classList.add('editor-modal-loaded');
         window.history.pushState({ hideFrictionlessQa: true }, '', '');
         return {
@@ -178,6 +129,12 @@ export function runQuickAction(quickAction, data, block) {
       onCancel: () => {
         window.history.back();
       },
+      onError: (error) => {
+        // eslint-disable-next-line no-underscore-dangle
+        showErrorToast(block, `${error._customData} Please try again.`);
+        quickActionContainer?.remove();
+        fadeIn(uploadContainer);
+      },
     },
   };
 
@@ -186,148 +143,76 @@ export function runQuickAction(quickAction, data, block) {
   const isStage = urlParams.get('hzenv') === 'stage';
 
   if (!ccEverywhere) return;
-  switch (quickAction) {
-    case 'convert-to-jpg':
-      ccEverywhere.quickAction.convertToJPEG(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'convert-to-png':
-      ccEverywhere.quickAction.convertToPNG(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'convert-to-svg':
-      exportConfig.pop();
-      ccEverywhere.quickAction.convertToSVG(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'crop-image':
-      ccEverywhere.quickAction.cropImage(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'resize-image':
-      ccEverywhere.quickAction.resizeImage(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'remove-background':
 
-      if (variant && isStage) {
-        frictionlessQAExperiment(variant, docConfig, appConfig, exportConfig, contConfig);
-        break;
-      }
-
-      ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'generate-qr-code':
-      ccEverywhere.quickAction.generateQRCode({}, appConfig, exportConfig, contConfig);
-      break;
-    // Experiment code, remove after done
-    case 'qa-nba':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-control':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-variant1':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-variant2':
-      frictionlessQAExperiment(quickAction, docConfig, appConfig, exportConfig, contConfig);
-      break;
-    default: break;
+  // Handle experimental variants for remove-background
+  if (quickActionId === 'remove-background' && variant && isStage) {
+    frictionlessQAExperiment(
+      variant,
+      docConfig,
+      appConfig,
+      exportConfig,
+      contConfig,
+    );
+    return;
   }
+
+  // Handle experimental variants
+  if (EXPERIMENTAL_VARIANTS.includes(quickActionId)) {
+    frictionlessQAExperiment(
+      quickActionId,
+      docConfig,
+      appConfig,
+      exportConfig,
+      contConfig,
+    );
+    return;
+  }
+
+  // Execute the quick action using the helper function
+  executeQuickAction(
+    ccEverywhere,
+    quickActionId,
+    docConfig,
+    appConfig,
+    exportConfig,
+    contConfig,
+    videoDocConfig,
+  );
 }
 
 // eslint-disable-next-line default-param-last
-async function startSDK(data = '', quickAction, block) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlOverride = urlParams.get('sdk-override');
-  let valid = false;
-  if (urlOverride) {
-    try {
-      if (new URL(urlOverride).host === 'dev.cc-embed.adobe.com') valid = true;
-    } catch (e) {
-      window.lana.log('Invalid SDK URL');
-    }
-  }
-  const CDN_URL = valid ? urlOverride : 'https://cc-embed.adobe.com/sdk/1p/v4/CCEverywhere.js';
-  const clientId = 'AdobeExpressWeb';
-
-  await loadScript(CDN_URL);
-  if (!window.CCEverywhere) {
-    return;
-  }
-
+async function startSDK(data = [''], quickAction, block) {
   if (!ccEverywhere) {
-    let { ietf } = getConfig().locale;
-    const country = urlParams.get('country');
-    if (country) ietf = getConfig().locales[country]?.ietf;
-    if (ietf === 'zh-Hant-TW') ietf = 'tw-TW';
-    else if (ietf === 'zh-Hans-CN') ietf = 'cn-CN';
-    // query parameter URL for overriding the cc everywhere
-    // iframe source URL, used for testing new experiences
-    const isStageEnv = urlParams.get('hzenv') === 'stage';
-
-    const ccEverywhereConfig = {
-      hostInfo: {
-        clientId,
-        appName: 'express',
-      },
-      configParams: {
-        locale: ietf?.replace('-', '_'),
-        env: isStageEnv ? 'stage' : 'prod',
-      },
-      authOption: () => ({ mode: 'delayed' }),
-    };
-
-    ccEverywhere = await window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
+    ccEverywhere = await loadAndInitializeCCEverywhere(getConfig);
   }
-
   runQuickAction(quickAction, data, block);
 }
 
-let timeoutId = null;
-function showErrorToast(block, msg) {
-  let toast = block.querySelector('.error-toast');
-  const hideToast = () => toast.classList.add('hide');
-  if (!toast) {
-    toast = createTag('div', { class: 'error-toast hide' });
-    toast.prepend(getIconElementDeprecated('error'));
-    const close = createTag('button', {}, getIconElementDeprecated('close-white'));
-    close.addEventListener('click', hideToast);
-    toast.append(close);
-    block.append(toast);
-  }
-  toast.textContent = msg;
-  toast.classList.remove('hide');
-  clearTimeout(timeoutId);
-  timeoutId = setTimeout(hideToast, 6000);
-}
-
-async function startSDKWithUnconvertedFile(file, quickAction, block) {
-  if (!file) return;
-  const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
-  if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      window.history.pushState({ hideFrictionlessQa: true }, '', '');
-      startSDK(reader.result, quickAction, block);
-    };
-
-    // Read the file as a data URL (Base64)
-    reader.readAsDataURL(file);
+async function startSDKWithUnconvertedFiles(files, quickAction, block) {
+  let data = await processFilesForQuickAction(files, quickAction);
+  if (!data[0]) {
+    const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
+    showErrorToast(block, msg);
     return;
   }
-  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-  let msg;
-  if (!QA_CONFIGS[quickAction].input_check(file.type)) {
-    msg = await replaceKey('file-type-not-supported', getConfig());
-  } else {
-    msg = await replaceKey('file-size-not-supported', getConfig());
+
+  if (data.some((item) => !item)) {
+    const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
+    showErrorToast(block, msg);
+    data = data.filter((item) => item);
   }
-  showErrorToast(block, msg);
+
+  startSDK(data, quickAction, block);
 }
 
 export default async function decorate(block) {
-  const [utils, gNavUtils] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
+  const [utils, gNavUtils, placeholders] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
+    import(`${getLibs()}/features/placeholders.js`),
     decorateButtonsDeprecated(block)]);
 
-  ({ createTag, getMetadata, loadScript, getConfig } = utils);
+  ({ createTag, getMetadata, getConfig } = utils);
+  ({ replaceKey } = placeholders);
 
   globalNavSelector = gNavUtils?.selectors.globalNav;
 
@@ -359,17 +244,25 @@ export default async function decorate(block) {
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
   actionColumn.append(dropzoneContainer, gtcText);
-  const inputElement = createTag('input', { type: 'file', accept: QA_CONFIGS[quickAction].accept });
+  const inputElement = createTag('input', {
+    type: 'file',
+    accept: QA_CONFIGS[quickAction].accept,
+    ...(quickAction === 'merge-videos' && { multiple: true }),
+  });
   inputElement.onchange = () => {
-    const file = inputElement.files[0];
-    startSDKWithUnconvertedFile(file, quickAction, block);
+    if (quickAction === 'merge-videos' && inputElement.files.length > 1) {
+      startSDKWithUnconvertedFiles(inputElement.files, quickAction, block);
+    } else {
+      const file = inputElement.files[0];
+      startSDKWithUnconvertedFiles([file], quickAction, block);
+    }
   };
   block.append(inputElement);
 
   dropzoneContainer.addEventListener('click', (e) => {
     e.preventDefault();
     if (quickAction === 'generate-qr-code') {
-      startSDK('', quickAction, block);
+      startSDK([''], quickAction, block);
     } else {
       inputElement.click();
     }
@@ -404,10 +297,14 @@ export default async function decorate(block) {
   dropzoneContainer.addEventListener('drop', async (e) => {
     const dt = e.dataTransfer;
     const { files } = dt;
+    if (quickAction === 'merge-videos' && files.length > 1) {
+      startSDKWithUnconvertedFiles(files, quickAction, block);
+    } else {
+      await Promise.all(
+        [...files].map((file) => startSDKWithUnconvertedFiles([file], quickAction, block)),
+      );
+    }
 
-    await Promise.all(
-      [...files].map((file) => startSDKWithUnconvertedFile(file, quickAction, block)),
-    );
     document.body.dataset.suppressfloatingcta = 'true';
   }, false);
 
@@ -424,7 +321,7 @@ export default async function decorate(block) {
       editorModal?.remove();
       document.body.classList.remove('editor-modal-loaded');
       inputElement.value = '';
-      fade(uploadContainer, 'in');
+      fadeIn(uploadContainer);
       document.body.dataset.suppressfloatingcta = 'false';
     }
   }, { passive: true });
