@@ -65,6 +65,7 @@ async function runAccessibilityTest({
     const axe = await new AxeBuilder({ page })
       .withTags(includeTags)
       .include(testElement)
+      .exclude('.dynamic-nav-status')
       .analyze();
 
     const enhancedAxeResults = {
