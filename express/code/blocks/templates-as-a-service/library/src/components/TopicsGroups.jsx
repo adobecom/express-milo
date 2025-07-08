@@ -29,7 +29,7 @@ function Row({ topicsGroup, rowIndex, expandButton }) {
         />
       ))}
       <div className="flex gap-1">
-        <button
+        {(rowIndex === 0 && topicsGroup.length === 1) || <button
           onClick={(e) => {
             e.preventDefault();
             formDispatch({
@@ -41,7 +41,7 @@ function Row({ topicsGroup, rowIndex, expandButton }) {
           }}
         >
           -
-        </button>
+        </button>}
         {topicsGroup.every(Boolean) && (
           <button
             onClick={(e) => {

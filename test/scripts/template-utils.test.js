@@ -61,6 +61,16 @@ describe('template-utils', () => {
       expect(filters.includes('topics==class')).to.be.true;
       expect(filters.includes('language==en-US')).to.be.true;
     });
+    it('handles topics top-level AND', () => {
+      // filters=language==en-US
+      const { url } = recipe2ApiQuery('topics=birthday AND music,geometric,gourmet,cactus_journal,60 AND sprinkles,fun,cakestand,paint paper,abstract AND dance,organic,cursive,succulent,photo memories,zig zag&limit=10&collection=default');
+      const params = new URL(url).searchParams;
+      const filters = params.getAll('filters');
+      expect(filters.includes('topics==birthday')).to.be.true;
+      expect(filters.includes('topics==music,geometric,gourmet,cactus_journal,60')).to.be.true;
+      expect(filters.includes('topics==sprinkles,fun,cakestand,paint paper,abstract')).to.be.true;
+      expect(filters.includes('topics==dance,organic,cursive,succulent,photo memories,zig zag')).to.be.true;
+    });
     it('handles api response', () => {
       const templates = mockAPIResposne.items;
       expect(getTemplateTitle(templates[0])).to.equal('Black Education Day Video');
