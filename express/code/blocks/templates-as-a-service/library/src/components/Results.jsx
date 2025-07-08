@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { fetchResults } from '../../../../../scripts/template-utils.js';
+import { useFormData } from '../utils/form-hooks.js';
+import { form2Recipe } from '../utils/recipe-form-utils.js';
 import Template from './Template.jsx';
 
 function Button({ generateResults, loading, results }) {
@@ -10,7 +12,9 @@ function Button({ generateResults, loading, results }) {
   );
 }
 
-export default function Results({ recipe }) {
+export default function Results() {
+  const formData = useFormData();
+  const recipe = form2Recipe(formData);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

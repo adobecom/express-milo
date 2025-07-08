@@ -36,6 +36,14 @@ main .section .app-container p {
   font-family: "Adobe Clean", sans-serif;
 }
 
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
 .m-auto {
   margin: auto;
 }
@@ -50,6 +58,10 @@ main .section .app-container p {
 
 .items-start {
   align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;;
 }
 
 .p-1 {
@@ -87,9 +99,6 @@ textarea {
 
 form label {
   position: relative;
-  display: flex;
-  gap: 10px;
-  align-items: center;
   margin-bottom: .75rem;
 }
 
@@ -107,6 +116,17 @@ form select {
   border: 1px solid #ccc;
   border-radius: 0.25rem;
   flex: 1;
+}
+
+.topics-input {
+  field-sizing: content;
+  min-width: 40px;
+  flex: none;
+}
+@supports not (field-sizing: content) {
+  .topics-input {
+    min-width: 120px;
+  }
 }
 
 form input:invalid {
@@ -184,6 +204,10 @@ code {
 
 .copy-button-container button:hover {
   background-color: #0056b3;
+}
+
+.left-container {
+  max-width: 500px;
 }
 
 .right-container {

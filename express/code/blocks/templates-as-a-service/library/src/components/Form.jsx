@@ -5,6 +5,7 @@ import {
   useFormDispatch,
 } from '../utils/form-hooks';
 import TopicsGroups from './TopicsGroups';
+import Label from './Label';
 
 const InfoButton = memo(({ fieldName, content, activeInfo, onToggle }) => {
   return (
@@ -66,7 +67,7 @@ export default function Form() {
       <h2>Form to Recipe:</h2>
       <h4>Search Parameters</h4>
 
-      <label>
+      <Label className='flex gap-2 items-center'>
         Q:
         <input
           name="q"
@@ -83,9 +84,9 @@ export default function Form() {
           'q',
           'Search query. This is more flexible and ambiguous than using filters but also less precise.'
         )}
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Collection:
         <select
           name="collection"
@@ -105,9 +106,9 @@ export default function Form() {
           'collection',
           'Predefined collections. Select Customized to use specific Collection ID. Defaults to the global collection (urn:aaid:sc:VA6C2:25a82757-01de-4dd9-b0ee-bde51dd3b418). You can also use the Popular collection (urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49b54b3b9852).'
         )}
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Collection ID:
         <input
           name="collectionId"
@@ -123,14 +124,14 @@ export default function Form() {
             })
           }
         />
-      </label>
+      </Label>
       {formData.collection === 'custom' && !formData.collectionId && (
         <div className="error-message">
           Collection ID is required when using a custom collection
         </div>
       )}
 
-      <label>
+      <Label>
         Limit:
         <input
           name="limit"
@@ -144,9 +145,9 @@ export default function Form() {
           }
         />
         {renderInfoButton('limit', 'Number of results to return')}
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Start:
         <input
           name="start"
@@ -160,9 +161,9 @@ export default function Form() {
           }
         />
         {renderInfoButton('start', 'Starting index for the results')}
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Order by:
         <select
           name="orderBy"
@@ -186,11 +187,11 @@ export default function Form() {
           'orderBy',
           'Select by which method results would be ordered'
         )}
-      </label>
+      </Label>
 
       <h4>Filters (comma separated):</h4>
 
-      <label>
+      <Label>
         Language:
         <input
           name="language"
@@ -207,9 +208,9 @@ export default function Form() {
           'language',
           'Available values : ar-SA, bn-IN, cs-CZ, da-DK, de-DE, el-GR, en-US, es-ES, fil-P,fi-FI, fr-FR,hi-IN, id-ID, it-IT, ja-JP, ko-KR, ms-MY, nb-NO, nl-NL, pl-PL, pt-BR, ro-RO, ru-RU, sv-SE, ta-IN, th-TH, tr-TR, uk-UA, vi-VN, zh-Hans-CN, zh-Hant-TW'
         )}
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Tasks:
         <input
           name="tasks"
@@ -222,11 +223,11 @@ export default function Form() {
             })
           }
         />
-      </label>
+      </Label>
 
       <TopicsGroups />
 
-      <label>
+      <Label>
         Behaviors:
         <select
           name="behaviors"
@@ -244,9 +245,9 @@ export default function Form() {
           <option value="video">Video</option>
           <option value="animated,video">Animated + Video</option>
         </select>
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Licensing Category:
         <select
           name="license"
@@ -262,11 +263,11 @@ export default function Form() {
           <option value="free">Free only</option>
           <option value="premium">Premium only</option>
         </select>
-      </label>
+      </Label>
 
       <h4>Boosting:</h4>
 
-      <label>
+      <Label>
         Preferred Language Boosting:
         <input
           name="prefLang"
@@ -282,9 +283,9 @@ export default function Form() {
           'prefLang',
           'Boost templates that are in this language. Useful when your results have a mix of languages. Same list as the one for language filter.'
         )}
-      </label>
+      </Label>
 
-      <label>
+      <Label>
         Preferred Region Boosting:
         <input
           name="prefRegion"
@@ -300,7 +301,7 @@ export default function Form() {
           'prefRegion',
           'Available values :  AD, AE, AF, AG, AI, AL, AM, AN, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, BG, BH, BI, BJ, BL, BM, BN, BO, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CD, CF, CG, CH, CI, CK, CL, CM, CN, CO, CR, CU, CV, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IQ, IR, IS, IT, JE, JM, JO, JP, KE, KG, KH, KI, KM, KN, KR, KV, KW, KY, KZ, LA, LB, LC, LI, LK, LR, LS, LT, LU, LV, LY, MA, MC, MD, ME, MF, MG, MH, MK, ML, MM, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, MX, MY, MZ, NA, NC, NE, NF, NG, NI, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, PK, PL, PM, PN, PR, PS, PT, PW, PY, QA, RE, RO, RS, RU, RW, SA, SB, SC, SD, SE, SG, SH, SI, SJ, SK, SL, SM, SN, SO, SR, ST, SV, SY, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VE, VG, VI, VN, VU, WF, WS, YE, YT, ZA, ZM, ZW, ZZ'
         )}
-      </label>
+      </Label>
     </form>
   );
 }

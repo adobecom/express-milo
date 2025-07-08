@@ -1,7 +1,8 @@
 import {
   defaultCollectionId,
   popularCollectionId,
-  TOPICS_SEPARATOR
+  TOPICS_AND_SEPARATOR,
+  TOPICS_OR_SEPARATOR,
 } from '../../../../../scripts/template-utils.js';
 
 export const initialFormData = {
@@ -14,7 +15,7 @@ export const initialFormData = {
   // filters
   language: '',
   tasks: '',
-  topics: [''],
+  topics: [['']],
   license: '',
   behaviors: '',
   // boosting
@@ -52,12 +53,16 @@ export function recipe2Form(recipe) {
   if (params.get('language')) formData.language = params.get('language');
   if (params.get('tasks')) formData.tasks = params.get('tasks');
   if (params.get('topics')) {
-    formData.topics = params.get('topics').split(TOPICS_SEPARATOR);
+    formData.topics = params
+      .get('topics')
+      .split(TOPICS_AND_SEPARATOR)
+      .map((group) => group.split(TOPICS_OR_SEPARATOR));
   }
   if (params.get('license')) formData.license = params.get('license');
   if (params.get('behaviors')) formData.behaviors = params.get('behaviors');
   if (params.get('prefLang')) formData.prefLang = params.get('prefLang');
-  if (params.get('prefRegion')) formData.prefRegion = params.get('prefRegion').toUpperCase();
+  if (params.get('prefRegion'))
+    formData.prefRegion = params.get('prefRegion').toUpperCase();
   return formData;
 }
 
@@ -73,7 +78,10 @@ export function form2Recipe(formData) {
   const q = formData.q ? `q=${formData.q}` : '';
   const language = formData.language ? `language=${formData.language}` : '';
   const tasks = formData.tasks ? `tasks=${formData.tasks}` : '';
-  const joinedTopics = formData.topics.filter(Boolean).join(TOPICS_SEPARATOR);
+  const joinedTopics = formData.topics
+    .filter((group) => group.some(Boolean))
+    .map((group) => group.filter(Boolean).join(TOPICS_OR_SEPARATOR))
+    .join(TOPICS_AND_SEPARATOR);
   const topics = joinedTopics ? `topics=${joinedTopics}` : '';
   const license = formData.license ? `license=${formData.license}` : '';
   const behaviors = formData.behaviors ? `behaviors=${formData.behaviors}` : '';
