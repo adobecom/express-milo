@@ -28,7 +28,7 @@ function Row({ topicsGroup, rowIndex, expandButton }) {
           }
         />
       ))}
-      <div className='flex gap-1'>
+      <div className="flex gap-1">
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -42,17 +42,19 @@ function Row({ topicsGroup, rowIndex, expandButton }) {
         >
           -
         </button>
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            formDispatch({
-              type: ACTION_TYPES.TOPICS_ADD,
-              payload: { topicsRow: rowIndex },
-            });
-          }}
-        >
-          +
-        </button>
+        {topicsGroup.every(Boolean) && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              formDispatch({
+                type: ACTION_TYPES.TOPICS_ADD,
+                payload: { topicsRow: rowIndex },
+              });
+            }}
+          >
+            +
+          </button>
+        )}
         {expandButton}
       </div>
     </Label>
