@@ -266,7 +266,7 @@
 .frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .locale-dropdown-wrapper {
     width: 100%;
     align-items: center;
-    margin-block: var(--spacing-600);
+    margin-block-end: var(--spacing-400);
 }
 
 .frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .locale-dropdown-wrapper #locale-select-label {
