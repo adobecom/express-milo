@@ -1,0 +1,15 @@
+.express-logo {
+  text-align: left;
+}
+
+.express-logo img {
+  width: auto;
+  height: 24px;
+  display: inline-block;
+}
+
+@media (min-width: 900px) {
+ .express-logo img{
+    height: 36px;
+  }
+}
