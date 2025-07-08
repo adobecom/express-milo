@@ -1112,7 +1112,11 @@ main .section.blog-content>.content>p {
   }
 }
 
-/* long-form section: left-align text */
+main .section.long-form {
+  max-width: 1024px;
+  margin: auto;
+}
+
 main .section.long-form.narrow {
   max-width: 850px;
   margin: 0 auto;
