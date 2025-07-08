@@ -152,7 +152,10 @@ async function decorateCards(block, { actions }) {
     const linksWrapper = createTag('div', { class: 'links-wrapper' });
     const mediaWrapper = createTag('div', { class: 'media-wrapper' });
     const textWrapper = createTag('div', { class: 'text-wrapper' });
-    card.append(mediaWrapper, textWrapper, linksWrapper);
+    const cardContentWrapper = createTag('div', { class: 'content-wrapper' });
+    cardContentWrapper.append(textWrapper, linksWrapper);
+
+    card.append(mediaWrapper, cardContentWrapper);
     if (image) {
       mediaWrapper.append(image);
       if (i > 0) {
@@ -167,7 +170,7 @@ async function decorateCards(block, { actions }) {
       if (hasGenAIForm) {
         const genAIForm = buildGenAIForm(cta);
         card.classList.add('gen-ai-action');
-        card.append(genAIForm);
+        cardContentWrapper.append(genAIForm);
         linksWrapper.remove();
       } else {
         const a = ctaLinks[0];

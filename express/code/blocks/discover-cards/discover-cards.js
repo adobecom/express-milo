@@ -148,7 +148,7 @@ export default async function decorate(block) {
         } else {
           const [titleDiv, detailsDiv] = element.children;
           if (titleDiv && detailsDiv) {
-            card.cardTitle = titleDiv.textContent.trim();
+            card.cardTitle = titleDiv;
             card.cardDetails = detailsDiv.textContent.trim();
           }
         }

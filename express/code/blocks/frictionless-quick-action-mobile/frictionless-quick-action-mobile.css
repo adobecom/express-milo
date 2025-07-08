@@ -141,6 +141,11 @@
     margin-bottom: 0;
 }
 
+.frictionless-quick-action-mobile .video-container {
+    position: relative;
+    height: 100%;
+}
+
 .frictionless-quick-action-mobile .extra-container {
     padding-top: 16px;
     text-align: center;
