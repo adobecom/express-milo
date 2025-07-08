@@ -24,6 +24,7 @@
 }
 .section .link-list.fullwidth {
   max-width: 100%;
+  margin-top: 0;
 }
 
 .section .link-list.centered {
@@ -101,10 +102,6 @@
   width: fit-content;
   max-width: 100%;
   padding-top: 0;
-}
-
-.section .link-list.fullwidth {
-  margin-top: 0;
 }
 
 .section div.link-list-wrapper:has(.link-list.fullwidth) .link-list,
@@ -185,6 +182,56 @@
   margin-left: 0;
 }
 
+.section .link-list-wrapper:has(.link-list.inline) {
+  max-width: initial;
+}
+
+.section .link-list.inline {
+  margin: 0 auto;
+}
+
+.section .link-list.inline h3 {
+  margin-bottom: 0;
+  padding-left: 0;
+  font-size: var(--body-font-size-m);
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: #131313;
+}
+
+.section .link-list.inline .button-container {
+  margin-left: 4px;
+  margin-right: var(--spacing-200);
+}
+
+.section .link-list.square .button-container .button {
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  padding: var(--spacing-100) var(--spacing-200);
+  line-height: 1.3;
+  font-weight: 700;
+  color: #292929;
+  background-color: var(--color-white);
+}
+
+.section .link-list.square .button-container:hover .button,
+.section .link-list.square .button-container:focus-within .button {
+  background-color: #e1e1e1;
+  transition: background-color .1s ease-out;
+}
+
+@media (min-width: 600px) {
+  .section .link-list.inline {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-300);
+  }
+  .section .link-list.inline .carousel-container {
+    min-width: 0;
+  }
+}
+
 @media (min-width: 900px) {
   .section .link-list.content-group {
     width: 648px;
@@ -203,6 +250,9 @@
 
   .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
      max-width: 830px;
+  }
+  .section .link-list-wrapper:has(.link-list.inline) {
+    max-width: initial;
   }
 
   .section .link-list-wrapper {
@@ -239,6 +289,9 @@
 @media (min-width: 1200px) {
   .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
     max-width: 1024px;
+  }
+  .section .link-list-wrapper:has(.link-list.inline) {
+    max-width: initial;
   }
 
   .section .link-list-wrapper {
