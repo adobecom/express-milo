@@ -7,6 +7,10 @@ function correctCenterAlignment(plat) {
   plat.parentElement.style.maxWidth = `${plat.offsetWidth}px`;
 }
 
+function isAtRightmostScroll(element) {
+  return element.scrollLeft + element.clientWidth >= element.scrollWidth;
+}
+
 function initToggleTriggers(parent) {
   if (!parent) return;
 
@@ -72,9 +76,6 @@ function initToggleTriggers(parent) {
   // todo: should unobserve triggers where/when appropriate...
 }
 
-function isAtRightmostScroll(element) {
-  return element.scrollLeft + element.clientWidth >= element.scrollWidth;
-}
 
 function onCarouselCSSLoad(selector, parent, options) {
   const carouselContent = selector ? parent.querySelectorAll(selector) : parent.querySelectorAll(':scope > *');
