@@ -76,7 +76,6 @@ function initToggleTriggers(parent) {
   // todo: should unobserve triggers where/when appropriate...
 }
 
-
 function onCarouselCSSLoad(selector, parent, options) {
   const carouselContent = selector ? parent.querySelectorAll(selector) : parent.querySelectorAll(':scope > *');
 
