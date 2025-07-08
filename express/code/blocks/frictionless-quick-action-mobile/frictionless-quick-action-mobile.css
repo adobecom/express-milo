@@ -189,30 +189,6 @@
     height: 1080px;
 }
 
-.frictionless-quick-action-mobile .quick-action-container#convert-to-gif-container {
-    height: 817px;
-}
-
-.frictionless-quick-action-mobile .quick-action-container#crop-video-container {
-    height: 741px;
-}
-
-.frictionless-quick-action-mobile .quick-action-container#trim-video-container {
-    height: 762px;
-}
-
-.frictionless-quick-action-mobile .quick-action-container#resize-video-container {
-    height: 913px;
-}
-
-.frictionless-quick-action-mobile .quick-action-container#convert-to-mp4-container {
-    height: 580px;
-}
-
-.frictionless-quick-action-mobile .quick-action-container#caption-video-container {
-    height: 822px;
-}
-
 .frictionless-quick-action-mobile > div.hidden {
     visibility: hidden;
     position: absolute;
