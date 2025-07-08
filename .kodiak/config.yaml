@@ -24,7 +24,6 @@ notifications:
           - jinglhua
           - rea01581
           - all42238
-          - all66020
           - cod87753
           - yolles
         labels: # You can add additional labels to your tickets here. Do not delete/change the first three.
