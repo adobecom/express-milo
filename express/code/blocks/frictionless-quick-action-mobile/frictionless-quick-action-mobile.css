@@ -273,3 +273,7 @@
     margin: 0;
     font-size: var(--body-font-size-m);
 }
+
+.frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .animation-container {
+    padding-block: var(--spacing-700);
+}
