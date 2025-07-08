@@ -26,6 +26,7 @@ notifications:
           - all42238
           - cod87753
           - yolles
+          - fullcolorcoder
         labels: # You can add additional labels to your tickets here. Do not delete/change the first three.
           - "OriginatingProcess=Kodiak"
           - "security"
