@@ -142,6 +142,7 @@ export function createDocConfig(data, type = 'image') {
       data,
       dataType,
       type,
+      name: data.name,
     },
   };
 }
@@ -153,6 +154,7 @@ export function createMergeVideosDocConfig(data) {
       data: file,
       dataType: 'blob',
       type: 'video',
+      name: file.name,
     });
   }
   return {
