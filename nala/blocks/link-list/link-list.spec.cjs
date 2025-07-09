@@ -43,5 +43,26 @@ module.exports = {
       },
       tags: '@link-list @link-list-leftalign @express @smoke @regression @t4',
     },
+    {
+      tcid: '4',
+      name: '@link-list fullwidth',
+      path: '/drafts/nala/blocks/link-list/link-list-fullwidth',
+      data: {
+        h3Text: 'Explore by category',
+        button1Text: 'Convert to MP4',
+        button2Text: 'Convert to GIF',
+      },
+      tags: '@link-list @link-list-fullwidth @express @smoke @regression @t4',
+    },
+    {
+      tcid: '5',
+      name: '@link-list noarrows',
+      path: '/drafts/nala/blocks/link-list/link-list-noarrows',
+      data: {
+        button1Text: 'Convert to MP4',
+        button2Text: 'Convert to GIF',
+      },
+      tags: '@link-list @link-list-noarrows @express @smoke @regression @t5',
+    },
   ],
 };

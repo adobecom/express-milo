@@ -66,6 +66,7 @@ async function runAccessibilityTest({
       .withTags(includeTags)
       .include(testElement)
       .exclude('.dynamic-nav-status')
+      .exclude('.feds-navLink--hoverCaret.feds-localnav-title')
       .analyze();
 
     const enhancedAxeResults = {

@@ -12,6 +12,8 @@ export default class LinkList {
       large: page.locator('.link-list.large').nth(nth),
       shaded: page.locator('.link-list.shaded').nth(nth),
       leftalign: page.locator('.link-list.leftalign').nth(nth),
+      fullwidth: page.locator('.link-list.fullwidth').nth(nth),
+      noarrows: page.locator('.link-list.noarrows').nth(nth),
     };
 
     // Centered variant details
@@ -31,5 +33,14 @@ export default class LinkList {
     this.leftalignVariantHeading = this.variants.leftalign.locator('h3');
     this.leftalignVariantButton1 = this.variants.leftalign.locator('a').nth(0);
     this.leftalignVariantButton2 = this.variants.leftalign.locator('a').nth(1);
+
+    // Fullwidth variant details
+    this.fullwidthVariantHeading = this.variants.fullwidth.locator('h3');
+    this.fullwidthVariantButton1 = this.variants.fullwidth.locator('a').nth(0);
+    this.fullwidthVariantButton2 = this.variants.fullwidth.locator('a').nth(1);
+
+    // Noarrows variant details
+    this.noarrowsVariantButton1 = this.variants.noarrows.locator('a').nth(0);
+    this.noarrowsVariantButton2 = this.variants.noarrows.locator('a').nth(1);
   }
 }

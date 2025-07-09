@@ -128,4 +128,62 @@ test.describe('Express Link List Block test suite', () => {
       await runAccessibilityTest({ page, testScope: linkList.variants.leftalign });
     });
   });
+
+  // Test 4 : Link List fullwidth
+  test(`${features[4].name},${features[4].tags}`, async ({ page, baseURL }) => {
+    const { data } = features[4];
+    const testUrl = `${baseURL}${features[4].path}${miloLibs}`;
+    console.info(`[Test Page]: ${testUrl}`);
+
+    await test.step('Go to link-list block test page', async () => {
+      await page.goto(testUrl);
+      await page.waitForLoadState('domcontentloaded');
+      await expect(page).toHaveURL(testUrl);
+    });
+
+    await test.step('Verify link-list.fullwidth block content/specs', async () => {
+      await expect(linkList.variants.fullwidth).toBeVisible();
+      await expect(linkList.fullwidthVariantHeading).toContainText(data.h3Text);
+      await expect(linkList.fullwidthVariantButton1).toContainText(data.button1Text);
+      await expect(linkList.fullwidthVariantButton2).toContainText(data.button2Text);
+    });
+
+    await test.step('Verify analytics attributes', async () => {
+      await expect(linkList.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(1));
+      await expect(linkList.variants.fullwidth).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('link-list', 1));
+    });
+
+    await test.step('Verify accessibility', async () => {
+      await runAccessibilityTest({ page, testScope: linkList.variants.fullwidth });
+    });
+  });
+
+  // Test 5 : Link List noarrows
+  test(`${features[5].name},${features[5].tags}`, async ({ page, baseURL, isMobile }) => {
+    test.skip(!isMobile, 'This variant is only for mobile');
+    const { data } = features[5];
+    const testUrl = `${baseURL}${features[5].path}${miloLibs}`;
+    console.info(`[Test Page]: ${testUrl}`);
+
+    await test.step('Go to link-list block test page', async () => {
+      await page.goto(testUrl);
+      await page.waitForLoadState('domcontentloaded');
+      await expect(page).toHaveURL(testUrl);
+    });
+
+    await test.step('Verify link-list.noarrows block content/specs', async () => {
+      await expect(linkList.variants.noarrows).toBeVisible();
+      await expect(linkList.noarrowsVariantButton1).toContainText(data.button1Text);
+      await expect(linkList.noarrowsVariantButton2).toContainText(data.button2Text);
+    });
+
+    await test.step('Verify analytics attributes', async () => {
+      await expect(linkList.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(1));
+      await expect(linkList.variants.noarrows).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('link-list', 1));
+    });
+
+    await test.step('Verify accessibility', async () => {
+      await runAccessibilityTest({ page, testScope: linkList.variants.noarrows });
+    });
+  });
 });
