@@ -2,8 +2,8 @@ import {
   ACTION_TYPES,
   useFormData,
   useFormDispatch,
-} from '../utils/form-hooks';
-import Label from './Label';
+} from '../../../utils/form-hooks';
+import Label from '../Label';
 
 function Row({ topicsGroup, rowIndex, expandButton }) {
   const formDispatch = useFormDispatch();

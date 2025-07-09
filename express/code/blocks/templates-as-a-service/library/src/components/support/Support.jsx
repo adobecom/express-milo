@@ -1,6 +1,6 @@
-import { recipe2ApiQuery } from '../../../../../scripts/template-utils.js';
-import { form2Recipe } from '../utils/recipe-form-utils';
-import { useFormData } from '../utils/form-hooks.js';
+import { recipe2ApiQuery } from '../../../../../../scripts/template-utils.js';
+import { form2Recipe } from '../../utils/recipe-form-utils.js';
+import { useFormData } from '../../utils/form-hooks.js';
 
 export default function Support() {
   const formData = useFormData();

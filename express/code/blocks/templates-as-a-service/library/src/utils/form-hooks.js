@@ -4,12 +4,18 @@ import { recipe2Form } from '../utils/recipe-form-utils.js';
 export const DataContext = createContext(null);
 export const DispatchContext = createContext(null);
 
+export const InfoContext = createContext(null);
+
 export function useFormData() {
   return useContext(DataContext);
 }
 
 export function useFormDispatch() {
   return useContext(DispatchContext);
+}
+
+export function useInfo() {
+  return useContext(InfoContext);
 }
 
 export const ACTION_TYPES = {

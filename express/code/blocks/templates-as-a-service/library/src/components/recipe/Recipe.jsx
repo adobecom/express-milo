@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { form2Recipe } from '../utils/recipe-form-utils';
-import { useFormData, useFormDispatch, ACTION_TYPES } from '../utils/form-hooks';
+import { form2Recipe } from '../../utils/recipe-form-utils';
+import { useFormData, useFormDispatch, ACTION_TYPES } from '../../utils/form-hooks';
 
 export default function Recipe() {
   const [showCopied, setShowCopied] = useState(false);

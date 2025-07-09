@@ -2,7 +2,7 @@ import {
   getTemplateTitle,
   extractRenditionLinkHref,
   extractComponentLinkHref,
-} from '../../../../../scripts/template-utils.js';
+} from '../../../../../../scripts/template-utils.js';
 
 function getImageSrc(template) {
   const thumbnail = template.pages[0].rendition.image?.thumbnail;

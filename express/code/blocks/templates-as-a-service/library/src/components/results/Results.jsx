@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { fetchResults } from '../../../../../scripts/template-utils.js';
-import { useFormData } from '../utils/form-hooks.js';
-import { form2Recipe } from '../utils/recipe-form-utils.js';
+import { fetchResults } from '../../../../../../scripts/template-utils.js';
+import { useFormData } from '../../utils/form-hooks.js';
+import { form2Recipe } from '../../utils/recipe-form-utils.js';
 import Template from './Template.jsx';
 
 function Button({ generateResults, loading, results }) {
