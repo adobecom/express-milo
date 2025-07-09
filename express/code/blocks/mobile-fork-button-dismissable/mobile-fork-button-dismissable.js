@@ -167,6 +167,7 @@ function mWebCloseEvents() {
 }
 
 function mWebVariant() {
+  if (getMobileOperatingSystem() !== 'Android') return;
   mWebBuildElements();
   mWebCloseEvents();
   mWebOverlayScroll();
@@ -174,7 +175,7 @@ function mWebVariant() {
 
 export default async function decorate(block) {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
-  if (getMobileOperatingSystem() !== 'Android') {
+  if (!androidCheck()) {
     const { default: decorateNormal } = await import('../floating-button/floating-button.js');
     decorateNormal(block);
     return;
