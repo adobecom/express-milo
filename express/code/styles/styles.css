@@ -1431,3 +1431,9 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 .hero-animation-overlay.column > .video-container > .video-controls-wrapper{
   right: 15px;
 }
+
+.icon.icon-adobe-express-logo {
+  width: initial;
+  height: 30px;
+  padding: 1rem 0 1rem;
+}
