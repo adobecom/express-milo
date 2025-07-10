@@ -12,7 +12,7 @@ function buildContent(content) {
   if (contentLink && contentLink.href.endsWith('.mp4')) {
     const video = new URL(contentLink.textContent.trim());
     const looping = ['true', 'yes', 'on'].includes(video.searchParams.get('loop'));
-    formattedContent = transformLinkToAnimation(contentLink, looping);
+    formattedContent = transformLinkToAnimation(contentLink, looping, false);
   } else {
     const contentImage = content.querySelector('picture');
 

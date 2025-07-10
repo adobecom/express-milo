@@ -1,20 +1,12 @@
 import { getLibs } from '../utils.js';
-import { debounce } from '../utils/hofs.js';
 
 const smalLViewport = 600;
 let createTag; let loadStyle;
 let getConfig;
 
 function initializeCarousel(selector, parent) {
-  let scrollCount = 1;
-  let touchStartX = 0;
-  let touchEndX = 0;
-  let touchStartY = 0;
-  let scrolling = false;
-  let isInitialLoad = true;
   let autoPlayInterval = null;
   let isPlaying = false;
-  let currentSetIndex = 0;
 
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
@@ -57,14 +49,6 @@ function initializeCarousel(selector, parent) {
     el.setAttribute('role', 'group');
     el.setAttribute('aria-label', `Item ${index + 1} of ${carouselContent.length}`);
 
-    el.addEventListener('focus', () => {
-      if (isGridLayout && window.innerWidth <= smalLViewport) {
-        return;
-      }
-      currentSetIndex = Math.floor(index / scrollCount);
-      // eslint-disable-next-line no-use-before-define
-      updateCarousel();
-    });
     el.addEventListener('mouseleave', () => {
       if (window.innerWidth > smalLViewport) {
         const isHover = el.querySelector('.button-container.singleton-hover');
@@ -82,10 +66,12 @@ function initializeCarousel(selector, parent) {
   const arrowLeft = createTag('a', {
     class: 'button basic-carousel-arrow basic-carousel-arrow-left',
     'aria-label': 'Scroll carousel left',
+    tabindex: '0',
   });
   const arrowRight = createTag('a', {
     class: 'button basic-carousel-arrow basic-carousel-arrow-right',
     'aria-label': 'Scroll carousel right',
+    tabindex: '0',
   });
 
   platform.append(...carouselContent);
@@ -134,9 +120,10 @@ function initializeCarousel(selector, parent) {
   if (hasPlayPause) {
     playPauseControl = createTag('div', { class: 'basic-carousel-play-pause' });
     playPauseButton = createTag('a', {
-      class: 'button basic-carousel-control basic-carousel-play-pause-button playing',
-      'aria-label': 'Pause carousel',
-      'daa-ll': 'Pause carousel',
+      class: 'button basic-carousel-control basic-carousel-play-pause-button paused',
+      'aria-label': 'Play carousel',
+      'daa-ll': 'Play carousel',
+      tabindex: '0',
     });
     playPauseControl.appendChild(playPauseButton);
     // Add pla/pause button first
@@ -151,66 +138,10 @@ function initializeCarousel(selector, parent) {
 
   const elements = platform.querySelectorAll('.template.basic-carousel-element');
 
-  // Determine scroll count based on viewport and classes
-  const determineScrollCount = () => {
-    if (platform.closest('.four')) return 4;
-    if (platform.closest('.three')) return 3;
-    if (platform.closest('.two')) return 2;
-    return 1;
+  // Simple scroll function from carousel.js
+  const moveCarousel = (increment) => {
+    platform.scrollLeft -= increment;
   };
-  scrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
-
-  // Calculate total number of distinct positions needed
-  const totalSets = Math.ceil(elements.length / scrollCount);
-
-  // Define updateCarousel as a function declaration for hoisting
-  function updateCarousel(forceUpdate = false) {
-    if (!forceUpdate && scrolling) return;
-    scrolling = true;
-
-    const elementWidth = elements[0].offsetWidth;
-    const platformWidth = platform.offsetWidth;
-    const defaultGap = 10;
-
-    // Special handling for grid layout on mobile
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      const twoTemplatesWidth = (elementWidth * 2) + defaultGap;
-      const centerOffset = (platformWidth - twoTemplatesWidth) / 2;
-      const newScrollPos = isInitialLoad
-        ? 0
-        : (currentSetIndex * (elementWidth + defaultGap)) - centerOffset;
-
-      platform.scrollTo({
-        left: newScrollPos,
-        behavior: isInitialLoad ? 'auto' : 'smooth',
-      });
-
-      isInitialLoad = false;
-
-      // Update arrow visibility for grid layout
-      faderLeft.classList.toggle('arrow-hidden', currentSetIndex === 0);
-      const eleLength = Math.floor(elements.length / 2) - 1;
-      faderRight.classList.toggle('arrow-hidden', currentSetIndex + 1 === eleLength);
-    } else {
-      // Standard carousel scrolling
-      const newScrollPos = window.innerWidth <= smalLViewport
-        ? currentSetIndex * elementWidth - (platformWidth - elementWidth) / 2
-        : currentSetIndex * elementWidth;
-
-      platform.scrollTo({
-        left: newScrollPos,
-        behavior: 'smooth',
-      });
-
-      // Update arrow visibility for standard layout
-      faderLeft.classList.toggle('arrow-hidden', currentSetIndex === 0);
-      faderRight.classList.toggle('arrow-hidden', currentSetIndex + scrollCount >= elements.length);
-    }
-
-    setTimeout(() => {
-      scrolling = false;
-    }, 300);
-  }
 
   // Function to start auto-play
   const startAutoPlay = () => {
@@ -222,18 +153,8 @@ function initializeCarousel(selector, parent) {
     playPauseButton.setAttribute('daa-ll', 'Pause carousel');
 
     const moveNext = () => {
-      // Check if right trigger is intersecting (meaning we're at the end)
-      const rightTriggerRect = rightTrigger.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-      const isAtEnd = rightTriggerRect.left <= containerRect.right;
-
-      if (isAtEnd) {
-        currentSetIndex = 0;
-        updateCarousel(true);
-      } else {
-        currentSetIndex += 1;
-        updateCarousel();
-      }
+      const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
+      moveCarousel(-increment);
     };
 
     autoPlayInterval = setInterval(moveNext, 3000);
@@ -260,9 +181,6 @@ function initializeCarousel(selector, parent) {
         startAutoPlay();
       }
     });
-
-    // Start auto-play by default
-    startAutoPlay();
   }
 
   // Pause on user interaction with arrows
@@ -277,50 +195,64 @@ function initializeCarousel(selector, parent) {
   faderRight.addEventListener('click', pauseOnUserInteraction);
   platform.addEventListener('touchstart', pauseOnUserInteraction);
 
-  // Update click handlers for grid layout
+  // Simple click handlers from carousel.js
   faderLeft.addEventListener('click', () => {
-    if (scrolling) return;
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      if (platform.scrollLeft <= 0) return;
-      currentSetIndex = Math.max(0, currentSetIndex - 1);
-    } else {
-      if (currentSetIndex === 0) return;
-      currentSetIndex -= scrollCount;
-      currentSetIndex = Math.max(0, currentSetIndex);
-    }
-    updateCarousel();
+    const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
+    moveCarousel(increment);
   });
 
   faderRight.addEventListener('click', () => {
-    if (scrolling) return;
-    if (isGridLayout && window.innerWidth <= smalLViewport) {
-      const maxScroll = platform.scrollWidth - platform.offsetWidth;
-      if (platform.scrollLeft >= maxScroll) return;
-
-      const templatesPerRow = Math.floor(elements.length / 2);
-      const maxIndex = templatesPerRow + 2;
-      currentSetIndex = Math.min(maxIndex, currentSetIndex + 1);
-    } else {
-      if (currentSetIndex + scrollCount >= elements.length) return;
-      currentSetIndex += scrollCount;
-    }
-    updateCarousel();
+    const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
+    moveCarousel(-increment);
   });
 
-  // Don't call preventDefault() here to allow normal scrolling
+  // Keyboard event handlers for accessibility
+  arrowLeft.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      pauseOnUserInteraction();
+      const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
+      moveCarousel(increment);
+    }
+  });
+
+  arrowRight.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      pauseOnUserInteraction();
+      const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
+      moveCarousel(-increment);
+    }
+  });
+
+  if (hasPlayPause) {
+    playPauseButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (isPlaying) {
+          stopAutoPlay();
+        } else {
+          startAutoPlay();
+        }
+      }
+    });
+  }
+
+  // Touch handling
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let touchStartY = 0;
+
   platform.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchEndX = touchStartX;
     touchStartY = e.touches[0].clientY;
   }, { passive: true });
 
-  // For vertical scrolling - passive listener (won't call preventDefault)
   platform.addEventListener('touchmove', (e) => {
     touchEndX = e.touches[0].clientX;
-    // Just update touch coordinates without preventing default
   }, { passive: true });
 
-  // For horizontal swiping - handle horizontal swipes only
   platform.addEventListener('touchmove', (e) => {
     const touchEndY = e.touches[0].clientY;
     const deltaX = Math.abs(touchEndX - touchStartX);
@@ -347,20 +279,19 @@ function initializeCarousel(selector, parent) {
       }
       return;
     }
+
     const swipeDistance = touchEndX - touchStartX;
 
     if (Math.abs(swipeDistance) > 50) {
+      const increment = Math.max((platform.offsetWidth / 4) * 3, 300);
       if (swipeDistance > 0) {
-        if (currentSetIndex > 0) {
-          currentSetIndex -= 1;
-          updateCarousel();
-        }
-      } else if (currentSetIndex + 1 < elements.length) {
-        currentSetIndex += 1;
-        updateCarousel();
+        moveCarousel(increment);
+      } else {
+        moveCarousel(-increment);
       }
       return;
     }
+
     const tappedElement = document.elementFromPoint(
       e.changedTouches[0].clientX,
       e.changedTouches[0].clientY,
@@ -390,60 +321,20 @@ function initializeCarousel(selector, parent) {
         }
         const tappedIndex = Array.from(elements).indexOf(isCard);
         if (tappedIndex !== -1) {
-          const currentPosition = currentSetIndex * scrollCount;
-          if (tappedIndex < currentPosition) {
-            currentSetIndex = Math.max(0, Math.floor(tappedIndex / scrollCount));
-            updateCarousel();
-          } else if (tappedIndex > currentPosition) {
-            currentSetIndex = Math.min(totalSets - 1, Math.floor(tappedIndex / scrollCount));
-            updateCarousel();
-          } else {
-            const btnContainer = isCard.querySelector('.button-container');
-            if (btnContainer) {
-              btnContainer.dispatchEvent(new Event('carouseltapstart'));
-              setTimeout(() => {
-                btnContainer.dispatchEvent(new Event('carouseltapend'));
-              }, 0);
-            }
-          }
+          // Center the tapped card
+          const elementWidth = elements[0].offsetWidth;
+          const platformWidth = platform.offsetWidth;
+          const targetScrollPos = tappedIndex * elementWidth - (platformWidth - elementWidth) / 2;
+          platform.scrollTo({
+            left: Math.max(0, targetScrollPos),
+            behavior: 'smooth',
+          });
         }
       } else if (isBtn && linkHref) {
         window.location.href = linkHref;
       }
     }
   });
-
-  // Handle scroll events for grid layout
-  platform.addEventListener('scroll', debounce(() => {
-    if (!isGridLayout || scrolling) return;
-
-    const elementWidth = elements[0].offsetWidth;
-    const scrollPosition = platform.scrollLeft;
-    const gap = 10;
-    const itemWidth = elementWidth + gap;
-    currentSetIndex = Math.round(scrollPosition / itemWidth);
-
-    faderLeft.classList.toggle('arrow-hidden', currentSetIndex === 0);
-    const eleLength = Math.floor(elements.length / 2) - 2;
-    faderRight.classList.toggle('arrow-hidden', currentSetIndex === eleLength);
-  }, 100));
-
-  window.addEventListener('resize', debounce(() => {
-    const newScrollCount = window.innerWidth <= smalLViewport ? 1 : determineScrollCount();
-    if (window.innerWidth > platform.offsetWidth) {
-      faderLeft.style.display = 'none';
-      faderRight.style.display = 'none';
-    } else {
-      faderLeft.style.display = 'unset';
-      faderRight.style.display = 'unset';
-    }
-    if (newScrollCount !== scrollCount) {
-      scrollCount = newScrollCount;
-      updateCarousel();
-    }
-  }));
-
-  updateCarousel();
 }
 
 export async function onBasicCarouselCSSLoad(selector, parent) {
