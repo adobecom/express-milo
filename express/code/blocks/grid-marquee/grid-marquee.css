@@ -2,7 +2,8 @@
   --m-img-w: 152px;
   --t-img-w: 304px;
   --d-img-w: 254px;
-  max-width: initial;
+  max-width: 812px;
+  margin: auto;
   text-align: center;
 }
 
