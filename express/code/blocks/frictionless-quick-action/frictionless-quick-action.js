@@ -2,6 +2,7 @@ import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
+import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 import {
   QA_CONFIGS,
   EXPERIMENTAL_VARIANTS,
@@ -22,8 +23,8 @@ let createTag;
 let getConfig;
 let getMetadata;
 let globalNavSelector;
+let selectedVideoLanguage = 'en-us'; // Default to English (US)
 let replaceKey;
-const selectedVideoLanguage = 'en-us'; // Default to English (US)
 
 let ccEverywhere;
 let quickActionContainer;
@@ -205,6 +206,23 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
   startSDK(data, quickAction, block);
 }
 
+function createCaptionLocaleDropdown() {
+  const { wrapper } = createLocaleDropdownWrapper({
+    defaultValue: 'en-us',
+    onChange: (code) => {
+      selectedVideoLanguage = code;
+    },
+  });
+  return wrapper;
+}
+
+function createStep(number, content) {
+  const step = createTag('div', { class: 'step', 'data-step': number });
+  const stepNumber = createTag('div', { class: 'step-number' }, number);
+  step.append(stepNumber, content);
+  return step;
+}
+
 export default async function decorate(block) {
   const [utils, gNavUtils, placeholders] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
@@ -218,7 +236,10 @@ export default async function decorate(block) {
 
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
-  const quickActionRow = rows.filter((r) => r.children && r.children[0].textContent.toLowerCase().trim() === 'quick-action');
+  const quickActionRow = rows.filter(
+    (r) => r.children
+      && r.children[0].textContent.toLowerCase().trim() === 'quick-action',
+  );
   const quickAction = quickActionRow?.[0].children[1]?.textContent;
   if (!quickAction) {
     throw new Error('Invalid Quick Action Type.');
@@ -230,6 +251,7 @@ export default async function decorate(block) {
   const animation = animationContainer.querySelector('a');
   const dropzone = actionAndAnimationRow[1];
   const cta = dropzone.querySelector('a.button, a.con-button');
+  const dropzoneHint = dropzone.querySelector('p:first-child');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });
@@ -238,12 +260,33 @@ export default async function decorate(block) {
     animationContainer.append(transformLinkToAnimation(animation));
   }
 
+  const captionVideoDropzoneActionColumn = createTag('div', { class: 'caption-video-dropzone-action-column' });
+  // Add locale dropdown for caption-video
+  if (quickAction === 'caption-video') {
+    const localeDropdownWrapper = createCaptionLocaleDropdown();
+    const step1 = createStep('1', localeDropdownWrapper);
+    actionColumn.append(step1);
+
+    const dropzoneHintClone = dropzoneHint.cloneNode(true);
+    dropzoneHintClone.classList.add('caption-video-dropzone-hint');
+    captionVideoDropzoneActionColumn.append(dropzoneHintClone);
+    dropzoneHint.classList.add('hidden');
+  }
+
   if (cta) cta.classList.add('xlarge');
   dropzone.classList.add('dropzone');
 
   dropzone.before(actionColumn);
   dropzoneContainer.append(dropzone);
-  actionColumn.append(dropzoneContainer, gtcText);
+
+  if (quickAction === 'caption-video') {
+    captionVideoDropzoneActionColumn.append(dropzoneContainer, gtcText);
+    const step2 = createStep('2', captionVideoDropzoneActionColumn);
+    actionColumn.append(step2);
+  } else {
+    actionColumn.append(dropzoneContainer, gtcText);
+  }
+
   const inputElement = createTag('input', {
     type: 'file',
     accept: QA_CONFIGS[quickAction].accept,
@@ -308,7 +351,10 @@ export default async function decorate(block) {
     document.body.dataset.suppressfloatingcta = 'true';
   }, false);
 
-  const freePlanTags = await buildFreePlanWidget({ typeKey: 'branded', checkmarks: true });
+  const freePlanTags = await buildFreePlanWidget({
+    typeKey: 'branded',
+    checkmarks: true,
+  });
   dropzone.append(freePlanTags);
 
   window.addEventListener('popstate', (e) => {
@@ -334,7 +380,9 @@ export default async function decorate(block) {
 
   block.dataset.frictionlessgroup = QA_CONFIGS[quickAction].group ?? 'image';
 
-  if (['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
+  if (
+    ['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())
+  ) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');
     block.prepend(logo);

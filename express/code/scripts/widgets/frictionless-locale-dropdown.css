@@ -1,0 +1,175 @@
+/* Locale Dropdown Widget Styles */
+:root {
+  --dropdown-bg: #e6e6e6;
+  --dropdown-text: var(--color-black);
+  --dropdown-hover-bg: #d5d5d5;
+  --dropdown-active-bg: rgba(0, 0, 0, 0.1);
+  --dropdown-focus-border: var(--color-info-accent-hover);
+  --dropdown-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.locale-dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-block-end: 16px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.locale-dropdown-label {
+  font-size: var(--body-font-size-xl);
+  color: var(--dropdown-text);
+  margin: 0;
+  font-weight: 900;
+  text-align: left;
+}
+
+.locale-combobox {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+}
+
+/* Default state */
+.combobox-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: var(--spacing-100) var(--spacing-200);
+  background-color: var(--dropdown-bg);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: var(--body-font-size-s);
+  font-weight: normal;
+  line-height: 1.4;
+  color: var(--dropdown-text);
+  transition: all 0.15s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Hover state */
+.combobox-input:hover:not(:focus) {
+  background-color: var(--dropdown-hover-bg);
+}
+
+/* Down/Active state */
+.combobox-input:active {
+  background-color: var(--dropdown-active-bg);
+}
+
+/* Focus states */
+.combobox-input:focus {
+  border-color: var(--dropdown-focus-border);
+  background-color: var(--dropdown-bg);
+}
+
+.combobox-input:focus:hover {
+  background-color: var(--dropdown-hover-bg);
+}
+
+/* Dropdown arrow */
+.combobox-input::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  margin-left: var(--spacing-100);
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: transform 0.2s ease;
+}
+
+.locale-combobox.open .combobox-input::after {
+  transform: rotate(180deg);
+}
+
+/* Dropdown list */
+.combobox-listbox {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: var(--dropdown-shadow);
+  display: none;
+  padding: 4px 0;
+}
+
+.locale-combobox.open .combobox-listbox {
+  display: block;
+}
+
+/* Dropdown options */
+.combobox-option {
+  padding: var(--spacing-100) var(--spacing-200);
+  cursor: pointer;
+  font-size: var(--body-font-size-s);
+  font-weight: normal;
+  line-height: 1.4;
+  color: var(--dropdown-text);
+  transition: background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 36px;
+}
+
+/* Option states */
+.combobox-option:hover {
+  background-color: var(--dropdown-hover-bg);
+}
+
+/* Keyboard navigation highlight */
+.combobox-option.option-current {
+  background-color: var(--dropdown-active-bg);
+}
+
+/* Selected option checkmark */
+.combobox-option[aria-selected='true']::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3332 4L5.99984 11.3333L2.6665 8' stroke='%230066CC' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Keyboard focus indicator */
+.combobox-input:focus-visible {
+  outline: none;
+  border-color: var(--dropdown-focus-border);
+  box-shadow: 0 0 0 2px var(--color-white),
+    0 0 0 4px var(--color-info-accent-hover);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .combobox-input,
+  .combobox-input::after,
+  .combobox-option {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .combobox-input {
+    border-width: 2px;
+    border-color: currentColor;
+  }
+
+  .combobox-option[aria-selected='true'] {
+    border: 2px solid currentColor;
+  }
+}
