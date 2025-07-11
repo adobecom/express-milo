@@ -9,7 +9,8 @@ export default defineConfig({
       entry: 'src/main.jsx',
       fileName: 'templates-as-a-service',
       formats: ['es']
-    }
+    },
+    sourcemap: true
   },
   define: {
     'process.env.NODE_ENV': '"production"',

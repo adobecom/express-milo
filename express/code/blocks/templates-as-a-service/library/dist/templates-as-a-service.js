@@ -10850,3 +10850,4 @@ typeof window < "u" && document.getElementById("root") && zh("root");
 export {
   zh as initTemplatesAsAService
 };
+//# sourceMappingURL=templates-as-a-service.js.map

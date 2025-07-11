@@ -61,7 +61,6 @@ export function recipe2ApiQuery(recipe) {
 
 export async function fetchResults(recipe) {
   const { url, headers } = recipe2ApiQuery(recipe);
-  console.log(recipe, url, headers);
   const response = await fetch(url, { headers });
   const data = await response.json();
   return data;
