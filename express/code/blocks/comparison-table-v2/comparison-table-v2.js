@@ -2,142 +2,195 @@
 
 
 
-function partitionContent(children) {
-    const groups = [];
-    let currentGroup = [];
+function partitionContentBySeparators(blockChildren) {
+    const contentGroups = [];
+    let currentSection = [];
 
-    for (const child of children) {
-        const hasHr = child.querySelector('hr');
-        if (hasHr) {
-            if (currentGroup.length > 0) {
-                groups.push(currentGroup);
-                currentGroup = [];
+    for (const childElement of blockChildren) {
+        const isSeparator = childElement.querySelector('hr');
+        if (isSeparator) {
+            if (currentSection.length > 0) {
+                contentGroups.push(currentSection);
+                currentSection = [];
             }
         } else {
-            currentGroup.push(child);
+            currentSection.push(childElement);
         }
     }
 
-    if (currentGroup.length > 0) {
-        groups.push(currentGroup);
+    if (currentSection.length > 0) {
+        contentGroups.push(currentSection);
     }
-    return groups;
+    return contentGroups;
 }
 
-function toggleVisibleContentMobile(block, visibleCol){
-   const planCell = block.querySelectorAll('.plan-cell');
-   planCell.forEach((cell, index) => {
-        cell.classList.toggle('invisible-content', index !== visibleCol && index > 0);
-   });
-   const rows = block.querySelectorAll('.table-container tr');
-   console.log(rows);
-   rows.forEach((row) => {
-    const featureCells = row.querySelectorAll('.feature-cell');
-    featureCells.forEach((cell, index) => {
-        cell.classList.toggle('invisible-content', index !== visibleCol + 1 && index > 1);
+function toggleVisibleContentMobile(comparisonBlock, visibleColumnIndex) {
+    const planCells = comparisonBlock.querySelectorAll('.plan-cell');
+    planCells.forEach((planCell, index) => {
+        planCell.classList.toggle('invisible-content', index !== visibleColumnIndex && index > 0);
     });
-   });
+    const tableRows = comparisonBlock.querySelectorAll('.table-container tr');
+    tableRows.forEach((tableRow) => {
+        const featureCells = tableRow.querySelectorAll('.feature-cell');
+        featureCells.forEach((featureCell, index) => {
+            featureCell.classList.toggle('invisible-content', index !== visibleColumnIndex + 1 && index > 1);
+        });
+    });
 }
 
-function convertToTable(group, headers) {
+function createToggleButton(isHidden) {
+    const button = document.createElement('button');
+    button.textContent = 'Toggle';
+    return button;
+}
+
+function createTableHeader(sectionHeaderRow, columnHeaders) {
+    const sectionHeaderContainer = document.createElement('div');
+    sectionHeaderContainer.classList.add('first-row');
+    
+    // Add section title
+    sectionHeaderContainer.appendChild(sectionHeaderRow.children[0]);
+    
+    // Extract colors and clear cells (skip first and last)
+    const columnColors = [];
+    for (let i = 1; i < sectionHeaderRow.children.length - 1; i++) {
+        const colorCell = sectionHeaderRow.children[i];
+        const colorValue = colorCell.textContent.trim();
+        columnColors.push(colorValue);
+        colorCell.textContent = '';
+    }
+    
+    return { sectionHeaderContainer, columnColors };
+}
+
+function createAccessibilityHeaders(sectionTitle, columnTitles) {
+    const screenReaderHeaders = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    screenReaderHeaders.classList.add('invisible-headers');
+    
+    // Add section title header
+    const sectionHeader = document.createElement('th');
+    sectionHeader.textContent = sectionTitle;
+    headerRow.appendChild(sectionHeader);
+    
+    // Add column headers
+    columnTitles.forEach(columnTitle => {
+        const columnHeader = document.createElement('th');
+        columnHeader.textContent = columnTitle;
+        headerRow.appendChild(columnHeader);
+    });
+    
+    screenReaderHeaders.appendChild(headerRow);
+    return screenReaderHeaders;
+}
+
+function createTableRow(featureRowDiv, columnColors) {
+    const tableRow = document.createElement('tr');
+    const featureCells = featureRowDiv.children;
+    
+    Array.from(featureCells).forEach((cellContent, cellIndex) => {
+        const tableCell = document.createElement('td');
+        tableCell.classList.add('feature-cell');
+        
+        // Apply color class to non-feature-name cells (skip first cell)
+        if (cellIndex > 0 && cellIndex <= columnColors.length) {
+            const colorClass = columnColors[cellIndex - 1];
+            if (colorClass) {
+                tableCell.classList.add(`color-${colorClass}`);
+            }
+        }
+        
+        tableCell.innerHTML = cellContent.innerHTML;
+        tableRow.appendChild(tableCell);
+    });
+    
+    return tableRow;
+}
+
+function convertToTable(sectionGroup, columnHeaders) {
     const tableContainer = document.createElement('div');
     tableContainer.classList.add('table-container');
-    const table = document.createElement('table');
-    const tbody = document.createElement('tbody');
-    const colors = []
-    group.forEach((div, index) => {
-        if (index === 0) {
-            const firstRow = document.createElement('div');
-            firstRow.classList.add('first-row');
-            firstRow.appendChild(div.children[0]);
-            for (let i = 1; i < div.children.length - 1; i++) {
-                const cell = div.children[i];
-                const color = cell.textContent.trim();
-                colors.push(color);
-                cell.textContent = '';
-            }
-
-            const button = document.createElement('button');
-            button.textContent = 'Toggle';
-            if (div.children[div.children.length - 1].textContent.trim() === 'hidden') {
-                table.classList.add('hide-table');
-            }
-            button.onclick = () => {
-                table.classList.toggle('hide-table');
-            }
-            const buttonCell = document.createElement('div');
-            buttonCell.appendChild(button);
-            buttonCell.classList.add('button-cell');
-            firstRow.appendChild(buttonCell);
-
-            tableContainer.appendChild(firstRow);
-
-            const invisibleHeaders = document.createElement('thead');
-            const invisibleHeaderRow = document.createElement('tr');
-            invisibleHeaders.classList.add('invisible-headers');
-            invisibleHeaders.appendChild(invisibleHeaderRow);
-            const headerCell = document.createElement('th');
-            headerCell.textContent = div.children[0].textContent.trim();
-            invisibleHeaderRow.appendChild(headerCell);
-
-            for (let i = 0; i < headers.length; i++) {
-                const th = document.createElement('th');
-                th.textContent = headers[i];
-                invisibleHeaderRow.appendChild(th);
-            }
-            table.appendChild(invisibleHeaders);
-        } else {
-            const row = document.createElement('tr');
-            const cells = div.children;
-            for (const cell of cells) {
-                const td = document.createElement('td');
-                td.classList.add('feature-cell');
-                td.innerHTML = cell.innerHTML;
-                row.appendChild(td);
-            }
-
-            tbody.appendChild(row);
-        }
-    });
-
-    table.appendChild(tbody);
-    tableContainer.appendChild(table);
+    const comparisonTable = document.createElement('table');
+    const tableBody = document.createElement('tbody');
+    
+    if (sectionGroup.length === 0) return tableContainer;
+    
+    // Process header row
+    const sectionHeaderDiv = sectionGroup[0];
+    const { sectionHeaderContainer, columnColors } = createTableHeader(sectionHeaderDiv, columnHeaders);
+    
+    // Check if table should be hidden
+    const visibilityIndicator = sectionHeaderDiv.children[sectionHeaderDiv.children.length - 1];
+    const shouldHideTable = visibilityIndicator && visibilityIndicator.textContent.trim() === 'hidden';
+    if (shouldHideTable) {
+        comparisonTable.classList.add('hide-table');
+    }
+    
+    // Add toggle button
+    const toggleButton = createToggleButton(shouldHideTable);
+    toggleButton.onclick = () => comparisonTable.classList.toggle('hide-table');
+    
+    const toggleButtonContainer = document.createElement('div');
+    toggleButtonContainer.classList.add('button-cell');
+    toggleButtonContainer.appendChild(toggleButton);
+    sectionHeaderContainer.appendChild(toggleButtonContainer);
+    
+    tableContainer.appendChild(sectionHeaderContainer);
+    
+    // Add accessibility headers
+    const sectionTitle = sectionHeaderDiv.children[0].textContent.trim();
+    const screenReaderHeaders = createAccessibilityHeaders(sectionTitle, columnHeaders);
+    comparisonTable.appendChild(screenReaderHeaders);
+    
+    // Process data rows
+    for (let featureIndex = 1; featureIndex < sectionGroup.length; featureIndex++) {
+        const featureRow = createTableRow(sectionGroup[featureIndex], columnColors);
+        tableBody.appendChild(featureRow);
+    }
+    
+    comparisonTable.appendChild(tableBody);
+    tableContainer.appendChild(comparisonTable);
     return tableContainer;
 }
 
-function createStickyHeader(stickyHeader) {
-    const headers = []
-    stickyHeader.classList.add('sticky-header');
-    const stickyHeaderContent = stickyHeader.querySelectorAll('div');
-    stickyHeaderContent.forEach((div, index) => {
-        if (index === 0) {
-            div.classList.add('first-cell');
+
+
+function createStickyHeader(headerGroupElement) {
+    const columnTitles = [];
+    headerGroupElement.classList.add('sticky-header');
+    const headerCells = headerGroupElement.querySelectorAll('div');
+    
+    headerCells.forEach((headerCell, cellIndex) => {
+        if (cellIndex === 0) {
+            headerCell.classList.add('first-cell');
         } else {
-            div.classList.add('plan-cell');
-            const choicesButton = document.createElement('button');
-            choicesButton.textContent = '>';
-            choicesButton.classList.add('choices-button');
-            div.appendChild(choicesButton);
-            headers.push(div.textContent.trim());
+            headerCell.classList.add('plan-cell');
+            const planSelectorButton = document.createElement('button');
+            planSelectorButton.textContent = '>';
+            planSelectorButton.classList.add('choices-button');
+            headerCell.appendChild(planSelectorButton);
+            columnTitles.push(headerCell.textContent.trim());
         }
-        stickyHeader.appendChild(div);
+        headerGroupElement.appendChild(headerCell);
     });
-    return { stickyHeader, headers };
+    
+    return { stickyHeaderElement: headerGroupElement, columnTitles };
 }
 
-export default async function decorate(block) {
-    const children = Array.from(block.children);
+export default async function decorate(comparisonBlock) {
+    const blockChildren = Array.from(comparisonBlock.children);
 
-    const groups = partitionContent(children);
+    const contentSections = partitionContentBySeparators(blockChildren);
 
-    block.innerHTML = '';
+    comparisonBlock.innerHTML = '';
 
-    const { stickyHeader, headers } = createStickyHeader(groups[0][0]);
-    block.appendChild(stickyHeader);
-    for (let i = 1; i < groups.length; i++) {
-        const table = convertToTable(groups[i], headers);
-        block.appendChild(table);
+    const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0][0]);
+    comparisonBlock.appendChild(stickyHeaderElement);
+    
+    for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex++) {
+        const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
+        comparisonBlock.appendChild(sectionTable);
     }
 
-    toggleVisibleContentMobile(block, 1);
+    toggleVisibleContentMobile(comparisonBlock, 1);
 }   
