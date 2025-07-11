@@ -155,20 +155,46 @@ function convertToTable(sectionGroup, columnHeaders) {
 
 
 
-function createStickyHeader(headerGroupElement) {
+function createPlanSelector(planIndex, totalPlans, comparisonBlock) {
+    const selectWrapper = document.createElement('div');
+    selectWrapper.classList.add('plan-selector-wrapper');
+    
+    const planSelector = document.createElement('select');
+    planSelector.classList.add('plan-selector');
+    planSelector.setAttribute('aria-label', 'Select comparison plan');
+    
+    // Create options for all plans
+    for (let i = 1; i < totalPlans; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Plan ${i + 1}`;
+        if (i === planIndex) {
+            option.selected = true;
+        }
+        planSelector.appendChild(option);
+    }
+    
+    planSelector.addEventListener('change', (e) => {
+        toggleVisibleContentMobile(comparisonBlock, parseInt(e.target.value));
+    });
+    
+    selectWrapper.appendChild(planSelector);
+    return selectWrapper;
+}
+
+function createStickyHeader(headerGroupElement, comparisonBlock) {
     const columnTitles = [];
     headerGroupElement.classList.add('sticky-header');
     const headerCells = headerGroupElement.querySelectorAll('div');
+    const totalPlans = headerCells.length - 1; // Exclude first cell
     
     headerCells.forEach((headerCell, cellIndex) => {
         if (cellIndex === 0) {
             headerCell.classList.add('first-cell');
         } else {
             headerCell.classList.add('plan-cell');
-            const planSelectorButton = document.createElement('button');
-            planSelectorButton.textContent = '>';
-            planSelectorButton.classList.add('choices-button');
-            headerCell.appendChild(planSelectorButton);
+            const planSelector = createPlanSelector(cellIndex, totalPlans, comparisonBlock);
+            headerCell.appendChild(planSelector);
             columnTitles.push(headerCell.textContent.trim());
         }
         headerGroupElement.appendChild(headerCell);
@@ -184,7 +210,7 @@ export default async function decorate(comparisonBlock) {
 
     comparisonBlock.innerHTML = '';
 
-    const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0][0]);
+    const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0][0], comparisonBlock);
     comparisonBlock.appendChild(stickyHeaderElement);
     
     for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex++) {

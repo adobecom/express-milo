@@ -19,6 +19,11 @@ main .section .comparison-table-v2 p {
     width: var(--cell-width);
 }
 
+.comparison-table-v2 .sticky-header .plan-cell {
+    position: relative;
+    padding-bottom: 40px;
+}
+
 .comparison-table-v2 .sticky-header .first-cell {
     display: flex;
     flex-direction: column-reverse;
@@ -110,6 +115,51 @@ main .section .comparison-table-v2 p {
     line-height: 130%; /* 23.4px */
 }
 
+
+.comparison-table-v2 .plan-selector-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+}
+
+.comparison-table-v2 .plan-selector {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+    width: 100%;
+    padding: 4px 20px 4px 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    color: transparent;
+    position: relative;
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    margin-right: -16px;
+    height: 32px;
+    border-radius: 0px 0px 8px 8px;
+    border: 0px solid var(--Border-sx-Extra-subdued-default, #D5D5D5);
+    background: var(--indigo-200, #EBEEFF);
+}
+
+.comparison-table-v2 .plan-selector:focus {
+    outline: none;
+}
+
+.comparison-table-v2 .plan-selector-wrapper::after {
+    content: '▼';
+    position: absolute;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%);
+    pointer-events: none;
+    font-size: 12px;
+    color: var(--Content-Subdued-default, #5258E4);
+}
 
 @media (max-width: 768px) {
     .comparison-table-v2 {
