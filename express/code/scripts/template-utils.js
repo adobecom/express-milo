@@ -82,3 +82,12 @@ export function extractComponentLinkHref(template) {
 export function containsVideo(page) {
   return !!page?.rendition?.video?.thumbnail?.componentId;
 }
+
+export function isValidTemplate(template) {
+  return !!(template.status === 'approved'
+      && template.customLinks?.branchUrl
+      && (template.assetType === 'Webpage_Template' || template.pages?.[0]?.rendition?.image?.thumbnail?.componentId)
+      && template._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href?.replace
+      && template._links?.['http://ns.adobe.com/adobecloud/rel/component']?.href?.replace
+  );
+}
