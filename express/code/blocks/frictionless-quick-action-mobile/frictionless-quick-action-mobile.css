@@ -1,3 +1,5 @@
+@import url('../../scripts/widgets/frictionless-locale-dropdown.css');
+
 .frictionless-quick-action-mobile {
     --animation-h: 260px;
     --quick-action-container-h: 667px;
@@ -259,4 +261,19 @@
     .frictionless-quick-action-mobile .quick-action-container#resize-image-container {
         height: 1000px;
     }
+}
+
+.frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .locale-dropdown-wrapper {
+    width: 100%;
+    align-items: center;
+    margin-block-end: var(--spacing-400);
+}
+
+.frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .locale-dropdown-wrapper #locale-select-label {
+    margin: 0;
+    font-size: var(--body-font-size-m);
+}
+
+.frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .animation-container {
+    padding-block: var(--spacing-700);
 }
