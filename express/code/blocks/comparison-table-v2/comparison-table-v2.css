@@ -13,6 +13,35 @@ main .section .comparison-table-v2 p {
     display: flex;
     gap: 16px;
     max-width: 600px;
+   
+}
+
+.comparison-table-v2 .sticky-header.is-stuck {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 16px;
+    max-width: 100%;
+    justify-content: center;
+}
+
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell {
+    border: none;
+}
+
+.comparison-table-v2 .sticky-header.is-stuck .plan-selector-wrapper,
+.comparison-table-v2 .sticky-header.is-stuck .first-cell {
+   display: none;
+}
+
+ 
+
+.comparison-table-v2 .sticky-header-placeholder {
+    display: none;
 }
 .comparison-table-v2 .sticky-header .first-cell,
 .comparison-table-v2 .sticky-header .plan-cell {
@@ -241,6 +270,12 @@ main .section .comparison-table-v2 p {
         text-align: center;
         gap: 12px;
         position: relative;
+    }
+
+    .comparison-table-v2 .sticky-header.is-stuck {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 12px 16px;
     }
 
     .comparison-table-v2 .sticky-header .first-cell {

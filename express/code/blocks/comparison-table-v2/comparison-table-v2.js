@@ -247,6 +247,48 @@ function createStickyHeader(headerGroup, comparisonBlock) {
     return { stickyHeaderElement: headerGroupElement, columnTitles };
 }
 
+function initStickyBehavior(stickyHeader, comparisonBlock) {
+    // Create placeholder element to maintain layout when header becomes fixed
+    const placeholder = document.createElement('div');
+    placeholder.classList.add('sticky-header-placeholder');
+    comparisonBlock.insertBefore(placeholder, stickyHeader.nextSibling);
+
+    // Intersection Observer to detect when header should stick
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    // Header is scrolled out of view - make it sticky
+                    stickyHeader.classList.add('is-stuck');
+                    placeholder.style.display = 'flex';
+                    placeholder.style.height = `${stickyHeader.offsetHeight}px`;
+                } else {
+                    // Header is in view - remove sticky
+                    stickyHeader.classList.remove('is-stuck');
+                    placeholder.style.display = 'none';
+                }
+            });
+        },
+        {
+            // Trigger when header is about to leave viewport
+            rootMargin: '-1px 0px 0px 0px',
+            threshold: [0, 1]
+        }
+    );
+
+    // Create sentinel element to track scroll position
+    const sentinel = document.createElement('div');
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '0';
+    sentinel.style.height = '1px';
+    sentinel.style.width = '100%';
+    sentinel.style.pointerEvents = 'none';
+    comparisonBlock.style.position = 'relative';
+    comparisonBlock.insertBefore(sentinel, comparisonBlock.firstChild);
+
+    observer.observe(sentinel);
+}
+
 export default async function decorate(comparisonBlock) {
     const blockChildren = Array.from(comparisonBlock.children);
     const contentSections = partitionContentBySeparators(blockChildren);  
@@ -260,4 +302,7 @@ export default async function decorate(comparisonBlock) {
     }
 
     toggleVisibleContentMobile(comparisonBlock, 1);
+    
+    // Initialize sticky header behavior
+    initStickyBehavior(stickyHeaderElement, comparisonBlock);
 }   
