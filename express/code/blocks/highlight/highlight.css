@@ -2,11 +2,12 @@
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
   padding-bottom: var(--spacing-500);
+  margin-left: var(--ax-grid-margin);
+  margin-right: var(--ax-grid-margin);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+  gap: var(--ax-grid-gutter);
+  justify-content: center;
 }
 
 .highlight .icon-row {
@@ -37,7 +38,6 @@
   max-width: unset;
 }
 
-
 @media (min-width: 768px) {
   .highlight {
     display: flex;
@@ -46,6 +46,13 @@
     width: auto;
     padding: var(--spacing-200) var(--spacing-500);
     flex: 1;
+    flex-wrap: nowrap;
+  }
+
+  .highlight .icon-row {
+    flex-direction: row;
+    text-align: left;
+    padding-left: var(--spacing-600);
   }
 
   .highlight .icon-row .text {
@@ -68,10 +75,5 @@
   }
   .highlight .icon-row .text {
     padding-left: var(--spacing-100);
-  }
-   .highlight .icon-row {
-    flex-direction: row;
-    text-align: left;
-    padding-left: var(--spacing-600);
   }
 }
