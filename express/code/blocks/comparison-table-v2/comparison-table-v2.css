@@ -14,8 +14,8 @@ main .section .comparison-table-v2 p {
     gap: 16px;
     max-width: 600px;
 }
-
-.comparison-table-v2 .sticky-header > div {
+.comparison-table-v2 .sticky-header .first-cell,
+.comparison-table-v2 .sticky-header .plan-cell {
     width: var(--cell-width);
 }
 
@@ -125,26 +125,56 @@ main .section .comparison-table-v2 p {
 }
 
 .comparison-table-v2 .plan-selector {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background: transparent;
-    border: none;
-    width: 100%;
-    padding: 4px 20px 4px 0;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    color: transparent;
+ 
     position: relative;
-    width: calc(100% + 32px);
-    margin-left: -16px;
-    margin-right: -16px;
+     
     height: 32px;
     border-radius: 0px 0px 8px 8px;
     border: 0px solid var(--Border-sx-Extra-subdued-default, #D5D5D5);
     background: var(--indigo-200, #EBEEFF);
 }
+
+.comparison-table-v2 .plan-selector-choices.display-none {
+    display: none;
+}
+
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice.selected::before {
+    content: '✓';
+    position: absolute;
+    left: 24px;
+}
+
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice {
+    padding: 8px 12px 8px 40px;
+    font-size: 13px;
+}   
+
+.comparison-table-v2 .plan-selector-choices {
+    position: absolute;
+    bottom: 0;
+    z-index: 5; 
+    bottom: -80px; 
+    border-radius: 10px 10px 0px 0px;
+    border-bottom: 1px solid #767676;
+    background: var(--Static-Pallete-_s2-gray-700, #505050);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    color: white;
+    bottom: -120px;
+    right: 0;
+    width: 206px;
+    text-align: left;
+    position: absolute;
+    /* bottom: 0; */
+    z-index: 5;
+    /* bottom: -80px; */
+    border-radius: 10px;
+    border-bottom: 1px solid #767676;
+    background: var(--Static-Pallete-_s2-gray-700, #505050);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+
 
 .comparison-table-v2 .plan-selector:focus {
     outline: none;
@@ -161,7 +191,7 @@ main .section .comparison-table-v2 p {
     color: var(--Content-Subdued-default, #5258E4);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1280px) {
     .comparison-table-v2 {
         --cell-width: 100%;
         --header-cell-width: 200px;
@@ -210,6 +240,7 @@ main .section .comparison-table-v2 p {
         flex-wrap: wrap;
         text-align: center;
         gap: 12px;
+        position: relative;
     }
 
     .comparison-table-v2 .sticky-header .first-cell {

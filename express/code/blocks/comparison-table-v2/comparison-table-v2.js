@@ -1,15 +1,15 @@
-
-
-
-
 function partitionContentBySeparators(blockChildren) {
     const contentGroups = [];
     let currentSection = [];
 
     for (const childElement of blockChildren) {
-        const isSeparator = childElement.querySelector('hr');
-        if (isSeparator) {
+        const isSeparator = childElement.querySelector('hr')
+        const isOpenSeparator = childElement.textContent.trim() === '+++';
+        if (isSeparator || isOpenSeparator) {
             if (currentSection.length > 0) {
+                if (isOpenSeparator) {
+                    currentSection[0].classList.add('open-separator');
+                }
                 contentGroups.push(currentSection);
                 currentSection = [];
             }
@@ -17,7 +17,6 @@ function partitionContentBySeparators(blockChildren) {
             currentSection.push(childElement);
         }
     }
-
     if (currentSection.length > 0) {
         contentGroups.push(currentSection);
     }
@@ -53,8 +52,8 @@ function createTableHeader(sectionHeaderRow, columnHeaders) {
     
     // Extract colors and clear cells (skip first and last)
     const columnColors = [];
-    for (let i = 1; i < sectionHeaderRow.children.length - 1; i++) {
-        const colorCell = sectionHeaderRow.children[i];
+    for (let i = 0; i < sectionHeaderRow.children.length; i++) {
+        const colorCell = sectionHeaderRow.children[i ];
         const colorValue = colorCell.textContent.trim();
         columnColors.push(colorValue);
         colorCell.textContent = '';
@@ -84,20 +83,14 @@ function createAccessibilityHeaders(sectionTitle, columnTitles) {
     return screenReaderHeaders;
 }
 
-function createTableRow(featureRowDiv, columnColors) {
+function createTableRow(featureRowDiv) {
     const tableRow = document.createElement('tr');
-    const featureCells = featureRowDiv.children;
-    
+    const featureCells = featureRowDiv.children; 
     Array.from(featureCells).forEach((cellContent, cellIndex) => {
         const tableCell = document.createElement('td');
-        tableCell.classList.add('feature-cell');
-        
-        // Apply color class to non-feature-name cells (skip first cell)
-        if (cellIndex > 0 && cellIndex <= columnColors.length) {
-            const colorClass = columnColors[cellIndex - 1];
-            if (colorClass) {
-                tableCell.classList.add(`color-${colorClass}`);
-            }
+        tableCell.classList.add('feature-cell'); 
+        for (let i = 0; i < cellContent.classList.length; i++) {
+            tableCell.classList.add(cellContent.classList[i]);
         }
         
         tableCell.innerHTML = cellContent.innerHTML;
@@ -112,11 +105,16 @@ function convertToTable(sectionGroup, columnHeaders) {
     tableContainer.classList.add('table-container');
     const comparisonTable = document.createElement('table');
     const tableBody = document.createElement('tbody');
+   
     
     if (sectionGroup.length === 0) return tableContainer;
     
     // Process header row
     const sectionHeaderDiv = sectionGroup[0];
+    if (! sectionHeaderDiv.classList.contains('open-separator')) {
+        comparisonTable.classList.add('hide-table');
+    }
+    
     const { sectionHeaderContainer, columnColors } = createTableHeader(sectionHeaderDiv, columnHeaders);
     
     // Check if table should be hidden
@@ -155,64 +153,107 @@ function convertToTable(sectionGroup, columnHeaders) {
 
 
 
-function createPlanSelector(planIndex, totalPlans, comparisonBlock) {
+function createPlanSelector(  totalPlans, comparisonBlock, headers) {
     const selectWrapper = document.createElement('div');
     selectWrapper.classList.add('plan-selector-wrapper');
+ 
     
-    const planSelector = document.createElement('select');
+    const planSelector = document.createElement('div');
     planSelector.classList.add('plan-selector');
     planSelector.setAttribute('aria-label', 'Select comparison plan');
-    
-    // Create options for all plans
-    for (let i = 1; i < totalPlans; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Plan ${i + 1}`;
-        if (i === planIndex) {
-            option.selected = true;
-        }
-        planSelector.appendChild(option);
-    }
-    
-    planSelector.addEventListener('change', (e) => {
-        toggleVisibleContentMobile(comparisonBlock, parseInt(e.target.value));
-    });
-    
     selectWrapper.appendChild(planSelector);
     return selectWrapper;
 }
 
-function createStickyHeader(headerGroupElement, comparisonBlock) {
-    const columnTitles = [];
+function createPlanDropdown(totalPlans, comparisonBlock, headers, headerGroupElement ) {
+ 
+
+    const planSelectorChoices = document.createElement('div');
+    planSelectorChoices.classList.add('plan-selector-choices'); 
+    for (let i = 1; i < totalPlans; i++) {
+        const option = document.createElement('div');
+        option.classList.add('plan-selector-choice');
+        option.value = i; 
+        option.textContent = headers[i]
+        option.addEventListener('click', () => {
+            planSelectorChoices.querySelectorAll('.plan-selector-choice').forEach(div => {
+                div.classList.toggle('selected', i === parseInt(div.value));
+            });
+            toggleVisibleContentMobile(comparisonBlock, parseInt(option.value));
+            planSelectorChoices.classList.add('display-none');  
+        });
+        planSelectorChoices.appendChild(option);
+    }
+
+    planSelectorChoices.querySelectorAll('.plan-selector-choice').forEach(div => {
+        div.classList.toggle('selected', div.value === 1);
+    }); 
+
+    headerGroupElement.querySelectorAll('.plan-selector').forEach(planSelector => {
+        console.log(planSelector);
+        planSelector.addEventListener('click', () => {
+            planSelectorChoices.classList.toggle('display-none');
+        });
+    });
+
+    planSelectorChoices.classList.add('display-none');
+    headerGroupElement.appendChild(planSelectorChoices);
+ 
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.plan-selector')) {
+            planSelectorChoices.classList.add('display-none');
+        }
+    });
+ 
+}
+
+function applyColumnShading(headerGroup, comparisonBlock) {
+    const columnShadingConfig = Array.from(headerGroup[0].querySelectorAll('div')).map((d) => d.textContent.trim());
+    const rows = comparisonBlock.querySelectorAll('div');
+ 
+    rows.forEach((row, rowIndex) => {
+        const cells = row.querySelectorAll('div');
+        cells.forEach((cell, cellIndex) => { 
+            if (columnShadingConfig[cellIndex] && columnShadingConfig[cellIndex] !== '') {
+                cell.classList.add(columnShadingConfig[cellIndex]);
+            }
+        });
+    });
+}
+
+function createStickyHeader(headerGroup, comparisonBlock) {
+ 
+    const headerGroupElement = headerGroup[1];
+    const columnTitles = []; 
     headerGroupElement.classList.add('sticky-header');
     const headerCells = headerGroupElement.querySelectorAll('div');
     const totalPlans = headerCells.length - 1; // Exclude first cell
-    
+    const headers = []
+   
     headerCells.forEach((headerCell, cellIndex) => {
         if (cellIndex === 0) {
             headerCell.classList.add('first-cell');
         } else {
-            headerCell.classList.add('plan-cell');
-            const planSelector = createPlanSelector(cellIndex, totalPlans, comparisonBlock);
-            headerCell.appendChild(planSelector);
+            headerCell.classList.add('plan-cell'); 
+            headers.push(headerCell.querySelector('h1,h2,h3,h4,h5,h6').textContent.trim() + ' ' + headerCell.querySelector('p').textContent.trim());
             columnTitles.push(headerCell.textContent.trim());
+            const planSelector = createPlanSelector( totalPlans, comparisonBlock, headers);
+            headerCell.appendChild(planSelector);
         }
         headerGroupElement.appendChild(headerCell);
     });
-    
+
+    createPlanDropdown(totalPlans, comparisonBlock, headers, headerGroupElement );
     return { stickyHeaderElement: headerGroupElement, columnTitles };
 }
 
 export default async function decorate(comparisonBlock) {
     const blockChildren = Array.from(comparisonBlock.children);
-
-    const contentSections = partitionContentBySeparators(blockChildren);
-
+    const contentSections = partitionContentBySeparators(blockChildren);  
+    applyColumnShading(contentSections[0], comparisonBlock);
     comparisonBlock.innerHTML = '';
-
-    const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0][0], comparisonBlock);
-    comparisonBlock.appendChild(stickyHeaderElement);
-    
+    const { stickyHeaderElement, columnTitles} = createStickyHeader(contentSections[0], comparisonBlock);
+    comparisonBlock.appendChild(stickyHeaderElement);   
     for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex++) {
         const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
         comparisonBlock.appendChild(sectionTable);
