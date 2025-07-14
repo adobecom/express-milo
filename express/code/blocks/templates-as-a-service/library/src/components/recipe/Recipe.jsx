@@ -1,12 +1,17 @@
 import { useState } from 'react';
 import { form2Recipe } from '../../utils/recipe-form-utils';
-import { useFormData, useFormDispatch, ACTION_TYPES } from '../../utils/form-hooks';
+import {
+  useFormData,
+  useFormDispatch,
+  ACTION_TYPES,
+} from '../../utils/form-hooks';
 
 export default function Recipe() {
   const [showCopied, setShowCopied] = useState(false);
   const formData = useFormData();
   const recipe = form2Recipe(formData);
   const formDispatch = useFormDispatch();
+  const backupRecipe = formData.backupRecipe;
 
   const copyRecipe = () => {
     navigator.clipboard.writeText(recipe);
@@ -23,12 +28,21 @@ export default function Recipe() {
         spellCheck="false"
         value={recipe}
         onChange={(e) =>
-          formDispatch({ type: ACTION_TYPES.UPDATE_RECIPE, payload: { value: e.target.value } })
+          formDispatch({
+            type: ACTION_TYPES.UPDATE_RECIPE,
+            payload: { value: e.target.value },
+          })
         }
       />
-      <div className="copy-button-container">
+      <div className="copy-button-container flex items-center justify-between">
         <button onClick={copyRecipe}>Copy</button>
         {showCopied && <p className="copied">Copied to clipboard!</p>}
+        <label>
+          Backup recipe:
+          <input type="checkbox" checked={backupRecipe !== null} onChange={(e) => {
+            console.log(e.target.value);
+          }} />
+        </label>
       </div>
     </div>
   );

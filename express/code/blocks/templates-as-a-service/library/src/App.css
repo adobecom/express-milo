@@ -56,6 +56,10 @@ main .section .app-container p {
   flex-wrap: wrap;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
 .items-start {
   align-items: flex-start;
 }

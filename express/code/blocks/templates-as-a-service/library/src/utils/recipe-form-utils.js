@@ -21,6 +21,9 @@ export const initialFormData = {
   // boosting
   prefLang: '',
   prefRegion: '',
+  // backup recipe
+  usingBackupRecipe: false,
+  backupRecipe: '',
 };
 
 export function recipe2Form(recipe) {

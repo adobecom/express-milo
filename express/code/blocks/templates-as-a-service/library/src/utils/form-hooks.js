@@ -25,22 +25,27 @@ export const ACTION_TYPES = {
   TOPICS_UPDATE: 'TOPICS_UPDATE',
   TOPICS_REMOVE: 'TOPICS_REMOVE',
   TOPICS_EXPAND: 'TOPICS_EXPAND',
+  BACKUP_RECIPE_TOGGLE: 'BACKUP_RECIPE_TOGGLE',
+  BACKUP_RECIPE_UPDATE: 'BACKUP_RECIPE_UPDATE',
 };
 
 export function reducer(state, action) {
   const { type, payload } = action;
   const { field, value, topicsRow, topicsCol } = payload || {};
-  
+
   if (type === ACTION_TYPES.UPDATE_RECIPE) {
     const form = recipe2Form(value);
     return form;
-  } else if (type === ACTION_TYPES.UPDATE_FORM) {
+  }
+  if (type === ACTION_TYPES.UPDATE_FORM) {
     return { ...state, [field]: value };
-  } else if (type === ACTION_TYPES.TOPICS_ADD) {
+  }
+  if (type === ACTION_TYPES.TOPICS_ADD) {
     const clonedTopics = structuredClone(state.topics);
     clonedTopics[topicsRow].push('');
     return { ...state, topics: clonedTopics };
-  } else if (type === ACTION_TYPES.TOPICS_REMOVE) {
+  }
+  if (type === ACTION_TYPES.TOPICS_REMOVE) {
     const clonedTopics = structuredClone(state.topics);
     clonedTopics[topicsRow].pop();
     clonedTopics[topicsRow].length || clonedTopics.splice(topicsRow, 1);
@@ -48,19 +53,26 @@ export function reducer(state, action) {
       ...state,
       topics: clonedTopics,
     };
-  } else if (type === ACTION_TYPES.TOPICS_UPDATE) {
+  }
+  if (type === ACTION_TYPES.TOPICS_UPDATE) {
     const clonedTopics = structuredClone(state.topics);
     clonedTopics[topicsRow][topicsCol] = value;
     return {
       ...state,
       topics: clonedTopics,
     };
-  } else if (type === ACTION_TYPES.TOPICS_EXPAND) {
-    const newState = {
+  }
+  if (type === ACTION_TYPES.TOPICS_EXPAND) {
+    return {
       ...state,
       topics: [...state.topics, ['']],
     };
-    return newState;
+  }
+  if (type === ACTION_TYPES.BACKUP_RECIPE_TOGGLE) {
+    return {
+      ...state,
+      usingBackupRecipe: !state.usingBackupRecipe,
+    };
   }
   throw new Error(`Unhandled action type: ${type}`);
 }
