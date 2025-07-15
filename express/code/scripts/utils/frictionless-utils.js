@@ -384,17 +384,11 @@ export async function processFileForQuickAction(file, quickAction) {
   const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
 
   if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
-    if (quickAction === 'convert-to-gif') {
-      const hasLongVideo = await checkVideoDuration(file);
-      if (hasLongVideo) {
-        return undefined;
-      }
-    } else if (quickAction === 'caption-video') {
-      const hasLongVideo = await checkVideoDuration(file, 300);
-      if (hasLongVideo) {
-        return undefined;
-      }
+    const hasLongVideo = await checkVideoDuration(file, quickAction === 'caption-video' ? 300 : 60);
+    if ((quickAction === 'convert-to-gif' || quickAction === 'caption-video') && hasLongVideo) {
+      return undefined;
     }
+
     const isVideo = QA_CONFIGS[quickAction].group === 'video';
     if (isVideo) {
       window.history.pushState({ hideFrictionlessQa: true }, '', '');
