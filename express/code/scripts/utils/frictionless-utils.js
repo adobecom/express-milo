@@ -331,18 +331,34 @@ export async function checkVideoDuration(file, minDurationSeconds = 60) {
   return new Promise((resolve) => {
     const video = document.createElement('video');
     video.preload = 'metadata';
+    const blobUrl = URL.createObjectURL(file);
+    video.src = blobUrl;
 
-    video.addEventListener('loadedmetadata', () => {
+    video.loadedmetadata = () => {
       const { duration } = video;
+      // Clean up the blob URL
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+      // Remove the video element from DOM if it was added
+      if (video.parentNode) {
+        video.parentNode.removeChild(video);
+      }
       resolve(duration > minDurationSeconds);
-    });
+    };
 
-    video.addEventListener('error', () => {
+    video.error = () => {
       // If we can't load metadata, assume it's valid
+      // Clean up the blob URL
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+      // Remove the video element from DOM if it was added
+      if (video.parentNode) {
+        video.parentNode.removeChild(video);
+      }
       resolve(true);
-    });
-
-    video.src = URL.createObjectURL(file);
+    };
   });
 }
 
