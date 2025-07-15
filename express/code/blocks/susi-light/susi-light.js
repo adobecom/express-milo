@@ -14,10 +14,10 @@ const usp = new URLSearchParams(window.location.search);
 const onRedirect = (e) => {
   // eslint-disable-next-line no-console
   console.log('redirecting to:', e.detail);
-  setTimeout(() => {
-    window.location.assign(e.detail);
-    // temporary solution: allows analytics to go thru
-  }, 100);
+  // setTimeout(() => {
+  //   window.location.assign(e.detail);
+  //   // temporary solution: allows analytics to go thru
+  // }, 100);
 };
 const onError = (e) => {
   window.lana?.log('on error:', e);
@@ -226,7 +226,7 @@ async function buildStudent(el) {
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
-  const studentCheck = rows[3]?.textContent?.trim();
+  const studentCheckText = rows[3]?.textContent?.trim();
   const footer = rows[4];
   footer?.classList.add('footer', 'susi-banner');
   const variant = 'standard';
@@ -239,18 +239,30 @@ async function buildStudent(el) {
   }
   const susiScriptReady = SUSIUtils.loadSUSIScripts();
   await susiScriptReady;
+  const susiComponent = createSUSIComponent(params);
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
   logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
-  const checkbox = createTag('input', { type: 'checkbox', name: 'student' });
-  const studentCheckLabel = createTag('label', {}, [checkbox, studentCheck]);
-  // const studentCheckDiv = createTag('div', { class: 'student-check' }, studentCheckLabel);
+  const checkboxInput = createTag('input', { type: 'checkbox', name: 'student' });
+  checkboxInput.addEventListener('change', (e) => {
+    const isStudent = e.target.checked;
+    const url = new URL(susiComponent.authParams.redirect_uri);
+    const { searchParams } = url;
+    if (isStudent) {
+      searchParams.set('student', 'true');
+    } else {
+      searchParams.delete('student');
+    }
+    susiComponent.authParams.redirect_uri = url.toString();
+  });
+  const studentCheckLabel = createTag('label', {}, [checkboxInput, studentCheckText]);
+  const studentCheckDiv = createTag('div', { class: 'student-check' }, studentCheckLabel);
   const wrapper = createTag('div', { class: 'susi-wrapper' }, [
     logo,
     titleDiv,
-    studentCheckLabel,
-    createSUSIComponent(params),
+    studentCheckDiv,
+    susiComponent,
   ]);
   footer && wrapper.append(footer);
   return wrapper;

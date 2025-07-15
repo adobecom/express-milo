@@ -111,17 +111,20 @@
   width: 100%;
 }
 
-.susi-light.student label {
-  margin: 16px 0 24px 0;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
+.susi-light .student-check {
+  margin-top: var(--spacing-300);
+  padding: var(--spacing-300) 0;
+  width: calc(100% - 2 * var(--spacing-400));
   font-weight: 700;
   font-size: var(--body-font-size-m);
   background-color: var(--color-gray-150);
+}
+
+.susi-light .student-check label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-100);
 }
 
 .susi-light.student input[type='checkbox'] {
