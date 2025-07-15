@@ -95,6 +95,7 @@
 
 .hover-cards.split {
   display: flex;
+  flex-wrap: wrap;
   margin: initial;
   gap: var(--spacing-400);
 }
@@ -166,6 +167,7 @@
 
 .hover-cards.split .cta {
   gap: 16px;
+  flex-wrap: wrap;
   display: flex;
   align-items: center;
   margin: 40px 0 12px;
@@ -191,6 +193,9 @@
 }
 
 @media (min-width: 600px) {
+  .hover-cards.split {
+    flex-wrap: initial;
+  }
   .hover-cards .heading-container h2,
   .hover-cards .heading-container h3 {
     padding-bottom: var(--spacing-100);
