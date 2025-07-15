@@ -213,7 +213,7 @@ async function buildB2B(el) {
   logo.classList.add('express-logo');
   logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
-  const wrapper = createTag('div', { class: 'susi-b2b' }, [logo, titleDiv, createSUSIComponent(params)]);
+  const wrapper = createTag('div', { class: 'susi-wrapper' }, [logo, titleDiv, createSUSIComponent(params)]);
   footer && wrapper.append(footer);
   return wrapper;
 }
@@ -243,10 +243,10 @@ async function buildStudent(el) {
   logo.classList.add('express-logo');
   logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
-  const checkbox = createTag('input', { type: 'checkbox' });
+  const checkbox = createTag('input', { type: 'checkbox', name: 'student' });
   const studentCheckLabel = createTag('label', {}, [checkbox, studentCheck]);
   // const studentCheckDiv = createTag('div', { class: 'student-check' }, studentCheckLabel);
-  const wrapper = createTag('div', { class: 'susi-student' }, [
+  const wrapper = createTag('div', { class: 'susi-wrapper' }, [
     logo,
     titleDiv,
     studentCheckLabel,
@@ -286,7 +286,7 @@ function buildSUSITabs(el) {
   }
 
   tabsId += 1;
-  const wrapper = createTag('div', { class: 'susi-tabs' });
+  const wrapper = createTag('div', { class: 'susi-wrapper' });
   const tabList = createTag('div', { role: 'tablist' });
   const susiScriptReady = SUSIUtils.loadSUSIScripts();
   const panels = tabParams.map((option, i) => {
@@ -360,7 +360,7 @@ export default async function init(el) {
   }
 
   if (isStudent) {
-    el.replaceChildren(buildStudent(el));
+    el.replaceChildren(await (buildStudent(el)));
     return;
   }
 
