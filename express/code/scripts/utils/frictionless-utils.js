@@ -334,7 +334,7 @@ export async function checkVideoDuration(file, minDurationSeconds = 60) {
 
     video.addEventListener('loadedmetadata', () => {
       const { duration } = video;
-      resolve(duration <= minDurationSeconds);
+      resolve(duration > minDurationSeconds);
     });
 
     video.addEventListener('error', () => {
@@ -353,23 +353,15 @@ export async function getErrorMsg(files, quickAction, replaceKey, getConfig) {
   );
   if (isNotValid) {
     msg = await replaceKey('file-type-not-supported', getConfig());
-  } else {
-    // Check if it's a video action and validate duration
-    const isVideoAction = QA_CONFIGS[quickAction].group === 'video';
-    if (isVideoAction) {
-      const durationChecks = await Promise.all(
-        Array.from(files).map((file) => checkVideoDuration(file)),
-      );
-      const hasLongVideo = durationChecks.some((isValid) => !isValid);
-
-      if (hasLongVideo) {
-        msg = await replaceKey('video-duration-too-long', getConfig());
-      } else {
-        msg = await replaceKey('file-size-not-supported', getConfig());
-      }
+  } else if (quickAction === 'convert-to-gif' || quickAction === 'caption-video') {
+    const hasLongVideo = await checkVideoDuration(files[0], quickAction === 'caption-video' ? 300 : 60);
+    if (hasLongVideo) {
+      msg = await replaceKey('video-duration-too-long', getConfig());
     } else {
       msg = await replaceKey('file-size-not-supported', getConfig());
     }
+  } else {
+    msg = await replaceKey('file-size-not-supported', getConfig());
   }
   return msg;
 }
@@ -378,6 +370,17 @@ export async function processFileForQuickAction(file, quickAction) {
   const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
 
   if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
+    if (quickAction === 'convert-to-gif') {
+      const hasLongVideo = await checkVideoDuration(file);
+      if (hasLongVideo) {
+        return undefined;
+      }
+    } else if (quickAction === 'caption-video') {
+      const hasLongVideo = await checkVideoDuration(file, 300);
+      if (hasLongVideo) {
+        return undefined;
+      }
+    }
     const isVideo = QA_CONFIGS[quickAction].group === 'video';
     if (isVideo) {
       window.history.pushState({ hideFrictionlessQa: true }, '', '');
