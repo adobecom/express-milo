@@ -76,9 +76,11 @@ function createToggleButton(isHidden) {
     button.classList.add('toggle-button');
 
     const iconSpan = document.createElement('span');
-    iconSpan.classList.add('icon', 'expand');
-    iconSpan.setAttribute('aria-expanded', (!isHidden).toString());
-
+    console.log(isHidden);
+    iconSpan.classList.add('icon', 'expand-button');
+    if (isHidden) {
+        iconSpan.classList.add('open');
+    }
     button.appendChild(iconSpan);
     return button;
 }
@@ -131,8 +133,7 @@ function createTableRow(featureRowDiv) {
         tableCell.classList.add('feature-cell');
         for (let i = 0; i < cellContent.classList.length; i++) {
             tableCell.classList.add(cellContent.classList[i]);
-        }
-        console.log(cellContent);
+        } 
 
         tableCell.innerHTML = cellContent.innerHTML;
         handleCellIcons(tableCell);
@@ -153,7 +154,8 @@ function convertToTable(sectionGroup, columnHeaders) {
 
     // Process header row
     const sectionHeaderDiv = sectionGroup[0];
-    if (!sectionHeaderDiv.classList.contains('open-separator')) {
+    const shouldHideTable = !sectionHeaderDiv.classList.contains('open-separator')
+    if (shouldHideTable) {
         comparisonTable.classList.add('hide-table');
     }
 
@@ -161,18 +163,15 @@ function convertToTable(sectionGroup, columnHeaders) {
 
     // Check if table should be hidden
     const visibilityIndicator = sectionHeaderDiv.children[sectionHeaderDiv.children.length - 1];
-    const shouldHideTable = visibilityIndicator && visibilityIndicator.textContent.trim() === 'hidden';
-    if (shouldHideTable) {
-        comparisonTable.classList.add('hide-table');
-    }
+ 
 
     // Add toggle button
     const toggleButton = createToggleButton(shouldHideTable);
     toggleButton.onclick = () => {
         comparisonTable.classList.toggle('hide-table');
-        const icon = toggleButton.querySelector('.icon.expand');
-        const isExpanded = comparisonTable.classList.contains('hide-table');
-        icon.setAttribute('aria-expanded', (!isExpanded).toString());
+         toggleButton.querySelector('span').classList.toggle('open')
+      
+       
     };
 
     const toggleButtonContainer = document.createElement('div');
@@ -236,8 +235,7 @@ function createPlanDropdown(totalPlans, comparisonBlock, headers, headerGroupEle
         div.classList.toggle('selected', div.value === 1);
     });
 
-    headerGroupElement.querySelectorAll('.plan-selector').forEach(planSelector => {
-        console.log(planSelector);
+    headerGroupElement.querySelectorAll('.plan-selector').forEach(planSelector => { 
         planSelector.addEventListener('click', () => {
             planSelectorChoices.classList.toggle('display-none');
         });

@@ -432,10 +432,10 @@ main .section .comparison-table-v2 p {
     justify-content: center;
 }
 
-.comparison-table-v2 .icon.expand {
+.comparison-table-v2 .icon.expand-button{
     background-color: transparent;
     border: 0;
-    background-image: url('/express/code/icons/expand.svg');
+    background-image: url('/express/code/icons/collapse.svg');
     background-repeat: no-repeat;
     background-position: center;
     width: 18px;
@@ -443,8 +443,9 @@ main .section .comparison-table-v2 p {
     display: block;
 }
 
-.comparison-table-v2 .icon.expand[aria-expanded='true'] {
-    background-image: url('/express/code/icons/collapse.svg');
+.comparison-table-v2 .icon.expand-button.open  {
+   
+    background-image: url('/express/code/icons/expand.svg');
 }
 
 .comparison-table-v2 .icon-checkmark-no-fill {
