@@ -153,6 +153,11 @@
     margin: var(--ax-panels-fold) var(--ax-grid-margin) var(--spacing-800) var(--ax-grid-margin);
     padding: var(--spacing-800) var(--spacing-500) var(--spacing-700);
   }
+
+  .section[data-ax-panel][role='tabpanel'].split {
+    padding: var(--spacing-800) var(--spacing-600) var(--spacing-800);
+  }
+
   .ax-panels {
     z-index: 1;
   }

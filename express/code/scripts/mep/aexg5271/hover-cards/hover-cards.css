@@ -5,7 +5,7 @@
 }
 
 .hover-cards .heading-container {
-  padding-bottom: calc(var(--spacing-500) - var(--box-shadow-vertical-offset));
+  padding-bottom: calc(var(--spacing-400) - var(--box-shadow-vertical-offset));
 }
 
 .hover-cards .heading-container p {
@@ -96,13 +96,16 @@
 .hover-cards.split {
   display: flex;
   margin: initial;
-  gap: var(--spacing-500);
+  gap: var(--spacing-400);
 }
 
 .hover-cards.split .left-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 16px;
+  max-width: 398px;
+}
+
+.hover-cards.split .content-wrapper {
+  min-height: 279px;
 }
 
 .hover-cards.split .card {
@@ -110,11 +113,11 @@
 }
 
 .hover-cards.split > div {
-  flex: 1;
+  flex: 1 50%;
 }
 
 .hover-cards.split .media-wrapper {
-   display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -122,6 +125,20 @@
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
 }
 
+.hover-cards.split picture {
+  width: 100%;
+  height: 100%;
+  display: flex;
+ 
+}
+
+.hover-cards.split picture img {
+ object-fit: cover; 
+    height: auto;
+    width:100%;
+}
+
+.hover-cards.split .primary,
 .hover-cards.split .button.gradient  {
   border-width: 1px;
   margin: 0; 
@@ -129,6 +146,9 @@
   font-size: var(--body-font-size-l);
   border-radius: 50px;
   line-height: 23.4px;
+}
+
+.hover-cards.split .button.gradient  {
   background: linear-gradient(97.82deg, #FF477B 3.22%, #5C5CE0 52.98%, #318FFF 101.72%);
 }
 
@@ -140,12 +160,34 @@
   margin: 0;
 }
 
+.hover-cards.split .body {
+  font-size: var(--body-font-size-m);
+}
+
 .hover-cards.split .cta {
+  gap: 16px;
+  display: flex;
+  align-items: center;
   margin: 40px 0 12px;
 }
 
-.hover-cards.split .card .media img {
-  height: initial;
+.hover-cards.split .cta strong {
+  display: flex;
+  align-items: center;
+}
+
+.hover-cards.split .cta .chevron-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hover-cards.split .cta .chevron-cta svg {
+  margin-left: 4px;
+}
+
+.hover-cards.split .cta-sub-text {
+  font-size: var(--body-font-size-s);
 }
 
 @media (min-width: 600px) {
