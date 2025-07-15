@@ -187,45 +187,45 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 table td p {
     display: flex;
     min-height: 40px;
-    padding: var(--Spacing-spacing-0, 0px);
+    padding: 0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: var(--Spacing-spacing-75, 4px);
+    gap: 4px;
     flex: 1 0 0;
     margin: 0;
     text-align: center;
-    color: var(--Palette-green-800, #008F5D);
-    font-family: "Adobe Clean";
-    font-size: 12px;
+    color: #008F5D;
+    font-family: var(--body-font-family);
+    font-size: var(--body-font-size-xs);
     font-style: normal;
     font-weight: 700;
-    line-height: 130%;
+    line-height: 1.3;
 }
 
 .comparison-table-v2 table td:first-child {
     display: flex;
-    padding: var(--Spacing-spacing-300, 16px) var(--Spacing-spacing-300, 16px) var(--Spacing-spacing-200, 12px) var(--Spacing-spacing-300, 16px);
+    padding: var(--spacing-300) var(--spacing-300) var(--spacing-200) var(--spacing-300);
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: var(--Spacing-spacing-50, 2px);
+    gap: 2px;
     align-self: stretch;
-    color: var(--Content-Subdued-default, #464646);
+    color: var(--color-gray-600);
     text-align: center;
-    font-family: "Adobe Clean";
-    font-size: 14px;
+    font-family: var(--body-font-family);
+    font-size: var(--body-font-size-s);
     font-style: normal;
     font-weight: 700;
-    line-height: 130%;
+    line-height: 1.3;
 }
 
 .comparison-table-v2 .table-container table td:first-child p {
-    border-radius: var(--Radius-corner-radius-75, 4px);
-    border: 1px solid var(--gray-100, #E9E9E9);
-    background: var(--gray-25, #FFF);
+    border-radius: 4px;
+    border: 1px solid var(--color-gray-200);
+    background: var(--color-white);
     display: flex;
-    padding: var(--Spacing-spacing-200, 12px) 0px;
+    padding: var(--spacing-200) 0px;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -239,13 +239,13 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 .table-container .first-row div:first-child h4,
 .comparison-table-v2 .table-container .first-row div:first-child h5,
 .comparison-table-v2 .table-container .first-row div:first-child h6 {
-    color: var(--Content-Neutral-default, #222);
+    color: var(--color-gray-800);
     text-align: center;
-    font-family: var(--Family-Title, "Adobe Clean");
-    font-size: var(--Global-Typography-Family-Title-L, 18px);
+    font-family: var(--body-font-family);
+    font-size: var(--body-font-size-l);
     font-style: normal;
     font-weight: 700;
-    line-height: 130%;
+    line-height: 1.3;
     padding-left: 36px;
     flex-grow: 1;
 }
@@ -277,8 +277,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     height: 22px;
     margin-top: 8px;
     border-radius: 0px 0px 8px 8px;
-    border: 0px solid var(--Border-sx-Extra-subdued-default, #D5D5D5);
-    background: var(--indigo-200, #EBEEFF);
+    border: 0px solid var(--color-gray-300);
+    background: #EBEEFF;
 }
 
 .comparison-table-v2 .plan-selector:focus {
@@ -292,8 +292,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     bottom: -5px;
     transform: translate(50%, -50%);
     pointer-events: none;
-    font-size: 12px;
-    color: var(--Content-Subdued-default, #5258E4);
+    font-size: var(--body-font-size-xs);
+    color: var(--color-info-accent);
 }
 
 .comparison-table-v2 .plan-selector-choices {
@@ -304,10 +304,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     width: 206px;
     text-align: left;
     border-radius: 10px;
-    border-bottom: 1px solid #767676;
-    background: var(--Static-Pallete-_s2-gray-700, #505050);
+    border-bottom: 1px solid var(--color-gray-500);
+    background: var(--color-gray-700);
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-    color: white;
+    color: var(--color-white);
 }
 
 .comparison-table-v2 .plan-selector-choices.display-none {
@@ -315,14 +315,14 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 }
 
 .comparison-table-v2 .plan-selector-choices .plan-selector-choice {
-    padding: 8px 12px 8px 40px;
+    padding: var(--spacing-100) var(--spacing-200) var(--spacing-100) 40px;
     font-size: 13px;
 }
 
 .comparison-table-v2 .plan-selector-choices .plan-selector-choice.selected::before {
     content: '✓';
     position: absolute;
-    left: 24px;
+    left: var(--spacing-400);
 }
 
 /* Icons */
