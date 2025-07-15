@@ -326,6 +326,26 @@ export function executeQuickAction(
   }
 }
 
+// Helper function to check video duration
+export async function checkVideoDuration(file, minDurationSeconds = 60) {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+
+    video.addEventListener('loadedmetadata', () => {
+      const { duration } = video;
+      resolve(duration <= minDurationSeconds);
+    });
+
+    video.addEventListener('error', () => {
+      // If we can't load metadata, assume it's valid
+      resolve(true);
+    });
+
+    video.src = URL.createObjectURL(file);
+  });
+}
+
 export async function getErrorMsg(files, quickAction, replaceKey, getConfig) {
   let msg;
   const isNotValid = Array.from(files).some(
@@ -334,15 +354,27 @@ export async function getErrorMsg(files, quickAction, replaceKey, getConfig) {
   if (isNotValid) {
     msg = await replaceKey('file-type-not-supported', getConfig());
   } else {
-    msg = await replaceKey('file-size-not-supported', getConfig());
+    // Check if it's a video action and validate duration
+    const isVideoAction = QA_CONFIGS[quickAction].group === 'video';
+    if (isVideoAction) {
+      const durationChecks = await Promise.all(
+        Array.from(files).map((file) => checkVideoDuration(file)),
+      );
+      const hasLongVideo = durationChecks.some((isValid) => !isValid);
+
+      if (hasLongVideo) {
+        msg = await replaceKey('video-duration-too-long', getConfig());
+      } else {
+        msg = await replaceKey('file-size-not-supported', getConfig());
+      }
+    } else {
+      msg = await replaceKey('file-size-not-supported', getConfig());
+    }
   }
   return msg;
 }
 
-export async function processFileForQuickAction(
-  file,
-  quickAction,
-) {
+export async function processFileForQuickAction(file, quickAction) {
   const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
 
   if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
