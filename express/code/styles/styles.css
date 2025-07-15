@@ -41,6 +41,12 @@
   --palette-indigo-1000: #4046CA;
   --background-positive-default: #007A4D;
 
+  /* new styles with similar names and shades */
+  --color-background-accent-default: #5258E4;
+  --color-background-accent-hover: #4046CA;
+  --color-background-accent-down: #3236A8;
+  --color-background-accent-focus: var(--color-background-accent-hover);
+
   /* body */
   --body-background-color: var(--color-white);
   --body-alt-background-color: var(--color-gray-200);
@@ -831,8 +837,8 @@ main .section:not(.xxxl-spacing-static,
   padding-bottom: 40px;
 }
 
-main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.button.same-fcta,
-main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text) a.con-button.same-fcta,
+main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text, .hover-cards, .cta-cards) a.button.same-fcta,
+main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text, .hover-cards, .cta-cards) a.con-button.same-fcta,
 #hero a.same-fcta {
   display: none;
 }
@@ -1008,8 +1014,8 @@ main .section.blog-content>.content>p {
     text-align: left;
   }
 
-  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.button.same-fcta,
-  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings) a.con-button.same-fcta {
+  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .text, .hover-cards, .cta-cards) a.button.same-fcta,
+  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .text, .hover-cards, .cta-cards) a.con-button.same-fcta {
     display: inline-block;
   }
 
@@ -1416,4 +1422,12 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 
 .video-controls-wrapper[aria-pressed="false"] .accessibility-control.icon-pause-video {
   display: none;
+}
+
+.hero-animation-overlay.column > .video-container {
+  position: relative;
+}
+
+.hero-animation-overlay.column > .video-container > .video-controls-wrapper{
+  right: 15px;
 }

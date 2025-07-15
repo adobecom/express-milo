@@ -1,5 +1,7 @@
 .hover-cards {
   --box-shadow-vertical-offset: 7px;
+  max-width: var(--ax-grid-10-col-width);
+  margin: auto;
 }
 
 .hover-cards .heading-container {
@@ -21,7 +23,7 @@
 }
 
 .hover-cards .gallery {
-  padding: var(--box-shadow-vertical-offset) 0;
+  padding: var(--box-shadow-vertical-offset);
   gap: var(--spacing-300);
 }
 
@@ -31,7 +33,7 @@
 
 .hover-cards .card {
   position: relative;
-  min-width: 260px;
+  min-width: min(100%, 260px);
   max-width: 405px;
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
   border-radius: 8px;

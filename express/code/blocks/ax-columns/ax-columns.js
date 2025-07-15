@@ -1,5 +1,4 @@
 import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
-import { debounce } from '../../scripts/utils/hofs.js';
 
 import {
   addAnimationToggle,
@@ -23,8 +22,6 @@ import {
 
 let createTag; let getMetadata;
 let getConfig;
-
-const isTabletOrMobile = 899;
 
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
@@ -238,9 +235,6 @@ export default async function decorate(block) {
     ({ createTag, getMetadata, getConfig } = utils);
   });
 
-  const { codeRoot } = getConfig();
-  const mobileImagePath = `${codeRoot}/blocks/ax-columns/img/marquee-mobile.png`;
-
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
@@ -296,6 +290,9 @@ export default async function decorate(block) {
       total = i;
     }
   }
+
+  // Track picture cells across all rows
+  let pictureCellCount = 0;
 
   rows.forEach((row, rowNum) => {
     const cells = Array.from(row.children);
@@ -381,51 +378,18 @@ export default async function decorate(block) {
       const childEls = [...cell.children];
       const isPictureColumn = childEls.every((el) => ['BR', 'PICTURE'].includes(el.tagName))
         && childEls.length > 0;
+
       if (isPictureColumn) {
+        pictureCellCount += 1;
         cell.classList.add('column-picture');
-        block.classList.contains('marquee') && createCornerOverlays(cell);
-        const picture = cell.querySelector('picture');
-        const img = picture.querySelector('img');
-        const sources = picture.querySelectorAll('source');
 
-        // Store original sources before potentially changing them
-        img.dataset.originalSrc = img.src;
-        sources.forEach((source) => {
-          source.dataset.originalSrcset = source.srcset;
-        });
-
-        // Track previous width to detect breakpoint crossing
-        let previousWidth = window.innerWidth;
-
-        if (window.innerWidth <= isTabletOrMobile) {
-          img.src = mobileImagePath;
-          sources.forEach((source) => {
-            source.srcset = mobileImagePath;
-          });
+        // Add mobile class to the second picture cell
+        if (pictureCellCount === 2) {
+          cell.classList.add('column-picture-mobile');
         }
 
-        // Add resize listener to handle image switching
-        window.addEventListener('resize', debounce(() => {
-          const currentWidth = window.innerWidth;
-          const crossingBreakpoint = (
-            previousWidth <= isTabletOrMobile && currentWidth > isTabletOrMobile)
-            || (previousWidth > isTabletOrMobile && currentWidth <= isTabletOrMobile);
-
-          if (crossingBreakpoint) {
-            if (currentWidth <= 899) {
-              img.src = mobileImagePath;
-              sources.forEach((source) => {
-                source.srcset = mobileImagePath;
-              });
-            } else {
-              img.src = img.dataset.originalSrc;
-              sources.forEach((source) => {
-                source.srcset = source.dataset.originalSrcset;
-              });
-            }
-          }
-          previousWidth = currentWidth;
-        }, 250));
+        const isMarquee = block.classList.contains('marquee');
+        isMarquee && createCornerOverlays(cell);
       }
 
       const $pars = cell.querySelectorAll('p');
