@@ -11,15 +11,18 @@ const DCTX_ID_PROD = 'v:2,s,dcp-r,bg:express2024,45faecb0-e687-11ee-a865-f545a8c
 
 const usp = new URLSearchParams(window.location.search);
 
-const onRedirect = (e) => {
+const redirectToUrl = (url) => {
   // eslint-disable-next-line no-console
-  console.log('redirecting to:', e.detail);
-  // setTimeout(() => {
-  //   window.location.assign(e.detail);
-  //   // temporary solution: allows analytics to go thru
-  // }, 100);
+  console.log('redirecting to:', url);
+  // temporary solution: allows analytics to go thru. should move to a promise
+  setTimeout(() => {
+    window.location.assign(url);
+  }, 100);
 };
-const onError = (e) => {
+const defaultOnRedirect = (e) => {
+  redirectToUrl(e.detail);
+};
+const defaultOnError = (e) => {
   window.lana?.log('on error:', e);
 };
 
@@ -82,7 +85,14 @@ function sendEventToAnalytics(type, eventName, client_id) {
   }
 }
 
-function createSUSIComponent({ variant, config, authParams, destURL }) {
+function createSUSIComponent({
+  variant,
+  config,
+  authParams,
+  destURL,
+  onRedirect = defaultOnRedirect,
+  onError = defaultOnError,
+}) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
   susi.authParams.redirect_uri = destURL;
@@ -90,6 +100,7 @@ function createSUSIComponent({ variant, config, authParams, destURL }) {
   susi.config = config;
   if (isStage) susi.stage = 'true';
   susi.variant = variant;
+
   const onAnalytics = (e) => {
     const { type, event } = e.detail;
     sendEventToAnalytics(type, event, authParams.client_id);
@@ -207,8 +218,7 @@ async function buildB2B(el) {
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
   }
-  const susiScriptReady = SUSIUtils.loadSUSIScripts();
-  await susiScriptReady;
+  await SUSIUtils.loadSUSIScripts();
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
   logo.height = 24;
@@ -237,27 +247,27 @@ async function buildStudent(el) {
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
   }
-  const susiScriptReady = SUSIUtils.loadSUSIScripts();
-  await susiScriptReady;
-  const susiComponent = createSUSIComponent(params);
+  await SUSIUtils.loadSUSIScripts();
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
   logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
   const checkboxInput = createTag('input', { type: 'checkbox', name: 'student' });
-  checkboxInput.addEventListener('change', (e) => {
-    const isStudent = e.target.checked;
-    const url = new URL(susiComponent.authParams.redirect_uri);
-    const { searchParams } = url;
-    if (isStudent) {
-      searchParams.set('student', 'true');
-    } else {
-      searchParams.delete('student');
+  const onRedirect = (e) => {
+    if (!checkboxInput.checked) {
+      defaultOnRedirect(e);
+      return;
     }
-    susiComponent.authParams.redirect_uri = url.toString();
-  });
-  const studentCheckLabel = createTag('label', {}, [checkboxInput, studentCheckText]);
-  const studentCheckDiv = createTag('div', { class: 'student-check' }, studentCheckLabel);
+    const url = new URL(e.detail);
+    url.searchParams.set('student', 'true');
+    redirectToUrl(url.toString());
+  };
+  const susiComponent = createSUSIComponent({ ...params, onRedirect });
+  const studentCheckDiv = createTag(
+    'div',
+    { class: 'student-check' },
+    createTag('label', {}, [checkboxInput, studentCheckText]),
+  );
   const wrapper = createTag('div', { class: 'susi-wrapper' }, [
     logo,
     titleDiv,
