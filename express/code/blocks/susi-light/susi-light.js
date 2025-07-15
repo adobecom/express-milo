@@ -218,6 +218,44 @@ async function buildB2B(el) {
   return wrapper;
 }
 
+async function buildStudent(el) {
+  const noRedirect = el.classList.contains('no-redirect');
+  const locale = getConfig().locale.ietf.toLowerCase();
+  const { imsClientId } = getConfig();
+  const rows = el.querySelectorAll(':scope > div > div');
+  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+  const title = rows[2]?.textContent?.trim();
+  const studentCheck = rows[3]?.textContent?.trim();
+  const footer = rows[4];
+  footer?.classList.add('footer', 'susi-banner');
+  const variant = 'standard';
+  const susiConfigs = {
+    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
+  };
+  const params = buildSUSIParams(susiConfigs);
+  if (!noRedirect) {
+    redirectIfLoggedIn(params.destURL);
+  }
+  const susiScriptReady = SUSIUtils.loadSUSIScripts();
+  await susiScriptReady;
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add('express-logo');
+  logo.height = 24;
+  const titleDiv = createTag('div', { class: 'title' }, title);
+  const checkbox = createTag('input', { type: 'checkbox' });
+  const studentCheckLabel = createTag('label', {}, [checkbox, studentCheck]);
+  // const studentCheckDiv = createTag('div', { class: 'student-check' }, studentCheckLabel);
+  const wrapper = createTag('div', { class: 'susi-student' }, [
+    logo,
+    titleDiv,
+    studentCheckLabel,
+    createSUSIComponent(params),
+  ]);
+  footer && wrapper.append(footer);
+  return wrapper;
+}
+
 // each tab wraps susi component with custom logo + footer
 let tabsId = 0;
 function buildSUSITabs(el) {
@@ -309,17 +347,24 @@ export default async function init(el) {
 
   const isTabs = el.classList.contains('tabs');
   const isBusiness = el.classList.contains('b2b');
-
-  // default edu
-  if (!isTabs && !isBusiness) {
-    const edu = await buildEdu(el);
-    el.replaceChildren(edu);
-    return;
-  }
+  const isStudent = el.classList.contains('student');
 
   if (isBusiness) {
     el.replaceChildren(await (buildB2B(el)));
-  } else {
-    el.replaceChildren(buildSUSITabs(el));
+    return;
   }
+
+  if (isTabs) {
+    el.replaceChildren(buildSUSITabs(el));
+    return;
+  }
+
+  if (isStudent) {
+    el.replaceChildren(buildStudent(el));
+    return;
+  }
+
+  // default edu
+  const edu = await buildEdu(el);
+  el.replaceChildren(edu);
 }
