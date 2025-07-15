@@ -367,8 +367,14 @@ export async function getErrorMsg(files, quickAction, replaceKey, getConfig) {
   const isNotValid = Array.from(files).some(
     (file) => !QA_CONFIGS[quickAction].input_check(file.type),
   );
-  const hasLongVideo = (await checkVideoDuration(files[0], quickAction === 'caption-video' ? 300 : 60))
-    && (quickAction === 'convert-to-gif' || quickAction === 'caption-video');
+
+  // Only check video duration for video files and video-related quick actions
+  let hasLongVideo = false;
+  if (files.length > 0 && files[0]
+      && (quickAction === 'convert-to-gif' || quickAction === 'caption-video')
+      && QA_CONFIGS[quickAction].group === 'video') {
+    hasLongVideo = await checkVideoDuration(files[0], quickAction === 'caption-video' ? 300 : 60);
+  }
 
   if (isNotValid) {
     msg = await replaceKey('file-type-not-supported', getConfig());
