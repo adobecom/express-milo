@@ -22,9 +22,39 @@ export const initialFormData = {
   prefLang: '',
   prefRegion: '',
   // backup recipe
-  usingBackupRecipe: false,
   backupRecipe: '',
 };
+
+// return ops where form2==ops(form1)
+function diffForms(form1, form2) {
+  return Object.keys(initialFormData)
+    .filter((key) => !['start', 'backupRecipe'].includes(key))
+    .reduce((diffs, key) => {
+      const val1 = form1[key];
+      const val2 = form2[key];
+      if (val1 === val2 || (!val1 && !val2)) {
+        return diffs;
+      }
+      console.log({ key, val1, val2 });
+      if (val1 && !val2) {
+        return [...diffs, { type: '-', key }];
+      } else {
+        return [...diffs, { type: '+', key, value: val2 }];
+      }
+    }, []);
+}
+
+function applyDiff(formData, diffs) {
+  const applied = structuredClone(formData);
+  for (const { type, key, value } of diffs) {
+    if (type === '-') {
+      delete applied[key];
+    } else {
+      applied[key] = value;
+    }
+  }
+  return applied;
+}
 
 export function recipe2Form(recipe) {
   const params = new URLSearchParams(recipe);
@@ -49,8 +79,8 @@ export function recipe2Form(recipe) {
     formData.collection = 'default';
     formData.collectionId = '';
   }
-  if (params.get('limit')) formData.limit = params.get('limit');
-  if (params.get('start')) formData.start = params.get('start');
+  if (params.get('limit')) formData.limit = Number(params.get('limit'));
+  if (params.get('start')) formData.start = Number(params.get('start'));
   if (params.get('orderBy')) formData.orderBy = params.get('orderBy');
   if (params.get('q')) formData.q = params.get('q');
   if (params.get('language')) formData.language = params.get('language');
@@ -93,6 +123,20 @@ export function form2Recipe(formData) {
   const prefRegion = formData.prefRegion
     ? `prefRegion=${formData.prefRegion}`
     : '';
+  // backup recipe form
+  let backup = '';
+  // limit=10&collection=default&backup=[]
+  if (formData.backupRecipe) {
+    const diff = diffForms(formData, recipe2Form(formData.backupRecipe));
+    if (diff.length) {
+      const diffStr = diff
+        .map(({ type, key, value }) => {
+          return `${type}${key}=${value}`;
+        })
+        .join(',');
+      backup = `backup=[${diffStr}]`;
+    }
+  }
 
   const recipe = [
     q,
@@ -108,6 +152,7 @@ export function form2Recipe(formData) {
     prefLang,
     prefRegion,
     start,
+    backup,
   ]
     .filter(Boolean)
     .join('&');

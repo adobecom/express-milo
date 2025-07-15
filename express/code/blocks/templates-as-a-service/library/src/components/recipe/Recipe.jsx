@@ -11,7 +11,6 @@ export default function Recipe() {
   const formData = useFormData();
   const recipe = form2Recipe(formData);
   const formDispatch = useFormDispatch();
-  const backupRecipe = formData.backupRecipe;
 
   const copyRecipe = () => {
     navigator.clipboard.writeText(recipe);
@@ -37,12 +36,6 @@ export default function Recipe() {
       <div className="copy-button-container flex items-center justify-between">
         <button onClick={copyRecipe}>Copy</button>
         {showCopied && <p className="copied">Copied to clipboard!</p>}
-        <label>
-          Backup recipe:
-          <input type="checkbox" checked={backupRecipe !== null} onChange={(e) => {
-            console.log(e.target.value);
-          }} />
-        </label>
       </div>
     </div>
   );

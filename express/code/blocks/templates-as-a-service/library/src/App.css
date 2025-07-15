@@ -72,6 +72,14 @@ main .section .app-container p {
   padding: 1rem;
 }
 
+.pt-1 {
+  padding-top: 1rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
 .gap-1 {
   gap: .5rem;
 }

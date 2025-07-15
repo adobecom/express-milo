@@ -25,8 +25,6 @@ export const ACTION_TYPES = {
   TOPICS_UPDATE: 'TOPICS_UPDATE',
   TOPICS_REMOVE: 'TOPICS_REMOVE',
   TOPICS_EXPAND: 'TOPICS_EXPAND',
-  BACKUP_RECIPE_TOGGLE: 'BACKUP_RECIPE_TOGGLE',
-  BACKUP_RECIPE_UPDATE: 'BACKUP_RECIPE_UPDATE',
 };
 
 export function reducer(state, action) {
@@ -66,12 +64,6 @@ export function reducer(state, action) {
     return {
       ...state,
       topics: [...state.topics, ['']],
-    };
-  }
-  if (type === ACTION_TYPES.BACKUP_RECIPE_TOGGLE) {
-    return {
-      ...state,
-      usingBackupRecipe: !state.usingBackupRecipe,
     };
   }
   throw new Error(`Unhandled action type: ${type}`);
