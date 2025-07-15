@@ -407,8 +407,9 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 {
         padding: 0;
         width: fit-content;
-        gap: 0;
-        display: block;
+        gap: 16px;
+        display: flex;
+        flex-direction: column;
         --cell-width: 222px;
         --header-cell-width: 318px;
     }
@@ -416,23 +417,31 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     /* Sticky header - Desktop */
     .comparison-table-v2 .sticky-header {
         flex-wrap: nowrap;
-        max-width: 600px;
+        max-width: none;
+        width: fit-content;
         gap: 16px;
         text-align: left;
     }
 
     .comparison-table-v2 .sticky-header.is-stuck {
         max-width: 100%;
+        width: auto;
         padding: 16px;
     }
 
     .comparison-table-v2 .sticky-header .first-cell {
         width: var(--header-cell-width);
         flex-direction: column-reverse;
-        color: inherit;
-        font-size: inherit;
-        font-weight: inherit;
-        line-height: inherit;
+        justify-content: flex-end;
+        align-items: flex-start;
+        text-align: left;
+        padding-left: 24px;
+        color: var(--Content-Subdued-default, #464646);
+        font-family: "Adobe Clean";
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 130%;
     }
 
     .comparison-table-v2 .sticky-header .plan-cell {
@@ -440,28 +449,52 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
     .comparison-table-v2 .sticky-header .plan-cell-wrapper {
-        padding-top: 0;
+        padding-top: 16px;
+        padding-bottom: 16px;
     }
 
-    /* Plan cell typography - Desktop reset */
+    /* Plan cell typography - Desktop - keep mobile styles */
     main .comparison-table-v2 .sticky-header .plan-cell h2,
     main .comparison-table-v2 .sticky-header .plan-cell h3,
     main .comparison-table-v2 .sticky-header .plan-cell h4,
     main .comparison-table-v2 .sticky-header .plan-cell h5,
-    main .comparison-table-v2 .sticky-header .plan-cell h6,
+    main .comparison-table-v2 .sticky-header .plan-cell h6 {
+        color: var(--Content-Neutral-default, #222);
+        text-align: center;
+        font-family: var(--Family-Title, "Adobe Clean");
+        font-size: var(--Global-Typography-Family-Title-L, 18px);
+        font-style: normal;
+        font-weight: 700;
+        line-height: 130%;
+    }
+
     main .comparison-table-v2 .sticky-header .plan-cell p {
-        font-size: inherit;
-        font-weight: inherit;
-        line-height: inherit;
+        color: var(--Content-Subdued-default, #464646);
+        text-align: center;
+        font-family: var(--Family-Title, "Adobe Clean");
+        font-size: var(--Global-Typography-Family-Body-S, 14px);
+        font-style: normal;
+        font-weight: 700;
+        line-height: 130%;
     }
 
     /* Table container - Desktop */
     .comparison-table-v2 .table-container {
         max-width: none;
-        border: none;
-        border-radius: 0;
-        background: transparent;
-        padding: 0;
+        border-radius: var(--Radius-corner-radius-100, 8px);
+        border: 1px solid var(--Border-sx-Extra-subdued-default, #D5D5D5);
+        background: var(--gray-25, #FFF);
+        padding: 16px 16px 0 16px;
+    }
+
+    .comparison-table-v2 .table-container .first-row {
+        border-bottom: 1px solid var(--Border-sx-Extra-subdued-default, #D5D5D5);
+        margin-bottom: 0;
+        padding-bottom: 16px;
+    }
+
+    .comparison-table-v2 .table-container table {
+        padding-top: 16px;
     }
 
     .comparison-table-v2 .table-container .first-row>div {
@@ -474,22 +507,40 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         margin-left: 0;
     }
 
+    /* First row content - Desktop left align */
+    .comparison-table-v2 .table-container .first-row div:first-child,
+    .comparison-table-v2 .table-container .first-row div:first-child h2,
+    .comparison-table-v2 .table-container .first-row div:first-child h3,
+    .comparison-table-v2 .table-container .first-row div:first-child h4,
+    .comparison-table-v2 .table-container .first-row div:first-child h5,
+    .comparison-table-v2 .table-container .first-row div:first-child h6 {
+        text-align: left;
+        padding-left: 0;
+    }
+
     /* Table styles - Desktop */
-    .comparison-table-v2 table,
-    .comparison-table-v2 table td,
-    .comparison-table-v2 table tr,
-    .comparison-table-v2 table th,
-    .comparison-table-v2 table tbody,
-    .comparison-table-v2 table thead {
+    .comparison-table-v2 table {
         display: table;
     }
 
-    .comparison-table-v2 table td,
-    .comparison-table-v2 table tr,
-    .comparison-table-v2 table th,
-    .comparison-table-v2 table tbody,
+    .comparison-table-v2 table td {
+        display: table-cell;
+    }
+
+    .comparison-table-v2 table tr {
+        display: table-row;
+    }
+
+    .comparison-table-v2 table th {
+        display: table-cell;
+    }
+
+    .comparison-table-v2 table tbody {
+        display: table-row-group;
+    }
+
     .comparison-table-v2 table thead {
-        display: revert;
+        display: table-header-group;
     }
 
     .comparison-table-v2 tbody tr {
@@ -515,6 +566,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
     /* Table cell content - Desktop */
+    .comparison-table-v2 table td {
+        vertical-align: top;
+    }
+
     .comparison-table-v2 table td p {
         color: inherit;
         font-size: inherit;
@@ -527,17 +582,18 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         font-size: inherit;
         font-weight: inherit;
         line-height: inherit;
-    }
-
-    .comparison-table-v2 .table-container table td:first-child p {
-        border: none;
-        border-radius: 0;
-        background: transparent;
-        padding: 0;
+        text-align: left;
     }
 
     /* Invisible content - Desktop */
     .comparison-table-v2 .invisible-content {
-        display: block;
+        display: revert;
+    }
+
+    /* Hide plan selector on desktop */
+    .comparison-table-v2 .plan-selector-wrapper,
+    .comparison-table-v2 .plan-selector,
+    .comparison-table-v2 .plan-selector-choices {
+        display: none;
     }
 }
