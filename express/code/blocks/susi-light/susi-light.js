@@ -223,7 +223,7 @@ async function buildB2B(el) {
   logo.classList.add('express-logo');
   logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
-  const wrapper = createTag('div', { class: 'susi-wrapper' }, [logo, titleDiv, createSUSIComponent(params)]);
+  const wrapper = createTag('div', { class: 'susi-b2b' }, [logo, titleDiv, createSUSIComponent(params)]);
   footer && wrapper.append(footer);
   return wrapper;
 }
@@ -268,7 +268,7 @@ async function buildStudent(el) {
     { class: 'student-check' },
     createTag('label', {}, [checkboxInput, studentCheckText]),
   );
-  const wrapper = createTag('div', { class: 'susi-wrapper' }, [
+  const wrapper = createTag('div', { class: 'susi-student' }, [
     logo,
     titleDiv,
     studentCheckDiv,
@@ -308,7 +308,7 @@ function buildSUSITabs(el) {
   }
 
   tabsId += 1;
-  const wrapper = createTag('div', { class: 'susi-wrapper' });
+  const wrapper = createTag('div', { class: 'susi-tabs' });
   const tabList = createTag('div', { role: 'tablist' });
   const susiScriptReady = SUSIUtils.loadSUSIScripts();
   const panels = tabParams.map((option, i) => {

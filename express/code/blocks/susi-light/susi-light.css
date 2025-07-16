@@ -22,19 +22,25 @@
   --susi-grey: #e6e6e6;
 }
 
-.susi-wrapper {
+.susi-tabs,
+.susi-b2b,
+.susi-student {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
 
-.susi-wrapper .express-logo {
+.susi-tabs .express-logo,
+.susi-b2b .express-logo,
+.susi-student .express-logo {
   width: unset;
   height: 24px;
 }
 
-.susi-wrapper .title {
+.susi-tabs .title,
+.susi-b2b .title,
+.susi-student .title {
   font-size: var(--heading-font-size-s);
   line-height: 28.6px;
   font-weight: 900;
@@ -91,7 +97,9 @@
   min-height: 366.5px;
 }
 
-.susi-wrapper .footer {
+.susi-tabs .footer,
+.susi-b2b .footer,
+.susi-student .footer {
   font-size: var(--body-font-size-s);
   text-align: center;
   padding: var(--spacing-300) 0;
@@ -100,18 +108,22 @@
   line-height: 1.3;
 }
 
-.susi-wrapper .footer a {
+.susi-tabs .footer a,
+.susi-b2b .footer a,
+.susi-student .footer a {
   text-decoration: underline;
   color: initial;
   font-weight: 500;
 }
 
-.susi-wrapper .footer.susi-banner {
+.susi-tabs .footer.susi-banner,
+.susi-b2b .footer.susi-banner,
+.susi-student .footer.susi-banner {
   background-color: var(--color-gray-150);
   width: 100%;
 }
 
-.susi-light .student-check {
+.susi-student .student-check {
   margin-top: var(--spacing-300);
   padding: var(--spacing-300) 0;
   width: calc(100% - 2 * var(--spacing-400));
@@ -120,14 +132,15 @@
   background-color: var(--color-gray-150);
 }
 
-.susi-light .student-check label {
+.susi-student .student-check label {
+  margin: auto;
+  width: max-content;
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: var(--spacing-100);
 }
 
-.susi-light.student input[type='checkbox'] {
+.susi-student input[type='checkbox'] {
   width: 1rem;
   height: 1rem;
 }
