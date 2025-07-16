@@ -155,7 +155,8 @@
 .section.ax-login-page .susi-light {
   padding-bottom: var(--spacing-700);
 }
-.section.ax-login-page .susi-tabs .footer {
+.section.ax-login-page .susi-tabs .footer,
+.section.ax-login-page .susi-b2b .footer {
   border-radius: 8px;
 }
 
@@ -164,7 +165,8 @@
     position: absolute;
     padding-top: 30px;
   }
-  .section.ax-login-page .susi-tabs .footer {
+  .section.ax-login-page .susi-tabs .footer,
+  .section.ax-login-page .susi-b2b .footer {
     border-radius: 0 0 16px 16px;
   }
 }
