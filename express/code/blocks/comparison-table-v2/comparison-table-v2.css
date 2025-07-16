@@ -423,7 +423,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     /* Sticky header - Desktop */
     .comparison-table-v2 .sticky-header {
         flex-wrap: nowrap;
-        max-width: none;
+        max-width: 1300px;
         width: fit-content;
         gap: var(--spacing-300);
         text-align: left; 
@@ -478,9 +478,6 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         width: var(--cell-width);
     }
 
-    .comparison-table-v2 .sticky-header .plan-cell:last-of-type {
-        padding-right: 48px;
-    }
 
     .comparison-table-v2 .sticky-header .plan-cell-wrapper {
         padding-top: var(--spacing-300);
@@ -504,7 +501,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 
     .comparison-table-v2 .sticky-header .plan-cell.last {
-        padding-right: 48px;
+        padding-right: 24px;
     }
 
     main .comparison-table-v2 .sticky-header .plan-cell p {
@@ -519,8 +516,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     /* Table container - Desktop */
     .comparison-table-v2 .table-container {
- 
         margin: auto;
+     
         box-sizing: border-box;
         min-width: 1000px;
         max-width: 1300px;
