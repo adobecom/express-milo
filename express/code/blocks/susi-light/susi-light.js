@@ -223,9 +223,10 @@ async function buildB2B(el) {
   logo.classList.add('express-logo');
   logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
-  const wrapper = createTag('div', { class: 'susi-b2b' }, [logo, titleDiv, createSUSIComponent(params)]);
-  footer && wrapper.append(footer);
-  return wrapper;
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent(params));
+  const layout = createTag('div', { class: 'susi-layout' }, [logo, titleDiv, susiWrapper]);
+  footer && layout.append(footer);
+  return layout;
 }
 
 async function buildStudent(el) {
@@ -262,20 +263,20 @@ async function buildStudent(el) {
     url.searchParams.set('student', 'true');
     redirectToUrl(url.toString());
   };
-  const susiComponent = createSUSIComponent({ ...params, onRedirect });
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent({ ...params, onRedirect }));
   const studentCheckDiv = createTag(
     'div',
     { class: 'student-check' },
     createTag('label', {}, [checkboxInput, studentCheckText]),
   );
-  const wrapper = createTag('div', { class: 'susi-student' }, [
+  const layout = createTag('div', { class: 'susi-layout' }, [
     logo,
     titleDiv,
     studentCheckDiv,
-    susiComponent,
+    susiWrapper,
   ]);
-  footer && wrapper.append(footer);
-  return wrapper;
+  footer && layout.append(footer);
+  return layout;
 }
 
 // each tab wraps susi component with custom logo + footer
@@ -308,7 +309,7 @@ function buildSUSITabs(el) {
   }
 
   tabsId += 1;
-  const wrapper = createTag('div', { class: 'susi-tabs' });
+  const layout = createTag('div', { class: 'susi-layout' });
   const tabList = createTag('div', { role: 'tablist' });
   const susiScriptReady = SUSIUtils.loadSUSIScripts();
   const panels = tabParams.map((option, i) => {
@@ -359,8 +360,8 @@ function buildSUSITabs(el) {
   logo.height = 24;
   const title = rows[0].textContent?.trim();
   const titleDiv = createTag('div', { class: 'title' }, title);
-  wrapper.append(logo, titleDiv, tabList, ...panels);
-  return wrapper;
+  layout.append(logo, titleDiv, tabList, ...panels);
+  return layout;
 }
 
 export default async function init(el) {
