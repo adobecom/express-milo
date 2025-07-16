@@ -1,10 +1,16 @@
 import { getLibs } from '../utils.js';
+import { throttle } from '../utils/hofs.js';
 
 let createTag; let loadStyle;
 
 function correctCenterAlignment(plat) {
   if (plat.parentElement.offsetWidth <= plat.offsetWidth) return;
   plat.parentElement.style.maxWidth = `${plat.offsetWidth}px`;
+}
+const margin = 0.95;
+
+function isAtRightmostScroll(element) {
+  return element.scrollLeft + element.clientWidth >= element.scrollWidth * margin;
 }
 
 function initToggleTriggers(parent) {
@@ -54,7 +60,7 @@ function initToggleTriggers(parent) {
       }
 
       if (entry.target === rightTrigger) {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting || isAtRightmostScroll(platform)) {
           rightControl.classList.add('arrow-hidden');
           platform.classList.remove('right-fader');
         } else {
@@ -102,6 +108,14 @@ function onCarouselCSSLoad(selector, parent, options) {
   faderLeft.append(arrowLeft);
   faderRight.append(arrowRight);
   parent.append(container);
+
+  platform.addEventListener('scroll', throttle(() => {
+    if (isAtRightmostScroll(platform)) {
+      container.querySelector('.carousel-arrow-right').style.display = 'none';
+    } else {
+      container.querySelector('.carousel-arrow-right').style.display = 'block';
+    }
+  }, 200));
 
   // Scroll the carousel by clicking on the controls
   const moveCarousel = (increment) => {
