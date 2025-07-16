@@ -146,7 +146,8 @@
 }
 
 /* ax-login-page section metadata styles */
-.section.ax-login-page .susi-tabs {
+.section.ax-login-page .susi-tabs,
+.section.ax-login-page .susi-b2b {
   background-color: var(--color-white);
   border-radius: 16px;
 }
