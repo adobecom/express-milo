@@ -48,8 +48,7 @@ main .section .comparison-table-v2 p {
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-wrapper,
 .comparison-table-v2 .sticky-header.is-stuck .first-cell {
-    opacity: 0;
-    max-width: 294px;
+    display: none;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck .first-cell 
@@ -418,6 +417,12 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         flex-direction: column;
         --cell-width: 222px;
         --header-cell-width: 294px;
+    }
+
+    .comparison-table-v2 .sticky-header.is-stuck .first-cell {
+        opacity: 0;
+        max-width: 294px;
+        display: block;
     }
 
     /* Sticky header - Desktop */
