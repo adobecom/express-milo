@@ -53,6 +53,7 @@
     flex-direction: row;
     text-align: left;
     padding-left: var(--spacing-600);
+    min-width: 132px;
   }
 
   .highlight .icon-row .text {
