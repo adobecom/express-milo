@@ -326,4 +326,11 @@ export default async function init(el) {
   } else {
     el.replaceChildren(await (buildSUSITabs(el)));
   }
+  // branchlinks can exist in footers
+  const footer = el.querySelector('.footer');
+  if (footer) {
+    const links = footer.querySelectorAll('a[href*="adobesparkpost"]');
+    const linksPopulated = new CustomEvent('linkspopulated', { detail: links });
+    document.dispatchEvent(linksPopulated);
+  }
 }
