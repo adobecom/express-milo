@@ -1,12 +1,18 @@
+:root {
+  --susi-modal-width: 370px;
+  --susi-tabs-width: 400px;
+  --susi-min-height: 462px;
+}
+
 /* preserving modal space for ux */
 .dialog-modal:has(.susi-light) {
-  width: 370px;
-  min-height: 462px;
+  width: var(--susi-modal-width);
+  min-height: var(--susi-min-height);
 }
 
 .dialog-modal:has(.susi-light.tabs) {
-  width: 400px;
-  min-height: 462px;
+  width: var(--susi-tabs-width);
+  min-height: var(--susi-min-height);
 }
 
 .section.ax-login-page .susi-light .express-logo,
@@ -77,7 +83,7 @@
 }
 
 .susi-tabs [role='tabpanel'] {
-  width: 400px;
+  width: var(--susi-tabs-width);
   max-width: 95vw;
 }
 
@@ -146,7 +152,8 @@
 }
 
 /* ax-login-page section metadata styles */
-.section.ax-login-page .susi-tabs {
+.section.ax-login-page .susi-tabs,
+.section.ax-login-page .susi-b2b {
   background-color: var(--color-white);
   border-radius: 16px;
 }
@@ -154,7 +161,11 @@
 .section.ax-login-page .susi-light {
   padding-bottom: var(--spacing-700);
 }
-.section.ax-login-page .susi-tabs .footer {
+.section.ax-login-page .susi-b2b {
+  width: var(--susi-modal-width);
+}
+.section.ax-login-page .susi-tabs .footer,
+.section.ax-login-page .susi-b2b .footer {
   border-radius: 8px;
 }
 
@@ -163,7 +174,8 @@
     position: absolute;
     padding-top: 30px;
   }
-  .section.ax-login-page .susi-tabs .footer {
+  .section.ax-login-page .susi-tabs .footer,
+  .section.ax-login-page .susi-b2b .footer {
     border-radius: 0 0 16px 16px;
   }
 }
