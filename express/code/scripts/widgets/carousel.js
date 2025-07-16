@@ -110,7 +110,7 @@ function onCarouselCSSLoad(selector, parent, options) {
   function throttle(fn, wait) {
     let lastTime = 0;
     let timeout;
-    return function(...args) {
+    return function (...args) {
       const now = Date.now();
       const remaining = wait - (now - lastTime);
       if (remaining <= 0) {
