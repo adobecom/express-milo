@@ -283,6 +283,9 @@ function createStickyHeader(headerGroup, comparisonBlock) {
 
 
             headerCell.classList.add('plan-cell');
+            if (cellIndex === headerCells.length - 1) {
+                headerCell.classList.add('last');
+            }
             headers.push(headerCell.querySelector('h1,h2,h3,h4,h5,h6').textContent.trim() + ' ' + headerCell.querySelector('p').textContent.trim());
             columnTitles.push(headerCell.textContent.trim());
             const planSelector = createPlanSelector(totalPlans, comparisonBlock, headers);
