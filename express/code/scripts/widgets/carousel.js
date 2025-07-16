@@ -10,7 +10,6 @@ function correctCenterAlignment(plat) {
 const margin = 0.95
 
 function isAtRightmostScroll(element) {
-  console.log(element.scrollLeft, element.clientWidth, element.scrollWidth);
   return element.scrollLeft + element.clientWidth >= element.scrollWidth * margin;
 }
 
