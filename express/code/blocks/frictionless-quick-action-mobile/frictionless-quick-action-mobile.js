@@ -18,7 +18,6 @@ import {
   executeQuickAction,
   processFilesForQuickAction,
   loadAndInitializeCCEverywhere,
-  getErrorMsg,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let replaceKey; let getConfig;
@@ -142,20 +141,24 @@ async function startSDK(data = [''], quickAction, block) {
 }
 
 async function startSDKWithUnconvertedFiles(files, quickAction, block) {
-  let data = await processFilesForQuickAction(files, quickAction);
-  if (!data[0]) {
-    const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
+  const result = await processFilesForQuickAction(files, quickAction);
+
+  if (result.data.length === 0) {
+    // All files failed validation, show error for the first error
+    const firstError = result.errors[0];
+    const msg = await replaceKey(firstError.error, getConfig());
     showErrorToast(block, msg);
     return;
   }
 
-  if (data.some((item) => !item)) {
-    const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
+  if (result.errors.length > 0) {
+    // Some files failed validation, show error for the first error
+    const firstError = result.errors[0];
+    const msg = await replaceKey(firstError.error, getConfig());
     showErrorToast(block, msg);
-    data = data.filter((item) => item);
   }
 
-  startSDK(data, quickAction, block);
+  startSDK(result.data, quickAction, block);
 }
 
 async function injectFreePlan(container) {
