@@ -1,4 +1,5 @@
 import { getLibs } from '../utils.js';
+import { throttle } from './../utils/hofs.js';
 
 let createTag; let loadStyle;
 
@@ -6,9 +7,11 @@ function correctCenterAlignment(plat) {
   if (plat.parentElement.offsetWidth <= plat.offsetWidth) return;
   plat.parentElement.style.maxWidth = `${plat.offsetWidth}px`;
 }
+const margin = 0.95
 
 function isAtRightmostScroll(element) {
-  return element.scrollLeft + element.clientWidth >= element.scrollWidth;
+  console.log(element.scrollLeft, element.clientWidth, element.scrollWidth);
+  return element.scrollLeft + element.clientWidth >= element.scrollWidth * margin;
 }
 
 function initToggleTriggers(parent) {
@@ -106,27 +109,6 @@ function onCarouselCSSLoad(selector, parent, options) {
   faderLeft.append(arrowLeft);
   faderRight.append(arrowRight);
   parent.append(container);
-
-  function throttle(fn, wait) {
-    let lastTime = 0;
-    let timeout;
-    return function (...args) {
-      const now = Date.now();
-      const remaining = wait - (now - lastTime);
-      if (remaining <= 0) {
-        clearTimeout(timeout);
-        timeout = null;
-        lastTime = now;
-        fn.apply(this, args);
-      } else if (!timeout) {
-        timeout = setTimeout(() => {
-          lastTime = Date.now();
-          timeout = null;
-          fn.apply(this, args);
-        }, remaining);
-      }
-    };
-  }
 
   platform.addEventListener('scroll', throttle(() => {
     if (isAtRightmostScroll(platform)) {
