@@ -128,13 +128,11 @@
   display: flex;
 }
 
-
 .section[data-ax-panel][role='tabpanel'].split {
   align-items: stretch;
   max-width: 966px;
   min-height: 400px;
-  background-blend-mode: darken;
-  background: linear-gradient(98.11deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 @media (min-width: 600px) {

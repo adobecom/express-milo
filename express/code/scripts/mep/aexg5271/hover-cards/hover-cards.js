@@ -22,6 +22,8 @@ const decorateSplit = (el) => {
     if (i === 0) {
       if (el.classList.contains('premium-cta')) a.classList.add('button', 'gradient');
       else a.classList.add('button', 'primary');
+    } else if (parent.lastChild && el.classList.contains('outline-cta')) {
+      a.classList.add('con-button');
     } else if (parent.lastChild && el.classList.contains('chevron-cta')) {
       const svg = `
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

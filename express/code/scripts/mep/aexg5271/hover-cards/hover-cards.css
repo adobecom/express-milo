@@ -140,6 +140,7 @@
 }
 
 .hover-cards.split .primary,
+.hover-cards.split .con-button,
 .hover-cards.split .button.gradient  {
   border-width: 1px;
   margin: 0; 
@@ -147,6 +148,15 @@
   font-size: var(--body-font-size-l);
   border-radius: 50px;
   line-height: 23.4px;
+}
+
+.hover-cards.split .con-button  {
+  color: var(--color-black);
+  border: 2px solid var(--color-black)
+}
+
+.hover-cards.split .con-button:hover  {
+  color: #fff;
 }
 
 .hover-cards.split .button.gradient  {
