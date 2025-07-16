@@ -48,8 +48,11 @@ main .section .comparison-table-v2 p {
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-wrapper,
 .comparison-table-v2 .sticky-header.is-stuck .first-cell {
-    display: none;
+    opacity: 0;
+    max-width: 294px;
 }
+
+.comparison-table-v2 .sticky-header.is-stuck .first-cell 
 
 .comparison-table-v2 .sticky-header-placeholder {
     display: none;
@@ -386,6 +389,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 /* Feature cell colors */
 .comparison-table-v2 .feature-cell p {
     color: var(--icon-color, #079355);
+    margin-top: 4px;
 }
 
 .comparison-table-v2 .feature-cell.gray p {
@@ -413,7 +417,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         display: flex;
         flex-direction: column;
         --cell-width: 222px;
-        --header-cell-width: 318px;
+        --header-cell-width: 294px;
     }
 
     /* Sticky header - Desktop */
@@ -422,32 +426,60 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         max-width: none;
         width: fit-content;
         gap: var(--spacing-300);
-        text-align: left;
+        text-align: left; 
     }
 
     .comparison-table-v2 .sticky-header.is-stuck {
         max-width: 100%;
-        width: auto;
-        padding: var(--spacing-300);
+        width: 100%;
+        padding: var(--spacing-300) 0px;
+        margin: 0;
+    }
+
+    .comparison-table-v2 table td:first-child {
+        padding: var(--spacing-400) 0;
+    }
+
+    .comparison-table-v2 .feature-cell {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .comparison-table-v2 .feature-cell:first-child {
+       display: table-cell;
+       padding: 0;
+       margin: auto 0px;
+       margin-right: auto; 
+
     }
 
     .comparison-table-v2 .sticky-header .first-cell {
-        width: var(--header-cell-width);
-        flex-direction: column-reverse;
+        width: var(--header-cell-width); 
         justify-content: flex-end;
         align-items: flex-start;
         text-align: left;
         padding-left: var(--spacing-400);
+        padding-bottom: 8px;
         color: var(--color-gray-600);
         font-family: var(--body-font-family);
         font-size: var(--body-font-size-l);
         font-style: normal;
         font-weight: 700;
-        line-height: 1.3;
+        line-height: 1.3; 
     }
 
+    /* .comparison-table-v2 td{
+        border-bottom: 1px solid var(--color-gray-300);
+    }    */
+
+ 
     .comparison-table-v2 .sticky-header .plan-cell {
         width: var(--cell-width);
+    }
+
+    .comparison-table-v2 .sticky-header .plan-cell:last-of-type {
+        padding-right: 48px;
     }
 
     .comparison-table-v2 .sticky-header .plan-cell-wrapper {
@@ -470,6 +502,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         line-height: 1.3;
     }
 
+
+    .comparison-table-v2 .sticky-header .plan-cell.last {
+        padding-right: 48px;
+    }
+
     main .comparison-table-v2 .sticky-header .plan-cell p {
         color: var(--color-gray-600);
         text-align: center;
@@ -482,11 +519,15 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     /* Table container - Desktop */
     .comparison-table-v2 .table-container {
-        max-width: none;
+ 
+        margin: auto;
+        box-sizing: border-box;
+        min-width: 1000px;
+        max-width: 1300px;
         border-radius: 8px;
         border: 1px solid var(--color-gray-300);
         background: var(--color-white);
-        padding: var(--spacing-300) var(--spacing-300) 0 var(--spacing-300);
+        padding: var(--spacing-400) var(--spacing-400) 0 var(--spacing-400);
     }
 
     .comparison-table-v2 .table-container .first-row {
@@ -494,10 +535,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         margin-bottom: 0;
         padding-bottom: var(--spacing-300);
     }
-
-    .comparison-table-v2 .table-container table {
-        padding-top: var(--spacing-300);
-    }
+ 
 
     .comparison-table-v2 .table-container .first-row>div {
         width: var(--cell-width);
@@ -523,15 +561,18 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     /* Table styles - Desktop */
     .comparison-table-v2 table {
         display: table;
+        border-collapse: collapse;
+        width: 100%;
+        height: 100%;
     }
 
     .comparison-table-v2 table td {
         display: table-cell;
     }
 
-    .comparison-table-v2 table tr {
+    /* .comparison-table-v2 table tr {
         display: table-row;
-    }
+    } */
 
     .comparison-table-v2 table th {
         display: table-cell;
@@ -547,6 +588,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     .comparison-table-v2 tbody tr {
         flex-wrap: nowrap;
+        padding: 24px 0
     }
 
     .comparison-table-v2 table td {
@@ -571,10 +613,19 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 table td {
         vertical-align: middle;
         padding: var(--spacing-400) 0;
+        position: relative;
+    }
+
+    .comparison-table-v2 table td .icon-wrapper {
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;  
     }
 
     .comparison-table-v2 table tr {
         border-bottom: 1px solid var(--color-gray-300);
+        height: 100%;
+        gap: 16px;
     }
 
     .comparison-table-v2 table tr:last-child {
@@ -594,6 +645,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         font-weight: inherit;
         line-height: inherit;
         text-align: left;
+        height: 100%;
     }
 
     /* Invisible content - Desktop */
