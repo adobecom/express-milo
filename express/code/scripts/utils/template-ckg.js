@@ -56,12 +56,10 @@ function isSearch(pathname) {
 function replaceLinkPill(linkPill, data) {
   const clone = linkPill.cloneNode(true);
   if (data) {
-    const sanitizedUrl = sanitizeHTML(data.url);
-    const sanitizedShortTitle = sanitizeHTML(data['short-title']);
     const a = clone.querySelector('a');
-    a.textContent = a.textContent.replaceAll('Default', sanitizedShortTitle);
-    a.title = a.textContent.replaceAll('Default', sanitizedShortTitle);
-    a.href = a.href.replace('/express/templates/default', sanitizedUrl);
+    a.textContent = a.textContent.replaceAll('Default', data['short-title']);
+    a.title = a.textContent.replaceAll('Default', data['short-title']);
+    a.href = a.href.replace('/express/templates/default', data.url);
   }
   if (data?.url && isSearch(data.url)) {
     clone.querySelectorAll('a').forEach((a) => {
@@ -105,9 +103,6 @@ async function updateSEOLinkList(container, linkPill, list) {
       });
 
       if (!templatePageData) return;
-      templatePageData.url = sanitizeHTML(templatePageData.url);
-      templatePageData['short-title'] = sanitizeHTML(templatePageData['short-title']);
-
       const clone = replaceLinkPill(linkPill, templatePageData);
       if (clone) container.append(clone);
     });
