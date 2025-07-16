@@ -107,13 +107,34 @@ function onCarouselCSSLoad(selector, parent, options) {
   faderRight.append(arrowRight);
   parent.append(container);
 
-  platform.addEventListener('scroll', () => {
+  function throttle(fn, wait) {
+    let lastTime = 0;
+    let timeout;
+    return function(...args) {
+      const now = Date.now();
+      const remaining = wait - (now - lastTime);
+      if (remaining <= 0) {
+        clearTimeout(timeout);
+        timeout = null;
+        lastTime = now;
+        fn.apply(this, args);
+      } else if (!timeout) {
+        timeout = setTimeout(() => {
+          lastTime = Date.now();
+          timeout = null;
+          fn.apply(this, args);
+        }, remaining);
+      }
+    };
+  }
+
+  platform.addEventListener('scroll', throttle(() => {
     if (isAtRightmostScroll(platform)) {
       container.querySelector('.carousel-arrow-right').style.display = 'none';
     } else {
       container.querySelector('.carousel-arrow-right').style.display = 'block';
     }
-  });
+  }, 200));
 
   // Scroll the carousel by clicking on the controls
   const moveCarousel = (increment) => {
