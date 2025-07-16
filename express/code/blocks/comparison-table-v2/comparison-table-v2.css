@@ -300,7 +300,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .plan-selector-choices {
     position: absolute;
-    bottom: -120px;
+    bottom: -60px;
     right: 0;
     z-index: 5;
     width: 206px;
