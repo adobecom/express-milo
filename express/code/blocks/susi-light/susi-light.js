@@ -244,8 +244,9 @@ async function buildStudent(el) {
   const footer = rows[4];
   footer?.classList.add('footer', 'susi-banner');
   const variant = 'standard';
+  const destURL = await getDestURL(redirectUrl);
   const susiConfigs = {
-    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
+    client_id, variant, destURL, locale, title: '', hideIcon: true,
   };
   const params = buildSUSIParams(susiConfigs);
   if (!noRedirect) {
