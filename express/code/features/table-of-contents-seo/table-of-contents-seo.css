@@ -53,10 +53,14 @@ main .toc-content a {
 }
 
 .toc-social-icons {
-  display: flex;
+  display: none;
   gap: 12px;
   margin-top: 20px;
-  padding: 0 16px;
+  padding: 0;
+}
+
+.toc-container.open .toc-social-icons {
+  display: flex;
 }
 
 .social-icon {
