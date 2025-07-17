@@ -41,12 +41,20 @@ export default async function setTOCSEO() {
   title.textContent = 'Table of Contents';
   toc.appendChild(title);
 
+  const tocContent = createTag('div', { class: 'toc-content' });
+
   Object.keys(config).forEach((key) => {
-    // if (key.startsWith('content-') && !key.endsWith('-short')) {
-    //   const link = createTag('a', { href: `#${key}` });
-    //   link.textContent = config[key];
-    //   toc.appendChild(link);
-    // }
+    if (key.startsWith('content-') && !key.endsWith('-short')) {
+      const link = createTag('a', { href: `#${key}` });
+      link.textContent = config[key];
+      tocContent.appendChild(link);
+    }
+  });
+
+  toc.appendChild(tocContent);
+
+  toc.addEventListener('click', () => {
+    toc.classList.toggle('open');
   });
 
   const firstSection = document.querySelector('main .section');
