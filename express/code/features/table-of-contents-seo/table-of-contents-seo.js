@@ -66,7 +66,9 @@ export default async function setTOCSEO() {
     }
   });
 
-  // Add social icons at bottom
+  toc.appendChild(tocContent);
+
+  // Add social icons at bottom (outside tocContent)
   const socialIcons = createTag('div', { class: 'toc-social-icons' });
   const icons = ['x', 'facebook', 'linkedin', 'link'];
 
@@ -76,9 +78,7 @@ export default async function setTOCSEO() {
     socialIcons.appendChild(icon);
   });
 
-  tocContent.appendChild(socialIcons);
-
-  toc.appendChild(tocContent);
+  toc.appendChild(socialIcons);
 
   toc.addEventListener('click', () => {
     toc.classList.toggle('open');
