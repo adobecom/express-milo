@@ -33,7 +33,7 @@ export default async function setTOCSEO() {
   const config = buildMetadataConfigObject();
 
   const toc = createTag('div', {
-    class: 'toc toc-container',
+    class: 'toc toc-container ax-grid-col-12',
   });
 
   const title = createTag('div', { class: 'toc-title' });
