@@ -19,7 +19,6 @@
   line-height: 130%;
   position: relative;
   padding-right: 20px;
-  padding-bottom: 8px;
 }
 
 .toc-title::after {
@@ -51,6 +50,10 @@ main .toc-content a {
   color: #5258E4;
   font-style: normal;
   font-weight: 400;
+}
+
+main .toc-content a:first-child {
+  padding-top: 16px;
 }
 
 .toc-content a:last-child {
