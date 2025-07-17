@@ -13,23 +13,39 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
+  position: relative;
+  padding-right: 20px;
+}
+
+.toc-title::after {
+  content: '▼';
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #666;
+}
+
+.toc-container.open .toc-title::after {
+  content: '▲';
 }
 
 .toc-content {
   display: none;
-  margin-top: 15px;
 }
 
 .toc-container.open .toc-content {
   display: block;
 }
 
-.toc-content a {
+main .toc-content a {
   display: block;
-  padding: 8px 0;
-  color: #333;
+  padding: 8px 16px;
   text-decoration: none;
-  border-bottom: 1px solid #f0f0f0;
+  color: #5258E4;
+  font-style: normal;
+  font-weight: 400;
 }
 
 .toc-content a:last-child {
