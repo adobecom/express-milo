@@ -80,7 +80,7 @@ export default async function setTOCSEO() {
 
   toc.appendChild(socialIcons);
 
-  toc.addEventListener('click', () => {
+  title.addEventListener('click', () => {
     toc.classList.toggle('open');
   });
 
