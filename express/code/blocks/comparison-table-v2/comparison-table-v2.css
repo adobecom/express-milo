@@ -95,11 +95,58 @@ main .section .comparison-table-v2 p {
     border: 1px solid var(--color-gray-300);
     background: var(--color-white);
     padding-top: var(--spacing-300);
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.comparison-table-v2 .sticky-header .plan-cell-wrapper:active {
+    outline: 4px solid var(--indigo-400, #C0C9FF);
+}
+
+.comparison-table-v2 .sticky-header .plan-cell-wrapper:focus {
+    outline: 2px solid var(--Background-Accent-key-focus, #4046CA);
+    outline-offset: 2px;
 }
 
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper {
-    border: 2px solid #B539C8;
+    z-index: 5;
+    border-radius: 8px;
+    border-image-slice: 1;
+    border-width: 2px;
+    position: relative;
     background: var(--color-white);
+    border-color: none;
+
+}
+
+.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper > * {
+    z-index: 2;
+    position: relative;
+}
+
+.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper::before {
+    content : '';
+    background: linear-gradient(95.85deg, #B539C8 0%, #7155FA 66%, #3B63FB 100%);
+    position: absolute;
+    width: calc(100% + 4px) ;
+    height: calc(100% + 4px);
+    z-index: -1;
+    left: -2px;
+    border-radius: 8px;
+    top: -2px;
+}
+
+.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper::after {
+    content : '';
+    background: white;
+    position: absolute;
+    width: calc(100%) ;
+    height: calc(100%);
+    z-index: 0;
+    left: 0px;
+    border-radius: 6px;
+    top: 0px;
 }
 
 .comparison-table-v2 .sticky-header .plan-cell.gray .plan-cell-wrapper {
@@ -143,6 +190,15 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     display: flex;
     gap: var(--spacing-300);
     position: relative;
+}
+
+.comparison-table-v2 .table-container .first-row:focus {
+    outline: none;
+    border: 2px solid var(--Background-Accent-key-focus, #4046CA);
+}
+
+.comparison-table-v2 .table-container .first-row:active {
+    outline: 4px solid var(--indigo-400, #C0C9FF);
 }
 
 .comparison-table-v2 .table-container .first-row .button-cell {
@@ -272,6 +328,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     left: 0;
     right: 0;
     width: 100%;
+    position: relative;
 }
 
 .comparison-table-v2 .plan-selector {
@@ -312,6 +369,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     color: var(--color-white);
 }
 
+.comparison-table-v2 .sticky-header.is-stuck .plan-selector-choices {
+    display: none;
+}
+
 .comparison-table-v2 .plan-selector-choices.display-none {
     display: none;
 }
@@ -326,6 +387,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     position: absolute;
     left: var(--spacing-400);
 }
+
 
 /* Icons */
 .comparison-table-v2 .toggle-button {
