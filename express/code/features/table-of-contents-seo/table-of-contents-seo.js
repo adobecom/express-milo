@@ -102,6 +102,7 @@ export default async function setTOCSEO() {
     if (window.innerWidth >= 1200) {
       const sectionElement = document.querySelector('main .section');
       const tocElement = document.querySelector('.toc-container');
+      const footerElement = document.querySelector('footer');
       const fixedTopDistance = 200; // Distance from top when fixed
 
       if (sectionElement && tocElement) {
@@ -114,6 +115,17 @@ export default async function setTOCSEO() {
         // If TOC would go above the fixed distance, keep it at fixed distance
         if (topPosition < fixedTopDistance) {
           topPosition = fixedTopDistance;
+        }
+
+        // If footer exists, prevent TOC from going into footer
+        if (footerElement) {
+          const footerTop = footerElement.offsetTop - scrollTop;
+          const tocHeight = tocElement.offsetHeight;
+          const maxTopPosition = footerTop - tocHeight - 20; // 20px gap from footer
+
+          if (topPosition > maxTopPosition) {
+            topPosition = maxTopPosition;
+          }
         }
 
         tocElement.style.position = 'fixed';
