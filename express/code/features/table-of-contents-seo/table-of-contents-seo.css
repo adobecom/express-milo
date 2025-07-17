@@ -32,6 +32,16 @@
   }
 }
 
+@media (min-width: 1200px) {
+  .toc-container {
+    position: static;
+    width: 310px;
+    height: 390px;
+    margin: 0;
+    z-index: 100;
+  }
+}
+
 .toc-title {
   color: #000;
   font-size: 18px;

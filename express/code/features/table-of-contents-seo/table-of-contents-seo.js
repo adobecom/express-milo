@@ -96,4 +96,40 @@ export default async function setTOCSEO() {
 
   const firstSection = document.querySelector('main .section');
   firstSection.insertAdjacentElement('afterend', toc);
+
+  // Desktop dynamic positioning
+  function handleDesktopPositioning() {
+    if (window.innerWidth >= 1200) {
+      const sectionElement = document.querySelector('main .section');
+      const tocElement = document.querySelector('.toc-container');
+      const fixedTopDistance = 200; // Distance from top when fixed
+
+      if (sectionElement && tocElement) {
+        const firstSectionBottom = sectionElement.offsetTop + sectionElement.offsetHeight;
+        const scrollTop = window.pageYOffset;
+
+        // Calculate where TOC should be positioned
+        let topPosition = firstSectionBottom - scrollTop;
+
+        // If TOC would go above the fixed distance, keep it at fixed distance
+        if (topPosition < fixedTopDistance) {
+          topPosition = fixedTopDistance;
+        }
+
+        tocElement.style.position = 'fixed';
+        tocElement.style.top = `${topPosition}px`;
+        tocElement.style.left = '0';
+        tocElement.style.width = '310px';
+        tocElement.style.height = '390px';
+      }
+    }
+  }
+
+  // Add scroll listener for desktop
+  if (window.innerWidth >= 1200) {
+    window.addEventListener('scroll', handleDesktopPositioning);
+    window.addEventListener('resize', handleDesktopPositioning);
+    // Initial positioning
+    handleDesktopPositioning();
+  }
 }
