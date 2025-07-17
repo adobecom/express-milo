@@ -120,7 +120,6 @@ export default async function setTOCSEO() {
         tocElement.style.top = `${topPosition}px`;
         tocElement.style.left = '0';
         tocElement.style.width = '310px';
-        tocElement.style.height = '390px';
       }
     }
   }
