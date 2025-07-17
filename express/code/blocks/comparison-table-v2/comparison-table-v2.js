@@ -88,6 +88,7 @@ function createToggleButton(isHidden) {
 function createTableHeader(sectionHeaderRow, columnHeaders) {
     const sectionHeaderContainer = document.createElement('div');
     sectionHeaderContainer.classList.add('first-row');
+    sectionHeaderContainer.setAttribute('tabindex', '0');
 
     // Add section title
     sectionHeaderContainer.appendChild(sectionHeaderRow.children[0]);
@@ -235,7 +236,7 @@ function createPlanDropdown(totalPlans, comparisonBlock, headers, headerGroupEle
         div.classList.toggle('selected', div.value === 1);
     });
 
-    headerGroupElement.querySelectorAll('.plan-selector').forEach(planSelector => { 
+    headerGroupElement.querySelectorAll('.plan-cell-wrapper').forEach(planSelector => { 
         planSelector.addEventListener('click', () => {
             planSelectorChoices.classList.toggle('display-none');
         });
@@ -245,7 +246,7 @@ function createPlanDropdown(totalPlans, comparisonBlock, headers, headerGroupEle
     headerGroupElement.appendChild(planSelectorChoices);
 
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.plan-selector')) {
+        if (!e.target.closest('.plan-cell-wrapper')) {
             planSelectorChoices.classList.add('display-none');
         }
     });
@@ -279,9 +280,9 @@ function createStickyHeader(headerGroup, comparisonBlock) {
         if (cellIndex === 0) {
             headerCell.classList.add('first-cell');
         } else {
-            const planCellWrapper = createTag('div', { class: 'plan-cell-wrapper' });
+            const planCellWrapper = createTag('button', { class: 'plan-cell-wrapper' });
 
-
+            planCellWrapper.setAttribute('tabindex', 0)
             headerCell.classList.add('plan-cell');
             if (cellIndex === headerCells.length - 1) {
                 headerCell.classList.add('last');
