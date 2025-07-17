@@ -109,7 +109,7 @@ export default async function setTOCSEO() {
         const scrollTop = window.pageYOffset;
 
         // Calculate where TOC should be positioned
-        let topPosition = firstSectionBottom - scrollTop;
+        let topPosition = firstSectionBottom - scrollTop + 40;
 
         // If TOC would go above the fixed distance, keep it at fixed distance
         if (topPosition < fixedTopDistance) {
