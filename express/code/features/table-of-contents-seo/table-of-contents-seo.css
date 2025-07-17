@@ -11,6 +11,25 @@
   z-index: 10;
 }
 
+@media (min-width: 768px) {
+  .toc-container {
+    position: static;
+    cursor: default;
+  }
+  
+  .toc-container .toc-content {
+    display: block;
+  }
+  
+  .toc-container .toc-social-icons {
+    display: flex;
+  }
+  
+  .toc-container .toc-title::after {
+    display: none;
+  }
+}
+
 .toc-title {
   color: #000;
   font-size: 18px;
