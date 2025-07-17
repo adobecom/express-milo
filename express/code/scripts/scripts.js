@@ -368,6 +368,10 @@ const listenAlloy = () => {
   });
 
   await loadArea();
+
+  const { fixIcons } = await import('./utils.js');
+  document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
+
   import('./express-delayed.js').then((mod) => {
     mod.default();
   });
