@@ -1,5 +1,5 @@
 /* eslint-disable import/named, import/extensions */
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let createTag; let getMetadata;
 
@@ -31,7 +31,6 @@ function buildMetadataConfigObject() {
 export default async function setTOCSEO() {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const config = buildMetadataConfigObject();
-  console.log('config', config);
 
   const toc = createTag('div', {
     class: 'toc toc-container',
@@ -66,6 +65,18 @@ export default async function setTOCSEO() {
       tocContent.appendChild(link);
     }
   });
+
+  // Add social icons at bottom
+  const socialIcons = createTag('div', { class: 'toc-social-icons' });
+  const icons = ['x', 'facebook', 'linkedin', 'link'];
+
+  icons.forEach((iconName) => {
+    const icon = getIconElementDeprecated(iconName);
+    icon.classList.add('social-icon', `${iconName}-icon`);
+    socialIcons.appendChild(icon);
+  });
+
+  tocContent.appendChild(socialIcons);
 
   toc.appendChild(tocContent);
 
