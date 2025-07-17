@@ -373,20 +373,13 @@ export default async function init(el) {
   ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
 
-  const isTabs = el.classList.contains('tabs');
-  const isBusiness = el.classList.contains('b2b');
-  const isStudent = el.classList.contains('student');
+  const match = [
+    { cls: 'b2b', build: buildB2B },
+    { cls: 'tabs', build: buildSUSITabs },
+    { cls: 'student', build: buildStudent },
+  ].find(({ cls }) => el.classList.contains(cls));
 
-  if (isBusiness) {
-    el.replaceChildren(await (buildB2B(el)));
-  } else if (isTabs) {
-    el.replaceChildren(await (buildSUSITabs(el)));
-  } else if (isStudent) {
-    el.replaceChildren(await (buildStudent(el)));
-  } else {
-    // default edu
-    el.replaceChildren((await buildEdu(el)));
-  }
+  el.replaceChildren(await (match?.build || buildEdu)(el));
 
   // branchlinks can exist in footers
   const footer = el.querySelector('.footer');
