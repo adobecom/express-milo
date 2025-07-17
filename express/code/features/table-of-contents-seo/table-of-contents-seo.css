@@ -4,6 +4,7 @@
   padding: 20px;
   border-top: 1px solid #E6E6E6;
   border-bottom: 1px solid #E6E6E6;
+  cursor: pointer;
 }
 
 .toc-title {
@@ -12,4 +13,25 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
+}
+
+.toc-content {
+  display: none;
+  margin-top: 15px;
+}
+
+.toc-container.open .toc-content {
+  display: block;
+}
+
+.toc-content a {
+  display: block;
+  padding: 8px 0;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.toc-content a:last-child {
+  border-bottom: none;
 }
