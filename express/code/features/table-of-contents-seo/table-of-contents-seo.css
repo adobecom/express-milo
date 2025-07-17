@@ -1,4 +1,13 @@
+/* Grid system implementation for TOC */
 .toc-container {
+  --ax-grid-margin: 20px;
+  --ax-grid-gutter: 16px;
+  --ax-grid-container-width: 100%;
+  --ax-grid-column-width: calc((var(--ax-grid-container-width) - var(--ax-grid-gutter) * 11) / 12);
+  --ax-grid-12-col-width: calc(var(--ax-grid-column-width) * 12 + var(--ax-grid-gutter) * 11);
+  --ax-grid-8-col-width: calc(var(--ax-grid-column-width) * 8 + var(--ax-grid-gutter) * 7);
+  --ax-grid-3-col-width: calc(var(--ax-grid-column-width) * 3 + var(--ax-grid-gutter) * 2);
+  
   display: block;
   width: 100%;
   padding: 20px;
@@ -9,6 +18,26 @@
   top: 40px;
   background: white;
   z-index: 10;
+}
+
+@media (min-width: 600px) {
+  .toc-container {
+    --ax-grid-margin: 32px;
+    --ax-grid-gutter: 24px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .toc-container {
+    --ax-grid-margin: 40px;
+    --ax-grid-gutter: 32px;
+  }
+}
+
+@media (min-width: 1680px) {
+  .toc-container {
+    --ax-grid-container-width: min(1600px, 100%);
+  }
 }
 
 @media (min-width: 768px) {
