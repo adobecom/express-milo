@@ -231,10 +231,9 @@ function createCornerOverlays(cell) {
 }
 
 function getOptimalImageSize() {
-  if (window.innerWidth <= 600) return 600; // Mobile
-  if (window.innerWidth <= 900) return 900; // Tablet
-  if (window.innerWidth <= 1200) return 1000; // Desktop (reduced from 1200)
-  return 1200; // Large desktop (cap at 1200px instead of 1365px)
+  if (window.innerWidth <= 600) return 400; // Mobile (covers ~350px column + 170% scaling)
+  if (window.innerWidth <= 900) return 600; // Tablet (covers ~520px column)
+  return 900; // Desktop+ (covers 884px background area at 170% scaling)
 }
 
 // Add preconnect hints for faster CDN connections
@@ -429,49 +428,45 @@ export default async function decorate(block) {
 
         const isMarquee = block.classList.contains('marquee');
         if (isMarquee) {
-          const isAboveFold = document.querySelector('main .ax-columns') === block
-            && document.querySelector('main .section:first-of-type > div') === block;
+          // Bg marquee blocks are always above the fold - apply critical optimizations
+          const allImages = cell.querySelectorAll('img');
+          allImages.forEach((img) => {
+            // Essential loading optimizations
+            img.removeAttribute('loading');
+            img.setAttribute('loading', 'eager');
+            img.setAttribute('fetchpriority', 'high');
 
-          if (isAboveFold) {
-            const allImages = cell.querySelectorAll('img');
-            allImages.forEach((img) => {
-              // Essential loading optimizations
-              img.removeAttribute('loading');
-              img.setAttribute('loading', 'eager');
-              img.setAttribute('fetchpriority', 'high');
+            // Image sizing optimization
+            const url = new URL(img.src, window.location.href);
+            const { pathname } = url;
+            const optimalWidth = getOptimalImageSize();
 
-              // Image sizing optimization (immediate, not deferred)
-              const url = new URL(img.src, window.location.href);
-              const { pathname } = url;
-              const optimalWidth = getOptimalImageSize();
-
-              // Update src with better size and format
-              const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=medium`;
-              if (img.src !== newSrc) {
-                img.src = newSrc;
-              }
-
-              // Update width/height attributes to match downloaded dimensions
-              img.setAttribute('width', optimalWidth);
-              img.setAttribute('height', Math.round(optimalWidth * (352 / 600))); // Maintain aspect ratio
-            });
-
-            // Add preconnect for faster CDN connections (immediate)
-            const firstImg = cell.querySelector('img');
-            if (firstImg) {
-              addImagePreconnects(firstImg.src);
+            // Update src with better size and format
+            const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=medium`;
+            if (img.src !== newSrc) {
+              img.src = newSrc;
             }
 
-            // Handle preload for first image only
-            if (pictureCellCount === 1) {
-              const preloadImg = cell.querySelector('img');
-              if (preloadImg?.src && !document.querySelector(`link[href="${preloadImg.src}"]`)) {
-                const link = document.createElement('link');
-                link.rel = 'preload';
-                link.as = 'image';
-                link.href = preloadImg.src;
-                document.head.appendChild(link);
-              }
+            // Update width/height attributes to match downloaded dimensions
+            img.setAttribute('width', optimalWidth);
+            img.setAttribute('height', Math.round(optimalWidth * (352 / 600))); // Maintain aspect ratio
+          });
+
+          // Add preconnect for faster CDN connections
+          const firstImg = cell.querySelector('img');
+          if (firstImg) {
+            addImagePreconnects(firstImg.src);
+          }
+
+          // Handle preload for first image only
+          if (pictureCellCount === 1) {
+            const preloadImg = cell.querySelector('img');
+            if (preloadImg?.src && !document.querySelector(`link[href="${preloadImg.src}"]`)) {
+              const link = document.createElement('link');
+              link.rel = 'preload';
+              link.as = 'image';
+              link.href = preloadImg.src;
+              document.head.appendChild(link);
             }
           }
 
