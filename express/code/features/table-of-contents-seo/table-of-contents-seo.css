@@ -22,17 +22,22 @@
 }
 
 .toc-title::after {
-  content: '▼';
+  content: '';
   position: absolute;
   right: 30px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 14px;
-  color: #666;
+  width: 14px;
+  height: 14px;
+  background-image: url('/express/code/icons/chevron.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .toc-container.open .toc-title::after {
-  content: '▲';
+  background-image: url('/express/code/icons/chevron.svg');
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .toc-content {
