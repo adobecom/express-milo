@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
 
 let createTag; let loadScript;
 let getConfig; let isStage;
@@ -31,10 +32,10 @@ export const SUSIUtils = {
   },
 };
 
-function getDestURL(url) {
+async function getDestURL(url) {
   let destURL;
   try {
-    destURL = new URL(url);
+    destURL = await getTrackingAppendedURL(url);
   } catch (err) {
     window.lana?.log(`invalid redirect uri for susi-light: ${url}`);
     destURL = new URL('https://new.express.adobe.com');
@@ -171,8 +172,9 @@ async function buildEdu(el) {
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
   const variant = 'edu-express';
+  const destURL = await getDestURL(redirectUrl);
   const params = buildSUSIParams({
-    client_id, variant, destURL: getDestURL(redirectUrl), locale, title,
+    client_id, variant, destURL, locale, title,
   });
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
@@ -195,8 +197,9 @@ async function buildB2B(el) {
   const footer = rows[3];
   footer?.classList.add('footer', 'susi-banner');
   const variant = 'standard';
+  const destURL = await getDestURL(redirectUrl);
   const susiConfigs = {
-    client_id, variant, destURL: getDestURL(redirectUrl), locale, title: '', hideIcon: true,
+    client_id, variant, destURL, locale, title: '', hideIcon: true,
   };
   if (emailFirst) {
     susiConfigs.layout = 'emailAndSocial';
@@ -220,7 +223,7 @@ async function buildB2B(el) {
 
 // each tab wraps susi component with custom logo + footer
 let tabsId = 0;
-function buildSUSITabs(el) {
+async function buildSUSITabs(el) {
   const locale = getConfig().locale.ietf.toLowerCase();
   const { imsClientId } = getConfig();
   const noRedirect = el.classList.contains('no-redirect');
@@ -230,12 +233,13 @@ function buildSUSITabs(el) {
   const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
   const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
   const footers = rows[5] ? [...rows[5].querySelectorAll('div')] : [];
+  const destURLs = await Promise.all(redirectUrls.map((redirectUrl) => getDestURL(redirectUrl)));
   const tabParams = tabNames.map((tabName, index) => ({
     tabName,
     ...buildSUSIParams({
       client_id: client_ids[index],
       variant: variants[index],
-      destURL: getDestURL(redirectUrls[index]),
+      destURL: destURLs[index],
       locale,
       title: '', // rm titles
       hideIcon: true,
@@ -320,6 +324,13 @@ export default async function init(el) {
   if (isBusiness) {
     el.replaceChildren(await (buildB2B(el)));
   } else {
-    el.replaceChildren(buildSUSITabs(el));
+    el.replaceChildren(await (buildSUSITabs(el)));
+  }
+  // branchlinks can exist in footers
+  const footer = el.querySelector('.footer');
+  if (footer) {
+    const links = footer.querySelectorAll('a[href*="adobesparkpost"]');
+    const linksPopulated = new CustomEvent('linkspopulated', { detail: links });
+    document.dispatchEvent(linksPopulated);
   }
 }
