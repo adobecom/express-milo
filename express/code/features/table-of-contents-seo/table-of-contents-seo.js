@@ -56,7 +56,17 @@ export default async function setTOCSEO() {
         const targetHeader = Array.from(headers).find((h) => h.textContent.trim().includes(headerText.replace('...', '').trim()));
 
         if (targetHeader) {
-          targetHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Scroll to target with offset for sticky TOC
+          const tocHeight = toc.offsetHeight;
+          const stickyOffset = 40; // TOC is positioned 40px from top
+          const headerRect = targetHeader.getBoundingClientRect();
+          const scrollTop = window.pageYOffset + headerRect.top - tocHeight - stickyOffset - 20;
+
+          window.scrollTo({
+            top: scrollTop,
+            behavior: 'smooth',
+          });
+
           // Close TOC after clicking
           toc.classList.remove('open');
         }
