@@ -43,10 +43,26 @@ export default async function setTOCSEO() {
 
   const tocContent = createTag('div', { class: 'toc-content' });
 
+  // Create all links once
   Object.keys(config).forEach((key) => {
     if (key.startsWith('content-') && !key.endsWith('-short')) {
       const link = createTag('a', { href: `#${key}` });
       link.textContent = config[key];
+
+      // Add click handler to scroll to header
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const headerText = config[key];
+        const headers = document.querySelectorAll('main h2, main h3, main h4');
+        const targetHeader = Array.from(headers).find((h) => h.textContent.trim().includes(headerText.replace('...', '').trim()));
+
+        if (targetHeader) {
+          targetHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close TOC after clicking
+          toc.classList.remove('open');
+        }
+      });
+
       tocContent.appendChild(link);
     }
   });
