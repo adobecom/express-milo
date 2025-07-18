@@ -241,7 +241,6 @@ export function getIconDeprecated(icons, alt, size = 44, altSrc) {
     return createSVGWrapper(icon, sheetSize, alt, altSrc);
   }
 
-  // For any icon not in the sprite sheet, just use the individual file
   return createTag('img', {
     class: `icon icon-${icon}`,
     src: altSrc || `/express/code/icons/${icon}.svg`,
