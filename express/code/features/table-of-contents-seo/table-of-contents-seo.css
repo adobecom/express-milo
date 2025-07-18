@@ -85,6 +85,12 @@ main .icon {
   line-height: 130%;
   position: relative;
   padding-right: 20px;
+  outline: none;
+}
+
+.toc-title:focus {
+  outline: 2px solid #5258E4;
+  outline-offset: 2px;
 }
 
 .toc-title::after {
@@ -140,6 +146,11 @@ main .toc-content a:hover::before {
   width: 2px;
   height: calc(100% - 16px);
   background-color: #E9E9E9;
+}
+
+main .toc-content a:focus {
+  outline: 2px solid #5258E4;
+  outline-offset: 2px;
 }
 
 .toc-content a:last-child {

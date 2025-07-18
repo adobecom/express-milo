@@ -34,13 +34,26 @@ export default async function setTOCSEO() {
 
   const toc = createTag('div', {
     class: 'toc toc-container ax-grid-col-12',
+    role: 'navigation',
+    'aria-label': 'Table of Contents',
   });
 
-  const title = createTag('div', { class: 'toc-title' });
+  const title = createTag('div', {
+    class: 'toc-title',
+    role: 'button',
+    tabindex: '0',
+    'aria-expanded': 'false',
+    'aria-controls': 'toc-content',
+  });
   title.textContent = 'Table of Contents';
   toc.appendChild(title);
 
-  const tocContent = createTag('div', { class: 'toc-content' });
+  const tocContent = createTag('div', {
+    class: 'toc-content',
+    id: 'toc-content',
+    role: 'region',
+    'aria-label': 'Table of Contents Links',
+  });
 
   // Create all links once
   Object.keys(config).forEach((key) => {
@@ -92,6 +105,48 @@ export default async function setTOCSEO() {
 
   title.addEventListener('click', () => {
     toc.classList.toggle('open');
+    const isExpanded = toc.classList.contains('open');
+    title.setAttribute('aria-expanded', isExpanded.toString());
+  });
+
+  // Add keyboard support for the title
+  title.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toc.classList.toggle('open');
+      const isExpanded = toc.classList.contains('open');
+      title.setAttribute('aria-expanded', isExpanded.toString());
+
+      // Focus first link when opening
+      if (isExpanded) {
+        const firstLink = tocContent.querySelector('a');
+        if (firstLink) {
+          firstLink.focus();
+        }
+      }
+    }
+  });
+
+  // Add arrow key navigation for links
+  tocContent.addEventListener('keydown', (e) => {
+    const links = Array.from(tocContent.querySelectorAll('a'));
+    const currentIndex = links.indexOf(document.activeElement);
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const nextIndex = (currentIndex + 1) % links.length;
+      links[nextIndex].focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prevIndex = currentIndex <= 0 ? links.length - 1 : currentIndex - 1;
+      links[prevIndex].focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      links[0].focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      links[links.length - 1].focus();
+    }
   });
 
   const firstSection = document.querySelector('main .section');
