@@ -240,7 +240,6 @@ export function getIconDeprecated(icons, alt, size = 44, altSrc) {
     if (size22Icons.includes(icon)) sheetSize = 22;
     return createSVGWrapper(icon, sheetSize, alt, altSrc);
   }
-
   return createTag('img', {
     class: `icon icon-${icon}`,
     src: altSrc || `/express/code/icons/${icon}.svg`,
