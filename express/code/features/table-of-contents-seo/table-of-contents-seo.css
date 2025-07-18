@@ -124,7 +124,7 @@ main .toc-content a {
 }
 
 main .toc-content a:hover {
-  background-color: #F8F8F8;
+  font-weight: 700;
 }
 
 main .toc-content a:hover::before {
@@ -134,7 +134,7 @@ main .toc-content a:hover::before {
   top: 8px;
   width: 2px;
   height: calc(100% - 16px);
-  background-color: #5258E4;
+  background-color: #E9E9E9;
 }
 
 .toc-content a:last-child {
