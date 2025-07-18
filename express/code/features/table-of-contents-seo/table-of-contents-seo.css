@@ -20,6 +20,11 @@
   z-index: 10;
 }
 
+main .icon {
+  width: 20px;
+  height: 20px;
+}
+
 @media (min-width: 600px) {
   .toc-container {
     --ax-grid-margin: 32px;
@@ -150,11 +155,4 @@ main .toc-content a:hover::before {
 
 .toc-container.open .toc-social-icons {
   display: flex;
-}
-
-.social-icon {
-  width: 24px;
-  height: 24px;
-  background-color: #f0f0f0;
-  border-radius: 4px;
 }
