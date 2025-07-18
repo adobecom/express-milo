@@ -388,6 +388,23 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     left: var(--spacing-400);
 }
 
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice.highlighted {
+    background-color: var(--color-gray-600);
+    color: var(--color-white);
+}
+
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice:first-child.highlighted {
+    border-radius: 10px 10px 0 0;
+}
+
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice:last-child.highlighted {
+    border-radius: 0 0 10px 10px;
+}
+
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice:only-child.highlighted {
+    border-radius: 10px;
+}
+
 
 /* Icons */
 .comparison-table-v2 .toggle-button {
@@ -467,6 +484,14 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .gray .icon-wrapper {
     background-color: var(--color-gray-100);
+}
+
+.comparison-table-v2 .plan-cell.order-0 {
+    order: 0;
+}
+
+.comparison-table-v2 .plan-cell.order-1 {
+    order: 1;
 }
 
 /* Desktop styles - 1280px and up */
@@ -722,5 +747,12 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 .plan-selector,
     .comparison-table-v2 .plan-selector-choices {
         display: none;
+    }
+
+  
+
+    .comparison-table-v2 .feature-cell,
+    .comparison-table-v2 .sticky-header .plan-cell {
+        order: unset;
     }
 }

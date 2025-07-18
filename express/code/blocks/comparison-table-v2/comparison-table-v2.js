@@ -57,26 +57,11 @@ function partitionContentBySeparators(blockChildren) {
     return contentGroups;
 }
 
-function toggleVisibleContentMobile(comparisonBlock, visibleColumnIndex) {
-    const planCells = comparisonBlock.querySelectorAll('.plan-cell');
-    planCells.forEach((planCell, index) => {
-        planCell.classList.toggle('invisible-content', index !== visibleColumnIndex && index > 0);
-    });
-    const tableRows = comparisonBlock.querySelectorAll('.table-container tr');
-    tableRows.forEach((tableRow) => {
-        const featureCells = tableRow.querySelectorAll('.feature-cell');
-        featureCells.forEach((featureCell, index) => {
-            featureCell.classList.toggle('invisible-content', index !== visibleColumnIndex + 1 && index > 1);
-        });
-    });
-}
-
 function createToggleButton(isHidden) {
     const button = document.createElement('button');
     button.classList.add('toggle-button');
 
     const iconSpan = document.createElement('span');
-    console.log(isHidden);
     iconSpan.classList.add('icon', 'expand-button');
     if (isHidden) {
         iconSpan.classList.add('open');
@@ -131,10 +116,14 @@ function createTableRow(featureRowDiv) {
     const featureCells = featureRowDiv.children;
     Array.from(featureCells).forEach((cellContent, cellIndex) => {
         const tableCell = document.createElement('td');
+        if (cellIndex === 0) {
+            tableCell.classList.add('feature-cell-header')
+        }
+        tableCell.setAttribute('data-plan-index', cellIndex)
         tableCell.classList.add('feature-cell');
         for (let i = 0; i < cellContent.classList.length; i++) {
             tableCell.classList.add(cellContent.classList[i]);
-        } 
+        }
 
         tableCell.innerHTML = cellContent.innerHTML;
         handleCellIcons(tableCell);
@@ -164,15 +153,15 @@ function convertToTable(sectionGroup, columnHeaders) {
 
     // Check if table should be hidden
     const visibilityIndicator = sectionHeaderDiv.children[sectionHeaderDiv.children.length - 1];
- 
+
 
     // Add toggle button
     const toggleButton = createToggleButton(shouldHideTable);
     toggleButton.onclick = () => {
         comparisonTable.classList.toggle('hide-table');
-         toggleButton.querySelector('span').classList.toggle('open')
-      
-       
+        toggleButton.querySelector('span').classList.toggle('open')
+
+
     };
 
     const toggleButtonContainer = document.createElement('div');
@@ -200,59 +189,44 @@ function convertToTable(sectionGroup, columnHeaders) {
 
 
 
-function createPlanSelector(totalPlans, comparisonBlock, headers) {
+function createPlanSelector(headers, planIndex ) {
     const selectWrapper = document.createElement('div');
     selectWrapper.classList.add('plan-selector-wrapper');
-
 
     const planSelector = document.createElement('div');
     planSelector.classList.add('plan-selector');
     planSelector.setAttribute('aria-label', 'Select comparison plan');
+    planSelector.setAttribute('tabindex', '0');
+    planSelector.setAttribute('role', 'button');
+    planSelector.setAttribute('aria-haspopup', 'listbox');
+    planSelector.setAttribute('aria-expanded', 'false');
+    planSelector.setAttribute('data-plan-index', planIndex);
+  
     selectWrapper.appendChild(planSelector);
+    planSelector.appendChild(createPlanDropdownChoices(headers))
     return selectWrapper;
 }
 
-function createPlanDropdown(totalPlans, comparisonBlock, headers, headerGroupElement) {
-
-
+function createPlanDropdownChoices( headers) {
     const planSelectorChoices = document.createElement('div');
-    planSelectorChoices.classList.add('plan-selector-choices');
-    for (let i = 1; i < totalPlans; i++) {
+    planSelectorChoices.classList.add('plan-selector-choices', 'invisible-content');
+    planSelectorChoices.setAttribute('role', 'listbox');
+    planSelectorChoices.setAttribute('aria-label', 'Plan options');
+
+ 
+    for (let i = 0; i < headers.length; i++) {
         const option = document.createElement('div');
         option.classList.add('plan-selector-choice');
         option.value = i;
-        option.textContent = headers[i]
-        option.addEventListener('click', () => {
-            planSelectorChoices.querySelectorAll('.plan-selector-choice').forEach(div => {
-                div.classList.toggle('selected', i === parseInt(div.value));
-            });
-            toggleVisibleContentMobile(comparisonBlock, parseInt(option.value));
-            planSelectorChoices.classList.add('display-none');
-        });
+        option.textContent = headers[i]; 
+        option.setAttribute('data-plan-index', i)
+        option.setAttribute('role', 'option');
+        option.setAttribute('aria-selected', 'false'); 
         planSelectorChoices.appendChild(option);
     }
-
-    planSelectorChoices.querySelectorAll('.plan-selector-choice').forEach(div => {
-        div.classList.toggle('selected', div.value === 1);
-    });
-
-    headerGroupElement.querySelectorAll('.plan-cell-wrapper').forEach(planSelector => { 
-        planSelector.addEventListener('click', () => {
-            planSelectorChoices.classList.toggle('display-none');
-        });
-    });
-
-    planSelectorChoices.classList.add('display-none');
-    headerGroupElement.appendChild(planSelectorChoices);
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.plan-cell-wrapper')) {
-            planSelectorChoices.classList.add('display-none');
-        }
-    });
-
+    return planSelectorChoices;
 }
-
+ 
 function applyColumnShading(headerGroup, comparisonBlock) {
     const columnShadingConfig = Array.from(headerGroup[0].querySelectorAll('div')).map((d) => d.textContent.trim());
     const rows = comparisonBlock.querySelectorAll('div');
@@ -270,33 +244,30 @@ function applyColumnShading(headerGroup, comparisonBlock) {
 function createStickyHeader(headerGroup, comparisonBlock) {
 
     const headerGroupElement = headerGroup[1];
-    const columnTitles = [];
     headerGroupElement.classList.add('sticky-header');
     const headerCells = headerGroupElement.querySelectorAll('div');
-    const totalPlans = headerCells.length - 1; // Exclude first cell
-    const headers = []
+
+    const headers = Array.from(headerCells).map(cell => cell.textContent.trim())
+    headers.splice(0, 1)
+    console.log(headers)
 
     headerCells.forEach((headerCell, cellIndex) => {
         if (cellIndex === 0) {
             headerCell.classList.add('first-cell');
         } else {
             const planCellWrapper = createTag('button', { class: 'plan-cell-wrapper' });
-
             planCellWrapper.setAttribute('tabindex', 0)
             headerCell.classList.add('plan-cell');
             if (cellIndex === headerCells.length - 1) {
                 headerCell.classList.add('last');
             }
-            headers.push(headerCell.querySelector('h1,h2,h3,h4,h5,h6').textContent.trim() + ' ' + headerCell.querySelector('p').textContent.trim());
-            columnTitles.push(headerCell.textContent.trim());
-            const planSelector = createPlanSelector(totalPlans, comparisonBlock, headers);
-
+ 
+            const planSelector = createPlanSelector(headers, cellIndex - 1);
             const lenght = headerCell.children.length;
             for (let i = 0; i < lenght; i++) {
                 planCellWrapper.appendChild(headerCell.children[0]);
             }
             planCellWrapper.appendChild(planSelector);
-         
             headerCell.appendChild(planCellWrapper);
             const button = planCellWrapper.querySelector('.action-area');
             if (button) {
@@ -306,8 +277,18 @@ function createStickyHeader(headerGroup, comparisonBlock) {
         headerGroupElement.appendChild(headerCell);
     });
 
-    createPlanDropdown(totalPlans, comparisonBlock, headers, headerGroupElement);
-    return { stickyHeaderElement: headerGroupElement, columnTitles };
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.plan-cell-wrapper')) {
+            headerGroupElement.querySelectorAll('.plan-selector-choices').forEach(choices => {
+                choices.classList.add('invisible-content');
+            });
+            headerGroupElement.querySelectorAll('.plan-selector').forEach(selector => {
+                selector.setAttribute('aria-expanded', 'false');
+            });
+        }
+    });
+
+    return { stickyHeaderElement: headerGroupElement, columnTitles: headers };
 }
 
 function initStickyBehavior(stickyHeader, comparisonBlock) {
@@ -356,20 +337,148 @@ export default async function decorate(comparisonBlock) {
     await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(comparisonBlock)]).then(([utils, placeholders, buttons]) => { createTag = utils.createTag });
     const blockChildren = Array.from(comparisonBlock.children);
     const contentSections = partitionContentBySeparators(blockChildren);
+
+   
+
     applyColumnShading(contentSections[0], comparisonBlock);
     comparisonBlock.innerHTML = '';
     const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0], comparisonBlock);
+   
+
+
+
+
+
     comparisonBlock.appendChild(stickyHeaderElement);
     for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex++) {
         const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
         comparisonBlock.appendChild(sectionTable);
     }
+ 
 
-    toggleVisibleContentMobile(comparisonBlock, 1);
+ 
+    const planSelectors = Array.from(stickyHeaderElement.querySelectorAll('.plan-selector'))
+    const comparisonTableState = new ComparisonTableState()
+
+    comparisonTableState.initializePlanSelectors(comparisonBlock, planSelectors)
 
     initStickyBehavior(stickyHeaderElement, comparisonBlock);
 
 
 
 
-}   
+}
+
+
+class ComparisonTableState {
+    constructor() {
+        
+        this.visiblePlans = [0, 1];
+        this.selectedPlans = new Map();
+        this.planSelectors = []
+    }
+
+    initializePlanSelectors(comparisonBlock, planSelectors) {
+        this.comparisonBlock = comparisonBlock
+        this.planSelectors = planSelectors
+        this.planSelectors.forEach((selector, index) => {
+            const choiceWrapper = selector.querySelector('.plan-selector-choices')
+           
+            const options = Array.from(choiceWrapper.children)
+            options.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation(); 
+                    this.updateVisiblePlan(parseInt(selector.dataset.planIndex), parseInt(option.dataset.planIndex))
+                    Array.from(document.querySelectorAll('.plan-selector-choices')).forEach(choices => {
+                        choices.classList.add('invisible-content')
+                    });
+                })
+            })
+     
+            selector.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.openDropdown(selector)
+            });
+            if (! this.visiblePlans.includes(index)) {
+                selector.closest('.plan-cell').classList.toggle('invisible-content', 1)
+                this.updateTableCells(index, index, true)
+            } else {
+                selector.closest('.plan-cell').classList.toggle('order-' + index)
+                this.updateTableCells(index, index, 0)
+            
+            }
+
+
+      
+        })
+        this.updatePlanSelectorOptions()
+    }
+
+    updateTableCells (index, visiblePlanIndex, intialValue = -1 ) {
+        const tableRows = this.comparisonBlock.querySelectorAll('tr')
+        
+        tableRows.forEach((row, rowIndex) => {
+            
+            const cells = row.querySelectorAll('.feature-cell:not(.feature-cell-header)')
+        
+            if (cells.length === 0) {
+                return
+            }
+            console.log(index,visiblePlanIndex, intialValue)
+            if (intialValue !== -1) {
+                cells[index].classList.toggle('invisible-content', intialValue)
+                cells[index].classList.toggle('order-' + visiblePlanIndex, intialValue)
+            } else {
+                cells[index].classList.toggle('invisible-content')
+                cells[index].classList.toggle('order-' + visiblePlanIndex)
+            }
+        })
+    }
+
+    openDropdown(selector) {
+        const dropdown = selector.querySelector('.plan-selector-choices')
+        dropdown.classList.toggle('invisible-content')
+    }
+ 
+    updateVisiblePlan(selectorIndex, newPlanIndex) {
+        const visiblePlanIndex = this.visiblePlans.indexOf(selectorIndex)
+       
+       // console.log(  Array.from(this.comparisonBlock.querySelector('tr')))
+
+        this.planSelectors[selectorIndex].closest('.plan-cell').classList.toggle('invisible-content', true)
+        this.planSelectors[selectorIndex].closest('.plan-cell').classList.remove('order-' + visiblePlanIndex)
+        this.updateTableCells(selectorIndex, visiblePlanIndex, 0)
+        this.visiblePlans[visiblePlanIndex] = newPlanIndex;
+        this.planSelectors[newPlanIndex].closest('.plan-cell').classList.toggle('invisible-content', false)
+        this.planSelectors[newPlanIndex].closest('.plan-cell').classList.add('order-' + visiblePlanIndex)
+        this.updateTableCells(newPlanIndex, visiblePlanIndex, 1)
+        this.updatePlanSelectorOptions()
+        for (let i = 0; i < this.planSelectors.length; i++) {
+            if (! this.visiblePlans.includes(i)) {
+                this.planSelectors[i].querySelector('.plan-selector-choices').classList.add('invisible-content')
+            } else {
+                this.planSelectors[i].querySelector('.plan-selector-choices').classList.remove('invisible-content')
+            }
+        }
+
+        
+    }
+
+    updatePlanSelectorOptions() {
+        console.log(this.visiblePlans)
+        for (let i = 0; i < this.planSelectors.length; i++) {
+            const currentPlanSelectorChildren = this.planSelectors[i].querySelector('.plan-selector-choices').children;
+            for (let j = 0; j < currentPlanSelectorChildren.length; j++) {
+                const child = currentPlanSelectorChildren[j];
+                const otherPlanIndex = this.visiblePlans.filter(plan => plan !== i)
+                if (j === otherPlanIndex[0]) {
+                    child.classList.add('invisible-content');
+                } else {
+                    child.classList.remove('invisible-content');
+                }
+            }
+        }
+    }
+}
