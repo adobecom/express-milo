@@ -85,7 +85,6 @@ export default async function setTOCSEO() {
 
   icons.forEach((iconName) => {
     const icon = getIconElementDeprecated(iconName);
-    icon.classList.add('social-icon', `${iconName}-icon`);
     socialIcons.appendChild(icon);
   });
 
