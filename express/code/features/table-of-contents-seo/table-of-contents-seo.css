@@ -101,6 +101,10 @@
   transform: translateY(-50%) rotate(180deg);
 }
 
+.toc-container.open .toc-title {
+  padding-bottom: 8px;
+}
+
 .toc-content {
   display: none;
 }
