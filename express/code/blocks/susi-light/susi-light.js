@@ -12,18 +12,15 @@ const DCTX_ID_PROD = 'v:2,s,dcp-r,bg:express2024,45faecb0-e687-11ee-a865-f545a8c
 
 const usp = new URLSearchParams(window.location.search);
 
-const redirectToUrl = (url) => {
+const onRedirect = (e) => {
   // eslint-disable-next-line no-console
-  console.log('redirecting to:', url);
+  console.log('redirecting to:', e.target.detail);
   // temporary solution: allows analytics to go thru. should move to a promise
   setTimeout(() => {
-    window.location.assign(url);
+    window.location.assign(e.target.detail);
   }, 100);
 };
-const defaultOnRedirect = (e) => {
-  redirectToUrl(e.detail);
-};
-const defaultOnError = (e) => {
+const onError = (e) => {
   window.lana?.log('on error:', e);
 };
 
@@ -91,8 +88,6 @@ function createSUSIComponent({
   config,
   authParams,
   destURL,
-  onRedirect = defaultOnRedirect,
-  onError = defaultOnError,
 }) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
@@ -258,16 +253,17 @@ async function buildStudent(el) {
   logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
   const checkboxInput = createTag('input', { type: 'checkbox', name: 'student' });
-  const onRedirect = (e) => {
-    if (!checkboxInput.checked) {
-      defaultOnRedirect(e);
-      return;
+  const susiComponent = createSUSIComponent(params);
+  checkboxInput.addEventListener('change', ({ target: { checked } }) => {
+    const url = new URL(susiComponent.authParams.redirect_uri);
+    if (checked) {
+      url.searchParams.set('student', 'true');
+    } else {
+      url.searchParams.delete('student');
     }
-    const url = new URL(e.detail);
-    url.searchParams.set('student', 'true');
-    redirectToUrl(url.toString());
-  };
-  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent({ ...params, onRedirect }));
+    susiComponent.authParams = { ...susiComponent.authParams, redirect_uri: url.toString() };
+  });
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, susiComponent);
   const studentCheckDiv = createTag(
     'div',
     { class: 'student-check' },

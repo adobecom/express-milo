@@ -121,7 +121,7 @@
   display: none;
 }
 
-/* reduce CLS */
+/* CLS optiimzations */
 /* TODO: makes this dynamic based on # of social logins */
 .susi-light.tabs [role='tabpanel'].standard .susi-wrapper {
   min-height: 457.5px;
@@ -129,6 +129,11 @@
 
 .susi-light.tabs [role='tabpanel'].edu-express .susi-wrapper {
   min-height: 366.5px;
+}
+
+.susi-light.student .susi-wrapper {
+  min-height: 421.5px;
+  width: var(--susi-modal-width);
 }
 
 /* student styles */
