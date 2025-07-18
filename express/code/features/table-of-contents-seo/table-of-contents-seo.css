@@ -119,6 +119,10 @@ main .toc-content a {
   position: relative;
 }
 
+main .toc-content a:hover {
+  background-color: #F8F8F8;
+}
+
 main .toc-content a:hover::before {
   content: '';
   position: absolute;
@@ -126,20 +130,6 @@ main .toc-content a:hover::before {
   top: 8px;
   width: 2px;
   height: calc(100% - 16px);
-  background-color: #5258E4;
-}
-
-main .toc-content a:first-child {
-  padding-top: 16px;
-}
-
-main .toc-content a:first-child:hover::before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 16px;
-  width: 2px;
-  height: calc(100% - 24px);
   background-color: #5258E4;
 }
 
