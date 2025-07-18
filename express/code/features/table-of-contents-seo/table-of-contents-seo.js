@@ -58,7 +58,8 @@ export default async function setTOCSEO() {
         if (targetHeader) {
           // Scroll to target with offset for sticky TOC
           const tocHeight = toc.offsetHeight;
-          const stickyOffset = 40; // TOC is positioned 40px from top
+          // Check current window width dynamically
+          const stickyOffset = window.innerWidth >= 768 ? -120 : 40;
           const headerRect = targetHeader.getBoundingClientRect();
           const scrollTop = window.pageYOffset + headerRect.top - tocHeight - stickyOffset - 20;
 
