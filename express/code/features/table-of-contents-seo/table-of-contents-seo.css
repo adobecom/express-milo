@@ -116,10 +116,31 @@ main .toc-content a {
   color: #5258E4;
   font-style: normal;
   font-weight: 400;
+  position: relative;
+}
+
+main .toc-content a:hover::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  width: 2px;
+  height: calc(100% - 16px);
+  background-color: #5258E4;
 }
 
 main .toc-content a:first-child {
   padding-top: 16px;
+}
+
+main .toc-content a:first-child:hover::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 16px;
+  width: 2px;
+  height: calc(100% - 24px);
+  background-color: #5258E4;
 }
 
 .toc-content a:last-child {
