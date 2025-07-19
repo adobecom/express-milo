@@ -30,6 +30,10 @@ test.describe('Express Floating Button Block test suite', () => {
     await test.step('Verify floating-button block content/specs', async () => {
       await expect(floatingButton.floatingButton).toBeVisible();
       await expect(floatingButton.floatingButton).toContainText(data.buttonText);
+      await page.evaluate(() => window.scrollBy(0, 500));
+      await expect(floatingButton.floatingButton).toBeVisible();
+      await floatingButton.floatingButton.click();
+      await expect(page).not.toHaveURL(`${testUrl}`);
     });
 
     await test.step('Verify analytics attributes', async () => {
