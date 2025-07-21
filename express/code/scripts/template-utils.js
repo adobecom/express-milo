@@ -9,7 +9,7 @@ export const TOPICS_OR_SEPARATOR = ',';
 
 // backup=[-q,+prefLang=en-GB]
 export function getBackupRecipe(oldParams, backupStr) {
-  const diffs = /\[(.+)\]/.exec(backupStr)[1].split(',');
+  const diffs = /\[(.+)\]/.exec(backupStr)[1].split(';');
   const params = new URLSearchParams(oldParams);
   diffs.forEach((diff) => {
     const minus = /^-(.+)/.exec(diff);
@@ -17,9 +17,9 @@ export function getBackupRecipe(oldParams, backupStr) {
       params.delete(minus[1]);
       return;
     }
-    const plus = /^\+(.+)=(.+)/.exec(diff);
-    if (plus) {
-      params.set(plus[1], plus[2]);
+    const update = /^(.+)=(.+)/.exec(diff);
+    if (update) {
+      params.set(update[1], update[2]);
     }
   });
   return params.toString();

@@ -4,7 +4,19 @@ import { useFormData } from '../../utils/form-hooks.js';
 
 export default function Support() {
   const formData = useFormData();
-  const { url, headers } = recipe2ApiQuery(form2Recipe(formData));
+  const { url, headers, backupQuery } = recipe2ApiQuery(form2Recipe(formData));
+  const backupInfo = !backupQuery ? null : (
+    <div className='pt-1'>
+      <div>
+        <code>Backup URL: {backupQuery.url}</code>
+      </div>
+      <div>
+        <code>
+          Backup Headers: {JSON.stringify(backupQuery.headers, null, 2)}
+        </code>
+      </div>
+    </div>
+  );
   return (
     <div className="border-grey rounded p-1">
       <h2>Support</h2>
@@ -22,13 +34,16 @@ export default function Support() {
         </a>
         .
       </p>
-      <div className='support--code'>
+      <div className="support--code">
         <div>
-          <code>url: {url}</code>
+          <div>
+            <code>URL: {url}</code>
+          </div>
+          <div>
+            <code>headers: {JSON.stringify(headers, null, 2)}</code>
+          </div>
         </div>
-        <div>
-          <code>headers: {JSON.stringify(headers, null, 2)}</code>
-        </div>
+        {backupInfo}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ if (import.meta.env.DEV) {
   import('./dev-styles.css');
 }
 import { ErrorBoundary, FormProvider } from './components/providers';
-import { Recipe, Form, Support, Results } from './components';
+import { Recipe, Form, Support, QueryResults } from './components';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
             </div>
             <div className="right-container flex flex-col gap-1">
               <Support />
-              <Results />
+              <QueryResults />
             </div>
           </div>
         </div>

@@ -134,11 +134,11 @@ export function form2Recipe(formData) {
       const diffStr = diff
         .map(({ type, key, value }) => {
           if (type === '-') {
-            return `${type}${key}`;
+            return `-${key}`;
           }
-          return `${type}${key}=${value}`;
+          return `${key}=${value}`;
         })
-        .join(',');
+        .join(';');
       backup = `backup=[${diffStr}]`;
     }
   }

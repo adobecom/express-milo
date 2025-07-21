@@ -12,7 +12,7 @@ function Button({ generateResults, loading, results }) {
   );
 }
 
-export default function Results() {
+export default function QueryResults() {
   const formData = useFormData();
   const recipe = form2Recipe(formData);
   const [results, setResults] = useState(null);
