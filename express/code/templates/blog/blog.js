@@ -42,22 +42,21 @@ function copyToClipboard(copyButton) {
   });
 }
 
-const loadImage = (img) =>
-  new Promise((resolve) => {
-    const start = Date.now();
-    const check = () => {
-      if (img.complete && img.naturalHeight !== 0) {
-        resolve();
-        return;
-      }
-      if (Date.now() - start >= 5000) {
-        resolve();
-        return;
-      }
-      setTimeout(check, 50);
-    };
-    check();
-  });
+const loadImage = (img) => new Promise((resolve) => {
+  const start = Date.now();
+  const check = () => {
+    if (img.complete && img.naturalHeight !== 0) {
+      resolve();
+      return;
+    }
+    if (Date.now() - start >= 5000) {
+      resolve();
+      return;
+    }
+    setTimeout(check, 50);
+  };
+  check();
+});
 
 export default async function decorateBlogPage() {
   ({ createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
