@@ -1,17 +1,14 @@
 import { expect, test } from '@playwright/test';
-import WebUtil from '../../libs/webutil.cjs';
 import { features } from './floating-button.spec.cjs';
 import FloatingButton from './floating-button.page.cjs';
 import { runAccessibilityTest } from '../../libs/accessibility.cjs';
 
-let webUtil;
 let floatingButton;
 
 const miloLibs = process.env.MILO_LIBS || '';
 
 test.describe('Express Floating Button Block test suite', () => {
   test.beforeEach(async ({ page }) => {
-    webUtil = new WebUtil(page);
     floatingButton = new FloatingButton(page);
   });
 
