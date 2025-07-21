@@ -44,23 +44,24 @@ function copyToClipboard(copyButton) {
 
 const loadImage = (img) => new Promise((resolve) => {
   const isLoaded = () => img.complete && img.naturalHeight !== 0;
-  if (isLoaded()) resolve();
-
-  let loadTimeout;
-  let loadInterval;
-
-  const onComplete = () => {
-    clearInterval(loadInterval);
-    clearTimeout(loadTimeout);
+  
+  if (isLoaded()) {
     resolve();
-  };
-    
-  else {
-    const loadInterval = setInterval(() => {
+  } else {
+    let loadInterval;
+    let loadTimeout;
+
+    const onComplete = () => {
+      clearInterval(loadInterval);
+      clearTimeout(loadTimeout);
+      resolve();
+    };
+
+    loadInterval = setInterval(() => {
       if (isLoaded()) onComplete();
     }, 200);
 
-    let loadTimeout = setTimeout(() => {
+    loadTimeout = setTimeout(() => {
       onComplete();
     }, 5000);
 
