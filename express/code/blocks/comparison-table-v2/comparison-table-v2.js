@@ -60,6 +60,8 @@ function partitionContentBySeparators(blockChildren) {
 function createToggleButton(isHidden) {
     const button = document.createElement('button');
     button.classList.add('toggle-button');
+    button.setAttribute('aria-label', isHidden ? 'Expand section' : 'Collapse section');
+    button.setAttribute('aria-expanded', !isHidden);
 
     const iconSpan = document.createElement('span');
     iconSpan.classList.add('icon', 'expand-button');
@@ -157,10 +159,11 @@ function convertToTable(sectionGroup, columnHeaders) {
     // Add toggle button
     const toggleButton = createToggleButton(shouldHideTable);
     toggleButton.onclick = () => {
+        const isExpanded = !comparisonTable.classList.contains('hide-table');
         comparisonTable.classList.toggle('hide-table');
-        toggleButton.querySelector('span').classList.toggle('open')
-
-
+        toggleButton.querySelector('span').classList.toggle('open');
+        toggleButton.setAttribute('aria-expanded', !isExpanded);
+        toggleButton.setAttribute('aria-label', isExpanded ? 'Expand section' : 'Collapse section');
     };
 
     const toggleButtonContainer = document.createElement('div');
@@ -188,22 +191,46 @@ function convertToTable(sectionGroup, columnHeaders) {
 
 
 
-function createPlanSelector(headers, planIndex) {
+function createPlanSelector(headers, planIndex, planCellWrapper) {
     const selectWrapper = document.createElement('div');
     selectWrapper.classList.add('plan-selector-wrapper');
 
     const planSelector = document.createElement('div');
     planSelector.classList.add('plan-selector');
-    planSelector.setAttribute('aria-label', 'Select comparison plan');
-    planSelector.setAttribute('tabindex', '0');
+    planSelector.setAttribute('aria-label', `Change comparison plan ${planIndex + 1}`);
+    planSelector.setAttribute('tabindex', '-1');
     planSelector.setAttribute('role', 'button');
     planSelector.setAttribute('aria-haspopup', 'listbox');
     planSelector.setAttribute('aria-expanded', 'false');
     planSelector.setAttribute('data-plan-index', planIndex);
 
+    // Add keyboard support for opening dropdown
+    selectWrapper.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            planSelector.click();
+        }
+    });
+
     selectWrapper.appendChild(planSelector);
     planSelector.appendChild(createPlanDropdownChoices(headers))
-    return selectWrapper;
+
+       // Add click handler to plan cell wrapper
+       planCellWrapper.addEventListener('click', (e) => {
+        // Don't trigger if clicking on action button or dropdown
+        if (!e.target.closest('.action-area') && !e.target.closest('.plan-selector-wrapper')) {
+            planSelector.click();
+        }
+    });
+    
+    // Add keyboard support
+    planCellWrapper.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && e.target === planCellWrapper && !e.target.closest('.action-area')) {
+            e.preventDefault();
+            planSelector.click();
+        }
+    });
+    planCellWrapper.appendChild(selectWrapper);
 }
 
 function createPlanDropdownChoices(headers) {
@@ -221,6 +248,7 @@ function createPlanDropdownChoices(headers) {
         option.setAttribute('data-plan-index', i)
         option.setAttribute('role', 'option');
         option.setAttribute('aria-selected', 'false');
+        option.setAttribute('tabindex', '-1');
         planSelectorChoices.appendChild(option);
     }
     return planSelectorChoices;
@@ -254,24 +282,31 @@ function createStickyHeader(headerGroup, comparisonBlock) {
         if (cellIndex === 0) {
             headerCell.classList.add('first-cell');
         } else {
-            const planCellWrapper = createTag('button', { class: 'plan-cell-wrapper' });
-            planCellWrapper.setAttribute('tabindex', 0)
+            const planCellWrapper = createTag('div', { class: 'plan-cell-wrapper' });
+            planCellWrapper.setAttribute('tabindex', '0');
+            planCellWrapper.setAttribute('role', 'button');
+            planCellWrapper.setAttribute('aria-label', `Select plan ${cellIndex}`);
+            planCellWrapper.setAttribute('aria-expanded', 'false');
+            planCellWrapper.setAttribute('aria-haspopup', 'listbox');
+            
             headerCell.classList.add('plan-cell');
             if (cellIndex === headerCells.length - 1) {
                 headerCell.classList.add('last');
             }
-
-            const planSelector = createPlanSelector(headers, cellIndex - 1);
             const lenght = headerCell.children.length;
             for (let i = 0; i < lenght; i++) {
                 planCellWrapper.appendChild(headerCell.children[0]);
             }
-            planCellWrapper.appendChild(planSelector);
+           
+            createPlanSelector(headers, cellIndex - 1, planCellWrapper);
+
             headerCell.appendChild(planCellWrapper);
             const button = planCellWrapper.querySelector('.action-area');
             if (button) {
                 headerCell.appendChild(button);
             }
+            
+         
         }
         headerGroupElement.appendChild(headerCell);
     });
@@ -283,6 +318,10 @@ function createStickyHeader(headerGroup, comparisonBlock) {
             });
             headerGroupElement.querySelectorAll('.plan-selector').forEach(selector => {
                 selector.setAttribute('aria-expanded', 'false');
+                // Remove focus styling from all options
+                selector.querySelectorAll('.plan-selector-choice').forEach(opt => {
+                    opt.classList.remove('focused');
+                });
             });
         }
     });
@@ -370,10 +409,18 @@ export class ComparisonTableState {
                 option.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.updateVisiblePlan(parseInt(selector.dataset.planIndex), parseInt(option.dataset.planIndex))
-                    Array.from(document.querySelectorAll('.plan-selector-choices')).forEach(choices => {
-                        choices.classList.add('invisible-content')
+                    
+                    // Update aria-selected
+                    choiceWrapper.querySelectorAll('[role="option"]').forEach(opt => {
+                        opt.setAttribute('aria-selected', 'false');
                     });
+                    option.setAttribute('aria-selected', 'true');
+                    
+                    this.updateVisiblePlan(parseInt(selector.dataset.planIndex), parseInt(option.dataset.planIndex))
+                    
+                    // Close dropdown and update aria-expanded
+                    this.closeDropdown(selector);
+                    selector.focus();
                 })
             })
 
@@ -382,10 +429,56 @@ export class ComparisonTableState {
                 e.stopPropagation();
                 this.openDropdown(selector)
             });
+
+            // Add keyboard navigation support
+            selector.addEventListener('keydown', (e) => {
+                const choices = selector.querySelector('.plan-selector-choices');
+                const isOpen = !choices.classList.contains('invisible-content');
+                
+                if (isOpen) {
+                    const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
+                    const currentIndex = visibleOptions.findIndex(opt => opt.classList.contains('focused'));
+                    
+                    switch(e.key) {
+                        case 'ArrowDown':
+                            e.preventDefault();
+                            const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+                            visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                            visibleOptions[nextIndex].classList.add('focused');
+                            visibleOptions[nextIndex].focus();
+                            break;
+                        case 'ArrowUp':
+                            e.preventDefault();
+                            const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+                            visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                            visibleOptions[prevIndex].classList.add('focused');
+                            visibleOptions[prevIndex].focus();
+                            break;
+                        case 'Escape':
+                            e.preventDefault();
+                            this.closeDropdown(selector);
+                            selector.focus();
+                            break;
+                    }
+                }
+            });
+
+            // Add keyboard support for option selection
+            options.forEach(option => {
+                option.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        option.click();
+                        selector.focus();
+                    }
+                });
+            });
             if (!this.visiblePlans.includes(index)) {
-                selector.closest('.plan-cell').classList.toggle('invisible-content', 1)
+                selector.closest('.plan-cell').classList.toggle('invisible-content', 1);
+                selector.setAttribute('tabindex', '-1'); // Remove from tab order when invisible
             } else {
-                selector.closest('.plan-cell').classList.toggle('invisible-content', 0)
+                selector.closest('.plan-cell').classList.toggle('invisible-content', 0);
+                selector.setAttribute('tabindex', '0'); // Add to tab order when visible
             }
 
             this.comparisonBlock.querySelectorAll('tr').forEach((row, rowIndex) => {
@@ -418,7 +511,38 @@ export class ComparisonTableState {
 
     openDropdown(selector) {
         const dropdown = selector.querySelector('.plan-selector-choices')
-        dropdown.classList.toggle('invisible-content')
+        const wasOpen = !dropdown.classList.contains('invisible-content');
+        
+        // Close other dropdowns
+        this.planSelectors.forEach(s => {
+            if (s !== selector) {
+                s.querySelector('.plan-selector-choices').classList.add('invisible-content');
+                s.setAttribute('aria-expanded', 'false');
+            }
+        });
+        
+        dropdown.classList.toggle('invisible-content');
+        selector.setAttribute('aria-expanded', !wasOpen);
+        
+        if (!wasOpen) {
+            // Focus first visible option when opening
+            const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
+            if (firstOption) {
+                firstOption.classList.add('focused');
+                firstOption.focus();
+            }
+        }
+    }
+
+    closeDropdown(selector) {
+        const dropdown = selector.querySelector('.plan-selector-choices');
+        dropdown.classList.add('invisible-content');
+        selector.setAttribute('aria-expanded', 'false');
+        
+        // Remove focus styling from all options
+        dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
+            opt.classList.remove('focused');
+        });
     }
 
     updateVisiblePlan(selectorIndex, newPlanIndex) {
@@ -429,6 +553,10 @@ export class ComparisonTableState {
 
         oldHeader.classList.toggle('invisible-content')
         newHeader.classList.toggle('invisible-content')
+        
+        // Update tabindex for plan selectors
+        this.planSelectors[selectorIndex].setAttribute('tabindex', '-1');
+        this.planSelectors[newPlanIndex].setAttribute('tabindex', '0');
 
         const parent = oldHeader.parentElement
         parent.insertBefore(newHeader, oldHeader)
