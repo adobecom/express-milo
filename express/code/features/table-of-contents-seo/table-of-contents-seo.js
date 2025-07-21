@@ -195,10 +195,9 @@ export default async function setTOCSEO() {
   }
 
   // Add scroll listener for desktop
-  if (window.innerWidth >= 1200) {
-    window.addEventListener('scroll', handleDesktopPositioning);
-    window.addEventListener('resize', handleDesktopPositioning);
-    // Initial positioning
-    handleDesktopPositioning();
-  }
+  window.addEventListener('scroll', handleDesktopPositioning);
+  window.addEventListener('resize', handleDesktopPositioning);
+
+  // Initial positioning
+  handleDesktopPositioning();
 }
