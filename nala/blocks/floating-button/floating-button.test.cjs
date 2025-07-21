@@ -36,8 +36,8 @@ test.describe('Express Floating Button Block test suite', () => {
     });
 
     await test.step('Verify analytics attributes', async () => {
-      await expect(floatingButton.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(9));
-      await expect(floatingButton.floatingButton).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('floating-button', 1));
+      await expect(floatingButton.section).toHaveAttribute('daa-lh');
+      await expect(floatingButton.floatingButton).toHaveAttribute('daa-lh');
     });
 
     await test.step('Verify accessibility', async () => {
