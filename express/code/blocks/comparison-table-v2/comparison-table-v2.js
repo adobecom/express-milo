@@ -315,13 +315,18 @@ function createStickyHeader(headerGroup, comparisonBlock) {
         if (!e.target.closest('.plan-cell-wrapper')) {
             headerGroupElement.querySelectorAll('.plan-selector-choices').forEach(choices => {
                 choices.classList.add('invisible-content');
+                // Make options not focusable when closed
+                choices.querySelectorAll('.plan-selector-choice').forEach(opt => {
+                    opt.setAttribute('tabindex', '-1');
+                    opt.classList.remove('focused');
+                });
             });
             headerGroupElement.querySelectorAll('.plan-selector').forEach(selector => {
                 selector.setAttribute('aria-expanded', 'false');
-                // Remove focus styling from all options
-                selector.querySelectorAll('.plan-selector-choice').forEach(opt => {
-                    opt.classList.remove('focused');
-                });
+            });
+            // Update plan cell wrapper aria-expanded
+            headerGroupElement.querySelectorAll('.plan-cell-wrapper').forEach(wrapper => {
+                wrapper.setAttribute('aria-expanded', 'false');
             });
         }
     });
@@ -454,6 +459,23 @@ export class ComparisonTableState {
                             visibleOptions[prevIndex].classList.add('focused');
                             visibleOptions[prevIndex].focus();
                             break;
+                        case 'Tab':
+                            // Focus trap - cycle through visible options
+                            e.preventDefault();
+                            if (e.shiftKey) {
+                                // Shift+Tab - go backwards
+                                const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+                                visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                                visibleOptions[prevIndex].classList.add('focused');
+                                visibleOptions[prevIndex].focus();
+                            } else {
+                                // Tab - go forwards
+                                const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+                                visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                                visibleOptions[nextIndex].classList.add('focused');
+                                visibleOptions[nextIndex].focus();
+                            }
+                            break;
                         case 'Escape':
                             e.preventDefault();
                             this.closeDropdown(selector);
@@ -466,10 +488,32 @@ export class ComparisonTableState {
             // Add keyboard support for option selection
             options.forEach(option => {
                 option.addEventListener('keydown', (e) => {
+                    const choices = selector.querySelector('.plan-selector-choices');
+                    const isOpen = !choices.classList.contains('invisible-content');
+                    
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         option.click();
                         selector.focus();
+                    } else if (e.key === 'Tab' && isOpen) {
+                        // Focus trap - prevent tabbing out of dropdown
+                        e.preventDefault();
+                        const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
+                        const currentIndex = visibleOptions.indexOf(option);
+                        
+                        if (e.shiftKey) {
+                            // Shift+Tab - go backwards
+                            const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+                            visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                            visibleOptions[prevIndex].classList.add('focused');
+                            visibleOptions[prevIndex].focus();
+                        } else {
+                            // Tab - go forwards
+                            const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+                            visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                            visibleOptions[nextIndex].classList.add('focused');
+                            visibleOptions[nextIndex].focus();
+                        }
                     }
                 });
             });
@@ -478,7 +522,7 @@ export class ComparisonTableState {
                 selector.setAttribute('tabindex', '-1'); // Remove from tab order when invisible
             } else {
                 selector.closest('.plan-cell').classList.toggle('invisible-content', 0);
-                selector.setAttribute('tabindex', '0'); // Add to tab order when visible
+                selector.setAttribute('tabindex', '-1'); // Add to tab order when visible
             }
 
             this.comparisonBlock.querySelectorAll('tr').forEach((row, rowIndex) => {
@@ -516,21 +560,41 @@ export class ComparisonTableState {
         // Close other dropdowns
         this.planSelectors.forEach(s => {
             if (s !== selector) {
-                s.querySelector('.plan-selector-choices').classList.add('invisible-content');
+                const otherDropdown = s.querySelector('.plan-selector-choices');
+                otherDropdown.classList.add('invisible-content');
                 s.setAttribute('aria-expanded', 'false');
+                // Make options not focusable when closed
+                otherDropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
+                    opt.setAttribute('tabindex', '-1');
+                });
             }
         });
         
         dropdown.classList.toggle('invisible-content');
         selector.setAttribute('aria-expanded', !wasOpen);
         
+        const planCellWrapper = selector.closest('.plan-cell-wrapper');
+        if (planCellWrapper) {
+            planCellWrapper.setAttribute('aria-expanded', !wasOpen);
+        }
+        
         if (!wasOpen) {
+            // Make options focusable when opening
+            dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
+                opt.setAttribute('tabindex', '0');
+            });
+            
             // Focus first visible option when opening
             const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
             if (firstOption) {
                 firstOption.classList.add('focused');
                 firstOption.focus();
             }
+        } else {
+            // Make options not focusable when closing
+            dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
+                opt.setAttribute('tabindex', '-1');
+            });
         }
     }
 
@@ -539,8 +603,14 @@ export class ComparisonTableState {
         dropdown.classList.add('invisible-content');
         selector.setAttribute('aria-expanded', 'false');
         
-        // Remove focus styling from all options
+        const planCellWrapper = selector.closest('.plan-cell-wrapper');
+        if (planCellWrapper) {
+            planCellWrapper.setAttribute('aria-expanded', 'false');
+        }
+        
+        // Make options not focusable when closed
         dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
+            opt.setAttribute('tabindex', '-1');
             opt.classList.remove('focused');
         });
     }
