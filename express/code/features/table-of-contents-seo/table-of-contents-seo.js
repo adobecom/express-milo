@@ -187,10 +187,9 @@ export default async function setTOCSEO() {
           }
         }
 
-        tocElement.style.position = 'fixed';
-        tocElement.style.top = `${topPosition}px`;
-        tocElement.style.left = '0';
-        tocElement.style.width = '310px';
+        // Apply dynamic positioning via CSS custom property
+        tocElement.style.setProperty('--toc-top-position', `${topPosition}px`);
+        tocElement.classList.add('toc-desktop-fixed');
       }
     }
   }
