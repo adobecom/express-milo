@@ -372,6 +372,14 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     overflow: hidden;
 }
 
+/* Position dropdown to the left when in the left plan cell on mobile */
+@media (max-width: 599px) {
+    .comparison-table-v2 .sticky-header .plan-cell.left-plan .plan-selector-choices {
+        right: unset;
+        left: 0;
+    }
+}
+
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-choices {
     display: none;
 }
