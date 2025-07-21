@@ -32,8 +32,13 @@ export default async function setTOCSEO() {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const config = buildMetadataConfigObject();
 
+  // Create grid wrapper
+  const tocWrapper = createTag('div', {
+    class: 'toc-wrapper',
+  });
+
   const toc = createTag('div', {
-    class: 'toc toc-container ax-grid-col-12',
+    class: 'toc toc-container',
     role: 'navigation',
     'aria-label': 'Table of Contents',
   });
@@ -150,7 +155,8 @@ export default async function setTOCSEO() {
   });
 
   const firstSection = document.querySelector('main .section');
-  firstSection.insertAdjacentElement('afterend', toc);
+  tocWrapper.appendChild(toc);
+  firstSection.insertAdjacentElement('afterend', tocWrapper);
 
   // Desktop dynamic positioning
   function handleDesktopPositioning() {
