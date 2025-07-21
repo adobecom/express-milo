@@ -200,4 +200,15 @@ export default async function setTOCSEO() {
 
   // Initial positioning
   handleDesktopPositioning();
+
+  // Clean up desktop classes when transitioning away from desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth < 1200) {
+      const tocElement = document.querySelector('.toc-container');
+      if (tocElement) {
+        tocElement.classList.remove('toc-desktop-fixed');
+        tocElement.style.removeProperty('--toc-top-position');
+      }
+    }
+  });
 }
