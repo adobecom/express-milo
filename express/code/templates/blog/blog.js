@@ -53,6 +53,7 @@ const loadImage = (img) => new Promise((resolve) => {
 
 function loadImage2(asset) {
   if (asset.complete) return Promise.resolve();
+  asset.setAttribute('loading', 'eager');
 
   return new Promise((resolve) => {
     ['load', 'error'].forEach((evt) => asset.addEventListener(evt, resolve, { once: true }));
