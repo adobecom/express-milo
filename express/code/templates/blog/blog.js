@@ -51,6 +51,14 @@ const loadImage = (img) => new Promise((resolve) => {
   }
 });
 
+function loadImage2(asset) {
+  if (asset.complete) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    ['load', 'error'].forEach((evt) => asset.addEventListener(evt, resolve, { once: true }));
+  });
+}
+
 export default async function decorateBlogPage() {
   ({ createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const $main = document.querySelector('main');
@@ -140,7 +148,7 @@ export default async function decorateBlogPage() {
     decorateBlogLinkedImages();
     if ($heroPicture) {
       const img = $heroPicture.querySelector('img');
-      await loadImage(img).then(() => {
+      await loadImage2(img).then(() => {
         document.body.style.visibility = 'visible';
       });
     } else {
