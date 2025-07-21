@@ -71,7 +71,11 @@ main .section>.simplified-pricing-cards-wrapper {
     z-index: 2;
 }
 
-.simplified-pricing-cards .card-header h2 {
+.simplified-pricing-cards .card-header h2,
+.simplified-pricing-cards .card-header h3,
+.simplified-pricing-cards .card-header h4,
+.simplified-pricing-cards .card-header h5,
+.simplified-pricing-cards .card-header h6 {
     font-weight: var(--heading-font-weight);
     line-height: var(--heading-line-height);
     font-size: var(--header-size);
@@ -110,8 +114,13 @@ main .section>.simplified-pricing-cards-wrapper {
     text-align: left;
 }
 
-.simplified-pricing-cards .pricing-area h2 {
+.simplified-pricing-cards .pricing-area h2,
+.simplified-pricing-cards .pricing-area h3,
+.simplified-pricing-cards .pricing-area h4,
+.simplified-pricing-cards .pricing-area h5,
+.simplified-pricing-cards .pricing-area h6 {
     text-align: left;
+    font-size: var(--header-size);
 }
 
 .simplified-pricing-cards .pricing-area p {
@@ -162,10 +171,6 @@ main .section>.simplified-pricing-cards-wrapper {
     margin: 0;
     width: 0;
     height: 0;
-}
-
-.simplified-pricing-cards .pricing-area h2 {
-    font-size: var(--header-size);
 }
 
 .simplified-pricing-cards .pricing-area .pricing-row {
