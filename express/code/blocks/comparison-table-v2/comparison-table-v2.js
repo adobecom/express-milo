@@ -471,17 +471,17 @@ export class ComparisonTableState {
                             // Focus trap - cycle through visible options
                             e.preventDefault();
                             if (e.shiftKey) {
-                                // Shift+Tab - go backwards
-                                const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
-                                visibleOptions.forEach(opt => opt.classList.remove('focused'));
-                                visibleOptions[prevIndex].classList.add('focused');
-                                visibleOptions[prevIndex].focus();
-                            } else {
-                                // Tab - go forwards
+                                // Shift+Tab - go backwards (higher index -> lower index)
                                 const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
                                 visibleOptions.forEach(opt => opt.classList.remove('focused'));
                                 visibleOptions[nextIndex].classList.add('focused');
                                 visibleOptions[nextIndex].focus();
+                            } else {
+                                // Tab - go forwards (lower index -> higher index)
+                                const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+                                visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                                visibleOptions[prevIndex].classList.add('focused');
+                                visibleOptions[prevIndex].focus();
                             }
                             break;
                         case 'Escape':
@@ -515,17 +515,17 @@ export class ComparisonTableState {
                         const currentIndex = visibleOptions.indexOf(option);
                         
                         if (e.shiftKey) {
-                            // Shift+Tab - go backwards
-                            const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
-                            visibleOptions.forEach(opt => opt.classList.remove('focused'));
-                            visibleOptions[prevIndex].classList.add('focused');
-                            visibleOptions[prevIndex].focus();
-                        } else {
-                            // Tab - go forwards
+                            // Shift+Tab - go backwards (higher index -> lower index)
                             const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
                             visibleOptions.forEach(opt => opt.classList.remove('focused'));
                             visibleOptions[nextIndex].classList.add('focused');
                             visibleOptions[nextIndex].focus();
+                        } else {
+                            // Tab - go forwards (lower index -> higher index)
+                            const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+                            visibleOptions.forEach(opt => opt.classList.remove('focused'));
+                            visibleOptions[prevIndex].classList.add('focused');
+                            visibleOptions[prevIndex].focus();
                         }
                     }
                 });
@@ -534,8 +534,19 @@ export class ComparisonTableState {
                 selector.closest('.plan-cell').classList.toggle('invisible-content', 1);
                 selector.setAttribute('tabindex', '-1'); // Remove from tab order when invisible
             } else {
-                selector.closest('.plan-cell').classList.toggle('invisible-content', 0);
+                const planCell = selector.closest('.plan-cell');
+                planCell.classList.toggle('invisible-content', 0);
                 selector.setAttribute('tabindex', '-1'); // Add to tab order when visible
+                
+                // Add positioning class based on which visible plan this is
+                const visibleIndex = this.visiblePlans.indexOf(index);
+                if (visibleIndex === 0) {
+                    planCell.classList.add('left-plan');
+                    planCell.classList.remove('right-plan');
+                } else {
+                    planCell.classList.add('right-plan');
+                    planCell.classList.remove('left-plan');
+                }
             }
 
             this.comparisonBlock.querySelectorAll('tr').forEach((row, rowIndex) => {
@@ -640,6 +651,19 @@ export class ComparisonTableState {
         // Update tabindex for plan selectors
         this.planSelectors[selectorIndex].setAttribute('tabindex', '-1');
         this.planSelectors[newPlanIndex].setAttribute('tabindex', '0');
+        
+        // Update positioning classes
+        if (visiblePlanIndex === 0) {
+            // First visible position (left)
+            oldHeader.classList.remove('left-plan');
+            newHeader.classList.add('left-plan');
+            newHeader.classList.remove('right-plan');
+        } else {
+            // Second visible position (right)
+            oldHeader.classList.remove('right-plan');
+            newHeader.classList.add('right-plan');
+            newHeader.classList.remove('left-plan');
+        }
 
         const parent = oldHeader.parentElement
         parent.insertBefore(newHeader, oldHeader)
