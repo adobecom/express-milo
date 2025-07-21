@@ -438,7 +438,7 @@ main .section>.simplified-pricing-cards-wrapper {
 
 @media (min-width: 1280px) {
     .simplified-pricing-cards {
-        --card-width: 270px;
+        --card-width: 294px;
         --header-size: 28px;
         --header-offer-size: 16px;
         padding-top: 40px;
