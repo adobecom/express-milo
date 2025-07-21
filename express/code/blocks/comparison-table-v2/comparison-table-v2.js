@@ -415,13 +415,21 @@ export class ComparisonTableState {
                     e.preventDefault();
                     e.stopPropagation();
                     
+                    const currentPlanIndex = parseInt(option.dataset.planIndex);
+                    const selectorIndex = parseInt(selector.dataset.planIndex);
+                    
+                    // Don't allow selecting the same plan that's currently visible
+                    if (this.visiblePlans.includes(currentPlanIndex)) {
+                        return; // Exit early, don't process the click
+                    }
+                    
                     // Update aria-selected
                     choiceWrapper.querySelectorAll('[role="option"]').forEach(opt => {
                         opt.setAttribute('aria-selected', 'false');
                     });
                     option.setAttribute('aria-selected', 'true');
                     
-                    this.updateVisiblePlan(parseInt(selector.dataset.planIndex), parseInt(option.dataset.planIndex))
+                    this.updateVisiblePlan(selectorIndex, currentPlanIndex)
                     
                     // Close dropdown and update aria-expanded
                     this.closeDropdown(selector);
@@ -493,7 +501,12 @@ export class ComparisonTableState {
                     
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        option.click();
+                        const currentPlanIndex = parseInt(option.dataset.planIndex);
+                        
+                        // Don't allow selecting the same plan that's currently visible
+                        if (!this.visiblePlans.includes(currentPlanIndex)) {
+                            option.click();
+                        }
                         selector.focus();
                     } else if (e.key === 'Tab' && isOpen) {
                         // Focus trap - prevent tabbing out of dropdown
@@ -648,7 +661,36 @@ export class ComparisonTableState {
                 } else {
                     child.classList.remove('invisible-content');
                 }
+                
+                // Update selected state and icon
+                const planIndex = parseInt(child.dataset.planIndex);
+                if (this.visiblePlans.includes(planIndex)) {
+                    child.classList.add('selected');
+                    this.addSelectedIcon(child);
+                } else {
+                    child.classList.remove('selected');
+                    this.removeSelectedIcon(child);
+                }
             }
+        }
+    }
+
+    addSelectedIcon(option) {
+        // Remove existing icon if present
+        const existingIcon = option.querySelector('.selected-icon');
+        if (existingIcon) {
+            existingIcon.remove();
+        }
+        
+        // Add selected icon
+        const iconSpan = createTag('span', { class: 'selected-icon icon-selected' });
+        option.prepend(iconSpan);
+    }
+
+    removeSelectedIcon(option) {
+        const existingIcon = option.querySelector('.selected-icon');
+        if (existingIcon) {
+            existingIcon.remove();
         }
     }
 }
