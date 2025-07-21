@@ -1,3 +1,12 @@
+/* Desktop fixed positioning */
+.toc-container.toc-desktop-fixed {
+  position: fixed;
+  top: var(--toc-top-position, 200px);
+  left: 0;
+  width: 310px;
+  z-index: 100;
+}
+
 /* TOC container using global CSS variables */
 .toc-container {
   display: block;
