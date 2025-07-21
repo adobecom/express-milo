@@ -449,11 +449,11 @@ class ComparisonTableState {
 
         this.planSelectors[selectorIndex].closest('.plan-cell').classList.toggle('invisible-content', true)
         this.planSelectors[selectorIndex].closest('.plan-cell').classList.remove('order-' + visiblePlanIndex)
-        this.updateTableCells(selectorIndex, visiblePlanIndex, 0)
+        this.updateTableCells(selectorIndex, visiblePlanIndex)
         this.visiblePlans[visiblePlanIndex] = newPlanIndex;
         this.planSelectors[newPlanIndex].closest('.plan-cell').classList.toggle('invisible-content', false)
         this.planSelectors[newPlanIndex].closest('.plan-cell').classList.add('order-' + visiblePlanIndex)
-        this.updateTableCells(newPlanIndex, visiblePlanIndex, 1)
+        this.updateTableCells(newPlanIndex, visiblePlanIndex)
         this.updatePlanSelectorOptions()
         for (let i = 0; i < this.planSelectors.length; i++) {
             if (! this.visiblePlans.includes(i)) {
