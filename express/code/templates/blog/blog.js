@@ -44,7 +44,7 @@ function copyToClipboard(copyButton) {
 
 const loadImage = (img) => new Promise((resolve) => {
   const isLoaded = () => img.complete && img.naturalHeight !== 0;
-  
+
   if (isLoaded()) {
     resolve();
   } else {
