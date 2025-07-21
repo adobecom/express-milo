@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/main.jsx',
-      fileName: 'templates-as-a-service',
+      fileName: (format) => `templates-as-a-service.min.${format}.js`,
       formats: ['es']
     },
     sourcemap: true

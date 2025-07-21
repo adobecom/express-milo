@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-relative-packages
-import { initTemplatesAsAService } from './library/dist/templates-as-a-service.js';
+import { initTemplatesAsAService } from './library/dist/templates-as-a-service.min.es.js';
 import { getLibs } from '../../scripts/utils.js';
 
 let createTag;

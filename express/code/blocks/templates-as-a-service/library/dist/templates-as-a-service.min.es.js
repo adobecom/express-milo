@@ -10978,4 +10978,4 @@ typeof window < "u" && document.getElementById("root") && Nh("root");
 export {
   Nh as initTemplatesAsAService
 };
-//# sourceMappingURL=templates-as-a-service.js.map
+//# sourceMappingURL=templates-as-a-service.min.es.js.map
