@@ -20,8 +20,6 @@ export default function Form() {
         payload: { field: fieldName, value: isNum ? Number(value) : value },
       });
     };
-
-    console.log('limit', typeof formData.limit);
   return (
     <form className="border-grey rounded p-1 gap-1">
       <h2>Form to Recipe:</h2>

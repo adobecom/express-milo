@@ -7,8 +7,35 @@ export const popularCollectionId = 'urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49
 export const TOPICS_AND_SEPARATOR = ' AND '; // allows joining topics groups
 export const TOPICS_OR_SEPARATOR = ',';
 
+// backup=[-q,+prefLang=en-GB]
+export function getBackupRecipe(oldParams, backupStr) {
+  const diffs = /\[(.+)\]/.exec(backupStr)[1].split(',');
+  const params = new URLSearchParams(oldParams);
+  diffs.forEach((diff) => {
+    const minus = /^-(.+)/.exec(diff);
+    if (minus) {
+      params.delete(minus[1]);
+      return;
+    }
+    const plus = /^\+(.+)=(.+)/.exec(diff);
+    if (plus) {
+      params.set(plus[1], plus[2]);
+    }
+  });
+  return params.toString();
+}
+
 export function recipe2ApiQuery(recipe) {
+  let backupQuery = null;
   const params = new URLSearchParams(recipe);
+  if (params.has('backup')) {
+    const backupStr = params.get('backup');
+    params.delete('backup');
+    backupQuery = {
+      target: params.get('limit'),
+      ...recipe2ApiQuery(getBackupRecipe(params, backupStr)),
+    };
+  }
   if (params.has('collection')) {
     if (params.get('collection') === 'default') {
       params.set('collectionId', `${defaultCollectionId}`);
@@ -56,14 +83,54 @@ export function recipe2ApiQuery(recipe) {
   params.set('queryType', 'search');
   // workaround to prevent akamai prod cache pollution causing cors issues in aem envs
   const envParam = new URL(base).host === window.location.host ? '' : '&ax-env=stage';
-  return { url: `${base}?${decodeURIComponent(params.toString())}${envParam}`, headers };
+  return {
+    url: `${base}?${decodeURIComponent(params.toString())}${envParam}`,
+    headers,
+    backupQuery,
+  };
 }
 
-export async function fetchResults(recipe) {
-  const { url, headers } = recipe2ApiQuery(recipe);
+async function fetchData(url, headers) {
   const response = await fetch(url, { headers });
   const data = await response.json();
   return data;
+}
+
+function dedup(items) {
+  const [set, arr] = [new Set(), []];
+  items.forEach((item) => {
+    if (!set.has(item.id)) {
+      set.add(item.id);
+      arr.push(item);
+    }
+  });
+  return arr;
+}
+
+export async function fetchResults(recipe) {
+  const { url, headers, backupQuery } = recipe2ApiQuery(recipe);
+  if (!backupQuery || !backupQuery.target) {
+    return fetchData(url, headers);
+  }
+  const [prefPromise, backupPromise] = [
+    fetchData(url, headers),
+    fetchData(backupQuery.url, backupQuery.headers)];
+  const prefRes = await prefPromise;
+  if (prefRes.items?.length >= backupQuery.target) {
+    return prefRes;
+  }
+
+  const backupRes = await backupPromise;
+  const mergedItems = dedup([...prefRes.items, ...backupRes.items])
+    .slice(0, backupQuery.target);
+  return {
+    metadata: {
+      totalHits: mergedItems.length,
+      start: '0',
+      limit: backupQuery.target,
+    },
+    items: mergedItems,
+  };
 }
 
 export function getTemplateTitle(template) {
