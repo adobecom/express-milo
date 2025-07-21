@@ -43,22 +43,32 @@ function copyToClipboard(copyButton) {
 }
 
 const loadImage = (img) => new Promise((resolve) => {
-  if (img.complete && img.naturalHeight !== 0) resolve();
+  const isLoaded = () => img.complete && img.naturalHeight !== 0;
+  if (isLoaded()) resolve();
+
+  let loadTimeout;
+  let loadInterval;
+
+  const onComplete = () => {
+    clearInterval(loadInterval);
+    clearTimeout(loadTimeout);
+    resolve();
+  };
+    
   else {
+    const loadInterval = setInterval(() => {
+      if (isLoaded()) onComplete();
+    }, 200);
+
+    let loadTimeout = setTimeout(() => {
+      onComplete();
+    }, 5000);
+
     img.onload = () => {
-      resolve();
+      onComplete();
     };
   }
 });
-
-function loadImage2(asset) {
-  if (asset.complete) return Promise.resolve();
-  asset.setAttribute('loading', 'eager');
-
-  return new Promise((resolve) => {
-    ['load', 'error'].forEach((evt) => asset.addEventListener(evt, resolve, { once: true }));
-  });
-}
 
 export default async function decorateBlogPage() {
   ({ createTag, getConfig, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
@@ -149,7 +159,7 @@ export default async function decorateBlogPage() {
     decorateBlogLinkedImages();
     if ($heroPicture) {
       const img = $heroPicture.querySelector('img');
-      await loadImage2(img).then(() => {
+      await loadImage(img).then(() => {
         document.body.style.visibility = 'visible';
       });
     } else {
