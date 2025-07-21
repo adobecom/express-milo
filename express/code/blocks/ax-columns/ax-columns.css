@@ -784,7 +784,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.fullsize .hero-animation-overlay video {
   max-height: 40vh;
   margin-bottom: var(--spacing-600);
-  max-width: 370px;
 }
 
 .ax-columns .hero-animation-overlay video {
