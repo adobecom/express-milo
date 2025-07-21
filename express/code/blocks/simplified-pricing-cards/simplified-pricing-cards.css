@@ -506,16 +506,9 @@ main .section>.simplified-pricing-cards-wrapper {
     }
 
 }
-
-@media (min-width: 1440px) {
-    .simplified-pricing-cards {
-        --card-width: 294px;
-    }
-}
-
+ 
 @media (min-width: 1680px) {
-    .simplified-pricing-cards {
-        --card-width: 294px;
+    .simplified-pricing-cards { 
         --header-size: 28px;
         --header-offer-size: 16px;
     }
