@@ -30,6 +30,22 @@ function tagPanels(main, el) {
   return panels;
 }
 
+function getDefaultTab(main) {
+  const sections = [...main.querySelectorAll('.section')];
+
+  let index;
+  sections.forEach((section) => {
+    const metadataDiv = section.querySelector(':scope > .section-metadata');
+    if (!metadataDiv) return;
+    const meta = readBlockConfig(metadataDiv);
+
+    const activeTab = Object.keys(meta).find((key) => key.trim().toLowerCase() === 'active-tab');
+    const tabIndex = parseInt(meta[activeTab], 10);
+    if (!Number.isNaN(tabIndex)) index = Math.max(tabIndex - 1, 0);
+  });
+  return index;
+}
+
 export default async function init(el) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const enclosingMain = el.closest('main');
@@ -98,4 +114,8 @@ export default async function init(el) {
     const nextTabIndex = (currTabIndex + (e.key === 'ArrowLeft' ? -1 : 1) + tabs.length) % tabs.length;
     activateTab(tabs[nextTabIndex]);
   });
+
+  const defaultTab = getDefaultTab(enclosingMain);
+  if (!defaultTab) return;
+  activateTab(tabs[defaultTab]);
 }
