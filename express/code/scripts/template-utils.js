@@ -7,7 +7,7 @@ export const popularCollectionId = 'urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49
 export const TOPICS_AND_SEPARATOR = ' AND '; // allows joining topics groups
 export const TOPICS_OR_SEPARATOR = ',';
 
-// backup=[-q,+prefLang=en-GB]
+// backup=[-q;prefLang=en-GB]
 export function getBackupRecipe(oldParams, backupStr) {
   const diffs = /\[(.+)\]/.exec(backupStr)[1].split(';');
   const params = new URLSearchParams(oldParams);
