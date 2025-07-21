@@ -1,4 +1,4 @@
-/* TOC container using existing ax-grid system */
+/* TOC container using global CSS variables */
 .toc-container {
   display: block;
   width: 100%;
@@ -9,31 +9,19 @@
   position: sticky;
   top: 40px;
   background: var(--color-white);
-  z-index: 10;
+  z-index: 1;
 }
 
-/* TOC wrapper to use grid system */
-.toc-wrapper {
-  margin-left: var(--ax-grid-margin);
-  margin-right: var(--ax-grid-margin);
-  box-sizing: border-box;
-  display: flex;
-  gap: var(--ax-grid-gutter);
-  justify-content: center;
-  flex-wrap: wrap;
+main .icon {
+  width: 20px;
+  height: 20px;
 }
 
-/* Mobile: full width (12 columns) */
-.toc-wrapper .toc-container {
-  width: var(--ax-grid-12-col-width);
-}
-
-/* Tablet: 8 columns centered */
 @media (min-width: 768px) {
-  .toc-wrapper .toc-container {
-    width: var(--ax-grid-8-col-width);
+  .toc-container {
     position: static;
     cursor: default;
+    width: 545px;
     margin: 0 auto;
   }
   
@@ -50,11 +38,10 @@
   }
 }
 
-/* Desktop: 3 columns (positioned by JavaScript) */
 @media (min-width: 1200px) {
-  .toc-wrapper .toc-container {
-    width: var(--ax-grid-3-col-width);
+  .toc-container {
     position: static;
+    width: 310px;
     margin: 0;
     z-index: 100;
     border-top: none;
