@@ -104,14 +104,18 @@ export default async function setTOCSEO() {
   toc.appendChild(socialIcons);
 
   title.addEventListener('click', () => {
-    toc.classList.toggle('open');
-    const isExpanded = toc.classList.contains('open');
-    title.setAttribute('aria-expanded', isExpanded.toString());
+    // Only toggle on mobile (below 768px)
+    if (window.innerWidth < 768) {
+      toc.classList.toggle('open');
+      const isExpanded = toc.classList.contains('open');
+      title.setAttribute('aria-expanded', isExpanded.toString());
+    }
   });
 
   // Add keyboard support for the title
   title.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    // Only toggle on mobile (below 768px)
+    if (window.innerWidth < 768 && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       toc.classList.toggle('open');
       const isExpanded = toc.classList.contains('open');
