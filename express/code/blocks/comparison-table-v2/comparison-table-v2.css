@@ -486,14 +486,6 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     background-color: var(--color-gray-100);
 }
 
-.comparison-table-v2 .plan-cell.order-0 {
-    order: 0;
-}
-
-.comparison-table-v2 .plan-cell.order-1 {
-    order: 1;
-}
-
 /* Desktop styles - 1280px and up */
 @media (min-width: 1280px) {
     .comparison-table-v2 {
