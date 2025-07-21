@@ -381,6 +381,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 }
 
 .comparison-table-v2 .plan-selector-choices .plan-selector-choice {
+    position: relative;
     padding: var(--spacing-100) var(--spacing-200) var(--spacing-100) 30px;
     font-size: 13px;
 }
@@ -389,10 +390,13 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     border-top: 1px solid var(--color-gray-500);
 }
 
-.comparison-table-v2 .plan-selector-choices .plan-selector-choice.selected::before {
-    content: '✓';
-    position: absolute;
-    left: var(--spacing-400);
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice.selected .selected-icon {
+    margin-right: var(--spacing-200);
+    display: inline-block;
+}
+
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice.selected {
+    pointer-events: none;
 }
 
 .comparison-table-v2 .plan-selector-choices .plan-selector-choice.highlighted,
@@ -445,6 +449,20 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .icon.expand-button.open {
     background-image: url('/express/code/icons/expand.svg');
+}
+
+.comparison-table-v2 .icon-selected {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 12px;
+    top: 10px;
+    display: block;
+    margin: auto;
+    background-color: var(--color-white);
+    -webkit-mask-image: url('selected.svg');
+    mask-image: url('selected.svg');
+    z-index: 2;
 }
 
 .comparison-table-v2 .icon-checkmark-no-fill {
