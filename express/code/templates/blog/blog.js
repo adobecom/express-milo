@@ -43,12 +43,22 @@ function copyToClipboard(copyButton) {
 }
 
 const loadImage = (img) => new Promise((resolve) => {
-  if (img.complete && img.naturalHeight !== 0) resolve();
-  else {
-    img.onload = () => {
+  let resolved = false;
+  
+  const resolveOnce = () => {
+    if (!resolved) {
+      resolved = true;
       resolve();
-    };
+    }
+  };
+  
+  if (img.complete && img.naturalHeight !== 0) {
+    resolveOnce();
+  } else {
+    img.onload = resolveOnce;
   }
+  
+  setTimeout(resolveOnce, 5000);
 });
 
 export default async function decorateBlogPage() {
