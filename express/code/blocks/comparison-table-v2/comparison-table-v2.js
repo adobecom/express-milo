@@ -18,7 +18,10 @@ function handleCellIcons(cell) {
             cell.textContent = '';
         }
         const wrapper = createTag('div', { class: 'icon-wrapper' });
-        wrapper.prepend(createTag('span', { class: 'icon-checkmark-no-fill' }));
+        const icon = createTag('span', { class: 'icon-checkmark-no-fill',role: 'img', alt: 'Yes' });
+        icon.setAttribute('aria-label', 'Yes');
+        wrapper.prepend(icon);
+    
         cell.prepend(wrapper);
     } else if (text === '-') {
         if (multiParagraph) {
@@ -27,7 +30,9 @@ function handleCellIcons(cell) {
             cell.textContent = '';
         }
         const wrapper = createTag('div', { class: 'icon-wrapper' });
-        wrapper.prepend(createTag('span', { class: 'icon-crossmark' }));
+        const icon = createTag('span', { class: 'icon-crossmark', role: 'img', alt: 'No' });
+        icon.setAttribute('aria-label', 'No');
+        wrapper.prepend(icon);
         cell.prepend(wrapper);
     }
 }
@@ -105,6 +110,7 @@ function createAccessibilityHeaders(sectionTitle, columnTitles) {
     // Add column headers
     columnTitles.forEach(columnTitle => {
         const columnHeader = document.createElement('th');
+        columnHeader.setAttribute('scope', 'col');
         columnHeader.textContent = columnTitle;
         headerRow.appendChild(columnHeader);
     });
@@ -197,11 +203,11 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
 
     const planSelector = document.createElement('div');
     planSelector.classList.add('plan-selector');
-    planSelector.setAttribute('aria-label', `Change comparison plan ${planIndex + 1}`);
-    planSelector.setAttribute('tabindex', '-1');
-    planSelector.setAttribute('role', 'button');
-    planSelector.setAttribute('aria-haspopup', 'listbox');
-    planSelector.setAttribute('aria-expanded', 'false');
+   // planSelector.setAttribute('aria-label', `Change comparison plan ${planIndex + 1}`);
+   // planSelector.setAttribute('tabindex', '-1');
+    // planSelector.setAttribute('role', 'button');
+    // planSelector.setAttribute('aria-haspopup', 'listbox');
+    // planSelector.setAttribute('aria-expanded', 'false');
     planSelector.setAttribute('data-plan-index', planIndex);
 
     // Add keyboard support for opening dropdown
@@ -315,18 +321,10 @@ function createStickyHeader(headerGroup, comparisonBlock) {
         if (!e.target.closest('.plan-cell-wrapper')) {
             headerGroupElement.querySelectorAll('.plan-selector-choices').forEach(choices => {
                 choices.classList.add('invisible-content');
-                // Make options not focusable when closed
                 choices.querySelectorAll('.plan-selector-choice').forEach(opt => {
                     opt.setAttribute('tabindex', '-1');
                     opt.classList.remove('focused');
                 });
-            });
-            headerGroupElement.querySelectorAll('.plan-selector').forEach(selector => {
-                selector.setAttribute('aria-expanded', 'false');
-            });
-            // Update plan cell wrapper aria-expanded
-            headerGroupElement.querySelectorAll('.plan-cell-wrapper').forEach(wrapper => {
-                wrapper.setAttribute('aria-expanded', 'false');
             });
         }
     });
@@ -382,6 +380,20 @@ export default async function decorate(comparisonBlock) {
     const contentSections = partitionContentBySeparators(blockChildren);
     applyColumnShading(contentSections[0], comparisonBlock);
     comparisonBlock.innerHTML = '';
+    
+    // Create aria-live region for plan change announcements
+    const ariaLiveRegion = createTag('div', {
+        class: 'sr-only',
+        'aria-live': 'polite',
+        'aria-atomic': 'true'
+    });
+    ariaLiveRegion.style.position = 'absolute';
+    ariaLiveRegion.style.left = '-10000px';
+    ariaLiveRegion.style.width = '1px';
+    ariaLiveRegion.style.height = '1px';
+    ariaLiveRegion.style.overflow = 'hidden';
+    comparisonBlock.appendChild(ariaLiveRegion);
+    
     const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0], comparisonBlock);
     comparisonBlock.appendChild(stickyHeaderElement);
     for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex++) {
@@ -389,18 +401,19 @@ export default async function decorate(comparisonBlock) {
         comparisonBlock.appendChild(sectionTable);
     }
     const planSelectors = Array.from(stickyHeaderElement.querySelectorAll('.plan-selector'))
-    const comparisonTableState = new ComparisonTableState()
+    const comparisonTableState = new ComparisonTableState(ariaLiveRegion)
     comparisonTableState.initializePlanSelectors(comparisonBlock, planSelectors)
     initStickyBehavior(stickyHeaderElement, comparisonBlock);
 }
 
 
 export class ComparisonTableState {
-    constructor() {
+    constructor(ariaLiveRegion) {
 
         this.visiblePlans = [0, 1];
         this.selectedPlans = new Map();
         this.planSelectors = []
+        this.ariaLiveRegion = ariaLiveRegion;
     }
 
     initializePlanSelectors(comparisonBlock, planSelectors) {
@@ -531,14 +544,10 @@ export class ComparisonTableState {
                 });
             });
             if (!this.visiblePlans.includes(index)) {
-                selector.closest('.plan-cell').classList.toggle('invisible-content', 1);
-                selector.setAttribute('tabindex', '-1'); // Remove from tab order when invisible
+                selector.closest('.plan-cell').classList.toggle('invisible-content', 1); 
             } else {
                 const planCell = selector.closest('.plan-cell');
                 planCell.classList.toggle('invisible-content', 0);
-                selector.setAttribute('tabindex', '-1'); // Add to tab order when visible
-                
-                // Add positioning class based on which visible plan this is
                 const visibleIndex = this.visiblePlans.indexOf(index);
                 if (visibleIndex === 0) {
                     planCell.classList.add('left-plan');
@@ -645,13 +654,13 @@ export class ComparisonTableState {
         const oldHeader = this.planSelectors[selectorIndex].closest('.plan-cell')
         const newHeader = this.planSelectors[newPlanIndex].closest('.plan-cell')
 
+        // Get plan names for announcement
+        const oldPlanName = oldHeader.querySelector('.plan-cell-wrapper').textContent.trim();
+        const newPlanName = newHeader.querySelector('.plan-cell-wrapper').textContent.trim();
+
         oldHeader.classList.toggle('invisible-content')
         newHeader.classList.toggle('invisible-content')
-        
-        // Update tabindex for plan selectors
-        this.planSelectors[selectorIndex].setAttribute('tabindex', '-1');
-        this.planSelectors[newPlanIndex].setAttribute('tabindex', '0');
-        
+         
         // Update positioning classes
         if (visiblePlanIndex === 0) {
             // First visible position (left)
@@ -672,6 +681,18 @@ export class ComparisonTableState {
         this.visiblePlans[visiblePlanIndex] = newPlanIndex;
         this.updatePlanSelectorOptions()
         this.updateTableCells(selectorIndex, newPlanIndex)
+        
+        // Announce the plan change to screen readers
+        if (this.ariaLiveRegion) {
+            const position = visiblePlanIndex === 0 ? 'left' : 'right';
+            const announcement = `Changed ${position} plan from ${oldPlanName} to ${newPlanName}`;
+            this.ariaLiveRegion.textContent = announcement;
+            
+            // Clear the announcement after a short delay to prepare for next announcement
+            setTimeout(() => {
+                this.ariaLiveRegion.textContent = '';
+            }, 100);
+        }
     }
 
     updatePlanSelectorOptions() {
