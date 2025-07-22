@@ -52,13 +52,13 @@ export default async function init(el) {
   if (!enclosingMain) return;
 
   const [headingContainer, tabListContainer] = el.querySelectorAll(':scope > div');
-  headingContainer.classList.add('ax-panels-heading-container');
-  tabListContainer.classList.add('tablist-container');
+  headingContainer?.classList.add('ax-panels-heading-container');
+  tabListContainer?.classList.add('tablist-container');
 
   const panels = tagPanels(enclosingMain, el);
 
-  const tabList = tabListContainer.querySelector('ul');
-  tabList.setAttribute('role', 'tablist');
+  const tabList = tabListContainer?.querySelector('ul');
+  tabList?.setAttribute('role', 'tablist');
   const headingId = headingContainer.querySelector('h2,h3')?.id;
   headingId && tabList.setAttribute('aria-labelledby', headingId);
 
