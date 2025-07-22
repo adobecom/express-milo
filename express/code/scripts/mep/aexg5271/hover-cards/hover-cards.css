@@ -33,11 +33,12 @@
 
 .hover-cards .card {
   position: relative;
+   flex: 1 1 auto;
   min-width: min(100%, 260px);
   max-width: 405px;
-  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
-  flex: 1 1 auto;
+  border: 1px solid var(--white, rgba(255, 255, 255, 1));
+  box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
   background-color: var(--color-white);
 }
 
