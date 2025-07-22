@@ -37,7 +37,6 @@
   min-width: min(100%, 260px);
   max-width: 405px;
   border-radius: 16px;
-  border: 1px solid var(--white, rgba(255, 255, 255, 1));
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
   background-color: var(--color-white);
 }
@@ -124,6 +123,7 @@
   justify-content: center;
   overflow: hidden;
   border-radius: 8px;
+  border: 1px solid var(--white, rgba(255, 255, 255, 1));
   box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.12);
 }
 
