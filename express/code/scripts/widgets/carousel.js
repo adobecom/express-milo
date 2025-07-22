@@ -10,7 +10,8 @@ function correctCenterAlignment(plat) {
 const margin = 0.99;
 
 function isAtRightmostScroll(element) {
-  return element.scrollLeft + element.clientWidth >= element.scrollWidth * margin;
+  console.log('isAtRightmostScroll', element.scrollLeft + element.clientWidth, element.scrollWidth)
+  return element.scrollLeft + element.clientWidth >= element.scrollWidth - 10;
 }
 
 function initToggleTriggers(parent) {
@@ -71,6 +72,19 @@ function initToggleTriggers(parent) {
     });
   };
 
+  // Also handle scroll events to ensure proper state updates
+  const updateRightArrowState = () => {
+    if (isAtRightmostScroll(platform)) {
+      rightControl.classList.add('arrow-hidden');
+      platform.classList.remove('right-fader');
+    } else {
+      rightControl.classList.remove('arrow-hidden');
+      platform.classList.add('right-fader');
+    }
+  };
+
+  platform.addEventListener('scroll', throttle(updateRightArrowState, 100));
+
   const options = { threshold: 0, root: parent };
   const slideObserver = new IntersectionObserver(onSlideIntersect, options);
   slideObserver.observe(leftTrigger);
@@ -109,13 +123,7 @@ function onCarouselCSSLoad(selector, parent, options) {
   faderRight.append(arrowRight);
   parent.append(container);
 
-  platform.addEventListener('scroll', throttle(() => {
-    if (isAtRightmostScroll(platform)) {
-      container.querySelector('.carousel-arrow-right').style.display = 'none';
-    } else {
-      container.querySelector('.carousel-arrow-right').style.display = 'block';
-    }
-  }, 200));
+  // Right arrow visibility is now handled by the intersection observer and scroll event in initToggleTriggers
 
   // Scroll the carousel by clicking on the controls
   const moveCarousel = (increment) => {
