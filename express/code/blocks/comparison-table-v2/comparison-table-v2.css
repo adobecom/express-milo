@@ -412,11 +412,6 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     color: var(--color-white);
 }
 
-.comparison-table-v2 .plan-selector-choices .plan-selector-choice:focus {
-    outline: 2px solid var(--color-blue-600);
-    outline-offset: -2px;
-}
-
 .comparison-table-v2 .plan-selector-choices .plan-selector-choice:first-child.highlighted,
 .comparison-table-v2 .plan-selector-choices .plan-selector-choice:first-child.focused {
     border-radius: 10px 10px 0 0;
