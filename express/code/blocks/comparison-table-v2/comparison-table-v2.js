@@ -195,7 +195,7 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
     const selectWrapper = document.createElement('div');
     selectWrapper.classList.add('plan-selector-wrapper');
 
-    const planSelector = document.createElement('div');
+    const planSelector = document.createElement('select');
     planSelector.classList.add('plan-selector');
     planSelector.setAttribute('aria-label', `Change comparison plan ${planIndex + 1}`);
     planSelector.setAttribute('tabindex', '-1');
@@ -213,7 +213,7 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
     });
 
     selectWrapper.appendChild(planSelector);
-    planSelector.appendChild(createPlanDropdownChoices(headers))
+    planSelector.append(...createPlanDropdownChoices(headers))
 
        // Add click handler to plan cell wrapper
        planCellWrapper.addEventListener('click', (e) => {
@@ -234,14 +234,15 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
 }
 
 function createPlanDropdownChoices(headers) {
-    const planSelectorChoices = document.createElement('div');
-    planSelectorChoices.classList.add('plan-selector-choices', 'invisible-content');
-    planSelectorChoices.setAttribute('role', 'listbox');
-    planSelectorChoices.setAttribute('aria-label', 'Plan options');
+    // const planSelectorChoices = document.createElement('div');
+    // planSelectorChoices.classList.add('plan-selector-choices', 'invisible-content');
+    // planSelectorChoices.setAttribute('role', 'listbox');
+    // planSelectorChoices.setAttribute('aria-label', 'Plan options');
 
+    const planSelectorChoices = []
 
     for (let i = 0; i < headers.length; i++) {
-        const option = document.createElement('div');
+        const option = document.createElement('option');
         option.classList.add('plan-selector-choice');
         option.value = i;
         option.textContent = headers[i];
@@ -249,7 +250,8 @@ function createPlanDropdownChoices(headers) {
         option.setAttribute('role', 'option');
         option.setAttribute('aria-selected', 'false');
         option.setAttribute('tabindex', '-1');
-        planSelectorChoices.appendChild(option);
+        planSelectorChoices.push(option)
+       // planSelectorChoices.appendChild(option);
     }
     return planSelectorChoices;
 }
@@ -392,6 +394,28 @@ export default async function decorate(comparisonBlock) {
     const comparisonTableState = new ComparisonTableState()
     comparisonTableState.initializePlanSelectors(comparisonBlock, planSelectors)
     initStickyBehavior(stickyHeaderElement, comparisonBlock);
+
+
+    const a = document.createElement('select')
+    const b = [1,2,3]
+    b.forEach(item => {
+        const option = document.createElement('option')
+        option.textContent = item
+        option.value = item
+        a.appendChild(option)
+    })
+
+    comparisonBlock.innerHTML = `<select name="pets" id="pet-select">
+                    <option value="">--Please choose an option--</option>
+                    <option value="dog">Dog</option>
+                    <option value="cat">Cat</option>
+                    <option value="hamster">Hamster</option>
+                    <option value="parrot">Parrot</option>
+                    <option value="spider">Spider</option>
+                    <option value="goldfish">Goldfish</option>
+                    </select>`
+                    
+ 
 }
 
 
@@ -407,9 +431,7 @@ export class ComparisonTableState {
         this.comparisonBlock = comparisonBlock
         this.planSelectors = planSelectors
         this.planSelectors.forEach((selector, index) => {
-            const choiceWrapper = selector.querySelector('.plan-selector-choices')
-
-            const options = Array.from(choiceWrapper.children)
+            const options = Array.from(selector.children)
             options.forEach(option => {
                 option.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -424,9 +446,9 @@ export class ComparisonTableState {
                     }
                     
                     // Update aria-selected
-                    choiceWrapper.querySelectorAll('[role="option"]').forEach(opt => {
+                    selector.querySelectorAll('[role="option"]').forEach(opt => {
                         opt.setAttribute('aria-selected', 'false');
-                    });
+                    }); 
                     option.setAttribute('aria-selected', 'true');
                     
                     this.updateVisiblePlan(selectorIndex, currentPlanIndex)
@@ -676,7 +698,7 @@ export class ComparisonTableState {
 
     updatePlanSelectorOptions() {
         for (let i = 0; i < this.planSelectors.length; i++) {
-            const currentPlanSelectorChildren = this.planSelectors[i].querySelector('.plan-selector-choices').children;
+            const currentPlanSelectorChildren = this.planSelectors[i].children;
             for (let j = 0; j < currentPlanSelectorChildren.length; j++) {
                 const child = currentPlanSelectorChildren[j];
                 const otherPlanIndex = this.visiblePlans.filter(plan => plan !== i)
