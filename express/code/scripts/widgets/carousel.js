@@ -7,7 +7,7 @@ function correctCenterAlignment(plat) {
   if (plat.parentElement.offsetWidth <= plat.offsetWidth) return;
   plat.parentElement.style.maxWidth = `${plat.offsetWidth}px`;
 }
-const margin = 0.95;
+const margin = 0.99;
 
 function isAtRightmostScroll(element) {
   return element.scrollLeft + element.clientWidth >= element.scrollWidth * margin;
