@@ -1137,6 +1137,7 @@ main .section.long-form .content h4,
 main .section.long-form .content h5,
 main .section.long-form .content h6 {
   text-align: left;
+  color: var(--color-gray-700);
 }
 
 main .section.long-form .content h2,
