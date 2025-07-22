@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
-// ✅ Usage: node nala/utils/copy-and-fix-imports.js <source-repo-path> block1 block2
+// Usage: node nala/utils/copy-and-fix-imports.js <source-repo-path> block1 block2
 
 const [,, sourceRepo, ...blocks] = process.argv;
 
