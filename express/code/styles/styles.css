@@ -1122,6 +1122,10 @@ main .section.long-form .content {
   box-sizing: border-box;
   padding: 0 20px 60px;
   max-width: unset;
+  /* Mobile: 12 columns */
+  width: var(--ax-grid-12-col-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 main .section.long-form .content,
@@ -1158,7 +1162,19 @@ main .section.long-form .content h4 {
 @media (min-width: 600px) {
   main .section.long-form .content {
     padding: 0 40px 60px;
-    max-width: 1070px;
+    /* Tablet: 12 columns */
+    width: var(--ax-grid-12-col-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .section.long-form .content {
+    /* Desktop: 7 columns */
+    width: var(--ax-grid-7-col-width);
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
