@@ -14,10 +14,10 @@ const usp = new URLSearchParams(window.location.search);
 
 const onRedirect = (e) => {
   // eslint-disable-next-line no-console
-  console.log('redirecting to:', e.target.detail);
+  console.log('redirecting to:', e.detail);
   // temporary solution: allows analytics to go thru. should move to a promise
   setTimeout(() => {
-    window.location.assign(e.target.detail);
+    window.location.assign(e.detail);
   }, 100);
 };
 const onError = (e) => {
