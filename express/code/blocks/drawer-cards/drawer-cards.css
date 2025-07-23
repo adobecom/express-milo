@@ -17,7 +17,7 @@
 
 main .section .drawer-cards .heading {
   padding-bottom: var(--spacing-100);
-  font-size: var(--heading-font-size-l);
+  font-size: var(--heading-font-size-s);
 }
 
 .drawer-cards strong,
@@ -340,6 +340,9 @@ main .section .drawer-cards .heading {
   .drawer-cards .heading-row {
     padding-bottom: var(--spacing-600);
     max-width: 1600px;
+  }
+  main .section .drawer-cards .heading {
+    font-size: var(--heading-font-size-l);
   }
   .drawer-cards .heading-row .ctas {
     padding-top: var(--spacing-400);
