@@ -1,5 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { fetchResults } from '../../scripts/template-utils.js';
+import { fetchResults, isValidTemplate } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
 import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
@@ -10,7 +10,11 @@ const fromScratchFallbackLink = 'https://adobesparkpost.app.link/c4bWARQhWAb';
 
 async function createTemplates(recipe) {
   const res = await fetchResults(recipe);
-  const templates = await Promise.all(res.items.map((item) => renderTemplate(item)));
+  const templates = await Promise.all(
+    res.items
+      .filter((item) => isValidTemplate(item))
+      .map((item) => renderTemplate(item)),
+  );
   templates.forEach((tplt) => tplt.classList.add('template'));
   return templates;
 }
