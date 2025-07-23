@@ -11,10 +11,6 @@
   background-color: var(--color-info-accent);
 }
 
-.banner  {
-  background-color: var(--color-info-accent);
-}
-
 .banner.standout {
   padding: 48px 0;
 }
