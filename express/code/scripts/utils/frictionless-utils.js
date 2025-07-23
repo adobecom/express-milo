@@ -326,49 +326,106 @@ export function executeQuickAction(
   }
 }
 
-export async function getErrorMsg(files, quickAction, replaceKey, getConfig) {
-  let msg;
-  const isNotValid = Array.from(files).some(
-    (file) => !QA_CONFIGS[quickAction].input_check(file.type),
+// Helper function to check if video duration validation is needed
+function shouldValidateVideoDuration(quickAction) {
+  return (
+    (quickAction === 'convert-to-gif' || quickAction === 'caption-video')
+    && QA_CONFIGS[quickAction].group === 'video'
   );
-  if (isNotValid) {
-    msg = await replaceKey('file-type-not-supported', getConfig());
-  } else {
-    msg = await replaceKey('file-size-not-supported', getConfig());
-  }
-  return msg;
 }
 
-export async function processFileForQuickAction(
-  file,
-  quickAction,
-) {
+// Helper function to check video duration
+export async function checkVideoDuration(file, minDurationSeconds = 60) {
+  return new Promise((resolve) => {
+    const tempVideo = document.createElement('video');
+    tempVideo.preload = 'metadata';
+    const blobUrl = URL.createObjectURL(file);
+    // Safe: blobUrl is created from a File object, not user input
+    tempVideo.src = blobUrl;
+
+    tempVideo.addEventListener('loadedmetadata', () => {
+      const { duration } = tempVideo;
+      // Clean up the blob URL
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+      // Remove the video element from DOM if it was added
+      if (tempVideo.parentNode) {
+        tempVideo.parentNode.removeChild(tempVideo);
+      }
+      resolve(duration > minDurationSeconds);
+    });
+
+    tempVideo.addEventListener('error', () => {
+      // If we can't load metadata, assume it's valid
+      // Clean up the blob URL
+      if (blobUrl) {
+        URL.revokeObjectURL(blobUrl);
+      }
+      // Remove the video element from DOM if it was added
+      if (tempVideo.parentNode) {
+        tempVideo.parentNode.removeChild(tempVideo);
+      }
+      resolve(true);
+    });
+  });
+}
+
+export async function processFileForQuickAction(file, quickAction) {
   const maxSize = QA_CONFIGS[quickAction].max_size ?? 40 * 1024 * 1024;
 
-  if (QA_CONFIGS[quickAction].input_check(file.type) && file.size <= maxSize) {
-    const isVideo = QA_CONFIGS[quickAction].group === 'video';
-    if (isVideo) {
-      window.history.pushState({ hideFrictionlessQa: true }, '', '');
-      return file;
-    }
-
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        window.history.pushState({ hideFrictionlessQa: true }, '', '');
-        resolve(reader.result);
-      };
-      reader.readAsDataURL(file);
-    });
+  if (!QA_CONFIGS[quickAction].input_check(file.type)) {
+    throw new Error('file-type-not-supported');
   }
-  return undefined;
+
+  if (file.size > maxSize) {
+    throw new Error('file-size-not-supported');
+  }
+
+  // Only check video duration for video files and video-related quick actions
+  if (shouldValidateVideoDuration(quickAction)) {
+    const hasLongVideo = await checkVideoDuration(
+      file,
+      quickAction === 'caption-video' ? 300 : 60,
+    );
+    if (hasLongVideo) {
+      throw new Error('video-duration-too-long');
+    }
+  }
+
+  const isVideo = QA_CONFIGS[quickAction].group === 'video';
+  if (isVideo) {
+    window.history.pushState({ hideFrictionlessQa: true }, '', '');
+    return file;
+  }
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      window.history.pushState({ hideFrictionlessQa: true }, '', '');
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 export async function processFilesForQuickAction(files, quickAction) {
-  const data = await Promise.all(
+  const results = await Promise.allSettled(
     Array.from(files).map((file) => processFileForQuickAction(file, quickAction)),
   );
-  return data;
+
+  const data = [];
+  const errors = [];
+
+  results.forEach((result, index) => {
+    if (result.status === 'fulfilled') {
+      data.push(result.value);
+    } else {
+      errors.push({ file: files[index], error: result.reason.message });
+    }
+  });
+
+  return { data, errors };
 }
 
 export function createSDKConfig(getConfig, urlParams) {
