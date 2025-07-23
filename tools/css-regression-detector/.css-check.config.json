@@ -1,0 +1,52 @@
+{
+  "dangerSelectors": [
+    ".btn",
+    ".container", 
+    "body",
+    ".modal",
+    ".header",
+    ".footer",
+    ".nav",
+    ".sidebar",
+    ".main",
+    ".content",
+    ".wrapper",
+    ".layout"
+  ],
+  "thresholds": {
+    "specificityIncrease": 2,
+    "maxConflicts": 5,
+    "maxUsageWarnings": 10,
+    "minUsageCount": 3
+  },
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/*.min.css",
+    "**/coverage/**",
+    "**/.git/**"
+  ],
+  "jsScanPatterns": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "cssScanPatterns": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass"
+  ],
+  "severity": {
+    "conflict": "error",
+    "specificityIncrease": "warning",
+    "dangerSelector": "error",
+    "usageWarning": "warning"
+  },
+  "output": {
+    "format": "console",
+    "verbose": false,
+    "color": true
+  }
+} 

@@ -12,7 +12,11 @@
     "lint": "npm run lint:js && npm run lint:css",
     "lint:fix": "npm run lint:js -- --fix && npm run lint:css --fix",
     "lint:js": "eslint .",
-    "lint:css": "stylelint 'blocks/**/*.css' 'express/code/styles/*.css'"
+    "lint:css": "stylelint 'blocks/**/*.css' 'express/code/styles/*.css'",
+    "css-check": "node tools/css-regression-detector/cli.js",
+    "css-check-all": "node tools/css-regression-detector/cli.js --scan-all",
+    "test:css-tool": "cd tools/css-regression-detector && node test.js",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -48,7 +52,12 @@
     "eslint-plugin-compat": "^4.0.2",
     "eslint-plugin-ecmalist": "^1.0.8",
     "eslint-plugin-import": "2.25.4",
+    "glob": "^10.3.10",
+    "husky": "^8.0.3",
     "lit": "^3.3.0",
+    "postcss": "^8.4.35",
+    "postcss-selector-parser": "^6.0.13",
+    "simple-git": "^3.22.0",
     "sinon": "13.0.1",
     "stylelint": "14.6.0",
     "stylelint-config-prettier": "9.0.3",
