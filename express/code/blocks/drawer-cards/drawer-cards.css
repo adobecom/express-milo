@@ -277,6 +277,9 @@ main .section .drawer-cards .heading {
   .drawer-cards .heading-row {
     max-width: 1200px;
   }
+  main .section .drawer-cards .heading {
+    font-size: var(--heading-font-size-m);
+  }
   .drawer-cards .heading-row .ctas {
     margin-top: var(--spacing-300);
     padding-top: var(--spacing-300);
