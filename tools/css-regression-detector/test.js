@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { writeFileSync, unlinkSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 
@@ -12,7 +12,8 @@ const testDir = join(process.cwd(), 'test-temp');
 function cleanup() {
   try {
     if (existsSync(testDir)) {
-      execSync(`rm -rf ${testDir}`);
+      // Use execFileSync for safer file operations
+      execFileSync('rm', ['-rf', testDir]);
     }
   } catch (error) {
     // Ignore cleanup errors
@@ -33,7 +34,7 @@ function test(name, testFn) {
 
 // Test 1: Basic functionality
 test('Tool runs without errors', () => {
-  const result = execSync('node cli.js', { encoding: 'utf8', cwd: process.cwd() });
+  const result = execFileSync('node', ['cli.js'], { encoding: 'utf8', cwd: process.cwd() });
   if (!result.includes('No staged CSS files found')) {
     throw new Error('Expected tool to run and show "No staged CSS files found" message');
   }
@@ -41,7 +42,7 @@ test('Tool runs without errors', () => {
 
 // Test 2: Scan-all mode
 test('Scan-all mode works', () => {
-  const result = execSync('node cli.js --scan-all', { encoding: 'utf8', cwd: process.cwd() });
+  const result = execFileSync('node', ['cli.js', '--scan-all'], { encoding: 'utf8', cwd: process.cwd() });
   if (!result.includes('Full Codebase Scan')) {
     throw new Error('Expected scan-all mode to work');
   }
@@ -49,7 +50,7 @@ test('Scan-all mode works', () => {
 
 // Test 3: Help output
 test('Help command works', () => {
-  const result = execSync('node cli.js --help', { encoding: 'utf8', cwd: process.cwd() });
+  const result = execFileSync('node', ['cli.js', '--help'], { encoding: 'utf8', cwd: process.cwd() });
   if (!result.includes('Detect CSS regressions')) {
     throw new Error('Expected help output');
   }
@@ -67,7 +68,7 @@ test('Configuration loading works', () => {
   writeFileSync(configFile, configContent);
 
   try {
-    const result = execSync(`node cli.js --config ${configFile} --scan-all`, { encoding: 'utf8', cwd: process.cwd() });
+    const result = execFileSync('node', ['cli.js', '--config', configFile, '--scan-all'], { encoding: 'utf8', cwd: process.cwd() });
     if (!result.includes('CSS Regression Detector')) {
       throw new Error('Expected tool to run with custom config');
     }
