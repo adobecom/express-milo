@@ -145,12 +145,15 @@ const slackNotification = (text, webhook) => {
 };
 
 const workingHours = () => {
-  const now = new Date();
-  const day = now.getUTCDay();
-  const hour = now.getUTCHours();
+  const nowPT = new Date(
+    new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })
+  );
+  const day = nowPT.getDay(); // 0 = Sunday, 6 = Saturday
+  const hour = nowPT.getHours();
   const isSunday = day === 0;
   const isSaturday = day === 6;
   const isFriday = day === 5;
+  // Allow only 8 AM – 8 PM Pacific, Monday – Thursday
   return hour >= 8 && hour <= 20 && !isFriday && !isSaturday && !isSunday;
 };
 
