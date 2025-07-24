@@ -231,9 +231,23 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
     
     // Add keyboard support
     planCellWrapper.addEventListener('keydown', (e) => {
-        if ((e.key === 'Enter' || e.key === ' ') && e.target === planCellWrapper && !e.target.closest('.action-area')) {
-            e.preventDefault();
-            planSelector.click();
+        if (e.target === planCellWrapper && !e.target.closest('.action-area')) {
+            if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                planSelector.click();
+                
+                // If ArrowDown, focus the first option after dropdown opens
+                if (e.key === 'ArrowDown') {
+                    setTimeout(() => {
+                        const dropdown = planSelector.querySelector('.plan-selector-choices');
+                        const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
+                        if (firstOption) {
+                            firstOption.classList.add('focused');
+                            firstOption.focus();
+                        }
+                    }, 0);
+                }
+            }
         }
     });
     planCellWrapper.appendChild(selectWrapper);
