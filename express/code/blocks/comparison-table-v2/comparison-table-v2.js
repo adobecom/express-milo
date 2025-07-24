@@ -307,11 +307,16 @@ function createStickyHeader(headerGroup, comparisonBlock) {
             headerCell.classList.add('first-cell');
         } else {
             const planCellWrapper = createTag('div', { class: 'plan-cell-wrapper' });
-            planCellWrapper.setAttribute('tabindex', '0');
-            planCellWrapper.setAttribute('role', 'button');
-            planCellWrapper.setAttribute('aria-label', `Select plan ${cellIndex}`);
-            planCellWrapper.setAttribute('aria-expanded', 'false');
-            planCellWrapper.setAttribute('aria-haspopup', 'listbox');
+            
+            // Only set tabindex and interactive attributes on mobile
+            const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
+            if (!isDesktop) {
+                planCellWrapper.setAttribute('tabindex', '0');
+                planCellWrapper.setAttribute('role', 'button');
+                planCellWrapper.setAttribute('aria-label', `Select plan ${cellIndex}`);
+                planCellWrapper.setAttribute('aria-expanded', 'false');
+                planCellWrapper.setAttribute('aria-haspopup', 'listbox');
+            }
             
             headerCell.classList.add('plan-cell');
             if (cellIndex === headerCells.length - 1) {
@@ -422,4 +427,29 @@ export default async function decorate(comparisonBlock) {
     const comparisonTableState = new ComparisonTableState(ariaLiveRegion)
     comparisonTableState.initializePlanSelectors(comparisonBlock, planSelectors)
     initStickyBehavior(stickyHeaderElement, comparisonBlock);
+    
+    // Handle tabindex updates on window resize
+    const updateTabindexOnResize = () => {
+        const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
+        const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
+        
+        planCellWrappers.forEach((wrapper, index) => {
+            if (isDesktop) {
+                wrapper.removeAttribute('tabindex');
+                wrapper.removeAttribute('role');
+                wrapper.removeAttribute('aria-label');
+                wrapper.removeAttribute('aria-expanded');
+                wrapper.removeAttribute('aria-haspopup');
+            } else {
+                wrapper.setAttribute('tabindex', '0');
+                wrapper.setAttribute('role', 'button');
+                wrapper.setAttribute('aria-label', `Select plan ${index + 1}`);
+                wrapper.setAttribute('aria-expanded', 'false');
+                wrapper.setAttribute('aria-haspopup', 'listbox');
+            }
+        });
+    };
+    
+    // Add resize listener
+    window.addEventListener('resize', updateTabindexOnResize);
 }
