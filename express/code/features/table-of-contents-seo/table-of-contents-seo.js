@@ -183,7 +183,7 @@ export default async function setTOCSEO() {
     if (window.innerWidth >= 1200) {
       const sectionElement = document.querySelector('main .section');
       const tocElement = document.querySelector('.toc-container');
-      const footerElement = document.querySelector('footer');
+      const linkListWrapper = document.querySelector('.section:has(.link-list-wrapper)');
       const fixedTopDistance = 200; // Distance from top when fixed
 
       if (sectionElement && tocElement) {
@@ -198,17 +198,16 @@ export default async function setTOCSEO() {
           topPosition = fixedTopDistance;
         }
 
-        // If footer exists, prevent TOC from going into footer
-        if (footerElement) {
-          const footerTop = footerElement.offsetTop - scrollTop;
+        // If link-list-wrapper exists, prevent TOC from going into it
+        if (linkListWrapper) {
+          const linkListTop = linkListWrapper.offsetTop - scrollTop;
           const tocHeight = tocElement.offsetHeight;
-          const maxTopPosition = footerTop - tocHeight; // Remove 20px gap from footer
+          const maxTopPosition = linkListTop - tocHeight;
 
           if (topPosition > maxTopPosition) {
             topPosition = maxTopPosition;
           }
         }
-
         // Apply dynamic positioning via CSS custom property
         tocElement.style.setProperty('--toc-top-position', `${topPosition}px`);
         tocElement.classList.add('toc-desktop-fixed');
