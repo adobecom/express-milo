@@ -154,6 +154,20 @@ export default async function setTOCSEO() {
   const firstSection = document.querySelector('main .section');
   firstSection.insertAdjacentElement('afterend', toc);
 
+  // Throttle function using requestAnimationFrame for smooth scrolling
+  function throttleRAF(func) {
+    let ticking = false;
+    return function executedFunction(...args) {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          func(...args);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+  }
+
   // Desktop dynamic positioning
   function handleDesktopPositioning() {
     if (window.innerWidth >= 1200) {
@@ -192,8 +206,12 @@ export default async function setTOCSEO() {
     }
   }
 
-  // Add scroll listener for desktop
-  window.addEventListener('scroll', handleDesktopPositioning);
+  // Create throttled version for scroll events using requestAnimationFrame
+  const throttledHandleDesktopPositioning = throttleRAF(handleDesktopPositioning);
+
+  // Add scroll listener for desktop (throttled with RAF for smooth scrolling)
+  window.addEventListener('scroll', throttledHandleDesktopPositioning);
+  // Add resize listener for desktop (immediate for responsive viewport changes)
   window.addEventListener('resize', handleDesktopPositioning);
 
   // Initial positioning
