@@ -25,11 +25,9 @@ function initButton(block, buttons, sections, index) {
       setActiveButton(index);
       sections.forEach((section) => {
         if (buttons[index].innerText.toLowerCase() === section.dataset.toggle.toLowerCase()) {
-          section.style.display = 'block';
-          section.style.height = 'auto';
-        } else {
-          section.style.display = 'none';
-          section.style.height = '0px';
+              section.classList.remove('display-none');
+            } else {
+            section.classList.add('display-none');
         }
       });
       if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
