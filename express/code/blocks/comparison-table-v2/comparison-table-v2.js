@@ -45,10 +45,15 @@ function partitionContentBySeparators(blockChildren) {
     for (const childElement of blockChildren) {
         const isSeparator = childElement.querySelector('hr')
         const isOpenSeparator = childElement.textContent.trim() === '+++';
-        if (isSeparator || isOpenSeparator) {
+        const noAccordion = childElement.textContent.trim() === '===';
+        console.log(noAccordion)
+        if (isSeparator || isOpenSeparator || noAccordion) {
             if (currentSection.length > 0) {
                 if (isOpenSeparator) {
                     currentSection[0].classList.add('open-separator');
+                }
+                if (noAccordion) {
+                    currentSection[0].classList.add('no-accordion');
                 }
                 contentGroups.push(currentSection);
                 currentSection = [];
@@ -82,9 +87,7 @@ function createTableHeader(sectionHeaderRow, columnHeaders) {
     const sectionHeaderContainer = document.createElement('div');
     sectionHeaderContainer.classList.add('first-row');
     // Add section title
-    sectionHeaderContainer.appendChild(sectionHeaderRow.children[0]);
-    console.log(sectionHeaderRow)
-    // Extract colors and clear cells (skip first and last)
+    sectionHeaderContainer.appendChild(sectionHeaderRow.children[0]); 
     const columnColors = [];
     for (let i = 0; i < sectionHeaderRow.children.length; i++) {
         const colorCell = sectionHeaderRow.children[i];
@@ -150,17 +153,17 @@ function convertToTable(sectionGroup, columnHeaders) {
 
     // Process header row
     const sectionHeaderDiv = sectionGroup[0];
-    const shouldHideTable = !sectionHeaderDiv.classList.contains('open-separator')
+    const shouldHideTable = !sectionHeaderDiv.classList.contains('open-separator') &&!sectionHeaderDiv.classList.contains('no-accordion')
     if (shouldHideTable) {
         comparisonTable.classList.add('hide-table');
     }
+    if (sectionHeaderDiv.classList.contains('no-accordion')) {
+        tableContainer.classList.add('no-accordion');
+    }
 
     const { sectionHeaderContainer, columnColors } = createTableHeader(sectionHeaderDiv, columnHeaders);
+ 
 
-    // Check if table should be hidden
-    const visibilityIndicator = sectionHeaderDiv.children[sectionHeaderDiv.children.length - 1];
-
-  
     // Add toggle button
     const toggleButton = createToggleButton(shouldHideTable);
     toggleButton.onclick = () => {
@@ -170,20 +173,13 @@ function convertToTable(sectionGroup, columnHeaders) {
         toggleButton.setAttribute('aria-expanded', !isExpanded);
         toggleButton.setAttribute('aria-label', isExpanded ? 'Expand section' : 'Collapse section');
     };
-
-    // const toggleButtonContainer = document.createElement('div');
-    // toggleButtonContainer.classList.add('button-cell');
-    // toggleButtonContainer.appendChild(toggleButton);
-    // sectionHeaderContainer.appendChild(toggleButtonContainer);
+ 
     const header = sectionHeaderContainer.querySelector('h2,h3,h4,h5,h6')
     if (header) {
         toggleButton.prepend(header)
     }
-    console.log(toggleButton)
-    console.log(sectionHeaderContainer)
     sectionHeaderContainer.appendChild(toggleButton);
     tableContainer.prepend(sectionHeaderContainer)
-    console.log(sectionHeaderContainer)
     // Add accessibility headers
     const sectionTitle = sectionHeaderDiv.children[0].textContent.trim();
     const screenReaderHeaders = createAccessibilityHeaders(sectionTitle, columnHeaders);
