@@ -67,6 +67,15 @@ main .icon {
   position: relative;
   padding-right: 20px;
   outline: none;
+  /* Button reset styles */
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
 }
 
 .toc-title:focus-visible {
@@ -94,7 +103,7 @@ main .icon {
 }
 
 .toc-container.open .toc-title {
-  padding-bottom: var(--spacing-100);
+  /* Remove padding-bottom to keep button height consistent */
 }
 
 .toc-content {
@@ -103,6 +112,7 @@ main .icon {
 
 .toc-container.open .toc-content {
   display: block;
+  margin-top: var(--spacing-100);
 }
 
 main .toc-content a {

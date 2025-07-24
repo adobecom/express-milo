@@ -38,10 +38,8 @@ export default async function setTOCSEO() {
     'aria-label': 'Table of Contents',
   });
 
-  const title = createTag('div', {
+  const title = createTag('button', {
     class: 'toc-title',
-    role: 'button',
-    tabindex: '0',
     'aria-expanded': 'false',
     'aria-controls': 'toc-content',
   });
