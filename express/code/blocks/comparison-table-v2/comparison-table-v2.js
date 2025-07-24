@@ -308,9 +308,15 @@ function createStickyHeader(headerGroup, comparisonBlock) {
         } else {
             const planCellWrapper = createTag('div', { class: 'plan-cell-wrapper' });
             
-            // Only set tabindex and interactive attributes on mobile
+            // Add two-columns class if there are only 2 columns
+            if (headers.length === 2) {
+                planCellWrapper.classList.add('two-columns');
+            }
+            
+            // Only set tabindex and interactive attributes on mobile when there are more than 2 columns
             const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
-            if (!isDesktop) {
+            const hasMoreThanTwoColumns = headers.length > 2;
+            if (!isDesktop && hasMoreThanTwoColumns) {
                 planCellWrapper.setAttribute('tabindex', '0');
                 planCellWrapper.setAttribute('role', 'button');
                 planCellWrapper.setAttribute('aria-label', `Select plan ${cellIndex}`);
@@ -327,7 +333,10 @@ function createStickyHeader(headerGroup, comparisonBlock) {
                 planCellWrapper.appendChild(headerCell.children[0]);
             }
            
-            createPlanSelector(headers, cellIndex - 1, planCellWrapper);
+            // Only create plan selector if there are more than 2 columns
+            if (headers.length > 2) {
+                createPlanSelector(headers, cellIndex - 1, planCellWrapper);
+            }
 
             headerCell.appendChild(planCellWrapper);
             const button = planCellWrapper.querySelector('.action-area');
@@ -397,6 +406,31 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
     observer.observe(sentinel);
 }
 
+function synchronizePlanCellHeights(comparisonBlock) {
+    const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
+    
+    if (planCellWrappers.length === 0) return;
+    
+    // Reset heights to auto to get natural heights
+    planCellWrappers.forEach(wrapper => {
+        wrapper.style.height = 'auto';
+    });
+    
+    // Find the maximum height
+    let maxHeight = 0;
+    planCellWrappers.forEach(wrapper => {
+        const height = wrapper.offsetHeight;
+        if (height > maxHeight) {
+            maxHeight = height;
+        }
+    });
+    
+    // Apply the maximum height to all wrappers
+    planCellWrappers.forEach(wrapper => {
+        wrapper.style.height = `${maxHeight}px`;
+    });
+}
+
 export default async function decorate(comparisonBlock) {
     await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(comparisonBlock), initComparisonTableState()]).then(([utils, placeholders, buttons]) => { createTag = utils.createTag });
     const blockChildren = Array.from(comparisonBlock.children);
@@ -432,9 +466,10 @@ export default async function decorate(comparisonBlock) {
     const updateTabindexOnResize = () => {
         const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
         const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
+        const hasMoreThanTwoColumns = columnTitles.length > 2;
         
         planCellWrappers.forEach((wrapper, index) => {
-            if (isDesktop) {
+            if (isDesktop || !hasMoreThanTwoColumns) {
                 wrapper.removeAttribute('tabindex');
                 wrapper.removeAttribute('role');
                 wrapper.removeAttribute('aria-label');
@@ -450,6 +485,26 @@ export default async function decorate(comparisonBlock) {
         });
     };
     
+    // Synchronize plan cell heights
+    synchronizePlanCellHeights(comparisonBlock);
+    
+    // Handle updates on window resize
+    const handleResize = () => {
+        updateTabindexOnResize();
+        synchronizePlanCellHeights(comparisonBlock);
+    };
+    
     // Add resize listener
-    window.addEventListener('resize', updateTabindexOnResize);
+    window.addEventListener('resize', handleResize);
+    
+    // Add ResizeObserver to handle dynamic content changes
+    const resizeObserver = new ResizeObserver(() => {
+        synchronizePlanCellHeights(comparisonBlock);
+    });
+    
+   // Observe all plan cell wrappers for size changes
+    const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
+    planCellWrappers.forEach(wrapper => {
+        resizeObserver.observe(wrapper);
+    });
 }

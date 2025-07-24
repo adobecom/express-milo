@@ -99,6 +99,23 @@ main .section .comparison-table-v2 p {
     padding-left: 0;
     padding-right: 0;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.comparison-table-v2 .sticky-header .plan-cell-wrapper.two-columns {
+    padding:var(--spacing-300)
+}
+
+
+.comparison-table-v2 .sticky-header .plan-cell-wrapper > h2,
+.comparison-table-v2 .sticky-header .plan-cell-wrapper > h3,
+.comparison-table-v2 .sticky-header .plan-cell-wrapper > h4,
+.comparison-table-v2 .sticky-header .plan-cell-wrapper > h5,
+.comparison-table-v2 .sticky-header .plan-cell-wrapper > h6 {
+    flex-grow: 1;
 }
 
 .comparison-table-v2 .sticky-header .plan-cell-wrapper:active {
@@ -126,29 +143,33 @@ main .section .comparison-table-v2 p {
     position: relative;
 }
 
-.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper::before {
-    content : '';
+.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper {
+ 
     background: linear-gradient(95.85deg, #B539C8 0%, #7155FA 66%, #3B63FB 100%);
-    position: absolute;
-    width: calc(100% + 4px) ;
-    height: calc(100% + 4px);
-    z-index: -1;
-    left: -2px;
+   
+    z-index: 5;
+   
     border-radius: 8px;
-    top: -2px;
+    border: none;
+ 
 }
 
-.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper::after {
-    content : '';
-    background: white;
-    position: absolute;
-    width: calc(100%) ;
-    height: calc(100%);
-    z-index: 0;
-    left: 0px;
-    border-radius: 6px;
-    top: 0px;
+.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper::before {
+    content: "";
+  position: absolute;
+  inset: 2px; /* Same as padding */
+  background: white; /* Match your background */
+  border-radius: 6px; /* Slightly less than parent */
+ 
 }
+ 
+.comparison-table-v2 .sticky-header .plan-cell.premium .plan-selector {
+    left: 2px;
+    width: calc(100% - 4px); 
+    top: -2px;
+    border-radius: 0px 0px 5px 5px;
+}
+
 
 .comparison-table-v2 .sticky-header .plan-cell.gray .plan-cell-wrapper {
     background: var(--color-gray-100);
@@ -174,8 +195,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     font-size: var(--body-font-size-s);
     font-style: normal;
     font-weight: 700;
-    line-height: 1.3;
-}
+    line-height: 1.3; 
+} 
 
 /* Table container - Mobile */
 .comparison-table-v2 .table-container {
@@ -337,7 +358,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     position: relative;
     height: 22px;
     margin-top: 8px;
-    border-radius: 0px 0px 8px 8px;
+    border-radius: 0px 0px 7px 7px;
     border: 0px solid var(--color-gray-300);
     background: #EBEEFF;
 }
