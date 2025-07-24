@@ -493,9 +493,6 @@ export default async function decorate(block) {
             // No main image, create overlays immediately but with lower priority
             createCornerOverlays(cell);
           }
-        } else {
-          // Non-marquee blocks use default overlay behavior
-          createCornerOverlays(cell);
         }
       }
 
