@@ -83,7 +83,7 @@ function createTableHeader(sectionHeaderRow, columnHeaders) {
     sectionHeaderContainer.classList.add('first-row');
     // Add section title
     sectionHeaderContainer.appendChild(sectionHeaderRow.children[0]);
-
+    console.log(sectionHeaderRow)
     // Extract colors and clear cells (skip first and last)
     const columnColors = [];
     for (let i = 0; i < sectionHeaderRow.children.length; i++) {
@@ -160,7 +160,7 @@ function convertToTable(sectionGroup, columnHeaders) {
     // Check if table should be hidden
     const visibilityIndicator = sectionHeaderDiv.children[sectionHeaderDiv.children.length - 1];
 
-
+  
     // Add toggle button
     const toggleButton = createToggleButton(shouldHideTable);
     toggleButton.onclick = () => {
@@ -171,13 +171,19 @@ function convertToTable(sectionGroup, columnHeaders) {
         toggleButton.setAttribute('aria-label', isExpanded ? 'Expand section' : 'Collapse section');
     };
 
-    const toggleButtonContainer = document.createElement('div');
-    toggleButtonContainer.classList.add('button-cell');
-    toggleButtonContainer.appendChild(toggleButton);
-    sectionHeaderContainer.appendChild(toggleButtonContainer);
-
-    tableContainer.appendChild(sectionHeaderContainer);
-
+    // const toggleButtonContainer = document.createElement('div');
+    // toggleButtonContainer.classList.add('button-cell');
+    // toggleButtonContainer.appendChild(toggleButton);
+    // sectionHeaderContainer.appendChild(toggleButtonContainer);
+    const header = sectionHeaderContainer.querySelector('h2,h3,h4,h5,h6')
+    if (header) {
+        toggleButton.prepend(header)
+    }
+    console.log(toggleButton)
+    console.log(sectionHeaderContainer)
+    sectionHeaderContainer.appendChild(toggleButton);
+    tableContainer.prepend(sectionHeaderContainer)
+    console.log(sectionHeaderContainer)
     // Add accessibility headers
     const sectionTitle = sectionHeaderDiv.children[0].textContent.trim();
     const screenReaderHeaders = createAccessibilityHeaders(sectionTitle, columnHeaders);

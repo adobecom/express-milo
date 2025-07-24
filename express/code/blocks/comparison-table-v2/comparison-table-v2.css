@@ -187,28 +187,48 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     padding: var(--spacing-300);
 }
 
-.comparison-table-v2 .table-container .first-row {
+.comparison-table-v2 .table-container .toggle-button {
     display: flex;
     gap: var(--spacing-300);
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.comparison-table-v2 .table-container .first-row button:focus {
+.comparison-table-v2 .table-container button.toggle-button:focus {
     outline: none;
+    border-radius: 8px;
     border: 2px solid var(--Background-Accent-key-focus, #4046CA);
 }
 
-.comparison-table-v2 .table-container .first-row button:active {
+.comparison-table-v2 .table-container button.toggle-button:active {
     outline: 4px solid var(--indigo-400, #C0C9FF);
 }
 
-.comparison-table-v2 .table-container .first-row .button-cell {
+.comparison-table-v2 .table-container button.toggle-button .button-cell {
     width: auto;
     display: flex;
     flex-direction: row-reverse; 
     align-items: center;
     position: static;
     margin-left: auto;
+}
+
+.comparison-table-v2 .table-container .toggle-button h2,
+.comparison-table-v2 .table-container .toggle-button h3,
+.comparison-table-v2 .table-container .toggle-button h4,
+.comparison-table-v2 .table-container .toggle-button h5,
+.comparison-table-v2 .table-container .toggle-button h6 {
+    flex-grow: 1;
+    color: var(--color-gray-800);
+    text-align: center;
+    font-family: var(--body-font-family);
+    font-size: var(--body-font-size-l);
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.3;
+    padding-left: 36px;
+    flex-grow: 1;
 }
 
 /* Table styles - Mobile */
@@ -288,24 +308,6 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     align-items: center;
     gap: 10px;
     align-self: stretch;
-}
-
-/* First row headers - Mobile */
-.comparison-table-v2 .table-container .first-row div:first-child,
-.comparison-table-v2 .table-container .first-row div:first-child h2,
-.comparison-table-v2 .table-container .first-row div:first-child h3,
-.comparison-table-v2 .table-container .first-row div:first-child h4,
-.comparison-table-v2 .table-container .first-row div:first-child h5,
-.comparison-table-v2 .table-container .first-row div:first-child h6 {
-    color: var(--color-gray-800);
-    text-align: center;
-    font-family: var(--body-font-family);
-    font-size: var(--body-font-size-l);
-    font-style: normal;
-    font-weight: 700;
-    line-height: 1.3;
-    padding-left: 24px;
-    flex-grow: 1;
 }
 
 /* Invisible/hidden elements */
@@ -601,6 +603,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     }
 
+    .comparison-table-v2 .first-row:has(button[aria-expanded="true"]) {
+        border-bottom: 1px solid var(--color-gray-300);
+    }
+
+
     .comparison-table-v2 .sticky-header .first-cell {
         width: var(--header-cell-width); 
         justify-content: flex-end;
@@ -675,21 +682,21 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
       
     }
 
-    .comparison-table-v2 .table-container .first-row {
+    .comparison-table-v2 .table-container .toggle-button {
         margin-bottom: 0; 
-        padding: var(--spacing-400) 0 var(--spacing-400) var(--spacing-400);
+        padding: var(--spacing-400);
     }
 
-    .comparison-table-v2 .table-container .first-row:has(button[aria-expanded="true"]) {
+    .comparison-table-v2 .table-container button.toggle-button:has(button[aria-expanded="true"]) {
         border-bottom: 1px solid var(--color-gray-300);
     }
  
 
-    .comparison-table-v2 .table-container .first-row>div {
+    .comparison-table-v2 .table-container .button-row {
         width: var(--cell-width);
     }
 
-    .comparison-table-v2 .table-container .first-row .button-cell {
+    .comparison-table-v2 .table-container .button-row .toggle-button {
         position: absolute;
         right: 0px;
         margin-left: 0;
@@ -697,12 +704,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
     /* First row content - Desktop left align */
-    .comparison-table-v2 .table-container .first-row div:first-child,
-    .comparison-table-v2 .table-container .first-row div:first-child h2,
-    .comparison-table-v2 .table-container .first-row div:first-child h3,
-    .comparison-table-v2 .table-container .first-row div:first-child h4,
-    .comparison-table-v2 .table-container .first-row div:first-child h5,
-    .comparison-table-v2 .table-container .first-row div:first-child h6 {
+    .comparison-table-v2 .table-container .toggle-button h2,
+    .comparison-table-v2 .table-container .toggle-button h3,
+    .comparison-table-v2 .table-container .toggle-button h4,
+    .comparison-table-v2 .table-container .toggle-button h5,
+    .comparison-table-v2 .table-container .toggle-button h6 {
         text-align: left;
         padding-left: 0;
     }
