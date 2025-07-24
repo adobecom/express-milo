@@ -3,7 +3,7 @@
   position: fixed;
   top: var(--toc-top-position, 200px);
   left: 0;
-  width: 310px;
+  width: 250px;
   z-index: 1;
 }
 
