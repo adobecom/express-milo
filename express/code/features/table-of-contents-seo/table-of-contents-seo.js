@@ -5,6 +5,7 @@ let createTag; let getMetadata;
 
 function buildMetadataConfigObject() {
   const title = getMetadata('toc-title');
+  const ariaLabel = getMetadata('toc-aria-label');
   const showContentNumbers = getMetadata('toc-content-numbers');
   const contents = [];
   let i = 1;
@@ -23,7 +24,7 @@ function buildMetadataConfigObject() {
   const config = contents.reduce((acc, el) => ({
     ...acc,
     ...el,
-  }), { title, 'toc-content-numbers': showContentNumbers });
+  }), { title, ariaLabel, 'toc-content-numbers': showContentNumbers });
 
   return config;
 }
@@ -52,14 +53,14 @@ export default async function setTOCSEO() {
     'aria-expanded': 'false',
     'aria-controls': 'toc-content',
   });
-  title.textContent = 'Table of Contents';
+  title.textContent = config.title;
   toc.appendChild(title);
 
   const tocContent = createTag('div', {
     class: 'toc-content',
     id: 'toc-content',
     role: 'region',
-    'aria-label': 'Table of Contents Links',
+    'aria-label': config.ariaLabel,
   });
 
   // Create all links once
