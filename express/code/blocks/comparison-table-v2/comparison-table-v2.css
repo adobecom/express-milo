@@ -630,12 +630,21 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
  
     .comparison-table-v2 .sticky-header .plan-cell {
         width: var(--cell-width);
+        pointer-events: none;
     }
+
+  
+
 
 
     .comparison-table-v2 .sticky-header .plan-cell-wrapper {
         padding-top: var(--spacing-300);
         padding-bottom: var(--spacing-300);
+        pointer-events: none;
+    }
+
+    .comparison-table-v2 .sticky-header .plan-cell-wrapper:focus {
+        outline: none;
     }
 
     /* Plan cell typography - Desktop - keep mobile styles */
