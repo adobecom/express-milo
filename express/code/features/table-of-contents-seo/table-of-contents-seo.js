@@ -180,7 +180,7 @@ export default async function setTOCSEO() {
         if (footerElement) {
           const footerTop = footerElement.offsetTop - scrollTop;
           const tocHeight = tocElement.offsetHeight;
-          const maxTopPosition = footerTop - tocHeight - 20; // 20px gap from footer
+          const maxTopPosition = footerTop - tocHeight; // Remove 20px gap from footer
 
           if (topPosition > maxTopPosition) {
             topPosition = maxTopPosition;
