@@ -370,6 +370,12 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
     const observer = new IntersectionObserver(
         (entries) => {
             entries.forEach(entry => {
+                // Check if parent section is hidde
+                if (comparisonBlock.parentElement.classList.contains('display-none')) {
+                    stickyHeader.classList.remove('is-stuck');
+                    placeholder.style.display = 'none';
+                    return;
+                }
                 if (!entry.isIntersecting) {
                     // Header is scrolled out of view - make it sticky
                     stickyHeader.classList.add('is-stuck');
@@ -400,6 +406,23 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
     comparisonBlock.insertBefore(sentinel, comparisonBlock.firstChild);
 
     observer.observe(sentinel);
+    
+    // Watch for changes to parent section's display property
+    const parentSection = comparisonBlock.closest('section');
+    if (parentSection) {
+        const mutationObserver = new MutationObserver(() => {
+            const isHidden = parentSection.style.display === 'none';
+            if (isHidden) {
+                stickyHeader.classList.remove('is-stuck');
+                placeholder.style.display = 'none';
+            }
+        });
+        
+        mutationObserver.observe(parentSection, {
+            attributes: true,
+            attributeFilter: ['style']
+        });
+    }
 }
 
 function synchronizePlanCellHeights(comparisonBlock) {

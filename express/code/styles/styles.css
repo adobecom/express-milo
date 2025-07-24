@@ -1437,3 +1437,8 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   height: 30px;
   padding: 1rem 0 1rem;
 }
+
+.section.display-none {
+  display: none;
+  height: 0px;;
+}

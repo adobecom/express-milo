@@ -14,6 +14,10 @@ main .section .comparison-table-v2 p {
     margin: 0;
 }
 
+.section.display-none .comparison-table-v2 .sticky-header{
+    display: none;
+}
+
 /* Sticky header - Mobile */
 .comparison-table-v2 .sticky-header {
     display: flex;
