@@ -32,6 +32,15 @@ export default async function setTOCSEO() {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const config = buildMetadataConfigObject();
 
+  // Dynamically get navigation height for mobile positioning
+  let MOBILE_NAV_HEIGHT = 40; // Default fallback
+  try {
+    const { getGnavHeight } = await import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`);
+    MOBILE_NAV_HEIGHT = getGnavHeight();
+  } catch (e) {
+    window.lana?.log(`Error getting gnav height ${e}`);
+  }
+
   const toc = createTag('div', {
     class: 'toc toc-container',
     role: 'navigation',
@@ -69,8 +78,8 @@ export default async function setTOCSEO() {
         if (targetHeader) {
           // Scroll to target with offset for sticky TOC
           const tocHeight = toc.offsetHeight;
-          // Check current window width dynamically
-          const stickyOffset = window.innerWidth >= 768 ? -120 : 40;
+          // Check current window width dynamically and use dynamic nav height for mobile
+          const stickyOffset = window.innerWidth >= 768 ? -120 : MOBILE_NAV_HEIGHT;
           const headerRect = targetHeader.getBoundingClientRect();
           const scrollTop = window.pageYOffset + headerRect.top - tocHeight - stickyOffset - 20;
 
