@@ -1,117 +1,168 @@
 # Comparison Table V2 - Implementation Context
 
 ## Overview
-The comparison-table-v2 component is a mobile-optimized comparison table designed to display feature comparisons between different plans/products. It uses a mobile-first approach with JavaScript-generated HTML.
+The comparison-table-v2 component is a mobile-optimized, accessible comparison table designed to display feature comparisons between different plans/products. It uses a mobile-first approach with JavaScript-generated semantic HTML and advanced state management.
 
-## Key Components
+## Recent Updates
+- Fixed header alignment issues on desktop
+- Resolved flashing/rendering issues during plan switching
+- Enhanced CSS styling for better visual consistency
+- Improved accessibility with proper ARIA attributes and keyboard navigation
+- Added comprehensive tooltip support with pattern matching
+- Implemented smooth plan height synchronization
 
-### 1. Main Structure (`decorate()` function)
-- Entry point at line 335
-- Partitions content into sections separated by `<hr>` or `+++` markers
-- Creates a sticky header for plan navigation
-- Converts content sections into accessible tables
+## Architecture
 
-### 2. Content Partitioning
-- `partitionContentBySeparators()` (line 35): Groups content by separator elements
-- Separators can be `<hr>` elements or text content `+++`
-- Content between separators forms individual table sections
+### Core Files
+- **comparison-table-v2.js** (575 lines): Main component logic
+- **comparison-table-state.js** (342 lines): State management and plan switching logic
+- **comparison-table-v2.css**: Styling and responsive layout
 
-### 3. Sticky Header Creation
-- `createStickyHeader()` (line 243): 
-  - Creates a fixed header that appears when scrolling
-  - Contains plan cells with interactive dropdown selectors
-  - Only shows 2 plans at a time on mobile
-  - Each plan cell has a button wrapper for accessibility
+### Key Dependencies
+- `decorateButtonsDeprecated`: Button styling from utils
+- `handleTooltip`: Tooltip functionality from widgets
+- `ComparisonTableState`: State management class
 
-### 4. Table Generation
-- `convertToTable()` (line 135):
-  - Converts div-based content into semantic table structure
-  - Creates screen reader headers (invisible but accessible)
-  - Adds collapsible sections with toggle buttons
-  - Processes feature rows with icon support
+## Component Features
 
-### 5. Icon Handling
-- `handleCellIcons()` (line 5):
-  - Converts "+" text to checkmark icons
-  - Converts "-" text to crossmark icons
-  - Wraps icons in div containers for styling
+### 1. Content Structure & Processing
+- **Separator-based partitioning**: Content sections divided by `<hr>`, `+++` (open by default), or `===` (no accordion)
+- **Column shading**: First section defines column styling (comma-separated classes)
+- **Tooltip support**: Pattern `[[tooltip_id]]content[[/tooltip_id]]` for interactive tooltips
 
-### 6. Plan Selection & Swapping
-- `ComparisonTableState` class (line 354):
-  - Manages visible plans (2 at a time)
-  - Handles plan swapping via dropdown selectors
-  - Updates table cells when plans are swapped
-  - Maintains DOM order for smooth transitions
+### 2. Sticky Header System
+- **Fixed positioning**: Header sticks to top when scrolling (line 403)
+- **Intersection Observer**: Tracks scroll position for smooth transitions
+- **Mobile optimization**: Shows only 2 plans at a time with dropdown selectors
+- **Desktop support**: All plans visible on screens ≥1280px
+- **Height synchronization**: Dynamic height matching across plan cells (line 468)
 
-### 7. Sticky Behavior
-- `initStickyBehavior()` (line 293):
-  - Uses Intersection Observer API
-  - Creates placeholder to maintain layout
-  - Adds/removes sticky class based on scroll position
-  - Shows simplified header when stuck
+### 3. Table Generation & Accessibility
+- **Semantic HTML**: Converts div-based content to proper `<table>` structure
+- **Screen reader support**: 
+  - Invisible table headers for context
+  - Proper ARIA labels and roles
+  - Live region announcements for plan changes
+- **Icon conversion**:
+  - "+" → checkmark icon with "Yes" label
+  - "-" → crossmark icon with "No" label
+  - Other text wrapped in styled containers
 
-## Mobile-Specific Features
+### 4. Interactive Plan Selection
+- **Dropdown selectors**: Click/tap to open plan selection menu
+- **Keyboard navigation**:
+  - Arrow keys to navigate options
+  - Enter/Space to select
+  - Escape to close
+  - Tab cycling within dropdown (focus trap)
+- **Visual feedback**: Selected plans show checkmark icon
+- **State persistence**: Selected plans remain visible across sections
 
-1. **Limited Columns**: Only 2 plans visible at once
-2. **Plan Selectors**: Dropdown menus to switch between plans
-3. **Touch-Friendly**: Large touch targets on buttons and selectors
-4. **Responsive Layout**: Flexible grid that adapts to screen size
-5. **Collapsible Sections**: Toggle buttons to expand/collapse table sections
+### 5. Collapsible Sections
+- **Toggle buttons**: Expand/collapse table sections
+- **ARIA states**: Proper expanded/collapsed announcements
+- **Default states**: Controlled by separator type (`+++` = open)
+
+## State Management (ComparisonTableState)
+
+### Core Properties
+- `visiblePlans`: Array tracking visible plan indices (e.g., [0, 1])
+- `planSelectors`: DOM references to dropdown elements
+- `ariaLiveRegion`: Announces plan changes to screen readers
+
+### Key Methods
+- `updateVisiblePlan()`: Swaps plans and updates DOM order
+- `updateTableCells()`: Synchronizes table cells with header changes
+- `updatePlanSelectorOptions()`: Manages dropdown visibility/selection state
+
+### Plan Switching Logic
+1. User selects new plan from dropdown
+2. State updates visible plan indices
+3. DOM elements reorder to maintain visual flow
+4. Table cells update to match new selection
+5. Screen reader announces the change
+
+## Mobile vs Desktop Behavior
+
+### Mobile (<1280px)
+- 2 plans maximum visible
+- Interactive plan selectors
+- Touch-friendly tap targets
+- Responsive grid layout
+- Focus management for accessibility
+
+### Desktop (≥1280px)
+- All plans visible simultaneously
+- No plan selectors needed
+- Wider layout optimization
+- Simplified interaction model
 
 ## Generated HTML Structure
 
 ```html
 <div class="comparison-table-v2">
+  <!-- Screen Reader Announcement Region -->
+  <div class="sr-only" aria-live="polite" aria-atomic="true"></div>
+  
   <!-- Sticky Header -->
   <div class="sticky-header">
     <div class="first-cell">Compare Plans</div>
-    <div class="plan-cell">
-      <button class="plan-cell-wrapper">
+    <div class="plan-cell [left-plan|right-plan]">
+      <div class="plan-cell-wrapper" 
+           tabindex="0" 
+           role="button" 
+           aria-expanded="false" 
+           aria-haspopup="listbox">
         <h3>Plan Name</h3>
-        <p>Price</p>
+        <p>Price/Description</p>
         <div class="plan-selector-wrapper">
-          <div class="plan-selector" role="button" aria-haspopup="listbox">
+          <div class="plan-selector" data-plan-index="0">
             <div class="plan-selector-choices" role="listbox">
-              <div class="plan-selector-choice" role="option">Plan 1</div>
-              <div class="plan-selector-choice" role="option">Plan 2</div>
+              <div class="plan-selector-choice" 
+                   role="option" 
+                   aria-selected="true">
+                <div class="plan-selector-choice-text">
+                  <span class="selected-icon icon-selected"></span>
+                  Plan Name
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <a class="con-button">Get Started</a>
-      </button>
+      </div>
+      <a class="con-button action-area">Get Started</a>
     </div>
   </div>
   
   <!-- Table Sections -->
-  <div class="table-container">
-    <div class="first-row" tabindex="0">
+  <div class="table-container [no-accordion]">
+    <div class="first-row">
       <h2>Section Title</h2>
-      <div class="button-cell">
-        <button class="toggle-button">
-          <span class="icon expand-button"></span>
-        </button>
-      </div>
+      <button class="toggle-button" 
+              aria-label="Expand section" 
+              aria-expanded="false">
+        <span class="icon expand-button [open]"></span>
+      </button>
     </div>
     
-    <table>
+    <table class="[hide-table]">
       <thead class="invisible-headers">
         <tr>
           <th>Section Title</th>
-          <th>Plan 1</th>
-          <th>Plan 2</th>
+          <th scope="col">Plan 1</th>
+          <th scope="col">Plan 2</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="feature-cell feature-cell-header">Feature Name</td>
+          <th class="feature-cell feature-cell-header" scope="row">
+            <p>Feature Name</p>
+          </th>
           <td class="feature-cell" data-plan-index="0">
             <div class="icon-wrapper">
-              <span class="icon-checkmark-no-fill"></span>
-            </div>
-          </td>
-          <td class="feature-cell" data-plan-index="1">
-            <div class="icon-wrapper">
-              <span class="icon-crossmark"></span>
+              <span class="icon-checkmark-no-fill" 
+                    role="img" 
+                    aria-label="Yes"></span>
             </div>
           </td>
         </tr>
@@ -121,16 +172,27 @@ The comparison-table-v2 component is a mobile-optimized comparison table designe
 </div>
 ```
 
-## Key Interactions
+## Button Styling Enhancement
+The component supports special button styling with the `#_button-fill` suffix in button text, which adds the `fill` class for filled button variants.
 
-1. **Plan Selection**: Click on plan selector → dropdown appears → select new plan → table updates
-2. **Section Toggle**: Click toggle button → table expands/collapses
-3. **Sticky Header**: Scroll down → header sticks to top → scroll up → header returns to position
-4. **Plan Swapping**: Selected plan moves to visible position, previous plan becomes hidden
+## Performance Optimizations
+- **ResizeObserver**: Monitors dynamic content changes for height adjustments
+- **Event delegation**: Efficient event handling for interactive elements
+- **DOM reordering**: Maintains visual consistency during plan switches
+- **Debounced resize handling**: Prevents excessive recalculations
 
-## State Management
+## Accessibility Features
+- Full keyboard navigation support
+- Screen reader announcements for all interactions
+- Proper ARIA attributes throughout
+- Focus management and trapping
+- Semantic HTML structure
+- High contrast support for icons
 
-The `ComparisonTableState` class maintains:
-- `visiblePlans`: Array of currently visible plan indices [0, 1]
-- `planSelectors`: References to dropdown selector elements
-- Methods to update visibility and reorder DOM elements
+## Testing Considerations
+- Test plan switching on mobile and desktop viewports
+- Verify keyboard navigation flows
+- Check screen reader announcements
+- Validate tooltip interactions
+- Ensure proper collapse/expand behavior
+- Test with 2, 3, and 4+ plans
