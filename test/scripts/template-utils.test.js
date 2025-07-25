@@ -61,6 +61,34 @@ describe('template-utils', () => {
       expect(filters.includes('topics==class')).to.be.true;
       expect(filters.includes('language==en-US')).to.be.true;
     });
+    it('handles topics top-level AND', () => {
+      // filters=language==en-US
+      const { url } = recipe2ApiQuery('topics=birthday AND music,geometric,gourmet,cactus_journal,60 AND sprinkles,fun,cakestand,paint paper,abstract AND dance,organic,cursive,succulent,photo memories,zig zag&limit=10&collection=default');
+      const params = new URL(url).searchParams;
+      const filters = params.getAll('filters');
+      expect(filters.includes('topics==birthday')).to.be.true;
+      expect(filters.includes('topics==music,geometric,gourmet,cactus_journal,60')).to.be.true;
+      expect(filters.includes('topics==sprinkles,fun,cakestand,paint paper,abstract')).to.be.true;
+      expect(filters.includes('topics==dance,organic,cursive,succulent,photo memories,zig zag')).to.be.true;
+    });
+    it('handles backup recipe', () => {
+      const { url, headers, backupQuery } = recipe2ApiQuery('topics=cat&tasks=poster&language=ja-JP&limit=10&collection=default&prefRegion=JP&backup=[language=en-US,ja-JP;-tasks;prefRegion=ZZ]');
+      const params = new URL(url).searchParams;
+      expect(params.get('limit')).to.equal('10');
+      const filters = params.getAll('filters');
+      expect(filters.includes('topics==cat')).to.be.true;
+      expect(filters.includes('pages.task.name==poster')).to.be.true;
+      expect(filters.includes('language==ja-JP')).to.be.true;
+      expect(headers['x-express-pref-region-code']).to.equal('JP');
+
+      expect(backupQuery.headers['x-express-pref-region-code']).to.equal('ZZ');
+      const backupParams = new URL(backupQuery.url).searchParams;
+      const backupFilters = backupParams.getAll('filters');
+      expect(backupFilters.includes('topics==cat')).to.be.true;
+      expect(backupFilters.some((filter) => filter.startsWith('pages.task.tasks'))).to.be.false;
+      expect(backupFilters.includes('language==en-US,ja-JP')).to.be.true;
+      expect(backupParams);
+    });
     it('handles api response', () => {
       const templates = mockAPIResposne.items;
       expect(getTemplateTitle(templates[0])).to.equal('Black Education Day Video');
