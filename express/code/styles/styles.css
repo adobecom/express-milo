@@ -1108,11 +1108,15 @@ main .section.blog-content>.content>p {
   }
 
   main .section>.content {
-    max-width: 1024px;
+    max-width: var(--block-lg-max-width);
   }
 }
 
-/* long-form section: left-align text */
+main .section.long-form {
+  max-width: var(--block-lg-max-width);
+  margin: auto;
+}
+
 main .section.long-form.narrow {
   max-width: 850px;
   margin: 0 auto;
