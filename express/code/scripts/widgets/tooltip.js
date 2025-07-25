@@ -31,20 +31,7 @@ export function adjustElementPosition() {
   }
 }
 
-function buildTooltip(pricingArea, tooltipPattern) {
-  const elements = pricingArea.querySelectorAll('p');
-  let tooltipMatch;
-  let tooltipContainer;
-
-  Array.from(elements).forEach((p) => {
-    const match = tooltipPattern.exec(p.textContent);
-    if (match) {
-      tooltipMatch = match;
-      tooltipContainer = p;
-    }
-  });
-  if (!tooltipMatch) return;
-
+function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
   tooltipContainer.innerHTML = tooltipContainer.innerHTML.replace(tooltipPattern, '');
   const tooltipContent = tooltipMatch[2];
   tooltipContainer.classList.add('tooltip');
@@ -141,7 +128,37 @@ function buildTooltip(pricingArea, tooltipPattern) {
   });
 }
 
-export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
+export function getTooltipMatch(pricingArea, tooltipPattern) {
+  const elements = pricingArea.querySelectorAll('p');
+  let tooltipMatch;
+  let tooltipContainer; 
+  Array.from(elements).forEach((p) => {
+    const match = tooltipPattern.exec(p.innerText);
+    if (match) {
+      tooltipMatch = match;
+      tooltipContainer = p;
+    }
+  });
+  return { tooltipMatch, tooltipContainer };
+}
+
+export function handleTooltipSync(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
+  const { tooltipMatch, tooltipContainer } = getTooltipMatch(pricingArea, tooltipPattern);
+  if (!tooltipMatch) return;
+  handleTooltip(pricingArea, tooltipPattern, tooltipMatch, tooltipContainer);
+}
+
+export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g, tooltipMatch, tooltipContainer) {
+  if (!tooltipMatch) {
+    const res = getTooltipMatch(pricingArea, tooltipPattern);
+    if (res.tooltipMatch) {
+      tooltipMatch = res.tooltipMatch;
+      tooltipContainer = res.tooltipContainer;
+    } else {
+      return;
+    }
+  }
+ 
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig, loadStyle } = utils);
   });
@@ -149,7 +166,7 @@ export default async function handleTooltip(pricingArea, tooltipPattern = /\(\((
   return new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
       onTooltipCSSLoad();
-      buildTooltip(pricingArea, tooltipPattern);
+      buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer);
       resolve();
     });
   });

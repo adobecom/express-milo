@@ -862,3 +862,51 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         order: unset;
     }
 }
+
+
+.comparison-table-v2 .tooltip{
+    display: flex;
+    flex-direction: row;
+}
+
+.comparison-table-v2 .tooltip>button:focus {
+ 
+    border-radius: 2px;
+    border-width: 1px;
+    border-style: dashed;
+    dashes: 4, 2;
+    border-color: var(--Background-Accent-key-focus, #4046CA);
+
+}
+
+.comparison-table-v2 .feature-cell p {
+    display: flex;
+    flex-direction: row; 
+}
+
+.comparison-table-v2 a[title='link'] {
+    font-family: Family/Title;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: Global/Typography/Family/Body/S;
+    leading-trim: NONE;
+    line-height: 130%;
+    letter-spacing: 0%;
+    text-align: center;
+    text-decoration: underline;
+    text-decoration-style: solid;
+    text-decoration-offset: 0%;
+    text-decoration-thickness: 0%;
+    text-decoration-skip-ink: auto;
+}
+
+
+.comparison-table-v2 a.con-button.fill:any-link {
+    background: var(--text-color);
+    border-color: var(--text-color);
+    color: var(--color-white);
+}
+
+.comparison-table-v2 a.con-button.fill:hover {
+    background-color: var(--color-gray-700);
+}
