@@ -604,9 +604,16 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     background-color: var(--color-gray-100);
 }
 
+@media (min-width: 768px) {
+    .comparison-table-v2  {
+        max-width: 600px;
+    }
+}
+
 /* Desktop styles - 1280px and up */
 @media (min-width: 1280px) {
     .comparison-table-v2 {
+        max-width: 1300px;
         padding: 0;
         width: fit-content;
         gap: var(--spacing-300);
