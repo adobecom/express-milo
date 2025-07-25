@@ -7,12 +7,12 @@
 }
 
 .collapsible-row-accordion {
-    height: 128px;
+    /* height: 128px; */
     margin-bottom: 4px;
-    border-radius: 0px 8px 8px 0px;
+    border-radius: 0px 16px 16px 0px;
     border-left: 4px solid #724CDC;
     background: #F8F8F8;
-    padding: 16px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -24,26 +24,26 @@
     height: auto;
     margin: auto;
 }
-.collapsible-rows .collapsible-row-accordion {
+/* .collapsible-rows .collapsible-row-accordion {
     margin-right: 15px;
-}
+} */
 .collapsible-row-header {
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 130%; /* 24px */
     text-align: left;
-    padding-left: 16px;
+    /* padding-left: 16px; */
     color: #444444;
 }
 .collapsible-row-sub-header {
-    margin-top: 10px;
-    font-size: 14px;
+    padding-top: 8px;
+    font-size: 18px;
     font-style: normal;
-    font-weight: 700;
-    line-height: 24px;
+    font-weight: 800;
+    line-height: 130%; /* 24px */
     text-align: left;
-    padding-left: 16px;
+    /* padding-left: 16px; */
     color: #505050;
 }
 .collapsible-rows .collapsible-row-toggle-btn {
@@ -159,7 +159,7 @@
 }
 
 @media (min-width: 400px) {
-    .collapsible-row-header {
+    /* .collapsible-row-header {
         font-size: 18px;
         font-weight: 400;
     }
@@ -167,17 +167,16 @@
         font-size: 18px;
         font-weight: 700;
         line-height: 24px;
-    }
+    } */
     .collapsible-rows.small .collapsible-row-accordion {
         height: 78px;
     }
     .collapsible-row-accordion {
-        height: 128px;
+        /* height: 128px; */
         margin-bottom: 4px;
-        border-radius: 0px 8px 8px 0px;
+        border-radius: 0px 16px 16px 0px;
         border-left: 4px solid #724CDC;
         background: #F8F8F8;
-        padding: 16px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -216,12 +215,12 @@
 
 @media (min-width: 900px) {
     .collapsible-rows-container {
-        width: 648px;
+        width: var(--ax-grid-8-col-width);
         margin-left: auto;
         margin-right: auto;
     }
     .collapsible-rows {
-        width: 648px;
+        width: var(--ax-grid-8-col-width);
     }
     .collapsible-rows .collapsible-row-accordion {
         margin-left: 0;
@@ -232,5 +231,22 @@
         height: 24px;
         line-height: 24px;
         margin-left: 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .collapsible-rows {
+        width: var(--ax-grid-7-col-width);
+    }
+
+    .collapsible-row-header {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 130%; /
+    }
+    .collapsible-row-sub-header {
+        font-size: 20px;
+        font-weight: 800;
+        line-height: 130%; 
     }
 }
