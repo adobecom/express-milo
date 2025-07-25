@@ -62,14 +62,17 @@ main .section .comparison-table-v2 p {
     padding: var(--spacing-200);
     padding-top: 0px;
 }
-
-.comparison-table-v2 .sticky-header.is-stuck .plan-cell {
-    border: none;
-}
-
-.comparison-table-v2 .sticky-header.is-stuck .plan-cell-wrapper {
+ 
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell.gray .plan-cell-wrapper,
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell .plan-cell-wrapper {
     padding-top: var(--spacing-300);
     padding-bottom: var(--spacing-300);
+    border: none;
+    background: none;
+}
+
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell a.con-button{
+    margin-top: -10px;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-wrapper,
@@ -169,6 +172,11 @@ main .section .comparison-table-v2 p {
     outline-offset: 2px;
 }
 
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell.premium .plan-cell-wrapper {
+    border: none;
+    background: none;
+}
+
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper {
     z-index: 5;
     border-radius: 8px;
@@ -204,6 +212,11 @@ main .section .comparison-table-v2 p {
   border-radius: 6px; /* Slightly less than parent */
  
 }
+
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell.premium .plan-cell-wrapper::before {
+    background: none;
+}
+ 
  
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-selector {
     left: 2px;
