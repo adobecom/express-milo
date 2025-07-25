@@ -620,7 +620,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         display: flex;
         flex-direction: column;
         --cell-width: 222px;
-        --header-cell-width: 294px;
+        --header-cell-width: 222px;
     }
 
     .comparison-table-v2 .sticky-header.is-stuck .first-cell {
@@ -662,7 +662,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         justify-content: flex-end;
         align-items: flex-start;
         text-align: left;
-        padding-left: var(--spacing-400);
+        margin-left: 64px;
         padding-bottom: 8px;
         color: var(--color-gray-600);
         font-family: var(--body-font-family);
@@ -705,7 +705,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 
     .comparison-table-v2 .sticky-header .plan-cell.last {
-        padding-right: 24px;
+        margin-right: 64px;
     }
 
     main .comparison-table-v2 .sticky-header .plan-cell p {
@@ -722,14 +722,12 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 .table-container {
         margin: auto;
         box-sizing: border-box;
-        min-width: 1000px;
         max-width: 1300px;
         border-radius: 8px;
         border: 1px solid var(--color-gray-300);
         background: var(--color-white);
         padding: 0px;
-        width: 100%;
-      
+     
     }
 
     .comparison-table-v2 .table-container .toggle-button {
