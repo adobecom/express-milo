@@ -41,6 +41,10 @@ main .section .comparison-table-v2 p {
     justify-content: center;
 }
 
+.comparison-table-v2 table {
+    padding: var(--spacing-300);
+}
+
 .comparison-table-v2 .sticky-header.is-stuck .plan-cell {
     border: none;
 }
@@ -208,12 +212,9 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 /* Table container - Mobile */
 .comparison-table-v2 .table-container {
-    width: 100%;
-    max-width: calc(100% - var(--spacing-500));
     border-radius: 8px;
     border: 1px solid var(--color-gray-300);
-    background: var(--color-white);
-    padding: var(--spacing-300);
+    background: var(--color-white); 
 }
 
 .comparison-table-v2 .table-container .toggle-button {
@@ -502,6 +503,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: var(--spacing-300);
 }
 
 .comparison-table-v2 .icon.expand-button {
@@ -572,15 +574,13 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     margin-top: 4px;
 }
 
+.comparison-table-v2 .feature-cell.gray-text p,
 .comparison-table-v2 .feature-cell.gray p {
     color: var(--icon-color-disabled);
 }
 
-.comparison-table-v2 .gray .icon-checkmark-no-fill {
-    background-color: var(--icon-color-disabled);
-}
-
-.comparison-table-v2 .gray .icon-crossmark {
+.comparison-table-v2 .gray-icon .icon-wrapper span ,
+.comparison-table-v2 .gray .icon-wrapper span {
     background-color: var(--icon-color-disabled);
 }
 
@@ -717,7 +717,6 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     /* Table container - Desktop */
     .comparison-table-v2 .table-container {
         margin: auto;
-     
         box-sizing: border-box;
         min-width: 1000px;
         max-width: 1300px;
@@ -725,6 +724,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         border: 1px solid var(--color-gray-300);
         background: var(--color-white);
         padding: 0px;
+        width: 100%;
       
     }
 

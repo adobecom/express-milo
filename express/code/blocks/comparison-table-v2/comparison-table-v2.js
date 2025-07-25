@@ -42,18 +42,25 @@ function partitionContentBySeparators(blockChildren) {
     const contentGroups = [];
     let currentSection = [];
 
+    let isSeparator = false;
+    let isOpenSeparator = false;
+    let noAccordion = false;
+
+    let nextSectionClasses = []
     for (const childElement of blockChildren) {
-        const isSeparator = childElement.querySelector('hr')
-        const isOpenSeparator = childElement.textContent.trim() === '+++';
-        const noAccordion = childElement.textContent.trim() === '===';
-        console.log(noAccordion)
+        isSeparator = childElement.querySelector('hr')
+        isOpenSeparator = childElement.textContent.trim() === '+++';
+        noAccordion = childElement.textContent.trim() === '===';
+      
         if (isSeparator || isOpenSeparator || noAccordion) {
             if (currentSection.length > 0) {
+                currentSection[0].classList.add(...nextSectionClasses)
+                nextSectionClasses = []
                 if (isOpenSeparator) {
-                    currentSection[0].classList.add('open-separator');
+                    nextSectionClasses.push('open-separator');
                 }
                 if (noAccordion) {
-                    currentSection[0].classList.add('no-accordion');
+                    nextSectionClasses.push('no-accordion');
                 }
                 contentGroups.push(currentSection);
                 currentSection = [];
@@ -63,6 +70,7 @@ function partitionContentBySeparators(blockChildren) {
         }
     }
     if (currentSection.length > 0) {
+        currentSection[0].classList.add(...nextSectionClasses)
         contentGroups.push(currentSection);
     }
     return contentGroups;
@@ -275,14 +283,20 @@ function createPlanDropdownChoices(headers) {
 }
 
 function applyColumnShading(headerGroup, comparisonBlock) {
-    const columnShadingConfig = Array.from(headerGroup[0].querySelectorAll('div')).map((d) => d.textContent.trim());
+    let columnShadingConfig = Array.from(headerGroup[0].querySelectorAll('div')).map((d) => d.textContent.trim());
+    columnShadingConfig = columnShadingConfig.map((entry) => entry.split(','));
+    console.log(columnShadingConfig)
     const rows = comparisonBlock.querySelectorAll('div');
 
     rows.forEach((row, rowIndex) => {
         const cells = row.querySelectorAll('div');
         cells.forEach((cell, cellIndex) => {
-            if (columnShadingConfig[cellIndex] && columnShadingConfig[cellIndex] !== '') {
-                cell.classList.add(columnShadingConfig[cellIndex]);
+            if (columnShadingConfig[cellIndex]) {
+                columnShadingConfig[cellIndex].forEach((entry) => {
+                    if (entry !== '') {
+                        cell.classList.add(entry.trim().toLowerCase());
+                    }
+                });
             }
         });
     });
