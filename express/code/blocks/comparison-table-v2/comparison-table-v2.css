@@ -338,7 +338,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 6px;
+    gap: 0px 6px;
 }
 
 .comparison-table-v2 tbody tr td {
@@ -454,7 +454,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 .plan-selector-choices {
     position: absolute;
     top: 30px;
-    right: 0;
+    right: -2px;
     z-index: 5;
     width: 206px;
     text-align: left;
@@ -486,7 +486,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     position: relative;
     /* padding: var(--spacing-100) var(--spacing-200) var(--spacing-100) var(--spacing-200); */
     padding: 4px;
-    font-size: 1px;
+    font-size: 13px;
+    font-weight: 500;
     background: var(--Background-subdued-default, #6D6D6D);
     box-sizing: border-box;
 
