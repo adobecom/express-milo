@@ -24,7 +24,8 @@ export class ComparisonTableState {
             const choiceWrapper = selector.querySelector('.plan-selector-choices')
 
             const options = Array.from(choiceWrapper.children)
-            options.forEach(option => {
+            console.log(options)
+            options.forEach((option,optionIndex) => {
                 option.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -43,6 +44,7 @@ export class ComparisonTableState {
                     choiceWrapper.querySelectorAll('[role="option"]').forEach(opt => {
                         opt.setAttribute('aria-selected', 'false');
                     });
+                  
                     option.setAttribute('aria-selected', 'true');
                     
                     this.updateVisiblePlan(selectorIndex, currentPlanIndex)
@@ -51,6 +53,10 @@ export class ComparisonTableState {
                     this.closeDropdown(selector);
                     selector.focus();
                 })
+ 
+                // if (optionIndex === this.visiblePlans[selectorIndex]) {
+                //     option.classList.add('selected')
+                // }  
             })
 
             selector.addEventListener('click', (e) => {
@@ -219,11 +225,7 @@ export class ComparisonTableState {
             dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
                 opt.setAttribute('tabindex', '0');
             });
-            const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
-            // if (firstOption) {
-            //     firstOption.classList.add('focused');
-            //     firstOption.focus();
-            // }
+
         } else {
             // Make options not focusable when closing
             dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
@@ -331,6 +333,7 @@ export class ComparisonTableState {
         // Add selected icon
         const iconSpan = createTag('span', { class: 'selected-icon icon-selected' });
         option.querySelector('.plan-selector-choice-text').prepend(iconSpan);
+        option.setAttribute('aria-selected', 'true');
     }
 
     removeSelectedIcon(option) {
@@ -338,5 +341,6 @@ export class ComparisonTableState {
         if (existingIcon) {
             existingIcon.remove();
         }
+        option.setAttribute('aria-selected', 'false');
     }
 }

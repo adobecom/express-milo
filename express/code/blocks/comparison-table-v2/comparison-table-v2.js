@@ -1,7 +1,9 @@
 import { decorateButtonsDeprecated, getLibs } from '../../scripts/utils.js';
 import { ComparisonTableState, initComparisonTableState } from './comparison-table-state.js';
-
+import handleTooltip, { adjustElementPosition , getTooltipMatch} from '../../scripts/widgets/tooltip.js';
 let createTag;
+
+const TOOLTIP_PATTERN =/\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g
 
 function handleCellIcons(cell) {
     let multiParagraph = false;
@@ -136,6 +138,7 @@ function createTableRow(featureRowDiv) {
         const tableCell = document.createElement('td');
         if (cellIndex === 0) {
             tableCell.classList.add('feature-cell-header')
+          
         }
         tableCell.setAttribute('data-plan-index', cellIndex - 1)
         tableCell.classList.add('feature-cell');
@@ -145,6 +148,11 @@ function createTableRow(featureRowDiv) {
 
         tableCell.innerHTML = cellContent.innerHTML;
         handleCellIcons(tableCell);
+
+        const { tooltipMatch, tooltipContainer} = getTooltipMatch(tableCell, TOOLTIP_PATTERN)
+        handleTooltip(tableCell, TOOLTIP_PATTERN, tooltipMatch, tooltipContainer)
+
+  
         tableRow.appendChild(tableCell);
     });
     return tableRow;
@@ -311,6 +319,13 @@ function createStickyHeader(headerGroup, comparisonBlock) {
     const headers = Array.from(headerCells).map(cell => cell.textContent.trim())
     headers.splice(0, 1)
 
+    const buttons = headerGroupElement.querySelectorAll('.con-button')
+    buttons.forEach(button => {
+        if (button.textContent.trim().includes("#_button-fill")) {
+            button.classList.add('fill')
+            button.textContent = button.textContent.replace('#_button-fill', '')
+        } 
+    })
 
     headerCells.forEach((headerCell, cellIndex) => {
         if (cellIndex === 0) {
