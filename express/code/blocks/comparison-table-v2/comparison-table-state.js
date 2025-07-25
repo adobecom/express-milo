@@ -23,8 +23,7 @@ export class ComparisonTableState {
         this.planSelectors.forEach((selector, index) => {
             const choiceWrapper = selector.querySelector('.plan-selector-choices')
 
-            const options = Array.from(choiceWrapper.children)
-            console.log(options)
+            const options = Array.from(choiceWrapper.children) 
             options.forEach((option,optionIndex) => {
                 option.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -53,10 +52,6 @@ export class ComparisonTableState {
                     this.closeDropdown(selector);
                     selector.focus();
                 })
- 
-                // if (optionIndex === this.visiblePlans[selectorIndex]) {
-                //     option.classList.add('selected')
-                // }  
             })
 
             selector.addEventListener('click', (e) => {

@@ -875,7 +875,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 
 .comparison-table-v2 .tooltip{
-    display: flex;
+ 
     gap:0px;
     flex-direction: row;
 }

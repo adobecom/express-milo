@@ -293,7 +293,7 @@ function createPlanDropdownChoices(headers) {
         const option = document.createElement('div');
         const a = document.createElement('div');
         a.classList.add('plan-selector-choice-text');
-        a.textContent = headers[i];
+        a.textContent = headers[i]; 
         option.appendChild(a);
         option.classList.add('plan-selector-choice');
         option.value = i;
@@ -309,8 +309,7 @@ function createPlanDropdownChoices(headers) {
 
 function applyColumnShading(headerGroup, comparisonBlock) {
     let columnShadingConfig = Array.from(headerGroup[0].querySelectorAll('div')).map((d) => d.textContent.trim());
-    columnShadingConfig = columnShadingConfig.map((entry) => entry.split(','));
-    console.log(columnShadingConfig)
+    columnShadingConfig = columnShadingConfig.map((entry) => entry.split(',')); 
     const rows = comparisonBlock.querySelectorAll('div');
 
     rows.forEach((row, rowIndex) => {
@@ -329,13 +328,16 @@ function applyColumnShading(headerGroup, comparisonBlock) {
 
 function createStickyHeader(headerGroup, comparisonBlock) {
 
-    const headerGroupElement = headerGroup[1];
+    const headerGroupElement = headerGroup[1]; 
     headerGroupElement.classList.add('sticky-header');
     const headerCells = headerGroupElement.querySelectorAll('div');
-
-    const headers = Array.from(headerCells).map(cell => cell.textContent.trim())
+    const headers = Array.from(headerCells).map(cell => {
+        const children = Array.from(cell.children)
+        const headers = children.filter((child) => ! child.querySelector('a')) 
+        const output = headers.map((header) => header.textContent.trim()).join(', ').replaceAll(',', '')
+        return output
+    } )
     headers.splice(0, 1)
-
     headerCells.forEach((headerCell, cellIndex) => {
         if (cellIndex === 0) {
             headerCell.classList.add('first-cell');
@@ -514,8 +516,7 @@ export default async function decorate(comparisonBlock) {
             button.textContent = button.textContent.replace('#_button-fill', '')
         } 
     })
-    
-    const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0], comparisonBlock);
+     const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0], comparisonBlock);
     comparisonBlock.appendChild(stickyHeaderElement);
     for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex++) {
         const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
