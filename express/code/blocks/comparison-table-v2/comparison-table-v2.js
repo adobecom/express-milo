@@ -135,10 +135,13 @@ function createTableRow(featureRowDiv) {
     const tableRow = document.createElement('tr');
     const featureCells = featureRowDiv.children;
     Array.from(featureCells).forEach((cellContent, cellIndex) => {
-        const tableCell = document.createElement('td');
+        let tableCell;
         if (cellIndex === 0) {
-            tableCell.classList.add('feature-cell-header')
-          
+            tableCell = document.createElement('th');
+            tableCell.classList.add('feature-cell-header');
+            tableCell.setAttribute('scope', 'row');
+        } else {
+            tableCell = document.createElement('td');
         }
         tableCell.setAttribute('data-plan-index', cellIndex - 1)
         tableCell.classList.add('feature-cell');
