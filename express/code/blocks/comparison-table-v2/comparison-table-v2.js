@@ -319,14 +319,6 @@ function createStickyHeader(headerGroup, comparisonBlock) {
     const headers = Array.from(headerCells).map(cell => cell.textContent.trim())
     headers.splice(0, 1)
 
-    const buttons = headerGroupElement.querySelectorAll('.con-button')
-    buttons.forEach(button => {
-        if (button.textContent.trim().includes("#_button-fill")) {
-            button.classList.add('fill')
-            button.textContent = button.textContent.replace('#_button-fill', '')
-        } 
-    })
-
     headerCells.forEach((headerCell, cellIndex) => {
         if (cellIndex === 0) {
             headerCell.classList.add('first-cell');
@@ -497,7 +489,14 @@ export default async function decorate(comparisonBlock) {
     ariaLiveRegion.style.width = '1px';
     ariaLiveRegion.style.height = '1px';
     ariaLiveRegion.style.overflow = 'hidden';
-    comparisonBlock.appendChild(ariaLiveRegion);
+    comparisonBlock.appendChild(ariaLiveRegion); 
+    const buttons = contentSections[0][1].querySelectorAll('.con-button')
+    buttons.forEach(button => {
+        if (button.textContent.trim().includes("#_button-fill")) {
+            button.classList.add('fill')
+            button.textContent = button.textContent.replace('#_button-fill', '')
+        } 
+    })
     
     const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0], comparisonBlock);
     comparisonBlock.appendChild(stickyHeaderElement);

@@ -168,10 +168,11 @@ export class ComparisonTableState {
             }
 
             this.comparisonBlock.querySelectorAll('tr').forEach((row, rowIndex) => {
-                const cells = row.querySelectorAll('.feature-cell:not(.feature-cell-header)')
+                const cells = row.querySelectorAll('.feature-cell:not(.feature-cell-header), th[scope="col"]')
                 for (let i = 0; i < cells.length; i++) {
                     cells[i].classList.toggle('invisible-content', !this.visiblePlans.includes(i))
                 }
+               
             })
         })
         this.updatePlanSelectorOptions()
