@@ -148,8 +148,12 @@ function createTableRow(featureRowDiv) {
             tableCell = document.createElement('th');
             tableCell.classList.add('feature-cell-header');
             tableCell.setAttribute('scope', 'row');
+            const tableHeaderWrapper = document.createElement('p');
+            tableHeaderWrapper.innerHTML = cellContent.innerHTML;
+            tableCell.appendChild(tableHeaderWrapper);
         } else {
             tableCell = document.createElement('td');
+            tableCell.innerHTML = cellContent.innerHTML;
         }
         tableCell.setAttribute('data-plan-index', cellIndex - 1)
         tableCell.classList.add('feature-cell');
@@ -160,8 +164,10 @@ function createTableRow(featureRowDiv) {
         tableCell.innerHTML = cellContent.innerHTML;
         handleCellIcons(tableCell);
 
-        const { tooltipMatch, tooltipContainer} = getTooltipMatch(tableCell.querySelectorAll('p'), TOOLTIP_PATTERN)
-        handleTooltip(tableCell.querySelectorAll('p'), TOOLTIP_PATTERN, tooltipMatch, tooltipContainer)
+        const tooltipElements = cellIndex === 0 ? [tableCell ]: tableCell.querySelectorAll('p')
+     
+        const { tooltipMatch, tooltipContainer} = getTooltipMatch(tooltipElements, TOOLTIP_PATTERN)
+        handleTooltip( tooltipElements, TOOLTIP_PATTERN, tooltipMatch, tooltipContainer)
 
   
         tableRow.appendChild(tableCell);

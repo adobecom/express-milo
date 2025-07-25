@@ -645,14 +645,6 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         padding: 0;
     }
 
-    .comparison-table-v2 .feature-cell:first-child {
-       display: table-cell;
-       padding: 0;
-       margin: auto 0px;
-       margin-right: auto; 
-
-    }
-
     .comparison-table-v2 .first-row:has(button[aria-expanded="true"]) {
         border-bottom: 1px solid var(--color-gray-300);
     }
@@ -776,9 +768,14 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
    
-.comparison-table-v2 table tbody th {
-    text-align: left;
-}
+    .comparison-table-v2 table tbody th.feature-cell-header {
+        text-align: left;
+        display: table-cell;
+        padding: 0;
+        margin: auto 0px;
+        margin-right: auto; 
+
+    }
     .comparison-table-v2 table tbody th,
     .comparison-table-v2 table td {
         display: table-cell;
