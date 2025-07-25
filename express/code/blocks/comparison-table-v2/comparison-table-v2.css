@@ -356,6 +356,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .invisible-content {
     display: none;
+    visibility: hidden;
 }
 
 .comparison-table-v2 .table-container table.hide-table {
