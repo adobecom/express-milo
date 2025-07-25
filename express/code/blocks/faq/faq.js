@@ -4,7 +4,8 @@ import { trackButtonClick } from '../../scripts/instrument.js';
 let createTag; let getMetadata;
 
 function decorateFAQBlocks(block) {
-  const showSchema = getMetadata('show-faq-schema');
+  const hideSchemaPageLevel = getMetadata('show-faq-schema') === 'no';
+  const hideSchemaBlockLevel = block.classList.contains('hide-faq-schema');
   const faqs = [];
   const entities = [];
   const rows = Array.from(block.children);
@@ -47,7 +48,7 @@ function decorateFAQBlocks(block) {
     });
   });
 
-  if (showSchema !== 'no') {
+  if (!hideSchemaPageLevel && !hideSchemaBlockLevel) {
     const $schemaScript = document.createElement('script');
     $schemaScript.setAttribute('type', 'application/ld+json');
     $schemaScript.textContent = JSON.stringify({
