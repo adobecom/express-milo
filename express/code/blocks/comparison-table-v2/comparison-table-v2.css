@@ -939,7 +939,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 table td p {
         color: inherit;
         font-size: inherit;
-        font-weight: inherit;
+        font-weight: 700;
         line-height: inherit;
     }
 
