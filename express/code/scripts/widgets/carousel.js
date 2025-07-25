@@ -121,7 +121,7 @@ function onCarouselCSSLoad(selector, parent, options) {
   faderRight.append(arrowRight);
   parent.append(container);
 
-  // Right arrow visibility is now handled by the intersection observer and scroll event in initToggleTriggers
+  // Right arrow visibility handled by intersection observer and scroll event in initToggleTriggers
 
   // Scroll the carousel by clicking on the controls
   const moveCarousel = (increment) => {
