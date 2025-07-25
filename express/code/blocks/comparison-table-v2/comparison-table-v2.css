@@ -356,6 +356,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     visibility: hidden;
 }
 
+
+
 .comparison-table-v2 .table-container table.hide-table {
     display: none;
 }
@@ -562,6 +564,22 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     padding: var(--spacing-200) 0px;
     margin: 0px 6px;
     box-sizing: border-box;
+}
+
+.comparison-table-v2 .icon-wrapper:has(.icon-wrapper-text) {
+    padding: 0px;
+}
+
+.comparison-table-v2 .icon-wrapper-text {
+    padding: 0px;
+    font-family: Adobe Clean;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 12px;
+    leading-trim: NONE;
+    line-height: 130%;
+    letter-spacing: 0%;
+    text-align: center;
 }
 
 
@@ -861,6 +879,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .tooltip{
     display: flex;
+    gap:0px;
     flex-direction: row;
 }
 

@@ -6,6 +6,7 @@ let createTag;
 const TOOLTIP_PATTERN =/\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g
 
 function handleCellIcons(cell) {
+    if (cell.tagName.toLowerCase() !== 'td') return;
     let multiParagraph = false;
     let marker = cell
     if (cell.querySelector('p')) {
@@ -36,6 +37,13 @@ function handleCellIcons(cell) {
         const icon = createTag('span', { class: 'icon-crossmark', role: 'img', alt: 'No' });
         icon.setAttribute('aria-label', 'No');
         wrapper.prepend(icon);
+        cell.prepend(wrapper);
+    } else {
+        const wrapper = createTag('div', { class: 'icon-wrapper' });
+        const p = createTag('p', { class: 'icon-wrapper-text' });
+        p.textContent = marker.textContent.trim();
+        marker.textContent = '';
+        wrapper.appendChild(p);
         cell.prepend(wrapper);
     }
 }
@@ -152,8 +160,8 @@ function createTableRow(featureRowDiv) {
         tableCell.innerHTML = cellContent.innerHTML;
         handleCellIcons(tableCell);
 
-        const { tooltipMatch, tooltipContainer} = getTooltipMatch(tableCell, TOOLTIP_PATTERN)
-        handleTooltip(tableCell, TOOLTIP_PATTERN, tooltipMatch, tooltipContainer)
+        const { tooltipMatch, tooltipContainer} = getTooltipMatch(tableCell.querySelectorAll('p'), TOOLTIP_PATTERN)
+        handleTooltip(tableCell.querySelectorAll('p'), TOOLTIP_PATTERN, tooltipMatch, tooltipContainer)
 
   
         tableRow.appendChild(tableCell);

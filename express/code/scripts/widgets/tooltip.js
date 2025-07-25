@@ -128,8 +128,7 @@ function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
   });
 }
 
-export function getTooltipMatch(pricingArea, tooltipPattern) {
-  const elements = pricingArea.querySelectorAll('p');
+export function getTooltipMatch(elements, tooltipPattern) {
   let tooltipMatch;
   let tooltipContainer; 
   Array.from(elements).forEach((p) => {
@@ -142,15 +141,15 @@ export function getTooltipMatch(pricingArea, tooltipPattern) {
   return { tooltipMatch, tooltipContainer };
 }
 
-export function handleTooltipSync(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
-  const { tooltipMatch, tooltipContainer } = getTooltipMatch(pricingArea, tooltipPattern);
+export function handleTooltipSync(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
+  const { tooltipMatch, tooltipContainer } = getTooltipMatch(elements, tooltipPattern);
   if (!tooltipMatch) return;
-  handleTooltip(pricingArea, tooltipPattern, tooltipMatch, tooltipContainer);
+  handleTooltip(elements, tooltipPattern, tooltipMatch, tooltipContainer);
 }
 
-export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g, tooltipMatch, tooltipContainer) {
+export default async function handleTooltip(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g, tooltipMatch, tooltipContainer) {
   if (!tooltipMatch) {
-    const res = getTooltipMatch(pricingArea, tooltipPattern);
+    const res = getTooltipMatch(elements, tooltipPattern);
     if (res.tooltipMatch) {
       tooltipMatch = res.tooltipMatch;
       tooltipContainer = res.tooltipContainer;
