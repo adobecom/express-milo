@@ -368,6 +368,18 @@ main .section>.simplified-pricing-cards-wrapper {
     margin: auto;
 }
 
+.simplified-pricing-cards .card-wrapper .card .plan-explanation p img:not(.premium-icon) {
+    width: 24px;
+    height: 24px;
+}
+
+.simplified-pricing-cards .card-wrapper .card .plan-explanation p {
+    margin-bottom: 0px;
+}
+
+
+
+
 /* Tablet styles */
 @media (min-width: 768px) and (max-width: 1279px) {
     .simplified-pricing-cards {
@@ -564,4 +576,50 @@ main .section>.simplified-pricing-cards-wrapper {
 
 .simplified-pricing-cards .visually-hidden {
     position:absolute; left:-9999px;
+}
+
+/* Plan explanation image tooltip styles */
+.simplified-pricing-cards .plan-explanation {
+    display: flex;
+    flex-direction: column;
+}
+
+.simplified-pricing-cards .plan-explanation .image-tooltip {
+    display: inline-flex;
+    position: relative;
+}
+
+.simplified-pricing-cards .plan-explanation .image-tooltip button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.simplified-pricing-cards .plan-explanation .tooltip-icon-img {
+    width: 24px;
+    height: 24px;
+}
+
+.simplified-pricing-cards .plan-explanation .premium-icon-wrapper {
+    position: absolute;
+    top: -12px;
+    right: -4px;
+    z-index: 10;
+}
+
+.simplified-pricing-cards .plan-explanation .premium-icon {
+    width: 12px;
+    height: 12px;
+}
+
+/* Make plan-explanation row images flex */
+.simplified-pricing-cards .plan-explanation p.plan-icon-list {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
 }

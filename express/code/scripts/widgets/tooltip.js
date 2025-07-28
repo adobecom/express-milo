@@ -141,6 +141,129 @@ function buildTooltip(pricingArea, tooltipPattern) {
   });
 }
 
+export async function imageTooltipAdapter(imgElement) {
+  if (!imgElement || imgElement.tagName !== 'IMG') return;
+  
+  const altText = imgElement.alt || '';
+
+  const altMatch = altText.match(/alt-text:\s*([^,]+)/);
+  console.log(altMatch);
+  const actualAlt = altMatch ? altMatch[1].trim().split(';')[0] : '';
+  imgElement.alt = actualAlt;
+
+  const tooltipMatch = altText.match(/tooltip-text:\s*([^,]+)/);
+  if (!tooltipMatch) return;
+  
+  const tooltipText = tooltipMatch[1].trim().split(';')[0];
+  const tooltipContainer = createTag('div', { class: 'tooltip image-tooltip' });
+  const tooltipPopup = createTag('div', { class: 'tooltip-text' });
+  tooltipPopup.innerText = tooltipText;
+  
+  const tooltipButton = createTag('button');
+  tooltipButton.setAttribute('aria-label', tooltipText);
+  
+  const imgClone = imgElement.cloneNode(true);
+  imgClone.classList.add('tooltip-icon-img');
+  
+  tooltipButton.append(imgClone);
+  tooltipButton.append(tooltipPopup);
+  
+  imgElement.replaceWith(tooltipContainer);
+  tooltipContainer.append(tooltipButton);
+  
+  const categoryMatch = altText.match(/category:\s*premium/);
+  if (categoryMatch) {
+    const premiumWrapper = createTag('div', { class: 'premium-icon-wrapper' });
+    const premiumIcon = createTag('img', { 
+      src: '/express/code/blocks/simplified-pricing-cards/icons/premium.svg',
+      alt: 'Premium',
+      class: 'premium-icon'
+    });
+    premiumWrapper.append(premiumIcon);
+    tooltipContainer.append(premiumWrapper);
+  }
+  
+  let isTooltipVisible = false;
+  let hideTimeout;
+  let isMouseOverIcon = false;
+  let isMouseOverTooltip = false;
+
+  const showTooltip = () => {
+    clearTimeout(hideTimeout);
+    isTooltipVisible = true;
+    tooltipButton.classList.add('hover');
+    tooltipPopup.classList.add('hover');
+  };
+
+  const hideTooltip = () => {
+    isTooltipVisible = false;
+    tooltipButton.classList.remove('hover');
+    tooltipPopup.classList.remove('hover');
+  };
+
+  const checkAndHideTooltip = () => {
+    clearTimeout(hideTimeout);
+    hideTimeout = setTimeout(() => {
+      if (!isMouseOverIcon && !isMouseOverTooltip) {
+        hideTooltip();
+      }
+    }, 300);
+  };
+
+  const toggleTooltip = () => {
+    if (isTooltipVisible) {
+      hideTooltip();
+    } else {
+      showTooltip();
+    }
+  };
+
+  tooltipButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    adjustElementPosition();
+    toggleTooltip();
+  });
+
+  window.addEventListener('resize', adjustElementPosition);
+  tooltipButton.addEventListener('mouseenter', () => {
+    isMouseOverIcon = true;
+    showTooltip();
+  });
+
+  tooltipButton.addEventListener('mouseleave', () => {
+    isMouseOverIcon = false;
+    checkAndHideTooltip();
+  });
+
+  tooltipPopup.addEventListener('mouseenter', () => {
+    isMouseOverTooltip = true;
+    clearTimeout(hideTimeout);
+  });
+
+  tooltipPopup.addEventListener('mouseleave', () => {
+    isMouseOverTooltip = false;
+    checkAndHideTooltip();
+  });
+
+  tooltipButton.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    toggleTooltip();
+  });
+
+  document.addEventListener('touchstart', (e) => {
+    if (isTooltipVisible && !tooltipButton.contains(e.target)) {
+      hideTooltip();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.activeElement.blur();
+      hideTooltip();
+    }
+  });
+}
+
 export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig, loadStyle } = utils);
