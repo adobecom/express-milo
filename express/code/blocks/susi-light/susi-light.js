@@ -169,10 +169,14 @@ function sanitizeId(input) {
     .replace(/[^\w-]/g, '');
 }
 
-async function buildEdu(el) {
-  const noRedirect = el.classList.contains('no-redirect');
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
+function createLogo() {
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add('express-logo');
+  logo.height = 24;
+  return logo;
+}
+
+async function buildEdu(el, locale, imsClientId, noRedirect) {
   const rows = el.querySelectorAll(':scope > div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
@@ -190,12 +194,9 @@ async function buildEdu(el) {
 }
 
 // wrap susi component with custom logo + footer
-async function buildB2B(el) {
-  const noRedirect = el.classList.contains('no-redirect');
+async function buildB2B(el, locale, imsClientId, noRedirect) {
   const emailFirst = el.classList.contains('email-first');
   const emailOnly = el.classList.contains('email-only');
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
   const rows = el.querySelectorAll(':scope > div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
@@ -217,20 +218,14 @@ async function buildB2B(el) {
     redirectIfLoggedIn(params.destURL);
   }
   await SUSIUtils.loadSUSIScripts();
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
-  logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
   const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent(params));
-  const layout = createTag('div', { class: 'susi-layout' }, [logo, titleDiv, susiWrapper]);
+  const layout = createTag('div', { class: 'susi-layout' }, [createLogo(), titleDiv, susiWrapper]);
   footer && layout.append(footer);
   return layout;
 }
 
-async function buildStudent(el) {
-  const noRedirect = el.classList.contains('no-redirect');
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
+async function buildStudent(el, locale, imsClientId, noRedirect) {
   const rows = el.querySelectorAll(':scope > div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
@@ -248,9 +243,6 @@ async function buildStudent(el) {
     redirectIfLoggedIn(params.destURL);
   }
   await SUSIUtils.loadSUSIScripts();
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
-  logo.height = 24;
   const titleDiv = createTag('div', { class: 'title' }, title);
   const checkboxInput = createTag('input', { type: 'checkbox', name: 'student' });
   const susiComponent = createSUSIComponent(params);
@@ -270,7 +262,7 @@ async function buildStudent(el) {
     createTag('label', {}, [checkboxInput, studentCheckText]),
   );
   const layout = createTag('div', { class: 'susi-layout' }, [
-    logo,
+    createLogo(),
     titleDiv,
     studentCheckDiv,
     susiWrapper,
@@ -281,11 +273,9 @@ async function buildStudent(el) {
 
 // each tab wraps susi component with custom logo + footer
 let tabsId = 0;
-async function buildSUSITabs(el) {
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
-  const noRedirect = el.classList.contains('no-redirect');
+async function buildSUSITabs(el, locale, imsClientId, noRedirect) {
   const rows = [...el.children];
+  const title = rows[0].textContent?.trim();
   const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
   const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
   const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
@@ -355,19 +345,17 @@ async function buildSUSITabs(el) {
     tabList.append(tab);
     return panel;
   });
-
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
-  logo.height = 24;
-  const title = rows[0].textContent?.trim();
   const titleDiv = createTag('div', { class: 'title' }, title);
-  layout.append(logo, titleDiv, tabList, ...panels);
+  layout.append(createLogo(), titleDiv, tabList, ...panels);
   return layout;
 }
 
 export default async function init(el) {
   ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
+  const locale = getConfig().locale.ietf.toLowerCase();
+  const { imsClientId } = getConfig();
+  const noRedirect = el.classList.contains('no-redirect');
 
   const match = [
     { cls: 'b2b', build: buildB2B },
@@ -375,7 +363,8 @@ export default async function init(el) {
     { cls: 'student', build: buildStudent },
   ].find(({ cls }) => el.classList.contains(cls));
 
-  el.replaceChildren(await (match?.build || buildEdu)(el));
+  const susi = await (match?.build || buildEdu)(el, locale, imsClientId, noRedirect);
+  el.replaceChildren(susi);
 
   // branchlinks can exist in footers
   const footer = el.querySelector('.footer');
