@@ -67,7 +67,7 @@ function handleYear2PricingToken(pricingArea, y2p, priceSuffix) {
         `${y2p} ${priceSuffix}`,
       );
     } else {
-      year2PricingToken.textContent = '';
+      year2PricingToken.remove();
     }
   } catch (e) {
     window.lana.log(e);
@@ -160,6 +160,13 @@ async function createPricingSection(
     pricingArea.prepend(priceRow);
     priceEl?.parentNode?.remove();
     pricingSuffixTextElem?.remove();
+    
+    // Clean up any empty paragraph elements
+    pricingArea.querySelectorAll('p').forEach((p) => {
+      if (p.textContent.trim() === '' && p.children.length === 0) {
+        p.remove();
+      }
+    });
   }
 
   ctaGroup.classList.add('card-cta-group');
