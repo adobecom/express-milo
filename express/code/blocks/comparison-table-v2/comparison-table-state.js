@@ -1,4 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
+import { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag;
 
@@ -292,6 +293,7 @@ export class ComparisonTableState {
                 this.ariaLiveRegion.textContent = '';
             }, 100);
         }
+        adjustElementPosition();
     }
 
     updatePlanSelectorOptions() {

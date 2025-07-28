@@ -572,4 +572,14 @@ export default async function decorate(comparisonBlock) {
     planCellWrappers.forEach(wrapper => {
         resizeObserver.observe(wrapper);
     });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) { 
+            observer.unobserve(entry.target);
+            adjustElementPosition();
+          }
+        });
+      });
+      adjustElementPosition();
 }
