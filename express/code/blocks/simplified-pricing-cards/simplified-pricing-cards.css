@@ -623,3 +623,11 @@ main .section>.simplified-pricing-cards-wrapper {
     align-items: center;
     flex-wrap: wrap;
 }
+
+.simplified-pricing-cards .plan-explanation .tooltip-text {
+  margin-bottom: 9px;
+}
+
+.simplified-pricing-cards .plan-explanation .tooltip-text::after {
+    left: 111px;
+}
