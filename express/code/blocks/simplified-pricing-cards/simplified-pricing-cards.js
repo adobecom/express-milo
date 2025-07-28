@@ -4,7 +4,7 @@ import {
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
 import { debounce } from '../../scripts/utils/hofs.js';
-import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
+import handleTooltip, { adjustElementPosition, imageTooltipAdapter } from '../../scripts/widgets/tooltip.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let formatSalesPhoneNumber;
@@ -273,6 +273,21 @@ export default async function init(el) {
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
   el.appendChild(rows[rows.length - 2]);
   el.appendChild(rows[rows.length - 1]);
+
+  // Process images in plan-explanation elements for tooltips
+  const planExplanations = el.querySelectorAll('.plan-explanation');
+  planExplanations.forEach((planExplanation) => {
+    const paragraphs = planExplanation.querySelectorAll('p');
+    paragraphs.forEach((p) => {
+      const images = p.querySelectorAll('img');
+      if (images.length > 0) {
+        p.classList.add('plan-icon-list');
+        images.forEach((img) => {
+          imageTooltipAdapter(img);
+        });
+      }
+    });
+  });
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
