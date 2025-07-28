@@ -6,7 +6,6 @@
     --card-border-radius: var(--spacing-100);
     
     /* Typography Variables - Use Global */
-    --header-size: 18px;
     --header-offer-size: var(--body-font-size-s);
     --line-height: 130%;
     --font-weight-bold: 700; /* Custom weight for pricing elements */
@@ -24,6 +23,7 @@
     --tooltip-icon-size: var(--spacing-400);
     --premium-icon-size: var(--body-font-size-xs);
     --pricing-card-font-weight: 700;
+    --pricing-card-font-size: 18px;
 }
 
 /* Base Styles */
@@ -77,7 +77,7 @@ main .section > .simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .card-header h5,
 .simplified-pricing-cards .card-header h6 {
     font-family: var(--body-font-family);
-    font-size: var(--header-size);
+    font-size: var(--pricing-card-font-size);
     font-weight: var(--pricing-card-font-weight);
     line-height: var(--line-height);
     color: var(--color-text-primary);
@@ -145,7 +145,7 @@ main .section > .simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .pricing-area h5,
 .simplified-pricing-cards .pricing-area h6 {
     text-align: left;
-    font-size: var(--header-size);
+    font-size: var(--pricing-card-font-size);
 }
 
 .simplified-pricing-cards .pricing-area p {
@@ -189,7 +189,7 @@ main .section > .simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .pricing-base-price,
 .simplified-pricing-cards .pricing-price {
     font-family: var(--body-font-family);
-    font-size: var(--header-size);
+    font-size: var(--pricing-card-font-size);
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height);
     text-decoration: none;
@@ -452,7 +452,6 @@ main .section .simplified-pricing-cards a.con-button.compare-all-button {
 @media (min-width: 768px) and (max-width: 1279px) {
     .simplified-pricing-cards {
         --card-width: 580px;
-        --header-size: 18px;
         --header-offer-size: 16px;
     }
 
@@ -498,7 +497,6 @@ main .section .simplified-pricing-cards a.con-button.compare-all-button {
 @media (min-width: 1280px) {
     .simplified-pricing-cards {
         --card-width: 294px;
-        --header-size: 18px;
         --header-offer-size: var(--body-font-size-m);
         padding-top: var(--spacing-600);
     }
