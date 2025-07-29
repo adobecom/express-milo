@@ -120,13 +120,13 @@ line-height: 130%; /* 23.4px */
     position: relative;
 }
 
-.comparison-table-v2 .sticky-header .plan-cell:first-child {
+/* .comparison-table-v2 .sticky-header .plan-cell:first-child {
     margin-right: 6px;
 }
 
 .comparison-table-v2 .sticky-header .plan-cell:last-child {
     margin-left: 6px;
-}
+} */
 
 .comparison-table-v2 .sticky-header .plan-cell a.con-button {
     margin-left: 0px;
@@ -713,8 +713,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         gap: var(--spacing-300);
         display: flex;
         flex-direction: column;
-        --cell-width: 222px;
-        --header-cell-width: 280px;
+        --cell-width: 231px;
+        --header-cell-width: 232px;
     }
     
 
@@ -766,12 +766,13 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 
     .comparison-table-v2 .sticky-header .first-cell {
-        width: var(--header-cell-width); 
+        width: var(--header-cell-width);
+        padding-right: 24px;
         justify-content: flex-end;
         align-items: flex-start;
         text-align: left; 
         padding-bottom: 8px;
-        
+        margin-right: 8px;
         font-style: normal;
         font-weight: 700;
         line-height: 1.3; 
@@ -876,6 +877,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         padding: 0;
         margin: auto 0px;
         margin-right: auto; 
+        padding-right: 8px;
 
     }
     .comparison-table-v2 table tbody th,
