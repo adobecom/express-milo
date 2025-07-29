@@ -11,10 +11,16 @@
     --color-dark-gray: #464646;
     --color-black: #222222;
     --border-color: #D5D5D5;
+    --divider-color: #e9e9e9;
+    --plan-cell-background-color: #F5F5F5;
  
 }
 
 .comparison-table-v2 > * {
+    box-sizing: border-box;
+}
+
+.comparison-table-v2 td {
     box-sizing: border-box;
 }
 
@@ -76,8 +82,7 @@ main .section .comparison-table-v2 p {
     padding-top: 0px;
 }
 .comparison-table-v2 .sticky-header.is-stuck-initial .action-area,
-.comparison-table-v2 .sticky-header.is-stuck-initial .plan-cell.premium .plan-cell-wrapper,
-.comparison-table-v2 .sticky-header.is-stuck-initial .plan-cell.premium .plan-cell-wrapper::before {
+.comparison-table-v2 .sticky-header.is-stuck-initial .plan-cell.premium .plan-cell-wrapper{
     transition: background 0.3s ease-in-out, margin-top 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
     background: none;
 }
@@ -215,12 +220,16 @@ line-height: 130%; /* 23.4px */
     border-bottom: 1px solid var(--border-color);
 }
 
+.comparison-table-v2 .table-container .first-row:hover{
+    background: var(--Palette-gray-50, #F8F8F8);
+}
+
 .comparison-table-v2 table tr:first-child {
     border-top: none;
 }
 
 .comparison-table-v2 table tr {
-    border-top: 1px solid var(--border-color); 
+    border-top: 1px solid var(--divider-color); 
 }
 
 
@@ -265,39 +274,13 @@ line-height: 130%; /* 23.4px */
 }
 
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper {
- 
-    background: linear-gradient(95.85deg, #B539C8 0%, #7155FA 66%, #3B63FB 100%);
-   
-    z-index: 5;
+    background: linear-gradient(var(--color-white) 0 0) padding-box, var(--S2-Buttons-Premium) border-box;
+    border: 2px solid transparent;
     border-radius: 8px;
-    border: none;
- 
 }
-
-.comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper::before {
-    content: "";
-  position: absolute;
-  inset: 2px; /* Same as padding */
-  background: white; /* Match your background */
-  border-radius: 6px; /* Slightly less than parent */
- 
-}
-
-.comparison-table-v2 .sticky-header.is-stuck .plan-cell.premium .plan-cell-wrapper::before {
-    background: none;
-}
- 
- 
-.comparison-table-v2 .sticky-header .plan-cell.premium .plan-selector {
-    left: 2px;
-    width: calc(100% - 4px); 
-    top: -2px;
-    border-radius: 0px 0px 5px 5px;
-}
-
 
 .comparison-table-v2 .sticky-header .plan-cell.gray .plan-cell-wrapper {
-    background: var(--color-gray-100);
+    background: var(--plan-cell-background-color);
 }
 
 /* Plan cell typography - Mobile */
@@ -513,14 +496,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 .plan-selector-choices {
     position: absolute;
     top: 30px;
-    right: -2px;
+    width: 188px;
     z-index: 5;
-    width: 206px;
+    right: 0;
     text-align: left;
-    border-radius: 10px;
-    border-bottom: 1px solid var(--color-gray-500);
-   
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 10px; 
     color: var(--color-white);
     overflow: hidden;
 }
@@ -549,13 +529,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     font-weight: 500;
     background: var(--Background-subdued-default, #6D6D6D);
     box-sizing: border-box;
+    width: 188px;
 
 
 }
-
-.comparison-table-v2 .plan-selector-choices .plan-selector-choice + .plan-selector-choice {
-    border-top: 1px solid var(--color-gray-500);
-}
+ 
 
 .comparison-table-v2 .plan-selector-choices .plan-selector-choice.selected .selected-icon {
     margin-right: var(--spacing-200);
