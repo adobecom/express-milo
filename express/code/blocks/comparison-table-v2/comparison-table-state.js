@@ -24,15 +24,15 @@ export class ComparisonTableState {
       const choiceWrapper = selector.querySelector('.plan-selector-choices');
 
       const options = Array.from(choiceWrapper.children);
-      options.forEach((option, optionIndex) => {
+      options.forEach((option) => {
         option.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
           if (e.target.classList.contains('selected')) {
             return;
           }
-          const currentPlanIndex = parseInt(option.dataset.planIndex);
-          const selectorIndex = parseInt(selector.dataset.planIndex);
+          const currentPlanIndex = parseInt(option.dataset.planIndex, 10);
+          const selectorIndex = parseInt(selector.dataset.planIndex, 10);
 
           // Don't allow selecting the same plan that's currently visible
           if (this.visiblePlans.includes(currentPlanIndex)) {
@@ -68,18 +68,19 @@ export class ComparisonTableState {
         if (isOpen) {
           const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
           const currentIndex = visibleOptions.findIndex((opt) => opt.classList.contains('focused'));
-
+          const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+          const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
           switch (e.key) {
             case 'ArrowDown':
               e.preventDefault();
-              const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+
               visibleOptions.forEach((opt) => opt.classList.remove('focused'));
               visibleOptions[nextIndex].classList.add('focused');
               visibleOptions[nextIndex].focus();
               break;
             case 'ArrowUp':
               e.preventDefault();
-              const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+
               visibleOptions.forEach((opt) => opt.classList.remove('focused'));
               visibleOptions[prevIndex].classList.add('focused');
               visibleOptions[prevIndex].focus();
@@ -89,13 +90,13 @@ export class ComparisonTableState {
               e.preventDefault();
               if (e.shiftKey) {
                 // Shift+Tab - go backwards (higher index -> lower index)
-                const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+
                 visibleOptions.forEach((opt) => opt.classList.remove('focused'));
                 visibleOptions[nextIndex].classList.add('focused');
                 visibleOptions[nextIndex].focus();
               } else {
                 // Tab - go forwards (lower index -> higher index)
-                const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+
                 visibleOptions.forEach((opt) => opt.classList.remove('focused'));
                 visibleOptions[prevIndex].classList.add('focused');
                 visibleOptions[prevIndex].focus();
@@ -118,7 +119,7 @@ export class ComparisonTableState {
 
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            const currentPlanIndex = parseInt(option.dataset.planIndex);
+            const currentPlanIndex = parseInt(option.dataset.planIndex, 10);
 
             // Don't allow selecting the same plan that's currently visible
             if (!this.visiblePlans.includes(currentPlanIndex)) {
@@ -162,7 +163,7 @@ export class ComparisonTableState {
         }
       }
 
-      this.comparisonBlock.querySelectorAll('tr').forEach((row, rowIndex) => {
+      this.comparisonBlock.querySelectorAll('tr').forEach((row) => {
         const cells = row.querySelectorAll('.feature-cell:not(.feature-cell-header), th[scope="col"]');
         for (let i = 0; i < cells.length; i += 1) {
           cells[i].classList.toggle('invisible-content', !this.visiblePlans.includes(i));
@@ -305,7 +306,7 @@ export class ComparisonTableState {
         }
 
         // Update selected state and icon
-        const planIndex = parseInt(child.dataset.planIndex);
+        const planIndex = parseInt(child.dataset.planIndex, 10);
         if (this.visiblePlans.includes(planIndex)) {
           child.classList.add('selected');
           this.addSelectedIcon(child);
