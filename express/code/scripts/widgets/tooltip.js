@@ -141,20 +141,16 @@ export function getTooltipMatch(elements, tooltipPattern) {
   return { tooltipMatch, tooltipContainer };
 }
 
-export function handleTooltipSync(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
-  const { tooltipMatch, tooltipContainer } = getTooltipMatch(elements, tooltipPattern);
-  if (!tooltipMatch) return;
-  handleTooltip(elements, tooltipPattern, tooltipMatch, tooltipContainer);
-}
-
-export default async function handleTooltip(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g, tooltipMatch, tooltipContainer) {
+export default async function handleTooltip(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g, tooltipMatch = undefined, tooltipContainer = undefined) {
+  let localTooltipMatch = tooltipMatch;
+  let localTooltipContainer = tooltipContainer;
   if (!tooltipMatch) {
     const res = getTooltipMatch(elements, tooltipPattern);
     if (res.tooltipMatch) {
-      tooltipMatch = res.tooltipMatch;
-      tooltipContainer = res.tooltipContainer;
+      localTooltipMatch = res.tooltipMatch;
+      localTooltipContainer = res.tooltipContainer;
     } else {
-      return;
+      return undefined;
     }
   }
 
@@ -165,8 +161,14 @@ export default async function handleTooltip(elements, tooltipPattern = /\(\(([^]
   return new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
       onTooltipCSSLoad();
-      buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer);
+      buildTooltip(localTooltipMatch, tooltipPattern, localTooltipContainer);
       resolve();
     });
   });
+}
+
+export function handleTooltipSync(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
+  const { tooltipMatch, tooltipContainer } = getTooltipMatch(elements, tooltipPattern);
+  if (!tooltipMatch) return;
+  handleTooltip(elements, tooltipPattern, tooltipMatch, tooltipContainer);
 }

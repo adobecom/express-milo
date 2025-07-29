@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-import { readFile, writeFile } from '@web/test-runner-commands';
+import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 const imports = await Promise.all([
@@ -393,7 +393,7 @@ describe('Comparison Table V2', () => {
     if (nonSelectedOption) {
       // Navigate to the non-selected option
       const optionIndex = visibleOptions.indexOf(nonSelectedOption);
-      for (let i = 0; i < optionIndex; i+=1) {
+      for (let i = 0; i < optionIndex; i += 1) {
         selector.dispatchEvent(new KeyboardEvent('keydown', {
           key: 'ArrowDown',
           bubbles: true,

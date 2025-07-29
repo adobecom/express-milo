@@ -49,7 +49,7 @@ export class ComparisonTableState {
           this.updateVisiblePlan(selectorIndex, currentPlanIndex);
 
           // Close dropdown and update aria-expanded
-          this.closeDropdown(selector);
+          ComparisonTableState.closeDropdown(selector);
           selector.focus();
         });
       });
@@ -104,8 +104,10 @@ export class ComparisonTableState {
               break;
             case 'Escape':
               e.preventDefault();
-              this.closeDropdown(selector);
+              ComparisonTableState.closeDropdown(selector);
               selector.focus();
+              break;
+            default:
               break;
           }
         }
@@ -180,8 +182,8 @@ export class ComparisonTableState {
       if (cells.length === 0) {
         return;
       }
-      const oldCell = cells.filter((cell) => cell.dataset.planIndex === selectorIndex.toString())[0];
-      const newCell = cells.filter((cell) => cell.dataset.planIndex === newPlanIndex.toString())[0];
+      const oldCell = cells.filter((c) => c.dataset.planIndex === selectorIndex.toString())[0];
+      const newCell = cells.filter((c) => c.dataset.planIndex === newPlanIndex.toString())[0];
       oldCell.classList.toggle('invisible-content', true);
       newCell.classList.toggle('invisible-content', false);
       const parent = oldCell.parentElement;
@@ -228,7 +230,7 @@ export class ComparisonTableState {
     }
   }
 
-  closeDropdown(selector) {
+  static closeDropdown(selector) {
     const dropdown = selector.querySelector('.plan-selector-choices');
     dropdown.classList.add('invisible-content');
     selector.setAttribute('aria-expanded', 'false');
@@ -309,16 +311,16 @@ export class ComparisonTableState {
         const planIndex = parseInt(child.dataset.planIndex, 10);
         if (this.visiblePlans.includes(planIndex)) {
           child.classList.add('selected');
-          this.addSelectedIcon(child);
+          ComparisonTableState.addSelectedIcon(child);
         } else {
           child.classList.remove('selected');
-          this.removeSelectedIcon(child);
+          ComparisonTableState.removeSelectedIcon(child);
         }
       }
     }
   }
 
-  addSelectedIcon(option) {
+  static addSelectedIcon(option) {
     // Remove existing icon if present
     const existingIcon = option.querySelector('.plan-selector-choice-text').querySelector('.selected-icon');
     if (existingIcon) {
@@ -331,7 +333,7 @@ export class ComparisonTableState {
     option.setAttribute('aria-selected', 'true');
   }
 
-  removeSelectedIcon(option) {
+  static removeSelectedIcon(option) {
     const existingIcon = option.querySelector('.plan-selector-choice-text').querySelector('.selected-icon');
     if (existingIcon) {
       existingIcon.remove();
