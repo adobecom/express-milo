@@ -31,7 +31,7 @@ function isFormFieldEqual(val1, val2) {
   if (val1 === val2) return true;
   if (Array.isArray(val1) && Array.isArray(val2)) {
     if (val1.length !== val2.length) return false;
-    return val1.every((v1, i) => isFormFieldEqual(v1, val2[i]));;
+    return val1.every((v1, i) => isFormFieldEqual(v1, val2[i]));
   }
   return false;
 }

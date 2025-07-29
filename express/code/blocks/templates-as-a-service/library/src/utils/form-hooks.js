@@ -31,40 +31,42 @@ export function reducer(state, action) {
   const { type, payload } = action;
   const { field, value, topicsRow, topicsCol } = payload || {};
 
-  if (type === ACTION_TYPES.UPDATE_RECIPE) {
-    const form = recipe2Form(value);
-    return form;
+  switch (type) {
+    case ACTION_TYPES.UPDATE_RECIPE: {
+      return recipe2Form(value);
+    }
+    case ACTION_TYPES.UPDATE_FORM: {
+      return { ...state, [field]: value };
+    }
+    case ACTION_TYPES.TOPICS_ADD: {
+      const clonedTopics = structuredClone(state.topics);
+      clonedTopics[topicsRow].push('');
+      return { ...state, topics: clonedTopics };
+    }
+    case ACTION_TYPES.TOPICS_REMOVE: {
+      const clonedTopics = structuredClone(state.topics);
+      clonedTopics[topicsRow].pop();
+      clonedTopics[topicsRow].length || clonedTopics.splice(topicsRow, 1);
+      return {
+        ...state,
+        topics: clonedTopics,
+      };
+    }
+    case ACTION_TYPES.TOPICS_UPDATE: {
+      const clonedTopics = structuredClone(state.topics);
+      clonedTopics[topicsRow][topicsCol] = value;
+      return {
+        ...state,
+        topics: clonedTopics,
+      };
+    }
+    case ACTION_TYPES.TOPICS_EXPAND: {
+      return {
+        ...state,
+        topics: [...state.topics, ['']],
+      };
+    }
+    default:
+      throw new Error(`Unhandled action type: ${type}`);
   }
-  if (type === ACTION_TYPES.UPDATE_FORM) {
-    return { ...state, [field]: value };
-  }
-  if (type === ACTION_TYPES.TOPICS_ADD) {
-    const clonedTopics = structuredClone(state.topics);
-    clonedTopics[topicsRow].push('');
-    return { ...state, topics: clonedTopics };
-  }
-  if (type === ACTION_TYPES.TOPICS_REMOVE) {
-    const clonedTopics = structuredClone(state.topics);
-    clonedTopics[topicsRow].pop();
-    clonedTopics[topicsRow].length || clonedTopics.splice(topicsRow, 1);
-    return {
-      ...state,
-      topics: clonedTopics,
-    };
-  }
-  if (type === ACTION_TYPES.TOPICS_UPDATE) {
-    const clonedTopics = structuredClone(state.topics);
-    clonedTopics[topicsRow][topicsCol] = value;
-    return {
-      ...state,
-      topics: clonedTopics,
-    };
-  }
-  if (type === ACTION_TYPES.TOPICS_EXPAND) {
-    return {
-      ...state,
-      topics: [...state.topics, ['']],
-    };
-  }
-  throw new Error(`Unhandled action type: ${type}`);
 }

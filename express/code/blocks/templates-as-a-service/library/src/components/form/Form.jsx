@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   ACTION_TYPES,
   useFormData,
@@ -12,14 +13,16 @@ import TextArea from './fields/TextArea';
 export default function Form() {
   const formData = useFormData();
   const formDispatch = useFormDispatch();
-  const createFieldChangeHandler =
+  const createFieldChangeHandler = useCallback(
     (fieldName, isNum = false) =>
     ({ target: { value } }) => {
       formDispatch({
         type: ACTION_TYPES.UPDATE_FORM,
         payload: { field: fieldName, value: isNum ? Number(value) : value },
       });
-    };
+    },
+    [formDispatch]
+  );
   return (
     <form className="border-grey rounded p-1 gap-1">
       <h2>Form to Recipe:</h2>
