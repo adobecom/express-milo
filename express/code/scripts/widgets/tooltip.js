@@ -130,7 +130,7 @@ function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
 
 export function getTooltipMatch(elements, tooltipPattern) {
   let tooltipMatch;
-  let tooltipContainer; 
+  let tooltipContainer;
   Array.from(elements).forEach((p) => {
     const match = tooltipPattern.exec(p.innerText);
     if (match) {
@@ -157,7 +157,7 @@ export default async function handleTooltip(elements, tooltipPattern = /\(\(([^]
       return;
     }
   }
- 
+
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig, loadStyle } = utils);
   });
