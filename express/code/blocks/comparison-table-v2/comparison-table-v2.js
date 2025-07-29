@@ -332,8 +332,8 @@ function createStickyHeader(headerGroup, comparisonBlock) {
   });
   const totalColumns = headers.length;
   headers.splice(0, 1);
-  const noSubheaders  = Array.from(headerGroupElement.querySelectorAll('p')).length === 0;
- 
+  const noSubheaders = Array.from(headerGroupElement.querySelectorAll('p')).length === 0;
+
   comparisonBlock.classList.add(`columns-${totalColumns}`);
   headerCells.forEach((headerCell, cellIndex) => {
     if (cellIndex === 0) {
@@ -405,7 +405,6 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   placeholder.classList.add('sticky-header-placeholder');
   comparisonBlock.insertBefore(placeholder, stickyHeader.nextSibling);
 
-   
   const fedsBanner = document.querySelector('.feds-localnav')?.offsetHeight || 40;
   // Intersection Observer to detect when header should stick
   const observer = new IntersectionObserver(
@@ -420,12 +419,12 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
         if (!entry.isIntersecting) {
           const stickyHeaderHeight = stickyHeader.offsetHeight;
           stickyHeader.classList.add('is-stuck-initial');
-       // 
+          //
           placeholder.style.display = 'flex';
           placeholder.style.height = `${stickyHeaderHeight}px`;
           setTimeout(() => {
             stickyHeader.style.top = `${fedsBanner}px`;
-           stickyHeader.classList.remove('is-stuck-initial');
+            stickyHeader.classList.remove('is-stuck-initial');
             stickyHeader.classList.add('is-stuck');
           }, 100);
         } else {
@@ -527,7 +526,8 @@ export default async function decorate(comparisonBlock) {
       button.textContent = button.textContent.replace('#_button-fill', '');
     }
   });
-  const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0],comparisonBlock);
+  const { stickyHeaderElement, columnTitles } = 
+  createStickyHeader(contentSections[0], comparisonBlock);
   comparisonBlock.appendChild(stickyHeaderElement);
   for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex += 1) {
     const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);

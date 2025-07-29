@@ -262,7 +262,7 @@ describe('Comparison Table V2', () => {
     await new Promise((resolve) => { setTimeout(resolve, 500); });
 
     const dropdown = selector.querySelector('.plan-selector-choices');
-    
+
     const visibleOptions = dropdown.querySelectorAll('.plan-selector-choice:not(.invisible-content)');
     console.log('visibleOptions', visibleOptions);
 
@@ -392,7 +392,7 @@ describe('Comparison Table V2', () => {
 
     const dropdown = selector.querySelector('.plan-selector-choices');
     let visibleOptions = Array.from(dropdown.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
-    
+
     // Find a non-selected option
     const nonSelectedOption = visibleOptions.find((opt) => !opt.classList.contains('selected'));
     console.log('nonSelectedOption', nonSelectedOption);
