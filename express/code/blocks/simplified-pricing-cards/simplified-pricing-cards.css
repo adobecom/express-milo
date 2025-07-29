@@ -286,7 +286,7 @@ main .section > .simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .card-cta-group {
     gap: var(--spacing-100);
     min-height: unset;
-    margin-top: 10px;
+    margin-top: 24px;
 }
 
 .simplified-pricing-cards .card-cta-group:not(.hide) {
@@ -445,6 +445,12 @@ main .section .simplified-pricing-cards a.con-button.compare-all-button {
     gap: var(--spacing-100);
     align-items: center;
     flex-wrap: wrap;
+
+}
+
+.simplified-pricing-cards .plan-explanation p.plan-icon-list picture {
+    width: var(--tooltip-icon-size);
+    height: var(--tooltip-icon-size);
 }
 
 .simplified-pricing-cards .plan-explanation .tooltip-text {
@@ -570,6 +576,12 @@ main .section .simplified-pricing-cards a.con-button.compare-all-button {
 
     .simplified-pricing-cards .pricing-footer div {
         width: unset;
+    }
+
+    .simplified-pricing-cards .card-cta-group {
+        gap: var(--spacing-100);
+        min-height: unset;
+        margin-top: 10px;
     }
 }
 
