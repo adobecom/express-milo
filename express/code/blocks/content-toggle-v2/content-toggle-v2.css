@@ -8,6 +8,10 @@ main .section .content-toggle-v2 {
     max-width: max-content;
 }
 
+main .content-toggle-v2.padding-m {
+    padding: 24px 16px;
+}
+
 main .content-toggle-v2 .carousel-container {
     display: flex;
     align-items: center;
@@ -139,5 +143,27 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
     main .section .content-toggle-v2 {
         --button-height: 40px;
         --spacing-button-padding-vertical: var(--spacing-300);
+        max-width: 600px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    main .content-toggle-v2.padding-m {
+        padding: 32px 0px;
+        max-width: 1000px;
+        margin: auto;
+        width: fit-content;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    main .content-toggle-v2.padding-m {
+        max-width: 1200px;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    main .content-toggle-v2.padding-m {
+        max-width: 1440px;
     }
 }
