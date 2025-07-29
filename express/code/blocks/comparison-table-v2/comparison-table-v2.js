@@ -320,7 +320,7 @@ function applyColumnShading(headerGroup, comparisonBlock) {
   });
 }
 
-function createStickyHeader(headerGroup) {
+function createStickyHeader(headerGroup, comparisonBlock) {
   const headerGroupElement = headerGroup[1];
   headerGroupElement.classList.add('sticky-header');
   const headerCells = headerGroupElement.querySelectorAll('div');
@@ -330,7 +330,11 @@ function createStickyHeader(headerGroup) {
     const output = childContent.map((content) => content.textContent.trim()).join(', ').replaceAll(',', '');
     return output;
   });
+  const totalColumns = headers.length;
   headers.splice(0, 1);
+  const noSubheaders  = Array.from(headerGroupElement.querySelectorAll('p')).length === 0;
+ 
+  comparisonBlock.classList.add(`columns-${totalColumns}`);
   headerCells.forEach((headerCell, cellIndex) => {
     if (cellIndex === 0) {
       headerCell.classList.add('first-cell');
@@ -351,6 +355,10 @@ function createStickyHeader(headerGroup) {
         planCellWrapper.setAttribute('aria-label', `Select plan ${cellIndex}`);
         planCellWrapper.setAttribute('aria-expanded', 'false');
         planCellWrapper.setAttribute('aria-haspopup', 'listbox');
+      }
+
+      if (noSubheaders) {
+        planCellWrapper.classList.add('no-subheaders');
       }
 
       headerCell.classList.add('plan-cell');
@@ -397,7 +405,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   placeholder.classList.add('sticky-header-placeholder');
   comparisonBlock.insertBefore(placeholder, stickyHeader.nextSibling);
 
-  console.log(stickyHeader.offsetHeight);
+   
   const fedsBanner = document.querySelector('.feds-localnav')?.offsetHeight || 40;
   // Intersection Observer to detect when header should stick
   const observer = new IntersectionObserver(
@@ -519,7 +527,7 @@ export default async function decorate(comparisonBlock) {
       button.textContent = button.textContent.replace('#_button-fill', '');
     }
   });
-  const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0]);
+  const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0],comparisonBlock);
   comparisonBlock.appendChild(stickyHeaderElement);
   for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex += 1) {
     const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
