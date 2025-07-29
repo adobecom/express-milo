@@ -1,6 +1,6 @@
 .simplified-pricing-cards {
     /* Layout Variables - Custom */
-    --card-width: 325px;
+    --card-width: 365px;
     --card-padding: var(--spacing-300);
     --card-gap: var(--spacing-100);
     --card-border-radius: var(--spacing-100);
@@ -24,6 +24,7 @@
     --premium-icon-size: var(--body-font-size-xs);
     --pricing-card-font-weight: 700;
     --pricing-card-font-size: 18px;
+    --card-max-width: 365px;
 }
 
 /* Base Styles */
@@ -46,7 +47,7 @@ main .section > .simplified-pricing-cards-wrapper {
 
 /* Card Styles */
 .simplified-pricing-cards .card {
-    width: calc(var(--card-width) - 34px);
+    width: var(--card-width);
     position: relative;
     padding: var(--card-padding);
     background: var(--color-white);
@@ -56,7 +57,15 @@ main .section > .simplified-pricing-cards-wrapper {
     gap: var(--card-gap);
     margin: 0 auto;
     border: 1px solid var(--color-border);
+    min-height: 330px;
+    box-sizing: border-box;
+  
 }
+
+.simplified-pricing-cards .card-wrapper .card.hide {
+    min-height: unset;
+ }
+
 
 .simplified-pricing-cards .card.gradient-promo {
     background: linear-gradient(var(--color-white) 0 0) padding-box,
@@ -114,6 +123,7 @@ main .section > .simplified-pricing-cards-wrapper {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-300);
+    flex-grow: 1;
 }
 
 .simplified-pricing-cards .card-wrapper .card .plan-explanation p {
@@ -203,6 +213,7 @@ main .section > .simplified-pricing-cards-wrapper {
 
 .simplified-pricing-cards .pricing-base-price strong {
     text-decoration: line-through;
+    font-weight: var(--font-weight-bold);
 }
 
 .simplified-pricing-cards .pricing-price strong {
@@ -222,9 +233,7 @@ main .section > .simplified-pricing-cards-wrapper {
 }
 
 .simplified-pricing-cards .card-header p em {
-    padding: 6px;
-    border-radius: var(--button-border-radius);
-    border: 1px solid transparent;
+    padding: 6px; 
     font-style: normal;
     font-weight: 500;
     font-size: var(--body-font-size-xs);
@@ -235,11 +244,10 @@ main .section > .simplified-pricing-cards-wrapper {
     justify-content: center;
     min-width: 21px;
     max-width: 168px;
-    min-height: var(--tooltip-icon-size);
-    border-radius: 7px;
+    max-height: var(--tooltip-icon-size);
+    border-radius: 9px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: var(--body-font-family);
+    text-overflow: ellipsis; 
     line-height: normal;
     text-align: center;
     height: fit-content;
@@ -278,12 +286,12 @@ main .section > .simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .card-cta-group {
     gap: var(--spacing-100);
     min-height: unset;
+    margin-top: 10px;
 }
 
 .simplified-pricing-cards .card-cta-group:not(.hide) {
     display: flex;
-    flex-direction: column-reverse;
-    flex-grow: 1;
+    flex-direction: column-reverse; 
 }
 
 .simplified-pricing-cards .card-cta-group p.button-container {
@@ -303,7 +311,7 @@ main .section > .simplified-pricing-cards-wrapper {
 
 /* Buttons */
 .section .simplified-pricing-cards a.button {
-    margin: var(--spacing-300) 0 0 0;
+    margin: 0px;
     border-radius: var(--button-border-radius);
 }
 
@@ -437,15 +445,16 @@ main .section .simplified-pricing-cards a.con-button.compare-all-button {
     gap: var(--spacing-100);
     align-items: center;
     flex-wrap: wrap;
-    padding-bottom: 80px;
 }
 
 .simplified-pricing-cards .plan-explanation .tooltip-text {
     margin-bottom: 9px;
+    max-width: 91px;
+    left: -44px;
 }
 
 .simplified-pricing-cards .plan-explanation .tooltip-text::after {
-    left: 111px;
+    left: 51px;
 }
 
 /* Tablet Styles */
@@ -496,9 +505,13 @@ main .section .simplified-pricing-cards a.con-button.compare-all-button {
 /* Desktop Styles */
 @media (min-width: 1280px) {
     .simplified-pricing-cards {
-        --card-width: 294px;
+        --card-width: 365px;
         --header-offer-size: var(--body-font-size-m);
         padding-top: var(--spacing-600);
+    }
+
+    .simplified-pricing-cards.many {
+        --card-width: 294px;
     }
 
     .simplified-pricing-cards .card.hide {
@@ -546,10 +559,11 @@ main .section .simplified-pricing-cards a.con-button.compare-all-button {
 
     .simplified-pricing-cards .card {
         gap: var(--spacing-100);
-        padding: 20px;
+        padding: 24px;
         margin: unset;
+        min-height: 385px;
+     
     }
-
     .simplified-pricing-cards a.button.compare-all-button {
         margin-top: var(--spacing-600);
     }
