@@ -126,8 +126,7 @@ main .section .comparison-table-v2 p {
         opacity 0.3s ease-in-out,
         transform 0.3s ease-in-out,
         max-height 0.3s ease-in-out,
-        margin 0.3s ease-in-out;
-    overflow: hidden;
+        margin 0.3s ease-in-out; 
 }
 
 /* Initial state - visible */
