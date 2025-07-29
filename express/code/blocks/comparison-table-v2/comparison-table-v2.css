@@ -833,6 +833,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         flex-direction: column;
         padding: 0;
         box-sizing: border-box;
+       
+    }
+
+    .comparison-table-v2 .feature-cell.no-text {
+        justify-content: center;
     }
 
     .comparison-table-v2 .plan-cell.left-plan {
@@ -1038,6 +1043,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 .invisible-content {
         display: revert;
         visibility: revert;
+    }
+
+    .comparison-table-v2 .invisible-content.feature-cell {
+        display: flex;
     }
 
     /* Hide plan selector on desktop */

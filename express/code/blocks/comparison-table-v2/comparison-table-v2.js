@@ -143,6 +143,7 @@ function createAccessibilityHeaders(sectionTitle, columnTitles) {
 function createTableRow(featureRowDiv) {
   const tableRow = document.createElement('tr');
   const featureCells = featureRowDiv.children;
+  const noText = featureRowDiv.querySelectorAll('p').length === 0; 
   Array.from(featureCells).forEach((cellContent, cellIndex) => {
     let tableCell;
     if (cellIndex === 0) {
@@ -158,9 +159,13 @@ function createTableRow(featureRowDiv) {
     }
     tableCell.setAttribute('data-plan-index', cellIndex - 1);
     tableCell.classList.add('feature-cell');
+    if (noText) {
+      tableCell.classList.add('no-text');
+    }
     for (let i = 0; i < cellContent.classList.length; i += 1) {
       tableCell.classList.add(cellContent.classList[i]);
     }
+   
 
     tableCell.innerHTML = cellContent.innerHTML;
     handleCellIcons(tableCell);
