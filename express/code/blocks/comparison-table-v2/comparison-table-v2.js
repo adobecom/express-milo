@@ -102,7 +102,7 @@ function createToggleButton(isHidden) {
   return button;
 }
 
-function createTableHeader(sectionHeaderRow, columnHeaders) {
+function createTableHeader(sectionHeaderRow) {
   const sectionHeaderContainer = document.createElement('div');
   sectionHeaderContainer.classList.add('first-row');
   // Add section title
@@ -193,7 +193,7 @@ function convertToTable(sectionGroup, columnHeaders) {
     tableContainer.classList.add('no-accordion');
   }
 
-  const { sectionHeaderContainer, columnColors } = createTableHeader(sectionHeaderDiv, columnHeaders);
+  const { sectionHeaderContainer, columnColors } = createTableHeader(sectionHeaderDiv);
 
   // Add toggle button
   const toggleButton = createToggleButton(shouldHideTable);
@@ -225,6 +225,29 @@ function convertToTable(sectionGroup, columnHeaders) {
   comparisonTable.appendChild(tableBody);
   tableContainer.appendChild(comparisonTable);
   return tableContainer;
+}
+function createPlanDropdownChoices(headers) {
+  const planSelectorChoices = document.createElement('div');
+  planSelectorChoices.classList.add('plan-selector-choices', 'invisible-content');
+  planSelectorChoices.setAttribute('role', 'listbox');
+  planSelectorChoices.setAttribute('aria-label', 'Plan options');
+
+  for (let i = 0; i < headers.length; i += 1) {
+    const option = document.createElement('div');
+    const a = document.createElement('div');
+    a.classList.add('plan-selector-choice-text');
+    a.textContent = headers[i];
+    option.appendChild(a);
+    option.classList.add('plan-selector-choice');
+    option.value = i;
+
+    option.setAttribute('data-plan-index', i);
+    option.setAttribute('role', 'option');
+    option.setAttribute('aria-selected', 'false');
+    option.setAttribute('tabindex', '-1');
+    planSelectorChoices.appendChild(option);
+  }
+  return planSelectorChoices;
 }
 
 function createPlanSelector(headers, planIndex, planCellWrapper) {
@@ -278,36 +301,12 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
   planCellWrapper.appendChild(selectWrapper);
 }
 
-function createPlanDropdownChoices(headers) {
-  const planSelectorChoices = document.createElement('div');
-  planSelectorChoices.classList.add('plan-selector-choices', 'invisible-content');
-  planSelectorChoices.setAttribute('role', 'listbox');
-  planSelectorChoices.setAttribute('aria-label', 'Plan options');
-
-  for (let i = 0; i < headers.length; i += 1) {
-    const option = document.createElement('div');
-    const a = document.createElement('div');
-    a.classList.add('plan-selector-choice-text');
-    a.textContent = headers[i];
-    option.appendChild(a);
-    option.classList.add('plan-selector-choice');
-    option.value = i;
-
-    option.setAttribute('data-plan-index', i);
-    option.setAttribute('role', 'option');
-    option.setAttribute('aria-selected', 'false');
-    option.setAttribute('tabindex', '-1');
-    planSelectorChoices.appendChild(option);
-  }
-  return planSelectorChoices;
-}
-
 function applyColumnShading(headerGroup, comparisonBlock) {
   let columnShadingConfig = Array.from(headerGroup[0].querySelectorAll('div')).map((d) => d.textContent.trim());
   columnShadingConfig = columnShadingConfig.map((entry) => entry.split(','));
   const rows = comparisonBlock.querySelectorAll('div');
 
-  rows.forEach((row, rowIndex) => {
+  rows.forEach((row) => {
     const cells = row.querySelectorAll('div');
     cells.forEach((cell, cellIndex) => {
       if (columnShadingConfig[cellIndex]) {
@@ -321,14 +320,14 @@ function applyColumnShading(headerGroup, comparisonBlock) {
   });
 }
 
-function createStickyHeader(headerGroup, comparisonBlock) {
+function createStickyHeader(headerGroup) {
   const headerGroupElement = headerGroup[1];
   headerGroupElement.classList.add('sticky-header');
   const headerCells = headerGroupElement.querySelectorAll('div');
   const headers = Array.from(headerCells).map((cell) => {
     const children = Array.from(cell.children);
-    const headers = children.filter((child) => !child.querySelector('a'));
-    const output = headers.map((header) => header.textContent.trim()).join(', ').replaceAll(',', '');
+    const childContent = children.filter((child) => !child.querySelector('a'));
+    const output = childContent.map((content) => content.textContent.trim()).join(', ').replaceAll(',', '');
     return output;
   });
   headers.splice(0, 1);
@@ -483,7 +482,10 @@ function synchronizePlanCellHeights(comparisonBlock) {
 }
 
 export default async function decorate(comparisonBlock) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(comparisonBlock), initComparisonTableState()]).then(([utils, placeholders, buttons]) => { createTag = utils.createTag; });
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`),
+    decorateButtonsDeprecated(comparisonBlock), initComparisonTableState()]).then(
+    ([utils]) => { createTag = utils.createTag; },
+  );
   const blockChildren = Array.from(comparisonBlock.children);
   const contentSections = partitionContentBySeparators(blockChildren);
   applyColumnShading(contentSections[0], comparisonBlock);
@@ -508,7 +510,7 @@ export default async function decorate(comparisonBlock) {
       button.textContent = button.textContent.replace('#_button-fill', '');
     }
   });
-  const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0], comparisonBlock);
+  const { stickyHeaderElement, columnTitles } = createStickyHeader(contentSections[0]);
   comparisonBlock.appendChild(stickyHeaderElement);
   for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex += 1) {
     const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
