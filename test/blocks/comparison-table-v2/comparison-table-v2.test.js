@@ -389,7 +389,7 @@ describe('Comparison Table V2', () => {
 
     // Find a non-selected option
     const nonSelectedOption = visibleOptions.find((opt) => !opt.classList.contains('selected'));
-
+    console.log('nonSelectedOption', nonSelectedOption);
     if (nonSelectedOption) {
       // Navigate to the non-selected option
       const optionIndex = visibleOptions.indexOf(nonSelectedOption);

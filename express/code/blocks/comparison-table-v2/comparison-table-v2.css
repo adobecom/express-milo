@@ -212,6 +212,8 @@ line-height: 130%; /* 23.4px */
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper > * {
     z-index: 2;
     position: relative;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper {
@@ -219,7 +221,6 @@ line-height: 130%; /* 23.4px */
     background: linear-gradient(95.85deg, #B539C8 0%, #7155FA 66%, #3B63FB 100%);
    
     z-index: 5;
-   
     border-radius: 8px;
     border: none;
  
