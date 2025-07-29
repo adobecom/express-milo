@@ -247,20 +247,24 @@ describe('Comparison Table V2', () => {
 
     const block = document.querySelector('.comparison-table-v2');
     await decorate(block);
-    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+    await new Promise((resolve) => { setTimeout(resolve, 500); });
 
     const planCellWrapper = block.querySelector('.plan-cell-wrapper');
     const selector = planCellWrapper.querySelector('.plan-selector');
 
     planCellWrapper.focus();
     planCellWrapper.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Enter',
+      key: 'ArrowDown',
       bubbles: true,
       cancelable: true,
     }));
 
+    await new Promise((resolve) => { setTimeout(resolve, 500); });
+
     const dropdown = selector.querySelector('.plan-selector-choices');
+    
     const visibleOptions = dropdown.querySelectorAll('.plan-selector-choice:not(.invisible-content)');
+    console.log('visibleOptions', visibleOptions);
 
     expect(visibleOptions[0].classList.contains('focused')).to.be.true;
 
@@ -308,7 +312,7 @@ describe('Comparison Table V2', () => {
 
     const block = document.querySelector('.comparison-table-v2');
     await decorate(block);
-    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+    await new Promise((resolve) => { setTimeout(resolve, 500); });
 
     const planCellWrapper = block.querySelector('.plan-cell-wrapper');
     const selector = planCellWrapper.querySelector('.plan-selector');
@@ -316,11 +320,11 @@ describe('Comparison Table V2', () => {
     // Open dropdown
     planCellWrapper.focus();
     planCellWrapper.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Enter',
+      key: 'ArrowDown',
       bubbles: true,
       cancelable: true,
     }));
-
+    await new Promise((resolve) => { setTimeout(resolve, 500); });
     const dropdown = selector.querySelector('.plan-selector-choices');
     const visibleOptions = dropdown.querySelectorAll('.plan-selector-choice:not(.invisible-content)');
 
@@ -371,7 +375,7 @@ describe('Comparison Table V2', () => {
 
     const block = document.querySelector('.comparison-table-v2');
     await decorate(block);
-    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+    await new Promise((resolve) => { setTimeout(resolve, 500); });
 
     const planCellWrapper = block.querySelector('.plan-cell-wrapper');
     const selector = planCellWrapper.querySelector('.plan-selector');
@@ -379,14 +383,16 @@ describe('Comparison Table V2', () => {
     // Open dropdown
     planCellWrapper.focus();
     planCellWrapper.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Enter',
+      key: 'ArrowDown',
       bubbles: true,
       cancelable: true,
     }));
 
+    await new Promise((resolve) => { setTimeout(resolve, 500); });
+
     const dropdown = selector.querySelector('.plan-selector-choices');
     let visibleOptions = Array.from(dropdown.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
-
+    
     // Find a non-selected option
     const nonSelectedOption = visibleOptions.find((opt) => !opt.classList.contains('selected'));
     console.log('nonSelectedOption', nonSelectedOption);
@@ -399,8 +405,9 @@ describe('Comparison Table V2', () => {
           bubbles: true,
           cancelable: true,
         }));
+        await new Promise((resolve) => { setTimeout(resolve, 100); });
       }
-
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
       // The option should be focused
       expect(nonSelectedOption.classList.contains('focused')).to.be.true;
 
