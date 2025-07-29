@@ -397,6 +397,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   placeholder.classList.add('sticky-header-placeholder');
   comparisonBlock.insertBefore(placeholder, stickyHeader.nextSibling);
 
+  console.log(stickyHeader.offsetHeight);
   const fedsBanner = document.querySelector('.feds-localnav')?.offsetHeight || 40;
   // Intersection Observer to detect when header should stick
   const observer = new IntersectionObserver(
@@ -409,11 +410,16 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           return;
         }
         if (!entry.isIntersecting) {
-          // Header is scrolled out of view - make it sticky
-          stickyHeader.classList.add('is-stuck');
-          stickyHeader.style.top = `${fedsBanner}px`;
+          const stickyHeaderHeight = stickyHeader.offsetHeight;
+          stickyHeader.classList.add('is-stuck-initial');
+       // 
           placeholder.style.display = 'flex';
-          placeholder.style.height = `${stickyHeader.offsetHeight}px`;
+          placeholder.style.height = `${stickyHeaderHeight}px`;
+          setTimeout(() => {
+            stickyHeader.style.top = `${fedsBanner}px`;
+           stickyHeader.classList.remove('is-stuck-initial');
+            stickyHeader.classList.add('is-stuck');
+          }, 100);
         } else {
           // Header is in view - remove sticky
           stickyHeader.classList.remove('is-stuck');

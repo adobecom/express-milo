@@ -44,11 +44,18 @@ main .section .comparison-table-v2 p {
     position: relative;
     justify-content: center;
     padding: 0px 16px;
+ 
+}
+
+.comparison-table-v2 .sticky-header.is-stuck-initial{
+    position: fixed;
+    top: 0px;
+    background: var(--color-white);
+ 
 }
 
 .comparison-table-v2 .sticky-header.is-stuck {
     position: fixed;
-    top: 0;
     left: 0;
     right: 0;
     z-index: 100;
@@ -60,23 +67,39 @@ main .section .comparison-table-v2 p {
     justify-content: center;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    transition:   transform 0.3s ease-in-out,
+   
 }
 
 .comparison-table-v2 table {
     padding: var(--spacing-200);
     padding-top: 0px;
 }
+.comparison-table-v2 .sticky-header.is-stuck-initial .action-area,
+.comparison-table-v2 .sticky-header.is-stuck-initial .plan-cell.premium .plan-cell-wrapper,
+.comparison-table-v2 .sticky-header.is-stuck-initial .plan-cell.premium .plan-cell-wrapper::before {
+    transition: background 0.3s ease-in-out, margin-top 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+    background: none;
+}
  
+.comparison-table-v2 .sticky-header.is-stuck-initial .plan-cell .plan-cell-wrapper {
+    border-color: transparent;
+    transition: background 0.3s ease-in-out, margin-top 0.3s ease-in-out, padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+}
+.comparison-table-v2 .sticky-header.is-stuck-initial .plan-cell {
+    width: calc(var(--cell-width) - 2px);
+}
+
 .comparison-table-v2 .sticky-header.is-stuck .plan-cell.gray .plan-cell-wrapper,
 .comparison-table-v2 .sticky-header.is-stuck .plan-cell .plan-cell-wrapper {
     padding-top: var(--spacing-300);
     padding-bottom: var(--spacing-300);
-    border: none;
+    border-color: transparent;
     background: none;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-cell a.con-button{
-    margin-top: -10px;
+    margin-top: -2px;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-wrapper,
@@ -88,6 +111,31 @@ main .section .comparison-table-v2 p {
 
 .comparison-table-v2 .sticky-header-placeholder {
     display: none;
+}
+ 
+.comparison-table-v2 .sticky-header .action-area {
+    transition: 
+        opacity 0.3s ease-in-out,
+        transform 0.3s ease-in-out,
+        max-height 0.3s ease-in-out,
+        margin 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+/* Initial state - visible */
+.comparison-table-v2 .sticky-header .action-area {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px; /* Adjust based on your button height */
+}
+
+/* When stuck - hide smoothly */
+.comparison-table-v2 .sticky-header.is-stuck .action-area {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+    margin: 0;
+    pointer-events: none;
 }
 
 /* First cell - Mobile */
