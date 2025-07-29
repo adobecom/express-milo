@@ -2,6 +2,7 @@ import { getIconElementDeprecated, getLibs } from '../utils.js';
 
 let createTag; let loadStyle;
 let getConfig;
+let currentVisibleTooltip = null;
 
 /* ========================================
    CSS and Position Management
@@ -89,15 +90,23 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
 
   const showTooltip = () => {
     clearTimeout(hideTimeout);
+    if (currentVisibleTooltip && currentVisibleTooltip !== tooltipButton) {
+      currentVisibleTooltip.classList.remove('hover');
+      currentVisibleTooltip.querySelector('.tooltip-text').classList.remove('hover');
+    }
     isTooltipVisible = true;
     tooltipButton.classList.add('hover');
     tooltipPopup.classList.add('hover');
+    currentVisibleTooltip = tooltipButton;
   };
 
   const hideTooltip = () => {
     isTooltipVisible = false;
     tooltipButton.classList.remove('hover');
     tooltipPopup.classList.remove('hover');
+    if (currentVisibleTooltip === tooltipButton) {
+      currentVisibleTooltip = null;
+    }
   };
 
   const checkAndHideTooltip = () => {
@@ -203,15 +212,23 @@ function buildTooltip(pricingArea, tooltipPattern) {
 
   const showTooltip = () => {
     clearTimeout(hideTimeout);
+    if (currentVisibleTooltip && currentVisibleTooltip !== tooltipButton) {
+      currentVisibleTooltip.classList.remove('hover');
+      currentVisibleTooltip.querySelector('.tooltip-text').classList.remove('hover');
+    }
     isTooltipVisible = true;
     tooltipButton.classList.add('hover');
     tooltipPopup.classList.add('hover');
+    currentVisibleTooltip = tooltipButton;
   };
 
   const hideTooltip = () => {
     isTooltipVisible = false;
     tooltipButton.classList.remove('hover');
     tooltipPopup.classList.remove('hover');
+    if (currentVisibleTooltip === tooltipButton) {
+      currentVisibleTooltip = null;
+    }
   };
 
   const checkAndHideTooltip = () => {
