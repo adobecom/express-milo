@@ -21,7 +21,7 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-  const classNames = ['.plan-explanation', '.card-header'];
+  const classNames = [ '.card-header', '.pricing-area'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
@@ -249,6 +249,9 @@ export default async function init(el) {
 
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
+  if (cardCount > 3) {
+    el.classList.add('many');
+  }
   const cards = [];
 
   const defaultOpenIndex = getDefaultExpandedIndex(el);
