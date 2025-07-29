@@ -6,8 +6,12 @@
     flex-direction: column;
     gap: var(--spacing-300);
     --icon-color: #05834E;
-    --icon-color-disabled: var(--color-gray-800);
+    --icon-color-disabled: var(--color-dark-gray);
     --cell-width: 44%;
+    --color-dark-gray: #464646;
+    --color-black: #222222;
+    --border-color: #D5D5D5;
+ 
 }
 
 .comparison-table-v2 > * {
@@ -94,14 +98,21 @@ main .section .comparison-table-v2 p {
     justify-content: center;
     align-items: center;
     gap: var(--spacing-300);
-    color: var(--color-gray-600);
+    color: var(--color-dark-gray);
     text-align: center;
     font-family: var(--body-font-family);
     font-size: var(--body-font-size-l);
     font-style: normal;
     font-weight: 700;
     line-height: 1.3;
-    padding-bottom: 16px;
+    padding-bottom: 16px; 
+
+/* Express web/Titles/L */
+font-family: var(--Family-Title, "Adobe Clean");
+font-size: var(--Global-Typography-Family-Title-L, 18px);
+font-style: normal;
+font-weight: 700;
+line-height: 130%; /* 23.4px */
 }
 
 /* Plan cells - Mobile */
@@ -132,7 +143,7 @@ main .section .comparison-table-v2 p {
     text-align: center;
     box-sizing: border-box;
     border-radius: 8px;
-    border: 1px solid var(--color-gray-300);
+    border: 1px solid var(--border-color);
     background: var(--color-white);
     padding-top: var(--spacing-300);
     width: 100%;
@@ -153,7 +164,7 @@ main .section .comparison-table-v2 p {
    display: none;
 }
 .comparison-table-v2 .table-container .first-row:has(button[aria-expanded="true"]) {
-    border-bottom: 1px solid var(--color-gray-300);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .comparison-table-v2 table tr:first-child {
@@ -161,7 +172,7 @@ main .section .comparison-table-v2 p {
 }
 
 .comparison-table-v2 table tr {
-    border-top: 1px solid var(--color-gray-300); 
+    border-top: 1px solid var(--border-color); 
 }
 
 
@@ -246,7 +257,7 @@ main .comparison-table-v2 .sticky-header .plan-cell h3,
 main .comparison-table-v2 .sticky-header .plan-cell h4,
 main .comparison-table-v2 .sticky-header .plan-cell h5,
 main .comparison-table-v2 .sticky-header .plan-cell h6 {
-    color: var(--color-gray-800);
+    color: var(--color-dark-gray);
     text-align: center;
     font-family: var(--body-font-family);
     font-size: var(--body-font-size-l);
@@ -254,7 +265,7 @@ main .comparison-table-v2 .sticky-header .plan-cell h6 {
 }
 
 main .comparison-table-v2 .sticky-header .plan-cell p {
-    color: var(--color-gray-600);
+    color: var(--color-dark-gray);
     text-align: center;
     font-family: var(--body-font-family);
     font-size: var(--body-font-size-s);
@@ -266,7 +277,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 /* Table container - Mobile */
 .comparison-table-v2 .table-container {
     border-radius: 8px;
-    border: 1px solid var(--color-gray-300);
+    border: 1px solid var(--border-color);
     background: var(--color-white); 
 }
 
@@ -303,7 +314,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 .table-container .toggle-button h5,
 .comparison-table-v2 .table-container .toggle-button h6 {
     flex-grow: 1;
-    color: var(--color-gray-800);
+    color: var(--color-black);
     text-align: center;
     font-family: var(--body-font-family);
     font-size: var(--body-font-size-l);
@@ -430,7 +441,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     height: 22px;
     margin-top: 8px;
     border-radius: 0px 0px 7px 7px;
-    border: 0px solid var(--color-gray-300);
+    border: 0px solid var(--border-color);
     background: #EBEEFF;
 }
 
@@ -595,7 +606,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     height: 18px;
     display: block;
     margin: auto;
-    background-color: var(--icon-color, #079355);
+    background-color: var(--icon-color, var(--color-green));
     -webkit-mask-image: url('checkmark.svg');
     mask-image: url('checkmark.svg');
     z-index: 2;
@@ -640,7 +651,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
   
 /* Feature cell colors */
 .comparison-table-v2 .feature-cell p {
-    color: var(--icon-color, #079355);
+    color: var(--icon-color, var(--color-green));
     margin-top: 4px;
 }
 
@@ -703,7 +714,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         display: flex;
         flex-direction: column;
         --cell-width: 222px;
-        --header-cell-width: 222px;
+        --header-cell-width: 280px;
     }
     
 
@@ -750,7 +761,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 /* 
     .comparison-table-v2 .first-row:has(button[aria-expanded="true"]) {
-        border-bottom: 1px solid var(--color-gray-300);
+        border-bottom: 1px solid var(--border-color);
     } */
 
 
@@ -760,9 +771,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         align-items: flex-start;
         text-align: left; 
         padding-bottom: 8px;
-        color: var(--color-gray-600);
-        font-family: var(--body-font-family);
-        font-size: var(--body-font-size-l);
+        
         font-style: normal;
         font-weight: 700;
         line-height: 1.3; 
@@ -791,7 +800,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     main .comparison-table-v2 .sticky-header .plan-cell h4,
     main .comparison-table-v2 .sticky-header .plan-cell h5,
     main .comparison-table-v2 .sticky-header .plan-cell h6 {
-        color: var(--color-gray-800);
+        color: var(--color-black);
         text-align: center;
         font-family: var(--body-font-family);
         font-size: var(--body-font-size-l);
@@ -802,7 +811,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
  
 
     main .comparison-table-v2 .sticky-header .plan-cell p {
-        color: var(--color-gray-600);
+        color: var(--color-dark-gray);
         text-align: center;
         font-family: var(--body-font-family);
         font-size: var(--body-font-size-s);
@@ -816,7 +825,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         box-sizing: border-box;
         max-width: 1300px;
         border-radius: 8px;
-        border: 1px solid var(--color-gray-300);
+        border: 1px solid var(--border-color);
         background: var(--color-white);
         padding: 0px;
      
@@ -897,7 +906,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     .comparison-table-v2 table tbody th,
     .comparison-table-v2 table td {
-        width: var(--cell-width);
+        width: 256px;
     }
 
     .comparison-table-v2 tbody tr td,
