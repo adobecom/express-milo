@@ -35,7 +35,8 @@ export const SUSIUtils = {
 async function getDestURL(url) {
   let destURL;
   try {
-    destURL = await getTrackingAppendedURL(url);
+    const appended = await getTrackingAppendedURL(url);
+    destURL = new URL(appended);
   } catch (err) {
     window.lana?.log(`invalid redirect uri for susi-light: ${url}`);
     destURL = new URL('https://new.express.adobe.com');
@@ -43,7 +44,7 @@ async function getDestURL(url) {
   if (isStage && ['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
     destURL.hostname = 'stage.projectx.corp.adobe.com';
   }
-  return destURL.toString();
+  return destURL;
 }
 
 function sendEventToAnalytics(type, eventName, client_id) {
@@ -91,7 +92,7 @@ function createSUSIComponent({
 }) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
-  susi.authParams.redirect_uri = destURL;
+  susi.authParams.redirect_uri = destURL.toString();
   susi.authParams.dctx_id = isStage ? DCTX_ID_STAGE : DCTX_ID_PROD;
   susi.config = config;
   if (isStage) susi.stage = 'true';
@@ -110,7 +111,7 @@ function createSUSIComponent({
 function redirectIfLoggedIn(destURL) {
   const goDest = () => {
     sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
-    window.location.assign(destURL);
+    window.location.assign(destURL.toString());
   };
   if (window.adobeIMS) {
     window.adobeIMS.isSignedInUser() && goDest();
@@ -226,6 +227,7 @@ async function buildB2B(el, locale, imsClientId, noRedirect) {
 }
 
 async function buildStudent(el, locale, imsClientId, noRedirect) {
+  const checked = el.classList.contains('checked');
   const rows = el.querySelectorAll(':scope > div > div');
   const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
@@ -235,6 +237,9 @@ async function buildStudent(el, locale, imsClientId, noRedirect) {
   footer?.classList.add('footer', 'susi-banner');
   const variant = 'standard';
   const destURL = await getDestURL(redirectUrl);
+  if (checked) {
+    destURL.searchParams.set('student', 'true');
+  }
   const susiConfigs = {
     client_id, variant, destURL, locale, title: '', hideIcon: true,
   };
@@ -245,10 +250,13 @@ async function buildStudent(el, locale, imsClientId, noRedirect) {
   await SUSIUtils.loadSUSIScripts();
   const titleDiv = createTag('div', { class: 'title' }, title);
   const checkboxInput = createTag('input', { type: 'checkbox', name: 'student' });
+  if (checked) {
+    checkboxInput.checked = true;
+  }
   const susiComponent = createSUSIComponent(params);
-  checkboxInput.addEventListener('change', ({ target: { checked } }) => {
+  checkboxInput.addEventListener('change', (e) => {
     const url = new URL(susiComponent.authParams.redirect_uri);
-    if (checked) {
+    if (e.target.checked) {
       url.searchParams.set('student', 'true');
     } else {
       url.searchParams.delete('student');
