@@ -341,7 +341,7 @@ export async function checkVideoDuration(file, minDurationSeconds = 60) {
     tempVideo.preload = 'metadata';
     const blobUrl = URL.createObjectURL(file);
     // Safe: blobUrl is created from a File object, not user input
-    tempVideo.src = blobUrl;
+    tempVideo.setAttribute('src', blobUrl);
 
     tempVideo.addEventListener('loadedmetadata', () => {
       const { duration } = tempVideo;
