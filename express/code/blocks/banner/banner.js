@@ -14,7 +14,6 @@ export default async function decorate(block) {
   const isBannerLightVariant = block.classList.contains('light');
   const isBannerStandoutVariant = block.classList.contains('standout');
   const isBannerCoolVariant = block.classList.contains('cool');
-  const backgroundImage = block.closest('.section')?.querySelector('img');
 
   if (isBannerStandoutVariant) {
     const contentContainer = createTag('div', { class: 'content-container' });
