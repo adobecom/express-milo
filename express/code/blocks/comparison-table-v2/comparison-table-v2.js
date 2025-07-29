@@ -285,20 +285,39 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
   // Add keyboard support
   planCellWrapper.addEventListener('keydown', (e) => {
     if (e.target === planCellWrapper && !e.target.closest('.action-area')) {
-      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+      if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         planSelector.click();
-
-        // If ArrowDown, focus the first option after dropdown opens
-        if (e.key === 'ArrowDown') {
+      } else if (e.key === 'ArrowDown') {
+        const dropdown = planSelector.querySelector('.plan-selector-choices');
+        const isOpen = !dropdown.classList.contains('invisible-content');
+        
+        if (!isOpen) {
+          // Only open dropdown if it's not already open
+          e.preventDefault();
+          planSelector.click();
+          
+          // Focus the first option after dropdown opens
           setTimeout(() => {
-            const dropdown = planSelector.querySelector('.plan-selector-choices');
             const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
             if (firstOption) {
               firstOption.classList.add('focused');
               firstOption.focus();
             }
           }, 0);
+        } else {
+          // If dropdown is already open, check if anything is focused
+          const focusedOption = dropdown.querySelector('.plan-selector-choice.focused');
+          if (!focusedOption) {
+            // Nothing is focused, focus the first option
+            e.preventDefault();
+            const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
+            if (firstOption) {
+              firstOption.classList.add('focused');
+              firstOption.focus();
+            }
+          }
+          // If something is already focused, let the event bubble to the selector's keydown handler
         }
       }
     }
