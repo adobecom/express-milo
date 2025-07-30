@@ -223,7 +223,7 @@ export default async function decorate(block) {
   ui2SDK = () => {
     fadeOut(dropzoneContainer);
     fadeOut(extraContainer);
-    fadeOut(localeDropdownWrapper);
+    if (localeDropdownWrapper) fadeOut(localeDropdownWrapper);
     logo.classList.add('hide');
     if (postUploadHeadlineText) {
       h1.textContent = postUploadHeadlineText;
@@ -233,7 +233,7 @@ export default async function decorate(block) {
   ui2Landing = () => {
     fadeIn(dropzoneContainer);
     fadeIn(extraContainer);
-    fadeIn(localeDropdownWrapper);
+    if (localeDropdownWrapper) fadeIn(localeDropdownWrapper);
     logo.classList.remove('hide');
     if (postUploadHeadlineText) {
       h1.textContent = landingHeadlineText;

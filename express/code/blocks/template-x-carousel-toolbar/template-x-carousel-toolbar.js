@@ -1,5 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { fetchResults } from '../../scripts/template-utils.js';
+import { fetchResults, isValidTemplate } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
 import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
@@ -10,7 +10,11 @@ const fromScratchFallbackLink = 'https://adobesparkpost.app.link/c4bWARQhWAb';
 
 async function createTemplates(recipe) {
   const res = await fetchResults(recipe);
-  const templates = await Promise.all(res.items.map((item) => renderTemplate(item)));
+  const templates = await Promise.all(
+    res.items
+      .filter((item) => isValidTemplate(item))
+      .map((item) => renderTemplate(item)),
+  );
   templates.forEach((tplt) => tplt.classList.add('template'));
   return templates;
 }
@@ -201,16 +205,30 @@ export default async function init(el) {
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
 
-  // TODO: lazy load templates
-  const [
-    { templatesContainer, updateTemplates, control: galleryControl },
-    sortSetup,
-  ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
-  const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
-  const dropdown = createDropdown(sortOptions, defaultIndex, updateTemplates, sortPlaceholderText);
-  const controlsContainer = createTag('div', { class: 'controls-container' }, [dropdown, galleryControl]);
-  sortOptions && controlsContainer.append(dropdown);
-  controlsContainer.append(galleryControl);
-  toolbar.append(controlsContainer);
-  el.append(templatesContainer);
+  try {
+    // TODO: lazy load templates
+    const [
+      { templatesContainer, updateTemplates, control: galleryControl },
+      sortSetup,
+    ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
+    const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
+    const dropdown = createDropdown(
+      sortOptions,
+      defaultIndex,
+      updateTemplates,
+      sortPlaceholderText,
+    );
+    const controlsContainer = createTag('div', { class: 'controls-container' }, [dropdown, galleryControl]);
+    sortOptions && controlsContainer.append(dropdown);
+    controlsContainer.append(galleryControl);
+    toolbar.append(controlsContainer);
+    el.append(templatesContainer);
+  } catch (err) {
+    window.lana?.log(`Error in template-x-carousel-toolbar: ${err}`);
+    if (getConfig().env.name === 'prod') {
+      el.remove();
+    } else {
+      el.textContent = 'Error loading templates, please refresh the page or try again later.';
+    }
+  }
 }
