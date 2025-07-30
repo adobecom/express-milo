@@ -341,13 +341,20 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 }
 
 .comparison-table-v2 .table-container button.toggle-button:focus {
-    outline: none;
+    outline: 2px solid var(--Background-Accent-key-focus, #4046CA);
     border-radius: 8px;
-    border: 2px solid var(--Background-Accent-key-focus, #4046CA);
 }
 
 .comparison-table-v2 .table-container button.toggle-button:active {
-    outline: 4px solid var(--indigo-400, #C0C9FF);
+    outline: none;
+}
+
+.comparison-table-v2 .table-container.no-accordion  .first-row {
+    pointer-events: none;
+}
+
+.comparison-table-v2 .table-container.no-accordion .first-row:hover{
+    background: none;
 }
 
 .comparison-table-v2 .table-container button.toggle-button .button-cell {
@@ -1032,7 +1039,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     .comparison-table-v2 table td p {
         color: inherit;
-        font-size: inherit;
+        font-size: 14px;
         font-weight: 700;
         line-height: inherit;
     }
