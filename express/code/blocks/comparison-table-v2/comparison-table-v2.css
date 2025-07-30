@@ -756,6 +756,14 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 .sticky-header {
     gap : 10px;
 }
+.comparison-table-v2 .plan-selector-choices {
+ 
+    width: var(--cell-width);
+}
+.comparison-table-v2 .plan-selector-choices .plan-selector-choice {
+ 
+    width: var(--cell-width);
+}
 
 }
  
@@ -1071,6 +1079,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 .sticky-header .plan-cell {
         order: unset;
     }
+
+  
 }
 
 @media (min-width: 1280px) {
