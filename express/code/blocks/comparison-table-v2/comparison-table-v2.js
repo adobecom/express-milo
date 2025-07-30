@@ -430,53 +430,83 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   comparisonBlock.insertBefore(placeholder, stickyHeader.nextSibling);
 
   const fedsBanner = document.querySelector('.feds-localnav')?.offsetHeight || 40;
-  // Intersection Observer to detect when header should stick
-  const observer = new IntersectionObserver(
+  let isSticky = false;
+
+  // Intersection Observer to detect when header should become sticky (at the top)
+  const headerObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        // Check if parent section is hidde
+        // Check if parent section is hidden
         if (comparisonBlock.parentElement.classList.contains('display-none')) {
           stickyHeader.classList.remove('is-stuck');
           placeholder.style.display = 'none';
+          isSticky = false;
           return;
         }
-        if (!entry.isIntersecting) {
+        
+        if (!entry.isIntersecting && !isSticky) {
+          // Header is leaving viewport at the top - make it sticky
           const stickyHeaderHeight = stickyHeader.offsetHeight;
           stickyHeader.classList.add('is-stuck-initial');
-          //
           placeholder.style.display = 'flex';
           placeholder.style.height = `${stickyHeaderHeight}px`;
           setTimeout(() => {
             stickyHeader.style.top = `${fedsBanner}px`;
             stickyHeader.classList.remove('is-stuck-initial');
             stickyHeader.classList.add('is-stuck');
+            isSticky = true;
           }, 100);
-        } else {
-          // Header is in view - remove sticky
+        } else if (entry.isIntersecting && isSticky) {
+          // Header is back in view at the top - remove sticky
           stickyHeader.classList.remove('is-stuck');
           placeholder.style.display = 'none';
           stickyHeader.style.top = '0';
+          isSticky = false;
         }
       });
     },
     {
-      // Trigger when header is about to leave viewport
+      // Trigger when header is about to leave viewport at the top
       rootMargin: '-1px 0px 0px 0px',
       threshold: [0, 1],
     },
   );
 
-  // Create sentinel element to track scroll position
-  const sentinel = document.createElement('div');
-  sentinel.style.position = 'absolute';
-  sentinel.style.top = '0';
-  sentinel.style.height = '1px';
-  sentinel.style.width = '100%';
-  sentinel.style.pointerEvents = 'none';
-  comparisonBlock.style.position = 'relative';
-  comparisonBlock.insertBefore(sentinel, comparisonBlock.firstChild);
+  // Intersection Observer to detect when comparison block exits viewport (at the bottom)
+  const blockObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting && isSticky) {
+          // Comparison block is leaving viewport at the bottom - remove sticky
+          stickyHeader.classList.remove('is-stuck');
+          placeholder.style.display = 'none';
+          stickyHeader.style.top = '0';
+          isSticky = false;
+        }
+      });
+    },
+    {
+      // Trigger when comparison block is about to leave viewport at the bottom
+      rootMargin: '0px 0px -1px 0px',
+      threshold: [0, 1],
+    },
+  );
 
-  observer.observe(sentinel);
+  // Create sentinel element to track header position
+  const headerSentinel = document.createElement('div');
+  headerSentinel.style.position = 'absolute';
+  headerSentinel.style.top = '0';
+  headerSentinel.style.height = '1px';
+  headerSentinel.style.width = '100%';
+  headerSentinel.style.pointerEvents = 'none';
+  comparisonBlock.style.position = 'relative';
+  comparisonBlock.insertBefore(headerSentinel, comparisonBlock.firstChild);
+
+  // Observe the header sentinel for sticky behavior
+  headerObserver.observe(headerSentinel);
+  
+  // Observe the entire comparison block for exit behavior
+  blockObserver.observe(comparisonBlock);
 
   // Watch for changes to parent section's display property
   const parentSection = comparisonBlock.closest('section');
@@ -486,6 +516,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
       if (isHidden) {
         stickyHeader.classList.remove('is-stuck');
         placeholder.style.display = 'none';
+        isSticky = false;
       }
     });
 
