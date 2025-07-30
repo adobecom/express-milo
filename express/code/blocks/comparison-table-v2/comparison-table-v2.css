@@ -19,6 +19,16 @@
     --row-font-size: 14px;
 }
 
+
+
+.comparison-table-v2 h2,
+.comparison-table-v2 h3,
+.comparison-table-v2 h4,
+.comparison-table-v2 h5,
+.comparison-table-v2 h6 {
+    font-family: var(--body-font-family);
+}
+
 .comparison-table-v2 > * {
     box-sizing: border-box;
 }
@@ -67,7 +77,7 @@ main .section .comparison-table-v2 p {
     position: fixed;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 4;
     background: var(--color-white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: var(--spacing-200) var(--spacing-500);
@@ -127,6 +137,16 @@ main .section .comparison-table-v2 p {
         transform 0.3s ease-in-out,
         max-height 0.3s ease-in-out,
         margin 0.3s ease-in-out; 
+}
+
+.comparison-table-v2 .icon-wrapper {
+   min-height: 40px;
+} 
+.comparison-table-v2 .icon-wrapper .icon-wrapper-text.tooltip {
+    min-height: unset;
+    padding-top: 6px;
+    margin: auto;
+    height: fit-content;
 }
 
 /* Initial state - visible */
@@ -540,6 +560,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 }
 
+.comparison-table-v2 .sticky-header.gnav-offset {
+    top: 40px;
+}
+
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-choices {
     display: none;
 }
@@ -814,6 +838,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
 
+.comparison-table-v2 .sticky-header.gnav-offset {
+    top: 63px;
+}
+
+
     .comparison-table-v2 .table-container .button-row {
         width: var(--cell-width);
     }
@@ -1038,6 +1067,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         margin: 24px 0px 0px 0px;
     }
 
+    .comparison-table-v2 table td  .icon-wrapper-text {
+        width: 100%;
+        height: 100%;
+    }
 
     .comparison-table-v2 table td.no-text .icon-wrapper {
         margin: 0px;
@@ -1148,18 +1181,16 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     padding-top: 4px;
 }
 
-.comparison-table-v2 a[title='link'] {
-    font-family: Family/Title;
+.comparison-table-v2 a:not(.con-button):any-link {
+    font-family: var(--body-font-family);
     font-weight: 700;
     font-style: Bold;
-    font-size: Global/Typography/Family/Body/S;
-    leading-trim: NONE;
+    font-size: var(--text-font-size);
     line-height: 130%;
     letter-spacing: 0%;
     text-align: center;
     text-decoration: underline;
-    text-decoration-style: solid;
-    text-decoration-offset: 0%;
+    text-decoration-style: solid; 
     text-decoration-thickness: 0%;
     text-decoration-skip-ink: auto;
 }
