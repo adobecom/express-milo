@@ -539,6 +539,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     bottom: -2px;
     z-index: 5;
     margin: auto;
+    pointer-events: none;
     left: calc(50% - 12px);
     width: 24px;
     height: 24px;
