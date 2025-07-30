@@ -194,31 +194,26 @@ export class ComparisonTableState {
 
   openDropdown(selector) {
     const dropdown = selector.querySelector('.plan-selector-choices');
-    const wasOpen = !dropdown.classList.contains('invisible-content');
-
-    // Close other dropdowns
-    this.planSelectors.forEach((s) => {
-      if (s !== selector) {
-        const otherDropdown = s.querySelector('.plan-selector-choices');
-        console.log(otherDropdown);
-        otherDropdown.classList.add('invisible-content');
-        s.setAttribute('aria-expanded', 'false');
-        // Make options not focusable when closed
+    const planCellWrapper = selector.closest('.plan-cell-wrapper');
+    const isOpen = planCellWrapper.getAttribute('aria-expanded') === 'true';
+   
+    this.comparisonBlock.querySelectorAll('.plan-cell-wrapper').forEach((wrapper) => {
+      if (wrapper !== selector) {
+        const otherPlanCellWrapper = wrapper.closest('.plan-cell-wrapper');
+        otherPlanCellWrapper.setAttribute('aria-expanded', 'false');
+        const otherDropdown = wrapper.querySelector('.plan-selector-choices');
+        otherDropdown.classList.add('invisible-content'); 
         otherDropdown.querySelectorAll('.plan-selector-choice').forEach((opt) => {
           opt.setAttribute('tabindex', '-1');
         });
       }
     });
+    planCellWrapper.setAttribute('aria-expanded', !isOpen); 
+    dropdown.classList.toggle('invisible-content', isOpen);
 
-    dropdown.classList.toggle('invisible-content');
-    selector.setAttribute('aria-expanded', !wasOpen);
+   
 
-    const planCellWrapper = selector.closest('.plan-cell-wrapper');
-    if (planCellWrapper) {
-      planCellWrapper.setAttribute('aria-expanded', !wasOpen);
-    }
-
-    if (!wasOpen) {
+    if (!isOpen) {
       // Make options focusable when opening
       dropdown.querySelectorAll('.plan-selector-choice').forEach((opt) => {
         opt.setAttribute('tabindex', '0');
