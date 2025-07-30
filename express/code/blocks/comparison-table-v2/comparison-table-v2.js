@@ -1,4 +1,4 @@
-import { decorateButtonsDeprecated, getLibs } from '../../scripts/utils.js';
+import { decorateButtonsDeprecated, getLibs , getIconElementDeprecated} from '../../scripts/utils.js';
 import { ComparisonTableState, initComparisonTableState } from './comparison-table-state.js';
 import handleTooltip, { adjustElementPosition, getTooltipMatch } from '../../scripts/widgets/tooltip.js';
 
@@ -274,7 +274,9 @@ function createPlanDropdownChoices(headers) {
 function createPlanSelector(headers, planIndex, planCellWrapper) {
   const selectWrapper = document.createElement('div');
   selectWrapper.classList.add('plan-selector-wrapper');
-
+  const chevron = getIconElementDeprecated('chevron-down');
+  selectWrapper.appendChild(chevron); 
+  
   const planSelector = document.createElement('div');
   planSelector.classList.add('plan-selector');
   planSelector.setAttribute('data-plan-index', planIndex);

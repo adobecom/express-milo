@@ -528,17 +528,20 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     outline: none;
 }
 
-.comparison-table-v2 .plan-selector-wrapper::after {
-    content: '▼';
-    position: absolute;
-    right: 50%;
-    bottom: -5px;
-    transform: translate(50%, -50%);
-    pointer-events: none;
-    font-size: var(--text-font-size);
-    color: var(--color-info-accent);
-
+.comparison-table-v2 .plan-cell-wrapper[aria-expanded="true"] .icon-chevron-down {
+    transform: rotate(180deg);
 }
+
+ .comparison-table-v2 .icon-chevron-down {
+    position: absolute; 
+    display: block;
+    bottom: -2px;
+    z-index: 5;
+    margin: auto;
+    left: calc(50% - 12px);
+    width: 24px;
+    height: 24px;
+} 
 
 .comparison-table-v2 .plan-selector-choices {
     position: absolute;
