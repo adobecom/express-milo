@@ -1,4 +1,4 @@
-import { decorateButtonsDeprecated, getLibs , getIconElementDeprecated} from '../../scripts/utils.js';
+import { decorateButtonsDeprecated, getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { ComparisonTableState, initComparisonTableState } from './comparison-table-state.js';
 import handleTooltip, { adjustElementPosition, getTooltipMatch } from '../../scripts/widgets/tooltip.js';
 
@@ -50,15 +50,13 @@ function handleCellIcons(cell) {
 }
 
 function getFooter(blockChildren) {
-    let footer;
-    const lastChild = blockChildren[blockChildren.length - 1];
-    console.log(lastChild);
-    if (lastChild.children.length === 1) {
-      footer = blockChildren.pop();
-      footer.classList.add('footer');
-   
-    }
-    return footer;
+  let footer;
+  const lastChild = blockChildren[blockChildren.length - 1];
+  if (lastChild.children.length === 1) {
+    footer = blockChildren.pop();
+    footer.classList.add('footer');
+  }
+  return footer;
 }
 
 function partitionContentBySeparators(blockChildren) {
@@ -133,7 +131,7 @@ function createTableHeader(sectionHeaderRow) {
   return { sectionHeaderContainer, columnColors };
 }
 
-function createAccessibilityHeaders(sectionTitle, columnTitles) {
+function createAccessibilityHeaders(sectionTitle, colTitles) {
   const screenReaderHeaders = document.createElement('thead');
   const headerRow = document.createElement('tr');
   screenReaderHeaders.classList.add('invisible-headers');
@@ -144,7 +142,7 @@ function createAccessibilityHeaders(sectionTitle, columnTitles) {
   headerRow.appendChild(sectionHeader);
 
   // Add column headers
-  columnTitles.forEach((columnTitle) => {
+  colTitles.forEach((columnTitle) => {
     const columnHeader = document.createElement('th');
     columnHeader.setAttribute('scope', 'col');
     columnHeader.textContent = columnTitle;
@@ -158,7 +156,7 @@ function createAccessibilityHeaders(sectionTitle, columnTitles) {
 function createTableRow(featureRowDiv) {
   const tableRow = document.createElement('tr');
   const featureCells = featureRowDiv.children;
-  const noText = featureRowDiv.querySelectorAll('p').length === 0; 
+  const noText = featureRowDiv.querySelectorAll('p').length === 0;
   Array.from(featureCells).forEach((cellContent, cellIndex) => {
     let tableCell;
     if (cellIndex === 0) {
@@ -180,7 +178,6 @@ function createTableRow(featureRowDiv) {
     for (let i = 0; i < cellContent.classList.length; i += 1) {
       tableCell.classList.add(cellContent.classList[i]);
     }
-   
 
     tableCell.innerHTML = cellContent.innerHTML;
     handleCellIcons(tableCell);
@@ -276,8 +273,8 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
   const selectWrapper = document.createElement('div');
   selectWrapper.classList.add('plan-selector-wrapper');
   const chevron = getIconElementDeprecated('chevron-down');
-  selectWrapper.appendChild(chevron); 
-  
+  selectWrapper.appendChild(chevron);
+
   const planSelector = document.createElement('div');
   planSelector.classList.add('plan-selector');
   planSelector.setAttribute('data-plan-index', planIndex);
@@ -310,12 +307,12 @@ function createPlanSelector(headers, planIndex, planCellWrapper) {
       } else if (e.key === 'ArrowDown') {
         const dropdown = planSelector.querySelector('.plan-selector-choices');
         const isOpen = !dropdown.classList.contains('invisible-content');
-        
+
         if (!isOpen) {
           // Only open dropdown if it's not already open
           e.preventDefault();
           planSelector.click();
-          
+
           // Focus the first option after dropdown opens
           setTimeout(() => {
             const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
@@ -439,7 +436,7 @@ function createStickyHeader(headerGroup, comparisonBlock) {
     }
   });
 
-  return { stickyHeaderElement: headerGroupElement, columnTitles: headers };
+  return { stickyHeader: headerGroupElement, colTitles: headers };
 }
 
 function initStickyBehavior(stickyHeader, comparisonBlock) {
@@ -448,7 +445,6 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   placeholder.classList.add('sticky-header-placeholder');
   comparisonBlock.insertBefore(placeholder, stickyHeader.nextSibling);
 
-  const fedsBanner = document.querySelector('.feds-localnav')?.offsetHeight || 40;
   let isSticky = false;
 
   // Intersection Observer to detect when header should become sticky (at the top)
@@ -463,7 +459,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           isSticky = false;
           return;
         }
-        
+
         if (!entry.isIntersecting && !isSticky) {
           // Header is leaving viewport at the top - make it sticky
           const stickyHeaderHeight = stickyHeader.offsetHeight;
@@ -524,7 +520,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
 
   // Observe the header sentinel for sticky behavior
   headerObserver.observe(headerSentinel);
-  
+
   // Observe the entire comparison block for exit behavior
   blockObserver.observe(comparisonBlock);
 
@@ -547,7 +543,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   }
 }
 
-function synchronizePlanCellHeights(comparisonBlock, footer) {
+function synchronizePlanCellHeights(comparisonBlock) {
   const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
 
   if (planCellWrappers.length === 0) return;
@@ -569,7 +565,7 @@ function synchronizePlanCellHeights(comparisonBlock, footer) {
   // Apply the maximum height to all wrappers
   planCellWrappers.forEach((wrapper) => {
     wrapper.style.height = `${maxHeight}px`;
-  });   
+  });
 }
 
 export default async function decorate(comparisonBlock) {
@@ -602,24 +598,23 @@ export default async function decorate(comparisonBlock) {
       button.textContent = button.textContent.replace('#_button-fill', '');
     }
   });
-  const { stickyHeaderElement, columnTitles } = 
-  createStickyHeader(contentSections[0], comparisonBlock);
-  comparisonBlock.appendChild(stickyHeaderElement);
+  const { stickyHeader, colTitles } = createStickyHeader(contentSections[0], comparisonBlock);
+  comparisonBlock.appendChild(stickyHeader);
   for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex += 1) {
-    const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
+    const sectionTable = convertToTable(contentSections[sectionIndex], colTitles);
     comparisonBlock.appendChild(sectionTable);
   }
 
-  const planSelectors = Array.from(stickyHeaderElement.querySelectorAll('.plan-selector'));
+  const planSelectors = Array.from(stickyHeader.querySelectorAll('.plan-selector'));
   const comparisonTableState = new ComparisonTableState(ariaLiveRegion);
   comparisonTableState.initializePlanSelectors(comparisonBlock, planSelectors);
-  initStickyBehavior(stickyHeaderElement, comparisonBlock);
+  initStickyBehavior(stickyHeader, comparisonBlock);
 
   // Handle tabindex updates on window resize
   const updateTabindexOnResize = () => {
     const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
     const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
-    const hasMoreThanTwoColumns = columnTitles.length > 2;
+    const hasMoreThanTwoColumns = colTitles.length > 2;
 
     planCellWrappers.forEach((wrapper, index) => {
       if (isDesktop || !hasMoreThanTwoColumns) {
@@ -638,18 +633,18 @@ export default async function decorate(comparisonBlock) {
     });
   };
 
-  if (footer) { 
+  if (footer) {
     comparisonBlock.appendChild(footer);
-  } 
+  }
   synchronizePlanCellHeights(comparisonBlock);
- 
+
   const handleResize = () => {
     updateTabindexOnResize();
     synchronizePlanCellHeights(comparisonBlock);
   };
- 
+
   window.addEventListener('resize', handleResize);
- 
+
   const resizeObserver = new ResizeObserver(() => {
     synchronizePlanCellHeights(comparisonBlock);
   });
@@ -669,6 +664,4 @@ export default async function decorate(comparisonBlock) {
     });
   });
   adjustElementPosition();
-
-
 }
