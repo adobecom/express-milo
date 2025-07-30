@@ -200,6 +200,7 @@ export class ComparisonTableState {
     this.planSelectors.forEach((s) => {
       if (s !== selector) {
         const otherDropdown = s.querySelector('.plan-selector-choices');
+        console.log(otherDropdown);
         otherDropdown.classList.add('invisible-content');
         s.setAttribute('aria-expanded', 'false');
         // Make options not focusable when closed
