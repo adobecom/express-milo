@@ -138,10 +138,9 @@ main .section .comparison-table-v2 p {
 
 /* When stuck - hide smoothly */
 .comparison-table-v2 .sticky-header.is-stuck .action-area {
-    opacity: 0;
+ 
     transform: translateY(-10px);
-    max-height: 0;
-    margin: 0;
+  
     pointer-events: none;
 }
 
@@ -742,11 +741,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
     .comparison-table-v2 .sticky-header .plan-cell {
-        width: 282px;
+       max-width: 282px;
     }
 
     .comparison-table-v2 table tbody tr td{
-        width: var(--cell-width);
+        max-width: var(--cell-width);
     }
 
  
