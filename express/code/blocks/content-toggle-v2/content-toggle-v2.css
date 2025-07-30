@@ -72,11 +72,14 @@ main .content-toggle-v2 .carousel-container .content-toggle-button:disabled {
     background: var(--color-gray-100);
     border-radius: var(--button-border-radius);;
 }
-
+main .content-toggle-v2 .content-toggle-button.active:focus-within,
+main .content-toggle-v2 .content-toggle-button.active:focus-visible,
 main .content-toggle-v2 .content-toggle-button.active:focus {
     border-radius: var(--button-border-radius);;
     background: var(--color-gray-800);
     color: var(--color-white);
+    outline-offset: -2px;
+    outline: 2px solid #4B75FF;
 }
 
 main .content-toggle-v2 .content-toggle-button.active,
@@ -86,11 +89,7 @@ main .content-toggle-v2 .content-toggle-button.active:hover {
     color: var(--color-white);
     border-radius: var(--button-border-radius);;
 }
-
-main .content-toggle-v2 .carousel-container .content-toggle-button.active:focus-visible {
-    outline: none;
-}
-
+ 
 /* Block specific modification to scripts/widgets/carousel.js */
 
 main .content-toggle-v2 .content-toggle-carousel-container .carousel-fader-left {

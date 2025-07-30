@@ -14,6 +14,8 @@ function initButton(block, buttons, sections, index) {
   const setActiveButton = (newIndex) => {
     buttons.forEach((btn) => btn.classList.remove('active'));
     buttons[newIndex].classList.add('active');
+    // Focus the active button for better accessibility
+    buttons[newIndex].focus();
   };
 
   const handleSectionChange = () => {
