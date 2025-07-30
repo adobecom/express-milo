@@ -677,7 +677,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 .icon.expand-button {
     background-color: transparent;
     border: 0;
-    background-image: url('/express/code/icons/collapse.svg');
+    background-image: url('/express/code/icons/accordion-control-close.svg');
     background-repeat: no-repeat;
     background-position: center;
     width: 19px;
@@ -686,7 +686,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 }
 
 .comparison-table-v2 .icon.expand-button.open {
-    background-image: url('/express/code/icons/expand.svg');
+    background-image: url('/express/code/icons/accordion-control-open.svg');
 }
 
 .comparison-table-v2 .icon-selected {
