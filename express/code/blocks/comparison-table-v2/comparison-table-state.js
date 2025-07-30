@@ -196,22 +196,20 @@ export class ComparisonTableState {
     const dropdown = selector.querySelector('.plan-selector-choices');
     const planCellWrapper = selector.closest('.plan-cell-wrapper');
     const isOpen = planCellWrapper.getAttribute('aria-expanded') === 'true';
-   
+
     this.comparisonBlock.querySelectorAll('.plan-cell-wrapper').forEach((wrapper) => {
       if (wrapper !== selector) {
         const otherPlanCellWrapper = wrapper.closest('.plan-cell-wrapper');
         otherPlanCellWrapper.setAttribute('aria-expanded', 'false');
         const otherDropdown = wrapper.querySelector('.plan-selector-choices');
-        otherDropdown.classList.add('invisible-content'); 
+        otherDropdown.classList.add('invisible-content');
         otherDropdown.querySelectorAll('.plan-selector-choice').forEach((opt) => {
           opt.setAttribute('tabindex', '-1');
         });
       }
     });
-    planCellWrapper.setAttribute('aria-expanded', !isOpen); 
+    planCellWrapper.setAttribute('aria-expanded', !isOpen);
     dropdown.classList.toggle('invisible-content', isOpen);
-
-   
 
     if (!isOpen) {
       // Make options focusable when opening
