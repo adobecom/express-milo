@@ -1035,9 +1035,13 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 table td .icon-wrapper {
         box-sizing: border-box;
         width: 100%;
-        margin: 0;  
+        margin: 24px 0px 0px 0px;
     }
 
+
+    .comparison-table-v2 table td.no-text .icon-wrapper {
+        margin: 0px;
+    }
     .comparison-table-v2 table tr { 
         height: 100%;
         gap: 16px;
