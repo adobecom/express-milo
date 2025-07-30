@@ -49,6 +49,18 @@ function handleCellIcons(cell) {
   }
 }
 
+function getFooter(blockChildren) {
+    let footer;
+    const lastChild = blockChildren[blockChildren.length - 1];
+    console.log(lastChild);
+    if (lastChild.children.length === 1) {
+      footer = blockChildren.pop();
+      footer.classList.add('footer');
+   
+    }
+    return footer;
+}
+
 function partitionContentBySeparators(blockChildren) {
   const contentGroups = [];
   let currentSection = [];
@@ -87,12 +99,15 @@ function partitionContentBySeparators(blockChildren) {
   return contentGroups;
 }
 
-function createToggleButton(isHidden) {
+function createToggleButton(isHidden, noAccordion) {
   const button = document.createElement('button');
   button.classList.add('toggle-button');
   button.setAttribute('aria-label', isHidden ? 'Expand section' : 'Collapse section');
   button.setAttribute('aria-expanded', !isHidden);
-
+  if (noAccordion) {
+    button.setAttribute('role', 'presentation');
+    button.setAttribute('tabindex', '-1');
+  }
   const iconSpan = document.createElement('span');
   iconSpan.classList.add('icon', 'expand-button');
   if (isHidden) {
@@ -194,14 +209,15 @@ function convertToTable(sectionGroup, columnHeaders) {
   if (shouldHideTable) {
     comparisonTable.classList.add('hide-table');
   }
-  if (sectionHeaderDiv.classList.contains('no-accordion')) {
+  const noAccordion = sectionHeaderDiv.classList.contains('no-accordion');
+  if (noAccordion) {
     tableContainer.classList.add('no-accordion');
   }
 
   const { sectionHeaderContainer, columnColors } = createTableHeader(sectionHeaderDiv);
 
   // Add toggle button
-  const toggleButton = createToggleButton(shouldHideTable);
+  const toggleButton = createToggleButton(shouldHideTable, noAccordion);
   toggleButton.onclick = () => {
     const isExpanded = !comparisonTable.classList.contains('hide-table');
     comparisonTable.classList.toggle('hide-table');
@@ -559,6 +575,7 @@ export default async function decorate(comparisonBlock) {
     ([utils]) => { createTag = utils.createTag; },
   );
   const blockChildren = Array.from(comparisonBlock.children);
+  const footer = getFooter(blockChildren);
   const contentSections = partitionContentBySeparators(blockChildren);
   applyColumnShading(contentSections[0], comparisonBlock);
   comparisonBlock.innerHTML = '';
@@ -588,6 +605,9 @@ export default async function decorate(comparisonBlock) {
   for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex += 1) {
     const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
     comparisonBlock.appendChild(sectionTable);
+  }
+  if (footer) {
+    comparisonBlock.appendChild(footer);
   }
   const planSelectors = Array.from(stickyHeaderElement.querySelectorAll('.plan-selector'));
   const comparisonTableState = new ComparisonTableState(ariaLiveRegion);
