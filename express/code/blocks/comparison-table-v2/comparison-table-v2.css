@@ -552,6 +552,18 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     overflow: hidden;
 }
 
+.comparison-table-v2 .footer {
+    color: var(--Content-Subdued-default, #464646);
+
+    /* Large Screen/Body/M */
+    font-family: "Adobe Clean";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 20.8px */
+    padding: 24px 0px 64px 0px;
+}
+
 /* Position dropdown to the left when in the left plan cell on mobile */
 @media (max-width: 599px) {
     .comparison-table-v2 .sticky-header .plan-cell.left-plan .plan-selector-choices {
@@ -787,6 +799,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
  
     width: var(--cell-width);
 }
+
+main .comparison-table-v2 .sticky-header .plan-cell p {
+   font-size: 14px; 
+} 
 
 }
  
