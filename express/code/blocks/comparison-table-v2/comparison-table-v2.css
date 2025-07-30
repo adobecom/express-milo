@@ -554,15 +554,18 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .footer {
     color: var(--Content-Subdued-default, #464646);
-
-    /* Large Screen/Body/M */
     font-family: "Adobe Clean";
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 400;
     line-height: 130%; /* 20.8px */
-    padding: 24px 0px 64px 0px;
+    padding: 16px 0px 0px 0px;
+    text-align: center;
 }
+.comparison-table-v2 .footer a:not(.con-button):any-link{
+    font-size: 14px;
+ }
+
 
 /* Position dropdown to the left when in the left plan cell on mobile */
 @media (max-width: 599px) {
@@ -803,6 +806,14 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 main .comparison-table-v2 .sticky-header .plan-cell p {
    font-size: 14px; 
 } 
+
+.comparison-table-v2 .footer a:not(.con-button):any-link{
+    font-size: 14px;
+ }
+
+ .comparison-table-v2 .footer {
+    padding: 24px 0px 0px;
+ }
 
 }
  
@@ -1131,7 +1142,12 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 .sticky-header .plan-cell {
         order: unset;
     }
-
+    .comparison-table-v2 .footer {
+        font-size: 16px;
+     }
+     .comparison-table-v2 .footer a:not(.con-button):any-link{
+        font-size: 16px;
+     }
   
 }
 
