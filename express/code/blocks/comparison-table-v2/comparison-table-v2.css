@@ -230,6 +230,9 @@ line-height: 130%; /* 23.4px */
 
 .comparison-table-v2 .table-container .first-row:hover{
     background: var(--Palette-gray-50, #F8F8F8);
+    border-radius: 8px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .comparison-table-v2 table tr:first-child {
