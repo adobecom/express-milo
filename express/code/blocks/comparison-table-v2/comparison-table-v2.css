@@ -144,7 +144,8 @@ main .section .comparison-table-v2 p {
 } 
 .comparison-table-v2 .icon-wrapper .icon-wrapper-text.tooltip {
     min-height: unset;
-    padding-top: 6px;
+    padding: 6px;
+    width: fit-content;
     margin: auto;
     height: fit-content;
 }
