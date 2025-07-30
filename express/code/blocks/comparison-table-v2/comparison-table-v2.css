@@ -1140,8 +1140,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 }
 
 .comparison-table-v2 .feature-cell p {
-    display: flex;
-    flex-direction: row; 
+    display: block;
+    padding-top: 4px;
 }
 
 .comparison-table-v2 a[title='link'] {
