@@ -775,6 +775,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2  {
         max-width: 600px;
         --cell-width: 282px;
+        --footer-width: 600px;
     }
  
 
@@ -816,6 +817,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
  .comparison-table-v2 .footer {
     padding: 24px 0px 0px;
+    max-width: var(--footer-width);
+    margin: auto;
  }
 
 }
@@ -825,7 +828,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 
     .comparison-table-v2.columns-3 {
-        --cell-width: 300px;
+        --cell-width: 300px; 
+        --footer-width: 945px;
 
      }
  
@@ -850,6 +854,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         --heading-font-size: 18px;
         --text-font-size: 14px;
         --row-font-size: 14px;
+        --footer-width: 945px;
     }
     .comparison-table-v2 .feature-cell {
         display: flex;
@@ -858,7 +863,12 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         box-sizing: border-box;
     }
 
-        .comparison-table-v2 .table-container {
+    .comparison-table-v2 .sticky-header{
+        width: fit-content;
+        margin: auto;
+    }
+
+    .comparison-table-v2 .table-container {
         box-sizing: border-box;
         max-width: 1300px;
         border-radius: 8px;
@@ -868,9 +878,9 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
 
-.comparison-table-v2 .sticky-header.gnav-offset {
-    top: 63px;
-}
+    .comparison-table-v2 .sticky-header.gnav-offset {
+        top: 63px;
+    }
 
 
     .comparison-table-v2 .table-container .button-row {
@@ -1042,12 +1052,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     .comparison-table-v2 table tbody th,
     .comparison-table-v2 table td {
         display: table-cell;
-    }
-
-    /* .comparison-table-v2 table tr {
-        display: table-row;
-    } */
-
+    } 
     .comparison-table-v2 table th {
         display: table-cell;
     }
@@ -1154,17 +1159,20 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
   
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1300px) {
     .comparison-table-v2.columns-3 {
         --cell-width: 231px;
+        --footer-width: 945px;
      }
 
      .comparison-table-v2.columns-4{
         --cell-width: 231px;
+        --footer-width: 1300px;
     }
 
     .comparison-table-v2.columns-5{
         --cell-width: 231px;
+        --footer-width: 1300px;
     }
 }
  

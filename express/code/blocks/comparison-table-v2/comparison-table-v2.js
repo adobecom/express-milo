@@ -546,7 +546,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   }
 }
 
-function synchronizePlanCellHeights(comparisonBlock) {
+function synchronizePlanCellHeights(comparisonBlock, footer) {
   const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
 
   if (planCellWrappers.length === 0) return;
@@ -569,6 +569,13 @@ function synchronizePlanCellHeights(comparisonBlock) {
   planCellWrappers.forEach((wrapper) => {
     wrapper.style.height = `${maxHeight}px`;
   });
+  // if (footer ) { 
+  //   if (window.innerWidth >= 768) {
+  //     footer.style.width = comparisonBlock.offsetWidth + 'px';
+  //   } else {
+  //     footer.style = "width: unset;"
+  //   }
+  // }  
 }
 
 export default async function decorate(comparisonBlock) {
@@ -608,9 +615,7 @@ export default async function decorate(comparisonBlock) {
     const sectionTable = convertToTable(contentSections[sectionIndex], columnTitles);
     comparisonBlock.appendChild(sectionTable);
   }
-  if (footer) {
-    comparisonBlock.appendChild(footer);
-  }
+
   const planSelectors = Array.from(stickyHeaderElement.querySelectorAll('.plan-selector'));
   const comparisonTableState = new ComparisonTableState(ariaLiveRegion);
   comparisonTableState.initializePlanSelectors(comparisonBlock, planSelectors);
@@ -639,21 +644,20 @@ export default async function decorate(comparisonBlock) {
     });
   };
 
-  // Synchronize plan cell heights
-  synchronizePlanCellHeights(comparisonBlock);
-
-  // Handle updates on window resize
+  if (footer) { 
+    comparisonBlock.appendChild(footer);
+  } 
+  synchronizePlanCellHeights(comparisonBlock, footer);
+ 
   const handleResize = () => {
     updateTabindexOnResize();
-    synchronizePlanCellHeights(comparisonBlock);
+    synchronizePlanCellHeights(comparisonBlock, footer);
   };
-
-  // Add resize listener
+ 
   window.addEventListener('resize', handleResize);
-
-  // Add ResizeObserver to handle dynamic content changes
+ 
   const resizeObserver = new ResizeObserver(() => {
-    synchronizePlanCellHeights(comparisonBlock);
+    synchronizePlanCellHeights(comparisonBlock, footer);
   });
 
   // Observe all plan cell wrappers for size changes
@@ -671,4 +675,6 @@ export default async function decorate(comparisonBlock) {
     });
   });
   adjustElementPosition();
+
+
 }
