@@ -568,14 +568,7 @@ function synchronizePlanCellHeights(comparisonBlock, footer) {
   // Apply the maximum height to all wrappers
   planCellWrappers.forEach((wrapper) => {
     wrapper.style.height = `${maxHeight}px`;
-  });
-  // if (footer ) { 
-  //   if (window.innerWidth >= 768) {
-  //     footer.style.width = comparisonBlock.offsetWidth + 'px';
-  //   } else {
-  //     footer.style = "width: unset;"
-  //   }
-  // }  
+  });   
 }
 
 export default async function decorate(comparisonBlock) {
@@ -647,17 +640,17 @@ export default async function decorate(comparisonBlock) {
   if (footer) { 
     comparisonBlock.appendChild(footer);
   } 
-  synchronizePlanCellHeights(comparisonBlock, footer);
+  synchronizePlanCellHeights(comparisonBlock);
  
   const handleResize = () => {
     updateTabindexOnResize();
-    synchronizePlanCellHeights(comparisonBlock, footer);
+    synchronizePlanCellHeights(comparisonBlock);
   };
  
   window.addEventListener('resize', handleResize);
  
   const resizeObserver = new ResizeObserver(() => {
-    synchronizePlanCellHeights(comparisonBlock, footer);
+    synchronizePlanCellHeights(comparisonBlock);
   });
 
   // Observe all plan cell wrappers for size changes
