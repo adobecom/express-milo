@@ -439,6 +439,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
         // Check if parent section is hidden
         if (comparisonBlock.parentElement.classList.contains('display-none')) {
           stickyHeader.classList.remove('is-stuck');
+          stickyHeader.classList.remove('gnav-offset');
           placeholder.style.display = 'none';
           isSticky = false;
           return;
@@ -451,7 +452,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           placeholder.style.display = 'flex';
           placeholder.style.height = `${stickyHeaderHeight}px`;
           setTimeout(() => {
-            stickyHeader.style.top = `${fedsBanner}px`;
+            stickyHeader.classList.add('gnav-offset');
             stickyHeader.classList.remove('is-stuck-initial');
             stickyHeader.classList.add('is-stuck');
             isSticky = true;
@@ -460,7 +461,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           // Header is back in view at the top - remove sticky
           stickyHeader.classList.remove('is-stuck');
           placeholder.style.display = 'none';
-          stickyHeader.style.top = '0';
+          stickyHeader.classList.remove('gnav-offset');
           isSticky = false;
         }
       });
@@ -480,7 +481,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           // Comparison block is leaving viewport at the bottom - remove sticky
           stickyHeader.classList.remove('is-stuck');
           placeholder.style.display = 'none';
-          stickyHeader.style.top = '0';
+          stickyHeader.classList.remove('gnav-offset');
           isSticky = false;
         }
       });
@@ -495,7 +496,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
   // Create sentinel element to track header position
   const headerSentinel = document.createElement('div');
   headerSentinel.style.position = 'absolute';
-  headerSentinel.style.top = '0';
+  headerSentinel.style.top = '0px';
   headerSentinel.style.height = '1px';
   headerSentinel.style.width = '100%';
   headerSentinel.style.pointerEvents = 'none';
