@@ -43,7 +43,7 @@ export default async function setTOCSEO() {
   }
 
   const toc = createTag('div', {
-    class: 'toc toc-container',
+    class: 'toc toc-container ax-grid-col-12',
     role: 'navigation',
     'aria-label': 'Table of Contents',
   });
