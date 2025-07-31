@@ -121,6 +121,7 @@ function createSVGWrapper(icon, sheetSize, alt, altSrc) {
   const svgWrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svgWrapper.classList.add('icon');
   svgWrapper.classList.add(`icon-${icon}`);
+  svgWrapper.setAttribute('aria-hidden', 'true');
   svgWrapper.setAttributeNS('http://www.w3.org/2000/xmlns/', 'xmlns', 'http://www.w3.org/1999/xlink');
   if (alt) {
     svgWrapper.appendChild(createTag('title', { innerText: alt }));
@@ -257,13 +258,6 @@ export async function fixIcons(el = document) {
   el.querySelectorAll('svg use[href^="./_icons_"]').forEach(($use) => {
     $use.setAttribute('href', `/express/icons.svg#${$use.getAttribute('href').split('#')[1]}`);
   });
-
-  let replaceKey;
-  let getConfig;
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
   /* new icons handling */
   el.querySelectorAll('img').forEach(($img) => {
     const alt = $img.getAttribute('alt');
@@ -278,12 +272,6 @@ export async function fixIcons(el = document) {
             }
             return null;
           });
-        let altText = null;
-        if (replaceKey(icon, getConfig())) {
-          altText = replaceKey(icon, getConfig());
-        } else if (replaceKey(mobileIcon, getConfig())) {
-          altText = replaceKey(mobileIcon, getConfig());
-        }
         const $picture = $img.closest('picture');
         const $block = $picture.closest('.section > div');
         let size = 44;
@@ -297,8 +285,10 @@ export async function fixIcons(el = document) {
             return;
           }
         }
+        const iconElement = getIconElementDeprecated([icon, mobileIcon], size);
+        iconElement.setAttribute('alt', '');
         $picture.parentElement
-          .replaceChild(getIconElementDeprecated([icon, mobileIcon], size, altText), $picture);
+          .replaceChild(iconElement, $picture);
       }
     }
   });
@@ -320,6 +310,7 @@ export async function decorateButtonsDeprecated(el, size) {
       // propagates to buttons.
       $a.innerHTML = $a.innerHTML.replaceAll('<u>', '').replaceAll('</u>', '');
     }
+
     $a.title = $a.title || linkText;
     try {
       const { hash } = new URL($a.href);
@@ -404,19 +395,28 @@ export function readBlockConfig(block) {
   return config;
 }
 
-function hideQuickActionsOnDevices() {
+export function hideQuickActionsOnDevices(userAgent) {
   if (getMetadata('fqa-off') || !!getMetadata('fqa-on')) return;
-  const { userAgent } = navigator;
   document.body.dataset.device = userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
-  if (document.body.dataset.device === 'mobile'
-    || (/Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent))) {
-    fqaMeta.setAttribute('name', 'fqa-off');
+  const isMobile = document.body.dataset.device === 'mobile';
+  // safari won't work either mobile or desktop
+  const isQualifiedBrowser = !/Safari/.test(userAgent) || /Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent);
+  if (isMobile || !isQualifiedBrowser) {
+    fqaMeta.setAttribute('name', 'fqa-off'); // legacy setup for mobile or desktop_safari
   } else {
-    fqaMeta.setAttribute('name', 'fqa-on');
+    fqaMeta.setAttribute('name', 'fqa-on'); // legacy setup for desktop or non_safari
   }
-  document.head.append(fqaMeta);
+  // up-to-date setup that supports mobile frictionless
+  const audienceFqaMeta = document.createElement('meta');
+  audienceFqaMeta.setAttribute('content', 'on');
+  if (isQualifiedBrowser) {
+    audienceFqaMeta.setAttribute('name', `fqa-qualified-${isMobile ? 'mobile' : 'desktop'}`);
+  } else {
+    audienceFqaMeta.setAttribute('name', 'fqa-non-qualified');
+  }
+  document.head.append(fqaMeta, audienceFqaMeta);
 }
 
 export function preDecorateSections(area) {
@@ -440,7 +440,7 @@ export function preDecorateSections(area) {
             || urlParams.get(`${sectionMeta.showwith}`);
         }
         const showwith = sectionMeta.showwith.toLowerCase();
-        if ((showwith === 'fqa-off' || showwith === 'fqa-on')) hideQuickActionsOnDevices();
+        if (['fqa-off', 'fqa-on', 'fqa-non-qualified', 'fqa-qualified-mobile', 'fqa-qualified-desktop'].includes(showwith)) hideQuickActionsOnDevices(navigator.userAgent);
         sectionRemove = showWithSearchParam !== null ? showWithSearchParam !== 'on' : getMetadata(showwith) !== 'on';
       }
       if (sectionRemove) section.remove();
@@ -594,7 +594,7 @@ export function buildAutoBlocks() {
     const lastDiv = document.querySelector('main > div:last-of-type');
     const newDiv = document.createElement('div');
     lastDiv.insertAdjacentElement('afterend', newDiv);
-    const validButtonVersion = ['floating-button', 'multifunction-button', 'mobile-fork-button', 'mobile-fork-button-frictionless'];
+    const validButtonVersion = ['floating-button', 'multifunction-button', 'mobile-fork-button', 'mobile-fork-button-frictionless', 'mobile-fork-button-dismissable'];
     const device = document.body.dataset?.device;
     const blockName = getMetadata(`${device}-floating-cta`);
 
@@ -796,7 +796,7 @@ export function decorateArea(area = document) {
   const embeds = area.querySelectorAll(`${selector} > .embed a[href*="instagram.com"]`);
   linksToNotAutoblock.push(...embeds);
 
-  let videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'image-list', 'tutorials', 'quick-action-hub', 'holiday-blade'].map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
+  let videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'drawer-cards', 'image-list', 'tutorials', 'quick-action-hub', 'holiday-blade'].map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
   videoLinksToNotAutoBlock += `,${['tutorials'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"], ${selector} .${block} a[href*="video.tv.adobe.com"]`).join(', ')}`;
   linksToNotAutoblock.push(...area.querySelectorAll(videoLinksToNotAutoBlock));
   linksToNotAutoblock.forEach((link) => {
@@ -804,4 +804,45 @@ export function decorateArea(area = document) {
   });
 
   decorateCommerceLinks(area);
+}
+
+export async function convertToInlineSVG(img) {
+  try {
+    const response = await fetch(img.src);
+    const svgText = await response.text();
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+    const svgElement = svgDoc.querySelector('svg');
+
+    if (!svgElement) {
+      window.lana?.log(`No SVG element found in file ${img.src}`);
+      return img;
+    }
+
+    // Preserve original classes and add them to the SVG
+    if (img.className) {
+      svgElement.classList.add(...img.className.split(' '));
+    }
+
+    // Preserve original ID if it exists
+    if (img.id) {
+      svgElement.id = img.id;
+    }
+
+    // Copy over any data attributes
+    Array.from(img.attributes).forEach((attr) => {
+      if (attr.name.startsWith('data-')) {
+        svgElement.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    // Set width and height if specified
+    if (img.width) svgElement.setAttribute('width', img.width);
+    if (img.height) svgElement.setAttribute('height', img.height);
+
+    return svgElement;
+  } catch (error) {
+    window.lana?.log(`Error converting SVG: ${error}`);
+    return img;
+  }
 }

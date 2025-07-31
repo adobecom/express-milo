@@ -167,7 +167,9 @@ function renderShareWrapper(templateInfo) {
   });
   const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   tooltip.append(checkmarkIcon);
-  tooltip.append(text);
+  const textEl = createTag('span', { class: 'text' });
+  textEl.textContent = text;
+  tooltip.append(textEl);
   wrapper.append(shareIcon);
   wrapper.append(tooltip);
   return wrapper;
@@ -176,7 +178,7 @@ function renderShareWrapper(templateInfo) {
 const buildiFrameContent = (template) => {
   const { branchUrl } = template.customLinks;
   const taskID = props?.taskid;
-  const zazzleUrl = props.zazzleurl;
+  const zazzleUrl = props?.zazzleurl;
   const { lang } = document.documentElement;
   const iFrame = createTag('iframe', {
     src: `${zazzleUrl}?TD=${template.id}&taskID=${taskID}&shortcode=${branchUrl.split('/').pop()}&lang=${lang}`,
@@ -246,11 +248,13 @@ function renderCTA(branchUrl) {
   return btnEl;
 }
 
-function renderCTALink(branchUrl) {
+function renderCTALink(branchUrl, template) {
+  const btnTitle = editThisTemplate === 'edit this template' ? 'Edit this template' : editThisTemplate;
   const linkEl = createTag('a', {
     href: `${branchUrl}${mv}${sdid}${source}${action}`,
     class: 'cta-link',
     tabindex: '-1',
+    'aria-label': `${btnTitle} ${getTemplateTitle(template)}`,
   });
   return linkEl;
 }
@@ -417,8 +421,6 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(templateInfo);
-      mediaWrapper.append(shareWrapper);
     }
     renderedMedia.hover();
     currentHoveredElement?.classList.remove('singleton-hover');
@@ -436,8 +438,6 @@ function renderMediaWrapper(template) {
     e.stopPropagation();
     if (!renderedMedia) {
       renderedMedia = await renderRotatingMedias(mediaWrapper, template.pages, templateInfo);
-      const shareWrapper = renderShareWrapper(templateInfo);
-      mediaWrapper.append(shareWrapper);
       renderedMedia.hover();
     }
     currentHoveredElement?.classList.remove('singleton-hover');
@@ -467,19 +467,32 @@ function renderHoverWrapper(template) {
     cta = renderPrintCTA(template);
     ctaLink = renderPrintCTALink(template);
   } else {
-    mv = `?mv=${props.mv}` || '';
-    sdid = `&sdid=${props.sdid}` || '';
-    source = `&source=${props.source}` || '';
-    action = `&action=${props.action}` || '';
+    mv = props?.mv ? `?mv=${props.mv}` : '';
+    sdid = props?.sdid ? `&sdid=${props.sdid}` : '';
+    source = props?.source ? `&source=${props.source}` : '';
+    action = props?.action ? `&action=${props.action}` : '';
     cta = renderCTA(template.customLinks.branchUrl);
-    ctaLink = renderCTALink(template.customLinks.branchUrl);
+    ctaLink = renderCTALink(template.customLinks.branchUrl, template);
   }
 
-  cta.setAttribute('aria-label', `${editThisTemplate}: ${getTemplateTitle(template)}`);
+  cta.setAttribute('aria-label', `${editThisTemplate} ${getTemplateTitle(template)}`);
   ctaLink.append(mediaWrapper);
+
+  // Create shareWrapper separately
+  const templateTitle = getTemplateTitle(template);
+  const { branchUrl } = template.customLinks;
+  const templateInfo = {
+    templateTitle,
+    branchUrl,
+    renditionLinkHref: extractRenditionLinkHref(template),
+    componentLinkHref: extractComponentLinkHref(template),
+  };
+  const shareWrapper = renderShareWrapper(templateInfo);
 
   btnContainer.append(cta);
   btnContainer.append(ctaLink);
+  btnContainer.append(shareWrapper);
+
   btnContainer.addEventListener('mouseenter', enterHandler);
   btnContainer.addEventListener('mouseleave', leaveHandler);
 

@@ -1,7 +1,6 @@
 import {
   getLibs,
   yieldToMain,
-  getIconElementDeprecated,
   fixIcons,
   addTempWrapperDeprecated, decorateButtonsDeprecated,
 } from '../../scripts/utils.js';
@@ -13,6 +12,7 @@ import {
   fetchPlanOnePlans,
 } from '../../scripts/utils/pricing.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
+import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let placeholders;
@@ -34,6 +34,7 @@ const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '[[year-2-pricing-token]]';
 const BASE_PRICING_TOKEN = '[[base-pricing-token]]';
+const TOOLTIP_PATTERN = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
 
 const PLANS = ['monthly', 'annually'];
 const SPECIAL_PLAN = 'annual-billed-monthly';
@@ -127,15 +128,14 @@ function tagFreePlan(cardContainer) {
   });
 }
 
-function createToggle(pricingSections, groupID, adjElemPos) {
+function createToggle(pricingSections, groupID, adjElemPos, header) {
   const subDesc = placeholders?.['subscription-type'] || 'Subscription Type:';
   const toggleWrapper = createTag('div', {
     class: 'billing-toggle',
     role: 'radiogroup',
-    'aria-labelledby': groupID,
   });
 
-  const groupLabel = createTag('strong', { id: groupID }, subDesc);
+  const groupLabel = createTag('strong', {}, subDesc);
   toggleWrapper.appendChild(groupLabel);
 
   const buttons = PLANS.map((basePlan, i) => {
@@ -143,20 +143,23 @@ function createToggle(pricingSections, groupID, adjElemPos) {
       ? SPECIAL_PLAN
       : basePlan;
     const label = placeholders?.[planLabelID];
-    const buttonID = `${groupID}:${basePlan}`;
     const isDefault = i === 0;
+    let associatedHeaderLabel = '';
+    const associatedHeader = header.querySelectorAll('h2, h3');
+    if (associatedHeader.length > 0) {
+      associatedHeaderLabel = associatedHeader[0].textContent.trim();
+    }
     const button = createTag('button', {
       class: isDefault ? 'checked' : '',
-      id: buttonID,
       plan: basePlan,
       role: 'radio',
       'aria-checked': isDefault.toString(),
-      'aria-labelledby': buttonID,
+      'aria-label': `${associatedHeaderLabel} ${label}`,
     });
 
     button.appendChild(createTag('span'));
 
-    button.appendChild(createTag('div', { id: `${buttonID}:radio` }, label));
+    button.appendChild(createTag('div', { }, label));
 
     button.addEventListener('click', () => {
       togglePlan(pricingSections, buttons, i);
@@ -292,88 +295,45 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
   }
 }
 
-function handleRawPrice(price, basePrice, response) {
+async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow) {
+  const [priceReduced, priceWas, priceNow] = await replaceKeyArray([
+    'price-reduced',
+    'price-was',
+    'price-now',
+  ], getConfig());
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
+  if (response.price?.length > 6) {
+    price.classList.add('long-price');
+    basePrice.classList.add('long-price');
+  }
   if (basePrice.innerHTML !== '') {
     price.classList.add('price-active');
+
+    const priceReducedElement = createTag('p');
+
+    const reducedText = createTag('span', { class: 'visually-hidden' });
+    reducedText.textContent = priceReduced;
+    priceReducedElement.appendChild(reducedText);
+
+    const del = createTag('del');
+    const wasText = createTag('span', { class: 'visually-hidden' });
+    wasText.textContent = priceWas;
+    priceReducedElement.appendChild(wasText);
+    del.appendChild(basePrice.cloneNode(true));
+    priceReducedElement.appendChild(del);
+
+    const ins = createTag('ins');
+    const nowText = createTag('span', { class: 'visually-hidden' });
+    nowText.textContent = priceNow;
+    priceReducedElement.appendChild(nowText);
+    ins.appendChild(price.cloneNode(true));
+    priceReducedElement.appendChild(ins);
+    priceRow.append(priceReducedElement, priceSuffix);
   } else {
     price.classList.remove('price-active');
+    priceRow.append(basePrice, price, priceSuffix);
   }
-}
-
-function adjustElementPosition() {
-  const elements = document.querySelectorAll('.tooltip-text');
-
-  if (elements.length === 0) return;
-  for (const element of elements) {
-    const rect = element.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-      element.classList.remove('overflow-left');
-      element.classList.add('overflow-right');
-    } else if (rect.left < 0) {
-      element.classList.remove('overflow-right');
-      element.classList.add('overflow-left');
-    } else {
-      element.classList.remove('overflow-right');
-      element.classList.remove('overflow-left');
-    }
-  }
-}
-
-function handleTooltip(pricingArea) {
-  const elements = pricingArea.querySelectorAll('p');
-  const pattern = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
-  let tooltip;
-  let tooltipDiv;
-
-  Array.from(elements).forEach((p) => {
-    const res = pattern.exec(p.textContent);
-    if (res) {
-      tooltip = res;
-      tooltipDiv = p;
-    }
-  });
-  if (!tooltip) return;
-
-  tooltipDiv.innerHTML = tooltipDiv.innerHTML.replace(pattern, '');
-  const tooltipText = tooltip[2];
-  tooltipDiv.classList.add('tooltip');
-  const span = createTag('div', { class: 'tooltip-text' });
-  span.innerText = tooltipText;
-  const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
-  icon.append(span);
-  const iconWrapper = createTag('button');
-  icon.setAttribute('tabindex', 1);
-  iconWrapper.setAttribute('aria-label', tooltipText);
-  iconWrapper.append(icon);
-  iconWrapper.append(span);
-  tooltipDiv.append(iconWrapper);
-
-  iconWrapper.addEventListener('mouseover', () => {
-    iconWrapper.classList.add('hover');
-  });
-
-  iconWrapper.addEventListener('mouseleave', () => {
-    setTimeout(() => {
-      iconWrapper.classList.remove('hover');
-    }, 500);
-  });
-
-  span.addEventListener('mouseenter', () => {
-    span.classList.add('hover');
-  });
-
-  span.addEventListener('mouseleave', () => {
-    span.classList.remove('hover');
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.activeElement.blur();
-      iconWrapper.classList.remove('hover');
-    }
-  });
 }
 
 async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
@@ -391,8 +351,6 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const basePrice = createTag('span', { class: 'pricing-base-price' });
   const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
 
-  priceRow.append(basePrice, price, priceSuffix);
-
   const response = await fetchPlanOnePlans(priceEl?.href);
   if (response.term && groupID) {
     BlockMediator.set(groupID, response.term);
@@ -405,9 +363,9 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
 
   const isPremiumCard = response.ooAvailable || false;
   const savePercentElem = pricingArea.querySelector('.card-offer');
-  handleRawPrice(price, basePrice, response);
   handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-  handleTooltip(pricingArea);
+  handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+  handleTooltip(pricingArea, TOOLTIP_PATTERN);
   handleSavePercentage(savePercentElem, isPremiumCard, response);
   handleSpecialPromo(specialPromo, isPremiumCard, response, legacyVersion);
   handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
@@ -420,6 +378,7 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
 }
 
 async function createPricingSection(
+  header,
   pricingArea,
   ctaGroup,
   specialPromo,
@@ -445,6 +404,9 @@ async function createPricingSection(
     if (a.parentNode.tagName.toLowerCase() === 'p') {
       a.parentNode.remove();
     }
+
+    const headerText = header?.querySelector('h2')?.textContent;
+    a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
     formatDynamicCartLink(a);
     ctaGroup.append(a);
   });
@@ -464,8 +426,14 @@ function readBraces(inputString, card) {
 
   if (matches.length > 0) {
     const [token, promoType] = matches[matches.length - 1];
-    const specialPromo = createTag('div');
-    specialPromo.textContent = inputString.split(token)[0].trim();
+    let specialPromo = createTag('div');
+    const textContent = inputString?.split(token)[0]?.trim();
+
+    if (textContent) {
+      specialPromo = createTag('h2');
+      specialPromo.textContent = textContent;
+    }
+
     card.classList.add(promoType.replaceAll(' ', ''));
     card.append(specialPromo);
     return specialPromo;
@@ -513,19 +481,28 @@ function decorateLegacyHeader(header, card) {
 
 function decorateHeader(header, borderParams, card, cardBorder) {
   const h2 = header.querySelector('h2');
+  const headerImage = h2?.querySelector('img');
+  const h2Text = h2?.innerText.trim();
+  const h3 = createTag('h3');
+  h3.innerText = h2Text;
+
+  if (headerImage) h3.append(headerImage);
+  header.append(h3);
+  h2?.remove();
+
   // The raw text extracted from the word doc
   header.classList.add('card-header');
   const specialPromo = readBraces(borderParams?.innerText, cardBorder);
   const premiumIcon = header.querySelector('img');
   // Finds the headcount, removes it from the original string and creates an icon with the hc
   const extractHeadCountExp = /(>?)\(\d+(.*?)\)/;
-  if (extractHeadCountExp.test(h2.innerText)) {
+  if (extractHeadCountExp.test(h3.innerText)) {
     const headCntDiv = createTag('div', { class: 'head-cnt', alt: '' });
-    const headCount = h2.innerText
+    const headCount = h3.innerText
       .match(extractHeadCountExp)[0]
       .replace(')', '')
       .replace('(', '');
-    [h2.innerText] = h2.innerText.split(extractHeadCountExp);
+    [h3.innerText] = h3.innerText.split(extractHeadCountExp);
     headCntDiv.textContent = headCount;
     headCntDiv.prepend(
       createTag('img', {
@@ -535,7 +512,7 @@ function decorateHeader(header, borderParams, card, cardBorder) {
     );
     header.append(headCntDiv);
   }
-  if (premiumIcon) h2.append(premiumIcon);
+  if (premiumIcon) h3.append(premiumIcon);
   header.querySelectorAll('p').forEach((p) => {
     if (p.innerHTML.trim() === '') p.remove();
   });
@@ -595,8 +572,8 @@ async function decorateCard({
   decorateBasicTextSection(explain, 'card-explain', card);
   const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
   const [mPricingSection, yPricingSection] = await Promise.all([
-    createPricingSection(mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
-    createPricingSection(yPricingRow, yCtaGroup, null),
+    createPricingSection(header, mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
+    createPricingSection(header, yPricingRow, yCtaGroup, null),
   ]);
   mPricingSection.classList.add('monthly');
   yPricingSection.classList.add('annually', 'hide');
@@ -605,6 +582,7 @@ async function decorateCard({
     [mPricingSection, yPricingSection],
     groupID,
     adjustElementPosition,
+    header,
   );
   card.append(toggle, mPricingSection, yPricingSection);
   decorateBasicTextSection(featureList, 'card-feature-list', card);

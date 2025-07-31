@@ -1,9 +1,10 @@
-import { getLibs, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
 import { debounce } from '../../scripts/utils/hofs.js';
+import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let formatSalesPhoneNumber;
@@ -11,75 +12,6 @@ let replaceKeyArray; let formatSalesPhoneNumber;
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '((year-2-pricing-token))';
-
-export function adjustElementPosition() {
-  const elements = document.querySelectorAll('.tooltip-text');
-
-  if (elements.length === 0) return;
-  for (const element of elements) {
-    const rect = element.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-      element.classList.remove('overflow-left');
-      element.classList.add('overflow-right');
-    } else if (rect.left < 0) {
-      element.classList.remove('overflow-right');
-      element.classList.add('overflow-left');
-    }
-  }
-}
-
-export function handleTooltip(pricingArea) {
-  const elements = pricingArea.querySelectorAll('p');
-  const pattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g;
-  let tooltip;
-  let tooltipDiv;
-
-  Array.from(elements).forEach((p) => {
-    const res = pattern.exec(p.textContent);
-    if (res) {
-      tooltip = res;
-      tooltipDiv = p;
-    }
-  });
-  if (!tooltip) return;
-
-  tooltipDiv.innerHTML = tooltipDiv.innerHTML.replace(pattern, '');
-  const tooltipText = tooltip[2];
-  tooltipDiv.classList.add('tooltip');
-  const span = createTag('div', { class: 'tooltip-text' });
-  span.innerText = tooltipText;
-  const icon = getIconElementDeprecated('info', 44, 'Info', 'tooltip-icon');
-  icon.append(span);
-  const iconWrapper = createTag('button');
-  iconWrapper.setAttribute('aria-label', tooltipText);
-  icon.setAttribute('tabindex', 1);
-  iconWrapper.append(icon);
-  iconWrapper.append(span);
-  tooltipDiv.append(iconWrapper);
-  iconWrapper.addEventListener('click', adjustElementPosition);
-  window.addEventListener('resize', adjustElementPosition);
-
-  icon.addEventListener('mouseover', () => {
-    iconWrapper.classList.add('hover');
-  });
-
-  icon.addEventListener('mouseleave', () => {
-    setTimeout(() => {
-      iconWrapper.classList.remove('hover');
-    }, 500);
-  });
-
-  span.addEventListener('mouseleave', () => {
-    span.classList.remove('hover');
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.activeElement.blur();
-      iconWrapper.classList.remove('hover');
-    }
-  });
-}
 
 function getHeightWithoutPadding(element) {
   const styles = window.getComputedStyle(element);
@@ -158,21 +90,49 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
   }
 }
 
-function handleRawPrice(price, basePrice, response) {
+async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow) {
+  const [priceReduced, priceWas, priceNow] = await replaceKeyArray([
+    'price-reduced',
+    'price-was',
+    'price-now',
+  ], getConfig());
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
-  if (basePrice.innerHTML !== '') {
-    price.classList.add('price-active');
-  } else {
-    price.classList.remove('price-active');
-  }
   if (response.price?.length > 6) {
     price.classList.add('long-price');
     basePrice.classList.add('long-price');
   }
+  if (basePrice.innerHTML !== '') {
+    price.classList.add('price-active');
+
+    const priceReducedElement = createTag('p');
+
+    const reducedText = createTag('span', { class: 'visually-hidden' });
+    reducedText.textContent = priceReduced;
+    priceReducedElement.appendChild(reducedText);
+
+    const del = createTag('del');
+    const wasText = createTag('span', { class: 'visually-hidden' });
+    wasText.textContent = priceWas;
+    priceReducedElement.appendChild(wasText);
+    del.appendChild(basePrice.cloneNode(true));
+    priceReducedElement.appendChild(del);
+
+    const ins = createTag('ins');
+    const nowText = createTag('span', { class: 'visually-hidden' });
+    nowText.textContent = priceNow;
+    priceReducedElement.appendChild(nowText);
+    ins.appendChild(price.cloneNode(true));
+    priceReducedElement.appendChild(ins);
+    priceRow.append(priceReducedElement, priceSuffix);
+  } else {
+    price.classList.remove('price-active');
+    priceRow.append(basePrice, price, priceSuffix);
+  }
 }
 
 async function createPricingSection(
+  header,
   pricingArea,
   ctaGroup,
 ) {
@@ -192,12 +152,11 @@ async function createPricingSection(
       placeholderArr,
       response,
     );
-    handleRawPrice(price, basePrice, response);
     handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
+    handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+
     handleTooltip(pricingArea);
     handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
-
-    priceRow.append(basePrice, price, priceSuffix);
     pricingArea.prepend(priceRow);
     priceEl?.parentNode?.remove();
     pricingSuffixTextElem?.remove();
@@ -214,6 +173,8 @@ async function createPricingSection(
     if (a.textContent.includes(SALES_NUMBERS)) {
       formatSalesPhoneNumber([a], SALES_NUMBERS);
     }
+    const headerText = header?.querySelector('h2')?.textContent;
+    a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
   });
 }
 
@@ -292,6 +253,7 @@ export default async function init(el) {
     decorateCardBorder(card, rows[1].children[0]);
     decorateHeader(rows[0].children[0], rows[2].children[0]);
     await createPricingSection(
+      rows[0].children[0],
       rows[3].children[0],
       rows[4].children[0],
     );

@@ -131,6 +131,8 @@ main .section .mobile-toc {
     align-items: center;
     cursor: pointer;
     padding: 10px;
+    width: 100%;
+    border: none;
 }
 
 .mobile-toc .toc-content {
@@ -175,8 +177,48 @@ main .section .mobile-toc {
     transform: rotate(135deg);
 }
 
+.table-of-contents-seo.mobile-view {
+  display: none;
+}
+
+.mobile-toc:not(.desktop-view) {
+  display: block;
+}
+
 @media (min-width: 600px) {
-    .table-of-contents-seo {
-        display: block;
-    }
+  .table-of-contents-seo:not(.mobile-view) {
+    display: block;
+  }
+
+  .mobile-toc.desktop-view {
+    display: none;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  top: -45px;
+  left: 0;
+  background: var(--color-white);
+  color: black;
+  padding: 8px;
+  z-index: 100;
+  text-decoration: none;
+  transition: top 0.3s ease;
+  border: 1px solid var(--color-gray-300);
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 2px solid var(--color-blue-600);
+  outline-offset: 2px;
+}
+
+.skip-link.hidden {
+  display: none;
+}
+
+.toc-focused {
+  outline: 2px solid var(--color-blue-600);
+  outline-offset: 2px;
 }

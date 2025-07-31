@@ -17,6 +17,7 @@ export function decorateHeading(block, payload) {
 
   if (payload.viewAllLink.href !== '') {
     const viewAllButton = createTag('a', { class: 'browse-by-category-link', href: payload.viewAllLink.href });
+    viewAllButton.setAttribute('aria-label', `${payload.viewAllLink.text} ${payload.heading}`);
     viewAllButton.textContent = payload.viewAllLink.text;
     viewAllButtonWrapper.append(viewAllButton);
   }
@@ -69,7 +70,7 @@ export default async function decorate(block) {
   const headingDiv = rows.shift();
 
   const payload = {
-    heading: headingDiv.querySelector('h4') ? headingDiv.querySelector('h4').textContent.trim() : '',
+    heading: headingDiv.querySelector('h2, h3, h4') ? headingDiv.querySelector('h2, h3, h4').textContent.trim() : '',
     viewAllLink: {
       text: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').textContent.trim() : '',
       href: headingDiv.querySelector('a.button') ? headingDiv.querySelector('a.button').href : '',

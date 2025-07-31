@@ -12,9 +12,10 @@ async function makeRating(
   starsPlaceholder,
   playStoreLabelPlaceholder,
   appleStoreLabelPlaceholder,
+  customURL,
 ) {
   const ratings = ratingPlaceholder?.split(';') || [];
-  const link = ratings[2]?.trim();
+  const link = customURL || ratings[2]?.trim();
   if (!link) {
     return null;
   }
@@ -40,6 +41,7 @@ async function makeRatings(
   starsPlaceholder,
   playStoreLabelPlaceholder,
   appleStoreLabelPlaceholder,
+  customURL,
 ) {
   const ratings = createTag('div', { class: 'ratings' });
   const userAgent = getMobileOperatingSystem();
@@ -50,6 +52,7 @@ async function makeRatings(
       starsPlaceholder,
       playStoreLabelPlaceholder,
       appleStoreLabelPlaceholder,
+      customURL,
     );
     appleElement && ratings.append(appleElement);
   }
@@ -60,6 +63,7 @@ async function makeRatings(
       starsPlaceholder,
       playStoreLabelPlaceholder,
       appleStoreLabelPlaceholder,
+      customURL,
     );
     googleElement && ratings.append(googleElement);
   }
@@ -80,10 +84,22 @@ export default async function decorate(block) {
       replaceKey('app-store-ratings-apple-store', getConfig()),
     ],
   );
+
+  let customURL;
+  const customUrlElement = block.querySelector(':scope > div a');
+  if (customUrlElement) {
+    customURL = customUrlElement.getAttribute('href');
+  }
+
   block.append(await makeRatings(
     ratingPlaceholder,
     starsPlaceholder,
     playStoreLabelPlaceholder,
     appleStoreLabelPlaceholder,
+    customURL,
   ));
+
+  if (customUrlElement) {
+    customUrlElement.remove();
+  }
 }

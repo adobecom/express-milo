@@ -1,5 +1,6 @@
 {
   "project": "Express Milo",
+  "trustedHosts": ["milo.adobe.com"],
   "plugins": [
     {
       "id": "path",

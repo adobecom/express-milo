@@ -101,18 +101,20 @@ async function processContentRow(block, props) {
   const textWrapper = createTag('div', { class: 'text-wrapper' });
   textWrapper.innerHTML = props.contentRow.outerHTML;
   templateTitle.append(textWrapper);
-
   const aTags = templateTitle.querySelectorAll(':scope a');
 
   if (aTags.length > 0) {
     templateTitle.classList.add('with-link');
     aTags.forEach((aTag) => {
       aTag.className = 'template-title-link';
-
       const p = aTag.closest('p');
+      const h4 = templateTitle.querySelector('h4');
       if (p) {
         templateTitle.append(p);
         p.className = 'view-all-link-wrapper';
+      }
+      if (h4) {
+        aTag.setAttribute('aria-label', `${aTag.textContent.trim()} ${h4.textContent.trim()}`);
       }
     });
 
@@ -1651,6 +1653,49 @@ function renderFallbackMsgWrapper(block, { fallbackMsg }) {
   }
 }
 
+async function handleTabClick(
+  block,
+  props,
+  templatesWrapper,
+  tabsWrapper,
+  tabBtn,
+  task,
+  index,
+  tabConfigs,
+) {
+  templatesWrapper.style.opacity = 0;
+  const {
+    templates: newTemplates,
+    fallbackMsg: newFallbackMsg,
+  } = await fetchAndRenderTemplates({
+    ...props,
+    start: '',
+    filters: {
+      ...props.filters,
+      tasks: task,
+    },
+    collectionId: tabConfigs[index].collectionId,
+  });
+  if (newTemplates?.length > 0) {
+    props.fallbackMsg = newFallbackMsg;
+    renderFallbackMsgWrapper(block, props);
+
+    templatesWrapper.innerHTML = '';
+    props.templates = newTemplates;
+    props.templates.forEach((template) => {
+      templatesWrapper.append(template);
+    });
+    await decorateTemplates(block, props);
+    buildCarousel(':scope > .template', templatesWrapper);
+    templatesWrapper.style.opacity = 1;
+  }
+
+  tabsWrapper.querySelectorAll('.template-tab-button').forEach((btn) => {
+    if (btn !== tabBtn) btn.classList.remove('active');
+  });
+  tabBtn.classList.add('active');
+}
+
 async function buildTemplateList(block, props, type = []) {
   if (type?.length > 0) {
     type.forEach((typeName) => {
@@ -1705,6 +1750,7 @@ async function buildTemplateList(block, props, type = []) {
     const xTaskNameMapping = await replaceKey('x-task-name-mapping', getConfig());
     const taskMap = xTaskNameMapping !== 'x task name mapping' ? JSON.parse(xTaskNameMapping) : {};
     const taskNames = tabConfigs.map(({ tab }) => getTaskNameInMapping(tab, taskMap));
+    let activeTabIndex = -1;
     if (taskNames.length === tabs.length) {
       taskNames.filter(({ length }) => length).forEach(([[task]], index) => {
         const tabBtn = createTag('button', { class: 'template-tab-button' });
@@ -1714,43 +1760,33 @@ async function buildTemplateList(block, props, type = []) {
 
         if (props.filters.tasks === task) {
           tabBtn.classList.add('active');
+          activeTabIndex = index;
         }
-
-        tabBtn.addEventListener('click', async () => {
-          templatesWrapper.style.opacity = 0;
-          const {
-            templates: newTemplates,
-            fallbackMsg: newFallbackMsg,
-          } = await fetchAndRenderTemplates({
-            ...props,
-            start: '',
-            filters: {
-              ...props.filters,
-              tasks: task,
-            },
-            collectionId: tabConfigs[index].collectionId,
-          });
-          if (newTemplates?.length > 0) {
-            props.fallbackMsg = newFallbackMsg;
-            renderFallbackMsgWrapper(block, props);
-
-            templatesWrapper.innerHTML = '';
-            props.templates = newTemplates;
-            props.templates.forEach((template) => {
-              templatesWrapper.append(template);
-            });
-
-            await decorateTemplates(block, props);
-            buildCarousel(':scope > .template', templatesWrapper);
-            templatesWrapper.style.opacity = 1;
-          }
-
-          tabsWrapper.querySelectorAll('.template-tab-button').forEach((btn) => {
-            if (btn !== tabBtn) btn.classList.remove('active');
-          });
-          tabBtn.classList.add('active');
-        }, { passive: true });
+        tabBtn.addEventListener('click', () => handleTabClick(
+          block,
+          props,
+          templatesWrapper,
+          tabsWrapper,
+          tabBtn,
+          task,
+          index,
+          tabConfigs,
+        ), { passive: true });
       });
+
+      if (activeTabIndex < 0 && tabBtns.length > 0) {
+        tabBtns[0].classList.add('active');
+        await handleTabClick(
+          block,
+          props,
+          templatesWrapper,
+          tabsWrapper,
+          tabBtns[0],
+          taskNames[0][0][0],
+          0,
+          tabConfigs,
+        );
+      }
 
       document.dispatchEvent(new CustomEvent('linkspopulated', { detail: tabBtns }));
     }
