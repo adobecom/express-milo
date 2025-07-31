@@ -164,6 +164,67 @@ main .banner h2 {
   padding: 0 15px;
 }
 
+/* Background image variants - make h2 black for contrast */
+.banner.light-bg h2,
+.banner.blue-green-pink-bg h2,
+.banner.blue-bg h2,
+.banner.blue-pink-orange-bg h2,
+.banner.green-blue-red-bg h2,
+.banner.blue-purple-gray-bg h2,
+.banner.yellow-pink-blue-bg h2 {
+  color: black;
+}
+
+/* Background image variants - apply background images */
+.banner.light-bg {
+  background-image: url('/express/code/blocks/banner/img/light-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner.blue-green-pink-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-green-pink-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner.blue-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner.blue-pink-orange-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-pink-orange-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner.green-blue-red-bg {
+  background-image: url('/express/code/blocks/banner/img/green-blue-red-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner.blue-purple-gray-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-purple-gray-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.banner.yellow-pink-blue-bg {
+  background-image: url('/express/code/blocks/banner/img/yellow-pink-blue-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 @media (min-width: 900px) {
   .section .banner.standout {
     padding-left: 6%;
