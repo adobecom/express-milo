@@ -470,6 +470,9 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           stickyHeader.classList.add('is-stuck-initial');
           placeholder.style.display = 'flex';
           placeholder.style.height = `${stickyHeaderHeight}px`;
+          if (document.activeElement && document.activeElement.blur) {
+            document.activeElement.blur();
+          }
           setTimeout(() => {
             stickyHeader.classList.add('gnav-offset');
             stickyHeader.classList.remove('is-stuck-initial');
