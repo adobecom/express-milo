@@ -1124,8 +1124,7 @@ main .section.long-form .content {
   max-width: unset;
   /* Mobile: 12 columns */
   width: var(--ax-grid-12-col-width);
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
 main .section.long-form .content,
@@ -1165,8 +1164,7 @@ main .section.long-form .content h4 {
     padding: 0 40px 60px;
     /* Tablet: 12 columns */
     width: var(--ax-grid-12-col-width);
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
   }
 }
 
@@ -1174,8 +1172,7 @@ main .section.long-form .content h4 {
   main .section.long-form .content {
     /* Desktop: 7 columns */
     width: var(--ax-grid-7-col-width);
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto;
   }
 }
 
