@@ -59,8 +59,7 @@ describe('Table of Contents SEO - Title Test', () => {
 
     expect(title).to.exist;
     expect(title.textContent).to.equal('Table of Contents');
-    expect(title.getAttribute('role')).to.equal('button');
-    expect(title.getAttribute('tabindex')).to.equal('0');
+    expect(title.tagName.toLowerCase()).to.equal('button');
     expect(title.getAttribute('aria-expanded')).to.equal('false');
     expect(title.getAttribute('aria-controls')).to.equal('toc-content');
 
