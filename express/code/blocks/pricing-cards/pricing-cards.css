@@ -32,7 +32,7 @@ Legacy CSS for cards and special promo
   align-items: center;
 }
 
-.pricing-cards .card .card-header h2 {
+.pricing-cards .card .card-header h3 {
   font-weight: var(--heading-font-weight);
   line-height: var(--heading-line-height);
   font-size: 1.75rem;
@@ -80,18 +80,19 @@ End legacy CSS
 /*
 Border style variants
 */
-
-.pricing-cards .gradient-promo>div:first-of-type {
+.pricing-cards .gradient-promo>h2{
   margin-left: 4px;
   color: var(--color-white);
   font-weight: 400;
   padding-bottom: 12px;
   line-height: 1.5rem;
   text-align: center;
+  font-size: 1rem;
+  margin-top: 0px !important;
 }
 
 .pricing-cards .gradient-promo {
-  background: linear-gradient(90deg, #ff477b 0%, #5c5ce0 52%, #318fff 100%) !important;
+  background: var(--S2-Buttons-Premium) !important;
   padding: 12px 2px 4px 2px;
   border-radius: 10px;
   background: var(--color-white);
@@ -159,104 +160,7 @@ Border style variants
   position: relative;
   top: -20px;
 }
-
-/*
-End border style variants
-*/
-
-.pricing-cards .tooltip-icon {
-  position: relative;
-  top: 2px;
-}
-.pricing-cards .tooltip-text.overflow-left {
-  right: inherit;
-  left: -20px;
-
-}
-.pricing-cards .tooltip-text.overflow-right {
-  left: inherit;
-  right: -20px;
-}
-
-.pricing-cards .tooltip > button:focus-within .tooltip-text {
-  opacity: 1;
-}
-
-.pricing-cards .tooltip-text {
-  opacity: 0;
-  padding: 8px;
-  z-index: 10;
-  background-color: #292929;
-  color: white;
-  border-radius: 8px;
-  position: absolute;
-  bottom: 100%;
-  min-width: 200px;
-  left: -105px;
-  margin-bottom: 5px;
-  user-select: text;
-  transition: bottom 0.5s;
-  width: 100%;
-}
-
-.pricing-cards .tooltip>button {
-  border: none;
-  background-color: transparent;
-  padding: 0px;
-  font-family: "adobe-clean";
-  position: relative;
-}
-
-
-.pricing-cards .tooltip  button.hover .tooltip-text {
-  opacity: 1;
-} 
-
-.pricing-cards .tooltip-text.hover {
-  opacity: 1;
-} 
-
-.pricing-cards .tooltip-text::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid black;
-
-}
-
-.pricing-cards .tooltip-text.overflow-left::after {
-  right: inherit;
-  left: 20px;
-}
-
-.pricing-cards .tooltip-text.overflow-right::after {
-  left: inherit;
-  right: 20px;
-}
-
-.pricing-cards .tooltip {
-  position: relative;
-  display: inline;
-}
-
-.pricing-cards .tooltip::after {
-  display: inline;
-}
-
-.pricing-cards .tooltip span {
-  position: relative;
-}
-
-.pricing-cards .tooltip .icon:hover~.tooltip-text {
-  opacity: 1;
-  pointer-events: visible;
-}
-
+  
 .pricing-cards .card-border .hide {
   display: none;
 }
@@ -269,11 +173,12 @@ End border style variants
 }
 
 
-.pricing-cards .card-border .card .card-header h2 {
+.pricing-cards .card-border .card .card-header h3 {
   display: flex;
   flex-direction: row-reverse;
   gap: 8px;
   text-align: left;
+  font-size: 1.75rem;
 }
 
 .pricing-cards .card-header img {
@@ -574,4 +479,13 @@ End border style variants
   .pricing-cards .billing-toggle.suppressed-billing-toggle {
     height: unset;
   }
+}
+
+.pricing-cards ins,
+.pricing-cards del {
+  text-decoration: none;
+}
+
+.pricing-cards .visually-hidden {
+  clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px;
 }

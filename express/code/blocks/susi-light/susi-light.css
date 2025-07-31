@@ -1,12 +1,7 @@
-/* preserving modal space for ux */
-.dialog-modal:has(.susi-light) {
-    width: 360px;
-    min-height: 462px;
-}
-
-.dialog-modal:has(.susi-light.tabs) {
-  width: 400px;
-  min-height: 462px;
+:root {
+  --susi-modal-width: 370px;
+  --susi-tabs-width: 400px;
+  --susi-min-height: 462px;
 }
 
 .susi-light {
@@ -14,134 +9,188 @@
   align-items: center;
   justify-content: center;
   line-height: initial;
+  --susi-grey: #e6e6e6;
 }
 
-.susi-tabs {
-  text-align: center;
+.susi-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.susi-tabs .express-logo {
-  width: unset;
-  height: 24px;
-  padding-top: 32px;
-}
-
-.susi-tabs .title {
-  font-size: var(--heading-font-size-s);
-  line-height: 28.6px;
-  font-weight: 900;
-  padding-top: 12px;
   text-align: center;
 }
 
-.susi-tabs [role='tablist'] {
-  background-color: #e6e6e6;
-  border-radius: 8px;
-  display: flex;
-  gap: 4px;
-  padding: 4px;
-  margin-top: 16px;
+.susi-layout .express-logo {
+  width: unset;
+  height: 24px;
 }
 
-.susi-tabs [role='tablist']:has(:first-child:last-child) {
+.susi-layout .title {
+  padding-top: var(--spacing-200);
+  max-width: 90%;
+  font-size: var(--heading-font-size-s);
+  line-height: 28.6px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.susi-layout .footer {
+  padding: var(--spacing-300) 0;
+  line-height: 1.3;
+  font-size: var(--body-font-size-s);
+  text-align: center;
+  font-weight: 700;
+  color: #292929;
+}
+
+.susi-layout .footer a {
+  text-decoration: underline;
+  font-weight: 500;
+  color: initial;
+}
+
+.susi-layout .footer.susi-banner {
+  width: 100%;
+  background-color: var(--color-gray-150);
+}
+
+.susi-layout .footer.susi-bubbles {
+  padding-bottom: var(--spacing-500);
+}
+
+.susi-layout .footer.susi-bubbles h2 {
+  margin: 0;
+  line-height: var(--heading-line-height);
+  font-size: var(--body-font-size-l);
+  font-weight: 700;
+}
+
+.susi-layout .footer .susi-bubble-container {
+  padding-top: var(--spacing-100);
+  display: flex;
+  gap: var(--spacing-200);
+  justify-content: center;
+}
+
+.susi-layout .footer .susi-bubble {
+  border-radius: 8px;
+  margin: 0;
+  padding: var(--spacing-200) var(--spacing-400);
+  display: flex;
+  flex-direction: column;
+  font-size: var(--body-font-size-s);
+  background-color: #f3f3f3;
+}
+
+/* tabs styles */
+.susi-light.tabs [role='tablist'] {
+  margin-top: var(--spacing-300);
+  border-radius: 8px;
+  padding: 4px;
+  display: flex;
+  gap: 4px;
+  background-color: var(--susi-grey);
+}
+
+.susi-light.tabs [role='tablist']:has(:first-child:last-child) {
   display: none;
 }
 
-.susi-tabs [role='tab'] {
-  background-color: #e6e6e6;
-  color: #222222;
+.susi-light.tabs [role='tab'] {
   border: initial;
+  padding: var(--spacing-100) var(--spacing-200) 10px;
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
   font-weight: 700;
-  padding: 8px 12px 10px;
+  background-color: var(--susi-grey);
+  color: #222222;
   line-height: 130%;
   cursor: pointer;
 }
 
-.susi-tabs [role='tab'][aria-selected='true'] {
-  background-color: var(--color-white);
+.susi-light.tabs [role='tab'][aria-selected='true'] {
   border-radius: 6px;
+  background-color: var(--color-white);
 }
 
-.susi-tabs [role='tabpanel'] {
-  width: 400px;
+.susi-light.tabs [role='tabpanel'] {
+  width: var(--susi-tabs-width);
   max-width: 95vw;
 }
 
-.susi-tabs [role='tabpanel'].hide {
+.susi-light.tabs [role='tabpanel'].hide {
   display: none;
 }
 
-/* reduce CLS */
-.susi-tabs [role='tabpanel'].standard .susi-wrapper {
+/* CLS optiimzations */
+/* TODO: makes this dynamic based on # of social logins */
+.susi-light.tabs [role='tabpanel'].standard .susi-wrapper {
   min-height: 457.5px;
 }
 
-.susi-tabs [role='tabpanel'].edu-express .susi-wrapper {
+.susi-light.tabs [role='tabpanel'].edu-express .susi-wrapper {
   min-height: 366.5px;
 }
 
-.susi-tabs .footer {
-  font-size: var(--body-font-size-s);
-  text-align: center;
-  padding: 16px 0;
+.susi-light.student .susi-wrapper {
+  min-height: 421.5px;
+  width: var(--susi-modal-width);
+}
+
+/* student styles */
+.susi-light.student .student-check {
+  margin-top: var(--spacing-300);
+  padding: var(--spacing-300) 0;
+  width: calc(100% - 2 * var(--spacing-400));
   font-weight: 700;
-  color: #292929;
-  line-height: 20.8px;
+  font-size: var(--body-font-size-m);
+  background-color: var(--color-gray-150);
 }
 
-.susi-tabs .footer a {
-  text-decoration: underline;
-  color: initial;
-  font-weight: 500;
-}
-
-.susi-tabs .footer.susi-banner {
-  background-color: #f3f3f3;
-}
-
-.susi-tabs .footer.susi-bubbles {
-  padding-bottom: 32px
-}
-
-.susi-tabs .footer.susi-bubbles h2 {
-  font-size: var(--body-font-size-l);
-  font-weight: 700;
-  line-height: var(--heading-line-height);
-  margin: 0;
-}
-
-.susi-tabs .footer .susi-bubble-container {
+.susi-light.student .student-check label {
+  margin: auto;
+  width: max-content;
   display: flex;
-  gap: 12px;
-  justify-content: center;
-  padding-top: 8px;
+  align-items: center;
+  gap: var(--spacing-100);
 }
 
-.susi-tabs .footer .susi-bubble {
-  font-size: var(--body-font-size-s);
-  background-color: #f3f3f3;
-  display: flex;
-  flex-direction: column;
-  padding: 12px 24px;
-  border-radius: 8px;
-  margin: 0;
+.susi-light.student input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* modal styles */
+.dialog-modal:has(.susi-light) {
+  width: var(--susi-modal-width);
+  min-height: var(--susi-min-height);
+}
+
+.dialog-modal:has(.susi-light.tabs) {
+  width: var(--susi-tabs-width);
+  min-height: var(--susi-min-height);
+}
+
+.dialog-modal .susi-light .express-logo {
+  padding-top: var(--spacing-500);
 }
 
 /* ax-login-page section metadata styles */
-.section.ax-login-page .susi-tabs {
+.section.ax-login-page .susi-light .express-logo {
+  padding-top: var(--spacing-500);
+}
+
+.section.ax-login-page .susi-layout {
   background-color: var(--color-white);
   border-radius: 16px;
 }
 
 .section.ax-login-page .susi-light {
-  padding-bottom: 48px;
+  padding-bottom: var(--spacing-700);
 }
-.section.ax-login-page .susi-tabs .footer {
+.section.ax-login-page .susi-light.b2b {
+  width: var(--susi-modal-width);
+}
+.section.ax-login-page .susi-layout .footer {
   border-radius: 8px;
 }
 
@@ -150,7 +199,7 @@
     position: absolute;
     padding-top: 30px;
   }
-  .section.ax-login-page .susi-tabs .footer {
+  .section.ax-login-page .susi-layout .footer {
     border-radius: 0 0 16px 16px;
   }
 }

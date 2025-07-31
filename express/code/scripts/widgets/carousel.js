@@ -1,4 +1,5 @@
 import { getLibs } from '../utils.js';
+import { throttle } from '../utils/hofs.js';
 
 let createTag; let loadStyle;
 
@@ -7,14 +8,25 @@ function correctCenterAlignment(plat) {
   plat.parentElement.style.maxWidth = `${plat.offsetWidth}px`;
 }
 
+function isAtRightmostScroll(element) {
+  return element.scrollLeft + element.clientWidth >= element.scrollWidth - 10;
+}
+
 function initToggleTriggers(parent) {
   if (!parent) return;
 
   const isInHiddenSection = () => {
+    // optimization to avoid flashing on tab switch
     const parentSection = parent.closest('.section');
     if (!parentSection) return false;
-
-    return parentSection.dataset.toggle && parentSection.style.display === 'none';
+    // 2 tabs block: ax-panels and content-toggle
+    if (parentSection.dataset.toggle && parentSection.style.display === 'none') {
+      return true;
+    }
+    if (parentSection.getAttribute('data-ax-panel') && parentSection.classList.contains('hide')) {
+      return true;
+    }
+    return false;
   };
 
   const leftControl = parent.querySelector('.carousel-fader-left');
@@ -47,7 +59,7 @@ function initToggleTriggers(parent) {
       }
 
       if (entry.target === rightTrigger) {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting || isAtRightmostScroll(platform)) {
           rightControl.classList.add('arrow-hidden');
           platform.classList.remove('right-fader');
         } else {
@@ -57,6 +69,19 @@ function initToggleTriggers(parent) {
       }
     });
   };
+
+  // Also handle scroll events to ensure proper state updates
+  const updateRightArrowState = () => {
+    if (isAtRightmostScroll(platform)) {
+      rightControl.classList.add('arrow-hidden');
+      platform.classList.remove('right-fader');
+    } else {
+      rightControl.classList.remove('arrow-hidden');
+      platform.classList.add('right-fader');
+    }
+  };
+
+  platform.addEventListener('scroll', throttle(updateRightArrowState, 100));
 
   const options = { threshold: 0, root: parent };
   const slideObserver = new IntersectionObserver(onSlideIntersect, options);
@@ -95,6 +120,9 @@ function onCarouselCSSLoad(selector, parent, options) {
   faderLeft.append(arrowLeft);
   faderRight.append(arrowRight);
   parent.append(container);
+
+  // Right arrow visibility is now handled by the intersection observer and
+  // scroll event in initToggleTriggers
 
   // Scroll the carousel by clicking on the controls
   const moveCarousel = (increment) => {

@@ -7,6 +7,9 @@
 /* Carousel specific styles */
 .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
+  padding-top: var(--spacing-600);
+  padding-left: var(--spacing-300);
+  padding-right: var(--spacing-300);
 }
 
 .quotes-wrapper .quote .author-content .summary p {
@@ -22,22 +25,21 @@
 
 .template.basic-carousel-element.quote {
   width: 100%;
-  max-height: 318px;
   margin-bottom: var(--spacing-400);
 }
 
 .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-left: var(--spacing-400);
+  margin-right: var(--spacing-300);
 }
 
 .quotes-wrapper .basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
   margin-left: 0;
-  margin-right: 16px;
+  margin-right: var(--spacing-300)
 }
 
 .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
-  scroll-padding-left: 16px;
+  scroll-padding-left: var(--spacing-300);
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -65,14 +67,6 @@
   margin-left: 10px;
 }
 
-.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left {
-  right: 29px;
-}
-
-.quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right {
-  padding-right: 10px;
-}
-  
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow {
   margin: 0 0px;
   background: #FFFFFF;
@@ -88,7 +82,7 @@
   min-height: 0;
   margin: auto;
   display: flex;
-  align-items: stretch;
+  align-items: end;
   background: linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0) 50%);
 }
 
@@ -97,7 +91,7 @@
   display: flex;
   min-height: 0;
   width: 348px;
-  min-width: 300px;
+  min-width: 348px;
   max-width: 348px;
   padding: var(--spacing-400);
   flex-direction: column;
@@ -129,15 +123,22 @@
 }
 
 .section .quotes-wrapper .quotes.carousel {
-  margin-top: var(--spacing-600);
+  margin: 0 -24px;
   padding-bottom: 0;
-  margin-bottom: 84px;
 }
 
 /* Singular quote styles */
 .quotes.singular {
   margin: 0 auto;
   padding-bottom: 0;
+}
+
+.quotes.singular .quote-comment p {
+  margin: 0;
+  font-size: 22px;
+  font-weight: var(--heading-font-weight);
+  text-align: left;
+  line-height: initial;
 }
 
 .quotes .quote {
@@ -208,7 +209,6 @@
 .quotes .quote .content::before {
   content: '“';
   display: block;
-  position: absolute;
   margin-top: -15px;
   width: 36px;
   text-align: left;
@@ -316,12 +316,15 @@ main .quotes.singular .quote-container .mobile-container .quote {
     display: none;
   }
   .section .quotes-wrapper .quotes.carousel {
-    margin-top: 80px;
-    padding-bottom: 0;
-    margin-bottom: 124px;
+    margin: 0px -40px;
+  }
+  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+    padding-top: var(--spacing-600);
+    padding-left: var(--spacing-500);
+    padding-right: var(--spacing-500);
   }
   .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
-    margin-left: var(--spacing-500);
+    margin-left: var(--spacing-600);
   }
 }
 
@@ -425,10 +428,8 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--spacing-500);
-  margin-left: 0;
-  margin-right: 0;
-  margin-bottom: 0;
+  max-width: 475px;
+  margin-left: 24px;
 }
 
 .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
@@ -440,7 +441,6 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
   font-weight: 900;
   line-height: 130%;
   margin-bottom: var(--spacing-400);
-  padding-left: 16px;
 }
 
 .quotes.carousel .ratings-container {
@@ -458,6 +458,7 @@ main .quotes.singular .mobile-container .author-panel .author-photo {
 
 .quotes.carousel .rating-votes {
   display: flex;
+  justify-content: center;
 }
 
 .quotes.carousel .ratings-container .rating-average {
@@ -668,11 +669,10 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
     right: -50px;
   }
   .quotes.carousel .quotes-ratings-wrapper .container {
-    flex-direction: row;
-    max-width: 1300px;
+    max-width: 1410px;
     width: unset;
+    margin-left: 40px;
     display: block;
-    margin: auto;
   }
 
   .quotes.carousel .quotes-ratings-wrapper .container div:first-child {
@@ -692,11 +692,11 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   
   .quotes.carousel .quotes-ratings-wrapper h2 {
-    font-size: 36px;
+    font-size: var(--heading-font-size-m);
     font-weight: 900;
     line-height: 130%;
     margin-bottom: var(--spacing-500);
-    width: max-content;
+    max-width: 495px;
   }
   .quotes.carousel .ratings-container .rating-average {
     color: #000;
@@ -758,12 +758,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   .quotes.ratings .hover-tooltip .tooltip-text {
     color: var(--color-white);
   }
-
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    font-size: var(--heading-font-size-m);
-    padding-left: 32px;
-  }
-
 }
 
 @media (min-width: 1280px) {
@@ -777,14 +771,29 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   .quotes.carousel .quotes-ratings-wrapper h2 {
     font-size: var(--heading-font-size-l);
   }
-  .quotes.carousel .quotes-ratings-wrapper h2 {
-    padding-left: 40px;
-  }
   .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin: auto;
+  }
+  .quotes-wrapper:has(.quotes.carousel) {
+    max-width: 1410px;
+  }
+  .quotes-ratings-wrapper .container {
+    margin-left: 0;
+  }
+  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+    padding: var(--spacing-900) var(--spacing-600) 0;
+  }
+  .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
+    margin-left: var(--spacing-600);
+  }
+}
+
+@media (min-width: 1550px) {
+  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+    padding: var(--spacing-900) 0 0 0;
   }
 }
 
@@ -834,4 +843,17 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: 40px;
   }
+}
+
+
+.quotes .quote blockquote.content {
+  text-align: center;
+  margin: 0;
+}
+
+.quotes .quote blockquote.content .inner-content {
+  text-align: left;
+  margin: 0;
+  line-height: 20px;
+  font-size: var(--body-font-size-m);
 }

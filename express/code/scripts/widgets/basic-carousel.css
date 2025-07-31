@@ -21,8 +21,6 @@
   max-width: 100%;
   height: 360px;
   max-height: 500px;
-  padding-top: 4px;
-  padding-bottom: 6px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -46,35 +44,13 @@
   margin: 0 10px;
 }
 
-.basic-carousel-container .basic-carousel-fader-left {
-  position: absolute;
-  bottom: -40px;
-  right: 45px;
-  z-index: 1;
-  width: var(--basic-carousel-fader-width);
+.basic-carousel-controls-wrapper {
   display: flex;
-  align-items: center;
-  text-align: left;
-  cursor: pointer;
-  pointer-events: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  transition: opacity 0.2s, display 0.2s;
-}
-
-.basic-carousel-container .basic-carousel-fader-right {
-  position: absolute;
-  bottom: -40px;
-  right: 0;
-  z-index: 1;
-  width: var(--basic-carousel-fader-width);
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  text-align: left;
-  cursor: pointer;
-  pointer-events: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  transition: opacity 0.2s;
+  justify-content: end;
+  padding-top: 0;
+  padding-bottom: var(--spacing-700);
+  padding-right: var(--spacing-300);
+  gap: var(--spacing-100);
 }
 
 .basic-carousel-container a.button.basic-carousel-arrow {
@@ -88,6 +64,19 @@
   box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
   border-radius: 50%;
   pointer-events: auto;
+}
+
+.basic-carousel-platform::after {
+  content: "";
+  flex: 0 0 16px;
+  display: block;
+  height: 1px;
+}
+
+/* Focus styles for arrow buttons */
+.basic-carousel-container a.button.basic-carousel-arrow:focus {
+  outline: 2px solid #724CDC;
+  outline-offset: 2px;
 }
 
 .template-list-wrapper:has(.template-list.horizontal-fullwidth.four-rectangle) {
@@ -194,6 +183,70 @@
   transform: rotate(45deg);
 }
 
+/* Play/Pause button styling */
+.basic-carousel-play-pause {
+  display: flex;
+  align-items: center;
+}
+
+.basic-carousel-play-pause-button {
+  cursor: pointer;
+  display: block;
+  width: 32px;
+  height: 32px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
+  border-radius: 50%;
+  pointer-events: auto;
+  position: relative;
+}
+
+/* Focus styles for play/pause button */
+main a.basic-carousel-play-pause-button:focus {
+  outline: 2px solid #724CDC;
+  outline-offset: 2px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
+  background-color: unset;
+}
+
+/* Active state - when clicked */
+.basic-carousel-play-pause-button:active {
+  outline: 2px solid #724CDC;
+  outline-offset: 2px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.1);
+}
+
+/* Play icon (right-pointing triangle) - shown when paused */
+.basic-carousel-play-pause-button.paused::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid var(--color-black);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  margin-left: 1px; /* Slight adjustment to center the triangle */
+}
+
+/* Pause icon (two vertical bars) - shown when playing */
+.basic-carousel-play-pause-button.playing::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 12px;
+  background: var(--color-black);
+  box-shadow: 6px 0 0 var(--color-black);
+  margin-left: -2px; /* Nudge left to better center the pause icon */
+}
+
 .basic-carousel-container.controls-hidden .basic-carousel-platform {
   scroll-snap-type: none;
 }
@@ -280,6 +333,28 @@
     scroll-snap-align: start;
   }
 }
+
+@media (min-width: 768px) {
+  .basic-carousel-controls-wrapper {
+    padding-top: var(--spacing-400);
+    padding-bottom: var(--spacing-800);
+    padding-right: var(--spacing-500);
+  }
+  .basic-carousel-platform::after {
+    content: "";
+    flex: 0 0 24px;
+    display: block;
+    height: 1px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .basic-carousel-controls-wrapper {
+    padding-bottom: var(--spacing-900);
+    max-width: 1300px;
+  }
+}
+
 
 @media (min-width: 900px) {
   .basic-carousel-container .basic-carousel-platform::-webkit-scrollbar {

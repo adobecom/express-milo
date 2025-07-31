@@ -41,13 +41,9 @@ export function decorateHeading(block, payload) {
       headingTextWrapper.append(p);
     });
   }
-
-  if (payload.viewAllLink.href !== '') {
-    const viewAllButton = createTag('a', {
-      class: 'cta-carousel-link',
-      href: payload.viewAllLink.href,
-    });
-    viewAllButton.textContent = payload.viewAllLink.text;
+  if (payload?.viewAllLink !== null) {
+    const viewAllButton = payload.viewAllLink;
+    viewAllButton.className = 'cta-carousel-link';
     headingSection.append(viewAllButton);
   }
 
@@ -233,10 +229,7 @@ function constructPayload(block) {
   const payload = {
     heading: headingDiv.querySelector('h2, h3, h4, h5, h6')?.textContent?.trim(),
     subHeadings: headingDiv.querySelectorAll('p:not(.button-container)'),
-    viewAllLink: {
-      text: headingDiv.querySelector('a.button')?.textContent?.trim(),
-      href: headingDiv.querySelector('a.button')?.href,
-    },
+    viewAllLink: headingDiv.querySelector('a.button'),
     actions: [],
   };
 
