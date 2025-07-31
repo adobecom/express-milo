@@ -145,7 +145,9 @@ export async function formatPrice(price, currency) {
 
 export const getOfferOnePlans = (() => {
   let json;
-  return async (offerId) => {
+  let jsonPromise;
+
+  return async (offerId, priority = 'normal') => {
     const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
     let country = await getCountry();
     if (!country) country = 'us';
@@ -156,10 +158,29 @@ export const getOfferOnePlans = (() => {
       currency = 'USD';
     }
 
+    if (!json && !jsonPromise) {
+      // For Phase E loads, defer until after LCP
+      if (priority === 'critical' && !window.lcpAchieved) {
+        // Return placeholder data and fetch asynchronously
+        setTimeout(async () => {
+          const resp = await fetch('/express/system/offers-one.json?limit=5000');
+          if (resp.ok) {
+            json = await resp.json();
+            // Trigger UI updates after data loads
+            document.dispatchEvent(new CustomEvent('pricing-data-loaded', { detail: json }));
+          }
+        }, 0);
+        return null; // Will be updated asynchronously
+      }
+
+      // Normal Phase L loading
+      jsonPromise = fetch('/express/system/offers-one.json?limit=5000')
+        .then((resp) => (resp.ok ? resp.json() : {}))
+        .then((data) => { json = data; return data; });
+    }
+
     if (!json) {
-      const resp = await fetch('/express/system/offers-one.json?limit=5000');
-      if (!resp.ok) return {};
-      json = await resp.json();
+      json = await jsonPromise;
     }
 
     const upperCountry = country.toUpperCase();
@@ -194,7 +215,7 @@ export const getOfferOnePlans = (() => {
   };
 })();
 
-export async function fetchPlanOnePlans(planUrl) {
+export async function fetchPlanOnePlans(planUrl, priority = 'normal') {
   if (!window.pricingPlans) {
     window.pricingPlans = {};
   }
@@ -235,8 +256,9 @@ export async function fetchPlanOnePlans(planUrl) {
       plan.frequency = null;
     }
 
-    const offer = await getOfferOnePlans(plan.offerId);
-    const foundOffer = Object.keys(offer).length > 0;
+    // Use priority-aware loading to prevent Phase E violations
+    const offer = await getOfferOnePlans(plan.offerId, priority);
+    const foundOffer = offer && Object.keys(offer).length > 0;
     if (foundOffer) {
       plan.currency = offer.currency;
       plan.price = offer.unitPrice;
