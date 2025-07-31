@@ -182,14 +182,11 @@ main .section .comparison-table-v2 p {
     font-style: normal;
     font-weight: 700;
     line-height: 1.3;
-
-    /* Express web/Titles/L */
-    font-family: var(--Family-Title, "Adobe Clean");
+ 
     font-size: var(--Global-Typography-Family-Title-L, 18px);
     font-style: normal;
     font-weight: 700;
-    line-height: 130%;
-    /* 23.4px */
+    line-height: 130%; 
 }
 
 /* Plan cells - Mobile */
