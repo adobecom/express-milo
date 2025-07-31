@@ -42,5 +42,5 @@ module.exports = {
   plugins: [
     'chai-friendly',
   ],
-  ignorePatterns: ['*.min.js'],
+  ignorePatterns: ['*.min.js', '*.min.es.js', '*.config.js', '**/templates-as-a-service/library/'],
 };
