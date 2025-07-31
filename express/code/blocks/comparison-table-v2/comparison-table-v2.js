@@ -1,6 +1,7 @@
 import { decorateButtonsDeprecated, getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { ComparisonTableState, initComparisonTableState } from './comparison-table-state.js';
 import handleTooltip, { adjustElementPosition, getTooltipMatch } from '../../scripts/widgets/tooltip.js';
+import { throttle } from '../../scripts/utils/hofs.js';
 
 let createTag;
 
@@ -638,16 +639,16 @@ export default async function decorate(comparisonBlock) {
   }
   synchronizePlanCellHeights(comparisonBlock);
 
-  const handleResize = () => {
+  const handleResize = throttle(() => {
     updateTabindexOnResize();
     synchronizePlanCellHeights(comparisonBlock);
-  };
+  }, 250);
 
   window.addEventListener('resize', handleResize);
 
-  const resizeObserver = new ResizeObserver(() => {
+  const resizeObserver = new ResizeObserver(throttle(() => {
     synchronizePlanCellHeights(comparisonBlock);
-  });
+  }, 100));
 
   // Observe all plan cell wrappers for size changes
   const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
@@ -659,7 +660,7 @@ export default async function decorate(comparisonBlock) {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         observer.unobserve(entry.target);
-        adjustElementPosition();
+        throttle(adjustElementPosition, 100)();
       }
     });
   });
