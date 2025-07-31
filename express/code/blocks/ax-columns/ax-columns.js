@@ -220,7 +220,7 @@ function createCornerOverlays(cell) {
       src: overlay.src,
       alt: '',
       fetchpriority: 'low',
-      loading: 'eager',
+      loading: 'lazy',
       ...(overlay.width && { width: overlay.width }),
       ...(overlay.height && { height: overlay.height }),
     });
@@ -228,6 +228,34 @@ function createCornerOverlays(cell) {
   });
 
   setupCornerOverlayAnimation(cell);
+}
+
+function getOptimalImageSize() {
+  if (window.innerWidth <= 600) return 400; // Mobile (covers ~350px column + 170% scaling)
+  if (window.innerWidth <= 900) return 600; // Tablet (covers ~520px column)
+  return 900; // Desktop+ (covers 884px background area at 170% scaling)
+}
+
+// Add preconnect hints for faster CDN connections
+function addImagePreconnects(imageUrl) {
+  if (!imageUrl) return;
+
+  try {
+    const url = new URL(imageUrl, window.location.href);
+    // Only add preconnect if image is served from different origin
+    if (url.origin !== window.location.origin) {
+      const existingPreconnect = document.querySelector(`link[rel="preconnect"][href="${url.origin}"]`);
+      if (!existingPreconnect) {
+        const link = document.createElement('link');
+        link.rel = 'preconnect';
+        link.href = url.origin;
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+      }
+    }
+  } catch (e) {
+    // Invalid URL, ignore
+  }
 }
 
 export default async function decorate(block) {
@@ -243,13 +271,23 @@ export default async function decorate(block) {
 
   const rows = Array.from(block.children);
 
-  if (block.classList.contains('marquee')) {
+  // Handle background images for marquee and hero-animation-overlay variants
+  if (block.classList.contains('marquee') || block.classList.contains('hero-animation-overlay')) {
     const background = rows.shift();
-    const bgImgURL = background?.querySelector('img')?.src;
+    const bgImg = background?.querySelector('img');
     block.firstElementChild?.remove();
-    const columnsWrapper = block.closest('.section');
-    if (columnsWrapper && bgImgURL) {
-      columnsWrapper.style.setProperty('--bg-image', `url("${bgImgURL}")`);
+    if (bgImg) {
+      // Create optimized image URL for CSS background (immediate)
+      const url = new URL(bgImg.src, window.location.href);
+      const { pathname } = url;
+      const width = getOptimalImageSize();
+      const optimizedImageUrl = `${pathname}?width=${width}&format=webp&optimize=medium`;
+
+      // Set CSS variable for the optimized background image
+      block.style.setProperty('--bg-image', `url("${optimizedImageUrl}")`);
+
+      // Add preconnect immediately for background images
+      addImagePreconnects(bgImg.src);
     }
   }
 
@@ -389,7 +427,73 @@ export default async function decorate(block) {
         }
 
         const isMarquee = block.classList.contains('marquee');
-        isMarquee && createCornerOverlays(cell);
+        if (isMarquee) {
+          // Bg marquee blocks are always above the fold - apply critical optimizations
+          const allImages = cell.querySelectorAll('img');
+          allImages.forEach((img) => {
+            // Essential loading optimizations
+            img.removeAttribute('loading');
+            img.setAttribute('loading', 'eager');
+            img.setAttribute('fetchpriority', 'high');
+
+            // Image sizing optimization
+            const url = new URL(img.src, window.location.href);
+            const { pathname } = url;
+            const optimalWidth = getOptimalImageSize();
+
+            // Update src with better size and format
+            const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=medium`;
+            if (img.src !== newSrc) {
+              img.src = newSrc;
+            }
+
+            // Update width/height attributes to match downloaded dimensions
+            img.setAttribute('width', optimalWidth);
+            img.setAttribute('height', Math.round(optimalWidth * (352 / 600))); // Maintain aspect ratio
+          });
+
+          // Add preconnect for faster CDN connections
+          const firstImg = cell.querySelector('img');
+          if (firstImg) {
+            addImagePreconnects(firstImg.src);
+          }
+
+          // Handle preload for first image only
+          if (pictureCellCount === 1) {
+            const preloadImg = cell.querySelector('img');
+            if (preloadImg?.src && !document.querySelector(`link[href="${preloadImg.src}"]`)) {
+              const link = document.createElement('link');
+              link.rel = 'preload';
+              link.as = 'image';
+              link.href = preloadImg.src;
+              document.head.appendChild(link);
+            }
+          }
+
+          // Delay decorative elements until main image loads to prioritize LCP
+          const mainImg = cell.querySelector('img');
+          if (mainImg) {
+            let overlaysCreated = false;
+            const createOverlaysDelayed = () => {
+              if (!overlaysCreated) {
+                overlaysCreated = true;
+                createCornerOverlays(cell);
+              }
+            };
+
+            if (mainImg.complete) {
+              // Image already loaded, delay slightly to avoid blocking
+              setTimeout(createOverlaysDelayed, 100);
+            } else {
+              // Wait for main image load, with fallback timeout
+              mainImg.addEventListener('load', createOverlaysDelayed, { once: true });
+              setTimeout(createOverlaysDelayed, 2000); // Fallback in case load event doesn't fire
+            }
+          } else {
+            // No main image, create overlays immediately but with lower priority
+            createCornerOverlays(cell);
+          }
+        }
       }
 
       const $pars = cell.querySelectorAll('p');
