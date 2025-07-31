@@ -182,11 +182,14 @@ main .section .comparison-table-v2 p {
     font-style: normal;
     font-weight: 700;
     line-height: 1.3;
- 
+
+    /* Express web/Titles/L */
+    font-family: var(--body-font-family);
     font-size: var(--Global-Typography-Family-Title-L, 18px);
     font-style: normal;
     font-weight: 700;
-    line-height: 130%; 
+    line-height: 130%;
+    /* 23.4px */
 }
 
 /* Plan cells - Mobile */
@@ -557,7 +560,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .footer {
     color: var(--Content-Subdued-default, #464646);
-    font-family: "Adobe Clean";
+    font-family: var(--body-font-family);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
