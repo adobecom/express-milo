@@ -736,7 +736,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
 .comparison-table-v2 .icon-wrapper-text {
     padding: 0px;
-    font-family: Adobe Clean;
+    font-family: var(--body-font-family);
     font-weight: 700;
     font-style: Bold;
     font-size: 12px;
