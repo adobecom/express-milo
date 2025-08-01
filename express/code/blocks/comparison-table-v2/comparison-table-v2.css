@@ -335,7 +335,7 @@ main .comparison-table-v2 .sticky-header .plan-cell h3,
 main .comparison-table-v2 .sticky-header .plan-cell h4,
 main .comparison-table-v2 .sticky-header .plan-cell h5,
 main .comparison-table-v2 .sticky-header .plan-cell h6 {
-    color: var(--color-dark-gray);
+    color: var(--color-black);
     text-align: center;
     font-size: 18px;
     font-weight: 700;
