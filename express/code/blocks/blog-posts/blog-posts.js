@@ -242,7 +242,7 @@ async function getHeroCard(post, dateFormatter) {
 // For configs with more than one post, get regular cards
 function getCard(post, dateFormatter) {
   const {
-    path, title, teaser, dateString, filteredTitle, imagePath,
+    path, title, teaser, filteredTitle, imagePath,
   } = getCardParameters(post, dateFormatter);
   const cardPicture = createOptimizedPicture(`./media_${imagePath}?format=webply&optimize=medium&width=750`, title, false, [{ width: '750' }]);
   const card = createTag('a', {
@@ -253,9 +253,10 @@ function getCard(post, dateFormatter) {
   card.innerHTML = `<div class="blog-card-image">
         ${pictureTag}
         </div>
+        <section class="blog-card-body">
         <h3 class="blog-card-title">${filteredTitle}</h3>
         <p class="blog-card-teaser">${teaser}</p>
-        <p class="blog-card-date">${dateString}</p>`;
+        </section>`;
   return card;
 }
 // Cached language and dateFormatter since creating a Dateformatter is an expensive operation
@@ -332,6 +333,7 @@ function checkStructure(element, querySelectors) {
 }
 
 export default async function decorate(block) {
+  console.log('decorate blog-posts block', block);
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ getConfig, createTag, getLocale } = utils);
     ({ replaceKey } = placeholders);
