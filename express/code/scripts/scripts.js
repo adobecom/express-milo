@@ -196,15 +196,35 @@ preDecorateSections(document);
   lcpImg?.removeAttribute('loading');
 }());
 
-(function loadStyles() {
-  const paths = [`${miloLibs}/styles/styles.css`];
-  if (STYLES) { paths.push(STYLES); }
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
-    document.head.appendChild(link);
-  });
+// Phase E: Show body immediately with minimal critical CSS, load full styles non-blocking
+(function loadStylesNonBlocking() {
+  // Phase E: Minimal critical CSS inline to show body immediately
+  const criticalCSS = document.createElement('style');
+  criticalCSS.textContent = `
+    body { 
+      display: block !important; 
+      font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+      color: #2c2c2c;
+      margin: 0;
+      opacity: 1 !important;
+    }
+    main { min-height: 50vh; }
+    h1 { font-size: 2rem; margin: 1rem 0; }
+  `;
+  document.head.appendChild(criticalCSS);
+  // Phase L: Load full CSS non-blocking after critical path
+  setTimeout(() => {
+    const paths = [`${miloLibs}/styles/styles.css`];
+    if (STYLES) { paths.push(STYLES); }
+    paths.forEach((path) => {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'stylesheet');
+      link.setAttribute('href', path);
+      link.setAttribute('media', 'print'); // Non-blocking load
+      link.setAttribute('onload', 'this.media="all"'); // Apply when loaded
+      document.head.appendChild(link);
+    });
+  }, 0);
 }());
 
 function decorateHeroLCP(loadStyle, config, createTag) {

@@ -265,38 +265,67 @@ async function makeRatings(
 }
 
 export default async function init(el) {
+  // Phase E (Eager): Import critical utils synchronously, insert basic LCP structure immediately
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-  const [ratingPlaceholder,
-    starsPlaceholder,
-    playStoreLabelPlaceholder,
-    appleStoreLabelPlaceholder] = await Promise.all(
-    [
-      replaceKey('app-store-ratings', getConfig()),
-      replaceKey('app-store-stars', getConfig()),
-      replaceKey('app-store-ratings-play-store', getConfig()),
-      replaceKey('app-store-ratings-apple-store', getConfig()),
-    ],
-  );
+
   const rows = [...el.querySelectorAll(':scope > div')];
-  const [headline, background, items, foreground] = [rows[0], rows[1], rows.slice(2), createTag('div', { class: 'foreground' })];
+  const [headline, background, items] = [rows[0], rows[1], rows.slice(2)];
+
+  // Phase E: Create and insert basic LCP structure immediately (no async dependencies)
+  const foreground = createTag('div', { class: 'foreground' });
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
-  const cards = items.map((item) => toCard(item));
-  const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
-  [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
-  foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [await makeRatings(
-    ratingPlaceholder,
-    starsPlaceholder,
-    playStoreLabelPlaceholder,
-    appleStoreLabelPlaceholder,
-  )] : []));
+
+  // CRITICAL: Insert LCP elements immediately - headline contains the H1 LCP element
+  foreground.append(logo, decorateHeadline(headline));
   background.classList.add('background');
   el.append(foreground);
-  new IntersectionObserver((entries, ob) => {
-    ob.unobserve(el);
-    cards.forEach((card) => card.lazyCB());
-  }).observe(el);
+
+  // Phase L (Lazy): Enhance with cards and ratings asynchronously - no blocking of LCP
+  setTimeout(async () => {
+    try {
+      // Create cards container
+      const cards = items.map((item) => toCard(item));
+      const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
+      [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
+
+      // Add cards to existing foreground
+      foreground.append(cardsContainer);
+
+      // Setup intersection observer for card lazy loading
+      new IntersectionObserver((entries, ob) => {
+        ob.unobserve(el);
+        cards.forEach((card) => card.lazyCB());
+      }).observe(el);
+
+      // Phase L: Load ratings if needed (async enhancement)
+      if (el.classList.contains('ratings')) {
+        const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
+        const [ratingPlaceholder,
+          starsPlaceholder,
+          playStoreLabelPlaceholder,
+          appleStoreLabelPlaceholder] = await Promise.all([
+          replaceKey('app-store-ratings', getConfig()),
+          replaceKey('app-store-stars', getConfig()),
+          replaceKey('app-store-ratings-play-store', getConfig()),
+          replaceKey('app-store-ratings-apple-store', getConfig()),
+        ]);
+
+        const ratingsElement = await makeRatings(
+          ratingPlaceholder,
+          starsPlaceholder,
+          playStoreLabelPlaceholder,
+          appleStoreLabelPlaceholder,
+        );
+        foreground.append(ratingsElement);
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn('Grid marquee enhancement failed:', error);
+    }
+  }, 0);
+
+  // Setup responsive handlers
   largeMQ.addEventListener('change', () => {
     isTouch = false;
     drawerOff();
@@ -305,6 +334,7 @@ export default async function init(el) {
     drawerOff();
   });
 }
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && currDrawer) {
     e.preventDefault();
