@@ -43,7 +43,7 @@ main .section:has(.blog-posts) div.blog-posts-decoration p a {
 
 main .blog-posts .blog-cards {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     justify-content: center;
     margin: 0 16px 64px 16px;
     width: unset;
@@ -66,7 +66,7 @@ main .blog-posts .blog-card {
     grid-template-areas: 'image' 'title'  'teaser';
     width: 335px;
     /* height: 223px; */
-    padding: 0 28px;
+    /* padding: 0 28px; */
 
     /* main .blog-posts .blog-card {
         
@@ -245,10 +245,38 @@ main .section:has(.blog-posts) > .content >h3 {
 }
 
 @media (min-width: 900px) {
+    main .blog-posts .blog-cards {
+        width: var(--ax-grid-12-col-width);
+        gap: var(--spacing-400);
+        flex-direction: row;
+    }
+
+    main .blog-posts .blog-card {
+        width: 257px;
+    }
+
     main .blog-posts .blog-hero-card .blog-card-image {
         min-width: 488px;
         max-width: 488px;
         height: 274px;
+    }
+
+
+    main .blog-posts .blog-hero-card .blog-card-image {
+        width: 100%;
+    }
+
+    main .blog-posts .blog-card .blog-card-image {
+        line-height: 0;
+        grid-area: image;
+        margin: 0;
+        /* margin-left: 16px; */
+        /* height: 92px;
+        width: 126px; */
+        /* margin: 0 0 24px 0; */
+        border-radius: 8px 8px 0 0;
+        height: unset;
+        width: 257px;
     }
 
     /* main .blog-posts .blog-card {
@@ -298,6 +326,7 @@ main .section:has(.blog-posts) > .content >h3 {
 
     main .blog-posts .blog-card {
         padding: 0;
+        width: 427px;
     }
     
     main .blog-posts .blog-cards {
@@ -305,6 +334,7 @@ main .section:has(.blog-posts) > .content >h3 {
         gap: var(--spacing-400);
         flex-direction: row;
     }
+
     .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
         max-width: 1088px;
     }
