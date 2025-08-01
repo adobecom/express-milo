@@ -10,7 +10,7 @@
     margin-bottom: 4px;
     border-radius: 0px 16px 16px 0px;
     border-left: 4px solid #724CDC;
-    background: #F8F8F8;
+    background: var(--color-gray-100);
     padding: 24px;
     display: flex;
     flex-direction: column;
