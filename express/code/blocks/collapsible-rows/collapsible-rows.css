@@ -11,7 +11,7 @@
     border-radius: 0px 16px 16px 0px;
     border-left: 4px solid #724CDC;
     background: var(--color-gray-100);
-    padding: 24px;
+    padding: var( --spacing-400);
     display: flex;
     flex-direction: column;
     justify-content: center;
