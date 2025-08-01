@@ -574,6 +574,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     font-size: 14px;
 }
 
+@media (max-width: 300px) {
+    .comparison-table-v2 .con-button {
+        font-size: 10px;
+    }
+}
 
 /* Position dropdown to the left when in the left plan cell on mobile */
 @media (max-width: 599px) {
