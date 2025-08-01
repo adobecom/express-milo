@@ -575,12 +575,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 }
 
 @media (max-width: 300px) {
-    .comparison-table-v2 .con-button {
-        font-size: 10px;
+    .comparison-table-v2 {
+        --row-font-size: 10px;
     }
 }
 
-/* Position dropdown to the left when in the left plan cell on mobile */
 @media (max-width: 599px) {
     .comparison-table-v2 .sticky-header .plan-cell.left-plan .plan-selector-choices {
         right: unset;
