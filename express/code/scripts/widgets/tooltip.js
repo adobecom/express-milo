@@ -31,20 +31,7 @@ export function adjustElementPosition() {
   }
 }
 
-function buildTooltip(pricingArea, tooltipPattern) {
-  const elements = pricingArea.querySelectorAll('p');
-  let tooltipMatch;
-  let tooltipContainer;
-
-  Array.from(elements).forEach((p) => {
-    const match = tooltipPattern.exec(p.textContent);
-    if (match) {
-      tooltipMatch = match;
-      tooltipContainer = p;
-    }
-  });
-  if (!tooltipMatch) return;
-
+function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
   tooltipContainer.innerHTML = tooltipContainer.innerHTML.replace(tooltipPattern, '');
   const tooltipContent = tooltipMatch[2];
   tooltipContainer.classList.add('tooltip');
@@ -141,7 +128,32 @@ function buildTooltip(pricingArea, tooltipPattern) {
   });
 }
 
-export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
+export function getTooltipMatch(elements, tooltipPattern) {
+  let tooltipMatch;
+  let tooltipContainer;
+  Array.from(elements).forEach((p) => {
+    const match = tooltipPattern.exec(p.innerText);
+    if (match) {
+      tooltipMatch = match;
+      tooltipContainer = p;
+    }
+  });
+  return { tooltipMatch, tooltipContainer };
+}
+
+export default async function handleTooltip(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g, tooltipMatch = undefined, tooltipContainer = undefined) {
+  let localTooltipMatch = tooltipMatch;
+  let localTooltipContainer = tooltipContainer;
+  if (!tooltipMatch) {
+    const res = getTooltipMatch(elements, tooltipPattern);
+    if (res.tooltipMatch) {
+      localTooltipMatch = res.tooltipMatch;
+      localTooltipContainer = res.tooltipContainer;
+    } else {
+      return undefined;
+    }
+  }
+
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig, loadStyle } = utils);
   });
@@ -149,8 +161,14 @@ export default async function handleTooltip(pricingArea, tooltipPattern = /\(\((
   return new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
       onTooltipCSSLoad();
-      buildTooltip(pricingArea, tooltipPattern);
+      buildTooltip(localTooltipMatch, tooltipPattern, localTooltipContainer);
       resolve();
     });
   });
+}
+
+export function handleTooltipSync(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
+  const { tooltipMatch, tooltipContainer } = getTooltipMatch(elements, tooltipPattern);
+  if (!tooltipMatch) return;
+  handleTooltip(elements, tooltipPattern, tooltipMatch, tooltipContainer);
 }
