@@ -173,6 +173,20 @@ main .banner h2 {
 .banner.blue-purple-gray-bg h2,
 .banner.yellow-pink-blue-bg h2 {
   color: black;
+  font-size: 36px;
+}
+
+.banner.light-bg h3,
+.banner.blue-green-pink-bg h3,
+.banner.blue-bg h3,
+.banner.blue-pink-orange-bg h3,
+.banner.green-blue-red-bg h3,
+.banner.blue-purple-gray-bg h3,
+.banner.yellow-pink-blue-bg h3 {
+  color: black;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
 }
 
 /* Adobe Express logo styling */
@@ -185,6 +199,18 @@ main .banner h2 {
 
 .banner h2 {
   margin-top: 0;
+}
+
+@media (min-width: 1280px) {
+  .banner.light-bg h2,
+  .banner.blue-green-pink-bg h2,
+  .banner.blue-bg h2,
+  .banner.blue-pink-orange-bg h2,
+  .banner.green-blue-red-bg h2,
+  .banner.blue-purple-gray-bg h2,
+  .banner.yellow-pink-blue-bg h2 {
+    font-size: 45px;
+  }
 }
 
 /* Background image variants - apply background images */
