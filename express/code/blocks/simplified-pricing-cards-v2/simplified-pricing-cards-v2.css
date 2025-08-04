@@ -459,6 +459,23 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   .simplified-pricing-cards-v2  .toggle-switch-wrapper {
     display: none;
   }
+
+  .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .plan-explanation,
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .pricing-area,
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .card-cta-group {
+  display: unset;
+}
+
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .plan-explanation{
+  gap: 16px;
+  display: flex;
+  flex-direction: column; 
+}
+
+ 
+  .simplified-pricing-cards-v2 .card-inner-content.hide {
+    gap: 8px;
+  } 
 }
 
 @media (min-width: 1440px) {
