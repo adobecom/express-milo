@@ -87,6 +87,39 @@
   height: auto;
 }
 
+/* Button styling for background variants */
+.banner[class*="-bg"] .button-container {
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+.banner[class*="-bg"] .button-container a.button.bg-banner-button {
+  font-size: 18px;
+  padding: 12px 24px;
+  border-radius: 24px;
+  background-color: black;
+  border: 2px solid black;
+}
+
+/* First button container - when it's the only one */
+.banner[class*="-bg"] .button-container:only-child a.button.bg-banner-button {
+  color: white;
+  background-color: black;
+}
+
+/* First button container - when there are multiple */
+.banner[class*="-bg"] .button-container:first-child:not(:only-child) a.button.bg-banner-button {
+  color: white;
+  background-color: black;
+}
+
+/* Second button container - when there are multiple */
+.banner[class*="-bg"] .button-container:nth-child(2) a.button.bg-banner-button {
+  color: black;
+  background-color: transparent;
+  border: 2px solid black;
+}
+
 /* Tablet styles */
 @media (min-width: 768px) {
   .banner[class*="-bg"] {
@@ -102,6 +135,12 @@
 @media (min-width: 1200px) {
   .banner[class*="-bg"] {
     padding: 80px 40px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .banner[class*="-bg"] h2 {
+    font-size: 45px;
   }
 } 
 
