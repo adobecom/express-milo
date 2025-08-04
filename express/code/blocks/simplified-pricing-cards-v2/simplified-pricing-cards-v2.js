@@ -185,7 +185,7 @@ async function createPricingSection(
   });
 }
 
-function decorateHeader(cardWrapper, card,header) {
+function decorateHeader(cardWrapper, card,header, cardIndex,defaultOpenIndex) {
   header.classList.add('card-header');
   const headers = header.querySelectorAll('h2,h3,h4,h5,h6');
   if (headers.length > 1) {
@@ -195,6 +195,10 @@ function decorateHeader(cardWrapper, card,header) {
     eyebrowContent.appendChild(firstHeader);
     card.prepend(eyebrowContent);
     cardWrapper.classList.add('has-eyebrow');
+    console.log(defaultOpenIndex[0]);
+    if (defaultOpenIndex[0] === 0) {
+      defaultOpenIndex[0] = cardIndex;
+    }
   }
 
   header.querySelectorAll('p').forEach((p) => {
@@ -263,20 +267,16 @@ export default async function init(el) {
     el.classList.add('many');
   }
   const cards = [];
-
-  const defaultOpenIndex = getDefaultExpandedIndex(el);
+  const defaultOpenIndex = [0];
+ 
   const cardWrapper = createTag('div', { class: 'card-wrapper ax-grid-container small-gap' });
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
-
     const card = createTag('div', { class: 'card' });
     const cardInnerContent = createTag('div', { class: 'card-inner-content' });
-    if (cardIndex !== defaultOpenIndex) {
-      card.classList.add('hide');
-    }
+    cardInnerContent.classList.add('hide');
     card.appendChild(cardInnerContent);
-    
-    decorateHeader(cardWrapper, card, rows[0].children[0]);
+    decorateHeader(cardWrapper, card, rows[0].children[0], cardIndex, defaultOpenIndex);
     decorateCardBorder(card, rows[1].children[0]);
     rows[2].children[0].classList.add('plan-explanation');
     await createPricingSection(
@@ -284,15 +284,15 @@ export default async function init(el) {
       rows[3].children[0],
       rows[4].children[0],
     );
-
     for (let j = 0; j < rows.length - 2; j += 1) {
       cardInnerContent.appendChild(rows[j].children[0]);
     }
     cards.push(card);
   }
 
+  cards[defaultOpenIndex[0]].querySelector('.card-inner-content').classList.remove('hide');
+
   el.innerHTML = '';
-  
   el.appendChild(cardWrapper);
   for (const card of cards) {
     cardWrapper.appendChild(card);

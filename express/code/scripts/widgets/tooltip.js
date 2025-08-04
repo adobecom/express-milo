@@ -26,7 +26,6 @@ export function adjustElementPosition() {
   if (elements.length === 0) return;
   for (const element of elements) {
     const rect = element.getBoundingClientRect();
-    console.log(rect, element.parentElement.classList);
     if (rect.right > window.innerWidth) {
       element.classList.remove('overflow-left');
       element.classList.add('overflow-right');
