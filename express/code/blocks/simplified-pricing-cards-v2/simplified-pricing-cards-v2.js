@@ -22,7 +22,7 @@ function getHeightWithoutPadding(element) {
 
 function equalizeHeights(el) {
   const classNames = [ '.card-header', '.pricing-area'];
-  const cardCount = el.querySelectorAll('.simplified-pricing-cards .card').length;
+  const cardCount = el.querySelectorAll('.simplified-pricing-cards-v2 .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
     const headers = el.querySelectorAll(className);
@@ -240,7 +240,7 @@ function getDefaultExpandedIndex(el) {
 }
 
 export default async function init(el) {
-  addTempWrapperDeprecated(el, 'simplified-pricing-cards');
+  addTempWrapperDeprecated(el, 'simplified-pricing-cards-v2');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), import('../../scripts/utils/location-utils.js')]).then(([utils, placeholders, locationUtils]) => {
     ({ createTag, getConfig } = utils);
     ({ replaceKeyArray } = placeholders);
@@ -311,7 +311,7 @@ export default async function init(el) {
     });
   });
 
-  document.querySelectorAll('.simplified-pricing-cards .card').forEach((column) => {
+  document.querySelectorAll('.simplified-pricing-cards-v2 .card').forEach((column) => {
     observer.observe(column);
   });
   await decorateButtonsDeprecated(el);

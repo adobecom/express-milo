@@ -622,7 +622,7 @@ export default async function init(el) {
     return acc;
   }, {});
   await decorateButtonsDeprecated(el);
-  addTempWrapperDeprecated(el, 'pricing-cards');
+  addTempWrapperDeprecated(el, 'pricing-cards-v2');
 
   // For backwards compatability with old versions of the pricing card
   const legacyVersion = el.querySelectorAll(':scope > div').length < 10;
