@@ -494,7 +494,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card {
-    margin-top: var(--spacing-300);
+    margin-top: var(--spacing-400);
   }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card:has(.eyebrow-content) {
