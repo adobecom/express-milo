@@ -120,7 +120,6 @@ export default async function decorate(block) {
   if (hasBackgroundImage) {
     buttons.forEach((button) => {
       button.classList.add('bg-banner-button');
-      console.log('Added bg-variant-button to button:', button.className);
     });
   }
 
