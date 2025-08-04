@@ -205,25 +205,30 @@ function decorateHeader(cardWrapper, card,header, cardIndex,defaultOpenIndex) {
     if (p.innerHTML.trim() === '') p.remove();
   });
 
+  // Get the header text for the button name
+  const remainingHeaders = header.querySelectorAll('h2,h3,h4,h5,h6');
+  const headerText = remainingHeaders[0]?.textContent?.trim() || '';
+
   // Create button wrapper for header content and chevron
-  const headerButton = createTag('button', { 
+  const headerButton = createTag('button', {
     class: 'header-toggle-button',
     type: 'button',
+    name: headerText,
     'aria-expanded': 'false',
-    'aria-controls': `card-content-${cardIndex}`
+    'aria-controls': `card-content-${cardIndex}`,
   });
-  
+
   // Move all header content into the button
   const headerContent = createTag('div', { class: 'header-content' });
   while (header.firstChild) {
     headerContent.appendChild(header.firstChild);
   }
-  
+
   // Create chevron wrapper and icon
   const hideButtonWrapper = createTag('div', { class: 'toggle-switch-wrapper' });
   const hideButton = getIconElementDeprecated('chevron-up');
   hideButtonWrapper.append(hideButton);
-  
+
   // Add click handler to the button
   headerButton.addEventListener('click', () => {
     const { classList } = header.parentElement;
@@ -236,11 +241,11 @@ function decorateHeader(cardWrapper, card,header, cardIndex,defaultOpenIndex) {
       headerButton.setAttribute('aria-expanded', 'false');
     }
   });
-  
+
   // Append content and chevron to button
   headerButton.append(headerContent);
   headerButton.append(hideButtonWrapper);
-  
+
   // Append button to header
   header.append(headerButton);
 }
@@ -260,20 +265,6 @@ function decorateCardBorder(card, source) {
     }
   }
   source.style.display = 'none';
-}
-
-function getDefaultExpandedIndex(el) {
-  let defaultOpenIndex = 0;
-  let q;
-  el.classList.forEach((cl) => {
-    if (cl.includes('default-expanded-')) {
-      q = cl;
-    }
-  });
-  if (q) {
-    defaultOpenIndex = parseInt(q.split('default-expanded-')[1], 10) - 1;
-  }
-  return defaultOpenIndex;
 }
 
 export default async function init(el) {
@@ -296,9 +287,9 @@ export default async function init(el) {
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
     const card = createTag('div', { class: 'card' });
-    const cardInnerContent = createTag('div', { 
+    const cardInnerContent = createTag('div', {
       class: 'card-inner-content',
-      id: `card-content-${cardIndex}`
+      id: `card-content-${cardIndex}`,
     });
     cardInnerContent.classList.add('hide');
     card.appendChild(cardInnerContent);
