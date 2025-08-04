@@ -8,6 +8,10 @@ main .section .content-toggle-v2 {
     max-width: max-content;
 }
 
+main .content-toggle-v2.padding-m {
+  padding: 24px 16px;
+}
+
 main .content-toggle-v2 .carousel-container {
     display: flex;
     align-items: center;
