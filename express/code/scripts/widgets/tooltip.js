@@ -43,13 +43,13 @@ export function adjustElementPosition() {
 function parseImageMetadata(altText) {
   const altMatch = altText.match(/alt-text:\s*([^,]+)/);
   const actualAlt = altMatch ? altMatch[1].trim().split(';')[0] : '';
-  
+
   const tooltipMatch = altText.match(/tooltip-text:\s*([^,]+)/);
   const tooltipText = tooltipMatch ? tooltipMatch[1].trim().split(';')[0] : '';
-  
+
   const categoryMatch = altText.match(/category:\s*premium/);
   const isPremium = !!categoryMatch;
-  
+
   const iconMatch = altText.match(/icon:\s*([^,]+)/);
   const icon = iconMatch ? iconMatch[1].trim().split(';')[0] : '';
   console.log(altText.split(';'));
@@ -60,22 +60,22 @@ function createTooltipElements(imgElement, tooltipText, acutalIconImage) {
   const tooltipContainer = createTag('div', { class: 'tooltip image-tooltip' });
   const tooltipPopup = createTag('div', { class: 'tooltip-text' });
   tooltipPopup.innerText = tooltipText;
-  
+
   const tooltipButton = createTag('button');
   tooltipButton.setAttribute('aria-label', tooltipText);
   acutalIconImage.classList.add('tooltip-icon-img');
   tooltipButton.append(acutalIconImage);
   tooltipButton.append(tooltipPopup);
-  
+
   return { tooltipContainer, tooltipButton, tooltipPopup };
 }
 
 function addPremiumIcon(tooltipContainer) {
   const premiumWrapper = createTag('div', { class: 'premium-icon-wrapper' });
-  const premiumIcon = createTag('img', { 
+  const premiumIcon = createTag('img', {
     src: '/express/code/icons/premium.svg',
     alt: 'Premium',
-    class: 'premium-icon'
+    class: 'premium-icon',
   });
   premiumWrapper.append(premiumIcon);
   tooltipContainer.append(premiumWrapper);
@@ -299,29 +299,33 @@ function buildTooltip(pricingArea, tooltipPattern) {
 
 export async function imageTooltipAdapter(imgElement) {
   if (!imgElement || imgElement.tagName !== 'IMG') return;
-  
+
   const altText = imgElement.alt || '';
   const { actualAlt, tooltipText, isPremium, icon } = parseImageMetadata(altText);
 
   const acutalIconImage = icon ? getIconElementDeprecated(icon, 44, actualAlt, 'tooltip-icon') : null;
-  
+
   if (!tooltipText) return;
-  
+
   // Update the image alt text
   imgElement.alt = actualAlt;
-  
+
   // Create tooltip elements
-  const { tooltipContainer, tooltipButton, tooltipPopup } = createTooltipElements(imgElement, tooltipText, acutalIconImage);
-  
+  const { tooltipContainer, tooltipButton, tooltipPopup } = createTooltipElements(
+    imgElement,
+    tooltipText,
+    acutalIconImage,
+  );
+
   // Replace the image with tooltip container
   imgElement.replaceWith(tooltipContainer);
   tooltipContainer.append(tooltipButton);
-  
+
   // Add premium icon if needed
   if (isPremium) {
     addPremiumIcon(tooltipContainer);
   }
-  
+
   // Setup event handlers
   setupTooltipEventHandlers(tooltipButton, tooltipPopup);
 }
