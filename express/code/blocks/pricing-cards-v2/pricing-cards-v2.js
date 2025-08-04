@@ -323,7 +323,7 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
     priceRow.append(priceReducedElement, priceSuffix);
   } else {
     price.classList.remove('price-active');
-    priceRow.append(basePrice, price, priceSuffix);
+    priceRow.append(price, priceSuffix);
   }
 }
 
@@ -400,6 +400,12 @@ async function createPricingSection(
     formatDynamicCartLink(a);
     ctaGroup.append(a);
   });
+  const texts = pricingArea.querySelectorAll(':scope > p');
+  if (texts) {
+    texts.forEach((text) => {
+      text.classList.add('description-text');
+    });
+  }
   pricingSection.append(pricingArea);
   pricingSection.append(ctaGroup);
   return pricingSection;
@@ -556,7 +562,7 @@ async function decorateCard({
   const cardBorderHeader = cardBorder.querySelector('h2, h3, h4, h5, h6');
   cardBorderHeader?.classList.add('card-promo-header');
   const { specialPromo, cardWrapper } = decorateHeader(header, borderParams, card, cardBorder);
-  decorateBasicTextSection(explain, 'card-explain', card);
+  decorateBasicTextSection(explain, 'plan-explanation', card);
   const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
   const [mPricingSection ] = await Promise.all([
     createPricingSection(header, mPricingRow, mCtaGroup, specialPromo, groupID), 
@@ -569,16 +575,40 @@ async function decorateCard({
   return cardWrapper;
 }
 
-// less thrashing by separating get and set
-async function syncMinHeights(groups) {
-  const maxHeights = groups.map((els) => els
-    .filter((e) => !!e)
-    .reduce((max, e) => Math.max(max, e.offsetHeight), 0));
-  await yieldToMain();
-  maxHeights.forEach((maxHeight, i) => groups[i].forEach((e) => {
-    if (e) e.style.minHeight = `${maxHeight}px`;
-  }));
+function getHeightWithoutPadding(element) {
+  const styles = window.getComputedStyle(element);
+  const paddingTop = parseFloat(styles.paddingTop);
+  const paddingBottom = parseFloat(styles.paddingBottom);
+  return element.clientHeight - paddingTop - paddingBottom;
 }
+
+
+function equalizeHeights(el) {
+  const classNames = [ '.card-header', '.plan-explanation',  '.plan-text', '.pricing-area', '.card-feature-list'];
+  const cardCount = el.querySelectorAll('.pricing-cards-v2 .card').length;
+  if (cardCount === 1) return;
+  for (const className of classNames) {
+    const headers = el.querySelectorAll(className);
+    let maxHeight = 0;
+    headers.forEach((placeholder) => {
+      placeholder.style.height = 'unset';
+    });
+    if (window.screen.width > 1279) {
+      headers.forEach((header) => {
+        if (header.checkVisibility()) {
+          const height = getHeightWithoutPadding(header);
+          maxHeight = Math.max(maxHeight, height);
+        }
+      });
+      headers.forEach((placeholder) => {
+        if (maxHeight > 0) {
+          placeholder.style.height = `${maxHeight}px`;
+        }
+      });
+    }
+  }
+}
+
 
 export default async function init(el) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(el)]).then(([utils, placeholdersMod]) => {
@@ -610,6 +640,7 @@ export default async function init(el) {
     obj[key] = divs[keyIndex][index];
     return obj;
   }, {}));
+  el.querySelector(':scope > div:last-of-type').classList.add('card-footer');
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
   const cardsContainer = createTag('div', { class: 'cards-container' });
 
@@ -617,8 +648,6 @@ export default async function init(el) {
     cards.map((card) => decorateCard(card, el)),
   );
   
-
-
   decoratedCards.forEach((card) => cardsContainer.append(card));
 
   if (cardsContainer.querySelectorAll('.card-border.gradient-promo, .card-border.gen-ai-promo').length > 0) {
@@ -634,72 +663,24 @@ export default async function init(el) {
   }
   el.prepend(cardsContainer);
   
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        equalizeHeights(el);
+        observer.unobserve(entry.target); 
+      }
+    });
+  });
 
-  // const groups = [
-  //   cards.map(({ header }) => header),
-  //   cards.map(({ explain }) => explain),
-  //   cards.reduce((acc, card) => [...acc, card.mCtaGroup, card.yCtaGroup], []),
-  //   [...el.querySelectorAll('.pricing-area')],
-  //   cards.map(({ featureList }) => featureList.querySelector('p')),
-  //   cards.map(({ featureList }) => featureList),
-  //   cards.map(({ compare }) => compare),
-  // ];
+  document.querySelectorAll('.pricing-cards-v2 .card').forEach((column) => {
+    observer.observe(column);
+  });
 
-  // const decoratedCardEls = [...cardsContainer.querySelectorAll('.card')];
-  // const synchedItems = groups.flat();
-  // synchedItems.forEach((item) => {
-  //   // elements with js-controlled heights need border-box
-  //   if (item) item.style.boxSizing = 'border-box';
-  // });
-  // const undoSyncHeights = () => {
-  //   synchedItems.forEach((item) => {
-  //     item.style?.removeProperty('min-height');
-  //   });
-  // };
-  // const doSyncHeights = () => {
-  //   // possible 2 card in row 1 and 3rd card in row 2
-  //   const yPositions = decoratedCardEls.map((c) => c.getBoundingClientRect().top);
-  //   const positionGroups = [];
-  //   // positionGroups -> [2,1]
-  //   yPositions.forEach((yPosition, i) => {
-  //     // accounting for pixel lineup issues
-  //     if (i === 0 || Math.abs(yPosition - yPositions[i - 1]) > 6) {
-  //       positionGroups.push(1);
-  //     } else {
-  //       positionGroups[positionGroups.length - 1] += 1;
-  //     }
-  //   });
-  //   if (positionGroups.length === cards.length) {
-  //     // no sync when 1 card per row
-  //     undoSyncHeights();
-  //     return;
-  //   }
-  //   const groupsByTop = [];
-  //   // [[h1, h2, h3], [e1, e2, e3], [m1,y1,m2,y2,m3,y3]] + [2,1]
-  //   // -> [[h1, h2], [h3], [e1, e2], [e3], [m1, m2, y1, y2], [m3, y3]]
-  //   groups.forEach((group) => {
-  //     for (let prev = 0, i = 0; i < positionGroups.length; i += 1) {
-  //       const span = positionGroups[i] * (group.length / cards.length);
-  //       groupsByTop.push(group.slice(prev, prev + span));
-  //       prev += span;
-  //     }
-  //   });
-  //   syncMinHeights(groupsByTop);
-  // };
-  // window.addEventListener('resize', debounce(() => {
-  //   doSyncHeights();
-  // }, 100));
 
-  // const observer = new IntersectionObserver((entries) => {
-  //   entries.forEach((entry) => {
-  //     if (entry.isIntersecting) {
-  //       doSyncHeights();
-  //       el.classList.remove('no-visible');
-  //     }
-  //     adjustElementPosition();
-  //   });
-  // });
+  window.addEventListener('resize', debounce(() => {
+    equalizeHeights(el);
+  }, 100));
 
-  // observer.observe(el);
-  // tagFreePlan(cardsContainer); 
+
+  tagFreePlan(cardsContainer); 
 }
