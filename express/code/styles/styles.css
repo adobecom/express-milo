@@ -330,6 +330,13 @@ main a.button.primaryCTA:any-link {
   border-color: var(--color-info-accent);
 }
 
+/* Override for background variant buttons to prevent flash */
+main .banner[class*="-bg"] .button-container a.button.bg-banner-button:any-link {
+  color: inherit;
+  background-color: inherit;
+  border-color: inherit;
+}
+
 main a.button:any-link:hover,
 main a.button.accent:any-link:hover,
 main a.con-button.blue:any-link:hover,
