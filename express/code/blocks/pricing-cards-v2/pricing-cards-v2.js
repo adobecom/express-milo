@@ -11,8 +11,7 @@ import {
   shallSuppressOfferEyebrowText,
   fetchPlanOnePlans,
 } from '../../scripts/utils/pricing.js';
-import BlockMediator from '../../scripts/block-mediator.min.js';
-import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
+import BlockMediator from '../../scripts/block-mediator.min.js'; 
 
 let createTag; let getConfig;
 let replaceKeyArray; let placeholders;
@@ -24,8 +23,6 @@ const blockKeys = [
   'explain',
   'mPricingRow',
   'mCtaGroup',
-  'yPricingRow',
-  'yCtaGroup',
   'featureList',
   'compare',
 ];
@@ -34,7 +31,6 @@ const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '[[year-2-pricing-token]]';
 const BASE_PRICING_TOKEN = '[[base-pricing-token]]';
-const TOOLTIP_PATTERN = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
 
 const PLANS = ['monthly', 'annually'];
 const SPECIAL_PLAN = 'annual-billed-monthly';
@@ -177,17 +173,13 @@ function createToggle(pricingSections, groupID, adjElemPos, header) {
   return toggleWrapper;
 }
 
-function suppressOfferEyebrow(specialPromo, legacyVersion) {
+function suppressOfferEyebrow(specialPromo ) {
   if (specialPromo.parentElement) {
-    if (legacyVersion) {
-      specialPromo.parentElement.classList.remove('special-promo');
-      specialPromo.remove();
-    } else {
       specialPromo.className = 'hide';
       specialPromo.parentElement.className = '';
       specialPromo.parentElement.classList.add('card-border');
       specialPromo.remove();
-    }
+ 
   }
 }
 
@@ -224,8 +216,7 @@ function handlePriceToken(pricingArea, priceToken = YEAR_2_PRICING_TOKEN, newPri
 function handleSpecialPromo(
   specialPromo,
   isPremiumCard,
-  response,
-  legacyVersion,
+  response, 
 ) {
   if (specialPromo?.textContent.includes(SAVE_PERCENTAGE)) {
     const offerTextContent = specialPromo.textContent;
@@ -238,7 +229,7 @@ function handleSpecialPromo(
     );
 
     if (shouldSuppress) {
-      suppressOfferEyebrow(specialPromo, legacyVersion);
+      suppressOfferEyebrow(specialPromo );
     } else {
       specialPromo.innerHTML = specialPromo.innerHTML.replace(
         SAVE_PERCENTAGE,
@@ -336,10 +327,10 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
   }
 }
 
-async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
+async function handlePrice(pricingArea, specialPromo, groupID ) { 
   const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
-  const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
 
+  const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container'); 
   if (!pricingBtnContainer) return;
   if (!priceEl) return;
 
@@ -364,10 +355,9 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const isPremiumCard = response.ooAvailable || false;
   const savePercentElem = pricingArea.querySelector('.card-offer');
   handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-  handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
-  handleTooltip(pricingArea, TOOLTIP_PATTERN);
+  handleRawPrice(price, basePrice, response, priceSuffix, priceRow); 
   handleSavePercentage(savePercentElem, isPremiumCard, response);
-  handleSpecialPromo(specialPromo, isPremiumCard, response, legacyVersion);
+  handleSpecialPromo(specialPromo, isPremiumCard, response );
   handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
   handlePriceToken(pricingArea, BASE_PRICING_TOKEN, response.formattedBP);
   priceEl?.parentNode?.remove();
@@ -382,8 +372,7 @@ async function createPricingSection(
   pricingArea,
   ctaGroup,
   specialPromo,
-  groupID,
-  legacyVersion,
+  groupID, 
 ) {
   const pricingSection = createTag('div', { class: 'pricing-section' });
   pricingArea.classList.add('pricing-area');
@@ -392,7 +381,8 @@ async function createPricingSection(
     offer.classList.add('card-offer');
     offer.parentElement.outerHTML = offer.outerHTML;
   }
-  await handlePrice(pricingArea, specialPromo, groupID, legacyVersion);
+  await handlePrice(pricingArea, specialPromo, groupID);
+  
   ctaGroup.classList.add('card-cta-group');
   ctaGroup.querySelectorAll('a').forEach((a, i) => {
     a.classList.add('large');
@@ -557,34 +547,23 @@ async function decorateCard({
   borderParams,
   explain,
   mPricingRow,
-  mCtaGroup,
-  yPricingRow,
-  yCtaGroup,
+  mCtaGroup, 
   featureList,
   compare,
-}, el, legacyVersion) {
+}, el) {
   const card = createTag('div', { class: 'card' });
   const cardBorder = createTag('div', { class: 'card-border' });
-  const { specialPromo, cardWrapper } = legacyVersion
-    ? decorateLegacyHeader(header, card)
-    : decorateHeader(header, borderParams, card, cardBorder);
-
+  const cardBorderHeader = cardBorder.querySelector('h2, h3, h4, h5, h6');
+  cardBorderHeader?.classList.add('card-promo-header');
+  const { specialPromo, cardWrapper } = decorateHeader(header, borderParams, card, cardBorder);
   decorateBasicTextSection(explain, 'card-explain', card);
   const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
-  const [mPricingSection, yPricingSection] = await Promise.all([
-    createPricingSection(header, mPricingRow, mCtaGroup, specialPromo, groupID, legacyVersion),
-    createPricingSection(header, yPricingRow, yCtaGroup, null),
+  const [mPricingSection ] = await Promise.all([
+    createPricingSection(header, mPricingRow, mCtaGroup, specialPromo, groupID), 
   ]);
-  mPricingSection.classList.add('monthly');
-  yPricingSection.classList.add('annually', 'hide');
-
-  const toggle = createToggle(
-    [mPricingSection, yPricingSection],
-    groupID,
-    adjustElementPosition,
-    header,
-  );
-  card.append(toggle, mPricingSection, yPricingSection);
+  mPricingSection.classList.add('monthly'); 
+ 
+  card.append( mPricingSection ); 
   decorateBasicTextSection(featureList, 'card-feature-list', card);
   decorateCompareSection(compare, el, card);
   return cardWrapper;
@@ -623,13 +602,8 @@ export default async function init(el) {
   }, {});
   await decorateButtonsDeprecated(el);
   addTempWrapperDeprecated(el, 'pricing-cards-v2');
-
-  // For backwards compatability with old versions of the pricing card
-  const legacyVersion = el.querySelectorAll(':scope > div').length < 10;
+ 
   const currentKeys = [...blockKeys];
-  if (legacyVersion) {
-    currentKeys.splice(1, 1);
-  }
   const divs = currentKeys.map((_, index) => el.querySelectorAll(`:scope > div:nth-child(${index + 1}) > div`));
 
   const cards = Array.from(divs[0]).map((_, index) => currentKeys.reduce((obj, key, keyIndex) => {
@@ -640,9 +614,16 @@ export default async function init(el) {
   const cardsContainer = createTag('div', { class: 'cards-container' });
 
   const decoratedCards = await Promise.all(
-    cards.map((card) => decorateCard(card, el, legacyVersion)),
+    cards.map((card) => decorateCard(card, el)),
   );
+  
+
+
   decoratedCards.forEach((card) => cardsContainer.append(card));
+
+  if (cardsContainer.querySelectorAll('.card-border.gradient-promo, .card-border.gen-ai-promo').length > 0) {
+    cardsContainer.classList.add('has-eyebrow');
+  }
 
   const phoneNumberTags = [...cardsContainer.querySelectorAll('a')].filter(
     (a) => a.title.includes(SALES_NUMBERS),
@@ -651,76 +632,74 @@ export default async function init(el) {
   if (phoneNumberTags.length > 0) {
     await formatSalesPhoneNumber(phoneNumberTags, SALES_NUMBERS);
   }
-  el.classList.add('no-visible');
   el.prepend(cardsContainer);
+  
 
-  const groups = [
-    cards.map(({ header }) => header),
-    cards.map(({ explain }) => explain),
-    cards.reduce((acc, card) => [...acc, card.mCtaGroup, card.yCtaGroup], []),
-    [...el.querySelectorAll('.pricing-area')],
-    cards.map(({ featureList }) => featureList.querySelector('p')),
-    cards.map(({ featureList }) => featureList),
-    cards.map(({ compare }) => compare),
-  ];
+  // const groups = [
+  //   cards.map(({ header }) => header),
+  //   cards.map(({ explain }) => explain),
+  //   cards.reduce((acc, card) => [...acc, card.mCtaGroup, card.yCtaGroup], []),
+  //   [...el.querySelectorAll('.pricing-area')],
+  //   cards.map(({ featureList }) => featureList.querySelector('p')),
+  //   cards.map(({ featureList }) => featureList),
+  //   cards.map(({ compare }) => compare),
+  // ];
 
-  const decoratedCardEls = [...cardsContainer.querySelectorAll('.card')];
-  const synchedItems = groups.flat();
-  synchedItems.forEach((item) => {
-    // elements with js-controlled heights need border-box
-    if (item) item.style.boxSizing = 'border-box';
-  });
-  const undoSyncHeights = () => {
-    synchedItems.forEach((item) => {
-      item.style?.removeProperty('min-height');
-    });
-  };
-  const doSyncHeights = () => {
-    // possible 2 card in row 1 and 3rd card in row 2
-    const yPositions = decoratedCardEls.map((c) => c.getBoundingClientRect().top);
-    const positionGroups = [];
-    // positionGroups -> [2,1]
-    yPositions.forEach((yPosition, i) => {
-      // accounting for pixel lineup issues
-      if (i === 0 || Math.abs(yPosition - yPositions[i - 1]) > 6) {
-        positionGroups.push(1);
-      } else {
-        positionGroups[positionGroups.length - 1] += 1;
-      }
-    });
-    if (positionGroups.length === cards.length) {
-      // no sync when 1 card per row
-      undoSyncHeights();
-      return;
-    }
-    const groupsByTop = [];
-    // [[h1, h2, h3], [e1, e2, e3], [m1,y1,m2,y2,m3,y3]] + [2,1]
-    // -> [[h1, h2], [h3], [e1, e2], [e3], [m1, m2, y1, y2], [m3, y3]]
-    groups.forEach((group) => {
-      for (let prev = 0, i = 0; i < positionGroups.length; i += 1) {
-        const span = positionGroups[i] * (group.length / cards.length);
-        groupsByTop.push(group.slice(prev, prev + span));
-        prev += span;
-      }
-    });
-    syncMinHeights(groupsByTop);
-  };
-  window.addEventListener('resize', debounce(() => {
-    doSyncHeights();
-  }, 100));
+  // const decoratedCardEls = [...cardsContainer.querySelectorAll('.card')];
+  // const synchedItems = groups.flat();
+  // synchedItems.forEach((item) => {
+  //   // elements with js-controlled heights need border-box
+  //   if (item) item.style.boxSizing = 'border-box';
+  // });
+  // const undoSyncHeights = () => {
+  //   synchedItems.forEach((item) => {
+  //     item.style?.removeProperty('min-height');
+  //   });
+  // };
+  // const doSyncHeights = () => {
+  //   // possible 2 card in row 1 and 3rd card in row 2
+  //   const yPositions = decoratedCardEls.map((c) => c.getBoundingClientRect().top);
+  //   const positionGroups = [];
+  //   // positionGroups -> [2,1]
+  //   yPositions.forEach((yPosition, i) => {
+  //     // accounting for pixel lineup issues
+  //     if (i === 0 || Math.abs(yPosition - yPositions[i - 1]) > 6) {
+  //       positionGroups.push(1);
+  //     } else {
+  //       positionGroups[positionGroups.length - 1] += 1;
+  //     }
+  //   });
+  //   if (positionGroups.length === cards.length) {
+  //     // no sync when 1 card per row
+  //     undoSyncHeights();
+  //     return;
+  //   }
+  //   const groupsByTop = [];
+  //   // [[h1, h2, h3], [e1, e2, e3], [m1,y1,m2,y2,m3,y3]] + [2,1]
+  //   // -> [[h1, h2], [h3], [e1, e2], [e3], [m1, m2, y1, y2], [m3, y3]]
+  //   groups.forEach((group) => {
+  //     for (let prev = 0, i = 0; i < positionGroups.length; i += 1) {
+  //       const span = positionGroups[i] * (group.length / cards.length);
+  //       groupsByTop.push(group.slice(prev, prev + span));
+  //       prev += span;
+  //     }
+  //   });
+  //   syncMinHeights(groupsByTop);
+  // };
+  // window.addEventListener('resize', debounce(() => {
+  //   doSyncHeights();
+  // }, 100));
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        doSyncHeights();
-        el.classList.remove('no-visible');
-      }
-      adjustElementPosition();
-    });
-  });
+  // const observer = new IntersectionObserver((entries) => {
+  //   entries.forEach((entry) => {
+  //     if (entry.isIntersecting) {
+  //       doSyncHeights();
+  //       el.classList.remove('no-visible');
+  //     }
+  //     adjustElementPosition();
+  //   });
+  // });
 
-  observer.observe(el);
-  tagFreePlan(cardsContainer);
-
-  window.addEventListener('resize', adjustElementPosition);
+  // observer.observe(el);
+  // tagFreePlan(cardsContainer); 
 }

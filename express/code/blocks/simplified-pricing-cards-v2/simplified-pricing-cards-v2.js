@@ -277,13 +277,11 @@ export default async function init(el) {
 
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
-  if (cardCount > 3) {
-    el.classList.add('many');
-  }
   const cards = [];
   const defaultOpenIndex = [0];
  
   const cardWrapper = createTag('div', { class: 'card-wrapper ax-grid-container small-gap' });
+  
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
     const card = createTag('div', { class: 'card' });
