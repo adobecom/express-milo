@@ -276,7 +276,19 @@ main .banner h2 {
   background-repeat: no-repeat;
 }
 
-/* Background container for all background image variants */
+/* Override banner padding for background image variants */
+.banner.light-bg,
+.banner.blue-green-pink-bg,
+.banner.blue-bg,
+.banner.blue-pink-orange-bg,
+.banner.green-blue-red-bg,
+.banner.blue-purple-gray-bg,
+.banner.yellow-pink-blue-bg {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Background container for all background image variants - CLEAN SOLUTION */
 .banner.light-bg .background-container,
 .banner.blue-green-pink-bg .background-container,
 .banner.blue-bg .background-container,
@@ -287,36 +299,14 @@ main .banner h2 {
   border-radius: 16px;
   border: 2px solid #FFF;
   background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18.1%, rgba(255, 255, 255, 0.40) 93.47%);
-  padding: 40px 20px;
+  padding: 40px 15px;
+  width: calc(100vw - 30px);
+  margin: 0 15px;
+  box-sizing: border-box;
+  max-width: none;
 }
 
 @media (min-width: 900px) {
-  .section .banner.standout {
-    padding-left: 6%;
-    padding-right: 6%;
-  }
-
-  .banner.standout .content-container > div {
-    padding: 33px 9%;
-  }
-
-  .banner {
-    padding-left: 56px;
-    padding-right: 56px;
-  }
-
-  .banner > div {
-    max-width: var(--block-md-max-width);
-  }
-
-  .banner.narrow > div {
-    max-width: 850px;
-  }
-
-  .banner.standout .content-container {
-    max-width: 830px;
-  }
-
   .banner.light-bg .background-container,
   .banner.blue-green-pink-bg .background-container,
   .banner.blue-bg .background-container,
@@ -324,7 +314,7 @@ main .banner h2 {
   .banner.green-blue-red-bg .background-container,
   .banner.blue-purple-gray-bg .background-container,
   .banner.yellow-pink-blue-bg .background-container {
-    padding: 80px 40px;
+    padding: 80px 15px;
   }
 }
 
