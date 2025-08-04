@@ -480,7 +480,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 }
 
 /* Tablet Styles */
-@media (min-width: var(--breakpoint-tablet)) {
+@media (min-width: 600px) {
   .simplified-pricing-cards-v2 {
     --card-width: var(--ax-grid-8-col-width);
   }
@@ -488,7 +488,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 }
 
 /* Desktop Styles */
-@media (min-width: var(--breakpoint-desktop)) {
+@media (min-width: 1200px) {
   .simplified-pricing-cards-v2 {
     --card-width: var(--ax-grid-3-col-width);
   }
