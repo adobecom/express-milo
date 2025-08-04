@@ -115,8 +115,23 @@ export default async function decorate(block) {
   if (buttons.length > 1) {
     block.classList.add('multi-button');
   }
+
+  // Add bg-variant-button class for background image variants FIRST
+  if (hasBackgroundImage) {
+    buttons.forEach((button) => {
+      button.classList.add('bg-banner-button');
+      console.log('Added bg-variant-button to button:', button.className);
+    });
+  }
+
   // button on dark background
   buttons.forEach((button) => {
+    // Skip adding classes if this is a bg-variant button
+    if (button.classList.contains('bg-banner-button')) {
+      button.classList.remove('accent', 'any-link', 'quick-link');
+      return;
+    }
+
     button.classList.remove('primary');
     button.classList.remove('secondary');
 
