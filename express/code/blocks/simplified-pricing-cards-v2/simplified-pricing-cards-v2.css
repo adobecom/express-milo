@@ -61,12 +61,11 @@ main .section > .simplified-pricing-cards-v2-wrapper {
     gap: var(--card-gap);
     margin: 0 auto;
     border: 1px solid var(--color-border);
-    min-height: 330px;
     box-sizing: border-box;
   
 }
 
-.simplified-pricing-cards-v2 .card-wrapper .card.hide {
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide {
     min-height: unset;
     padding: var(--spacing-300);
  }
@@ -117,7 +116,7 @@ main .section > .simplified-pricing-cards-v2-wrapper {
 }
 
 /* Plan Explanation */
-.simplified-pricing-cards-v2 .card > .plan-explanation {
+.simplified-pricing-cards-v2 .card-inner-content > .plan-explanation {
     margin: 0;
     text-align: left;
     color: var(--color-text-secondary);
@@ -131,7 +130,7 @@ main .section > .simplified-pricing-cards-v2-wrapper {
     flex-grow: 1;
 }
 
-.simplified-pricing-cards-v2 .card-wrapper .card .plan-explanation p {
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content .plan-explanation p {
     margin: 0;
     color: var(--color-text-secondary);
     font-family: var(--body-font-family);
@@ -140,7 +139,7 @@ main .section > .simplified-pricing-cards-v2-wrapper {
     line-height: var(--line-height);
 }
 
-.simplified-pricing-cards-v2 .card-wrapper .card .plan-explanation p img:not(.premium-icon) {
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content .plan-explanation p img:not(.premium-icon) {
     width: var(--tooltip-icon-size);
     height: var(--tooltip-icon-size);
 }
@@ -344,11 +343,11 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     margin: auto 10px auto auto;
 }
 
-.simplified-pricing-cards-v2 .card.hide {
+.simplified-pricing-cards-v2 .card-inner-content.hide {
     gap: unset;
 }
 
-.simplified-pricing-cards-v2 .card.hide .toggle-switch {
+.simplified-pricing-cards-v2 .card-inner-content.hide .toggle-switch {
     rotate: 180deg;
 }
 
@@ -400,9 +399,9 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 }
 
 /* Hide Elements */
-.simplified-pricing-cards-v2 .card-wrapper .card.hide .plan-explanation,
-.simplified-pricing-cards-v2 .card-wrapper .card.hide .pricing-area,
-.simplified-pricing-cards-v2 .card-wrapper .card.hide .card-cta-group {
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .plan-explanation,
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .pricing-area,
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .card-cta-group {
     display: none;
 }
 
@@ -449,7 +448,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     height: var(--premium-icon-size);
 }
 
-.simplified-pricing-cards-v2 .card-wrapper .card .plan-explanation p.plan-icon-list {
+.simplified-pricing-cards-v2 .card-wrapper .card-inner-content .plan-explanation p.plan-icon-list {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-100);
@@ -491,7 +490,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
         width: min-content;
     }
 
-    .simplified-pricing-cards-v2 .card.hide {
+    .simplified-pricing-cards-v2 .card-inner-content.hide {
         gap: 10px;
     }
 
@@ -531,7 +530,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
         --card-width: 294px;
     }
 
-    .simplified-pricing-cards-v2 .card.hide {
+    .simplified-pricing-cards-v2 .card-inner-content.hide {
         gap: var(--spacing-100);
     }
 
@@ -550,9 +549,9 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
         width: fit-content;
     }
 
-    .simplified-pricing-cards-v2 .pricing-area-wrapper {
+    /* .simplified-pricing-cards-v2 .pricing-area-wrapper {
         min-height: 200px;
-    }
+    } */
 
     .simplified-pricing-cards-v2 .card-header p em {
         margin-right: 0;
@@ -568,13 +567,13 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
         height: unset;
     }
 
-    .simplified-pricing-cards-v2 .card-wrapper .card.hide .plan-explanation,
-    .simplified-pricing-cards-v2 .card-wrapper .card.hide .pricing-area,
-    .simplified-pricing-cards-v2 .card-wrapper .card.hide .card-cta-group {
+    .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .plan-explanation,
+    .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .pricing-area,
+    .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .card-cta-group {
         display: flex;
     }
 
-    .simplified-pricing-cards-v2 .card {
+    .simplified-pricing-cards-v2 .card-inner-content {
         gap: var(--spacing-100);
         padding: 24px;
         margin: unset;
@@ -615,7 +614,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     }
 
     .simplified-pricing-cards-v2 .card,
-    .simplified-pricing-cards-v2 .card.hide {
+    .simplified-pricing-cards-v2 .card-inner-content.hide {
         padding: 20px;
         gap: var(--spacing-100);
     }
@@ -648,3 +647,49 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
         width: unset;
     }
 }
+
+.simplified-pricing-cards-v2 .card {
+  background: var(--S2-Buttons-Gen-AI) border-box;
+  padding-top: 4px;
+  padding: 1px;
+  gap: 0px;
+  border-radius: 12px;
+  border: none;
+}
+
+.simplified-pricing-cards-v2 .eyebrow-header {
+  overflow: hidden;
+    color: var(--Palette-white, var(--Palette-white, #FFF));
+    text-overflow: ellipsis;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-align: center;
+    padding: 4px;
+}
+
+.simplified-pricing-cards-v2 .card-inner-content {
+  background: white;
+  border-radius: 8px;
+  padding: 24px 16px;
+  border-bottom-left-radius: 11px;
+  border-bottom-right-radius: 11px;
+}
+
+
+/* .simplified-pricing-cards-v2 .card:before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  left: -1px;
+  width: 100%;
+  height: 100%;
+  padding-top: 4px;
+  text-align: center;
+  color: var(--color-white);
+  background: var(--S2-Buttons-Gen-AI) border-box;
+  z-index: -1;
+  border-radius: 12px;
+  border: 1px solid var(--S2-Buttons-Gen-AI);
+} */
