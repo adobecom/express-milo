@@ -24,27 +24,13 @@ export default async function decorate(block) {
 
   if (sectionMetadata) {
     const meta = readBlockConfig(sectionMetadata);
-    console.log('Section metadata:', meta);
     shouldInjectLogo = ['on', 'yes'].includes(meta['inject-logo']?.toLowerCase());
   }
 
   if (shouldInjectLogo) {
-    console.log('Logo injection conditions met');
-    console.log('H2 element:', block.querySelector('H2'));
-
     const logo = getIconElementDeprecated('adobe-express-logo');
-    console.log('Logo element:', logo);
-
     logo.classList.add('express-logo');
     block.querySelector('H2')?.prepend(logo);
-  } else {
-    console.log('Logo injection conditions NOT met');
-    console.log('Section metadata found:', !!sectionMetadata);
-    if (sectionMetadata) {
-      const meta = readBlockConfig(sectionMetadata);
-      console.log('Available metadata keys:', Object.keys(meta));
-      console.log('inject-logo value:', meta['inject-logo']);
-    }
   }
 
   if (isBannerStandoutVariant) {
