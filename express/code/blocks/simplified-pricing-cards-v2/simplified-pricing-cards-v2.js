@@ -1,4 +1,4 @@
-import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
@@ -21,7 +21,7 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-  const classNames = [ '.card-header', '.pricing-area'];
+  const classNames = [ '.card-header','.pricing-area'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards-v2 .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
@@ -192,8 +192,7 @@ function decorateHeader(header, planExplanation) {
   });
   planExplanation.classList.add('plan-explanation');
   const hideButtonWrapper = createTag('div', { class: 'toggle-switch-wrapper' });
-  const hideButton = createTag('div', { class: 'toggle-switch' });
-  hideButton.innerText = '>';
+  const hideButton = getIconElementDeprecated('chevron-up');
   hideButton.addEventListener('click', () => {
     const { classList } = header.parentElement;
     if (classList.contains('hide')) {
@@ -258,10 +257,25 @@ export default async function init(el) {
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
     const card = createTag('div', { class: 'card' });
+    const headers = rows[0].children[0].querySelectorAll('h2,h3,h4,h5,h6');
+    if (headers.length > 1) {
+      const eyebrowContent = createTag('div', { class: 'eyebrow-content' });
+      const firstHeader = headers[0];
+      firstHeader.classList.add('eyebrow-header');
+      eyebrowContent.appendChild(firstHeader);
+      rows[0].children[0].appendChild(eyebrowContent);
+      card.appendChild(eyebrowContent);
+    }
+ 
+    const cardInnerContent = createTag('div', { class: 'card-inner-content' });
     if (cardIndex !== defaultOpenIndex) {
       card.classList.add('hide');
     }
+    card.appendChild(cardInnerContent);
     decorateCardBorder(card, rows[1].children[0]);
+
+
+
     decorateHeader(rows[0].children[0], rows[2].children[0]);
     await createPricingSection(
       rows[0].children[0],
@@ -270,7 +284,7 @@ export default async function init(el) {
     );
 
     for (let j = 0; j < rows.length - 2; j += 1) {
-      card.appendChild(rows[j].children[0]);
+      cardInnerContent.appendChild(rows[j].children[0]);
     }
     cards.push(card);
   }
@@ -320,14 +334,12 @@ export default async function init(el) {
     equalizeHeights(el);
   }, 100));
 
-  cards.forEach((card) => {
-    const eyebrowContent = createTag('div', { class: 'card' });
-    const header = createTag('h2', { class: 'eyebrow-header' });
-    card.classList.remove('card');
-    card.classList.add('card-inner-content');
-    header.textContent = 'Best value';
-    eyebrowContent.appendChild(header);
-    eyebrowContent.appendChild(card);
-    cardWrapper.appendChild(eyebrowContent);
-  });
+  // cards.forEach((card) => {
+  //   const eyebrowContent = createTag('div', { class: 'card' });
+  //   const header = createTag('h2', { class: 'eyebrow-header' });
+  //   header.textContent = 'Best value';
+  //   eyebrowContent.appendChild(header);
+  //   eyebrowContent.appendChild(card);
+  //   cardWrapper.appendChild(eyebrowContent);
+  // });
 }
