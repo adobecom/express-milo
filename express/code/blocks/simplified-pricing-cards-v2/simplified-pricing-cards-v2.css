@@ -12,10 +12,10 @@
   --line-height: 130%;
   --font-weight-bold: 700;
   --pricing-card-font-weight: 700;
-  --pricing-card-font-size: 18px;
+  --pricing-card-font-size: var(--spacing-225);
   --pricing-card-body-font-weight: 400;
-  --pricing-card-price-font-size: 22px;
-  --pricing-card-price-suffix-font-size: 12px;
+  --pricing-card-price-font-size: var(--spacing-275);
+  --pricing-card-price-suffix-font-size: var(--spacing-150);
 
   /* === COLOR VARIABLES === */
   --color-text-primary: #222222;
@@ -27,9 +27,37 @@
 
   /* === COMPONENT VARIABLES === */
   --button-border-radius: var(--spacing-400);
-  --icon-size: 18px;
+  --icon-size: var(--spacing-225);
   --tooltip-icon-size: var(--spacing-400);
   --premium-icon-size: var(--body-font-size-xs);
+  
+  /* === SPACING VARIABLES (LOCAL) === */
+  --breakpoint-tablet: 600px;    /* Tablet breakpoint */
+  --breakpoint-desktop: 1200px;  /* Desktop breakpoint */
+  --spacing-025: 2px;   /* Small margins and offsets */
+  --spacing-050: 4px;   /* Eyebrow padding, outline offset */
+  --spacing-075: 6px;   /* Small gaps */
+  --spacing-125: 10px;  /* Medium gaps */
+  --spacing-150: 12px;  /* Button padding, font sizes, border radius */
+  --spacing-175: 16px;  /* Medium spacing */
+  --spacing-225: 18px;  /* Font sizes */
+  --spacing-275: 22px;  /* Price font size */
+  --spacing-300-alt: 24px; /* Alternative to spacing-300 for specific use */
+  --spacing-475: 38px;  /* Specific component heights */
+  --spacing-550: 44px;  /* Icon positioning */
+  --spacing-1125: 91px; /* Tooltip max-width */
+  --spacing-negative-100: -2px;  /* Small negative offsets */
+  --spacing-negative-200: -4px;  /* Medium negative offsets */
+  --spacing-negative-225: -6px;  /* Specific negative offsets */
+  --spacing-negative-200-alt: -8px; /* Alternative negative offset */
+  --spacing-negative-500: -40px; /* Large negative offsets */
+  --spacing-negative-1100: -44px; /* Large negative positioning */
+  --spacing-negative-2250: -9999px; /* Screen reader hide */
+  --border-width-thin: 1px;
+  --border-width-medium: 2px;
+  --border-radius-small: 4px;
+  --border-radius-medium: 11px;
+  --border-radius-large: 12px;
 }
 
 /* Base Styles */
@@ -42,19 +70,19 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   overflow: hidden;
   color: var(--color-white);
   text-overflow: ellipsis;
-  font-size: 12px;
+  font-size: var(--spacing-150);
   font-style: normal;
   font-weight: 500;
   line-height: normal;
   text-align: center;
-  padding: 4px;
+  padding: var(--spacing-050);
 }
 
 .simplified-pricing-cards-v2 .card-inner-content {
   background: white;
-  border-radius: 11px;
+  border-radius: var(--border-radius-medium);
   padding: var(--spacing-300);
-  gap: 8px;
+  gap: var(--spacing-100);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -66,9 +94,9 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--color-border);
+  border: var(--border-width-thin) solid var(--color-border);
   box-sizing: border-box;
-  border-radius: 12px;
+  border-radius: var(--border-radius-large);
 }
 
 .simplified-pricing-cards-v2 .card-inner-content.hide {
@@ -79,16 +107,16 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 .simplified-pricing-cards-v2 .card-wrapper .card.gradient-promo .eyebrow-content {
   background: var(--S2-Buttons-Premium) border-box;
   border: none;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: var(--border-radius-large);
+  border-top-right-radius: var(--border-radius-large);
   line-height: 130%;
 }
 
 .simplified-pricing-cards-v2 .card-wrapper .card.gen-ai .eyebrow-content {
   background: var(--S2-Buttons-Gen-AI) border-box;
   border: none;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-top-left-radius: var(--border-radius-large);
+  border-top-right-radius: var(--border-radius-large);
 }
 
 .simplified-pricing-cards-v2 .card-wrapper .card:has(.eyebrow-content) {
@@ -100,7 +128,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 
 .simplified-pricing-cards-v2 .card.gradient-promo {
   background: var(--S2-Buttons-Premium) border-box;
-  border: 1px solid transparent;
+  border: var(--border-width-thin) solid transparent;
 }
 
 .simplified-pricing-cards-v2 .card.gen-ai {
@@ -132,7 +160,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 .simplified-pricing-cards-v2 .card-header h4,
 .simplified-pricing-cards-v2 .card-header h5,
 .simplified-pricing-cards-v2 .card-header h6 {
-  margin: 0 5px 0 0;
+  margin: 0 var(--spacing-075) 0 0;
   display: flex;
   align-items: center;
   gap: var(--spacing-100);
@@ -147,7 +175,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--spacing-125);
   width: 100%;
   padding: 0;
   margin: 0;
@@ -160,9 +188,9 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 }
 
 .simplified-pricing-cards-v2 .header-toggle-button:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: 4px;
+  outline: var(--border-width-medium) solid var(--color-accent);
+  outline-offset: var(--spacing-025);
+  border-radius: var(--border-radius-small);
 }
  
 .simplified-pricing-cards-v2 .card-header img {
@@ -211,10 +239,10 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 
 
 .simplified-pricing-cards-v2 .pricing-area p {
-  margin: 2px 0px 0px 0px;
+  margin: var(--spacing-025) 0px 0px 0px;
   font-size: var(--body-font-size-xs);
   line-height: 1.3;
-  margin-top: 4px;
+  margin-top: var(--spacing-050);
   color: var(--color-text-secondary);
   font-family: var(--body-font-family);
   font-weight: var(--body-font-weight);
@@ -228,7 +256,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 
 .simplified-pricing-cards-v2 .pricing-area .pricing-row>p:first-of-type {
   display: flex;
-  gap: 6px;
+  gap: var(--spacing-075);
 }
 
 .simplified-pricing-cards-v2 .pricing-area .pricing-row-suf {
@@ -236,7 +264,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   height: fit-content;
   margin-top: auto;
   font-size: var(--pricing-card-price-suffix-font-size);
-  margin-bottom: 2px;
+  margin-bottom: var(--spacing-025);
 }
 
 .simplified-pricing-cards-v2 .pricing-area a:not(.con-button) {
@@ -282,7 +310,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   gap: var(--spacing-100);
   min-height: unset;
   margin-top: var(--spacing-300);
-  font-size: 18px;
+  font-size: var(--spacing-225);
 }
 
 .simplified-pricing-cards-v2 .card-cta-group:not(.hide) {
@@ -300,14 +328,14 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   margin: 0;
   width: 100%;
   line-height: 1.3;
-  font-size: 18px;
+  font-size: var(--spacing-225);
   border: none;
-  padding: 12px;
+  padding: var(--spacing-150);
 }
 
 .simplified-pricing-cards-v2 .card-cta-group strong .button {
   position: relative;
-  top: 4px;
+  top: var(--spacing-050);
 }
 
 /* Buttons */
@@ -319,7 +347,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 .simplified-pricing-cards-v2 a.button.compare-all-button,
 main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   background-color: var(--color-white);
-  border: 2px solid var(--color-black);
+  border: var(--border-width-medium) solid var(--color-black);
   color: var(--color-black); 
   padding-top: var(--body-font-size-xs);
   padding-bottom: var(--body-font-size-xs);
@@ -333,18 +361,18 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 
 .simplified-pricing-cards-v2 .card-inner-content.hide .icon-chevron-up {
   rotate: 180deg;
-  translate: 0 2px;
+  translate: 0 var(--spacing-025);
 }
 
 /* Promo Elements */
 .simplified-pricing-cards-v2 .promo-eyebrow-text {
   position: absolute;
-  top: -40px;
-  left: -2px;
+  top: var(--spacing-negative-500);
+  left: var(--spacing-negative-100);
   z-index: 0;
   width: 100%;
-  height: 38px;
-  padding: 10px 2px;
+  height: var(--spacing-475);
+  padding: var(--spacing-125) var(--spacing-025);
   margin-top: 0;
   color: var(--color-white);
   text-align: center;
@@ -356,10 +384,10 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 .simplified-pricing-cards-v2 .promo-eyebrow-text::before {
   content: "";
   position: absolute;
-  left: 2px;
-  bottom: -8px;
-  width: calc(100% - 4px);
-  height: 25px;
+  left: var(--spacing-025);
+  bottom: var(--spacing-negative-200-alt);
+  width: calc(100% - var(--spacing-050));
+  height: var(--spacing-300-alt);
   background-color: var(--color-white);
   border-radius: var(--spacing-300) var(--spacing-300) 0 0;
 }
@@ -394,7 +422,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 
 .simplified-pricing-cards-v2 .visually-hidden {
   position: absolute;
-  left: -9999px;
+  left: var(--spacing-negative-2250);
 }
 
 /* Image Tooltip Styles */
@@ -419,8 +447,8 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 
 .simplified-pricing-cards-v2 .plan-explanation .premium-icon-wrapper {
   position: absolute;
-  top: -6px;
-  right: -4px;
+  top: var(--spacing-negative-225);
+  right: var(--spacing-negative-200);
   z-index: 10;
 }
 
@@ -444,17 +472,17 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 }
 
 .simplified-pricing-cards-v2 .plan-explanation .tooltip-text {
-  margin-bottom: 9px;
-  max-width: 91px;
-  left: -44px;
+  margin-bottom: var(--spacing-125);
+  max-width: var(--spacing-1125);
+  left: var(--spacing-negative-1100);
 }
 
 .simplified-pricing-cards-v2 .plan-explanation .tooltip-text::after {
-  left: 51px;
+  left: var(--spacing-550);
 }
 
 /* Tablet Styles */
-@media (min-width: 600px) {
+@media (min-width: var(--breakpoint-tablet)) {
   .simplified-pricing-cards-v2 {
     --card-width: var(--ax-grid-8-col-width);
   }
@@ -462,13 +490,13 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 }
 
 /* Desktop Styles */
-@media (min-width: 1200px) {
+@media (min-width: var(--breakpoint-desktop)) {
   .simplified-pricing-cards-v2 {
     --card-width: var(--ax-grid-3-col-width);
   }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card {
-    margin-top: 24px;
+    margin-top: var(--spacing-300-alt);
   }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card:has(.eyebrow-content) {
@@ -486,7 +514,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   }
 
   .simplified-pricing-cards-v2 .card-inner-content.hide .plan-explanation{
-    gap: 16px;
+    gap: var(--spacing-175);
     display: flex;
     flex-direction: column; 
   }
@@ -497,7 +525,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 
  
   .simplified-pricing-cards-v2 .card-inner-content.hide {
-    gap: 8px;
+    gap: var(--spacing-100);
   } 
 }
 

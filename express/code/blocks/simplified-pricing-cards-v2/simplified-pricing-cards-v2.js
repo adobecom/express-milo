@@ -6,12 +6,22 @@ import {
 import { debounce } from '../../scripts/utils/hofs.js';
 import handleTooltip, { adjustElementPosition, imageTooltipAdapter } from '../../scripts/widgets/tooltip.js';
 
-let createTag; let getConfig;
-let replaceKeyArray; let formatSalesPhoneNumber;
+// Module-level variables initialized during init
+let createTag = null;
+let getConfig = null;
+let replaceKeyArray = null;
+let formatSalesPhoneNumber = null;
 
+// Token constants
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '((year-2-pricing-token))';
+
+// UI constants
+const DESKTOP_BREAKPOINT = 1200;
+const LONG_PRICE_LENGTH = 6;
+const SINGLE_CARD_COUNT = 1;
+const RESIZE_DEBOUNCE_MS = 100;
 
 function getHeightWithoutPadding(element) {
   const styles = window.getComputedStyle(element);
@@ -23,14 +33,14 @@ function getHeightWithoutPadding(element) {
 function equalizeHeights(el) {
   const classNames = [ '.card-header', '.plan-text', '.pricing-area'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards-v2 .card').length;
-  if (cardCount === 1) return;
+  if (cardCount === SINGLE_CARD_COUNT) return;
   for (const className of classNames) {
     const headers = el.querySelectorAll(className);
     let maxHeight = 0;
     headers.forEach((placeholder) => {
       placeholder.style.height = 'unset';
     });
-    if (window.screen.width > 1279) {
+    if (window.screen.width > DESKTOP_BREAKPOINT) {
       headers.forEach((header) => {
         if (header.checkVisibility()) {
           const height = getHeightWithoutPadding(header);
@@ -47,11 +57,27 @@ function equalizeHeights(el) {
 }
 
 async function getPriceElementSuffix(placeholderArr, response) {
-  const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
-  const placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
-  return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat && placeholdersResponse[i].replaceAll(' ', '') !== key.replaceAll('-', '')
-    ? ''
-    : ((placeholdersResponse[i].replaceAll(' ', '') !== key.replaceAll('-', '') ? placeholdersResponse[i] : '') || ''))).join(' ');
+  try {
+    if (!placeholderArr || !Array.isArray(placeholderArr) || !response) {
+      console.warn('Invalid parameters passed to getPriceElementSuffix');
+      return '';
+    }
+
+    const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
+    const placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
+    
+    if (!placeholdersResponse || !Array.isArray(placeholdersResponse)) {
+      console.warn('Failed to get placeholders response');
+      return '';
+    }
+
+    return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat && placeholdersResponse[i].replaceAll(' ', '') !== key.replaceAll('-', '')
+      ? ''
+      : ((placeholdersResponse[i].replaceAll(' ', '') !== key.replaceAll('-', '') ? placeholdersResponse[i] : '') || ''))).join(' ');
+  } catch (error) {
+    console.error('Error in getPriceElementSuffix:', error);
+    return '';
+  }
 }
 
 function handleYear2PricingToken(pricingArea, y2p, priceSuffix) {
@@ -98,7 +124,7 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
   ], getConfig());
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
-  if (response.price?.length > 6) {
+  if (response.price?.length > LONG_PRICE_LENGTH) {
     price.classList.add('long-price');
     basePrice.classList.add('long-price');
   }
@@ -136,30 +162,42 @@ async function createPricingSection(
   pricingArea,
   ctaGroup,
 ) {
-  pricingArea.classList.add('pricing-area');
-  const priceEl = [...pricingArea.querySelectorAll('a')].filter((link) => link.textContent.includes(PRICE_TOKEN))[0];
+  try {
+    if (!pricingArea || !ctaGroup) {
+      console.error('Missing required parameters for createPricingSection');
+      return;
+    }
 
-  if (priceEl) {
-    const pricingSuffixTextElem = priceEl.closest('p').nextElementSibling;
-    const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
+    pricingArea.classList.add('pricing-area');
+    const priceEl = [...pricingArea.querySelectorAll('a')].filter((link) => link.textContent.includes(PRICE_TOKEN))[0];
 
-    const priceRow = createTag('div', { class: 'pricing-row' });
-    const price = createTag('span', { class: 'pricing-price' });
-    const basePrice = createTag('span', { class: 'pricing-base-price' });
-    const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
-    const response = await fetchPlanOnePlans(priceEl?.href);
-    const priceSuffixTextContent = await getPriceElementSuffix(
-      placeholderArr,
-      response,
-    );
-    handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-    handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+    if (priceEl) {
+      const pricingSuffixTextElem = priceEl.closest('p')?.nextElementSibling;
+      const placeholderArr = pricingSuffixTextElem?.textContent?.split(' ') || [];
 
-    handleTooltip(pricingArea);
-    handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
-    pricingArea.prepend(priceRow);
-    priceEl?.parentNode?.remove();
-    pricingSuffixTextElem?.remove();
+      const priceRow = createTag('div', { class: 'pricing-row' });
+      const price = createTag('span', { class: 'pricing-price' });
+      const basePrice = createTag('span', { class: 'pricing-base-price' });
+      const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
+      
+      const response = await fetchPlanOnePlans(priceEl?.href);
+      if (!response) {
+        console.warn('Failed to fetch pricing data');
+        return;
+      }
+
+      const priceSuffixTextContent = await getPriceElementSuffix(
+        placeholderArr,
+        response,
+      );
+      handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
+      handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+
+      handleTooltip(pricingArea);
+      handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
+      pricingArea.prepend(priceRow);
+      priceEl?.parentNode?.remove();
+      pricingSuffixTextElem?.remove();
     
     // Clean up any empty paragraph elements
     pricingArea.querySelectorAll('p').forEach((p) => {
@@ -183,6 +221,9 @@ async function createPricingSection(
     const headerText = header?.querySelector('h2')?.textContent;
     a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
   });
+  } catch (error) {
+    console.error('Error in createPricingSection:', error);
+  }
 }
 
 function decorateHeader(cardWrapper, card,header, cardIndex,defaultOpenIndex) {
@@ -268,12 +309,26 @@ function decorateCardBorder(card, source) {
 }
 
 export default async function init(el) {
-  addTempWrapperDeprecated(el, 'simplified-pricing-cards-v2');
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), import('../../scripts/utils/location-utils.js')]).then(([utils, placeholders, locationUtils]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKeyArray } = placeholders);
-    ({ formatSalesPhoneNumber } = locationUtils);
-  });
+  try {
+    if (!el) {
+      console.error('Element is required for simplified-pricing-cards-v2 initialization');
+      return;
+    }
+
+    addTempWrapperDeprecated(el, 'simplified-pricing-cards-v2');
+    
+    await Promise.all([
+      import(`${getLibs()}/utils/utils.js`),
+      import(`${getLibs()}/features/placeholders.js`),
+      import('../../scripts/utils/location-utils.js')
+    ]).then(([utils, placeholders, locationUtils]) => {
+      ({ createTag, getConfig } = utils);
+      ({ replaceKeyArray } = placeholders);
+      ({ formatSalesPhoneNumber } = locationUtils);
+    }).catch((error) => {
+      console.error('Failed to load required modules:', error);
+      throw error;
+    });
 
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
@@ -352,7 +407,7 @@ export default async function init(el) {
 
   window.addEventListener('resize', debounce(() => {
     equalizeHeights(el);
-  }, 100));
+  }, RESIZE_DEBOUNCE_MS));
 
   // cards.forEach((card) => {
   //   const eyebrowContent = createTag('div', { class: 'card' });
@@ -362,4 +417,7 @@ export default async function init(el) {
   //   eyebrowContent.appendChild(card);
   //   cardWrapper.appendChild(eyebrowContent);
   // });
+  } catch (error) {
+    console.error('Error initializing simplified-pricing-cards-v2:', error);
+  }
 }
