@@ -87,6 +87,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   border: none;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  line-height: 130%;
 }
 
 .simplified-pricing-cards-v2 .card-wrapper .card.gen-ai .eyebrow-content {
@@ -100,6 +101,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   margin-top: 0;
 }
 
+ 
 
 
 .simplified-pricing-cards-v2 .card.gradient-promo {
@@ -306,6 +308,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   line-height: 1.3;
   font-size: 18px;
   border: none;
+  padding: 12px;
 }
 
 .simplified-pricing-cards-v2 .card-cta-group strong .button {
@@ -484,16 +487,16 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   }
 
   .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .plan-explanation,
-.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .pricing-area,
-.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .card-cta-group {
-  display: unset;
-}
+  .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .pricing-area,
+  .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .card-cta-group {
+    display: unset;
+  }
 
-.simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .plan-explanation{
-  gap: 16px;
-  display: flex;
-  flex-direction: column; 
-}
+  .simplified-pricing-cards-v2 .card-wrapper .card-inner-content.hide .plan-explanation{
+    gap: 16px;
+    display: flex;
+    flex-direction: column; 
+  }
 
  
   .simplified-pricing-cards-v2 .card-inner-content.hide {
