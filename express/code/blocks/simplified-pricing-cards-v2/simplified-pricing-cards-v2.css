@@ -132,12 +132,35 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 }
 
 .simplified-pricing-cards-v2 .card-header {
+  z-index: 2;
+}
+
+.simplified-pricing-cards-v2 .header-toggle-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  z-index: 2;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
 }
+
+.simplified-pricing-cards-v2 .header-toggle-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* .simplified-pricing-cards-v2 .header-toggle-button .header-content {
+  flex: 1;
+  min-width: 0;
+} */
 
 .simplified-pricing-cards-v2 .card-header img {
   width: var(--icon-size);

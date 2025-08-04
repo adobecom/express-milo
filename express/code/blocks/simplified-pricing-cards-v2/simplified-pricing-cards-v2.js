@@ -205,21 +205,44 @@ function decorateHeader(cardWrapper, card,header, cardIndex,defaultOpenIndex) {
     if (p.innerHTML.trim() === '') p.remove();
   });
 
+  // Create button wrapper for header content and chevron
+  const headerButton = createTag('button', { 
+    class: 'header-toggle-button',
+    type: 'button',
+    'aria-expanded': 'false',
+    'aria-controls': `card-content-${cardIndex}`
+  });
+  
+  // Move all header content into the button
+  const headerContent = createTag('div', { class: 'header-content' });
+  while (header.firstChild) {
+    headerContent.appendChild(header.firstChild);
+  }
+  
+  // Create chevron wrapper and icon
   const hideButtonWrapper = createTag('div', { class: 'toggle-switch-wrapper' });
   const hideButton = getIconElementDeprecated('chevron-up');
-  hideButton.addEventListener('click', () => {
+  hideButtonWrapper.append(hideButton);
+  
+  // Add click handler to the button
+  headerButton.addEventListener('click', () => {
     const { classList } = header.parentElement;
     if (classList.contains('hide')) {
       classList.remove('hide');
+      headerButton.setAttribute('aria-expanded', 'true');
       adjustElementPosition();
     } else {
       classList.add('hide');
+      headerButton.setAttribute('aria-expanded', 'false');
     }
   });
-  header.append(hideButtonWrapper);
-  hideButtonWrapper.append(hideButton);
-
-
+  
+  // Append content and chevron to button
+  headerButton.append(headerContent);
+  headerButton.append(hideButtonWrapper);
+  
+  // Append button to header
+  header.append(headerButton);
 }
 
 function decorateCardBorder(card, source) {
@@ -273,7 +296,10 @@ export default async function init(el) {
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
     const card = createTag('div', { class: 'card' });
-    const cardInnerContent = createTag('div', { class: 'card-inner-content' });
+    const cardInnerContent = createTag('div', { 
+      class: 'card-inner-content',
+      id: `card-content-${cardIndex}`
+    });
     cardInnerContent.classList.add('hide');
     card.appendChild(cardInnerContent);
     decorateHeader(cardWrapper, card, rows[0].children[0], cardIndex, defaultOpenIndex);
@@ -291,6 +317,7 @@ export default async function init(el) {
   }
 
   cards[defaultOpenIndex[0]].querySelector('.card-inner-content').classList.remove('hide');
+  cards[defaultOpenIndex[0]].querySelector('.header-toggle-button').setAttribute('aria-expanded', 'true');
 
   el.innerHTML = '';
   el.appendChild(cardWrapper);
