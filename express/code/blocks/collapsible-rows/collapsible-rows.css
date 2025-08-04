@@ -25,7 +25,7 @@
 }
 
 .collapsible-row-header {
-    font-size: 16px;
+    font-size: var(--body-font-size-m);
     font-style: normal;
     font-weight: 400;
     line-height: 130%; 
@@ -34,10 +34,10 @@
 }
 .collapsible-row-sub-header {
     padding-top: var(--spacing-100);
-    font-size: 18px;
+    font-size: var(--body-font-size-l);
     font-style: normal;
     font-weight: 700;
-    line-height: 130%; /* 24px */
+    line-height: 130%;
     text-align: left;
     color: #505050;
 }
@@ -210,6 +210,7 @@
     .collapsible-rows .collapsible-row-accordion {
         margin-left: 0;
         margin-right: 0;
+        padding: var(--spacing-400) var(--spacing-300);
     }
     .collapsible-rows .collapsible-row-toggle-btn {
         width: 65px;
