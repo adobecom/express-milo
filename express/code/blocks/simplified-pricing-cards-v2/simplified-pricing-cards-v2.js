@@ -202,7 +202,6 @@ function decorateHeader(header, planExplanation) {
     } else {
       classList.add('hide');
     }
-
   });
   header.append(hideButtonWrapper);
   hideButtonWrapper.append(hideButton);
@@ -277,9 +276,10 @@ export default async function init(el) {
   }
 
   el.innerHTML = '';
-  el.appendChild(createTag('div', { class: 'card-wrapper' }));
+  const cardWrapper = createTag('div', { class: 'card-wrapper' });
+  el.appendChild(cardWrapper);
   for (const card of cards) {
-    el.children[0].appendChild(card);
+    cardWrapper.appendChild(card);
   }
   rows[rows.length - 2].classList.add('pricing-footer');
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
@@ -319,4 +319,15 @@ export default async function init(el) {
   window.addEventListener('resize', debounce(() => {
     equalizeHeights(el);
   }, 100));
+
+  cards.forEach((card) => {
+    const eyebrowContent = createTag('div', { class: 'card' });
+    const header = createTag('h2', { class: 'eyebrow-header' });
+    card.classList.remove('card');
+    card.classList.add('card-inner-content');
+    header.textContent = 'Best value';
+    eyebrowContent.appendChild(header);
+    eyebrowContent.appendChild(card);
+    cardWrapper.appendChild(eyebrowContent);
+  });
 }
