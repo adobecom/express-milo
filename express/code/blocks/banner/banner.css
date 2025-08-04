@@ -300,8 +300,8 @@ main .banner h2 {
   border: 2px solid #FFF;
   background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18.1%, rgba(255, 255, 255, 0.40) 93.47%);
   padding: 40px 15px;
-  width: calc(100vw - 30px);
-  margin: 0 15px;
+  width: 100vw;
+  margin: 0;
   box-sizing: border-box;
   max-width: none;
 }
@@ -314,7 +314,8 @@ main .banner h2 {
   .banner.green-blue-red-bg .background-container,
   .banner.blue-purple-gray-bg .background-container,
   .banner.yellow-pink-blue-bg .background-container {
-    padding: 80px 15px;
+    width: calc(100vw - 80px);
+    margin: 0 40px;
   }
 }
 
