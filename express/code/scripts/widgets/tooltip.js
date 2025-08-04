@@ -51,21 +51,21 @@ function parseImageMetadata(altText) {
   const categoryMatch = altText.match(/category:\s*premium/);
   const isPremium = !!categoryMatch;
   
-  return { actualAlt, tooltipText, isPremium };
+  const iconMatch = altText.match(/icon:\s*([^,]+)/);
+  const icon = iconMatch ? iconMatch[1].trim().split(';')[0] : '';
+  console.log(altText.split(';'));
+  return { actualAlt, tooltipText, isPremium, icon };
 }
 
-function createTooltipElements(imgElement, tooltipText) {
+function createTooltipElements(imgElement, tooltipText, acutalIconImage) {
   const tooltipContainer = createTag('div', { class: 'tooltip image-tooltip' });
   const tooltipPopup = createTag('div', { class: 'tooltip-text' });
   tooltipPopup.innerText = tooltipText;
   
   const tooltipButton = createTag('button');
   tooltipButton.setAttribute('aria-label', tooltipText);
-  
-  const imgClone = imgElement.cloneNode(true);
-  imgClone.classList.add('tooltip-icon-img');
-  
-  tooltipButton.append(imgClone);
+  acutalIconImage.classList.add('tooltip-icon-img');
+  tooltipButton.append(acutalIconImage);
   tooltipButton.append(tooltipPopup);
   
   return { tooltipContainer, tooltipButton, tooltipPopup };
@@ -302,7 +302,9 @@ export async function imageTooltipAdapter(imgElement) {
   if (!imgElement || imgElement.tagName !== 'IMG') return;
   
   const altText = imgElement.alt || '';
-  const { actualAlt, tooltipText, isPremium } = parseImageMetadata(altText);
+  const { actualAlt, tooltipText, isPremium, icon } = parseImageMetadata(altText);
+
+  const acutalIconImage = icon ? getIconElementDeprecated(icon, 44, actualAlt, 'tooltip-icon') : null;
   
   if (!tooltipText) return;
   
@@ -310,7 +312,7 @@ export async function imageTooltipAdapter(imgElement) {
   imgElement.alt = actualAlt;
   
   // Create tooltip elements
-  const { tooltipContainer, tooltipButton, tooltipPopup } = createTooltipElements(imgElement, tooltipText);
+  const { tooltipContainer, tooltipButton, tooltipPopup } = createTooltipElements(imgElement, tooltipText, acutalIconImage);
   
   // Replace the image with tooltip container
   imgElement.replaceWith(tooltipContainer);
