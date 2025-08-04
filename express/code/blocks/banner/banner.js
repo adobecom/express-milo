@@ -15,6 +15,37 @@ export default async function decorate(block) {
   const isBannerStandoutVariant = block.classList.contains('standout');
   const isBannerCoolVariant = block.classList.contains('cool');
 
+  // Check for background image classes
+  const backgroundImageClasses = [
+    'light-bg',
+    'blue-green-pink-bg',
+    'blue-bg',
+    'blue-pink-orange-bg',
+    'green-blue-red-bg',
+    'blue-purple-gray-bg',
+    'yellow-pink-blue-bg',
+  ];
+
+  let hasBackgroundImage = false;
+  for (const className of backgroundImageClasses) {
+    if (block.classList.contains(className)) {
+      hasBackgroundImage = true;
+      break;
+    }
+  }
+
+  // Create background container for banners with background images
+  if (hasBackgroundImage) {
+    const backgroundContainer = createTag('div', { class: 'background-container' });
+
+    // Move all existing content into the background container
+    while (block.firstChild) {
+      backgroundContainer.appendChild(block.firstChild);
+    }
+
+    block.appendChild(backgroundContainer);
+  }
+
   // Normalize headings first to ensure proper structure
   normalizeHeadings(block, ['h2', 'h3']);
 
