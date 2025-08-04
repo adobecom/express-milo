@@ -21,7 +21,7 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-  const classNames = [ '.card-header','.pricing-area'];
+  const classNames = [ '.card-header', '.plan-text', '.pricing-area'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards-v2 .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
@@ -185,12 +185,22 @@ async function createPricingSection(
   });
 }
 
-function decorateHeader(header, planExplanation) {
+function decorateHeader(cardWrapper, card,header) {
   header.classList.add('card-header');
+  const headers = header.querySelectorAll('h2,h3,h4,h5,h6');
+  if (headers.length > 1) {
+    const eyebrowContent = createTag('div', { class: 'eyebrow-content' });
+    const firstHeader = headers[0];
+    firstHeader.classList.add('eyebrow-header');
+    eyebrowContent.appendChild(firstHeader);
+    card.prepend(eyebrowContent);
+    cardWrapper.classList.add('has-eyebrow');
+  }
+
   header.querySelectorAll('p').forEach((p) => {
     if (p.innerHTML.trim() === '') p.remove();
   });
-  planExplanation.classList.add('plan-explanation');
+
   const hideButtonWrapper = createTag('div', { class: 'toggle-switch-wrapper' });
   const hideButton = getIconElementDeprecated('chevron-up');
   hideButton.addEventListener('click', () => {
@@ -204,6 +214,8 @@ function decorateHeader(header, planExplanation) {
   });
   header.append(hideButtonWrapper);
   hideButtonWrapper.append(hideButton);
+
+
 }
 
 function decorateCardBorder(card, source) {
@@ -253,30 +265,20 @@ export default async function init(el) {
   const cards = [];
 
   const defaultOpenIndex = getDefaultExpandedIndex(el);
-
+  const cardWrapper = createTag('div', { class: 'card-wrapper ax-grid-container small-gap' });
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
+
     const card = createTag('div', { class: 'card' });
-    const headers = rows[0].children[0].querySelectorAll('h2,h3,h4,h5,h6');
-    if (headers.length > 1) {
-      const eyebrowContent = createTag('div', { class: 'eyebrow-content' });
-      const firstHeader = headers[0];
-      firstHeader.classList.add('eyebrow-header');
-      eyebrowContent.appendChild(firstHeader);
-      rows[0].children[0].appendChild(eyebrowContent);
-      card.appendChild(eyebrowContent);
-    }
- 
     const cardInnerContent = createTag('div', { class: 'card-inner-content' });
     if (cardIndex !== defaultOpenIndex) {
       card.classList.add('hide');
     }
     card.appendChild(cardInnerContent);
+    
+    decorateHeader(cardWrapper, card, rows[0].children[0]);
     decorateCardBorder(card, rows[1].children[0]);
-
-
-
-    decorateHeader(rows[0].children[0], rows[2].children[0]);
+    rows[2].children[0].classList.add('plan-explanation');
     await createPricingSection(
       rows[0].children[0],
       rows[3].children[0],
@@ -290,15 +292,15 @@ export default async function init(el) {
   }
 
   el.innerHTML = '';
-  const cardWrapper = createTag('div', { class: 'card-wrapper' });
+  
   el.appendChild(cardWrapper);
   for (const card of cards) {
     cardWrapper.appendChild(card);
   }
   rows[rows.length - 2].classList.add('pricing-footer');
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
-  el.appendChild(rows[rows.length - 2]);
-  el.appendChild(rows[rows.length - 1]);
+  cardWrapper.appendChild(rows[rows.length - 2]);
+  cardWrapper.appendChild(rows[rows.length - 1]);
 
   // Process images in plan-explanation elements for tooltips
   const planExplanations = el.querySelectorAll('.plan-explanation');
@@ -311,6 +313,8 @@ export default async function init(el) {
         images.forEach((img) => {
           imageTooltipAdapter(img);
         });
+      } else {
+        p.classList.add('plan-text');
       }
     });
   });
