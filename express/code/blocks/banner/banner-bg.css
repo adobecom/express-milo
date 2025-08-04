@@ -1,13 +1,7 @@
 /* Banner Background Variants - Simple and Clean */
 
 /* Base styles for all background variants */
-.banner.light-bg,
-.banner.blue-green-pink-bg,
-.banner.blue-bg,
-.banner.blue-pink-orange-bg,
-.banner.green-blue-red-bg,
-.banner.blue-purple-gray-bg,
-.banner.yellow-pink-blue-bg {
+.banner[class*="-bg"] {
   padding: 40px 20px;
   text-align: center;
   margin: 0 auto;
@@ -65,13 +59,7 @@
 }
 
 /* Background container */
-.banner.light-bg .background-container,
-.banner.blue-green-pink-bg .background-container,
-.banner.blue-bg .background-container,
-.banner.blue-pink-orange-bg .background-container,
-.banner.green-blue-red-bg .background-container,
-.banner.blue-purple-gray-bg .background-container,
-.banner.yellow-pink-blue-bg .background-container {
+.banner[class*="-bg"] .background-container {
   border-radius: 16px;
   border: 2px solid #FFF;
   background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18.1%, rgba(255, 255, 255, 0.40) 93.47%);
@@ -81,47 +69,37 @@
   max-width: none;
 }
 
-/* H2 styling */
-.banner.light-bg h2,
-.banner.blue-green-pink-bg h2,
-.banner.blue-bg h2,
-.banner.blue-pink-orange-bg h2,
-.banner.green-blue-red-bg h2,
-.banner.blue-purple-gray-bg h2,
-.banner.yellow-pink-blue-bg h2 {
+/* Common header styles for all background variants */
+.banner[class*="-bg"] h2,
+.banner[class*="-bg"] h3,
+.banner[class*="-bg"] h4 {
   color: black;
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 36px;
   font-style: normal;
-  font-weight: 900;
   line-height: 130%;
 }
 
-.banner.light-bg h3,
-.banner.blue-green-pink-bg h3,
-.banner.blue-bg h3,
-.banner.blue-pink-orange-bg h3,
-.banner.green-blue-red-bg h3,
-.banner.blue-purple-gray-bg h3,
-.banner.yellow-pink-blue-bg h3 {
-  color: black;
-  margin-top: 0;
-  margin-bottom: 0;
+/* H2 specific styling */
+.banner[class*="-bg"] h2 {
+  font-size: 36px;
+  font-weight: 900;
+}
+
+/* H3 specific styling */
+.banner[class*="-bg"] h3 {
   font-size: 20px;
-  font-style: normal;
   font-weight: 400;
-  line-height: 130%;
+}
+
+/* H4 specific styling */
+.banner[class*="-bg"] h4 {
+  font-size: 18px;
+  font-weight: 400;
 }
 
 /* Logo styling */
-.banner.light-bg .express-logo,
-.banner.blue-green-pink-bg .express-logo,
-.banner.blue-bg .express-logo,
-.banner.blue-pink-orange-bg .express-logo,
-.banner.green-blue-red-bg .express-logo,
-.banner.blue-purple-gray-bg .express-logo,
-.banner.yellow-pink-blue-bg .express-logo {
+.banner[class*="-bg"] .express-logo {
   display: block;
   margin: 0 auto;
   width: 168px;
@@ -130,36 +108,19 @@
 
 /* Tablet styles */
 @media (min-width: 768px) {
-  .banner.light-bg,
-  .banner.blue-green-pink-bg,
-  .banner.blue-bg,
-  .banner.blue-pink-orange-bg,
-  .banner.green-blue-red-bg,
-  .banner.blue-purple-gray-bg,
-  .banner.yellow-pink-blue-bg {
+  .banner[class*="-bg"] {
     padding: 40px 32px;
   }
 
-  .banner.light-bg .background-container,
-  .banner.blue-green-pink-bg .background-container,
-  .banner.blue-bg .background-container,
-  .banner.blue-pink-orange-bg .background-container,
-  .banner.green-blue-red-bg .background-container,
-  .banner.blue-purple-gray-bg .background-container,
-  .banner.yellow-pink-blue-bg .background-container {
+  .banner[class*="-bg"] .background-container {
     width: calc(100vw - 80px);
   }
 }
 
 /* Desktop styles */
 @media (min-width: 1200px) {
-  .banner.light-bg,
-  .banner.blue-green-pink-bg,
-  .banner.blue-bg,
-  .banner.blue-pink-orange-bg,
-  .banner.green-blue-red-bg,
-  .banner.blue-purple-gray-bg,
-  .banner.yellow-pink-blue-bg {
+  .banner[class*="-bg"] {
     padding: 80px 40px;
   }
 } 
+
