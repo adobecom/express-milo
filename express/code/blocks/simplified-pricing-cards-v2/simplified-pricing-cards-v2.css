@@ -60,12 +60,6 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   flex-grow: 1;
 }
 
-
-.simplified-pricing-cards-v2.wide {
-  --card-width: 100%;
-  padding: var(--spacing-300);
-}
-
 /* Card Styles */
 .simplified-pricing-cards-v2 .card {
   width: var(--card-width);
