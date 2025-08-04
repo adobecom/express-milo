@@ -14,7 +14,7 @@
   /* Color Variables - Use Global */
   --color-text-primary: #222222;
   --color-text-secondary: #464646;
-  --color-text-disabled: #B1B1B1;
+  --color-text-disabled: #8f8f8f;
   --color-accent: var(--color-info-accent);
   --color-border: #D5D5D5;
 
@@ -158,12 +158,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   outline-offset: 2px;
   border-radius: 4px;
 }
-
-/* .simplified-pricing-cards-v2 .header-toggle-button .header-content {
-  flex: 1;
-  min-width: 0;
-} */
-
+ 
 .simplified-pricing-cards-v2 .card-header img {
   width: var(--icon-size);
   height: var(--icon-size);
@@ -377,12 +372,12 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 /* Footer */
 .simplified-pricing-cards-v2 .pricing-footer {
   text-align: center; 
-  width: var(--ax-grid-12-col-width);
+  width: 100%;
 }
 
 .simplified-pricing-cards-v2 .pricing-footer+div {
   text-align: center;
-  width: var(--ax-grid-12-col-width);
+  width: 100%;
 }
 
 /* Hide Elements */
@@ -496,6 +491,10 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     gap: 16px;
     display: flex;
     flex-direction: column; 
+  }
+
+  .simplified-pricing-cards-v2 .header-toggle-button {
+    pointer-events: none;
   }
 
  
