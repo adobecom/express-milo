@@ -30,8 +30,6 @@
   --pricing-card-body-font-weight: 400;
   --pricing-card-price-font-size: 22px;
   --pricing-card-price-suffix-font-size: 12px;
-
-  margin-bottom: 40px;
 }
 
 /* Base Styles */
@@ -84,7 +82,14 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   padding: var(--spacing-300);
 }
 
-.simplified-pricing-cards-v2 .card-wrapper .eyebrow-content {
+.simplified-pricing-cards-v2 .card-wrapper .card.gradient-promo .eyebrow-content {
+  background: var(--S2-Buttons-Premium) border-box;
+  border: none;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.simplified-pricing-cards-v2 .card-wrapper .card.gen-ai .eyebrow-content {
   background: var(--S2-Buttons-Gen-AI) border-box;
   border: none;
   border-top-left-radius: 12px;
@@ -449,6 +454,10 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card:has(.eyebrow-content) {
     margin-top: 0;
+  }
+
+  .simplified-pricing-cards-v2  .toggle-switch-wrapper {
+    display: none;
   }
 }
 
