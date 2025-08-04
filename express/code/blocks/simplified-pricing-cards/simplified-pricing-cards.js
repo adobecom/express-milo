@@ -4,7 +4,7 @@ import {
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
 import { debounce } from '../../scripts/utils/hofs.js';
-import handleTooltip, { adjustElementPosition, imageTooltipAdapter } from '../../scripts/widgets/tooltip.js';
+import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let formatSalesPhoneNumber;
@@ -21,7 +21,7 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-  const classNames = [ '.card-header', '.pricing-area'];
+  const classNames = ['.plan-explanation', '.card-header'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
@@ -67,7 +67,7 @@ function handleYear2PricingToken(pricingArea, y2p, priceSuffix) {
         `${y2p} ${priceSuffix}`,
       );
     } else {
-      year2PricingToken.remove();
+      year2PricingToken.textContent = '';
     }
   } catch (e) {
     window.lana.log(e);
@@ -160,13 +160,6 @@ async function createPricingSection(
     pricingArea.prepend(priceRow);
     priceEl?.parentNode?.remove();
     pricingSuffixTextElem?.remove();
-    
-    // Clean up any empty paragraph elements
-    pricingArea.querySelectorAll('p').forEach((p) => {
-      if (p.textContent.trim() === '' && p.children.length === 0) {
-        p.remove();
-      }
-    });
   }
 
   ctaGroup.classList.add('card-cta-group');
@@ -198,11 +191,9 @@ function decorateHeader(header, planExplanation) {
     const { classList } = header.parentElement;
     if (classList.contains('hide')) {
       classList.remove('hide');
-      adjustElementPosition();
     } else {
       classList.add('hide');
     }
-
   });
   header.append(hideButtonWrapper);
   hideButtonWrapper.append(hideButton);
@@ -249,9 +240,6 @@ export default async function init(el) {
 
   const rows = Array.from(el.querySelectorAll(':scope > div'));
   const cardCount = rows[0].children.length;
-  if (cardCount > 3) {
-    el.classList.add('many');
-  }
   const cards = [];
 
   const defaultOpenIndex = getDefaultExpandedIndex(el);
@@ -285,21 +273,6 @@ export default async function init(el) {
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
   el.appendChild(rows[rows.length - 2]);
   el.appendChild(rows[rows.length - 1]);
-
-  // Process images in plan-explanation elements for tooltips
-  const planExplanations = el.querySelectorAll('.plan-explanation');
-  planExplanations.forEach((planExplanation) => {
-    const paragraphs = planExplanation.querySelectorAll('p');
-    paragraphs.forEach((p) => {
-      const images = p.querySelectorAll('img');
-      if (images.length > 0) {
-        p.classList.add('plan-icon-list');
-        images.forEach((img) => {
-          imageTooltipAdapter(img);
-        });
-      }
-    });
-  });
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
