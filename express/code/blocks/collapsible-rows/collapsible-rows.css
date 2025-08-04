@@ -15,6 +15,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: var(--spacing-600) 20px;
 }
 .collapsible-rows {
     position: relative;
@@ -157,15 +158,7 @@
     .collapsible-rows.small .collapsible-row-accordion {
         height: 78px;
     }
-    .collapsible-row-accordion {
-        margin-bottom: 4px;
-        border-radius: 0px 16px 16px 0px;
-        border-left: 4px solid #724CDC;
-        background: #F8F8F8;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+
     .collapsible-row-accordion.collapsed {
         display: none;
     }
