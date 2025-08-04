@@ -34,6 +34,35 @@ export default async function decorate(block) {
     }
   }
 
+  // Load background variants CSS if needed
+  if (hasBackgroundImage) {
+    // Completely disable ALL banner.css files to prevent CSS regression
+    const allBannerCSS = document.querySelectorAll('link[href*="banner.css"]');
+    allBannerCSS.forEach((link) => {
+      link.disabled = true;
+      link.style.display = 'none';
+    });
+
+    // Also disable any inline styles that might interfere
+    const bannerBlocks = document.querySelectorAll('.banner');
+    bannerBlocks.forEach((bannerBlock) => {
+      if (backgroundImageClasses.some((cls) => bannerBlock.classList.contains(cls))) {
+        // Remove any inline styles that might interfere
+        bannerBlock.style.removeProperty('background-color');
+        bannerBlock.style.removeProperty('background');
+        bannerBlock.style.removeProperty('color');
+      }
+    });
+
+    // Load our isolated CSS file
+    if (!document.querySelector('link[href*="banner-bg.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/express/code/blocks/banner/banner-bg.css';
+      document.head.appendChild(link);
+    }
+  }
+
   // Create background container for banners with background images
   if (hasBackgroundImage) {
     const backgroundContainer = createTag('div', { class: 'background-container' });
@@ -47,7 +76,7 @@ export default async function decorate(block) {
   }
 
   // Normalize headings first to ensure proper structure
-  normalizeHeadings(block, ['h2', 'h3']);
+  normalizeHeadings(block, ['h2', 'h3', 'h4']);
 
   // Check section metadata for inject-logo setting
   const sectionMetadata = section?.querySelector('.section-metadata');
