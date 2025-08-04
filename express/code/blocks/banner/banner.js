@@ -1,4 +1,4 @@
-import { getLibs, fixIcons, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, fixIcons, decorateButtonsDeprecated, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import { normalizeHeadings } from '../../scripts/utils/decorate.js';
 
@@ -14,6 +14,38 @@ export default async function decorate(block) {
   const isBannerLightVariant = block.classList.contains('light');
   const isBannerStandoutVariant = block.classList.contains('standout');
   const isBannerCoolVariant = block.classList.contains('cool');
+
+  // Normalize headings first to ensure proper structure
+  normalizeHeadings(block, ['h2', 'h3']);
+
+  // Check section metadata for inject-logo setting
+  const sectionMetadata = section?.querySelector('.section-metadata');
+  let shouldInjectLogo = false;
+
+  if (sectionMetadata) {
+    const meta = readBlockConfig(sectionMetadata);
+    console.log('Section metadata:', meta);
+    shouldInjectLogo = ['on', 'yes'].includes(meta['inject-logo']?.toLowerCase());
+  }
+
+  if (shouldInjectLogo) {
+    console.log('Logo injection conditions met');
+    console.log('H2 element:', block.querySelector('H2'));
+
+    const logo = getIconElementDeprecated('adobe-express-logo');
+    console.log('Logo element:', logo);
+
+    logo.classList.add('express-logo');
+    block.querySelector('H2')?.prepend(logo);
+  } else {
+    console.log('Logo injection conditions NOT met');
+    console.log('Section metadata found:', !!sectionMetadata);
+    if (sectionMetadata) {
+      const meta = readBlockConfig(sectionMetadata);
+      console.log('Available metadata keys:', Object.keys(meta));
+      console.log('inject-logo value:', meta['inject-logo']);
+    }
+  }
 
   if (isBannerStandoutVariant) {
     const contentContainer = createTag('div', { class: 'content-container' });
@@ -33,7 +65,6 @@ export default async function decorate(block) {
     block.replaceChildren(wrapperEl);
   }
 
-  normalizeHeadings(block, ['h2', 'h3']);
   const buttons = block.querySelectorAll('a.button');
   if (buttons.length > 1) {
     block.classList.add('multi-button');

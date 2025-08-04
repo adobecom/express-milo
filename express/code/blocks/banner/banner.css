@@ -175,6 +175,18 @@ main .banner h2 {
   color: black;
 }
 
+/* Adobe Express logo styling */
+.banner .express-logo {
+  display: block;
+  margin: 0 auto;
+  width: 168px;
+  height: auto;
+}
+
+.banner h2 {
+  margin-top: 0;
+}
+
 /* Background image variants - apply background images */
 .banner.light-bg {
   background-image: url('/express/code/blocks/banner/img/light-bg.jpg');
