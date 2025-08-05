@@ -494,7 +494,9 @@ export default async function init(el) {
     obj[key] = divs[keyIndex][index];
     return obj;
   }, {}));
-  el.querySelector(':scope > div:last-of-type').classList.add('card-footer');
+
+  const cardFooter = el.querySelector(':scope > div:last-of-type');
+  cardFooter.classList.add('card-footer');
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
   const cardsContainer = createTag('div', { class: 'cards-container ax-grid-container small-gap' });
 
@@ -515,6 +517,7 @@ export default async function init(el) {
   if (phoneNumberTags.length > 0) {
     await formatSalesPhoneNumber(phoneNumberTags, SALES_NUMBERS);
   }
+  cardsContainer.append(cardFooter);
   el.prepend(cardsContainer);
 
   const observer = new IntersectionObserver((entries) => {
