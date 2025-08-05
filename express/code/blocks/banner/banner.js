@@ -126,10 +126,10 @@ export default async function decorate(block) {
   // button on dark background
   buttons.forEach((button) => {
     // Skip adding classes if this is a bg-variant button
-    if (button.classList.contains('bg-banner-button')) {
-      button.classList.remove('accent', 'any-link', 'quick-link');
-      return;
-    }
+    // if (button.classList.contains('bg-banner-button')) {
+    //   button.classList.remove('accent', 'any-link', 'quick-link');
+    //   return;
+    // }
 
     button.classList.remove('primary');
     button.classList.remove('secondary');
