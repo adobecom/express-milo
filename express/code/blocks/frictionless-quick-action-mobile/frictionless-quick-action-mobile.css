@@ -27,6 +27,9 @@
     margin: var(--spacing-100) 0;
     font-size: var(--body-font-size-m);
 }
+.frictionless-quick-action-mobile .subheading.hide {
+    display: none;
+}
 
 .frictionless-quick-action-mobile h1.post-upload {
     font-size: var(--heading-font-size-m);

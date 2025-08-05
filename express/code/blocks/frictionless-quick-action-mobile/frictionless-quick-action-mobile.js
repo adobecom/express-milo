@@ -230,6 +230,7 @@ export default async function decorate(block) {
     fadeOut(dropzoneContainer);
     fadeOut(extraContainer);
     if (localeDropdownWrapper) fadeOut(localeDropdownWrapper);
+    if (subheading) subheading.classList.add('hide');
     logo.classList.add('hide');
     if (postUploadHeadlineText) {
       h1.textContent = postUploadHeadlineText;
@@ -240,6 +241,7 @@ export default async function decorate(block) {
     fadeIn(dropzoneContainer);
     fadeIn(extraContainer);
     if (localeDropdownWrapper) fadeIn(localeDropdownWrapper);
+    if (subheading) subheading.classList.remove('hide');
     logo.classList.remove('hide');
     if (postUploadHeadlineText) {
       h1.textContent = landingHeadlineText;
