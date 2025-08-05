@@ -92,7 +92,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
               gap var(--transition-duration) var(--transition-easing),
               opacity var(--transition-duration) var(--transition-easing);
   opacity: 1;
-  overflow: hidden;
+  overflow: visible;
   max-height: 1000px; /* Large initial value for expanded state */
 }
 
@@ -292,6 +292,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   margin-top: auto;
   font-size: var(--pricing-card-price-suffix-font-size);
   margin-bottom: var(--spacing-025);
+  font-weight: var(--font-weight-bold);
 }
 
 .simplified-pricing-cards-v2 .pricing-area > p:not(:last-of-type) { 
@@ -550,13 +551,6 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     display: none;
   }
 
-  /* Mobile: Keep content expanded, hide toggle button */
-  /* .simplified-pricing-cards-v2 .card-inner-content.hide {
-    max-height: none;
-    padding: var(--spacing-300);
-    gap: var(--spacing-100);
-  } */
-
   .simplified-pricing-cards-v2 .card-inner-content.hide .plan-explanation{
     gap: var(--spacing-300);
     display: flex;
@@ -569,7 +563,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     visibility: visible;
     max-height: unset;
     margin: unset;
-    flex-grow: 1;
+    /* flex-grow: 1; */
     opacity: 1;
   }
 

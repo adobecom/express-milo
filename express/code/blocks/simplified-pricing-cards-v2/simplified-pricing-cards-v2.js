@@ -30,7 +30,7 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-  const classNames = ['.card-header', '.plan-text', '.pricing-area'];
+  const classNames = ['.card-header', '.plan-text', '.plan-explanation', '.pricing-area'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards-v2 .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
