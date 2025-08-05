@@ -439,7 +439,7 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-  const classNames = ['.card-header', '.plan-explanation', '.plan-text', '.pricing-area', '.card-feature-list'];
+  const classNames = ['.plan-explanation', '.plan-text', '.pricing-area', '.card-cta-group', '.card-feature-list'];
   const cardCount = el.querySelectorAll('.pricing-cards-v2 .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
@@ -530,6 +530,53 @@ export default async function init(el) {
     observer.observe(column);
   });
 
+  const parentSection = el.closest('.section');
+  if (parentSection) {
+    // MutationObserver for display changes
+    const mutationObserver = new MutationObserver(debounce((mutations) => {
+      let displayChanged = false;
+      
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && 
+            (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+          const computedStyle = window.getComputedStyle(parentSection);
+          const currentDisplay = computedStyle.display;
+          
+          if (!parentSection.dataset.prevDisplay) {
+            parentSection.dataset.prevDisplay = currentDisplay;
+          }
+          
+          if (parentSection.dataset.prevDisplay !== currentDisplay) {
+            displayChanged = true;
+            parentSection.dataset.prevDisplay = currentDisplay;
+          }
+        }
+      });
+      
+      if (displayChanged && parentSection.offsetHeight > 0) {
+        console.log('Section display changed, equalizing heights');
+        equalizeHeights(el);
+      }
+    }, 100));
+
+    mutationObserver.observe(parentSection, {
+      attributes: true,
+      attributeFilter: ['style', 'class'],
+      childList: false,
+      subtree: false
+    });
+    
+    // Store observers for cleanup
+    el.sectionMutationObserver = mutationObserver; 
+    
+    // Cleanup function
+    el.cleanupObservers = () => {
+      if (el.sectionMutationObserver) {
+        el.sectionMutationObserver.disconnect();
+        el.sectionMutationObserver = null;
+      }
+    };
+  }
   window.addEventListener('resize', debounce(() => {
     equalizeHeights(el);
   }, 100));
