@@ -2,7 +2,7 @@
 
 /* Base styles for all background variants */
 .banner[class*="-bg"] {
-  padding: 40px 20px;
+  padding: var(--spacing-600) 20px;
   text-align: center;
   margin: 0 auto;
   color: black;
@@ -42,10 +42,10 @@
 /* Background container */
 .banner[class*="-bg"] .background-container {
   border-radius: 16px;
-  border: 2px solid #FFF;
+  border: 2px solid var(--color-white);
   background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18.1%, rgba(255, 255, 255, 0.40) 93.47%);
-  padding: 64px 32px;
-  width: calc(100vw - 40px);
+  padding: var(--spacing-800) var(--spacing-500);
+  width: calc(100vw - var(--spacing-600));
   box-sizing: border-box;
   max-width: none;
 }
@@ -63,7 +63,7 @@
 
 /* H2 specific styling */
 .banner[class*="-bg"] h2 {
-  font-size: 36px;
+  font-size: var(--heading-font-size-l);
   font-weight: 900;
 }
 
@@ -89,14 +89,14 @@
 
 /* Button styling for background variants */
 .banner[class*="-bg"] .button-container {
-  margin-top: 32px;
-  margin-bottom: 16px;
+  margin-top: var(--spacing-500);
+  margin-bottom: var(--spacing-300);
 }
 
 /* Make buttons display inline when there are multiple buttons */
 .banner[class*="-bg"].multi-button .button-container {
   display: inline-block;
-  margin-right: 16px;
+  margin-right: var(--spacing-300);
 }
 
 .banner[class*="-bg"].multi-button .button-container:last-child {
@@ -105,50 +105,39 @@
 
 .banner[class*="-bg"] .button-container a.button.bg-banner-button {
   font-size: 18px;
-  padding: 12px 24px;
+  padding: var(--spacing-200) var(--spacing-400);
   border-radius: 24px;
   background-color: black;
   border: 2px solid black;
-}
-
-
-/* First button container - when it's the only one */
-.banner[class*="-bg"] .button-container:only-child a.button.bg-banner-button {
   color: white;
-  background-color: black;
 }
 
-/* First button container - when there are multiple */
-.banner[class*="-bg"] .button-container:first-child:not(:only-child) a.button.bg-banner-button {
-  color: white;
-  background-color: black;
-}
-
-/* Second button container - when there are multiple */
-.banner[class*="-bg"] .button-container:nth-child(2) a.button.bg-banner-button {
+/* Second button styling for multi-button banners - using specific class */
+.banner[class*="-bg"] .button-container a.button.bg-banner-button-secondary {
   color: black;
-  background-color: transparent;
+  background-color: var(--color-white);
+  border-color: var(--color-black);
   border: 2px solid black;
 }
 
 /* Tablet styles */
 @media (min-width: 768px) {
   .banner[class*="-bg"] {
-    padding: 40px 32px;
+    padding: var(--spacing-600) var(--spacing-500);
   }
 
   .banner[class*="-bg"] .background-container {
-    width: calc(100vw - 80px);
+    width: calc(100vw - var(--spacing-900));
   }
 }
 
 /* Desktop styles */
 @media (min-width: 1200px) {
   .banner[class*="-bg"] {
-    padding: 80px 40px;
+    padding: var(--spacing-900) var(--spacing-600);
   }
   .banner[class*="-bg"] h2 {
-    font-size: 45px;
+    font-size: var(--heading-font-size-xl);
   }
 }
 
