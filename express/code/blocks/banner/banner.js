@@ -55,10 +55,10 @@ export default async function decorate(block) {
     }
 
     block.appendChild(backgroundContainer);
-  }
 
-  // Normalize headings first to ensure proper structure
-  normalizeHeadings(block, ['h2', 'h3', 'h4']);
+    // Normalize headings first to ensure proper structure
+    normalizeHeadings(block, ['h2', 'h3', 'h4']);
+  }
 
   // Check section metadata for inject-logo setting
   const sectionMetadata = section?.querySelector('.section-metadata');
