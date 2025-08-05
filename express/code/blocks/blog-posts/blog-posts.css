@@ -7,6 +7,7 @@
 main .section:has(.blog-posts-wrapper) > div {
     max-width: 375px;
     margin: auto;
+    width: var(--ax-grid-12-col-width);
 }
 
 main .section:has(.blog-posts-wrapper) > div:not:first-child {
@@ -45,7 +46,7 @@ main .blog-posts .blog-cards {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: 0 16px 64px 16px;
+    /* margin: 0 16px 64px 16px; */
     width: unset;
     gap: 16px;
 }
