@@ -132,6 +132,7 @@ async function mWebStickyCTA() {
   data.mainCta.text = data.mainCta.forkStickyMobileText || data.mainCta.text;
   data.mainCta.href = data.mainCta.forkStickyMobileHref || data.mainCta.href;
   await createFloatingButton(oldBlock, audience, data);
+  newBlock.remove();
 }
 
 function mWebOverlayScroll() {
