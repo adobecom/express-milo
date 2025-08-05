@@ -33,27 +33,43 @@ function getRootVariables() {
   const colorVars = {};
   const spacingVars = {};
 
-  // Extract color variables
-  const colorRegex = /--color-([^:]+):\s*([^;]+);/g;
-  let match = colorRegex.exec(stylesContent);
+  // Extract color variables - look specifically in the :root block
+  const rootBlockMatch = stylesContent.match(/:root\s*\{([\s\S]*?)\}/);
 
-  while (match !== null) {
-    const varName = match[1];
-    const value = match[2].trim();
-    const normalizedValue = normalizeColor(value);
-    colorVars[normalizedValue] = `var(--color-${varName})`;
-    match = colorRegex.exec(stylesContent);
-  }
+  if (rootBlockMatch) {
+    const rootContent = rootBlockMatch[1];
 
-  // Extract spacing variables
-  const spacingRegex = /--spacing-([^:]+):\s*([^;]+);/g;
-  match = spacingRegex.exec(stylesContent);
+    // Extract color variables from the :root block - be more specific
+    const lines = rootContent.split('\n');
 
-  while (match !== null) {
-    const varName = match[1];
-    const value = match[2].trim();
-    spacingVars[value] = `var(--spacing-${varName})`;
-    match = spacingRegex.exec(stylesContent);
+    lines.forEach((line) => {
+      const trimmedLine = line.trim();
+      // Only match lines that start with --color- and contain a color value
+      const colorMatch = trimmedLine.match(/^--color-([^:]+):\s*([^;]+);/);
+
+      if (colorMatch) {
+        const varName = colorMatch[1];
+        const value = colorMatch[2].trim();
+
+        // Only process if this looks like a valid color value
+        if (/^#[0-9a-fA-F]{3,6}$|^rgb\(|^rgba\(|^hsl\(|^hsla\(|^[a-zA-Z]+$/.test(value)) {
+          const normalizedValue = normalizeColor(value);
+          colorVars[normalizedValue] = `var(--color-${varName})`;
+        }
+      }
+    });
+
+    // Extract spacing variables from the :root block
+    lines.forEach((line) => {
+      const trimmedLine = line.trim();
+      const spacingMatch = trimmedLine.match(/^--spacing-([^:]+):\s*([^;]+);/);
+
+      if (spacingMatch) {
+        const varName = spacingMatch[1];
+        const value = spacingMatch[2].trim();
+        spacingVars[value] = `var(--spacing-${varName})`;
+      }
+    });
   }
 
   return { colorVars, spacingVars };
