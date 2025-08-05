@@ -439,6 +439,73 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
     console.log('resize');
     equalizeHeights(el);
   }, RESIZE_DEBOUNCE_MS));
+
+  // Setup observers for parent .section element
+  const parentSection = el.closest('.section');
+  if (parentSection) {
+    // MutationObserver for display changes
+    const mutationObserver = new MutationObserver(debounce((mutations) => {
+      let displayChanged = false;
+      
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && 
+            (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+          const computedStyle = window.getComputedStyle(parentSection);
+          const currentDisplay = computedStyle.display;
+          
+          if (!parentSection.dataset.prevDisplay) {
+            parentSection.dataset.prevDisplay = currentDisplay;
+          }
+          
+          if (parentSection.dataset.prevDisplay !== currentDisplay) {
+            displayChanged = true;
+            parentSection.dataset.prevDisplay = currentDisplay;
+          }
+        }
+      });
+      
+      if (displayChanged && parentSection.offsetHeight > 0) {
+        console.log('Section display changed, equalizing heights');
+        equalizeHeights(el);
+      }
+    }, RESIZE_DEBOUNCE_MS));
+    
+    // ResizeObserver for height changes
+    const resizeObserver = new ResizeObserver(debounce((entries) => {
+      for (const entry of entries) {
+        if (entry.target === parentSection && entry.contentRect.height > 0) {
+          console.log('Section resized, equalizing heights');
+          equalizeHeights(el);
+        }
+      }
+    }, RESIZE_DEBOUNCE_MS));
+    
+    // Start observing
+    mutationObserver.observe(parentSection, {
+      attributes: true,
+      attributeFilter: ['style', 'class'],
+      childList: false,
+      subtree: false
+    });
+    
+    resizeObserver.observe(parentSection);
+    
+    // Store observers for cleanup
+    el.sectionMutationObserver = mutationObserver;
+    el.sectionResizeObserver = resizeObserver;
+    
+    // Cleanup function
+    el.cleanupObservers = () => {
+      if (el.sectionMutationObserver) {
+        el.sectionMutationObserver.disconnect();
+        el.sectionMutationObserver = null;
+      }
+      if (el.sectionResizeObserver) {
+        el.sectionResizeObserver.disconnect();
+        el.sectionResizeObserver = null;
+      }
+    };
+  }
 }
 
 export default async function init(el) {
