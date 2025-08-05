@@ -155,6 +155,12 @@
   .banner[class*="-bg"] .background-container {
     width: calc(100vw - var(--spacing-900));
   }
+
+  .banner[class*="-bg"] h2 {
+    max-width: 812px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 /* Desktop styles */
@@ -162,6 +168,7 @@
   .banner[class*="-bg"] {
     padding: var(--spacing-900) var(--spacing-600);
   }
+
   .banner[class*="-bg"] h2 {
     font-size: var(--heading-font-size-xl);
   }
