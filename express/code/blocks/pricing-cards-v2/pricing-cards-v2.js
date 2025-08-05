@@ -551,7 +551,7 @@ export default async function init(el) {
   }, {}));
   el.querySelector(':scope > div:last-of-type').classList.add('card-footer');
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
-  const cardsContainer = createTag('div', { class: 'cards-container' });
+  const cardsContainer = createTag('div', { class: 'cards-container ax-grid-container small-gap' });
 
   const decoratedCards = await Promise.all(
     cards.map((card) => decorateCard(card, el)),
