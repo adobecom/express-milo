@@ -1,6 +1,5 @@
  
 .pricing-cards-v2 {
-  padding: 12px 15px 40px 15px;
   --card-width: var(--ax-grid-12-col-width);
   --card-padding: 12px;
 }
@@ -10,10 +9,6 @@
 }
 
 .pricing-cards-v2 .cards-container {
-  /* display: grid; */
-  /* grid-template-columns: repeat(auto-fit, minmax(var(--card-width), var(--card-max-width)));
-  grid-template-rows: repeat(auto-fit, minmax(311px, 1fr));
-  justify-content: center; */
   gap: 16px;
 }
 
