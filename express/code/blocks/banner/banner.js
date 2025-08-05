@@ -9,14 +9,7 @@ export default async function decorate(block) {
     ({ createTag } = utils);
   });
 
-  const section = block.closest('.section');
-  if (section?.style?.background) block.style.background = section.style.background;
-
-  const isBannerLightVariant = block.classList.contains('light');
-  const isBannerStandoutVariant = block.classList.contains('standout');
-  const isBannerCoolVariant = block.classList.contains('cool');
-
-  // Check for background image classes
+  // Check for background image classes early
   const backgroundImageClasses = [
     'light-bg',
     'blue-green-pink-bg',
@@ -34,6 +27,21 @@ export default async function decorate(block) {
       break;
     }
   }
+
+  // Load CSS immediately if background variant detected
+  if (hasBackgroundImage && !document.querySelector('link[href*="banner-bg.css"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/express/code/blocks/banner/banner-bg.css';
+    document.head.appendChild(link);
+  }
+
+  const section = block.closest('.section');
+  if (section?.style?.background) block.style.background = section.style.background;
+
+  const isBannerLightVariant = block.classList.contains('light');
+  const isBannerStandoutVariant = block.classList.contains('standout');
+  const isBannerCoolVariant = block.classList.contains('cool');
 
   // Create background container for banners with background images
   if (hasBackgroundImage) {
