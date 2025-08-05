@@ -93,6 +93,16 @@
   margin-bottom: 16px;
 }
 
+/* Make buttons display inline when there are multiple buttons */
+.banner[class*="-bg"].multi-button .button-container {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.banner[class*="-bg"].multi-button .button-container:last-child {
+  margin-right: 0;
+}
+
 .banner[class*="-bg"] .button-container a.button.bg-banner-button {
   font-size: 18px;
   padding: 12px 24px;
@@ -100,7 +110,6 @@
   background-color: black;
   border: 2px solid black;
 }
-
 
 
 /* First button container - when it's the only one */
@@ -138,11 +147,10 @@
   .banner[class*="-bg"] {
     padding: 80px 40px;
   }
-}
-
-@media (min-width: 1280px) {
   .banner[class*="-bg"] h2 {
     font-size: 45px;
   }
-} 
+}
+
+
 
