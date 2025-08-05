@@ -46,7 +46,9 @@
 
 .section .link-list h3 {
   font-size: var(--heading-font-size-m);
+  color: var(--color-gray-900);
   margin-bottom: 20px;
+  padding-left: 6px;
 }
 
 .section .link-list p.button-container {
@@ -55,15 +57,23 @@
 }
 
 .section .link-list p.button-container:first-of-type {
-  margin-left: unset;
+  margin-left: 3px;
 }
 
 .section .link-list a.button.secondary {
-  margin: 0;
+  margin: 6px 0;
   padding: var(--spacing-100) var(--spacing-300) 10px;
   border-radius: 100px;
+  color: var(--color-gray-900);
+  border: none;
+  background-color: var(--color-light-gray);
 }
-
+.section .link-list a.button.secondary:active {
+  background-color: var(--color-gray-400-variant);
+}
+.section .link-list a.button.secondary:hover, .section .link-list a.button.secondary:focus {
+  background-color: var(--color-gray-300-variant);
+}
 .section .link-list .carousel-container {
   margin-left: 0;
   margin-right: 0;
