@@ -180,54 +180,9 @@ function toCard(drawer) {
   return { card, lazyCB };
 }
 
-async function formatDynamicCartLink(a) {
-  try {
-    const pattern = /.*commerce.*adobe\.com.*/gm;
-    if (!pattern.test(a.href)) return a;
-    a.style.visibility = 'hidden';
-    const {
-      fetchPlanOnePlans,
-      buildUrl,
-    } = await import('../../scripts/utils/pricing.js');
-    const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-    const {
-      url,
-      country,
-      language,
-      offerId,
-    } = await fetchPlanOnePlans(a.href);
-    const newTrialHref = buildUrl(url, country, language, getConfig, offerId);
-    a.href = newTrialHref;
-  } catch (error) {
-    window.lana.log(`Failed to fetch prices for page plan: ${error}`);
-  }
-  a.style.visibility = 'visible';
-  return a;
-}
+// formatDynamicCartLink moved to grid-marquee-hero block
 
-function decorateHeadline(headline) {
-  headline.classList.add('headline');
-  const ctas = headline.querySelectorAll('a');
-  if (!ctas.length) {
-    headline.classList.add('no-cta');
-    return headline;
-  }
-  ctas[0].parentElement.classList.add('ctas');
-  ctas.forEach((cta) => {
-    cta.classList.add('button');
-    // Remove formatDynamicCartLink from LCP phase - defer to Promise.all
-  });
-  ctas[0].classList.add('primaryCTA');
-  return headline;
-}
-
-function decorateHeadlineAsync(headline) {
-  // Enhanced version with pricing for deferred loading
-  const ctas = headline.querySelectorAll('a');
-  ctas.forEach((cta) => {
-    formatDynamicCartLink(cta);
-  });
-}
+// Headline functions moved to grid-marquee-hero block
 
 async function makeRating(
   store,
@@ -291,25 +246,23 @@ async function makeRatings(
 
 export default async function init(el) {
   const rows = [...el.querySelectorAll(':scope > div')];
-  const [headline, background, items] = [rows[0], rows[1], rows.slice(2)];
+  // NEW STRUCTURE: empty div, background, items (no headline - that's in grid-marquee-hero)
+  const [, background, ...items] = rows;
 
-  // Create LCP structure immediately - like hero-marquee
+  // NUCLEAR OPTION: Remove ALL images from DOM initially to prevent ANY loading
+  const allImages = [...el.querySelectorAll('img')];
+  const imageData = allImages.map((img) => ({
+    element: img,
+    parent: img.parentNode,
+    nextSibling: img.nextSibling,
+  }));
+  allImages.forEach((img) => img.remove());
+
+  // Create structure for cards only - NO HEADLINE (that's in grid-marquee-hero now)
   const foreground = createTag('div', { class: 'foreground' });
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
 
-  // Core text decoration happens immediately like hero-marquee
-  headline.classList.add('headline');
-  decorateHeadline(headline); // Basic headline decoration only
-
-  // Insert LCP structure immediately
-  foreground.append(logo, headline);
+  // Background setup (images will be restored later)
   background.classList.add('background');
-  background.querySelectorAll('img').forEach((img) => {
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.fetchPriority = 'low';
-  });
   el.append(foreground);
 
   // Setup responsive handlers immediately
@@ -321,67 +274,67 @@ export default async function init(el) {
     drawerOff();
   });
 
-  // Defer only truly optional enhancements to Promise.all like hero-marquee
-  const promiseArr = [];
-
-  // Postpone headline dynamic pricing until browser is idle
-  if (headline.querySelectorAll('a').length) {
-    const idleCb = (cb) => (
-      window.requestIdleCallback
-        ? window.requestIdleCallback(cb, { timeout: 3000 })
-        : setTimeout(cb, 3000)
-    );
-    idleCb(() => {
-      decorateHeadlineAsync(headline);
+  // Image restoration function
+  let imagesRestored = false;
+  const restoreImages = () => {
+    if (imagesRestored) return;
+    imagesRestored = true;
+    imageData.forEach(({ element, parent, nextSibling }) => {
+      element.loading = 'lazy';
+      element.decoding = 'async';
+      element.fetchPriority = 'low';
+      if (nextSibling) {
+        parent.insertBefore(element, nextSibling);
+      } else {
+        parent.appendChild(element);
+      }
     });
-  }
+  };
 
-  // Add card processing to promise array (optional enhancement)
+  // Process cards immediately after restoring images - no LCP concerns here
   if (items.length > 0) {
-    promiseArr.push((async () => {
+    // Restore images immediately in next frame
+    requestAnimationFrame(() => {
+      restoreImages();
+
+      // Process cards immediately - no LCP blocking since hero handles that
       const cards = items.map((item) => toCard(item));
       const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
       [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
       foreground.append(cardsContainer);
-    })());
-  }
 
-  // Schedule ratings processing after LCP using requestIdleCallback
-  if (el.classList.contains('ratings')) {
-    const ratingsPlaceholder = createTag('div', { class: 'ratings' });
-    foreground.append(ratingsPlaceholder);
+      // Add ratings after cards if needed
+      if (el.classList.contains('ratings')) {
+        const ratingsPlaceholder = createTag('div', { class: 'ratings' });
+        foreground.append(ratingsPlaceholder);
 
-    const idleCb = (cb) => (
-      window.requestIdleCallback
-        ? window.requestIdleCallback(cb, { timeout: 2000 })
-        : setTimeout(cb, 2000)
-    );
+        // Process ratings after a short delay
+        setTimeout(async () => {
+          const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
+          const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+          const [ratingPlaceholder,
+            starsPlaceholder,
+            playStoreLabelPlaceholder,
+            appleStoreLabelPlaceholder] = await Promise.all([
+            replaceKey('app-store-ratings', getConfig()),
+            replaceKey('app-store-stars', getConfig()),
+            replaceKey('app-store-ratings-play-store', getConfig()),
+            replaceKey('app-store-ratings-apple-store', getConfig()),
+          ]);
 
-    idleCb(async () => {
-      const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-      const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-      const [ratingPlaceholder,
-        starsPlaceholder,
-        playStoreLabelPlaceholder,
-        appleStoreLabelPlaceholder] = await Promise.all([
-        replaceKey('app-store-ratings', getConfig()),
-        replaceKey('app-store-stars', getConfig()),
-        replaceKey('app-store-ratings-play-store', getConfig()),
-        replaceKey('app-store-ratings-apple-store', getConfig()),
-      ]);
-
-      const ratingsElement = await makeRatings(
-        ratingPlaceholder,
-        starsPlaceholder,
-        playStoreLabelPlaceholder,
-        appleStoreLabelPlaceholder,
-      );
-      ratingsPlaceholder.replaceWith(ratingsElement);
+          const ratingsElement = await makeRatings(
+            ratingPlaceholder,
+            starsPlaceholder,
+            playStoreLabelPlaceholder,
+            appleStoreLabelPlaceholder,
+          );
+          ratingsPlaceholder.replaceWith(ratingsElement);
+        }, 1000);
+      }
     });
   }
 
-  // Kick off heavy operations in parallel without blocking block load
-  Promise.all(promiseArr);
+  // All processing handled in requestAnimationFrame above - no additional work needed
 }
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && currDrawer) {
