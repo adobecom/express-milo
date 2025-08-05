@@ -23,6 +23,11 @@
     color: #242424;
 }
 
+.frictionless-quick-action-mobile .subheading {
+    margin: var(--spacing-100) 0;
+    font-size: var(--body-font-size-m);
+}
+
 .frictionless-quick-action-mobile h1.post-upload {
     font-size: var(--heading-font-size-m);
 }

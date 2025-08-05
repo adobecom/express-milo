@@ -202,8 +202,17 @@ export default async function decorate(block) {
   const [headline, dropzoneContainer, extraContainer] = rows;
   const h1 = headline.querySelector('h1');
   const landingHeadlineText = h1.textContent;
-  const postUploadHeadline = headline.querySelector('p');
+  const headlineParagraphs = headline.querySelectorAll('p');
   let postUploadHeadlineText;
+  let postUploadHeadline;
+  let subheading;
+  if (headlineParagraphs.length > 1) {
+    [subheading, postUploadHeadline] = headlineParagraphs;
+    subheading?.classList.add('subheading');
+  } else {
+    [postUploadHeadline] = headlineParagraphs;
+  }
+
   if (postUploadHeadline) {
     postUploadHeadlineText = postUploadHeadline.textContent;
     postUploadHeadline.remove();
