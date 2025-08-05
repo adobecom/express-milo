@@ -102,6 +102,22 @@
   margin-bottom: var(--spacing-300);
 }
 
+/* Reduce spacing between stacked buttons on mobile */
+@media (max-width: 767px) {
+  .banner[class*="-bg"].multi-button .button-container {
+    margin-top: var(--spacing-100);
+    margin-bottom: var(--spacing-100);
+  }
+  
+  .banner[class*="-bg"].multi-button .button-container:first-child {
+    margin-top: var(--spacing-500);
+  }
+  
+  .banner[class*="-bg"].multi-button .button-container:last-child {
+    margin-bottom: var(--spacing-300);
+  }
+}
+
 /* Make buttons display inline when there are multiple buttons */
 .banner[class*="-bg"].multi-button .button-container {
   display: inline-block;
