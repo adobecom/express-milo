@@ -118,8 +118,13 @@ export default async function decorate(block) {
 
   // Add bg-variant-button class for background image variants FIRST
   if (hasBackgroundImage) {
-    buttons.forEach((button) => {
+    buttons.forEach((button, index) => {
       button.classList.add('bg-banner-button');
+
+      // For multi-button banners with background images, style the second button differently
+      if (block.classList.contains('multi-button') && index === 1) {
+        button.classList.add('bg-banner-button-secondary');
+      }
     });
   }
 

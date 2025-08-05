@@ -43,7 +43,7 @@
 .banner[class*="-bg"] .background-container {
   border-radius: 16px;
   border: 2px solid var(--color-white);
-  background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18.1%, rgba(255, 255, 255, 0.40) 93.47%);
+  background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18%, rgba(255, 255, 255, 0.40) 93%);
   padding: var(--spacing-800) var(--spacing-500);
   width: calc(100vw - var(--spacing-600));
   box-sizing: border-box;
