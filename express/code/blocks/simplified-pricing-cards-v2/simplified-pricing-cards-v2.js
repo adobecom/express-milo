@@ -30,7 +30,7 @@ function getHeightWithoutPadding(element) {
 }
 
 function equalizeHeights(el) {
-  const classNames = ['.card-header', '.plan-explanation', '.plan-text', '.pricing-area'];
+  const classNames = ['.card-header', '.plan-text', '.pricing-area'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards-v2 .card').length;
   if (cardCount === 1) return;
   for (const className of classNames) {
@@ -104,6 +104,7 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
   if (parentP.children.length > 1) {
     Array.from(parentP.childNodes).forEach((node) => {
       if (node === priceEl) return;
+ 
       if (node.nodeName === '#text') {
         priceSuffix.append(node);
       } else {
@@ -112,6 +113,7 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
     });
   } else {
     priceSuffix.textContent = priceSuffixTextContent;
+    priceEl.append(priceSuffix);
   }
 }
 
@@ -434,6 +436,7 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
 
   // Setup resize handler
   window.addEventListener('resize', debounce(() => {
+    console.log('resize');
     equalizeHeights(el);
   }, RESIZE_DEBOUNCE_MS));
 }
