@@ -43,24 +43,19 @@ export function adjustElementPosition() {
 function parseImageMetadata(altText) {
   const altMatch = altText.match(/alt-text:\s*([^,]+)/);
   const actualAlt = altMatch ? altMatch[1].trim().split(';')[0] : '';
-
   const tooltipMatch = altText.match(/tooltip-text:\s*([^,]+)/);
   const tooltipText = tooltipMatch ? tooltipMatch[1].trim().split(';')[0] : '';
-
   const categoryMatch = altText.match(/category:\s*premium/);
   const isPremium = !!categoryMatch;
-
   const iconMatch = altText.match(/icon:\s*([^,]+)/);
   const icon = iconMatch ? iconMatch[1].trim().split(';')[0] : '';
-  console.log(altText.split(';'));
   return { actualAlt, tooltipText, isPremium, icon };
 }
 
 function createTooltipElements(imgElement, tooltipText, acutalIconImage) {
   const tooltipContainer = createTag('div', { class: 'tooltip image-tooltip' });
   const tooltipPopup = createTag('div', { class: 'tooltip-text' });
-  tooltipPopup.innerText = tooltipText;
-
+  tooltipPopup.innerText = tooltipText
   const tooltipButton = createTag('button');
   tooltipButton.setAttribute('aria-label', tooltipText);
   acutalIconImage.classList.add('tooltip-icon-img');
@@ -87,12 +82,15 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
   let isMouseOverIcon = false;
   let isMouseOverTooltip = false;
 
+  const clearAllTooltips = () => {
+    document.querySelectorAll('.tooltip').forEach((tooltip) => {
+      tooltip.classList.remove('hover');
+      tooltip.querySelector('.tooltip-text').classList.remove('hover');
+      tooltip.querySelector('button')?.blur();
+    });
+  }
+
   const showTooltip = () => {
-    clearTimeout(hideTimeout);
-    if (currentVisibleTooltip && currentVisibleTooltip !== tooltipButton) {
-      currentVisibleTooltip.classList.remove('hover');
-      currentVisibleTooltip.querySelector('.tooltip-text').classList.remove('hover');
-    }
     isTooltipVisible = true;
     tooltipButton.classList.add('hover');
     tooltipPopup.classList.add('hover');
@@ -132,7 +130,10 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
   });
 
   window.addEventListener('resize', adjustElementPosition);
-  tooltipButton.addEventListener('mouseenter', () => {
+  tooltipButton.addEventListener('mouseenter', (e) => {
+    if (e.currentTarget !== currentVisibleTooltip) {
+      clearAllTooltips();
+    }
     isMouseOverIcon = true;
     showTooltip();
   });
@@ -142,7 +143,8 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
     checkAndHideTooltip();
   });
 
-  tooltipPopup.addEventListener('mouseenter', () => {
+  tooltipPopup.addEventListener('mouseenter', (e) => {
+    
     isMouseOverTooltip = true;
     clearTimeout(hideTimeout);
   });

@@ -40,7 +40,6 @@
   --spacing-075: 6px;   /* Small gaps */
   --spacing-125: 10px;  /* Medium gaps */
   --spacing-150: 12px;  /* Button padding, border radius */
-  --spacing-175: 16px;  /* Medium spacing */
   --spacing-475: 38px;  /* Specific component heights */
   --spacing-550: 44px;  /* Icon positioning */
   --spacing-1125: 91px; /* Tooltip max-width */
@@ -49,7 +48,7 @@
   --spacing-negative-225: -6px;  /* Specific negative offsets */
   --spacing-negative-200-alt: -8px; /* Alternative negative offset */
   --spacing-negative-500: -40px; /* Large negative offsets */
-  --spacing-negative-1100: -44px; /* Large negative positioning */
+  --spacing-negative-1100: -37.5px; /* Large negative positioning */
   --spacing-negative-2250: -9999px; /* Screen reader hide */
   --border-width-thin: 1px;
   --border-width-medium: 2px;
@@ -469,7 +468,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 }
 
 .simplified-pricing-cards-v2 .plan-explanation .tooltip-text {
-  margin-bottom: var(--spacing-125);
+  margin-bottom: 8px;
   max-width: var(--spacing-1125);
   left: var(--spacing-negative-1100);
 }
@@ -491,6 +490,10 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   .simplified-pricing-cards-v2 {
     --card-width: var(--ax-grid-3-col-width);
   }
+  .simplified-pricing-cards-v2 .card-inner-content.hide,
+  .simplified-pricing-cards-v2 .card-inner-content {
+    padding: var(--spacing-400) var(--spacing-300);
+  }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card {
     margin-top: var(--spacing-400);
@@ -511,7 +514,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   }
 
   .simplified-pricing-cards-v2 .card-inner-content.hide .plan-explanation{
-    gap: var(--spacing-175);
+    gap: var(---spacing-300);
     display: flex;
     flex-direction: column; 
   }
