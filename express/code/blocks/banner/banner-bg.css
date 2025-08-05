@@ -79,6 +79,15 @@
   font-weight: 400;
 }
 
+/* H4 link styling */
+.banner[class*="-bg"] h4 a {
+  color: var(--color-black);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  text-decoration-line: underline;
+}
+
 /* Logo styling */
 .banner[class*="-bg"] .express-logo {
   display: block;
