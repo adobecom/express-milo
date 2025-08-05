@@ -123,26 +123,32 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
 }
 function addCardInteractions(card, drawer, lazyCB) {
   let drawerReady = false;
+  let drawerBuildPromise;
   const ensureDrawer = () => {
     if (!drawerReady) {
       drawerReady = true;
-      lazyCB();
+      drawerBuildPromise = Promise.resolve(lazyCB());
     }
+    return drawerBuildPromise || Promise.resolve();
   };
+
+  const openDrawer = () => {
+    ensureDrawer().then(() => {
+      drawerOn(drawer);
+    });
+  };
+
   card.addEventListener('click', (e) => {
-    ensureDrawer();
     if (currDrawer && e.target !== card && !card.contains(e.target)) return;
     e.stopPropagation();
-    drawerOn(drawer);
+    openDrawer();
   });
   card.addEventListener('touchstart', () => {
-    ensureDrawer();
     isTouch = true;
   });
   card.addEventListener('mouseenter', () => {
-    ensureDrawer();
-    if (isTouch) return; // touchstart->mouseenter->click
-    drawerOn(drawer);
+    if (isTouch) return; // touchstart→mouseenter→click
+    openDrawer();
   });
   card.addEventListener('mouseleave', () => {
     drawerOff();
@@ -299,6 +305,11 @@ export default async function init(el) {
   // Insert LCP structure immediately
   foreground.append(logo, headline);
   background.classList.add('background');
+  background.querySelectorAll('img').forEach((img) => {
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.fetchPriority = 'low';
+  });
   el.append(foreground);
 
   // Setup responsive handlers immediately
@@ -313,10 +324,17 @@ export default async function init(el) {
   // Defer only truly optional enhancements to Promise.all like hero-marquee
   const promiseArr = [];
 
-  // Add headline pricing enhancement to promise array (optional)
-  promiseArr.push((async () => {
-    decorateHeadlineAsync(headline);
-  })());
+  // Postpone headline dynamic pricing until browser is idle
+  if (headline.querySelectorAll('a').length) {
+    const idleCb = (cb) => (
+      window.requestIdleCallback
+        ? window.requestIdleCallback(cb, { timeout: 3000 })
+        : setTimeout(cb, 3000)
+    );
+    idleCb(() => {
+      decorateHeadlineAsync(headline);
+    });
+  }
 
   // Add card processing to promise array (optional enhancement)
   if (items.length > 0) {
