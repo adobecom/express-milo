@@ -8,14 +8,8 @@ export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
-  const section = block.closest('.section');
-  if (section?.style?.background) block.style.background = section.style.background;
 
-  const isBannerLightVariant = block.classList.contains('light');
-  const isBannerStandoutVariant = block.classList.contains('standout');
-  const isBannerCoolVariant = block.classList.contains('cool');
-
-  // Check for background image classes
+  // Preload CSS for background variants early for better performance
   const backgroundImageClasses = [
     'light-bg',
     'blue-green-pink-bg',
@@ -34,16 +28,23 @@ export default async function decorate(block) {
     }
   }
 
-  // Load background variants CSS if needed
-  if (hasBackgroundImage) {
-    // Load our isolated CSS file with higher specificity
-    // if (!document.querySelector('link[href*="banner-bg.css"]')) {
-    //   const link = document.createElement('link');
-    //   link.rel = 'stylesheet';
-    //   link.href = '/express/code/blocks/banner/banner-bg.css';
-    //   document.head.appendChild(link);
-    // }
+  if (hasBackgroundImage && !document.querySelector('link[href*="banner-bg.css"]')) {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'style';
+    link.href = '/express/code/blocks/banner/banner-bg.css';
+    link.onload = () => {
+      link.rel = 'stylesheet';
+    };
+    document.head.appendChild(link);
   }
+
+  const section = block.closest('.section');
+  if (section?.style?.background) block.style.background = section.style.background;
+
+  const isBannerLightVariant = block.classList.contains('light');
+  const isBannerStandoutVariant = block.classList.contains('standout');
+  const isBannerCoolVariant = block.classList.contains('cool');
 
   // Create background container for banners with background images
   if (hasBackgroundImage) {
