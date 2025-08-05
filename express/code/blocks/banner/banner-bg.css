@@ -120,6 +120,19 @@
   border: 2px solid var(--color-black);
 }
 
+/* Hover effects - invert the appearance */
+.banner[class*="-bg"] .button-container a.button.bg-banner-button:hover {
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.banner[class*="-bg"] .button-container a.button.bg-banner-button-secondary:hover {
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+}
+
 /* Tablet styles */
 @media (min-width: 768px) {
   .banner[class*="-bg"] {
