@@ -1,9 +1,8 @@
  
 .pricing-cards-v2 {
   padding: 12px 15px 40px 15px;
-  --card-width: 353px;
+  --card-width: var(--ax-grid-12-col-width);
   --card-padding: 12px;
-  --card-max-width: calc((1200px - 32px) / 3);
 }
 
 .pricing-cards-v2 > p {
@@ -11,10 +10,10 @@
 }
 
 .pricing-cards-v2 .cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(var(--card-width), var(--card-max-width)));
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(var(--card-width), var(--card-max-width)));
   grid-template-rows: repeat(auto-fit, minmax(311px, 1fr));
-  justify-content: center;
+  justify-content: center; */
   gap: 16px;
 }
 
@@ -71,8 +70,6 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
   gap: 8px;
 }
 
-
-
 .pricing-cards-v2 .gradient-promo {
   background: var(--S2-Buttons-Premium);
   border-radius: 12px; 
@@ -95,16 +92,16 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
   border: 2px solid transparent;
 }
 
-.pricing-cards-v2 .gen-ai-promo:has(div:empty),
-.pricing-cards-v2 .gradient-promo:has(div:empty) {
-  margin-top: -48px;
-}
-
 .pricing-cards-v2 .gen-ai-promo div:empty,
 .pricing-cards-v2 .gradient-promo div:empty {
   padding: 18px;
 }
   
+
+.pricing-cards-v2 .card-border{
+  width: var(--card-width);
+}
+
 .pricing-cards-v2 .card-border .hide {
   display: none;
 }
@@ -364,11 +361,11 @@ letter-spacing: var(--Letter-spacing, 0);
   }
 }
 
-@media (min-width: 768px) and (max-width: 1279px) {
-  :root {
-    --card-width: 580px;
+@media (min-width: 600px)  {
+  .pricing-cards-v2{
+    --card-width: var(--ax-grid-8-col-width);
   }
-
+  
   .pricing-cards-v2 .card-feature-list {
     display: none;
   }
@@ -379,22 +376,11 @@ letter-spacing: var(--Letter-spacing, 0);
     margin: auto;
     width: fit-content;
   }
-
-  .pricing-cards-v2 .card {
-    width: var(--card-width);
-  }
-
-  .pricing-cards-v2 .cards-container~div {
-    width: var(--card-width);
-  }
-
-  
-
 }
 
-@media (min-width: 1280px) {
-  :root {
-    --card-width: 400px;
+@media (min-width: 1200px) {
+  .pricing-cards-v2 .card-border{
+    --card-width: var(--ax-grid-3-col-width);
   }
 
   .pricing-cards-v2 .card-feature-list {
