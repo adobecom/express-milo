@@ -31,9 +31,39 @@ export default async function decorate(block) {
   // Load CSS immediately if background variant detected
   if (hasBackgroundImage && !document.querySelector('link[href*="banner-bg.css"]')) {
     const link = document.createElement('link');
-    link.rel = 'stylesheet';
+    link.rel = 'preload';
+    link.as = 'style';
     link.href = '/express/code/blocks/banner/banner-bg.css';
+    link.onload = () => {
+      link.rel = 'stylesheet';
+    };
     document.head.appendChild(link);
+
+    // Preload only the specific background image for the detected class
+    const backgroundImageMap = {
+      'light-bg': '/express/code/blocks/banner/img/light-bg.jpg',
+      'blue-green-pink-bg': '/express/code/blocks/banner/img/blue-green-pink-bg.jpg',
+      'blue-bg': '/express/code/blocks/banner/img/blue-bg.jpg',
+      'blue-pink-orange-bg': '/express/code/blocks/banner/img/blue-pink-orange-bg.jpg',
+      'green-blue-red-bg': '/express/code/blocks/banner/img/green-blue-red-bg.jpg',
+      'blue-purple-gray-bg': '/express/code/blocks/banner/img/blue-purple-gray-bg.jpg',
+      'yellow-pink-blue-bg': '/express/code/blocks/banner/img/yellow-pink-blue-bg.jpg',
+    };
+
+    // Find which specific class exists and preload its image
+    for (const className of backgroundImageClasses) {
+      if (block.classList.contains(className)) {
+        const imgSrc = backgroundImageMap[className];
+        if (imgSrc && !document.querySelector(`link[href="${imgSrc}"]`)) {
+          const preloadLink = document.createElement('link');
+          preloadLink.rel = 'preload';
+          preloadLink.as = 'image';
+          preloadLink.href = imgSrc;
+          document.head.appendChild(preloadLink);
+        }
+        break; // Only preload the first matching class
+      }
+    }
   }
 
   const section = block.closest('.section');
