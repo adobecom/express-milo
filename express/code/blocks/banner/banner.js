@@ -37,12 +37,12 @@ export default async function decorate(block) {
   // Load background variants CSS if needed
   if (hasBackgroundImage) {
     // Load our isolated CSS file with higher specificity
-    if (!document.querySelector('link[href*="banner-bg.css"]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/express/code/blocks/banner/banner-bg.css';
-      document.head.appendChild(link);
-    }
+    // if (!document.querySelector('link[href*="banner-bg.css"]')) {
+    //   const link = document.createElement('link');
+    //   link.rel = 'stylesheet';
+    //   link.href = '/express/code/blocks/banner/banner-bg.css';
+    //   document.head.appendChild(link);
+    // }
   }
 
   // Create background container for banners with background images
