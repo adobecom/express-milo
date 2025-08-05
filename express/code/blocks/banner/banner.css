@@ -250,3 +250,194 @@ main .banner h2 {
     max-width: 1600px;
   }
 }
+
+/* Banner Background Variants - Added to end for performance */
+.banner[class*="-bg"].banner {
+  padding: var(--spacing-600) 20px;
+  text-align: center;
+  margin: 0 auto;
+  color: var(--color-black);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent; /* no-verify */
+}
+
+.banner.light-bg {
+  background-image: url('/express/code/blocks/banner/img/light-bg.jpg');
+}
+
+.banner.blue-green-pink-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-green-pink-bg.jpg');
+}
+
+.banner.blue-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-bg.jpg');
+}
+
+.banner.blue-pink-orange-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-pink-orange-bg.jpg');
+}
+
+.banner.green-blue-red-bg {
+  background-image: url('/express/code/blocks/banner/img/green-blue-red-bg.jpg');
+}
+
+.banner.blue-purple-gray-bg {
+  background-image: url('/express/code/blocks/banner/img/blue-purple-gray-bg.jpg');
+}
+
+.banner.yellow-pink-blue-bg {
+  background-image: url('/express/code/blocks/banner/img/yellow-pink-blue-bg.jpg');
+}
+
+/* Background container */
+.banner[class*="-bg"].banner .background-container {
+  border-radius: 16px;
+  border: 2px solid var(--color-white);
+  background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18%, rgba(255, 255, 255, 0.40) 93%);
+  padding: var(--spacing-800) var(--spacing-500);
+  width: calc(100vw - var(--spacing-600));
+  box-sizing: border-box;
+  max-width: none;
+}
+
+/* Common header styles for all background variants */
+.banner[class*="-bg"].banner h2,
+.banner[class*="-bg"].banner h3,
+.banner[class*="-bg"].banner h4 {
+  color: var(--color-black) !important;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-style: normal;
+  line-height: 130%;
+}
+
+/* H2 specific styling */
+.banner[class*="-bg"].banner h2 {
+  font-size: var(--heading-font-size-l);
+  font-weight: 900;
+}
+
+/* H3 specific styling */
+.banner[class*="-bg"].banner h3 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+/* H4 specific styling */
+.banner[class*="-bg"].banner h4 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+/* H4 link styling */
+.banner[class*="-bg"].banner h4 a {
+  color: var(--color-black);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  text-decoration-line: underline;
+}
+
+/* Logo styling */
+.banner[class*="-bg"].banner .express-logo {
+  display: block;
+  margin: 0 auto;
+  width: 168px;
+  height: auto;
+}
+
+/* Button styling for background variants */
+.banner[class*="-bg"].banner .button-container {
+  margin-top: var(--spacing-500);
+  margin-bottom: var(--spacing-300);
+}
+
+/* Make buttons display inline when there are multiple buttons */
+.banner[class*="-bg"].banner.multi-button .button-container {
+  display: inline-block;
+}
+
+.banner[class*="-bg"].banner.multi-button .button-container:last-child {
+  margin-right: 0;
+}
+
+.banner[class*="-bg"].banner .button-container a.button.bg-banner-button {
+  font-size: 18px;
+  line-height: 1;
+  padding: 13px var(--spacing-400);
+  border-radius: 24px;
+  background-color: var(--color-black);
+  border: 2px solid var(--color-black);
+  color: var(--color-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+}
+
+/* Second button styling for multi-button banners - using specific class */
+.banner[class*="-bg"].banner .button-container a.button.bg-banner-button-secondary {
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border-color: var(--color-black);
+  border: 2px solid var(--color-black);
+}
+
+/* Hover effects - invert the appearance */
+.banner[class*="-bg"].banner .button-container a.button.bg-banner-button:hover {
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.banner[class*="-bg"].banner .button-container a.button.bg-banner-button-secondary:hover {
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+}
+
+/* Reduce spacing between stacked buttons on mobile */
+@media (max-width: 767px) {
+  .banner[class*="-bg"].banner.multi-button .button-container {
+    margin-top: var(--spacing-100);
+    margin-bottom: var(--spacing-100);
+  }
+  
+  .banner[class*="-bg"].banner.multi-button .button-container:first-child {
+    margin-top: var(--spacing-500);
+  }
+  
+  .banner[class*="-bg"].banner.multi-button .button-container:last-child {
+    margin-bottom: var(--spacing-300);
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+  .banner[class*="-bg"].banner {
+    padding: var(--spacing-600) var(--spacing-500);
+  }
+
+  .banner[class*="-bg"].banner .background-container {
+    width: calc(100vw - var(--spacing-900));
+  }
+
+  .banner[class*="-bg"].banner h2 {
+    max-width: 812px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1200px) {
+  .banner[class*="-bg"].banner {
+    padding: var(--spacing-900) var(--spacing-600);
+  }
+
+  .banner[class*="-bg"].banner h2 {
+    font-size: var(--heading-font-size-xl);
+  }
+}
