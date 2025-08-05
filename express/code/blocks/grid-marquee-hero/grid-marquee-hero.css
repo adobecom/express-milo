@@ -1,0 +1,81 @@
+.section .grid-marquee-hero {
+  max-width: initial;
+  text-align: center;
+}
+
+.grid-marquee-hero .express-logo {
+  width: initial;
+  height: 30px;
+  padding: 1rem 0 1rem;
+}
+
+main .section .grid-marquee-hero h1 {
+  font-size: var(--heading-font-size-m);
+  padding-bottom: 8px;
+}
+
+.grid-marquee-hero strong,
+.grid-marquee-hero a,
+.grid-marquee-hero button {
+  font-family: var(--body-font-family);
+}
+
+.grid-marquee-hero .headline {
+  padding-bottom: 24px;
+  max-width: 340px;
+}
+
+.grid-marquee-hero .headline p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.grid-marquee-hero .headline .ctas {
+  display: none;
+}
+
+.grid-marquee-hero .headline a:not(.primaryCTA) {
+  background-color: black;
+  border-color: black;
+}
+
+.grid-marquee-hero .foreground {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Mobile first - show CTAs */
+@media (min-width: 768px) {
+  .grid-marquee-hero .headline {
+    max-width: 436px;
+  }
+
+  .grid-marquee-hero .headline .ctas {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-marquee-hero .headline {
+    max-width: 570px;
+  }
+
+  main .section .grid-marquee-hero h1 {
+    font-size: var(--heading-font-size-l);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-marquee-hero .headline {
+    max-width: 680px;
+  }
+
+  main .section .grid-marquee-hero h1 {
+    font-size: var(--heading-font-size-xl);
+  }
+}
