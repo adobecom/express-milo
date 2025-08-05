@@ -70,7 +70,6 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
   border-radius: 12px; 
   display: flex;
   flex-direction: column;
-  margin-bottom: 48px;
   padding: 2px;
 }
 
@@ -194,7 +193,7 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
   border: 1px solid var(--Palette-indigo-200, #E0E2FF);
   background: var(--App-frame-background-layer-1, #F8F8F8);
   position: relative;
-  margin-top: 24px;
+  margin-top: 16px;
 }
 
 .pricing-cards-v2 .pricing-area .description-text {
@@ -206,6 +205,14 @@ font-style: normal;
 font-weight: 400;
 line-height: 150%; /* 18px */
 letter-spacing: var(--Letter-spacing, 0);
+}
+
+.pricing-cards-v2 .pricing-area .description-text strong {
+  font-weight: 400;
+}
+
+.pricing-cards-v2 .pricing-area .description-text a {
+  font-weight: 700;
 }
 
 .pricing-cards-v2 .pricing-area .pricing-row{
@@ -277,6 +284,7 @@ letter-spacing: var(--Letter-spacing, 0);
   flex-direction: column;
   width: 100%;
   gap: 16px;
+  margin-bottom: 16px;
 }
 
 .pricing-cards-v2 .card-cta-group a,
@@ -285,12 +293,13 @@ letter-spacing: var(--Letter-spacing, 0);
   width: 100%;
   box-sizing: border-box;
   margin: 0;
+  padding: 8px 20px 11px 20px;
+  border: none;
 }
  
 .pricing-cards-v2 .card-feature-list {
   display: none;
   align-self: flex-start;
-  margin-top: 16px;
   margin-bottom: 16px;
 }
 
@@ -342,13 +351,13 @@ letter-spacing: var(--Letter-spacing, 0);
 
 .pricing-cards-v2 .card-footer {
   padding: 12px 8px;
-  margin: 16px auto;
   border-radius: 4px; 
   max-width: 1200px;
   box-sizing: border-box;
   text-align: center;
   border-radius: var(--Radius-corner-radius-75, 4px);
   background: var(--Background-Accent-subdued-default, #E0E2FF);
+  width: var(--ax-grid-12-col-width);
 
 }
 
@@ -383,6 +392,8 @@ letter-spacing: var(--Letter-spacing, 0);
     margin: auto;
     width: fit-content;
   }
+
+ 
 }
 
 @media (min-width: 1200px) {
@@ -396,12 +407,15 @@ letter-spacing: var(--Letter-spacing, 0);
 
   .pricing-cards-v2 .cards-container.has-eyebrow .card-border{
     margin-top: 36px;
-    margin-bottom: 48px;
   } 
   
   .pricing-cards-v2 .cards-container.has-eyebrow .card-border.gradient-promo,
   .pricing-cards-v2 .cards-container.has-eyebrow .card-border.gen-ai-promo {
     margin-top: 0px;
+  }
+
+  .pricing-cards-v2 .pricing-area {
+    margin-top: 24px;
   }
 }
 
