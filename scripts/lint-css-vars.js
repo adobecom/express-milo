@@ -206,8 +206,10 @@ function checkFile(filePath, colorVars, spacingVars) {
       });
 
       if (replacements.length > 0) {
-        const lineNumber = content.substring(0, matchIndex).split('\n').length;
-        const fullRule = content.substring(matchIndex, content.indexOf(';', matchIndex) + 1).trim();
+        // Calculate line number based on the position of the semicolon
+        const semicolonIndex = content.indexOf(';', matchIndex);
+        const lineNumber = content.substring(0, semicolonIndex).split('\n').length;
+        const fullRule = content.substring(matchIndex, semicolonIndex + 1).trim();
 
         // Find the selector by looking backwards for the opening brace
         const beforeMatch = content.substring(0, matchIndex);
@@ -242,17 +244,30 @@ function applyFixes(filePath, issues) {
   sortedIssues.forEach((issue) => {
     if (issue.replacements) {
       // Handle spacing replacements
-      issue.replacements.forEach((replacement) => {
-        const lines = content.split('\n');
-        const targetLine = lines[issue.line - 1];
+      const lines = content.split('\n');
+      const targetLine = lines[issue.line - 1];
+      let newLine = targetLine;
+      let lineModified = false;
 
-        if (targetLine.includes(replacement.from)) {
-          const newLine = targetLine.replace(replacement.from, replacement.to);
-          lines[issue.line - 1] = newLine;
-          content = lines.join('\n');
-          modified = true;
+      console.log(`Processing line ${issue.line}: "${targetLine}"`);
+
+      issue.replacements.forEach((replacement) => {
+        console.log(`  Looking for "${replacement.from}" -> "${replacement.to}"`);
+        if (newLine.includes(replacement.from)) {
+          console.log('    Found! Replacing...');
+          newLine = newLine.replace(replacement.from, replacement.to);
+          lineModified = true;
+        } else {
+          console.log('    Not found in line');
         }
       });
+
+      if (lineModified) {
+        console.log(`  Final line: "${newLine}"`);
+        lines[issue.line - 1] = newLine;
+        content = lines.join('\n');
+        modified = true;
+      }
     } else {
       // Handle color replacements
       const lines = content.split('\n');
