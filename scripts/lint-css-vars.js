@@ -25,6 +25,38 @@ function normalizeColor(color) {
   return normalized.toLowerCase();
 }
 
+// Color name to hex mapping
+const colorNameToHex = {
+  black: '#000',
+  white: '#fff',
+  transparent: 'transparent',
+  inherit: 'inherit',
+  initial: 'initial',
+  unset: 'unset',
+};
+
+// Helper function to determine which variable name is more semantically correct
+function shouldPreferVariable(newVarName, existingVar) {
+  const existingVarName = existingVar.replace('var(--color-', '').replace(')', '');
+
+  // Prefer simple color names over complex ones
+  const simpleColors = ['black', 'white', 'red', 'green', 'blue', 'yellow', 'gray', 'grey'];
+
+  const newIsSimple = simpleColors.includes(newVarName);
+  const existingIsSimple = simpleColors.includes(existingVarName);
+
+  if (newIsSimple && !existingIsSimple) {
+    return true;
+  }
+
+  if (!newIsSimple && existingIsSimple) {
+    return false;
+  }
+
+  // If both are simple or both are complex, prefer the shorter name
+  return newVarName.length < existingVarName.length;
+}
+
 // Read the root CSS variables
 function getRootVariables() {
   const stylesPath = path.join(currentDir, '../express/code/styles/styles.css');
@@ -54,7 +86,12 @@ function getRootVariables() {
         // Only process if this looks like a valid color value
         if (/^#[0-9a-fA-F]{3,6}$|^rgb\(|^rgba\(|^hsl\(|^hsla\(|^[a-zA-Z]+$/.test(value)) {
           const normalizedValue = normalizeColor(value);
-          colorVars[normalizedValue] = `var(--color-${varName})`;
+
+          // Prioritize more semantically correct variable names
+          const existingVar = colorVars[normalizedValue];
+          if (!existingVar || shouldPreferVariable(varName, existingVar)) {
+            colorVars[normalizedValue] = `var(--color-${varName})`;
+          }
         }
       }
     });
@@ -90,11 +127,33 @@ function checkFile(filePath, colorVars, spacingVars) {
 
     // Extract color values from the property value
     // This handles cases like "background: #ffffff url(image.png) no-repeat;"
-    const colorMatches = fullValue.match(/#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|[a-zA-Z]+/g);
+    const colorMatches = fullValue.match(/#[0-9a-fA-F]{3,6}|rgb\([^)]+\)|rgba\([^)]+\)|hsl\([^)]+\)|hsla\([^)]+\)|black|white|transparent|inherit|initial|unset/g);
 
     if (colorMatches) {
-      colorMatches.forEach((colorValue) => {
-        const normalizedColor = normalizeColor(colorValue);
+      // Filter out matches that are inside var() calls
+      const validColorMatches = colorMatches.filter((colorMatch) => {
+        const colorMatchIndex = fullValue.indexOf(colorMatch);
+        const beforeColorMatch = fullValue.substring(0, colorMatchIndex);
+        const lastVarIndex = beforeColorMatch.lastIndexOf('var(');
+        const lastCloseParenIndex = beforeColorMatch.lastIndexOf(')');
+
+        // If there's a var( before this match and no closing ) before it, skip it
+        if (lastVarIndex > lastCloseParenIndex) {
+          return false;
+        }
+
+        return true;
+      });
+
+      validColorMatches.forEach((colorValue) => {
+        // Skip if the value is already a CSS variable or contains var()
+        if (colorValue.includes('var(')) {
+          return;
+        }
+
+        // Convert color names to hex values if they exist in our mapping
+        const hexValue = colorNameToHex[colorValue.toLowerCase()] || colorValue;
+        const normalizedColor = normalizeColor(hexValue);
 
         // Check if this color has a corresponding variable
         if (colorVars[normalizedColor]) {
@@ -277,7 +336,8 @@ function main() {
     if (shouldAutoFix) {
       console.log('🔄 Applying fixes...');
       stagedCSSFiles.forEach((filePath) => {
-        applyFixes(filePath, allIssues);
+        const fileIssues = allIssues.filter((issue) => issue.file === filePath);
+        applyFixes(filePath, fileIssues);
       });
       console.log('✅ Fixes applied. Please re-stage your files.');
     }
