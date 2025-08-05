@@ -114,11 +114,15 @@
 
 .banner[class*="-bg"] .button-container a.button.bg-banner-button {
   font-size: 18px;
-  padding: var(--spacing-200) var(--spacing-400);
+  line-height: 1;
+  padding: 13px var(--spacing-400);
   border-radius: 24px;
   background-color: var(--color-black);
   border: 2px solid var(--color-black);
   color: var(--color-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Second button styling for multi-button banners - using specific class */
