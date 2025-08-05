@@ -5,7 +5,7 @@
   padding: var(--spacing-600) 20px;
   text-align: center;
   margin: 0 auto;
-  color: black;
+  color: var(--color-black);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -54,7 +54,7 @@
 .banner[class*="-bg"] h2,
 .banner[class*="-bg"] h3,
 .banner[class*="-bg"] h4 {
-  color: black;
+  color: var(--color-black);
   margin-top: 0;
   margin-bottom: 0;
   font-style: normal;
@@ -107,17 +107,17 @@
   font-size: 18px;
   padding: var(--spacing-200) var(--spacing-400);
   border-radius: 24px;
-  background-color: black;
-  border: 2px solid black;
-  color: white;
+  background-color: var(--color-black);
+  border: 2px solid var(--color-black);
+  color: var(--color-white);
 }
 
 /* Second button styling for multi-button banners - using specific class */
 .banner[class*="-bg"] .button-container a.button.bg-banner-button-secondary {
-  color: black;
+  color: var(--color-black);
   background-color: var(--color-white);
   border-color: var(--color-black);
-  border: 2px solid black;
+  border: 2px solid var(--color-black);
 }
 
 /* Tablet styles */
