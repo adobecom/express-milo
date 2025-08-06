@@ -146,7 +146,7 @@ This project uses automated workflows for merging to stage and main branches. Un
 - **Effect**: 
   - Can be merged alongside other PRs without file conflict concerns
   - Bypasses some restrictions in batch merging
-- **Usage**: Add for documentation, test, or configuration changes that don't affect functionality
+- **Usage**: Add for documentation, test, or configuration changes that don't affect functionality. Always add "Ready for QA" when reviews are complete.
 
 #### **Do Not Merge**
 - **Purpose**: Prevents PR from being auto-merged
@@ -214,7 +214,7 @@ curl -X POST \
 5. **Check file conflicts** - similar files edited in same batch may conflict
 
 #### **For QA Team**
-1. **Use "QA Approved"** instead of "Ready for Stage" when appropriate
+1. **Use "QA Approved"** instead of "Ready for Stage" always.
 2. **Test on staging environment** before approving stage-to-main
 3. **Consider "Run Nala"** for comprehensive test coverage
 
