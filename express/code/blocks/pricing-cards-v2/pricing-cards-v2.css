@@ -215,7 +215,7 @@ letter-spacing: var(--Letter-spacing, 0);
 .pricing-cards-v2 .pricing-area .pricing-row{
   display: flex;
   flex-direction: row;
-  gap: 4px;
+  gap: 2px;
 }
 
 .pricing-cards-v2 .pricing-area .pricing-row > p {
