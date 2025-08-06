@@ -334,9 +334,11 @@ async function loadRequiredModules() {
  * @param {number} cardCount - Number of cards to create
  * @returns {Object} - Object containing cards array and defaultOpenIndex
  */
-async function createCards(rows, cardCount) {
+async function createCards(el, rows, cardCount) {
+  const defaultClassIndex = Array.from(el.classList).filter((className) => className.includes('default-open-')).map((className) => parseInt(className.replace('default-open-', ''), 10) - 1);
   const cards = [];
-  const defaultOpenIndex = [0];
+  console.log(defaultClassIndex)
+  const defaultOpenIndex = defaultClassIndex.length > 0 ? defaultClassIndex : [0];
   const cardWrapper = createTag('div', { class: 'card-wrapper ax-grid-container small-gap' });
 
   /* eslint-disable no-await-in-loop */
@@ -526,7 +528,7 @@ export default async function init(el) {
     const cardCount = rows[0].children.length;
 
     // Create all cards
-    const { cards, defaultOpenIndex, cardWrapper } = await createCards(rows, cardCount);
+    const { cards, defaultOpenIndex, cardWrapper } = await createCards(el,rows, cardCount);
 
     // Setup DOM structure and event handlers
     setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper);
