@@ -2,6 +2,7 @@
 .pricing-cards-v2 {
   --card-width: var(--ax-grid-12-col-width);
   --card-padding: 12px;
+  --pricing-gap: 2px;
 }
 
 .pricing-cards-v2 > p {
@@ -215,12 +216,12 @@ letter-spacing: var(--Letter-spacing, 0);
 .pricing-cards-v2 .pricing-area .pricing-row{
   display: flex;
   flex-direction: row;
-  gap: 2px;
+  gap: var(--pricing-gap);
 }
 
 .pricing-cards-v2 .pricing-area .pricing-row > p {
   display: flex;
-  gap: 4px;
+  gap: var(--pricing-gap);
   margin: 0;
 }
 
@@ -230,6 +231,8 @@ letter-spacing: var(--Letter-spacing, 0);
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
+  display: flex;
+  gap: var(--pricing-gap);
 }
 
 .pricing-cards-v2 .pricing-base-price>strong {
@@ -240,6 +243,8 @@ letter-spacing: var(--Letter-spacing, 0);
 
 .pricing-cards-v2 .pricing-price {
   color: #464646;
+  display: flex;
+  gap: var(--pricing-gap);
 }
 
 .pricing-cards-v2 .pricing-row-suf {
