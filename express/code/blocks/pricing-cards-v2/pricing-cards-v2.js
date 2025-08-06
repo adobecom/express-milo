@@ -305,7 +305,7 @@ async function createPricingSection(
   return pricingSection;
 }
 
-function readBraces(inputString, card) {
+function readBraces(inputString, cardBorder) {
   if (!inputString) {
     return null;
   }
@@ -317,16 +317,15 @@ function readBraces(inputString, card) {
   if (matches.length > 0) {
     const [token, promoType] = matches[matches.length - 1];
     let specialPromo = createTag('div');
-    const textContent = inputString?.split(token)[0]?.trim();
-
-    if (textContent) {
+    const textContent = inputString?.split(token)[0]?.trim(); 
+    cardBorder.classList.add(promoType.replaceAll(' ', ''));
+    if (textContent && textContent.length > 0) {
       specialPromo = createTag('h2');
       specialPromo.textContent = textContent;
+      cardBorder.append(specialPromo); 
+      return specialPromo;
     }
-
-    card.classList.add(promoType.replaceAll(' ', ''));
-    card.append(specialPromo);
-    return specialPromo;
+    return null;
   }
   return null;
 }
@@ -345,6 +344,7 @@ function decorateHeader(header, borderParams, card, cardBorder) {
   // The raw text extracted from the word doc
   header.classList.add('card-header');
   const specialPromo = readBraces(borderParams?.innerText, cardBorder);
+  borderParams?.remove();
   const premiumIcon = header.querySelector('img');
   // Finds the headcount, removes it from the original string and creates an icon with the hc
   const extractHeadCountExp = /(>?)\(\d+(.*?)\)/;
@@ -365,7 +365,7 @@ function decorateHeader(header, borderParams, card, cardBorder) {
     header.append(headCntDiv);
   }
   if (premiumIcon) h3.append(premiumIcon);
-  header.querySelectorAll('p').forEach((p) => {
+  header.querySelectorAll('p, div').forEach((p) => {
     if (p.innerHTML.trim() === '') p.remove();
   });
   card.append(header);
@@ -418,6 +418,9 @@ async function decorateCard({
   const cardBorderHeader = cardBorder.querySelector('h2, h3, h4, h5, h6');
   cardBorderHeader?.classList.add('card-promo-header');
   const { specialPromo, cardWrapper } = decorateHeader(header, borderParams, card, cardBorder);
+  if (specialPromo) {
+     el.classList.toggle('has-promo', true);
+  }
   decorateBasicTextSection(explain, 'plan-explanation', card);
   const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
   const [mPricingSection] = await Promise.all([
@@ -448,7 +451,7 @@ function equalizeHeights(el) {
     headers.forEach((placeholder) => {
       placeholder.style.height = 'unset';
     });
-    if (window.screen.width > 1279) {
+    if (window.screen.width >= 1200) {
       headers.forEach((header) => {
         if (header.checkVisibility()) {
           const height = getHeightWithoutPadding(header);
@@ -495,8 +498,10 @@ export default async function init(el) {
     return obj;
   }, {}));
 
+  el.classList.add(`card-count-${cards.length}`);
   const cardFooter = el.querySelector(':scope > div:last-of-type');
-  cardFooter.classList.add('card-footer');
+
+  cardFooter.classList.add('card-footer', 'ax-grid-container', 'small-gap');
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
   const cardsContainer = createTag('div', { class: 'cards-container ax-grid-container small-gap' });
 
@@ -505,11 +510,6 @@ export default async function init(el) {
   );
 
   decoratedCards.forEach((card) => cardsContainer.append(card));
-
-  if (cardsContainer.querySelectorAll('.card-border.gradient-promo, .card-border.gen-ai-promo').length > 0) {
-    cardsContainer.classList.add('has-eyebrow');
-  }
-
   const phoneNumberTags = [...cardsContainer.querySelectorAll('a')].filter(
     (a) => a.title.includes(SALES_NUMBERS),
   );
@@ -517,7 +517,8 @@ export default async function init(el) {
   if (phoneNumberTags.length > 0) {
     await formatSalesPhoneNumber(phoneNumberTags, SALES_NUMBERS);
   }
-  cardsContainer.append(cardFooter);
+  
+  el.append(cardFooter);
   el.prepend(cardsContainer);
 
   const observer = new IntersectionObserver((entries) => {
