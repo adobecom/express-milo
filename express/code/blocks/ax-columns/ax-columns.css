@@ -1783,3 +1783,15 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 }
 
+/* Patch for MAX */
+.section.ax-max-entitled:has(.ax-columns) .column-picture img {
+  max-width: 384px;
+  margin-top: var(--spacing-400);
+}
+
+@media (min-width: 900px) {
+  .section.ax-max-entitled:has(.ax-columns) .column-picture img {
+    max-width: 100%;
+    margin-top: 0;
+  }
+}
