@@ -336,8 +336,7 @@ async function loadRequiredModules() {
  */
 async function createCards(el, rows, cardCount) {
   const defaultClassIndex = Array.from(el.classList).filter((className) => className.includes('default-open-')).map((className) => parseInt(className.replace('default-open-', ''), 10) - 1);
-  const cards = [];
-  console.log(defaultClassIndex)
+  const cards = []; 
   const defaultOpenIndex = defaultClassIndex.length > 0 ? defaultClassIndex : [0];
   const cardWrapper = createTag('div', { class: 'card-wrapper ax-grid-container small-gap' });
 
@@ -403,7 +402,7 @@ function processTooltips(el) {
  * @param {Array} defaultOpenIndex - Index of the default open card
  * @param {Element} cardWrapper - The card wrapper element
  */
-function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
+function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) { 
   // Set default open card
   cards[defaultOpenIndex[0]].querySelector('.card-inner-content').classList.remove('hide');
   cards[defaultOpenIndex[0]].querySelector('.header-toggle-button').setAttribute('aria-expanded', 'true');
@@ -416,11 +415,17 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
   }
 
   // Add footer elements
-  rows[rows.length - 2].classList.add('pricing-footer');
-  rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
-  cardWrapper.appendChild(rows[rows.length - 2]);
-  cardWrapper.appendChild(rows[rows.length - 1]);
 
+  if (rows.length > 6) {
+    rows[rows.length - 2].classList.add('pricing-footer');
+    cardWrapper.appendChild(rows[rows.length - 2]);
+  } else {
+    rows[rows.length - 1].classList.add('pricing-footer-button');
+  }
+ 
+  rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
+  cardWrapper.appendChild(rows[rows.length - 1]);
+  
   // Setup intersection observer for height equalization
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
