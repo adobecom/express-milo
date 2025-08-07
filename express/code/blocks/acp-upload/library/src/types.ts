@@ -1,0 +1,102 @@
+import type { 
+  AdobeHTTPService, 
+  AdobeAsset, 
+  ProgressCallback,
+  RepoMetaPatch,
+  ResourceDesignator
+} from '@dcx/common-types';
+
+/**
+ * Type of authentication token being used
+ */
+export type TokenType = 'guest' | 'normal';
+
+/**
+ * Configuration for the UploadService
+ */
+export interface UploadServiceConfig {
+  /** Authentication configuration */
+  authConfig: AuthConfig;
+  /** Repository endpoint URL */
+  endpoint: string;
+  /** Repository ID (required for normal token uploads) */
+  repositoryId?: string;
+  /** Base path for guest uploads (optional) */
+  basePath?: string;
+}
+
+/**
+ * Options for uploading an asset
+ */
+export interface UploadOptions {
+  /** File to upload */
+  file: File | Blob | ArrayBuffer;
+  /** File name */
+  fileName: string;
+  /** Content type of the file */
+  contentType: string;
+  /** Relative path where to upload the file */
+  path?: string;
+  /** Whether to create intermediate directories */
+  createIntermediates?: boolean;
+  /** Progress callback for upload monitoring */
+  onProgress?: ProgressCallback;
+  /** Additional headers to include in the request */
+  additionalHeaders?: Record<string, string>;
+  /** Repository metadata patch */
+  repoMetaPatch?: RepoMetaPatch;
+  /** Resource designator for response */
+  resourceDesignator?: ResourceDesignator;
+}
+
+/**
+ * Result of an upload operation
+ */
+export interface UploadResult {
+  /** The uploaded asset */
+  asset: AdobeAsset;
+  /** The pre signed URL for downloading */
+  preSignedUrl?: string;
+}
+
+/**
+ * Result of pre-signed URL generation
+ */
+export interface PreSignedUrlResult {
+  /** The pre-signed URL for downloading */
+  url: string;
+  /** Whether this is a pre-signed URL or direct link */
+  isPresignedUrl: boolean;
+  /** Expiration time for the URL (if applicable) */
+  expiresAt?: Date;
+  /** Additional metadata */
+  metadata?: Record<string, any>;
+}
+
+/**
+ * Options for generating pre-signed URLs
+ */
+export interface PreSignedUrlOptions {
+  /** Asset to generate URL for */
+  asset: AdobeAsset;
+  /** Component ID (for composite assets) */
+  componentId?: string;
+  /** Component revision (for composite assets) */
+  componentRevision?: string;
+  /** Component size (helps determine if pre-signed URL is needed) */
+  componentSize?: number;
+  /** Additional headers */
+  additionalHeaders?: Record<string, string>;
+}
+
+/**
+ * Authentication configuration
+ */
+export interface AuthConfig {
+  /** Authentication token */
+  token: string;
+  /** API key */
+  apiKey?: string;
+  /** Token type */
+  tokenType: TokenType;
+} 
