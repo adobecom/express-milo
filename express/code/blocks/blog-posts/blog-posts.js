@@ -275,6 +275,14 @@ function getDateFormatter(newLanguage) {
 
 // Given a blog post element and a config, append all posts defined in the config to blogPosts
 async function decorateBlogPosts(blogPostsElements, config, offset = 0) {
+
+  const placeholders = await import(`${getLibs()}/features/placeholders.js`);
+  const viewAll = await placeholders.replaceKey('rating-votes', getConfig());
+
+  // const viewAll = await replaceKey('view-all', getConfig()) || 'View all';
+  console.log('viewAll', viewAll)
+
+  console.log('config', config);
   const posts = await getFilteredResults(config);
   // If a blog config has only one featured item, then build the item as a hero card.
   const isHero = config.featured && config.featured.length === 1;
