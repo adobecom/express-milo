@@ -191,7 +191,7 @@ async function startSDK(data = [''], quickAction, block) {
 
 async function performStorageUpload(files) {
   // eslint-disable-next-line import/no-relative-packages
-  const { initUploadService } = await import('../acp-upload/library/dist/acp-upload.min.es.js');
+  const { initUploadService } = await import('../../scripts/upload-service/dist/acp-upload.min.es.js');
   const uploadService = initUploadService();
   const { preSignedUrl } = await uploadService.uploadAsset({
     file: files[0],
