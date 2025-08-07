@@ -2,6 +2,18 @@ import { readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.j
 import createCarousel from '../../scripts/widgets/carousel.js';
 
 function getDefatultToggleIndex(block) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabParam = urlParams.get('tab');
+  
+  if (tabParam) {
+    const buttons = block.closest('main').querySelectorAll('.content-toggle-button');
+    for (let i = 0; i < buttons.length; i++) {
+      if (buttons[i].innerText.toLowerCase().replace(/\s+/g, '-') === tabParam.toLowerCase()) {
+        return i;
+      }
+    }
+  }
+  
   const enclosingMain = block.closest('main');
   const toggleDefaultOption = enclosingMain.querySelector('[data-toggle-default]');
   const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
@@ -32,6 +44,12 @@ function initButton(block, buttons, sections, index) {
           section.classList.add('display-none');
         }
       });
+      
+      const tabParam = buttons[index].innerText.toLowerCase().replace(/\s+/g, '-');
+      const url = new URL(window.location);
+      url.searchParams.set('tab', tabParam);
+      window.history.replaceState({}, '', url);
+      
       if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
         window.scrollTo({
           top: offsetPosition,
