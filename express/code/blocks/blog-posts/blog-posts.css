@@ -1,3 +1,16 @@
+.section.ax-blog-posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-400);
+    margin: 40px 20px;
+}
+
+.section.ax-blog-posts-container:not([data-padding='none']):not(
+    .xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static,
+    .xxxl-spacing, .xxl-spacing, .xl-spacing, .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .content:first-child {
+    padding: 0;
+}
+
 .blog main .section:has(.blog-posts-wrapper):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > div:first-child {
     padding: 0;
@@ -5,10 +18,7 @@
 }
 
 main .section:has(.blog-posts-wrapper) > div {
-    /* max-width: 375px; */
-    margin: auto;
-    margin: 40px 20px;
-    max-width: var(--ax-grid-12-col-width);
+    margin: 0;
 }
 
 main .section:has(.blog-posts-wrapper) > div:not:first-child {
@@ -23,6 +33,7 @@ main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static,
 main .section:has(.blog-posts-wrapper) div > h3:first-child  {
     margin-top: 0px;
     width: var(--ax-grid-12-col-width);
+    text-align: left;
 }
 
 .blog main .section:has(.blog-posts-wrapper) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
@@ -48,9 +59,7 @@ main .blog-posts .blog-cards {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* margin: 0 16px 64px 16px; */
-    /* width: var(--ax-grid-12-col-width); */
-    gap: 16px;
+    gap: var(--spacing-300);
 }
 
 main .blog-posts {
@@ -62,18 +71,6 @@ main .blog-posts .blog-card, main .blog-posts .blog-hero-card {
     text-decoration: unset;
     color: unset;
     text-align: left;
-}
-
-main .blog-posts .blog-card {
-
-    /* width: 335px; */
-    /* height: 223px; */
-    /* padding: 0 28px; */
-
-    /* main .blog-posts .blog-card {
-        
-        width: 325px;
-    } */
 }
 
 main .blog-posts .blog-hero-card {
@@ -101,15 +98,8 @@ main .blog-posts .blog-card > p, main .blog-posts .blog-hero-card > p {
 
 main .blog-posts .blog-card .blog-card-image {
     line-height: 0;
-    grid-area: image;
     margin: 0;
-    /* margin-left: 16px; */
-    /* height: 92px;
-    width: 126px; */
-    /* margin: 0 0 24px 0; */
-    border-radius: 8px 8px 0 0;
-    height: 223px;
-    /* width: 335px; */
+    border-radius: 16px 16px 0 0;
 }
 
 main .blog-posts .blog-hero-card .blog-card-image {
@@ -124,7 +114,8 @@ main .blog-posts .blog-card .blog-card-image img {
     height: 100%;
     width: 100%;
     border-top-left-radius: 6px;
-    border-top-right-radius: 6px
+    border-top-right-radius: 6px;
+    height: 260px;
 }
 
 main .blog-posts .blog-hero-card .blog-card-image img {
@@ -232,11 +223,6 @@ main .blog-posts .card .card-body p {
   font-size: 1rem;
 }
 
-main .section:has(.blog-posts) > .content {
-    display: flex;
-    font-size: var(--heading-font-size-m);
-}
-
 main .section:has(.blog-posts) > .content >h2 {
     margin-top: 80px;
 }
@@ -247,7 +233,7 @@ main .section:has(.blog-posts) > .content >h3 {
 }
 
 @media (min-width: 768px) {
-    main .section:has(.blog-posts-wrapper) > div {
+    .section.ax-blog-posts-container {
         margin-right: 32px;
         margin-left: 32px
     }
@@ -273,13 +259,6 @@ main .section:has(.blog-posts) > .content >h3 {
         line-height: 0;
         grid-area: image;
         margin: 0;
-        /* margin-left: 16px; */
-        /* height: 92px;
-        width: 126px; */
-        /* margin: 0 0 24px 0; */
-        border-radius: 8px 8px 0 0;
-        /* height: unset; */
-        /* width: 257px; */
     }
 
     main .blog-posts .blog-card {
@@ -306,28 +285,49 @@ main .section:has(.blog-posts) > .content >h3 {
         margin-bottom: 0px;
     }
 
-    main .section:has(.blog-posts) > div, main .section:has(.blog-posts) > .content {
+    /* main .section:has(.blog-posts) > div, main .section:has(.blog-posts) > .content {
+        max-width: 1199px;
+    } */
+    .section.ax-blog-posts-container {
         max-width: 1199px;
     }
 
     .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
         max-width: 700px;
     }
+
+    main .blog-posts .blog-card .blog-card-image img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        height: 171px;
+    }
 }
 
 @media (min-width: 1200px) {
-    main .section:has(.blog-posts) > div, main .section:has(.blog-posts) > .content {
-        width: var(--ax-grid-12-col-width);
-        margin: auto;
-    }
-    main .blog-posts {
-        margin: 80px 40px;
+    .section.ax-blog-posts-container {
+        padding-right: var( --spacing-600);
+        padding-left: var( --spacing-600);
+        max-width: 1200px;
+        margin-right: auto;
+        margin-left: auto;
     }
 
     main .blog-posts .blog-hero-card .blog-card-image {
         min-width: 600px;
         max-width: 600px;
         height: 338px;
+    }
+
+    main .blog-posts .blog-card .blog-card-image img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        height: 284px;
     }
 
     main .blog-posts .blog-card {
@@ -337,7 +337,6 @@ main .section:has(.blog-posts) > .content >h3 {
     main .blog-posts .blog-cards {
         width: var(--ax-grid-12-col-width);
         gap: var(--spacing-400);
-        flex-direction: row;
     }
 
     .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
