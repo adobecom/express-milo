@@ -154,7 +154,6 @@ export class UploadService {
     this.httpService.setApiKey(this.authConfig.apiKey);
     const session = createRepoAPISession(this.httpService, this.config.endpoint);
     session.setLinksCache(new RepositoryLinksCache());
-
     return session;
   }
 

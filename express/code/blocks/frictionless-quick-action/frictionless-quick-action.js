@@ -189,7 +189,24 @@ async function startSDK(data = [''], quickAction, block) {
   runQuickAction(quickAction, data, block);
 }
 
+async function performStorageUpload(files) {
+  // eslint-disable-next-line import/no-relative-packages
+  const { initUploadService } = await import('../acp-upload/library/dist/acp-upload.min.es.js');
+  const uploadService = initUploadService();
+  const { preSignedUrl } = await uploadService.uploadAsset({
+    file: files[0],
+    fileName: files[0].name,
+    contentType: files[0].type,
+  });
+  return preSignedUrl;
+}
+
 async function startSDKWithUnconvertedFiles(files, quickAction, block) {
+  if (quickAction === 'resize-image') {
+    const preSignedUrl = await performStorageUpload(files);
+    console.log(preSignedUrl);
+    return;
+  }
   let data = await processFilesForQuickAction(files, quickAction);
   if (!data[0]) {
     const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);

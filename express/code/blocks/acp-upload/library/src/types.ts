@@ -9,7 +9,7 @@ import type {
 /**
  * Type of authentication token being used
  */
-export type TokenType = 'guest' | 'normal';
+export type TokenType = 'guest' | 'user';
 
 /**
  * Configuration for the UploadService
