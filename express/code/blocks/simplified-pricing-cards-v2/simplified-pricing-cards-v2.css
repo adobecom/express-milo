@@ -445,6 +445,12 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   width: 100%;
 }
 
+.simplified-pricing-cards-v2 .pricing-footer-button {
+  text-align: center; 
+  width: 100%;
+  margin-top: 8px;
+}
+
 .simplified-pricing-cards-v2 .pricing-footer+div {
   text-align: center;
   width: 100%;
