@@ -59,11 +59,14 @@
   --border-radius-small: 4px;
   --border-radius-medium: 11px;
   --border-radius-large: 12px;
+
+  
 }
 
 /* Base Styles */
 main .section>.simplified-pricing-cards-v2-wrapper {
   max-width: unset;
+  
 }
 
 
@@ -134,6 +137,10 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   max-height: 0;
   margin: 0;
   opacity: 0;
+}
+
+.simplified-pricing-cards-v2 .card-wrapper {
+  row-gap: 16px;
 }
 
 .simplified-pricing-cards-v2 .card-wrapper .card.gradient-promo .eyebrow-content {
@@ -524,6 +531,8 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 .simplified-pricing-cards-v2 .plan-explanation .tooltip-text::after {
   left: var(--spacing-550);
 }
+
+
 
 /* Tablet Styles */
 @media (min-width: 600px) {
