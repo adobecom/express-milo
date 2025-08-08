@@ -679,10 +679,10 @@ export default async function decorate(block) {
   if (columnVideos.length) {
     columnVideos.forEach((columnVideo) => {
       const parent = columnVideo.closest('.ax-columns');
-      const a = parent.querySelector('a');
+      const a = parent?.querySelector('a');
       const adobeEventName = appendLinkText(`adobe.com:express:cta:learn:columns:${getExpressLandingPageType()}:`, a);
 
-      parent.addEventListener('click', (e) => {
+      parent?.addEventListener('click', (e) => {
         e.stopPropagation();
         sendEventToAnalytics(adobeEventName);
       });
