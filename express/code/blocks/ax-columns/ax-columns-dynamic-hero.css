@@ -62,6 +62,8 @@
 @media (min-width: 900px) {
   .ax-columns-dynamic-hero {
     padding: var(--spacing-900) var(--spacing-600);
+    max-width: 1440px;
+    margin: 0 auto;
   }
 
   .ax-columns-dynamic-hero.width-2-columns h1 {
