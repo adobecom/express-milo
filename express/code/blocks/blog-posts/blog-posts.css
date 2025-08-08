@@ -113,7 +113,7 @@ main .blog-posts .blog-card .blog-card-image img {
     height: 100%;
     width: 100%;
     border-radius: var(--spacing-300) var(--spacing-300) 0 0;
-    height: 260px;
+    aspect-ratio: 16 / 9;
 }
 
 main .blog-posts .blog-hero-card .blog-card-image img {
@@ -287,10 +287,6 @@ main .section:has(.blog-posts) > .content >h3 {
     .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
         max-width: 700px;
     }
-
-    main .blog-posts .blog-card .blog-card-image img {
-        height: 171px;
-    }
 }
 
 @media (min-width: 1200px) {
@@ -306,10 +302,6 @@ main .section:has(.blog-posts) > .content >h3 {
         min-width: 600px;
         max-width: 600px;
         height: 338px;
-    }
-
-    main .blog-posts .blog-card .blog-card-image img {
-        height: 284px;
     }
 
     main .blog-posts .blog-card {
