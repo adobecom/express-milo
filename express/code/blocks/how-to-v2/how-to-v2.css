@@ -270,7 +270,6 @@ main .section:has(.how-to-v2) .content em {
   }
   main .section > .content:has( + .how-to-v2) h2 {
     margin-top: 20px;
-    font-size: var(--heading-font-size-l);
   }
   .how-to-v2 ol li h3 {
     font-size: 22px;
