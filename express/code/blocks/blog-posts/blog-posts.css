@@ -134,6 +134,7 @@ main .blog-posts .blog-card h3.blog-card-title {
     overflow: hidden;
     grid-area: title;
     margin-top: 0;
+    color: var(--color-gray-900);
 }
 
 main .blog-posts .blog-hero-card h3.blog-card-title {
@@ -145,7 +146,7 @@ main .blog-posts .blog-hero-card h3.blog-card-title {
 }
 
 main .blog-posts .blog-card p.blog-card-teaser {
-    font-size: var(--body-font-size-m);
+    font-size: var(--body-font-size-s);
     line-height: var(--body-line-height);
     font-weight: normal;
     font-family: var(--body-serif-font-family);
@@ -155,6 +156,7 @@ main .blog-posts .blog-card p.blog-card-teaser {
     overflow: hidden;
     grid-area: teaser;
     margin: unset;
+    color: #505050;
 }
 
 
@@ -270,11 +272,6 @@ main .section:has(.blog-posts) > .content >h3 {
         margin: 56px auto;
     }
 
-    main .blog-posts .blog-card h3.blog-card-title {
-        font-size: var(--heading-font-size-s);
-        margin: 0 0 24px 0;
-    }
-
     main .blog-posts .blog-hero-card p.blog-card-cta {
         margin-bottom: 0px;
     }
@@ -319,6 +316,11 @@ main .section:has(.blog-posts) > .content >h3 {
         padding: 0;
     }
     
+
+    main .blog-posts .blog-card h3.blog-card-title {
+        font-size: var(--heading-font-size-s);
+    }
+
     main .blog-posts .blog-cards {
         width: var(--ax-grid-12-col-width);
         gap: var(--spacing-400);
