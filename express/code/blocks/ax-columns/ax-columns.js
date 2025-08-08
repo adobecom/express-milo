@@ -263,16 +263,10 @@ export default async function decorate(block) {
     ({ createTag, getMetadata, getConfig } = utils);
   });
 
-  if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
-  const colorProperties = extractProperties(block);
-  splitAndAddVariantsWithDash(block);
-  decorateSocialIcons(block);
-  await decorateButtonsDeprecated(block, 'button-xxl');
-
   // check for dynamic-hero variant
   if (block.classList.contains('dynamic-hero') && !document.querySelector('link[href*="ax-columns-dynamic-hero.css"]')) {
-    // block.classList.remove('ax-columns');
-    // block.classList.add('ax-columns-dynamic-hero');
+    block.classList.remove('ax-columns');
+    block.classList.add('ax-columns-dynamic-hero');
 
     if (block.classList.contains('hero-top')) {
       block.classList.add('hero-top');
@@ -287,6 +281,12 @@ export default async function decorate(block) {
     };
     document.head.appendChild(link);
   }
+
+  if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
+  const colorProperties = extractProperties(block);
+  splitAndAddVariantsWithDash(block);
+  decorateSocialIcons(block);
+  await decorateButtonsDeprecated(block, 'button-xxl');
 
   const rows = Array.from(block.children);
 
