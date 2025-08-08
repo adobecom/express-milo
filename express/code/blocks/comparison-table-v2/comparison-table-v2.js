@@ -155,6 +155,7 @@ function createAccessibilityHeaders(sectionTitle, colTitles) {
 
 function createTableRow(featureRowDiv) {
   const tableRow = document.createElement('tr');
+  tableRow.classList.add('ax-grid-container');
   const featureCells = featureRowDiv.children;
   const noText = featureRowDiv.querySelectorAll('p').length === 0;
   Array.from(featureCells).forEach((cellContent, cellIndex) => {
@@ -169,9 +170,10 @@ function createTableRow(featureRowDiv) {
     } else {
       tableCell = document.createElement('td');
       tableCell.innerHTML = cellContent.innerHTML;
+      tableCell.classList.add('feature-cell');
     }
     tableCell.setAttribute('data-plan-index', cellIndex - 1);
-    tableCell.classList.add('feature-cell');
+    
     if (noText) {
       tableCell.classList.add('no-text');
     }
@@ -194,8 +196,8 @@ function createTableRow(featureRowDiv) {
 
 function convertToTable(sectionGroup, columnHeaders) {
   const tableContainer = document.createElement('div');
-  tableContainer.classList.add('table-container');
-  const comparisonTable = document.createElement('table');
+  tableContainer.classList.add('table-container', 'ax-grid-container');
+  const comparisonTable = document.createElement('table'); 
   const tableBody = document.createElement('tbody');
 
   if (sectionGroup.length === 0) return tableContainer;
