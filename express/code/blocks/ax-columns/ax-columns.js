@@ -264,18 +264,22 @@ export default async function decorate(block) {
   });
 
   // check for dynamic-hero variant
-  if (block.classList.contains('dynamic-hero') && !document.querySelector('link[href*="ax-columns-dynamic-hero.css"]')) {
+  if (block.classList.contains('dynamic-hero')) {
+    // Change class for ALL dynamic-hero blocks
     block.classList.remove('ax-columns');
     block.classList.add('ax-columns-dynamic-hero');
 
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'style';
-    link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
-    link.onload = () => {
-      link.rel = 'stylesheet';
-    };
-    document.head.appendChild(link);
+    // Load CSS file only once
+    if (!document.querySelector('link[href*="ax-columns-dynamic-hero.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'style';
+      link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
+      link.onload = () => {
+        link.rel = 'stylesheet';
+      };
+      document.head.appendChild(link);
+    }
   }
 
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
