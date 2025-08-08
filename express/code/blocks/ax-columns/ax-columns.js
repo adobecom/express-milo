@@ -291,6 +291,25 @@ export default async function decorate(block) {
     }
   }
 
+  // Load CSS immediately if test variant detected
+  if (block.classList.contains('test') && !document.querySelector('link[href*="ax-columns-marquee.css"]')) {
+    // Change the root class to avoid original CSS
+    block.classList.remove('ax-columns');
+    block.classList.add('ax-columns-marquee');
+
+    // Load the new CSS file
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/express/code/blocks/ax-columns/ax-columns-marquee.css';
+    document.head.appendChild(link);
+
+    // Apply module-like classes
+    const section = block.closest('section');
+    if (section) {
+      section.classList.add('ax-marquee-discover');
+    }
+  }
+
   if (block.classList.contains('xl-heading')) {
     addHeaderClass(block, 'xl');
   }
