@@ -84,6 +84,8 @@
   /* 28px */
   --heading-font-size-s: 1.375rem;
   /* 22px */
+  --heading-font-size-xs: 1.25rem;
+  /* 20px */
 
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;

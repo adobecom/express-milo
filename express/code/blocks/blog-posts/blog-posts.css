@@ -125,7 +125,7 @@ main .blog-posts .blog-hero-card .blog-card-image img {
 }
 
 main .blog-posts .blog-card h3.blog-card-title {
-    font-size: var(--heading-font-size-s);
+    font-size: var(--heading-font-size-xs);
     line-height: var(--heading-line-height);
     text-align: left;
     display: -webkit-box;
@@ -271,7 +271,7 @@ main .section:has(.blog-posts) > .content >h3 {
     }
 
     main .blog-posts .blog-card h3.blog-card-title {
-        font-size: var(--heading-font-size-m);
+        font-size: var(--heading-font-size-s);
         margin: 0 0 24px 0;
     }
 
