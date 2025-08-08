@@ -51,8 +51,15 @@
     display: flex;
     flex-direction: column;
   }
+}
+
+/* Keep hero-top flipped on mobile up to tablet */
+@media (max-width: 899px) {
+  .ax-columns-dynamic-hero.hero-top > div {
+    display: flex;
+    flex-direction: column;
+  }
   
-  /* Flip image to top */
   .ax-columns-dynamic-hero.hero-top .column-picture {
     order: -1;
   }
