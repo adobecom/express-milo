@@ -32,3 +32,17 @@
   font-weight: 700;
   line-height: 130%;
 }
+
+/* Media query for ax-columns-marquee */
+@media (min-width: 400px) and (max-width: 899px) {
+  .ax-columns-marquee {
+    padding: var(--spacing-600) var(--spacing-500);
+  }
+  
+  .ax-columns-marquee .column-picture img {
+    max-height: 535px;
+    height: auto;
+    width: 100%;
+    object-fit: cover;
+  }
+}
