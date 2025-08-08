@@ -133,13 +133,20 @@
   line-height: 1;
   padding: 13px var(--spacing-400);
   border-radius: 24px;
-  background-color: var(--color-black);
+  background-color: #222222;
   border: 2px solid var(--color-black);
   color: var(--color-white);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   margin-right: 2px;
+}
+
+/* Hover effects for banner button */
+.banner[class*="-bg"].banner .button-container a.button.bg-banner-button:hover {
+  color: var(--color-white);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 /* Second button styling for multi-button banners - using specific class */
@@ -150,16 +157,9 @@
   border: 2px solid var(--color-black);
 }
 
-/* Hover effects - invert the appearance */
-.banner[class*="-bg"].banner .button-container a.button.bg-banner-button:hover {
-  color: var(--color-black);
-  background-color: transparent;
-  border-color: var(--color-black);
-}
-
 .banner[class*="-bg"].banner .button-container a.button.bg-banner-button-secondary:hover {
-  color: var(--color-white);
-  background-color: var(--color-black);
+  color: var(--color-black);
+  background-color: #D5D5D5;
   border-color: var(--color-black);
 }
 
