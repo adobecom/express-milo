@@ -274,18 +274,18 @@ export default async function decorate(block) {
     // block.classList.remove('ax-columns');
     // block.classList.add('ax-columns-dynamic-hero');
 
-    // if (block.classList.contains('hero-top')) {
-    //   block.classList.add('hero-top');
-    // }
+    if (block.classList.contains('hero-top')) {
+      block.classList.add('hero-top');
+    }
 
-    // const link = document.createElement('link');
-    // link.rel = 'preload';
-    // link.as = 'style';
-    // link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
-    // link.onload = () => {
-    //   link.rel = 'stylesheet';
-    // };
-    // document.head.appendChild(link);
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'style';
+    link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
+    link.onload = () => {
+      link.rel = 'stylesheet';
+    };
+    document.head.appendChild(link);
   }
 
   const rows = Array.from(block.children);
