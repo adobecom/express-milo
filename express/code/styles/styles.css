@@ -1175,7 +1175,7 @@ main .section.long-form .content h4 {
 @media (min-width: 1200px) {
   main .section.long-form .content {
     /* Desktop: 7 columns */
-    width: var(--ax-grid-7-col-width);
+    width: var(--ax-grid-10-col-width);
     margin: 0 auto;
   }
 }
