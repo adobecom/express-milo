@@ -33,8 +33,8 @@
   line-height: 130%;
 }
 
-/* Media query for ax-columns-marquee */
-@media (min-width: 400px) and (max-width: 899px) {
+/* Media query for ax-columns-marquee on tablet */
+@media (min-width: 768px) and (max-width: 899px) {
   .ax-columns-marquee {
     padding: var(--spacing-600) var(--spacing-500);
   }
@@ -44,5 +44,15 @@
     height: auto;
     width: 100%;
     object-fit: cover;
+  }
+  
+  .ax-columns-marquee > div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Flip image to top */
+  .ax-columns-marquee.top .column-picture {
+    order: -1;
   }
 }
