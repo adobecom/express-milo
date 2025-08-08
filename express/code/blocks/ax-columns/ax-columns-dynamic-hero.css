@@ -56,3 +56,10 @@
     order: -1;
   }
 }
+
+/* Media query for ax-columns-dynamic-hero on desktop */
+@media (min-width: 900px) {
+  .ax-columns-dynamic-hero {
+    padding: var(--spacing-900) var(--spacing-600);
+  }
+}
