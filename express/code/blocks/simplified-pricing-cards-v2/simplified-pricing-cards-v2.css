@@ -139,10 +139,6 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   opacity: 0;
 }
 
-.simplified-pricing-cards-v2 .card-wrapper {
-  row-gap: 16px;
-}
-
 .simplified-pricing-cards-v2 .card-wrapper .card.gradient-promo .eyebrow-content {
   background: var(--S2-Buttons-Premium) border-box;
   border: none;
@@ -552,6 +548,10 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     padding: var(--spacing-400) var(--spacing-300);
     max-height: none;
     gap: var(--spacing-100);
+  }
+  
+  .simplified-pricing-cards-v2 .card-wrapper {
+    row-gap: 16px;
   }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card {
