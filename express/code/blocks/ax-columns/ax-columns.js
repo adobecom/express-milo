@@ -291,9 +291,8 @@ export default async function decorate(block) {
     }
   }
 
-  // Load CSS immediately if dynamic-hero variant detected
+  // check for dynamic-hero variant
   if (block.classList.contains('dynamic-hero') && !document.querySelector('link[href*="ax-columns-dynamic-hero.css"]')) {
-    // Change the root class to avoid original CSS
     block.classList.remove('ax-columns');
     block.classList.add('ax-columns-dynamic-hero');
 
@@ -301,10 +300,13 @@ export default async function decorate(block) {
       block.classList.add('hero-top');
     }
 
-    // Load the new CSS file
     const link = document.createElement('link');
-    link.rel = 'stylesheet';
+    link.rel = 'preload';
+    link.as = 'style';
     link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
+    link.onload = () => {
+      link.rel = 'stylesheet';
+    };
     document.head.appendChild(link);
   }
 
