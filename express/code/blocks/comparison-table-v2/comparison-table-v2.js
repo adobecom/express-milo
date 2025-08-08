@@ -365,7 +365,20 @@ function applyColumnShading(headerGroup, comparisonBlock) {
 function createStickyHeader(headerGroup, comparisonBlock) {
   const headerGroupElement = headerGroup[1];
   headerGroupElement.classList.add('sticky-header');
-  const headerCells = headerGroupElement.querySelectorAll('div');
+  
+  // Create wrapper div for all header content
+  const headerWrapper = document.createElement('div');
+  headerWrapper.classList.add('sticky-header-wrapper', 'ax-grid-container');
+  
+  // Move all existing children to the wrapper
+  while (headerGroupElement.firstChild) {
+    headerWrapper.appendChild(headerGroupElement.firstChild);
+  }
+  
+  // Add the wrapper back to the header
+  headerGroupElement.appendChild(headerWrapper);
+  
+  const headerCells = headerWrapper.querySelectorAll('div');
   const headers = Array.from(headerCells).map((cell) => {
     const children = Array.from(cell.children);
     const childContent = children.filter((child) => !child.querySelector('a'));
@@ -423,12 +436,12 @@ function createStickyHeader(headerGroup, comparisonBlock) {
         headerCell.appendChild(button);
       }
     }
-    headerGroupElement.appendChild(headerCell);
+    headerWrapper.appendChild(headerCell);
   });
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.plan-cell-wrapper')) {
-      headerGroupElement.querySelectorAll('.plan-selector-choices').forEach((choices) => {
+      headerWrapper.querySelectorAll('.plan-selector-choices').forEach((choices) => {
         choices.classList.add('invisible-content');
         choices.querySelectorAll('.plan-selector-choice').forEach((opt) => {
           opt.setAttribute('tabindex', '-1');
