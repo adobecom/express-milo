@@ -268,10 +268,6 @@ export default async function decorate(block) {
     block.classList.remove('ax-columns');
     block.classList.add('ax-columns-dynamic-hero');
 
-    if (block.classList.contains('hero-top')) {
-      block.classList.add('hero-top');
-    }
-
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'style';
