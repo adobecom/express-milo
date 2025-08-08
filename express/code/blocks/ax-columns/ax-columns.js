@@ -292,22 +292,20 @@ export default async function decorate(block) {
   }
 
   // Load CSS immediately if test variant detected
-  if (block.classList.contains('test') && !document.querySelector('link[href*="ax-columns-marquee.css"]')) {
+  if (block.classList.contains('dynamic') && !document.querySelector('link[href*="ax-columns-dynamic.css"]')) {
     // Change the root class to avoid original CSS
     block.classList.remove('ax-columns');
-    block.classList.add('ax-columns-marquee');
+    block.classList.add('ax-columns-dynamic');
+
+    if (block.classList.contains('hero-top')) {
+      block.classList.add('hero-top');
+    }
 
     // Load the new CSS file
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/express/code/blocks/ax-columns/ax-columns-marquee.css';
+    link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic.css';
     document.head.appendChild(link);
-
-    // Apply module-like classes
-    const section = block.closest('section');
-    if (section) {
-      section.classList.add('ax-marquee-discover');
-    }
   }
 
   if (block.classList.contains('xl-heading')) {
