@@ -269,6 +269,25 @@ export default async function decorate(block) {
   decorateSocialIcons(block);
   await decorateButtonsDeprecated(block, 'button-xxl');
 
+  // check for dynamic-hero variant
+  if (block.classList.contains('dynamic-hero') && !document.querySelector('link[href*="ax-columns-dynamic-hero.css"]')) {
+    block.classList.remove('ax-columns');
+    block.classList.add('ax-columns-dynamic-hero');
+
+    if (block.classList.contains('hero-top')) {
+      block.classList.add('hero-top');
+    }
+
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'style';
+    link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
+    link.onload = () => {
+      link.rel = 'stylesheet';
+    };
+    document.head.appendChild(link);
+  }
+
   const rows = Array.from(block.children);
 
   // Handle background images for marquee and hero-animation-overlay variants
@@ -289,25 +308,6 @@ export default async function decorate(block) {
       // Add preconnect immediately for background images
       addImagePreconnects(bgImg.src);
     }
-  }
-
-  // check for dynamic-hero variant
-  if (block.classList.contains('dynamic-hero') && !document.querySelector('link[href*="ax-columns-dynamic-hero.css"]')) {
-    block.classList.remove('ax-columns');
-    block.classList.add('ax-columns-dynamic-hero');
-
-    if (block.classList.contains('hero-top')) {
-      block.classList.add('hero-top');
-    }
-
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'style';
-    link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
-    link.onload = () => {
-      link.rel = 'stylesheet';
-    };
-    document.head.appendChild(link);
   }
 
   if (block.classList.contains('xl-heading')) {
