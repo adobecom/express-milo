@@ -1,5 +1,6 @@
 .ax-columns-dynamic-hero {
   padding: var(--spacing-600) 20px;
+  min-width: 320px;
 }
 
 .ax-columns-dynamic-hero.width-2-columns .column {
@@ -61,5 +62,36 @@
 @media (min-width: 900px) {
   .ax-columns-dynamic-hero {
     padding: var(--spacing-900) var(--spacing-600);
+  }
+
+  .ax-columns-dynamic-hero.width-2-columns h1 {
+    font-size: var(--heading-font-size-l);
+  }
+  
+  .ax-columns-dynamic-hero > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .ax-columns-dynamic-hero .column-picture {
+    order: 2; /* Move image to the right */
+    flex: 1;
+    text-align: right;
+  }
+  
+  .ax-columns-dynamic-hero .column:not(.column-picture) {
+    order: 1; /* Keep text on the left */
+    flex: 1;
+    text-align: left;
+  }
+  
+  .ax-columns-dynamic-hero .column:not(.column-picture) .button-container {
+    text-align: left;
+  }
+  
+  .ax-columns-dynamic-hero .column:not(.column-picture) .button-container a {
+    margin-left: 0;
   }
 }
