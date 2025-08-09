@@ -297,7 +297,9 @@ export async function fixIcons(el = document) {
 // This was only added for the blocks premigration.
 // For new blocks they should only use the decorateButtons method from milo.
 export async function decorateButtonsDeprecated(el, size) {
+  console.log('el', el);
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
+  console.log('decorate deprecated', el, size);
   // eslint-disable-next-line max-len
   // DO NOT add any more exceptions here. Authors must learn to author buttons the new milo way, even with old blocks
   if (!el.closest('.ax-columns') && !el.closest('.banner') && !el.closest('.fullscreen-marquee') && !el.closest('.link-list')) decorateButtons(el, size);
@@ -327,8 +329,15 @@ export async function decorateButtonsDeprecated(el, size) {
         const $twoup = $a.parentElement.parentElement;
         if (!$a.querySelector('img')) {
           if ($up.childNodes.length === 1 && ($up.tagName === 'P' || $up.tagName === 'DIV')) {
-            $a.classList.add('button', 'accent'); // default
-            $up.classList.add('button-container');
+            /* provide the ability to convert or not to CTA style */
+            if (!originalHref.includes('#_cls')) {
+              $a.classList.add('button', 'accent'); // default
+              $up.classList.add('button-container');
+            }
+            if (originalHref.includes('#_cls')) {
+              const [cleanHref] = $a.href.split('#');
+              $a.setAttribute('href', cleanHref);
+            }
           }
           if ($up.childNodes.length === 1 && $up.tagName === 'STRONG'
               && $twoup.children.length === 1 && $twoup.tagName === 'P') {
