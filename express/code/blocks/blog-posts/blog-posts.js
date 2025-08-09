@@ -273,16 +273,22 @@ function getDateFormatter(newLanguage) {
   });
 }
 
+function addRightChevronToViewAll(blockElement) {
+  const link = blockElement.parentElement.parentElement.querySelector('.content a');
+  const nextSVGHTML = `
+<svg xmlns="http://www.w3.org/2000/svg" width="15" height="16" viewBox="0 0 15 16" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.46967 2.86029C5.76256 2.5674 6.23744 2.5674 6.53033 2.86029L11.0303 7.3603C11.3232 7.65319 11.3232 8.12806 11.0303 8.42095L6.53033 12.921C6.23744 13.2138 5.76256 13.2138 5.46967 12.921C5.17678 12.6281 5.17678 12.1532 5.46967 11.8603L9.43934 7.89062L5.46967 3.92096C5.17678 3.62806 5.17678 3.15319 5.46967 2.86029Z" fill="#292929"/>
+</svg>
+`;
+
+const nextButton = createTag('span', {
+  'aria-label': 'button',
+}, nextSVGHTML);
+  link.appendChild(nextButton);
+}
+
 // Given a blog post element and a config, append all posts defined in the config to blogPosts
 async function decorateBlogPosts(blogPostsElements, config, offset = 0) {
-
-  const placeholders = await import(`${getLibs()}/features/placeholders.js`);
-  const viewAll = await placeholders.replaceKey('rating-votes', getConfig());
-
-  // const viewAll = await replaceKey('view-all', getConfig()) || 'View all';
-  console.log('viewAll', viewAll)
-
-  console.log('config', config);
   const posts = await getFilteredResults(config);
   // If a blog config has only one featured item, then build the item as a hero card.
   const isHero = config.featured && config.featured.length === 1;
@@ -341,13 +347,26 @@ function checkStructure(element, querySelectors) {
 }
 
 export default async function decorate(block) {
-  console.log('decorate blog-posts block', block);
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ getConfig, createTag, getLocale } = utils);
     ({ replaceKey } = placeholders);
   });
   addTempWrapperDeprecated(block, 'blog-posts');
   const config = getBlogPostsConfig(block);
+  
+  
+  const viewAll = await replaceKey('view-all', getConfig());
+  console.log('viewAll', viewAll);
+
+  console.log('block parentElement', block?.parentElement);
+  const viewAllLink = block?.parentElement?.querySelector('.content a');
+  console.log('viewAllLink', viewAllLink);
+
+  // if (viewAll) { 
+  //   viewAllLink?.textContent = viewAll;
+  // }
+  // console.log('viewAll.innerText', viewAllLink?.innerText);
+  
 
   // wrap p in parent section
   if (checkStructure(block.parentNode, ['h2 + p + p + div.blog-posts', 'h2 + p + div.blog-posts', 'h2 + div.blog-posts'])) {
@@ -358,6 +377,8 @@ export default async function decorate(block) {
       wrapper.appendChild(p);
     });
   }
+
+  addRightChevronToViewAll(block);
 
   await decorateBlogPosts(block, config);
 }

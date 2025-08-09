@@ -32,8 +32,8 @@ main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static,
 
 main .section:has(.blog-posts-wrapper) div > h3:first-child  {
     margin-top: 0px;
-    width: var(--ax-grid-12-col-width);
     text-align: left;
+    width: 66%;;
 }
 
 .blog main .section:has(.blog-posts-wrapper) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
@@ -85,7 +85,7 @@ main .blog-posts .blog-hero-card {
     padding: var(--spacing-400);
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-300);
+    gap: var(--spacing-100);
     border-radius: 0 0 16px 16px;
     border-right: 2px solid var(--palette-gray-200);
     border-bottom: 2px solid var(--palette-gray-200);
@@ -126,6 +126,7 @@ main .blog-posts .blog-hero-card .blog-card-image img {
 
 main .blog-posts .blog-card h3.blog-card-title {
     font-size: var(--heading-font-size-xs);
+    font-weight: var(--subheading-font-weight);
     line-height: var(--heading-line-height);
     text-align: left;
     display: -webkit-box;
@@ -146,10 +147,9 @@ main .blog-posts .blog-hero-card h3.blog-card-title {
 }
 
 main .blog-posts .blog-card p.blog-card-teaser {
-    font-size: var(--body-font-size-s);
+    font-size: var(--body-font-size-m);
     line-height: var(--body-line-height);
     font-weight: normal;
-    font-family: var(--body-serif-font-family);
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -223,11 +223,37 @@ main .blog-posts .card .card-body p {
   font-size: 1rem;
 }
 
-main .section:has(.blog-posts) > .content >h2 {
+main .section:has(.blog-posts) > .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: var(--spacing-400);
+    max-width: var(--block-wd-grid-max-width);
+}
+main .section:has(.blog-posts) > .content p {
+    margin: 0;
+    font-size: var(--body-font-size-s);
+    font-weight: 400;
+    line-height: 142.857%;
+}
+
+main .section:has(.blog-posts) > .content a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    padding: var(--spacing-100) 0;
+}
+
+main .section:has(.blog-posts) > .content a > span {
+    line-height: 0;
+}
+
+main .section:has(.blog-posts) > .content > h2 {
     margin-top: 80px;
 }
 
-main .section:has(.blog-posts) > .content >h3 {
+main .section:has(.blog-posts) > .content > h3 {
     font-size: var(--heading-font-size-m);
     margin-top: 64px;
 }
@@ -293,7 +319,7 @@ main .section:has(.blog-posts) > .content >h3 {
     .section.ax-blog-posts-container {
         padding-right: var( --spacing-600);
         padding-left: var( --spacing-600);
-        max-width: 1360px;
+        max-width: var(--block-wd-grid-max-width);
         margin-right: auto;
         margin-left: auto;
     }
