@@ -333,7 +333,10 @@ main .section:has(.blog-posts) > .content > h3 {
     main .blog-posts .blog-card {
         padding: 0;
     }
-    
+
+    .section.ax-blog-posts-container .blog-posts .blog-card .blog-card-body {
+        min-height: 135px;
+    }
 
     main .blog-posts .blog-card h3.blog-card-title {
         font-size: var(--heading-font-size-s);
