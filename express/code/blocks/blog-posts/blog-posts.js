@@ -347,23 +347,17 @@ export default async function decorate(block) {
     ({ getConfig, createTag, getLocale } = utils);
     ({ replaceKey } = placeholders);
   });
+
+  /* localize view all */
+  const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
+  const viewAllLink = block?.parentElement?.querySelector('.content a');
+  if (viewAll) { 
+    viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
+  }
+  
   addTempWrapperDeprecated(block, 'blog-posts');
   const config = getBlogPostsConfig(block);
   
-  
-  const viewAll = await replaceKey('view-all', getConfig());
-  console.log('viewAll', viewAll);
-
-  console.log('block parentElement', block?.parentElement);
-  const viewAllLink = block?.parentElement?.querySelector('.content a');
-  console.log('viewAllLink', viewAllLink);
-
-  // if (viewAll) { 
-  //   viewAllLink?.textContent = viewAll;
-  // }
-  // console.log('viewAll.innerText', viewAllLink?.innerText);
-  
-
   // wrap p in parent section
   if (checkStructure(block.parentNode, ['h2 + p + p + div.blog-posts', 'h2 + p + div.blog-posts', 'h2 + div.blog-posts'])) {
     const wrapper = createTag('div', { class: 'blog-posts-decoration' });
