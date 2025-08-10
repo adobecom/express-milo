@@ -5,17 +5,19 @@ import type {
   UploadProgressCallback,
   SliceableData,
 } from '@dcx/common-types';
-import type {
-  UploadServiceConfig,
-  UploadOptions,
-  UploadResult,
-  PreSignedUrlOptions,
-  AuthConfig
+import {
+  type UploadServiceConfig,
+  type UploadOptions,
+  type UploadResult,
+  type PreSignedUrlOptions,
+  type AuthConfig,
+  UploadStatus,
 } from '../types';
 import { createRepoAPISession } from '@dcx/repo-api-session';
 import { getPresignedUrl, RepoResponseResult, RepositoryLinksCache } from '@dcx/assets';
 import { DEFAULT_STORAGE_PATH, ERROR_CODES } from '../consts';
 import { createHTTPService } from '@dcx/http';
+import { UploadStatusEvent } from '../events';
 
 /**
  * Service for uploading assets to Adobe Content Platform Storage
@@ -26,6 +28,8 @@ export class UploadService {
   private config: UploadServiceConfig;
   private httpService: AdobeHTTPService;
   private authConfig: AuthConfig;
+  private _uploadStatus: UploadStatus = UploadStatus.IDLE;
+  private _uploadBytesCompleted: boolean = false;
 
   /**
    * Create a new UploadService instance
@@ -36,6 +40,23 @@ export class UploadService {
     this.httpService = createHTTPService();
     this.authConfig = config.authConfig;
     this.session = this.prepareSession();
+  }
+
+  /**
+   * Get the current upload status
+   * @returns The current upload status
+   */
+  get uploadStatus(): UploadStatus {
+    return this._uploadStatus;
+  }
+
+  /**
+   * Set the upload status
+   * @param status - The status to set
+   */
+  set uploadStatus(status: UploadStatus) {
+    this._uploadStatus = status;
+    this.dispatchStatusEvent(status);
   }
 
   /**
@@ -63,42 +84,50 @@ export class UploadService {
 
       let result: RepoResponseResult<AdobeAsset>;
       let preSignedUrl: string | undefined;
-
-      if (this.authConfig.tokenType === 'guest') {
-        result = await this.session.createAssetForGuest(
-          fullPath,
-          contentType,
-          resourceDesignator,
-          additionalHeaders,
-          fileData,
-          fileSize,
-          repoMetaPatch,
-          onProgress
-        );
-        preSignedUrl = await this.generatePreSignedUrl({ asset: result.result });
-      } else {
-        if (!this.config.repositoryId) {
-          throw this.handleError(
-            ERROR_CODES.REPOSITORY_ID_REQUIRED.code,
-            new Error(ERROR_CODES.REPOSITORY_ID_REQUIRED.message)
+      switch (this.authConfig.tokenType) {
+        case 'guest': {
+          result = await this.session.createAssetForGuest(
+            fullPath,
+            contentType,
+            resourceDesignator,
+            additionalHeaders,
+            fileData,
+            fileSize,
+            repoMetaPatch,
+            onProgress
           );
+          preSignedUrl = await this.generatePreSignedUrl({ asset: result.result });
+          break;
+        }
+        case 'user':
+        default: {
+          if (!this.config.repositoryId) {
+            throw this.handleError(
+              ERROR_CODES.REPOSITORY_ID_REQUIRED.code,
+              new Error(ERROR_CODES.REPOSITORY_ID_REQUIRED.message)
+            );
+          }
+
+          const parentDir = await this.getOrCreateParentDirectory(path);
+          
+          result = await this.session.createAsset(
+            parentDir,
+            fileName,
+            createIntermediates || true,
+            contentType,
+            resourceDesignator,
+            additionalHeaders,
+            fileData,
+            fileSize,
+            repoMetaPatch
+          );
+          }
         }
 
-        const parentDir = await this.getOrCreateParentDirectory(path);
-        
-        result = await this.session.createAsset(
-          parentDir,
-          fileName,
-          createIntermediates || true,
-          contentType,
-          resourceDesignator,
-          additionalHeaders,
-          fileData,
-          fileSize,
-          repoMetaPatch
-        );
+      if(this._uploadBytesCompleted) {
+        this.uploadStatus = UploadStatus.COMPLETED;
       }
-
+      
       const asset = result.result;
       return {
         asset,
@@ -162,12 +191,23 @@ export class UploadService {
   }
 
   /**
+   * Dispatch a status event
+   * @param status - The status to dispatch
+   */
+  private dispatchStatusEvent(status: UploadStatus): void {
+    window.dispatchEvent(new UploadStatusEvent({ status }));
+  }
+
+  /**
    * Get upload progress for an ongoing upload
    * @returns Promise resolving to upload progress information
    */
   getUploadProgress(): UploadProgressCallback {
-    return (bytesCompleted, totalBytes, indeterminate) => {
-      console.log('Upload progress:', bytesCompleted, totalBytes, indeterminate ? '(indeterminate)' : '');
+    return (bytesCompleted, totalBytes) => {
+      if(bytesCompleted === totalBytes) {
+        this._uploadBytesCompleted = true;
+      }
+      this.uploadStatus = UploadStatus.UPLOADING;
     };
   }
 
@@ -256,6 +296,11 @@ export class UploadService {
    */
   private handleError(code: keyof typeof ERROR_CODES, originalError?: any, message?: string): Error {
     const errorCode = ERROR_CODES[code];
+
+    if(errorCode.code === ERROR_CODES.UPLOAD_FAILED.code) {
+      this.uploadStatus = UploadStatus.FAILED;
+    }
+
     const errorMessage = message || errorCode.message;
     const error = new (class extends Error {
       constructor(

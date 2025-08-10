@@ -101,3 +101,27 @@ export interface AuthConfig {
   /** Token type */
   tokenType: TokenType;
 } 
+
+/**
+ * Status of the upload
+ */
+export enum UploadStatus {
+  /** Upload has not started */
+  IDLE = 'idle',
+  /** Upload is in progress */  
+  UPLOADING = 'uploading',
+  /** Upload is complete */
+  COMPLETED = 'completed',
+  /** Upload failed */
+  FAILED = 'failed'
+}
+
+/**
+ * Payload for upload event status
+ */ 
+export type UploadEventStatusPayload = {
+  /** Status of the upload */
+  status: UploadStatus;
+  /** Error message if upload failed */
+  errorMessage?: string;
+}
