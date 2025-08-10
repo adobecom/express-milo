@@ -1,3 +1,26 @@
+.section.ax-how-to-v2-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-600);
+  margin: 0;
+  padding:  var(--spacing-600) 0;
+  width: var(--ax-grid-12-col-width);
+}
+
+main .section.ax-how-to-v2-container:not([data-padding='none']):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, 
+.xxl-spacing, .xl-spacing, .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing)>.content:first-child {
+  padding-top: 0;
+}
+
+main .section.ax-how-to-v2-container > .content:has( + .how-to-v2) h2 {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+
+.ax-how-to-v2-container .how-to-v2 {
+  padding: 0;
+}
 .how-to-v2 {
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
@@ -25,7 +48,7 @@ main .section > .content:has( + .how-to-v2) h2 {
 }
 
 .how-to-v2 ol li {
-  padding: 8px 0;
+  padding: 0;
   cursor: pointer;
   transition: all 0.21s;
   display: flex;
@@ -39,7 +62,7 @@ main .section > .content:has( + .how-to-v2) h2 {
 }
 
 .how-to-v2 ol li .step-content {
-  padding: 8px 26px;
+  padding: var(--spacing-100) var(--spacing-300);
   margin: 0;
 }
 
@@ -68,7 +91,7 @@ main .section > .content:has( + .how-to-v2) h2 {
 }
 
 .how-to-v2 ol li .detail-text {
-  padding-top: 10px;
+  padding-top: var(--spacing-100);
 }
 
 /* so that there is no initial re-paint */
@@ -110,10 +133,8 @@ main .section:has(.how-to-v2) .content em {
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-top: 4px;
-  margin-bottom: var(--spacing-900);
-  width: var(--ax-grid-12-col-width);
   min-width: 350px;
+  gap: var(--spacing-300);
 }
 
 .how-to-v2 .steps-content:has(.media-container .milo-video) {
@@ -124,7 +145,7 @@ main .section:has(.how-to-v2) .content em {
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  padding: 0 var(--spacing-400);
+  padding: var(--spacing-400);
   min-width: 350px;
 }
 
@@ -147,8 +168,12 @@ main .section:has(.how-to-v2) .content em {
 }
 
 .how-to-v2 ol.steps {
-  margin: 12px 0 0;
+  margin: 0;
   padding: 0;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
 }
 
 .how-to-v2 ol.steps .step .step-content:has(.detail-container.closed) h3:not(:has(picture), :has(.milo-video)):hover {
@@ -193,9 +218,18 @@ main .section:has(.how-to-v2) .content em {
     margin-left: 20px;
     margin-right: 20px;
   }
+
+  main:has(.section.ax-how-to-v2-container) .content {
+    margin: 0;
+  }
 }
 
 @media (min-width: 768px) {
+  .section.ax-how-to-v2-container {
+    width: var(--ax-grid-8-col-width);
+    margin: 0 auto;
+  }
+
   .how-to-v2 h2 {
     font-size: var(--heading-font-size-m);
   }
@@ -211,13 +245,12 @@ main .section:has(.how-to-v2) .content em {
     margin: auto;
   }
 
-  .how-to-v2 .steps-content {
+  /* .how-to-v2 .steps-content {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-bottom: var(--spacing-900);
-  }
+  } */
 
   .how-to-v2 .steps-content:has(.media-container .milo-video) {
     display: flex;
@@ -265,6 +298,18 @@ main .section:has(.how-to-v2) .content em {
 }
 
 @media (min-width: 1200px) {
+  .section.ax-how-to-v2-container {
+    width: var(--ax-grid-7-col-width);
+    margin: 0 auto;
+  }
+
+  .how-to-v2 .steps-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  } 
+
   .how-to-v2 .steps-content .media-container::before {
     height: 60vh;
   }
