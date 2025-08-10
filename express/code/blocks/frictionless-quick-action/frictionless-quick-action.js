@@ -193,20 +193,24 @@ async function performStorageUpload(files) {
   // eslint-disable-next-line import/no-relative-packages
   const { initUploadService } = await import('../../scripts/upload-service/dist/acp-upload.min.es.js');
   const uploadService = initUploadService();
-  const { preSignedUrl } = await uploadService.uploadAsset({
+  const { shareablePreSignedUrl } = await uploadService.uploadAsset({
     file: files[0],
     fileName: files[0].name,
     contentType: files[0].type,
   });
-  return preSignedUrl;
+
+  return shareablePreSignedUrl;
+}
+
+async function performUploadAction(files) {
+  const preSignedUrl = await performStorageUpload(files);
+  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
+  url.searchParams.set('frictionlessUploadFileSource', preSignedUrl);
+  url.searchParams.set('url', '/express/feature/image/editor');
+  window.location.href = url.toString();
 }
 
 async function startSDKWithUnconvertedFiles(files, quickAction, block) {
-  if (quickAction === 'resize-image') {
-    const preSignedUrl = await performStorageUpload(files);
-    console.log(preSignedUrl);
-    return;
-  }
   let data = await processFilesForQuickAction(files, quickAction);
   if (!data[0]) {
     const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
@@ -218,6 +222,11 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
     showErrorToast(block, msg);
     data = data.filter((item) => item);
+  }
+
+  if (quickAction === 'image-editor') {
+    await performUploadAction(files);
+    return;
   }
 
   startSDK(data, quickAction, block);
