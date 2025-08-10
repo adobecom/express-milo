@@ -189,21 +189,41 @@ async function startSDK(data = [''], quickAction, block) {
   runQuickAction(quickAction, data, block);
 }
 
-async function performStorageUpload(files) {
-  // eslint-disable-next-line import/no-relative-packages
-  const { initUploadService } = await import('../../scripts/upload-service/dist/acp-upload.min.es.js');
-  const uploadService = initUploadService();
-  const { shareablePreSignedUrl } = await uploadService.uploadAsset({
-    file: files[0],
-    fileName: files[0].name,
-    contentType: files[0].type,
-  });
-
-  return shareablePreSignedUrl;
+function handleUploadStatusChange(uploadStatusEvent) {
+  const listener = (e) => {
+    console.log('upload status', e.detail.status);
+    if (e.detail.status === 'completed' || e.detail.status === 'failed') {
+      window.removeEventListener(uploadStatusEvent, listener);
+    }
+  };
+  window.addEventListener(uploadStatusEvent, listener);
 }
 
-async function performUploadAction(files) {
-  const preSignedUrl = await performStorageUpload(files);
+async function performStorageUpload(files, block) {
+  let preSignedUrl;
+  // eslint-disable-next-line import/no-relative-packages
+  const { initUploadService, UPLOAD_EVENTS } = await import('../../scripts/upload-service/dist/acp-upload.min.es.js');
+  const uploadService = initUploadService();
+  handleUploadStatusChange(UPLOAD_EVENTS.UPLOAD_STATUS);
+  try {
+    const { shareablePreSignedUrl } = await uploadService.uploadAsset({
+      file: files[0],
+      fileName: files[0].name,
+      contentType: files[0].type,
+    });
+    preSignedUrl = shareablePreSignedUrl;
+  } catch (error) {
+    showErrorToast(block, error.message);
+  }
+
+  return preSignedUrl;
+}
+
+async function performUploadAction(files, block) {
+  const preSignedUrl = await performStorageUpload(files, block);
+  if (!preSignedUrl) {
+    return;
+  }
   const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
   url.searchParams.set('frictionlessUploadFileSource', preSignedUrl);
   url.searchParams.set('url', '/express/feature/image/editor');
@@ -225,7 +245,7 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
   }
 
   if (quickAction === 'image-editor') {
-    await performUploadAction(files);
+    await performUploadAction(files, block);
     return;
   }
 

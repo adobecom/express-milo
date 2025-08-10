@@ -7,7 +7,7 @@ export const DEFAULT_STORAGE_PATH = 'assets';
 export const ERROR_CODES = {
     UPLOAD_FAILED: {
       code: 'UPLOAD_FAILED',
-      message: 'Failed to upload asset'
+      message: 'Failed to upload asset. Please try again.'
     },
     URL_GENERATION_FAILED: {
       code: 'URL_GENERATION_FAILED',
@@ -21,4 +21,8 @@ export const ERROR_CODES = {
       code: 'REPOSITORY_ID_REQUIRED_FOR_DIRECTORY',
       message: 'Repository ID required for directory operations'
     }
+  } as const;
+
+  export const UPLOAD_EVENTS = {
+    UPLOAD_STATUS: 'x-express-upload-status'
   } as const;
