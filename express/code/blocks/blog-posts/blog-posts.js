@@ -351,13 +351,13 @@ export default async function decorate(block) {
   /* localize view all */
   const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
   const viewAllLink = block?.parentElement?.querySelector('.content a');
-  if (viewAll) { 
+  if (viewAll) {
     viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
   }
-  
+
   addTempWrapperDeprecated(block, 'blog-posts');
   const config = getBlogPostsConfig(block);
-  
+
   // wrap p in parent section
   if (checkStructure(block.parentNode, ['h2 + p + p + div.blog-posts', 'h2 + p + div.blog-posts', 'h2 + div.blog-posts'])) {
     const wrapper = createTag('div', { class: 'blog-posts-decoration' });
