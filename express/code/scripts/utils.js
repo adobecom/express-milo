@@ -297,9 +297,7 @@ export async function fixIcons(el = document) {
 // This was only added for the blocks premigration.
 // For new blocks they should only use the decorateButtons method from milo.
 export async function decorateButtonsDeprecated(el, size) {
-  console.log('el', el);
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-  console.log('decorate deprecated', el, size);
   // eslint-disable-next-line max-len
   // DO NOT add any more exceptions here. Authors must learn to author buttons the new milo way, even with old blocks
   if (!el.closest('.ax-columns') && !el.closest('.banner') && !el.closest('.fullscreen-marquee') && !el.closest('.link-list')) decorateButtons(el, size);
