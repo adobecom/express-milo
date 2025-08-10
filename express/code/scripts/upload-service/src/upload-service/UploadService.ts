@@ -2,7 +2,7 @@ import type { AdobeRepoAPISession } from '@dcx/repo-api-session';
 import type { 
   AdobeAsset,
   AdobeHTTPService,
-  ProgressCallback,
+  UploadProgressCallback,
   SliceableData,
 } from '@dcx/common-types';
 import type {
@@ -59,12 +59,12 @@ export class UploadService {
 
       const fileData = this.convertToSliceableData(file);
       const fileSize = this.getFileSize(file);
-      const fullPath = this.buildPath(path, fileName);
+      const fullPath = this.buildPath(path, this.generateFileName(fileName));
 
       let result: RepoResponseResult<AdobeAsset>;
       let preSignedUrl: string | undefined;
 
-      if (this.config.authConfig.tokenType === 'guest') {
+      if (this.authConfig.tokenType === 'guest') {
         result = await this.session.createAssetForGuest(
           fullPath,
           contentType,
@@ -102,7 +102,8 @@ export class UploadService {
       const asset = result.result;
       return {
         asset,
-        preSignedUrl
+        readablePreSignedUrl: preSignedUrl,
+        shareablePreSignedUrl: this.generateShareablePreSignedUrl(preSignedUrl)
       };
 
     } catch (error) {
@@ -137,12 +138,36 @@ export class UploadService {
   }
 
   /**
+   * Generate a shareable pre-signed URL by base64 encoding the URL
+   * This is useful for passing the URL via URL params
+   * @param url - The pre-signed URL to share
+   * @returns The shareable pre-signed URL
+   */
+  private generateShareablePreSignedUrl(url: string | undefined): string {
+    if (!url) {
+      return '';
+    }
+    return btoa(url);
+  }
+
+  /**
+   * Generate a unique file name for the uploaded file
+   * @param fileName - The original file name
+   * @returns The unique file name
+   */
+  private generateFileName(fileName: string): string {
+    const [name, extension] = fileName.split('.');
+    const timestamp = Date.now();
+    return `${name}-${timestamp}.${extension}`;
+  }
+
+  /**
    * Get upload progress for an ongoing upload
    * @returns Promise resolving to upload progress information
    */
-  getUploadProgress(): ProgressCallback {
-    return (bytesCompleted, totalBytes) => {
-      console.log('Upload progress:', bytesCompleted, totalBytes);
+  getUploadProgress(): UploadProgressCallback {
+    return (bytesCompleted, totalBytes, indeterminate) => {
+      console.log('Upload progress:', bytesCompleted, totalBytes, indeterminate ? '(indeterminate)' : '');
     };
   }
 

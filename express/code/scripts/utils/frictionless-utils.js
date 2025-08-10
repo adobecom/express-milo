@@ -97,6 +97,7 @@ export const QA_CONFIGS = {
   'qa-in-product-variant2': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-in-product-control': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'qa-nba': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'image-editor': { ...getBaseImgCfg(JPG, JPEG, PNG) },
   'convert-to-gif': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'crop-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'trim-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
