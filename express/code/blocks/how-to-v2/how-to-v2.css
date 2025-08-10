@@ -305,6 +305,7 @@ main .section:has(.how-to-v2) .content em {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    gap: var(--spacing-500);
   } 
 
   .how-to-v2 .steps-content .media-container::before {
@@ -313,9 +314,7 @@ main .section:has(.how-to-v2) .content em {
   main .section > .content:has( + .how-to-v2) h2 {
     margin-top: 20px;
   }
-  .how-to-v2 ol li h3 {
-    font-size: 22px;
-  }
+
   .how-to-v2 {
     padding-left: var(--spacing-600);
     padding-right: var(--spacing-600);
