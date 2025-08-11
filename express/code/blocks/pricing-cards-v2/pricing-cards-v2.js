@@ -483,10 +483,6 @@ export default async function init(el) {
   });
 
   placeholderValues = await replaceKeyArray(keyArray, getConfig());
-  placeholders = keyArray.reduce((acc, key, index) => {
-    acc[key] = placeholderValues[index];
-    return acc;
-  }, {});
   await decorateButtonsDeprecated(el);
   addTempWrapperDeprecated(el, 'pricing-cards-v2');
 
