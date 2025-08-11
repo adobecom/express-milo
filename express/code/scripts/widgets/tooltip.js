@@ -35,146 +35,6 @@ export function adjustElementPosition() {
     }
   }
 }
-
-/* ========================================
-   Image Tooltip Helper Functions
-   ======================================== */
-
-function parseImageMetadata(altText) {
-  const altMatch = altText.match(/alt-text:\s*([^,]+)/);
-  const actualAlt = altMatch ? altMatch[1].trim().split(';')[0] : '';
-  const tooltipMatch = altText.match(/tooltip-text:\s*([^,]+)/);
-  const tooltipText = tooltipMatch ? tooltipMatch[1].trim().split(';')[0] : '';
-  const categoryMatch = altText.match(/category:\s*premium/);
-  const isPremium = !!categoryMatch;
-  const iconMatch = altText.match(/icon:\s*([^,]+)/);
-  const icon = iconMatch ? iconMatch[1].trim().split(';')[0] : '';
-  return { actualAlt, tooltipText, isPremium, icon };
-}
-
-function createTooltipElements(imgElement, tooltipText, acutalIconImage) {
-  const tooltipContainer = createTag('div', { class: 'tooltip image-tooltip' });
-  const tooltipPopup = createTag('div', { class: 'tooltip-text' });
-  tooltipPopup.innerText = tooltipText
-  const tooltipButton = createTag('button');
-  tooltipButton.setAttribute('aria-label', tooltipText);
-  acutalIconImage.classList.add('tooltip-icon-img');
-  tooltipButton.append(acutalIconImage);
-  tooltipButton.append(tooltipPopup);
-
-  return { tooltipContainer, tooltipButton, tooltipPopup };
-}
-
-function addPremiumIcon(tooltipContainer) {
-  const premiumWrapper = createTag('div', { class: 'premium-icon-wrapper' });
-  const premiumIcon = createTag('img', {
-    src: '/express/code/icons/premium.svg',
-    alt: 'Premium',
-    class: 'premium-icon',
-  });
-  premiumWrapper.append(premiumIcon);
-  tooltipContainer.append(premiumWrapper);
-}
-
-function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
-  let isTooltipVisible = false;
-  let hideTimeout;
-  let isMouseOverIcon = false;
-  let isMouseOverTooltip = false;
-
-  const clearAllTooltips = () => {
-    document.querySelectorAll('.tooltip').forEach((tooltip) => {
-      tooltip.classList.remove('hover');
-      tooltip.querySelector('.tooltip-text').classList.remove('hover');
-      tooltip.querySelector('button')?.blur();
-    });
-  }
-
-  const showTooltip = () => {
-    isTooltipVisible = true;
-    tooltipButton.classList.add('hover');
-    tooltipPopup.classList.add('hover');
-    currentVisibleTooltip = tooltipButton;
-  };
-
-  const hideTooltip = () => {
-    isTooltipVisible = false;
-    tooltipButton.classList.remove('hover');
-    tooltipPopup.classList.remove('hover');
-    if (currentVisibleTooltip === tooltipButton) {
-      currentVisibleTooltip = null;
-    }
-  };
-
-  const checkAndHideTooltip = () => {
-    clearTimeout(hideTimeout);
-    hideTimeout = setTimeout(() => {
-      if (!isMouseOverIcon && !isMouseOverTooltip) {
-        hideTooltip();
-      }
-    }, 300);
-  };
-
-  const toggleTooltip = () => {
-    console.log('toggleTooltip', isTooltipVisible);
-    if (isTooltipVisible) {
-      hideTooltip();
-    } else {
-      showTooltip();
-    }
-  };
-
-  tooltipButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    adjustElementPosition();
-    toggleTooltip();
-  });
-
-  window.addEventListener('resize', adjustElementPosition);
-  tooltipButton.addEventListener('mouseenter', (e) => {
-    if (e.currentTarget !== currentVisibleTooltip) {
-      clearAllTooltips();
-    }
-    isMouseOverIcon = true;
-    showTooltip();
-  });
-
-  tooltipButton.addEventListener('mouseleave', () => {
-    isMouseOverIcon = false;
-    checkAndHideTooltip();
-  });
-
-  tooltipPopup.addEventListener('mouseenter', (e) => {
-    
-    isMouseOverTooltip = true;
-    clearTimeout(hideTimeout);
-  });
-
-  tooltipPopup.addEventListener('mouseleave', () => {
-    isMouseOverTooltip = false;
-    checkAndHideTooltip();
-  });
-
-  tooltipButton.addEventListener('touchstart', (e) => {
-    console.log('touchstart');
-    e.preventDefault();
-    toggleTooltip();
-  });
-
-  document.addEventListener('touchstart', (e) => {
-    if (isTooltipVisible && !tooltipButton.contains(e.target)) {
-      hideTooltip();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.activeElement.blur();
-      hideTooltip();
-    }
-  });
-}
-
 /* ========================================
    Legacy Tooltip Functions
    ======================================== */
@@ -297,51 +157,13 @@ function buildTooltip(elements, tooltipPattern) {
   });
 }
 
-
-
-export async function imageTooltipAdapter(imgElement) {
-  if (!imgElement || imgElement.tagName !== 'IMG') return;
-
-  const altText = imgElement.alt || '';
-  const { actualAlt, tooltipText, isPremium, icon } = parseImageMetadata(altText);
-
-  const acutalIconImage = icon ? getIconElementDeprecated(icon, 44, actualAlt, 'tooltip-icon') : null;
-
-  if (!tooltipText) return;
-
-  // Update the image alt text
-  imgElement.alt = actualAlt;
-
-  // Create tooltip elements
-  const { tooltipContainer, tooltipButton, tooltipPopup } = createTooltipElements(
-    imgElement,
-    tooltipText,
-    acutalIconImage,
-  );
-
-  // Replace the image with tooltip container
-  imgElement.replaceWith(tooltipContainer);
-  tooltipContainer.append(tooltipButton);
-
-  // Add premium icon if needed
-  if (isPremium) {
-    addPremiumIcon(tooltipContainer);
-  }
-
-  // Setup event handlers
-  setupTooltipEventHandlers(tooltipButton, tooltipPopup);
-}
-
 export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig, loadStyle } = utils);
   });
-  const config = getConfig();
   return new Promise((resolve) => {
-    loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
-      onTooltipCSSLoad();
-      buildTooltip(pricingArea, tooltipPattern);
-      resolve();
-    });
+    onTooltipCSSLoad();
+    buildTooltip(pricingArea, tooltipPattern);
+    resolve();
   });
 }

@@ -561,7 +561,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 @media (min-width: 1200px) {
   .simplified-pricing-cards-v2 {
     --card-width: var(--ax-grid-3-col-width);
-    --padding-bottom: var(--spacing-xxxl);
+    --padding-bottom: var(--spacing-xxl);
   }
   .simplified-pricing-cards-v2 .card-inner-content.hide,
   .simplified-pricing-cards-v2 .card-inner-content {
