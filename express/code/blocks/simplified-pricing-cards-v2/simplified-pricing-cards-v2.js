@@ -4,7 +4,8 @@ import {
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
 import { debounce } from '../../scripts/utils/hofs.js';
-import handleTooltip, { adjustElementPosition, imageTooltipAdapter } from '../../scripts/widgets/tooltip.js';
+import handleImageTooltip, { adjustImageTooltipPosition } from '../../scripts/widgets/image-tooltip.js';
+import handleTooltip, {adjustElementPosition} from '../../scripts/widgets/tooltip.js';
 
 // Module-level variables initialized during init
 let createTag = null;
@@ -276,6 +277,7 @@ function decorateHeader(cardWrapper, card, header, cardIndex, defaultOpenIndex) 
     if (classList.contains('hide')) {
       classList.remove('hide');
       headerButton.setAttribute('aria-expanded', 'true');
+      adjustImageTooltipPosition();
       adjustElementPosition();
     } else {
       classList.add('hide');
@@ -385,7 +387,7 @@ function processTooltips(el) {
       if (images.length > 0) {
         p.classList.add('plan-icon-list');
         images.forEach((img) => {
-          imageTooltipAdapter(img);
+          handleImageTooltip(img);
         });
       } else {
         p.classList.add('plan-text');
@@ -433,6 +435,7 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
         equalizeHeights(el);
         observer.unobserve(entry.target);
         adjustElementPosition();
+        adjustImageTooltipPosition();
       }
     });
   });

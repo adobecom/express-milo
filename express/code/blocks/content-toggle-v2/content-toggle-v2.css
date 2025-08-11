@@ -57,16 +57,12 @@ main .content-toggle-v2 .carousel-container .content-toggle-button {
 }
 
 
-main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible{
-  box-shadow: none;
-  outline: none;
-  border: none;
+main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible {
+  outline: 2px solid #4B75FF;
+  outline-offset: -2px;
+  border-radius: var(--button-border-radius);;
 }
-main .content-toggle-v2 .carousel-container .content-toggle-button:active {
-  box-shadow: none;
-  outline: none;
-  border: none;
-}
+
 main .content-toggle-v2 .carousel-container .content-toggle-button:hover {
     background: var(--color-gray-200);
     border-radius: var(--button-border-radius);;
