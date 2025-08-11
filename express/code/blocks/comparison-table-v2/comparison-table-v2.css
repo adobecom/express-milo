@@ -70,13 +70,14 @@ main .section .comparison-table-v2 p {
   flex-wrap: wrap;
 }
 
-.comparison-table-v2 .sticky-header.is-stuck-initial {
+.comparison-table-v2 .sticky-header.is-stuck.initial {
     position: fixed;
-    top: 0px;
+    top: 60px;
     left: 0;
     right: 0;
     z-index: 4;
     background: var(--color-white);
+    transition: padding 0.3s ease-in-out;
 
 }
 
@@ -87,8 +88,7 @@ main .section .comparison-table-v2 p {
     z-index: 4;
     background: var(--color-white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: var(--spacing-200);
-    transition: transform 0.3s ease-in-out,
+    transition: padding 0.3s ease-in-out;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck-initial .sticky-header-wrapper,
@@ -120,16 +120,11 @@ main .section .comparison-table-v2 p {
     width: calc(var(--cell-width) - 2px);
 }
 
+
 .comparison-table-v2 .sticky-header.is-stuck .plan-cell.gray .plan-cell-wrapper,
 .comparison-table-v2 .sticky-header.is-stuck .plan-cell .plan-cell-wrapper {
-    padding-top: var(--spacing-300);
-    padding-bottom: var(--spacing-300);
     border-color: transparent;
     background: none;
-}
-
-.comparison-table-v2 .sticky-header.is-stuck .plan-cell a.con-button {
-    margin-top: -2px;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-wrapper,
@@ -169,14 +164,6 @@ main .section .comparison-table-v2 p {
     /* Adjust based on your button height */
 }
 
-/* When stuck - hide smoothly */
-.comparison-table-v2 .sticky-header.is-stuck .action-area {
-
-    transform: translateY(-10px);
-
-    pointer-events: none;
-}
-
 /* First cell - Mobile */
 .comparison-table-v2 .sticky-header .first-cell {
     width: 100%;
@@ -214,7 +201,7 @@ main .section .comparison-table-v2 p {
     margin-left: 0px;
     margin-right: 0px;
     margin-bottom: 0px;
-    margin-top: 8px;
+    margin-top: 16px;
     padding-left: 8px;
     padding-right: 8px;
     box-sizing: border-box;
@@ -233,6 +220,10 @@ main .section .comparison-table-v2 p {
     line-height: normal;
 }
 
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell a.con-button {
+    margin-top: 0px;
+}
+
 .comparison-table-v2 .sticky-header .plan-cell-wrapper {
     position: relative;
     text-align: center;
@@ -240,7 +231,7 @@ main .section .comparison-table-v2 p {
     border-radius: 8px;
     border: 1px solid var(--border-color);
     background: var(--color-white);
-    padding: var(--spacing-300) 8px 30px 8px;
+    padding: var(--spacing-300) 8px  var(--spacing-300) 8px;
     width: 100%;
     cursor: pointer;
     display: flex;
@@ -309,7 +300,6 @@ main .section .comparison-table-v2 p {
 }
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-cell.premium .plan-cell-wrapper {
-    border: none;
     background: none;
 }
 
@@ -902,6 +892,10 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         top: 63px;
     }
 
+    .comparison-table-v2 .sticky-header {
+        padding-bottom: var(--spacing-100);
+    }
+
 
     .comparison-table-v2 .sticky-header-wrapper {
         padding-left: 24px;
@@ -924,7 +918,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     .comparison-table-v2 .sticky-header.is-stuck {
         max-width: 100%; 
-        padding: var(--spacing-300) 0px;
+        padding: var(--spacing-100) 0px var(--spacing-400) 0px;
         margin: 0;
     }
     
@@ -979,8 +973,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
     .comparison-table-v2 .sticky-header .plan-cell-wrapper {
-        padding-top: var(--spacing-300);
-        padding-bottom: var(--spacing-300);
+        /* padding-top: var(--spacing-300);
+        padding-bottom: var(--spacing-300); */
         pointer-events: none;
     }
 
