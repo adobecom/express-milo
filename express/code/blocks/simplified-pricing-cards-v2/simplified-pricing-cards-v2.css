@@ -103,10 +103,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  transition: max-height var(--transition-duration) var(--transition-easing),
-              padding var(--transition-duration) var(--transition-easing),
-              gap var(--transition-duration) var(--transition-easing),
-              opacity var(--transition-duration) var(--transition-easing);
+  transition:  opacity var(--transition-duration) var(--transition-easing);
   opacity: 1;
   overflow: visible;
   max-height: 1000px; /* Large initial value for expanded state */

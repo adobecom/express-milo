@@ -444,75 +444,54 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
     observer.observe(column);
   });
 
+  if (window.matchMedia('(max-width: 1024px)').matches) {
+    return;
+  }
+
   // Setup resize handler
   window.addEventListener('resize', debounce(() => {
     console.log('resize');
     equalizeHeights(el);
   }, RESIZE_DEBOUNCE_MS));
 
-  // Setup observers for parent .section element
+  // Setup observer for display-none class changes
   const parentSection = el.closest('.section');
   if (parentSection) {
-    // MutationObserver for display changes
+    // MutationObserver for display-none class changes only
     const mutationObserver = new MutationObserver(debounce((mutations) => {
-      let displayChanged = false;
-
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes'
-            && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
-          const computedStyle = window.getComputedStyle(parentSection);
-          const currentDisplay = computedStyle.display;
-
-          if (!parentSection.dataset.prevDisplay) {
-            parentSection.dataset.prevDisplay = currentDisplay;
-          }
-
-          if (parentSection.dataset.prevDisplay !== currentDisplay) {
-            displayChanged = true;
-            parentSection.dataset.prevDisplay = currentDisplay;
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          const hadDisplayNone = mutation.oldValue?.includes('display-none');
+          const hasDisplayNone = parentSection.classList.contains('display-none');
+          
+          // Section became visible (display-none removed)
+          if (hadDisplayNone && !hasDisplayNone) {
+            console.log('Section became visible, equalizing heights');
+            equalizeHeights(el);
+            adjustElementPosition();
+            adjustImageTooltipPosition();
           }
         }
       });
-
-      if (displayChanged && parentSection.offsetHeight > 0) {
-        console.log('Section display changed, equalizing heights');
-        equalizeHeights(el);
-      }
     }, RESIZE_DEBOUNCE_MS));
 
-    // ResizeObserver for height changes
-    const resizeObserver = new ResizeObserver(debounce((entries) => {
-      for (const entry of entries) {
-        if (entry.target === parentSection && entry.contentRect.height > 0) {
-          console.log('Section resized, equalizing heights');
-          equalizeHeights(el);
-        }
-      }
-    }, RESIZE_DEBOUNCE_MS));
-
-    // Start observing
+    // Start observing with oldValue tracking
     mutationObserver.observe(parentSection, {
       attributes: true,
-      attributeFilter: ['style', 'class'],
+      attributeFilter: ['class'],
+      attributeOldValue: true,
       childList: false,
       subtree: false,
     });
 
-    resizeObserver.observe(parentSection);
-
-    // Store observers for cleanup
+    // Store observer for cleanup
     el.sectionMutationObserver = mutationObserver;
-    el.sectionResizeObserver = resizeObserver;
 
     // Cleanup function
     el.cleanupObservers = () => {
       if (el.sectionMutationObserver) {
         el.sectionMutationObserver.disconnect();
         el.sectionMutationObserver = null;
-      }
-      if (el.sectionResizeObserver) {
-        el.sectionResizeObserver.disconnect();
-        el.sectionResizeObserver = null;
       }
     };
   }
