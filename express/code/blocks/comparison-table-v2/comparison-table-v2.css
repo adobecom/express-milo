@@ -4,7 +4,7 @@
     padding: 0px 0px 24px 0px;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-300);
+    /* gap: var(--spacing-300); */
     --icon-color: #05834E;
     --icon-color-disabled: #222222;
     --cell-width: var(--ax-grid-5-col-width);
@@ -60,6 +60,7 @@ main .section .comparison-table-v2 p {
 .comparison-table-v2 .sticky-header {
   position: relative;
   text-align: center;
+  padding-bottom: var(--spacing-300);
 }
 
 .comparison-table-v2 .sticky-header-wrapper {
@@ -77,8 +78,16 @@ main .section .comparison-table-v2 p {
     right: 0;
     z-index: 4;
     background: var(--color-white);
-    transition: padding 0.3s ease-in-out;
+    transition: padding 0.3s ease-in-out, top 0.3s ease-in-out;
+}
 
+.comparison-table-v2 .sticky-header.is-stuck.initial .plan-cell .plan-cell-wrapper {
+    padding-bottom: var(--spacing-300);
+}
+
+.comparison-table-v2 .sticky-header.is-stuck.initial .plan-cell a.con-button {
+    margin-top: 16px;
+    transition: margin-top 0.3s ease-in-out;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck {
@@ -88,16 +97,16 @@ main .section .comparison-table-v2 p {
     z-index: 4;
     background: var(--color-white);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: padding 0.3s ease-in-out;
+    transition: padding 0.3s ease-in-out, top 0.3s ease-in-out;
+   
 }
-
-.comparison-table-v2 .sticky-header.is-stuck-initial .sticky-header-wrapper,
 .comparison-table-v2 .sticky-header.is-stuck .sticky-header-wrapper {
     flex-wrap: nowrap;
     overflow-x: auto;
     justify-content: center;
     display: flex;
     margin: auto;
+    padding: 0px 16px;
 }
 
 .comparison-table-v2 table {
@@ -121,10 +130,12 @@ main .section .comparison-table-v2 p {
 }
 
 
-.comparison-table-v2 .sticky-header.is-stuck .plan-cell.gray .plan-cell-wrapper,
-.comparison-table-v2 .sticky-header.is-stuck .plan-cell .plan-cell-wrapper {
+.comparison-table-v2 .sticky-header.is-stuck:not(.initial) .plan-cell.gray .plan-cell-wrapper,
+.comparison-table-v2 .sticky-header.is-stuck:not(.initial) .plan-cell .plan-cell-wrapper {
     border-color: transparent;
     background: none;
+    padding-bottom: 8px;
+    transition: padding-bottom 0.3s ease-in-out, background 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 .comparison-table-v2 .sticky-header.is-stuck .plan-selector-wrapper,
@@ -239,7 +250,13 @@ main .section .comparison-table-v2 p {
     justify-content: center;
     align-items: center;
     min-height: var(--plan-cell-height);
+    padding-bottom: 30px;
 
+}
+
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell-wrapper {
+    padding-bottom: 0px;
+    min-height: unset;
 }
 
 .comparison-table-v2 .sticky-header .plan-cell-wrapper.two-columns {
@@ -299,9 +316,16 @@ main .section .comparison-table-v2 p {
     outline-offset: 2px;
 }
 
-.comparison-table-v2 .sticky-header.is-stuck .plan-cell.premium .plan-cell-wrapper {
+.comparison-table-v2 .sticky-header.is-stuck:not(.initial) .plan-cell.premium .plan-cell-wrapper {
     background: none;
+    transition: background 0.3s ease-in-out;
 }
+
+
+.comparison-table-v2 .sticky-header.is-stuck .first-cell {
+  display: none;
+}
+
 
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper {
     z-index: 5;
@@ -341,7 +365,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     color: var(--color-dark-gray);
     text-align: center;
     font-family: var(--body-font-family);
-    font-size: var(--text-font-size);
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: 1.3;
@@ -352,6 +376,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     border-radius: 8px;
     border: 1px solid var(--border-color);
     background: var(--color-white);
+    margin-bottom: var(--spacing-300);
     /* width: max-content */
 }
 
@@ -812,15 +837,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     .comparison-table-v2 .plan-cell.left-plan {
         margin-left: auto;
-    }
+    } 
 
-    /* .comparison-table-v2 .plan-selector-choices {
-        width: var(--cell-width);
+    .comparison-table-v2 .sticky-header-wrapper  {
+      max-width: 600px;
     }
-
-    .comparison-table-v2 .plan-selector-choices .plan-selector-choice {
-        width: var(--cell-width);
-    } */
 
     main .comparison-table-v2 .sticky-header .plan-cell p {
         font-size: 14px;
@@ -926,6 +947,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         max-width: 1300px;
         width: 100%;
         margin: auto;
+        padding: 0px 24px;
     } 
 
     .comparison-table-v2 .feature-cell {
@@ -973,8 +995,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 
     .comparison-table-v2 .sticky-header .plan-cell-wrapper {
-        /* padding-top: var(--spacing-300);
-        padding-bottom: var(--spacing-300); */
+         padding-top: var(--spacing-300);
+        padding-bottom: var(--spacing-300); 
         pointer-events: none;
     }
 

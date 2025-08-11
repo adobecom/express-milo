@@ -475,7 +475,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           return;
         }
         const rect = entry.boundingClientRect; 
-        const isAboveViewport = rect.top < 60 ;
+        const isAboveViewport = rect.top < 0 ;
         if (!entry.isIntersecting && isAboveViewport && !isSticky) {
           // Header has scrolled past the top - make it sticky
           const stickyHeaderHeight = stickyHeader.offsetHeight;
@@ -494,15 +494,19 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
             isSticky = true;
           }, 100);
         } else if (entry.isIntersecting && isSticky) { 
-          stickyHeader.classList.remove('is-stuck');
-          placeholder.style.display = 'none';
-          stickyHeader.classList.remove('gnav-offset');
-          isSticky = false;
+          stickyHeader.classList.add('initial');
+          setTimeout(() => {
+            stickyHeader.classList.remove('is-stuck');
+            stickyHeader.classList.remove('initial');
+            placeholder.style.display = 'none';
+            stickyHeader.classList.remove('gnav-offset');
+            isSticky = false;
+          }, 100);
         }
       });
     },
     { 
-      rootMargin: '-60px 0px 0px 0px',
+      rootMargin: '-1px 0px 0px 0px',
       threshold: [0, 1],
     },
   );
@@ -566,12 +570,14 @@ function synchronizePlanCellHeights(comparisonBlock) {
   const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
 
   if (planCellWrappers.length === 0) return;
-  if (comparisonBlock.querySelector('.is-stuck')) return;
+
 
   // Reset heights to auto to get natural heights
   planCellWrappers.forEach((wrapper) => {
     wrapper.style.height = 'auto';
   });
+
+  if (comparisonBlock.querySelector('.is-stuck')) return;
 
   // Find the maximum height
   let maxHeight = 0;
