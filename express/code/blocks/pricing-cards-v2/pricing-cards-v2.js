@@ -13,8 +13,7 @@ import {
 import BlockMediator from '../../scripts/block-mediator.min.js';
 
 let createTag; let getConfig;
-let replaceKeyArray; let placeholders;
-let placeholderValues;
+let replaceKeyArray;
 
 const blockKeys = [
   'header',
@@ -481,8 +480,6 @@ export default async function init(el) {
     i.innerHTML = offer.innerHTML;
     parentElement.replaceChild(i, offer);
   });
-
-  placeholderValues = await replaceKeyArray(keyArray, getConfig());
   await decorateButtonsDeprecated(el);
   addTempWrapperDeprecated(el, 'pricing-cards-v2');
 
