@@ -3,14 +3,24 @@
     max-width: var(--ax-grid-12-col-width);
     margin: 0;
     padding: var(--spacing-600) 20px;
-}
-.section.ax-template-promo-edit.one-up {
     display: flex;
     flex-direction: column;
+}
+.section.ax-template-promo-edit.one-up {
     gap: var(--spacing-300);
 }
 
-.section.ax-template-promo-edit.two-up, .section.ax-template-promo-edit.three-up, .section.ax-template-promo-edit.four-up {
+.section.ax-template-promo-edit.multiple-up {
+    gap: var(--spacing-600);
+}
+
+/** TWO-UP */
+.section.ax-template-promo-edit.multiple-up .two-up .image-container {
+    width: 50%;
+}
+.template-promo-edit.two-up {
+    display: flex;
+    flex-direction: row;
     gap: var(--spacing-300);
 }
 

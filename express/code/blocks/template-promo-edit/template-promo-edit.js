@@ -13,6 +13,33 @@ console.log('getLibs', getLibs);
         ({ replaceKey } = placeholders);
       });
     
+    // Create absolutely positioned button in top right corner
+    const topRightButton = createTag('button', {
+        class: 'top-right-button',
+        style: `
+            display: flex;
+            padding: 8px 12px;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            border-radius: 50px;
+            background: rgba(36, 36, 36, 0.70);
+            border: none;
+            color: white;
+            cursor: pointer;
+            z-index: 1000;
+        `
+    });
+    
+    // Set button text content
+    topRightButton.textContent = 'free';
+    
+
     const ONE_UP = 'one-up';
     async function handleOneUp(oneUpVariantBlock) {
         const parent = block.parentElement;
@@ -20,6 +47,8 @@ console.log('getLibs', getLibs);
         // const collapsibleBlock = parent.querySelector('collapsible-rows.blog');
         // console.log('oneUpVariantBlock', oneUpVariantBlock);
         const img = block?.querySelector('picture img');
+        const picture = block?.querySelector('picture');
+        picture.append(topRightButton);
         // pictureElement.parentElement.remove();
         // console.log('img', img);
         // console.log('parent', parent);
@@ -46,17 +75,44 @@ console.log('getLibs', getLibs);
         
     }
 
-    function handleRestOfVariants(otherVariantsBlock) {
-        const pictureElements = block?.querySelectorAll('picture');
-        console.log('pictureElements', pictureElements)
+    async function handleRestOfVariants(otherVariantsBlock) {
+        const MULTIPLE_UP = 'multiple-up';
+        const pictureElements = [...block?.querySelectorAll('picture')];
+        console.log('pictureElements', typeof pictureElements)
         console.log('otherVariantsBlock', otherVariantsBlock);
+
+        pictureElements.forEach((picture) => {
+            picture.parentElement.parentElement.classList.add('image-container');
+            picture.append(topRightButton);
+        });
+
+        const parent = block.parentElement;
+        parent.classList.add(MULTIPLE_UP);
+        const img = block?.querySelector('picture img');
+        // console.log('img', img);
+        // console.log('parent', parent);
+
+        const templateEditLinks = [...block?.querySelectorAll('a')];
+        templateEditLinks.forEach((link) => link.style.display = 'none');
+        // templateEditLink.style.display = 'none';
+        // console.log('templateEditLink');
+
+        // console.log('picture'. pictureElement)
+        const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+        const editTemplateButton = createTag('a', {
+            href: templateEditLink.href,
+            title: `${editThisTemplate} ${img.alt}`,
+            class: 'button accent',
+            'aria-label': `${editThisTemplate} ${img.alt}`
+          });
+    
+        editTemplateButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+
+        console.log('editTemplateButton', editTemplateButton);
+
     }
     // INIT LOGIC
-    block?.classList?.contains(ONE_UP) ? handleOneUp(block) : handleRestOfVariants(block);
-    // console.log('Block classList:', block.classList);
-    // console.log('block', block);
-    // console.log('block parent', block.parentElement);
-    // console.log('blkock classlist ', block)
-    // const pictureElements = block?.querySelectorAll('picture');
-    // console.log('pictureElements', pictureElements);
+    block?.classList?.contains(ONE_UP) 
+        ? handleOneUp(block) 
+        : handleRestOfVariants(block);
 }
