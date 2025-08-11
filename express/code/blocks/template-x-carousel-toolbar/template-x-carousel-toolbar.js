@@ -173,12 +173,10 @@ export async function extractSort(recipe) {
   const recipeParams = new URLSearchParams(recipe);
   const sortKeys = Object.keys(sortConfig);
   const sortValues = Object.values(sortConfig);
-  // const [sortPlaceholderText, ...sortOptionTexts] = await Promise.all(
-  const ha = await Promise.all([
+  const [sortPlaceholderText, ...sortOptionTexts] = await Promise.all([
     replaceKey('sort', getConfig()),
     ...(sortKeys.map((key) => replaceKey(key, getConfig()))),
   ]);
-  const [sortPlaceholderText, ...sortOptionTexts] = ha;
   const sortOptions = sortKeys.map((key, i) => {
     const sortedRecipe = new URLSearchParams(recipeParams);
     sortedRecipe.set('orderBy', sortConfig[key]);
@@ -188,7 +186,7 @@ export async function extractSort(recipe) {
     };
   });
   const defaultIndex = Math.max(0, sortValues.indexOf(
-    (sortValues.includes(recipeParams.get('orderBy'))),
+    recipeParams.get('orderBy'),
   ));
   return { sortOptions, defaultIndex, sortPlaceholderText };
 }
@@ -205,16 +203,30 @@ export default async function init(el) {
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
 
-  // TODO: lazy load templates
-  const [
-    { templatesContainer, updateTemplates, control: galleryControl },
-    sortSetup,
-  ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
-  const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
-  const dropdown = createDropdown(sortOptions, defaultIndex, updateTemplates, sortPlaceholderText);
-  const controlsContainer = createTag('div', { class: 'controls-container' }, [dropdown, galleryControl]);
-  sortOptions && controlsContainer.append(dropdown);
-  controlsContainer.append(galleryControl);
-  toolbar.append(controlsContainer);
-  el.append(templatesContainer);
+  try {
+    // TODO: lazy load templates
+    const [
+      { templatesContainer, updateTemplates, control: galleryControl },
+      sortSetup,
+    ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
+    const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
+    const dropdown = createDropdown(
+      sortOptions,
+      defaultIndex,
+      updateTemplates,
+      sortPlaceholderText,
+    );
+    const controlsContainer = createTag('div', { class: 'controls-container' }, [dropdown, galleryControl]);
+    sortOptions && controlsContainer.append(dropdown);
+    controlsContainer.append(galleryControl);
+    toolbar.append(controlsContainer);
+    el.append(templatesContainer);
+  } catch (err) {
+    window.lana?.log(`Error in template-x-carousel-toolbar: ${err}`);
+    if (getConfig().env.name === 'prod') {
+      el.remove();
+    } else {
+      el.textContent = 'Error loading templates, please refresh the page or try again later.';
+    }
+  }
 }
