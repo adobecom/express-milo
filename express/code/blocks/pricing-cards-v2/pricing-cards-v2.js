@@ -317,12 +317,12 @@ function readBraces(inputString, cardBorder) {
   if (matches.length > 0) {
     const [token, promoType] = matches[matches.length - 1];
     let specialPromo = createTag('div');
-    const textContent = inputString?.split(token)[0]?.trim(); 
+    const textContent = inputString?.split(token)[0]?.trim();
     cardBorder.classList.add(promoType.replaceAll(' ', ''));
     if (textContent && textContent.length > 0) {
       specialPromo = createTag('h2');
       specialPromo.textContent = textContent;
-      cardBorder.append(specialPromo); 
+      cardBorder.append(specialPromo);
       return specialPromo;
     }
     return null;
@@ -419,7 +419,7 @@ async function decorateCard({
   cardBorderHeader?.classList.add('card-promo-header');
   const { specialPromo, cardWrapper } = decorateHeader(header, borderParams, card, cardBorder);
   if (specialPromo) {
-     el.classList.toggle('has-promo', true);
+    el.classList.toggle('has-promo', true);
   }
   decorateBasicTextSection(explain, 'plan-explanation', card);
   const groupID = `${Date.now()}:${header.textContent.replace(/\s/g, '').trim()}`;
@@ -467,7 +467,7 @@ function equalizeHeights(el) {
   }
 }
 
-export default async function init(el) { 
+export default async function init(el) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(el)]).then(([utils, placeholdersMod]) => {
     ({ createTag, getConfig } = utils);
     ({ replaceKeyArray } = placeholdersMod);
@@ -517,7 +517,7 @@ export default async function init(el) {
   if (phoneNumberTags.length > 0) {
     await formatSalesPhoneNumber(phoneNumberTags, SALES_NUMBERS);
   }
-  
+
   el.append(cardFooter);
   el.prepend(cardsContainer);
 
@@ -539,24 +539,24 @@ export default async function init(el) {
     // MutationObserver for display changes
     const mutationObserver = new MutationObserver(debounce((mutations) => {
       let displayChanged = false;
-      
+
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && 
-            (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+        if (mutation.type === 'attributes'
+            && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
           const computedStyle = window.getComputedStyle(parentSection);
           const currentDisplay = computedStyle.display;
-          
+
           if (!parentSection.dataset.prevDisplay) {
             parentSection.dataset.prevDisplay = currentDisplay;
           }
-          
+
           if (parentSection.dataset.prevDisplay !== currentDisplay) {
             displayChanged = true;
             parentSection.dataset.prevDisplay = currentDisplay;
           }
         }
       });
-      
+
       if (displayChanged && parentSection.offsetHeight > 0) {
         console.log('Section display changed, equalizing heights');
         equalizeHeights(el);
@@ -567,12 +567,12 @@ export default async function init(el) {
       attributes: true,
       attributeFilter: ['style', 'class'],
       childList: false,
-      subtree: false
+      subtree: false,
     });
-    
+
     // Store observers for cleanup
-    el.sectionMutationObserver = mutationObserver; 
-    
+    el.sectionMutationObserver = mutationObserver;
+
     // Cleanup function
     el.cleanupObservers = () => {
       if (el.sectionMutationObserver) {

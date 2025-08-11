@@ -1,6 +1,6 @@
 import { getIconElementDeprecated, getLibs } from '../utils.js';
 
-let createTag; let loadStyle;
+let createTag;
 let getConfig;
 let currentVisibleTooltip = null;
 
