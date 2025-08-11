@@ -365,7 +365,7 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
   const savePercentElem = pricingArea.querySelector('.card-offer');
   handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
   handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
-  handleTooltip(pricingArea, TOOLTIP_PATTERN);
+  handleTooltip(pricingArea.querySelectorAll('p'), TOOLTIP_PATTERN);
   handleSavePercentage(savePercentElem, isPremiumCard, response);
   handleSpecialPromo(specialPromo, isPremiumCard, response, legacyVersion);
   handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);

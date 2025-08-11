@@ -41,8 +41,13 @@ async function getDestURL(url) {
     window.lana?.log(`invalid redirect uri for susi-light: ${url}`);
     destURL = new URL('https://new.express.adobe.com');
   }
-  if (isStage && ['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
-    destURL.hostname = 'stage.projectx.corp.adobe.com';
+  if (isStage) {
+    if (['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
+      destURL.hostname = 'stage.projectx.corp.adobe.com';
+    }
+    if (destURL.hostname === 'adobesparkpost.app.link') {
+      destURL.pathname = '1F048UHIAVb';
+    }
   }
   return destURL;
 }
