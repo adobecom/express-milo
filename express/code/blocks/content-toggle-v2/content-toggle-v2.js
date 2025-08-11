@@ -35,7 +35,7 @@ function initButton(block, buttons, sections, index) {
       if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
         window.scrollTo({
           top: offsetPosition,
-          behavior: 'smooth',
+          behavior: 'instant',
         });
       }
     }
