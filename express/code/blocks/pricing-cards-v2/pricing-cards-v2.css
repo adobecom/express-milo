@@ -129,6 +129,7 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   color: var(--Content-Neutral-default, #222);
   text-overflow: ellipsis;
   font-size: 16px;

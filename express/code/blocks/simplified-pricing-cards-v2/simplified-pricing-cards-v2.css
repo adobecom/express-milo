@@ -309,7 +309,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   height: fit-content;
   margin-top: auto;
   font-size: var(--pricing-card-price-suffix-font-size);
-  margin-bottom: var(--spacing-025);
+  margin-bottom:var(--spacing-050);
   font-weight: var(--font-weight-bold);
 }
 
