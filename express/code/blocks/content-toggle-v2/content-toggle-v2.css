@@ -56,13 +56,17 @@ main .content-toggle-v2 .carousel-container .content-toggle-button {
     background: none;
 }
 
-main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible {
-    outline: 2px solid #4B75FF;
-    outline-offset: -2px;
-    border-radius: var(--button-border-radius);;
-}
 
-main .content-toggle-v2 .carousel-container .content-toggle-button:active,
+main .content-toggle-v2 .carousel-container .content-toggle-button:focus-visible{
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
+main .content-toggle-v2 .carousel-container .content-toggle-button:active {
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
 main .content-toggle-v2 .carousel-container .content-toggle-button:hover {
     background: var(--color-gray-200);
     border-radius: var(--button-border-radius);;
@@ -153,6 +157,10 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
         max-width: 1000px;
         margin: auto;
         width: fit-content;
+    }
+
+    main .content-toggle-v2.padding-400 {
+       padding: 24px 0px;
     }
 }
 
