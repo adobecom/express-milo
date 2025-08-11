@@ -155,7 +155,7 @@ function createAccessibilityHeaders(sectionTitle, colTitles) {
 
 function createTableRow(featureRowDiv) {
   const tableRow = document.createElement('tr');
-  tableRow.classList.add('ax-grid-container');
+  // tableRow.classList.add('ax-grid-container');
   const featureCells = featureRowDiv.children;
   const noText = featureRowDiv.querySelectorAll('p').length === 0;
   Array.from(featureCells).forEach((cellContent, cellIndex) => {
@@ -196,7 +196,7 @@ function createTableRow(featureRowDiv) {
 
 function convertToTable(sectionGroup, columnHeaders) {
   const tableContainer = document.createElement('div');
-  tableContainer.classList.add('table-container', 'ax-grid-container');
+  tableContainer.classList.add('table-container');
   const comparisonTable = document.createElement('table'); 
   const tableBody = document.createElement('tbody');
 
@@ -368,7 +368,7 @@ function createStickyHeader(headerGroup, comparisonBlock) {
   
   // Create wrapper div for all header content
   const headerWrapper = document.createElement('div');
-  headerWrapper.classList.add('sticky-header-wrapper', 'ax-grid-container');
+  headerWrapper.classList.add('sticky-header-wrapper');
   
   // Move all existing children to the wrapper
   while (headerGroupElement.firstChild) {
