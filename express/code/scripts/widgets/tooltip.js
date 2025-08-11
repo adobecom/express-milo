@@ -177,8 +177,7 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
    Legacy Tooltip Functions
    ======================================== */
 
-function buildTooltip(pricingArea, tooltipPattern) {
-  const elements = pricingArea.querySelectorAll('p');
+function buildTooltip(elements, tooltipPattern) {
   let tooltipMatch;
   let tooltipContainer;
 
@@ -340,14 +339,8 @@ export default async function handleTooltip(pricingArea, tooltipPattern = /\(\((
   return new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
       onTooltipCSSLoad();
-      buildTooltip(localTooltipMatch, tooltipPattern, localTooltipContainer);
+      buildTooltip(pricingArea, tooltipPattern);
       resolve();
     });
   });
-}
-
-export function handleTooltipSync(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
-  const { tooltipMatch, tooltipContainer } = getTooltipMatch(elements, tooltipPattern);
-  if (!tooltipMatch) return;
-  handleTooltip(elements, tooltipPattern, tooltipMatch, tooltipContainer);
 }
