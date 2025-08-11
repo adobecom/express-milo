@@ -143,6 +143,7 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
         --button-height: 40px;
         --spacing-button-padding-vertical: var(--spacing-300);
         max-width: 600px;
+        width: fit-content;
     }
 }
 
