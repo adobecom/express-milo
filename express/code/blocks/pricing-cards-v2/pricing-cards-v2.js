@@ -30,15 +30,6 @@ const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '[[year-2-pricing-token]]';
 const BASE_PRICING_TOKEN = '[[base-pricing-token]]';
 
-const PLANS = ['monthly', 'annually'];
-const SPECIAL_PLAN = 'annual-billed-monthly';
-const SUBSCRIPTION_TYPE = 'subscription-type';
-const keyArray = [
-  ...PLANS,
-  SPECIAL_PLAN,
-  SUBSCRIPTION_TYPE,
-];
-
 function tagFreePlan(cardContainer) {
   const cards = Array.from(cardContainer.querySelectorAll('.card'));
   let disableAllToggles = true;
