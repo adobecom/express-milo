@@ -1,7 +1,32 @@
 import { readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import createCarousel from '../../scripts/widgets/carousel.js';
 
+function getTabIndexFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabParam = urlParams.get('tab');
+  if (tabParam) {
+    const index = parseInt(tabParam, 10);
+    if (!Number.isNaN(index) && index >= 0) {
+      return index;
+    }
+  }
+  return null;
+}
+
+function updateURLParameter(index) {
+  const url = new URL(window.location);
+  url.searchParams.set('tab', index);
+  window.history.replaceState({}, '', url);
+}
+
 function getDefatultToggleIndex(block) {
+  // First check URL parameter
+  const urlIndex = getTabIndexFromURL();
+  if (urlIndex !== null) {
+    return urlIndex;
+  }
+
+  // Fall back to data attribute
   const enclosingMain = block.closest('main');
   const toggleDefaultOption = enclosingMain.querySelector('[data-toggle-default]');
   const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
@@ -23,6 +48,7 @@ function initButton(block, buttons, sections, index) {
 
     if (activeButton !== buttons[index]) {
       setActiveButton(index);
+      updateURLParameter(index);
       sections.forEach((section) => {
         if (buttons[index].innerText.toLowerCase() === section.dataset.toggle.toLowerCase()) {
           section.style.display = 'block';
