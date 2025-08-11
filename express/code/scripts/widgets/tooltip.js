@@ -35,6 +35,19 @@ export function adjustElementPosition() {
     }
   }
 }
+
+export function getTooltipMatch(elements, tooltipPattern) {
+  let tooltipMatch;
+  let tooltipContainer;
+  Array.from(elements).forEach((p) => {
+    const match = tooltipPattern.exec(p.innerText);
+    if (match) {
+      tooltipMatch = match;
+      tooltipContainer = p;
+    }
+  });
+  return { tooltipMatch, tooltipContainer };
+}
 /* ========================================
    Legacy Tooltip Functions
    ======================================== */

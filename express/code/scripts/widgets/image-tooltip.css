@@ -9,7 +9,6 @@
     opacity: 0;
     padding: 3px 8px 5px 8px;
     z-index: 10;
-    font-family: var(--body-font-family);
     background-color: var(--color-gray-800);
     color: var(--color-white);
     border-radius: 8px;
@@ -21,6 +20,7 @@
     user-select: text;
     pointer-events: none;
     transition: bottom 0.5s;
+    font-family: var(--body-font-family);
 }
 
 .image-tooltip>button {
