@@ -1,3 +1,63 @@
+/** block container variants */
 .section.ax-template-promo-edit {
-    width: var(--ax-grid-12-col-width);
+    max-width: var(--ax-grid-12-col-width);
+    margin: 0;
+    padding: var(--spacing-600) 20px;
 }
+.section.ax-template-promo-edit.one-up {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-300);
+}
+
+.section.ax-template-promo-edit.two-up, .section.ax-template-promo-edit.three-up, .section.ax-template-promo-edit.four-up {
+    gap: var(--spacing-300);
+}
+
+/* Collapsible block */
+.section.ax-template-promo-edit .collapsible-rows .collapsible-row-accordion {
+    margin-right: 0;
+}
+/** Botton Container */
+.botton-container {
+    display: flex;
+    align-items: center;
+}
+.section.ax-template-promo-edit > .button-container a.button.accent {
+    background-color: var(--color-background-accent-default);
+    margin: 0;
+    font-size: var(--body-font-size-m);
+    padding: var(--spacing-100) var(--spacing-300);
+    border-radius: 1000px;
+}
+
+.template-promo-edit.one-up {
+    width: var(--ax-grid-12-col-width);
+    
+}
+
+
+/* .section.ax-template-promo-edit .template-promo-edit.four-up-square {
+    width: var(--ax-grid-12-col-width);
+    margin: 0 auto;
+}
+
+.section.ax-template-promo-edit .template-promo-edit.four-up-square {
+    width: var(--ax-grid-12-col-width);
+    margin: 0 auto;
+} */
+
+@media screen and (min-width: 768px) {
+    .section.ax-template-promo-edit {
+        width: var(--ax-grid-8-col-width);
+        margin: 0 auto;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .section.ax-template-promo-edit {
+        width: var(--ax-grid-7-col-width);
+        margin: 0 auto;
+    }
+}
+    
