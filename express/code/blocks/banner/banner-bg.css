@@ -56,7 +56,7 @@
 .banner[class*="-bg"].banner h3,
 .banner[class*="-bg"].banner h4 {
   color: var(--color-black);
-  margin-top: var(--spacing-300);
+  margin-top: var(--spacing-100);
   margin-bottom: 0;
   font-style: normal;
   line-height: 130%;
@@ -165,6 +165,13 @@
 
 /* Tablet styles */
 @media (min-width: 768px) {
+  /* Common header styles for all background variants */
+  .banner[class*="-bg"].banner h2,
+  .banner[class*="-bg"].banner h3,
+  .banner[class*="-bg"].banner h4 {
+    margin-top: var(--spacing-200);
+  }
+
   .banner[class*="-bg"].banner {
     padding: var(--spacing-600) var(--spacing-500);
   }
@@ -182,6 +189,13 @@
 
 /* Desktop styles */
 @media (min-width: 1200px) {
+  /* Common header styles for all background variants */
+  .banner[class*="-bg"].banner h2,
+  .banner[class*="-bg"].banner h3,
+  .banner[class*="-bg"].banner h4 {
+    margin-top: var(--spacing-300);
+  }
+
   .banner[class*="-bg"].banner {
     padding: var(--spacing-900) var(--spacing-600);
     max-width: 1600px;
