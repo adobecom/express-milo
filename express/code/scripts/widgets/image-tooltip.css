@@ -21,6 +21,7 @@
     pointer-events: none;
     transition: bottom 0.5s;
     font-family: var(--body-font-family);
+    
 }
 
 .image-tooltip>button {
