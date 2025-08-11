@@ -1,4 +1,4 @@
-## Upload Service (acp-upload)
+## Upload Service
 
 Client-side library to upload assets to Adobe Content Platform Storage. Supports guest and signed-in users, progress events, and optional pre‑signed download URLs.
 
