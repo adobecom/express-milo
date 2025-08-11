@@ -1,5 +1,5 @@
 import { getIconElementDeprecated, createTag, getLibs } from '../utils.js';
- 
+
 let getConfig;
 let currentVisibleTooltip = null;
 
@@ -51,14 +51,14 @@ function parseImageMetadata(altText) {
   return { actualAlt, tooltipText, isPremium, icon };
 }
 
-function createTooltipElements(imgElement, tooltipText, acutalIconImage) {
+function createTooltipElements(imgElement, tooltipText, actualIconImage) {
   const tooltipContainer = createTag('div', { class: 'image-tooltip' });
   const tooltipPopup = createTag('div', { class: 'tooltip-text' });
   tooltipPopup.innerText = tooltipText;
   const tooltipButton = createTag('button');
   tooltipButton.setAttribute('aria-label', tooltipText);
-  acutalIconImage.classList.add('tooltip-icon-img');
-  tooltipButton.append(acutalIconImage);
+  actualIconImage.classList.add('tooltip-icon-img');
+  tooltipButton.append(actualIconImage);
   tooltipButton.append(tooltipPopup);
 
   return { tooltipContainer, tooltipButton, tooltipPopup };
@@ -113,27 +113,25 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
     }, 300);
   };
 
-  tooltipButton.addEventListener('click', (e) => {
-    e.target.focus();
+  // Click and touch events - just focus the button
+  tooltipButton.addEventListener('click', (e) => e.target.focus());
+  tooltipButton.addEventListener('touchstart', (e) => e.target.focus());
+
+  // Focus management
+  tooltipButton.addEventListener('focus', () => {
+    clearAllTooltips();
+    showTooltip();
+    adjustImageTooltipPosition();
   });
 
-  window.addEventListener('resize', adjustImageTooltipPosition);
+  tooltipButton.addEventListener('blur', () => hideTooltip());
+
+  // Mouse events for desktop
   tooltipButton.addEventListener('mouseenter', (e) => {
     e.stopPropagation();
     clearAllTooltips();
     isMouseOverIcon = true;
     showTooltip();
-  });
-
-  tooltipButton.addEventListener('focus', () => {
-    clearAllTooltips();
-    isMouseOverIcon = true;
-    showTooltip();
-    adjustImageTooltipPosition();
-  });
-
-  tooltipButton.addEventListener('blur', () => {
-    hideTooltip();
   });
 
   tooltipButton.addEventListener('mouseleave', () => {
@@ -152,21 +150,18 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
     checkAndHideTooltip();
   });
 
-  tooltipButton.addEventListener('touchstart', (e) => {
-    e.target.focus();
-  });
+  // Global events
+  window.addEventListener('resize', adjustImageTooltipPosition);
 
   document.addEventListener('touchstart', (e) => {
     if (isTooltipVisible && !tooltipButton.contains(e.target)) {
       document.activeElement.blur();
-      hideTooltip();
     }
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.activeElement.blur();
-      hideTooltip();
     }
   });
 }
@@ -181,7 +176,7 @@ export default async function handleImageTooltip(imgElement) {
   const altText = imgElement.alt || '';
   const { actualAlt, tooltipText, isPremium, icon } = parseImageMetadata(altText);
 
-  const acutalIconImage = icon ? getIconElementDeprecated(icon, 44, actualAlt, 'tooltip-icon') : null;
+  const actualIconImage = icon ? getIconElementDeprecated(icon, 44, actualAlt, 'tooltip-icon') : null;
 
   if (!tooltipText) return;
 
@@ -190,7 +185,7 @@ export default async function handleImageTooltip(imgElement) {
   const { tooltipContainer, tooltipButton, tooltipPopup } = createTooltipElements(
     imgElement,
     tooltipText,
-    acutalIconImage,
+    actualIconImage,
   );
 
   imgElement.replaceWith(tooltipContainer);

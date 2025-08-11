@@ -5,7 +5,7 @@ import {
 } from '../../scripts/utils/pricing.js';
 import { debounce } from '../../scripts/utils/hofs.js';
 import handleImageTooltip, { adjustImageTooltipPosition } from '../../scripts/widgets/image-tooltip.js';
-import handleTooltip, {adjustElementPosition} from '../../scripts/widgets/tooltip.js';
+import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 // Module-level variables initialized during init
 let createTag = null;
@@ -105,7 +105,7 @@ function handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent) {
   if (parentP.children.length > 1) {
     Array.from(parentP.childNodes).forEach((node) => {
       if (node === priceEl) return;
- 
+
       if (node.nodeName === '#text') {
         priceSuffix.append(node);
       } else {
@@ -338,7 +338,7 @@ async function loadRequiredModules() {
  */
 async function createCards(el, rows, cardCount) {
   const defaultClassIndex = Array.from(el.classList).filter((className) => className.includes('default-open-')).map((className) => parseInt(className.replace('default-open-', ''), 10) - 1);
-  const cards = []; 
+  const cards = [];
   const defaultOpenIndex = defaultClassIndex.length > 0 ? defaultClassIndex : [0];
   const cardWrapper = createTag('div', { class: 'card-wrapper ax-grid-container' });
 
@@ -404,7 +404,7 @@ function processTooltips(el) {
  * @param {Array} defaultOpenIndex - Index of the default open card
  * @param {Element} cardWrapper - The card wrapper element
  */
-function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) { 
+function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
   // Set default open card
   cards[defaultOpenIndex[0]].querySelector('.card-inner-content').classList.remove('hide');
   cards[defaultOpenIndex[0]].querySelector('.header-toggle-button').setAttribute('aria-expanded', 'true');
@@ -424,10 +424,10 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
   } else {
     rows[rows.length - 1].classList.add('pricing-footer-button');
   }
- 
+
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
   cardWrapper.appendChild(rows[rows.length - 1]);
-  
+
   // Setup intersection observer for height equalization
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -456,30 +456,30 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
     // MutationObserver for display changes
     const mutationObserver = new MutationObserver(debounce((mutations) => {
       let displayChanged = false;
-      
+
       mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && 
-            (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+        if (mutation.type === 'attributes'
+            && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
           const computedStyle = window.getComputedStyle(parentSection);
           const currentDisplay = computedStyle.display;
-          
+
           if (!parentSection.dataset.prevDisplay) {
             parentSection.dataset.prevDisplay = currentDisplay;
           }
-          
+
           if (parentSection.dataset.prevDisplay !== currentDisplay) {
             displayChanged = true;
             parentSection.dataset.prevDisplay = currentDisplay;
           }
         }
       });
-      
+
       if (displayChanged && parentSection.offsetHeight > 0) {
         console.log('Section display changed, equalizing heights');
         equalizeHeights(el);
       }
     }, RESIZE_DEBOUNCE_MS));
-    
+
     // ResizeObserver for height changes
     const resizeObserver = new ResizeObserver(debounce((entries) => {
       for (const entry of entries) {
@@ -489,21 +489,21 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
         }
       }
     }, RESIZE_DEBOUNCE_MS));
-    
+
     // Start observing
     mutationObserver.observe(parentSection, {
       attributes: true,
       attributeFilter: ['style', 'class'],
       childList: false,
-      subtree: false
+      subtree: false,
     });
-    
+
     resizeObserver.observe(parentSection);
-    
+
     // Store observers for cleanup
     el.sectionMutationObserver = mutationObserver;
     el.sectionResizeObserver = resizeObserver;
-    
+
     // Cleanup function
     el.cleanupObservers = () => {
       if (el.sectionMutationObserver) {
@@ -536,7 +536,7 @@ export default async function init(el) {
     const cardCount = rows[0].children.length;
 
     // Create all cards
-    const { cards, defaultOpenIndex, cardWrapper } = await createCards(el,rows, cardCount);
+    const { cards, defaultOpenIndex, cardWrapper } = await createCards(el, rows, cardCount);
 
     // Setup DOM structure and event handlers
     setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper);
