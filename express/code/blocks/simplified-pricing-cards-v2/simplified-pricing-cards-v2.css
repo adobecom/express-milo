@@ -60,6 +60,8 @@
   --border-radius-medium: 11px;
   --border-radius-large: 12px;
 
+  --padding-bottom: var(--spacing-l);
+  padding-bottom: var(--padding-bottom);
   opacity: 0;
 
   
@@ -68,7 +70,7 @@
 /* Base Styles */
 main .section>.simplified-pricing-cards-v2-wrapper {
   max-width: unset;
-  
+
 }
 
 
@@ -84,9 +86,18 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   padding: var(--spacing-050);
 }
 
+
+.simplified-pricing-cards-v2 .card-inner-content.hide {
+  border-radius: var(--border-radius-medium);
+}
+
+.simplified-pricing-cards-v2 .eyebrow-content~.card-inner-content {
+  border-radius: 8px 8px 11px 11px;
+}
+
 .simplified-pricing-cards-v2 .card-inner-content {
   background: white;
-  border-radius: var(--border-radius-medium);
+  border-radius: 11px;
   padding: var(--spacing-300);
   gap: var(--spacing-100);
   display: flex;
@@ -140,6 +151,8 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   margin: 0;
   opacity: 0;
 }
+
+
 
 .simplified-pricing-cards-v2 .card-wrapper .card.gradient-promo .eyebrow-content {
   background: var(--S2-Buttons-Premium) border-box;
@@ -397,7 +410,9 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   padding-top: var(--body-font-size-xs);
   padding-bottom: var(--body-font-size-xs);
   border-radius: var(--button-border-radius);
+  margin-top: 8px;
 }
+
 
 
 
@@ -530,7 +545,9 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   left: var(--spacing-550);
 }
 
-
+.simplified-pricing-cards-v2 .card-wrapper.ax-grid-container {
+  gap: 8px;
+}
 
 /* Tablet Styles */
 @media (min-width: 600px) {
@@ -544,6 +561,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 @media (min-width: 1200px) {
   .simplified-pricing-cards-v2 {
     --card-width: var(--ax-grid-3-col-width);
+    --padding-bottom: var(--spacing-xxxl);
   }
   .simplified-pricing-cards-v2 .card-inner-content.hide,
   .simplified-pricing-cards-v2 .card-inner-content {
@@ -554,6 +572,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   
   .simplified-pricing-cards-v2 .card-wrapper {
     row-gap: 16px;
+    column-gap: 24px;
   }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card {
