@@ -667,14 +667,15 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 }
 /* /Table Section Rows */
 
-.pricing-table .row.table-end-row:not(.connect-to-toggle):not(.additional-row) .col {
-  border-bottom-width: var(--border-width);
-}
-
 @media (max-width: 980px) {
   .pricing-table .row:not(.blank-row) {
     min-height: 60px;
   }
+
+  .pricing-table .row.table-end-row:not(.connect-to-toggle):not(.additional-row) .col {
+    border-bottom-width: var(--border-width);
+  }
+  
 
   .pricing-table .row.row-heading {
     min-height: 0px;
@@ -879,6 +880,10 @@ main .section .pricing-table-wrapper:has(.pricing-table.many-cols) {
 @media (min-width: 981px) {
   .pricing-table > .row {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  
+  .pricing-table .row.table-end-row:not(.connect-to-toggle) .col {
+    border-bottom-width: var(--border-width);
   }
 
   /* Sticky Table */
