@@ -116,6 +116,7 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
   };
 
   const toggleTooltip = () => {
+    console.log('toggleTooltip', isTooltipVisible);
     if (isTooltipVisible) {
       hideTooltip();
     } else {
@@ -155,6 +156,7 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
   });
 
   tooltipButton.addEventListener('touchstart', (e) => {
+    console.log('touchstart');
     e.preventDefault();
     toggleTooltip();
   });
@@ -276,6 +278,7 @@ function buildTooltip(elements, tooltipPattern) {
   });
 
   tooltipButton.addEventListener('touchstart', (e) => {
+    console.log('touchstart');
     e.preventDefault();
     toggleTooltip();
   });
@@ -294,9 +297,7 @@ function buildTooltip(elements, tooltipPattern) {
   });
 }
 
-/* ========================================
-   Main Export Functions
-   ======================================== */
+
 
 export async function imageTooltipAdapter(imgElement) {
   if (!imgElement || imgElement.tagName !== 'IMG') return;
