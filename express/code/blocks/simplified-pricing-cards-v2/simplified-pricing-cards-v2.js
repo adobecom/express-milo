@@ -537,7 +537,7 @@ export default async function init(el) {
 
     // Create all cards
     const { cards, defaultOpenIndex, cardWrapper } = await createCards(el, rows, cardCount);
-
+    el.classList.add('loaded');
     // Setup DOM structure and event handlers
     setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper);
 
@@ -546,7 +546,7 @@ export default async function init(el) {
 
     // Decorate buttons
     await decorateButtonsDeprecated(el);
-    el.classList.add('loaded');
+   
   } catch (error) {
     console.error('Error initializing simplified-pricing-cards-v2:', error);
   }
