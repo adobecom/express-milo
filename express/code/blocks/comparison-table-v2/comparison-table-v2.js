@@ -474,14 +474,15 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           isSticky = false;
           return;
         }
-
-        if (!entry.isIntersecting && !isSticky) {
-          // Header is leaving viewport at the top - make it sticky
+        const rect = entry.boundingClientRect;
+        const isAboveViewport = rect.top < 0;
+        if (!entry.isIntersecting && isAboveViewport && !isSticky) {
+          // Header has scrolled past the top - make it sticky
           const stickyHeaderHeight = stickyHeader.offsetHeight;
           stickyHeader.classList.add('is-stuck-initial');
           placeholder.style.display = 'flex';
           placeholder.style.height = `${stickyHeaderHeight}px`;
-
+  
           ComparisonTableState.closeDropdown(stickyHeader
             ?.querySelector('.plan-cell-wrapper[aria-expanded="true"]')?.querySelector('.plan-selector'));
           if (document.activeElement && document.activeElement.blur) {
@@ -493,8 +494,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
             stickyHeader.classList.add('is-stuck');
             isSticky = true;
           }, 100);
-        } else if (entry.isIntersecting && isSticky) {
-          // Header is back in view at the top - remove sticky
+        } else if (entry.isIntersecting && isSticky) { 
           stickyHeader.classList.remove('is-stuck');
           placeholder.style.display = 'none';
           stickyHeader.classList.remove('gnav-offset');
@@ -502,8 +502,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
         }
       });
     },
-    {
-      // Trigger when header is about to leave viewport at the top
+    { 
       rootMargin: '-1px 0px 0px 0px',
       threshold: [0, 1],
     },
