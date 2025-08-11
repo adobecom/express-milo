@@ -73,6 +73,9 @@ main .section .comparison-table-v2 p {
 .comparison-table-v2 .sticky-header.is-stuck-initial {
     position: fixed;
     top: 0px;
+    left: 0;
+    right: 0;
+    z-index: 4;
     background: var(--color-white);
 
 }
@@ -88,11 +91,13 @@ main .section .comparison-table-v2 p {
     transition: transform 0.3s ease-in-out,
 }
 
+.comparison-table-v2 .sticky-header.is-stuck-initial .sticky-header-wrapper,
 .comparison-table-v2 .sticky-header.is-stuck .sticky-header-wrapper {
     flex-wrap: nowrap;
     overflow-x: auto;
     justify-content: center;
     display: flex;
+    margin: auto;
 }
 
 .comparison-table-v2 table {
