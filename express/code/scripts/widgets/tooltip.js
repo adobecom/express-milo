@@ -340,8 +340,14 @@ export default async function handleTooltip(pricingArea, tooltipPattern = /\(\((
   return new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
       onTooltipCSSLoad();
-      buildTooltip(pricingArea, tooltipPattern);
+      buildTooltip(localTooltipMatch, tooltipPattern, localTooltipContainer);
       resolve();
     });
   });
+}
+
+export function handleTooltipSync(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
+  const { tooltipMatch, tooltipContainer } = getTooltipMatch(elements, tooltipPattern);
+  if (!tooltipMatch) return;
+  handleTooltip(elements, tooltipPattern, tooltipMatch, tooltipContainer);
 }
