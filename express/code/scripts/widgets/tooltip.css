@@ -20,13 +20,13 @@
     user-select: text;
     pointer-events: none;
     transition: bottom 0.5s;
+    font-family: var(--body-font-family);
 }
 
 .tooltip>button {
     border: none;
     background-color: transparent;
     padding: 0px;
-    font-family: "adobe-clean";
     position: relative;
 }
 
@@ -63,6 +63,7 @@
 
 .tooltip .tooltip-icon {
     position: relative;
+    top: 2px;
 }
 
 .tooltip {
