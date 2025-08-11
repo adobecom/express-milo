@@ -274,10 +274,10 @@ main .section:has(.how-to-v2) .content em {
 
   .how-to-v2 .steps-content .media-container::before {
     width: 70vw;
-    max-width: 850px;
+    max-width: 700px;
     height: calc(55vh + (20 * (100vw - 768px) / 432));
-    max-height: 760px;
-    top: -150px;
+    max-height: 700px;
+    top: -180px;
     background-image: 
       linear-gradient(to bottom, transparent 85%, white 100%),
       linear-gradient(to right, transparent 85%, white 100%),
