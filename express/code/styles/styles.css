@@ -109,7 +109,6 @@
   /* current ax-grid system */
   --ax-grid-margin: 20px;
   --ax-grid-gutter: 16px;
-  --ax-grid-gutter-small: 16px;
   --ax-grid-container-width: 100%;
   --ax-grid-column-width: calc((var(--ax-grid-container-width) - var(--ax-grid-gutter) * 11) / 12);
   --ax-grid-1-col-width: calc(var(--ax-grid-column-width) * 1 + var(--ax-grid-gutter) * 0);
@@ -130,7 +129,6 @@
   :root {
     --ax-grid-margin: 32px;
     --ax-grid-gutter: 24px;
-    --ax-grid-gutter-small: 16px;
   }
 }
 
@@ -1343,14 +1341,6 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   gap: var(--ax-grid-gutter);
   justify-content: center;
   flex-wrap: wrap;
-}
-
-.ax-grid-container.no-gap {
-  gap: 0;
-}
-
-.ax-grid-container.small-gap {
-  gap: var(--ax-grid-gutter-small);
 }
 
 .ax-grid-col-1 {
