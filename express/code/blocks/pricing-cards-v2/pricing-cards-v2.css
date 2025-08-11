@@ -3,6 +3,7 @@
   --card-width: var(--ax-grid-12-col-width);
   --card-padding: 12px;
   --pricing-gap: 2px;
+  --content-neutral-default: #222;
   opacity: 0; 
 }
 
@@ -15,12 +16,10 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border-radius: 8px; 
+  align-items: center; 
   padding: var(--spacing-400) var(--spacing-300);
-  gap: 8px;
-  text-align: left;  
-  border-radius: var(--Radius-corner-radius-100, 8px);
+  gap: var(--spacing-100);
+  text-align: left;   
   border: 1px solid var(--Border-sx-extra-subdued-default, #D5D5D5);
   background: #FFF;
   flex-grow: 1;
@@ -132,7 +131,6 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
   -webkit-line-clamp: 3;
   color: var(--Content-Neutral-default, #222);
   text-overflow: ellipsis;
-  
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
