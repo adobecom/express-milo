@@ -467,7 +467,7 @@ function equalizeHeights(el) {
   }
 }
 
-export default async function init(el) {
+export default async function init(el) { 
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), fixIcons(el)]).then(([utils, placeholdersMod]) => {
     ({ createTag, getConfig } = utils);
     ({ replaceKeyArray } = placeholdersMod);
@@ -586,4 +586,5 @@ export default async function init(el) {
   }, 100));
 
   tagFreePlan(cardsContainer);
+  el.classList.add('loaded');
 }

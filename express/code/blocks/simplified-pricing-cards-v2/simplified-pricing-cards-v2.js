@@ -543,6 +543,7 @@ export default async function init(el) {
 
     // Decorate buttons
     await decorateButtonsDeprecated(el);
+    el.classList.add('loaded');
   } catch (error) {
     console.error('Error initializing simplified-pricing-cards-v2:', error);
   }

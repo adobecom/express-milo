@@ -60,6 +60,8 @@
   --border-radius-medium: 11px;
   --border-radius-large: 12px;
 
+  opacity: 0;
+
   
 }
 
@@ -592,3 +594,8 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   } 
 }
 
+
+.simplified-pricing-cards-v2.loaded {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
