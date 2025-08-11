@@ -1,6 +1,7 @@
-import { getIconElementDeprecated, createTag, getLibs } from '../utils.js';
+import { getIconElementDeprecated, getLibs } from '../utils.js';
 
 let getConfig;
+let createTag;
 let currentVisibleTooltip = null;
 
 /* ========================================
@@ -170,7 +171,7 @@ function setupTooltipEventHandlers(tooltipButton, tooltipPopup) {
 export default async function handleImageTooltip(imgElement) {
   if (!imgElement || imgElement.tagName !== 'IMG') return;
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
-    ({ getConfig } = utils);
+    ({ getConfig, createTag } = utils);
   });
   await onImageTooltipCSSLoad();
 
