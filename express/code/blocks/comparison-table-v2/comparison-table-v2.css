@@ -900,7 +900,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         padding-left: 24px;
         padding-right: 24px;
         flex-wrap: nowrap;
-        max-width: 1300px;
+        max-width: 1300px; 
         text-align: left;
         display: flex;
     }
@@ -917,7 +917,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 
     .comparison-table-v2 .sticky-header.is-stuck {
         max-width: 100%;
-        width: 100%;
+        /* width: 100%; */
         padding: var(--spacing-300) 0px;
         margin: 0;
     }
