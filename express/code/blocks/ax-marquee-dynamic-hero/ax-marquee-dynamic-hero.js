@@ -1,11 +1,10 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
-let createTag; let getMetadata;
-let getConfig;
+let getMetadata;
 
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
-    ({ createTag, getMetadata, getConfig } = utils);
+    ({ getMetadata } = utils);
   });
 
   // Add button-container class to p tag after h1 and add classes to the link
@@ -26,11 +25,13 @@ export default async function decorate(block) {
     logo.classList.add('express-logo');
 
     const isHeroTop = block.classList.contains('hero-top');
+
     if (isHeroTop) {
-      const targetElement = block.querySelector('div:has(picture)');
-      targetElement?.appendChild(logo);
+      const headerElement = block.querySelector('h1');
+      headerElement?.parentElement?.insertBefore(logo, headerElement);
     } else {
-      block.prepend(logo);
+      const headerElement = block.querySelector('h1');
+      headerElement?.parentElement?.insertBefore(logo, headerElement);
     }
   }
 }
