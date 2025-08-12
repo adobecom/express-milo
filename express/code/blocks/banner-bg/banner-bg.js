@@ -1,5 +1,4 @@
 import { getLibs, fixIcons, decorateButtonsDeprecated, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
-import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 import { normalizeHeadings } from '../../scripts/utils/decorate.js';
 
 let createTag;
@@ -30,15 +29,6 @@ export default async function decorate(block) {
 
   // Load CSS immediately if background variant detected
   if (hasBackgroundImage) {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'style';
-    link.href = '/express/code/blocks/banner-bg/banner-bg.css';
-    link.onload = () => {
-      link.rel = 'stylesheet';
-    };
-    document.head.appendChild(link);
-
     // Preload only the specific background image for the detected class
     const backgroundImageMap = {
       'light-bg': '/express/code/blocks/banner-bg/img/light-bg.jpg',
@@ -68,10 +58,6 @@ export default async function decorate(block) {
 
   const section = block.closest('.section');
   if (section?.style?.background) block.style.background = section.style.background;
-
-  const isBannerLightVariant = block.classList.contains('light');
-  const isBannerStandoutVariant = block.classList.contains('standout');
-  const isBannerCoolVariant = block.classList.contains('cool');
 
   // Create background container for banners with background images
   if (hasBackgroundImage) {
@@ -103,24 +89,6 @@ export default async function decorate(block) {
     block.querySelector('H2')?.prepend(logo);
   }
 
-  if (isBannerStandoutVariant) {
-    const contentContainer = createTag('div', { class: 'content-container' });
-    for (const child of block.children) {
-      contentContainer.append(child);
-    }
-    block.replaceChildren(contentContainer);
-  } else if (isBannerCoolVariant) {
-    const wrapperEl = createTag('div', { class: 'wrapper' });
-    const contentContainer = createTag('div', { class: 'content-container' });
-
-    wrapperEl.append(contentContainer);
-
-    for (const child of block.children) {
-      contentContainer.append(child);
-    }
-    block.replaceChildren(wrapperEl);
-  }
-
   const buttons = block.querySelectorAll('a.button');
   if (buttons.length > 1) {
     block.classList.add('multi-button');
@@ -143,27 +111,11 @@ export default async function decorate(block) {
     button.classList.remove('primary');
     button.classList.remove('secondary');
 
-    if (isBannerStandoutVariant || isBannerCoolVariant) {
-      button.classList.remove('accent');
-      button.classList.add('large', 'primary');
-    } else if (isBannerLightVariant) {
-      button.classList.remove('accent');
-      button.classList.add('large', 'primary', 'reverse');
-    } else {
-      button.classList.add('accent', 'dark');
-      if (block.classList.contains('multi-button')) {
-        button.classList.add('reverse');
-      }
+    button.classList.add('accent', 'dark');
+    if (block.classList.contains('multi-button')) {
+      button.classList.add('reverse');
     }
   });
 
-  const phoneNumberTags = block.querySelectorAll('a[title="{{business-sales-numbers}}"]');
-  if (phoneNumberTags.length > 0) {
-    try {
-      await formatSalesPhoneNumber(phoneNumberTags);
-    } catch (e) {
-      window.lana?.log('banner.js - error fetching sales phones numbers:', e.message);
-    }
-  }
   fixIcons(block);
 }
