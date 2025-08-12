@@ -34,12 +34,13 @@
   margin: calc(-1 * var(--template-expand-top-len)) 0 calc(-1 * var(--template-expand-bot-len));
   /* avoid capping from .button-container */
   padding: var(--template-expand-top-len) 0 var(--template-expand-bot-len);
-  align-items: flex-start;
+  align-items: center;
   gap: var(--ax-grid-gutter);
 }
 
 .template-x-carousel .gallery-control {
   padding-top: var(--spacing-400);
+  padding-right: 27.5px;
 }
 
 /* individual templates styles */
@@ -301,6 +302,22 @@
   }
 
   .template-x-carousel .template {
-    width: 25%;
+    width: initial;
+    flex: 1 1 0;
+  }
+  /* 4-up */
+  .template-x-carousel .templates-container .template img:not(.icon),
+  .template-x-carousel .templates-container .template video {
+    max-height: 240px;
+  }
+
+  .template-x-carousel .templates-container:has(:nth-child(3):last-child) .template img:not(.icon),
+  .template-x-carousel .templates-container:has(:nth-child(3):last-child) .template video {
+    max-height: 360px;
+  }
+
+  .template-x-carousel .templates-container:has(:nth-child(2):last-child) .template img:not(.icon),
+  .template-x-carousel .templates-container:has(:nth-child(2):last-child) .template video {
+    max-height: 540px;
   }
 }

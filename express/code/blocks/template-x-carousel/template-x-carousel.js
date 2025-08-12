@@ -24,6 +24,7 @@ async function createTemplatesContainer(recipe) {
   const { control: initialControl } = await buildGallery(
     [...templates],
     templatesContainer,
+    { center: true },
   );
   return {
     templatesContainer,

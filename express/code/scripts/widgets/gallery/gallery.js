@@ -17,7 +17,8 @@ const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"
 
 let createTag; let loadStyle;
 
-function createControl(items, container) {
+function createControl(items, container, config) {
+  const { center } = config;
   const control = createTag('div', { class: 'gallery-control loading' });
   const prevButton = createTag('button', {
     class: 'prev',
@@ -36,7 +37,7 @@ function createControl(items, container) {
     if (first === -1) return; // middle of swapping only page
     if (first + inc < 0 || first + inc >= len) return; // no looping
     const target = items[(first + inc + len) % len];
-    target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    target.scrollIntoView({ behavior: 'smooth', inline: center ? 'center' : 'start', block: 'nearest' });
   }, 30);
   prevButton.addEventListener('click', () => pageInc(-1));
   nextButton.addEventListener('click', () => pageInc(1));
@@ -80,9 +81,10 @@ function createControl(items, container) {
 export default async function buildGallery(
   items,
   container = items?.[0]?.parentNode,
+  config = { center: false },
 ) {
   ({ createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`));
-  const control = createControl([...items], container);
+  const control = createControl([...items], container, config);
   await new Promise((res) => {
     loadStyle('/express/code/scripts/widgets/gallery/gallery.css', res);
   });
