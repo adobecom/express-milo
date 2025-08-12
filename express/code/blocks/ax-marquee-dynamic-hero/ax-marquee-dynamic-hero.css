@@ -9,8 +9,12 @@ main .ax-marquee-dynamic-hero p.button-container {
 }
 
 .ax-marquee-dynamic-hero > img.express-logo,
-.ax-marquee-dynamic-hero div:has(picture) img.express-logo {
+.ax-marquee-dynamic-hero div:has(picture) img.express-logo,
+.ax-marquee-dynamic-hero div:has(h1) img.express-logo {
   width: 164px;
+  margin: 0;
+  margin-left: 0;
+  display: block;
 }
 
 .ax-marquee-dynamic-hero div:has(picture) {
