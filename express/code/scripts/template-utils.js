@@ -25,17 +25,7 @@ export function getBackupRecipe(oldParams, backupStr) {
   return params.toString();
 }
 
-export function recipe2ApiQuery(recipe) {
-  let backupQuery = null;
-  const params = new URLSearchParams(recipe);
-  if (params.has('backup')) {
-    const backupStr = params.get('backup');
-    params.delete('backup');
-    backupQuery = {
-      target: params.get('limit'),
-      ...recipe2ApiQuery(getBackupRecipe(params, backupStr)),
-    };
-  }
+function handleCollections(params) {
   if (params.has('collection')) {
     if (params.get('collection') === 'default') {
       params.set('collectionId', `${defaultCollectionId}`);
@@ -47,6 +37,9 @@ export function recipe2ApiQuery(recipe) {
   if (!params.get('collectionId')) {
     params.set('collectionId', `${defaultCollectionId}`);
   }
+}
+
+function handleFilters(params) {
   if (params.get('license')) {
     params.append('filters', `licensingCategory==${params.get('license')}`);
     params.delete('license');
@@ -69,7 +62,9 @@ export function recipe2ApiQuery(recipe) {
     params.append('filters', `language==${params.get('language')}`);
     params.delete('language');
   }
+}
 
+function handleHeaders(params) {
   const headers = {};
   if (params.get('prefLang')) {
     headers['x-express-pref-lang'] = params.get('prefLang');
@@ -79,15 +74,36 @@ export function recipe2ApiQuery(recipe) {
     headers['x-express-pref-region-code'] = params.get('prefRegion');
     params.delete('prefRegion');
   }
+  return headers;
+}
+
+export function recipe2ApiQuery(recipe) {
+  const query = {};
+  const params = new URLSearchParams(recipe);
 
   params.set('queryType', 'search');
+
+  handleCollections(params);
+  if (params.get('templateIds')) {
+    params.append('filters', `id==${params.get('templateIds')}`);
+    params.delete('templateIds');
+  } else {
+    if (params.has('backup')) {
+      const backupStr = params.get('backup');
+      params.delete('backup');
+      query.backupQuery = {
+        target: params.get('limit'),
+        ...recipe2ApiQuery(getBackupRecipe(params, backupStr)),
+      };
+    }
+    handleFilters(params);
+    query.headers = handleHeaders(params);
+  }
+
   // workaround to prevent akamai prod cache pollution causing cors issues in aem envs
-  const envParam = new URL(base).host === window.location.host ? '' : '&ax-env=stage';
-  return {
-    url: `${base}?${decodeURIComponent(params.toString())}${envParam}`,
-    headers,
-    backupQuery,
-  };
+  const envParam = (new URL(base).host === window.location.host) ? '' : '&ax-env=stage';
+  query.url = `${base}?${decodeURIComponent(params.toString())}${envParam}`;
+  return query;
 }
 
 async function fetchData(url, headers) {

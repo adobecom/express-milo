@@ -9,6 +9,7 @@ import TextField from './fields/TextField';
 import SelectField from './fields/SelectField';
 import NumberField from './fields/NumberField';
 import TextArea from './fields/TextArea';
+import TemplateIdGroups from './template-id-group/TemplateIDGroup';
 
 export default function Form() {
   const formData = useFormData();
@@ -146,6 +147,9 @@ export default function Form() {
           { value: 'premium', label: 'Premium' },
         ]}
       />
+
+      <h4>Manual Template IDs (exclusive and disable rest of form)</h4>
+      <TemplateIdGroups />
 
       <h4>Boosting:</h4>
 

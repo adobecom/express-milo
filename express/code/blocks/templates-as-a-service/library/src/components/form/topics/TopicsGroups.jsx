@@ -14,6 +14,7 @@ function Row({ topicsGroup, rowIndex, expandButton }) {
         <input
           className="topics-input"
           key={colIndex}
+          name={`topic-group-${rowIndex}-${colIndex}`}
           type="text"
           value={topic}
           onChange={(e) =>

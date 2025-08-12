@@ -19,6 +19,8 @@ export const initialFormData = {
   topics: [['']],
   license: '',
   behaviors: '',
+  // manual ids
+  templateIds: [''],
   // boosting
   prefLang: '',
   prefRegion: '',
@@ -77,6 +79,12 @@ export function recipe2Form(recipe) {
     formData.collection = 'default';
     formData.collectionId = '';
   }
+
+  if (params.has('templateIds')) {
+    formData.templateIds = params.get('templateIds').split(',');
+    return formData;
+  }
+
   if (params.get('limit')) formData.limit = Number(params.get('limit'));
   if (params.get('start')) formData.start = Number(params.get('start'));
   if (params.get('orderBy')) formData.orderBy = params.get('orderBy');
@@ -109,6 +117,20 @@ export function form2Recipe(formData) {
     formData.collection === 'custom'
       ? `collectionId=${formData.collectionId}`
       : '';
+
+  // manual ids
+  const templateIds = formData.templateIds
+    .filter(Boolean)
+    .map((id) => id.trim());
+  const joinedManualIds = templateIds[0]
+    ? `templateIds=${templateIds.join(',')}`
+    : '';
+  if (joinedManualIds) {
+    return [collection, collectionId, joinedManualIds]
+      .filter(Boolean)
+      .join('&');
+  }
+
   const limit = formData.limit ? `limit=${formData.limit}` : '';
   const start = formData.start ? `start=${formData.start}` : '';
   const q = formData.q ? `q=${formData.q}` : '';

@@ -135,6 +135,12 @@ form select {
   min-width: 40px;
   flex: none;
 }
+
+.template-id-input {
+  font-size: .75rem;
+  width: 350px;;
+}
+
 @supports not (field-sizing: content) {
   .topics-input {
     min-width: 120px;
