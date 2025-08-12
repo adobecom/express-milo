@@ -91,5 +91,22 @@ main .ax-marquee-dynamic-hero p.button-container {
     padding: var(--spacing-900) var(--spacing-600);
     max-width: 1440px;
     margin: 0 auto;
-  }  
+  }
+  
+  .ax-marquee-dynamic-hero > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .ax-marquee-dynamic-hero > div > div:first-child {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .ax-marquee-dynamic-hero > div > div:has(picture) {
+    flex: 1;
+    text-align: right;
+  }
 }
