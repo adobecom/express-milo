@@ -5,7 +5,6 @@
   padding: var(--spacing-600) 20px;
   text-align: center;
   margin: 0 auto;
-  color: var(--color-black);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -51,43 +50,14 @@
   max-width: none;
 }
 
-/* Common header styles for all background variants */
-.banner-bg[class*="-bg"] h2,
-.banner-bg[class*="-bg"] h3,
-.banner-bg[class*="-bg"] h4 {
-  color: var(--color-black);
-  margin-top: var(--spacing-100);
+.banner-bg[class*="-bg"] h2 {
+  color: var(--color-content-neutral);
+  margin-top: 0;
   margin-bottom: 0;
   font-style: normal;
   line-height: 130%;
-}
-
-/* H2 specific styling */
-.banner-bg[class*="-bg"] h2 {
   font-size: var(--heading-font-size-l);
   font-weight: 900;
-  margin-top: 0;
-}
-
-/* H3 specific styling */
-.banner-bg[class*="-bg"] h3 {
-  font-size: 20px;
-  font-weight: 400;
-}
-
-/* H4 specific styling */
-.banner-bg[class*="-bg"] h4 {
-  font-size: 18px;
-  font-weight: 400;
-}
-
-/* H4 link styling */
-.banner-bg[class*="-bg"] h4 a {
-  color: var(--color-black);
-  font-style: normal;
-  font-weight: 700;
-  line-height: 130%;
-  text-decoration-line: underline;
 }
 
 /* Paragraph styling for background variants */
@@ -107,7 +77,7 @@
 
 /* Link styling within last paragraph */
 .banner-bg[class*="-bg"] p:not(.button-container):last-child a {
-  color: #222222;
+  color: var(--color-content-neutral);
   font-weight: 700;
   text-decoration: underline;
 }
@@ -160,8 +130,8 @@
   line-height: 1;
   padding: 13px var(--spacing-400);
   border-radius: 24px;
-  background-color: #222222;
-  border: 2px solid var(--color-black);
+  background-color: var(--color-content-neutral);
+  border: 2px solid var(--color-content-neutral);
   color: var(--color-white);
   display: inline-flex;
   align-items: center;
@@ -178,10 +148,10 @@
 
 /* Second button styling for multi-button banners - using specific class */
 .banner-bg[class*="-bg"] .button-container a.button.bg-banner-button-secondary {
-  color: var(--color-black);
+  color: var(--color-content-neutral);;
   background-color: transparent;
-  border-color: var(--color-black);
-  border: 2px solid var(--color-black);
+  border-color: var(--color-content-neutral);;
+  border: 2px solid var(--color-content-neutral);;
 }
 
 .banner-bg[class*="-bg"] .button-container a.button.bg-banner-button-secondary:hover {

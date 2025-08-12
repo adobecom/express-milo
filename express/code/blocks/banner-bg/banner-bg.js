@@ -1,4 +1,4 @@
-import { getLibs, fixIcons, decorateButtonsDeprecated, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
 import { normalizeHeadings } from '../../scripts/utils/decorate.js';
 
 let createTag;
