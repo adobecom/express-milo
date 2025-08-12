@@ -62,7 +62,7 @@
 
 /* Paragraph styling for background variants */
 .banner-bg[class*="-bg"] p:not(.button-container) {
-  color: var(--color-black);
+  color: var(--color-content-neutral);
   margin-top: var(--spacing-100);
   margin-bottom: var(--spacing-400);
   font-size: var(--body-font-size-xl);
