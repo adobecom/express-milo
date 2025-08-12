@@ -16,6 +16,7 @@ main .ax-marquee-dynamic-hero p.button-container {
   margin: 0;
   margin-left: 0;
   display: block;
+  padding-top: var(--spacing-600);
 }
 
 .ax-marquee-dynamic-hero div:has(picture) {
