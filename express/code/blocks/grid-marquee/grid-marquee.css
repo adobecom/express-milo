@@ -465,10 +465,12 @@ main .section .grid-marquee.pricing-page h1 {
   line-height: 130%;
   text-align: center;
   padding-bottom: 8px;
+ 
 }
 
 .grid-marquee.pricing-page .headline {
   padding-bottom: 0;
+  max-width: var(--ax-grid-6-col-width);
 }
 
 .grid-marquee.pricing-page .express-logo {
