@@ -107,6 +107,19 @@
 
 .hover-cards.split .content-wrapper {
   min-height: 279px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hover-cards.split .right-content {
+  padding: 16px 0;
+}
+
+.hover-cards.split .left-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hover-cards.split .card {
@@ -119,8 +132,6 @@
 
 .hover-cards.split .media-wrapper {
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid var(--white, rgba(255, 255, 255, 1));
@@ -166,6 +177,7 @@
 
 .hover-cards.split h2 {
   margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .hover-cards.split p {
@@ -200,6 +212,7 @@
 }
 
 .hover-cards.split .cta-sub-text {
+  margin-left: 2px;
   font-size: var(--body-font-size-s);
 }
 
@@ -211,6 +224,10 @@
   .hover-cards .heading-container h3 {
     padding-bottom: var(--spacing-100);
     font-size: var(--heading-font-size-s);
+  }
+
+  .hover-cards.split .heading-container h2 {
+    font-size: 22px; /* This heading size doesn't exist in the library */
   }
   .hover-cards .heading-container {
     padding-bottom: calc(20px - var(--box-shadow-vertical-offset));

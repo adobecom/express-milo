@@ -7,7 +7,7 @@
 .section[data-ax-panel][role='tabpanel'] {
   box-sizing: border-box;
   margin: 20px var(--ax-grid-margin) var(--spacing-400) var(--ax-grid-margin);
-  border: 2px solid var(--color-white);
+  border: 1px solid var(--color-white);
   border-radius: 16px;
   box-shadow: var(--ax-panels-box-shadow);
   padding: var(--spacing-400) var(--spacing-300) var(--spacing-300);
@@ -35,7 +35,6 @@
 
 .ax-panels .tablist-container {
   margin: auto;
-  
   border-radius: 8px;
   box-shadow: var(--ax-panels-box-shadow);
   padding: 4px 0;
@@ -146,6 +145,12 @@
   }
   .ax-panels [role='tab'] {
     font-size: var(--body-font-size-l );
+  }
+  .ax-panels.split .ax-panels-heading-container h2 {
+    font-size: var(--body-font-size-l);
+  }
+  .ax-panels.split [role='tab'] {
+    font-size: var(--body-font-size-m);
   }
   .section[data-ax-panel][role='tabpanel'] {
     margin: var(--ax-panels-fold) var(--ax-grid-margin) var(--spacing-800) var(--ax-grid-margin);
