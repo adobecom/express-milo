@@ -210,13 +210,6 @@
 
 /* Desktop styles */
 @media (min-width: 1200px) {
-  /* Common header styles for all background variants */
-  .banner-bg[class*="-bg"] h2,
-  .banner-bg[class*="-bg"] h3,
-  .banner-bg[class*="-bg"] h4 {
-    margin-top: var(--spacing-300);
-  }
-
   .banner-bg[class*="-bg"] {
     padding: var(--spacing-900) var(--spacing-600);
     max-width: 1600px;
