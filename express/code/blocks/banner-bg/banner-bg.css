@@ -143,6 +143,7 @@
   display: inline-block;
   margin-top: 0;
   margin-bottom: var(--spacing-300);
+  margin-right: var(--spacing-300);
 }
 
 .banner-bg[class*="-bg"].multi-button .button-container:last-child {
