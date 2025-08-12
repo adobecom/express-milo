@@ -22,9 +22,9 @@ main .ax-marquee-dynamic-hero p.button-container {
   line-height: 125%;
 }
 
-.ax-marquee-dynamic-hero > img.express-logo {
-  /* margin: 0 auto;
-  display: block; */
+.ax-marquee-dynamic-hero > img.express-logo,
+.ax-marquee-dynamic-hero div:has(picture) img.express-logo {
+  margin: 0;
 }
 
 .ax-marquee-dynamic-hero h1:first-of-type {
@@ -51,9 +51,26 @@ main .ax-marquee-dynamic-hero p.button-container {
 
 /* Keep hero-top flipped on mobile up to tablet */
 @media (max-width: 899px) {
+  .ax-marquee-dynamic-hero.hero-top {
+    display: flex;
+    flex-direction: column;
+  }
+  
   .ax-marquee-dynamic-hero.hero-top > div {
     display: flex;
     flex-direction: column;
+  }
+  
+  .ax-marquee-dynamic-hero.hero-top > div > div:has(picture) {
+    order: -1;
+  }
+  
+  .ax-marquee-dynamic-hero.hero-top > div > div:nth-child(1) {
+    order: 1;
+  }
+  
+  .ax-marquee-dynamic-hero.hero-top > img.express-logo {
+    order: 0;
   }
 }
 
