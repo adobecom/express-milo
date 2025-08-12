@@ -96,13 +96,13 @@ main .ax-marquee-dynamic-hero p.button-container {
   .ax-marquee-dynamic-hero > div {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-600);
   }
   
   .ax-marquee-dynamic-hero > div > div:first-child {
-    flex: 1;
-    text-align: left;
+    flex: 0 0 auto;
+    max-width: 50%;
   }
   
   .ax-marquee-dynamic-hero > div > div:has(picture) {
