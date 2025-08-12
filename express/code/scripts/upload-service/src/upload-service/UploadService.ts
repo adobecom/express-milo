@@ -65,6 +65,11 @@ export class UploadService {
    * @returns Promise resolving to upload result
    */
   async uploadAsset(options: UploadOptions): Promise<UploadResult> {
+    /**
+     * Reset the upload status to idle when the upload is completed or failed.
+     */
+    this.uploadStatus = UploadStatus.IDLE;
+    
     try {
       const {
         file,
@@ -127,7 +132,7 @@ export class UploadService {
       if(this._uploadBytesCompleted) {
         this.uploadStatus = UploadStatus.COMPLETED;
       }
-      
+
       const asset = result.result;
       return {
         asset,
