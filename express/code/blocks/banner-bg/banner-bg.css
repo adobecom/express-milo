@@ -101,6 +101,7 @@
 /* Last paragraph styling for background variants */
 .banner-bg[class*="-bg"] p:not(.button-container):last-child {
   margin-top: 0;
+  margin-bottom: 0;
   font-size: var(--body-font-size-l);
 }
 
