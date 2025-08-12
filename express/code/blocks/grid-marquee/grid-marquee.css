@@ -6,6 +6,8 @@
   text-align: center;
 }
 
+
+
 .grid-marquee .express-logo {
   width: initial;
   height: 30px;
@@ -451,3 +453,35 @@ main .section .grid-marquee h1 {
     font-size: var(--body-font-size-l);
   }
 }
+
+
+.grid-marquee.pricing-page {
+  --heading-size: 36px;
+}
+
+main .section .grid-marquee.pricing-page h1 {
+  font-weight: 900;
+  font-size: var(--heading-size);
+  line-height: 130%;
+  text-align: center;
+  padding-bottom: 8px;
+}
+
+.grid-marquee.pricing-page .headline {
+  padding-bottom: 0;
+}
+
+.grid-marquee.pricing-page .express-logo {
+  padding: 0px 0px 16px 0px
+}
+
+@media screen and (min-width: 1024px) {
+  .grid-marquee.pricing-page {
+    --heading-size: 45px;
+  }
+}
+
+
+
+
+
