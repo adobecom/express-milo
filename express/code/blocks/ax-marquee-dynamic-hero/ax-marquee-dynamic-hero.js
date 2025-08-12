@@ -8,6 +8,7 @@ export default async function decorate(block) {
     ({ createTag, getMetadata, getConfig } = utils);
   });
 
+  // Add button-container class to p tag after h1 and add classes to the link
   const h1 = block.querySelector('h1:first-of-type');
   if (h1) {
     const pWithLink = block.querySelector('p:has(a)');
@@ -22,10 +23,14 @@ export default async function decorate(block) {
 
   if (block && ['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');
-    const marquee = block.classList.contains('ax-marquee-dynamic-hero');
     logo.classList.add('express-logo');
-    if (marquee) {
-      block.prepend(logo);
+
+    const isMarquee = block.classList.contains('ax-marquee-dynamic-hero');
+    const isHeroTop = block.classList.contains('hero-top');
+
+    if (isMarquee) {
+      const targetElement = isHeroTop ? block.querySelector('div:has(picture)') : block;
+      targetElement?.appendChild(logo);
     }
   }
 }
