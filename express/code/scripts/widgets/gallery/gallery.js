@@ -37,7 +37,9 @@ function createControl(items, container, config) {
     if (first === -1) return; // middle of swapping only page
     if (first + inc < 0 || first + inc >= len) return; // no looping
     const target = items[(first + inc + len) % len];
+    if (center) container.classList.add('is-centering');
     target.scrollIntoView({ behavior: 'smooth', inline: center ? 'center' : 'start', block: 'nearest' });
+    if (center) setTimeout(() => container.classList.remove('is-centering'), 10);
   }, 30);
   prevButton.addEventListener('click', () => pageInc(-1));
   nextButton.addEventListener('click', () => pageInc(1));
@@ -89,6 +91,7 @@ export default async function buildGallery(
     loadStyle('/express/code/scripts/widgets/gallery/gallery.css', res);
   });
   container.classList.add('gallery');
+  if (config.center) container.classList.add('center');
   container.setAttribute('aria-roledescription', 'carousel');
   container.setAttribute('role', 'group');
   [...items].forEach((item) => {

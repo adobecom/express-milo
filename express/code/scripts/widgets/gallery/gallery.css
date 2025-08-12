@@ -6,6 +6,10 @@
   scroll-behavior: smooth;
 }
 
+.gallery.is-centering {
+  scroll-padding-inline: 50%;
+}
+
 .gallery::-webkit-scrollbar {
   display: none;
 }

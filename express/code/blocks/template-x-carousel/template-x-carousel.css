@@ -29,11 +29,11 @@
 }
 /* gallery styles */
 .template-x-carousel .gallery {
-  scroll-padding-inline: 50%;
   /* cancel the padding */
   margin: calc(-1 * var(--template-expand-top-len)) 0 calc(-1 * var(--template-expand-bot-len));
   /* avoid capping from .button-container */
-  padding: var(--template-expand-top-len) 0 var(--template-expand-bot-len);
+  padding-top: var(--template-expand-top-len);
+  padding-bottom: var(--template-expand-bot-len);
   align-items: center;
   gap: var(--ax-grid-gutter);
 }
