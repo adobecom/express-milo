@@ -57,8 +57,8 @@
   --border-width-thin: 1px;
   --border-width-medium: 2px;
   --border-radius-small: 4px;
-  --border-radius-medium: 11px;
-  --border-radius-large: 12px;
+  --border-radius-medium: 7px;
+  --border-radius-large: 8px;
 
   --padding-bottom: var(--spacing-l);
   padding-bottom: var(--padding-bottom);
@@ -92,12 +92,12 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 }
 
 .simplified-pricing-cards-v2 .eyebrow-content~.card-inner-content {
-  border-radius: 8px 8px 11px 11px;
+  border-radius: 8px;
 }
 
 .simplified-pricing-cards-v2 .card-inner-content {
   background: white;
-  border-radius: 11px;
+  border-radius:8px;
   padding: var(--spacing-300);
   gap: var(--spacing-100);
   display: flex;
