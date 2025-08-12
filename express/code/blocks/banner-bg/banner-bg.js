@@ -86,7 +86,7 @@ export default async function decorate(block) {
   if (shouldInjectLogo) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');
-    block.querySelector('H2')?.prepend(logo);
+    block.querySelector('H2')?.parentElement?.prepend(logo);
   }
 
   const buttons = block.querySelectorAll('a.button');
@@ -116,6 +116,4 @@ export default async function decorate(block) {
       button.classList.add('reverse');
     }
   });
-
-  fixIcons(block);
 }
