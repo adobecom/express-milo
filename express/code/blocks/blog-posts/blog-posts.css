@@ -245,6 +245,10 @@ main .section:has(.blog-posts) > .content a {
     padding: var(--spacing-100) 0;
 }
 
+.section.ax-blog-posts-container > .content a {
+    font-weight: var(--body-font-weight);
+}
+
 main .section:has(.blog-posts) > .content a > span {
     line-height: 0;
 }
