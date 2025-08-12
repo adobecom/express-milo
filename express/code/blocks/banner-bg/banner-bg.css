@@ -66,6 +66,7 @@
 .banner-bg[class*="-bg"] h2 {
   font-size: var(--heading-font-size-l);
   font-weight: 900;
+  margin-top: 0;
 }
 
 /* H3 specific styling */
@@ -89,18 +90,20 @@
   text-decoration-line: underline;
 }
 
+/* Paragraph styling for background variants */
+.banner-bg[class*="-bg"] p:not(.button-container) {
+  color: var(--color-black);
+  margin-top: var(--spacing-100);
+  margin-bottom: var(--spacing-400);
+}
+
 /* Logo styling */
 .banner-bg[class*="-bg"] .express-logo {
   display: block;
-  margin: 0 auto;
+  margin: 0 auto var(--spacing-200) auto;
+  padding-top: 0;
   width: 168px;
   height: auto;
-}
-
-/* Button styling for background variants */
-.banner-bg[class*="-bg"] .button-container {
-  margin-top: var(--spacing-500);
-  margin-bottom: var(--spacing-300);
 }
 
 /* Reduce spacing between stacked buttons on mobile */
@@ -122,6 +125,7 @@
 /* Make buttons display inline when there are multiple buttons */
 .banner-bg[class*="-bg"].multi-button .button-container {
   display: inline-block;
+  margin-top: 0;
 }
 
 .banner-bg[class*="-bg"].multi-button .button-container:last-child {
@@ -140,6 +144,7 @@
   align-items: center;
   justify-content: center;
   margin-right: 2px;
+  margin-top: 0;
 }
 
 /* Hover effects for banner button */
