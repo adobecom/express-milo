@@ -26,7 +26,7 @@ async function fetchBlogIndex(locales) {
   const byPath = {};
   jointData.forEach((post) => {
     if (post.tags) {
-      const tags = JSON.parse(post.tags);
+      const tags = typeof post.tags === 'string' ? JSON.parse(post.tags) : post.tags;
       tags.push(post.category);
       post.tags = JSON.stringify(tags);
     }

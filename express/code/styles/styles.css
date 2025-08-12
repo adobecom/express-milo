@@ -843,8 +843,8 @@ main .section:not(.xxxl-spacing-static,
   padding-bottom: 40px;
 }
 
-main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text, .hover-cards, .cta-cards) a.button.same-fcta,
-main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text, .hover-cards, .cta-cards) a.con-button.same-fcta,
+div[data-block-status]:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text, .hover-cards, .cta-cards) a.button.same-fcta,
+div[data-block-status]:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .ribbon-banner, .content, .banner, .text, .hover-cards, .cta-cards) a.con-button.same-fcta,
 #hero a.same-fcta {
   display: none;
 }
@@ -1020,8 +1020,8 @@ main .section.blog-content>.content>p {
     text-align: left;
   }
 
-  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .text, .hover-cards, .cta-cards) a.button.same-fcta,
-  main .section>div:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .text, .hover-cards, .cta-cards) a.con-button.same-fcta {
+  div[data-block-status]:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .text, .hover-cards, .cta-cards) a.button.same-fcta,
+  div[data-block-status]:not(.pricing-cards-wrapper, .pricing-table-wrapper, .split-action-wrapper, .link-list-wrapper, .wayfinder, .ratings, .text, .hover-cards, .cta-cards) a.con-button.same-fcta {
     display: inline-block;
   }
 
@@ -1114,11 +1114,15 @@ main .section.blog-content>.content>p {
   }
 
   main .section>.content {
-    max-width: 1024px;
+    max-width: var(--block-lg-max-width);
   }
 }
 
-/* long-form section: left-align text */
+main .section.long-form {
+  max-width: var(--block-lg-max-width);
+  margin: auto;
+}
+
 main .section.long-form.narrow {
   max-width: 850px;
   margin: 0 auto;
@@ -1443,3 +1447,9 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   height: 30px;
   padding: 1rem 0 1rem;
 }
+
+.section.display-none {
+  display: none;
+  height: 0px;
+}
+
