@@ -1,5 +1,6 @@
-import { getLibs, decorateButtonsDeprecated, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated, fixIcons, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
 import { normalizeHeadings } from '../../scripts/utils/decorate.js';
+import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 
 let createTag;
 
@@ -116,4 +117,14 @@ export default async function decorate(block) {
       button.classList.add('reverse');
     }
   });
+
+  const phoneNumberTags = block.querySelectorAll('a[title="{{business-sales-numbers}}"]');
+  if (phoneNumberTags.length > 0) {
+    try {
+      await formatSalesPhoneNumber(phoneNumberTags);
+    } catch (e) {
+      window.lana?.log('banner.js - error fetching sales phones numbers:', e.message);
+    }
+  }
+  fixIcons(block);
 }
