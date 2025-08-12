@@ -8,6 +8,12 @@ main .ax-marquee-dynamic-hero p.button-container {
   text-align: left;
 }
 
+.ax-marquee-dynamic-hero > img.express-logo,
+.ax-marquee-dynamic-hero div:has(picture) img.express-logo {
+  width: 164px;
+}
+
+
 .ax-marquee-dynamic-hero .button-container a.button {
   background-color: var(--color-background-accent-default);
   padding-top: var(--spacing-200);
