@@ -104,11 +104,19 @@
   font-size: var(--body-font-size-l);
 }
 
+/* Link styling within last paragraph */
+.banner-bg[class*="-bg"] p:not(.button-container):last-child a {
+  color: #222222;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 /* Logo styling */
 .banner-bg[class*="-bg"] .express-logo {
   display: block;
-  margin: 0 auto var(--spacing-200) auto;
+  margin: 0 auto;
   padding-top: 0;
+  padding-bottom: var(--spacing-200);
   width: 168px;
   height: auto;
 }
