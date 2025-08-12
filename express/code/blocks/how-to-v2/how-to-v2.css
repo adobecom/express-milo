@@ -112,6 +112,7 @@ main .section > .content:has( + .how-to-v2) h2 {
 
 .section.ax-how-to-v2-container .how-to-v2 picture img {
   max-width: 100%;
+  max-height: 100%;
 }
 
 main .section:has(.how-to-v2) .content em {
