@@ -23,6 +23,10 @@
   max-width: 100%;
 }
 
+.gallery.center .gallery--item {
+  scroll-snap-align: center;
+}
+
 .gallery-control {
   display: flex;
   justify-content: flex-end;
