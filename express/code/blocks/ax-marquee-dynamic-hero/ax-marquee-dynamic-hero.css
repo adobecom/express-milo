@@ -22,11 +22,6 @@ main .ax-marquee-dynamic-hero p.button-container {
   line-height: 125%;
 }
 
-.ax-marquee-dynamic-hero > img.express-logo,
-.ax-marquee-dynamic-hero div:has(picture) img.express-logo {
-  margin: 0;
-}
-
 .ax-marquee-dynamic-hero h1:first-of-type {
   font-size: var(--heading-font-size-l);
 }

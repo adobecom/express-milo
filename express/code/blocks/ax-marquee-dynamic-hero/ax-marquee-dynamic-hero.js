@@ -25,12 +25,12 @@ export default async function decorate(block) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');
 
-    const isMarquee = block.classList.contains('ax-marquee-dynamic-hero');
     const isHeroTop = block.classList.contains('hero-top');
-
-    if (isMarquee) {
-      const targetElement = isHeroTop ? block.querySelector('div:has(picture)') : block;
+    if (isHeroTop) {
+      const targetElement = block.querySelector('div:has(picture)');
       targetElement?.appendChild(logo);
+    } else {
+      block.prepend(logo);
     }
   }
 }
