@@ -13,13 +13,21 @@ main .ax-marquee-dynamic-hero p.button-container {
   width: 164px;
 }
 
+.ax-marquee-dynamic-hero div:has(picture) {
+  text-align: center;
+}
+
+.ax-marquee-dynamic-hero div:has(picture) picture {
+  display: inline-block;
+  max-width: 100%;
+}
+
 
 .ax-marquee-dynamic-hero .button-container a.button {
   background-color: var(--color-background-accent-default);
   padding-top: var(--spacing-200);
   padding-bottom: var(--spacing-200);
-  margin-top: 0;
-  margin-bottom: var(--spacing-600);
+  margin: 0 0 var(--spacing-600) 0;
   border-radius: 22px;
   width: 183px;
   font-size: var(--body-font-size-m);
@@ -30,12 +38,14 @@ main .ax-marquee-dynamic-hero p.button-container {
 
 .ax-marquee-dynamic-hero h1:first-of-type {
   font-size: var(--heading-font-size-l);
+  text-align: left;
 }
 
 .ax-marquee-dynamic-hero h1:first-of-type + p {
   margin-top: var(--spacing-300);
   margin-bottom: var(--spacing-400);
   font-size: var(--body-font-size-m);
+  text-align: left;
 }
 
 /* Media query for ax-columns-dynamic-hero on tablet */
