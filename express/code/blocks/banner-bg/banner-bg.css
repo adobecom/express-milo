@@ -150,6 +150,11 @@
   margin-right: 0;
 }
 
+/* Single button container styling */
+.banner-bg[class*="-bg"] .button-container:not(.multi-button .button-container) {
+  margin-bottom: var(--spacing-300)
+}
+
 .banner-bg[class*="-bg"] .button-container a.button.bg-banner-button {
   font-size: 18px;
   line-height: 1;
