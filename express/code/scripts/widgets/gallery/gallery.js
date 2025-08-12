@@ -36,7 +36,7 @@ function createControl(items, container) {
     if (first === -1) return; // middle of swapping only page
     if (first + inc < 0 || first + inc >= len) return; // no looping
     const target = items[(first + inc + len) % len];
-    target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   }, 30);
   prevButton.addEventListener('click', () => pageInc(-1));
   nextButton.addEventListener('click', () => pageInc(1));

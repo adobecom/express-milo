@@ -5,7 +5,6 @@ import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
 let createTag;
 let getConfig;
-let replaceKey;
 
 async function createTemplates(recipe) {
   const res = await fetchResults(recipe);
@@ -39,10 +38,7 @@ function decorateHeadingRow(headingRow) {
 }
 
 export default async function init(el) {
-  [{ createTag, getConfig }, { replaceKey }] = await Promise.all([
-    import(`${getLibs()}/utils/utils.js`),
-    import(`${getLibs()}/features/placeholders.js`),
-  ]);
+  ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const [headingRow, recipeRow] = el.children;
   decorateHeadingRow(headingRow);
   const recipe = recipeRow.textContent.trim();
