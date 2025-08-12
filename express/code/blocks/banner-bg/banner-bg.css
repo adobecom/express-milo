@@ -187,13 +187,6 @@
 
 /* Tablet styles */
 @media (min-width: 768px) {
-  /* Common header styles for all background variants */
-  .banner-bg[class*="-bg"] h2,
-  .banner-bg[class*="-bg"] h3,
-  .banner-bg[class*="-bg"] h4 {
-    margin-top: var(--spacing-200);
-  }
-
   .banner-bg[class*="-bg"] {
     padding: var(--spacing-600) var(--spacing-500);
   }
