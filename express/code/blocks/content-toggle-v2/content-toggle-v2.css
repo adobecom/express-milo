@@ -54,6 +54,7 @@ main .content-toggle-v2 .carousel-container .content-toggle-button {
     padding: var(--spacing-200) var(--spacing-200);
     border: none;
     background: none;
+    cursor: pointer;
 }
 
 
