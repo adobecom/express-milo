@@ -59,7 +59,7 @@ function initToggleTriggers(parent) {
       }
 
       if (entry.target === rightTrigger) {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting || isAtRightmostScroll(platform)) {
           rightControl.classList.add('arrow-hidden');
           platform.classList.remove('right-fader');
         } else {
