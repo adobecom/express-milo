@@ -202,6 +202,12 @@
     width: calc(100vw - var(--spacing-900));
   }
 
+  /* Paragraph styling for background variants */
+  .banner-bg[class*="-bg"] p:not(.button-container) {
+    margin-top: var(--spacing-200);
+    margin-bottom: var(--spacing-500);
+  }
+
   .banner-bg[class*="-bg"] h2 {
     max-width: 812px;
     margin-left: auto;
