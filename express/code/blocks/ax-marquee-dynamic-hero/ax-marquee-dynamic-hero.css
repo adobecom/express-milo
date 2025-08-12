@@ -1,0 +1,67 @@
+.ax-marquee-dynamic-hero {
+  padding: var(--spacing-600) 20px;
+  min-width: 320px;
+}
+
+main .ax-marquee-dynamic-hero p.button-container {
+  margin-top: 0;
+  text-align: left;
+}
+
+.ax-marquee-dynamic-hero .button-container a.button {
+  background-color: var(--color-background-accent-default);
+  padding-top: var(--spacing-200);
+  padding-bottom: var(--spacing-200);
+  margin-top: 0;
+  margin-bottom: var(--spacing-600);
+  border-radius: 22px;
+  width: 183px;
+  font-size: var(--body-font-size-m);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 125%;
+}
+
+.ax-marquee-dynamic-hero > img.express-logo {
+  /* margin: 0 auto;
+  display: block; */
+}
+
+.ax-marquee-dynamic-hero h1:first-of-type {
+  font-size: var(--heading-font-size-l);
+}
+
+.ax-marquee-dynamic-hero h1:first-of-type + p {
+  margin-top: var(--spacing-300);
+  margin-bottom: var(--spacing-400);
+  font-size: var(--body-font-size-m);
+}
+
+/* Media query for ax-columns-dynamic-hero on tablet */
+@media (min-width: 768px) and (max-width: 899px) {
+  .ax-marquee-dynamic-hero {
+    padding: var(--spacing-600) var(--spacing-500);
+  }
+  
+  .ax-marquee-dynamic-hero > div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Keep hero-top flipped on mobile up to tablet */
+@media (max-width: 899px) {
+  .ax-marquee-dynamic-hero.hero-top > div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Media query for ax-columns-dynamic-hero on desktop */
+@media (min-width: 900px) {
+  .ax-marquee-dynamic-hero {
+    padding: var(--spacing-900) var(--spacing-600);
+    max-width: 1440px;
+    margin: 0 auto;
+  }  
+}
