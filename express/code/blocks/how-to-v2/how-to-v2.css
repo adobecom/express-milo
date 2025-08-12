@@ -3,8 +3,8 @@
   flex-direction: column;
   gap: var(--spacing-600);
   margin: 0;
-  padding:  var(--spacing-600) 0;
-  width: var(--ax-grid-12-col-width);
+  padding:  var(--spacing-600) var(--ax-grid-margin);
+  max-width: var(--ax-grid-12-col-width);
 }
 
 main .section.ax-how-to-v2-container:not([data-padding='none']):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, 
@@ -21,6 +21,7 @@ main .section.ax-how-to-v2-container > .content:has( + .how-to-v2) h2 {
 .ax-how-to-v2-container .how-to-v2 {
   padding: 0;
 }
+
 .how-to-v2 {
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
@@ -109,6 +110,10 @@ main .section > .content:has( + .how-to-v2) h2 {
   min-width: 350px;
 }
 
+.section.ax-how-to-v2-container .how-to-v2 picture img {
+  max-width: 100%;
+}
+
 main .section:has(.how-to-v2) .content em {
   font-style: normal;
   background: linear-gradient(140.08deg, #FF4DD2 67.54%, #FF993B 76.42%);
@@ -142,10 +147,7 @@ main .section:has(.how-to-v2) .content em {
 }
 
 .how-to-v2 .steps-content .media-container {
-  margin-left: auto;
-  margin-right: auto;
   position: relative;
-  padding: var(--spacing-400);
   min-width: 350px;
 }
 
@@ -266,10 +268,6 @@ main .section:has(.how-to-v2) .content em {
 
   .how-to-v2 .image-container img {
     height: unset;
-  }
-
-  .how-to-v2 .steps-content .steps {
-    padding-left: 24px;
   }
 
   .how-to-v2 .steps-content .media-container::before {
