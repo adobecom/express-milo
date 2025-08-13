@@ -1,11 +1,11 @@
-/* Tooltip CSS */ 
-.tooltip button.hover.tooltip-text,
-.tooltip .tooltip-text.hover {
+/* Tooltip CSS */
+.image-tooltip button.hover.tooltip-text, 
+.image-tooltip .tooltip-text.hover {
     opacity: 1;
     pointer-events: all;
 }
 
-.tooltip .tooltip-text {
+.image-tooltip .tooltip-text {
     opacity: 0;
     padding: 3px 8px 5px 8px;
     z-index: 10;
@@ -23,24 +23,24 @@
     font-family: var(--body-font-family);
 }
 
-.tooltip>button {
+.image-tooltip>button {
     border: none;
     background-color: transparent;
     padding: 0px;
     position: relative;
 }
 
-.tooltip .tooltip-text.overflow-left {
+.image-tooltip .tooltip-text.overflow-left {
     right: inherit;
     left: -20px;
 }
 
-.tooltip .tooltip-text.overflow-right {
+.image-tooltip .tooltip-text.overflow-right {
     left: inherit;
     right: -20px;
 }
 
-.tooltip .tooltip-text::after {
+.image-tooltip .tooltip-text::after {
     content: '';
     position: absolute;
     bottom: -5px;
@@ -51,26 +51,25 @@
     border-top: 5px solid black;
 }
 
-.tooltip .tooltip-text.overflow-left::after {
+.image-tooltip .tooltip-text.overflow-left::after {
     right: inherit;
     left: 23px;
 }
 
-.tooltip .tooltip-text.overflow-right::after {
+.image-tooltip .tooltip-text.overflow-right::after {
     left: inherit;
     right: 20px;
 }
 
-.tooltip .tooltip-icon {
+.image-tooltip .tooltip-icon {
     position: relative;
-    top: 2px;
 }
 
-.tooltip {
+.image-tooltip .tooltip-icon {
     position: relative;
     display: inline;
 }
 
-.tooltip span {
+.image-tooltip span {
     position: relative;
 }
