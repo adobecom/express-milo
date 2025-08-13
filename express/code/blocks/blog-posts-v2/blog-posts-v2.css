@@ -36,7 +36,7 @@ main .section:has(.blog-posts-wrapper) div > h3:first-child  {
     width: 66%;;
 }
 
-.blog main .section:has(.blog-posts-wrapper) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
+.blog main .section:has(.blog-posts-wrapper) > div > h2, main .section:has(.blog-posts-v2) div.blog-posts-decoration {
     max-width: 280px;
 }
 
@@ -45,35 +45,35 @@ main .section:has(.blog-posts-wrapper) div.blog-posts-decoration {
     justify-content: space-between;
 }
 
-main .section:has(.blog-posts) div.blog-posts-decoration p {
+main .section:has(.blog-posts-v2) div.blog-posts-decoration p {
     margin: 0;
     font-family: var(--body-serif-font-family);
 }
 
-main .section:has(.blog-posts) div.blog-posts-decoration p a {
+main .section:has(.blog-posts-v2) div.blog-posts-decoration p a {
     margin: 0;
     font-family: var(--body-font-family);
 }
 
-main .blog-posts .blog-cards {
+main .blog-posts-v2 .blog-cards {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: var(--spacing-300);
 }
 
-main .blog-posts {
+main .blog-posts-v2 {
     text-align: center;
 }
 
-main .blog-posts .blog-card, main .blog-posts .blog-hero-card {
+main .blog-posts-v2 .blog-card, main .blog-posts .blog-hero-card {
     cursor: pointer;
     text-decoration: unset;
     color: unset;
     text-align: left;
 }
 
-main .blog-posts .blog-hero-card {
+main .blog-posts-v2 .blog-hero-card {
     display: flex;
     flex-direction: column-reverse;
     width: 100%;
@@ -92,23 +92,23 @@ main .blog-posts .blog-hero-card {
     border-left: 2px solid var(--palette-gray-200);
 }
 
-main .blog-posts .blog-card > p, main .blog-posts .blog-hero-card > p {
+main .blog-posts .blog-card > p, main .blog-posts-v2 .blog-hero-card > p {
     margin: 0;
 }
 
-main .blog-posts .blog-card .blog-card-image {
+main .blog-posts-v2 .blog-card .blog-card-image {
     line-height: 0;
     margin: 0;
 }
 
-main .blog-posts .blog-hero-card .blog-card-image {
+main .blog-posts-v2 .blog-hero-card .blog-card-image {
     line-height: 0;
     grid-area: image;
     margin: 0;
     height: 276px;
 }
 
-main .blog-posts .blog-card .blog-card-image img {
+main .blog-posts-v2 .blog-card .blog-card-image img {
     object-fit: cover;
     height: 100%;
     width: 100%;
@@ -116,7 +116,7 @@ main .blog-posts .blog-card .blog-card-image img {
     aspect-ratio: 16 / 9;
 }
 
-main .blog-posts .blog-hero-card .blog-card-image img {
+main .blog-posts-v2 .blog-hero-card .blog-card-image img {
     height: 100%;
     width: 100%;
     margin: auto;
@@ -124,7 +124,7 @@ main .blog-posts .blog-hero-card .blog-card-image img {
     object-fit: cover;
 }
 
-main .blog-posts .blog-card h3.blog-card-title {
+main .blog-posts-v2 .blog-card h3.blog-card-title {
     font-size: var(--heading-font-size-xs);
     font-weight: var(--subheading-font-weight);
     line-height: var(--heading-line-height);
@@ -138,7 +138,7 @@ main .blog-posts .blog-card h3.blog-card-title {
     color: var(--color-gray-900);
 }
 
-main .blog-posts .blog-hero-card h3.blog-card-title {
+main .blog-posts-v2 .blog-hero-card h3.blog-card-title {
     font-size: var(--heading-font-size-xl);
     line-height: var(--heading-line-height);
     text-align: left;
@@ -146,7 +146,7 @@ main .blog-posts .blog-hero-card h3.blog-card-title {
     margin: 0 24px;
 }
 
-main .blog-posts .blog-card p.blog-card-teaser {
+main .blog-posts-v2 .blog-card p.blog-card-teaser {
     font-size: var(--body-font-size-m);
     line-height: var(--body-line-height);
     font-weight: normal;
@@ -160,7 +160,7 @@ main .blog-posts .blog-card p.blog-card-teaser {
 }
 
 
-main .blog-posts .blog-hero-card p.blog-card-teaser {
+main .blog-posts-v2 .blog-hero-card p.blog-card-teaser {
     font-family: var(--body-serif-font-family);
     font-size: var(--body-font-size-l);
     text-align: left;
@@ -169,7 +169,7 @@ main .blog-posts .blog-hero-card p.blog-card-teaser {
     margin: 24px;
 }
 
-main .blog-posts p.blog-card-date {
+main .blog-posts-v2 p.blog-card-date {
     font-size: var(--body-font-size-s);
     line-height: var(--body-line-height);
     font-family: var(--body-serif-font-family);
@@ -177,11 +177,11 @@ main .blog-posts p.blog-card-date {
     grid-area: date;
 }
 
-main .blog-posts .blog-hero-card p.blog-card-date {
+main .blog-posts-v2 .blog-hero-card p.blog-card-date {
     margin: 32px 0 32px 24px;
 }
 
-main .blog-posts .blog-hero-card p.blog-card-cta {
+main .blog-posts-v2 .blog-hero-card p.blog-card-cta {
     grid-area: cta;
     text-align: left;
     margin-top: 14px;
@@ -189,11 +189,11 @@ main .blog-posts .blog-hero-card p.blog-card-cta {
     margin-left: 24px;
 }
 
-main .blog-posts .blog-hero-card p.blog-card-cta a {
+main .blog-posts-v2 .blog-hero-card p.blog-card-cta a {
     margin-left: 0;
 }
 
-main .blog-posts .card {
+main .blog-posts-v2 .card {
   display: flex;
   flex-direction: column;
   width: 290px;
@@ -201,17 +201,17 @@ main .blog-posts .card {
   text-align: left;
   cursor: pointer;
 }
-main .blog-posts .card .card-image {
+main .blog-posts-v2 .card .card-image {
   line-height: 0;
 }
 
-main .blog-posts .card .card-image img {
+main .blog-posts-v2 .card .card-image img {
   height: 200px;
   object-fit: cover;
   width: 100%;
 }
 
-main .blog-posts .card .card-body {
+main .blog-posts-v2 .card .card-body {
   padding: 20px;
   border: 1px solid lightgrey;
   border-radius: 0 0 5px 5px;
@@ -219,25 +219,25 @@ main .blog-posts .card .card-body {
   height: 300px;
 }
 
-main .blog-posts .card .card-body p {
+main .blog-posts-v2 .card .card-body p {
   font-size: 1rem;
 }
 
-main .section:has(.blog-posts) > .content {
+main .section:has(.blog-posts-v2) > .content {
     display: flex;
     justify-content: space-between;
     align-items: end;
     gap: var(--spacing-400);
     max-width: var(--block-wd-grid-max-width);
 }
-main .section:has(.blog-posts) > .content p {
+main .section:has(.blog-posts-v2) > .content p {
     margin: 0;
     font-size: var(--body-font-size-s);
     font-weight: 400;
     line-height: 142.857%;
 }
 
-main .section:has(.blog-posts) > .content a {
+main .section:has(.blog-posts-v2) > .content a {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -249,15 +249,15 @@ main .section:has(.blog-posts) > .content a {
     font-weight: var(--body-font-weight);
 }
 
-main .section:has(.blog-posts) > .content a > span {
+main .section:has(.blog-posts-v2) > .content a > span {
     line-height: 0;
 }
 
-main .section:has(.blog-posts) > .content > h2 {
+main .section:has(.blog-posts-v2) > .content > h2 {
     margin-top: 80px;
 }
 
-main .section:has(.blog-posts) > .content > h3 {
+main .section:has(.blog-posts-v2) > .content > h3 {
     font-size: var(--heading-font-size-m);
     margin-top: 64px;
 }
@@ -268,45 +268,45 @@ main .section:has(.blog-posts) > .content > h3 {
         margin-left: 32px
     }
 
-    main .blog-posts .blog-cards {
+    main .blog-posts-v2 .blog-cards {
         width: var(--ax-grid-12-col-width);
         gap: var(--spacing-400);
         flex-direction: row;
     }
 
-    main .blog-posts .blog-hero-card .blog-card-image {
+    main .blog-posts-v2 .blog-hero-card .blog-card-image {
         min-width: 488px;
         max-width: 488px;
         height: 274px;
     }
 
 
-    main .blog-posts .blog-hero-card .blog-card-image {
+    main .blog-posts-v2 .blog-hero-card .blog-card-image {
         width: 100%;
     }
 
-    main .blog-posts .blog-card .blog-card-image {
+    main .blog-posts-v2 .blog-card .blog-card-image {
         line-height: 0;
         grid-area: image;
         margin: 0;
     }
 
-    main .blog-posts .blog-card {
+    main .blog-posts-v2 .blog-card {
         width: 33%;;
     }
 
-    main .blog-posts .blog-hero-card {
+    main .blog-posts-v2 .blog-hero-card {
         flex-direction: unset;
         max-width: 1200px;
         align-items: center;
         margin: 56px auto;
     }
 
-    main .blog-posts .blog-hero-card p.blog-card-cta {
+    main .blog-posts-v2 .blog-hero-card p.blog-card-cta {
         margin-bottom: 0px;
     }
 
-    main .blog-posts .blog-hero-card p.blog-card-cta a {
+    main .blog-posts-v2 .blog-hero-card p.blog-card-cta a {
         margin-bottom: 0px;
     }
 
@@ -314,7 +314,7 @@ main .section:has(.blog-posts) > .content > h3 {
         max-width: 1199px;
     }
 
-    .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
+    .blog main .section:has(.blog-posts-v2) > div > h2, main .section:has(.blog-posts-v2) div.blog-posts-v2-decoration {
         max-width: 700px;
     }
 }
@@ -328,48 +328,48 @@ main .section:has(.blog-posts) > .content > h3 {
         margin-left: auto;
     }
 
-    main .blog-posts .blog-hero-card .blog-card-image {
+    main .blog-posts-v2 .blog-hero-card .blog-card-image {
         min-width: 600px;
         max-width: 600px;
         height: 338px;
     }
 
-    main .blog-posts .blog-card {
+    main .blog-posts-v2 .blog-card {
         padding: 0;
     }
 
-    .section.ax-blog-posts-container .blog-posts .blog-card .blog-card-body {
+    .section.ax-blog-posts-container .blog-posts-v2 .blog-card .blog-card-body {
         min-height: 135px;
     }
 
-    main .blog-posts .blog-card h3.blog-card-title {
+    main .blog-posts-v2 .blog-card h3.blog-card-title {
         font-size: var(--heading-font-size-s);
     }
 
-    main .blog-posts .blog-cards {
+    main .blog-posts-v2 .blog-cards {
         width: var(--ax-grid-12-col-width);
         gap: var(--spacing-400);
     }
 
-    .blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
+    .blog main .section:has(.blog-posts-v2) > div > h2, main .section:has(.blog-posts-v2) div.blog-posts-v2-decoration {
         max-width: 1088px;
     }
 }
 
 /* Japanese font styles */
-:lang(ja) main .section:has(.blog-posts) div.blog-posts-decoration p {
+:lang(ja) main .section:has(.blog-posts-v2) div.blog-posts-decoration p {
     font-family: var(--body-font-family);
 }
 
-:lang(ja) main .blog-posts .blog-card p.blog-card-teaser {
+:lang(ja) main .blog-posts-v2 .blog-card p.blog-card-teaser {
     font-family: var(--body-font-family);
 }
 
-:lang(ja) main .blog-posts .blog-hero-card p.blog-card-teaser {
+:lang(ja) main .blog-posts-v2 .blog-hero-card p.blog-card-teaser {
     font-family: var(--body-font-family);
 }
 
-:lang(ja) main .blog-posts p.blog-card-date {
+:lang(ja) main .blog-posts-v2 p.blog-card-date {
     font-family: var(--body-font-family);
     font-weight: var(--body-font-weight);
 }

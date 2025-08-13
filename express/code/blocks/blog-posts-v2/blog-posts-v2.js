@@ -144,11 +144,11 @@ async function filterAllBlogPostsOnPage() {
       resolve = r;
     });
     const results = [];
-    const blocks = [...document.querySelectorAll('.blog-posts')];
+    const blocks = [...document.querySelectorAll('.blog-posts-v2')];
 
     if (!blogIndex) {
       const locales = [getConfig().locale.prefix];
-      const allBlogLinks = document.querySelectorAll('.blog-posts a');
+      const allBlogLinks = document.querySelectorAll('.blog-posts-v2 a');
       allBlogLinks.forEach((l) => {
         const blogLocale = getLocale(getConfig().locales, new URL(l).pathname).prefix;
         if (!locales.includes(blogLocale)) {
