@@ -2,36 +2,13 @@ import { getLibs, decorateButtonsDeprecated, fixIcons, getIconElementDeprecated,
 import { normalizeHeadings } from '../../scripts/utils/decorate.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 
-let createTag;
+// ============================================================================
+// CONFIGURATION
+// ============================================================================
 
-export default async function decorate(block) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
-    ({ createTag } = utils);
-  });
-
-  // Check for background image classes early
-  const backgroundImageClasses = [
-    'light-bg',
-    'blue-green-pink-bg',
-    'blue-bg',
-    'blue-pink-orange-bg',
-    'green-blue-red-bg',
-    'blue-purple-gray-bg',
-    'yellow-pink-blue-bg',
-  ];
-
-  let hasBackgroundImage = false;
-  for (const className of backgroundImageClasses) {
-    if (block.classList.contains(className)) {
-      hasBackgroundImage = true;
-      break;
-    }
-  }
-
-  // Load CSS immediately if background variant detected
-  if (hasBackgroundImage) {
-    // Preload only the specific background image for the detected class
-    const backgroundImageMap = {
+const CONFIG = {
+  background: {
+    variants: {
       'light-bg': '/express/code/blocks/banner-bg/img/light-bg.jpg',
       'blue-green-pink-bg': '/express/code/blocks/banner-bg/img/blue-green-pink-bg.jpg',
       'blue-bg': '/express/code/blocks/banner-bg/img/blue-bg.jpg',
@@ -39,92 +16,211 @@ export default async function decorate(block) {
       'green-blue-red-bg': '/express/code/blocks/banner-bg/img/green-blue-red-bg.jpg',
       'blue-purple-gray-bg': '/express/code/blocks/banner-bg/img/blue-purple-gray-bg.jpg',
       'yellow-pink-blue-bg': '/express/code/blocks/banner-bg/img/yellow-pink-blue-bg.jpg',
-    };
+    },
+    get variantClasses() {
+      return Object.keys(this.variants);
+    },
+  },
+  buttons: {
+    base: ['accent', 'dark'],
+    multiButton: ['reverse'],
+    background: ['bg-banner-button'],
+    backgroundSecondary: ['bg-banner-button-secondary'],
+    remove: ['primary', 'secondary'],
+  },
+  headings: ['h2', 'h3', 'h4'],
+  logo: {
+    icon: 'adobe-express-logo',
+    class: 'express-logo',
+    target: 'H2',
+  },
+  phoneNumber: {
+    selector: 'a[title="{{business-sales-numbers}}"]',
+  },
+};
 
-    // Find which specific class exists and preload its image
-    for (const className of backgroundImageClasses) {
-      if (block.classList.contains(className)) {
-        const imgSrc = backgroundImageMap[className];
-        if (imgSrc && !document.querySelector(`link[href="${imgSrc}"]`)) {
-          const preloadLink = document.createElement('link');
-          preloadLink.rel = 'preload';
-          preloadLink.as = 'image';
-          preloadLink.href = imgSrc;
-          document.head.appendChild(preloadLink);
-        }
-        break; // Only preload the first matching class
-      }
-    }
+// ============================================================================
+// UTILITIES
+// ============================================================================
+
+let createTag;
+
+/**
+ * Safely applies multiple CSS classes to an element
+ * @param {HTMLElement} element - The target element
+ * @param {string[]} classes - Array of class names to add
+ */
+function addClasses(element, classes) {
+  classes.forEach((className) => element.classList.add(className));
+}
+
+/**
+ * Safely removes multiple CSS classes from an element
+ * @param {HTMLElement} element - The target element
+ * @param {string[]} classes - Array of class names to remove
+ */
+function removeClasses(element, classes) {
+  classes.forEach((className) => element.classList.remove(className));
+}
+
+// ============================================================================
+// BACKGROUND HANDLING
+// ============================================================================
+
+/**
+ * Detects background variant class on the block
+ * @param {HTMLElement} block - The banner block element
+ * @returns {string|null} Background variant class name or null
+ */
+function detectBackgroundVariant(block) {
+  return CONFIG.background.variantClasses.find(
+    (className) => block.classList.contains(className),
+  ) || null;
+}
+
+/**
+ * Preloads background image for performance
+ * @param {string} imagePath - Path to the background image
+ */
+function preloadBackgroundImage(imagePath) {
+  if (!imagePath || document.querySelector(`link[href="${imagePath}"]`)) {
+    return;
   }
 
-  const section = block.closest('.section');
-  if (section?.style?.background) block.style.background = section.style.background;
+  const preloadLink = document.createElement('link');
+  preloadLink.rel = 'preload';
+  preloadLink.as = 'image';
+  preloadLink.href = imagePath;
+  document.head.appendChild(preloadLink);
+}
 
-  // Create background container for banners with background images
-  if (hasBackgroundImage) {
-    const backgroundContainer = createTag('div', { class: 'background-container' });
+/**
+ * Creates background container and restructures DOM
+ * @param {HTMLElement} block - The banner-bg block element
+ */
+function createBackgroundContainer(block) {
+  const container = createTag('div', { class: 'background-container' });
 
-    // Move all existing content into the background container
-    while (block.firstChild) {
-      backgroundContainer.appendChild(block.firstChild);
-    }
-
-    block.appendChild(backgroundContainer);
-
-    // Normalize headings first to ensure proper structure
-    normalizeHeadings(block, ['h2', 'h3', 'h4']);
+  // Move all content into container
+  while (block.firstChild) {
+    container.appendChild(block.firstChild);
   }
 
-  // Check section metadata for inject-logo setting
-  const sectionMetadata = section?.querySelector('.section-metadata');
-  let shouldInjectLogo = false;
+  block.appendChild(container);
+  normalizeHeadings(block, CONFIG.headings);
+}
 
-  if (sectionMetadata) {
-    const meta = readBlockConfig(sectionMetadata);
-    shouldInjectLogo = ['on', 'yes'].includes(meta['inject-logo']?.toLowerCase());
+// ============================================================================
+// CONTENT ENHANCEMENT
+// ============================================================================
+
+/**
+ * Injects Adobe Express logo if configured
+ * @param {HTMLElement} block - The banner block element
+ * @param {HTMLElement} section - The parent section element
+ */
+function injectLogo(block, section) {
+  const metadata = section?.querySelector('.section-metadata');
+  if (!metadata) return;
+
+  const config = readBlockConfig(metadata);
+  const shouldInject = ['on', 'yes'].includes(config['inject-logo']?.toLowerCase());
+
+  if (shouldInject) {
+    const logo = getIconElementDeprecated(CONFIG.logo.icon);
+    logo.classList.add(CONFIG.logo.class);
+    block.querySelector(CONFIG.logo.target)?.parentElement?.prepend(logo);
   }
+}
 
-  if (shouldInjectLogo) {
-    const logo = getIconElementDeprecated('adobe-express-logo');
-    logo.classList.add('express-logo');
-    block.querySelector('H2')?.parentElement?.prepend(logo);
-  }
+/**
+ * Applies comprehensive button styling
+ * @param {HTMLElement} block - The banner block element
+ * @param {string|null} variantClass - Background variant class
+ */
+function styleButtons(block, variantClass) {
+  const buttons = Array.from(block.querySelectorAll('a.button'));
+  if (buttons.length === 0) return;
 
-  const buttons = block.querySelectorAll('a.button');
+  // Add multi-button class to block if needed
   if (buttons.length > 1) {
     block.classList.add('multi-button');
   }
 
-  // Add bg-variant-button class for background image variants FIRST
-  if (hasBackgroundImage) {
-    buttons.forEach((button, index) => {
-      button.classList.add('bg-banner-button');
+  buttons.forEach((button, index) => {
+    // Remove default classes
+    removeClasses(button, CONFIG.buttons.remove);
 
-      // For multi-button banners with background images, style the second button differently
+    // Add base classes
+    addClasses(button, CONFIG.buttons.base);
+
+    // Handle background variant styling
+    if (variantClass) {
+      addClasses(button, CONFIG.buttons.background);
+
+      // Style secondary button for multi-button backgrounds
       if (block.classList.contains('multi-button') && index === 1) {
-        button.classList.add('bg-banner-button-secondary');
+        addClasses(button, CONFIG.buttons.backgroundSecondary);
       }
-    });
-  }
+    }
 
-  // button on dark background
-  buttons.forEach((button) => {
-    button.classList.remove('primary');
-    button.classList.remove('secondary');
-
-    button.classList.add('accent', 'dark');
+    // Add multi-button specific classes
     if (block.classList.contains('multi-button')) {
-      button.classList.add('reverse');
+      addClasses(button, CONFIG.buttons.multiButton);
     }
   });
+}
 
-  const phoneNumberTags = block.querySelectorAll('a[title="{{business-sales-numbers}}"]');
-  if (phoneNumberTags.length > 0) {
-    try {
-      await formatSalesPhoneNumber(phoneNumberTags);
-    } catch (e) {
-      window.lana?.log('banner.js - error fetching sales phones numbers:', e.message);
-    }
+/**
+ * Formats sales phone numbers
+ * @param {HTMLElement} block - The banner block element
+ */
+async function formatPhoneNumbers(block) {
+  const phoneTags = block.querySelectorAll(CONFIG.phoneNumber.selector);
+  if (phoneTags.length === 0) return;
+
+  try {
+    await formatSalesPhoneNumber(phoneTags);
+  } catch (error) {
+    window.lana?.log('banner-bg.js - error formatting phone numbers:', error.message);
   }
+}
+
+// ============================================================================
+// MAIN DECORATOR
+// ============================================================================
+
+/**
+ * Main decorator function for banner-bg blocks
+ * @param {HTMLElement} block - The banner block element to decorate
+ */
+export default async function decorate(block) {
+  // Phase 1: Initialize dependencies
+  const [utils] = await Promise.all([
+    import(`${getLibs()}/utils/utils.js`),
+    decorateButtonsDeprecated(block),
+  ]);
+  ({ createTag } = utils);
+
+  // Phase 2: Detect and setup background
+  const variantClass = detectBackgroundVariant(block);
+  const hasBackground = variantClass !== null;
+
+  if (hasBackground) {
+    const imagePath = CONFIG.background.variants[variantClass];
+    preloadBackgroundImage(imagePath);
+    createBackgroundContainer(block);
+  }
+
+  // Phase 3: Handle section inheritance
+  const section = block.closest('.section');
+  if (section?.style?.background) {
+    block.style.background = section.style.background;
+  }
+
+  // Phase 4: Enhance content
+  injectLogo(block, section);
+  styleButtons(block, variantClass);
+  await formatPhoneNumbers(block);
   fixIcons(block);
 }
