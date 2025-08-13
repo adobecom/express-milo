@@ -6,7 +6,7 @@
 
 main .ax-marquee-dynamic-hero p.button-container {
   margin-top: 0;
-  text-align: left;
+  text-align: center;
 }
 
 .ax-marquee-dynamic-hero > img.express-logo,
@@ -67,14 +67,14 @@ main .ax-marquee-dynamic-hero p.button-container {
 
 .ax-marquee-dynamic-hero h1:first-of-type {
   font-size: var(--heading-font-size-l);
-  text-align: left;
+  text-align: center;
 }
 
 .ax-marquee-dynamic-hero h1:first-of-type + p {
   margin-top: var(--spacing-300);
   margin-bottom: var(--spacing-400);
   font-size: var(--body-font-size-m);
-  text-align: left;
+  text-align: center;
 }
 
 /* Media query for ax-columns-dynamic-hero on tablet */
@@ -137,5 +137,17 @@ main .ax-marquee-dynamic-hero p.button-container {
   .ax-marquee-dynamic-hero > div > div:has(picture) {
     flex: 1;
     text-align: right;
+  }
+  
+  main .ax-marquee-dynamic-hero p.button-container {
+    text-align: left;
+  }
+  
+  .ax-marquee-dynamic-hero h1:first-of-type {
+    text-align: left;
+  }
+  
+  .ax-marquee-dynamic-hero h1:first-of-type + p {
+    text-align: left;
   }
 }
