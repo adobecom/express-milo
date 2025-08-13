@@ -3,7 +3,6 @@
   padding-right: var(--spacing-300);
   margin: 0;
   max-width: unset;
-  color: var( --color-gray-900);
 }
 
 .how-to-v2 h2 {
@@ -17,7 +16,6 @@ main .section > .content:has( + .how-to-v2) h2 {
   font-size: var(--heading-font-size-s);
   margin-top: -12px;
   padding-bottom: var(--spacing-200);
-  color: var( --color-gray-900);
 }
 
 .how-to-v2 ol {
