@@ -25,6 +25,15 @@ main .ax-marquee-dynamic-hero p.button-container {
   border-radius: 16px;
 }
 
+.ax-marquee-dynamic-hero .video-controls-wrapper {
+  background-color: white;
+}
+
+.ax-marquee-dynamic-hero .accessibility-control.icon-pause-video,
+.ax-marquee-dynamic-hero .accessibility-control.icon-play-video {
+  filter: invert(100%);
+}
+
 .ax-marquee-dynamic-hero .video-container video::-webkit-media-controls,
 .ax-marquee-dynamic-hero .video-container video::-webkit-media-controls-panel,
 .ax-marquee-dynamic-hero .video-container video::-webkit-media-controls-play-button,
