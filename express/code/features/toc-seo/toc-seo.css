@@ -61,7 +61,7 @@ main .icon {
 
 .toc-title {
   color: var(--color-black);
-  font-size: 18px;
+  font-size: var(--body-font-size-l);
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
