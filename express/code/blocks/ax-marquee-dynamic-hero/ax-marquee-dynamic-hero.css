@@ -65,16 +65,12 @@ main .ax-marquee-dynamic-hero p.button-container {
   line-height: 125%;
 }
 
-.ax-marquee-dynamic-hero h1:first-of-type,
-.ax-marquee-dynamic-hero h2:first-of-type,
-.ax-marquee-dynamic-hero h3:first-of-type {
+.ax-marquee-dynamic-hero [class*="heading"]:first-of-type {
   font-size: var(--heading-font-size-l);
   text-align: center;
 }
 
-.ax-marquee-dynamic-hero h1:first-of-type + p,
-.ax-marquee-dynamic-hero h2:first-of-type + p,
-.ax-marquee-dynamic-hero h3:first-of-type + p {
+.ax-marquee-dynamic-hero [class*="heading"]:first-of-type + p {
   margin-top: var(--spacing-300);
   margin-bottom: var(--spacing-400);
   font-size: var(--body-font-size-m);
@@ -147,15 +143,11 @@ main .ax-marquee-dynamic-hero p.button-container {
     text-align: left;
   }
   
-  .ax-marquee-dynamic-hero h1:first-of-type,
-  .ax-marquee-dynamic-hero h2:first-of-type,
-  .ax-marquee-dynamic-hero h3:first-of-type {
+  .ax-marquee-dynamic-hero [class*="heading"]:first-of-type {
     text-align: left;
   }
   
-  .ax-marquee-dynamic-hero h1:first-of-type + p,
-  .ax-marquee-dynamic-hero h2:first-of-type + p,
-  .ax-marquee-dynamic-hero h3:first-of-type + p {
+  .ax-marquee-dynamic-hero [class*="heading"]:first-of-type + p {
     text-align: left;
   }
 }

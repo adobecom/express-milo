@@ -28,6 +28,7 @@ let getMetadata;
  */
 function setupButtonStyling(block) {
   const heading = block.querySelector('h1,h2,h3:first-of-type');
+  heading?.classList.add('heading');
   if (!heading) return;
 
   const pWithLink = block.querySelector('p:has(a)');
