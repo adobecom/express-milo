@@ -154,18 +154,18 @@ function applyMinimumDistance(position) {
 }
 
 /**
- * Ensures the TOC doesn't overlap with the link list wrapper
+ * Ensures the TOC doesn't overlap with the footer
  * @param {number} position - Current position
- * @param {HTMLElement} linkListWrapper - Link list wrapper element
  * @param {HTMLElement} tocElement - TOC element
  * @returns {number} Adjusted position
  */
-function preventOverlapWithLinkList(position, linkListWrapper, tocElement) {
-  if (!linkListWrapper) return position;
+function preventOverlapWithFooter(position, tocElement) {
+  const footer = document.querySelector('footer');
+  if (!footer) return position;
 
-  const linkListTop = linkListWrapper.offsetTop - window.pageYOffset;
+  const footerTop = footer.offsetTop - window.pageYOffset;
   const tocHeight = tocElement.offsetHeight;
-  const maxTopPosition = linkListTop - tocHeight;
+  const maxTopPosition = footerTop - tocHeight;
 
   return Math.min(position, maxTopPosition);
 }
@@ -188,14 +188,13 @@ function handleDesktopPositioning(tocElement) {
   if (!isDesktopViewport()) return;
 
   const sectionElement = document.querySelector(CONFIG.selectors.section);
-  const linkListWrapper = document.querySelector(CONFIG.selectors.linkListWrapper);
 
   if (!sectionElement || !tocElement) return;
 
   // Calculate and apply positioning constraints
   let position = calculateInitialPosition(sectionElement);
   position = applyMinimumDistance(position);
-  position = preventOverlapWithLinkList(position, linkListWrapper, tocElement);
+  position = preventOverlapWithFooter(position, tocElement);
 
   applyPositionToElement(tocElement, position);
 }
