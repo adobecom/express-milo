@@ -90,7 +90,7 @@ main .ax-marquee-dynamic-hero p.button-container {
 }
 
 /* Keep hero-top flipped on mobile up to tablet */
-@media (max-width: 899px) {
+@media (max-width: 1023px) {
   .ax-marquee-dynamic-hero.hero-top {
     display: flex;
     flex-direction: column;
@@ -115,7 +115,7 @@ main .ax-marquee-dynamic-hero p.button-container {
 }
 
 /* Media query for ax-columns-dynamic-hero on desktop */
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .ax-marquee-dynamic-hero {
     padding: var(--spacing-900) var(--spacing-600);
     max-width: 1440px;
