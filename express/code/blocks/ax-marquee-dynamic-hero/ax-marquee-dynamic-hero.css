@@ -19,6 +19,18 @@ main .ax-marquee-dynamic-hero p.button-container {
   padding-top: var(--spacing-600);
 }
 
+/* Hide original video controls when accessibility controls are present */
+.ax-marquee-dynamic-hero .video-container video {
+  pointer-events: none;
+}
+
+.ax-marquee-dynamic-hero .video-container video::-webkit-media-controls,
+.ax-marquee-dynamic-hero .video-container video::-webkit-media-controls-panel,
+.ax-marquee-dynamic-hero .video-container video::-webkit-media-controls-play-button,
+.ax-marquee-dynamic-hero .video-container video::-webkit-media-controls-start-playback-button {
+  display: none;
+}
+
 .ax-marquee-dynamic-hero div:has(picture) {
   text-align: center;
 }
