@@ -41,6 +41,13 @@ describe('template-utils', () => {
       ({ url } = recipe2ApiQuery('limit=10'));
       expect(new URL(url).searchParams.get('collectionId')).to.equal(defaultCollectionId);
     });
+    it('handles manual templates ids', () => {
+      const { url } = recipe2ApiQuery('collection=default&templateIds=urn:aaid:sc:VA6C2:abd317d8-0dfe-474f-8261-9a43829b559e,urn:aaid:sc:VA6C2:3eebb37d-96d1-40eb-a4b2-cb88a5bbcbeb');
+      expect(new URL(url).searchParams.get('collectionId')).to.equal(defaultCollectionId);
+      const params = new URL(url).searchParams;
+      const filters = params.getAll('filters');
+      expect(filters.includes('id==urn:aaid:sc:VA6C2:abd317d8-0dfe-474f-8261-9a43829b559e,urn:aaid:sc:VA6C2:3eebb37d-96d1-40eb-a4b2-cb88a5bbcbeb')).to.be.true;
+    });
     it('handles non filter params', () => {
       const { url } = recipe2ApiQuery('q=dogs running&orderBy=-remixCount&limit=10&collectionId=abcde&start=23');
       const params = new URL(url).searchParams;
