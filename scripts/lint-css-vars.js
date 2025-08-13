@@ -35,6 +35,16 @@ const colorNameToHex = {
   unset: 'unset',
 };
 
+// Color keywords that are allowed and should not trigger violations
+const allowedColorKeywords = [
+  'transparent',
+  'inherit',
+  'initial',
+  'unset',
+  'currentColor',
+  'none',
+];
+
 // Helper function to determine which variable name is more semantically correct
 function shouldPreferVariable(newVarName, existingVar) {
   const existingVarName = existingVar.replace('var(--color-', '').replace(')', '');
@@ -148,6 +158,11 @@ function checkFile(filePath, colorVars, spacingVars) {
       validColorMatches.forEach((colorValue) => {
         // Skip if the value is already a CSS variable or contains var()
         if (colorValue.includes('var(')) {
+          return;
+        }
+
+        // Skip allowed color keywords that don't need to be replaced with variables
+        if (allowedColorKeywords.includes(colorValue.toLowerCase())) {
           return;
         }
 
