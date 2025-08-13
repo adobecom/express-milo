@@ -348,16 +348,131 @@ function createNavigationLinks(config, toc) {
 }
 
 /**
- * Creates social icons section
+ * Opens social media sharing in popup windows
+ * @param {Event} e - Click event
+ */
+function openPopup(e) {
+  const target = e.target.closest('a');
+  const href = target.getAttribute('data-href');
+  const type = target.getAttribute('data-type');
+  window.open(
+    href,
+    type,
+    'popup,top=233,left=233,width=700,height=467',
+  );
+}
+
+/**
+ * Copies current URL to clipboard with visual feedback
+ * @param {HTMLElement} button - Copy button element
+ * @param {string} copyTxt - Text to show when copied
+ */
+async function copyToClipboard(button, copyTxt) {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    button.setAttribute('title', copyTxt);
+    button.setAttribute('aria-label', copyTxt);
+
+    const tooltip = createTag('div', {
+      role: 'status',
+      'aria-live': 'polite',
+      class: 'copied-to-clipboard',
+    }, copyTxt);
+    button.append(tooltip);
+
+    setTimeout(() => {
+      tooltip.remove();
+    }, 3000);
+    button.classList.remove('copy-failure');
+    button.classList.add('copy-success');
+  } catch (e) {
+    button.classList.add('copy-failure');
+    button.classList.remove('copy-success');
+  }
+}
+
+/**
+ * Updates share text with localized labels
+ * @param {HTMLElement} shareBlock - Social icons container
+ */
+async function updateShareText(shareBlock) {
+  // Use static labels for now - can be enhanced with localization later
+  const labels = [
+    'Share on Twitter',
+    'Share on LinkedIn',
+    'Share on Facebook',
+    'Copy to clipboard',
+  ];
+  const shareLinks = shareBlock.querySelectorAll('a');
+  [...shareLinks].forEach((el, index) => el.setAttribute('aria-label', labels[index]));
+  return 'Copied to clipboard';
+}
+
+/**
+ * Creates social icons section with sharing functionality
  * @returns {HTMLElement} Social icons container
  */
-function createSocialIcons() {
+async function createSocialIcons() {
+  const url = encodeURIComponent(window.location.href);
+  const title = encodeURIComponent(document.querySelector('h1')?.textContent || '');
+  const description = encodeURIComponent(getMetadata('description') || '');
+
+  const platformMap = {
+    x: {
+      'data-href': `https://www.twitter.com/share?&url=${url}&text=${title}`,
+      'aria-label': 'share twitter',
+      tabindex: '0',
+    },
+    linkedin: {
+      'data-type': 'LinkedIn',
+      'data-href': `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}&summary=${description}`,
+      'aria-label': 'share linkedin',
+      tabindex: '0',
+    },
+    facebook: {
+      'data-type': 'Facebook',
+      'data-href': `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      'aria-label': 'share facebook',
+      tabindex: '0',
+    },
+    link: {
+      id: 'copy-to-clipboard',
+      'aria-label': 'copy to clipboard',
+      tabindex: '0',
+    },
+  };
+
+  const platforms = Object.keys(platformMap);
   const socialIcons = createTag('div', { class: 'toc-social-icons' });
 
-  CONFIG.socialIcons.forEach((iconName) => {
-    const icon = getIconElementDeprecated(iconName);
-    socialIcons.appendChild(icon);
+  // Create social media links
+  platforms.forEach((platform) => {
+    const platformProperties = platformMap[platform];
+    if (platformProperties) {
+      const icon = getIconElementDeprecated(platform);
+      const link = createTag('a', platformProperties);
+      link.appendChild(icon);
+      socialIcons.appendChild(link);
+    }
   });
+
+  // Add event listeners for sharing functionality
+  socialIcons.querySelectorAll('[data-href]').forEach((link) => {
+    link.addEventListener('click', openPopup);
+  });
+
+  const copyButton = socialIcons.querySelector('#copy-to-clipboard');
+  if (copyButton) {
+    copyButton.addEventListener('click', () => copyToClipboard(copyButton, 'Copied to clipboard'));
+  }
+
+  // Update share text with localized labels
+  setTimeout(async () => {
+    const copyText = await updateShareText(socialIcons);
+    if (copyButton) {
+      copyButton.addEventListener('click', () => copyToClipboard(copyButton, copyText));
+    }
+  }, 100);
 
   return socialIcons;
 }
@@ -479,13 +594,13 @@ async function initializeDependencies() {
 /**
  * Creates the complete TOC structure
  * @param {Object} config - Configuration object
- * @returns {Object} Object containing all TOC elements
+ * @returns {Promise<Object>} Object containing all TOC elements
  */
-function createTOCStructure(config) {
+async function createTOCStructure(config) {
   const toc = createTOCContainer();
   const title = createTOCTitle(config.title);
   const tocContent = createNavigationLinks(config, toc);
-  const socialIcons = createSocialIcons();
+  const socialIcons = await createSocialIcons();
 
   return { toc, title, tocContent, socialIcons };
 }
@@ -553,7 +668,7 @@ export default async function setTOCSEO() {
     const config = buildMetadataConfig();
 
     // Phase 3: Create TOC structure
-    const elements = createTOCStructure(config);
+    const elements = await createTOCStructure(config);
 
     // Phase 4: Assemble TOC
     const toc = assembleTOC(elements);
