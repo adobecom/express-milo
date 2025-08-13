@@ -263,25 +263,6 @@ export default async function decorate(block) {
     ({ createTag, getMetadata, getConfig } = utils);
   });
 
-  // check for dynamic-hero variant
-  if (block.classList.contains('dynamic-hero')) {
-    // Change class for ALL dynamic-hero blocks
-    block.classList.remove('ax-columns');
-    block.classList.add('ax-columns-dynamic-hero');
-
-    // Load CSS file only once
-    if (!document.querySelector('link[href*="ax-columns-dynamic-hero.css"]')) {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'style';
-      link.href = '/express/code/blocks/ax-columns/ax-columns-dynamic-hero.css';
-      link.onload = () => {
-        link.rel = 'stylesheet';
-      };
-      document.head.appendChild(link);
-    }
-  }
-
   if (document.body.dataset.device === 'mobile') replaceHyphensInText(block);
   const colorProperties = extractProperties(block);
   splitAndAddVariantsWithDash(block);
@@ -681,10 +662,10 @@ export default async function decorate(block) {
   if (columnVideos.length) {
     columnVideos.forEach((columnVideo) => {
       const parent = columnVideo.closest('.ax-columns');
-      const a = parent?.querySelector('a');
+      const a = parent.querySelector('a');
       const adobeEventName = appendLinkText(`adobe.com:express:cta:learn:columns:${getExpressLandingPageType()}:`, a);
 
-      parent?.addEventListener('click', (e) => {
+      parent.addEventListener('click', (e) => {
         e.stopPropagation();
         sendEventToAnalytics(adobeEventName);
       });
