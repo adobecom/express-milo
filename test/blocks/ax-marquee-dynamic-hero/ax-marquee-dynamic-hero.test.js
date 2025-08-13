@@ -80,16 +80,13 @@ describe('ax-marquee-dynamic-hero', () => {
     // After createAccessibilityVideoControls, the video is moved into a video-container
     // The hero-animation-overlay class should be on the parent of the video-container
     const videoContainer = block.querySelector('.video-container');
-    console.log('Video container exists:', !!videoContainer);
 
     if (videoContainer) {
       const heroAnimationOverlay = videoContainer.closest('.hero-animation-overlay');
-      console.log('Hero animation overlay exists:', !!heroAnimationOverlay);
       expect(heroAnimationOverlay).to.exist;
     } else {
       // Fallback: check if the original video parent has the class
       const videoParent = block.querySelector('video').closest('div');
-      console.log('Video parent classes:', videoParent.classList.toString());
       expect(videoParent.classList.contains('hero-animation-overlay')).to.be.true;
     }
   });
