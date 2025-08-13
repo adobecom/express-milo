@@ -22,6 +22,7 @@ main .ax-marquee-dynamic-hero p.button-container {
 /* Hide original video controls when accessibility controls are present */
 .ax-marquee-dynamic-hero .video-container video {
   pointer-events: none;
+  border-radius: 16px;
 }
 
 .ax-marquee-dynamic-hero .video-container video::-webkit-media-controls,
@@ -38,6 +39,7 @@ main .ax-marquee-dynamic-hero p.button-container {
 .ax-marquee-dynamic-hero div:has(picture) picture {
   display: inline-block;
   max-width: 100%;
+  border-radius: 16px;
 }
 
 
