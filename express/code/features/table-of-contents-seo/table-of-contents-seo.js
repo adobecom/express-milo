@@ -134,6 +134,53 @@ function scrollToHeader(headerText, toc) {
 }
 
 /**
+ * Calculates the initial position for the TOC based on section position
+ * @param {HTMLElement} sectionElement - The first section element
+ * @returns {number} Initial top position in pixels
+ */
+function calculateInitialPosition(sectionElement) {
+  const firstSectionBottom = sectionElement.offsetTop + sectionElement.offsetHeight;
+  const scrollTop = window.pageYOffset;
+  return firstSectionBottom - scrollTop + CONFIG.positioning.offset;
+}
+
+/**
+ * Ensures the TOC doesn't go above the minimum fixed distance
+ * @param {number} position - Current position
+ * @returns {number} Adjusted position
+ */
+function applyMinimumDistance(position) {
+  return Math.max(position, CONFIG.positioning.fixedTopDistance);
+}
+
+/**
+ * Ensures the TOC doesn't overlap with the link list wrapper
+ * @param {number} position - Current position
+ * @param {HTMLElement} linkListWrapper - Link list wrapper element
+ * @param {HTMLElement} tocElement - TOC element
+ * @returns {number} Adjusted position
+ */
+function preventOverlapWithLinkList(position, linkListWrapper, tocElement) {
+  if (!linkListWrapper) return position;
+
+  const linkListTop = linkListWrapper.offsetTop - window.pageYOffset;
+  const tocHeight = tocElement.offsetHeight;
+  const maxTopPosition = linkListTop - tocHeight;
+
+  return Math.min(position, maxTopPosition);
+}
+
+/**
+ * Applies the calculated position to the TOC element
+ * @param {HTMLElement} tocElement - TOC element to position
+ * @param {number} topPosition - Calculated top position
+ */
+function applyPositionToElement(tocElement, topPosition) {
+  tocElement.style.setProperty('--toc-top-position', `${topPosition}px`);
+  tocElement.classList.add('toc-desktop-fixed');
+}
+
+/**
  * Handles desktop positioning logic
  * @param {HTMLElement} tocElement - TOC element to position
  */
@@ -145,31 +192,12 @@ function handleDesktopPositioning(tocElement) {
 
   if (!sectionElement || !tocElement) return;
 
-  const firstSectionBottom = sectionElement.offsetTop + sectionElement.offsetHeight;
-  const scrollTop = window.pageYOffset;
+  // Calculate and apply positioning constraints
+  let position = calculateInitialPosition(sectionElement);
+  position = applyMinimumDistance(position);
+  position = preventOverlapWithLinkList(position, linkListWrapper, tocElement);
 
-  // Calculate where TOC should be positioned
-  let topPosition = firstSectionBottom - scrollTop + CONFIG.positioning.offset;
-
-  // If TOC would go above the fixed distance, keep it at fixed distance
-  if (topPosition < CONFIG.positioning.fixedTopDistance) {
-    topPosition = CONFIG.positioning.fixedTopDistance;
-  }
-
-  // If link-list-wrapper exists, prevent TOC from going into it
-  if (linkListWrapper) {
-    const linkListTop = linkListWrapper.offsetTop - scrollTop;
-    const tocHeight = tocElement.offsetHeight;
-    const maxTopPosition = linkListTop - tocHeight;
-
-    if (topPosition > maxTopPosition) {
-      topPosition = maxTopPosition;
-    }
-  }
-
-  // Apply dynamic positioning via CSS custom property
-  tocElement.style.setProperty('--toc-top-position', `${topPosition}px`);
-  tocElement.classList.add('toc-desktop-fixed');
+  applyPositionToElement(tocElement, position);
 }
 
 /**
