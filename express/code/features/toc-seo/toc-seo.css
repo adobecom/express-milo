@@ -5,6 +5,7 @@
   left: 0;
   width: 250px;
   z-index: 1;
+  padding-left: 40px;
 }
 
 /* TOC container using global CSS variables */
@@ -142,6 +143,11 @@ main .toc-content a:hover::before {
 main .toc-content a:focus {
   outline: 2px solid var(--color-background-accent-default);
   outline-offset: 2px;
+}
+
+/* Prevent focus outline on mouse clicks, but keep it for keyboard navigation */
+main .toc-content a:focus:not(:focus-visible) {
+  outline: none;
 }
 
 .toc-content a:last-child {
