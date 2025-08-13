@@ -5,9 +5,10 @@
   left: 0;
   width: 250px;
   z-index: 1;
-  padding-left: var(--spacing-600);
   margin-top: var(--spacing-600);
+  padding-left: var(--spacing-600);
   padding-top: 0;
+  padding-bottom: 0;
 }
 
 /* TOC container using global CSS variables */
