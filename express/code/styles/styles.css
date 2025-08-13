@@ -100,6 +100,8 @@
   --spacing-800: 64px;
   --spacing-900: 80px;
   --spacing-1000: 96px;
+
+  --S2-Buttons-Gen-AI: linear-gradient(96deg, #D73220 0%, #D92361 33%, #7155FA 100%);
  
   --S2-Buttons-Premium: linear-gradient(95.85deg, #b539c8, #7155fa 66%, #3b63fb);
   --S2-Buttons-Premium-Hover: linear-gradient(96deg, #9C28AF 0%, #6338EE 66%, #274DEA 100%);
@@ -134,6 +136,7 @@
   :root {
     --ax-grid-margin: 40px;
     --ax-grid-gutter: 32px;
+    --ax-grid-gutter-small: 24px;
   }
 }
 
