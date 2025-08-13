@@ -371,8 +371,16 @@ function setupEventHandlers(tocElement) {
  * @returns {Promise<Object>} Object containing createTag and getMetadata functions
  */
 async function initializeDependencies() {
-  const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
-  return { createTag, getMetadata };
+  try {
+    const utils = await import(`${getLibs()}/utils/utils.js`);
+    return {
+      createTag: utils.createTag,
+      getMetadata: utils.getMetadata,
+    };
+  } catch (error) {
+    window.lana?.log('Failed to initialize TOC dependencies:', error);
+    throw new Error('Failed to load required utilities');
+  }
 }
 
 /**
