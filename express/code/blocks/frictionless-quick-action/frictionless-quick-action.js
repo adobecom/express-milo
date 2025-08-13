@@ -29,6 +29,7 @@ let replaceKey;
 let ccEverywhere;
 let quickActionContainer;
 let uploadContainer;
+let uploadService;
 
 function frictionlessQAExperiment(
   quickAction,
@@ -200,33 +201,41 @@ function handleUploadStatusChange(uploadStatusEvent) {
 }
 
 async function performStorageUpload(files, block) {
-  let preSignedUrl;
+  let assetId;
   // eslint-disable-next-line import/no-relative-packages
   const { initUploadService, UPLOAD_EVENTS } = await import('../../scripts/upload-service/dist/acp-upload.min.es.js');
-  const uploadService = initUploadService();
+  const { env } = getConfig();
+  if (!uploadService) {
+    uploadService = await initUploadService({ environment: env.name });
+  }
   handleUploadStatusChange(UPLOAD_EVENTS.UPLOAD_STATUS);
   try {
-    const { shareablePreSignedUrl } = await uploadService.uploadAsset({
+    const { asset } = await uploadService.uploadAsset({
       file: files[0],
       fileName: files[0].name,
       contentType: files[0].type,
     });
-    preSignedUrl = shareablePreSignedUrl;
+    assetId = asset.assetId;
   } catch (error) {
     showErrorToast(block, error.message);
   }
 
-  return preSignedUrl;
+  return assetId;
 }
 
-async function performUploadAction(files, block) {
-  const preSignedUrl = await performStorageUpload(files, block);
-  if (!preSignedUrl) {
+async function performUploadAction(files, block, quickAction) {
+  const urlsMap = {
+    'image-editor': '/express/feature/image/editor',
+    'video-editor': '/express/feature/video/editor',
+  };
+  const assetId = await performStorageUpload(files, block);
+  if (!assetId) {
     return;
   }
-  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
-  url.searchParams.set('frictionlessUploadFileSource', preSignedUrl);
-  url.searchParams.set('url', '/express/feature/image/editor');
+  const encodedAssetId = btoa(assetId);
+  const url = new URL('https://184757.prenv.projectx.corp.adobe.com/new');
+  url.searchParams.set('frictionlessUploadAssetId', encodedAssetId);
+  url.searchParams.set('url', urlsMap[quickAction]);
   window.location.href = url.toString();
 }
 
@@ -244,8 +253,8 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     data = data.filter((item) => item);
   }
 
-  if (quickAction === 'image-editor') {
-    await performUploadAction(files, block);
+  if (quickAction === 'image-editor' || quickAction === 'video-editor') {
+    await performUploadAction(files, block, quickAction);
     return;
   }
 
