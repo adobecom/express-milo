@@ -45,24 +45,6 @@ const CONFIG = {
 
 let createTag;
 
-/**
- * Safely applies multiple CSS classes to an element
- * @param {HTMLElement} element - The target element
- * @param {string[]} classes - Array of class names to add
- */
-function addClasses(element, classes) {
-  classes.forEach((className) => element.classList.add(className));
-}
-
-/**
- * Safely removes multiple CSS classes from an element
- * @param {HTMLElement} element - The target element
- * @param {string[]} classes - Array of class names to remove
- */
-function removeClasses(element, classes) {
-  classes.forEach((className) => element.classList.remove(className));
-}
-
 // ============================================================================
 // BACKGROUND HANDLING
 // ============================================================================
@@ -134,7 +116,7 @@ function injectLogo(block, section) {
 }
 
 /**
- * Applies comprehensive button styling
+ * Applies comprehensive button styling efficiently
  * @param {HTMLElement} block - The banner block element
  * @param {string|null} variantClass - Background variant class
  */
@@ -143,31 +125,36 @@ function styleButtons(block, variantClass) {
   if (buttons.length === 0) return;
 
   // Add multi-button class to block if needed
-  if (buttons.length > 1) {
+  const isMultiButton = buttons.length > 1;
+  if (isMultiButton) {
     block.classList.add('multi-button');
   }
 
+  // Pre-calculate styling classes to avoid repeated work
+  const stylingClasses = [...CONFIG.buttons.base];
+
+  if (variantClass) {
+    stylingClasses.push(...CONFIG.buttons.background);
+  }
+
+  if (isMultiButton) {
+    stylingClasses.push(...CONFIG.buttons.multiButton);
+  }
+
   buttons.forEach((button, index) => {
-    // Remove default classes
-    removeClasses(button, CONFIG.buttons.remove);
+    // Preserve essential classes efficiently
+    const currentClasses = button.className.split(' ').filter((cls) => cls === 'button' || cls === 'a' || !CONFIG.buttons.remove.includes(cls));
 
-    // Add base classes
-    addClasses(button, CONFIG.buttons.base);
+    // Add variant-specific classes for this button
+    const buttonClasses = [...currentClasses, ...stylingClasses];
 
-    // Handle background variant styling
-    if (variantClass) {
-      addClasses(button, CONFIG.buttons.background);
-
-      // Style secondary button for multi-button backgrounds
-      if (block.classList.contains('multi-button') && index === 1) {
-        addClasses(button, CONFIG.buttons.backgroundSecondary);
-      }
+    // Add secondary styling for second button in multi-button backgrounds
+    if (variantClass && isMultiButton && index === 1) {
+      buttonClasses.push(...CONFIG.buttons.backgroundSecondary);
     }
 
-    // Add multi-button specific classes
-    if (block.classList.contains('multi-button')) {
-      addClasses(button, CONFIG.buttons.multiButton);
-    }
+    // Single DOM operation
+    button.className = buttonClasses.join(' ');
   });
 }
 
