@@ -27,8 +27,8 @@ let getMetadata;
  * @param {Element} block - The main block element
  */
 function setupButtonStyling(block) {
-  const h1 = block.querySelector('h1:first-of-type');
-  if (!h1) return;
+  const heading = block.querySelector('h1,h2,h3:first-of-type');
+  if (!heading) return;
 
   const pWithLink = block.querySelector('p:has(a)');
   if (!pWithLink) return;
@@ -75,7 +75,7 @@ function placeLogo(block) {
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add(CLASS_NAMES.EXPRESS_LOGO);
 
-  const headerElement = block.querySelector('h1');
+  const headerElement = block.querySelector('h1,h2,h3:first-of-type');
 
   if (headerElement?.parentElement) {
     headerElement.parentElement.insertBefore(logo, headerElement);
