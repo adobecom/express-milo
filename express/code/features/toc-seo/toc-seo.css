@@ -133,11 +133,11 @@ main .toc-content a:hover {
 main .toc-content a:hover::before {
   content: '';
   position: absolute;
-  left: 4px;
-  top: var(--spacing-100);
-  width: 2px;
-  height: calc(100% - var(--spacing-300));
-  background-color: var(--color-light-gray);
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--gray-100, #E9E9E9);
 }
 
 main .toc-content a:focus {
