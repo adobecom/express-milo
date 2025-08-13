@@ -2,67 +2,123 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { createAccessibilityVideoControls } from '../../scripts/utils/media.js';
 import { appendLinkText, getExpressLandingPageType, sendEventToAnalytics } from '../../scripts/instrument.js';
 
+// Constants for better maintainability
+const METADATA_KEYS = {
+  MARQUEE_INJECT_LOGO: 'marquee-inject-logo',
+};
+
+const CLASS_NAMES = {
+  BUTTON_CONTAINER: 'button-container',
+  QUICK_LINK: 'quick-link',
+  BUTTON: 'button',
+  ACCENT: 'accent',
+  EXPRESS_LOGO: 'express-logo',
+  HERO_TOP: 'hero-top',
+  HERO_ANIMATION_OVERLAY: 'hero-animation-overlay',
+  VIDEO_CONTAINER: 'video-container',
+  AX_MARQUEE_DYNAMIC_HERO: 'ax-marquee-dynamic-hero',
+};
+
+const LOGO_INJECT_VALUES = ['on', 'yes'];
+
 let getMetadata;
 
+/**
+ * Adds button styling classes to the CTA link
+ * @param {Element} block - The main block element
+ */
+function setupButtonStyling(block) {
+  const h1 = block.querySelector('h1:first-of-type');
+  if (!h1) return;
+
+  const pWithLink = block.querySelector('p:has(a)');
+  if (!pWithLink) return;
+
+  pWithLink.classList.add(CLASS_NAMES.BUTTON_CONTAINER);
+
+  const link = pWithLink.querySelector('a');
+  if (link) {
+    link.classList.add(CLASS_NAMES.QUICK_LINK, CLASS_NAMES.BUTTON, CLASS_NAMES.ACCENT);
+  }
+}
+
+/**
+ * Sets up video accessibility controls and container structure
+ * @param {Element} block - The main block element
+ */
+async function setupVideoControls(block) {
+  const videoElement = block.querySelector('video');
+  if (!videoElement) return;
+
+  try {
+    const videoParent = videoElement.closest('div');
+    if (videoParent) {
+      videoParent.classList.add(CLASS_NAMES.HERO_ANIMATION_OVERLAY);
+    }
+    await createAccessibilityVideoControls(videoElement);
+  } catch (error) {
+    window.lana?.log('Error creating video controls:', error);
+  }
+}
+
+/**
+ * Places the Adobe Express logo in the appropriate location
+ * @param {Element} block - The main block element
+ */
+function placeLogo(block) {
+  const shouldInjectLogo = LOGO_INJECT_VALUES.includes(
+    getMetadata(METADATA_KEYS.MARQUEE_INJECT_LOGO)?.toLowerCase(),
+  );
+
+  if (!shouldInjectLogo) return;
+
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add(CLASS_NAMES.EXPRESS_LOGO);
+
+  const headerElement = block.querySelector('h1');
+
+  if (headerElement?.parentElement) {
+    headerElement.parentElement.insertBefore(logo, headerElement);
+  }
+}
+
+/**
+ * Sets up analytics tracking for video interactions
+ * @param {Element} block - The main block element
+ */
+function setupVideoAnalytics(block) {
+  const videoElements = block.querySelectorAll(`.${CLASS_NAMES.VIDEO_CONTAINER}`);
+  if (!videoElements.length) return;
+
+  videoElements.forEach((videoContainer) => {
+    const parent = videoContainer.closest(`.${CLASS_NAMES.AX_MARQUEE_DYNAMIC_HERO}`);
+    if (!parent) return;
+
+    const link = parent.querySelector('a');
+    const adobeEventName = appendLinkText(
+      `adobe.com:express:cta:learn:marquee-dynamic-hero:${getExpressLandingPageType()}:`,
+      link,
+    );
+
+    parent.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sendEventToAnalytics(adobeEventName);
+    });
+  });
+}
+
+/**
+ * Main decorator function for ax-marquee-dynamic-hero block
+ * Handles button styling, video controls, logo placement, and analytics
+ * @param {Element} block - The main block element
+ */
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ getMetadata } = utils);
   });
 
-  // Add button-container class to p tag after h1 and add classes to the link
-  const h1 = block.querySelector('h1:first-of-type');
-  if (h1) {
-    const pWithLink = block.querySelector('p:has(a)');
-    if (pWithLink) {
-      pWithLink.classList.add('button-container');
-      const link = pWithLink.querySelector('a');
-      if (link) {
-        link.classList.add('quick-link', 'button', 'accent');
-      }
-    }
-  }
-
-  // Handle video elements
-  const videoElement = block.querySelector('video');
-  if (videoElement) {
-    try {
-      const videoParent = videoElement.closest('div');
-      if (videoParent) {
-        videoParent.classList.add('hero-animation-overlay');
-      }
-      await createAccessibilityVideoControls(videoElement);
-    } catch (error) {
-      window.lana?.log('Error creating video controls:', error);
-    }
-  }
-
-  if (block && ['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
-    const logo = getIconElementDeprecated('adobe-express-logo');
-    logo.classList.add('express-logo');
-
-    const isHeroTop = block.classList.contains('hero-top');
-
-    if (isHeroTop) {
-      const headerElement = block.querySelector('h1');
-      headerElement?.parentElement?.insertBefore(logo, headerElement);
-    } else {
-      const headerElement = block.querySelector('h1');
-      headerElement?.parentElement?.insertBefore(logo, headerElement);
-    }
-  }
-
-  // Tracking any video elements
-  const videoElements = block.querySelectorAll('.video-container');
-  if (videoElements.length) {
-    videoElements.forEach((videoContainer) => {
-      const parent = videoContainer.closest('.ax-marquee-dynamic-hero');
-      const a = parent?.querySelector('a');
-      const adobeEventName = appendLinkText(`adobe.com:express:cta:learn:marquee-dynamic-hero:${getExpressLandingPageType()}:`, a);
-
-      parent?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        sendEventToAnalytics(adobeEventName);
-      });
-    });
-  }
+  setupButtonStyling(block);
+  await setupVideoControls(block);
+  placeLogo(block);
+  setupVideoAnalytics(block);
 }
