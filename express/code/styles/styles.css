@@ -1153,16 +1153,15 @@ main .section.long-form .content h6 {
   font-size: var(--heading-font-size-s);
 }
 
-main .section.long-form .content h2 {
-  margin-top: 80px;
-}
-
-main .section.long-form .content h3 {
-  margin-top: 64px;
-}
-
+main .section.long-form .content h1,
+main .section.long-form .content h2,
+main .section.long-form .content h3,
 main .section.long-form .content h4 {
-  margin-top: 56px;
+  margin-top: 0;
+}
+
+main .section.long-form .content:has(h1, h2, h3, h4) {
+  padding-top: var(--spacing-800)
 }
 
 @media (min-width: 600px) {
