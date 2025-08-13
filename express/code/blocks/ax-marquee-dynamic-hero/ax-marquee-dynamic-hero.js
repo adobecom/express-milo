@@ -1,6 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { createAccessibilityVideoControls } from '../../scripts/utils/media.js';
-import { appendLinkText, getExpressLandingPageType, sendEventToAnalytics } from '../../scripts/instrument.js';
 
 // Constants for better maintainability
 const METADATA_KEYS = {
@@ -84,31 +83,6 @@ function placeLogo(block) {
 }
 
 /**
- * Sets up analytics tracking for video interactions
- * @param {Element} block - The main block element
- */
-function setupVideoAnalytics(block) {
-  const videoElements = block.querySelectorAll(`.${CLASS_NAMES.VIDEO_CONTAINER}`);
-  if (!videoElements.length) return;
-
-  videoElements.forEach((videoContainer) => {
-    const parent = videoContainer.closest(`.${CLASS_NAMES.AX_MARQUEE_DYNAMIC_HERO}`);
-    if (!parent) return;
-
-    const link = parent.querySelector('a');
-    const adobeEventName = appendLinkText(
-      `adobe.com:express:cta:learn:marquee-dynamic-hero:${getExpressLandingPageType()}:`,
-      link,
-    );
-
-    parent.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sendEventToAnalytics(adobeEventName);
-    });
-  });
-}
-
-/**
  * Main decorator function for ax-marquee-dynamic-hero block
  * Handles button styling, video controls, logo placement, and analytics
  * @param {Element} block - The main block element
@@ -121,5 +95,4 @@ export default async function decorate(block) {
   setupButtonStyling(block);
   await setupVideoControls(block);
   placeLogo(block);
-  setupVideoAnalytics(block);
 }
