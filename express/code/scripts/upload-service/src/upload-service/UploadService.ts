@@ -4,6 +4,8 @@ import type {
   AdobeHTTPService,
   UploadProgressCallback,
   SliceableData,
+  AdobeMinimalAsset,
+  AdobeAssetEmbedded,
 } from '@dcx/common-types';
 import {
   type UploadServiceConfig,
@@ -14,8 +16,8 @@ import {
   UploadStatus,
 } from '../types';
 import { createRepoAPISession } from '@dcx/repo-api-session';
-import { getPresignedUrl, RepoResponseResult, RepositoryLinksCache } from '@dcx/assets';
-import { DEFAULT_STORAGE_PATH, ERROR_CODES } from '../consts';
+import { Directory, getDiscoverableAssets, getPresignedUrl, RepoResponseResult, RepositoryLinksCache } from '@dcx/assets';
+import { ERROR_CODES } from '../consts';
 import { createHTTPService } from '@dcx/http';
 import { UploadStatusEvent } from '../events';
 
@@ -43,6 +45,41 @@ export class UploadService {
   }
 
   /**
+   * Initialize repository for user token type
+   */
+  private async initializeUserRepository(): Promise<void> {
+    try {
+      const repository = await this.setupUserRepository();
+      const assets = await getDiscoverableAssets(this.httpService);
+      console.log(assets.paged.items);
+      if (repository) {
+        this.config.repository = repository;
+      }
+    } catch (error) {
+      throw this.handleError(
+        ERROR_CODES.REPOSITORY_REQUIRED.code,
+        error
+      );
+    }
+  }
+
+  /**
+   * Setup user repository by fetching discoverable assets and determining repository ID
+   * @returns Promise resolving to the repository ID
+   */
+  private async setupUserRepository(): Promise<AdobeAssetEmbedded | null> {
+    const indexDocumentResponse = await this.session.getIndexDocument();
+    const { assignedDirectories } = indexDocumentResponse.result;
+    const indexRepoId = assignedDirectories?.[0]?.repositoryId;
+    const indexAssetId = assignedDirectories?.[0]?.assetId;
+
+    const dir = new Directory({ repositoryId: indexRepoId, assetId: indexAssetId }, this.httpService);
+    const children = await dir.getPagedChildren();
+    console.log(children.result.result)
+    return null;
+  }
+
+  /**
    * Get the current upload status
    * @returns The current upload status
    */
@@ -60,27 +97,28 @@ export class UploadService {
   }
 
   /**
+   * Initialize the upload service
+   */
+  async setIndexRepository(): Promise<void> {
+    if(this.authConfig.tokenType === 'user') {
+      await this.initializeUserRepository();
+    }
+  }
+
+  /**
    * Upload an asset to storage
    * @param options - Upload options including file, path, and metadata
    * @returns Promise resolving to upload result
    */
   async uploadAsset(options: UploadOptions): Promise<UploadResult> {
-    /**
-     * Reset the upload status to idle when the upload is completed or failed.
-     */
     this.uploadStatus = UploadStatus.IDLE;
-    
+
     try {
       const {
         file,
         fileName,
-        contentType,
-        path = DEFAULT_STORAGE_PATH,
-        createIntermediates,
-        onProgress = this.getUploadProgress(),
-        additionalHeaders = {},
-        repoMetaPatch,
-        resourceDesignator
+        path = this.config.basePath,
+        onProgress = this.getUploadProgress()
       } = options;
 
       const fileData = this.convertToSliceableData(file);
@@ -89,45 +127,32 @@ export class UploadService {
 
       let result: RepoResponseResult<AdobeAsset>;
       let preSignedUrl: string | undefined;
+
       switch (this.authConfig.tokenType) {
         case 'guest': {
-          result = await this.session.createAssetForGuest(
-            fullPath,
-            contentType,
-            resourceDesignator,
-            additionalHeaders,
+          const guestResult = await this.createAssetForGuest(
+            { ...options, onProgress },
             fileData,
             fileSize,
-            repoMetaPatch,
-            onProgress
+            fullPath
           );
-          preSignedUrl = await this.generatePreSignedUrl({ asset: result.result });
+          result = guestResult.result;
+          preSignedUrl = guestResult.preSignedUrl;
           break;
         }
         case 'user':
         default: {
-          if (!this.config.repositoryId) {
-            throw this.handleError(
-              ERROR_CODES.REPOSITORY_ID_REQUIRED.code,
-              new Error(ERROR_CODES.REPOSITORY_ID_REQUIRED.message)
-            );
-          }
-
-          const parentDir = await this.getOrCreateParentDirectory(path);
-          
-          result = await this.session.createAsset(
-            parentDir,
-            fileName,
-            createIntermediates || true,
-            contentType,
-            resourceDesignator,
-            additionalHeaders,
+          const userResult = await this.createAssetForUser(
+            options,
             fileData,
             fileSize,
-            repoMetaPatch
+            path,
+            fileName
           );
-          }
+          result = userResult.result;
+          break;
         }
+      }
 
       if(this._uploadBytesCompleted) {
         this.uploadStatus = UploadStatus.COMPLETED;
@@ -135,9 +160,7 @@ export class UploadService {
 
       const asset = result.result;
       return {
-        asset,
-        readablePreSignedUrl: preSignedUrl,
-        shareablePreSignedUrl: this.generateShareablePreSignedUrl(preSignedUrl)
+        asset
       };
 
     } catch (error) {
@@ -146,6 +169,102 @@ export class UploadService {
         error
       );
     }
+  }
+
+  /**
+   * Create asset for guest users
+   * @param options - Upload options
+   * @param fileData - Processed file data
+   * @param fileSize - Size of the file
+   * @param fullPath - Full path for the asset
+   * @returns Promise resolving to asset creation result and pre-signed URL
+   */
+  private async createAssetForGuest(
+    options: UploadOptions,
+    fileData: SliceableData,
+    fileSize: number,
+    fullPath: string
+  ): Promise<{ result: RepoResponseResult<AdobeAsset>; preSignedUrl?: string }> {
+    const {
+      contentType,
+      resourceDesignator,
+      additionalHeaders = {},
+      repoMetaPatch,
+      onProgress
+    } = options;
+
+    const result = await this.session.createAssetForGuest(
+      fullPath,
+      contentType,
+      resourceDesignator,
+      additionalHeaders,
+      fileData,
+      fileSize,
+      repoMetaPatch,
+      onProgress
+    );
+
+    return { result };
+  }
+
+  /**
+   * Create asset for authenticated users
+   * @param options - Upload options
+   * @param fileData - Processed file data
+   * @param fileSize - Size of the file
+   * @param path - Path for the asset
+   * @param fileName - Name of the file
+   * @returns Promise resolving to asset creation result
+   */
+  private async createAssetForUser(
+    options: UploadOptions,
+    fileData: SliceableData,
+    fileSize: number,
+    path: string,
+    fileName: string
+  ): Promise<{ result: RepoResponseResult<AdobeAsset> }> {
+    const {
+      contentType,
+      resourceDesignator,
+      additionalHeaders = {},
+      repoMetaPatch,
+      createIntermediates
+    } = options;
+
+    let result: RepoResponseResult<AdobeAsset>;
+
+    if (!this.config.repository) {
+      throw this.handleError(
+        ERROR_CODES.REPOSITORY_REQUIRED.code,
+        new Error(ERROR_CODES.REPOSITORY_REQUIRED.message)
+      );
+    }
+
+    const parentDir: AdobeMinimalAsset = {
+      repositoryId: this.config.repository.repositoryId,
+      path: 'cloud-content'
+    };
+    
+    try {
+      result = await this.session.createAsset(
+        parentDir,
+        fileName,
+        createIntermediates || true,
+        contentType,
+        resourceDesignator,
+        additionalHeaders,
+        fileData,
+        fileSize,
+        repoMetaPatch
+      );
+    } catch (error) {
+      throw this.handleError(
+        ERROR_CODES.UPLOAD_FAILED.code,
+        error
+      );
+    }
+
+    return { result };
   }
 
   /**
@@ -271,28 +390,6 @@ export class UploadService {
   }
 
   /**
-   * Get or create a parent directory for an asset
-   * @param path - The path to the asset
-   * @returns The parent directory asset
-   */
-  private async getOrCreateParentDirectory(path: string): Promise<AdobeAsset> {
-    if (!this.config.repositoryId) {
-      throw this.handleError(
-        ERROR_CODES.REPOSITORY_ID_REQUIRED_FOR_DIRECTORY.code,
-        new Error(ERROR_CODES.REPOSITORY_ID_REQUIRED_FOR_DIRECTORY.message)
-      );
-    }
-
-    const parentDir: AdobeAsset = {
-      repositoryId: this.config.repositoryId,
-      path: path || '/',
-      links: {}
-    };
-
-    return parentDir;
-  }
-
-  /**
    * Handle an error
    * @param code - The error code
    * @param originalError - The original error
@@ -318,7 +415,9 @@ export class UploadService {
       }
     })(errorMessage, errorCode.code, originalError);
 
-    console.error(`UploadService Error [${errorCode.code}]:`, errorMessage, originalError);
+    if(this.config.environment === 'local' || this.config.environment === 'stage') {
+      console.error(`UploadService Error [${errorCode.code}]:`, errorMessage, originalError);
+    }
     
     return error;
   }

@@ -2,7 +2,11 @@ declare global {
   interface Window {
     tempAccessToken: string;
     adobeIMS: {
-      getAccessToken: () => string;
+      getAccessToken: () => {
+        token: string;
+        expire: number;
+        isGuestToken: boolean;
+      };
       isSignedInUser: () => boolean;
     };
   }
