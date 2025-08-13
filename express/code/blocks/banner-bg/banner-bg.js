@@ -187,22 +187,27 @@ async function formatPhoneNumbers(block) {
 }
 
 // ============================================================================
-// MAIN DECORATOR
+// PHASE FUNCTIONS
 // ============================================================================
 
 /**
- * Main decorator function for banner-bg blocks
- * @param {HTMLElement} block - The banner block element to decorate
+ * Phase 1: Initialize dependencies and utilities
+ * @param {HTMLElement} block - The banner block element
  */
-export default async function decorate(block) {
-  // Phase 1: Initialize dependencies
+async function initializeDependencies(block) {
   const [utils] = await Promise.all([
     import(`${getLibs()}/utils/utils.js`),
     decorateButtonsDeprecated(block),
   ]);
   ({ createTag } = utils);
+}
 
-  // Phase 2: Detect and setup background
+/**
+ * Phase 2: Detect and setup background handling
+ * @param {HTMLElement} block - The banner block element
+ * @returns {string|null} Background variant class name
+ */
+function setupBackground(block) {
   const variantClass = detectBackgroundVariant(block);
   const hasBackground = variantClass !== null;
 
@@ -212,15 +217,55 @@ export default async function decorate(block) {
     createBackgroundContainer(block);
   }
 
-  // Phase 3: Handle section inheritance
+  return variantClass;
+}
+
+/**
+ * Phase 3: Handle section inheritance and styling
+ * @param {HTMLElement} block - The banner block element
+ * @returns {HTMLElement} The parent section element
+ */
+function handleSectionInheritance(block) {
   const section = block.closest('.section');
+
   if (section?.style?.background) {
     block.style.background = section.style.background;
   }
 
-  // Phase 4: Enhance content
+  return section;
+}
+
+/**
+ * Phase 4: Enhance content with logos, buttons, and formatting
+ * @param {HTMLElement} block - The banner block element
+ * @param {HTMLElement} section - The parent section element
+ * @param {string|null} variantClass - Background variant class
+ */
+async function enhanceContent(block, section, variantClass) {
   injectLogo(block, section);
   styleButtons(block, variantClass);
   await formatPhoneNumbers(block);
   fixIcons(block);
+}
+
+// ============================================================================
+// MAIN DECORATOR
+// ============================================================================
+
+/**
+ * Main decorator function for banner-bg blocks
+ * @param {HTMLElement} block - The banner block element to decorate
+ */
+export default async function decorate(block) {
+  // Phase 1: Initialize dependencies
+  await initializeDependencies(block);
+
+  // Phase 2: Setup background
+  const variantClass = setupBackground(block);
+
+  // Phase 3: Handle section inheritance
+  const section = handleSectionInheritance(block);
+
+  // Phase 4: Enhance content
+  await enhanceContent(block, section, variantClass);
 }
