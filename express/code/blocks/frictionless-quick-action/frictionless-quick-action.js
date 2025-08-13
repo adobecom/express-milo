@@ -225,8 +225,8 @@ async function performStorageUpload(files, block) {
 
 async function performUploadAction(files, block, quickAction) {
   const urlsMap = {
-    'image-editor': '/express/feature/image/editor',
-    'video-editor': '/express/feature/video/editor',
+    'edit-image': '/express/feature/image/editor',
+    'edit-video': '/express/feature/video/editor',
   };
   const assetId = await performStorageUpload(files, block);
   if (!assetId) {
