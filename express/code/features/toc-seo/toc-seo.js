@@ -216,6 +216,59 @@ function cleanupDesktopPositioning(tocElement) {
   }
 }
 
+/**
+ * Updates the active TOC link based on current scroll position
+ * @param {HTMLElement} toc - TOC container element
+ */
+function updateActiveTOCLink(toc) {
+  const headers = document.querySelectorAll(CONFIG.selectors.headers);
+  const tocLinks = toc.querySelectorAll('.toc-content a');
+
+  if (!headers.length || !tocLinks.length) return;
+
+  const offset = 100; // Offset to trigger active state
+
+  let activeHeader = null;
+  let minDistance = Infinity;
+
+  headers.forEach((header) => {
+    const rect = header.getBoundingClientRect();
+    const distance = Math.abs(rect.top - offset);
+
+    if (rect.top <= offset && distance < minDistance) {
+      minDistance = distance;
+      activeHeader = header;
+    }
+  });
+
+  // Remove active class from all links
+  tocLinks.forEach((link) => {
+    link.classList.remove('active');
+  });
+
+  // Add active class to corresponding link
+  if (activeHeader) {
+    const headerText = activeHeader.textContent.trim();
+    const activeLink = Array.from(tocLinks).find((link) => link.textContent.trim().includes(headerText.replace('...', '').trim()));
+
+    if (activeLink) {
+      activeLink.classList.add('active');
+    }
+  }
+}
+
+/**
+ * Sets up scroll event handler for active link tracking
+ * @param {HTMLElement} toc - TOC container element
+ */
+function setupScrollTracking(toc) {
+  const throttledUpdate = throttleRAF(() => updateActiveTOCLink(toc));
+  window.addEventListener('scroll', throttledUpdate);
+
+  // Initial update
+  updateActiveTOCLink(toc);
+}
+
 // ============================================================================
 // DOM CREATION
 // ============================================================================
@@ -462,6 +515,7 @@ function setupAllEventHandlers(elements) {
   setupTitleHandlers(title, toc, tocContent);
   setupKeyboardNavigation(tocContent);
   setupEventHandlers(toc);
+  setupScrollTracking(toc);
 }
 
 /**
