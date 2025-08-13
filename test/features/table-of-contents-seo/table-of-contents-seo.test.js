@@ -98,3 +98,45 @@ describe('Table of Contents SEO - Links Test', () => {
     cleanupTest();
   });
 });
+
+describe('Table of Contents SEO - Error Handling Test', () => {
+  it('should handle missing metadata gracefully', async () => {
+    const testBody = await readFile({ path: './mocks/body.html' });
+    window.isTestEnv = true;
+
+    // Remove metadata to test error handling
+    const modifiedBody = testBody.replace(/<meta name="toc-title"/, '<!-- <meta name="toc-title"');
+    document.documentElement.innerHTML = modifiedBody;
+
+    // Should not throw an error
+    await setTOCSEO();
+
+    cleanupTest();
+  });
+});
+
+describe('Table of Contents SEO - Social Icons Test', () => {
+  it('should render social icons correctly', async () => {
+    const toc = await setupTest('./mocks/body.html');
+    const socialIcons = toc.querySelector('.toc-social-icons');
+
+    expect(socialIcons).to.exist;
+    expect(socialIcons.children.length).to.be.greaterThan(0);
+
+    cleanupTest();
+  });
+});
+
+describe('Table of Contents SEO - Configuration Test', () => {
+  it('should use configuration values correctly', async () => {
+    const toc = await setupTest('./mocks/body.html');
+
+    // Test that configuration is being used
+    expect(toc.getAttribute('aria-label')).to.equal('Table of Contents');
+
+    const title = toc.querySelector('.toc-title');
+    expect(title.getAttribute('aria-controls')).to.equal('toc-content');
+
+    cleanupTest();
+  });
+});
