@@ -5,7 +5,7 @@
   left: 0;
   width: 250px;
   z-index: 1;
-  padding-left: 40px;
+  padding-left: var(--spacing-600)
 }
 
 /* TOC container using global CSS variables */
@@ -137,7 +137,22 @@ main .toc-content a:hover::before {
   top: 0;
   width: 4px;
   height: 100%;
-  background-color: var(--gray-100, #E9E9E9);
+  background-color: var(--gray-100, --color-light-gray);
+}
+
+/* Active state for TOC links */
+main .toc-content a.active {
+  font-weight: 700;
+}
+
+main .toc-content a.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background-color: var(--gray-100, --color-light-gray);
 }
 
 main .toc-content a:focus {
