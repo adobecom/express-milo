@@ -1,9 +1,36 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
+// Set up mocks BEFORE any imports to prevent external calls
+if (typeof window !== 'undefined') {
+  // Mock fetch globally
+  window.fetch = () => Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({}),
+    text: () => Promise.resolve(''),
+  });
+
+  // Mock LANA logging
+  window.lana = {
+    log: () => {}, // No-op function
+  };
+
+  // Mock geolocation service
+  window.geo2 = {
+    getCountry: () => Promise.resolve('US'),
+    getLanguage: () => Promise.resolve('en'),
+  };
+
+  // Mock any other external services
+  window.adobeDataLayer = [];
+  window.satellite = {
+    track: () => {},
+  };
+}
+
 const imports = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
-  import('../../../express/code/features/table-of-contents-seo/table-of-contents-seo.js'),
+  import('../../../express/code/features/toc-seo/toc-seo.js'),
 ]);
 
 const { default: setTOCSEO } = imports[1];
