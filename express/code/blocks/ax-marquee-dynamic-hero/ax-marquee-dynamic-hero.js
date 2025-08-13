@@ -55,6 +55,7 @@ async function setupVideoControls(block) {
     if (videoParent) {
       videoParent.classList.add(CLASS_NAMES.HERO_ANIMATION_OVERLAY);
     }
+
     await createAccessibilityVideoControls(videoElement);
   } catch (error) {
     window.lana?.log('Error creating video controls:', error);
