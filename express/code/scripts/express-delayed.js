@@ -31,8 +31,8 @@ function preloadSUSILight() {
 
 function loadTOC() {
   if (getMetadata('toc-seo') === 'on') {
-    loadStyle('/express/code/features/table-of-contents-seo/table-of-contents-seo.css');
-    import('../features/table-of-contents-seo/table-of-contents-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
+    loadStyle('/express/code/features/toc-seo/toc-seo.css');
+    import('../features/toc-seo/toc-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
   }
 }
 
