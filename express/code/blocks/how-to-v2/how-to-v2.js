@@ -26,9 +26,10 @@ function buildAccordion(block, rows, stepsContent) {
 
   rows.forEach((row, i) => {
     const [stepTitle, stepDetail] = row.querySelectorAll(':scope div');
-    stepTitle.textContent = `${1 + i}. ${stepTitle.textContent}`;
+
     const titleId = `step-title-${i}`;
     const detailId = `step-detail-${i}`;
+
     const newStepTitle = createTag('h3', { id: titleId });
     newStepTitle.replaceChildren(...stepTitle.childNodes);
 
