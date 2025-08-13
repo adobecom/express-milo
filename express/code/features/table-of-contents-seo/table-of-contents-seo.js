@@ -363,6 +363,71 @@ function setupEventHandlers(tocElement) {
 }
 
 // ============================================================================
+// INITIALIZATION
+// ============================================================================
+
+/**
+ * Initializes required utilities and dependencies
+ * @returns {Promise<Object>} Object containing createTag and getMetadata functions
+ */
+async function initializeDependencies() {
+  const { createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`);
+  return { createTag, getMetadata };
+}
+
+/**
+ * Creates the complete TOC structure
+ * @param {Object} config - Configuration object
+ * @returns {Object} Object containing all TOC elements
+ */
+function createTOCStructure(config) {
+  const toc = createTOCContainer();
+  const title = createTOCTitle(config.title);
+  const tocContent = createNavigationLinks(config, toc);
+  const socialIcons = createSocialIcons();
+
+  return { toc, title, tocContent, socialIcons };
+}
+
+/**
+ * Assembles the TOC structure by appending all elements
+ * @param {Object} elements - Object containing TOC elements
+ * @returns {HTMLElement} Assembled TOC container
+ */
+function assembleTOC(elements) {
+  const { toc, title, tocContent, socialIcons } = elements;
+
+  toc.appendChild(title);
+  toc.appendChild(tocContent);
+  toc.appendChild(socialIcons);
+
+  return toc;
+}
+
+/**
+ * Sets up all event handlers for the TOC
+ * @param {Object} elements - Object containing TOC elements
+ */
+function setupAllEventHandlers(elements) {
+  const { toc, title, tocContent } = elements;
+
+  setupTitleHandlers(title, toc, tocContent);
+  setupKeyboardNavigation(tocContent);
+  setupEventHandlers(toc);
+}
+
+/**
+ * Inserts the TOC into the DOM at the correct location
+ * @param {HTMLElement} toc - TOC container element
+ */
+function insertTOCIntoDOM(toc) {
+  const firstSection = document.querySelector(CONFIG.selectors.section);
+  if (firstSection) {
+    firstSection.insertAdjacentElement('afterend', toc);
+  }
+}
+
+// ============================================================================
 // MAIN FUNCTION
 // ============================================================================
 
@@ -371,33 +436,25 @@ function setupEventHandlers(tocElement) {
  */
 export default async function setTOCSEO() {
   try {
-    // Initialize utilities
-    ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
+    // Phase 1: Initialize dependencies
+    const utils = await initializeDependencies();
+    createTag = utils.createTag;
+    getMetadata = utils.getMetadata;
 
-    // Get configuration
+    // Phase 2: Build configuration
     const config = buildMetadataConfig();
 
-    // Create TOC structure
-    const toc = createTOCContainer();
-    const title = createTOCTitle(config.title);
-    const tocContent = createNavigationLinks(config, toc);
-    const socialIcons = createSocialIcons();
+    // Phase 3: Create TOC structure
+    const elements = createTOCStructure(config);
 
-    // Assemble TOC
-    toc.appendChild(title);
-    toc.appendChild(tocContent);
-    toc.appendChild(socialIcons);
+    // Phase 4: Assemble TOC
+    const toc = assembleTOC(elements);
 
-    // Setup event handlers
-    setupTitleHandlers(title, toc, tocContent);
-    setupKeyboardNavigation(tocContent);
-    setupEventHandlers(toc);
+    // Phase 5: Setup event handlers
+    setupAllEventHandlers(elements);
 
-    // Insert TOC into DOM
-    const firstSection = document.querySelector(CONFIG.selectors.section);
-    if (firstSection) {
-      firstSection.insertAdjacentElement('afterend', toc);
-    }
+    // Phase 6: Insert into DOM
+    insertTOCIntoDOM(toc);
   } catch (error) {
     window.lana?.log('Error setting up TOC SEO:', error);
   }
