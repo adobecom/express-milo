@@ -17,6 +17,7 @@ const CONFIG = {
   },
   selectors: {
     section: 'main .section',
+    highlight: 'div.highlight',
     toc: '.toc-container',
     linkListWrapper: '.section:has(.link-list-wrapper)',
     headers: 'main h2, main h3, main h4',
@@ -134,14 +135,14 @@ function scrollToHeader(headerText, toc) {
 }
 
 /**
- * Calculates the initial position for the TOC based on section position
- * @param {HTMLElement} sectionElement - The first section element
+ * Calculates the initial position for the TOC based on anchor element position
+ * @param {HTMLElement} anchorElement - The anchor element (highlight or section)
  * @returns {number} Initial top position in pixels
  */
-function calculateInitialPosition(sectionElement) {
-  const firstSectionBottom = sectionElement.offsetTop + sectionElement.offsetHeight;
+function calculateInitialPosition(anchorElement) {
+  const anchorBottom = anchorElement.offsetTop + anchorElement.offsetHeight;
   const scrollTop = window.pageYOffset;
-  return firstSectionBottom - scrollTop + CONFIG.positioning.offset;
+  return anchorBottom - scrollTop + CONFIG.positioning.offset;
 }
 
 /**
@@ -187,12 +188,17 @@ function applyPositionToElement(tocElement, topPosition) {
 function handleDesktopPositioning(tocElement) {
   if (!isDesktopViewport()) return;
 
-  const sectionElement = document.querySelector(CONFIG.selectors.section);
+  let anchorElement = document.querySelector(CONFIG.selectors.highlight);
 
-  if (!sectionElement || !tocElement) return;
+  // Fallback to section element if highlight element is not found
+  if (!anchorElement) {
+    anchorElement = document.querySelector(CONFIG.selectors.section);
+  }
+
+  if (!anchorElement || !tocElement) return;
 
   // Calculate and apply positioning constraints
-  let position = calculateInitialPosition(sectionElement);
+  let position = calculateInitialPosition(anchorElement);
   position = applyMinimumDistance(position);
   position = preventOverlapWithFooter(position, tocElement);
 
@@ -269,9 +275,16 @@ function createNavigationLinks(config, toc) {
       const link = createTag('a', { href: `#${key}` });
       link.textContent = config[key];
 
+      link.addEventListener('mousedown', (e) => {
+        // Prevent focus on mousedown to avoid the outline
+        e.preventDefault();
+      });
+
       link.addEventListener('click', (e) => {
         e.preventDefault();
         scrollToHeader(config[key], toc);
+        // Remove focus to prevent the focus outline from persisting
+        link.blur();
       });
 
       tocContent.appendChild(link);
@@ -456,9 +469,15 @@ function setupAllEventHandlers(elements) {
  * @param {HTMLElement} toc - TOC container element
  */
 function insertTOCIntoDOM(toc) {
-  const firstSection = document.querySelector(CONFIG.selectors.section);
-  if (firstSection) {
-    firstSection.insertAdjacentElement('afterend', toc);
+  const highlightElement = document.querySelector(CONFIG.selectors.highlight);
+  if (highlightElement) {
+    highlightElement.insertAdjacentElement('afterend', toc);
+  } else {
+    // Fallback to original behavior if highlight element is not found
+    const firstSection = document.querySelector(CONFIG.selectors.section);
+    if (firstSection) {
+      firstSection.insertAdjacentElement('afterend', toc);
+    }
   }
 }
 
