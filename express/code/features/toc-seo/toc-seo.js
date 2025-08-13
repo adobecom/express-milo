@@ -142,7 +142,7 @@ function scrollToHeader(headerText, toc) {
 function calculateInitialPosition(anchorElement) {
   const anchorBottom = anchorElement.offsetTop + anchorElement.offsetHeight;
   const scrollTop = window.pageYOffset;
-  return anchorBottom - scrollTop + CONFIG.positioning.offset;
+  return anchorBottom - scrollTop + CONFIG.positioning.offset + 64;
 }
 
 /**
