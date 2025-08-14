@@ -1332,13 +1332,24 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   text-decoration: underline;
 }
 
+/* TODO: deprecated: util classes for current ax-grid system */
+.ax-grid-container {
+  margin-left: var(--ax-grid-margin);
+  margin-right: var(--ax-grid-margin);
+  box-sizing: border-box;
+  display: flex;
+  gap: var(--ax-grid-gutter);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 /* video controls for accessibility */
 .video-controls-wrapper {
   position: absolute;
   bottom: 15px;
   right: 35px;
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: var(--color-gray-700);
   display: flex;
