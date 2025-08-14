@@ -119,7 +119,6 @@ function scrollToHeader(headerText, toc) {
   if (targetHeader) {
     const tocHeight = toc.offsetHeight;
     const stickyOffset = isMobileViewport() ? CONFIG.positioning.mobileNavHeight : -120;
-    console.log('stickyOffset', stickyOffset);
     const headerRect = targetHeader.getBoundingClientRect();
     const scrollTop = window.pageYOffset + headerRect.top - tocHeight - stickyOffset - 20;
 
@@ -554,13 +553,60 @@ function setupKeyboardNavigation(tocContent) {
 }
 
 /**
+ * Handles mobile sticky positioning when TOC is after highlight element
+ * @param {HTMLElement} tocElement - TOC element to position
+ */
+function handleMobileSticky(tocElement) {
+  if (isDesktopViewport()) return; // Only on mobile/tablet
+
+  const highlightElement = document.querySelector('.section div.highlight');
+  if (!highlightElement) return; // Only apply when TOC is after highlight
+
+  // Get the highlight element's position relative to viewport
+  const { bottom } = highlightElement.getBoundingClientRect();
+  const { mobileNavHeight } = CONFIG.positioning;
+
+  // When highlight is scrolled out of view, make TOC sticky
+  if (bottom <= mobileNavHeight) {
+    // Create placeholder if it doesn't exist
+    if (!tocElement.nextElementSibling || !tocElement.nextElementSibling.classList.contains('toc-placeholder')) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'toc-placeholder';
+      placeholder.style.height = `${tocElement.offsetHeight}px`;
+      tocElement.insertAdjacentElement('afterend', placeholder);
+    }
+
+    tocElement.style.position = 'fixed';
+    tocElement.style.top = `${mobileNavHeight}px`;
+    tocElement.style.left = '0';
+    tocElement.style.right = '0';
+    tocElement.style.zIndex = '100';
+  } else {
+    // Return to normal flow when highlight is visible
+    tocElement.style.position = 'static';
+    tocElement.style.top = '';
+    tocElement.style.left = '';
+    tocElement.style.right = '';
+    tocElement.style.zIndex = '';
+
+    // Remove placeholder
+    const placeholder = tocElement.nextElementSibling;
+    if (placeholder && placeholder.classList.contains('toc-placeholder')) {
+      placeholder.remove();
+    }
+  }
+}
+
+/**
  * Sets up scroll and resize event handlers
  * @param {HTMLElement} tocElement - TOC element to position
  */
 function setupEventHandlers(tocElement) {
   const throttledHandleDesktopPositioning = throttleRAF(() => handleDesktopPositioning(tocElement));
+  const throttledHandleMobileSticky = throttleRAF(() => handleMobileSticky(tocElement));
 
   window.addEventListener('scroll', throttledHandleDesktopPositioning);
+  window.addEventListener('scroll', throttledHandleMobileSticky);
   window.addEventListener('resize', () => {
     handleDesktopPositioning(tocElement);
     cleanupDesktopPositioning(tocElement);
