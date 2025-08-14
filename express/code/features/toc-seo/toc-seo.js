@@ -17,7 +17,7 @@ const CONFIG = {
   },
   selectors: {
     section: 'main .section',
-    highlight: 'div.highlight',
+    highlight: 'div[data-block-name="highlight"]',
     toc: '.toc-container',
     linkListWrapper: '.section:has(.link-list-wrapper)',
     headers: 'main h2, main h3, main h4',
