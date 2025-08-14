@@ -185,22 +185,32 @@ function applyPositionToElement(tocElement, topPosition) {
  * @param {HTMLElement} tocElement - TOC element to position
  */
 function handleDesktopPositioning(tocElement) {
-  if (!isDesktopViewport()) return;
+  console.log('Desktop positioning called, viewport width:', window.innerWidth);
+  if (!isDesktopViewport()) {
+    console.log('Not desktop viewport, returning');
+    return;
+  }
 
   let anchorElement = document.querySelector(CONFIG.selectors.highlight);
+  console.log('Anchor element found:', anchorElement);
 
   // Fallback to section element if highlight element is not found
   if (!anchorElement) {
     anchorElement = document.querySelector(CONFIG.selectors.section);
+    console.log('Using section fallback:', anchorElement);
   }
 
-  if (!anchorElement || !tocElement) return;
+  if (!anchorElement || !tocElement) {
+    console.log('Missing anchor or TOC element');
+    return;
+  }
 
   // Calculate and apply positioning constraints
   let position = calculateInitialPosition(anchorElement);
   position = applyMinimumDistance(position);
   position = preventOverlapWithFooter(position, tocElement);
 
+  console.log('Calculated position:', position);
   applyPositionToElement(tocElement, position);
 }
 
@@ -557,8 +567,6 @@ function setupKeyboardNavigation(tocContent) {
  * @param {HTMLElement} tocElement - TOC element to position
  */
 function handleMobileSticky(tocElement) {
-  if (isDesktopViewport()) return; // Only on mobile/tablet
-
   const highlightElement = document.querySelector('.section div.highlight');
   if (!highlightElement) return; // Only apply when TOC is after highlight
 
@@ -605,11 +613,36 @@ function setupEventHandlers(tocElement) {
   const throttledHandleDesktopPositioning = throttleRAF(() => handleDesktopPositioning(tocElement));
   const throttledHandleMobileSticky = throttleRAF(() => handleMobileSticky(tocElement));
 
-  window.addEventListener('scroll', throttledHandleDesktopPositioning);
-  window.addEventListener('scroll', throttledHandleMobileSticky);
+  // Single scroll handler with viewport check
+  const handleScroll = () => {
+    if (window.innerWidth >= 1440) {
+      throttledHandleDesktopPositioning();
+    } else if (window.innerWidth < 768) {
+      // Mobile sticky behavior (below 768px)
+      throttledHandleMobileSticky();
+    }
+    // Tablet (768px-1439px) - no scroll behavior, stays static
+  };
+
+  window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', () => {
     handleDesktopPositioning(tocElement);
     cleanupDesktopPositioning(tocElement);
+
+    // Reset mobile sticky positioning when transitioning to tablet/desktop
+    if (window.innerWidth >= 768) {
+      tocElement.style.position = 'static';
+      tocElement.style.top = '';
+      tocElement.style.left = '';
+      tocElement.style.right = '';
+      tocElement.style.zIndex = '';
+
+      // Remove placeholder if it exists
+      const placeholder = tocElement.nextElementSibling;
+      if (placeholder && placeholder.classList.contains('toc-placeholder')) {
+        placeholder.remove();
+      }
+    }
   });
 
   // Initial positioning
