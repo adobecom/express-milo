@@ -223,8 +223,6 @@
   }
   .hover-cards.split .right-content {
     padding: 20px 0;
-  }
-  .hover-cards.split .content-wrapper {
     min-height: 279px;
   }
 }
