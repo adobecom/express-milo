@@ -119,6 +119,7 @@ function scrollToHeader(headerText, toc) {
   if (targetHeader) {
     const tocHeight = toc.offsetHeight;
     const stickyOffset = isMobileViewport() ? CONFIG.positioning.mobileNavHeight : -120;
+    console.log('stickyOffset', stickyOffset);
     const headerRect = targetHeader.getBoundingClientRect();
     const scrollTop = window.pageYOffset + headerRect.top - tocHeight - stickyOffset - 20;
 
@@ -637,29 +638,13 @@ function setupAllEventHandlers(elements) {
  * @param {HTMLElement} toc - TOC container element
  */
 function insertTOCIntoDOM(toc) {
-  console.log('Inserting TOC into DOM');
-
-  // Debug: Let's see what highlight elements actually exist
-  const allHighlights = document.querySelectorAll('.highlight');
-  console.log('All elements with .highlight class:', allHighlights);
-
-  const allSections = document.querySelectorAll('section');
-  console.log('All section elements:', allSections);
-
-  console.log('Looking for highlight with selector:', CONFIG.selectors.highlight);
   const highlightElement = document.querySelector(CONFIG.selectors.highlight);
-  console.log('Highlight element found for insertion:', highlightElement);
-
   if (highlightElement) {
-    console.log('Inserting TOC after highlight element');
     highlightElement.insertAdjacentElement('afterend', toc);
   } else {
-    console.log('No highlight found, falling back to section');
     // Fallback to original behavior if highlight element is not found
     const firstSection = document.querySelector(CONFIG.selectors.section);
-    console.log('Section element found:', firstSection);
     if (firstSection) {
-      console.log('Inserting TOC after first section');
       firstSection.insertAdjacentElement('afterend', toc);
     }
   }
