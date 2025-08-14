@@ -1183,14 +1183,18 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   }
 }
 
-/* Removing this max width for now until 
-more time is available to fully implement the grid */ 
-/* @media (min-width: 1200px) {
-  main .section.long-form .content { 
-    width: var(--ax-grid-10-col-width);
-    margin: 0 auto;
+@media (min-width: 1200px) {
+
+  main .section.long-form {
+    margin-left: var(--ax-grid-3-col-width);
   }
-} */
+  main .section.long-form > *,
+  main .section.long-form .content { 
+    padding: 0;
+    width: var(--ax-grid-10-col-width);
+    margin: 0;
+  }
+}
 
 /*Styles can be removed once we stop using block transpilations*/
 main .marquee.transpiled p.action-area>span {
