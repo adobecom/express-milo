@@ -15,9 +15,9 @@ const usp = new URLSearchParams(window.location.search);
 const onRedirect = (e) => {
   // eslint-disable-next-line no-console
   console.log('redirecting to:', e.detail);
+  // temporary solution: allows analytics to go thru. should move to a promise
   setTimeout(() => {
     window.location.assign(e.detail);
-    // temporary solution: allows analytics to go thru
   }, 100);
 };
 const onError = (e) => {
@@ -35,15 +35,21 @@ export const SUSIUtils = {
 async function getDestURL(url) {
   let destURL;
   try {
-    destURL = await getTrackingAppendedURL(url);
+    const appended = await getTrackingAppendedURL(url);
+    destURL = new URL(appended);
   } catch (err) {
     window.lana?.log(`invalid redirect uri for susi-light: ${url}`);
     destURL = new URL('https://new.express.adobe.com');
   }
-  if (isStage && ['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
-    destURL.hostname = 'stage.projectx.corp.adobe.com';
+  if (isStage) {
+    if (['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
+      destURL.hostname = 'stage.projectx.corp.adobe.com';
+    }
+    if (destURL.hostname === 'adobesparkpost.app.link') {
+      destURL.pathname = '1F048UHIAVb';
+    }
   }
-  return destURL.toString();
+  return destURL;
 }
 
 function sendEventToAnalytics(type, eventName, client_id) {
@@ -83,14 +89,20 @@ function sendEventToAnalytics(type, eventName, client_id) {
   }
 }
 
-function createSUSIComponent({ variant, config, authParams, destURL }) {
+function createSUSIComponent({
+  variant,
+  config,
+  authParams,
+  destURL,
+}) {
   const susi = createTag('susi-sentry-light');
   susi.authParams = authParams;
-  susi.authParams.redirect_uri = destURL;
+  susi.authParams.redirect_uri = destURL.toString();
   susi.authParams.dctx_id = isStage ? DCTX_ID_STAGE : DCTX_ID_PROD;
   susi.config = config;
   if (isStage) susi.stage = 'true';
   susi.variant = variant;
+
   const onAnalytics = (e) => {
     const { type, event } = e.detail;
     sendEventToAnalytics(type, event, authParams.client_id);
@@ -104,7 +116,7 @@ function createSUSIComponent({ variant, config, authParams, destURL }) {
 function redirectIfLoggedIn(destURL) {
   const goDest = () => {
     sendEventToAnalytics('redirect', 'logged-in-auto-redirect');
-    window.location.assign(destURL);
+    window.location.assign(destURL.toString());
   };
   if (window.adobeIMS) {
     window.adobeIMS.isSignedInUser() && goDest();
@@ -163,12 +175,16 @@ function sanitizeId(input) {
     .replace(/[^\w-]/g, '');
 }
 
-async function buildEdu(el) {
-  const noRedirect = el.classList.contains('no-redirect');
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
+function createLogo() {
+  const logo = getIconElementDeprecated('adobe-express-logo');
+  logo.classList.add('express-logo');
+  logo.height = 24;
+  return logo;
+}
+
+async function buildEdu(el, locale, imsClientId, noRedirect) {
   const rows = el.querySelectorAll(':scope > div > div');
-  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const redirectUrl = rows[0]?.textContent?.trim();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
   const variant = 'edu-express';
@@ -184,14 +200,11 @@ async function buildEdu(el) {
 }
 
 // wrap susi component with custom logo + footer
-async function buildB2B(el) {
-  const noRedirect = el.classList.contains('no-redirect');
+async function buildB2B(el, locale, imsClientId, noRedirect) {
   const emailFirst = el.classList.contains('email-first');
   const emailOnly = el.classList.contains('email-only');
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
   const rows = el.querySelectorAll(':scope > div > div');
-  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const redirectUrl = rows[0]?.textContent?.trim();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
   const footer = rows[3];
@@ -210,27 +223,75 @@ async function buildB2B(el) {
   if (!noRedirect) {
     redirectIfLoggedIn(params.destURL);
   }
-  const susiScriptReady = SUSIUtils.loadSUSIScripts();
-  await susiScriptReady;
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
-  logo.height = 24;
+  await SUSIUtils.loadSUSIScripts();
   const titleDiv = createTag('div', { class: 'title' }, title);
-  const wrapper = createTag('div', { class: 'susi-b2b' }, [logo, titleDiv, createSUSIComponent(params)]);
-  footer && wrapper.append(footer);
-  return wrapper;
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, createSUSIComponent(params));
+  const layout = createTag('div', { class: 'susi-layout' }, [createLogo(), titleDiv, susiWrapper]);
+  footer && layout.append(footer);
+  return layout;
+}
+
+async function buildStudent(el, locale, imsClientId, noRedirect) {
+  const checked = el.classList.contains('checked');
+  const rows = el.querySelectorAll(':scope > div > div');
+  const redirectUrl = rows[0]?.textContent?.trim();
+  const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
+  const title = rows[2]?.textContent?.trim();
+  const studentCheckText = rows[3]?.textContent?.trim();
+  const footer = rows[4];
+  footer?.classList.add('footer', 'susi-banner');
+  const variant = 'standard';
+  const destURL = await getDestURL(redirectUrl);
+  if (checked) {
+    destURL.searchParams.set('student', 'true');
+  }
+  const susiConfigs = {
+    client_id, variant, destURL, locale, title: '', hideIcon: true,
+  };
+  const params = buildSUSIParams(susiConfigs);
+  if (!noRedirect) {
+    redirectIfLoggedIn(params.destURL);
+  }
+  await SUSIUtils.loadSUSIScripts();
+  const titleDiv = createTag('div', { class: 'title' }, title);
+  const checkboxInput = createTag('input', { type: 'checkbox', name: 'student' });
+  if (checked) {
+    checkboxInput.checked = true;
+  }
+  const susiComponent = createSUSIComponent(params);
+  checkboxInput.addEventListener('change', (e) => {
+    const url = new URL(susiComponent.authParams.redirect_uri);
+    if (e.target.checked) {
+      url.searchParams.set('student', 'true');
+    } else {
+      url.searchParams.delete('student');
+    }
+    susiComponent.authParams = { ...susiComponent.authParams, redirect_uri: url.toString() };
+  });
+  const susiWrapper = createTag('div', { class: 'susi-wrapper' }, susiComponent);
+  const studentCheckDiv = createTag(
+    'div',
+    { class: 'student-check' },
+    createTag('label', {}, [checkboxInput, studentCheckText]),
+  );
+  const layout = createTag('div', { class: 'susi-layout' }, [
+    createLogo(),
+    titleDiv,
+    studentCheckDiv,
+    susiWrapper,
+  ]);
+  footer && layout.append(footer);
+  return layout;
 }
 
 // each tab wraps susi component with custom logo + footer
 let tabsId = 0;
-async function buildSUSITabs(el) {
-  const locale = getConfig().locale.ietf.toLowerCase();
-  const { imsClientId } = getConfig();
-  const noRedirect = el.classList.contains('no-redirect');
+async function buildSUSITabs(el, locale, imsClientId, noRedirect) {
   const rows = [...el.children];
+  const title = rows[0].textContent?.trim();
   const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
   const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
-  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim());
   const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
   const footers = rows[5] ? [...rows[5].querySelectorAll('div')] : [];
   const destURLs = await Promise.all(redirectUrls.map((redirectUrl) => getDestURL(redirectUrl)));
@@ -252,7 +313,7 @@ async function buildSUSITabs(el) {
   }
 
   tabsId += 1;
-  const wrapper = createTag('div', { class: 'susi-tabs' });
+  const layout = createTag('div', { class: 'susi-layout' });
   const tabList = createTag('div', { role: 'tablist' });
   const susiScriptReady = SUSIUtils.loadSUSIScripts();
   const panels = tabParams.map((option, i) => {
@@ -297,35 +358,27 @@ async function buildSUSITabs(el) {
     tabList.append(tab);
     return panel;
   });
-
-  const logo = getIconElementDeprecated('adobe-express-logo');
-  logo.classList.add('express-logo');
-  logo.height = 24;
-  const title = rows[0].textContent?.trim();
   const titleDiv = createTag('div', { class: 'title' }, title);
-  wrapper.append(logo, titleDiv, tabList, ...panels);
-  return wrapper;
+  layout.append(createLogo(), titleDiv, tabList, ...panels);
+  return layout;
 }
 
 export default async function init(el) {
   ({ createTag, loadScript, getConfig, loadIms } = await import(`${getLibs()}/utils/utils.js`));
   isStage = (usp.get('env') && usp.get('env') !== 'prod') || getConfig().env.name !== 'prod';
+  const locale = getConfig().locale.ietf.toLowerCase();
+  const { imsClientId } = getConfig();
+  const noRedirect = el.classList.contains('no-redirect');
 
-  const isTabs = el.classList.contains('tabs');
-  const isBusiness = el.classList.contains('b2b');
+  const match = [
+    { cls: 'b2b', build: buildB2B },
+    { cls: 'tabs', build: buildSUSITabs },
+    { cls: 'student', build: buildStudent },
+  ].find(({ cls }) => el.classList.contains(cls));
 
-  // default edu
-  if (!isTabs && !isBusiness) {
-    const edu = await buildEdu(el);
-    el.replaceChildren(edu);
-    return;
-  }
+  const susi = await (match?.build || buildEdu)(el, locale, imsClientId, noRedirect);
+  el.replaceChildren(susi);
 
-  if (isBusiness) {
-    el.replaceChildren(await (buildB2B(el)));
-  } else {
-    el.replaceChildren(await (buildSUSITabs(el)));
-  }
   // branchlinks can exist in footers
   const footer = el.querySelector('.footer');
   if (footer) {
