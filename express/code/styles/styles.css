@@ -1183,13 +1183,14 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   }
 }
 
-@media (min-width: 1200px) {
-  main .section.long-form .content {
-    /* Desktop: 7 columns */
+/* Removing this max width for now until 
+more time is available to fully implement the grid */ 
+/* @media (min-width: 1200px) {
+  main .section.long-form .content { 
     width: var(--ax-grid-10-col-width);
     margin: 0 auto;
   }
-}
+} */
 
 /*Styles can be removed once we stop using block transpilations*/
 main .marquee.transpiled p.action-area>span {
