@@ -102,7 +102,6 @@
 }
 
 .hover-cards.split .left-content {
-
   padding: 16px;
 }
 
@@ -111,6 +110,12 @@
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.hover-cards.split .right-content .content-wrapper {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
