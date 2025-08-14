@@ -8,7 +8,7 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 const CONFIG = {
   breakpoints: {
     mobile: 768,
-    desktop: 1200,
+    desktop: 1440,
   },
   positioning: {
     fixedTopDistance: 200,
