@@ -17,7 +17,7 @@ const CONFIG = {
   },
   selectors: {
     section: 'main .section',
-    highlight: 'div[data-block-name="highlight"]',
+    highlight: '.section div.highlight',
     toc: '.toc-container',
     linkListWrapper: '.section:has(.link-list-wrapper)',
     headers: 'main h2, main h3, main h4',
@@ -140,9 +140,8 @@ function scrollToHeader(headerText, toc) {
  * @returns {number} Initial top position in pixels
  */
 function calculateInitialPosition(anchorElement) {
-  const anchorBottom = anchorElement.offsetTop + anchorElement.offsetHeight;
-  const scrollTop = window.pageYOffset;
-  return anchorBottom - scrollTop + CONFIG.positioning.offset + 64;
+  const anchorRect = anchorElement.getBoundingClientRect();
+  return anchorRect.bottom + 20; // Position 20px below the highlight blade
 }
 
 /**
@@ -638,13 +637,29 @@ function setupAllEventHandlers(elements) {
  * @param {HTMLElement} toc - TOC container element
  */
 function insertTOCIntoDOM(toc) {
+  console.log('Inserting TOC into DOM');
+
+  // Debug: Let's see what highlight elements actually exist
+  const allHighlights = document.querySelectorAll('.highlight');
+  console.log('All elements with .highlight class:', allHighlights);
+
+  const allSections = document.querySelectorAll('section');
+  console.log('All section elements:', allSections);
+
+  console.log('Looking for highlight with selector:', CONFIG.selectors.highlight);
   const highlightElement = document.querySelector(CONFIG.selectors.highlight);
+  console.log('Highlight element found for insertion:', highlightElement);
+
   if (highlightElement) {
+    console.log('Inserting TOC after highlight element');
     highlightElement.insertAdjacentElement('afterend', toc);
   } else {
+    console.log('No highlight found, falling back to section');
     // Fallback to original behavior if highlight element is not found
     const firstSection = document.querySelector(CONFIG.selectors.section);
+    console.log('Section element found:', firstSection);
     if (firstSection) {
+      console.log('Inserting TOC after first section');
       firstSection.insertAdjacentElement('afterend', toc);
     }
   }
