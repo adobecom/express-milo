@@ -99,7 +99,6 @@ export function recipe2Form(recipe) {
 
   if (params.has('templateIds')) {
     formData.templateIds = params.get('templateIds').split(',');
-    return formData;
   }
 
   if (params.get('start')) formData.start = Number(params.get('start'));

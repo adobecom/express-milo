@@ -95,6 +95,9 @@ export function recipe2ApiQuery(recipe) {
   if (params.get('templateIds')) {
     params.append('filters', `id==${params.get('templateIds')}`);
     params.delete('templateIds');
+    // ids are very specific so removing some interference
+    params.delete('start');
+    params.delete('orderBy');
   } else {
     handleFilters(params);
     query.headers = handleHeaders(params);

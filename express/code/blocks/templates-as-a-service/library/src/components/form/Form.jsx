@@ -148,7 +148,7 @@ export default function Form() {
         ]}
       />
 
-      <h4>Manual Template IDs (exclusive and disable rest of form)</h4>
+      <h4>Manual Template IDs (ignoring all but collection and limit)</h4>
       <TemplateIdGroups />
 
       <h4>Boosting:</h4>
