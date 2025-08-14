@@ -1,7 +1,12 @@
 import { getIconElementDeprecated, getLibs } from '../utils.js';
 
-let createTag; let loadStyle;
+let createTag;
 let getConfig;
+let currentVisibleTooltip = null;
+
+/* ========================================
+   CSS and Position Management
+   ======================================== */
 
 export async function onTooltipCSSLoad() {
   const config = getConfig();
@@ -31,8 +36,23 @@ export function adjustElementPosition() {
   }
 }
 
-function buildTooltip(pricingArea, tooltipPattern) {
-  const elements = pricingArea.querySelectorAll('p');
+export function getTooltipMatch(elements, tooltipPattern) {
+  let tooltipMatch;
+  let tooltipContainer;
+  Array.from(elements).forEach((p) => {
+    const match = tooltipPattern.exec(p.innerText);
+    if (match) {
+      tooltipMatch = match;
+      tooltipContainer = p;
+    }
+  });
+  return { tooltipMatch, tooltipContainer };
+}
+/* ========================================
+   Legacy Tooltip Functions
+   ======================================== */
+
+function buildTooltip(elements, tooltipPattern) {
   let tooltipMatch;
   let tooltipContainer;
 
@@ -67,15 +87,23 @@ function buildTooltip(pricingArea, tooltipPattern) {
 
   const showTooltip = () => {
     clearTimeout(hideTimeout);
+    if (currentVisibleTooltip && currentVisibleTooltip !== tooltipButton) {
+      currentVisibleTooltip.classList.remove('hover');
+      currentVisibleTooltip.querySelector('.tooltip-text').classList.remove('hover');
+    }
     isTooltipVisible = true;
     tooltipButton.classList.add('hover');
     tooltipPopup.classList.add('hover');
+    currentVisibleTooltip = tooltipButton;
   };
 
   const hideTooltip = () => {
     isTooltipVisible = false;
     tooltipButton.classList.remove('hover');
     tooltipPopup.classList.remove('hover');
+    if (currentVisibleTooltip === tooltipButton) {
+      currentVisibleTooltip = null;
+    }
   };
 
   const checkAndHideTooltip = () => {
@@ -123,6 +151,7 @@ function buildTooltip(pricingArea, tooltipPattern) {
   });
 
   tooltipButton.addEventListener('touchstart', (e) => {
+    console.log('touchstart');
     e.preventDefault();
     toggleTooltip();
   });
@@ -143,14 +172,11 @@ function buildTooltip(pricingArea, tooltipPattern) {
 
 export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
-    ({ createTag, getConfig, loadStyle } = utils);
+    ({ createTag, getConfig } = utils);
   });
-  const config = getConfig();
   return new Promise((resolve) => {
-    loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
-      onTooltipCSSLoad();
-      buildTooltip(pricingArea, tooltipPattern);
-      resolve();
-    });
+    onTooltipCSSLoad();
+    buildTooltip(pricingArea, tooltipPattern);
+    resolve();
   });
 }
