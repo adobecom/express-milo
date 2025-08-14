@@ -431,27 +431,10 @@ async function copyToClipboard(button, copyTxt) {
 }
 
 /**
- * Updates share text with localized labels
- * @param {HTMLElement} shareBlock - Social icons container
- */
-async function updateShareText(shareBlock) {
-  // Use static labels for now - can be enhanced with localization later
-  const labels = [
-    'Share on Twitter',
-    'Share on LinkedIn',
-    'Share on Facebook',
-    'Copy to clipboard',
-  ];
-  const shareLinks = shareBlock.querySelectorAll('a');
-  [...shareLinks].forEach((el, index) => el.setAttribute('aria-label', labels[index]));
-  return 'Copied to clipboard';
-}
-
-/**
  * Creates social icons section with sharing functionality
  * @returns {HTMLElement} Social icons container
  */
-async function createSocialIcons() {
+function createSocialIcons() {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(document.querySelector('h1')?.textContent || '');
   const description = encodeURIComponent(getMetadata('description') || '');
@@ -502,23 +485,8 @@ async function createSocialIcons() {
 
   const copyButton = socialIcons.querySelector('#copy-to-clipboard');
   if (copyButton) {
-    // Remove any existing event listeners to avoid duplicates
-    copyButton.replaceWith(copyButton.cloneNode(true));
-    const newCopyButton = socialIcons.querySelector('#copy-to-clipboard');
-    newCopyButton.addEventListener('click', () => copyToClipboard(newCopyButton, 'Copied to clipboard'));
+    copyButton.addEventListener('click', () => copyToClipboard(copyButton, 'Copied to clipboard'));
   }
-
-  // Update share text with localized labels
-  setTimeout(async () => {
-    const copyText = await updateShareText(socialIcons);
-    const updatedCopyButton = socialIcons.querySelector('#copy-to-clipboard');
-    if (updatedCopyButton) {
-      // Remove existing listener and add new one with updated text
-      updatedCopyButton.replaceWith(updatedCopyButton.cloneNode(true));
-      const finalCopyButton = socialIcons.querySelector('#copy-to-clipboard');
-      finalCopyButton.addEventListener('click', () => copyToClipboard(finalCopyButton, copyText));
-    }
-  }, 100);
 
   return socialIcons;
 }
@@ -711,13 +679,15 @@ async function initializeDependencies() {
 /**
  * Creates the complete TOC structure
  * @param {Object} config - Configuration object
- * @returns {Promise<Object>} Object containing all TOC elements
+ * @returns {Object} Object containing all TOC elements
  */
-async function createTOCStructure(config) {
+function createTOCStructure(config) {
   const toc = createTOCContainer();
   const title = createTOCTitle(config.title);
   const tocContent = createNavigationLinks(config, toc);
-  const socialIcons = await createSocialIcons();
+
+  // Create a placeholder for social icons to load them asynchronously
+  const socialIcons = createTag('div', { class: 'toc-social-icons' });
 
   return { toc, title, tocContent, socialIcons };
 }
@@ -748,12 +718,18 @@ function assembleTOC(elements) {
  * @param {Object} elements - Object containing TOC elements
  */
 function setupAllEventHandlers(elements) {
-  const { toc, title, tocContent } = elements;
+  const { toc, title, tocContent, socialIcons } = elements;
 
   setupTitleHandlers(title, toc, tocContent);
   setupKeyboardNavigation(tocContent);
   setupEventHandlers(toc);
   setupScrollTracking(toc);
+
+  // Load social icons asynchronously after TOC is in DOM
+  requestIdleCallback(() => {
+    const realSocialIcons = createSocialIcons();
+    socialIcons.innerHTML = realSocialIcons.innerHTML;
+  });
 }
 
 /**
@@ -791,7 +767,7 @@ export default async function setTOCSEO() {
     const config = buildMetadataConfig();
 
     // Phase 3: Create TOC structure
-    const elements = await createTOCStructure(config);
+    const elements = createTOCStructure(config);
 
     // Phase 4: Assemble TOC
     const toc = assembleTOC(elements);
