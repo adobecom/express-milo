@@ -734,6 +734,12 @@ function assembleTOC(elements) {
   toc.appendChild(tocContent);
   toc.appendChild(socialIcons);
 
+  // Set TOC to open by default on mobile
+  if (isMobileViewport()) {
+    toc.classList.add('open');
+    title.setAttribute('aria-expanded', 'true');
+  }
+
   return toc;
 }
 
