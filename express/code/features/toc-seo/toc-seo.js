@@ -171,6 +171,27 @@ function preventOverlapWithFooter(position, tocElement) {
 }
 
 /**
+ * Stops TOC scroll when reaching the blog posts container on desktop
+ * @param {number} position - Current position
+ * @param {HTMLElement} tocElement - TOC element
+ * @returns {number} Adjusted position
+ */
+function preventScrollPastBlogPosts(position, tocElement) {
+  if (!isDesktopViewport()) {
+    return position;
+  }
+
+  const blogPostsContainer = document.querySelector('.ax-blog-posts-container');
+  if (!blogPostsContainer) return position;
+
+  const blogPostsTop = blogPostsContainer.offsetTop - window.pageYOffset;
+  const tocHeight = tocElement.offsetHeight;
+  const maxTopPosition = blogPostsTop - tocHeight;
+
+  return Math.min(position, maxTopPosition);
+}
+
+/**
  * Applies the calculated position to the TOC element
  * @param {HTMLElement} tocElement - TOC element to position
  * @param {number} topPosition - Calculated top position
@@ -204,6 +225,7 @@ function handleDesktopPositioning(tocElement) {
   let position = calculateInitialPosition(anchorElement);
   position = applyMinimumDistance(position);
   position = preventOverlapWithFooter(position, tocElement);
+  position = preventScrollPastBlogPosts(position, tocElement);
 
   applyPositionToElement(tocElement, position);
 }
