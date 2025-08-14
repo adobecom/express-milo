@@ -202,7 +202,7 @@ main .toc-content a:focus:not(:focus-visible) {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1440px) {
   .toc-container {
     position: static;
     width: 310px;
