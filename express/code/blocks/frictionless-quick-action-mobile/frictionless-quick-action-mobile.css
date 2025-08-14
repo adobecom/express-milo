@@ -207,6 +207,10 @@
     height: 741px;
 }
 
+.frictionless-quick-action-mobile .quick-action-container#crop-image-container {
+    height: 875px;
+}
+
 .frictionless-quick-action-mobile .quick-action-container#trim-video-container {
     height: 762px;
 }
