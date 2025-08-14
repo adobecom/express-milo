@@ -502,14 +502,21 @@ async function createSocialIcons() {
 
   const copyButton = socialIcons.querySelector('#copy-to-clipboard');
   if (copyButton) {
-    copyButton.addEventListener('click', () => copyToClipboard(copyButton, 'Copied to clipboard'));
+    // Remove any existing event listeners to avoid duplicates
+    copyButton.replaceWith(copyButton.cloneNode(true));
+    const newCopyButton = socialIcons.querySelector('#copy-to-clipboard');
+    newCopyButton.addEventListener('click', () => copyToClipboard(newCopyButton, 'Copied to clipboard'));
   }
 
   // Update share text with localized labels
   setTimeout(async () => {
     const copyText = await updateShareText(socialIcons);
-    if (copyButton) {
-      copyButton.addEventListener('click', () => copyToClipboard(copyButton, copyText));
+    const updatedCopyButton = socialIcons.querySelector('#copy-to-clipboard');
+    if (updatedCopyButton) {
+      // Remove existing listener and add new one with updated text
+      updatedCopyButton.replaceWith(updatedCopyButton.cloneNode(true));
+      const finalCopyButton = socialIcons.querySelector('#copy-to-clipboard');
+      finalCopyButton.addEventListener('click', () => copyToClipboard(finalCopyButton, copyText));
     }
   }, 100);
 
