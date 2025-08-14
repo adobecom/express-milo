@@ -550,8 +550,15 @@ function setupTitleHandlers(title, toc, tocContent) {
     }
   };
 
-  title.addEventListener('click', toggleTOC);
+  // Single click handler for the entire TOC container on mobile
+  toc.addEventListener('click', (e) => {
+    // Only handle clicks on mobile and prevent clicks on links and social icons from toggling
+    if (isMobileViewport() && !e.target.closest('a') && !e.target.closest('.toc-social-icons')) {
+      toggleTOC();
+    }
+  });
 
+  // Keep keyboard handler for accessibility
   title.addEventListener('keydown', (e) => {
     if (isMobileViewport() && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
