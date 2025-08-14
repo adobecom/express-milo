@@ -24,6 +24,15 @@
   padding-bottom: 0;
 }
 
+/* Mobile fixed positioning */
+.toc.toc-container.toc-mobile-fixed {
+  position: fixed;
+  top: var(--mobile-nav-height, 40px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
 main .icon {
   width: 20px;
   height: 20px;
