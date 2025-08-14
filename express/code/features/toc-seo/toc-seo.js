@@ -578,18 +578,11 @@ function handleMobileSticky(tocElement) {
       tocElement.insertAdjacentElement('afterend', placeholder);
     }
 
-    tocElement.style.position = 'fixed';
-    tocElement.style.top = `${mobileNavHeight}px`;
-    tocElement.style.left = '0';
-    tocElement.style.right = '0';
-    tocElement.style.zIndex = '100';
+    tocElement.classList.add('toc-mobile-fixed');
+    tocElement.style.setProperty('--mobile-nav-height', `${mobileNavHeight}px`);
   } else {
     // Return to normal flow when highlight is visible
-    tocElement.style.position = 'static';
-    tocElement.style.top = '';
-    tocElement.style.left = '';
-    tocElement.style.right = '';
-    tocElement.style.zIndex = '';
+    tocElement.classList.remove('toc-mobile-fixed');
 
     // Remove placeholder
     const placeholder = tocElement.nextElementSibling;
@@ -623,14 +616,10 @@ function setupEventHandlers(tocElement) {
     // Reset mobile sticky positioning when transitioning to tablet/desktop
     if (window.innerWidth >= 768) {
       if (window.innerWidth < 1440) {
-        tocElement.style.position = 'static';
+        tocElement.classList.remove('toc-mobile-fixed');
       } else {
-        tocElement.style.position = 'fixed';
+        tocElement.classList.add('toc-desktop-fixed');
       }
-      tocElement.style.top = '';
-      tocElement.style.left = '';
-      tocElement.style.right = '';
-      tocElement.style.zIndex = '';
 
       // Remove placeholder if it exists
       const placeholder = tocElement.nextElementSibling;
