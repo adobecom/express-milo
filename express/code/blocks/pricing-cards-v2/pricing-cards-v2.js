@@ -485,9 +485,9 @@ export default async function init(el) {
   el.classList.add(`card-count-${cards.length}`);
   const cardFooter = el.querySelector(':scope > div:last-of-type');
 
-  cardFooter.classList.add('card-footer', 'ax-grid-container', 'small-gap');
+  cardFooter.classList.add('card-footer');
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
-  const cardsContainer = createTag('div', { class: 'cards-container ax-grid-container small-gap' });
+  const cardsContainer = createTag('div', { class: 'cards-container' });
 
   const decoratedCards = await Promise.all(
     cards.map((card) => decorateCard(card, el)),
