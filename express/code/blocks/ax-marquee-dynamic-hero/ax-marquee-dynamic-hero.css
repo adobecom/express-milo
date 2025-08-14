@@ -15,7 +15,6 @@ main .ax-marquee-dynamic-hero p.button-container {
   width: 164px;
   margin: 0;
   margin-left: 0;
-  display: block;
   padding-top: var(--spacing-600);
 }
 
@@ -111,6 +110,7 @@ main .ax-marquee-dynamic-hero p.button-container {
   
   .ax-marquee-dynamic-hero.hero-top > img.express-logo {
     order: 0;
+    margin: 0 auto;
   }
 }
 
@@ -127,6 +127,12 @@ main .ax-marquee-dynamic-hero p.button-container {
     flex-direction: row;
     align-items: flex-start;
     gap: var(--spacing-600);
+  }
+
+  .ax-marquee-dynamic-hero > img.express-logo,
+  .ax-marquee-dynamic-hero div:has(picture) img.express-logo,
+  .ax-marquee-dynamic-hero div:has(h1, h2, h3) img.express-logo {
+    display: block;
   }
   
   .ax-marquee-dynamic-hero > div > div:first-child {
