@@ -340,7 +340,7 @@ async function createCards(el, rows, cardCount) {
   const defaultClassIndex = Array.from(el.classList).filter((className) => className.includes('default-open-')).map((className) => parseInt(className.replace('default-open-', ''), 10) - 1);
   const cards = [];
   const defaultOpenIndex = defaultClassIndex.length > 0 ? defaultClassIndex : [0];
-  const cardWrapper = createTag('div', { class: 'card-wrapper ax-grid-container' });
+  const cardWrapper = createTag('div', { class: 'card-wrapper' });
 
   /* eslint-disable no-await-in-loop */
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
