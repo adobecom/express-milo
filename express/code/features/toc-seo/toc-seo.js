@@ -120,7 +120,7 @@ function scrollToHeader(headerText, toc) {
     // Calculate proper offset based on viewport
     let stickyOffset;
     if (isMobileViewport()) {
-      stickyOffset = CONFIG.positioning.mobileNavHeight;
+      stickyOffset = CONFIG.positioning.mobileNavHeight + 80;
     } else if (isDesktopViewport()) {
       // For desktop, account for the fixed TOC position and some padding
       stickyOffset = CONFIG.positioning.fixedTopDistance + 40;
