@@ -1136,6 +1136,9 @@ main .section.long-form .content {
   box-sizing: border-box;
   padding: 0 20px 60px;
   max-width: unset;
+  /* Mobile: 12 columns */
+  width: var(--ax-grid-12-col-width);
+  margin: 0 auto;
 }
 
 main .section.long-form .content,
@@ -1147,6 +1150,7 @@ main .section.long-form .content h4,
 main .section.long-form .content h5,
 main .section.long-form .content h6 {
   text-align: left;
+  color: var(--color-gray-700);
 }
 
 main .section.long-form .content h2,
@@ -1157,22 +1161,31 @@ main .section.long-form .content h6 {
   font-size: var(--heading-font-size-s);
 }
 
-main .section.long-form .content h2 {
-  margin-top: 80px;
-}
-
-main .section.long-form .content h3 {
-  margin-top: 64px;
-}
-
+main .section.long-form .content h1,
+main .section.long-form .content h2,
+main .section.long-form .content h3,
 main .section.long-form .content h4 {
-  margin-top: 56px;
+  margin-top: 0;
+}
+
+main .section.long-form .content:has(h1, h2, h3, h4) {
+  padding-top: var(--spacing-800)
 }
 
 @media (min-width: 600px) {
   main .section.long-form .content {
     padding: 0 40px 60px;
-    max-width: 1070px;
+    /* Tablet: 12 columns */
+    width: var(--ax-grid-12-col-width);
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  main .section.long-form .content {
+    /* Desktop: 7 columns */
+    width: var(--ax-grid-10-col-width);
+    margin: 0 auto;
   }
 }
 
