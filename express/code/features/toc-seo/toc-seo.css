@@ -179,6 +179,10 @@ main .toc-content a:focus:not(:focus-visible) {
   padding: 0;
 }
 
+.toc-social-icons a {
+  cursor: pointer;
+}
+
 .toc-container.open .toc-social-icons {
   display: flex;
 }
