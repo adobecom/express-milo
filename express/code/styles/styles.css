@@ -17,9 +17,12 @@
   --color-gray-500: #909090;
   --color-gray-600: #686868;
   --color-gray-700: #444;
+  --color-gray-700-variant: #464646;
   --color-gray-800: #242424;
+  --color-gray-900: #222;
   --color-blue-600: #0066CC;
   --color-black: #000;
+  --color-content-neutral: #222222;
   --color-brand-title: #000b1d;
   --color-info-accent: #5c5ce0;
   --color-info-accent-hover: #4646c6;
@@ -39,6 +42,7 @@
   --gradient-highlight-diagonal: linear-gradient(45deg, #7c84fc, #ff4dd2);
   --palette-indigo-200: #E0E2FF;
   --palette-indigo-1000: #4046CA;
+  --palette-gray-200: #E6E6E6;
   --background-positive-default: #007A4D;
 
   /* new styles with similar names and shades */
@@ -69,8 +73,9 @@
   /* 12px */
   /* headings */
   --heading-font-weight: 800;
+  --subheading-font-weight: 700;
   --heading-color: var(--color-gray-800);
-  --heading-line-height: 1.25;
+  --heading-line-height: 130%;
   --heading-font-size-xxxl: 5rem;
   /* 80px */
   --heading-font-size-xxl: 3.75rem;
@@ -83,10 +88,13 @@
   /* 28px */
   --heading-font-size-s: 1.375rem;
   /* 22px */
+  --heading-font-size-xs: 1.25rem;
+  /* 20px */
 
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
   --block-lg-max-width: 1024px;
+  --block-wd-grid-max-width: 1520px;
   --block-wd-max-width: 1440px;
 
   /* Spacing */
@@ -1344,13 +1352,24 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   text-decoration: underline;
 }
 
+/* TODO: deprecated: util classes for current ax-grid system */
+.ax-grid-container {
+  margin-left: var(--ax-grid-margin);
+  margin-right: var(--ax-grid-margin);
+  box-sizing: border-box;
+  display: flex;
+  gap: var(--ax-grid-gutter);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 /* video controls for accessibility */
 .video-controls-wrapper {
   position: absolute;
   bottom: 15px;
   right: 35px;
-  width: 48px;
-  height: 48px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: var(--color-gray-700);
   display: flex;
