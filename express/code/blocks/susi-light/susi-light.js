@@ -41,8 +41,13 @@ async function getDestURL(url) {
     window.lana?.log(`invalid redirect uri for susi-light: ${url}`);
     destURL = new URL('https://new.express.adobe.com');
   }
-  if (isStage && ['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
-    destURL.hostname = 'stage.projectx.corp.adobe.com';
+  if (isStage) {
+    if (['new.express.adobe.com', 'express.adobe.com'].includes(destURL.hostname)) {
+      destURL.hostname = 'stage.projectx.corp.adobe.com';
+    }
+    if (destURL.hostname === 'adobesparkpost.app.link') {
+      destURL.pathname = '1F048UHIAVb';
+    }
   }
   return destURL;
 }
@@ -179,7 +184,7 @@ function createLogo() {
 
 async function buildEdu(el, locale, imsClientId, noRedirect) {
   const rows = el.querySelectorAll(':scope > div > div');
-  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const redirectUrl = rows[0]?.textContent?.trim();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
   const variant = 'edu-express';
@@ -199,7 +204,7 @@ async function buildB2B(el, locale, imsClientId, noRedirect) {
   const emailFirst = el.classList.contains('email-first');
   const emailOnly = el.classList.contains('email-only');
   const rows = el.querySelectorAll(':scope > div > div');
-  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const redirectUrl = rows[0]?.textContent?.trim();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
   const footer = rows[3];
@@ -229,7 +234,7 @@ async function buildB2B(el, locale, imsClientId, noRedirect) {
 async function buildStudent(el, locale, imsClientId, noRedirect) {
   const checked = el.classList.contains('checked');
   const rows = el.querySelectorAll(':scope > div > div');
-  const redirectUrl = rows[0]?.textContent?.trim().toLowerCase();
+  const redirectUrl = rows[0]?.textContent?.trim();
   const client_id = rows[1]?.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb');
   const title = rows[2]?.textContent?.trim();
   const studentCheckText = rows[3]?.textContent?.trim();
@@ -286,7 +291,7 @@ async function buildSUSITabs(el, locale, imsClientId, noRedirect) {
   const title = rows[0].textContent?.trim();
   const tabNames = [...rows[1].querySelectorAll('div')].map((div) => div.textContent);
   const variants = [...rows[2].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
-  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim().toLowerCase());
+  const redirectUrls = [...rows[3].querySelectorAll('div')].map((div) => div.textContent?.trim());
   const client_ids = [...rows[4].querySelectorAll('div')].map((div) => div.textContent?.trim() || (imsClientId ?? 'AdobeExpressWeb'));
   const footers = rows[5] ? [...rows[5].querySelectorAll('div')] : [];
   const destURLs = await Promise.all(redirectUrls.map((redirectUrl) => getDestURL(redirectUrl)));
