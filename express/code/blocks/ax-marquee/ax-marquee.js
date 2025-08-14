@@ -459,18 +459,21 @@ async function handleContent(div, block, animations) {
       buttonsWrapper.append(btnContainer);
     });
   } else {
-    const inlineButtons = [
-      ...div.querySelectorAll('p:last-of-type > a:not(.button.accent)'),
-    ];
-    if (inlineButtons.length) {
-      const primaryCta = inlineButtons[0];
+    // Only promote a final-paragraph link to a CTA when it is the sole
+    // content of that paragraph. This prevents legal copy like "View terms"
+    // links from being turned into CTAs on mobile.
+    const lastParagraph = div.querySelector('p:last-of-type');
+    const candidateLink = lastParagraph?.querySelector(':scope > a:not(.button.accent)');
+    const shouldPromote = !!(candidateLink
+      && lastParagraph.childElementCount === 1
+      && lastParagraph.textContent.trim() === candidateLink.textContent.trim());
+
+    if (shouldPromote) {
+      const primaryCta = candidateLink;
       formatDynamicCartLink(primaryCta);
       primaryCta.classList.add('button', 'accent', 'primaryCTA', 'xlarge');
       BlockMediator.set('primaryCtaUrl', primaryCta.href);
-      primaryCta.parentElement.classList.add(
-        'buttons-wrapper',
-        'with-inline-ctas',
-      );
+      lastParagraph.classList.add('buttons-wrapper', 'with-inline-ctas');
     }
   }
 
