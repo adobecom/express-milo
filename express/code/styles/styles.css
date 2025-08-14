@@ -1196,6 +1196,26 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   }
 }
 
+
+@media (min-width: 1440px) {
+
+  main .section.long-form {
+    margin-left: var(--ax-grid-3-col-width);
+  }
+  main .section.long-form > *,
+  main .section.long-form .content { 
+    padding: 0;
+    width: var(--ax-grid-12-col-width);
+    margin: 0;
+  }
+}
+
+@media (min-width: 1680px) {
+  main .section.long-form {
+    margin: 0 auto;
+  }
+}
+
 /*Styles can be removed once we stop using block transpilations*/
 main .marquee.transpiled p.action-area>span {
   display: flex;
