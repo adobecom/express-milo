@@ -185,23 +185,18 @@ function applyPositionToElement(tocElement, topPosition) {
  * @param {HTMLElement} tocElement - TOC element to position
  */
 function handleDesktopPositioning(tocElement) {
-  console.log('Desktop positioning called, viewport width:', window.innerWidth);
   if (!isDesktopViewport()) {
-    console.log('Not desktop viewport, returning');
     return;
   }
 
   let anchorElement = document.querySelector(CONFIG.selectors.highlight);
-  console.log('Anchor element found:', anchorElement);
 
   // Fallback to section element if highlight element is not found
   if (!anchorElement) {
     anchorElement = document.querySelector(CONFIG.selectors.section);
-    console.log('Using section fallback:', anchorElement);
   }
 
   if (!anchorElement || !tocElement) {
-    console.log('Missing anchor or TOC element');
     return;
   }
 
@@ -210,7 +205,6 @@ function handleDesktopPositioning(tocElement) {
   position = applyMinimumDistance(position);
   position = preventOverlapWithFooter(position, tocElement);
 
-  console.log('Calculated position:', position);
   applyPositionToElement(tocElement, position);
 }
 
@@ -626,12 +620,13 @@ function setupEventHandlers(tocElement) {
 
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', () => {
-    handleDesktopPositioning(tocElement);
-    cleanupDesktopPositioning(tocElement);
-
     // Reset mobile sticky positioning when transitioning to tablet/desktop
     if (window.innerWidth >= 768) {
-      tocElement.style.position = 'static';
+      if (window.innerWidth < 1440) {
+        tocElement.style.position = 'static';
+      } else {
+        tocElement.style.position = 'fixed';
+      }
       tocElement.style.top = '';
       tocElement.style.left = '';
       tocElement.style.right = '';
@@ -643,6 +638,10 @@ function setupEventHandlers(tocElement) {
         placeholder.remove();
       }
     }
+
+    // Handle desktop positioning and cleanup
+    handleDesktopPositioning(tocElement);
+    cleanupDesktopPositioning(tocElement);
   });
 
   // Initial positioning
