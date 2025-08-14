@@ -1,31 +1,30 @@
-/** block container variants */
-.section.ax-template-promo-edit {
+.section.ax-template-promo {
     max-width: var(--ax-grid-12-col-width);
     margin: 0;
     padding: var(--spacing-600) 20px;
     display: flex;
     flex-direction: column;
 }
-.section.ax-template-promo-edit.one-up {
+.section.ax-template-promo.one-up {
     gap: var(--spacing-300);
 }
 
-.section.ax-template-promo-edit.multiple-up {
+.section.ax-template-promo.multiple-up {
     gap: var(--spacing-600);
 }
 
 /** TWO-UP */
-.section.ax-template-promo-edit.multiple-up .two-up .image-container {
+.section.ax-template-promo.multiple-up .two-up .image-container {
     width: 50%;
 }
-.template-promo-edit.two-up {
+.template-promo.two-up {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-300);
 }
 
 /* Collapsible block */
-.section.ax-template-promo-edit .collapsible-rows .collapsible-row-accordion {
+.section.ax-template-promo .collapsible-rows .collapsible-row-accordion {
     margin-right: 0;
 }
 /** Botton Container */
@@ -33,7 +32,7 @@
     display: flex;
     align-items: center;
 }
-.section.ax-template-promo-edit > .button-container a.button.accent {
+.section.ax-template-promo > .button-container a.button.accent {
     background-color: var(--color-background-accent-default);
     margin: 0;
     font-size: var(--body-font-size-m);
@@ -41,31 +40,20 @@
     border-radius: 1000px;
 }
 
-.template-promo-edit.one-up {
+.template-promo.one-up {
     width: var(--ax-grid-12-col-width);
     
 }
 
-
-/* .section.ax-template-promo-edit .template-promo-edit.four-up-square {
-    width: var(--ax-grid-12-col-width);
-    margin: 0 auto;
-}
-
-.section.ax-template-promo-edit .template-promo-edit.four-up-square {
-    width: var(--ax-grid-12-col-width);
-    margin: 0 auto;
-} */
-
 @media screen and (min-width: 768px) {
-    .section.ax-template-promo-edit {
+    .section.ax-template-promo {
         width: var(--ax-grid-8-col-width);
         margin: 0 auto;
     }
 }
 
 @media screen and (min-width: 1200px) {
-    .section.ax-template-promo-edit {
+    .section.ax-template-promo {
         width: var(--ax-grid-7-col-width);
         margin: 0 auto;
     }
