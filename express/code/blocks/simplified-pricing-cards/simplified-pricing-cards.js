@@ -155,7 +155,7 @@ async function createPricingSection(
     handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
     handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
 
-    handleTooltip(pricingArea);
+    handleTooltip(pricingArea.querySelectorAll('p'));
     handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
     pricingArea.prepend(priceRow);
     priceEl?.parentNode?.remove();
