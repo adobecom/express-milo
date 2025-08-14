@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import {
   ACTION_TYPES,
   useFormData,
@@ -5,11 +6,12 @@ import {
 } from '../../../utils/form-hooks';
 import Label from '../Label';
 
-function Row({ rowIndex, templateId, expandButton }) {
+function Row({ rowIndex, templateId, expandButton, inputRef }) {
   const formDispatch = useFormDispatch();
   return (
     <Label>
       <input
+        ref={inputRef}
         className="template-id-input"
         type="text"
         value={templateId}
@@ -48,6 +50,20 @@ export default function TemplateIdGroups() {
   const formData = useFormData();
   const formDispatch = useFormDispatch();
   const { templateIds } = formData;
+  const inputRefs = useRef([]);
+  const prevLength = useRef(templateIds.length);
+  
+  // Focus on the newest input when a new one is added
+  useEffect(() => {
+    if (templateIds.length > prevLength.current) {
+      const lastInputIndex = templateIds.length - 1;
+      if (inputRefs.current[lastInputIndex]) {
+        inputRefs.current[lastInputIndex].focus();
+      }
+    }
+    prevLength.current = templateIds.length;
+  }, [templateIds.length]);
+  
   const expandButton = (
     <button
       onClick={(e) => {
@@ -68,6 +84,7 @@ export default function TemplateIdGroups() {
           rowIndex={i}
           templateId={templateId}
           expandButton={i === templateIds.length - 1 ? expandButton : null}
+          inputRef={(el) => inputRefs.current[i] = el}
         />
       ))}
     </div>

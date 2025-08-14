@@ -7,24 +7,6 @@ export const popularCollectionId = 'urn:aaid:sc:VA6C2:a6767752-9c76-493e-a9e8-49
 export const TOPICS_AND_SEPARATOR = ' AND '; // allows joining topics groups
 export const TOPICS_OR_SEPARATOR = ',';
 
-// backup=[-q;prefLang=en-GB]
-export function getBackupRecipe(oldParams, backupStr) {
-  const diffs = /\[(.+)\]/.exec(backupStr)[1].split(';');
-  const params = new URLSearchParams(oldParams);
-  diffs.forEach((diff) => {
-    const minus = /^-(.+)/.exec(diff);
-    if (minus) {
-      params.delete(minus[1]);
-      return;
-    }
-    const update = /^(.+)=(.+)/.exec(diff);
-    if (update) {
-      params.set(update[1], update[2]);
-    }
-  });
-  return params.toString();
-}
-
 function handleCollections(params) {
   if (params.has('collection')) {
     if (params.get('collection') === 'default') {
@@ -77,6 +59,24 @@ function handleHeaders(params) {
   return headers;
 }
 
+// backup=[-q;prefLang=en-GB]
+export function getBackupRecipe(oldParams, backupStr) {
+  const diffs = /\[(.+)\]/.exec(backupStr)[1].split(';');
+  const params = new URLSearchParams(oldParams);
+  diffs.forEach((diff) => {
+    const minus = /^-(.+)/.exec(diff);
+    if (minus) {
+      params.delete(minus[1]);
+      return;
+    }
+    const update = /^(.+)=(.+)/.exec(diff);
+    if (update) {
+      params.set(update[1], update[2]);
+    }
+  });
+  return params.toString();
+}
+
 export function recipe2ApiQuery(recipe) {
   const query = {};
   const params = new URLSearchParams(recipe);
@@ -84,18 +84,18 @@ export function recipe2ApiQuery(recipe) {
   params.set('queryType', 'search');
 
   handleCollections(params);
+  if (params.has('backup')) {
+    const backupStr = params.get('backup');
+    params.delete('backup');
+    query.backupQuery = {
+      target: params.get('limit'),
+      ...recipe2ApiQuery(getBackupRecipe(params, backupStr)),
+    };
+  }
   if (params.get('templateIds')) {
     params.append('filters', `id==${params.get('templateIds')}`);
     params.delete('templateIds');
   } else {
-    if (params.has('backup')) {
-      const backupStr = params.get('backup');
-      params.delete('backup');
-      query.backupQuery = {
-        target: params.get('limit'),
-        ...recipe2ApiQuery(getBackupRecipe(params, backupStr)),
-      };
-    }
     handleFilters(params);
     query.headers = handleHeaders(params);
   }
