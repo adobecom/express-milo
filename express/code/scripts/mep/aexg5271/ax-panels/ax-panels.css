@@ -137,7 +137,7 @@
 .section[data-ax-panel][role='tabpanel'].split {
   z-index: -1;
   margin-top: -28px;
-  padding: 48px 32px 32px;
+  padding: 48px 20px 32px;
   align-items: stretch;
   max-width: 966px;
   min-height: 400px;
