@@ -117,10 +117,20 @@ function scrollToHeader(headerText, toc) {
   const targetHeader = Array.from(headers).find((h) => h.textContent.trim().includes(headerText.replace('...', '').trim()));
 
   if (targetHeader) {
-    const tocHeight = toc.offsetHeight;
-    const stickyOffset = isMobileViewport() ? CONFIG.positioning.mobileNavHeight : -120;
+    // Calculate proper offset based on viewport
+    let stickyOffset;
+    if (isMobileViewport()) {
+      stickyOffset = CONFIG.positioning.mobileNavHeight;
+    } else if (isDesktopViewport()) {
+      // For desktop, account for the fixed TOC position and some padding
+      stickyOffset = CONFIG.positioning.fixedTopDistance + 40;
+    } else {
+      // For tablet, use a moderate offset
+      stickyOffset = 80;
+    }
+
     const headerRect = targetHeader.getBoundingClientRect();
-    const scrollTop = window.pageYOffset + headerRect.top - tocHeight - stickyOffset - 20;
+    const scrollTop = window.pageYOffset + headerRect.top - stickyOffset;
 
     window.scrollTo({
       top: scrollTop,
@@ -351,7 +361,11 @@ function createNavigationLinks(config, toc) {
   Object.keys(config).forEach((key) => {
     if (key.startsWith('content-') && !key.endsWith('-short')) {
       const link = createTag('a', { href: `#${key}` });
-      link.textContent = config[key];
+
+      // Check if there's a short version available and use it
+      const shortKey = `${key}-short`;
+      const displayText = config[shortKey] || config[key];
+      link.textContent = displayText;
 
       link.addEventListener('mousedown', (e) => {
         // Prevent focus on mousedown to avoid the outline
