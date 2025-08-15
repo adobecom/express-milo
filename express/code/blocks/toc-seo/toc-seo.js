@@ -156,12 +156,16 @@ function scrollToHeader(headerText, toc) {
     const isDesktop = window.innerWidth >= 1024;
     const isMobile = window.innerWidth < 768;
 
-    // Calculate consistent offsets based on viewport, not TOC state
+    // Calculate consistent offsets based on viewport and sticky state
     let offset;
+    const isSticky = toc.classList.contains('toc-mobile-fixed');
+
     if (isDesktop) {
       offset = 80;
-    } else if (isMobile) {
+    } else if (isMobile && isSticky) {
       offset = 120;
+    } else if (isMobile) {
+      offset = 240;
     } else {
       offset = 80;
     }
