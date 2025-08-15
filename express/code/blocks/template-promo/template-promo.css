@@ -49,7 +49,7 @@
     gap: var(--spacing-300);
 }
 
-.ax-template-promo.one-up img {
+.ax-template-promo.one-up img, .ax-template-promo.multiple-up img {
     border-radius: var(--spacing-300);
 }
 
