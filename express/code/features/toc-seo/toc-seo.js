@@ -216,7 +216,7 @@ function applyPositionToElement(tocElement, topPosition) {
  * @param {HTMLElement} tocElement - TOC element to position
  */
 function handleDesktopPositioning(tocElement) {
-  if (!isDesktopViewport()) {
+  if (!isDesktopViewport() || !tocElement) {
     return;
   }
 
@@ -227,7 +227,7 @@ function handleDesktopPositioning(tocElement) {
     anchorElement = document.querySelector(CONFIG.selectors.section);
   }
 
-  if (!anchorElement || !tocElement) {
+  if (!anchorElement) {
     return;
   }
 
@@ -630,7 +630,7 @@ function setupEventHandlers(tocElement) {
   };
 
   window.addEventListener('scroll', handleScroll);
-  window.addEventListener('resize', () => {
+  const throttledResizeHandler = throttleRAF(() => {
     // Reset mobile sticky positioning when transitioning to tablet/desktop
     if (window.innerWidth >= 768) {
       if (window.innerWidth < 1440) {
@@ -650,6 +650,8 @@ function setupEventHandlers(tocElement) {
     handleDesktopPositioning(tocElement);
     cleanupDesktopPositioning(tocElement);
   });
+
+  window.addEventListener('resize', throttledResizeHandler);
 
   // Initial positioning
   handleDesktopPositioning(tocElement);
