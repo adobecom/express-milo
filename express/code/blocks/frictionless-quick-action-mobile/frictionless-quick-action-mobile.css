@@ -196,7 +196,7 @@
 }
 
 .frictionless-quick-action-mobile .quick-action-container#resize-image-container {
-    height: 1080px;
+    height: 1160px;
 }
 
 .frictionless-quick-action-mobile .quick-action-container#convert-to-gif-container {
@@ -267,12 +267,6 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-}
-
-@media (min-width: 1200px) {
-    .frictionless-quick-action-mobile .quick-action-container#resize-image-container {
-        height: 1000px;
-    }
 }
 
 .frictionless-quick-action-mobile[data-frictionlesstype="caption-video"] .locale-dropdown-wrapper {
