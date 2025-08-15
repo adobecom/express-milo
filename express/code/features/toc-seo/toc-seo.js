@@ -114,30 +114,33 @@ function buildMetadataConfig() {
  */
 function scrollToHeader(headerText, toc) {
   const headers = document.querySelectorAll(CONFIG.selectors.headers);
-  const targetHeader = Array.from(headers).find((h) => h.textContent.trim().includes(headerText.replace('...', '').trim()));
+
+  const targetHeader = Array.from(headers).find((h) => {
+    const headerContent = h.textContent.trim();
+    const searchText = headerText.replace('...', '').trim();
+    return headerContent.includes(searchText);
+  });
 
   if (targetHeader) {
-    // Calculate proper offset based on viewport
-    let stickyOffset;
-    if (isMobileViewport()) {
-      stickyOffset = CONFIG.positioning.mobileNavHeight + 80;
-    } else if (isDesktopViewport()) {
-      // For desktop, account for the fixed TOC position and some padding
-      stickyOffset = CONFIG.positioning.fixedTopDistance + 40;
+    // Get where the header is currently positioned relative to viewport
+    const headerRect = targetHeader.getBoundingClientRect();
+    const distanceFromTop = headerRect.top;
+
+    // Check if TOC is sticky or not
+    const isTocSticky = toc.classList.contains('toc-mobile-fixed') || toc.classList.contains('toc-desktop-fixed');
+
+    if (isTocSticky) {
+      window.scrollBy({
+        top: distanceFromTop - 120,
+        behavior: 'smooth',
+      });
     } else {
-      // For tablet, use a moderate offset
-      stickyOffset = 80;
+      window.scrollBy({
+        top: distanceFromTop - 260,
+        behavior: 'smooth',
+      });
     }
 
-    const headerRect = targetHeader.getBoundingClientRect();
-    const scrollTop = window.pageYOffset + headerRect.top - stickyOffset;
-
-    window.scrollTo({
-      top: scrollTop,
-      behavior: 'smooth',
-    });
-
-    // Close TOC after clicking on mobile
     if (isMobileViewport()) {
       toc.classList.remove('open');
     }
