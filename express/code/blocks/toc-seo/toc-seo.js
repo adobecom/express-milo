@@ -790,8 +790,6 @@ export default async function decorate(block) {
     // Phase 2: Read block configuration
     const config = buildBlockConfig(block);
 
-    console.log('config', config);
-
     // Phase 3: Create TOC structure
     const elements = createTOCStructure(config);
 
@@ -801,9 +799,17 @@ export default async function decorate(block) {
     // Phase 5: Setup event handlers
     setupAllEventHandlers(elements);
 
-    // Phase 6: Replace block content
-    block.innerHTML = '';
-    block.appendChild(toc);
+    // Phase 6: Insert TOC after highlight element
+    const highlightElement = document.querySelector('.highlight');
+    if (highlightElement) {
+      // Insert after the highlight element
+      highlightElement.insertAdjacentElement('afterend', toc);
+      // Hide the original block since we moved the TOC
+      block.style.display = 'none';
+    } else {
+      window.lana?.log('TOC Block: No highlight element found. TOC will not be displayed.');
+      block.style.display = 'none';
+    }
   } catch (error) {
     window.lana?.log('Error setting up TOC Block:', error);
   }
