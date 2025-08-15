@@ -173,9 +173,10 @@ function scrollToHeader(headerText, toc) {
         behavior: 'smooth',
       });
     } else {
+      console.log('not sticky');
       // Non-sticky behavior
       window.scrollBy({
-        top: distanceFromTop - 80,
+        top: distanceFromTop - 240,
         behavior: 'smooth',
       });
     }
