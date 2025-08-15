@@ -69,7 +69,7 @@ main .icon {
   position: absolute;
   right: 30px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(180deg);
   width: 14px;
   height: 14px;
   background-image: url('/express/code/icons/chevron.svg');
@@ -80,7 +80,7 @@ main .icon {
 
 .toc-container.open .toc-title::after {
   background-image: url('/express/code/icons/chevron.svg');
-  transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%) rotate(0deg);
 }
 
 .toc-container.open .toc-title {
