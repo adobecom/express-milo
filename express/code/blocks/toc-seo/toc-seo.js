@@ -194,7 +194,7 @@ function scrollToHeader(headerText, toc) {
  */
 function calculateInitialPosition(anchorElement) {
   const anchorRect = anchorElement.getBoundingClientRect();
-  return anchorRect.bottom + 20; // Position 20px below the highlight blade
+  return anchorRect.bottom; // Position 30px below the highlight blade (was 20px)
 }
 
 /**
@@ -253,7 +253,7 @@ function preventScrollPastLinkList(position, tocElement) {
  * @param {number} topPosition - Calculated top position
  */
 function applyPositionToElement(tocElement, topPosition) {
-  tocElement.style.setProperty('--toc-top-position', `${topPosition}px`);
+  tocElement.style.setProperty('--toc-top-position', `${topPosition + 20}px`);
   tocElement.classList.add('toc-desktop-fixed');
 }
 
