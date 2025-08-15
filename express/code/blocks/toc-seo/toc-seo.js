@@ -152,36 +152,37 @@ function scrollToHeader(headerText, toc) {
   });
 
   if (targetHeader) {
-    // Get where the header is currently positioned relative to viewport
+    // Use scrollIntoView with consistent offset for more reliable behavior
+    const isDesktop = window.innerWidth >= 1440;
+    const isMobile = window.innerWidth < 768;
+
+    // Calculate consistent offsets based on viewport, not TOC state
+    let offset;
+    if (isDesktop) {
+      offset = 80;
+    } else if (isMobile) {
+      offset = 120;
+    } else {
+      offset = 80;
+    }
+
+    // Get header position relative to viewport
     const headerRect = targetHeader.getBoundingClientRect();
     const distanceFromTop = headerRect.top;
 
-    // Check if TOC is sticky or not
-    const isTocSticky = toc.classList.contains('toc-mobile-fixed') || toc.classList.contains('toc-desktop-fixed');
-    const isDesktopSticky = toc.classList.contains('toc-desktop-fixed');
+    // Calculate how much to scroll
+    const scrollDistance = distanceFromTop - offset;
 
-    if (isDesktopSticky) {
-      // Desktop sticky behavior
-      window.scrollBy({
-        top: distanceFromTop - 80,
-        behavior: 'smooth',
-      });
-    } else if (isTocSticky) {
-      // Mobile sticky behavior
-      window.scrollBy({
-        top: distanceFromTop - 120,
-        behavior: 'smooth',
-      });
-    } else {
-      // Non-sticky behavior
-      window.scrollBy({
-        top: distanceFromTop - 240,
-        behavior: 'smooth',
-      });
-    }
+    window.scrollBy({
+      top: scrollDistance,
+      behavior: 'smooth',
+    });
 
-    if (isMobileViewport()) {
-      toc.classList.remove('open');
+    // Close TOC on mobile after scroll
+    if (isMobile) {
+      setTimeout(() => {
+        toc.classList.remove('open');
+      }, 100);
     }
   }
 }
