@@ -527,7 +527,7 @@ function createSocialIcons() {
  */
 function setupTitleHandlers(title, toc, tocContent) {
   const toggleTOC = () => {
-    if (isMobileViewport()) {
+    if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440)) {
       toc.classList.toggle('open');
       const isExpanded = toc.classList.contains('open');
       title.setAttribute('aria-expanded', isExpanded.toString());
@@ -542,17 +542,19 @@ function setupTitleHandlers(title, toc, tocContent) {
     }
   };
 
-  // Single click handler for the entire TOC container on mobile
+  // Single click handler for the entire TOC container on mobile and tablet
   toc.addEventListener('click', (e) => {
-    // Only handle clicks on mobile and prevent clicks on links and social icons from toggling
-    if (isMobileViewport() && !e.target.closest('a') && !e.target.closest('.toc-social-icons')) {
+    // Handle clicks on mobile and tablet, prevent clicks on links and social icons from toggling
+    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440))
+        && !e.target.closest('a') && !e.target.closest('.toc-social-icons')) {
       toggleTOC();
     }
   });
 
   // Keep keyboard handler for accessibility
   title.addEventListener('keydown', (e) => {
-    if (isMobileViewport() && (e.key === 'Enter' || e.key === ' ')) {
+    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440))
+        && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       toggleTOC();
     }
@@ -730,8 +732,8 @@ function assembleTOC(elements) {
   toc.appendChild(tocContent);
   toc.appendChild(socialIcons);
 
-  // Set TOC to open by default on mobile
-  if (isMobileViewport()) {
+  // Set TOC to open by default on mobile and tablet
+  if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440)) {
     toc.classList.add('open');
     title.setAttribute('aria-expanded', 'true');
   }

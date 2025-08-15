@@ -187,28 +187,36 @@ main .toc-content a:focus:not(:focus-visible) {
   color: var(--color-red);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1439px) {
   .toc-container {
     position: static;
-    cursor: default;
+    cursor: pointer;
     width: 545px;
     margin: 0 auto;
   }
   
   .toc-container .toc-content {
+    display: none;
+  }
+  
+  .toc-container.open .toc-content {
     display: block;
   }
   
   .toc-container .toc-social-icons {
+    display: none;
+  }
+  
+  .toc-container.open .toc-social-icons {
     display: flex;
   }
 
   .toc-title {
-    padding-bottom: var(--spacing-300);
+    padding-bottom: 0;
   }
   
   .toc-container .toc-title::after {
-    display: none;
+    display: block;
   }
 }
 
@@ -220,5 +228,9 @@ main .toc-content a:focus:not(:focus-visible) {
     z-index: 100;
     border-top: none;
     border-bottom: none;
+  }
+  
+  .toc-container .toc-title::after {
+    display: none;
   }
 }
