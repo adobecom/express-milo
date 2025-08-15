@@ -354,9 +354,6 @@ function setupScrollTracking(toc) {
     requestAnimationFrame(() => updateActiveTOCLink(toc));
   });
   window.addEventListener('scroll', throttledUpdate);
-
-  // Initial update
-  updateActiveTOCLink(toc);
 }
 
 // ============================================================================
