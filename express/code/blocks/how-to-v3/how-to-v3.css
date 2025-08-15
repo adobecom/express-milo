@@ -222,7 +222,7 @@
       margin-right: 20px;
     }
   
-    main:has(.section.ax-how-to-v3-container) .content {
+    main:has(.section.ax-how-to-v3-container) .ax-how-to-v3-container .content {
       margin: 0;
     }
   }
