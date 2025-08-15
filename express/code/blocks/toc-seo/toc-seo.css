@@ -112,6 +112,14 @@ main .toc-content a {
   text-overflow: ellipsis;
 }
 
+@media (min-width: 1024px) {
+  main .toc-content a {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+}
+
 main .toc-content a:hover {
   font-weight: 700;
 }
