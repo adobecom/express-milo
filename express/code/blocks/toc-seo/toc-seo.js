@@ -153,7 +153,7 @@ function scrollToHeader(headerText, toc) {
 
   if (targetHeader) {
     // Use scrollIntoView with consistent offset for more reliable behavior
-    const isDesktop = window.innerWidth >= 1440;
+    const isDesktop = window.innerWidth >= 1024;
     const isMobile = window.innerWidth < 768;
 
     // Calculate consistent offsets based on viewport, not TOC state
@@ -555,7 +555,7 @@ function createSocialIcons() {
  */
 function setupTitleHandlers(title, toc, tocContent) {
   const toggleTOC = () => {
-    if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440)) {
+    if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024)) {
       toc.classList.toggle('open');
       const isExpanded = toc.classList.contains('open');
       title.setAttribute('aria-expanded', isExpanded.toString());
@@ -573,7 +573,7 @@ function setupTitleHandlers(title, toc, tocContent) {
   // Single click handler for the entire TOC container on mobile and tablet
   toc.addEventListener('click', (e) => {
     // Handle clicks on mobile and tablet, prevent clicks on links and social icons from toggling
-    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440))
+    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024))
         && !e.target.closest('a') && !e.target.closest('.toc-social-icons')) {
       toggleTOC();
     }
@@ -581,7 +581,7 @@ function setupTitleHandlers(title, toc, tocContent) {
 
   // Keep keyboard handler for accessibility
   title.addEventListener('keydown', (e) => {
-    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440))
+    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024))
         && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       toggleTOC();
