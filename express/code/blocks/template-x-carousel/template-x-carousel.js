@@ -1,12 +1,12 @@
 import { getLibs } from '../../scripts/utils.js';
-import { isValidTemplate } from '../../scripts/template-utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
 import buildGallery from '../../scripts/widgets/gallery/gallery.js';
+import template from '../template-promo/templateProps.js';
 
   // JavaScript object containing all properties used by the template variable
 // Based on analysis of template-rendering.js
 
-const template = {
+const template2 = {
   // Core template identification
   id: "urn:aaid:sc:VA6C2:abd317d8-0dfe-474f-8261-9a43829b559e", // Used for iframe src, modal id, tracking, and CSS class generation
   
@@ -144,6 +144,7 @@ let createTag;
 let getConfig;
 
 async function createTemplates(itemTamplates) {
+  console.log('createTemplates itemTamplates', itemTamplates);
   // const res = await fetchResults(recipe);
   // const templates = await Promise.all(
   //   res.items
@@ -153,19 +154,24 @@ async function createTemplates(itemTamplates) {
 
     const templates = await Promise.all(
       itemTamplates
-      .filter((item) => isValidTemplate(item))
+      // .filter((item) => isValidTemplate(item))
       .map((item) => renderTemplate(item)),
   );
+  console.log('createTemplates templates', templates);
 
   // const items = itemTamplates.filter((item) => item?.id && item?.title);
   // const templates = await Promise.all(items.map((item) => renderTemplate(item)));
-  templates.forEach((tplt) => tplt.classList.add('template'));
+  templates.forEach((tplt) => {
+    tplt.classList.add('template');
+    console.log('tplt', tplt, tplt.classList);
+  });
   return templates;
 }
 
 async function createTemplatesContainer(templatesParm) {
   const templatesContainer = createTag('div', { class: 'templates-container' });
-  const templates = await Promise.all(createTemplates(templatesParm));
+  const [templates] = await Promise.all([createTemplates(templatesParm)]);
+  console.log('createTemplatesContainer templates', templates);
   templatesContainer.append(...templates);
   const { control: initialControl } = await buildGallery(
     [...templates],
@@ -178,13 +184,17 @@ async function createTemplatesContainer(templatesParm) {
   };
 }
 
+console.log('template2', template2);
+console.log('template', template);
+
 // function decorateHeadingRow(headingRow) {
 //   headingRow.classList.add('heading-row');
 //   headingRow.querySelector('h1,h2,h3,h4,h5')?.classList.add('heading');
 //   [...headingRow.querySelectorAll('p')].forEach((p) => p.classList.add('subcopy'));
 // }
 
-export default async function init(el) {
+export default async function init(el, pictureElements) {
+  el.classList.add('template-x-carousel');
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   // const [headingRow, recipeRow] = el.children;
   // decorateHeadingRow(headingRow);
@@ -202,6 +212,11 @@ export default async function init(el) {
     console.log('templatesContainer', templatesContainer);
     console.log('galleryControl', galleryControl);
     console.log('el', el);
+    
+    
+    pictureElements.forEach((picture) => {
+      picture.parentElement.parentElement.remove();
+    });
     el.append(templatesContainer);
     el.append(galleryControl);
   } catch (err) {

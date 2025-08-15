@@ -1,5 +1,4 @@
-const template = [
-    {
+const template = {
         "id": "urn:aaid:sc:VA6C2:abd317d8-0dfe-474f-8261-9a43829b559e",
         "parentDirectoryId": "urn:aaid:sc:VA6C2:33b6d16c-846b-49b3-8a4e-b673c03a98c3",
         "ancestorAssetIds": [
@@ -232,7 +231,7 @@ const template = [
                 "name": "ACP"
             }
         }
-    }
-]
+    };
+
 
 export default template;

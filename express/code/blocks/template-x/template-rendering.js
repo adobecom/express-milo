@@ -582,6 +582,7 @@ function renderStillWrapper(template) {
 
 export default async function renderTemplate(template, variant, properties) {
   variants = variant;
+  console.log('renderTemplate template', template, variants);
   props = properties;
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
