@@ -181,22 +181,22 @@ function preventOverlapWithFooter(position, tocElement) {
 }
 
 /**
- * Stops TOC scroll when reaching the blog posts container on desktop
+ * Stops TOC scroll when reaching the section with link-list-wrapper on desktop
  * @param {number} position - Current position
  * @param {HTMLElement} tocElement - TOC element
  * @returns {number} Adjusted position
  */
-function preventScrollPastBlogPosts(position, tocElement) {
+function preventScrollPastLinkList(position, tocElement) {
   if (!isDesktopViewport()) {
     return position;
   }
 
-  const blogPostsContainer = document.querySelector('.ax-blog-posts-container');
-  if (!blogPostsContainer) return position;
+  const linkListSection = document.querySelector('.section:has(.link-list-wrapper)');
+  if (!linkListSection) return position;
 
-  const blogPostsTop = blogPostsContainer.offsetTop - window.pageYOffset;
+  const sectionTop = linkListSection.offsetTop - window.pageYOffset;
   const tocHeight = tocElement.offsetHeight;
-  const maxTopPosition = blogPostsTop - tocHeight;
+  const maxTopPosition = sectionTop - tocHeight;
 
   return Math.min(position, maxTopPosition);
 }
@@ -235,7 +235,7 @@ function handleDesktopPositioning(tocElement) {
   let position = calculateInitialPosition(anchorElement);
   position = applyMinimumDistance(position);
   position = preventOverlapWithFooter(position, tocElement);
-  position = preventScrollPastBlogPosts(position, tocElement);
+  position = preventScrollPastLinkList(position, tocElement);
 
   applyPositionToElement(tocElement, position);
 }
