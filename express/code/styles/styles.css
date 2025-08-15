@@ -1185,6 +1185,15 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   }
 }
 
+@media (min-width: 1440px) {
+  main .section.long-form .content {
+    /* Desktop: 7 columns, shifted right to accommodate fixed TOC */
+    max-width: var(--ax-grid-7-col-width);
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    margin-right: auto;
+  }
+}
+
 /*Styles can be removed once we stop using block transpilations*/
 main .marquee.transpiled p.action-area>span {
   display: flex;
