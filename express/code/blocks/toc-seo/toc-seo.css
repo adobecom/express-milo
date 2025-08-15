@@ -228,9 +228,20 @@ main .toc-content a:focus:not(:focus-visible) {
     z-index: 100;
     border-top: none;
     border-bottom: none;
+    cursor: default;
   }
   
   .toc-container .toc-title::after {
     display: none;
+  }
+  
+  .toc-container .toc-content {
+    display: block;
+    margin-top: var(--spacing-200);
+  }
+  
+  .toc-container .toc-social-icons {
+    display: flex;
+    margin-top: var(--spacing-300);
   }
 }
