@@ -1129,13 +1129,13 @@ main .section.long-form.narrow {
   margin: 0 auto;
 }
 
-/* main .section.long-form .content {
+main .section.long-form .content {
   box-sizing: border-box;
   padding: 0 20px 60px;
   max-width: unset;
   width: var(--ax-grid-12-col-width);
   margin: 0 auto;
-} */
+}
 
 main .section.long-form .content,
 main .section.long-form .content p:not(.button-container, :has(.con-button)),
@@ -1168,13 +1168,14 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   padding-top: var(--spacing-800)
 }
 
-/* @media (min-width: 600px) {
+@media (min-width: 768px) {
   main .section.long-form .content {
     padding: 0 40px 60px;
     width: var(--ax-grid-12-col-width);
     margin: 0 auto;
+    box-sizing: border-box;
   }
-} */
+}
 
 @media (min-width: 1024px) {
   main .section.long-form .content {
