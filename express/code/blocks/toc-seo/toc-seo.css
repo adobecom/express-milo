@@ -18,7 +18,7 @@
   background: transparent;
   top: var(--toc-top-position, 200px);
   left: 0;
-  width: var(--ax-grid-2-col-width);
+  width: var(--ax-grid-3-col-width);
   z-index: 1;
   padding-left: var(--spacing-600);
   padding-top: 0;
@@ -95,6 +95,11 @@ main .icon {
 
 @media (min-width: 1024px) {
   .toc-container.open .toc-content {
+    padding-right: 0;
+  }
+  
+  .toc-container {
+    padding-left: 0;
     padding-right: 0;
   }
 }
@@ -205,7 +210,7 @@ main .toc-content a:focus:not(:focus-visible) {
   .toc-container {
     position: static;
     cursor: pointer;
-    width: 545px;
+    max-width: var(--ax-grid-7-col-width);
     margin: 40px auto 0;
   }
   
