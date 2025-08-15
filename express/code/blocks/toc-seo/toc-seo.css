@@ -83,10 +83,6 @@ main .icon {
   transform: translateY(-50%) rotate(0deg);
 }
 
-.toc-container.open .toc-title {
-  /* Remove padding-bottom to keep button height consistent */
-}
-
 .toc-content {
   display: none;
 }
@@ -94,6 +90,7 @@ main .icon {
 .toc-container.open .toc-content {
   display: block;
   margin-top: var(--spacing-100);
+  padding-right: 20px;
 }
 
 main .toc-content a {
