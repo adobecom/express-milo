@@ -93,6 +93,12 @@ main .icon {
   padding-right: 20px;
 }
 
+@media (min-width: 1024px) {
+  .toc-container.open .toc-content {
+    padding-right: 0;
+  }
+}
+
 main .toc-content a {
   display: block;
   padding: var(--spacing-100) var(--spacing-300);
@@ -101,6 +107,9 @@ main .toc-content a {
   font-style: normal;
   font-weight: 400;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 main .toc-content a:hover {
