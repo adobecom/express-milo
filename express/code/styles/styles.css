@@ -1171,7 +1171,7 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
 @media (min-width: 768px) {
   main .section.long-form .content {
     padding: 0 40px 60px;
-    width: var(--ax-grid-12-col-width);
+    width: var(--ax-grid-8-col-width);
     margin: 0 auto;
     box-sizing: border-box;
   }
