@@ -1171,7 +1171,7 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
 @media (min-width: 768px) {
   main .section.long-form .content {
     padding: 0 40px 60px;
-    width: var(--ax-grid-8-col-width);
+    width: var(--ax-grid-12-col-width);
     margin: 0 auto;
     box-sizing: border-box;
   }
@@ -1182,6 +1182,17 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
     /* Desktop: 7 columns */
     max-width: var(--ax-grid-7-col-width);
     margin: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: 1440px) {
+  main .section.long-form .content {
+    /* Desktop: 7 columns, shifted right to accommodate fixed TOC */
+    max-width: var(--ax-grid-7-col-width);
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    margin-right: auto;
   }
 }
 
