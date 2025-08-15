@@ -129,13 +129,22 @@ function scrollToHeader(headerText, toc) {
 
     // Check if TOC is sticky or not
     const isTocSticky = toc.classList.contains('toc-mobile-fixed') || toc.classList.contains('toc-desktop-fixed');
+    const isDesktopSticky = toc.classList.contains('toc-desktop-fixed');
 
-    if (isTocSticky) {
+    if (isDesktopSticky) {
+      // Desktop sticky behavior
+      window.scrollBy({
+        top: distanceFromTop - 80,
+        behavior: 'smooth',
+      });
+    } else if (isTocSticky) {
+      // Mobile sticky behavior
       window.scrollBy({
         top: distanceFromTop - 120,
         behavior: 'smooth',
       });
     } else {
+      // Non-sticky behavior
       window.scrollBy({
         top: distanceFromTop - 260,
         behavior: 'smooth',
