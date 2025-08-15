@@ -63,6 +63,8 @@ function handleHeaders(params) {
 export function getBackupRecipe(oldParams, backupStr) {
   const diffs = /\[(.+)\]/.exec(backupStr)[1].split(';');
   const params = new URLSearchParams(oldParams);
+  params.delete('limit');
+  params.delete('start');
   diffs.forEach((diff) => {
     const minus = /^-(.+)/.exec(diff);
     if (minus) {
