@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
 import templateXCarousel from '../template-x-carousel/template-x-carousel.js';
-import template from 'templateProps.js';
+import template from './templateProps.js';
 
 console.log('templateProps.js', template);
 
