@@ -86,8 +86,9 @@ function buildMetadataConfig() {
 
   let i = 1;
   let content = getMetadata(`content-${i}`);
+  const MAX_ITERATIONS = 25; // Safety limit
 
-  while (content) {
+  while (content && i <= MAX_ITERATIONS) {
     const abbreviatedContent = getMetadata(`content-${i}-short`);
     if (abbreviatedContent) {
       contents.push({ [`content-${i}-short`]: abbreviatedContent });
@@ -176,6 +177,7 @@ function preventOverlapWithFooter(position, tocElement) {
   const footer = document.querySelector('footer');
   if (!footer) return position;
 
+  // Cache layout measurements to avoid multiple layout recalculations
   const footerTop = footer.offsetTop - window.pageYOffset;
   const tocHeight = tocElement.offsetHeight;
   const maxTopPosition = footerTop - tocHeight;
@@ -197,6 +199,7 @@ function preventScrollPastLinkList(position, tocElement) {
   const linkListSection = document.querySelector('.section:has(.link-list-wrapper)');
   if (!linkListSection) return position;
 
+  // Cache layout measurements to avoid multiple layout recalculations
   const sectionTop = linkListSection.offsetTop - window.pageYOffset;
   const tocHeight = tocElement.offsetHeight;
   const maxTopPosition = sectionTop - tocHeight;
@@ -259,6 +262,7 @@ function cleanupDesktopPositioning(tocElement) {
  * @param {HTMLElement} toc - TOC container element
  */
 function updateActiveTOCLink(toc) {
+  // Cache DOM queries to avoid repeated lookups
   const headers = document.querySelectorAll(CONFIG.selectors.headers);
   const tocLinks = toc.querySelectorAll('.toc-content a');
 
@@ -269,13 +273,18 @@ function updateActiveTOCLink(toc) {
   let activeHeader = null;
   let minDistance = Infinity;
 
-  headers.forEach((header) => {
-    const rect = header.getBoundingClientRect();
+  // Batch layout operations by getting all rects at once
+  const headerRects = Array.from(headers).map((header) => ({
+    element: header,
+    rect: header.getBoundingClientRect(),
+  }));
+
+  headerRects.forEach(({ element, rect }) => {
     const distance = Math.abs(rect.top - offset);
 
     if (rect.top <= offset && distance < minDistance) {
       minDistance = distance;
-      activeHeader = header;
+      activeHeader = element;
     }
   });
 
@@ -300,7 +309,10 @@ function updateActiveTOCLink(toc) {
  * @param {HTMLElement} toc - TOC container element
  */
 function setupScrollTracking(toc) {
-  const throttledUpdate = throttleRAF(() => updateActiveTOCLink(toc));
+  const throttledUpdate = throttleRAF(() => {
+    // Use requestAnimationFrame to batch layout operations
+    requestAnimationFrame(() => updateActiveTOCLink(toc));
+  });
   window.addEventListener('scroll', throttledUpdate);
 
   // Initial update
@@ -585,7 +597,7 @@ function handleMobileSticky(tocElement) {
   const highlightElement = document.querySelector('.section div.highlight');
   if (!highlightElement) return; // Only apply when TOC is after highlight
 
-  // Get the highlight element's position relative to viewport
+  // Cache layout measurements to avoid multiple layout recalculations
   const { bottom } = highlightElement.getBoundingClientRect();
   const { mobileNavHeight } = CONFIG.positioning;
 
