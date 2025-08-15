@@ -1,5 +1,5 @@
 /* eslint-disable import/named, import/extensions */
-import { getLibs, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 // ============================================================================
 // CONFIGURATION
@@ -75,28 +75,39 @@ function isDesktopViewport() {
 // ============================================================================
 
 /**
- * Builds configuration object from block and section metadata
+ * Builds configuration object from block HTML structure
  * @param {HTMLElement} block - The block element
  * @returns {Object} Configuration object with title, ariaLabel, and contents
  */
 function buildBlockConfig(block) {
-  const section = block.closest('.section');
-  const metadata = section?.querySelector('.section-metadata');
+  const config = {};
+  const rows = Array.from(block.children);
 
-  let config = {};
+  // Read all rows to build the configuration
+  rows.forEach((row) => {
+    const cells = Array.from(row.children);
 
-  if (metadata) {
-    config = readBlockConfig(metadata);
-  } else {
-    window.lana?.log('TOC Block: No section metadata found. TOC block requires section-metadata for configuration.');
-    return { title: 'Table of Contents', ariaLabel: 'Table of Contents Navigation', 'toc-content-numbers': undefined };
-  }
+    if (cells.length > 0) {
+      const key = cells[0]?.textContent?.trim();
+      const value = cells.length > 1
+        ? Array.from(cells.slice(1))
+          .map((cell) => cell?.textContent?.trim())
+          .filter((text) => text !== undefined)
+          .join(' ')
+        : '';
 
-  const title = config.title || 'Table of Contents';
-  const ariaLabel = config['aria-label'] || 'Table of Contents Navigation';
-  const showContentNumbers = config['content-numbers'];
+      if (key) {
+        config[key] = value;
+      }
+    }
+  });
+
+  // Validate and set defaults
+  const title = config['toc-title'] || 'Table of Contents';
+  const ariaLabel = config['toc-aria-label'] || 'Table of Contents Navigation';
   const contents = [];
 
+  // Build content array with validation
   let i = 1;
   let content = config[`content-${i}`];
   const MAX_ITERATIONS = 25; // Safety limit
@@ -111,10 +122,15 @@ function buildBlockConfig(block) {
     content = config[`content-${i}`];
   }
 
+  // Log configuration for debugging (optional)
+  if (Object.keys(config).length === 0) {
+    window.lana?.log('TOC Block: No configuration found in block structure');
+  }
+
   return contents.reduce((acc, el) => ({
     ...acc,
     ...el,
-  }), { title, ariaLabel, 'toc-content-numbers': showContentNumbers });
+  }), { title, ariaLabel, 'toc-content-numbers': undefined });
 }
 
 // ============================================================================
