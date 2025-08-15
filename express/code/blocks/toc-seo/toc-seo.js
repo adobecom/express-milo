@@ -231,6 +231,7 @@ function preventOverlapWithFooter(position, tocElement) {
  * @returns {number} Adjusted position
  */
 function preventScrollPastLinkList(position, tocElement) {
+  // Only apply this constraint when we're in desktop viewport and the TOC will be fixed
   if (!isDesktopViewport()) {
     return position;
   }
@@ -676,20 +677,20 @@ function setupEventHandlers(tocElement) {
 
   // Single scroll handler with viewport check
   const handleScroll = () => {
-    if (window.innerWidth >= 1440) {
+    if (window.innerWidth >= 1024) {
       throttledHandleDesktopPositioning();
     } else if (window.innerWidth < 768) {
       // Mobile sticky behavior (below 768px)
       throttledHandleMobileSticky();
     }
-    // Tablet (768px-1439px) - no scroll behavior, stays static
+    // Tablet (768px-1023px) - no scroll behavior, stays static
   };
 
   window.addEventListener('scroll', handleScroll);
   const throttledResizeHandler = throttleRAF(() => {
     // Reset mobile sticky positioning when transitioning to tablet/desktop
     if (window.innerWidth >= 768) {
-      if (window.innerWidth < 1440) {
+      if (window.innerWidth < 1024) {
         tocElement.classList.remove('toc-mobile-fixed');
       } else {
         tocElement.classList.add('toc-desktop-fixed');
@@ -763,7 +764,7 @@ function assembleTOC(elements) {
   toc.appendChild(socialIcons);
 
   // Set TOC to open by default on mobile and tablet
-  if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1440)) {
+  if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024)) {
     toc.classList.add('open');
     title.setAttribute('aria-expanded', 'true');
   }
