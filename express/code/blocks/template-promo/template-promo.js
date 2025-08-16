@@ -1,4 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
+import templatePromoCarousel from '../template-promo-carousel/template-promo-carousel.js';
 
 let createTag;
 let getConfig;
@@ -44,26 +45,11 @@ export default async function decorate(block) {
     parent.append(buttonContainer);
   }
 
-  async function handleMultipleVariants(multipleVariantsBlock = block) {
-    const MULTIPLE_UP = 'multiple-up';
-    const pictureElements = [...(multipleVariantsBlock?.querySelectorAll('picture') || [])];
-
-    pictureElements.forEach((picture) => {
-      picture.parentElement.parentElement.classList.add('image-container');
-    });
-
-    const parent = multipleVariantsBlock.parentElement;
-    parent.classList.add(MULTIPLE_UP);
-
-    const templateEditLinks = [...(multipleVariantsBlock?.querySelectorAll('a') || [])];
-    templateEditLinks.forEach((link) => {
-      link.style.display = 'none';
-    });
-  }
-
-  const pictureElements = [...(block?.querySelectorAll('picture') || [])];
-  const isOneUp = pictureElements.length === 1;
+  const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
+  console.log('imageElements:', imageElements);
+  const isOneUp = imageElements.length === 1;
+  console.log('Template Promo Block:', block, 'Picture Elements:', imageElements, 'Is One Up:', isOneUp);
 
   // INIT LOGIC
-  isOneUp ? handleOneUp(block) : handleMultipleVariants(block);
+  isOneUp ? handleOneUp(block) : templatePromoCarousel(block, imageElements);
 }
