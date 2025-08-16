@@ -5,7 +5,6 @@ let getConfig;
 let replaceKey;
 
 export default async function decorate(block) {
-  // block.parentElement.style.visibility = 'hidden';
   block.parentElement.classList.add('ax-template-promo');
 
   const freePremiumTags = [];
