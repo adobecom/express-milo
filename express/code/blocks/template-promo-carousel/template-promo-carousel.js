@@ -33,15 +33,15 @@ export default async function init(el, imageElementsArray) {
   const imageElements = imageElementsArray || [...(el?.querySelectorAll('picture') || [])];
   const templateLinks = [...(el?.querySelectorAll('a') || [])];
   const freePremiumTags = [...(el?.querySelectorAll('h1') || [])];
-  console.log('freePremiumTags:', freePremiumTags);
-  console.log('freePremiumTags 22222:', freePremiumTags[0].textContent);
-  console.log('freePremiumTags 22222:', freePremiumTags[1].textContent);
-  console.log('freePremiumTags 22222:', freePremiumTags[2].textContent);
-  console.log('freePremiumTags 22222:', freePremiumTags[3].textContent);
+  // console.log('freePremiumTags:', freePremiumTags);
+  // console.log('freePremiumTags 22222:', freePremiumTags[0].textContent);
+  // console.log('freePremiumTags 22222:', freePremiumTags[1].textContent);
+  // console.log('freePremiumTags 22222:', freePremiumTags[2].textContent);
+  // console.log('freePremiumTags 22222:', freePremiumTags[3].textContent);
 
 
 
-  console.log('templateLinks:', templateLinks);
+  // console.log('templateLinks:', templateLinks);
 
   el.classList.add('template-promo-carousel');
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
@@ -96,7 +96,7 @@ export default async function init(el, imageElementsArray) {
   };
 
   const templatesArray = imageElements.map((img, index) => {
-    console.log('Processing image element:', img);
+    // console.log('Processing image element:', img);
     const imagesToTemplateInfoMap = {
       licensingCategory: freePremiumTags[index]?.textContent?.toLowerCase(), // Determine licensing category based on tag text
       'dc:title': {
@@ -146,7 +146,7 @@ export default async function init(el, imageElementsArray) {
     
     return { ...baseTemplateMap, ...imagesToTemplateInfoMap };
   });
-  console.log('templatesArray:', templatesArray);
+  // console.log('templatesArray:', templatesArray);
   try {
     const [{ templatesContainer, control: galleryControl }] = await Promise.all(
       [createTemplatesContainer(templatesArray)],
@@ -155,6 +155,7 @@ export default async function init(el, imageElementsArray) {
     imageElements.forEach((img, index) => {
       img?.parentElement?.parentElement?.remove();
       templateLinks[index]?.parentElement.remove();
+      freePremiumTags[index]?.remove();
     });
 
     el.append(templatesContainer);
@@ -164,7 +165,7 @@ export default async function init(el, imageElementsArray) {
     if (getConfig().env.name === 'prod') {
       el.remove();
     } else {
-      console.log('Error in template-x-carousel-toolbar:', err);
+      // console.log('Error in template-x-carousel-toolbar:', err);
       const errElement = createTag('div')
       errElement.textContent = 'Error loading templates, please refresh the page or try again later.';
       el.append(errElement);
