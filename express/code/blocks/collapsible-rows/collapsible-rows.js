@@ -91,7 +91,7 @@ function buildOriginalLayout(block) {
   collapsibleRows.forEach((row, index) => {
     const { header, subHeader } = row;
 
-    const accordion = createTag('div', { class: 'collapsible-row-accordion' });
+    const accordion = createTag('div', { class: 'collapsible-row-accordion', tabIndex: 0 });
 
     if (index >= visibleCount) {
       accordion.classList.add('collapsed');
