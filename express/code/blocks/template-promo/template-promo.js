@@ -6,6 +6,11 @@ let getConfig;
 let replaceKey;
 
 export default async function decorate(block) {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
+
   block.parentElement.classList.add('ax-template-promo');
 
   const freePremiumTags = [];
@@ -17,10 +22,6 @@ export default async function decorate(block) {
     }
   });
 
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
 
   async function handleOneUp(blockElement) {
     const parent = blockElement.parentElement;

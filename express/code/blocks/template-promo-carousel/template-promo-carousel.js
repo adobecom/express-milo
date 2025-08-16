@@ -31,14 +31,32 @@ async function createTemplatesContainer(templatesParm) {
 
 export default async function init(el, imageElementsArray) {
   const imageElements = imageElementsArray || [...(el?.querySelectorAll('picture') || [])];
+  const templateLinks = [...(el?.querySelectorAll('a') || [])];
+  const freePremiumTags = [...(el?.querySelectorAll('h1') || [])];
+  console.log('freePremiumTags:', freePremiumTags);
+  console.log('freePremiumTags 22222:', freePremiumTags[0].textContent);
+  console.log('freePremiumTags 22222:', freePremiumTags[1].textContent);
+  console.log('freePremiumTags 22222:', freePremiumTags[2].textContent);
+  console.log('freePremiumTags 22222:', freePremiumTags[3].textContent);
+
+
+
+  console.log('templateLinks:', templateLinks);
+
   el.classList.add('template-promo-carousel');
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
 
   const baseTemplateMap = {
+    origin: 'discovery', // Used to make the free / premium tags the same and not change the premoiums icon
     assetType: "Template", // Special handling for webpage templates (sets empty pages array)
     licensingCategory: "free", // Values: "free" | "premium" - determines plan icon display
-    'dc:title': {
-      'i-default': "Template Title String YEIBER" // Primary title source
+    "dc:title": {
+      "i-default": "Template Title String YEIBER" // Primary title source
+    },
+  
+     // Title information (multiple sources)
+     title: {
+      "i-default": "Template Title String yeiber" // Primary title source
     },
     pages: [
       {
@@ -77,11 +95,16 @@ export default async function init(el, imageElementsArray) {
     }
   };
 
-  const templatesArray = imageElements.map((img) => {
+  const templatesArray = imageElements.map((img, index) => {
     console.log('Processing image element:', img);
     const imagesToTemplateInfoMap = {
+      licensingCategory: freePremiumTags[index]?.textContent?.toLowerCase(), // Determine licensing category based on tag text
       'dc:title': {
         'i-default': img?.alt || '',
+      },
+       // Title information (multiple sources)
+       title: {
+        "i-default": "Template Title String" // Primary title source
       },
       title: img?.alt || '',
       _links: {
@@ -93,19 +116,45 @@ export default async function init(el, imageElementsArray) {
           href: img.src,
           templated: true,
         },
-      }
+      },
+      pages: [
+        {
+          "rendition": {
+            "image": {
+              "thumbnail": {
+                  "componentId": "c4b97f82-b38b-4e97-abac-014e24270f0f",
+                  "hzRevision": "0",
+                  "width": 500,
+                  "height": 500,
+                  "mediaType": "image/webp"
+              },
+              "preview": {
+                  "componentId": "dc188d19-5941-418c-bfa3-4c3689709a22",
+                  "hzRevision": "0",
+                  "width": 1200,
+                  "height": 1200,
+                  "mediaType": "image/webp"
+              }
+            }
+          }
+        }
+      ],
+      customLinks: {
+        branchUrl: templateLinks[index].href, // Used for edit buttons and sharing functionality
+      },
     }   
     
     return { ...baseTemplateMap, ...imagesToTemplateInfoMap };
   });
-
+  console.log('templatesArray:', templatesArray);
   try {
     const [{ templatesContainer, control: galleryControl }] = await Promise.all(
       [createTemplatesContainer(templatesArray)],
     );
 
-    imageElements.forEach((img) => {
+    imageElements.forEach((img, index) => {
       img?.parentElement?.parentElement?.remove();
+      templateLinks[index]?.parentElement.remove();
     });
 
     el.append(templatesContainer);
