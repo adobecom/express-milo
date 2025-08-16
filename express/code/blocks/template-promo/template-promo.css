@@ -49,6 +49,7 @@
 .ax-template-promo.one-up {
   gap: var(--spacing-300);
   margin: var(--spacing-600) auto;
+  margin-bottom: 0;
 }
 
 .ax-template-promo.one-up img {
@@ -119,6 +120,9 @@
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     margin-right: auto;
     padding: 0;
+  }
+  .ax-template-promo.one-up {
+    margin-bottom: var(--spacing-600);
   }
 }
 

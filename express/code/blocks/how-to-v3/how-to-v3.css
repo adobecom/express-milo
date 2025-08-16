@@ -293,10 +293,13 @@
     }
   }
   
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     .section.ax-how-to-v3-container {
       width: var(--ax-grid-7-col-width);
-      margin: 0 auto;
+      margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+      margin-right: auto;
+      padding: 0;
+      padding-top: var(--spacing-600);
     }
   
     .how-to-v3 .steps-content {
