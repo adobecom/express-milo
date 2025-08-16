@@ -1,11 +1,16 @@
 import { getLibs } from '../../scripts/utils.js';
+import templatePromoCarousel from '../template-promo-carousel/template-promo-carousel.js';
 
 let createTag;
 let getConfig;
 let replaceKey;
 
 export default async function decorate(block) {
-  // block.parentElement.style.visibility = 'hidden';
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
+
   block.parentElement.classList.add('ax-template-promo');
 
   const freePremiumTags = [];
@@ -17,12 +22,11 @@ export default async function decorate(block) {
     }
   });
 
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
 
   async function handleOneUp(blockElement) {
+    const freePremiumTags2 = blockElement?.children[0].lastElementChild;
+    freePremiumTags2.style.display = 'none';
+    console.log('freePremiumTags3:', freePremiumTags2);
     const parent = blockElement.parentElement;
     parent.classList.add('one-up');
     const img = blockElement?.querySelector('picture img');
@@ -45,26 +49,11 @@ export default async function decorate(block) {
     parent.append(buttonContainer);
   }
 
-  async function handleMultipleVariants(multipleVariantsBlock = block) {
-    const MULTIPLE_UP = 'multiple-up';
-    const pictureElements = [...(multipleVariantsBlock?.querySelectorAll('picture') || [])];
-
-    pictureElements.forEach((picture) => {
-      picture.parentElement.parentElement.classList.add('image-container');
-    });
-
-    const parent = multipleVariantsBlock.parentElement;
-    parent.classList.add(MULTIPLE_UP);
-
-    const templateEditLinks = [...(multipleVariantsBlock?.querySelectorAll('a') || [])];
-    templateEditLinks.forEach((link) => {
-      link.style.display = 'none';
-    });
-  }
-
-  const pictureElements = [...(block?.querySelectorAll('picture') || [])];
-  const isOneUp = pictureElements.length === 1;
+  const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
+  // console.log('imageElements:', imageElements);
+  const isOneUp = imageElements.length === 1;
+  // console.log('Template Promo Block:', block, 'Picture Elements:', imageElements, 'Is One Up:', isOneUp);
 
   // INIT LOGIC
-  isOneUp ? handleOneUp(block) : handleMultipleVariants(block);
+  isOneUp ? handleOneUp(block) : templatePromoCarousel(block, imageElements);
 }

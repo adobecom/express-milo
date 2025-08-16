@@ -8,7 +8,7 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 const CONFIG = {
   breakpoints: {
     mobile: 768,
-    desktop: 1200,
+    desktop: 1024,
   },
   positioning: {
     fixedTopDistance: 200,
@@ -17,7 +17,7 @@ const CONFIG = {
   },
   selectors: {
     section: 'main .section',
-    highlight: 'div.highlight',
+    highlight: '.section div.highlight',
     toc: '.toc-container',
     linkListWrapper: '.section:has(.link-list-wrapper)',
     headers: 'main h2, main h3, main h4',
@@ -75,32 +75,62 @@ function isDesktopViewport() {
 // ============================================================================
 
 /**
- * Builds configuration object from metadata
+ * Builds configuration object from block HTML structure
+ * @param {HTMLElement} block - The block element
  * @returns {Object} Configuration object with title, ariaLabel, and contents
  */
-function buildMetadataConfig() {
-  const title = getMetadata('toc-title');
-  const ariaLabel = getMetadata('toc-aria-label');
-  const showContentNumbers = getMetadata('toc-content-numbers');
+function buildBlockConfig(block) {
+  const config = {};
+  const rows = Array.from(block.children);
+
+  // Read all rows to build the configuration
+  rows.forEach((row) => {
+    const cells = Array.from(row.children);
+
+    if (cells.length > 0) {
+      const key = cells[0]?.textContent?.trim();
+      const value = cells.length > 1
+        ? Array.from(cells.slice(1))
+          .map((cell) => cell?.textContent?.trim())
+          .filter((text) => text !== undefined)
+          .join(' ')
+        : '';
+
+      if (key) {
+        config[key] = value;
+      }
+    }
+  });
+
+  // Validate and set defaults
+  const title = config['toc-title'] || 'Table of Contents';
+  const ariaLabel = config['toc-aria-label'] || 'Table of Contents Navigation';
   const contents = [];
 
+  // Build content array with validation
   let i = 1;
-  let content = getMetadata(`content-${i}`);
+  let content = config[`content-${i}`];
+  const MAX_ITERATIONS = 25; // Safety limit
 
-  while (content) {
-    const abbreviatedContent = getMetadata(`content-${i}-short`);
+  while (content && i <= MAX_ITERATIONS) {
+    const abbreviatedContent = config[`content-${i}-short`];
     if (abbreviatedContent) {
       contents.push({ [`content-${i}-short`]: abbreviatedContent });
     }
     contents.push({ [`content-${i}`]: content });
     i += 1;
-    content = getMetadata(`content-${i}`);
+    content = config[`content-${i}`];
+  }
+
+  // Log configuration for debugging (optional)
+  if (Object.keys(config).length === 0) {
+    window.lana?.log('TOC Block: No configuration found in block structure');
   }
 
   return contents.reduce((acc, el) => ({
     ...acc,
     ...el,
-  }), { title, ariaLabel, 'toc-content-numbers': showContentNumbers });
+  }), { title, ariaLabel, 'toc-content-numbers': undefined });
 }
 
 // ============================================================================
@@ -114,22 +144,49 @@ function buildMetadataConfig() {
  */
 function scrollToHeader(headerText, toc) {
   const headers = document.querySelectorAll(CONFIG.selectors.headers);
-  const targetHeader = Array.from(headers).find((h) => h.textContent.trim().includes(headerText.replace('...', '').trim()));
+
+  const targetHeader = Array.from(headers).find((h) => {
+    const headerContent = h.textContent.trim();
+    const searchText = headerText.replace('...', '').trim();
+    return headerContent.includes(searchText);
+  });
 
   if (targetHeader) {
-    const tocHeight = toc.offsetHeight;
-    const stickyOffset = isMobileViewport() ? CONFIG.positioning.mobileNavHeight : -120;
-    const headerRect = targetHeader.getBoundingClientRect();
-    const scrollTop = window.pageYOffset + headerRect.top - tocHeight - stickyOffset - 20;
+    // Use scrollIntoView with consistent offset for more reliable behavior
+    const isDesktop = window.innerWidth >= 1024;
+    const isMobile = window.innerWidth < 768;
 
-    window.scrollTo({
-      top: scrollTop,
+    // Calculate consistent offsets based on viewport and sticky state
+    let offset;
+    const isSticky = toc.classList.contains('toc-mobile-fixed');
+
+    if (isDesktop) {
+      offset = 80;
+    } else if (isMobile && isSticky) {
+      offset = 120;
+    } else if (isMobile) {
+      offset = 240;
+    } else {
+      offset = 80;
+    }
+
+    // Get header position relative to viewport
+    const headerRect = targetHeader.getBoundingClientRect();
+    const distanceFromTop = headerRect.top;
+
+    // Calculate how much to scroll
+    const scrollDistance = distanceFromTop - offset;
+
+    window.scrollBy({
+      top: scrollDistance,
       behavior: 'smooth',
     });
 
-    // Close TOC after clicking on mobile
-    if (isMobileViewport()) {
-      toc.classList.remove('open');
+    // Close TOC on mobile after scroll
+    if (isMobile) {
+      setTimeout(() => {
+        toc.classList.remove('open');
+      }, 100);
     }
   }
 }
@@ -140,9 +197,8 @@ function scrollToHeader(headerText, toc) {
  * @returns {number} Initial top position in pixels
  */
 function calculateInitialPosition(anchorElement) {
-  const anchorBottom = anchorElement.offsetTop + anchorElement.offsetHeight;
-  const scrollTop = window.pageYOffset;
-  return anchorBottom - scrollTop + CONFIG.positioning.offset + 64;
+  const anchorRect = anchorElement.getBoundingClientRect();
+  return anchorRect.bottom; // Position 30px below the highlight blade (was 20px)
 }
 
 /**
@@ -164,9 +220,33 @@ function preventOverlapWithFooter(position, tocElement) {
   const footer = document.querySelector('footer');
   if (!footer) return position;
 
+  // Cache layout measurements to avoid multiple layout recalculations
   const footerTop = footer.offsetTop - window.pageYOffset;
   const tocHeight = tocElement.offsetHeight;
   const maxTopPosition = footerTop - tocHeight;
+
+  return Math.min(position, maxTopPosition);
+}
+
+/**
+ * Stops TOC scroll when reaching the section with link-list-wrapper on desktop
+ * @param {number} position - Current position
+ * @param {HTMLElement} tocElement - TOC element
+ * @returns {number} Adjusted position
+ */
+function preventScrollPastLinkList(position, tocElement) {
+  // Only apply this constraint when we're in desktop viewport and the TOC will be fixed
+  if (!isDesktopViewport()) {
+    return position;
+  }
+
+  const linkListSection = document.querySelector('.section:has(.link-list-wrapper)');
+  if (!linkListSection) return position;
+
+  // Cache layout measurements to avoid multiple layout recalculations
+  const sectionTop = linkListSection.offsetTop - window.pageYOffset;
+  const tocHeight = tocElement.offsetHeight;
+  const maxTopPosition = sectionTop - tocHeight;
 
   return Math.min(position, maxTopPosition);
 }
@@ -177,7 +257,7 @@ function preventOverlapWithFooter(position, tocElement) {
  * @param {number} topPosition - Calculated top position
  */
 function applyPositionToElement(tocElement, topPosition) {
-  tocElement.style.setProperty('--toc-top-position', `${topPosition}px`);
+  tocElement.style.setProperty('--toc-top-position', `${topPosition + 20}px`);
   tocElement.classList.add('toc-desktop-fixed');
 }
 
@@ -186,7 +266,9 @@ function applyPositionToElement(tocElement, topPosition) {
  * @param {HTMLElement} tocElement - TOC element to position
  */
 function handleDesktopPositioning(tocElement) {
-  if (!isDesktopViewport()) return;
+  if (!isDesktopViewport() || !tocElement) {
+    return;
+  }
 
   let anchorElement = document.querySelector(CONFIG.selectors.highlight);
 
@@ -195,12 +277,15 @@ function handleDesktopPositioning(tocElement) {
     anchorElement = document.querySelector(CONFIG.selectors.section);
   }
 
-  if (!anchorElement || !tocElement) return;
+  if (!anchorElement) {
+    return;
+  }
 
   // Calculate and apply positioning constraints
   let position = calculateInitialPosition(anchorElement);
   position = applyMinimumDistance(position);
   position = preventOverlapWithFooter(position, tocElement);
+  position = preventScrollPastLinkList(position, tocElement);
 
   applyPositionToElement(tocElement, position);
 }
@@ -221,6 +306,7 @@ function cleanupDesktopPositioning(tocElement) {
  * @param {HTMLElement} toc - TOC container element
  */
 function updateActiveTOCLink(toc) {
+  // Cache DOM queries to avoid repeated lookups
   const headers = document.querySelectorAll(CONFIG.selectors.headers);
   const tocLinks = toc.querySelectorAll('.toc-content a');
 
@@ -231,13 +317,18 @@ function updateActiveTOCLink(toc) {
   let activeHeader = null;
   let minDistance = Infinity;
 
-  headers.forEach((header) => {
-    const rect = header.getBoundingClientRect();
+  // Batch layout operations by getting all rects at once
+  const headerRects = Array.from(headers).map((header) => ({
+    element: header,
+    rect: header.getBoundingClientRect(),
+  }));
+
+  headerRects.forEach(({ element, rect }) => {
     const distance = Math.abs(rect.top - offset);
 
     if (rect.top <= offset && distance < minDistance) {
       minDistance = distance;
-      activeHeader = header;
+      activeHeader = element;
     }
   });
 
@@ -262,11 +353,11 @@ function updateActiveTOCLink(toc) {
  * @param {HTMLElement} toc - TOC container element
  */
 function setupScrollTracking(toc) {
-  const throttledUpdate = throttleRAF(() => updateActiveTOCLink(toc));
+  const throttledUpdate = throttleRAF(() => {
+    // Use requestAnimationFrame to batch layout operations
+    requestAnimationFrame(() => updateActiveTOCLink(toc));
+  });
   window.addEventListener('scroll', throttledUpdate);
-
-  // Initial update
-  updateActiveTOCLink(toc);
 }
 
 // ============================================================================
@@ -326,7 +417,11 @@ function createNavigationLinks(config, toc) {
   Object.keys(config).forEach((key) => {
     if (key.startsWith('content-') && !key.endsWith('-short')) {
       const link = createTag('a', { href: `#${key}` });
-      link.textContent = config[key];
+
+      // Check if there's a short version available and use it
+      const shortKey = `${key}-short`;
+      const displayText = config[shortKey] || config[key];
+      link.textContent = displayText;
 
       link.addEventListener('mousedown', (e) => {
         // Prevent focus on mousedown to avoid the outline
@@ -392,27 +487,10 @@ async function copyToClipboard(button, copyTxt) {
 }
 
 /**
- * Updates share text with localized labels
- * @param {HTMLElement} shareBlock - Social icons container
- */
-async function updateShareText(shareBlock) {
-  // Use static labels for now - can be enhanced with localization later
-  const labels = [
-    'Share on Twitter',
-    'Share on LinkedIn',
-    'Share on Facebook',
-    'Copy to clipboard',
-  ];
-  const shareLinks = shareBlock.querySelectorAll('a');
-  [...shareLinks].forEach((el, index) => el.setAttribute('aria-label', labels[index]));
-  return 'Copied to clipboard';
-}
-
-/**
  * Creates social icons section with sharing functionality
  * @returns {HTMLElement} Social icons container
  */
-async function createSocialIcons() {
+function createSocialIcons() {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(document.querySelector('h1')?.textContent || '');
   const description = encodeURIComponent(getMetadata('description') || '');
@@ -466,14 +544,6 @@ async function createSocialIcons() {
     copyButton.addEventListener('click', () => copyToClipboard(copyButton, 'Copied to clipboard'));
   }
 
-  // Update share text with localized labels
-  setTimeout(async () => {
-    const copyText = await updateShareText(socialIcons);
-    if (copyButton) {
-      copyButton.addEventListener('click', () => copyToClipboard(copyButton, copyText));
-    }
-  }, 100);
-
   return socialIcons;
 }
 
@@ -489,7 +559,7 @@ async function createSocialIcons() {
  */
 function setupTitleHandlers(title, toc, tocContent) {
   const toggleTOC = () => {
-    if (isMobileViewport()) {
+    if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024)) {
       toc.classList.toggle('open');
       const isExpanded = toc.classList.contains('open');
       title.setAttribute('aria-expanded', isExpanded.toString());
@@ -504,10 +574,19 @@ function setupTitleHandlers(title, toc, tocContent) {
     }
   };
 
-  title.addEventListener('click', toggleTOC);
+  // Single click handler for the entire TOC container on mobile and tablet
+  toc.addEventListener('click', (e) => {
+    // Handle clicks on mobile and tablet, prevent clicks on links and social icons from toggling
+    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024))
+        && !e.target.closest('a') && !e.target.closest('.toc-social-icons')) {
+      toggleTOC();
+    }
+  });
 
+  // Keep keyboard handler for accessibility
   title.addEventListener('keydown', (e) => {
-    if (isMobileViewport() && (e.key === 'Enter' || e.key === ' ')) {
+    if ((isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024))
+        && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       toggleTOC();
     }
@@ -554,17 +633,83 @@ function setupKeyboardNavigation(tocContent) {
 }
 
 /**
+ * Handles mobile sticky positioning when TOC is after highlight element
+ * @param {HTMLElement} tocElement - TOC element to position
+ */
+function handleMobileSticky(tocElement) {
+  const highlightElement = document.querySelector('.section div.highlight');
+  if (!highlightElement) return; // Only apply when TOC is after highlight
+
+  // Cache layout measurements to avoid multiple layout recalculations
+  const { bottom } = highlightElement.getBoundingClientRect();
+  const { mobileNavHeight } = CONFIG.positioning;
+
+  // When highlight is scrolled out of view, make TOC sticky
+  if (bottom <= mobileNavHeight) {
+    // Create placeholder if it doesn't exist
+    if (!tocElement.nextElementSibling || !tocElement.nextElementSibling.classList.contains('toc-placeholder')) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'toc-placeholder';
+      placeholder.style.height = `${tocElement.offsetHeight}px`;
+      tocElement.insertAdjacentElement('afterend', placeholder);
+    }
+
+    tocElement.classList.add('toc-mobile-fixed');
+    tocElement.style.setProperty('--mobile-nav-height', `${mobileNavHeight}px`);
+  } else {
+    // Return to normal flow when highlight is visible
+    tocElement.classList.remove('toc-mobile-fixed');
+
+    // Remove placeholder
+    const placeholder = tocElement.nextElementSibling;
+    if (placeholder && placeholder.classList.contains('toc-placeholder')) {
+      placeholder.remove();
+    }
+  }
+}
+
+/**
  * Sets up scroll and resize event handlers
  * @param {HTMLElement} tocElement - TOC element to position
  */
 function setupEventHandlers(tocElement) {
   const throttledHandleDesktopPositioning = throttleRAF(() => handleDesktopPositioning(tocElement));
+  const throttledHandleMobileSticky = throttleRAF(() => handleMobileSticky(tocElement));
 
-  window.addEventListener('scroll', throttledHandleDesktopPositioning);
-  window.addEventListener('resize', () => {
+  // Single scroll handler with viewport check
+  const handleScroll = () => {
+    if (window.innerWidth >= 1024) {
+      throttledHandleDesktopPositioning();
+    } else if (window.innerWidth < 768) {
+      // Mobile sticky behavior (below 768px)
+      throttledHandleMobileSticky();
+    }
+    // Tablet (768px-1023px) - no scroll behavior, stays static
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  const throttledResizeHandler = throttleRAF(() => {
+    // Reset mobile sticky positioning when transitioning to tablet/desktop
+    if (window.innerWidth >= 768) {
+      if (window.innerWidth < 1024) {
+        tocElement.classList.remove('toc-mobile-fixed');
+      } else {
+        tocElement.classList.add('toc-desktop-fixed');
+      }
+
+      // Remove placeholder if it exists
+      const placeholder = tocElement.nextElementSibling;
+      if (placeholder && placeholder.classList.contains('toc-placeholder')) {
+        placeholder.remove();
+      }
+    }
+
+    // Handle desktop positioning and cleanup
     handleDesktopPositioning(tocElement);
     cleanupDesktopPositioning(tocElement);
   });
+
+  window.addEventListener('resize', throttledResizeHandler);
 
   // Initial positioning
   handleDesktopPositioning(tocElement);
@@ -594,13 +739,15 @@ async function initializeDependencies() {
 /**
  * Creates the complete TOC structure
  * @param {Object} config - Configuration object
- * @returns {Promise<Object>} Object containing all TOC elements
+ * @returns {Object} Object containing all TOC elements
  */
-async function createTOCStructure(config) {
+function createTOCStructure(config) {
   const toc = createTOCContainer();
   const title = createTOCTitle(config.title);
   const tocContent = createNavigationLinks(config, toc);
-  const socialIcons = await createSocialIcons();
+
+  // Create a placeholder for social icons to load them asynchronously
+  const socialIcons = createTag('div', { class: 'toc-social-icons' });
 
   return { toc, title, tocContent, socialIcons };
 }
@@ -617,6 +764,12 @@ function assembleTOC(elements) {
   toc.appendChild(tocContent);
   toc.appendChild(socialIcons);
 
+  // Set TOC to open by default on mobile and tablet
+  if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024)) {
+    toc.classList.add('open');
+    title.setAttribute('aria-expanded', 'true');
+  }
+
   return toc;
 }
 
@@ -625,29 +778,18 @@ function assembleTOC(elements) {
  * @param {Object} elements - Object containing TOC elements
  */
 function setupAllEventHandlers(elements) {
-  const { toc, title, tocContent } = elements;
+  const { toc, title, tocContent, socialIcons } = elements;
 
   setupTitleHandlers(title, toc, tocContent);
   setupKeyboardNavigation(tocContent);
   setupEventHandlers(toc);
   setupScrollTracking(toc);
-}
 
-/**
- * Inserts the TOC into the DOM at the correct location
- * @param {HTMLElement} toc - TOC container element
- */
-function insertTOCIntoDOM(toc) {
-  const highlightElement = document.querySelector(CONFIG.selectors.highlight);
-  if (highlightElement) {
-    highlightElement.insertAdjacentElement('afterend', toc);
-  } else {
-    // Fallback to original behavior if highlight element is not found
-    const firstSection = document.querySelector(CONFIG.selectors.section);
-    if (firstSection) {
-      firstSection.insertAdjacentElement('afterend', toc);
-    }
-  }
+  // Load social icons asynchronously after TOC is in DOM
+  requestIdleCallback(() => {
+    const realSocialIcons = createSocialIcons();
+    socialIcons.innerHTML = realSocialIcons.innerHTML;
+  });
 }
 
 // ============================================================================
@@ -655,20 +797,20 @@ function insertTOCIntoDOM(toc) {
 // ============================================================================
 
 /**
- * Main function to set up Table of Contents with SEO features
+ * Main function to set up Table of Contents block
  */
-export default async function setTOCSEO() {
+export default async function decorate(block) {
   try {
     // Phase 1: Initialize dependencies
     const utils = await initializeDependencies();
     createTag = utils.createTag;
     getMetadata = utils.getMetadata;
 
-    // Phase 2: Build configuration
-    const config = buildMetadataConfig();
+    // Phase 2: Read block configuration
+    const config = buildBlockConfig(block);
 
     // Phase 3: Create TOC structure
-    const elements = await createTOCStructure(config);
+    const elements = createTOCStructure(config);
 
     // Phase 4: Assemble TOC
     const toc = assembleTOC(elements);
@@ -676,9 +818,18 @@ export default async function setTOCSEO() {
     // Phase 5: Setup event handlers
     setupAllEventHandlers(elements);
 
-    // Phase 6: Insert into DOM
-    insertTOCIntoDOM(toc);
+    // Phase 6: Insert TOC after highlight element
+    const highlightElement = document.querySelector('.highlight');
+    if (highlightElement) {
+      // Insert after the highlight element
+      highlightElement.insertAdjacentElement('afterend', toc);
+      // Hide the original block since we moved the TOC
+      block.style.display = 'none';
+    } else {
+      window.lana?.log('TOC Block: No highlight element found. TOC will not be displayed.');
+      block.style.display = 'none';
+    }
   } catch (error) {
-    window.lana?.log('Error setting up TOC SEO:', error);
+    window.lana?.log('Error setting up TOC Block:', error);
   }
 }
