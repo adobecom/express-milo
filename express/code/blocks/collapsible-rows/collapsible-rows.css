@@ -6,8 +6,20 @@
     width: 92%;
 }
 
+.collapsible-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+    position: relative;
+    z-index: 1;
+    width: var(--ax-grid-12-col-width);
+    height: auto;
+    margin: auto;
+    padding: 40px 0;
+}
+
 .collapsible-row-accordion {
-    margin-bottom: 4px;
+    /* margin-bottom: 4px; */
     border-radius: 0px var(--body-font-size-m) var(--body-font-size-m) 0px;
     border-left: 4px solid #724CDC;
     background: var(--color-gray-100);
@@ -15,14 +27,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: var(--spacing-600) 20px;
+    /* margin: var(--spacing-600) 20px; */
 }
-.collapsible-rows {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: auto;
-    margin: auto;
+
+.collapsible-row-accordion:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-info-accent);
 }
 
 .collapsible-row-header {
@@ -191,7 +201,7 @@
     }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
     .collapsible-rows-container {
         width: var(--ax-grid-8-col-width);
         margin-left: auto;
@@ -213,7 +223,7 @@
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
     .collapsible-rows {
         width: var(--ax-grid-7-col-width);
     }

@@ -24,6 +24,9 @@ export default async function decorate(block) {
 
 
   async function handleOneUp(blockElement) {
+    const freePremiumTags2 = blockElement?.children[0].lastElementChild;
+    freePremiumTags2.style.display = 'none';
+    console.log('freePremiumTags3:', freePremiumTags2);
     const parent = blockElement.parentElement;
     parent.classList.add('one-up');
     const img = blockElement?.querySelector('picture img');

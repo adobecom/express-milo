@@ -30,6 +30,7 @@ async function createTemplatesContainer(templatesParm) {
 }
 
 export default async function init(el, imageElementsArray) {
+  el.parentElement.classList.add('multiple-up');
   const imageElements = imageElementsArray || [...(el?.querySelectorAll('picture') || [])];
   const templateLinks = [...(el?.querySelectorAll('a') || [])];
   const freePremiumTags = [...(el?.querySelectorAll('h1') || [])];
