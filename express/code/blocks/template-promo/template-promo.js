@@ -47,9 +47,9 @@ export default async function decorate(block) {
   }
 
   const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
-  console.log('imageElements:', imageElements);
+  // console.log('imageElements:', imageElements);
   const isOneUp = imageElements.length === 1;
-  console.log('Template Promo Block:', block, 'Picture Elements:', imageElements, 'Is One Up:', isOneUp);
+  // console.log('Template Promo Block:', block, 'Picture Elements:', imageElements, 'Is One Up:', isOneUp);
 
   // INIT LOGIC
   isOneUp ? handleOneUp(block) : templatePromoCarousel(block, imageElements);
