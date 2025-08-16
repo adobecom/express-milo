@@ -85,7 +85,7 @@ function buildOriginalLayout(block) {
 
   block.innerHTML = '';
 
-  const visibleCount = 3;
+  const visibleCount = 4;
   let isExpanded = false;
 
   collapsibleRows.forEach((row, index) => {
@@ -112,7 +112,7 @@ function buildOriginalLayout(block) {
   const toggleButton = createTag('a', { class: 'collapsible-row-toggle-btn button' });
   toggleButton.textContent = 'View more';
   // eslint-disable-next-line chai-friendly/no-unused-expressions
-  collapsibleRows.length > 3 && block.append(toggleButton);
+  collapsibleRows.length > 4 && block.append(toggleButton);
 
   toggleButton.addEventListener('click', () => {
     const hiddenItems = block.querySelectorAll('.collapsible-row-accordion');
