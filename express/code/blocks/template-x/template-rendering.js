@@ -25,7 +25,6 @@ function isVideo(iterator) {
 }
 
 function getTemplateTitle(template) {
-  // console.log('getTemplateTitle:', template);
   if (template['dc:title']?.['i-default']) {
     return template['dc:title']['i-default'];
   }
@@ -308,7 +307,6 @@ async function renderRotatingMedias(
 
     return video;
   };
-  // console.log('templateTitle:', templateTitle);
   const constructImg = () => createTag('img', {
     src: '',
     alt: templateTitle,
@@ -533,7 +531,6 @@ function getStillWrapperIcons(template) {
     planIcon = createTag('span', { class: 'free-tag' });
     planIcon.append(free === 'free' ? 'Free' : free);
   } else {
-    // console.log('template.licensingCategory:', template);
     planIcon = getIconElementDeprecated('premium');
   }
   let videoIcon = '';
@@ -567,14 +564,11 @@ function renderStillWrapper(template) {
 
   const imgWrapper = createTag('div', { class: 'image-wrapper' });
 
-
   const img = createTag('img', {
     src: thumbnailImageHref,
     alt: templateTitle,
   });
   imgWrapper.append(img);
-
-  // console.log('img'. img)
 
   const { planIcon, videoIcon } = getStillWrapperIcons(template);
   img.onload = (e) => {

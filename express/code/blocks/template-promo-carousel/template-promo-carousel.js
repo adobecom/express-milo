@@ -46,7 +46,7 @@ export default async function init(el, imageElementsArray) {
 
   const templatesArray = imageElements.map((img, index) => {
     const imagesToTemplateInfoMap = {
-      licensingCategory: freePremiumTags[index]?.toLowerCase(), // Determine licensing category based on tag text
+      licensingCategory: freePremiumTags[index]?.toLowerCase(),
       'dc:title': {
         'i-default': img?.alt || '',
       },
