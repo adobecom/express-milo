@@ -6,8 +6,8 @@
   max-width: 375px;
 }
 
-.section .link-list-wrapper {
-  padding: 40px 20px;
+.section  .link-list-wrapper {
+  padding: 60px 0 0 0;
   margin: 0 auto;
 }
 
@@ -18,11 +18,13 @@
 .section .link-list {
   display: block;
   overflow: hidden;
-  width: var(--ax-grid-12-col-width);
+  margin: 40px auto;
+  width: 100%;
   text-align: left;
 }
 .section .link-list.fullwidth {
   max-width: 100%;
+  margin-top: 0;
 }
 
 .section .link-list.centered {
@@ -42,13 +44,12 @@
 .section .link-list h3,
 .section .link-list h4 {
   text-align: left;
+  padding-left: 32px;
 }
 
 .section .link-list h3 {
   font-size: var(--heading-font-size-m);
-  color: var(--color-gray-900);
   margin-bottom: 20px;
-  padding-left: 6px;
 }
 
 .section .link-list p.button-container {
@@ -56,24 +57,17 @@
   line-height: 0;
 }
 
-.section .link-list p.button-container:first-of-type {
-  margin-left: 3px;
-}
-
 .section .link-list a.button.secondary {
   margin: 6px 0;
-  padding: var(--spacing-100) var(--spacing-300) 10px;
-  border-radius: 100px;
-  color: var(--color-gray-900);
-  border: none;
-  background-color: var(--color-light-gray);
 }
+
 .section .link-list a.button.secondary:active {
   background-color: var(--color-gray-400-variant);
 }
 .section .link-list a.button.secondary:hover, .section .link-list a.button.secondary:focus {
   background-color: var(--color-gray-300-variant);
 }
+
 .section .link-list .carousel-container {
   margin-left: 0;
   margin-right: 0;
@@ -90,7 +84,6 @@
 
 .section .link-list .carousel-platform {
   scroll-padding: 32px;
-  padding: 0px
 }
 
 .section .link-list .carousel-platform p.button-container:first-child {
@@ -116,10 +109,6 @@
   width: fit-content;
   max-width: 100%;
   padding-top: 0;
-}
-
-.section .link-list.fullwidth {
-  margin-top: 0;
 }
 
 .section div.link-list-wrapper:has(.link-list.fullwidth) .link-list,
@@ -200,6 +189,56 @@
   margin-left: 0;
 }
 
+.section .link-list-wrapper:has(.link-list.inline) {
+  max-width: initial;
+}
+
+.section .link-list.inline {
+  margin: 0 auto;
+}
+
+.section .link-list.inline h3 {
+  margin-bottom: 0;
+  padding-left: 0;
+  font-size: var(--body-font-size-m);
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: #131313;
+}
+
+.section .link-list.inline .button-container {
+  margin-left: 4px;
+  margin-right: var(--spacing-200);
+}
+
+.section .link-list.square .button-container .button {
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  padding: var(--spacing-100) var(--spacing-200);
+  line-height: 1.3;
+  font-weight: 700;
+  color: #292929;
+  background-color: var(--color-white);
+}
+
+.section .link-list.square .button-container:hover .button,
+.section .link-list.square .button-container:focus-within .button {
+  background-color: #e1e1e1;
+  transition: background-color .1s ease-out;
+}
+
+@media (min-width: 600px) {
+  .section .link-list.inline {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-300);
+  }
+  .section .link-list.inline .carousel-container {
+    min-width: 0;
+  }
+}
+
 @media (min-width: 900px) {
   .section .link-list.content-group {
     width: 648px;
@@ -219,9 +258,12 @@
   .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
      max-width: 830px;
   }
+  .section .link-list-wrapper:has(.link-list.inline) {
+    max-width: initial;
+  }
 
   .section .link-list-wrapper {
-    padding: 40px 24px;
+    padding: 60px 50px 0 50px;
     margin: 0 auto;
   }
 
@@ -255,9 +297,12 @@
   .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
     max-width: 1024px;
   }
+  .section .link-list-wrapper:has(.link-list.inline) {
+    max-width: initial;
+  }
 
   .section .link-list-wrapper {
-    padding: var(--spacing-900) var(--spacing-600);
+    padding: 60px 50px 0 50px;
     max-width: 1200px;
   }
 }
