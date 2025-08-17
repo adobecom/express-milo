@@ -1,6 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import renderTemplate from '../template-x/template-rendering.js';
 import buildGallery from '../../scripts/widgets/gallery/gallery.js';
+import templatePromoCarouselBaseModel from './templatePromoCarouselBaseModel.js';
 
 let createTag;
 let getConfig;
@@ -33,83 +34,27 @@ export default async function init(el, imageElementsArray) {
   el.parentElement.classList.add('multiple-up');
   const imageElements = imageElementsArray || [...(el?.querySelectorAll('picture') || [])];
   const templateLinks = [...(el?.querySelectorAll('a') || [])];
-  const freePremiumTags = [...(el?.querySelectorAll('h1') || [])];
-  // console.log('freePremiumTags:', freePremiumTags);
-  // console.log('freePremiumTags 22222:', freePremiumTags[0].textContent);
-  // console.log('freePremiumTags 22222:', freePremiumTags[1].textContent);
-  // console.log('freePremiumTags 22222:', freePremiumTags[2].textContent);
-  // console.log('freePremiumTags 22222:', freePremiumTags[3].textContent);
+  const freePremiumTags = [];
 
-
-
-  // console.log('templateLinks:', templateLinks);
+  templateLinks.forEach((aTag) => {
+    freePremiumTags.push(aTag?.parentElement.nextElementSibling.innerText || '');
+    aTag?.parentElement.nextElementSibling.remove();
+  });
 
   el.classList.add('template-promo-carousel');
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
 
-  const baseTemplateMap = {
-    origin: 'discovery', // Used to make the free / premium tags the same and not change the premoiums icon
-    assetType: "Template", // Special handling for webpage templates (sets empty pages array)
-    licensingCategory: "free", // Values: "free" | "premium" - determines plan icon display
-    "dc:title": {
-      "i-default": "Template Title String YEIBER" // Primary title source
-    },
-  
-     // Title information (multiple sources)
-     title: {
-      "i-default": "Template Title String yeiber" // Primary title source
-    },
-    pages: [
-      {
-        "rendition": {
-          "image": {
-            "thumbnail": {
-                "componentId": "c4b97f82-b38b-4e97-abac-014e24270f0f",
-                "hzRevision": "0",
-                "width": 500,
-                "height": 500,
-                "mediaType": "image/webp"
-            },
-            "preview": {
-                "componentId": "dc188d19-5941-418c-bfa3-4c3689709a22",
-                "hzRevision": "0",
-                "width": 1200,
-                "height": 1200,
-                "mediaType": "image/webp"
-            }
-          }
-        }
-      }
-    ],
-    customLinks: {
-      branchUrl: "https://new.express.adobe.com/id/urn:aaid:sc:US:7747c721-20e8-5722-95f6-d6a6fe258d6f?invite=true&accept=true&promoid=Z2G1FQKR&mv=other" // Used for edit buttons and sharing functionality
-    },
-    _links: {
-      "http://ns.adobe.com/adobecloud/rel/rendition": {
-        href: 'https://mwpw-176304--express-milo--adobecom.aem.page/drafts/yeiber/media_1ca9af5fc08551f78d084a11ebb6e99c518507dbf.png?width=2000&format=webply&optimize=medium',
-        templated: true,
-      },
-      'http://ns.adobe.com/adobecloud/rel/component': { // image of the template
-        href: 'https://mwpw-176304--express-milo--adobecom.aem.page/drafts/yeiber/media_1ca9af5fc08551f78d084a11ebb6e99c518507dbf.png?width=2000&format=webply&optimize=medium',
-        templated: true,
-      },
-    }
-  };
-
   const templatesArray = imageElements.map((img, index) => {
-    // console.log('Processing image element:', img);
     const imagesToTemplateInfoMap = {
-      licensingCategory: freePremiumTags[index]?.textContent?.toLowerCase(), // Determine licensing category based on tag text
+      licensingCategory: freePremiumTags[index]?.toLowerCase(), // Determine licensing category based on tag text
       'dc:title': {
         'i-default': img?.alt || '',
       },
-       // Title information (multiple sources)
-       title: {
-        "i-default": "Template Title String" // Primary title source
+      title: {
+        'i-default': img?.alt || '',
       },
-      title: img?.alt || '',
       _links: {
-        "http://ns.adobe.com/adobecloud/rel/rendition": {
+        'http://ns.adobe.com/adobecloud/rel/rendition': {
           href: img.src,
           templated: true,
         },
@@ -120,34 +65,34 @@ export default async function init(el, imageElementsArray) {
       },
       pages: [
         {
-          "rendition": {
-            "image": {
-              "thumbnail": {
-                  "componentId": "c4b97f82-b38b-4e97-abac-014e24270f0f",
-                  "hzRevision": "0",
-                  "width": 500,
-                  "height": 500,
-                  "mediaType": "image/webp"
+          rendition: {
+            image: {
+              thumbnail: {
+                componentId: '',
+                hzRevision: '0',
+                width: img?.width,
+                height: img?.height,
+                mediaType: 'image/webp',
               },
-              "preview": {
-                  "componentId": "dc188d19-5941-418c-bfa3-4c3689709a22",
-                  "hzRevision": "0",
-                  "width": 1200,
-                  "height": 1200,
-                  "mediaType": "image/webp"
-              }
-            }
-          }
-        }
+              preview: {
+                componentId: '',
+                hzRevision: '0',
+                width: img?.width,
+                height: img?.width,
+                mediaType: 'image/webp',
+              },
+            },
+          },
+        },
       ],
       customLinks: {
-        branchUrl: templateLinks[index].href, // Used for edit buttons and sharing functionality
+        branchUrl: templateLinks[index]?.href,
       },
-    }   
-    
-    return { ...baseTemplateMap, ...imagesToTemplateInfoMap };
+    };
+
+    return { ...templatePromoCarouselBaseModel, ...imagesToTemplateInfoMap };
   });
-  // console.log('templatesArray:', templatesArray);
+
   try {
     const [{ templatesContainer, control: galleryControl }] = await Promise.all(
       [createTemplatesContainer(templatesArray)],
@@ -155,8 +100,7 @@ export default async function init(el, imageElementsArray) {
 
     imageElements.forEach((img, index) => {
       img?.parentElement?.parentElement?.remove();
-      templateLinks[index]?.parentElement.remove();
-      freePremiumTags[index]?.remove();
+      templateLinks[index]?.parentElement?.remove();
     });
 
     el.append(templatesContainer);
@@ -166,8 +110,7 @@ export default async function init(el, imageElementsArray) {
     if (getConfig().env.name === 'prod') {
       el.remove();
     } else {
-      // console.log('Error in template-x-carousel-toolbar:', err);
-      const errElement = createTag('div')
+      const errElement = createTag('div');
       errElement.textContent = 'Error loading templates, please refresh the page or try again later.';
       el.append(errElement);
     }
