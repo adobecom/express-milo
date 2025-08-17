@@ -526,7 +526,7 @@ function renderHoverWrapper(template) {
 
 function getStillWrapperIcons(template) {
   let planIcon = null;
-  if (template.licensingCategory === 'premium' && template.origin === 'discovery') {
+  if (template.licensingCategory === 'premium' && template.origin === 'discover') {
     planIcon = createTag('span', { class: 'free-tag' });
     planIcon.append(template.licensingCategory);
   } else if (template.licensingCategory === 'free') {

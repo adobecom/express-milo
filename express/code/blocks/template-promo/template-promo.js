@@ -22,11 +22,7 @@ export default async function decorate(block) {
     }
   });
 
-
   async function handleOneUp(blockElement) {
-    const freePremiumTags2 = blockElement?.children[0].lastElementChild;
-    freePremiumTags2.style.display = 'none';
-    console.log('freePremiumTags3:', freePremiumTags2);
     const parent = blockElement.parentElement;
     parent.classList.add('one-up');
     const img = blockElement?.querySelector('picture img');
@@ -36,10 +32,10 @@ export default async function decorate(block) {
 
     const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
     const editTemplateButton = createTag('a', {
-      href: templateEditLink.href,
-      title: `${editThisTemplate} ${img.alt}`,
+      href: templateEditLink?.href,
+      title: `${editThisTemplate} ${img?.alt}`,
       class: 'button accent',
-      'aria-label': `${editThisTemplate} ${img.alt}`,
+      'aria-label': `${editThisTemplate} ${img?.alt}`,
     });
 
     editTemplateButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
@@ -50,9 +46,7 @@ export default async function decorate(block) {
   }
 
   const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
-  // console.log('imageElements:', imageElements);
   const isOneUp = imageElements.length === 1;
-  // console.log('Template Promo Block:', block, 'Picture Elements:', imageElements, 'Is One Up:', isOneUp);
 
   // INIT LOGIC
   isOneUp ? handleOneUp(block) : templatePromoCarousel(block, imageElements);
