@@ -211,6 +211,17 @@
   font-size: var(--body-font-size-s);
 }
 
+[data-ax-panel].background-overflow .section-background img {
+    object-fit: none !important;
+    height: initial !important;
+    width: initial !important;
+    max-width: initial !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 @media (min-width: 600px) {
   .hover-cards .heading-container h2,
   .hover-cards .heading-container h3 {

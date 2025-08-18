@@ -115,6 +115,10 @@
   font-size: var(--body-font-size-l)
 }
 
+.ax-panels.split {
+  z-index: 1;
+}
+
 .ax-panels.split [role='tab'] {
   font-size: var(--body-font-size-m);
 }
@@ -135,7 +139,6 @@
 }
 
 .section[data-ax-panel][role='tabpanel'].split {
-  z-index: -1;
   margin-top: -28px;
   padding: 48px 20px 32px;
   align-items: stretch;
@@ -143,6 +146,7 @@
   min-height: 400px;
   background: rgba(255, 255, 255, 0.3);
 }
+
 
 @media (min-width: 600px) {
   :root {
