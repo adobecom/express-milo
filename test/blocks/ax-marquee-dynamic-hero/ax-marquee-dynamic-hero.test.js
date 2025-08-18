@@ -144,7 +144,7 @@ describe('ax-marquee-dynamic-hero', () => {
 
     const logo = block.querySelector('.express-logo');
     expect(logo).to.exist;
-    expect(block.classList.contains('hero-top')).to.be.true;
+    expect(block.classList.contains('hero-top-mobile')).to.be.true;
 
     meta.remove();
   });

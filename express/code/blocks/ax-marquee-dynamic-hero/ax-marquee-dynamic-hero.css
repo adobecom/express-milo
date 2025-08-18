@@ -96,25 +96,25 @@ main .ax-marquee-dynamic-hero p.button-container {
 
 /* Keep hero-top flipped on mobile up to tablet */
 @media (max-width: 1023px) {
-  .ax-marquee-dynamic-hero.hero-top {
+  .ax-marquee-dynamic-hero.hero-top-mobile {
     display: flex;
     flex-direction: column;
   }
   
-  .ax-marquee-dynamic-hero.hero-top > div {
+  .ax-marquee-dynamic-hero.hero-top-mobile > div {
     display: flex;
     flex-direction: column;
   }
   
-  .ax-marquee-dynamic-hero.hero-top > div > div:has(picture) {
+  .ax-marquee-dynamic-hero.hero-top-mobile > div > div:has(picture) {
     order: -1;
   }
   
-  .ax-marquee-dynamic-hero.hero-top > div > div:nth-child(1) {
+  .ax-marquee-dynamic-hero.hero-top-mobile > div > div:nth-child(1) {
     order: 1;
   }
   
-  .ax-marquee-dynamic-hero.hero-top > img.express-logo {
+  .ax-marquee-dynamic-hero.hero-top-mobile > img.express-logo {
     order: 0;
     margin: 0 auto;
   }
