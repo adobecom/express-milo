@@ -104,13 +104,11 @@ export class ComparisonTableState {
             e.preventDefault();
             this.constructor.focusOption(visibleOptions, prevIndex);
             break;
-          case 'Tab': {
-            // Focus trap - cycle through visible options
-            e.preventDefault();
-            const targetIndex = e.shiftKey ? nextIndex : nextIndex;
-            this.constructor.focusOption(visibleOptions, targetIndex);
+          case 'Tab':
+            // Allow normal tab behavior - close dropdown and move to next element
+            ComparisonTableState.closeDropdown(selector);
+            // Don't prevent default - let Tab continue normal navigation
             break;
-          }
           case 'Escape':
             e.preventDefault();
             ComparisonTableState.closeDropdown(selector);
