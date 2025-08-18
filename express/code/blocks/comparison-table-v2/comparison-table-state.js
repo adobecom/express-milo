@@ -27,163 +27,209 @@ export class ComparisonTableState {
     this.ariaLiveRegion = ariaLiveRegion;
   }
 
-  initializePlanSelectors(comparisonBlock, planSelectors) {
-    this.comparisonBlock = comparisonBlock;
-    this.planSelectors = planSelectors;
-    this.planSelectors.forEach((selector, index) => {
-      const choiceWrapper = selector.querySelector('.plan-selector-choices');
-      const options = Array.from(choiceWrapper.children);
-      options.forEach((option) => {
-        option.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (e.target.classList.contains('selected')) {
-            return;
-          }
-          const currentPlanIndex = parseInt(option.dataset.planIndex, 10);
-          const selectorIndex = parseInt(selector.dataset.planIndex, 10);
-
-          // Don't allow selecting the same plan that's currently visible
-          if (this.visiblePlans.includes(currentPlanIndex)) {
-            return; // Exit early, don't process the click
-          }
-
-          // Update aria-selected
-          choiceWrapper.querySelectorAll('[role="option"]').forEach((opt) => {
-            opt.setAttribute('aria-selected', 'false');
-          });
-
-          option.setAttribute('aria-selected', 'true');
-
-          this.updateVisiblePlan(selectorIndex, currentPlanIndex);
-
-          // Close dropdown and update aria-expanded
-          ComparisonTableState.closeDropdown(selector);
-          selector.focus();
-        });
-      });
-
-      selector.addEventListener('click', (e) => {
+  /**
+   * Setup click handlers for plan selector options
+   * @param {HTMLElement} selector - The plan selector element
+   * @param {Array} options - Array of option elements
+   */
+  setupOptionClickHandlers(selector, options) {
+    const choiceWrapper = selector.querySelector('.plan-selector-choices');
+    options.forEach((option) => {
+      option.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        this.openDropdown(selector);
-      });
+        if (e.target.classList.contains('selected')) {
+          return;
+        }
+        const currentPlanIndex = parseInt(option.dataset.planIndex, 10);
+        const selectorIndex = parseInt(selector.dataset.planIndex, 10);
 
-      // Add keyboard navigation support
-      selector.addEventListener('keydown', (e) => {
+        // Don't allow selecting the same plan that's currently visible
+        if (this.visiblePlans.includes(currentPlanIndex)) {
+          return; // Exit early, don't process the click
+        }
+
+        // Update aria-selected
+        choiceWrapper.querySelectorAll('[role="option"]').forEach((opt) => {
+          opt.setAttribute('aria-selected', 'false');
+        });
+
+        option.setAttribute('aria-selected', 'true');
+
+        this.updateVisiblePlan(selectorIndex, currentPlanIndex);
+
+        // Close dropdown and update aria-expanded
+        ComparisonTableState.closeDropdown(selector);
+        selector.focus();
+      });
+    });
+  }
+
+  /**
+   * Setup selector click handler to open dropdown
+   * @param {HTMLElement} selector - The plan selector element
+   */
+  setupSelectorClickHandler(selector) {
+    selector.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.openDropdown(selector);
+    });
+  }
+
+  /**
+   * Setup keyboard navigation for selector dropdown
+   * @param {HTMLElement} selector - The plan selector element
+   */
+  setupSelectorKeyboardNavigation(selector) {
+    selector.addEventListener('keydown', (e) => {
+      const choices = selector.querySelector('.plan-selector-choices');
+      const isOpen = !choices.classList.contains('invisible-content');
+
+      if (isOpen) {
+        const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
+        const currentIndex = visibleOptions.findIndex((opt) => opt.classList.contains('focused'));
+        const nextIndex = currentIndex < visibleOptions.length - 1
+          ? currentIndex + 1
+          : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
+        const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN
+          ? currentIndex - 1
+          : visibleOptions.length - 1;
+        switch (e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            this.constructor.focusOption(visibleOptions, nextIndex);
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            this.constructor.focusOption(visibleOptions, prevIndex);
+            break;
+          case 'Tab': {
+            // Focus trap - cycle through visible options
+            e.preventDefault();
+            const targetIndex = e.shiftKey ? nextIndex : nextIndex;
+            this.constructor.focusOption(visibleOptions, targetIndex);
+            break;
+          }
+          case 'Escape':
+            e.preventDefault();
+            ComparisonTableState.closeDropdown(selector);
+            selector.focus();
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
+
+  /**
+   * Setup keyboard support for individual options
+   * @param {HTMLElement} selector - The plan selector element
+   * @param {Array} options - Array of option elements
+   */
+  setupOptionKeyboardNavigation(selector, options) {
+    options.forEach((option) => {
+      option.addEventListener('keydown', (e) => {
         const choices = selector.querySelector('.plan-selector-choices');
         const isOpen = !choices.classList.contains('invisible-content');
 
-        if (isOpen) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const currentPlanIndex = parseInt(option.dataset.planIndex, 10);
+
+          // Don't allow selecting the same plan that's currently visible
+          if (!this.visiblePlans.includes(currentPlanIndex)) {
+            option.click();
+          }
+          selector.focus();
+        } else if (e.key === 'Tab' && isOpen) {
+          // Focus trap - prevent tabbing out of dropdown
+          e.preventDefault();
           const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
-          const currentIndex = visibleOptions.findIndex((opt) => opt.classList.contains('focused'));
-          const nextIndex = currentIndex < visibleOptions.length - 1
-            ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
-          const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN
-            ? currentIndex - 1 : visibleOptions.length - 1;
-          switch (e.key) {
-            case 'ArrowDown':
-              e.preventDefault();
+          const currentIndex = visibleOptions.indexOf(option);
 
-              visibleOptions.forEach((opt) => opt.classList.remove('focused'));
-              visibleOptions[nextIndex].classList.add('focused');
-              visibleOptions[nextIndex].focus();
-              break;
-            case 'ArrowUp':
-              e.preventDefault();
-
-              visibleOptions.forEach((opt) => opt.classList.remove('focused'));
-              visibleOptions[prevIndex].classList.add('focused');
-              visibleOptions[prevIndex].focus();
-              break;
-            case 'Tab':
-              // Focus trap - cycle through visible options
-              e.preventDefault();
-              if (e.shiftKey) {
-                // Shift+Tab - go backwards (higher index -> lower index)
-
-                visibleOptions.forEach((opt) => opt.classList.remove('focused'));
-                visibleOptions[nextIndex].classList.add('focused');
-                visibleOptions[nextIndex].focus();
-              } else {
-                // Tab - go forwards (lower index -> higher index)
-                visibleOptions.forEach((opt) => opt.classList.remove('focused'));
-                visibleOptions[nextIndex].classList.add('focused');
-                visibleOptions[nextIndex].focus();
-              }
-              break;
-            case 'Escape':
-              e.preventDefault();
-              ComparisonTableState.closeDropdown(selector);
-              selector.focus();
-              break;
-            default:
-              break;
+          if (e.shiftKey) {
+            // Shift+Tab - go backwards (higher index -> lower index)
+            const nextIndex = currentIndex < visibleOptions.length - 1
+              ? currentIndex + 1
+              : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
+            ComparisonTableState.focusOption(visibleOptions, nextIndex);
+          } else {
+            // Tab - go forwards (lower index -> higher index)
+            const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN
+              ? currentIndex - 1
+              : visibleOptions.length - 1;
+            ComparisonTableState.focusOption(visibleOptions, prevIndex);
           }
-        }
-      });
-
-      // Add keyboard support for option selection
-      options.forEach((option) => {
-        option.addEventListener('keydown', (e) => {
-          const choices = selector.querySelector('.plan-selector-choices');
-          const isOpen = !choices.classList.contains('invisible-content');
-
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            const currentPlanIndex = parseInt(option.dataset.planIndex, 10);
-
-            // Don't allow selecting the same plan that's currently visible
-            if (!this.visiblePlans.includes(currentPlanIndex)) {
-              option.click();
-            }
-            selector.focus();
-          } else if (e.key === 'Tab' && isOpen) {
-            // Focus trap - prevent tabbing out of dropdown
-            e.preventDefault();
-            const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
-            const currentIndex = visibleOptions.indexOf(option);
-
-            if (e.shiftKey) {
-              // Shift+Tab - go backwards (higher index -> lower index)
-              const nextIndex = currentIndex < visibleOptions.length - 1
-                ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
-              visibleOptions.forEach((opt) => opt.classList.remove('focused'));
-              visibleOptions[nextIndex].classList.add('focused');
-              visibleOptions[nextIndex].focus();
-            } else {
-              // Tab - go forwards (lower index -> higher index)
-              const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN 
-                ? currentIndex - 1 : visibleOptions.length - 1;
-              visibleOptions.forEach((opt) => opt.classList.remove('focused'));
-              visibleOptions[prevIndex].classList.add('focused');
-              visibleOptions[prevIndex].focus();
-            }
-          }
-        });
-      });
-      if (!this.visiblePlans.includes(index)) {
-        selector.closest('.plan-cell').classList.toggle('invisible-content', 1);
-      } else {
-        const planCell = selector.closest('.plan-cell');
-        planCell.classList.toggle('invisible-content', 0);
-        const visibleIndex = this.visiblePlans.indexOf(index);
-        if (visibleIndex === PLAN_DEFAULTS.FIRST_VISIBLE_PLAN) {
-          planCell.classList.add('left-plan');
-          planCell.classList.remove('right-plan');
-        } else {
-          planCell.classList.add('right-plan');
-          planCell.classList.remove('left-plan');
-        }
-      }
-
-      this.comparisonBlock.querySelectorAll('tr').forEach((row) => {
-        const cells = row.querySelectorAll('.feature-cell:not(.feature-cell-header), th[scope="col"]');
-        for (let i = 0; i < cells.length; i += 1) {
-          cells[i].classList.toggle('invisible-content', !this.visiblePlans.includes(i));
         }
       });
     });
+  }
+
+  /**
+   * Helper method to focus an option and update classes
+   * @param {Array} visibleOptions - Array of visible option elements
+   * @param {number} targetIndex - Index of option to focus
+   */
+  static focusOption(visibleOptions, targetIndex) {
+    visibleOptions.forEach((opt) => opt.classList.remove('focused'));
+    visibleOptions[targetIndex].classList.add('focused');
+    visibleOptions[targetIndex].focus();
+  }
+
+  /**
+   * Update visibility state for plan cells and table cells
+   * @param {HTMLElement} selector - The plan selector element
+   * @param {number} index - Index of the selector
+   */
+  updateVisibilityState(selector, index) {
+    if (!this.visiblePlans.includes(index)) {
+      selector.closest('.plan-cell').classList.toggle('invisible-content', 1);
+    } else {
+      const planCell = selector.closest('.plan-cell');
+      planCell.classList.toggle('invisible-content', 0);
+      const visibleIndex = this.visiblePlans.indexOf(index);
+      if (visibleIndex === PLAN_DEFAULTS.FIRST_VISIBLE_PLAN) {
+        planCell.classList.add('left-plan');
+        planCell.classList.remove('right-plan');
+      } else {
+        planCell.classList.add('right-plan');
+        planCell.classList.remove('left-plan');
+      }
+    }
+
+    // Update table cell visibility
+    this.comparisonBlock.querySelectorAll('tr').forEach((row) => {
+      const cells = row.querySelectorAll('.feature-cell:not(.feature-cell-header), th[scope="col"]');
+      for (let i = 0; i < cells.length; i += 1) {
+        cells[i].classList.toggle('invisible-content', !this.visiblePlans.includes(i));
+      }
+    });
+  }
+
+  /**
+   * Initialize plan selectors with event handlers and visibility
+   * @param {HTMLElement} comparisonBlock - The comparison table block element
+   * @param {Array} planSelectors - Array of plan selector elements
+   */
+  initializePlanSelectors(comparisonBlock, planSelectors) {
+    this.comparisonBlock = comparisonBlock;
+    this.planSelectors = planSelectors;
+
+    this.planSelectors.forEach((selector, index) => {
+      const options = Array.from(selector.querySelector('.plan-selector-choices').children);
+
+      // Setup all event handlers
+      this.setupOptionClickHandlers(selector, options);
+      this.setupSelectorClickHandler(selector);
+      this.setupSelectorKeyboardNavigation(selector);
+      this.setupOptionKeyboardNavigation(selector, options);
+
+      // Update visibility state
+      this.updateVisibilityState(selector, index);
+    });
+
     this.updatePlanSelectorOptions();
   }
 

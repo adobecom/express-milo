@@ -783,7 +783,6 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     font-weight: 700;
     font-style: Bold;
     font-size: 12px;
-    leading-trim: NONE;
     line-height: 130%;
     letter-spacing: 0%;
     text-align: center;
