@@ -623,18 +623,43 @@ function synchronizePlanCellHeights(comparisonBlock) {
   });
 }
 
-export default async function decorate(comparisonBlock) {
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`),
-    decorateButtonsDeprecated(comparisonBlock), initComparisonTableState()]).then(
-    ([utils]) => { createTag = utils.createTag; },
-  );
+/**
+ * Initialize the comparison table dependencies and utilities
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ * @returns {Promise<void>}
+ */
+async function initializeComparisonTable(comparisonBlock) {
+  await Promise.all([
+    import(`${getLibs()}/utils/utils.js`),
+    import(`${getLibs()}/features/placeholders.js`),
+    decorateButtonsDeprecated(comparisonBlock),
+    initComparisonTableState(),
+  ]).then(([utils]) => {
+    createTag = utils.createTag;
+  });
+}
+
+/**
+ * Process and prepare the comparison table content
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ * @returns {Object} - Processed content sections and footer
+ */
+function processComparisonContent(comparisonBlock) {
   const blockChildren = Array.from(comparisonBlock.children);
   const footer = getFooter(blockChildren);
   const contentSections = partitionContentBySeparators(blockChildren);
   applyColumnShading(contentSections[0], comparisonBlock);
   comparisonBlock.innerHTML = '';
 
-  // Create aria-live region for plan change announcements
+  return { contentSections, footer };
+}
+
+/**
+ * Create and configure the aria-live region for accessibility announcements
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ * @returns {HTMLElement} - The configured aria-live region
+ */
+function createAriaLiveRegion(comparisonBlock) {
   const ariaLiveRegion = createTag('div', {
     class: 'sr-only',
     'aria-live': 'polite',
@@ -646,6 +671,15 @@ export default async function decorate(comparisonBlock) {
   ariaLiveRegion.style.height = POSITIONING.ARIA_LIVE_SIZE;
   ariaLiveRegion.style.overflow = 'hidden';
   comparisonBlock.appendChild(ariaLiveRegion);
+
+  return ariaLiveRegion;
+}
+
+/**
+ * Process button styling for fill buttons
+ * @param {Array} contentSections - The content sections array
+ */
+function processButtonStyling(contentSections) {
   const buttons = contentSections[0][1].querySelectorAll('.con-button');
   buttons.forEach((button) => {
     if (button.textContent.trim().includes('#_button-fill')) {
@@ -653,20 +687,45 @@ export default async function decorate(comparisonBlock) {
       button.textContent = button.textContent.replace('#_button-fill', '');
     }
   });
-  const { stickyHeaderEl, colTitles } = createStickyHeader(contentSections[0], comparisonBlock);
-  comparisonBlock.appendChild(stickyHeaderEl);
+}
+
+/**
+ * Create comparison table sections
+ * @param {Array} contentSections - The content sections array
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ * @param {Array} colTitles - Column titles for the table
+ */
+function createTableSections(contentSections, comparisonBlock, colTitles) {
   for (let sectionIndex = 1; sectionIndex < contentSections.length; sectionIndex += 1) {
     const sectionTable = convertToTable(contentSections[sectionIndex], colTitles);
     comparisonBlock.appendChild(sectionTable);
   }
+}
 
+/**
+ * Initialize state management for plan selectors
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ * @param {HTMLElement} stickyHeaderEl - The sticky header element
+ * @param {HTMLElement} ariaLiveRegion - The aria-live region for announcements
+ * @returns {Object} - The comparison table state instance
+ */
+function initializeStateManagement(comparisonBlock, stickyHeaderEl, ariaLiveRegion) {
   const planSelectors = Array.from(stickyHeaderEl.querySelectorAll('.plan-selector'));
   const comparisonTableState = new ComparisonTableState(ariaLiveRegion);
   comparisonTableState.initializePlanSelectors(comparisonBlock, planSelectors);
   initStickyBehavior(stickyHeaderEl, comparisonBlock);
 
-  // Handle tabindex updates on window resize
-  const updateTabindexOnResize = () => {
+  return comparisonTableState;
+}
+
+/**
+ * Create the tabindex update handler for responsive behavior
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ * @param {Array} colTitles - Column titles for determining column count
+ * @returns {Function} - The tabindex update function
+ */
+function createTabindexUpdateHandler(comparisonBlock, colTitles) {
+  return () => {
     const isDesktop = window.matchMedia(BREAKPOINTS.DESKTOP).matches;
     const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
     const hasMoreThanTwoColumns = colTitles.length > DROPDOWN.MIN_COLUMNS_FOR_SELECTOR;
@@ -687,12 +746,14 @@ export default async function decorate(comparisonBlock) {
       }
     });
   };
+}
 
-  if (footer) {
-    comparisonBlock.appendChild(footer);
-  }
-  synchronizePlanCellHeights(comparisonBlock);
-
+/**
+ * Setup event listeners and observers for the comparison table
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ * @param {Function} updateTabindexOnResize - The tabindex update handler
+ */
+function setupEventListeners(comparisonBlock, updateTabindexOnResize) {
   const handleResize = () => {
     updateTabindexOnResize();
     synchronizePlanCellHeights(comparisonBlock);
@@ -719,4 +780,50 @@ export default async function decorate(comparisonBlock) {
     });
   });
   adjustElementPosition();
+}
+
+/**
+ * Main decoration function for the comparison table
+ * @param {HTMLElement} comparisonBlock - The comparison table block element
+ */
+export default async function decorate(comparisonBlock) {
+  try {
+    // 1. Initialize dependencies
+    await initializeComparisonTable(comparisonBlock);
+
+    // 2. Process content
+    const { contentSections, footer } = processComparisonContent(comparisonBlock);
+
+    // 3. Create accessibility features
+    const ariaLiveRegion = createAriaLiveRegion(comparisonBlock);
+
+    // 4. Process button styling
+    processButtonStyling(contentSections);
+
+    // 5. Create and append sticky header
+    const { stickyHeaderEl, colTitles } = createStickyHeader(contentSections[0], comparisonBlock);
+    comparisonBlock.appendChild(stickyHeaderEl);
+
+    // 6. Create table sections
+    createTableSections(contentSections, comparisonBlock, colTitles);
+
+    // 7. Initialize state management
+    initializeStateManagement(comparisonBlock, stickyHeaderEl, ariaLiveRegion);
+
+    // 8. Add footer if present
+    if (footer) {
+      comparisonBlock.appendChild(footer);
+    }
+
+    // 9. Initial height synchronization
+    synchronizePlanCellHeights(comparisonBlock);
+
+    // 10. Setup responsive behavior and observers
+    const updateTabindexOnResize = createTabindexUpdateHandler(comparisonBlock, colTitles);
+    setupEventListeners(comparisonBlock, updateTabindexOnResize);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Failed to initialize comparison table:', error);
+    comparisonBlock.innerHTML = '<p>Unable to load comparison table. Please refresh the page.</p>';
+  }
 }
