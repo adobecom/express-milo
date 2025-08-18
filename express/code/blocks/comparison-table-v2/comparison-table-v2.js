@@ -173,7 +173,7 @@ function createTableRow(featureRowDiv) {
       tableCell.classList.add('feature-cell');
     }
     tableCell.setAttribute('data-plan-index', cellIndex - 1);
-    
+
     if (noText) {
       tableCell.classList.add('no-text');
     }
@@ -197,7 +197,7 @@ function createTableRow(featureRowDiv) {
 function convertToTable(sectionGroup, columnHeaders) {
   const tableContainer = document.createElement('div');
   tableContainer.classList.add('table-container');
-  const comparisonTable = document.createElement('table'); 
+  const comparisonTable = document.createElement('table');
   const tableBody = document.createElement('tbody');
 
   if (sectionGroup.length === 0) return tableContainer;
@@ -365,19 +365,19 @@ function applyColumnShading(headerGroup, comparisonBlock) {
 function createStickyHeader(headerGroup, comparisonBlock) {
   const headerGroupElement = headerGroup[1];
   headerGroupElement.classList.add('sticky-header');
-  
+
   // Create wrapper div for all header content
   const headerWrapper = document.createElement('div');
   headerWrapper.classList.add('sticky-header-wrapper');
-  
+
   // Move all existing children to the wrapper
   while (headerGroupElement.firstChild) {
     headerWrapper.appendChild(headerGroupElement.firstChild);
   }
-  
+
   // Add the wrapper back to the header
   headerGroupElement.appendChild(headerWrapper);
-  
+
   const headerCells = headerWrapper.querySelectorAll('div');
   const headers = Array.from(headerCells).map((cell) => {
     const children = Array.from(cell.children);
@@ -474,15 +474,15 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
           isSticky = false;
           return;
         }
-        const rect = entry.boundingClientRect; 
-        const isAboveViewport = rect.top < 0 ;
+        const rect = entry.boundingClientRect;
+        const isAboveViewport = rect.top < 0;
         if (!entry.isIntersecting && isAboveViewport && !isSticky) {
           // Header has scrolled past the top - make it sticky
           const stickyHeaderHeight = stickyHeader.offsetHeight;
           stickyHeader.classList.add('is-stuck', 'initial');
           placeholder.style.display = 'flex';
           placeholder.style.height = `${stickyHeaderHeight}px`;
-  
+
           ComparisonTableState.closeDropdown(stickyHeader
             ?.querySelector('.plan-cell-wrapper[aria-expanded="true"]')?.querySelector('.plan-selector'));
           if (document.activeElement && document.activeElement.blur) {
@@ -493,7 +493,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
             stickyHeader.classList.remove('initial');
             isSticky = true;
           }, 100);
-        } else if (entry.isIntersecting && isSticky) { 
+        } else if (entry.isIntersecting && isSticky) {
           stickyHeader.classList.add('initial');
           setTimeout(() => {
             stickyHeader.classList.remove('is-stuck');
@@ -505,7 +505,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
         }
       });
     },
-    { 
+    {
       rootMargin: '-1px 0px 0px 0px',
       threshold: [0, 1],
     },
@@ -570,7 +570,6 @@ function synchronizePlanCellHeights(comparisonBlock) {
   const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
 
   if (planCellWrappers.length === 0) return;
-
 
   // Reset heights to auto to get natural heights
   planCellWrappers.forEach((wrapper) => {
