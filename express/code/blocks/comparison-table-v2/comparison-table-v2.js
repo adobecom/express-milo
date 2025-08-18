@@ -788,38 +788,29 @@ function setupEventListeners(comparisonBlock, updateTabindexOnResize) {
  */
 export default async function decorate(comparisonBlock) {
   try {
-    // 1. Initialize dependencies
-    await initializeComparisonTable(comparisonBlock);
+    await initializeComparisonTable(comparisonBlock); 
 
-    // 2. Process content
-    const { contentSections, footer } = processComparisonContent(comparisonBlock);
+    const { contentSections, footer } = processComparisonContent(comparisonBlock); 
 
-    // 3. Create accessibility features
     const ariaLiveRegion = createAriaLiveRegion(comparisonBlock);
 
-    // 4. Process button styling
-    processButtonStyling(contentSections);
+    processButtonStyling(contentSections); 
 
-    // 5. Create and append sticky header
     const { stickyHeaderEl, colTitles } = createStickyHeader(contentSections[0], comparisonBlock);
-    comparisonBlock.appendChild(stickyHeaderEl);
+    comparisonBlock.appendChild(stickyHeaderEl); 
 
-    // 6. Create table sections
-    createTableSections(contentSections, comparisonBlock, colTitles);
+    createTableSections(contentSections, comparisonBlock, colTitles); 
 
-    // 7. Initialize state management
     initializeStateManagement(comparisonBlock, stickyHeaderEl, ariaLiveRegion);
 
-    // 8. Add footer if present
     if (footer) {
       comparisonBlock.appendChild(footer);
-    }
+    } 
 
-    // 9. Initial height synchronization
     synchronizePlanCellHeights(comparisonBlock);
-
-    // 10. Setup responsive behavior and observers
+ 
     const updateTabindexOnResize = createTabindexUpdateHandler(comparisonBlock, colTitles);
+    
     setupEventListeners(comparisonBlock, updateTabindexOnResize);
   } catch (error) {
     // eslint-disable-next-line no-console
