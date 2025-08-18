@@ -77,8 +77,10 @@ export class ComparisonTableState {
         if (isOpen) {
           const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
           const currentIndex = visibleOptions.findIndex((opt) => opt.classList.contains('focused'));
-          const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
-          const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN ? currentIndex - 1 : visibleOptions.length - 1;
+          const nextIndex = currentIndex < visibleOptions.length - 1
+            ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
+          const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN
+            ? currentIndex - 1 : visibleOptions.length - 1;
           switch (e.key) {
             case 'ArrowDown':
               e.preventDefault();
@@ -144,13 +146,15 @@ export class ComparisonTableState {
 
             if (e.shiftKey) {
               // Shift+Tab - go backwards (higher index -> lower index)
-              const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
+              const nextIndex = currentIndex < visibleOptions.length - 1
+                ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
               visibleOptions.forEach((opt) => opt.classList.remove('focused'));
               visibleOptions[nextIndex].classList.add('focused');
               visibleOptions[nextIndex].focus();
             } else {
               // Tab - go forwards (lower index -> higher index)
-              const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN ? currentIndex - 1 : visibleOptions.length - 1;
+              const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN 
+                ? currentIndex - 1 : visibleOptions.length - 1;
               visibleOptions.forEach((opt) => opt.classList.remove('focused'));
               visibleOptions[prevIndex].classList.add('focused');
               visibleOptions[prevIndex].focus();

@@ -58,12 +58,12 @@ function initButton(block, buttons, sections, index) {
           section.classList.add('display-none');
         }
       });
-      
+
       const tabParam = buttons[index].innerText.toLowerCase().replace(/\s+/g, '-');
       const url = new URL(window.location);
       url.searchParams.set('tab', tabParam);
       window.history.replaceState({}, '', url);
-      
+
       if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
         window.scrollTo({
           top: offsetPosition,
