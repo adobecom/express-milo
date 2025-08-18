@@ -240,7 +240,8 @@ function preventScrollPastLinkList(position, tocElement) {
     return position;
   }
 
-  const linkListSection = document.querySelector('.section:has(.link-list-wrapper)');
+  const linkListSection = document.querySelector('.section:has(.link-list-v2-wrapper)');
+  console.log('linkListSection', linkListSection);
   if (!linkListSection) return position;
 
   // Cache layout measurements to avoid multiple layout recalculations
