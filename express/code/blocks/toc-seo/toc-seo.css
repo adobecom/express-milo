@@ -226,6 +226,7 @@ main .toc-content a:focus:not(:focus-visible) {
   
   .toc-container .toc-title::after {
     display: block;
+    right: -20px;
   }
 }
 
