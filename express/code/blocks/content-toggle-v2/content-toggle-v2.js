@@ -58,7 +58,6 @@ function initButton(block, buttons, sections, index) {
           section.classList.add('display-none');
         }
       });
-
       if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
         window.scrollTo({
           top: offsetPosition,
