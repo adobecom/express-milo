@@ -1,92 +1,20 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import natural from 'natural';
 import chalk from 'chalk';
 import ora from 'ora';
 import open from 'open';
 import VisualRegression from './index.js';
+import { parseVisualRegressionQuery, suggestCorrections } from './nlp.js';
 
-// Natural language processing setup
-const tokenizer = new natural.WordTokenizer();
-
-function parseNaturalLanguage(input) {
-  const tokens = tokenizer.tokenize(input.toLowerCase());
-  
-  // Find branch names (typically contain dashes or are after 'branch', 'from', 'to', 'vs', 'versus', 'against')
-  const branchIndicators = ['branch', 'from', 'to', 'vs', 'versus', 'against', 'compare'];
-  const branches = [];
-  
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
-    
-    // Check if this might be a branch name
-    if (token.includes('-') || token === 'main' || token === 'stage' || token === 'prod') {
-      branches.push(token);
-    } else if (branchIndicators.includes(token) && i + 1 < tokens.length) {
-      // Next token might be a branch
-      const nextToken = tokens[i + 1];
-      if (!branchIndicators.includes(nextToken)) {
-        branches.push(nextToken);
-      }
-    }
-  }
-  
-  // Find path/subdirectory (typically after 'path', 'page', 'url', 'subdirectory', or contains '/')
-  const pathIndicators = ['path', 'page', 'url', 'subdirectory', 'directory', 'at', 'for'];
-  let subdirectory = '';
-  
-  // First, check if input contains a clear path (with slashes)
-  const pathMatch = input.match(/\/[^\s]+/);
-  if (pathMatch) {
-    subdirectory = pathMatch[0];
-  } else {
-    // Look for path after indicators
-    for (let i = 0; i < tokens.length; i++) {
-      if (pathIndicators.includes(tokens[i]) && i + 1 < tokens.length) {
-        // Collect tokens until we hit a branch indicator or end
-        const pathTokens = [];
-        for (let j = i + 1; j < tokens.length; j++) {
-          if (branchIndicators.includes(tokens[j]) || branches.includes(tokens[j])) {
-            break;
-          }
-          pathTokens.push(tokens[j]);
-        }
-        if (pathTokens.length > 0) {
-          subdirectory = pathTokens.join('/');
-          if (!subdirectory.startsWith('/')) {
-            subdirectory = '/' + subdirectory;
-          }
-          break;
-        }
-      }
-    }
-  }
-  
-  // Determine control and experimental branches
-  let controlBranch = branches[0] || 'main';
-  let experimentalBranch = branches[1] || branches[0] || 'stage';
-  
-  // If 'main' is mentioned, it's likely the control
-  if (branches.includes('main')) {
-    controlBranch = 'main';
-    experimentalBranch = branches.find(b => b !== 'main') || 'stage';
-  }
-  
-  return {
-    controlBranch,
-    experimentalBranch,
-    subdirectory: subdirectory || '/'
-  };
-}
 
 // Example natural language patterns
 const examples = [
-  "compare main branch with feature-xyz at /docs/library/kitchen-sink/comparison-table-v2",
-  "check visual differences between main and stage for /express/templates",
-  "test main vs experimental-branch on page /docs/library",
-  "show me the difference between stage and prod branches for /express",
-  "visual regression main against feature-123 path /docs"
+  'compare main branch with feature-xyz at /docs/library/kitchen-sink/comparison-table-v2',
+  'check visual differences between main and stage for /express/templates',
+  'test main vs experimental-branch on page /docs/library',
+  'show me the difference between stage and prod branches for /express',
+  'visual regression main against feature-123 path /docs',
 ];
 
 program
@@ -171,12 +99,22 @@ program
     
     console.log(chalk.gray(`\n🤖 Parsing: "${query}"\n`));
     
-    const parsed = parseNaturalLanguage(query);
+    const parsed = parseVisualRegressionQuery(query);
+    const suggestions = suggestCorrections(parsed, query);
     
     console.log(chalk.cyan('Understood:'));
     console.log(`  Control Branch: ${chalk.bold(parsed.controlBranch)}`);
     console.log(`  Experimental Branch: ${chalk.bold(parsed.experimentalBranch)}`);
-    console.log(`  Subdirectory: ${chalk.bold(parsed.subdirectory)}\n`);
+    console.log(`  Subdirectory: ${chalk.bold(parsed.subdirectory)}`);
+    console.log(`  Confidence: ${chalk.bold(parsed.confidence + '%')}\n`);
+    
+    if (suggestions.length > 0) {
+      console.log(chalk.yellow('Suggestions:'));
+      suggestions.forEach((suggestion) => {
+        console.log(chalk.gray(`  • ${suggestion}`));
+      });
+      console.log('');
+    }
     
     const spinner = ora('Starting visual regression test...').start();
     

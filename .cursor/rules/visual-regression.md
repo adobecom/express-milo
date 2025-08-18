@@ -4,11 +4,22 @@
 
 ## Available Commands
 
-You can help users run visual regression tests using natural language. The tool is located at `tools/visual-regression/` and provides both CLI and natural language interfaces. It uses the aem.live domain for testing branches.
+You can help users run visual regression tests using both CLI and direct API. The tool is located at `tools/visual-regression/` and uses the aem.live domain for testing branches.
 
-### Natural Language Interface
+### Recommended: Direct API (Best for Cursor AI)
 
-When users ask for visual comparisons, you can execute:
+When users ask for visual comparisons, use the simple API:
+
+```bash
+cd tools/visual-regression && node cursor-api.js <control-branch> <experimental-branch> <path>
+```
+
+Example:
+```bash
+cd tools/visual-regression && node cursor-api.js main feature-xyz /express/templates
+```
+
+### Alternative: Natural Language Interface
 
 ```bash
 cd tools/visual-regression && npx visual-compare nl "compare main and feature-branch for /express/templates"
