@@ -790,6 +790,16 @@ function setupAllEventHandlers(elements) {
   requestIdleCallback(() => {
     const realSocialIcons = createSocialIcons();
     socialIcons.innerHTML = realSocialIcons.innerHTML;
+
+    // Re-attach event listeners after HTML is copied
+    socialIcons.querySelectorAll('[data-href]').forEach((link) => {
+      link.addEventListener('click', openPopup);
+    });
+
+    const copyButton = socialIcons.querySelector('#copy-to-clipboard');
+    if (copyButton) {
+      copyButton.addEventListener('click', () => copyToClipboard(copyButton, 'Copied to clipboard'));
+    }
   });
 }
 
