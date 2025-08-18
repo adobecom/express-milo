@@ -3,6 +3,16 @@ import { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag;
 
+// Constants
+const PLAN_DEFAULTS = {
+  FIRST_VISIBLE_PLAN: 0,
+  SECOND_VISIBLE_PLAN: 1,
+};
+
+const TIMING = {
+  ARIA_ANNOUNCEMENT_CLEAR: 100,
+};
+
 export async function initComparisonTableState() {
   const utils = await import(`${getLibs()}/utils/utils.js`);
   createTag = utils.createTag;
@@ -11,7 +21,7 @@ export async function initComparisonTableState() {
 
 export class ComparisonTableState {
   constructor(ariaLiveRegion) {
-    this.visiblePlans = [0, 1];
+    this.visiblePlans = [PLAN_DEFAULTS.FIRST_VISIBLE_PLAN, PLAN_DEFAULTS.SECOND_VISIBLE_PLAN];
     this.selectedPlans = new Map();
     this.planSelectors = [];
     this.ariaLiveRegion = ariaLiveRegion;
@@ -67,8 +77,8 @@ export class ComparisonTableState {
         if (isOpen) {
           const visibleOptions = Array.from(choices.querySelectorAll('.plan-selector-choice:not(.invisible-content)'));
           const currentIndex = visibleOptions.findIndex((opt) => opt.classList.contains('focused'));
-          const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
-          const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+          const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
+          const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN ? currentIndex - 1 : visibleOptions.length - 1;
           switch (e.key) {
             case 'ArrowDown':
               e.preventDefault();
@@ -95,10 +105,9 @@ export class ComparisonTableState {
                 visibleOptions[nextIndex].focus();
               } else {
                 // Tab - go forwards (lower index -> higher index)
-
                 visibleOptions.forEach((opt) => opt.classList.remove('focused'));
-                visibleOptions[prevIndex].classList.add('focused');
-                visibleOptions[prevIndex].focus();
+                visibleOptions[nextIndex].classList.add('focused');
+                visibleOptions[nextIndex].focus();
               }
               break;
             case 'Escape':
@@ -135,13 +144,13 @@ export class ComparisonTableState {
 
             if (e.shiftKey) {
               // Shift+Tab - go backwards (higher index -> lower index)
-              const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : 0;
+              const nextIndex = currentIndex < visibleOptions.length - 1 ? currentIndex + 1 : PLAN_DEFAULTS.FIRST_VISIBLE_PLAN;
               visibleOptions.forEach((opt) => opt.classList.remove('focused'));
               visibleOptions[nextIndex].classList.add('focused');
               visibleOptions[nextIndex].focus();
             } else {
               // Tab - go forwards (lower index -> higher index)
-              const prevIndex = currentIndex > 0 ? currentIndex - 1 : visibleOptions.length - 1;
+              const prevIndex = currentIndex > PLAN_DEFAULTS.FIRST_VISIBLE_PLAN ? currentIndex - 1 : visibleOptions.length - 1;
               visibleOptions.forEach((opt) => opt.classList.remove('focused'));
               visibleOptions[prevIndex].classList.add('focused');
               visibleOptions[prevIndex].focus();
@@ -155,7 +164,7 @@ export class ComparisonTableState {
         const planCell = selector.closest('.plan-cell');
         planCell.classList.toggle('invisible-content', 0);
         const visibleIndex = this.visiblePlans.indexOf(index);
-        if (visibleIndex === 0) {
+        if (visibleIndex === PLAN_DEFAULTS.FIRST_VISIBLE_PLAN) {
           planCell.classList.add('left-plan');
           planCell.classList.remove('right-plan');
         } else {
@@ -257,7 +266,7 @@ export class ComparisonTableState {
     newHeader.classList.toggle('invisible-content');
 
     // Update positioning classes
-    if (visiblePlanIndex === 0) {
+    if (visiblePlanIndex === PLAN_DEFAULTS.FIRST_VISIBLE_PLAN) {
       // First visible position (left)
       oldHeader.classList.remove('left-plan');
       newHeader.classList.add('left-plan');
@@ -279,14 +288,14 @@ export class ComparisonTableState {
 
     // Announce the plan change to screen readers
     if (this.ariaLiveRegion) {
-      const position = visiblePlanIndex === 0 ? 'left' : 'right';
+      const position = visiblePlanIndex === PLAN_DEFAULTS.FIRST_VISIBLE_PLAN ? 'left' : 'right';
       const announcement = `Changed ${position} plan from ${oldPlanName} to ${newPlanName}`;
       this.ariaLiveRegion.textContent = announcement;
 
       // Clear the announcement after a short delay to prepare for next announcement
       setTimeout(() => {
         this.ariaLiveRegion.textContent = '';
-      }, 100);
+      }, TIMING.ARIA_ANNOUNCEMENT_CLEAR);
     }
     adjustElementPosition();
   }
