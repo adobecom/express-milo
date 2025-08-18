@@ -312,7 +312,10 @@ function updateActiveTOCLink(toc) {
 
   if (!headers.length || !tocLinks.length) return;
 
-  const offset = 100; // Offset to trigger active state
+  // Get TOC title position to use as the offset for active state
+  const tocTitle = toc.querySelector('.toc-title');
+  const tocTitleRect = tocTitle ? tocTitle.getBoundingClientRect() : toc.getBoundingClientRect();
+  const offset = tocTitleRect.top + 20; // Small buffer for better UX
 
   let activeHeader = null;
   let minDistance = Infinity;
