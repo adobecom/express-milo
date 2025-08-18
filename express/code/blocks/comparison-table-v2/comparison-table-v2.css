@@ -251,6 +251,7 @@ main .section .comparison-table-v2 p {
     align-items: center;
     min-height: var(--plan-cell-height);
     padding-bottom: 30px;
+    -webkit-tap-highlight-color: transparent;
 
 }
 
@@ -311,7 +312,7 @@ main .section .comparison-table-v2 p {
     outline: 4px solid var(--indigo-400, #C0C9FF);
 }
 
-.comparison-table-v2 .sticky-header .plan-cell-wrapper:focus {
+.comparison-table-v2 .sticky-header .plan-cell-wrapper:focus-visible {
     outline: 2px solid var(--Background-Accent-key-focus, #4046CA);
     outline-offset: 2px;
 }
@@ -1010,6 +1011,7 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
          padding-top: var(--spacing-300);
         padding-bottom: var(--spacing-300); 
         pointer-events: none;
+
     }
 
     .comparison-table-v2 .sticky-header .plan-cell-wrapper:focus {
