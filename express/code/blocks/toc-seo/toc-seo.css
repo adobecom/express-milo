@@ -129,16 +129,6 @@ main .toc-content a:hover {
   font-weight: 700;
 }
 
-main .toc-content a:hover::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background-color: var(--color-light-gray)
-}
-
 /* Active state for TOC links */
 main .toc-content a.active {
   font-weight: 700;
