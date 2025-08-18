@@ -18,10 +18,10 @@ class VisualRegression {
   constructor(options = {}) {
     this.outputDir = options.outputDir || path.join(__dirname, 'output');
     this.baseUrl = 'https://{branch}--express-milo--adobecom.aem.live';
-    this.pageTimeout = options.pageTimeout || 60000; // 60 seconds
-    this.waitForBlocks = options.waitForBlocks || 5000; // 5 seconds
-    this.waitForImages = options.waitForImages || 10000; // 10 seconds
-    this.finalWait = options.finalWait || 3000; // 3 seconds
+    this.pageTimeout = options.pageTimeout || 30000; // 30 seconds (reduced)
+    this.waitForBlocks = options.waitForBlocks || 2000; // 2 seconds (reduced)
+    this.waitForImages = options.waitForImages || 5000; // 5 seconds (reduced)
+    this.finalWait = options.finalWait || 1000; // 1 second (reduced)
   }
 
   async init() {
@@ -179,9 +179,13 @@ class VisualRegression {
   async compare(controlBranch, experimentalBranch, subdirectory) {
     await this.init();
     
-    console.log('📸 Capturing screenshots...');
-    const controlScreenshots = await this.captureScreenshots(controlBranch, subdirectory);
-    const experimentalScreenshots = await this.captureScreenshots(experimentalBranch, subdirectory);
+    console.log('📸 Capturing screenshots in parallel...');
+    
+    // Run both branches concurrently
+    const [controlScreenshots, experimentalScreenshots] = await Promise.all([
+      this.captureScreenshots(controlBranch, subdirectory),
+      this.captureScreenshots(experimentalBranch, subdirectory),
+    ]);
     
     const results = [];
     

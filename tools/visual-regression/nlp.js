@@ -8,6 +8,15 @@ export function parseVisualRegressionQuery(input) {
   // Common branch names and patterns
   const commonBranches = ['main', 'stage', 'prod', 'production', 'master', 'develop', 'dev'];
   
+  // Parse timing options
+  let timing = 'fast'; // default
+  if (text.includes('slow') || text.includes('heavy') || text.includes('complex')) {
+    timing = 'slow';
+  }
+  if (text.includes('fast') || text.includes('quick')) {
+    timing = 'fast';
+  }
+  
   // Extract quoted strings first (these are likely exact parameters)
   const quotedStrings = text.match(/"([^"]+)"|'([^']+)'/g) || [];
   const quotes = quotedStrings.map(q => q.slice(1, -1)); // remove quotes
@@ -121,6 +130,7 @@ export function parseVisualRegressionQuery(input) {
     controlBranch: controlBranch || 'main',
     experimentalBranch: experimentalBranch || 'stage',
     subdirectory: subdirectory || '/express',
+    timing,
     confidence: calculateConfidence(text, controlBranch, experimentalBranch, subdirectory)
   };
 }

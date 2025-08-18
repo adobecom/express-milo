@@ -106,6 +106,7 @@ program
     console.log(`  Control Branch: ${chalk.bold(parsed.controlBranch)}`);
     console.log(`  Experimental Branch: ${chalk.bold(parsed.experimentalBranch)}`);
     console.log(`  Subdirectory: ${chalk.bold(parsed.subdirectory)}`);
+    console.log(`  Timing: ${chalk.bold(parsed.timing)}`);
     console.log(`  Confidence: ${chalk.bold(parsed.confidence + '%')}\n`);
     
     if (suggestions.length > 0) {
@@ -119,15 +120,25 @@ program
     const spinner = ora('Starting visual regression test...').start();
     
     try {
-      const vr = new VisualRegression({
-        pageTimeout: parseInt(options.timeout),
-        waitForBlocks: parseInt(options.wait),
-        finalWait: parseInt(options.finalWait)
-      });
+      // Configure timing based on parsed options
+      const vrOptions = {
+        pageTimeout: parseInt(options.timeout, 10),
+        waitForBlocks: parseInt(options.wait, 10),
+        finalWait: parseInt(options.finalWait, 10),
+      };
+      
+      if (parsed.timing === 'slow') {
+        vrOptions.pageTimeout = 60000; // 60s
+        vrOptions.waitForBlocks = 5000; // 5s
+        vrOptions.waitForImages = 10000; // 10s
+        vrOptions.finalWait = 3000; // 3s
+      }
+      
+      const vr = new VisualRegression(vrOptions);
       const results = await vr.compare(
         parsed.controlBranch,
         parsed.experimentalBranch,
-        parsed.subdirectory
+        parsed.subdirectory,
       );
       
       spinner.succeed('Screenshots captured and compared!');

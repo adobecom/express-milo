@@ -11,13 +11,27 @@ You can help users run visual regression tests using both CLI and direct API. Th
 When users ask for visual comparisons, use the simple API:
 
 ```bash
-cd tools/visual-regression && node cursor-api.js <control-branch> <experimental-branch> <path>
+cd tools/visual-regression && node cursor-api.js <control-branch> <experimental-branch> <path> [options]
 ```
 
-Example:
+Examples:
 ```bash
+# Fast timing (default)
 cd tools/visual-regression && node cursor-api.js main feature-xyz /express/templates
+
+# Slow timing for heavy pages
+cd tools/visual-regression && node cursor-api.js main feature-xyz /express/templates --slow
+
+# Custom timeout
+cd tools/visual-regression && node cursor-api.js main feature-xyz /express/templates --timeout=45000
 ```
+
+**Timing Options:**
+- `--fast`: Quick timing (default) - 30s timeout, 2s wait
+- `--slow`: Slow timing for heavy pages - 60s timeout, 5s wait  
+- `--timeout=<ms>`: Custom page timeout
+- `--wait=<ms>`: Custom block wait time
+- `--open`: Open report in browser
 
 ### Alternative: Natural Language Interface
 
@@ -36,6 +50,22 @@ cd tools/visual-regression && npx visual-compare nl "compare main and feature-br
    - "Compare branches for /docs/library/kitchen-sink/comparison-table-v2"
    - "Visual test /express/templates page"
    - "Check /express for regressions"
+
+3. **With Timing Control**:
+   - "Compare main vs feature for /express using slow timing" → Use `--slow`
+   - "Quick visual test of main vs stage" → Use `--fast` (default)
+   - "Heavy page comparison" → Use `--slow`
+
+### Detecting Timing Needs
+
+Use `--slow` when user mentions:
+- "heavy pages", "complex pages", "slow loading"
+- "lots of content", "many components"
+- "timeout issues", "blank screenshots"
+
+Use `--fast` (default) for:
+- "quick test", "fast comparison"
+- Simple pages, basic testing
 
 ### Tool Features
 
