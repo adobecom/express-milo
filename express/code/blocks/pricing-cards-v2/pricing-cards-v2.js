@@ -68,12 +68,39 @@ function suppressOfferEyebrow(specialPromo) {
 }
 
 async function getPriceElementSuffix(placeholderArr, response) {
-  const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
-  const placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
+  try {
+    if (!placeholderArr || !Array.isArray(placeholderArr) || !response) {
+      console.warn('Invalid parameters passed to getPriceElementSuffix');
+      return '';
+    }
 
-  return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat
-    ? ''
-    : placeholdersResponse[i] || '')).join(' ');
+    const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
+
+    let placeholdersResponse;
+    try {
+      placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
+    } catch (placeholderError) {
+      console.error('Failed to replace placeholders:', placeholderError);
+      window.lana?.log('Placeholder replacement error', {
+        placeholders: cleanPlaceholderArr,
+        error: placeholderError.message,
+      });
+      return '';
+    }
+
+    if (!placeholdersResponse || !Array.isArray(placeholdersResponse)) {
+      console.warn('Failed to get placeholders response');
+      return '';
+    }
+
+    return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat
+      ? ''
+      : placeholdersResponse[i] || '')).join(' ');
+  } catch (error) {
+    console.error('Error in getPriceElementSuffix:', error);
+    window.lana?.log('getPriceElementSuffix error', { error: error.message });
+    return '';
+  }
 }
 
 // eslint-disable-next-line default-param-last
@@ -212,43 +239,77 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
 }
 
 async function handlePrice(pricingArea, specialPromo, groupID) {
-  const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
+  try {
+    const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
 
-  const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
-  if (!pricingBtnContainer) return;
-  if (!priceEl) return;
+    const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
+    if (!pricingBtnContainer) {
+      console.warn('Pricing button container not found');
+      return;
+    }
+    if (!priceEl) {
+      console.warn('Price element with token not found');
+      return;
+    }
 
-  const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
-  const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
+    const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
+    const placeholderArr = pricingSuffixTextElem?.textContent?.split(' ') || [];
 
-  const priceRow = createTag('div', { class: 'pricing-row' });
-  const price = createTag('span', { class: 'pricing-price' });
-  const basePrice = createTag('span', { class: 'pricing-base-price' });
-  const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
+    const priceRow = createTag('div', { class: 'pricing-row' });
+    const price = createTag('span', { class: 'pricing-price' });
+    const basePrice = createTag('span', { class: 'pricing-base-price' });
+    const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
 
-  const response = await fetchPlanOnePlans(priceEl?.href);
-  if (response.term && groupID) {
-    BlockMediator.set(groupID, response.term);
+    let response;
+    try {
+      response = await fetchPlanOnePlans(priceEl?.href);
+      if (!response) {
+        throw new Error('Empty response from pricing API');
+      }
+    } catch (pricingError) {
+      console.error('Failed to fetch pricing data:', pricingError);
+      window.lana?.log('Pricing API failure', {
+        href: priceEl?.href,
+        error: pricingError.message,
+      });
+
+      // Fallback: Show basic pricing structure without API data
+      price.textContent = 'Price unavailable';
+      priceSuffix.textContent = 'Please try again later';
+      priceRow.append(price, priceSuffix);
+      pricingArea.prepend(priceRow);
+      priceEl?.parentNode?.remove();
+      pricingBtnContainer?.remove();
+      pricingSuffixTextElem?.remove();
+      return;
+    }
+
+    if (response.term && groupID) {
+      BlockMediator.set(groupID, response.term);
+    }
+
+    const priceSuffixTextContent = await getPriceElementSuffix(
+      placeholderArr,
+      response,
+    );
+
+    const isPremiumCard = response.ooAvailable || false;
+    const savePercentElem = pricingArea.querySelector('.card-offer');
+    handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
+    await handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+    handleSavePercentage(savePercentElem, isPremiumCard, response);
+    handleSpecialPromo(specialPromo, isPremiumCard, response);
+    handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
+    handlePriceToken(pricingArea, BASE_PRICING_TOKEN, response.formattedBP);
+    priceEl?.parentNode?.remove();
+    if (!priceRow) return;
+    pricingArea.prepend(priceRow);
+    pricingBtnContainer?.remove();
+    pricingSuffixTextElem?.remove();
+  } catch (error) {
+    console.error('Error in handlePrice:', error);
+    window.lana?.log('handlePrice error', { error: error.message });
   }
-
-  const priceSuffixTextContent = await getPriceElementSuffix(
-    placeholderArr,
-    response,
-  );
-
-  const isPremiumCard = response.ooAvailable || false;
-  const savePercentElem = pricingArea.querySelector('.card-offer');
-  handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-  handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
-  handleSavePercentage(savePercentElem, isPremiumCard, response);
-  handleSpecialPromo(specialPromo, isPremiumCard, response);
-  handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
-  handlePriceToken(pricingArea, BASE_PRICING_TOKEN, response.formattedBP);
-  priceEl?.parentNode?.remove();
-  if (!priceRow) return;
-  pricingArea.prepend(priceRow);
-  pricingBtnContainer?.remove();
-  pricingSuffixTextElem?.remove();
 }
 
 async function createPricingSection(
@@ -505,47 +566,71 @@ export default async function init(el) {
   el.append(cardFooter);
   el.prepend(cardsContainer);
 
-  const observer = new IntersectionObserver((entries) => {
+  // Initialize observers array for cleanup tracking
+  const observers = [];
+
+  const intersectionObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        equalizeHeights(el);
-        observer.unobserve(entry.target);
+        try {
+          equalizeHeights(el);
+          intersectionObserver.unobserve(entry.target);
+        } catch (error) {
+          console.error('Error in intersection observer:', error);
+          window.lana?.log('IntersectionObserver error', { error: error.message });
+        }
       }
     });
   });
 
-  document.querySelectorAll('.pricing-cards-v2 .card').forEach((column) => {
-    observer.observe(column);
-  });
+  // Store observer for cleanup
+  observers.push(intersectionObserver);
+
+  const cardElements = el.querySelectorAll('.card');
+  if (cardElements.length > 0) {
+    cardElements.forEach((card) => {
+      intersectionObserver.observe(card);
+    });
+  } else {
+    console.warn('No cards found for intersection observer');
+  }
 
   const parentSection = el.closest('.section');
   if (parentSection) {
     // MutationObserver for display changes
     const mutationObserver = new MutationObserver(debounce((mutations) => {
-      let displayChanged = false;
+      try {
+        let displayChanged = false;
 
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes'
-            && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
-          const computedStyle = window.getComputedStyle(parentSection);
-          const currentDisplay = computedStyle.display;
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes'
+              && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+            const computedStyle = window.getComputedStyle(parentSection);
+            const currentDisplay = computedStyle.display;
 
-          if (!parentSection.dataset.prevDisplay) {
-            parentSection.dataset.prevDisplay = currentDisplay;
+            if (!parentSection.dataset.prevDisplay) {
+              parentSection.dataset.prevDisplay = currentDisplay;
+            }
+
+            if (parentSection.dataset.prevDisplay !== currentDisplay) {
+              displayChanged = true;
+              parentSection.dataset.prevDisplay = currentDisplay;
+            }
           }
+        });
 
-          if (parentSection.dataset.prevDisplay !== currentDisplay) {
-            displayChanged = true;
-            parentSection.dataset.prevDisplay = currentDisplay;
-          }
+        if (displayChanged && parentSection.offsetHeight > 0) {
+          console.log('Section display changed, equalizing heights');
+          equalizeHeights(el);
         }
-      });
-
-      if (displayChanged && parentSection.offsetHeight > 0) {
-        console.log('Section display changed, equalizing heights');
-        equalizeHeights(el);
+      } catch (error) {
+        console.error('Error in mutation observer:', error);
+        window.lana?.log('MutationObserver error', { error: error.message });
       }
     }, 100));
+
+    // Store observer for cleanup
+    observers.push(mutationObserver);
 
     mutationObserver.observe(parentSection, {
       attributes: true,
@@ -553,21 +638,48 @@ export default async function init(el) {
       childList: false,
       subtree: false,
     });
-
-    // Store observers for cleanup
-    el.sectionMutationObserver = mutationObserver;
-
-    // Cleanup function
-    el.cleanupObservers = () => {
-      if (el.sectionMutationObserver) {
-        el.sectionMutationObserver.disconnect();
-        el.sectionMutationObserver = null;
-      }
-    };
   }
-  window.addEventListener('resize', debounce(() => {
-    equalizeHeights(el);
-  }, 100));
+
+  // Resize handler with cleanup tracking
+  const resizeHandler = debounce(() => {
+    try {
+      equalizeHeights(el);
+    } catch (error) {
+      console.error('Error in resize handler:', error);
+      window.lana?.log('Resize handler error', { error: error.message });
+    }
+  }, 100);
+
+  window.addEventListener('resize', resizeHandler);
+
+  // Enhanced cleanup function
+  el.cleanupObservers = () => {
+    try {
+      // Disconnect all stored observers
+      observers.forEach((observer) => {
+        if (observer && typeof observer.disconnect === 'function') {
+          observer.disconnect();
+        }
+      });
+
+      // Clear observers array
+      observers.length = 0;
+
+      // Remove resize handler
+      window.removeEventListener('resize', resizeHandler);
+
+      // Clear stored references
+      el.sectionMutationObserver = null;
+
+      console.log('All observers cleaned up successfully');
+    } catch (error) {
+      console.error('Error during observer cleanup:', error);
+      window.lana?.log('Observer cleanup error', { error: error.message });
+    }
+  };
+
+  // Auto cleanup on page unload
+  window.addEventListener('beforeunload', el.cleanupObservers, { once: true });
 
   tagFreePlan(cardsContainer);
   el.classList.add('loaded');
