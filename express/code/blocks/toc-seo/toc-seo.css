@@ -13,7 +13,7 @@
 }
 
 /* Desktop fixed positioning */
-.toc.toc-container.toc-desktop-fixed {
+.toc.toc-container.toc-desktop {
   position: fixed;
   background: transparent;
   top: var(--toc-top-position, 200px);
@@ -211,7 +211,7 @@ main .toc-content a:focus:not(:focus-visible) {
     position: static;
     cursor: pointer;
     max-width: var(--ax-grid-7-col-width);
-    margin: 40px auto 0;
+    margin: var(--spacing-600) auto 0;
   }
   
   .toc-container .toc-content {
@@ -264,3 +264,12 @@ main .toc-content a:focus:not(:focus-visible) {
     margin-top: var(--spacing-300);
   }
 }
+
+@media (min-width: 1680px) {
+  .toc.toc-container.toc-desktop {
+    /* Position TOC dynamically but ensure minimum safe distance from viewport edge */
+    left: max(var(--spacing-200), calc((100vw - var(--ax-grid-7-col-width)) / 2 - var(--ax-grid-3-col-width) - var(--spacing-600) - var(--ax-grid-gutter)));
+  }
+}
+
+
