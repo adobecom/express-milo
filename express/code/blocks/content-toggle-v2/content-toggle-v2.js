@@ -1,19 +1,32 @@
 import { readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import createCarousel from '../../scripts/widgets/carousel.js';
 
-function getDefatultToggleIndex(block) {
+function getTabIndexFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   const tabParam = urlParams.get('tab');
-  
   if (tabParam) {
-    const buttons = block.closest('main').querySelectorAll('.content-toggle-button');
-    for (let i = 0; i < buttons.length; i++) {
-      if (buttons[i].innerText.toLowerCase().replace(/\s+/g, '-') === tabParam.toLowerCase()) {
-        return i;
-      }
+    const index = parseInt(tabParam, 10);
+    if (!Number.isNaN(index) && index >= 0) {
+      return index;
     }
   }
-  
+  return null;
+}
+
+function updateURLParameter(index) {
+  const url = new URL(window.location);
+  url.searchParams.set('tab', index);
+  window.history.replaceState({}, '', url);
+}
+
+function getDefatultToggleIndex(block) {
+  // First check URL parameter
+  const urlIndex = getTabIndexFromURL();
+  if (urlIndex !== null) {
+    return urlIndex;
+  }
+
+  // Fall back to data attribute
   const enclosingMain = block.closest('main');
   const toggleDefaultOption = enclosingMain.querySelector('[data-toggle-default]');
   const defaultValue = toggleDefaultOption?.dataset.toggleDefault || toggleDefaultOption?.getAttribute('data-toggle-default');
@@ -37,6 +50,7 @@ function initButton(block, buttons, sections, index) {
 
     if (activeButton !== buttons[index]) {
       setActiveButton(index);
+      updateURLParameter(index);
       sections.forEach((section) => {
         if (buttons[index].innerText.toLowerCase() === section.dataset.toggle.toLowerCase()) {
           section.classList.remove('display-none');
@@ -53,7 +67,7 @@ function initButton(block, buttons, sections, index) {
       if (!(window.scrollY < offsetPosition + 1 && window.scrollY > offsetPosition - 1)) {
         window.scrollTo({
           top: offsetPosition,
-          behavior: 'smooth',
+          behavior: 'instant',
         });
       }
     }

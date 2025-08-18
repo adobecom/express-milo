@@ -143,8 +143,13 @@ body.no-desktop-brand-header header {
 }
 
 .ax-marquee p > a {
-    color: var(--color-black);
-    text-decoration: underline;
+    color: var(--color-background-accent-default);
+    text-decoration: none;
+}
+
+.ax-marquee p > a:is(:hover, :focus) {
+    color: var(--color-background-accent-hover);
+    text-decoration: none;
 }
 
 .ax-marquee p.button-container {
