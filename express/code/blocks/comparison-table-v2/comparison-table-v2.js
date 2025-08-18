@@ -4,6 +4,36 @@ import handleTooltip, { adjustElementPosition, getTooltipMatch } from '../../scr
 
 let createTag;
 
+// Constants
+const BREAKPOINTS = {
+  DESKTOP: '(min-width: 1024px)',
+  TABLET: '(min-width: 768px)',
+};
+
+const TIMING = {
+  STICKY_TRANSITION: 100,
+  ARIA_ANNOUNCEMENT_CLEAR: 100,
+};
+
+const DROPDOWN = {
+  FIRST_PLAN_INDEX: 0,
+  SECOND_PLAN_INDEX: 1,
+  MIN_COLUMNS_FOR_SELECTOR: 2,
+};
+
+const OBSERVER_CONFIG = {
+  HEADER_ROOT_MARGIN: '-1px 0px 0px 0px',
+  BLOCK_ROOT_MARGIN: '0px 0px -1px 0px',
+  THRESHOLD: [0, 1],
+};
+
+const POSITIONING = {
+  SENTINEL_TOP: '0px',
+  SENTINEL_HEIGHT: '1px',
+  ARIA_LIVE_LEFT: '-10000px',
+  ARIA_LIVE_SIZE: '1px',
+};
+
 const TOOLTIP_PATTERN = /\[\[([^]+)\]\]([^]+)\[\[\/([^]+)\]\]/g;
 
 function handleCellIcons(cell) {
@@ -397,13 +427,13 @@ function createStickyHeader(headerGroup, comparisonBlock) {
       const planCellWrapper = createTag('div', { class: 'plan-cell-wrapper' });
 
       // Add two-columns class if there are only 2 columns
-      if (headers.length === 2) {
+      if (headers.length === DROPDOWN.MIN_COLUMNS_FOR_SELECTOR) {
         planCellWrapper.classList.add('two-columns');
       }
 
       // Only set tabindex and interactive attributes on mobile when there are more than 2 columns
-      const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
-      const hasMoreThanTwoColumns = headers.length > 2;
+      const isDesktop = window.matchMedia(BREAKPOINTS.DESKTOP).matches;
+      const hasMoreThanTwoColumns = headers.length > DROPDOWN.MIN_COLUMNS_FOR_SELECTOR;
       if (!isDesktop && hasMoreThanTwoColumns) {
         planCellWrapper.setAttribute('tabindex', '0');
         planCellWrapper.setAttribute('role', 'button');
@@ -426,7 +456,7 @@ function createStickyHeader(headerGroup, comparisonBlock) {
       }
 
       // Only create plan selector if there are more than 2 columns
-      if (headers.length > 2) {
+      if (headers.length > DROPDOWN.MIN_COLUMNS_FOR_SELECTOR) {
         createPlanSelector(headers, cellIndex - 1, planCellWrapper);
       }
 
@@ -492,7 +522,7 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
             stickyHeader.classList.add('gnav-offset');
             stickyHeader.classList.remove('initial');
             isSticky = true;
-          }, 100);
+          }, TIMING.STICKY_TRANSITION);
         } else if (entry.isIntersecting && isSticky) {
           stickyHeader.classList.add('initial');
           setTimeout(() => {
@@ -501,13 +531,13 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
             placeholder.style.display = 'none';
             stickyHeader.classList.remove('gnav-offset');
             isSticky = false;
-          }, 100);
+          }, TIMING.STICKY_TRANSITION);
         }
       });
     },
     {
-      rootMargin: '-1px 0px 0px 0px',
-      threshold: [0, 1],
+      rootMargin: OBSERVER_CONFIG.HEADER_ROOT_MARGIN,
+      threshold: OBSERVER_CONFIG.THRESHOLD,
     },
   );
 
@@ -526,16 +556,16 @@ function initStickyBehavior(stickyHeader, comparisonBlock) {
     },
     {
       // Trigger when comparison block is about to leave viewport at the bottom
-      rootMargin: '0px 0px -1px 0px',
-      threshold: [0, 1],
+      rootMargin: OBSERVER_CONFIG.BLOCK_ROOT_MARGIN,
+      threshold: OBSERVER_CONFIG.THRESHOLD,
     },
   );
 
   // Create sentinel element to track header position
   const headerSentinel = document.createElement('div');
   headerSentinel.style.position = 'absolute';
-  headerSentinel.style.top = '0px';
-  headerSentinel.style.height = '1px';
+  headerSentinel.style.top = POSITIONING.SENTINEL_TOP;
+  headerSentinel.style.height = POSITIONING.SENTINEL_HEIGHT;
   headerSentinel.style.width = '100%';
   headerSentinel.style.pointerEvents = 'none';
   comparisonBlock.style.position = 'relative';
@@ -611,9 +641,9 @@ export default async function decorate(comparisonBlock) {
     'aria-atomic': 'true',
   });
   ariaLiveRegion.style.position = 'absolute';
-  ariaLiveRegion.style.left = '-10000px';
-  ariaLiveRegion.style.width = '1px';
-  ariaLiveRegion.style.height = '1px';
+  ariaLiveRegion.style.left = POSITIONING.ARIA_LIVE_LEFT;
+  ariaLiveRegion.style.width = POSITIONING.ARIA_LIVE_SIZE;
+  ariaLiveRegion.style.height = POSITIONING.ARIA_LIVE_SIZE;
   ariaLiveRegion.style.overflow = 'hidden';
   comparisonBlock.appendChild(ariaLiveRegion);
   const buttons = contentSections[0][1].querySelectorAll('.con-button');
@@ -637,9 +667,9 @@ export default async function decorate(comparisonBlock) {
 
   // Handle tabindex updates on window resize
   const updateTabindexOnResize = () => {
-    const isDesktop = window.matchMedia('(min-width: 1280px)').matches;
+    const isDesktop = window.matchMedia(BREAKPOINTS.DESKTOP).matches;
     const planCellWrappers = comparisonBlock.querySelectorAll('.plan-cell-wrapper');
-    const hasMoreThanTwoColumns = colTitles.length > 2;
+    const hasMoreThanTwoColumns = colTitles.length > DROPDOWN.MIN_COLUMNS_FOR_SELECTOR;
 
     planCellWrappers.forEach((wrapper, index) => {
       if (isDesktop || !hasMoreThanTwoColumns) {
