@@ -1,5 +1,4 @@
 const templatePromoCarouselBaseModel = {
-  origin: 'discover', // Used to make the free / premium tags not change to icons
   assetType: 'Template', // Special handling for webpage templates (sets empty pages array)
   licensingCategory: '', // Values: "free" | "premium" - determines plan icon display
   'dc:title': {
