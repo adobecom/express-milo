@@ -140,7 +140,7 @@
 
 .section[data-ax-panel][role='tabpanel'].split {
   margin-top: -28px;
-  padding: 48px 20px 32px;
+  padding: 8px 20px 32px;
   align-items: stretch;
   max-width: 966px;
   min-height: 400px;
@@ -175,7 +175,7 @@
   }
   .section[data-ax-panel][role='tabpanel'].split {
     margin-top: -16px;
-    padding: 64px 32px;
+    padding: 10px 32px;
   }
   .section[data-ax-panel][role='tabpanel'].split .mobile-background {
     display: none;
@@ -195,6 +195,6 @@
     padding-bottom: var(--spacing-500);
   }
   .section[data-ax-panel][role='tabpanel'].split {
-    padding: 64px 40px;
+    padding: 24px 40px;
   }
 }
