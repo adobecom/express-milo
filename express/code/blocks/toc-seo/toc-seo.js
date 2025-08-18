@@ -287,6 +287,14 @@ function handleDesktopPositioning(tocElement) {
   position = preventOverlapWithFooter(position, tocElement);
   position = preventScrollPastLinkList(position, tocElement);
 
+  // Apply text bottom boundary constraint
+  const { textBottomBoundary } = tocElement.dataset;
+  if (textBottomBoundary) {
+    const tocHeight = tocElement.offsetHeight;
+    const maxPosition = parseFloat(textBottomBoundary) - tocHeight;
+    position = Math.min(position, maxPosition);
+  }
+
   applyPositionToElement(tocElement, position);
 }
 
@@ -682,6 +690,30 @@ function setupEventHandlers(tocElement) {
   // Single scroll handler with viewport check
   const handleScroll = () => {
     if (window.innerWidth >= 1024) {
+      // Log distance between TOC bottom and last long-form content bottom
+      const longFormSections = document.querySelectorAll('main .section.long-form .content');
+      if (longFormSections.length > 0) {
+        const lastLongFormContent = longFormSections[longFormSections.length - 1];
+        const contentRect = lastLongFormContent.getBoundingClientRect();
+
+        // Get actual computed padding and margin from the element
+        const computedStyle = window.getComputedStyle(lastLongFormContent);
+        const contentPadding = parseFloat(computedStyle.paddingBottom) || 0;
+
+        // Get margin from the last paragraph inside the content
+        const paragraphs = lastLongFormContent.querySelectorAll('p');
+        const lastParagraph = paragraphs[paragraphs.length - 1];
+        const paragraphStyle = lastParagraph ? window.getComputedStyle(lastParagraph) : null;
+        const paragraphMargin = paragraphStyle ? parseFloat(paragraphStyle.marginBottom) || 0 : 0;
+
+        const additionalSpacing = 60; // Additional spacing for visual comfort
+        const textBottom = contentRect.bottom - contentPadding - paragraphMargin
+          - additionalSpacing;
+
+        // Store the boundary for use in positioning
+        tocElement.dataset.textBottomBoundary = textBottom;
+      }
+
       throttledHandleDesktopPositioning();
     } else if (window.innerWidth < 768) {
       // Mobile sticky behavior (below 768px)
