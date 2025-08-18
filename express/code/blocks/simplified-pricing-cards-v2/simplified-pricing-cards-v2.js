@@ -182,49 +182,97 @@ async function createPricingSection(
       const basePrice = createTag('span', { class: 'pricing-base-price' });
       const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
 
-      const response = await fetchPlanOnePlans(priceEl?.href);
-      if (!response) {
-        console.warn('Failed to fetch pricing data');
-        return;
+      let response;
+      let pricingSuccessful = false;
+      
+      try {
+        response = await fetchPlanOnePlans(priceEl?.href);
+        if (!response) {
+          throw new Error('Empty response from pricing API');
+        }
+        pricingSuccessful = true;
+      } catch (pricingError) {
+        console.error('Failed to fetch pricing data:', pricingError);
+        window.lana?.log('Simplified pricing API failure', { 
+          href: priceEl?.href, 
+          error: pricingError.message 
+        });
+        
+        // Fallback: Show basic pricing structure without API data
+        price.textContent = 'Price unavailable';
+        priceSuffix.textContent = 'Please try again later';
+        priceRow.append(price, priceSuffix);
+        pricingArea.prepend(priceRow);
+        priceEl?.parentNode?.remove();
+        pricingSuffixTextElem?.remove();
       }
 
-      const priceSuffixTextContent = await getPriceElementSuffix(
-        placeholderArr,
-        response,
-      );
-      handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-      handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+      if (pricingSuccessful) {
+        // Only process pricing data if API call succeeded
+        try {
+          const priceSuffixTextContent = await getPriceElementSuffix(
+            placeholderArr,
+            response,
+          );
+          handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
+          await handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
 
-      handleTooltip(pricingArea);
-      handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
-      pricingArea.prepend(priceRow);
-      priceEl?.parentNode?.remove();
-      pricingSuffixTextElem?.remove();
+          handleTooltip(pricingArea);
+          handleYear2PricingToken(pricingArea, response.y2p, priceSuffixTextContent);
+          pricingArea.prepend(priceRow);
+          priceEl?.parentNode?.remove();
+          pricingSuffixTextElem?.remove();
+        } catch (processingError) {
+          console.error('Error processing pricing data:', processingError);
+          window.lana?.log('Simplified pricing processing error', { 
+            error: processingError.message 
+          });
+          // Fallback to basic display
+          price.textContent = 'Price processing error';
+          priceRow.append(price);
+          pricingArea.prepend(priceRow);
+        }
+      }
 
       // Clean up any empty paragraph elements
-      pricingArea.querySelectorAll('p').forEach((p) => {
-        if (p.textContent.trim() === '' && p.children.length === 0) {
-          p.remove();
-        }
-      });
+      try {
+        pricingArea.querySelectorAll('p').forEach((p) => {
+          if (p.textContent.trim() === '' && p.children.length === 0) {
+            p.remove();
+          }
+        });
+      } catch (cleanupError) {
+        console.warn('Error during paragraph cleanup:', cleanupError);
+      }
     }
 
-    ctaGroup.classList.add('card-cta-group');
-    ctaGroup.querySelectorAll('a').forEach((a, i) => {
-      a.classList.add('large');
-      if (i === 1) a.classList.add('secondary');
-      if (a.parentNode.tagName.toLowerCase() === 'strong') {
-        a.classList.add('button', 'primary');
-      }
-      formatDynamicCartLink(a);
-      if (a.textContent.includes(SALES_NUMBERS)) {
-        formatSalesPhoneNumber([a], SALES_NUMBERS);
-      }
-      const headerText = header?.querySelector('h2')?.textContent;
-      a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText}`);
-    });
+    // Process CTA group with error handling
+    try {
+      ctaGroup.classList.add('card-cta-group');
+      ctaGroup.querySelectorAll('a').forEach((a, i) => {
+        try {
+          a.classList.add('large');
+          if (i === 1) a.classList.add('secondary');
+          if (a.parentNode.tagName.toLowerCase() === 'strong') {
+            a.classList.add('button', 'primary');
+          }
+          formatDynamicCartLink(a);
+          if (a.textContent.includes(SALES_NUMBERS)) {
+            formatSalesPhoneNumber([a], SALES_NUMBERS);
+          }
+          const headerText = header?.querySelector('h2')?.textContent;
+          a.setAttribute('aria-label', `${a.textContent.trim()} ${headerText || ''}`);
+        } catch (linkError) {
+          console.warn('Error processing CTA link:', linkError);
+        }
+      });
+    } catch (ctaError) {
+      console.error('Error processing CTA group:', ctaError);
+      window.lana?.log('CTA group processing error', { error: ctaError.message });
+    }
   } catch (error) {
     console.error('Error in createPricingSection:', error);
+    window.lana?.log('createPricingSection error', { error: error.message });
   }
 }
 
@@ -428,67 +476,104 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
   rows[rows.length - 1].querySelector('a').classList.add('button', 'compare-all-button');
   cardWrapper.appendChild(rows[rows.length - 1]);
 
+  // Initialize observers array for cleanup tracking
+  const observers = [];
+
   // Setup intersection observer for height equalization
-  const observer = new IntersectionObserver((entries) => {
+  const intersectionObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        equalizeHeights(el);
-        observer.unobserve(entry.target);
-        adjustElementPosition();
-        adjustImageTooltipPosition();
+        try {
+          equalizeHeights(el);
+          intersectionObserver.unobserve(entry.target);
+          adjustElementPosition();
+          adjustImageTooltipPosition();
+        } catch (error) {
+          console.error('Error in simplified intersection observer:', error);
+          window.lana?.log('Simplified IntersectionObserver error', { error: error.message });
+        }
       }
     });
   });
 
-  document.querySelectorAll('.simplified-pricing-cards-v2 .card').forEach((column) => {
-    observer.observe(column);
-  });
+  // Store observer for cleanup
+  observers.push(intersectionObserver);
 
-  // Setup resize handler
-  window.addEventListener('resize', debounce(() => {
-    console.log('resize');
-    equalizeHeights(el);
-  }, RESIZE_DEBOUNCE_MS));
+  const c = el.querySelectorAll('.card');
+  if (c.length > 0) {
+    c.forEach((card) => {
+      intersectionObserver.observe(card);
+    });
+  } else {
+    console.warn('No cards found for simplified intersection observer');
+  }
+
+  // Setup resize handler with cleanup tracking
+  const resizeHandler = debounce(() => {
+    try {
+      console.log('resize');
+      equalizeHeights(el);
+    } catch (error) {
+      console.error('Error in simplified resize handler:', error);
+      window.lana?.log('Simplified resize handler error', { error: error.message });
+    }
+  }, RESIZE_DEBOUNCE_MS);
+  
+  window.addEventListener('resize', resizeHandler);
 
   // Setup observers for parent .section element
   const parentSection = el.closest('.section');
   if (parentSection) {
     // MutationObserver for display changes
     const mutationObserver = new MutationObserver(debounce((mutations) => {
-      let displayChanged = false;
+      try {
+        let displayChanged = false;
 
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes'
-            && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
-          const computedStyle = window.getComputedStyle(parentSection);
-          const currentDisplay = computedStyle.display;
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'attributes'
+              && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+            const computedStyle = window.getComputedStyle(parentSection);
+            const currentDisplay = computedStyle.display;
 
-          if (!parentSection.dataset.prevDisplay) {
-            parentSection.dataset.prevDisplay = currentDisplay;
+            if (!parentSection.dataset.prevDisplay) {
+              parentSection.dataset.prevDisplay = currentDisplay;
+            }
+
+            if (parentSection.dataset.prevDisplay !== currentDisplay) {
+              displayChanged = true;
+              parentSection.dataset.prevDisplay = currentDisplay;
+            }
           }
+        });
 
-          if (parentSection.dataset.prevDisplay !== currentDisplay) {
-            displayChanged = true;
-            parentSection.dataset.prevDisplay = currentDisplay;
-          }
+        if (displayChanged && parentSection.offsetHeight > 0) {
+          console.log('Section display changed, equalizing heights');
+          equalizeHeights(el);
         }
-      });
-
-      if (displayChanged && parentSection.offsetHeight > 0) {
-        console.log('Section display changed, equalizing heights');
-        equalizeHeights(el);
+      } catch (error) {
+        console.error('Error in simplified mutation observer:', error);
+        window.lana?.log('Simplified MutationObserver error', { error: error.message });
       }
     }, RESIZE_DEBOUNCE_MS));
 
     // ResizeObserver for height changes
     const resizeObserver = new ResizeObserver(debounce((entries) => {
-      for (const entry of entries) {
-        if (entry.target === parentSection && entry.contentRect.height > 0) {
-          console.log('Section resized, equalizing heights');
-          equalizeHeights(el);
+      try {
+        for (const entry of entries) {
+          if (entry.target === parentSection && entry.contentRect.height > 0) {
+            console.log('Section resized, equalizing heights');
+            equalizeHeights(el);
+          }
         }
+      } catch (error) {
+        console.error('Error in simplified resize observer:', error);
+        window.lana?.log('Simplified ResizeObserver error', { error: error.message });
       }
     }, RESIZE_DEBOUNCE_MS));
+
+    // Store observers for cleanup
+    observers.push(mutationObserver);
+    observers.push(resizeObserver);
 
     // Start observing
     mutationObserver.observe(parentSection, {
@@ -499,23 +584,37 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
     });
 
     resizeObserver.observe(parentSection);
-
-    // Store observers for cleanup
-    el.sectionMutationObserver = mutationObserver;
-    el.sectionResizeObserver = resizeObserver;
-
-    // Cleanup function
-    el.cleanupObservers = () => {
-      if (el.sectionMutationObserver) {
-        el.sectionMutationObserver.disconnect();
-        el.sectionMutationObserver = null;
-      }
-      if (el.sectionResizeObserver) {
-        el.sectionResizeObserver.disconnect();
-        el.sectionResizeObserver = null;
-      }
-    };
   }
+
+  // Enhanced cleanup function
+  el.cleanupObservers = () => {
+    try {
+      // Disconnect all stored observers
+      observers.forEach((observer) => {
+        if (observer && typeof observer.disconnect === 'function') {
+          observer.disconnect();
+        }
+      });
+      
+      // Clear observers array
+      observers.length = 0;
+      
+      // Remove resize handler
+      window.removeEventListener('resize', resizeHandler);
+      
+      // Clear stored references
+      el.sectionMutationObserver = null;
+      el.sectionResizeObserver = null;
+      
+      console.log('All simplified observers cleaned up successfully');
+    } catch (error) {
+      console.error('Error during simplified observer cleanup:', error);
+      window.lana?.log('Simplified observer cleanup error', { error: error.message });
+    }
+  };
+
+  // Auto cleanup on page unload
+  window.addEventListener('beforeunload', el.cleanupObservers, { once: true });
 }
 
 export default async function init(el) {
