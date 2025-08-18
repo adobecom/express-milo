@@ -147,6 +147,9 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
+.section[data-ax-panel][role='tabpanel'].split .section-background:not(.mobile-background) {
+  display: none;
+}
 
 @media (min-width: 600px) {
   :root {
@@ -160,21 +163,25 @@
   .ax-panels [role='tab'] {
     font-size: var(--body-font-size-l );
   }
-  .ax-panels.split .ax-panels-heading-container h2 {
-    font-size: var(--body-font-size-l);
-  }
   .section[data-ax-panel][role='tabpanel'] {
     margin: var(--ax-panels-fold) var(--ax-grid-margin) var(--spacing-800) var(--ax-grid-margin);
     padding: var(--spacing-800) var(--spacing-500) var(--spacing-700);
   }
-
+  .ax-panels {
+    z-index: 1;
+  }
+  .ax-panels.split .ax-panels-heading-container h2 {
+    font-size: var(--body-font-size-l);
+  }
   .section[data-ax-panel][role='tabpanel'].split {
     margin-top: -16px;
     padding: 64px 32px;
   }
-
-  .ax-panels {
-    z-index: 1;
+  .section[data-ax-panel][role='tabpanel'].split .mobile-background {
+    display: none;
+  }
+  .section[data-ax-panel][role='tabpanel'].split .section-background:not(.mobile-background) {
+    display: block;
   }
 }
 

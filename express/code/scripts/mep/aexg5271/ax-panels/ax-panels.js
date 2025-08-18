@@ -47,13 +47,27 @@ function getDefaultTab(main) {
   return index;
 }
 
-const updateBackground = (main) => {
+const styleBackground = (main) => {
   [...main.querySelectorAll('.section[data-ax-panel]')].forEach((section) => {
     const metadataDiv = section.querySelector(':scope > .section-metadata');
     if (!metadataDiv) return;
     const meta = readBlockConfig(metadataDiv);
     if (Object.keys(meta).some((key) => key.trim().toLowerCase() === 'background-overflow')) {
       section.classList.add('background-overflow');
+    }
+  });
+};
+
+const setMobileBackground = (main) => {
+  [...main.querySelectorAll('.section[data-ax-panel]')].forEach((section) => {
+    const metadataDiv = section.querySelector(':scope > .section-metadata');
+    if (!metadataDiv) return;
+    const meta = readBlockConfig(metadataDiv);
+    const mobileBgKey = Object.keys(meta).find((key) => key.trim().toLowerCase() === 'mobile-background');
+    if (mobileBgKey) {
+      const picture = metadataDiv.querySelector('picture');
+      picture.classList.add('section-background', 'mobile-background');
+      section.prepend(picture);
     }
   });
 };
@@ -127,7 +141,9 @@ export default async function init(el) {
     activateTab(tabs[nextTabIndex]);
   });
 
-  updateBackground(enclosingMain, el);
+  styleBackground(enclosingMain);
+  setMobileBackground(enclosingMain);
+
   const defaultTab = getDefaultTab(enclosingMain, tabs);
   if (!defaultTab) return;
   activateTab(tabs[defaultTab]);
