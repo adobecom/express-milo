@@ -41,7 +41,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify basic block initialization and decoration
-   * 
+   *
    * This test ensures that the simplified-pricing-cards-v2 block is properly decorated with:
    * - A card wrapper with proper grid layout
    * - Individual card elements with correct structure
@@ -62,7 +62,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify card header decoration and toggle functionality
-   * 
+   *
    * This test ensures that card headers are properly processed:
    * - Headers have toggle button functionality
    * - Eyebrow content is handled correctly
@@ -93,7 +93,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify eyebrow content handling
-   * 
+   *
    * This test ensures that eyebrow content is properly processed:
    * - Multiple headers create eyebrow sections
    * - Eyebrow content is moved to correct position
@@ -114,7 +114,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify default open card functionality
-   * 
+   *
    * This test ensures that default open functionality works:
    * - First card is open by default (or specified card)
    * - Card content visibility is properly managed
@@ -147,7 +147,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify border parameters and promo styling
-   * 
+   *
    * This test ensures that border parameters are properly processed:
    * - Promo classes are applied to cards
    * - Promo text is handled correctly
@@ -172,7 +172,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify plan explanation decoration and icon handling
-   * 
+   *
    * This test ensures that plan explanations are properly decorated:
    * - Plan text sections have correct classes
    * - Image tooltips are set up for icon lists
@@ -200,7 +200,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify pricing section creation and token handling
-   * 
+   *
    * This test ensures that pricing sections are properly created:
    * - Pricing areas are created for each card
    * - Pricing tokens are identified and processed
@@ -229,7 +229,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify CTA group decoration and button styling
-   * 
+   *
    * This test ensures that CTA groups are properly decorated:
    * - CTA groups have correct classes
    * - Buttons are properly styled (large, primary, secondary)
@@ -257,7 +257,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify toggle functionality
-   * 
+   *
    * This test ensures that card toggle functionality works:
    * - Clicking toggle button changes card state
    * - Aria attributes are updated correctly
@@ -291,7 +291,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify footer elements decoration
-   * 
+   *
    * This test ensures that footer elements are properly decorated:
    * - Pricing footer is applied when present
    * - Compare all button is properly styled
@@ -310,20 +310,25 @@ describe('Simplified Pricing Cards v2', () => {
   });
 
   /**
-   * Test Objective: Verify height equalization setup
-   * 
+   * Test Objective: Verify height equalization setup and functionality
+   *
    * This test ensures that height equalization is properly set up:
-   * - Intersection observers are created
-   * - Resize event listeners are attached
-   * - Elements for equalization exist
+   * - Elements for equalization exist (.card-header, .plan-text, .plan-explanation, .pricing-area)
+   * - Observers and event listeners are set up for height equalization
+   * - Desktop breakpoint condition is respected (screen width > 1200px)
+   * - Cleanup functions are properly attached
    */
-  it('should set up height equalization', async () => {
+  it('should set up height equalization with proper observers and functionality', async () => {
+    // Set up desktop viewport for height equalization
+    Object.defineProperty(window, 'screen', {
+      writable: true,
+      value: { width: 1400 },
+    });
+
     await init(block);
 
-    // Check that the block has loaded class (indicates initialization completed)
+    // Verify basic setup
     expect(block.classList.contains('loaded')).to.be.true;
-
-    // Check that cards exist for height equalization
     const cards = block.querySelectorAll('.card');
     expect(cards.length).to.equal(3);
 
@@ -336,11 +341,33 @@ describe('Simplified Pricing Cards v2', () => {
     expect(cardHeaders.length).to.equal(3);
     expect(planExplanations.length).to.equal(3);
     expect(pricingAreas.length).to.equal(3);
+
+    // Test resize event listener
+    window.dispatchEvent(new Event('resize'));
+    await new Promise((resolve) => { setTimeout(resolve, 150); });
+
+    // Verify cleanup functions are attached
+    expect(typeof block.cleanupObservers).to.equal('function');
+
+    // Test cleanup
+    if (block.cleanupObservers) {
+      block.cleanupObservers();
+    }
+
+    // Test mutation observer by modifying parent section
+    const parentSection = block.closest('.section');
+    if (parentSection) {
+      // Change style to trigger mutation observer
+      parentSection.style.display = 'none';
+      await new Promise((resolve) => { setTimeout(resolve, 50); });
+      parentSection.style.display = '';
+      await new Promise((resolve) => { setTimeout(resolve, 150); });
+    }
   });
 
   /**
    * Test Objective: Verify pricing token identification
-   * 
+   *
    * This test ensures that pricing tokens are properly identified:
    * - Links with ((pricing)) token are found
    * - Pricing URLs are preserved
@@ -359,7 +386,7 @@ describe('Simplified Pricing Cards v2', () => {
 
   /**
    * Test Objective: Verify card content structure
-   * 
+   *
    * This test ensures that card inner content is properly structured:
    * - Card inner content has correct ID
    * - Content is initially hidden (except default open)
