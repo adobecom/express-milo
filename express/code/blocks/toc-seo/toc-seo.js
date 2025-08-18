@@ -259,7 +259,7 @@ function preventScrollPastLinkList(position, tocElement) {
  */
 function applyPositionToElement(tocElement, topPosition) {
   tocElement.style.setProperty('--toc-top-position', `${topPosition + 20}px`);
-  tocElement.classList.add('toc-desktop-fixed');
+  tocElement.classList.add('toc-desktop');
 }
 
 /**
@@ -297,7 +297,7 @@ function handleDesktopPositioning(tocElement) {
  */
 function cleanupDesktopPositioning(tocElement) {
   if (!isDesktopViewport() && tocElement) {
-    tocElement.classList.remove('toc-desktop-fixed');
+    tocElement.classList.remove('toc-desktop');
     tocElement.style.removeProperty('--toc-top-position');
   }
 }
@@ -695,7 +695,7 @@ function setupEventHandlers(tocElement) {
       if (window.innerWidth < 1024) {
         tocElement.classList.remove('toc-mobile-fixed');
       } else {
-        tocElement.classList.add('toc-desktop-fixed');
+        tocElement.classList.add('toc-desktop');
       }
 
       // Remove placeholder if it exists
