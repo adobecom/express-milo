@@ -248,8 +248,72 @@ class VisualRegression {
         .bad { color: #dc3545; }
         .images { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .image-container { text-align: center; }
-        .image-container img { max-width: 100%; border: 1px solid #ddd; }
         .image-container h4 { margin: 10px 0; }
+        .screenshot-link { 
+            text-decoration: none; 
+            color: inherit;
+            display: block;
+        }
+        .thumbnail {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 30px 20px;
+            color: #6c757d;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        .thumbnail:hover {
+            background: #e9ecef;
+            border-color: #007bff;
+            color: #007bff;
+            transform: translateY(-2px);
+        }
+        .thumbnail-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .thumbnail-text {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .thumbnail-detail {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        .summary {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .quick-link-group {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .quick-link-group h4 {
+            margin: 0 0 8px 0;
+            color: #495057;
+        }
+        .quick-link-group a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .quick-link-group a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -258,6 +322,20 @@ class VisualRegression {
         <p>Comparing: <strong>${comparisonResults.controlBranch}</strong> vs <strong>${comparisonResults.experimentalBranch}</strong></p>
         <p>Path: ${comparisonResults.subdirectory}</p>
         <p>Generated: ${new Date(comparisonResults.timestamp).toLocaleString()}</p>
+    </div>
+    
+    <div class="summary">
+        <h2>Quick Links</h2>
+        <div class="quick-links">
+            ${comparisonResults.results.map(result => `
+                <div class="quick-link-group">
+                    <h4>${result.resolution.charAt(0).toUpperCase() + result.resolution.slice(1)}</h4>
+                    <a href="screenshots/${path.basename(result.controlPath)}" target="_blank">Control</a> | 
+                    <a href="screenshots/${path.basename(result.experimentalPath)}" target="_blank">Experimental</a> | 
+                    <a href="diffs/${path.basename(result.diffPath)}" target="_blank">Diff</a>
+                </div>
+            `).join('')}
+        </div>
     </div>
     
     ${comparisonResults.results.map(result => `
@@ -286,15 +364,33 @@ class VisualRegression {
             <div class="images">
                 <div class="image-container">
                     <h4>Control (${comparisonResults.controlBranch})</h4>
-                    <img src="../screenshots/${path.basename(result.controlPath)}" alt="Control">
+                    <a href="../screenshots/${path.basename(result.controlPath)}" target="_blank" class="screenshot-link">
+                        <div class="thumbnail">
+                            <div class="thumbnail-icon">📸</div>
+                            <div class="thumbnail-text">View Screenshot</div>
+                            <div class="thumbnail-detail">${result.resolution} resolution</div>
+                        </div>
+                    </a>
                 </div>
                 <div class="image-container">
                     <h4>Experimental (${comparisonResults.experimentalBranch})</h4>
-                    <img src="../screenshots/${path.basename(result.experimentalPath)}" alt="Experimental">
+                    <a href="../screenshots/${path.basename(result.experimentalPath)}" target="_blank" class="screenshot-link">
+                        <div class="thumbnail">
+                            <div class="thumbnail-icon">📸</div>
+                            <div class="thumbnail-text">View Screenshot</div>
+                            <div class="thumbnail-detail">${result.resolution} resolution</div>
+                        </div>
+                    </a>
                 </div>
                 <div class="image-container">
                     <h4>Difference</h4>
-                    <img src="../diffs/${path.basename(result.diffPath)}" alt="Difference">
+                    <a href="../diffs/${path.basename(result.diffPath)}" target="_blank" class="screenshot-link">
+                        <div class="thumbnail">
+                            <div class="thumbnail-icon">🔍</div>
+                            <div class="thumbnail-text">View Diff</div>
+                            <div class="thumbnail-detail">${result.pixelDifference}% different</div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
