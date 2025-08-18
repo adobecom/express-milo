@@ -37,66 +37,71 @@ class VisualRegression {
   }
 
   async captureScreenshots(branch, subdirectory) {
-    const browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    
     const url = this.constructUrl(branch, subdirectory);
-    console.log(`Capturing screenshots for: ${url}`);
+    console.log(`🌐 ${branch}: ${url}`);
     
-    const screenshots = [];
+    // Create separate browser contexts for each resolution to enable parallelism
+    const screenshotPromises = RESOLUTIONS.map(async (resolution) => {
+      const browser = await chromium.launch({ headless: true });
+      const context = await browser.newContext();
+      const page = await context.newPage();
+      
+      try {
+        console.log(`📱 ${branch} - ${resolution.name} (${resolution.width}x${resolution.height}): Starting...`);
+        
+        await page.setViewportSize({ width: resolution.width, height: resolution.height });
+        
+        // Extended wait for AEM pages
+        console.log(`📱 ${branch} - ${resolution.name}: Loading page...`);
+        await page.goto(url, { 
+          waitUntil: 'networkidle',
+          timeout: this.pageTimeout
+        });
+        
+        // Wait for AEM blocks to load and render
+        console.log(`📱 ${branch} - ${resolution.name}: Waiting for blocks...`);
+        await page.waitForTimeout(this.waitForBlocks);
+        
+        // Wait for any lazy-loaded images or components
+        console.log(`📱 ${branch} - ${resolution.name}: Checking images...`);
+        await page.waitForFunction(() => {
+          const images = document.querySelectorAll('img');
+          return Array.from(images).every(img => img.complete);
+        }, { timeout: this.waitForImages }).catch(() => {
+          console.log(`⚠️  ${branch} - ${resolution.name}: Some images may not have loaded`);
+        });
+        
+        // Additional wait for any animations or dynamic content
+        await page.waitForTimeout(this.finalWait);
+        
+        const screenshotPath = path.join(
+          this.outputDir, 
+          'screenshots', 
+          `${branch}-${resolution.name}.png`
+        );
+        
+        console.log(`📸 ${branch} - ${resolution.name}: Taking screenshot...`);
+        await page.screenshot({ 
+          path: screenshotPath,
+          fullPage: true 
+        });
+        
+        console.log(`✅ ${branch} - ${resolution.name}: Complete`);
+        
+        return {
+          path: screenshotPath,
+          resolution: resolution.name,
+          branch
+        };
+      } finally {
+        await browser.close();
+      }
+    });
     
-    for (const resolution of RESOLUTIONS) {
-      console.log(`📱 Capturing ${resolution.name} (${resolution.width}x${resolution.height})...`);
-      
-      await page.setViewportSize({ width: resolution.width, height: resolution.height });
-      
-      // Extended wait for AEM pages
-      console.log(`  Loading page with ${this.pageTimeout / 1000}s timeout...`);
-      await page.goto(url, { 
-        waitUntil: 'networkidle',
-        timeout: this.pageTimeout
-      });
-      
-      // Wait for AEM blocks to load and render
-      console.log(`  Waiting ${this.waitForBlocks / 1000}s for AEM blocks to render...`);
-      await page.waitForTimeout(this.waitForBlocks);
-      
-      // Wait for any lazy-loaded images or components
-      console.log(`  Checking images are loaded...`);
-      await page.waitForFunction(() => {
-        const images = document.querySelectorAll('img');
-        return Array.from(images).every(img => img.complete);
-      }, { timeout: this.waitForImages }).catch(() => {
-        console.log(`  ⚠️  Some images may not have loaded for ${resolution.name}`);
-      });
-      
-      // Additional wait for any animations or dynamic content
-      console.log(`  Final wait ${this.finalWait / 1000}s for animations...`);
-      await page.waitForTimeout(this.finalWait);
-      
-      const screenshotPath = path.join(
-        this.outputDir, 
-        'screenshots', 
-        `${branch}-${resolution.name}.png`
-      );
-      
-      console.log(`  📸 Taking screenshot...`);
-      await page.screenshot({ 
-        path: screenshotPath,
-        fullPage: true 
-      });
-      
-      screenshots.push({
-        path: screenshotPath,
-        resolution: resolution.name,
-        branch
-      });
-      
-      console.log(`  ✅ ${resolution.name} complete`);
-    }
+    // Wait for all resolutions to complete
+    const screenshots = await Promise.all(screenshotPromises);
+    console.log(`🎉 ${branch}: All resolutions complete`);
     
-    await browser.close();
     return screenshots;
   }
 
@@ -179,57 +184,78 @@ class VisualRegression {
   async compare(controlBranch, experimentalBranch, subdirectory) {
     await this.init();
     
+    const startTime = Date.now();
     console.log('📸 Capturing screenshots in parallel...');
     
     // Run both branches concurrently
+    const screenshotStartTime = Date.now();
     const [controlScreenshots, experimentalScreenshots] = await Promise.all([
       this.captureScreenshots(controlBranch, subdirectory),
       this.captureScreenshots(experimentalBranch, subdirectory),
     ]);
+    const screenshotTime = Date.now() - screenshotStartTime;
+    console.log(`⏱️  Screenshot capture completed in ${(screenshotTime / 1000).toFixed(1)}s`);
     
-    const results = [];
+    console.log('\n🔍 Comparing screenshots in parallel...');
     
-    for (let i = 0; i < RESOLUTIONS.length; i++) {
+    // Parallelize the comparison process
+    const comparisonPromises = RESOLUTIONS.map(async (resolution, i) => {
       const control = controlScreenshots[i];
       const experimental = experimentalScreenshots[i];
       
-      console.log(`\n🔍 Comparing ${control.resolution} screenshots...`);
+      console.log(`🔍 ${resolution.name}: Starting comparison...`);
       
-      // Perceptual hashing
-      const hash1 = await this.calculatePerceptualHash(control.path);
-      const hash2 = await this.calculatePerceptualHash(experimental.path);
+      // Run hash calculation and diff creation in parallel
+      const [hash1, hash2, pixelDiff] = await Promise.all([
+        this.calculatePerceptualHash(control.path),
+        this.calculatePerceptualHash(experimental.path),
+        (async () => {
+          const diffPath = path.join(
+            this.outputDir,
+            'diffs',
+            `diff-${control.resolution}.png`
+          );
+          return {
+            ...await this.createVisualDiff(control.path, experimental.path, diffPath),
+            diffPath
+          };
+        })()
+      ]);
+      
       const hammingDistance = this.calculateHammingDistance(hash1, hash2);
       const perceptualSimilarity = ((1024 - hammingDistance) / 1024) * 100;
       
-      // Pixel-level diff
-      const diffPath = path.join(
-        this.outputDir,
-        'diffs',
-        `diff-${control.resolution}.png`
-      );
+      console.log(`✅ ${resolution.name}: Comparison complete`);
       
-      const pixelDiff = await this.createVisualDiff(
-        control.path,
-        experimental.path,
-        diffPath
-      );
-      
-      results.push({
+      return {
         resolution: control.resolution,
         perceptualSimilarity: perceptualSimilarity.toFixed(2),
         pixelDifference: pixelDiff.percentDiff.toFixed(2),
         hammingDistance,
-        diffPath,
+        diffPath: pixelDiff.diffPath,
         controlPath: control.path,
         experimentalPath: experimental.path
-      });
-    }
+      };
+    });
+    
+    const comparisonStartTime = Date.now();
+    const results = await Promise.all(comparisonPromises);
+    const comparisonTime = Date.now() - comparisonStartTime;
+    
+    const totalTime = Date.now() - startTime;
+    console.log(`⏱️  Image comparison completed in ${(comparisonTime / 1000).toFixed(1)}s`);
+    console.log(`🎉 Total test completed in ${(totalTime / 1000).toFixed(1)}s`);
     
     return {
       controlBranch,
       experimentalBranch,
       subdirectory,
       timestamp: new Date().toISOString(),
+      performance: {
+        screenshotTime: screenshotTime / 1000,
+        comparisonTime: comparisonTime / 1000,
+        totalTime: totalTime / 1000
+      },
       results
     };
   }
@@ -326,6 +352,11 @@ class VisualRegression {
         <p>Comparing: <strong>${comparisonResults.controlBranch}</strong> vs <strong>${comparisonResults.experimentalBranch}</strong></p>
         <p>Path: ${comparisonResults.subdirectory}</p>
         <p>Generated: ${new Date(comparisonResults.timestamp).toLocaleString()}</p>
+        ${comparisonResults.performance ? `
+        <p>⏱️ Performance: Screenshots ${comparisonResults.performance.screenshotTime.toFixed(1)}s, 
+        Comparison ${comparisonResults.performance.comparisonTime.toFixed(1)}s, 
+        Total ${comparisonResults.performance.totalTime.toFixed(1)}s</p>
+        ` : ''}
     </div>
     
     <div class="summary">
