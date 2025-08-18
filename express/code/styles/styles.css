@@ -1189,6 +1189,12 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   }
 }
 
+@media (min-width: 1680px) {
+  main .section.long-form .content {
+    margin: 0 auto;
+  }
+}
+
 /*Styles can be removed once we stop using block transpilations*/
 main .marquee.transpiled p.action-area>span {
   display: flex;
