@@ -241,7 +241,6 @@ function preventScrollPastLinkList(position, tocElement) {
   }
 
   const linkListSection = document.querySelector('.section:has(.link-list-v2-wrapper)');
-  console.log('linkListSection', linkListSection);
   if (!linkListSection) return position;
 
   // Cache layout measurements to avoid multiple layout recalculations
@@ -258,7 +257,7 @@ function preventScrollPastLinkList(position, tocElement) {
  * @param {number} topPosition - Calculated top position
  */
 function applyPositionToElement(tocElement, topPosition) {
-  tocElement.style.setProperty('--toc-top-position', `${topPosition + 20}px`);
+  tocElement.style.setProperty('--toc-top-position', `${topPosition + 60}px`);
   tocElement.classList.add('toc-desktop');
 }
 
