@@ -1,14 +1,12 @@
+.section.ax-link-list-v2-container {
+  padding: var(--spacing-600) var(--ax-grid-margin);
+}
 .section.ax-link-list-v2-container div + .link-list-v2-wrapper {
   padding: 0 0 0 0;
 }
 
 .section.ax-link-list-v2-container .link-list-v2-wrapper:has(.link-list-v2:is([class*=" "])) {
   max-width: 375px;
-}
-
-.section.ax-link-list-v2-container .link-list-v2-wrapper {
-  padding: 40px 20px;
-  margin: 0 auto;
 }
 
 .section.ax-link-list-v2-container .link-list-v2-wrapper .link-list-v2.narrow {
@@ -203,11 +201,12 @@
 @media (min-width: 768px) {
   .section.ax-link-list-v2-container {
     max-width: 1600px;
+    padding: var(--spacing-600) 32px;
   }
 
-  .section.ax-link-list-v2-container .link-list-v2-wrapper {
-    padding: var(--spacing-600);
-  }
+  /* .section.ax-link-list-v2-container .link-list-v2-wrapper {
+    padding: var(--spacing-600) 32px;
+  } */
 
   .section.ax-link-list-v2-container .link-list-v2.content-group {
     width: 648px;
@@ -241,7 +240,7 @@
   .section.ax-link-list-v2-container .link-list-v2 .carousel-platform {
     scroll-padding: 0;
   }
-  
+
   .section.ax-link-list-v2-container div.link-list-v2-wrapper:has(.link-list-v2.fullwidth.leftalign) .link-list-v2,
   .section.ax-link-list-v2-container div.link-list-v2-wrapper:has(.link-list-v2.fullwidth.leftalign) .link-list-v2 h2,
   .section.ax-link-list-v2-container div.link-list-v2-wrapper:has(.link-list-v2.fullwidth.leftalign) .link-list-v2 h3,
@@ -258,10 +257,6 @@
   .section.ax-link-list-v2-container {
     max-width: 1600px;
     margin: 0 auto;
-  }
-
-  .section.ax-link-list-v2-container .link-list-v2-wrapper {
-    padding-right: 0;
-    padding-left: 0;
+    padding: var(--spacing-600);
   }
 }
