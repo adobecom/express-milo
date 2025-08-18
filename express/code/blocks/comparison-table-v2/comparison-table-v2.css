@@ -1244,3 +1244,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
 .comparison-table-v2 a.con-button.fill:hover {
     background-color: var(--color-gray-700);
 }
+
+
+.comparison-table-v2 .tooltip .tooltip-text::after {
+    left: 111.5px;
+}
