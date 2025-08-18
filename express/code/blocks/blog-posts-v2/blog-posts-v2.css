@@ -319,7 +319,7 @@ main .section:has(.blog-posts-v2) > .content > h3 {
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
     .section.ax-blog-posts-container {
         padding-right: var( --spacing-600);
         padding-left: var( --spacing-600);
