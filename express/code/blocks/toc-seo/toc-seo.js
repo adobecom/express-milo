@@ -174,7 +174,7 @@ function scrollToHeader(headerText, toc) {
       let offset;
 
       if (isSticky) {
-        offset = 120; // Sticky offset for both mobile and tablet
+        offset = 140; // Sticky offset for both mobile and tablet
       } else {
         offset = 240; // Non-sticky offset for both mobile and tablet
       }
