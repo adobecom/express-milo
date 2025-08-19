@@ -45,7 +45,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    padding: var(--spacing-200) var(--spacing-600);
+    padding: var(--spacing-200) var(--spacing-600) var(--spacing-600);
     max-width: 1440px;
     width: 100%;
     margin-left: auto;
