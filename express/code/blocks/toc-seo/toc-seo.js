@@ -683,6 +683,12 @@ function handleMobileSticky(tocElement) {
     if (titleButton) {
       titleButton.setAttribute('aria-expanded', 'false');
     }
+
+    // Update placeholder height to match closed TOC
+    const placeholder = tocElement.nextElementSibling;
+    if (placeholder && placeholder.classList.contains('toc-placeholder')) {
+      placeholder.style.height = `${tocElement.offsetHeight}px`;
+    }
   } else {
     // Return to normal flow when highlight is visible
     tocElement.classList.remove('toc-mobile-fixed');
