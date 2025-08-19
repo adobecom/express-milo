@@ -58,7 +58,7 @@ describe('Content Toggle V2', async () => {
 
     expect(carouselContainer).to.exist;
     expect(carouselPlatform).to.exist;
-    expect(contentToggleV2.querySelectorAll('button.content-toggle-button')).lengthOf(9);
+    expect(contentToggleV2.querySelectorAll('li.content-toggle-button')).lengthOf(9);
   });
 
   it('should handle keyboard navigation and activation', async () => {
@@ -68,7 +68,7 @@ describe('Content Toggle V2', async () => {
     await decorate(contentToggleV2);
 
     const carouselButtons = contentToggleV2
-      .querySelectorAll('button.content-toggle-button');
+      .querySelectorAll('li.content-toggle-button');
     const targetButton = carouselButtons[3];
 
     const event = new Event('keydown', {

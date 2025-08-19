@@ -37,10 +37,14 @@ function getDefatultToggleIndex(block) {
 
 function initButton(block, buttons, sections, index) {
   const setActiveButton = (newIndex) => {
-    buttons.forEach((btn) => btn.classList.remove('active'));
+    buttons.forEach((btn) => {
+      btn.classList.remove('active');
+      btn.setAttribute('aria-selected', 'false');
+      btn.setAttribute('tabindex', '-1');
+    });
     buttons[newIndex].classList.add('active');
-    // Focus the active button for better accessibility
-    buttons[newIndex].focus();
+    buttons[newIndex].setAttribute('aria-selected', 'true');
+    buttons[newIndex].setAttribute('tabindex', '0');
   };
 
   const handleSectionChange = () => {
@@ -78,8 +82,34 @@ function initButton(block, buttons, sections, index) {
 
   buttons[index].addEventListener('keydown', (e) => {
     if (e.target === buttons[index]) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        handleSectionChange();
+      let newIndex = index;
+
+      switch (e.key) {
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          handleSectionChange();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          newIndex = (index + 1) % buttons.length;
+          buttons[newIndex].focus();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          newIndex = (index - 1 + buttons.length) % buttons.length;
+          buttons[newIndex].focus();
+          break;
+        case 'Home':
+          e.preventDefault();
+          buttons[0].focus();
+          break;
+        case 'End':
+          e.preventDefault();
+          buttons[buttons.length - 1].focus();
+          break;
+        default:
+          return;
       }
     }
   });
@@ -113,17 +143,31 @@ export default function decorate(block) {
     const items = block.querySelector('ul');
     items.classList.add('content-toggle-carousel-container');
 
+    // Add ARIA attributes to the list
+    items.setAttribute('role', 'tablist');
+    items.setAttribute('aria-label', 'Content toggle navigation');
+
     const toggles = row.querySelectorAll('li');
-    toggles.forEach((toggle) => {
-      const button = document.createElement('button');
-      button.innerHTML = toggle.innerHTML;
-      button.className = `${toggle.className} content-toggle-button`;
-      toggle.parentNode.replaceChild(button, toggle);
+    toggles.forEach((toggle, idx) => {
+      // Keep as li elements but add necessary classes and attributes
+      toggle.classList.add('content-toggle-button');
+      toggle.setAttribute('role', 'tab');
+      toggle.setAttribute('aria-selected', 'false');
+      toggle.setAttribute('tabindex', '-1');
+      toggle.setAttribute('aria-controls', `panel-${idx}`);
+      toggle.setAttribute('id', `tab-${idx}`);
     });
 
-    createCarousel('button', items);
+    createCarousel('li.content-toggle-button', items);
     const sections = enclosingMain.querySelectorAll('[data-toggle]');
     const buttons = row.querySelectorAll('.content-toggle-button');
+
+    // Add ARIA attributes to sections
+    sections.forEach((section, idx) => {
+      section.setAttribute('role', 'tabpanel');
+      section.setAttribute('id', `panel-${idx}`);
+      section.setAttribute('aria-labelledby', `tab-${idx}`);
+    });
 
     for (let i = 0; i < buttons.length; i += 1) {
       initButton(block, buttons, sections, i);
