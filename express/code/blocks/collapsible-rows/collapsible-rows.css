@@ -1,7 +1,8 @@
 
 .section.ax-collapsible-rows {
     display: flex;
-    padding: var(--ax-grid-margin) 0;
+    padding: 20px 0;
+
 }
 
 .collapsible-row-wrapper {
@@ -205,7 +206,8 @@
 
 @media (min-width: 768px) {
     .collapsible-rows {
-        width: var(--ax-grid-8-col-width);
+        /* padding-left: 32px; */
+        width: calc(var(--ax-grid-8-col-width) - var(--ax-grid-margin));
     }
     .collapsible-rows .collapsible-row-accordion {
         margin-left: 0;
@@ -222,7 +224,8 @@
 
 @media (min-width: 1024px) {
     .collapsible-rows {
-        width: var(--ax-grid-7-col-width);
+        width: calc(var(--ax-grid-7-col-width) - 64px);
+        margin-left: calc(var(--ax-grid-3-col-width) - 132px);
     }
 
     .collapsible-row-header {
@@ -234,5 +237,11 @@
         font-size: 20px;
         font-weight: 700;
         line-height: 130%; 
+    }
+}
+
+@media screen and (min-width: 1680px) {
+    .collapsible-rows {
+        margin: auto;
     }
 }
