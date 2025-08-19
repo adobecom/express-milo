@@ -107,18 +107,19 @@ async function getPriceElementSuffix(placeholderArr, response) {
 function handlePriceToken(pricingArea, priceToken = YEAR_2_PRICING_TOKEN, newPrice, priceSuffix = '') {
   try {
     const elements = pricingArea.querySelectorAll('p');
-    const year2PricingToken = Array.from(elements).find(
+    const year2PricingTokens = Array.from(elements).filter(
       (p) => p.textContent.includes(priceToken),
     );
-    if (!year2PricingToken) return;
-    if (newPrice) {
-      year2PricingToken.innerHTML = year2PricingToken.innerHTML.replace(
-        priceToken,
-        `${newPrice} ${priceSuffix}`,
-      );
-    } else {
-      year2PricingToken.textContent = '';
-    }
+    year2PricingTokens.forEach((year2PricingToken) => {
+      if (newPrice) {
+        year2PricingToken.innerHTML = year2PricingToken.innerHTML.replace(
+          priceToken,
+          `${newPrice} ${priceSuffix}`,
+        );
+      } else {
+        year2PricingToken.textContent = '';
+      }
+    });
   } catch (e) {
     window.lana.log(e);
   }
