@@ -1,3 +1,8 @@
+
+.section.ax-collapsible-rows {
+    display: flex;
+}
+
 .collapsible-row-wrapper {
     margin: 0 auto 10px auto;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -14,12 +19,10 @@
     z-index: 1;
     width: var(--ax-grid-12-col-width);
     height: auto;
-    margin: auto;
-    padding: 40px 0;
+    padding: var(--spacing-600) 0;
 }
 
 .collapsible-row-accordion {
-    /* margin-bottom: 4px; */
     border-radius: 0px var(--body-font-size-m) var(--body-font-size-m) 0px;
     border-left: 4px solid #724CDC;
     background: var(--color-gray-100);
@@ -27,7 +30,6 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* margin: var(--spacing-600) 20px; */
 }
 
 .collapsible-row-accordion:focus-visible {
@@ -202,11 +204,6 @@
 }
 
 @media (min-width: 768px) {
-    .collapsible-rows-container {
-        width: var(--ax-grid-8-col-width);
-        margin-left: auto;
-        margin-right: auto;
-    }
     .collapsible-rows {
         width: var(--ax-grid-8-col-width);
     }
