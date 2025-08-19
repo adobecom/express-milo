@@ -343,6 +343,7 @@ function checkStructure(element, querySelectors) {
 }
 
 export default async function decorate(block) {
+  block.parentElement.classList.add('ax-blog-posts-container');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ getConfig, createTag, getLocale } = utils);
     ({ replaceKey } = placeholders);
