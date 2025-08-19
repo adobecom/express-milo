@@ -153,7 +153,6 @@ function scrollToHeader(headerText, toc) {
 
   if (targetHeader) {
     const isDesktop = window.innerWidth >= 1024;
-    const isMobile = window.innerWidth < 768;
 
     if (isDesktop) {
       // On desktop, scroll header to be inline with TOC title
@@ -170,16 +169,14 @@ function scrollToHeader(headerText, toc) {
         behavior: 'smooth',
       });
     } else {
-      // Mobile and tablet behavior with consistent offsets
-      let offset;
+      // Mobile and tablet behavior
       const isSticky = toc.classList.contains('toc-mobile-fixed');
+      let offset;
 
-      if (isMobile && isSticky) {
-        offset = 120;
-      } else if (isMobile) {
-        offset = 240;
+      if (isSticky) {
+        offset = 120; // Sticky offset for both mobile and tablet
       } else {
-        offset = 80;
+        offset = 240; // Non-sticky offset for both mobile and tablet
       }
 
       // Get header position relative to viewport
@@ -194,12 +191,10 @@ function scrollToHeader(headerText, toc) {
         behavior: 'smooth',
       });
 
-      // Close TOC on mobile after scroll
-      if (isMobile) {
-        setTimeout(() => {
-          toc.classList.remove('open');
-        }, 100);
-      }
+      // Close TOC after scroll (both mobile and tablet)
+      setTimeout(() => {
+        toc.classList.remove('open');
+      }, 100);
     }
   }
 }
