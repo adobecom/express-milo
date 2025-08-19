@@ -653,10 +653,19 @@ function handleMobileSticky(tocElement) {
 
   // Cache layout measurements to avoid multiple layout recalculations
   const { bottom } = highlightElement.getBoundingClientRect();
-  const { mobileNavHeight } = CONFIG.positioning;
+
+  // Use fixed nav heights based on viewport width for better performance
+  let navHeight;
+  if (window.innerWidth <= 899) {
+    navHeight = 40; // Mobile and tablet sticky header
+  } else if (window.innerWidth <= 1023) {
+    navHeight = 63; // Desktop header (but we shouldn't be sticky here)
+  } else {
+    navHeight = CONFIG.positioning.mobileNavHeight; // Fallback
+  }
 
   // When highlight is scrolled out of view, make TOC sticky
-  if (bottom <= mobileNavHeight) {
+  if (bottom <= navHeight) {
     // Create placeholder if it doesn't exist
     if (!tocElement.nextElementSibling || !tocElement.nextElementSibling.classList.contains('toc-placeholder')) {
       const placeholder = document.createElement('div');
@@ -666,7 +675,7 @@ function handleMobileSticky(tocElement) {
     }
 
     tocElement.classList.add('toc-mobile-fixed');
-    tocElement.style.setProperty('--mobile-nav-height', `${mobileNavHeight}px`);
+    tocElement.style.setProperty('--mobile-nav-height', `${navHeight}px`);
   } else {
     // Return to normal flow when highlight is visible
     tocElement.classList.remove('toc-mobile-fixed');
@@ -715,28 +724,28 @@ function setupEventHandlers(tocElement) {
       }
 
       throttledHandleDesktopPositioning();
-    } else if (window.innerWidth < 768) {
-      // Mobile sticky behavior (below 768px)
+    } else if (window.innerWidth < 1024) {
+      // Mobile and tablet sticky behavior (below 1024px)
       throttledHandleMobileSticky();
     }
-    // Tablet (768px-1023px) - no scroll behavior, stays static
   };
 
   window.addEventListener('scroll', handleScroll);
   const throttledResizeHandler = throttleRAF(() => {
-    // Reset mobile sticky positioning when transitioning to tablet/desktop
-    if (window.innerWidth >= 768) {
-      if (window.innerWidth < 1024) {
-        tocElement.classList.remove('toc-mobile-fixed');
-      } else {
-        tocElement.classList.add('toc-desktop');
-      }
+    // Reset sticky positioning when transitioning between viewports
+    if (window.innerWidth >= 1024) {
+      // Desktop: remove mobile/tablet sticky, add desktop positioning
+      tocElement.classList.remove('toc-mobile-fixed');
+      tocElement.classList.add('toc-desktop');
+    } else {
+      // Mobile/Tablet: remove desktop positioning
+      tocElement.classList.remove('toc-desktop');
+    }
 
-      // Remove placeholder if it exists
-      const placeholder = tocElement.nextElementSibling;
-      if (placeholder && placeholder.classList.contains('toc-placeholder')) {
-        placeholder.remove();
-      }
+    // Remove placeholder if it exists
+    const placeholder = tocElement.nextElementSibling;
+    if (placeholder && placeholder.classList.contains('toc-placeholder')) {
+      placeholder.remove();
     }
 
     // Handle desktop positioning and cleanup

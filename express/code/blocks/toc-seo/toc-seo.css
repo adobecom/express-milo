@@ -198,12 +198,15 @@ main .toc-content a:focus:not(:focus-visible) {
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .toc-container {
-    position: static;
     cursor: pointer;
     max-width: var(--ax-grid-7-col-width);
-    margin: var(--spacing-600) auto 0;
+    margin: 0 auto;
   }
-  
+
+  .toc.toc-container.toc-mobile-fixed {
+    z-index: 1;
+  }
+
   .toc-container .toc-content {
     display: none;
   }
