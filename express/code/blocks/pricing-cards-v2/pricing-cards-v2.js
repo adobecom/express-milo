@@ -81,12 +81,9 @@ function handlePriceToken(pricingArea, priceToken = YEAR_2_PRICING_TOKEN, newPri
   try {
     const paragraphs = Array.from(pricingArea.querySelectorAll('p'))
       .filter((p) => p.textContent.includes(priceToken));
-
     if (paragraphs.length === 0) return;
-
-    const hasPrice = newPrice !== undefined && newPrice !== null && `${newPrice}` !== ''; // extra checks
+    const hasPrice = newPrice !== undefined && newPrice !== null && `${newPrice}` !== '';
     const replacement = [newPrice, priceSuffix].filter(Boolean).join(' ');
-
     paragraphs.forEach((p) => {
       if (hasPrice) {
         p.innerHTML = p.innerHTML.replaceAll(priceToken, replacement);
