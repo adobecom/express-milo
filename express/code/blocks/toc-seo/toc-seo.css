@@ -260,10 +260,10 @@ main .toc-content a:focus:not(:focus-visible) {
 }
 
 @media (min-width: 1680px) {
-  .toc.toc-container.toc-desktop {
-    /* Position TOC dynamically but ensure minimum safe distance from viewport edge */
-    left: max(var(--spacing-200), calc((100vw - var(--ax-grid-7-col-width)) / 2 - var(--ax-grid-3-col-width) - var(--spacing-600) - var(--ax-grid-gutter)));
-  }
+    .toc.toc-container.toc-desktop {
+      width: var(--ax-grid-2-col-width);
+      left: calc((100vw - var(--ax-grid-7-col-width)) / 2 - var(--ax-grid-2-col-width) - var(--spacing-200));
+    }
 }
 
 
