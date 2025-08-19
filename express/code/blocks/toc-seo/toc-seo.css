@@ -67,7 +67,7 @@ main .icon {
 .toc-title::after {
   content: '';
   position: absolute;
-  right: 30px;
+  right: 33px;
   top: 50%;
   transform: translateY(-50%) rotate(180deg);
   width: 14px;
