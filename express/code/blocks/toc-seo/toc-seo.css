@@ -106,7 +106,7 @@ main .icon {
 
 main .toc-content a {
   display: block;
-  padding: var(--spacing-100) var(--spacing-300);
+  padding: var(--spacing-100) var(--spacing-400);
   text-decoration: none;
   color: var(--color-background-accent-default);
   font-style: normal;
