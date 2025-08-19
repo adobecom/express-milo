@@ -187,14 +187,13 @@
 @media (min-width: 1200px) {
   .banner-bg[class*="-bg"] {
     padding: var(--spacing-900) var(--spacing-600);
-    max-width: 1440px;
     margin: 0 auto;
     box-sizing: border-box;
   }
 
   .banner-bg[class*="-bg"] .background-container {
-    width: 100%;
-    max-width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
   }
 
   .banner-bg[class*="-bg"] h2 {
