@@ -152,41 +152,54 @@ function scrollToHeader(headerText, toc) {
   });
 
   if (targetHeader) {
-    // Use scrollIntoView with consistent offset for more reliable behavior
     const isDesktop = window.innerWidth >= 1024;
     const isMobile = window.innerWidth < 768;
 
-    // Calculate consistent offsets based on viewport and sticky state
-    let offset;
-    const isSticky = toc.classList.contains('toc-mobile-fixed');
-
     if (isDesktop) {
-      offset = 80;
-    } else if (isMobile && isSticky) {
-      offset = 120;
-    } else if (isMobile) {
-      offset = 240;
+      // On desktop, scroll header to be inline with TOC title
+      const tocTitle = toc.querySelector('.toc-title');
+      const tocTitleRect = tocTitle ? tocTitle.getBoundingClientRect()
+        : toc.getBoundingClientRect();
+      const headerRect = targetHeader.getBoundingClientRect();
+
+      // Calculate scroll distance to align header with TOC title
+      const scrollDistance = headerRect.top - tocTitleRect.top;
+
+      window.scrollBy({
+        top: scrollDistance,
+        behavior: 'smooth',
+      });
     } else {
-      offset = 80;
-    }
+      // Mobile and tablet behavior with consistent offsets
+      let offset;
+      const isSticky = toc.classList.contains('toc-mobile-fixed');
 
-    // Get header position relative to viewport
-    const headerRect = targetHeader.getBoundingClientRect();
-    const distanceFromTop = headerRect.top;
+      if (isMobile && isSticky) {
+        offset = 120;
+      } else if (isMobile) {
+        offset = 240;
+      } else {
+        offset = 80;
+      }
 
-    // Calculate how much to scroll
-    const scrollDistance = distanceFromTop - offset;
+      // Get header position relative to viewport
+      const headerRect = targetHeader.getBoundingClientRect();
+      const distanceFromTop = headerRect.top;
 
-    window.scrollBy({
-      top: scrollDistance,
-      behavior: 'smooth',
-    });
+      // Calculate how much to scroll
+      const scrollDistance = distanceFromTop - offset;
 
-    // Close TOC on mobile after scroll
-    if (isMobile) {
-      setTimeout(() => {
-        toc.classList.remove('open');
-      }, 100);
+      window.scrollBy({
+        top: scrollDistance,
+        behavior: 'smooth',
+      });
+
+      // Close TOC on mobile after scroll
+      if (isMobile) {
+        setTimeout(() => {
+          toc.classList.remove('open');
+        }, 100);
+      }
     }
   }
 }
