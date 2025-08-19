@@ -257,7 +257,7 @@ function preventScrollPastLinkList(position, tocElement) {
  * @param {number} topPosition - Calculated top position
  */
 function applyPositionToElement(tocElement, topPosition) {
-  tocElement.style.setProperty('--toc-top-position', `${topPosition + 60}px`);
+  tocElement.style.setProperty('--toc-top-position', `${topPosition + 65}px`);
   tocElement.classList.add('toc-desktop');
 }
 
@@ -706,7 +706,7 @@ function setupEventHandlers(tocElement) {
         const paragraphStyle = lastParagraph ? window.getComputedStyle(lastParagraph) : null;
         const paragraphMargin = paragraphStyle ? parseFloat(paragraphStyle.marginBottom) || 0 : 0;
 
-        const additionalSpacing = 60; // Additional spacing for visual comfort
+        const additionalSpacing = 65; // Additional spacing for visual comfort
         const textBottom = contentRect.bottom - contentPadding - paragraphMargin
           - additionalSpacing;
 
