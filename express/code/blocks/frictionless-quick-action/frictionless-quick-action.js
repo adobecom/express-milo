@@ -253,7 +253,7 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     data = data.filter((item) => item);
   }
 
-  if (quickAction === 'image-editor' || quickAction === 'video-editor') {
+  if (quickAction === 'edit-image' || quickAction === 'edit-video') {
     await performUploadAction(files, block, quickAction);
     return;
   }
