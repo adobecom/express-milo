@@ -676,6 +676,13 @@ function handleMobileSticky(tocElement) {
 
     tocElement.classList.add('toc-mobile-fixed');
     tocElement.style.setProperty('--mobile-nav-height', `${navHeight}px`);
+
+    // Close TOC when it becomes sticky
+    tocElement.classList.remove('open');
+    const titleButton = tocElement.querySelector('.toc-title');
+    if (titleButton) {
+      titleButton.setAttribute('aria-expanded', 'false');
+    }
   } else {
     // Return to normal flow when highlight is visible
     tocElement.classList.remove('toc-mobile-fixed');
