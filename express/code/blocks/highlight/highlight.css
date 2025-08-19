@@ -39,7 +39,7 @@
   max-width: unset;
 }
 
-@media (min-width: 768px) and (max-width: 899px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .highlight {
     display: flex;
     flex-direction: row;
@@ -67,7 +67,7 @@
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1024px) {
   .highlight {
     display: flex;
     flex-direction: row;
