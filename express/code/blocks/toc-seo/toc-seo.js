@@ -461,11 +461,34 @@ function openPopup(e) {
   const target = e.target.closest('a');
   const href = target.getAttribute('data-href');
   const type = target.getAttribute('data-type');
-  window.open(
+  const ariaLabel = target.getAttribute('aria-label');
+
+  // Open the popup window
+  const popup = window.open(
     href,
     type,
     'popup,top=233,left=233,width=700,height=467',
   );
+
+  // Announce to screen readers that a new window opened
+  const announcement = createTag('div', {
+    role: 'status',
+    'aria-live': 'polite',
+    class: 'sr-only',
+    style: 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;',
+  }, `${ariaLabel} window opened`);
+
+  document.body.appendChild(announcement);
+
+  // Remove the announcement after it's been read
+  setTimeout(() => {
+    announcement.remove();
+  }, 1000);
+
+  // Focus the popup window if it opened successfully
+  if (popup && !popup.closed) {
+    popup.focus();
+  }
 }
 
 /**
