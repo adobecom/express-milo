@@ -548,11 +548,23 @@ function createSocialIcons() {
   // Add event listeners for sharing functionality
   socialIcons.querySelectorAll('[data-href]').forEach((link) => {
     link.addEventListener('click', openPopup);
+    link.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        openPopup(e);
+      }
+    });
   });
 
   const copyButton = socialIcons.querySelector('#copy-to-clipboard');
   if (copyButton) {
     copyButton.addEventListener('click', () => copyToClipboard(copyButton, 'Copied to clipboard'));
+    copyButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        copyToClipboard(copyButton, 'Copied to clipboard');
+      }
+    });
   }
 
   return socialIcons;
@@ -845,16 +857,9 @@ function setupAllEventHandlers(elements) {
   // Load social icons asynchronously after TOC is in DOM
   requestIdleCallback(() => {
     const realSocialIcons = createSocialIcons();
-    socialIcons.innerHTML = realSocialIcons.innerHTML;
-
-    // Re-attach event listeners after HTML is copied
-    socialIcons.querySelectorAll('[data-href]').forEach((link) => {
-      link.addEventListener('click', openPopup);
-    });
-
-    const copyButton = socialIcons.querySelector('#copy-to-clipboard');
-    if (copyButton) {
-      copyButton.addEventListener('click', () => copyToClipboard(copyButton, 'Copied to clipboard'));
+    // Move the actual DOM elements instead of copying innerHTML
+    while (realSocialIcons.firstChild) {
+      socialIcons.appendChild(realSocialIcons.firstChild);
     }
   });
 }
