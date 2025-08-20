@@ -11,7 +11,7 @@ export default async function decorate(block) {
     ({ replaceKey } = placeholders);
   });
 
-  block.parentElement.classList.add('ax-template-promo', 'ax-grid-container');
+  block.parentElement.classList.add('ax-template-promo');
 
   const freePremiumTags = [];
   const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])]
