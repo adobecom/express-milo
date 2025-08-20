@@ -300,30 +300,34 @@
       padding-right: 20px;
     }
   
-    /* .how-to-v3 .steps-content {
+   
+  
+    /* .how-to-v3 .steps-content .media-container::before {
+      height: 60vh;
+    } */
+    /* main .section > .content:has( + .how-to-v3) h2 {
+      margin-top: 20px;
+    } */
+  
+    /* .how-to-v3 {
+      padding-left: var(--spacing-600);
+      padding-right: var(--spacing-600);
+    } */
+    /* .how-to-v3 .milo-video,
+    .how-to-v3 picture img {
+      max-width: 533px;
+      max-height: 300px;
+    } */
+  }
+
+  @media (min-width: 1400px) {
+    .how-to-v3 .steps-content {
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
       gap: var(--spacing-500);
     } 
-  
-    .how-to-v3 .steps-content .media-container::before {
-      height: 60vh;
-    }
-    main .section > .content:has( + .how-to-v3) h2 {
-      margin-top: 20px;
-    }
-  
-    .how-to-v3 {
-      padding-left: var(--spacing-600);
-      padding-right: var(--spacing-600);
-    }
-    .how-to-v3 .milo-video,
-    .how-to-v3 picture img {
-      max-width: 533px;
-      max-height: 300px;
-    } */
   }
 
   @media (min-width: 1680px) {
