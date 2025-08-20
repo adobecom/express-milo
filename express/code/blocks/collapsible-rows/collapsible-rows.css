@@ -1,7 +1,7 @@
 
 .section.ax-collapsible-rows {
     box-sizing: border-box;
-    padding: 20px 0;
+    padding: 0 20px 60px;
     max-width: unset;
     width: var(--ax-grid-12-col-width);
     margin: 0 auto;
@@ -23,6 +23,7 @@
     z-index: 1;
     width: var(--ax-grid-12-col-width);
     height: auto;
+    padding: 0 20px;
 }
 
 .collapsible-row-accordion {
@@ -238,6 +239,10 @@
 }
 
 @media (min-width: 768px) {
+    .section.ax-collapsible-rows {
+        padding: 0;
+    }
+    
     .collapsible-rows {
         padding: 0 40px 60px;
         width: var(--ax-grid-8-col-width);

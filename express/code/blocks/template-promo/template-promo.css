@@ -2,7 +2,7 @@
 
 .section.ax-template-promo {
   box-sizing: border-box;
-  padding: 20px 0;
+  padding: 20px 0px 0px 20px;
   max-width: unset;
   width: var(--ax-grid-12-col-width);
   margin: 0 auto;
@@ -141,6 +141,10 @@
 }
 
 @media (min-width: 768px) {
+  .section.ax-template-promo {
+    padding: 20px 40px;
+  }
+  
   .ax-template-promo.one-up .template-promo, 
   .ax-template-promo.one-up .collapsible-rows, 
   .ax-template-promo.one-up .button-container {
