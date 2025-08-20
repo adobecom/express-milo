@@ -9,7 +9,7 @@
   position: sticky;
   top: var(--spacing-600);
   background: var(--color-white);
-  z-index: 1;
+  z-index: 2;
 }
 
 /* Desktop fixed positioning */
@@ -31,7 +31,6 @@
   top: var(--mobile-nav-height, 40px);
   left: 0;
   right: 0;
-  z-index: 100;
 }
 
 main .icon {
