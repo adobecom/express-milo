@@ -299,7 +299,7 @@
   @media (min-width: 1024px) {
     .section.ax-how-to-v3-container {
       width: var(--ax-grid-7-col-width);
-      margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+      margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-margin) + var(--ax-grid-gutter));
       margin-right: auto;
       padding: 0;
       padding-top: var(--spacing-600);
