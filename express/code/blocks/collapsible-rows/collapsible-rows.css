@@ -22,7 +22,7 @@
     z-index: 1;
     width: var(--ax-grid-12-col-width);
     height: auto;
-    padding: 20px 0;
+    padding: 20px;
 }
 
 .collapsible-row-accordion {
