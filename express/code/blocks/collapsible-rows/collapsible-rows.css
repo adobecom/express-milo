@@ -1,8 +1,10 @@
 
 .section.ax-collapsible-rows {
-    display: flex;
+    box-sizing: border-box;
     padding: 20px 0;
-    justify-content: flex-start;
+    max-width: unset;
+    width: var(--ax-grid-12-col-width);
+    margin: 0 auto;
 }
 
 .collapsible-row-wrapper {
@@ -206,10 +208,10 @@
 
 @media (min-width: 768px) {
     .collapsible-rows {
-        padding-left: 5px;
-        width: calc(var(--ax-grid-8-col-width) - 15px);
-        margin-left: calc(var(--ax-grid-2-col-width) + var(--ax-grid-margin));
-
+        padding: 0 40px 60px;
+        width: var(--ax-grid-8-col-width);
+        margin: 0 auto;
+        box-sizing: border-box;
     }
     .collapsible-rows .collapsible-row-accordion {
         margin-left: 0;
@@ -227,8 +229,7 @@
 @media (min-width: 1024px) {
     .collapsible-rows {
         width: calc(var(--ax-grid-7-col-width));
-        margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-gutter));
-        padding-left: 0;
+        margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     }
 
     .collapsible-row-header {
