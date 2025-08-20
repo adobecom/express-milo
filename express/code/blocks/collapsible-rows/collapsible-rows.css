@@ -279,5 +279,7 @@
 @media screen and (min-width: 1680px) {
     .collapsible-rows {
         margin: auto;
+        padding-left: 40px;
+        box-sizing: border-box;
     }
 }

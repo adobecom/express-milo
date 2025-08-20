@@ -1197,8 +1197,13 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
 }
 
 @media (min-width: 1680px) {
+  main .section.long-form {
+    margin: 0 auto;  
+  }
+  
   main .section.long-form .content {
     margin: 0 auto;
+    padding-left: 40px;
   }
 }
 

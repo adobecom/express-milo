@@ -28,6 +28,11 @@
 }
 
 @media (min-width: 1680px) {
+    main .section.ax-template-promo.long-form {
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+    
     main .section.ax-template-promo.long-form .content {
         margin: 0 auto;
     }
@@ -178,5 +183,16 @@
   .ax-template-promo.one-up .button-container {
     width: calc(var(--ax-grid-7-col-width));
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+  }
+}
+
+
+@media screen and (min-width: 1680px) {
+  .ax-template-promo.multiple-up .template-promo.template-promo-carousel, 
+  .ax-template-promo.one-up .template-promo, 
+  .ax-template-promo.one-up .collapsible-rows, 
+  .ax-template-promo.one-up .button-container {
+    margin: 0 auto;
+    padding-left: 40px;
   }
 }
