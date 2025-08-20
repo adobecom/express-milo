@@ -1171,16 +1171,16 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   padding-top: var(--spacing-800)
 }
 
+main .section.long-form .content p {
+  margin-top: 16px;
+}
+
 @media (min-width: 768px) {
   main .section.long-form .content {
     padding: 0 40px 60px;
     width: var(--ax-grid-8-col-width);
     margin: 0 auto;
     box-sizing: border-box;
-  }
-
-  main .section.long-form .content p {
-    margin-top: 16px;
   }
 }
 
