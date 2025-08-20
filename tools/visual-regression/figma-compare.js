@@ -28,6 +28,7 @@ program
   .option('--viewport-width <width>', 'Viewport width (default: 1920, auto-detected from Figma)', '1920')
   .option('--viewport-height <height>', 'Viewport height (default: 1080, auto-detected from Figma)', '1080')
   .option('--threshold <percent>', 'Difference threshold percentage (default: 5)', '5')
+  .option('--interactive', 'Generate interactive report with area selection')
   .action(async (reference, websiteUrl, options) => {
     const spinner = ora('Starting Figma comparison...').start();
 
@@ -134,18 +135,30 @@ program
         console.log(chalk.gray(`  Screenshot: ${screenshotPath}`));
         console.log(chalk.gray(`  Diff: ${diffPath}`));
 
-        // Create a simple HTML report
-        const reportPath = await createSimpleReport({
-          referencePath,
-          screenshotPath,
-          diffPath,
-          websiteUrl,
-          reference,
-          viewport,
-          pixelDifference: diffResult.percentDiff,
-          success,
-          threshold,
-        });
+        // Create HTML report (interactive or simple)
+        const reportPath = options.interactive 
+          ? await createInteractiveReport({
+              referencePath,
+              screenshotPath,
+              diffPath,
+              websiteUrl,
+              reference,
+              viewport,
+              pixelDifference: diffResult.percentDiff,
+              success,
+              threshold,
+            })
+          : await createSimpleReport({
+              referencePath,
+              screenshotPath,
+              diffPath,
+              websiteUrl,
+              reference,
+              viewport,
+              pixelDifference: diffResult.percentDiff,
+              success,
+              threshold,
+            });
 
         console.log(chalk.blue(`\\n📄 Report: ${reportPath}`));
 
@@ -163,6 +176,27 @@ program
       process.exit(1);
     }
   });
+
+async function createInteractiveReport(data) {
+  const template = fs.readFileSync(path.join(__dirname, 'interactive-report-template.html'), 'utf8');
+  
+  const html = template
+    .replace(/reference\.png/g, path.relative(path.join(__dirname, 'output'), data.referencePath))
+    .replace(/screenshot\.png/g, path.relative(path.join(__dirname, 'output'), data.screenshotPath))
+    .replace('<title>Interactive Visual Comparison</title>', 
+      `<title>Interactive Figma Comparison - ${data.success ? 'PASS' : 'FAIL'}</title>`)
+    .replace('<h1>Interactive Visual Comparison</h1>', 
+      `<h1>Interactive Figma Comparison - ${data.success ? '✅ PASS' : '❌ FAIL'}</h1>
+       <p>Reference: <strong>${data.reference}</strong></p>
+       <p>Website: <strong>${data.websiteUrl}</strong></p>
+       <p>Viewport: <strong>${data.viewport.width}x${data.viewport.height}</strong></p>
+       <p>Pixel Difference: <strong style="color: ${data.success ? '#28a745' : '#dc3545'}">${data.pixelDifference.toFixed(2)}%</strong> (threshold: ${data.threshold}%)</p>
+       <p>Generated: ${new Date().toLocaleString()}</p>`);
+  
+  const reportPath = path.join(__dirname, 'output', 'interactive-figma-comparison.html');
+  fs.writeFileSync(reportPath, html);
+  return reportPath;
+}
 
 async function createSimpleReport(data) {
   const html = `
