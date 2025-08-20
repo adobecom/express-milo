@@ -244,7 +244,7 @@
     }
     
     .collapsible-rows {
-        padding: 0 40px 60px;
+        padding: 0 40px 0px;
         width: var(--ax-grid-8-col-width);
         margin: 0 auto;
         box-sizing: border-box;
