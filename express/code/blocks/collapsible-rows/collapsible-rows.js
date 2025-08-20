@@ -133,7 +133,7 @@ function buildOriginalLayout(block) {
 }
 
 export default async function decorate(block) {
-  block.parentElement.classList.add('ax-collapsible-rows', 'ax-grid-container');
+  block.parentElement.classList.add('ax-collapsible-rows');
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const isExpandableVariant = block.classList.contains('expandable');
 
