@@ -1178,6 +1178,10 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
     margin: 0 auto;
     box-sizing: border-box;
   }
+
+  main .section.long-form .content p {
+    margin-top: 16px;
+  }
 }
 
 @media (min-width: 1024px) {
