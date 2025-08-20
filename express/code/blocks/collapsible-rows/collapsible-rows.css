@@ -20,7 +20,6 @@
     gap: var(--spacing-100);
     position: relative;
     z-index: 1;
-    width: var(--ax-grid-12-col-width);
     height: auto;
     padding: 20px;
 }
@@ -208,7 +207,7 @@
 
 @media (min-width: 768px) {
     .collapsible-rows {
-        padding: 0 40px 60px;
+        padding: 20px 40px;
         width: var(--ax-grid-8-col-width);
         margin: 0 auto;
         box-sizing: border-box;
@@ -228,7 +227,7 @@
 
 @media (min-width: 1024px) {
     .collapsible-rows {
-        width: calc(var(--ax-grid-7-col-width));
+        width: var(--ax-grid-7-col-width);
         margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     }
 
