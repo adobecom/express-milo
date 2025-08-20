@@ -1181,11 +1181,18 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
 }
 
 @media (min-width: 1024px) {
+  main .section.long-form {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+  }
+  
   main .section.long-form .content {
     /* Desktop: 7 columns, shifted right to accommodate fixed TOC */
     max-width: var(--ax-grid-7-col-width);
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     margin-right: auto;
+    padding-left: 0;
   }
 }
 

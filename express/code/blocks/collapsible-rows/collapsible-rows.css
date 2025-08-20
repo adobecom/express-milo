@@ -146,6 +146,37 @@
     padding-top: 10px;
     padding-bottom: 50px;
 }
+
+/* Zero out padding for consistent spacing when using ax-collapsible-rows or ax-collapsable-rows class */
+.section.ax-collapsible-rows,
+.section.ax-collapsable-rows {
+    padding: 0;
+}
+
+/* Consistent long-form spacing */
+@media (min-width: 1024px) {
+    main .section.ax-collapsible-rows.long-form,
+    main .section.ax-collapsable-rows.long-form {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: none;
+        padding-left: 0;
+    }
+    
+    main .section.ax-collapsible-rows.long-form .content,
+    main .section.ax-collapsable-rows.long-form .content {
+        max-width: var(--ax-grid-7-col-width);
+        margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+        margin-right: auto;
+    }
+}
+
+@media (min-width: 1680px) {
+    main .section.ax-collapsible-rows.long-form .content,
+    main .section.ax-collapsable-rows.long-form .content {
+        margin: 0 auto;
+    }
+}
 .section .collapsible-rows-background {
     position: absolute;
     top: 0;
@@ -230,6 +261,7 @@
     .collapsible-rows {
         width: calc(var(--ax-grid-7-col-width));
         margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+        padding-left: 0;
     }
 
     .collapsible-row-header {

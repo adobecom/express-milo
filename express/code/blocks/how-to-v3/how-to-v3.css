@@ -3,13 +3,28 @@
     flex-direction: column;
     gap: var(--spacing-600);
     margin: 0;
-    padding:  var(--spacing-600) var(--ax-grid-margin);
+    padding: 0;
     max-width: var(--ax-grid-12-col-width);
   }
   
   main .section.ax-how-to-v3-container:not([data-padding='none']):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, 
   .xxl-spacing, .xl-spacing, .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing)>.content:first-child {
     padding-top: 0;
+  }
+
+  /* Consistent long-form spacing */
+  @media (min-width: 1024px) {
+      main .section.ax-how-to-v3-container.long-form .content {
+          max-width: var(--ax-grid-7-col-width);
+          margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+          margin-right: auto;
+      }
+  }
+
+  @media (min-width: 1680px) {
+      main .section.ax-how-to-v3-container.long-form .content {
+          margin: 0 auto;
+      }
   }
   
   main .section.ax-how-to-v3-container > .content:has( + .how-to-v3) h2 {
@@ -298,13 +313,16 @@
   
   @media (min-width: 1024px) {
     .section.ax-how-to-v3-container {
-      width: calc(var(--ax-grid-7-col-width) - 200px);
+      /* width: calc(var(--ax-grid-7-col-width) - 200px);
       margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-gutter));
       margin-right: auto;
       padding: 0;
       padding-top: var(--spacing-600);
       min-width: 600px;
-      max-width: 1199px;
+      max-width: 1199px; */
+      width: calc(var(--ax-grid-7-col-width));
+      margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+   
     }
   
     .how-to-v3 .steps-content {
