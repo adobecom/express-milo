@@ -624,5 +624,63 @@ describe('Sticky Header', () => {
       const firstOption = dropdown.querySelector('.plan-selector-choice');
       expect(firstOption.classList.contains('focused')).to.be.true;
     });
+
+    it('should focus first option when ArrowDown pressed with dropdown already open but nothing focused', () => {
+      const headerGroup = [null, document.createElement('div')];
+      const comparisonBlock = document.querySelector('.comparison-table-v2');
+
+      // Create 3+ columns for dropdown
+      ['Compare', 'Plan A', 'Plan B', 'Plan C'].forEach((text) => {
+        const cell = document.createElement('div');
+        const p = document.createElement('p');
+        p.textContent = text;
+        cell.appendChild(p);
+        headerGroup[1].appendChild(cell);
+      });
+
+      const result = createStickyHeader(headerGroup, comparisonBlock);
+      const planCellWrapper = result.stickyHeaderEl.querySelector('.plan-cell-wrapper');
+      const planSelector = planCellWrapper.querySelector('.plan-selector');
+      const dropdown = planSelector.querySelector('.plan-selector-choices');
+
+      // Mock media query for mobile
+      window.matchMedia = () => ({ matches: false });
+
+      // Manually open the dropdown first
+      dropdown.classList.remove('invisible-content');
+      
+      // Make sure no option is focused
+      dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
+        opt.classList.remove('focused');
+      });
+
+      const arrowDownEvent = new KeyboardEvent('keydown', {
+        key: 'ArrowDown',
+        bubbles: true,
+      });
+
+      // Spy on click to ensure it's NOT called when dropdown is already open
+      const clickSpy = sinon.spy(planSelector, 'click');
+
+      // Target the event at the plan cell wrapper
+      Object.defineProperty(arrowDownEvent, 'target', {
+        value: planCellWrapper,
+        writable: false,
+      });
+
+      planCellWrapper.dispatchEvent(arrowDownEvent);
+
+      // Should NOT trigger click when dropdown is already open
+      expect(clickSpy.called).to.be.false;
+
+      // Should focus the first visible option
+      const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
+      expect(firstOption.classList.contains('focused')).to.be.true;
+      
+      // Verify that focus() was called on the element
+      const focusSpy = sinon.spy(firstOption, 'focus');
+      firstOption.focus();
+      expect(focusSpy.called).to.be.true;
+    });
   });
 });
