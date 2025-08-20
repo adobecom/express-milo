@@ -39,12 +39,10 @@ function initButton(block, buttons, sections, index) {
   const setActiveButton = (newIndex) => {
     buttons.forEach((btn) => {
       btn.classList.remove('active');
-      btn.setAttribute('aria-selected', 'false');
-      btn.setAttribute('tabindex', '-1');
+      btn.removeAttribute('aria-current');
     });
     buttons[newIndex].classList.add('active');
-    buttons[newIndex].setAttribute('aria-selected', 'true');
-    buttons[newIndex].setAttribute('tabindex', '0');
+    buttons[newIndex].setAttribute('aria-current', 'page');
   };
 
   const handleSectionChange = () => {
@@ -109,7 +107,7 @@ function initButton(block, buttons, sections, index) {
           buttons[buttons.length - 1].focus();
           break;
         default:
-          return;
+          break;
       }
     }
   });
@@ -143,19 +141,22 @@ export default function decorate(block) {
     const items = block.querySelector('ul');
     items.classList.add('content-toggle-carousel-container');
 
-    // Add ARIA attributes to the list
-    items.setAttribute('role', 'tablist');
-    items.setAttribute('aria-label', 'Content toggle navigation');
+    // Create nav element and move the ul inside it
+    const nav = document.createElement('nav');
+    nav.setAttribute('aria-label', 'Content navigation');
+    nav.className = 'content-toggle-nav';
+    items.parentNode.insertBefore(nav, items);
+    nav.appendChild(items);
 
     const toggles = row.querySelectorAll('li');
     toggles.forEach((toggle, idx) => {
       // Keep as li elements but add necessary classes and attributes
-      toggle.classList.add('content-toggle-button');
-      toggle.setAttribute('role', 'tab');
-      toggle.setAttribute('aria-selected', 'false');
-      toggle.setAttribute('tabindex', '-1');
-      toggle.setAttribute('aria-controls', `panel-${idx}`);
-      toggle.setAttribute('id', `tab-${idx}`);
+      toggle.classList.add('content-toggle-button', 'nav-item');
+      toggle.setAttribute('tabindex', '0');
+
+      // Create anchor-like behavior for better semantics
+      toggle.setAttribute('role', 'button');
+      toggle.setAttribute('data-section-id', `section-${idx}`);
     });
 
     createCarousel('li.content-toggle-button', items);
@@ -164,9 +165,13 @@ export default function decorate(block) {
 
     // Add ARIA attributes to sections
     sections.forEach((section, idx) => {
-      section.setAttribute('role', 'tabpanel');
-      section.setAttribute('id', `panel-${idx}`);
-      section.setAttribute('aria-labelledby', `tab-${idx}`);
+      section.setAttribute('id', `section-${idx}`);
+      section.setAttribute('aria-labelledby', `nav-item-${idx}`);
+    });
+
+    // Set id on nav items
+    buttons.forEach((btn, idx) => {
+      btn.setAttribute('id', `nav-item-${idx}`);
     });
 
     for (let i = 0; i < buttons.length; i += 1) {
