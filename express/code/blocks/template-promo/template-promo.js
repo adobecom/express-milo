@@ -11,10 +11,12 @@ export default async function decorate(block) {
     ({ replaceKey } = placeholders);
   });
 
-  block.parentElement.classList.add('ax-template-promo');
+  block.parentElement.classList.add('ax-template-promo', 'ax-grid-container');
 
   const freePremiumTags = [];
-  const premiumTagsElements = [...(block?.querySelectorAll('div:last-child') || [])];
+  const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])] 
+    || [...(block?.querySelectorAll('div:last-child') || [])];
+  
   premiumTagsElements.forEach((tag) => {
     if (tag.lastChild.nodeName === '#text' && tag.children.length === 0) {
       freePremiumTags.push(tag);
