@@ -312,8 +312,8 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
           // Comparison block is re-entering viewport - check if header sentinel is above viewport
           const headerSentinel = comparisonBlock.firstChild;
           const sentinelRect = headerSentinel.getBoundingClientRect();
-          
-          // Only reapply sticky if the header sentinel is above the viewport (user scrolled back up)
+
+          // Only reapply sticky if header sentinel is above viewport (scrolled back up)
           if (sentinelRect.top < 0) {
             const stickyHeaderHeight = stickyHeader.offsetHeight;
             stickyHeader.classList.add('is-stuck', 'initial');
