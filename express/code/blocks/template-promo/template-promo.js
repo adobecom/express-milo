@@ -1,25 +1,27 @@
 import { getLibs } from '../../scripts/utils.js';
+import templatePromoCarousel from '../template-promo-carousel/template-promo-carousel.js';
 
 let createTag;
 let getConfig;
 let replaceKey;
 
 export default async function decorate(block) {
-  // block.parentElement.style.visibility = 'hidden';
-  block.parentElement.classList.add('ax-template-promo');
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    ({ createTag, getConfig } = utils);
+    ({ replaceKey } = placeholders);
+  });
+
+  block.parentElement.classList.add('ax-template-promo', 'ax-grid-container');
 
   const freePremiumTags = [];
-  const premiumTagsElements = [...(block?.querySelectorAll('div:last-child') || [])];
+  const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])]
+    || [...(block?.querySelectorAll('div:last-child') || [])];
+
   premiumTagsElements.forEach((tag) => {
     if (tag.lastChild.nodeName === '#text' && tag.children.length === 0) {
       freePremiumTags.push(tag);
       tag.style.display = 'none';
     }
-  });
-
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
   });
 
   async function handleOneUp(blockElement) {
@@ -32,10 +34,10 @@ export default async function decorate(block) {
 
     const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
     const editTemplateButton = createTag('a', {
-      href: templateEditLink.href,
-      title: `${editThisTemplate} ${img.alt}`,
+      href: templateEditLink?.href,
+      title: `${editThisTemplate} ${img?.alt}`,
       class: 'button accent',
-      'aria-label': `${editThisTemplate} ${img.alt}`,
+      'aria-label': `${editThisTemplate} ${img?.alt}`,
     });
 
     editTemplateButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
@@ -45,26 +47,9 @@ export default async function decorate(block) {
     parent.append(buttonContainer);
   }
 
-  async function handleMultipleVariants(multipleVariantsBlock = block) {
-    const MULTIPLE_UP = 'multiple-up';
-    const pictureElements = [...(multipleVariantsBlock?.querySelectorAll('picture') || [])];
-
-    pictureElements.forEach((picture) => {
-      picture.parentElement.parentElement.classList.add('image-container');
-    });
-
-    const parent = multipleVariantsBlock.parentElement;
-    parent.classList.add(MULTIPLE_UP);
-
-    const templateEditLinks = [...(multipleVariantsBlock?.querySelectorAll('a') || [])];
-    templateEditLinks.forEach((link) => {
-      link.style.display = 'none';
-    });
-  }
-
-  const pictureElements = [...(block?.querySelectorAll('picture') || [])];
-  const isOneUp = pictureElements.length === 1;
+  const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
+  const isOneUp = imageElements.length === 1;
 
   // INIT LOGIC
-  isOneUp ? handleOneUp(block) : handleMultipleVariants(block);
+  isOneUp ? handleOneUp(block) : templatePromoCarousel(block, imageElements);
 }

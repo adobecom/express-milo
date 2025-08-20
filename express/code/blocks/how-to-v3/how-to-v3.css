@@ -19,7 +19,7 @@
   
   
   .ax-how-to-v3-container .how-to-v3 {
-    padding: 0;
+    padding: 20px 0;
   }
   
   .how-to-v3 {
@@ -222,15 +222,18 @@
       margin-right: 20px;
     }
   
-    main:has(.section.ax-how-to-v3-container) .content {
+    main:has(.section.ax-how-to-v3-container) .ax-how-to-v3-container .content {
       margin: 0;
     }
   }
   
   @media (min-width: 768px) {
     .section.ax-how-to-v3-container {
-      width: var(--ax-grid-8-col-width);
-      margin: 0 auto;
+      padding-left: 18px;
+      max-width: calc(var(--ax-grid-8-col-width) - 28px);
+      margin-left: calc(var(--ax-grid-2-col-width) + var(--ax-grid-margin));
+      margin-right: auto;
+      padding-right: 0;
     }
   
     .how-to-v3 h2 {
@@ -293,10 +296,15 @@
     }
   }
   
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     .section.ax-how-to-v3-container {
-      width: var(--ax-grid-7-col-width);
-      margin: 0 auto;
+      width: calc(var(--ax-grid-7-col-width) - 200px);
+      margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-gutter));
+      margin-right: auto;
+      padding: 0;
+      padding-top: var(--spacing-600);
+      min-width: 600px;
+      max-width: 1199px;
     }
   
     .how-to-v3 .steps-content {

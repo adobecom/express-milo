@@ -1,3 +1,12 @@
+
+.section.ax-collapsible-rows {
+    box-sizing: border-box;
+    padding: 20px 0;
+    max-width: unset;
+    width: var(--ax-grid-12-col-width);
+    margin: 0 auto;
+}
+
 .collapsible-row-wrapper {
     margin: 0 auto 10px auto;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -6,8 +15,17 @@
     width: 92%;
 }
 
+.collapsible-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+    position: relative;
+    z-index: 1;
+    width: var(--ax-grid-12-col-width);
+    height: auto;
+}
+
 .collapsible-row-accordion {
-    margin-bottom: 4px;
     border-radius: 0px var(--body-font-size-m) var(--body-font-size-m) 0px;
     border-left: 4px solid #724CDC;
     background: var(--color-gray-100);
@@ -15,14 +33,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: var(--spacing-600) 20px;
 }
-.collapsible-rows {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    height: auto;
-    margin: auto;
+
+.collapsible-row-accordion:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px var(--color-info-accent);
 }
 
 .collapsible-row-header {
@@ -191,14 +206,12 @@
     }
 }
 
-@media (min-width: 900px) {
-    .collapsible-rows-container {
-        width: var(--ax-grid-8-col-width);
-        margin-left: auto;
-        margin-right: auto;
-    }
+@media (min-width: 768px) {
     .collapsible-rows {
+        padding: 0 40px 60px;
         width: var(--ax-grid-8-col-width);
+        margin: 0 auto;
+        box-sizing: border-box;
     }
     .collapsible-rows .collapsible-row-accordion {
         margin-left: 0;
@@ -213,19 +226,26 @@
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
     .collapsible-rows {
-        width: var(--ax-grid-7-col-width);
+        width: calc(var(--ax-grid-7-col-width));
+        margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     }
 
     .collapsible-row-header {
         font-size: var(--body-font-size-l);
         font-weight: 400;
-        line-height: 130%; /
+        line-height: 130%;
     }
     .collapsible-row-sub-header {
         font-size: 20px;
         font-weight: 700;
         line-height: 130%; 
+    }
+}
+
+@media screen and (min-width: 1680px) {
+    .collapsible-rows {
+        margin: auto;
     }
 }

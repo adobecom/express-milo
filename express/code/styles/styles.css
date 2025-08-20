@@ -99,7 +99,7 @@
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
   --block-lg-max-width: 1024px;
-  --block-wd-grid-max-width: 1520px;
+  --block-wd-grid-max-width: 1600px;
   --block-wd-max-width: 1440px;
 
   /* Spacing */
@@ -1127,11 +1127,6 @@ main .section.blog-content>.content>p {
   }
 }
 
-main .section.long-form {
-  max-width: var(--block-lg-max-width);
-  margin: auto;
-}
-
 main .section.long-form.narrow {
   max-width: 850px;
   margin: 0 auto;
@@ -1141,7 +1136,6 @@ main .section.long-form .content {
   box-sizing: border-box;
   padding: 0 20px 60px;
   max-width: unset;
-  /* Mobile: 12 columns */
   width: var(--ax-grid-12-col-width);
   margin: 0 auto;
 }
@@ -1177,19 +1171,26 @@ main .section.long-form .content:has(h1, h2, h3, h4) {
   padding-top: var(--spacing-800)
 }
 
-@media (min-width: 600px) {
+@media (min-width: 768px) {
   main .section.long-form .content {
     padding: 0 40px 60px;
-    /* Tablet: 12 columns */
-    width: var(--ax-grid-12-col-width);
+    width: var(--ax-grid-8-col-width);
     margin: 0 auto;
+    box-sizing: border-box;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   main .section.long-form .content {
-    /* Desktop: 7 columns */
-    width: var(--ax-grid-10-col-width);
+    /* Desktop: 7 columns, shifted right to accommodate fixed TOC */
+    max-width: var(--ax-grid-7-col-width);
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1680px) {
+  main .section.long-form .content {
     margin: 0 auto;
   }
 }
