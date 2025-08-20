@@ -117,7 +117,7 @@
 
 .ax-panels.split {
   z-index: 1;
-  
+  padding-top: 0;
 }
 
 .ax-panels.split [role='tab'] {
