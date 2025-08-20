@@ -6,6 +6,8 @@
   max-width: unset;
   width: var(--ax-grid-12-col-width);
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .section.ax-template-promo .content {
@@ -194,5 +196,6 @@
   .ax-template-promo.one-up .button-container {
     margin: 0 auto;
     padding-left: 40px;
+    box-sizing: border-box;
   }
 }
