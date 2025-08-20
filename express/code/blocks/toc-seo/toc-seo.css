@@ -204,7 +204,7 @@ main .toc-content a:focus:not(:focus-visible) {
   }
 
   .toc.toc-container.toc-mobile-fixed {
-    z-index: 1;
+    z-index: 2;
   }
 
   .toc-container .toc-content {
