@@ -5,6 +5,10 @@
   box-sizing: border-box;
 }
 
+.section.ax-template-promo.one-up {
+  display: block;
+}
+
 .section.ax-template-promo .content {
   text-align: justify;
 }
@@ -99,62 +103,43 @@
   margin: 0;
 }
 
-/* @media (min-width: 600px) {
-  :root {
-    --ax-grid-margin: 20px;
-    --ax-grid-gutter: 16px;
-  }
-} */
-
 @media (min-width: 768px) {
-  .ax-template-promo.one-up .template-promo, 
-  .ax-template-promo.one-up .collapsible-rows, 
-  .ax-template-promo.one-up .button-container {
-    width: var(--ax-grid-8-col-width);
-    margin: auto;
-  }
-
-  /* .ax-template-promo.multiple-up .template-promo.template-promo-carousel, 
-  .ax-template-promo.one-up .template-promo, 
-  .ax-template-promo.one-up .collapsible-rows, 
-  .ax-template-promo.one-up .button-container {
-    padding-left: 5px;
-    max-width: calc(var(--ax-grid-8-col-width) - 15px);
-    margin-left: calc(var(--ax-grid-2-col-width) + var(--ax-grid-margin));
-  } */
-}
-
-
-@media screen and (min-width: 1024px) {
-  :root {
-    --ax-grid-margin: 40px;
-    --ax-grid-gutter: 24px;
-  }
-
   .ax-template-promo.one-up .template-promo, 
   .ax-template-promo.one-up .collapsible-rows, 
   .ax-template-promo.one-up .button-container {
     width: var(--ax-grid-7-col-width);
     margin: auto;
+    padding-bottom: 0;
   }
+}
 
+
+@media screen and (min-width: 1024px) {
   .template-promo {
     width: calc(var(--ax-grid-6-col-width) + 20px);
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     padding-bottom: 60px;
   }
 
-  /* .ax-template-promo.multiple-up .template-promo.template-promo-carousel, 
+  .ax-template-promo.one-up .template-promo,
+  .ax-template-promo.one-up .collapsible-rows {
+    width: calc(var(--ax-grid-6-col-width) + 20px);
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    padding-bottom: 0px;
+  }
+
   .ax-template-promo.one-up .template-promo, 
   .ax-template-promo.one-up .collapsible-rows, 
   .ax-template-promo.one-up .button-container {
-    padding-left: 40px;
-    max-width: calc(var(--ax-grid-7-col-width));
-    margin-left: calc(var(--ax-grid-2-col-width) + var(--ax-grid-margin) + var(--ax-grid-gutter));
-  } */
+    width: calc(var(--ax-grid-6-col-width) + 20px);
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    padding-bottom: 0px;
+  }
+
 }
 
 @media screen and (min-width: 1680px) {
+  .ax-template-promo.one-up .template-promo,
   .template-promo {
     margin: 0 auto;
   }
