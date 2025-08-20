@@ -254,7 +254,7 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
     (entries) => {
       entries.forEach((entry) => {
         // Check if parent section is hidden
-        if (comparisonBlock.parentElement.classList.contains('display-none')) {
+        if (comparisonBlock?.parentElement?.classList?.contains('display-none')) {
           stickyHeader.classList.remove('is-stuck');
           stickyHeader.classList.remove('gnav-offset');
           placeholder.style.display = 'none';

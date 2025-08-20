@@ -31,7 +31,7 @@ describe('Sticky Header', () => {
   beforeEach(async () => {
     document.body.innerHTML = body;
     clock = sinon.useFakeTimers();
-    
+
     // Mock createTag function
     mockCreateTag = (tag, attrs = {}) => {
       const el = document.createElement(tag);
@@ -44,7 +44,7 @@ describe('Sticky Header', () => {
       });
       return el;
     };
-    
+
     // Set the createTag function
     setCreateTag(mockCreateTag);
 
@@ -77,7 +77,7 @@ describe('Sticky Header', () => {
       const headers = ['Plan A', 'Plan B', 'Plan C'];
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create a simple header structure for testing
       headers.forEach((header, index) => {
         const cell = document.createElement('div');
@@ -89,22 +89,22 @@ describe('Sticky Header', () => {
 
       const result = createStickyHeader(headerGroup, comparisonBlock);
       const planSelector = result.stickyHeaderEl.querySelector('.plan-selector');
-      
+
       if (!planSelector) {
         // No plan selector for 2 columns, skip this test
         return;
       }
-      
+
       const choices = planSelector.querySelector('.plan-selector-choices');
-      
+
       expect(choices).to.exist;
       expect(choices.classList.contains('invisible-content')).to.be.true;
       expect(choices.getAttribute('role')).to.equal('listbox');
       expect(choices.getAttribute('aria-label')).to.equal('Plan options');
-      
+
       const options = choices.querySelectorAll('.plan-selector-choice');
       expect(options).to.have.length(2); // Plan B and Plan C (excluding first cell)
-      
+
       options.forEach((option, index) => {
         expect(option.getAttribute('role')).to.equal('option');
         expect(option.getAttribute('aria-selected')).to.equal('false');
@@ -119,7 +119,7 @@ describe('Sticky Header', () => {
     it('should handle keyboard events on plan selector', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create header cells
       ['Compare', 'Express Teams', 'Canva Teams', 'Express Free'].forEach((text) => {
         const cell = document.createElement('div');
@@ -133,27 +133,27 @@ describe('Sticky Header', () => {
       const planCellWrapper = result.stickyHeaderEl.querySelector('.plan-cell-wrapper');
       const selectWrapper = planCellWrapper.querySelector('.plan-selector-wrapper');
       const planSelector = selectWrapper.querySelector('.plan-selector');
-      
+
       // Test Enter key
       const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
       const clickSpy = sinon.spy(planSelector, 'click');
       selectWrapper.dispatchEvent(enterEvent);
-      
+
       expect(clickSpy.called).to.be.true;
       clickSpy.restore();
-      
+
       // Test Space key
       const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
       const clickSpy2 = sinon.spy(planSelector, 'click');
       selectWrapper.dispatchEvent(spaceEvent);
-      
+
       expect(clickSpy2.called).to.be.true;
     });
 
     it('should handle click events on plan cell wrapper', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create header cells
       ['Compare', 'Express Teams', 'Canva Teams', 'Express Free'].forEach((text) => {
         const cell = document.createElement('div');
@@ -166,12 +166,12 @@ describe('Sticky Header', () => {
       const result = createStickyHeader(headerGroup, comparisonBlock);
       const planCellWrapper = result.stickyHeaderEl.querySelector('.plan-cell-wrapper');
       const planSelector = planCellWrapper.querySelector('.plan-selector');
-      
+
       const clickSpy = sinon.spy(planSelector, 'click');
-      
+
       // Click on plan cell wrapper (not on action area or selector)
       planCellWrapper.click();
-      
+
       expect(clickSpy.called).to.be.true;
     });
   });
@@ -180,7 +180,7 @@ describe('Sticky Header', () => {
     it('should create sticky header with proper structure', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create header cells
       const headers = ['Compare Features', 'Adobe Express Teams', 'Canva Teams'];
       headers.forEach((text) => {
@@ -192,17 +192,17 @@ describe('Sticky Header', () => {
       });
 
       const result = createStickyHeader(headerGroup, comparisonBlock);
-      
+
       expect(result.stickyHeaderEl).to.exist;
       expect(result.stickyHeaderEl.classList.contains('sticky-header')).to.be.true;
       expect(result.colTitles).to.deep.equal(['Adobe Express Teams', 'Canva Teams']);
-      
+
       const wrapper = result.stickyHeaderEl.querySelector('.sticky-header-wrapper');
       expect(wrapper).to.exist;
-      
+
       const firstCell = wrapper.querySelector('.first-cell');
       expect(firstCell).to.exist;
-      
+
       const planCells = wrapper.querySelectorAll('.plan-cell');
       expect(planCells).to.have.length(2);
     });
@@ -210,7 +210,7 @@ describe('Sticky Header', () => {
     it('should handle two-column layout', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create only 2 columns
       ['Compare', 'Adobe Express', 'Canva'].forEach((text) => {
         const cell = document.createElement('div');
@@ -222,11 +222,11 @@ describe('Sticky Header', () => {
 
       const result = createStickyHeader(headerGroup, comparisonBlock);
       const planCellWrappers = result.stickyHeaderEl.querySelectorAll('.plan-cell-wrapper');
-      
+
       planCellWrappers.forEach((wrapper) => {
         expect(wrapper.classList.contains('two-columns')).to.be.true;
       });
-      
+
       // Should not have plan selectors for 2 columns
       const planSelectors = result.stickyHeaderEl.querySelectorAll('.plan-selector');
       expect(planSelectors).to.have.length(0);
@@ -235,7 +235,7 @@ describe('Sticky Header', () => {
     it('should handle no subheaders case', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create headers without p tags (no subheaders)
       ['Compare', 'Express', 'Canva'].forEach((text) => {
         const cell = document.createElement('div');
@@ -247,7 +247,7 @@ describe('Sticky Header', () => {
 
       const result = createStickyHeader(headerGroup, comparisonBlock);
       const planCellWrappers = result.stickyHeaderEl.querySelectorAll('.plan-cell-wrapper');
-      
+
       planCellWrappers.forEach((wrapper) => {
         expect(wrapper.classList.contains('no-subheaders')).to.be.true;
       });
@@ -256,24 +256,24 @@ describe('Sticky Header', () => {
     it('should handle action buttons', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create header with action button - need 3+ columns for full behavior
       const cell1 = document.createElement('div');
       cell1.innerHTML = '<p>Compare</p>';
       headerGroup[1].appendChild(cell1);
-      
+
       const cell2 = document.createElement('div');
       const p2 = document.createElement('p');
       p2.textContent = 'Express Premium';
       cell2.appendChild(p2);
-      
+
       const actionArea2 = document.createElement('div');
       actionArea2.className = 'action-area';
       actionArea2.innerHTML = '<a href="#">Start trial</a>';
       cell2.appendChild(actionArea2);
-      
+
       headerGroup[1].appendChild(cell2);
-      
+
       const cell3 = document.createElement('div');
       const p3 = document.createElement('p');
       p3.textContent = 'Express Free';
@@ -281,19 +281,19 @@ describe('Sticky Header', () => {
       headerGroup[1].appendChild(cell3);
 
       const result = createStickyHeader(headerGroup, comparisonBlock);
-      
+
       // Find the action area in the result
       const actionArea = result.stickyHeaderEl.querySelector('.action-area');
       expect(actionArea).to.exist;
-      
+
       // The action area should have both 'action-area' and 'plan-cell' classes
       expect(actionArea.classList.contains('action-area')).to.be.true;
       expect(actionArea.classList.contains('plan-cell')).to.be.true;
-      
+
       // The original content from the action area should be inside a plan-cell-wrapper
       const actionAreaWrapper = actionArea.querySelector('.plan-cell-wrapper');
       expect(actionAreaWrapper).to.exist;
-      
+
       // The link should be inside the wrapper
       const link = actionAreaWrapper.querySelector('a');
       expect(link).to.exist;
@@ -303,7 +303,7 @@ describe('Sticky Header', () => {
     it('should close dropdowns on outside click', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create 3+ columns to get dropdowns
       ['Compare', 'Plan A', 'Plan B', 'Plan C'].forEach((text) => {
         const cell = document.createElement('div');
@@ -315,13 +315,13 @@ describe('Sticky Header', () => {
 
       const result = createStickyHeader(headerGroup, comparisonBlock);
       const choices = result.stickyHeaderEl.querySelector('.plan-selector-choices');
-      
+
       // Open dropdown
       choices.classList.remove('invisible-content');
-      
+
       // Click outside
       document.body.click();
-      
+
       expect(choices.classList.contains('invisible-content')).to.be.true;
     });
   });
@@ -332,7 +332,7 @@ describe('Sticky Header', () => {
 
     beforeEach(() => {
       observerCallbacks = [];
-      
+
       // Mock IntersectionObserver
       originalIntersectionObserver = window.IntersectionObserver;
       window.IntersectionObserver = class MockIntersectionObserver {
@@ -341,9 +341,27 @@ describe('Sticky Header', () => {
           this.options = options;
           observerCallbacks.push({ callback, options });
         }
-        observe() {}
-        unobserve() {}
-        disconnect() {}
+
+        observe() {
+          this.callback([{
+            isIntersecting: true,
+            boundingClientRect: { top: 0 },
+          }]);
+        }
+
+        unobserve() {
+          this.callback([{
+            isIntersecting: false,
+            boundingClientRect: { top: -10 },
+          }]);
+        }
+
+        disconnect() {
+          this.callback([{
+            isIntersecting: false,
+            boundingClientRect: { top: -10 },
+          }]);
+        }
       };
     });
 
@@ -376,12 +394,12 @@ describe('Sticky Header', () => {
       stickyHeader.style.height = '100px';
       const comparisonBlock = document.createElement('div');
       comparisonBlock.classList.add('comparison-table-v2');
-      
+
       // Add required parent structure
       const section = document.createElement('section');
       section.appendChild(comparisonBlock);
       document.body.appendChild(section);
-      
+
       comparisonBlock.appendChild(stickyHeader);
 
       initStickyBehavior(stickyHeader, comparisonBlock);
@@ -392,7 +410,7 @@ describe('Sticky Header', () => {
       // Simulate header scrolling past top
       headerObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { top: -10 }
+        boundingClientRect: { top: -10 },
       }]);
 
       expect(stickyHeader.classList.contains('is-stuck')).to.be.true;
@@ -408,7 +426,7 @@ describe('Sticky Header', () => {
       // Simulate header coming back into view
       headerObserver.callback([{
         isIntersecting: true,
-        boundingClientRect: { top: 0 }
+        boundingClientRect: { top: 0 },
       }]);
 
       expect(stickyHeader.classList.contains('initial')).to.be.true;
@@ -429,7 +447,7 @@ describe('Sticky Header', () => {
       comparisonBlock.appendChild(stickyHeader);
       section.appendChild(comparisonBlock);
       document.body.appendChild(section);
-      
+
       // Add display-none class to parent element
       comparisonBlock.parentElement.classList.add('display-none');
 
@@ -440,7 +458,7 @@ describe('Sticky Header', () => {
       // Trigger observer with hidden parent
       headerObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { top: -10 }
+        boundingClientRect: { top: -10 },
       }]);
 
       expect(stickyHeader.classList.contains('is-stuck')).to.be.false;
@@ -449,37 +467,37 @@ describe('Sticky Header', () => {
     it('should close dropdown when becoming sticky', () => {
       const stickyHeader = document.createElement('div');
       stickyHeader.classList.add('sticky-header');
-      
+
       // Create mock dropdown structure
       const wrapper = document.createElement('div');
       wrapper.classList.add('plan-cell-wrapper');
       wrapper.setAttribute('aria-expanded', 'true');
-      
+
       const selector = document.createElement('div');
       selector.classList.add('plan-selector');
       wrapper.appendChild(selector);
       stickyHeader.appendChild(wrapper);
-      
+
       const comparisonBlock = document.createElement('div');
       comparisonBlock.classList.add('comparison-table-v2');
-      
+
       // Add required parent structure
       const section = document.createElement('section');
       section.appendChild(comparisonBlock);
       document.body.appendChild(section);
-      
+
       comparisonBlock.appendChild(stickyHeader);
 
       // Mock ComparisonTableState.closeDropdown to avoid null reference error
       const originalCloseDropdown = ComparisonTableState.closeDropdown;
       let closeDropdownCalled = false;
       let closeDropdownArg = null;
-      
+
       ComparisonTableState.closeDropdown = (arg) => {
         closeDropdownCalled = true;
         closeDropdownArg = arg;
       };
-      
+
       initStickyBehavior(stickyHeader, comparisonBlock);
 
       const headerObserver = observerCallbacks[0];
@@ -487,12 +505,12 @@ describe('Sticky Header', () => {
       // Simulate header scrolling past top
       headerObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { top: -10 }
+        boundingClientRect: { top: -10 },
       }]);
 
       expect(closeDropdownCalled).to.be.true;
       expect(closeDropdownArg).to.equal(selector);
-      
+
       // Restore original function
       ComparisonTableState.closeDropdown = originalCloseDropdown;
     });
@@ -501,23 +519,23 @@ describe('Sticky Header', () => {
   describe('synchronizePlanCellHeights', () => {
     it('should synchronize heights of plan cell wrappers', () => {
       const comparisonBlock = document.createElement('div');
-      
+
       // Create plan cell wrappers with different heights
       const wrapper1 = document.createElement('div');
       wrapper1.classList.add('plan-cell-wrapper');
       wrapper1.style.height = '50px';
       Object.defineProperty(wrapper1, 'offsetHeight', { value: 50, configurable: true });
-      
+
       const wrapper2 = document.createElement('div');
       wrapper2.classList.add('plan-cell-wrapper');
       wrapper2.style.height = '80px';
       Object.defineProperty(wrapper2, 'offsetHeight', { value: 80, configurable: true });
-      
+
       const wrapper3 = document.createElement('div');
       wrapper3.classList.add('plan-cell-wrapper');
       wrapper3.style.height = '60px';
       Object.defineProperty(wrapper3, 'offsetHeight', { value: 60, configurable: true });
-      
+
       comparisonBlock.appendChild(wrapper1);
       comparisonBlock.appendChild(wrapper2);
       comparisonBlock.appendChild(wrapper3);
@@ -531,19 +549,19 @@ describe('Sticky Header', () => {
 
     it('should not synchronize heights when header is stuck', () => {
       const comparisonBlock = document.createElement('div');
-      
+
       const stickyHeader = document.createElement('div');
       stickyHeader.classList.add('is-stuck');
       comparisonBlock.appendChild(stickyHeader);
-      
+
       const wrapper1 = document.createElement('div');
       wrapper1.classList.add('plan-cell-wrapper');
       wrapper1.style.height = '50px';
-      
+
       const wrapper2 = document.createElement('div');
       wrapper2.classList.add('plan-cell-wrapper');
       wrapper2.style.height = '80px';
-      
+
       comparisonBlock.appendChild(wrapper1);
       comparisonBlock.appendChild(wrapper2);
 
@@ -556,7 +574,7 @@ describe('Sticky Header', () => {
 
     it('should handle empty block gracefully', () => {
       const comparisonBlock = document.createElement('div');
-      
+
       expect(() => synchronizePlanCellHeights(comparisonBlock)).to.not.throw();
     });
   });
@@ -565,7 +583,7 @@ describe('Sticky Header', () => {
     it('should handle ArrowDown key to open dropdown', () => {
       const headerGroup = [null, document.createElement('div')];
       const comparisonBlock = document.querySelector('.comparison-table-v2');
-      
+
       // Create 3+ columns for dropdown
       ['Compare', 'Plan A', 'Plan B', 'Plan C'].forEach((text) => {
         const cell = document.createElement('div');
@@ -579,30 +597,30 @@ describe('Sticky Header', () => {
       const planCellWrapper = result.stickyHeaderEl.querySelector('.plan-cell-wrapper');
       const planSelector = planCellWrapper.querySelector('.plan-selector');
       const dropdown = planSelector.querySelector('.plan-selector-choices');
-      
+
       // Mock media query for mobile
       window.matchMedia = () => ({ matches: false });
-      
-      const arrowDownEvent = new KeyboardEvent('keydown', { 
+
+      const arrowDownEvent = new KeyboardEvent('keydown', {
         key: 'ArrowDown',
-        bubbles: true 
+        bubbles: true,
       });
-      
+
       const clickSpy = sinon.spy(planSelector, 'click');
-      
+
       // Target the event at the plan cell wrapper
       Object.defineProperty(arrowDownEvent, 'target', {
         value: planCellWrapper,
-        writable: false
+        writable: false,
       });
-      
+
       planCellWrapper.dispatchEvent(arrowDownEvent);
-      
+
       expect(clickSpy.called).to.be.true;
-      
+
       // Verify first option gets focused after timeout
       clock.tick(0);
-      
+
       const firstOption = dropdown.querySelector('.plan-selector-choice');
       expect(firstOption.classList.contains('focused')).to.be.true;
     });
