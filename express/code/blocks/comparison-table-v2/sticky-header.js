@@ -298,7 +298,7 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
     },
   );
 
-  // Intersection Observer to detect when comparison block exits viewport (at the bottom)
+  // Intersection Observer to detect when comparison block exits/enters viewport (at the bottom)
   const blockObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -308,6 +308,29 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
           placeholder.style.display = 'none';
           stickyHeader.classList.remove('gnav-offset');
           isSticky = false;
+        } else if (entry.isIntersecting && !isSticky) {
+          // Comparison block is re-entering viewport - check if header sentinel is above viewport
+          const headerSentinel = comparisonBlock.firstChild;
+          const sentinelRect = headerSentinel.getBoundingClientRect();
+          
+          // Only reapply sticky if the header sentinel is above the viewport (user scrolled back up)
+          if (sentinelRect.top < 0) {
+            const stickyHeaderHeight = stickyHeader.offsetHeight;
+            stickyHeader.classList.add('is-stuck', 'initial');
+            placeholder.style.display = 'flex';
+            placeholder.style.height = `${stickyHeaderHeight}px`;
+
+            ComparisonTableState.closeDropdown(stickyHeader
+              ?.querySelector('.plan-cell-wrapper[aria-expanded="true"]')?.querySelector('.plan-selector'));
+            if (document.activeElement && document.activeElement.blur) {
+              document.activeElement.blur();
+            }
+            setTimeout(() => {
+              stickyHeader.classList.add('gnav-offset');
+              stickyHeader.classList.remove('initial');
+              isSticky = true;
+            }, TIMING.STICKY_TRANSITION);
+          }
         }
       });
     },
