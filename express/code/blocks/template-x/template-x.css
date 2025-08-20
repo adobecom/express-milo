@@ -3194,6 +3194,68 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
   margin-bottom: 0px;
 }
 
+/* Last variant: template-tworow */
+
+main .template-x.tworow .template-x-inner-wrapper.gallery {
+  justify-content: flex-start;
+  /* undo legacy weird styles */
+  max-width: initial;;
+  margin-right: initial;
+  margin-left: var(--ax-grid-margin);
+  margin-bottom: initial;
+  margin-block: initial;
+  padding-left: initial;
+  padding-right: initial;
+}
+
+main .template-x.tworow .gallery-control {
+  padding-top: var(--spacing-200);
+}
+
+main .template-x.tworow .template-2x2-col {
+  display: flex;
+  flex-direction: column;
+  width: var(--ax-grid-6-col-width);
+  flex: 0 0 auto;
+}
+
+main .template-x.tworow .template-2x2-col .template {
+  justify-content: flex-start;
+}
+
+main .template-x.tworow .template-2x2-col .template.placeholder {
+  max-height: 200px;
+  width: calc(100% - 10px);
+  max-width: initial;
+  margin: 5px;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-200)
+}
+
+main .template-x.tworow .template-2x2-col .template.placeholder div:first-of-type {
+  max-width: initial;
+  height: initial;
+}
+
+main .template-x.tworow .template-2x2-col .template.placeholder .icon {
+  width: 36px;
+}
+
+main .template-x.tworow .template-2x2-col .template.placeholder div:nth-of-type(2) {
+  max-width: initial;
+  position: static;
+  padding-top: initial;
+}
+
+main .template-x.tworow .template-2x2-col .template .still-wrapper img:not(.icon) {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+}
+
+/* Last variant: template-tworow END */
+
 @media (min-width: 768px) {
   main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
     margin-top:  var(--spacing-400);

@@ -23,6 +23,7 @@ import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadat
 import renderTemplate from './template-rendering.js';
 import isDarkOverlayReadable from '../../scripts/color-tools.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
+import buildGallery from '../../scripts/widgets/gallery/gallery.js';
 
 let replaceKey; let replaceKeyArray;
 let getMetadata; let createTag;
@@ -287,6 +288,9 @@ function adjustPlaceholderDimensions(block, props, tmplt, option) {
   const ratios = option.split(sep).map((e) => +e);
   props.placeholderFormat = ratios;
   if (!ratios[1]) return;
+  if (block.classList.contains(TWO_ROW)) {
+    return;
+  }
   if (block.classList.contains('horizontal')) {
     const height = block.classList.contains('mini') ? 100 : 200;
     const width = (ratios[0] / ratios[1]) * height;
@@ -1718,6 +1722,13 @@ async function handleTabClick(
   tabBtn.classList.add('active');
 }
 
+function chunkPairs(arr) {
+  return Array.from(
+    { length: Math.ceil(arr.length / 2) },
+    (_, i) => arr.slice(i * 2, i * 2 + 2),
+  );
+}
+
 async function buildTemplateList(block, props, type = []) {
   if (type?.length > 0) {
     type.forEach((typeName) => {
@@ -1842,7 +1853,18 @@ async function buildTemplateList(block, props, type = []) {
   if (templates && props.orientation && props.orientation.toLowerCase() === 'horizontal') {
     const innerWrapper = block.querySelector('.template-x-inner-wrapper');
     if (innerWrapper) {
-      if (!block.classList.contains(TWO_ROW)) buildCarousel(':scope > .template', innerWrapper);
+      // WIP
+      if (block.classList.contains(TWO_ROW)) {
+        const pairs = chunkPairs([...innerWrapper.querySelectorAll('.template')]);
+        const cols = pairs.map((pair) => createTag('div', { class: 'template-2x2-col' }, pair));
+        // cols.forEach((col) => innerWrapper.append(col));
+        innerWrapper.append(...cols);
+        // break into 2 rows per column
+        const { control } = await buildGallery(cols, innerWrapper);
+        block.append(control);
+      } else {
+        buildCarousel(':scope > .template', innerWrapper);
+      }
     } else {
       block.remove();
     }
