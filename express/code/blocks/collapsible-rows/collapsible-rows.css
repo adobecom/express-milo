@@ -1,7 +1,6 @@
 
 .section.ax-collapsible-rows {
     box-sizing: border-box;
-    padding: 20px 0;
     max-width: unset;
     width: var(--ax-grid-12-col-width);
     margin: 0 auto;
@@ -23,6 +22,7 @@
     z-index: 1;
     width: var(--ax-grid-12-col-width);
     height: auto;
+    padding: 20px 0;
 }
 
 .collapsible-row-accordion {
