@@ -52,7 +52,7 @@
 .template-promo-carousel .template {
   position: relative;
   flex: 0 0 auto;
-  border-radius: 14px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -80,7 +80,7 @@
 
 .template-promo-carousel .template img,
 .template-promo-carousel .template video {
-  border-radius: 12px;
+  border-radius: 16px;
 }
 
 .template-promo-carousel .template img:not(.icon),
