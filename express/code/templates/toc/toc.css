@@ -1,0 +1,32 @@
+/* toc template styling */
+
+.toc main .section[template="toc"] .template-toc-wrapper.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.toc .template-toc-wrapper .col-3,
+.toc .template-toc-wrapper .col-7 {
+  width: 100%;
+}
+
+.toc .template-toc-wrapper .col-3 .toc-seo {
+  position: sticky;
+  top: 80px;
+}
+
+@media (min-width: 900px) {
+  .toc main .section[template="toc"] .template-toc-wrapper.container {
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+  }
+}
+
+/* Optional spacing for common blocks inside the right column */
+.toc .template-toc-wrapper .col-7 > * + * {
+  margin-top: 32px;
+}
+
+
