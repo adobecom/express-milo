@@ -1,6 +1,7 @@
 /* TOC container using global CSS variables */
 .toc-container {
-  display: block;
+  /* Test */
+  display: block; 
   width: 100%;
   padding: 20px;
   border-top: 1px solid var(--color-light-gray);

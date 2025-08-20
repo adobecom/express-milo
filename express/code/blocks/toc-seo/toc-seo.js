@@ -1,6 +1,6 @@
 /* eslint-disable import/named, import/extensions */
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-
+console.log('test');
 // ============================================================================
 // CONFIGURATION
 // ============================================================================
