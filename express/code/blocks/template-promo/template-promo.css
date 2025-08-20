@@ -1,11 +1,7 @@
 @import url('../template-promo-carousel/template-promo-carousel.css');
 
 .section.ax-template-promo {
-  padding: 20px 0;
   display: flex;
-  flex-direction: column;
-  margin-left: var(--ax-grid-margin);
-  margin-right: var(--ax-grid-margin);
   box-sizing: border-box;
 }
 
@@ -63,6 +59,7 @@
 
 .template-promo {
   max-width: var(--ax-grid-12-col-width);
+  padding: 20px;
 }
 
 .ax-template-promo.multiple-up .template-promo .image-container {
