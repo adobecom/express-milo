@@ -14,9 +14,9 @@ export default async function decorate(block) {
   block.parentElement.classList.add('ax-template-promo', 'ax-grid-container');
 
   const freePremiumTags = [];
-  const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])] 
+  const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])]
     || [...(block?.querySelectorAll('div:last-child') || [])];
-  
+
   premiumTagsElements.forEach((tag) => {
     if (tag.lastChild.nodeName === '#text' && tag.children.length === 0) {
       freePremiumTags.push(tag);
