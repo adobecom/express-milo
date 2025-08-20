@@ -9,6 +9,7 @@
 .section .link-list-wrapper {
   padding: 40px 20px;
   margin: 0 auto;
+  width: fit-content;
 }
 
 .section .link-list-wrapper .link-list.narrow {
@@ -27,8 +28,6 @@
 
 .section .link-list.centered {
   box-sizing: border-box;
-  max-width: 92%;
-  width: max-content;
 }
 
 .section .link-list.shaded {
