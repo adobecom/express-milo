@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint max-classes-per-file: "off" */
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
@@ -518,7 +519,7 @@ describe('Sticky Header', () => {
     it('should remove sticky when comparison block exits viewport at bottom', () => {
       const stickyHeader = document.createElement('div');
       stickyHeader.classList.add('sticky-header');
-      
+
       const comparisonBlock = document.createElement('div');
       comparisonBlock.classList.add('comparison-table-v2');
       comparisonBlock.appendChild(stickyHeader);
@@ -529,20 +530,20 @@ describe('Sticky Header', () => {
 
       // Initialize sticky behavior
       initStickyBehavior(stickyHeader, comparisonBlock);
-      
+
       // Get the placeholder that was created
       const placeholder = comparisonBlock.querySelector('.sticky-header-placeholder');
-      
+
       // Get the header observer and make header sticky first
       const headerObserver = observerCallbacks[0];
       headerObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { top: -10 }
+        boundingClientRect: { top: -10 },
       }]);
-      
+
       // Wait for transition
       clock.tick(100);
-      
+
       // Verify header is sticky
       expect(stickyHeader.classList.contains('is-stuck')).to.be.true;
       expect(stickyHeader.classList.contains('gnav-offset')).to.be.true;
@@ -555,7 +556,7 @@ describe('Sticky Header', () => {
       // The block observer only triggers removal when isSticky is true
       blockObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { bottom: -10 }
+        boundingClientRect: { bottom: -10 },
       }]);
 
       // Header should no longer be sticky
@@ -567,7 +568,7 @@ describe('Sticky Header', () => {
     it('should handle parent section style.display changes via MutationObserver', () => {
       const stickyHeader = document.createElement('div');
       stickyHeader.classList.add('sticky-header');
-      
+
       const comparisonBlock = document.createElement('div');
       comparisonBlock.classList.add('comparison-table-v2');
       comparisonBlock.appendChild(stickyHeader);
@@ -583,26 +584,30 @@ describe('Sticky Header', () => {
         constructor(callback) {
           mutationCallback = callback;
         }
-        observe() {}
-        disconnect() {}
+
+        // eslint-disable-next-line class-methods-use-this
+        observe() { /* Mock method */ }
+
+        // eslint-disable-next-line class-methods-use-this
+        disconnect() { /* Mock method */ }
       };
 
       // Initialize sticky behavior
       initStickyBehavior(stickyHeader, comparisonBlock);
-      
+
       // Get the placeholder that was created
       const placeholder = comparisonBlock.querySelector('.sticky-header-placeholder');
-      
+
       // Get the header observer and make header sticky
       const headerObserver = observerCallbacks[0];
       headerObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { top: -10 }
+        boundingClientRect: { top: -10 },
       }]);
-      
+
       // Wait for transition
       clock.tick(100);
-      
+
       // Verify header is sticky
       expect(stickyHeader.classList.contains('is-stuck')).to.be.true;
       expect(placeholder.style.display).to.equal('flex');
@@ -615,12 +620,12 @@ describe('Sticky Header', () => {
 
       // Simulate parent section being hidden via style.display
       section.style.display = 'none';
-      
+
       // Trigger the mutation callback
       mutationCallback([{
         type: 'attributes',
         attributeName: 'style',
-        target: section
+        target: section,
       }]);
 
       // Sticky state should be removed
@@ -632,7 +637,7 @@ describe('Sticky Header', () => {
       const stickyHeader = document.createElement('div');
       stickyHeader.classList.add('sticky-header');
       stickyHeader.style.height = '100px';
-      
+
       const comparisonBlock = document.createElement('div');
       comparisonBlock.classList.add('comparison-table-v2');
       comparisonBlock.appendChild(stickyHeader);
@@ -643,55 +648,55 @@ describe('Sticky Header', () => {
 
       // Initialize sticky behavior
       initStickyBehavior(stickyHeader, comparisonBlock);
-      
+
       // Get the placeholder and header sentinel
       const placeholder = comparisonBlock.querySelector('.sticky-header-placeholder');
       const headerSentinel = comparisonBlock.firstChild;
-      
+
       // Mock getBoundingClientRect for header sentinel
-      headerSentinel.getBoundingClientRect = sinon.stub().returns({ top: -50 }); // Header is above viewport
-      
+      headerSentinel.getBoundingClientRect = sinon.stub().returns({ top: -50 }); // Above viewport
+
       // Get observers
       const headerObserver = observerCallbacks[0];
       const blockObserver = observerCallbacks[1];
-      
+
       // First make header sticky by scrolling past it
       headerObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { top: -10 }
+        boundingClientRect: { top: -10 },
       }]);
       clock.tick(100);
-      
+
       // Verify header is sticky
       expect(stickyHeader.classList.contains('is-stuck')).to.be.true;
       expect(stickyHeader.classList.contains('gnav-offset')).to.be.true;
-      
+
       // Now simulate block exiting viewport at bottom
       blockObserver.callback([{
         isIntersecting: false,
-        boundingClientRect: { bottom: -10 }
+        boundingClientRect: { bottom: -10 },
       }]);
-      
+
       // Sticky should be removed
       expect(stickyHeader.classList.contains('is-stuck')).to.be.false;
       expect(stickyHeader.classList.contains('gnav-offset')).to.be.false;
       expect(placeholder.style.display).to.equal('none');
-      
+
       // Now simulate block re-entering viewport (scrolling back up)
       blockObserver.callback([{
         isIntersecting: true,
-        boundingClientRect: { top: 0, bottom: 100 }
+        boundingClientRect: { top: 0, bottom: 100 },
       }]);
-      
+
       // Should reapply sticky since header sentinel is above viewport
       expect(stickyHeader.classList.contains('is-stuck')).to.be.true;
       expect(stickyHeader.classList.contains('initial')).to.be.true;
       expect(placeholder.style.display).to.equal('flex');
       expect(placeholder.style.height).to.equal('100px');
-      
+
       // Wait for transition
       clock.tick(100);
-      
+
       expect(stickyHeader.classList.contains('gnav-offset')).to.be.true;
       expect(stickyHeader.classList.contains('initial')).to.be.false;
     });
@@ -700,7 +705,7 @@ describe('Sticky Header', () => {
       const stickyHeader = document.createElement('div');
       stickyHeader.classList.add('sticky-header');
       stickyHeader.style.height = '100px';
-      
+
       const comparisonBlock = document.createElement('div');
       comparisonBlock.classList.add('comparison-table-v2');
       comparisonBlock.appendChild(stickyHeader);
@@ -711,22 +716,22 @@ describe('Sticky Header', () => {
 
       // Initialize sticky behavior
       initStickyBehavior(stickyHeader, comparisonBlock);
-      
+
       // Get the header sentinel
       const headerSentinel = comparisonBlock.firstChild;
-      
-      // Mock getBoundingClientRect for header sentinel - header is visible in viewport
-      headerSentinel.getBoundingClientRect = sinon.stub().returns({ top: 50 }); // Header is below viewport top
-      
+
+      // Mock getBoundingClientRect for header sentinel - visible in viewport
+      headerSentinel.getBoundingClientRect = sinon.stub().returns({ top: 50 }); // Below top
+
       // Get block observer
       const blockObserver = observerCallbacks[1];
-      
+
       // Simulate block re-entering viewport when header sentinel is visible
       blockObserver.callback([{
         isIntersecting: true,
-        boundingClientRect: { top: 0, bottom: 100 }
+        boundingClientRect: { top: 0, bottom: 100 },
       }]);
-      
+
       // Should not apply sticky since header sentinel is in viewport
       expect(stickyHeader.classList.contains('is-stuck')).to.be.false;
       expect(stickyHeader.classList.contains('gnav-offset')).to.be.false;
@@ -865,9 +870,9 @@ describe('Sticky Header', () => {
 
       // Manually open the dropdown first
       dropdown.classList.remove('invisible-content');
-      
+
       // Make sure no option is focused
-      dropdown.querySelectorAll('.plan-selector-choice').forEach(opt => {
+      dropdown.querySelectorAll('.plan-selector-choice').forEach((opt) => {
         opt.classList.remove('focused');
       });
 
@@ -893,7 +898,7 @@ describe('Sticky Header', () => {
       // Should focus the first visible option
       const firstOption = dropdown.querySelector('.plan-selector-choice:not(.invisible-content)');
       expect(firstOption.classList.contains('focused')).to.be.true;
-      
+
       // Verify that focus() was called on the element
       const focusSpy = sinon.spy(firstOption, 'focus');
       firstOption.focus();
