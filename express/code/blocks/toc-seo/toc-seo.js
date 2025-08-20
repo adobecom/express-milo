@@ -755,28 +755,33 @@ function setupEventHandlers(tocElement) {
   // Single scroll handler with viewport check
   const handleScroll = () => {
     if (window.innerWidth >= 1024) {
-      // Log distance between TOC bottom and last long-form content bottom
-      const longFormSections = document.querySelectorAll('main .section.long-form .content');
-      if (longFormSections.length > 0) {
-        const lastLongFormContent = longFormSections[longFormSections.length - 1];
-        const contentRect = lastLongFormContent.getBoundingClientRect();
+      // Only update boundary calculation occasionally to reduce flashing
+      const lastUpdate = parseInt(tocElement.dataset.lastBoundaryUpdate, 10) || 0;
+      if (!tocElement.dataset.lastBoundaryUpdate
+          || Math.abs(window.pageYOffset - lastUpdate) > 100) {
+        const longFormSections = document.querySelectorAll('main .section.long-form .content');
+        if (longFormSections.length > 0) {
+          const lastLongFormContent = longFormSections[longFormSections.length - 1];
+          const contentRect = lastLongFormContent.getBoundingClientRect();
 
-        // Get actual computed padding and margin from the element
-        const computedStyle = window.getComputedStyle(lastLongFormContent);
-        const contentPadding = parseFloat(computedStyle.paddingBottom) || 0;
+          // Get actual computed padding and margin from the element
+          const computedStyle = window.getComputedStyle(lastLongFormContent);
+          const contentPadding = parseFloat(computedStyle.paddingBottom) || 0;
 
-        // Get margin from the last paragraph inside the content
-        const paragraphs = lastLongFormContent.querySelectorAll('p');
-        const lastParagraph = paragraphs[paragraphs.length - 1];
-        const paragraphStyle = lastParagraph ? window.getComputedStyle(lastParagraph) : null;
-        const paragraphMargin = paragraphStyle ? parseFloat(paragraphStyle.marginBottom) || 0 : 0;
+          // Get margin from the last paragraph inside the content
+          const paragraphs = lastLongFormContent.querySelectorAll('p');
+          const lastParagraph = paragraphs[paragraphs.length - 1];
+          const paragraphStyle = lastParagraph ? window.getComputedStyle(lastParagraph) : null;
+          const paragraphMargin = paragraphStyle ? parseFloat(paragraphStyle.marginBottom) || 0 : 0;
 
-        const additionalSpacing = 65; // Additional spacing for visual comfort
-        const textBottom = contentRect.bottom - contentPadding - paragraphMargin
-          - additionalSpacing;
+          const additionalSpacing = 65; // Additional spacing for visual comfort
+          const textBottom = contentRect.bottom - contentPadding - paragraphMargin
+            - additionalSpacing;
 
-        // Store the boundary for use in positioning
-        tocElement.dataset.textBottomBoundary = textBottom;
+          // Store the boundary for use in positioning
+          tocElement.dataset.textBottomBoundary = textBottom;
+          tocElement.dataset.lastBoundaryUpdate = window.pageYOffset;
+        }
       }
 
       throttledHandleDesktopPositioning();
