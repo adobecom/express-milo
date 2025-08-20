@@ -19,7 +19,7 @@
   
   
   .ax-how-to-v3-container .how-to-v3 {
-    padding: 0;
+    padding: 20px 0;
   }
   
   .how-to-v3 {
@@ -298,11 +298,13 @@
   
   @media (min-width: 1024px) {
     .section.ax-how-to-v3-container {
-      width: var(--ax-grid-7-col-width);
-      margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-margin) + var(--ax-grid-gutter));
+      width: calc(var(--ax-grid-7-col-width) - 200px);
+      margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-gutter));
       margin-right: auto;
       padding: 0;
       padding-top: var(--spacing-600);
+      min-width: 600px;
+      max-width: 1199px;
     }
   
     .how-to-v3 .steps-content {
