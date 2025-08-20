@@ -59,7 +59,7 @@
 
 .template-promo {
   max-width: var(--ax-grid-12-col-width);
-  padding: 20px;
+  padding: 40px;
 }
 
 .ax-template-promo.multiple-up .template-promo .image-container {
@@ -86,10 +86,6 @@
   border-radius: 1000px;
 }
 
-.template-promo {
-  width: var(--ax-grid-12-col-width);
-}
-
 /* collapsible rows overrides */
 .ax-template-promo .collapsible-rows {
   padding: 0;
@@ -103,12 +99,12 @@
   margin: 0;
 }
 
-@media (min-width: 600px) {
+/* @media (min-width: 600px) {
   :root {
     --ax-grid-margin: 20px;
     --ax-grid-gutter: 16px;
   }
-}
+} */
 
 @media (min-width: 768px) {
   .ax-template-promo.one-up .template-promo, 
@@ -118,14 +114,14 @@
     margin: auto;
   }
 
-  .ax-template-promo.multiple-up .template-promo.template-promo-carousel, 
+  /* .ax-template-promo.multiple-up .template-promo.template-promo-carousel, 
   .ax-template-promo.one-up .template-promo, 
   .ax-template-promo.one-up .collapsible-rows, 
   .ax-template-promo.one-up .button-container {
     padding-left: 5px;
     max-width: calc(var(--ax-grid-8-col-width) - 15px);
     margin-left: calc(var(--ax-grid-2-col-width) + var(--ax-grid-margin));
-  }
+  } */
 }
 
 
@@ -135,13 +131,6 @@
     --ax-grid-gutter: 24px;
   }
 
-  .template-promo {
-    width: var(--ax-grid-7-col-width);
-    margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-gutter));
-    margin-right: auto;
-    padding: 0;
-  }
-
   .ax-template-promo.one-up .template-promo, 
   .ax-template-promo.one-up .collapsible-rows, 
   .ax-template-promo.one-up .button-container {
@@ -149,12 +138,24 @@
     margin: auto;
   }
 
-  .ax-template-promo.multiple-up .template-promo.template-promo-carousel, 
+  .template-promo {
+    width: calc(var(--ax-grid-6-col-width) + 20px);
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    padding-bottom: 60px;
+  }
+
+  /* .ax-template-promo.multiple-up .template-promo.template-promo-carousel, 
   .ax-template-promo.one-up .template-promo, 
   .ax-template-promo.one-up .collapsible-rows, 
   .ax-template-promo.one-up .button-container {
     padding-left: 40px;
     max-width: calc(var(--ax-grid-7-col-width));
     margin-left: calc(var(--ax-grid-2-col-width) + var(--ax-grid-margin) + var(--ax-grid-gutter));
+  } */
+}
+
+@media screen and (min-width: 1680px) {
+  .template-promo {
+    margin: 0 auto;
   }
 }

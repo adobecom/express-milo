@@ -1,5 +1,5 @@
 .section.ax-link-list-v2-container {
-  padding: var(--spacing-600) var(--ax-grid-margin);
+  padding: 0 var(--ax-grid-margin) var(--spacing-600);
 }
 .section.ax-link-list-v2-container div + .link-list-v2-wrapper {
   padding: 0 0 0 0;
@@ -201,7 +201,7 @@
 @media (min-width: 768px) {
   .section.ax-link-list-v2-container {
     max-width: 1600px;
-    padding: var(--spacing-600) 32px;
+    padding: 0 32px var(--spacing-600);
   }
 
   /* .section.ax-link-list-v2-container .link-list-v2-wrapper {
