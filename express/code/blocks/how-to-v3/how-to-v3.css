@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 24px;
     margin: 0;
-    padding:  var(--spacing-600) var(--ax-grid-margin);
+    padding: 40px 20px;
     max-width: var(--ax-grid-12-col-width);
   }
   
@@ -18,8 +18,8 @@
   }
   
   .how-to-v3 {
-    padding-left: var(--spacing-300);
-    padding-right: var(--spacing-300);
+    padding-left: 0;
+    padding-right: 0;
     margin: 0;
     max-width: unset;
   }
@@ -288,14 +288,19 @@
     }
   }
   
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
     .section.ax-how-to-v3-container {
       max-width: var(--ax-grid-7-col-width);
-      margin-left: calc(var(--ax-grid-3-col-width) + var(--ax-grid-gutter));
+      margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
       margin-right: auto;
     }
+
+    .how-to-v3 {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
   
-    .how-to-v3 .steps-content {
+    /* .how-to-v3 .steps-content {
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -318,7 +323,7 @@
     .how-to-v3 picture img {
       max-width: 533px;
       max-height: 300px;
-    }
+    } */
   }
 
   @media (min-width: 1680px) {
