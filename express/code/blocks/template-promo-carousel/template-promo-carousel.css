@@ -315,6 +315,6 @@
    /* Multiple up */
    .template-promo-carousel .templates-container .template img:not(.icon),
    .template-promo-carousel .templates-container .template video {
-     max-height: 240px;
+     max-height: 400px;
    }
 }

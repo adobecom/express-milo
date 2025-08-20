@@ -1,7 +1,7 @@
 .section.ax-how-to-v3-container {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-600);
+    gap: var(--spacing-400);
     margin: 0;
     padding:  var(--spacing-600) var(--ax-grid-margin);
     max-width: var(--ax-grid-12-col-width);
@@ -15,11 +15,6 @@
   main .section.ax-how-to-v3-container > .content:has( + .how-to-v3) h2 {
     margin: 0;
     padding-bottom: 0;
-  }
-  
-  
-  .ax-how-to-v3-container .how-to-v3 {
-    padding: 20px 0;
   }
   
   .how-to-v3 {

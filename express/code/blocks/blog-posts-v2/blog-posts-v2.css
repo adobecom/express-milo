@@ -242,7 +242,6 @@ main .section:has(.blog-posts-v2) > .content a {
     justify-content: space-between;
     align-items: center;
     gap: 4px;
-    padding: var(--spacing-100) 0;
 }
 
 .section.ax-blog-posts-container > .content a {
