@@ -5,19 +5,21 @@
   "type": "module",
   "main": "index.js",
   "bin": {
-    "visual-compare": "./cli.js"
+    "visual-compare": "./cli.js",
+    "figma-compare": "./figma-compare.js"
   },
   "scripts": {
     "test": "node test.js"
   },
   "dependencies": {
     "@playwright/test": "^1.52.0",
-    "sharp": "^0.33.5",
+    "chalk": "^5.3.0",
+    "commander": "^13.1.0",
+    "dotenv": "^17.2.1",
+    "open": "^10.1.0",
+    "ora": "^8.1.0",
     "pixelmatch": "^5.3.0",
     "pngjs": "^7.0.0",
-    "commander": "^13.1.0",
-    "chalk": "^5.3.0",
-    "ora": "^8.1.0",
-    "open": "^10.1.0"
+    "sharp": "^0.33.5"
   }
 }

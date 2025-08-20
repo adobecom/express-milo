@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import VisualRegression from './index.js';
 import chalk from 'chalk';
 import ora from 'ora';
 import open from 'open';
+import VisualRegression from './index.js';
 
 /**
  * Simple API for Cursor AI integration
@@ -24,7 +24,7 @@ function parseOptions(args) {
     customWait: null,
   };
 
-  args.forEach(arg => {
+  args.forEach((arg) => {
     if (arg === '--open') options.openReport = true;
     if (arg === '--fast') options.timing = 'fast';
     if (arg === '--slow') options.timing = 'slow';
@@ -41,7 +41,7 @@ function parseOptions(args) {
 
 async function main() {
   const args = process.argv.slice(2);
-  
+
   if (args.length < 3) {
     console.log(chalk.red('Usage: node cursor-api.js <control-branch> <experimental-branch> <path> [options]'));
     console.log(chalk.gray('Example: node cursor-api.js main feature-xyz /express'));
@@ -62,18 +62,18 @@ async function main() {
   try {
     // Configure timing based on options
     const vrOptions = {};
-    
+
     if (options.timing === 'slow') {
       vrOptions.pageTimeout = 60000; // 60s
       vrOptions.waitForBlocks = 5000; // 5s
       vrOptions.waitForImages = 10000; // 10s
       vrOptions.finalWait = 3000; // 3s
-      spinner.text = `Using slow timing for heavy pages...`;
+      spinner.text = 'Using slow timing for heavy pages...';
     } else if (options.timing === 'fast') {
       // Use defaults (already faster)
-      spinner.text = `Using fast timing...`;
+      spinner.text = 'Using fast timing...';
     }
-    
+
     // Override with custom values if provided
     if (options.customTimeout) {
       vrOptions.pageTimeout = options.customTimeout;
@@ -82,9 +82,9 @@ async function main() {
       vrOptions.waitForBlocks = options.customWait;
       vrOptions.finalWait = Math.floor(options.customWait / 2);
     }
-    
+
     const vr = new VisualRegression(vrOptions);
-    
+
     spinner.text = `Comparing ${controlBranch} vs ${experimentalBranch} for ${subdirectory}...`;
     const results = await vr.compare(controlBranch, experimentalBranch, subdirectory);
 
@@ -139,19 +139,19 @@ async function main() {
       })),
     };
 
-    console.log('\n' + JSON.stringify(summary, null, 2));
+    console.log(`\n${JSON.stringify(summary, null, 2)}`);
   } catch (error) {
     spinner.fail('Error during comparison');
     console.error(chalk.red(error.message));
-    
+
     const errorSummary = {
       success: false,
       error: error.message,
       branches: { control: controlBranch, experimental: experimentalBranch },
       path: subdirectory,
     };
-    
-    console.log('\n' + JSON.stringify(errorSummary, null, 2));
+
+    console.log(`\n${JSON.stringify(errorSummary, null, 2)}`);
     process.exit(1);
   }
 }

@@ -11,7 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const RESOLUTIONS = [
   { width: 375, height: 667, name: 'mobile' },
   { width: 768, height: 1024, name: 'tablet' },
-  { width: 1920, height: 1080, name: 'desktop' }
+  { width: 1920, height: 1080, name: 'desktop' },
 ];
 
 class VisualRegression {
@@ -39,69 +39,69 @@ class VisualRegression {
   async captureScreenshots(branch, subdirectory) {
     const url = this.constructUrl(branch, subdirectory);
     console.log(`🌐 ${branch}: ${url}`);
-    
+
     // Create separate browser contexts for each resolution to enable parallelism
     const screenshotPromises = RESOLUTIONS.map(async (resolution) => {
       const browser = await chromium.launch({ headless: true });
       const context = await browser.newContext();
       const page = await context.newPage();
-      
+
       try {
         console.log(`📱 ${branch} - ${resolution.name} (${resolution.width}x${resolution.height}): Starting...`);
-        
+
         await page.setViewportSize({ width: resolution.width, height: resolution.height });
-        
+
         // Extended wait for AEM pages
         console.log(`📱 ${branch} - ${resolution.name}: Loading page...`);
-        await page.goto(url, { 
+        await page.goto(url, {
           waitUntil: 'networkidle',
-          timeout: this.pageTimeout
+          timeout: this.pageTimeout,
         });
-        
+
         // Wait for AEM blocks to load and render
         console.log(`📱 ${branch} - ${resolution.name}: Waiting for blocks...`);
         await page.waitForTimeout(this.waitForBlocks);
-        
+
         // Wait for any lazy-loaded images or components
         console.log(`📱 ${branch} - ${resolution.name}: Checking images...`);
         await page.waitForFunction(() => {
           const images = document.querySelectorAll('img');
-          return Array.from(images).every(img => img.complete);
+          return Array.from(images).every((img) => img.complete);
         }, { timeout: this.waitForImages }).catch(() => {
           console.log(`⚠️  ${branch} - ${resolution.name}: Some images may not have loaded`);
         });
-        
+
         // Additional wait for any animations or dynamic content
         await page.waitForTimeout(this.finalWait);
-        
+
         const screenshotPath = path.join(
-          this.outputDir, 
-          'screenshots', 
-          `${branch}-${resolution.name}.png`
+          this.outputDir,
+          'screenshots',
+          `${branch}-${resolution.name}.png`,
         );
-        
+
         console.log(`📸 ${branch} - ${resolution.name}: Taking screenshot...`);
-        await page.screenshot({ 
+        await page.screenshot({
           path: screenshotPath,
-          fullPage: true 
+          fullPage: true,
         });
-        
+
         console.log(`✅ ${branch} - ${resolution.name}: Complete`);
-        
+
         return {
           path: screenshotPath,
           resolution: resolution.name,
-          branch
+          branch,
         };
       } finally {
         await browser.close();
       }
     });
-    
+
     // Wait for all resolutions to complete
     const screenshots = await Promise.all(screenshotPromises);
     console.log(`🎉 ${branch}: All resolutions complete`);
-    
+
     return screenshots;
   }
 
@@ -113,15 +113,15 @@ class VisualRegression {
       .greyscale()
       .raw()
       .toBuffer({ resolveWithObject: true });
-    
+
     // Calculate hash based on relative brightness
     const pixels = Array.from(data);
-    
+
     // Calculate average brightness
     const average = pixels.reduce((a, b) => a + b, 0) / pixels.length;
-    
+
     // Create binary hash
-    const hash = pixels.map(p => p > average ? 1 : 0).join('');
+    const hash = pixels.map((p) => (p > average ? 1 : 0)).join('');
     return hash;
   }
 
@@ -136,57 +136,66 @@ class VisualRegression {
   async createVisualDiff(img1Path, img2Path, diffPath) {
     const img1 = PNG.sync.read(await fs.readFile(img1Path));
     const img2 = PNG.sync.read(await fs.readFile(img2Path));
-    
-    // Ensure images are same size by resizing to largest dimensions
+
+    // Ensure images are same size by padding to largest dimensions
     const width = Math.max(img1.width, img2.width);
     const height = Math.max(img1.height, img2.height);
-    
-    // Resize images if needed using Sharp
-    let img1Data, img2Data;
-    
+
+    // Pad images if needed using Sharp (preserves original image quality)
+    let img1Data; let
+      img2Data;
+
     if (img1.width !== width || img1.height !== height) {
-      const resized = await sharp(img1Path)
-        .resize(width, height)
+      const padded = await sharp(img1Path)
+        .resize(width, height, {
+          fit: 'contain',
+          position: 'left top',
+          background: { r: 255, g: 255, b: 255, alpha: 1 },
+        })
         .png()
         .toBuffer();
-      img1Data = PNG.sync.read(resized).data;
+      img1Data = PNG.sync.read(padded).data;
     } else {
       img1Data = img1.data;
     }
-    
+
     if (img2.width !== width || img2.height !== height) {
-      const resized = await sharp(img2Path)
-        .resize(width, height)
+      const padded = await sharp(img2Path)
+        .resize(width, height, {
+          fit: 'contain',
+          position: 'left top',
+          background: { r: 255, g: 255, b: 255, alpha: 1 },
+        })
         .png()
         .toBuffer();
-      img2Data = PNG.sync.read(resized).data;
+      img2Data = PNG.sync.read(padded).data;
     } else {
       img2Data = img2.data;
     }
-    
+
     const diff = new PNG({ width, height });
-    
+
     const numDiffPixels = pixelmatch(
       img1Data,
       img2Data,
       diff.data,
       width,
       height,
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
-    
+
     await fs.writeFile(diffPath, PNG.sync.write(diff));
-    
+
     const percentDiff = (numDiffPixels / (width * height)) * 100;
     return { numDiffPixels, percentDiff };
   }
 
   async compare(controlBranch, experimentalBranch, subdirectory) {
     await this.init();
-    
+
     const startTime = Date.now();
     console.log('📸 Capturing screenshots in parallel...');
-    
+
     // Run both branches concurrently
     const screenshotStartTime = Date.now();
     const [controlScreenshots, experimentalScreenshots] = await Promise.all([
@@ -195,16 +204,16 @@ class VisualRegression {
     ]);
     const screenshotTime = Date.now() - screenshotStartTime;
     console.log(`⏱️  Screenshot capture completed in ${(screenshotTime / 1000).toFixed(1)}s`);
-    
+
     console.log('\n🔍 Comparing screenshots in parallel...');
-    
+
     // Parallelize the comparison process
     const comparisonPromises = RESOLUTIONS.map(async (resolution, i) => {
       const control = controlScreenshots[i];
       const experimental = experimentalScreenshots[i];
-      
+
       console.log(`🔍 ${resolution.name}: Starting comparison...`);
-      
+
       // Run hash calculation and diff creation in parallel
       const [hash1, hash2, pixelDiff] = await Promise.all([
         this.calculatePerceptualHash(control.path),
@@ -213,20 +222,20 @@ class VisualRegression {
           const diffPath = path.join(
             this.outputDir,
             'diffs',
-            `diff-${control.resolution}.png`
+            `diff-${control.resolution}.png`,
           );
           return {
             ...await this.createVisualDiff(control.path, experimental.path, diffPath),
-            diffPath
+            diffPath,
           };
-        })()
+        })(),
       ]);
-      
+
       const hammingDistance = this.calculateHammingDistance(hash1, hash2);
       const perceptualSimilarity = ((1024 - hammingDistance) / 1024) * 100;
-      
+
       console.log(`✅ ${resolution.name}: Comparison complete`);
-      
+
       return {
         resolution: control.resolution,
         perceptualSimilarity: perceptualSimilarity.toFixed(2),
@@ -234,18 +243,18 @@ class VisualRegression {
         hammingDistance,
         diffPath: pixelDiff.diffPath,
         controlPath: control.path,
-        experimentalPath: experimental.path
+        experimentalPath: experimental.path,
       };
     });
-    
+
     const comparisonStartTime = Date.now();
     const results = await Promise.all(comparisonPromises);
     const comparisonTime = Date.now() - comparisonStartTime;
-    
+
     const totalTime = Date.now() - startTime;
     console.log(`⏱️  Image comparison completed in ${(comparisonTime / 1000).toFixed(1)}s`);
     console.log(`🎉 Total test completed in ${(totalTime / 1000).toFixed(1)}s`);
-    
+
     return {
       controlBranch,
       experimentalBranch,
@@ -254,9 +263,9 @@ class VisualRegression {
       performance: {
         screenshotTime: screenshotTime / 1000,
         comparisonTime: comparisonTime / 1000,
-        totalTime: totalTime / 1000
+        totalTime: totalTime / 1000,
       },
-      results
+      results,
     };
   }
 
@@ -362,7 +371,7 @@ class VisualRegression {
     <div class="summary">
         <h2>Quick Links</h2>
         <div class="quick-links">
-            ${comparisonResults.results.map(result => `
+            ${comparisonResults.results.map((result) => `
                 <div class="quick-link-group">
                     <h4>${result.resolution.charAt(0).toUpperCase() + result.resolution.slice(1)}</h4>
                     <a href="screenshots/${path.basename(result.controlPath)}" target="_blank">Control</a> | 
@@ -373,7 +382,7 @@ class VisualRegression {
         </div>
     </div>
     
-    ${comparisonResults.results.map(result => `
+    ${comparisonResults.results.map((result) => `
         <div class="comparison">
             <h2>${result.resolution.charAt(0).toUpperCase() + result.resolution.slice(1)} Resolution</h2>
             
@@ -433,7 +442,7 @@ class VisualRegression {
 </body>
 </html>
     `;
-    
+
     const reportPath = path.join(this.outputDir, 'report.html');
     await fs.writeFile(reportPath, html);
     return reportPath;
