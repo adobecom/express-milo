@@ -756,14 +756,19 @@ function setupEventHandlers(tocElement) {
   const handleScroll = () => {
     if (window.innerWidth >= 1024) {
       // Only update boundary calculation occasionally to reduce flashing
-      const lastUpdate = parseInt(tocElement.dataset.lastBoundaryUpdate, 10) || 0;
-      if (!tocElement.dataset.lastBoundaryUpdate
-          || Math.abs(window.pageYOffset - lastUpdate) > 100) {
-        const longFormSections = document.querySelectorAll('main .section.long-form .content');
-        if (longFormSections.length > 0) {
-          const lastLongFormContent = longFormSections[longFormSections.length - 1];
-          const contentRect = lastLongFormContent.getBoundingClientRect();
+      // Always update boundary when near the bottom to ensure proper stopping
+      const longFormSections = document.querySelectorAll('main .section.long-form .content');
+      if (longFormSections.length > 0) {
+        const lastLongFormContent = longFormSections[longFormSections.length - 1];
+        const contentRect = lastLongFormContent.getBoundingClientRect();
 
+        // Update boundary more frequently when near the bottom
+        const lastUpdate = parseInt(tocElement.dataset.lastBoundaryUpdate, 10) || 0;
+        const shouldUpdate = !tocElement.dataset.lastBoundaryUpdate
+          || Math.abs(window.pageYOffset - lastUpdate) > 100
+          || contentRect.bottom < window.innerHeight + 200; // Update when near bottom
+
+        if (shouldUpdate) {
           // Get actual computed padding and margin from the element
           const computedStyle = window.getComputedStyle(lastLongFormContent);
           const contentPadding = parseFloat(computedStyle.paddingBottom) || 0;
