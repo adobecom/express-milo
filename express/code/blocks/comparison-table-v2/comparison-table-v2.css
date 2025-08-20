@@ -945,6 +945,11 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         padding: 0 var(--spacing-400);
     } 
 
+    .comparison-table-v2.columns-3 .sticky-header.is-stuck .sticky-header-wrapper{
+        max-width: 1100px;
+        width: var(--ax-grid-9-col-width);
+    }
+
     .comparison-table-v2 .feature-cell {
         display: flex;
         flex-direction: column;
