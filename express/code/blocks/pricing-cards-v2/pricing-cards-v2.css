@@ -80,7 +80,6 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  padding: 1px;
 }
 
 .pricing-cards-v2 .gradient-promo {
@@ -94,6 +93,7 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
 .pricing-cards-v2 .gen-ai-promo .card,
 .pricing-cards-v2 .gradient-promo .card {
   border: 2px solid transparent;
+  margin: 1px;
 }
 
 .pricing-cards-v2 .gen-ai-promo div:empty,
