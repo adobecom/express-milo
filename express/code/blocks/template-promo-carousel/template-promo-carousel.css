@@ -146,10 +146,11 @@
 
 .template-promo-carousel .template .share-icon-wrapper {
   position: absolute;
-  top: var(--spacing-100);
-  right: var(--spacing-100);
+  top: var(--spacing-300);
+  right: var(--spacing-300);
   border-radius: 50%;
   height: 20px;
+  opacity: 1;
 }
 
 .template-promo-carousel .sr-only {
