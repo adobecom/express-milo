@@ -237,29 +237,6 @@ function preventOverlapWithFooter(position, tocElement) {
 }
 
 /**
- * Stops TOC scroll when reaching the section with link-list-wrapper on desktop
- * @param {number} position - Current position
- * @param {HTMLElement} tocElement - TOC element
- * @returns {number} Adjusted position
- */
-function preventScrollPastLinkList(position, tocElement) {
-  // Only apply this constraint when we're in desktop viewport and the TOC will be fixed
-  if (!isDesktopViewport()) {
-    return position;
-  }
-
-  const linkListSection = document.querySelector('.section:has(.link-list-v2-wrapper)');
-  if (!linkListSection) return position;
-
-  // Cache layout measurements to avoid multiple layout recalculations
-  const sectionTop = linkListSection.offsetTop - window.pageYOffset;
-  const tocHeight = tocElement.offsetHeight;
-  const maxTopPosition = sectionTop - tocHeight;
-
-  return Math.min(position, maxTopPosition);
-}
-
-/**
  * Applies the calculated position to the TOC element
  * @param {HTMLElement} tocElement - TOC element to position
  * @param {number} topPosition - Calculated top position
@@ -293,7 +270,6 @@ function handleDesktopPositioning(tocElement) {
   let position = calculateInitialPosition(anchorElement);
   position = applyMinimumDistance(position);
   position = preventOverlapWithFooter(position, tocElement);
-  position = preventScrollPastLinkList(position, tocElement);
 
   // Apply text bottom boundary constraint
   const { textBottomBoundary } = tocElement.dataset;
@@ -779,7 +755,7 @@ function setupEventHandlers(tocElement) {
           const paragraphStyle = lastParagraph ? window.getComputedStyle(lastParagraph) : null;
           const paragraphMargin = paragraphStyle ? parseFloat(paragraphStyle.marginBottom) || 0 : 0;
 
-          const additionalSpacing = 65; // Additional spacing for visual comfort
+          const additionalSpacing = 10; // Reduced spacing since padding-bottom was removed from .content
           const textBottom = contentRect.bottom - contentPadding - paragraphMargin
             - additionalSpacing;
 
