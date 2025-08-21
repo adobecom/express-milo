@@ -105,7 +105,7 @@ export const QA_CONFIGS = {
   'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'edit-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
-  'edit-image': { ...getBaseImgCfg(JPG, JPEG, PNG) },
+  'edit-image': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
 };
 
 // Experimental variants
