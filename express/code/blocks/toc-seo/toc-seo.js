@@ -775,7 +775,7 @@ function setupEventHandlers(tocElement) {
           const paragraphStyle = lastParagraph ? window.getComputedStyle(lastParagraph) : null;
           const paragraphMargin = paragraphStyle ? parseFloat(paragraphStyle.marginBottom) || 0 : 0;
 
-          const additionalSpacing = 10; // Reduced spacing since padding-bottom was removed from .content
+          const additionalSpacing = 10;
           const textBottom = contentRect.bottom - contentPadding - paragraphMargin
             - additionalSpacing;
 
