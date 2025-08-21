@@ -265,7 +265,7 @@ function preventScrollPastLinkList(position, tocElement) {
  * @param {number} topPosition - Calculated top position
  */
 function applyPositionToElement(tocElement, topPosition) {
-  tocElement.style.setProperty('--toc-top-position', `${topPosition + 65}px`);
+  tocElement.style.setProperty('--toc-top-position', `${topPosition + 45}px`);
   tocElement.classList.add('toc-desktop');
 }
 
