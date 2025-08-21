@@ -173,6 +173,12 @@
   line-height: 130%;
 }
 
+@media (min-width: 600px) {
+  .ax-template-promo.multiple-up .gallery {
+    overflow: unset;
+  }
+}
+
 @media (min-width: 768px) {
   .ax-template-promo.one-up h3 {
     color: var(--color-gray-700-variant);
