@@ -5,6 +5,29 @@ let createTag;
 let getConfig;
 let replaceKey;
 
+async function handleOneUp(blockElement, {imageElements, templateLinks }) {
+  const parent = blockElement.parentElement;
+  parent.classList.add('one-up');
+  const img = imageElements[0];
+
+  const templateEditLink = templateLinks[0];
+  templateEditLink.style.display = 'none';
+
+  const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  const editTemplateButton = createTag('a', {
+    href: templateEditLink?.href,
+    title: `${editThisTemplate} ${img?.alt}`,
+    class: 'button accent',
+    'aria-label': `${editThisTemplate} ${img?.alt}`,
+  });
+
+  editTemplateButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  const buttonContainer = createTag('section', { class: 'button-container' });
+  buttonContainer.append(editTemplateButton);
+
+  parent.append(buttonContainer);
+}
+
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig } = utils);
@@ -13,43 +36,15 @@ export default async function decorate(block) {
 
   block.parentElement.classList.add('ax-template-promo');
 
-  const freePremiumTags = [];
-  const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])]
-    || [...(block?.querySelectorAll('div:last-child') || [])];
-
-  premiumTagsElements.forEach((tag) => {
-    if (tag.lastChild.nodeName === '#text' && tag.children.length === 0) {
-      freePremiumTags.push(tag);
-      tag.style.display = 'none';
-    }
-  });
-
-  async function handleOneUp(blockElement) {
-    const parent = blockElement.parentElement;
-    parent.classList.add('one-up');
-    const img = blockElement?.querySelector('picture img');
-
-    const templateEditLink = blockElement?.querySelector('a');
-    templateEditLink.style.display = 'none';
-
-    const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
-    const editTemplateButton = createTag('a', {
-      href: templateEditLink?.href,
-      title: `${editThisTemplate} ${img?.alt}`,
-      class: 'button accent',
-      'aria-label': `${editThisTemplate} ${img?.alt}`,
-    });
-
-    editTemplateButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
-    const buttonContainer = createTag('section', { class: 'button-container' });
-    buttonContainer.append(editTemplateButton);
-
-    parent.append(buttonContainer);
-  }
-
+  const templateLinks = [...(block?.querySelectorAll('a') || [])];
   const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
+  const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])];
+  premiumTagsElements.forEach((tag) => tag.style.display = 'none');
   const isOneUp = imageElements.length === 1;
+  const variantsData = { premiumTagsElements, imageElements, templateLinks };
 
   // INIT LOGIC
-  isOneUp ? handleOneUp(block) : templatePromoCarousel(block, imageElements);
+  isOneUp 
+    ? handleOneUp(block, variantsData) 
+    : templatePromoCarousel(block, variantsData);
 }

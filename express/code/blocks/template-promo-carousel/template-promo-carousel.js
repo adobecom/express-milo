@@ -30,23 +30,18 @@ async function createTemplatesContainer(templatesParm) {
   };
 }
 
-export default async function init(el, imageElementsArray) {
+export default async function init(el, { premiumTagsElements, imageElements, templateLinks}) {
   el.parentElement.classList.add('multiple-up');
-  const imageElements = imageElementsArray || [...(el?.querySelectorAll('picture') || [])];
-  const templateLinks = [...(el?.querySelectorAll('a') || [])];
-  const freePremiumTags = [];
+  const freePremiumTags = premiumTagsElements;
 
-  templateLinks.forEach((aTag) => {
-    freePremiumTags.push(aTag?.parentElement.nextElementSibling.innerText || '');
-    aTag?.parentElement.nextElementSibling.remove();
-  });
+  templateLinks.forEach((aTag) => aTag?.parentElement.nextElementSibling.remove() );
 
   el.classList.add('template-promo-carousel');
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
 
   const templatesArray = imageElements.map((img, index) => {
     const imagesToTemplateInfoMap = {
-      licensingCategory: freePremiumTags[index]?.toLowerCase(),
+      licensingCategory: freePremiumTags[index]?.textContent?.trim()?.toLowerCase(),
       'dc:title': {
         'i-default': img?.alt || '',
       },
