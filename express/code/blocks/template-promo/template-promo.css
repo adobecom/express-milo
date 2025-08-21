@@ -141,10 +141,6 @@
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     box-sizing: border-box;
   }
-
-  .ax-template-promo.one-up.ax-collapsible-rows  .collapsible-rows {
-    margin-right: auto;
-  }
 }
 
 @media (min-width: 1680px) {
