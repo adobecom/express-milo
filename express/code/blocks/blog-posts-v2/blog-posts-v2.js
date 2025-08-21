@@ -222,16 +222,16 @@ async function getHeroCard(post, dateFormatter) {
     path, title, teaser, dateString, filteredTitle, imagePath,
   } = getCardParameters(post, dateFormatter);
   const heroPicture = createOptimizedPicture(`./media_${imagePath}?format=webply&optimize=medium&width=750`, title, false);
-  
+
   const card = createTag('a', {
     class: 'blog-hero-card',
     href: path,
   });
-  
+
   // Create image wrapper and tag
   const imageWrapper = createTag('div', { class: 'image-wrapper' });
   imageWrapper.appendChild(heroPicture);
-  
+
   const pictureTag = imageWrapper.outerHTML;
   card.innerHTML = `<div class="blog-card-image">
     ${pictureTag}
@@ -257,11 +257,11 @@ function getCard(post, dateFormatter) {
     class: 'blog-card',
     href: path,
   });
-  
+
   // Create image wrapper and tag
   const imageWrapper = createTag('div', { class: 'image-wrapper' });
   imageWrapper.appendChild(cardPicture);
-  
+
   const pictureTag = imageWrapper.outerHTML;
   card.innerHTML = `<div class="blog-card-image">
         ${pictureTag}

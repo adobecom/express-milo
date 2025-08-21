@@ -68,7 +68,9 @@ export default async function decorate(block) {
   const templateLinks = [...(block?.querySelectorAll('a') || [])];
   const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
   const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])];
-  premiumTagsElements.forEach((tag) => tag.style.display = 'none');
+  premiumTagsElements.forEach((tag) => {
+    tag.style.display = 'none';
+  });
   const isOneUp = imageElements.length === 1;
   const variantsData = { imageElements, templateLinks, premiumTagsElements };
 

@@ -544,8 +544,6 @@ function getStillWrapperIcons(template) {
   }
   if (videoIcon) videoIcon.classList.add('media-type-icon');
   return { planIcon, videoIcon };
-
-  console.log('getStillWrapperIcons -> videoIcon', videoIcon);
 }
 
 function renderStillWrapper(template) {
