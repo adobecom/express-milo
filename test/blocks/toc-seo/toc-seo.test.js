@@ -275,10 +275,10 @@ describe('Table of Contents SEO - Safari Compatibility Test', () => {
   it('should work when requestIdleCallback is not available (Safari fallback)', async () => {
     // Store original requestIdleCallback
     const originalRequestIdleCallback = window.requestIdleCallback;
-    
+
     // Remove requestIdleCallback to simulate Safari
     delete window.requestIdleCallback;
-    
+
     try {
       const toc = await setupTest('./mocks/body.html');
       const socialIcons = toc.querySelector('.toc-social-icons');
