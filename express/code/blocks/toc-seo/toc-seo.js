@@ -20,7 +20,7 @@ const CONFIG = {
     highlight: '.section div.highlight',
     toc: '.toc-container',
     linkListWrapper: '.section:has(.link-list-wrapper)',
-    headers: 'main h2, main h3, main h4',
+    headers: 'main .section.long-form .content h2, main .section.long-form .content h3, main .section.long-form .content h4',
   },
   socialIcons: ['x', 'facebook', 'linkedin', 'link'],
   aria: {
@@ -326,6 +326,14 @@ function updateActiveTOCLink(toc) {
       activeHeader = element;
     }
   });
+
+  // If no header was found above the offset (TOC stopped at bottom), use the last visible header
+  if (!activeHeader) {
+    const visibleHeaders = headerRects.filter(({ rect }) => rect.top < window.innerHeight);
+    if (visibleHeaders.length > 0) {
+      activeHeader = visibleHeaders[visibleHeaders.length - 1].element;
+    }
+  }
 
   // Remove active class from all links
   tocLinks.forEach((link) => {
