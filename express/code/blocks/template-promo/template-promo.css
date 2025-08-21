@@ -60,6 +60,7 @@
 .ax-template-promo.multiple-up .template-promo,
 .ax-template-promo.one-up {
   padding: 20px;
+  z-index: 999;
 }
 .ax-template-promo.multiple-up .template-promo {
   padding-right: 0;
