@@ -95,7 +95,6 @@
   height: 30px;
   bottom: var(--spacing-100);
   right: var(--spacing-100);
-  z-index: 10;
 }
 
 .ax-template-promo.one-up .image-wrapper .icon-premium {
@@ -104,7 +103,6 @@
   height: 30px;
   bottom: var(--spacing-100);
   right: var(--spacing-100);
-  z-index: 10;
 }
 
 /* One-up h3 typography - Mobile First */
