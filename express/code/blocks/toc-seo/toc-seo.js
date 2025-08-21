@@ -892,7 +892,10 @@ function setupAllEventHandlers(elements) {
   setupScrollTracking(toc);
 
   // Load social icons asynchronously after TOC is in DOM
-  requestIdleCallback(() => {
+  // Safari doesn't support requestIdleCallback, use setTimeout as fallback
+  const idleCallback = window.requestIdleCallback || ((callback) => setTimeout(callback, 0));
+
+  idleCallback(() => {
     const realSocialIcons = createSocialIcons();
     // Move the actual DOM elements instead of copying innerHTML
     while (realSocialIcons.firstChild) {
@@ -910,35 +913,52 @@ function setupAllEventHandlers(elements) {
  */
 export default async function decorate(block) {
   try {
-    // Hide the original block immediately to prevent FOUC
-    block.style.display = 'none';
+    // Debug logging for Safari
+    console.log('TOC: Starting decoration', { userAgent: navigator.userAgent });
 
     // Phase 1: Initialize dependencies
     const utils = await initializeDependencies();
     createTag = utils.createTag;
     getMetadata = utils.getMetadata;
 
+    console.log('TOC: Dependencies loaded', utils);
+
     // Phase 2: Read block configuration
     const config = buildBlockConfig(block);
+    console.log('TOC: Config built', config);
 
     // Phase 3: Create TOC structure
     const elements = createTOCStructure(config);
+    console.log('TOC: Structure created', elements);
 
     // Phase 4: Assemble TOC
     const toc = assembleTOC(elements);
+    console.log('TOC: Assembled', toc);
 
     // Phase 5: Setup event handlers
     setupAllEventHandlers(elements);
+    console.log('TOC: Event handlers set up');
 
     // Phase 6: Insert TOC after highlight element
     const highlightElement = document.querySelector('.highlight');
+    console.log('TOC: Highlight element found', highlightElement);
+
     if (highlightElement) {
       // Insert after the highlight element
       highlightElement.insertAdjacentElement('afterend', toc);
+      console.log('TOC: Inserted after highlight');
+      // Hide the original block after successful TOC creation
+      block.style.display = 'none';
     } else {
+      console.log('TOC: No highlight element found');
       window.lana?.log('TOC Block: No highlight element found. TOC will not be displayed.');
+      // Hide the original block even if TOC creation fails
+      block.style.display = 'none';
     }
   } catch (error) {
+    console.error('TOC: Error setting up TOC Block:', error);
     window.lana?.log('Error setting up TOC Block:', error);
+    // Hide the original block even if there's an error
+    block.style.display = 'none';
   }
 }
