@@ -222,13 +222,20 @@ async function getHeroCard(post, dateFormatter) {
     path, title, teaser, dateString, filteredTitle, imagePath,
   } = getCardParameters(post, dateFormatter);
   const heroPicture = createOptimizedPicture(`./media_${imagePath}?format=webply&optimize=medium&width=750`, title, false);
+
   const card = createTag('a', {
     class: 'blog-hero-card',
     href: path,
   });
-  const pictureTag = heroPicture.outerHTML;
+
+  // Create image wrapper and tag
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
+  imageWrapper.appendChild(heroPicture);
+
+  const pictureTag = imageWrapper.outerHTML;
   card.innerHTML = `<div class="blog-card-image">
     ${pictureTag}
+    <span class="blog-tag">Social Media</span>
     </div>
     <div class="blog-hero-card-body">
       <h3 class="blog-card-title">${filteredTitle}</h3>
@@ -249,9 +256,15 @@ function getCard(post, dateFormatter) {
     class: 'blog-card',
     href: path,
   });
-  const pictureTag = cardPicture.outerHTML;
+
+  // Create image wrapper and tag
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
+  imageWrapper.appendChild(cardPicture);
+
+  const pictureTag = imageWrapper.outerHTML;
   card.innerHTML = `<div class="blog-card-image">
         ${pictureTag}
+        <span class="blog-tag">Social Media</span>
         </div>
         <section class="blog-card-body">
         <h3 class="blog-card-title">${filteredTitle}</h3>
@@ -343,6 +356,7 @@ function checkStructure(element, querySelectors) {
 }
 
 export default async function decorate(block) {
+  block.parentElement.classList.add('ax-blog-posts-container');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ getConfig, createTag, getLocale } = utils);
     ({ replaceKey } = placeholders);
