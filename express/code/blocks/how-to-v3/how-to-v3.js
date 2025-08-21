@@ -84,6 +84,7 @@ function buildAccordion(block, rows, stepsContent) {
 }
 
 export default function decorate(block) {
+  block.parentElement.classList.add('ax-how-to-v3-container');
   const rows = Array.from(block.children);
 
   const backgroundRow = block.children[0];
