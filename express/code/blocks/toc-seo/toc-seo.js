@@ -156,18 +156,30 @@ function scrollToHeader(headerText, toc) {
 
     if (isDesktop) {
       // On desktop, scroll header to be inline with TOC title
-      const tocTitle = toc.querySelector('.toc-title');
-      const tocTitleRect = tocTitle ? tocTitle.getBoundingClientRect()
-        : toc.getBoundingClientRect();
       const headerRect = targetHeader.getBoundingClientRect();
+      const headerAbsoluteTop = window.pageYOffset + headerRect.top;
 
-      // Calculate scroll distance to align header with TOC title
-      const scrollDistance = headerRect.top - tocTitleRect.top + 5;
+      // Find the highlight element to calculate TOC position
+      let anchorElement = document.querySelector(CONFIG.selectors.highlight);
+      if (!anchorElement) {
+        anchorElement = document.querySelector(CONFIG.selectors.section);
+      }
 
-      window.scrollBy({
-        top: scrollDistance,
-        behavior: 'smooth',
-      });
+      if (anchorElement) {
+        // Calculate where TOC should be positioned (using same logic as calculateInitialPosition)
+        const anchorBottom = anchorElement.offsetTop + anchorElement.offsetHeight;
+        let tocTop = anchorBottom - 60; // Same as initial calculation
+        tocTop = Math.max(tocTop, CONFIG.positioning.fixedTopDistance);
+
+        // Scroll so header aligns with where TOC title will be
+        const tocTitleTop = tocTop + 40; // Approximate TOC title position within TOC
+        const targetScroll = headerAbsoluteTop - tocTitleTop;
+
+        window.scrollTo({
+          top: Math.max(0, targetScroll),
+          behavior: 'smooth',
+        });
+      }
     } else {
       // Mobile and tablet behavior
       const isSticky = toc.classList.contains('toc-mobile-fixed');
