@@ -1134,7 +1134,8 @@ main .section.long-form.narrow {
 
 main .section.long-form .content {
   box-sizing: border-box;
-  padding: 0 20px 60px;
+  padding-left: 20px;
+  padding-right: 20px;
   max-width: unset;
   width: var(--ax-grid-12-col-width);
   margin: 0 auto;
@@ -1165,10 +1166,6 @@ main .section.long-form .content h2,
 main .section.long-form .content h3,
 main .section.long-form .content h4 {
   margin-top: 0;
-}
-
-main .section.long-form .content:has(h1, h2, h3, h4) {
-  padding-top: var(--spacing-800)
 }
 
 main .section.long-form .content p {
