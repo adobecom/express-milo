@@ -105,16 +105,6 @@
   right: var(--spacing-100);
 }
 
-/* One-up h3 typography - Mobile First */
-.ax-template-promo.one-up h3 {
-  color: var(--color-gray-700-variant);
-  font-family: var(--body-font-family);
-  font-size: var(--heading-font-size-xs);
-  font-style: normal;
-  font-weight: var(--heading-font-weight);
-  line-height: var(--heading-line-height);
-}
-
 .ax-template-promo.multiple-up {
   gap: var(--spacing-600);
 }
@@ -163,6 +153,24 @@
 
 .ax-template-promo.one-up .collapsible-row-accordion {
   margin: 0;
+}
+
+.ax-template-promo.one-up .collapsible-rows .collapsible-row-header {
+  color: var(--color-gray-700-variant);
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-style: normal;
+  font-weight: var(--heading-font-weight);
+  line-height: var(--heading-line-height);
+}
+
+.ax-template-promo.one-up .collapsible-rows .collapsible-row-sub-header {
+  color: var(--color-gray-700-variant);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
 }
 
 @media (min-width: 768px) {
@@ -226,8 +234,4 @@
   .ax-template-promo.one-up {
       margin: auto;
   }
-
-  /* .ax-template-promo.one-up .collapsible-rows {
-    width: 100% !important;
-  } */
 }
