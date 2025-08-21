@@ -1174,7 +1174,7 @@ main .section.long-form .content p {
 
 @media (min-width: 768px) {
   main .section.long-form .content {
-    padding: 0 40px 60px;
+    padding: 0 40px 0;
     width: var(--ax-grid-8-col-width);
     margin: 0 auto;
     box-sizing: border-box;
