@@ -54,6 +54,7 @@ main .ax-marquee-dynamic-hero p.button-container {
   width: 100%;
   height: auto;
   border-radius: 16px;
+  max-width: 835px;
 }
 
 
