@@ -26,22 +26,118 @@ if (typeof window !== 'undefined') {
   window.satellite = {
     track: () => {},
   };
+
+  // Mock utils functions that TOC-SEO uses
+  window.mockUtils = {
+    createTag: (tag, attributes, content) => {
+      const element = document.createElement(tag);
+      if (attributes) {
+        Object.keys(attributes).forEach((key) => {
+          if (key === 'class') {
+            element.className = attributes[key];
+          } else {
+            element.setAttribute(key, attributes[key]);
+          }
+        });
+      }
+      if (content) {
+        element.textContent = content;
+      }
+      return element;
+    },
+    getMetadata: (name) => {
+      const meta = document.querySelector(`meta[name="${name}"]`);
+      return meta ? meta.getAttribute('content') : '';
+    },
+  };
+
+  // Mock getLibs function
+  window.getLibs = () => '/test/scripts';
+
+  // Mock getIconElementDeprecated function
+  window.getIconElementDeprecated = (name) => {
+    const icon = document.createElement('span');
+    icon.classList.add('icon', `icon-${name}`);
+    return icon;
+  };
+
+  // Mock requestIdleCallback to execute immediately for testing
+  window.requestIdleCallback = (callback) => {
+    setTimeout(callback, 0);
+  };
 }
 
 const imports = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
-  import('../../../express/code/features/toc-seo/toc-seo.js'),
+  import('../../../express/code/blocks/toc-seo/toc-seo.js'),
 ]);
 
-const { default: setTOCSEO } = imports[1];
+const { default: decorate } = imports[1];
 
 const setupTest = async (htmlFile) => {
   const testBody = await readFile({ path: htmlFile });
   window.isTestEnv = true;
 
+  // Mock window width to be desktop (>= 1024px) for consistent testing
+  Object.defineProperty(window, 'innerWidth', {
+    writable: true,
+    configurable: true,
+    value: 1024,
+  });
+
   document.documentElement.innerHTML = testBody;
 
-  await setTOCSEO();
+  // Create a mock TOC block element
+  const tocBlock = document.createElement('div');
+  tocBlock.classList.add('toc-seo');
+
+  // Add mock configuration rows
+  const configRows = [
+    ['toc-title', 'Table of Contents'],
+    ['toc-aria-label', 'Table of Contents Links'],
+    ['content-1', 'First Section'],
+    ['content-2', 'Second Section'],
+    ['content-3', 'Third Section'],
+  ];
+
+  configRows.forEach(([key, value]) => {
+    const row = document.createElement('div');
+    const keyCell = document.createElement('div');
+    const valueCell = document.createElement('div');
+    keyCell.textContent = key;
+    valueCell.textContent = value;
+    row.appendChild(keyCell);
+    row.appendChild(valueCell);
+    tocBlock.appendChild(row);
+  });
+
+  // Add highlight element that TOC needs
+  const highlight = document.createElement('div');
+  highlight.classList.add('section');
+  const highlightDiv = document.createElement('div');
+  highlightDiv.classList.add('highlight');
+  highlight.appendChild(highlightDiv);
+  document.body.appendChild(highlight);
+
+  // Add main section with long-form content
+  const mainSection = document.createElement('main');
+  const section = document.createElement('div');
+  section.classList.add('section', 'long-form');
+  const content = document.createElement('div');
+  content.classList.add('content');
+
+  // Add test headers
+  ['First Section', 'Second Section', 'Third Section'].forEach((text) => {
+    const header = document.createElement('h2');
+    header.textContent = text;
+    content.appendChild(header);
+  });
+
+  section.appendChild(content);
+  mainSection.appendChild(section);
+  document.body.appendChild(mainSection);
+
+  await decorate(tocBlock);
   return document.querySelector('.toc-container');
 };
 
@@ -51,17 +147,9 @@ const cleanupTest = () => {
 
 describe('Table of Contents SEO - Basic Test', () => {
   it('should load without error', async () => {
-    const testBody = await readFile({ path: './mocks/body.html' });
-    window.isTestEnv = true;
-
-    document.documentElement.innerHTML = testBody;
-
-    await setTOCSEO();
-
-    const toc = document.querySelector('.toc-container');
+    const toc = await setupTest('./mocks/body.html');
     expect(toc).to.exist;
-
-    document.documentElement.innerHTML = '';
+    cleanupTest();
   });
 });
 
@@ -128,15 +216,22 @@ describe('Table of Contents SEO - Links Test', () => {
 
 describe('Table of Contents SEO - Error Handling Test', () => {
   it('should handle missing metadata gracefully', async () => {
-    const testBody = await readFile({ path: './mocks/body.html' });
     window.isTestEnv = true;
 
-    // Remove metadata to test error handling
-    const modifiedBody = testBody.replace(/<meta name="toc-title"/, '<!-- <meta name="toc-title"');
-    document.documentElement.innerHTML = modifiedBody;
+    // Create a TOC block without full configuration
+    const tocBlock = document.createElement('div');
+    tocBlock.classList.add('toc-seo');
 
-    // Should not throw an error
-    await setTOCSEO();
+    // Add minimal highlight element
+    const highlight = document.createElement('div');
+    highlight.classList.add('section');
+    const highlightDiv = document.createElement('div');
+    highlightDiv.classList.add('highlight');
+    highlight.appendChild(highlightDiv);
+    document.body.appendChild(highlight);
+
+    // Should not throw an error even with minimal config
+    await decorate(tocBlock);
 
     cleanupTest();
   });
@@ -148,7 +243,15 @@ describe('Table of Contents SEO - Social Icons Test', () => {
     const socialIcons = toc.querySelector('.toc-social-icons');
 
     expect(socialIcons).to.exist;
-    expect(socialIcons.children.length).to.be.greaterThan(0);
+
+    // Wait for async social icons loading to complete
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        // After async loading, social icons should be present
+        expect(socialIcons.children.length).to.be.greaterThan(0);
+        resolve();
+      }, 10);
+    });
 
     cleanupTest();
   });
