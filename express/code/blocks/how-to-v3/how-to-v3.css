@@ -147,10 +147,11 @@
   .how-to-v3 .steps-content .media-container::before {
     content: '';
     position: absolute;
-    width: 170%;
+    width: 140%;
     height: 135%;
-    left: -175px;
-    top: -60px;
+    left: 40%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     z-index: -1;
     background-image: 
       linear-gradient(to bottom, transparent 85%, white 100%),
@@ -259,11 +260,13 @@
     }
   
     .how-to-v3 .steps-content .media-container::before {
-      width: 70vw;
-      max-width: 700px;
+      width: 60vw;
+      max-width: 600px;
       height: calc(55vh + (20 * (100vw - 768px) / 432));
       max-height: 700px;
-      top: -180px;
+      left: 40%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       background-image: 
         linear-gradient(to bottom, transparent 85%, white 100%),
         linear-gradient(to right, transparent 85%, white 100%),
@@ -315,11 +318,21 @@
       align-items: center;
       gap: var(--spacing-500);
     }
+
+    .how-to-v3 .steps-content .media-container::before {
+      width: 50vw;
+      max-width: 500px;
+      height: 50vh;
+      max-height: 500px;
+      left: 40%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   @media screen and (min-width: 1680px) {
     .section.ax-how-to-v3-container, .how-to-v3  {
         margin: auto;
     }
-}
+  }
   
