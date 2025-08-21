@@ -270,3 +270,37 @@ describe('Table of Contents SEO - Configuration Test', () => {
     cleanupTest();
   });
 });
+
+describe('Table of Contents SEO - Safari Compatibility Test', () => {
+  it('should work when requestIdleCallback is not available (Safari fallback)', async () => {
+    // Store original requestIdleCallback
+    const originalRequestIdleCallback = window.requestIdleCallback;
+    
+    // Remove requestIdleCallback to simulate Safari
+    delete window.requestIdleCallback;
+    
+    try {
+      const toc = await setupTest('./mocks/body.html');
+      const socialIcons = toc.querySelector('.toc-social-icons');
+
+      expect(toc).to.exist;
+      expect(socialIcons).to.exist;
+
+      // Wait for setTimeout fallback to execute
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          // Social icons should still be loaded via setTimeout fallback
+          expect(socialIcons.children.length).to.be.greaterThan(0);
+          resolve();
+        }, 20);
+      });
+
+      cleanupTest();
+    } finally {
+      // Restore original requestIdleCallback
+      if (originalRequestIdleCallback) {
+        window.requestIdleCallback = originalRequestIdleCallback;
+      }
+    }
+  });
+});
