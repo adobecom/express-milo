@@ -299,7 +299,7 @@ const listenAlloy = () => {
   }, 3000);
 };
 
-(async function loadPage() {
+async function loadPage() {
   if (window.isTestEnv) return;
   const {
     loadArea,
@@ -375,7 +375,9 @@ const listenAlloy = () => {
   import('./express-delayed.js').then((mod) => {
     mod.default();
   });
-}());
+}
+
+loadPage();
 
 (async function loadDa() {
   if (!new URL(window.location.href).searchParams.get('dapreview')) return;
