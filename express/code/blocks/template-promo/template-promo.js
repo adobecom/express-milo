@@ -1,70 +1,81 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
+import templatePromoCarousel from '../template-promo-carousel/template-promo-carousel.js';
 
 let createTag;
 let getConfig;
 let replaceKey;
 
+function getStillWrapperIcons(templateType) {
+  let planIcon = null;
+  if (templateType === 'free') {
+    planIcon = createTag('span', { class: 'free-tag' });
+    planIcon.append('Free');
+  } else {
+    planIcon = getIconElementDeprecated('premium');
+  }
+  return { planIcon };
+}
+
+async function handleOneUp(blockElement, { imageElements, templateLinks, premiumTagsElements }) {
+  const parent = blockElement.parentElement;
+  parent.classList.add('one-up');
+  const img = imageElements[0];
+  const templateType = premiumTagsElements[0]?.textContent?.trim().toLowerCase();
+
+  // Create image wrapper following the same pattern as template rendering
+  const imgWrapper = createTag('div', { class: 'image-wrapper' });
+
+  if (img && img.parentElement) {
+    img.parentElement.insertBefore(imgWrapper, img);
+    imgWrapper.append(img);
+  }
+
+  // Get and append the plan icon to the image wrapper
+  const { planIcon } = getStillWrapperIcons(templateType);
+  if (planIcon) {
+    imgWrapper.append(planIcon);
+  }
+
+  const templateEditLink = templateLinks[0];
+  templateEditLink.style.display = 'none';
+
+  const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  const editTemplateButton = createTag('a', {
+    href: templateEditLink?.href,
+    title: `${editThisTemplate} ${img?.alt}`,
+    class: 'button accent',
+    'aria-label': `${editThisTemplate} ${img?.alt}`,
+  });
+
+  editTemplateButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  const buttonContainer = createTag('section', { class: 'button-container' });
+  buttonContainer.append(editTemplateButton);
+
+  parent.append(buttonContainer);
+}
+
 export default async function decorate(block) {
-  // block.parentElement.style.visibility = 'hidden';
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
+    const { createTag: createTagUtil, getConfig: getConfigUtil } = utils;
+    const { replaceKey: replaceKeyUtil } = placeholders;
+    createTag = createTagUtil;
+    getConfig = getConfigUtil;
+    replaceKey = replaceKeyUtil;
+  });
+
   block.parentElement.classList.add('ax-template-promo');
 
-  const freePremiumTags = [];
-  const premiumTagsElements = [...(block?.querySelectorAll('div:last-child') || [])];
+  const templateLinks = [...(block?.querySelectorAll('a') || [])];
+  const imageElements = [...(block?.querySelectorAll('picture > img') || [])];
+  const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])];
   premiumTagsElements.forEach((tag) => {
-    if (tag.lastChild.nodeName === '#text' && tag.children.length === 0) {
-      freePremiumTags.push(tag);
-      tag.style.display = 'none';
-    }
+    tag.style.display = 'none';
   });
-
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
-  });
-
-  async function handleOneUp(blockElement) {
-    const parent = blockElement.parentElement;
-    parent.classList.add('one-up');
-    const img = blockElement?.querySelector('picture img');
-
-    const templateEditLink = blockElement?.querySelector('a');
-    templateEditLink.style.display = 'none';
-
-    const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
-    const editTemplateButton = createTag('a', {
-      href: templateEditLink.href,
-      title: `${editThisTemplate} ${img.alt}`,
-      class: 'button accent',
-      'aria-label': `${editThisTemplate} ${img.alt}`,
-    });
-
-    editTemplateButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
-    const buttonContainer = createTag('section', { class: 'button-container' });
-    buttonContainer.append(editTemplateButton);
-
-    parent.append(buttonContainer);
-  }
-
-  async function handleMultipleVariants(multipleVariantsBlock = block) {
-    const MULTIPLE_UP = 'multiple-up';
-    const pictureElements = [...(multipleVariantsBlock?.querySelectorAll('picture') || [])];
-
-    pictureElements.forEach((picture) => {
-      picture.parentElement.parentElement.classList.add('image-container');
-    });
-
-    const parent = multipleVariantsBlock.parentElement;
-    parent.classList.add(MULTIPLE_UP);
-
-    const templateEditLinks = [...(multipleVariantsBlock?.querySelectorAll('a') || [])];
-    templateEditLinks.forEach((link) => {
-      link.style.display = 'none';
-    });
-  }
-
-  const pictureElements = [...(block?.querySelectorAll('picture') || [])];
-  const isOneUp = pictureElements.length === 1;
+  const isOneUp = imageElements.length === 1;
+  const variantsData = { imageElements, templateLinks, premiumTagsElements };
 
   // INIT LOGIC
-  isOneUp ? handleOneUp(block) : handleMultipleVariants(block);
+  isOneUp
+    ? handleOneUp(block, variantsData)
+    : templatePromoCarousel(block, variantsData);
 }

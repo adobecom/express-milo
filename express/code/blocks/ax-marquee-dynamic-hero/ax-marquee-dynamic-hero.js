@@ -12,7 +12,7 @@ const CLASS_NAMES = {
   BUTTON: 'button',
   ACCENT: 'accent',
   EXPRESS_LOGO: 'express-logo',
-  HERO_TOP: 'hero-top',
+  HERO_TOP: 'hero-top-mobile',
   HERO_ANIMATION_OVERLAY: 'hero-animation-overlay',
   VIDEO_CONTAINER: 'video-container',
   AX_MARQUEE_DYNAMIC_HERO: 'ax-marquee-dynamic-hero',
