@@ -391,10 +391,17 @@ main .section:has(.blog-posts-v2) > .content > h3 {
 
 @media (min-width: 1024px) {
     .section.ax-blog-posts-container {
+        flex-direction: column;
         padding: var(--spacing-900) var(--spacing-600);
+        max-width: 100%;
+        align-items: center;
+    }
+
+    .section.ax-blog-posts-container .content, .section.ax-blog-posts-container .blog-posts-wrapper {
+        padding-left: var(--spacing-600);
+        padding-right: var(--spacing-600);
+        width: 100%;
         max-width: var(--block-wd-grid-max-width);
-        margin-right: auto;
-        margin-left: auto;
     }
 
     main .blog-posts-v2 .blog-hero-card .blog-card-image {
