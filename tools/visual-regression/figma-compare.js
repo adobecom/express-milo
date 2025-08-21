@@ -8,7 +8,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import VisualRegression from './index.js';
-import FigmaExporter from './figma_exporter.js';
+import { downloadFromUrl } from './figma_exporter.js';
+import { generateFigmaComparisonReport, generateInteractiveFigmaReport } from './reports/reporter.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -39,8 +40,7 @@ program
       // Check if reference is a Figma URL
       if (reference.includes('figma.com')) {
         spinner.text = 'Downloading Figma reference image...';
-        const figmaExporter = new FigmaExporter();
-        const figmaResult = await figmaExporter.downloadFromUrl(reference, 'figma-reference.png');
+        const figmaResult = await downloadFromUrl(reference, 'figma-reference.png');
         referencePath = figmaResult.path;
         figmaDimensions = { width: figmaResult.width, height: figmaResult.height };
 
@@ -136,29 +136,27 @@ program
         console.log(chalk.gray(`  Diff: ${diffPath}`));
 
         // Create HTML report (interactive or simple)
+        const reportData = {
+          referencePath,
+          screenshotPath,
+          diffPath,
+          websiteUrl,
+          reference,
+          viewport,
+          pixelDifference: diffResult.percentDiff,
+          success,
+          threshold,
+        };
+        
         const reportPath = options.interactive 
-          ? await createInteractiveReport({
-              referencePath,
-              screenshotPath,
-              diffPath,
-              websiteUrl,
-              reference,
-              viewport,
-              pixelDifference: diffResult.percentDiff,
-              success,
-              threshold,
-            })
-          : await createSimpleReport({
-              referencePath,
-              screenshotPath,
-              diffPath,
-              websiteUrl,
-              reference,
-              viewport,
-              pixelDifference: diffResult.percentDiff,
-              success,
-              threshold,
-            });
+          ? await generateInteractiveFigmaReport(
+              reportData,
+              path.join(__dirname, 'output', 'interactive-figma-comparison.html')
+            )
+          : await generateFigmaComparisonReport(
+              reportData,
+              path.join(__dirname, 'output', 'figma-comparison-report.html')
+            );
 
         console.log(chalk.blue(`\\n📄 Report: ${reportPath}`));
 
@@ -177,98 +175,6 @@ program
     }
   });
 
-async function createInteractiveReport(data) {
-  const template = fs.readFileSync(path.join(__dirname, 'interactive-report-template.html'), 'utf8');
-  
-  const html = template
-    .replace(/reference\.png/g, path.relative(path.join(__dirname, 'output'), data.referencePath))
-    .replace(/screenshot\.png/g, path.relative(path.join(__dirname, 'output'), data.screenshotPath))
-    .replace('<title>Interactive Visual Comparison</title>', 
-      `<title>Interactive Figma Comparison - ${data.success ? 'PASS' : 'FAIL'}</title>`)
-    .replace('<h1>Interactive Visual Comparison</h1>', 
-      `<h1>Interactive Figma Comparison - ${data.success ? '✅ PASS' : '❌ FAIL'}</h1>
-       <p>Reference: <strong>${data.reference}</strong></p>
-       <p>Website: <strong>${data.websiteUrl}</strong></p>
-       <p>Viewport: <strong>${data.viewport.width}x${data.viewport.height}</strong></p>
-       <p>Pixel Difference: <strong style="color: ${data.success ? '#28a745' : '#dc3545'}">${data.pixelDifference.toFixed(2)}%</strong> (threshold: ${data.threshold}%)</p>
-       <p>Generated: ${new Date().toLocaleString()}</p>`);
-  
-  const reportPath = path.join(__dirname, 'output', 'interactive-figma-comparison.html');
-  fs.writeFileSync(reportPath, html);
-  return reportPath;
-}
 
-async function createSimpleReport(data) {
-  const html = `
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Figma Comparison Report</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
-        .header { background: #333; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .comparison { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px; }
-        .metric { background: #f8f8f8; padding: 15px; border-radius: 4px; text-align: center; }
-        .metric .value { font-size: 24px; font-weight: bold; margin: 10px 0; }
-        .good { color: #28a745; }
-        .bad { color: #dc3545; }
-        .images { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .image-container { text-align: center; }
-        .image-container h4 { margin: 10px 0; }
-        .image-container img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px; }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Figma Comparison Report</h1>
-        <p>Reference: <strong>${data.reference}</strong></p>
-        <p>Website: <strong>${data.websiteUrl}</strong></p>
-        <p>Viewport: <strong>${data.viewport.width}x${data.viewport.height}</strong></p>
-        <p>Generated: ${new Date().toLocaleString()}</p>
-    </div>
-    
-    <div class="comparison">
-        <h2>Comparison Results</h2>
-        
-        <div class="metrics">
-            <div class="metric">
-                <div>Test Result</div>
-                <div class="value ${data.success ? 'good' : 'bad'}">
-                    ${data.success ? 'PASS' : 'FAIL'}
-                </div>
-            </div>
-            <div class="metric">
-                <div>Pixel Difference</div>
-                <div class="value ${data.pixelDifference < data.threshold ? 'good' : 'bad'}">
-                    ${data.pixelDifference.toFixed(2)}%
-                </div>
-                <div style="font-size: 12px; color: #666;">Threshold: ${data.threshold}%</div>
-            </div>
-        </div>
-        
-        <div class="images">
-            <div class="image-container">
-                <h4>Reference (Figma)</h4>
-                <img src="../${path.relative(path.join(__dirname, 'output'), data.referencePath)}" alt="Reference">
-            </div>
-            <div class="image-container">
-                <h4>Website Screenshot</h4>
-                <img src="../${path.relative(path.join(__dirname, 'output'), data.screenshotPath)}" alt="Screenshot">
-            </div>
-            <div class="image-container">
-                <h4>Difference</h4>
-                <img src="../${path.relative(path.join(__dirname, 'output'), data.diffPath)}" alt="Diff">
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-  `;
-
-  const reportPath = path.join(__dirname, 'output', 'figma-comparison-report.html');
-  fs.writeFileSync(reportPath, html);
-  return reportPath;
-}
 
 program.parse();

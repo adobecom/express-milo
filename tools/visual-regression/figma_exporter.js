@@ -10,110 +10,113 @@ const __dirname = path.dirname(__filename);
 // Load environment variables from .env file
 dotenv.config({ path: path.join(__dirname, '.env') });
 
-class FigmaExporter {
-  constructor() {
-    this.token = process.env.FIGMA_TOKEN;
-    if (!this.token) {
-      throw new Error('FIGMA_TOKEN environment variable is required');
-    }
-    this.baseURL = 'https://api.figma.com/v1';
-    this.inputDir = path.join(__dirname, 'input');
+// Constants
+const FIGMA_BASE_URL = 'https://api.figma.com/v1';
+const INPUT_DIR = path.join(__dirname, 'input');
+
+// Utility functions
+const ensureInputDirectory = () => {
+  if (!fs.existsSync(INPUT_DIR)) {
+    fs.mkdirSync(INPUT_DIR, { recursive: true });
+  }
+};
+
+const getFigmaToken = () => {
+  const token = process.env.FIGMA_TOKEN;
+  if (!token) {
+    throw new Error('FIGMA_TOKEN environment variable is required');
+  }
+  return token;
+};
+
+// Parse Figma URL to extract file key and node ID
+export const parseFigmaUrl = (url) => {
+  const figmaUrlRegex = /figma\.com\/(?:file|proto|design)\/([A-Za-z0-9]+)\/[^?]*(?:\?.*node-id=([0-9-:]+))?/;
+  const match = url.match(figmaUrlRegex);
+
+  if (!match) {
+    throw new Error('Invalid Figma URL format');
   }
 
-  ensureInputDirectory() {
-    if (!fs.existsSync(this.inputDir)) {
-      fs.mkdirSync(this.inputDir, { recursive: true });
-    }
+  const fileKey = match[1];
+  let nodeId = match[2];
+
+  if (nodeId) {
+    nodeId = nodeId.replace(/-/g, ':');
   }
 
-  parseFigmaUrl(url) {
-    const figmaUrlRegex = /figma\.com\/(?:file|proto|design)\/([A-Za-z0-9]+)\/[^?]*(?:\?.*node-id=([0-9-:]+))?/;
-    const match = url.match(figmaUrlRegex);
+  return { fileKey, nodeId };
+};
 
-    if (!match) {
-      throw new Error('Invalid Figma URL format');
-    }
+// Download a Figma frame as PNG
+export const downloadFrame = async (fileKey, nodeId, filename = 'frame.png') => {
+  try {
+    ensureInputDirectory();
+    const token = getFigmaToken();
 
-    const fileKey = match[1];
-    let nodeId = match[2];
-
-    if (nodeId) {
-      nodeId = nodeId.replace(/-/g, ':');
-    }
-
-    return { fileKey, nodeId };
-  }
-
-  async downloadFrame(fileKey, nodeId, filename = 'frame.png') {
-    try {
-      this.ensureInputDirectory();
-
-      // Get image URLs from Figma API
-      const imageResponse = await fetch(
-        `${this.baseURL}/images/${fileKey}?ids=${nodeId}&format=png&scale=1`,
-        {
-          headers: {
-            'X-Figma-Token': this.token,
-          },
+    // Get image URLs from Figma API
+    const imageResponse = await fetch(
+      `${FIGMA_BASE_URL}/images/${fileKey}?ids=${nodeId}&format=png&scale=1`,
+      {
+        headers: {
+          'X-Figma-Token': token,
         },
-      );
+      },
+    );
 
-      if (!imageResponse.ok) {
-        throw new Error(`Figma API error: ${imageResponse.status} ${imageResponse.statusText}`);
-      }
-
-      const imageData = await imageResponse.json();
-
-      if (imageData.err) {
-        throw new Error(`Figma API error: ${imageData.err}`);
-      }
-
-      const imageUrl = imageData.images[nodeId];
-      if (!imageUrl) {
-        throw new Error(`No image URL found for node ${nodeId}`);
-      }
-
-      // Download the actual image
-      const downloadResponse = await fetch(imageUrl);
-      if (!downloadResponse.ok) {
-        throw new Error(`Failed to download image: ${downloadResponse.status} ${downloadResponse.statusText}`);
-      }
-
-      const buffer = await downloadResponse.arrayBuffer();
-      const outputPath = path.join(this.inputDir, filename);
-
-      fs.writeFileSync(outputPath, Buffer.from(buffer));
-
-      // Get image dimensions using Sharp
-      const metadata = await sharp(outputPath).metadata();
-
-      console.log(`Frame downloaded successfully to: ${outputPath}`);
-      console.log(`Dimensions: ${metadata.width}x${metadata.height}`);
-
-      return {
-        path: outputPath,
-        width: metadata.width,
-        height: metadata.height,
-      };
-    } catch (error) {
-      console.error('Error downloading frame:', error.message);
-      throw error;
-    }
-  }
-
-  async downloadFromUrl(figmaUrl, filename = 'figma-reference.png') {
-    const { fileKey, nodeId } = this.parseFigmaUrl(figmaUrl);
-
-    if (!nodeId) {
-      throw new Error('Figma URL must include a node-id parameter to specify which frame to export');
+    if (!imageResponse.ok) {
+      throw new Error(`Figma API error: ${imageResponse.status} ${imageResponse.statusText}`);
     }
 
-    return this.downloadFrame(fileKey, nodeId, filename);
-  }
-}
+    const imageData = await imageResponse.json();
 
-// Export for use as module
-export default FigmaExporter;
+    if (imageData.err) {
+      throw new Error(`Figma API error: ${imageData.err}`);
+    }
+
+    const imageUrl = imageData.images[nodeId];
+    if (!imageUrl) {
+      throw new Error(`No image URL found for node ${nodeId}`);
+    }
+
+    // Download the actual image
+    const downloadResponse = await fetch(imageUrl);
+    if (!downloadResponse.ok) {
+      throw new Error(`Failed to download image: ${downloadResponse.status} ${downloadResponse.statusText}`);
+    }
+
+    const buffer = await downloadResponse.arrayBuffer();
+    const outputPath = path.join(INPUT_DIR, filename);
+
+    fs.writeFileSync(outputPath, Buffer.from(buffer));
+
+    // Get image dimensions using Sharp
+    const metadata = await sharp(outputPath).metadata();
+
+    console.log(`Frame downloaded successfully to: ${outputPath}`);
+    console.log(`Dimensions: ${metadata.width}x${metadata.height}`);
+
+    return {
+      path: outputPath,
+      width: metadata.width,
+      height: metadata.height,
+    };
+  } catch (error) {
+    console.error('Error downloading frame:', error.message);
+    throw error;
+  }
+};
+
+// Download frame from Figma URL
+export const downloadFromUrl = async (figmaUrl, filename = 'figma-reference.png') => {
+  const { fileKey, nodeId } = parseFigmaUrl(figmaUrl);
+
+  if (!nodeId) {
+    throw new Error('Figma URL must include a node-id parameter to specify which frame to export');
+  }
+
+  return downloadFrame(fileKey, nodeId, filename);
+};
 
 // CLI usage
 if (import.meta.url === `file://${process.argv[1]}`) {
@@ -138,8 +141,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     process.exit(1);
   }
 
-  const exporter = new FigmaExporter();
-
   if (args[0] === 'url') {
     const [, figmaUrl, filename] = args;
 
@@ -149,7 +150,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(1);
     }
 
-    exporter.downloadFromUrl(figmaUrl, filename)
+    downloadFromUrl(figmaUrl, filename)
       .then((result) => {
         console.log(`✅ Download completed: ${result.path}`);
       })
@@ -166,7 +167,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       process.exit(1);
     }
 
-    exporter.downloadFrame(fileKey, nodeId, filename)
+    downloadFrame(fileKey, nodeId, filename)
       .then((result) => {
         console.log(`✅ Download completed: ${result.path}`);
       })
@@ -176,3 +177,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       });
   }
 }
+
+// Export all functions for use as a module
+export default {
+  parseFigmaUrl,
+  downloadFrame,
+  downloadFromUrl,
+};
