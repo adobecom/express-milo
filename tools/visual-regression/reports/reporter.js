@@ -161,9 +161,34 @@ export const generateInteractiveFigmaReport = async (data, outputPath) => {
   return outputPath;
 };
 
+// Generate live comparison report
+export const generateLiveComparisonReport = async (data, outputPath) => {
+  const template = await readTemplate('live-comparison-report.html');
+  
+  const outputDir = path.dirname(outputPath);
+  const templateData = {
+    sessionId: data.sessionId,
+    viewportName: data.viewportName,
+    timestamp: new Date().toLocaleString(),
+    status: data.diffPercentage <= data.threshold ? 'PASS ✅' : 'FAIL ❌',
+    statusClass: data.diffPercentage <= data.threshold ? 'pass' : 'fail',
+    diffPercentage: data.diffPercentage,
+    threshold: data.threshold,
+    comparisonCount: data.comparisonCount,
+    referenceImagePath: path.relative(outputDir, data.referenceImage),
+    snapshotPath: path.basename(data.snapshotPath),
+    diffPath: path.basename(data.diffPath),
+  };
+  
+  const html = replaceTemplateVars(template, templateData);
+  await fs.writeFile(outputPath, html);
+  return outputPath;
+};
+
 // Export all report generation functions
 export default {
   generateComparisonReport,
   generateFigmaComparisonReport,
   generateInteractiveFigmaReport,
+  generateLiveComparisonReport,
 };
