@@ -252,7 +252,6 @@ function getCard(post, dateFormatter) {
     path, title, teaser, filteredTitle, imagePath,
   } = getCardParameters(post, dateFormatter);
   const cardPicture = createOptimizedPicture(`./media_${imagePath}?format=webply&optimize=medium&width=750`, title, false, [{ width: '750' }]);
-  
   const card = createTag('a', {
     class: 'blog-card',
     href: path,
