@@ -139,7 +139,6 @@ main .blog-posts-v2 .blog-card .blog-card-image {
     font-style: normal;
     font-weight: 700;
     line-height: 130%;
-    z-index: 10;
 }
 
 main .blog-posts-v2 .blog-hero-card .blog-card-image {
@@ -177,7 +176,6 @@ main .blog-posts-v2 .blog-hero-card .blog-card-image {
     font-style: normal;
     font-weight: 700;
     line-height: 130%;
-    z-index: 10;
 }
 
 main .blog-posts-v2 .blog-card .blog-card-image img {
