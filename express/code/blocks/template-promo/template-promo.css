@@ -65,20 +65,28 @@
 }
 
 .ax-template-promo.one-up .image-wrapper .free-tag {
-  position: absolute;
-  height: 24px;
+  color: var(--Neutral-50, #FFF);
+  text-align: center;
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  
   display: flex;
-  border-radius: 1000px;
+  padding: 8px 12px;
+  justify-content: center;
   align-items: center;
-  font-weight: var(--body-font-weight-medium);
-  width: max-content;
-  top: var(--spacing-100);
-  right: var(--spacing-100);
-  color: var(--color-white);
-  font-size: var(--body-font-size-xs);
-  line-height: 16px;
-  padding: 0 var(--spacing-200);
-  background: #000000B3;
+  align-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  
+  border-radius: 50px;
+  background: rgba(36, 36, 36, 0.70);
 }
 
 .ax-template-promo.one-up .image-wrapper svg {
@@ -99,6 +107,16 @@
   z-index: 10;
 }
 
+/* One-up h3 typography - Mobile First */
+.ax-template-promo.one-up h3 {
+  color: var(--color-gray-700-variant);
+  font-family: var(--body-font-family);
+  font-size: var(--heading-font-size-xs);
+  font-style: normal;
+  font-weight: var(--heading-font-weight);
+  line-height: var(--heading-line-height);
+}
+
 .ax-template-promo.multiple-up {
   gap: var(--spacing-600);
 }
@@ -106,12 +124,11 @@
 .ax-template-promo.multiple-up .template-promo,
 .ax-template-promo.one-up {
   padding: 20px;
-  z-index: 3;
+  z-index: unset;
 }
 .ax-template-promo.multiple-up .template-promo {
   padding-right: 0;
 }
-
 
 .ax-template-promo.multiple-up .template-promo .image-container {
   max-height: 240px;
@@ -151,6 +168,15 @@
 }
 
 @media (min-width: 768px) {
+  .ax-template-promo.one-up h3 {
+    color: var(--color-gray-700-variant);
+    font-family: var(--body-font-family);
+    font-size: var(--heading-font-size-xs);
+    font-style: normal;
+    font-weight: var(--heading-font-weight);
+    line-height: var(--heading-line-height);
+  }
+
   .ax-template-promo.one-up .collapsible-rows {
     width: unset;
     margin: unset;
@@ -166,6 +192,14 @@
 }
 
 @media (min-width: 1024px) {
+  .ax-template-promo.one-up h3 {
+    color: var(--color-gray-700-variant);
+    font-family: var(--body-font-family);
+    font-size: var(--heading-font-size-s);
+    font-style: normal;
+    font-weight: var(--heading-font-weight);
+    line-height: var(--heading-line-height);
+  }
 
   .ax-template-promo.one-up .collapsible-rows {
     width: unset;
@@ -195,7 +229,7 @@
       margin: auto;
   }
 
-  .ax-template-promo.one-up .collapsible-rows {
+  /* .ax-template-promo.one-up .collapsible-rows {
     width: 100% !important;
-  }
+  } */
 }

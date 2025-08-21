@@ -222,13 +222,20 @@ async function getHeroCard(post, dateFormatter) {
     path, title, teaser, dateString, filteredTitle, imagePath,
   } = getCardParameters(post, dateFormatter);
   const heroPicture = createOptimizedPicture(`./media_${imagePath}?format=webply&optimize=medium&width=750`, title, false);
+  
   const card = createTag('a', {
     class: 'blog-hero-card',
     href: path,
   });
-  const pictureTag = heroPicture.outerHTML;
+  
+  // Create image wrapper and tag
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
+  imageWrapper.appendChild(heroPicture);
+  
+  const pictureTag = imageWrapper.outerHTML;
   card.innerHTML = `<div class="blog-card-image">
     ${pictureTag}
+    <span class="blog-tag">Social Media</span>
     </div>
     <div class="blog-hero-card-body">
       <h3 class="blog-card-title">${filteredTitle}</h3>
@@ -245,13 +252,20 @@ function getCard(post, dateFormatter) {
     path, title, teaser, filteredTitle, imagePath,
   } = getCardParameters(post, dateFormatter);
   const cardPicture = createOptimizedPicture(`./media_${imagePath}?format=webply&optimize=medium&width=750`, title, false, [{ width: '750' }]);
+  
   const card = createTag('a', {
     class: 'blog-card',
     href: path,
   });
-  const pictureTag = cardPicture.outerHTML;
+  
+  // Create image wrapper and tag
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
+  imageWrapper.appendChild(cardPicture);
+  
+  const pictureTag = imageWrapper.outerHTML;
   card.innerHTML = `<div class="blog-card-image">
         ${pictureTag}
+        <span class="blog-tag">Social Media</span>
         </div>
         <section class="blog-card-body">
         <h3 class="blog-card-title">${filteredTitle}</h3>
