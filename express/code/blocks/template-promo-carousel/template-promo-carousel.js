@@ -30,11 +30,11 @@ async function createTemplatesContainer(templatesParm) {
   };
 }
 
-export default async function init(el, { premiumTagsElements, imageElements, templateLinks}) {
+export default async function init(el, { premiumTagsElements, imageElements, templateLinks }) {
   el.parentElement.classList.add('multiple-up');
   const freePremiumTags = premiumTagsElements;
 
-  templateLinks.forEach((aTag) => aTag?.parentElement.nextElementSibling.remove() );
+  templateLinks.forEach((aTag) => aTag?.parentElement.nextElementSibling.remove());
 
   el.classList.add('template-promo-carousel');
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));

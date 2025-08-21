@@ -56,8 +56,11 @@ async function handleOneUp(blockElement, { imageElements, templateLinks, premium
 
 export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
+    const { createTag: createTagUtil, getConfig: getConfigUtil } = utils;
+    const { replaceKey: replaceKeyUtil } = placeholders;
+    createTag = createTagUtil;
+    getConfig = getConfigUtil;
+    replaceKey = replaceKeyUtil;
   });
 
   block.parentElement.classList.add('ax-template-promo');
@@ -70,7 +73,7 @@ export default async function decorate(block) {
   const variantsData = { imageElements, templateLinks, premiumTagsElements };
 
   // INIT LOGIC
-  isOneUp 
-    ? handleOneUp(block, variantsData) 
+  isOneUp
+    ? handleOneUp(block, variantsData)
     : templatePromoCarousel(block, variantsData);
 }
