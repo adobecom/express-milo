@@ -1,14 +1,40 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import templatePromoCarousel from '../template-promo-carousel/template-promo-carousel.js';
 
 let createTag;
 let getConfig;
 let replaceKey;
 
-async function handleOneUp(blockElement, {imageElements, templateLinks }) {
+function getStillWrapperIcons(templateType) {
+  let planIcon = null;
+  if (templateType === 'free') {
+    planIcon = createTag('span', { class: 'free-tag' });
+    planIcon.append('Free');
+  } else {
+    planIcon = getIconElementDeprecated('premium');
+  }
+  return { planIcon };
+}
+
+async function handleOneUp(blockElement, { imageElements, templateLinks, premiumTagsElements }) {
   const parent = blockElement.parentElement;
   parent.classList.add('one-up');
   const img = imageElements[0];
+  const templateType = premiumTagsElements[0]?.textContent?.trim().toLowerCase();
+
+  // Create image wrapper following the same pattern as template rendering
+  const imgWrapper = createTag('div', { class: 'image-wrapper' });
+
+  if (img && img.parentElement) {
+    img.parentElement.insertBefore(imgWrapper, img);
+    imgWrapper.append(img);
+  }
+
+  // Get and append the plan icon to the image wrapper
+  const { planIcon } = getStillWrapperIcons(templateType);
+  if (planIcon) {
+    imgWrapper.append(planIcon);
+  }
 
   const templateEditLink = templateLinks[0];
   templateEditLink.style.display = 'none';
@@ -41,7 +67,7 @@ export default async function decorate(block) {
   const premiumTagsElements = [...(block?.querySelectorAll('h4') || [])];
   premiumTagsElements.forEach((tag) => tag.style.display = 'none');
   const isOneUp = imageElements.length === 1;
-  const variantsData = { premiumTagsElements, imageElements, templateLinks };
+  const variantsData = { imageElements, templateLinks, premiumTagsElements };
 
   // INIT LOGIC
   isOneUp 
