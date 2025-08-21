@@ -162,7 +162,7 @@ function scrollToHeader(headerText, toc) {
       const headerRect = targetHeader.getBoundingClientRect();
 
       // Calculate scroll distance to align header with TOC title
-      const scrollDistance = headerRect.top - tocTitleRect.top;
+      const scrollDistance = headerRect.top - tocTitleRect.top + 5;
 
       window.scrollBy({
         top: scrollDistance,
