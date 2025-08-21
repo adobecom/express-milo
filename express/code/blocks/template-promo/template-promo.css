@@ -156,7 +156,7 @@
 }
 
 .ax-template-promo.one-up .collapsible-rows .collapsible-row-header {
-  color: var(--color-gray-700-variant);
+  color: var(--color-gray-900);
   font-family: var(--body-font-family);
   font-size: var(--heading-font-size-xs);
   font-style: normal;
