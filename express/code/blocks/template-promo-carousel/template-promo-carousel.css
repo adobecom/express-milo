@@ -299,6 +299,10 @@
   .template-promo-carousel .templates-container .template video {
     max-height: 400px;
   }
+  .template-promo-carousel .templates-container.gallery  .gallery--item:nth-last-child(1),
+  .template-promo-carousel .templates-container.gallery  .gallery--item:nth-last-child(2) {
+    scroll-snap-align: end;
+  }
 }
 
 @media (min-width: 600px) {
