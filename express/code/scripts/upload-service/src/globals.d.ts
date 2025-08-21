@@ -9,6 +9,9 @@ declare global {
       };
       isSignedInUser: () => boolean;
     };
+    lana: {
+      log: (...args: any[]) => void;
+    };
   }
 }
 

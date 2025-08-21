@@ -32,6 +32,7 @@ export class UploadService {
   private authConfig: AuthConfig;
   private _uploadStatus: UploadStatus = UploadStatus.IDLE;
   private _uploadBytesCompleted: boolean = false;
+  private _uploadProgressPercentage: number = 0;
 
   /**
    * Create a new UploadService instance
@@ -319,7 +320,7 @@ export class UploadService {
    * @param status - The status to dispatch
    */
   private dispatchStatusEvent(status: UploadStatus): void {
-    window.dispatchEvent(new UploadStatusEvent({ status }));
+    window.dispatchEvent(new UploadStatusEvent({ status, progress: this._uploadProgressPercentage }));
   }
 
   /**
@@ -328,6 +329,7 @@ export class UploadService {
    */
   getUploadProgress(): UploadProgressCallback {
     return (bytesCompleted, totalBytes) => {
+      this._uploadProgressPercentage = Math.round((bytesCompleted / totalBytes) * 100);
       if(bytesCompleted === totalBytes) {
         this._uploadBytesCompleted = true;
       }
@@ -416,7 +418,7 @@ export class UploadService {
     })(errorMessage, errorCode.code, originalError);
 
     if(this.config.environment === 'local' || this.config.environment === 'stage') {
-      console.error(`UploadService Error [${errorCode.code}]:`, errorMessage, originalError);
+      window.lana.log(`UploadService Error [${errorCode.code}]:`, errorMessage, originalError);
     }
     
     return error;

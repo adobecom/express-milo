@@ -102,4 +102,6 @@ export enum UploadStatus {
 export type UploadEventStatusPayload = {
   /** Status of the upload */
   status: UploadStatus;
+  /** Progress percentage (0-100) */
+  progress: number;
 }

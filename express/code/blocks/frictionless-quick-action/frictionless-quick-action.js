@@ -30,6 +30,7 @@ let ccEverywhere;
 let quickActionContainer;
 let uploadContainer;
 let uploadService;
+let fqaContainer;
 
 function frictionlessQAExperiment(
   quickAction,
@@ -190,14 +191,28 @@ async function startSDK(data = [''], quickAction, block) {
   runQuickAction(quickAction, data, block);
 }
 
-function handleUploadStatusChange(uploadStatusEvent) {
+function handleUploadStatusChange(uploadStatusEvent, progressBar) {
   const listener = (e) => {
-    console.log('upload status', e.detail.status);
-    if (e.detail.status === 'completed' || e.detail.status === 'failed') {
+    progressBar.setProgress(e.detail.progress);
+    if (['completed', 'failed'].includes(e.detail.status)) {
+      if (e.detail.status === 'failed') {
+        fqaContainer?.remove();
+        progressBar.remove();
+      }
       window.removeEventListener(uploadStatusEvent, listener);
     }
   };
   window.addEventListener(uploadStatusEvent, listener);
+}
+
+async function initProgressBar() {
+  const { default: ProgressBar } = await import('../../scripts/utils/createProgressBar.js');
+  const progressBar = new ProgressBar();
+  progressBar.setAttribute('label', '<b>Adobe Express</b> is uploading your media...');
+  progressBar.setAttribute('width', '400px');
+  progressBar.setAttribute('show-percentage', 'false');
+  progressBar.setAttribute('progress', '2');
+  return progressBar;
 }
 
 async function performStorageUpload(files, block) {
@@ -208,8 +223,15 @@ async function performStorageUpload(files, block) {
   if (!uploadService) {
     uploadService = await initUploadService({ environment: env.name });
   }
-  handleUploadStatusChange(UPLOAD_EVENTS.UPLOAD_STATUS);
   try {
+    const progressBar = await initProgressBar();
+    fqaContainer = block.querySelector('.fqa-container');
+    fqaContainer?.remove();
+    block.append(progressBar);
+    handleUploadStatusChange(
+      UPLOAD_EVENTS.UPLOAD_STATUS,
+      progressBar,
+    );
     const { asset } = await uploadService.uploadAsset({
       file: files[0],
       fileName: files[0].name,
