@@ -10,7 +10,7 @@
 }
 
 .section.ax-template-promo .content h1, .section.ax-template-promo .content h2 {
-  color:var(--color-gray-800-variant);
+  color: var(--color-gray-800-variant);
   font-size: var(--heading-font-size-l);
   font-weight: var(--heading-font-weight-extra);
   text-align: left;
@@ -20,7 +20,7 @@
 }
 
 .section.ax-template-promo .content p {
-  color:var(--color-gray-700-variant);
+  color: var(--color-gray-700-variant);
   font-size: var(--body-font-size-m);
   font-style: normal;
   font-weight: var(--body-font-weight);
@@ -31,7 +31,7 @@
   color: var(--color-background-accent-default);
   font-size: var(--body-font-size-m);
   font-style: normal;
-  font-weight: var( --heading-font-weight-medium);
+  font-weight: var(--heading-font-weight-medium);
   line-height: 130%;
 }
 
@@ -51,6 +51,52 @@
 
 .ax-template-promo.one-up img {
   border-radius: var(--spacing-300);
+}
+
+.ax-template-promo.one-up .image-wrapper {
+  position: relative;
+  display: block;
+}
+
+.ax-template-promo.one-up .image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ax-template-promo.one-up .image-wrapper .free-tag {
+  position: absolute;
+  height: 24px;
+  display: flex;
+  border-radius: 1000px;
+  align-items: center;
+  font-weight: var(--body-font-weight-medium);
+  width: max-content;
+  top: var(--spacing-100);
+  right: var(--spacing-100);
+  color: var(--color-white);
+  font-size: var(--body-font-size-xs);
+  line-height: 16px;
+  padding: 0 var(--spacing-200);
+  background: #000000B3;
+}
+
+.ax-template-promo.one-up .image-wrapper svg {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  bottom: var(--spacing-100);
+  right: var(--spacing-100);
+  z-index: 10;
+}
+
+.ax-template-promo.one-up .image-wrapper .icon-premium {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  bottom: var(--spacing-100);
+  right: var(--spacing-100);
+  z-index: 10;
 }
 
 .ax-template-promo.multiple-up {
@@ -75,7 +121,7 @@
   border-radius: var(--spacing-300);
 }
 
-/** Botton Container */
+/** Button Container */
 .ax-template-promo .botton-container {
   display: flex;
   align-items: center;
