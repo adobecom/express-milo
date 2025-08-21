@@ -910,6 +910,9 @@ function setupAllEventHandlers(elements) {
  */
 export default async function decorate(block) {
   try {
+    // Hide the original block immediately to prevent FOUC
+    block.style.display = 'none';
+
     // Phase 1: Initialize dependencies
     const utils = await initializeDependencies();
     createTag = utils.createTag;
@@ -932,11 +935,8 @@ export default async function decorate(block) {
     if (highlightElement) {
       // Insert after the highlight element
       highlightElement.insertAdjacentElement('afterend', toc);
-      // Hide the original block since we moved the TOC
-      block.style.display = 'none';
     } else {
       window.lana?.log('TOC Block: No highlight element found. TOC will not be displayed.');
-      block.style.display = 'none';
     }
   } catch (error) {
     window.lana?.log('Error setting up TOC Block:', error);
