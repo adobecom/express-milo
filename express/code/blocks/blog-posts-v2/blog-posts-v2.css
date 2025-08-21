@@ -333,8 +333,8 @@ main .section:has(.blog-posts-v2) > .content > h3 {
 
 @media (min-width: 768px) {
     .section.ax-blog-posts-container {
-        margin-right: 32px;
-        margin-left: 32px
+        padding-right: 32px;
+        padding-left: 32px
     }
 
     main .blog-posts-v2 .blog-cards {
@@ -391,8 +391,7 @@ main .section:has(.blog-posts-v2) > .content > h3 {
 
 @media (min-width: 1024px) {
     .section.ax-blog-posts-container {
-        padding-right: var( --spacing-600);
-        padding-left: var( --spacing-600);
+        padding: var(--spacing-900) var(--spacing-600);
         max-width: var(--block-wd-grid-max-width);
         margin-right: auto;
         margin-left: auto;
