@@ -237,15 +237,19 @@ function constructPayload(block) {
 
 async function convertCountryLink(block) {
   const { getCountry } = await import('../../scripts/utils/location-utils.js');
-  const country = await getCountry();
-  if (country.toLowerCase() !== 'ch') {
+  const country = (await getCountry())?.toLowerCase();
+  if (country !== 'ch') {
     return;
   }
   const { prefix } = getConfig().locale;
-  const queryIndexJson = await fetch(`${prefix}/express/lingo/query-index.json`).then((res) => res.json());
+  const queryIndexJson = await fetch(`${prefix}/${country}/express/query-index.json`).then((res) => {
+    if (res.ok) return res.json();
+    return null;
+  });
+  if (!queryIndexJson) return;
   const links = [...block.querySelectorAll('a')];
   links.forEach((link) => {
-    const countrifiedLink = new URL(link.href).pathname.replace(`${prefix}`, `${prefix}/ch`);
+    const countrifiedLink = new URL(link.href).pathname.replace(`${prefix}`, `${prefix}/${country}`);
     if (queryIndexJson.data.some(({ path }) => path === countrifiedLink)) {
       link.href = countrifiedLink;
     }
