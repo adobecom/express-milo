@@ -172,8 +172,8 @@ async function formatHeadingPlaceholder(props) {
       toolBarHeading = toolBarHeading
         .replace('{{quantity}}', props.fallbackMsg ? '0' : templateCount)
         .replace('quantity', props.fallbackMsg ? '0' : templateCount)
-        .replace('{{Type}}', titleCase(getMetadata('short-title') || getMetadata('q') || getMetadata('topics')))
-        .replace('{{type}}', getMetadata('short-title') || getMetadata('q') || getMetadata('topics'));
+        .replace('{{Type}}', titleCase(getMetadata('short-title') || getMetadata('q') || getMetadata('topics') || ''))
+        .replace('{{type}}', getMetadata('short-title') || getMetadata('q') || getMetadata('topics') || '');
       if (region === 'fr') {
         toolBarHeading.split(' ').forEach((word, index, words) => {
           if (index + 1 < words.length) {
@@ -386,14 +386,13 @@ function chunkPairs(arr) {
 async function build2by2(parentContainer, block) {
   // preserve placeholder
   const placeholder = parentContainer.querySelector('.placeholder');
-  console.log({placeholder});
-  // bruteforce cleanup
-  [...parentContainer.querySelectorAll('.template-2x2-col')].forEach((col) => col.remove());
-  const pairs = chunkPairs([...parentContainer.querySelectorAll('.template')]);
-  const cols = pairs.map((pair) => createTag('div', { class: 'template-2x2-col' }, pair));
-  // cols.forEach((col) => innerWrapper.append(col));
-  parentContainer.append(...cols);
+  const oldCols = [...parentContainer.querySelectorAll('.template-2x2-col')];
+  // cleanup
+  oldCols.forEach((col) => col.remove());
   // break into 2 rows per column
+  const pairs = chunkPairs([oldCols.length ? placeholder : null, ...parentContainer.querySelectorAll('.template')].filter(Boolean));
+  const cols = pairs.map((pair) => createTag('div', { class: 'template-2x2-col' }, pair));
+  parentContainer.append(...cols);
   const { control } = await buildGallery(cols, parentContainer);
   const oldControl = block.querySelector('.gallery-control');
   if (oldControl) {
