@@ -242,7 +242,8 @@ async function convertCountryLink(block) {
     return;
   }
   const { prefix } = getConfig().locale;
-  const queryIndexJson = await fetch(`${prefix}/${country}/express/query-index.json`).then((res) => {
+  // work around akamai
+  const queryIndexJson = await fetch(`https://stage--express-milo--adobecom.aem.live${prefix}/${country}/express/query-index.json`).then((res) => {
     if (res.ok) return res.json();
     return null;
   });
@@ -252,6 +253,8 @@ async function convertCountryLink(block) {
     const countrifiedLink = new URL(link.href).pathname.replace(`${prefix}`, `${prefix}/${country}`);
     if (queryIndexJson.data.some(({ path }) => path === countrifiedLink)) {
       link.href = countrifiedLink;
+      // work around akamai
+      if (link.hostname === 'www.stage.adobe.com') link.hostname = 'stage--express-milo--adobecom.aem.live';
     }
   });
 }
