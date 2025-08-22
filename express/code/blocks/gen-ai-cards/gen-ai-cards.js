@@ -242,7 +242,8 @@ async function convertCountryLink(block) {
     return;
   }
   const { prefix } = getConfig().locale;
-  const queryIndexJson = await fetch(`${prefix}/express/lingo/query-index.json`).then((res) => {
+  // work around akamai
+  const queryIndexJson = await fetch(`https://stage--express-milo--adobecom.aem.live${prefix}/${country}/express/query-index.json`).then((res) => {
     if (res.ok) return res.json();
     return null;
   });
