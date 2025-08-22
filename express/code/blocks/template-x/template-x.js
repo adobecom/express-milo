@@ -289,6 +289,11 @@ function adjustPlaceholderDimensions(block, props, tmplt, option) {
   props.placeholderFormat = ratios;
   if (!ratios[1]) return;
   if (block.classList.contains(TWO_ROW)) {
+    // fixed width + dynamic height
+    const width = Math.max(60, (window.innerWidth - 10) / 2);
+    const height = width / (ratios[0] / ratios[1]);
+    if (height >= 100) tmplt.classList.add('tall');
+    tmplt.style = `height: ${height}px`;
     return;
   }
   if (block.classList.contains('horizontal')) {

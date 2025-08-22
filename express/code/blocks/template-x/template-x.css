@@ -3250,16 +3250,24 @@ main .template-x.tworow .template-2x2-col .template {
 
 main .template-x.tworow .template-2x2-col .template.placeholder {
   max-height: 200px;
+  min-height: initial;
   width: calc(100% - 10px);
   max-width: initial;
   margin: 5px;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
   gap: var(--spacing-200)
 }
 
+main .template-x.tworow .template-2x2-col .template.placeholder.tall {
+  flex-direction: column;
+}
+
 main .template-x.tworow .template-2x2-col .template.placeholder div:first-of-type {
   max-width: initial;
+  width: initial;
   height: initial;
 }
 
@@ -3269,6 +3277,7 @@ main .template-x.tworow .template-2x2-col .template.placeholder .icon {
 
 main .template-x.tworow .template-2x2-col .template.placeholder div:nth-of-type(2) {
   max-width: initial;
+  min-height: initial;
   position: static;
   padding-top: initial;
 }
