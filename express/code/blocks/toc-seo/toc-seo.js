@@ -892,7 +892,10 @@ function setupAllEventHandlers(elements) {
   setupScrollTracking(toc);
 
   // Load social icons asynchronously after TOC is in DOM
-  requestIdleCallback(() => {
+  // Safari doesn't support requestIdleCallback, use setTimeout as fallback
+  const idleCallback = window.requestIdleCallback || ((callback) => setTimeout(callback, 0));
+
+  idleCallback(() => {
     const realSocialIcons = createSocialIcons();
     // Move the actual DOM elements instead of copying innerHTML
     while (realSocialIcons.firstChild) {
@@ -932,13 +935,16 @@ export default async function decorate(block) {
     if (highlightElement) {
       // Insert after the highlight element
       highlightElement.insertAdjacentElement('afterend', toc);
-      // Hide the original block since we moved the TOC
+      // Hide the original block after successful TOC creation
       block.style.display = 'none';
     } else {
       window.lana?.log('TOC Block: No highlight element found. TOC will not be displayed.');
+      // Hide the original block even if TOC creation fails
       block.style.display = 'none';
     }
   } catch (error) {
     window.lana?.log('Error setting up TOC Block:', error);
+    // Hide the original block even if there's an error
+    block.style.display = 'none';
   }
 }
