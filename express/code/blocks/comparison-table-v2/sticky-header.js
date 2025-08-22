@@ -32,6 +32,54 @@ export function setCreateTag(createTagFn) {
 }
 
 /**
+ * Convert heading elements to divs within the sticky header
+ * @param {HTMLElement} stickyHeader - The sticky header element
+ */
+function convertHeadingsToDivs(stickyHeader) {
+  const headings = stickyHeader.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  headings.forEach((heading) => {
+    const div = document.createElement('div');
+    // Copy all attributes
+    Array.from(heading.attributes).forEach(attr => {
+      div.setAttribute(attr.name, attr.value);
+    });
+    // Add a marker class and store original tag name
+    div.classList.add('sticky-header-title');
+    div.setAttribute('data-original-tag', heading.tagName.toLowerCase());
+    // Move all children
+    while (heading.firstChild) {
+      div.appendChild(heading.firstChild);
+    }
+    heading.parentNode.replaceChild(div, heading);
+  });
+}
+
+/**
+ * Convert divs back to their original heading elements
+ * @param {HTMLElement} stickyHeader - The sticky header element
+ */
+function convertDivsToHeadings(stickyHeader) {
+  const divs = stickyHeader.querySelectorAll('.sticky-header-title[data-original-tag]');
+  divs.forEach((div) => {
+    const originalTag = div.getAttribute('data-original-tag');
+    const heading = document.createElement(originalTag);
+    // Copy all attributes except our custom ones
+    Array.from(div.attributes).forEach(attr => {
+      if (attr.name !== 'data-original-tag') {
+        heading.setAttribute(attr.name, attr.value);
+      }
+    });
+    // Remove the marker class
+    heading.classList.remove('sticky-header-title');
+    // Move all children
+    while (div.firstChild) {
+      heading.appendChild(div.firstChild);
+    }
+    div.parentNode.replaceChild(heading, div);
+  });
+}
+
+/**
  * Create plan dropdown choices for the plan selector
  * @param {Array} headers - Array of header names
  * @returns {HTMLElement} - The dropdown choices element
@@ -275,6 +323,10 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
           if (document.activeElement && document.activeElement.blur) {
             document.activeElement.blur();
           }
+          // Convert headings to divs and hide from screen readers when sticky
+          convertHeadingsToDivs(stickyHeader);
+          stickyHeader.setAttribute('aria-hidden', 'true');
+          
           setTimeout(() => {
             stickyHeader.classList.add('gnav-offset');
             stickyHeader.classList.remove('initial');
@@ -288,6 +340,10 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
             placeholder.style.display = 'none';
             stickyHeader.classList.remove('gnav-offset');
             isSticky = false;
+            
+            // Convert divs back to headings and make visible to screen readers
+            convertDivsToHeadings(stickyHeader);
+            stickyHeader.removeAttribute('aria-hidden');
           }, TIMING.STICKY_TRANSITION);
         }
       });
@@ -308,6 +364,10 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
           placeholder.style.display = 'none';
           stickyHeader.classList.remove('gnav-offset');
           isSticky = false;
+          
+          // Convert divs back to headings and make visible to screen readers
+          convertDivsToHeadings(stickyHeader);
+          stickyHeader.removeAttribute('aria-hidden');
         } else if (entry.isIntersecting && !isSticky) {
           // Comparison block is re-entering viewport - check if header sentinel is above viewport
           const headerSentinel = comparisonBlock.firstChild;
@@ -325,6 +385,10 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
             if (document.activeElement && document.activeElement.blur) {
               document.activeElement.blur();
             }
+            // Convert headings to divs and hide from screen readers when sticky
+            convertHeadingsToDivs(stickyHeader);
+            stickyHeader.setAttribute('aria-hidden', 'true');
+            
             setTimeout(() => {
               stickyHeader.classList.add('gnav-offset');
               stickyHeader.classList.remove('initial');
@@ -362,10 +426,14 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
   if (parentSection) {
     const mutationObserver = new MutationObserver(() => {
       const isHidden = parentSection.style.display === 'none';
-      if (isHidden) {
+      if (isHidden && isSticky) {
         stickyHeader.classList.remove('is-stuck');
         placeholder.style.display = 'none';
         isSticky = false;
+        
+        // Convert divs back to headings and make visible to screen readers
+        convertDivsToHeadings(stickyHeader);
+        stickyHeader.removeAttribute('aria-hidden');
       }
     });
 

@@ -293,7 +293,8 @@ main .section .comparison-table-v2 p {
 .comparison-table-v2 .sticky-header .plan-cell-wrapper.no-subheaders>h3,
 .comparison-table-v2 .sticky-header .plan-cell-wrapper.no-subheaders>h4,
 .comparison-table-v2 .sticky-header .plan-cell-wrapper.no-subheaders>h5,
-.comparison-table-v2 .sticky-header .plan-cell-wrapper.no-subheaders>h6 {
+.comparison-table-v2 .sticky-header .plan-cell-wrapper.no-subheaders>h6,
+.comparison-table-v2 .sticky-header .plan-cell-wrapper.no-subheaders>.sticky-header-title {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -304,7 +305,8 @@ main .section .comparison-table-v2 p {
 .comparison-table-v2 .sticky-header .plan-cell-wrapper>h3,
 .comparison-table-v2 .sticky-header .plan-cell-wrapper>h4,
 .comparison-table-v2 .sticky-header .plan-cell-wrapper>h5,
-.comparison-table-v2 .sticky-header .plan-cell-wrapper>h6 {
+.comparison-table-v2 .sticky-header .plan-cell-wrapper>h6,
+.comparison-table-v2 .sticky-header .plan-cell-wrapper>.sticky-header-title {
     flex-grow: 1;
  
 }
@@ -349,7 +351,8 @@ main .comparison-table-v2 .sticky-header .plan-cell h2,
 main .comparison-table-v2 .sticky-header .plan-cell h3,
 main .comparison-table-v2 .sticky-header .plan-cell h4,
 main .comparison-table-v2 .sticky-header .plan-cell h5,
-main .comparison-table-v2 .sticky-header .plan-cell h6 {
+main .comparison-table-v2 .sticky-header .plan-cell h6,
+main .comparison-table-v2 .sticky-header .plan-cell .sticky-header-title {
     color: var(--color-black);
     text-align: center;
     font-size: 18px;
@@ -1004,7 +1007,8 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     main .comparison-table-v2 .sticky-header .plan-cell h3,
     main .comparison-table-v2 .sticky-header .plan-cell h4,
     main .comparison-table-v2 .sticky-header .plan-cell h5,
-    main .comparison-table-v2 .sticky-header .plan-cell h6 {
+    main .comparison-table-v2 .sticky-header .plan-cell h6,
+    main .comparison-table-v2 .sticky-header .plan-cell .sticky-header-title {
         color: var(--color-black);
         text-align: center;
         font-family: var(--body-font-family);

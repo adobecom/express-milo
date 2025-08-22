@@ -118,7 +118,7 @@ function partitionContentBySeparators(blockChildren) {
 function createToggleButton(isHidden, noAccordion) {
   const button = document.createElement('button');
   button.classList.add('toggle-button');
-  button.setAttribute('aria-label', isHidden ? 'Expand section' : 'Collapse section');
+  // Removed aria-label - button will get its name from the H3 inside it
   button.setAttribute('aria-expanded', !isHidden);
   if (noAccordion) {
     button.setAttribute('role', 'presentation');
@@ -240,7 +240,6 @@ function convertToTable(sectionGroup, columnHeaders) {
     comparisonTable.classList.toggle('hide-table');
     toggleButton.querySelector('span').classList.toggle('open');
     toggleButton.setAttribute('aria-expanded', !isExpanded);
-    toggleButton.setAttribute('aria-label', isExpanded ? 'Expand section' : 'Collapse section');
   };
 
   const header = sectionHeaderContainer.querySelector('h2,h3,h4,h5,h6');
