@@ -1429,3 +1429,55 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   height: 0px;
 }
 
+
+/*
+ * Milo grid overrides
+ *
+ * Purpose: Override Milo's grid container width tokens without modifying Milo core.
+ * How to use:
+ *   - Page-wide: add class "milo-grid-wide" to <body> or <main> to widen Milo grids site/page-wide.
+ *   - Section-only: add class "milo-grid-wide" to a specific Milo .section to scope changes locally.
+ */
+body.milo-grid-wide,
+main.milo-grid-wide,
+.section.milo-grid-wide {
+  --grid-container-width: min(1320px, 92vw);
+}
+
+/* Optional: tune breakpoint behavior for wide pages */
+@media (min-width: 1440px) {
+  body.milo-grid-wide,
+  main.milo-grid-wide,
+  .section.milo-grid-wide {
+    --grid-container-width: 1320px;
+  }
+}
+
+/* Optional: decouple margins from container width for wide pages
+.milo-grid-wide {
+  --grid-margins-width: calc((100vw - var(--grid-container-width)) / 2);
+}
+*/
+
+/* Optional: global override for entire site (disabled by default)
+:root {
+  --grid-container-width: min(1320px, 92vw);
+}
+*/
+
+/* Map Milo grid tokens to AX grid tokens (opt-in)
+ * Apply .milo-grid-use-ax to body/main/section to have Milo use AX widths
+ */
+body.milo-grid-use-ax,
+main.milo-grid-use-ax,
+.section.milo-grid-use-ax {
+  /* Container width and margins */
+  --grid-container-width: var(--ax-grid-container-width);
+  --grid-margins-width: var(--ax-grid-margin);
+
+  /* Derived margins for specific grid widths */
+  --grid-margins-width-10: calc((100vw - var(--ax-grid-10-col-width)) / 2);
+  --grid-margins-width-8: calc((100vw - var(--ax-grid-8-col-width)) / 2);
+  --grid-margins-width-6: calc((100vw - var(--ax-grid-6-col-width)) / 2);
+}
+
