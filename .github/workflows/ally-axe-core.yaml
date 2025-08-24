@@ -1,134 +1,120 @@
-name: Accessibility Check (axe-core)
+name: Accessibility Checks
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled]
     branches:
       - stage
+      - main
 
 jobs:
-  a11y:
-    if: >
+  a11y-check:
+    if: |
       github.event.pull_request.draft == false &&
-      contains(join(toJson(github.event.pull_request.labels.*.name), ','), 'engineering')
+      contains(github.event.pull_request.labels.*.name, 'engineering')
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
+        run: npm install axe-core puppeteer
+
+      - name: Extract Test URLs from PR body
+        id: extract-urls
         run: |
-          npm install playwright @axe-core/playwright jsdom prettier
+          echo "BEFORE_URL=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=\| \*\*Before\*\*  \|).*' | xargs)" >> $GITHUB_ENV
+          echo "AFTER_URL=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=\| \*\*After\*\*   \|).*' | xargs)" >> $GITHUB_ENV
 
-      - name: Extract PR URLs
-        id: urls
-        run: |
-          BEFORE_URL=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=\| \*\*Before\*\*  \| ).*' | xargs)
-          AFTER_URL=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=\| \*\*After\*\*   \| ).*' | xargs)
-
-          echo "before=$BEFORE_URL" >> $GITHUB_OUTPUT
-          echo "after=$AFTER_URL" >> $GITHUB_OUTPUT
-
-      - name: Run axe-core checks
-        id: axe
+      - name: Run axe-core on URLs
+        id: run-a11y
         run: |
           node <<'EOF'
+          const puppeteer = require('puppeteer');
+          const { AxePuppeteer } = require('axe-core/puppeteer');
           const fs = require('fs');
-          const { chromium } = require('playwright');
-          const { AxeBuilder } = require('@axe-core/playwright');
 
-          const urls = {
-            before: process.env.BEFORE_URL,
-            after: process.env.AFTER_URL
-          };
-
-          async function run(url, label) {
-            if (!url) return null;
-            const browser = await chromium.launch();
-            const page = await browser.newPage();
-            await page.goto(url, { waitUntil: 'domcontentloaded' });
-            const results = await new AxeBuilder({ page }).analyze();
-            await browser.close();
-
-            fs.writeFileSync(`${label}-report.json`, JSON.stringify(results, null, 2));
-            fs.writeFileSync(`${label}-report.html`, `
-              <html><head><title>A11y Report: ${label}</title></head>
-              <body><h1>Accessibility Report: ${label}</h1>
-              <pre>${JSON.stringify(results, null, 2)}</pre></body></html>
-            `);
-            return results;
-          }
+          const urls = [process.env.BEFORE_URL, process.env.AFTER_URL].filter(Boolean);
 
           (async () => {
-            const before = await run(urls.before, 'before');
-            const after = await run(urls.after, 'after');
+            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+            let results = [];
 
-            const newViolations = [];
-            if (after) {
-              for (const v of after.violations) {
-                const already = before?.violations.some(b => b.id === v.id);
-                if (!already) newViolations.push(v);
-              }
+            for (const url of urls) {
+              const page = await browser.newPage();
+              await page.goto(url, { waitUntil: 'networkidle2' });
+              const axe = new AxePuppeteer(page);
+              const result = await axe.analyze();
+
+              results.push({ url, violations: result.violations });
             }
 
-            fs.writeFileSync('new-violations.json', JSON.stringify(newViolations, null, 2));
+            await browser.close();
 
-            // Fail job if new A-level violations found
-            const blockers = newViolations.filter(v => v.impact === 'critical' || v.impact === 'serious');
-            if (blockers.length > 0) {
-              console.error("Blocking A-level violations found!");
+            // Group by WCAG level
+            const grouped = results.map(r => ({
+              url: r.url,
+              A: r.violations.filter(v => v.tags.includes('wcag2a')),
+              AA: r.violations.filter(v => v.tags.includes('wcag2aa')),
+              AAA: r.violations.filter(v => v.tags.includes('wcag2aaa')),
+            }));
+
+            // Build Markdown report
+            let md = `## ♿ Accessibility Report\n\n`;
+            grouped.forEach(r => {
+              md += `### 🔗 [${r.url}](${r.url})\n`;
+
+              if (r.A.length === 0 && r.AA.length === 0 && r.AAA.length === 0) {
+                md += `✅ No violations found.\n\n`;
+              } else {
+                if (r.A.length > 0) {
+                  md += `**❌ Level A Violations:**\n`;
+                  r.A.forEach(v => {
+                    md += `- ${v.help} ([link](${v.helpUrl}))\n`;
+                  });
+                  md += `\n`;
+                }
+                if (r.AA.length > 0) {
+                  md += `**⚠️ Level AA Violations:**\n`;
+                  r.AA.forEach(v => {
+                    md += `- ${v.help} ([link](${v.helpUrl}))\n`;
+                  });
+                  md += `\n`;
+                }
+                if (r.AAA.length > 0) {
+                  md += `**ℹ️ Level AAA Violations:**\n`;
+                  r.AAA.forEach(v => {
+                    md += `- ${v.help} ([link](${v.helpUrl}))\n`;
+                  });
+                  md += `\n`;
+                }
+              }
+            });
+
+            fs.writeFileSync('a11y-report.md', md);
+
+            // Fail if Level A violations exist
+            const hasA = grouped.some(r => r.A.length > 0);
+            if (hasA) {
+              console.error('❌ Accessibility check failed: Level A violations found.');
               process.exit(1);
             }
           })();
           EOF
-        env:
-          BEFORE_URL: ${{ steps.urls.outputs.before }}
-          AFTER_URL: ${{ steps.urls.outputs.after }}
 
-      - name: Upload reports as artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: a11y-reports
-          path: |
-            before-report.json
-            before-report.html
-            after-report.json
-            after-report.html
-            new-violations.json
+          name: a11y-report
+          path: a11y-report.md
 
-      - name: Post PR comment with results
-        if: always()
-        uses: actions/github-script@v7
+      - name: Comment results on PR
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            let msg = "## 🧪 Accessibility Check\n\n";
-
-            try {
-              const newViolations = JSON.parse(fs.readFileSync('new-violations.json', 'utf8'));
-              if (newViolations.length === 0) {
-                msg += "✅ No new accessibility issues introduced.";
-              } else {
-                msg += "⚠️ New accessibility issues detected:\n\n";
-                for (const v of newViolations) {
-                  msg += `- **${v.id}** (${v.impact})\n  - ${v.description}\n  - Help: ${v.helpUrl}\n`;
-                }
-                msg += "\nDetailed HTML reports available in workflow artifacts.";
-              }
-            } catch (e) {
-              msg += "⚠️ Accessibility check could not run (no URLs found or parsing failed).";
-            }
-
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: msg
-            });
+          path: a11y-report.md
