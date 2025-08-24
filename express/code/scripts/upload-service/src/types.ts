@@ -1,8 +1,10 @@
+import { Directory } from '@dcx/assets';
 import type { 
   AdobeAsset, 
   UploadProgressCallback,
   RepoMetaPatch,
-  ResourceDesignator
+  ResourceDesignator,
+  AdobeMinimalAsset
 } from '@dcx/common-types';
 export interface InitOptions {
   /** Environment to use for the upload service */
@@ -22,8 +24,8 @@ export interface UploadServiceConfig {
   authConfig: AuthConfig;
   /** Repository endpoint URL */
   endpoint: string;
-  /** Repository ID (required for normal token uploads) */
-  repository?: AdobeAsset;
+  /** User repository (required for normal token uploads) */
+  repository?: AdobeMinimalAsset;
   /** Base path for guest uploads (optional) */
   basePath: string;
   /** Environment to use for the upload service */
