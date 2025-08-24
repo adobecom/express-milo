@@ -27,5 +27,5 @@ export default async function decorate(block) {
       </p>
     </article>
   </section>
-  `
-};
+  `;
+}

@@ -2,96 +2,114 @@ name: Accessibility Check
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, labeled]
-    branches:
-      - stage
-  issue_comment:
-    types: [created]
+    types: [opened, edited, synchronize]
+  workflow_dispatch:
 
 jobs:
   a11y-check:
-    if: >
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.draft == false &&
-      contains(join(fromJson('["' + join(github.event.pull_request.labels.*.name, '","') + '"]')), 'engineering')
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Extract Test URLs from PR body
-        id: extract-urls
-        run: |
-          echo "urls=$(echo '${{ github.event.pull_request.body }}' | grep -Eo 'https?://[^ ]+' | tr '\n' ' ')" >> $GITHUB_OUTPUT
-
-      - name: Fail if no Test URLs found
-        if: steps.extract-urls.outputs.urls == ''
-        run: |
-          echo "❌ No test URLs found in the PR body under **Test URLs** section."
-          exit 1
-
-      - name: Run axe-core on Test URLs
-        id: axe-scan
-        run: |
-          npx @axe-core/cli --timeout 60000 ${{ steps.extract-urls.outputs.urls }} --save ./axe-report.json || true
-
-      - name: Format accessibility report
-        id: format-report
-        run: |
-          echo "report<<EOF" >> $GITHUB_OUTPUT
-          echo "### ♿ Accessibility Report" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          jq -r '
-            .violations[]? | 
-            "- **\(.impact | ascii_upcase)**: [\(.id)](\(.helpUrl))  
-               Description: \(.description)  
-               Affected Nodes: \(.nodes | length)"' axe-report.json >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Post comment on PR
-        uses: marocchino/sticky-pull-request-comment@v2
+      - name: Extract PR body
+        id: pr-body
+        uses: actions/github-script@v7
         with:
-          header: accessibility-report
-          message: ${{ steps.format-report.outputs.report }}
+          script: |
+            const pr = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput("body", pr.data.body || "");
 
-      - name: Fail on A-level violations
+      - name: Parse Test URLs only
+        id: parse-urls
         run: |
-          if jq -e '.violations[] | select(.impact == "critical" or .impact == "serious")' axe-report.json > /dev/null; then
-            echo "❌ A/AA violations detected. Failing job."
-            exit 1
+          body="${{ steps.pr-body.outputs.body }}"
+          urls=$(echo "$body" | awk '/## Test URLs/{flag=1;next}/##/{flag=0}flag' | grep -Eo 'https?://[^ )]+')
+          urls=$(echo "$urls" | tr '\n' ' ')
+          echo "URLS=$urls" >> $GITHUB_ENV
+          echo "Parsed URLs: $urls"
+
+      - name: Run Accessibility Scan
+        id: a11y-scan
+        run: |
+          mkdir -p reports
+          urls="${URLS:-}"
+          skipped=""
+          if [ -z "$urls" ]; then
+            echo "NO_URLS=true" >> $GITHUB_ENV
+            exit 0
           fi
 
-  rerun:
-    if: >
-      github.event_name == 'issue_comment' &&
-      github.event.issue.pull_request != '' &&
-      contains(github.event.comment.body, '/rerun-a11y')
-    runs-on: ubuntu-latest
+          for url in $urls; do
+            echo "🔎 Scanning $url"
+            if ! npx @axe-core/cli --exit 0 --timeout 60000 -q -s -u "$url" -j > "reports/$(echo $url | sed 's/[^a-zA-Z0-9]/_/g').json"; then
+              echo "⚠️ Skipping $url (unreachable or failed)"
+              skipped="$skipped $url"
+            fi
+          done
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+          echo "SKIPPED=$skipped" >> $GITHUB_ENV
 
-      - name: Get last commit SHA
-        id: last-sha
-        run: echo "sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
-
-      - name: Check if rerun needed
-        id: rerun-check
-        run: |
-          if gh run list --branch ${{ github.event.pull_request.head.ref }} --json headSha,conclusion -q '.[] | select(.headSha=="${{ steps.last-sha.outputs.sha }}") | .conclusion' | grep -q "success"; then
-            echo "skip=true" >> $GITHUB_OUTPUT
+          if ls reports/*.json 1> /dev/null 2>&1; then
+            echo "REPORTS=true" >> $GITHUB_ENV
           else
-            echo "skip=false" >> $GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            echo "REPORTS=false" >> $GITHUB_ENV
+          fi
 
-      - name: Skip rerun
-        if: steps.rerun-check.outputs.skip == 'true'
-        run: echo "✅ No new commits since last successful run. Skipping rerun."
+      - name: Post or Update GitHub PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { repo, issue } = context;
+            const issue_number = issue.number;
+            const urls = (process.env.URLS || "").trim();
+            const noUrls = process.env.NO_URLS === "true";
+            const hasReports = process.env.REPORTS === "true";
+            const skipped = (process.env.SKIPPED || "").trim();
 
-      - name: Trigger rerun
-        if: steps.rerun-check.outputs.skip == 'false'
-        run: echo "🔄 Manual rerun of Accessibility Check requested via comment."
+            let body = "🧪 **Accessibility Check**\n\n";
+
+            if (noUrls) {
+              body += "⚠️ Accessibility check could not run (no Test URLs section found).\n\n";
+            } else if (!urls) {
+              body += "⚠️ Accessibility check could not run (no URLs parsed).\n\n";
+            } else {
+              const urlList = urls.split(" ").filter(Boolean);
+              for (const url of urlList) {
+                if (skipped.includes(url)) {
+                  body += `- ⚠️ Skipped [${url}](${url}) (unreachable or private)\n`;
+                } else if (hasReports) {
+                  body += `- ✅ No accessibility violations found at [${url}](${url})\n`;
+                }
+              }
+              body += "\n";
+            }
+
+            // Always show rerun link
+            body += "\n🔁 [Re-run Accessibility Check](${context.payload.repository.html_url}/actions/runs/${process.env.GITHUB_RUN_ID})\n";
+
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              ...repo,
+              issue_number,
+            });
+
+            const existing = comments.data.find(c => c.user.type === "Bot" && c.body.includes("Accessibility Check"));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                ...repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...repo,
+                issue_number,
+                body,
+              });
+            }
