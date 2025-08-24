@@ -1,0 +1,170 @@
+name: Accessibility (axe-core)
+
+on:
+  pull_request:
+    branches: [stage]
+    types: [opened, synchronize, reopened, labeled]
+
+jobs:
+  axe:
+    if: contains(github.event.pull_request.labels.*.name, 'engineering')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install axe CLI
+        run: npm i -g @axe-core/cli
+
+      - name: Parse PR body for Before/After URLs
+        id: urls
+        run: |
+          BEFORE=$(printf "%s" "${{ github.event.pull_request.body }}" | perl -ne 'print $1 if /\|\s*\*\*Before\*\*\s*\|\s*(\S+)/')
+          AFTER=$(printf "%s" "${{ github.event.pull_request.body }}" | perl -ne 'print $1 if /\|\s*\*\*After\*\*\s*\|\s*(\S+)/')
+          echo "before=${BEFORE}" >> $GITHUB_OUTPUT
+          echo "after=${AFTER}"   >> $GITHUB_OUTPUT
+
+      - name: Run axe on Before
+        if: steps.urls.outputs.before != ''
+        run: |
+          axe "${{ steps.urls.outputs.before }}" --reporter json > axe-before.json || true
+
+      - name: Run axe on After
+        if: steps.urls.outputs.after != ''
+        run: |
+          axe "${{ steps.urls.outputs.after }}" --reporter json > axe-after.json || true
+
+      - name: Combine reports
+        id: combine
+        run: |
+          node -e "const fs=require('fs');
+          const before=fs.existsSync('axe-before.json')?JSON.parse(fs.readFileSync('axe-before.json','utf8')):{violations:[],url:process.env.BEFORE||''};
+          const after =fs.existsSync('axe-after.json') ?JSON.parse(fs.readFileSync('axe-after.json','utf8')) :{violations:[],url:process.env.AFTER||''};
+          const out={ before, after };
+          fs.writeFileSync('axe-results.json', JSON.stringify(out));" \
+          BEFORE="${{ steps.urls.outputs.before }}" AFTER="${{ steps.urls.outputs.after }}"
+
+      - name: Generate pretty HTML
+        run: |
+          mkdir -p reports
+          node scripts/axe-to-html.js axe-results.json reports/axe-report.html
+
+      - name: Upload artifacts (HTML + JSON)
+        uses: actions/upload-artifact@v4
+        with:
+          name: axe-report
+          path: |
+            reports/axe-report.html
+            axe-results.json
+
+      - name: Format & post sticky comment (compare AA/AAA to previous)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('axe-results.json','utf8'));
+            const runUrl = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            const beforeUrl = `${{ toJSON(steps.urls.outputs.before) }}`.replace(/^"|"$/g,'') || '_Not provided_';
+            const afterUrl  = `${{ toJSON(steps.urls.outputs.after) }}`.replace(/^"|"$/g,'') || '_Not provided_';
+
+            function group(vs){ 
+              const g = {critical:[],serious:[],moderate:[],minor:[]};
+              (vs||[]).forEach(v=>g[v.impact]?.push(v));
+              return g;
+            }
+            const gb = group(results.before.violations||[]);
+            const ga = group(results.after.violations||[]);
+            const A_before  = [...gb.critical, ...gb.serious];
+            const A_after   = [...ga.critical, ...ga.serious];
+            const AA_before = gb.moderate, AA_after = ga.moderate;
+            const AAA_before= gb.minor,    AAA_after= ga.minor;
+
+            // Read previous bot comment to diff AA/AAA
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: context.issue.number, owner: context.repo.owner, repo: context.repo.repo
+            });
+            const prev = comments.find(c => c.user.type === 'Bot' && c.body.includes('### 🔍 Accessibility Scan Results'));
+            const prevAAIds  = prev ? [...prev.body.matchAll(/⚠️ \[(.*?)\]/g)].map(m=>m[1]) : [];
+            const prevAAAIds = prev ? [...prev.body.matchAll(/ℹ️ \[(.*?)\]/g)].map(m=>m[1]) : [];
+
+            const newAA_after  = AA_after.filter(v => !prevAAIds.includes(v.id));
+            const newAAA_after = AAA_after.filter(v => !prevAAAIds.includes(v.id));
+            const unchangedAA  = Math.max(AA_after.length - newAA_after.length, 0);
+            const unchangedAAA = Math.max(AAA_after.length - newAAA_after.length, 0);
+
+            const hasA = A_after.length > 0;
+            const statusBadge = hasA
+              ? '🚫 **Accessibility Check: FAILED (A violations present)**'
+              : '✅ **Accessibility Check: PASSED (No A violations)**';
+
+            const fmt = (arr, icon, label) => {
+              if (!arr.length) return '- ✅ None found';
+              return arr.map(v => {
+                const nodes = (v.nodes||[]).slice(0,5).map(n => `  - \`${(n.target||[]).join(' ')}\``).join('\\n');
+                return `${icon} [${v.id}](${v.helpUrl}) — ${v.description}
+  **URL (${label})**: ${label==='After' ? afterUrl : beforeUrl}
+${nodes ? nodes : ''}`;
+              }).join('\\n\\n');
+            };
+
+            const body = `
+${statusBadge}
+
+---
+
+### 🔍 Accessibility Scan Results
+
+**Tested Pages**
+- 🔗 Before: ${beforeUrl}
+- 🔗 After: ${afterUrl}
+
+---
+
+### A Violations (Blockers – must fix before merge)
+${fmt(A_after, '❌', 'After')}
+${A_before.length ? `\n\n<details><summary>Show A issues also present on Before</summary>\n\n${fmt(A_before,'❌','Before')}\n\n</details>` : ''}
+
+---
+
+### New AA Violations (Warnings – recommended fixes)
+${fmt(newAA_after, '⚠️', 'After')}
+${unchangedAA ? `\nℹ️ (${unchangedAA} unchanged AA issues from previous run)` : ''}
+
+---
+
+### New AAA Violations (Informational – optional improvements)
+${fmt(newAAA_after, 'ℹ️', 'After')}
+${unchangedAAA ? `\nℹ️ (${unchangedAAA} unchanged AAA issues from previous run)` : ''}
+
+---
+
+📂 **Artifacts:** [Open workflow run to download HTML & JSON](${runUrl})
+
+✅ **Job fails only if A violations exist**
+`;
+
+            if (prev) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                comment_id: prev.id, body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: context.issue.number, body
+              });
+            }
+
+      - name: Fail if A violations exist
+        run: |
+          A_COUNT=$(jq '[.after.violations[] | select(.impact=="critical" or .impact=="serious")] | length' axe-results.json)
+          if [ "$A_COUNT" -gt 0 ]; then
+            echo "❌ Blocking: $A_COUNT A-level violations (After)."
+            exit 1
+          fi
