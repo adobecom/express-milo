@@ -1,5 +1,114 @@
 @import url('../template-promo-carousel/template-promo-carousel.css');
 
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip links for keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--color-background-accent-default);
+  color: var(--color-text-on-accent);
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 6px;
+  outline: 2px solid var(--color-background-accent-default);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .ax-template-promo {
+    border: 2px solid var(--color-gray-900);
+  }
+
+  .ax-template-promo .button.accent {
+    border: 2px solid var(--color-gray-900);
+  }
+
+  .ax-template-promo .free-tag {
+    border: 2px solid var(--color-gray-900);
+    background: var(--color-gray-900) !important;
+    color: var(--color-white) !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .ax-template-promo *,
+  .ax-template-promo *::before,
+  .ax-template-promo *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .skip-link {
+    transition: none;
+  }
+}
+
+/* Focus indicators - Enhanced for accessibility */
+.ax-template-promo a:focus,
+.ax-template-promo button:focus,
+.ax-template-promo [tabindex]:focus {
+  outline: 2px solid var(--color-background-accent-default);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Enhanced focus for interactive elements */
+.ax-template-promo .button.accent:focus {
+  outline: 3px solid var(--color-background-accent-default);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--color-background-accent-default);
+}
+
+/* Focus visible only when using keyboard */
+.ax-template-promo a:focus:not(:focus-visible),
+.ax-template-promo button:focus:not(:focus-visible),
+.ax-template-promo [tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Touch target size improvements for mobile */
+@media (max-width: 767px) {
+  .ax-template-promo .button.accent {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+  }
+
+  .ax-template-promo .free-tag {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+  }
+
+  .ax-template-promo .image-wrapper svg,
+  .ax-template-promo .image-wrapper .icon-premium {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
 .section.ax-template-promo {
   display: flex;
   box-sizing: border-box;
@@ -43,6 +152,13 @@
   color: var(--color-background-accent-down);
 }
 
+/* Enhanced hover states for better accessibility */
+.section.ax-template-promo .content p a:hover,
+.section.ax-template-promo .content p a:focus {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .ax-template-promo.one-up {
   gap: var(--spacing-300);
   display: flex;
@@ -64,6 +180,7 @@
   display: block;
 }
 
+/* Enhanced free tag with better contrast and accessibility */
 .ax-template-promo.one-up .image-wrapper .free-tag {
   color: var(--Neutral-50, #FFF);
   text-align: center;
@@ -86,7 +203,19 @@
   top: 16px;
   
   border-radius: 50px;
-  background: rgba(36, 36, 36, 0.70);
+  background: rgba(36, 36, 36, 0.90); /* Increased opacity for better contrast */
+  backdrop-filter: blur(4px);
+
+  /* Enhanced accessibility */
+  min-height: 32px;
+  min-width: 48px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Focus state for free tag */
+.ax-template-promo.one-up .image-wrapper .free-tag:focus {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
 }
 
 .ax-template-promo.one-up .image-wrapper svg {
@@ -105,6 +234,11 @@
   right: var(--spacing-100);
 }
 
+.ax-template-promo.one-up .image-wrapper .icon-premium:focus {
+  outline: 2px solid var(--color-background-accent-default);
+  outline-offset: 2px;
+}
+
 .ax-template-promo.multiple-up {
   gap: var(--spacing-600);
 }
@@ -114,6 +248,7 @@
   padding: 20px;
   z-index: unset;
 }
+
 .ax-template-promo.multiple-up .template-promo {
   padding-right: 0;
 }
@@ -131,15 +266,46 @@
   display: flex;
   align-items: center;
 }
+
 .ax-template-promo > .button-container {
   display: flex;
 }
+
 .ax-template-promo > .button-container a.button.accent {
   background-color: var(--color-background-accent-default);
   margin: 0;
   font-size: var(--body-font-size-m);
   padding: var(--spacing-100) var(--spacing-300);
   border-radius: 1000px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  /* Better contrast for text */
+  color: var(--color-text-on-accent, #FFFFFF);
+  font-weight: 600;
+}
+
+/* Button hover and focus states */
+.ax-template-promo > .button-container a.button.accent:hover {
+  background-color: var(--color-background-accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ax-template-promo > .button-container a.button.accent:active {
+  background-color: var(--color-background-accent-down);
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Button pressed state for screen readers */
+.ax-template-promo > .button-container a.button.accent[aria-pressed="true"] {
+  background-color: var(--color-background-accent-down);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* collapsible rows overrides */
@@ -171,6 +337,48 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
+}
+
+/* Enhanced keyboard navigation support */
+.ax-template-promo [tabindex]:focus {
+  outline: 2px solid var(--color-background-accent-default);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Live region styling */
+.ax-template-promo [aria-live] {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* High contrast mode for dark themes */
+@media (prefers-color-scheme: dark) {
+  .ax-template-promo .free-tag {
+    background: rgba(255, 255, 255, 0.90) !important;
+    color: var(--color-gray-900) !important;
+  }
+  
+  .ax-template-promo .button.accent {
+    border: 1px solid var(--color-white);
+  }
+}
+
+/* Print styles for accessibility */
+@media print {
+  .ax-template-promo .skip-link,
+  .ax-template-promo .sr-only {
+    display: none !important;
+  }
+  
+  .ax-template-promo .button.accent {
+    border: 1px solid var(--color-gray-900);
+    background: transparent !important;
+    color: var(--color-gray-900) !important;
+  }
 }
 
 @media (min-width: 600px) {
