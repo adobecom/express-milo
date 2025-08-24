@@ -35,3 +35,12 @@ Resolves: [MWPW-NUMBER](https://jira.corp.adobe.com/browse/MWPW-NUMBER)
 ## Additional Notes
 
 (If applicable) Add context, related PRs, or known issues here.
+
+---
+
+## Engineering System Changes (only if label = engineering-system)
+
+_Required when the **engineering-system** label is applied._  
+- [ ] Affected blocks/utilities  
+- [ ] Any shift-left automation changes  
+- [ ] Impact on accessibility / mobile-first principles  
