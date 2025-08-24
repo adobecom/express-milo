@@ -1,120 +1,97 @@
-name: Accessibility Checks
+name: Accessibility Check
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled]
     branches:
       - stage
-      - main
+  issue_comment:
+    types: [created]
 
 jobs:
   a11y-check:
-    if: |
+    if: >
+      github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
-      contains(github.event.pull_request.labels.*.name, 'engineering')
+      contains(join(fromJson('["' + join(github.event.pull_request.labels.*.name, '","') + '"]')), 'engineering')
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm install axe-core puppeteer
 
       - name: Extract Test URLs from PR body
         id: extract-urls
         run: |
-          echo "BEFORE_URL=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=\| \*\*Before\*\*  \|).*' | xargs)" >> $GITHUB_ENV
-          echo "AFTER_URL=$(echo "${{ github.event.pull_request.body }}" | grep -oP '(?<=\| \*\*After\*\*   \|).*' | xargs)" >> $GITHUB_ENV
+          echo "urls=$(echo '${{ github.event.pull_request.body }}' | grep -Eo 'https?://[^ ]+' | tr '\n' ' ')" >> $GITHUB_OUTPUT
 
-      - name: Run axe-core on URLs
-        id: run-a11y
+      - name: Fail if no Test URLs found
+        if: steps.extract-urls.outputs.urls == ''
         run: |
-          node <<'EOF'
-          const puppeteer = require('puppeteer');
-          const { AxePuppeteer } = require('axe-core/puppeteer');
-          const fs = require('fs');
+          echo "❌ No test URLs found in the PR body under **Test URLs** section."
+          exit 1
 
-          const urls = [process.env.BEFORE_URL, process.env.AFTER_URL].filter(Boolean);
+      - name: Run axe-core on Test URLs
+        id: axe-scan
+        run: |
+          npx @axe-core/cli --timeout 60000 ${{ steps.extract-urls.outputs.urls }} --save ./axe-report.json || true
 
-          (async () => {
-            const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
-            let results = [];
+      - name: Format accessibility report
+        id: format-report
+        run: |
+          echo "report<<EOF" >> $GITHUB_OUTPUT
+          echo "### ♿ Accessibility Report" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          jq -r '
+            .violations[]? | 
+            "- **\(.impact | ascii_upcase)**: [\(.id)](\(.helpUrl))  
+               Description: \(.description)  
+               Affected Nodes: \(.nodes | length)"' axe-report.json >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-            for (const url of urls) {
-              const page = await browser.newPage();
-              await page.goto(url, { waitUntil: 'networkidle2' });
-              const axe = new AxePuppeteer(page);
-              const result = await axe.analyze();
-
-              results.push({ url, violations: result.violations });
-            }
-
-            await browser.close();
-
-            // Group by WCAG level
-            const grouped = results.map(r => ({
-              url: r.url,
-              A: r.violations.filter(v => v.tags.includes('wcag2a')),
-              AA: r.violations.filter(v => v.tags.includes('wcag2aa')),
-              AAA: r.violations.filter(v => v.tags.includes('wcag2aaa')),
-            }));
-
-            // Build Markdown report
-            let md = `## ♿ Accessibility Report\n\n`;
-            grouped.forEach(r => {
-              md += `### 🔗 [${r.url}](${r.url})\n`;
-
-              if (r.A.length === 0 && r.AA.length === 0 && r.AAA.length === 0) {
-                md += `✅ No violations found.\n\n`;
-              } else {
-                if (r.A.length > 0) {
-                  md += `**❌ Level A Violations:**\n`;
-                  r.A.forEach(v => {
-                    md += `- ${v.help} ([link](${v.helpUrl}))\n`;
-                  });
-                  md += `\n`;
-                }
-                if (r.AA.length > 0) {
-                  md += `**⚠️ Level AA Violations:**\n`;
-                  r.AA.forEach(v => {
-                    md += `- ${v.help} ([link](${v.helpUrl}))\n`;
-                  });
-                  md += `\n`;
-                }
-                if (r.AAA.length > 0) {
-                  md += `**ℹ️ Level AAA Violations:**\n`;
-                  r.AAA.forEach(v => {
-                    md += `- ${v.help} ([link](${v.helpUrl}))\n`;
-                  });
-                  md += `\n`;
-                }
-              }
-            });
-
-            fs.writeFileSync('a11y-report.md', md);
-
-            // Fail if Level A violations exist
-            const hasA = grouped.some(r => r.A.length > 0);
-            if (hasA) {
-              console.error('❌ Accessibility check failed: Level A violations found.');
-              process.exit(1);
-            }
-          })();
-          EOF
-
-      - name: Upload results as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: a11y-report
-          path: a11y-report.md
-
-      - name: Comment results on PR
+      - name: Post comment on PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
-          path: a11y-report.md
+          header: accessibility-report
+          message: ${{ steps.format-report.outputs.report }}
+
+      - name: Fail on A-level violations
+        run: |
+          if jq -e '.violations[] | select(.impact == "critical" or .impact == "serious")' axe-report.json > /dev/null; then
+            echo "❌ A/AA violations detected. Failing job."
+            exit 1
+          fi
+
+  rerun:
+    if: >
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request != '' &&
+      contains(github.event.comment.body, '/rerun-a11y')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Get last commit SHA
+        id: last-sha
+        run: echo "sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Check if rerun needed
+        id: rerun-check
+        run: |
+          if gh run list --branch ${{ github.event.pull_request.head.ref }} --json headSha,conclusion -q '.[] | select(.headSha=="${{ steps.last-sha.outputs.sha }}") | .conclusion' | grep -q "success"; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Skip rerun
+        if: steps.rerun-check.outputs.skip == 'true'
+        run: echo "✅ No new commits since last successful run. Skipping rerun."
+
+      - name: Trigger rerun
+        if: steps.rerun-check.outputs.skip == 'false'
+        run: echo "🔄 Manual rerun of Accessibility Check requested via comment."

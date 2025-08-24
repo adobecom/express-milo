@@ -1,4 +1,4 @@
-export default async function decorate(block) {  
+export default async function decorate(block) {
   console.log('Ally Test Block Decorated', block);
 
   block.innerHTML = `
@@ -28,4 +28,4 @@ export default async function decorate(block) {
     </article>
   </section>
   `
-}
+};
