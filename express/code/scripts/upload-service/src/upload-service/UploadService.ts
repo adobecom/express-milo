@@ -5,7 +5,7 @@ import type {
   UploadProgressCallback,
   SliceableData,
   AdobeMinimalAsset,
-  AdobeAssetEmbedded,
+  GetSliceCallback,
 } from '@dcx/common-types';
 import {
   type UploadServiceConfig,
@@ -13,10 +13,10 @@ import {
   type UploadResult,
   type PreSignedUrlOptions,
   type AuthConfig,
-  UploadStatus,
+  UploadStatus
 } from '../types';
 import { createRepoAPISession } from '@dcx/repo-api-session';
-import { Directory, getDiscoverableAssets, getPresignedUrl, RepoResponseResult, RepositoryLinksCache } from '@dcx/assets';
+import { Directory, getPresignedUrl, RepoResponseResult, RepositoryLinksCache } from '@dcx/assets';
 import { ERROR_CODES } from '../consts';
 import { createHTTPService } from '@dcx/http';
 import { UploadStatusEvent } from '../events';
@@ -51,8 +51,6 @@ export class UploadService {
   private async initializeUserRepository(): Promise<void> {
     try {
       const repository = await this.setupUserRepository();
-      const assets = await getDiscoverableAssets(this.httpService);
-      console.log(assets.paged.items);
       if (repository) {
         this.config.repository = repository;
       }
@@ -65,10 +63,16 @@ export class UploadService {
   }
 
   /**
-   * Setup user repository by fetching discoverable assets and determining repository ID
-   * @returns Promise resolving to the repository ID
+   * Sets up the user repository for the upload service
+   * This function does a couple of things:
+   * 1. Gets the index document for the user
+   * 2. Gets the children of the index document
+   * 3. If there is only one child, that is the repository
+   * 4. If there are multiple children, it finds the temp folder. If there is no temp folder, it uses the first child as the repository
+   * 5. Returns the repository ID and path
+   * @returns Promise resolving to the repository
    */
-  private async setupUserRepository(): Promise<AdobeAssetEmbedded | null> {
+  private async setupUserRepository(): Promise<AdobeMinimalAsset | null> {
     const indexDocumentResponse = await this.session.getIndexDocument();
     const { assignedDirectories } = indexDocumentResponse.result;
     const indexRepoId = assignedDirectories?.[0]?.repositoryId;
@@ -76,7 +80,28 @@ export class UploadService {
 
     const dir = new Directory({ repositoryId: indexRepoId, assetId: indexAssetId }, this.httpService);
     const children = await dir.getPagedChildren();
-    console.log(children.result.result)
+
+    if(children?.result) {
+      const directoryChildren = children.result.children;
+      if(directoryChildren.length === 1) {
+        const repository = directoryChildren[0];
+        return {
+          repositoryId: repository["repo:repositoryId"],
+          path: repository["repo:path"]
+        };
+      } else {
+        //Find the temp folder for the user from the children repositories
+        let tempFolder = directoryChildren.find((child: any) => child["repo:name"] === "temp");
+        if(!tempFolder) {
+          tempFolder = directoryChildren[0];
+        }
+        return {
+          repositoryId: tempFolder["repo:repositoryId"],
+          path: tempFolder["repo:path"]
+        };
+      }
+    }
+
     return null;
   }
 
@@ -147,8 +172,7 @@ export class UploadService {
             options,
             fileData,
             fileSize,
-            path,
-            fileName
+            fullPath
           );
           result = userResult.result;
           break;
@@ -213,16 +237,14 @@ export class UploadService {
    * @param options - Upload options
    * @param fileData - Processed file data
    * @param fileSize - Size of the file
-   * @param path - Path for the asset
-   * @param fileName - Name of the file
+   * @param fullPath - Full path for the asset
    * @returns Promise resolving to asset creation result
    */
   private async createAssetForUser(
     options: UploadOptions,
     fileData: SliceableData,
     fileSize: number,
-    path: string,
-    fileName: string
+    fullPath: string
   ): Promise<{ result: RepoResponseResult<AdobeAsset> }> {
     const {
       contentType,
@@ -241,15 +263,13 @@ export class UploadService {
       );
     }
 
-    const parentDir: AdobeMinimalAsset = {
-      repositoryId: this.config.repository.repositoryId,
-      path: 'cloud-content'
-    };
+    const parentDir = this.config.repository;
     
     try {
+      this.uploadStatus = UploadStatus.UPLOADING;
       result = await this.session.createAsset(
         parentDir,
-        fileName,
+        fullPath,
         createIntermediates || true,
         contentType,
         resourceDesignator,
@@ -258,6 +278,8 @@ export class UploadService {
         fileSize,
         repoMetaPatch
       );
+      this._uploadProgressPercentage = 100;
+      this.uploadStatus = UploadStatus.COMPLETED;
     } catch (error) {
       throw this.handleError(
         ERROR_CODES.UPLOAD_FAILED.code,
@@ -418,7 +440,8 @@ export class UploadService {
     })(errorMessage, errorCode.code, originalError);
 
     if(this.config.environment === 'local' || this.config.environment === 'stage') {
-      window.lana.log(`UploadService Error [${errorCode.code}]:`, errorMessage, originalError);
+      window.lana.log(`UploadService Error [${errorCode.code}]: ${errorMessage}`);
+      window.lana.log(originalError);
     }
     
     return error;

@@ -1,9 +1,9 @@
-var nt = /* @__PURE__ */ ((t) => (t.IDLE = "idle", t.UPLOADING = "uploading", t.COMPLETED = "completed", t.FAILED = "failed", t))(nt || {}), X;
+var $e = /* @__PURE__ */ ((t) => (t.IDLE = "idle", t.UPLOADING = "uploading", t.COMPLETED = "completed", t.FAILED = "failed", t))($e || {}), X;
 (function(t) {
   t.ACCESS_DENIED = "http://ns.adobe.com/adobecloud/problem/accessdenied", t.ASSET_LOCKED = "http://ns.adobe.com/adobecloud/problem/assetlocked", t.ASSET_MOVED = "http://ns.adobe.com/adobecloud/problem/assetmoved", t.ASSET_NAME_CONFLICT = "http://ns.adobe.com/adobecloud/problem/assetnameconflict", t.ASSET_NAME_INVALID = "http://ns.adobe.com/adobecloud/problem/assetnamenotvalid", t.ASSET_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/assetnotfound", t.ASSET_STATE_NOT_ALLOWED = "http://ns.adobe.com/adobecloud/problem/assetstatenotallowed", t.BAD_REQUEST = "http://ns.adobe.com/adobecloud/problem/badrequest", t.BULK_REQUEST_NOT_ATTEMPTED = "http://ns.adobe.com/adobecloud/problem/bulkrequestnotattempted", t.COMPOSITE_INTEGRITY = "http://ns.adobe.com/adobecloud/problem/compositeintegrity", t.DCX_VALIDATION = "http://ns.adobe.com/adobecloud/problem/dcxvalidation", t.DIRECTORY_NOT_EMPTY = "http://ns.adobe.com/adobecloud/problem/directorynotempty", t.EMBED_INVALID = "http://ns.adobe.com/adobecloud/problem/embedinvalid", t.EMBED_TOO_LARGE = "http://ns.adobe.com/adobecloud/problem/embedtoolarge", t.ENCRYPTION_KEY_INACCESSIBLE = "http://ns.adobe.com/adobecloud/problem/encryptionkeyinaccessible", t.INVALID_FRAGMENT = "http://ns.adobe.com/adobecloud/problem/invalidfragment", t.LIMIT_CHILDREN_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/childrencount", t.LIMIT_COMPONENT_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/componentcount", t.LIMIT_EMBED_SELECTOR_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/embedspecifierselectorcount", t.LIMIT_MILESTONE_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/milestonecount", t.LIMIT_MILESTONE_LABEL_LENGTH = "http://ns.adobe.com/adobecloud/problem/limit/milestonelabellength", t.LIMIT_NAME_LENGTH = "http://ns.adobe.com/adobecloud/problem/limit/namelength", t.LIMIT_OPERATION_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/operationcount", t.LIMIT_PATH_SEGMENT_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/pathsegmentcount", t.LIMIT_RESOURCE_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/resourcecount", t.LIMIT_RESOURCE_SIZE = "http://ns.adobe.com/adobecloud/problem/limit/resourcesize", t.NOT_ENTITLED = "http://ns.adobe.com/adobecloud/problem/notentitled", t.OPERATION_FAILED = "http://ns.adobe.com/adobecloud/problem/operationfailed", t.OPERATION_TARGET_CONFLICT = "http://ns.adobe.com/adobecloud/problem/operation/targetconflict", t.QUOTA_EXCEEDED = "http://ns.adobe.com/adobecloud/problem/quotaexceeded", t.REPOSITORY_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/repositorynotfound", t.RESOURCE_BLOCKED = "http://ns.adobe.com/adobecloud/problem/resourceblocked", t.RESOURCE_NOT_ALLOWED = "http://ns.adobe.com/adobecloud/problem/resourcenotallowed", t.RESOURCE_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/resourcenotfound", t.RESOURCE_NOT_READY = "http://ns.adobe.com/adobecloud/problem/resourcenotready", t.RESPONSE_TOO_LARGE = "http://ns.adobe.com/adobecloud/problem/responsetoolarge", t.USER_BLOCKED = "http://ns.adobe.com/adobecloud/problem/userblocked", t.VERSION_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/versionnotfound", t.PARTIAL_ASSET = "http://ns.adobe.com/adobecloud/problem/partialasset";
 })(X || (X = {}));
-const I = { ASSET_MOVED: "ASSET_MOVED", INVALID_JSON: "INVALID_JSON", READ_ONLY: "READ_ONLY", INVALID_PARAMS: "", INVALID_LINKS: "INVALID_LINKS", PRECONDITION_FAILED: "PRECONDITION_FAILED", INVALID_DATA: "INVALID_DATA", DUPLICATE_VALUE: "DUPLICATE_VALUE", NO_BASE_BRANCH_DATA: "NO_BASE_BRANCH_DATA", INVALID_STATE: "INVALID_STATE", DELETED_COMPOSITE: "DELETED_COMPOSITE", INCOMPLETE_COMPOSITE: "INCOMPLETE_COMPOSITE", UNEXPECTED_RESPONSE: "UNEXPECTED_RESPONSE", NETWORK_ERROR: "NETWORK_ERROR", COMPONENT_DOWNLOAD_ERROR: "COMPONENT_DOWNLOAD_ERROR", COMPONENT_UPLOAD_ERROR: "COMPONENT_UPLOAD_ERROR", COMPONENT_MODIFIED_ERROR: "COMPONENT_MODIFIED_ERROR", UPDATE_CONFLICT: "UPDATE_CONFLICT", NO_COMPOSITE: "NO_COMPOSITE", ALREADY_EXISTS: "ALREADY_EXISTS", SERVICE_IS_INACTIVE: "SERVICE_IS_INACTIVE", EXCEEDS_QUOTA: "EXCEEDS_QUOTA", NOT_IMPLEMENTED: "NOT_IMPLEMENTED", RETRYABLE_SERVER_ERROR: "RETRYABLE_SERVER_ERROR", TIMED_OUT: "TIMED_OUT", UNEXPECTED: "UNEXPECTED", TERMINATED_INPUTSTREAM: "TERMINATED_INPUTSTREAM", WRONG_ENDPOINT: "WRONG_ENDPOINT", OUT_OF_SPACE: "ENOSPC", FILE_EXISTS_IN_CLOUD: "FILE_EXISTS_IN_CLOUD", ASSET_NOT_FOUND: "ASSET_NOT_FOUND", COMPOSITE_NOT_FOUND: "COMPOSITE_NOT_FOUND", NOT_FOUND: "NOT_FOUND", UNAUTHORIZED: "UNAUTHORIZED", FORBIDDEN: "FORBIDDEN", METHOD_NOT_ALLOWED: "METHOD_NOT_ALLOWED", NOT_ACCEPTABLE: "NOT_ACCEPTABLE", BANDWIDTH_LIMIT_EXCEEDED: "BANDWIDTH_LIMIT_EXCEEDED", ABORTED: "ABORTED", TOO_MANY_REDIRECTS: "TOO_MANY_REDIRECTS", INSECURE_REDIRECT: "INSECURE_REDIRECT", RESOURCE_NOT_READY: "RESOURCE_NOT_READY", ASSET_LOCKED: "ASSET_LOCKED" }, Uo = { [I.SERVICE_IS_INACTIVE]: !0, [I.ABORTED]: !0, [I.INSECURE_REDIRECT]: !0, [I.TOO_MANY_REDIRECTS]: !0, [I.NOT_IMPLEMENTED]: !0, [I.EXCEEDS_QUOTA]: !0, [I.RETRYABLE_SERVER_ERROR]: !0, [I.TIMED_OUT]: !0, [I.TERMINATED_INPUTSTREAM]: !0, [I.WRONG_ENDPOINT]: !0, [I.OUT_OF_SPACE]: !0, [I.INVALID_PARAMS]: !0, [I.INVALID_STATE]: !0 };
-let c = class Xe extends Error {
+const I = { ASSET_MOVED: "ASSET_MOVED", INVALID_JSON: "INVALID_JSON", READ_ONLY: "READ_ONLY", INVALID_PARAMS: "", INVALID_LINKS: "INVALID_LINKS", PRECONDITION_FAILED: "PRECONDITION_FAILED", INVALID_DATA: "INVALID_DATA", DUPLICATE_VALUE: "DUPLICATE_VALUE", NO_BASE_BRANCH_DATA: "NO_BASE_BRANCH_DATA", INVALID_STATE: "INVALID_STATE", DELETED_COMPOSITE: "DELETED_COMPOSITE", INCOMPLETE_COMPOSITE: "INCOMPLETE_COMPOSITE", UNEXPECTED_RESPONSE: "UNEXPECTED_RESPONSE", NETWORK_ERROR: "NETWORK_ERROR", COMPONENT_DOWNLOAD_ERROR: "COMPONENT_DOWNLOAD_ERROR", COMPONENT_UPLOAD_ERROR: "COMPONENT_UPLOAD_ERROR", COMPONENT_MODIFIED_ERROR: "COMPONENT_MODIFIED_ERROR", UPDATE_CONFLICT: "UPDATE_CONFLICT", NO_COMPOSITE: "NO_COMPOSITE", ALREADY_EXISTS: "ALREADY_EXISTS", SERVICE_IS_INACTIVE: "SERVICE_IS_INACTIVE", EXCEEDS_QUOTA: "EXCEEDS_QUOTA", NOT_IMPLEMENTED: "NOT_IMPLEMENTED", RETRYABLE_SERVER_ERROR: "RETRYABLE_SERVER_ERROR", TIMED_OUT: "TIMED_OUT", UNEXPECTED: "UNEXPECTED", TERMINATED_INPUTSTREAM: "TERMINATED_INPUTSTREAM", WRONG_ENDPOINT: "WRONG_ENDPOINT", OUT_OF_SPACE: "ENOSPC", FILE_EXISTS_IN_CLOUD: "FILE_EXISTS_IN_CLOUD", ASSET_NOT_FOUND: "ASSET_NOT_FOUND", COMPOSITE_NOT_FOUND: "COMPOSITE_NOT_FOUND", NOT_FOUND: "NOT_FOUND", UNAUTHORIZED: "UNAUTHORIZED", FORBIDDEN: "FORBIDDEN", METHOD_NOT_ALLOWED: "METHOD_NOT_ALLOWED", NOT_ACCEPTABLE: "NOT_ACCEPTABLE", BANDWIDTH_LIMIT_EXCEEDED: "BANDWIDTH_LIMIT_EXCEEDED", ABORTED: "ABORTED", TOO_MANY_REDIRECTS: "TOO_MANY_REDIRECTS", INSECURE_REDIRECT: "INSECURE_REDIRECT", RESOURCE_NOT_READY: "RESOURCE_NOT_READY", ASSET_LOCKED: "ASSET_LOCKED" }, xo = { [I.SERVICE_IS_INACTIVE]: !0, [I.ABORTED]: !0, [I.INSECURE_REDIRECT]: !0, [I.TOO_MANY_REDIRECTS]: !0, [I.NOT_IMPLEMENTED]: !0, [I.EXCEEDS_QUOTA]: !0, [I.RETRYABLE_SERVER_ERROR]: !0, [I.TIMED_OUT]: !0, [I.TERMINATED_INPUTSTREAM]: !0, [I.WRONG_ENDPOINT]: !0, [I.OUT_OF_SPACE]: !0, [I.INVALID_PARAMS]: !0, [I.INVALID_STATE]: !0 };
+let c = class Ze extends Error {
   constructor(e, s, r, n, o) {
     var i;
     if (super(), this.code = e, this.name = "AdobeDCXError", this._additionalData = {}, ((i = n == null ? void 0 : n.headers) === null || i === void 0 ? void 0 : i["content-type"]) === "application/problem+json" && n.response && typeof n.response == "object" && typeof n.response.slice == "function") try {
@@ -13,7 +13,7 @@ let c = class Xe extends Error {
       const d = n.response;
       n.response = { originalBody: d, message: "Failed to parse JSON problem type response body.", parseError: a };
     }
-    if (r instanceof Error && (this._underlyingError = r), this._response = n || (it(r) ? r.response : void 0), this._additionalData = o, this._message = s, this.message = (typeof e == "string" && e !== "" ? "[" + e + "] " : "") + (this._message || ""), Object.setPrototypeOf(this, Xe.prototype), Error.captureStackTrace) Error.captureStackTrace(this, Xe);
+    if (r instanceof Error && (this._underlyingError = r), this._response = n || (it(r) ? r.response : void 0), this._additionalData = o, this._message = s, this.message = (typeof e == "string" && e !== "" ? "[" + e + "] " : "") + (this._message || ""), Object.setPrototypeOf(this, Ze.prototype), Error.captureStackTrace) Error.captureStackTrace(this, Ze);
     else try {
       const a = new Error();
       if (a.name = this.name, a.stack) {
@@ -46,22 +46,22 @@ let c = class Xe extends Error {
   }
   static wrapError(e, s, r, n) {
     var o, i, a, d;
-    if (r && Uo[r.code]) return r;
+    if (r && xo[r.code]) return r;
     if (n && typeof n == "object") {
       const h = n.statusCode, l = h === 403 && (((a = (i = (o = n.response) === null || o === void 0 ? void 0 : o.message) === null || i === void 0 ? void 0 : i.match(/code=(\d+.\d+)/)) === null || a === void 0 ? void 0 : a[1]) === "403.1" || ((d = n.response) === null || d === void 0 ? void 0 : d.type) === X.QUOTA_EXCEEDED);
       if (h >= 500 && h < 600 || l) h === 501 ? (e = I.NOT_IMPLEMENTED, s = "Unimplemented request") : h === 507 || l ? (e = I.EXCEEDS_QUOTA, s = "Quota exceeded") : (e = I.RETRYABLE_SERVER_ERROR, s = "Server error");
-      else if (r instanceof Xe && e === r.code && r.code === this.UNEXPECTED_RESPONSE) return r;
+      else if (r instanceof Ze && e === r.code && r.code === this.UNEXPECTED_RESPONSE) return r;
     }
-    return new Xe(e, s, r, n);
+    return new Ze(e, s, r, n);
   }
   toString() {
     return `${this.name}: ${this.message}`;
   }
   static networkError(e, s, r) {
-    return Xe.wrapError(I.NETWORK_ERROR, e, s, r);
+    return Ze.wrapError(I.NETWORK_ERROR, e, s, r);
   }
   static unexpectedResponse(e, s, r) {
-    return Xe.wrapError(I.UNEXPECTED_RESPONSE, e, s, r);
+    return Ze.wrapError(I.UNEXPECTED_RESPONSE, e, s, r);
   }
 };
 function Vs(t, e, s) {
@@ -70,16 +70,16 @@ function Vs(t, e, s) {
 function it(t) {
   return !(!t || typeof t != "object") && t.name === "AdobeDCXError";
 }
-function Bo(t) {
+function Uo(t) {
   const e = Array.isArray(t.response) ? t.response.reduce((n, o) => n || o.error, void 0) : t.response.error;
   if (!e) return t;
   const s = Yt(t.statusCode, t);
   if (s instanceof c) throw s;
-  const r = jo(e, t);
+  const r = Bo(e, t);
   throw r || new c(e.type || c.UNEXPECTED_RESPONSE, e.title || "Unexpected Error", e, t);
 }
 c.ABORTED = I.ABORTED, c.INSECURE_REDIRECT = I.INSECURE_REDIRECT, c.TOO_MANY_REDIRECTS = I.TOO_MANY_REDIRECTS, c.INVALID_JSON = I.INVALID_JSON, c.READ_ONLY = I.READ_ONLY, c.INVALID_PARAMS = I.INVALID_PARAMS, c.INVALID_DATA = I.INVALID_DATA, c.DUPLICATE_VALUE = I.DUPLICATE_VALUE, c.NO_BASE_BRANCH_DATA = I.NO_BASE_BRANCH_DATA, c.INVALID_STATE = I.INVALID_STATE, c.DELETED_COMPOSITE = I.DELETED_COMPOSITE, c.INCOMPLETE_COMPOSITE = I.INCOMPLETE_COMPOSITE, c.UNEXPECTED_RESPONSE = I.UNEXPECTED_RESPONSE, c.NETWORK_ERROR = I.NETWORK_ERROR, c.COMPONENT_DOWNLOAD_ERROR = I.COMPONENT_DOWNLOAD_ERROR, c.COMPONENT_UPLOAD_ERROR = I.COMPONENT_UPLOAD_ERROR, c.COMPONENT_MODIFIED_ERROR = I.COMPONENT_MODIFIED_ERROR, c.UPDATE_CONFLICT = I.UPDATE_CONFLICT, c.NO_COMPOSITE = I.NO_COMPOSITE, c.ALREADY_EXISTS = I.ALREADY_EXISTS, c.SERVICE_IS_INACTIVE = I.SERVICE_IS_INACTIVE, c.EXCEEDS_QUOTA = I.EXCEEDS_QUOTA, c.NOT_IMPLEMENTED = I.NOT_IMPLEMENTED, c.RETRYABLE_SERVER_ERROR = I.RETRYABLE_SERVER_ERROR, c.TIMED_OUT = I.TIMED_OUT, c.UNEXPECTED = I.UNEXPECTED, c.TERMINATED_INPUTSTREAM = I.TERMINATED_INPUTSTREAM, c.WRONG_ENDPOINT = I.WRONG_ENDPOINT, c.OUT_OF_SPACE = I.OUT_OF_SPACE, c.FILE_EXISTS_IN_CLOUD = I.FILE_EXISTS_IN_CLOUD, c.ASSET_NOT_FOUND = I.ASSET_NOT_FOUND, c.COMPOSITE_NOT_FOUND = I.COMPOSITE_NOT_FOUND, c.NOT_FOUND = I.NOT_FOUND, c.UNAUTHORIZED = I.UNAUTHORIZED, c.FORBIDDEN = I.FORBIDDEN, c.PRECONDITION_FAILED = I.PRECONDITION_FAILED, c.RESOURCE_NOT_READY = I.RESOURCE_NOT_READY, c.ASSET_LOCKED = I.ASSET_LOCKED;
-const Gt = /* @__PURE__ */ new Map([[400, { code: I.UNEXPECTED_RESPONSE, message: "Bad request" }], [401, { code: I.UNAUTHORIZED, message: "Unauthorized" }], [403, { code: I.FORBIDDEN, message: "Forbidden" }], [404, { code: I.NOT_FOUND, message: "Not found" }], [405, { code: I.METHOD_NOT_ALLOWED, message: "The user is authorized to act on this resource, but cannot use the specified method." }], [406, { code: I.NOT_ACCEPTABLE, message: "Unable to obtain resource in a content type matching the Accept header or rendition type parameter." }], [409, { code: I.ALREADY_EXISTS, message: "Already exists" }], [412, { code: I.PRECONDITION_FAILED, message: "Precondition failed" }], [501, { code: I.NOT_IMPLEMENTED, message: "Not implemented" }], [507, { code: I.EXCEEDS_QUOTA, message: "Exceeds quota" }], [509, { code: I.BANDWIDTH_LIMIT_EXCEEDED, message: "Bandwidth limit exceeded" }]]), on = new Map(Object.entries({ [X.ASSET_MOVED]: { code: I.ASSET_MOVED, message: "Asset moved to a different region while operation was in progress" }, [X.COMPOSITE_INTEGRITY]: { code: I.INCOMPLETE_COMPOSITE, message: "Incomplete composite. invoke missingComponentsFromError with this error for more information." }, [X.PARTIAL_ASSET]: { code: I.NO_COMPOSITE, message: "Asset is partially created. No Manifest found" }, [X.LIMIT_RESOURCE_COUNT]: { code: I.UNEXPECTED_RESPONSE, message: "Resource count limit exceed" }, [X.QUOTA_EXCEEDED]: { code: I.EXCEEDS_QUOTA, message: "Quota exceeded" }, [X.ASSET_LOCKED]: { code: I.ASSET_LOCKED, message: "Asset is locked and cannot be modified" } })), jo = (t, e) => {
+const Gt = /* @__PURE__ */ new Map([[400, { code: I.UNEXPECTED_RESPONSE, message: "Bad request" }], [401, { code: I.UNAUTHORIZED, message: "Unauthorized" }], [403, { code: I.FORBIDDEN, message: "Forbidden" }], [404, { code: I.NOT_FOUND, message: "Not found" }], [405, { code: I.METHOD_NOT_ALLOWED, message: "The user is authorized to act on this resource, but cannot use the specified method." }], [406, { code: I.NOT_ACCEPTABLE, message: "Unable to obtain resource in a content type matching the Accept header or rendition type parameter." }], [409, { code: I.ALREADY_EXISTS, message: "Already exists" }], [412, { code: I.PRECONDITION_FAILED, message: "Precondition failed" }], [501, { code: I.NOT_IMPLEMENTED, message: "Not implemented" }], [507, { code: I.EXCEEDS_QUOTA, message: "Exceeds quota" }], [509, { code: I.BANDWIDTH_LIMIT_EXCEEDED, message: "Bandwidth limit exceeded" }]]), on = new Map(Object.entries({ [X.ASSET_MOVED]: { code: I.ASSET_MOVED, message: "Asset moved to a different region while operation was in progress" }, [X.COMPOSITE_INTEGRITY]: { code: I.INCOMPLETE_COMPOSITE, message: "Incomplete composite. invoke missingComponentsFromError with this error for more information." }, [X.PARTIAL_ASSET]: { code: I.NO_COMPOSITE, message: "Asset is partially created. No Manifest found" }, [X.LIMIT_RESOURCE_COUNT]: { code: I.UNEXPECTED_RESPONSE, message: "Resource count limit exceed" }, [X.QUOTA_EXCEEDED]: { code: I.EXCEEDS_QUOTA, message: "Quota exceeded" }, [X.ASSET_LOCKED]: { code: I.ASSET_LOCKED, message: "Asset is locked and cannot be modified" } })), Bo = (t, e) => {
   var s;
   const r = on.get((s = t.type) !== null && s !== void 0 ? s : "") || (typeof t.status == "number" ? Gt.get(t.status) : void 0);
   return r ? new c(r.code, r.message, t, e) : void 0;
@@ -88,24 +88,24 @@ const Gt = /* @__PURE__ */ new Map([[400, { code: I.UNEXPECTED_RESPONSE, message
   const r = on.get((s = (e = t.response) === null || e === void 0 ? void 0 : e.type) !== null && s !== void 0 ? s : "") || Gt.get(t.statusCode);
   return r ? new c(r.code, r.message, void 0, t, t.response) : void 0;
 }, Yt = (t, e) => t && e ? t < 300 && t > 199 || Tt(e) || !1 : new c(I.NETWORK_ERROR, "Invalid or missing status code or response", void 0, e);
-let Lt;
-const Vo = new Uint8Array(16);
-function Fo() {
-  if (!Lt && (Lt = typeof crypto < "u" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto), !Lt)) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
-  return Lt(Vo);
+let wt;
+const jo = new Uint8Array(16);
+function Vo() {
+  if (!wt && (wt = typeof crypto < "u" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto), !wt)) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
+  return wt(jo);
 }
-var Ho = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+var Fo = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 const oe = [];
 for (let t = 0; t < 256; ++t) oe.push((t + 256).toString(16).slice(1));
 var Rr = { randomUUID: typeof crypto < "u" && crypto.randomUUID && crypto.randomUUID.bind(crypto) };
-function $o(t, e, s) {
+function Ho(t, e, s) {
   if (Rr.randomUUID && !e && !t) return Rr.randomUUID();
-  const r = (t = t || {}).random || (t.rng || Fo)();
+  const r = (t = t || {}).random || (t.rng || Vo)();
   return r[6] = 15 & r[6] | 64, r[8] = 63 & r[8] | 128, function(n, o = 0) {
     return oe[n[o + 0]] + oe[n[o + 1]] + oe[n[o + 2]] + oe[n[o + 3]] + "-" + oe[n[o + 4]] + oe[n[o + 5]] + "-" + oe[n[o + 6]] + oe[n[o + 7]] + "-" + oe[n[o + 8]] + oe[n[o + 9]] + "-" + oe[n[o + 10]] + oe[n[o + 11]] + oe[n[o + 12]] + oe[n[o + 13]] + oe[n[o + 14]] + oe[n[o + 15]];
   }(r);
 }
-const Go = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && typeof t == "object", q = (t) => typeof t == "function", fe = (t) => Array.isArray(t), Yo = (t) => S(t) && q(t.constructor) && t.constructor.name === "ArrayBuffer" && q(t.slice), Or = (t) => {
+const $o = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && typeof t == "object", q = (t) => typeof t == "function", fe = (t) => Array.isArray(t), Go = (t) => S(t) && q(t.constructor) && t.constructor.name === "ArrayBuffer" && q(t.slice), Or = (t) => {
   if (typeof t != "string") return !1;
   const e = t.toLowerCase().split("application/");
   if (e.length < 2) return !1;
@@ -117,8 +117,8 @@ const Go = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && ty
   } catch {
     return !1;
   }
-}, qo = () => typeof self == "object" && self.self === self, zt = () => $o(), Wt = (t) => {
-  return typeof (e = t) == "string" && Ho.test(e);
+}, Yo = () => typeof self == "object" && self.self === self, zt = () => Ho(), Wt = (t) => {
+  return typeof (e = t) == "string" && Fo.test(e);
   var e;
 }, he = (...t) => !t || !Array.isArray(t) || t.length < 1 ? {} : t.reduce((e, s) => {
   const r = S(e) ? e : {};
@@ -137,18 +137,18 @@ const Go = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && ty
     typeof n == "string" && n !== "" && (r === 0 && n.length !== 1 || n.charAt(0) === "/" && (n = n.slice(1)), r !== s - 1 && n.charAt(n.length - 1) === "/" && (n = n.slice(0, n.length - 1)), e.push(n));
   }
   return e.join("/");
-}, zo = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"), Wo = (t) => {
-  const e = t.match(zo) || [];
+}, qo = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"), zo = (t) => {
+  const e = t.match(qo) || [];
   return { scheme: e[2], authority: e[4], path: e[5], query: e[7], fragment: e[9] };
 }, Ss = (t) => {
-  const e = Wo(t), s = e.scheme, r = e.authority, n = s === "https" ? 443 : s === "http" ? 80 : -1;
+  const e = zo(t), s = e.scheme, r = e.authority, n = s === "https" ? 443 : s === "http" ? 80 : -1;
   let o;
   return s && r && (o = (s + "://" + r).toLowerCase(), n >= 0 && r.indexOf(":") < 0 && (o = o + ":" + n)), o;
-}, Ko = (t) => {
+}, Wo = (t) => {
   if (!t || typeof t != "string") return t;
   const e = (t = (t = (t = (t = t.indexOf("//") > -1 ? t.split("/")[2] : t.split("/")[0]).split("?")[0]).split("/")[0]).split(":")[0]).split(".");
   return t = e.slice(Math.max(e.length - 2, 0)).join(".");
-}, Rt = 48, Xo = 49, Kt = 57, Cs = 97, Ns = 65, cn = 102, dn = 70, Pr = (t) => {
+}, Rt = 48, Ko = 49, Kt = 57, Cs = 97, Ns = 65, cn = 102, dn = 70, Pr = (t) => {
   const e = t.charCodeAt(0);
   return e >= Rt && e <= Kt || e >= Cs && e <= cn || e >= Ns && e <= dn;
 }, Vt = (t) => t.length >= 3 && t.charAt(0) === "%" && Pr(t.charAt(1)) && Pr(t.charAt(2)), Mt = (t) => {
@@ -158,13 +158,13 @@ const Go = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && ty
   const e = [];
   for (let s = 0; s < 128; ++s) e.push(t.indexOf(String.fromCharCode(s)) !== -1);
   return e;
-}, hn = Hs(Fs + ":/?#[]@!$&'()*+,;="), Zo = Hs(Fs);
+}, hn = Hs(Fs + ":/?#[]@!$&'()*+,;="), Xo = Hs(Fs);
 Hs(Fs + "/");
-const Jo = (t, e) => {
+const Zo = (t, e) => {
   if (t < 128 && e[t]) return String.fromCharCode(t);
   let s = "%";
   return s += Sr.charAt(t >> 4 & 15), s += Sr.charAt(15 & t), s;
-}, Qo = (t) => {
+}, Jo = (t) => {
   const e = [];
   for (let s = 0; s < t.length; s++) {
     let r = t.charCodeAt(s);
@@ -172,11 +172,11 @@ const Jo = (t, e) => {
   }
   return e;
 }, $s = (t, e) => {
-  const s = Qo(t);
+  const s = Jo(t);
   let r = "";
-  for (let n = 0; n < s.length; n++) r += Jo(s[n], e);
+  for (let n = 0; n < s.length; n++) r += Zo(s[n], e);
   return r;
-}, pt = (t) => (t = t.normalize("NFC"), $s(t, Zo)), _s = (t) => {
+}, pt = (t) => (t = t.normalize("NFC"), $s(t, Xo)), _s = (t) => {
   t = t.normalize("NFC");
   let e = 0, s = "";
   for (; e < t.length; ) Vt(t.substr(e)) ? (s += t.substr(e, 3), e += 3) : s += $s(t.charAt(e++), hn);
@@ -232,7 +232,7 @@ const Jo = (t, e) => {
           if (h = !0, ++s >= t.length) break;
         } else if (t.charAt(s) === ":") {
           if (++s >= t.length) break;
-          for (t.charCodeAt(s) >= Xo && t.charCodeAt(s) <= Kt && (f = 0); s < t.length && t.charCodeAt(s) >= Rt && t.charCodeAt(s) <= Kt && f < 1e4; ) f = 10 * f + (t.charCodeAt(s++) - Rt);
+          for (t.charCodeAt(s) >= Ko && t.charCodeAt(s) <= Kt && (f = 0); s < t.length && t.charCodeAt(s) >= Rt && t.charCodeAt(s) <= Kt && f < 1e4; ) f = 10 * f + (t.charCodeAt(s++) - Rt);
           if (s >= t.length) break;
         }
         for (; s < t.length && t.charAt(s) !== "}" && t.charAt(s) !== ","; ) ++s;
@@ -287,16 +287,16 @@ function ye(t, e) {
 function Ie(t) {
   return new TextEncoder().encode(t);
 }
-function Le(t, e) {
+function we(t, e) {
   const s = new Uint8Array(t.length + e.length);
   return s.set(t, 0), s.set(e, t.length), s;
 }
-function ei(t) {
+function Qo(t) {
   const e = {};
   for (const [s, r] of t) e[s] = r;
   return e;
 }
-function ti(t, e) {
+function ei(t, e) {
   return t.reduce((s, r, n) => (n % e == 0 ? s.unshift([r]) : s[0].push(r), s), []).reverse();
 }
 let Gs = class {
@@ -327,7 +327,7 @@ const ln = [/^(?!^501$|^507$)^(5\d{2})$|429|423$/], Nr = (t, e) => {
 function gt(t, e = ln) {
   return !!t && (Array.isArray(e) ? e.some((s) => Nr(s, t)) : Nr(e, t));
 }
-const si = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
+const ti = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
   const e = {}, s = t.split(/\r?\n/);
   let r, n;
   for (let o = 0; o < s.length; ++o) {
@@ -335,7 +335,7 @@ const si = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
     if (i.length > 0) {
       const a = i.charCodeAt(0);
       if (!r || a !== 9 && a !== 32) {
-        const d = si.exec(i);
+        const d = ti.exec(i);
         d && d.length > 1 && (r = d[1].toLowerCase(), n = d[2] || "", n = n.replace(Dr, ""), e[r] ? e[r] = e[r] + "," + n : e[r] = n);
       } else e[r] = e[r] + " " + i.replace(Dr, "");
     }
@@ -346,13 +346,13 @@ const si = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
   const e = {};
   for (const [s, r] of Object.entries(t)) e[s.toLowerCase()] = fe(r) ? r.join(";") : r;
   return e;
-}, Oe = (t, e, s) => fe(e) ? new c(c.INVALID_PARAMS, `Param '${t}' type must be one of: [${e.join(",")}].${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`) : new c(c.INVALID_PARAMS, `Param '${t}' must be of type '${e}'.${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`), Ye = (t, e, s, r = !1, n = []) => {
+}, Oe = (t, e, s) => fe(e) ? new c(c.INVALID_PARAMS, `Param '${t}' type must be one of: [${e.join(",")}].${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`) : new c(c.INVALID_PARAMS, `Param '${t}' must be of type '${e}'.${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`), qe = (t, e, s, r = !1, n = []) => {
   if (r && e == null) return !0;
   if (fe(s)) {
     for (const i in s) {
       const a = s[i];
       try {
-        return Ye(t, e, a, r, n), !0;
+        return qe(t, e, a, r, n), !0;
       } catch {
       }
     }
@@ -364,7 +364,7 @@ const si = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
   if (s.endsWith("[]")) {
     if (!fe(e)) throw Oe(t, s, n);
     return e.forEach((i, a) => {
-      Ye(`${t}[${a}]`, i, s.substr(0, s.length - 2));
+      qe(`${t}[${a}]`, i, s.substr(0, s.length - 2));
     }), !0;
   }
   let o = s.toLowerCase();
@@ -390,13 +390,13 @@ const si = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
   return !0;
 };
 function E(...t) {
-  return t.map((e) => Ye(...e));
+  return t.map((e) => qe(...e));
 }
 function un(t, e, ...s) {
   if (e = e ? " " + e + " " : " ", !t || typeof t != "object") throw new c(c.INVALID_PARAMS, `Object${e}is invalid.`);
   try {
     s.forEach((r) => {
-      Ye(r[0], t[r[0]], r[1], r[2] || !1, r[3] || []);
+      qe(r[0], t[r[0]], r[1], r[2] || !1, r[3] || []);
     });
   } catch (r) {
     throw new c(c.INVALID_PARAMS, `Object${e}is invalid. ${r.message.replace("Param", "Property")}`, r);
@@ -405,12 +405,12 @@ function un(t, e, ...s) {
 const pn = (t, e) => {
   if (t() === !1) throw new c(c.INVALID_PARAMS, e);
 };
-function ri(t, e = {}, s) {
-  const r = typeof e.selector == "function" ? e.selector : ni, n = Array.isArray(t) ? r(t, s) : t;
+function si(t, e = {}, s) {
+  const r = typeof e.selector == "function" ? e.selector : ri, n = Array.isArray(t) ? r(t, s) : t;
   if (!n) throw new c(c.INVALID_PARAMS, "Could not select appropriate link for usage");
   return n.templated ? typeof e.expander == "function" ? e.expander(n.href, s) : Ve(n.href, s) : n.href;
 }
-function ni(t, e = { mode: "id" }) {
+function ri(t, e = { mode: "id" }) {
   let s = t[0], r = 0;
   for (const n of t) {
     let o = 0;
@@ -419,27 +419,27 @@ function ni(t, e = { mode: "id" }) {
   }
   return s;
 }
-function L(t) {
+function w(t) {
   if (!S(t)) throw new Error("Expecting object");
   const e = {};
   for (const s in t) t[s] != null && (e[s] = t[s]);
   return e;
 }
-const oi = /^utf-?8|ascii|utf-?16-?le|ucs-?2|base-?64|latin-?1$/i, ii = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, ai = /\s|\uFEFF|\xA0/, ci = /\r?\n[\x20\x09]+/g, di = /[;,"]/, hi = /[;,"]|\s/, xt = 1, kr = 2, fs = 4;
-function wr(t) {
-  return t.replace(ii, "");
+const ni = /^utf-?8|ascii|utf-?16-?le|ucs-?2|base-?64|latin-?1$/i, oi = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, ii = /\s|\uFEFF|\xA0/, ai = /\r?\n[\x20\x09]+/g, ci = /[;,"]/, di = /[;,"]|\s/, xt = 1, kr = 2, fs = 4;
+function Lr(t) {
+  return t.replace(oi, "");
 }
 function Ft(t) {
-  return ai.test(t);
+  return ii.test(t);
 }
-function li(t, e) {
+function hi(t, e) {
   for (; Ft(t[e]); ) e++;
   return e;
 }
-function Lr(t) {
-  return hi.test(t);
+function wr(t) {
+  return di.test(t);
 }
-class ui {
+class li {
   constructor(e) {
     this.refs = [], e && this.parse(e);
   }
@@ -464,7 +464,7 @@ class ui {
   }
   parse(e, s = 0) {
     let r = s ? e.slice(s) : e;
-    r = wr(r).replace(ci, "");
+    r = Lr(r).replace(ai, "");
     let n = xt;
     const o = r.length;
     let i = 0, a = null;
@@ -499,9 +499,9 @@ class ui {
         }
         const d = r.indexOf("=", i);
         if (d === -1) throw new Error("Expected attribute delimiter at offset " + i);
-        const h = wr(r.slice(i, d)).toLowerCase();
+        const h = Lr(r.slice(i, d)).toLowerCase();
         let l = "";
-        if (i = d + 1, i = li(r, i), r[i] === '"') for (i++; i < o; ) {
+        if (i = d + 1, i = hi(r, i), r[i] === '"') for (i++; i < o; ) {
           if (r[i] === '"') {
             i++;
             break;
@@ -510,10 +510,10 @@ class ui {
         }
         else {
           let p = i + 1;
-          for (; !di.test(r[p]) && p < o; ) p++;
+          for (; !ci.test(r[p]) && p < o; ) p++;
           l = r.slice(i, p), i = p;
         }
-        if (!(a && a[h] && pi(h))) if (a && h[h.length - 1] === "*") a[h] = _i(l);
+        if (!(a && a[h] && ui(h))) if (a && h[h.length - 1] === "*") a[h] = pi(l);
         else if (l = h === "rel" || h === "type" ? l.toLowerCase() : l, a && a[h] != null) {
           const p = a[h];
           fe(p) ? p.push(l) : a[h] = [a[h], l];
@@ -542,14 +542,14 @@ class ui {
     return e.join(", ");
   }
 }
-const ks = (t) => oi.test(t), pi = (t) => t === "rel" || t === "type" || t === "media" || t === "title" || t === "title*", Mr = (t) => t.replace(/"/g, '\\"'), _i = (t) => {
+const ks = (t) => ni.test(t), ui = (t) => t === "rel" || t === "type" || t === "media" || t === "title" || t === "title*", Mr = (t) => t.replace(/"/g, '\\"'), pi = (t) => {
   const e = /([^']+)?(?:'([^']+)')?(.+)/.exec(t) || [];
   return { language: e[2].toLowerCase(), encoding: ks(e[1]) ? null : e[1].toLowerCase(), value: ks(e[1]) ? decodeURIComponent(e[3]) : e[3] };
 }, _n = (t, e) => Array.isArray(e) ? e.map((s) => _n(t, s)).join("; ") : t[t.length - 1] === "*" || typeof e != "string" ? ((s, r) => {
   const n = (r.encoding || "utf-8").toUpperCase(), o = r.language || "en";
   let i = "";
   return i = Buffer.isBuffer(r.value) && ks(n) ? r.value.toString(n) : Buffer.isBuffer(r.value) ? r.value.toString("hex").replace(/[0-9a-f]{2}/gi, "%$1") : encodeURIComponent(r.value), s + "=" + n + "'" + o + "'" + i;
-})(t, e) : (/* @__PURE__ */ ((s) => s === "rel" || s === "type" || s === "anchor")(t) ? e = Lr(e) ? '"' + Mr(e) + '"' : Mr(e) : Lr(e) && (e = '"' + (e = (e = encodeURIComponent(e)).replace(/%20/g, " ").replace(/%2C/g, ",").replace(/%3B/g, ";")) + '"'), t + "=" + e);
+})(t, e) : (/* @__PURE__ */ ((s) => s === "rel" || s === "type" || s === "anchor")(t) ? e = wr(e) ? '"' + Mr(e) + '"' : Mr(e) : wr(e) && (e = '"' + (e = (e = encodeURIComponent(e)).replace(/%20/g, " ").replace(/%2C/g, ",").replace(/%3B/g, ";")) + '"'), t + "=" + e);
 function Qt(t, e, s, r = "id") {
   const n = qs(t)[e];
   if (n) {
@@ -568,18 +568,18 @@ function H(t, e, s = "id") {
 }
 function Z(t, e, s, r = "id") {
   const n = H(qs(t), e, r);
-  return Ve(n, L(s));
+  return Ve(n, w(s));
 }
-const fi = (t, e = 0) => new ui().parse(t, e);
+const _i = (t, e = 0) => new li().parse(t, e);
 function qs(t) {
   return S(t) ? "_links" in t ? t._links : "links" in t ? t.links : t : {};
 }
 let Ut;
-const Ei = () => {
+const fi = () => {
   if (Ut) return Ut;
   const t = qt();
-  return Ut = t && S(globalThis.performance) && q(globalThis.performance.now) ? globalThis.performance : t && S(globalThis.perf_hooks) && S(globalThis.perf_hooks.performance) && q(globalThis.perf_hooks.performance.now) ? globalThis.perf_hooks.performance : qo() && S(self.performance) && q(self.performance.now) ? self.performance : Date, Ut;
-}, ie = () => Ei().now(), gi = (t) => Ds(void 0, void 0, void 0, function* () {
+  return Ut = t && S(globalThis.performance) && q(globalThis.performance.now) ? globalThis.performance : t && S(globalThis.perf_hooks) && S(globalThis.perf_hooks.performance) && q(globalThis.perf_hooks.performance.now) ? globalThis.perf_hooks.performance : Yo() && S(self.performance) && q(self.performance.now) ? self.performance : Date, Ut;
+}, ie = () => fi().now(), Ei = (t) => Ds(void 0, void 0, void 0, function* () {
   return new Promise((e) => setTimeout(e, t));
 });
 function fn(t, e, s, r, n) {
@@ -589,7 +589,7 @@ function fn(t, e, s, r, n) {
       if (ie() - s.startTime >= s.timeoutAfter) throw new c(c.TIMED_OUT, "request aborted due to timeout");
       r || (r = (i = o.response) === null || i === void 0 ? void 0 : i.response.type);
       const h = 1e3 * parseInt((a = o.response) === null || a === void 0 ? void 0 : a.headers["retry-after"], 10) || 2e3;
-      if (((d = o.response) === null || d === void 0 ? void 0 : d.statusCode) === e && o.response.response.type === r) return yield gi(h), fn(t, e, s, r);
+      if (((d = o.response) === null || d === void 0 ? void 0 : d.statusCode) === e && o.response.response.type === r) return yield Ei(h), fn(t, e, s, r);
       throw o;
     }));
   });
@@ -606,7 +606,7 @@ var xr, Ur, Br, Se, z;
 }(Se || (Se = {})), function(t) {
   t[t.Deprecated = 0] = "Deprecated", t[t.Error = 1] = "Error", t[t.Warn = 2] = "Warn", t[t.Log = 3] = "Log", t[t.Debug = 4] = "Debug";
 }(z || (z = {}));
-const Ii = { [z.Deprecated]: "error", [z.Error]: "error", [z.Log]: "log", [z.Warn]: "warn", [z.Debug]: "debug" };
+const gi = { [z.Deprecated]: "error", [z.Error]: "error", [z.Log]: "log", [z.Warn]: "warn", [z.Debug]: "debug" };
 class de extends Gs {
   constructor(e) {
     super([Se.CreateComposite, Se.UploadComponent, Se.PushComposite, Se.PullComposite, Se.PullCompositeVersion, Se.DownloadComponent]), this._logLevel = z.Warn, this._prevDebugTime = ie(), this._debugFormatter = (s, r, n, o) => `[${s} (+${(1e3 * (r - n)).toFixed(0)})] ${o.map((i) => typeof i == "string" ? i : JSON.stringify(i)).join(" ")}`, this._debugNamespaces = [], this._debugSkips = [], this.suppressDeprecationWarnings = !1, e && (this._logCallback = e), this._initNamespaces();
@@ -658,7 +658,7 @@ class de extends Gs {
           const n = this._prevDebugTime;
           this._prevDebugTime = ie(), (console.debug || console.log)(this._debugFormatter(s, this._prevDebugTime, n, r));
         }
-      } else console[Ii[e]](...r.slice(0, -2));
+      } else console[gi[e]](...r.slice(0, -2));
     } catch {
     }
   }
@@ -711,7 +711,7 @@ const zs = () => {
 }, U = (t) => zs().Debug(t);
 zs();
 const Vr = (t) => toString.call(t) === "[object Function]";
-let Ti = class {
+let Ii = class {
   constructor(e, s) {
     return this._promise = null, this._props = {}, this._registeredProps = [], this._handlers = { cancel: [] }, this._done = !1, this._canceled = !1, this._internalKeys = [], this.name = "AdobePromise", this._internalKeys = [...Object.keys(this), ...Object.keys(Object.getOwnPropertyDescriptors(Object.getPrototypeOf(this))), "_cancelReason"], s && typeof s == "object" && this._setProps(s), this._promise = new Promise((r, n) => e.call(this, (o) => {
       this._done || (this._done = !0, r(o));
@@ -827,9 +827,9 @@ let Ti = class {
     this._handlers.cancel = [];
   }
 };
-const C = Ti;
-var Ai = typeof globalThis == "object" ? globalThis : typeof self == "object" ? self : typeof window == "object" ? window : typeof globalThis == "object" ? globalThis : {}, Ze = "1.9.0", Fr = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
-function mi(t) {
+const C = Ii;
+var Ti = typeof globalThis == "object" ? globalThis : typeof self == "object" ? self : typeof window == "object" ? window : typeof globalThis == "object" ? globalThis : {}, Je = "1.9.0", Fr = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
+function Ai(t) {
   var e = /* @__PURE__ */ new Set([t]), s = /* @__PURE__ */ new Set(), r = t.match(Fr);
   if (!r)
     return function() {
@@ -868,34 +868,34 @@ function mi(t) {
     return l.prerelease != null || n.major !== l.major ? o(d) : n.major === 0 ? n.minor === l.minor && n.patch <= l.patch ? i(d) : o(d) : n.minor <= l.minor ? i(d) : o(d);
   };
 }
-var yi = mi(Ze), vi = Ze.split(".")[0], Pt = Symbol.for("opentelemetry.js.api." + vi), St = Ai;
+var mi = Ai(Je), yi = Je.split(".")[0], Pt = Symbol.for("opentelemetry.js.api." + yi), St = Ti;
 function Ct(t, e, s, r) {
   var n;
   r === void 0 && (r = !1);
   var o = St[Pt] = (n = St[Pt]) !== null && n !== void 0 ? n : {
-    version: Ze
+    version: Je
   };
   if (!r && o[t]) {
     var i = new Error("@opentelemetry/api: Attempted duplicate registration of API: " + t);
     return s.error(i.stack || i.message), !1;
   }
-  if (o.version !== Ze) {
-    var i = new Error("@opentelemetry/api: Registration of version v" + o.version + " for " + t + " does not match previously registered API v" + Ze);
+  if (o.version !== Je) {
+    var i = new Error("@opentelemetry/api: Registration of version v" + o.version + " for " + t + " does not match previously registered API v" + Je);
     return s.error(i.stack || i.message), !1;
   }
-  return o[t] = e, s.debug("@opentelemetry/api: Registered a global for " + t + " v" + Ze + "."), !0;
+  return o[t] = e, s.debug("@opentelemetry/api: Registered a global for " + t + " v" + Je + "."), !0;
 }
-function Qe(t) {
+function et(t) {
   var e, s, r = (e = St[Pt]) === null || e === void 0 ? void 0 : e.version;
-  if (!(!r || !yi(r)))
+  if (!(!r || !mi(r)))
     return (s = St[Pt]) === null || s === void 0 ? void 0 : s[t];
 }
 function Nt(t, e) {
-  e.debug("@opentelemetry/api: Unregistering a global for " + t + " v" + Ze + ".");
+  e.debug("@opentelemetry/api: Unregistering a global for " + t + " v" + Je + ".");
   var s = St[Pt];
   s && delete s[t];
 }
-var bi = function(t, e) {
+var vi = function(t, e) {
   var s = typeof Symbol == "function" && t[Symbol.iterator];
   if (!s) return t;
   var r = s.call(t), n, o = [], i;
@@ -911,11 +911,11 @@ var bi = function(t, e) {
     }
   }
   return o;
-}, Ri = function(t, e, s) {
+}, bi = function(t, e, s) {
   if (arguments.length === 2) for (var r = 0, n = e.length, o; r < n; r++)
     (o || !(r in e)) && (o || (o = Array.prototype.slice.call(e, 0, r)), o[r] = e[r]);
   return t.concat(o || Array.prototype.slice.call(e));
-}, Oi = (
+}, Ri = (
   /** @class */
   function() {
     function t(e) {
@@ -945,15 +945,15 @@ var bi = function(t, e) {
   }()
 );
 function _t(t, e, s) {
-  var r = Qe("diag");
+  var r = et("diag");
   if (r)
-    return s.unshift(e), r[t].apply(r, Ri([], bi(s), !1));
+    return s.unshift(e), r[t].apply(r, bi([], vi(s), !1));
 }
 var ge;
 (function(t) {
   t[t.NONE = 0] = "NONE", t[t.ERROR = 30] = "ERROR", t[t.WARN = 50] = "WARN", t[t.INFO = 60] = "INFO", t[t.DEBUG = 70] = "DEBUG", t[t.VERBOSE = 80] = "VERBOSE", t[t.ALL = 9999] = "ALL";
 })(ge || (ge = {}));
-function Pi(t, e) {
+function Oi(t, e) {
   t < ge.NONE ? t = ge.NONE : t > ge.ALL && (t = ge.ALL), e = e || {};
   function s(r, n) {
     var o = e[r];
@@ -968,7 +968,7 @@ function Pi(t, e) {
     verbose: s("verbose", ge.VERBOSE)
   };
 }
-var Si = function(t, e) {
+var Pi = function(t, e) {
   var s = typeof Symbol == "function" && t[Symbol.iterator];
   if (!s) return t;
   var r = s.call(t), n, o = [], i;
@@ -984,11 +984,11 @@ var Si = function(t, e) {
     }
   }
   return o;
-}, Ci = function(t, e, s) {
+}, Si = function(t, e, s) {
   if (arguments.length === 2) for (var r = 0, n = e.length, o; r < n; r++)
     (o || !(r in e)) && (o || (o = Array.prototype.slice.call(e, 0, r)), o[r] = e[r]);
   return t.concat(o || Array.prototype.slice.call(e));
-}, Ni = "diag", Ce = (
+}, Ci = "diag", Ce = (
   /** @class */
   function() {
     function t() {
@@ -996,9 +996,9 @@ var Si = function(t, e) {
         return function() {
           for (var o = [], i = 0; i < arguments.length; i++)
             o[i] = arguments[i];
-          var a = Qe("diag");
+          var a = et("diag");
           if (a)
-            return a[n].apply(a, Ci([], Si(o), !1));
+            return a[n].apply(a, Si([], Pi(o), !1));
         };
       }
       var s = this, r = function(n, o) {
@@ -1010,7 +1010,7 @@ var Si = function(t, e) {
         typeof o == "number" && (o = {
           logLevel: o
         });
-        var l = Qe("diag"), p = Pi((a = o.logLevel) !== null && a !== void 0 ? a : ge.INFO, n);
+        var l = et("diag"), p = Oi((a = o.logLevel) !== null && a !== void 0 ? a : ge.INFO, n);
         if (l && !o.suppressOverrideMessage) {
           var _ = (d = new Error().stack) !== null && d !== void 0 ? d : "<failed to generate stacktrace>";
           l.warn("Current logger will be overwritten from " + _), p.warn("Current logger will overwrite one already registered from " + _);
@@ -1018,16 +1018,16 @@ var Si = function(t, e) {
         return Ct("diag", p, s, !0);
       };
       s.setLogger = r, s.disable = function() {
-        Nt(Ni, s);
+        Nt(Ci, s);
       }, s.createComponentLogger = function(n) {
-        return new Oi(n);
+        return new Ri(n);
       }, s.verbose = e("verbose"), s.debug = e("debug"), s.info = e("info"), s.warn = e("warn"), s.error = e("error");
     }
     return t.instance = function() {
       return this._instance || (this._instance = new t()), this._instance;
     }, t;
   }()
-), Di = function(t, e) {
+), Ni = function(t, e) {
   var s = typeof Symbol == "function" && t[Symbol.iterator];
   if (!s) return t;
   var r = s.call(t), n, o = [], i;
@@ -1043,7 +1043,7 @@ var Si = function(t, e) {
     }
   }
   return o;
-}, ki = function(t) {
+}, Di = function(t) {
   var e = typeof Symbol == "function" && Symbol.iterator, s = e && t[e], r = 0;
   if (s) return s.call(t);
   if (t && typeof t.length == "number") return {
@@ -1052,7 +1052,7 @@ var Si = function(t, e) {
     }
   };
   throw new TypeError(e ? "Object is not iterable." : "Symbol.iterator is not defined.");
-}, wi = (
+}, ki = (
   /** @class */
   function() {
     function t(e) {
@@ -1064,7 +1064,7 @@ var Si = function(t, e) {
         return Object.assign({}, s);
     }, t.prototype.getAllEntries = function() {
       return Array.from(this._entries.entries()).map(function(e) {
-        var s = Di(e, 2), r = s[0], n = s[1];
+        var s = Ni(e, 2), r = s[0], n = s[1];
         return [r, n];
       });
     }, t.prototype.setEntry = function(e, s) {
@@ -1078,7 +1078,7 @@ var Si = function(t, e) {
         r[n] = arguments[n];
       var o = new t(this._entries);
       try {
-        for (var i = ki(r), a = i.next(); !a.done; a = i.next()) {
+        for (var i = Di(r), a = i.next(); !a.done; a = i.next()) {
           var d = a.value;
           o._entries.delete(d);
         }
@@ -1099,12 +1099,12 @@ var Si = function(t, e) {
 );
 Ce.instance();
 function Li(t) {
-  return t === void 0 && (t = {}), new wi(new Map(Object.entries(t)));
+  return t === void 0 && (t = {}), new ki(new Map(Object.entries(t)));
 }
 function gn(t) {
   return Symbol.for(t);
 }
-var Mi = (
+var wi = (
   /** @class */
   /* @__PURE__ */ function() {
     function t(e) {
@@ -1121,7 +1121,7 @@ var Mi = (
     }
     return t;
   }()
-), xi = new Mi(), tt = /* @__PURE__ */ function() {
+), Mi = new wi(), st = /* @__PURE__ */ function() {
   var t = function(e, s) {
     return t = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(r, n) {
       r.__proto__ = n;
@@ -1138,25 +1138,25 @@ var Mi = (
     }
     e.prototype = s === null ? Object.create(s) : (r.prototype = s.prototype, new r());
   };
-}(), Ui = (
+}(), xi = (
   /** @class */
   function() {
     function t() {
     }
     return t.prototype.createGauge = function(e, s) {
-      return zi;
-    }, t.prototype.createHistogram = function(e, s) {
-      return Wi;
-    }, t.prototype.createCounter = function(e, s) {
       return qi;
+    }, t.prototype.createHistogram = function(e, s) {
+      return zi;
+    }, t.prototype.createCounter = function(e, s) {
+      return Yi;
     }, t.prototype.createUpDownCounter = function(e, s) {
-      return Ki;
+      return Wi;
     }, t.prototype.createObservableGauge = function(e, s) {
-      return Zi;
-    }, t.prototype.createObservableCounter = function(e, s) {
       return Xi;
+    }, t.prototype.createObservableCounter = function(e, s) {
+      return Ki;
     }, t.prototype.createObservableUpDownCounter = function(e, s) {
-      return Ji;
+      return Zi;
     }, t.prototype.addBatchObservableCallback = function(e, s) {
     }, t.prototype.removeBatchObservableCallback = function(e) {
     }, t;
@@ -1168,10 +1168,20 @@ var Mi = (
     }
     return t;
   }()
+), Ui = (
+  /** @class */
+  function(t) {
+    st(e, t);
+    function e() {
+      return t !== null && t.apply(this, arguments) || this;
+    }
+    return e.prototype.add = function(s, r) {
+    }, e;
+  }(es)
 ), Bi = (
   /** @class */
   function(t) {
-    tt(e, t);
+    st(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1181,27 +1191,17 @@ var Mi = (
 ), ji = (
   /** @class */
   function(t) {
-    tt(e, t);
-    function e() {
-      return t !== null && t.apply(this, arguments) || this;
-    }
-    return e.prototype.add = function(s, r) {
-    }, e;
-  }(es)
-), Vi = (
-  /** @class */
-  function(t) {
-    tt(e, t);
+    st(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
     return e.prototype.record = function(s, r) {
     }, e;
   }(es)
-), Fi = (
+), Vi = (
   /** @class */
   function(t) {
-    tt(e, t);
+    st(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1217,10 +1217,19 @@ var Mi = (
     }, t.prototype.removeCallback = function(e) {
     }, t;
   }()
+), Fi = (
+  /** @class */
+  function(t) {
+    st(e, t);
+    function e() {
+      return t !== null && t.apply(this, arguments) || this;
+    }
+    return e;
+  }(Ws)
 ), Hi = (
   /** @class */
   function(t) {
-    tt(e, t);
+    st(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1229,22 +1238,13 @@ var Mi = (
 ), $i = (
   /** @class */
   function(t) {
-    tt(e, t);
+    st(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
     return e;
   }(Ws)
-), Gi = (
-  /** @class */
-  function(t) {
-    tt(e, t);
-    function e() {
-      return t !== null && t.apply(this, arguments) || this;
-    }
-    return e;
-  }(Ws)
-), Yi = new Ui(), qi = new Bi(), zi = new Vi(), Wi = new Fi(), Ki = new ji(), Xi = new Hi(), Zi = new $i(), Ji = new Gi(), Qi = {
+), Gi = new xi(), Yi = new Ui(), qi = new ji(), zi = new Vi(), Wi = new Bi(), Ki = new Fi(), Xi = new Hi(), Zi = new $i(), Ji = {
   get: function(t, e) {
     if (t != null)
       return t[e];
@@ -1252,11 +1252,11 @@ var Mi = (
   keys: function(t) {
     return t == null ? [] : Object.keys(t);
   }
-}, ea = {
+}, Qi = {
   set: function(t, e, s) {
     t != null && (t[e] = s);
   }
-}, ta = function(t, e) {
+}, ea = function(t, e) {
   var s = typeof Symbol == "function" && t[Symbol.iterator];
   if (!s) return t;
   var r = s.call(t), n, o = [], i;
@@ -1272,21 +1272,21 @@ var Mi = (
     }
   }
   return o;
-}, sa = function(t, e, s) {
+}, ta = function(t, e, s) {
   if (s || arguments.length === 2) for (var r = 0, n = e.length, o; r < n; r++)
     (o || !(r in e)) && (o || (o = Array.prototype.slice.call(e, 0, r)), o[r] = e[r]);
   return t.concat(o || Array.prototype.slice.call(e));
-}, ra = (
+}, sa = (
   /** @class */
   function() {
     function t() {
     }
     return t.prototype.active = function() {
-      return xi;
+      return Mi;
     }, t.prototype.with = function(e, s, r) {
       for (var n = [], o = 3; o < arguments.length; o++)
         n[o - 3] = arguments[o];
-      return s.call.apply(s, sa([r], ta(n), !1));
+      return s.call.apply(s, ta([r], ea(n), !1));
     }, t.prototype.bind = function(e, s) {
       return s;
     }, t.prototype.enable = function() {
@@ -1295,7 +1295,7 @@ var Mi = (
       return this;
     }, t;
   }()
-), na = function(t, e) {
+), ra = function(t, e) {
   var s = typeof Symbol == "function" && t[Symbol.iterator];
   if (!s) return t;
   var r = s.call(t), n, o = [], i;
@@ -1311,11 +1311,11 @@ var Mi = (
     }
   }
   return o;
-}, oa = function(t, e, s) {
+}, na = function(t, e, s) {
   if (arguments.length === 2) for (var r = 0, n = e.length, o; r < n; r++)
     (o || !(r in e)) && (o || (o = Array.prototype.slice.call(e, 0, r)), o[r] = e[r]);
   return t.concat(o || Array.prototype.slice.call(e));
-}, Es = "context", ia = new ra(), ts = (
+}, Es = "context", oa = new sa(), ts = (
   /** @class */
   function() {
     function t() {
@@ -1329,28 +1329,28 @@ var Mi = (
     }, t.prototype.with = function(e, s, r) {
       for (var n, o = [], i = 3; i < arguments.length; i++)
         o[i - 3] = arguments[i];
-      return (n = this._getContextManager()).with.apply(n, oa([e, s, r], na(o), !1));
+      return (n = this._getContextManager()).with.apply(n, na([e, s, r], ra(o), !1));
     }, t.prototype.bind = function(e, s) {
       return this._getContextManager().bind(e, s);
     }, t.prototype._getContextManager = function() {
-      return Qe(Es) || ia;
+      return et(Es) || oa;
     }, t.prototype.disable = function() {
       this._getContextManager().disable(), Nt(Es, Ce.instance());
     }, t;
   }()
-), ws;
+), Ls;
 (function(t) {
   t[t.NONE = 0] = "NONE", t[t.SAMPLED = 1] = "SAMPLED";
-})(ws || (ws = {}));
-var In = "0000000000000000", Tn = "00000000000000000000000000000000", aa = {
+})(Ls || (Ls = {}));
+var In = "0000000000000000", Tn = "00000000000000000000000000000000", ia = {
   traceId: Tn,
   spanId: In,
-  traceFlags: ws.NONE
+  traceFlags: Ls.NONE
 }, At = (
   /** @class */
   function() {
     function t(e) {
-      e === void 0 && (e = aa), this._spanContext = e;
+      e === void 0 && (e = ia), this._spanContext = e;
     }
     return t.prototype.spanContext = function() {
       return this._spanContext;
@@ -1378,33 +1378,33 @@ var In = "0000000000000000", Tn = "00000000000000000000000000000000", aa = {
 function Xs(t) {
   return t.getValue(Ks) || void 0;
 }
-function ca() {
+function aa() {
   return Xs(ts.getInstance().active());
 }
 function Zs(t, e) {
   return t.setValue(Ks, e);
 }
-function da(t) {
+function ca(t) {
   return t.deleteValue(Ks);
 }
-function ha(t, e) {
+function da(t, e) {
   return Zs(t, new At(e));
 }
 function An(t) {
   var e;
   return (e = Xs(t)) === null || e === void 0 ? void 0 : e.spanContext();
 }
-var la = /^([0-9a-f]{32})$/i, ua = /^[0-9a-f]{16}$/i;
-function pa(t) {
-  return la.test(t) && t !== Tn;
+var ha = /^([0-9a-f]{32})$/i, la = /^[0-9a-f]{16}$/i;
+function ua(t) {
+  return ha.test(t) && t !== Tn;
 }
-function _a(t) {
-  return ua.test(t) && t !== In;
+function pa(t) {
+  return la.test(t) && t !== In;
 }
 function mn(t) {
-  return pa(t.traceId) && _a(t.spanId);
+  return ua(t.traceId) && pa(t.spanId);
 }
-function fa(t) {
+function _a(t) {
   return new At(t);
 }
 var gs = ts.getInstance(), yn = (
@@ -1418,7 +1418,7 @@ var gs = ts.getInstance(), yn = (
       if (n)
         return new At();
       var o = r && An(r);
-      return Ea(o) && mn(o) ? new At(o) : new At();
+      return fa(o) && mn(o) ? new At(o) : new At();
     }, t.prototype.startActiveSpan = function(e, s, r, n) {
       var o, i, a;
       if (!(arguments.length < 2)) {
@@ -1429,10 +1429,10 @@ var gs = ts.getInstance(), yn = (
     }, t;
   }()
 );
-function Ea(t) {
+function fa(t) {
   return typeof t == "object" && typeof t.spanId == "string" && typeof t.traceId == "string" && typeof t.traceFlags == "number";
 }
-var ga = new yn(), Ia = (
+var Ea = new yn(), ga = (
   /** @class */
   function() {
     function t(e, s, r, n) {
@@ -1447,10 +1447,10 @@ var ga = new yn(), Ia = (
       if (this._delegate)
         return this._delegate;
       var e = this._provider.getDelegateTracer(this.name, this.version, this.options);
-      return e ? (this._delegate = e, this._delegate) : ga;
+      return e ? (this._delegate = e, this._delegate) : Ea;
     }, t;
   }()
-), Ta = (
+), Ia = (
   /** @class */
   function() {
     function t() {
@@ -1459,17 +1459,17 @@ var ga = new yn(), Ia = (
       return new yn();
     }, t;
   }()
-), Aa = new Ta(), Hr = (
+), Ta = new Ia(), Hr = (
   /** @class */
   function() {
     function t() {
     }
     return t.prototype.getTracer = function(e, s, r) {
       var n;
-      return (n = this.getDelegateTracer(e, s, r)) !== null && n !== void 0 ? n : new Ia(this, e, s, r);
+      return (n = this.getDelegateTracer(e, s, r)) !== null && n !== void 0 ? n : new ga(this, e, s, r);
     }, t.prototype.getDelegate = function() {
       var e;
-      return (e = this._delegate) !== null && e !== void 0 ? e : Aa;
+      return (e = this._delegate) !== null && e !== void 0 ? e : Ta;
     }, t.prototype.setDelegate = function(e) {
       this._delegate = e;
     }, t.prototype.getDelegateTracer = function(e, s, r) {
@@ -1481,16 +1481,16 @@ var ga = new yn(), Ia = (
 (function(t) {
   t[t.UNSET = 0] = "UNSET", t[t.OK = 1] = "OK", t[t.ERROR = 2] = "ERROR";
 })(mt || (mt = {}));
-var ma = ts.getInstance(), ya = Ce.instance(), va = (
+var Aa = ts.getInstance(), ma = Ce.instance(), ya = (
   /** @class */
   function() {
     function t() {
     }
     return t.prototype.getMeter = function(e, s, r) {
-      return Yi;
+      return Gi;
     }, t;
   }()
-), ba = new va(), Is = "metrics", Ra = (
+), va = new ya(), Is = "metrics", ba = (
   /** @class */
   function() {
     function t() {
@@ -1500,14 +1500,14 @@ var ma = ts.getInstance(), ya = Ce.instance(), va = (
     }, t.prototype.setGlobalMeterProvider = function(e) {
       return Ct(Is, e, Ce.instance());
     }, t.prototype.getMeterProvider = function() {
-      return Qe(Is) || ba;
+      return et(Is) || va;
     }, t.prototype.getMeter = function(e, s, r) {
       return this.getMeterProvider().getMeter(e, s, r);
     }, t.prototype.disable = function() {
       Nt(Is, Ce.instance());
     }, t;
   }()
-), Oa = Ra.getInstance(), Pa = (
+), Ra = ba.getInstance(), Oa = (
   /** @class */
   function() {
     function t() {
@@ -1523,42 +1523,42 @@ var ma = ts.getInstance(), ya = Ce.instance(), va = (
 function vn(t) {
   return t.getValue(Js) || void 0;
 }
-function Sa() {
+function Pa() {
   return vn(ts.getInstance().active());
 }
-function Ca(t, e) {
+function Sa(t, e) {
   return t.setValue(Js, e);
 }
-function Na(t) {
+function Ca(t) {
   return t.deleteValue(Js);
 }
-var Ts = "propagation", Da = new Pa(), ka = (
+var Ts = "propagation", Na = new Oa(), Da = (
   /** @class */
   function() {
     function t() {
-      this.createBaggage = Li, this.getBaggage = vn, this.getActiveBaggage = Sa, this.setBaggage = Ca, this.deleteBaggage = Na;
+      this.createBaggage = Li, this.getBaggage = vn, this.getActiveBaggage = Pa, this.setBaggage = Sa, this.deleteBaggage = Ca;
     }
     return t.getInstance = function() {
       return this._instance || (this._instance = new t()), this._instance;
     }, t.prototype.setGlobalPropagator = function(e) {
       return Ct(Ts, e, Ce.instance());
     }, t.prototype.inject = function(e, s, r) {
-      return r === void 0 && (r = ea), this._getGlobalPropagator().inject(e, s, r);
+      return r === void 0 && (r = Qi), this._getGlobalPropagator().inject(e, s, r);
     }, t.prototype.extract = function(e, s, r) {
-      return r === void 0 && (r = Qi), this._getGlobalPropagator().extract(e, s, r);
+      return r === void 0 && (r = Ji), this._getGlobalPropagator().extract(e, s, r);
     }, t.prototype.fields = function() {
       return this._getGlobalPropagator().fields();
     }, t.prototype.disable = function() {
       Nt(Ts, Ce.instance());
     }, t.prototype._getGlobalPropagator = function() {
-      return Qe(Ts) || Da;
+      return et(Ts) || Na;
     }, t;
   }()
-), wa = ka.getInstance(), As = "trace", La = (
+), ka = Da.getInstance(), As = "trace", La = (
   /** @class */
   function() {
     function t() {
-      this._proxyTracerProvider = new Hr(), this.wrapSpanContext = fa, this.isSpanContextValid = mn, this.deleteSpan = da, this.getSpan = Xs, this.getActiveSpan = ca, this.getSpanContext = An, this.setSpan = Zs, this.setSpanContext = ha;
+      this._proxyTracerProvider = new Hr(), this.wrapSpanContext = _a, this.isSpanContextValid = mn, this.deleteSpan = ca, this.getSpan = Xs, this.getActiveSpan = aa, this.getSpanContext = An, this.setSpan = Zs, this.setSpanContext = da;
     }
     return t.getInstance = function() {
       return this._instance || (this._instance = new t()), this._instance;
@@ -1566,29 +1566,29 @@ var Ts = "propagation", Da = new Pa(), ka = (
       var s = Ct(As, this._proxyTracerProvider, Ce.instance());
       return s && this._proxyTracerProvider.setDelegate(e), s;
     }, t.prototype.getTracerProvider = function() {
-      return Qe(As) || this._proxyTracerProvider;
+      return et(As) || this._proxyTracerProvider;
     }, t.prototype.getTracer = function(e, s) {
       return this.getTracerProvider().getTracer(e, s);
     }, t.prototype.disable = function() {
       Nt(As, Ce.instance()), this._proxyTracerProvider = new Hr();
     }, t;
   }()
-), Ma = La.getInstance();
+), wa = La.getInstance();
 const It = {
-  context: ma,
-  diag: ya,
-  metrics: Oa,
-  propagation: wa,
-  trace: Ma
-}, xa = "9.10.0";
-function Ua(t) {
+  context: Aa,
+  diag: ma,
+  metrics: Ra,
+  propagation: ka,
+  trace: wa
+}, Ma = "9.10.0";
+function xa(t) {
   return function(e) {
     e.traceableAs = () => t;
   };
 }
 function ss(t, e, s) {
   const r = function(...n) {
-    const o = It.trace.getTracer("dcx-js", xa).startSpan(t), i = It.trace.setSpan(It.context.active(), o);
+    const o = It.trace.getTracer("dcx-js", Ma).startSpan(t), i = It.trace.setSpan(It.context.active(), o);
     try {
       const a = It.context.with(i, () => e.apply(this, n));
       return o.setStatus({ code: mt.OK }), a && a instanceof Promise ? a.catch((d) => {
@@ -1622,19 +1622,19 @@ function pe(t, e) {
 }
 const u = { ACCESS_CHECK: "http://ns.adobe.com/adobecloud/rel/ac/check", ACL_POLICY: "http://ns.adobe.com/adobecloud/rel/ac/policy", ANNOTATIONS: "http://ns.adobe.com/adobecloud/rel/annotations", APP_METADATA: "http://ns.adobe.com/adobecloud/rel/metadata/application", BASE_DIRECTORY: "http://ns.adobe.com/adobecloud/rel/directory/base", BLOCK_DOWNLOAD: "http://ns.adobe.com/adobecloud/rel/download", BLOCK_EXTEND: "http://ns.adobe.com/adobecloud/rel/block/extend", BLOCK_FINALIZE: "http://ns.adobe.com/adobecloud/rel/block/finalize", BLOCK_TRANSFER: "http://ns.adobe.com/adobecloud/rel/block/transfer", BLOCK_UPLOAD_INIT: "http://ns.adobe.com/adobecloud/rel/block/init", BULK_REQUEST: "http://ns.adobe.com/adobecloud/rel/bulk", COMPONENT: "http://ns.adobe.com/adobecloud/rel/component", CREATE: "http://ns.adobe.com/adobecloud/rel/create", DESCRIBED_BY: "describedBy", DIRECTORY: "http://ns.adobe.com/adobecloud/rel/directory", DISCARD: "http://ns.adobe.com/adobecloud/rel/discard", EFFECTIVE_PRIVILAGES: "http://ns.adobe.com/adobecloud/rel/ac/effective", EMBEDDED_METADATA: "http://ns.adobe.com/adobecloud/rel/metadata/embedded", ID: "http://ns.adobe.com/adobecloud/rel/id", MANIFEST: "http://ns.adobe.com/adobecloud/rel/manifest", PAGE: "http://ns.adobe.com/adobecloud/rel/page", PATH: "http://ns.adobe.com/adobecloud/rel/path", PRIMARY: "http://ns.adobe.com/adobecloud/rel/primary", RENDITION: "http://ns.adobe.com/adobecloud/rel/rendition", REPO_METADATA: "http://ns.adobe.com/adobecloud/rel/metadata/repository", REPO_OPS: "http://ns.adobe.com/adobecloud/rel/ops", REPOSITORY: "http://ns.adobe.com/adobecloud/rel/repository", RESOLVE_BY_ID: "http://ns.adobe.com/adobecloud/rel/resolve/id", RESOLVE_BY_PATH: "http://ns.adobe.com/adobecloud/rel/resolve/path", RESTORE: "http://ns.adobe.com/adobecloud/rel/restore", VERSION_HISTORY: "version-history" };
 var T, Me, $r, Gr, Yr, Xt, B, yt;
-function Ba(t) {
+function Ua(t) {
   return S(t) && ["headers", "responseType", "statusCode", "xhr"].every((e) => e in t);
 }
-function ja(t) {
-  return S(t) && Ba(t.response);
+function Ba(t) {
+  return S(t) && Ua(t.response);
 }
 function bn(t) {
-  return S(t) && ja(t) && "result" in t;
+  return S(t) && Ba(t) && "result" in t;
 }
 function Rn(t) {
   return S(t) && q(t.slice);
 }
-function Ls(t) {
+function ws(t) {
   return S(t) && "resolvePullWithBranch" in t;
 }
 function qr(t) {
@@ -1643,19 +1643,19 @@ function qr(t) {
 function Zt(t) {
   return S(t) && (S(t.links) || typeof t.repositoryId == "string" && (typeof t.path == "string" || typeof t.assetId == "string"));
 }
-function Va(t) {
+function ja(t) {
   return typeof Blob < "u" && t instanceof Blob;
 }
 function Qs(t) {
   return S(t) && (typeof t.repositoryId == "string" && typeof t.path == "string" || typeof t.assetId == "string");
 }
-function Fa(t) {
+function Va(t) {
   return S(t) && (t.name === "AdobeHTTPService" || q(t.invoke));
 }
 function er(t) {
-  return S(t) && Fa(t.service);
+  return S(t) && Va(t.service);
 }
-function Ha(t) {
+function Fa(t) {
   if (!S(t)) return !1;
   const e = t[T.LINKS];
   return S(e) ? !!(e[u.BLOCK_TRANSFER] && e[u.BLOCK_EXTEND] && e[u.BLOCK_FINALIZE]) : !1;
@@ -1686,19 +1686,19 @@ function On(t) {
   t.DEVICE_MODIFY_DATE = "deviceModifyDate", t.REPO_META_PATCH = "repoMetaPatch", t.RESPOND_WITH = "respondWith";
 }(yt || (yt = {}));
 const zr = U("dcx:assets:service"), x = (t) => er(t) ? t.service : t, ne = (t) => er(t) ? t.cache : void 0;
-function qe(t, e) {
+function ze(t, e) {
   zr("constructServiceEndpoint()", t);
   const s = e._repoAPIBaseUrl;
   return s && (t = `${s.endsWith("/") ? s.substr(0, s.length - 1) : s}${t}`), zr("cSE()", t), t;
 }
-const Ge = { Asset: "asset", Directory: "directory" };
+const Ye = { Asset: "asset", Directory: "directory" };
 var R, O;
 (function(t) {
   t.CONTENT_ID = "content-id", t.CONTENT_LENGTH = "content-length", t.CONTENT_RANGE = "content-range", t.CONTENT_TYPE = "content-type", t.IF_MATCH = "if-match", t.IF_NONE_MATCH = "if-none-match", t.AUTHORIZATION = "authorization", t.X_API_KEY = "x-api-key", t.X_CONTRIBUTORS = "x-contributors", t.LES_SEQUENCE_NUMBER = "les-sequence-number", t.PREFER = "prefer", t.DIRECTIVE = "directive";
 })(R || (R = {})), function(t) {
   t.GET = "GET", t.PUT = "PUT", t.PATCH = "PATCH", t.HEAD = "HEAD", t.POST = "POST", t.DELETE = "DELETE";
 }(O || (O = {}));
-const $a = "application/vnd.adobecloud.directory+json", Ga = "application/vnd.adobe.dcx-manifest+json", Ya = "application/json", Ms = "application/problem+json", ct = "application/json-patch+json", Pn = "application/vnd.adobecloud.bulk-transfer+json", qa = "application/vnd.adobe.asset-operation+json", tr = ["buffer", "arraybuffer", "string", "text", "blob", "json", "stream", "defaultbuffer"];
+const Ha = "application/vnd.adobecloud.directory+json", $a = "application/vnd.adobe.dcx-manifest+json", Ga = "application/json", Ms = "application/problem+json", ct = "application/json-patch+json", Pn = "application/vnd.adobecloud.bulk-transfer+json", Ya = "application/vnd.adobe.asset-operation+json", tr = ["buffer", "arraybuffer", "string", "text", "blob", "json", "stream", "defaultbuffer"];
 function Sn(t, e) {
   var s = {};
   for (var r in t) Object.prototype.hasOwnProperty.call(t, r) && e.indexOf(r) < 0 && (s[r] = t[r]);
@@ -1736,7 +1736,7 @@ function re(t, e, s, r) {
 function ot(t) {
   return this instanceof ot ? (this.v = t, this) : new ot(t);
 }
-function za(t, e, s) {
+function qa(t, e, s) {
   if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
   var r, n = s.apply(t, e || []), o = [];
   return r = {}, i("next"), i("throw"), i("return"), r[Symbol.asyncIterator] = function() {
@@ -1801,7 +1801,7 @@ const N = (t, e, s) => {
     return !1;
   }
   return !0;
-}, Wa = (t, e = []) => !!S(t) && at(t.links || t._links, e);
+}, za = (t, e = []) => !!S(t) && at(t.links || t._links, e);
 function Dn(t) {
   if (!Qs(t)) throw new c(c.INVALID_PARAMS, "Asset must contain links or repositoryId + path or assetId to be resolved.");
 }
@@ -1809,7 +1809,7 @@ function kn(t, e, s) {
   if (!S(t)) throw new c(c.INVALID_PARAMS, `Invalid parameter. Expected object, encountered "${t === null ? "null" : typeof t}".`);
   if (!(e in t)) throw new c(c.INVALID_PARAMS, `Invalid parameter object. Expected object containing key "${String(e)}".`);
   if (s) try {
-    Ye(e, t[e], s);
+    qe(e, t[e], s);
   } catch {
     throw new c(c.INVALID_PARAMS, `Invalid parameter object. Expected object containing key "${String(e)}" with type "${s}", encountered type "${typeof t[e]}".`);
   }
@@ -1823,51 +1823,51 @@ function Ne(t, e, s) {
     throw new c(c.INVALID_PARAMS, `Invalid parameter object. Expected object containing one of [${e.join(", ")}]` + (s ? ` with type ${s}, encountered types [${e.map((r) => typeof t[r]).join(", ")}].` : "."));
   }
 }
-const Ka = U("dcx:assets:util:http");
+const Wa = U("dcx:assets:util:http");
 function sr(t, e, s) {
-  return Ka("headHTTPResource()"), x(t).invoke(O.HEAD, e, s, void 0, { isStatusValid: N() });
+  return Wa("headHTTPResource()"), x(t).invoke(O.HEAD, e, s, void 0, { isStatusValid: N() });
 }
-function Xa(t, e, s, r) {
+function Ka(t, e, s, r) {
   return x(t).invoke(O.GET, e, s, void 0, { isStatusValid: N(), responseType: r });
 }
-const wn = U("dcx:assets:util:serialization");
+const Ln = U("dcx:assets:util:serialization");
 function se(t, e) {
-  wn("deserializeAsset()");
+  Ln("deserializeAsset()");
   const s = {};
   s.repositoryId = t.repositoryId || t[T.REPO_REPOSITORY_ID], s.assetId = t.assetId || t[T.REPO_ASSET_ID], s.name = t.name || t[T.REPO_NAME], s.size = t.size != null ? t.size : t[T.REPO_SIZE], s.path = t.path || t[T.REPO_PATH], s.assetClass = t.etag || t[T.REPO_ASSET_CLASS], s.etag = t.etag || t[T.REPO_ETAG], s.version = t.version || t[T.REPO_VERSION], s.format = t.format || t[T.DC_FORMAT], s.md5 = t.md5, s.createDate = t.createDate || t[T.REPO_CREATE_DATE], s.modifyDate = t.modifyDate || t.modifiedDate || t[T.REPO_MODIFY_DATE], s.discardDate = t.discardDate || t[T.REPO_DISCARD_DATE], s.createdBy = t.createdBy || t[T.REPO_CREATED_BY], s.modifiedBy = t.modifiedBy || t[T.REPO_MODIFIED_BY], s.discardedBy = t.discardedBy || t[T.REPO_DISCARDED_BY], s.deviceCreateDate = t.deviceCreateDate || t[T.REPO_DEVICE_CREATE_DATE], s.deviceModifyDate = t.deviceModifyDate || t[T.REPO_DEVICE_MODIFY_DATE], s.defaultScheduledDeletionDuration = t.defaultScheduledDeletionDuration || t[T.REPO_DEFAULT_SCHEDULED_DELETION_DURATION], s.scheduledDeletionDate = t.scheduledDeletionDate || t[T.REPO_SCHEDULED_DELETION_DATE], s.assetType = t.assetType || t[T.REPO_ASSET_TYPE], s.assetSubType = t.assetSubType || t[T.REPO_ASSET_SUB_TYPE], s.les = t.les || t[T.STORAGE_LES], s.baseAssetId = t.baseAssetId || t[T.REPO_BASE_ASSET_ID], s.state = t.state || t[T.REPO_STATE], s.links = t.links || t[T.LINKS], s.representations = t.representations || t[T.REPO_REPRESENTATIONS], s.contributors = t.contributors || t[T.REPO_CONTRIBUTORS], s.width = t.width || t[T.IMAGE_WIDTH], s.length = t.length || t[T.IMAGE_LENGTH];
   const r = [e, t._embedded].flat();
-  return s.embedded = Object.entries({ EffectivePrivileges: u.EFFECTIVE_PRIVILAGES, RepositoryResource: u.REPOSITORY, AppMetadata: u.APP_METADATA }).reduce((n, [o, i]) => (r.filter((a) => a && i in a).forEach((a) => he(n, { [o]: i === u.REPOSITORY ? rr(a) : a })), n), {}), L(s);
+  return s.embedded = Object.entries({ EffectivePrivileges: u.EFFECTIVE_PRIVILAGES, RepositoryResource: u.REPOSITORY, AppMetadata: u.APP_METADATA }).reduce((n, [o, i]) => (r.filter((a) => a && i in a).forEach((a) => he(n, { [o]: i === u.REPOSITORY ? rr(a) : a })), n), {}), w(s);
 }
 function rr(t = {}) {
-  wn("deserializeRepository()");
+  Ln("deserializeRepository()");
   const e = t[u.REPOSITORY] ? t[u.REPOSITORY] : t;
   return { repositoryId: e[T.REPO_REPOSITORY_ID], repositoryType: e[T.REPO_REPOSITORY_TYPE], owner: e[T.REPO_OWNER], createDate: e[T.REPO_CREATE_DATE], title: e[T.DC_TITLE], availableRegions: e[T.REPO_AVAILABLE_REGIONS] };
 }
-function Za(t) {
+function Xa(t) {
   const e = [];
   return t.assetType && e.push({ op: "add", path: `/${[T.REPO_ASSET_TYPE]}`, value: t.assetType }), t.assetSubType && e.push({ op: "add", path: `/${[T.REPO_ASSET_SUB_TYPE]}`, value: t.assetSubType }), e;
 }
-const Ln = U("dcx:assets:util:link");
+const wn = U("dcx:assets:util:link");
 function Mn(t, e) {
-  Ln("getIndexLinks()");
+  wn("getIndexLinks()");
   const s = x(t), r = ne(t);
   if (r) {
     const n = r.getIndexLinks();
     if (n) return C.resolve(n);
     r.setPending("INDEX");
   }
-  return sr(s, qe("/", s), e).then((n) => Ee(n)).then((n) => (r && r.setIndexLinks(n), n)).catch((n) => {
+  return sr(s, ze("/", s), e).then((n) => Ee(n)).then((n) => (r && r.setIndexLinks(n), n)).catch((n) => {
     throw r && r.delete("INDEX"), n;
   });
 }
 function xn(t, e) {
-  Ln("getIndexDocument()");
+  wn("getIndexDocument()");
   const s = x(t), r = ne(t);
   if (r) {
     const o = r.getIndexRepository();
     if (o) return C.resolve(o);
   }
-  const n = qe("/", s);
+  const n = ze("/", s);
   return s.invoke(O.GET, n, e, void 0, { responseType: "json", isStatusValid: N() }).then((o) => {
     const i = Ee(o), a = o.response, d = {};
     for (const h in a.children) {
@@ -1892,9 +1892,9 @@ function Ee(t) {
 }
 function nr(t) {
   try {
-    const e = fi(t), s = {};
+    const e = _i(t), s = {};
     for (const r in e.refs) {
-      const n = e.refs[r], { rel: o, uri: i, templated: a, type: d, width: h, height: l } = n, p = Sn(n, ["rel", "uri", "templated", "type", "width", "height"]), _ = L({ href: i, templated: a ? a === "true" : void 0, type: d, width: h, height: l, [B.MAX_SINGLE_TRANSFER_SIZE]: p[B.MAX_SINGLE_TRANSFER_SIZE.toLowerCase()], [B.REPO_MIN_BLOCK_TRANSFER_SIZE]: p[B.REPO_MIN_BLOCK_TRANSFER_SIZE.toLowerCase()] });
+      const n = e.refs[r], { rel: o, uri: i, templated: a, type: d, width: h, height: l } = n, p = Sn(n, ["rel", "uri", "templated", "type", "width", "height"]), _ = w({ href: i, templated: a ? a === "true" : void 0, type: d, width: h, height: l, [B.MAX_SINGLE_TRANSFER_SIZE]: p[B.MAX_SINGLE_TRANSFER_SIZE.toLowerCase()], [B.REPO_MIN_BLOCK_TRANSFER_SIZE]: p[B.REPO_MIN_BLOCK_TRANSFER_SIZE.toLowerCase()] });
       ["width", "height"].filter((v) => v in _).forEach((v) => {
         const m = parseInt(_[v], 10);
         isNaN(m) || (_[v] = m);
@@ -1920,7 +1920,7 @@ function De(t, e) {
     }
   });
 }
-const Re = U("dcx:assets:operations"), Ke = U("dcx:assets:operations:builder"), Wr = 500;
+const Re = U("dcx:assets:operations"), Xe = U("dcx:assets:operations:builder"), Wr = 500;
 function Un(t, e, s, r, n, o, i) {
   Re("copyAsset()"), E(["svc", t, "object"], ["srcAsset", e, "object"], ["destAsset", s, "object"], ["createIntermediates", r, "boolean"], ["overwriteExisting", n, "boolean", !0], ["manifestPatch", i, ["object", "string"], !0]), Ne(e, ["repo:path", "path", "assetId", "repo:assetId"], "string"), Ne(s, ["repo:path", "path", "assetId", "repo:assetId"], "string");
   const a = Te("copy", s, e, { overwriteExisting: n, createIntermediates: r }, { "repo:manifestPatch": JSON.stringify(i) }), d = x(t);
@@ -1941,8 +1941,8 @@ function jn(t, e, s, r, n) {
 const Vn = ss("AdobeDCX.deleteAsset", function(t, e, s = "*", r, n) {
   Re("deleteAsset()"), pe("mediaType", e.format), pe("assetId", e.assetId), E(["svc", t, "object"], ["asset", e, "object"], ["etag", s, "string", !0], ["recursive", r, "boolean", !0]);
   const o = x(t);
-  if (e.format === $a && r == null) throw new c(c.INVALID_PARAMS, "Recursive flag is required for directory assets.");
-  if (!r && Wa(e, [u.REPO_METADATA])) {
+  if (e.format === Ha && r == null) throw new c(c.INVALID_PARAMS, "Recursive flag is required for directory assets.");
+  if (!r && za(e, [u.REPO_METADATA])) {
     const d = Z(e, u.REPO_METADATA, {});
     return o.invoke("DELETE", d, { [R.IF_MATCH]: s }, void 0, { isStatusValid: N() }).then(Jt);
   }
@@ -1961,25 +1961,25 @@ function Fn(t, e, s) {
 }
 function Hn(t, e, s, r, n, o) {
   var i, a;
-  Re("packageAssets()"), E(["svc", t, "object"], ["destination", s, "object"]), Ye("sources", e, ["object", "object[]"]), e = fe(e) ? e : [e], i = ["repo:path", "path", "assetId", "repo:assetId"], a = "string", e.map((l) => Ne(l, i, a)), Ne(s, ["repo:path", "path", "assetId", "repo:assetId"], "string");
+  Re("packageAssets()"), E(["svc", t, "object"], ["destination", s, "object"]), qe("sources", e, ["object", "object[]"]), e = fe(e) ? e : [e], i = ["repo:path", "path", "assetId", "repo:assetId"], a = "string", e.map((l) => Ne(l, i, a)), Ne(s, ["repo:path", "path", "assetId", "repo:assetId"], "string");
   const d = Te("package", s, e, { createIntermediates: r, overwriteExisting: n }), h = x(t);
   return De.call(this, t).then((l) => je(h, l, d, o)).then(rs.bind(void 0, s)).then(Jt);
 }
-function Ja(t, e, s, r) {
-  return $n(t, e, s, r).then(Qa);
+function Za(t, e, s, r) {
+  return $n(t, e, s, r).then(Ja);
+}
+function Ja(t) {
+  return { result: (fe(t.response) ? t.response : [t.response]).map(Qa), response: t };
 }
 function Qa(t) {
-  return { result: (fe(t.response) ? t.response : [t.response]).map(ec), response: t };
-}
-function ec(t) {
   if (!t.error) return t;
   const e = Object.assign({}, t), s = N()(t.error.status);
   return e.error = it(s) ? s : new c(c.UNEXPECTED, "Unexpected response"), e._additionalData = t.error, e.error._message = t.error.title, e;
 }
 function je(t, e, s, r) {
-  return Re("doOperation()"), E(["svc", t, "object"], ["opsEndpoint", e, "string"], ["operationDocument", s, ["string", "object"]], ["additionalHeaders", r, "object", !0]), $n(t, e, s, r).then(Bo);
+  return Re("doOperation()"), E(["svc", t, "object"], ["opsEndpoint", e, "string"], ["operationDocument", s, ["string", "object"]], ["additionalHeaders", r, "object", !0]), $n(t, e, s, r).then(Uo);
 }
-class tc {
+class ec {
   constructor() {
     this.opBatchLimit = 100, this._docs = [];
   }
@@ -1993,7 +1993,7 @@ class tc {
     return this._docs.length;
   }
   copyResources(e, s, r, n, o, i) {
-    Ke("copyResource()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
+    Xe("copyResource()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
     const a = this._docs.find(/* @__PURE__ */ function(h, l) {
       return function(p) {
         return p.op === "copy_resources" && Xr(p.source, h) && Xr(p.target, l);
@@ -2004,34 +2004,34 @@ class tc {
     return this._docs.push(d), this;
   }
   copy(e, s, r, n, o) {
-    Ke("copy()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
+    Xe("copy()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
     const i = Te("copy", s, e, { createIntermediates: r, overwriteExisting: n }, o);
     return this._docs.push(i), this;
   }
   move(e, s, r, n, o) {
-    Ke("move()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
+    Xe("move()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
     const i = Te("move", s, e, { createIntermediates: r, overwriteExisting: n }, o);
     return this._docs.push(i), this;
   }
   package(e, s, r, n, o) {
-    Ke("package()"), this._assertUnderLimit(), (e = fe(e) ? e : [e]).map((a) => {
+    Xe("package()"), this._assertUnderLimit(), (e = fe(e) ? e : [e]).map((a) => {
       this._checkSourceType(a);
     }), this._checkTargetType(s);
     const i = Te("package", s, e, { createIntermediates: r, overwriteExisting: n }, o);
     return this._docs.push(i), this;
   }
   discard(e, s, r) {
-    Ke("discard()"), this._assertUnderLimit(), this._checkTargetType(e);
+    Xe("discard()"), this._assertUnderLimit(), this._checkTargetType(e);
     const n = Te("discard", e, void 0, { recursive: s }, r);
     return this._docs.push(n), this;
   }
   restore(e, s) {
-    Ke("restore()"), this._assertUnderLimit(), Ne(e, ["assetId", "repo:assetId"], "string"), this._checkTargetType(e);
+    Xe("restore()"), this._assertUnderLimit(), Ne(e, ["assetId", "repo:assetId"], "string"), this._checkTargetType(e);
     const r = Te("restore", e, void 0, void 0, s);
     return this._docs.push(r), this;
   }
   delete(e, s, r) {
-    Ke("delete()"), this._assertUnderLimit(), this._checkTargetType(e);
+    Xe("delete()"), this._assertUnderLimit(), this._checkTargetType(e);
     const n = Te("delete", e, void 0, { recursive: s }, r);
     return this._docs.push(n), this;
   }
@@ -2056,14 +2056,14 @@ class tc {
   }
 }
 function Kr() {
-  return new tc();
+  return new ec();
 }
 function Xr(t, e) {
   var s, r;
   return t[T.REPO_ASSET_ID] === ((s = e[T.REPO_ASSET_ID]) !== null && s !== void 0 ? s : e.assetId) && t[T.REPO_REPOSITORY_ID] === ((r = e[T.REPO_REPOSITORY_ID]) !== null && r !== void 0 ? r : e.repositoryId);
 }
 function $n(t, e, s, r = {}) {
-  return t.invoke(O.POST, e, Object.assign({ [R.CONTENT_TYPE]: qa }, r), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N(), responseType: "json", retryOptions: { pollCodes: [202], pollHeader: "location", pollMethod: "get", modifyHeadersCallback: On([R.PREFER]) } });
+  return t.invoke(O.POST, e, Object.assign({ [R.CONTENT_TYPE]: Ya }, r), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N(), responseType: "json", retryOptions: { pollCodes: [202], pollHeader: "location", pollMethod: "get", modifyHeadersCallback: On([R.PREFER]) } });
 }
 function rs(t, e) {
   return e.response.asset = Object.assign(Object.assign({}, e.response.asset || {}), { repositoryId: t.repositoryId || t["repo:repositoryId"] }), e;
@@ -2077,11 +2077,11 @@ function Jt(t) {
 function ms(t, e, s) {
   if (Re("_convertToACPSource()"), typeof e != "object") return;
   const r = { "repo:repositoryId": e.repositoryId || e["repo:repositoryId"], "repo:path": e.path || e["repo:path"], "repo:assetId": e.assetId || e["repo:assetId"], "repo:baseAssetId": e.baseAssetId || e["repo:baseAssetId"] };
-  return typeof r.href == "string" ? (delete r["repo:path"], delete r["repo:assetId"], delete r["repo:baseAssetId"]) : typeof r["repo:assetId"] == "string" && (delete r["repo:path"], delete r["repo:baseAssetId"]), t === "target" ? s === !0 ? r[R.IF_MATCH] = e.format !== Ge.Directory && e["dc:format"] !== Ge.Directory && e.etag || "*" : s === !1 ? r[R.IF_NONE_MATCH] = "*" : e.format !== Ge.Directory && e["dc:format"] !== Ge.Directory && (r[R.IF_MATCH] = e.etag) : e.format !== Ge.Directory && e["dc:format"] !== Ge.Directory && (r[R.IF_MATCH] = e.etag || "*"), e.version && (r["repo:version"] = e.version), r["repo:path"] && kn(r, "repo:repositoryId", "string"), Re("_cTACPS() out", r), L(r);
+  return typeof r.href == "string" ? (delete r["repo:path"], delete r["repo:assetId"], delete r["repo:baseAssetId"]) : typeof r["repo:assetId"] == "string" && (delete r["repo:path"], delete r["repo:baseAssetId"]), t === "target" ? s === !0 ? r[R.IF_MATCH] = e.format !== Ye.Directory && e["dc:format"] !== Ye.Directory && e.etag || "*" : s === !1 ? r[R.IF_NONE_MATCH] = "*" : e.format !== Ye.Directory && e["dc:format"] !== Ye.Directory && (r[R.IF_MATCH] = e.etag) : e.format !== Ye.Directory && e["dc:format"] !== Ye.Directory && (r[R.IF_MATCH] = e.etag || "*"), e.version && (r["repo:version"] = e.version), r["repo:path"] && kn(r, "repo:repositoryId", "string"), Re("_cTACPS() out", r), w(r);
 }
 function Te(t, e, s, r = {}, n = {}) {
   Re("_buildOperationDoc()");
-  const o = L({ op: t, target: e, source: fe(s) ? [] : s ? {} : void 0 }), { overwriteExisting: i, createIntermediates: a, recursive: d } = r;
+  const o = w({ op: t, target: e, source: fe(s) ? [] : s ? {} : void 0 }), { overwriteExisting: i, createIntermediates: a, recursive: d } = r;
   if (o.source && (o.source = fe(s) ? s.map((h) => ms("source", h, i)).filter((h) => h != null) : ms("source", s, i)), typeof e == "object") {
     const h = ms("target", e, i);
     h && (o.target = h);
@@ -2163,15 +2163,15 @@ const ce = new class {
     const s = t === "upload" ? this._uploads : this._downloads;
     return s.filter((r) => r && (r.state === g.NOT_INITIALIZED || r.state === g.INITIALIZED || r.state === g.INITIALIZING || r.state === g.STARTED)).length === 0 ? e.start() : e._setWaiting(), s.push(e), e.promise;
   }
-}(), G = U("dcx:assets:blockdownload"), sc = U("dcx:assets:blockdownload:leaf"), rc = function* () {
+}(), G = U("dcx:assets:blockdownload"), tc = U("dcx:assets:blockdownload:leaf"), sc = function* () {
   let t = 0;
   for (; ; ) yield t++;
 }();
-class nc extends Gs {
+class rc extends Gs {
   constructor(e, s, r = {}) {
     super(["stateChanged"]), this._state = g.NOT_INITIALIZED, this._cachedBlocks = /* @__PURE__ */ new Map(), this._blockRequestIndex = 0, this._blockHandledIndex = 0, this._currentByteRange = [void 0, void 0], this._pending = [], G("constructor");
-    const { startByte: n, blockSize: o, endByte: i, url: a, totalSize: d, maxConcurrentRequests: h } = Object.assign({ blockSize: ce.downloadChunkSize, maxConcurrentRequests: 4 }, L(r));
-    E(["svc", e, "object"], ["responseType", s, "enum", !1, ["buffer"]], ["blockSize", o, "+number"], ["url", a, "string", !0], ["startByte", n, "number", !0], ["endByte", i, "number", !0], ["totalSize", d, "number", !0], ["maxConcurrentRequests", h, "+number"]), this._dbgId = rc.next().value, this._maxConcurrentRequests = h, this._blockSize = Math.round(o), this._service = e, this._url = a, this._startByte = n, this._endByte = i, this._totalSize = d, this._bytes = new Uint8Array(), this._promise = new C((l, p) => {
+    const { startByte: n, blockSize: o, endByte: i, url: a, totalSize: d, maxConcurrentRequests: h } = Object.assign({ blockSize: ce.downloadChunkSize, maxConcurrentRequests: 4 }, w(r));
+    E(["svc", e, "object"], ["responseType", s, "enum", !1, ["buffer"]], ["blockSize", o, "+number"], ["url", a, "string", !0], ["startByte", n, "number", !0], ["endByte", i, "number", !0], ["totalSize", d, "number", !0], ["maxConcurrentRequests", h, "+number"]), this._dbgId = sc.next().value, this._maxConcurrentRequests = h, this._blockSize = Math.round(o), this._service = e, this._url = a, this._startByte = n, this._endByte = i, this._totalSize = d, this._bytes = new Uint8Array(), this._promise = new C((l, p) => {
       this._resolve = () => {
         G(this._dbgId, "resolving"), this.removeAllHandlers(), l(this);
       }, this._reject = (_) => {
@@ -2301,7 +2301,7 @@ class nc extends Gs {
     if (this._state === g.ERROR) return;
     this._contentType = this._contentType || e.headers[R.CONTENT_TYPE];
     const s = typeof Buffer < "u" && e.response instanceof Buffer ? e.response : new Uint8Array(e.response);
-    this._bytes = Le(this._bytes, s);
+    this._bytes = we(this._bytes, s);
   }
   _shiftState(e) {
     return G(this._dbgId, "_shiftState(): ", e), this._state === g.COMPLETE || this._state === g.ERROR || this._state === g.CANCELED || (this._state = e, this.emit("stateChanged", [this._state, this]), e === g.FINALIZING && this._finalize(), e === g.COMPLETE && Promise.all(this._pending).then(this._resolve.bind(this))), this;
@@ -2326,12 +2326,12 @@ class nc extends Gs {
     if (!r) throw G(this._dbgId, "_aSIV() throw ", n), new c(c.INVALID_STATE, n, void 0, void 0, { method: e, currentState: s });
   }
 }
-function oc(t, e, s) {
-  return new nc(t, e, s);
+function nc(t, e, s) {
+  return new rc(t, e, s);
 }
-function et(t, e, s, r, n = "defaultbuffer", o, i, a) {
-  sc("_doBlockDownload()");
-  const d = n === "stream" ? void 0 : oc(t, "buffer", { startByte: s, endByte: r });
+function tt(t, e, s, r, n = "defaultbuffer", o, i, a) {
+  tc("_doBlockDownload()");
+  const d = n === "stream" ? void 0 : nc(t, "buffer", { startByte: s, endByte: r });
   (this != null ? this : {}).blockDownload = d;
   let h = C.resolve(e, this !== void 0 ? this : {});
   return o || (h = h.then(() => t.invoke(O.GET, e, Object.assign({ priority: "u=1" }, a), void 0, { responseType: "text", isStatusValid: N(), retryOptions: { pollCodes: [202], pollHeader: "location", pollMethod: "GET" } })).then((l) => {
@@ -2339,10 +2339,10 @@ function et(t, e, s, r, n = "defaultbuffer", o, i, a) {
     if (typeof p != "string" || p === "") throw new c(c.UNEXPECTED_RESPONSE, "No block download href found in response.", void 0, l);
     return i = i || parseInt(Cr(l.response, '"size":\\s*(\\d+)')), p;
   })), h.then((l) => re(this, void 0, void 0, function* () {
-    return d ? Promise.race([d.init(l, i).then(() => ce.addAndStartDownload(d)), d.promise]).then(() => ({ statusCode: 200, headers: L({ [R.CONTENT_TYPE]: d.contentType, [R.CONTENT_LENGTH]: d.totalSize }), responseType: n, response: ic(d.buffer, n, d.contentType), message: "OK" })) : t.invoke(O.GET, l, Yn(s, r), void 0, { responseType: "stream", isExternalRequest: !0 });
+    return d ? Promise.race([d.init(l, i).then(() => ce.addAndStartDownload(d)), d.promise]).then(() => ({ statusCode: 200, headers: w({ [R.CONTENT_TYPE]: d.contentType, [R.CONTENT_LENGTH]: d.totalSize }), responseType: n, response: oc(d.buffer, n, d.contentType), message: "OK" })) : t.invoke(O.GET, l, Yn(s, r), void 0, { responseType: "stream", isExternalRequest: !0 });
   }));
 }
-function ic(t, e, s) {
+function oc(t, e, s) {
   if (e === "defaultbuffer" || e === "buffer" || e === "arraybuffer") return t.buffer;
   if (e === "blob") return new Blob([t], { type: s });
   const r = ye(t);
@@ -2369,10 +2369,10 @@ function ir(t, e, s, r, n = "defaultbuffer", o, i, a = {}, d = !1) {
     if (!p) return h;
     if (!("location" in h.headers) || typeof h.headers.location != "string") {
       if (!at(e.links, [u.BLOCK_DOWNLOAD])) throw new c(c.INVALID_DATA, "Resource too large and missing download link.");
-      const _ = L({ reltype: r, component_id: o, revision: i }), f = Z(e.links, u.BLOCK_DOWNLOAD, { resource: r ? JSON.stringify(_) : void 0 });
-      return d ? { statusCode: 200, headers: L({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: f }, message: "OK" } : et.call(l, t, f, void 0, void 0, n, !1, void 0, a);
+      const _ = w({ reltype: r, component_id: o, revision: i }), f = Z(e.links, u.BLOCK_DOWNLOAD, { resource: r ? JSON.stringify(_) : void 0 });
+      return d ? { statusCode: 200, headers: w({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: f }, message: "OK" } : tt.call(l, t, f, void 0, void 0, n, !1, void 0, a);
     }
-    return d ? { statusCode: 200, headers: L({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: h.headers.location }, message: "OK" } : et.call(l, t, h.headers.location, void 0, void 0, n, !0, void 0, a);
+    return d ? { statusCode: 200, headers: w({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: h.headers.location }, message: "OK" } : tt.call(l, t, h.headers.location, void 0, void 0, n, !0, void 0, a);
   });
 }
 function $t({ additionalHeaders: t = {}, asset: e, contentType: s, data: r, etag: n, headHref: o, href: i, maybeIsNew: a, relation: d, service: h }, l = !1) {
@@ -2392,29 +2392,29 @@ function $t({ additionalHeaders: t = {}, asset: e, contentType: s, data: r, etag
     return _;
   });
 }
-const ac = U("dcx:assets:bulk");
-function cc(t, e) {
+const ic = U("dcx:assets:bulk");
+function ac(t, e) {
   const s = `\r
 `;
   let r = Uint8Array.from([]);
   for (let n = 0; n < t.length; n++) {
     const o = t[n];
-    r = Le(r, Ie(n === 0 ? `--${e}${s}` : `${s}--${e}${s}`)), r = Le(r, Ie(`${[R.CONTENT_TYPE]}: application/http${s}`)), r = Le(r, Ie(`${s}${o.method} ${o.href}`));
+    r = we(r, Ie(n === 0 ? `--${e}${s}` : `${s}--${e}${s}`)), r = we(r, Ie(`${[R.CONTENT_TYPE]}: application/http${s}`)), r = we(r, Ie(`${s}${o.method} ${o.href}`));
     let i = !1;
     for (const a in o.headers) {
       const d = a.toLowerCase();
-      d === "content-length" && (i = !0), r = Le(r, Ie(`${s}${d}: ${o.headers[a]}`));
+      d === "content-length" && (i = !0), r = we(r, Ie(`${s}${d}: ${o.headers[a]}`));
     }
     if (o.body) {
-      const a = dc(o.body);
-      i || (r = Le(r, Ie(`${s}content-length: ${a.length}`))), r = Le(r, Ie(`${s}${s}`)), r = Le(r, a);
+      const a = cc(o.body);
+      i || (r = we(r, Ie(`${s}content-length: ${a.length}`))), r = we(r, Ie(`${s}${s}`)), r = we(r, a);
     }
   }
-  return r = Le(r, Ie(`${s}--${e}--${s}`)), r;
+  return r = we(r, Ie(`${s}--${e}--${s}`)), r;
 }
-function dc(t) {
+function cc(t) {
   if (typeof t == "string") return Ie(t);
-  if (Yo(t)) return new Uint8Array(t);
+  if (Go(t)) return new Uint8Array(t);
   if (Rn(t)) return t;
   throw new c(c.INVALID_PARAMS, "Bulk subrequest body expecting string | ArrayBuffer | Buffer");
 }
@@ -2455,7 +2455,7 @@ function ns(t, e = !1) {
   let l;
   return l = isNaN(h) ? (a == null ? void 0 : a.length) === 0 ? new Uint8Array([]) : a : h === 0 ? new Uint8Array([]) : a == null ? void 0 : a.subarray(0, h), { headers: i, response: i[R.CONTENT_TYPE] === Ms && l !== void 0 ? JSON.parse(ye(l)) : l, statusCode: d };
 }
-function hc(t) {
+function dc(t) {
   if (t.length > 10) throw new c(c.INVALID_PARAMS, "A single bulk request can only contain a maximum of 10 sub-requests.");
   const { writeOperations: e, readOperations: s } = t.reduce((r, n) => {
     if (typeof n.href != "string") throw new c(c.INVALID_PARAMS, "A sub-request of the bulk operation is missing an href");
@@ -2467,13 +2467,13 @@ function hc(t) {
   if (e.length > 0 && s.length > 0) throw new c(c.INVALID_PARAMS, "Cannot mix READ and WRITE operations in bulk sub requests.");
 }
 function os(t, e, s, r = "id", n = {}, o = !1) {
-  return ac("performBulkRequest()"), E(["svc", t, "object"], ["asset", e, "object"], ["requests", s, "array"], ["linkMode", r, "string", !0, ["id", "path"]]), F(e.links, [u.BULK_REQUEST]), hc(s), zn(t, e, s, r, n).then(({ response: i, subresponses: a }) => re(this, void 0, void 0, function* () {
+  return ic("performBulkRequest()"), E(["svc", t, "object"], ["asset", e, "object"], ["requests", s, "array"], ["linkMode", r, "string", !0, ["id", "path"]]), F(e.links, [u.BULK_REQUEST]), dc(s), zn(t, e, s, r, n).then(({ response: i, subresponses: a }) => re(this, void 0, void 0, function* () {
     const d = Wn(a, s);
     return { result: o ? yield Kn(t, e, d, r, n, a) : a, response: i };
   }));
 }
 function zn(t, e, s, r = "id", n = {}) {
-  const o = `boundary-${Date.now()}`, i = cc(s, o), a = Object.assign(Object.assign({}, n), { [R.CONTENT_TYPE]: `multipart/mixed;boundary=${o}` }), d = H(e.links, u.BULK_REQUEST, r);
+  const o = `boundary-${Date.now()}`, i = ac(s, o), a = Object.assign(Object.assign({}, n), { [R.CONTENT_TYPE]: `multipart/mixed;boundary=${o}` }), d = H(e.links, u.BULK_REQUEST, r);
   return t.invoke(O.POST, d, a, i, { isStatusValid: N(), responseType: "defaultbuffer", retryOptions: { pollHeader: "location", pollCodes: [202], pollMethod: O.GET } }).then((h) => ({ response: h, subresponses: ar(h, s.length) }));
 }
 function Wn(t, e) {
@@ -2496,7 +2496,7 @@ function Kn(t, e, s, r = "id", n = {}, o, i = 5) {
 const V = U("dcx:assets:asset"), Y = U("dcx:assets:asset:leaf");
 class vt {
   constructor(e, s, r = {}) {
-    this.type = Ge.Asset, this._data = {}, this._data = se(e), this._svc = x(s), this._cache = ne(s), this._links = he({}, e.links || {}, e._links || {}, r);
+    this.type = Ye.Asset, this._data = {}, this._data = se(e), this._svc = x(s), this._cache = ne(s), this._links = he({}, e.links || {}, e._links || {}, r);
   }
   setLinks(e) {
     this._links = e, this._updateCachedLinks();
@@ -2698,7 +2698,7 @@ class vt {
     return V("patchAppMetadata()"), E(["patchDoc", e, ["string", "object[]"]], ["etag", s, "string"]), this.fetchLinksIfMissing([u.APP_METADATA], r).then(() => oo(this._svc, this, e, s, r));
   }
   getBaseDirectoryMetadata() {
-    return V("getBaseDirectoryMetadata()"), gc(this._svc);
+    return V("getBaseDirectoryMetadata()"), Ec(this._svc);
   }
   getLinks(e) {
     return V("getLinks()"), S(this.links) && Object.keys(this.links).length > 0 ? C.resolve(this.links) : Qn(this._svc, this, e).then((s) => (this.setLinks(s), s));
@@ -2736,7 +2736,7 @@ class vt {
     return V("copyResources()"), E(["targetAsset", e, "object"], ["resources", s, "array"], ["manifestPatch", n, ["object", "string"], !0], ["intermediates", r, "boolean", !0]), Gn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path, version: this.version }, e, s, r, n, o);
   }
   move(e, s, r, n) {
-    return V("move()"), E(["destination", e, ["object", "string"]], ["createIntermediates", s, "boolean"], ["overwriteExisting", r, "boolean"]), Bn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r, n).then(({ response: o, result: i }) => (this._data = Object.assign(Object.assign({}, this._data), L(i)), { response: o, result: this }));
+    return V("move()"), E(["destination", e, ["object", "string"]], ["createIntermediates", s, "boolean"], ["overwriteExisting", r, "boolean"]), Bn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r, n).then(({ response: o, result: i }) => (this._data = Object.assign(Object.assign({}, this._data), w(i)), { response: o, result: this }));
   }
   delete(e, s = !1, r) {
     return V("delete()"), E(["etag", e, "string", !0], ["recursive", s, "boolean"]), Vn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r).then((n) => (this._data.state = "DELETED", n));
@@ -2748,7 +2748,7 @@ class vt {
     return V("package()"), E(["destination", e, ["object", "string"]], ["createIntermediates", s, "boolean"], ["overwriteExisting", r, "boolean"]), Hn(this._svc, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r, n);
   }
   restore(e) {
-    return V("restore()"), Fn(this._svc, { repositoryId: this.repositoryId, assetId: this.assetId }, e).then(({ response: s, result: r }) => (this._data = Object.assign(Object.assign(Object.assign({}, this._data), L(r)), { state: "ACTIVE" }), { response: s, result: this }));
+    return V("restore()"), Fn(this._svc, { repositoryId: this.repositoryId, assetId: this.assetId }, e).then(({ response: s, result: r }) => (this._data = Object.assign(Object.assign(Object.assign({}, this._data), w(r)), { state: "ACTIVE" }), { response: s, result: this }));
   }
   _updateDataWithResponse(e) {
     return e && (this._data.etag = e.headers.etag || this._data.etag, this._data.version = e.headers.version || this._data.version, this._data.assetId = e.headers["asset-id"] || this._data.assetId, this._data.md5 = e.headers["content-md5"] || this._data.md5, this._data.repositoryId = e.headers["repository-id"] || this._data.repositoryId, e);
@@ -2772,21 +2772,21 @@ function Zn(t, e, s) {
     return i && i.setValueWithAsset(e.links || {}, e), n;
   });
 }
-const lc = "/content/directory/resolve{?repositoryId,id,resource,mode}", uc = "/content/directory/resolve{?repositoryId,path,resource,mode}";
-function pc(t, e, s = "id", r, n) {
+const hc = "/content/directory/resolve{?repositoryId,id,resource,mode}", lc = "/content/directory/resolve{?repositoryId,path,resource,mode}";
+function uc(t, e, s = "id", r, n) {
   Y("getResolveLinkForAsset()"), E(["svc", t, "object"], ["asset", e, "object"], ["mode", s, "enum", !1, ["id", "path"]], ["resource", r, ["string", "object"], !0]), Dn(e);
-  const o = { repositoryId: e.repositoryId, id: e.assetId, path: e.path, mode: s, resource: S(r) ? JSON.stringify(r) : r }, i = x(t), a = qe(e.assetId ? lc : uc, i);
-  return C.resolve(Ve(a, L(o)));
+  const o = { repositoryId: e.repositoryId, id: e.assetId, path: e.path, mode: s, resource: S(r) ? JSON.stringify(r) : r }, i = x(t), a = ze(e.assetId ? hc : lc, i);
+  return C.resolve(Ve(a, w(o)));
 }
-const _c = "/content/create/~/:create{?path,mode,intermediates,respondWith,repoMetaPatch*}", fc = "/content/create/~/:block_upload";
+const pc = "/content/create/~/:create{?path,mode,intermediates,respondWith,repoMetaPatch*}", _c = "/content/create/~/:block_upload";
 function cr(t, e, s = "id", r, n, o) {
   Y("resolveAsset()"), E(["svc", t, "object"], ["asset", e, "object"], ["mode", s, "enum", !0, ["id", "path"]], ["resource", r, ["string", "object"], !0]), Dn(e);
   const i = x(t), a = ne(t), d = a && e.assetId && e.repositoryId && s === "id";
-  return d && (Y("rA() set pending"), a.setPending(e.assetId, e.repositoryId)), pc(t, e, s, r).then((h) => r == null ? sr(i, h, o) : Xa(i, h, o, n)).then((h) => ({ response: h, result: fo(e, h, s === "id", a) })).catch((h) => {
+  return d && (Y("rA() set pending"), a.setPending(e.assetId, e.repositoryId)), uc(t, e, s, r).then((h) => r == null ? sr(i, h, o) : Ka(i, h, o, n)).then((h) => ({ response: h, result: fo(e, h, s === "id", a) })).catch((h) => {
     throw d && a.deleteWithAsset(e), h;
   });
 }
-function Ec(t, e, s) {
+function fc(t, e, s) {
   return Y("fetchLinksForAsset()"), Jn(t, e, s).then((r) => r.result.links);
 }
 function Jn(t, e, s) {
@@ -2809,14 +2809,14 @@ function Qn(t, e, s) {
     const o = n.getValueWithAsset(e);
     if (o) return C.resolve(o);
   }
-  return Ec(t, e, s);
+  return fc(t, e, s);
 }
 function eo(t, e, s) {
   Y("updateRepoMetadata()"), E(["svc", t, "object"], ["asset", e, "object"]), F(e.links, [u.REPO_METADATA]);
-  const r = H(e.links, u.REPO_METADATA), n = Object.assign({ [R.CONTENT_TYPE]: ct }, s), o = Za(e);
+  const r = H(e.links, u.REPO_METADATA), n = Object.assign({ [R.CONTENT_TYPE]: ct }, s), o = Xa(e);
   return t.invoke(O.PATCH, r, n, JSON.stringify(o), { responseType: "json", isStatusValid: N() }).then((i) => ({ result: i.response, response: i }));
 }
-function gc(t, e) {
+function Ec(t, e) {
   throw Y("getBaseDirectoryMetadata()"), new c(c.NOT_IMPLEMENTED, "Method not implemented.");
 }
 function to(t, e, s) {
@@ -2845,12 +2845,12 @@ function ro(t, e, s, r = {}) {
 function no(t, e, s, r, n = {}) {
   Y("putAppMetadata()"), E(["svc", t, "object"], ["asset", e, "object"], ["metadata", s, ["object", "string"]], ["etag", r, "string", !0]), F(e.links, [u.APP_METADATA]);
   const o = H(e.links, u.APP_METADATA);
-  return t.invoke(O.PUT, o, L(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: Ya })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
+  return t.invoke(O.PUT, o, w(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: Ga })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
 }
 function oo(t, e, s, r, n = {}) {
   Y("patchAppMetadata()"), E(["svc", t, "object"], ["asset", e, "object"], ["metadata", s, ["object[]", "string"]], ["etag", r, "string"]), F(e.links, [u.APP_METADATA]);
   const o = H(e.links, u.APP_METADATA);
-  return t.invoke(O.PATCH, o, L(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: ct })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
+  return t.invoke(O.PATCH, o, w(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: ct })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
 }
 function io(t, e, s) {
   Y("getEffectivePrivileges()"), E(["svc", t, "object"], ["asset", e, "object"]), F(e.links, [u.EFFECTIVE_PRIVILAGES]);
@@ -2869,7 +2869,7 @@ function co(t, e, s, r, n = {}) {
 }
 function ho(t, e, s, r, n = {}) {
   Y("patchACLPolicy()"), E(["svc", t, "object"], ["asset", e, "object"], ["policy", s, ["string", "object"]], ["etag", r, "string", !0]), F(e.links, [u.ACL_POLICY]);
-  const o = L(Object.assign(n, { [R.CONTENT_TYPE]: ct, [R.IF_MATCH]: r })), i = H(e.links, u.ACL_POLICY);
+  const o = w(Object.assign(n, { [R.CONTENT_TYPE]: ct, [R.IF_MATCH]: r })), i = H(e.links, u.ACL_POLICY);
   return x(t).invoke(O.PATCH, i, o, typeof s == "string" ? s : JSON.stringify(s), { responseType: "json", isStatusValid: N() }).then((a) => ({ result: a.response, response: a }));
 }
 function lo(t, e, s = {}) {
@@ -2905,11 +2905,11 @@ function uo(t, e, s, r, n) {
 function dt(t, e, s = [], r = !1, n) {
   return po(t, e, s, r, n).then(({ result: o }) => o);
 }
-const Ic = /* @__PURE__ */ new Set([u.BASE_DIRECTORY, u.RESOLVE_BY_ID, u.RESOLVE_BY_PATH, u.REPO_OPS, u.REPOSITORY, u.DIRECTORY, u.DISCARD, u.RESTORE, u.PATH, u.ANNOTATIONS]), Tc = "/links{?assetId,repositoryId,clientRegion}";
-function Ac(t, e, s) {
+const gc = /* @__PURE__ */ new Set([u.BASE_DIRECTORY, u.RESOLVE_BY_ID, u.RESOLVE_BY_PATH, u.REPO_OPS, u.REPOSITORY, u.DIRECTORY, u.DISCARD, u.RESTORE, u.PATH, u.ANNOTATIONS]), Ic = "/links{?assetId,repositoryId,clientRegion}";
+function Tc(t, e, s) {
   const r = function(n, o) {
     Y("getLinksAPIUrlForAsset()"), E(["svc", n, "object"], ["asset", o, "object"]);
-    const i = x(n), a = qe(Tc, i), { assetId: d, repositoryId: h, contentRegion: l } = o, p = L({ assetId: d, repositoryId: h, contentRegion: l });
+    const i = x(n), a = ze(Ic, i), { assetId: d, repositoryId: h, contentRegion: l } = o, p = w({ assetId: d, repositoryId: h, contentRegion: l });
     return Ve(a, p);
   }(t, e);
   return x(t).invoke(O.GET, r, s, void 0, { responseType: "json" }).then((n) => {
@@ -2921,15 +2921,15 @@ function po(t, e, s = [], r = !1, n) {
   if (Y("fetchLinksIfMissing()", s), E(["svc", t, "object"], ["asset", e, "object"], ["linksToPopulate", s, "string[]"], ["suppressMissingErrors", r, "boolean", !0]), at(e.links, s)) return Y("fLIM() links exist"), C.resolve({ result: e.links });
   const o = ne(t);
   return _o(e, o, s, !0).then((i) => i || (function(a, d) {
-    return typeof a.assetId == "string" && a.assetId.length > 0 && d.every((h) => !Ic.has(h));
-  }(e, s) ? Ac(t, e, n) : (Y("fLIM() fetching links"), Jn(t, e, n)))).then((i) => {
+    return typeof a.assetId == "string" && a.assetId.length > 0 && d.every((h) => !gc.has(h));
+  }(e, s) ? Tc(t, e, n) : (Y("fLIM() fetching links"), Jn(t, e, n)))).then((i) => {
     let a, d, h = i;
     if (bn(i) && (a = i.response, h = i.result.links, d = i.result), e.links !== h) {
       e.links = he(e.links || {}, h);
       const l = ne(t);
       l && l.setValueWithAsset(e.links, e);
     }
-    if (!r && !at(h, s)) throw new c(c.INVALID_PARAMS, "Required links could not be fetched for asset.", void 0, a, L({ required: s, asset: d }));
+    if (!r && !at(h, s)) throw new c(c.INVALID_PARAMS, "Required links could not be fetched for asset.", void 0, a, w({ required: s, asset: d }));
     return Y("fLIM() fetchedOCached exists"), { result: h || e.links, response: a };
   });
 }
@@ -2938,24 +2938,24 @@ function _o(t, e, s, r) {
   const n = e.getValueWithAsset(t);
   return n == null ? (r && e.setPending(t.assetId, t.repositoryId), C.resolve(void 0)) : C.resolve(n).then((o) => s ? at(o, s) ? o : void (r && e.setPending(t.assetId, t.repositoryId)) : o);
 }
-function mc(t, e, s, r, n, o, i) {
+function Ac(t, e, s, r, n, o, i) {
   return Gn(t, e, s, r, n, o, i);
 }
 function fo(t, e, s, r) {
   const n = Ee(e), o = Object.assign(Object.assign(Object.assign({}, function(i) {
     return S(i.asset) ? i.asset : i;
-  }(t)), L({ assetId: e.headers["asset-id"] || e.headers["x-resource-id"], format: e.headers[R.CONTENT_TYPE], md5: e.headers["content-md5"], etag: e.headers.etag, version: e.headers.version, repositoryId: e.headers["repository-id"] })), { links: n });
+  }(t)), w({ assetId: e.headers["asset-id"] || e.headers["x-resource-id"], format: e.headers[R.CONTENT_TYPE], md5: e.headers["content-md5"], etag: e.headers.etag, version: e.headers.version, repositoryId: e.headers["repository-id"] })), { links: n });
   return s && n && Object.keys(n).length > 0 && r && r.setValueWithAsset(n, o), o;
 }
 U("dcx:assets:block_transfer");
-const is = 10485760, yc = 52428800, vc = is / 4;
-let Eo = yc;
+const is = 10485760, mc = 52428800, yc = is / 4;
+let Eo = mc;
 function dr(t, e) {
   const s = function(n) {
     return go(n, B.REPO_MIN_BLOCK_TRANSFER_SIZE);
   }(t);
   if (s && e < s) return !1;
-  const r = bc(t);
+  const r = vc(t);
   return !!(r && e > r) || e > is;
 }
 function go(t, e) {
@@ -2963,34 +2963,34 @@ function go(t, e) {
   const s = Qt(t.links, u.BLOCK_UPLOAD_INIT, e);
   return s ? parseInt(s) : void 0;
 }
-function bc(t) {
+function vc(t) {
   return go(t, B.MAX_SINGLE_TRANSFER_SIZE);
 }
-const Ue = (t) => typeof t == "string" ? t.length >= vc ? Ie(t).byteLength : t.length : "size" in t ? t.size : t.byteLength, Je = (t, e) => {
+const Ue = (t) => typeof t == "string" ? t.length >= yc ? Ie(t).byteLength : t.length : "size" in t ? t.size : t.byteLength, Qe = (t, e) => {
   if (!q(t)) return t;
   if (t.length < 2) throw new c(c.INVALID_PARAMS, "GetSliceCallback is expected to accept 2 parameters");
   if (e === void 0 || isNaN(e) || e < 0) throw new c(c.INVALID_PARAMS, "Size parameter should indicate total number of bytes to be read from GetSliceCallback");
   return { getSlice: t, size: e };
-}, Io = () => Eo, Rc = (t) => {
+}, Io = () => Eo, bc = (t) => {
   if (Number.isNaN(t) || typeof t != "number" || t <= 0) throw new c(c.INVALID_PARAMS, "Invalid block download threshold, must be positive integer");
   Eo = t;
 };
-function Oc(t, e, s, r) {
+function Rc(t, e, s, r) {
   const n = Ys(r);
   return { id: e, length: s, type: t, links: nr(n.link), etag: n.etag, location: n.location, version: n.version, revision: n.revision, md5: n["content-md5"] };
 }
-const w = U("dcx:assets:blockupload"), Pc = U("dcx:assets:blockupload:leaf");
-class Sc extends Gs {
+const L = U("dcx:assets:blockupload"), Oc = U("dcx:assets:blockupload:leaf");
+class Pc extends Gs {
   constructor(e, s, r, n, o, i, a, d, h, l, p, _, f, v) {
-    super(["stateChanged"]), this._internalBlockUploadId = zt(), this._state = g.NOT_INITIALIZED, this._currentBlockIndex = 0, this._pendingBlockRequests = /* @__PURE__ */ new Map(), this._bytesUploaded = 0, this._indeterminateTransfer = !1, this._maxConcurrentRequests = 4, this._retryQueue = /* @__PURE__ */ new Set(), this._activeBlockIndex = 0, this._lastExtendTime = 0, this._uploadedBlocksURLs = [], this._service = e, this._getSliceCallback = s, Ha(r) ? (E([B.REPO_SIZE, r[B.REPO_SIZE], "number"]), this._blockTransferDocument = r, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._dataSize = this._blockTransferDocument[B.REPO_SIZE], this._relationType = this._blockTransferDocument[B.REPO_REL_TYPE], this._shiftState(g.INITIALIZED), w(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`)) : (E(["relationType", n, "string"], ["dataSize", o, "number"], ["contentType", i, "string"], ["componentId", a, "string", !0], ["etag", h, "string", !0]), this._asset = r, F(this._asset.links, [u.BLOCK_UPLOAD_INIT], c.UNEXPECTED, "/rel/block/init missing from BlockTransferDocument."), this._relationType = n, this._dataSize = o, this._contentType = i, this._componentId = a, this._md5 = d, this._ifMatch = h), this._relPath = l, this._createIntermediates = p, this._respondWith = _, this._repoMetaPatch = f, this._maxConcurrentRequests = v || 4, this._promise = new C((m, b) => {
+    super(["stateChanged"]), this._internalBlockUploadId = zt(), this._state = g.NOT_INITIALIZED, this._currentBlockIndex = 0, this._pendingBlockRequests = /* @__PURE__ */ new Map(), this._bytesUploaded = 0, this._indeterminateTransfer = !1, this._maxConcurrentRequests = 4, this._retryQueue = /* @__PURE__ */ new Set(), this._activeBlockIndex = 0, this._lastExtendTime = 0, this._uploadedBlocksURLs = [], this._service = e, this._getSliceCallback = s, Fa(r) ? (E([B.REPO_SIZE, r[B.REPO_SIZE], "number"]), this._blockTransferDocument = r, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._dataSize = this._blockTransferDocument[B.REPO_SIZE], this._relationType = this._blockTransferDocument[B.REPO_REL_TYPE], this._shiftState(g.INITIALIZED), L(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`)) : (E(["relationType", n, "string"], ["dataSize", o, "number"], ["contentType", i, "string"], ["componentId", a, "string", !0], ["etag", h, "string", !0]), this._asset = r, F(this._asset.links, [u.BLOCK_UPLOAD_INIT], c.UNEXPECTED, "/rel/block/init missing from BlockTransferDocument."), this._relationType = n, this._dataSize = o, this._contentType = i, this._componentId = a, this._md5 = d, this._ifMatch = h), this._relPath = l, this._createIntermediates = p, this._respondWith = _, this._repoMetaPatch = f, this._maxConcurrentRequests = v || 4, this._promise = new C((m, b) => {
       this._reject = b, this._resolve = m;
     }), ce.uploads.push(this);
   }
   init(e) {
     if (this._assertStateIsValid("init"), !this._blockTransferDocument || !this._blockTransferDocument[T.LINKS]) {
       this._shiftState(g.INITIALIZING);
-      const s = L(Object.assign({ [B.REPO_REL_TYPE]: this._relationType, [B.REPO_IF_MATCH]: this._ifMatch, [B.REPO_SIZE]: this._dataSize, [B.DC_FORMAT]: this._contentType, [B.COMPONENT_ID]: this._componentId, [B.REPO_MD5]: this._md5 }, this._blockTransferDocument));
-      return hr(this._service, this._asset, s, e).then((r) => (this._blockTransferDocument = r.result, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._shiftState(g.INITIALIZED), w(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`), this));
+      const s = w(Object.assign({ [B.REPO_REL_TYPE]: this._relationType, [B.REPO_IF_MATCH]: this._ifMatch, [B.REPO_SIZE]: this._dataSize, [B.DC_FORMAT]: this._contentType, [B.COMPONENT_ID]: this._componentId, [B.REPO_MD5]: this._md5 }, this._blockTransferDocument));
+      return hr(this._service, this._asset, s, e).then((r) => (this._blockTransferDocument = r.result, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._shiftState(g.INITIALIZED), L(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`), this));
     }
     return C.resolve(this);
   }
@@ -3001,16 +3001,16 @@ class Sc extends Gs {
     return this._promise;
   }
   start() {
-    return this._assertStateIsValid("start"), ce.uploads[0] !== this || this._state !== g.INITIALIZED && this._state !== g.PAUSED || (w(`Starting the transfer of BlockUpload: ${this._internalBlockUploadId}`), this._shiftState(g.STARTED), this._uploadLoop()), this._promise;
+    return this._assertStateIsValid("start"), ce.uploads[0] !== this || this._state !== g.INITIALIZED && this._state !== g.PAUSED || (L(`Starting the transfer of BlockUpload: ${this._internalBlockUploadId}`), this._shiftState(g.STARTED), this._uploadLoop()), this._promise;
   }
   pause() {
-    return this._assertStateIsValid("pause"), this._shiftState(g.PAUSING), C.allSettled([...this._pendingBlockRequests.values()]).then(() => (this._shiftState(g.PAUSED), w(`BlockUploading has been paused.  BlockUploadId: ${this._internalBlockUploadId}`), this));
+    return this._assertStateIsValid("pause"), this._shiftState(g.PAUSING), C.allSettled([...this._pendingBlockRequests.values()]).then(() => (this._shiftState(g.PAUSED), L(`BlockUploading has been paused.  BlockUploadId: ${this._internalBlockUploadId}`), this));
   }
   resume() {
-    return this._assertStateIsValid("resume"), w(`BlockUploading has been resumed.  BlockUploadId: ${this._internalBlockUploadId}`), this.start(), this;
+    return this._assertStateIsValid("resume"), L(`BlockUploading has been resumed.  BlockUploadId: ${this._internalBlockUploadId}`), this.start(), this;
   }
   cancel() {
-    this._assertStateIsValid("cancel"), this._shiftState(g.CANCELED), w(`A BlockUpload has been canceled... BlockUploadId: ${this._internalBlockUploadId}`), this._promise.cancel(), this._cancel();
+    this._assertStateIsValid("cancel"), this._shiftState(g.CANCELED), L(`A BlockUpload has been canceled... BlockUploadId: ${this._internalBlockUploadId}`), this._promise.cancel(), this._cancel();
   }
   _setWaiting() {
     this._shiftState(g.WAITING);
@@ -3019,8 +3019,8 @@ class Sc extends Gs {
     if (this._assertStateIsValid("uploadNextBlock"), this._isEmptyBlock(e)) throw new c(c.INVALID_PARAMS, "Trying to upload empty data block.");
     const s = this._activeBlockIndex, r = Date.now(), n = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER][s].href;
     let o;
-    w(`Uploading a block... BlockUploadId: ${this._internalBlockUploadId}`);
-    const i = Ue(e), a = this._uploadBlock(e, n).then((d) => (this._uploadedBlocksURLs[s] = { href: n }, this._updateProgress(i), o(), w(`A block has completed... ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), d)).catch((d) => (o(), this._isTransferUrlExpiredError(d) ? (w(`A block with index as ${s} has FAILED due to Transfer Expiry!! ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), this._retryQueue.add(s), r <= this._lastExtendTime ? (w(`Skipping extend for block ${s} — request started after last extend.`), this._maybePauseForRetry().then(() => C.reject(g.PAUSED))) : this._maybeExtendWithPauseResume().catch((h) => (w(`Extend flow failed for block ${s}`, h), C.reject(h)))) : (w(`A block upload has failed. BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.ERROR), this._reject(new c(c.UNEXPECTED_RESPONSE, "A block has failed during upload", d, d.response)), this.cancel(), C.reject(d))));
+    L(`Uploading a block... BlockUploadId: ${this._internalBlockUploadId}`);
+    const i = Ue(e), a = this._uploadBlock(e, n).then((d) => (this._uploadedBlocksURLs[s] = { href: n }, this._updateProgress(i), o(), L(`A block has completed... ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), d)).catch((d) => (o(), this._isTransferUrlExpiredError(d) ? (L(`A block with index as ${s} has FAILED due to Transfer Expiry!! ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), this._retryQueue.add(s), r <= this._lastExtendTime ? (L(`Skipping extend for block ${s} — request started after last extend.`), this._maybePauseForRetry().then(() => C.reject(g.PAUSED))) : this._maybeExtendWithPauseResume().catch((h) => (L(`Extend flow failed for block ${s}`, h), C.reject(h)))) : (L(`A block upload has failed. BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.ERROR), this._reject(new c(c.UNEXPECTED_RESPONSE, "A block has failed during upload", d, d.response)), this.cancel(), C.reject(d))));
     return o = this._pushPendingBlockRequest(s, a), a;
   }
   get _pendingBlocksCount() {
@@ -3030,7 +3030,7 @@ class Sc extends Gs {
     return this._pendingBlocksCount < this._maxConcurrentRequests ? Promise.resolve() : Promise.race(ce.pendingUploadRequests.filter((e) => !!e));
   }
   _handleAssetMoved(e) {
-    throw w("_handleAssetMoved"), this._pendingBlockRequests.forEach((s) => {
+    throw L("_handleAssetMoved"), this._pendingBlockRequests.forEach((s) => {
       s.abort();
     }), this._pendingBlockRequests.clear(), this._uploadedBlocksURLs.length = 0, this._transferBlockLinks.length = 0, this._asset.links = Object.assign(Object.assign({}, this._asset.links), Ee(e.response)), this._retryQueue.clear(), this._activeBlockIndex = 0, this._lastExtendTime = 0, this._currentBlockIndex = 0, this._bytesUploaded = 0, this._state = g.NOT_INITIALIZED, this._blockTransferDocument[T.LINKS] = void 0, this.init().then(() => this.start()), g.INITIALIZING;
   }
@@ -3047,25 +3047,25 @@ class Sc extends Gs {
       if (this._state === g.PAUSING || this._state === g.PAUSED) throw g.PAUSED;
       if (this._state === g.CANCELED) throw g.CANCELED;
       if (this._state === g.ERROR) throw g.ERROR;
-    }).then(() => this._getNextUploadBlockData()).then((e) => this._isEmptyBlock(e) ? (w(`No more blocks.  BlockUploadId: ${this._internalBlockUploadId}`), Promise.all([...this._pendingBlockRequests.values()]).then(this._finalize.bind(this))) : e && Ue(e) > 0 && this._activeBlockIndex >= this._transferBlockLinks.length ? this._extend().then(() => e) : e).then((e) => {
+    }).then(() => this._getNextUploadBlockData()).then((e) => this._isEmptyBlock(e) ? (L(`No more blocks.  BlockUploadId: ${this._internalBlockUploadId}`), Promise.all([...this._pendingBlockRequests.values()]).then(this._finalize.bind(this))) : e && Ue(e) > 0 && this._activeBlockIndex >= this._transferBlockLinks.length ? this._extend().then(() => e) : e).then((e) => {
       if (!e) throw g.COMPLETE;
       this.uploadNextBlock(e), this._activeBlockIndex === this._currentBlockIndex && this._currentBlockIndex++;
     }).then(() => {
       this._uploadLoop();
     }).catch((e) => {
       if (typeof e != "string" && (this._continueBlockUploads(), this._reject(e)), e !== g.INITIALIZING) if (e !== g.COMPLETE) {
-        if (e !== g.PAUSED) return e === g.CANCELED ? (w(`BlockUpload loop is terminated due to the upload being canceled. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : e === g.ERROR ? (w(`BlockUpload loop is terminated due to error state. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : void 0;
-        w(`BlockUpload loop is terminated due to paused state. BlockUploadId: ${this._internalBlockUploadId}`);
-      } else w(`BlockUpload loop is complete. BlockUploadId: ${this._internalBlockUploadId}`);
-      else w(`BlockUpload loop must be re-started due to assetmoved BlockUploadId: ${this._internalBlockUploadId}`);
+        if (e !== g.PAUSED) return e === g.CANCELED ? (L(`BlockUpload loop is terminated due to the upload being canceled. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : e === g.ERROR ? (L(`BlockUpload loop is terminated due to error state. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : void 0;
+        L(`BlockUpload loop is terminated due to paused state. BlockUploadId: ${this._internalBlockUploadId}`);
+      } else L(`BlockUpload loop is complete. BlockUploadId: ${this._internalBlockUploadId}`);
+      else L(`BlockUpload loop must be re-started due to assetmoved BlockUploadId: ${this._internalBlockUploadId}`);
     });
   }
   _getBlockAtIndex(e) {
-    w(`_getBlockAtIndex(${e})`);
+    L(`_getBlockAtIndex(${e})`);
     const s = Math.min(this._dataSize, this._blockTransferDocument[B.REPO_BLOCK_SIZE]);
     if (this._state === g.STARTED) {
       const r = e * s;
-      return w("calling _getSliceCallback", r, r + s), this._getSliceCallback(r, r + s).catch((n) => {
+      return L("calling _getSliceCallback", r, r + s), this._getSliceCallback(r, r + s).catch((n) => {
         throw new c(c.UNEXPECTED_RESPONSE, "The getSliceCallback threw an unexpected error.", n);
       });
     }
@@ -3074,30 +3074,30 @@ class Sc extends Gs {
     return this._service.invoke(O.PUT, s, void 0, e, { isStatusValid: N(), isExternalRequest: !0 });
   }
   _isEmptyBlock(e) {
-    return typeof e == "string" ? e.length === 0 : Va(e) ? e.size === 0 : !e || e.byteLength === 0;
+    return typeof e == "string" ? e.length === 0 : ja(e) ? e.size === 0 : !e || e.byteLength === 0;
   }
   _extend(e = !0) {
     F(this._blockTransferDocument[T.LINKS], [u.BLOCK_EXTEND], c.UNEXPECTED, "The transfer document does not contain an extend href");
     const s = this._blockTransferDocument[B.REPO_SIZE], r = e ? Math.ceil(1.5 * s) : s, n = Z(this._blockTransferDocument[T.LINKS], u.BLOCK_EXTEND, { size: r });
-    return this._service.invoke(O.POST, n, {}, void 0, { isStatusValid: N(), responseType: "json" }).then((o) => (this._indeterminateTransfer = !0, this._blockTransferDocument = o.response, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], w(`Transfer document extended (${e ? "size increased" : "URL refresh only"}): ${this._transferBlockLinks.length} transfer links. BlockUploadId: ${this._internalBlockUploadId}`), o)).catch((o) => {
+    return this._service.invoke(O.POST, n, {}, void 0, { isStatusValid: N(), responseType: "json" }).then((o) => (this._indeterminateTransfer = !0, this._blockTransferDocument = o.response, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], L(`Transfer document extended (${e ? "size increased" : "URL refresh only"}): ${this._transferBlockLinks.length} transfer links. BlockUploadId: ${this._internalBlockUploadId}`), o)).catch((o) => {
       throw it(o) && o.problemType === X.ASSET_MOVED && this._handleAssetMoved(o), new c(c.UNEXPECTED_RESPONSE, "An unexpected error occurred while extending the block transfer document.", o, o.response);
     });
   }
   _maybeExtendWithPauseResume() {
-    if (this._extendPromise) return w("Reusing in-progress extend (with pause/resume)"), C.reject(g.PAUSED);
-    w("[_maybeExtendWithPauseResume] Setting state to PAUSED and triggering extend"), this._shiftState(g.PAUSED);
-    const e = C.resolve().then(() => (w("[_maybeExtendWithPauseResume] Pause done, calling _extend()"), this._extend(!1))).then((s) => (this._lastExtendTime = Date.now(), w("[_maybeExtendWithPauseResume] Extend done, calling resume()"), C.resolve(this.resume()).then(() => (w("[_maybeExtendWithPauseResume] Resume done"), s))));
+    if (this._extendPromise) return L("Reusing in-progress extend (with pause/resume)"), C.reject(g.PAUSED);
+    L("[_maybeExtendWithPauseResume] Setting state to PAUSED and triggering extend"), this._shiftState(g.PAUSED);
+    const e = C.resolve().then(() => (L("[_maybeExtendWithPauseResume] Pause done, calling _extend()"), this._extend(!1))).then((s) => (this._lastExtendTime = Date.now(), L("[_maybeExtendWithPauseResume] Extend done, calling resume()"), C.resolve(this.resume()).then(() => (L("[_maybeExtendWithPauseResume] Resume done"), s))));
     return this._extendPromise = e.finally(() => {
       this._extendPromise = void 0;
     }), C.reject(g.PAUSED);
   }
   _maybePauseForRetry() {
-    return this._state === g.PAUSED || this._state === g.PAUSING ? (w("[_maybePauseForRetry] Already in PAUSED or PAUSING state — skipping."), C.resolve()) : (w("[_maybePauseForRetry] Shifting to PAUSED state to trigger retry mechanism."), this._shiftState(g.PAUSED), w("[_maybePauseForRetry] Calling resume() to restart upload loop for retries."), this.resume(), C.resolve());
+    return this._state === g.PAUSED || this._state === g.PAUSING ? (L("[_maybePauseForRetry] Already in PAUSED or PAUSING state — skipping."), C.resolve()) : (L("[_maybePauseForRetry] Shifting to PAUSED state to trigger retry mechanism."), this._shiftState(g.PAUSED), L("[_maybePauseForRetry] Calling resume() to restart upload loop for retries."), this.resume(), C.resolve());
   }
   _isTransferUrlExpiredError(e) {
     var s, r;
     const n = (s = e == null ? void 0 : e.response) === null || s === void 0 ? void 0 : s.statusCode, o = e == null ? void 0 : e.code, i = ((r = e == null ? void 0 : e.response) === null || r === void 0 ? void 0 : r.response) || "";
-    return w(`[TransferExpiryCheck] StatusCode: ${n}`), w(`[TransferExpiryCheck] Code: ${o}`), w(`[TransferExpiryCheck] RawResponse: ${i}`), !(n !== 403 && o !== "FORBIDDEN" || typeof i != "string" || !i.toLowerCase().includes("request has expired"));
+    return L(`[TransferExpiryCheck] StatusCode: ${n}`), L(`[TransferExpiryCheck] Code: ${o}`), L(`[TransferExpiryCheck] RawResponse: ${i}`), !(n !== 403 && o !== "FORBIDDEN" || typeof i != "string" || !i.toLowerCase().includes("request has expired"));
   }
   _pushPendingBlockRequest(e, s) {
     this._pendingBlockRequests.set(e, s);
@@ -3107,7 +3107,7 @@ class Sc extends Gs {
     };
   }
   _updateProgress(e) {
-    if (w("_updateProgress()", e), typeof e == "number" && (this._bytesUploaded += e), this.onProgress && q(this.onProgress)) try {
+    if (L("_updateProgress()", e), typeof e == "number" && (this._bytesUploaded += e), this.onProgress && q(this.onProgress)) try {
       this.onProgress(this._bytesUploaded, Math.max(this._blockTransferDocument[B.REPO_SIZE], this._bytesUploaded), this._indeterminateTransfer);
     } catch (s) {
       console.error("Error in onProgress callback", s);
@@ -3138,20 +3138,20 @@ class Sc extends Gs {
     }
   }
   _continueBlockUploads() {
-    if (w("continueBlockUploads()"), ce.uploads[0] === this) if (ce.uploads.shift(), ce.uploads.length > 0) {
+    if (L("continueBlockUploads()"), ce.uploads[0] === this) if (ce.uploads.shift(), ce.uploads.length > 0) {
       const e = ce.uploads[0];
-      w("Another block upload found in the queue, starting..."), e.start();
-    } else this._pendingBlocksCount === 0 && (w("There are no more pending block transfers.. Clean up blockUploadManager.."), ce.resetUploads());
+      L("Another block upload found in the queue, starting..."), e.start();
+    } else this._pendingBlocksCount === 0 && (L("There are no more pending block transfers.. Clean up blockUploadManager.."), ce.resetUploads());
   }
   _finalize() {
-    w(`Finalizing block transfer.  BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.FINALIZING);
-    const e = Z(this._blockTransferDocument[T.LINKS], u.BLOCK_FINALIZE, L({ path: this._relPath, intermediates: this._createIntermediates, respondWith: S(this._respondWith) ? JSON.stringify(this._respondWith) : this._respondWith, repoMetaPatch: this._repoMetaPatch }));
-    return this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER] = this._uploadedBlocksURLs, this._service.invoke(O.POST, e, { [R.CONTENT_TYPE]: Pn }, JSON.stringify(L(this._blockTransferDocument)), { isStatusValid: N(), retryOptions: { pollHeader: "location", pollCodes: [202], timeoutAfter: 12e4 }, responseType: "arraybuffer" }).then((s) => {
+    L(`Finalizing block transfer.  BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.FINALIZING);
+    const e = Z(this._blockTransferDocument[T.LINKS], u.BLOCK_FINALIZE, w({ path: this._relPath, intermediates: this._createIntermediates, respondWith: S(this._respondWith) ? JSON.stringify(this._respondWith) : this._respondWith, repoMetaPatch: this._repoMetaPatch }));
+    return this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER] = this._uploadedBlocksURLs, this._service.invoke(O.POST, e, { [R.CONTENT_TYPE]: Pn }, JSON.stringify(w(this._blockTransferDocument)), { isStatusValid: N(), retryOptions: { pollHeader: "location", pollCodes: [202], timeoutAfter: 12e4 }, responseType: "arraybuffer" }).then((s) => {
       if (s.statusCode === 200 || s.statusCode === 201) {
-        w(`Finalize complete.  BlockUploadId: ${this._internalBlockUploadId}`);
+        L(`Finalize complete.  BlockUploadId: ${this._internalBlockUploadId}`);
         const r = ns(new Uint8Array(s.response));
         if (this._relationType === u.PRIMARY) {
-          if (this.finalizeResponse = r, this.createdAsset = L({ assetId: r.headers["asset-id"], repositoryId: r.headers["repository-id"], links: nr(r.headers.link), etag: r.headers.etag, md5: r.headers["content-md5"] }), r.response && this._respondWith) try {
+          if (this.finalizeResponse = r, this.createdAsset = w({ assetId: r.headers["asset-id"], repositoryId: r.headers["repository-id"], links: nr(r.headers.link), etag: r.headers.etag, md5: r.headers["content-md5"] }), r.response && this._respondWith) try {
             const n = JSON.parse(ye(r.response));
             r.response = n, this.createdAsset = xe(this.createdAsset, se(n));
           } catch (n) {
@@ -3160,7 +3160,7 @@ class Sc extends Gs {
         } else {
           this.finalizeResponse = s;
           try {
-            this.uploadRecord = Oc(this._blockTransferDocument[B.DC_FORMAT], this._blockTransferDocument[B.COMPONENT_ID], this._bytesUploaded, ye(s.response));
+            this.uploadRecord = Rc(this._blockTransferDocument[B.DC_FORMAT], this._blockTransferDocument[B.COMPONENT_ID], this._bytesUploaded, ye(s.response));
           } catch (n) {
             throw new c(c.UNEXPECTED, "An error occurred while deserializing upload component record.", n, r);
           }
@@ -3173,13 +3173,13 @@ class Sc extends Gs {
         case X.ASSET_MOVED:
           return void this._handleAssetMoved(s);
         case X.ASSET_NAME_CONFLICT:
-          return w("Error occurred finalizing the block transfer due to asset name conflict.. Rejecting with ALREADY_EXISTS"), this._reject(new c(c.ALREADY_EXISTS, "Asset name conflict occurred during block transfer finalization.", s, s.response)), void this._continueBlockUploads();
+          return L("Error occurred finalizing the block transfer due to asset name conflict.. Rejecting with ALREADY_EXISTS"), this._reject(new c(c.ALREADY_EXISTS, "Asset name conflict occurred during block transfer finalization.", s, s.response)), void this._continueBlockUploads();
       }
-      w("Error occurred finalizing the block transfer.. Rejecting"), this._reject(new c(c.UNEXPECTED_RESPONSE, "An error occurred while finalizing the block transfer.", s, s.response)), this._continueBlockUploads();
+      L("Error occurred finalizing the block transfer.. Rejecting"), this._reject(new c(c.UNEXPECTED_RESPONSE, "An error occurred while finalizing the block transfer.", s, s.response)), this._continueBlockUploads();
     });
   }
   _shiftState(e) {
-    return w(`_shiftState(): ${e}`), this._state === g.COMPLETE || this._state === g.ERROR || this._state === g.CANCELED || (this._state = e, this.emit("stateChanged", [this._state])), this;
+    return L(`_shiftState(): ${e}`), this._state === g.COMPLETE || this._state === g.ERROR || this._state === g.CANCELED || (this._state = e, this.emit("stateChanged", [this._state])), this;
   }
 }
 function hr(t, e, s, r = {}) {
@@ -3194,8 +3194,8 @@ function hr(t, e, s, r = {}) {
   return o.priority = o.priority || "u=1", t.invoke(O.POST, n, o, JSON.stringify(s), { responseType: "json", isStatusValid: N() }).then((i) => ({ response: i, result: i.response }));
 }
 function To({ additionalHeaders: t, asset: e, componentId: s, contentType: r, dataOrSliceCallback: n, etag: o, maybeIsNew: i, md5: a, progressCb: d, relation: h, size: l, svc: p, blockSize: _, maxConcurrentRequests: f }) {
-  Pc("_upload()"), E(["svc", p, "object"], ["asset", e, "object"], ["size", l, "number", !0], ["md5", a, "string", !0], ["etag", o, "string", !0]);
-  const v = Je(n, l), m = Ue(v), b = x(p);
+  Oc("_upload()"), E(["svc", p, "object"], ["asset", e, "object"], ["size", l, "number", !0], ["md5", a, "string", !0], ["etag", o, "string", !0]);
+  const v = Qe(n, l), m = Ue(v), b = x(p);
   if (dr(e, m)) return bt({ asset: e, additionalHeaders: t, componentId: s, contentType: r, dataOrSliceCallback: n, etag: o, md5: a, progressCb: d, relation: h, size: l, service: b, blockSize: _, maxConcurrentRequests: f });
   F(e.links, [h]);
   const y = Z(e.links, h, { component_id: s });
@@ -3224,11 +3224,11 @@ function Ao({ service: t, asset: e, additionalHeaders: s, dataOrSliceCallback: r
   e && F(e.links, [u.BLOCK_UPLOAD_INIT]);
   const P = hr(t, e || function(A) {
     V("getBlockUploadLinkForGuest"), E(["svc", A, "object"]);
-    const D = x(A), k = qe(fc, D);
+    const D = x(A), k = ze(_c, D);
     return Ve(k, {});
-  }(t), L({ [B.REPO_REL_TYPE]: i, [B.REPO_IF_MATCH]: l, [B.REPO_SIZE]: a, [B.DC_FORMAT]: n, [B.COMPONENT_ID]: d, [B.REPO_MD5]: h, [B.REPO_BLOCK_SIZE]: v }), s);
+  }(t), w({ [B.REPO_REL_TYPE]: i, [B.REPO_IF_MATCH]: l, [B.REPO_SIZE]: a, [B.DC_FORMAT]: n, [B.COMPONENT_ID]: d, [B.REPO_MD5]: h, [B.REPO_BLOCK_SIZE]: v }), s);
   return P.then((A) => {
-    const D = new Sc(t, y, A.result, i, a, n, d, h, l, p, _, f, m, b);
+    const D = new Pc(t, y, A.result, i, a, n, d, h, l, p, _, f, m, b);
     return D.onProgress = o, Object.assign(P, { blockUpload: D }), D.init(s);
   }).then((A) => A.start()).then((A) => {
     const D = A.finalizeResponse || { headers: {} }, k = A.uploadRecord || A.createdAsset;
@@ -3241,23 +3241,23 @@ function bt({ service: t, asset: e, additionalHeaders: s, dataOrSliceCallback: r
 function ys({ service: t, additionalHeaders: e, dataOrSliceCallback: s, contentType: r, progressCb: n, relation: o, size: i, componentId: a, md5: d, etag: h, relPath: l, respondWith: p, blockSize: _, repoMetaPatch: f, maxConcurrentRequests: v }) {
   return Ao({ service: t, asset: void 0, additionalHeaders: e, dataOrSliceCallback: s, contentType: r, progressCb: n, relation: o, size: i, componentId: a, md5: d, etag: h, relPath: l, createIntermediates: !0, respondWith: p, blockSize: _, repoMetaPatch: f, maxConcurrentRequests: v });
 }
-function Cc(t) {
+function Sc(t) {
   return t || "defaultbuffer";
 }
-function Nc(t) {
+function Cc(t) {
   return !!(t.deviceModifyDate || t.assetType || t.assetSubType);
 }
-function Dc(t, e, s = "json", r = {}) {
+function Nc(t, e, s = "json", r = {}) {
   E(["svc", t, "object"], ["asset", e, "object"], ["format", s, "enum", !1, ["json", "xml"]]), F(e.links, [u.EMBEDDED_METADATA]);
   const n = H(e.links, u.EMBEDDED_METADATA);
   return t.invoke(O.GET, n, Object.assign(Object.assign({}, r), { accept: Xt[s.toUpperCase()] }), void 0, { isStatusValid: N(), responseType: s === "json" ? "json" : "text" }).then((o) => ({ result: o.response, response: o }));
 }
-function kc(t, e, s, r, n = "json", o = {}) {
+function Dc(t, e, s, r, n = "json", o = {}) {
   E(["svc", t, "object"], ["asset", e, "object"], ["data", s, ["string", "object", "object[]"]], ["etag", r, "string", !0], ["format", n, "enum", !1, ["json", "xml"]]), F(e.links, [u.EMBEDDED_METADATA]);
   const i = H(e.links, u.EMBEDDED_METADATA), a = Object.assign(Object.assign({}, o), { [R.CONTENT_TYPE]: Xt[n.toUpperCase()], [R.IF_MATCH]: r });
   return t.invoke(O.PUT, i, a, typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() });
 }
-function wc(t, e, s, r, n = {}) {
+function kc(t, e, s, r, n = {}) {
   E(["svc", t, "object"], ["asset", e, "object"], ["data", s, ["string", "object", "object[]"]], ["etag", r, "string", !0]), F(e.links, [u.EMBEDDED_METADATA]);
   const o = H(e.links, u.EMBEDDED_METADATA);
   return t.invoke(O.PATCH, o, Object.assign(n, { [R.CONTENT_TYPE]: ct, [R.IF_MATCH]: r }), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N(), retryOptions: { pollCodes: [202], pollHeader: "location", pollMethod: "GET" } });
@@ -3266,19 +3266,19 @@ U("dcx:assets:filebase");
 const lr = U("dcx:assets:filebase:leaf"), mo = "application/vnd.adobe.versions+json";
 function Lc(t, e, s, r = "defaultbuffer", n, o) {
   lr("getRendition()"), E(["svc", t, "object"], ["asset", e, "object"], ["renditionOptions", s, "object", !0], ["linkProvider", n, "object", !0]), F(e.links, [u.RENDITION]);
-  const i = n ? ri(e.links[u.RENDITION], n, s) : Z(e.links, u.RENDITION, Object.assign({}, s));
-  return t.invoke(O.GET, i, o, void 0, { responseType: Cc(r), isStatusValid: N() }).then((a) => ({ result: a.response, response: a }));
+  const i = n ? si(e.links[u.RENDITION], n, s) : Z(e.links, u.RENDITION, Object.assign({}, s));
+  return t.invoke(O.GET, i, o, void 0, { responseType: Sc(r), isStatusValid: N() }).then((a) => ({ result: a.response, response: a }));
 }
 function Zr(t, e, s, r, n, o, i, a, d) {
   lr("doBlockDownload()"), E(["svc", t, "object"], ["assetOrPresignedUrl", e, ["object", "string"]], ["startByte", s, "number", !0], ["endByte", r, "number", !0], ["resource", n, "string", !0], ["componentId", o, "string", !0], ["version", i, "string", !0], ["responseType", a, "enum", !0, tr]), pn(() => s == null || r == null || s < r, "endByte must be greater than startByte");
   const h = this != null ? this : {};
-  if (typeof e == "string") return et.call(h, t, e, s, r, a, !0, void 0, d);
+  if (typeof e == "string") return tt.call(h, t, e, s, r, a, !0, void 0, d);
   const l = e;
   F(l.links, [u.BLOCK_DOWNLOAD]);
-  const p = L({ reltype: n, component_id: o, revision: i }), _ = Z(l.links, u.BLOCK_DOWNLOAD, { resource: n !== void 0 ? JSON.stringify(p) : void 0 });
-  return et.call(h, t, _, s, r, a, !1, void 0, d);
+  const p = w({ reltype: n, component_id: o, revision: i }), _ = Z(l.links, u.BLOCK_DOWNLOAD, { resource: n !== void 0 ? JSON.stringify(p) : void 0 });
+  return tt.call(h, t, _, s, r, a, !1, void 0, d);
 }
-function Mc(t, e, s, r, n, o, i, a) {
+function wc(t, e, s, r, n, o, i, a) {
   return lr("updatePrimaryResource()"), E(["service", t, "object"], ["asset", e, "object"], ["dataOrSliceCallback", s, ["function", "object", "string"]], ["contentType", r, "string"], ["size", n, "number", !0], ["md5", i, "string", !0]), F(e.links, [u.PRIMARY]), To({ svc: t, asset: e, dataOrSliceCallback: s, contentType: r, relation: u.PRIMARY, size: n, md5: i, maybeIsNew: !1, etag: o, additionalHeaders: a }).catch((d) => {
     var h;
     if (((h = d.response) === null || h === void 0 ? void 0 : h.statusCode) === 413) return bt({ service: x(t), asset: e, dataOrSliceCallback: s, contentType: r, relation: u.PRIMARY, size: n, md5: i, etag: o, additionalHeaders: a });
@@ -3319,7 +3319,7 @@ class as {
     for (const e in this._items) yield this._items[e];
   }
   [Symbol.asyncIterator]() {
-    return za(this, arguments, function* () {
+    return qa(this, arguments, function* () {
       for (const e in this._items) yield yield ot(this._items[e]);
       for (; this.hasNextPage(); ) {
         const e = yield ot(this.next());
@@ -3346,7 +3346,7 @@ class as {
 }
 U("dcx:assets:version");
 const yo = U("dcx:assets:version:leaf");
-function xc(t) {
+function Mc(t) {
   yo("adobeVersionTransformer()");
   const e = ur(t);
   return e.links = he({}, t.links, t._links), [e.version, e];
@@ -3356,7 +3356,7 @@ function ur(t) {
 }
 U("dcx:assets:file");
 const pr = U("dcx:assets:file:leaf");
-function Uc(t, e, s, r, n) {
+function xc(t, e, s, r, n) {
   pr("patchVersions()"), E(["svc", t, "object"], ["asset", e, "object"], ["patchDoc", s, ["string", "array"]], ["etag", r, "string", !0]), F(e.links, [u.VERSION_HISTORY]);
   const o = Object.assign(Object.assign({}, n), { [R.CONTENT_TYPE]: ct });
   r && (o[R.IF_MATCH] = r);
@@ -3368,15 +3368,15 @@ function vo(t, e, s, r) {
   const n = Z(e.links, u.PAGE, { version: s });
   return t.invoke(O.GET, n, r, void 0, { responseType: "json", isStatusValid: N() }).then((o) => ({ result: o.response[Me.TOTAL_CHILDREN] > 0 ? o.response[T.CHILDREN][0] : void 0, response: o }));
 }
-function Bc(t, e, s = {}, r) {
-  return pr("getPagedVersions()"), E(["svc", t, "object"], ["asset", e, "object"], ["pageOpts", s, "object"]), F(e.links, [u.PAGE]), Nn(e.links, u.PAGE, "type", mo), new as(e.links, t, s.itemTransformer || xc, u.VERSION_HISTORY).getPage(s, r);
+function Uc(t, e, s = {}, r) {
+  return pr("getPagedVersions()"), E(["svc", t, "object"], ["asset", e, "object"], ["pageOpts", s, "object"]), F(e.links, [u.PAGE]), Nn(e.links, u.PAGE, "type", mo), new as(e.links, t, s.itemTransformer || Mc, u.VERSION_HISTORY).getPage(s, r);
 }
 U("dcx:assets:composite");
-const _e = U("dcx:assets:composite:leaf"), jc = de.getInstance();
-function Vc(t, e, s) {
+const _e = U("dcx:assets:composite:leaf"), Bc = de.getInstance();
+function jc(t, e, s) {
   return _e("headCompositeManifest()"), E(["svc", t, "object"], ["asset", e, "object"]), F(e.links, [u.MANIFEST]), cs(t, e, void 0, s).then((r) => t.invoke(O.HEAD, r, s, void 0, { responseType: "json", isStatusValid: N() }));
 }
-function Fc(t, e, s, r, n) {
+function Vc(t, e, s, r, n) {
   return _e("getCompositeManifest()"), E(["svc", t, "object"], ["asset", e, "object"], ["version", s, "string", !0], ["etag", r, "string", !0]), F(e.links, [u.MANIFEST]), cs(t, e, s, n).then((o) => t.invoke(O.GET, o, Object.assign(n ?? {}, r ? { [R.IF_NONE_MATCH]: r } : {}), void 0, { isStatusValid: N([304]), retryOptions: { pollCodes: [404, 202], pollHeader: "location", pollMethod: O.GET, problemWithCode: { problemType: X.RESOURCE_NOT_READY, code: 404 } } })).then((o) => {
     if ((o.statusCode === 200 || o.statusCode === 201) && o.headers[R.CONTENT_TYPE] === "application/http") {
       if (o.response) {
@@ -3393,8 +3393,8 @@ function Fc(t, e, s, r, n) {
 function cs(t, e, s, r) {
   return _e("getCompositeManifestUrl()"), _r(t, e, u.MANIFEST, s, r).then((n) => Ve(n, {}));
 }
-function Hc(t, e, s, r) {
-  return _e("_getComponentPathUrl()"), _r(t, e, u.COMPONENT, e.version, r).then((n) => Ve(n, L({ component_path: s })));
+function Fc(t, e, s, r) {
+  return _e("_getComponentPathUrl()"), _r(t, e, u.COMPONENT, e.version, r).then((n) => Ve(n, w({ component_path: s })));
 }
 function _r(t, e, s, r, n) {
   return _e("_getUrl()"), E(["svc", t, "object"], ["asset", e, "object"], ["versionId", r, "string", !0]), C.resolve().then(() => {
@@ -3407,7 +3407,7 @@ function _r(t, e, s, r, n) {
     return H(e.links, s);
   });
 }
-function $c(t, e, s, r, n, o) {
+function Hc(t, e, s, r, n, o) {
   E(["svc", t, "object"], ["asset", e, "object"], ["components", s, "array"], ["version", r, "string", !0], ["etag", n, "string", !0]);
   const i = [u.MANIFEST, u.COMPONENT, u.BULK_REQUEST, u.BLOCK_DOWNLOAD];
   return r && i.push(u.PAGE), dt(t, e, i, void 0, o).then((a) => re(this, void 0, void 0, function* () {
@@ -3415,12 +3415,12 @@ function $c(t, e, s, r, n, o) {
     const d = x(t), h = s.map(({ component_path: _, responseType: f, subrequestHeaders: v }) => ({ method: O.GET, href: Z(e.links, u.COMPONENT, { component_path: _ }), headers: Object.assign(v || {}, o), component_path: _, responseType: f })), l = yield cs(d, e, r, o);
     h.unshift({ method: O.GET, href: l, headers: Object.assign(n ? { [R.IF_NONE_MATCH]: n } : {}, o) });
     const p = { startTime: ie(), timeoutAfter: 72e5 };
-    return fn(Gc.bind(void 0, t, e, s, h, o), 404, p, X.RESOURCE_NOT_READY);
+    return fn($c.bind(void 0, t, e, s, h, o), 404, p, X.RESOURCE_NOT_READY);
   }));
 }
-function Gc(t, e, s, r, n) {
+function $c(t, e, s, r, n) {
   return re(this, void 0, void 0, function* () {
-    const o = x(t), i = yield Promise.all(ti(r, 10).map((a) => os(o, e, a, void 0, n, !0)));
+    const o = x(t), i = yield Promise.all(ei(r, 10).map((a) => os(o, e, a, void 0, n, !0)));
     return C.resolve(yield i.reduce((a, d) => re(this, void 0, void 0, function* () {
       var h, l;
       const p = yield a;
@@ -3439,8 +3439,8 @@ function Gc(t, e, s, r, n) {
           return (yield Promise.all(b.map((k) => re(this, void 0, void 0, function* () {
             if (k.headers[R.CONTENT_TYPE] === Ms && k.response.type === X.RESPONSE_TOO_LARGE) {
               const j = Jr(k, m), J = k.headers.location ? k.headers.location : Z(P, u.BLOCK_DOWNLOAD, { resource: JSON.stringify({ component_path: j.component_path }) });
-              if (D && D[j.component_path]) return { statusCode: 200, headers: L({ [R.CONTENT_TYPE]: k.headers["content-type"], [R.CONTENT_LENGTH]: k.headers["content-length"], [R.CONTENT_ID]: k.headers[R.CONTENT_ID] }), responseType: "application/json", response: { href: J }, message: "OK" };
-              const $ = yield et(x(y), J, void 0, void 0, "defaultbuffer", !0, void 0, A);
+              if (D && D[j.component_path]) return { statusCode: 200, headers: w({ [R.CONTENT_TYPE]: k.headers["content-type"], [R.CONTENT_LENGTH]: k.headers["content-length"], [R.CONTENT_ID]: k.headers[R.CONTENT_ID] }), responseType: "application/json", response: { href: J }, message: "OK" };
+              const $ = yield tt(x(y), J, void 0, void 0, "defaultbuffer", !0, void 0, A);
               return Object.assign($.headers, { [R.CONTENT_ID]: k.headers[R.CONTENT_ID] }), $;
             }
             return k;
@@ -3457,7 +3457,7 @@ function Gc(t, e, s, r, n) {
         });
       }(r.slice(1), _, t, e.links, n, v)), !f) return p;
       if (f.statusCode === 200) {
-        p.manifest.data = vs(f.response, "json"), p.manifest.response = f, Ls(e) && typeof ((h = e.current) === null || h === void 0 ? void 0 : h.parse) == "function" && (e.current.parse(ye(f.response)), e.current.versionId = f.headers.version), e.links = Ee(f);
+        p.manifest.data = vs(f.response, "json"), p.manifest.response = f, ws(e) && typeof ((h = e.current) === null || h === void 0 ? void 0 : h.parse) == "function" && (e.current.parse(ye(f.response)), e.current.versionId = f.headers.version), e.links = Ee(f);
         const m = ne(t);
         return m && m.setValueWithAsset(e.links, e), p;
       }
@@ -3468,8 +3468,8 @@ function Gc(t, e, s, r, n) {
       }
       if (f.headers[R.CONTENT_TYPE] === Ms && f.response.type === X.RESPONSE_TOO_LARGE) {
         try {
-          const m = f.headers.location ? f.headers.location : Z(e.links, u.BLOCK_DOWNLOAD, { resource: JSON.stringify({ reltype: u.MANIFEST }) }), b = yield et(o, m, void 0, void 0, "json", !0, void 0, n);
-          p.manifest.data = b.response, p.manifest.response = b, Ls(e) && typeof ((l = e.current) === null || l === void 0 ? void 0 : l.parse) == "function" && e.current.parse(JSON.stringify(b.response)), e.links = Ee(b);
+          const m = f.headers.location ? f.headers.location : Z(e.links, u.BLOCK_DOWNLOAD, { resource: JSON.stringify({ reltype: u.MANIFEST }) }), b = yield tt(o, m, void 0, void 0, "json", !0, void 0, n);
+          p.manifest.data = b.response, p.manifest.response = b, ws(e) && typeof ((l = e.current) === null || l === void 0 ? void 0 : l.parse) == "function" && e.current.parse(JSON.stringify(b.response)), e.links = Ee(b);
         } catch (m) {
           p.manifest.error = m instanceof c ? m : new c(c.UNEXPECTED, "Error fetching manifest via block download", m);
         }
@@ -3502,7 +3502,7 @@ function vs(t, e, s) {
   }
   throw new c(c.INVALID_PARAMS, "requested response type is not supported");
 }
-function Yc(t, e, s, r, n, o) {
+function Gc(t, e, s, r, n, o) {
   return re(this, void 0, void 0, function* () {
     const i = [{ method: O.PUT, href: s, headers: n, body: r }], a = [];
     if (e.deviceModifyDate && a.push({ op: "add", path: `/${[T.REPO_DEVICE_MODIFY_DATE]}`, value: e.deviceModifyDate }), a.length) {
@@ -3535,39 +3535,39 @@ function bo(t, e, s, r) {
 const Ro = ss("AdobeDCX.getCompositeComponentPresignedUrl", function(t, e, s, r, n) {
   return _e("getCompositeComponentPresignedUrl()"), pe("componentId", s), pe("componentRevision", r), E(["svc", t, "object"], ["asset", e, "object"], ["componentId", s, "string"], ["componentRevision", r, "string"]), bo(t, e, { reltype: u.COMPONENT, revision: r, component_id: s }, n);
 });
-function qc(t, e, s, r = "defaultbuffer", n, o) {
+function Yc(t, e, s, r = "defaultbuffer", n, o) {
   return E(["svc", t, "object"], ["asset", e, "object"], ["componentPath", s, "string"], ["responseType", r, "string", !0], ["additionalHeaders", n, "object", !0]), dt(t, e, [u.COMPONENT, u.PAGE], void 0, n).then((i) => {
-    if (e.links = i, e.version) return Hc(x(t), e, s);
+    if (e.links = i, e.version) return Fc(x(t), e, s);
   }).then((i) => ir(x(t), e, i ?? Z(e.links, u.COMPONENT, { component_path: s }), u.COMPONENT, r, void 0, void 0, n, o));
 }
-function zc(t, e, s, r, n = "defaultbuffer", o, i) {
+function qc(t, e, s, r, n = "defaultbuffer", o, i) {
   _e("getCompositeComponent()"), E(["svc", t, "object"], ["asset", e, "object"], ["componentId", s, "string"], ["componentRevision", r, "string"], ["responseType", n, "string", !0], ["additionalHeaders", o, "object", !0], ["componentSize", i, "number", !0]);
   const a = {};
   if (!i || i < Io()) {
     const d = fr(t, e, s, r);
     return ir.call(a, t, e, d, u.COMPONENT, n, s, r, o);
   }
-  return Ro(t, e, s, r, o).then(({ response: d, result: h }) => et.call(a, t, h, void 0, void 0, n, !0, d.response.size, o));
+  return Ro(t, e, s, r, o).then(({ response: d, result: h }) => tt.call(a, t, h, void 0, void 0, n, !0, d.response.size, o));
 }
 function Us(t, e, s, r, n = 1, o, i = {}, a) {
   if (_e("updateCompositeManifest() ", r, o), E(["svc", t, "object"], ["asset", e, "object"], ["manifest", s, ["object", "string"]], ["overwrite", r, "boolean"], ["validationLevel", n, "+number"], ["etag", o, "string", !0]), n < 1) throw new c(c.INVALID_PARAMS, "ValidationLevel must be >=1");
   return F(e.links, [u.BULK_REQUEST, u.REPO_METADATA]), _r(t, e, u.MANIFEST, void 0, i).then((d) => re(this, void 0, void 0, function* () {
     const h = Object.assign({}, i);
     r ? h[R.IF_MATCH] = "*" : o && (h[R.IF_MATCH] = o);
-    const l = `${Ga}; validation-level=${n}`;
+    const l = `${$a}; validation-level=${n}`;
     h[R.CONTENT_TYPE] = l;
     const p = typeof s == "string" ? s : JSON.stringify(s);
     let _, f, v;
     const m = d.includes(yt.REPO_META_PATCH) || d.includes(yt.RESPOND_WITH);
     if (m) {
-      const y = {}, P = L({ [T.REPO_DEVICE_MODIFY_DATE]: e.deviceModifyDate });
+      const y = {}, P = w({ [T.REPO_DEVICE_MODIFY_DATE]: e.deviceModifyDate });
       Object.keys(P).length && (y[yt.REPO_META_PATCH] = P), d = Ve(d, y), _ = yield function(A, D, k, j) {
         return re(this, void 0, void 0, function* () {
           return yield A.invoke(O.PUT, D, j, k, { isStatusValid: N([412, 409]), responseType: "arraybuffer", retryOptions: { pollCodes: [202], pollHeader: "location", pollMethod: O.GET, modifyHeadersCallback: On([R.IF_MATCH]) } });
         });
       }(t, d, p, h);
     } else {
-      const y = yield Yc(t, e, d, p, h, i);
+      const y = yield Gc(t, e, d, p, h, i);
       _ = y.manifestResponse, f = y.repoMetadataResponse, v = y.response;
     }
     if (_e("uCM() status code for manifest response: ", _.statusCode), _.statusCode === 412 && r) return _e("uCM() retry 412 without overwrite"), Us(t, e, s, !1, n, void 0, i);
@@ -3583,7 +3583,7 @@ function Us(t, e, s, r, n = 1, o, i = {}, a) {
       if (y !== !0) throw new c(y.code || c.UNEXPECTED_RESPONSE, y._message || y.message, y.underlyingError, _);
     }
     if (!m) {
-      if (_.xhr = v.xhr, _e("uCM() status code for metadata response: ", f.statusCode), Nc(e) && f.statusCode !== 200 && f.statusCode !== 201 && f.statusCode !== 204) throw new c(c.UNEXPECTED_RESPONSE, "Unexpected HTTP Response", void 0, f);
+      if (_.xhr = v.xhr, _e("uCM() status code for metadata response: ", f.statusCode), Cc(e) && f.statusCode !== 200 && f.statusCode !== 201 && f.statusCode !== 204) throw new c(c.UNEXPECTED_RESPONSE, "Unexpected HTTP Response", void 0, f);
       return _;
     }
     let b = _;
@@ -3596,21 +3596,21 @@ function Us(t, e, s, r, n = 1, o, i = {}, a) {
     return b;
   }));
 }
-function Wc(t, e, s, r, n, o, i, a, d, h, l) {
+function zc(t, e, s, r, n, o, i, a, d, h, l) {
   if (E(["service", t, "object"], ["asset", e, "object"], ["componentId", s, "string"], ["contentType", n, "string"], ["maybeIsNew", o, "boolean", !0], ["size", i, "number", !0], ["blockSize", l, "number", !0], ["md5", a, "string", !0]), o && !Wt(s)) throw new c(c.INVALID_PARAMS, "Component id is not a uuid");
-  return Wt(s) || jc.warn("Existing component id is not a uuid"), To({ svc: t, asset: e, dataOrSliceCallback: r, contentType: n, relation: u.COMPONENT, size: i, componentId: s, md5: a, maybeIsNew: o, additionalHeaders: h, progressCb: d, blockSize: l }).then(({ response: p, result: _, isBlockUpload: f, asset: v }) => {
+  return Wt(s) || Bc.warn("Existing component id is not a uuid"), To({ svc: t, asset: e, dataOrSliceCallback: r, contentType: n, relation: u.COMPONENT, size: i, componentId: s, md5: a, maybeIsNew: o, additionalHeaders: h, progressCb: d, blockSize: l }).then(({ response: p, result: _, isBlockUpload: f, asset: v }) => {
     const m = { response: p, result: Object.assign(Object.assign({}, _), { id: s, type: n }), isBlockUpload: f, asset: v };
     return Object.defineProperty(m, "compositeAsset", { get: () => v }), m;
   });
 }
-function Kc(t, e, s, r) {
+function Wc(t, e, s, r) {
   return dt(t, e, [u.COMPONENT, u.BLOCK_UPLOAD_INIT], void 0, r).then((n) => {
     var o;
     const i = x(t);
     (o = ne(t)) === null || o === void 0 || o.setValueWithAsset(n, e), e.links = Object.assign(Object.assign({}, e.links), n);
-    const a = Ot(L(Object.assign(Object.assign({}, r), { [R.AUTHORIZATION]: i.authProvider.authToken, [R.X_API_KEY]: i.authProvider.apiKey })));
+    const a = Ot(w(Object.assign(Object.assign({}, r), { [R.AUTHORIZATION]: i.authProvider.authToken, [R.X_API_KEY]: i.authProvider.apiKey })));
     return Promise.all(s.map((d) => dr(e, d.size) ? function(h, l, p, _) {
-      const f = L({ "repo:reltype": u.COMPONENT, "repo:size": p.size, "dc:format": p.contentType, component_id: p.componentId });
+      const f = w({ "repo:reltype": u.COMPONENT, "repo:size": p.size, "dc:format": p.contentType, component_id: p.componentId });
       return hr(h, l, f, _).then((v) => {
         if (v.response.statusCode !== 200) throw new c(c.UNEXPECTED_RESPONSE, "Unexpected response from block upload init", v.response);
         const m = v.result;
@@ -3626,7 +3626,7 @@ function Kc(t, e, s, r) {
 const bs = U("dcx:assets:directory"), Dt = U("dcx:assets:directory:leaf");
 class Er extends vt {
   constructor(e, s, r) {
-    super(e, s, r), this.type = Ge.Directory, this.children = [], this.children = e[T.CHILDREN];
+    super(e, s, r), this.type = Ye.Directory, this.children = [], this.children = e[T.CHILDREN];
   }
   getPagedChildren(e, s) {
     return bs("getPagedChildren()"), this.fetchLinksIfMissing([u.PAGE], s).then(() => Po(this._svc, this, e, s));
@@ -3649,7 +3649,7 @@ function Oo(t) {
   const r = t.children || t[T.CHILDREN];
   return r && r.length > 0 ? s.children = r.map((n) => se(n)) : s.children = [], [s.assetId, s];
 }
-function Xc(t, e) {
+function Kc(t, e) {
   return Dt("getDirectoryByURL()"), t.invoke(O.GET, e, void 0, void 0, { responseType: "json", isStatusValid: N() }).then((s) => ({ result: s.response, response: s }));
 }
 function Po(t, e, s = {}, r) {
@@ -3664,24 +3664,24 @@ const So = ss("AdobeDCX.createAsset", function(t, e, s, r, n, o, i = {}, a, d, h
   Dt("createAsset()"), E(["service", t, "object"], ["parentDir", e, "object"], ["relPath", s, "string"], ["createIntermediates", r, "boolean"], ["contentType", n, "string"], ["respondWith", o, ["string", "object"], !0], ["additionalHeaders", i, "object", !0], ["repoMetaPatch", h, "object", !0]);
   const p = S(o) ? JSON.stringify(o) : o;
   return dt(t, e, [u.CREATE]).then((_) => {
-    const f = Z(_, u.CREATE, { path: s, intermediates: r.toString(), respondWith: p, mode: "id", repoMetaPatch: h }), v = Object.assign({}, { [R.CONTENT_TYPE]: n }, i), m = x(t), b = a ? Je(a, d) : void 0, y = b ? Ue(b) : 0;
+    const f = Z(_, u.CREATE, { path: s, intermediates: r.toString(), respondWith: p, mode: "id", repoMetaPatch: h }), v = Object.assign({}, { [R.CONTENT_TYPE]: n }, i), m = x(t), b = a ? Qe(a, d) : void 0, y = b ? Ue(b) : 0;
     return a && dr(e, y) ? bt({ service: m, contentType: n, relation: u.PRIMARY, asset: e, dataOrSliceCallback: a, size: y, relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l }).then(({ result: P, response: A }) => {
       const D = s.split("/").slice(-1);
-      return { result: L(xe({ name: D }, P)), response: A };
+      return { result: w(xe({ name: D }, P)), response: A };
     }) : C.resolve().then(() => re(this, void 0, void 0, function* () {
       const P = q(a) ? yield a(0, y) : b;
       return m.invoke(O.POST, f, v, P, { responseType: "json", isStatusValid: N([413]), reuseRequestDesc: { id: "createAsset", method: O.POST, href: f, headers: v, progress: l } }).then((A) => {
         var D;
-        if (A.statusCode === 413) return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: e, dataOrSliceCallback: a, size: Ue(Je(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l }).catch((ae) => {
+        if (A.statusCode === 413) return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: e, dataOrSliceCallback: a, size: Ue(Qe(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l }).catch((ae) => {
           var be;
           if (ae.problemType === X.ASSET_NAME_CONFLICT) {
             const ue = { assetId: (be = ae.response.response) === null || be === void 0 ? void 0 : be["repo:assetId"], links: Ee(ae.response) };
-            return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: ue, dataOrSliceCallback: a, size: Ue(Je(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l });
+            return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: ue, dataOrSliceCallback: a, size: Ue(Qe(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l });
           }
           throw ae;
         }).then(({ result: ae, response: be }) => {
           const ue = s.split("/")[s.split("/").length - 1];
-          return { result: L(xe({ name: ue }, ae)), response: be };
+          return { result: w(xe({ name: ue }, ae)), response: be };
         });
         const k = s.split("/")[s.split("/").length - 1];
         let j;
@@ -3695,10 +3695,10 @@ const So = ss("AdobeDCX.createAsset", function(t, e, s, r, n, o, i = {}, a, d, h
         pe("assetId", ke);
         let le = ve.etag, Ae = ve.md5;
         o == null && (le = $.etag, Ae = $["content-md5"]);
-        const ze = S(A.response) && o && (o === u.REPO_METADATA || S(o) && o.reltype === u.REPO_METADATA) ? se(A.response) : {};
-        A.response && (ze.representations = A.response.representations || A.response[T.REPO_REPRESENTATIONS]);
-        const we = ne(t);
-        return we && we.setValueWithAsset(J, ze), { result: L(xe({ name: k }, ze, L({ links: J, assetId: ke, etag: le, md5: Ae, repositoryId: Q, format: n, path: j }))), response: A };
+        const We = S(A.response) && o && (o === u.REPO_METADATA || S(o) && o.reltype === u.REPO_METADATA) ? se(A.response) : {};
+        A.response && (We.representations = A.response.representations || A.response[T.REPO_REPRESENTATIONS]);
+        const Le = ne(t);
+        return Le && Le.setValueWithAsset(J, We), { result: w(xe({ name: k }, We, w({ links: J, assetId: ke, etag: le, md5: Ae, repositoryId: Q, format: n, path: j }))), response: A };
       });
     }));
   });
@@ -3708,23 +3708,23 @@ function Co(t, e, s, r, n = {}, o, i, a, d) {
   const h = S(r) ? JSON.stringify(r) : r, l = x(t);
   return function(p, _, f, v) {
     V("getCreateLinkForGuestUser"), E(["svc", p, "object"], ["assetPath", _, "string"]);
-    const m = { path: _, mode: "id", intermediates: "true", repoMetaPatch: v, respondWith: f }, b = x(p), y = qe(_c, b);
-    return C.resolve(Ve(y, L(m)));
+    const m = { path: _, mode: "id", intermediates: "true", repoMetaPatch: v, respondWith: f }, b = x(p), y = ze(pc, b);
+    return C.resolve(Ve(y, w(m)));
   }(l, e, h, a).then((p) => {
-    const _ = Object.assign({}, { [R.CONTENT_TYPE]: s }, n), f = o ? Je(o, i) : void 0, v = f ? Ue(f) : 0;
+    const _ = Object.assign({}, { [R.CONTENT_TYPE]: s }, n), f = o ? Qe(o, i) : void 0, v = f ? Ue(f) : 0;
     return o && v > is ? ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: v, relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d }).then(({ result: m, response: b }) => {
       const y = e.split("/").slice(-1);
-      return { result: L(xe({ name: y }, m)), response: b };
+      return { result: w(xe({ name: y }, m)), response: b };
     }) : C.resolve().then(() => re(this, void 0, void 0, function* () {
       const m = q(o) ? yield o(0, v) : f;
       return l.invoke(O.POST, p, _, m, { responseType: "json", isStatusValid: N([413]), reuseRequestDesc: { id: "createAssetForGuest", method: O.POST, href: p, headers: _, progress: d } }).then((b) => {
         var y;
-        if (b.statusCode === 413) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Je(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d }).catch((le) => {
-          if (le.problemType === X.ASSET_NAME_CONFLICT) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Je(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d });
+        if (b.statusCode === 413) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Qe(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d }).catch((le) => {
+          if (le.problemType === X.ASSET_NAME_CONFLICT) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Qe(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d });
           throw le;
         }).then(({ result: le, response: Ae }) => {
-          const ze = e.split("/")[e.split("/").length - 1];
-          return { result: L(xe({ name: ze }, le)), response: Ae };
+          const We = e.split("/")[e.split("/").length - 1];
+          return { result: w(xe({ name: We }, le)), response: Ae };
         });
         const P = e.split("/")[e.split("/").length - 1], A = Ee(b), D = b.headers;
         if (!((y = D[R.CONTENT_TYPE]) === null || y === void 0) && y.includes("multipart/mixed")) {
@@ -3735,13 +3735,13 @@ function Co(t, e, s, r, n = {}, o, i, a, d) {
         let $ = k.etag, ve = k.md5;
         r == null && ($ = D.etag, ve = D["content-md5"]);
         const ke = S(b.response) && r && (r === u.REPO_METADATA || S(r) && r.reltype === u.REPO_METADATA) ? se(b.response) : {}, Q = ne(t);
-        return Q && Q.setValueWithAsset(A, ke), { result: L(xe({ name: P }, ke, L({ links: A, assetId: j, etag: $, md5: ve, format: s, repositoryId: J, path: e }))), response: b };
+        return Q && Q.setValueWithAsset(A, ke), { result: w(xe({ name: P }, ke, w({ links: A, assetId: j, etag: $, md5: ve, format: s, repositoryId: J, path: e }))), response: b };
       });
     }));
   });
 }
 const ds = U("dcx:assets:discoverable");
-function No(t, e = {}, s) {
+function Xc(t, e = {}, s) {
   ds("getDiscoverableAssets()"), E(["svc", t, "object"], ["pageOpts", e, "object"]);
   const r = x(t);
   return xn(t, s).then((n) => new as(n.assetLinks, r, Zc, "api:primary").getPage(e, s)).then((n) => ({ result: n.response.response, paged: n.paged, response: n.response }));
@@ -3758,7 +3758,7 @@ function Jc(t) {
 }
 function Qc(t, e = {}, s) {
   ds("getDiscoverableRepos()"), E(["svc", t, "object"], ["pageOpts", e, "object"]);
-  const r = x(t), n = qe("/repositories", r);
+  const r = x(t), n = ze("/repositories", r);
   return C.resolve(void 0).then(() => re(this, void 0, void 0, function* () {
     const o = ne(t);
     let i;
@@ -3766,14 +3766,14 @@ function Qc(t, e = {}, s) {
   })).then((o) => ({ result: o.response.response, paged: o.paged, response: o.response }));
 }
 U("dcx:assets:factory");
-const Do = U("dcx:assets:indexdocument");
+const No = U("dcx:assets:indexdocument");
 function ed(t, e) {
-  Do("getIndexDocument()"), E(["svc", t, "object"]);
-  const s = x(t), r = qe("/index", s);
+  No("getIndexDocument()"), E(["svc", t, "object"]);
+  const s = x(t), r = ze("/index", s);
   return s.invoke(O.GET, r, e, void 0, { responseType: "json", isStatusValid: N() }).then((n) => ({ result: td(n.response), response: n.response }));
 }
 function td(t) {
-  Do("deserializeIndexDocument()");
+  No("deserializeIndexDocument()");
   const e = t.children.map((s) => {
     const r = se(s[T.EMBEDDED][u.REPO_METADATA]), n = rr(s[T.EMBEDDED][u.REPOSITORY]);
     return r.embedded = { RepositoryResource: n }, r;
@@ -3843,7 +3843,7 @@ class rd {
     s && this.delete(s, e.repositoryId);
   }
 }
-class ko extends rd {
+class Do extends rd {
   constructor(e = 1e5, s = 2592e6) {
     super(e, "SESSION"), this.timestampsOnLinkCreation = 0, this.maxCachePeriodMS = 0, this.maxCachePeriodMS = s;
   }
@@ -3882,7 +3882,7 @@ function od(t) {
   const e = { versionCount: t[Me.TOTAL_CHILDREN], repositoryId: t[Me.REPO_ID], assetId: t[T.REPO_ASSET_ID], links: {}, versions: [] }, s = t.children || t[T.CHILDREN];
   return s && s.length > 0 && (e.versions = s.map((r) => ur(r))), e.links = t._links, e;
 }
-function rt(t, e, s, r) {
+function nt(t, e, s, r) {
   var n, o = arguments.length, i = o < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, s) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") i = Reflect.decorate(t, e, s, r);
   else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (i = (o < 3 ? n(i) : o > 3 ? n(e, s, i) : n(e, s)) || i);
@@ -3910,7 +3910,7 @@ class dd {
         throw new c(c.INVALID_STATE, "Invalid record data", d);
       }
       const a = { versionId: id, componentId: i.id, cloudAssetId: r, compositeId: n, repositoryId: o, componentRevisionId: i.version, type: i.type, cloudExpiration: void 0, size: i.length, etag: i.etag, hashType: ad, hashValue: i.md5 };
-      return L(a);
+      return w(a);
     }(this.compositeAssetId, this.compositeId, this.repositoryId, s));
   }
   getComponentURL(e, s) {
@@ -3953,12 +3953,12 @@ function ld(t, e, s) {
   return i.then((a) => (a.addUploadRecord(n.id, o), a));
 }
 const sn = U("dcx:repoapisession"), ud = de.getInstance(), rn = "+dcx";
-let $e = class {
+let Ge = class {
   constructor(t, e, s) {
     this._authenticationAllowList = ["adobe.com", "adobe.io", "adobelogin.com", "fotolia.net"], this._blockUploadThreshold = is, E(["httpService", t, "object"], ["server", e, "string"]), this._service = t, this._service._repoAPIBaseUrl = e;
     const r = Ss(e);
     if (!r) throw new c(c.INVALID_PARAMS, "Could not determine endpoint from: " + e);
-    this._endPoint = r, S(s) && q(s.getIndexLinks) ? this._linksCache = s : this._linksCache = new ko();
+    this._endPoint = r, S(s) && q(s.getIndexLinks) ? this._linksCache = s : this._linksCache = new Do();
   }
   get serviceConfig() {
     return { service: this._service, cache: this._linksCache };
@@ -3967,13 +3967,13 @@ let $e = class {
     return this._blockUploadThreshold;
   }
   set blockUploadThreshold(t) {
-    Ye("threshold", t, "+number"), this._blockUploadThreshold = t;
+    qe("threshold", t, "+number"), this._blockUploadThreshold = t;
   }
   get blockDownloadThreshold() {
     return Io();
   }
   set blockDownloadThreshold(t) {
-    Ye("threshold", t, "+number"), Rc(t);
+    qe("threshold", t, "+number"), bc(t);
   }
   createAsset(t, e, s, r, n, o, i, a, d) {
     return So(this._service, t, e, s, r, n, o, i, a, d);
@@ -3994,7 +3994,7 @@ let $e = class {
     });
   }
   copyResources(t, e, s, r, n, o) {
-    return mc(this._service, t, e, s, r, n, o);
+    return Ac(this._service, t, e, s, r, n, o);
   }
   getIndexLinks(t) {
     return Mn(this.serviceConfig, t);
@@ -4006,7 +4006,7 @@ let $e = class {
     return ed(this.serviceConfig, t);
   }
   getDiscoverableAssets(t = {}, e) {
-    return No(this.serviceConfig, t, e);
+    return Xc(this.serviceConfig, t, e);
   }
   getDiscoverableRepos(t = {}, e) {
     return Qc(this.serviceConfig, t, e);
@@ -4015,7 +4015,7 @@ let $e = class {
     return sr(this._service, t, e);
   }
   headCompositeManifest(t, e) {
-    return this.fetchLinksIfMissing(t, [u.COMPONENT], e).then(() => Vc(this._service, t, e));
+    return this.fetchLinksIfMissing(t, [u.COMPONENT], e).then(() => jc(this._service, t, e));
   }
   resolveAsset(t, e = "id", s, r, n) {
     return cr(this.serviceConfig, t, e, s, r, n);
@@ -4030,19 +4030,19 @@ let $e = class {
     return this.fetchLinksIfMissing(t, [u.REPO_METADATA], e).then(() => eo(this.serviceConfig.service, t, e));
   }
   getEmbeddedMetadata(t, e = "json", s) {
-    return E(["asset", t, "object"], ["format", e, "enum", !1, ["json", "xml"]]), this.fetchLinksIfMissing(t, [u.EMBEDDED_METADATA], s).then(() => Dc(this._service, t, e));
+    return E(["asset", t, "object"], ["format", e, "enum", !1, ["json", "xml"]]), this.fetchLinksIfMissing(t, [u.EMBEDDED_METADATA], s).then(() => Nc(this._service, t, e));
   }
   putEmbeddedMetadata(t, e, s, r = "json", n) {
-    return E(["asset", t, "object"], ["data", e, ["string", "object", "object[]"]], ["etag", s, "string", !0], ["format", r, "enum", !1, ["json", "xml"]]), this.fetchLinksIfMissing(t, [u.EMBEDDED_METADATA], n).then(() => kc(this._service, t, e, s, r, n));
+    return E(["asset", t, "object"], ["data", e, ["string", "object", "object[]"]], ["etag", s, "string", !0], ["format", r, "enum", !1, ["json", "xml"]]), this.fetchLinksIfMissing(t, [u.EMBEDDED_METADATA], n).then(() => Dc(this._service, t, e, s, r, n));
   }
   patchEmbeddedMetadata(t, e, s, r) {
-    return E(["asset", t, "object"], ["data", e, ["string", "object", "object[]"]], ["etag", s, "string", !0]), this.fetchLinksIfMissing(t, [u.EMBEDDED_METADATA], r).then(() => wc(this._service, t, e, s, r));
+    return E(["asset", t, "object"], ["data", e, ["string", "object", "object[]"]], ["etag", s, "string", !0]), this.fetchLinksIfMissing(t, [u.EMBEDDED_METADATA], r).then(() => kc(this._service, t, e, s, r));
   }
   getDirectory(t, e, s) {
     return this.fetchLinksIfMissing(t, [u.PAGE], s).then(() => Po(this._service, t, e, s).then((r) => ({ result: Oo(r.paged.data)[1], paged: r.paged, response: r.response })));
   }
   getDirectoryByURL(t) {
-    return Xc(this._service, t).then((e) => ({ response: e.response, result: se(e.result) }));
+    return Kc(this._service, t).then((e) => ({ response: e.response, result: se(e.result) }));
   }
   getLinksForAsset(t, e) {
     return Qn(this.serviceConfig, t, e);
@@ -4055,13 +4055,13 @@ let $e = class {
     return this._withSourcePromise(r).then(() => this.fetchLinksIfMissing(t, [u.PRIMARY], s)).then(() => Xn.call(r, this._service, t, e, s));
   }
   updatePrimaryResource(t, e, s, r, n, o, i) {
-    return this.fetchLinksIfMissing(t, [u.PRIMARY], i).then(() => Mc(this._service, t, e, s, r, n, o, i));
+    return this.fetchLinksIfMissing(t, [u.PRIMARY], i).then(() => wc(this._service, t, e, s, r, n, o, i));
   }
   getRepositoryResource(t, e) {
     return this.fetchLinksIfMissing(t, [u.REPOSITORY], e).then(() => to(this._service, t, e));
   }
   getVersions(t, e, s) {
-    return this.fetchLinksIfMissing(t, [u.PAGE], s).then(() => Bc(this._service, t, e, s).then((r) => ({ result: od(r.result), response: r.response, paged: r.paged })));
+    return this.fetchLinksIfMissing(t, [u.PAGE], s).then(() => Uc(this._service, t, e, s).then((r) => ({ result: od(r.result), response: r.response, paged: r.paged })));
   }
   getVersionResource(t, e, s) {
     return this.fetchLinksIfMissing(t, [u.PAGE], s).then(() => vo(this._service, t, e, s).then((r) => ({ result: ur(r.result), response: r.response })));
@@ -4106,10 +4106,10 @@ let $e = class {
   getCompositeManifest(t, e, s, r) {
     E(["asset", t, "object"], ["version", e, "string", !0], ["etag", s, "string", !0]);
     const n = this._getAsAdobeAsset(t);
-    return n.version = e || n.version, this.fetchLinksIfMissing(n, [u.MANIFEST], r).then(() => Fc(this._service, n, e, s, r));
+    return n.version = e || n.version, this.fetchLinksIfMissing(n, [u.MANIFEST], r).then(() => Vc(this._service, n, e, s, r));
   }
   getManifestAndComponentsByPath(t, e, s, r, n) {
-    return $c(this.serviceConfig.service, t, e, s, r, n);
+    return Hc(this.serviceConfig.service, t, e, s, r, n);
   }
   getRendition(t, e, s, r, n) {
     return this.fetchLinksIfMissing(t, [u.RENDITION]).then(() => Lc(this._service, t, e, s, r, n));
@@ -4124,20 +4124,20 @@ let $e = class {
     return this.fetchLinksIfMissing(n, [u.COMPONENT], r).then(() => (E(["asset", n, "object"], ["componentId", o, "string"], ["componentRevision", i, "string", !0]), fr(this._service, n, o, i)));
   }
   getCompositeComponentByPath(t, e, s, r, n) {
-    return qc(this._service, this._getAsAdobeAsset(t), e, s, r, n);
+    return Yc(this._service, this._getAsAdobeAsset(t), e, s, r, n);
   }
   getCompositeComponent(t, e, s, r, n, o) {
     const i = this._getAsAdobeAsset(t), { id: a, revision: d } = this._resolveComponentIdAndRevision(t, e, s);
-    return i.assetId && pe("assetId", i.assetId), e && pe("componentId", e), o && pe("componentSize", String(o)), this.fetchLinksIfMissing(i, [u.COMPONENT], n).then(() => (E(["asset", t, "object"], ["componentId", a, "string"], ["componentRevision", d, "string"], ["responseType", r, "enum", !0, tr]), zc(this._service, i, a, d, r, n, this._isDCXComponentLike(t) ? t.length : o)));
+    return i.assetId && pe("assetId", i.assetId), e && pe("componentId", e), o && pe("componentSize", String(o)), this.fetchLinksIfMissing(i, [u.COMPONENT], n).then(() => (E(["asset", t, "object"], ["componentId", a, "string"], ["componentRevision", d, "string"], ["responseType", r, "enum", !0, tr]), qc(this._service, i, a, d, r, n, this._isDCXComponentLike(t) ? t.length : o)));
   }
   putCompositeComponent(t, e, s, r, n, o, i, a, d, h) {
     if (E(["asset", t, "object"], ["componentId", e, "string"], ["contentType", r, "string"], ["maybeIsNew", n, "boolean", !0], ["size", o, "number", !0], ["md5", i, "string", !0]), n && !Wt(e)) throw new c(c.INVALID_PARAMS, "Component id is not a uuid");
     Wt(e) || ud.warn("Existing component id is not a uuid");
     const l = this._getAsAdobeAsset(t);
-    return (l.assetId || l.id) && pe("assetId", l.assetId || l.id), pe("componentId", e), o && pe("componentSize", String(o)), this.fetchLinksIfMissing(l, [u.COMPONENT, u.BLOCK_UPLOAD_INIT], d).then(() => Wc(this.serviceConfig, t, e, s, r, n, o, i, a, d, h));
+    return (l.assetId || l.id) && pe("assetId", l.assetId || l.id), pe("componentId", e), o && pe("componentSize", String(o)), this.fetchLinksIfMissing(l, [u.COMPONENT, u.BLOCK_UPLOAD_INIT], d).then(() => zc(this.serviceConfig, t, e, s, r, n, o, i, a, d, h));
   }
   getCompositeComponentsUrlsForUpload(t, e, s) {
-    return Kc(this._service, t, e, s);
+    return Wc(this._service, t, e, s);
   }
   performBulkRequest(t, e, s, r) {
     return this.fetchLinksIfMissing(t, [u.BULK_REQUEST], r).then(() => os(this._service, t, e, s, r));
@@ -4148,7 +4148,7 @@ let $e = class {
     return this.fetchLinksIfMissing(i, [u.MANIFEST], o).then(() => Us(this._service, i, e, s, r, n, o));
   }
   patchVersions(t, e, s, r) {
-    return E(["asset", t, "object"], ["patchDoc", e, ["string", "array"]], ["etag", s, "string", !0]), this.fetchLinksIfMissing(t, [u.VERSION_HISTORY], r).then(() => Uc(this._service, t, e, s, r));
+    return E(["asset", t, "object"], ["patchDoc", e, ["string", "array"]], ["etag", s, "string", !0]), this.fetchLinksIfMissing(t, [u.VERSION_HISTORY], r).then(() => xc(this._service, t, e, s, r));
   }
   patchACLPolicy(t, e, s, r) {
     return E(["asset", t, "object"], ["policy", e, ["string", "object"]], ["etag", s, "string", !0]), this.fetchLinksIfMissing(t, [u.VERSION_HISTORY], r).then(() => ho(this._service, t, e, s, r));
@@ -4178,7 +4178,7 @@ let $e = class {
     return De(this.serviceConfig, e).then((s) => je(this._service, s, t, e));
   }
   performBatchOperation(t, e) {
-    return De(this.serviceConfig).then((s) => Ja(this._service, s, t, e));
+    return De(this.serviceConfig).then((s) => Za(this._service, s, t, e));
   }
   uploadResultsFromAdobeRepoUploadResult(t, e) {
     return ld(this, t, e);
@@ -4205,7 +4205,7 @@ let $e = class {
     if (this._isDCXComponentLike(t)) return { revision: t.version, id: t.id };
     if (!e) throw new c(c.INVALID_PARAMS, "Missing componentId.");
     if (r === !1 || s) return { revision: s, id: e };
-    if (!Ls(t) || !e) throw new c(c.INVALID_PARAMS, "Could not determine component revision");
+    if (!ws(t) || !e) throw new c(c.INVALID_PARAMS, "Could not determine component revision");
     const o = (n = t.current) === null || n === void 0 ? void 0 : n.getComponentWithId(e);
     if ((o == null ? void 0 : o.version) === void 0) throw new c(c.INVALID_PARAMS, "Could not determine component revision");
     return { revision: o.version, id: e };
@@ -4246,8 +4246,8 @@ let $e = class {
     return this._linksCache.setValueWithAsset(t, r), r;
   }
 };
-rt([ft], $e.prototype, "getRepoMetadata", null), rt([ft], $e.prototype, "getAppMetadata", null), rt([ft], $e.prototype, "getCompositeComponent", null), rt([ft], $e.prototype, "putCompositeComponent", null), rt([ft], $e.prototype, "moveAsset", null), $e = rt([Ua("AdobeRepoAPISession")], $e);
-const pd = (t, e, s) => new $e(t, e, s), _d = "https://platform-cs-stage.adobe.io", fd = "AdobeExpressWeb", Ed = "assets", gd = "Failed to upload asset. Please try again.", Fe = {
+nt([ft], Ge.prototype, "getRepoMetadata", null), nt([ft], Ge.prototype, "getAppMetadata", null), nt([ft], Ge.prototype, "getCompositeComponent", null), nt([ft], Ge.prototype, "putCompositeComponent", null), nt([ft], Ge.prototype, "moveAsset", null), Ge = nt([xa("AdobeRepoAPISession")], Ge);
+const pd = (t, e, s) => new Ge(t, e, s), _d = "https://platform-cs-stage.adobe.io", fd = "AdobeExpressWeb", Ed = "assets", gd = "Failed to upload asset. Please try again.", Fe = {
   UPLOAD_FAILED: {
     code: "UPLOAD_FAILED",
     message: gd
@@ -4391,7 +4391,7 @@ class Bt {
     });
   }
   isAuthorizedURL(e) {
-    const s = Ko(e);
+    const s = Wo(e);
     return this._authenticationAllowList.includes(s);
   }
   logout() {
@@ -4399,7 +4399,7 @@ class Bt {
   }
   applyAuthHeaders(e, s) {
     const r = { "x-api-key": void 0, authorization: void 0 };
-    return this.isAuthorizedURL(e) && (s["x-api-key"] !== null && this.apiKey && (r["x-api-key"] = this.apiKey), s.authorization !== null && this.authToken && (r.authorization = (this.authTokenScheme ? `${this.authTokenScheme} ` : "") + this.authToken)), s = L(Object.assign(Object.assign({}, s), r));
+    return this.isAuthorizedURL(e) && (s["x-api-key"] !== null && this.apiKey && (r["x-api-key"] = this.apiKey), s.authorization !== null && this.authToken && (r.authorization = (this.authTokenScheme ? `${this.authTokenScheme} ` : "") + this.authToken)), s = w(Object.assign(Object.assign({}, s), r));
   }
 }
 const Bs = 12e4, Rs = 36e5, me = U("dcx:http:xhr");
@@ -4558,7 +4558,7 @@ class Td {
     var e, s;
     if (!this._sent) throw new Error("Cannot getAllResponseHeaders before sending.");
     if (this._parsedResponseHeaders) return this._parsedResponseHeaders;
-    const r = this._isFetchRequest ? ei((s = (e = this._fetchResponse) === null || e === void 0 ? void 0 : e.headers.entries()) !== null && s !== void 0 ? s : []) : this._xhr.getAllResponseHeaders();
+    const r = this._isFetchRequest ? Qo((s = (e = this._fetchResponse) === null || e === void 0 ? void 0 : e.headers.entries()) !== null && s !== void 0 ? s : []) : this._xhr.getAllResponseHeaders();
     return this._parsedResponseHeaders = typeof r == "string" ? Ys(r) : Ot(r), this._parsedResponseHeaders;
   }
   isError() {
@@ -4641,19 +4641,19 @@ const He = U("dcx:http:backoff");
 function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
   const { disableRetry: a = !1, retryNetworkError: d = !0, responseType: h = "text", authCallback: l = null, progressListeners: p = [], initialWait: _ = 2e3, maxWait: f = 32e3, preCallback: v, postCallback: m, preScheduleCallback: b, postScheduleCallback: y, preferRetryAfterHeader: P = !0, pollCodes: A = [], pollHeader: D, pollMethod: k = "get", problemWithCode: j = { problemType: "", code: null, url: "" }, modifyHeadersCallback: J = null } = o;
   let { retryCodes: $ = [], timeoutAfter: ve = 72e3 } = o;
-  $ = i ? [...A, ...$] : a || Go(s) ? [] : o.retryCodes || ln, He("retry codes", $);
+  $ = i ? [...A, ...$] : a || $o(s) ? [] : o.retryCodes || ln, He("retry codes", $);
   const ke = o.increase || ((W, ee, M) => W === 1 ? M : ee * ee > f ? f : ee * ee);
   let Q = 0, le = 0, Ae = !1;
-  const ze = ie();
-  let we, ae, be, ue, ht = ie(), We = 0, kt = !1, gr = !1;
+  const We = ie();
+  let Le, ae, be, ue, ht = ie(), Ke = 0, kt = !1, gr = !1;
   const Ir = [];
   let Tr;
-  function wt() {
-    He("getSnapshot()", Ae, Q, ie(), ht, We);
-    const W = Ae || we != null ? 0 : Q - (ie() - ht);
-    let ee = We;
+  function Lt() {
+    He("getSnapshot()", Ae, Q, ie(), ht, Ke);
+    const W = Ae || Le != null ? 0 : Q - (ie() - ht);
+    let ee = Ke;
     ee += Ae ? ie() - ht : 0;
-    const M = (we || ie()) - ze;
+    const M = (Le || ie()) - We;
     return { count: le, canceled: kt, timedOut: gr, requests: Ir, duration: M, totalWaited: ee, requestPending: Ae, waitingFor: W };
   }
   function Ar() {
@@ -4661,7 +4661,7 @@ function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
     return Math.min(W, f);
   }
   function mr(W) {
-    if (W) return (ee) => W(ee, wt());
+    if (W) return (ee) => W(ee, Lt());
   }
   function yr(W) {
     const ee = W.getResponseHeader("retry-after");
@@ -4673,28 +4673,28 @@ function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
       return 1e3 * parseInt(W.getResponseHeader("retry-after"));
     }
   }
-  function st(W = Q) {
+  function rt(W = Q) {
     return Be(this, void 0, void 0, function* () {
-      if (We >= ve) return He("timed out", We, ve), gr = !0, ae(ue);
-      ht = ie(), b && (yield b(wt())), He("retry in ", W), Tr = setTimeout(() => {
+      if (Ke >= ve) return He("timed out", Ke, ve), gr = !0, ae(ue);
+      ht = ie(), b && (yield b(Lt())), He("retry in ", W), Tr = setTimeout(() => {
         var ee;
         try {
-          He("retry start"), jr(`Request: ${e.toUpperCase()} ${t} ${(ee = r == null ? void 0 : r["x-request-id"]) !== null && ee !== void 0 ? ee : ""}`), Ae = !0, We += W, ue = new Td(Object.assign(Object.assign({}, o), { timeout: n, preCallback: mr(v), postCallback: mr(m) })), Ir.push(ue), le++;
+          He("retry start"), jr(`Request: ${e.toUpperCase()} ${t} ${(ee = r == null ? void 0 : r["x-request-id"]) !== null && ee !== void 0 ? ee : ""}`), Ae = !0, Ke += W, ue = new Td(Object.assign(Object.assign({}, o), { timeout: n, preCallback: mr(v), postCallback: mr(m) })), Ir.push(ue), le++;
           for (const M of p) ue.onProgress(M);
           ue.send(t, e, s, r, h).then((M) => Be(this, void 0, void 0, function* () {
             var ls, us, ps;
-            if (jr(`Response: ${e.toUpperCase()} ${t} ${(ls = M.headers) === null || ls === void 0 ? void 0 : ls["x-request-id"]} ${M.getStatus()}`), Ae = !1, !M.isError() && !gt(M.getStatus(), $) && (M.getStatus() !== 401 || l == null) && (typeof D != "string" || A == null || !gt(M.getStatus(), A)) || (j == null ? void 0 : j.code) === M.getStatus() && M.getResponseData() && (j == null ? void 0 : j.problemType) !== ((us = yield M.getResponseDataAsJSON()) === null || us === void 0 ? void 0 : us.type)) return we = ie(), ae(M);
-            if (M.isAborted() || kt) return we = ie(), kt = !0, ae(M);
+            if (jr(`Response: ${e.toUpperCase()} ${t} ${(ls = M.headers) === null || ls === void 0 ? void 0 : ls["x-request-id"]} ${M.getStatus()}`), Ae = !1, !M.isError() && !gt(M.getStatus(), $) && (M.getStatus() !== 401 || l == null) && (typeof D != "string" || A == null || !gt(M.getStatus(), A)) || (j == null ? void 0 : j.code) === M.getStatus() && M.getResponseData() && (j == null ? void 0 : j.problemType) !== ((us = yield M.getResponseDataAsJSON()) === null || us === void 0 ? void 0 : us.type)) return Le = ie(), ae(M);
+            if (M.isAborted() || kt) return Le = ie(), kt = !0, ae(M);
             if (!i && typeof D == "string" && A != null && gt(M.getStatus(), A)) {
               const lt = M.getResponseHeader(D.toLowerCase()), ut = j.url, vr = ut && j.code === M.getStatus() && j.problemType === ((ps = M.getResponseData()) === null || ps === void 0 ? void 0 : ps.type);
               if (lt || vr) {
-                i = !0, t = vr ? ut : lt, e = k, s = void 0, J && (r = J(r)), $ = [...$, ...A], We = 0, ve *= 3;
-                const xo = M.getResponseHeader("retry-after");
-                if (P && xo) {
+                i = !0, t = vr ? ut : lt, e = k, s = void 0, J && (r = J(r)), $ = [...$, ...A], Ke = 0, ve *= 3;
+                const Mo = M.getResponseHeader("retry-after");
+                if (P && Mo) {
                   const br = yr(M);
-                  if (br != null) return Q = br, st(Q);
+                  if (br != null) return Q = br, rt(Q);
                 }
-                return st(0);
+                return rt(0);
               }
             }
             if (M.getStatus() === 401) {
@@ -4704,36 +4704,36 @@ function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
                 } catch {
                   return be(new c(c.UNAUTHORIZED, "Authentication Failed", M));
                 }
-                return We += ie() - ht, st(0);
+                return Ke += ie() - ht, rt(0);
               }
-              return we = ie(), be(new c(c.UNAUTHORIZED, "Authentication Failed", M));
+              return Le = ie(), be(new c(c.UNAUTHORIZED, "Authentication Failed", M));
             }
             if (gt(M.getStatus(), $) || d && M.getErrorCode() === I.NETWORK_ERROR) {
               const lt = M.getResponseHeader("retry-after");
               if (P && lt) {
                 const ut = yr(M);
-                if (ut != null) return Q = ut, st(Q);
+                if (ut != null) return Q = ut, rt(Q);
               }
-              return Q = Ar(), st(Q);
+              return Q = Ar(), rt(Q);
             }
-            return we = ie(), ae(M);
+            return Le = ie(), ae(M);
           })).catch((M) => {
             be(M);
           });
         } catch (M) {
           be(M);
         }
-      }, W), y && (yield y(wt()));
+      }, W), y && (yield y(Lt()));
     });
   }
-  const Mo = new Promise((W, ee) => {
-    ae = W, be = ee, st(0);
+  const wo = new Promise((W, ee) => {
+    ae = W, be = ee, rt(0);
   });
-  return { getPromise: () => Mo, cancel: function() {
+  return { getPromise: () => wo, cancel: function() {
     He("cancel()"), kt = !0, ue != null && ue.abort(), Ae || (He("abort"), clearTimeout(Tr), ae({ getErrorCode: () => te.ABORTED }));
   }, onProgress: function(W) {
     if (!p.includes(W)) return p.push(W), ue != null ? ue.onProgress && ue.onProgress(W) : void 0;
-  }, getSnapshot: wt };
+  }, getSnapshot: Lt };
 }
 class md {
   constructor(e, s, r, n, o = "text", i, a, d = {}) {
@@ -5033,7 +5033,7 @@ class Od {
   }
   _makeRequest(e) {
     K("_makeRequest(): ", e.id);
-    const s = e.options || {}, r = yd(L(Object.assign(Object.assign({ url: e.href, autoParseJson: e.autoParseJson, descriptor: e }, e), { timeout: s.timeout || this._timeout, authProvider: this._authProvider, forceXhr: this._forcedXhr, fetch: this._fetch, responseType: s.responseType, preCallback: this._beforeHook, postCallback: this._afterHook, isStatusValid: s.isStatusValid, additionalNodeOptions: s.additionalNodeOptions, retryOptions: s.retryOptions, isExternalRequest: s.isExternalRequest, preferFetch: this._preferFetch })));
+    const s = e.options || {}, r = yd(w(Object.assign(Object.assign({ url: e.href, autoParseJson: e.autoParseJson, descriptor: e }, e), { timeout: s.timeout || this._timeout, authProvider: this._authProvider, forceXhr: this._forcedXhr, fetch: this._fetch, responseType: s.responseType, preCallback: this._beforeHook, postCallback: this._afterHook, isStatusValid: s.isStatusValid, additionalNodeOptions: s.additionalNodeOptions, retryOptions: s.retryOptions, isExternalRequest: s.isExternalRequest, preferFetch: this._preferFetch })));
     return this._requestsOutstanding.addRequest(e.id, r), e.startTime = (/* @__PURE__ */ new Date()).valueOf(), r;
   }
   _checkQueue() {
@@ -5071,28 +5071,28 @@ class Od {
     K("abortAllWithToken()"), this._requestsOutstanding.removeAllWithToken(e), this._requestQueue.removeAllWithToken(e);
   }
 }
-const Pd = (t, e) => new Od(t, {}), wo = class Lo extends CustomEvent {
+const Pd = (t, e) => new Od(t, {}), ko = class Lo extends CustomEvent {
   constructor(e) {
     super(Lo.EVENT_NAME, { bubbles: !0, composed: !0, detail: e });
   }
 };
-wo.EVENT_NAME = Id.UPLOAD_STATUS;
-let Sd = wo;
+ko.EVENT_NAME = Id.UPLOAD_STATUS;
+let Sd = ko;
 class Cd {
   /**
    * Create a new UploadService instance
    * @param config - Configuration for the upload service
    */
   constructor(e) {
-    this._uploadStatus = nt.IDLE, this._uploadBytesCompleted = !1, this._uploadProgressPercentage = 0, this.config = e, this.httpService = Pd(), this.authConfig = e.authConfig, this.session = this.prepareSession();
+    this._uploadStatus = $e.IDLE, this._uploadBytesCompleted = !1, this._uploadProgressPercentage = 0, this.config = e, this.httpService = Pd(), this.authConfig = e.authConfig, this.session = this.prepareSession();
   }
   /**
    * Initialize repository for user token type
    */
   async initializeUserRepository() {
     try {
-      const e = await this.setupUserRepository(), s = await No(this.httpService);
-      console.log(s.paged.items), e && (this.config.repository = e);
+      const e = await this.setupUserRepository();
+      e && (this.config.repository = e);
     } catch (e) {
       throw this.handleError(
         Fe.REPOSITORY_REQUIRED.code,
@@ -5101,13 +5101,35 @@ class Cd {
     }
   }
   /**
-   * Setup user repository by fetching discoverable assets and determining repository ID
-   * @returns Promise resolving to the repository ID
+   * Sets up the user repository for the upload service
+   * This function does a couple of things:
+   * 1. Gets the index document for the user
+   * 2. Gets the children of the index document
+   * 3. If there is only one child, that is the repository
+   * 4. If there are multiple children, it finds the temp folder. If there is no temp folder, it uses the first child as the repository
+   * 5. Returns the repository ID and path
+   * @returns Promise resolving to the repository
    */
   async setupUserRepository() {
     var a, d;
     const e = await this.session.getIndexDocument(), { assignedDirectories: s } = e.result, r = (a = s == null ? void 0 : s[0]) == null ? void 0 : a.repositoryId, n = (d = s == null ? void 0 : s[0]) == null ? void 0 : d.assetId, i = await new Er({ repositoryId: r, assetId: n }, this.httpService).getPagedChildren();
-    return console.log(i.result.result), null;
+    if (i != null && i.result) {
+      const h = i.result.children;
+      if (h.length === 1) {
+        const l = h[0];
+        return {
+          repositoryId: l["repo:repositoryId"],
+          path: l["repo:path"]
+        };
+      } else {
+        let l = h.find((p) => p["repo:name"] === "temp");
+        return l || (l = h[0]), {
+          repositoryId: l["repo:repositoryId"],
+          path: l["repo:path"]
+        };
+      }
+    }
+    return null;
   }
   /**
    * Get the current upload status
@@ -5135,7 +5157,7 @@ class Cd {
    * @returns Promise resolving to upload result
    */
   async uploadAsset(e) {
-    this.uploadStatus = nt.IDLE;
+    this.uploadStatus = $e.IDLE;
     try {
       const {
         file: s,
@@ -5161,13 +5183,12 @@ class Cd {
             e,
             i,
             a,
-            n,
-            r
+            d
           )).result;
           break;
         }
       }
-      return this._uploadBytesCompleted && (this.uploadStatus = nt.COMPLETED), {
+      return this._uploadBytesCompleted && (this.uploadStatus = $e.COMPLETED), {
         asset: h.result
       };
     } catch (s) {
@@ -5209,47 +5230,43 @@ class Cd {
    * @param options - Upload options
    * @param fileData - Processed file data
    * @param fileSize - Size of the file
-   * @param path - Path for the asset
-   * @param fileName - Name of the file
+   * @param fullPath - Full path for the asset
    * @returns Promise resolving to asset creation result
    */
-  async createAssetForUser(e, s, r, n, o) {
+  async createAssetForUser(e, s, r, n) {
     const {
-      contentType: i,
-      resourceDesignator: a,
-      additionalHeaders: d = {},
-      repoMetaPatch: h,
-      createIntermediates: l
+      contentType: o,
+      resourceDesignator: i,
+      additionalHeaders: a = {},
+      repoMetaPatch: d,
+      createIntermediates: h
     } = e;
-    let p;
+    let l;
     if (!this.config.repository)
       throw this.handleError(
         Fe.REPOSITORY_REQUIRED.code,
         new Error(Fe.REPOSITORY_REQUIRED.message)
       );
-    const _ = {
-      repositoryId: this.config.repository.repositoryId,
-      path: "cloud-content"
-    };
+    const p = this.config.repository;
     try {
-      p = await this.session.createAsset(
-        _,
+      this.uploadStatus = $e.UPLOADING, l = await this.session.createAsset(
+        p,
+        n,
+        h || !0,
         o,
-        l || !0,
         i,
         a,
-        d,
         s,
         r,
-        h
-      );
-    } catch (f) {
+        d
+      ), this._uploadProgressPercentage = 100, this.uploadStatus = $e.COMPLETED;
+    } catch (_) {
       throw this.handleError(
         Fe.UPLOAD_FAILED.code,
-        f
+        _
       );
     }
-    return { result: p };
+    return { result: l };
   }
   /**
    * Generate a pre-signed URL for downloading an asset
@@ -5300,7 +5317,7 @@ class Cd {
    */
   getUploadProgress() {
     return (e, s) => {
-      this._uploadProgressPercentage = Math.round(e / s * 100), e === s && (this._uploadBytesCompleted = !0), this.uploadStatus = nt.UPLOADING;
+      this._uploadProgressPercentage = Math.round(e / s * 100), e === s && (this._uploadBytesCompleted = !0), this.uploadStatus = $e.UPLOADING;
     };
   }
   /**
@@ -5309,7 +5326,7 @@ class Cd {
   prepareSession() {
     this.httpService.setAuthToken(this.authConfig.token), this.httpService.setApiKey(this.authConfig.apiKey);
     const e = pd(this.httpService, this.config.endpoint);
-    return e.setLinksCache(new ko()), e;
+    return e.setLinksCache(new Do()), e;
   }
   /**
    * Convert a file to a sliceable data object
@@ -5346,13 +5363,13 @@ class Cd {
    */
   handleError(e, s, r) {
     const n = Fe[e];
-    n.code === Fe.UPLOAD_FAILED.code && (this.uploadStatus = nt.FAILED);
+    n.code === Fe.UPLOAD_FAILED.code && (this.uploadStatus = $e.FAILED);
     const o = r || n.message, i = new class extends Error {
       constructor(a, d, h) {
         super(a), this.code = d, this.originalError = h, this.name = "UploadServiceError";
       }
     }(o, n.code, s);
-    return (this.config.environment === "local" || this.config.environment === "stage") && window.lana.log(`UploadService Error [${n.code}]:`, o, s), i;
+    return (this.config.environment === "local" || this.config.environment === "stage") && (window.lana.log(`UploadService Error [${n.code}]: ${o}`), window.lana.log(s)), i;
   }
   /**
    * Update the service configuration

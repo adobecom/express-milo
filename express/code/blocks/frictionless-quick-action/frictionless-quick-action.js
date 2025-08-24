@@ -196,8 +196,8 @@ function handleUploadStatusChange(uploadStatusEvent, progressBar) {
     progressBar.setProgress(e.detail.progress);
     if (['completed', 'failed'].includes(e.detail.status)) {
       if (e.detail.status === 'failed') {
-        fqaContainer?.remove();
         progressBar.remove();
+        fqaContainer?.classList.remove('hidden');
       }
       window.removeEventListener(uploadStatusEvent, listener);
     }
@@ -226,7 +226,7 @@ async function performStorageUpload(files, block) {
   try {
     const progressBar = await initProgressBar();
     fqaContainer = block.querySelector('.fqa-container');
-    fqaContainer?.remove();
+    fqaContainer?.classList.add('hidden');
     block.append(progressBar);
     handleUploadStatusChange(
       UPLOAD_EVENTS.UPLOAD_STATUS,
@@ -258,7 +258,7 @@ async function performUploadAction(files, block, quickAction) {
   const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
   url.searchParams.set('frictionlessUploadAssetId', encodedAssetId);
   url.searchParams.set('url', urlsMap[quickAction]);
-  window.location.href = url.toString();
+  // window.location.href = url.toString();
 }
 
 async function startSDKWithUnconvertedFiles(files, quickAction, block) {
