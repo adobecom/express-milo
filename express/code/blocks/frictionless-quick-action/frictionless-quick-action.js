@@ -255,7 +255,8 @@ async function performUploadAction(files, block, quickAction) {
     return;
   }
   const encodedAssetId = btoa(assetId);
-  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
+  // const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
+  const url = new URL('https://localhost.adobe.com:8080/new');
   url.searchParams.set('frictionlessUploadAssetId', encodedAssetId);
   url.searchParams.set('url', urlsMap[quickAction]);
   window.location.href = url.toString();

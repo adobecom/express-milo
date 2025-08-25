@@ -5,7 +5,6 @@ import type {
   UploadProgressCallback,
   SliceableData,
   AdobeMinimalAsset,
-  GetSliceCallback,
 } from '@dcx/common-types';
 import {
   type UploadServiceConfig,
@@ -78,8 +77,8 @@ export class UploadService {
     const indexRepoId = assignedDirectories?.[0]?.repositoryId;
     const indexAssetId = assignedDirectories?.[0]?.assetId;
 
-    const dir = new Directory({ repositoryId: indexRepoId, assetId: indexAssetId }, this.httpService);
-    const children = await dir.getPagedChildren();
+    this.config.directory = new Directory({ repositoryId: indexRepoId, assetId: indexAssetId }, this.httpService);
+    const children = await this.config.directory.getPagedChildren();
 
     if(children?.result) {
       const directoryChildren = children.result.children;
@@ -150,6 +149,7 @@ export class UploadService {
       const fileData = this.convertToSliceableData(file);
       const fileSize = this.getFileSize(file);
       const fullPath = this.buildPath(path, this.generateFileName(fileName));
+      const optionsWithProgress = { ...options, onProgress };
 
       let result: RepoResponseResult<AdobeAsset>;
       let preSignedUrl: string | undefined;
@@ -157,7 +157,7 @@ export class UploadService {
       switch (this.authConfig.tokenType) {
         case 'guest': {
           const guestResult = await this.createAssetForGuest(
-            { ...options, onProgress },
+            optionsWithProgress,
             fileData,
             fileSize,
             fullPath
@@ -169,7 +169,7 @@ export class UploadService {
         case 'user':
         default: {
           const userResult = await this.createAssetForUser(
-            options,
+            optionsWithProgress,
             fileData,
             fileSize,
             fullPath
@@ -251,24 +251,19 @@ export class UploadService {
       resourceDesignator,
       additionalHeaders = {},
       repoMetaPatch,
-      createIntermediates
+      createIntermediates,
+      onProgress
     } = options;
 
     let result: RepoResponseResult<AdobeAsset>;
 
-    if (!this.config.repository) {
-      throw this.handleError(
-        ERROR_CODES.REPOSITORY_REQUIRED.code,
-        new Error(ERROR_CODES.REPOSITORY_REQUIRED.message)
-      );
-    }
+    this.validateRequiredConfig([
+      { field: 'directory', errorCode: ERROR_CODES.DIRECTORY_REQUIRED },
+      { field: 'repository', errorCode: ERROR_CODES.REPOSITORY_REQUIRED }
+    ]);
 
-    const parentDir = this.config.repository;
-    
     try {
-      this.uploadStatus = UploadStatus.UPLOADING;
-      result = await this.session.createAsset(
-        parentDir,
+      result = await this.config.directory!.createAsset(
         fullPath,
         createIntermediates || true,
         contentType,
@@ -276,10 +271,9 @@ export class UploadService {
         additionalHeaders,
         fileData,
         fileSize,
-        repoMetaPatch
+        repoMetaPatch,
+        onProgress
       );
-      this._uploadProgressPercentage = 100;
-      this.uploadStatus = UploadStatus.COMPLETED;
     } catch (error) {
       throw this.handleError(
         ERROR_CODES.UPLOAD_FAILED.code,
@@ -411,6 +405,22 @@ export class UploadService {
       .replace(/\/+/g, '/');
     
     return fullPath.startsWith('/') ? fullPath.substring(1) : fullPath;
+  }
+
+  /**
+   * Validate required configuration fields
+   * @param validations - Array of field validations to perform
+   * @throws Error if any required field is missing
+   */
+  private validateRequiredConfig(validations: Array<{ field: keyof UploadServiceConfig, errorCode: typeof ERROR_CODES[keyof typeof ERROR_CODES] }>): void {
+    for (const { field, errorCode } of validations) {
+      if (!this.config[field]) {
+        throw this.handleError(
+          errorCode.code as keyof typeof ERROR_CODES,
+          new Error(errorCode.message)
+        );
+      }
+    }
   }
 
   /**

@@ -26,6 +26,8 @@ export interface UploadServiceConfig {
   endpoint: string;
   /** User repository (required for normal token uploads) */
   repository?: AdobeMinimalAsset;
+  /** Directory to use for the upload service (required for normal token uploads) */
+  directory?: Directory;
   /** Base path for guest uploads (optional) */
   basePath: string;
   /** Environment to use for the upload service */
