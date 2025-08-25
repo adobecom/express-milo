@@ -197,7 +197,7 @@ function handleUploadStatusChange(uploadStatusEvent, progressBar) {
     if (['completed', 'failed'].includes(e.detail.status)) {
       if (e.detail.status === 'failed') {
         progressBar.remove();
-        fqaContainer?.classList.remove('hidden');
+        fadeIn(fqaContainer);
       }
       window.removeEventListener(uploadStatusEvent, listener);
     }
@@ -208,7 +208,9 @@ function handleUploadStatusChange(uploadStatusEvent, progressBar) {
 async function initProgressBar() {
   const { default: ProgressBar } = await import('../../scripts/utils/createProgressBar.js');
   const progressBar = new ProgressBar();
-  progressBar.setAttribute('label', '<b>Adobe Express</b> is uploading your media...');
+  const uploadLabel = await replaceKey('uploading-media', getConfig());
+  progressBar.setAttribute('label', `<b>Adobe Express</b> ${uploadLabel}`);
+  progressBar.setAttribute('aria-label', uploadLabel);
   progressBar.setAttribute('width', '400px');
   progressBar.setAttribute('show-percentage', 'false');
   progressBar.setAttribute('progress', '2');
@@ -226,8 +228,8 @@ async function performStorageUpload(files, block) {
   try {
     const progressBar = await initProgressBar();
     fqaContainer = block.querySelector('.fqa-container');
-    fqaContainer?.classList.add('hidden');
-    block.append(progressBar);
+    fadeOut(fqaContainer);
+    block.insertBefore(progressBar, fqaContainer);
     handleUploadStatusChange(
       UPLOAD_EVENTS.UPLOAD_STATUS,
       progressBar,
@@ -238,6 +240,7 @@ async function performStorageUpload(files, block) {
       contentType: files[0].type,
     });
     assetId = asset.assetId;
+    progressBar.setProgress(100);
   } catch (error) {
     showErrorToast(block, error.message);
   }

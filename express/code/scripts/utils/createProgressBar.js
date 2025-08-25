@@ -94,7 +94,6 @@ class ProgressBar extends HTMLElement {
 
       .progress-label {
           font-size: 16px;
-          font-weight: 600;
           color: rgba(0, 0, 0, 1);
           text-align: center;
           line-height: 1.4;
@@ -126,6 +125,7 @@ class ProgressBar extends HTMLElement {
         left: 0;
         right: 0;
         bottom: 0;
+        min-width: 70px;
         background: linear-gradient(90deg,
           transparent 0%,
           rgba(255, 255, 255, 0.2) 50%,
