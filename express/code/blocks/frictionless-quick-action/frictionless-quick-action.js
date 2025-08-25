@@ -29,6 +29,8 @@ let replaceKey;
 let ccEverywhere;
 let quickActionContainer;
 let uploadContainer;
+let uploadService;
+let fqaContainer;
 
 function frictionlessQAExperiment(
   quickAction,
@@ -189,6 +191,76 @@ async function startSDK(data = [''], quickAction, block) {
   runQuickAction(quickAction, data, block);
 }
 
+function handleUploadStatusChange(uploadStatusEvent, progressBar) {
+  const listener = (e) => {
+    progressBar.setProgress(e.detail.progress);
+    if (['completed', 'failed'].includes(e.detail.status)) {
+      if (e.detail.status === 'failed') {
+        progressBar.remove();
+        fqaContainer?.classList.remove('hidden');
+      }
+      window.removeEventListener(uploadStatusEvent, listener);
+    }
+  };
+  window.addEventListener(uploadStatusEvent, listener);
+}
+
+async function initProgressBar() {
+  const { default: ProgressBar } = await import('../../scripts/utils/createProgressBar.js');
+  const progressBar = new ProgressBar();
+  progressBar.setAttribute('label', '<b>Adobe Express</b> is uploading your media...');
+  progressBar.setAttribute('width', '400px');
+  progressBar.setAttribute('show-percentage', 'false');
+  progressBar.setAttribute('progress', '2');
+  return progressBar;
+}
+
+async function performStorageUpload(files, block) {
+  let assetId;
+  // eslint-disable-next-line import/no-relative-packages
+  const { initUploadService, UPLOAD_EVENTS } = await import('../../scripts/upload-service/dist/acp-upload.min.es.js');
+  const { env } = getConfig();
+  if (!uploadService) {
+    uploadService = await initUploadService({ environment: env.name });
+  }
+  try {
+    const progressBar = await initProgressBar();
+    fqaContainer = block.querySelector('.fqa-container');
+    fqaContainer?.classList.add('hidden');
+    block.append(progressBar);
+    handleUploadStatusChange(
+      UPLOAD_EVENTS.UPLOAD_STATUS,
+      progressBar,
+    );
+    const { asset } = await uploadService.uploadAsset({
+      file: files[0],
+      fileName: files[0].name,
+      contentType: files[0].type,
+    });
+    assetId = asset.assetId;
+  } catch (error) {
+    showErrorToast(block, error.message);
+  }
+
+  return assetId;
+}
+
+async function performUploadAction(files, block, quickAction) {
+  const urlsMap = {
+    'edit-image': '/express/feature/image/editor',
+    'edit-video': '/express/feature/video/editor',
+  };
+  const assetId = await performStorageUpload(files, block);
+  if (!assetId) {
+    return;
+  }
+  const encodedAssetId = btoa(assetId);
+  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
+  url.searchParams.set('frictionlessUploadAssetId', encodedAssetId);
+  url.searchParams.set('url', urlsMap[quickAction]);
+  window.location.href = url.toString();
+}
+
 async function startSDKWithUnconvertedFiles(files, quickAction, block) {
   let data = await processFilesForQuickAction(files, quickAction);
   if (!data[0]) {
@@ -201,6 +273,11 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     const msg = await getErrorMsg(files, quickAction, replaceKey, getConfig);
     showErrorToast(block, msg);
     data = data.filter((item) => item);
+  }
+
+  if (quickAction === 'edit-image' || quickAction === 'edit-video') {
+    await performUploadAction(files, block, quickAction);
+    return;
   }
 
   startSDK(data, quickAction, block);

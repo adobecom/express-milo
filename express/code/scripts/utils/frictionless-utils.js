@@ -104,6 +104,8 @@ export const QA_CONFIGS = {
   'merge-videos': getMergeVideosCfg(),
   'convert-to-mp4': { ...getBaseVideoCfg(VIDEO_FORMATS) },
   'caption-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'edit-video': { ...getBaseVideoCfg(VIDEO_FORMATS) },
+  'edit-image': { ...getBaseImgCfg(JPG, JPEG, PNG, WEBP) },
 };
 
 // Experimental variants
