@@ -70,7 +70,7 @@ function suppressOfferEyebrow(specialPromo) {
 async function getPriceElementSuffix(placeholderArr, response) {
   try {
     if (!placeholderArr || !Array.isArray(placeholderArr) || !response) {
-      console.warn('Invalid parameters passed to getPriceElementSuffix');
+      window.lana?.log('Invalid parameters passed to getPriceElementSuffix');
       return '';
     }
 
@@ -80,7 +80,7 @@ async function getPriceElementSuffix(placeholderArr, response) {
     try {
       placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
     } catch (placeholderError) {
-      console.error('Failed to replace placeholders:', placeholderError);
+      window.lana?.log('Failed to replace placeholders:', placeholderError);
       window.lana?.log('Placeholder replacement error', {
         placeholders: cleanPlaceholderArr,
         error: placeholderError.message,
@@ -89,7 +89,7 @@ async function getPriceElementSuffix(placeholderArr, response) {
     }
 
     if (!placeholdersResponse || !Array.isArray(placeholdersResponse)) {
-      console.warn('Failed to get placeholders response');
+      window.lana?.log('Failed to get placeholders response');
       return '';
     }
 
@@ -97,7 +97,7 @@ async function getPriceElementSuffix(placeholderArr, response) {
       ? ''
       : placeholdersResponse[i] || '')).join(' ');
   } catch (error) {
-    console.error('Error in getPriceElementSuffix:', error);
+    window.lana?.log('Error in getPriceElementSuffix:', error);
     window.lana?.log('getPriceElementSuffix error', { error: error.message });
     return '';
   }
@@ -121,7 +121,7 @@ function handlePriceToken(pricingArea, priceToken = YEAR_2_PRICING_TOKEN, newPri
       }
     });
   } catch (e) {
-    window.lana.log(e);
+    window.lana?.log(e);
   }
 }
 
@@ -245,11 +245,11 @@ async function handlePrice(pricingArea, specialPromo, groupID) {
 
     const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
     if (!pricingBtnContainer) {
-      console.warn('Pricing button container not found');
+      window.lana?.log('Pricing button container not found');
       return;
     }
     if (!priceEl) {
-      console.warn('Price element with token not found');
+      window.lana?.log('Price element with token not found');
       return;
     }
 
@@ -268,7 +268,7 @@ async function handlePrice(pricingArea, specialPromo, groupID) {
         throw new Error('Empty response from pricing API');
       }
     } catch (pricingError) {
-      console.error('Failed to fetch pricing data:', pricingError);
+      window.lana?.log('Failed to fetch pricing data:', pricingError);
       window.lana?.log('Pricing API failure', {
         href: priceEl?.href,
         error: pricingError.message,
@@ -308,7 +308,7 @@ async function handlePrice(pricingArea, specialPromo, groupID) {
     pricingBtnContainer?.remove();
     pricingSuffixTextElem?.remove();
   } catch (error) {
-    console.error('Error in handlePrice:', error);
+    window.lana?.log('Error in handlePrice:', error);
     window.lana?.log('handlePrice error', { error: error.message });
   }
 }
@@ -577,7 +577,6 @@ export default async function init(el) {
           equalizeHeights(el);
           intersectionObserver.unobserve(entry.target);
         } catch (error) {
-          console.error('Error in intersection observer:', error);
           window.lana?.log('IntersectionObserver error', { error: error.message });
         }
       }
@@ -592,8 +591,6 @@ export default async function init(el) {
     cardElements.forEach((card) => {
       intersectionObserver.observe(card);
     });
-  } else {
-    console.warn('No cards found for intersection observer');
   }
 
   const parentSection = el.closest('.section');
@@ -621,11 +618,9 @@ export default async function init(el) {
         });
 
         if (displayChanged && parentSection.offsetHeight > 0) {
-          console.log('Section display changed, equalizing heights');
           equalizeHeights(el);
         }
       } catch (error) {
-        console.error('Error in mutation observer:', error);
         window.lana?.log('MutationObserver error', { error: error.message });
       }
     }, 100));
@@ -646,7 +641,6 @@ export default async function init(el) {
     try {
       equalizeHeights(el);
     } catch (error) {
-      console.error('Error in resize handler:', error);
       window.lana?.log('Resize handler error', { error: error.message });
     }
   }, 100);
@@ -671,10 +665,7 @@ export default async function init(el) {
 
       // Clear stored references
       el.sectionMutationObserver = null;
-
-      console.log('All observers cleaned up successfully');
     } catch (error) {
-      console.error('Error during observer cleanup:', error);
       window.lana?.log('Observer cleanup error', { error: error.message });
     }
   };
