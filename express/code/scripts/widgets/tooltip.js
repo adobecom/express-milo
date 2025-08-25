@@ -160,9 +160,8 @@ function buildTooltip(elements, tooltipPattern) {
 
 export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
-    ({ createTag, getConfig, loadStyle } = utils);
+    ({ createTag, getConfig } = utils);
   });
-  const config = getConfig();
   return new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/scripts/widgets/tooltip.css`);
     buildTooltip(pricingArea, tooltipPattern);
