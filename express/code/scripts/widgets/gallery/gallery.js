@@ -17,8 +17,7 @@ const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none"
 
 let createTag; let loadStyle;
 
-function createControl(items, container, config) {
-  const { center } = config;
+function createControl(items, container) {
   const control = createTag('div', { class: 'gallery-control loading' });
   const prevButton = createTag('button', {
     class: 'prev',
@@ -37,9 +36,7 @@ function createControl(items, container, config) {
     if (first === -1) return; // middle of swapping only page
     if (first + inc < 0 || first + inc >= len) return; // no looping
     const target = items[(first + inc + len) % len];
-    if (center) container.classList.add('is-centering');
-    target.scrollIntoView({ behavior: 'smooth', inline: center ? 'center' : 'start', block: 'nearest' });
-    if (center) setTimeout(() => container.classList.remove('is-centering'), 10);
+    target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
   }, 30);
   prevButton.addEventListener('click', () => pageInc(-1));
   nextButton.addEventListener('click', () => pageInc(1));
@@ -83,15 +80,13 @@ function createControl(items, container, config) {
 export default async function buildGallery(
   items,
   container = items?.[0]?.parentNode,
-  config = { center: false },
 ) {
   ({ createTag, loadStyle } = await import(`${getLibs()}/utils/utils.js`));
-  const control = createControl([...items], container, config);
+  const control = createControl([...items], container);
   await new Promise((res) => {
     loadStyle('/express/code/scripts/widgets/gallery/gallery.css', res);
   });
   container.classList.add('gallery');
-  if (config.center) container.classList.add('center');
   container.setAttribute('aria-roledescription', 'carousel');
   container.setAttribute('role', 'group');
   [...items].forEach((item) => {

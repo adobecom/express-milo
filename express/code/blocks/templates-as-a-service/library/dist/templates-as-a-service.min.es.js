@@ -10248,7 +10248,7 @@ function hv(f) {
 }
 function Dd(f, g) {
   const h = /\[(.+)\]/.exec(g)[1].split(";"), o = new URLSearchParams(f);
-  return h.forEach((z) => {
+  return o.delete("limit"), o.delete("start"), h.forEach((z) => {
     const N = /^-(.+)/.exec(z);
     if (N) {
       o.delete(N[1]);
