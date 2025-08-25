@@ -1471,13 +1471,18 @@ main.milo-grid-wide,
 body.milo-grid-use-ax,
 main.milo-grid-use-ax,
 .section.milo-grid-use-ax {
-  /* Container width and margins */
-  --grid-container-width: var(--ax-grid-container-width);
-  --grid-margins-width: var(--ax-grid-margin);
+  /* Compute Milo container from AX margins; center with computed margins */
+  --grid-container-width: calc(100vw - (var(--ax-grid-margin) * 2));
+  --grid-margins-width: calc((100vw - var(--grid-container-width)) / 2);
+}
 
-  /* Derived margins for specific grid widths */
-  --grid-margins-width-10: calc((100vw - var(--ax-grid-10-col-width)) / 2);
-  --grid-margins-width-8: calc((100vw - var(--ax-grid-8-col-width)) / 2);
-  --grid-margins-width-6: calc((100vw - var(--ax-grid-6-col-width)) / 2);
+/* Clamp Milo container to 1600px at large viewports */
+@media (min-width: 1600px) {
+  body.milo-grid-use-ax,
+  main.milo-grid-use-ax,
+  .section.milo-grid-use-ax {
+    --grid-container-width: 1600px;
+    --grid-margins-width: calc((100vw - 1600px) / 2);
+  }
 }
 
