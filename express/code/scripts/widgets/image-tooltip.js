@@ -172,7 +172,7 @@ export default async function handleImageTooltip(imgElement) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ getConfig } = utils);
   });
-  
+
   // Skip CSS loading in test environment
   if (!window.isTestEnv) {
     await onImageTooltipCSSLoad();
