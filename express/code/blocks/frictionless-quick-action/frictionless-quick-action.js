@@ -258,7 +258,7 @@ async function performUploadAction(files, block, quickAction) {
   const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
   url.searchParams.set('frictionlessUploadAssetId', encodedAssetId);
   url.searchParams.set('url', urlsMap[quickAction]);
-  // window.location.href = url.toString();
+  window.location.href = url.toString();
 }
 
 async function startSDKWithUnconvertedFiles(files, quickAction, block) {
