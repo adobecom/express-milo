@@ -1,9 +1,9 @@
-var $e = /* @__PURE__ */ ((t) => (t.IDLE = "idle", t.UPLOADING = "uploading", t.COMPLETED = "completed", t.FAILED = "failed", t))($e || {}), X;
+var nt = /* @__PURE__ */ ((t) => (t.IDLE = "idle", t.UPLOADING = "uploading", t.COMPLETED = "completed", t.FAILED = "failed", t))(nt || {}), X;
 (function(t) {
   t.ACCESS_DENIED = "http://ns.adobe.com/adobecloud/problem/accessdenied", t.ASSET_LOCKED = "http://ns.adobe.com/adobecloud/problem/assetlocked", t.ASSET_MOVED = "http://ns.adobe.com/adobecloud/problem/assetmoved", t.ASSET_NAME_CONFLICT = "http://ns.adobe.com/adobecloud/problem/assetnameconflict", t.ASSET_NAME_INVALID = "http://ns.adobe.com/adobecloud/problem/assetnamenotvalid", t.ASSET_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/assetnotfound", t.ASSET_STATE_NOT_ALLOWED = "http://ns.adobe.com/adobecloud/problem/assetstatenotallowed", t.BAD_REQUEST = "http://ns.adobe.com/adobecloud/problem/badrequest", t.BULK_REQUEST_NOT_ATTEMPTED = "http://ns.adobe.com/adobecloud/problem/bulkrequestnotattempted", t.COMPOSITE_INTEGRITY = "http://ns.adobe.com/adobecloud/problem/compositeintegrity", t.DCX_VALIDATION = "http://ns.adobe.com/adobecloud/problem/dcxvalidation", t.DIRECTORY_NOT_EMPTY = "http://ns.adobe.com/adobecloud/problem/directorynotempty", t.EMBED_INVALID = "http://ns.adobe.com/adobecloud/problem/embedinvalid", t.EMBED_TOO_LARGE = "http://ns.adobe.com/adobecloud/problem/embedtoolarge", t.ENCRYPTION_KEY_INACCESSIBLE = "http://ns.adobe.com/adobecloud/problem/encryptionkeyinaccessible", t.INVALID_FRAGMENT = "http://ns.adobe.com/adobecloud/problem/invalidfragment", t.LIMIT_CHILDREN_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/childrencount", t.LIMIT_COMPONENT_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/componentcount", t.LIMIT_EMBED_SELECTOR_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/embedspecifierselectorcount", t.LIMIT_MILESTONE_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/milestonecount", t.LIMIT_MILESTONE_LABEL_LENGTH = "http://ns.adobe.com/adobecloud/problem/limit/milestonelabellength", t.LIMIT_NAME_LENGTH = "http://ns.adobe.com/adobecloud/problem/limit/namelength", t.LIMIT_OPERATION_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/operationcount", t.LIMIT_PATH_SEGMENT_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/pathsegmentcount", t.LIMIT_RESOURCE_COUNT = "http://ns.adobe.com/adobecloud/problem/limit/resourcecount", t.LIMIT_RESOURCE_SIZE = "http://ns.adobe.com/adobecloud/problem/limit/resourcesize", t.NOT_ENTITLED = "http://ns.adobe.com/adobecloud/problem/notentitled", t.OPERATION_FAILED = "http://ns.adobe.com/adobecloud/problem/operationfailed", t.OPERATION_TARGET_CONFLICT = "http://ns.adobe.com/adobecloud/problem/operation/targetconflict", t.QUOTA_EXCEEDED = "http://ns.adobe.com/adobecloud/problem/quotaexceeded", t.REPOSITORY_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/repositorynotfound", t.RESOURCE_BLOCKED = "http://ns.adobe.com/adobecloud/problem/resourceblocked", t.RESOURCE_NOT_ALLOWED = "http://ns.adobe.com/adobecloud/problem/resourcenotallowed", t.RESOURCE_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/resourcenotfound", t.RESOURCE_NOT_READY = "http://ns.adobe.com/adobecloud/problem/resourcenotready", t.RESPONSE_TOO_LARGE = "http://ns.adobe.com/adobecloud/problem/responsetoolarge", t.USER_BLOCKED = "http://ns.adobe.com/adobecloud/problem/userblocked", t.VERSION_NOT_FOUND = "http://ns.adobe.com/adobecloud/problem/versionnotfound", t.PARTIAL_ASSET = "http://ns.adobe.com/adobecloud/problem/partialasset";
 })(X || (X = {}));
 const I = { ASSET_MOVED: "ASSET_MOVED", INVALID_JSON: "INVALID_JSON", READ_ONLY: "READ_ONLY", INVALID_PARAMS: "", INVALID_LINKS: "INVALID_LINKS", PRECONDITION_FAILED: "PRECONDITION_FAILED", INVALID_DATA: "INVALID_DATA", DUPLICATE_VALUE: "DUPLICATE_VALUE", NO_BASE_BRANCH_DATA: "NO_BASE_BRANCH_DATA", INVALID_STATE: "INVALID_STATE", DELETED_COMPOSITE: "DELETED_COMPOSITE", INCOMPLETE_COMPOSITE: "INCOMPLETE_COMPOSITE", UNEXPECTED_RESPONSE: "UNEXPECTED_RESPONSE", NETWORK_ERROR: "NETWORK_ERROR", COMPONENT_DOWNLOAD_ERROR: "COMPONENT_DOWNLOAD_ERROR", COMPONENT_UPLOAD_ERROR: "COMPONENT_UPLOAD_ERROR", COMPONENT_MODIFIED_ERROR: "COMPONENT_MODIFIED_ERROR", UPDATE_CONFLICT: "UPDATE_CONFLICT", NO_COMPOSITE: "NO_COMPOSITE", ALREADY_EXISTS: "ALREADY_EXISTS", SERVICE_IS_INACTIVE: "SERVICE_IS_INACTIVE", EXCEEDS_QUOTA: "EXCEEDS_QUOTA", NOT_IMPLEMENTED: "NOT_IMPLEMENTED", RETRYABLE_SERVER_ERROR: "RETRYABLE_SERVER_ERROR", TIMED_OUT: "TIMED_OUT", UNEXPECTED: "UNEXPECTED", TERMINATED_INPUTSTREAM: "TERMINATED_INPUTSTREAM", WRONG_ENDPOINT: "WRONG_ENDPOINT", OUT_OF_SPACE: "ENOSPC", FILE_EXISTS_IN_CLOUD: "FILE_EXISTS_IN_CLOUD", ASSET_NOT_FOUND: "ASSET_NOT_FOUND", COMPOSITE_NOT_FOUND: "COMPOSITE_NOT_FOUND", NOT_FOUND: "NOT_FOUND", UNAUTHORIZED: "UNAUTHORIZED", FORBIDDEN: "FORBIDDEN", METHOD_NOT_ALLOWED: "METHOD_NOT_ALLOWED", NOT_ACCEPTABLE: "NOT_ACCEPTABLE", BANDWIDTH_LIMIT_EXCEEDED: "BANDWIDTH_LIMIT_EXCEEDED", ABORTED: "ABORTED", TOO_MANY_REDIRECTS: "TOO_MANY_REDIRECTS", INSECURE_REDIRECT: "INSECURE_REDIRECT", RESOURCE_NOT_READY: "RESOURCE_NOT_READY", ASSET_LOCKED: "ASSET_LOCKED" }, xo = { [I.SERVICE_IS_INACTIVE]: !0, [I.ABORTED]: !0, [I.INSECURE_REDIRECT]: !0, [I.TOO_MANY_REDIRECTS]: !0, [I.NOT_IMPLEMENTED]: !0, [I.EXCEEDS_QUOTA]: !0, [I.RETRYABLE_SERVER_ERROR]: !0, [I.TIMED_OUT]: !0, [I.TERMINATED_INPUTSTREAM]: !0, [I.WRONG_ENDPOINT]: !0, [I.OUT_OF_SPACE]: !0, [I.INVALID_PARAMS]: !0, [I.INVALID_STATE]: !0 };
-let c = class Ze extends Error {
+let c = class Xe extends Error {
   constructor(e, s, r, n, o) {
     var i;
     if (super(), this.code = e, this.name = "AdobeDCXError", this._additionalData = {}, ((i = n == null ? void 0 : n.headers) === null || i === void 0 ? void 0 : i["content-type"]) === "application/problem+json" && n.response && typeof n.response == "object" && typeof n.response.slice == "function") try {
@@ -13,7 +13,7 @@ let c = class Ze extends Error {
       const d = n.response;
       n.response = { originalBody: d, message: "Failed to parse JSON problem type response body.", parseError: a };
     }
-    if (r instanceof Error && (this._underlyingError = r), this._response = n || (it(r) ? r.response : void 0), this._additionalData = o, this._message = s, this.message = (typeof e == "string" && e !== "" ? "[" + e + "] " : "") + (this._message || ""), Object.setPrototypeOf(this, Ze.prototype), Error.captureStackTrace) Error.captureStackTrace(this, Ze);
+    if (r instanceof Error && (this._underlyingError = r), this._response = n || (it(r) ? r.response : void 0), this._additionalData = o, this._message = s, this.message = (typeof e == "string" && e !== "" ? "[" + e + "] " : "") + (this._message || ""), Object.setPrototypeOf(this, Xe.prototype), Error.captureStackTrace) Error.captureStackTrace(this, Xe);
     else try {
       const a = new Error();
       if (a.name = this.name, a.stack) {
@@ -50,18 +50,18 @@ let c = class Ze extends Error {
     if (n && typeof n == "object") {
       const h = n.statusCode, l = h === 403 && (((a = (i = (o = n.response) === null || o === void 0 ? void 0 : o.message) === null || i === void 0 ? void 0 : i.match(/code=(\d+.\d+)/)) === null || a === void 0 ? void 0 : a[1]) === "403.1" || ((d = n.response) === null || d === void 0 ? void 0 : d.type) === X.QUOTA_EXCEEDED);
       if (h >= 500 && h < 600 || l) h === 501 ? (e = I.NOT_IMPLEMENTED, s = "Unimplemented request") : h === 507 || l ? (e = I.EXCEEDS_QUOTA, s = "Quota exceeded") : (e = I.RETRYABLE_SERVER_ERROR, s = "Server error");
-      else if (r instanceof Ze && e === r.code && r.code === this.UNEXPECTED_RESPONSE) return r;
+      else if (r instanceof Xe && e === r.code && r.code === this.UNEXPECTED_RESPONSE) return r;
     }
-    return new Ze(e, s, r, n);
+    return new Xe(e, s, r, n);
   }
   toString() {
     return `${this.name}: ${this.message}`;
   }
   static networkError(e, s, r) {
-    return Ze.wrapError(I.NETWORK_ERROR, e, s, r);
+    return Xe.wrapError(I.NETWORK_ERROR, e, s, r);
   }
   static unexpectedResponse(e, s, r) {
-    return Ze.wrapError(I.UNEXPECTED_RESPONSE, e, s, r);
+    return Xe.wrapError(I.UNEXPECTED_RESPONSE, e, s, r);
   }
 };
 function Vs(t, e, s) {
@@ -88,11 +88,11 @@ const Gt = /* @__PURE__ */ new Map([[400, { code: I.UNEXPECTED_RESPONSE, message
   const r = on.get((s = (e = t.response) === null || e === void 0 ? void 0 : e.type) !== null && s !== void 0 ? s : "") || Gt.get(t.statusCode);
   return r ? new c(r.code, r.message, void 0, t, t.response) : void 0;
 }, Yt = (t, e) => t && e ? t < 300 && t > 199 || Tt(e) || !1 : new c(I.NETWORK_ERROR, "Invalid or missing status code or response", void 0, e);
-let wt;
+let Lt;
 const jo = new Uint8Array(16);
 function Vo() {
-  if (!wt && (wt = typeof crypto < "u" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto), !wt)) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
-  return wt(jo);
+  if (!Lt && (Lt = typeof crypto < "u" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto), !Lt)) throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");
+  return Lt(jo);
 }
 var Fo = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 const oe = [];
@@ -105,7 +105,7 @@ function Ho(t, e, s) {
     return oe[n[o + 0]] + oe[n[o + 1]] + oe[n[o + 2]] + oe[n[o + 3]] + "-" + oe[n[o + 4]] + oe[n[o + 5]] + "-" + oe[n[o + 6]] + oe[n[o + 7]] + "-" + oe[n[o + 8]] + oe[n[o + 9]] + "-" + oe[n[o + 10]] + oe[n[o + 11]] + oe[n[o + 12]] + oe[n[o + 13]] + oe[n[o + 14]] + oe[n[o + 15]];
   }(r);
 }
-const $o = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && typeof t == "object", q = (t) => typeof t == "function", fe = (t) => Array.isArray(t), Go = (t) => S(t) && q(t.constructor) && t.constructor.name === "ArrayBuffer" && q(t.slice), Or = (t) => {
+const $o = (t) => C(t) && (q(t.pipe) || q(t.pipeTo)), C = (t) => t != null && typeof t == "object", q = (t) => typeof t == "function", fe = (t) => Array.isArray(t), Go = (t) => C(t) && q(t.constructor) && t.constructor.name === "ArrayBuffer" && q(t.slice), Or = (t) => {
   if (typeof t != "string") return !1;
   const e = t.toLowerCase().split("application/");
   if (e.length < 2) return !1;
@@ -121,13 +121,13 @@ const $o = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && ty
   return typeof (e = t) == "string" && Fo.test(e);
   var e;
 }, he = (...t) => !t || !Array.isArray(t) || t.length < 1 ? {} : t.reduce((e, s) => {
-  const r = S(e) ? e : {};
-  if (S(s)) for (const n in s) Object.prototype.hasOwnProperty.call(s, n) && (r[n] = s[n]);
+  const r = C(e) ? e : {};
+  if (C(s)) for (const n in s) Object.prototype.hasOwnProperty.call(s, n) && (r[n] = s[n]);
   return r;
 }), xe = (t, ...e) => {
   if (!e.length) return t;
   const s = e.shift();
-  if (S(t) && S(s)) for (const r in s) S(s[r]) && !fe(s[r]) ? (t[r] || Object.assign(t, { [r]: {} }), xe(t[r], s[r])) : fe(t[r]) && fe(s[r]) ? Object.assign(t, { [r]: s[r] }) : Object.assign(t, { [r]: s[r] });
+  if (C(t) && C(s)) for (const r in s) C(s[r]) && !fe(s[r]) ? (t[r] || Object.assign(t, { [r]: {} }), xe(t[r], s[r])) : fe(t[r]) && fe(s[r]) ? Object.assign(t, { [r]: s[r] }) : Object.assign(t, { [r]: s[r] });
   return xe(t, ...e);
 }, an = (...t) => {
   if (!t || !Array.isArray(t)) return "";
@@ -140,7 +140,7 @@ const $o = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && ty
 }, qo = new RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?"), zo = (t) => {
   const e = t.match(qo) || [];
   return { scheme: e[2], authority: e[4], path: e[5], query: e[7], fragment: e[9] };
-}, Ss = (t) => {
+}, Cs = (t) => {
   const e = zo(t), s = e.scheme, r = e.authority, n = s === "https" ? 443 : s === "http" ? 80 : -1;
   let o;
   return s && r && (o = (s + "://" + r).toLowerCase(), n >= 0 && r.indexOf(":") < 0 && (o = o + ":" + n)), o;
@@ -148,13 +148,13 @@ const $o = (t) => S(t) && (q(t.pipe) || q(t.pipeTo)), S = (t) => t != null && ty
   if (!t || typeof t != "string") return t;
   const e = (t = (t = (t = (t = t.indexOf("//") > -1 ? t.split("/")[2] : t.split("/")[0]).split("?")[0]).split("/")[0]).split(":")[0]).split(".");
   return t = e.slice(Math.max(e.length - 2, 0)).join(".");
-}, Rt = 48, Ko = 49, Kt = 57, Cs = 97, Ns = 65, cn = 102, dn = 70, Pr = (t) => {
+}, Rt = 48, Ko = 49, Kt = 57, Ss = 97, Ns = 65, cn = 102, dn = 70, Pr = (t) => {
   const e = t.charCodeAt(0);
-  return e >= Rt && e <= Kt || e >= Cs && e <= cn || e >= Ns && e <= dn;
+  return e >= Rt && e <= Kt || e >= Ss && e <= cn || e >= Ns && e <= dn;
 }, Vt = (t) => t.length >= 3 && t.charAt(0) === "%" && Pr(t.charAt(1)) && Pr(t.charAt(2)), Mt = (t) => {
   const e = t.charCodeAt(0);
-  return e >= Rt && e <= Kt ? e - Rt : e >= Cs && e <= cn ? 10 + e - Cs : e >= Ns && e <= dn ? 10 + e - Ns : 0;
-}, Fs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~", Sr = "0123456789ABCDEF", Hs = (t) => {
+  return e >= Rt && e <= Kt ? e - Rt : e >= Ss && e <= cn ? 10 + e - Ss : e >= Ns && e <= dn ? 10 + e - Ns : 0;
+}, Fs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~", Cr = "0123456789ABCDEF", Hs = (t) => {
   const e = [];
   for (let s = 0; s < 128; ++s) e.push(t.indexOf(String.fromCharCode(s)) !== -1);
   return e;
@@ -163,7 +163,7 @@ Hs(Fs + "/");
 const Zo = (t, e) => {
   if (t < 128 && e[t]) return String.fromCharCode(t);
   let s = "%";
-  return s += Sr.charAt(t >> 4 & 15), s += Sr.charAt(15 & t), s;
+  return s += Cr.charAt(t >> 4 & 15), s += Cr.charAt(15 & t), s;
 }, Jo = (t) => {
   const e = [];
   for (let s = 0; s < t.length; s++) {
@@ -251,7 +251,7 @@ const Zo = (t, e) => {
   } else Vt(t.substr(s)) ? (r += t.substr(s, 3), s += 3) : r += $s(t.charAt(s++), hn);
   var m, b;
   return r;
-}, Cr = (t, e) => {
+}, Sr = (t, e) => {
   if (!t || typeof t != "string" || !e) return "";
   let s;
   return s = typeof e == "string" ? t.match(e) : e.exec(t), s ? s[1] : "";
@@ -287,7 +287,7 @@ function ye(t, e) {
 function Ie(t) {
   return new TextEncoder().encode(t);
 }
-function we(t, e) {
+function Le(t, e) {
   const s = new Uint8Array(t.length + e.length);
   return s.set(t, 0), s.set(e, t.length), s;
 }
@@ -346,13 +346,13 @@ const ti = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
   const e = {};
   for (const [s, r] of Object.entries(t)) e[s.toLowerCase()] = fe(r) ? r.join(";") : r;
   return e;
-}, Oe = (t, e, s) => fe(e) ? new c(c.INVALID_PARAMS, `Param '${t}' type must be one of: [${e.join(",")}].${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`) : new c(c.INVALID_PARAMS, `Param '${t}' must be of type '${e}'.${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`), qe = (t, e, s, r = !1, n = []) => {
+}, Oe = (t, e, s) => fe(e) ? new c(c.INVALID_PARAMS, `Param '${t}' type must be one of: [${e.join(",")}].${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`) : new c(c.INVALID_PARAMS, `Param '${t}' must be of type '${e}'.${s && s.length > 0 ? " Possible values: " + s.join(", ") + "." : ""}`), Ye = (t, e, s, r = !1, n = []) => {
   if (r && e == null) return !0;
   if (fe(s)) {
     for (const i in s) {
       const a = s[i];
       try {
-        return qe(t, e, a, r, n), !0;
+        return Ye(t, e, a, r, n), !0;
       } catch {
       }
     }
@@ -364,7 +364,7 @@ const ti = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
   if (s.endsWith("[]")) {
     if (!fe(e)) throw Oe(t, s, n);
     return e.forEach((i, a) => {
-      qe(`${t}[${a}]`, i, s.substr(0, s.length - 2));
+      Ye(`${t}[${a}]`, i, s.substr(0, s.length - 2));
     }), !0;
   }
   let o = s.toLowerCase();
@@ -390,13 +390,13 @@ const ti = /^([^:]+):(.*)$/, Dr = /^\s+|\s+$/g, Ys = (t) => {
   return !0;
 };
 function E(...t) {
-  return t.map((e) => qe(...e));
+  return t.map((e) => Ye(...e));
 }
 function un(t, e, ...s) {
   if (e = e ? " " + e + " " : " ", !t || typeof t != "object") throw new c(c.INVALID_PARAMS, `Object${e}is invalid.`);
   try {
     s.forEach((r) => {
-      qe(r[0], t[r[0]], r[1], r[2] || !1, r[3] || []);
+      Ye(r[0], t[r[0]], r[1], r[2] || !1, r[3] || []);
     });
   } catch (r) {
     throw new c(c.INVALID_PARAMS, `Object${e}is invalid. ${r.message.replace("Param", "Property")}`, r);
@@ -419,14 +419,14 @@ function ri(t, e = { mode: "id" }) {
   }
   return s;
 }
-function w(t) {
-  if (!S(t)) throw new Error("Expecting object");
+function L(t) {
+  if (!C(t)) throw new Error("Expecting object");
   const e = {};
   for (const s in t) t[s] != null && (e[s] = t[s]);
   return e;
 }
 const ni = /^utf-?8|ascii|utf-?16-?le|ucs-?2|base-?64|latin-?1$/i, oi = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, ii = /\s|\uFEFF|\xA0/, ai = /\r?\n[\x20\x09]+/g, ci = /[;,"]/, di = /[;,"]|\s/, xt = 1, kr = 2, fs = 4;
-function Lr(t) {
+function wr(t) {
   return t.replace(oi, "");
 }
 function Ft(t) {
@@ -436,7 +436,7 @@ function hi(t, e) {
   for (; Ft(t[e]); ) e++;
   return e;
 }
-function wr(t) {
+function Lr(t) {
   return di.test(t);
 }
 class li {
@@ -464,7 +464,7 @@ class li {
   }
   parse(e, s = 0) {
     let r = s ? e.slice(s) : e;
-    r = Lr(r).replace(ai, "");
+    r = wr(r).replace(ai, "");
     let n = xt;
     const o = r.length;
     let i = 0, a = null;
@@ -499,7 +499,7 @@ class li {
         }
         const d = r.indexOf("=", i);
         if (d === -1) throw new Error("Expected attribute delimiter at offset " + i);
-        const h = Lr(r.slice(i, d)).toLowerCase();
+        const h = wr(r.slice(i, d)).toLowerCase();
         let l = "";
         if (i = d + 1, i = hi(r, i), r[i] === '"') for (i++; i < o; ) {
           if (r[i] === '"') {
@@ -549,7 +549,7 @@ const ks = (t) => ni.test(t), ui = (t) => t === "rel" || t === "type" || t === "
   const n = (r.encoding || "utf-8").toUpperCase(), o = r.language || "en";
   let i = "";
   return i = Buffer.isBuffer(r.value) && ks(n) ? r.value.toString(n) : Buffer.isBuffer(r.value) ? r.value.toString("hex").replace(/[0-9a-f]{2}/gi, "%$1") : encodeURIComponent(r.value), s + "=" + n + "'" + o + "'" + i;
-})(t, e) : (/* @__PURE__ */ ((s) => s === "rel" || s === "type" || s === "anchor")(t) ? e = wr(e) ? '"' + Mr(e) + '"' : Mr(e) : wr(e) && (e = '"' + (e = (e = encodeURIComponent(e)).replace(/%20/g, " ").replace(/%2C/g, ",").replace(/%3B/g, ";")) + '"'), t + "=" + e);
+})(t, e) : (/* @__PURE__ */ ((s) => s === "rel" || s === "type" || s === "anchor")(t) ? e = Lr(e) ? '"' + Mr(e) + '"' : Mr(e) : Lr(e) && (e = '"' + (e = (e = encodeURIComponent(e)).replace(/%20/g, " ").replace(/%2C/g, ",").replace(/%3B/g, ";")) + '"'), t + "=" + e);
 function Qt(t, e, s, r = "id") {
   const n = qs(t)[e];
   if (n) {
@@ -563,22 +563,22 @@ function Qt(t, e, s, r = "id") {
 function H(t, e, s = "id") {
   const r = qs(t), n = r[e];
   let o;
-  if (S(n) && typeof n.href == "string" ? o = n.href : Array.isArray(n) && (o = Qt(r, e, "href", s)), typeof o != "string") throw new c(c.INVALID_PARAMS, "Missing or invalid link href.");
+  if (C(n) && typeof n.href == "string" ? o = n.href : Array.isArray(n) && (o = Qt(r, e, "href", s)), typeof o != "string") throw new c(c.INVALID_PARAMS, "Missing or invalid link href.");
   return o;
 }
 function Z(t, e, s, r = "id") {
   const n = H(qs(t), e, r);
-  return Ve(n, w(s));
+  return Ve(n, L(s));
 }
 const _i = (t, e = 0) => new li().parse(t, e);
 function qs(t) {
-  return S(t) ? "_links" in t ? t._links : "links" in t ? t.links : t : {};
+  return C(t) ? "_links" in t ? t._links : "links" in t ? t.links : t : {};
 }
 let Ut;
 const fi = () => {
   if (Ut) return Ut;
   const t = qt();
-  return Ut = t && S(globalThis.performance) && q(globalThis.performance.now) ? globalThis.performance : t && S(globalThis.perf_hooks) && S(globalThis.perf_hooks.performance) && q(globalThis.perf_hooks.performance.now) ? globalThis.perf_hooks.performance : Yo() && S(self.performance) && q(self.performance.now) ? self.performance : Date, Ut;
+  return Ut = t && C(globalThis.performance) && q(globalThis.performance.now) ? globalThis.performance : t && C(globalThis.perf_hooks) && C(globalThis.perf_hooks.performance) && q(globalThis.perf_hooks.performance.now) ? globalThis.perf_hooks.performance : Yo() && C(self.performance) && q(self.performance.now) ? self.performance : Date, Ut;
 }, ie = () => fi().now(), Ei = (t) => Ds(void 0, void 0, void 0, function* () {
   return new Promise((e) => setTimeout(e, t));
 });
@@ -594,7 +594,7 @@ function fn(t, e, s, r, n) {
     }));
   });
 }
-var xr, Ur, Br, Se, z;
+var xr, Ur, Br, Ce, z;
 (function(t) {
   t[t.Success = 0] = "Success", t[t.Error = 1] = "Error";
 })(xr || (xr = {})), function(t) {
@@ -603,13 +603,13 @@ var xr, Ur, Br, Se, z;
   t[t.Push = 0] = "Push", t[t.MinPull = 1] = "MinPull", t[t.VersionPull = 2] = "VersionPull", t[t.Upload = 3] = "Upload", t[t.Download = 4] = "Download", t[t.Create = 5] = "Create", t[t.Unknown = 6] = "Unknown";
 }(Br || (Br = {})), function(t) {
   t.PushComposite = "analyticsPush", t.CreateComposite = "analyticsCreate", t.PullComposite = "analyticsPull", t.PullCompositeVersion = "analyticsPullVersion", t.UploadComponent = "analyticsUpload", t.DownloadComponent = "analyticsDownload", t.All = "*";
-}(Se || (Se = {})), function(t) {
+}(Ce || (Ce = {})), function(t) {
   t[t.Deprecated = 0] = "Deprecated", t[t.Error = 1] = "Error", t[t.Warn = 2] = "Warn", t[t.Log = 3] = "Log", t[t.Debug = 4] = "Debug";
 }(z || (z = {}));
 const gi = { [z.Deprecated]: "error", [z.Error]: "error", [z.Log]: "log", [z.Warn]: "warn", [z.Debug]: "debug" };
 class de extends Gs {
   constructor(e) {
-    super([Se.CreateComposite, Se.UploadComponent, Se.PushComposite, Se.PullComposite, Se.PullCompositeVersion, Se.DownloadComponent]), this._logLevel = z.Warn, this._prevDebugTime = ie(), this._debugFormatter = (s, r, n, o) => `[${s} (+${(1e3 * (r - n)).toFixed(0)})] ${o.map((i) => typeof i == "string" ? i : JSON.stringify(i)).join(" ")}`, this._debugNamespaces = [], this._debugSkips = [], this.suppressDeprecationWarnings = !1, e && (this._logCallback = e), this._initNamespaces();
+    super([Ce.CreateComposite, Ce.UploadComponent, Ce.PushComposite, Ce.PullComposite, Ce.PullCompositeVersion, Ce.DownloadComponent]), this._logLevel = z.Warn, this._prevDebugTime = ie(), this._debugFormatter = (s, r, n, o) => `[${s} (+${(1e3 * (r - n)).toFixed(0)})] ${o.map((i) => typeof i == "string" ? i : JSON.stringify(i)).join(" ")}`, this._debugNamespaces = [], this._debugSkips = [], this.suppressDeprecationWarnings = !1, e && (this._logCallback = e), this._initNamespaces();
   }
   get debugNamespaces() {
     return this._debugNamespaces;
@@ -625,8 +625,8 @@ class de extends Gs {
     return this._logLevel;
   }
   on(e, s) {
-    if (e !== Se.All) return super.on(e, s);
-    const r = Object.values(Se);
+    if (e !== Ce.All) return super.on(e, s);
+    const r = Object.values(Ce);
     let n;
     for (let o = 0, i = r.length; o < i; o++) {
       const a = r[o];
@@ -647,7 +647,7 @@ class de extends Gs {
     return this._logCallback;
   }
   _initNamespaces() {
-    qt() ? this.setDebugNamespaces(process.env.DCX_DEBUG || "") : S(globalThis) && S(globalThis.dcxjs) && this.setDebugNamespaces(globalThis.dcxjs.debug || ""), this._debugNamespaces.length > 0 && (this._logLevel = z.Debug);
+    qt() ? this.setDebugNamespaces(process.env.DCX_DEBUG || "") : C(globalThis) && C(globalThis.dcxjs) && this.setDebugNamespaces(globalThis.dcxjs.debug || ""), this._debugNamespaces.length > 0 && (this._logLevel = z.Debug);
   }
   _log(e, s, r) {
     try {
@@ -731,19 +731,19 @@ let Ii = class {
     return this.name;
   }
   static reject(e, s) {
-    return new C((r, n) => Promise.reject(e).catch((o) => {
+    return new S((r, n) => Promise.reject(e).catch((o) => {
       n && n(o);
     }), s);
   }
   static resolve(e, s) {
-    return new C((r) => {
-      S(e) && Vr(e.then) ? e.then((n) => {
+    return new S((r) => {
+      C(e) && Vr(e.then) ? e.then((n) => {
         r(n);
       }) : r(e);
     }, s);
   }
   static allSettled(e, s) {
-    return e.length === 0 ? C.resolve([], s) : new C((r) => {
+    return e.length === 0 ? S.resolve([], s) : new S((r) => {
       const n = [];
       e.map((o, i) => {
         o.then((a) => {
@@ -767,12 +767,12 @@ let Ii = class {
   }
   then(e, s) {
     if (e == null && s == null) return this;
-    const r = new C((n, o, i) => (i && i((a) => {
+    const r = new S((n, o, i) => (i && i((a) => {
       this.cancel.call(this, a), o && o(a);
     }), this._resolveOrReject.call(this, n, o)), this._props);
     return r._promise = r.getPromise().then((n) => {
       const o = e && e(n);
-      if (o instanceof C) {
+      if (o instanceof S) {
         const i = o;
         this.onCancel((a) => i.cancel(a));
         for (const a in this.props) i.props[a] == null && (i.props[a] = this.props[a]);
@@ -805,7 +805,7 @@ let Ii = class {
   _setProps(e) {
     if (this._props === e) return;
     this._props = e;
-    const s = [], r = Object.getOwnPropertyDescriptors(C), n = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(e));
+    const s = [], r = Object.getOwnPropertyDescriptors(S), n = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(e));
     if (n.constructor.value !== Object) for (const o in n) {
       if (o in r || o in this && !this._registeredProps.includes(o)) continue;
       s.push(o);
@@ -827,8 +827,8 @@ let Ii = class {
     this._handlers.cancel = [];
   }
 };
-const C = Ii;
-var Ti = typeof globalThis == "object" ? globalThis : typeof self == "object" ? self : typeof window == "object" ? window : typeof globalThis == "object" ? globalThis : {}, Je = "1.9.0", Fr = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
+const S = Ii;
+var Ti = typeof globalThis == "object" ? globalThis : typeof self == "object" ? self : typeof window == "object" ? window : typeof globalThis == "object" ? globalThis : {}, Ze = "1.9.0", Fr = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
 function Ai(t) {
   var e = /* @__PURE__ */ new Set([t]), s = /* @__PURE__ */ new Set(), r = t.match(Fr);
   if (!r)
@@ -868,31 +868,31 @@ function Ai(t) {
     return l.prerelease != null || n.major !== l.major ? o(d) : n.major === 0 ? n.minor === l.minor && n.patch <= l.patch ? i(d) : o(d) : n.minor <= l.minor ? i(d) : o(d);
   };
 }
-var mi = Ai(Je), yi = Je.split(".")[0], Pt = Symbol.for("opentelemetry.js.api." + yi), St = Ti;
-function Ct(t, e, s, r) {
+var mi = Ai(Ze), yi = Ze.split(".")[0], Pt = Symbol.for("opentelemetry.js.api." + yi), Ct = Ti;
+function St(t, e, s, r) {
   var n;
   r === void 0 && (r = !1);
-  var o = St[Pt] = (n = St[Pt]) !== null && n !== void 0 ? n : {
-    version: Je
+  var o = Ct[Pt] = (n = Ct[Pt]) !== null && n !== void 0 ? n : {
+    version: Ze
   };
   if (!r && o[t]) {
     var i = new Error("@opentelemetry/api: Attempted duplicate registration of API: " + t);
     return s.error(i.stack || i.message), !1;
   }
-  if (o.version !== Je) {
-    var i = new Error("@opentelemetry/api: Registration of version v" + o.version + " for " + t + " does not match previously registered API v" + Je);
+  if (o.version !== Ze) {
+    var i = new Error("@opentelemetry/api: Registration of version v" + o.version + " for " + t + " does not match previously registered API v" + Ze);
     return s.error(i.stack || i.message), !1;
   }
-  return o[t] = e, s.debug("@opentelemetry/api: Registered a global for " + t + " v" + Je + "."), !0;
+  return o[t] = e, s.debug("@opentelemetry/api: Registered a global for " + t + " v" + Ze + "."), !0;
 }
-function et(t) {
-  var e, s, r = (e = St[Pt]) === null || e === void 0 ? void 0 : e.version;
+function Qe(t) {
+  var e, s, r = (e = Ct[Pt]) === null || e === void 0 ? void 0 : e.version;
   if (!(!r || !mi(r)))
-    return (s = St[Pt]) === null || s === void 0 ? void 0 : s[t];
+    return (s = Ct[Pt]) === null || s === void 0 ? void 0 : s[t];
 }
 function Nt(t, e) {
-  e.debug("@opentelemetry/api: Unregistering a global for " + t + " v" + Je + ".");
-  var s = St[Pt];
+  e.debug("@opentelemetry/api: Unregistering a global for " + t + " v" + Ze + ".");
+  var s = Ct[Pt];
   s && delete s[t];
 }
 var vi = function(t, e) {
@@ -945,7 +945,7 @@ var vi = function(t, e) {
   }()
 );
 function _t(t, e, s) {
-  var r = et("diag");
+  var r = Qe("diag");
   if (r)
     return s.unshift(e), r[t].apply(r, bi([], vi(s), !1));
 }
@@ -984,11 +984,11 @@ var Pi = function(t, e) {
     }
   }
   return o;
-}, Si = function(t, e, s) {
+}, Ci = function(t, e, s) {
   if (arguments.length === 2) for (var r = 0, n = e.length, o; r < n; r++)
     (o || !(r in e)) && (o || (o = Array.prototype.slice.call(e, 0, r)), o[r] = e[r]);
   return t.concat(o || Array.prototype.slice.call(e));
-}, Ci = "diag", Ce = (
+}, Si = "diag", Se = (
   /** @class */
   function() {
     function t() {
@@ -996,9 +996,9 @@ var Pi = function(t, e) {
         return function() {
           for (var o = [], i = 0; i < arguments.length; i++)
             o[i] = arguments[i];
-          var a = et("diag");
+          var a = Qe("diag");
           if (a)
-            return a[n].apply(a, Si([], Pi(o), !1));
+            return a[n].apply(a, Ci([], Pi(o), !1));
         };
       }
       var s = this, r = function(n, o) {
@@ -1010,15 +1010,15 @@ var Pi = function(t, e) {
         typeof o == "number" && (o = {
           logLevel: o
         });
-        var l = et("diag"), p = Oi((a = o.logLevel) !== null && a !== void 0 ? a : ge.INFO, n);
+        var l = Qe("diag"), p = Oi((a = o.logLevel) !== null && a !== void 0 ? a : ge.INFO, n);
         if (l && !o.suppressOverrideMessage) {
           var _ = (d = new Error().stack) !== null && d !== void 0 ? d : "<failed to generate stacktrace>";
           l.warn("Current logger will be overwritten from " + _), p.warn("Current logger will overwrite one already registered from " + _);
         }
-        return Ct("diag", p, s, !0);
+        return St("diag", p, s, !0);
       };
       s.setLogger = r, s.disable = function() {
-        Nt(Ci, s);
+        Nt(Si, s);
       }, s.createComponentLogger = function(n) {
         return new Ri(n);
       }, s.verbose = e("verbose"), s.debug = e("debug"), s.info = e("info"), s.warn = e("warn"), s.error = e("error");
@@ -1097,14 +1097,14 @@ var Pi = function(t, e) {
     }, t;
   }()
 );
-Ce.instance();
-function Li(t) {
+Se.instance();
+function wi(t) {
   return t === void 0 && (t = {}), new ki(new Map(Object.entries(t)));
 }
 function gn(t) {
   return Symbol.for(t);
 }
-var wi = (
+var Li = (
   /** @class */
   /* @__PURE__ */ function() {
     function t(e) {
@@ -1121,7 +1121,7 @@ var wi = (
     }
     return t;
   }()
-), Mi = new wi(), st = /* @__PURE__ */ function() {
+), Mi = new Li(), tt = /* @__PURE__ */ function() {
   var t = function(e, s) {
     return t = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(r, n) {
       r.__proto__ = n;
@@ -1171,7 +1171,7 @@ var wi = (
 ), Ui = (
   /** @class */
   function(t) {
-    st(e, t);
+    tt(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1181,7 +1181,7 @@ var wi = (
 ), Bi = (
   /** @class */
   function(t) {
-    st(e, t);
+    tt(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1191,7 +1191,7 @@ var wi = (
 ), ji = (
   /** @class */
   function(t) {
-    st(e, t);
+    tt(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1201,7 +1201,7 @@ var wi = (
 ), Vi = (
   /** @class */
   function(t) {
-    st(e, t);
+    tt(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1220,7 +1220,7 @@ var wi = (
 ), Fi = (
   /** @class */
   function(t) {
-    st(e, t);
+    tt(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1229,7 +1229,7 @@ var wi = (
 ), Hi = (
   /** @class */
   function(t) {
-    st(e, t);
+    tt(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1238,7 +1238,7 @@ var wi = (
 ), $i = (
   /** @class */
   function(t) {
-    st(e, t);
+    tt(e, t);
     function e() {
       return t !== null && t.apply(this, arguments) || this;
     }
@@ -1323,7 +1323,7 @@ var wi = (
     return t.getInstance = function() {
       return this._instance || (this._instance = new t()), this._instance;
     }, t.prototype.setGlobalContextManager = function(e) {
-      return Ct(Es, e, Ce.instance());
+      return St(Es, e, Se.instance());
     }, t.prototype.active = function() {
       return this._getContextManager().active();
     }, t.prototype.with = function(e, s, r) {
@@ -1333,19 +1333,19 @@ var wi = (
     }, t.prototype.bind = function(e, s) {
       return this._getContextManager().bind(e, s);
     }, t.prototype._getContextManager = function() {
-      return et(Es) || oa;
+      return Qe(Es) || oa;
     }, t.prototype.disable = function() {
-      this._getContextManager().disable(), Nt(Es, Ce.instance());
+      this._getContextManager().disable(), Nt(Es, Se.instance());
     }, t;
   }()
-), Ls;
+), ws;
 (function(t) {
   t[t.NONE = 0] = "NONE", t[t.SAMPLED = 1] = "SAMPLED";
-})(Ls || (Ls = {}));
+})(ws || (ws = {}));
 var In = "0000000000000000", Tn = "00000000000000000000000000000000", ia = {
   traceId: Tn,
   spanId: In,
-  traceFlags: Ls.NONE
+  traceFlags: ws.NONE
 }, At = (
   /** @class */
   function() {
@@ -1481,7 +1481,7 @@ var Ea = new yn(), ga = (
 (function(t) {
   t[t.UNSET = 0] = "UNSET", t[t.OK = 1] = "OK", t[t.ERROR = 2] = "ERROR";
 })(mt || (mt = {}));
-var Aa = ts.getInstance(), ma = Ce.instance(), ya = (
+var Aa = ts.getInstance(), ma = Se.instance(), ya = (
   /** @class */
   function() {
     function t() {
@@ -1498,13 +1498,13 @@ var Aa = ts.getInstance(), ma = Ce.instance(), ya = (
     return t.getInstance = function() {
       return this._instance || (this._instance = new t()), this._instance;
     }, t.prototype.setGlobalMeterProvider = function(e) {
-      return Ct(Is, e, Ce.instance());
+      return St(Is, e, Se.instance());
     }, t.prototype.getMeterProvider = function() {
-      return et(Is) || va;
+      return Qe(Is) || va;
     }, t.prototype.getMeter = function(e, s, r) {
       return this.getMeterProvider().getMeter(e, s, r);
     }, t.prototype.disable = function() {
-      Nt(Is, Ce.instance());
+      Nt(Is, Se.instance());
     }, t;
   }()
 ), Ra = ba.getInstance(), Oa = (
@@ -1526,22 +1526,22 @@ function vn(t) {
 function Pa() {
   return vn(ts.getInstance().active());
 }
-function Sa(t, e) {
+function Ca(t, e) {
   return t.setValue(Js, e);
 }
-function Ca(t) {
+function Sa(t) {
   return t.deleteValue(Js);
 }
 var Ts = "propagation", Na = new Oa(), Da = (
   /** @class */
   function() {
     function t() {
-      this.createBaggage = Li, this.getBaggage = vn, this.getActiveBaggage = Pa, this.setBaggage = Sa, this.deleteBaggage = Ca;
+      this.createBaggage = wi, this.getBaggage = vn, this.getActiveBaggage = Pa, this.setBaggage = Ca, this.deleteBaggage = Sa;
     }
     return t.getInstance = function() {
       return this._instance || (this._instance = new t()), this._instance;
     }, t.prototype.setGlobalPropagator = function(e) {
-      return Ct(Ts, e, Ce.instance());
+      return St(Ts, e, Se.instance());
     }, t.prototype.inject = function(e, s, r) {
       return r === void 0 && (r = Qi), this._getGlobalPropagator().inject(e, s, r);
     }, t.prototype.extract = function(e, s, r) {
@@ -1549,12 +1549,12 @@ var Ts = "propagation", Na = new Oa(), Da = (
     }, t.prototype.fields = function() {
       return this._getGlobalPropagator().fields();
     }, t.prototype.disable = function() {
-      Nt(Ts, Ce.instance());
+      Nt(Ts, Se.instance());
     }, t.prototype._getGlobalPropagator = function() {
-      return et(Ts) || Na;
+      return Qe(Ts) || Na;
     }, t;
   }()
-), ka = Da.getInstance(), As = "trace", La = (
+), ka = Da.getInstance(), As = "trace", wa = (
   /** @class */
   function() {
     function t() {
@@ -1563,23 +1563,23 @@ var Ts = "propagation", Na = new Oa(), Da = (
     return t.getInstance = function() {
       return this._instance || (this._instance = new t()), this._instance;
     }, t.prototype.setGlobalTracerProvider = function(e) {
-      var s = Ct(As, this._proxyTracerProvider, Ce.instance());
+      var s = St(As, this._proxyTracerProvider, Se.instance());
       return s && this._proxyTracerProvider.setDelegate(e), s;
     }, t.prototype.getTracerProvider = function() {
-      return et(As) || this._proxyTracerProvider;
+      return Qe(As) || this._proxyTracerProvider;
     }, t.prototype.getTracer = function(e, s) {
       return this.getTracerProvider().getTracer(e, s);
     }, t.prototype.disable = function() {
-      Nt(As, Ce.instance()), this._proxyTracerProvider = new Hr();
+      Nt(As, Se.instance()), this._proxyTracerProvider = new Hr();
     }, t;
   }()
-), wa = La.getInstance();
+), La = wa.getInstance();
 const It = {
   context: Aa,
   diag: ma,
   metrics: Ra,
   propagation: ka,
-  trace: wa
+  trace: La
 }, Ma = "9.10.0";
 function xa(t) {
   return function(e) {
@@ -1623,42 +1623,42 @@ function pe(t, e) {
 const u = { ACCESS_CHECK: "http://ns.adobe.com/adobecloud/rel/ac/check", ACL_POLICY: "http://ns.adobe.com/adobecloud/rel/ac/policy", ANNOTATIONS: "http://ns.adobe.com/adobecloud/rel/annotations", APP_METADATA: "http://ns.adobe.com/adobecloud/rel/metadata/application", BASE_DIRECTORY: "http://ns.adobe.com/adobecloud/rel/directory/base", BLOCK_DOWNLOAD: "http://ns.adobe.com/adobecloud/rel/download", BLOCK_EXTEND: "http://ns.adobe.com/adobecloud/rel/block/extend", BLOCK_FINALIZE: "http://ns.adobe.com/adobecloud/rel/block/finalize", BLOCK_TRANSFER: "http://ns.adobe.com/adobecloud/rel/block/transfer", BLOCK_UPLOAD_INIT: "http://ns.adobe.com/adobecloud/rel/block/init", BULK_REQUEST: "http://ns.adobe.com/adobecloud/rel/bulk", COMPONENT: "http://ns.adobe.com/adobecloud/rel/component", CREATE: "http://ns.adobe.com/adobecloud/rel/create", DESCRIBED_BY: "describedBy", DIRECTORY: "http://ns.adobe.com/adobecloud/rel/directory", DISCARD: "http://ns.adobe.com/adobecloud/rel/discard", EFFECTIVE_PRIVILAGES: "http://ns.adobe.com/adobecloud/rel/ac/effective", EMBEDDED_METADATA: "http://ns.adobe.com/adobecloud/rel/metadata/embedded", ID: "http://ns.adobe.com/adobecloud/rel/id", MANIFEST: "http://ns.adobe.com/adobecloud/rel/manifest", PAGE: "http://ns.adobe.com/adobecloud/rel/page", PATH: "http://ns.adobe.com/adobecloud/rel/path", PRIMARY: "http://ns.adobe.com/adobecloud/rel/primary", RENDITION: "http://ns.adobe.com/adobecloud/rel/rendition", REPO_METADATA: "http://ns.adobe.com/adobecloud/rel/metadata/repository", REPO_OPS: "http://ns.adobe.com/adobecloud/rel/ops", REPOSITORY: "http://ns.adobe.com/adobecloud/rel/repository", RESOLVE_BY_ID: "http://ns.adobe.com/adobecloud/rel/resolve/id", RESOLVE_BY_PATH: "http://ns.adobe.com/adobecloud/rel/resolve/path", RESTORE: "http://ns.adobe.com/adobecloud/rel/restore", VERSION_HISTORY: "version-history" };
 var T, Me, $r, Gr, Yr, Xt, B, yt;
 function Ua(t) {
-  return S(t) && ["headers", "responseType", "statusCode", "xhr"].every((e) => e in t);
+  return C(t) && ["headers", "responseType", "statusCode", "xhr"].every((e) => e in t);
 }
 function Ba(t) {
-  return S(t) && Ua(t.response);
+  return C(t) && Ua(t.response);
 }
 function bn(t) {
-  return S(t) && Ba(t) && "result" in t;
+  return C(t) && Ba(t) && "result" in t;
 }
 function Rn(t) {
-  return S(t) && q(t.slice);
+  return C(t) && q(t.slice);
 }
-function ws(t) {
-  return S(t) && "resolvePullWithBranch" in t;
+function Ls(t) {
+  return C(t) && "resolvePullWithBranch" in t;
 }
 function qr(t) {
-  return S(t) && (["compositeId", "compositeAssetId", "compositeRepositoryId"].some((e) => e in t) || S(t._core));
+  return C(t) && (["compositeId", "compositeAssetId", "compositeRepositoryId"].some((e) => e in t) || C(t._core));
 }
 function Zt(t) {
-  return S(t) && (S(t.links) || typeof t.repositoryId == "string" && (typeof t.path == "string" || typeof t.assetId == "string"));
+  return C(t) && (C(t.links) || typeof t.repositoryId == "string" && (typeof t.path == "string" || typeof t.assetId == "string"));
 }
 function ja(t) {
   return typeof Blob < "u" && t instanceof Blob;
 }
 function Qs(t) {
-  return S(t) && (typeof t.repositoryId == "string" && typeof t.path == "string" || typeof t.assetId == "string");
+  return C(t) && (typeof t.repositoryId == "string" && typeof t.path == "string" || typeof t.assetId == "string");
 }
 function Va(t) {
-  return S(t) && (t.name === "AdobeHTTPService" || q(t.invoke));
+  return C(t) && (t.name === "AdobeHTTPService" || q(t.invoke));
 }
 function er(t) {
-  return S(t) && Va(t.service);
+  return C(t) && Va(t.service);
 }
 function Fa(t) {
-  if (!S(t)) return !1;
+  if (!C(t)) return !1;
   const e = t[T.LINKS];
-  return S(e) ? !!(e[u.BLOCK_TRANSFER] && e[u.BLOCK_EXTEND] && e[u.BLOCK_FINALIZE]) : !1;
+  return C(e) ? !!(e[u.BLOCK_TRANSFER] && e[u.BLOCK_EXTEND] && e[u.BLOCK_FINALIZE]) : !1;
 }
 function On(t) {
   return (e) => {
@@ -1686,12 +1686,12 @@ function On(t) {
   t.DEVICE_MODIFY_DATE = "deviceModifyDate", t.REPO_META_PATCH = "repoMetaPatch", t.RESPOND_WITH = "respondWith";
 }(yt || (yt = {}));
 const zr = U("dcx:assets:service"), x = (t) => er(t) ? t.service : t, ne = (t) => er(t) ? t.cache : void 0;
-function ze(t, e) {
+function qe(t, e) {
   zr("constructServiceEndpoint()", t);
   const s = e._repoAPIBaseUrl;
   return s && (t = `${s.endsWith("/") ? s.substr(0, s.length - 1) : s}${t}`), zr("cSE()", t), t;
 }
-const Ye = { Asset: "asset", Directory: "directory" };
+const Ge = { Asset: "asset", Directory: "directory" };
 var R, O;
 (function(t) {
   t.CONTENT_ID = "content-id", t.CONTENT_LENGTH = "content-length", t.CONTENT_RANGE = "content-range", t.CONTENT_TYPE = "content-type", t.IF_MATCH = "if-match", t.IF_NONE_MATCH = "if-none-match", t.AUTHORIZATION = "authorization", t.X_API_KEY = "x-api-key", t.X_CONTRIBUTORS = "x-contributors", t.LES_SEQUENCE_NUMBER = "les-sequence-number", t.PREFER = "prefer", t.DIRECTIVE = "directive";
@@ -1699,7 +1699,7 @@ var R, O;
   t.GET = "GET", t.PUT = "PUT", t.PATCH = "PATCH", t.HEAD = "HEAD", t.POST = "POST", t.DELETE = "DELETE";
 }(O || (O = {}));
 const Ha = "application/vnd.adobecloud.directory+json", $a = "application/vnd.adobe.dcx-manifest+json", Ga = "application/json", Ms = "application/problem+json", ct = "application/json-patch+json", Pn = "application/vnd.adobecloud.bulk-transfer+json", Ya = "application/vnd.adobe.asset-operation+json", tr = ["buffer", "arraybuffer", "string", "text", "blob", "json", "stream", "defaultbuffer"];
-function Sn(t, e) {
+function Cn(t, e) {
   var s = {};
   for (var r in t) Object.prototype.hasOwnProperty.call(t, r) && e.indexOf(r) < 0 && (s[r] = t[r]);
   if (t != null && typeof Object.getOwnPropertySymbols == "function") {
@@ -1778,15 +1778,15 @@ const N = (t, e, s) => {
     return _ === !0 && p == null || (it(_) ? _ : !!p && new c(p, l, void 0, a));
   };
 }, F = (t, e = [], s, r) => {
-  if (!S(t)) throw new c(s || c.INVALID_PARAMS, r || "Missing or invalid links on Asset");
+  if (!C(t)) throw new c(s || c.INVALID_PARAMS, r || "Missing or invalid links on Asset");
   e.map((n) => {
-    if (!(n in t) || !S(t[n])) throw new c(s || c.INVALID_PARAMS, r || `Missing required link: ${n}`);
+    if (!(n in t) || !C(t[n])) throw new c(s || c.INVALID_PARAMS, r || `Missing required link: ${n}`);
   });
-}, Cn = (t = {}, e = []) => {
+}, Sn = (t = {}, e = []) => {
   if (e.length !== 0) {
     for (let s = 0; s < e.length; s++) {
       const r = e[s];
-      if (r in t && S(t[r])) return r;
+      if (r in t && C(t[r])) return r;
     }
     throw new c(c.INVALID_PARAMS, `Missing links, one required: ${e.join(", ")}`);
   }
@@ -1801,15 +1801,15 @@ const N = (t, e, s) => {
     return !1;
   }
   return !0;
-}, za = (t, e = []) => !!S(t) && at(t.links || t._links, e);
+}, za = (t, e = []) => !!C(t) && at(t.links || t._links, e);
 function Dn(t) {
   if (!Qs(t)) throw new c(c.INVALID_PARAMS, "Asset must contain links or repositoryId + path or assetId to be resolved.");
 }
 function kn(t, e, s) {
-  if (!S(t)) throw new c(c.INVALID_PARAMS, `Invalid parameter. Expected object, encountered "${t === null ? "null" : typeof t}".`);
+  if (!C(t)) throw new c(c.INVALID_PARAMS, `Invalid parameter. Expected object, encountered "${t === null ? "null" : typeof t}".`);
   if (!(e in t)) throw new c(c.INVALID_PARAMS, `Invalid parameter object. Expected object containing key "${String(e)}".`);
   if (s) try {
-    qe(e, t[e], s);
+    Ye(e, t[e], s);
   } catch {
     throw new c(c.INVALID_PARAMS, `Invalid parameter object. Expected object containing key "${String(e)}" with type "${s}", encountered type "${typeof t[e]}".`);
   }
@@ -1830,16 +1830,16 @@ function sr(t, e, s) {
 function Ka(t, e, s, r) {
   return x(t).invoke(O.GET, e, s, void 0, { isStatusValid: N(), responseType: r });
 }
-const Ln = U("dcx:assets:util:serialization");
+const wn = U("dcx:assets:util:serialization");
 function se(t, e) {
-  Ln("deserializeAsset()");
+  wn("deserializeAsset()");
   const s = {};
   s.repositoryId = t.repositoryId || t[T.REPO_REPOSITORY_ID], s.assetId = t.assetId || t[T.REPO_ASSET_ID], s.name = t.name || t[T.REPO_NAME], s.size = t.size != null ? t.size : t[T.REPO_SIZE], s.path = t.path || t[T.REPO_PATH], s.assetClass = t.etag || t[T.REPO_ASSET_CLASS], s.etag = t.etag || t[T.REPO_ETAG], s.version = t.version || t[T.REPO_VERSION], s.format = t.format || t[T.DC_FORMAT], s.md5 = t.md5, s.createDate = t.createDate || t[T.REPO_CREATE_DATE], s.modifyDate = t.modifyDate || t.modifiedDate || t[T.REPO_MODIFY_DATE], s.discardDate = t.discardDate || t[T.REPO_DISCARD_DATE], s.createdBy = t.createdBy || t[T.REPO_CREATED_BY], s.modifiedBy = t.modifiedBy || t[T.REPO_MODIFIED_BY], s.discardedBy = t.discardedBy || t[T.REPO_DISCARDED_BY], s.deviceCreateDate = t.deviceCreateDate || t[T.REPO_DEVICE_CREATE_DATE], s.deviceModifyDate = t.deviceModifyDate || t[T.REPO_DEVICE_MODIFY_DATE], s.defaultScheduledDeletionDuration = t.defaultScheduledDeletionDuration || t[T.REPO_DEFAULT_SCHEDULED_DELETION_DURATION], s.scheduledDeletionDate = t.scheduledDeletionDate || t[T.REPO_SCHEDULED_DELETION_DATE], s.assetType = t.assetType || t[T.REPO_ASSET_TYPE], s.assetSubType = t.assetSubType || t[T.REPO_ASSET_SUB_TYPE], s.les = t.les || t[T.STORAGE_LES], s.baseAssetId = t.baseAssetId || t[T.REPO_BASE_ASSET_ID], s.state = t.state || t[T.REPO_STATE], s.links = t.links || t[T.LINKS], s.representations = t.representations || t[T.REPO_REPRESENTATIONS], s.contributors = t.contributors || t[T.REPO_CONTRIBUTORS], s.width = t.width || t[T.IMAGE_WIDTH], s.length = t.length || t[T.IMAGE_LENGTH];
   const r = [e, t._embedded].flat();
-  return s.embedded = Object.entries({ EffectivePrivileges: u.EFFECTIVE_PRIVILAGES, RepositoryResource: u.REPOSITORY, AppMetadata: u.APP_METADATA }).reduce((n, [o, i]) => (r.filter((a) => a && i in a).forEach((a) => he(n, { [o]: i === u.REPOSITORY ? rr(a) : a })), n), {}), w(s);
+  return s.embedded = Object.entries({ EffectivePrivileges: u.EFFECTIVE_PRIVILAGES, RepositoryResource: u.REPOSITORY, AppMetadata: u.APP_METADATA }).reduce((n, [o, i]) => (r.filter((a) => a && i in a).forEach((a) => he(n, { [o]: i === u.REPOSITORY ? rr(a) : a })), n), {}), L(s);
 }
 function rr(t = {}) {
-  Ln("deserializeRepository()");
+  wn("deserializeRepository()");
   const e = t[u.REPOSITORY] ? t[u.REPOSITORY] : t;
   return { repositoryId: e[T.REPO_REPOSITORY_ID], repositoryType: e[T.REPO_REPOSITORY_TYPE], owner: e[T.REPO_OWNER], createDate: e[T.REPO_CREATE_DATE], title: e[T.DC_TITLE], availableRegions: e[T.REPO_AVAILABLE_REGIONS] };
 }
@@ -1847,27 +1847,27 @@ function Xa(t) {
   const e = [];
   return t.assetType && e.push({ op: "add", path: `/${[T.REPO_ASSET_TYPE]}`, value: t.assetType }), t.assetSubType && e.push({ op: "add", path: `/${[T.REPO_ASSET_SUB_TYPE]}`, value: t.assetSubType }), e;
 }
-const wn = U("dcx:assets:util:link");
+const Ln = U("dcx:assets:util:link");
 function Mn(t, e) {
-  wn("getIndexLinks()");
+  Ln("getIndexLinks()");
   const s = x(t), r = ne(t);
   if (r) {
     const n = r.getIndexLinks();
-    if (n) return C.resolve(n);
+    if (n) return S.resolve(n);
     r.setPending("INDEX");
   }
-  return sr(s, ze("/", s), e).then((n) => Ee(n)).then((n) => (r && r.setIndexLinks(n), n)).catch((n) => {
+  return sr(s, qe("/", s), e).then((n) => Ee(n)).then((n) => (r && r.setIndexLinks(n), n)).catch((n) => {
     throw r && r.delete("INDEX"), n;
   });
 }
 function xn(t, e) {
-  wn("getIndexDocument()");
+  Ln("getIndexDocument()");
   const s = x(t), r = ne(t);
   if (r) {
     const o = r.getIndexRepository();
-    if (o) return C.resolve(o);
+    if (o) return S.resolve(o);
   }
-  const n = ze("/", s);
+  const n = qe("/", s);
   return s.invoke(O.GET, n, e, void 0, { responseType: "json", isStatusValid: N() }).then((o) => {
     const i = Ee(o), a = o.response, d = {};
     for (const h in a.children) {
@@ -1894,7 +1894,7 @@ function nr(t) {
   try {
     const e = _i(t), s = {};
     for (const r in e.refs) {
-      const n = e.refs[r], { rel: o, uri: i, templated: a, type: d, width: h, height: l } = n, p = Sn(n, ["rel", "uri", "templated", "type", "width", "height"]), _ = w({ href: i, templated: a ? a === "true" : void 0, type: d, width: h, height: l, [B.MAX_SINGLE_TRANSFER_SIZE]: p[B.MAX_SINGLE_TRANSFER_SIZE.toLowerCase()], [B.REPO_MIN_BLOCK_TRANSFER_SIZE]: p[B.REPO_MIN_BLOCK_TRANSFER_SIZE.toLowerCase()] });
+      const n = e.refs[r], { rel: o, uri: i, templated: a, type: d, width: h, height: l } = n, p = Cn(n, ["rel", "uri", "templated", "type", "width", "height"]), _ = L({ href: i, templated: a ? a === "true" : void 0, type: d, width: h, height: l, [B.MAX_SINGLE_TRANSFER_SIZE]: p[B.MAX_SINGLE_TRANSFER_SIZE.toLowerCase()], [B.REPO_MIN_BLOCK_TRANSFER_SIZE]: p[B.REPO_MIN_BLOCK_TRANSFER_SIZE.toLowerCase()] });
       ["width", "height"].filter((v) => v in _).forEach((v) => {
         const m = parseInt(_[v], 10);
         isNaN(m) || (_[v] = m);
@@ -1908,9 +1908,9 @@ function nr(t) {
   }
 }
 function De(t, e) {
-  if (S(this)) {
-    if (typeof this.opsHref == "string") return C.resolve(this.opsHref);
-    if (q(this.opsHref)) return C.resolve(this.opsHref());
+  if (C(this)) {
+    if (typeof this.opsHref == "string") return S.resolve(this.opsHref);
+    if (q(this.opsHref)) return S.resolve(this.opsHref());
   }
   return Mn(t, e).then((s) => {
     try {
@@ -1920,7 +1920,7 @@ function De(t, e) {
     }
   });
 }
-const Re = U("dcx:assets:operations"), Xe = U("dcx:assets:operations:builder"), Wr = 500;
+const Re = U("dcx:assets:operations"), Ke = U("dcx:assets:operations:builder"), Wr = 500;
 function Un(t, e, s, r, n, o, i) {
   Re("copyAsset()"), E(["svc", t, "object"], ["srcAsset", e, "object"], ["destAsset", s, "object"], ["createIntermediates", r, "boolean"], ["overwriteExisting", n, "boolean", !0], ["manifestPatch", i, ["object", "string"], !0]), Ne(e, ["repo:path", "path", "assetId", "repo:assetId"], "string"), Ne(s, ["repo:path", "path", "assetId", "repo:assetId"], "string");
   const a = Te("copy", s, e, { overwriteExisting: n, createIntermediates: r }, { "repo:manifestPatch": JSON.stringify(i) }), d = x(t);
@@ -1961,7 +1961,7 @@ function Fn(t, e, s) {
 }
 function Hn(t, e, s, r, n, o) {
   var i, a;
-  Re("packageAssets()"), E(["svc", t, "object"], ["destination", s, "object"]), qe("sources", e, ["object", "object[]"]), e = fe(e) ? e : [e], i = ["repo:path", "path", "assetId", "repo:assetId"], a = "string", e.map((l) => Ne(l, i, a)), Ne(s, ["repo:path", "path", "assetId", "repo:assetId"], "string");
+  Re("packageAssets()"), E(["svc", t, "object"], ["destination", s, "object"]), Ye("sources", e, ["object", "object[]"]), e = fe(e) ? e : [e], i = ["repo:path", "path", "assetId", "repo:assetId"], a = "string", e.map((l) => Ne(l, i, a)), Ne(s, ["repo:path", "path", "assetId", "repo:assetId"], "string");
   const d = Te("package", s, e, { createIntermediates: r, overwriteExisting: n }), h = x(t);
   return De.call(this, t).then((l) => je(h, l, d, o)).then(rs.bind(void 0, s)).then(Jt);
 }
@@ -1993,7 +1993,7 @@ class ec {
     return this._docs.length;
   }
   copyResources(e, s, r, n, o, i) {
-    Xe("copyResource()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
+    Ke("copyResource()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
     const a = this._docs.find(/* @__PURE__ */ function(h, l) {
       return function(p) {
         return p.op === "copy_resources" && Xr(p.source, h) && Xr(p.target, l);
@@ -2004,34 +2004,34 @@ class ec {
     return this._docs.push(d), this;
   }
   copy(e, s, r, n, o) {
-    Xe("copy()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
+    Ke("copy()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
     const i = Te("copy", s, e, { createIntermediates: r, overwriteExisting: n }, o);
     return this._docs.push(i), this;
   }
   move(e, s, r, n, o) {
-    Xe("move()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
+    Ke("move()"), this._assertUnderLimit(), this._checkSourceType(e), this._checkTargetType(s);
     const i = Te("move", s, e, { createIntermediates: r, overwriteExisting: n }, o);
     return this._docs.push(i), this;
   }
   package(e, s, r, n, o) {
-    Xe("package()"), this._assertUnderLimit(), (e = fe(e) ? e : [e]).map((a) => {
+    Ke("package()"), this._assertUnderLimit(), (e = fe(e) ? e : [e]).map((a) => {
       this._checkSourceType(a);
     }), this._checkTargetType(s);
     const i = Te("package", s, e, { createIntermediates: r, overwriteExisting: n }, o);
     return this._docs.push(i), this;
   }
   discard(e, s, r) {
-    Xe("discard()"), this._assertUnderLimit(), this._checkTargetType(e);
+    Ke("discard()"), this._assertUnderLimit(), this._checkTargetType(e);
     const n = Te("discard", e, void 0, { recursive: s }, r);
     return this._docs.push(n), this;
   }
   restore(e, s) {
-    Xe("restore()"), this._assertUnderLimit(), Ne(e, ["assetId", "repo:assetId"], "string"), this._checkTargetType(e);
+    Ke("restore()"), this._assertUnderLimit(), Ne(e, ["assetId", "repo:assetId"], "string"), this._checkTargetType(e);
     const r = Te("restore", e, void 0, void 0, s);
     return this._docs.push(r), this;
   }
   delete(e, s, r) {
-    Xe("delete()"), this._assertUnderLimit(), this._checkTargetType(e);
+    Ke("delete()"), this._assertUnderLimit(), this._checkTargetType(e);
     const n = Te("delete", e, void 0, { recursive: s }, r);
     return this._docs.push(n), this;
   }
@@ -2077,11 +2077,11 @@ function Jt(t) {
 function ms(t, e, s) {
   if (Re("_convertToACPSource()"), typeof e != "object") return;
   const r = { "repo:repositoryId": e.repositoryId || e["repo:repositoryId"], "repo:path": e.path || e["repo:path"], "repo:assetId": e.assetId || e["repo:assetId"], "repo:baseAssetId": e.baseAssetId || e["repo:baseAssetId"] };
-  return typeof r.href == "string" ? (delete r["repo:path"], delete r["repo:assetId"], delete r["repo:baseAssetId"]) : typeof r["repo:assetId"] == "string" && (delete r["repo:path"], delete r["repo:baseAssetId"]), t === "target" ? s === !0 ? r[R.IF_MATCH] = e.format !== Ye.Directory && e["dc:format"] !== Ye.Directory && e.etag || "*" : s === !1 ? r[R.IF_NONE_MATCH] = "*" : e.format !== Ye.Directory && e["dc:format"] !== Ye.Directory && (r[R.IF_MATCH] = e.etag) : e.format !== Ye.Directory && e["dc:format"] !== Ye.Directory && (r[R.IF_MATCH] = e.etag || "*"), e.version && (r["repo:version"] = e.version), r["repo:path"] && kn(r, "repo:repositoryId", "string"), Re("_cTACPS() out", r), w(r);
+  return typeof r.href == "string" ? (delete r["repo:path"], delete r["repo:assetId"], delete r["repo:baseAssetId"]) : typeof r["repo:assetId"] == "string" && (delete r["repo:path"], delete r["repo:baseAssetId"]), t === "target" ? s === !0 ? r[R.IF_MATCH] = e.format !== Ge.Directory && e["dc:format"] !== Ge.Directory && e.etag || "*" : s === !1 ? r[R.IF_NONE_MATCH] = "*" : e.format !== Ge.Directory && e["dc:format"] !== Ge.Directory && (r[R.IF_MATCH] = e.etag) : e.format !== Ge.Directory && e["dc:format"] !== Ge.Directory && (r[R.IF_MATCH] = e.etag || "*"), e.version && (r["repo:version"] = e.version), r["repo:path"] && kn(r, "repo:repositoryId", "string"), Re("_cTACPS() out", r), L(r);
 }
 function Te(t, e, s, r = {}, n = {}) {
   Re("_buildOperationDoc()");
-  const o = w({ op: t, target: e, source: fe(s) ? [] : s ? {} : void 0 }), { overwriteExisting: i, createIntermediates: a, recursive: d } = r;
+  const o = L({ op: t, target: e, source: fe(s) ? [] : s ? {} : void 0 }), { overwriteExisting: i, createIntermediates: a, recursive: d } = r;
   if (o.source && (o.source = fe(s) ? s.map((h) => ms("source", h, i)).filter((h) => h != null) : ms("source", s, i)), typeof e == "object") {
     const h = ms("target", e, i);
     h && (o.target = h);
@@ -2109,7 +2109,7 @@ function Gn(t, e, s, r, n, o, i) {
         return Object.assign(Object.assign({}, Q), { resources: [...A == null ? void 0 : A.resources, ...Q.resources], asset: Q.asset || A.asset });
       });
     }
-    let P = C.resolve({ resources: [], source: {}, target: {} });
+    let P = S.resolve({ resources: [], source: {}, target: {} });
     for (const A of m) P = P.then((D) => y(D, A));
     return P.then((A) => {
       if (!b) throw new c(c.UNEXPECTED_RESPONSE, "No response received from copy resources operation");
@@ -2170,8 +2170,8 @@ const ce = new class {
 class rc extends Gs {
   constructor(e, s, r = {}) {
     super(["stateChanged"]), this._state = g.NOT_INITIALIZED, this._cachedBlocks = /* @__PURE__ */ new Map(), this._blockRequestIndex = 0, this._blockHandledIndex = 0, this._currentByteRange = [void 0, void 0], this._pending = [], G("constructor");
-    const { startByte: n, blockSize: o, endByte: i, url: a, totalSize: d, maxConcurrentRequests: h } = Object.assign({ blockSize: ce.downloadChunkSize, maxConcurrentRequests: 4 }, w(r));
-    E(["svc", e, "object"], ["responseType", s, "enum", !1, ["buffer"]], ["blockSize", o, "+number"], ["url", a, "string", !0], ["startByte", n, "number", !0], ["endByte", i, "number", !0], ["totalSize", d, "number", !0], ["maxConcurrentRequests", h, "+number"]), this._dbgId = sc.next().value, this._maxConcurrentRequests = h, this._blockSize = Math.round(o), this._service = e, this._url = a, this._startByte = n, this._endByte = i, this._totalSize = d, this._bytes = new Uint8Array(), this._promise = new C((l, p) => {
+    const { startByte: n, blockSize: o, endByte: i, url: a, totalSize: d, maxConcurrentRequests: h } = Object.assign({ blockSize: ce.downloadChunkSize, maxConcurrentRequests: 4 }, L(r));
+    E(["svc", e, "object"], ["responseType", s, "enum", !1, ["buffer"]], ["blockSize", o, "+number"], ["url", a, "string", !0], ["startByte", n, "number", !0], ["endByte", i, "number", !0], ["totalSize", d, "number", !0], ["maxConcurrentRequests", h, "+number"]), this._dbgId = sc.next().value, this._maxConcurrentRequests = h, this._blockSize = Math.round(o), this._service = e, this._url = a, this._startByte = n, this._endByte = i, this._totalSize = d, this._bytes = new Uint8Array(), this._promise = new S((l, p) => {
       this._resolve = () => {
         G(this._dbgId, "resolving"), this.removeAllHandlers(), l(this);
       }, this._reject = (_) => {
@@ -2201,8 +2201,8 @@ class rc extends Gs {
     return this._service.invoke(O.GET, this._url, o, void 0, { responseType: "defaultbuffer", isStatusValid: N(), isExternalRequest: !0 }).then((i) => ({ response: i, index: r, lane: n })).catch(this._handleErrorAndThrow.bind(this));
   }
   init(e = this._url, s = this._totalSize) {
-    if (G(this._dbgId, "init(): ", e, s), this._state === g.INITIALIZED && e === this._url && s === this._totalSize) return C.resolve(this);
-    if (this._assertStateIsValid("init"), this._shiftState(g.INITIALIZING), this._url = e, this._initByteRange(s), this._totalSize !== 1 / 0 || this._currentByteRange[0] == null) return this._shiftState(g.INITIALIZED), C.resolve(this);
+    if (G(this._dbgId, "init(): ", e, s), this._state === g.INITIALIZED && e === this._url && s === this._totalSize) return S.resolve(this);
+    if (this._assertStateIsValid("init"), this._shiftState(g.INITIALIZING), this._url = e, this._initByteRange(s), this._totalSize !== 1 / 0 || this._currentByteRange[0] == null) return this._shiftState(g.INITIALIZED), S.resolve(this);
     const { startByte: r, endByte: n, blockIndex: o } = this._nextBlockData();
     let i = g.INITIALIZED;
     return this._requestBlock(r, n, o, 0).then((a) => (this._updateTotalSize(a), (!n || n > this._endByte) && (i = g.FINALIZING), a)).then(this._handleBlock.bind(this)).then(() => this._shiftState(i)).catch(this._handleErrorAndThrow.bind(this));
@@ -2213,7 +2213,7 @@ class rc extends Gs {
     return this._blockRequestIndex += 1, this._currentByteRange = [s + 1, s], this._requestBlock(e, s, r, 0).then(this._handleBlock.bind(this)).catch(this._handleError.bind(this)), this._promise;
   }
   pause() {
-    return G(this._dbgId, "pause()"), this._assertStateIsValid("pause"), this._shiftState(g.PAUSING), C.allSettled(this._pending).then(() => (this._shiftState(g.PAUSED), ce.startNextWaiting("download"), this));
+    return G(this._dbgId, "pause()"), this._assertStateIsValid("pause"), this._shiftState(g.PAUSING), S.allSettled(this._pending).then(() => (this._shiftState(g.PAUSED), ce.startNextWaiting("download"), this));
   }
   resume() {
     return G(this._dbgId, "resume()"), this.state === g.PAUSED && (this._shiftState(g.STARTED), this._start()), this;
@@ -2265,7 +2265,7 @@ class rc extends Gs {
     this._currentByteRange = [this._startByte, s];
   }
   _finalize() {
-    return G(this._dbgId, "_finalize() start"), ce.startNextWaiting("download"), C.allSettled(this._pending).then(() => {
+    return G(this._dbgId, "_finalize() start"), ce.startNextWaiting("download"), S.allSettled(this._pending).then(() => {
       this._checkCachedBlocks(), this._shiftState(g.COMPLETE);
     });
   }
@@ -2301,7 +2301,7 @@ class rc extends Gs {
     if (this._state === g.ERROR) return;
     this._contentType = this._contentType || e.headers[R.CONTENT_TYPE];
     const s = typeof Buffer < "u" && e.response instanceof Buffer ? e.response : new Uint8Array(e.response);
-    this._bytes = we(this._bytes, s);
+    this._bytes = Le(this._bytes, s);
   }
   _shiftState(e) {
     return G(this._dbgId, "_shiftState(): ", e), this._state === g.COMPLETE || this._state === g.ERROR || this._state === g.CANCELED || (this._state = e, this.emit("stateChanged", [this._state, this]), e === g.FINALIZING && this._finalize(), e === g.COMPLETE && Promise.all(this._pending).then(this._resolve.bind(this))), this;
@@ -2329,17 +2329,17 @@ class rc extends Gs {
 function nc(t, e, s) {
   return new rc(t, e, s);
 }
-function tt(t, e, s, r, n = "defaultbuffer", o, i, a) {
+function et(t, e, s, r, n = "defaultbuffer", o, i, a) {
   tc("_doBlockDownload()");
   const d = n === "stream" ? void 0 : nc(t, "buffer", { startByte: s, endByte: r });
   (this != null ? this : {}).blockDownload = d;
-  let h = C.resolve(e, this !== void 0 ? this : {});
+  let h = S.resolve(e, this !== void 0 ? this : {});
   return o || (h = h.then(() => t.invoke(O.GET, e, Object.assign({ priority: "u=1" }, a), void 0, { responseType: "text", isStatusValid: N(), retryOptions: { pollCodes: [202], pollHeader: "location", pollMethod: "GET" } })).then((l) => {
-    const p = l.response.indexOf("href") > 0 ? Cr(l.response, '"href":\\s*"([^;"]*)"') : "";
+    const p = l.response.indexOf("href") > 0 ? Sr(l.response, '"href":\\s*"([^;"]*)"') : "";
     if (typeof p != "string" || p === "") throw new c(c.UNEXPECTED_RESPONSE, "No block download href found in response.", void 0, l);
-    return i = i || parseInt(Cr(l.response, '"size":\\s*(\\d+)')), p;
+    return i = i || parseInt(Sr(l.response, '"size":\\s*(\\d+)')), p;
   })), h.then((l) => re(this, void 0, void 0, function* () {
-    return d ? Promise.race([d.init(l, i).then(() => ce.addAndStartDownload(d)), d.promise]).then(() => ({ statusCode: 200, headers: w({ [R.CONTENT_TYPE]: d.contentType, [R.CONTENT_LENGTH]: d.totalSize }), responseType: n, response: oc(d.buffer, n, d.contentType), message: "OK" })) : t.invoke(O.GET, l, Yn(s, r), void 0, { responseType: "stream", isExternalRequest: !0 });
+    return d ? Promise.race([d.init(l, i).then(() => ce.addAndStartDownload(d)), d.promise]).then(() => ({ statusCode: 200, headers: L({ [R.CONTENT_TYPE]: d.contentType, [R.CONTENT_LENGTH]: d.totalSize }), responseType: n, response: oc(d.buffer, n, d.contentType), message: "OK" })) : t.invoke(O.GET, l, Yn(s, r), void 0, { responseType: "stream", isExternalRequest: !0 });
   }));
 }
 function oc(t, e, s) {
@@ -2361,18 +2361,18 @@ function ir(t, e, s, r, n = "defaultbuffer", o, i, a = {}, d = !1) {
   let h;
   Ht("_getUrlFallbackDirect()");
   const l = this !== void 0 ? this : {};
-  return C.resolve(void 0, l).then(() => t.invoke(O.GET, s, Object.assign({ priority: "u=1" }, a), void 0, { responseType: n, isStatusValid: N([400]) })).then((p) => (Ht("_gUFD() status code", p.statusCode), h = p, p.statusCode === 400 && p.xhr ? p.xhr.getResponseDataAsJSON() : p)).then((p) => {
-    const _ = S(p) && (h.statusCode === 400 || p.status === 400) && p.type === X.RESPONSE_TOO_LARGE;
+  return S.resolve(void 0, l).then(() => t.invoke(O.GET, s, Object.assign({ priority: "u=1" }, a), void 0, { responseType: n, isStatusValid: N([400]) })).then((p) => (Ht("_gUFD() status code", p.statusCode), h = p, p.statusCode === 400 && p.xhr ? p.xhr.getResponseDataAsJSON() : p)).then((p) => {
+    const _ = C(p) && (h.statusCode === 400 || p.status === 400) && p.type === X.RESPONSE_TOO_LARGE;
     if (Ht("_gUFD() do direct", _), !_ && h.statusCode === 400) throw new c(c.UNEXPECTED_RESPONSE, "Unexpected response", void 0, h);
     return _;
   }).then((p) => {
     if (!p) return h;
     if (!("location" in h.headers) || typeof h.headers.location != "string") {
       if (!at(e.links, [u.BLOCK_DOWNLOAD])) throw new c(c.INVALID_DATA, "Resource too large and missing download link.");
-      const _ = w({ reltype: r, component_id: o, revision: i }), f = Z(e.links, u.BLOCK_DOWNLOAD, { resource: r ? JSON.stringify(_) : void 0 });
-      return d ? { statusCode: 200, headers: w({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: f }, message: "OK" } : tt.call(l, t, f, void 0, void 0, n, !1, void 0, a);
+      const _ = L({ reltype: r, component_id: o, revision: i }), f = Z(e.links, u.BLOCK_DOWNLOAD, { resource: r ? JSON.stringify(_) : void 0 });
+      return d ? { statusCode: 200, headers: L({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: f }, message: "OK" } : et.call(l, t, f, void 0, void 0, n, !1, void 0, a);
     }
-    return d ? { statusCode: 200, headers: w({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: h.headers.location }, message: "OK" } : tt.call(l, t, h.headers.location, void 0, void 0, n, !0, void 0, a);
+    return d ? { statusCode: 200, headers: L({ [R.CONTENT_TYPE]: h.headers["content-type"], [R.CONTENT_LENGTH]: h.headers["content-length"] }), responseType: n, response: { href: h.headers.location }, message: "OK" } : et.call(l, t, h.headers.location, void 0, void 0, n, !0, void 0, a);
   });
 }
 function $t({ additionalHeaders: t = {}, asset: e, contentType: s, data: r, etag: n, headHref: o, href: i, maybeIsNew: a, relation: d, service: h }, l = !1) {
@@ -2399,18 +2399,18 @@ function ac(t, e) {
   let r = Uint8Array.from([]);
   for (let n = 0; n < t.length; n++) {
     const o = t[n];
-    r = we(r, Ie(n === 0 ? `--${e}${s}` : `${s}--${e}${s}`)), r = we(r, Ie(`${[R.CONTENT_TYPE]}: application/http${s}`)), r = we(r, Ie(`${s}${o.method} ${o.href}`));
+    r = Le(r, Ie(n === 0 ? `--${e}${s}` : `${s}--${e}${s}`)), r = Le(r, Ie(`${[R.CONTENT_TYPE]}: application/http${s}`)), r = Le(r, Ie(`${s}${o.method} ${o.href}`));
     let i = !1;
     for (const a in o.headers) {
       const d = a.toLowerCase();
-      d === "content-length" && (i = !0), r = we(r, Ie(`${s}${d}: ${o.headers[a]}`));
+      d === "content-length" && (i = !0), r = Le(r, Ie(`${s}${d}: ${o.headers[a]}`));
     }
     if (o.body) {
       const a = cc(o.body);
-      i || (r = we(r, Ie(`${s}content-length: ${a.length}`))), r = we(r, Ie(`${s}${s}`)), r = we(r, a);
+      i || (r = Le(r, Ie(`${s}content-length: ${a.length}`))), r = Le(r, Ie(`${s}${s}`)), r = Le(r, a);
     }
   }
-  return r = we(r, Ie(`${s}--${e}--${s}`)), r;
+  return r = Le(r, Ie(`${s}--${e}--${s}`)), r;
 }
 function cc(t) {
   if (typeof t == "string") return Ie(t);
@@ -2496,7 +2496,7 @@ function Kn(t, e, s, r = "id", n = {}, o, i = 5) {
 const V = U("dcx:assets:asset"), Y = U("dcx:assets:asset:leaf");
 class vt {
   constructor(e, s, r = {}) {
-    this.type = Ye.Asset, this._data = {}, this._data = se(e), this._svc = x(s), this._cache = ne(s), this._links = he({}, e.links || {}, e._links || {}, r);
+    this.type = Ge.Asset, this._data = {}, this._data = se(e), this._svc = x(s), this._cache = ne(s), this._links = he({}, e.links || {}, e._links || {}, r);
   }
   setLinks(e) {
     this._links = e, this._updateCachedLinks();
@@ -2701,7 +2701,7 @@ class vt {
     return V("getBaseDirectoryMetadata()"), Ec(this._svc);
   }
   getLinks(e) {
-    return V("getLinks()"), S(this.links) && Object.keys(this.links).length > 0 ? C.resolve(this.links) : Qn(this._svc, this, e).then((s) => (this.setLinks(s), s));
+    return V("getLinks()"), C(this.links) && Object.keys(this.links).length > 0 ? S.resolve(this.links) : Qn(this._svc, this, e).then((s) => (this.setLinks(s), s));
   }
   getRepositoryResource(e) {
     return V("getRepositoryResource()"), this.fetchLinksIfMissing([u.REPOSITORY], e).then(() => to(this._svc, this, e)).then((s) => (this.repositoryId = s.result["repo:repositoryId"], s));
@@ -2736,7 +2736,7 @@ class vt {
     return V("copyResources()"), E(["targetAsset", e, "object"], ["resources", s, "array"], ["manifestPatch", n, ["object", "string"], !0], ["intermediates", r, "boolean", !0]), Gn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path, version: this.version }, e, s, r, n, o);
   }
   move(e, s, r, n) {
-    return V("move()"), E(["destination", e, ["object", "string"]], ["createIntermediates", s, "boolean"], ["overwriteExisting", r, "boolean"]), Bn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r, n).then(({ response: o, result: i }) => (this._data = Object.assign(Object.assign({}, this._data), w(i)), { response: o, result: this }));
+    return V("move()"), E(["destination", e, ["object", "string"]], ["createIntermediates", s, "boolean"], ["overwriteExisting", r, "boolean"]), Bn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r, n).then(({ response: o, result: i }) => (this._data = Object.assign(Object.assign({}, this._data), L(i)), { response: o, result: this }));
   }
   delete(e, s = !1, r) {
     return V("delete()"), E(["etag", e, "string", !0], ["recursive", s, "boolean"]), Vn(this.serviceConfig, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r).then((n) => (this._data.state = "DELETED", n));
@@ -2748,13 +2748,13 @@ class vt {
     return V("package()"), E(["destination", e, ["object", "string"]], ["createIntermediates", s, "boolean"], ["overwriteExisting", r, "boolean"]), Hn(this._svc, { repositoryId: this.repositoryId, assetId: this.assetId, path: this.path }, e, s, r, n);
   }
   restore(e) {
-    return V("restore()"), Fn(this._svc, { repositoryId: this.repositoryId, assetId: this.assetId }, e).then(({ response: s, result: r }) => (this._data = Object.assign(Object.assign(Object.assign({}, this._data), w(r)), { state: "ACTIVE" }), { response: s, result: this }));
+    return V("restore()"), Fn(this._svc, { repositoryId: this.repositoryId, assetId: this.assetId }, e).then(({ response: s, result: r }) => (this._data = Object.assign(Object.assign(Object.assign({}, this._data), L(r)), { state: "ACTIVE" }), { response: s, result: this }));
   }
   _updateDataWithResponse(e) {
     return e && (this._data.etag = e.headers.etag || this._data.etag, this._data.version = e.headers.version || this._data.version, this._data.assetId = e.headers["asset-id"] || this._data.assetId, this._data.md5 = e.headers["content-md5"] || this._data.md5, this._data.repositoryId = e.headers["repository-id"] || this._data.repositoryId, e);
   }
   _withSourcePromise(e) {
-    return C.resolve(void 0, e);
+    return S.resolve(void 0, e);
   }
 }
 function Xn(t, e, s, r) {
@@ -2775,8 +2775,8 @@ function Zn(t, e, s) {
 const hc = "/content/directory/resolve{?repositoryId,id,resource,mode}", lc = "/content/directory/resolve{?repositoryId,path,resource,mode}";
 function uc(t, e, s = "id", r, n) {
   Y("getResolveLinkForAsset()"), E(["svc", t, "object"], ["asset", e, "object"], ["mode", s, "enum", !1, ["id", "path"]], ["resource", r, ["string", "object"], !0]), Dn(e);
-  const o = { repositoryId: e.repositoryId, id: e.assetId, path: e.path, mode: s, resource: S(r) ? JSON.stringify(r) : r }, i = x(t), a = ze(e.assetId ? hc : lc, i);
-  return C.resolve(Ve(a, w(o)));
+  const o = { repositoryId: e.repositoryId, id: e.assetId, path: e.path, mode: s, resource: C(r) ? JSON.stringify(r) : r }, i = x(t), a = qe(e.assetId ? hc : lc, i);
+  return S.resolve(Ve(a, L(o)));
 }
 const pc = "/content/create/~/:create{?path,mode,intermediates,respondWith,repoMetaPatch*}", _c = "/content/create/~/:block_upload";
 function cr(t, e, s = "id", r, n, o) {
@@ -2793,7 +2793,7 @@ function Jn(t, e, s) {
   if (Y("fetchAsset()"), E(["svc", t, "object"], ["asset", e, "object"]), Qs(e)) return cr(t, e, "id", void 0, void 0, s).then((a) => a);
   let r;
   try {
-    r = Cn(e.links, [u.ID, u.REPO_METADATA, u.PRIMARY, u.PATH]);
+    r = Sn(e.links, [u.ID, u.REPO_METADATA, u.PRIMARY, u.PATH]);
   } catch (a) {
     throw new c(c.INVALID_PARAMS, "Asset is not resolvable. Must contain repositoryId & path, assetId, or links.", a);
   }
@@ -2803,11 +2803,11 @@ function Jn(t, e, s) {
 function Qn(t, e, s) {
   Y("getLinksForAsset()"), E(["svc", t, "object"], ["asset", e, "object"]);
   const r = e.links || e[T.LINKS];
-  if (S(r) && Object.keys(r).length !== 0) return C.resolve(r);
+  if (C(r) && Object.keys(r).length !== 0) return S.resolve(r);
   const n = ne(t);
   if (n) {
     const o = n.getValueWithAsset(e);
-    if (o) return C.resolve(o);
+    if (o) return S.resolve(o);
   }
   return fc(t, e, s);
 }
@@ -2845,12 +2845,12 @@ function ro(t, e, s, r = {}) {
 function no(t, e, s, r, n = {}) {
   Y("putAppMetadata()"), E(["svc", t, "object"], ["asset", e, "object"], ["metadata", s, ["object", "string"]], ["etag", r, "string", !0]), F(e.links, [u.APP_METADATA]);
   const o = H(e.links, u.APP_METADATA);
-  return t.invoke(O.PUT, o, w(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: Ga })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
+  return t.invoke(O.PUT, o, L(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: Ga })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
 }
 function oo(t, e, s, r, n = {}) {
   Y("patchAppMetadata()"), E(["svc", t, "object"], ["asset", e, "object"], ["metadata", s, ["object[]", "string"]], ["etag", r, "string"]), F(e.links, [u.APP_METADATA]);
   const o = H(e.links, u.APP_METADATA);
-  return t.invoke(O.PATCH, o, w(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: ct })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
+  return t.invoke(O.PATCH, o, L(Object.assign(n, { [R.IF_MATCH]: r, [R.CONTENT_TYPE]: ct })), typeof s == "string" ? s : JSON.stringify(s), { isStatusValid: N() }).then((i) => ({ response: i, result: { etag: i.headers.etag } }));
 }
 function io(t, e, s) {
   Y("getEffectivePrivileges()"), E(["svc", t, "object"], ["asset", e, "object"]), F(e.links, [u.EFFECTIVE_PRIVILAGES]);
@@ -2869,7 +2869,7 @@ function co(t, e, s, r, n = {}) {
 }
 function ho(t, e, s, r, n = {}) {
   Y("patchACLPolicy()"), E(["svc", t, "object"], ["asset", e, "object"], ["policy", s, ["string", "object"]], ["etag", r, "string", !0]), F(e.links, [u.ACL_POLICY]);
-  const o = w(Object.assign(n, { [R.CONTENT_TYPE]: ct, [R.IF_MATCH]: r })), i = H(e.links, u.ACL_POLICY);
+  const o = L(Object.assign(n, { [R.CONTENT_TYPE]: ct, [R.IF_MATCH]: r })), i = H(e.links, u.ACL_POLICY);
   return x(t).invoke(O.PATCH, i, o, typeof s == "string" ? s : JSON.stringify(s), { responseType: "json", isStatusValid: N() }).then((a) => ({ result: a.response, response: a }));
 }
 function lo(t, e, s = {}) {
@@ -2885,7 +2885,7 @@ function uo(t, e, s, r, n) {
     i = H(e.links, s);
   } catch {
   }
-  return C.resolve(i).then((a) => {
+  return S.resolve(i).then((a) => {
     if (typeof a == "string") return Y("uLORR() asset has link"), a;
     const d = ne(t);
     return _o(e, d, [s]);
@@ -2909,7 +2909,7 @@ const gc = /* @__PURE__ */ new Set([u.BASE_DIRECTORY, u.RESOLVE_BY_ID, u.RESOLVE
 function Tc(t, e, s) {
   const r = function(n, o) {
     Y("getLinksAPIUrlForAsset()"), E(["svc", n, "object"], ["asset", o, "object"]);
-    const i = x(n), a = ze(Ic, i), { assetId: d, repositoryId: h, contentRegion: l } = o, p = w({ assetId: d, repositoryId: h, contentRegion: l });
+    const i = x(n), a = qe(Ic, i), { assetId: d, repositoryId: h, contentRegion: l } = o, p = L({ assetId: d, repositoryId: h, contentRegion: l });
     return Ve(a, p);
   }(t, e);
   return x(t).invoke(O.GET, r, s, void 0, { responseType: "json" }).then((n) => {
@@ -2918,7 +2918,7 @@ function Tc(t, e, s) {
   });
 }
 function po(t, e, s = [], r = !1, n) {
-  if (Y("fetchLinksIfMissing()", s), E(["svc", t, "object"], ["asset", e, "object"], ["linksToPopulate", s, "string[]"], ["suppressMissingErrors", r, "boolean", !0]), at(e.links, s)) return Y("fLIM() links exist"), C.resolve({ result: e.links });
+  if (Y("fetchLinksIfMissing()", s), E(["svc", t, "object"], ["asset", e, "object"], ["linksToPopulate", s, "string[]"], ["suppressMissingErrors", r, "boolean", !0]), at(e.links, s)) return Y("fLIM() links exist"), S.resolve({ result: e.links });
   const o = ne(t);
   return _o(e, o, s, !0).then((i) => i || (function(a, d) {
     return typeof a.assetId == "string" && a.assetId.length > 0 && d.every((h) => !gc.has(h));
@@ -2929,22 +2929,22 @@ function po(t, e, s = [], r = !1, n) {
       const l = ne(t);
       l && l.setValueWithAsset(e.links, e);
     }
-    if (!r && !at(h, s)) throw new c(c.INVALID_PARAMS, "Required links could not be fetched for asset.", void 0, a, w({ required: s, asset: d }));
+    if (!r && !at(h, s)) throw new c(c.INVALID_PARAMS, "Required links could not be fetched for asset.", void 0, a, L({ required: s, asset: d }));
     return Y("fLIM() fetchedOCached exists"), { result: h || e.links, response: a };
   });
 }
 function _o(t, e, s, r) {
-  if (Y("getLinksFromCache()"), !e) return C.resolve(void 0);
+  if (Y("getLinksFromCache()"), !e) return S.resolve(void 0);
   const n = e.getValueWithAsset(t);
-  return n == null ? (r && e.setPending(t.assetId, t.repositoryId), C.resolve(void 0)) : C.resolve(n).then((o) => s ? at(o, s) ? o : void (r && e.setPending(t.assetId, t.repositoryId)) : o);
+  return n == null ? (r && e.setPending(t.assetId, t.repositoryId), S.resolve(void 0)) : S.resolve(n).then((o) => s ? at(o, s) ? o : void (r && e.setPending(t.assetId, t.repositoryId)) : o);
 }
 function Ac(t, e, s, r, n, o, i) {
   return Gn(t, e, s, r, n, o, i);
 }
 function fo(t, e, s, r) {
   const n = Ee(e), o = Object.assign(Object.assign(Object.assign({}, function(i) {
-    return S(i.asset) ? i.asset : i;
-  }(t)), w({ assetId: e.headers["asset-id"] || e.headers["x-resource-id"], format: e.headers[R.CONTENT_TYPE], md5: e.headers["content-md5"], etag: e.headers.etag, version: e.headers.version, repositoryId: e.headers["repository-id"] })), { links: n });
+    return C(i.asset) ? i.asset : i;
+  }(t)), L({ assetId: e.headers["asset-id"] || e.headers["x-resource-id"], format: e.headers[R.CONTENT_TYPE], md5: e.headers["content-md5"], etag: e.headers.etag, version: e.headers.version, repositoryId: e.headers["repository-id"] })), { links: n });
   return s && n && Object.keys(n).length > 0 && r && r.setValueWithAsset(n, o), o;
 }
 U("dcx:assets:block_transfer");
@@ -2966,7 +2966,7 @@ function go(t, e) {
 function vc(t) {
   return go(t, B.MAX_SINGLE_TRANSFER_SIZE);
 }
-const Ue = (t) => typeof t == "string" ? t.length >= yc ? Ie(t).byteLength : t.length : "size" in t ? t.size : t.byteLength, Qe = (t, e) => {
+const Ue = (t) => typeof t == "string" ? t.length >= yc ? Ie(t).byteLength : t.length : "size" in t ? t.size : t.byteLength, Je = (t, e) => {
   if (!q(t)) return t;
   if (t.length < 2) throw new c(c.INVALID_PARAMS, "GetSliceCallback is expected to accept 2 parameters");
   if (e === void 0 || isNaN(e) || e < 0) throw new c(c.INVALID_PARAMS, "Size parameter should indicate total number of bytes to be read from GetSliceCallback");
@@ -2979,20 +2979,20 @@ function Rc(t, e, s, r) {
   const n = Ys(r);
   return { id: e, length: s, type: t, links: nr(n.link), etag: n.etag, location: n.location, version: n.version, revision: n.revision, md5: n["content-md5"] };
 }
-const L = U("dcx:assets:blockupload"), Oc = U("dcx:assets:blockupload:leaf");
+const w = U("dcx:assets:blockupload"), Oc = U("dcx:assets:blockupload:leaf");
 class Pc extends Gs {
   constructor(e, s, r, n, o, i, a, d, h, l, p, _, f, v) {
-    super(["stateChanged"]), this._internalBlockUploadId = zt(), this._state = g.NOT_INITIALIZED, this._currentBlockIndex = 0, this._pendingBlockRequests = /* @__PURE__ */ new Map(), this._bytesUploaded = 0, this._indeterminateTransfer = !1, this._maxConcurrentRequests = 4, this._retryQueue = /* @__PURE__ */ new Set(), this._activeBlockIndex = 0, this._lastExtendTime = 0, this._uploadedBlocksURLs = [], this._service = e, this._getSliceCallback = s, Fa(r) ? (E([B.REPO_SIZE, r[B.REPO_SIZE], "number"]), this._blockTransferDocument = r, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._dataSize = this._blockTransferDocument[B.REPO_SIZE], this._relationType = this._blockTransferDocument[B.REPO_REL_TYPE], this._shiftState(g.INITIALIZED), L(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`)) : (E(["relationType", n, "string"], ["dataSize", o, "number"], ["contentType", i, "string"], ["componentId", a, "string", !0], ["etag", h, "string", !0]), this._asset = r, F(this._asset.links, [u.BLOCK_UPLOAD_INIT], c.UNEXPECTED, "/rel/block/init missing from BlockTransferDocument."), this._relationType = n, this._dataSize = o, this._contentType = i, this._componentId = a, this._md5 = d, this._ifMatch = h), this._relPath = l, this._createIntermediates = p, this._respondWith = _, this._repoMetaPatch = f, this._maxConcurrentRequests = v || 4, this._promise = new C((m, b) => {
+    super(["stateChanged"]), this._internalBlockUploadId = zt(), this._state = g.NOT_INITIALIZED, this._currentBlockIndex = 0, this._pendingBlockRequests = /* @__PURE__ */ new Map(), this._bytesUploaded = 0, this._indeterminateTransfer = !1, this._maxConcurrentRequests = 4, this._retryQueue = /* @__PURE__ */ new Set(), this._activeBlockIndex = 0, this._lastExtendTime = 0, this._uploadedBlocksURLs = [], this._service = e, this._getSliceCallback = s, Fa(r) ? (E([B.REPO_SIZE, r[B.REPO_SIZE], "number"]), this._blockTransferDocument = r, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._dataSize = this._blockTransferDocument[B.REPO_SIZE], this._relationType = this._blockTransferDocument[B.REPO_REL_TYPE], this._shiftState(g.INITIALIZED), w(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`)) : (E(["relationType", n, "string"], ["dataSize", o, "number"], ["contentType", i, "string"], ["componentId", a, "string", !0], ["etag", h, "string", !0]), this._asset = r, F(this._asset.links, [u.BLOCK_UPLOAD_INIT], c.UNEXPECTED, "/rel/block/init missing from BlockTransferDocument."), this._relationType = n, this._dataSize = o, this._contentType = i, this._componentId = a, this._md5 = d, this._ifMatch = h), this._relPath = l, this._createIntermediates = p, this._respondWith = _, this._repoMetaPatch = f, this._maxConcurrentRequests = v || 4, this._promise = new S((m, b) => {
       this._reject = b, this._resolve = m;
     }), ce.uploads.push(this);
   }
   init(e) {
     if (this._assertStateIsValid("init"), !this._blockTransferDocument || !this._blockTransferDocument[T.LINKS]) {
       this._shiftState(g.INITIALIZING);
-      const s = w(Object.assign({ [B.REPO_REL_TYPE]: this._relationType, [B.REPO_IF_MATCH]: this._ifMatch, [B.REPO_SIZE]: this._dataSize, [B.DC_FORMAT]: this._contentType, [B.COMPONENT_ID]: this._componentId, [B.REPO_MD5]: this._md5 }, this._blockTransferDocument));
-      return hr(this._service, this._asset, s, e).then((r) => (this._blockTransferDocument = r.result, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._shiftState(g.INITIALIZED), L(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`), this));
+      const s = L(Object.assign({ [B.REPO_REL_TYPE]: this._relationType, [B.REPO_IF_MATCH]: this._ifMatch, [B.REPO_SIZE]: this._dataSize, [B.DC_FORMAT]: this._contentType, [B.COMPONENT_ID]: this._componentId, [B.REPO_MD5]: this._md5 }, this._blockTransferDocument));
+      return hr(this._service, this._asset, s, e).then((r) => (this._blockTransferDocument = r.result, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], this._shiftState(g.INITIALIZED), w(`BlockUpload Initialized: Transfer document found with ${this._transferBlockLinks.length} links. BlockUploadId: ${this._internalBlockUploadId}`), this));
     }
-    return C.resolve(this);
+    return S.resolve(this);
   }
   get state() {
     return this._state;
@@ -3001,16 +3001,16 @@ class Pc extends Gs {
     return this._promise;
   }
   start() {
-    return this._assertStateIsValid("start"), ce.uploads[0] !== this || this._state !== g.INITIALIZED && this._state !== g.PAUSED || (L(`Starting the transfer of BlockUpload: ${this._internalBlockUploadId}`), this._shiftState(g.STARTED), this._uploadLoop()), this._promise;
+    return this._assertStateIsValid("start"), ce.uploads[0] !== this || this._state !== g.INITIALIZED && this._state !== g.PAUSED || (w(`Starting the transfer of BlockUpload: ${this._internalBlockUploadId}`), this._shiftState(g.STARTED), this._uploadLoop()), this._promise;
   }
   pause() {
-    return this._assertStateIsValid("pause"), this._shiftState(g.PAUSING), C.allSettled([...this._pendingBlockRequests.values()]).then(() => (this._shiftState(g.PAUSED), L(`BlockUploading has been paused.  BlockUploadId: ${this._internalBlockUploadId}`), this));
+    return this._assertStateIsValid("pause"), this._shiftState(g.PAUSING), S.allSettled([...this._pendingBlockRequests.values()]).then(() => (this._shiftState(g.PAUSED), w(`BlockUploading has been paused.  BlockUploadId: ${this._internalBlockUploadId}`), this));
   }
   resume() {
-    return this._assertStateIsValid("resume"), L(`BlockUploading has been resumed.  BlockUploadId: ${this._internalBlockUploadId}`), this.start(), this;
+    return this._assertStateIsValid("resume"), w(`BlockUploading has been resumed.  BlockUploadId: ${this._internalBlockUploadId}`), this.start(), this;
   }
   cancel() {
-    this._assertStateIsValid("cancel"), this._shiftState(g.CANCELED), L(`A BlockUpload has been canceled... BlockUploadId: ${this._internalBlockUploadId}`), this._promise.cancel(), this._cancel();
+    this._assertStateIsValid("cancel"), this._shiftState(g.CANCELED), w(`A BlockUpload has been canceled... BlockUploadId: ${this._internalBlockUploadId}`), this._promise.cancel(), this._cancel();
   }
   _setWaiting() {
     this._shiftState(g.WAITING);
@@ -3019,8 +3019,8 @@ class Pc extends Gs {
     if (this._assertStateIsValid("uploadNextBlock"), this._isEmptyBlock(e)) throw new c(c.INVALID_PARAMS, "Trying to upload empty data block.");
     const s = this._activeBlockIndex, r = Date.now(), n = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER][s].href;
     let o;
-    L(`Uploading a block... BlockUploadId: ${this._internalBlockUploadId}`);
-    const i = Ue(e), a = this._uploadBlock(e, n).then((d) => (this._uploadedBlocksURLs[s] = { href: n }, this._updateProgress(i), o(), L(`A block has completed... ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), d)).catch((d) => (o(), this._isTransferUrlExpiredError(d) ? (L(`A block with index as ${s} has FAILED due to Transfer Expiry!! ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), this._retryQueue.add(s), r <= this._lastExtendTime ? (L(`Skipping extend for block ${s} — request started after last extend.`), this._maybePauseForRetry().then(() => C.reject(g.PAUSED))) : this._maybeExtendWithPauseResume().catch((h) => (L(`Extend flow failed for block ${s}`, h), C.reject(h)))) : (L(`A block upload has failed. BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.ERROR), this._reject(new c(c.UNEXPECTED_RESPONSE, "A block has failed during upload", d, d.response)), this.cancel(), C.reject(d))));
+    w(`Uploading a block... BlockUploadId: ${this._internalBlockUploadId}`);
+    const i = Ue(e), a = this._uploadBlock(e, n).then((d) => (this._uploadedBlocksURLs[s] = { href: n }, this._updateProgress(i), o(), w(`A block has completed... ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), d)).catch((d) => (o(), this._isTransferUrlExpiredError(d) ? (w(`A block with index as ${s} has FAILED due to Transfer Expiry!! ${this._pendingBlocksCount} requests still active. BlockUploadId: ${this._internalBlockUploadId}`), this._retryQueue.add(s), r <= this._lastExtendTime ? (w(`Skipping extend for block ${s} — request started after last extend.`), this._maybePauseForRetry().then(() => S.reject(g.PAUSED))) : this._maybeExtendWithPauseResume().catch((h) => (w(`Extend flow failed for block ${s}`, h), S.reject(h)))) : (w(`A block upload has failed. BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.ERROR), this._reject(new c(c.UNEXPECTED_RESPONSE, "A block has failed during upload", d, d.response)), this.cancel(), S.reject(d))));
     return o = this._pushPendingBlockRequest(s, a), a;
   }
   get _pendingBlocksCount() {
@@ -3030,7 +3030,7 @@ class Pc extends Gs {
     return this._pendingBlocksCount < this._maxConcurrentRequests ? Promise.resolve() : Promise.race(ce.pendingUploadRequests.filter((e) => !!e));
   }
   _handleAssetMoved(e) {
-    throw L("_handleAssetMoved"), this._pendingBlockRequests.forEach((s) => {
+    throw w("_handleAssetMoved"), this._pendingBlockRequests.forEach((s) => {
       s.abort();
     }), this._pendingBlockRequests.clear(), this._uploadedBlocksURLs.length = 0, this._transferBlockLinks.length = 0, this._asset.links = Object.assign(Object.assign({}, this._asset.links), Ee(e.response)), this._retryQueue.clear(), this._activeBlockIndex = 0, this._lastExtendTime = 0, this._currentBlockIndex = 0, this._bytesUploaded = 0, this._state = g.NOT_INITIALIZED, this._blockTransferDocument[T.LINKS] = void 0, this.init().then(() => this.start()), g.INITIALIZING;
   }
@@ -3047,25 +3047,25 @@ class Pc extends Gs {
       if (this._state === g.PAUSING || this._state === g.PAUSED) throw g.PAUSED;
       if (this._state === g.CANCELED) throw g.CANCELED;
       if (this._state === g.ERROR) throw g.ERROR;
-    }).then(() => this._getNextUploadBlockData()).then((e) => this._isEmptyBlock(e) ? (L(`No more blocks.  BlockUploadId: ${this._internalBlockUploadId}`), Promise.all([...this._pendingBlockRequests.values()]).then(this._finalize.bind(this))) : e && Ue(e) > 0 && this._activeBlockIndex >= this._transferBlockLinks.length ? this._extend().then(() => e) : e).then((e) => {
+    }).then(() => this._getNextUploadBlockData()).then((e) => this._isEmptyBlock(e) ? (w(`No more blocks.  BlockUploadId: ${this._internalBlockUploadId}`), Promise.all([...this._pendingBlockRequests.values()]).then(this._finalize.bind(this))) : e && Ue(e) > 0 && this._activeBlockIndex >= this._transferBlockLinks.length ? this._extend().then(() => e) : e).then((e) => {
       if (!e) throw g.COMPLETE;
       this.uploadNextBlock(e), this._activeBlockIndex === this._currentBlockIndex && this._currentBlockIndex++;
     }).then(() => {
       this._uploadLoop();
     }).catch((e) => {
       if (typeof e != "string" && (this._continueBlockUploads(), this._reject(e)), e !== g.INITIALIZING) if (e !== g.COMPLETE) {
-        if (e !== g.PAUSED) return e === g.CANCELED ? (L(`BlockUpload loop is terminated due to the upload being canceled. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : e === g.ERROR ? (L(`BlockUpload loop is terminated due to error state. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : void 0;
-        L(`BlockUpload loop is terminated due to paused state. BlockUploadId: ${this._internalBlockUploadId}`);
-      } else L(`BlockUpload loop is complete. BlockUploadId: ${this._internalBlockUploadId}`);
-      else L(`BlockUpload loop must be re-started due to assetmoved BlockUploadId: ${this._internalBlockUploadId}`);
+        if (e !== g.PAUSED) return e === g.CANCELED ? (w(`BlockUpload loop is terminated due to the upload being canceled. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : e === g.ERROR ? (w(`BlockUpload loop is terminated due to error state. BlockUploadId: ${this._internalBlockUploadId}`), void this._continueBlockUploads()) : void 0;
+        w(`BlockUpload loop is terminated due to paused state. BlockUploadId: ${this._internalBlockUploadId}`);
+      } else w(`BlockUpload loop is complete. BlockUploadId: ${this._internalBlockUploadId}`);
+      else w(`BlockUpload loop must be re-started due to assetmoved BlockUploadId: ${this._internalBlockUploadId}`);
     });
   }
   _getBlockAtIndex(e) {
-    L(`_getBlockAtIndex(${e})`);
+    w(`_getBlockAtIndex(${e})`);
     const s = Math.min(this._dataSize, this._blockTransferDocument[B.REPO_BLOCK_SIZE]);
     if (this._state === g.STARTED) {
       const r = e * s;
-      return L("calling _getSliceCallback", r, r + s), this._getSliceCallback(r, r + s).catch((n) => {
+      return w("calling _getSliceCallback", r, r + s), this._getSliceCallback(r, r + s).catch((n) => {
         throw new c(c.UNEXPECTED_RESPONSE, "The getSliceCallback threw an unexpected error.", n);
       });
     }
@@ -3079,25 +3079,25 @@ class Pc extends Gs {
   _extend(e = !0) {
     F(this._blockTransferDocument[T.LINKS], [u.BLOCK_EXTEND], c.UNEXPECTED, "The transfer document does not contain an extend href");
     const s = this._blockTransferDocument[B.REPO_SIZE], r = e ? Math.ceil(1.5 * s) : s, n = Z(this._blockTransferDocument[T.LINKS], u.BLOCK_EXTEND, { size: r });
-    return this._service.invoke(O.POST, n, {}, void 0, { isStatusValid: N(), responseType: "json" }).then((o) => (this._indeterminateTransfer = !0, this._blockTransferDocument = o.response, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], L(`Transfer document extended (${e ? "size increased" : "URL refresh only"}): ${this._transferBlockLinks.length} transfer links. BlockUploadId: ${this._internalBlockUploadId}`), o)).catch((o) => {
+    return this._service.invoke(O.POST, n, {}, void 0, { isStatusValid: N(), responseType: "json" }).then((o) => (this._indeterminateTransfer = !0, this._blockTransferDocument = o.response, this._transferBlockLinks = this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER], w(`Transfer document extended (${e ? "size increased" : "URL refresh only"}): ${this._transferBlockLinks.length} transfer links. BlockUploadId: ${this._internalBlockUploadId}`), o)).catch((o) => {
       throw it(o) && o.problemType === X.ASSET_MOVED && this._handleAssetMoved(o), new c(c.UNEXPECTED_RESPONSE, "An unexpected error occurred while extending the block transfer document.", o, o.response);
     });
   }
   _maybeExtendWithPauseResume() {
-    if (this._extendPromise) return L("Reusing in-progress extend (with pause/resume)"), C.reject(g.PAUSED);
-    L("[_maybeExtendWithPauseResume] Setting state to PAUSED and triggering extend"), this._shiftState(g.PAUSED);
-    const e = C.resolve().then(() => (L("[_maybeExtendWithPauseResume] Pause done, calling _extend()"), this._extend(!1))).then((s) => (this._lastExtendTime = Date.now(), L("[_maybeExtendWithPauseResume] Extend done, calling resume()"), C.resolve(this.resume()).then(() => (L("[_maybeExtendWithPauseResume] Resume done"), s))));
+    if (this._extendPromise) return w("Reusing in-progress extend (with pause/resume)"), S.reject(g.PAUSED);
+    w("[_maybeExtendWithPauseResume] Setting state to PAUSED and triggering extend"), this._shiftState(g.PAUSED);
+    const e = S.resolve().then(() => (w("[_maybeExtendWithPauseResume] Pause done, calling _extend()"), this._extend(!1))).then((s) => (this._lastExtendTime = Date.now(), w("[_maybeExtendWithPauseResume] Extend done, calling resume()"), S.resolve(this.resume()).then(() => (w("[_maybeExtendWithPauseResume] Resume done"), s))));
     return this._extendPromise = e.finally(() => {
       this._extendPromise = void 0;
-    }), C.reject(g.PAUSED);
+    }), S.reject(g.PAUSED);
   }
   _maybePauseForRetry() {
-    return this._state === g.PAUSED || this._state === g.PAUSING ? (L("[_maybePauseForRetry] Already in PAUSED or PAUSING state — skipping."), C.resolve()) : (L("[_maybePauseForRetry] Shifting to PAUSED state to trigger retry mechanism."), this._shiftState(g.PAUSED), L("[_maybePauseForRetry] Calling resume() to restart upload loop for retries."), this.resume(), C.resolve());
+    return this._state === g.PAUSED || this._state === g.PAUSING ? (w("[_maybePauseForRetry] Already in PAUSED or PAUSING state — skipping."), S.resolve()) : (w("[_maybePauseForRetry] Shifting to PAUSED state to trigger retry mechanism."), this._shiftState(g.PAUSED), w("[_maybePauseForRetry] Calling resume() to restart upload loop for retries."), this.resume(), S.resolve());
   }
   _isTransferUrlExpiredError(e) {
     var s, r;
     const n = (s = e == null ? void 0 : e.response) === null || s === void 0 ? void 0 : s.statusCode, o = e == null ? void 0 : e.code, i = ((r = e == null ? void 0 : e.response) === null || r === void 0 ? void 0 : r.response) || "";
-    return L(`[TransferExpiryCheck] StatusCode: ${n}`), L(`[TransferExpiryCheck] Code: ${o}`), L(`[TransferExpiryCheck] RawResponse: ${i}`), !(n !== 403 && o !== "FORBIDDEN" || typeof i != "string" || !i.toLowerCase().includes("request has expired"));
+    return w(`[TransferExpiryCheck] StatusCode: ${n}`), w(`[TransferExpiryCheck] Code: ${o}`), w(`[TransferExpiryCheck] RawResponse: ${i}`), !(n !== 403 && o !== "FORBIDDEN" || typeof i != "string" || !i.toLowerCase().includes("request has expired"));
   }
   _pushPendingBlockRequest(e, s) {
     this._pendingBlockRequests.set(e, s);
@@ -3107,7 +3107,7 @@ class Pc extends Gs {
     };
   }
   _updateProgress(e) {
-    if (L("_updateProgress()", e), typeof e == "number" && (this._bytesUploaded += e), this.onProgress && q(this.onProgress)) try {
+    if (w("_updateProgress()", e), typeof e == "number" && (this._bytesUploaded += e), this.onProgress && q(this.onProgress)) try {
       this.onProgress(this._bytesUploaded, Math.max(this._blockTransferDocument[B.REPO_SIZE], this._bytesUploaded), this._indeterminateTransfer);
     } catch (s) {
       console.error("Error in onProgress callback", s);
@@ -3138,20 +3138,20 @@ class Pc extends Gs {
     }
   }
   _continueBlockUploads() {
-    if (L("continueBlockUploads()"), ce.uploads[0] === this) if (ce.uploads.shift(), ce.uploads.length > 0) {
+    if (w("continueBlockUploads()"), ce.uploads[0] === this) if (ce.uploads.shift(), ce.uploads.length > 0) {
       const e = ce.uploads[0];
-      L("Another block upload found in the queue, starting..."), e.start();
-    } else this._pendingBlocksCount === 0 && (L("There are no more pending block transfers.. Clean up blockUploadManager.."), ce.resetUploads());
+      w("Another block upload found in the queue, starting..."), e.start();
+    } else this._pendingBlocksCount === 0 && (w("There are no more pending block transfers.. Clean up blockUploadManager.."), ce.resetUploads());
   }
   _finalize() {
-    L(`Finalizing block transfer.  BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.FINALIZING);
-    const e = Z(this._blockTransferDocument[T.LINKS], u.BLOCK_FINALIZE, w({ path: this._relPath, intermediates: this._createIntermediates, respondWith: S(this._respondWith) ? JSON.stringify(this._respondWith) : this._respondWith, repoMetaPatch: this._repoMetaPatch }));
-    return this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER] = this._uploadedBlocksURLs, this._service.invoke(O.POST, e, { [R.CONTENT_TYPE]: Pn }, JSON.stringify(w(this._blockTransferDocument)), { isStatusValid: N(), retryOptions: { pollHeader: "location", pollCodes: [202], timeoutAfter: 12e4 }, responseType: "arraybuffer" }).then((s) => {
+    w(`Finalizing block transfer.  BlockUploadId: ${this._internalBlockUploadId}`), this._shiftState(g.FINALIZING);
+    const e = Z(this._blockTransferDocument[T.LINKS], u.BLOCK_FINALIZE, L({ path: this._relPath, intermediates: this._createIntermediates, respondWith: C(this._respondWith) ? JSON.stringify(this._respondWith) : this._respondWith, repoMetaPatch: this._repoMetaPatch }));
+    return this._blockTransferDocument[T.LINKS][u.BLOCK_TRANSFER] = this._uploadedBlocksURLs, this._service.invoke(O.POST, e, { [R.CONTENT_TYPE]: Pn }, JSON.stringify(L(this._blockTransferDocument)), { isStatusValid: N(), retryOptions: { pollHeader: "location", pollCodes: [202], timeoutAfter: 12e4 }, responseType: "arraybuffer" }).then((s) => {
       if (s.statusCode === 200 || s.statusCode === 201) {
-        L(`Finalize complete.  BlockUploadId: ${this._internalBlockUploadId}`);
+        w(`Finalize complete.  BlockUploadId: ${this._internalBlockUploadId}`);
         const r = ns(new Uint8Array(s.response));
         if (this._relationType === u.PRIMARY) {
-          if (this.finalizeResponse = r, this.createdAsset = w({ assetId: r.headers["asset-id"], repositoryId: r.headers["repository-id"], links: nr(r.headers.link), etag: r.headers.etag, md5: r.headers["content-md5"] }), r.response && this._respondWith) try {
+          if (this.finalizeResponse = r, this.createdAsset = L({ assetId: r.headers["asset-id"], repositoryId: r.headers["repository-id"], links: nr(r.headers.link), etag: r.headers.etag, md5: r.headers["content-md5"] }), r.response && this._respondWith) try {
             const n = JSON.parse(ye(r.response));
             r.response = n, this.createdAsset = xe(this.createdAsset, se(n));
           } catch (n) {
@@ -3173,13 +3173,13 @@ class Pc extends Gs {
         case X.ASSET_MOVED:
           return void this._handleAssetMoved(s);
         case X.ASSET_NAME_CONFLICT:
-          return L("Error occurred finalizing the block transfer due to asset name conflict.. Rejecting with ALREADY_EXISTS"), this._reject(new c(c.ALREADY_EXISTS, "Asset name conflict occurred during block transfer finalization.", s, s.response)), void this._continueBlockUploads();
+          return w("Error occurred finalizing the block transfer due to asset name conflict.. Rejecting with ALREADY_EXISTS"), this._reject(new c(c.ALREADY_EXISTS, "Asset name conflict occurred during block transfer finalization.", s, s.response)), void this._continueBlockUploads();
       }
-      L("Error occurred finalizing the block transfer.. Rejecting"), this._reject(new c(c.UNEXPECTED_RESPONSE, "An error occurred while finalizing the block transfer.", s, s.response)), this._continueBlockUploads();
+      w("Error occurred finalizing the block transfer.. Rejecting"), this._reject(new c(c.UNEXPECTED_RESPONSE, "An error occurred while finalizing the block transfer.", s, s.response)), this._continueBlockUploads();
     });
   }
   _shiftState(e) {
-    return L(`_shiftState(): ${e}`), this._state === g.COMPLETE || this._state === g.ERROR || this._state === g.CANCELED || (this._state = e, this.emit("stateChanged", [this._state])), this;
+    return w(`_shiftState(): ${e}`), this._state === g.COMPLETE || this._state === g.ERROR || this._state === g.CANCELED || (this._state = e, this.emit("stateChanged", [this._state])), this;
   }
 }
 function hr(t, e, s, r = {}) {
@@ -3195,11 +3195,11 @@ function hr(t, e, s, r = {}) {
 }
 function To({ additionalHeaders: t, asset: e, componentId: s, contentType: r, dataOrSliceCallback: n, etag: o, maybeIsNew: i, md5: a, progressCb: d, relation: h, size: l, svc: p, blockSize: _, maxConcurrentRequests: f }) {
   Oc("_upload()"), E(["svc", p, "object"], ["asset", e, "object"], ["size", l, "number", !0], ["md5", a, "string", !0], ["etag", o, "string", !0]);
-  const v = Qe(n, l), m = Ue(v), b = x(p);
+  const v = Je(n, l), m = Ue(v), b = x(p);
   if (dr(e, m)) return bt({ asset: e, additionalHeaders: t, componentId: s, contentType: r, dataOrSliceCallback: n, etag: o, md5: a, progressCb: d, relation: h, size: l, service: b, blockSize: _, maxConcurrentRequests: f });
   F(e.links, [h]);
   const y = Z(e.links, h, { component_id: s });
-  return C.resolve(void 0, { blockUpload: void 0, progress: d }).then(() => Promise.resolve(q(n) ? n(0, m) : n)).then((P) => $t({ asset: e, additionalHeaders: t, contentType: r, data: P, etag: o, headHref: y, href: y, maybeIsNew: i, relation: h, service: b })).then((P) => {
+  return S.resolve(void 0, { blockUpload: void 0, progress: d }).then(() => Promise.resolve(q(n) ? n(0, m) : n)).then((P) => $t({ asset: e, additionalHeaders: t, contentType: r, data: P, etag: o, headHref: y, href: y, maybeIsNew: i, relation: h, service: b })).then((P) => {
     let A = {};
     try {
       A = Ee(P), e.links = he(e.links || {}, A);
@@ -3224,9 +3224,9 @@ function Ao({ service: t, asset: e, additionalHeaders: s, dataOrSliceCallback: r
   e && F(e.links, [u.BLOCK_UPLOAD_INIT]);
   const P = hr(t, e || function(A) {
     V("getBlockUploadLinkForGuest"), E(["svc", A, "object"]);
-    const D = x(A), k = ze(_c, D);
+    const D = x(A), k = qe(_c, D);
     return Ve(k, {});
-  }(t), w({ [B.REPO_REL_TYPE]: i, [B.REPO_IF_MATCH]: l, [B.REPO_SIZE]: a, [B.DC_FORMAT]: n, [B.COMPONENT_ID]: d, [B.REPO_MD5]: h, [B.REPO_BLOCK_SIZE]: v }), s);
+  }(t), L({ [B.REPO_REL_TYPE]: i, [B.REPO_IF_MATCH]: l, [B.REPO_SIZE]: a, [B.DC_FORMAT]: n, [B.COMPONENT_ID]: d, [B.REPO_MD5]: h, [B.REPO_BLOCK_SIZE]: v }), s);
   return P.then((A) => {
     const D = new Pc(t, y, A.result, i, a, n, d, h, l, p, _, f, m, b);
     return D.onProgress = o, Object.assign(P, { blockUpload: D }), D.init(s);
@@ -3241,10 +3241,10 @@ function bt({ service: t, asset: e, additionalHeaders: s, dataOrSliceCallback: r
 function ys({ service: t, additionalHeaders: e, dataOrSliceCallback: s, contentType: r, progressCb: n, relation: o, size: i, componentId: a, md5: d, etag: h, relPath: l, respondWith: p, blockSize: _, repoMetaPatch: f, maxConcurrentRequests: v }) {
   return Ao({ service: t, asset: void 0, additionalHeaders: e, dataOrSliceCallback: s, contentType: r, progressCb: n, relation: o, size: i, componentId: a, md5: d, etag: h, relPath: l, createIntermediates: !0, respondWith: p, blockSize: _, repoMetaPatch: f, maxConcurrentRequests: v });
 }
-function Sc(t) {
+function Cc(t) {
   return t || "defaultbuffer";
 }
-function Cc(t) {
+function Sc(t) {
   return !!(t.deviceModifyDate || t.assetType || t.assetSubType);
 }
 function Nc(t, e, s = "json", r = {}) {
@@ -3264,21 +3264,21 @@ function kc(t, e, s, r, n = {}) {
 }
 U("dcx:assets:filebase");
 const lr = U("dcx:assets:filebase:leaf"), mo = "application/vnd.adobe.versions+json";
-function Lc(t, e, s, r = "defaultbuffer", n, o) {
+function wc(t, e, s, r = "defaultbuffer", n, o) {
   lr("getRendition()"), E(["svc", t, "object"], ["asset", e, "object"], ["renditionOptions", s, "object", !0], ["linkProvider", n, "object", !0]), F(e.links, [u.RENDITION]);
   const i = n ? si(e.links[u.RENDITION], n, s) : Z(e.links, u.RENDITION, Object.assign({}, s));
-  return t.invoke(O.GET, i, o, void 0, { responseType: Sc(r), isStatusValid: N() }).then((a) => ({ result: a.response, response: a }));
+  return t.invoke(O.GET, i, o, void 0, { responseType: Cc(r), isStatusValid: N() }).then((a) => ({ result: a.response, response: a }));
 }
 function Zr(t, e, s, r, n, o, i, a, d) {
   lr("doBlockDownload()"), E(["svc", t, "object"], ["assetOrPresignedUrl", e, ["object", "string"]], ["startByte", s, "number", !0], ["endByte", r, "number", !0], ["resource", n, "string", !0], ["componentId", o, "string", !0], ["version", i, "string", !0], ["responseType", a, "enum", !0, tr]), pn(() => s == null || r == null || s < r, "endByte must be greater than startByte");
   const h = this != null ? this : {};
-  if (typeof e == "string") return tt.call(h, t, e, s, r, a, !0, void 0, d);
+  if (typeof e == "string") return et.call(h, t, e, s, r, a, !0, void 0, d);
   const l = e;
   F(l.links, [u.BLOCK_DOWNLOAD]);
-  const p = w({ reltype: n, component_id: o, revision: i }), _ = Z(l.links, u.BLOCK_DOWNLOAD, { resource: n !== void 0 ? JSON.stringify(p) : void 0 });
-  return tt.call(h, t, _, s, r, a, !1, void 0, d);
+  const p = L({ reltype: n, component_id: o, revision: i }), _ = Z(l.links, u.BLOCK_DOWNLOAD, { resource: n !== void 0 ? JSON.stringify(p) : void 0 });
+  return et.call(h, t, _, s, r, a, !1, void 0, d);
 }
-function wc(t, e, s, r, n, o, i, a) {
+function Lc(t, e, s, r, n, o, i, a) {
   return lr("updatePrimaryResource()"), E(["service", t, "object"], ["asset", e, "object"], ["dataOrSliceCallback", s, ["function", "object", "string"]], ["contentType", r, "string"], ["size", n, "number", !0], ["md5", i, "string", !0]), F(e.links, [u.PRIMARY]), To({ svc: t, asset: e, dataOrSliceCallback: s, contentType: r, relation: u.PRIMARY, size: n, md5: i, maybeIsNew: !1, etag: o, additionalHeaders: a }).catch((d) => {
     var h;
     if (((h = d.response) === null || h === void 0 ? void 0 : h.statusCode) === 413) return bt({ service: x(t), asset: e, dataOrSliceCallback: s, contentType: r, relation: u.PRIMARY, size: n, md5: i, etag: o, additionalHeaders: a });
@@ -3298,7 +3298,7 @@ class as {
   }
   getPage(e = {}, s) {
     Et("getPage()");
-    const { embed: r } = e, n = Sn(e, ["embed"]);
+    const { embed: r } = e, n = Cn(e, ["embed"]);
     r && (n.embed = r.some((i) => typeof i == "object") ? JSON.stringify(r) : r.join(",")), this.ListResource && Object.assign(n, { resource: this.ListResource });
     const o = Z(this._links, u.PAGE, n);
     return this._svc.invoke(O.GET, o, s, void 0, { isStatusValid: N(), responseType: "json" }).then((i) => {
@@ -3394,14 +3394,14 @@ function cs(t, e, s, r) {
   return _e("getCompositeManifestUrl()"), _r(t, e, u.MANIFEST, s, r).then((n) => Ve(n, {}));
 }
 function Fc(t, e, s, r) {
-  return _e("_getComponentPathUrl()"), _r(t, e, u.COMPONENT, e.version, r).then((n) => Ve(n, w({ component_path: s })));
+  return _e("_getComponentPathUrl()"), _r(t, e, u.COMPONENT, e.version, r).then((n) => Ve(n, L({ component_path: s })));
 }
 function _r(t, e, s, r, n) {
-  return _e("_getUrl()"), E(["svc", t, "object"], ["asset", e, "object"], ["versionId", r, "string", !0]), C.resolve().then(() => {
+  return _e("_getUrl()"), E(["svc", t, "object"], ["asset", e, "object"], ["versionId", r, "string", !0]), S.resolve().then(() => {
     if (r) return vo(t, e, r, n);
   }).then((o) => {
     if (r != null) {
-      if (!o || !S(o) || typeof o.result != "object") throw new c(c.UNEXPECTED_RESPONSE, "Invalid version resource.", void 0, o ? o.response : void 0);
+      if (!o || !C(o) || typeof o.result != "object") throw new c(c.UNEXPECTED_RESPONSE, "Invalid version resource.", void 0, o ? o.response : void 0);
       return F(o.result[T.LINKS], [s]), H(o.result[T.LINKS], s);
     }
     return H(e.links, s);
@@ -3421,7 +3421,7 @@ function Hc(t, e, s, r, n, o) {
 function $c(t, e, s, r, n) {
   return re(this, void 0, void 0, function* () {
     const o = x(t), i = yield Promise.all(ei(r, 10).map((a) => os(o, e, a, void 0, n, !0)));
-    return C.resolve(yield i.reduce((a, d) => re(this, void 0, void 0, function* () {
+    return S.resolve(yield i.reduce((a, d) => re(this, void 0, void 0, function* () {
       var h, l;
       const p = yield a;
       if (p.responses.push(d.response), d.response.statusCode !== 200) return p;
@@ -3439,8 +3439,8 @@ function $c(t, e, s, r, n) {
           return (yield Promise.all(b.map((k) => re(this, void 0, void 0, function* () {
             if (k.headers[R.CONTENT_TYPE] === Ms && k.response.type === X.RESPONSE_TOO_LARGE) {
               const j = Jr(k, m), J = k.headers.location ? k.headers.location : Z(P, u.BLOCK_DOWNLOAD, { resource: JSON.stringify({ component_path: j.component_path }) });
-              if (D && D[j.component_path]) return { statusCode: 200, headers: w({ [R.CONTENT_TYPE]: k.headers["content-type"], [R.CONTENT_LENGTH]: k.headers["content-length"], [R.CONTENT_ID]: k.headers[R.CONTENT_ID] }), responseType: "application/json", response: { href: J }, message: "OK" };
-              const $ = yield tt(x(y), J, void 0, void 0, "defaultbuffer", !0, void 0, A);
+              if (D && D[j.component_path]) return { statusCode: 200, headers: L({ [R.CONTENT_TYPE]: k.headers["content-type"], [R.CONTENT_LENGTH]: k.headers["content-length"], [R.CONTENT_ID]: k.headers[R.CONTENT_ID] }), responseType: "application/json", response: { href: J }, message: "OK" };
+              const $ = yield et(x(y), J, void 0, void 0, "defaultbuffer", !0, void 0, A);
               return Object.assign($.headers, { [R.CONTENT_ID]: k.headers[R.CONTENT_ID] }), $;
             }
             return k;
@@ -3457,7 +3457,7 @@ function $c(t, e, s, r, n) {
         });
       }(r.slice(1), _, t, e.links, n, v)), !f) return p;
       if (f.statusCode === 200) {
-        p.manifest.data = vs(f.response, "json"), p.manifest.response = f, ws(e) && typeof ((h = e.current) === null || h === void 0 ? void 0 : h.parse) == "function" && (e.current.parse(ye(f.response)), e.current.versionId = f.headers.version), e.links = Ee(f);
+        p.manifest.data = vs(f.response, "json"), p.manifest.response = f, Ls(e) && typeof ((h = e.current) === null || h === void 0 ? void 0 : h.parse) == "function" && (e.current.parse(ye(f.response)), e.current.versionId = f.headers.version), e.links = Ee(f);
         const m = ne(t);
         return m && m.setValueWithAsset(e.links, e), p;
       }
@@ -3468,8 +3468,8 @@ function $c(t, e, s, r, n) {
       }
       if (f.headers[R.CONTENT_TYPE] === Ms && f.response.type === X.RESPONSE_TOO_LARGE) {
         try {
-          const m = f.headers.location ? f.headers.location : Z(e.links, u.BLOCK_DOWNLOAD, { resource: JSON.stringify({ reltype: u.MANIFEST }) }), b = yield tt(o, m, void 0, void 0, "json", !0, void 0, n);
-          p.manifest.data = b.response, p.manifest.response = b, ws(e) && typeof ((l = e.current) === null || l === void 0 ? void 0 : l.parse) == "function" && e.current.parse(JSON.stringify(b.response)), e.links = Ee(b);
+          const m = f.headers.location ? f.headers.location : Z(e.links, u.BLOCK_DOWNLOAD, { resource: JSON.stringify({ reltype: u.MANIFEST }) }), b = yield et(o, m, void 0, void 0, "json", !0, void 0, n);
+          p.manifest.data = b.response, p.manifest.response = b, Ls(e) && typeof ((l = e.current) === null || l === void 0 ? void 0 : l.parse) == "function" && e.current.parse(JSON.stringify(b.response)), e.links = Ee(b);
         } catch (m) {
           p.manifest.error = m instanceof c ? m : new c(c.UNEXPECTED, "Error fetching manifest via block download", m);
         }
@@ -3547,7 +3547,7 @@ function qc(t, e, s, r, n = "defaultbuffer", o, i) {
     const d = fr(t, e, s, r);
     return ir.call(a, t, e, d, u.COMPONENT, n, s, r, o);
   }
-  return Ro(t, e, s, r, o).then(({ response: d, result: h }) => tt.call(a, t, h, void 0, void 0, n, !0, d.response.size, o));
+  return Ro(t, e, s, r, o).then(({ response: d, result: h }) => et.call(a, t, h, void 0, void 0, n, !0, d.response.size, o));
 }
 function Us(t, e, s, r, n = 1, o, i = {}, a) {
   if (_e("updateCompositeManifest() ", r, o), E(["svc", t, "object"], ["asset", e, "object"], ["manifest", s, ["object", "string"]], ["overwrite", r, "boolean"], ["validationLevel", n, "+number"], ["etag", o, "string", !0]), n < 1) throw new c(c.INVALID_PARAMS, "ValidationLevel must be >=1");
@@ -3560,7 +3560,7 @@ function Us(t, e, s, r, n = 1, o, i = {}, a) {
     let _, f, v;
     const m = d.includes(yt.REPO_META_PATCH) || d.includes(yt.RESPOND_WITH);
     if (m) {
-      const y = {}, P = w({ [T.REPO_DEVICE_MODIFY_DATE]: e.deviceModifyDate });
+      const y = {}, P = L({ [T.REPO_DEVICE_MODIFY_DATE]: e.deviceModifyDate });
       Object.keys(P).length && (y[yt.REPO_META_PATCH] = P), d = Ve(d, y), _ = yield function(A, D, k, j) {
         return re(this, void 0, void 0, function* () {
           return yield A.invoke(O.PUT, D, j, k, { isStatusValid: N([412, 409]), responseType: "arraybuffer", retryOptions: { pollCodes: [202], pollHeader: "location", pollMethod: O.GET, modifyHeadersCallback: On([R.IF_MATCH]) } });
@@ -3583,7 +3583,7 @@ function Us(t, e, s, r, n = 1, o, i = {}, a) {
       if (y !== !0) throw new c(y.code || c.UNEXPECTED_RESPONSE, y._message || y.message, y.underlyingError, _);
     }
     if (!m) {
-      if (_.xhr = v.xhr, _e("uCM() status code for metadata response: ", f.statusCode), Cc(e) && f.statusCode !== 200 && f.statusCode !== 201 && f.statusCode !== 204) throw new c(c.UNEXPECTED_RESPONSE, "Unexpected HTTP Response", void 0, f);
+      if (_.xhr = v.xhr, _e("uCM() status code for metadata response: ", f.statusCode), Sc(e) && f.statusCode !== 200 && f.statusCode !== 201 && f.statusCode !== 204) throw new c(c.UNEXPECTED_RESPONSE, "Unexpected HTTP Response", void 0, f);
       return _;
     }
     let b = _;
@@ -3608,9 +3608,9 @@ function Wc(t, e, s, r) {
     var o;
     const i = x(t);
     (o = ne(t)) === null || o === void 0 || o.setValueWithAsset(n, e), e.links = Object.assign(Object.assign({}, e.links), n);
-    const a = Ot(w(Object.assign(Object.assign({}, r), { [R.AUTHORIZATION]: i.authProvider.authToken, [R.X_API_KEY]: i.authProvider.apiKey })));
+    const a = Ot(L(Object.assign(Object.assign({}, r), { [R.AUTHORIZATION]: i.authProvider.authToken, [R.X_API_KEY]: i.authProvider.apiKey })));
     return Promise.all(s.map((d) => dr(e, d.size) ? function(h, l, p, _) {
-      const f = w({ "repo:reltype": u.COMPONENT, "repo:size": p.size, "dc:format": p.contentType, component_id: p.componentId });
+      const f = L({ "repo:reltype": u.COMPONENT, "repo:size": p.size, "dc:format": p.contentType, component_id: p.componentId });
       return hr(h, l, f, _).then((v) => {
         if (v.response.statusCode !== 200) throw new c(c.UNEXPECTED_RESPONSE, "Unexpected response from block upload init", v.response);
         const m = v.result;
@@ -3619,23 +3619,23 @@ function Wc(t, e, s, r) {
         throw new c(c.UNEXPECTED_RESPONSE, "Unexpected response from block upload init", v);
       });
     }(i, e, d, a) : function(h, l, p, _) {
-      return C.resolve({ blockSize: p.size, uploadRequestParameters: [{ href: fr(h, l, p.componentId), method: O.PUT, headers: _ }] });
+      return S.resolve({ blockSize: p.size, uploadRequestParameters: [{ href: fr(h, l, p.componentId), method: O.PUT, headers: _ }] });
     }(i, e, d, a)));
   });
 }
 const bs = U("dcx:assets:directory"), Dt = U("dcx:assets:directory:leaf");
 class Er extends vt {
   constructor(e, s, r) {
-    super(e, s, r), this.type = Ye.Directory, this.children = [], this.children = e[T.CHILDREN];
+    super(e, s, r), this.type = Ge.Directory, this.children = [], this.children = e[T.CHILDREN];
   }
   getPagedChildren(e, s) {
     return bs("getPagedChildren()"), this.fetchLinksIfMissing([u.PAGE], s).then(() => Po(this._svc, this, e, s));
   }
   createAsset(e, s, r, n, o, i, a, d, h) {
-    return bs("createAsset()"), So(this._svc, this, e, s, r, n, o, i, a, d, h).then((l) => ({ result: new vt(l.result, this.serviceConfig), response: l.response }));
+    return bs("createAsset()"), Co(this._svc, this, e, s, r, n, o, i, a, d, h).then((l) => ({ result: new vt(l.result, this.serviceConfig), response: l.response }));
   }
   createAssetForGuest(e, s, r, n, o, i, a, d) {
-    return bs("createAssetForGAT"), Co(this._svc, e, s, r, n, o, i, a, d).then((h) => ({ result: new vt(h.result, this.serviceConfig), response: h.response }));
+    return bs("createAssetForGAT"), So(this._svc, e, s, r, n, o, i, a, d).then((h) => ({ result: new vt(h.result, this.serviceConfig), response: h.response }));
   }
   copy(e, s, r) {
     return super.copy(e, s, r).then(({ response: n, result: o }) => ({ response: n, result: new Er(o, this.serviceConfig) }));
@@ -3657,31 +3657,31 @@ function Po(t, e, s = {}, r) {
   try {
     return new as(e.links, t, Oo, "api:primary").getPage(s, r);
   } catch (n) {
-    return C.reject(n);
+    return S.reject(n);
   }
 }
-const So = ss("AdobeDCX.createAsset", function(t, e, s, r, n, o, i = {}, a, d, h, l) {
+const Co = ss("AdobeDCX.createAsset", function(t, e, s, r, n, o, i = {}, a, d, h, l) {
   Dt("createAsset()"), E(["service", t, "object"], ["parentDir", e, "object"], ["relPath", s, "string"], ["createIntermediates", r, "boolean"], ["contentType", n, "string"], ["respondWith", o, ["string", "object"], !0], ["additionalHeaders", i, "object", !0], ["repoMetaPatch", h, "object", !0]);
-  const p = S(o) ? JSON.stringify(o) : o;
+  const p = C(o) ? JSON.stringify(o) : o;
   return dt(t, e, [u.CREATE]).then((_) => {
-    const f = Z(_, u.CREATE, { path: s, intermediates: r.toString(), respondWith: p, mode: "id", repoMetaPatch: h }), v = Object.assign({}, { [R.CONTENT_TYPE]: n }, i), m = x(t), b = a ? Qe(a, d) : void 0, y = b ? Ue(b) : 0;
+    const f = Z(_, u.CREATE, { path: s, intermediates: r.toString(), respondWith: p, mode: "id", repoMetaPatch: h }), v = Object.assign({}, { [R.CONTENT_TYPE]: n }, i), m = x(t), b = a ? Je(a, d) : void 0, y = b ? Ue(b) : 0;
     return a && dr(e, y) ? bt({ service: m, contentType: n, relation: u.PRIMARY, asset: e, dataOrSliceCallback: a, size: y, relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l }).then(({ result: P, response: A }) => {
       const D = s.split("/").slice(-1);
-      return { result: w(xe({ name: D }, P)), response: A };
-    }) : C.resolve().then(() => re(this, void 0, void 0, function* () {
+      return { result: L(xe({ name: D }, P)), response: A };
+    }) : S.resolve().then(() => re(this, void 0, void 0, function* () {
       const P = q(a) ? yield a(0, y) : b;
       return m.invoke(O.POST, f, v, P, { responseType: "json", isStatusValid: N([413]), reuseRequestDesc: { id: "createAsset", method: O.POST, href: f, headers: v, progress: l } }).then((A) => {
         var D;
-        if (A.statusCode === 413) return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: e, dataOrSliceCallback: a, size: Ue(Qe(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l }).catch((ae) => {
+        if (A.statusCode === 413) return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: e, dataOrSliceCallback: a, size: Ue(Je(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l }).catch((ae) => {
           var be;
           if (ae.problemType === X.ASSET_NAME_CONFLICT) {
             const ue = { assetId: (be = ae.response.response) === null || be === void 0 ? void 0 : be["repo:assetId"], links: Ee(ae.response) };
-            return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: ue, dataOrSliceCallback: a, size: Ue(Qe(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l });
+            return bt({ service: m, contentType: n, relation: u.PRIMARY, asset: ue, dataOrSliceCallback: a, size: Ue(Je(a, d)), relPath: s, createIntermediates: r, respondWith: o, repoMetaPatch: h, additionalHeaders: i, progressCb: l });
           }
           throw ae;
         }).then(({ result: ae, response: be }) => {
           const ue = s.split("/")[s.split("/").length - 1];
-          return { result: w(xe({ name: ue }, ae)), response: be };
+          return { result: L(xe({ name: ue }, ae)), response: be };
         });
         const k = s.split("/")[s.split("/").length - 1];
         let j;
@@ -3691,51 +3691,51 @@ const So = ss("AdobeDCX.createAsset", function(t, e, s, r, n, o, i = {}, a, d, h
           const ae = ar(A)[1];
           throw ae.statusCode === 404 ? new c(c.ASSET_NOT_FOUND, "Asset was created successfully but repository metadata could not be found.", void 0, A) : ae.statusCode === 403 ? new c(c.FORBIDDEN, "Asset was created successfully but Permission denied for fetching repository metadata.", void 0, A) : Vs("Unexpected Server Response", void 0, A);
         }
-        const ve = S(A.response) ? A.response : { etag: "", md5: "" }, ke = $["asset-id"] || $["x-resource-id"], Q = e.repositoryId;
+        const ve = C(A.response) ? A.response : { etag: "", md5: "" }, ke = $["asset-id"] || $["x-resource-id"], Q = e.repositoryId;
         pe("assetId", ke);
         let le = ve.etag, Ae = ve.md5;
         o == null && (le = $.etag, Ae = $["content-md5"]);
-        const We = S(A.response) && o && (o === u.REPO_METADATA || S(o) && o.reltype === u.REPO_METADATA) ? se(A.response) : {};
-        A.response && (We.representations = A.response.representations || A.response[T.REPO_REPRESENTATIONS]);
-        const Le = ne(t);
-        return Le && Le.setValueWithAsset(J, We), { result: w(xe({ name: k }, We, w({ links: J, assetId: ke, etag: le, md5: Ae, repositoryId: Q, format: n, path: j }))), response: A };
+        const ze = C(A.response) && o && (o === u.REPO_METADATA || C(o) && o.reltype === u.REPO_METADATA) ? se(A.response) : {};
+        A.response && (ze.representations = A.response.representations || A.response[T.REPO_REPRESENTATIONS]);
+        const we = ne(t);
+        return we && we.setValueWithAsset(J, ze), { result: L(xe({ name: k }, ze, L({ links: J, assetId: ke, etag: le, md5: Ae, repositoryId: Q, format: n, path: j }))), response: A };
       });
     }));
   });
 });
-function Co(t, e, s, r, n = {}, o, i, a, d) {
+function So(t, e, s, r, n = {}, o, i, a, d) {
   Dt("createAssetForGuest()"), E(["service", t, "object"], ["relPath", e, "string"], ["contentType", s, "string"], ["respondWith", r, ["string", "object"], !0], ["additionalHeaders", n, "object", !0], ["repoMetaPatch", a, "object", !0]);
-  const h = S(r) ? JSON.stringify(r) : r, l = x(t);
+  const h = C(r) ? JSON.stringify(r) : r, l = x(t);
   return function(p, _, f, v) {
     V("getCreateLinkForGuestUser"), E(["svc", p, "object"], ["assetPath", _, "string"]);
-    const m = { path: _, mode: "id", intermediates: "true", repoMetaPatch: v, respondWith: f }, b = x(p), y = ze(pc, b);
-    return C.resolve(Ve(y, w(m)));
+    const m = { path: _, mode: "id", intermediates: "true", repoMetaPatch: v, respondWith: f }, b = x(p), y = qe(pc, b);
+    return S.resolve(Ve(y, L(m)));
   }(l, e, h, a).then((p) => {
-    const _ = Object.assign({}, { [R.CONTENT_TYPE]: s }, n), f = o ? Qe(o, i) : void 0, v = f ? Ue(f) : 0;
+    const _ = Object.assign({}, { [R.CONTENT_TYPE]: s }, n), f = o ? Je(o, i) : void 0, v = f ? Ue(f) : 0;
     return o && v > is ? ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: v, relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d }).then(({ result: m, response: b }) => {
       const y = e.split("/").slice(-1);
-      return { result: w(xe({ name: y }, m)), response: b };
-    }) : C.resolve().then(() => re(this, void 0, void 0, function* () {
+      return { result: L(xe({ name: y }, m)), response: b };
+    }) : S.resolve().then(() => re(this, void 0, void 0, function* () {
       const m = q(o) ? yield o(0, v) : f;
       return l.invoke(O.POST, p, _, m, { responseType: "json", isStatusValid: N([413]), reuseRequestDesc: { id: "createAssetForGuest", method: O.POST, href: p, headers: _, progress: d } }).then((b) => {
         var y;
-        if (b.statusCode === 413) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Qe(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d }).catch((le) => {
-          if (le.problemType === X.ASSET_NAME_CONFLICT) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Qe(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d });
+        if (b.statusCode === 413) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Je(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d }).catch((le) => {
+          if (le.problemType === X.ASSET_NAME_CONFLICT) return ys({ service: l, contentType: s, relation: u.PRIMARY, dataOrSliceCallback: o, size: Ue(Je(o, i)), relPath: e, respondWith: r, repoMetaPatch: a, additionalHeaders: n, progressCb: d });
           throw le;
         }).then(({ result: le, response: Ae }) => {
-          const We = e.split("/")[e.split("/").length - 1];
-          return { result: w(xe({ name: We }, le)), response: Ae };
+          const ze = e.split("/")[e.split("/").length - 1];
+          return { result: L(xe({ name: ze }, le)), response: Ae };
         });
         const P = e.split("/")[e.split("/").length - 1], A = Ee(b), D = b.headers;
         if (!((y = D[R.CONTENT_TYPE]) === null || y === void 0) && y.includes("multipart/mixed")) {
           const le = ar(b)[1];
           throw le.statusCode === 404 ? new c(c.ASSET_NOT_FOUND, "Asset was created successfully but repository metadata could not be found.", void 0, b) : le.statusCode === 403 ? new c(c.FORBIDDEN, "Asset was created successfully but Permission denied for fetching repository metadata.", void 0, b) : Vs("Unexpected Server Response", void 0, b);
         }
-        const k = S(b.response) ? b.response : { etag: "", md5: "" }, j = D["asset-id"] || D["x-resource-id"], J = D["repository-id"];
+        const k = C(b.response) ? b.response : { etag: "", md5: "" }, j = D["asset-id"] || D["x-resource-id"], J = D["repository-id"];
         let $ = k.etag, ve = k.md5;
         r == null && ($ = D.etag, ve = D["content-md5"]);
-        const ke = S(b.response) && r && (r === u.REPO_METADATA || S(r) && r.reltype === u.REPO_METADATA) ? se(b.response) : {}, Q = ne(t);
-        return Q && Q.setValueWithAsset(A, ke), { result: w(xe({ name: P }, ke, w({ links: A, assetId: j, etag: $, md5: ve, format: s, repositoryId: J, path: e }))), response: b };
+        const ke = C(b.response) && r && (r === u.REPO_METADATA || C(r) && r.reltype === u.REPO_METADATA) ? se(b.response) : {}, Q = ne(t);
+        return Q && Q.setValueWithAsset(A, ke), { result: L(xe({ name: P }, ke, L({ links: A, assetId: j, etag: $, md5: ve, format: s, repositoryId: J, path: e }))), response: b };
       });
     }));
   });
@@ -3758,8 +3758,8 @@ function Jc(t) {
 }
 function Qc(t, e = {}, s) {
   ds("getDiscoverableRepos()"), E(["svc", t, "object"], ["pageOpts", e, "object"]);
-  const r = x(t), n = ze("/repositories", r);
-  return C.resolve(void 0).then(() => re(this, void 0, void 0, function* () {
+  const r = x(t), n = qe("/repositories", r);
+  return S.resolve(void 0).then(() => re(this, void 0, void 0, function* () {
     const o = ne(t);
     let i;
     return o && (i = yield o.getRepositoryLinks()), !i && (i = Ee(yield r.invoke(O.HEAD, n, s, void 0, { isStatusValid: N() }))), o && o.setRepositoryLinks(i), new as(i, r, Jc).getPage(e, s);
@@ -3769,7 +3769,7 @@ U("dcx:assets:factory");
 const No = U("dcx:assets:indexdocument");
 function ed(t, e) {
   No("getIndexDocument()"), E(["svc", t, "object"]);
-  const s = x(t), r = ze("/index", s);
+  const s = x(t), r = qe("/index", s);
   return s.invoke(O.GET, r, e, void 0, { responseType: "json", isStatusValid: N() }).then((n) => ({ result: td(n.response), response: n.response }));
 }
 function td(t) {
@@ -3882,7 +3882,7 @@ function od(t) {
   const e = { versionCount: t[Me.TOTAL_CHILDREN], repositoryId: t[Me.REPO_ID], assetId: t[T.REPO_ASSET_ID], links: {}, versions: [] }, s = t.children || t[T.CHILDREN];
   return s && s.length > 0 && (e.versions = s.map((r) => ur(r))), e.links = t._links, e;
 }
-function nt(t, e, s, r) {
+function rt(t, e, s, r) {
   var n, o = arguments.length, i = o < 3 ? e : r === null ? r = Object.getOwnPropertyDescriptor(e, s) : r;
   if (typeof Reflect == "object" && typeof Reflect.decorate == "function") i = Reflect.decorate(t, e, s, r);
   else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (i = (o < 3 ? n(i) : o > 3 ? n(e, s, i) : n(e, s)) || i);
@@ -3910,7 +3910,7 @@ class dd {
         throw new c(c.INVALID_STATE, "Invalid record data", d);
       }
       const a = { versionId: id, componentId: i.id, cloudAssetId: r, compositeId: n, repositoryId: o, componentRevisionId: i.version, type: i.type, cloudExpiration: void 0, size: i.length, etag: i.etag, hashType: ad, hashValue: i.md5 };
-      return w(a);
+      return L(a);
     }(this.compositeAssetId, this.compositeId, this.repositoryId, s));
   }
   getComponentURL(e, s) {
@@ -3940,10 +3940,10 @@ function ld(t, e, s) {
   if (!(r.assetId && r.repositoryId || r.links || n.links)) throw new c(c.INVALID_PARAMS, "AdobeRepoUploadResult#asset object missing repositoryId or assetId, and links");
   const o = hd(n.id, n.etag, n.revision, n.md5, n.length, n.type);
   let i;
-  if (r.assetId && r.repositoryId) i = C.resolve(tn(s, r.assetId, r.repositoryId));
+  if (r.assetId && r.repositoryId) i = S.resolve(tn(s, r.assetId, r.repositoryId));
   else {
     E(["session", t, "object"]);
-    const a = r.links || n.links, d = Cn(a, [u.PRIMARY, u.ID, u.PATH, u.COMPONENT]), h = Z(a, d, { component_id: "manifest" });
+    const a = r.links || n.links, d = Sn(a, [u.PRIMARY, u.ID, u.PATH, u.COMPONENT]), h = Z(a, d, { component_id: "manifest" });
     i = t.headHTTPResource(h).then((l) => {
       const p = l.headers["repository-id"], _ = l.headers["asset-id"];
       if (!p || !_) throw new c(c.INVALID_DATA, "Fetched data missing repositoryId or assetId");
@@ -3953,12 +3953,12 @@ function ld(t, e, s) {
   return i.then((a) => (a.addUploadRecord(n.id, o), a));
 }
 const sn = U("dcx:repoapisession"), ud = de.getInstance(), rn = "+dcx";
-let Ge = class {
+let $e = class {
   constructor(t, e, s) {
     this._authenticationAllowList = ["adobe.com", "adobe.io", "adobelogin.com", "fotolia.net"], this._blockUploadThreshold = is, E(["httpService", t, "object"], ["server", e, "string"]), this._service = t, this._service._repoAPIBaseUrl = e;
-    const r = Ss(e);
+    const r = Cs(e);
     if (!r) throw new c(c.INVALID_PARAMS, "Could not determine endpoint from: " + e);
-    this._endPoint = r, S(s) && q(s.getIndexLinks) ? this._linksCache = s : this._linksCache = new Do();
+    this._endPoint = r, C(s) && q(s.getIndexLinks) ? this._linksCache = s : this._linksCache = new Do();
   }
   get serviceConfig() {
     return { service: this._service, cache: this._linksCache };
@@ -3967,19 +3967,19 @@ let Ge = class {
     return this._blockUploadThreshold;
   }
   set blockUploadThreshold(t) {
-    qe("threshold", t, "+number"), this._blockUploadThreshold = t;
+    Ye("threshold", t, "+number"), this._blockUploadThreshold = t;
   }
   get blockDownloadThreshold() {
     return Io();
   }
   set blockDownloadThreshold(t) {
-    qe("threshold", t, "+number"), bc(t);
+    Ye("threshold", t, "+number"), bc(t);
   }
   createAsset(t, e, s, r, n, o, i, a, d) {
-    return So(this._service, t, e, s, r, n, o, i, a, d);
+    return Co(this._service, t, e, s, r, n, o, i, a, d);
   }
   createAssetForGuest(t, e, s, r, n, o, i, a) {
-    return Co(this._service, t, e, s, r, n, o, i, a);
+    return So(this._service, t, e, s, r, n, o, i, a);
   }
   createComposite(t, e, s, r, n, o, i, a) {
     if (sn("createComposite()"), E(["parentDir", t, "object"], ["relPath", e, "string"], ["contentType", s, "string"]), !s.endsWith(rn)) throw new c(c.INVALID_PARAMS, `Composite contentType must end in "${rn}"`);
@@ -4055,7 +4055,7 @@ let Ge = class {
     return this._withSourcePromise(r).then(() => this.fetchLinksIfMissing(t, [u.PRIMARY], s)).then(() => Xn.call(r, this._service, t, e, s));
   }
   updatePrimaryResource(t, e, s, r, n, o, i) {
-    return this.fetchLinksIfMissing(t, [u.PRIMARY], i).then(() => wc(this._service, t, e, s, r, n, o, i));
+    return this.fetchLinksIfMissing(t, [u.PRIMARY], i).then(() => Lc(this._service, t, e, s, r, n, o, i));
   }
   getRepositoryResource(t, e) {
     return this.fetchLinksIfMissing(t, [u.REPOSITORY], e).then(() => to(this._service, t, e));
@@ -4112,7 +4112,7 @@ let Ge = class {
     return Hc(this.serviceConfig.service, t, e, s, r, n);
   }
   getRendition(t, e, s, r, n) {
-    return this.fetchLinksIfMissing(t, [u.RENDITION]).then(() => Lc(this._service, t, e, s, r, n));
+    return this.fetchLinksIfMissing(t, [u.RENDITION]).then(() => wc(this._service, t, e, s, r, n));
   }
   getCompositeComponentUrlForDownload(t, e, s, r, n) {
     var o;
@@ -4205,16 +4205,16 @@ let Ge = class {
     if (this._isDCXComponentLike(t)) return { revision: t.version, id: t.id };
     if (!e) throw new c(c.INVALID_PARAMS, "Missing componentId.");
     if (r === !1 || s) return { revision: s, id: e };
-    if (!ws(t) || !e) throw new c(c.INVALID_PARAMS, "Could not determine component revision");
+    if (!Ls(t) || !e) throw new c(c.INVALID_PARAMS, "Could not determine component revision");
     const o = (n = t.current) === null || n === void 0 ? void 0 : n.getComponentWithId(e);
     if ((o == null ? void 0 : o.version) === void 0) throw new c(c.INVALID_PARAMS, "Could not determine component revision");
     return { revision: o.version, id: e };
   }
   _isDCXComponentLike(t) {
-    return !!S(t) && t.owner != null && qr(t.owner);
+    return !!C(t) && t.owner != null && qr(t.owner);
   }
   _withSourcePromise(t) {
-    return C.resolve(void 0, t);
+    return S.resolve(void 0, t);
   }
   _getAsAdobeAsset(t) {
     if (typeof t != "object" || Array.isArray(t)) throw new c(c.INVALID_PARAMS, "Invalid asset-like object.");
@@ -4238,7 +4238,7 @@ let Ge = class {
     this._authenticationAllowList = t;
   }
   _resolveUrl(t) {
-    return Ss(t) ? t : an(this._service._repoAPIBaseUrl || this._service.server, t);
+    return Cs(t) ? t : an(this._service._repoAPIBaseUrl || this._service.server, t);
   }
   registerLinks(t, e, s) {
     t = t._links || t;
@@ -4246,8 +4246,8 @@ let Ge = class {
     return this._linksCache.setValueWithAsset(t, r), r;
   }
 };
-nt([ft], Ge.prototype, "getRepoMetadata", null), nt([ft], Ge.prototype, "getAppMetadata", null), nt([ft], Ge.prototype, "getCompositeComponent", null), nt([ft], Ge.prototype, "putCompositeComponent", null), nt([ft], Ge.prototype, "moveAsset", null), Ge = nt([xa("AdobeRepoAPISession")], Ge);
-const pd = (t, e, s) => new Ge(t, e, s), _d = "https://platform-cs-stage.adobe.io", fd = "AdobeExpressWeb", Ed = "assets", gd = "Failed to upload asset. Please try again.", Fe = {
+rt([ft], $e.prototype, "getRepoMetadata", null), rt([ft], $e.prototype, "getAppMetadata", null), rt([ft], $e.prototype, "getCompositeComponent", null), rt([ft], $e.prototype, "putCompositeComponent", null), rt([ft], $e.prototype, "moveAsset", null), $e = rt([xa("AdobeRepoAPISession")], $e);
+const pd = (t, e, s) => new $e(t, e, s), _d = "https://platform-cs-stage.adobe.io", fd = "AdobeExpressWeb", Ed = "assets", gd = "Failed to upload asset. Please try again.", Fe = {
   UPLOAD_FAILED: {
     code: "UPLOAD_FAILED",
     message: gd
@@ -4259,6 +4259,10 @@ const pd = (t, e, s) => new Ge(t, e, s), _d = "https://platform-cs-stage.adobe.i
   REPOSITORY_REQUIRED: {
     code: "REPOSITORY_REQUIRED",
     message: "Repository is required for normal token uploads"
+  },
+  DIRECTORY_REQUIRED: {
+    code: "DIRECTORY_REQUIRED",
+    message: "Directory is required for normal token uploads"
   },
   REPOSITORY_REQUIRED_FOR_DIRECTORY: {
     code: "REPOSITORY_REQUIRED_FOR_DIRECTORY",
@@ -4399,7 +4403,7 @@ class Bt {
   }
   applyAuthHeaders(e, s) {
     const r = { "x-api-key": void 0, authorization: void 0 };
-    return this.isAuthorizedURL(e) && (s["x-api-key"] !== null && this.apiKey && (r["x-api-key"] = this.apiKey), s.authorization !== null && this.authToken && (r.authorization = (this.authTokenScheme ? `${this.authTokenScheme} ` : "") + this.authToken)), s = w(Object.assign(Object.assign({}, s), r));
+    return this.isAuthorizedURL(e) && (s["x-api-key"] !== null && this.apiKey && (r["x-api-key"] = this.apiKey), s.authorization !== null && this.authToken && (r.authorization = (this.authTokenScheme ? `${this.authTokenScheme} ` : "") + this.authToken)), s = L(Object.assign(Object.assign({}, s), r));
   }
 }
 const Bs = 12e4, Rs = 36e5, me = U("dcx:http:xhr");
@@ -4644,16 +4648,16 @@ function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
   $ = i ? [...A, ...$] : a || $o(s) ? [] : o.retryCodes || ln, He("retry codes", $);
   const ke = o.increase || ((W, ee, M) => W === 1 ? M : ee * ee > f ? f : ee * ee);
   let Q = 0, le = 0, Ae = !1;
-  const We = ie();
-  let Le, ae, be, ue, ht = ie(), Ke = 0, kt = !1, gr = !1;
+  const ze = ie();
+  let we, ae, be, ue, ht = ie(), We = 0, kt = !1, gr = !1;
   const Ir = [];
   let Tr;
-  function Lt() {
-    He("getSnapshot()", Ae, Q, ie(), ht, Ke);
-    const W = Ae || Le != null ? 0 : Q - (ie() - ht);
-    let ee = Ke;
+  function wt() {
+    He("getSnapshot()", Ae, Q, ie(), ht, We);
+    const W = Ae || we != null ? 0 : Q - (ie() - ht);
+    let ee = We;
     ee += Ae ? ie() - ht : 0;
-    const M = (Le || ie()) - We;
+    const M = (we || ie()) - ze;
     return { count: le, canceled: kt, timedOut: gr, requests: Ir, duration: M, totalWaited: ee, requestPending: Ae, waitingFor: W };
   }
   function Ar() {
@@ -4661,7 +4665,7 @@ function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
     return Math.min(W, f);
   }
   function mr(W) {
-    if (W) return (ee) => W(ee, Lt());
+    if (W) return (ee) => W(ee, wt());
   }
   function yr(W) {
     const ee = W.getResponseHeader("retry-after");
@@ -4673,28 +4677,28 @@ function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
       return 1e3 * parseInt(W.getResponseHeader("retry-after"));
     }
   }
-  function rt(W = Q) {
+  function st(W = Q) {
     return Be(this, void 0, void 0, function* () {
-      if (Ke >= ve) return He("timed out", Ke, ve), gr = !0, ae(ue);
-      ht = ie(), b && (yield b(Lt())), He("retry in ", W), Tr = setTimeout(() => {
+      if (We >= ve) return He("timed out", We, ve), gr = !0, ae(ue);
+      ht = ie(), b && (yield b(wt())), He("retry in ", W), Tr = setTimeout(() => {
         var ee;
         try {
-          He("retry start"), jr(`Request: ${e.toUpperCase()} ${t} ${(ee = r == null ? void 0 : r["x-request-id"]) !== null && ee !== void 0 ? ee : ""}`), Ae = !0, Ke += W, ue = new Td(Object.assign(Object.assign({}, o), { timeout: n, preCallback: mr(v), postCallback: mr(m) })), Ir.push(ue), le++;
+          He("retry start"), jr(`Request: ${e.toUpperCase()} ${t} ${(ee = r == null ? void 0 : r["x-request-id"]) !== null && ee !== void 0 ? ee : ""}`), Ae = !0, We += W, ue = new Td(Object.assign(Object.assign({}, o), { timeout: n, preCallback: mr(v), postCallback: mr(m) })), Ir.push(ue), le++;
           for (const M of p) ue.onProgress(M);
           ue.send(t, e, s, r, h).then((M) => Be(this, void 0, void 0, function* () {
             var ls, us, ps;
-            if (jr(`Response: ${e.toUpperCase()} ${t} ${(ls = M.headers) === null || ls === void 0 ? void 0 : ls["x-request-id"]} ${M.getStatus()}`), Ae = !1, !M.isError() && !gt(M.getStatus(), $) && (M.getStatus() !== 401 || l == null) && (typeof D != "string" || A == null || !gt(M.getStatus(), A)) || (j == null ? void 0 : j.code) === M.getStatus() && M.getResponseData() && (j == null ? void 0 : j.problemType) !== ((us = yield M.getResponseDataAsJSON()) === null || us === void 0 ? void 0 : us.type)) return Le = ie(), ae(M);
-            if (M.isAborted() || kt) return Le = ie(), kt = !0, ae(M);
+            if (jr(`Response: ${e.toUpperCase()} ${t} ${(ls = M.headers) === null || ls === void 0 ? void 0 : ls["x-request-id"]} ${M.getStatus()}`), Ae = !1, !M.isError() && !gt(M.getStatus(), $) && (M.getStatus() !== 401 || l == null) && (typeof D != "string" || A == null || !gt(M.getStatus(), A)) || (j == null ? void 0 : j.code) === M.getStatus() && M.getResponseData() && (j == null ? void 0 : j.problemType) !== ((us = yield M.getResponseDataAsJSON()) === null || us === void 0 ? void 0 : us.type)) return we = ie(), ae(M);
+            if (M.isAborted() || kt) return we = ie(), kt = !0, ae(M);
             if (!i && typeof D == "string" && A != null && gt(M.getStatus(), A)) {
               const lt = M.getResponseHeader(D.toLowerCase()), ut = j.url, vr = ut && j.code === M.getStatus() && j.problemType === ((ps = M.getResponseData()) === null || ps === void 0 ? void 0 : ps.type);
               if (lt || vr) {
-                i = !0, t = vr ? ut : lt, e = k, s = void 0, J && (r = J(r)), $ = [...$, ...A], Ke = 0, ve *= 3;
+                i = !0, t = vr ? ut : lt, e = k, s = void 0, J && (r = J(r)), $ = [...$, ...A], We = 0, ve *= 3;
                 const Mo = M.getResponseHeader("retry-after");
                 if (P && Mo) {
                   const br = yr(M);
-                  if (br != null) return Q = br, rt(Q);
+                  if (br != null) return Q = br, st(Q);
                 }
-                return rt(0);
+                return st(0);
               }
             }
             if (M.getStatus() === 401) {
@@ -4704,36 +4708,36 @@ function Ad(t, e, s, r = {}, n, o = {}, i = !1) {
                 } catch {
                   return be(new c(c.UNAUTHORIZED, "Authentication Failed", M));
                 }
-                return Ke += ie() - ht, rt(0);
+                return We += ie() - ht, st(0);
               }
-              return Le = ie(), be(new c(c.UNAUTHORIZED, "Authentication Failed", M));
+              return we = ie(), be(new c(c.UNAUTHORIZED, "Authentication Failed", M));
             }
             if (gt(M.getStatus(), $) || d && M.getErrorCode() === I.NETWORK_ERROR) {
               const lt = M.getResponseHeader("retry-after");
               if (P && lt) {
                 const ut = yr(M);
-                if (ut != null) return Q = ut, rt(Q);
+                if (ut != null) return Q = ut, st(Q);
               }
-              return Q = Ar(), rt(Q);
+              return Q = Ar(), st(Q);
             }
-            return Le = ie(), ae(M);
+            return we = ie(), ae(M);
           })).catch((M) => {
             be(M);
           });
         } catch (M) {
           be(M);
         }
-      }, W), y && (yield y(Lt()));
+      }, W), y && (yield y(wt()));
     });
   }
-  const wo = new Promise((W, ee) => {
-    ae = W, be = ee, rt(0);
+  const Lo = new Promise((W, ee) => {
+    ae = W, be = ee, st(0);
   });
-  return { getPromise: () => wo, cancel: function() {
+  return { getPromise: () => Lo, cancel: function() {
     He("cancel()"), kt = !0, ue != null && ue.abort(), Ae || (He("abort"), clearTimeout(Tr), ae({ getErrorCode: () => te.ABORTED }));
   }, onProgress: function(W) {
     if (!p.includes(W)) return p.push(W), ue != null ? ue.onProgress && ue.onProgress(W) : void 0;
-  }, getSnapshot: Lt };
+  }, getSnapshot: wt };
 }
 class md {
   constructor(e, s, r, n, o = "text", i, a, d = {}) {
@@ -4924,7 +4928,7 @@ class Rd {
 const K = U("dcx:http:service"), nn = 3e5;
 class Od {
   constructor(e, s = {}) {
-    this.name = "AdobeHTTPService", this._requestQueue = new Rd(), this._requestsOutstanding = new vd(), this._authProvider = void 0, this._isActive = !0, this._preferFetch = !1, this._handlesRedirects = !0, this._withCredentials = !1, this._additionalNodeOptions = {}, this._retryOptions = {}, this._serviceGuid = zt(), this._reqNum = 0, this.featureFlags = {}, e instanceof Bt || S(e) && q(e.onChange) ? this._authProvider = e : q(e) && (s.useAuthProvider ? (this._authProvider = new Bt(void 0, void 0, e), this._waitingForAuthentication = !0) : (this._authProvider = new Bt(void 0, void 0, () => e.call(null, this)), this._waitingForAuthentication = !0)), this._authProvider ? this._authProvider.onChange(this._onAuthChange.bind(this)) : (this._authProvider = new Bt(), this._authProvider.resume()), this._maxOutstanding = s.maxOutstanding || 5, this._withCredentials = s.crossOriginCredentials || !1, this._timeout = s.timeout == null ? Bs : s.timeout, this._preferFetch = s.preferFetch === !0, this._requestIdPrefix = s.requestIdPrefix, s.server && (this.server = s.server);
+    this.name = "AdobeHTTPService", this._requestQueue = new Rd(), this._requestsOutstanding = new vd(), this._authProvider = void 0, this._isActive = !0, this._preferFetch = !1, this._handlesRedirects = !0, this._withCredentials = !1, this._additionalNodeOptions = {}, this._retryOptions = {}, this._serviceGuid = zt(), this._reqNum = 0, this.featureFlags = {}, e instanceof Bt || C(e) && q(e.onChange) ? this._authProvider = e : q(e) && (s.useAuthProvider ? (this._authProvider = new Bt(void 0, void 0, e), this._waitingForAuthentication = !0) : (this._authProvider = new Bt(void 0, void 0, () => e.call(null, this)), this._waitingForAuthentication = !0)), this._authProvider ? this._authProvider.onChange(this._onAuthChange.bind(this)) : (this._authProvider = new Bt(), this._authProvider.resume()), this._maxOutstanding = s.maxOutstanding || 5, this._withCredentials = s.crossOriginCredentials || !1, this._timeout = s.timeout == null ? Bs : s.timeout, this._preferFetch = s.preferFetch === !0, this._requestIdPrefix = s.requestIdPrefix, s.server && (this.server = s.server);
   }
   get isActive() {
     return this._isActive;
@@ -5009,11 +5013,11 @@ class Od {
     } else if (h === "blob") {
       if (typeof Blob != "function") throw new c(c.INVALID_PARAMS, "No Blob class");
     } else if (h && h !== "text" && h !== "json" && h !== "arraybuffer" && h !== "stream") throw new c(c.INVALID_PARAMS, "Unsupported response type: " + h);
-    !Ss(s) && this.server && (s = `${this.server}/${s.startsWith("/") ? s.substr(1, s.length) : s}`), K("invoke href", s);
+    !Cs(s) && this.server && (s = `${this.server}/${s.startsWith("/") ? s.substr(1, s.length) : s}`), K("invoke href", s);
     const l = he({}, r, this._additionalHeaders);
     K("invoke headers", r), l["x-request-id"] = [this._requestIdPrefix, this._serviceGuid, l["x-request-id"], "" + this._reqNum++].filter((v) => v).join("."), o.additionalNodeOptions = Object.assign({}, this._additionalNodeOptions || {}, o.additionalNodeOptions || {}), o.isStatusValid = o.isStatusValid || this._isStatusValid, o.retryOptions = Object.assign({}, this._retryOptions || {}, o.retryOptions || {});
     let p = { method: e, href: s, headers: l, token: void 0, body: n, options: o, progress: (a = o.reuseRequestDesc) === null || a === void 0 ? void 0 : a.progress, autoParseJson: d }, _ = o.reuseRequestDesc;
-    _ && _ instanceof C && "props" in _ && (_ = _.props), _ && ((this._requestQueue.exists(_) || _.id && this._requestsOutstanding.get(_.id) != null) && K("requestDesc still in use"), p = he(_, p)), p.id = p.id || zt(), i && ("maxRedirects" in o.additionalNodeOptions && (o.additionalNodeOptions.maxRedirects = 0), o.retryOptions && Object.keys(o.retryOptions).length !== 0 || (o.retryOptions = { disableRetry: !0 }));
+    _ && _ instanceof S && "props" in _ && (_ = _.props), _ && ((this._requestQueue.exists(_) || _.id && this._requestsOutstanding.get(_.id) != null) && K("requestDesc still in use"), p = he(_, p)), p.id = p.id || zt(), i && ("maxRedirects" in o.additionalNodeOptions && (o.additionalNodeOptions.maxRedirects = 0), o.retryOptions && Object.keys(o.retryOptions).length !== 0 || (o.retryOptions = { disableRetry: !0 }));
     const f = this._getRequestPromise(p);
     return f.getPromise().then(this._checkQueue.bind(this)).catch(this._checkQueue.bind(this)), q(i) && (K("invoke - cb"), f.then((v) => {
       K("invoke - cb - resolve ", v.statusCode);
@@ -5033,7 +5037,7 @@ class Od {
   }
   _makeRequest(e) {
     K("_makeRequest(): ", e.id);
-    const s = e.options || {}, r = yd(w(Object.assign(Object.assign({ url: e.href, autoParseJson: e.autoParseJson, descriptor: e }, e), { timeout: s.timeout || this._timeout, authProvider: this._authProvider, forceXhr: this._forcedXhr, fetch: this._fetch, responseType: s.responseType, preCallback: this._beforeHook, postCallback: this._afterHook, isStatusValid: s.isStatusValid, additionalNodeOptions: s.additionalNodeOptions, retryOptions: s.retryOptions, isExternalRequest: s.isExternalRequest, preferFetch: this._preferFetch })));
+    const s = e.options || {}, r = yd(L(Object.assign(Object.assign({ url: e.href, autoParseJson: e.autoParseJson, descriptor: e }, e), { timeout: s.timeout || this._timeout, authProvider: this._authProvider, forceXhr: this._forcedXhr, fetch: this._fetch, responseType: s.responseType, preCallback: this._beforeHook, postCallback: this._afterHook, isStatusValid: s.isStatusValid, additionalNodeOptions: s.additionalNodeOptions, retryOptions: s.retryOptions, isExternalRequest: s.isExternalRequest, preferFetch: this._preferFetch })));
     return this._requestsOutstanding.addRequest(e.id, r), e.startTime = (/* @__PURE__ */ new Date()).valueOf(), r;
   }
   _checkQueue() {
@@ -5053,7 +5057,7 @@ class Od {
     K("_cQL done");
   }
   _getRequestPromise(e) {
-    return K("_getRequestPromise()"), new C((s, r, n) => {
+    return K("_getRequestPromise()"), new S((s, r, n) => {
       if (!this._isActive) return K("_gRP inactive"), r(new c(c.SERVICE_IS_INACTIVE, "Network request in inactive state"));
       n(() => {
         K("_gRP cancel 1", e.id), this._requestQueue.remove(e);
@@ -5071,20 +5075,20 @@ class Od {
     K("abortAllWithToken()"), this._requestsOutstanding.removeAllWithToken(e), this._requestQueue.removeAllWithToken(e);
   }
 }
-const Pd = (t, e) => new Od(t, {}), ko = class Lo extends CustomEvent {
+const Pd = (t, e) => new Od(t, {}), ko = class wo extends CustomEvent {
   constructor(e) {
-    super(Lo.EVENT_NAME, { bubbles: !0, composed: !0, detail: e });
+    super(wo.EVENT_NAME, { bubbles: !0, composed: !0, detail: e });
   }
 };
 ko.EVENT_NAME = Id.UPLOAD_STATUS;
-let Sd = ko;
-class Cd {
+let Cd = ko;
+class Sd {
   /**
    * Create a new UploadService instance
    * @param config - Configuration for the upload service
    */
   constructor(e) {
-    this._uploadStatus = $e.IDLE, this._uploadBytesCompleted = !1, this._uploadProgressPercentage = 0, this.config = e, this.httpService = Pd(), this.authConfig = e.authConfig, this.session = this.prepareSession();
+    this._uploadStatus = nt.IDLE, this._uploadBytesCompleted = !1, this._uploadProgressPercentage = 0, this.config = e, this.httpService = Pd(), this.authConfig = e.authConfig, this.session = this.prepareSession();
   }
   /**
    * Initialize repository for user token type
@@ -5111,21 +5115,23 @@ class Cd {
    * @returns Promise resolving to the repository
    */
   async setupUserRepository() {
-    var a, d;
-    const e = await this.session.getIndexDocument(), { assignedDirectories: s } = e.result, r = (a = s == null ? void 0 : s[0]) == null ? void 0 : a.repositoryId, n = (d = s == null ? void 0 : s[0]) == null ? void 0 : d.assetId, i = await new Er({ repositoryId: r, assetId: n }, this.httpService).getPagedChildren();
-    if (i != null && i.result) {
-      const h = i.result.children;
-      if (h.length === 1) {
-        const l = h[0];
+    var i, a;
+    const e = await this.session.getIndexDocument(), { assignedDirectories: s } = e.result, r = (i = s == null ? void 0 : s[0]) == null ? void 0 : i.repositoryId, n = (a = s == null ? void 0 : s[0]) == null ? void 0 : a.assetId;
+    this.config.directory = new Er({ repositoryId: r, assetId: n }, this.httpService);
+    const o = await this.config.directory.getPagedChildren();
+    if (o != null && o.result) {
+      const d = o.result.children;
+      if (d.length === 1) {
+        const h = d[0];
         return {
-          repositoryId: l["repo:repositoryId"],
-          path: l["repo:path"]
+          repositoryId: h["repo:repositoryId"],
+          path: h["repo:path"]
         };
       } else {
-        let l = h.find((p) => p["repo:name"] === "temp");
-        return l || (l = h[0]), {
-          repositoryId: l["repo:repositoryId"],
-          path: l["repo:path"]
+        let h = d.find((l) => l["repo:name"] === "temp");
+        return h || (h = d[0]), {
+          repositoryId: h["repo:repositoryId"],
+          path: h["repo:path"]
         };
       }
     }
@@ -5157,30 +5163,30 @@ class Cd {
    * @returns Promise resolving to upload result
    */
   async uploadAsset(e) {
-    this.uploadStatus = $e.IDLE;
+    this.uploadStatus = nt.IDLE;
     try {
       const {
         file: s,
         fileName: r,
         path: n = this.config.basePath,
         onProgress: o = this.getUploadProgress()
-      } = e, i = this.convertToSliceableData(s), a = this.getFileSize(s), d = this.buildPath(n, this.generateFileName(r));
-      let h, l;
+      } = e, i = this.convertToSliceableData(s), a = this.getFileSize(s), d = this.buildPath(n, this.generateFileName(r)), h = { ...e, onProgress: o };
+      let l, p;
       switch (this.authConfig.tokenType) {
         case "guest": {
-          const _ = await this.createAssetForGuest(
-            { ...e, onProgress: o },
+          const f = await this.createAssetForGuest(
+            h,
             i,
             a,
             d
           );
-          h = _.result, l = _.preSignedUrl;
+          l = f.result, p = f.preSignedUrl;
           break;
         }
         case "user":
         default: {
-          h = (await this.createAssetForUser(
-            e,
+          l = (await this.createAssetForUser(
+            h,
             i,
             a,
             d
@@ -5188,8 +5194,8 @@ class Cd {
           break;
         }
       }
-      return this._uploadBytesCompleted && (this.uploadStatus = $e.COMPLETED), {
-        asset: h.result
+      return this._uploadBytesCompleted && (this.uploadStatus = nt.COMPLETED), {
+        asset: l.result
       };
     } catch (s) {
       throw this.handleError(
@@ -5239,18 +5245,16 @@ class Cd {
       resourceDesignator: i,
       additionalHeaders: a = {},
       repoMetaPatch: d,
-      createIntermediates: h
+      createIntermediates: h,
+      onProgress: l
     } = e;
-    let l;
-    if (!this.config.repository)
-      throw this.handleError(
-        Fe.REPOSITORY_REQUIRED.code,
-        new Error(Fe.REPOSITORY_REQUIRED.message)
-      );
-    const p = this.config.repository;
+    let p;
+    this.validateRequiredConfig([
+      { field: "directory", errorCode: Fe.DIRECTORY_REQUIRED },
+      { field: "repository", errorCode: Fe.REPOSITORY_REQUIRED }
+    ]);
     try {
-      this.uploadStatus = $e.UPLOADING, l = await this.session.createAsset(
-        p,
+      p = await this.config.directory.createAsset(
         n,
         h || !0,
         o,
@@ -5258,15 +5262,16 @@ class Cd {
         a,
         s,
         r,
-        d
-      ), this._uploadProgressPercentage = 100, this.uploadStatus = $e.COMPLETED;
+        d,
+        l
+      );
     } catch (_) {
       throw this.handleError(
         Fe.UPLOAD_FAILED.code,
         _
       );
     }
-    return { result: l };
+    return { result: p };
   }
   /**
    * Generate a pre-signed URL for downloading an asset
@@ -5309,7 +5314,7 @@ class Cd {
    * @param status - The status to dispatch
    */
   dispatchStatusEvent(e) {
-    window.dispatchEvent(new Sd({ status: e, progress: this._uploadProgressPercentage }));
+    window.dispatchEvent(new Cd({ status: e, progress: this._uploadProgressPercentage }));
   }
   /**
    * Get upload progress for an ongoing upload
@@ -5317,7 +5322,7 @@ class Cd {
    */
   getUploadProgress() {
     return (e, s) => {
-      this._uploadProgressPercentage = Math.round(e / s * 100), e === s && (this._uploadBytesCompleted = !0), this.uploadStatus = $e.UPLOADING;
+      this._uploadProgressPercentage = Math.round(e / s * 100), e === s && (this._uploadBytesCompleted = !0), this.uploadStatus = nt.UPLOADING;
     };
   }
   /**
@@ -5355,6 +5360,19 @@ class Cd {
     return n.startsWith("/") ? n.substring(1) : n;
   }
   /**
+   * Validate required configuration fields
+   * @param validations - Array of field validations to perform
+   * @throws Error if any required field is missing
+   */
+  validateRequiredConfig(e) {
+    for (const { field: s, errorCode: r } of e)
+      if (!this.config[s])
+        throw this.handleError(
+          r.code,
+          new Error(r.message)
+        );
+  }
+  /**
    * Handle an error
    * @param code - The error code
    * @param originalError - The original error
@@ -5363,7 +5381,7 @@ class Cd {
    */
   handleError(e, s, r) {
     const n = Fe[e];
-    n.code === Fe.UPLOAD_FAILED.code && (this.uploadStatus = $e.FAILED);
+    n.code === Fe.UPLOAD_FAILED.code && (this.uploadStatus = nt.FAILED);
     const o = r || n.message, i = new class extends Error {
       constructor(a, d, h) {
         super(a), this.code = d, this.originalError = h, this.name = "UploadServiceError";
@@ -5392,7 +5410,7 @@ const kd = async (t) => {
     tokenType: ((n = window == null ? void 0 : window.adobeIMS) == null ? void 0 : n.isSignedInUser()) || !1 ? "user" : "guest",
     token: (i = (o = window == null ? void 0 : window.adobeIMS) == null ? void 0 : o.getAccessToken()) == null ? void 0 : i.token,
     apiKey: fd
-  }, r = new Cd({
+  }, r = new Sd({
     authConfig: s,
     endpoint: _d,
     basePath: Ed,

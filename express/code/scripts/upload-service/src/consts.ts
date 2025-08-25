@@ -18,6 +18,10 @@ export const ERROR_CODES = {
       code: 'REPOSITORY_REQUIRED',
       message: 'Repository is required for normal token uploads'
     },
+    DIRECTORY_REQUIRED: {
+      code: 'DIRECTORY_REQUIRED',
+      message: 'Directory is required for normal token uploads'
+    },
     REPOSITORY_REQUIRED_FOR_DIRECTORY: {
       code: 'REPOSITORY_REQUIRED_FOR_DIRECTORY',
       message: 'Repository is required for directory operations'
