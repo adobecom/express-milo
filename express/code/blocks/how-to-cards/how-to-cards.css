@@ -118,6 +118,13 @@
     }
 }
 
+/* Desktop: when exactly 3 cards, make each take 1/3 of container */
+@media (min-width: 900px) {
+    .how-to-cards.cards-count-3 .card {
+        width: calc((100% - 32px) / 3);
+    }
+}
+
 .gallery {
     display: flex;
     flex-wrap: nowrap;
