@@ -146,9 +146,10 @@ export default function Form() {
           { value: 'free', label: 'Free' },
           { value: 'premium', label: 'Premium' },
         ]}
+        info="Premium/Crown icon will be added to Template Results for premium templates"
       />
 
-      <h4>Manual Template IDs (ignoring all but collection and limit)</h4>
+      <h4>Manual Template IDs</h4>
       <TemplateIdGroups />
 
       <h4>Boosting:</h4>

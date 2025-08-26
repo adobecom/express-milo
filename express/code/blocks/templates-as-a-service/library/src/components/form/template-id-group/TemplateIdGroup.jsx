@@ -5,6 +5,7 @@ import {
   useFormDispatch,
 } from '../../../utils/form-hooks';
 import Label from '../Label';
+import InfoButton from '../fields/InfoButton';
 
 function Row({ rowIndex, templateId, expandButton, inputRef }) {
   const formDispatch = useFormDispatch();
@@ -27,21 +28,24 @@ function Row({ rowIndex, templateId, expandButton, inputRef }) {
         }
       />
       <div className="flex gap-1">
-        {rowIndex === 0  || <button
-          onClick={(e) => {
-            e.preventDefault();
-            formDispatch({
-              type: ACTION_TYPES.IDS_REMOVE,
-              payload: {
-                idsRow: rowIndex,
-              },
-            });
-          }}
-        >
-          -
-        </button>}
+        {rowIndex === 0 || (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              formDispatch({
+                type: ACTION_TYPES.IDS_REMOVE,
+                payload: {
+                  idsRow: rowIndex,
+                },
+              });
+            }}
+          >
+            -
+          </button>
+        )}
         {expandButton}
       </div>
+      <InfoButton fieldName={'template-id'} content={'Having manual ids will ignore all filters and boosting. Collection is still needed. Limit can be used in combo with backup recipe. Clicking each Template Result can toggle the display of its id.'} />
     </Label>
   );
 }
@@ -52,7 +56,7 @@ export default function TemplateIdGroups() {
   const { templateIds } = formData;
   const inputRefs = useRef([]);
   const prevLength = useRef(templateIds.length);
-  
+
   // Focus on the newest input when a new one is added
   useEffect(() => {
     if (templateIds.length > prevLength.current) {
@@ -63,7 +67,7 @@ export default function TemplateIdGroups() {
     }
     prevLength.current = templateIds.length;
   }, [templateIds.length]);
-  
+
   const expandButton = (
     <button
       onClick={(e) => {
@@ -84,7 +88,7 @@ export default function TemplateIdGroups() {
           rowIndex={i}
           templateId={templateId}
           expandButton={i === templateIds.length - 1 ? expandButton : null}
-          inputRef={(el) => inputRefs.current[i] = el}
+          inputRef={(el) => (inputRefs.current[i] = el)}
         />
       ))}
     </div>

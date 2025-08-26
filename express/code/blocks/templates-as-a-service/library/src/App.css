@@ -90,6 +90,10 @@ main .section .app-container p {
   gap: 1rem;
 }
 
+.row-gap-7 {
+  row-gap: 2rem;
+}
+
 .flex-col {
   flex-direction: column;
 }
@@ -159,6 +163,7 @@ form h4 {
 
 form h4 {
   padding-top: 1rem;
+  padding-bottom: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
@@ -172,11 +177,23 @@ code {
   max-height: 230px;
   max-width: 230px;
   background-color: #eeeeee;
+  position: relative;
 }
 
-.template img {
+.template img,
+.template video {
   height: 100%;
   object-fit: contain;
+}
+
+.template img.icon {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+}
+
+.template-id {
+  font-size: 0.75rem;
 }
 
 .info-button {

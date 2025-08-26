@@ -184,3 +184,68 @@ export function isValidTemplate(template) {
       && template._links?.['http://ns.adobe.com/adobecloud/rel/component']?.href?.replace
   );
 }
+
+function extractImageThumbnail(page) {
+  return page?.rendition?.image?.thumbnail;
+}
+
+export function getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page) {
+  const thumbnail = extractImageThumbnail(page);
+  if (!thumbnail) {
+    // webpages
+    return renditionLinkHref.replace('{&page,size,type,fragment}', '');
+  }
+  const {
+    mediaType,
+    componentId,
+    width,
+    height,
+    hzRevision,
+  } = thumbnail;
+  if (mediaType === 'image/webp') {
+    // webp only supported by componentLink
+    return componentLinkHref.replace(
+      '{&revision,component_id}',
+      `&revision=${hzRevision || 0}&component_id=${componentId}`,
+    );
+  }
+
+  return renditionLinkHref.replace(
+    '{&page,size,type,fragment}',
+    `&size=${Math.max(width, height)}&type=${mediaType}&fragment=id=${componentId}`,
+  );
+}
+
+const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
+
+export async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
+  const videoThumbnail = page.rendition?.video?.thumbnail;
+  const { componentId } = videoThumbnail;
+  const preLink = renditionLinkHref.replace(
+    '{&page,size,type,fragment}',
+    `&type=${videoMetadataType}&fragment=id=${componentId}`,
+  );
+  const backupPosterSrc = getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page);
+  try {
+    const response = await fetch(preLink);
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+    const { renditionsStatus: { state }, posterframe, renditions } = await response.json();
+    if (state !== 'COMPLETED') throw new Error('Video not ready');
+
+    const mp4Rendition = renditions.find((r) => r.videoContainer === 'MP4');
+    if (!mp4Rendition?.url) throw new Error('No MP4 rendition found');
+
+    return { src: mp4Rendition.url, poster: posterframe?.url || backupPosterSrc };
+  } catch (err) {
+    // use componentLink as backup
+    return {
+      src: componentLinkHref.replace(
+        '{&revision,component_id}',
+        `&revision=0&component_id=${componentId}`,
+      ),
+      poster: backupPosterSrc,
+    };
+  }
+}
