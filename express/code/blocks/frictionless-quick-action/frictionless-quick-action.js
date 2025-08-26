@@ -258,9 +258,34 @@ async function performUploadAction(files, block, quickAction) {
     return;
   }
   const encodedAssetId = btoa(assetId);
+  const isVideoEditor = quickAction === 'edit-video';
+  const isImageEditor = quickAction === 'edit-image';
   const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
-  url.searchParams.set('frictionlessUploadAssetId', encodedAssetId);
-  url.searchParams.set('url', urlsMap[quickAction]);
+  const searchParams = {
+    frictionlessUploadAssetId: encodedAssetId,
+    category: 'media',
+    unit: 'px',
+    tab: isVideoEditor ? 'videos' : 'photos',
+    referrer: 'https://www.google.com/',
+    placement: isVideoEditor ? 'ax-columns-1' : 'outside-blocks',
+    locale: 'en-US',
+    contentRegion: 'us',
+    url: urlsMap[quickAction],
+  };
+
+  Object.entries(searchParams).forEach(([key, value]) => {
+    url.searchParams.set(key, value);
+  });
+
+  if (isVideoEditor) {
+    url.searchParams.set('isVideoMaker', 'true');
+    url.searchParams.set('sceneline', 'true');
+  }
+
+  if (isImageEditor) {
+    url.searchParams.set('learn', 'exercise:express/how-to/in-app/how-to-edit-an-image:-1');
+  }
+
   window.location.href = url.toString();
 }
 
