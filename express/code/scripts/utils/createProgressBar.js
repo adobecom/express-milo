@@ -67,7 +67,7 @@ class ProgressBar extends HTMLElement {
           gap: 16px;
           margin: 0 auto;
           position: relative;
-          min-height: 500px;
+          min-height: 450px;
           display: grid;
           place-items: center;
           place-content: center;
@@ -76,7 +76,6 @@ class ProgressBar extends HTMLElement {
       .progress-icon-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 8px;
       }
 
       .adobe-express-icon {
