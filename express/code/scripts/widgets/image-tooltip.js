@@ -173,10 +173,7 @@ export default async function handleImageTooltip(imgElement) {
     ({ getConfig } = utils);
   });
 
-  // Skip CSS loading in test environment
-  if (!window.isTestEnv) {
-    await onImageTooltipCSSLoad();
-  }
+  await onImageTooltipCSSLoad();
 
   const altText = imgElement.alt || '';
   const { actualAlt, tooltipText, isPremium, icon } = parseImageMetadata(altText);
