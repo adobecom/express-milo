@@ -3220,7 +3220,7 @@ main .template-x.tworow .template-2x2-col {
   width: min(260px, var(--ax-grid-6-col-width));
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   flex: 0 0 auto;
 }
 
@@ -3247,11 +3247,11 @@ main .template-x.tworow .toolbar-wrapper .wrapper-functions {
 
 main .template-x.tworow .template-2x2-col .template {
   justify-content: flex-start;
+  min-height: 90px;
 }
 
 main .template-x.tworow .template-2x2-col .template.placeholder {
   max-height: 200px;
-  min-height: initial;
   width: calc(100% - 10px);
   max-width: initial;
   margin: 5px;
@@ -3259,7 +3259,8 @@ main .template-x.tworow .template-2x2-col .template.placeholder {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-200)
+  gap: 4px;
+  padding: 5px;
 }
 
 main .template-x.tworow .template-2x2-col .template.placeholder.tall {
@@ -3286,7 +3287,7 @@ main .template-x.tworow .template-2x2-col .template.placeholder div:nth-of-type(
 main .template-x.tworow .template-2x2-col .template .still-wrapper img:not(.icon) {
   width: 100%;
   height: auto;
-  max-height: 200px;
+  max-height: 190px;
 }
 
 /* Last variant: template-tworow END */
