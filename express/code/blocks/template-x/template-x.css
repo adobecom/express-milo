@@ -3250,6 +3250,10 @@ main .template-x.tworow .template-2x2-col .template {
   min-height: 90px;
 }
 
+main .template-x.horizontal.tworow .template-2x2-col .template .button-container {
+  margin-left: initial;
+}
+
 main .template-x.tworow .template-2x2-col .template.placeholder {
   max-height: 200px;
   width: calc(100% - 10px);
