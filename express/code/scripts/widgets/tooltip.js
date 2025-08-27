@@ -162,6 +162,7 @@ export default async function handleTooltip(pricingArea, tooltipPattern = /\(\((
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig } = utils);
   });
+  const config = getConfig();
   return new Promise((resolve) => {
     loadStyle(`${config.codeRoot}/scripts/widgets/tooltip.css`);
     buildTooltip(pricingArea, tooltipPattern);
