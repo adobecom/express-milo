@@ -1768,8 +1768,6 @@ async function buildTemplateList(block, props, type = []) {
   if (!props.templateStats) {
     await processContentRow(block, props);
   }
-  if (props.experiment) block.classList.add(props.experiment);
-  if (getMetadata('template-experiment')) block.classList.add(getMetadata('template-experiment'));
 
   const { templates, fallbackMsg } = await fetchAndRenderTemplates(props);
 
@@ -1917,8 +1915,6 @@ function determineTemplateXType(props) {
   if (props.print && props.print.toLowerCase() === 'flyer') type.push('flyer');
   if (props.print && props.print.toLowerCase() === 't-shirt') type.push('t-shirt');
 
-  if (props.experiment) type.push(props.experiment);
-
   variant = type;
   return type;
 }
@@ -1930,6 +1926,15 @@ export default async function decorate(block) {
   });
   block.dataset.blockName = 'template-x';
   const props = constructProps(block);
+  if (getMetadata('template-experiment') && !props.experiment) {
+    props.experiment = getMetadata('template-experiment');
+  }
+  if (props.experiment) block.classList.add(props.experiment);
+  if (block.classList.contains(TWO_ROW)) {
+    // overriding variants for tworow experimentation
+    props.orientation = 'horizontal';
+    props.width = 'full';
+  }
   block.innerHTML = '';
   await buildTemplateList(block, props, determineTemplateXType(props));
 }
