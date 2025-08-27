@@ -1769,6 +1769,7 @@ async function buildTemplateList(block, props, type = []) {
     await processContentRow(block, props);
   }
   if (props.experiment) block.classList.add(props.experiment);
+  if (getMetadata('template-experiment')) block.classList.add(getMetadata('template-experiment'));
 
   const { templates, fallbackMsg } = await fetchAndRenderTemplates(props);
 
