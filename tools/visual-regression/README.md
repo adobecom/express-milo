@@ -35,13 +35,13 @@ visual-compare compare <control-branch> <experimental-branch> <subdirectory> [op
 
 Example:
 ```bash
-visual-compare compare main feature-xyz /docs/library/kitchen-sink/comparison-table-v2 --open
+visual-compare compare main feature-xyz /docs/library/kitchen-sink/comparison-table-v2 --open --report=report-kitchen-sink.html
 ```
 
 ### Natural Language Interface
 
 ```bash
-visual-compare nl "compare main branch with feature-xyz at /docs/library/kitchen-sink/comparison-table-v2"
+visual-compare nl "compare main branch with feature-xyz at /docs/library/kitchen-sink/comparison-table-v2" --report=report-kitchen-sink.html
 ```
 
 Other examples:
@@ -115,7 +115,7 @@ You can ask Cursor AI to run comparisons for you:
 
 Cursor will understand and execute:
 ```bash
-cd tools/visual-regression && npx visual-compare nl "compare main and feature-abc for /express/templates"
+cd tools/visual-regression && npx visual-compare nl "compare main and feature-abc for /express/templates" --report=report-templates.html
 ```
 
 ## Output
@@ -123,7 +123,35 @@ cd tools/visual-regression && npx visual-compare nl "compare main and feature-ab
 The tool generates:
 - Screenshots in `output/screenshots/`
 - Difference images in `output/diffs/`
-- HTML report at `output/report.html`
+- HTML report at `output/report.html` (customize via `--report=<filename>`)
+
+## Batch Mode (Configurable Concurrency)
+
+Provide a text file with one path per line (lines starting with `#` are ignored):
+
+```
+# urls.txt
+/express
+/express/pricing
+/docs/library/kitchen-sink/comparison-table-v2
+```
+
+Run with configurable concurrency and timing:
+
+```bash
+visual-compare batch <control-branch> <experimental-branch> <urls-file> \
+  --concurrency=4 --slow --timeout=60000 --wait=5000
+```
+
+Example:
+
+```bash
+visual-compare batch main stage urls.txt --concurrency=3 --slow
+```
+
+Outputs:
+- Individual HTML reports in `output/` (auto-named per path)
+- Summary JSON at `output/batch-summary-<timestamp>.json`
 
 ## Troubleshooting
 

@@ -28,6 +28,7 @@ program
   .argument('<experimental-branch>', 'Experimental branch name')
   .argument('<subdirectory>', 'Subdirectory path (e.g., /docs/library/kitchen-sink)')
   .option('-o, --open', 'Open report in browser after completion')
+  .option('-r, --report <filename>', 'Custom report filename (e.g., report-pricing.html)')
   .option('-t, --timeout <ms>', 'Page load timeout in milliseconds (default: 60000)', '60000')
   .option('-w, --wait <ms>', 'Wait time for blocks to render in milliseconds (default: 5000)', '5000')
   .option('-f, --final-wait <ms>', 'Final wait time for animations in milliseconds (default: 3000)', '3000')
@@ -45,7 +46,7 @@ program
       spinner.succeed('Screenshots captured and compared!');
 
       // Generate report
-      const reportPath = await vr.generateHTMLReport(results);
+      const reportPath = await vr.generateHTMLReport(results, options.report);
 
       // Display results summary
       console.log(chalk.bold('\n📊 Comparison Results:\n'));
@@ -90,6 +91,7 @@ program
   .alias('nl')
   .description('Use natural language to specify comparison')
   .option('-o, --open', 'Open report in browser after completion')
+  .option('-r, --report <filename>', 'Custom report filename (e.g., report-pricing.html)')
   .option('-t, --timeout <ms>', 'Page load timeout in milliseconds (default: 60000)', '60000')
   .option('-w, --wait <ms>', 'Wait time for blocks to render in milliseconds (default: 5000)', '5000')
   .option('-f, --final-wait <ms>', 'Final wait time for animations in milliseconds (default: 3000)', '3000')
@@ -142,7 +144,7 @@ program
 
       spinner.succeed('Screenshots captured and compared!');
 
-      const reportPath = await vr.generateHTMLReport(results);
+      const reportPath = await vr.generateHTMLReport(results, options.report);
 
       // Display results summary
       console.log(chalk.bold('\n📊 Comparison Results:\n'));
@@ -191,6 +193,26 @@ program
       console.log(chalk.gray('  • ') + example);
     });
     console.log(chalk.dim('\nUsage: visual-compare nl "your natural language query"'));
+  });
+
+program
+  .command('batch')
+  .description('Run a batch of comparisons from a text file of URLs')
+  .argument('<control-branch>', 'Control branch name (e.g., main)')
+  .argument('<experimental-branch>', 'Experimental branch name')
+  .argument('<urls-file>', 'Path to a text file containing subdirectory paths')
+  .option('-c, --concurrency <n>', 'Max concurrent comparisons (default: 4)', '4')
+  .option('--slow', 'Use slow timing for heavy pages')
+  .option('--fast', 'Use fast timing (default)')
+  .option('-t, --timeout <ms>', 'Page load timeout in milliseconds')
+  .option('-w, --wait <ms>', 'Wait time for blocks to render in milliseconds')
+  .action(async (controlBranch, experimentalBranch, urlsFile, options) => {
+    const { runBatch } = await import('./batch-run.js');
+    const concurrency = parseInt(options.concurrency, 10) || 4;
+    const timing = options.slow ? 'slow' : 'fast';
+    const timeout = options.timeout ? parseInt(options.timeout, 10) : undefined;
+    const wait = options.wait ? parseInt(options.wait, 10) : undefined;
+    await runBatch(controlBranch, experimentalBranch, urlsFile, { concurrency, timing, timeout, wait });
   });
 
 program.parse();

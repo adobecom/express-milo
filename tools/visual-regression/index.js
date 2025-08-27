@@ -270,9 +270,12 @@ class VisualRegression {
     };
   }
 
-  async generateHTMLReport(comparisonResults) {
-    const reportPath = path.join(this.outputDir, 'report.html');
-    return await generateComparisonReport(comparisonResults, reportPath);
+  async generateHTMLReport(comparisonResults, customFilename) {
+    const filename = customFilename && String(customFilename).trim().length > 0
+      ? customFilename
+      : 'report.html';
+    const reportPath = path.join(this.outputDir, filename);
+    return generateComparisonReport(comparisonResults, reportPath);
   }
 }
 

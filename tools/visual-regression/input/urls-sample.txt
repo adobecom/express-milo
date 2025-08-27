@@ -1,0 +1,4 @@
+# Sample list of subdirectory paths for batch mode
+/express
+/express/pricing
+/docs/library/kitchen-sink/comparison-table-v2

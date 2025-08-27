@@ -14,6 +14,7 @@ import VisualRegression from './index.js';
  *   --slow: Use slow timing for heavy pages
  *   --timeout=<ms>: Custom page timeout
  *   --wait=<ms>: Custom block wait time
+ *   --report=<filename>: Custom report filename
  */
 
 function parseOptions(args) {
@@ -22,6 +23,7 @@ function parseOptions(args) {
     timing: 'fast',
     customTimeout: null,
     customWait: null,
+    reportFilename: null,
   };
 
   args.forEach((arg) => {
@@ -33,6 +35,9 @@ function parseOptions(args) {
     }
     if (arg.startsWith('--wait=')) {
       options.customWait = parseInt(arg.split('=')[1], 10);
+    }
+    if (arg.startsWith('--report=')) {
+      options.reportFilename = arg.split('=')[1];
     }
   });
 
@@ -91,7 +96,7 @@ async function main() {
     spinner.succeed('Screenshots captured and compared!');
 
     // Generate report
-    const reportPath = await vr.generateHTMLReport(results);
+    const reportPath = await vr.generateHTMLReport(results, options.reportFilename);
 
     // Display results summary
     console.log(chalk.bold('\n📊 Comparison Results:\n'));

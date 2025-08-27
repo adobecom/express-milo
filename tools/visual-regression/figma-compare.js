@@ -147,16 +147,16 @@ program
           success,
           threshold,
         };
-        
-        const reportPath = options.interactive 
+
+        const reportPath = options.interactive
           ? await generateInteractiveFigmaReport(
-              reportData,
-              path.join(__dirname, 'output', 'interactive-figma-comparison.html')
-            )
+            reportData,
+            path.join(__dirname, 'output', 'interactive-figma-comparison.html'),
+          )
           : await generateFigmaComparisonReport(
-              reportData,
-              path.join(__dirname, 'output', 'figma-comparison-report.html')
-            );
+            reportData,
+            path.join(__dirname, 'output', 'figma-comparison-report.html'),
+          );
 
         console.log(chalk.blue(`\\n📄 Report: ${reportPath}`));
 
@@ -174,7 +174,5 @@ program
       process.exit(1);
     }
   });
-
-
 
 program.parse();
