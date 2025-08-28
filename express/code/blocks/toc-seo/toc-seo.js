@@ -930,15 +930,21 @@ export default async function decorate(block) {
     // Phase 5: Setup event handlers
     setupAllEventHandlers(elements);
 
-    // Phase 6: Insert TOC after highlight element
-    const highlightElement = document.querySelector('.highlight');
-    if (highlightElement) {
-      // Insert after the highlight element
-      highlightElement.insertAdjacentElement('afterend', toc);
+    // Phase 6: Insert TOC after highlight element or fallback to first section
+    let anchorElement = document.querySelector(CONFIG.selectors.highlight);
+
+    // Fallback to first section if highlight element is not found
+    if (!anchorElement) {
+      anchorElement = document.querySelector(CONFIG.selectors.section);
+    }
+
+    if (anchorElement) {
+      // Insert after the anchor element (highlight or section)
+      anchorElement.insertAdjacentElement('afterend', toc);
       // Hide the original block after successful TOC creation
       block.style.display = 'none';
     } else {
-      window.lana?.log('TOC Block: No highlight element found. TOC will not be displayed.');
+      window.lana?.log('TOC Block: No highlight or section element found. TOC will not be displayed.');
       // Hide the original block even if TOC creation fails
       block.style.display = 'none';
     }
