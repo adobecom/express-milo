@@ -5,6 +5,7 @@ import path from 'path';
 import ora from 'ora';
 import chalk from 'chalk';
 import VisualRegression from './index.js';
+import { generateBatchSummaryReport } from './reports/reporter.js';
 
 /**
  * Batch runner: compare many URLs with configurable concurrency.
@@ -83,6 +84,9 @@ export async function runBatch(controlBranch, experimentalBranch, urlsFile, opti
     wait: typeof options.wait === 'number' ? options.wait : undefined,
   };
 
+  // Single session id shared across this entire batch run
+  const sessionId = options.sessionId || `${Date.now()}`;
+
   const spinner = ora(`Starting batch: ${urls.length} URL(s), concurrency ${opts.concurrency}...`).start();
 
   const vrOptions = {};
@@ -101,14 +105,21 @@ export async function runBatch(controlBranch, experimentalBranch, urlsFile, opti
   const failures = [];
   let completed = 0;
 
-  await Promise.all(urls.map((subdirectory) => limiter(async () => {
+  await Promise.all(urls.map((subdirectory, index) => limiter(async () => {
     const label = `${subdirectory}`;
     const runSpinner = ora({ text: `Comparing ${controlBranch} vs ${experimentalBranch} ${label}`, spinner: 'dots' }).start();
     try {
-      const vr = new VisualRegression(vrOptions);
+      const vr = new VisualRegression({ ...vrOptions, sessionId });
       const comparison = await vr.compare(controlBranch, experimentalBranch, subdirectory);
       const reportName = `report${subdirectory.replace(/\//g, '_')}.html`;
-      const reportPath = await vr.generateHTMLReport(comparison, reportName);
+      // Prepare navigation context
+      const allReports = urls.map((u) => path.join(vr.outputDir, `report${u.replace(/\//g, '_')}.html`));
+      const labels = urls.map((u) => u);
+      const reportPath = await vr.generateHTMLReport(comparison, reportName, {
+        allReports,
+        labels,
+        currentIndex: index,
+      });
       results.push({ subdirectory, reportPath, comparison });
       runSpinner.succeed(`Done ${label}`);
     } catch (err) {
@@ -134,15 +145,44 @@ export async function runBatch(controlBranch, experimentalBranch, urlsFile, opti
   };
 
   // Write a machine-readable summary next to reports directory
-  const outDir = path.join(path.dirname(new URL(import.meta.url).pathname), 'output');
-  const summaryPath = path.join(outDir, `batch-summary-${Date.now()}.json`);
+  const vrOut = path.join(path.dirname(new URL(import.meta.url).pathname), 'output');
+  const summaryPath = path.join(vrOut, `batch-summary-${Date.now()}.json`);
   await fs.writeFile(summaryPath, JSON.stringify(summary, null, 2), 'utf8');
+
+  // Build and write an HTML summary in the same session folder as the reports
+  const detectedSessionId = results[0] ? results[0].reportPath.split('/sessions/')[1].split('/')[0] : sessionId;
+  const sessionDir = path.join(vrOut, 'sessions', detectedSessionId);
+  const items = results.map((r, index) => {
+    const basename = path.basename(r.reportPath);
+    const comparison = r.comparison;
+    const desktop = comparison.results.find((x) => x.resolution === 'desktop');
+    const tablet = comparison.results.find((x) => x.resolution === 'tablet');
+    const mobile = comparison.results.find((x) => x.resolution === 'mobile');
+    return {
+      index,
+      subdirectory: r.subdirectory,
+      reportBasename: basename,
+      desktop: desktop ? { similarity: desktop.perceptualSimilarity, pixelDiff: desktop.pixelDifference } : null,
+      tablet: tablet ? { similarity: tablet.perceptualSimilarity, pixelDiff: tablet.pixelDifference } : null,
+      mobile: mobile ? { similarity: mobile.perceptualSimilarity, pixelDiff: mobile.pixelDifference } : null,
+    };
+  });
+
+  const summaryHtmlPath = path.join(sessionDir, 'index.html');
+  await generateBatchSummaryReport({
+    sessionId: detectedSessionId,
+    controlBranch,
+    experimentalBranch,
+    total: urls.length,
+    items,
+  }, summaryHtmlPath);
 
   console.log('\n' + chalk.bold('Batch Summary:'));
   console.log(JSON.stringify(summary, null, 2));
   console.log(chalk.blue(`\nSummary written to: ${summaryPath}`));
+  console.log(chalk.blue(`HTML Summary: ${summaryHtmlPath}`));
 
-  return { summary, summaryPath };
+  return { summary, summaryPath, summaryHtmlPath };
 }
 
 // Allow running directly via `node batch-run.js ...`

@@ -206,13 +206,18 @@ program
   .option('--fast', 'Use fast timing (default)')
   .option('-t, --timeout <ms>', 'Page load timeout in milliseconds')
   .option('-w, --wait <ms>', 'Wait time for blocks to render in milliseconds')
+  .option('-o, --open', 'Open the batch summary after completion')
   .action(async (controlBranch, experimentalBranch, urlsFile, options) => {
     const { runBatch } = await import('./batch-run.js');
     const concurrency = parseInt(options.concurrency, 10) || 4;
     const timing = options.slow ? 'slow' : 'fast';
     const timeout = options.timeout ? parseInt(options.timeout, 10) : undefined;
     const wait = options.wait ? parseInt(options.wait, 10) : undefined;
-    await runBatch(controlBranch, experimentalBranch, urlsFile, { concurrency, timing, timeout, wait });
+    const result = await runBatch(controlBranch, experimentalBranch, urlsFile, { concurrency, timing, timeout, wait });
+    if (options.open && result?.summaryHtmlPath) {
+      const { default: open } = await import('open');
+      await open(result.summaryHtmlPath);
+    }
   });
 
 program.parse();

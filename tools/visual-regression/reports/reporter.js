@@ -27,15 +27,41 @@ const replaceTemplateVars = (template, data) => {
 };
 
 // Generate visual regression comparison report
-export const generateComparisonReport = async (comparisonResults, outputPath) => {
+export const generateComparisonReport = async (comparisonResults, outputPath, navigationContext = {}) => {
   const template = await readTemplate('comparison-report.html');
 
   // Format the results for template
+  const currentIndex = navigationContext.currentIndex ?? null;
+  const totalCount = Array.isArray(navigationContext.allReports) ? navigationContext.allReports.length : null;
+  const prevReport = (typeof currentIndex === 'number' && totalCount && currentIndex > 0)
+    ? path.basename(navigationContext.allReports[currentIndex - 1])
+    : '';
+  const nextReport = (typeof currentIndex === 'number' && totalCount && currentIndex < totalCount - 1)
+    ? path.basename(navigationContext.allReports[currentIndex + 1])
+    : '';
+
   const templateData = {
     controlBranch: comparisonResults.controlBranch,
     experimentalBranch: comparisonResults.experimentalBranch,
     subdirectory: comparisonResults.subdirectory,
     timestamp: new Date(comparisonResults.timestamp).toLocaleString(),
+    navPrev: prevReport ? `<a href="${prevReport}">← Previous</a>` : '',
+    navNext: nextReport ? `<a href="${nextReport}">Next →</a>` : '',
+    navSelect: Array.isArray(navigationContext.allReports) ? `
+      <select id="report-select">
+        ${navigationContext.allReports.map((p, i) => `
+          <option value="${path.basename(p)}" ${i === currentIndex ? 'selected' : ''}>${navigationContext.labels?.[i] || path.basename(p)}</option>
+        `).join('')}
+      </select>
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const sel = document.getElementById('report-select');
+          if (sel) sel.addEventListener('change', (e) => {
+            const v = e.target.value; if (v) window.location.href = v;
+          });
+        });
+      </script>
+    ` : '',
     performanceInfo: comparisonResults.performance ? `
       <p>⏱️ Performance: Screenshots ${comparisonResults.performance.screenshotTime.toFixed(1)}s, 
       Comparison ${comparisonResults.performance.comparisonTime.toFixed(1)}s, 
@@ -195,4 +221,31 @@ export default {
   generateFigmaComparisonReport,
   generateInteractiveFigmaReport,
   generateLiveComparisonReport,
+};
+
+// Batch summary report
+export const generateBatchSummaryReport = async (data, outputPath) => {
+  const template = await readTemplate('batch-summary.html');
+
+  const listHtml = data.items.map((item) => `
+    <tr>
+      <td>${item.index + 1}</td>
+      <td><a href="${item.reportBasename}">${item.subdirectory}</a></td>
+      <td>${item.desktop?.similarity ?? '-'}% / ${item.desktop?.pixelDiff ?? '-'}%</td>
+      <td>${item.tablet?.similarity ?? '-'}% / ${item.tablet?.pixelDiff ?? '-'}%</td>
+      <td>${item.mobile?.similarity ?? '-'}% / ${item.mobile?.pixelDiff ?? '-'}%</td>
+    </tr>
+  `).join('');
+
+  const html = replaceTemplateVars(template, {
+    sessionId: data.sessionId,
+    controlBranch: data.controlBranch,
+    experimentalBranch: data.experimentalBranch,
+    total: String(data.total),
+    generated: new Date().toLocaleString(),
+    tableRows: listHtml,
+  });
+
+  await fs.writeFile(outputPath, html);
+  return outputPath;
 };

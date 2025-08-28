@@ -17,7 +17,9 @@ const RESOLUTIONS = [
 
 class VisualRegression {
   constructor(options = {}) {
-    this.outputDir = options.outputDir || path.join(__dirname, 'output');
+    this.sessionId = options.sessionId || `${Date.now()}`;
+    this.baseOutputDir = options.outputDir || path.join(__dirname, 'output');
+    this.outputDir = path.join(this.baseOutputDir, 'sessions', this.sessionId);
     this.baseUrl = 'https://{branch}--express-milo--adobecom.aem.live';
     this.pageTimeout = options.pageTimeout || 30000; // 30 seconds (reduced)
     this.waitForBlocks = options.waitForBlocks || 2000; // 2 seconds (reduced)
@@ -270,12 +272,12 @@ class VisualRegression {
     };
   }
 
-  async generateHTMLReport(comparisonResults, customFilename) {
+  async generateHTMLReport(comparisonResults, customFilename, navigationContext) {
     const filename = customFilename && String(customFilename).trim().length > 0
       ? customFilename
       : 'report.html';
     const reportPath = path.join(this.outputDir, filename);
-    return generateComparisonReport(comparisonResults, reportPath);
+    return generateComparisonReport(comparisonResults, reportPath, navigationContext);
   }
 }
 
