@@ -6,14 +6,17 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/index.ts',
-      fileName: (format) => `acp-upload.min.${format}.js`,
+      fileName: (format) => `upload-service.min.${format}.js`,
       formats: ['es']
     },
-    sourcemap: true
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        chunkFileNames: '[name]-[hash].min.js',
+      }
+    }
   },
   define: {
-    'process.env.NODE_ENV': '"production"',
-    'process.env.INCLUDE_EXTERNAL_STYLES': '"false"',
     global: 'globalThis'
   },
   esbuild: {

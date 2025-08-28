@@ -6,9 +6,17 @@ import type {
   ResourceDesignator,
   AdobeMinimalAsset
 } from '@dcx/common-types';
+
+export const ENVIRONMENT_TYPES = {
+  LOCAL: 'local',
+  STAGE: 'stage',
+  PROD: 'prod'
+} as const;
+
+export type EnvironmentType = typeof ENVIRONMENT_TYPES[keyof typeof ENVIRONMENT_TYPES];
 export interface InitOptions {
   /** Environment to use for the upload service */
-  environment: 'prod' | 'stage' | 'local';
+  environment: EnvironmentType;
 }
 
 /**

@@ -19,5 +19,7 @@ export const initUploadService = async (options: InitOptions) => {
 
   await uploadService.setIndexRepository();
 
+  await uploadService.initializeLogging();
+
   return uploadService;
 };

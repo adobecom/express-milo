@@ -1,4 +1,5 @@
 import type { AdobeRepoAPISession } from '@dcx/repo-api-session';
+import type { LogService } from './Logging';
 import type { 
   AdobeAsset,
   AdobeHTTPService,
@@ -29,6 +30,7 @@ export class UploadService {
   private config: UploadServiceConfig;
   private httpService: AdobeHTTPService;
   private authConfig: AuthConfig;
+  private logService?: LogService;
   private _uploadStatus: UploadStatus = UploadStatus.IDLE;
   private _uploadBytesCompleted: boolean = false;
   private _uploadProgressPercentage: number = 0;
@@ -42,6 +44,15 @@ export class UploadService {
     this.httpService = createHTTPService();
     this.authConfig = config.authConfig;
     this.session = this.prepareSession();
+  }
+
+  /**
+   * Initialize logging facade
+   */
+  async initializeLogging(): Promise<void> {
+    const { LogService } = await import('./Logging');
+    this.logService = new LogService();
+    await this.logService.initialize(this.config.environment);
   }
 
   /**
@@ -124,7 +135,7 @@ export class UploadService {
   /**
    * Initialize the upload service
    */
-  async setIndexRepository(): Promise<void> {
+  async setIndexRepository(): Promise<void> {    
     if(this.authConfig.tokenType === 'user') {
       await this.initializeUserRepository();
     }
@@ -152,7 +163,6 @@ export class UploadService {
       const optionsWithProgress = { ...options, onProgress };
 
       let result: RepoResponseResult<AdobeAsset>;
-      let preSignedUrl: string | undefined;
 
       switch (this.authConfig.tokenType) {
         case 'guest': {
@@ -163,7 +173,8 @@ export class UploadService {
             fullPath
           );
           result = guestResult.result;
-          preSignedUrl = guestResult.preSignedUrl;
+          const preSignedUrl = await this.generatePreSignedUrl({ asset: result.result });
+          console.log('preSignedUrl', preSignedUrl);
           break;
         }
         case 'user':
@@ -202,7 +213,7 @@ export class UploadService {
    * @param fileData - Processed file data
    * @param fileSize - Size of the file
    * @param fullPath - Full path for the asset
-   * @returns Promise resolving to asset creation result and pre-signed URL
+   * @returns Promise resolving to asset creation result and optionlally pre-signed URL
    */
   private async createAssetForGuest(
     options: UploadOptions,
@@ -218,18 +229,39 @@ export class UploadService {
       onProgress
     } = options;
 
-    const result = await this.session.createAssetForGuest(
+    
+    this.logService?.log('LOG_UPLOAD_START', 'guest', {
       fullPath,
       contentType,
-      resourceDesignator,
-      additionalHeaders,
-      fileData,
       fileSize,
-      repoMetaPatch,
-      onProgress
-    );
+      hasResourceDesignator: !!resourceDesignator,
+      hasRepoMetaPatch: !!repoMetaPatch
+    });
 
-    return { result };
+    try {
+      const result = await this.session.createAssetForGuest(
+        fullPath,
+        contentType,
+        resourceDesignator,
+        additionalHeaders,
+        fileData,
+        fileSize,
+        repoMetaPatch,
+        onProgress
+      );
+
+      this.logService?.log('LOG_UPLOAD_RESPONSE', 'createAssetForGuest', result, fullPath, fileSize);
+      this.logService?.log('LOG_UPLOAD_STATUS', result.response.statusCode, result.response, 'guest');
+
+      return { result };
+    } catch (error) {
+      this.logService?.log('LOG_UPLOAD_ERROR', 'guest', {
+        fullPath,
+        contentType,
+        fileSize
+      }, error);
+      throw error;
+    }
   }
 
   /**
@@ -262,6 +294,16 @@ export class UploadService {
       { field: 'repository', errorCode: ERROR_CODES.REPOSITORY_REQUIRED }
     ]);
 
+    this.logService?.log('LOG_UPLOAD_START', 'user', {
+      fullPath,
+      contentType,
+      fileSize,
+      createIntermediates: createIntermediates || true,
+      hasResourceDesignator: !!resourceDesignator,
+      hasRepoMetaPatch: !!repoMetaPatch,
+      repository: this.config.repository?.name || 'unknown'
+    });
+
     try {
       result = await this.config.directory!.createAsset(
         fullPath,
@@ -274,7 +316,18 @@ export class UploadService {
         repoMetaPatch,
         onProgress
       );
+
+      this.logService?.log('LOG_UPLOAD_RESPONSE', 'createAssetForUser', result, fullPath, fileSize);
+      this.logService?.log('LOG_UPLOAD_STATUS', result.response.statusCode, result.response, 'user');
+
     } catch (error) {
+      this.logService?.log('LOG_UPLOAD_ERROR', 'user', {
+        fullPath,
+        contentType,
+        fileSize,
+        repository: this.config.repository?.name || 'unknown'
+      }, error);
+      
       throw this.handleError(
         ERROR_CODES.UPLOAD_FAILED.code,
         error
@@ -376,6 +429,8 @@ export class UploadService {
     return file as SliceableData;
   }
 
+
+
   /**
    * Get the size of a file
    * @param file - The file to get the size of
@@ -398,8 +453,7 @@ export class UploadService {
    * @returns The full path to the asset
    */
   private buildPath(path: string, fileName: string): string {
-    const basePath = this.config.basePath || '';
-    const fullPath = [basePath, path, fileName]
+    const fullPath = [path, fileName]
       .filter(Boolean)
       .join('/')
       .replace(/\/+/g, '/');
