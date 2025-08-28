@@ -3254,12 +3254,6 @@ main .template-x.horizontal.tworow .template-2x2-col .template .button-container
   margin-left: initial;
 }
 
-/* main .template-x.horizontal.tworow .template-2x2-col .template .button-container .media-wrapper {
-  width: initial;
-  height: initial;
-  max-height: 200px;
-} */
-
 main .template-x.horizontal.tworow .template-2x2-col .template .button-container .media-wrapper video,
 main .template-x.horizontal.tworow .template-2x2-col .template .button-container .media-wrapper img {
   object-fit: contain;
