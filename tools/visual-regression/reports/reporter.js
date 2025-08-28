@@ -158,6 +158,23 @@ export const generateFigmaComparisonReport = async (data, outputPath) => {
     screenshotPath: path.relative(outputDir, data.screenshotPath),
     diffPath: path.relative(outputDir, data.diffPath),
     testStatus: data.success ? 'PASS' : 'FAIL',
+    navPrev: data.navigation?.prev ? `<a href="${path.basename(data.navigation.prev)}">← Previous</a>` : '',
+    navNext: data.navigation?.next ? `<a href="${path.basename(data.navigation.next)}">Next →</a>` : '',
+    navSelect: Array.isArray(data.navigation?.all) ? `
+      <select id="report-select">
+        ${data.navigation.all.map((p, i) => `
+          <option value="${path.basename(p)}" ${i === (data.navigation.currentIndex ?? -1) ? 'selected' : ''}>${data.navigation.labels?.[i] || path.basename(p)}</option>
+        `).join('')}
+      </select>
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const sel = document.getElementById('report-select');
+          if (sel) sel.addEventListener('change', (e) => {
+            const v = e.target.value; if (v) window.location.href = v;
+          });
+        });
+      </script>
+    ` : '',
   };
 
   const html = replaceTemplateVars(template, templateData);
