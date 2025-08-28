@@ -3217,7 +3217,7 @@ main .template-x.tworow .gallery-control {
 }
 
 main .template-x.tworow .template-2x2-col {
-  width: min(260px, var(--ax-grid-6-col-width));
+  width: min(260px, var(--ax-grid-5-col-width));
   display: flex;
   flex-direction: column;
   justify-content: center;
