@@ -4,8 +4,8 @@
 }
 
 .how-to-cards {
-    max-width: 1280px;
-    margin: auto;
+    /* max-width: 1280px;
+    margin: auto; */
 }
 
 .how-to-cards h3 {
@@ -114,7 +114,9 @@
 
 @media (min-width: 900px) {
     .how-to-cards {
-        padding: 0 0 0 40px;
+      padding: 0px 40px;
+      max-width: 1440px;
+      box-sizing: border-box;
     }
 }
 
@@ -129,7 +131,7 @@
     display: flex;
     flex-wrap: nowrap;
     gap: 16px;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
