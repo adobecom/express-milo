@@ -220,7 +220,7 @@ async function initProgressBar() {
 async function performStorageUpload(files, block) {
   let assetId;
   // eslint-disable-next-line import/no-relative-packages
-  const { initUploadService, UPLOAD_EVENTS } = await import('../../scripts/upload-service/dist/acp-upload.min.es.js');
+  const { initUploadService, UPLOAD_EVENTS } = await import('../../scripts/upload-service/dist/upload-service.min.es.js');
   const { env } = getConfig();
   if (!uploadService) {
     uploadService = await initUploadService({ environment: env.name });
@@ -257,19 +257,13 @@ async function performUploadAction(files, block, quickAction) {
   if (!assetId) {
     return;
   }
-  const encodedAssetId = btoa(assetId);
   const isVideoEditor = quickAction === 'edit-video';
   const isImageEditor = quickAction === 'edit-image';
-  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
+  const url = new URL('https://localhost.adobe.com:8080/new');
   const searchParams = {
-    frictionlessUploadAssetId: encodedAssetId,
+    frictionlessUploadAssetId: assetId,
     category: 'media',
-    unit: 'px',
     tab: isVideoEditor ? 'videos' : 'photos',
-    referrer: 'https://www.google.com/',
-    placement: isVideoEditor ? 'ax-columns-1' : 'outside-blocks',
-    locale: 'en-US',
-    contentRegion: 'us',
     url: urlsMap[quickAction],
   };
 

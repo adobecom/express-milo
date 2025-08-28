@@ -1,6 +1,6 @@
 export const REPO_API_ENDPOINT = 'https://platform-cs-stage.adobe.io';
 export const API_KEY = "AdobeExpressWeb";
-export const DEFAULT_STORAGE_PATH = 'assets';
+export const DEFAULT_STORAGE_PATH = 'temp';
 export const DEFAULT_USER_ERROR_MESSAGE = 'Failed to upload asset. Please try again.';
 /**
  * Centralized error codes and messages for the UploadService
@@ -29,7 +29,7 @@ export const ERROR_CODES = {
     FAILED_TO_CREATE_ASSET: {
       code: 'FAILED_TO_CREATE_ASSET',
       message: 'Failed to create asset'
-    }
+    },
   } as const;
 
   export const UPLOAD_EVENTS = {
