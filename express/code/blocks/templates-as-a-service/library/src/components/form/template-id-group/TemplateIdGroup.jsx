@@ -50,6 +50,8 @@ function Row({ rowIndex, templateId, expandButton, inputRef }) {
   );
 }
 
+export const MAX_INDIVIDUAL_IDS = 8;
+
 export default function TemplateIdGroups() {
   const formData = useFormData();
   const formDispatch = useFormDispatch();
@@ -87,7 +89,7 @@ export default function TemplateIdGroups() {
           key={i}
           rowIndex={i}
           templateId={templateId}
-          expandButton={i === templateIds.length - 1 ? expandButton : null}
+          expandButton={(i === templateIds.length - 1 && templateIds.length < MAX_INDIVIDUAL_IDS) ? expandButton : null}
           inputRef={(el) => (inputRefs.current[i] = el)}
         />
       ))}
