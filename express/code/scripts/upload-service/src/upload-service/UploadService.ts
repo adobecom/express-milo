@@ -47,7 +47,7 @@ export class UploadService {
   }
 
   /**
-   * Initialize logging facade
+   * Initialize logging service
    */
   async initializeLogging(): Promise<void> {
     const { LogService } = await import('./Logging');

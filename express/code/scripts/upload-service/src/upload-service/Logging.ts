@@ -58,7 +58,7 @@ export class LogMarkers {
 }
 
 /**
- * Logging facade that conditionally loads and uses EnhancedLogging
+ * Logging service that conditionally loads and uses EnhancedLogging
  * Only loads the logging module and performs logging in local environments
  * Instance-based class that requires initialization
  */
@@ -75,7 +75,7 @@ export class LogService {
   }
 
   /**
-   * Initialize the logging facade
+   * Initialize the logging service
    * Dynamically imports EnhancedLogging if environment is local
    * @param environment - The current environment ('local', 'stage', 'prod')
    */
@@ -117,7 +117,7 @@ export class LogService {
    */
   getMarkers(): LogMarkers {
     if (!this.isInitialized) {
-      throw new Error('LoggingFacade must be initialized before accessing markers');
+      throw new Error('LogService must be initialized before accessing markers');
     }
     return this.logMarkers;
   }
@@ -129,7 +129,7 @@ export class LogService {
    */
   log(marker: string, ...args: any[]): void {
     if (!this.isInitialized) {
-      console.warn('LoggingFacade not initialized - call initialize() first');
+      console.warn('LogService not initialized - call initialize() first');
       return;
     }
 
@@ -178,14 +178,14 @@ export class LogService {
   }
 
   /**
-   * Check if the facade is initialized
+   * Check if the service is initialized
    */
   getIsInitialized(): boolean {
     return this.isInitialized;
   }
 
   /**
-   * Reset the facade state (useful for testing)
+   * Reset the service state (useful for testing)
    */
   reset(): void {
     this.enhancedLoggingInstance = null;
