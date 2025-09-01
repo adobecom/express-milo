@@ -421,3 +421,15 @@ export async function loadAndInitializeCCEverywhere(getConfig) {
   const ccEverywhereConfig = createSDKConfig(getConfig, urlParams);
   return window.CCEverywhere.initialize(...Object.values(ccEverywhereConfig));
 }
+
+export async function initProgressBar(replaceKey, getConfig) {
+  const { default: ProgressBar } = await import('./createProgressBar.js');
+  const progressBar = new ProgressBar();
+  const uploadLabel = await replaceKey('uploading-media', getConfig());
+  progressBar.setAttribute('label', `<b>Adobe Express</b> ${uploadLabel}`);
+  progressBar.setAttribute('aria-label', uploadLabel);
+  progressBar.setAttribute('width', '400px');
+  progressBar.setAttribute('show-percentage', 'false');
+  progressBar.setAttribute('progress', '2');
+  return progressBar;
+}
