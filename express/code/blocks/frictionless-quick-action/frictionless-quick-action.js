@@ -195,15 +195,18 @@ async function startSDK(data = [''], quickAction, block) {
 
 function createUploadStatusListener(uploadStatusEvent, progressBar) {
   const listener = (e) => {
+    const isUploadProgressLessThanVisual = e.detail.progress < progressBar.getProgress();
+    const progress = isUploadProgressLessThanVisual ? progressBar.getProgress() : e.detail.progress;
+
     /**
      * The reason for doing this is because assetId takes a while to resolve
      * and progress completes to 100 before assetId is resolved. This can cause
      * a confusion in experience where user might think the upload is stuck.
      */
-    if (e.detail.progress === 100) {
+    if (progress === 100) {
       progressBar.setProgress(95);
     } else {
-      progressBar.setProgress(e.detail.progress);
+      progressBar.setProgress(progress);
     }
 
     if (['completed', 'failed'].includes(e.detail.status)) {
