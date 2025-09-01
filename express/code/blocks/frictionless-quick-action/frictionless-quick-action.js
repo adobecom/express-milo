@@ -17,6 +17,7 @@ import {
   processFilesForQuickAction,
   loadAndInitializeCCEverywhere,
   getErrorMsg,
+  initProgressBar,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -31,6 +32,7 @@ let quickActionContainer;
 let uploadContainer;
 let uploadService;
 let fqaContainer;
+let uploadEvents;
 
 function frictionlessQAExperiment(
   quickAction,
@@ -191,9 +193,19 @@ async function startSDK(data = [''], quickAction, block) {
   runQuickAction(quickAction, data, block);
 }
 
-function handleUploadStatusChange(uploadStatusEvent, progressBar) {
+function createUploadStatusListener(uploadStatusEvent, progressBar) {
   const listener = (e) => {
-    progressBar.setProgress(e.detail.progress);
+    /**
+     * The reason for doing this is because assetId takes a while to resolve
+     * and progress completes to 100 before assetId is resolved. This can cause
+     * a confusion in experience where user might think the upload is stuck.
+     */
+    if (e.detail.progress === 100) {
+      progressBar.setProgress(95);
+    } else {
+      progressBar.setProgress(e.detail.progress);
+    }
+
     if (['completed', 'failed'].includes(e.detail.status)) {
       if (e.detail.status === 'failed') {
         progressBar.remove();
@@ -205,79 +217,180 @@ function handleUploadStatusChange(uploadStatusEvent, progressBar) {
   window.addEventListener(uploadStatusEvent, listener);
 }
 
-async function initProgressBar() {
-  const { default: ProgressBar } = await import('../../scripts/utils/createProgressBar.js');
-  const progressBar = new ProgressBar();
-  const uploadLabel = await replaceKey('uploading-media', getConfig());
-  progressBar.setAttribute('label', `<b>Adobe Express</b> ${uploadLabel}`);
-  progressBar.setAttribute('aria-label', uploadLabel);
-  progressBar.setAttribute('width', '400px');
-  progressBar.setAttribute('show-percentage', 'false');
-  progressBar.setAttribute('progress', '2');
-  return progressBar;
-}
-
-async function performStorageUpload(files, block) {
-  let assetId;
+async function initializeUploadService() {
+  if (uploadService) return uploadService;
   // eslint-disable-next-line import/no-relative-packages
   const { initUploadService, UPLOAD_EVENTS } = await import('../../scripts/upload-service/dist/upload-service.min.es.js');
   const { env } = getConfig();
-  if (!uploadService) {
-    uploadService = await initUploadService({ environment: env.name });
-  }
-  try {
-    const progressBar = await initProgressBar();
-    fqaContainer = block.querySelector('.fqa-container');
-    fadeOut(fqaContainer);
-    block.insertBefore(progressBar, fqaContainer);
-    handleUploadStatusChange(
-      UPLOAD_EVENTS.UPLOAD_STATUS,
-      progressBar,
-    );
-    const { asset } = await uploadService.uploadAsset({
-      file: files[0],
-      fileName: files[0].name,
-      contentType: files[0].type,
-    });
-    assetId = asset.assetId;
-    progressBar.setProgress(100);
-  } catch (error) {
-    showErrorToast(block, error.message);
-  }
-
-  return assetId;
+  uploadService = await initUploadService({ environment: env.name });
+  uploadEvents = UPLOAD_EVENTS;
+  return uploadService;
 }
 
-async function performUploadAction(files, block, quickAction) {
+async function setupUploadUI(block) {
+  const progressBar = await initProgressBar(replaceKey, getConfig);
+  fqaContainer = block.querySelector('.fqa-container');
+  fadeOut(fqaContainer);
+  block.insertBefore(progressBar, fqaContainer);
+  return progressBar;
+}
+
+async function uploadAssetToStorage(file, progressBar) {
+  const service = await initializeUploadService();
+  createUploadStatusListener(uploadEvents.UPLOAD_STATUS, progressBar);
+
+  const { asset } = await service.uploadAsset({
+    file,
+    fileName: file.name,
+    contentType: file.type,
+  });
+
+  progressBar.setProgress(100);
+  return asset.assetId;
+}
+
+async function performStorageUpload(files, block) {
+  try {
+    const progressBar = await setupUploadUI(block);
+    return await uploadAssetToStorage(files[0], progressBar);
+  } catch (error) {
+    showErrorToast(block, error.message);
+    return null;
+  }
+}
+
+async function startAssetDecoding(file, controller) {
+  const { getAssetDimensions, decodeWithTimeout } = await import('../../scripts/utils/assetDecoder.js');
+
+  return decodeWithTimeout(getAssetDimensions(file, {
+    signal: controller.signal,
+  }).catch((error) => {
+    window.lana?.log('Asset decode failed');
+    window.lana?.log(error);
+    return null;
+  }), 5000);
+}
+
+async function raceUploadAndDecode(uploadPromise, decodePromise) {
+  return Promise.race([
+    uploadPromise
+      .then((result) => ({ type: 'upload', value: result }))
+      .catch((error) => ({ type: 'upload', error })),
+    decodePromise
+      .then((result) => ({ type: 'decode', value: result }))
+      .catch((error) => ({ type: 'decode', error })),
+  ]);
+}
+
+async function handleUploadFirst(assetId, gracePeriodDecodePromise, gracePeriodController) {
+  if (!assetId) {
+    gracePeriodController.abort('Upload failed');
+    return { assetId: null, dimensions: null };
+  }
+
+  const dimensions = await Promise.race([
+    gracePeriodDecodePromise,
+    new Promise((resolve) => {
+      setTimeout(() => resolve(null), 1000);
+    }),
+  ]);
+
+  if (dimensions === null) {
+    gracePeriodController.abort('Grace period expired, proceeding without dimensions');
+  }
+
+  return { assetId, dimensions };
+}
+
+async function handleDecodeFirst(dimensions, uploadPromise, initialDecodeController) {
+  const assetId = await uploadPromise;
+
+  if (!assetId) {
+    initialDecodeController.abort('Upload failed');
+    return { assetId: null, dimensions: null };
+  }
+
+  return { assetId, dimensions };
+}
+
+function buildEditorUrl(quickAction, assetId, dimensions) {
   const urlsMap = {
     'edit-image': '/express/feature/image/editor',
     'edit-video': '/express/feature/video/editor',
   };
-  const assetId = await performStorageUpload(files, block);
-  if (!assetId) {
-    return;
-  }
+
   const isVideoEditor = quickAction === 'edit-video';
-  const isImageEditor = quickAction === 'edit-image';
-  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
+  const url = new URL('https://localhost.adobe.com:8080/new');
+
   const searchParams = {
     frictionlessUploadAssetId: assetId,
     category: 'media',
     tab: isVideoEditor ? 'videos' : 'photos',
     url: urlsMap[quickAction],
+    width: dimensions?.width,
+    height: dimensions?.height,
   };
 
   Object.entries(searchParams).forEach(([key, value]) => {
-    url.searchParams.set(key, value);
+    if (value) {
+      url.searchParams.set(key, value);
+    }
   });
 
-  if (isVideoEditor) {
-    url.searchParams.set('isVideoMaker', 'true');
-    url.searchParams.set('sceneline', 'true');
+  return url;
+}
+
+function addVideoEditorParams(url) {
+  url.searchParams.set('isVideoMaker', 'true');
+  url.searchParams.set('sceneline', 'true');
+}
+
+function addImageEditorParams(url) {
+  url.searchParams.set('learn', 'exercise:express/how-to/in-app/how-to-edit-an-image:-1');
+}
+
+async function performUploadAction(files, block, quickAction) {
+  const initialDecodeController = new AbortController();
+
+  const initialDecodePromise = startAssetDecoding(files[0], initialDecodeController);
+  const uploadPromise = performStorageUpload(files, block);
+
+  const firstToComplete = await raceUploadAndDecode(uploadPromise, initialDecodePromise);
+
+  let result;
+  if (firstToComplete.type === 'upload') {
+    if (firstToComplete.error) {
+      return;
+    }
+
+    const gracePeriodController = new AbortController();
+    const gracePeriodDecodePromise = startAssetDecoding(files[0], gracePeriodController);
+    result = await handleUploadFirst(
+      firstToComplete.value,
+      gracePeriodDecodePromise,
+      gracePeriodController,
+    );
+
+    initialDecodeController.abort('Upload completed first, switching to grace period decode');
+  } else {
+    if (firstToComplete.error) {
+      initialDecodeController.abort('Decode failed');
+      return;
+    }
+
+    result = await handleDecodeFirst(firstToComplete.value, uploadPromise, initialDecodeController);
   }
 
-  if (isImageEditor) {
-    url.searchParams.set('learn', 'exercise:express/how-to/in-app/how-to-edit-an-image:-1');
+  if (!result.assetId) return;
+
+  const url = buildEditorUrl(quickAction, result.assetId, result.dimensions);
+
+  if (quickAction === 'edit-video') {
+    addVideoEditorParams(url);
+  }
+
+  if (quickAction === 'edit-image') {
+    addImageEditorParams(url);
   }
 
   window.location.href = url.toString();
