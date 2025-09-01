@@ -173,8 +173,6 @@ export class UploadService {
             fullPath
           );
           result = guestResult.result;
-          const preSignedUrl = await this.generatePreSignedUrl({ asset: result.result });
-          console.log('preSignedUrl', preSignedUrl);
           break;
         }
         case 'user':

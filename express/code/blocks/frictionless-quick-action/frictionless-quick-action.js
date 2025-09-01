@@ -320,7 +320,7 @@ function buildEditorUrl(quickAction, assetId, dimensions) {
   };
 
   const isVideoEditor = quickAction === 'edit-video';
-  const url = new URL('https://localhost.adobe.com:8080/new');
+  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
 
   const searchParams = {
     frictionlessUploadAssetId: assetId,
