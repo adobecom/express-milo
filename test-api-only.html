@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API Only Template X Promo Test</title>
+    <link rel="stylesheet" href="/Users/cano/Adobe/express-milo/express/code/styles/styles.css">
+    <link rel="stylesheet" href="/Users/cano/Adobe/express-milo/express/code/blocks/template-x-promo/template-x-promo.css">
+</head>
+<body>
+    <h1>🧪 API-Only Template X Promo Test</h1>
+
+    <h2>Multiple Templates (should be basic-carousel)</h2>
+    <div class="section ax-template-x-promo">
+        <div class="template-x-promo">
+            <div class="recipe">collection=default&templateIds=urn:aaid:sc:VA6C2:12053b1e-8454-4fda-8fd8-244e5eb7d060,urn:aaid:sc:VA6C2:e2797332-b3ba-40cf-8ea1-23d3a1c87791,urn:aaid:sc:VA6C2:3c674431-f00a-5500-962b-75b847af95d5</div>
+        </div>
+    </div>
+
+    <h2>Single Template (should be one-up)</h2>
+    <div class="section ax-template-x-promo">
+        <div class="template-x-promo">
+            <div class="recipe">collection=default&templateIds=urn:aaid:sc:VA6C2:12053b1e-8454-4fda-8fd8-244e5eb7d060</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import('/Users/cano/Adobe/express-milo/express/code/blocks/template-x-promo/template-x-promo.js')
+            .then(module => {
+                console.log('Template-x-promo loaded');
+                
+                document.querySelectorAll('.template-x-promo').forEach((block, index) => {
+                    console.log(`Initializing block ${index + 1}:`, block);
+                    module.default(block);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>
