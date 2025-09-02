@@ -1,5 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import loadCarousel from '../../scripts/utils/load-carousel.js';
+import buildCarousel from '../../scripts/widgets/carousel.js';
 import { fetchResults } from '../../scripts/template-utils.js';
 import { isValidTemplate } from '../../scripts/template-search-api-v3.js';
 
@@ -106,6 +106,44 @@ async function handleOneUpFromApiData(block, templateData) {
   parent.append(buttonContainer);
 }
 
+async function handleMultipleUpCarousel(block, templates) {
+  const parent = block.parentElement;
+  parent.classList.add('multiple-up');
+  // Make it behave like template-x for proper CSS inheritance
+  block.classList.add('horizontal', 'three', 'template-x');
+  
+  // Create template-x-inner-wrapper like template-x
+  const innerWrapper = createTag('div', { class: 'template-x-inner-wrapper' });
+  
+  // Import renderTemplate like template-x does
+  try {
+    const renderTemplateModule = await import('../template-x/template-rendering.js');
+    const renderTemplate = renderTemplateModule.default;
+    
+    if (!renderTemplate) {
+      throw new Error('renderTemplate is null or undefined');
+    }
+    
+    // Use renderTemplate to create proper template elements with all the right structure
+    for (let i = 0; i < templates.length; i++) {
+      const template = templates[i];
+      const renderedTemplate = await renderTemplate(template);
+      renderedTemplate.classList.add('template');
+      innerWrapper.append(renderedTemplate);
+    }
+  } catch (e) {
+    // Fallback if renderTemplate fails
+    block.textContent = `Error loading templates: ${e.message}`;
+    return;
+  }
+  
+  block.innerHTML = '';
+  block.append(innerWrapper);
+  
+  // Use buildCarousel exactly like template-x does - disable infinite scroll to avoid duplicates
+  await buildCarousel(':scope > .template', innerWrapper);
+}
+
 /**
  * Handles multiple templates with carousel
  */
@@ -133,7 +171,6 @@ async function handleMultipleUpFromRenderedTemplates(block) {
  */
 async function handleApiDrivenTemplates(block, apiUrl) {
   const { templates } = await fetchDirectFromApiUrl(apiUrl);
-  console.log('🔥 templates:', templates);
 
   if (!templates || templates.length === 0) {
     throw new Error('No valid templates found');
@@ -143,7 +180,7 @@ async function handleApiDrivenTemplates(block, apiUrl) {
   if (templates.length === 1) {
     await handleOneUpFromApiData(block, templates[0]);
   } else if (templates.length > 1) {
-    await handleMultipleUpFromRenderedTemplates(block, templates);
+    await handleMultipleUpCarousel(block, templates);
   }
 }
 
