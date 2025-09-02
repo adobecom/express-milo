@@ -318,6 +318,10 @@ async function handleDecodeFirst(dimensions, uploadPromise, initialDecodeControl
 }
 
 async function buildEditorUrl(quickAction, assetId, dimensions) {
+  const urlsMap = {
+    'edit-image': '/express/feature/image/editor',
+    'edit-video': '/express/feature/video/editor',
+  };
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
   const isVideoEditor = quickAction === 'edit-video';
@@ -328,6 +332,7 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
     tab: isVideoEditor ? 'videos' : 'photos',
     width: dimensions?.width,
     height: dimensions?.height,
+    url: urlsMap[quickAction],
   };
 
   Object.entries(searchParams).forEach(([key, value]) => {
