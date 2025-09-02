@@ -5,12 +5,15 @@ let createTag; let loadStyle;
 let getConfig;
 
 function initializeCarousel(selector, parent) {
+  console.log('🔥 initializeCarousel called with:', selector, parent);
   let autoPlayInterval = null;
   let isPlaying = false;
 
   const carouselContent = selector
     ? parent.querySelectorAll(selector)
     : parent.querySelectorAll(':scope > *');
+
+  console.log('🔥 carouselContent:', carouselContent);
 
   const isGridLayout = parent.closest('.template-x.basic-carousel.grid') !== null;
 
@@ -338,6 +341,7 @@ function initializeCarousel(selector, parent) {
 }
 
 export async function onBasicCarouselCSSLoad(selector, parent) {
+  console.log('🔥 onBasicCarouselCSSLoad called with:', selector, parent);
   const config = getConfig();
   const stylesheetHref = `${config.codeRoot}/scripts/widgets/basic-carousel.css`;
 
@@ -354,6 +358,7 @@ export async function onBasicCarouselCSSLoad(selector, parent) {
 }
 
 export default async function buildBasicCarousel(selector, parent, options = {}) {
+  console.log('🔥 buildBasicCarousel called with:', selector, parent, options);
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig, loadStyle } = utils);
   });
