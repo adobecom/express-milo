@@ -1,4 +1,52 @@
 @import url('../template-promo-carousel/template-promo-carousel.css');
+@import url('../template-x/template-x.css');
+@import url('../../scripts/widgets/carousel.css');
+
+/* Let template-x CSS handle the hover behavior - just ensure it applies to template-x-promo */
+
+/* Fix button positioning in hover overlay - button at bottom */
+.ax-template-x-promo.multiple-up .template .button-container {
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.ax-template-x-promo.multiple-up .template .button-container .button.accent.small {
+  margin: 6px 6px 0 !important;
+  position: relative;
+  z-index: 1;
+  order: 2; /* Place button at bottom */
+}
+
+/* Ensure the cta-link takes up the main area */
+.ax-template-x-promo.multiple-up .template .button-container .cta-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  order: 1; /* Place cta-link in main area */
+}
+
+/* Hide carousel navigation arrows on desktop - only show on mobile */
+.ax-template-x-promo .carousel-fader-left,
+.ax-template-x-promo .carousel-fader-right {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Show arrows only on mobile */
+@media (max-width: 900px) {
+  .ax-template-x-promo .carousel-fader-left,
+  .ax-template-x-promo .carousel-fader-right {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    display: flex !important;
+  }
+  
+  .ax-template-x-promo .carousel-fader-left .carousel-arrow,
+  .ax-template-x-promo .carousel-fader-right .carousel-arrow {
+    display: block !important;
+  }
+}
 
 .section.ax-template-x-promo {
   display: flex;
