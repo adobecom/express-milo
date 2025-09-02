@@ -323,7 +323,7 @@ function buildEditorUrl(quickAction, assetId, dimensions) {
   };
 
   const isVideoEditor = quickAction === 'edit-video';
-  const url = new URL('https://180640.prenv.projectx.corp.adobe.com/new');
+  const url = new URL('https://stage.projectx.corp.adobe.com/new');
 
   const searchParams = {
     frictionlessUploadAssetId: assetId,
