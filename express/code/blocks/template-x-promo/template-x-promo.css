@@ -1,119 +1,4 @@
-@import url('../template-promo-carousel/template-promo-carousel.css');
-@import url('../template-x/template-x.css');
-@import url('../../scripts/widgets/carousel.css');
-
-/* Let template-x CSS handle the hover behavior - just ensure it applies to template-x-promo */
-
-.ax-template-x-promo.multiple-up .gallery-control {
-  padding-right: 27.5px !important;
-}
-/* Fix button positioning in hover overlay - button at bottom */
-.ax-template-x-promo.multiple-up .template .button-container {
-  justify-content: space-between !important;
-  align-items: center !important;
-}
-
-.ax-template-x-promo.multiple-up .template .button-container .button.accent.small {
-  margin: 6px 6px 0 !important;
-  position: relative;
-  z-index: 1;
-  order: 2; /* Place button at bottom */
-}
-
-/* Ensure the cta-link takes up the main area */
-.ax-template-x-promo.multiple-up .template .button-container .cta-link {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  order: 1; /* Place cta-link in main area */
-}
-
-/* Gallery-style navigation buttons will be positioned by compact-nav-carousel */
-
-/* Hide the default carousel arrows */
-.ax-template-x-promo.multiple-up .carousel-container .carousel-fader-left,
-.ax-template-x-promo.multiple-up .carousel-container .carousel-fader-right {
-  display: none !important;
-}
-
-/* Style gallery-control to match the positioning from your image */
-.ax-template-x-promo.multiple-up .gallery-control {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  display: flex !important;
-  justify-content: flex-end;
-  gap: 8px;
-  align-items: center;
-  z-index: 2;
-}
-
-.ax-template-x-promo.multiple-up .gallery-control button {
-  all: unset;
-  cursor: pointer;
-  height: 2rem;
-  box-shadow: 0px 2px 8px 0px #00000029;
-  border-radius: 50px;
-}
-
-.ax-template-x-promo.multiple-up .gallery-control button:focus {
-  outline: revert;
-}
-
-.ax-template-x-promo.multiple-up .gallery-control button:hover:not(:disabled) circle {
-  fill: var(--color-gray-300);
-}
-
-.ax-template-x-promo.multiple-up .gallery-control button:disabled {
-  cursor: auto;
-}
-
-.ax-template-x-promo.multiple-up .gallery-control button:disabled path {
-  stroke: var(--color-gray-300);
-}
-
-/* Fallback: ensure gallery-control is always visible */
-.gallery-control {
-  position: absolute !important;
-  bottom: 16px !important;
-  right: 16px !important;
-  display: flex !important;
-  gap: 8px !important;
-  z-index: 999 !important;
-}
-
-.gallery-control button {
-  height: 32px !important;
-  width: 32px !important;
-  background: white !important;
-  border-radius: 50% !important;
-  box-shadow: 0px 2px 8px 0px #00000029 !important;
-  cursor: pointer !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Force carousel to be scrollable by constraining the container width */
-.ax-template-x-promo.multiple-up .carousel-container {
-  width: 320px !important; /* Show about 2 templates (152px each + margins) */
-  max-width: 320px !important;
-  overflow: hidden;
-  margin: 0 auto;
-}
-
-.ax-template-x-promo.multiple-up .carousel-platform {
-  max-width: none !important;
-  width: auto !important;
-  overflow-x: scroll !important;
-}
-
-/* Make templates slightly larger for better visibility */
-.ax-template-x-promo.multiple-up .template {
-  flex-shrink: 0;
-  margin: 0 10px;
-}
+/* Fresh custom carousel styles - no imports, all our own */
 
 .section.ax-template-x-promo {
   display: flex;
@@ -124,40 +9,7 @@
   text-align: justify;
 }
 
-.section.ax-template-x-promo .content h1, .section.ax-template-x-promo .content h2 {
-  color: var(--color-gray-800-variant);
-  font-size: var(--heading-font-size-l);
-  font-weight: var(--heading-font-weight-extra);
-  text-align: left;
-  line-height: 130%;
-  margin-top: 0;
-  padding-top: 0;
-}
-
-.section.ax-template-x-promo .content p {
-  color: var(--color-gray-700-variant);
-  font-size: var(--body-font-size-m);
-  font-style: normal;
-  font-weight: var(--body-font-weight);
-  line-height: 130%;
-}
-
-.section.ax-template-x-promo .content p a {
-  color: var(--color-background-accent-default);
-  font-size: var(--body-font-size-m);
-  font-style: normal;
-  font-weight: var(--heading-font-weight-medium);
-  line-height: 130%;
-}
-
-.section.ax-template-x-promo .content p a:hover {
-  color: var(--color-background-accent-hover);
-}
-
-.section.ax-template-x-promo .content p a:active {
-  color: var(--color-background-accent-down);
-}
-
+/* One-up layout */
 .ax-template-x-promo.one-up {
   gap: var(--spacing-300);
   display: flex;
@@ -166,14 +18,6 @@
 
 .ax-template-x-promo.one-up img {
   border-radius: var(--spacing-300);
-}
-
-.ax-template-x-promo.one-up .image-wrapper {
-  position: relative;
-  display: block;
-}
-
-.ax-template-x-promo.one-up .image-wrapper img {
   width: 100%;
   height: auto;
   aspect-ratio: 3/4;
@@ -181,180 +25,214 @@
   display: block;
 }
 
-.ax-template-x-promo.one-up .image-wrapper .free-tag {
-  color: var(--Neutral-50, #FFF);
-  text-align: center;
-  font-family: var(--body-font-family);
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 130%;
-  
+.ax-template-x-promo.one-up .image-wrapper {
+  position: relative;
+  display: block;
+}
+
+/* Multiple-up custom carousel */
+.ax-template-x-promo.multiple-up {
+  position: relative;
+  padding: 20px;
+}
+
+.custom-promo-carousel {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.promo-carousel-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.promo-carousel-viewport {
+  overflow: hidden; /* Hide templates outside viewport */
+  width: 860px; /* Show ~3 templates: 255px * 3 + 20px gaps + padding */
+  max-width: 90vw; /* Don't exceed screen width */
+  min-height: 360px;
+  margin: 0 auto; /* Center the carousel */
+}
+
+.promo-carousel-track {
   display: flex;
+  gap: 20px; /* Space between templates */
+}
+
+/* Individual template styling */
+.promo-template {
+  position: relative;
+  flex: 0 0 255px; /* Fixed width: 255px for 3:4 aspect ratio */
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.promo-image-wrapper {
+  position: relative;
+  width: 255px; /* Match aspect ratio 3:4 */
+  height: 340px; /* Fixed height of 340px */
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.promo-image-wrapper img {
+  width: 255px;
+  height: 340px; /* Fixed height of 340px */
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+  background-color: #f0f0f0;
+}
+
+/* Free/Premium tags */
+.promo-plan-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(36, 36, 36, 0.7);
+  color: white;
   padding: 8px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  z-index: 2;
+}
+
+.promo-image-wrapper .promo-premium-icon,
+.promo-image-wrapper .icon.icon-premium {
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  width: 30px !important;
+  height: 30px !important;
+  z-index: 2 !important;
+  display: block !important;
+}
+
+/* Hover overlay */
+.promo-hover-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  
+  gap: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  border-radius: 16px;
+  z-index: 3;
+}
+
+.promo-template.hover-active .promo-hover-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.promo-edit-button {
+  background: var(--color-background-accent-default);
+  color: white;
+  padding: 12px 24px;
   border-radius: 50px;
-  background: rgba(36, 36, 36, 0.70);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.2s ease;
 }
 
-.ax-template-x-promo.one-up .image-wrapper svg {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  bottom: var(--spacing-100);
-  right: var(--spacing-100);
+.promo-edit-button:hover {
+  background: var(--color-background-accent-hover);
 }
 
-.ax-template-x-promo.one-up .image-wrapper .icon-premium {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  bottom: var(--spacing-100);
-  right: var(--spacing-100);
-}
-
-.ax-template-x-promo.multiple-up {
-  gap: var(--spacing-600);
-}
-
-.ax-template-x-promo.multiple-up .template-promo,
-.ax-template-x-promo.one-up {
-  padding: 20px;
-  z-index: unset;
-}
-.ax-template-x-promo.multiple-up .template-promo {
-  padding-right: 0;
-}
-
-.ax-template-x-promo.multiple-up .template-promo .image-container {
-  max-height: 240px;
-  overflow: hidden;
+.promo-share-button {
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
-  border-radius: var(--spacing-300);
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/** Button Container */
-.ax-template-x-promo .botton-container {
-  display: flex;
-  align-items: center;
-}
-.ax-template-x-promo > .button-container {
-  display: flex;
-}
-.ax-template-x-promo > .button-container a.button.accent {
-  background-color: var(--color-background-accent-default);
-  margin: 0;
-  font-size: var(--body-font-size-m);
-  padding: var(--spacing-100) var(--spacing-300);
-  border-radius: 1000px;
+.promo-share-button:hover {
+  background: white;
 }
 
-/* collapsible rows overrides */
-.ax-template-x-promo .collapsible-rows {
+.promo-share-button svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+.promo-share-button:hover svg {
+  fill: black;
+}
+
+/* Navigation controls */
+.promo-nav-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.promo-nav-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
   padding: 0;
+  border-radius: 50%;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
+  transition: all 0.2s ease;
 }
 
-.ax-template-x-promo.multiple-up .collapsible-rows {
-  padding: var(--spacing-600) 0;
+.promo-nav-btn:hover:not(:disabled) svg circle {
+  fill: #f0f0f0;
 }
 
-.ax-template-x-promo.one-up .collapsible-row-accordion {
-  margin: 0;
+.promo-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.ax-template-x-promo.one-up .collapsible-rows .collapsible-row-header {
-  color: var(--color-gray-900);
-  font-family: var(--body-font-family);
-  font-size: var(--heading-font-size-xs);
-  font-style: normal;
-  font-weight: var(--heading-font-weight);
-  line-height: var(--heading-line-height);
+.promo-nav-btn svg {
+  display: block;
+  width: 32px;
+  height: 32px;
 }
 
-.ax-template-x-promo.one-up .collapsible-rows .collapsible-row-sub-header {
-  color: var(--color-gray-700-variant);
-  font-family: var(--body-font-family);
-  font-size: var(--body-font-size-m);
-  font-style: normal;
-  font-weight: 700;
-  line-height: 130%;
-}
-
-@media (min-width: 600px) {
-  .ax-template-x-promo.multiple-up .gallery {
-    overflow: unset;
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .ax-template-x-promo.multiple-up {
+    padding: 10px;
+  }
+  
+  .promo-nav-controls {
+    bottom: 10px;
+    right: 10px;
   }
 }
 
-@media (min-width: 768px) {
-  .ax-template-x-promo.one-up h3 {
-    color: var(--color-gray-700-variant);
-    font-family: var(--body-font-family);
-    font-size: var(--heading-font-size-xs);
-    font-style: normal;
-    font-weight: var(--heading-font-weight);
-    line-height: var(--heading-line-height);
+/* Removed tablet-specific template sizing - using consistent 255px width */
+
+/* Hide navigation on larger screens where it might not be needed */
+@media (min-width: 1200px) {
+  .promo-nav-controls {
+    opacity: 0.7;
   }
-
-  .ax-template-x-promo.one-up .collapsible-rows {
-    width: unset;
-    margin: unset;
-  }
-
-  .ax-template-x-promo.multiple-up,.ax-template-x-promo.multiple-up .template-promo.template-promo-carousel, 
-  .ax-template-x-promo.one-up {
-    padding: 20px 40px;
-    width: var(--ax-grid-8-col-width);
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-}
-
-@media (min-width: 1024px) {
-  .ax-template-x-promo.one-up h3 {
-    color: var(--color-gray-700-variant);
-    font-family: var(--body-font-family);
-    font-size: var(--heading-font-size-s);
-    font-style: normal;
-    font-weight: var(--heading-font-weight);
-    line-height: var(--heading-line-height);
-  }
-
-  .ax-template-x-promo.one-up .collapsible-rows {
-    width: unset;
-    margin: unset;
-  }
-
-  /* .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel, 
-  .ax-template-x-promo.one-up {
-    padding: 20px 40px;
-    width: var(--ax-grid-8-col-width);
-    margin: 0 auto;
-    box-sizing: border-box;
-  } */
-
-  .ax-template-x-promo.multiple-up, .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel,
-  .ax-template-x-promo.one-up {
-    padding: 20px 40px;
-    width: var(--ax-grid-7-col-width);
-    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
-    box-sizing: border-box;
-  }
-}
-
-@media (min-width: 1680px) {
-  .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel,
-  .ax-template-x-promo.one-up {
-      margin: auto;
+  
+  .promo-carousel-wrapper:hover .promo-nav-controls {
+    opacity: 1;
   }
 }
