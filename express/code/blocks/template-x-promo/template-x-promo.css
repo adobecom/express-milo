@@ -47,42 +47,145 @@
   width: 100%;
 }
 
+/* 3-up layout: prev-CURRENT-next */
 .promo-carousel-viewport {
-  overflow: hidden; /* Hide templates outside viewport */
-  width: 860px; /* Show ~3 templates: 255px * 3 + 20px gaps + padding */
-  max-width: 90vw; /* Don't exceed screen width */
-  min-height: 360px;
-  margin: 0 auto; /* Center the carousel */
+  overflow: visible; /* Show all 3 templates */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .promo-carousel-track {
   display: flex;
-  gap: 20px; /* Space between templates */
+  gap: 30px; /* Space between templates */
+  align-items: center;
+  transition: transform 0.3s ease;
 }
 
-/* Individual template styling */
 .promo-template {
   position: relative;
-  flex: 0 0 255px; /* Fixed width: 255px for 3:4 aspect ratio */
+  flex: 0 0 auto;
   cursor: pointer;
   box-sizing: border-box;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Side templates (prev/next) - smaller and faded */
+.promo-template:not(.current-template) {
+  opacity: 0.6;
+  transform: scale(0.8);
+}
+
+/* Current/center template - highlighted */
+.promo-template.current-template {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
 }
 
 .promo-image-wrapper {
   position: relative;
-  width: 255px; /* Match aspect ratio 3:4 */
-  height: 340px; /* Fixed height of 340px */
+  width: 255px;
+  height: 340px;
   border-radius: 16px;
   overflow: hidden;
 }
 
 .promo-image-wrapper img {
   width: 255px;
-  height: 340px; /* Fixed height of 340px */
+  height: 340px;
   object-fit: cover;
   display: block;
   border-radius: 16px;
   background-color: #f0f0f0;
+}
+
+/* Medium screens (768px-899px) - responsive padding and sizing */
+@media (min-width: 768px) and (max-width: 899px) {
+  .promo-carousel-viewport {
+    overflow: hidden; /* No scroll bars */
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 max(20px, 3vw); /* Responsive padding - minimum 20px, grows with viewport */
+    box-sizing: border-box;
+  }
+  
+  .promo-carousel-track {
+    display: flex;
+    gap: min(15px, 1.5vw); /* Responsive gap that shrinks with viewport */
+    justify-content: center;
+  }
+  
+  .promo-template {
+    position: relative;
+    flex: 1 1 0; /* Equal flex grow/shrink from 0 base */
+    max-width: min(160px, 22vw); /* Responsive max width */
+    min-width: min(120px, 18vw); /* Responsive min width */
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  
+  .promo-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 340px; /* Fixed height to maintain consistent template sizes */
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .promo-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+    background-color: #f0f0f0;
+  }
+}
+
+/* Large screens (≥900px) - show all templates with responsive padding */
+@media (min-width: 900px) {
+  .promo-carousel-viewport {
+    overflow: visible; /* Show all templates */
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 max(40px, 4vw); /* Responsive padding for large screens */
+    box-sizing: border-box;
+  }
+  
+  .promo-carousel-track {
+    display: flex;
+    gap: min(20px, 2vw); /* Responsive gap */
+    justify-content: center; /* Center all templates */
+  }
+  
+  .promo-template {
+    position: relative;
+    flex: 1; /* Equal width distribution */
+    max-width: min(280px, 25vw); /* Responsive max width */
+    min-width: min(200px, 20vw); /* Responsive min width */
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  
+  .promo-image-wrapper {
+    position: relative;
+    width: 100%; /* Full width of container */
+    height: 340px; /* Fixed height for consistency across different aspect ratios */
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  
+  .promo-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+    background-color: #f0f0f0;
+  }
 }
 
 /* Free/Premium tags */
@@ -177,14 +280,47 @@
   fill: black;
 }
 
-/* Navigation controls */
+/* Navigation controls - positioned on sides for 3-up layout with 24px gap */
 .promo-nav-controls {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
+  pointer-events: none; /* Allow clicks through to carousel */
   z-index: 10;
+  /* Calculate positioning: center template is 255px wide, side templates are ~204px (255px * 0.8 scale)
+     Total for 3 templates + 2 gaps of 30px = 255 + 30 + 204 + 30 + 204 = 723px
+     24px gap from template edge to button */
+  padding: 0 calc(50% - 361px - 24px); /* Half of total width (723px/2 = 361px) + 24px gap */
+}
+
+.promo-nav-btn {
+  pointer-events: auto; /* Re-enable clicks for buttons */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.promo-nav-btn:hover {
+  transform: scale(1.1);
+}
+
+.promo-prev-btn {
+  /* Position on the left */
+}
+
+.promo-next-btn {
+  /* Position on the right */
 }
 
 .promo-nav-btn {
@@ -212,13 +348,14 @@
   height: 32px;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
+/* Mobile responsive - show navigation buttons on mobile only */
+@media (max-width: 767px) {
   .ax-template-x-promo.multiple-up {
     padding: 10px;
   }
   
   .promo-nav-controls {
+    display: flex; /* Show buttons on mobile */
     bottom: 10px;
     right: 10px;
   }
@@ -226,13 +363,4 @@
 
 /* Removed tablet-specific template sizing - using consistent 255px width */
 
-/* Hide navigation on larger screens where it might not be needed */
-@media (min-width: 1200px) {
-  .promo-nav-controls {
-    opacity: 0.7;
-  }
-  
-  .promo-carousel-wrapper:hover .promo-nav-controls {
-    opacity: 1;
-  }
-}
+/* Navigation buttons are hidden on desktop (768px+) and only show on mobile (≤767px) */
