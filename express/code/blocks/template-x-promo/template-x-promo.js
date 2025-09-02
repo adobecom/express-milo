@@ -140,8 +140,106 @@ async function handleMultipleUpCarousel(block, templates) {
   block.innerHTML = '';
   block.append(innerWrapper);
   
-  // Use buildCarousel exactly like template-x does - disable infinite scroll to avoid duplicates
-  await buildCarousel(':scope > .template', innerWrapper);
+      // Keep it simple - use the working infinite scroll carousel
+    try {
+      await buildCarousel(':scope > .template', innerWrapper, { 
+        infinityScrollEnabled: true 
+      });
+    
+    // Create gallery-control buttons that work with the existing carousel
+    const carouselContainer = block.querySelector('.carousel-container');
+    const carouselPlatform = block.querySelector('.carousel-platform');
+    
+    console.log('🔍 Carousel elements found:', { carouselContainer, carouselPlatform });
+    
+    if (carouselContainer && carouselPlatform) {
+      // Create gallery-control structure
+      const galleryControl = createTag('div', { class: 'gallery-control' });
+      console.log('🎯 Created gallery-control:', galleryControl);
+      
+      const prevSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="Slider Button - Arrow - Left">
+          <circle id="Ellipse 24477" cx="16" cy="16" r="16" transform="matrix(-1 0 0 1 32 0)" fill="#FFFFFF"/>
+          <path id="chevron-right" d="M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>`;
+      
+      const nextSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="Slider Button - Arrow - Right">
+          <circle id="Ellipse 24477" cx="16" cy="16" r="16" fill="#FFFFFF"/>
+          <path id="chevron-right" d="M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>`;
+      
+      const prevButton = createTag('button', { 
+        class: 'prev', 
+        'aria-label': 'Previous' 
+      });
+      prevButton.innerHTML = prevSVGHTML;
+      
+      const nextButton = createTag('button', { 
+        class: 'next', 
+        'aria-label': 'Next' 
+      });
+      nextButton.innerHTML = nextSVGHTML;
+      
+      galleryControl.append(prevButton, nextButton);
+      carouselContainer.append(galleryControl);
+      
+      console.log('✅ Gallery control appended to carousel container');
+      console.log('🔍 Gallery control in DOM:', block.querySelector('.gallery-control'));
+      
+      // Hook into existing carousel scroll functionality
+      prevButton.addEventListener('click', () => {
+        const increment = Math.max((carouselPlatform.offsetWidth / 4) * 3, 300);
+        carouselPlatform.scrollLeft -= increment;
+      });
+      
+      nextButton.addEventListener('click', () => {
+        const increment = Math.max((carouselPlatform.offsetWidth / 4) * 3, 300);
+        carouselPlatform.scrollLeft += increment;
+      });
+    }
+    
+    // Fix hover behavior - add proper mouseleave handling for each template
+    const templates = block.querySelectorAll('.template');
+    templates.forEach(template => {
+      template.addEventListener('mouseleave', () => {
+        const buttonContainer = template.querySelector('.button-container.singleton-hover');
+        if (buttonContainer) {
+          buttonContainer.classList.remove('singleton-hover');
+        }
+      });
+    });
+  } catch (error) {
+    console.error('Error initializing carousel:', error);
+    // Fallback: just show templates without carousel
+  }
+  
+  // Fix mobile hover behavior - remove singleton-hover when tapping elsewhere
+  const clearAllHoverStates = () => {
+    const hoveredContainers = block.querySelectorAll('.button-container.singleton-hover');
+    hoveredContainers.forEach(container => {
+      container.classList.remove('singleton-hover');
+    });
+  };
+  
+  // Add document-level click/touch handler to clear hover states on mobile
+  const handleDocumentClick = (e) => {
+    // Only handle on mobile width (768px or less) - works in both real mobile and responsive mode
+    if (window.innerWidth > 768) return;
+    
+    // Check if click/touch is outside our carousel
+    const isInsideCarousel = e.target.closest('.ax-template-x-promo.multiple-up');
+    const isNavigationButton = e.target.closest('.carousel-fader-left, .carousel-fader-right');
+    
+    if (!isInsideCarousel || isNavigationButton) {
+      clearAllHoverStates();
+    }
+  };
+  
+  document.addEventListener('click', handleDocumentClick, { passive: true });
+  document.addEventListener('touchstart', handleDocumentClick, { passive: true });
 }
 
 /**
