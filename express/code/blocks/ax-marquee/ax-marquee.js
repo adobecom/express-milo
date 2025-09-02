@@ -458,10 +458,9 @@ async function handleContent(div, block, animations) {
       btnContainer.querySelector('a.button')?.classList.add('xlarge');
       buttonsWrapper.append(btnContainer);
     });
-  } else {
+  } else if (block.classList.contains('legal')) {
     // Only promote a final-paragraph link to a CTA when it is the sole
-    // content of that paragraph. This prevents legal copy like "View terms"
-    // links from being turned into CTAs on mobile.
+    // content of that paragraph to avoid converting legal copy into CTAs.
     const lastParagraph = div.querySelector('p:last-of-type');
     const candidateLink = lastParagraph?.querySelector(':scope > a:not(.button.accent)');
     const shouldPromote = !!(candidateLink
@@ -474,6 +473,17 @@ async function handleContent(div, block, animations) {
       primaryCta.classList.add('button', 'accent', 'primaryCTA', 'xlarge');
       BlockMediator.set('primaryCtaUrl', primaryCta.href);
       lastParagraph.classList.add('buttons-wrapper', 'with-inline-ctas');
+    }
+  } else {
+    const primaryCta = div.querySelector('p:last-of-type > a:not(.button.accent)');
+    if (primaryCta) {
+      formatDynamicCartLink(primaryCta);
+      primaryCta.classList.add('button', 'accent', 'primaryCTA', 'xlarge');
+      BlockMediator.set('primaryCtaUrl', primaryCta.href);
+      primaryCta.parentElement.classList.add(
+        'buttons-wrapper',
+        'with-inline-ctas',
+      );
     }
   }
 

@@ -1,15 +1,3 @@
-/* Desktop fixed positioning */
-.toc-container.toc-desktop-fixed {
-  position: fixed;
-  top: var(--toc-top-position, 200px);
-  left: 0;
-  width: 250px;
-  z-index: 1;
-  padding-left: var(--spacing-600);
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
 /* TOC container using global CSS variables */
 .toc-container {
   display: block;
@@ -21,44 +9,33 @@
   position: sticky;
   top: var(--spacing-600);
   background: var(--color-white);
+  z-index: 2;
+}
+
+/* Desktop fixed positioning */
+.toc.toc-container.toc-desktop {
+  position: fixed;
+  background: transparent;
+  top: var(--toc-top-position, 200px);
+  left: 0;
+  width: var(--ax-grid-3-col-width);
   z-index: 1;
+  padding-left: var(--spacing-600);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Mobile fixed positioning */
+.toc.toc-container.toc-mobile-fixed {
+  position: fixed;
+  top: var(--mobile-nav-height, 40px);
+  left: 0;
+  right: 0;
 }
 
 main .icon {
   width: 20px;
   height: 20px;
-}
-
-@media (min-width: 768px) {
-  .toc-container {
-    position: static;
-    cursor: default;
-    width: 545px;
-    margin: 0 auto;
-  }
-  
-  .toc-container .toc-content {
-    display: block;
-  }
-  
-  .toc-container .toc-social-icons {
-    display: flex;
-  }
-  
-  .toc-container .toc-title::after {
-    display: none;
-  }
-}
-
-@media (min-width: 1200px) {
-  .toc-container {
-    position: static;
-    width: 310px;
-    margin: 0;
-    z-index: 100;
-    border-top: none;
-    border-bottom: none;
-  }
 }
 
 .toc-title {
@@ -79,7 +56,6 @@ main .icon {
   padding: 0;
   margin: 0;
   font-family: inherit;
-  padding-bottom: var(--spacing-300);
 }
 
 .toc-title:focus-visible {
@@ -90,9 +66,9 @@ main .icon {
 .toc-title::after {
   content: '';
   position: absolute;
-  right: 30px;
+  right: 33px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) rotate(180deg);
   width: 14px;
   height: 14px;
   background-image: url('/express/code/icons/chevron.svg');
@@ -103,11 +79,7 @@ main .icon {
 
 .toc-container.open .toc-title::after {
   background-image: url('/express/code/icons/chevron.svg');
-  transform: translateY(-50%) rotate(180deg);
-}
-
-.toc-container.open .toc-title {
-  /* Remove padding-bottom to keep button height consistent */
+  transform: translateY(-50%) rotate(0deg);
 }
 
 .toc-content {
@@ -117,30 +89,43 @@ main .icon {
 .toc-container.open .toc-content {
   display: block;
   margin-top: var(--spacing-100);
+  padding-right: 20px;
+}
+
+@media (min-width: 1024px) {
+  .toc-container.open .toc-content {
+    padding-right: 0;
+  }
+  
+  .toc-container {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 main .toc-content a {
   display: block;
-  padding: var(--spacing-100) var(--spacing-300);
+  padding: var(--spacing-100) var(--spacing-400);
   text-decoration: none;
   color: var(--color-background-accent-default);
   font-style: normal;
   font-weight: 400;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 1024px) {
+  main .toc-content a {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
 }
 
 main .toc-content a:hover {
   font-weight: 700;
-}
-
-main .toc-content a:hover::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background-color: var(--color-light-gray)
 }
 
 /* Active state for TOC links */
@@ -179,6 +164,10 @@ main .toc-content a:focus:not(:focus-visible) {
   padding: 0;
 }
 
+.toc-social-icons a {
+  cursor: pointer;
+}
+
 .toc-container.open .toc-social-icons {
   display: flex;
 }
@@ -205,3 +194,75 @@ main .toc-content a:focus:not(:focus-visible) {
 .copy-failure {
   color: var(--color-red);
 }
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .toc-container {
+    cursor: pointer;
+    max-width: var(--ax-grid-7-col-width);
+    margin: 0 auto;
+  }
+
+  .toc.toc-container.toc-mobile-fixed {
+    z-index: 2;
+  }
+
+  .toc-container .toc-content {
+    display: none;
+  }
+  
+  .toc-container.open .toc-content {
+    display: block;
+  }
+  
+  .toc-container .toc-social-icons {
+    display: none;
+  }
+  
+  .toc-container.open .toc-social-icons {
+    display: flex;
+  }
+
+  .toc-title {
+    padding-bottom: 0;
+  }
+  
+  .toc-container .toc-title::after {
+    display: block;
+    right: -20px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .toc-container {
+    position: static;
+    width: 310px;
+    margin: 0;
+    z-index: 100;
+    border-top: none;
+    border-bottom: none;
+    cursor: default;
+  }
+  
+  .toc-container .toc-title::after {
+    display: none;
+  }
+  
+  .toc-container .toc-content {
+    display: block;
+    margin-top: var(--spacing-200);
+  }
+  
+  .toc-container .toc-social-icons {
+    display: flex;
+    margin-top: var(--spacing-300);
+  }
+}
+
+@media (min-width: 1680px) {
+    .toc.toc-container.toc-desktop {
+      width: var(--ax-grid-2-col-width);
+      left: calc((100vw - var(--ax-grid-7-col-width)) / 2 - var(--ax-grid-2-col-width) - var(--spacing-200));
+    }
+}
+
+
