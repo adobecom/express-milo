@@ -4,6 +4,9 @@
 
 /* Let template-x CSS handle the hover behavior - just ensure it applies to template-x-promo */
 
+.ax-template-x-promo.multiple-up .gallery-control {
+  padding-right: 27.5px !important;
+}
 /* Fix button positioning in hover overlay - button at bottom */
 .ax-template-x-promo.multiple-up .template .button-container {
   justify-content: space-between !important;
@@ -26,26 +29,90 @@
   order: 1; /* Place cta-link in main area */
 }
 
-/* Hide carousel navigation arrows on desktop - only show on mobile */
-.ax-template-x-promo .carousel-fader-left,
-.ax-template-x-promo .carousel-fader-right {
-  opacity: 0;
-  pointer-events: none;
+/* Gallery-style navigation buttons will be positioned by compact-nav-carousel */
+
+/* Hide the default carousel arrows */
+.ax-template-x-promo.multiple-up .carousel-container .carousel-fader-left,
+.ax-template-x-promo.multiple-up .carousel-container .carousel-fader-right {
+  display: none !important;
 }
 
-/* Show arrows only on mobile */
-@media (max-width: 900px) {
-  .ax-template-x-promo .carousel-fader-left,
-  .ax-template-x-promo .carousel-fader-right {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    display: flex !important;
-  }
-  
-  .ax-template-x-promo .carousel-fader-left .carousel-arrow,
-  .ax-template-x-promo .carousel-fader-right .carousel-arrow {
-    display: block !important;
-  }
+/* Style gallery-control to match the positioning from your image */
+.ax-template-x-promo.multiple-up .gallery-control {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex !important;
+  justify-content: flex-end;
+  gap: 8px;
+  align-items: center;
+  z-index: 2;
+}
+
+.ax-template-x-promo.multiple-up .gallery-control button {
+  all: unset;
+  cursor: pointer;
+  height: 2rem;
+  box-shadow: 0px 2px 8px 0px #00000029;
+  border-radius: 50px;
+}
+
+.ax-template-x-promo.multiple-up .gallery-control button:focus {
+  outline: revert;
+}
+
+.ax-template-x-promo.multiple-up .gallery-control button:hover:not(:disabled) circle {
+  fill: var(--color-gray-300);
+}
+
+.ax-template-x-promo.multiple-up .gallery-control button:disabled {
+  cursor: auto;
+}
+
+.ax-template-x-promo.multiple-up .gallery-control button:disabled path {
+  stroke: var(--color-gray-300);
+}
+
+/* Fallback: ensure gallery-control is always visible */
+.gallery-control {
+  position: absolute !important;
+  bottom: 16px !important;
+  right: 16px !important;
+  display: flex !important;
+  gap: 8px !important;
+  z-index: 999 !important;
+}
+
+.gallery-control button {
+  height: 32px !important;
+  width: 32px !important;
+  background: white !important;
+  border-radius: 50% !important;
+  box-shadow: 0px 2px 8px 0px #00000029 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Force carousel to be scrollable by constraining the container width */
+.ax-template-x-promo.multiple-up .carousel-container {
+  width: 320px !important; /* Show about 2 templates (152px each + margins) */
+  max-width: 320px !important;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.ax-template-x-promo.multiple-up .carousel-platform {
+  max-width: none !important;
+  width: auto !important;
+  overflow-x: scroll !important;
+}
+
+/* Make templates slightly larger for better visibility */
+.ax-template-x-promo.multiple-up .template {
+  flex-shrink: 0;
+  margin: 0 10px;
 }
 
 .section.ax-template-x-promo {
@@ -244,7 +311,7 @@
     margin: unset;
   }
 
-  .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel, 
+  .ax-template-x-promo.multiple-up,.ax-template-x-promo.multiple-up .template-promo.template-promo-carousel, 
   .ax-template-x-promo.one-up {
     padding: 20px 40px;
     width: var(--ax-grid-8-col-width);
@@ -268,15 +335,15 @@
     margin: unset;
   }
 
-  .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel, 
+  /* .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel, 
   .ax-template-x-promo.one-up {
     padding: 20px 40px;
     width: var(--ax-grid-8-col-width);
     margin: 0 auto;
     box-sizing: border-box;
-  }
+  } */
 
-  .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel,
+  .ax-template-x-promo.multiple-up, .ax-template-x-promo.multiple-up .template-promo.template-promo-carousel,
   .ax-template-x-promo.one-up {
     padding: 20px 40px;
     width: var(--ax-grid-7-col-width);
