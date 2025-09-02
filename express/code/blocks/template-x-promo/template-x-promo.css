@@ -47,59 +47,123 @@
   width: 100%;
 }
 
-/* 3-up layout: prev-CURRENT-next */
-.promo-carousel-viewport {
-  overflow: visible; /* Show all 3 templates */
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+/* Mobile - use flex column with 24px gap for clean separation */
+@media (max-width: 767px) {
+  .promo-carousel-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* Exactly 24px between viewport and nav controls */
+  }
 }
 
-.promo-carousel-track {
-  display: flex;
-  gap: 30px; /* Space between templates */
-  align-items: center;
-  transition: transform 0.3s ease;
+/* Desktop (≥768px) - Simple flex container approach */
+@media (min-width: 768px) {
+  /* Block container handles padding */
+  .ax-template-x-promo.multiple-up {
+    padding: 20px 40px; /* Block determines the padding */
+  }
+  
+  .promo-carousel-viewport {
+    overflow: visible;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .promo-carousel-track {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px; /* Reasonable max container width */
+  }
+
+  .promo-template {
+    position: relative;
+    flex: 1; /* Fluid - equal distribution of available space */
+    cursor: pointer;
+    box-sizing: border-box;
+    max-width: 280px; /* Cap at reasonable max size */
+    min-width: 180px; /* Minimum size for readability */
+    /* NO transition, scaling, or opacity changes on desktop */
+  }
+
+  .promo-image-wrapper {
+    position: relative;
+    width: 100%; /* Fill the available template space */
+    aspect-ratio: 3/4; /* Maintain aspect ratio based on width */
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .promo-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+    background-color: #f0f0f0;
+  }
 }
 
-.promo-template {
-  position: relative;
-  flex: 0 0 auto;
-  cursor: pointer;
-  box-sizing: border-box;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
+/* Mobile (≤767px) - Carousel with 3-up prev-CURRENT-next */
+@media (max-width: 767px) {
+  .promo-carousel-viewport {
+    overflow: visible; /* Show all 3 templates */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
 
-/* Side templates (prev/next) - smaller and faded */
-.promo-template:not(.current-template) {
-  opacity: 0.6;
-  transform: scale(0.8);
-}
+  .promo-carousel-track {
+    display: flex;
+    gap: 8px; /* 8px gap between templates */
+    align-items: center;
+    transition: transform 0.3s ease;
+  }
 
-/* Current/center template - highlighted */
-.promo-template.current-template {
-  opacity: 1;
-  transform: scale(1);
-  z-index: 2;
-}
+  .promo-template {
+    position: relative;
+    flex: 0 0 auto;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
 
-.promo-image-wrapper {
-  position: relative;
-  width: 255px;
-  height: 340px;
-  border-radius: 16px;
-  overflow: hidden;
-}
+  /* Side templates (prev/next) - only faded, NO scaling - MOBILE ONLY */
+  .promo-template:not(.current-template) {
+    opacity: 0.6;
+    /* NO transform: scale() - keep images the same size */
+  }
 
-.promo-image-wrapper img {
-  width: 255px;
-  height: 340px;
-  object-fit: cover;
-  display: block;
-  border-radius: 16px;
-  background-color: #f0f0f0;
+  /* Current/center template - highlighted - MOBILE ONLY */
+  .promo-template.current-template {
+    opacity: 1;
+    /* NO transform: scale() - images stay consistent size */
+    /* Removed z-index to prevent blocking scroll and other content */
+  }
+
+  .promo-image-wrapper {
+    position: relative;
+    width: 255px;
+    height: 340px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .promo-image-wrapper img {
+    width: 255px;
+    height: 340px;
+    object-fit: cover;
+    display: block;
+    border-radius: 16px;
+    background-color: #f0f0f0;
+  }
 }
 
 /* Medium screens (768px-899px) - responsive padding and sizing */
@@ -199,7 +263,7 @@
   border-radius: 50px;
   font-size: 12px;
   font-weight: 700;
-  z-index: 2;
+  /* Removed z-index to prevent blocking scroll */
 }
 
 .promo-image-wrapper .promo-premium-icon,
@@ -209,7 +273,7 @@
   right: 16px !important;
   width: 30px !important;
   height: 30px !important;
-  z-index: 2 !important;
+  /* Removed z-index to prevent blocking scroll */
   display: block !important;
 }
 
@@ -230,7 +294,7 @@
   visibility: hidden;
   transition: all 0.2s ease;
   border-radius: 16px;
-  z-index: 3;
+  /* Removed z-index to prevent blocking scroll */
 }
 
 .promo-template.hover-active .promo-hover-overlay {
@@ -280,47 +344,37 @@
   fill: black;
 }
 
-/* Navigation controls - positioned on sides for 3-up layout with 24px gap */
+/* Navigation controls - hidden by default (desktop) */
 .promo-nav-controls {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  pointer-events: none; /* Allow clicks through to carousel */
-  z-index: 10;
-  /* Calculate positioning: center template is 255px wide, side templates are ~204px (255px * 0.8 scale)
-     Total for 3 templates + 2 gaps of 30px = 255 + 30 + 204 + 30 + 204 = 723px
-     24px gap from template edge to button */
-  padding: 0 calc(50% - 361px - 24px); /* Half of total width (723px/2 = 361px) + 24px gap */
+  display: none;
 }
 
-.promo-nav-btn {
-  pointer-events: auto; /* Re-enable clicks for buttons */
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-}
-
-.promo-nav-btn:hover {
-  transform: scale(1.1);
-}
-
-.promo-prev-btn {
-  /* Position on the left */
-}
-
-.promo-next-btn {
-  /* Position on the right */
+/* Mobile only - show buttons at bottom right, below 768px */
+@media (max-width: 767px) {
+  .promo-nav-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end; /* Align buttons to the right */
+    /* No absolute positioning needed - flex gap handles the 24px separation */
+  }
+  
+  .promo-prev-btn,
+  .promo-next-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  
+  .promo-nav-btn:hover {
+    transform: scale(1.1);
+  }
 }
 
 .promo-nav-btn {

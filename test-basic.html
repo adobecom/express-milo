@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Carousel Test</title>
+    <style>
+        body { margin: 0; padding: 20px; font-family: sans-serif; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; }
+        .controls { margin-bottom: 20px; }
+        .btn { background: #007acc; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 6px; cursor: pointer; }
+        .btn:hover { background: #005a9e; }
+        .status { background: #333; color: #00ff00; padding: 10px; margin: 10px 0; border-radius: 4px; font-family: monospace; }
+        
+        /* Carousel styles - simplified */
+        .carousel-wrapper { position: relative; }
+        .carousel-track { display: flex; gap: 8px; justify-content: center; align-items: center; }
+        .template { width: 255px; height: 340px; border-radius: 16px; overflow: hidden; position: relative; }
+        .template img { width: 100%; height: 100%; object-fit: cover; }
+        .tag { position: absolute; top: 16px; right: 16px; background: rgba(36,36,36,0.7); color: white; padding: 8px 12px; border-radius: 50px; font-size: 12px; }
+        
+        /* Mobile styles */
+        @media (max-width: 767px) {
+            .carousel-wrapper { display: flex; flex-direction: column; gap: 24px; }
+            .template:not(.current) { opacity: 0.6; }
+            .nav-controls { display: flex; gap: 8px; justify-content: flex-end; }
+            .nav-btn { background: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        }
+        
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            .nav-controls { display: none; }
+            .template { flex: 1; max-width: 280px; min-width: 200px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎠 Simple Carousel Test</h1>
+        
+        <div class="controls">
+            <button class="btn" onclick="test(4)">4 Templates</button>
+            <button class="btn" onclick="test(3)">3 Templates</button>
+            <button class="btn" onclick="test(2)">2 Templates</button>
+            <button class="btn" onclick="getInfo()">Window Info</button>
+        </div>
+        
+        <div id="status" class="status">Click a button to test...</div>
+        
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="track">
+                <!-- Templates will go here -->
+            </div>
+            <div class="nav-controls">
+                <button class="nav-btn" onclick="prev()">←</button>
+                <button class="nav-btn" onclick="next()">→</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const templates = [
+            { name: 'Template 1', color: '#FF6B6B', type: 'free' },
+            { name: 'Template 2', color: '#4ECDC4', type: 'premium' },
+            { name: 'Template 3', color: '#45B7D1', type: 'free' },
+            { name: 'Template 4', color: '#96CEB4', type: 'premium' }
+        ];
+        
+        let currentTemplates = templates;
+        let currentIndex = 0;
+
+        function createTemplate(template, index) {
+            const isMobile = window.innerWidth < 768;
+            const div = document.createElement('div');
+            div.className = 'template';
+            
+            if (isMobile && index === 1) div.classList.add('current');
+            
+            div.innerHTML = `
+                <img src="https://via.placeholder.com/255x340/${template.color.slice(1)}/ffffff?text=${template.name}" alt="${template.name}">
+                <div class="tag">${template.type}</div>
+            `;
+            return div;
+        }
+
+        function updateDisplay() {
+            const track = document.getElementById('track');
+            const isMobile = window.innerWidth < 768;
+            
+            track.innerHTML = '';
+            
+            if (isMobile && currentTemplates.length > 1) {
+                // Mobile: show 3 (prev, current, next)
+                const prev = currentTemplates[(currentIndex - 1 + currentTemplates.length) % currentTemplates.length];
+                const current = currentTemplates[currentIndex];
+                const next = currentTemplates[(currentIndex + 1) % currentTemplates.length];
+                
+                track.appendChild(createTemplate(prev, 0));
+                track.appendChild(createTemplate(current, 1));
+                track.appendChild(createTemplate(next, 2));
+            } else {
+                // Desktop: show all
+                currentTemplates.forEach((template, index) => {
+                    track.appendChild(createTemplate(template, index));
+                });
+            }
+        }
+
+        function test(count) {
+            currentTemplates = templates.slice(0, count);
+            currentIndex = 0;
+            updateDisplay();
+            document.getElementById('status').textContent = `Showing ${count} templates. ${window.innerWidth < 768 ? 'Mobile' : 'Desktop'} mode.`;
+        }
+
+        function next() {
+            currentIndex = (currentIndex + 1) % currentTemplates.length;
+            updateDisplay();
+        }
+
+        function prev() {
+            currentIndex = (currentIndex - 1 + currentTemplates.length) % currentTemplates.length;
+            updateDisplay();
+        }
+
+        function getInfo() {
+            const isMobile = window.innerWidth < 768;
+            document.getElementById('status').textContent = `Window: ${window.innerWidth}px x ${window.innerHeight}px - ${isMobile ? 'Mobile' : 'Desktop'} mode`;
+        }
+
+        // Auto-resize handler
+        window.addEventListener('resize', updateDisplay);
+        
+        // Initialize
+        test(4);
+    </script>
+</body>
+</html>

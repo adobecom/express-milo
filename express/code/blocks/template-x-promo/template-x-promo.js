@@ -3,9 +3,9 @@ import { fetchResults } from '../../scripts/template-utils.js';
 import { isValidTemplate } from '../../scripts/template-search-api-v3.js';
 
 // Global utilities (loaded dynamically)
-let createTag;
-let getConfig;
-let replaceKey;
+let createTag = window.createTag; // Try to get it from window first
+let getConfig = window.getConfig;
+let replaceKey = window.replaceKey;
 let renderTemplate;
 
 /**
@@ -222,7 +222,7 @@ async function createTemplateElement(templateData) {
 /**
  * Creates our custom carousel with prev/next navigation
  */
-async function createCustomCarousel(block, templates) {
+export async function createCustomCarousel(block, templates) {
   const parent = block.parentElement;
   parent.classList.add('multiple-up');
   block.classList.add('custom-promo-carousel');
@@ -286,39 +286,51 @@ async function createCustomCarousel(block, templates) {
     navContainer.append(prevButton, nextButton);
     carouselWrapper.append(navContainer);
     
-    // 3-up carousel logic: always show prev-CURRENT-next
+    // Check if we're on mobile
+    const isMobile = () => window.innerWidth < 768;
+    
+    // Mobile: 3-up carousel logic, Desktop: static all templates
     let currentIndex = 0;
     const templateCount = templateElements.length;
     
     const updateCarouselDisplay = () => {
-      console.log(`📍 Current index: ${currentIndex} of ${templateCount}`);
+      console.log(`📍 Current index: ${currentIndex} of ${templateCount}, Mobile: ${isMobile()}`);
       
-      // Remove current class from all templates
-      templateElements.forEach(el => el.classList.remove('current-template'));
-      
-      // Clear track and add 3 templates: prev, current, next
+      // Clear track
       carouselTrack.innerHTML = '';
       
-      // Calculate indices with looping
-      const prevIndex = (currentIndex - 1 + templateCount) % templateCount;
-      const nextIndex = (currentIndex + 1) % templateCount;
-      
-      // Add prev template
-      const prevTemplate = templateElements[prevIndex].cloneNode(true);
-      prevTemplate.classList.add('prev-template');
-      carouselTrack.append(prevTemplate);
-      
-      // Add current template (center)
-      const currentTemplate = templateElements[currentIndex].cloneNode(true);
-      currentTemplate.classList.add('current-template');
-      carouselTrack.append(currentTemplate);
-      
-      // Add next template
-      const nextTemplate = templateElements[nextIndex].cloneNode(true);
-      nextTemplate.classList.add('next-template');
-      carouselTrack.append(nextTemplate);
-      
-      console.log(`📍 Showing: prev(${prevIndex}) -> current(${currentIndex}) -> next(${nextIndex})`);
+      if (isMobile()) {
+        // Mobile: Show prev-CURRENT-next with carousel behavior
+        const prevIndex = (currentIndex - 1 + templateCount) % templateCount;
+        const nextIndex = (currentIndex + 1) % templateCount;
+        
+        // Add prev template
+        const prevTemplate = templateElements[prevIndex].cloneNode(true);
+        prevTemplate.classList.add('prev-template');
+        carouselTrack.append(prevTemplate);
+        
+        // Add current template (center)
+        const currentTemplate = templateElements[currentIndex].cloneNode(true);
+        currentTemplate.classList.add('current-template');
+        carouselTrack.append(currentTemplate);
+        
+        // Add next template
+        const nextTemplate = templateElements[nextIndex].cloneNode(true);
+        nextTemplate.classList.add('next-template');
+        carouselTrack.append(nextTemplate);
+        
+        console.log(`📱 Mobile: prev(${prevIndex}) -> current(${currentIndex}) -> next(${nextIndex})`);
+      } else {
+        // Desktop: Show all templates equally, no carousel behavior
+        templateElements.forEach((template, index) => {
+          const templateClone = template.cloneNode(true);
+          // Remove any carousel-specific classes
+          templateClone.classList.remove('prev-template', 'current-template', 'next-template');
+          carouselTrack.append(templateClone);
+        });
+        
+        console.log(`🖥️ Desktop: Showing all ${templateCount} templates statically`);
+      }
     };
     
     const moveNext = () => {
@@ -384,13 +396,98 @@ async function createCustomCarousel(block, templates) {
     block.innerHTML = '';
     block.append(carouselWrapper);
     
-    // Initialize the 3-up display
+    // Handle resize events to switch between mobile/desktop layouts
+    let resizeTimeout;
+    const handleResize = () => {
+      // Debounce resize events to prevent infinite loops
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        console.log('🔄 Window resized, updating carousel display');
+        updateCarouselDisplay();
+      }, 100);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Initialize the display
     updateCarouselDisplay();
     
     console.log('✅ Custom carousel created successfully');
     console.log('🔍 Final DOM structure:', block.outerHTML.substring(0, 500) + '...');
     console.log('🔍 Templates in track:', carouselTrack.children.length);
     console.log('🔍 Track children:', Array.from(carouselTrack.children).map(child => child.className));
+    
+    // Add testing controls to window for easy testing
+    window.testTemplateCarousel = {
+      show4Templates: () => {
+        console.log('🧪 Testing with 4 templates');
+        createMultipleCarousels();
+      },
+      show3Templates: () => {
+        console.log('🧪 Testing with 3 templates');
+        createMultipleCarousels();
+      },
+      show2Templates: () => {
+        console.log('🧪 Testing with 2 templates');
+        createMultipleCarousels();
+      },
+      getCurrentInfo: () => {
+        console.log(`📊 Current: ${isMobile() ? 'Mobile' : 'Desktop'}, Templates: ${templateElements.length}, Index: ${currentIndex}`);
+      }
+    };
+    
+    // Create multiple carousels for visual testing
+    window.createMultipleCarousels = async () => {
+      console.log('🎠 Creating multiple carousel tests...');
+      
+      // Clear existing content
+      const section = block.closest('.section');
+      section.innerHTML = `
+        <h2 style="text-align: center; margin: 40px 0 20px; font-size: 24px;">🎠 Carousel Testing with Different Template Counts</h2>
+        <div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border-radius: 8px;">
+          <strong>Instructions:</strong> Resize window to test mobile vs desktop behavior on each carousel below
+        </div>
+      `;
+      
+      // Test with 4 templates
+      const section4 = document.createElement('div');
+      section4.style.cssText = 'margin: 40px 0; padding: 20px; border: 2px solid #007acc; border-radius: 8px;';
+      section4.innerHTML = '<h3 style="margin: 0 0 20px; color: #007acc;">4 Templates</h3>';
+      const block4 = document.createElement('div');
+      block4.className = 'template-x-promo horizontal three template-x custom-promo-carousel';
+      section4.appendChild(block4);
+      section.appendChild(section4);
+      
+      // Test with 3 templates  
+      const section3 = document.createElement('div');
+      section3.style.cssText = 'margin: 40px 0; padding: 20px; border: 2px solid #28a745; border-radius: 8px;';
+      section3.innerHTML = '<h3 style="margin: 0 0 20px; color: #28a745;">3 Templates</h3>';
+      const block3 = document.createElement('div');
+      block3.className = 'template-x-promo horizontal three template-x custom-promo-carousel';
+      section3.appendChild(block3);
+      section.appendChild(section3);
+      
+      // Test with 2 templates
+      const section2 = document.createElement('div');
+      section2.style.cssText = 'margin: 40px 0; padding: 20px; border: 2px solid #ffc107; border-radius: 8px;';
+      section2.innerHTML = '<h3 style="margin: 0 0 20px; color: #ffc107;">2 Templates</h3>';
+      const block2 = document.createElement('div');
+      block2.className = 'template-x-promo horizontal three template-x custom-promo-carousel';
+      section2.appendChild(block2);
+      section.appendChild(section2);
+      
+      // Create carousels with different template counts
+      await createCustomCarousel(block4, templateElements.slice(0, 4));
+      await createCustomCarousel(block3, templateElements.slice(0, 3));
+      await createCustomCarousel(block2, templateElements.slice(0, 2));
+      
+      console.log('✅ Multiple carousel test setup complete!');
+    };
+    
+    console.log('🧪 Test controls available: window.testTemplateCarousel');
+    console.log('   - show4Templates(), show3Templates(), show2Templates()');
+    console.log('   - getCurrentInfo()');
+    console.log('📱 Resize window to test mobile vs desktop behavior');
     
   } catch (e) {
     console.error('Error creating custom carousel:', e);
@@ -455,8 +552,9 @@ export default async function decorate(block) {
     ({ replaceKey } = placeholders);
     ({ default: renderTemplate } = templateRendering);
   } catch (utilsError) {
-    // Fallback implementations
-    createTag = (tag, attrs) => {
+    console.log('⚠️ Utils failed to load, using fallback implementations');
+    // Fallback implementations - try window.createTag first
+    createTag = window.createTag || ((tag, attrs) => {
       const el = document.createElement(tag);
       if (attrs) {
         Object.keys(attrs).forEach((key) => {
@@ -465,9 +563,9 @@ export default async function decorate(block) {
         });
       }
       return el;
-    };
-    getConfig = () => ({});
-    replaceKey = async () => null;
+    });
+    getConfig = window.getConfig || (() => ({}));
+    replaceKey = window.replaceKey || (async () => null);
     renderTemplate = null;
   }
 
