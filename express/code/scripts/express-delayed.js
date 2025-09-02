@@ -29,13 +29,6 @@ function preloadSUSILight() {
   import(`${getLibs()}/blocks/fragment/fragment.js`);
 }
 
-function loadTOC() {
-  if (getMetadata('toc-seo') === 'on') {
-    loadStyle('/express/code/features/toc-seo/toc-seo.css');
-    import('../features/toc-seo/toc-seo.js').then(({ default: setTOCSEO }) => setTOCSEO());
-  }
-}
-
 function turnContentLinksIntoButtons() {
   document.querySelectorAll('.section > .content').forEach((content) => {
     const links = content.querySelectorAll('a');
@@ -80,7 +73,6 @@ export default async function loadDelayed() {
     });
     addJapaneseSectionHeaderSizing();
     turnContentLinksIntoButtons();
-    loadTOC();
     preloadSUSILight();
     return null;
   } catch (err) {
