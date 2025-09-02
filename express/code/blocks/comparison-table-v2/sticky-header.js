@@ -61,8 +61,11 @@ function convertHeadingsToDivs(stickyHeader) {
 function convertDivsToHeadings(stickyHeader) {
   const divs = stickyHeader.querySelectorAll('.sticky-header-title[data-original-tag]');
   divs.forEach((div) => {
-    const originalTag = div.getAttribute('data-original-tag');
-    const heading = document.createElement(originalTag);
+    const originalTag = div.getAttribute('data-original-tag'); 
+    // Only allow safe heading tags
+    const allowedTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    const safeTag = allowedTags.includes(originalTag) ? originalTag : 'div';
+    const heading = document.createElement(safeTag);
     // Copy all attributes except our custom ones
     Array.from(div.attributes).forEach(attr => {
       if (attr.name !== 'data-original-tag') {
