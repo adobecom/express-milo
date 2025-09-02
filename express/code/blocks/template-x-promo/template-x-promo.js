@@ -286,42 +286,51 @@ async function createCustomCarousel(block, templates) {
     navContainer.append(prevButton, nextButton);
     carouselWrapper.append(navContainer);
     
-    // Carousel logic
-    let currentPosition = 0;
+    // 3-up carousel logic: always show prev-CURRENT-next
+    let currentIndex = 0;
     const templateCount = templateElements.length;
-    const templatesPerView = window.innerWidth <= 768 ? 1 : 3;
     
-    const updateCarouselPosition = () => {
-      // Each template is 255px wide + 20px gap = 275px total
-      const templateTotalWidth = 275; // 255px + 20px gap
-      const translateX = -(currentPosition * templateTotalWidth);
-      carouselTrack.style.transform = `translateX(${translateX}px)`;
+    const updateCarouselDisplay = () => {
+      console.log(`📍 Current index: ${currentIndex} of ${templateCount}`);
       
-      console.log(`📍 Carousel position: ${currentPosition}, translateX: ${translateX}px`);
+      // Remove current class from all templates
+      templateElements.forEach(el => el.classList.remove('current-template'));
       
-      // Update button states (no disabled states for infinite loop)
-      prevButton.disabled = false;
-      nextButton.disabled = false;
+      // Clear track and add 3 templates: prev, current, next
+      carouselTrack.innerHTML = '';
+      
+      // Calculate indices with looping
+      const prevIndex = (currentIndex - 1 + templateCount) % templateCount;
+      const nextIndex = (currentIndex + 1) % templateCount;
+      
+      // Add prev template
+      const prevTemplate = templateElements[prevIndex].cloneNode(true);
+      prevTemplate.classList.add('prev-template');
+      carouselTrack.append(prevTemplate);
+      
+      // Add current template (center)
+      const currentTemplate = templateElements[currentIndex].cloneNode(true);
+      currentTemplate.classList.add('current-template');
+      carouselTrack.append(currentTemplate);
+      
+      // Add next template
+      const nextTemplate = templateElements[nextIndex].cloneNode(true);
+      nextTemplate.classList.add('next-template');
+      carouselTrack.append(nextTemplate);
+      
+      console.log(`📍 Showing: prev(${prevIndex}) -> current(${currentIndex}) -> next(${nextIndex})`);
     };
     
     const moveNext = () => {
-      if (currentPosition < templateCount - templatesPerView) {
-        currentPosition++;
-      } else {
-        // Loop to beginning
-        currentPosition = 0;
-      }
-      updateCarouselPosition();
+      currentIndex = (currentIndex + 1) % templateCount;
+      updateCarouselDisplay();
+      console.log(`➡️ Moved next to index: ${currentIndex}`);
     };
     
     const movePrev = () => {
-      if (currentPosition > 0) {
-        currentPosition--;
-      } else {
-        // Loop to end
-        currentPosition = templateCount - templatesPerView;
-      }
-      updateCarouselPosition();
+      currentIndex = (currentIndex - 1 + templateCount) % templateCount;
+      updateCarouselDisplay();
+      console.log(`⬅️ Moved prev to index: ${currentIndex}`);
     };
     
     // Add event listeners
@@ -374,7 +383,9 @@ async function createCustomCarousel(block, templates) {
     // Initialize carousel
     block.innerHTML = '';
     block.append(carouselWrapper);
-    updateCarouselPosition();
+    
+    // Initialize the 3-up display
+    updateCarouselDisplay();
     
     console.log('✅ Custom carousel created successfully');
     console.log('🔍 Final DOM structure:', block.outerHTML.substring(0, 500) + '...');
