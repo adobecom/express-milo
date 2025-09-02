@@ -33,6 +33,7 @@ let uploadContainer;
 let uploadService;
 let fqaContainer;
 let uploadEvents;
+let frictionlessTargetBaseUrl;
 
 function frictionlessQAExperiment(
   quickAction,
@@ -316,20 +317,15 @@ async function handleDecodeFirst(dimensions, uploadPromise, initialDecodeControl
   return { assetId, dimensions };
 }
 
-function buildEditorUrl(quickAction, assetId, dimensions) {
-  const urlsMap = {
-    'edit-image': '/express/feature/image/editor',
-    'edit-video': '/express/feature/video/editor',
-  };
+async function buildEditorUrl(quickAction, assetId, dimensions) {
+  const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
   const isVideoEditor = quickAction === 'edit-video';
-  const url = new URL('https://stage.projectx.corp.adobe.com/new');
-
+  const url = new URL(await getTrackingAppendedURL(frictionlessTargetBaseUrl));
   const searchParams = {
     frictionlessUploadAssetId: assetId,
     category: 'media',
     tab: isVideoEditor ? 'videos' : 'photos',
-    url: urlsMap[quickAction],
     width: dimensions?.width,
     height: dimensions?.height,
   };
@@ -386,7 +382,7 @@ async function performUploadAction(files, block, quickAction) {
 
   if (!result.assetId) return;
 
-  const url = buildEditorUrl(quickAction, result.assetId, result.dimensions);
+  const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
 
   if (quickAction === 'edit-video') {
     addVideoEditorParams(url);
@@ -466,6 +462,9 @@ export default async function decorate(block) {
   const animation = animationContainer.querySelector('a');
   const dropzone = actionAndAnimationRow[1];
   const cta = dropzone.querySelector('a.button, a.con-button');
+  cta.addEventListener('click', (e) => e.preventDefault(), false);
+  // Fetch the base url for editor entry from upload cta and save it for later use.
+  frictionlessTargetBaseUrl = cta.href;
   const dropzoneHint = dropzone.querySelector('p:first-child');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
