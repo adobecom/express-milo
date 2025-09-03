@@ -1,4 +1,4 @@
-import {  getLibs } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 import { ComparisonTableState, initComparisonTableState } from './comparison-table-state.js';
 import handleTooltip, { adjustElementPosition, getTooltipMatch } from '../../scripts/widgets/tooltip.js';
 import { createStickyHeader, initStickyBehavior, synchronizePlanCellHeights, setCreateTag } from './sticky-header.js';
@@ -290,19 +290,16 @@ function applyColumnShading(headerGroup, comparisonBlock) {
  * @returns {Promise<void>}
  */
 async function initializeComparisonTable(comparisonBlock) {
- 
   await Promise.all([
     import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/features/placeholders.js`),
     import(`${getLibs()}/utils/decorate.js`),
     initComparisonTableState(),
-  ]).then(([utils, _, { decorateButtons }]) => {
+  ]).then(([utils, , { decorateButtons }]) => {
     createTag = utils.createTag;
-    // Pass createTag to sticky header module
     setCreateTag(utils.createTag);
     decorateButtons(comparisonBlock);
   });
-
 }
 
 /**
