@@ -116,6 +116,12 @@ export const EXPERIMENTAL_VARIANTS = [
   'qa-in-product-control',
 ];
 
+// Quick actions allowed in frictionless upload feature
+export const FRICTIONLESS_UPLOAD_QUICK_ACTIONS = {
+  videoEditor: 'edit-video',
+  imageEditor: 'edit-image',
+};
+
 // Shared utility functions
 export function selectElementByTagPrefix(p) {
   const allEls = document.body.querySelectorAll(':scope > *');
