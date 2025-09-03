@@ -221,8 +221,21 @@ function createUploadStatusListener(uploadStatusEvent, progressBar) {
   window.addEventListener(uploadStatusEvent, listener);
 }
 
+async function validateTokenAndReturnService(existingService) {
+  const freshToken = window?.adobeIMS?.getAccessToken()?.token;
+  if (freshToken && freshToken !== existingService.getConfig().authConfig.token) {
+    existingService.updateConfig({
+      authConfig: {
+        ...uploadService.getConfig().authConfig,
+        token: freshToken,
+      },
+    });
+  }
+  return existingService;
+}
+
 async function initializeUploadService() {
-  if (uploadService) return uploadService;
+  if (uploadService) return validateTokenAndReturnService(uploadService);
   // eslint-disable-next-line import/no-relative-packages
   const { initUploadService, UPLOAD_EVENTS } = await import('../../scripts/upload-service/dist/upload-service.min.es.js');
   const { env } = getConfig();
