@@ -237,6 +237,12 @@ main .section .comparison-table-v2 p {
     margin-top: 0;
 }
 
+.comparison-table-v2 .sticky-header .premium .plan-cell-wrapper {
+  min-height: calc(var(--plan-cell-height) - 4px);
+}
+
+
+
 .comparison-table-v2 .sticky-header .plan-cell-wrapper {
     position: relative;
     text-align: center;
@@ -341,6 +347,10 @@ main .section .comparison-table-v2 p {
     background: linear-gradient(var(--color-white) 0 0) padding-box, var(--S2-Buttons-Premium) border-box;
     border: 2px solid transparent;
 }
+
+.comparison-table-v2 .sticky-header.is-stuck .plan-cell.premium .plan-cell-wrapper {
+  border: 1px solid transparent;
+ }
 
 .comparison-table-v2 .sticky-header .plan-cell.gray .plan-cell-wrapper {
     background: var(--plan-cell-background-color);
