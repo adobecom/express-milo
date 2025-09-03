@@ -18,6 +18,7 @@ import {
   loadAndInitializeCCEverywhere,
   getErrorMsg,
   initProgressBar,
+  FRICTIONLESS_UPLOAD_QUICK_ACTIONS,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -337,7 +338,7 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   };
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
-  const isVideoEditor = quickAction === 'edit-video';
+  const isVideoEditor = quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor;
   const url = new URL(await getTrackingAppendedURL(frictionlessTargetBaseUrl));
   const searchParams = {
     frictionlessUploadAssetId: assetId,
@@ -402,11 +403,11 @@ async function performUploadAction(files, block, quickAction) {
 
   const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
 
-  if (quickAction === 'edit-video') {
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor) {
     addVideoEditorParams(url);
   }
 
-  if (quickAction === 'edit-image') {
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor) {
     addImageEditorParams(url);
   }
 
@@ -427,7 +428,8 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     data = data.filter((item) => item);
   }
 
-  if (quickAction === 'edit-image' || quickAction === 'edit-video') {
+  const frictionlessAllowedQuickActions = Object.values(FRICTIONLESS_UPLOAD_QUICK_ACTIONS);
+  if (frictionlessAllowedQuickActions.includes(quickAction)) {
     await performUploadAction(files, block, quickAction);
     return;
   }
