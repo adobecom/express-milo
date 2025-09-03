@@ -483,13 +483,19 @@ export class UploadService {
    * @returns The error
    */
   private handleError(code: keyof typeof ERROR_CODES, originalError?: any, message?: string): Error {
-    const errorCode = ERROR_CODES[code];
+    let errorCode = ERROR_CODES[code];
 
-    if(errorCode.code === ERROR_CODES.UPLOAD_FAILED.code) {
-      this.uploadStatus = UploadStatus.FAILED;
-    }
+    this.uploadStatus = UploadStatus.FAILED;
 
     const errorMessage = message || errorCode.message;
+
+    if(this.config.environment === 'local' || this.config.environment === 'stage') {
+      window?.lana.log(`UploadService Error [${errorCode.code}]: ${errorMessage}`);
+      window?.lana.log(originalError);
+    } else {
+      // Only show upload failed error in prod.
+      errorCode = ERROR_CODES.UPLOAD_FAILED;
+    }
     const error = new (class extends Error {
       constructor(
         message: string,
@@ -500,11 +506,6 @@ export class UploadService {
         this.name = 'UploadServiceError';
       }
     })(errorMessage, errorCode.code, originalError);
-
-    if(this.config.environment === 'local' || this.config.environment === 'stage') {
-      window.lana.log(`UploadService Error [${errorCode.code}]: ${errorMessage}`);
-      window.lana.log(originalError);
-    }
     
     return error;
   }

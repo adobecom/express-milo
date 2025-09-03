@@ -195,6 +195,11 @@ async function startSDK(data = [''], quickAction, block) {
   runQuickAction(quickAction, data, block);
 }
 
+function resetUploadUI(progressBar) {
+  progressBar.remove();
+  fadeIn(fqaContainer);
+}
+
 function createUploadStatusListener(uploadStatusEvent, progressBar) {
   const listener = (e) => {
     const isUploadProgressLessThanVisual = e.detail.progress < progressBar.getProgress();
@@ -213,8 +218,9 @@ function createUploadStatusListener(uploadStatusEvent, progressBar) {
 
     if (['completed', 'failed'].includes(e.detail.status)) {
       if (e.detail.status === 'failed') {
-        progressBar.remove();
-        fadeIn(fqaContainer);
+        setTimeout(() => {
+          resetUploadUI(progressBar);
+        }, 200);
       }
       window.removeEventListener(uploadStatusEvent, listener);
     }
@@ -272,7 +278,12 @@ async function performStorageUpload(files, block) {
     const progressBar = await setupUploadUI(block);
     return await uploadAssetToStorage(files[0], progressBar);
   } catch (error) {
-    showErrorToast(block, error.message);
+    if (error.code === 'UPLOAD_FAILED') {
+      const message = await replaceKey('upload-media-error', getConfig());
+      showErrorToast(block, message);
+    } else {
+      showErrorToast(block, error.message);
+    }
     return null;
   }
 }
