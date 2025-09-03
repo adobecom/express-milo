@@ -3199,7 +3199,7 @@ main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
 main .template-x.tworow .template-x-inner-wrapper.gallery {
   justify-content: flex-start;
   /* undo legacy weird styles */
-  max-width: initial;;
+  max-width: initial;
   margin-left: initial;
   margin-right: initial;
   margin-bottom: initial;
