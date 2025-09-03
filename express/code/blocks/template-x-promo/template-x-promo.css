@@ -1,5 +1,24 @@
 /* Fresh custom carousel styles - no imports, all our own */
 
+/* CSS Variables for maintainability */
+.template-x-promo {
+  --template-spacing: 16px;
+  --template-spacing-sm: 8px;
+  --template-spacing-lg: 24px;
+  --template-height: 340px;
+  --template-border-radius: 16px;
+  --template-border-radius-lg: 20px;
+  --overlay-opacity: 0.95;
+  --overlay-bg: rgba(255, 255, 255, var(--overlay-opacity));
+  --share-icon-size: 32px;
+  --share-icon-inner: 16px;
+  --button-border-radius: 24px;
+  --z-base: 1;
+  --z-overlay: 2;
+  --z-controls: 3;
+  --transition-speed: 0.3s;
+}
+
 .section.ax-template-x-promo {
   display: flex;
   box-sizing: border-box;
@@ -255,8 +274,8 @@
 /* Free/Premium tags */
 .template-x-promo .template .free-tag {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: var(--template-spacing);
+  right: var(--template-spacing);
   background: rgba(36, 36, 36, 0.7);
   color: white;
   padding: 8px 12px;
