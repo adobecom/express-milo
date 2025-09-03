@@ -40,7 +40,7 @@ function convertHeadingsToDivs(stickyHeader) {
   headings.forEach((heading) => {
     const div = document.createElement('div');
     // Copy all attributes
-    Array.from(heading.attributes).forEach(attr => {
+    Array.from(heading.attributes).forEach((attr) => {
       div.setAttribute(attr.name, attr.value);
     });
     // Add a marker class and store original tag name
@@ -61,13 +61,13 @@ function convertHeadingsToDivs(stickyHeader) {
 function convertDivsToHeadings(stickyHeader) {
   const divs = stickyHeader.querySelectorAll('.sticky-header-title[data-original-tag]');
   divs.forEach((div) => {
-    const originalTag = div.getAttribute('data-original-tag'); 
+    const originalTag = div.getAttribute('data-original-tag');
     // Only allow safe heading tags
     const allowedTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
     const safeTag = allowedTags.includes(originalTag) ? originalTag : 'div';
     const heading = document.createElement(safeTag);
     // Copy all attributes except our custom ones
-    Array.from(div.attributes).forEach(attr => {
+    Array.from(div.attributes).forEach((attr) => {
       if (attr.name !== 'data-original-tag') {
         heading.setAttribute(attr.name, attr.value);
       }
@@ -329,7 +329,7 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
           // Convert headings to divs and hide from screen readers when sticky
           convertHeadingsToDivs(stickyHeader);
           stickyHeader.setAttribute('aria-hidden', 'true');
-          
+
           setTimeout(() => {
             stickyHeader.classList.add('gnav-offset');
             stickyHeader.classList.remove('initial');
@@ -343,7 +343,7 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
             placeholder.style.display = 'none';
             stickyHeader.classList.remove('gnav-offset');
             isSticky = false;
-            
+
             // Convert divs back to headings and make visible to screen readers
             convertDivsToHeadings(stickyHeader);
             stickyHeader.removeAttribute('aria-hidden');
@@ -367,7 +367,7 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
           placeholder.style.display = 'none';
           stickyHeader.classList.remove('gnav-offset');
           isSticky = false;
-          
+
           // Convert divs back to headings and make visible to screen readers
           convertDivsToHeadings(stickyHeader);
           stickyHeader.removeAttribute('aria-hidden');
@@ -391,7 +391,7 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
             // Convert headings to divs and hide from screen readers when sticky
             convertHeadingsToDivs(stickyHeader);
             stickyHeader.setAttribute('aria-hidden', 'true');
-            
+
             setTimeout(() => {
               stickyHeader.classList.add('gnav-offset');
               stickyHeader.classList.remove('initial');
@@ -433,7 +433,7 @@ export function initStickyBehavior(stickyHeader, comparisonBlock) {
         stickyHeader.classList.remove('is-stuck');
         placeholder.style.display = 'none';
         isSticky = false;
-        
+
         // Convert divs back to headings and make visible to screen readers
         convertDivsToHeadings(stickyHeader);
         stickyHeader.removeAttribute('aria-hidden');
