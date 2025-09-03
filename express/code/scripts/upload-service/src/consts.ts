@@ -7,7 +7,7 @@ export const REPO_API_ENDPOINTS: Record<EnvironmentType, string> = {
 };
 export const API_KEY = 'AdobeExpressWeb';
 export const DEFAULT_STORAGE_PATH = 'assets';
-export const DEFAULT_USER_ERROR_MESSAGE = 'Failed to upload asset. Please try again.';
+export const DEFAULT_USER_ERROR_MESSAGE = 'Upload failed. Please try again.';
 /**
  * Centralized error codes and messages for the UploadService
  */
