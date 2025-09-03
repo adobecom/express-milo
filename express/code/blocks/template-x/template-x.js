@@ -289,7 +289,7 @@ function adjustPlaceholderDimensions(block, props, tmplt, option) {
   props.placeholderFormat = ratios;
   if (!ratios[1]) return;
   if (block.classList.contains(TWO_ROW)) {
-    // fixed width + dynamic height
+    // fixed width + height calculated at load time
     const width = Math.max(60, (window.innerWidth - 10) / 2);
     const height = Math.min(200, width / (ratios[0] / ratios[1]));
     if (height >= 100) tmplt.classList.add('tall');
