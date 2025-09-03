@@ -221,11 +221,11 @@ main .section .comparison-table-v2 p {
     box-sizing: border-box;
     width: 100%;
     min-height: var(--min-button-height);
-    border: none;
+    /* border: none; */
     justify-content: center;
     display: flex;
     flex-direction: column;
-    color: var(--Static-white, #FFF);
+    /* color: var(--Static-white, #FFF); */
     font-family: var(--body-font-family);
     font-size: var(--row-font-size);
     font-style: normal;
