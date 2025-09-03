@@ -106,14 +106,58 @@ async function handleOneUpFromApiData(block, templateData) {
 }
 
 /**
+ * Attaches hover listeners to a template element (for cloned elements)
+ */
+function attachHoverListeners(templateEl) {
+  const buttonContainer = templateEl.querySelector('.button-container');
+  if (!buttonContainer) return;
+  
+  let currentHoveredElement;
+  
+  const enterHandler = async (e) => {
+    console.log('🎯 CLONED TEMPLATE MOUSEENTER triggered!', e.target);
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Follow template-x pattern exactly
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.remove('singleton-hover');
+    }
+    currentHoveredElement = buttonContainer; // Target the button-container
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.add('singleton-hover');
+    }
+    document.activeElement.blur();
+    
+    console.log('✅ Singleton-hover applied to cloned template:', currentHoveredElement);
+  };
+  
+  const leaveHandler = () => {
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.remove('singleton-hover');
+      currentHoveredElement = null;
+    }
+  };
+  
+  // Add events to template (visible element)
+  templateEl.addEventListener('mouseenter', enterHandler);
+  templateEl.addEventListener('mouseleave', leaveHandler);
+  
+  console.log('🔧 Attached hover listeners to cloned template:', templateEl);
+}
+
+/**
  * Creates a template element with hover overlay from template data
  */
 async function createTemplateElement(templateData) {
   // Create main template container
-  const templateEl = createTag('div', { class: 'promo-template' });
+  const templateEl = createTag('div', { class: 'template' });
   
-  // Create image wrapper with still image
-  const imageWrapper = createTag('div', { class: 'promo-image-wrapper' });
+  // Create still wrapper (like template-x)
+  const stillWrapper = createTag('div', { class: 'still-wrapper' });
+  
+  // Create image wrapper with the actual image (visible by default)
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
   
   // Fix image URL by replacing the template parameters
   let imageUrl = templateData.thumbnail || templateData._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href;
@@ -122,8 +166,10 @@ async function createTemplateElement(templateData) {
     imageUrl = imageUrl.replace('{&page,size,type,fragment}', '&page=0&size=512&type=image/jpeg');
   }
   
-  console.log('🖼️ Template image URL:', imageUrl);
+  console.log('🖼️ Template image URL (main):', imageUrl);
+  console.log('📊 Template data:', templateData['dc:title']?.['i-default'] || 'No title');
   
+  // Create the actual image element (visible by default)
   const img = createTag('img', {
     src: imageUrl,
     alt: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
@@ -145,76 +191,203 @@ async function createTemplateElement(templateData) {
   
   imageWrapper.append(img);
   
-  // Add free/premium tag
+  // Add free/premium tag to image wrapper
   const isFreePlan = templateData.licensingCategory === 'free';
   if (isFreePlan) {
-    const freeTag = createTag('span', { class: 'promo-plan-tag' });
+    const freeTag = createTag('span', { class: 'free-tag' });
     freeTag.textContent = 'Free';
     imageWrapper.append(freeTag);
   } else {
     const premiumIcon = getIconElementDeprecated('premium');
     if (premiumIcon) {
-      premiumIcon.classList.add('promo-premium-icon');
+      premiumIcon.classList.add('icon', 'icon-premium');
       imageWrapper.append(premiumIcon);
     }
   }
   
-  // Create hover overlay with buttons
-  const hoverOverlay = createTag('div', { class: 'promo-hover-overlay' });
+  stillWrapper.append(imageWrapper);
   
-  // Edit button
+  // Create button container (following exact template-x pattern)
+  const buttonContainer = createTag('div', { class: 'button-container' });
+  
+  // Edit button (CTA)
+  const editButtonText = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  const templateTitle = templateData['dc:title']?.['i-default'] || '';
+  
   const editButton = createTag('a', {
     href: templateData.customLinks?.branchUrl || '#',
-    class: 'promo-edit-button',
+    class: 'button accent small',
+    title: editButtonText,
+    'aria-label': `${editButtonText} ${templateTitle}`,
     target: '_self'
   });
-  editButton.textContent = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  editButton.textContent = editButtonText;
   
-  // Share button
-  const shareButton = createTag('button', { class: 'promo-share-button' });
-  const shareIcon = getIconElementDeprecated('share-arrow');
-  if (shareIcon) shareButton.append(shareIcon);
-  
-  hoverOverlay.append(editButton, shareButton);
-  
-  // Assemble template
-  templateEl.append(imageWrapper, hoverOverlay);
-  
-  // Add hover behavior
-  let isHovered = false;
-  
-  const showOverlay = () => {
-    if (!isHovered) {
-      // Clear other overlays first
-      document.querySelectorAll('.promo-template.hover-active').forEach(t => {
-        t.classList.remove('hover-active');
-      });
-      templateEl.classList.add('hover-active');
-      isHovered = true;
-    }
-  };
-  
-  const hideOverlay = () => {
-    templateEl.classList.remove('hover-active');
-    isHovered = false;
-  };
-  
-  // Desktop hover
-  templateEl.addEventListener('mouseenter', showOverlay);
-  templateEl.addEventListener('mouseleave', hideOverlay);
-  
-  // Mobile tap behavior
-  templateEl.addEventListener('click', (e) => {
-    if (window.matchMedia('(pointer: coarse)').matches) {
-      if (!isHovered) {
-        e.preventDefault();
-        e.stopPropagation();
-        showOverlay();
-        return false;
-      }
-      // Second tap - allow navigation
-    }
+  // CTA Link (covers the media area) - NO IMAGE NEEDED, dark overlay shows original
+  const ctaLink = createTag('a', {
+    href: templateData.customLinks?.branchUrl || '#',
+    class: 'cta-link',
+    tabindex: '-1',
+    'aria-label': `${editButtonText}: ${templateTitle}`,
+    target: '_self'
   });
+  
+  // Media wrapper (contains a COPY of the image for hover state)
+  const mediaWrapper = createTag('div', { class: 'media-wrapper' });
+  
+  // Create a copy of the SAME image for the hover state (use same URL)
+  const hoverImageUrl = imageUrl; // Ensure we use the exact same URL
+  console.log('🖼️ Template image URL (hover):', hoverImageUrl);
+  console.log('🔍 URLs match:', imageUrl === hoverImageUrl);
+  const hoverImg = createTag('img', {
+    src: hoverImageUrl,
+    alt: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
+    loading: 'lazy',
+    class: ''
+  });
+  
+  mediaWrapper.append(hoverImg);
+  
+  // Share wrapper (goes inside media-wrapper like template-x)
+  const shareWrapper = createTag('div', { class: 'share-icon-wrapper' });
+  
+  // Screen reader only element for accessibility
+  const srOnly = createTag('div', { 
+    class: 'sr-only',
+    'aria-live': 'polite'
+  });
+  shareWrapper.append(srOnly);
+  
+  // Share icon
+  const shareIcon = getIconElementDeprecated('share-arrow');
+  if (shareIcon) {
+    shareIcon.classList.add('icon', 'icon-share-arrow');
+    shareIcon.setAttribute('tabindex', '0');
+    shareIcon.setAttribute('role', 'button');
+    shareIcon.setAttribute('aria-label', `Share ${templateTitle}`);
+    shareWrapper.append(shareIcon);
+  }
+  
+  // Shared tooltip (like template-x)
+  const sharedTooltip = createTag('div', {
+    class: 'shared-tooltip',
+    'aria-label': 'Copied to clipboard',
+    role: 'tooltip',
+    tabindex: '-1'
+  });
+  
+  const checkmarkIcon = getIconElementDeprecated('checkmark-green');
+  if (checkmarkIcon) {
+    checkmarkIcon.classList.add('icon', 'icon-checkmark-green');
+    sharedTooltip.append(checkmarkIcon);
+  }
+  
+  const tooltipText = createTag('span', { class: 'text' });
+  tooltipText.textContent = 'Copied to clipboard';
+  sharedTooltip.append(tooltipText);
+  
+  shareWrapper.append(sharedTooltip);
+  
+  // Add media wrapper to cta link
+  ctaLink.append(mediaWrapper);
+  
+  // Button container structure: editButton, ctaLink, shareWrapper (as siblings)
+  buttonContainer.append(editButton, ctaLink, shareWrapper);
+  
+  // Assemble template (following template-x pattern)
+  templateEl.append(stillWrapper, buttonContainer);
+  
+  // Add hover behavior exactly like template-x
+  let currentHoveredElement;
+  
+  const enterHandler = async (e) => {
+    console.log('🎯 ENTER HANDLER triggered:', e.type, e.target);
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Follow template-x pattern exactly
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.remove('singleton-hover');
+    }
+    currentHoveredElement = e.target; // Use e.target directly like template-x
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.add('singleton-hover');
+    }
+    document.activeElement.blur();
+    
+    console.log('✅ Singleton-hover applied to:', currentHoveredElement);
+  };
+  
+  const leaveHandler = () => {
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.remove('singleton-hover');
+      currentHoveredElement = null;
+    }
+  };
+  
+  const focusHandler = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.remove('singleton-hover');
+    }
+    currentHoveredElement = e.target.closest('.template');
+    if (currentHoveredElement) {
+      currentHoveredElement.classList.add('singleton-hover');
+    }
+  };
+  
+  // Fix: Add mouseenter to the template element (visible), then apply to button-container
+  console.log('🔧 Adding mouseenter to TEMPLATE element (visible) like template-x:', templateEl);
+  
+  templateEl.addEventListener('mouseenter', (e) => {
+    console.log('🎯 TEMPLATE MOUSEENTER triggered!', e.target);
+    // Simulate the event target being the button-container for template-x compatibility
+    const fakeEvent = {
+      target: buttonContainer,
+      preventDefault: () => {},
+      stopPropagation: () => {}
+    };
+    enterHandler(fakeEvent);
+  });
+  
+  templateEl.addEventListener('mouseleave', (e) => {
+    console.log('🎯 TEMPLATE MOUSELEAVE triggered!', e.target);
+    leaveHandler();
+  });
+  
+  // Focus handling for accessibility
+  editButton.addEventListener('focusin', focusHandler);
+  
+  // Click handlers (matching template-x exactly)
+  const ctaClickHandler = () => {
+    // Add analytics tracking here if needed
+    console.log('Template clicked:', templateData['dc:title']?.['i-default']);
+  };
+  
+  // Combine the handlers properly
+  const combinedClickHandler = (ev) => {
+    console.log('🖱️ CLICK HANDLER triggered:', ev.type, ev.target);
+    
+    // Touch device logic first
+    if (window.matchMedia('(pointer: coarse)').matches) {
+      if (!templateEl.classList.contains('singleton-hover')) {
+        console.log('🚫 Preventing navigation - showing hover first');
+        ev.preventDefault();
+        ev.stopPropagation();
+        enterHandler(ev);
+        return false;
+      } else {
+        console.log('✅ Second tap - allowing navigation');
+      }
+    }
+    
+    // Regular click tracking
+    ctaClickHandler();
+  };
+  
+  editButton.addEventListener('click', combinedClickHandler);
+  ctaLink.addEventListener('click', combinedClickHandler);
   
   return templateEl;
 }
@@ -307,16 +480,19 @@ export async function createCustomCarousel(block, templates) {
         // Add prev template
         const prevTemplate = templateElements[prevIndex].cloneNode(true);
         prevTemplate.classList.add('prev-template');
+        attachHoverListeners(prevTemplate); // Re-attach events!
         carouselTrack.append(prevTemplate);
         
         // Add current template (center)
         const currentTemplate = templateElements[currentIndex].cloneNode(true);
         currentTemplate.classList.add('current-template');
+        attachHoverListeners(currentTemplate); // Re-attach events!
         carouselTrack.append(currentTemplate);
         
         // Add next template
         const nextTemplate = templateElements[nextIndex].cloneNode(true);
         nextTemplate.classList.add('next-template');
+        attachHoverListeners(nextTemplate); // Re-attach events!
         carouselTrack.append(nextTemplate);
         
         console.log(`📱 Mobile: prev(${prevIndex}) -> current(${currentIndex}) -> next(${nextIndex})`);
@@ -326,6 +502,7 @@ export async function createCustomCarousel(block, templates) {
           const templateClone = template.cloneNode(true);
           // Remove any carousel-specific classes
           templateClone.classList.remove('prev-template', 'current-template', 'next-template');
+          attachHoverListeners(templateClone); // Re-attach events!
           carouselTrack.append(templateClone);
         });
         
@@ -381,7 +558,7 @@ export async function createCustomCarousel(block, templates) {
     
     // Clear document click handler for mobile hover clearing
     const clearAllHovers = () => {
-      document.querySelectorAll('.promo-template.hover-active').forEach(t => {
+      document.querySelectorAll('.template.hover-active').forEach(t => {
         t.classList.remove('hover-active');
       });
     };
@@ -421,15 +598,15 @@ export async function createCustomCarousel(block, templates) {
     window.testTemplateCarousel = {
       show4Templates: () => {
         console.log('🧪 Testing with 4 templates');
-        createMultipleCarousels();
+        createCustomCarousel();
       },
       show3Templates: () => {
         console.log('🧪 Testing with 3 templates');
-        createMultipleCarousels();
+        createCustomCarousel();
       },
       show2Templates: () => {
         console.log('🧪 Testing with 2 templates');
-        createMultipleCarousels();
+        createCustomCarousel();
       },
       getCurrentInfo: () => {
         console.log(`📊 Current: ${isMobile() ? 'Mobile' : 'Desktop'}, Templates: ${templateElements.length}, Index: ${currentIndex}`);
@@ -511,10 +688,8 @@ async function handleMultipleUpFromRenderedTemplates(block) {
   //   block.append(template);
   // });
 
-  // Initialize carousel
-  // buildBasicCarousel(':scope > .template', newBlock);
-  // loadCarousel(null, block, {});
-  loadCarousel('.basic-carousel-platform', block, {});
+  // Our custom carousel is initialized in handleApiDrivenTemplates
+  // No need for external carousel libraries
 }
 
 /**
