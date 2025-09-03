@@ -3200,19 +3200,25 @@ main .template-x.tworow .template-x-inner-wrapper.gallery {
   justify-content: flex-start;
   /* undo legacy weird styles */
   max-width: initial;;
+  margin-left: initial;
   margin-right: initial;
-  margin-left: var(--ax-grid-margin);
   margin-bottom: initial;
   margin-block: initial;
   padding-left: initial;
   padding-right: initial;
 
-  padding-bottom: 20px;
-  padding-top: 28px;
+  padding-bottom: var(--spacing-300);
+  padding-top: var(--spacing-300);
+
+  scroll-padding-left: var(--ax-grid-margin);
+}
+
+main .template-x.tworow .template-x-inner-wrapper.gallery .gallery--item:first-of-type {
+  /* prevent left clipping after scroll */
+  margin-left: var(--ax-grid-margin);
 }
 
 main .template-x.tworow .gallery-control {
-  padding-top: var(--spacing-200);
   padding-right: 20px;
 }
 
