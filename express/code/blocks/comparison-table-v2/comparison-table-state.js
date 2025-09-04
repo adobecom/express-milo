@@ -42,9 +42,8 @@ export class ComparisonTableState {
       || parseInt(getComputedStyle(dropdown).width, 10)
       || 0;
     const viewportWidth = document.documentElement.clientWidth;
- 
+
     const wouldOverflowRight = (wrapperRect.left + dropdownWidth) > (viewportWidth / 2);
-    console.log(wouldOverflowRight);
     if (wouldOverflowRight) {
       dropdown.classList.add('right-aligned');
     }
