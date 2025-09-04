@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦢 Mixed Template Types Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-header {
+            background: #1976d2;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .template-type {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 2px;
+        }
+        
+        .type-square { background: #e3f2fd; color: #1976d2; }
+        .type-portrait { background: #f3e5f5; color: #7b1fa2; }
+        .type-landscape { background: #e8f5e8; color: #388e3c; }
+        .type-story { background: #fff3e0; color: #f57c00; }
+    </style>
+</head>
+<body>
+    <div class="test-header">
+        <h1>🦢 Mixed Template Types - Carousel Test</h1>
+        <p>Testing carousel with different template aspect ratios and types</p>
+        
+        <div style="margin-top: 15px;">
+            <span class="template-type type-square">■ Square (1:1)</span>
+            <span class="template-type type-portrait">▮ Portrait (3:4)</span>
+            <span class="template-type type-landscape">▬ Landscape (16:9)</span>
+            <span class="template-type type-story">▌ Story (9:16)</span>
+        </div>
+    </div>
+
+    <!-- Mixed template carousel -->
+    <div class="test-section">
+        <h3>🎠 Mixed Template Carousel</h3>
+        <p>This carousel contains 4 different template types to test adaptability</p>
+        
+        <div class="section ax-template-x-promo">
+            <div class="template-x-promo">
+                <div>
+                    <div>
+                        <h4 id="recipe-mixed">recipe</h4>
+                    </div>
+                    <div>collection=mixed&templateIds=square-template,portrait-template,landscape-template,story-template</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Individual type carousels for comparison -->
+    <div class="test-section">
+        <h3>📐 Individual Type Tests</h3>
+        
+        <h4>Square Templates (1:1)</h4>
+        <div class="section ax-template-x-promo">
+            <div class="template-x-promo">
+                <div>
+                    <div>
+                        <h4 id="recipe-square">recipe</h4>
+                    </div>
+                    <div>collection=square&templateIds=square-1,square-2,square-3</div>
+                </div>
+            </div>
+        </div>
+
+        <h4>Portrait Templates (3:4)</h4>
+        <div class="section ax-template-x-promo">
+            <div class="template-x-promo">
+                <div>
+                    <div>
+                        <h4 id="recipe-portrait">recipe</h4>
+                    </div>
+                    <div>collection=portrait&templateIds=portrait-1,portrait-2,portrait-3</div>
+                </div>
+            </div>
+        </div>
+
+        <h4>Landscape Templates (16:9)</h4>
+        <div class="section ax-template-x-promo">
+            <div class="template-x-promo">
+                <div>
+                    <div>
+                        <h4 id="recipe-landscape">recipe</h4>
+                    </div>
+                    <div>collection=landscape&templateIds=landscape-1,landscape-2,landscape-3</div>
+                </div>
+            </div>
+        </div>
+
+        <h4>Story Templates (9:16)</h4>
+        <div class="section ax-template-x-promo">
+            <div class="template-x-promo">
+                <div>
+                    <div>
+                        <h4 id="recipe-story">recipe</h4>
+                    </div>
+                    <div>collection=story&templateIds=story-1,story-2,story-3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Mock data for different template types
+        const mockTemplatesByType = {
+            square: [
+                {
+                    'dc:title': { 'i-default': 'Square Post Design' },
+                    thumbnail: 'https://picsum.photos/400/400?random=1',
+                    customLinks: { branchUrl: 'https://example.com/square/1' },
+                    premium: false,
+                    aspectRatio: '1:1',
+                    type: 'square'
+                },
+                {
+                    'dc:title': { 'i-default': 'Square Ad Creative' },
+                    thumbnail: 'https://picsum.photos/400/400?random=2',
+                    customLinks: { branchUrl: 'https://example.com/square/2' },
+                    premium: true,
+                    aspectRatio: '1:1',
+                    type: 'square'
+                },
+                {
+                    'dc:title': { 'i-default': 'Square Social Media' },
+                    thumbnail: 'https://picsum.photos/400/400?random=3',
+                    customLinks: { branchUrl: 'https://example.com/square/3' },
+                    premium: false,
+                    aspectRatio: '1:1',
+                    type: 'square'
+                }
+            ],
+            portrait: [
+                {
+                    'dc:title': { 'i-default': 'Portrait Poster' },
+                    thumbnail: 'https://picsum.photos/300/400?random=4',
+                    customLinks: { branchUrl: 'https://example.com/portrait/1' },
+                    premium: false,
+                    aspectRatio: '3:4',
+                    type: 'portrait'
+                },
+                {
+                    'dc:title': { 'i-default': 'Portrait Flyer' },
+                    thumbnail: 'https://picsum.photos/300/400?random=5',
+                    customLinks: { branchUrl: 'https://example.com/portrait/2' },
+                    premium: true,
+                    aspectRatio: '3:4',
+                    type: 'portrait'
+                },
+                {
+                    'dc:title': { 'i-default': 'Portrait Card' },
+                    thumbnail: 'https://picsum.photos/300/400?random=6',
+                    customLinks: { branchUrl: 'https://example.com/portrait/3' },
+                    premium: false,
+                    aspectRatio: '3:4',
+                    type: 'portrait'
+                }
+            ],
+            landscape: [
+                {
+                    'dc:title': { 'i-default': 'Landscape Banner' },
+                    thumbnail: 'https://picsum.photos/500/280?random=7',
+                    customLinks: { branchUrl: 'https://example.com/landscape/1' },
+                    premium: false,
+                    aspectRatio: '16:9',
+                    type: 'landscape'
+                },
+                {
+                    'dc:title': { 'i-default': 'Landscape Presentation' },
+                    thumbnail: 'https://picsum.photos/500/280?random=8',
+                    customLinks: { branchUrl: 'https://example.com/landscape/2' },
+                    premium: true,
+                    aspectRatio: '16:9',
+                    type: 'landscape'
+                },
+                {
+                    'dc:title': { 'i-default': 'Landscape Header' },
+                    thumbnail: 'https://picsum.photos/500/280?random=9',
+                    customLinks: { branchUrl: 'https://example.com/landscape/3' },
+                    premium: false,
+                    aspectRatio: '16:9',
+                    type: 'landscape'
+                }
+            ],
+            story: [
+                {
+                    'dc:title': { 'i-default': 'Instagram Story' },
+                    thumbnail: 'https://picsum.photos/225/400?random=10',
+                    customLinks: { branchUrl: 'https://example.com/story/1' },
+                    premium: false,
+                    aspectRatio: '9:16',
+                    type: 'story'
+                },
+                {
+                    'dc:title': { 'i-default': 'TikTok Video Frame' },
+                    thumbnail: 'https://picsum.photos/225/400?random=11',
+                    customLinks: { branchUrl: 'https://example.com/story/2' },
+                    premium: true,
+                    aspectRatio: '9:16',
+                    type: 'story'
+                },
+                {
+                    'dc:title': { 'i-default': 'Mobile Story Ad' },
+                    thumbnail: 'https://picsum.photos/225/400?random=12',
+                    customLinks: { branchUrl: 'https://example.com/story/3' },
+                    premium: false,
+                    aspectRatio: '9:16',
+                    type: 'story'
+                }
+            ],
+            mixed: [
+                // Mix of all types for comprehensive testing
+                {
+                    'dc:title': { 'i-default': 'Square Social Post' },
+                    thumbnail: 'https://picsum.photos/400/400?random=13',
+                    customLinks: { branchUrl: 'https://example.com/mixed/1' },
+                    premium: false,
+                    aspectRatio: '1:1',
+                    type: 'square'
+                },
+                {
+                    'dc:title': { 'i-default': 'Portrait Business Card' },
+                    thumbnail: 'https://picsum.photos/300/400?random=14',
+                    customLinks: { branchUrl: 'https://example.com/mixed/2' },
+                    premium: true,
+                    aspectRatio: '3:4',
+                    type: 'portrait'
+                },
+                {
+                    'dc:title': { 'i-default': 'Landscape Presentation' },
+                    thumbnail: 'https://picsum.photos/500/280?random=15',
+                    customLinks: { branchUrl: 'https://example.com/mixed/3' },
+                    premium: false,
+                    aspectRatio: '16:9',
+                    type: 'landscape'
+                },
+                {
+                    'dc:title': { 'i-default': 'Story Instagram Post' },
+                    thumbnail: 'https://picsum.photos/225/400?random=16',
+                    customLinks: { branchUrl: 'https://example.com/mixed/4' },
+                    premium: true,
+                    aspectRatio: '9:16',
+                    type: 'story'
+                }
+            ]
+        };
+
+        // Mock the API endpoint to return our test data
+        window.mockFetchResults = (recipe) => {
+            const type = recipe.includes('mixed') ? 'mixed' : 
+                        recipe.includes('square') ? 'square' :
+                        recipe.includes('portrait') ? 'portrait' :
+                        recipe.includes('landscape') ? 'landscape' :
+                        recipe.includes('story') ? 'story' : 'portrait';
+            
+            return Promise.resolve({
+                items: mockTemplatesByType[type] || mockTemplatesByType.portrait
+            });
+        };
+
+        console.log('🧪 Mixed template test page loaded');
+        console.log('📊 Available template types:', Object.keys(mockTemplatesByType));
+        console.log('🎯 Mixed carousel will contain:', mockTemplatesByType.mixed.map(t => `${t.type} (${t.aspectRatio})`));
+    </script>
+</body>
+</html>
