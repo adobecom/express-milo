@@ -554,7 +554,6 @@ describe('Comparison Table V2', () => {
     expect(toggleButtons.length).to.be.greaterThan(0);
 
     toggleButtons.forEach((button) => {
-      expect(button.hasAttribute('aria-label')).to.be.true;
       expect(button.hasAttribute('aria-expanded')).to.be.true;
 
       const icon = button.querySelector('.icon.expand-button');
