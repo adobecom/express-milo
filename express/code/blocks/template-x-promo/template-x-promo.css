@@ -5,7 +5,7 @@
   --template-spacing: 16px;
   --template-spacing-sm: 8px;
   --template-spacing-lg: 24px;
-  --template-height: 340px;
+  --template-max-height: 340px;
   --template-border-radius: 16px;
   --template-border-radius-lg: 20px;
   --overlay-opacity: 0.95;
@@ -17,6 +17,8 @@
   --z-overlay: 2;
   --z-controls: 3;
   --transition-speed: 0.3s;
+  --focus-color: #0066CC;
+  --focus-width: 2px;
 }
 
 .section.ax-template-x-promo {
@@ -120,7 +122,8 @@
 
   .promo-image-wrapper img {
     width: 100%;
-    height: 100%;
+    height: auto; /* Natural height for aspect ratio */
+    max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
     border-radius: 16px;
@@ -143,41 +146,50 @@
     display: flex;
     gap: 8px; /* 8px gap between templates */
     align-items: center;
-    transition: transform 0.3s ease;
+    width: 100%;
+    justify-content: center;
+    padding: 0 16px; /* Prevent edge cutting */
   }
 
   .template {
     position: relative;
-    flex: 0 0 auto;
+    flex: 0 0 calc(33.333% - 5.33px); /* 1/3 width minus gap */
+    max-width: 280px; /* Cap maximum size */
+    min-width: 180px; /* Ensure readable minimum */
     cursor: pointer;
     box-sizing: border-box;
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
-  /* Side templates (prev/next) - only faded, NO scaling - MOBILE ONLY */
-  .template:not(.current-template) {
-    opacity: 0.6;
-    /* NO transform: scale() - keep images the same size */
+  /* Previous template - slightly faded */
+  .template.prev-template {
+    opacity: 0.7;
   }
 
-  /* Current/center template - highlighted - MOBILE ONLY */
+  /* Current/center template - fully visible and prominent */
   .template.current-template {
     opacity: 1;
-    /* NO transform: scale() - images stay consistent size */
-    /* Removed z-index to prevent blocking scroll and other content */
+    transform: scale(1.05); /* Slightly larger to show prominence */
+    z-index: 2;
+  }
+
+  /* Next template - slightly faded */
+  .template.next-template {
+    opacity: 0.7;
   }
 
   .promo-image-wrapper {
     position: relative;
-    width: 255px;
-    height: 340px;
+    width: 100%; /* Full template width */
+    aspect-ratio: 3/4; /* Maintain aspect ratio */
     border-radius: 16px;
     overflow: hidden;
   }
 
   .promo-image-wrapper img {
-    width: 255px;
-    height: 340px;
+    width: 100%;
+    height: auto; /* Natural height for aspect ratio */
+    max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
     border-radius: 16px;
@@ -213,14 +225,15 @@
   .promo-image-wrapper {
     position: relative;
     width: 100%;
-    height: 340px; /* Fixed height to maintain consistent template sizes */
+    max-height: var(--template-max-height); /* Max height to allow natural aspect ratios */
     border-radius: 16px;
     overflow: hidden;
   }
   
   .promo-image-wrapper img {
     width: 100%;
-    height: 100%;
+    height: auto; /* Natural height for aspect ratio */
+    max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
     border-radius: 16px;
@@ -256,14 +269,15 @@
   .promo-image-wrapper {
     position: relative;
     width: 100%; /* Full width of container */
-    height: 340px; /* Fixed height for consistency across different aspect ratios */
+    max-height: var(--template-max-height); /* Max height allows natural aspect ratios */
     border-radius: 16px;
     overflow: hidden;
   }
   
   .promo-image-wrapper img {
     width: 100%;
-    height: 100%;
+    height: auto; /* Natural height for aspect ratio */
+    max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
     border-radius: 16px;
@@ -319,7 +333,8 @@
 
 .template-x-promo .template .image-wrapper img {
   width: 100%;
-  height: 340px;
+  max-height: var(--template-max-height);
+  height: auto; /* Allow natural height based on aspect ratio */
   object-fit: cover;
   display: block;
   border-radius: 16px;
@@ -327,16 +342,19 @@
 
 .template-x-promo .template .button-container {
   position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, calc(-50% + var(--ax-grid-gutter)));
-  padding: var(--spacing-100);
-  border-radius: 20px;
-  width: 100%;
+  width: 100%; /* Proper container width */
   max-width: 90vw;
-  min-height: 100%;
+  min-height: 100%; /* Proper container height */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Perfect centering */
+  padding: 6px;
+  padding-bottom: 8px;
+  border-radius: 20px;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
   background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
   box-shadow: 0 0 6px #00000029;
   opacity: 0;
@@ -347,17 +365,14 @@
 }
 
 .template-x-promo .template:hover .button-container {
-  z-index: 1;
+  z-index: 2;
   opacity: 1;
   pointer-events: initial;
 }
 
 .template-x-promo .template .button-container .media-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative; /* Let it be a flex child */
+  flex: 1; /* Take up remaining space */
   pointer-events: none;
   border-radius: 16px;
   overflow: hidden;
@@ -365,17 +380,17 @@
 }
 
 .template-x-promo .template .button-container .media-wrapper img {
-  width: 90%;
+  width: 100%;
   height: 90%;
   object-fit: cover;
   border-radius: 16px;
   display: block;
-  margin: 5% auto;
+  margin: 0;
 }
 
 .template-x-promo .template .button-container a.button {
-  max-width: 100%;
-  margin: 0; /* Remove margins for better centering */
+  width: fit-content;
+  margin: 0;
   box-sizing: border-box;
   display: block;
   white-space: nowrap;
@@ -383,7 +398,6 @@
   text-overflow: ellipsis;
   font-size: 14px;
   font-weight: 600;
-  padding: 12px 24px;
   border-radius: 24px; /* More rounded */
   transition: all 0.2s ease;
   position: relative;
@@ -391,11 +405,12 @@
 }
 
 .template-x-promo .template .button-container a.cta-link {
-  display: block;
+  display: block; /* Keep the cta-link to show the image */
   width: 100%;
   height: calc(100% - 34px);
   white-space: nowrap;
   font-weight: var(--body-font-weight);
+  pointer-events: none; /* Prevent it from interfering with button clicks */
 }
 
 .template-x-promo .template .button-container .share-icon-wrapper {
@@ -524,5 +539,93 @@
 }
 
 /* Removed tablet-specific template sizing - using consistent 255px width */
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+
+/* Screen reader only content */
+.template-x-promo .sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip link for keyboard users */
+.template-x-promo .carousel-skip-link:focus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--focus-color);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 9999;
+  clip: auto;
+  width: auto;
+  height: auto;
+}
+
+/* Focus indicators for all interactive elements */
+.template-x-promo button:focus-visible,
+.template-x-promo a:focus-visible,
+.template-x-promo [tabindex="0"]:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Enhanced focus for navigation buttons */
+.template-x-promo .promo-nav-btn:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .template-x-promo .promo-nav-btn {
+    border: 2px solid ButtonText;
+  }
+  
+  .template-x-promo .button-container {
+    border: 2px solid ButtonText;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .template-x-promo * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  
+  .template-x-promo .promo-carousel-track {
+    transform: none !important;
+  }
+}
+
+/* Color scheme support */
+@media (prefers-color-scheme: dark) {
+  .template-x-promo {
+    --focus-color: #66B3FF;
+  }
+}
+
+/* Mobile share icon sizing */
+@media (max-width: 767px) {
+  .template-x-promo .share-icon-wrapper img {
+    width: 16px;
+    height: 16px;
+  }
+}
 
 /* Navigation buttons are hidden on desktop (768px+) and only show on mobile (≤767px) */

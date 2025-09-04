@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦢 Carousel Factory Test Drive</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .test-controls {
+            background: #1976d2;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .test-controls h1 {
+            margin: 0 0 10px 0;
+        }
+        
+        .test-controls p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary { background: #2196f3; color: white; }
+        .btn-success { background: #4caf50; color: white; }
+        .btn-warning { background: #ff9800; color: white; }
+        .btn-danger { background: #f44336; color: white; }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-success { background: #4caf50; }
+        .status-error { background: #f44336; }
+        .status-warning { background: #ff9800; }
+        
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .success-message {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .info-box {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        #test-results {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        .template-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            min-height: 340px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .template-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+        
+        .template-card-content {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .a11y-info {
+            background: #fff3e0;
+            border: 1px solid #ffb74d;
+            border-radius: 4px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+        
+        .a11y-info h4 {
+            margin: 0 0 8px 0;
+            color: #ef6c00;
+        }
+        
+        .keyboard-shortcut {
+            background: #263238;
+            color: #eceff1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-controls">
+        <h1>🦢 Carousel Factory Test Drive</h1>
+        <p><strong>Functional Programming Carousel</strong> - Semantic HTML, Full A11y, Responsive Design</p>
+        <p>📱 Resize window to test mobile ↔ desktop behavior | ⌨️ Use arrow keys for navigation</p>
+        
+        <div class="control-group">
+            <button class="btn btn-primary" onclick="testBasicCarousel()">🎠 Basic Carousel</button>
+            <button class="btn btn-success" onclick="testTemplateCarousel()">📋 Template Carousel</button>
+            <button class="btn btn-warning" onclick="testCustomizedCarousel()">⚙️ Custom Carousel</button>
+            <button class="btn btn-danger" onclick="testStressCarousel()">🔥 Stress Test (20 items)</button>
+        </div>
+        
+        <div class="control-group">
+            <button class="btn btn-primary" onclick="testKeyboardNav()">⌨️ Test Keyboard Nav</button>
+            <button class="btn btn-success" onclick="testA11yFeatures()">♿ Test A11y Features</button>
+            <button class="btn btn-warning" onclick="clearTests()">🧹 Clear Tests</button>
+            <button class="btn btn-danger" onclick="runAllTests()">🚀 Run All Tests</button>
+        </div>
+    </div>
+
+    <div class="info-box">
+        <h4>🎯 Testing Instructions:</h4>
+        <ul>
+            <li><strong>Responsive:</strong> Resize window - mobile shows carousel, desktop shows grid</li>
+            <li><strong>Keyboard:</strong> Focus carousel and use <span class="keyboard-shortcut">←</span> <span class="keyboard-shortcut">→</span> <span class="keyboard-shortcut">Home</span> <span class="keyboard-shortcut">End</span></li>
+            <li><strong>Screen Reader:</strong> Enable screen reader to test announcements</li>
+            <li><strong>Touch:</strong> On mobile, tap templates for hover, swipe navigation</li>
+        </ul>
+    </div>
+
+    <div class="a11y-info">
+        <h4>♿ Accessibility Features Being Tested:</h4>
+        <ul>
+            <li>✅ Semantic HTML (section, nav, article elements)</li>
+            <li>✅ ARIA labels and live regions</li>
+            <li>✅ Keyboard navigation support</li>
+            <li>✅ Focus indicators and management</li>
+            <li>✅ Screen reader announcements</li>
+            <li>✅ Reduced motion support</li>
+            <li>✅ High contrast mode compatibility</li>
+            <li>✅ Touch target sizing (44px minimum)</li>
+        </ul>
+    </div>
+
+    <div id="test-results"></div>
+
+    <!-- Test carousel containers -->
+    <div id="carousel-container"></div>
+
+    <!-- Mock utility functions for testing -->
+    <script>
+        // Mock global functions that the carousel factory needs
+        window.createTag = (tag, attributes = {}) => {
+            const element = document.createElement(tag);
+            Object.entries(attributes).forEach(([key, value]) => {
+                if (key === 'class') {
+                    element.className = value;
+                } else if (key === 'text') {
+                    element.textContent = value;
+                } else {
+                    element.setAttribute(key, value);
+                }
+            });
+            return element;
+        };
+
+        window.getConfig = () => ({
+            locale: { ietf: 'en-US' }
+        });
+
+        window.replaceKey = async (key) => {
+            const translations = {
+                'edit-this-template': 'Edit this template'
+            };
+            return translations[key] || key;
+        };
+
+        // Mock template data for testing
+        const mockTemplates = [
+            {
+                'dc:title': { 'i-default': 'Modern Business Card' },
+                thumbnail: 'https://picsum.photos/300/400?random=1',
+                customLinks: { branchUrl: 'https://example.com/template/1' },
+                premium: false
+            },
+            {
+                'dc:title': { 'i-default': 'Creative Poster Design' },
+                thumbnail: 'https://picsum.photos/300/400?random=2',
+                customLinks: { branchUrl: 'https://example.com/template/2' },
+                premium: true
+            },
+            {
+                'dc:title': { 'i-default': 'Social Media Post' },
+                thumbnail: 'https://picsum.photos/300/400?random=3',
+                customLinks: { branchUrl: 'https://example.com/template/3' },
+                premium: false
+            },
+            {
+                'dc:title': { 'i-default': 'Professional Resume' },
+                thumbnail: 'https://picsum.photos/300/400?random=4',
+                customLinks: { branchUrl: 'https://example.com/template/4' },
+                premium: true
+            }
+        ];
+
+        // Generate large dataset for stress testing
+        const generateMockTemplates = (count) => {
+            return Array.from({ length: count }, (_, i) => ({
+                'dc:title': { 'i-default': `Template ${i + 1}` },
+                thumbnail: `https://picsum.photos/300/400?random=${i + 100}`,
+                customLinks: { branchUrl: `https://example.com/template/${i + 1}` },
+                premium: Math.random() > 0.7
+            }));
+        };
+
+        // Create mock template elements
+        const createMockTemplateElement = async (templateData) => {
+            const template = window.createTag('article', { class: 'template' });
+            
+            const stillWrapper = window.createTag('div', { class: 'still-wrapper' });
+            const imageWrapper = window.createTag('div', { class: 'image-wrapper' });
+            
+            const img = window.createTag('img', {
+                src: templateData.thumbnail,
+                alt: templateData['dc:title']['i-default'],
+                loading: 'lazy'
+            });
+            
+            const planIcon = window.createTag('span', { 
+                class: templateData.premium ? 'premium-tag' : 'free-tag',
+                text: templateData.premium ? 'Premium' : 'Free'
+            });
+            
+            imageWrapper.append(img, planIcon);
+            stillWrapper.append(imageWrapper);
+            
+            // Button container for hover
+            const buttonContainer = window.createTag('section', { class: 'button-container' });
+            const editBtn = window.createTag('a', {
+                href: templateData.customLinks?.branchUrl || '#',
+                class: 'button accent small',
+                text: 'Edit this template'
+            });
+            buttonContainer.append(editBtn);
+            
+            template.append(stillWrapper, buttonContainer);
+            return template;
+        };
+
+        // Logging utility
+        const log = (message, type = 'info') => {
+            const results = document.getElementById('test-results');
+            const timestamp = new Date().toLocaleTimeString();
+            const statusIcon = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
+            results.innerHTML += `[${timestamp}] ${statusIcon} ${message}\n`;
+            results.scrollTop = results.scrollHeight;
+        };
+
+        // Test functions
+        async function testBasicCarousel() {
+            try {
+                log('🎠 Testing Basic Carousel...', 'info');
+                
+                const container = document.getElementById('carousel-container');
+                container.innerHTML = '';
+                
+                const section = window.createTag('div', { class: 'section ax-template-x-promo' });
+                const block = window.createTag('div', { class: 'template-x-promo' });
+                section.append(block);
+                container.append(section);
+                
+                // Import carousel factory
+                const { createTemplateCarousel } = await import('./express/code/scripts/widgets/carousel-factory.js');
+                
+                // Create mock templates
+                const templates = await Promise.all(
+                    mockTemplates.slice(0, 3).map(createMockTemplateElement)
+                );
+                
+                log(`📋 Created ${templates.length} template elements`, 'info');
+                
+                // Create carousel
+                const carousel = createTemplateCarousel(block, templates, window.createTag);
+                
+                log('✅ Basic carousel created successfully!', 'success');
+                log(`🎯 Current index: ${carousel.getCurrentIndex()}`, 'info');
+                log(`📱 Mobile mode: ${carousel.isMobile()}`, 'info');
+                
+            } catch (error) {
+                log(`❌ Basic carousel test failed: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function testTemplateCarousel() {
+            try {
+                log('📋 Testing Template Carousel with Full Features...', 'info');
+                
+                const container = document.getElementById('carousel-container');
+                container.innerHTML = '';
+                
+                const section = window.createTag('div', { class: 'section ax-template-x-promo' });
+                const block = window.createTag('div', { class: 'template-x-promo' });
+                section.append(block);
+                container.append(section);
+                
+                const { createTemplateCarousel } = await import('./express/code/scripts/widgets/carousel-factory.js');
+                
+                const templates = await Promise.all(
+                    mockTemplates.map(createMockTemplateElement)
+                );
+                
+                log(`📋 Created ${templates.length} template elements with hover`, 'info');
+                
+                const carousel = createTemplateCarousel(block, templates, window.createTag);
+                
+                log('✅ Template carousel with hover created!', 'success');
+                log('🎯 Try hovering over templates on desktop', 'info');
+                log('📱 Try tapping templates on mobile', 'info');
+                
+            } catch (error) {
+                log(`❌ Template carousel test failed: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function testCustomizedCarousel() {
+            try {
+                log('⚙️ Testing Customized Carousel with DOM Callback...', 'info');
+                
+                const container = document.getElementById('carousel-container');
+                container.innerHTML = '';
+                
+                const section = window.createTag('div', { class: 'section ax-template-x-promo custom-theme' });
+                const block = window.createTag('div', { class: 'template-x-promo' });
+                section.append(block);
+                container.append(section);
+                
+                const { createCarousel } = await import('./express/code/scripts/widgets/carousel-factory.js');
+                
+                const templates = await Promise.all(
+                    mockTemplates.map(createMockTemplateElement)
+                );
+                
+                // Custom DOM callback for additional features
+                const customDOMCallback = ({ wrapper, navigation, block }) => {
+                    // Add custom progress indicator
+                    const progressBar = window.createTag('div', { 
+                        class: 'custom-progress-bar',
+                        style: 'height: 4px; background: #e0e0e0; margin: 10px 0;'
+                    });
+                    const progress = window.createTag('div', {
+                        class: 'progress-fill',
+                        style: 'height: 100%; background: #2196f3; width: 25%; transition: width 0.3s;'
+                    });
+                    progressBar.append(progress);
+                    wrapper.append(progressBar);
+                    
+                    // Add custom styling to navigation
+                    if (navigation) {
+                        navigation.style.background = 'rgba(33, 150, 243, 0.1)';
+                        navigation.style.padding = '10px';
+                        navigation.style.borderRadius = '8px';
+                    }
+                    
+                    log('🎨 Applied custom DOM modifications', 'info');
+                };
+                
+                const carousel = createCarousel({
+                    block,
+                    templates,
+                    createTag: window.createTag,
+                    customDOMCallback
+                });
+                
+                log('✅ Customized carousel created with custom DOM!', 'success');
+                log('🎨 Notice the custom progress bar and styled navigation', 'info');
+                
+            } catch (error) {
+                log(`❌ Customized carousel test failed: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        async function testStressCarousel() {
+            try {
+                log('🔥 Testing Stress Carousel (20 templates)...', 'warning');
+                
+                const container = document.getElementById('carousel-container');
+                container.innerHTML = '';
+                
+                const section = window.createTag('div', { class: 'section ax-template-x-promo' });
+                const block = window.createTag('div', { class: 'template-x-promo' });
+                section.append(block);
+                container.append(section);
+                
+                const { createTemplateCarousel } = await import('./express/code/scripts/widgets/carousel-factory.js');
+                
+                const stressTemplates = generateMockTemplates(20);
+                const templates = await Promise.all(
+                    stressTemplates.map(createMockTemplateElement)
+                );
+                
+                const startTime = performance.now();
+                const carousel = createTemplateCarousel(block, templates, window.createTag);
+                const endTime = performance.now();
+                
+                log(`✅ Stress test completed! ${templates.length} templates`, 'success');
+                log(`⏱️ Creation time: ${(endTime - startTime).toFixed(2)}ms`, 'info');
+                log(`🎯 Navigate through all ${templates.length} templates`, 'info');
+                
+            } catch (error) {
+                log(`❌ Stress test failed: ${error.message}`, 'error');
+                console.error(error);
+            }
+        }
+
+        function testKeyboardNav() {
+            log('⌨️ Testing Keyboard Navigation...', 'info');
+            log('🎯 Focus the carousel and try these keys:', 'info');
+            log('   ← → Arrow Keys: Navigate templates', 'info');
+            log('   Home: Go to first template', 'info');
+            log('   End: Go to last template', 'info');
+            log('   Tab: Navigate through interactive elements', 'info');
+            log('   Enter/Space: Activate focused element', 'info');
+        }
+
+        function testA11yFeatures() {
+            log('♿ Testing Accessibility Features...', 'info');
+            log('🔍 Enable screen reader to test:', 'info');
+            log('   • Live region announcements', 'info');
+            log('   • ARIA labels and descriptions', 'info');
+            log('   • Semantic structure navigation', 'info');
+            log('   • Focus management', 'info');
+            log('💡 Try enabling high contrast mode', 'info');
+            log('🎛️ Try enabling reduced motion in system preferences', 'info');
+        }
+
+        function clearTests() {
+            document.getElementById('test-results').innerHTML = '';
+            document.getElementById('carousel-container').innerHTML = '';
+            log('🧹 Tests cleared', 'info');
+        }
+
+        async function runAllTests() {
+            log('🚀 Running All Tests...', 'warning');
+            
+            await testBasicCarousel();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testTemplateCarousel();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testCustomizedCarousel();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            await testStressCarousel();
+            
+            log('🎉 All tests completed!', 'success');
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            log('🦢 Carousel Factory Test Drive Ready!', 'success');
+            log('👆 Click buttons above to test different carousel types', 'info');
+        });
+    </script>
+</body>
+</html>
