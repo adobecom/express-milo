@@ -28,6 +28,29 @@ export class ComparisonTableState {
   }
 
   /**
+   * Determine if dropdown should be right-aligned on mobile and toggle class
+   * @param {HTMLElement} dropdown - The dropdown element ('.plan-selector-choices')
+   * @param {HTMLElement} planCellWrapper - The wrapper used for positioning
+   */
+  static setDropdownAlignment(dropdown, planCellWrapper) {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    dropdown.classList.remove('right-aligned');
+    if (!isMobile) return;
+
+    const wrapperRect = planCellWrapper.getBoundingClientRect();
+    const dropdownWidth = dropdown.offsetWidth
+      || parseInt(getComputedStyle(dropdown).width, 10)
+      || 0;
+    const viewportWidth = document.documentElement.clientWidth;
+ 
+    const wouldOverflowRight = (wrapperRect.left + dropdownWidth) > (viewportWidth / 2);
+    console.log(wouldOverflowRight);
+    if (wouldOverflowRight) {
+      dropdown.classList.add('right-aligned');
+    }
+  }
+
+  /**
    * Setup click handlers for plan selector options
    * @param {HTMLElement} selector - The plan selector element
    * @param {Array} options - Array of option elements
@@ -272,11 +295,14 @@ export class ComparisonTableState {
       dropdown.querySelectorAll('.plan-selector-choice').forEach((opt) => {
         opt.setAttribute('tabindex', '0');
       });
+      // Determine alignment via class (mobile only)
+      this.constructor.setDropdownAlignment(dropdown, planCellWrapper);
     } else {
       // Make options not focusable when closing
       dropdown.querySelectorAll('.plan-selector-choice').forEach((opt) => {
         opt.setAttribute('tabindex', '-1');
       });
+      dropdown.classList.remove('right-aligned');
     }
   }
 
