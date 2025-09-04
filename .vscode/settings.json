@@ -6,33 +6,31 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  
   // === ESLint Integration ===
   "eslint.enable": true,
   "eslint.autoFixOnSave": true,
-  "eslint.validate": ["javascript", "typescript"],
-  
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
   // === Your Project's Exact Rules ===
   // Based on .eslintrc.cjs - extends 'airbnb-base'
-  
   // Indentation: 2 spaces (from airbnb-base)
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
-  
   // Line length: 100 characters (from airbnb-base max-len rule)
-  "editor.rulers": [100],
+  "editor.rulers": [
+    100
+  ],
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 100,
-  
   // Trailing spaces and commas (auto-fix these)
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "editor.trimAutoWhitespace": true,
-  
   // === Cursor AI Prompts for Your Rules ===
   "cursor.cpp.includePath": [],
-  
   // Custom rules instruction for Cursor AI
   "cursor.ai.rules": [
     "Always use 2-space indentation (never 4 spaces)",
@@ -49,22 +47,18 @@
     "Max 2 statements per line",
     "No console.log in production code (except in test/ folder)"
   ],
-  
   // === File Associations ===
   "files.associations": {
     "*.cjs": "javascript"
   },
-  
   // === CSS/Stylelint ===
   "stylelint.enable": true,
   "css.validate": false,
   "scss.validate": false,
   "less.validate": false,
-  
   // === Auto-save linting ===
   "editor.formatOnType": false,
   "editor.formatOnPaste": true,
-  
   // === Project-specific overrides ===
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -73,11 +67,9 @@
   "[css]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint"
   },
-  
   // === Cursor-specific AI settings ===
-  "cursor.ai.model": "claude-3.5-sonnet", 
+  "cursor.ai.model": "claude-3.5-sonnet",
   "cursor.chat.sendCodeContext": true,
-  
   // Disable VS Code's built-in JS/TS validation (use ESLint instead)
   "javascript.validate.enable": false,
   "typescript.validate.enable": false
