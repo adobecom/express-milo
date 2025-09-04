@@ -26,7 +26,17 @@ function getStillWrapperIcons(templateType) {
  * Extracts recipe parameters from DOM element
  */
 function extractApiParamsFromRecipe(block) {
-  const recipeString = block.querySelector('[id^=recipe], h4')?.parentElement?.nextElementSibling?.textContent;
+  const recipeElement = block.querySelector('[id^=recipe], h4');
+  const recipeString = recipeElement?.parentElement?.nextElementSibling?.textContent;
+  
+  // Clean up the recipe DOM after extraction
+  if (recipeElement && recipeElement.parentElement) {
+    const recipeContainer = recipeElement.parentElement.parentElement; // Get the outer div
+    if (recipeContainer) {
+      recipeContainer.remove(); // Remove the entire recipe container
+    }
+  }
+  
   return recipeString;
 }
 
@@ -291,8 +301,8 @@ async function createTemplateElement(templateData) {
   // Add media wrapper to cta link
   ctaLink.append(mediaWrapper);
   
-  // Button container structure: editButton, ctaLink, shareWrapper (as siblings)
-  buttonContainer.append(editButton, ctaLink, shareWrapper);
+  // Button container structure: ctaLink (image), editButton, shareWrapper (proper DOM order)
+  buttonContainer.append(ctaLink, editButton, shareWrapper);
   
   // Assemble template (following template-x pattern)
   templateEl.append(stillWrapper, buttonContainer);
@@ -393,7 +403,7 @@ async function createTemplateElement(templateData) {
 }
 
 /**
- * Creates our custom carousel with prev/next navigation
+ * Creates our custom carousel using the functional carousel module
  */
 export async function createCustomCarousel(block, templates) {
   const parent = block.parentElement;
@@ -401,32 +411,21 @@ export async function createCustomCarousel(block, templates) {
   block.classList.add('custom-promo-carousel');
   
   try {
-    console.log(`🏗️ Creating ${templates.length} template elements`);
-    
     // Create all template elements
     const templateElements = await Promise.all(
-      templates.map((template, index) => {
-        console.log(`🏗️ Processing template ${index + 1}:`, template['dc:title']?.['i-default']);
-        return createTemplateElement(template);
-      })
+      templates.map(template => createTemplateElement(template))
     );
     
-    console.log(`✅ Created ${templateElements.length} template elements`);
-    
-    // Create carousel structure
+    // Create carousel structure (back to original working implementation)
     const carouselWrapper = createTag('div', { class: 'promo-carousel-wrapper' });
     const carouselTrack = createTag('div', { class: 'promo-carousel-track' });
     const carouselViewport = createTag('div', { class: 'promo-carousel-viewport' });
     
-    console.log('🏗️ Created carousel structure elements');
-    
     // Add templates to track
-    templateElements.forEach((template, index) => {
-      console.log(`📝 Appending template ${index + 1} to track`);
+    templateElements.forEach(template => {
+      attachHoverListeners(template);
       carouselTrack.append(template);
     });
-    
-    console.log('📝 All templates appended to track');
     
     carouselViewport.append(carouselTrack);
     carouselWrapper.append(carouselViewport);
@@ -467,8 +466,6 @@ export async function createCustomCarousel(block, templates) {
     const templateCount = templateElements.length;
     
     const updateCarouselDisplay = () => {
-      console.log(`📍 Current index: ${currentIndex} of ${templateCount}, Mobile: ${isMobile()}`);
-      
       // Clear track
       carouselTrack.innerHTML = '';
       
@@ -495,7 +492,6 @@ export async function createCustomCarousel(block, templates) {
         attachHoverListeners(nextTemplate); // Re-attach events!
         carouselTrack.append(nextTemplate);
         
-        console.log(`📱 Mobile: prev(${prevIndex}) -> current(${currentIndex}) -> next(${nextIndex})`);
       } else {
         // Desktop: Show all templates equally, no carousel behavior
         templateElements.forEach((template, index) => {
@@ -506,20 +502,17 @@ export async function createCustomCarousel(block, templates) {
           carouselTrack.append(templateClone);
         });
         
-        console.log(`🖥️ Desktop: Showing all ${templateCount} templates statically`);
       }
     };
     
     const moveNext = () => {
       currentIndex = (currentIndex + 1) % templateCount;
       updateCarouselDisplay();
-      console.log(`➡️ Moved next to index: ${currentIndex}`);
     };
     
     const movePrev = () => {
       currentIndex = (currentIndex - 1 + templateCount) % templateCount;
       updateCarouselDisplay();
-      console.log(`⬅️ Moved prev to index: ${currentIndex}`);
     };
     
     // Add event listeners
