@@ -1021,7 +1021,7 @@ const ErrorBoundary = {
   isCarouselError(event) {
     // Check if error is related to our carousel
     const stack = event.error?.stack || event.reason?.stack || '';
-    return stack.includes('carousel-factory') || 
+    return stack.includes('carousel-factory') ||
            event.target?.closest?.('.promo-carousel-wrapper') ||
            this.container.contains(event.target);
   },
@@ -1057,7 +1057,7 @@ const ErrorBoundary = {
     }
 
     const errorCount = parseInt(img.dataset.errorCount, 10);
-    
+
     if (errorCount < fallbackSources.length) {
       // Try next fallback source
       img.src = fallbackSources[errorCount];
@@ -1136,7 +1136,7 @@ const ErrorBoundary = {
 
   defaultErrorHandler(errorInfo) {
     console.error('🛡️ Carousel Error Boundary caught:', errorInfo);
-    
+
     // Send to analytics (if available)
     if (typeof gtag !== 'undefined') {
       gtag('event', 'carousel_error', {
@@ -1210,24 +1210,24 @@ const MomentumPhysics = {
     this.element.addEventListener('touchmove', (e) => {
       const currentX = e.touches[0].clientX;
       const currentTime = Date.now();
-      
+
       // Calculate instantaneous velocity
       const deltaX = currentX - lastX;
       const deltaTime = currentTime - lastTime;
-      
+
       if (deltaTime > 0) {
         this.velocity = deltaX / deltaTime;
       }
-      
+
       lastX = currentX;
       lastTime = currentTime;
     }, { passive: true });
 
     this.element.addEventListener('touchend', () => {
       // Apply momentum based on final velocity
-      this.velocity = Math.max(-this.options.maxVelocity, 
+      this.velocity = Math.max(-this.options.maxVelocity,
                               Math.min(this.options.maxVelocity, this.velocity * 20));
-      
+
       if (Math.abs(this.velocity) > this.options.threshold) {
         this.startMomentum();
       }
@@ -1243,7 +1243,7 @@ const MomentumPhysics = {
 
   startMomentum() {
     if (this.isActive) return;
-    
+
     this.isActive = true;
     this.lastTime = performance.now();
     this.animate();
@@ -1254,16 +1254,16 @@ const MomentumPhysics = {
 
     const currentTime = performance.now();
     const deltaTime = currentTime - this.lastTime;
-    
+
     // Apply friction
     this.velocity *= this.options.friction;
-    
+
     // Update position
     this.position += this.velocity * deltaTime;
-    
+
     // Apply transform
     this.element.style.transform = `translateX(${this.position}px)`;
-    
+
     // Continue animation if velocity is significant
     if (Math.abs(this.velocity) > this.options.threshold) {
       this.lastTime = currentTime;
@@ -1332,11 +1332,11 @@ const CarouselDOM = {
 
   createNavigation: (createTag) => ({
     container: createTag('div', { class: 'promo-nav-controls' }),
-    prevBtn: createTag('button', { 
+    prevBtn: createTag('button', {
       class: 'promo-nav-btn promo-prev-btn',
       'aria-label': 'Previous templates',
     }),
-    nextBtn: createTag('button', { 
+    nextBtn: createTag('button', {
       class: 'promo-nav-btn promo-next-btn',
       'aria-label': 'Next templates',
     }),
@@ -1458,7 +1458,7 @@ const DisplayLogic = {
       // Mobile: prev-current-next pattern
       const prevIndex = (state.currentIndex - 1 + state.templateCount) % state.templateCount;
       const nextIndex = (state.currentIndex + 1) % state.templateCount;
-      
+
       return [
         { index: prevIndex, class: 'prev-template' },
         { index: state.currentIndex, class: 'current-template' },
@@ -1466,8 +1466,8 @@ const DisplayLogic = {
       ];
     }
       // Desktop: all templates visible
-      return state.templates.map((_, index) => ({ 
-        index, 
+      return state.templates.map((_, index) => ({
+        index,
       class: '',
     }));
   },
@@ -1489,25 +1489,25 @@ export const createCarousel = async (config) => {
   }
 
   // Validate required dependencies
-  const { 
-    block, 
-    templates, 
-    createTag, 
+  const {
+    block,
+    templates,
+    createTag,
     attachHoverListeners,
     customDOMCallback,
   } = config;
-  
+
   if (!block || !templates || !createTag) {
     throw new Error('Missing required carousel dependencies');
   }
 
   // Initialize carousel state
   let state = CarouselState.create({ templates });
-  
+
   // Create DOM structure
   const dom = CarouselDOM.createStructure(createTag);
   const nav = CarouselDOM.createNavigation(createTag);
-  
+
   // Setup navigation buttons
   nav.prevBtn.innerHTML = CarouselDOM.createButtonSVG('prev');
   nav.nextBtn.innerHTML = CarouselDOM.createButtonSVG('next');
@@ -1519,24 +1519,24 @@ export const createCarousel = async (config) => {
   // Pure function to update display
   const updateDisplay = () => {
     const visibleTemplates = DisplayLogic.getVisibleTemplates(state);
-    
+
     // Clear track
     dom.track.innerHTML = '';
-    
+
     // Add visible templates
     visibleTemplates.forEach(({ index, class: className }) => {
       const template = templates[index];
       const templateClone = template.cloneNode(true);
-      
+
       if (className) templateClone.classList.add(className);
-      
+
       // Re-attach hover events (since cloneNode doesn't copy listeners)
       if (attachHoverListeners) {
         attachHoverListeners(templateClone);
       } else {
         HoverSystem.attachToTemplate(templateClone, hoverSystem);
       }
-      
+
       dom.track.append(templateClone);
     });
   };
@@ -1730,7 +1730,7 @@ export const createCarousel = async (config) => {
       retryButton: true,
       onError: (errorInfo) => {
         console.warn('🛡️ Carousel error handled gracefully:', errorInfo.type);
-        
+
         // Optional: Send to analytics
         if (config.trackErrors && typeof gtag !== 'undefined') {
           gtag('event', 'carousel_error_handled', {
@@ -1750,19 +1750,19 @@ export const createCarousel = async (config) => {
       maxVelocity: config.maxVelocity || 30,
       threshold: 0.2,
     });
-    
+
     // Integrate with touch gestures for enhanced feel
     if (TouchGestures) {
       const originalOnSwipeLeft = TouchGestures.onSwipeLeft;
       const originalOnSwipeRight = TouchGestures.onSwipeRight;
-      
+
       TouchGestures.onSwipeLeft = () => {
         momentumPhysics.addImpulse(-15); // Add leftward momentum
         if (originalOnSwipeLeft) originalOnSwipeLeft();
       };
-      
+
       TouchGestures.onSwipeRight = () => {
-        momentumPhysics.addImpulse(15); // Add rightward momentum  
+        momentumPhysics.addImpulse(15); // Add rightward momentum
         if (originalOnSwipeRight) originalOnSwipeRight();
       };
     }
@@ -1777,7 +1777,7 @@ export const createCarousel = async (config) => {
     getCurrentIndex: () => state.currentIndex,
     getTemplateCount: () => state.templateCount,
     isMobile: () => state.isMobile(),
-    
+
     // Actions
     next: handleNext,
     prev: handlePrev,
@@ -1785,7 +1785,7 @@ export const createCarousel = async (config) => {
       state = { ...state, currentIndex: index };
       updateDisplay();
     },
-    
+
     // Enhanced Cleanup with Performance Management 🚀
     destroy: () => {
       // Clean up standard event listeners
@@ -1819,7 +1819,7 @@ export const createCarousel = async (config) => {
       if (momentumPhysics) {
         momentumPhysics.cleanup();
       }
-      
+
       console.log('🦢 ULTIMATE Carousel destroyed with COMPLETE cleanup!');
     },
   };
