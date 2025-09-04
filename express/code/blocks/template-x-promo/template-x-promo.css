@@ -35,7 +35,7 @@
   gap: var(--spacing-300);
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px; /* Base padding for one-up */
 }
 
 .ax-template-x-promo.one-up img {
@@ -132,7 +132,7 @@
 /* Mobile (≤767px) - Carousel with 3-up prev-CURRENT-next */
 @media (max-width: 767px) {
   .promo-carousel-viewport {
-    overflow: visible; /* Show all 3 templates */
+    overflow: visible; /* MUST allow hover to show outside */
     width: 100%;
     display: flex;
     align-items: center;
@@ -144,35 +144,35 @@
     display: flex;
     gap: 8px; /* 8px gap between templates */
     align-items: center;
-    width: 100%;
+    width: 100%; /* Full width */
     justify-content: center;
-    padding: 0; /* Full width - no padding restrictions */
+    padding: 0 15%; /* Side padding creates natural peek effect */
   }
 
   .template {
     position: relative;
-    flex: 0 0 calc(33.333% - 5.33px); /* 1/3 width minus gap */
-    max-width: 280px; /* Cap maximum size */
     cursor: pointer;
     box-sizing: border-box;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, flex 0.3s ease;
   }
 
-  /* Previous template - slightly faded */
+  /* Previous template - same size, partially cropped at left edge */
   .template.prev-template {
-    opacity: 0.7;
+    flex: 0 0 50%; /* Same size as current */
+    opacity: 0.8;
   }
 
   /* Current/center template - fully visible and prominent */
   .template.current-template {
+    flex: 0 0 50%;
     opacity: 1;
-    transform: scale(1.05); /* Slightly larger to show prominence */
     z-index: 2;
   }
 
-  /* Next template - slightly faded */
+  /* Next template - same size, partially cropped at right edge */
   .template.next-template {
-    opacity: 0.7;
+    flex: 0 0 50%; /* Same size as current */
+    opacity: 0.8;
   }
 
   .promo-image-wrapper {
@@ -575,7 +575,13 @@
 
 /* One-up responsive styles (matching template-promo patterns) */
 @media (min-width: 768px) {
-  .ax-template-x-promo.one-up,
+  .ax-template-x-promo.one-up {
+    padding: 20px 40px;
+    width: var(--ax-grid-8-col-width) !important; /* Override collapsible-rows */
+    margin: 0 auto !important; /* Override collapsible-rows */
+    box-sizing: border-box;
+  }
+  
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
     width: var(--ax-grid-8-col-width);
@@ -584,8 +590,8 @@
   }
   
   .ax-template-x-promo.one-up .collapsible-rows {
-    width: unset;
-    margin: unset;
+    width: unset !important; /* Force override */
+    margin: unset !important; /* Force override */
   }
 }
 
@@ -593,14 +599,14 @@
   .ax-template-x-promo.one-up,
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
-    width: var(--ax-grid-7-col-width);
-    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    width: var(--ax-grid-7-col-width) !important; /* Override collapsible-rows */
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter)) !important; /* Override collapsible-rows */
     box-sizing: border-box;
   }
   
   .ax-template-x-promo.one-up .collapsible-rows {
-    width: unset;
-    margin: unset;
+    width: unset !important; /* Force override */
+    margin: unset !important; /* Force override */
   }
 }
 
