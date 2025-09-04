@@ -2,24 +2,12 @@ import { getIconElementDeprecated, getLibs } from '../utils.js';
 
 let createTag;
 let getConfig;
+let loadStyle;
 let currentVisibleTooltip = null;
 
 /* ========================================
    CSS and Position Management
    ======================================== */
-
-export async function onTooltipCSSLoad() {
-  const config = getConfig();
-  const stylesheetHref = `${config.codeRoot}/scripts/widgets/tooltip.css`;
-  await new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = stylesheetHref;
-    link.onload = resolve;
-    link.onerror = () => reject(new Error(`Failed to load ${stylesheetHref}`));
-    document.head.appendChild(link);
-  });
-}
 
 export function adjustElementPosition() {
   const elements = document.querySelectorAll('.tooltip-text');
@@ -174,8 +162,9 @@ export default async function handleTooltip(pricingArea, tooltipPattern = /\(\((
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ createTag, getConfig } = utils);
   });
+  const config = getConfig();
   return new Promise((resolve) => {
-    onTooltipCSSLoad();
+    loadStyle(`${config.codeRoot}/scripts/widgets/tooltip.css`);
     buildTooltip(pricingArea, tooltipPattern);
     resolve();
   });
