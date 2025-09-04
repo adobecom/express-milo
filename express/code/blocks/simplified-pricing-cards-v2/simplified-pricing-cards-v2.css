@@ -31,29 +31,46 @@
   --icon-size: 18px;
   --tooltip-icon-size: var(--spacing-400);
   --premium-icon-size: var(--body-font-size-xs);
-  
+
   /* === TRANSITION VARIABLES === */
   --transition-duration: 0.3s;
   --transition-easing: ease-out;
-  
+
   /* === SPACING VARIABLES (LOCAL) === */
-  --breakpoint-tablet: 600px;    /* Tablet breakpoint */
-  --breakpoint-desktop: 1200px;  /* Desktop breakpoint */
-  --spacing-025: 2px;   /* Small margins and offsets */
-  --spacing-050: 4px;   /* Eyebrow padding, outline offset */
-  --spacing-075: 6px;   /* Small gaps */
-  --spacing-125: 10px;  /* Medium gaps */
-  --spacing-150: 12px;  /* Button padding, border radius */
-  --spacing-475: 38px;  /* Specific component heights */
-  --spacing-550: 44px;  /* Icon positioning */
-  --spacing-1125: 91px; /* Tooltip max-width */
-  --spacing-negative-100: -2px;  /* Small negative offsets */
-  --spacing-negative-200: -4px;  /* Medium negative offsets */
-  --spacing-negative-225: -6px;  /* Specific negative offsets */
-  --spacing-negative-200-alt: -8px; /* Alternative negative offset */
-  --spacing-negative-500: -40px; /* Large negative offsets */
-  --spacing-negative-1100: -37.5px; /* Large negative positioning */
-  --spacing-negative-2250: -9999px; /* Screen reader hide */
+  --breakpoint-tablet: 600px;
+  /* Tablet breakpoint */
+  --breakpoint-desktop: 1200px;
+  /* Desktop breakpoint */
+  --spacing-025: 2px;
+  /* Small margins and offsets */
+  --spacing-050: 4px;
+  /* Eyebrow padding, outline offset */
+  --spacing-075: 6px;
+  /* Small gaps */
+  --spacing-125: 10px;
+  /* Medium gaps */
+  --spacing-150: 12px;
+  /* Button padding, border radius */
+  --spacing-475: 38px;
+  /* Specific component heights */
+  --spacing-550: 44px;
+  /* Icon positioning */
+  --spacing-1125: 91px;
+  /* Tooltip max-width */
+  --spacing-negative-100: -2px;
+  /* Small negative offsets */
+  --spacing-negative-200: -4px;
+  /* Medium negative offsets */
+  --spacing-negative-225: -6px;
+  /* Specific negative offsets */
+  --spacing-negative-200-alt: -8px;
+  /* Alternative negative offset */
+  --spacing-negative-500: -40px;
+  /* Large negative offsets */
+  --spacing-negative-1100: -37.5px;
+  /* Large negative positioning */
+  --spacing-negative-2250: -9999px;
+  /* Screen reader hide */
   --border-width-thin: 1px;
   --border-width-medium: 2px;
   --border-radius-small: 4px;
@@ -64,7 +81,7 @@
   padding-bottom: var(--padding-bottom);
   opacity: 0;
 
-  
+
 }
 
 /* Base Styles */
@@ -97,19 +114,20 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 
 .simplified-pricing-cards-v2 .card-inner-content {
   background: white;
-  border-radius:8px;
+  border-radius: 8px;
   padding: var(--spacing-300);
   gap: var(--spacing-100);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   transition: max-height var(--transition-duration) var(--transition-easing),
-              padding var(--transition-duration) var(--transition-easing),
-              gap var(--transition-duration) var(--transition-easing),
-              opacity var(--transition-duration) var(--transition-easing);
+    padding var(--transition-duration) var(--transition-easing),
+    gap var(--transition-duration) var(--transition-easing),
+    opacity var(--transition-duration) var(--transition-easing);
   opacity: 1;
   overflow: visible;
-  max-height: 1000px; /* Large initial value for expanded state */
+  max-height: 1000px;
+  /* Large initial value for expanded state */
 }
 
 .simplified-pricing-cards-v2 .card-header button {
@@ -173,7 +191,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   margin-top: 0;
 }
 
- 
+
 
 
 .simplified-pricing-cards-v2 .card.gradient-promo {
@@ -237,7 +255,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   outline-offset: var(--spacing-025);
   border-radius: var(--border-radius-small);
 }
- 
+
 .simplified-pricing-cards-v2 .card-header img {
   width: var(--icon-size);
   height: var(--icon-size);
@@ -309,11 +327,11 @@ main .section>.simplified-pricing-cards-v2-wrapper {
   height: fit-content;
   margin-top: auto;
   font-size: var(--pricing-card-price-suffix-font-size);
-  margin-bottom:var(--spacing-050);
+  margin-bottom: var(--spacing-050);
   font-weight: var(--font-weight-bold);
 }
 
-.simplified-pricing-cards-v2 .pricing-area > p:not(:last-of-type) { 
+.simplified-pricing-cards-v2 .pricing-area>p:not(:last-of-type) {
   margin-bottom: var(--spacing-300);
 }
 
@@ -329,7 +347,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 /* Pricing Elements */
 .simplified-pricing-cards-v2 .pricing-area h4,
 .simplified-pricing-cards-v2 .pricing-area h5,
-.simplified-pricing-cards-v2 .pricing-area h6,  
+.simplified-pricing-cards-v2 .pricing-area h6,
 .simplified-pricing-cards-v2 .pricing-base-price,
 .simplified-pricing-cards-v2 .pricing-price {
   font-family: var(--body-font-family);
@@ -406,7 +424,7 @@ main .section>.simplified-pricing-cards-v2-wrapper {
 main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   background-color: var(--color-white);
   border: var(--border-width-medium) solid var(--color-black);
-  color: var(--color-black); 
+  color: var(--color-black);
   padding-top: var(--body-font-size-xs);
   padding-bottom: var(--body-font-size-xs);
   border-radius: var(--button-border-radius);
@@ -419,7 +437,7 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 /* Chevron icon transitions */
 .simplified-pricing-cards-v2 .icon-chevron-up {
   transition: rotate var(--transition-duration) var(--transition-easing),
-              translate var(--transition-duration) var(--transition-easing);
+    translate var(--transition-duration) var(--transition-easing);
 }
 
 .simplified-pricing-cards-v2 .card-inner-content.hide .icon-chevron-up {
@@ -461,12 +479,12 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
 
 /* Footer */
 .simplified-pricing-cards-v2 .pricing-footer {
-  text-align: center; 
+  text-align: center;
   width: 100%;
 }
 
 .simplified-pricing-cards-v2 .pricing-footer-button {
-  text-align: center; 
+  text-align: center;
   width: 100%;
   margin-top: var(--spacing-100);
 }
@@ -545,8 +563,14 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
   left: var(--spacing-550);
 }
 
-.simplified-pricing-cards-v2 .card-wrapper.ax-grid-container {
+.simplified-pricing-cards-v2 .card-wrapper {
   gap: var(--spacing-100);
+  margin-left: var(--ax-grid-margin);
+  margin-right: var(--ax-grid-margin);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* Tablet Styles */
@@ -563,16 +587,24 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     --card-width: var(--ax-grid-3-col-width);
     --padding-bottom: var(--spacing-xxl);
   }
+
   .simplified-pricing-cards-v2 .card-inner-content.hide,
   .simplified-pricing-cards-v2 .card-inner-content {
     padding: var(--spacing-400) var(--spacing-300);
     max-height: none;
     gap: var(--spacing-100);
   }
-  
+
   .simplified-pricing-cards-v2 .card-wrapper {
     row-gap: var(--spacing-300);
     column-gap: var(--spacing-400);
+    margin-left: var(--ax-grid-margin);
+    margin-right: var(--ax-grid-margin);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-400);
   }
 
   .simplified-pricing-cards-v2 .card-wrapper.has-eyebrow .card {
@@ -583,14 +615,14 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     margin-top: 0;
   }
 
-  .simplified-pricing-cards-v2  .toggle-switch-wrapper {
+  .simplified-pricing-cards-v2 .toggle-switch-wrapper {
     display: none;
   }
 
-  .simplified-pricing-cards-v2 .card-inner-content.hide .plan-explanation{
+  .simplified-pricing-cards-v2 .card-inner-content.hide .plan-explanation {
     gap: var(--spacing-300);
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
   }
 
   .simplified-pricing-cards-v2 .card-inner-content.hide .plan-explanation,
@@ -606,16 +638,16 @@ main .section .simplified-pricing-cards-v2 a.con-button.compare-all-button {
     pointer-events: none;
   }
 
- 
+
   .simplified-pricing-cards-v2 .card-inner-content.hide {
     gap: var(--spacing-100);
-  } 
+  }
 
-  .simplified-pricing-cards-v2 .card-wrapper.ax-grid-container {
+  .simplified-pricing-cards-v2 .card-wrapper {
     column-gap: var(--spacing-400);
     row-gap: var(--spacing-100);
   }
-  
+
 }
 
 
