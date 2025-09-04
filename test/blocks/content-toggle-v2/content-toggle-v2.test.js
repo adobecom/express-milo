@@ -72,8 +72,8 @@ describe('Content Toggle V2', async () => {
   });
 
   it('should handle keyboard navigation and activation', async () => {
-    await decorateArea(document); 
-    contentToggleV2 = document.querySelector('.content-toggle-v2'); 
+    await decorateArea(document);
+    contentToggleV2 = document.querySelector('.content-toggle-v2');
     // eslint-disable-next-line no-promise-executor-return
     await new Promise((resolve) => setTimeout(resolve, 300));
     await decorate(contentToggleV2);
