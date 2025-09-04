@@ -3,24 +3,11 @@ import { fetchResults } from '../../scripts/template-utils.js';
 import { isValidTemplate } from '../../scripts/template-search-api-v3.js';
 
 // Global utilities (loaded dynamically)
-let createTag = window.createTag; // Try to get it from window first
-let getConfig = window.getConfig;
-let replaceKey = window.replaceKey;
-let renderTemplate;
+let { createTag } = window; // Try to get it from window first
+let { getConfig } = window;
+let { replaceKey } = window;
 
-/**
- * Creates plan icons for templates (free/premium)
- */
-function getStillWrapperIcons(templateType) {
-  let planIcon = null;
-  if (templateType === 'free') {
-    planIcon = createTag('span', { class: 'free-tag' });
-    planIcon.textContent = 'Free';
-  } else {
-    planIcon = getIconElementDeprecated('premium');
-  }
-  return { planIcon };
-}
+// Removed unused getStillWrapperIcons function
 
 /**
  * Extracts recipe parameters from DOM element
@@ -64,7 +51,6 @@ async function handleOneUpFromApiData(block, templateData) {
   block.innerHTML = '';
 
   // Extract template data
-  const templateType = templateData.licensingCategory || 'free';
   const editUrl = templateData.customLinks?.branchUrl || '#';
   const templateTitle = templateData['dc:title']?.['i-default'] || 'Template';
 
@@ -88,7 +74,7 @@ async function handleOneUpFromApiData(block, templateData) {
   });
 
   const imgWrapper = createTag('div', { class: 'image-wrapper' });
-    imgWrapper.append(img);
+  imgWrapper.append(img);
 
   // Note: No plan icon needed for API-driven templates
   // The API already provides the template type information
@@ -134,7 +120,6 @@ function attachHoverListeners(templateEl) {
       currentHoveredElement.classList.add('singleton-hover');
     }
     document.activeElement.blur();
-
   };
 
   const leaveHandler = () => {
@@ -147,7 +132,6 @@ function attachHoverListeners(templateEl) {
   // Add events to template (visible element)
   templateEl.addEventListener('mouseenter', enterHandler);
   templateEl.addEventListener('mouseleave', leaveHandler);
-
 }
 
 /**
@@ -164,25 +148,25 @@ async function createTemplateElement(templateData) {
   const imageWrapper = createTag('div', { class: 'image-wrapper' });
 
   // Fix image URL by replacing the template parameters
+  // eslint-disable-next-line no-underscore-dangle
   let imageUrl = templateData.thumbnail || templateData._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href;
   if (imageUrl && imageUrl.includes('{&page,size,type,fragment}')) {
     // Try different image parameters - sometimes webp doesn't work
     imageUrl = imageUrl.replace('{&page,size,type,fragment}', '&page=0&size=512&type=image/jpeg');
   }
 
-
   // Create the actual image element (visible by default)
   const img = createTag('img', {
     src: imageUrl,
     alt: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
-    loading: 'lazy'
+    loading: 'lazy',
   });
 
   // Add error handling and success logging
   img.addEventListener('load', () => {
   });
 
-  img.addEventListener('error', (e) => {
+  img.addEventListener('error', () => {
     // Fallback: show a placeholder
     img.style.backgroundColor = '#e0e0e0';
     img.style.minHeight = '200px';
@@ -219,7 +203,7 @@ async function createTemplateElement(templateData) {
     class: 'button accent small',
     title: editButtonText,
     'aria-label': `${editButtonText} ${templateTitle}`,
-    target: '_self'
+    target: '_self',
   });
   editButton.textContent = editButtonText;
 
@@ -229,7 +213,7 @@ async function createTemplateElement(templateData) {
     class: 'cta-link',
     tabindex: '-1',
     'aria-label': `${editButtonText}: ${templateTitle}`,
-    target: '_self'
+    target: '_self',
   });
 
   // Media wrapper (contains a COPY of the image for hover state)
@@ -241,7 +225,7 @@ async function createTemplateElement(templateData) {
     src: hoverImageUrl,
     alt: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
     loading: 'lazy',
-    class: ''
+    class: '',
   });
 
   mediaWrapper.append(hoverImg);
@@ -252,7 +236,7 @@ async function createTemplateElement(templateData) {
   // Screen reader only element for accessibility
   const srOnly = createTag('div', {
     class: 'sr-only',
-    'aria-live': 'polite'
+    'aria-live': 'polite',
   });
   shareWrapper.append(srOnly);
 
@@ -271,7 +255,7 @@ async function createTemplateElement(templateData) {
     class: 'shared-tooltip',
     'aria-label': 'Copied to clipboard',
     role: 'tooltip',
-    tabindex: '-1'
+    tabindex: '-1',
   });
 
   const checkmarkIcon = getIconElementDeprecated('checkmark-green');
@@ -311,7 +295,6 @@ async function createTemplateElement(templateData) {
       currentHoveredElement.classList.add('singleton-hover');
     }
     document.activeElement.blur();
-
   };
 
   const leaveHandler = () => {
@@ -335,17 +318,17 @@ async function createTemplateElement(templateData) {
 
   // Fix: Add mouseenter to the template element (visible), then apply to button-container
 
-  templateEl.addEventListener('mouseenter', (e) => {
+  templateEl.addEventListener('mouseenter', () => {
     // Simulate the event target being the button-container for template-x compatibility
     const fakeEvent = {
       target: buttonContainer,
       preventDefault: () => {},
-      stopPropagation: () => {}
+      stopPropagation: () => {},
     };
     enterHandler(fakeEvent);
   });
 
-  templateEl.addEventListener('mouseleave', (e) => {
+  templateEl.addEventListener('mouseleave', () => {
     leaveHandler();
   });
 
@@ -359,7 +342,6 @@ async function createTemplateElement(templateData) {
 
   // Combine the handlers properly
   const combinedClickHandler = (ev) => {
-
     // Touch device logic first
     if (window.matchMedia('(pointer: coarse)').matches) {
       if (!templateEl.classList.contains('singleton-hover')) {
@@ -367,12 +349,12 @@ async function createTemplateElement(templateData) {
         ev.stopPropagation();
         enterHandler(ev);
         return false;
-      } else {
       }
     }
 
     // Regular click tracking
     ctaClickHandler();
+    return true;
   };
 
   editButton.addEventListener('click', combinedClickHandler);
@@ -387,7 +369,7 @@ async function createTemplateElement(templateData) {
 export async function createCustomCarousel(block, templates) {
   const parent = block.parentElement;
   parent.classList.add('multiple-up');
-  
+
   // Add specific layout class based on template count
   const templateCount = templates.length;
   if (templateCount === 2) {
@@ -397,13 +379,13 @@ export async function createCustomCarousel(block, templates) {
   } else if (templateCount >= 4) {
     parent.classList.add('four-up');
   }
-  
+
   block.classList.add('custom-promo-carousel');
 
   try {
     // Create all template elements
     const templateElements = await Promise.all(
-      templates.map(template => createTemplateElement(template))
+      templates.map((template) => createTemplateElement(template)),
     );
 
     // Create carousel structure (back to original working implementation)
@@ -412,7 +394,7 @@ export async function createCustomCarousel(block, templates) {
     const carouselViewport = createTag('div', { class: 'promo-carousel-viewport' });
 
     // Add templates to track
-    templateElements.forEach(template => {
+    templateElements.forEach((template) => {
       attachHoverListeners(template);
       carouselTrack.append(template);
     });
@@ -425,7 +407,7 @@ export async function createCustomCarousel(block, templates) {
 
     const prevButton = createTag('button', {
       class: 'promo-nav-btn promo-prev-btn',
-      'aria-label': 'Previous templates'
+      'aria-label': 'Previous templates',
     });
     prevButton.innerHTML = `
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -436,7 +418,7 @@ export async function createCustomCarousel(block, templates) {
 
     const nextButton = createTag('button', {
       class: 'promo-nav-btn promo-next-btn',
-      'aria-label': 'Next templates'
+      'aria-label': 'Next templates',
     });
     nextButton.innerHTML = `
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -453,7 +435,7 @@ export async function createCustomCarousel(block, templates) {
 
     // Mobile: 3-up carousel logic, Desktop: static all templates
     let currentIndex = 0;
-    const templateCount = templateElements.length;
+    const elementsCount = templateElements.length;
 
     const updateCarouselDisplay = () => {
       // Clear track
@@ -461,8 +443,8 @@ export async function createCustomCarousel(block, templates) {
 
       if (isMobile()) {
         // Mobile: Show prev-CURRENT-next with carousel behavior
-        const prevIndex = (currentIndex - 1 + templateCount) % templateCount;
-        const nextIndex = (currentIndex + 1) % templateCount;
+        const prevIndex = (currentIndex - 1 + elementsCount) % elementsCount;
+        const nextIndex = (currentIndex + 1) % elementsCount;
 
         // Add prev template
         const prevTemplate = templateElements[prevIndex].cloneNode(true);
@@ -481,17 +463,15 @@ export async function createCustomCarousel(block, templates) {
         nextTemplate.classList.add('next-template');
         attachHoverListeners(nextTemplate); // Re-attach events!
         carouselTrack.append(nextTemplate);
-
       } else {
         // Desktop: Show all templates equally, no carousel behavior
-        templateElements.forEach((template, index) => {
+        templateElements.forEach((template) => {
           const templateClone = template.cloneNode(true);
           // Remove any carousel-specific classes
           templateClone.classList.remove('prev-template', 'current-template', 'next-template');
           attachHoverListeners(templateClone); // Re-attach events!
           carouselTrack.append(templateClone);
         });
-
       }
     };
 
@@ -541,7 +521,7 @@ export async function createCustomCarousel(block, templates) {
 
     // Clear document click handler for mobile hover clearing
     const clearAllHovers = () => {
-      document.querySelectorAll('.template.hover-active').forEach(t => {
+      document.querySelectorAll('.template.hover-active').forEach((t) => {
         t.classList.remove('hover-active');
       });
     };
@@ -571,91 +551,10 @@ export async function createCustomCarousel(block, templates) {
     // Initialize the display
     updateCarouselDisplay();
 
-
-    // Add testing controls to window for easy testing
-
-    // Create multiple carousels for visual testing
-    window.createMultipleCarousels = async () => {
-
-      // Clear existing content
-      const section = block.closest('.section');
-      section.innerHTML = `
-        <h2 style="text-align: center; margin: 40px 0 20px; font-size: 24px;">🎠 Carousel Testing with Different Template Counts</h2>
-        <div style="background: #f0f0f0; padding: 20px; margin: 20px 0; border-radius: 8px;">
-          <strong>Instructions:</strong> Resize window to test mobile vs desktop behavior on each carousel below
-        </div>
-      `;
-
-      // Test with 4 templates
-      const section4 = document.createElement('div');
-      section4.style.cssText = 'margin: 40px 0; padding: 20px; border: 2px solid #007acc; border-radius: 8px;';
-      section4.innerHTML = '<h3 style="margin: 0 0 20px; color: #007acc;">4 Templates</h3>';
-      const block4 = document.createElement('div');
-      block4.className = 'template-x-promo horizontal three template-x custom-promo-carousel';
-      section4.appendChild(block4);
-      section.appendChild(section4);
-
-      // Test with 3 templates
-      const section3 = document.createElement('div');
-      section3.style.cssText = 'margin: 40px 0; padding: 20px; border: 2px solid #28a745; border-radius: 8px;';
-      section3.innerHTML = '<h3 style="margin: 0 0 20px; color: #28a745;">3 Templates</h3>';
-      const block3 = document.createElement('div');
-      block3.className = 'template-x-promo horizontal three template-x custom-promo-carousel';
-      section3.appendChild(block3);
-      section.appendChild(section3);
-
-      // Test with 2 templates
-      const section2 = document.createElement('div');
-      section2.style.cssText = 'margin: 40px 0; padding: 20px; border: 2px solid #ffc107; border-radius: 8px;';
-      section2.innerHTML = '<h3 style="margin: 0 0 20px; color: #ffc107;">2 Templates</h3>';
-      const block2 = document.createElement('div');
-      block2.className = 'template-x-promo horizontal three template-x custom-promo-carousel';
-      section2.appendChild(block2);
-      section.appendChild(section2);
-
-      // Create carousels with different template counts
-      await createCustomCarousel(block4, templateElements.slice(0, 4));
-      await createCustomCarousel(block3, templateElements.slice(0, 3));
-      await createCustomCarousel(block2, templateElements.slice(0, 2));
-
-    };
-
-
+    // Production ready - test code removed
   } catch (e) {
     block.textContent = `Error loading templates: ${e.message}`;
   }
-}
-
-/**
- * Handles multiple templates with carousel
- */
-async function handleMultipleUpFromRenderedTemplates(block) {
-  const parent = block.parentElement;
-  parent.classList.add('multiple-up');
-  
-  // Count existing templates and add layout class
-  const existingTemplates = block.querySelectorAll('.template');
-  const templateCount = existingTemplates.length;
-  if (templateCount === 2) {
-    parent.classList.add('two-up');
-  } else if (templateCount === 3) {
-    parent.classList.add('three-up');
-  } else if (templateCount >= 4) {
-    parent.classList.add('four-up');
-  }
-  
-  block.classList.add('basic-carousel');
-
-  block.innerHTML = '';
-
-  // Add templates to carousel
-  // renderedTemplates.forEach((template) => {
-  //   template.classList.add('template');
-  //   block.append(template);
-  // });
-
-  // Our custom carousel is initialized in handleApiDrivenTemplates
-  // No need for external carousel libraries
 }
 
 /**
@@ -683,15 +582,14 @@ export default async function decorate(block) {
   // Initialize utilities
   const libsPath = getLibs() || '../../scripts';
   try {
-    const [utils, placeholders, templateRendering] = await Promise.all([
+    const [utils, placeholders] = await Promise.all([
       import(`${libsPath}/utils.js`),
       import(`${libsPath}/features/placeholders.js`),
-      import('../template-x/template-rendering.js'),
     ]);
 
-    ({ createTag, getConfig } = utils);
-    ({ replaceKey } = placeholders);
-    ({ default: renderTemplate } = templateRendering);
+    createTag = utils.createTag;
+    getConfig = utils.getConfig;
+    replaceKey = placeholders.replaceKey;
   } catch (utilsError) {
     // Fallback implementations - try window.createTag first
     createTag = window.createTag || ((tag, attrs) => {
@@ -706,7 +604,6 @@ export default async function decorate(block) {
     });
     getConfig = window.getConfig || (() => ({}));
     replaceKey = window.replaceKey || (async () => null);
-    renderTemplate = null;
   }
 
   block.parentElement.classList.add('ax-template-x-promo');
