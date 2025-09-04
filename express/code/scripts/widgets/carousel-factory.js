@@ -2,7 +2,7 @@
  * Carousel Factory - Functional Programming Module
  * Universal carousel creation system with composable architecture
  * Focus: Clean functions, immutable configs, extensible behavior
- * 
+ *
  * CSS: Pair with carousel-factory.css for complete styling
  */
 
@@ -17,18 +17,18 @@ const CarouselState = {
     currentIndex: 0,
     templateCount: config.templates.length,
     isMobile: () => window.innerWidth < 768,
-    ...config
+    ...config,
   }),
 
   moveNext: (state) => ({
     ...state,
-    currentIndex: (state.currentIndex + 1) % state.templateCount
+    currentIndex: (state.currentIndex + 1) % state.templateCount,
   }),
 
   movePrev: (state) => ({
     ...state,
-    currentIndex: (state.currentIndex - 1 + state.templateCount) % state.templateCount
-  })
+    currentIndex: (state.currentIndex - 1 + state.templateCount) % state.templateCount,
+  }),
 };
 
 // DOM creation utilities (pure functions)
@@ -36,37 +36,37 @@ const CarouselDOM = {
   createStructure: (createTag) => ({
     wrapper: createTag('div', { class: 'promo-carousel-wrapper' }),
     viewport: createTag('div', { class: 'promo-carousel-viewport' }),
-    track: createTag('div', { class: 'promo-carousel-track' })
+    track: createTag('div', { class: 'promo-carousel-track' }),
   }),
 
   createNavigation: (createTag) => ({
     container: createTag('div', { class: 'promo-nav-controls' }),
-    prevBtn: createTag('button', { 
+    prevBtn: createTag('button', {
       class: 'promo-nav-btn promo-prev-btn',
-      'aria-label': 'Previous templates'
+      'aria-label': 'Previous templates',
     }),
-    nextBtn: createTag('button', { 
+    nextBtn: createTag('button', {
       class: 'promo-nav-btn promo-next-btn',
-      'aria-label': 'Next templates'
-    })
+      'aria-label': 'Next templates',
+    }),
   }),
 
-  createA11yElements: (createTag, state) => ({
+  createA11yElements: (createTag) => ({
     instructions: createTag('div', {
       id: 'carousel-instructions',
       class: 'sr-only',
-      'aria-live': 'polite'
+      'aria-live': 'polite',
     }),
     status: createTag('div', {
       id: 'carousel-status',
       class: 'sr-only',
       'aria-live': 'polite',
-      'aria-atomic': 'true'
+      'aria-atomic': 'true',
     }),
     skipLink: createTag('a', {
       href: '#carousel-end',
-      class: 'sr-only carousel-skip-link'
-    })
+      class: 'sr-only carousel-skip-link',
+    }),
   }),
 
   createButtonSVG: (direction) => {
@@ -77,11 +77,13 @@ const CarouselDOM = {
            aria-hidden="true" focusable="false" role="img">
         <title>${arrowDirection} arrow</title>
         <circle cx="16" cy="16" r="16" fill="#FFFFFF"/>
-        <path d="${isNext ? 'M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996' : 'M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996'}" 
+        <path d="${isNext
+    ? 'M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996'
+    : 'M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996'}"
               stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     `;
-  }
+  },
 };
 
 // Hover system (pure functions)
@@ -116,7 +118,7 @@ const HoverSystem = {
         if (currentHoveredElement) {
           currentHoveredElement.classList.add('singleton-hover');
         }
-      }
+      },
     };
   },
 
@@ -147,6 +149,7 @@ const HoverSystem = {
           return false;
         }
       }
+      return true;
     };
 
     if (editButton) {
@@ -154,7 +157,7 @@ const HoverSystem = {
       editButton.addEventListener('click', combinedClickHandler);
     }
     if (ctaLink) ctaLink.addEventListener('click', combinedClickHandler);
-  }
+  },
 };
 
 // Display logic (pure functions that return instructions)
@@ -164,22 +167,21 @@ const DisplayLogic = {
       // Mobile: prev-current-next pattern
       const prevIndex = (state.currentIndex - 1 + state.templateCount) % state.templateCount;
       const nextIndex = (state.currentIndex + 1) % state.templateCount;
-      
+
       return [
         { index: prevIndex, class: 'prev-template' },
         { index: state.currentIndex, class: 'current-template' },
-        { index: nextIndex, class: 'next-template' }
+        { index: nextIndex, class: 'next-template' },
       ];
-    } else {
-      // Desktop: all templates visible
-      return state.templates.map((_, index) => ({ 
-        index, 
-        class: '' 
-      }));
     }
+    // Desktop: all templates visible
+    return state.templates.map((_, index) => ({
+      index,
+      class: '',
+    }));
   },
 
-  shouldShowNavigation: (state) => state.isMobile() && state.templateCount > 1
+  shouldShowNavigation: (state) => state.isMobile() && state.templateCount > 1,
 };
 
 // Core carousel factory function
@@ -196,25 +198,25 @@ export const createCarousel = async (config) => {
   }
 
   // Validate required dependencies
-  const { 
-    block, 
-    templates, 
-    createTag, 
+  const {
+    block,
+    templates,
+    createTag,
     attachHoverListeners,
-    customDOMCallback 
+    customDOMCallback,
   } = config;
-  
+
   if (!block || !templates || !createTag) {
     throw new Error('Missing required carousel dependencies');
   }
 
   // Initialize carousel state
   let state = CarouselState.create({ templates });
-  
+
   // Create DOM structure
   const dom = CarouselDOM.createStructure(createTag);
   const nav = CarouselDOM.createNavigation(createTag);
-  
+
   // Setup navigation buttons
   nav.prevBtn.innerHTML = CarouselDOM.createButtonSVG('prev');
   nav.nextBtn.innerHTML = CarouselDOM.createButtonSVG('next');
@@ -226,24 +228,24 @@ export const createCarousel = async (config) => {
   // Pure function to update display
   const updateDisplay = () => {
     const visibleTemplates = DisplayLogic.getVisibleTemplates(state);
-    
+
     // Clear track
     dom.track.innerHTML = '';
-    
+
     // Add visible templates
     visibleTemplates.forEach(({ index, class: className }) => {
       const template = templates[index];
       const templateClone = template.cloneNode(true);
-      
+
       if (className) templateClone.classList.add(className);
-      
+
       // Re-attach hover events (since cloneNode doesn't copy listeners)
       if (attachHoverListeners) {
         attachHoverListeners(templateClone);
       } else {
         HoverSystem.attachToTemplate(templateClone, hoverSystem);
       }
-      
+
       dom.track.append(templateClone);
     });
   };
@@ -262,7 +264,7 @@ export const createCarousel = async (config) => {
   const handleKeyboard = (event) => {
     // Only handle keyboard nav when carousel is focused
     if (!dom.wrapper.contains(event.target)) return;
-    
+
     switch (event.key) {
       case 'ArrowLeft':
         event.preventDefault();
@@ -283,6 +285,9 @@ export const createCarousel = async (config) => {
         event.preventDefault();
         state = { ...state, currentIndex: state.templateCount - 1 };
         updateDisplay();
+        break;
+      default:
+        // No action needed for other keys
         break;
     }
   };
@@ -318,7 +323,7 @@ export const createCarousel = async (config) => {
       prevButton: nav.prevBtn,
       nextButton: nav.nextBtn,
       block,
-      state
+      state,
     });
   }
 
@@ -336,7 +341,7 @@ export const createCarousel = async (config) => {
     getCurrentIndex: () => state.currentIndex,
     getTemplateCount: () => state.templateCount,
     isMobile: () => state.isMobile(),
-    
+
     // Actions
     next: handleNext,
     prev: handlePrev,
@@ -344,7 +349,7 @@ export const createCarousel = async (config) => {
       state = { ...state, currentIndex: index };
       updateDisplay();
     },
-    
+
     // Cleanup
     destroy: () => {
       nav.nextBtn.removeEventListener('click', handleNext);
@@ -352,7 +357,7 @@ export const createCarousel = async (config) => {
       document.removeEventListener('keydown', handleKeyboard);
       window.removeEventListener('resize', handleResize);
       clearTimeout(handleResize.timeout);
-    }
+    },
   };
 };
 
@@ -360,34 +365,39 @@ export const createCarousel = async (config) => {
 export const CarouselFactory = {
   // Main factory method
   create: createCarousel,
-  
+
   // Preset configurations
   presets: {
     templatePromo: {
       showNavigation: true,
       responsive: true,
       hoverSystem: true,
-      looping: true
+      looping: true,
     },
-    
+
     basic: {
       showNavigation: true,
       responsive: false,
       hoverSystem: false,
-      looping: false
-    }
-  }
+      looping: false,
+    },
+  },
 };
 
 // Utility function for easy integration
-export const createTemplateCarousel = async (block, templates, createTag, attachHoverListeners = null, customDOMCallback = null, config = {}) => {
-  return createCarousel({
-    block,
-    templates,
-    createTag,
-    attachHoverListeners,
-    customDOMCallback,
-    ...CarouselFactory.presets.templatePromo,
-    ...config
-  });
-};
+export const createTemplateCarousel = async (
+  block,
+  templates,
+  createTag,
+  attachHoverListeners = null,
+  customDOMCallback = null,
+  config = {},
+) => createCarousel({
+  block,
+  templates,
+  createTag,
+  attachHoverListeners,
+  customDOMCallback,
+  ...CarouselFactory.presets.templatePromo,
+  ...config,
+});
