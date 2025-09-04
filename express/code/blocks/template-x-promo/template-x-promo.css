@@ -65,7 +65,9 @@
 .promo-carousel-wrapper {
   position: relative;
   width: 100%;
+  /* Let wrapper size naturally to content */
 }
+
 
 /* Mobile - use flex column with 24px gap for clean separation */
 @media (max-width: 767px) {
@@ -90,6 +92,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    /* Height set dynamically to prevent jumping */
+    transition: min-height 0.3s ease;
   }
 
   /* Desktop/Tablet max-heights for very vertical images */
@@ -122,6 +126,8 @@
     justify-content: center;
     width: 100%;
     max-width: 1200px; /* Reasonable max container width */
+    /* Height set dynamically to prevent jumping */
+    transition: min-height 0.3s ease;
   }
 
   .template {
@@ -160,6 +166,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    /* Height locked by JavaScript to prevent jumping, but content can overflow naturally */
   }
 
   .promo-carousel-track {
@@ -169,6 +176,8 @@
     width: 100%; /* Full width */
     justify-content: center;
     padding: 0 15%; /* Side padding creates natural peek effect */
+    /* Height set dynamically to prevent jumping on mobile */
+    /* Removed transition to prevent height changes */
   }
 
   .template {
@@ -265,11 +274,11 @@
 
 .template-x-promo .template .image-wrapper img {
   width: 100%;
-  max-height: var(--template-max-height);
   height: auto; /* Allow natural height based on aspect ratio */
   object-fit: cover;
   display: block;
   border-radius: 16px;
+  /* Removed max-height constraint - let images size naturally to their content */
 }
 
 .template-x-promo .template .button-container {
