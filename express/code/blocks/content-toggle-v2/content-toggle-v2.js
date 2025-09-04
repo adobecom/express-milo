@@ -5,9 +5,9 @@ function getTabIndexFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   const tabParam = urlParams.get('tab');
   if (tabParam) {
-    const index = parseInt(tabParam, 10);
-    if (!Number.isNaN(index) && index >= 0) {
-      return index;
+    const indexOneBased = parseInt(tabParam, 10);
+    if (!Number.isNaN(indexOneBased) && indexOneBased >= 1) {
+      return indexOneBased - 1; // convert to 0-based internal index
     }
   }
   return null;
@@ -35,7 +35,7 @@ function getDefatultToggleIndex(block) {
   return defaultIndex;
 }
 
-function initButton(block, buttons, sections, index) {
+function initButton(block, buttons, sections, index, initiallyHasTabParam) {
   const setActiveButton = (newIndex) => {
     buttons.forEach((btn) => btn.classList.remove('active'));
     buttons[newIndex].classList.add('active');
@@ -43,14 +43,14 @@ function initButton(block, buttons, sections, index) {
     buttons[newIndex].focus();
   };
 
-  const handleSectionChange = () => {
+  const handleSectionChange = (updateUrl = true) => {
     const activeButton = block.querySelector('.content-toggle-button.carousel-element.active');
     const blockPosition = block.getBoundingClientRect().top;
     const offsetPosition = blockPosition + window.scrollY - 80;
 
     if (activeButton !== buttons[index]) {
       setActiveButton(index);
-      updateURLParameter(index);
+      if (updateUrl) updateURLParameter(index + 1); // write 1-based index to URL
       sections.forEach((section) => {
         if (buttons[index].innerText.toLowerCase() === section.dataset.toggle.toLowerCase()) {
           section.classList.remove('display-none');
@@ -69,17 +69,18 @@ function initButton(block, buttons, sections, index) {
 
   if (index === getDefatultToggleIndex(block)) {
     setActiveButton(index);
-    handleSectionChange();
+    // On initial load, only update URL if it already had a tab param
+    handleSectionChange(!!initiallyHasTabParam);
   }
 
   buttons[index].addEventListener('click', () => {
-    handleSectionChange();
+    handleSectionChange(true);
   });
 
   buttons[index].addEventListener('keydown', (e) => {
     if (e.target === buttons[index]) {
       if (e.key === 'Enter' || e.key === ' ') {
-        handleSectionChange();
+        handleSectionChange(true);
       }
     }
   });
@@ -109,6 +110,7 @@ export default function decorate(block) {
 
   const enclosingMain = block.closest('main');
   if (enclosingMain) {
+    const hadInitialTabParam = new URLSearchParams(window.location.search).has('tab');
     const row = block.querySelector('div');
     const items = block.querySelector('ul');
     items.classList.add('content-toggle-carousel-container');
@@ -126,7 +128,7 @@ export default function decorate(block) {
     const buttons = row.querySelectorAll('.content-toggle-button');
 
     for (let i = 0; i < buttons.length; i += 1) {
-      initButton(block, buttons, sections, i);
+      initButton(block, buttons, sections, i, hadInitialTabParam);
     }
   }
 }
