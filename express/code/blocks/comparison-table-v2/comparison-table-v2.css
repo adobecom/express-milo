@@ -650,6 +650,13 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
     }
 }
 
+@media (max-width: 767px) {
+    .comparison-table-v2 .plan-selector-choices.right-aligned {
+        right: 0px;
+        left: auto;
+    }
+}
+
 .comparison-table-v2 .sticky-header.gnav-offset {
     top: 40px;
 }
