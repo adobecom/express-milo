@@ -91,10 +91,33 @@
     justify-content: center;
     position: relative;
   }
+  
+  /* Desktop/Tablet max-heights for very vertical images */
+  /* 4-up layout: 240px max-height */
+  .ax-template-x-promo.multiple-up .template .image-wrapper img,
+  .ax-template-x-promo.multiple-up .template .button-container .media-wrapper img {
+    max-height: 240px; /* 4-up: crop very vertical images */
+  }
+  
+  /* 3-up layout: 360px max-height + 33.333% width */
+  .ax-template-x-promo.three-up .template {
+    width: 33.333%; /* 3-up: each template takes 1/3 width */
+  }
+  
+  .ax-template-x-promo.three-up .template .image-wrapper img,
+  .ax-template-x-promo.three-up .template .button-container .media-wrapper img {
+    max-height: 360px; /* 3-up: crop very vertical images */
+  }
+  
+  /* 2-up layout: 540px max-height */
+  .ax-template-x-promo.two-up .template .image-wrapper img,
+  .ax-template-x-promo.two-up .template .button-container .media-wrapper img {
+    max-height: 540px; /* 2-up: crop very vertical images */
+  }
 
   .promo-carousel-track {
     display: flex;
-    gap: 8px;
+    gap: 16px; /* 16px gap on desktop */
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -106,7 +129,6 @@
     flex: 1; /* Fluid - equal distribution of available space */
     cursor: pointer;
     box-sizing: border-box;
-    max-width: 280px; /* Cap at reasonable max size */
     /* NO transition, scaling, or opacity changes on desktop */
   }
 
@@ -228,7 +250,6 @@
   pointer-events: auto; /* Ensure it can receive hover events */
 }
 
-/* DEBUG: Visual hover feedback - REMOVED */
 
 .template-x-promo .template .still-wrapper {
   position: relative;
@@ -447,6 +468,12 @@
     display: flex; /* Show buttons on mobile */
     padding-right: 20px; /* 20px from right edge */
     /* Remove conflicting bottom/right positioning - handled by flex layout */
+  }
+  
+  /* Mobile max-height for very vertical images - crop bottom */
+  .template .image-wrapper img,
+  .template .button-container .media-wrapper img {
+    max-height: 400px; /* Mobile: 400px max for vertical images */
   }
 }
 
