@@ -613,6 +613,6 @@
 @media (min-width: 1680px) {
   .ax-template-x-promo.one-up,
   .ax-template-x-promo.multiple-up {
-    margin: auto;
+    margin: auto !important;
   }
 }
