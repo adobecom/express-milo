@@ -82,7 +82,7 @@
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px; /* Block determines the padding */
   }
-  
+
   .promo-carousel-viewport {
     overflow: visible;
     width: 100%;
@@ -91,27 +91,27 @@
     justify-content: center;
     position: relative;
   }
-  
+
   /* Desktop/Tablet max-heights for very vertical images */
   /* 4-up layout: 240px max-height */
   .ax-template-x-promo.multiple-up .template .image-wrapper img,
   .ax-template-x-promo.multiple-up .template .button-container .media-wrapper img {
     max-height: 240px; /* 4-up: crop very vertical images */
   }
-  
+
   /* 3-up layout: 360px max-height + 33.333% width */
   .ax-template-x-promo.three-up .template {
     width: 33.333%; /* 3-up: each template takes 1/3 width */
   }
-  
+
   .ax-template-x-promo.three-up .template .image-wrapper img,
   .ax-template-x-promo.three-up .template .button-container .media-wrapper img {
     max-height: 360px; /* 3-up: crop very vertical images */
   }
-  
+
   /* 2-up layout: 540px max-height */
   .ax-template-x-promo.two-up .template .image-wrapper img,
-  .ax-template-x-promo.two-up .template .button-container .media-wrapper img {
+  .ax-template-x-promo.two-up .template .button-container .media-wrapper img  {
     max-height: 540px; /* 2-up: crop very vertical images */
   }
 
@@ -413,7 +413,7 @@
     padding-right: 20px; /* 20px from right edge */
     /* No absolute positioning needed - flex gap handles the 24px separation */
   }
-  
+
   .promo-prev-btn,
   .promo-next-btn {
     background: none;
@@ -427,7 +427,7 @@
     transition: transform 0.2s ease;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
-  
+
   .promo-nav-btn:hover {
     transform: scale(1.1);
   }
@@ -463,13 +463,13 @@
   .ax-template-x-promo.multiple-up {
     padding: 0; /* Full width on mobile for carousel */
   }
-  
+
   .promo-nav-controls {
     display: flex; /* Show buttons on mobile */
     padding-right: 20px; /* 20px from right edge */
     /* Remove conflicting bottom/right positioning - handled by flex layout */
   }
-  
+
   /* Mobile max-height for very vertical images - crop bottom */
   .template .image-wrapper img,
   .template .button-container .media-wrapper img {
@@ -532,7 +532,7 @@
   .template-x-promo .promo-nav-btn {
     border: 2px solid ButtonText;
   }
-  
+
   .template-x-promo .button-container {
     border: 2px solid ButtonText;
   }
@@ -546,7 +546,7 @@
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
   }
-  
+
   .template-x-promo .promo-carousel-track {
     transform: none !important;
   }
@@ -608,14 +608,14 @@
     margin: 0 auto !important; /* Override collapsible-rows */
     box-sizing: border-box;
   }
-  
+
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
     width: var(--ax-grid-8-col-width);
     margin: 0 auto;
     box-sizing: border-box;
   }
-  
+
   .ax-template-x-promo.one-up .collapsible-rows {
     width: unset !important; /* Force override */
     margin: unset !important; /* Force override */
@@ -630,7 +630,7 @@
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter)) !important; /* Override collapsible-rows */
     box-sizing: border-box;
   }
-  
+
   .ax-template-x-promo.one-up .collapsible-rows {
     width: unset !important; /* Force override */
     margin: unset !important; /* Force override */
