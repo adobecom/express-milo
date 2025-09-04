@@ -113,9 +113,14 @@ export default function decorate(block) {
     const hadInitialTabParam = new URLSearchParams(window.location.search).has('tab');
     const row = block.querySelector('div');
     const items = block.querySelector('ul');
-    items.classList.add('content-toggle-carousel-container');
+    const carouselContainer = document.createElement('div');
+    carouselContainer.classList.add('content-toggle-carousel-container');
+    console.log(items.children);
+    while (items.firstChild) {
+      carouselContainer.appendChild(items.firstChild);
+    } 
 
-    const toggles = row.querySelectorAll('li');
+    const toggles = carouselContainer.querySelectorAll('li');
     toggles.forEach((toggle) => {
       const button = document.createElement('button');
       button.innerHTML = toggle.innerHTML;
@@ -123,7 +128,10 @@ export default function decorate(block) {
       toggle.parentNode.replaceChild(button, toggle);
     });
 
-    createCarousel('button', items);
+    createCarousel('button', carouselContainer);
+
+   
+    items.parentNode.replaceChild(carouselContainer, items);
     const sections = enclosingMain.querySelectorAll('[data-toggle]');
     const buttons = row.querySelectorAll('.content-toggle-button');
 
