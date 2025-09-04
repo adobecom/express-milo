@@ -90,11 +90,8 @@ async function handleOneUpFromApiData(block, templateData) {
   const imgWrapper = createTag('div', { class: 'image-wrapper' });
     imgWrapper.append(img);
 
-  // Add plan icon
-  const { planIcon } = getStillWrapperIcons(templateType);
-  if (planIcon) {
-    imgWrapper.append(planIcon);
-  }
+  // Note: No plan icon needed for API-driven templates 
+  // The API already provides the template type information
 
   block.append(imgWrapper);
 
