@@ -364,6 +364,8 @@ async function handlePrice(pricingArea, specialPromo, groupID, legacyVersion) {
 
   const isPremiumCard = response.ooAvailable || false;
   const savePercentElem = pricingArea.querySelector('.card-offer');
+  console.log('--------------------------------');
+  console.log(response);
   handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
   handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
   handleTooltip(pricingArea.querySelectorAll('p'), TOOLTIP_PATTERN);
