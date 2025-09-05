@@ -13,22 +13,6 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  
-  /* Layout - using design system spacing */
-  --carousel-gap: var(--spacing-100); /* 8px */
-  --carousel-nav-bottom: var(--spacing-400); /* 24px */
-  --carousel-nav-right: var(--spacing-400); /* 24px */
-  --carousel-nav-gap: var(--spacing-100); /* 8px */
-  
-  /* Timing */
-  --carousel-transition-speed: 0.3s;
-  
-  /* Z-index layers */
-  --carousel-nav-z: 3;
-  
-  /* Accessibility */
-  --carousel-focus-color: #0066CC;
-  --carousel-focus-width: calc(var(--spacing-100) / 4); /* 2px */
 }
 
 /* Viewport for template display */
@@ -150,10 +134,10 @@
   top: 0;
   background: var(--carousel-focus-color, #0066CC);
   color: white;
-  padding: var(--spacing-100) var(--spacing-300); /* 8px 16px */
+  padding: 8px 16px;
   text-decoration: none;
   z-index: 9999;
-  border-radius: calc(var(--spacing-100) / 2); /* 4px */
+  border-radius: 4px;
 }
 
 .carousel-skip-link:focus {
@@ -168,21 +152,21 @@
 .promo-carousel-wrapper a:focus-visible,
 .promo-carousel-wrapper [tabindex="0"]:focus-visible {
   outline: var(--carousel-focus-width, 2px) solid var(--carousel-focus-color, #0066CC);
-  outline-offset: calc(var(--spacing-100) / 4); /* 2px */
-  border-radius: calc(var(--spacing-100) / 2); /* 4px */
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 /* Enhanced focus for navigation buttons */
 .promo-nav-btn:focus-visible {
   outline: var(--carousel-focus-width, 2px) solid var(--carousel-focus-color, #0066CC);
-  outline-offset: calc(var(--spacing-100) / 2); /* 4px */
+  outline-offset: 4px;
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .promo-nav-btn {
-    border: calc(var(--spacing-100) / 4) solid ButtonText; /* 2px */
+    border: 2px solid ButtonText;
     background: ButtonFace;
   }
   
@@ -228,7 +212,23 @@
    CSS CUSTOM PROPERTIES (THEMING)
    ======================================== */
 
-/* Note: CSS custom properties are defined in the main .promo-carousel-wrapper selector above */
+.promo-carousel-wrapper {
+  /* Layout */
+  --carousel-gap: 8px;
+  --carousel-nav-bottom: 24px;
+  --carousel-nav-right: 24px;
+  --carousel-nav-gap: 24px;
+  
+  /* Timing */
+  --carousel-transition-speed: 0.3s;
+  
+  /* Z-index layers */
+  --carousel-nav-z: 3;
+  
+  /* Accessibility */
+  --carousel-focus-color: #0066CC;
+  --carousel-focus-width: 2px;
+}
 
 /* ========================================
    TEMPLATE POSITIONING CLASSES
