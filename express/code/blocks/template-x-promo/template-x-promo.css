@@ -15,23 +15,55 @@
 
 /* CSS Variables for maintainability */
 .template-x-promo {
-  --template-spacing: 16px;
-  --template-spacing-sm: 8px;
-  --template-spacing-lg: 24px;
-  --template-max-height: 340px;
-  --template-border-radius: 8px;
+  /* Use design system spacing */
+  --template-gap-mobile: var(--spacing-100); /* 8px */
+  --template-gap-desktop: var(--spacing-300); /* 16px */
+  
+  /* Border radius system */
+  --template-border-radius: var(--template-border-radius);
   --template-border-radius-lg: 20px;
+  --button-border-radius: var(--button-border-radius);
+  --share-border-radius: var(--share-border-radius);
+  
+  /* Container sizing */
+  --template-max-height: 340px;
+  --template-max-height-mobile: 400px;
+  --template-max-height-2up: 540px;
+  --template-max-height-3up: 360px;
+  --template-max-height-4up: 240px;
+  --template-max-width: 1200px;
+  
+  /* Overlay system */
   --overlay-opacity: 0.95;
   --overlay-bg: rgba(255, 255, 255, var(--overlay-opacity));
+  --share-icon-bg: rgba(255, 255, 255, 0.9);
+  --tag-bg: rgba(36, 36, 36, 0.7);
+  
+  /* Icon sizing */
   --share-icon-size: 32px;
   --share-icon-inner: 16px;
-  --button-border-radius: 24px;
+  --premium-icon-size: 30px;
+  
+  /* Z-index system */
   --z-base: 1;
   --z-overlay: 2;
   --z-controls: 3;
+  
+  /* Animation */
   --transition-speed: 0.3s;
+  --transition-fast: 0.2s;
+  
+  /* Accessibility */
   --focus-color: #0066CC;
+  --focus-color-dark: #66B3FF;
   --focus-width: 2px;
+  --focus-offset: 2px;
+  --focus-offset-lg: 4px;
+  
+  /* Shadows */
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-medium: 0 2px 8px rgba(0, 0, 0, 0.16);
+  --shadow-overlay: 0 0 6px #00000029;
 }
 
 .section.ax-template-x-promo {
@@ -48,7 +80,7 @@
   gap: var(--spacing-300);
   display: flex;
   flex-direction: column;
-  padding: 20px; /* Base padding for one-up */
+  padding: var(--spacing-400); /* Base padding for one-up */
 }
 
 .ax-template-x-promo.one-up img {
@@ -66,7 +98,7 @@
 /* Multiple-up custom carousel */
 .ax-template-x-promo.multiple-up {
   position: relative;
-  padding: 20px;
+  padding: var(--spacing-400);
 }
 
 .custom-promo-carousel {
@@ -87,7 +119,7 @@
   .promo-carousel-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Exactly 24px between viewport and nav controls */
+    gap: var(--spacing-400); /* Between viewport and nav controls */
   }
 }
 
@@ -95,7 +127,7 @@
 @media (min-width: 768px) {
   /* Block container handles padding */
   .ax-template-x-promo.multiple-up {
-    padding: 20px 40px; /* Block determines the padding */
+    padding: var(--spacing-400) var(--spacing-600); /* Block determines the padding */
   }
 
   .promo-carousel-viewport {
@@ -106,14 +138,14 @@
     justify-content: center;
     position: relative;
     /* Height set dynamically to prevent jumping */
-    transition: min-height 0.3s ease;
+    transition: min-height var(--transition-speed) ease;
   }
 
   /* Desktop/Tablet max-heights for very vertical images */
-  /* 4-up layout: 240px max-height */
+  /* 4-up layout: max-height */
   .ax-template-x-promo.multiple-up .template .image-wrapper img,
   .ax-template-x-promo.multiple-up .template .button-container .media-wrapper img {
-    max-height: 240px; /* 4-up: crop very vertical images */
+    max-height: var(--template-max-height-4up); /* 4-up: crop very vertical images */
   }
 
   /* 3-up layout: 360px max-height + 33.333% width */
@@ -123,22 +155,22 @@
 
   .ax-template-x-promo.three-up .template .image-wrapper img,
   .ax-template-x-promo.three-up .template .button-container .media-wrapper img {
-    max-height: 360px; /* 3-up: crop very vertical images */
+    max-height: var(--template-max-height-3up); /* 3-up: crop very vertical images */
   }
 
   /* 2-up layout: 540px max-height */
   .ax-template-x-promo.two-up .template .image-wrapper img,
   .ax-template-x-promo.two-up .template .button-container .media-wrapper img  {
-    max-height: 540px; /* 2-up: crop very vertical images */
+    max-height: var(--template-max-height-2up); /* 2-up: crop very vertical images */
   }
 
   .promo-carousel-track {
     display: flex;
-    gap: 16px; /* 16px gap on desktop */
+    gap: var(--template-gap-desktop); /* Desktop gap */
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 1200px; /* Reasonable max container width */
+    max-width: var(--template-max-width); /* Reasonable max container width */
     /* Height set dynamically to prevent jumping */
     transition: min-height 0.3s ease;
   }
@@ -155,7 +187,7 @@
     position: relative;
     width: 100%; /* Fill the available template space */
     aspect-ratio: 3/4; /* Maintain aspect ratio based on width */
-    border-radius: 8px;
+    border-radius: var(--template-border-radius);
     overflow: hidden;
   }
 
@@ -165,7 +197,7 @@
     max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
-    border-radius: 8px;
+    border-radius: var(--template-border-radius);
     background-color: #f0f0f0;
   }
 }
@@ -223,7 +255,7 @@
     position: relative;
     width: 100%; /* Full template width */
     aspect-ratio: 3/4; /* Maintain aspect ratio */
-    border-radius: 8px;
+    border-radius: var(--template-border-radius);
     overflow: hidden;
   }
 
@@ -233,7 +265,7 @@
     max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
-    border-radius: 8px;
+    border-radius: var(--template-border-radius);
     background-color: #f0f0f0;
   }
 }
@@ -243,8 +275,8 @@
 /* Free/Premium tags */
 .template-x-promo .template .free-tag {
   position: absolute;
-  top: var(--template-spacing);
-  right: var(--template-spacing);
+  top: var(--spacing-300);
+  right: var(--spacing-300);
   background: rgba(36, 36, 36, 0.7);
   color: white;
   padding: 8px 12px;
@@ -281,7 +313,7 @@
 .template-x-promo .template .image-wrapper {
   position: relative;
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--template-border-radius);
   overflow: hidden;
 }
 
@@ -290,7 +322,7 @@
   height: auto; /* Allow natural height based on aspect ratio */
   object-fit: cover;
   display: block;
-  border-radius: 8px;
+  border-radius: var(--template-border-radius);
   /* Removed max-height constraint - let images size naturally to their content */
 }
 
@@ -303,17 +335,17 @@
   left: 50%;
   transform: translate(-50%, -50%); /* Perfect centering */
   padding: 6px;
-  padding-bottom: 8px;
-  border-radius: 8px;
+  padding-bottom: var(--spacing-100);
+  border-radius: var(--template-border-radius);
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
-  box-shadow: 0 0 6px #00000029;
+  background-color: var(--overlay-bg); /* Semi-transparent white */
+  box-shadow: var(--shadow-overlay);
   opacity: 0;
   text-align: center;
-  transition: opacity .3s ease-in-out;
+  transition: opacity var(--transition-speed) ease-in-out;
   will-change: opacity;
   pointer-events: none;
 }
@@ -340,7 +372,7 @@
   position: relative; /* Let it be a flex child */
   flex: 1; /* Take up remaining space */
   pointer-events: none;
-  border-radius: 8px;
+  border-radius: var(--template-border-radius);
   overflow: hidden;
   z-index: 1; /* Show the image */
 }
@@ -349,7 +381,7 @@
   width: 100%;
   height: 90%;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: var(--template-border-radius);
   display: block;
   margin: 0;
 }
@@ -364,8 +396,8 @@
   text-overflow: ellipsis;
   font-size: 14px;
   font-weight: 600;
-  border-radius: 24px; /* More rounded */
-  transition: all 0.2s ease;
+  border-radius: var(--button-border-radius); /* More rounded */
+  transition: all var(--transition-fast) ease;
   position: relative;
   z-index: 3; /* Above the image and overlay */
 }
@@ -383,10 +415,10 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: var(--share-border-radius);
+  width: var(--share-icon-size);
+  height: var(--share-icon-size);
+  background-color: var(--share-icon-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -398,8 +430,8 @@
 .template-x-promo .template .button-container .icon-share-arrow {
   cursor: pointer;
   pointer-events: auto;
-  width: 16px;
-  height: 16px;
+  width: var(--share-icon-inner);
+  height: var(--share-icon-inner);
   padding: 0;
   background-color: transparent;
   overflow: visible;
@@ -442,9 +474,9 @@
 @media (max-width: 767px) {
   .promo-nav-controls {
     display: flex;
-    gap: 8px;
+    gap: var(--spacing-100);
     justify-content: flex-end; /* Align buttons to the right */
-    padding-right: 20px; /* 20px from right edge */
+    padding-right: var(--spacing-400); /* From right edge */
     /* No absolute positioning needed - flex gap handles the 24px separation */
   }
 
@@ -454,12 +486,12 @@
     border: none;
     cursor: pointer;
     padding: 8px;
-    border-radius: 50%;
+    border-radius: var(--share-border-radius);
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: var(--shadow-light);
   }
 
   .promo-nav-btn:hover {
@@ -472,9 +504,9 @@
   border: none;
   cursor: pointer;
   padding: 0;
-  border-radius: 50%;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
-  transition: all 0.2s ease;
+  border-radius: var(--share-border-radius);
+  box-shadow: var(--shadow-medium);
+  transition: all var(--transition-fast) ease;
 }
 
 .promo-nav-btn:hover:not(:disabled) svg circle {
@@ -488,8 +520,8 @@
 
 .promo-nav-btn svg {
   display: block;
-  width: 32px;
-  height: 32px;
+  width: var(--share-icon-size);
+  height: var(--share-icon-size);
 }
 
 /* Mobile responsive - show navigation buttons on mobile only */
@@ -500,14 +532,14 @@
 
   .promo-nav-controls {
     display: flex; /* Show buttons on mobile */
-    padding-right: 20px; /* 20px from right edge */
+    padding-right: var(--spacing-400); /* From right edge */
     /* Remove conflicting bottom/right positioning - handled by flex layout */
   }
 
   /* Mobile max-height for very vertical images - crop bottom */
   .template .image-wrapper img,
   .template .button-container .media-wrapper img {
-    max-height: 400px; /* Mobile: 400px max for vertical images */
+    max-height: var(--template-max-height-mobile); /* Mobile: max for vertical images */
   }
 }
 
@@ -550,14 +582,14 @@
 .template-x-promo a:focus-visible,
 .template-x-promo [tabindex="0"]:focus-visible {
   outline: var(--focus-width) solid var(--focus-color);
-  outline-offset: 2px;
+  outline-offset: var(--focus-offset);
   border-radius: 4px;
 }
 
 /* Enhanced focus for navigation buttons */
 .template-x-promo .promo-nav-btn:focus-visible {
   outline: var(--focus-width) solid var(--focus-color);
-  outline-offset: 4px;
+  outline-offset: var(--focus-offset-lg);
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
 
@@ -589,7 +621,7 @@
 /* Color scheme support */
 @media (prefers-color-scheme: dark) {
   .template-x-promo {
-    --focus-color: #66B3FF;
+    --focus-color: var(--focus-color-dark);
   }
 }
 
@@ -651,14 +683,14 @@
 /* One-up responsive styles (matching template-promo patterns) */
 @media (min-width: 768px) {
   .ax-template-x-promo.one-up {
-    padding: 20px 40px;
+    padding: var(--spacing-400) var(--spacing-600);
     width: var(--ax-grid-8-col-width) !important; /* Override collapsible-rows */
     margin: 0 auto !important; /* Override collapsible-rows */
     box-sizing: border-box;
   }
 
   .ax-template-x-promo.multiple-up {
-    padding: 20px 40px;
+    padding: var(--spacing-400) var(--spacing-600);
     width: var(--ax-grid-8-col-width);
     margin: 0 auto;
     box-sizing: border-box;
@@ -673,7 +705,7 @@
 @media (min-width: 1024px) {
   .ax-template-x-promo.one-up,
   .ax-template-x-promo.multiple-up {
-    padding: 20px 40px;
+    padding: var(--spacing-400) var(--spacing-600);
     width: var(--ax-grid-7-col-width) !important; /* Override collapsible-rows */
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter)) !important; /* Override collapsible-rows */
     box-sizing: border-box;
