@@ -1,20 +1,13 @@
 import { getIconElementDeprecated, getLibs } from '../utils.js';
 
-let createTag; let loadStyle;
+let createTag;
 let getConfig;
+let loadStyle;
+let currentVisibleTooltip = null;
 
-export async function onTooltipCSSLoad() {
-  const config = getConfig();
-  const stylesheetHref = `${config.codeRoot}/scripts/widgets/tooltip.css`;
-  await new Promise((resolve, reject) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = stylesheetHref;
-    link.onload = resolve;
-    link.onerror = () => reject(new Error(`Failed to load ${stylesheetHref}`));
-    document.head.appendChild(link);
-  });
-}
+/* ========================================
+   CSS and Position Management
+   ======================================== */
 
 export function adjustElementPosition() {
   const elements = document.querySelectorAll('.tooltip-text');
@@ -31,7 +24,35 @@ export function adjustElementPosition() {
   }
 }
 
-function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
+export function getTooltipMatch(elements, tooltipPattern) {
+  let tooltipMatch;
+  let tooltipContainer;
+  Array.from(elements).forEach((p) => {
+    const match = tooltipPattern.exec(p.innerText);
+    if (match) {
+      tooltipMatch = match;
+      tooltipContainer = p;
+    }
+  });
+  return { tooltipMatch, tooltipContainer };
+}
+/* ========================================
+   Legacy Tooltip Functions
+   ======================================== */
+
+function buildTooltip(elements, tooltipPattern) {
+  let tooltipMatch;
+  let tooltipContainer;
+
+  Array.from(elements).forEach((p) => {
+    const match = tooltipPattern.exec(p.textContent);
+    if (match) {
+      tooltipMatch = match;
+      tooltipContainer = p;
+    }
+  });
+  if (!tooltipMatch) return;
+
   tooltipContainer.innerHTML = tooltipContainer.innerHTML.replace(tooltipPattern, '');
   const tooltipContent = tooltipMatch[2];
   tooltipContainer.classList.add('tooltip');
@@ -54,15 +75,23 @@ function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
 
   const showTooltip = () => {
     clearTimeout(hideTimeout);
+    if (currentVisibleTooltip && currentVisibleTooltip !== tooltipButton) {
+      currentVisibleTooltip.classList.remove('hover');
+      currentVisibleTooltip.querySelector('.tooltip-text').classList.remove('hover');
+    }
     isTooltipVisible = true;
     tooltipButton.classList.add('hover');
     tooltipPopup.classList.add('hover');
+    currentVisibleTooltip = tooltipButton;
   };
 
   const hideTooltip = () => {
     isTooltipVisible = false;
     tooltipButton.classList.remove('hover');
     tooltipPopup.classList.remove('hover');
+    if (currentVisibleTooltip === tooltipButton) {
+      currentVisibleTooltip = null;
+    }
   };
 
   const checkAndHideTooltip = () => {
@@ -110,6 +139,7 @@ function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
   });
 
   tooltipButton.addEventListener('touchstart', (e) => {
+    console.log('touchstart');
     e.preventDefault();
     toggleTooltip();
   });
@@ -128,47 +158,14 @@ function buildTooltip(tooltipMatch, tooltipPattern, tooltipContainer) {
   });
 }
 
-export function getTooltipMatch(elements, tooltipPattern) {
-  let tooltipMatch;
-  let tooltipContainer;
-  Array.from(elements).forEach((p) => {
-    const match = tooltipPattern.exec(p.innerText);
-    if (match) {
-      tooltipMatch = match;
-      tooltipContainer = p;
-    }
-  });
-  return { tooltipMatch, tooltipContainer };
-}
-
-export default async function handleTooltip(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g, tooltipMatch = undefined, tooltipContainer = undefined) {
-  let localTooltipMatch = tooltipMatch;
-  let localTooltipContainer = tooltipContainer;
-  if (!tooltipMatch) {
-    const res = getTooltipMatch(elements, tooltipPattern);
-    if (res.tooltipMatch) {
-      localTooltipMatch = res.tooltipMatch;
-      localTooltipContainer = res.tooltipContainer;
-    } else {
-      return undefined;
-    }
-  }
-
+export default async function handleTooltip(pricingArea, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
-    ({ createTag, getConfig, loadStyle } = utils);
+    ({ createTag, getConfig } = utils);
   });
   const config = getConfig();
   return new Promise((resolve) => {
-    loadStyle(`${config.codeRoot}/scripts/widgets/basic-carousel.css`, () => {
-      onTooltipCSSLoad();
-      buildTooltip(localTooltipMatch, tooltipPattern, localTooltipContainer);
-      resolve();
-    });
+    loadStyle(`${config.codeRoot}/scripts/widgets/tooltip.css`);
+    buildTooltip(pricingArea, tooltipPattern);
+    resolve();
   });
-}
-
-export function handleTooltipSync(elements, tooltipPattern = /\(\(([^]+)\)\)([^]+)\(\(\/([^]+)\)\)/g) {
-  const { tooltipMatch, tooltipContainer } = getTooltipMatch(elements, tooltipPattern);
-  if (!tooltipMatch) return;
-  handleTooltip(elements, tooltipPattern, tooltipMatch, tooltipContainer);
 }
