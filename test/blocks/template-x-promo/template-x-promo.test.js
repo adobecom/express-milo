@@ -40,20 +40,44 @@ describe('Template X Promo', () => {
           {
             id: 'template1',
             title: 'Test Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
-            _links: { 'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' } },
+            behaviors: ['COPYABLE', 'still'],
+            _links: { 
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image1.jpg' },
+              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component1' }
+            },
           },
           {
             id: 'template2',
             title: 'Test Template 2',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image2.jpg' },
-            _links: { 'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' } },
+            behaviors: ['COPYABLE', 'still'],
+            _links: { 
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image2.jpg' },
+              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component2' }
+            },
           },
           {
             id: 'template3',
             title: 'Test Template 3',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit3' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image3.jpg' },
-            _links: { 'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit3' } },
+            behaviors: ['COPYABLE', 'still'],
+            _links: { 
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit3' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image3.jpg' },
+              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component3' }
+            },
           },
         ],
       }),
