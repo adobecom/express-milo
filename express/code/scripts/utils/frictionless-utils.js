@@ -120,6 +120,7 @@ export const EXPERIMENTAL_VARIANTS = [
 export const FRICTIONLESS_UPLOAD_QUICK_ACTIONS = {
   videoEditor: 'edit-video',
   imageEditor: 'edit-image',
+  removeBackground: 'remove-background'
 };
 
 // Shared utility functions
