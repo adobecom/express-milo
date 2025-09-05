@@ -41,7 +41,7 @@ export default class TemplateXPromo {
   }
 
   async getTemplateCount() {
-    return await this.templates.count();
+    return this.templates.count();
   }
 
   async clickNext() {
@@ -57,10 +57,10 @@ export default class TemplateXPromo {
   }
 
   async isCarouselVisible() {
-    return await this.carouselWrapper.isVisible();
+    return this.carouselWrapper.isVisible();
   }
 
   async areNavigationButtonsVisible() {
-    return await this.navControls.isVisible();
+    return this.navControls.isVisible();
   }
 }
