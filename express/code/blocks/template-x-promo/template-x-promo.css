@@ -66,6 +66,26 @@
   display: block;
 }
 
+.ax-template-x-promo.one-up .button-container a.button.accent {
+  background-color: var(--color-background-accent-default);
+  margin: 0;
+  font-size: var(--body-font-size-m);
+  padding: var(--spacing-100) var(--spacing-300);
+  border-radius: 1000px;
+}
+
+.ax-template-x-promo.one-up .button-container a.button.accent:hover {
+  background-color: var(--color-background-accent-hover);
+}
+
+.ax-template-x-promo.one-up .button-container a.button.accent:active {
+  background-color: var(--color-background-accent-down);
+}
+
+.ax-template-x-promo.one-up .button-container a.button.accent:focus {
+  background-color: var(--color-background-accent-focus);
+}
+
 /* Multiple-up custom carousel */
 .section.ax-template-x-promo.multiple-up {
   position: relative;
@@ -363,16 +383,18 @@
 }
 
 .template-x-promo .template .button-container a.button {
-  width: fit-content;
+  width: 100%;
+  max-width: 120px;
   margin: 0;
   box-sizing: border-box;
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  border-radius: 24px; /* More rounded */
+  padding: 4px 12px;
+  border-radius: 24px;
   transition: all 0.2s ease;
   position: relative;
   z-index: 3; /* Above the image and overlay */
