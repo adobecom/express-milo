@@ -64,9 +64,10 @@
 }
 
 /* Multiple-up custom carousel */
-.ax-template-x-promo.multiple-up {
+.section.ax-template-x-promo.multiple-up {
   position: relative;
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .custom-promo-carousel {
