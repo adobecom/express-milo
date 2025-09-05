@@ -45,10 +45,10 @@ describe('Template X Promo', () => {
             customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
             behaviors: ['COPYABLE', 'still'],
-            _links: { 
+            _links: {
               'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
               'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image1.jpg' },
-              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component1' }
+              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component1' },
             },
           },
           {
@@ -59,10 +59,10 @@ describe('Template X Promo', () => {
             customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image2.jpg' },
             behaviors: ['COPYABLE', 'still'],
-            _links: { 
+            _links: {
               'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
               'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image2.jpg' },
-              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component2' }
+              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component2' },
             },
           },
           {
@@ -73,10 +73,10 @@ describe('Template X Promo', () => {
             customLinks: { branchUrl: 'https://express.adobe.com/edit3' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image3.jpg' },
             behaviors: ['COPYABLE', 'still'],
-            _links: { 
+            _links: {
               'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit3' },
               'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image3.jpg' },
-              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component3' }
+              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component3' },
             },
           },
         ],
@@ -103,7 +103,7 @@ describe('Template X Promo', () => {
    */
   it('should decorate the template-x-promo block without errors', async () => {
     expect(block).to.exist;
-    
+
     try {
       await decorate(block);
       // If we reach here, it didn't throw - that's good
