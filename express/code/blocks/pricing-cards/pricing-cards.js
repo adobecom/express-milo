@@ -303,6 +303,7 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
   ], getConfig());
   price.innerHTML = response.formatted;
   basePrice.innerHTML = response.formattedBP || '';
+  console.log(response);
   if (response.price?.length > 6) {
     price.classList.add('long-price');
     basePrice.classList.add('long-price');
