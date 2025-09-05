@@ -1,12 +1,25 @@
 /* Fresh custom carousel styles - no imports, all our own */
 
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 /* CSS Variables for maintainability */
 .template-x-promo {
   --template-spacing: 16px;
   --template-spacing-sm: 8px;
   --template-spacing-lg: 24px;
   --template-max-height: 340px;
-  --template-border-radius: 16px;
+  --template-border-radius: 8px;
   --template-border-radius-lg: 20px;
   --overlay-opacity: 0.95;
   --overlay-bg: rgba(255, 255, 255, var(--overlay-opacity));
@@ -142,7 +155,7 @@
     position: relative;
     width: 100%; /* Fill the available template space */
     aspect-ratio: 3/4; /* Maintain aspect ratio based on width */
-    border-radius: 16px;
+    border-radius: 8px;
     overflow: hidden;
   }
 
@@ -152,7 +165,7 @@
     max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
-    border-radius: 16px;
+    border-radius: 8px;
     background-color: #f0f0f0;
   }
 }
@@ -210,7 +223,7 @@
     position: relative;
     width: 100%; /* Full template width */
     aspect-ratio: 3/4; /* Maintain aspect ratio */
-    border-radius: 16px;
+    border-radius: 8px;
     overflow: hidden;
   }
 
@@ -220,7 +233,7 @@
     max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
-    border-radius: 16px;
+    border-radius: 8px;
     background-color: #f0f0f0;
   }
 }
@@ -268,7 +281,7 @@
 .template-x-promo .template .image-wrapper {
   position: relative;
   width: 100%;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -277,7 +290,7 @@
   height: auto; /* Allow natural height based on aspect ratio */
   object-fit: cover;
   display: block;
-  border-radius: 16px;
+  border-radius: 8px;
   /* Removed max-height constraint - let images size naturally to their content */
 }
 
@@ -291,7 +304,7 @@
   transform: translate(-50%, -50%); /* Perfect centering */
   padding: 6px;
   padding-bottom: 8px;
-  border-radius: 20px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -305,17 +318,29 @@
   pointer-events: none;
 }
 
-.template-x-promo .template:hover .button-container {
-  z-index: 2;
-  opacity: 1;
-  pointer-events: initial;
+/* Desktop: All templates can hover */
+@media (min-width: 768px) {
+  .template-x-promo .template:hover .button-container {
+    z-index: 2;
+    opacity: 1;
+    pointer-events: initial;
+  }
+}
+
+/* Mobile: Only current template can hover */
+@media (max-width: 767px) {
+  .template-x-promo .template.current-template:hover .button-container {
+    z-index: 2;
+    opacity: 1;
+    pointer-events: initial;
+  }
 }
 
 .template-x-promo .template .button-container .media-wrapper {
   position: relative; /* Let it be a flex child */
   flex: 1; /* Take up remaining space */
   pointer-events: none;
-  border-radius: 16px;
+  border-radius: 8px;
   overflow: hidden;
   z-index: 1; /* Show the image */
 }
@@ -324,7 +349,7 @@
   width: 100%;
   height: 90%;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: 8px;
   display: block;
   margin: 0;
 }
@@ -607,6 +632,20 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
+}
+
+/* Mobile carousel: disable hover overlay on prev/next templates to prevent truncation */
+@media (max-width: 767px) {
+  .template-x-promo.multiple-up .template.prev-template .button-container,
+  .template-x-promo.multiple-up .template.next-template .button-container {
+    display: none !important;
+  }
+
+  .template-x-promo.multiple-up .template.prev-template:hover .button-container,
+  .template-x-promo.multiple-up .template.next-template:hover .button-container {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 }
 
 /* One-up responsive styles (matching template-promo patterns) */
