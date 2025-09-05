@@ -596,7 +596,7 @@ export async function createCustomCarousel(block, templates) {
       // Filter to only main template images (exclude icons)
       const mainImages = Array.from(renderedImages).filter((img) => {
         const src = img.src || '';
-        
+
         // In test environment, be more permissive with URLs
         if (window.isTestEnv) {
           return !src.includes('.svg')
@@ -604,7 +604,7 @@ export async function createCustomCarousel(block, templates) {
                  && !src.includes('share-arrow')
                  && !src.includes('checkmark');
         }
-        
+
         // In production, enforce strict hostname validation
         try {
           const url = new URL(src);
@@ -808,17 +808,23 @@ export async function createCustomCarousel(block, templates) {
  * Main API-driven template handler
  */
 async function handleApiDrivenTemplates(block, apiUrl) {
-  const { templates } = await fetchDirectFromApiUrl(apiUrl);
+  try {
+    const { templates } = await fetchDirectFromApiUrl(apiUrl);
 
-  if (!templates || templates.length === 0) {
-    throw new Error('No valid templates found');
-  }
+    if (!templates || templates.length === 0) {
+      // Graceful degradation - no templates available
+      return;
+    }
 
-  // Route to appropriate handler
-  if (templates.length === 1) {
-    await handleOneUpFromApiData(block, templates[0]);
-  } else if (templates.length > 1) {
-    await createCustomCarousel(block, templates);
+    // Route to appropriate handler
+    if (templates.length === 1) {
+      await handleOneUpFromApiData(block, templates[0]);
+    } else if (templates.length > 1) {
+      await createCustomCarousel(block, templates);
+    }
+  } catch (error) {
+    // Graceful degradation - API error occurred
+    // Silently fail to avoid breaking the page
   }
 }
 
