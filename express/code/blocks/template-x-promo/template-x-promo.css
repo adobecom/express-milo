@@ -93,6 +93,16 @@
 
 /* Desktop (≥768px) - Simple flex container approach */
 @media (min-width: 768px) {
+  /* Reset mobile carousel min-width and override mobile styles */
+  .template {
+    min-width: unset;
+    position: relative;
+    flex: 1; /* Fluid - equal distribution of available space */
+    cursor: pointer;
+    box-sizing: border-box;
+    /* NO transition, scaling, or opacity changes on desktop */
+  }
+
   /* Block container handles padding */
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px; /* Block determines the padding */
@@ -143,14 +153,6 @@
     transition: min-height 0.3s ease;
   }
 
-  .template {
-    position: relative;
-    flex: 1; /* Fluid - equal distribution of available space */
-    cursor: pointer;
-    box-sizing: border-box;
-    /* NO transition, scaling, or opacity changes on desktop */
-  }
-
   .promo-image-wrapper {
     position: relative;
     width: 100%; /* Fill the available template space */
@@ -197,6 +199,7 @@
     position: relative;
     cursor: pointer;
     box-sizing: border-box;
+    min-width: 216px;
     transition: transform 0.3s ease, opacity 0.3s ease, flex 0.3s ease;
   }
 
@@ -232,6 +235,7 @@
     height: auto; /* Natural height for aspect ratio */
     max-height: var(--template-max-height);
     object-fit: cover;
+    object-position: top;
     display: block;
     border-radius: 8px;
     background-color: #f0f0f0;
@@ -703,5 +707,3 @@
     margin: auto !important;
   }
 }
-
-
