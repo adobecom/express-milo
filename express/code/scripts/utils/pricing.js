@@ -139,7 +139,7 @@ export async function formatPrice(price, currency) {
   Object.entries(customSymbols).forEach(([symbol, replacement]) => {
     formattedPrice = formattedPrice.replace(symbol, replacement);
   });
-
+  console.log(formattedPrice);
   return formattedPrice;
 }
 
