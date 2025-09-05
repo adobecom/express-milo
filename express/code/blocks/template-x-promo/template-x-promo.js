@@ -596,11 +596,16 @@ export async function createCustomCarousel(block, templates) {
       // Filter to only main template images (exclude icons)
       const mainImages = Array.from(renderedImages).filter((img) => {
         const src = img.src || '';
-        return src.includes('design-assets.adobeprojectm.com')
-               && !src.includes('.svg')
-               && !src.includes('premium')
-               && !src.includes('share-arrow')
-               && !src.includes('checkmark');
+        try {
+          const url = new URL(src);
+          return url.hostname === 'design-assets.adobeprojectm.com'
+                 && !src.includes('.svg')
+                 && !src.includes('premium')
+                 && !src.includes('share-arrow')
+                 && !src.includes('checkmark');
+        } catch {
+          return false; // Invalid URLs are rejected
+        }
       });
 
       const actualHeights = mainImages.map((img) => img.offsetHeight);
