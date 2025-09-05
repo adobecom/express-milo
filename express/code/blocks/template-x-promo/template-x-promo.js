@@ -7,10 +7,6 @@ let { createTag } = window; // Try to get it from window first
 let { getConfig } = window;
 let { replaceKey } = window;
 
-// Height is calculated once per carousel instance - no caching needed
-
-// Removed unused getStillWrapperIcons function
-
 /**
  * Extracts recipe parameters from DOM element
  */
@@ -164,10 +160,7 @@ async function createTemplateElement(templateData) {
     loading: 'lazy',
   });
 
-  // Add error handling and success logging
-  img.addEventListener('load', () => {
-  });
-
+  // Add error handling for failed image loads
   img.addEventListener('error', () => {
     // Fallback: show a placeholder
     img.style.backgroundColor = '#e0e0e0';
@@ -319,7 +312,6 @@ async function createTemplateElement(templateData) {
   };
 
   // Fix: Add mouseenter to the template element (visible), then apply to button-container
-
   templateEl.addEventListener('mouseenter', () => {
     // Simulate the event target being the button-container for template-x compatibility
     const fakeEvent = {
