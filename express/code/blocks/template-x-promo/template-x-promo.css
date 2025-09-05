@@ -56,6 +56,9 @@
   width: 100%;
   height: auto;
   display: block;
+  max-height: 335px;
+  object-fit: cover;
+  object-position: top;
 }
 
 .ax-template-x-promo.one-up .image-wrapper {
@@ -662,6 +665,10 @@
     box-sizing: border-box;
   }
 
+  .ax-template-x-promo.one-up img {
+    max-height: 549px;
+  }
+
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
     width: var(--ax-grid-8-col-width);
@@ -688,6 +695,10 @@
     width: var(--ax-grid-7-col-width) !important; /* Override collapsible-rows */
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter)) !important; /* Override collapsible-rows */
     box-sizing: border-box;
+  }
+
+  .ax-template-x-promo.one-up img {
+    max-height: 778px;
   }
 
   .ax-template-x-promo.one-up .collapsible-rows {
