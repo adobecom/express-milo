@@ -34,7 +34,7 @@ test.describe('Express Floating Button Block test suite', () => {
 
     await test.step('Verify hidden state is removed from accessibility tree', async () => {
       // Scroll footer into view so the CTA hides
-      await page.locator('footer').scrollIntoViewIfNeeded();
+      await page.locator('.global-footer').scrollIntoViewIfNeeded();
       const wrapper = floatingButton.section;
       await expect(wrapper).toHaveClass(/floating-button--hidden/);
       await expect(wrapper).toHaveAttribute('aria-hidden', 'true');
