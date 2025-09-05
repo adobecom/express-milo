@@ -7,8 +7,7 @@ let { createTag } = window; // Try to get it from window first
 let { getConfig } = window;
 let { replaceKey } = window;
 
-// Global height cache to survive DOM changes
-window.templateXPromoHeightCache = window.templateXPromoHeightCache || {};
+// Height is calculated once per carousel instance - no caching needed
 
 // Removed unused getStillWrapperIcons function
 
