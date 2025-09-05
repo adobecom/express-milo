@@ -319,7 +319,19 @@ function updateActiveTOCLink(toc) {
   // Get TOC title position to use as the offset for active state
   const tocTitle = toc.querySelector('.toc-title');
   const tocTitleRect = tocTitle ? tocTitle.getBoundingClientRect() : toc.getBoundingClientRect();
-  const offset = tocTitleRect.top + 20; // Small buffer for better UX
+
+  // Special handling for mobile/tablet sticky mode
+  const isSticky = toc.classList.contains('toc-mobile-fixed');
+  let offset;
+
+  if (isSticky && window.innerWidth < 1024) {
+    // When sticky on mobile/tablet, look for header positioned just below the sticky TOC
+    const stickyBottom = tocTitleRect.bottom + 20; // Bottom of sticky TOC + buffer
+    offset = stickyBottom;
+  } else {
+    // Normal desktop behavior - align with TOC title
+    offset = tocTitleRect.top + 20; // Small buffer for better UX
+  }
 
   let activeHeader = null;
   let minDistance = Infinity;
@@ -330,20 +342,43 @@ function updateActiveTOCLink(toc) {
     rect: header.getBoundingClientRect(),
   }));
 
-  headerRects.forEach(({ element, rect }) => {
-    const distance = Math.abs(rect.top - offset);
+  if (isSticky && window.innerWidth < 1024) {
+    // For sticky mode: find the header closest to being just below the sticky TOC
+    headerRects.forEach(({ element, rect }) => {
+      const distance = rect.top - offset;
 
-    if (rect.top <= offset && distance < minDistance) {
-      minDistance = distance;
-      activeHeader = element;
-    }
-  });
+      // Header should be below the sticky TOC and closest to it
+      if (distance >= 0 && distance < minDistance) {
+        minDistance = distance;
+        activeHeader = element;
+      }
+    });
+  } else {
+    // Normal desktop behavior: find header above/at the offset position
+    headerRects.forEach(({ element, rect }) => {
+      const distance = Math.abs(rect.top - offset);
 
-  // If no header was found above the offset (TOC stopped at bottom), use the last visible header
+      if (rect.top <= offset && distance < minDistance) {
+        minDistance = distance;
+        activeHeader = element;
+      }
+    });
+  }
+
+  // If no header was found, use fallback logic
   if (!activeHeader) {
-    const visibleHeaders = headerRects.filter(({ rect }) => rect.top < window.innerHeight);
-    if (visibleHeaders.length > 0) {
-      activeHeader = visibleHeaders[visibleHeaders.length - 1].element;
+    if (isSticky && window.innerWidth < 1024) {
+      // For sticky mode: if no header below sticky TOC, use the last header above it
+      const headersAboveSticky = headerRects.filter(({ rect }) => rect.top < offset);
+      if (headersAboveSticky.length > 0) {
+        activeHeader = headersAboveSticky[headersAboveSticky.length - 1].element;
+      }
+    } else {
+      // Normal desktop behavior: use the last visible header
+      const visibleHeaders = headerRects.filter(({ rect }) => rect.top < window.innerHeight);
+      if (visibleHeaders.length > 0) {
+        activeHeader = visibleHeaders[visibleHeaders.length - 1].element;
+      }
     }
   }
 
