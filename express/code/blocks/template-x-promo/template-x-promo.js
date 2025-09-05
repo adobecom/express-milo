@@ -366,275 +366,13 @@ async function createTemplateElement(templateData) {
   return templateEl;
 }
 
-// ✅ REMOVED: Old setCarouselHeight function - using API dimensions now
-// The old function had complex image loading, timeouts, and Promise.all logic
-// Now we calculate heights directly from API thumbnail dimensions
-/*
-function setCarouselHeight(carouselWrapper, templateElements, block) {
-  const cacheKey = `${window.location.pathname}-${block.parentElement.className}-${templateElements.length}`;
-
-  // eslint-disable-next-line no-console
-  console.log('🔍 setCarouselHeight called for:', cacheKey, 'with templates:', templateElements.length);
-
-  // Use cached height only if it's from real measurements (not timeouts)
-  if (carouselWrapper.dataset.cachedHeight
-      && carouselWrapper.style.minHeight !== '200px'
-      && carouselWrapper.style.minHeight !== ''
-      && carouselWrapper.dataset.realMeasurement === 'true') {
-    // eslint-disable-next-line no-console
-    console.log('✅ Using cached real measurement:', carouselWrapper.dataset.cachedHeight);
-    return; // Height already set from real measurement, don't recalculate
-  }
-
-  // Debug: Check why four-up might be exiting early
-  // eslint-disable-next-line no-console
-  console.log('🔍 Early return check:', {
-    cachedHeight: carouselWrapper.dataset.cachedHeight,
-    minHeight: carouselWrapper.style.minHeight,
-    shouldExit: carouselWrapper.dataset.cachedHeight && carouselWrapper.style.minHeight !== '200px' && carouselWrapper.style.minHeight !== '',
-  });
-
-  // If we have a cached height and current is corrupted, restore from cache
-  if (carouselWrapper.dataset.cachedHeight && carouselWrapper.style.minHeight === '200px') {
-    // eslint-disable-next-line no-console
-    console.log('🔧 Restoring from cache:', carouselWrapper.dataset.cachedHeight);
-    carouselWrapper.style.setProperty('min-height', carouselWrapper.dataset.cachedHeight, 'important');
-
-    // Also restore viewport and track
-    const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-    if (viewport) {
-      viewport.style.setProperty('min-height', carouselWrapper.dataset.cachedHeight, 'important');
-    }
-    const track = carouselWrapper.querySelector('.promo-carousel-track');
-    if (track) {
-      track.style.setProperty('min-height', carouselWrapper.dataset.cachedHeight, 'important');
-    }
-    return;
-  }
-
-  // Debug when we detect corruption
-  if (carouselWrapper.style.minHeight === '200px') {
-    // eslint-disable-next-line no-console
-    console.log('🚨 200px corruption detected! Recalculating container height...');
-    // eslint-disable-next-line no-console
-    console.trace('🔍 Stack trace for 200px corruption:');
-  }
-
-  // Wait for images to load and get the maximum height
-  // eslint-disable-next-line no-console
-  console.log('🔍 Starting image load promises for:', cacheKey, 'templates:', templateElements.length);
-
-  const imageLoadPromises = templateElements.map((template, index) => {
-    const img = template.querySelector('img');
-    if (!img) {
-      // eslint-disable-next-line no-console
-      console.log(`🔍 No image found in template ${index} for:`, cacheKey);
-      return Promise.resolve(0);
-    }
-
-    // eslint-disable-next-line no-console
-    console.log(`🔍 Processing image ${index} for:`, cacheKey, 'src:', img.src, 'complete:', img.complete, 'naturalWidth:', img.naturalWidth, 'naturalHeight:', img.naturalHeight, 'offsetHeight:', img.offsetHeight);
-
-    return new Promise((resolve) => {
-      // Add timeout to prevent hanging promises
-      const timeout = setTimeout(() => {
-        // eslint-disable-next-line no-console
-        console.log(`⏰ Image ${index} timeout for:`, cacheKey, 'final state - complete:', img.complete, 'naturalWidth:', img.naturalWidth, 'naturalHeight:', img.naturalHeight, 'offsetHeight:', img.offsetHeight);
-
-        // Try to use natural dimensions even on timeout if available
-        const height = img.naturalHeight || img.offsetHeight || 200;
-        resolve(height);
-      }, 5000); // 5 second timeout
-
-      // Check if image has natural dimensions (loaded)
-      if (img.complete && img.naturalWidth > 0) {
-        clearTimeout(timeout);
-        // Use natural height if available, fallback to offset height
-        const height = img.naturalHeight || img.offsetHeight || 200;
-        // eslint-disable-next-line no-console
-        console.log(`✅ Image ${index} already complete for:`, cacheKey, 'naturalHeight:', img.naturalHeight, 'offsetHeight:', img.offsetHeight, 'using:', height);
-        resolve(height);
-      } else {
-        // eslint-disable-next-line no-console
-        console.log(`⏳ Image ${index} waiting to load for:`, cacheKey, 'setting up listeners...');
-
-        // Wait for image to load
-        const loadHandler = () => {
-          clearTimeout(timeout);
-          // Prefer natural height for more accurate dimensions
-          const height = img.naturalHeight || img.offsetHeight || 200;
-          // eslint-disable-next-line no-console
-          console.log(`✅ Image ${index} loaded via event for:`, cacheKey, 'naturalHeight:', img.naturalHeight, 'offsetHeight:', img.offsetHeight, 'using:', height);
-          resolve(height);
-        };
-
-        const errorHandler = () => {
-          clearTimeout(timeout);
-          // eslint-disable-next-line no-console
-          console.log(`❌ Image ${index} error for:`, cacheKey, 'falling back to 200px');
-          resolve(200);
-        };
-
-        img.addEventListener('load', loadHandler, { once: true });
-        img.addEventListener('error', errorHandler, { once: true });
-
-        // Also check periodically in case events don't fire
-        const checkInterval = setInterval(() => {
-          if (img.complete && img.naturalWidth > 0) {
-            clearTimeout(timeout);
-            clearInterval(checkInterval);
-            const height = img.naturalHeight || img.offsetHeight || 200;
-            // eslint-disable-next-line no-console
-            console.log(`✅ Image ${index} detected via polling for:`, cacheKey, 'naturalHeight:', img.naturalHeight, 'offsetHeight:', img.offsetHeight, 'using:', height);
-            resolve(height);
-          }
-        }, 100); // Check every 100ms
-      }
-    });
-  });
-
-  Promise.all(imageLoadPromises).then((heights) => {
-    // eslint-disable-next-line no-console
-    console.log('🔍 Promise.all resolved for:', cacheKey, 'with heights:', heights);
-
-    // Check if any images failed or timed out (200px fallback)
-    const validHeights = heights.filter((h) => h > 200);
-    const hasTimeouts = heights.some((h) => h === 200);
-
-    if (hasTimeouts && validHeights.length === 0) {
-      // eslint-disable-next-line no-console
-      console.log('⚠️ All images timed out for:', cacheKey, 'skipping height management - let carousel size naturally');
-
-      // Don't cache timeouts, don't apply any heights - just let it size naturally
-      // This prevents constant retries while allowing natural sizing
-      return;
-    }
-
-    // Define max-height limits for mobile vs desktop
-    const isMobile = window.innerWidth < 768;
-    const maxHeightLimit = isMobile ? 400 : 500; // Mobile: 400px, Desktop: 500px
-
-    // Calculate actual container height (min of tallest image vs limit)
-    const tallestImageHeight = Math.max(...heights, 200);
-    const containerHeight = Math.min(tallestImageHeight, maxHeightLimit);
-
-    // Debug: Log height calculation details
-    // eslint-disable-next-line no-console
-    console.log('🔍 Height calculation:', {
-      heights,
-      tallestImageHeight,
-      maxHeightLimit,
-      containerHeight,
-      isMobile,
-      templateCount: templateElements.length,
-      imageDetails: templateElements.map((t) => {
-        const img = t.querySelector('img');
-        return img ? `${img.offsetHeight}px (${img.complete ? 'loaded' : 'loading'})` : 'no-img';
-      }),
-    });
-
-    // Set container height to prevent jumping
-    carouselWrapper.style.setProperty('min-height', `${containerHeight}px`, 'important');
-
-    // Cache the calculated height globally (survives DOM changes)
-    window.templateXPromoHeightCache[cacheKey] = `${containerHeight}px`;
-    carouselWrapper.dataset.heightCalculated = 'true';
-    carouselWrapper.dataset.cachedHeight = `${containerHeight}px`;
-    carouselWrapper.dataset.realMeasurement = 'true'; // Mark as real measurement
-    carouselWrapper.dataset.cacheKey = cacheKey;
-
-    // eslint-disable-next-line no-console
-    console.log('💾 Global cache set:', cacheKey, '=', window.templateXPromoHeightCache[cacheKey]);
-
-    // Set max-height on images to crop very tall ones
-    templateElements.forEach((template) => {
-      const img = template.querySelector('img');
-      if (img) {
-        img.style.setProperty('max-height', `${maxHeightLimit}px`, 'important');
-        img.style.setProperty('object-fit', 'cover', 'important');
-      }
-    });
-
-    // Also apply to viewport and track for consistency
-    const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-    if (viewport) {
-      viewport.style.setProperty('min-height', `${containerHeight}px`, 'important');
-    }
-
-    const track = carouselWrapper.querySelector('.promo-carousel-track');
-    if (track) {
-      track.style.setProperty('min-height', `${containerHeight}px`, 'important');
-    }
-
-    carouselWrapper.dataset.heightCalculated = 'true'; // Mark as calculated
-  }).catch((error) => {
-    // eslint-disable-next-line no-console
-    console.error('🚨 Promise.all failed for:', cacheKey, 'error:', error);
-  });
-
-  // Also handle ResizeObserver for responsive scenarios
-  if (window.ResizeObserver) {
-    const resizeObserver = new ResizeObserver(() => {
-      // Recalculate on resize
-      const currentHeights = templateElements.map((template) => {
-        const img = template.querySelector('img');
-        return img ? img.offsetHeight : 200;
-      });
-
-      const isMobile = window.innerWidth < 768;
-      const maxHeightLimit = isMobile ? 400 : 500;
-      const tallestImageHeight = Math.max(...currentHeights, 200);
-      const containerHeight = Math.min(tallestImageHeight, maxHeightLimit);
-
-      // Update container heights
-      carouselWrapper.style.setProperty('min-height', `${containerHeight}px`, 'important');
-
-      const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-      if (viewport) {
-        viewport.style.setProperty('min-height', `${containerHeight}px`, 'important');
-      }
-
-      const track = carouselWrapper.querySelector('.promo-carousel-track');
-      if (track) {
-        track.style.setProperty('min-height', `${containerHeight}px`, 'important');
-      }
-
-      // Update image max-heights
-      templateElements.forEach((template) => {
-        const img = template.querySelector('img');
-        if (img) {
-          img.style.setProperty('max-height', `${maxHeightLimit}px`, 'important');
-          img.style.setProperty('object-fit', 'cover', 'important');
-        }
-      });
-    });
-
-    templateElements.forEach((template) => {
-      const img = template.querySelector('img');
-      if (img) resizeObserver.observe(img);
-    });
-  }
-}
-*/
+// Height management now uses API thumbnail dimensions for fast, accurate calculations
 
 /**
  * Creates our custom carousel using the functional carousel module
  */
 export async function createCustomCarousel(block, templates) {
-  // 🔍 DEBUG: Log all template thumbnail data from API
-  // eslint-disable-next-line no-console
-  console.log('🔍 API Template Data Analysis:', templates.map((template, index) => ({
-    index,
-    id: template.id?.substring(template.id.lastIndexOf(':') + 1) || 'no-id',
-    title: template['dc:title']?.['i-default'] || 'no-title',
-    thumbnailData: template.pages?.[0]?.rendition?.image?.thumbnail || 'NO THUMBNAIL DATA',
-    taskSize: template.pages?.[0]?.task?.size?.name || 'NO TASK SIZE',
-    // Full pages structure for debugging
-    pagesStructure: template.pages?.map((page) => ({
-      task: page.task,
-      rendition: page.rendition?.image?.thumbnail,
-    })) || 'NO PAGES',
-  })));
+  // Template analysis complete - API data loaded
 
   const parent = block.parentElement;
   parent.classList.add('multiple-up');
@@ -658,9 +396,18 @@ export async function createCustomCarousel(block, templates) {
     );
 
     // Create carousel structure (back to original working implementation)
-    const carouselWrapper = createTag('div', { class: 'promo-carousel-wrapper' });
+    const carouselWrapper = createTag('div', {
+      class: 'promo-carousel-wrapper',
+      role: 'region',
+      'aria-label': 'Template carousel',
+      tabindex: '0',
+    });
     const carouselTrack = createTag('div', { class: 'promo-carousel-track' });
-    const carouselViewport = createTag('div', { class: 'promo-carousel-viewport' });
+    const carouselViewport = createTag('div', {
+      class: 'promo-carousel-viewport',
+      'aria-live': 'polite',
+      'aria-atomic': 'false',
+    });
 
     // Add templates to track
     templateElements.forEach((template) => {
@@ -678,7 +425,8 @@ export async function createCustomCarousel(block, templates) {
 
     const prevButton = createTag('button', {
       class: 'promo-nav-btn promo-prev-btn',
-      'aria-label': 'Previous templates',
+      'aria-label': 'View previous templates',
+      'aria-describedby': 'carousel-status',
     });
     prevButton.innerHTML = `
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -689,7 +437,8 @@ export async function createCustomCarousel(block, templates) {
 
     const nextButton = createTag('button', {
       class: 'promo-nav-btn promo-next-btn',
-      'aria-label': 'Next templates',
+      'aria-label': 'View next templates',
+      'aria-describedby': 'carousel-status',
     });
     nextButton.innerHTML = `
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -698,16 +447,31 @@ export async function createCustomCarousel(block, templates) {
       </svg>
     `;
 
-    navContainer.append(prevButton, nextButton);
-    carouselWrapper.append(navContainer);
-
-    // Check if we're on mobile
-    // Mobile: 3-up carousel logic, Desktop: static all templates
+    // Initialize carousel state variables first
     let currentIndex = 0;
     const elementsCount = templateElements.length;
 
-    // 🔒 CALCULATE HEIGHT ONCE - NEVER CHANGE IT!
+    // Add carousel status for screen readers
+    const statusElement = createTag('div', {
+      id: 'carousel-status',
+      class: 'sr-only',
+      'aria-live': 'polite',
+      'aria-atomic': 'true',
+    });
+    statusElement.textContent = `Showing template ${currentIndex + 1} of ${elementsCount}`;
+
+    navContainer.append(prevButton, nextButton);
+    carouselWrapper.append(navContainer, statusElement);
+
+    // 🔒 CALCULATE HEIGHT ONCE - ONLY FOR MOBILE CAROUSEL!
     const calculateFixedHeight = () => {
+      const isMobile = window.innerWidth < 768;
+
+      // Desktop: Let images size naturally with CSS max-height constraints
+      if (!isMobile) {
+        return null; // No fixed height needed - let CSS handle it
+      }
+
       const templateHeights = templates.map((template) => {
         // Get height from API data (thumbnail dimensions)
         const thumbnailHeight = template.pages?.[0]?.rendition?.image?.thumbnail?.height;
@@ -717,16 +481,27 @@ export async function createCustomCarousel(block, templates) {
           // Scale to our actual container width based on aspect ratio
           const aspectRatio = thumbnailHeight / thumbnailWidth;
           // Real container widths based on CSS and template count
-          const isMobile = window.innerWidth < 768;
-          const templateCount = templates.length;
+          const currentTemplateCount = templates.length;
 
           let containerWidth;
           if (isMobile) {
             // Mobile: 50% width with gaps, but constrained by viewport
-            containerWidth = templateCount >= 4 ? 120 : templateCount === 3 ? 140 : 160;
+            if (currentTemplateCount >= 4) {
+              containerWidth = 120;
+            } else if (currentTemplateCount === 3) {
+              containerWidth = 140;
+            } else {
+              containerWidth = 160;
+            }
+          } else if (currentTemplateCount >= 4) {
+            // Desktop 4-up: (1200px - 3*16px gaps) / 4 = 288px
+            containerWidth = 288;
+          } else if (currentTemplateCount === 3) {
+            // Desktop 3-up: (1200px - 2*16px gaps) / 3 = 389px
+            containerWidth = 389;
           } else {
-            // Desktop: divided evenly with gaps
-            containerWidth = templateCount >= 4 ? 180 : templateCount === 3 ? 240 : 320;
+            // Desktop 2-up: (1200px - 1*16px gap) / 2 = 592px
+            containerWidth = 592;
           }
 
           const calculatedHeight = Math.round(containerWidth * aspectRatio);
@@ -740,15 +515,24 @@ export async function createCustomCarousel(block, templates) {
         if (taskSize) {
           const [width, height] = taskSize.match(/(\d+)x(\d+)px/)?.slice(1, 3) || [];
           if (width && height) {
-            const aspectRatio = parseInt(height) / parseInt(width);
-            const isMobile = window.innerWidth < 768;
-            const templateCount = templates.length;
+            const aspectRatio = parseInt(height, 10) / parseInt(width, 10);
+            const taskTemplateCount = templates.length;
 
             let containerWidth;
             if (isMobile) {
-              containerWidth = templateCount >= 4 ? 120 : templateCount === 3 ? 140 : 160;
+              if (taskTemplateCount >= 4) {
+                containerWidth = 120;
+              } else if (taskTemplateCount === 3) {
+                containerWidth = 140;
+              } else {
+                containerWidth = 160;
+              }
+            } else if (taskTemplateCount >= 4) {
+              containerWidth = 288; // Desktop 4-up: (1200px - 48px) / 4
+            } else if (taskTemplateCount === 3) {
+              containerWidth = 389; // Desktop 3-up: (1200px - 32px) / 3
             } else {
-              containerWidth = templateCount >= 4 ? 180 : templateCount === 3 ? 240 : 320;
+              containerWidth = 592; // Desktop 2-up: (1200px - 16px) / 2
             }
 
             const calculatedHeight = Math.round(containerWidth * aspectRatio);
@@ -758,39 +542,33 @@ export async function createCustomCarousel(block, templates) {
         }
 
         // Ultimate fallback: reasonable height based on layout
-        const isMobile = window.innerWidth < 768;
-        const templateCount = templates.length;
-        return isMobile
-          ? (templateCount >= 4 ? 240 : templateCount === 3 ? 280 : 320)
-          : (templateCount >= 4 ? 180 : templateCount === 3 ? 240 : 320);
+        const fallbackTemplateCount = templates.length;
+
+        if (isMobile) {
+          if (fallbackTemplateCount >= 4) {
+            return 240;
+          }
+          if (fallbackTemplateCount === 3) {
+            return 280;
+          }
+          return 320;
+        }
+        // Desktop: grid layout calculations
+        if (fallbackTemplateCount >= 4) {
+          return 240; // Cap at max-height for 4-up
+        }
+        if (fallbackTemplateCount === 3) {
+          return 360; // Cap at max-height for 3-up
+        }
+        return 500; // Cap at desktop max for 1-up/2-up
       });
 
       // Use the tallest template height OR max limit - NEVER EXCEED 400px!
-      const isMobile = window.innerWidth < 768;
       const maxAllowed = isMobile ? 400 : 500;
       const calculatedMax = Math.max(...templateHeights);
       const finalHeight = Math.min(calculatedMax, maxAllowed);
 
-      // eslint-disable-next-line no-console
-      console.log('🔒 FIXED HEIGHT CALCULATED ONCE:', {
-        templateHeights,
-        calculatedMax,
-        maxAllowed,
-        finalHeight,
-        isMobile,
-        message: 'This height will NEVER change during navigation!',
-        // Debug the individual template calculations
-        templateDebug: templates.map((template, index) => {
-          const thumbnailHeight = template.pages?.[0]?.rendition?.image?.thumbnail?.height;
-          const thumbnailWidth = template.pages?.[0]?.rendition?.image?.thumbnail?.width;
-          return {
-            index,
-            thumbnailHeight,
-            thumbnailWidth,
-            calculatedHeight: templateHeights[index],
-          };
-        }),
-      });
+      // Height calculation complete - using tallest template for consistent layout
 
       return finalHeight;
     };
@@ -798,15 +576,8 @@ export async function createCustomCarousel(block, templates) {
     // Calculate the fixed height ONCE using ACTUAL rendered heights
     let FIXED_CONTAINER_HEIGHT = calculateFixedHeight();
 
-    // 🎯 BETTER: Wait for images to render, then use their ACTUAL heights
+    // Wait for images to render, then use their actual heights if taller than calculated
     setTimeout(() => {
-      // eslint-disable-next-line no-console
-      console.log('⏰ Timeout fired - checking actual heights...');
-
-      // Debug: Check what's actually in the carousel track
-      // eslint-disable-next-line no-console
-      console.log('🔍 DEBUG: carouselTrack HTML structure:', carouselTrack.innerHTML.substring(0, 500));
-
       // Try multiple selectors to find images
       const selectors = [
         '.template .promo-image-wrapper img',
@@ -819,8 +590,6 @@ export async function createCustomCarousel(block, templates) {
       let renderedImages = [];
       for (const selector of selectors) {
         renderedImages = carouselTrack.querySelectorAll(selector);
-        // eslint-disable-next-line no-console
-        console.log(`🔍 Selector "${selector}" found:`, renderedImages.length, 'images');
         if (renderedImages.length > 0) break;
       }
 
@@ -834,72 +603,33 @@ export async function createCustomCarousel(block, templates) {
                && !src.includes('checkmark');
       });
 
-      const actualHeights = mainImages.map((img, index) => {
-        const height = img.offsetHeight;
-        // eslint-disable-next-line no-console
-        console.log(`🔍 Main template image ${index} height:`, height, 'src:', img?.src?.substring(img.src.lastIndexOf('/') + 1) || 'no-src');
-        return height;
-      });
-
-      // eslint-disable-next-line no-console
-      console.log('📊 All actual heights:', actualHeights);
+      const actualHeights = mainImages.map((img) => img.offsetHeight);
 
       if (actualHeights.some((h) => h > 0)) {
         const tallestActualHeight = Math.max(...actualHeights);
 
-        // eslint-disable-next-line no-console
-        console.log('📏 ACTUAL vs CALCULATED heights:', {
-          calculated: FIXED_CONTAINER_HEIGHT,
-          actualHeights,
-          tallestActual: tallestActualHeight,
-          shouldUseActual: tallestActualHeight > FIXED_CONTAINER_HEIGHT,
-        });
-
-        // If actual height is taller, use that instead
-        if (tallestActualHeight > FIXED_CONTAINER_HEIGHT) {
+        // If actual height is taller, use that instead (mobile only)
+        if (FIXED_CONTAINER_HEIGHT !== null && tallestActualHeight > FIXED_CONTAINER_HEIGHT) {
           FIXED_CONTAINER_HEIGHT = tallestActualHeight;
 
           const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
           if (viewport) {
             viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
             viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-            // eslint-disable-next-line no-console
-            console.log('🔄 VIEWPORT HEIGHT UPDATED to actual:', FIXED_CONTAINER_HEIGHT, 'px');
           }
         }
       }
     }, 200);
 
-    // 🔒 SET VIEWPORT HEIGHT ONCE - NEVER TOUCH AGAIN!
+    // Set viewport height once - only for mobile carousel
     const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-    if (viewport) {
-      // eslint-disable-next-line no-console
-      console.log('🔍 BEFORE setting viewport - wrapper natural height:', carouselWrapper.offsetHeight, 'px');
-
+    if (viewport && FIXED_CONTAINER_HEIGHT !== null) {
       viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
       viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-
-      // eslint-disable-next-line no-console
-      console.log('🔒 VIEWPORT HEIGHT SET ONCE:', FIXED_CONTAINER_HEIGHT, 'px - will NEVER be touched again!');
-
-      // Double-check what actually got set
-      // eslint-disable-next-line no-console
-      console.log('🔍 VERIFY: viewport.style.height =', viewport.style.height);
-
-      // Also check wrapper height after viewport is set
-      setTimeout(() => {
-        // eslint-disable-next-line no-console
-        console.log('🔍 AFTER timeout - wrapper height:', carouselWrapper.offsetHeight, 'viewport height:', viewport.offsetHeight);
-      }, 100);
     }
 
     const updateCarouselDisplay = () => {
-      // 🚫 DO NOT TOUCH HEIGHT! Only update content!
-
-      // eslint-disable-next-line no-console
-      console.log('📋 Navigation update - HEIGHT NOT TOUCHED, only content updated');
-
-      // Clear track and update content (NO HEIGHT MANIPULATION!)
+      // Only update content - height remains fixed
       carouselTrack.innerHTML = '';
 
       if (window.innerWidth < 768) {
@@ -942,35 +672,54 @@ export async function createCustomCarousel(block, templates) {
       currentIndex = (currentIndex + 1) % templateCount;
       updateCarouselDisplay();
 
-      // Immediate fix for 200px corruption
-      setTimeout(() => {
-        if (carouselWrapper.style.minHeight === '200px') {
-          // eslint-disable-next-line no-console
-          console.log('🔧 Emergency fix: 200px detected after moveNext, forcing recalculation');
-          carouselWrapper.dataset.heightCalculated = ''; // Force recalculation
-          // Height already managed in updateCarouselDisplay
-        }
-      }, 10);
+      // Update status for screen readers
+      statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
+
+      // Note: Height is now fixed and should never change
     };
 
     const movePrev = () => {
       currentIndex = (currentIndex - 1 + templateCount) % templateCount;
       updateCarouselDisplay();
 
-      // Immediate fix for 200px corruption
-      setTimeout(() => {
-        if (carouselWrapper.style.minHeight === '200px') {
-          // eslint-disable-next-line no-console
-          console.log('🔧 Emergency fix: 200px detected after movePrev, forcing recalculation');
-          carouselWrapper.dataset.heightCalculated = ''; // Force recalculation
-          // Height already managed in updateCarouselDisplay
-        }
-      }, 10);
+      // Update status for screen readers
+      statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
+
+      // Note: Height is now fixed and should never change
     };
 
     // Add event listeners
     nextButton.addEventListener('click', moveNext);
     prevButton.addEventListener('click', movePrev);
+
+    // Keyboard navigation support
+    carouselWrapper.addEventListener('keydown', (e) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          e.preventDefault();
+          movePrev();
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          moveNext();
+          break;
+        case 'Home':
+          e.preventDefault();
+          currentIndex = 0;
+          updateCarouselDisplay();
+          statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
+          break;
+        case 'End':
+          e.preventDefault();
+          currentIndex = templateCount - 1;
+          updateCarouselDisplay();
+          statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
+          break;
+        default:
+          // No action needed for other keys
+          break;
+      }
+    });
 
     // Touch/swipe support
     let startX = 0;
