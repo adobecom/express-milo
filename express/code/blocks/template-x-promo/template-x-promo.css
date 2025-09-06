@@ -56,7 +56,7 @@
   width: 100%;
   height: auto;
   display: block;
-  max-height: 335px;
+  aspect-ratio: 1/1;
   object-fit: cover;
   object-position: top;
 }
@@ -687,9 +687,6 @@
     box-sizing: border-box;
   }
 
-  .ax-template-x-promo.one-up img {
-    max-height: 549px;
-  }
 
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
@@ -719,9 +716,6 @@
     box-sizing: border-box;
   }
 
-  .ax-template-x-promo.one-up img {
-    max-height: 778px;
-  }
 
   .ax-template-x-promo.one-up .collapsible-rows {
     width: unset !important; /* Force override */
