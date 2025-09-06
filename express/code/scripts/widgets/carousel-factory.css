@@ -1,0 +1,269 @@
+/**
+ * Carousel Factory CSS - Reusable Carousel Styles
+ * Universal styles for carousel components created by the factory
+ * Focus: Semantic, accessible, responsive design
+ */
+
+/* ========================================
+   CORE CAROUSEL STRUCTURE
+   ======================================== */
+
+/* Main carousel wrapper (semantic section) */
+.promo-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Viewport for template display */
+.promo-carousel-viewport {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Track that holds templates */
+.promo-carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform var(--carousel-transition-speed, 0.3s) ease-in-out;
+  gap: var(--carousel-gap, 8px);
+}
+
+/* ========================================
+   NAVIGATION CONTROLS
+   ======================================== */
+
+/* Navigation container (semantic nav) */
+.promo-nav-controls {
+  position: absolute;
+  bottom: var(--carousel-nav-bottom, 24px);
+  right: var(--carousel-nav-right, 24px);
+  display: none; /* Hidden by default, shown on mobile */
+  gap: var(--carousel-nav-gap, 8px);
+  z-index: var(--carousel-nav-z, 3);
+}
+
+/* Navigation buttons */
+.promo-nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: 
+    transform var(--carousel-transition-speed, 0.3s) ease,
+    box-shadow var(--carousel-transition-speed, 0.3s) ease;
+}
+
+.promo-nav-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.promo-nav-btn:active {
+  transform: scale(0.95);
+}
+
+.promo-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* SVG icons inside buttons */
+.promo-nav-btn svg {
+  display: block;
+  pointer-events: none;
+}
+
+/* ========================================
+   RESPONSIVE BEHAVIOR
+   ======================================== */
+
+/* Desktop (768px+): Static grid layout */
+@media (min-width: 768px) {
+  .promo-carousel-track {
+    display: flex;
+    flex-wrap: wrap;
+    transform: none !important; /* Override any carousel transforms */
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  
+  .promo-nav-controls {
+    display: none !important; /* Always hidden on desktop */
+  }
+}
+
+/* Mobile (≤767px): Carousel behavior */
+@media (max-width: 767px) {
+  .promo-carousel-track {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+  
+  .promo-nav-controls {
+    display: flex; /* Show navigation on mobile */
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+   ======================================== */
+
+/* Screen reader only content */
+.carousel-factory .sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip link for keyboard users */
+.carousel-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--carousel-focus-color, #0066CC);
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 9999;
+  border-radius: 4px;
+}
+
+.carousel-skip-link:focus {
+  left: 0;
+  clip: auto;
+  width: auto;
+  height: auto;
+}
+
+/* Focus indicators for all interactive elements */
+.promo-carousel-wrapper button:focus-visible,
+.promo-carousel-wrapper a:focus-visible,
+.promo-carousel-wrapper [tabindex="0"]:focus-visible {
+  outline: var(--carousel-focus-width, 2px) solid var(--carousel-focus-color, #0066CC);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Enhanced focus for navigation buttons */
+.promo-nav-btn:focus-visible {
+  outline: var(--carousel-focus-width, 2px) solid var(--carousel-focus-color, #0066CC);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .promo-nav-btn {
+    border: 2px solid ButtonText;
+    background: ButtonFace;
+  }
+  
+  .promo-nav-btn svg {
+    filter: contrast(2);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .promo-carousel-wrapper * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  
+  .promo-carousel-track {
+    transform: none !important;
+  }
+  
+  .promo-nav-btn {
+    transition: none !important;
+  }
+}
+
+/* Color scheme support */
+@media (prefers-color-scheme: dark) {
+  .promo-carousel-wrapper {
+    --carousel-focus-color: #66B3FF;
+  }
+}
+
+/* Enhanced touch targets for mobile */
+@media (max-width: 767px) {
+  .promo-nav-btn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* ========================================
+   CSS CUSTOM PROPERTIES (THEMING)
+   ======================================== */
+
+.promo-carousel-wrapper {
+  /* Layout */
+  --carousel-gap: 8px;
+  --carousel-nav-bottom: 24px;
+  --carousel-nav-right: 24px;
+  --carousel-nav-gap: 24px;
+  
+  /* Timing */
+  --carousel-transition-speed: 0.3s;
+  
+  /* Z-index layers */
+  --carousel-nav-z: 3;
+  
+  /* Accessibility */
+  --carousel-focus-color: #0066CC;
+  --carousel-focus-width: 2px;
+}
+
+/* ========================================
+   TEMPLATE POSITIONING CLASSES
+   ======================================== */
+
+/* Mobile carousel positioning classes */
+@media (max-width: 767px) {
+  .promo-carousel-track .prev-template {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+  
+  .promo-carousel-track .current-template {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .promo-carousel-track .next-template {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+}
+
+/* Smooth transitions for template states */
+.promo-carousel-track > * {
+  transition: 
+    opacity var(--carousel-transition-speed, 0.3s) ease,
+    transform var(--carousel-transition-speed, 0.3s) ease;
+}
+
+/* Respect reduced motion for template transitions */
+@media (prefers-reduced-motion: reduce) {
+  .promo-carousel-track > * {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
