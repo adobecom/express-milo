@@ -11,7 +11,7 @@ const imports = await Promise.all([
 ]);
 const { getLibs } = imports[0];
 const { default: decorate } = imports[2];
-const { isValidTemplate: originalIsValidTemplate } = imports[3];
+// const { isValidTemplate: originalIsValidTemplate } = imports[3]; // Not used in tests
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   mod.setConfig({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } });
@@ -79,7 +79,7 @@ describe('Template X Promo', () => {
     if (fetchStub) {
       fetchStub.restore();
     }
-    
+
     // Reset DOM
     document.body.innerHTML = body;
     block = document.querySelector('.template-x-promo');
@@ -149,11 +149,11 @@ describe('Template X Promo', () => {
     if (fetchStub) {
       fetchStub.restore();
     }
-    
+
     // Clean up window mocks
     delete window.isValidTemplate;
     delete window.getIconElementDeprecated;
-    
+
     document.body.innerHTML = '';
   });
 
@@ -169,7 +169,6 @@ describe('Template X Promo', () => {
 
     expect(block).to.exist;
   });
-
 
   it('should make API calls when decorated', async () => {
     await decorate(block);
@@ -195,7 +194,6 @@ describe('Template X Promo', () => {
       fetchStub.restore();
     }
     fetchStub = sinon.stub(window, 'fetch');
-    
 
     // Set up the mock response for this test
     fetchStub.resolves(mockFreeResponse);
@@ -210,7 +208,7 @@ describe('Template X Promo', () => {
 
     // Verify the block has been populated
     expect(block.innerHTML).to.not.be.empty;
-    
+
     const freeTags = block.querySelectorAll('.free-tag');
     console.log('Free tags found:', freeTags.length);
     expect(freeTags.length).to.be.greaterThan(0, 'Free tags should be present');
@@ -233,7 +231,7 @@ describe('Template X Promo', () => {
       fetchStub.restore();
     }
     fetchStub = sinon.stub(window, 'fetch');
-    
+
     const mockPremiumResponse = {
       ok: true,
       json: () => Promise.resolve({
@@ -281,7 +279,7 @@ describe('Template X Promo', () => {
     };
 
     fetchStub.resolves(mockPremiumResponse);
-    
+
     // Wait for the async operations to complete
     await decorate(block);
     await new Promise((resolve) => { setTimeout(resolve, 1000); });
@@ -292,7 +290,7 @@ describe('Template X Promo', () => {
 
     // Verify the block has been populated
     expect(block.innerHTML).to.not.be.empty;
-    
+
     const premiumIcons = block.querySelectorAll('.icon-premium');
     expect(premiumIcons.length).to.be.greaterThan(0, 'Premium icons should be present');
 
@@ -313,16 +311,16 @@ describe('Template X Promo', () => {
     // Reset the DOM for this test
     document.body.innerHTML = body;
     block = document.querySelector('.template-x-promo');
-    
+
     // Reset fetchStub for this test
     if (fetchStub) {
       fetchStub.restore();
     }
     fetchStub = sinon.stub(window, 'fetch');
-    
+
     // Use the existing mockFreeResponse which has the correct structure
     fetchStub.resolves(mockFreeResponse);
-    
+
     // Wait for the async operations to complete
     await decorate(block);
     await new Promise((resolve) => { setTimeout(resolve, 1000); });
@@ -368,7 +366,7 @@ describe('Template X Promo', () => {
       fetchStub.restore();
     }
     fetchStub = sinon.stub(window, 'fetch');
-    
+
     const mockSingleResponse = {
       ok: true,
       json: () => Promise.resolve({
@@ -397,7 +395,7 @@ describe('Template X Promo', () => {
     };
 
     fetchStub.resolves(mockSingleResponse);
-    
+
     // Wait for the async operations to complete
     await decorate(block);
     await new Promise((resolve) => { setTimeout(resolve, 1000); });
@@ -424,7 +422,7 @@ describe('Template X Promo', () => {
       fetchStub.restore();
     }
     fetchStub = sinon.stub(window, 'fetch');
-    
+
     const originalGetIcon = window.getIconElementDeprecated;
     window.getIconElementDeprecated = () => null;
 
