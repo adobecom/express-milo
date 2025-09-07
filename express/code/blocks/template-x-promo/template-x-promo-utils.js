@@ -640,3 +640,397 @@ export function createImageErrorHandler() {
     img.alt = 'Image failed to load';
   };
 }
+
+// ============================================
+// API DATA FETCHING - PURE FUNCTIONS
+// ============================================
+
+/**
+ * Fetches templates from API (pure function)
+ * @param {string} recipe - API recipe parameter
+ * @param {Function} [fetchResults] - Function to fetch API results (optional)
+ * @param {Function} [isValidTemplate] - Function to validate templates (optional)
+ * @returns {Promise<Object>} API response with templates
+ */
+export async function fetchDirectFromApiUrl(recipe, fetchResults, isValidTemplate) {
+  // Use default imports if not provided
+  const fetchResultsFn = fetchResults || (await import('../../scripts/template-utils.js')).fetchResults;
+  const isValidTemplateFn = isValidTemplate || (await import('../../scripts/template-search-api-v3.js')).isValidTemplate;
+
+  const data = await fetchResultsFn(recipe);
+
+  if (!data || !data.items || !Array.isArray(data.items)) {
+    throw new Error('Invalid API response format');
+  }
+
+  const filtered = data.items.filter((item) => isValidTemplateFn(item));
+
+  return { templates: filtered };
+}
+
+// ============================================
+// EVENT HANDLING - PURE FUNCTIONS
+// ============================================
+
+/**
+ * Attaches hover listeners to template element (pure function)
+ * @param {HTMLElement} templateEl - Template element
+ * @param {Function} [createHoverStateManagerFn] - Function to create hover state manager (optional)
+ * @param {Function} [createMouseEnterHandlerFn] - Function to create mouse enter handler (optional)
+ * @param {Function} [createMouseLeaveHandlerFn] - Function to create mouse leave handler (optional)
+ * @param {Function} [shareFn] - Function to handle sharing (optional)
+ * @param {Function} [getTrackingAppendedURLFn] - Function to get tracking URL (optional)
+ */
+export function attachHoverListeners(
+  templateEl,
+  createHoverStateManagerFn,
+  createMouseEnterHandlerFn,
+  createMouseLeaveHandlerFn,
+  shareFn,
+  getTrackingAppendedURLFn,
+) {
+  // Use default functions if not provided
+  const createHoverStateManagerDefault = createHoverStateManagerFn || createHoverStateManager;
+  const createMouseEnterHandlerDefault = createMouseEnterHandlerFn || createMouseEnterHandler;
+  const createMouseLeaveHandlerDefault = createMouseLeaveHandlerFn || createMouseLeaveHandler;
+  const shareDefault = shareFn || share;
+  const getTrackingAppendedURLDefault = getTrackingAppendedURLFn || (async () => {
+    const { getTrackingAppendedURL: getTrackingAppendedURLImport } = await import('../../scripts/branchlinks.js');
+    return getTrackingAppendedURLImport;
+  });
+  const buttonContainer = templateEl.querySelector('.button-container');
+  if (!buttonContainer) return;
+
+  // Create hover state manager
+  const hoverManager = createHoverStateManagerDefault();
+
+  // Create event handlers using our functional approach
+  const enterHandler = createMouseEnterHandlerDefault(hoverManager, buttonContainer);
+  const leaveHandler = createMouseLeaveHandlerDefault(hoverManager);
+
+  // Add events to template (visible element)
+  templateEl.addEventListener('mouseenter', enterHandler);
+  templateEl.addEventListener('mouseleave', leaveHandler);
+
+  // Re-attach share icon click handlers to cloned elements
+  const shareIcons = templateEl.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
+  shareIcons.forEach((shareIcon) => {
+    const shareWrapper = shareIcon.closest('.share-icon-wrapper');
+    const sharedTooltip = shareWrapper?.querySelector('.shared-tooltip');
+    const srOnly = shareWrapper?.querySelector('.sr-only');
+
+    if (shareIcon && sharedTooltip && srOnly) {
+      let timeoutId = null;
+      const text = 'Copied to clipboard';
+
+      // Remove any existing listeners first
+      shareIcon.replaceWith(shareIcon.cloneNode(true));
+      const newShareIcon = shareWrapper.querySelector('.icon-share-arrow');
+
+      newShareIcon.addEventListener('click', async (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        timeoutId = await shareDefault(
+          shareIcon.getAttribute('data-edit-url') || '#',
+          sharedTooltip,
+          timeoutId,
+          srOnly,
+          text,
+          getTrackingAppendedURLDefault,
+        );
+      });
+
+      newShareIcon.addEventListener('keypress', async (e) => {
+        if (e.key !== 'Enter') return;
+        timeoutId = await shareDefault(
+          shareIcon.getAttribute('data-edit-url') || '#',
+          sharedTooltip,
+          timeoutId,
+          srOnly,
+          text,
+          getTrackingAppendedURLDefault,
+        );
+      });
+    }
+  });
+}
+
+// ============================================
+// TEMPLATE ELEMENT CREATION - PURE FUNCTIONS
+// ============================================
+
+/**
+ * Creates image section configuration (pure function)
+ * @param {Object} metadata - Template metadata
+ * @param {Function} createTag - Function to create DOM elements
+ * @param {Function} getIconElementDeprecated - Function to get icon element
+ * @returns {Object} Image section configuration
+ */
+export function createImageSectionConfig(metadata, createTag, getIconElementDeprecated) {
+  // Fix image URL by replacing template parameters
+  let { imageUrl } = metadata;
+  if (imageUrl && imageUrl.includes('{&page,size,type,fragment}')) {
+    imageUrl = imageUrl.replace('{&page,size,type,fragment}', '&page=0&size=512&type=image/jpeg');
+  }
+
+  const img = createTag('img', {
+    src: imageUrl,
+    alt: metadata.title,
+    loading: 'lazy',
+  });
+
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
+  imageWrapper.append(img);
+
+  // Add free/premium tag
+  if (metadata.isFree) {
+    const freeTag = createTag('span', { class: 'free-tag' });
+    freeTag.textContent = 'Free';
+    imageWrapper.append(freeTag);
+  } else if (metadata.isPremium) {
+    const premiumIcon = createPremiumIcon(getIconElementDeprecated, createTag);
+    imageWrapper.append(premiumIcon);
+  }
+
+  const stillWrapper = createTag('div', { class: 'still-wrapper' });
+  stillWrapper.append(imageWrapper);
+
+  return {
+    stillWrapper,
+    imageWrapper,
+    img,
+    imageUrl,
+  };
+}
+
+/**
+ * Creates button section configuration (pure function)
+ * @param {Object} metadata - Template metadata
+ * @param {string} editButtonText - Localized edit button text
+ * @param {string} processedImageUrl - Processed image URL from image section
+ * @param {Function} createTag - Function to create DOM elements
+ * @returns {Object} Button section configuration
+ */
+export function createButtonSectionConfig(metadata, editButtonText, processedImageUrl, createTag) {
+  const editButton = createTag('a', {
+    href: metadata.editUrl,
+    class: 'button accent small',
+    title: editButtonText,
+    'aria-label': `${editButtonText} ${metadata.title}`,
+    target: '_self',
+  });
+  editButton.textContent = editButtonText;
+
+  const ctaLink = createTag('a', {
+    href: metadata.editUrl,
+    class: 'cta-link',
+    title: `${editButtonText}: ${metadata.title}`,
+    'aria-label': `${editButtonText}: ${metadata.title}`,
+    target: '_self',
+    tabindex: '-1',
+  });
+
+  const mediaWrapper = createTag('div', { class: 'media-wrapper' });
+  const hoverImg = createTag('img', {
+    src: processedImageUrl,
+    alt: metadata.title,
+    loading: 'lazy',
+  });
+  mediaWrapper.append(hoverImg);
+  ctaLink.append(mediaWrapper);
+
+  const buttonContainer = createTag('div', { class: 'button-container' });
+  buttonContainer.append(ctaLink, editButton);
+
+  return {
+    buttonContainer,
+    editButton,
+    ctaLink,
+    mediaWrapper,
+  };
+}
+
+/**
+ * Creates share section configuration (pure function)
+ * @param {Object} metadata - Template metadata
+ * @param {Function} createTag - Function to create DOM elements
+ * @param {Function} getIconElementDeprecated - Function to get icon element
+ * @returns {Object} Share section configuration
+ */
+export function createShareSectionConfig(metadata, createTag, getIconElementDeprecated) {
+  const shareStructure = buildShareWrapperStructure(metadata);
+
+  const shareWrapper = createTag(shareStructure.wrapper.tag, {
+    class: shareStructure.wrapper.className,
+  });
+
+  const srOnly = createTag(shareStructure.srOnly.tag, {
+    class: shareStructure.srOnly.className,
+    ...shareStructure.srOnly.attributes,
+  });
+  shareWrapper.append(srOnly);
+
+  const sharedTooltip = createTag(shareStructure.tooltip.tag, {
+    class: shareStructure.tooltip.className,
+    ...shareStructure.tooltip.attributes,
+  });
+
+  // Create checkmark icon
+  const checkmarkIcon = getIconElementDeprecated('checkmark-green');
+  if (checkmarkIcon) {
+    checkmarkIcon.classList.add('icon', 'icon-checkmark-green');
+    sharedTooltip.append(checkmarkIcon);
+  }
+
+  // Create tooltip text
+  const tooltipText = createTag(shareStructure.tooltip.children[1].tag, {
+    class: shareStructure.tooltip.children[1].className,
+  });
+  tooltipText.textContent = shareStructure.tooltip.children[1].textContent;
+  sharedTooltip.append(tooltipText);
+
+  shareWrapper.append(sharedTooltip);
+
+  // Share icon
+  const shareIcon = getIconElementDeprecated('share-arrow');
+  if (shareIcon) {
+    shareIcon.classList.add(...shareStructure.shareIcon.className.split(' '));
+    Object.entries(shareStructure.shareIcon.attributes).forEach(([key, value]) => {
+      shareIcon.setAttribute(key, value);
+    });
+    shareWrapper.append(shareIcon);
+  }
+
+  return {
+    shareWrapper,
+    shareIcon,
+    sharedTooltip,
+    srOnly,
+  };
+}
+
+/**
+ * Creates image section for template element (pure function)
+ * @param {Object} metadata - Template metadata
+ * @param {Function} [createTag] - Function to create DOM elements (optional)
+ * @param {Function} [getIconElementDeprecated] - Function to get icon element (optional)
+ * @param {Function} [createImageErrorHandler] - Function to create image error handler (optional)
+ * @returns {Object} Image section configuration
+ */
+export async function createImageSection(
+  metadata,
+  createTag,
+  getIconElementDeprecated,
+  createImageErrorHandlerFn,
+) {
+  // Use default functions if not provided
+  const createTagDefault = createTag || (async () => {
+    const { createTag: createTagFn } = await import('../../scripts/utils.js');
+    return createTagFn;
+  });
+  const getIconElementDeprecatedDefault = getIconElementDeprecated || (async () => {
+    const { getIconElementDeprecated: getIconElementDeprecatedFn } = await import('../../scripts/utils.js');
+    return getIconElementDeprecatedFn;
+  });
+  const createImageErrorHandlerDefault = createImageErrorHandlerFn || createImageErrorHandler;
+
+  // Resolve async defaults
+  const resolvedCreateTag = typeof createTagDefault === 'function' && createTagDefault.length === 0
+    ? await createTagDefault()
+    : createTagDefault;
+  const resolvedGetIconElementDeprecated = typeof getIconElementDeprecatedDefault === 'function'
+    && getIconElementDeprecatedDefault.length === 0
+    ? await getIconElementDeprecatedDefault()
+    : getIconElementDeprecatedDefault;
+
+  const imageConfig = createImageSectionConfig(
+    metadata,
+    resolvedCreateTag,
+    resolvedGetIconElementDeprecated,
+  );
+
+  // Add error handling for failed image loads
+  imageConfig.img.addEventListener('error', createImageErrorHandlerDefault());
+
+  return imageConfig;
+}
+
+/**
+ * Creates share section for template element (pure function)
+ * @param {Object} metadata - Template metadata
+ * @param {Function} [createTag] - Function to create DOM elements (optional)
+ * @param {Function} [getIconElementDeprecated] - Function to get icon element (optional)
+ * @param {Function} [share] - Function to handle sharing (optional)
+ * @param {Function} [getTrackingAppendedURL] - Function to get tracking URL (optional)
+ * @returns {Object} Share section configuration
+ */
+export async function createShareSection(
+  metadata,
+  createTag,
+  getIconElementDeprecated,
+  shareFn,
+  getTrackingAppendedURLFn,
+) {
+  // Use default functions if not provided
+  const createTagDefault = createTag || (async () => {
+    const { createTag: createTagFn } = await import('../../scripts/utils.js');
+    return createTagFn;
+  });
+  const getIconElementDeprecatedDefault = getIconElementDeprecated || (async () => {
+    const { getIconElementDeprecated: getIconElementDeprecatedFn } = await import('../../scripts/utils.js');
+    return getIconElementDeprecatedFn;
+  });
+  const shareDefault = shareFn || share;
+  const getTrackingAppendedURLDefault = getTrackingAppendedURLFn || (async () => {
+    const { getTrackingAppendedURL: getTrackingAppendedURLImport } = await import('../../scripts/branchlinks.js');
+    return getTrackingAppendedURLImport;
+  });
+
+  // Resolve async defaults
+  const resolvedCreateTag = typeof createTagDefault === 'function' && createTagDefault.length === 0
+    ? await createTagDefault()
+    : createTagDefault;
+  const resolvedGetIconElementDeprecated = typeof getIconElementDeprecatedDefault === 'function'
+    && getIconElementDeprecatedDefault.length === 0
+    ? await getIconElementDeprecatedDefault()
+    : getIconElementDeprecatedDefault;
+
+  const shareConfig = createShareSectionConfig(
+    metadata,
+    resolvedCreateTag,
+    resolvedGetIconElementDeprecated,
+  );
+
+  // Add share icon event handlers
+  if (shareConfig.shareIcon) {
+    let timeoutId = null;
+    const text = 'Copied to clipboard';
+
+    shareConfig.shareIcon.addEventListener('click', async (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      timeoutId = await shareDefault(
+        metadata.editUrl,
+        shareConfig.sharedTooltip,
+        timeoutId,
+        shareConfig.srOnly,
+        text,
+        getTrackingAppendedURLDefault,
+      );
+    });
+
+    shareConfig.shareIcon.addEventListener('keypress', async (e) => {
+      if (e.key !== 'Enter') return;
+      timeoutId = await shareDefault(
+        metadata.editUrl,
+        shareConfig.sharedTooltip,
+        timeoutId,
+        shareConfig.srOnly,
+        text,
+        getTrackingAppendedURLDefault,
+      );
+    });
+  }
+
+  return shareConfig;
+}
