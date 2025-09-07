@@ -2,353 +2,26 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { fetchResults } from '../../scripts/template-utils.js';
 import { isValidTemplate } from '../../scripts/template-search-api-v3.js';
 import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
-
-// ============================================
-// PURE FUNCTIONS - DATA TRANSFORMATION
-// ============================================
-
-// Pure function: Calculate tooltip positioning logic
-function calculateTooltipPosition(tooltipRect, windowWidth) {
-  const tooltipRightEdgePos = tooltipRect.left + tooltipRect.width;
-  return {
-    shouldFlip: tooltipRightEdgePos > windowWidth,
-    position: {
-      left: tooltipRect.left,
-      right: tooltipRect.right,
-      width: tooltipRect.width,
-    },
-  };
-}
-
-// Pure function: Generate share action data
-function generateShareActionData(branchUrl, text, tooltipPosition) {
-  return {
-    url: branchUrl,
-    text,
-    tooltipClasses: tooltipPosition.shouldFlip
-      ? ['display-tooltip', 'flipped']
-      : ['display-tooltip'],
-    timeoutDuration: 2500,
-  };
-}
-
-// Pure function: Create share wrapper configuration
-function createShareWrapperConfig(metadata) {
-  return {
-    className: 'share-icon-wrapper',
-    srOnly: {
-      className: 'sr-only',
-      attributes: { 'aria-live': 'polite' },
-    },
-    tooltip: {
-      className: 'shared-tooltip',
-      attributes: {
-        'aria-label': 'Copied to clipboard',
-        role: 'tooltip',
-        tabindex: '-1',
-      },
-      text: 'Copied to clipboard',
-    },
-    shareIcon: {
-      className: 'icon icon-share-arrow',
-      attributes: {
-        tabindex: '0',
-        role: 'button',
-        'aria-label': `Share ${metadata.title}`,
-        'data-edit-url': metadata.editUrl,
-      },
-    },
-  };
-}
-
-// Pure function: Build share wrapper DOM structure (returns configuration for DOM creation)
-function buildShareWrapperStructure(metadata) {
-  const config = createShareWrapperConfig(metadata);
-
-  return {
-    wrapper: {
-      tag: 'div',
-      className: config.className,
-    },
-    srOnly: {
-      tag: 'div',
-      className: config.srOnly.className,
-      attributes: config.srOnly.attributes,
-    },
-    tooltip: {
-      tag: 'div',
-      className: config.tooltip.className,
-      attributes: config.tooltip.attributes,
-      children: [
-        {
-          tag: 'img',
-          className: 'icon icon-checkmark-green',
-          attributes: {
-            src: '/express/code/icons/checkmark-green.svg',
-            alt: 'checkmark-green',
-          },
-        },
-        {
-          tag: 'span',
-          className: 'text',
-          textContent: config.tooltip.text,
-        },
-      ],
-    },
-    shareIcon: {
-      tag: 'img',
-      className: config.shareIcon.className,
-      attributes: {
-        ...config.shareIcon.attributes,
-        src: '/express/code/icons/share-arrow.svg',
-        alt: 'share-arrow',
-      },
-    },
-  };
-}
-
-// Share function - now uses pure functions for logic, side effects isolated
-async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
-  // Pure: Generate tracking URL
-  const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
-    placement: 'template-x',
-    isSearchOverride: true,
-  });
-
-  // Pure: Calculate tooltip positioning
-  const tooltipRect = tooltip.getBoundingClientRect();
-  const tooltipPosition = calculateTooltipPosition(tooltipRect, window.innerWidth);
-
-  // Pure: Generate share action data
-  const shareData = generateShareActionData(branchUrl, text, tooltipPosition);
-
-  // Side effects: Execute the share action
-  await navigator.clipboard.writeText(urlWithTracking);
-
-  // Apply tooltip classes based on pure calculation
-  tooltip.classList.add(...shareData.tooltipClasses);
-
-  // Update ARIA-live region
-  liveRegion.textContent = shareData.text;
-
-  // Clear existing timeout
-  clearTimeout(timeoutId);
-
-  // Return new timeout for cleanup
-  return setTimeout(() => {
-    tooltip.classList.remove('display-tooltip');
-    tooltip.classList.remove('flipped');
-  }, shareData.timeoutDuration);
-}
+import {
+  buildShareWrapperStructure,
+  extractTemplateMetadata,
+  extractApiParamsFromRecipe,
+  getBlockStylingConfig,
+  createHoverStateManager,
+  determineTemplateRouting,
+  share,
+  createMouseEnterHandler,
+  createMouseLeaveHandler,
+  createFocusHandler,
+  createClickHandler,
+  createPremiumIcon,
+  createImageErrorHandler,
+} from './template-x-promo-utils.js';
 
 // Global utilities (loaded dynamically)
 let { createTag } = window; // Try to get it from window first
 let { getConfig } = window;
 let { replaceKey } = window;
-
-// ============================================
-// PURE FUNCTIONS - DATA TRANSFORMATION
-// ============================================
-
-/**
- * Extracts recipe string from DOM element (pure function)
- */
-const extractRecipeFromElement = (block) => {
-  const recipeElement = block.querySelector('[id^=recipe], h4');
-  return recipeElement?.parentElement?.nextElementSibling?.textContent || null;
-};
-
-/**
- * Cleans up recipe DOM (side effect isolated)
- */
-const cleanupRecipeDOM = (block) => {
-  const recipeElement = block.querySelector('[id^=recipe], h4');
-  if (recipeElement?.parentElement) {
-    const recipeContainer = recipeElement.parentElement.parentElement;
-    recipeContainer?.remove();
-  }
-};
-
-/**
- * Fixes image URL format (pure function) - EXACTLY matches original behavior
- */
-const fixImageUrl = (imageUrl) => {
-  if (typeof imageUrl !== 'string') return null;
-  return imageUrl; // Don't modify URLs - let original logic handle it
-};
-
-/**
- * Extracts template metadata (pure function)
- */
-const extractTemplateMetadata = (templateData) => ({
-  editUrl: templateData.customLinks?.branchUrl || templateData.branchUrl || '#',
-  imageUrl: fixImageUrl(
-    templateData.thumbnail?.url || templateData.thumbnail
-    || templateData._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href, // eslint-disable-line no-underscore-dangle
-  ),
-  title: templateData['dc:title']?.['i-default'] || (typeof templateData.title === 'string' ? templateData.title : templateData.title?.['i-default']) || '',
-  isFree: templateData.licensingCategory === 'free',
-  isPremium: templateData.licensingCategory !== 'free',
-});
-
-// ============================================
-// ATOMIC DOM BUILDERS - PURE FUNCTIONS
-// ============================================
-
-// ============================================
-// EVENT HANDLERS - FUNCTIONAL STYLE
-// ============================================
-
-/**
- * Creates hover state manager (pure function)
- */
-const createHoverStateManager = () => {
-  let currentHoveredElement = null;
-
-  return {
-    setHovered: (element) => {
-      if (currentHoveredElement) {
-        currentHoveredElement.classList.remove('singleton-hover');
-      }
-      currentHoveredElement = element;
-      if (currentHoveredElement) {
-        currentHoveredElement.classList.add('singleton-hover');
-      }
-    },
-    clearHovered: () => {
-      if (currentHoveredElement) {
-        currentHoveredElement.classList.remove('singleton-hover');
-        currentHoveredElement = null;
-      }
-    },
-    getCurrent: () => currentHoveredElement,
-  };
-};
-
-/**
- * Creates mouse enter handler (pure function)
- */
-const createMouseEnterHandler = (hoverManager, targetElement) => (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  hoverManager.setHovered(targetElement);
-  document.activeElement.blur();
-};
-
-/**
- * Creates mouse leave handler (pure function)
- */
-const createMouseLeaveHandler = (hoverManager) => () => {
-  hoverManager.clearHovered();
-};
-
-/**
- * Creates focus handler (pure function)
- */
-const createFocusHandler = (hoverManager) => (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  const templateElement = e.target.closest('.template');
-  hoverManager.setHovered(templateElement);
-};
-
-/**
- * Creates click handler (pure function)
- */
-const createClickHandler = (hoverManager, templateElement, analyticsHandler) => (ev) => {
-  // Touch device logic first
-  if (window.matchMedia('(pointer: coarse)').matches) {
-    if (!templateElement.classList.contains('singleton-hover')) {
-      ev.preventDefault();
-      ev.stopPropagation();
-      hoverManager.setHovered(templateElement);
-      return false;
-    }
-  }
-
-  // Regular click tracking
-  if (analyticsHandler) {
-    analyticsHandler();
-  }
-  return true;
-};
-
-/**
- * Creates image error handler (pure function)
- */
-const createImageErrorHandler = () => function imageErrorHandler() {
-  // Fallback: show a placeholder
-  const img = this;
-  img.style.backgroundColor = '#e0e0e0';
-  img.style.minHeight = '200px';
-  img.alt = 'Image failed to load';
-};
-
-/**
- * Creates an image element (pure function)
- */
-const createImageElement = ({ src, alt, loading = 'lazy' }) => createTag('img', { src, alt, loading });
-
-/**
- * Creates a wrapper div with class (pure function)
- */
-const createWrapper = (className) => createTag('div', { class: className });
-
-/**
- * Creates a free tag element (pure function)
- */
-const createFreeTag = () => {
-  const freeTag = createTag('span', { class: 'free-tag' });
-  freeTag.textContent = 'Free';
-  return freeTag;
-};
-
-/**
- * Creates a premium icon element (pure function)
- */
-const createPremiumIcon = () => {
-  const premiumIcon = getIconElementDeprecated('premium');
-  if (premiumIcon) {
-    premiumIcon.classList.add('icon', 'icon-premium');
-    return premiumIcon;
-  }
-  // Fallback div with CSS class
-  return createTag('div', { class: 'icon premium-fallback' });
-};
-
-/**
- * Creates a button element (pure function)
- */
-const createButtonElement = (type, { href, text, title, ariaLabel }) => {
-  const classes = type === 'edit' ? 'button accent small' : 'cta-link';
-
-  const button = createTag('a', {
-    href,
-    class: classes,
-    title: type === 'edit' ? 'Edit this template' : title,
-    'aria-label': ariaLabel,
-    target: '_self',
-  });
-
-  if (type === 'cta') {
-    button.setAttribute('tabindex', '-1');
-  }
-
-  if (type === 'edit') {
-    button.textContent = text;
-  }
-
-  return button;
-};
-
-/**
- * Extracts recipe parameters from DOM element (composed function)
- */
-function extractApiParamsFromRecipe(block) {
-  const recipeString = extractRecipeFromElement(block);
-  cleanupRecipeDOM(block);
-  return recipeString;
-}
 
 /**
  * Fetches templates from API
@@ -387,13 +60,13 @@ async function handleOneUpFromApiData(block, templateData) {
   }
 
   // Create image with wrapper using our atomic functions
-  const img = createImageElement({
+  const img = createTag('img', {
     src: imageUrl,
     alt: metadata.title,
     loading: 'lazy',
   });
 
-  const imgWrapper = createWrapper('image-wrapper');
+  const imgWrapper = createTag('div', { class: 'image-wrapper' });
   imgWrapper.append(img);
 
   // Note: No plan icon needed for API-driven templates
@@ -403,12 +76,14 @@ async function handleOneUpFromApiData(block, templateData) {
 
   // Create edit button with localized text using our atomic function
   const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
-  const editTemplateButton = createButtonElement('edit', {
+  const editTemplateButton = createTag('a', {
     href: metadata.editUrl,
-    text: editThisTemplate,
+    class: 'button accent small',
     title: `${editThisTemplate} ${metadata.title}`,
-    ariaLabel: `${editThisTemplate} ${metadata.title}`,
+    'aria-label': `${editThisTemplate} ${metadata.title}`,
+    target: '_self',
   });
+  editTemplateButton.textContent = editThisTemplate;
 
   const buttonContainer = createTag('section', { class: 'button-container' });
   buttonContainer.append(editTemplateButton);
@@ -452,12 +127,26 @@ function attachHoverListeners(templateEl) {
       newShareIcon.addEventListener('click', async (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
-        timeoutId = await share(shareIcon.getAttribute('data-edit-url') || '#', sharedTooltip, timeoutId, srOnly, text);
+        timeoutId = await share(
+          shareIcon.getAttribute('data-edit-url') || '#',
+          sharedTooltip,
+          timeoutId,
+          srOnly,
+          text,
+          getTrackingAppendedURL,
+        );
       });
 
       newShareIcon.addEventListener('keypress', async (e) => {
         if (e.key !== 'Enter') return;
-        timeoutId = await share(shareIcon.getAttribute('data-edit-url') || '#', sharedTooltip, timeoutId, srOnly, text);
+        timeoutId = await share(
+          shareIcon.getAttribute('data-edit-url') || '#',
+          sharedTooltip,
+          timeoutId,
+          srOnly,
+          text,
+          getTrackingAppendedURL,
+        );
       });
     }
   });
@@ -471,13 +160,13 @@ async function createTemplateElement(templateData) {
   const metadata = extractTemplateMetadata(templateData);
 
   // Create main template container
-  const templateEl = createWrapper('template');
+  const templateEl = createTag('div', { class: 'template' });
 
   // Create still wrapper (like template-x)
-  const stillWrapper = createWrapper('still-wrapper');
+  const stillWrapper = createTag('div', { class: 'still-wrapper' });
 
   // Create image wrapper with the actual image (visible by default)
-  const imageWrapper = createWrapper('image-wrapper');
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
 
   // Fix image URL by replacing the template parameters (original logic)
   let { imageUrl } = metadata;
@@ -487,7 +176,7 @@ async function createTemplateElement(templateData) {
   }
 
   // Create the actual image element using our atomic function
-  const img = createImageElement({
+  const img = createTag('img', {
     src: imageUrl,
     alt: metadata.title,
     loading: 'lazy',
@@ -500,41 +189,46 @@ async function createTemplateElement(templateData) {
 
   // Add free/premium tag to image wrapper using our atomic functions
   if (metadata.isFree) {
-    const freeTag = createFreeTag();
+    const freeTag = createTag('span', { class: 'free-tag' });
+    freeTag.textContent = 'Free';
     imageWrapper.append(freeTag);
   } else if (metadata.isPremium) {
-    const premiumIcon = createPremiumIcon();
+    const premiumIcon = createPremiumIcon(getIconElementDeprecated, createTag);
     imageWrapper.append(premiumIcon);
   }
 
   stillWrapper.append(imageWrapper);
 
   // Create button container (following exact template-x pattern)
-  const buttonContainer = createWrapper('button-container');
+  const buttonContainer = createTag('div', { class: 'button-container' });
 
   // Edit button (CTA) using our atomic function
   const editButtonText = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
 
-  const editButton = createButtonElement('edit', {
+  const editButton = createTag('a', {
     href: metadata.editUrl,
-    text: editButtonText,
+    class: 'button accent small',
     title: editButtonText,
-    ariaLabel: `${editButtonText} ${metadata.title}`,
+    'aria-label': `${editButtonText} ${metadata.title}`,
+    target: '_self',
   });
+  editButton.textContent = editButtonText;
 
   // CTA Link (covers the media area) using our atomic function
-  const ctaLink = createButtonElement('cta', {
+  const ctaLink = createTag('a', {
     href: metadata.editUrl,
-    text: '',
+    class: 'cta-link',
     title: `${editButtonText}: ${metadata.title}`,
-    ariaLabel: `${editButtonText}: ${metadata.title}`,
+    'aria-label': `${editButtonText}: ${metadata.title}`,
+    target: '_self',
+    tabindex: '-1',
   });
 
   // Media wrapper (contains a COPY of the image for hover state)
-  const mediaWrapper = createWrapper('media-wrapper');
+  const mediaWrapper = createTag('div', { class: 'media-wrapper' });
 
   // Create a copy of the SAME image for the hover state using our atomic function
-  const hoverImg = createImageElement({
+  const hoverImg = createTag('img', {
     src: imageUrl, // Use the processed URL
     alt: metadata.title,
     loading: 'lazy',
@@ -546,7 +240,9 @@ async function createTemplateElement(templateData) {
   const shareStructure = buildShareWrapperStructure(metadata);
 
   // Side effects: Create DOM elements from pure configuration
-  const shareWrapper = createWrapper(shareStructure.wrapper.className);
+  const shareWrapper = createTag(shareStructure.wrapper.tag, {
+    class: shareStructure.wrapper.className,
+  });
 
   // Screen reader only element
   const srOnly = createTag(shareStructure.srOnly.tag, {
@@ -594,12 +290,26 @@ async function createTemplateElement(templateData) {
     shareIcon.addEventListener('click', async (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
-      timeoutId = await share(metadata.editUrl, sharedTooltip, timeoutId, srOnly, text);
+      timeoutId = await share(
+        metadata.editUrl,
+        sharedTooltip,
+        timeoutId,
+        srOnly,
+        text,
+        getTrackingAppendedURL,
+      );
     });
 
     shareIcon.addEventListener('keypress', async (e) => {
       if (e.key !== 'Enter') return;
-      timeoutId = await share(metadata.editUrl, sharedTooltip, timeoutId, srOnly, text);
+      timeoutId = await share(
+        metadata.editUrl,
+        sharedTooltip,
+        timeoutId,
+        srOnly,
+        text,
+        getTrackingAppendedURL,
+      );
     });
   }
 
@@ -1012,24 +722,22 @@ const initializeUtilities = async () => {
 };
 
 /**
- * Applies block styling (side effect function)
- */
-const applyBlockStyling = (block) => {
-  block.parentElement.classList.add('ax-template-x-promo');
-};
-
-/**
- * Routes templates to appropriate handler (pure function)
+ * Routes templates to appropriate handler (side effects function)
  */
 const routeTemplates = async (block, templates) => {
-  if (!templates || templates.length === 0) {
-    return; // Graceful degradation - no templates available
-  }
+  const routingDecision = determineTemplateRouting(templates);
 
-  if (templates.length === 1) {
-    await handleOneUpFromApiData(block, templates[0]);
-  } else if (templates.length > 1) {
-    await createCustomCarousel(block, templates);
+  switch (routingDecision.strategy) {
+    case 'none':
+      return; // Graceful degradation - no templates available
+    case 'one-up':
+      await handleOneUpFromApiData(block, routingDecision.template);
+      break;
+    case 'carousel':
+      await createCustomCarousel(block, routingDecision.templates);
+      break;
+    default:
+      // Unknown routing strategy - graceful degradation
   }
 };
 
@@ -1059,7 +767,10 @@ export default async function decorate(block) {
   replaceKey = utilities.replaceKey;
 
   // Apply block styling
-  applyBlockStyling(block);
+  const stylingConfig = getBlockStylingConfig(block);
+  if (stylingConfig.shouldApply) {
+    block.parentElement.classList.add(...stylingConfig.parentClasses);
+  }
 
   // Get API URL and handle templates
   const apiUrl = extractApiParamsFromRecipe(block);
