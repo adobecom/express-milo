@@ -56,6 +56,95 @@ const extractTemplateMetadata = (templateData) => ({
 // ATOMIC DOM BUILDERS - PURE FUNCTIONS
 // ============================================
 
+// ============================================
+// EVENT HANDLERS - FUNCTIONAL STYLE
+// ============================================
+
+/**
+ * Creates hover state manager (pure function)
+ */
+const createHoverStateManager = () => {
+  let currentHoveredElement = null;
+
+  return {
+    setHovered: (element) => {
+      if (currentHoveredElement) {
+        currentHoveredElement.classList.remove('singleton-hover');
+      }
+      currentHoveredElement = element;
+      if (currentHoveredElement) {
+        currentHoveredElement.classList.add('singleton-hover');
+      }
+    },
+    clearHovered: () => {
+      if (currentHoveredElement) {
+        currentHoveredElement.classList.remove('singleton-hover');
+        currentHoveredElement = null;
+      }
+    },
+    getCurrent: () => currentHoveredElement,
+  };
+};
+
+/**
+ * Creates mouse enter handler (pure function)
+ */
+const createMouseEnterHandler = (hoverManager, targetElement) => (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  hoverManager.setHovered(targetElement);
+  document.activeElement.blur();
+};
+
+/**
+ * Creates mouse leave handler (pure function)
+ */
+const createMouseLeaveHandler = (hoverManager) => () => {
+  hoverManager.clearHovered();
+};
+
+/**
+ * Creates focus handler (pure function)
+ */
+const createFocusHandler = (hoverManager) => (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const templateElement = e.target.closest('.template');
+  hoverManager.setHovered(templateElement);
+};
+
+/**
+ * Creates click handler (pure function)
+ */
+const createClickHandler = (hoverManager, templateElement, analyticsHandler) => (ev) => {
+  // Touch device logic first
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    if (!templateElement.classList.contains('singleton-hover')) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      hoverManager.setHovered(templateElement);
+      return false;
+    }
+  }
+
+  // Regular click tracking
+  if (analyticsHandler) {
+    analyticsHandler();
+  }
+  return true;
+};
+
+/**
+ * Creates image error handler (pure function)
+ */
+const createImageErrorHandler = () => () => {
+  // Fallback: show a placeholder
+  const img = this;
+  img.style.backgroundColor = '#e0e0e0';
+  img.style.minHeight = '200px';
+  img.alt = 'Image failed to load';
+};
+
 /**
  * Creates an image element (pure function)
  */
@@ -195,29 +284,12 @@ function attachHoverListeners(templateEl) {
   const buttonContainer = templateEl.querySelector('.button-container');
   if (!buttonContainer) return;
 
-  let currentHoveredElement;
+  // Create hover state manager
+  const hoverManager = createHoverStateManager();
 
-  const enterHandler = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Follow template-x pattern exactly
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.remove('singleton-hover');
-    }
-    currentHoveredElement = buttonContainer; // Target the button-container
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.add('singleton-hover');
-    }
-    document.activeElement.blur();
-  };
-
-  const leaveHandler = () => {
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.remove('singleton-hover');
-      currentHoveredElement = null;
-    }
-  };
+  // Create event handlers using our functional approach
+  const enterHandler = createMouseEnterHandler(hoverManager, buttonContainer);
+  const leaveHandler = createMouseLeaveHandler(hoverManager);
 
   // Add events to template (visible element)
   templateEl.addEventListener('mouseenter', enterHandler);
@@ -254,13 +326,8 @@ async function createTemplateElement(templateData) {
     loading: 'lazy',
   });
 
-  // Add error handling for failed image loads
-  img.addEventListener('error', () => {
-    // Fallback: show a placeholder
-    img.style.backgroundColor = '#e0e0e0';
-    img.style.minHeight = '200px';
-    img.alt = 'Image failed to load';
-  });
+  // Add error handling for failed image loads using our functional approach
+  img.addEventListener('error', createImageErrorHandler());
 
   imageWrapper.append(img);
 
@@ -357,42 +424,13 @@ async function createTemplateElement(templateData) {
   // Assemble template (following template-x pattern)
   templateEl.append(stillWrapper, buttonContainer);
 
-  // Add hover behavior exactly like template-x
-  let currentHoveredElement;
+  // Add hover behavior using our functional approach
+  const hoverManager = createHoverStateManager();
 
-  const enterHandler = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    // Follow template-x pattern exactly
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.remove('singleton-hover');
-    }
-    currentHoveredElement = e.target; // Use e.target directly like template-x
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.add('singleton-hover');
-    }
-    document.activeElement.blur();
-  };
-
-  const leaveHandler = () => {
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.remove('singleton-hover');
-      currentHoveredElement = null;
-    }
-  };
-
-  const focusHandler = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.remove('singleton-hover');
-    }
-    currentHoveredElement = e.target.closest('.template');
-    if (currentHoveredElement) {
-      currentHoveredElement.classList.add('singleton-hover');
-    }
-  };
+  // Create event handlers
+  const enterHandler = createMouseEnterHandler(hoverManager, buttonContainer);
+  const leaveHandler = createMouseLeaveHandler(hoverManager);
+  const focusHandler = createFocusHandler(hoverManager);
 
   // Fix: Add mouseenter to the template element (visible), then apply to button-container
   templateEl.addEventListener('mouseenter', () => {
@@ -405,34 +443,17 @@ async function createTemplateElement(templateData) {
     enterHandler(fakeEvent);
   });
 
-  templateEl.addEventListener('mouseleave', () => {
-    leaveHandler();
-  });
+  templateEl.addEventListener('mouseleave', leaveHandler);
 
   // Focus handling for accessibility
   editButton.addEventListener('focusin', focusHandler);
 
-  // Click handlers (matching template-x exactly)
+  // Click handlers using our functional approach
   const ctaClickHandler = () => {
     // Add analytics tracking here if needed
   };
 
-  // Combine the handlers properly
-  const combinedClickHandler = (ev) => {
-    // Touch device logic first
-    if (window.matchMedia('(pointer: coarse)').matches) {
-      if (!templateEl.classList.contains('singleton-hover')) {
-        ev.preventDefault();
-        ev.stopPropagation();
-        enterHandler(ev);
-        return false;
-      }
-    }
-
-    // Regular click tracking
-    ctaClickHandler();
-    return true;
-  };
+  const combinedClickHandler = createClickHandler(hoverManager, templateEl, ctaClickHandler);
 
   editButton.addEventListener('click', combinedClickHandler);
   ctaLink.addEventListener('click', combinedClickHandler);
@@ -492,8 +513,6 @@ export async function createCustomCarousel(block, templates) {
     carouselViewport.append(carouselTrack);
     carouselWrapper.append(carouselViewport);
 
-    // Height management now handled in updateCarouselDisplay using API data
-
     // Create navigation buttons
     const navContainer = createTag('div', { class: 'promo-nav-controls' });
 
@@ -537,191 +556,64 @@ export async function createCustomCarousel(block, templates) {
     navContainer.append(prevButton, nextButton);
     carouselWrapper.append(navContainer, statusElement);
 
-    // 🔒 CALCULATE HEIGHT ONCE - ONLY FOR MOBILE CAROUSEL!
-    const calculateFixedHeight = () => {
-      const isMobile = window.innerWidth < 768;
+    // Measure actual rendered heights after DOM is built
+    let FIXED_CONTAINER_HEIGHT = null;
+    let heightCalculated = false; // Flag to prevent recalculation
 
-      // Desktop: Let images size naturally with CSS max-height constraints
-      if (!isMobile) {
-        return null; // No fixed height needed - let CSS handle it
-      }
+    // Measure actual template heights after they're rendered
+    const measureActualHeights = () => {
+      if (heightCalculated) return; // Only measure once
 
-      const templateHeights = templates.map((template) => {
-        // Get height from API data (thumbnail dimensions)
-        const thumbnailHeight = template.pages?.[0]?.rendition?.image?.thumbnail?.height;
-        const thumbnailWidth = template.pages?.[0]?.rendition?.image?.thumbnail?.width;
+      // Wait for images to load and measure actual heights
+      const measureHeights = () => {
+        const templateElements = carouselTrack.querySelectorAll('.template');
+        if (templateElements.length === 0) return;
 
-        if (thumbnailHeight && thumbnailWidth) {
-          // Scale to our actual container width based on aspect ratio
-          const aspectRatio = thumbnailHeight / thumbnailWidth;
-          // Real container widths based on CSS and template count
-          const currentTemplateCount = templates.length;
+        const actualHeights = Array.from(templateElements).map((template) => {
+          // Get the actual rendered height of the template
+          const rect = template.getBoundingClientRect();
+          return rect.height;
+        });
 
-          let containerWidth;
-          if (isMobile) {
-            // Mobile: 50% width with gaps, but constrained by viewport
-            if (currentTemplateCount >= 4) {
-              containerWidth = 120;
-            } else if (currentTemplateCount === 3) {
-              containerWidth = 140;
-            } else {
-              containerWidth = 160;
-            }
-          } else if (currentTemplateCount >= 4) {
-            // Desktop 4-up: (1200px - 3*16px gaps) / 4 = 288px
-            containerWidth = 288;
-          } else if (currentTemplateCount === 3) {
-            // Desktop 3-up: (1200px - 2*16px gaps) / 3 = 389px
-            containerWidth = 389;
-          } else {
-            // Desktop 2-up: (1200px - 1*16px gap) / 2 = 592px
-            containerWidth = 592;
-          }
+        // Use the tallest actual height
+        const maxHeight = Math.max(...actualHeights);
+        
+        // Apply reasonable limits
+        const finalHeight = Math.min(maxHeight, 600); // Cap at 600px
+        FIXED_CONTAINER_HEIGHT = Math.max(finalHeight, 200); // Minimum 200px
 
-          const calculatedHeight = Math.round(containerWidth * aspectRatio);
-          // Apply reasonable limits to prevent extreme heights
-          const maxHeight = isMobile ? 400 : 500;
-          return Math.min(calculatedHeight, maxHeight);
+        // Set viewport height for mobile carousel
+        const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
+        if (viewport) {
+          viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
+          viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
         }
 
-        // Fallback: use task size if available
-        const taskSize = template.pages?.[0]?.task?.size?.name;
-        if (taskSize) {
-          const [width, height] = taskSize.match(/(\d+)x(\d+)px/)?.slice(1, 3) || [];
-          if (width && height) {
-            const aspectRatio = parseInt(height, 10) / parseInt(width, 10);
-            const taskTemplateCount = templates.length;
+        heightCalculated = true;
+      };
 
-            let containerWidth;
-            if (isMobile) {
-              if (taskTemplateCount >= 4) {
-                containerWidth = 120;
-              } else if (taskTemplateCount === 3) {
-                containerWidth = 140;
-              } else {
-                containerWidth = 160;
-              }
-            } else if (taskTemplateCount >= 4) {
-              containerWidth = 288; // Desktop 4-up: (1200px - 48px) / 4
-            } else if (taskTemplateCount === 3) {
-              containerWidth = 389; // Desktop 3-up: (1200px - 32px) / 3
-            } else {
-              containerWidth = 592; // Desktop 2-up: (1200px - 16px) / 2
-            }
-
-            const calculatedHeight = Math.round(containerWidth * aspectRatio);
-            const maxHeight = isMobile ? 400 : 500;
-            return Math.min(calculatedHeight, maxHeight);
-          }
-        }
-
-        // Ultimate fallback: reasonable height based on layout
-        const fallbackTemplateCount = templates.length;
-
-        if (isMobile) {
-          if (fallbackTemplateCount >= 4) {
-            return 240;
-          }
-          if (fallbackTemplateCount === 3) {
-            return 280;
-          }
-          return 320;
-        }
-        // Desktop: grid layout calculations
-        if (fallbackTemplateCount >= 4) {
-          return 240; // Cap at max-height for 4-up
-        }
-        if (fallbackTemplateCount === 3) {
-          return 360; // Cap at max-height for 3-up
-        }
-        return 500; // Cap at desktop max for 1-up/2-up
-      });
-
-      // Use the tallest template height OR max limit - NEVER EXCEED 400px!
-      const maxAllowed = isMobile ? 400 : 500;
-      const calculatedMax = Math.max(...templateHeights);
-      const finalHeight = Math.min(calculatedMax, maxAllowed);
-
-      // Height calculation complete - using tallest template for consistent layout
-
-      return finalHeight;
+      // Try multiple times to ensure images are loaded
+      setTimeout(measureHeights, 100);
+      setTimeout(measureHeights, 300);
+      setTimeout(measureHeights, 500);
     };
 
-    // Calculate the fixed height ONCE using ACTUAL rendered heights
-    let FIXED_CONTAINER_HEIGHT = calculateFixedHeight();
-
-    // Wait for images to render, then use their actual heights if taller than calculated
-    setTimeout(() => {
-      // Try multiple selectors to find images
-      const selectors = [
-        '.template .promo-image-wrapper img',
-        '.template img',
-        'img',
-        '.image-wrapper img',
-        '.still-wrapper img',
-      ];
-
-      let renderedImages = [];
-      for (const selector of selectors) {
-        renderedImages = carouselTrack.querySelectorAll(selector);
-        if (renderedImages.length > 0) break;
-      }
-
-      // Filter to only main template images (exclude icons)
-      const mainImages = Array.from(renderedImages).filter((img) => {
-        const src = img.src || '';
-
-        // In test environment, be more permissive with URLs
-        if (window.isTestEnv) {
-          return !src.includes('.svg')
-                 && !src.includes('premium')
-                 && !src.includes('share-arrow')
-                 && !src.includes('checkmark');
-        }
-
-        // In production, enforce strict hostname validation
-        try {
-          const url = new URL(src);
-          return url.hostname === 'design-assets.adobeprojectm.com'
-                 && !src.includes('.svg')
-                 && !src.includes('premium')
-                 && !src.includes('share-arrow')
-                 && !src.includes('checkmark');
-        } catch {
-          return false; // Invalid URLs are rejected
-        }
-      });
-
-      const actualHeights = mainImages.map((img) => img.offsetHeight);
-
-      if (actualHeights.some((h) => h > 0)) {
-        const tallestActualHeight = Math.max(...actualHeights);
-
-        // If actual height is taller, use that instead (mobile only)
-        if (FIXED_CONTAINER_HEIGHT !== null && tallestActualHeight > FIXED_CONTAINER_HEIGHT) {
-          FIXED_CONTAINER_HEIGHT = tallestActualHeight;
-
-          const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-          if (viewport) {
-            viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-            viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-          }
-        }
-      }
-    }, 200);
-
-    // Set viewport height once - only for mobile carousel
-    const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-    if (viewport && FIXED_CONTAINER_HEIGHT !== null) {
-      viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-      viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-    }
+    // Start measuring after DOM is ready
+    measureActualHeights();
 
     const updateCarouselDisplay = () => {
       // Only update content - height remains fixed
       carouselTrack.innerHTML = '';
 
       if (window.innerWidth < 768) {
+        // Restore height for mobile mode if it was calculated
+        if (heightCalculated && FIXED_CONTAINER_HEIGHT !== null) {
+          const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
+          if (viewport) {
+            viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
+            viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
+          }
+        }
         // Mobile: Show prev-CURRENT-next with carousel behavior
         const prevIndex = (currentIndex - 1 + elementsCount) % elementsCount;
         const nextIndex = (currentIndex + 1) % elementsCount;
@@ -744,6 +636,13 @@ export async function createCustomCarousel(block, templates) {
         attachHoverListeners(nextTemplate); // Re-attach events!
         carouselTrack.append(nextTemplate);
       } else {
+        // Desktop: Clear fixed height and show all templates equally
+        const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
+        if (viewport) {
+          viewport.style.removeProperty('height');
+          viewport.style.removeProperty('min-height');
+        }
+
         // Desktop: Show all templates equally, no carousel behavior
         templateElements.forEach((template) => {
           const templateClone = template.cloneNode(true);
@@ -859,11 +758,18 @@ export async function createCustomCarousel(block, templates) {
 
     // Handle resize events to switch between mobile/desktop layouts
     let resizeTimeout;
+    let currentMode = window.innerWidth < 768 ? 'mobile' : 'desktop';
+
     const handleResize = () => {
       // Debounce resize events to prevent infinite loops
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        updateCarouselDisplay();
+        const newMode = window.innerWidth < 768 ? 'mobile' : 'desktop';
+        // Only update if mode actually changed
+        if (newMode !== currentMode) {
+          currentMode = newMode;
+          updateCarouselDisplay();
+        }
       }, 100);
     };
 
