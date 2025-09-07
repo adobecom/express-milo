@@ -7,9 +7,11 @@ const imports = await Promise.all([
   import('../../../express/code/scripts/utils.js'),
   import('../../../express/code/scripts/scripts.js'),
   import('../../../express/code/blocks/template-x-promo/template-x-promo.js'),
+  import('../../../express/code/scripts/template-search-api-v3.js'),
 ]);
 const { getLibs } = imports[0];
 const { default: decorate } = imports[2];
+const { isValidTemplate: originalIsValidTemplate } = imports[3];
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   mod.setConfig({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } });
@@ -26,6 +28,12 @@ describe('Template X Promo', () => {
   });
 
   beforeEach(async () => {
+    // Clean up any existing stubs first
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    
+    // Reset DOM
     document.body.innerHTML = body;
     block = document.querySelector('.template-x-promo');
 
@@ -34,6 +42,14 @@ describe('Template X Promo', () => {
 
     // Mock isValidTemplate by replacing it on the window object
     window.isValidTemplate = sinon.stub().returns(true);
+
+    // Mock getIconElementDeprecated for testing
+    window.getIconElementDeprecated = sinon.stub().callsFake((iconName) => {
+      const icon = document.createElement('div');
+      icon.className = `icon icon-${iconName}`;
+      icon.textContent = iconName;
+      return icon;
+    });
 
     // Mock successful API response
     const mockResponse = {
@@ -90,8 +106,9 @@ describe('Template X Promo', () => {
       fetchStub.restore();
     }
     
-    // Clean up window mock
+    // Clean up window mocks
     delete window.isValidTemplate;
+    delete window.getIconElementDeprecated;
     
     document.body.innerHTML = '';
   });
@@ -129,6 +146,12 @@ describe('Template X Promo', () => {
   });
 
   it('should display Free tags in multiple-up carousel templates', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+    
     const mockFreeResponse = {
       ok: true,
       json: () => Promise.resolve({
@@ -169,11 +192,22 @@ describe('Template X Promo', () => {
       }),
     };
 
+    // Set up the mock response for this test
     fetchStub.resolves(mockFreeResponse);
-    await decorate(block);
-    await new Promise((resolve) => { setTimeout(resolve, 100); });
 
+    // Wait for the async operations to complete
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+    // Debug: Check what's in the block
+    console.log('Block innerHTML after decorate:', block.innerHTML);
+    console.log('Block parent classes:', block.parentElement.className);
+
+    // Verify the block has been populated
+    expect(block.innerHTML).to.not.be.empty;
+    
     const freeTags = block.querySelectorAll('.free-tag');
+    console.log('Free tags found:', freeTags.length);
     expect(freeTags.length).to.be.greaterThan(0, 'Free tags should be present');
 
     freeTags.forEach((tag) => {
@@ -189,6 +223,12 @@ describe('Template X Promo', () => {
   });
 
   it('should display Premium icons in multiple-up carousel templates', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+    
     const mockPremiumResponse = {
       ok: true,
       json: () => Promise.resolve({
@@ -230,9 +270,14 @@ describe('Template X Promo', () => {
     };
 
     fetchStub.resolves(mockPremiumResponse);
+    
+    // Wait for the async operations to complete
     await decorate(block);
-    await new Promise((resolve) => { setTimeout(resolve, 100); });
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
 
+    // Verify the block has been populated
+    expect(block.innerHTML).to.not.be.empty;
+    
     const premiumIcons = block.querySelectorAll('.icon-premium');
     expect(premiumIcons.length).to.be.greaterThan(0, 'Premium icons should be present');
 
@@ -249,8 +294,43 @@ describe('Template X Promo', () => {
   });
 
   it('should display Share icons in button containers with proper accessibility', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+    
+    // Set up the mock response for this test
+    fetchStub.resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'template1',
+            title: 'Test Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image1.jpg',
+              },
+            },
+          },
+        ],
+      }),
+    });
+    
+    // Wait for the async operations to complete
     await decorate(block);
-    await new Promise((resolve) => { setTimeout(resolve, 100); });
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+    // Verify the block has been populated
+    expect(block.innerHTML).to.not.be.empty;
 
     const shareIcons = block.querySelectorAll('.button-container .icon-share-arrow');
     expect(shareIcons.length).to.be.greaterThan(0, 'Share icons should be present');
@@ -279,6 +359,12 @@ describe('Template X Promo', () => {
   });
 
   it('should NOT display Free/Premium tags in one-up layout', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+    
     const mockSingleResponse = {
       ok: true,
       json: () => Promise.resolve({
@@ -304,8 +390,13 @@ describe('Template X Promo', () => {
     };
 
     fetchStub.resolves(mockSingleResponse);
+    
+    // Wait for the async operations to complete
     await decorate(block);
-    await new Promise((resolve) => { setTimeout(resolve, 100); });
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+    // Verify the block has been populated
+    expect(block.innerHTML).to.not.be.empty;
 
     const { parentElement } = block;
     expect(parentElement.classList.contains('one-up')).to.be.true;
@@ -321,12 +412,47 @@ describe('Template X Promo', () => {
   });
 
   it('should create fallback icons when getIconElementDeprecated is unavailable', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+    
     const originalGetIcon = window.getIconElementDeprecated;
     window.getIconElementDeprecated = () => null;
 
+    // Set up the mock response for this test
+    fetchStub.resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'template1',
+            title: 'Test Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image1.jpg',
+              },
+            },
+          },
+        ],
+      }),
+    });
+
     try {
+      // Wait for the async operations to complete
       await decorate(block);
-      await new Promise((resolve) => { setTimeout(resolve, 100); });
+      await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+      // Verify the block has been populated
+      expect(block.innerHTML).to.not.be.empty;
 
       const shareIcons = block.querySelectorAll('.icon-share-arrow.share-fallback');
       expect(shareIcons.length).to.be.greaterThan(0, 'Fallback share icons should be created');

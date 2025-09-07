@@ -44,10 +44,10 @@ const fixImageUrl = (imageUrl) => {
 const extractTemplateMetadata = (templateData) => ({
   editUrl: templateData.customLinks?.branchUrl || templateData.branchUrl || '#',
   imageUrl: fixImageUrl(
-    templateData.thumbnail
+    templateData.thumbnail?.url || templateData.thumbnail
     || templateData._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href, // eslint-disable-line no-underscore-dangle
   ),
-  title: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
+  title: templateData['dc:title']?.['i-default'] || (typeof templateData.title === 'string' ? templateData.title : templateData.title?.['i-default']) || '',
   isFree: templateData.licensingCategory === 'free',
   isPremium: templateData.licensingCategory !== 'free',
 });
@@ -137,7 +137,7 @@ const createClickHandler = (hoverManager, templateElement, analyticsHandler) => 
 /**
  * Creates image error handler (pure function)
  */
-const createImageErrorHandler = () => () => {
+const createImageErrorHandler = () => function imageErrorHandler() {
   // Fallback: show a placeholder
   const img = this;
   img.style.backgroundColor = '#e0e0e0';
@@ -566,10 +566,10 @@ export async function createCustomCarousel(block, templates) {
 
       // Wait for images to load and measure actual heights
       const measureHeights = () => {
-        const templateElements = carouselTrack.querySelectorAll('.template');
-        if (templateElements.length === 0) return;
+        const renderedTemplates = carouselTrack.querySelectorAll('.template');
+        if (renderedTemplates.length === 0) return;
 
-        const actualHeights = Array.from(templateElements).map((template) => {
+        const actualHeights = Array.from(renderedTemplates).map((template) => {
           // Get the actual rendered height of the template
           const rect = template.getBoundingClientRect();
           return rect.height;
@@ -577,7 +577,7 @@ export async function createCustomCarousel(block, templates) {
 
         // Use the tallest actual height
         const maxHeight = Math.max(...actualHeights);
-        
+
         // Apply reasonable limits
         const finalHeight = Math.min(maxHeight, 600); // Cap at 600px
         FIXED_CONTAINER_HEIGHT = Math.max(finalHeight, 200); // Minimum 200px
@@ -784,35 +784,14 @@ export async function createCustomCarousel(block, templates) {
   }
 }
 
-/**
- * Main API-driven template handler
- */
-async function handleApiDrivenTemplates(block, apiUrl) {
-  try {
-    const { templates } = await fetchDirectFromApiUrl(apiUrl);
-
-    if (!templates || templates.length === 0) {
-      // Graceful degradation - no templates available
-      return;
-    }
-
-    // Route to appropriate handler
-    if (templates.length === 1) {
-      await handleOneUpFromApiData(block, templates[0]);
-    } else if (templates.length > 1) {
-      await createCustomCarousel(block, templates);
-    }
-  } catch (error) {
-    // Graceful degradation - API error occurred
-    // Silently fail to avoid breaking the page
-  }
-}
+// ============================================
+// FUNCTIONAL COMPOSITION - MAIN FLOW
+// ============================================
 
 /**
- * Main block decorator
+ * Initializes utilities with fallbacks (pure function)
  */
-export default async function decorate(block) {
-  // Initialize utilities
+const initializeUtilities = async () => {
   const libsPath = getLibs() || '../../scripts';
   try {
     const [utils, placeholders] = await Promise.all([
@@ -820,30 +799,82 @@ export default async function decorate(block) {
       import(`${libsPath}/features/placeholders.js`),
     ]);
 
-    createTag = utils.createTag;
-    getConfig = utils.getConfig;
-    replaceKey = placeholders.replaceKey;
+    return {
+      createTag: utils.createTag,
+      getConfig: utils.getConfig,
+      replaceKey: placeholders.replaceKey,
+    };
   } catch (utilsError) {
-    // Fallback implementations - try window.createTag first
-    createTag = window.createTag || ((tag, attrs) => {
-      const el = document.createElement(tag);
-      if (attrs) {
-        Object.keys(attrs).forEach((key) => {
-          if (key === 'class') el.className = attrs[key];
-          else el.setAttribute(key, attrs[key]);
-        });
-      }
-      return el;
-    });
-    getConfig = window.getConfig || (() => ({}));
-    replaceKey = window.replaceKey || (async () => null);
+    // Fallback implementations
+    return {
+      createTag: window.createTag || ((tag, attrs) => {
+        const el = document.createElement(tag);
+        if (attrs) {
+          Object.keys(attrs).forEach((key) => {
+            if (key === 'class') el.className = attrs[key];
+            else el.setAttribute(key, attrs[key]);
+          });
+        }
+        return el;
+      }),
+      getConfig: window.getConfig || (() => ({})),
+      replaceKey: window.replaceKey || (async () => null),
+    };
+  }
+};
+
+/**
+ * Applies block styling (side effect function)
+ */
+const applyBlockStyling = (block) => {
+  block.parentElement.classList.add('ax-template-x-promo');
+};
+
+/**
+ * Routes templates to appropriate handler (pure function)
+ */
+const routeTemplates = async (block, templates) => {
+  if (!templates || templates.length === 0) {
+    return; // Graceful degradation - no templates available
   }
 
-  block.parentElement.classList.add('ax-template-x-promo');
+  if (templates.length === 1) {
+    await handleOneUpFromApiData(block, templates[0]);
+  } else if (templates.length > 1) {
+    await createCustomCarousel(block, templates);
+  }
+};
 
-  // Get API URL from recipe
+/**
+ * Handles API-driven templates with error handling (composed function)
+ */
+const handleApiDrivenTemplates = async (block, apiUrl) => {
+  try {
+    const { templates } = await fetchDirectFromApiUrl(apiUrl);
+    await routeTemplates(block, templates);
+  } catch (error) {
+    // Graceful degradation - API error occurred
+    // Silently fail to avoid breaking the page
+  }
+};
+
+/**
+ * Main block decorator using functional composition
+ */
+export default async function decorate(block) {
+  // Initialize utilities
+  const utilities = await initializeUtilities();
+
+  // Apply utilities to global scope
+  createTag = utilities.createTag;
+  getConfig = utilities.getConfig;
+  replaceKey = utilities.replaceKey;
+
+  // Apply block styling
+  applyBlockStyling(block);
+
+  // Get API URL and handle templates
   const apiUrl = extractApiParamsFromRecipe(block);
-
   if (apiUrl) {
     await handleApiDrivenTemplates(block, apiUrl);
   }
