@@ -7,118 +7,21 @@ let { createTag } = window; // Try to get it from window first
 let { getConfig } = window;
 let { replaceKey } = window;
 
-// ============================================
-// PURE FUNCTIONS - DATA TRANSFORMATION
-// ============================================
-
 /**
- * Extracts recipe string from DOM element (pure function)
- */
-const extractRecipeFromElement = (block) => {
-  const recipeElement = block.querySelector('[id^=recipe], h4');
-  return recipeElement?.parentElement?.nextElementSibling?.textContent || null;
-};
-
-/**
- * Cleans up recipe DOM (side effect isolated)
- */
-const cleanupRecipeDOM = (block) => {
-  const recipeElement = block.querySelector('[id^=recipe], h4');
-  if (recipeElement?.parentElement) {
-    const recipeContainer = recipeElement.parentElement.parentElement;
-    recipeContainer?.remove();
-  }
-};
-
-/**
- * Fixes image URL format (pure function) - EXACTLY matches original behavior
- */
-const fixImageUrl = (imageUrl) => {
-  if (typeof imageUrl !== 'string') return null;
-  return imageUrl; // Don't modify URLs - let original logic handle it
-};
-
-/**
- * Extracts template metadata (pure function)
- */
-const extractTemplateMetadata = (templateData) => ({
-  editUrl: templateData.customLinks?.branchUrl || templateData.branchUrl || '#',
-  imageUrl: fixImageUrl(
-    templateData.thumbnail
-    || templateData._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href, // eslint-disable-line no-underscore-dangle
-  ),
-  title: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
-  isFree: templateData.licensingCategory === 'free',
-  isPremium: templateData.licensingCategory !== 'free',
-});
-
-// ============================================
-// ATOMIC DOM BUILDERS - PURE FUNCTIONS
-// ============================================
-
-/**
- * Creates an image element (pure function)
- */
-const createImageElement = ({ src, alt, loading = 'lazy' }) => createTag('img', { src, alt, loading });
-
-/**
- * Creates a wrapper div with class (pure function)
- */
-const createWrapper = (className) => createTag('div', { class: className });
-
-/**
- * Creates a free tag element (pure function)
- */
-const createFreeTag = () => {
-  const freeTag = createTag('span', { class: 'free-tag' });
-  freeTag.textContent = 'Free';
-  return freeTag;
-};
-
-/**
- * Creates a premium icon element (pure function)
- */
-const createPremiumIcon = () => {
-  const premiumIcon = getIconElementDeprecated('premium');
-  if (premiumIcon) {
-    premiumIcon.classList.add('icon', 'icon-premium');
-    return premiumIcon;
-  }
-  // Fallback div with CSS class
-  return createTag('div', { class: 'icon premium-fallback' });
-};
-
-/**
- * Creates a button element (pure function)
- */
-const createButtonElement = (type, { href, text, title, ariaLabel }) => {
-  const classes = type === 'edit' ? 'button accent small' : 'cta-link';
-
-  const button = createTag('a', {
-    href,
-    class: classes,
-    title: type === 'edit' ? 'Edit this template' : title,
-    'aria-label': ariaLabel,
-    target: '_self',
-  });
-
-  if (type === 'cta') {
-    button.setAttribute('tabindex', '-1');
-  }
-
-  if (type === 'edit') {
-    button.textContent = text;
-  }
-
-  return button;
-};
-
-/**
- * Extracts recipe parameters from DOM element (composed function)
+ * Extracts recipe parameters from DOM element
  */
 function extractApiParamsFromRecipe(block) {
-  const recipeString = extractRecipeFromElement(block);
-  cleanupRecipeDOM(block);
+  const recipeElement = block.querySelector('[id^=recipe], h4');
+  const recipeString = recipeElement?.parentElement?.nextElementSibling?.textContent;
+
+  // Clean up the recipe DOM after extraction
+  if (recipeElement && recipeElement.parentElement) {
+    const recipeContainer = recipeElement.parentElement.parentElement; // Get the outer div
+    if (recipeContainer) {
+      recipeContainer.remove(); // Remove the entire recipe container
+    }
+  }
+
   return recipeString;
 }
 
@@ -145,11 +48,14 @@ async function handleOneUpFromApiData(block, templateData) {
   parent.classList.add('one-up');
   block.innerHTML = '';
 
-  // Extract metadata using our pure function
-  const metadata = extractTemplateMetadata(templateData);
+  // Extract template data
+  const editUrl = templateData.customLinks?.branchUrl || '#';
+  const templateTitle = templateData['dc:title']?.['i-default'] || 'Template';
 
-  // Get and clean image URL (original logic)
-  let { imageUrl } = metadata;
+  // Get and clean image URL
+  // eslint-disable-next-line no-underscore-dangle
+  let imageUrl = templateData._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href;
+
   if (imageUrl && imageUrl.includes('{&')) {
     imageUrl = imageUrl.replace('{&page,size,type,fragment}', '');
   }
@@ -158,30 +64,29 @@ async function handleOneUpFromApiData(block, templateData) {
     throw new Error('Invalid template image URL');
   }
 
-  // Create image with wrapper using our atomic functions
-  const img = createImageElement({
+  // Create image with wrapper
+  const img = createTag('img', {
     src: imageUrl,
-    alt: metadata.title,
+    alt: templateTitle,
     loading: 'lazy',
   });
 
-  const imgWrapper = createWrapper('image-wrapper');
+  const imgWrapper = createTag('div', { class: 'image-wrapper' });
   imgWrapper.append(img);
-
-  // Note: No plan icon needed for API-driven templates
-  // The API already provides the template type information
 
   block.append(imgWrapper);
 
-  // Create edit button with localized text using our atomic function
+  // Create edit button with localized text
   const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
-  const editTemplateButton = createButtonElement('edit', {
-    href: metadata.editUrl,
-    text: editThisTemplate,
-    title: `${editThisTemplate} ${metadata.title}`,
-    ariaLabel: `${editThisTemplate} ${metadata.title}`,
+  const editTemplateButton = createTag('a', {
+    href: editUrl,
+    title: `${editThisTemplate} ${templateTitle}`,
+    class: 'button accent',
+    'aria-label': `${editThisTemplate} ${templateTitle}`,
+    target: '_blank',
   });
 
+  editTemplateButton.textContent = editThisTemplate;
   const buttonContainer = createTag('section', { class: 'button-container' });
   buttonContainer.append(editTemplateButton);
 
@@ -228,29 +133,27 @@ function attachHoverListeners(templateEl) {
  * Creates a template element with hover overlay from template data
  */
 async function createTemplateElement(templateData) {
-  // Extract metadata using our pure function
-  const metadata = extractTemplateMetadata(templateData);
-
   // Create main template container
-  const templateEl = createWrapper('template');
+  const templateEl = createTag('div', { class: 'template' });
 
   // Create still wrapper (like template-x)
-  const stillWrapper = createWrapper('still-wrapper');
+  const stillWrapper = createTag('div', { class: 'still-wrapper' });
 
   // Create image wrapper with the actual image (visible by default)
-  const imageWrapper = createWrapper('image-wrapper');
+  const imageWrapper = createTag('div', { class: 'image-wrapper' });
 
-  // Fix image URL by replacing the template parameters (original logic)
-  let { imageUrl } = metadata;
+  // Fix image URL by replacing the template parameters
+  // eslint-disable-next-line no-underscore-dangle
+  let imageUrl = templateData.thumbnail || templateData._links?.['http://ns.adobe.com/adobecloud/rel/rendition']?.href;
   if (imageUrl && imageUrl.includes('{&page,size,type,fragment}')) {
     // Try different image parameters - sometimes webp doesn't work
     imageUrl = imageUrl.replace('{&page,size,type,fragment}', '&page=0&size=512&type=image/jpeg');
   }
 
-  // Create the actual image element using our atomic function
-  const img = createImageElement({
+  // Create the actual image element (visible by default)
+  const img = createTag('img', {
     src: imageUrl,
-    alt: metadata.title,
+    alt: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
     loading: 'lazy',
   });
 
@@ -264,52 +167,63 @@ async function createTemplateElement(templateData) {
 
   imageWrapper.append(img);
 
-  // Add free/premium tag to image wrapper using our atomic functions
-  if (metadata.isFree) {
-    const freeTag = createFreeTag();
+  // Add free/premium tag to image wrapper
+  const isFreePlan = templateData.licensingCategory === 'free';
+  if (isFreePlan) {
+    const freeTag = createTag('span', { class: 'free-tag' });
+    freeTag.textContent = 'Free';
     imageWrapper.append(freeTag);
-  } else if (metadata.isPremium) {
-    const premiumIcon = createPremiumIcon();
-    imageWrapper.append(premiumIcon);
+  } else {
+    const premiumIcon = getIconElementDeprecated('premium');
+    if (premiumIcon) {
+      premiumIcon.classList.add('icon', 'icon-premium');
+      imageWrapper.append(premiumIcon);
+    }
   }
 
   stillWrapper.append(imageWrapper);
 
   // Create button container (following exact template-x pattern)
-  const buttonContainer = createWrapper('button-container');
+  const buttonContainer = createTag('div', { class: 'button-container' });
 
-  // Edit button (CTA) using our atomic function
+  // Edit button (CTA)
   const editButtonText = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  const templateTitle = templateData['dc:title']?.['i-default'] || '';
 
-  const editButton = createButtonElement('edit', {
-    href: metadata.editUrl,
-    text: editButtonText,
+  const editButton = createTag('a', {
+    href: templateData.customLinks?.branchUrl || '#',
+    class: 'button accent small',
     title: editButtonText,
-    ariaLabel: `${editButtonText} ${metadata.title}`,
+    'aria-label': `${editButtonText} ${templateTitle}`,
+    target: '_self',
   });
+  editButton.textContent = editButtonText;
 
-  // CTA Link (covers the media area) using our atomic function
-  const ctaLink = createButtonElement('cta', {
-    href: metadata.editUrl,
-    text: '',
-    title: `${editButtonText}: ${metadata.title}`,
-    ariaLabel: `${editButtonText}: ${metadata.title}`,
+  // CTA Link (covers the media area) - NO IMAGE NEEDED, dark overlay shows original
+  const ctaLink = createTag('a', {
+    href: templateData.customLinks?.branchUrl || '#',
+    class: 'cta-link',
+    tabindex: '-1',
+    'aria-label': `${editButtonText}: ${templateTitle}`,
+    target: '_self',
   });
 
   // Media wrapper (contains a COPY of the image for hover state)
-  const mediaWrapper = createWrapper('media-wrapper');
+  const mediaWrapper = createTag('div', { class: 'media-wrapper' });
 
-  // Create a copy of the SAME image for the hover state using our atomic function
-  const hoverImg = createImageElement({
-    src: imageUrl, // Use the processed URL
-    alt: metadata.title,
+  // Create a copy of the SAME image for the hover state (use same URL)
+  const hoverImageUrl = imageUrl; // Ensure we use the exact same URL
+  const hoverImg = createTag('img', {
+    src: hoverImageUrl,
+    alt: templateData['dc:title']?.['i-default'] || templateData.title?.['i-default'] || '',
     loading: 'lazy',
+    class: '',
   });
 
   mediaWrapper.append(hoverImg);
 
   // Share wrapper (goes inside media-wrapper like template-x)
-  const shareWrapper = createWrapper('share-icon-wrapper');
+  const shareWrapper = createTag('div', { class: 'share-icon-wrapper' });
 
   // Screen reader only element for accessibility
   const srOnly = createTag('div', {
@@ -324,7 +238,7 @@ async function createTemplateElement(templateData) {
     shareIcon.classList.add('icon', 'icon-share-arrow');
     shareIcon.setAttribute('tabindex', '0');
     shareIcon.setAttribute('role', 'button');
-    shareIcon.setAttribute('aria-label', `Share ${metadata.title}`);
+    shareIcon.setAttribute('aria-label', `Share ${templateTitle}`);
     shareWrapper.append(shareIcon);
   }
 
