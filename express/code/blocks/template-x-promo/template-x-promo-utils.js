@@ -730,26 +730,37 @@ export function attachHoverListeners(
       newShareIcon.addEventListener('click', async (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
-        timeoutId = await shareDefault(
-          shareIcon.getAttribute('data-edit-url') || '#',
-          sharedTooltip,
-          timeoutId,
-          srOnly,
-          text,
-          getTrackingAppendedURLDefault,
-        );
+        console.log('Share icon clicked!', shareIcon.getAttribute('data-edit-url'));
+        try {
+          const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
+          timeoutId = await shareDefault(
+            shareIcon.getAttribute('data-edit-url') || '#',
+            sharedTooltip,
+            timeoutId,
+            srOnly,
+            text,
+            getTrackingAppendedURL,
+          );
+        } catch (error) {
+          console.error('Share error:', error);
+        }
       });
 
       newShareIcon.addEventListener('keypress', async (e) => {
         if (e.key !== 'Enter') return;
-        timeoutId = await shareDefault(
-          shareIcon.getAttribute('data-edit-url') || '#',
-          sharedTooltip,
-          timeoutId,
-          srOnly,
-          text,
-          getTrackingAppendedURLDefault,
-        );
+        try {
+          const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
+          timeoutId = await shareDefault(
+            shareIcon.getAttribute('data-edit-url') || '#',
+            sharedTooltip,
+            timeoutId,
+            srOnly,
+            text,
+            getTrackingAppendedURL,
+          );
+        } catch (error) {
+          console.error('Share error:', error);
+        }
       });
     }
   });
@@ -783,6 +794,8 @@ export function createImageSectionConfig(metadata, createTag, getIconElementDepr
   imageWrapper.append(img);
 
   // Add free/premium tag
+  console.log('Template metadata:', metadata.title, 'isFree:', metadata.isFree, 'isPremium:', metadata.isPremium);
+
   if (metadata.isFree) {
     const freeTag = createTag('span', { class: 'free-tag' });
     freeTag.textContent = 'Free';
@@ -1009,26 +1022,36 @@ export async function createShareSection(
     shareConfig.shareIcon.addEventListener('click', async (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
-      timeoutId = await shareDefault(
-        metadata.editUrl,
-        shareConfig.sharedTooltip,
-        timeoutId,
-        shareConfig.srOnly,
-        text,
-        getTrackingAppendedURLDefault,
-      );
+      try {
+        const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
+        timeoutId = await shareDefault(
+          metadata.editUrl,
+          shareConfig.sharedTooltip,
+          timeoutId,
+          shareConfig.srOnly,
+          text,
+          getTrackingAppendedURL,
+        );
+      } catch (error) {
+        console.error('Share error:', error);
+      }
     });
 
     shareConfig.shareIcon.addEventListener('keypress', async (e) => {
       if (e.key !== 'Enter') return;
-      timeoutId = await shareDefault(
-        metadata.editUrl,
-        shareConfig.sharedTooltip,
-        timeoutId,
-        shareConfig.srOnly,
-        text,
-        getTrackingAppendedURLDefault,
-      );
+      try {
+        const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
+        timeoutId = await shareDefault(
+          metadata.editUrl,
+          shareConfig.sharedTooltip,
+          timeoutId,
+          shareConfig.srOnly,
+          text,
+          getTrackingAppendedURL,
+        );
+      } catch (error) {
+        console.error('Share error:', error);
+      }
     });
   }
 

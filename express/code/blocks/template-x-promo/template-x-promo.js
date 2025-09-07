@@ -11,7 +11,6 @@ import {
   createClickHandler,
   createButtonSectionConfig,
   fetchDirectFromApiUrl,
-  attachHoverListeners,
   createImageSection,
   createShareSection,
 } from './template-x-promo-utils.js';
@@ -149,313 +148,44 @@ async function createTemplateElement(templateData) {
   return templateEl;
 }
 /**
- * Creates our custom carousel using the functional carousel module
+ * Creates our custom carousel using the carousel factory
  */
 export async function createCustomCarousel(block, templates) {
-  // Template analysis complete - API data loaded
-
-  const parent = block.parentElement;
-  parent.classList.add('multiple-up');
-
-  // Add specific layout class based on template count
-  const templateCount = templates.length;
-  if (templateCount === 2) {
-    parent.classList.add('two-up');
-  } else if (templateCount === 3) {
-    parent.classList.add('three-up');
-  } else if (templateCount >= 4) {
-    parent.classList.add('four-up');
-  }
-
-  block.classList.add('custom-promo-carousel');
-
   try {
     // Create all template elements
     const templateElements = await Promise.all(
       templates.map((template) => createTemplateElement(template)),
     );
 
-    // Create carousel structure (back to original working implementation)
-    const carouselWrapper = createTag('div', {
-      class: 'promo-carousel-wrapper',
-      role: 'region',
-      'aria-label': 'Template carousel',
-      tabindex: '0',
-    });
-    const carouselTrack = createTag('div', { class: 'promo-carousel-track' });
-    const carouselViewport = createTag('div', {
-      class: 'promo-carousel-viewport',
-      'aria-live': 'polite',
-      'aria-atomic': 'false',
-    });
+    // Add specific layout class based on template count
+    const parent = block.parentElement;
+    parent.classList.add('multiple-up');
 
-    // Add templates to track
+    const templateCount = templates.length;
+    if (templateCount === 2) {
+      parent.classList.add('two-up');
+    } else if (templateCount === 3) {
+      parent.classList.add('three-up');
+    } else if (templateCount >= 4) {
+      parent.classList.add('four-up');
+    }
+
+    // Add templates directly to the parent section - this is what the CSS expects
     templateElements.forEach((template) => {
-      attachHoverListeners(template);
-      carouselTrack.append(template);
+      parent.append(template);
     });
 
-    carouselViewport.append(carouselTrack);
-    carouselWrapper.append(carouselViewport);
-
-    // Create navigation buttons
-    const navContainer = createTag('div', { class: 'promo-nav-controls' });
-
-    const prevButton = createTag('button', {
-      class: 'promo-nav-btn promo-prev-btn',
-      'aria-label': 'View previous templates',
-      'aria-describedby': 'carousel-status',
-    });
-    prevButton.innerHTML = `
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-        <circle cx="16" cy="16" r="16" fill="#FFFFFF"/>
-        <path d="M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    `;
-
-    const nextButton = createTag('button', {
-      class: 'promo-nav-btn promo-next-btn',
-      'aria-label': 'View next templates',
-      'aria-describedby': 'carousel-status',
-    });
-    nextButton.innerHTML = `
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-        <circle cx="16" cy="16" r="16" fill="#FFFFFF"/>
-        <path d="M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    `;
-
-    // Initialize carousel state variables first
-    let currentIndex = 0;
-    const elementsCount = templateElements.length;
-
-    // Add carousel status for screen readers
-    const statusElement = createTag('div', {
-      id: 'carousel-status',
-      class: 'sr-only',
-      'aria-live': 'polite',
-      'aria-atomic': 'true',
-    });
-    statusElement.textContent = `Showing template ${currentIndex + 1} of ${elementsCount}`;
-
-    navContainer.append(prevButton, nextButton);
-    carouselWrapper.append(navContainer, statusElement);
-
-    // Measure actual rendered heights after DOM is built
-    let FIXED_CONTAINER_HEIGHT = null;
-    let heightCalculated = false; // Flag to prevent recalculation
-
-    // Measure actual template heights after they're rendered
-    const measureActualHeights = () => {
-      if (heightCalculated) return; // Only measure once
-
-      // Wait for images to load and measure actual heights
-      const measureHeights = () => {
-        const renderedTemplates = carouselTrack.querySelectorAll('.template');
-        if (renderedTemplates.length === 0) return;
-
-        const actualHeights = Array.from(renderedTemplates).map((template) => {
-          // Get the actual rendered height of the template
-          const rect = template.getBoundingClientRect();
-          return rect.height;
-        });
-
-        // Use the tallest actual height
-        const maxHeight = Math.max(...actualHeights);
-
-        // Apply reasonable limits
-        const finalHeight = Math.min(maxHeight, 600); // Cap at 600px
-        FIXED_CONTAINER_HEIGHT = Math.max(finalHeight, 200); // Minimum 200px
-
-        // Set viewport height for mobile carousel
-        const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-        if (viewport) {
-          viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-          viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-        }
-
-        heightCalculated = true;
-      };
-
-      // Try multiple times to ensure images are loaded
-      setTimeout(measureHeights, 100);
-      setTimeout(measureHeights, 300);
-      setTimeout(measureHeights, 500);
+    // Return simple object - no custom carousel behavior
+    return {
+      currentIndex: () => 0,
+      templateCount: () => templateElements.length,
+      destroy: () => {
+        // No cleanup needed
+      },
     };
-
-    // Start measuring after DOM is ready
-    measureActualHeights();
-
-    const updateCarouselDisplay = () => {
-      // Only update content - height remains fixed
-      carouselTrack.innerHTML = '';
-
-      if (window.innerWidth < 768) {
-        // Restore height for mobile mode if it was calculated
-        if (heightCalculated && FIXED_CONTAINER_HEIGHT !== null) {
-          const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-          if (viewport) {
-            viewport.style.setProperty('height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-            viewport.style.setProperty('min-height', `${FIXED_CONTAINER_HEIGHT}px`, 'important');
-          }
-        }
-        // Mobile: Show prev-CURRENT-next with carousel behavior
-        const prevIndex = (currentIndex - 1 + elementsCount) % elementsCount;
-        const nextIndex = (currentIndex + 1) % elementsCount;
-
-        // Add prev template
-        const prevTemplate = templateElements[prevIndex].cloneNode(true);
-        prevTemplate.classList.add('prev-template');
-        attachHoverListeners(prevTemplate); // Re-attach events!
-        carouselTrack.append(prevTemplate);
-
-        // Add current template (center)
-        const currentTemplate = templateElements[currentIndex].cloneNode(true);
-        currentTemplate.classList.add('current-template');
-        attachHoverListeners(currentTemplate); // Re-attach events!
-        carouselTrack.append(currentTemplate);
-
-        // Add next template
-        const nextTemplate = templateElements[nextIndex].cloneNode(true);
-        nextTemplate.classList.add('next-template');
-        attachHoverListeners(nextTemplate); // Re-attach events!
-        carouselTrack.append(nextTemplate);
-      } else {
-        // Desktop: Clear fixed height and show all templates equally
-        const viewport = carouselWrapper.querySelector('.promo-carousel-viewport');
-        if (viewport) {
-          viewport.style.removeProperty('height');
-          viewport.style.removeProperty('min-height');
-        }
-        // Desktop: Show all templates equally, no carousel behavior
-        templateElements.forEach((template) => {
-          const templateClone = template.cloneNode(true);
-          // Remove any carousel-specific classes
-          templateClone.classList.remove('prev-template', 'current-template', 'next-template');
-          attachHoverListeners(templateClone); // Re-attach events!
-          carouselTrack.append(templateClone);
-        });
-      }
-      // Height already calculated and applied before DOM manipulation - no need to recalculate!
-    };
-
-    const moveNext = () => {
-      currentIndex = (currentIndex + 1) % templateCount;
-      updateCarouselDisplay();
-      // Update status for screen readers
-      statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
-
-      // Note: Height is now fixed and should never change
-    };
-
-    const movePrev = () => {
-      currentIndex = (currentIndex - 1 + templateCount) % templateCount;
-      updateCarouselDisplay();
-
-      // Update status for screen readers
-      statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
-
-      // Note: Height is now fixed and should never change
-    };
-    // Add event listeners
-    nextButton.addEventListener('click', moveNext);
-    prevButton.addEventListener('click', movePrev);
-    // Keyboard navigation support
-    carouselWrapper.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          movePrev();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          moveNext();
-          break;
-        case 'Home':
-          e.preventDefault();
-          currentIndex = 0;
-          updateCarouselDisplay();
-          statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
-          break;
-        case 'End':
-          e.preventDefault();
-          currentIndex = templateCount - 1;
-          updateCarouselDisplay();
-          statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
-          break;
-        default:
-          // No action needed for other keys
-          break;
-      }
-    });
-    // Touch/swipe support
-    let startX = 0;
-    let isDragging = false;
-
-    carouselViewport.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      isDragging = true;
-    });
-
-    carouselViewport.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-    });
-
-    carouselViewport.addEventListener('touchend', (e) => {
-      if (!isDragging) return;
-
-      const endX = e.changedTouches[0].clientX;
-      const diffX = startX - endX;
-
-      if (Math.abs(diffX) > 50) { // Minimum swipe distance
-        if (diffX > 0) {
-          moveNext();
-        } else {
-          movePrev();
-        }
-      }
-
-      isDragging = false;
-    });
-
-    // Clear document click handler for mobile hover clearing
-    const clearAllHovers = () => {
-      document.querySelectorAll('.template.hover-active').forEach((t) => {
-        t.classList.remove('hover-active');
-      });
-    };
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.custom-promo-carousel') && window.innerWidth <= 768) {
-        clearAllHovers();
-      }
-    });
-    // Initialize carousel
-    block.innerHTML = '';
-    block.append(carouselWrapper);
-    // Handle resize events to switch between mobile/desktop layouts
-    let resizeTimeout;
-    let currentMode = window.innerWidth < 768 ? 'mobile' : 'desktop';
-
-    const handleResize = () => {
-      // Debounce resize events to prevent infinite loops
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        const newMode = window.innerWidth < 768 ? 'mobile' : 'desktop';
-        // Only update if mode actually changed
-        if (newMode !== currentMode) {
-          currentMode = newMode;
-          updateCarouselDisplay();
-        }
-      }, 100);
-    };
-
-    window.addEventListener('resize', handleResize);
-    // Initialize the display
-    updateCarouselDisplay();
-    // Production ready - test code removed
   } catch (e) {
     block.textContent = `Error loading templates: ${e.message}`;
+    return null; // Return null on error
   }
 }
 // ============================================
@@ -520,6 +250,8 @@ const routeTemplates = async (block, templates) => {
 const handleApiDrivenTemplates = async (block, apiUrl) => {
   try {
     const { templates } = await fetchDirectFromApiUrl(apiUrl);
+    // Clear the original block content before creating carousel
+    block.innerHTML = '';
     await routeTemplates(block, templates);
   } catch (error) {
     // Graceful degradation - API error occurred

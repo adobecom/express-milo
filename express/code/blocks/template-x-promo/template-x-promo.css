@@ -269,7 +269,7 @@
 
 
 /* Free/Premium tags */
-.template-x-promo .template .free-tag {
+.ax-template-x-promo .template .free-tag {
   position: absolute;
   top: var(--template-spacing);
   right: var(--template-spacing);
@@ -282,7 +282,7 @@
   z-index: 1;
 }
 
-.template-x-promo .template .image-wrapper .icon.icon-premium {
+.ax-template-x-promo .template .image-wrapper .icon.icon-premium {
   position: absolute !important;
   top: 16px !important;
   right: 16px !important;
@@ -293,7 +293,7 @@
 }
 
 /* Template structure (following template-x pattern) */
-.template-x-promo .template {
+.ax-template-x-promo .template {
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
@@ -301,19 +301,19 @@
 }
 
 
-.template-x-promo .template .still-wrapper {
+.ax-template-x-promo .template .still-wrapper {
   position: relative;
   display: block;
 }
 
-.template-x-promo .template .image-wrapper {
+.ax-template-x-promo .template .image-wrapper {
   position: relative;
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
 }
 
-.template-x-promo .template .image-wrapper img {
+.ax-template-x-promo .template .image-wrapper img {
   width: 100%;
   height: auto; /* Allow natural height based on aspect ratio */
   object-fit: cover;
@@ -322,7 +322,12 @@
   /* Removed max-height constraint - let images size naturally to their content */
 }
 
-.template-x-promo .template .button-container {
+/* Hide empty template-x-promo block in multiple-up layouts */
+.ax-template-x-promo.multiple-up .template-x-promo:empty {
+  display: none;
+}
+
+.ax-template-x-promo .template .button-container {
   position: absolute;
   width: 100%; /* Proper container width */
   max-width: 90vw;
@@ -333,22 +338,22 @@
   padding: 6px;
   padding-bottom: 8px;
   border-radius: 8px;
+  opacity: 0; /* Hidden by default */
+  pointer-events: none; /* No interaction by default */
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
   box-shadow: 0 0 6px #00000029;
-  opacity: 0;
   text-align: center;
   transition: opacity .3s ease-in-out;
   will-change: opacity;
-  pointer-events: none;
 }
 
 /* Desktop: All templates can hover */
 @media (min-width: 768px) {
-  .template-x-promo .template:hover .button-container {
+  .ax-template-x-promo .template:hover .button-container {
     z-index: 2;
     opacity: 1;
     pointer-events: initial;
@@ -357,14 +362,14 @@
 
 /* Mobile: Only current template can hover */
 @media (max-width: 767px) {
-  .template-x-promo .template.current-template:hover .button-container {
+  .ax-template-x-promo .template.current-template:hover .button-container {
     z-index: 2;
     opacity: 1;
     pointer-events: initial;
   }
 }
 
-.template-x-promo .template .button-container .media-wrapper {
+.ax-template-x-promo .template .button-container .media-wrapper {
   position: relative; /* Let it be a flex child */
   flex: 1; /* Take up remaining space */
   pointer-events: none;
@@ -373,7 +378,7 @@
   z-index: 1; /* Show the image */
 }
 
-.template-x-promo .template .button-container .media-wrapper img {
+.ax-template-x-promo .template .button-container .media-wrapper img {
   width: 100%;
   height: 90%;
   object-fit: cover;
@@ -382,7 +387,7 @@
   margin: 0;
 }
 
-.template-x-promo .template .button-container a.button {
+.ax-template-x-promo .template .button-container a.button {
   width: 100%;
   max-width: 120px;
   margin: 0;
@@ -400,7 +405,7 @@
   z-index: 3; /* Above the image and overlay */
 }
 
-.template-x-promo .template .button-container a.cta-link {
+.ax-template-x-promo .template .button-container a.cta-link {
   display: block; /* Keep the cta-link to show the image */
   width: 100%;
   height: calc(100% - 34px);
@@ -409,7 +414,7 @@
   pointer-events: none; /* Prevent it from interfering with button clicks */
 }
 
-.template-x-promo .template .button-container .share-icon-wrapper {
+.ax-template-x-promo .template .button-container .share-icon-wrapper {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -425,7 +430,7 @@
   z-index: 3;
 }
 
-.template-x-promo .template .button-container .icon-share-arrow {
+.ax-template-x-promo .template .button-container .icon-share-arrow {
   cursor: pointer;
   pointer-events: auto;
   width: 16px;
@@ -436,7 +441,7 @@
   fill: var(--color-gray-700);
 }
 
-.template-x-promo .template .button-container .shared-tooltip {
+.ax-template-x-promo .template .button-container .shared-tooltip {
   visibility: hidden;
   position: absolute;
   display: flex;
@@ -460,11 +465,11 @@
   transition: visibility 0.2s ease;
 }
 
-.template-x-promo .template .button-container .shared-tooltip.display-tooltip {
+.ax-template-x-promo .template .button-container .shared-tooltip.display-tooltip {
   visibility: visible;
 }
 
-.template-x-promo .template .button-container .shared-tooltip .icon {
+.ax-template-x-promo .template .button-container .shared-tooltip .icon {
   opacity: 0;
   transition: opacity 0.2s ease;
   background-color: white;
@@ -477,25 +482,25 @@
   justify-content: center;
 }
 
-.template-x-promo .template .button-container .shared-tooltip .text {
+.ax-template-x-promo .template .button-container .shared-tooltip .text {
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
-.template-x-promo .template .button-container .shared-tooltip.display-tooltip .icon {
+.ax-template-x-promo .template .button-container .shared-tooltip.display-tooltip .icon {
   opacity: 1;
 }
 
-.template-x-promo .template .button-container .shared-tooltip.display-tooltip .text {
+.ax-template-x-promo .template .button-container .shared-tooltip.display-tooltip .text {
   opacity: 1;
 }
 
-.template-x-promo .template .button-container .shared-tooltip.flipped {
+.ax-template-x-promo .template .button-container .shared-tooltip.flipped {
   left: unset;
   right: calc(100% + 12px);
 }
 
-.template-x-promo .template .button-container .sr-only {
+.ax-template-x-promo .template .button-container .sr-only {
   position: absolute;
   width: 1px;
   height: 1px;

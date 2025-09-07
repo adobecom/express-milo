@@ -206,10 +206,10 @@ describe('Template X Promo', () => {
     console.log('Block innerHTML after decorate:', block.innerHTML);
     console.log('Block parent classes:', block.parentElement.className);
 
-    // Verify the block has been populated
-    expect(block.innerHTML).to.not.be.empty;
+    // Verify the parent has been populated (templates are added to parent, not block)
+    expect(block.parentElement.innerHTML).to.not.be.empty;
 
-    const freeTags = block.querySelectorAll('.free-tag');
+    const freeTags = block.parentElement.querySelectorAll('.free-tag');
     console.log('Free tags found:', freeTags.length);
     expect(freeTags.length).to.be.greaterThan(0, 'Free tags should be present');
 
