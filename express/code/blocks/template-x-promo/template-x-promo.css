@@ -1,5 +1,14 @@
 /* Fresh custom carousel styles - no imports, all our own */
 
+/* CSS Variables */
+:root {
+  --template-spacing: 16px;
+  --template-max-height: 400px;
+  --overlay-opacity: 0.95;
+  --focus-color: #66B3FF;
+  --focus-width: 2px;
+}
+
 /* Screen reader only content */
 .sr-only {
   position: absolute !important;
@@ -279,7 +288,6 @@
   border-radius: 50px;
   font-size: 12px;
   font-weight: 700;
-  z-index: 1;
 }
 
 .ax-template-x-promo .template .image-wrapper .icon.icon-premium {
@@ -288,7 +296,6 @@
   right: 16px !important;
   width: 30px !important;
   height: 30px !important;
-  z-index: 1 !important;
   display: block !important;
 }
 
