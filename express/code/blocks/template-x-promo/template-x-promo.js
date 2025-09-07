@@ -1,6 +1,30 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import { fetchResults } from '../../scripts/template-utils.js';
 import { isValidTemplate } from '../../scripts/template-search-api-v3.js';
+import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
+
+// Share function (copied from template-x)
+async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
+  const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
+    placement: 'template-x',
+    isSearchOverride: true,
+  });
+  await navigator.clipboard.writeText(urlWithTracking);
+  tooltip.classList.add('display-tooltip');
+
+  const rect = tooltip.getBoundingClientRect();
+  const tooltipRightEdgePos = rect.left + rect.width;
+  if (tooltipRightEdgePos > window.innerWidth) {
+    tooltip.classList.add('flipped');
+  }
+  // Update ARIA-live region
+  liveRegion.textContent = text;
+  clearTimeout(timeoutId);
+  return setTimeout(() => {
+    tooltip.classList.remove('display-tooltip');
+    tooltip.classList.remove('flipped');
+  }, 2500);
+}
 
 // Global utilities (loaded dynamically)
 let { createTag } = window; // Try to get it from window first
@@ -294,6 +318,34 @@ function attachHoverListeners(templateEl) {
   // Add events to template (visible element)
   templateEl.addEventListener('mouseenter', enterHandler);
   templateEl.addEventListener('mouseleave', leaveHandler);
+
+  // Re-attach share icon click handlers to cloned elements
+  const shareIcons = templateEl.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
+  shareIcons.forEach((shareIcon) => {
+    const shareWrapper = shareIcon.closest('.share-icon-wrapper');
+    const sharedTooltip = shareWrapper?.querySelector('.shared-tooltip');
+    const srOnly = shareWrapper?.querySelector('.sr-only');
+
+    if (shareIcon && sharedTooltip && srOnly) {
+      let timeoutId = null;
+      const text = 'Copied to clipboard';
+
+      // Remove any existing listeners first
+      shareIcon.replaceWith(shareIcon.cloneNode(true));
+      const newShareIcon = shareWrapper.querySelector('.icon-share-arrow');
+
+      newShareIcon.addEventListener('click', async (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        timeoutId = await share(shareIcon.getAttribute('data-edit-url') || '#', sharedTooltip, timeoutId, srOnly, text);
+      });
+
+      newShareIcon.addEventListener('keypress', async (e) => {
+        if (e.key !== 'Enter') return;
+        timeoutId = await share(shareIcon.getAttribute('data-edit-url') || '#', sharedTooltip, timeoutId, srOnly, text);
+      });
+    }
+  });
 }
 
 /**
@@ -385,17 +437,7 @@ async function createTemplateElement(templateData) {
   });
   shareWrapper.append(srOnly);
 
-  // Share icon
-  const shareIcon = getIconElementDeprecated('share-arrow');
-  if (shareIcon) {
-    shareIcon.classList.add('icon', 'icon-share-arrow');
-    shareIcon.setAttribute('tabindex', '0');
-    shareIcon.setAttribute('role', 'button');
-    shareIcon.setAttribute('aria-label', `Share ${metadata.title}`);
-    shareWrapper.append(shareIcon);
-  }
-
-  // Shared tooltip (like template-x)
+  // Shared tooltip (like template-x) - create first so it's available for click handlers
   const sharedTooltip = createTag('div', {
     class: 'shared-tooltip',
     'aria-label': 'Copied to clipboard',
@@ -414,6 +456,32 @@ async function createTemplateElement(templateData) {
   sharedTooltip.append(tooltipText);
 
   shareWrapper.append(sharedTooltip);
+
+  // Share icon
+  const shareIcon = getIconElementDeprecated('share-arrow');
+  if (shareIcon) {
+    shareIcon.classList.add('icon', 'icon-share-arrow');
+    shareIcon.setAttribute('tabindex', '0');
+    shareIcon.setAttribute('role', 'button');
+    shareIcon.setAttribute('aria-label', `Share ${metadata.title}`);
+    shareIcon.setAttribute('data-edit-url', metadata.editUrl);
+    shareWrapper.append(shareIcon);
+
+    // Add click and keypress handlers for share icon (exactly like template-x)
+    let timeoutId = null;
+    const text = 'Copied to clipboard';
+
+    shareIcon.addEventListener('click', async (ev) => {
+      ev.preventDefault();
+      ev.stopPropagation();
+      timeoutId = await share(metadata.editUrl, sharedTooltip, timeoutId, srOnly, text);
+    });
+
+    shareIcon.addEventListener('keypress', async (e) => {
+      if (e.key !== 'Enter') return;
+      timeoutId = await share(metadata.editUrl, sharedTooltip, timeoutId, srOnly, text);
+    });
+  }
 
   // Add media wrapper to cta link
   ctaLink.append(mediaWrapper);

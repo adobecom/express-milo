@@ -437,18 +437,62 @@
 }
 
 .template-x-promo .template .button-container .shared-tooltip {
+  visibility: hidden;
   position: absolute;
-  top: 30px;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 130px;
+  background-color: var(--background-positive-default, #00a650);
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(100% + 12px);
+  font-size: var(--body-font-size-s, 12px);
+  width: max-content;
+  max-width: 200px;
+  white-space: normal;
+  word-break: break-word;
   pointer-events: none;
+  transition: visibility 0.2s ease;
+}
+
+.template-x-promo .template .button-container .shared-tooltip.display-tooltip {
+  visibility: visible;
+}
+
+.template-x-promo .template .button-container .shared-tooltip .icon {
+  opacity: 0;
   transition: opacity 0.2s ease;
+  background-color: white;
+  border-radius: 50%;
+  padding: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.template-x-promo .template .button-container .shared-tooltip .text {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.template-x-promo .template .button-container .shared-tooltip.display-tooltip .icon {
+  opacity: 1;
+}
+
+.template-x-promo .template .button-container .shared-tooltip.display-tooltip .text {
+  opacity: 1;
+}
+
+.template-x-promo .template .button-container .shared-tooltip.flipped {
+  left: unset;
+  right: calc(100% + 12px);
 }
 
 .template-x-promo .template .button-container .sr-only {
