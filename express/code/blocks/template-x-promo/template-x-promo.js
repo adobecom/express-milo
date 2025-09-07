@@ -3,27 +3,142 @@ import { fetchResults } from '../../scripts/template-utils.js';
 import { isValidTemplate } from '../../scripts/template-search-api-v3.js';
 import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
 
-// Share function (copied from template-x)
+// ============================================
+// PURE FUNCTIONS - DATA TRANSFORMATION
+// ============================================
+
+// Pure function: Calculate tooltip positioning logic
+function calculateTooltipPosition(tooltipRect, windowWidth) {
+  const tooltipRightEdgePos = tooltipRect.left + tooltipRect.width;
+  return {
+    shouldFlip: tooltipRightEdgePos > windowWidth,
+    position: {
+      left: tooltipRect.left,
+      right: tooltipRect.right,
+      width: tooltipRect.width,
+    },
+  };
+}
+
+// Pure function: Generate share action data
+function generateShareActionData(branchUrl, text, tooltipPosition) {
+  return {
+    url: branchUrl,
+    text,
+    tooltipClasses: tooltipPosition.shouldFlip
+      ? ['display-tooltip', 'flipped']
+      : ['display-tooltip'],
+    timeoutDuration: 2500,
+  };
+}
+
+// Pure function: Create share wrapper configuration
+function createShareWrapperConfig(metadata) {
+  return {
+    className: 'share-icon-wrapper',
+    srOnly: {
+      className: 'sr-only',
+      attributes: { 'aria-live': 'polite' },
+    },
+    tooltip: {
+      className: 'shared-tooltip',
+      attributes: {
+        'aria-label': 'Copied to clipboard',
+        role: 'tooltip',
+        tabindex: '-1',
+      },
+      text: 'Copied to clipboard',
+    },
+    shareIcon: {
+      className: 'icon icon-share-arrow',
+      attributes: {
+        tabindex: '0',
+        role: 'button',
+        'aria-label': `Share ${metadata.title}`,
+        'data-edit-url': metadata.editUrl,
+      },
+    },
+  };
+}
+
+// Pure function: Build share wrapper DOM structure (returns configuration for DOM creation)
+function buildShareWrapperStructure(metadata) {
+  const config = createShareWrapperConfig(metadata);
+
+  return {
+    wrapper: {
+      tag: 'div',
+      className: config.className,
+    },
+    srOnly: {
+      tag: 'div',
+      className: config.srOnly.className,
+      attributes: config.srOnly.attributes,
+    },
+    tooltip: {
+      tag: 'div',
+      className: config.tooltip.className,
+      attributes: config.tooltip.attributes,
+      children: [
+        {
+          tag: 'img',
+          className: 'icon icon-checkmark-green',
+          attributes: {
+            src: '/express/code/icons/checkmark-green.svg',
+            alt: 'checkmark-green',
+          },
+        },
+        {
+          tag: 'span',
+          className: 'text',
+          textContent: config.tooltip.text,
+        },
+      ],
+    },
+    shareIcon: {
+      tag: 'img',
+      className: config.shareIcon.className,
+      attributes: {
+        ...config.shareIcon.attributes,
+        src: '/express/code/icons/share-arrow.svg',
+        alt: 'share-arrow',
+      },
+    },
+  };
+}
+
+// Share function - now uses pure functions for logic, side effects isolated
 async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
+  // Pure: Generate tracking URL
   const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
     isSearchOverride: true,
   });
-  await navigator.clipboard.writeText(urlWithTracking);
-  tooltip.classList.add('display-tooltip');
 
-  const rect = tooltip.getBoundingClientRect();
-  const tooltipRightEdgePos = rect.left + rect.width;
-  if (tooltipRightEdgePos > window.innerWidth) {
-    tooltip.classList.add('flipped');
-  }
+  // Pure: Calculate tooltip positioning
+  const tooltipRect = tooltip.getBoundingClientRect();
+  const tooltipPosition = calculateTooltipPosition(tooltipRect, window.innerWidth);
+
+  // Pure: Generate share action data
+  const shareData = generateShareActionData(branchUrl, text, tooltipPosition);
+
+  // Side effects: Execute the share action
+  await navigator.clipboard.writeText(urlWithTracking);
+
+  // Apply tooltip classes based on pure calculation
+  tooltip.classList.add(...shareData.tooltipClasses);
+
   // Update ARIA-live region
-  liveRegion.textContent = text;
+  liveRegion.textContent = shareData.text;
+
+  // Clear existing timeout
   clearTimeout(timeoutId);
+
+  // Return new timeout for cleanup
   return setTimeout(() => {
     tooltip.classList.remove('display-tooltip');
     tooltip.classList.remove('flipped');
-  }, 2500);
+  }, shareData.timeoutDuration);
 }
 
 // Global utilities (loaded dynamically)
@@ -427,32 +542,37 @@ async function createTemplateElement(templateData) {
 
   mediaWrapper.append(hoverImg);
 
-  // Share wrapper (goes inside media-wrapper like template-x)
-  const shareWrapper = createWrapper('share-icon-wrapper');
+  // Pure: Generate share wrapper structure configuration
+  const shareStructure = buildShareWrapperStructure(metadata);
 
-  // Screen reader only element for accessibility
-  const srOnly = createTag('div', {
-    class: 'sr-only',
-    'aria-live': 'polite',
+  // Side effects: Create DOM elements from pure configuration
+  const shareWrapper = createWrapper(shareStructure.wrapper.className);
+
+  // Screen reader only element
+  const srOnly = createTag(shareStructure.srOnly.tag, {
+    class: shareStructure.srOnly.className,
+    ...shareStructure.srOnly.attributes,
   });
   shareWrapper.append(srOnly);
 
-  // Shared tooltip (like template-x) - create first so it's available for click handlers
-  const sharedTooltip = createTag('div', {
-    class: 'shared-tooltip',
-    'aria-label': 'Copied to clipboard',
-    role: 'tooltip',
-    tabindex: '-1',
+  // Shared tooltip - create first so it's available for click handlers
+  const sharedTooltip = createTag(shareStructure.tooltip.tag, {
+    class: shareStructure.tooltip.className,
+    ...shareStructure.tooltip.attributes,
   });
 
+  // Create checkmark icon
   const checkmarkIcon = getIconElementDeprecated('checkmark-green');
   if (checkmarkIcon) {
     checkmarkIcon.classList.add('icon', 'icon-checkmark-green');
     sharedTooltip.append(checkmarkIcon);
   }
 
-  const tooltipText = createTag('span', { class: 'text' });
-  tooltipText.textContent = 'Copied to clipboard';
+  // Create tooltip text
+  const tooltipText = createTag(shareStructure.tooltip.children[1].tag, {
+    class: shareStructure.tooltip.children[1].className,
+  });
+  tooltipText.textContent = shareStructure.tooltip.children[1].textContent;
   sharedTooltip.append(tooltipText);
 
   shareWrapper.append(sharedTooltip);
@@ -460,11 +580,11 @@ async function createTemplateElement(templateData) {
   // Share icon
   const shareIcon = getIconElementDeprecated('share-arrow');
   if (shareIcon) {
-    shareIcon.classList.add('icon', 'icon-share-arrow');
-    shareIcon.setAttribute('tabindex', '0');
-    shareIcon.setAttribute('role', 'button');
-    shareIcon.setAttribute('aria-label', `Share ${metadata.title}`);
-    shareIcon.setAttribute('data-edit-url', metadata.editUrl);
+    // Apply configuration from pure function
+    shareIcon.classList.add(...shareStructure.shareIcon.className.split(' '));
+    Object.entries(shareStructure.shareIcon.attributes).forEach(([key, value]) => {
+      shareIcon.setAttribute(key, value);
+    });
     shareWrapper.append(shareIcon);
 
     // Add click and keypress handlers for share icon (exactly like template-x)

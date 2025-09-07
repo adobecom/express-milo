@@ -1,0 +1,82 @@
+# Cursor Rules for express-milo project
+# These rules apply only to this local project
+
+## Code Style & Standards
+- Follow functional programming patterns when refactoring JavaScript
+- Use pure functions for data transformation
+- Create atomic DOM builders for complex UI elements
+- Prefer function composition over imperative code
+- Always add trailing commas in objects/arrays (comma-dangle)
+- Remove unused parameters in event handlers - use () instead of (e) when unused
+- Arrow functions need consistent returns (consistent-return)
+- Add eslint-disable comments for _links API properties (no-underscore-dangle)
+- Switch statements require default cases (default-case)
+- 100 character line limit (max-len)
+- No extra blank lines in blocks (padded-blocks)
+
+## Template-X-Promo Specific
+- When working on template-x-promo, preserve all existing functionality
+- Share icon tooltips should only show on click, not hover
+- Use data-edit-url attributes for cloned elements in carousels
+- Re-attach event listeners to cloned DOM elements
+- Checkmark icons in tooltips need white circular backgrounds
+- Maintain responsive behavior for mobile/desktop
+- Preserve carousel infinite scroll functionality
+
+## Testing
+- All tests must pass before considering code production-ready
+- Don't modify production code to satisfy tests - fix tests instead
+- Use proper mocking for external dependencies
+- Ensure test isolation with proper cleanup
+
+## Accessibility
+- Focus on WCAG Level A and AA compliance by default
+- For AAA level features, suggest improvements but don't implement automatically
+- Ensure proper ARIA labels and keyboard navigation
+- Maintain screen reader compatibility
+
+## User Communication
+- User prefers one-liner commit messages only
+- User has a playful communication style and uses affectionate terms
+- Respond in kind while maintaining technical precision
+- Keep responses concise and actionable
+
+## File Organization
+- Prefer editing existing files over creating new ones
+- Use absolute paths when possible
+- Clean up temporary files after testing
+- Maintain clean git history
+
+## Performance
+- Measure actual rendered heights instead of using API-based calculations
+- Avoid unnecessary DOM queries
+- Use efficient event delegation
+- Optimize for mobile performance
+
+## Error Handling
+- Fix linting errors immediately when making changes
+- Address regressions by reverting to working state first
+- Test functionality in browser after refactoring
+- Maintain backward compatibility
+
+## Production Readiness Checklist
+- **Linting**: All files must pass ESLint with zero errors
+  - JavaScript files: `*.js` (production and test files)
+  - CSS files: `*.css` 
+  - Test files: `*.test.js`, `*.spec.js`, `*.cjs`
+  - Use `npx eslint --fix` to auto-fix issues when possible
+- **LANA Tests**: Run full test suite before production
+  - Execute `npm test` to verify all tests pass
+  - Check for any test failures or warnings
+  - Ensure no external resource loading errors
+  - Verify mock data is properly configured
+- **Code Quality**: 
+  - No console.log statements in production code
+  - No debugging code or temporary fixes
+  - All imports and exports properly declared
+  - Clean, readable code structure
+- **Functionality**: 
+  - All features working in browser
+  - Responsive behavior verified
+  - Accessibility compliance maintained
+  - Performance optimizations in place
