@@ -1,42 +1,25 @@
-import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
-import { fetchResults } from '../../scripts/template-utils.js';
-import { isValidTemplate } from '../../scripts/template-search-api-v3.js';
-import { getTrackingAppendedURL } from '../../scripts/branchlinks.js';
+import { getLibs } from '../../scripts/utils.js';
 import {
-  buildShareWrapperStructure,
   extractTemplateMetadata,
   extractApiParamsFromRecipe,
   getBlockStylingConfig,
   createHoverStateManager,
   determineTemplateRouting,
-  share,
   createMouseEnterHandler,
   createMouseLeaveHandler,
   createFocusHandler,
   createClickHandler,
-  createPremiumIcon,
-  createImageErrorHandler,
+  createButtonSectionConfig,
+  fetchDirectFromApiUrl,
+  attachHoverListeners,
+  createImageSection,
+  createShareSection,
 } from './template-x-promo-utils.js';
 
 // Global utilities (loaded dynamically)
 let { createTag } = window; // Try to get it from window first
 let { getConfig } = window;
 let { replaceKey } = window;
-
-/**
- * Fetches templates from API
- */
-async function fetchDirectFromApiUrl(recipe) {
-  const data = await fetchResults(recipe);
-
-  if (!data || !data.items || !Array.isArray(data.items)) {
-    throw new Error('Invalid API response format');
-  }
-
-  const filtered = data.items.filter((item) => isValidTemplate(item));
-
-  return { templates: filtered };
-}
 
 /**
  * Handles one-up template display
@@ -69,9 +52,6 @@ async function handleOneUpFromApiData(block, templateData) {
   const imgWrapper = createTag('div', { class: 'image-wrapper' });
   imgWrapper.append(img);
 
-  // Note: No plan icon needed for API-driven templates
-  // The API already provides the template type information
-
   block.append(imgWrapper);
 
   // Create edit button with localized text using our atomic function
@@ -90,249 +70,31 @@ async function handleOneUpFromApiData(block, templateData) {
 
   parent.append(buttonContainer);
 }
-
 /**
- * Attaches hover listeners to a template element (for cloned elements)
+ * Creates button section for template element
  */
-function attachHoverListeners(templateEl) {
-  const buttonContainer = templateEl.querySelector('.button-container');
-  if (!buttonContainer) return;
-
-  // Create hover state manager
-  const hoverManager = createHoverStateManager();
-
-  // Create event handlers using our functional approach
-  const enterHandler = createMouseEnterHandler(hoverManager, buttonContainer);
-  const leaveHandler = createMouseLeaveHandler(hoverManager);
-
-  // Add events to template (visible element)
-  templateEl.addEventListener('mouseenter', enterHandler);
-  templateEl.addEventListener('mouseleave', leaveHandler);
-
-  // Re-attach share icon click handlers to cloned elements
-  const shareIcons = templateEl.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
-  shareIcons.forEach((shareIcon) => {
-    const shareWrapper = shareIcon.closest('.share-icon-wrapper');
-    const sharedTooltip = shareWrapper?.querySelector('.shared-tooltip');
-    const srOnly = shareWrapper?.querySelector('.sr-only');
-
-    if (shareIcon && sharedTooltip && srOnly) {
-      let timeoutId = null;
-      const text = 'Copied to clipboard';
-
-      // Remove any existing listeners first
-      shareIcon.replaceWith(shareIcon.cloneNode(true));
-      const newShareIcon = shareWrapper.querySelector('.icon-share-arrow');
-
-      newShareIcon.addEventListener('click', async (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        timeoutId = await share(
-          shareIcon.getAttribute('data-edit-url') || '#',
-          sharedTooltip,
-          timeoutId,
-          srOnly,
-          text,
-          getTrackingAppendedURL,
-        );
-      });
-
-      newShareIcon.addEventListener('keypress', async (e) => {
-        if (e.key !== 'Enter') return;
-        timeoutId = await share(
-          shareIcon.getAttribute('data-edit-url') || '#',
-          sharedTooltip,
-          timeoutId,
-          srOnly,
-          text,
-          getTrackingAppendedURL,
-        );
-      });
-    }
-  });
-}
-
-/**
- * Creates a template element with hover overlay from template data
- */
-async function createTemplateElement(templateData) {
-  // Extract metadata using our pure function
-  const metadata = extractTemplateMetadata(templateData);
-
-  // Create main template container
-  const templateEl = createTag('div', { class: 'template' });
-
-  // Create still wrapper (like template-x)
-  const stillWrapper = createTag('div', { class: 'still-wrapper' });
-
-  // Create image wrapper with the actual image (visible by default)
-  const imageWrapper = createTag('div', { class: 'image-wrapper' });
-
-  // Fix image URL by replacing the template parameters (original logic)
-  let { imageUrl } = metadata;
-  if (imageUrl && imageUrl.includes('{&page,size,type,fragment}')) {
-    // Try different image parameters - sometimes webp doesn't work
-    imageUrl = imageUrl.replace('{&page,size,type,fragment}', '&page=0&size=512&type=image/jpeg');
-  }
-
-  // Create the actual image element using our atomic function
-  const img = createTag('img', {
-    src: imageUrl,
-    alt: metadata.title,
-    loading: 'lazy',
-  });
-
-  // Add error handling for failed image loads using our functional approach
-  img.addEventListener('error', createImageErrorHandler());
-
-  imageWrapper.append(img);
-
-  // Add free/premium tag to image wrapper using our atomic functions
-  if (metadata.isFree) {
-    const freeTag = createTag('span', { class: 'free-tag' });
-    freeTag.textContent = 'Free';
-    imageWrapper.append(freeTag);
-  } else if (metadata.isPremium) {
-    const premiumIcon = createPremiumIcon(getIconElementDeprecated, createTag);
-    imageWrapper.append(premiumIcon);
-  }
-
-  stillWrapper.append(imageWrapper);
-
-  // Create button container (following exact template-x pattern)
-  const buttonContainer = createTag('div', { class: 'button-container' });
-
-  // Edit button (CTA) using our atomic function
+async function createButtonSection(metadata, processedImageUrl) {
   const editButtonText = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  const buttonConfig = createButtonSectionConfig(
+    metadata,
+    editButtonText,
+    processedImageUrl,
+    createTag,
+  );
 
-  const editButton = createTag('a', {
-    href: metadata.editUrl,
-    class: 'button accent small',
-    title: editButtonText,
-    'aria-label': `${editButtonText} ${metadata.title}`,
-    target: '_self',
-  });
-  editButton.textContent = editButtonText;
-
-  // CTA Link (covers the media area) using our atomic function
-  const ctaLink = createTag('a', {
-    href: metadata.editUrl,
-    class: 'cta-link',
-    title: `${editButtonText}: ${metadata.title}`,
-    'aria-label': `${editButtonText}: ${metadata.title}`,
-    target: '_self',
-    tabindex: '-1',
-  });
-
-  // Media wrapper (contains a COPY of the image for hover state)
-  const mediaWrapper = createTag('div', { class: 'media-wrapper' });
-
-  // Create a copy of the SAME image for the hover state using our atomic function
-  const hoverImg = createTag('img', {
-    src: imageUrl, // Use the processed URL
-    alt: metadata.title,
-    loading: 'lazy',
-  });
-
-  mediaWrapper.append(hoverImg);
-
-  // Pure: Generate share wrapper structure configuration
-  const shareStructure = buildShareWrapperStructure(metadata);
-
-  // Side effects: Create DOM elements from pure configuration
-  const shareWrapper = createTag(shareStructure.wrapper.tag, {
-    class: shareStructure.wrapper.className,
-  });
-
-  // Screen reader only element
-  const srOnly = createTag(shareStructure.srOnly.tag, {
-    class: shareStructure.srOnly.className,
-    ...shareStructure.srOnly.attributes,
-  });
-  shareWrapper.append(srOnly);
-
-  // Shared tooltip - create first so it's available for click handlers
-  const sharedTooltip = createTag(shareStructure.tooltip.tag, {
-    class: shareStructure.tooltip.className,
-    ...shareStructure.tooltip.attributes,
-  });
-
-  // Create checkmark icon
-  const checkmarkIcon = getIconElementDeprecated('checkmark-green');
-  if (checkmarkIcon) {
-    checkmarkIcon.classList.add('icon', 'icon-checkmark-green');
-    sharedTooltip.append(checkmarkIcon);
-  }
-
-  // Create tooltip text
-  const tooltipText = createTag(shareStructure.tooltip.children[1].tag, {
-    class: shareStructure.tooltip.children[1].className,
-  });
-  tooltipText.textContent = shareStructure.tooltip.children[1].textContent;
-  sharedTooltip.append(tooltipText);
-
-  shareWrapper.append(sharedTooltip);
-
-  // Share icon
-  const shareIcon = getIconElementDeprecated('share-arrow');
-  if (shareIcon) {
-    // Apply configuration from pure function
-    shareIcon.classList.add(...shareStructure.shareIcon.className.split(' '));
-    Object.entries(shareStructure.shareIcon.attributes).forEach(([key, value]) => {
-      shareIcon.setAttribute(key, value);
-    });
-    shareWrapper.append(shareIcon);
-
-    // Add click and keypress handlers for share icon (exactly like template-x)
-    let timeoutId = null;
-    const text = 'Copied to clipboard';
-
-    shareIcon.addEventListener('click', async (ev) => {
-      ev.preventDefault();
-      ev.stopPropagation();
-      timeoutId = await share(
-        metadata.editUrl,
-        sharedTooltip,
-        timeoutId,
-        srOnly,
-        text,
-        getTrackingAppendedURL,
-      );
-    });
-
-    shareIcon.addEventListener('keypress', async (e) => {
-      if (e.key !== 'Enter') return;
-      timeoutId = await share(
-        metadata.editUrl,
-        sharedTooltip,
-        timeoutId,
-        srOnly,
-        text,
-        getTrackingAppendedURL,
-      );
-    });
-  }
-
-  // Add media wrapper to cta link
-  ctaLink.append(mediaWrapper);
-
-  // Button container structure: ctaLink (image), editButton, shareWrapper (proper DOM order)
-  buttonContainer.append(ctaLink, editButton, shareWrapper);
-
-  // Assemble template (following template-x pattern)
-  templateEl.append(stillWrapper, buttonContainer);
-
-  // Add hover behavior using our functional approach
-  const hoverManager = createHoverStateManager();
-
+  return buttonConfig;
+}
+/**
+ * Attaches event handlers to template element
+ */
+function attachTemplateEvents(templateEl, buttonContainer, editButton, ctaLink, hoverManager) {
   // Create event handlers
   const enterHandler = createMouseEnterHandler(hoverManager, buttonContainer);
   const leaveHandler = createMouseLeaveHandler(hoverManager);
   const focusHandler = createFocusHandler(hoverManager);
 
-  // Fix: Add mouseenter to the template element (visible), then apply to button-container
+  // Mouse events
   templateEl.addEventListener('mouseenter', () => {
-    // Simulate the event target being the button-container for template-x compatibility
     const fakeEvent = {
       target: buttonContainer,
       preventDefault: () => {},
@@ -346,21 +108,46 @@ async function createTemplateElement(templateData) {
   // Focus handling for accessibility
   editButton.addEventListener('focusin', focusHandler);
 
-  // Click handlers using our functional approach
+  // Click handlers
   const ctaClickHandler = () => {
     // Add analytics tracking here if needed
   };
 
   const combinedClickHandler = createClickHandler(hoverManager, templateEl, ctaClickHandler);
-
   editButton.addEventListener('click', combinedClickHandler);
   ctaLink.addEventListener('click', combinedClickHandler);
+}
+/**
+ * Creates a template element with hover overlay from template data
+ */
+async function createTemplateElement(templateData) {
+  // Extract metadata using our pure function
+  const metadata = extractTemplateMetadata(templateData);
+
+  // Create main template container
+  const templateEl = createTag('div', { class: 'template' });
+
+  // Create sections using our functional approach
+  const imageSection = await createImageSection(metadata);
+  const buttonSection = await createButtonSection(metadata, imageSection.imageUrl);
+  const shareSection = await createShareSection(metadata);
+
+  // Assemble template structure
+  templateEl.append(imageSection.stillWrapper, buttonSection.buttonContainer);
+  buttonSection.buttonContainer.append(shareSection.shareWrapper);
+
+  // Add hover behavior
+  const hoverManager = createHoverStateManager();
+  attachTemplateEvents(
+    templateEl,
+    buttonSection.buttonContainer,
+    buttonSection.editButton,
+    buttonSection.ctaLink,
+    hoverManager,
+  );
 
   return templateEl;
 }
-
-// Height management now uses API thumbnail dimensions for fast, accurate calculations
-
 /**
  * Creates our custom carousel using the functional carousel module
  */
@@ -540,7 +327,6 @@ export async function createCustomCarousel(block, templates) {
           viewport.style.removeProperty('height');
           viewport.style.removeProperty('min-height');
         }
-
         // Desktop: Show all templates equally, no carousel behavior
         templateElements.forEach((template) => {
           const templateClone = template.cloneNode(true);
@@ -550,14 +336,12 @@ export async function createCustomCarousel(block, templates) {
           carouselTrack.append(templateClone);
         });
       }
-
       // Height already calculated and applied before DOM manipulation - no need to recalculate!
     };
 
     const moveNext = () => {
       currentIndex = (currentIndex + 1) % templateCount;
       updateCarouselDisplay();
-
       // Update status for screen readers
       statusElement.textContent = `Showing template ${currentIndex + 1} of ${templateCount}`;
 
@@ -573,11 +357,9 @@ export async function createCustomCarousel(block, templates) {
 
       // Note: Height is now fixed and should never change
     };
-
     // Add event listeners
     nextButton.addEventListener('click', moveNext);
     prevButton.addEventListener('click', movePrev);
-
     // Keyboard navigation support
     carouselWrapper.addEventListener('keydown', (e) => {
       switch (e.key) {
@@ -606,7 +388,6 @@ export async function createCustomCarousel(block, templates) {
           break;
       }
     });
-
     // Touch/swipe support
     let startX = 0;
     let isDragging = false;
@@ -649,11 +430,9 @@ export async function createCustomCarousel(block, templates) {
         clearAllHovers();
       }
     });
-
     // Initialize carousel
     block.innerHTML = '';
     block.append(carouselWrapper);
-
     // Handle resize events to switch between mobile/desktop layouts
     let resizeTimeout;
     let currentMode = window.innerWidth < 768 ? 'mobile' : 'desktop';
@@ -672,20 +451,16 @@ export async function createCustomCarousel(block, templates) {
     };
 
     window.addEventListener('resize', handleResize);
-
     // Initialize the display
     updateCarouselDisplay();
-
     // Production ready - test code removed
   } catch (e) {
     block.textContent = `Error loading templates: ${e.message}`;
   }
 }
-
 // ============================================
 // FUNCTIONAL COMPOSITION - MAIN FLOW
 // ============================================
-
 /**
  * Initializes utilities with fallbacks (pure function)
  */
@@ -720,7 +495,6 @@ const initializeUtilities = async () => {
     };
   }
 };
-
 /**
  * Routes templates to appropriate handler (side effects function)
  */
@@ -740,7 +514,6 @@ const routeTemplates = async (block, templates) => {
       // Unknown routing strategy - graceful degradation
   }
 };
-
 /**
  * Handles API-driven templates with error handling (composed function)
  */
@@ -753,25 +526,21 @@ const handleApiDrivenTemplates = async (block, apiUrl) => {
     // Silently fail to avoid breaking the page
   }
 };
-
 /**
  * Main block decorator using functional composition
  */
 export default async function decorate(block) {
   // Initialize utilities
   const utilities = await initializeUtilities();
-
   // Apply utilities to global scope
   createTag = utilities.createTag;
   getConfig = utilities.getConfig;
   replaceKey = utilities.replaceKey;
-
   // Apply block styling
   const stylingConfig = getBlockStylingConfig(block);
   if (stylingConfig.shouldApply) {
     block.parentElement.classList.add(...stylingConfig.parentClasses);
   }
-
   // Get API URL and handle templates
   const apiUrl = extractApiParamsFromRecipe(block);
   if (apiUrl) {
