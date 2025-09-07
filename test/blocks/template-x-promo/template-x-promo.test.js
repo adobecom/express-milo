@@ -32,6 +32,9 @@ describe('Template X Promo', () => {
     // Mock fetch for API calls
     fetchStub = sinon.stub(window, 'fetch');
 
+    // Mock isValidTemplate by replacing it on the window object
+    window.isValidTemplate = sinon.stub().returns(true);
+
     // Mock successful API response
     const mockResponse = {
       ok: true,
@@ -44,11 +47,16 @@ describe('Template X Promo', () => {
             assetType: 'Webpage_Template',
             customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
-            behaviors: ['COPYABLE', 'still'],
+            behaviors: ['still'],
+            licensingCategory: 'free',
             _links: {
               'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
-              'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image1.jpg' },
-              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image1.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component1',
+              },
             },
           },
           {
@@ -58,25 +66,16 @@ describe('Template X Promo', () => {
             assetType: 'Webpage_Template',
             customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
             thumbnail: { url: 'https://design-assets.adobeprojectm.com/image2.jpg' },
-            behaviors: ['COPYABLE', 'still'],
+            behaviors: ['still'],
+            licensingCategory: 'free',
             _links: {
               'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
-              'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image2.jpg' },
-              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component2' },
-            },
-          },
-          {
-            id: 'template3',
-            title: 'Test Template 3',
-            status: 'approved',
-            assetType: 'Webpage_Template',
-            customLinks: { branchUrl: 'https://express.adobe.com/edit3' },
-            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image3.jpg' },
-            behaviors: ['COPYABLE', 'still'],
-            _links: {
-              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit3' },
-              'http://ns.adobe.com/adobecloud/rel/rendition': { href: 'https://design-assets.adobeprojectm.com/image3.jpg' },
-              'http://ns.adobe.com/adobecloud/rel/component': { href: 'https://design-assets.adobeprojectm.com/component3' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image2.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component2',
+              },
             },
           },
         ],
@@ -90,69 +89,255 @@ describe('Template X Promo', () => {
     if (fetchStub) {
       fetchStub.restore();
     }
+    
+    // Clean up window mock
+    delete window.isValidTemplate;
+    
     document.body.innerHTML = '';
   });
 
-  /**
-   * Test Objective: Verify block basic functionality
-   *
-   * This test ensures that the block can be decorated without throwing errors:
-   * - Block exists after decoration
-   * - No JavaScript errors are thrown
-   * - Block maintains basic structure
-   */
   it('should decorate the template-x-promo block without errors', async () => {
     expect(block).to.exist;
 
     try {
       await decorate(block);
-      // If we reach here, it didn't throw - that's good
       expect(true).to.be.true;
     } catch (error) {
-      // If it throws, that's a failure
       expect.fail(`decorate should not throw errors: ${error.message}`);
     }
 
-    // Block should still exist after decoration
     expect(block).to.exist;
   });
 
-  /**
-   * Test Objective: Verify API call is made
-   *
-   * This test ensures that the block attempts to make API calls:
-   * - Fetch is called when block is decorated
-   * - Component handles API responses gracefully
-   */
+
   it('should make API calls when decorated', async () => {
     await decorate(block);
-
-    // Check that fetch was called
     expect(fetchStub.called).to.be.true;
   });
 
-  /**
-   * Test Objective: Verify error handling for API failures
-   *
-   * This test ensures that the block handles API failures gracefully:
-   * - Failed API calls don't crash the block
-   * - Appropriate error handling is implemented
-   * - Block continues to exist after API errors
-   */
   it('should handle API errors gracefully', async () => {
-    // Mock failed API response
     fetchStub.rejects(new Error('API Error'));
 
     try {
       await decorate(block);
-      // If we reach here, it didn't throw - that's good
       expect(true).to.be.true;
     } catch (error) {
-      // If it throws, that's a failure
       expect.fail(`decorate should handle API errors gracefully: ${error.message}`);
     }
 
-    // Block should still exist and not be broken
     expect(block).to.exist;
+  });
+
+  it('should display Free tags in multiple-up carousel templates', async () => {
+    const mockFreeResponse = {
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'free-template-1',
+            title: 'Free Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/free1.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/free1.jpg',
+              },
+            },
+          },
+          {
+            id: 'free-template-2',
+            title: 'Free Template 2',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/free2.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/free2.jpg',
+              },
+            },
+          },
+        ],
+      }),
+    };
+
+    fetchStub.resolves(mockFreeResponse);
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+    const freeTags = block.querySelectorAll('.free-tag');
+    expect(freeTags.length).to.be.greaterThan(0, 'Free tags should be present');
+
+    freeTags.forEach((tag) => {
+      expect(tag.textContent.trim()).to.equal('Free');
+      expect(tag.classList.contains('free-tag')).to.be.true;
+    });
+
+    const imageWrapperFreeTags = block.querySelectorAll('.image-wrapper .free-tag');
+    expect(imageWrapperFreeTags.length).to.equal(
+      freeTags.length,
+      'All Free tags should be in image wrappers',
+    );
+  });
+
+  it('should display Premium icons in multiple-up carousel templates', async () => {
+    const mockPremiumResponse = {
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'premium-template-1',
+            title: 'Premium Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/premium1.jpg' },
+            behaviors: ['COPYABLE', 'still', 'premium'],
+            licensingCategory: 'premium',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/premium1.jpg',
+              },
+            },
+          },
+          {
+            id: 'premium-template-2',
+            title: 'Premium Template 2',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/premium2.jpg' },
+            behaviors: ['COPYABLE', 'still', 'premium'],
+            licensingCategory: 'premium',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/premium2.jpg',
+              },
+            },
+          },
+        ],
+      }),
+    };
+
+    fetchStub.resolves(mockPremiumResponse);
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+    const premiumIcons = block.querySelectorAll('.icon-premium');
+    expect(premiumIcons.length).to.be.greaterThan(0, 'Premium icons should be present');
+
+    premiumIcons.forEach((icon) => {
+      expect(icon.classList.contains('icon')).to.be.true;
+      expect(icon.classList.contains('icon-premium')).to.be.true;
+      const hasSvgContent = icon.querySelector('svg') !== null;
+      const hasFallbackClass = icon.classList.contains('premium-fallback');
+      expect(hasSvgContent || hasFallbackClass).to.be.true;
+    });
+
+    const imageWrapperPremiumIcons = block.querySelectorAll('.image-wrapper .icon-premium');
+    expect(imageWrapperPremiumIcons.length).to.equal(premiumIcons.length);
+  });
+
+  it('should display Share icons in button containers with proper accessibility', async () => {
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+    const shareIcons = block.querySelectorAll('.button-container .icon-share-arrow');
+    expect(shareIcons.length).to.be.greaterThan(0, 'Share icons should be present');
+
+    shareIcons.forEach((icon) => {
+      expect(icon.classList.contains('icon')).to.be.true;
+      expect(icon.classList.contains('icon-share-arrow')).to.be.true;
+
+      expect(icon.getAttribute('role')).to.equal('button');
+      expect(icon.getAttribute('tabindex')).to.equal('0');
+      expect(icon.getAttribute('aria-label')).to.include('Share');
+      const hasSvgContent = icon.querySelector('svg') !== null;
+      const hasFallbackClass = icon.classList.contains('share-fallback');
+      expect(hasSvgContent || hasFallbackClass).to.be.true;
+    });
+
+    const shareWrappers = block.querySelectorAll('.share-icon-wrapper');
+    expect(shareWrappers.length).to.be.greaterThan(0);
+    shareWrappers.forEach((wrapper) => {
+      const shareIcon = wrapper.querySelector('.icon-share-arrow');
+      expect(shareIcon).to.exist;
+      const tooltip = wrapper.querySelector('.shared-tooltip');
+      expect(tooltip).to.exist;
+      expect(tooltip.textContent.trim()).to.equal('Link copied');
+    });
+  });
+
+  it('should NOT display Free/Premium tags in one-up layout', async () => {
+    const mockSingleResponse = {
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'single-template',
+            title: 'Single Template',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/single.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/single.jpg',
+              },
+            },
+          },
+        ],
+      }),
+    };
+
+    fetchStub.resolves(mockSingleResponse);
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+    const { parentElement } = block;
+    expect(parentElement.classList.contains('one-up')).to.be.true;
+
+    const freeTags = block.querySelectorAll('.free-tag');
+    expect(freeTags.length).to.equal(0, 'One-up layout should NOT have Free tags');
+
+    const premiumIcons = block.querySelectorAll('.icon-premium');
+    expect(premiumIcons.length).to.equal(0, 'One-up layout should NOT have Premium icons');
+
+    const images = block.querySelectorAll('img');
+    expect(images.length).to.be.greaterThan(0, 'One-up layout should have images');
+  });
+
+  it('should create fallback icons when getIconElementDeprecated is unavailable', async () => {
+    const originalGetIcon = window.getIconElementDeprecated;
+    window.getIconElementDeprecated = () => null;
+
+    try {
+      await decorate(block);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const shareIcons = block.querySelectorAll('.icon-share-arrow.share-fallback');
+      expect(shareIcons.length).to.be.greaterThan(0, 'Fallback share icons should be created');
+
+      shareIcons.forEach((icon) => {
+        expect(icon.classList.contains('share-fallback')).to.be.true;
+        expect(icon.getAttribute('role')).to.equal('button');
+        expect(icon.getAttribute('tabindex')).to.equal('0');
+      });
+    } finally {
+      window.getIconElementDeprecated = originalGetIcon;
+    }
   });
 });
