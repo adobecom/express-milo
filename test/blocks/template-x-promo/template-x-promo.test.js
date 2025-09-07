@@ -218,7 +218,7 @@ describe('Template X Promo', () => {
       expect(tag.classList.contains('free-tag')).to.be.true;
     });
 
-    const imageWrapperFreeTags = block.querySelectorAll('.image-wrapper .free-tag');
+    const imageWrapperFreeTags = block.parentElement.querySelectorAll('.image-wrapper .free-tag');
     expect(imageWrapperFreeTags.length).to.equal(
       freeTags.length,
       'All Free tags should be in image wrappers',
@@ -288,10 +288,10 @@ describe('Template X Promo', () => {
     console.log('Premium test - Block innerHTML after decorate:', block.innerHTML);
     console.log('Premium test - Block parent classes:', block.parentElement.className);
 
-    // Verify the block has been populated
-    expect(block.innerHTML).to.not.be.empty;
+    // Verify the parent has been populated (templates are added to parent, not block)
+    expect(block.parentElement.innerHTML).to.not.be.empty;
 
-    const premiumIcons = block.querySelectorAll('.icon-premium');
+    const premiumIcons = block.parentElement.querySelectorAll('.icon-premium');
     expect(premiumIcons.length).to.be.greaterThan(0, 'Premium icons should be present');
 
     premiumIcons.forEach((icon) => {
@@ -303,7 +303,7 @@ describe('Template X Promo', () => {
       expect(hasSvgContent || hasImgContent || hasFallbackClass).to.be.true;
     });
 
-    const imageWrapperPremiumIcons = block.querySelectorAll('.image-wrapper .icon-premium');
+    const imageWrapperPremiumIcons = block.parentElement.querySelectorAll('.image-wrapper .icon-premium');
     expect(imageWrapperPremiumIcons.length).to.equal(premiumIcons.length);
   });
 
@@ -325,14 +325,14 @@ describe('Template X Promo', () => {
     await decorate(block);
     await new Promise((resolve) => { setTimeout(resolve, 1000); });
 
-    // Verify the block has been populated
-    expect(block.innerHTML).to.not.be.empty;
+    // Verify the parent has been populated (templates are added to parent, not block)
+    expect(block.parentElement.innerHTML).to.not.be.empty;
 
-    // Debug: Check what's in the block
-    console.log('Share icons test - Block innerHTML after decorate:', block.innerHTML);
+    // Debug: Check what's in the parent
+    console.log('Share icons test - Parent innerHTML after decorate:', block.parentElement.innerHTML);
     console.log('Share icons test - getIconElementDeprecated available:', typeof window.getIconElementDeprecated);
 
-    const shareIcons = block.querySelectorAll('.icon-share-arrow');
+    const shareIcons = block.parentElement.querySelectorAll('.icon-share-arrow');
     console.log('Share icons found:', shareIcons.length);
     expect(shareIcons.length).to.be.greaterThan(0, 'Share icons should be present');
 
@@ -349,7 +349,7 @@ describe('Template X Promo', () => {
       expect(hasSvgContent || hasImgContent || hasFallbackClass).to.be.true;
     });
 
-    const shareWrappers = block.querySelectorAll('.share-icon-wrapper');
+    const shareWrappers = block.parentElement.querySelectorAll('.share-icon-wrapper');
     expect(shareWrappers.length).to.be.greaterThan(0);
     shareWrappers.forEach((wrapper) => {
       const shareIcon = wrapper.querySelector('.icon-share-arrow');

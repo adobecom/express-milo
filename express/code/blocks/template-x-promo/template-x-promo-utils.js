@@ -794,7 +794,6 @@ export function createImageSectionConfig(metadata, createTag, getIconElementDepr
   imageWrapper.append(img);
 
   // Add free/premium tag
-  console.log('Template metadata:', metadata.title, 'isFree:', metadata.isFree, 'isPremium:', metadata.isPremium);
 
   if (metadata.isFree) {
     const freeTag = createTag('span', { class: 'free-tag' });
