@@ -365,7 +365,7 @@ export default async function decorate(block) {
   /* localize view all */
   const viewAll = await replaceKey('view-all', getConfig()) || 'view all';
   const viewAllLink = block?.parentElement?.querySelector('.content a');
-  if (viewAll) {
+  if (viewAll && viewAllLink) {
     viewAllLink.textContent = `${viewAll.charAt(0).toUpperCase()}${viewAll.slice(1)}`;
   }
 

@@ -206,7 +206,7 @@ async function getReadMoreString() {
 function getCardParameters(post, dateFormatter) {
   const path = post.path.split('.')[0];
   const { title, teaser, image } = post;
-  const publicationDate = new Date(post.date * 1000);
+  const publicationDate = post.date ? new Date(post.date * 1000) : new Date();
   const dateString = dateFormatter.format(publicationDate);
   const filteredTitle = title.replace(/(\s?)(｜|\|)(\s?Adobe\sExpress\s?)$/g, '');
   const imagePath = image.split('?')[0].split('_')[1];

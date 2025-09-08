@@ -11,7 +11,7 @@ const imports = await Promise.all([
 const { default: decorate } = imports[1];
 
 // Mock fetch for blog index
-global.fetch = async (url) => {
+window.fetch = async (url) => {
   if (url.includes('query-index.json')) {
     const mockData = {
       data: [
