@@ -1,4 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
+import { createTemplateCarousel } from '../../scripts/widgets/carousel-factory.js';
 import {
   extractTemplateMetadata,
   extractApiParamsFromRecipe,
@@ -227,7 +228,6 @@ export async function createCustomCarousel(block, templates) {
     // The carousel factory will manage the entire block content
 
     // Now use carousel factory with the DOM elements
-    const { createTemplateCarousel } = await import('../../scripts/widgets/carousel-factory.js');
     const carousel = await createTemplateCarousel(
       block,
       templateElements, // Pass DOM elements, not data
@@ -382,7 +382,7 @@ export default async function decorate(block) {
 
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
       const hasCarousel = block.querySelector(selectors.carousel);
-      const hasDesktopLayout = block.parentElement.querySelector(selectors.desktop);
+      const hasDesktopLayout = block.parentElement?.querySelector(selectors.desktop);
 
       // If we have a carousel but should be desktop, switch to desktop layout
       if (hasCarousel && !isMobile) {

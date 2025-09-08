@@ -575,7 +575,7 @@ export function createMouseLeaveHandler(hoverManager) {
   return () => {
     // Clear any visible tooltips when leaving the template
     hoverManager.clearTooltips();
-    
+
     // Clear hover state
     hoverManager.clearHovered();
   };
