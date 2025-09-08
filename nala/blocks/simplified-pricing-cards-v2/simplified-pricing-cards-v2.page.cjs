@@ -28,4 +28,3 @@ export default class SimplifiedPricingCardsV2 {
     await this.block.scrollIntoViewIfNeeded(2000);
   }
 }
-

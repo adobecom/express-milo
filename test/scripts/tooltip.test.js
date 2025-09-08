@@ -61,4 +61,3 @@ describe('Tooltip widget parsing', () => {
     expect(button.getAttribute('aria-label').trim()).to.equal(tooltipContent.trim());
   });
 });
-

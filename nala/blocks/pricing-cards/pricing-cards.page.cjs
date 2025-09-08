@@ -40,4 +40,3 @@ export default class PricingCards {
     await this.pricingCards.scrollIntoViewIfNeeded(2000);
   }
 }
-
