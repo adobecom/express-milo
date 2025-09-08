@@ -187,7 +187,7 @@ export default function decorate(block) {
 
     // ARIA: link tabs to tabpanels using index-based ids
     buttons.forEach((btn, i) => {
-      const tabId = `tab-${i + 1}`;
+      const tabId = `tab-button-${i + 1}`;
       btn.id = tabId;
       btn.setAttribute('role', 'tab');
       btn.setAttribute('aria-selected', 'false');
@@ -195,7 +195,7 @@ export default function decorate(block) {
       const label = btn.innerText.trim().toLowerCase();
       const panel = Array.from(sections).find((s) => s.dataset.toggle?.toLowerCase() === label);
       if (panel) {
-        const panelId = `tabpanel-${i + 1}`;
+        const panelId = `tab-${i + 1}`;
         panel.id = panelId;
         panel.setAttribute('role', 'tabpanel');
         panel.setAttribute('aria-labelledby', tabId);
