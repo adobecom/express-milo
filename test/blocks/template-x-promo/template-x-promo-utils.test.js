@@ -13,12 +13,42 @@ const utils = imports[2];
 
 // Import specific functions for testing
 const {
+  calculateTooltipPosition,
+  generateShareActionData,
+  createShareWrapperConfig,
+  buildShareWrapperStructure,
+  extractRecipeFromElement,
+  cleanRecipeString,
+  extractApiUrl,
+  createTemplateMetadata,
+  getTemplateLayoutClass,
+  calculateMobileHeight,
   generateCarouselStatusText,
   createNavButtonConfig,
   createImageElementConfig,
   createWrapperConfig,
   createFreeTagConfig,
   createButtonElementConfig,
+  getRecipeCleanupInstructions,
+  createHoverStateManagerConfig,
+  createImageErrorHandlerConfig,
+  getBlockStylingConfig,
+  getResponsiveLayoutConfig,
+  createHoverStateManager,
+  determineTemplateRouting,
+  createMouseEnterHandler,
+  createMouseLeaveHandler,
+  createFocusHandler,
+  createClickHandler,
+  createPremiumIcon,
+  createImageErrorHandler,
+  fetchDirectFromApiUrl,
+  attachHoverListeners,
+  createImageSectionConfig,
+  createButtonSectionConfig,
+  createShareSectionConfig,
+  createImageSection,
+  createShareSection,
 } = utils;
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
@@ -329,6 +359,93 @@ describe('template-x-promo-utils', () => {
   });
 
   describe('Additional Utility Functions', () => {
+    it('should test calculateTooltipPosition function', () => {
+      const tooltipRect = { left: 100, width: 200, right: 300 };
+      const windowWidth = 400;
+      const result = calculateTooltipPosition(tooltipRect, windowWidth);
+      expect(result).to.have.property('shouldFlip');
+      expect(result).to.have.property('position');
+      expect(result.position).to.have.property('left', 100);
+    });
+
+    it('should test generateShareActionData function', () => {
+      const branchUrl = 'https://example.com';
+      const text = 'Share this';
+      const tooltipPosition = { shouldFlip: true };
+      const result = generateShareActionData(branchUrl, text, tooltipPosition);
+      expect(result).to.have.property('url', branchUrl);
+      expect(result).to.have.property('text', text);
+      expect(result.tooltipClasses).to.include('flipped');
+    });
+
+    it('should test cleanRecipeString function', () => {
+      const recipeString = '@https://example.com/api';
+      const result = cleanRecipeString(recipeString);
+      expect(result).to.equal('https://example.com/api');
+    });
+
+    it('should test extractApiUrl function', () => {
+      const recipeString = '@https://example.com/api';
+      const result = extractApiUrl(recipeString);
+      expect(result).to.equal('https://example.com/api');
+    });
+
+    it('should test createTemplateMetadata function', () => {
+      const template = { id: 'test', title: 'Test Template' };
+      const result = createTemplateMetadata(template, 0);
+      expect(result).to.have.property('id', 'test');
+      expect(result).to.have.property('title', 'Test Template');
+      expect(result).to.have.property('index', 0);
+    });
+
+    it('should test getTemplateLayoutClass function', () => {
+      expect(getTemplateLayoutClass(1)).to.equal('one-up');
+      expect(getTemplateLayoutClass(2)).to.equal('two-up');
+      expect(getTemplateLayoutClass(3)).to.equal('three-up');
+      expect(getTemplateLayoutClass(4)).to.equal('four-up');
+      expect(getTemplateLayoutClass(5)).to.equal('multiple-up');
+    });
+
+    it('should test calculateMobileHeight function', () => {
+      expect(calculateMobileHeight(1)).to.equal(200);
+      expect(calculateMobileHeight(2)).to.equal(400);
+      expect(calculateMobileHeight(3)).to.equal(400);
+    });
+
+    it('should test getRecipeCleanupInstructions function', () => {
+      const block = document.createElement('div');
+      const result = getRecipeCleanupInstructions(block);
+      expect(result).to.have.property('shouldCleanup');
+      expect(result).to.have.property('elementToRemove');
+    });
+
+    it('should test createHoverStateManagerConfig function', () => {
+      const result = createHoverStateManagerConfig();
+      expect(result).to.have.property('currentHoveredElement', null);
+      expect(result).to.have.property('singletonClass', 'singleton-hover');
+    });
+
+    it('should test createImageErrorHandlerConfig function', () => {
+      const result = createImageErrorHandlerConfig();
+      expect(result).to.have.property('fallbackSrc');
+      expect(result).to.have.property('fallbackAlt');
+      expect(result).to.have.property('errorClass');
+    });
+
+    it('should test getResponsiveLayoutConfig function', () => {
+      const result = getResponsiveLayoutConfig(2, true);
+      expect(result).to.have.property('base');
+      expect(result).to.have.property('responsive');
+      expect(result).to.have.property('combined');
+    });
+
+    it('should test createHoverStateManager function', () => {
+      const manager = createHoverStateManager();
+      expect(manager).to.have.property('setHovered');
+      expect(manager).to.have.property('clearHovered');
+      expect(manager).to.have.property('clearTooltips');
+    });
+
     it('should test generateCarouselStatusText function', () => {
       const statusText = generateCarouselStatusText(2, 5);
       expect(statusText).to.equal('Showing template 3 of 5');
