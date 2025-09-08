@@ -15,9 +15,6 @@ const utils = imports[2];
 const {
   calculateTooltipPosition,
   generateShareActionData,
-  createShareWrapperConfig,
-  buildShareWrapperStructure,
-  extractRecipeFromElement,
   cleanRecipeString,
   extractApiUrl,
   createTemplateMetadata,
@@ -32,23 +29,8 @@ const {
   getRecipeCleanupInstructions,
   createHoverStateManagerConfig,
   createImageErrorHandlerConfig,
-  getBlockStylingConfig,
   getResponsiveLayoutConfig,
   createHoverStateManager,
-  determineTemplateRouting,
-  createMouseEnterHandler,
-  createMouseLeaveHandler,
-  createFocusHandler,
-  createClickHandler,
-  createPremiumIcon,
-  createImageErrorHandler,
-  fetchDirectFromApiUrl,
-  attachHoverListeners,
-  createImageSectionConfig,
-  createButtonSectionConfig,
-  createShareSectionConfig,
-  createImageSection,
-  createShareSection,
 } = utils;
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
