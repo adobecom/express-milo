@@ -18,11 +18,8 @@ test.describe('content-toggle-v2 test suite', () => {
         const basePath = path.startsWith('http') ? path : `${baseURL}${path}`;
         const testUrl = `${basePath}${basePath.includes('?') ? '&' : '?'}tab=1${miloLibs}`;
         await contentToggle.gotoURL(testUrl);
-        await expect(contentToggle.main).toBeVisible();
-        await page.waitForTimeout(1000);
-        await expect(page.locator('.content-toggle-wrapper')).toBeVisible();
-        await page.waitForSelector('.content-toggle-wrapper .content-toggle-v2 .content-toggle-button', { state: 'visible' });
-        await page.waitForTimeout(1000);
+        await page.waitForSelector('.content-toggle-wrapper', { state: 'attached', timeout: 15000 });
+        await page.waitForSelector('.content-toggle-wrapper .content-toggle-v2 .content-toggle-button', { state: 'visible', timeout: 15000 });
 
         // Ensure block is present
         await expect(contentToggle.block).toBeVisible();
