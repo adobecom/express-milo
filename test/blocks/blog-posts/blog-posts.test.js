@@ -7,14 +7,14 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   const conf = {};
   mod.setConfig(conf);
 });
-const { default: decorate } = await import('../../../express/code/blocks/blog-posts/blog-posts.js');
+const [{ default: decorate }] = await Promise.all([import('../../../express/code/blocks/blog-posts/blog-posts.js')]);
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('blog-posts', () => {
   let block;
   before(async () => {
     block = document.querySelector('.blog-posts');
-    await decorate(block);
+    decorate(block);
   });
 
   it('has blog posts block', async () => {
