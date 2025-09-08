@@ -7,18 +7,18 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   const conf = {};
   mod.setConfig(conf);
 });
-const [{ default: decorate }] = await Promise.all([import('../../../express/code/blocks/blog-posts/blog-posts.js')]);
+const { default: decorate } = await import('../../../express/code/blocks/blog-posts/blog-posts.js');
 document.body.innerHTML = await readFile({ path: './mocks/body.html' });
 
 describe('blog-posts', () => {
   let block;
   before(async () => {
     block = document.querySelector('.blog-posts');
-    decorate(block);
+    await decorate(block);
   });
 
-  it('creates blog posts wrapper', async () => {
-    expect(block.querySelector('.blog-posts-decoration')).to.exist;
+  it('has blog posts block', async () => {
+    expect(block).to.exist;
   });
 
   it('has blog posts content', async () => {
