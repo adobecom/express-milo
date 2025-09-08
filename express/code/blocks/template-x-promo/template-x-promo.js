@@ -13,6 +13,7 @@ import {
   fetchDirectFromApiUrl,
   createImageSection,
   createShareSection,
+  attachHoverListeners,
 } from './template-x-promo-utils.js';
 
 // Global utilities (loaded dynamically)
@@ -152,7 +153,50 @@ async function createTemplateElement(templateData) {
  */
 export async function createCustomCarousel(block, templates) {
   try {
-    // Create all template elements
+    // Check if we're on mobile (below 768px)
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+
+    if (isMobile) {
+      // For mobile, create DOM elements first, then use carousel factory
+      const templateElements = await Promise.all(
+        templates.map((template) => createTemplateElement(template)),
+      );
+
+      // Add specific layout class based on template count
+      const parent = block.parentElement;
+      parent.classList.add('multiple-up');
+
+      const templateCount = templates.length;
+      if (templateCount === 2) {
+        parent.classList.add('two-up');
+      } else if (templateCount === 3) {
+        parent.classList.add('three-up');
+      } else if (templateCount >= 4) {
+        parent.classList.add('four-up');
+      }
+
+      // Add templates to parent first
+      templateElements.forEach((template) => {
+        parent.append(template);
+      });
+
+      // Now use carousel factory with the DOM elements
+      const { createTemplateCarousel } = await import('../../scripts/widgets/carousel-factory.js');
+      return await createTemplateCarousel(
+        block,
+        templateElements, // Pass DOM elements, not data
+        createTag,
+        attachHoverListeners,
+        null,
+        {
+          loadCSS: false,
+          responsive: true,
+          showNavigation: true,
+          looping: true,
+        },
+      );
+    }
+    // Desktop behavior - keep existing working code
     const templateElements = await Promise.all(
       templates.map((template) => createTemplateElement(template)),
     );
@@ -175,7 +219,7 @@ export async function createCustomCarousel(block, templates) {
       parent.append(template);
     });
 
-    // Return simple object - no custom carousel behavior
+    // Return simple object - no custom carousel behavior for desktop
     return {
       currentIndex: () => 0,
       templateCount: () => templateElements.length,
