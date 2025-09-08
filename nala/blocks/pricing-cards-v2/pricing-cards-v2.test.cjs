@@ -46,4 +46,3 @@ test.describe('pricing-cards-v2 test suite', () => {
     });
   });
 });
-
