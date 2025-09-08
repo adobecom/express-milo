@@ -9,7 +9,50 @@ const imports = await Promise.all([
   import('../../../express/code/blocks/template-x-promo/template-x-promo-utils.js'),
 ]);
 const { getLibs } = imports[0];
-// const utils = imports[2]; // Not used in current tests
+const utils = imports[2];
+
+// Import specific functions for testing
+const {
+  calculateTooltipPosition,
+  generateShareActionData,
+  createShareWrapperConfig,
+  buildShareWrapperStructure,
+  extractRecipeFromElement,
+  cleanRecipeString,
+  extractApiUrl,
+  createTemplateMetadata,
+  getTemplateLayoutClass,
+  calculateMobileHeight,
+  generateCarouselStatusText,
+  createNavButtonConfig,
+  fixImageUrl,
+  createImageElementConfig,
+  createWrapperConfig,
+  createFreeTagConfig,
+  createButtonElementConfig,
+  extractTemplateMetadata,
+  getRecipeCleanupInstructions,
+  extractApiParamsFromRecipe,
+  createHoverStateManagerConfig,
+  createImageErrorHandlerConfig,
+  getBlockStylingConfig,
+  getResponsiveLayoutConfig,
+  createHoverStateManager,
+  determineTemplateRouting,
+  createMouseEnterHandler,
+  createMouseLeaveHandler,
+  createFocusHandler,
+  createClickHandler,
+  createPremiumIcon,
+  createImageErrorHandler,
+  fetchDirectFromApiUrl,
+  attachHoverListeners,
+  createImageSectionConfig,
+  createButtonSectionConfig,
+  createShareSectionConfig,
+  createImageSection,
+  createShareSection,
+} = utils;
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
   mod.setConfig({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } });
@@ -315,6 +358,55 @@ describe('template-x-promo-utils', () => {
 
       expect(isFree).to.be.true;
       expect(isPremium).to.be.true;
+    });
+  });
+
+  describe('Additional Utility Functions', () => {
+  it('should test generateCarouselStatusText function', () => {
+    const statusText = generateCarouselStatusText(2, 5);
+    expect(statusText).to.equal('Showing template 3 of 5');
+  });
+
+    it('should test createNavButtonConfig function', () => {
+      const prevButton = createNavButtonConfig('prev', false);
+      expect(prevButton).to.be.an('object');
+      expect(prevButton.className).to.include('promo-prev-btn');
+      expect(prevButton.attributes['aria-label']).to.include('previous');
+    });
+
+    it('should test createImageElementConfig function', () => {
+      const config = createImageElementConfig({
+        src: 'https://example.com/image.jpg',
+        alt: 'Test Image',
+        loading: 'eager',
+      });
+      expect(config.attributes.src).to.equal('https://example.com/image.jpg');
+      expect(config.attributes.alt).to.equal('Test Image');
+    });
+
+    it('should test createWrapperConfig function', () => {
+      const config = createWrapperConfig('test-wrapper');
+      expect(config).to.be.an('object');
+      expect(config.attributes.class).to.equal('test-wrapper');
+    });
+
+    it('should test createFreeTagConfig function', () => {
+      const config = createFreeTagConfig();
+      expect(config).to.be.an('object');
+      expect(config.attributes.class).to.equal('free-tag');
+      expect(config.textContent).to.equal('Free');
+    });
+
+    it('should test createButtonElementConfig function', () => {
+      const config = createButtonElementConfig('button', {
+        href: 'https://example.com',
+        text: 'Click Me',
+        title: 'Button Title',
+        ariaLabel: 'Button Aria Label',
+      });
+      expect(config).to.be.an('object');
+      expect(config.attributes.href).to.equal('https://example.com');
+      expect(config.textContent).to.equal('Click Me');
     });
   });
 });
