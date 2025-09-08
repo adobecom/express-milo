@@ -16,11 +16,11 @@ describe('blog-posts-v2', () => {
     block = document.querySelector('.blog-posts-v2');
     decorate(block);
   });
-  
+
   it('creates blog posts v2 wrapper', async () => {
     expect(block.querySelector('.blog-posts-v2-decoration')).to.exist;
   });
-  
+
   it('has blog posts content', async () => {
     expect(block.querySelectorAll('div').length).to.be.above(0);
   });
