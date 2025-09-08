@@ -4,6 +4,20 @@
     gap: var(--spacing-400);
     padding: var(--spacing-600) var(--spacing-400);
     background-color: var(--color-gray-100);
+    position: relative;
+}
+
+/* Full-width background wrapper */
+.section.ax-blog-posts-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100%;
+    background-color: var(--color-gray-100);
+    z-index: -1;
 }
 
 .section.ax-blog-posts-container:not([data-padding='none']):not(
@@ -334,7 +348,8 @@ main .section:has(.blog-posts-v2) > .content > h3 {
 @media (min-width: 768px) {
     .section.ax-blog-posts-container {
         padding-right: 32px;
-        padding-left: 32px
+        padding-left: 32px;
+        max-width: 1199px;
     }
 
     main .blog-posts-v2 .blog-cards {
@@ -347,10 +362,6 @@ main .section:has(.blog-posts-v2) > .content > h3 {
         min-width: 488px;
         max-width: 488px;
         height: 274px;
-    }
-
-
-    main .blog-posts-v2 .blog-hero-card .blog-card-image {
         width: 100%;
     }
 
@@ -378,10 +389,6 @@ main .section:has(.blog-posts-v2) > .content > h3 {
 
     main .blog-posts-v2 .blog-hero-card p.blog-card-cta a {
         margin-bottom: 0px;
-    }
-
-    .section.ax-blog-posts-container {
-        max-width: 1199px;
     }
 
     .blog main .section:has(.blog-posts-v2) > div > h2, main .section:has(.blog-posts-v2) div.blog-posts-v2-decoration {
