@@ -20,6 +20,11 @@ const CarouselState = {
     ...config,
   }),
 
+  updateResponsiveState: (state) => ({
+    ...state,
+    isMobile: () => window.innerWidth < 768,
+  }),
+
   moveNext: (state) => ({
     ...state,
     currentIndex: (state.currentIndex + 1) % state.templateCount,
@@ -228,6 +233,18 @@ export const createCarousel = async (config) => {
   // Pure function to update display
   const updateDisplay = () => {
     const visibleTemplates = DisplayLogic.getVisibleTemplates(state);
+    const currentTemplates = Array.from(dom.track.children);
+
+    // Only update if the visible templates have actually changed
+    const needsUpdate = currentTemplates.length !== visibleTemplates.length
+      || visibleTemplates.some(({ index, class: className }, i) => {
+        const currentTemplate = currentTemplates[i];
+        return !currentTemplate
+          || currentTemplate.dataset.templateIndex !== index.toString()
+          || currentTemplate.className !== `template ${className}`.trim();
+      });
+
+    if (!needsUpdate) return;
 
     // Clear track
     dom.track.innerHTML = '';
@@ -236,6 +253,9 @@ export const createCarousel = async (config) => {
     visibleTemplates.forEach(({ index, class: className }) => {
       const template = templates[index];
       const templateClone = template.cloneNode(true);
+
+      // Add data attribute to track template index
+      templateClone.dataset.templateIndex = index.toString();
 
       if (className) templateClone.classList.add(className);
 
@@ -296,7 +316,46 @@ export const createCarousel = async (config) => {
     // Debounced resize handler
     clearTimeout(handleResize.timeout);
     handleResize.timeout = setTimeout(() => {
-      // Clear any existing data-events-attached attributes before updating
+      // Update the responsive state
+      const wasMobile = state.isMobile();
+      state = CarouselState.updateResponsiveState(state);
+      const isNowMobile = state.isMobile();
+
+      // Update if switching mobile/desktop modes OR if significant width change
+      const lastWidth = handleResize.lastWidth || window.innerWidth;
+      const widthChange = Math.abs(window.innerWidth - lastWidth);
+      const shouldUpdate = wasMobile !== isNowMobile || widthChange > 100;
+
+      if (shouldUpdate) {
+        // Clear any existing data-events-attached attributes before updating
+        const existingTemplates = dom.track.querySelectorAll('.template');
+        existingTemplates.forEach((template) => {
+          const shareIcons = template.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
+          shareIcons.forEach((icon) => {
+            icon.removeAttribute('data-events-attached');
+          });
+        });
+        updateDisplay();
+      }
+
+      // Store current width for next comparison
+      handleResize.lastWidth = window.innerWidth;
+    }, 150); // Slightly longer debounce to reduce frequency
+  };
+
+  // Attach event listeners
+  nav.nextBtn.addEventListener('click', handleNext);
+  nav.prevBtn.addEventListener('click', handlePrev);
+  document.addEventListener('keydown', handleKeyboard);
+  window.addEventListener('resize', handleResize);
+
+  // Handle orientation changes specifically
+  const handleOrientationChange = () => {
+    // Force update on orientation change to handle mobile portrait/landscape transitions
+    setTimeout(() => {
+      state = CarouselState.updateResponsiveState(state);
+
+      // Update on any orientation change to handle mobile portrait/landscape transitions
       const existingTemplates = dom.track.querySelectorAll('.template');
       existingTemplates.forEach((template) => {
         const shareIcons = template.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
@@ -305,14 +364,10 @@ export const createCarousel = async (config) => {
         });
       });
       updateDisplay();
-    }, 100);
+    }, 200); // Increased timeout to ensure orientation change is complete
   };
 
-  // Attach event listeners
-  nav.nextBtn.addEventListener('click', handleNext);
-  nav.prevBtn.addEventListener('click', handlePrev);
-  document.addEventListener('keydown', handleKeyboard);
-  window.addEventListener('resize', handleResize);
+  window.addEventListener('orientationchange', handleOrientationChange);
 
   // Assemble DOM
   dom.viewport.append(dom.track);
@@ -366,6 +421,7 @@ export const createCarousel = async (config) => {
       nav.prevBtn.removeEventListener('click', handlePrev);
       document.removeEventListener('keydown', handleKeyboard);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleOrientationChange);
       clearTimeout(handleResize.timeout);
     },
   };

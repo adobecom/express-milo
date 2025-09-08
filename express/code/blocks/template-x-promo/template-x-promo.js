@@ -149,54 +149,10 @@ async function createTemplateElement(templateData) {
   return templateEl;
 }
 /**
- * Creates our custom carousel using the carousel factory
+ * Creates desktop layout for templates (original desktop behavior)
  */
-export async function createCustomCarousel(block, templates) {
+async function createDesktopLayout(block, templates) {
   try {
-    // Check if we're on mobile (below 768px)
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-
-    if (isMobile) {
-      // For mobile, create DOM elements first, then use carousel factory
-      const templateElements = await Promise.all(
-        templates.map((template) => createTemplateElement(template)),
-      );
-
-      // Add specific layout class based on template count
-      const parent = block.parentElement;
-      parent.classList.add('multiple-up');
-
-      const templateCount = templates.length;
-      if (templateCount === 2) {
-        parent.classList.add('two-up');
-      } else if (templateCount === 3) {
-        parent.classList.add('three-up');
-      } else if (templateCount >= 4) {
-        parent.classList.add('four-up');
-      }
-
-      // Add templates to parent first
-      templateElements.forEach((template) => {
-        parent.append(template);
-      });
-
-      // Now use carousel factory with the DOM elements
-      const { createTemplateCarousel } = await import('../../scripts/widgets/carousel-factory.js');
-      return await createTemplateCarousel(
-        block,
-        templateElements, // Pass DOM elements, not data
-        createTag,
-        attachHoverListeners,
-        null,
-        {
-          loadCSS: false,
-          responsive: true,
-          showNavigation: true,
-          looping: true,
-        },
-      );
-    }
-    // Desktop behavior - keep existing working code
     const templateElements = await Promise.all(
       templates.map((template) => createTemplateElement(template)),
     );
@@ -219,6 +175,17 @@ export async function createCustomCarousel(block, templates) {
       parent.append(template);
     });
 
+    // Ensure share icons don't have duplicate event listeners on desktop
+    templateElements.forEach((template) => {
+      const shareIcons = template.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
+      shareIcons.forEach((shareIcon) => {
+        // Mark as having event listeners to prevent duplicates
+        if (!shareIcon.hasAttribute('data-events-attached')) {
+          shareIcon.setAttribute('data-events-attached', 'true');
+        }
+      });
+    });
+
     // Return simple object - no custom carousel behavior for desktop
     return {
       currentIndex: () => 0,
@@ -227,6 +194,59 @@ export async function createCustomCarousel(block, templates) {
         // No cleanup needed
       },
     };
+  } catch (e) {
+    block.textContent = `Error loading templates: ${e.message}`;
+    return null; // Return null on error
+  }
+}
+
+/**
+ * Creates our custom carousel using the carousel factory (mobile only)
+ */
+export async function createCustomCarousel(block, templates) {
+  try {
+    // For mobile, create DOM elements first, then use carousel factory
+    const templateElements = await Promise.all(
+      templates.map((template) => createTemplateElement(template)),
+    );
+
+    // Add specific layout class based on template count
+    const parent = block.parentElement;
+    parent.classList.add('multiple-up');
+
+    const templateCount = templates.length;
+    if (templateCount === 2) {
+      parent.classList.add('two-up');
+    } else if (templateCount === 3) {
+      parent.classList.add('three-up');
+    } else if (templateCount >= 4) {
+      parent.classList.add('four-up');
+    }
+
+    // Don't append templates to parent - let carousel factory handle it
+    // The carousel factory will manage the entire block content
+
+    // Now use carousel factory with the DOM elements
+    const { createTemplateCarousel } = await import('../../scripts/widgets/carousel-factory.js');
+    const carousel = await createTemplateCarousel(
+      block,
+      templateElements, // Pass DOM elements, not data
+      createTag,
+      attachHoverListeners,
+      null,
+      {
+        loadCSS: false,
+        responsive: true,
+        showNavigation: true,
+        looping: true,
+      },
+    );
+
+    // Store carousel instance on the block for cleanup
+    // eslint-disable-next-line no-underscore-dangle
+    block._carousel = carousel;
+
+    return carousel;
   } catch (e) {
     block.textContent = `Error loading templates: ${e.message}`;
     return null; // Return null on error
@@ -281,9 +301,18 @@ const routeTemplates = async (block, templates) => {
     case 'one-up':
       await handleOneUpFromApiData(block, routingDecision.template);
       break;
-    case 'carousel':
-      await createCustomCarousel(block, routingDecision.templates);
+    case 'carousel': {
+      // For desktop above 767px, use original desktop layout
+      // For mobile below 768px, use carousel factory
+      const isMobile = window.matchMedia('(max-width: 767px)').matches;
+      if (isMobile) {
+        await createCustomCarousel(block, routingDecision.templates);
+      } else {
+        // Desktop: use original desktop layout logic
+        await createDesktopLayout(block, routingDecision.templates);
+      }
       break;
+    }
     default:
       // Unknown routing strategy - graceful degradation
   }
@@ -296,6 +325,12 @@ const handleApiDrivenTemplates = async (block, apiUrl) => {
     const { templates } = await fetchDirectFromApiUrl(apiUrl);
     // Clear the original block content before creating carousel
     block.innerHTML = '';
+
+    // Clear any existing templates from parent element
+    const parent = block.parentElement;
+    const existingTemplates = parent.querySelectorAll('.template');
+    existingTemplates.forEach((template) => template.remove());
+
     await routeTemplates(block, templates);
   } catch (error) {
     // Graceful degradation - API error occurred
@@ -306,6 +341,13 @@ const handleApiDrivenTemplates = async (block, apiUrl) => {
  * Main block decorator using functional composition
  */
 export default async function decorate(block) {
+  // Check if already decorated to prevent duplicate calls
+  if (block.hasAttribute('data-decorated')) {
+    return;
+  }
+
+  // Mark as decorated
+  block.setAttribute('data-decorated', 'true');
   // Initialize utilities
   const utilities = await initializeUtilities();
   // Apply utilities to global scope
@@ -321,5 +363,55 @@ export default async function decorate(block) {
   const apiUrl = extractApiParamsFromRecipe(block);
   if (apiUrl) {
     await handleApiDrivenTemplates(block, apiUrl);
+
+    // Add responsive handling for template-x-promo blocks
+    const handleResponsiveChange = () => {
+      const isMobile = window.matchMedia('(max-width: 767px)').matches;
+      const hasCarousel = block.querySelector('.promo-carousel-wrapper');
+      const hasDesktopLayout = block.parentElement.querySelector('.template:not(.prev-template):not(.next-template):not(.current-template)');
+
+      // If we have a carousel but should be desktop, switch to desktop layout
+      if (hasCarousel && !isMobile) {
+        // Destroy current carousel
+        // eslint-disable-next-line no-underscore-dangle
+        if (block._carousel && block._carousel.destroy) {
+          // eslint-disable-next-line no-underscore-dangle
+          block._carousel.destroy();
+          // eslint-disable-next-line no-underscore-dangle
+          block._carousel = null;
+        }
+
+        // Clear carousel content
+        block.innerHTML = '';
+
+        // Re-route templates for desktop
+        handleApiDrivenTemplates(block, apiUrl);
+      } else if (hasDesktopLayout && isMobile) {
+        // If we have desktop layout but should be mobile, switch to carousel
+        // Clear desktop content
+        const parent = block.parentElement;
+        const existingTemplates = parent.querySelectorAll('.template');
+        existingTemplates.forEach((template) => template.remove());
+
+        // Re-route templates for mobile
+        handleApiDrivenTemplates(block, apiUrl);
+      }
+    };
+
+    // Add resize listener
+    window.addEventListener('resize', handleResponsiveChange);
+    window.addEventListener('orientationchange', handleResponsiveChange);
+
+    // Store cleanup function
+    // eslint-disable-next-line no-underscore-dangle
+    block._cleanup = () => {
+      window.removeEventListener('resize', handleResponsiveChange);
+      window.removeEventListener('orientationchange', handleResponsiveChange);
+      // eslint-disable-next-line no-underscore-dangle
+      if (block._carousel && block._carousel.destroy) {
+        // eslint-disable-next-line no-underscore-dangle
+        block._carousel.destroy();
+      }
+    };
   }
 }

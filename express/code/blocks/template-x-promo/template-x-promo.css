@@ -246,7 +246,7 @@
   .template.current-template {
     flex: 0 0 50%;
     opacity: 1;
-    z-index: 2;
+    z-index: 1;
   }
 
   /* Next template - same size, partially cropped at right edge */
@@ -409,7 +409,7 @@
   border-radius: 24px;
   transition: all 0.2s ease;
   position: relative;
-  z-index: 3; /* Above the image and overlay */
+  z-index: 2; /* Above the image and overlay */
 }
 
 .ax-template-x-promo .template .button-container a.cta-link {
@@ -434,7 +434,7 @@
   justify-content: center;
   opacity: 1;
   pointer-events: initial;
-  z-index: 3;
+  z-index: 2;
 }
 
 .ax-template-x-promo .template .button-container .icon-share-arrow {
