@@ -174,9 +174,7 @@ export default async function handleTooltip(pricingArea, tooltipPattern = /\(\((
     ({ createTag, getConfig, loadStyle } = utils);
   });
   return new Promise((resolve) => {
-    loadStyle(`${getConfig().codeRoot}/scripts/widgets/tooltip.css`, () => {
-      resolve();
-    });
+    loadStyle(`${getConfig().codeRoot}/scripts/widgets/tooltip.css`);
     buildTooltip(pricingArea, tooltipPattern);
     resolve();
   });
