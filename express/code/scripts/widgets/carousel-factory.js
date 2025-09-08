@@ -313,34 +313,38 @@ export const createCarousel = async (config) => {
   };
 
   const handleResize = () => {
-    // Debounced resize handler
-    clearTimeout(handleResize.timeout);
-    handleResize.timeout = setTimeout(() => {
-      // Update the responsive state
-      const wasMobile = state.isMobile();
-      state = CarouselState.updateResponsiveState(state);
-      const isNowMobile = state.isMobile();
+    // Throttled resize handler for better performance
+    const now = Date.now();
+    const THROTTLE_MS = 100; // Throttle to max once per 100ms
 
-      // Update if switching mobile/desktop modes OR if significant width change
-      const lastWidth = handleResize.lastWidth || window.innerWidth;
-      const widthChange = Math.abs(window.innerWidth - lastWidth);
-      const shouldUpdate = wasMobile !== isNowMobile || widthChange > 100;
+    if (handleResize.lastCall && now - handleResize.lastCall < THROTTLE_MS) {
+      return; // Skip if called too recently
+    }
+    handleResize.lastCall = now;
+    // Update the responsive state
+    const wasMobile = state.isMobile();
+    state = CarouselState.updateResponsiveState(state);
+    const isNowMobile = state.isMobile();
 
-      if (shouldUpdate) {
-        // Clear any existing data-events-attached attributes before updating
-        const existingTemplates = dom.track.querySelectorAll('.template');
-        existingTemplates.forEach((template) => {
-          const shareIcons = template.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
-          shareIcons.forEach((icon) => {
-            icon.removeAttribute('data-events-attached');
-          });
+    // Update if switching mobile/desktop modes OR if significant width change
+    const lastWidth = handleResize.lastWidth || window.innerWidth;
+    const widthChange = Math.abs(window.innerWidth - lastWidth);
+    const shouldUpdate = wasMobile !== isNowMobile || widthChange > 100;
+
+    if (shouldUpdate) {
+      // Clear any existing data-events-attached attributes before updating
+      const existingTemplates = dom.track.querySelectorAll('.template');
+      existingTemplates.forEach((template) => {
+        const shareIcons = template.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
+        shareIcons.forEach((icon) => {
+          icon.removeAttribute('data-events-attached');
         });
-        updateDisplay();
-      }
+      });
+      updateDisplay();
+    }
 
-      // Store current width for next comparison
-      handleResize.lastWidth = window.innerWidth;
-    }, 150); // Slightly longer debounce to reduce frequency
+    // Store current width for next comparison
+    handleResize.lastWidth = window.innerWidth;
   };
 
   // Attach event listeners
@@ -422,7 +426,8 @@ export const createCarousel = async (config) => {
       document.removeEventListener('keydown', handleKeyboard);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleOrientationChange);
-      clearTimeout(handleResize.timeout);
+      // Clear throttling state
+      handleResize.lastCall = 0;
     },
   };
 };
