@@ -469,4 +469,347 @@ describe('Template X Promo', () => {
       window.getIconElementDeprecated = originalGetIcon;
     }
   });
+
+  it('should not create duplicate share icons on multiple calls', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+
+    // Set up the mock response for this test
+    fetchStub.resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'template1',
+            title: 'Test Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image1.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component1',
+              },
+            },
+          },
+          {
+            id: 'template2',
+            title: 'Test Template 2',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image2.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'premium',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image2.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component2',
+              },
+            },
+          },
+        ],
+      }),
+    });
+
+    // First call
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+    const { parentElement } = block;
+    const firstCallShareIcons = parentElement.querySelectorAll('.icon-share-arrow');
+    const firstCallTemplates = parentElement.querySelectorAll('.template');
+
+    // Verify first call created elements
+    expect(firstCallTemplates.length).to.equal(2, 'First call should create exactly 2 templates');
+    expect(firstCallShareIcons.length).to.equal(2, 'First call should create exactly 2 share icons');
+    expect(block.hasAttribute('data-decorated')).to.be.true, 'Block should be marked as decorated';
+
+    // Second call (should be prevented by data-decorated attribute)
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 100); }); // Shorter timeout since it should return immediately
+
+    const secondCallShareIcons = parentElement.querySelectorAll('.icon-share-arrow');
+    const secondCallTemplates = parentElement.querySelectorAll('.template');
+
+    // Verify no duplicates were created - counts should be identical
+    expect(secondCallTemplates.length).to.equal(firstCallTemplates.length, 'Template count should not increase on second call');
+    expect(secondCallShareIcons.length).to.equal(firstCallShareIcons.length, 'Share icon count should not increase on second call');
+    expect(secondCallTemplates.length).to.equal(2, 'Should have exactly 2 templates');
+    expect(secondCallShareIcons.length).to.equal(2, 'Should have exactly 2 share icons');
+  });
+
+  it('should not create duplicate elements in 3-up layout', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+
+    // Set up the mock response for 3 templates
+    fetchStub.resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'template1',
+            title: 'Test Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image1.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component1',
+              },
+            },
+          },
+          {
+            id: 'template2',
+            title: 'Test Template 2',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image2.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'premium',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image2.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component2',
+              },
+            },
+          },
+          {
+            id: 'template3',
+            title: 'Test Template 3',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit3' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image3.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit3' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image3.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component3',
+              },
+            },
+          },
+        ],
+      }),
+    });
+
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+    const { parentElement } = block;
+    expect(parentElement.classList.contains('three-up')).to.be.true;
+
+    // Verify exact counts - no duplicates
+    const templates = parentElement.querySelectorAll('.template');
+    const shareIcons = parentElement.querySelectorAll('.icon-share-arrow');
+    const freeTags = parentElement.querySelectorAll('.free-tag');
+    const premiumIcons = parentElement.querySelectorAll('.icon-premium');
+
+    expect(templates.length).to.equal(3, 'Should have exactly 3 templates');
+    expect(shareIcons.length).to.equal(3, 'Should have exactly 3 share icons');
+    expect(freeTags.length).to.equal(2, 'Should have exactly 2 free tags (templates 1 and 3)');
+    expect(premiumIcons.length).to.equal(1, 'Should have exactly 1 premium icon (template 2)');
+
+    // Verify no duplicate data-events-attached attributes
+    const shareIconsWithEvents = parentElement.querySelectorAll('.icon-share-arrow[data-events-attached="true"]');
+    expect(shareIconsWithEvents.length).to.equal(3, 'All share icons should have data-events-attached attribute');
+  });
+
+  it('should not create duplicate elements in 4-up layout', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+
+    // Set up the mock response for 4 templates
+    fetchStub.resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'template1',
+            title: 'Test Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image1.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component1',
+              },
+            },
+          },
+          {
+            id: 'template2',
+            title: 'Test Template 2',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit2' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image2.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'premium',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit2' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image2.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component2',
+              },
+            },
+          },
+          {
+            id: 'template3',
+            title: 'Test Template 3',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit3' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image3.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit3' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image3.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component3',
+              },
+            },
+          },
+          {
+            id: 'template4',
+            title: 'Test Template 4',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit4' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image4.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'premium',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit4' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image4.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component4',
+              },
+            },
+          },
+        ],
+      }),
+    });
+
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+    const { parentElement } = block;
+    expect(parentElement.classList.contains('four-up')).to.be.true;
+
+    // Verify exact counts - no duplicates
+    const templates = parentElement.querySelectorAll('.template');
+    const shareIcons = parentElement.querySelectorAll('.icon-share-arrow');
+    const freeTags = parentElement.querySelectorAll('.free-tag');
+    const premiumIcons = parentElement.querySelectorAll('.icon-premium');
+
+    expect(templates.length).to.equal(4, 'Should have exactly 4 templates');
+    expect(shareIcons.length).to.equal(4, 'Should have exactly 4 share icons');
+    expect(freeTags.length).to.equal(2, 'Should have exactly 2 free tags (templates 1 and 3)');
+    expect(premiumIcons.length).to.equal(2, 'Should have exactly 2 premium icons (templates 2 and 4)');
+
+    // Verify no duplicate data-events-attached attributes
+    const shareIconsWithEvents = parentElement.querySelectorAll('.icon-share-arrow[data-events-attached="true"]');
+    expect(shareIconsWithEvents.length).to.equal(4, 'All share icons should have data-events-attached attribute');
+  });
+
+  it('should not make multiple API calls on repeated decorate calls', async () => {
+    // Reset fetchStub for this test
+    if (fetchStub) {
+      fetchStub.restore();
+    }
+    fetchStub = sinon.stub(window, 'fetch');
+
+    // Set up the mock response
+    fetchStub.resolves({
+      ok: true,
+      json: () => Promise.resolve({
+        items: [
+          {
+            id: 'template1',
+            title: 'Test Template 1',
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: 'https://express.adobe.com/edit1' },
+            thumbnail: { url: 'https://design-assets.adobeprojectm.com/image1.jpg' },
+            behaviors: ['still'],
+            licensingCategory: 'free',
+            _links: {
+              'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit1' },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: 'https://design-assets.adobeprojectm.com/image1.jpg',
+              },
+              'http://ns.adobe.com/adobecloud/rel/component': {
+                href: 'https://design-assets.adobeprojectm.com/component1',
+              },
+            },
+          },
+        ],
+      }),
+    });
+
+    // First call
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+    const firstCallCount = fetchStub.callCount;
+    expect(firstCallCount).to.be.greaterThan(0, 'At least one API call should have been made initially');
+    expect(block.hasAttribute('data-decorated')).to.be.true, 'Block should be marked as decorated';
+
+    // Second call (should be prevented by data-decorated attribute)
+    await decorate(block);
+    await new Promise((resolve) => { setTimeout(resolve, 100); }); // Shorter timeout since it should return immediately
+
+    const secondCallCount = fetchStub.callCount;
+
+    // Verify no additional API calls were made
+    expect(secondCallCount).to.equal(firstCallCount, 'No additional API calls should be made on second decorate call');
+  });
 });
