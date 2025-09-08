@@ -13,45 +13,12 @@ const utils = imports[2];
 
 // Import specific functions for testing
 const {
-  calculateTooltipPosition,
-  generateShareActionData,
-  createShareWrapperConfig,
-  buildShareWrapperStructure,
-  extractRecipeFromElement,
-  cleanRecipeString,
-  extractApiUrl,
-  createTemplateMetadata,
-  getTemplateLayoutClass,
-  calculateMobileHeight,
   generateCarouselStatusText,
   createNavButtonConfig,
-  fixImageUrl,
   createImageElementConfig,
   createWrapperConfig,
   createFreeTagConfig,
   createButtonElementConfig,
-  extractTemplateMetadata,
-  getRecipeCleanupInstructions,
-  extractApiParamsFromRecipe,
-  createHoverStateManagerConfig,
-  createImageErrorHandlerConfig,
-  getBlockStylingConfig,
-  getResponsiveLayoutConfig,
-  createHoverStateManager,
-  determineTemplateRouting,
-  createMouseEnterHandler,
-  createMouseLeaveHandler,
-  createFocusHandler,
-  createClickHandler,
-  createPremiumIcon,
-  createImageErrorHandler,
-  fetchDirectFromApiUrl,
-  attachHoverListeners,
-  createImageSectionConfig,
-  createButtonSectionConfig,
-  createShareSectionConfig,
-  createImageSection,
-  createShareSection,
 } = utils;
 
 await import(`${getLibs()}/utils/utils.js`).then((mod) => {
@@ -362,10 +329,10 @@ describe('template-x-promo-utils', () => {
   });
 
   describe('Additional Utility Functions', () => {
-  it('should test generateCarouselStatusText function', () => {
-    const statusText = generateCarouselStatusText(2, 5);
-    expect(statusText).to.equal('Showing template 3 of 5');
-  });
+    it('should test generateCarouselStatusText function', () => {
+      const statusText = generateCarouselStatusText(2, 5);
+      expect(statusText).to.equal('Showing template 3 of 5');
+    });
 
     it('should test createNavButtonConfig function', () => {
       const prevButton = createNavButtonConfig('prev', false);
