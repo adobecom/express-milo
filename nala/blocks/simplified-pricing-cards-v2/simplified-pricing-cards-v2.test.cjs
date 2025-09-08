@@ -17,6 +17,11 @@ test.describe('simplified-pricing-cards-v2 test suite', () => {
       await spcv2.scrollToBlock();
       const isMobile = /mobile/i.test(test.info().project.name || '');
 
+      await test.step('fail if block reports data-failed="true"', async () => {
+        const failed = await spcv2.block.first().getAttribute('data-failed');
+        expect(failed).not.toBe('true');
+      });
+
       await test.step('validate structure', async () => {
         await expect(spcv2.block).toBeVisible();
         const count = await spcv2.card.count();
@@ -76,8 +81,9 @@ test.describe('simplified-pricing-cards-v2 test suite', () => {
           await expect(tooltipButton.locator('.tooltip-icon')).toBeVisible();
           const tooltipText = tooltipButton.locator('.tooltip-text');
           await expect(tooltipText).toHaveCount(1);
-          const ttText = await tooltipText.innerText();
-          expect((ttText || '').trim().length).toBeTruthy();
+          const ttTextRaw = await tooltipText.innerText();
+          const ttText = (ttTextRaw || '').replace(/\s+/g, ' ').trim();
+          expect(ttText.length).toBeTruthy();
         }
       });
 
@@ -93,8 +99,9 @@ test.describe('simplified-pricing-cards-v2 test suite', () => {
         await firstTooltip.hover();
         const firstTooltipText = firstTooltip.locator('.tooltip-text');
         await expect(firstTooltipText).toBeVisible();
-        const text = await firstTooltipText.innerText();
-        expect((text || '').trim().length).toBeTruthy();
+        const textRaw = await firstTooltipText.innerText();
+        const text = (textRaw || '').replace(/\s+/g, ' ').trim();
+        expect(text.length).toBeTruthy();
       });
     });
   });

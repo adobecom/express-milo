@@ -16,6 +16,11 @@ test.describe('pricing-cards test suite', () => {
       await pc.gotoURL(url);
       await pc.scrollToPricingCards();
 
+      await test.step('fail if block reports data-failed="true"', async () => {
+        const failed = await pc.block.first().getAttribute('data-failed');
+        expect(failed).not.toBe('true');
+      });
+
       await test.step('validate structure', async () => {
         await expect(pc.block).toBeVisible();
         const count = await pc.card.count();
@@ -116,8 +121,9 @@ test.describe('pricing-cards test suite', () => {
 
         const tooltipText = tooltipButton.locator('.tooltip-text');
         await expect(tooltipText).toHaveCount(1);
-        const ttText = await tooltipText.innerText();
-        expect((ttText || '').trim().length).toBeTruthy();
+        const ttTextRaw = await tooltipText.innerText();
+        const ttText = (ttTextRaw || '').replace(/\s+/g, ' ').trim();
+        expect(ttText.length).toBeTruthy();
       });
 
       await test.step('compare link (optional)', async () => {
