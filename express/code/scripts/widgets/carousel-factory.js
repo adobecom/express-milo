@@ -41,7 +41,24 @@ const CarouselDOM = {
   createStructure: (createTag) => ({
     wrapper: createTag('div', { class: 'promo-carousel-wrapper' }),
     viewport: createTag('div', { class: 'promo-carousel-viewport' }),
-    track: createTag('div', { class: 'promo-carousel-track' }),
+    track: createTag('div', {
+      class: 'promo-carousel-track',
+      id: 'carousel-content',
+      tabindex: '0',
+      role: 'region',
+      'aria-label': 'Template carousel',
+    }),
+    skipLink: createTag('a', {
+      href: '#carousel-content',
+      class: 'carousel-skip-link sr-only',
+      textContent: 'Skip to carousel content',
+    }),
+    status: createTag('div', {
+      id: 'carousel-status',
+      class: 'sr-only',
+      'aria-live': 'polite',
+      'aria-atomic': 'true',
+    }),
   }),
 
   createNavigation: (createTag) => ({
@@ -49,10 +66,12 @@ const CarouselDOM = {
     prevBtn: createTag('button', {
       class: 'promo-nav-btn promo-prev-btn',
       'aria-label': 'Previous templates',
+      'aria-describedby': 'carousel-status',
     }),
     nextBtn: createTag('button', {
       class: 'promo-nav-btn promo-next-btn',
       'aria-label': 'Next templates',
+      'aria-describedby': 'carousel-status',
     }),
   }),
 
@@ -268,6 +287,11 @@ export const createCarousel = async (config) => {
 
       dom.track.append(templateClone);
     });
+
+    // Update carousel status for screen readers (WCAG Level AA)
+    const currentIndex = state.currentIndex + 1;
+    const totalTemplates = state.templateCount;
+    dom.status.textContent = `Carousel item ${currentIndex} of ${totalTemplates}`;
   };
 
   // Event handlers (pure functions)
@@ -282,6 +306,15 @@ export const createCarousel = async (config) => {
   };
 
   const handleKeyboard = (event) => {
+    // Handle skip link focus
+    if (event.target.classList.contains('carousel-skip-link')) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        dom.track.focus();
+        return;
+      }
+    }
+
     // Only handle keyboard nav when carousel is focused
     if (!dom.wrapper.contains(event.target)) return;
 
@@ -375,7 +408,7 @@ export const createCarousel = async (config) => {
 
   // Assemble DOM
   dom.viewport.append(dom.track);
-  dom.wrapper.append(dom.viewport);
+  dom.wrapper.append(dom.skipLink, dom.viewport, dom.status);
 
   // Add navigation if needed
   if (DisplayLogic.shouldShowNavigation(state)) {

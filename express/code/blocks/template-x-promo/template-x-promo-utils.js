@@ -446,6 +446,15 @@ export function createHoverStateManager() {
         currentHoveredElement = null;
       }
     },
+    clearTooltips: () => {
+      if (currentHoveredElement) {
+        const tooltips = currentHoveredElement.querySelectorAll('.shared-tooltip.display-tooltip');
+        tooltips.forEach((tooltip) => {
+          tooltip.classList.remove('display-tooltip');
+          tooltip.classList.remove('flipped');
+        });
+      }
+    },
     getCurrent: () => currentHoveredElement,
   };
 }
@@ -564,6 +573,10 @@ export function createMouseEnterHandler(hoverManager, targetElement) {
  */
 export function createMouseLeaveHandler(hoverManager) {
   return () => {
+    // Clear any visible tooltips when leaving the template
+    hoverManager.clearTooltips();
+    
+    // Clear hover state
     hoverManager.clearHovered();
   };
 }
@@ -799,7 +812,7 @@ export function createImageSectionConfig(metadata, createTag, getIconElementDepr
 
   const img = createTag('img', {
     src: imageUrl,
-    alt: metadata.title,
+    alt: metadata.title ? `${metadata.title} template preview` : 'Template preview image',
     loading: 'lazy',
   });
 
@@ -858,7 +871,7 @@ export function createButtonSectionConfig(metadata, editButtonText, processedIma
   const mediaWrapper = createTag('div', { class: 'media-wrapper' });
   const hoverImg = createTag('img', {
     src: processedImageUrl,
-    alt: metadata.title,
+    alt: metadata.title ? `${metadata.title} template preview` : 'Template preview image',
     loading: 'lazy',
   });
   mediaWrapper.append(hoverImg);
