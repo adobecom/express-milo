@@ -3,6 +3,12 @@
  * These functions have no side effects and can be easily tested and reused
  */
 
+// Static imports for better performance and tree-shaking
+import { createTag as createTagUtil, getIconElementDeprecated as getIconElementDeprecatedUtil } from '../../scripts/utils.js';
+import { getTrackingAppendedURL as getTrackingAppendedURLUtil } from '../../scripts/branchlinks.js';
+import { fetchResults as fetchResultsUtil } from '../../scripts/template-utils.js';
+import { isValidTemplate as isValidTemplateUtil } from '../../scripts/template-search-api-v3.js';
+
 // ============================================
 // PURE FUNCTIONS - DATA TRANSFORMATION
 // ============================================
@@ -668,9 +674,9 @@ export function createImageErrorHandler() {
  * @returns {Promise<Object>} API response with templates
  */
 export async function fetchDirectFromApiUrl(recipe, fetchResults, isValidTemplate) {
-  // Use default imports if not provided
-  const fetchResultsFn = fetchResults || (await import('../../scripts/template-utils.js')).fetchResults;
-  const isValidTemplateFn = isValidTemplate || (await import('../../scripts/template-search-api-v3.js')).isValidTemplate;
+  // Use provided functions or fall back to static imports
+  const fetchResultsFn = fetchResults || fetchResultsUtil;
+  const isValidTemplateFn = isValidTemplate || isValidTemplateUtil;
 
   const data = await fetchResultsFn(recipe);
 
@@ -709,10 +715,7 @@ export function attachHoverListeners(
   const createMouseEnterHandlerDefault = createMouseEnterHandlerFn || createMouseEnterHandler;
   const createMouseLeaveHandlerDefault = createMouseLeaveHandlerFn || createMouseLeaveHandler;
   const shareDefault = shareFn || share;
-  const getTrackingAppendedURLDefault = getTrackingAppendedURLFn || (async () => {
-    const { getTrackingAppendedURL: getTrackingAppendedURLImport } = await import('../../scripts/branchlinks.js');
-    return getTrackingAppendedURLImport;
-  });
+  const getTrackingAppendedURLDefault = getTrackingAppendedURLFn || getTrackingAppendedURLUtil;
   const buttonContainer = templateEl.querySelector('.button-container');
   if (!buttonContainer) return;
 
@@ -961,30 +964,15 @@ export async function createImageSection(
   getIconElementDeprecated,
   createImageErrorHandlerFn,
 ) {
-  // Use default functions if not provided
-  const createTagDefault = createTag || (async () => {
-    const { createTag: createTagFn } = await import('../../scripts/utils.js');
-    return createTagFn;
-  });
-  const getIconElementDeprecatedDefault = getIconElementDeprecated || (async () => {
-    const { getIconElementDeprecated: getIconElementDeprecatedFn } = await import('../../scripts/utils.js');
-    return getIconElementDeprecatedFn;
-  });
+  // Use provided functions or fall back to static imports
+  const createTagFn = createTag || createTagUtil;
+  const getIconElementDeprecatedFn = getIconElementDeprecated || getIconElementDeprecatedUtil;
   const createImageErrorHandlerDefault = createImageErrorHandlerFn || createImageErrorHandler;
-
-  // Resolve async defaults
-  const resolvedCreateTag = typeof createTagDefault === 'function' && createTagDefault.length === 0
-    ? await createTagDefault()
-    : createTagDefault;
-  const resolvedGetIconElementDeprecated = typeof getIconElementDeprecatedDefault === 'function'
-    && getIconElementDeprecatedDefault.length === 0
-    ? await getIconElementDeprecatedDefault()
-    : getIconElementDeprecatedDefault;
 
   const imageConfig = createImageSectionConfig(
     metadata,
-    resolvedCreateTag,
-    resolvedGetIconElementDeprecated,
+    createTagFn,
+    getIconElementDeprecatedFn,
   );
 
   // Add error handling for failed image loads
@@ -1009,34 +997,16 @@ export async function createShareSection(
   shareFn,
   getTrackingAppendedURLFn,
 ) {
-  // Use default functions if not provided
-  const createTagDefault = createTag || (async () => {
-    const { createTag: createTagFn } = await import('../../scripts/utils.js');
-    return createTagFn;
-  });
-  const getIconElementDeprecatedDefault = getIconElementDeprecated || (async () => {
-    const { getIconElementDeprecated: getIconElementDeprecatedFn } = await import('../../scripts/utils.js');
-    return getIconElementDeprecatedFn;
-  });
+  // Use provided functions or fall back to static imports
+  const createTagFn = createTag || createTagUtil;
+  const getIconElementDeprecatedFn = getIconElementDeprecated || getIconElementDeprecatedUtil;
   const shareDefault = shareFn || share;
-  const getTrackingAppendedURLDefault = getTrackingAppendedURLFn || (async () => {
-    const { getTrackingAppendedURL: getTrackingAppendedURLImport } = await import('../../scripts/branchlinks.js');
-    return getTrackingAppendedURLImport;
-  });
-
-  // Resolve async defaults
-  const resolvedCreateTag = typeof createTagDefault === 'function' && createTagDefault.length === 0
-    ? await createTagDefault()
-    : createTagDefault;
-  const resolvedGetIconElementDeprecated = typeof getIconElementDeprecatedDefault === 'function'
-    && getIconElementDeprecatedDefault.length === 0
-    ? await getIconElementDeprecatedDefault()
-    : getIconElementDeprecatedDefault;
+  const getTrackingAppendedURLFnResolved = getTrackingAppendedURLFn || getTrackingAppendedURLUtil;
 
   const shareConfig = createShareSectionConfig(
     metadata,
-    resolvedCreateTag,
-    resolvedGetIconElementDeprecated,
+    createTagFn,
+    getIconElementDeprecatedFn,
   );
 
   // Add share icon event handlers
@@ -1051,14 +1021,13 @@ export async function createShareSection(
       ev.preventDefault();
       ev.stopPropagation();
       try {
-        const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
         timeoutId = await shareDefault(
           metadata.editUrl,
           shareConfig.sharedTooltip,
           timeoutId,
           shareConfig.srOnly,
           text,
-          getTrackingAppendedURL,
+          getTrackingAppendedURLFnResolved,
         );
       } catch (error) {
         console.error('Share error:', error);
@@ -1068,14 +1037,13 @@ export async function createShareSection(
     shareConfig.shareIcon.addEventListener('keypress', async (e) => {
       if (e.key !== 'Enter') return;
       try {
-        const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
         timeoutId = await shareDefault(
           metadata.editUrl,
           shareConfig.sharedTooltip,
           timeoutId,
           shareConfig.srOnly,
           text,
-          getTrackingAppendedURL,
+          getTrackingAppendedURLFnResolved,
         );
       } catch (error) {
         console.error('Share error:', error);
