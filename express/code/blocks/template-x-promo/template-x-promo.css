@@ -583,6 +583,10 @@
   .ax-template-x-promo.multiple-up {
     padding: 0; /* Full width on mobile for carousel */
   }
+  
+  .ax-template-x-promo .template {
+    min-height: 200px; /* Small height constraint to reduce jumping */
+  }
 
   .promo-nav-controls {
     display: flex; /* Show buttons on mobile */

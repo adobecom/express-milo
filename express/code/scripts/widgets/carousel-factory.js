@@ -295,7 +295,17 @@ export const createCarousel = async (config) => {
   const handleResize = () => {
     // Debounced resize handler
     clearTimeout(handleResize.timeout);
-    handleResize.timeout = setTimeout(updateDisplay, 100);
+    handleResize.timeout = setTimeout(() => {
+      // Clear any existing data-events-attached attributes before updating
+      const existingTemplates = dom.track.querySelectorAll('.template');
+      existingTemplates.forEach((template) => {
+        const shareIcons = template.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
+        shareIcons.forEach((icon) => {
+          icon.removeAttribute('data-events-attached');
+        });
+      });
+      updateDisplay();
+    }, 100);
   };
 
   // Attach event listeners

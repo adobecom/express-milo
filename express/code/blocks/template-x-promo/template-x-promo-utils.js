@@ -521,7 +521,9 @@ export async function share(
   await navigator.clipboard.writeText(urlWithTracking);
 
   // Apply tooltip classes based on pure calculation
-  tooltip.classList.add(...shareData.tooltipClasses);
+  if (tooltip) {
+    tooltip.classList.add(...shareData.tooltipClasses);
+  }
 
   // Update ARIA-live region
   liveRegion.textContent = shareData.text;
@@ -720,24 +722,35 @@ export function attachHoverListeners(
     const srOnly = shareWrapper?.querySelector('.sr-only');
 
     if (shareIcon && sharedTooltip && srOnly) {
+      // For cloned templates in carousel, we need to re-attach event listeners
+      // even if they have the data-events-attached attribute, because cloneNode
+      // doesn't copy event listeners
+
       let timeoutId = null;
       const text = 'Copied to clipboard';
 
-      // Remove any existing listeners first
-      shareIcon.replaceWith(shareIcon.cloneNode(true));
-      const newShareIcon = shareWrapper.querySelector('.icon-share-arrow');
+      // Mark this share icon as having event listeners attached
+      shareIcon.setAttribute('data-events-attached', 'true');
+
+      // Remove any existing event listeners first to prevent duplicates
+      const newShareIcon = shareIcon.cloneNode(true);
+      shareIcon.parentNode.replaceChild(newShareIcon, shareIcon);
+
+      // Re-find the tooltip elements after cloning to ensure we have the right references
+      const newShareWrapper = newShareIcon.closest('.share-icon-wrapper');
+      const newSharedTooltip = newShareWrapper?.querySelector('.shared-tooltip');
+      const newSrOnly = newShareWrapper?.querySelector('.sr-only');
 
       newShareIcon.addEventListener('click', async (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
-        console.log('Share icon clicked!', shareIcon.getAttribute('data-edit-url'));
         try {
           const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
           timeoutId = await shareDefault(
-            shareIcon.getAttribute('data-edit-url') || '#',
-            sharedTooltip,
+            newShareIcon.getAttribute('data-edit-url') || '#',
+            newSharedTooltip,
             timeoutId,
-            srOnly,
+            newSrOnly,
             text,
             getTrackingAppendedURL,
           );
@@ -751,10 +764,10 @@ export function attachHoverListeners(
         try {
           const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
           timeoutId = await shareDefault(
-            shareIcon.getAttribute('data-edit-url') || '#',
-            sharedTooltip,
+            newShareIcon.getAttribute('data-edit-url') || '#',
+            newSharedTooltip,
             timeoutId,
-            srOnly,
+            newSrOnly,
             text,
             getTrackingAppendedURL,
           );
@@ -1017,6 +1030,9 @@ export async function createShareSection(
   if (shareConfig.shareIcon) {
     let timeoutId = null;
     const text = 'Copied to clipboard';
+
+    // Mark this share icon as having event listeners attached
+    shareConfig.shareIcon.setAttribute('data-events-attached', 'true');
 
     shareConfig.shareIcon.addEventListener('click', async (ev) => {
       ev.preventDefault();
