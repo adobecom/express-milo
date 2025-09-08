@@ -14,7 +14,6 @@ test.describe('how-to-steps-carousel test suite', () => {
     test(`${features[0].name}, path: ${path},`, async ({ baseURL, page }) => {
       const testPage = `${baseURL}${path}`;
       await howToStepsCarousel.gotoURL(testPage);
-      console.log(testPage);
       await howToStepsCarousel.scrollToHowToStepsCarousel();
 
       await test.step('validate elements in block', async () => {
