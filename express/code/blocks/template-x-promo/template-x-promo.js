@@ -364,11 +364,25 @@ export default async function decorate(block) {
   if (apiUrl) {
     await handleApiDrivenTemplates(block, apiUrl);
 
-    // Add responsive handling for template-x-promo blocks
+    // Add responsive handling for template-x-promo blocks with throttling
+    let lastResponsiveCheck = 0;
+    const RESPONSIVE_THROTTLE_MS = 100; // Throttle to max once per 100ms
+
+    // Cache DOM selectors for better performance
+    const selectors = {
+      carousel: '.promo-carousel-wrapper',
+      desktop: '.template:not(.prev-template):not(.next-template):not(.current-template)',
+    };
     const handleResponsiveChange = () => {
+      const now = Date.now();
+      if (now - lastResponsiveCheck < RESPONSIVE_THROTTLE_MS) {
+        return; // Skip if called too recently
+      }
+      lastResponsiveCheck = now;
+
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
-      const hasCarousel = block.querySelector('.promo-carousel-wrapper');
-      const hasDesktopLayout = block.parentElement.querySelector('.template:not(.prev-template):not(.next-template):not(.current-template)');
+      const hasCarousel = block.querySelector(selectors.carousel);
+      const hasDesktopLayout = block.parentElement.querySelector(selectors.desktop);
 
       // If we have a carousel but should be desktop, switch to desktop layout
       if (hasCarousel && !isMobile) {
