@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { expect, test } from '@playwright/test';
-import { features } from './ax-marquee.spec.js';
-import AxMarquee from './ax-marquee.page.js';
+import { features } from './ax-marquee.spec.cjs';
+import AxMarquee from './ax-marquee.page.cjs';
 
 let axMarquee;
 
