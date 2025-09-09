@@ -9,21 +9,21 @@
    ======================================== */
 
 /* Main carousel wrapper (semantic section) */
-.promo-carousel-wrapper {
+.carousel-factory.custom-promo-carousel .promo-carousel-wrapper {
   position: relative;
   width: 100%;
   box-sizing: border-box;
 }
 
 /* Viewport for template display */
-.promo-carousel-viewport {
+.carousel-factory.custom-promo-carousel .promo-carousel-viewport {
   width: 100%;
   overflow: hidden;
   position: relative;
 }
 
 /* Track that holds templates */
-.promo-carousel-track {
+.carousel-factory.custom-promo-carousel .promo-carousel-track {
   display: flex;
   width: 100%;
   transition: transform 0.3s ease-in-out;
@@ -35,7 +35,7 @@
    ======================================== */
 
 /* Navigation container (semantic nav) */
-.promo-nav-controls {
+.carousel-factory.custom-promo-carousel .promo-nav-controls {
   position: absolute;
   bottom: var(--spacing-400);
   right: var(--spacing-400);
@@ -45,7 +45,7 @@
 }
 
 /* Navigation buttons */
-.promo-nav-btn {
+.carousel-factory.custom-promo-carousel .promo-nav-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -59,22 +59,22 @@
     box-shadow 0.3s ease;
 }
 
-.promo-nav-btn:hover:not(:disabled) {
+.carousel-factory.custom-promo-carousel .promo-nav-btn:hover:not(:disabled) {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.promo-nav-btn:active {
+.carousel-factory.custom-promo-carousel .promo-nav-btn:active {
   transform: scale(0.95);
 }
 
-.promo-nav-btn:disabled {
+.carousel-factory.custom-promo-carousel .promo-nav-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 /* SVG icons inside buttons */
-.promo-nav-btn svg {
+.carousel-factory.custom-promo-carousel .promo-nav-btn svg {
   display: block;
   pointer-events: none;
 }
@@ -85,7 +85,7 @@
 
 /* Desktop (768px+): Static grid layout */
 @media (min-width: 768px) {
-  .promo-carousel-track {
+  .carousel-factory.custom-promo-carousel .promo-carousel-track {
     display: flex;
     flex-wrap: wrap;
     transform: none; /* Override any carousel transforms */
@@ -93,19 +93,19 @@
     align-items: flex-start;
   }
   
-  .promo-nav-controls {
+  .carousel-factory.custom-promo-carousel .promo-nav-controls {
     display: none; /* Always hidden on desktop */
   }
 }
 
 /* Mobile (≤767px): Carousel behavior */
 @media (max-width: 767px) {
-  .promo-carousel-track {
+  .carousel-factory.custom-promo-carousel .promo-carousel-track {
     flex-wrap: nowrap;
     justify-content: flex-start;
   }
   
-  .promo-nav-controls {
+  .carousel-factory.custom-promo-carousel .promo-nav-controls {
     display: flex; /* Show navigation on mobile */
   }
 }
@@ -115,7 +115,7 @@
    ======================================== */
 
 /* Screen reader only content */
-.carousel-factory .sr-only {
+.carousel-factory.custom-promo-carousel .sr-only {
   position: absolute !important;
   width: 1px !important;
   height: 1px !important;
@@ -128,7 +128,7 @@
 }
 
 /* Skip link for keyboard users */
-.carousel-skip-link {
+.carousel-factory.custom-promo-carousel .carousel-skip-link {
   position: absolute;
   left: -9999px;
   top: 0;
@@ -140,7 +140,7 @@
   border-radius: 4px;
 }
 
-.carousel-skip-link:focus {
+.carousel-factory.custom-promo-carousel .carousel-skip-link:focus {
   left: 0;
   clip: auto;
   width: auto;
@@ -148,16 +148,16 @@
 }
 
 /* Focus indicators for all interactive elements */
-.promo-carousel-wrapper button:focus-visible,
-.promo-carousel-wrapper a:focus-visible,
-.promo-carousel-wrapper [tabindex="0"]:focus-visible {
+.carousel-factory.custom-promo-carousel .promo-carousel-wrapper button:focus-visible,
+.carousel-factory.custom-promo-carousel .promo-carousel-wrapper a:focus-visible,
+.carousel-factory.custom-promo-carousel .promo-carousel-wrapper [tabindex="0"]:focus-visible {
   outline: 2px solid var(--color-blue-600);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* Enhanced focus for navigation buttons */
-.promo-nav-btn:focus-visible {
+.carousel-factory.custom-promo-carousel .promo-nav-btn:focus-visible {
   outline: 2px solid var(--color-blue-600);
   outline-offset: 4px;
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
@@ -165,30 +165,30 @@
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-  .promo-nav-btn {
+  .carousel-factory.custom-promo-carousel .promo-nav-btn {
     border: 2px solid ButtonText;
     background: ButtonFace;
   }
   
-  .promo-nav-btn svg {
+  .carousel-factory.custom-promo-carousel .promo-nav-btn svg {
     filter: contrast(2);
   }
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .promo-carousel-wrapper * {
+  .carousel-factory.custom-promo-carousel .promo-carousel-wrapper * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
   }
   
-  .promo-carousel-track {
+  .carousel-factory.custom-promo-carousel .promo-carousel-track {
     transform: none !important;
   }
   
-  .promo-nav-btn {
+  .carousel-factory.custom-promo-carousel .promo-nav-btn {
     transition: none !important;
   }
 }
@@ -201,7 +201,7 @@
 
 /* Enhanced touch targets for mobile */
 @media (max-width: 767px) {
-  .promo-nav-btn {
+  .carousel-factory.custom-promo-carousel .promo-nav-btn {
     min-width: 44px;
     min-height: 44px;
   }
@@ -218,24 +218,24 @@
 
 /* Mobile carousel positioning classes */
 @media (max-width: 767px) {
-  .promo-carousel-track .prev-template {
+  .carousel-factory.custom-promo-carousel .promo-carousel-track .prev-template {
     opacity: 0.7;
     transform: scale(0.9);
   }
   
-  .promo-carousel-track .current-template {
+  .carousel-factory.custom-promo-carousel .promo-carousel-track .current-template {
     opacity: 1;
     transform: scale(1);
   }
   
-  .promo-carousel-track .next-template {
+  .carousel-factory.custom-promo-carousel .promo-carousel-track .next-template {
     opacity: 0.7;
     transform: scale(0.9);
   }
 }
 
 /* Smooth transitions for template states */
-.promo-carousel-track > * {
+.carousel-factory.custom-promo-carousel .promo-carousel-track > * {
   transition: 
     opacity 0.3s ease,
     transform 0.3s ease;
@@ -243,7 +243,7 @@
 
 /* Respect reduced motion for template transitions */
 @media (prefers-reduced-motion: reduce) {
-  .promo-carousel-track > * {
+  .carousel-factory.custom-promo-carousel .promo-carousel-track > * {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;

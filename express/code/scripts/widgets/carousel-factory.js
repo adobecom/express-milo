@@ -431,7 +431,7 @@ export const createCarousel = async (config) => {
 
   // Setup block classes
   block.parentElement.classList.add('multiple-up');
-  block.classList.add('custom-promo-carousel');
+  block.classList.add('carousel-factory', 'custom-promo-carousel');
   block.append(dom.wrapper);
 
   // Initial render
