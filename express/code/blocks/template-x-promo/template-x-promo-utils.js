@@ -519,7 +519,6 @@ export async function share(
   text,
   getTrackingAppendedURL,
 ) {
-  // Pure: Generate tracking URL
   const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
     isSearchOverride: true,
@@ -714,7 +713,19 @@ export function attachHoverListeners(
   const createHoverStateManagerDefault = createHoverStateManagerFn || createHoverStateManager;
   const createMouseEnterHandlerDefault = createMouseEnterHandlerFn || createMouseEnterHandler;
   const createMouseLeaveHandlerDefault = createMouseLeaveHandlerFn || createMouseLeaveHandler;
-  const shareDefault = shareFn || share;
+  const shareDefault = async (
+    branchUrl,
+    tooltip,
+    timeoutId,
+    liveRegion,
+    text,
+    getTrackingAppendedURL,
+  ) => {
+    if (!branchUrl) return timeoutId; // Skip if no valid URL
+    return shareFn
+      ? shareFn(branchUrl, tooltip, timeoutId, liveRegion, text, getTrackingAppendedURL)
+      : share(branchUrl, tooltip, timeoutId, liveRegion, text, getTrackingAppendedURL);
+  };
   const getTrackingAppendedURLDefault = getTrackingAppendedURLFn || getTrackingAppendedURLUtil;
   const buttonContainer = templateEl.querySelector('.button-container');
   if (!buttonContainer) return;
@@ -761,9 +772,10 @@ export function attachHoverListeners(
         ev.preventDefault();
         ev.stopPropagation();
         try {
-          const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
+          const getTrackingAppendedURL = getTrackingAppendedURLDefault;
+          const editUrl = newShareIcon.getAttribute('data-edit-url');
           timeoutId = await shareDefault(
-            newShareIcon.getAttribute('data-edit-url') || '#',
+            editUrl,
             newSharedTooltip,
             timeoutId,
             newSrOnly,
@@ -771,16 +783,17 @@ export function attachHoverListeners(
             getTrackingAppendedURL,
           );
         } catch (error) {
-          console.error('Share error:', error);
+          // Share error handled silently
         }
       });
 
       newShareIcon.addEventListener('keypress', async (e) => {
         if (e.key !== 'Enter') return;
         try {
-          const getTrackingAppendedURL = await getTrackingAppendedURLDefault();
+          const getTrackingAppendedURL = getTrackingAppendedURLDefault;
+          const editUrl = newShareIcon.getAttribute('data-edit-url');
           timeoutId = await shareDefault(
-            newShareIcon.getAttribute('data-edit-url') || '#',
+            editUrl,
             newSharedTooltip,
             timeoutId,
             newSrOnly,
@@ -788,7 +801,7 @@ export function attachHoverListeners(
             getTrackingAppendedURL,
           );
         } catch (error) {
-          console.error('Share error:', error);
+          // Share error handled silently
         }
       });
     }
@@ -1000,7 +1013,19 @@ export async function createShareSection(
   // Use provided functions or fall back to static imports
   const createTagFn = createTag || createTagUtil;
   const getIconElementDeprecatedFn = getIconElementDeprecated || getIconElementDeprecatedUtil;
-  const shareDefault = shareFn || share;
+  const shareDefault = async (
+    branchUrl,
+    tooltip,
+    timeoutId,
+    liveRegion,
+    text,
+    getTrackingAppendedURL,
+  ) => {
+    if (!branchUrl) return timeoutId; // Skip if no valid URL
+    return shareFn
+      ? shareFn(branchUrl, tooltip, timeoutId, liveRegion, text, getTrackingAppendedURL)
+      : share(branchUrl, tooltip, timeoutId, liveRegion, text, getTrackingAppendedURL);
+  };
   const getTrackingAppendedURLFnResolved = getTrackingAppendedURLFn || getTrackingAppendedURLUtil;
 
   const shareConfig = createShareSectionConfig(
@@ -1021,32 +1046,36 @@ export async function createShareSection(
       ev.preventDefault();
       ev.stopPropagation();
       try {
+        const getTrackingAppendedURL = getTrackingAppendedURLFnResolved;
+        const { editUrl } = metadata;
         timeoutId = await shareDefault(
-          metadata.editUrl,
+          editUrl,
           shareConfig.sharedTooltip,
           timeoutId,
           shareConfig.srOnly,
           text,
-          getTrackingAppendedURLFnResolved,
+          getTrackingAppendedURL,
         );
       } catch (error) {
-        console.error('Share error:', error);
+        // Share error handled silently
       }
     });
 
     shareConfig.shareIcon.addEventListener('keypress', async (e) => {
       if (e.key !== 'Enter') return;
       try {
+        const getTrackingAppendedURL = getTrackingAppendedURLFnResolved;
+        const { editUrl } = metadata;
         timeoutId = await shareDefault(
-          metadata.editUrl,
+          editUrl,
           shareConfig.sharedTooltip,
           timeoutId,
           shareConfig.srOnly,
           text,
-          getTrackingAppendedURLFnResolved,
+          getTrackingAppendedURL,
         );
       } catch (error) {
-        console.error('Share error:', error);
+        // Share error handled silently
       }
     });
   }
