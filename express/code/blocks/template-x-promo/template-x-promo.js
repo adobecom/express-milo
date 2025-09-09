@@ -71,6 +71,7 @@ async function handleOneUpFromApiData(block, templateData) {
 
   parent.append(buttonContainer);
 }
+
 /**
  * Creates button section for template element
  */
@@ -85,6 +86,7 @@ async function createButtonSection(metadata, processedImageUrl) {
 
   return buttonConfig;
 }
+
 /**
  * Attaches event handlers to template element
  */
@@ -118,6 +120,28 @@ function attachTemplateEvents(templateEl, buttonContainer, editButton, ctaLink, 
   editButton.addEventListener('click', combinedClickHandler);
   ctaLink.addEventListener('click', combinedClickHandler);
 }
+
+/**
+ * Transforms our template data to match template-x expectations
+ */
+function transformTemplateForTemplateX(templateData) {
+  return {
+    ...templateData,
+    // Template-x expects dc:title structure
+    'dc:title': {
+      'i-default': templateData.title || templateData.name || 'Template',
+    },
+    // Template-x expects pages array
+    pages: templateData.pages || [{
+      rendition: {
+        image: {
+          thumbnail: templateData.thumbnail?.url || templateData.imageUrl,
+        },
+      },
+    }],
+  };
+}
+
 /**
  * Creates a template element with hover overlay from template data
  */
@@ -146,6 +170,40 @@ async function createTemplateElement(templateData) {
     buttonSection.ctaLink,
     hoverManager,
   );
+
+  return templateEl;
+}
+
+/**
+ * Creates a template element using template-x rendering system (for carousel only)
+ */
+async function createTemplateElementForCarousel(templateData) {
+  // Import template-x rendering system
+  const { default: renderTemplate } = await import('../template-x/template-rendering.js');
+
+  // Transform our data to match template-x expectations
+  const transformedTemplate = transformTemplateForTemplateX(templateData);
+
+  // Use template-x rendering system with default variant and props
+  const templateEl = await renderTemplate(transformedTemplate, [], {});
+
+  // Add the 'template' class for carousel compatibility
+  templateEl.classList.add('template');
+
+  // Add hover functionality and event handlers that template-x doesn't provide
+  const buttonContainer = templateEl.querySelector('.button-container');
+  if (buttonContainer) {
+    const editButton = buttonContainer.querySelector('.button');
+    const ctaLink = buttonContainer.querySelector('.cta-link');
+
+    if (editButton && ctaLink) {
+      // Create hover state manager
+      const hoverManager = createHoverStateManager();
+
+      // Attach template events (hover, click handlers)
+      attachTemplateEvents(templateEl, buttonContainer, editButton, ctaLink, hoverManager);
+    }
+  }
 
   return templateEl;
 }
@@ -207,8 +265,9 @@ async function createDesktopLayout(block, templates) {
 export async function createCustomCarousel(block, templates) {
   try {
     // For mobile, create DOM elements first, then use carousel factory
+    // Use template-x rendering for carousel templates
     const templateElements = await Promise.all(
-      templates.map((template) => createTemplateElement(template)),
+      templates.map((template) => createTemplateElementForCarousel(template)),
     );
 
     // Add specific layout class based on template count
