@@ -19,6 +19,7 @@ import {
   getExpressLandingPageType,
   sendEventToAnalytics,
 } from '../../scripts/instrument.js';
+import { createTextInputBoxWithCTA, loadStylesForTextInputBoxWithCTA } from '../../scripts/widgets/text-input-box-with-cta.js';
 
 let createTag; let getMetadata;
 let getConfig;
@@ -527,9 +528,9 @@ export default async function decorate(block) {
     }
   }
 
-  // add free plan widget to first columns block on every page except blog
+  // add free plan widget to first columns block on every page except blog and express quick action generate qr code
   if (
-    !(getMetadata('theme') === 'blog' || getMetadata('template') === 'blog')
+    !(getMetadata('theme') === 'blog' || getMetadata('template') === 'blog' || 'generate-qr-code' === getMetadata('express-quick-action-name')?.toLowerCase())
     && document.querySelector('main .ax-columns') === block && document.querySelector('main .section:first-of-type > div') === block
   ) {
     addFreePlanWidget(
@@ -540,6 +541,25 @@ export default async function decorate(block) {
         ),
     );
   }
+
+  // add input box for generate qr code
+  if (
+    'generate-qr-code' === getMetadata('express-quick-action-name')?.toLowerCase()
+  ) {
+    const buttonContainer = block.querySelector('.button-container');
+    // Capture original CTA href from the button container, if present
+    const originalHref = buttonContainer?.querySelector('a')?.getAttribute('href') || '#';
+    await loadStylesForTextInputBoxWithCTA();
+    const inputBox = createTextInputBoxWithCTA({
+      label: 'Enter or paste URL:',
+      placeholder: 'https://www.adobe.com',
+      cta: 'Create now',
+      ctaHref: originalHref,
+      paramKey: 'qrCodeUrl',
+    });
+    buttonContainer.replaceWith(inputBox);
+  }
+
   if (document.querySelector('main > div > div') === block && ['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');
     logo.classList.add('express-logo');

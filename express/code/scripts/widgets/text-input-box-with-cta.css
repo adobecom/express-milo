@@ -1,0 +1,98 @@
+:root {
+    --input-box-bg: var(--color-white);
+
+    --input-box-text-color: var(--color-content-neutral);
+    --input-box-text-font-size: var(--body-font-size-m);
+    --input-box-text-font-weight: 400;
+    --input-box-text-line-height: 130%;
+
+    --input-box-label-text-color: var(--color-gray-700);
+    --input-box-label-font-size: var(--body-font-size-s);
+    --input-box-label-font-weight: 400;
+    --input-box-label-line-height: 130%;
+
+    --input-box-cta-text-color: var(--color-white);
+    --input-box-cta-font-size: var(--body-font-size-s);
+    --input-box-cta-font-weight: 700;
+    --input-box-cta-text-style: bold;
+    --input-box-cta-line-height: 130%;
+    --input-box-cta-width: 100px;
+    --input-box-cta-height: 32px;
+    --input-box-cta-padding-top: 6px;
+    --input-box-cta-padding-right: 16px;
+    --input-box-cta-padding-bottom: 8px;
+    --input-box-cta-padding-left: 16px;
+    --input-box-cta-border-radius: 16px;
+    --input-box-cta-background-color: var(--color-background-accent-default);
+
+    --input-box-border-radius: 16px;
+    --input-box-shadow-small: 0px 0px 3px 0px rgba(0, 0, 0, 0.12);
+    --input-box-shadow-medium: 0px 3px 8px 0px rgba(0, 0, 0, 0.04);
+    --input-box-shadow-large: 0px 4px 16px 0px rgba(0, 0, 0, 0.08);
+}
+
+.input-box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+    width: 90%;
+    height: 100%;
+    padding-left: var(--spacing-300);
+    padding-right: var(--spacing-300);
+    padding-top: var(--spacing-200);
+    padding-bottom: var(--spacing-200);
+    background-color: var(--input-box-bg);
+    border-radius: var(--input-box-border-radius);
+    box-shadow: var(--input-box-shadow-large);
+}
+
+.input-box-label {
+    font-size: var(--input-box-label-font-size);
+    color: var(--input-box-label-text-color);
+    font-weight: var(--input-box-label-font-weight);
+    line-height: var(--input-box-label-line-height);
+}
+
+.input-box-input-element {
+    font-size: var(--input-box-text-font-size);
+    color: var(--input-box-text-color);
+    font-weight: var(--input-box-text-font-weight);
+    line-height: var(--input-box-text-line-height);
+    border: none;
+    outline: none;
+    box-shadow: none;
+    cursor: text;
+    caret-color: var(--input-box-text-color);
+}
+
+.input-box-input-element:focus,
+.input-box-input-element:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.input-box-cta {
+    font-size: var(--input-box-cta-font-size);
+    color: var(--input-box-cta-text-color);
+    font-weight: var(--input-box-cta-font-weight);
+    line-height: var(--input-box-cta-line-height);
+    min-width: var(--input-box-cta-width);
+    width: auto;
+    height: var(--input-box-cta-height);
+    border-radius: var(--input-box-cta-border-radius);
+    border: none;
+    background-color: var(--input-box-cta-background-color);
+    align-self: flex-end;
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a.input-box-cta:any-link,
+.input-box-cta:link,
+.input-box-cta:visited {
+    color: var(--input-box-cta-text-color);
+    font-weight: var(--input-box-cta-font-weight);
+}
