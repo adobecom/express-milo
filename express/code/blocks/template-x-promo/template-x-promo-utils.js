@@ -771,38 +771,30 @@ export function attachHoverListeners(
       newShareIcon.addEventListener('click', async (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
-        try {
-          const getTrackingAppendedURL = getTrackingAppendedURLDefault;
-          const editUrl = newShareIcon.getAttribute('data-edit-url');
-          timeoutId = await shareDefault(
-            editUrl,
-            newSharedTooltip,
-            timeoutId,
-            newSrOnly,
-            text,
-            getTrackingAppendedURL,
-          );
-        } catch (error) {
-          // Share error handled silently
-        }
+        const getTrackingAppendedURL = getTrackingAppendedURLDefault;
+        const editUrl = newShareIcon.getAttribute('data-edit-url');
+        timeoutId = await shareDefault(
+          editUrl,
+          newSharedTooltip,
+          timeoutId,
+          newSrOnly,
+          text,
+          getTrackingAppendedURL,
+        );
       });
 
       newShareIcon.addEventListener('keypress', async (e) => {
         if (e.key !== 'Enter') return;
-        try {
-          const getTrackingAppendedURL = getTrackingAppendedURLDefault;
-          const editUrl = newShareIcon.getAttribute('data-edit-url');
-          timeoutId = await shareDefault(
-            editUrl,
-            newSharedTooltip,
-            timeoutId,
-            newSrOnly,
-            text,
-            getTrackingAppendedURL,
-          );
-        } catch (error) {
-          // Share error handled silently
-        }
+        const getTrackingAppendedURL = getTrackingAppendedURLDefault;
+        const editUrl = newShareIcon.getAttribute('data-edit-url');
+        timeoutId = await shareDefault(
+          editUrl,
+          newSharedTooltip,
+          timeoutId,
+          newSrOnly,
+          text,
+          getTrackingAppendedURL,
+        );
       });
     }
   });
@@ -1045,38 +1037,30 @@ export async function createShareSection(
     shareConfig.shareIcon.addEventListener('click', async (ev) => {
       ev.preventDefault();
       ev.stopPropagation();
-      try {
-        const getTrackingAppendedURL = getTrackingAppendedURLFnResolved;
-        const { editUrl } = metadata;
-        timeoutId = await shareDefault(
-          editUrl,
-          shareConfig.sharedTooltip,
-          timeoutId,
-          shareConfig.srOnly,
-          text,
-          getTrackingAppendedURL,
-        );
-      } catch (error) {
-        // Share error handled silently
-      }
+      const getTrackingAppendedURL = getTrackingAppendedURLFnResolved;
+      const { editUrl } = metadata;
+      timeoutId = await shareDefault(
+        editUrl,
+        shareConfig.sharedTooltip,
+        timeoutId,
+        shareConfig.srOnly,
+        text,
+        getTrackingAppendedURL,
+      );
     });
 
     shareConfig.shareIcon.addEventListener('keypress', async (e) => {
       if (e.key !== 'Enter') return;
-      try {
-        const getTrackingAppendedURL = getTrackingAppendedURLFnResolved;
-        const { editUrl } = metadata;
-        timeoutId = await shareDefault(
-          editUrl,
-          shareConfig.sharedTooltip,
-          timeoutId,
-          shareConfig.srOnly,
-          text,
-          getTrackingAppendedURL,
-        );
-      } catch (error) {
-        // Share error handled silently
-      }
+      const getTrackingAppendedURL = getTrackingAppendedURLFnResolved;
+      const { editUrl } = metadata;
+      timeoutId = await shareDefault(
+        editUrl,
+        shareConfig.sharedTooltip,
+        timeoutId,
+        shareConfig.srOnly,
+        text,
+        getTrackingAppendedURL,
+      );
     });
   }
 
