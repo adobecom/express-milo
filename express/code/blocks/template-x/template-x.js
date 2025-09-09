@@ -1671,14 +1671,6 @@ function importSearchBar(block, blockMediator) {
         searchBar.addEventListener('input', inputHandler);
       });
     }
-
-    if (e.newValue.loadSearchBar && existingStickySearchBar) {
-      existingStickySearchBar.classList.add('show');
-    }
-
-    if (!e.newValue.loadSearchBar && existingStickySearchBar) {
-      existingStickySearchBar.classList.remove('show');
-    }
   }
 }
 
