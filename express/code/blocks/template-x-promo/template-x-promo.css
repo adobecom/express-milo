@@ -291,12 +291,12 @@
 }
 
 .ax-template-x-promo .template .image-wrapper .icon.icon-premium {
-  position: absolute !important;
-  top: 16px !important;
-  right: 16px !important;
-  width: 30px !important;
-  height: 30px !important;
-  display: block !important;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  display: block;
 }
 
 /* Template structure (following template-x pattern) */
@@ -728,13 +728,13 @@
 @media (max-width: 767px) {
   .template-x-promo.multiple-up .template.prev-template .button-container,
   .template-x-promo.multiple-up .template.next-template .button-container {
-    display: none !important;
+    display: none;
   }
 
   .template-x-promo.multiple-up .template.prev-template:hover .button-container,
   .template-x-promo.multiple-up .template.next-template:hover .button-container {
-    opacity: 0 !important;
-    pointer-events: none !important;
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
