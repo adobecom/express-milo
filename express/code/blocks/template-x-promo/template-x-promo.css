@@ -2,11 +2,7 @@
 
 /* CSS Variables */
 :root {
-  --template-spacing: 16px;
   --template-max-height: 400px;
-  --overlay-opacity: 0.95;
-  --focus-color: #66B3FF;
-  --focus-width: 2px;
 }
 
 /* Screen reader only content */
@@ -24,23 +20,7 @@
 
 /* CSS Variables for maintainability */
 .template-x-promo {
-  --template-spacing: 16px;
-  --template-spacing-sm: 8px;
-  --template-spacing-lg: 24px;
   --template-max-height: 340px;
-  --template-border-radius: 8px;
-  --template-border-radius-lg: 20px;
-  --overlay-opacity: 0.95;
-  --overlay-bg: rgba(255, 255, 255, var(--overlay-opacity));
-  --share-icon-size: 32px;
-  --share-icon-inner: 16px;
-  --button-border-radius: 24px;
-  --z-base: 1;
-  --z-overlay: 2;
-  --z-controls: 3;
-  --transition-speed: 0.3s;
-  --focus-color: #0066CC;
-  --focus-width: 2px;
 }
 
 .section.ax-template-x-promo {
@@ -280,8 +260,8 @@
 /* Free/Premium tags */
 .ax-template-x-promo .template .free-tag {
   position: absolute;
-  top: var(--template-spacing);
-  right: var(--template-spacing);
+  top: var(--spacing-300);
+  right: var(--spacing-300);
   background: rgba(36, 36, 36, 0.7);
   color: white;
   padding: 8px 12px;
@@ -455,7 +435,7 @@
   align-items: center;
   gap: 4px;
   min-width: 130px;
-  background-color: var(--background-positive-default, #00a650);
+  background-color: var(--background-positive-default);
   color: white;
   text-align: center;
   border-radius: 6px;
@@ -463,7 +443,7 @@
   top: 50%;
   transform: translateY(-50%);
   left: calc(100% + 12px);
-  font-size: var(--body-font-size-s, 12px);
+  font-size: var(--body-font-size-s);
   width: max-content;
   max-width: 200px;
   white-space: normal;
@@ -625,7 +605,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  background: var(--focus-color);
+  background: var(--color-blue-600);
   color: white;
   padding: 8px 16px;
   text-decoration: none;
@@ -639,14 +619,14 @@
 .template-x-promo button:focus-visible,
 .template-x-promo a:focus-visible,
 .template-x-promo [tabindex="0"]:focus-visible {
-  outline: var(--focus-width) solid var(--focus-color);
+  outline: 2px solid var(--color-blue-600);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* Enhanced focus for navigation buttons */
 .template-x-promo .promo-nav-btn:focus-visible {
-  outline: var(--focus-width) solid var(--focus-color);
+  outline: 2px solid var(--color-blue-600);
   outline-offset: 4px;
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
@@ -679,7 +659,7 @@
 /* Color scheme support */
 @media (prefers-color-scheme: dark) {
   .template-x-promo {
-    --focus-color: #66B3FF;
+    /* Using design system color directly */
   }
 }
 
@@ -742,8 +722,8 @@
 @media (min-width: 768px) {
   .ax-template-x-promo.one-up {
     padding: 20px 40px;
-    width: var(--ax-grid-8-col-width) !important; /* Override collapsible-rows */
-    margin: 0 auto !important; /* Override collapsible-rows */
+    width: var(--ax-grid-8-col-width);
+    margin: 0 auto;
     box-sizing: border-box;
   }
 
@@ -756,8 +736,8 @@
   }
 
   .ax-template-x-promo.one-up .collapsible-rows {
-    width: unset !important; /* Force override */
-    margin: unset !important; /* Force override */
+    width: unset;
+    margin: unset;
   }
 
   .ax-template-x-promo.multiple-up .template .free-tag,
@@ -771,15 +751,15 @@
   .ax-template-x-promo.one-up,
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
-    width: var(--ax-grid-7-col-width) !important; /* Override collapsible-rows */
-    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter)) !important; /* Override collapsible-rows */
+    width: var(--ax-grid-7-col-width);
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     box-sizing: border-box;
   }
 
 
   .ax-template-x-promo.one-up .collapsible-rows {
-    width: unset !important; /* Force override */
-    margin: unset !important; /* Force override */
+    width: unset;
+    margin: unset;
   }
 
   .ax-template-x-promo.multiple-up .template .free-tag,
