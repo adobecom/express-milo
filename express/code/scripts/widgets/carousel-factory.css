@@ -26,8 +26,8 @@
 .promo-carousel-track {
   display: flex;
   width: 100%;
-  transition: transform var(--carousel-transition-speed, 0.3s) ease-in-out;
-  gap: var(--carousel-gap, 8px);
+  transition: transform 0.3s ease-in-out;
+  gap: var(--spacing-100);
 }
 
 /* ========================================
@@ -37,11 +37,11 @@
 /* Navigation container (semantic nav) */
 .promo-nav-controls {
   position: absolute;
-  bottom: var(--carousel-nav-bottom, 24px);
-  right: var(--carousel-nav-right, 24px);
+  bottom: var(--spacing-400);
+  right: var(--spacing-400);
   display: none; /* Hidden by default, shown on mobile */
-  gap: var(--carousel-nav-gap, 8px);
-  z-index: var(--carousel-nav-z, 3);
+  gap: var(--spacing-100);
+  z-index: 3;
 }
 
 /* Navigation buttons */
@@ -55,8 +55,8 @@
   justify-content: center;
   border-radius: 50%;
   transition: 
-    transform var(--carousel-transition-speed, 0.3s) ease,
-    box-shadow var(--carousel-transition-speed, 0.3s) ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .promo-nav-btn:hover:not(:disabled) {
@@ -88,13 +88,13 @@
   .promo-carousel-track {
     display: flex;
     flex-wrap: wrap;
-    transform: none !important; /* Override any carousel transforms */
+    transform: none; /* Override any carousel transforms */
     justify-content: flex-start;
     align-items: flex-start;
   }
   
   .promo-nav-controls {
-    display: none !important; /* Always hidden on desktop */
+    display: none; /* Always hidden on desktop */
   }
 }
 
@@ -132,7 +132,7 @@
   position: absolute;
   left: -9999px;
   top: 0;
-  background: var(--carousel-focus-color, #0066CC);
+  background: var(--color-blue-600);
   color: white;
   padding: 8px 16px;
   text-decoration: none;
@@ -151,14 +151,14 @@
 .promo-carousel-wrapper button:focus-visible,
 .promo-carousel-wrapper a:focus-visible,
 .promo-carousel-wrapper [tabindex="0"]:focus-visible {
-  outline: var(--carousel-focus-width, 2px) solid var(--carousel-focus-color, #0066CC);
+  outline: 2px solid var(--color-blue-600);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* Enhanced focus for navigation buttons */
 .promo-nav-btn:focus-visible {
-  outline: var(--carousel-focus-width, 2px) solid var(--carousel-focus-color, #0066CC);
+  outline: 2px solid var(--color-blue-600);
   outline-offset: 4px;
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
@@ -196,7 +196,6 @@
 /* Color scheme support */
 @media (prefers-color-scheme: dark) {
   .promo-carousel-wrapper {
-    --carousel-focus-color: #66B3FF;
   }
 }
 
@@ -212,23 +211,6 @@
    CSS CUSTOM PROPERTIES (THEMING)
    ======================================== */
 
-.promo-carousel-wrapper {
-  /* Layout */
-  --carousel-gap: 8px;
-  --carousel-nav-bottom: 24px;
-  --carousel-nav-right: 24px;
-  --carousel-nav-gap: 24px;
-  
-  /* Timing */
-  --carousel-transition-speed: 0.3s;
-  
-  /* Z-index layers */
-  --carousel-nav-z: 3;
-  
-  /* Accessibility */
-  --carousel-focus-color: #0066CC;
-  --carousel-focus-width: 2px;
-}
 
 /* ========================================
    TEMPLATE POSITIONING CLASSES
@@ -255,8 +237,8 @@
 /* Smooth transitions for template states */
 .promo-carousel-track > * {
   transition: 
-    opacity var(--carousel-transition-speed, 0.3s) ease,
-    transform var(--carousel-transition-speed, 0.3s) ease;
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 /* Respect reduced motion for template transitions */
