@@ -343,16 +343,19 @@ function updateActiveTOCLink(toc) {
   }));
 
   if (isSticky && window.innerWidth < 1024) {
-    // For sticky mode: find the header closest to being just below the sticky TOC
-    headerRects.forEach(({ element, rect }) => {
-      const distance = rect.top - offset;
+    // For sticky mobile/tablet: use trigger lines (140px above each header)
+    const currentScrollTop = window.pageYOffset + offset; // Current scroll position
 
-      // Header should be below the sticky TOC and closest to it
-      if (distance >= 0 && distance < minDistance) {
-        minDistance = distance;
-        activeHeader = element;
+    // Find which trigger line we've most recently crossed
+    for (const { element, rect } of headerRects) {
+      const headerAbsoluteTop = window.pageYOffset + rect.top;
+      const triggerLine = headerAbsoluteTop - 40; // 40px above header (landing spot)
+      if (currentScrollTop >= triggerLine) {
+        activeHeader = element; // Keep updating until we find the last crossed trigger
+      } else {
+        break; // Stop at first trigger line we haven't crossed yet
       }
-    });
+    }
   } else {
     // Normal desktop behavior: find header above/at the offset position
     headerRects.forEach(({ element, rect }) => {
@@ -368,10 +371,9 @@ function updateActiveTOCLink(toc) {
   // If no header was found, use fallback logic
   if (!activeHeader) {
     if (isSticky && window.innerWidth < 1024) {
-      // For sticky mode: if no header below sticky TOC, use the last header above it
-      const headersAboveSticky = headerRects.filter(({ rect }) => rect.top < offset);
-      if (headersAboveSticky.length > 0) {
-        activeHeader = headersAboveSticky[headersAboveSticky.length - 1].element;
+      // For sticky mode: if no trigger lines crossed, highlight first section
+      if (headerRects.length > 0) {
+        activeHeader = headerRects[0].element;
       }
     } else {
       // Normal desktop behavior: use the last visible header
