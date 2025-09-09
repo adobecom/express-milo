@@ -1,6 +1,4 @@
 import {
-  getLottie,
-  lazyLoadLottiePlayer,
   toClassName,
   getIconElementDeprecated,
   fixIcons,
@@ -17,7 +15,6 @@ import {
   gatherPageImpression,
   trackSearch,
   updateImpressionCache,
-  generateSearchId,
 } from '../../scripts/template-search-api-v3.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import renderTemplate from './template-rendering.js';
