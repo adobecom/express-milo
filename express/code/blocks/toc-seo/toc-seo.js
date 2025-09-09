@@ -322,8 +322,14 @@ function updateActiveTOCLink(toc) {
 
   // Special handling for mobile/tablet sticky mode
   const isSticky = toc.classList.contains('toc-mobile-fixed');
-  let offset;
 
+  // On mobile/tablet, only do active header detection when TOC is sticky
+  if (window.innerWidth < 1024 && !isSticky) {
+    // TOC is not sticky on mobile/tablet, so don't highlight anything
+    return;
+  }
+
+  let offset;
   if (isSticky && window.innerWidth < 1024) {
     // When sticky on mobile/tablet, look for header positioned just below the sticky TOC
     const stickyBottom = tocTitleRect.bottom + 20; // Bottom of sticky TOC + buffer
@@ -343,13 +349,14 @@ function updateActiveTOCLink(toc) {
   }));
 
   if (isSticky && window.innerWidth < 1024) {
-    // For sticky mobile/tablet: use trigger lines (140px above each header)
+    // For sticky mobile/tablet: use trigger lines (40px above each header)
     const currentScrollTop = window.pageYOffset + offset; // Current scroll position
 
     // Find which trigger line we've most recently crossed
     for (const { element, rect } of headerRects) {
       const headerAbsoluteTop = window.pageYOffset + rect.top;
       const triggerLine = headerAbsoluteTop - 40; // 40px above header (landing spot)
+
       if (currentScrollTop >= triggerLine) {
         activeHeader = element; // Keep updating until we find the last crossed trigger
       } else {
