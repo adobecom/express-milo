@@ -129,7 +129,7 @@
     justify-content: center;
     position: relative;
     /* Height set dynamically to prevent jumping */
-    transition: min-height 0.3s ease;
+    /* Removed transition to prevent flashing */
   }
 
   /* Desktop/Tablet max-heights for very vertical images */
@@ -163,7 +163,7 @@
     width: 100%;
     max-width: 1200px; /* Reasonable max container width */
     /* Height set dynamically to prevent jumping */
-    transition: min-height 0.3s ease;
+    /* Removed transition to prevent flashing */
   }
 
   .promo-image-wrapper {
@@ -203,9 +203,18 @@
     align-items: center;
     width: 100%; /* Full width */
     justify-content: center;
-    padding: 0 15%; /* Side padding creates natural peek effect */
     /* Height set dynamically to prevent jumping on mobile */
     /* Removed transition to prevent height changes */
+  }
+
+  /* Two-up: No padding - both templates get full width */
+  .ax-template-x-promo.multiple-up.two-up .promo-carousel-track {
+    padding: 0;
+  }
+
+  /* Three-up+: Add padding for peek effect */
+  .ax-template-x-promo.multiple-up .promo-carousel-track {
+    padding: 0 15%; /* Side padding creates natural peek effect for carousel */
   }
 
   .template {
@@ -328,7 +337,7 @@
   opacity: 0; /* Hidden by default */
   pointer-events: none; /* No interaction by default */
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 6px;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
@@ -341,16 +350,26 @@
 /* Desktop: All templates can hover */
 @media (min-width: 768px) {
   .ax-template-x-promo .template:hover .button-container {
-    z-index: 2;
     opacity: 1;
     pointer-events: initial;
+    flex-direction: column-reverse;
   }
 }
 
-/* Mobile: Only current template can hover */
+/* Mobile: Only current template can hover, except for two-up where both can hover */
 @media (max-width: 767px) {
   .ax-template-x-promo .template.current-template:hover .button-container {
-    z-index: 2;
+    opacity: 1;
+    pointer-events: initial;
+  }
+
+  /* Two-up carousel: Always show still images at 100% opacity since both templates are fully visible */
+  .ax-template-x-promo.multiple-up.two-up .template .still-wrapper {
+    opacity: 1;
+  }
+  
+  /* Two-up carousel: Button containers can hover on both templates */
+  .ax-template-x-promo.multiple-up.two-up .template:hover .button-container {
     opacity: 1;
     pointer-events: initial;
   }
@@ -564,9 +583,6 @@
     padding: 0; /* Full width on mobile for carousel */
   }
   
-  .ax-template-x-promo .template {
-    min-height: 200px; /* Small height constraint to reduce jumping */
-  }
 
   .promo-nav-controls {
     display: flex; /* Show buttons on mobile */

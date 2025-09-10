@@ -113,7 +113,7 @@ async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
   }
 }
 
-async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
+export async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
   const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
     isSearchOverride: true,
@@ -135,7 +135,7 @@ async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
   }, 2500);
 }
 
-function renderShareWrapper(templateInfo) {
+export function renderShareWrapper(templateInfo) {
   const { templateTitle, branchUrl } = templateInfo;
   const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
   const wrapper = createTag('div', { class: 'share-icon-wrapper' });
@@ -447,7 +447,7 @@ function renderMediaWrapper(template) {
   return { mediaWrapper, enterHandler, leaveHandler, focusHandler };
 }
 
-function renderHoverWrapper(template) {
+export function renderHoverWrapper(template) {
   let cta;
   let ctaLink;
 
