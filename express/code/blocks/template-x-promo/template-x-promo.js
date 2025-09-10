@@ -4,17 +4,8 @@ import {
   extractTemplateMetadata,
   extractApiParamsFromRecipe,
   getBlockStylingConfig,
-  createHoverStateManager,
   determineTemplateRouting,
-  createMouseEnterHandler,
-  createMouseLeaveHandler,
-  createFocusHandler,
-  createClickHandler,
-  createButtonSectionConfig,
   fetchDirectFromApiUrl,
-  createImageSection,
-  createShareSection,
-  attachHoverListeners,
 } from './template-x-promo-utils.js';
 
 // Global utilities (loaded dynamically)
@@ -75,104 +66,6 @@ async function handleOneUpFromApiData(block, templateData) {
 /**
  * Creates button section for template element
  */
-async function createButtonSection(metadata, processedImageUrl) {
-  const editButtonText = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
-  const buttonConfig = createButtonSectionConfig(
-    metadata,
-    editButtonText,
-    processedImageUrl,
-    createTag,
-  );
-
-  return buttonConfig;
-}
-
-/**
- * Attaches event handlers to template element
- */
-function attachTemplateEvents(templateEl, buttonContainer, editButton, ctaLink, hoverManager) {
-  // Create event handlers
-  const enterHandler = createMouseEnterHandler(hoverManager, buttonContainer);
-  const leaveHandler = createMouseLeaveHandler(hoverManager);
-  const focusHandler = createFocusHandler(hoverManager);
-
-  // Mouse events
-  templateEl.addEventListener('mouseenter', () => {
-    const fakeEvent = {
-      target: buttonContainer,
-      preventDefault: () => {},
-      stopPropagation: () => {},
-    };
-    enterHandler(fakeEvent);
-  });
-
-  templateEl.addEventListener('mouseleave', leaveHandler);
-
-  // Focus handling for accessibility
-  editButton.addEventListener('focusin', focusHandler);
-
-  // Click handlers
-  const ctaClickHandler = () => {
-    // Add analytics tracking here if needed
-  };
-
-  const combinedClickHandler = createClickHandler(hoverManager, templateEl, ctaClickHandler);
-  editButton.addEventListener('click', combinedClickHandler);
-  ctaLink.addEventListener('click', combinedClickHandler);
-}
-
-/**
- * Transforms our template data to match template-x expectations
- */
-function transformTemplateForTemplateX(templateData) {
-  return {
-    ...templateData,
-    // Template-x expects dc:title structure
-    'dc:title': {
-      'i-default': templateData.title || templateData.name || 'Template',
-    },
-    // Template-x expects pages array
-    pages: templateData.pages || [{
-      rendition: {
-        image: {
-          thumbnail: templateData.thumbnail?.url || templateData.imageUrl,
-        },
-      },
-    }],
-  };
-}
-
-/**
- * Creates a template element with hover overlay from template data
- */
-async function createTemplateElement(templateData) {
-  // Extract metadata using our pure function
-  const metadata = extractTemplateMetadata(templateData);
-
-  // Create main template container
-  const templateEl = createTag('div', { class: 'template' });
-
-  // Create sections using our functional approach
-  const imageSection = await createImageSection(metadata);
-  const buttonSection = await createButtonSection(metadata, imageSection.imageUrl);
-  const shareSection = await createShareSection(metadata);
-
-  // Assemble template structure
-  templateEl.append(imageSection.stillWrapper, buttonSection.buttonContainer);
-  buttonSection.buttonContainer.append(shareSection.shareWrapper);
-
-  // Add hover behavior
-  const hoverManager = createHoverStateManager();
-  attachTemplateEvents(
-    templateEl,
-    buttonSection.buttonContainer,
-    buttonSection.editButton,
-    buttonSection.ctaLink,
-    hoverManager,
-  );
-
-  return templateEl;
-}
 
 /**
  * Creates a template element using template-x rendering system (for carousel only)
@@ -181,39 +74,31 @@ async function createTemplateElementForCarousel(templateData) {
   // Import template-x rendering system
   const { default: renderTemplate } = await import('../template-x/template-rendering.js');
 
-  // Transform our data to match template-x expectations
-  const transformedTemplate = transformTemplateForTemplateX(templateData);
+  // Ensure single page to prevent multipage badge
+  const singlePageTemplate = {
+    ...templateData,
+    pages: templateData.pages ? [templateData.pages[0]] : [],
+  };
 
   // Use template-x rendering system with default variant and props
-  const templateEl = await renderTemplate(transformedTemplate, [], {});
+  const templateEl = await renderTemplate(singlePageTemplate, [], {});
 
   // Add the 'template' class for carousel compatibility
   templateEl.classList.add('template');
 
-  // Add hover functionality and event handlers that template-x doesn't provide
-  const buttonContainer = templateEl.querySelector('.button-container');
-  if (buttonContainer) {
-    const editButton = buttonContainer.querySelector('.button');
-    const ctaLink = buttonContainer.querySelector('.cta-link');
-
-    if (editButton && ctaLink) {
-      // Create hover state manager
-      const hoverManager = createHoverStateManager();
-
-      // Attach template events (hover, click handlers)
-      attachTemplateEvents(templateEl, buttonContainer, editButton, ctaLink, hoverManager);
-    }
-  }
+  // Note: template-x system creates all DOM elements with event handlers
+  // We don't need to modify the DOM structure or add our own event handlers
 
   return templateEl;
 }
+
 /**
  * Creates desktop layout for templates (original desktop behavior)
  */
 async function createDesktopLayout(block, templates) {
   try {
     const templateElements = await Promise.all(
-      templates.map((template) => createTemplateElement(template)),
+      templates.map((template) => createTemplateElementForCarousel(template)),
     );
 
     // Add specific layout class based on template count
@@ -232,17 +117,6 @@ async function createDesktopLayout(block, templates) {
     // Add templates directly to the parent section - this is what the CSS expects
     templateElements.forEach((template) => {
       parent.append(template);
-    });
-
-    // Ensure share icons don't have duplicate event listeners on desktop
-    templateElements.forEach((template) => {
-      const shareIcons = template.querySelectorAll('.share-icon-wrapper .icon-share-arrow');
-      shareIcons.forEach((shareIcon) => {
-        // Mark as having event listeners to prevent duplicates
-        if (!shareIcon.hasAttribute('data-events-attached')) {
-          shareIcon.setAttribute('data-events-attached', 'true');
-        }
-      });
     });
 
     // Return simple object - no custom carousel behavior for desktop
@@ -287,11 +161,12 @@ export async function createCustomCarousel(block, templates) {
     // The carousel factory will manage the entire block content
 
     // Now use carousel factory with the DOM elements
+    // No need to re-attach handlers since we're not cloning
     const carousel = await createTemplateCarousel(
       block,
       templateElements, // Pass DOM elements, not data
       createTag,
-      attachHoverListeners,
+      null, // No re-attachment needed since we're not cloning
       null,
       {
         loadCSS: false,

@@ -110,7 +110,8 @@ const CarouselDOM = {
   },
 };
 
-// Hover system (pure functions)
+// Hover system (pure functions) - commented out since not used
+/*
 const HoverSystem = {
   create: () => {
     let currentHoveredElement = null;
@@ -183,6 +184,7 @@ const HoverSystem = {
     if (ctaLink) ctaLink.addEventListener('click', combinedClickHandler);
   },
 };
+*/
 
 // Display logic (pure functions that return instructions)
 const DisplayLogic = {
@@ -226,7 +228,6 @@ export const createCarousel = async (config) => {
     block,
     templates,
     createTag,
-    attachHoverListeners,
     customDOMCallback,
   } = config;
 
@@ -246,8 +247,8 @@ export const createCarousel = async (config) => {
   nav.nextBtn.innerHTML = CarouselDOM.createButtonSVG('next');
   nav.container.append(nav.prevBtn, nav.nextBtn);
 
-  // Initialize hover system
-  const hoverSystem = HoverSystem.create();
+  // Initialize hover system (commented out since we're not using it)
+  // const hoverSystem = HoverSystem.create();
 
   // Pure function to update display
   const updateDisplay = () => {
@@ -271,19 +272,21 @@ export const createCarousel = async (config) => {
     // Add visible templates
     visibleTemplates.forEach(({ index, class: className }) => {
       const template = templates[index];
-      const templateClone = template.cloneNode(true);
+      // Use original template directly - no cloning needed
+      // const templateClone = template.cloneNode(true); // Cloning logic commented out
+      const templateClone = template;
 
       // Add data attribute to track template index
       templateClone.dataset.templateIndex = index.toString();
 
       if (className) templateClone.classList.add(className);
 
-      // Re-attach hover events (since cloneNode doesn't copy listeners)
-      if (attachHoverListeners) {
-        attachHoverListeners(templateClone);
-      } else {
-        HoverSystem.attachToTemplate(templateClone, hoverSystem);
-      }
+      // No need to re-attach events since we're not cloning
+      // if (attachHoverListeners) {
+      //   attachHoverListeners(templateClone);
+      // } else {
+      //   HoverSystem.attachToTemplate(templateClone, hoverSystem);
+      // }
 
       dom.track.append(templateClone);
     });
