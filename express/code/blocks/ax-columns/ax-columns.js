@@ -543,8 +543,12 @@ export default async function decorate(block) {
   }
 
   // add input box for generate qr code
+  const sectionMetadataBlock = block.parentElement.querySelector(':scope > .section-metadata');
+  const sectionMetadataKey = sectionMetadataBlock?.children[0]?.children[0]?.textContent?.trim();
+  const sectionMetadataValue = sectionMetadataBlock?.children[0]?.children[1]?.textContent?.trim();
   if (
-    'generate-qr-code' === getMetadata('express-quick-action-name')?.toLowerCase()
+    'express-quick-action-name' === sectionMetadataKey?.toLowerCase() &&
+    'generate-qr-code' === sectionMetadataValue?.toLowerCase()
   ) {
     const buttonContainer = block.querySelector('.button-container');
     // Capture original CTA href from the button container, if present
