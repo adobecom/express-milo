@@ -153,6 +153,7 @@ main .section .drawer-cards .heading {
   align-items: center;
   justify-content: space-between;
   background-color: var(--color-white);
+  z-index: 10;
 }
 
 .drawer-cards .drawer .title-row strong {
