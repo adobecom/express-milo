@@ -1,7 +1,7 @@
 /* eslint-disable no-plusplus */
 import { expect, test } from '@playwright/test';
-import { features } from './template-x.spec.js';
-import TemplateX from './template-x.page.js';
+import { features } from './template-x.spec.cjs';
+import TemplateX from './template-x.page.cjs';
 
 let templateX;
 
@@ -17,7 +17,7 @@ test.describe('template-x Block Test Suite', () => {
       await page.goto(`${baseURL}${features[0].path}`);
       await page.waitForLoadState('domcontentloaded');
       await expect(page).toHaveURL(`${baseURL}${features[0].path}`);
-      await page.waitForTimeout(3000);
+      //await page.waitForTimeout(3000);
     });
 
     await test.step('Verify search icon is displayed ', async () => {
