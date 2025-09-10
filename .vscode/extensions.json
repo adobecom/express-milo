@@ -2,6 +2,7 @@
     "recommendations": [
         "stylelint.vscode-stylelint",
         "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
         "editorconfig.editorconfig",
         "ryanluker.vscode-coverage-gutters",
         "eamodio.gitlens"
