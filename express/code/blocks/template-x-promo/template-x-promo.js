@@ -8,23 +8,17 @@ import {
   fetchDirectFromApiUrl,
 } from './template-x-promo-utils.js';
 
-// Global utilities (loaded dynamically)
-let { createTag } = window; // Try to get it from window first
-let { getConfig } = window;
-let { replaceKey } = window;
+let createTag;
+let getConfig;
+let replaceKey;
 
-/**
- * Handles one-up template display
- */
 async function handleOneUpFromApiData(block, templateData) {
   const parent = block.parentElement;
   parent.classList.add('one-up');
   block.innerHTML = '';
 
-  // Extract metadata using our pure function
   const metadata = extractTemplateMetadata(templateData);
 
-  // Get and clean image URL (original logic)
   let { imageUrl } = metadata;
   if (imageUrl && imageUrl.includes('{&')) {
     imageUrl = imageUrl.replace('{&page,size,type,fragment}', '');
@@ -34,7 +28,6 @@ async function handleOneUpFromApiData(block, templateData) {
     throw new Error('Invalid template image URL');
   }
 
-  // Create image with wrapper using our atomic functions
   const img = createTag('img', {
     src: imageUrl,
     alt: metadata.title,
@@ -46,7 +39,6 @@ async function handleOneUpFromApiData(block, templateData) {
 
   block.append(imgWrapper);
 
-  // Create edit button with localized text using our atomic function
   const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
   const editTemplateButton = createTag('a', {
     href: metadata.editUrl,
@@ -63,45 +55,27 @@ async function handleOneUpFromApiData(block, templateData) {
   parent.append(buttonContainer);
 }
 
-/**
- * Creates button section for template element
- */
-
-/**
- * Creates a template element using template-x rendering system (for carousel only)
- */
 async function createTemplateElementForCarousel(templateData) {
-  // Import template-x rendering system
   const { default: renderTemplate } = await import('../template-x/template-rendering.js');
 
-  // Ensure single page to prevent multipage badge
   const singlePageTemplate = {
     ...templateData,
     pages: templateData.pages ? [templateData.pages[0]] : [],
   };
 
-  // Use template-x rendering system with default variant and props
   const templateEl = await renderTemplate(singlePageTemplate, [], {});
 
-  // Add the 'template' class for carousel compatibility
   templateEl.classList.add('template');
-
-  // Note: template-x system creates all DOM elements with event handlers
-  // We don't need to modify the DOM structure or add our own event handlers
 
   return templateEl;
 }
 
-/**
- * Creates desktop layout for templates (original desktop behavior)
- */
 async function createDesktopLayout(block, templates) {
   try {
     const templateElements = await Promise.all(
       templates.map((template) => createTemplateElementForCarousel(template)),
     );
 
-    // Add specific layout class based on template count
     const parent = block.parentElement;
     parent.classList.add('multiple-up');
 
@@ -114,12 +88,10 @@ async function createDesktopLayout(block, templates) {
       parent.classList.add('four-up');
     }
 
-    // Add templates directly to the parent section - this is what the CSS expects
     templateElements.forEach((template) => {
       parent.append(template);
     });
 
-    // Return simple object - no custom carousel behavior for desktop
     return {
       currentIndex: () => 0,
       templateCount: () => templateElements.length,
@@ -129,22 +101,16 @@ async function createDesktopLayout(block, templates) {
     };
   } catch (e) {
     block.textContent = `Error loading templates: ${e.message}`;
-    return null; // Return null on error
+    return null;
   }
 }
 
-/**
- * Creates our custom carousel using the carousel factory (mobile only)
- */
 export async function createCustomCarousel(block, templates) {
   try {
-    // For mobile, create DOM elements first, then use carousel factory
-    // Use template-x rendering for carousel templates
     const templateElements = await Promise.all(
       templates.map((template) => createTemplateElementForCarousel(template)),
     );
 
-    // Add specific layout class based on template count
     const parent = block.parentElement;
     parent.classList.add('multiple-up');
 
@@ -157,16 +123,11 @@ export async function createCustomCarousel(block, templates) {
       parent.classList.add('four-up');
     }
 
-    // Don't append templates to parent - let carousel factory handle it
-    // The carousel factory will manage the entire block content
-
-    // Now use carousel factory with the DOM elements
-    // No need to re-attach handlers since we're not cloning
     const carousel = await createTemplateCarousel(
       block,
-      templateElements, // Pass DOM elements, not data
+      templateElements,
       createTag,
-      null, // No re-attachment needed since we're not cloning
+      null,
       null,
       {
         loadCSS: false,
@@ -176,22 +137,16 @@ export async function createCustomCarousel(block, templates) {
       },
     );
 
-    // Store carousel instance on the block for cleanup
     // eslint-disable-next-line no-underscore-dangle
     block._carousel = carousel;
 
     return carousel;
   } catch (e) {
     block.textContent = `Error loading templates: ${e.message}`;
-    return null; // Return null on error
+    return null;
   }
 }
-// ============================================
-// FUNCTIONAL COMPOSITION - MAIN FLOW
-// ============================================
-/**
- * Initializes utilities with fallbacks (pure function)
- */
+
 const initializeUtilities = async () => {
   const libsPath = getLibs() || '../../scripts';
   try {
@@ -206,7 +161,6 @@ const initializeUtilities = async () => {
       replaceKey: placeholders.replaceKey,
     };
   } catch (utilsError) {
-    // Fallback implementations
     return {
       createTag: window.createTag || ((tag, attrs) => {
         const el = document.createElement(tag);
@@ -223,44 +177,34 @@ const initializeUtilities = async () => {
     };
   }
 };
-/**
- * Routes templates to appropriate handler (side effects function)
- */
+
 const routeTemplates = async (block, templates) => {
   const routingDecision = determineTemplateRouting(templates);
 
   switch (routingDecision.strategy) {
     case 'none':
-      return; // Graceful degradation - no templates available
+      return;
     case 'one-up':
       await handleOneUpFromApiData(block, routingDecision.template);
       break;
     case 'carousel': {
-      // For desktop above 767px, use original desktop layout
-      // For mobile below 768px, use carousel factory
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
       if (isMobile) {
         await createCustomCarousel(block, routingDecision.templates);
       } else {
-        // Desktop: use original desktop layout logic
         await createDesktopLayout(block, routingDecision.templates);
       }
       break;
     }
     default:
-      // Unknown routing strategy - graceful degradation
   }
 };
-/**
- * Handles API-driven templates with error handling (composed function)
- */
+
 const handleApiDrivenTemplates = async (block, apiUrl) => {
   try {
     const { templates } = await fetchDirectFromApiUrl(apiUrl);
-    // Clear the original block content before creating carousel
     block.innerHTML = '';
 
-    // Clear any existing templates from parent element
     const parent = block.parentElement;
     const existingTemplates = parent.querySelectorAll('.template');
     existingTemplates.forEach((template) => template.remove());
@@ -268,41 +212,30 @@ const handleApiDrivenTemplates = async (block, apiUrl) => {
     await routeTemplates(block, templates);
   } catch (error) {
     // Graceful degradation - API error occurred
-    // Silently fail to avoid breaking the page
   }
 };
-/**
- * Main block decorator using functional composition
- */
+
 export default async function decorate(block) {
-  // Check if already decorated to prevent duplicate calls
   if (block.hasAttribute('data-decorated')) {
     return;
   }
 
-  // Mark as decorated
   block.setAttribute('data-decorated', 'true');
-  // Initialize utilities
   const utilities = await initializeUtilities();
-  // Apply utilities to global scope
   createTag = utilities.createTag;
   getConfig = utilities.getConfig;
   replaceKey = utilities.replaceKey;
-  // Apply block styling
   const stylingConfig = getBlockStylingConfig(block);
   if (stylingConfig.shouldApply) {
     block.parentElement.classList.add(...stylingConfig.parentClasses);
   }
-  // Get API URL and handle templates
   const apiUrl = extractApiParamsFromRecipe(block);
   if (apiUrl) {
     await handleApiDrivenTemplates(block, apiUrl);
 
-    // Add responsive handling for template-x-promo blocks with throttling
     let lastResponsiveCheck = 0;
-    const RESPONSIVE_THROTTLE_MS = 100; // Throttle to max once per 100ms
+    const RESPONSIVE_THROTTLE_MS = 100;
 
-    // Cache DOM selectors for better performance
     const selectors = {
       carousel: '.promo-carousel-wrapper',
       desktop: '.template:not(.prev-template):not(.next-template):not(.current-template)',
@@ -310,7 +243,7 @@ export default async function decorate(block) {
     const handleResponsiveChange = () => {
       const now = Date.now();
       if (now - lastResponsiveCheck < RESPONSIVE_THROTTLE_MS) {
-        return; // Skip if called too recently
+        return;
       }
       lastResponsiveCheck = now;
 
@@ -318,9 +251,7 @@ export default async function decorate(block) {
       const hasCarousel = block.querySelector(selectors.carousel);
       const hasDesktopLayout = block.parentElement?.querySelector(selectors.desktop);
 
-      // If we have a carousel but should be desktop, switch to desktop layout
       if (hasCarousel && !isMobile) {
-        // Destroy current carousel
         // eslint-disable-next-line no-underscore-dangle
         if (block._carousel && block._carousel.destroy) {
           // eslint-disable-next-line no-underscore-dangle
@@ -329,28 +260,21 @@ export default async function decorate(block) {
           block._carousel = null;
         }
 
-        // Clear carousel content
         block.innerHTML = '';
 
-        // Re-route templates for desktop
         handleApiDrivenTemplates(block, apiUrl);
       } else if (hasDesktopLayout && isMobile) {
-        // If we have desktop layout but should be mobile, switch to carousel
-        // Clear desktop content
         const parent = block.parentElement;
         const existingTemplates = parent.querySelectorAll('.template');
         existingTemplates.forEach((template) => template.remove());
 
-        // Re-route templates for mobile
         handleApiDrivenTemplates(block, apiUrl);
       }
     };
 
-    // Add resize listener
     window.addEventListener('resize', handleResponsiveChange);
     window.addEventListener('orientationchange', handleResponsiveChange);
 
-    // Store cleanup function
     // eslint-disable-next-line no-underscore-dangle
     block._cleanup = () => {
       window.removeEventListener('resize', handleResponsiveChange);

@@ -1,11 +1,7 @@
-/* Fresh custom carousel styles - no imports, all our own */
-
-/* CSS Variables */
 :root {
   --template-max-height: 400px;
 }
 
-/* Screen reader only content */
 .sr-only {
   position: absolute !important;
   width: 1px !important;
@@ -17,29 +13,22 @@
   white-space: nowrap !important;
   border: 0 !important;
 }
-
-/* CSS Variables for maintainability */
 .template-x-promo {
   --template-max-height: 340px;
 }
-
 .section.ax-template-x-promo {
   display: flex;
   box-sizing: border-box;
 }
-
 .section.ax-template-x-promo .content {
   text-align: justify;
 }
-
-/* One-up layout */
 .ax-template-x-promo.one-up {
   gap: var(--spacing-300);
   display: flex;
   flex-direction: column;
-  padding: 20px; /* Base padding for one-up */
+  padding: 20px; 
 }
-
 .ax-template-x-promo.one-up img {
   border-radius: var(--spacing-300);
   width: 100%;
@@ -49,12 +38,10 @@
   object-fit: cover;
   object-position: top;
 }
-
 .ax-template-x-promo.one-up .image-wrapper {
   position: relative;
   display: block;
 }
-
 .ax-template-x-promo.one-up .button-container a.button.accent {
   background-color: var(--color-background-accent-default);
   margin: 0;
@@ -62,65 +49,51 @@
   padding: var(--spacing-100) var(--spacing-300);
   border-radius: 1000px;
 }
-
 .ax-template-x-promo.one-up .button-container a.button.accent:hover {
   background-color: var(--color-background-accent-hover);
 }
-
 .ax-template-x-promo.one-up .button-container a.button.accent:active {
   background-color: var(--color-background-accent-down);
 }
-
 .ax-template-x-promo.one-up .button-container a.button.accent:focus {
   background-color: var(--color-background-accent-focus);
 }
-
-/* Multiple-up custom carousel */
 .section.ax-template-x-promo.multiple-up {
   position: relative;
   padding-top: 20px;
   padding-bottom: 20px;
 }
-
 .custom-promo-carousel {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .promo-carousel-wrapper {
   position: relative;
   width: 100%;
-  /* Let wrapper size naturally to content */
+  
 }
-
-
-/* Mobile - use flex column with 24px gap for clean separation */
 @media (max-width: 767px) {
   .promo-carousel-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Exactly 24px between viewport and nav controls */
+    gap: 24px; 
   }
 }
-
-/* Desktop (≥768px) - Simple flex container approach */
 @media (min-width: 768px) {
-  /* Reset mobile carousel min-width and override mobile styles */
+  
   .template {
     min-width: unset;
     position: relative;
-    flex: 1; /* Fluid - equal distribution of available space */
+    flex: 1; 
     cursor: pointer;
     box-sizing: border-box;
-    /* NO transition, scaling, or opacity changes on desktop */
+    
   }
-
-  /* Block container handles padding */
+  
   .ax-template-x-promo.multiple-up {
-    padding: 20px 40px; /* Block determines the padding */
+    padding: 20px 40px; 
   }
-
   .promo-carousel-viewport {
     overflow: visible;
     width: 100%;
@@ -128,55 +101,48 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    /* Height set dynamically to prevent jumping */
-    /* Removed transition to prevent flashing */
+    
+    
   }
-
-  /* Desktop/Tablet max-heights for very vertical images */
-  /* 4-up layout: 240px max-height */
+  
+  
   .ax-template-x-promo.multiple-up .template .image-wrapper img,
   .ax-template-x-promo.multiple-up .template .button-container .media-wrapper img {
-    max-height: 240px; /* 4-up: crop very vertical images */
+    max-height: 240px; 
   }
-
-  /* 3-up layout: 360px max-height + 33.333% width */
+  
   .ax-template-x-promo.three-up .template {
-    width: 33.333%; /* 3-up: each template takes 1/3 width */
+    width: 33.333%; 
   }
-
   .ax-template-x-promo.three-up .template .image-wrapper img,
   .ax-template-x-promo.three-up .template .button-container .media-wrapper img {
-    max-height: 360px; /* 3-up: crop very vertical images */
+    max-height: 360px; 
   }
-
-  /* 2-up layout: 540px max-height */
+  
   .ax-template-x-promo.two-up .template .image-wrapper img,
   .ax-template-x-promo.two-up .template .button-container .media-wrapper img  {
-    max-height: 540px; /* 2-up: crop very vertical images */
+    max-height: 540px; 
   }
-
   .promo-carousel-track {
     display: flex;
-    gap: 16px; /* 16px gap on desktop */
+    gap: 16px; 
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 1200px; /* Reasonable max container width */
-    /* Height set dynamically to prevent jumping */
-    /* Removed transition to prevent flashing */
+    max-width: 1200px; 
+    
+    
   }
-
   .promo-image-wrapper {
     position: relative;
-    width: 100%; /* Fill the available template space */
-    aspect-ratio: 3/4; /* Maintain aspect ratio based on width */
+    width: 100%; 
+    aspect-ratio: 3/4; 
     border-radius: 8px;
     overflow: hidden;
   }
-
   .promo-image-wrapper img {
     width: 100%;
-    height: auto; /* Natural height for aspect ratio */
+    height: auto; 
     max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
@@ -184,39 +150,33 @@
     background-color: #f0f0f0;
   }
 }
-
-/* Mobile (≤767px) - Carousel with 3-up prev-CURRENT-next */
 @media (max-width: 767px) {
   .promo-carousel-viewport {
-    overflow: visible; /* MUST allow hover to show outside */
+    overflow: visible; 
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    /* Height locked by JavaScript to prevent jumping, but content can overflow naturally */
+    
   }
-
   .promo-carousel-track {
     display: flex;
-    gap: 8px; /* 8px gap between templates */
+    gap: 8px; 
     align-items: center;
-    width: 100%; /* Full width */
+    width: 100%; 
     justify-content: center;
-    /* Height set dynamically to prevent jumping on mobile */
-    /* Removed transition to prevent height changes */
+    
+    
   }
-
-  /* Two-up: No padding - both templates get full width */
+  
   .ax-template-x-promo.multiple-up.two-up .promo-carousel-track {
     padding: 0;
   }
-
-  /* Three-up+: Add padding for peek effect */
+  
   .ax-template-x-promo.multiple-up .promo-carousel-track {
-    padding: 0 15%; /* Side padding creates natural peek effect for carousel */
+    padding: 0 15%; 
   }
-
   .template {
     position: relative;
     cursor: pointer;
@@ -224,37 +184,32 @@
     min-width: 216px;
     transition: transform 0.3s ease, opacity 0.3s ease, flex 0.3s ease;
   }
-
-  /* Previous template - same size, partially cropped at left edge */
+  
   .template.prev-template {
-    flex: 0 0 50%; /* Same size as current */
+    flex: 0 0 50%; 
     opacity: 0.8;
   }
-
-  /* Current/center template - fully visible and prominent */
+  
   .template.current-template {
     flex: 0 0 50%;
     opacity: 1;
     z-index: 1;
   }
-
-  /* Next template - same size, partially cropped at right edge */
+  
   .template.next-template {
-    flex: 0 0 50%; /* Same size as current */
+    flex: 0 0 50%; 
     opacity: 0.8;
   }
-
   .promo-image-wrapper {
     position: relative;
-    width: 100%; /* Full template width */
-    aspect-ratio: 3/4; /* Maintain aspect ratio */
+    width: 100%; 
+    aspect-ratio: 3/4; 
     border-radius: 8px;
     overflow: hidden;
   }
-
   .promo-image-wrapper img {
     width: 100%;
-    height: auto; /* Natural height for aspect ratio */
+    height: auto; 
     max-height: var(--template-max-height);
     object-fit: cover;
     object-position: top;
@@ -263,10 +218,6 @@
     background-color: #f0f0f0;
   }
 }
-
-
-
-/* Free/Premium tags */
 .ax-template-x-promo .template .free-tag {
   position: absolute;
   top: var(--spacing-300);
@@ -278,7 +229,6 @@
   font-size: 12px;
   font-weight: 700;
 }
-
 .ax-template-x-promo .template .image-wrapper .icon.icon-premium {
   position: absolute;
   top: 16px;
@@ -287,67 +237,56 @@
   height: 30px;
   display: block;
 }
-
-/* Template structure (following template-x pattern) */
 .ax-template-x-promo .template {
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
-  pointer-events: auto; /* Ensure it can receive hover events */
+  pointer-events: auto; 
 }
-
-
 .ax-template-x-promo .template .still-wrapper {
   position: relative;
   display: block;
 }
-
 .ax-template-x-promo .template .image-wrapper {
   position: relative;
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
 }
-
 .ax-template-x-promo .template .image-wrapper img {
   width: 100%;
-  height: auto; /* Allow natural height based on aspect ratio */
+  height: auto; 
   object-fit: cover;
   display: block;
   border-radius: 8px;
-  /* Removed max-height constraint - let images size naturally to their content */
+  
 }
-
-/* Hide empty template-x-promo block in multiple-up layouts */
 .ax-template-x-promo.multiple-up .template-x-promo:empty {
   display: none;
 }
-
 .ax-template-x-promo .template .button-container {
   position: absolute;
-  width: 100%; /* Proper container width */
+  width: 100%; 
   max-width: 90vw;
-  min-height: 100%; /* Proper container height */
+  min-height: 100%; 
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Perfect centering */
+  transform: translate(-50%, -50%); 
   padding: 6px;
   padding-bottom: 8px;
   border-radius: 8px;
-  opacity: 0; /* Hidden by default */
-  pointer-events: none; /* No interaction by default */
+  opacity: 0; 
+  pointer-events: none; 
   display: flex;
   flex-direction: column-reverse;
   gap: 6px;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+  background-color: rgba(255, 255, 255, 0.95); 
   box-shadow: 0 0 6px #00000029;
   text-align: center;
   transition: opacity .3s ease-in-out;
   will-change: opacity;
 }
-
-/* Desktop: All templates can hover */
 @media (min-width: 768px) {
   .ax-template-x-promo .template:hover .button-container {
     opacity: 1;
@@ -355,35 +294,30 @@
     flex-direction: column-reverse;
   }
 }
-
-/* Mobile: Only current template can hover, except for two-up where both can hover */
 @media (max-width: 767px) {
   .ax-template-x-promo .template.current-template:hover .button-container {
     opacity: 1;
     pointer-events: initial;
   }
-
-  /* Two-up carousel: Always show still images at 100% opacity since both templates are fully visible */
+  
   .ax-template-x-promo.multiple-up.two-up .template .still-wrapper {
     opacity: 1;
   }
   
-  /* Two-up carousel: Button containers can hover on both templates */
+  
   .ax-template-x-promo.multiple-up.two-up .template:hover .button-container {
     opacity: 1;
     pointer-events: initial;
   }
 }
-
 .ax-template-x-promo .template .button-container .media-wrapper {
-  position: relative; /* Let it be a flex child */
-  flex: 1; /* Take up remaining space */
+  position: relative; 
+  flex: 1; 
   pointer-events: none;
   border-radius: 8px;
   overflow: hidden;
-  z-index: 1; /* Show the image */
+  z-index: 1; 
 }
-
 .ax-template-x-promo .template .button-container .media-wrapper img {
   width: 100%;
   height: 90%;
@@ -392,7 +326,6 @@
   display: block;
   margin: 0;
 }
-
 .ax-template-x-promo .template .button-container a.button {
   width: 100%;
   max-width: 120px;
@@ -408,18 +341,16 @@
   border-radius: 24px;
   transition: all 0.2s ease;
   position: relative;
-  z-index: 2; /* Above the image and overlay */
+  z-index: 2; 
 }
-
 .ax-template-x-promo .template .button-container a.cta-link {
-  display: block; /* Keep the cta-link to show the image */
+  display: block; 
   width: 100%;
   height: calc(100% - 34px);
   white-space: nowrap;
   font-weight: var(--body-font-weight);
-  pointer-events: none; /* Prevent it from interfering with button clicks */
+  pointer-events: none; 
 }
-
 .ax-template-x-promo .template .button-container .share-icon-wrapper {
   position: absolute;
   top: 16px;
@@ -435,7 +366,6 @@
   pointer-events: initial;
   z-index: 2;
 }
-
 .ax-template-x-promo .template .button-container .icon-share-arrow {
   cursor: pointer;
   pointer-events: auto;
@@ -446,7 +376,6 @@
   overflow: visible;
   fill: var(--color-gray-700);
 }
-
 .ax-template-x-promo .template .button-container .shared-tooltip {
   visibility: hidden;
   position: absolute;
@@ -470,11 +399,9 @@
   pointer-events: none;
   transition: visibility 0.2s ease;
 }
-
 .ax-template-x-promo .template .button-container .shared-tooltip.display-tooltip {
   visibility: visible;
 }
-
 .ax-template-x-promo .template .button-container .shared-tooltip .icon {
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -487,25 +414,20 @@
   align-items: center;
   justify-content: center;
 }
-
 .ax-template-x-promo .template .button-container .shared-tooltip .text {
   opacity: 0;
   transition: opacity 0.2s ease;
 }
-
 .ax-template-x-promo .template .button-container .shared-tooltip.display-tooltip .icon {
   opacity: 1;
 }
-
 .ax-template-x-promo .template .button-container .shared-tooltip.display-tooltip .text {
   opacity: 1;
 }
-
 .ax-template-x-promo .template .button-container .shared-tooltip.flipped {
   left: unset;
   right: calc(100% + 12px);
 }
-
 .ax-template-x-promo .template .button-container .sr-only {
   position: absolute;
   width: 1px;
@@ -517,22 +439,17 @@
   white-space: nowrap;
   border: 0;
 }
-
-/* Navigation controls - hidden by default (desktop) */
 .promo-nav-controls {
   display: none;
 }
-
-/* Mobile only - show buttons at bottom right, below 768px */
 @media (max-width: 767px) {
   .promo-nav-controls {
     display: flex;
     gap: 8px;
-    justify-content: flex-end; /* Align buttons to the right */
-    padding-right: 20px; /* 20px from right edge */
-    /* No absolute positioning needed - flex gap handles the 24px separation */
+    justify-content: flex-end; 
+    padding-right: 20px; 
+    
   }
-
   .promo-prev-btn,
   .promo-next-btn {
     background: none;
@@ -543,15 +460,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
-
-  .promo-nav-btn:hover {
-    transform: scale(1.1);
-  }
 }
-
 .promo-nav-btn {
   background: transparent;
   border: none;
@@ -559,51 +470,32 @@
   padding: 0;
   border-radius: 50%;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
-  transition: all 0.2s ease;
 }
-
-.promo-nav-btn:hover:not(:disabled) svg circle {
-  fill: #f0f0f0;
-}
-
 .promo-nav-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .promo-nav-btn svg {
   display: block;
   width: 32px;
   height: 32px;
 }
-
-/* Mobile responsive - show navigation buttons on mobile only */
 @media (max-width: 767px) {
   .ax-template-x-promo.multiple-up {
-    padding: 0; /* Full width on mobile for carousel */
+    padding: 0; 
   }
   
-
   .promo-nav-controls {
-    display: flex; /* Show buttons on mobile */
-    padding-right: 20px; /* 20px from right edge */
-    /* Remove conflicting bottom/right positioning - handled by flex layout */
+    display: flex; 
+    padding-right: 20px; 
+    
   }
-
-  /* Mobile max-height for very vertical images - crop bottom */
+  
   .template .image-wrapper img,
   .template .button-container .media-wrapper img {
-    max-height: 400px; /* Mobile: 400px max for vertical images */
+    max-height: 400px; 
   }
 }
-
-/* Removed tablet-specific template sizing - using consistent 255px width */
-
-/* ========================================
-   ACCESSIBILITY IMPROVEMENTS
-   ======================================== */
-
-/* Screen reader only content */
 .template-x-promo .sr-only {
   position: absolute !important;
   width: 1px !important;
@@ -615,8 +507,6 @@
   white-space: nowrap !important;
   border: 0 !important;
 }
-
-/* Skip link for keyboard users */
 .template-x-promo .carousel-skip-link:focus {
   position: absolute;
   top: 0;
@@ -630,8 +520,6 @@
   width: auto;
   height: auto;
 }
-
-/* Focus indicators for all interactive elements */
 .template-x-promo button:focus-visible,
 .template-x-promo a:focus-visible,
 .template-x-promo [tabindex="0"]:focus-visible {
@@ -639,26 +527,19 @@
   outline-offset: 2px;
   border-radius: 4px;
 }
-
-/* Enhanced focus for navigation buttons */
 .template-x-promo .promo-nav-btn:focus-visible {
   outline: 2px solid var(--color-blue-600);
   outline-offset: 4px;
   box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
 }
-
-/* High contrast mode support */
 @media (prefers-contrast: high) {
   .template-x-promo .promo-nav-btn {
     border: 2px solid ButtonText;
   }
-
   .template-x-promo .button-container {
     border: 2px solid ButtonText;
   }
 }
-
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .template-x-promo * {
     animation-duration: 0.01ms !important;
@@ -666,42 +547,30 @@
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
   }
-
   .template-x-promo .promo-carousel-track {
     transform: none !important;
   }
 }
-
-/* Color scheme support */
 @media (prefers-color-scheme: dark) {
   .template-x-promo {
-    /* Using design system color directly */
+    
   }
 }
-
-/* Mobile share icon sizing */
 @media (max-width: 767px) {
   .template-x-promo .share-icon-wrapper img {
     width: 16px;
     height: 16px;
   }
 }
-
-/* Navigation buttons are hidden on desktop (768px+) and only show on mobile (≤767px) */
-
-/* Collapsible rows overrides (matching template-promo patterns) */
 .ax-template-x-promo .collapsible-rows {
   padding: 0;
 }
-
 .ax-template-x-promo.multiple-up .collapsible-rows {
   padding: var(--spacing-600) 0;
 }
-
 .ax-template-x-promo.one-up .collapsible-row-accordion {
   margin: 0;
 }
-
 .ax-template-x-promo.one-up .collapsible-rows .collapsible-row-header {
   color: var(--color-gray-900);
   font-family: var(--body-font-family);
@@ -710,7 +579,6 @@
   font-weight: var(--heading-font-weight);
   line-height: var(--heading-line-height);
 }
-
 .ax-template-x-promo.one-up .collapsible-rows .collapsible-row-sub-header {
   color: var(--color-gray-700-variant);
   font-family: var(--body-font-family);
@@ -719,22 +587,17 @@
   font-weight: 700;
   line-height: 130%;
 }
-
-/* Mobile carousel: disable hover overlay on prev/next templates to prevent truncation */
 @media (max-width: 767px) {
   .template-x-promo.multiple-up .template.prev-template .button-container,
   .template-x-promo.multiple-up .template.next-template .button-container {
     display: none;
   }
-
   .template-x-promo.multiple-up .template.prev-template:hover .button-container,
   .template-x-promo.multiple-up .template.next-template:hover .button-container {
     opacity: 0;
     pointer-events: none;
   }
 }
-
-/* One-up responsive styles (matching template-promo patterns) */
 @media (min-width: 768px) {
   .ax-template-x-promo.one-up {
     padding: 20px 40px;
@@ -742,27 +605,22 @@
     margin: 0 auto;
     box-sizing: border-box;
   }
-
-
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
     width: var(--ax-grid-8-col-width);
     margin: 0 auto;
     box-sizing: border-box;
   }
-
   .ax-template-x-promo.one-up .collapsible-rows {
     width: unset;
     margin: unset;
   }
-
   .ax-template-x-promo.multiple-up .template .free-tag,
   .ax-template-x-promo.multiple-up .template .image-wrapper .icon.icon-premium,
   .ax-template-x-promo.multiple-up .template .button-container .share-icon-wrapper {
     right: 16.25px;
   }
 }
-
 @media (min-width: 1024px) {
   .ax-template-x-promo.one-up,
   .ax-template-x-promo.multiple-up {
@@ -771,20 +629,16 @@
     margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
     box-sizing: border-box;
   }
-
-
   .ax-template-x-promo.one-up .collapsible-rows {
     width: unset;
     margin: unset;
   }
-
   .ax-template-x-promo.multiple-up .template .free-tag,
   .ax-template-x-promo.multiple-up .template .image-wrapper .icon.icon-premium,
   .ax-template-x-promo.multiple-up .template .button-container .share-icon-wrapper {
     right: 15.5px;
   }
 }
-
 @media (min-width: 1680px) {
   .ax-template-x-promo.one-up,
   .ax-template-x-promo.multiple-up {
