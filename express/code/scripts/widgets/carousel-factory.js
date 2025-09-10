@@ -383,11 +383,69 @@ export const createCarousel = async (config) => {
     handleResize.lastWidth = window.innerWidth;
   };
 
+  // Touch/swipe handling for mobile
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
+  let isSwipeGesture = false;
+
+  const handleTouchStart = (event) => {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+    isSwipeGesture = false;
+  };
+
+  const handleTouchMove = (event) => {
+    if (!touchStartX || !touchStartY) return;
+
+    touchEndX = event.touches[0].clientX;
+    touchEndY = event.touches[0].clientY;
+
+    const deltaX = touchStartX - touchEndX;
+    const deltaY = touchStartY - touchEndY;
+
+    // Determine if this is a horizontal swipe (not vertical scroll)
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+      isSwipeGesture = true;
+      event.preventDefault(); // Prevent vertical scrolling during horizontal swipe
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (!isSwipeGesture || !touchStartX || !touchEndX) return;
+
+    const deltaX = touchStartX - touchEndX;
+    const minSwipeDistance = 50; // Minimum distance for a swipe
+
+    if (Math.abs(deltaX) > minSwipeDistance) {
+      if (deltaX > 0) {
+        // Swipe left - go to next
+        handleNext();
+      } else {
+        // Swipe right - go to previous
+        handlePrev();
+      }
+    }
+
+    // Reset touch values
+    touchStartX = 0;
+    touchStartY = 0;
+    touchEndX = 0;
+    touchEndY = 0;
+    isSwipeGesture = false;
+  };
+
   // Attach event listeners
   nav.nextBtn.addEventListener('click', handleNext);
   nav.prevBtn.addEventListener('click', handlePrev);
   document.addEventListener('keydown', handleKeyboard);
   window.addEventListener('resize', handleResize);
+
+  // Touch events for swipe navigation
+  dom.track.addEventListener('touchstart', handleTouchStart, { passive: false });
+  dom.track.addEventListener('touchmove', handleTouchMove, { passive: false });
+  dom.track.addEventListener('touchend', handleTouchEnd, { passive: false });
 
   // Handle orientation changes specifically
   const handleOrientationChange = () => {
@@ -462,6 +520,10 @@ export const createCarousel = async (config) => {
       document.removeEventListener('keydown', handleKeyboard);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleOrientationChange);
+      // Cleanup touch events
+      dom.track.removeEventListener('touchstart', handleTouchStart);
+      dom.track.removeEventListener('touchmove', handleTouchMove);
+      dom.track.removeEventListener('touchend', handleTouchEnd);
       // Clear throttling state
       handleResize.lastCall = 0;
     },
