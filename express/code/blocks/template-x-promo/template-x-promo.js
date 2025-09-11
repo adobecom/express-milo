@@ -187,7 +187,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
   track.addEventListener('touchend', handleTouchEnd, { passive: false });
 
   viewport.append(track);
-  wrapper.append(skipLink, viewport, status, navControls);
+  wrapper.append(skipLink, viewport, navControls, status);
 
   block.parentElement.classList.add('multiple-up');
   block.classList.add('custom-promo-carousel');
