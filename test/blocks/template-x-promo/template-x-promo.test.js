@@ -339,7 +339,7 @@ describe('Template X Promo', () => {
     });
   });
 
-  it('should NOT display Free/Premium tags in one-up layout', async () => {
+  it('should display Free/Premium tags in one-up layout', async () => {
     // Reset fetchStub for this test
     if (fetchStub) {
       fetchStub.restore();
@@ -386,7 +386,7 @@ describe('Template X Promo', () => {
     expect(parentElement.classList.contains('one-up')).to.be.true;
 
     const freeTags = block.querySelectorAll('.free-tag');
-    expect(freeTags.length).to.equal(0, 'One-up layout should NOT have Free tags');
+    expect(freeTags.length).to.equal(1, 'One-up layout should have Free tags');
 
     const premiumIcons = block.querySelectorAll('.icon-premium');
     expect(premiumIcons.length).to.equal(0, 'One-up layout should NOT have Premium icons');
