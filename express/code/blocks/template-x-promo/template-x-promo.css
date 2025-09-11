@@ -27,7 +27,7 @@
   gap: var(--spacing-300);
   display: flex;
   flex-direction: column;
-  padding: 20px; 
+  padding: 20px;
 }
 .ax-template-x-promo.one-up img {
   border-radius: var(--spacing-300);
@@ -68,12 +68,12 @@
   max-width: 1200px;
   margin: 0 auto;
 }
-.promo-carousel-wrapper {
+.ax-template-x-promo .promo-carousel-wrapper {
   position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 24px; 
+  gap: 24px;
 }
 .ax-template-x-promo .template .free-tag {
   position: absolute;
@@ -98,7 +98,9 @@
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
-  pointer-events: auto; 
+  pointer-events: auto;
+  min-width: 216px;
+  transition: transform 0.3s ease, opacity 0.3s ease, flex 0.3s ease;
 }
 .ax-template-x-promo .template .still-wrapper {
   position: relative;
@@ -112,7 +114,7 @@
 }
 .ax-template-x-promo .template .image-wrapper img {
   width: 100%;
-  height: auto; 
+  height: auto;
   object-fit: cover;
   display: block;
   border-radius: 8px;
@@ -152,35 +154,35 @@
 }
 .ax-template-x-promo .template .button-container {
   position: absolute;
-  width: 100%; 
+  width: 100%;
   max-width: 90vw;
-  min-height: 100%; 
+  min-height: 100%;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
   padding: 6px;
   padding-bottom: 8px;
   z-index: 2;
   border-radius: 8px;
-  opacity: 0; 
-  pointer-events: none; 
+  opacity: 0;
+  pointer-events: none;
   display: flex;
   flex-direction: column-reverse;
   gap: 6px;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.95); 
+  background-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 6px #00000029;
   text-align: center;
   transition: opacity .3s ease-in-out;
   will-change: opacity;
 }
 .ax-template-x-promo .template .button-container .media-wrapper {
-  position: relative; 
-  flex: 1; 
+  position: relative;
+  flex: 1;
   pointer-events: none;
   border-radius: 8px;
   overflow: hidden;
-  z-index: 1; 
+  z-index: 1;
 }
 .ax-template-x-promo .template .button-container .media-wrapper img {
   width: 100%;
@@ -205,15 +207,15 @@
   border-radius: 24px;
   transition: all 0.2s ease;
   position: relative;
-  z-index: 2; 
+  z-index: 2;
 }
 .ax-template-x-promo .template .button-container a.cta-link {
-  display: block; 
+  display: block;
   width: 100%;
   height: calc(100% - 34px);
   white-space: nowrap;
   font-weight: var(--body-font-weight);
-  pointer-events: none; 
+  pointer-events: none;
 }
 .ax-template-x-promo .template .button-container .share-icon-wrapper {
   position: absolute;
@@ -310,14 +312,14 @@
   white-space: nowrap;
   border: 0;
 }
-.promo-nav-controls {
+.ax-template-x-promo .promo-nav-controls {
   display: flex;
   gap: 8px;
-  justify-content: flex-end; 
-  padding-right: 20px; 
+  justify-content: flex-end;
+  padding-right: 20px;
 }
 
-.promo-nav-btn {
+.ax-template-x-promo .promo-nav-btn {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -325,11 +327,11 @@
   border-radius: 50%;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
 }
-.promo-nav-btn:disabled {
+.ax-template-x-promo .promo-nav-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.promo-nav-btn svg {
+.ax-template-x-promo .promo-nav-btn svg {
   display: block;
   width: 32px;
   height: 32px;
@@ -395,9 +397,8 @@
   line-height: 130%;
 }
 
-
-.promo-carousel-viewport {
-  overflow: visible; 
+.ax-template-x-promo .promo-carousel-viewport {
+  overflow: visible;
   width: 100%;
   display: flex;
   align-items: center;
@@ -405,11 +406,11 @@
   position: relative;
 }
 
-.promo-carousel-track {
+.ax-template-x-promo .promo-carousel-track {
   display: flex;
-  gap: 8px; 
+  gap: 8px;
   align-items: center;
-  width: 100%; 
+  width: 100%;
   justify-content: center;
   position: relative;
   z-index: 10;
@@ -420,44 +421,37 @@
 }
 
 .ax-template-x-promo.multiple-up .promo-carousel-track {
-  padding: 0 15%; 
+  padding: 0 15%;
 }
 
-.template {
-  position: relative;
-  cursor: pointer;
-  box-sizing: border-box;
-  min-width: 216px;
-  transition: transform 0.3s ease, opacity 0.3s ease, flex 0.3s ease;
-}
 
-.template.prev-template {
-  flex: 0 0 50%; 
+.ax-template-x-promo .template.prev-template {
+  flex: 0 0 50%;
   opacity: 0.8;
 }
 
-.template.current-template {
+.ax-template-x-promo .template.current-template {
   flex: 0 0 50%;
   opacity: 1;
   z-index: 1;
 }
 
-.template.next-template {
-  flex: 0 0 50%; 
+.ax-template-x-promo .template.next-template {
+  flex: 0 0 50%;
   opacity: 0.8;
 }
 
-.promo-image-wrapper {
+.ax-template-x-promo .promo-image-wrapper {
   position: relative;
-  width: 100%; 
-  aspect-ratio: 3/4; 
+  width: 100%;
+  aspect-ratio: 3/4;
   border-radius: 8px;
   overflow: hidden;
 }
 
-.promo-image-wrapper img {
+.ax-template-x-promo .promo-image-wrapper img {
   width: 100%;
-  height: auto; 
+  height: auto;
   max-height: var(--template-max-height);
   object-fit: cover;
   object-position: top;
@@ -480,8 +474,8 @@
   pointer-events: initial;
 }
 
-.promo-prev-btn,
-.promo-next-btn {
+.ax-template-x-promo .promo-prev-btn,
+.ax-template-x-promo .promo-next-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -494,12 +488,12 @@
 }
 
 .ax-template-x-promo.multiple-up {
-  padding: 0; 
+  padding: 0;
 }
 
-.template .image-wrapper img,
-.template .button-container .media-wrapper img {
-  max-height: 400px; 
+.ax-template-x-promo .template .image-wrapper img,
+.ax-template-x-promo .template .button-container .media-wrapper img {
+  max-height: 400px;
 }
 
 .template-x-promo .share-icon-wrapper img {
@@ -519,16 +513,16 @@
 }
 
 @media (min-width: 768px) {
-  .template {
+  .ax-template-x-promo .template {
     min-width: unset;
     position: relative;
-    flex: 1; 
+    flex: 1;
     cursor: pointer;
     box-sizing: border-box;
-    
+
   }
 
-  .promo-carousel-viewport {
+  .ax-template-x-promo .promo-carousel-viewport {
     overflow: visible;
     width: 100%;
     display: flex;
@@ -539,41 +533,41 @@
 
   .ax-template-x-promo.multiple-up .template .image-wrapper img,
   .ax-template-x-promo.multiple-up .template .button-container .media-wrapper img {
-    max-height: 240px; 
+    max-height: 240px;
   }
 
   .ax-template-x-promo.three-up .template {
-    width: 33.333%; 
+    width: 33.333%;
   }
   .ax-template-x-promo.three-up .template .image-wrapper img,
   .ax-template-x-promo.three-up .template .button-container .media-wrapper img {
-    max-height: 360px; 
+    max-height: 360px;
   }
 
   .ax-template-x-promo.two-up .template .image-wrapper img,
   .ax-template-x-promo.two-up .template .button-container .media-wrapper img  {
-    max-height: 540px; 
+    max-height: 540px;
   }
-  .promo-carousel-track {
+  .ax-template-x-promo .promo-carousel-track {
     display: flex;
-    gap: 16px; 
+    gap: 16px;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 1200px; 
+    max-width: 1200px;
     position: relative;
     z-index: 10;
   }
-  .promo-image-wrapper {
+  .ax-template-x-promo .promo-image-wrapper {
     position: relative;
-    width: 100%; 
-    aspect-ratio: 3/4; 
+    width: 100%;
+    aspect-ratio: 3/4;
     border-radius: 8px;
     overflow: hidden;
   }
-  .promo-image-wrapper img {
+  .ax-template-x-promo .promo-image-wrapper img {
     width: 100%;
-    height: auto; 
+    height: auto;
     max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
@@ -652,8 +646,3 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .template-x-promo {
-    
-  }
-}
