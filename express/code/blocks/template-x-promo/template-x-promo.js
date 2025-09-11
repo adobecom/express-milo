@@ -1,4 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
+import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import {
   extractTemplateMetadata,
   extractApiParamsFromRecipe,
@@ -30,8 +30,9 @@ async function createDirectCarousel(block, templates, createTagFn) {
     role: 'region',
     'aria-label': 'Template carousel',
   });
+  const carouselId = `carousel-status-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   const status = createTagFn('div', {
-    id: 'carousel-status',
+    id: carouselId,
     class: 'sr-only',
     'aria-live': 'polite',
     'aria-atomic': 'true',
@@ -41,12 +42,12 @@ async function createDirectCarousel(block, templates, createTagFn) {
   const prevBtn = createTagFn('button', {
     class: 'promo-nav-btn promo-prev-btn',
     'aria-label': 'Previous templates',
-    'aria-describedby': 'carousel-status',
+    'aria-describedby': carouselId,
   });
   const nextBtn = createTagFn('button', {
     class: 'promo-nav-btn promo-next-btn',
     'aria-label': 'Next templates',
-    'aria-describedby': 'carousel-status',
+    'aria-describedby': carouselId,
   });
 
   prevBtn.innerHTML = `
@@ -77,16 +78,19 @@ async function createDirectCarousel(block, templates, createTagFn) {
     const prevTemplate = templates[prevIndex];
     prevTemplate.dataset.templateIndex = prevIndex.toString();
     prevTemplate.className = 'template prev-template';
+    prevTemplate.setAttribute('tabindex', '0');
     track.append(prevTemplate);
 
     const currentTemplate = templates[currentIndex];
     currentTemplate.dataset.templateIndex = currentIndex.toString();
     currentTemplate.className = 'template current-template';
+    currentTemplate.setAttribute('tabindex', '0');
     track.append(currentTemplate);
 
     const nextTemplate = templates[nextIndex];
     nextTemplate.dataset.templateIndex = nextIndex.toString();
     nextTemplate.className = 'template next-template';
+    nextTemplate.setAttribute('tabindex', '0');
     track.append(nextTemplate);
 
     status.textContent = `Carousel item ${currentIndex + 1} of ${templateCount}`;
@@ -233,6 +237,16 @@ async function handleOneUpFromApiData(block, templateData) {
 
   const imgWrapper = createTag('div', { class: 'image-wrapper' });
   imgWrapper.append(img);
+
+  // Add free tag or premium icon based on template data
+  if (metadata.isFree) {
+    const freeTag = createTag('span', { class: 'free-tag' });
+    freeTag.textContent = 'Free';
+    imgWrapper.append(freeTag);
+  } else if (metadata.isPremium) {
+    const premiumIcon = getIconElementDeprecated('premium');
+    imgWrapper.append(premiumIcon);
+  }
 
   block.append(imgWrapper);
 
