@@ -1,6 +1,4 @@
 import {
-  getLottie,
-  lazyLoadLottiePlayer,
   toClassName,
   getIconElementDeprecated,
   fixIcons,
@@ -17,7 +15,6 @@ import {
   gatherPageImpression,
   trackSearch,
   updateImpressionCache,
-  generateSearchId,
 } from '../../scripts/template-search-api-v3.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 import renderTemplate from './template-rendering.js';
@@ -684,137 +681,6 @@ async function appendCategoryTemplatesCount(block, props) {
     anchor.append(cntSpan);
     // eslint-disable-next-line no-await-in-loop, no-promise-executor-return
     await new Promise((resolve) => setTimeout(resolve, 25));
-  }
-}
-
-async function decorateCategoryList(block, props) {
-  const { prefix } = getConfig().locale;
-  const mobileDrawerWrapper = block.querySelector('.filter-drawer-mobile');
-  const drawerWrapper = block.querySelector('.filter-drawer-mobile-inner-wrapper');
-  const xTaskCategories = await replaceKey('x-task-categories', getConfig());
-  const categories = xTaskCategories !== 'x task categories' ? JSON.parse(xTaskCategories) : {};
-  const taskCategoryIcons = await replaceKey('task-category-icons', getConfig());
-  const categoryIcons = taskCategoryIcons !== 'task category icons' ? taskCategoryIcons.replace(/\s/g, '')?.split(',') : undefined;
-  const categoriesDesktopWrapper = createTag('div', { class: 'category-list-wrapper' });
-  const categoriesToggleWrapper = createTag('div', { class: 'category-list-toggle-wrapper' });
-  const categoriesToggle = getIconElementDeprecated('drop-down-arrow');
-  const categoriesListHeading = createTag('div', { class: 'category-list-heading' });
-  const categoriesList = createTag('ul', { class: 'category-list' });
-
-  const jumpToCategory = await replaceKey('jump-to-category', getConfig());
-  categoriesListHeading.append(getIconElementDeprecated('template-search'), jumpToCategory);
-  categoriesToggleWrapper.append(categoriesToggle);
-  categoriesDesktopWrapper.append(categoriesToggleWrapper, categoriesListHeading, categoriesList);
-
-  Object.entries(categories).forEach((category, index) => {
-    const format = `${props.placeholderFormat[0]}:${props.placeholderFormat[1]}`;
-    const targetTasks = category[1];
-    const currentTasks = props.filters.tasks ? props.filters.tasks : "''";
-    const currentTopic = props.filters.topics || props.q;
-
-    const listItem = createTag('li');
-    if (category[1] === currentTasks) {
-      listItem.classList.add('active');
-    }
-
-    let icon;
-    if (categoryIcons[index] && categoryIcons[index] !== '') {
-      icon = categoryIcons[index];
-    } else {
-      icon = 'template-static';
-    }
-
-    const iconElement = getIconElementDeprecated(icon);
-    const a = createTag('a', {
-      'data-tasks': targetTasks,
-      'data-topics': currentTopic || '',
-      href: `${prefix}/express/templates/search?tasks=${targetTasks}&tasksx=${targetTasks}&phformat=${format}&topics=${currentTopic || "''"}&q=${currentTopic || ''}&searchId=${generateSearchId()}`,
-    });
-    [a.textContent] = category;
-
-    a.prepend(iconElement);
-    listItem.append(a);
-    categoriesList.append(listItem);
-    a.addEventListener('click', () => {
-      updateImpressionCache({
-        category_filter: a.dataset.tasks,
-        collection: a.dataset.topics,
-        collection_path: window.location.pathname,
-        content_category: 'templates',
-      });
-      trackSearch('search-inspire', new URLSearchParams(new URL(a.href).search).get('searchId'));
-    }, { passive: true });
-  });
-
-  categoriesDesktopWrapper.addEventListener('mouseover', () => {
-    appendCategoryTemplatesCount(block, props);
-  }, { once: true });
-
-  const categoriesMobileWrapper = categoriesDesktopWrapper.cloneNode({ deep: true });
-  const mobileJumpCategoryLinks = categoriesMobileWrapper.querySelectorAll('.category-list > li > a');
-  mobileJumpCategoryLinks.forEach((a) => {
-    a.addEventListener('click', () => {
-      updateImpressionCache({
-        search_keyword: a.dataset.tasks,
-        collection: a.dataset.topics,
-        collection_path: window.location.pathname,
-        content_category: 'templates',
-      });
-      trackSearch('search-inspire', new URLSearchParams(new URL(a.href).search).get('searchId'));
-    }, { passive: true });
-  });
-  const mobileCategoriesToggle = createTag('span', { class: 'category-list-toggle' });
-  mobileCategoriesToggle.textContent = jumpToCategory !== 'jump to category' ? jumpToCategory : '';
-  categoriesMobileWrapper.querySelector('.category-list-toggle-wrapper > .icon')?.replaceWith(mobileCategoriesToggle);
-  const lottieArrows = createTag('a', { class: 'lottie-wrapper' });
-  mobileDrawerWrapper.append(lottieArrows);
-  drawerWrapper.append(categoriesMobileWrapper);
-  lottieArrows.innerHTML = getLottie('purple-arrows', '/express/code/icons/purple-arrows.json');
-  lazyLoadLottiePlayer();
-
-  block.prepend(categoriesDesktopWrapper);
-  block.classList.add('with-categories-list');
-
-  const toggleButton = categoriesMobileWrapper.querySelector('.category-list-toggle-wrapper');
-  toggleButton.append(getIconElementDeprecated('drop-down-arrow'));
-  toggleButton.addEventListener('click', () => {
-    const listWrapper = toggleButton.parentElement;
-    toggleButton.classList.toggle('collapsed');
-    if (toggleButton.classList.contains('collapsed')) {
-      if (listWrapper.classList.contains('desktop-only')) {
-        listWrapper.classList.add('collapsed');
-        listWrapper.style.maxHeight = '40px';
-      } else {
-        listWrapper.classList.add('collapsed');
-        listWrapper.style.maxHeight = '24px';
-      }
-    } else {
-      listWrapper.classList.remove('collapsed');
-      listWrapper.style.maxHeight = '1000px';
-    }
-
-    setTimeout(() => {
-      if (!listWrapper.classList.contains('desktop-only')) {
-        updateLottieStatus(block);
-      }
-    }, 510);
-  }, { passive: true });
-
-  lottieArrows.addEventListener('click', () => {
-    drawerWrapper.scrollBy({
-      top: 300,
-      behavior: 'smooth',
-    });
-  }, { passive: true });
-
-  drawerWrapper.addEventListener('scroll', () => {
-    updateLottieStatus(block);
-  }, { passive: true });
-
-  if (variant.includes('flyer')
-  || variant.includes('t-shirt')
-  || variant.includes('print')) {
-    categoriesDesktopWrapper.remove();
   }
 }
 
@@ -1856,7 +1722,6 @@ async function buildTemplateList(block, props, type = []) {
 
   if (templates && props.toolBar) {
     await decorateToolbar(block, props);
-    if (!block.classList.contains(TWO_ROW)) await decorateCategoryList(block, props);
   }
 
   if (props.toolBar && props.searchBar) {
