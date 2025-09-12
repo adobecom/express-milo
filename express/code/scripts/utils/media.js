@@ -143,6 +143,10 @@ export function transformLinkToAnimation($a, $videoLooping = true, hasControls =
 
   const isLegacy = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') || videoUrl.pathname.includes('media_');
   const $video = createTag('video', attribs);
+  if ($a?.dataset?.title) {
+    $video.setAttribute('title', $a.dataset.title);
+    $a.removeAttribute('data-title');
+  }
   if (isLegacy) {
     const helixId = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') ? videoUrl.pathname.split('/')[2] : videoUrl.pathname.split('media_')[1].split('.')[0];
     const videoHref = `./media_${helixId}.mp4`;
@@ -168,7 +172,6 @@ export function transformLinkToAnimation($a, $videoLooping = true, hasControls =
   });
   // TODO: make this authorable or edit all blocks that use this func
   if (hasControls) createAccessibilityVideoControls($video);
-  // addAnimationToggle($video);
 
   return $video;
 }
