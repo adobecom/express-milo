@@ -466,9 +466,6 @@ function createStep(number, content) {
 }
 
 export default async function decorate(block) {
-  const metadata = block?.parentElement?.querySelector('.section-metadata');
-  const allyTitleForVideo = metadata?.children[1]?.children[1]?.textContent;
-
   const [utils, gNavUtils, placeholders] = await Promise.all([import(`${getLibs()}/utils/utils.js`),
     import(`${getLibs()}/blocks/global-navigation/utilities/utilities.js`),
     import(`${getLibs()}/features/placeholders.js`),
@@ -503,8 +500,6 @@ export default async function decorate(block) {
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });
-
-  if (animation && allyTitleForVideo) animation?.setAttribute('data-title', allyTitleForVideo);
 
   if (animation && animation.href.includes('.mp4')) {
     animationContainer.append(transformLinkToAnimation(animation));

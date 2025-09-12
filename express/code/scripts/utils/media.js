@@ -123,6 +123,9 @@ export async function createAccessibilityVideoControls(videoElement) {
 }
 
 export function transformLinkToAnimation($a, $videoLooping = true, hasControls = true) {
+  const metadata = $a?.closest('.section')?.querySelector('.section-metadata');
+  const allyTitleForVideo = metadata?.children[1]?.children[1]?.textContent?.trim();
+
   if (!$a || !$a.href || !$a.href.endsWith('.mp4')) {
     return null;
   }
@@ -143,9 +146,9 @@ export function transformLinkToAnimation($a, $videoLooping = true, hasControls =
 
   const isLegacy = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') || videoUrl.pathname.includes('media_');
   const $video = createTag('video', attribs);
-  if ($a?.dataset?.title) {
-    $video.setAttribute('title', $a.dataset.title);
-    $a.removeAttribute('data-title');
+
+  if (allyTitleForVideo) {
+    $video?.setAttribute('title', allyTitleForVideo);
   }
   if (isLegacy) {
     const helixId = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') ? videoUrl.pathname.split('/')[2] : videoUrl.pathname.split('media_')[1].split('.')[0];
