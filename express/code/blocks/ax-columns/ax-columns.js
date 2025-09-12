@@ -575,7 +575,7 @@ export default async function decorate(block) {
       placeholder: 'Enter your business name',
       cta: 'Create now',
       ctaHref: originalHref,
-      paramKey: 'businessName',
+      paramKey: 'logoMakerBusinessName',
     });
     buttonContainer.replaceWith(inputBox);
   }
