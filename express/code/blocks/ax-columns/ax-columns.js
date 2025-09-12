@@ -563,6 +563,22 @@ export default async function decorate(block) {
     });
     buttonContainer.replaceWith(inputBox);
   }
+  else if (
+    'express-quick-action-name' === sectionMetadataKey?.toLowerCase() &&
+    'logo-maker' === sectionMetadataValue?.toLowerCase()
+  ) {
+    const buttonContainer = block.querySelector('.button-container');
+    const originalHref = buttonContainer?.querySelector('a')?.getAttribute('href') || '#';
+    await loadStylesForTextInputBoxWithCTA();
+    const inputBox = createTextInputBoxWithCTA({
+      label: 'Business Name',
+      placeholder: 'Enter your business name',
+      cta: 'Create now',
+      ctaHref: originalHref,
+      paramKey: 'businessName',
+    });
+    buttonContainer.replaceWith(inputBox);
+  }
 
   if (document.querySelector('main > div > div') === block && ['on', 'yes'].includes(getMetadata('marquee-inject-logo')?.toLowerCase())) {
     const logo = getIconElementDeprecated('adobe-express-logo');

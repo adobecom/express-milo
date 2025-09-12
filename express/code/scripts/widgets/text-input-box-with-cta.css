@@ -55,6 +55,7 @@
 
 .input-box-input-element {
     font-size: var(--input-box-text-font-size);
+    font-style: italic;
     color: var(--input-box-text-color);
     font-weight: var(--input-box-text-font-weight);
     line-height: var(--input-box-text-line-height);
