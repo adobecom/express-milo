@@ -1435,3 +1435,7 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
   display: none;
   height: 0px;
 }
+
+main .section.zero-margin:not([data-padding='none']) .content:first-child {
+  padding-top: 0px;
+}
