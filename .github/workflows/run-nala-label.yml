@@ -91,6 +91,9 @@ jobs:
             const labels = pr.data.labels.map(label => label.name);
             const isTestMode = labels.includes('test-qa-workflow');
             
+            console.log(`Current labels on PR #${number}:`, labels);
+            console.log(`Is test mode enabled: ${isTestMode}`);
+            
             if (isTestMode) {
               console.log(`Test mode enabled for PR #${number} - simulating 2 approvals`);
               approvalCount = 2;
