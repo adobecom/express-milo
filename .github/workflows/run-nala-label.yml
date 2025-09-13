@@ -109,6 +109,7 @@ jobs:
             
             // If 2+ approvals and no request changes, move to Ready for QA
             if (approvalCount >= 2 && !hasRequestChanges) {
+              console.log(`Moving to Ready for QA - ${approvalCount} approvals, no request changes`);
               // Remove Ready for review label (try both variations)
               const reviewLabels = ['Ready for review', 'Ready for Review'];
               for (const labelName of reviewLabels) {
@@ -137,6 +138,7 @@ jobs:
             } 
             // If less than 2 approvals or has request changes, ensure Ready for review
             else if (approvalCount < 2 || hasRequestChanges) {
+              console.log(`Moving to Ready for review - ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
               // Remove Ready for QA label if it exists
               try {
                 await github.rest.issues.removeLabel({
@@ -160,6 +162,8 @@ jobs:
                 });
                 console.log(`Added "Ready for review" label to PR #${number}`);
               }
+            } else {
+              console.log(`No action taken - ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
             }
 
   action:
