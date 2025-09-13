@@ -261,6 +261,28 @@
   overflow: visible;
   fill: var(--color-gray-700);
 }
+
+.ax-template-x-promo .template .button-container .share-button {
+  cursor: pointer;
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background-color: transparent;
+  overflow: visible;
+  fill: var(--color-gray-700);
+  border: none;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ax-template-x-promo .template .button-container .share-button:focus-visible {
+  outline: 2px solid var(--color-blue-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 .ax-template-x-promo .template .button-container .shared-tooltip {
   visibility: hidden;
   position: absolute;
@@ -407,11 +429,16 @@
   height: auto;
 }
 .ax-template-x-promo button:focus-visible,
-.ax-template-x-promo a:focus-visible,
-.ax-template-x-promo [tabindex="0"]:focus-visible {
+.ax-template-x-promo a:focus-visible:not(.cta-link),
+.ax-template-x-promo [tabindex="0"]:focus-visible:not(.cta-link) {
   outline: 2px solid var(--color-blue-600);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Disable focus-visible for cta-link */
+.ax-template-x-promo .cta-link:focus-visible {
+  outline: none;
 }
 .ax-template-x-promo .collapsible-rows {
   padding: 0;
@@ -501,7 +528,9 @@
   background-color: var(--color-gray-100);
 }
 
-.ax-template-x-promo .template.current-template:hover .button-container {
+.ax-template-x-promo .template.current-template:hover .button-container,
+.ax-template-x-promo .template.current-template:focus .button-container,
+.ax-template-x-promo .template.singleton-hover .button-container {
   opacity: 1;
   pointer-events: initial;
 }
@@ -510,7 +539,9 @@
   opacity: 1;
 }
 
-.ax-template-x-promo.multiple-up.two-up .template:hover .button-container {
+.ax-template-x-promo.multiple-up.two-up .template:hover .button-container,
+.ax-template-x-promo.multiple-up.two-up .template:focus .button-container,
+.ax-template-x-promo.multiple-up.two-up .template.singleton-hover .button-container {
   opacity: 1;
   pointer-events: initial;
 }
@@ -618,7 +649,9 @@
     background-color: var(--color-gray-100);
   }
 
-  .ax-template-x-promo .template:hover .button-container {
+  .ax-template-x-promo .template:hover .button-container,
+  .ax-template-x-promo .template:focus .button-container,
+  .ax-template-x-promo .template.singleton-hover .button-container {
     opacity: 1;
     pointer-events: initial;
     flex-direction: column-reverse;

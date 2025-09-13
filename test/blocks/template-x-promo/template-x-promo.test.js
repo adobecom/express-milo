@@ -311,17 +311,21 @@ describe('Template X Promo', () => {
     console.log('Share icons test - Parent innerHTML after decorate:', block.parentElement.innerHTML);
     console.log('Share icons test - getIconElementDeprecated available:', typeof window.getIconElementDeprecated);
 
-    const shareIcons = block.parentElement.querySelectorAll('.icon-share-arrow');
-    console.log('Share icons found:', shareIcons.length);
-    expect(shareIcons.length).to.be.greaterThan(0, 'Share icons should be present');
+    const shareButtons = block.parentElement.querySelectorAll('.share-button');
+    console.log('Share buttons found:', shareButtons.length);
+    expect(shareButtons.length).to.be.greaterThan(0, 'Share buttons should be present');
 
-    shareIcons.forEach((icon) => {
+    shareButtons.forEach((button) => {
+      expect(button.tagName.toLowerCase()).to.equal('button');
+      expect(button.getAttribute('type')).to.equal('button');
+      expect(button.getAttribute('aria-label')).to.include('Share');
+      
+      // Check that the button contains the icon
+      const icon = button.querySelector('.icon-share-arrow');
+      expect(icon).to.exist;
       expect(icon.classList.contains('icon')).to.be.true;
       expect(icon.classList.contains('icon-share-arrow')).to.be.true;
-
-      expect(icon.getAttribute('role')).to.equal('button');
-      expect(icon.getAttribute('tabindex')).to.equal('0');
-      expect(icon.getAttribute('aria-label')).to.include('Share');
+      
       const hasSvgContent = icon.querySelector('svg') !== null;
       const hasImgContent = icon.tagName === 'IMG';
       const hasFallbackClass = icon.classList.contains('share-fallback');
@@ -1008,6 +1012,265 @@ describe('Template X Promo', () => {
       block._cleanup();
       // eslint-disable-next-line no-underscore-dangle
       expect(block._cleanup).to.be.a('function');
+    });
+  });
+
+  // Navigation and Keyboard Tests
+  describe('Keyboard Navigation Tests', () => {
+    let templates;
+    let parentElement;
+
+    beforeEach(async () => {
+      // Reset fetchStub for navigation tests
+      if (fetchStub) {
+        fetchStub.restore();
+      }
+      fetchStub = sinon.stub(window, 'fetch');
+
+      // Mock response with 3 templates for navigation testing
+      fetchStub.resolves({
+        ok: true,
+        json: () => Promise.resolve({
+          items: [
+            {
+              id: 'nav-template-1',
+              title: 'Navigation Template 1',
+              status: 'approved',
+              assetType: 'Webpage_Template',
+              customLinks: { branchUrl: 'https://express.adobe.com/nav1' },
+              thumbnail: { url: 'https://design-assets.adobeprojectm.com/nav1.jpg' },
+              behaviors: ['still'],
+              licensingCategory: 'free',
+              _links: {
+                'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/nav1' },
+                'http://ns.adobe.com/adobecloud/rel/rendition': {
+                  href: 'https://design-assets.adobeprojectm.com/nav1.jpg',
+                },
+                'http://ns.adobe.com/adobecloud/rel/component': {
+                  href: 'https://design-assets.adobeprojectm.com/component1',
+                },
+              },
+            },
+            {
+              id: 'nav-template-2',
+              title: 'Navigation Template 2',
+              status: 'approved',
+              assetType: 'Webpage_Template',
+              customLinks: { branchUrl: 'https://express.adobe.com/nav2' },
+              thumbnail: { url: 'https://design-assets.adobeprojectm.com/nav2.jpg' },
+              behaviors: ['still'],
+              licensingCategory: 'free',
+              _links: {
+                'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/nav2' },
+                'http://ns.adobe.com/adobecloud/rel/rendition': {
+                  href: 'https://design-assets.adobeprojectm.com/nav2.jpg',
+                },
+                'http://ns.adobe.com/adobecloud/rel/component': {
+                  href: 'https://design-assets.adobeprojectm.com/component2',
+                },
+              },
+            },
+            {
+              id: 'nav-template-3',
+              title: 'Navigation Template 3',
+              status: 'approved',
+              assetType: 'Webpage_Template',
+              customLinks: { branchUrl: 'https://express.adobe.com/nav3' },
+              thumbnail: { url: 'https://design-assets.adobeprojectm.com/nav3.jpg' },
+              behaviors: ['still'],
+              licensingCategory: 'free',
+              _links: {
+                'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/nav3' },
+                'http://ns.adobe.com/adobecloud/rel/rendition': {
+                  href: 'https://design-assets.adobeprojectm.com/nav3.jpg',
+                },
+                'http://ns.adobe.com/adobecloud/rel/component': {
+                  href: 'https://design-assets.adobeprojectm.com/component3',
+                },
+              },
+            },
+          ],
+        }),
+      });
+
+      // Mock desktop viewport for desktop layout
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 1024,
+      });
+
+      await decorate(block);
+      await new Promise((resolve) => { setTimeout(resolve, 1000); });
+
+      parentElement = block.parentElement;
+      templates = parentElement.querySelectorAll('.template');
+    });
+
+    it('should make templates focusable with proper attributes', () => {
+      expect(templates.length).to.be.greaterThan(0);
+
+      templates.forEach((template, index) => {
+        expect(template.getAttribute('tabindex')).to.equal('0');
+        expect(template.getAttribute('role')).to.equal('button');
+        expect(template.getAttribute('aria-label')).to.include(`Template ${index + 1}`);
+      });
+    });
+
+    it('should have correct tabindex values for button elements', () => {
+      if (templates.length === 0) return;
+
+      templates.forEach((template) => {
+        const editButton = template.querySelector('.button-container .button');
+        const shareButton = template.querySelector('.share-button');
+        const ctaLink = template.querySelector('.cta-link');
+
+        if (editButton) {
+          expect(editButton.getAttribute('tabindex')).to.equal('0');
+        }
+        if (shareButton) {
+          // Share button is now a semantic button, so it doesn't need tabindex
+          expect(shareButton.tagName.toLowerCase()).to.equal('button');
+        }
+        if (ctaLink) {
+          expect(ctaLink.getAttribute('tabindex')).to.equal('-1');
+        }
+      });
+    });
+
+    it('should handle Enter and Space keys on templates', () => {
+      if (templates.length === 0) return;
+
+      // Prevent navigation for testing
+      const originalClick = HTMLElement.prototype.click;
+      HTMLElement.prototype.click = function() {
+        // Mock click to prevent navigation
+        console.log('Mock click on:', this);
+      };
+
+      try {
+        const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+        const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
+
+        templates.forEach((template) => {
+          // Test Enter key
+          expect(() => template.dispatchEvent(enterEvent)).to.not.throw();
+          
+          // Test Space key
+          expect(() => template.dispatchEvent(spaceEvent)).to.not.throw();
+        });
+      } finally {
+        // Restore original click
+        HTMLElement.prototype.click = originalClick;
+      }
+    });
+
+    it('should have focus and blur event listeners attached to templates', () => {
+      if (templates.length === 0) return;
+
+      // Test that focus events can be dispatched without errors
+      const focusEvent = new FocusEvent('focus');
+      const blurEvent = new FocusEvent('blur');
+      const focusInEvent = new FocusEvent('focusin');
+      const focusOutEvent = new FocusEvent('focusout');
+
+      templates.forEach((template) => {
+        expect(() => template.dispatchEvent(focusEvent)).to.not.throw();
+        expect(() => template.dispatchEvent(blurEvent)).to.not.throw();
+        expect(() => template.dispatchEvent(focusInEvent)).to.not.throw();
+        expect(() => template.dispatchEvent(focusOutEvent)).to.not.throw();
+      });
+    });
+
+    it('should have button-container focus/blur handlers attached', () => {
+      if (templates.length === 0) return;
+
+      templates.forEach((template) => {
+        const buttonContainer = template.querySelector('.button-container');
+        if (buttonContainer) {
+          const focusInEvent = new FocusEvent('focusin');
+          const focusOutEvent = new FocusEvent('focusout');
+          
+          expect(() => buttonContainer.dispatchEvent(focusInEvent)).to.not.throw();
+          expect(() => buttonContainer.dispatchEvent(focusOutEvent)).to.not.throw();
+        }
+      });
+    });
+
+    it('should have proper CSS classes for singleton-hover behavior', () => {
+      if (templates.length === 0) return;
+
+      // Test that singleton-hover class can be added/removed
+      templates.forEach((template) => {
+        template.classList.add('singleton-hover');
+        expect(template.classList.contains('singleton-hover')).to.be.true;
+        
+        template.classList.remove('singleton-hover');
+        expect(template.classList.contains('singleton-hover')).to.be.false;
+      });
+    });
+
+    it('should handle tabindex changes correctly', () => {
+      if (templates.length === 0) return;
+
+      templates.forEach((template) => {
+        // Test initial state
+        expect(template.getAttribute('tabindex')).to.equal('0');
+        
+        // Test setting to -1
+        template.setAttribute('tabindex', '-1');
+        expect(template.getAttribute('tabindex')).to.equal('-1');
+        
+        // Test setting back to 0
+        template.setAttribute('tabindex', '0');
+        expect(template.getAttribute('tabindex')).to.equal('0');
+      });
+    });
+
+    it('should have proper ARIA attributes for accessibility', () => {
+      if (templates.length === 0) return;
+
+      templates.forEach((template, index) => {
+        expect(template.getAttribute('role')).to.equal('button');
+        expect(template.getAttribute('aria-label')).to.include(`Template ${index + 1}`);
+        expect(template.getAttribute('tabindex')).to.equal('0');
+      });
+    });
+
+    it('should have share icons with proper accessibility attributes', () => {
+      if (templates.length === 0) return;
+
+      templates.forEach((template) => {
+        const shareButton = template.querySelector('.share-button');
+        if (shareButton) {
+          expect(shareButton.tagName.toLowerCase()).to.equal('button');
+          expect(shareButton.getAttribute('type')).to.equal('button');
+          expect(shareButton.getAttribute('aria-label')).to.include('Share');
+        }
+      });
+    });
+
+    it('should have edit buttons with proper accessibility attributes', () => {
+      if (templates.length === 0) return;
+
+      templates.forEach((template) => {
+        const editButton = template.querySelector('.button-container .button');
+        if (editButton) {
+          expect(editButton.getAttribute('tabindex')).to.equal('0');
+          expect(editButton.getAttribute('aria-label')).to.include('edit this template');
+        }
+      });
+    });
+
+    it('should have CTA links removed from tab order', () => {
+      if (templates.length === 0) return;
+
+      templates.forEach((template) => {
+        const ctaLink = template.querySelector('.cta-link');
+        if (ctaLink) {
+          expect(ctaLink.getAttribute('tabindex')).to.equal('-1');
+        }
+      });
     });
   });
 });

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 import {
   extractTemplateMetadata,
@@ -50,18 +51,54 @@ async function createDirectCarousel(block, templates, createTagFn) {
     'aria-describedby': carouselId,
   });
 
-  prevBtn.innerHTML = `
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false" role="img">
-      <circle cx="16" cy="16" r="16" fill="#FFFFFF"></circle>
-      <path d="M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-    </svg>
-  `;
-  nextBtn.innerHTML = `
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false" role="img">
-      <circle cx="16" cy="16" r="16" fill="#FFFFFF"></circle>
-      <path d="M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
-    </svg>
-  `;
+  const prevSvg = createTagFn('svg', {
+    width: '32',
+    height: '32',
+    viewBox: '0 0 32 32',
+    fill: 'none',
+    'aria-hidden': 'true',
+    focusable: 'false',
+    role: 'img',
+  });
+  const prevCircle = createTagFn('circle', {
+    cx: '16',
+    cy: '16',
+    r: '16',
+    fill: '#FFFFFF',
+  });
+  const prevPath = createTagFn('path', {
+    d: 'M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996',
+    stroke: '#292929',
+    'stroke-width': '3',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+  });
+  prevSvg.append(prevCircle, prevPath);
+  prevBtn.append(prevSvg);
+  const nextSvg = createTagFn('svg', {
+    width: '32',
+    height: '32',
+    viewBox: '0 0 32 32',
+    fill: 'none',
+    'aria-hidden': 'true',
+    focusable: 'false',
+    role: 'img',
+  });
+  const nextCircle = createTagFn('circle', {
+    cx: '16',
+    cy: '16',
+    r: '16',
+    fill: '#FFFFFF',
+  });
+  const nextPath = createTagFn('path', {
+    d: 'M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996',
+    stroke: '#292929',
+    'stroke-width': '3',
+    'stroke-linecap': 'round',
+    'stroke-linejoin': 'round',
+  });
+  nextSvg.append(nextCircle, nextPath);
+  nextBtn.append(nextSvg);
 
   navControls.append(prevBtn, nextBtn);
 
@@ -70,7 +107,9 @@ async function createDirectCarousel(block, templates, createTagFn) {
       return;
     }
 
-    track.innerHTML = '';
+    while (track.firstChild) {
+      track.removeChild(track.firstChild);
+    }
 
     const prevIndex = currentIndex === 0 ? templateCount - 1 : currentIndex - 1;
     const nextIndex = currentIndex === templateCount - 1 ? 0 : currentIndex + 1;
@@ -216,7 +255,9 @@ async function createDirectCarousel(block, templates, createTagFn) {
 async function handleOneUpFromApiData(block, templateData) {
   const parent = block.parentElement;
   parent.classList.add('one-up');
-  block.innerHTML = '';
+  while (block.firstChild) {
+    block.removeChild(block.firstChild);
+  }
 
   const metadata = extractTemplateMetadata(templateData);
 
@@ -238,7 +279,6 @@ async function handleOneUpFromApiData(block, templateData) {
   const imgWrapper = createTag('div', { class: 'image-wrapper' });
   imgWrapper.append(img);
 
-  // Add free tag or premium icon based on template data
   if (metadata.isFree) {
     const freeTag = createTag('span', { class: 'free-tag' });
     freeTag.textContent = 'Free';
@@ -283,6 +323,8 @@ async function createTemplateElementForCarousel(templateData) {
 
 async function createDesktopLayout(block, templates) {
   try {
+    let currentHoveredElement = null;
+    const eventListeners = new Map();
     const templateElements = await Promise.all(
       templates.map((template) => createTemplateElementForCarousel(template)),
     );
@@ -299,14 +341,186 @@ async function createDesktopLayout(block, templates) {
       parent.classList.add('four-up');
     }
 
-    templateElements.forEach((template) => {
+    const addTrackedListener = (element, event, handler) => {
+      element.addEventListener(event, handler);
+      if (!eventListeners.has(element)) {
+        eventListeners.set(element, []);
+      }
+      eventListeners.get(element).push({ event, handler });
+    };
+
+    templateElements.forEach((template, index) => {
+      template.setAttribute('tabindex', '0');
+      template.setAttribute('role', 'button');
+      template.setAttribute('aria-label', `Template ${index + 1} of ${templateCount}`);
+
       parent.append(template);
+    });
+
+    const handleKeyboard = (event) => {
+      const currentIndex = Array.from(templateElements).indexOf(event.target);
+
+      if (currentIndex === -1) return; // Not one of our templates
+
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        const prevIndex = currentIndex === 0 ? templateElements.length - 1 : currentIndex - 1;
+        templateElements[prevIndex].focus();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        const nextIndex = currentIndex === templateElements.length - 1 ? 0 : currentIndex + 1;
+        templateElements[nextIndex].focus();
+      } else if (event.key === 'Home') {
+        event.preventDefault();
+        templateElements[0].focus();
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        templateElements[templateElements.length - 1].focus();
+      } else if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        const editButton = event.target.querySelector('.button-container .button');
+        if (editButton) {
+          editButton.click();
+        }
+      }
+    };
+
+    const handleFocus = (event) => {
+      if (event.target.classList.contains('template')) {
+        if (!event.target.classList.contains('singleton-hover')) {
+          const templatesWithHover = document.querySelectorAll('.ax-template-x-promo .template.singleton-hover');
+          templatesWithHover.forEach((template) => {
+            if (template !== event.target) {
+              template.classList.remove('singleton-hover');
+              template.setAttribute('tabindex', '0');
+            }
+          });
+
+          event.target.classList.add('singleton-hover');
+          event.target.setAttribute('tabindex', '-1');
+
+          const editButton = event.target.querySelector('.button-container .button');
+          if (editButton) {
+            editButton.focus();
+          }
+        }
+      }
+    };
+
+    const handleBlur = (event) => {
+      if (event.target.classList.contains('template')) {
+        if (event.target.classList.contains('singleton-hover')) {
+          const isMovingToChild = event.relatedTarget
+            && event.relatedTarget.closest('.template') === event.target
+            && event.relatedTarget.closest('.button-container');
+
+          if (!isMovingToChild) {
+            event.target.classList.remove('singleton-hover');
+            event.target.setAttribute('tabindex', '0');
+          }
+        }
+      }
+    };
+
+    const fixTemplateElements = (template, addTrackedListenerFn) => {
+      const editButton = template.querySelector('.button-container .button');
+      if (editButton) {
+        editButton.setAttribute('tabindex', '0');
+      }
+
+      const ctaLink = template.querySelector('.cta-link');
+      if (ctaLink) {
+        ctaLink.setAttribute('tabindex', '-1');
+      }
+
+      const shareArrow = template.querySelector('.share-icon-wrapper img');
+      if (shareArrow) {
+        const shareButton = createTag('button', {
+          class: 'share-button',
+          'aria-label': shareArrow.getAttribute('aria-label') || 'Share',
+          type: 'button',
+        });
+
+        const iconClone = shareArrow.cloneNode(true);
+        iconClone.removeAttribute('role');
+        iconClone.removeAttribute('tabindex');
+        iconClone.removeAttribute('aria-label');
+        shareButton.appendChild(iconClone);
+
+        const clickHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          shareArrow.click();
+        };
+
+        const keypressHandler = (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          e.stopPropagation();
+          shareArrow.click();
+        };
+
+        shareButton.addEventListener('click', clickHandler);
+        shareButton.addEventListener('keydown', keypressHandler);
+
+        shareArrow.parentNode.replaceChild(shareButton, shareArrow);
+      }
+
+      const buttonContainer = template.querySelector('.button-container');
+      if (buttonContainer) {
+        const buttonContainerFocusHandler = (e) => {
+          if (e.target.closest('.button-container')) {
+            if (currentHoveredElement && currentHoveredElement.classList) {
+              currentHoveredElement.classList.remove('singleton-hover');
+            }
+            const templateEl = e.target.closest('.template');
+            currentHoveredElement = templateEl;
+            if (currentHoveredElement && currentHoveredElement.classList) {
+              currentHoveredElement.classList.add('singleton-hover');
+            }
+          }
+        };
+
+        const buttonContainerBlurHandler = (e) => {
+          if (!e.relatedTarget
+              || (!e.relatedTarget.closest('.template')
+              && !e.relatedTarget.closest('.button-container'))) {
+            if (currentHoveredElement && currentHoveredElement.classList) {
+              currentHoveredElement.classList.remove('singleton-hover');
+            }
+            currentHoveredElement = null;
+          }
+        };
+
+        addTrackedListenerFn(buttonContainer, 'focusin', buttonContainerFocusHandler);
+        addTrackedListenerFn(buttonContainer, 'focusout', buttonContainerBlurHandler);
+      }
+    };
+
+    templateElements.forEach((template) => {
+      addTrackedListener(template, 'focus', handleFocus);
+      addTrackedListener(template, 'blur', handleBlur);
+
+      addTrackedListener(template, 'focusin', handleFocus);
+      addTrackedListener(template, 'focusout', handleBlur);
+
+      fixTemplateElements(template, addTrackedListener);
+    });
+
+    templateElements.forEach((template) => {
+      addTrackedListener(template, 'keydown', handleKeyboard);
     });
 
     return {
       currentIndex: () => 0,
       templateCount: () => templateElements.length,
       destroy: () => {
+        eventListeners.forEach((listeners, element) => {
+          listeners.forEach(({ event, handler }) => {
+            element.removeEventListener(event, handler);
+          });
+        });
+        eventListeners.clear();
       },
     };
   } catch (e) {
@@ -317,6 +531,8 @@ async function createDesktopLayout(block, templates) {
 
 export async function createCustomCarousel(block, templates) {
   try {
+    let currentHoveredElement = null;
+    const eventListeners = new Map();
     const templateElements = await Promise.all(
       templates.map((template) => createTemplateElementForCarousel(template)),
     );
@@ -333,10 +549,105 @@ export async function createCustomCarousel(block, templates) {
       parent.classList.add('four-up');
     }
 
+    const addTrackedListener = (element, event, handler) => {
+      element.addEventListener(event, handler);
+      if (!eventListeners.has(element)) {
+        eventListeners.set(element, []);
+      }
+      eventListeners.get(element).push({ event, handler });
+    };
+
+    const fixTemplateElements = (template, addTrackedListenerFn) => {
+      const editButton = template.querySelector('.button-container .button');
+      if (editButton) {
+        editButton.setAttribute('tabindex', '0');
+      }
+
+      const ctaLink = template.querySelector('.cta-link');
+      if (ctaLink) {
+        ctaLink.setAttribute('tabindex', '-1');
+      }
+
+      const shareArrow = template.querySelector('.share-icon-wrapper img');
+      if (shareArrow) {
+        const shareButton = createTag('button', {
+          class: 'share-button',
+          'aria-label': shareArrow.getAttribute('aria-label') || 'Share',
+          type: 'button',
+        });
+
+        const iconClone = shareArrow.cloneNode(true);
+        iconClone.removeAttribute('role');
+        iconClone.removeAttribute('tabindex');
+        iconClone.removeAttribute('aria-label');
+        shareButton.appendChild(iconClone);
+
+        const clickHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          shareArrow.click();
+        };
+
+        const keypressHandler = (e) => {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          e.stopPropagation();
+          shareArrow.click();
+        };
+
+        shareButton.addEventListener('click', clickHandler);
+        shareButton.addEventListener('keydown', keypressHandler);
+
+        shareArrow.parentNode.replaceChild(shareButton, shareArrow);
+      }
+
+      const buttonContainer = template.querySelector('.button-container');
+      if (buttonContainer) {
+        const buttonContainerFocusHandler = (e) => {
+          if (e.target.closest('.button-container')) {
+            if (currentHoveredElement && currentHoveredElement.classList) {
+              currentHoveredElement.classList.remove('singleton-hover');
+            }
+            const templateEl = e.target.closest('.template');
+            currentHoveredElement = templateEl;
+            if (currentHoveredElement && currentHoveredElement.classList) {
+              currentHoveredElement.classList.add('singleton-hover');
+            }
+          }
+        };
+
+        const buttonContainerBlurHandler = (e) => {
+          if (!e.relatedTarget
+              || (!e.relatedTarget.closest('.template')
+              && !e.relatedTarget.closest('.button-container'))) {
+            if (currentHoveredElement && currentHoveredElement.classList) {
+              currentHoveredElement.classList.remove('singleton-hover');
+            }
+            currentHoveredElement = null;
+          }
+        };
+
+        addTrackedListenerFn(buttonContainer, 'focusin', buttonContainerFocusHandler);
+        addTrackedListenerFn(buttonContainer, 'focusout', buttonContainerBlurHandler);
+      }
+    };
+
+    templateElements.forEach((template) => fixTemplateElements(template, addTrackedListener));
+
     const carousel = await createDirectCarousel(block, templateElements, createTag);
 
-    // eslint-disable-next-line no-underscore-dangle
     block._carousel = carousel;
+
+    const originalDestroy = carousel.destroy || (() => {});
+    carousel.destroy = () => {
+      eventListeners.forEach((listeners, element) => {
+        listeners.forEach(({ event, handler }) => {
+          element.removeEventListener(event, handler);
+        });
+      });
+      eventListeners.clear();
+      originalDestroy();
+    };
 
     return carousel;
   } catch (e) {
@@ -407,11 +718,12 @@ const handleApiDrivenTemplates = async (block, apiUrl, cachedTemplates = null) =
     } else {
       const response = await fetchDirectFromApiUrl(apiUrl);
       templates = response.templates;
-      // eslint-disable-next-line no-underscore-dangle
       block._cachedTemplates = templates;
     }
 
-    block.innerHTML = '';
+    while (block.firstChild) {
+      block.removeChild(block.firstChild);
+    }
 
     const parent = block.parentElement;
     const existingTemplates = parent.querySelectorAll('.template');
@@ -419,8 +731,7 @@ const handleApiDrivenTemplates = async (block, apiUrl, cachedTemplates = null) =
 
     await routeTemplates(block, templates);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error in handleApiDrivenTemplates:', error);
+    // Error handling for API-driven templates
   }
 };
 
@@ -461,24 +772,21 @@ export default async function decorate(block) {
       const hasDesktopLayout = block.parentElement?.querySelector(selectors.desktop);
 
       if (hasCarousel && !isMobile) {
-        // eslint-disable-next-line no-underscore-dangle
         if (block._carousel && block._carousel.destroy) {
-          // eslint-disable-next-line no-underscore-dangle
           block._carousel.destroy();
-          // eslint-disable-next-line no-underscore-dangle
           block._carousel = null;
         }
 
-        block.innerHTML = '';
+        while (block.firstChild) {
+          block.removeChild(block.firstChild);
+        }
 
-        // eslint-disable-next-line no-underscore-dangle
         handleApiDrivenTemplates(block, apiUrl, block._cachedTemplates);
       } else if (hasDesktopLayout && isMobile) {
         const parent = block.parentElement;
         const existingTemplates = parent.querySelectorAll('.template');
         existingTemplates.forEach((template) => template.remove());
 
-        // eslint-disable-next-line no-underscore-dangle
         handleApiDrivenTemplates(block, apiUrl, block._cachedTemplates);
       }
     };
@@ -495,22 +803,19 @@ export default async function decorate(block) {
       const hasDesktopLayout = block.parentElement?.querySelector(selectors.desktop);
 
       if (hasCarousel && !isMobile) {
-        // eslint-disable-next-line no-underscore-dangle
         if (block._carousel && block._carousel.destroy) {
-          // eslint-disable-next-line no-underscore-dangle
           block._carousel.destroy();
-          // eslint-disable-next-line no-underscore-dangle
           block._carousel = null;
         }
 
-        block.innerHTML = '';
+        while (block.firstChild) {
+          block.removeChild(block.firstChild);
+        }
 
-        // eslint-disable-next-line no-underscore-dangle
         let templates = block._cachedTemplates;
         if (!templates) {
           const response = await fetchDirectFromApiUrl(apiUrl);
           templates = response.templates;
-          // eslint-disable-next-line no-underscore-dangle
           block._cachedTemplates = templates;
         }
         await createDesktopLayout(block, templates);
@@ -519,12 +824,10 @@ export default async function decorate(block) {
         const existingTemplates = parent.querySelectorAll('.template');
         existingTemplates.forEach((template) => template.remove());
 
-        // eslint-disable-next-line no-underscore-dangle
         let templates = block._cachedTemplates;
         if (!templates) {
           const response = await fetchDirectFromApiUrl(apiUrl);
           templates = response.templates;
-          // eslint-disable-next-line no-underscore-dangle
           block._cachedTemplates = templates;
         }
         await createCustomCarousel(block, templates);
@@ -534,13 +837,10 @@ export default async function decorate(block) {
     window.addEventListener('resize', handleResponsiveChange);
     window.addEventListener('orientationchange', handleResponsiveOrientationChange);
 
-    // eslint-disable-next-line no-underscore-dangle
     block._cleanup = () => {
       window.removeEventListener('resize', handleResponsiveChange);
       window.removeEventListener('orientationchange', handleResponsiveOrientationChange);
-      // eslint-disable-next-line no-underscore-dangle
       if (block._carousel && block._carousel.destroy) {
-        // eslint-disable-next-line no-underscore-dangle
         block._carousel.destroy();
       }
     };
