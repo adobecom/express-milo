@@ -131,6 +131,9 @@ jobs:
                 }
               }
               
+              // Wait a moment for the removal to complete
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              
               // Add Ready for QA label
               await github.rest.issues.addLabels({
                 owner,
@@ -159,6 +162,9 @@ jobs:
                   console.log(`"Ready for QA" label not found on PR #${number}`);
                 }
               }
+              
+              // Wait a moment for the removal to complete
+              await new Promise(resolve => setTimeout(resolve, 1000));
               
               // Add Ready for review label if PR is not draft
               if (!pr.data.draft) {
