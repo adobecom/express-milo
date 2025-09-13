@@ -2,7 +2,7 @@ name: Nala Tests Label Trigger
 
 on:
   pull_request:
-    types: [ labeled, opened, synchronize, reopened, ready_for_review, converted_to_draft ]
+    types: [ labeled, opened, synchronize, reopened, ready_for_review, converted_to_draft, submitted ]
 
 jobs:
   manage-ready-for-review-label:
@@ -48,6 +48,101 @@ jobs:
             });
             
             console.log(`Removed "Ready for review" label from PR #${number}`);
+
+  manage-qa-labels:
+    name: Manage Ready for QA Labels
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' && (
+        github.event.action == 'submitted' ||
+        github.event.action == 'opened' ||
+        github.event.action == 'synchronize' ||
+        github.event.action == 'reopened'
+      )
+    steps:
+      - name: Check approvals and manage QA labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            
+            // Get PR reviews
+            const reviews = await github.rest.pulls.listReviews({
+              owner,
+              repo,
+              pull_number: number
+            });
+            
+            // Count approvals and check for request changes
+            let approvalCount = 0;
+            let hasRequestChanges = false;
+            
+            for (const review of reviews.data) {
+              if (review.state === 'APPROVED') {
+                approvalCount++;
+              } else if (review.state === 'CHANGES_REQUESTED') {
+                hasRequestChanges = true;
+              }
+            }
+            
+            console.log(`PR #${number}: ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
+            
+            // If 2+ approvals and no request changes, move to Ready for QA
+            if (approvalCount >= 2 && !hasRequestChanges) {
+              // Remove Ready for review label
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: number,
+                  name: 'Ready for review'
+                });
+                console.log(`Removed "Ready for review" label from PR #${number}`);
+              } catch (error) {
+                console.log(`"Ready for review" label not found on PR #${number}`);
+              }
+              
+              // Add Ready for QA label
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: number,
+                labels: ['Ready for QA']
+              });
+              console.log(`Added "Ready for QA" label to PR #${number}`);
+            } 
+            // If less than 2 approvals or has request changes, ensure Ready for review
+            else if (approvalCount < 2 || hasRequestChanges) {
+              // Remove Ready for QA label if it exists
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: number,
+                  name: 'Ready for QA'
+                });
+                console.log(`Removed "Ready for QA" label from PR #${number}`);
+              } catch (error) {
+                console.log(`"Ready for QA" label not found on PR #${number}`);
+              }
+              
+              // Add Ready for review label if PR is not draft
+              const pr = await github.rest.pulls.get({
+                owner,
+                repo,
+                pull_number: number
+              });
+              
+              if (!pr.data.draft) {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: number,
+                  labels: ['Ready for review']
+                });
+                console.log(`Added "Ready for review" label to PR #${number}`);
+              }
+            }
 
   action:
     name: Running Nala E2E UI Tests
