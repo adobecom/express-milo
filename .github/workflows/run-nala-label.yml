@@ -53,14 +53,7 @@ jobs:
     name: Manage Ready for QA Labels
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'pull_request' && (
-        github.event.action == 'submitted' ||
-        github.event.action == 'opened' ||
-        github.event.action == 'synchronize' ||
-        github.event.action == 'reopened' ||
-        github.event.action == 'labeled' ||
-        github.event.action == 'unlabeled'
-      )
+      github.event_name == 'pull_request'
     steps:
       - name: Check approvals and manage QA labels
         uses: actions/github-script@v7
