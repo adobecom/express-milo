@@ -134,6 +134,45 @@ jobs:
                 labels: ['Ready for QA']
               });
               console.log(`Added "Ready for QA" label to PR #${number}`);
+              
+              // Force UI refresh by updating PR title (invisible change)
+              try {
+                await github.rest.pulls.update({
+                  owner,
+                  repo,
+                  pull_number: number,
+                  title: pr.data.title + ' ' // Add invisible space
+                });
+                // Immediately revert the title change
+                await github.rest.pulls.update({
+                  owner,
+                  repo,
+                  pull_number: number,
+                  title: pr.data.title
+                });
+                console.log(`Forced UI refresh for PR #${number}`);
+              } catch (error) {
+                console.log(`Could not force UI refresh: ${error.message}`);
+              }
+              
+              // Additional UI refresh: Add and immediately delete a comment
+              try {
+                const comment = await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: number,
+                  body: '🔄 UI refresh trigger'
+                });
+                // Immediately delete the comment
+                await github.rest.issues.deleteComment({
+                  owner,
+                  repo,
+                  comment_id: comment.data.id
+                });
+                console.log(`Added comment-based UI refresh for PR #${number}`);
+              } catch (error) {
+                console.log(`Could not add comment refresh: ${error.message}`);
+              }
             } 
             // If less than 2 approvals or has request changes, ensure Ready for review
             else if (approvalCount < 2 || hasRequestChanges) {
@@ -167,6 +206,45 @@ jobs:
                   labels: ['Ready for Review']
                 });
                 console.log(`Added "Ready for Review" label to PR #${number}`);
+                
+                // Force UI refresh by updating PR title (invisible change)
+                try {
+                  await github.rest.pulls.update({
+                    owner,
+                    repo,
+                    pull_number: number,
+                    title: pr.data.title + ' ' // Add invisible space
+                  });
+                  // Immediately revert the title change
+                  await github.rest.pulls.update({
+                    owner,
+                    repo,
+                    pull_number: number,
+                    title: pr.data.title
+                  });
+                  console.log(`Forced UI refresh for PR #${number}`);
+                } catch (error) {
+                  console.log(`Could not force UI refresh: ${error.message}`);
+                }
+                
+                // Additional UI refresh: Add and immediately delete a comment
+                try {
+                  const comment = await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: number,
+                    body: '🔄 UI refresh trigger'
+                  });
+                  // Immediately delete the comment
+                  await github.rest.issues.deleteComment({
+                    owner,
+                    repo,
+                    comment_id: comment.data.id
+                  });
+                  console.log(`Added comment-based UI refresh for PR #${number}`);
+                } catch (error) {
+                  console.log(`Could not add comment refresh: ${error.message}`);
+                }
               }
             } else {
               console.log(`No action taken - ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
