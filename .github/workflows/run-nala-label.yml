@@ -123,7 +123,11 @@ jobs:
                   console.log(`Removed "${labelName}" label from PR #${number}`);
                   break; // Exit loop if successful
                 } catch (error) {
-                  console.log(`"${labelName}" label not found on PR #${number}`);
+                  if (error.status === 404) {
+                    console.log(`"${labelName}" label does not exist in repository`);
+                  } else {
+                    console.log(`"${labelName}" label not found on PR #${number}`);
+                  }
                 }
               }
               
@@ -149,7 +153,11 @@ jobs:
                 });
                 console.log(`Removed "Ready for QA" label from PR #${number}`);
               } catch (error) {
-                console.log(`"Ready for QA" label not found on PR #${number}`);
+                if (error.status === 404) {
+                  console.log(`"Ready for QA" label does not exist in repository`);
+                } else {
+                  console.log(`"Ready for QA" label not found on PR #${number}`);
+                }
               }
               
               // Add Ready for review label if PR is not draft
