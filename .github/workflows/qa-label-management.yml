@@ -123,8 +123,8 @@ jobs:
                 }
               }
               
-              // Wait a moment for the removal to complete
-              await new Promise(resolve => setTimeout(resolve, 1000));
+              // Wait longer for the removal to complete
+              await new Promise(resolve => setTimeout(resolve, 2000));
               
               // Add Ready for QA label
               await github.rest.issues.addLabels({
@@ -135,43 +135,24 @@ jobs:
               });
               console.log(`Added "Ready for QA" label to PR #${number}`);
               
-              // Force UI refresh by updating PR title (invisible change)
-              try {
-                await github.rest.pulls.update({
-                  owner,
-                  repo,
-                  pull_number: number,
-                  title: pr.data.title + ' ' // Add invisible space
-                });
-                // Immediately revert the title change
-                await github.rest.pulls.update({
-                  owner,
-                  repo,
-                  pull_number: number,
-                  title: pr.data.title
-                });
-                console.log(`Forced UI refresh for PR #${number}`);
-              } catch (error) {
-                console.log(`Could not force UI refresh: ${error.message}`);
-              }
+              // Wait for label to be processed
+              await new Promise(resolve => setTimeout(resolve, 1000));
               
-              // Additional UI refresh: Add and immediately delete a comment
+              // Subtle UI refresh: Update PR description with timestamp
               try {
-                const comment = await github.rest.issues.createComment({
+                const currentDesc = pr.data.body || '';
+                const timestamp = new Date().toISOString();
+                const newDesc = currentDesc.replace(/<!-- UI-REFRESH:.*?-->/g, '') + `\n\n<!-- UI-REFRESH:${timestamp} -->`;
+                
+                await github.rest.pulls.update({
                   owner,
                   repo,
-                  issue_number: number,
-                  body: '🔄 UI refresh trigger'
+                  pull_number: number,
+                  body: newDesc
                 });
-                // Immediately delete the comment
-                await github.rest.issues.deleteComment({
-                  owner,
-                  repo,
-                  comment_id: comment.data.id
-                });
-                console.log(`Added comment-based UI refresh for PR #${number}`);
+                console.log(`Updated PR description for UI refresh`);
               } catch (error) {
-                console.log(`Could not add comment refresh: ${error.message}`);
+                console.log(`Could not update PR description: ${error.message}`);
               }
             } 
             // If less than 2 approvals or has request changes, ensure Ready for review
@@ -194,8 +175,8 @@ jobs:
                 }
               }
               
-              // Wait a moment for the removal to complete
-              await new Promise(resolve => setTimeout(resolve, 1000));
+              // Wait longer for the removal to complete
+              await new Promise(resolve => setTimeout(resolve, 2000));
               
               // Add Ready for review label if PR is not draft
               if (!pr.data.draft) {
@@ -207,43 +188,24 @@ jobs:
                 });
                 console.log(`Added "Ready for Review" label to PR #${number}`);
                 
-                // Force UI refresh by updating PR title (invisible change)
-                try {
-                  await github.rest.pulls.update({
-                    owner,
-                    repo,
-                    pull_number: number,
-                    title: pr.data.title + ' ' // Add invisible space
-                  });
-                  // Immediately revert the title change
-                  await github.rest.pulls.update({
-                    owner,
-                    repo,
-                    pull_number: number,
-                    title: pr.data.title
-                  });
-                  console.log(`Forced UI refresh for PR #${number}`);
-                } catch (error) {
-                  console.log(`Could not force UI refresh: ${error.message}`);
-                }
+                // Wait for label to be processed
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                // Additional UI refresh: Add and immediately delete a comment
+                // Subtle UI refresh: Update PR description with timestamp
                 try {
-                  const comment = await github.rest.issues.createComment({
+                  const currentDesc = pr.data.body || '';
+                  const timestamp = new Date().toISOString();
+                  const newDesc = currentDesc.replace(/<!-- UI-REFRESH:.*?-->/g, '') + `\n\n<!-- UI-REFRESH:${timestamp} -->`;
+                  
+                  await github.rest.pulls.update({
                     owner,
                     repo,
-                    issue_number: number,
-                    body: '🔄 UI refresh trigger'
+                    pull_number: number,
+                    body: newDesc
                   });
-                  // Immediately delete the comment
-                  await github.rest.issues.deleteComment({
-                    owner,
-                    repo,
-                    comment_id: comment.data.id
-                  });
-                  console.log(`Added comment-based UI refresh for PR #${number}`);
+                  console.log(`Updated PR description for UI refresh`);
                 } catch (error) {
-                  console.log(`Could not add comment refresh: ${error.message}`);
+                  console.log(`Could not update PR description: ${error.message}`);
                 }
               }
             } else {
