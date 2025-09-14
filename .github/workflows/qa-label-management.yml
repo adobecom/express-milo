@@ -72,33 +72,62 @@ jobs:
               });
               console.log(`Set labels to: ${targetLabels.join(', ')}`);
               
-              // Force UI refresh by re-applying the main Ready label
+              // Force UI refresh using multiple strategies
               if (targetReadyLabels.length > 0) {
                 const mainLabel = targetReadyLabels[0];
-                console.log(`Forcing UI refresh by re-applying ${mainLabel}`);
+                console.log(`Forcing UI refresh using multiple strategies`);
                 
-                // Small delay to ensure first operation is processed
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                // Re-apply the main label to force UI refresh
+                // Strategy 1: Add a comment to trigger UI refresh
                 try {
-                  await github.rest.issues.removeLabel({
+                  await github.rest.issues.createComment({
                     owner,
                     repo,
                     issue_number: number,
-                    name: mainLabel
+                    body: `🔄 Label updated to: **${mainLabel}**`
                   });
+                  console.log(`Added comment for UI refresh`);
                   
-                  await github.rest.issues.addLabels({
+                  // Wait a moment for comment to be processed
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  
+                  // Delete the comment immediately
+                  const comments = await github.rest.issues.listComments({
                     owner,
                     repo,
-                    issue_number: number,
-                    labels: [mainLabel]
+                    issue_number: number
                   });
                   
-                  console.log(`Successfully re-applied ${mainLabel} for UI refresh`);
+                  const refreshComment = comments.data.find(comment => 
+                    comment.body.includes('🔄 Label updated to:')
+                  );
+                  
+                  if (refreshComment) {
+                    await github.rest.issues.deleteComment({
+                      owner,
+                      repo,
+                      comment_id: refreshComment.id
+                    });
+                    console.log(`Deleted refresh comment`);
+                  }
                 } catch (error) {
-                  console.log(`UI refresh failed: ${error.message}`);
+                  console.log(`Comment-based UI refresh failed: ${error.message}`);
+                }
+                
+                // Strategy 2: Update PR description with timestamp
+                try {
+                  const currentDesc = pr.data.body || '';
+                  const timestamp = new Date().toISOString();
+                  const newDesc = currentDesc.replace(/<!-- UI-REFRESH:.*?-->/g, '') + `\n\n<!-- UI-REFRESH:${timestamp} -->`;
+                  
+                  await github.rest.pulls.update({
+                    owner,
+                    repo,
+                    pull_number: number,
+                    body: newDesc
+                  });
+                  console.log(`Updated PR description for UI refresh`);
+                } catch (error) {
+                  console.log(`Description-based UI refresh failed: ${error.message}`);
                 }
               }
             } else {
