@@ -50,22 +50,31 @@ jobs:
               console.log(`Adding Ready for Review label`);
             }
             
-            // Set the exact label list
-            await github.rest.issues.setLabels({
-              owner,
-              repo,
-              issue_number: number,
-              labels: targetLabels
-            });
-            console.log(`Set labels to: ${targetLabels.join(', ')}`);
+            // Check if labels actually changed to avoid unnecessary operations
+            const currentReadyLabels = currentLabels.filter(label => 
+              label.includes('Ready for')
+            );
+            const targetReadyLabels = targetLabels.filter(label => 
+              label.includes('Ready for')
+            );
             
-            // Force UI refresh by re-applying the main Ready label
-            if (targetLabels.length > 0) {
-              const mainLabel = targetLabels.find(label => 
-                label.includes('Ready for')
-              );
+            const labelsChanged = JSON.stringify(currentReadyLabels.sort()) !== JSON.stringify(targetReadyLabels.sort());
+            
+            if (labelsChanged) {
+              console.log(`Labels changed: ${currentReadyLabels.join(', ')} → ${targetReadyLabels.join(', ')}`);
               
-              if (mainLabel) {
+              // Set the exact label list
+              await github.rest.issues.setLabels({
+                owner,
+                repo,
+                issue_number: number,
+                labels: targetLabels
+              });
+              console.log(`Set labels to: ${targetLabels.join(', ')}`);
+              
+              // Force UI refresh by re-applying the main Ready label
+              if (targetReadyLabels.length > 0) {
+                const mainLabel = targetReadyLabels[0];
                 console.log(`Forcing UI refresh by re-applying ${mainLabel}`);
                 
                 // Small delay to ensure first operation is processed
@@ -92,6 +101,8 @@ jobs:
                   console.log(`UI refresh failed: ${error.message}`);
                 }
               }
+            } else {
+              console.log(`No label changes needed - Ready labels already correct`);
             }
             
             // Helper function to check approvals
