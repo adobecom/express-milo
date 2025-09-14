@@ -31,17 +31,15 @@ jobs:
             console.log(`Current labels on PR #${number}:`, currentLabels);
             console.log(`Is draft: ${isDraft}, Is test mode: ${isTestMode}`);
             
-            // Determine what labels should be set
-            let targetLabels = [...currentLabels];
-            
-            // Remove conflicting labels first
-            targetLabels = targetLabels.filter(label => 
+            // Start fresh - only keep non-Ready labels
+            const targetLabels = currentLabels.filter(label => 
               !['Ready for Review', 'Ready for review', 'Ready for QA', 'Ready for qa'].includes(label)
             );
             
+            // Add the correct Ready label based on state
             if (isDraft) {
               // Draft PRs should have no Ready labels
-              console.log(`Draft PR - removing all Ready labels`);
+              console.log(`Draft PR - no Ready labels needed`);
             } else if (isTestMode || (await checkApprovals(owner, repo, number)) >= 2) {
               // Ready for QA - 2+ approvals and no request changes
               targetLabels.push('Ready for QA');
