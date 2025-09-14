@@ -10,21 +10,36 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     steps:
-      - name: Add Ready for review label (non-draft PRs)
+      - name: Set Ready for review label (non-draft PRs)
         uses: actions/github-script@v7
         with:
           script: |
             const { owner, repo, number } = context.issue;
             
-            // Add the "Ready for Review" label
-            await github.rest.issues.addLabels({
+            // Get current PR and labels
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: number
+            });
+            
+            const currentLabels = pr.data.labels.map(label => label.name);
+            
+            // Remove any existing Ready for Review labels and add the correct one
+            const filteredLabels = currentLabels.filter(label => 
+              !['Ready for Review', 'Ready for review'].includes(label)
+            );
+            const newLabels = [...filteredLabels, 'Ready for Review'];
+            
+            // Set exact label list using PUT method
+            await github.rest.issues.setLabels({
               owner,
               repo,
               issue_number: number,
-              labels: ['Ready for Review']
+              labels: newLabels
             });
             
-            console.log(`Added "Ready for Review" label to PR #${number}`);
+            console.log(`Set labels to: ${newLabels.join(', ')}`);
 
   remove-ready-for-review-label:
     name: Remove Ready for Review Label
@@ -37,15 +52,29 @@ jobs:
           script: |
             const { owner, repo, number } = context.issue;
             
-            // Remove the "Ready for Review" label
-            await github.rest.issues.removeLabel({
+            // Get current PR and labels
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: number
+            });
+            
+            const currentLabels = pr.data.labels.map(label => label.name);
+            
+            // Remove Ready for Review labels
+            const filteredLabels = currentLabels.filter(label => 
+              !['Ready for Review', 'Ready for review'].includes(label)
+            );
+            
+            // Set exact label list using PUT method
+            await github.rest.issues.setLabels({
               owner,
               repo,
               issue_number: number,
-              name: 'Ready for Review'
+              labels: filteredLabels
             });
             
-            console.log(`Removed "Ready for Review" label from PR #${number}`);
+            console.log(`Set labels to: ${filteredLabels.join(', ')}`);
 
   manage-qa-labels:
     name: Manage Ready for QA Labels
