@@ -5,82 +5,11 @@ on:
     types: [opened, edited, ready_for_review, converted_to_draft, labeled, unlabeled, submitted, synchronize, reopened]
 
 jobs:
-  manage-ready-for-review-label:
-    name: Manage Ready for Review Label
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-    steps:
-      - name: Set Ready for review label (non-draft PRs)
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { owner, repo, number } = context.issue;
-            
-            // Get current PR and labels
-            const pr = await github.rest.pulls.get({
-              owner,
-              repo,
-              pull_number: number
-            });
-            
-            const currentLabels = pr.data.labels.map(label => label.name);
-            
-            // Remove any existing Ready for Review labels and add the correct one
-            const filteredLabels = currentLabels.filter(label => 
-              !['Ready for Review', 'Ready for review'].includes(label)
-            );
-            const newLabels = [...filteredLabels, 'Ready for Review'];
-            
-            // Set exact label list using PUT method
-            await github.rest.issues.setLabels({
-              owner,
-              repo,
-              issue_number: number,
-              labels: newLabels
-            });
-            
-            console.log(`Set labels to: ${newLabels.join(', ')}`);
-
-  remove-ready-for-review-label:
-    name: Remove Ready for Review Label
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == true
-    steps:
-      - name: Remove Ready for review label (draft PRs)
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { owner, repo, number } = context.issue;
-            
-            // Get current PR and labels
-            const pr = await github.rest.pulls.get({
-              owner,
-              repo,
-              pull_number: number
-            });
-            
-            const currentLabels = pr.data.labels.map(label => label.name);
-            
-            // Remove Ready for Review labels
-            const filteredLabels = currentLabels.filter(label => 
-              !['Ready for Review', 'Ready for review'].includes(label)
-            );
-            
-            // Set exact label list using PUT method
-            await github.rest.issues.setLabels({
-              owner,
-              repo,
-              issue_number: number,
-              labels: filteredLabels
-            });
-            
-            console.log(`Set labels to: ${filteredLabels.join(', ')}`);
-
-  manage-qa-labels:
-    name: Manage Ready for QA Labels
+  manage-labels:
+    name: Manage All PR Labels
     runs-on: ubuntu-latest
     steps:
-      - name: Check approvals and manage QA labels
+      - name: Manage labels based on PR state and approvals
         uses: actions/github-script@v7
         with:
           script: |
@@ -88,89 +17,65 @@ jobs:
             
             console.log(`Workflow triggered for PR #${number}, action: ${context.payload.action}`);
             
-            // Get PR reviews
-            const reviews = await github.rest.pulls.listReviews({
-              owner,
-              repo,
-              pull_number: number
-            });
-            
-            // Count approvals and check for request changes
-            let approvalCount = 0;
-            let hasRequestChanges = false;
-            
-            // Check for test mode label
+            // Get PR details
             const pr = await github.rest.pulls.get({
               owner,
               repo,
               pull_number: number
             });
             
-            const labels = pr.data.labels.map(label => label.name);
-            const isTestMode = labels.includes('test-qa-workflow');
+            const currentLabels = pr.data.labels.map(label => label.name);
+            const isDraft = pr.data.draft;
+            const isTestMode = currentLabels.includes('test-qa-workflow');
             
-            console.log(`Current labels on PR #${number}:`, labels);
-            console.log(`Is test mode enabled: ${isTestMode}`);
+            console.log(`Current labels on PR #${number}:`, currentLabels);
+            console.log(`Is draft: ${isDraft}, Is test mode: ${isTestMode}`);
             
-            if (isTestMode) {
-              console.log(`Test mode enabled for PR #${number} - simulating 2 approvals`);
-              approvalCount = 2;
-              hasRequestChanges = false;
+            // Determine what labels should be set
+            let targetLabels = [...currentLabels];
+            
+            // Remove conflicting labels first
+            targetLabels = targetLabels.filter(label => 
+              !['Ready for Review', 'Ready for review', 'Ready for QA', 'Ready for qa'].includes(label)
+            );
+            
+            if (isDraft) {
+              // Draft PRs should have no Ready labels
+              console.log(`Draft PR - removing all Ready labels`);
+            } else if (isTestMode || (await checkApprovals(owner, repo, number)) >= 2) {
+              // Ready for QA - 2+ approvals and no request changes
+              targetLabels.push('Ready for QA');
+              console.log(`Adding Ready for QA label`);
             } else {
+              // Ready for Review - default for non-draft PRs
+              targetLabels.push('Ready for Review');
+              console.log(`Adding Ready for Review label`);
+            }
+            
+            // Set the exact label list
+            await github.rest.issues.setLabels({
+              owner,
+              repo,
+              issue_number: number,
+              labels: targetLabels
+            });
+            console.log(`Set labels to: ${targetLabels.join(', ')}`);
+            
+            // Helper function to check approvals
+            async function checkApprovals(owner, repo, number) {
+              const reviews = await github.rest.pulls.listReviews({
+                owner,
+                repo,
+                pull_number: number
+              });
+              
+              let approvalCount = 0;
               for (const review of reviews.data) {
                 if (review.state === 'APPROVED') {
                   approvalCount++;
                 } else if (review.state === 'CHANGES_REQUESTED') {
-                  hasRequestChanges = true;
+                  return 0; // Request changes blocks QA
                 }
               }
-            }
-            
-            console.log(`PR #${number}: ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
-            
-            // If 2+ approvals and no request changes, move to Ready for QA
-            if (approvalCount >= 2 && !hasRequestChanges) {
-              console.log(`Moving to Ready for QA - ${approvalCount} approvals, no request changes`);
-              
-              // Get current labels and filter out Ready for Review
-              const currentLabels = pr.data.labels.map(label => label.name);
-              const filteredLabels = currentLabels.filter(label => 
-                !['Ready for Review', 'Ready for review'].includes(label)
-              );
-              
-              // Add Ready for QA to the filtered list
-              const newLabels = [...filteredLabels, 'Ready for QA'];
-              
-              // Set exact label list using PUT method
-              await github.rest.issues.setLabels({
-                owner,
-                repo,
-                issue_number: number,
-                labels: newLabels
-              });
-              console.log(`Set labels to: ${newLabels.join(', ')}`);
-            } 
-            // If less than 2 approvals or has request changes, ensure Ready for review
-            else if (approvalCount < 2 || hasRequestChanges) {
-              console.log(`Moving to Ready for review - ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
-              
-              // Get current labels and filter out Ready for QA
-              const currentLabels = pr.data.labels.map(label => label.name);
-              const filteredLabels = currentLabels.filter(label => 
-                !['Ready for QA', 'Ready for qa'].includes(label)
-              );
-              
-              // Add Ready for Review to the filtered list if PR is not draft
-              const newLabels = pr.data.draft ? filteredLabels : [...filteredLabels, 'Ready for Review'];
-              
-              // Set exact label list using PUT method
-              await github.rest.issues.setLabels({
-                owner,
-                repo,
-                issue_number: number,
-                labels: newLabels
-              });
-              console.log(`Set labels to: ${newLabels.join(', ')}`);
-            } else {
-              console.log(`No action taken - ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
+              return approvalCount;
             }
