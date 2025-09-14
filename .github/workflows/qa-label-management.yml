@@ -102,112 +102,46 @@ jobs:
             // If 2+ approvals and no request changes, move to Ready for QA
             if (approvalCount >= 2 && !hasRequestChanges) {
               console.log(`Moving to Ready for QA - ${approvalCount} approvals, no request changes`);
-              // Remove Ready for review label
-              const reviewLabels = ['Ready for Review'];
-              for (const labelName of reviewLabels) {
-                try {
-                  await github.rest.issues.removeLabel({
-                    owner,
-                    repo,
-                    issue_number: number,
-                    name: labelName
-                  });
-                  console.log(`Removed "${labelName}" label from PR #${number}`);
-                  break; // Exit loop if successful
-                } catch (error) {
-                  if (error.status === 404) {
-                    console.log(`"${labelName}" label does not exist in repository`);
-                  } else {
-                    console.log(`"${labelName}" label not found on PR #${number}`);
-                  }
-                }
-              }
               
-              // Wait longer for the removal to complete
-              await new Promise(resolve => setTimeout(resolve, 2000));
+              // Get current labels and filter out Ready for Review
+              const currentLabels = pr.data.labels.map(label => label.name);
+              const filteredLabels = currentLabels.filter(label => 
+                !['Ready for Review', 'Ready for review'].includes(label)
+              );
               
-              // Add Ready for QA label
-              await github.rest.issues.addLabels({
+              // Add Ready for QA to the filtered list
+              const newLabels = [...filteredLabels, 'Ready for QA'];
+              
+              // Set exact label list using PUT method
+              await github.rest.issues.setLabels({
                 owner,
                 repo,
                 issue_number: number,
-                labels: ['Ready for QA']
+                labels: newLabels
               });
-              console.log(`Added "Ready for QA" label to PR #${number}`);
-              
-              // Wait for label to be processed
-              await new Promise(resolve => setTimeout(resolve, 1000));
-              
-              // Subtle UI refresh: Update PR description with timestamp
-              try {
-                const currentDesc = pr.data.body || '';
-                const timestamp = new Date().toISOString();
-                const newDesc = currentDesc.replace(/<!-- UI-REFRESH:.*?-->/g, '') + `\n\n<!-- UI-REFRESH:${timestamp} -->`;
-                
-                await github.rest.pulls.update({
-                  owner,
-                  repo,
-                  pull_number: number,
-                  body: newDesc
-                });
-                console.log(`Updated PR description for UI refresh`);
-              } catch (error) {
-                console.log(`Could not update PR description: ${error.message}`);
-              }
+              console.log(`Set labels to: ${newLabels.join(', ')}`);
             } 
             // If less than 2 approvals or has request changes, ensure Ready for review
             else if (approvalCount < 2 || hasRequestChanges) {
               console.log(`Moving to Ready for review - ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
-              // Remove Ready for QA label if it exists
-              try {
-                await github.rest.issues.removeLabel({
-                  owner,
-                  repo,
-                  issue_number: number,
-                  name: 'Ready for QA'
-                });
-                console.log(`Removed "Ready for QA" label from PR #${number}`);
-              } catch (error) {
-                if (error.status === 404) {
-                  console.log(`"Ready for QA" label does not exist in repository`);
-                } else {
-                  console.log(`"Ready for QA" label not found on PR #${number}`);
-                }
-              }
               
-              // Wait longer for the removal to complete
-              await new Promise(resolve => setTimeout(resolve, 2000));
+              // Get current labels and filter out Ready for QA
+              const currentLabels = pr.data.labels.map(label => label.name);
+              const filteredLabels = currentLabels.filter(label => 
+                !['Ready for QA', 'Ready for qa'].includes(label)
+              );
               
-              // Add Ready for review label if PR is not draft
-              if (!pr.data.draft) {
-                await github.rest.issues.addLabels({
-                  owner,
-                  repo,
-                  issue_number: number,
-                  labels: ['Ready for Review']
-                });
-                console.log(`Added "Ready for Review" label to PR #${number}`);
-                
-                // Wait for label to be processed
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // Subtle UI refresh: Update PR description with timestamp
-                try {
-                  const currentDesc = pr.data.body || '';
-                  const timestamp = new Date().toISOString();
-                  const newDesc = currentDesc.replace(/<!-- UI-REFRESH:.*?-->/g, '') + `\n\n<!-- UI-REFRESH:${timestamp} -->`;
-                  
-                  await github.rest.pulls.update({
-                    owner,
-                    repo,
-                    pull_number: number,
-                    body: newDesc
-                  });
-                  console.log(`Updated PR description for UI refresh`);
-                } catch (error) {
-                  console.log(`Could not update PR description: ${error.message}`);
-                }
-              }
+              // Add Ready for Review to the filtered list if PR is not draft
+              const newLabels = pr.data.draft ? filteredLabels : [...filteredLabels, 'Ready for Review'];
+              
+              // Set exact label list using PUT method
+              await github.rest.issues.setLabels({
+                owner,
+                repo,
+                issue_number: number,
+                labels: newLabels
+              });
+              console.log(`Set labels to: ${newLabels.join(', ')}`);
             } else {
               console.log(`No action taken - ${approvalCount} approvals, hasRequestChanges: ${hasRequestChanges}`);
             }
