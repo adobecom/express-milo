@@ -59,6 +59,41 @@ jobs:
             });
             console.log(`Set labels to: ${targetLabels.join(', ')}`);
             
+            // Force UI refresh by re-applying the main Ready label
+            if (targetLabels.length > 0) {
+              const mainLabel = targetLabels.find(label => 
+                label.includes('Ready for')
+              );
+              
+              if (mainLabel) {
+                console.log(`Forcing UI refresh by re-applying ${mainLabel}`);
+                
+                // Small delay to ensure first operation is processed
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Re-apply the main label to force UI refresh
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: number,
+                    name: mainLabel
+                  });
+                  
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: number,
+                    labels: [mainLabel]
+                  });
+                  
+                  console.log(`Successfully re-applied ${mainLabel} for UI refresh`);
+                } catch (error) {
+                  console.log(`UI refresh failed: ${error.message}`);
+                }
+              }
+            }
+            
             // Helper function to check approvals
             async function checkApprovals(owner, repo, number) {
               const reviews = await github.rest.pulls.listReviews({
