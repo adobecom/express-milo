@@ -111,8 +111,33 @@ jobs:
               ]
             }
 
-      - name: Send detailed Slack notification
-        if: env.SLACK_WEBHOOK_URL != '' && steps.release-notes.outputs.changes != ''
+      - name: Generate PR list
+        id: pr-list
+        run: |
+          # Get PRs from the last 10 commits
+          PR_LIST=$(git log --oneline -10 --grep="Merge pull request" | head -10)
+          PR_NUMBERS=$(echo "$PR_LIST" | grep -o '#[0-9]*' | tr '\n' ' ')
+          
+          # Create formatted PR list
+          if [ -n "$PR_LIST" ]; then
+            FORMATTED_PRS=""
+            while IFS= read -r line; do
+              if echo "$line" | grep -q "Merge pull request"; then
+                PR_NUM=$(echo "$line" | grep -o '#[0-9]*')
+                PR_TITLE=$(echo "$line" | sed 's/.*Merge pull request.*: //' | sed 's/ from.*//')
+                if [ -n "$PR_NUM" ] && [ -n "$PR_TITLE" ]; then
+                  FORMATTED_PRS="${FORMATTED_PRS}- ${PR_TITLE} ${PR_NUM}\n"
+                fi
+              fi
+            done <<< "$PR_LIST"
+            
+            echo "pr_list=${FORMATTED_PRS}" >> $GITHUB_OUTPUT
+          else
+            echo "pr_list=No PRs found in recent commits" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send release summary
+        if: env.SLACK_WEBHOOK_URL != '' && steps.pr-list.outputs.pr_list != ''
         uses: 8398a7/action-slack@v3
         with:
           status: custom
@@ -120,22 +145,12 @@ jobs:
           webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
           custom_payload: |
             {
-              "text": "📋 Recent Changes:",
+              "text": "## Changes in this Release",
               "attachments": [
                 {
                   "color": "#36a64f",
-                  "fields": [
-                    {
-                      "title": "Recent Commits",
-                      "value": "```${{ steps.release-notes.outputs.changes }}```",
-                      "short": false
-                    },
-                    {
-                      "title": "Changed Files",
-                      "value": "${{ steps.commit-info.outputs.changed_files }}",
-                      "short": false
-                    }
-                  ]
+                  "text": "${{ steps.pr-list.outputs.pr_list }}",
+                  "mrkdwn_in": ["text"]
                 }
               ]
             }
