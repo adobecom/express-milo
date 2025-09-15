@@ -1,0 +1,168 @@
+name: Slack PR Merge Notification
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL || '#express-releases' }}
+
+jobs:
+  notify-pr-merge:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'adobecom' && github.event.pull_request.merged == true
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get PR details
+        id: pr-info
+        run: |
+          # Extract PR details
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_MERGED_BY="${{ github.event.pull_request.merged_by.login }}"
+          PR_BASE_REF="${{ github.event.pull_request.base.ref }}"
+          PR_HEAD_REF="${{ github.event.pull_request.head.ref }}"
+          PR_MERGED_AT="${{ github.event.pull_request.merged_at }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          
+          # Get commit count
+          COMMIT_COUNT="${{ github.event.pull_request.commits }}"
+          
+          # Get changed files count
+          FILES_CHANGED="${{ github.event.pull_request.changed_files }}"
+          ADDITIONS="${{ github.event.pull_request.additions }}"
+          DELETIONS="${{ github.event.pull_request.deletions }}"
+          
+          echo "pr_title=${PR_TITLE}" >> $GITHUB_OUTPUT
+          echo "pr_number=${PR_NUMBER}" >> $GITHUB_OUTPUT
+          echo "pr_author=${PR_AUTHOR}" >> $GITHUB_OUTPUT
+          echo "pr_merged_by=${PR_MERGED_BY}" >> $GITHUB_OUTPUT
+          echo "pr_base_ref=${PR_BASE_REF}" >> $GITHUB_OUTPUT
+          echo "pr_head_ref=${PR_HEAD_REF}" >> $GITHUB_OUTPUT
+          echo "pr_merged_at=${PR_MERGED_AT}" >> $GITHUB_OUTPUT
+          echo "pr_url=${PR_URL}" >> $GITHUB_OUTPUT
+          echo "commit_count=${COMMIT_COUNT}" >> $GITHUB_OUTPUT
+          echo "files_changed=${FILES_CHANGED}" >> $GITHUB_OUTPUT
+          echo "additions=${ADDITIONS}" >> $GITHUB_OUTPUT
+          echo "deletions=${DELETIONS}" >> $GITHUB_OUTPUT
+
+      - name: Analyze PR content
+        id: analyze-pr
+        run: |
+          # Determine PR type based on title and labels
+          PR_TITLE="${{ steps.pr-info.outputs.pr_title }}"
+          
+          # Check for common patterns
+          if echo "$PR_TITLE" | grep -qi "feat\|feature\|add\|new"; then
+            PR_TYPE="🚀 Feature"
+            COLOR="good"
+          elif echo "$PR_TITLE" | grep -qi "fix\|bug\|issue\|hotfix"; then
+            PR_TYPE="🐛 Bug Fix"
+            COLOR="danger"
+          elif echo "$PR_TITLE" | grep -qi "refactor\|clean\|update\|improve"; then
+            PR_TYPE="🔧 Improvement"
+            COLOR="warning"
+          elif echo "$PR_TITLE" | grep -qi "docs\|documentation"; then
+            PR_TYPE="📚 Documentation"
+            COLOR="#36a64f"
+          elif echo "$PR_TITLE" | grep -qi "test\|testing"; then
+            PR_TYPE="🧪 Testing"
+            COLOR="#2eb886"
+          else
+            PR_TYPE="📦 Other"
+            COLOR="#36a64f"
+          fi
+          
+          echo "pr_type=${PR_TYPE}" >> $GITHUB_OUTPUT
+          echo "color=${COLOR}" >> $GITHUB_OUTPUT
+
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: ${{ env.SLACK_CHANNEL }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+          custom_payload: |
+            {
+              "attachments": [
+                {
+                  "color": "${{ steps.analyze-pr.outputs.color }}",
+                  "title": "${{ steps.analyze-pr.outputs.pr_type }}: PR #${{ steps.pr-info.outputs.pr_number }} Merged",
+                  "title_link": "${{ steps.pr-info.outputs.pr_url }}",
+                  "fields": [
+                    {
+                      "title": "PR Title",
+                      "value": "${{ steps.pr-info.outputs.pr_title }}",
+                      "short": false
+                    },
+                    {
+                      "title": "Author",
+                      "value": "${{ steps.pr-info.outputs.pr_author }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Merged By",
+                      "value": "${{ steps.pr-info.outputs.pr_merged_by }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Branch",
+                      "value": "`${{ steps.pr-info.outputs.pr_head_ref }}` → `${{ steps.pr-info.outputs.pr_base_ref }}`",
+                      "short": true
+                    },
+                    {
+                      "title": "Changes",
+                      "value": "📊 ${{ steps.pr-info.outputs.commit_count }} commits, ${{ steps.pr-info.outputs.files_changed }} files changed\n➕ ${{ steps.pr-info.outputs.additions }} additions, ➖ ${{ steps.pr-info.outputs.deletions }} deletions",
+                      "short": false
+                    }
+                  ],
+                  "footer": "Express Milo",
+                  "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico",
+                  "ts": ${{ steps.pr-info.outputs.pr_merged_at }}
+                }
+              ]
+            }
+
+      - name: Send deployment status
+        if: env.SLACK_WEBHOOK_URL != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          channel: ${{ env.SLACK_CHANNEL }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+          custom_payload: |
+            {
+              "text": "🚀 *Deployment Status*",
+              "attachments": [
+                {
+                  "color": "good",
+                  "fields": [
+                    {
+                      "title": "Status",
+                      "value": "✅ Successfully merged to main branch",
+                      "short": true
+                    },
+                    {
+                      "title": "Next Steps",
+                      "value": "🔄 Changes will be deployed to production automatically",
+                      "short": true
+                    }
+                  ]
+                }
+              ]
+            }
+
+      - name: Fallback notification
+        if: failure() && env.SLACK_WEBHOOK_URL != ''
+        run: |
+          echo "❌ Slack notification failed. Please check webhook configuration."
+          echo "PR: #${{ steps.pr-info.outputs.pr_number }} - ${{ steps.pr-info.outputs.pr_title }}"
+          echo "Author: ${{ steps.pr-info.outputs.pr_author }}"
+          echo "Merged by: ${{ steps.pr-info.outputs.pr_merged_by }}"
