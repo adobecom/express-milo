@@ -4,19 +4,19 @@ module.exports = {
     {
       tcid: '0',
       name: '@template-x-promo basic functionality',
-      path: ['/dev/testing/test-template-x-promo'],
+      path: ['/drafts/nala/blocks/template-x-promo/template-x-promo-basic'],
       tags: '@express @smoke @regression @template-x-promo',
     },
     {
       tcid: '1',
       name: '@template-x-promo with recipe parameters',
-      path: ['/dev/testing/test-template-x-promo-with-recipe'],
+      path: ['/drafts/nala/blocks/template-x-promo/template-x-promo-recipe'],
       tags: '@express @smoke @regression @template-x-promo',
     },
     {
       tcid: '2',
       name: '@template-x-promo real API integration',
-      path: ['/dev/testing/test-real-template-x-promo'],
+      path: ['/drafts/nala/blocks/template-x-promo/template-x-promo-api'],
       tags: '@express @smoke @regression @template-x-promo',
     },
   ],
