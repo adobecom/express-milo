@@ -9,7 +9,7 @@
  * without requiring external tool installations.
  */
 
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
@@ -134,11 +134,11 @@ const testJestTests = () => {
       const testPath = path.join(testDir, testFile);
       console.log(`  Running ${testFile}...`);
 
-      const result = execSync(`node ${testPath}`, {
-        encoding: 'utf8',
-        stdio: 'pipe',
-        timeout: 10000,
-      });
+          const result = execFileSync('node', [testPath], {
+            encoding: 'utf8',
+            stdio: 'pipe',
+            timeout: 10000,
+          });
 
       // Check if test passed (exit code 0)
       if (result.includes('🎉 All tests passed!')) {
