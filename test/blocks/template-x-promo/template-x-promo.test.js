@@ -319,13 +319,13 @@ describe('Template X Promo', () => {
       expect(button.tagName.toLowerCase()).to.equal('button');
       expect(button.getAttribute('type')).to.equal('button');
       expect(button.getAttribute('aria-label')).to.include('Share');
-      
+
       // Check that the button contains the icon
       const icon = button.querySelector('.icon-share-arrow');
       expect(icon).to.exist;
       expect(icon.classList.contains('icon')).to.be.true;
       expect(icon.classList.contains('icon-share-arrow')).to.be.true;
-      
+
       const hasSvgContent = icon.querySelector('svg') !== null;
       const hasImgContent = icon.tagName === 'IMG';
       const hasFallbackClass = icon.classList.contains('share-fallback');
@@ -1143,7 +1143,7 @@ describe('Template X Promo', () => {
 
       // Prevent navigation for testing
       const originalClick = HTMLElement.prototype.click;
-      HTMLElement.prototype.click = function() {
+      HTMLElement.prototype.click = function () {
         // Mock click to prevent navigation
         console.log('Mock click on:', this);
       };
@@ -1155,7 +1155,7 @@ describe('Template X Promo', () => {
         templates.forEach((template) => {
           // Test Enter key
           expect(() => template.dispatchEvent(enterEvent)).to.not.throw();
-          
+
           // Test Space key
           expect(() => template.dispatchEvent(spaceEvent)).to.not.throw();
         });
@@ -1190,7 +1190,7 @@ describe('Template X Promo', () => {
         if (buttonContainer) {
           const focusInEvent = new FocusEvent('focusin');
           const focusOutEvent = new FocusEvent('focusout');
-          
+
           expect(() => buttonContainer.dispatchEvent(focusInEvent)).to.not.throw();
           expect(() => buttonContainer.dispatchEvent(focusOutEvent)).to.not.throw();
         }
@@ -1204,7 +1204,7 @@ describe('Template X Promo', () => {
       templates.forEach((template) => {
         template.classList.add('singleton-hover');
         expect(template.classList.contains('singleton-hover')).to.be.true;
-        
+
         template.classList.remove('singleton-hover');
         expect(template.classList.contains('singleton-hover')).to.be.false;
       });
@@ -1216,11 +1216,11 @@ describe('Template X Promo', () => {
       templates.forEach((template) => {
         // Test initial state
         expect(template.getAttribute('tabindex')).to.equal('0');
-        
+
         // Test setting to -1
         template.setAttribute('tabindex', '-1');
         expect(template.getAttribute('tabindex')).to.equal('-1');
-        
+
         // Test setting back to 0
         template.setAttribute('tabindex', '0');
         expect(template.getAttribute('tabindex')).to.equal('0');
