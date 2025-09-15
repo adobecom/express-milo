@@ -1,0 +1,37 @@
+/* pdp-x block styles */
+.pdp-x {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* Content container where external script renders */
+.pdp-x-content {
+  width: 100%;
+  min-height: 400px;
+  position: relative;
+}
+
+/* Loading state */
+.pdp-x:not(.pdp-x-loaded) .pdp-x-content::after {
+  content: 'Loading PDP content...';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #666;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Ensure the zazzle root takes full width */
+#zazzle-root {
+  width: 100%;
+  min-height: 400px;
+}
+
+/* Hide any authored content after block is loaded */
+.pdp-x.pdp-x-loaded > div:not(.pdp-x-content) {
+  display: none;
+}
