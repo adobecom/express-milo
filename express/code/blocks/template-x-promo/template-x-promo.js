@@ -160,6 +160,14 @@ async function createDirectCarousel(block, templates, createTagFn) {
       if (editButton) {
         editButton.click();
       }
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      // Close all button containers
+      const templatesWithHover = track.querySelectorAll('.template.singleton-hover');
+      templatesWithHover.forEach((template) => {
+        template.classList.remove('singleton-hover');
+        template.setAttribute('tabindex', '0');
+      });
     }
   };
 
@@ -211,10 +219,22 @@ async function createDirectCarousel(block, templates, createTagFn) {
     }
   };
 
+  // Handle click outside to close button containers
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.template') && !event.target.closest('.promo-nav-btn')) {
+      const templatesWithHover = track.querySelectorAll('.template.singleton-hover');
+      templatesWithHover.forEach((template) => {
+        template.classList.remove('singleton-hover');
+        template.setAttribute('tabindex', '0');
+      });
+    }
+  };
+
   track.addEventListener('keydown', handleKeyboard);
   track.addEventListener('focus', handleFocus, true);
   track.addEventListener('focus', handleTemplateFocus, true);
   track.addEventListener('blur', handleBlur, true);
+  document.addEventListener('click', handleClickOutside);
 
   let touchStartX = 0;
   let touchStartY = 0;
@@ -289,6 +309,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
       track.removeEventListener('touchstart', handleTouchStart);
       track.removeEventListener('touchmove', handleTouchMove);
       track.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('click', handleClickOutside);
     },
   };
 }
