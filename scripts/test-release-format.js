@@ -10,8 +10,8 @@
  *   node scripts/test-release-format.js <WEBHOOK_URL> [CHANNEL]
  */
 
-const https = require('https');
-const { URL } = require('url');
+import https from 'https';
+import { URL } from 'url';
 
 // Get command line arguments
 const webhookUrl = process.argv[2];
