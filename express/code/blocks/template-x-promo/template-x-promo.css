@@ -358,6 +358,8 @@
   gap: 8px;
   justify-content: flex-end;
   padding-right: 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .ax-template-x-promo .promo-nav-btn {
@@ -485,9 +487,7 @@
   outline: none;
 }
 
-.ax-template-x-promo.multiple-up.two-up .promo-carousel-track {
-  padding: 0;
-}
+/* All carousel types use the same track padding */
 
 .ax-template-x-promo.multiple-up .promo-carousel-track {
   padding: 0 15%;
@@ -509,6 +509,8 @@
   opacity: 0.8;
 }
 
+/* All carousel types should work the same way */
+
 .ax-template-x-promo .promo-image-wrapper {
   position: relative;
   width: 100%;
@@ -528,23 +530,14 @@
   background-color: var(--color-gray-100);
 }
 
-.ax-template-x-promo .template.current-template:hover .button-container,
-.ax-template-x-promo .template.current-template:focus .button-container,
+.ax-template-x-promo .template:hover .button-container,
+.ax-template-x-promo .template:focus .button-container,
 .ax-template-x-promo .template.singleton-hover .button-container {
   opacity: 1;
   pointer-events: initial;
 }
 
-.ax-template-x-promo.multiple-up.two-up .template .still-wrapper {
-  opacity: 1;
-}
-
-.ax-template-x-promo.multiple-up.two-up .template:hover .button-container,
-.ax-template-x-promo.multiple-up.two-up .template:focus .button-container,
-.ax-template-x-promo.multiple-up.two-up .template.singleton-hover .button-container {
-  opacity: 1;
-  pointer-events: initial;
-}
+/* All carousel types work the same way - no special rules */
 
 .ax-template-x-promo .promo-prev-btn,
 .ax-template-x-promo .promo-next-btn {
@@ -575,16 +568,7 @@
   object-fit: contain;
 }
 
-.template-x-promo.multiple-up .template.prev-template .button-container,
-.template-x-promo.multiple-up .template.next-template .button-container {
-  display: none;
-}
-
-.template-x-promo.multiple-up .template.prev-template:hover .button-container,
-.template-x-promo.multiple-up .template.next-template:hover .button-container {
-  opacity: 0;
-  pointer-events: none;
-}
+/* Remove the rules that hide button containers for prev/next templates */
 
 @media (min-width: 768px) {
   .ax-template-x-promo .template {
