@@ -17,12 +17,24 @@ jobs:
             
             console.log(`Workflow triggered for PR #${number}, action: ${context.payload.action}`);
             
-            // Get PR details
-            const pr = await github.rest.pulls.get({
-              owner,
-              repo,
-              pull_number: number
-            });
+            // Get PR details with error handling
+            let pr;
+            try {
+              pr = await github.rest.pulls.get({
+                owner,
+                repo,
+                pull_number: number
+              });
+              console.log(`Successfully retrieved PR #${number} details`);
+            } catch (error) {
+              console.log(`❌ Failed to get PR details: ${error.message}`);
+              if (error.status === 404) {
+                console.log(`PR #${number} not found - may have been deleted`);
+              } else if (error.status === 403) {
+                console.log(`Insufficient permissions to access PR #${number}`);
+              }
+              return; // Exit gracefully
+            }
             
             const currentLabels = pr.data.labels.map(label => label.name);
             const isDraft = pr.data.draft;
@@ -58,38 +70,65 @@ jobs:
               label.includes('Ready for')
             );
             
-            const labelsChanged = JSON.stringify(currentReadyLabels.sort()) !== JSON.stringify(targetReadyLabels.sort());
+            // More efficient label comparison
+            const labelsChanged = currentReadyLabels.length !== targetReadyLabels.length || 
+              !currentReadyLabels.every(label => targetReadyLabels.includes(label));
             
             if (labelsChanged) {
               console.log(`Labels changed: ${currentReadyLabels.join(', ')} → ${targetReadyLabels.join(', ')}`);
               
-              // Set the exact label list
-              await github.rest.issues.setLabels({
-                owner,
-                repo,
-                issue_number: number,
-                labels: targetLabels
-              });
-              console.log(`Set labels to: ${targetLabels.join(', ')}`);
+              // Set the exact label list with error handling
+              try {
+                await github.rest.issues.setLabels({
+                  owner,
+                  repo,
+                  issue_number: number,
+                  labels: targetLabels
+                });
+                console.log(`✅ Successfully set labels to: ${targetLabels.join(', ')}`);
+              } catch (error) {
+                console.log(`❌ Failed to set labels: ${error.message}`);
+                if (error.status === 404) {
+                  console.log(`PR #${number} not found - may have been deleted`);
+                } else if (error.status === 403) {
+                  console.log(`Insufficient permissions to modify labels on PR #${number}`);
+                } else if (error.status === 422) {
+                  console.log(`Invalid label data provided: ${JSON.stringify(targetLabels)}`);
+                }
+                return; // Exit gracefully
+              }
             } else {
               console.log(`No label changes needed - Ready labels already correct`);
             }
             
-            // Helper function to check approvals
+            // Helper function to check approvals with error handling
             async function checkApprovals(owner, repo, number) {
-              const reviews = await github.rest.pulls.listReviews({
-                owner,
-                repo,
-                pull_number: number
-              });
-              
-              let approvalCount = 0;
-              for (const review of reviews.data) {
-                if (review.state === 'APPROVED') {
-                  approvalCount++;
-                } else if (review.state === 'CHANGES_REQUESTED') {
-                  return 0; // Request changes blocks QA
+              try {
+                const reviews = await github.rest.pulls.listReviews({
+                  owner,
+                  repo,
+                  pull_number: number
+                });
+                
+                let approvalCount = 0;
+                for (const review of reviews.data) {
+                  if (review.state === 'APPROVED') {
+                    approvalCount++;
+                  } else if (review.state === 'CHANGES_REQUESTED') {
+                    console.log(`Found "request changes" review - blocking QA transition`);
+                    return 0; // Request changes blocks QA
+                  }
                 }
+                console.log(`Found ${approvalCount} approval(s) for PR #${number}`);
+                return approvalCount;
+              } catch (error) {
+                console.log(`❌ Failed to get reviews for PR #${number}: ${error.message}`);
+                if (error.status === 404) {
+                  console.log(`PR #${number} not found when checking reviews`);
+                } else if (error.status === 403) {
+                  console.log(`Insufficient permissions to read reviews for PR #${number}`);
+                }
+                // Return 0 to default to "Ready for Review" on error
+                return 0;
               }
-              return approvalCount;
             }
