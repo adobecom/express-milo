@@ -1,0 +1,173 @@
+name: Slack Release Notification
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '*.md'
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL || '#express-releases' }}
+
+jobs:
+  notify-slack:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'adobecom' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get commit details
+        id: commit-info
+        run: |
+          # Get the latest commit details
+          COMMIT_SHA=$(git rev-parse HEAD)
+          COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+          COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an")
+          COMMIT_DATE=$(git log -1 --pretty=format:"%ci")
+          
+          # Get changed files
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | head -10 | tr '\n' ', ' | sed 's/,$//')
+          
+          # Get PR numbers from commit messages (if any)
+          PR_NUMBERS=$(git log -1 --pretty=format:"%B" | grep -o 'MWPW-[0-9]*' | head -5 | tr '\n' ' ' | sed 's/ $//')
+          
+          echo "commit_sha=${COMMIT_SHA}" >> $GITHUB_OUTPUT
+          echo "commit_message=${COMMIT_MESSAGE}" >> $GITHUB_OUTPUT
+          echo "commit_author=${COMMIT_AUTHOR}" >> $GITHUB_OUTPUT
+          echo "commit_date=${COMMIT_DATE}" >> $GITHUB_OUTPUT
+          echo "changed_files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+          echo "pr_numbers=${PR_NUMBERS}" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        id: release-notes
+        run: |
+          # Extract meaningful changes
+          CHANGES=$(git log --oneline HEAD~5..HEAD | grep -v "Merge pull request" | head -5)
+          
+          # Count different types of changes
+          FEATURE_COUNT=$(echo "$CHANGES" | grep -i "feat\|feature\|add" | wc -l)
+          FIX_COUNT=$(echo "$CHANGES" | grep -i "fix\|bug\|issue" | wc -l)
+          REFACTOR_COUNT=$(echo "$CHANGES" | grep -i "refactor\|clean\|update" | wc -l)
+          
+          echo "changes=${CHANGES}" >> $GITHUB_OUTPUT
+          echo "feature_count=${FEATURE_COUNT}" >> $GITHUB_OUTPUT
+          echo "fix_count=${FIX_COUNT}" >> $GITHUB_OUTPUT
+          echo "refactor_count=${REFACTOR_COUNT}" >> $GITHUB_OUTPUT
+
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: ${{ env.SLACK_CHANNEL }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          custom_payload: |
+            {
+              "attachments": [
+                {
+                  "color": "good",
+                  "title": "🚀 Express Milo Release Deployed",
+                  "title_link": "https://github.com/${{ github.repository }}/commit/${{ steps.commit-info.outputs.commit_sha }}",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Branch",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ steps.commit-info.outputs.commit_sha }}|${{ steps.commit-info.outputs.commit_sha }}>",
+                      "short": true
+                    },
+                    {
+                      "title": "Author",
+                      "value": "${{ steps.commit-info.outputs.commit_author }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit Message",
+                      "value": "${{ steps.commit-info.outputs.commit_message }}",
+                      "short": false
+                    }
+                  ],
+                  "footer": "Express Milo",
+                  "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico",
+                  "ts": ${{ steps.commit-info.outputs.commit_date }}
+                }
+              ]
+            }
+
+      - name: Send detailed Slack notification
+        if: env.SLACK_WEBHOOK_URL != '' && steps.release-notes.outputs.changes != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          channel: ${{ env.SLACK_CHANNEL }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+          custom_payload: |
+            {
+              "text": "📋 Recent Changes:",
+              "attachments": [
+                {
+                  "color": "#36a64f",
+                  "fields": [
+                    {
+                      "title": "Recent Commits",
+                      "value": "```${{ steps.release-notes.outputs.changes }}```",
+                      "short": false
+                    },
+                    {
+                      "title": "Changed Files",
+                      "value": "${{ steps.commit-info.outputs.changed_files }}",
+                      "short": false
+                    }
+                  ]
+                }
+              ]
+            }
+
+      - name: Send PR summary (if PRs found)
+        if: env.SLACK_WEBHOOK_URL != '' && steps.commit-info.outputs.pr_numbers != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          channel: ${{ env.SLACK_CHANNEL }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+          custom_payload: |
+            {
+              "text": "🔗 Related Pull Requests:",
+              "attachments": [
+                {
+                  "color": "#2eb886",
+                  "fields": [
+                    {
+                      "title": "PR Numbers",
+                      "value": "${{ steps.commit-info.outputs.pr_numbers }}",
+                      "short": false
+                    }
+                  ]
+                }
+              ]
+            }
+
+      - name: Fallback notification (if webhook fails)
+        if: failure() && env.SLACK_WEBHOOK_URL != ''
+        run: |
+          echo "❌ Slack notification failed. Please check webhook configuration."
+          echo "Commit: ${{ steps.commit-info.outputs.commit_sha }}"
+          echo "Message: ${{ steps.commit-info.outputs.commit_message }}"
+          echo "Author: ${{ steps.commit-info.outputs.commit_author }}"
