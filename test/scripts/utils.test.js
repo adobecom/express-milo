@@ -175,7 +175,7 @@ describe('transformLinkToAnimation', () => {
     // Mock URL constructor to throw an error
     const originalURL = window.URL;
     window.URL = class {
-      constructor(url) {
+      constructor() {
         throw new Error('Invalid URL for testing');
       }
     };
