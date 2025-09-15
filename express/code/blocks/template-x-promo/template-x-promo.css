@@ -495,7 +495,8 @@
 
 .ax-template-x-promo .template.prev-template {
   flex: 0 0 50%;
-  opacity: 0.8;
+  opacity: 1;
+  z-index: 2;
 }
 
 .ax-template-x-promo .template.current-template {
@@ -506,7 +507,8 @@
 
 .ax-template-x-promo .template.next-template {
   flex: 0 0 50%;
-  opacity: 0.8;
+  opacity: 1;
+  z-index: 2;
 }
 
 /* All carousel types should work the same way */
@@ -535,6 +537,17 @@
 .ax-template-x-promo .template.singleton-hover .button-container {
   opacity: 1;
   pointer-events: initial;
+}
+
+/* Position button containers towards center for prev/next templates to avoid cutoff */
+.ax-template-x-promo .template.prev-template .button-container {
+  left: 100%;
+  transform: translate(-45%, -50%);
+}
+
+.ax-template-x-promo .template.next-template .button-container {
+  left: 0%;
+  transform: translate(-55%, -50%);
 }
 
 /* All carousel types work the same way - no special rules */
