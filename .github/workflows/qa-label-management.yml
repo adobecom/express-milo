@@ -2,7 +2,7 @@ name: QA Label Management
 
 on:
   pull_request:
-    types: [opened, edited, ready_for_review, converted_to_draft, labeled, unlabeled, submitted, synchronize, reopened]
+    types: [opened, edited, ready_for_review, converted_to_draft, labeled, unlabeled, synchronize, reopened]
 
 jobs:
   manage-labels:
