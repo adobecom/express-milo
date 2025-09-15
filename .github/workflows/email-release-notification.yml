@@ -1,0 +1,104 @@
+name: Email Release Notification
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '*.md'
+
+env:
+  EMAIL_TO: ${{ secrets.EMAIL_TO }}
+  EMAIL_FROM: ${{ secrets.EMAIL_FROM || 'noreply@adobe.com' }}
+  SMTP_SERVER: ${{ secrets.SMTP_SERVER || 'smtp.gmail.com' }}
+  SMTP_PORT: ${{ secrets.SMTP_PORT || '587' }}
+  SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+
+jobs:
+  notify-release:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'adobecom' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract PR information
+        id: extract-prs
+        run: |
+          # Get recent merge commits
+          MERGE_COMMITS=$(git log --oneline -10 --grep="Merge pull request")
+          
+          if [ -n "$MERGE_COMMITS" ]; then
+            # Extract PR titles and numbers
+            PR_LIST=""
+            while IFS= read -r line; do
+              if echo "$line" | grep -q "Merge pull request"; then
+                # Extract PR number
+                PR_NUM=$(echo "$line" | grep -o '#[0-9]*')
+                
+                # Extract PR title (everything after "Merge pull request #XXX: ")
+                PR_TITLE=$(echo "$line" | sed 's/.*Merge pull request #[0-9]*: //' | sed 's/ from.*//')
+                
+                if [ -n "$PR_NUM" ] && [ -n "$PR_TITLE" ]; then
+                  PR_LIST="${PR_LIST}- ${PR_TITLE} ${PR_NUM}\n"
+                fi
+              fi
+            done <<< "$MERGE_COMMITS"
+            
+            echo "pr_list<<EOF" >> $GITHUB_OUTPUT
+            echo -e "$PR_LIST" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "pr_list=No recent PRs found" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send email notification
+        if: env.EMAIL_TO != '' && steps.extract-prs.outputs.pr_list != ''
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ env.SMTP_SERVER }}
+          server_port: ${{ env.SMTP_PORT }}
+          username: ${{ env.SMTP_USERNAME }}
+          password: ${{ env.SMTP_PASSWORD }}
+          subject: '🚀 Express Milo Release Deployed - ${{ github.ref_name }}'
+          to: ${{ env.EMAIL_TO }}
+          from: ${{ env.EMAIL_FROM }}
+          body: |
+            🚀 Express Milo Release Deployed
+            
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Link: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+            
+            ## Changes in this Release
+            ${{ steps.extract-prs.outputs.pr_list }}
+            
+            ---
+            This notification was sent automatically by GitHub Actions.
+          html_body: |
+            <h2>🚀 Express Milo Release Deployed</h2>
+            <p><strong>Repository:</strong> ${{ github.repository }}<br>
+            <strong>Branch:</strong> ${{ github.ref_name }}<br>
+            <strong>Commit:</strong> <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">${{ github.sha }}</a></p>
+            
+            <h3>Changes in this Release</h3>
+            <ul>
+            ${{ steps.extract-prs.outputs.pr_list }}
+            </ul>
+            
+            <hr>
+            <p><em>This notification was sent automatically by GitHub Actions.</em></p>
+
+      - name: Fallback notification
+        if: failure() && env.EMAIL_TO != ''
+        run: |
+          echo "❌ Email notification failed"
+          echo "Commit: ${{ github.sha }}"
+          echo "Repository: ${{ github.repository }}"

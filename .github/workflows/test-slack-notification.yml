@@ -1,0 +1,78 @@
+name: Test Slack Notification
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Test message to send'
+        required: true
+        default: 'Test notification from Express Milo'
+      channel:
+        description: 'Slack channel (optional)'
+        required: false
+        default: ''
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_CHANNEL: ${{ inputs.channel || secrets.SLACK_CHANNEL || '#express-releases' }}
+
+jobs:
+  test-notification:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'adobecom'
+    
+    steps:
+      - name: Send test notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          channel: ${{ env.SLACK_CHANNEL }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+          custom_payload: |
+            {
+              "text": "🧪 *Test Notification*",
+              "attachments": [
+                {
+                  "color": "good",
+                  "fields": [
+                    {
+                      "title": "Message",
+                      "value": "${{ inputs.message }}",
+                      "short": false
+                    },
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Triggered By",
+                      "value": "${{ github.actor }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Time",
+                      "value": "${{ github.event.head_commit.timestamp }}",
+                      "short": true
+                    }
+                  ],
+                  "footer": "Express Milo Test",
+                  "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
+                }
+              ]
+            }
+
+      - name: Verify webhook URL is set
+        if: env.SLACK_WEBHOOK_URL == ''
+        run: |
+          echo "❌ SLACK_WEBHOOK_URL secret is not set!"
+          echo "Please add the SLACK_WEBHOOK_URL secret to your repository settings."
+          exit 1
+
+      - name: Test webhook connectivity
+        if: env.SLACK_WEBHOOK_URL != ''
+        run: |
+          echo "✅ Webhook URL is configured"
+          echo "Channel: ${{ env.SLACK_CHANNEL }}"
+          echo "Repository: ${{ github.repository }}"
