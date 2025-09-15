@@ -10,8 +10,15 @@ on:
       - '*.md'
 
 env:
+  # Primary webhook (required)
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  # Additional webhooks (optional)
+  SLACK_WEBHOOK_URL_2: ${{ secrets.SLACK_WEBHOOK_URL_2 }}
+  SLACK_WEBHOOK_URL_3: ${{ secrets.SLACK_WEBHOOK_URL_3 }}
+  # Channel names for reference
   SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL || '#express-releases' }}
+  SLACK_CHANNEL_2: ${{ secrets.SLACK_CHANNEL_2 || '#express-dev-core' }}
+  SLACK_CHANNEL_3: ${{ secrets.SLACK_CHANNEL_3 || '#engineering-updates' }}
 
 jobs:
   notify-release:
@@ -130,13 +137,95 @@ jobs:
               prList: prList
             };
 
-      - name: Send release notification
+      - name: Send release notification to primary channel
         if: env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
         uses: 8398a7/action-slack@v3
         with:
           status: custom
           channel: ${{ env.SLACK_CHANNEL }}
           webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+          custom_payload: |
+            {
+              "text": "🚀 *Express Milo Release Deployed*",
+              "attachments": [
+                {
+                  "color": "good",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Branch",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                      "short": true
+                    }
+                  ]
+                },
+                {
+                  "color": "#36a64f",
+                  "text": "## Changes in this Release\n${{ steps.extract-prs.outputs.prList }}",
+                  "mrkdwn_in": ["text"]
+                }
+              ],
+              "footer": "Express Milo",
+              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
+            }
+
+      - name: Send release notification to secondary channel
+        if: env.SLACK_WEBHOOK_URL_2 != '' && steps.extract-prs.outputs.prList != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          channel: ${{ env.SLACK_CHANNEL_2 }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL_2 }}
+          custom_payload: |
+            {
+              "text": "🚀 *Express Milo Release Deployed*",
+              "attachments": [
+                {
+                  "color": "good",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Branch",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                      "short": true
+                    }
+                  ]
+                },
+                {
+                  "color": "#36a64f",
+                  "text": "## Changes in this Release\n${{ steps.extract-prs.outputs.prList }}",
+                  "mrkdwn_in": ["text"]
+                }
+              ],
+              "footer": "Express Milo",
+              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
+            }
+
+      - name: Send release notification to tertiary channel
+        if: env.SLACK_WEBHOOK_URL_3 != '' && steps.extract-prs.outputs.prList != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          channel: ${{ env.SLACK_CHANNEL_3 }}
+          webhook_url: ${{ env.SLACK_WEBHOOK_URL_3 }}
           custom_payload: |
             {
               "text": "🚀 *Express Milo Release Deployed*",
