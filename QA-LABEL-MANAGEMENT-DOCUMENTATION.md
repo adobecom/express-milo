@@ -176,8 +176,7 @@ The workflow logs detailed information:
 .github/workflows/
 └── qa-label-management.yml    # Main workflow file
 
-dev/
-└── QA-LABEL-MANAGEMENT-DOCUMENTATION.md    # This documentation
+QA-LABEL-MANAGEMENT-DOCUMENTATION.md    # This documentation (root directory)
 ```
 
 ## Maintenance
