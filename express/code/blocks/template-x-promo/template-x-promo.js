@@ -22,12 +22,13 @@ async function createDirectCarousel(block, templates, createTagFn) {
     href: '#carousel-content',
     class: 'carousel-skip-link sr-only',
     textContent: 'Skip to carousel content',
+    tabindex: '-1',
   });
   const viewport = createTagFn('div', { class: 'promo-carousel-viewport' });
   const track = createTagFn('div', {
     class: 'promo-carousel-track',
     id: 'carousel-content',
-    tabindex: '0',
+    tabindex: '-1',
     role: 'region',
     'aria-label': 'Template carousel',
   });
@@ -51,54 +52,18 @@ async function createDirectCarousel(block, templates, createTagFn) {
     'aria-describedby': carouselId,
   });
 
-  const prevSvg = createTagFn('svg', {
-    width: '32',
-    height: '32',
-    viewBox: '0 0 32 32',
-    fill: 'none',
-    'aria-hidden': 'true',
-    focusable: 'false',
-    role: 'img',
-  });
-  const prevCircle = createTagFn('circle', {
-    cx: '16',
-    cy: '16',
-    r: '16',
-    fill: '#FFFFFF',
-  });
-  const prevPath = createTagFn('path', {
-    d: 'M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996',
-    stroke: '#292929',
-    'stroke-width': '3',
-    'stroke-linecap': 'round',
-    'stroke-linejoin': 'round',
-  });
-  prevSvg.append(prevCircle, prevPath);
-  prevBtn.append(prevSvg);
-  const nextSvg = createTagFn('svg', {
-    width: '32',
-    height: '32',
-    viewBox: '0 0 32 32',
-    fill: 'none',
-    'aria-hidden': 'true',
-    focusable: 'false',
-    role: 'img',
-  });
-  const nextCircle = createTagFn('circle', {
-    cx: '16',
-    cy: '16',
-    r: '16',
-    fill: '#FFFFFF',
-  });
-  const nextPath = createTagFn('path', {
-    d: 'M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996',
-    stroke: '#292929',
-    'stroke-width': '3',
-    'stroke-linecap': 'round',
-    'stroke-linejoin': 'round',
-  });
-  nextSvg.append(nextCircle, nextPath);
-  nextBtn.append(nextSvg);
+  prevBtn.innerHTML = `
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false" role="img">
+      <circle cx="16" cy="16" r="16" fill="#FFFFFF"></circle>
+      <path d="M17.3984 21.1996L12.5984 16.3996L17.3984 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  `;
+  nextBtn.innerHTML = `
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false" role="img">
+      <circle cx="16" cy="16" r="16" fill="#FFFFFF"></circle>
+      <path d="M14.6016 21.1996L19.4016 16.3996L14.6016 11.5996" stroke="#292929" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  `;
 
   navControls.append(prevBtn, nextBtn);
 
@@ -131,6 +96,14 @@ async function createDirectCarousel(block, templates, createTagFn) {
     nextTemplate.className = 'template next-template';
     nextTemplate.setAttribute('tabindex', '0');
     track.append(nextTemplate);
+
+    // Fix template elements to ensure edit buttons are focusable
+    [prevTemplate, currentTemplate, nextTemplate].forEach((template) => {
+      const editButton = template.querySelector('.button-container .button');
+      if (editButton) {
+        editButton.setAttribute('tabindex', '0');
+      }
+    });
 
     status.textContent = `Carousel item ${currentIndex + 1} of ${templateCount}`;
   };
@@ -173,9 +146,75 @@ async function createDirectCarousel(block, templates, createTagFn) {
     } else if (event.key === 'ArrowRight') {
       event.preventDefault();
       handleNext();
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      currentIndex = 0;
+      updateDisplay();
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      currentIndex = templateCount - 1;
+      updateDisplay();
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      const editButton = event.target.querySelector('.button-container .button');
+      if (editButton) {
+        editButton.click();
+      }
     }
   };
+
+  const handleFocus = (event) => {
+    if (event.target.classList.contains('template')) {
+      if (!event.target.classList.contains('singleton-hover')) {
+        // Only affect templates within this carousel
+        const templatesWithHover = track.querySelectorAll('.template.singleton-hover');
+        templatesWithHover.forEach((template) => {
+          if (template !== event.target) {
+            template.classList.remove('singleton-hover');
+            template.setAttribute('tabindex', '-1');
+          }
+        });
+
+        event.target.classList.add('singleton-hover');
+        event.target.setAttribute('tabindex', '-1');
+
+        const editButton = event.target.querySelector('.button-container .button');
+        if (editButton) {
+          editButton.focus();
+        }
+      }
+    }
+  };
+
+  // Handle focus on prev/next templates - show button container and focus edit button
+  const handleTemplateFocus = (event) => {
+    if (event.target.classList.contains('prev-template') || event.target.classList.contains('next-template')) {
+      event.target.classList.add('singleton-hover');
+      const editButton = event.target.querySelector('.button-container .button');
+      if (editButton) {
+        editButton.focus();
+      }
+    }
+  };
+
+  const handleBlur = (event) => {
+    if (event.target.classList.contains('template')) {
+      if (event.target.classList.contains('singleton-hover')) {
+        const isMovingToChild = event.relatedTarget
+          && event.relatedTarget.closest('.template') === event.target;
+
+        if (!isMovingToChild) {
+          event.target.classList.remove('singleton-hover');
+          event.target.setAttribute('tabindex', '0');
+        }
+      }
+    }
+  };
+
   track.addEventListener('keydown', handleKeyboard);
+  track.addEventListener('focus', handleFocus, true);
+  track.addEventListener('focus', handleTemplateFocus, true);
+  track.addEventListener('blur', handleBlur, true);
 
   let touchStartX = 0;
   let touchStartY = 0;
@@ -245,6 +284,8 @@ async function createDirectCarousel(block, templates, createTagFn) {
       nextBtn.removeEventListener('click', handleNext);
       prevBtn.removeEventListener('click', handlePrev);
       track.removeEventListener('keydown', handleKeyboard);
+      track.removeEventListener('focus', handleFocus, true);
+      track.removeEventListener('blur', handleBlur, true);
       track.removeEventListener('touchstart', handleTouchStart);
       track.removeEventListener('touchmove', handleTouchMove);
       track.removeEventListener('touchend', handleTouchEnd);
