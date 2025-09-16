@@ -11,7 +11,7 @@ test.describe('pricing-cards-v2 test suite', () => {
   });
 
   features[0].path.forEach((path) => {
-    test(`${features[0].name}, path: ${path}`, async ({ baseURL }) => {
+    test(`[Test Id - ${features[0].tcid}] ${features[0].name}, path: ${path}`, async ({ baseURL }) => {
       const url = `${baseURL}${path}`;
       await pcv2.gotoURL(url);
       await pcv2.scrollToBlock();
