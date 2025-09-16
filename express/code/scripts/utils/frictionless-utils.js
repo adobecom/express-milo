@@ -197,7 +197,7 @@ export function createDefaultExportConfig() {
         size: 'xl',
       },
     },
-    ...(!isSafariBrowser
+    ...(isSafariBrowser
       ? []
       : [{
         id: 'edit-in-express',
