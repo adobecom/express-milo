@@ -172,6 +172,6 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
     }
 
     main .section .content-toggle-v2.padding-m {
-        padding: var(--spacing-500), var(--spacing-600);
+        padding: var(--spacing-500) var(--spacing-600);
     }
 }
