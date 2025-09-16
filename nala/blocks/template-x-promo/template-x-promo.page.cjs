@@ -45,11 +45,18 @@ export default class TemplateXPromo {
     // Wait for the main block to be visible first
     await this.templateXPromo.waitFor();
     
+    // Wait for the block to be decorated by JavaScript
+    await this.templateXPromo.waitFor({ state: 'attached' });
+    await this.page.waitForFunction(
+      () => document.querySelector('.template-x-promo')?.hasAttribute('data-decorated'),
+      { timeout: 30000 }
+    );
+    
     // Wait for network to be idle (API calls completed)
     await this.page.waitForLoadState('networkidle');
     
     // Give additional time for DOM updates after API calls
-    await this.page.waitForTimeout(3000);
+    await this.page.waitForTimeout(2000);
     
     // Check if it's a carousel layout
     const isCarousel = await this.carouselWrapper.isVisible();
