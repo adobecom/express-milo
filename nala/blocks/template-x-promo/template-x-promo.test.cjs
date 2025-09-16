@@ -9,7 +9,7 @@ test.describe('Template X Promo block tests', () => {
   test.beforeEach(async ({ page }) => {
     templateXPromo = new TemplateXPromo(page);
   });
-  
+
   // Test 0: 1-up variant
   test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ baseURL }) => {
     console.info(`Testing: ${baseURL}${features[0].path}`);
@@ -22,7 +22,7 @@ test.describe('Template X Promo block tests', () => {
       const blockCount = await templateXPromo.templateXPromo.count();
       if (blockCount === 0) {
         console.log('Template-x-promo block not found on this page, skipping test');
-        return; // Just return instead of calling test.skip()
+        // Just return instead of calling test.skip()
       }
     });
 
@@ -59,7 +59,7 @@ test.describe('Template X Promo block tests', () => {
       const blockCount = await templateXPromo.templateXPromo.count();
       if (blockCount === 0) {
         console.log('Template-x-promo block not found on this page, skipping test');
-        return; // Just return instead of calling test.skip()
+        // Just return instead of calling test.skip()
       }
     });
 
@@ -96,7 +96,7 @@ test.describe('Template X Promo block tests', () => {
       const blockCount = await templateXPromo.templateXPromo.count();
       if (blockCount === 0) {
         console.log('Template-x-promo block not found on this page, skipping test');
-        return; // Just return instead of calling test.skip()
+        // Just return instead of calling test.skip()
       }
     });
 
@@ -133,7 +133,7 @@ test.describe('Template X Promo block tests', () => {
       const blockCount = await templateXPromo.templateXPromo.count();
       if (blockCount === 0) {
         console.log('Template-x-promo block not found on this page, skipping test');
-        return; // Just return instead of calling test.skip()
+        // Just return instead of calling test.skip()
       }
     });
 
