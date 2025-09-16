@@ -39,8 +39,11 @@ export default class TemplateXPromo {
     // Wait for the main block to be visible first
     await this.templateXPromo.waitFor();
     
-    // Give the block time to initialize and make API calls
-    await this.page.waitForTimeout(2000);
+    // Wait for network to be idle (API calls completed)
+    await this.page.waitForLoadState('networkidle');
+    
+    // Give additional time for DOM updates after API calls
+    await this.page.waitForTimeout(3000);
     
     // Check if it's a carousel layout
     const isCarousel = await this.carouselWrapper.isVisible();
@@ -52,8 +55,8 @@ export default class TemplateXPromo {
     
     // Wait for templates to be created (with longer timeout for API calls)
     try {
-      await this.templates.first().waitFor({ timeout: 15000 });
-      await this.templateImages.first().waitFor({ timeout: 15000 });
+      await this.templates.first().waitFor({ timeout: 20000 });
+      await this.templateImages.first().waitFor({ timeout: 20000 });
     } catch (error) {
       // If templates don't load, check if there are any images in the block
       const hasImages = await this.templateImages.count() > 0;
