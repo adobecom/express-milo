@@ -1,4 +1,4 @@
-import { getLibs } from '../utils.js';
+import { getLibs, getWebBrowser } from '../utils.js';
 
 // Shared constants and configurations for frictionless quick actions
 const JPG = 'jpg';
@@ -181,6 +181,9 @@ export function createContainerConfig(quickAction) {
   };
 }
 
+const browserType = getWebBrowser();
+const isSafariBrowser = browserType === 'Safari';
+
 export function createDefaultExportConfig() {
   return [
     {
@@ -194,17 +197,20 @@ export function createDefaultExportConfig() {
         size: 'xl',
       },
     },
-    {
-      id: 'edit-in-express',
-      // label: 'Edit in Adobe Express for free',
-      action: { target: 'express' },
-      style: { uiType: 'button' },
-      buttonStyle: {
-        variant: 'primary',
-        treatment: 'fill',
-        size: 'xl',
-      },
-    },
+    ...(!isSafariBrowser
+      ? []
+      : [{
+        id: 'edit-in-express',
+        // label: 'Edit in Adobe Express for free',
+        action: { target: 'express' },
+        style: { uiType: 'button' },
+        buttonStyle: {
+          variant: 'primary',
+          treatment: 'fill',
+          size: 'xl',
+        },
+      }]
+    ),
   ];
 }
 
