@@ -155,7 +155,6 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
 @media screen and (min-width: 1024px) {
     main .content-toggle-v2.padding-m {
         padding: 32px 0px;
-        max-width: 1000px;
         margin: auto;
         width: fit-content;
     }
@@ -165,14 +164,8 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
     }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1200px) {
     main .content-toggle-v2.padding-m {
-        max-width: 1200px;
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    main .content-toggle-v2.padding-m {
-        max-width: 1440px;
+        max-width: var(--ax-grid-12-col-width);
     }
 }
