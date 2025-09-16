@@ -153,19 +153,19 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
 }
 
 @media screen and (min-width: 1024px) {
-    main .content-toggle-v2.padding-m {
+    main .section .content-toggle-v2.padding-m {
         padding: 32px 0px;
         margin: auto;
         width: fit-content;
     }
 
-    main .content-toggle-v2.padding-400 {
+    main .section .content-toggle-v2.padding-400 {
        padding: 24px 0px;
     }
 }
 
 @media screen and (min-width: 1200px) {
-    main .content-toggle-v2.padding-m {
+    main .section .content-toggle-v2 {
         max-width: var(--ax-grid-12-col-width);
     }
 }
