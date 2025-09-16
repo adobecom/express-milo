@@ -3,7 +3,7 @@ export default class TemplateXPromo {
     this.page = page;
 
     // Main block selectors
-    this.templateXPromo = page.locator('.template-x-promo');
+    this.templateXPromo = page.locator('.template-x-promo').nth(0);
     this.carouselWrapper = page.locator('.promo-carousel-wrapper');
     this.carouselViewport = page.locator('.promo-carousel-viewport');
     this.carouselTrack = page.locator('.promo-carousel-track');
