@@ -346,6 +346,7 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   const urlsMap = {
     'edit-image': '/express/feature/image/editor',
     'edit-video': '/express/feature/video/editor',
+    'remove-background': '/express/feature/image/remove-background',
   };
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
@@ -376,6 +377,10 @@ function addVideoEditorParams(url) {
 
 function addImageEditorParams(url) {
   url.searchParams.set('learn', 'exercise:express/how-to/in-app/how-to-edit-an-image:-1');
+}
+
+function addRemoveBackgroundParams(url) {
+  url.searchParams.set('variant', 'qa-in-product-variant1');
 }
 
 async function performUploadAction(files, block, quickAction) {
@@ -420,6 +425,9 @@ async function performUploadAction(files, block, quickAction) {
 
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor) {
     addImageEditorParams(url);
+  }
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackground) {
+    addRemoveBackgroundParams(url);
   }
 
   window.location.href = url.toString();
@@ -496,6 +504,9 @@ export default async function decorate(block) {
   cta.addEventListener('click', (e) => e.preventDefault(), false);
   // Fetch the base url for editor entry from upload cta and save it for later use.
   frictionlessTargetBaseUrl = cta.href;
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackground) {
+    frictionlessTargetBaseUrl = 'https://193167.prenv.projectx.corp.adobe.com/new?feature-enable=frictionless-upload-feature';
+  }
   const dropzoneHint = dropzone.querySelector('p:first-child');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
