@@ -36,23 +36,29 @@ export default class TemplateXPromo {
   }
 
   async waitForTemplates() {
+    // First check if the block exists at all
+    const blockExists = await this.templateXPromo.count() > 0;
+    if (!blockExists) {
+      throw new Error('Template-x-promo block not found on page');
+    }
+
     // Wait for the main block to be visible first
     await this.templateXPromo.waitFor();
-    
+
     // Wait for network to be idle (API calls completed)
     await this.page.waitForLoadState('networkidle');
-    
+
     // Give additional time for DOM updates after API calls
     await this.page.waitForTimeout(3000);
-    
+
     // Check if it's a carousel layout
     const isCarousel = await this.carouselWrapper.isVisible();
-    
+
     if (isCarousel) {
       // Wait for carousel structure
       await this.carouselTrack.waitFor();
     }
-    
+
     // Wait for templates to be created (with longer timeout for API calls)
     try {
       await this.templates.first().waitFor({ timeout: 20000 });
