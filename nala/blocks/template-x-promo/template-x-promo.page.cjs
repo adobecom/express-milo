@@ -65,9 +65,6 @@ export default class TemplateXPromo {
     // If no templates or images are found, log a warning but don't fail
     // This is expected if the block isn't fully functional yet
     if (templateCount === 0 && imageCount === 0) {
-      // Debug: log what we actually found
-      const blockHTML = await this.templateXPromo.innerHTML();
-      console.log(`Block HTML: ${blockHTML.substring(0, 500)}...`);
       console.log('Warning: Template-x-promo block found but no templates were processed. This is expected if the block is not fully functional yet.');
       return; // Don't fail the test, just return
     }
