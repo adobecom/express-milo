@@ -9,7 +9,7 @@ test.describe('Template X Promo block tests', () => {
   test.beforeEach(async ({ page }) => {
     templateXPromo = new TemplateXPromo(page);
   });
-
+  
   // Test 0: 1-up variant
   test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ baseURL }) => {
     console.info(`Testing: ${baseURL}${features[0].path}`);
