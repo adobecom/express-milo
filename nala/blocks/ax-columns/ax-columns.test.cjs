@@ -15,7 +15,7 @@ test.describe('Express AX Columns Block test suite', () => {
     axColumns = new AxColumns(page);
   });
 
-  // Test 0 : AX-Columns center variant
+  // Test 0 : AX-Columns center
   test(`${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}${miloLibs}`;
