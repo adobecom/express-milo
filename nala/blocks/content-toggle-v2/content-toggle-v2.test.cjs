@@ -13,7 +13,7 @@ test.describe('content-toggle-v2 test suite', () => {
   const paths = Array.isArray(features[0].path) ? features[0].path : [features[0].path];
   paths.forEach((path) => {
     test(
-      `${features[0].name},${features[0].tags}, path: ${path}`,
+      `[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}, path: ${path}`,
       async ({ baseURL, page }) => {
         const basePath = path.startsWith('http') ? path : `${baseURL}${path}`;
         const testUrl = `${basePath}${basePath.includes('?') ? '&' : '?'}tab=1${miloLibs}`;
