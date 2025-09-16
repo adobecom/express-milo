@@ -13,7 +13,7 @@ test.describe('Express Floating Button Block test suite', () => {
   });
 
   // Test 0 : Floating Button
-  test(`${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
+  test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}${miloLibs}`;
     console.info(`[Test Page]: ${testUrl}`);
