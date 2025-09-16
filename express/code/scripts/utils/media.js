@@ -1,4 +1,4 @@
-import { createTag, getLibs } from '../utils.js';
+import { createTag, getLibs, readBlockConfig } from '../utils.js';
 
 /** Adding a backup here for the rootPath for createAccessibilityVideoControls function */
 const federatedAccessibilityIconsPath = 'https://main--federal--adobecom.aem.live';
@@ -124,8 +124,10 @@ export async function createAccessibilityVideoControls(videoElement) {
 
 export function transformLinkToAnimation($a, $videoLooping = true, hasControls = true) {
   try {
-    const metadata = $a?.closest('.section')?.querySelector('.section-metadata');
-    const allyTitleForVideo = metadata?.children[1]?.children[1]?.textContent?.trim();
+    const sectionMetadata = $a?.closest('.section')?.querySelector('.section-metadata');
+    const metadataConfig = sectionMetadata ? readBlockConfig(sectionMetadata) : {};
+    const { 'animation-alt-text': animationAltText } = metadataConfig || {};
+    const videoTitle = animationAltText?.trim();
 
     if (!$a || !$a.href || !$a.href.endsWith('.mp4')) {
       return null;
@@ -158,8 +160,8 @@ export function transformLinkToAnimation($a, $videoLooping = true, hasControls =
     const isLegacy = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') || videoUrl.pathname.includes('media_');
     const $video = createTag('video', attribs);
 
-    if (allyTitleForVideo) {
-      $video?.setAttribute('title', allyTitleForVideo);
+    if (videoTitle) {
+      $video?.setAttribute('title', videoTitle);
     }
 
     // Use createTag instead of innerHTML
