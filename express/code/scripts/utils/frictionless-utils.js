@@ -220,18 +220,24 @@ export async function createMobileExportConfig(
   editText,
 ) {
   const exportConfig = createDefaultExportConfig();
-  return [
+  const result = [
     {
       ...exportConfig[0],
       ...(QA_CONFIGS[quickAction].group === 'video'
         ? {}
         : { label: downloadText }),
     },
-    {
+  ];
+
+  // Only add the edit option if it exists (not Safari browser)
+  if (exportConfig[1]) {
+    result.push({
       ...exportConfig[1],
       ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
-    },
-  ];
+    });
+  }
+
+  return result;
 }
 
 // Helper function to execute quick actions with common parameters
