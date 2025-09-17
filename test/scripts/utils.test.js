@@ -56,13 +56,13 @@ describe('Label Metadata for Frictionless', () => {
     document.querySelector('meta[name="fqa-on"]')?.remove();
     document.querySelector('meta[name="fqa-off"]')?.remove();
   });
-  it('labels iOS as fqa-non-qualified', () => {
+  it('labels iOS as fqa-qualified-mobile', () => {
     hideQuickActionsOnDevices('Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1');
-    expect(document.querySelector('meta[name="fqa-non-qualified"]')).to.exist;
+    expect(document.querySelector('meta[name="fqa-qualified-mobile"]')).to.exist;
   });
-  it('labels desktop Safari as fqa-non-qualified', () => {
+  it('labels desktop Safari as fqa-qualified-desktop', () => {
     hideQuickActionsOnDevices('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15');
-    expect(document.querySelector('meta[name="fqa-non-qualified"]')).to.exist;
+    expect(document.querySelector('meta[name="fqa-qualified-desktop"]')).to.exist;
   });
   it('labels Android phone as fqa-qualified-mobile', () => {
     hideQuickActionsOnDevices('Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36');
