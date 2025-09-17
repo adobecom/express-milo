@@ -10,7 +10,7 @@ test.describe('Template X Promo block tests', () => {
     templateXPromo = new TemplateXPromo(page);
   });
 
-  test(`${features[0].name},${features[0].tags}`, async ({ baseURL }) => {
+  test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ baseURL }) => {
     console.info(`Testing: ${baseURL}${features[0].path}`);
     const testPage = `${baseURL}${features[0].path}`;
     await test.step('Navigate to test page', async () => {
