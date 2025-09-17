@@ -1,4 +1,6 @@
+https://main--express-milo--adobecom.aem.live/.milo/config.json?limit=99999
 https://main--express-milo--adobecom.aem.live/admin/SproutResources.json?limit=99999
+https://main--express-milo--adobecom.aem.live/admin/sproutresources.json?limit=99999
 https://main--express-milo--adobecom.aem.live/br/express/colors/default/metadata.json?limit=99999
 https://main--express-milo--adobecom.aem.live/br/express/create/multifunction-button.json?limit=99999
 https://main--express-milo--adobecom.aem.live/br/express/floating-cta-dev.json?limit=99999

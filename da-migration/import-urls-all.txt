@@ -746,6 +746,7 @@ https://main--express-milo--adobecom.aem.live/about/post/
 https://main--express-milo--adobecom.aem.live/about/video
 https://main--express-milo--adobecom.aem.live/about/video/
 https://main--express-milo--adobecom.aem.live/admin/SproutResources.json
+https://main--express-milo--adobecom.aem.live/admin/sproutresources.json
 https://main--express-milo--adobecom.aem.live/ae_ar/express
 https://main--express-milo--adobecom.aem.live/ae_en/express
 https://main--express-milo--adobecom.aem.live/africa/express
@@ -769,6 +770,7 @@ https://main--express-milo--adobecom.aem.live/blog/
 https://main--express-milo--adobecom.aem.live/br/education/express/
 https://main--express-milo--adobecom.aem.live/br/express/Android
 https://main--express-milo--adobecom.aem.live/br/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/br/express/android
 https://main--express-milo--adobecom.aem.live/br/express/assets/animation/seo/create-video-youtube.mp4
 https://main--express-milo--adobecom.aem.live/br/express/blog/sitemap.xml
 https://main--express-milo--adobecom.aem.live/br/express/business
@@ -803,6 +805,8 @@ https://main--express-milo--adobecom.aem.live/br/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/br/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/br/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/br/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/br/express/create/ai/thumbnail
+https://main--express-milo--adobecom.aem.live/br/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/br/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/br/express/create/animation
 https://main--express-milo--adobecom.aem.live/br/express/create/animation/instagram
@@ -987,6 +991,7 @@ https://main--express-milo--adobecom.aem.live/br/express/create/flyer/party
 https://main--express-milo--adobecom.aem.live/br/express/create/flyer/real-estate
 https://main--express-milo--adobecom.aem.live/br/express/create/flyer/salon
 https://main--express-milo--adobecom.aem.live/br/express/create/frame/polaroid
+https://main--express-milo--adobecom.aem.live/br/express/create/gif
 https://main--express-milo--adobecom.aem.live/br/express/create/gift-certificate.html
 https://main--express-milo--adobecom.aem.live/br/express/create/gift-certificate
 https://main--express-milo--adobecom.aem.live/br/express/create/gift-certificate/massage
@@ -1159,6 +1164,7 @@ https://main--express-milo--adobecom.aem.live/br/express/create/planner/personal
 https://main--express-milo--adobecom.aem.live/br/express/create/planner/workout
 https://main--express-milo--adobecom.aem.live/br/express/create/poetry
 https://main--express-milo--adobecom.aem.live/br/express/create/polaroid-frame
+https://main--express-milo--adobecom.aem.live/br/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/br/express/create/post
 https://main--express-milo--adobecom.aem.live/br/express/create/post/blog
 https://main--express-milo--adobecom.aem.live/br/express/create/post/facebook
@@ -1267,6 +1273,7 @@ https://main--express-milo--adobecom.aem.live/br/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/br/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/br/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/br/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/br/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/br/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/br/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/br/express/create/video/facebook
@@ -1550,6 +1557,10 @@ https://main--express-milo--adobecom.aem.live/br/express/feature/design/color-pa
 https://main--express-milo--adobecom.aem.live/br/express/feature/design/color
 https://main--express-milo--adobecom.aem.live/br/express/feature/design/curved-text
 https://main--express-milo--adobecom.aem.live/br/express/feature/design/frame
+https://main--express-milo--adobecom.aem.live/br/express/feature/design/safe-zone/facebook
+https://main--express-milo--adobecom.aem.live/br/express/feature/design/safe-zone/instagram
+https://main--express-milo--adobecom.aem.live/br/express/feature/design/safe-zone/social
+https://main--express-milo--adobecom.aem.live/br/express/feature/design/safe-zone/tiktok
 https://main--express-milo--adobecom.aem.live/br/express/feature/design/text-animation
 https://main--express-milo--adobecom.aem.live/br/express/feature/design/text-editor
 https://main--express-milo--adobecom.aem.live/br/express/feature/design/text-effects
@@ -1569,6 +1580,7 @@ https://main--express-milo--adobecom.aem.live/br/express/feature/image/change-ba
 https://main--express-milo--adobecom.aem.live/br/express/feature/image/change-background
 https://main--express-milo--adobecom.aem.live/br/express/feature/image/combine
 https://main--express-milo--adobecom.aem.live/br/express/feature/image/convert
+https://main--express-milo--adobecom.aem.live/br/express/feature/image/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/br/express/feature/image/convert/jpg-to-png
 https://main--express-milo--adobecom.aem.live/br/express/feature/image/convert/jpg-to-png/transparent-png
 https://main--express-milo--adobecom.aem.live/br/express/feature/image/convert/jpg-to-svg
@@ -2080,6 +2092,7 @@ https://main--express-milo--adobecom.aem.live/cn/express/acom-gnav-thin
 https://main--express-milo--adobecom.aem.live/cn/express/affiliate
 https://main--express-milo--adobecom.aem.live/cn/express/affiliate/special-20
 https://main--express-milo--adobecom.aem.live/cn/express/ambassadors/list
+https://main--express-milo--adobecom.aem.live/cn/express/android
 https://main--express-milo--adobecom.aem.live/cn/express/business
 https://main--express-milo--adobecom.aem.live/cn/express/business/request-info
 https://main--express-milo--adobecom.aem.live/cn/express/business/teams
@@ -2102,9 +2115,12 @@ https://main--express-milo--adobecom.aem.live/cn/express/feature/ai/image/remove
 https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler
 https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/calendar
 https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/facebook
+https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/instagram
 https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/linkedin
 https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/national-day
 https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/post
+https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/social-media
+https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/tiktok
 https://main--express-milo--adobecom.aem.live/cn/express/feature/content-scheduler/twitter
 https://main--express-milo--adobecom.aem.live/cn/express/feature/design
 https://main--express-milo--adobecom.aem.live/cn/express/feature/design/color
@@ -3502,6 +3518,7 @@ https://main--express-milo--adobecom.aem.live/de/education/express/deployment
 https://main--express-milo--adobecom.aem.live/de/education/express/
 https://main--express-milo--adobecom.aem.live/de/express/Android
 https://main--express-milo--adobecom.aem.live/de/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/de/express/android
 https://main--express-milo--adobecom.aem.live/de/express/assets/animations/ax-homepage-marquee-2550x540-de.mp4
 https://main--express-milo--adobecom.aem.live/de/express/assets/animations/ax-homepage-marquee-900x540-de.mp4
 https://main--express-milo--adobecom.aem.live/de/express/blog/sitemap.xml
@@ -3539,6 +3556,7 @@ https://main--express-milo--adobecom.aem.live/de/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/de/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/de/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/de/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/de/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/de/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/de/express/create/animation
 https://main--express-milo--adobecom.aem.live/de/express/create/animation/instagram
@@ -3607,6 +3625,7 @@ https://main--express-milo--adobecom.aem.live/de/express/create/brochure/tri-fol
 https://main--express-milo--adobecom.aem.live/de/express/create/business-card.html
 https://main--express-milo--adobecom.aem.live/de/express/create/business-card
 https://main--express-milo--adobecom.aem.live/de/express/create/business-card/qr-code.html
+https://main--express-milo--adobecom.aem.live/de/express/create/business-card/qr-code
 https://main--express-milo--adobecom.aem.live/de/express/create/business-card/virtual
 https://main--express-milo--adobecom.aem.live/de/express/create/business-plan
 https://main--express-milo--adobecom.aem.live/de/express/create/calendar.html
@@ -3927,6 +3946,7 @@ https://main--express-milo--adobecom.aem.live/de/express/create/planner/personal
 https://main--express-milo--adobecom.aem.live/de/express/create/planner/workout
 https://main--express-milo--adobecom.aem.live/de/express/create/poetry
 https://main--express-milo--adobecom.aem.live/de/express/create/polaroid-frame
+https://main--express-milo--adobecom.aem.live/de/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/de/express/create/post
 https://main--express-milo--adobecom.aem.live/de/express/create/post/blog
 https://main--express-milo--adobecom.aem.live/de/express/create/post/facebook
@@ -4046,6 +4066,7 @@ https://main--express-milo--adobecom.aem.live/de/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/de/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/de/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/de/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/de/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/de/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/de/express/create/video/explainer.html
 https://main--express-milo--adobecom.aem.live/de/express/create/video/explainer
@@ -4747,10 +4768,10 @@ https://main--express-milo--adobecom.aem.live/de/express/learn/blog/infographic-
 https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-add-ons
 https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-analytics
 https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-bio-ideas
-https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\" \\l\n\"explore-related-posts
-https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\" \\l\n\"ready-to-create-standout-content
-https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\" \\l \n\"explore-related-posts
-https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\" \\l \n\"ready-to-create-standout-content
+https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\https://main--express-milo--adobecom.aem.live \\l\n\https://main--express-milo--adobecom.aem.liveexplore-related-posts
+https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\https://main--express-milo--adobecom.aem.live \\l\n\https://main--express-milo--adobecom.aem.liveready-to-create-standout-content
+https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\https://main--express-milo--adobecom.aem.live \\l \n\https://main--express-milo--adobecom.aem.liveexplore-related-posts
+https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement\https://main--express-milo--adobecom.aem.live \\l \n\https://main--express-milo--adobecom.aem.liveready-to-create-standout-content
 https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-engagement
 https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-questions
 https://main--express-milo--adobecom.aem.live/de/express/learn/blog/instagram-story-covers
@@ -5093,6 +5114,7 @@ https://main--express-milo--adobecom.aem.live/de/express/why-choose-express
 https://main--express-milo--adobecom.aem.live/dk/education/express/
 https://main--express-milo--adobecom.aem.live/dk/express/Android
 https://main--express-milo--adobecom.aem.live/dk/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/dk/express/android
 https://main--express-milo--adobecom.aem.live/dk/express/business
 https://main--express-milo--adobecom.aem.live/dk/express/business/request-info
 https://main--express-milo--adobecom.aem.live/dk/express/business/teams
@@ -5115,9 +5137,12 @@ https://main--express-milo--adobecom.aem.live/dk/express/feature/ai/image/remove
 https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler
 https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/calendar
 https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/facebook
+https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/instagram
 https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/linkedin
 https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/national-day
 https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/post
+https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/social-media
+https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/tiktok
 https://main--express-milo--adobecom.aem.live/dk/express/feature/content-scheduler/twitter
 https://main--express-milo--adobecom.aem.live/dk/express/feature/design
 https://main--express-milo--adobecom.aem.live/dk/express/feature/design/color
@@ -5267,6 +5292,7 @@ https://main--express-milo--adobecom.aem.live/docs/library/blocks/ax-marquee-dyn
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/ax-marquee
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/ax-panels
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/ax-table-of-contents
+https://main--express-milo--adobecom.aem.live/docs/library/blocks/banner-bg
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/banner
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/blog-posts
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/browse-by-category
@@ -5293,6 +5319,7 @@ https://main--express-milo--adobecom.aem.live/docs/library/blocks/gen-ai-row
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/grid-marquee
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/headline
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/hero-color
+https://main--express-milo--adobecom.aem.live/docs/library/blocks/highlight
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/hover-cards
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/how-to-cards
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/how-to-steps-carousel
@@ -5327,6 +5354,7 @@ https://main--express-milo--adobecom.aem.live/docs/library/blocks/table-of-conte
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/tabs-ax
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/template-x-carousel-toolbar
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/template-x
+https://main--express-milo--adobecom.aem.live/docs/library/blocks/toc-seo
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/toggle-bar
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/tutorials
 https://main--express-milo--adobecom.aem.live/docs/library/blocks/wayfinder
@@ -5370,6 +5398,7 @@ https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/grid-mar
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/headline
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/hero-animation
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/hero-color
+https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/highlight
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/holiday-blade
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/hover-cards
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/how-to-cards
@@ -5414,6 +5443,7 @@ https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/tabs-ax
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/template-list
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/template-x-carousel-toolbar
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/template-x
+https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/toc-seo
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/toc
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/toggle-bar
 https://main--express-milo--adobecom.aem.live/docs/library/kitchen-sink/tutorials
@@ -5452,11 +5482,15 @@ https://main--express-milo--adobecom.aem.live/drafts/alex/number
 https://main--express-milo--adobecom.aem.live/drafts/alex/playground
 https://main--express-milo--adobecom.aem.live/drafts/alex/promotion
 https://main--express-milo--adobecom.aem.live/drafts/ana/uk/DOTCOM-114134/discover/ideas/how-to-host-a-dinner-party
+https://main--express-milo--adobecom.aem.live/drafts/ana/uk/dotcom-114134/discover/ideas/how-to-host-a-dinner-party
 https://main--express-milo--adobecom.aem.live/drafts/ana/uk/q3/159959/mood-board
 https://main--express-milo--adobecom.aem.live/drafts/apganapa/fullscreen-marquee-v2
 https://main--express-milo--adobecom.aem.live/drafts/authoring-team/Logo-QA-pages/de/website
 https://main--express-milo--adobecom.aem.live/drafts/authoring-team/Logo-QA-pages/jp/logo/company
 https://main--express-milo--adobecom.aem.live/drafts/authoring-team/Logo-QA-pages/jp/logo/cool
+https://main--express-milo--adobecom.aem.live/drafts/authoring-team/logo-qa-pages/de/website
+https://main--express-milo--adobecom.aem.live/drafts/authoring-team/logo-qa-pages/jp/logo/company
+https://main--express-milo--adobecom.aem.live/drafts/authoring-team/logo-qa-pages/jp/logo/cool
 https://main--express-milo--adobecom.aem.live/drafts/blaishram/test-urls/page-gnav-footer-thin
 https://main--express-milo--adobecom.aem.live/drafts/blaishram/test-urls/page-localnav
 https://main--express-milo--adobecom.aem.live/drafts/blaishram/test-urls/page-with-promo
@@ -5471,9 +5505,11 @@ https://main--express-milo--adobecom.aem.live/drafts/bugs/columns
 https://main--express-milo--adobecom.aem.live/drafts/casey/embedded-youtube
 https://main--express-milo--adobecom.aem.live/drafts/casey/left-bottom-corner-bg.png
 https://main--express-milo--adobecom.aem.live/drafts/casey/quick-action-card
+https://main--express-milo--adobecom.aem.live/drafts/cmillar/demo
 https://main--express-milo--adobecom.aem.live/drafts/demo/editor
 https://main--express-milo--adobecom.aem.live/drafts/derjones/list
 https://main--express-milo--adobecom.aem.live/drafts/dhananjay/editor
+https://main--express-milo--adobecom.aem.live/drafts/dhananjay/focused-editor/editor
 https://main--express-milo--adobecom.aem.live/drafts/dhananjay/video/editor
 https://main--express-milo--adobecom.aem.live/drafts/donaldy/in/dotcom-154763/draft/ideas/craft
 https://main--express-milo--adobecom.aem.live/drafts/donaldy/uk/how-to/how-to-promote-tiktok-and-youtube-videos
@@ -5512,6 +5548,8 @@ https://main--express-milo--adobecom.aem.live/drafts/econgress/CCX landing page 
 https://main--express-milo--adobecom.aem.live/drafts/ernest_sallee/DOTCOM-69600/student-pricing
 https://main--express-milo--adobecom.aem.live/drafts/ernest_sallee/DOTCOM-73636/content-scheduler
 https://main--express-milo--adobecom.aem.live/drafts/ernest_sallee/affiliate
+https://main--express-milo--adobecom.aem.live/drafts/ernest_sallee/dotcom-69600/student-pricing
+https://main--express-milo--adobecom.aem.live/drafts/ernest_sallee/dotcom-73636/content-scheduler
 https://main--express-milo--adobecom.aem.live/drafts/esallee/localnav-express-business-test
 https://main--express-milo--adobecom.aem.live/drafts/esallee/price-ribbon-test
 https://main--express-milo--adobecom.aem.live/drafts/esallee/transparent-copy
@@ -5533,6 +5571,9 @@ https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/1- FR - Ready t
 https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/DE/100-instagram-caption-ideas
 https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/FR/etsy-shop-xxxx
 https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/FR/instagram-engagement
+https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/de/100-instagram-caption-ideas
+https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/fr/etsy-shop-xxxx
+https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/fr/instagram-engagement
 https://main--express-milo--adobecom.aem.live/drafts/ismail/blog/modern-logo-design
 https://main--express-milo--adobecom.aem.live/drafts/jcohan/how-to-transparent-background
 https://main--express-milo--adobecom.aem.live/drafts/jingle/getting-started
@@ -5549,6 +5590,8 @@ https://main--express-milo--adobecom.aem.live/drafts/jingle/template-x-query-con
 https://main--express-milo--adobecom.aem.live/drafts/jinglhua/grid-marquee
 https://main--express-milo--adobecom.aem.live/drafts/jinglhua/login-page
 https://main--express-milo--adobecom.aem.live/drafts/jinglhua/susi-light
+https://main--express-milo--adobecom.aem.live/drafts/jinglhua/svg-test
+https://main--express-milo--adobecom.aem.live/drafts/joao/131395/draft/how-to-party-flyer-ptbr
 https://main--express-milo--adobecom.aem.live/drafts/jsandlan/business
 https://main--express-milo--adobecom.aem.live/drafts/jsandlan/discover-redesign-highlight
 https://main--express-milo--adobecom.aem.live/drafts/jsandlan/dynamic-marquee-img-video
@@ -5558,8 +5601,10 @@ https://main--express-milo--adobecom.aem.live/drafts/jsandlan/homepage-milo
 https://main--express-milo--adobecom.aem.live/drafts/jsandlan/milo-allow-content-toggle
 https://main--express-milo--adobecom.aem.live/drafts/jsandlan/milo-basic-carousel-grid
 https://main--express-milo--adobecom.aem.live/drafts/jsandlan/mothers-day
+https://main--express-milo--adobecom.aem.live/drafts/julia/blog/tiktok-as-search-engine
 https://main--express-milo--adobecom.aem.live/drafts/kart/test
 https://main--express-milo--adobecom.aem.live/drafts/losanes/Document
+https://main--express-milo--adobecom.aem.live/drafts/losanes/document
 https://main--express-milo--adobecom.aem.live/drafts/losanes/pricing2
 https://main--express-milo--adobecom.aem.live/drafts/losanes/test1
 https://main--express-milo--adobecom.aem.live/drafts/losanes/training
@@ -5567,7 +5612,10 @@ https://main--express-milo--adobecom.aem.live/drafts/losanes/training2
 https://main--express-milo--adobecom.aem.live/drafts/markp/icon.json
 https://main--express-milo--adobecom.aem.live/drafts/maxed/test
 https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-100260/draft/cyber-monday
+https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-100261/draft/banner-design
+https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-100262/draft/album
 https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-100262/draft/schedule
+https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-130514/draft/photoshop
 https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-139333/draft/postcard-design
 https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-141809/draft/oshi
 https://main--express-milo--adobecom.aem.live/drafts/minakoz/dotcom-141809/draft/thank-you
@@ -5586,6 +5634,7 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/ax-columns-numb
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/ax-columns/ax-column-highlight
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/ax-marquee/ax-marquee-animation
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/ax-marquee/ax-marquee-short
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/ax-quotes/ax-quotes
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/banner
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/cards-dark
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/cards-default-1-card
@@ -5601,7 +5650,9 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/cards/cards-def
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/cards/cards-default
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/cards/cards-featured
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/cards/cards-large
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/content-toggle-v2
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/discover-cards/discover-cards
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/feature-list
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/floating-button-page
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/frictionless-qa/fqa-video-resize
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/frictionless-qa/fqa-video-to-gif
@@ -5609,6 +5660,14 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/gen-ai-cards-2
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/gen-ai-cards
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/gen-ai-cards/gen-ai-cards-homepage
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/gen-ai-cards/gen-ai-cards-prompt
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/how-to-steps-carousel-schema-image
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/how-to-steps-carousel
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/how-to-steps-carousel/how-to-steps-carousel-schema-image
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/how-to-steps-carousel/how-to-steps-carousel-with-button
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/how-to-steps/how-to-steps-noschema
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/how-to-steps/how-to-steps
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/icon-list/icon-list-fullwidth
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/icon-list/icon-list
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/image-list-l
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/image-list-m
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/image-list-s
@@ -5625,9 +5684,23 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/link-list/link-
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/link-list/link-list-leftalign
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/link-list/link-list-noarrows
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/link-list/link-list-shaded
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/logo-row
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/logo-row/ax-quotes
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/pricing-cards-v2
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/pricing-cards
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/pricing-cards/pricing-cards
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/pricing-table
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/simplified-pricing-cards-v2
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/simplified-pricing-cards
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/small-business-page
 https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/small-business
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/steps/steps-dark
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/steps/steps-highlight
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/steps/steps-schema
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/tabs-ax/tabs-ax-1
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/template-x-promo/template-x-promo-api
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/template-x-promo/template-x-promo-basic
+https://main--express-milo--adobecom.aem.live/drafts/nala/blocks/template-x-promo/template-x-promo-recipe
 https://main--express-milo--adobecom.aem.live/drafts/nala/create-print-t-shirt
 https://main--express-milo--adobecom.aem.live/drafts/nala/homepage
 https://main--express-milo--adobecom.aem.live/drafts/nala/nonprofits
@@ -5636,6 +5709,7 @@ https://main--express-milo--adobecom.aem.live/drafts/nala/spotlight-logo
 https://main--express-milo--adobecom.aem.live/drafts/nipun/affiliate
 https://main--express-milo--adobecom.aem.live/drafts/nipun/registration
 https://main--express-milo--adobecom.aem.live/drafts/nipun/ticket-update/express/
+https://main--express-milo--adobecom.aem.live/drafts/nish/create/midsumma
 https://main--express-milo--adobecom.aem.live/drafts/npowaga/blog/craft-logo-ideas
 https://main--express-milo--adobecom.aem.live/drafts/npowaga/blog/creative-cloud-express-february-2022-feature-roadmap
 https://main--express-milo--adobecom.aem.live/drafts/npowaga/blog/how-to-build-a-standout-campaign
@@ -5826,6 +5900,7 @@ https://main--express-milo--adobecom.aem.live/drafts/qiyundai/wallsio
 https://main--express-milo--adobecom.aem.live/drafts/rlope/banner
 https://main--express-milo--adobecom.aem.live/drafts/rlope/columns-fullsize
 https://main--express-milo--adobecom.aem.live/drafts/rofe/create/Document
+https://main--express-milo--adobecom.aem.live/drafts/rofe/create/document
 https://main--express-milo--adobecom.aem.live/drafts/rofe/feature/quick-actions
 https://main--express-milo--adobecom.aem.live/drafts/rofe/home
 https://main--express-milo--adobecom.aem.live/drafts/rofe/ratings
@@ -5836,6 +5911,7 @@ https://main--express-milo--adobecom.aem.live/drafts/rpapani/ravi-quick-test
 https://main--express-milo--adobecom.aem.live/drafts/sandra/quotes
 https://main--express-milo--adobecom.aem.live/drafts/santhosh/reference/block-inventory
 https://main--express-milo--adobecom.aem.live/drafts/santhosh/test/testBlocks
+https://main--express-milo--adobecom.aem.live/drafts/santhosh/test/testblocks
 https://main--express-milo--adobecom.aem.live/drafts/solene/ratings
 https://main--express-milo--adobecom.aem.live/drafts/souj/localnav-express
 https://main--express-milo--adobecom.aem.live/drafts/souj/test1doc
@@ -6089,13 +6165,16 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/music
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/name
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/online-radio
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/pharmacy-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/pharmacy-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/phone
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/photography
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/real-estate-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/real-estate-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/restaurant
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/school
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/shop
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/soccer-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/soccer-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/sports
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/team
 https://main--express-milo--adobecom.aem.live/drafts/yge/br/logo/technology
@@ -6204,6 +6283,7 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/fashion
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/fitness
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/food
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/football-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/football-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/game
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/heart
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/hotel
@@ -6212,13 +6292,16 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/mountain
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/movie
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/music
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/pharmacy-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/pharmacy-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/phone
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/photography
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/real-estate-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/real-estate-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/restaurant
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/school
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/shop
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/soccer-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/soccer-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/sports
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/team
 https://main--express-milo--adobecom.aem.live/drafts/yge/de/logo/text
@@ -6277,6 +6360,30 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/dk/Removed/Video/add-te
 https://main--express-milo--adobecom.aem.live/drafts/yge/dk/Removed/Video/editor
 https://main--express-milo--adobecom.aem.live/drafts/yge/dk/Removed/Video/images-to-video
 https://main--express-milo--adobecom.aem.live/drafts/yge/dk/Removed/Video/merge
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/black-white-filter
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/blur-background
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/blur
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/change-background-color
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/combine
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/crop
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/crop/circle
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/editor
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/enhance
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/filter
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/flip
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/mirror
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/montage
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/photo-animation
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/photo-effect
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/rotate
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/sharpen
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/image/unblur
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/video/add-music
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/video/add-subtitle
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/video/add-text
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/video/editor
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/video/images-to-video
+https://main--express-milo--adobecom.aem.live/drafts/yge/dk/removed/video/merge
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/DOTCOM-108928/card/18-birthday
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/ai/create/logo
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/create/new-layout/label/mug
@@ -6292,6 +6399,7 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/en/design/color-palette
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/design/text-animation
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/design/text-on-photo
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/document/pamphlet
+https://main--express-milo--adobecom.aem.live/drafts/yge/en/dotcom-108928/card/18-birthday
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/feature/gif/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/feature/image/combine-new
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/feature/maze-generator-0branches
@@ -6358,14 +6466,17 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/neon
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/numbers
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/online-radio
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/pharmacy-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/pharmacy-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/phone
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/photography
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/pink
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/real-estate-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/real-estate-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/restaurant
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/school
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/shop
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/soccer-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/soccer-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/sports
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/team
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/technology
@@ -6375,6 +6486,7 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/tree
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/twitch
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/typography
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/volleyball-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/volleyball-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/website
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/wedding
 https://main--express-milo--adobecom.aem.live/drafts/yge/en/logo/youtube
@@ -6443,6 +6555,7 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/es/SEO review/social-me
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/SEO review/trim
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/design/Add-borders/black-and-white
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/design/add-borders
+https://main--express-milo--adobecom.aem.live/drafts/yge/es/design/add-borders/black-and-white
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/design/add-fonts
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/design/add-frame
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/design/add-icons
@@ -6502,12 +6615,15 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/music
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/name
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/numbers
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/pharmacy-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/pharmacy-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/phone
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/photography
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/real-estate-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/real-estate-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/restaurant
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/school
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/soccer-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/soccer-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/sports
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/team
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/technology
@@ -6515,6 +6631,7 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/text
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/tree
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/twitch
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/volleyball-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/volleyball-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/wedding
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/logo/youtube
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/standard
@@ -6546,6 +6663,8 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/es/videomobile/videofea
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/videomobile/videofeature/images-to-video
 https://main--express-milo--adobecom.aem.live/drafts/yge/es/videomobile/videofeature/merge
 https://main--express-milo--adobecom.aem.live/drafts/yge/fi/2022/localization/feature/video/FI/instagram-edit-fi
+https://main--express-milo--adobecom.aem.live/drafts/yge/fi/2022/localization/feature/video/fi/instagram-edit-fi
+https://main--express-milo--adobecom.aem.live/drafts/yge/fi/feature/content-scheduler/twitter
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/2022/localization 2/create/announcement/communion
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/2022/localization/feature/image/convert
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/2022/localization/feature/image/convert/jpg-to-svg
@@ -6560,6 +6679,7 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/fr/2022/localization/fe
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/2022/localization/feature/video/merge/mp4
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/2022/localization/feature/video/resize/mp4
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/2022/localization/feature/video/trim/mp4
+https://main--express-milo--adobecom.aem.live/drafts/yge/fr/create/gif
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/design/add-borders
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/design/add-fonts
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/design/add-frame
@@ -6617,9 +6737,11 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/mountain
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/music
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/numbers
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/pharmacy-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/pharmacy-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/phone
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/photography
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/real-estate-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/real-estate-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/restaurant
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/school
 https://main--express-milo--adobecom.aem.live/drafts/yge/fr/logo/team
@@ -6712,6 +6834,19 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/it/design/add-speech-bu
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/design/color-palette
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/design/text-animation
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/design/text-on-photo
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/black-white-filter
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/blur-background
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/blur
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/change-background-color
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/combine
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/crop
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/editor
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/filter
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/flip
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/mirror
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/photo-animation
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/rotate
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/images/unblur
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/animated
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/art
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/basketball
@@ -6741,17 +6876,21 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/movie
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/music
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/name
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/pharmacy-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/pharmacy-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/phone
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/photography
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/real-estate-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/real-estate-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/restaurant
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/school
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/soccer-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/soccer-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/sports
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/team
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/technology
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/twitch
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/volleyball-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/volleyball-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/wedding
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/logo/youtube
 https://main--express-milo--adobecom.aem.live/drafts/yge/it/standard
@@ -6911,10 +7050,12 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/hotel
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/instagram
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/mountain
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/real-estate-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/real-estate-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/restaurant
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/school
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/shop
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/soccer-X
+https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/soccer-x
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/sports
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/team
 https://main--express-milo--adobecom.aem.live/drafts/yge/kr/logo/text
@@ -6964,6 +7105,8 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/mariela_and_ale/new_con
 https://main--express-milo--adobecom.aem.live/drafts/yge/mariela_and_ale/new_content/convert-to-mp4
 https://main--express-milo--adobecom.aem.live/drafts/yge/mariela_and_ale/new_content/enlarge
 https://main--express-milo--adobecom.aem.live/drafts/yge/mariela_and_ale/new_content/merge
+https://main--express-milo--adobecom.aem.live/drafts/yge/mariela_and_ale/new_content/oct/announcement/pregnancy/funny
+https://main--express-milo--adobecom.aem.live/drafts/yge/mariela_and_ale/new_content/oct/card/photo
 https://main--express-milo--adobecom.aem.live/drafts/yge/mariela_and_ale/new_content/reverse
 https://main--express-milo--adobecom.aem.live/drafts/yge/nl/SEO review/Templates/flyer
 https://main--express-milo--adobecom.aem.live/drafts/yge/nl/SEO review/banner
@@ -7064,6 +7207,7 @@ https://main--express-milo--adobecom.aem.live/drafts/yge/tw/videomobile/videofea
 https://main--express-milo--adobecom.aem.live/drafts/yge/tw/videomobile/videofeature/editor
 https://main--express-milo--adobecom.aem.live/drafts/yge/tw/videomobile/videofeature/images-to-video
 https://main--express-milo--adobecom.aem.live/drafts/yge/tw/videomobile/videofeature/merge
+https://main--express-milo--adobecom.aem.live/drafts/yolles/test
 https://main--express-milo--adobecom.aem.live/drafts/zmattioli/animated-gif-maker
 https://main--express-milo--adobecom.aem.live/drafts/zmattioli/gif-maker
 https://main--express-milo--adobecom.aem.live/drafts/zmattioli/gif-meme-maker
@@ -8009,6 +8153,7 @@ https://main--express-milo--adobecom.aem.live/es-ES/templates/worksheets/
 https://main--express-milo--adobecom.aem.live/es/education/express/
 https://main--express-milo--adobecom.aem.live/es/express/Android
 https://main--express-milo--adobecom.aem.live/es/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/es/express/android
 https://main--express-milo--adobecom.aem.live/es/express/blog/sitemap.xml
 https://main--express-milo--adobecom.aem.live/es/express/business
 https://main--express-milo--adobecom.aem.live/es/express/business/request-info
@@ -8042,6 +8187,8 @@ https://main--express-milo--adobecom.aem.live/es/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/es/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/es/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/es/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/es/express/create/ai/thumbnail
+https://main--express-milo--adobecom.aem.live/es/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/es/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/es/express/create/animation
 https://main--express-milo--adobecom.aem.live/es/express/create/animation/instagram
@@ -8381,6 +8528,7 @@ https://main--express-milo--adobecom.aem.live/es/express/create/planner/daily
 https://main--express-milo--adobecom.aem.live/es/express/create/planner/lesson
 https://main--express-milo--adobecom.aem.live/es/express/create/poetry
 https://main--express-milo--adobecom.aem.live/es/express/create/polaroid-frame
+https://main--express-milo--adobecom.aem.live/es/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/es/express/create/post
 https://main--express-milo--adobecom.aem.live/es/express/create/post/facebook
 https://main--express-milo--adobecom.aem.live/es/express/create/post/instagram
@@ -8511,6 +8659,7 @@ https://main--express-milo--adobecom.aem.live/es/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/es/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/es/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/es/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/es/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/es/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/es/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/es/express/create/video/facebook
@@ -8678,6 +8827,9 @@ https://main--express-milo--adobecom.aem.live/es/express/feature/gif/convert/mp4
 https://main--express-milo--adobecom.aem.live/es/express/feature/gif/convert/png
 https://main--express-milo--adobecom.aem.live/es/express/feature/gif/convert/video
 https://main--express-milo--adobecom.aem.live/es/express/feature/image
+https://main--express-milo--adobecom.aem.live/es/express/feature/image/animated-image
+https://main--express-milo--adobecom.aem.live/es/express/feature/image/animated-image/background
+https://main--express-milo--adobecom.aem.live/es/express/feature/image/animated-image/wallpaper
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/black-white-filter
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/blur-background
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/blur
@@ -8686,6 +8838,7 @@ https://main--express-milo--adobecom.aem.live/es/express/feature/image/change-ba
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/change-background
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/combine
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/convert
+https://main--express-milo--adobecom.aem.live/es/express/feature/image/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/convert/jpg-to-png
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/convert/jpg-to-png/transparent-png
 https://main--express-milo--adobecom.aem.live/es/express/feature/image/convert/jpg-to-svg
@@ -9035,14 +9188,42 @@ https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/ax-
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/entitled-designer-column-video-kitiya-palaskas.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/entitled-designer-column-video-kris-andrew-small.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-10d7e792a1e995d5a1d921fc10bf7f89765035107.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-117537e63c59f646fb358ede41559e88776fcf978.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-161a751e45895871d9f32e4e08260a5d95bc9f9ac.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-16c76ab036ecbc569e799de29ebe58f695939c3b9.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-1c113ea76d8e471ef801c0db4096a54499898cc8d.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-1d617584a0b780c7bf8c2ca185a61a247c85298e8.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-1e24120e4418ea326622ac9f9c28819265b9d45e1.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/media-1e7122e12681a5da4eb0fe8d6107dff7f6a95c33e.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/new-hp-marquee-video-1.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/new-hp-marquee-video-2.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/new-hp-marquee-video-3.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/homepage/new-hp-marquee-video-4.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/in-diwali-seasonal-blade-animation-opt2-1300x200.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-11b2d5d86f42c94ab1f5115cde52d038cc5fe8c04.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-12578a3ff700a1cd009045c25eb2874a6cb51a7a9.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-12aeac7a0c81f96df1a42906b1053377a25195e99.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-12e502d7eee2ddf80545735d859843d86a14765b9.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-13e5c7414f9b4ccf40d3f16fb70570dc113e04b71.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-142872dc6b4cab56fb54c94623ec4c1e0f47cde57.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-14bc3dd7e586c22784d830deb448616ad2c74e720.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-15160daa80e83032e10d01abf80c90e4a6a3ecdf2.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-158add88bac1f81b176a0a59d927d1e330c24bd61.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-167103d6b51e6521d289b0935492d42052c78f31c.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-17a05aab6b46bd621eea6cae378009343c9b467e0.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-17ea8d5fc12de9c5c70974d766b3ddfed9e565378.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-18559fcd828e168905ef87dfb9e028625202ac786.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1a29e698a8ad1c29396d886569c60c8136915ae4d.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1a89b72c2a5dde20820e11970cfd9bfe58af49be8.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1ac0a2e73a09210ed050c92a87b499d51fafcd034.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1b89dbbbaf1e2498e1c46848f8b99b17889550e2b.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1bce5ac6d752379b26c4dd0a180f38528cded4b81.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1cb49b31f0e56fed8c96cadf6d4a5c3aa586442e6.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1e2e2f11d173be30cd9f60ac58288cfb92ade9fae.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1e984bf744d9165143b83d50469dd387eb178fa12.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1eac7d212ba3e80e2437bf17c20f92e48589ba835.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1f8200c000336b8bf8a30ba8a3e46699657da3d4b.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/media-1f8dc083f26571f134a3671a94d7d3f61bcfcec77.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/mothersday-banner-final-v2.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-1-gen-ai-a-com-24.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-12917928-express-cc-entitled-creator-led-anna-basile-tn-60-16x9-en.mp4
@@ -9063,6 +9244,7 @@ https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-17251057-express-cc-entitled-creator-led-miranda-wong-60-16x9-en.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-2-projects-a-com-24-v2.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-34f715857f06b6add5ffb7b67f515db558429480.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-adobe-2025-express-demandcreation-enterprise-cpg-30-web-9x16-h264.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-adobe-kris-video-1-integration-final-original.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-awfac-dream-crest-columns-container01-video-desktop.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/marketing/new-birthday-video-hero.mp4
@@ -9184,6 +9366,7 @@ https://main--express-milo--adobecom.aem.live/express/assets/video/seo/new-video
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/new-video-birthday-in.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/new-video-meme-1-header.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/new-video-social-header.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/seo/print-hoodie-riverflow-1-1x.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/resize-image.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/resize-pinterest.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/resize-snapchat.mp4
@@ -9192,6 +9375,7 @@ https://main--express-milo--adobecom.aem.live/express/assets/video/seo/short-vid
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/short-video.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/tribute-hero.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/video-invitation-wedding.mp4
+https://main--express-milo--adobecom.aem.live/express/assets/video/seo/video-maker-test.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/webp-bg-remover.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/webp-to-jpg.mp4
 https://main--express-milo--adobecom.aem.live/express/assets/video/seo/webp-to-png.mp4
@@ -9224,6 +9408,7 @@ https://main--express-milo--adobecom.aem.live/express/colors/sitemap.xml
 https://main--express-milo--adobecom.aem.live/express/community
 https://main--express-milo--adobecom.aem.live/express/create
 https://main--express-milo--adobecom.aem.live/express/create/advertisement
+https://main--express-milo--adobecom.aem.live/express/create/advertisement/amazon
 https://main--express-milo--adobecom.aem.live/express/create/advertisement/cyber-monday
 https://main--express-milo--adobecom.aem.live/express/create/advertisement/facebook
 https://main--express-milo--adobecom.aem.live/express/create/advertisement/google
@@ -9270,6 +9455,7 @@ https://main--express-milo--adobecom.aem.live/express/create/ai/worksheet/spring
 https://main--express-milo--adobecom.aem.live/express/create/ai/worksheet/thanksgiving
 https://main--express-milo--adobecom.aem.live/express/create/ai/worksheet/unicorn
 https://main--express-milo--adobecom.aem.live/express/create/ai/worksheet/winter
+https://main--express-milo--adobecom.aem.live/express/create/amazon-ad
 https://main--express-milo--adobecom.aem.live/express/create/animation
 https://main--express-milo--adobecom.aem.live/express/create/animation/instagram
 https://main--express-milo--adobecom.aem.live/express/create/animation/social
@@ -9840,6 +10026,9 @@ https://main--express-milo--adobecom.aem.live/express/create/map
 https://main--express-milo--adobecom.aem.live/express/create/marketing-material
 https://main--express-milo--adobecom.aem.live/express/create/marketing-plan
 https://main--express-milo--adobecom.aem.live/express/create/maze
+https://main--express-milo--adobecom.aem.live/express/create/media-10795a1d7ca065230b7d8b0473ebdcdc16d4907db.mp4
+https://main--express-milo--adobecom.aem.live/express/create/media-1c8a29fae5fa064e4a3de13083adfb2b81865c46e.mp4
+https://main--express-milo--adobecom.aem.live/express/create/media-1df37d23eb0bdd379e57c7bb615f483753ed0db4c.mp4
 https://main--express-milo--adobecom.aem.live/express/create/media-kit
 https://main--express-milo--adobecom.aem.live/express/create/meeting-minute
 https://main--express-milo--adobecom.aem.live/express/create/meme
@@ -9909,6 +10098,7 @@ https://main--express-milo--adobecom.aem.live/express/create/planner/workout
 https://main--express-milo--adobecom.aem.live/express/create/plant-care-card
 https://main--express-milo--adobecom.aem.live/express/create/poetry
 https://main--express-milo--adobecom.aem.live/express/create/polaroid-frame
+https://main--express-milo--adobecom.aem.live/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/express/create/post
 https://main--express-milo--adobecom.aem.live/express/create/post/blog
 https://main--express-milo--adobecom.aem.live/express/create/post/facebook
@@ -10398,6 +10588,7 @@ https://main--express-milo--adobecom.aem.live/express/discover/messages/thanksgi
 https://main--express-milo--adobecom.aem.live/express/discover/messages/thinking-of-you
 https://main--express-milo--adobecom.aem.live/express/discover/messages/veterans-day
 https://main--express-milo--adobecom.aem.live/express/discover/messages/welcome
+https://main--express-milo--adobecom.aem.live/express/discover/quotes/aesthetic
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/anxiety
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/appreciation
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/art
@@ -10425,6 +10616,7 @@ https://main--express-milo--adobecom.aem.live/express/discover/quotes/good-morni
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/good-night
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/gratitude
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/growth
+https://main--express-milo--adobecom.aem.live/express/discover/quotes/gym
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/happy
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/healing
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/i-miss-you
@@ -10458,6 +10650,7 @@ https://main--express-milo--adobecom.aem.live/express/discover/quotes/strength
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/success
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/sunday
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/teacher
+https://main--express-milo--adobecom.aem.live/express/discover/quotes/teamwork
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/thank-you
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/thanksgiving
 https://main--express-milo--adobecom.aem.live/express/discover/quotes/thursday
@@ -10541,10 +10734,16 @@ https://main--express-milo--adobecom.aem.live/express/discover/wishes/warm
 https://main--express-milo--adobecom.aem.live/express/discover/wishes/wedding
 https://main--express-milo--adobecom.aem.live/express/discover/wishes/wedding/anniversary
 https://main--express-milo--adobecom.aem.live/express/discover/wishes/womens-day
+https://main--express-milo--adobecom.aem.live/express/drafts/axel/assets/size-indicator-100.svg
+https://main--express-milo--adobecom.aem.live/express/drafts/axel/assets/size-indicator.svg
 https://main--express-milo--adobecom.aem.live/express/drafts/axel/express-merch-card-poc
+https://main--express-milo--adobecom.aem.live/express/drafts/biljana-test/certificate
+https://main--express-milo--adobecom.aem.live/express/drafts/fragments/spotlight-tall-video-desktop
 https://main--express-milo--adobecom.aem.live/express/drafts/mepdev/fragments/2025/q2/mobile-fork-button/rtp-page
+https://main--express-milo--adobecom.aem.live/express/drafts/sukamat/why-choose-express
 https://main--express-milo--adobecom.aem.live/express/entitled.html
 https://main--express-milo--adobecom.aem.live/express/entitled
+https://main--express-milo--adobecom.aem.live/express/entitled/designer
 https://main--express-milo--adobecom.aem.live/express/experiments/ace1049/ace1049-photo-editor
 https://main--express-milo--adobecom.aem.live/express/experiments/ace1049/ace1049.json
 https://main--express-milo--adobecom.aem.live/express/experiments/aexg5181/aexg5181-replace.json
@@ -10738,6 +10937,7 @@ https://main--express-milo--adobecom.aem.live/express/feature/image/crop/webp
 https://main--express-milo--adobecom.aem.live/express/feature/image/editor.html
 https://main--express-milo--adobecom.aem.live/express/feature/image/editor
 https://main--express-milo--adobecom.aem.live/express/feature/image/editor/collage
+https://main--express-milo--adobecom.aem.live/express/feature/image/editor/upload
 https://main--express-milo--adobecom.aem.live/express/feature/image/effect
 https://main--express-milo--adobecom.aem.live/express/feature/image/effect/blur
 https://main--express-milo--adobecom.aem.live/express/feature/image/enhance
@@ -10899,6 +11099,7 @@ https://main--express-milo--adobecom.aem.live/express/fragments/personalization/
 https://main--express-milo--adobecom.aem.live/express/fragments/pricing-cards/personalized-cclo-pricing-page-students-card
 https://main--express-milo--adobecom.aem.live/express/fragments/pricing-cards/personalized-cclo-students-page-pricing-card
 https://main--express-milo--adobecom.aem.live/express/fragments/pricing-cards/simplified-pricing-card-business
+https://main--express-milo--adobecom.aem.live/express/fragments/pricing-cards/simplified-pricing-card-default-copy
 https://main--express-milo--adobecom.aem.live/express/fragments/pricing-cards/simplified-pricing-card-default
 https://main--express-milo--adobecom.aem.live/express/fragments/pricing-cards/simplified-pricing-card-design-with-express-desktop
 https://main--express-milo--adobecom.aem.live/express/fragments/pricing-cards/simplified-pricing-card-design-with-express-mobile
@@ -10976,6 +11177,12 @@ https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/ae
 https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/easily-get-started-3-genai.mp4
 https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/easily-get-started-4-explore.mp4
 https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/individual-tab-video.mp4
+https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/media-1361c6c7c5c80b633f40da74221b4f7bff86fab74.mp4
+https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/media-136977e4ddeedb8099426bac91815b2e6efab34bf.mp4
+https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/media-13b7a7ecf2bfeca3d72cd11ff1d97e2004f35f55f.mp4
+https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/media-19d1322026eb5c5b7c4203ceeb634b123d6500171.mp4
+https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/media-1cf2c6e074884258c0b26a372ad79ae3f61b85a60.mp4
+https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/assets/media-1e984bf744d9165143b83d50469dd387eb178fa12.mp4
 https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/ax-panels-var1-ent
 https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/ax-panels-var1-smb-dnu12
 https://main--express-milo--adobecom.aem.live/express/fragments/tests/2025/q3/aexg5271/ax-panels-var1-smb
@@ -11086,6 +11293,7 @@ https://main--express-milo--adobecom.aem.live/express/images/home-welcome-banner
 https://main--express-milo--adobecom.aem.live/express/images/how-to-de.png
 https://main--express-milo--adobecom.aem.live/express/images/how-to-fr.png
 https://main--express-milo--adobecom.aem.live/express/images/how-to-jp.png
+https://main--express-milo--adobecom.aem.live/express/images/media-1638b3cf741e8552c66582546674b1ebd4bae0d15.png
 https://main--express-milo--adobecom.aem.live/express/images/mothers-day.svg
 https://main--express-milo--adobecom.aem.live/express/images/test.svg
 https://main--express-milo--adobecom.aem.live/express/images/transparent-express-how-to-block-background.png
@@ -12358,6 +12566,7 @@ https://main--express-milo--adobecom.aem.live/express/learn/blog/you-tube-shorts
 https://main--express-milo--adobecom.aem.live/express/learn/blog/your-adobe-express-student-account
 https://main--express-milo--adobecom.aem.live/express/learn/blog/youtube-analytics
 https://main--express-milo--adobecom.aem.live/express/learn/blog/youtube-creator-studio
+https://main--express-milo--adobecom.aem.live/express/learn/blog/youtube-leads-streaming
 https://main--express-milo--adobecom.aem.live/express/learn/blog/zibbet
 https://main--express-milo--adobecom.aem.live/express/learn/collections/covid
 https://main--express-milo--adobecom.aem.live/express/learn/collections/covid/back-to-business
@@ -12381,6 +12590,7 @@ https://main--express-milo--adobecom.aem.live/express/learn/collections/spark-10
 https://main--express-milo--adobecom.aem.live/express/learn/collections/spark-101/professional-communicator
 https://main--express-milo--adobecom.aem.live/express/learn/collections/spark-101/starter-pack
 https://main--express-milo--adobecom.aem.live/express/learn/collections/spark-101/welcome-to-spark-premium
+https://main--express-milo--adobecom.aem.live/express/learn/collections/top-templates-of-2019
 https://main--express-milo--adobecom.aem.live/express/learn/express-your-brand
 https://main--express-milo--adobecom.aem.live/express/learn/express-your-holiday
 https://main--express-milo--adobecom.aem.live/express/learn/playbooks/grow-your-brand
@@ -12394,6 +12604,27 @@ https://main--express-milo--adobecom.aem.live/express/learn/tutorials
 https://main--express-milo--adobecom.aem.live/express/linklist-qa-mapping.json
 https://main--express-milo--adobecom.aem.live/express/localnav-express
 https://main--express-milo--adobecom.aem.live/express/login
+https://main--express-milo--adobecom.aem.live/express/media-1040a2bada835408b88166a271505a1f24d25c2a3.png
+https://main--express-milo--adobecom.aem.live/express/media-10c73c964b02b19cf50533f2ca94415ceba5e06eb.png
+https://main--express-milo--adobecom.aem.live/express/media-11225d769ec5aade1d644566442160dc22bffa5b9.png
+https://main--express-milo--adobecom.aem.live/express/media-11e5c3128ea43f271fd2a565c1e4d68cd1d62c985.png
+https://main--express-milo--adobecom.aem.live/express/media-11ffe376e21cc1f2437a2c5c9c875a2c478b51d9a.png
+https://main--express-milo--adobecom.aem.live/express/media-1230b70538ba45910cdc41ba81574bcb442f26b45.png
+https://main--express-milo--adobecom.aem.live/express/media-137010e69bbac3139dd6e45e6a45d59d31039ad90.png
+https://main--express-milo--adobecom.aem.live/express/media-1460fa1227fa59f6d998556d97df3d709f53c92b8.png
+https://main--express-milo--adobecom.aem.live/express/media-15688fa3d6879a549a4b279d5a4a25bc6b821f6dd.png
+https://main--express-milo--adobecom.aem.live/express/media-1638b3cf741e8552c66582546674b1ebd4bae0d15.png
+https://main--express-milo--adobecom.aem.live/express/media-16a8f73f855ff7291221027b92ac5fa7da6e91a62.png
+https://main--express-milo--adobecom.aem.live/express/media-17bd66d9a334e329c634b98c7cb972945b1e81fd3.png
+https://main--express-milo--adobecom.aem.live/express/media-17c7c871444cf80eb82b997ddceee30a9783fc201.png
+https://main--express-milo--adobecom.aem.live/express/media-1c724eeab23a8dcc387bfba0c2656c08f2c464d20.png
+https://main--express-milo--adobecom.aem.live/express/media-1cb2ce67a138d7d0f9efadd0ca2d3109b0f19ef19.png
+https://main--express-milo--adobecom.aem.live/express/media-1d1a08ff2f9ec985f88831a94cc78162fa5f9766a.png
+https://main--express-milo--adobecom.aem.live/express/media-1e76b94fe2832eed99add1da263159b3ba3ad9871.png
+https://main--express-milo--adobecom.aem.live/express/media-1efec67aa1be9ac7f56eddbf1dd44dbbe4292d10d.png
+https://main--express-milo--adobecom.aem.live/express/media-1f1c2777b0900a6c708067e1c5f950934de73181b.png
+https://main--express-milo--adobecom.aem.live/express/media-1f8a97e57758ad04d6b5e8d54a7a7849d99bd9de0.png
+https://main--express-milo--adobecom.aem.live/express/media-1fc72fbcfe599d2a721d614c1319470ec07b649b7.png
 https://main--express-milo--adobecom.aem.live/express/mobile-apps
 https://main--express-milo--adobecom.aem.live/express/nonprofits
 https://main--express-milo--adobecom.aem.live/express/paths
@@ -12419,7 +12650,6 @@ https://main--express-milo--adobecom.aem.live/express/post/when-to-send-wedding-
 https://main--express-milo--adobecom.aem.live/express/pre-launch/feature/video/crop/mp4
 https://main--express-milo--adobecom.aem.live/express/pre-launch/feature/video/resize/instagram
 https://main--express-milo--adobecom.aem.live/express/pre-launch/feature/video/trim/mp4
-https://main--express-milo--adobecom.aem.live/express/pre-launch/video-to-gif
 https://main--express-milo--adobecom.aem.live/express/pricing-sheet.json
 https://main--express-milo--adobecom.aem.live/express/pricing.html
 https://main--express-milo--adobecom.aem.live/express/pricing
@@ -12476,9 +12706,12 @@ https://main--express-milo--adobecom.aem.live/express/spotlight/education
 https://main--express-milo--adobecom.aem.live/express/spotlight/explore
 https://main--express-milo--adobecom.aem.live/express/spotlight/express-your-fandom
 https://main--express-milo--adobecom.aem.live/express/spotlight/express-your-fandom/terms-of-use-test
+https://main--express-milo--adobecom.aem.live/express/spotlight/express-your-fandom/terms-of-use
 https://main--express-milo--adobecom.aem.live/express/spotlight/flaticon
 https://main--express-milo--adobecom.aem.live/express/spotlight/flyer
 https://main--express-milo--adobecom.aem.live/express/spotlight/freepik
+https://main--express-milo--adobecom.aem.live/express/spotlight/gnav-prod-test
+https://main--express-milo--adobecom.aem.live/express/spotlight/how-to-banner
 https://main--express-milo--adobecom.aem.live/express/spotlight/how-to-flyer
 https://main--express-milo--adobecom.aem.live/express/spotlight/how-to-instagram-story
 https://main--express-milo--adobecom.aem.live/express/spotlight/how-to-logo
@@ -12497,9 +12730,11 @@ https://main--express-milo--adobecom.aem.live/express/spotlight/overview-convert
 https://main--express-milo--adobecom.aem.live/express/spotlight/overview-quick-actions-images
 https://main--express-milo--adobecom.aem.live/express/spotlight/photo-collage
 https://main--express-milo--adobecom.aem.live/express/spotlight/poster
+https://main--express-milo--adobecom.aem.live/express/spotlight/price-ribbon-test
 https://main--express-milo--adobecom.aem.live/express/spotlight/pricing
 https://main--express-milo--adobecom.aem.live/express/spotlight/social-media-graphic
 https://main--express-milo--adobecom.aem.live/express/spotlight/switch-now
+https://main--express-milo--adobecom.aem.live/express/spotlight/templates-banner
 https://main--express-milo--adobecom.aem.live/express/spotlight/templates-flyer
 https://main--express-milo--adobecom.aem.live/express/spotlight/templates-instagram-story
 https://main--express-milo--adobecom.aem.live/express/spotlight/templates-logo
@@ -12609,6 +12844,7 @@ https://main--express-milo--adobecom.aem.live/express/templates/flyer/saint-patr
 https://main--express-milo--adobecom.aem.live/express/templates/flyer/secret-santa
 https://main--express-milo--adobecom.aem.live/express/templates/flyer/toy-drive
 https://main--express-milo--adobecom.aem.live/express/templates/flyer/wine-tasting
+https://main--express-milo--adobecom.aem.live/express/templates/funeral-program
 https://main--express-milo--adobecom.aem.live/express/templates/game-card
 https://main--express-milo--adobecom.aem.live/express/templates/gift-certificate
 https://main--express-milo--adobecom.aem.live/express/templates/gift-certificate/massage
@@ -13103,10 +13339,12 @@ https://main--express-milo--adobecom.aem.live/fi-FI/templates/wallpapers/iphone/
 https://main--express-milo--adobecom.aem.live/fi-FI/templates/worksheets
 https://main--express-milo--adobecom.aem.live/fi-FI/templates/worksheets/
 https://main--express-milo--adobecom.aem.live/fi/Android
+https://main--express-milo--adobecom.aem.live/fi/android
 https://main--express-milo--adobecom.aem.live/fi/education/express/
 https://main--express-milo--adobecom.aem.live/fi/express/14
 https://main--express-milo--adobecom.aem.live/fi/express/Android
 https://main--express-milo--adobecom.aem.live/fi/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/fi/express/android
 https://main--express-milo--adobecom.aem.live/fi/express/business
 https://main--express-milo--adobecom.aem.live/fi/express/business/request-info
 https://main--express-milo--adobecom.aem.live/fi/express/business/teams
@@ -13129,9 +13367,12 @@ https://main--express-milo--adobecom.aem.live/fi/express/feature/ai/image/remove
 https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler
 https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/calendar
 https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/facebook
+https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/instagram
 https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/linkedin
 https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/national-day
 https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/post
+https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/social-media
+https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/tiktok
 https://main--express-milo--adobecom.aem.live/fi/express/feature/content-scheduler/twitter
 https://main--express-milo--adobecom.aem.live/fi/express/feature/design
 https://main--express-milo--adobecom.aem.live/fi/express/feature/design/color
@@ -14134,6 +14375,7 @@ https://main--express-milo--adobecom.aem.live/fr/education/express/for-teachers
 https://main--express-milo--adobecom.aem.live/fr/education/express/
 https://main--express-milo--adobecom.aem.live/fr/express/Android
 https://main--express-milo--adobecom.aem.live/fr/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/fr/express/android
 https://main--express-milo--adobecom.aem.live/fr/express/assets/animations/ax-homepage-marquee-2550x540-fr.mp4
 https://main--express-milo--adobecom.aem.live/fr/express/assets/animations/ax-homepage-marquee-900x540-fr.mp4
 https://main--express-milo--adobecom.aem.live/fr/express/assets/video/seo/video-ad-maker-fr.mp4
@@ -14173,6 +14415,8 @@ https://main--express-milo--adobecom.aem.live/fr/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/fr/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/fr/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/fr/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/fr/express/create/ai/thumbnail
+https://main--express-milo--adobecom.aem.live/fr/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/fr/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/fr/express/create/animation
 https://main--express-milo--adobecom.aem.live/fr/express/create/animation/instagram
@@ -14364,6 +14608,7 @@ https://main--express-milo--adobecom.aem.live/fr/express/create/flyer/party
 https://main--express-milo--adobecom.aem.live/fr/express/create/flyer/real-estate
 https://main--express-milo--adobecom.aem.live/fr/express/create/flyer/talent-show
 https://main--express-milo--adobecom.aem.live/fr/express/create/frame/polaroid
+https://main--express-milo--adobecom.aem.live/fr/express/create/gif
 https://main--express-milo--adobecom.aem.live/fr/express/create/gift-certificate.html
 https://main--express-milo--adobecom.aem.live/fr/express/create/gift-certificate
 https://main--express-milo--adobecom.aem.live/fr/express/create/giveaway/instagram
@@ -14537,6 +14782,7 @@ https://main--express-milo--adobecom.aem.live/fr/express/create/planner/personal
 https://main--express-milo--adobecom.aem.live/fr/express/create/planner/workout
 https://main--express-milo--adobecom.aem.live/fr/express/create/poetry
 https://main--express-milo--adobecom.aem.live/fr/express/create/polaroid-frame
+https://main--express-milo--adobecom.aem.live/fr/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/fr/express/create/post
 https://main--express-milo--adobecom.aem.live/fr/express/create/post/blog
 https://main--express-milo--adobecom.aem.live/fr/express/create/post/facebook
@@ -14663,6 +14909,7 @@ https://main--express-milo--adobecom.aem.live/fr/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/fr/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/fr/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/fr/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/fr/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/fr/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/fr/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/fr/express/create/video/facebook
@@ -14767,13 +15014,23 @@ https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/business
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/business-cards
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/card/birthday
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/challenges
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/christmas/tree
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/christmas/tree/topper
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/christmas/tree/white
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/christmas/wreath
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/cover/book
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/crafts
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/decoration/pumpkin
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/decoration/room
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/decoration/wall
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/drawing
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/easter
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/father
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/fathers-day
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/finding-sponsors
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/flyer
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/flyers
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/fundraiser
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/gender-reveal
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/gift/housewarming
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/halloween-party-designs
@@ -14786,14 +15043,30 @@ https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/hallowee
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/infographic
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/instagram-reel
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/instagram-story
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/list/bucket
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/logo
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/mothers-day
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/new-year
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/painting
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/party
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/party/graduation
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/party/retirement
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/photoshoot
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/poster
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/posters
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/scavenger-hunt
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/scrapbook
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/side-hustle
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/sketchbook
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/sleepover
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/small-business
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/social-media-marketing
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/social-media
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/tattoo
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/valentines-day
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/valentines-day/box
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/viral-video
+https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/vision-board
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/wedding
 https://main--express-milo--adobecom.aem.live/fr/express/discover/ideas/youtube-banners
 https://main--express-milo--adobecom.aem.live/fr/express/discover/messages
@@ -14935,6 +15208,7 @@ https://main--express-milo--adobecom.aem.live/fr/express/feature/image/change-ba
 https://main--express-milo--adobecom.aem.live/fr/express/feature/image/change-background
 https://main--express-milo--adobecom.aem.live/fr/express/feature/image/combine
 https://main--express-milo--adobecom.aem.live/fr/express/feature/image/convert
+https://main--express-milo--adobecom.aem.live/fr/express/feature/image/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/fr/express/feature/image/convert/jpg-to-png
 https://main--express-milo--adobecom.aem.live/fr/express/feature/image/convert/jpg-to-png/transparent-png
 https://main--express-milo--adobecom.aem.live/fr/express/feature/image/convert/jpg-to-svg
@@ -15584,6 +15858,7 @@ https://main--express-milo--adobecom.aem.live/id_id/express/create/mood-board
 https://main--express-milo--adobecom.aem.live/id_id/express/create/online-portfolio
 https://main--express-milo--adobecom.aem.live/id_id/express/create/photo-collage
 https://main--express-milo--adobecom.aem.live/id_id/express/create/photo-collage/side-by-side
+https://main--express-milo--adobecom.aem.live/id_id/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/id_id/express/create/post/facebook
 https://main--express-milo--adobecom.aem.live/id_id/express/create/post/instagram
 https://main--express-milo--adobecom.aem.live/id_id/express/create/poster
@@ -18101,6 +18376,7 @@ https://main--express-milo--adobecom.aem.live/it-IT/templates/worksheets/
 https://main--express-milo--adobecom.aem.live/it/education/express/
 https://main--express-milo--adobecom.aem.live/it/express/Android
 https://main--express-milo--adobecom.aem.live/it/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/it/express/android
 https://main--express-milo--adobecom.aem.live/it/express/blog/sitemap.xml
 https://main--express-milo--adobecom.aem.live/it/express/business
 https://main--express-milo--adobecom.aem.live/it/express/business/request-info
@@ -18134,6 +18410,8 @@ https://main--express-milo--adobecom.aem.live/it/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/it/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/it/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/it/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/it/express/create/ai/thumbnail
+https://main--express-milo--adobecom.aem.live/it/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/it/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/it/express/create/animation
 https://main--express-milo--adobecom.aem.live/it/express/create/animation/instagram
@@ -18388,6 +18666,7 @@ https://main--express-milo--adobecom.aem.live/it/express/create/place-card
 https://main--express-milo--adobecom.aem.live/it/express/create/planner/agenda
 https://main--express-milo--adobecom.aem.live/it/express/create/planner/agenda/meeting
 https://main--express-milo--adobecom.aem.live/it/express/create/planner/lesson
+https://main--express-milo--adobecom.aem.live/it/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/it/express/create/post
 https://main--express-milo--adobecom.aem.live/it/express/create/post/facebook
 https://main--express-milo--adobecom.aem.live/it/express/create/post/instagram
@@ -18476,6 +18755,7 @@ https://main--express-milo--adobecom.aem.live/it/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/it/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/it/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/it/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/it/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/it/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/it/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/it/express/create/video/facebook
@@ -18629,6 +18909,9 @@ https://main--express-milo--adobecom.aem.live/it/express/feature/gif/convert/mp4
 https://main--express-milo--adobecom.aem.live/it/express/feature/gif/convert/png
 https://main--express-milo--adobecom.aem.live/it/express/feature/gif/convert/video
 https://main--express-milo--adobecom.aem.live/it/express/feature/image
+https://main--express-milo--adobecom.aem.live/it/express/feature/image/animated-image
+https://main--express-milo--adobecom.aem.live/it/express/feature/image/animated-image/background
+https://main--express-milo--adobecom.aem.live/it/express/feature/image/animated-image/wallpaper
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/black-white-filter
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/blur-background
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/blur
@@ -18637,6 +18920,7 @@ https://main--express-milo--adobecom.aem.live/it/express/feature/image/change-ba
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/change-background
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/combine
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/convert
+https://main--express-milo--adobecom.aem.live/it/express/feature/image/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/convert/jpg-to-png
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/convert/jpg-to-png/transparent-png
 https://main--express-milo--adobecom.aem.live/it/express/feature/image/convert/jpg-to-svg
@@ -19282,8 +19566,14 @@ https://main--express-milo--adobecom.aem.live/jp/express/Assets/Animation/jp-bg-
 https://main--express-milo--adobecom.aem.live/jp/express/Assets/static/ax-jp-cross-device-600x600.png
 https://main--express-milo--adobecom.aem.live/jp/express/acom-gnav-thin
 https://main--express-milo--adobecom.aem.live/jp/express/affiliate
+https://main--express-milo--adobecom.aem.live/jp/express/android
 https://main--express-milo--adobecom.aem.live/jp/express/assets/animation/adobe-express-jp-marquee-animation-2250x540.mp4
+https://main--express-milo--adobecom.aem.live/jp/express/assets/animation/ax-homepage-marquee-2550x540-jp.mp4
+https://main--express-milo--adobecom.aem.live/jp/express/assets/animation/ax-homepage-marquee-900x540-jp.mp4
+https://main--express-milo--adobecom.aem.live/jp/express/assets/animation/jp-bg-animation-opt1-1300x200-1.mp4
+https://main--express-milo--adobecom.aem.live/jp/express/assets/animation/media-1e71fd5916ba07cde8f1ddcb450b5014715675aa5.mp4
 https://main--express-milo--adobecom.aem.live/jp/express/assets/animation/new-adobe-express-jp-marquee-animation-2250x540.mp4
+https://main--express-milo--adobecom.aem.live/jp/express/assets/static/ax-jp-cross-device-600x600.png
 https://main--express-milo--adobecom.aem.live/jp/express/blog/sitemap.xml
 https://main--express-milo--adobecom.aem.live/jp/express/business
 https://main--express-milo--adobecom.aem.live/jp/express/business/request-info
@@ -19565,6 +19855,7 @@ https://main--express-milo--adobecom.aem.live/jp/express/create/planner
 https://main--express-milo--adobecom.aem.live/jp/express/create/planner/agenda/meeting
 https://main--express-milo--adobecom.aem.live/jp/express/create/planner/daily
 https://main--express-milo--adobecom.aem.live/jp/express/create/planner/meal
+https://main--express-milo--adobecom.aem.live/jp/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/jp/express/create/post
 https://main--express-milo--adobecom.aem.live/jp/express/create/post/facebook
 https://main--express-milo--adobecom.aem.live/jp/express/create/post/instagram
@@ -19643,6 +19934,7 @@ https://main--express-milo--adobecom.aem.live/jp/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/jp/express/create/video/animation/tiktok
 https://main--express-milo--adobecom.aem.live/jp/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/jp/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/jp/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/jp/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/jp/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/jp/express/create/video/facebook
@@ -20891,6 +21183,7 @@ https://main--express-milo--adobecom.aem.live/kr/drafts/hbijli/kr-discover-cards
 https://main--express-milo--adobecom.aem.live/kr/education/express/
 https://main--express-milo--adobecom.aem.live/kr/express/Android
 https://main--express-milo--adobecom.aem.live/kr/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/kr/express/android
 https://main--express-milo--adobecom.aem.live/kr/express/business
 https://main--express-milo--adobecom.aem.live/kr/express/business/request-info
 https://main--express-milo--adobecom.aem.live/kr/express/business/teams
@@ -20920,6 +21213,8 @@ https://main--express-milo--adobecom.aem.live/kr/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/kr/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/kr/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/kr/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/kr/express/create/ai/thumbnail
+https://main--express-milo--adobecom.aem.live/kr/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/kr/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/kr/express/create/animation
 https://main--express-milo--adobecom.aem.live/kr/express/create/animation/instagram
@@ -21115,6 +21410,7 @@ https://main--express-milo--adobecom.aem.live/kr/express/create/photo-collage/in
 https://main--express-milo--adobecom.aem.live/kr/express/create/photo-collage/montage
 https://main--express-milo--adobecom.aem.live/kr/express/create/photo-collage/side-by-side
 https://main--express-milo--adobecom.aem.live/kr/express/create/planner/agenda
+https://main--express-milo--adobecom.aem.live/kr/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/kr/express/create/post
 https://main--express-milo--adobecom.aem.live/kr/express/create/post/facebook
 https://main--express-milo--adobecom.aem.live/kr/express/create/post/instagram
@@ -21188,6 +21484,7 @@ https://main--express-milo--adobecom.aem.live/kr/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/kr/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/kr/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/kr/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/kr/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/kr/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/kr/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/kr/express/create/video/facebook
@@ -21306,6 +21603,9 @@ https://main--express-milo--adobecom.aem.live/kr/express/feature/gif/convert/mp4
 https://main--express-milo--adobecom.aem.live/kr/express/feature/gif/convert/png
 https://main--express-milo--adobecom.aem.live/kr/express/feature/gif/convert/video
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image
+https://main--express-milo--adobecom.aem.live/kr/express/feature/image/animated-image
+https://main--express-milo--adobecom.aem.live/kr/express/feature/image/animated-image/background
+https://main--express-milo--adobecom.aem.live/kr/express/feature/image/animated-image/wallpaper
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/black-white-filter
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/blur-background
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/blur
@@ -21314,6 +21614,7 @@ https://main--express-milo--adobecom.aem.live/kr/express/feature/image/change-ba
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/change-background
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/combine
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/convert
+https://main--express-milo--adobecom.aem.live/kr/express/feature/image/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/convert/jpg-to-png
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/convert/jpg-to-png/transparent-png
 https://main--express-milo--adobecom.aem.live/kr/express/feature/image/convert/jpg-to-svg
@@ -23212,6 +23513,7 @@ https://main--express-milo--adobecom.aem.live/nl-NL/templates/worksheets/
 https://main--express-milo--adobecom.aem.live/nl/education/express/
 https://main--express-milo--adobecom.aem.live/nl/express/Android
 https://main--express-milo--adobecom.aem.live/nl/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/nl/express/android
 https://main--express-milo--adobecom.aem.live/nl/express/business
 https://main--express-milo--adobecom.aem.live/nl/express/business/teams
 https://main--express-milo--adobecom.aem.live/nl/express/collections/birthday
@@ -23242,6 +23544,8 @@ https://main--express-milo--adobecom.aem.live/nl/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/nl/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/nl/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/nl/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/nl/express/create/ai/thumbnail
+https://main--express-milo--adobecom.aem.live/nl/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/nl/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/nl/express/create/animation
 https://main--express-milo--adobecom.aem.live/nl/express/create/animation/instagram
@@ -23423,6 +23727,7 @@ https://main--express-milo--adobecom.aem.live/nl/express/create/place-card
 https://main--express-milo--adobecom.aem.live/nl/express/create/planner/agenda
 https://main--express-milo--adobecom.aem.live/nl/express/create/planner/agenda/meeting
 https://main--express-milo--adobecom.aem.live/nl/express/create/poetry
+https://main--express-milo--adobecom.aem.live/nl/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/nl/express/create/post
 https://main--express-milo--adobecom.aem.live/nl/express/create/post/blog
 https://main--express-milo--adobecom.aem.live/nl/express/create/post/facebook
@@ -23488,6 +23793,7 @@ https://main--express-milo--adobecom.aem.live/nl/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/nl/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/nl/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/nl/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/nl/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/nl/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/nl/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/nl/express/create/video/facebook
@@ -23595,6 +23901,9 @@ https://main--express-milo--adobecom.aem.live/nl/express/feature/gif/convert/mp4
 https://main--express-milo--adobecom.aem.live/nl/express/feature/gif/convert/png
 https://main--express-milo--adobecom.aem.live/nl/express/feature/gif/convert/video
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image
+https://main--express-milo--adobecom.aem.live/nl/express/feature/image/animated-image
+https://main--express-milo--adobecom.aem.live/nl/express/feature/image/animated-image/background
+https://main--express-milo--adobecom.aem.live/nl/express/feature/image/animated-image/wallpaper
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/black-white-filter
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/blur-background
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/blur
@@ -23603,6 +23912,7 @@ https://main--express-milo--adobecom.aem.live/nl/express/feature/image/change-ba
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/change-background
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/combine
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/convert
+https://main--express-milo--adobecom.aem.live/nl/express/feature/image/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/convert/jpg-to-png
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/convert/jpg-to-png/transparent-png
 https://main--express-milo--adobecom.aem.live/nl/express/feature/image/convert/jpg-to-svg
@@ -23899,6 +24209,7 @@ https://main--express-milo--adobecom.aem.live/nl/express/why-choose-express
 https://main--express-milo--adobecom.aem.live/no/education/express/
 https://main--express-milo--adobecom.aem.live/no/express/Android
 https://main--express-milo--adobecom.aem.live/no/express/acom-gnav-thin
+https://main--express-milo--adobecom.aem.live/no/express/android
 https://main--express-milo--adobecom.aem.live/no/express/business
 https://main--express-milo--adobecom.aem.live/no/express/business/request-info
 https://main--express-milo--adobecom.aem.live/no/express/business/teams
@@ -23921,9 +24232,12 @@ https://main--express-milo--adobecom.aem.live/no/express/feature/ai/image/remove
 https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler
 https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/calendar
 https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/facebook
+https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/instagram
 https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/linkedin
 https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/national-day
 https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/post
+https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/social-media
+https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/tiktok
 https://main--express-milo--adobecom.aem.live/no/express/feature/content-scheduler/twitter
 https://main--express-milo--adobecom.aem.live/no/express/feature/design
 https://main--express-milo--adobecom.aem.live/no/express/feature/design/color
@@ -24989,6 +25303,7 @@ https://main--express-milo--adobecom.aem.live/se/education/express/
 https://main--express-milo--adobecom.aem.live/se/express/Android
 https://main--express-milo--adobecom.aem.live/se/express/acom-gnav-thin
 https://main--express-milo--adobecom.aem.live/se/express/affiliate
+https://main--express-milo--adobecom.aem.live/se/express/android
 https://main--express-milo--adobecom.aem.live/se/express/business
 https://main--express-milo--adobecom.aem.live/se/express/business/request-info
 https://main--express-milo--adobecom.aem.live/se/express/business/teams
@@ -25011,9 +25326,12 @@ https://main--express-milo--adobecom.aem.live/se/express/feature/ai/image/remove
 https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler
 https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/calendar
 https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/facebook
+https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/instagram
 https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/linkedin
 https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/national-day
 https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/post
+https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/social-media
+https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/tiktok
 https://main--express-milo--adobecom.aem.live/se/express/feature/content-scheduler/twitter
 https://main--express-milo--adobecom.aem.live/se/express/feature/design
 https://main--express-milo--adobecom.aem.live/se/express/feature/design/color
@@ -26424,6 +26742,7 @@ https://main--express-milo--adobecom.aem.live/tw/express/acom-gnav-thin
 https://main--express-milo--adobecom.aem.live/tw/express/affiliate
 https://main--express-milo--adobecom.aem.live/tw/express/affiliate/special-20
 https://main--express-milo--adobecom.aem.live/tw/express/ambassadors/list
+https://main--express-milo--adobecom.aem.live/tw/express/android
 https://main--express-milo--adobecom.aem.live/tw/express/business
 https://main--express-milo--adobecom.aem.live/tw/express/business/request-info
 https://main--express-milo--adobecom.aem.live/tw/express/business/teams
@@ -26454,6 +26773,8 @@ https://main--express-milo--adobecom.aem.live/tw/express/create/ai/presentation
 https://main--express-milo--adobecom.aem.live/tw/express/create/ai/template-generator
 https://main--express-milo--adobecom.aem.live/tw/express/create/ai/text-effects
 https://main--express-milo--adobecom.aem.live/tw/express/create/ai/text-effects/3d
+https://main--express-milo--adobecom.aem.live/tw/express/create/ai/thumbnail
+https://main--express-milo--adobecom.aem.live/tw/express/create/ai/wallpaper
 https://main--express-milo--adobecom.aem.live/tw/express/create/ai/worksheet/coloring-page
 https://main--express-milo--adobecom.aem.live/tw/express/create/animation
 https://main--express-milo--adobecom.aem.live/tw/express/create/animation/instagram
@@ -26655,6 +26976,7 @@ https://main--express-milo--adobecom.aem.live/tw/express/create/planner
 https://main--express-milo--adobecom.aem.live/tw/express/create/planner/agenda
 https://main--express-milo--adobecom.aem.live/tw/express/create/planner/agenda/meeting
 https://main--express-milo--adobecom.aem.live/tw/express/create/planner/lesson
+https://main--express-milo--adobecom.aem.live/tw/express/create/portfolio
 https://main--express-milo--adobecom.aem.live/tw/express/create/post
 https://main--express-milo--adobecom.aem.live/tw/express/create/post/facebook
 https://main--express-milo--adobecom.aem.live/tw/express/create/post/instagram
@@ -26735,6 +27057,7 @@ https://main--express-milo--adobecom.aem.live/tw/express/create/video/animation/
 https://main--express-milo--adobecom.aem.live/tw/express/create/video/animation/youtube
 https://main--express-milo--adobecom.aem.live/tw/express/create/video/anniversary
 https://main--express-milo--adobecom.aem.live/tw/express/create/video/birthday
+https://main--express-milo--adobecom.aem.live/tw/express/create/video/clip/youtube
 https://main--express-milo--adobecom.aem.live/tw/express/create/video/collage
 https://main--express-milo--adobecom.aem.live/tw/express/create/video/explainer
 https://main--express-milo--adobecom.aem.live/tw/express/create/video/facebook
@@ -26784,6 +27107,7 @@ https://main--express-milo--adobecom.aem.live/tw/express/discover/examples/resum
 https://main--express-milo--adobecom.aem.live/tw/express/discover/ideas/drawing
 https://main--express-milo--adobecom.aem.live/tw/express/discover/messages
 https://main--express-milo--adobecom.aem.live/tw/express/discover/messages/card/congratulations/Document1
+https://main--express-milo--adobecom.aem.live/tw/express/discover/messages/card/congratulations/document1
 https://main--express-milo--adobecom.aem.live/tw/express/discover/messages/card/congratulations/wedding
 https://main--express-milo--adobecom.aem.live/tw/express/discover/messages/love
 https://main--express-milo--adobecom.aem.live/tw/express/discover/messages/text/good-morning
@@ -26841,6 +27165,9 @@ https://main--express-milo--adobecom.aem.live/tw/express/feature/gif/convert/mp4
 https://main--express-milo--adobecom.aem.live/tw/express/feature/gif/convert/png
 https://main--express-milo--adobecom.aem.live/tw/express/feature/gif/convert/video
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image
+https://main--express-milo--adobecom.aem.live/tw/express/feature/image/animated-image
+https://main--express-milo--adobecom.aem.live/tw/express/feature/image/animated-image/background
+https://main--express-milo--adobecom.aem.live/tw/express/feature/image/animated-image/wallpaper
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/black-white-filter
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/blur-background
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/blur
@@ -26849,6 +27176,7 @@ https://main--express-milo--adobecom.aem.live/tw/express/feature/image/change-ba
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/change-background
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/combine
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/convert
+https://main--express-milo--adobecom.aem.live/tw/express/feature/image/convert/image-to-gif
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/convert/jpg-to-png
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/convert/jpg-to-png/transparent-png
 https://main--express-milo--adobecom.aem.live/tw/express/feature/image/convert/jpg-to-svg
@@ -27160,6 +27488,9 @@ https://main--express-milo--adobecom.aem.live/uk/express/affiliate
 https://main--express-milo--adobecom.aem.live/uk/express/ambassadors
 https://main--express-milo--adobecom.aem.live/uk/express/ambassadors/list
 https://main--express-milo--adobecom.aem.live/uk/express/assets/adobe-express-manifesto-competition-terms-conditions.pdf
+https://main--express-milo--adobecom.aem.live/uk/express/assets/media-1b9b82af1d63c7aa59d98bb0bcc3b3cdb50376587.mp4
+https://main--express-milo--adobecom.aem.live/uk/express/assets/media-1e12e0fd4084beaa5f70eb94f53c6166c7b990c93.mp4
+https://main--express-milo--adobecom.aem.live/uk/express/assets/media-1e984bf744d9165143b83d50469dd387eb178fa12.mp4
 https://main--express-milo--adobecom.aem.live/uk/express/assets/new-uk-hero-pod1.mp4
 https://main--express-milo--adobecom.aem.live/uk/express/assets/new-uk-hero-pod2.mp4
 https://main--express-milo--adobecom.aem.live/uk/express/assets/new-uk-hero-pod3.mp4
@@ -27196,9 +27527,11 @@ https://main--express-milo--adobecom.aem.live/uk/express/create/resume/cv
 https://main--express-milo--adobecom.aem.live/uk/express/create/sticker/whatsapp
 https://main--express-milo--adobecom.aem.live/uk/express/design-app
 https://main--express-milo--adobecom.aem.live/uk/express/discover/alternative/photoshop
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/advertisement/facebook
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/ai/art
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/analysis/thematic
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/brand-guidelines
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/brand-identity
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/business-cycle
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/business-plan-presentation
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/call-to-action
@@ -27211,6 +27544,7 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/colla
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/collage/photos
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/company-overview-presentation
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/competitive-market-analysis
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/content-calendar
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/cover-letter
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/cover/book
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/customer-service
@@ -27226,6 +27560,8 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/hoodi
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/icon
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/infographic
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/introduction-interview
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/landing-page
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/lead-magnet
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/letter/application
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/letter/resignation
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/letterhead
@@ -27242,11 +27578,13 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/perso
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/personalised-sweatshirts
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/plan/action
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/presentation/epq
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/press-release
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/print/colouring-page
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/project-management-presentation
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/proposal/project
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/report
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/resume
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/sales-funnel
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/sales-promotion
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/sales-strategy-presentation
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/school-leaver-cv
@@ -27255,6 +27593,7 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/secon
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/skills/communication
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/skills/personal
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/social-media-strategy-presentation
+https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/social-proof
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/storyboard
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/survey/customer
 https://main--express-milo--adobecom.aem.live/uk/express/discover/examples/swot-analysis-presentation
@@ -27354,7 +27693,10 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/make-a-
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/make-an-interactive-map
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/make-music-with-ai
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/market-research
+https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/market-share
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/marketing-plan
+https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/marketing/aida
+https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/marketing/cro
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/measure/photo-frame
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/merch/band
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/merch/youtuber
@@ -27468,6 +27810,8 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/video/b
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/video/email
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/video/live-photo
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/video/watermark
+https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/video/youtube/reference
+https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/vision-board
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/volunteering-on-cv
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/website
 https://main--express-milo--adobecom.aem.live/uk/express/discover/how-to/website/business
@@ -27652,6 +27996,7 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/ideas/world-oc
 https://main--express-milo--adobecom.aem.live/uk/express/discover/ideas/world-refugee-day
 https://main--express-milo--adobecom.aem.live/uk/express/discover/ideas/yoga-day
 https://main--express-milo--adobecom.aem.live/uk/express/discover/ideas/youtube-banners
+https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/anniversary/death
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/birthday
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/birthday/boyfriend
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/birthday/sixty
@@ -27660,25 +28005,31 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/birth
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/anniversary
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/birthday
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/birthday/mother
+https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/christening
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/christmas
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/congratulations
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/easter
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/father
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/get-well-soon
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/mother
+https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/new-baby
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/sympathy
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/teacher
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/thank-you
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/thanksgiving
+https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/valentines-day
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/card/wedding
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/condolences-for-work-colleague
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/food
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/future
+https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/happy-valentines
+https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/invitation/decline
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/new-home
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/saturday-morning-greetings
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/smile
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/text/good-night
 https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/unpublished/card/birthday/mother
+https://main--express-milo--adobecom.aem.live/uk/express/discover/messages/valentines-day
 https://main--express-milo--adobecom.aem.live/uk/express/discover/quotes/book
 https://main--express-milo--adobecom.aem.live/uk/express/discover/quotes/buddha
 https://main--express-milo--adobecom.aem.live/uk/express/discover/quotes/cat
@@ -27745,6 +28096,7 @@ https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/how-to-st
 https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/how-to-write-a-cv-with-no-experience
 https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/how-to-write-press-release
 https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/how-to-write-professional-email
+https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/icon
 https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/inspiring-graph-and-chart-examples
 https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/instagram/fonts
 https://main--express-milo--adobecom.aem.live/uk/express/discover/tips/interview-questions-to-ask-employer
@@ -28073,11 +28425,14 @@ https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/visual-merch
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-are-presentation-skills
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-does-rgb-stand-for
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-brochure
+https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-conversion-rate
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-cover-page
+https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-lead-magnet
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-meme
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-mood-board
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-newsletter
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-pestel-analysis
+https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-podcast
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-portfolio
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-press-release
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-a-testimonial
@@ -28094,10 +28449,12 @@ https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-cmyk
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-content-calendar
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-cottagecore
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-crypto-art
+https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-customer-retention
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-dadaism
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-dark-academia
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-datamosh
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-design-thinking
+https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-direct-marketing
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-dreamcore
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-frutiger-aero
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-glitch-art
@@ -28110,8 +28467,10 @@ https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-nati
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-neo-expressionism
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-optical-illusion-in-art
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-pastel-goth
+https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-personal-branding
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-pointillism-art
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-repetition-in-design
+https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-social-proof
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-surrealism
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-time-series-data
 https://main--express-milo--adobecom.aem.live/uk/express/learn/blog/what-is-vaporwave
