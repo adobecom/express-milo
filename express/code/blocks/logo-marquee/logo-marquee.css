@@ -39,9 +39,18 @@
   .logo-marquee p { font-size: var(--body-font-size-m); }
 }
 
-.logo-marquee .button-container {
-  display: none;
+.logo-marquee .button-container { display: block; }
+
+.logo-marquee .cta-with-input {
+  display: flex;
+  gap: var(--spacing-300);
+  align-items: stretch;
+  flex-direction: column;
 }
+
+.logo-marquee .cta-with-input .logo-marquee-input { order: 0; width: 100%; }
+.logo-marquee .cta-with-input .button,
+.logo-marquee .cta-with-input .con-button { order: 1; width: 100%; white-space: nowrap; }
 
 .logo-marquee .column-picture {
   margin: 28px 32px 28px 28px;
@@ -116,6 +125,11 @@
     font-size: 18px;
   }
 
+  .logo-marquee .cta-with-input { flex-direction: row; align-items: center; }
+  .logo-marquee .cta-with-input .logo-marquee-input { width: auto; flex: 1 1 auto; }
+  .logo-marquee .cta-with-input .button,
+  .logo-marquee .cta-with-input .con-button { width: auto; order: 1; }
+
   .logo-marquee .column-picture::before {
     width: 160%;
     height: 160%;
@@ -132,5 +146,14 @@
     padding-left: var(--spacing-600);
     padding-right: var(--spacing-600);
   }
+}
+
+/* Input styling to match Milo form look */
+.logo-marquee-input {
+  height: 40px;
+  border-radius: 20px;
+  border: 1px solid var(--hlx-color-gray-300, #e0e0e0);
+  padding: 0 var(--spacing-400);
+  font-size: var(--body-font-size-m);
 }
 
