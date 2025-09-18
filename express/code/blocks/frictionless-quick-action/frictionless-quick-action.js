@@ -373,6 +373,10 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
         tab: isVideoEditor ? 'videos' : 'photos',
         width: dimensions?.width,
         height: dimensions?.height,
+        ...(isVideoEditor && {
+          sceneline: true,
+          isVideoMaker: true,
+        }),
       };
       break;
     }
