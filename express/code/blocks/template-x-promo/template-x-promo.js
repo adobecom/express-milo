@@ -158,8 +158,18 @@ async function createDirectCarousel(block, templates, createTagFn) {
     } else if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       const editButton = event.target.querySelector('.button-container .button');
+
       if (editButton) {
         editButton.click();
+      } else {
+        // Try to find the current template
+        const currentTemplate = track.querySelector('.template.current-template');
+        if (currentTemplate) {
+          const currentEditButton = currentTemplate.querySelector('.button-container .button');
+          if (currentEditButton) {
+            currentEditButton.click();
+          }
+        }
       }
     } else if (event.key === 'Escape') {
       event.preventDefault();
@@ -326,8 +336,8 @@ async function createDirectCarousel(block, templates, createTagFn) {
   // Use Intersection Observer for lazy height measurement
   const observerOptions = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
+    rootMargin: '200px 0px',
+    threshold: 0.1,
   };
 
   const heightObserver = new IntersectionObserver((entries) => {
