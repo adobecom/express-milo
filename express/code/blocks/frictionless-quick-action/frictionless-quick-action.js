@@ -19,6 +19,7 @@ import {
   getErrorMsg,
   initProgressBar,
   FRICTIONLESS_UPLOAD_QUICK_ACTIONS,
+  EXPRESS_ROUTE_PATHS,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -346,15 +347,32 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
   const isVideoEditor = quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor;
   const url = new URL(await getTrackingAppendedURL(frictionlessTargetBaseUrl));
-  const searchParams = {
+  let composedSearchParams = {
     frictionlessUploadAssetId: assetId,
-    category: 'media',
-    tab: isVideoEditor ? 'videos' : 'photos',
-    width: dimensions?.width,
-    height: dimensions?.height,
   };
 
-  Object.entries(searchParams).forEach(([key, value]) => {
+  switch (url.pathname) {
+    case EXPRESS_ROUTE_PATHS.loggedOutEditor: {
+      composedSearchParams = {
+        category: 'media',
+        tab: isVideoEditor ? 'videos' : 'photos',
+        width: dimensions?.width,
+        height: dimensions?.height,
+      };
+
+      break;
+    }
+    case EXPRESS_ROUTE_PATHS.focusedEditor: {
+      composedSearchParams = {
+        skipUploadStep: true,
+      };
+      break;
+    }
+    default:
+      break;
+  }
+
+  Object.entries(composedSearchParams).forEach(([key, value]) => {
     if (value) {
       url.searchParams.set(key, value);
     }
