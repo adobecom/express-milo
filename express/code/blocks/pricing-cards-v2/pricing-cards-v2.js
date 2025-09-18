@@ -68,60 +68,33 @@ function suppressOfferEyebrow(specialPromo) {
 }
 
 async function getPriceElementSuffix(placeholderArr, response) {
-  try {
-    if (!placeholderArr || !Array.isArray(placeholderArr) || !response) {
-      window.lana?.log('Invalid parameters passed to getPriceElementSuffix');
-      return '';
-    }
+  const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
+  const placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
 
-    const cleanPlaceholderArr = placeholderArr.map((placeholder) => placeholder.replace('((', '').replace('))', ''));
-
-    let placeholdersResponse;
-    try {
-      placeholdersResponse = await replaceKeyArray(cleanPlaceholderArr, getConfig());
-    } catch (placeholderError) {
-      window.lana?.log('Failed to replace placeholders:', placeholderError);
-      window.lana?.log('Placeholder replacement error', {
-        placeholders: cleanPlaceholderArr,
-        error: placeholderError.message,
-      });
-      return '';
-    }
-
-    if (!placeholdersResponse || !Array.isArray(placeholdersResponse)) {
-      window.lana?.log('Failed to get placeholders response');
-      return '';
-    }
-
-    return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat
-      ? ''
-      : placeholdersResponse[i] || '')).join(' ');
-  } catch (error) {
-    window.lana?.log('Error in getPriceElementSuffix:', error);
-    window.lana?.log('getPriceElementSuffix error', { error: error.message });
-    return '';
-  }
+  return cleanPlaceholderArr.map((key, i) => (key.includes('vat') && !response.showVat
+    ? ''
+    : placeholdersResponse[i] || '')).join(' ');
 }
 
 // eslint-disable-next-line default-param-last
 function handlePriceToken(pricingArea, priceToken = YEAR_2_PRICING_TOKEN, newPrice, priceSuffix = '') {
   try {
-    const elements = pricingArea.querySelectorAll('p');
-    const year2PricingTokens = Array.from(elements).filter(
-      (p) => p.textContent.includes(priceToken),
-    );
-    year2PricingTokens.forEach((year2PricingToken) => {
-      if (newPrice) {
-        year2PricingToken.innerHTML = year2PricingToken.innerHTML.replace(
-          priceToken,
-          `${newPrice} ${priceSuffix}`,
-        );
+    const paragraphs = Array.from(pricingArea.querySelectorAll('p'))
+      .filter((p) => p.textContent.includes(priceToken));
+    if (paragraphs.length === 0) return;
+    const hasPrice = newPrice !== undefined && newPrice !== null && `${newPrice}` !== '';
+    const replacement = [newPrice, priceSuffix].filter(Boolean).join(' ');
+    paragraphs.forEach((p) => {
+      if (hasPrice) {
+        p.innerHTML = p.innerHTML.replaceAll(priceToken, replacement);
+      } else if (p.textContent.trim() === priceToken) {
+        p.textContent = '';
       } else {
-        year2PricingToken.textContent = '';
+        p.innerHTML = p.innerHTML.replaceAll(priceToken, '');
       }
     });
   } catch (e) {
-    window.lana?.log(e);
+    window.lana.log(e);
   }
 }
 
@@ -240,77 +213,43 @@ async function handleRawPrice(price, basePrice, response, priceSuffix, priceRow)
 }
 
 async function handlePrice(pricingArea, specialPromo, groupID) {
-  try {
-    const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
+  const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((anchor) => anchor.textContent === PRICE_TOKEN);
 
-    const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
-    if (!pricingBtnContainer) {
-      window.lana?.log('Pricing button container not found');
-      return;
-    }
-    if (!priceEl) {
-      window.lana?.log('Price element with token not found');
-      return;
-    }
+  const pricingBtnContainer = pricingArea.querySelector('.action-area, .button-container');
+  if (!pricingBtnContainer) return;
+  if (!priceEl) return;
 
-    const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
-    const placeholderArr = pricingSuffixTextElem?.textContent?.split(' ') || [];
+  const pricingSuffixTextElem = pricingBtnContainer.nextElementSibling;
+  const placeholderArr = pricingSuffixTextElem.textContent?.split(' ');
 
-    const priceRow = createTag('div', { class: 'pricing-row' });
-    const price = createTag('span', { class: 'pricing-price' });
-    const basePrice = createTag('span', { class: 'pricing-base-price' });
-    const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
+  const priceRow = createTag('div', { class: 'pricing-row' });
+  const price = createTag('span', { class: 'pricing-price' });
+  const basePrice = createTag('span', { class: 'pricing-base-price' });
+  const priceSuffix = createTag('div', { class: 'pricing-row-suf' });
 
-    let response;
-    try {
-      response = await fetchPlanOnePlans(priceEl?.href);
-      if (!response) {
-        throw new Error('Empty response from pricing API');
-      }
-    } catch (pricingError) {
-      window.lana?.log('Failed to fetch pricing data:', pricingError);
-      window.lana?.log('Pricing API failure', {
-        href: priceEl?.href,
-        error: pricingError.message,
-      });
-
-      // Fallback: Show basic pricing structure without API data
-      price.textContent = 'Price unavailable';
-      priceSuffix.textContent = 'Please try again later';
-      priceRow.append(price, priceSuffix);
-      pricingArea.prepend(priceRow);
-      priceEl?.parentNode?.remove();
-      pricingBtnContainer?.remove();
-      pricingSuffixTextElem?.remove();
-      return;
-    }
-
-    if (response.term && groupID) {
-      BlockMediator.set(groupID, response.term);
-    }
-
-    const priceSuffixTextContent = await getPriceElementSuffix(
-      placeholderArr,
-      response,
-    );
-
-    const isPremiumCard = response.ooAvailable || false;
-    const savePercentElem = pricingArea.querySelector('.card-offer');
-    handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
-    await handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
-    handleSavePercentage(savePercentElem, isPremiumCard, response);
-    handleSpecialPromo(specialPromo, isPremiumCard, response);
-    handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
-    handlePriceToken(pricingArea, BASE_PRICING_TOKEN, response.formattedBP);
-    priceEl?.parentNode?.remove();
-    if (!priceRow) return;
-    pricingArea.prepend(priceRow);
-    pricingBtnContainer?.remove();
-    pricingSuffixTextElem?.remove();
-  } catch (error) {
-    window.lana?.log('Error in handlePrice:', error);
-    window.lana?.log('handlePrice error', { error: error.message });
+  const response = await fetchPlanOnePlans(priceEl?.href);
+  if (response.term && groupID) {
+    BlockMediator.set(groupID, response.term);
   }
+
+  const priceSuffixTextContent = await getPriceElementSuffix(
+    placeholderArr,
+    response,
+  );
+
+  const isPremiumCard = response.ooAvailable || false;
+  const savePercentElem = pricingArea.querySelector('.card-offer');
+  handlePriceSuffix(priceEl, priceSuffix, priceSuffixTextContent);
+  handleRawPrice(price, basePrice, response, priceSuffix, priceRow);
+  handleSavePercentage(savePercentElem, isPremiumCard, response);
+  handleSpecialPromo(specialPromo, isPremiumCard, response);
+  handlePriceToken(pricingArea, YEAR_2_PRICING_TOKEN, response.y2p, priceSuffixTextContent);
+  handlePriceToken(pricingArea, BASE_PRICING_TOKEN, response.formattedBP);
+  priceEl?.parentNode?.remove();
+  if (!priceRow) return;
+  pricingArea.prepend(priceRow);
+  pricingBtnContainer?.remove();
+  pricingSuffixTextElem?.remove();
 }
 
 async function createPricingSection(
@@ -547,9 +486,9 @@ export default async function init(el) {
   el.classList.add(`card-count-${cards.length}`);
   const cardFooter = el.querySelector(':scope > div:last-of-type');
 
-  cardFooter.classList.add('card-footer');
+  cardFooter.classList.add('card-footer', 'ax-grid-container', 'small-gap');
   el.querySelectorAll(':scope > div:not(:last-of-type)').forEach((d) => d.remove());
-  const cardsContainer = createTag('div', { class: 'cards-container' });
+  const cardsContainer = createTag('div', { class: 'cards-container ax-grid-container small-gap' });
 
   const decoratedCards = await Promise.all(
     cards.map((card) => decorateCard(card, el)),
@@ -567,66 +506,47 @@ export default async function init(el) {
   el.append(cardFooter);
   el.prepend(cardsContainer);
 
-  // Initialize observers array for cleanup tracking
-  const observers = [];
-
-  const intersectionObserver = new IntersectionObserver((entries) => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        try {
-          equalizeHeights(el);
-          intersectionObserver.unobserve(entry.target);
-        } catch (error) {
-          window.lana?.log('IntersectionObserver error', { error: error.message });
-        }
+        equalizeHeights(el);
+        observer.unobserve(entry.target);
       }
     });
   });
 
-  // Store observer for cleanup
-  observers.push(intersectionObserver);
-
-  const cardElements = el.querySelectorAll('.card');
-  if (cardElements.length > 0) {
-    cardElements.forEach((card) => {
-      intersectionObserver.observe(card);
-    });
-  }
+  document.querySelectorAll('.pricing-cards-v2 .card').forEach((column) => {
+    observer.observe(column);
+  });
 
   const parentSection = el.closest('.section');
   if (parentSection) {
     // MutationObserver for display changes
     const mutationObserver = new MutationObserver(debounce((mutations) => {
-      try {
-        let displayChanged = false;
+      let displayChanged = false;
 
-        mutations.forEach((mutation) => {
-          if (mutation.type === 'attributes'
-              && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
-            const computedStyle = window.getComputedStyle(parentSection);
-            const currentDisplay = computedStyle.display;
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes'
+            && (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+          const computedStyle = window.getComputedStyle(parentSection);
+          const currentDisplay = computedStyle.display;
 
-            if (!parentSection.dataset.prevDisplay) {
-              parentSection.dataset.prevDisplay = currentDisplay;
-            }
-
-            if (parentSection.dataset.prevDisplay !== currentDisplay) {
-              displayChanged = true;
-              parentSection.dataset.prevDisplay = currentDisplay;
-            }
+          if (!parentSection.dataset.prevDisplay) {
+            parentSection.dataset.prevDisplay = currentDisplay;
           }
-        });
 
-        if (displayChanged && parentSection.offsetHeight > 0) {
-          equalizeHeights(el);
+          if (parentSection.dataset.prevDisplay !== currentDisplay) {
+            displayChanged = true;
+            parentSection.dataset.prevDisplay = currentDisplay;
+          }
         }
-      } catch (error) {
-        window.lana?.log('MutationObserver error', { error: error.message });
+      });
+
+      if (displayChanged && parentSection.offsetHeight > 0) {
+        console.log('Section display changed, equalizing heights');
+        equalizeHeights(el);
       }
     }, 100));
-
-    // Store observer for cleanup
-    observers.push(mutationObserver);
 
     mutationObserver.observe(parentSection, {
       attributes: true,
@@ -634,44 +554,21 @@ export default async function init(el) {
       childList: false,
       subtree: false,
     });
+
+    // Store observers for cleanup
+    el.sectionMutationObserver = mutationObserver;
+
+    // Cleanup function
+    el.cleanupObservers = () => {
+      if (el.sectionMutationObserver) {
+        el.sectionMutationObserver.disconnect();
+        el.sectionMutationObserver = null;
+      }
+    };
   }
-
-  // Resize handler with cleanup tracking
-  const resizeHandler = debounce(() => {
-    try {
-      equalizeHeights(el);
-    } catch (error) {
-      window.lana?.log('Resize handler error', { error: error.message });
-    }
-  }, 100);
-
-  window.addEventListener('resize', resizeHandler);
-
-  // Enhanced cleanup function
-  el.cleanupObservers = () => {
-    try {
-      // Disconnect all stored observers
-      observers.forEach((observer) => {
-        if (observer && typeof observer.disconnect === 'function') {
-          observer.disconnect();
-        }
-      });
-
-      // Clear observers array
-      observers.length = 0;
-
-      // Remove resize handler
-      window.removeEventListener('resize', resizeHandler);
-
-      // Clear stored references
-      el.sectionMutationObserver = null;
-    } catch (error) {
-      window.lana?.log('Observer cleanup error', { error: error.message });
-    }
-  };
-
-  // Auto cleanup on page unload
-  window.addEventListener('beforeunload', el.cleanupObservers, { once: true });
+  window.addEventListener('resize', debounce(() => {
+    equalizeHeights(el);
+  }, 100));
 
   tagFreePlan(cardsContainer);
   el.classList.add('loaded');
