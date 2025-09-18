@@ -318,8 +318,6 @@ async function createDirectCarousel(block, templates, createTagFn) {
 
     if (maxHeight > 0) {
       track.style.minHeight = `${maxHeight}px`;
-    } else {
-      track.style.minHeight = '400px';
     }
 
     proceedWithCleanup();
@@ -328,8 +326,8 @@ async function createDirectCarousel(block, templates, createTagFn) {
   // Use Intersection Observer for lazy height measurement
   const observerOptions = {
     root: null,
-    rootMargin: '0px', // Only trigger when actually entering viewport
-    threshold: 0.5, // Trigger when 50% of carousel is visible (more conservative)
+    rootMargin: '0px',
+    threshold: 0.5,
   };
 
   const heightObserver = new IntersectionObserver((entries) => {
