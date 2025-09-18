@@ -10,7 +10,10 @@ const imports = await Promise.all([
 const { getLibs } = imports[0];
 const decorate = imports[1].default;
 
-await import(`${getLibs()}/utils/utils.js`).then((mod) => {
+// Set libs path for testing
+const libsPath = getLibs() || '../../../libs';
+
+await import(`${libsPath}/utils/utils.js`).then((mod) => {
   mod.setConfig({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } });
 });
 
