@@ -83,7 +83,7 @@ describe('Blog Posts V2 Block', () => {
     // Test with minimal DOM structure
     document.body.innerHTML = '<div class="blog-posts-v2"><div><div></div></div></div>';
     const minimalBlock = document.querySelector('.blog-posts-v2');
-    
+
     try {
       await decorate(minimalBlock);
       expect(true).to.be.true; // If we get here, no errors were thrown
