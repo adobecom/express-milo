@@ -352,24 +352,22 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   };
 
   switch (url.pathname) {
-    case EXPRESS_ROUTE_PATHS.loggedOutEditor: {
-      composedSearchParams = {
-        category: 'media',
-        tab: isVideoEditor ? 'videos' : 'photos',
-        width: dimensions?.width,
-        height: dimensions?.height,
-      };
-
-      break;
-    }
     case EXPRESS_ROUTE_PATHS.focusedEditor: {
       composedSearchParams = {
         skipUploadStep: true,
       };
       break;
     }
-    default:
+    case EXPRESS_ROUTE_PATHS.loggedOutEditor:
+    default: {
+      composedSearchParams = {
+        category: 'media',
+        tab: isVideoEditor ? 'videos' : 'photos',
+        width: dimensions?.width,
+        height: dimensions?.height,
+      };
       break;
+    }
   }
 
   Object.entries(composedSearchParams).forEach(([key, value]) => {
