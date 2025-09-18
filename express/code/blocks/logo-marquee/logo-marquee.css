@@ -1,6 +1,7 @@
 .logo-marquee {
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
+  padding-top: 40px;
   margin: auto;
   max-width: 900px;
 }
@@ -8,6 +9,7 @@
 .logo-marquee .icon.express-logo {
   width: fit-content;
   marign-left: 0px;
+  padding: 0px;
 }
 
 .logo-marquee > div {
@@ -49,8 +51,8 @@
 }
 
 @media (max-width: 600px) {
-  .logo-marquee h1 { font-size: var(--heading-font-size-xl); }
-  .logo-marquee h2 { font-size: var(--heading-font-size-l); }
+  .logo-marquee h1 { font-size: var(--heading-font-size-m); }
+  .logo-marquee h2 { font-size: var(--heading-font-size-m); }
   .logo-marquee h3 { font-size: var(--heading-font-size-m); }
   .logo-marquee p { font-size: var(--body-font-size-m); }
 }
@@ -71,9 +73,9 @@
   padding: 0;
 }
 
-.logo-marquee .cta-with-input .logo-marquee-input { order: 0; width: 100%; }
-.logo-marquee .cta-with-input .button,
-.logo-marquee .cta-with-input .con-button { order: 1; width: 100%; white-space: nowrap; }
+main .logo-marquee .cta-with-input .logo-marquee-input { order: 0; width: 100%; }
+main .logo-marquee .cta-with-input a.button:any-link,
+main .logo-marquee .cta-with-input .con-button { order: 1; width: 100%; white-space: nowrap; box-sizing: border-box; margin: 0; }
 
 .logo-marquee .column-picture {
   margin: 28px 32px 28px 28px;
@@ -174,11 +176,13 @@
 /* Input styling to match Milo form look */
 .logo-marquee-input {
   height: 48px;
+  box-sizing: border-box;
   border-radius: 10px;
   border: 1px solid var(--hlx-color-gray-300, #e0e0e0);
   font-size: var(--body-font-size-m);
   transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
   background-color: var(--color-white, #fff);
+
 }
 
 /* Always-visible placeholder pattern */
@@ -190,7 +194,7 @@
 .logo-marquee-input-wrapper::before {
   content: attr(data-placeholder);
   position: absolute;
-  left: 14px;
+  left: 18px;
   color: var(--text-color-secondary, #6e6e6e);
   pointer-events: none;
   transition: all 150ms ease-out;
@@ -219,6 +223,7 @@
 
 .logo-marquee-input-wrapper:not(:has(.logo-marquee-input:placeholder-shown)) .logo-marquee-input {
   padding-top: 20px;
+  padding-left: 18px;
 }
 
 .logo-marquee-input::placeholder {

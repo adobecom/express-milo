@@ -168,6 +168,7 @@ export default async function decorate(block) {
     input.placeholder = 'Enter your business name';
     input.className = 'logo-marquee-input';
     wrapper.appendChild(input);
+    cta.classList.add('suppress-until-not-visible');
 
     const container = cta.closest('.button-container') || cta.parentElement;
     container.classList.add('cta-with-input');

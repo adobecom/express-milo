@@ -7,10 +7,12 @@ import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'floating-button');
+  console.log(block);
   if (!block.classList.contains('meta-powered')) {
     block.parentElement?.remove();
     return;
   }
+  console.log(block);
 
   const audience = block.querySelector(':scope > div').textContent.trim();
   if (audience === 'mobile') {
@@ -25,6 +27,8 @@ export default async function decorate(block) {
     parentSection ? audience : null,
     data,
   );
+
+  console.log(blockWrapper);
 
   const blockLinks = blockWrapper.querySelectorAll('a');
   if (blockLinks && blockLinks.length > 0) {
