@@ -550,6 +550,16 @@
   transform: translate(-55%, -50%);
 }
 
+@media (max-width: 375px) {
+  .ax-template-x-promo .template.prev-template .button-container {
+    transform: translate(-33%, -50%);
+  }
+
+  .ax-template-x-promo .template.next-template .button-container {
+    transform: translate(-67%, -50%);
+  }
+}
+
 /* All carousel types work the same way - no special rules */
 
 .ax-template-x-promo .promo-prev-btn,
