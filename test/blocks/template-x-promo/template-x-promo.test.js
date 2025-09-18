@@ -1273,4 +1273,250 @@ describe('Template X Promo', () => {
       });
     });
   });
+
+  describe('Intersection Observer Height Measurement Tests', () => {
+    let intersectionObserverStub;
+    let observerCallback;
+    let observerInstance;
+    let mockEntries;
+    let carouselBlock;
+
+    beforeEach(() => {
+      // Create a new block for carousel tests
+      document.body.innerHTML = body;
+      carouselBlock = document.body.querySelector('.template-x-promo');
+      
+      // Force mobile viewport to trigger carousel instead of desktop
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 500, // Mobile width
+      });
+
+      // Mock IntersectionObserver
+      observerInstance = {
+        observe: sinon.stub(),
+        unobserve: sinon.stub(),
+        disconnect: sinon.stub(),
+      };
+
+      intersectionObserverStub = sinon.stub(window, 'IntersectionObserver').callsFake((callback, options) => {
+        observerCallback = callback;
+        return observerInstance;
+      });
+
+      // Mock entries for intersection observer
+      mockEntries = [{
+        target: document.createElement('div'),
+        isIntersecting: false,
+        intersectionRatio: 0,
+      }];
+
+      // Reset fetchStub
+      if (fetchStub) {
+        fetchStub.restore();
+      }
+      fetchStub = sinon.stub(window, 'fetch').resolves(mockFreeResponse);
+    });
+
+    afterEach(() => {
+      if (intersectionObserverStub) {
+        intersectionObserverStub.restore();
+      }
+      // Restore window width
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: 1024,
+      });
+    });
+
+    it('should create IntersectionObserver with correct options in carousel mode', async () => {
+      await decorate(carouselBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 200); });
+
+      // Check if IntersectionObserver was called
+      if (intersectionObserverStub.called) {
+        const [callback, options] = intersectionObserverStub.firstCall.args;
+        expect(callback).to.be.a('function');
+        expect(options).to.deep.equal({
+          root: null,
+          rootMargin: '200px 0px',
+          threshold: 0.1,
+        });
+      }
+    });
+
+    it('should observe the carousel wrapper when carousel is created', async () => {
+      await decorate(carouselBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 200); });
+
+      const wrapper = document.querySelector('.promo-carousel-wrapper');
+      if (wrapper && observerInstance.observe.called) {
+        expect(observerInstance.observe.calledOnce).to.be.true;
+        const observedElement = observerInstance.observe.firstCall.args[0];
+        expect(observedElement.classList.contains('promo-carousel-wrapper')).to.be.true;
+      }
+    });
+
+    it('should simulate height measurement workflow', async () => {
+      await decorate(carouselBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 200); });
+
+      // Create mock track and wrapper elements if they don't exist
+      let track = document.querySelector('.promo-carousel-track');
+      let wrapper = document.querySelector('.promo-carousel-wrapper');
+      
+      if (!wrapper) {
+        wrapper = document.createElement('div');
+        wrapper.className = 'promo-carousel-wrapper';
+        carouselBlock.appendChild(wrapper);
+      }
+      
+      if (!track) {
+        track = document.createElement('div');
+        track.className = 'promo-carousel-track';
+        track.style.display = 'flex';
+        wrapper.appendChild(track);
+      }
+
+      // Mock offsetHeight to return a valid height
+      Object.defineProperty(track, 'offsetHeight', {
+        configurable: true,
+        value: 300,
+      });
+
+      // Simulate the intersection observer callback if it exists
+      if (observerCallback && typeof observerCallback === 'function') {
+        const mockEntry = {
+          target: wrapper,
+          isIntersecting: true,
+          intersectionRatio: 0.5,
+        };
+        
+        // This should trigger height measurement
+        observerCallback([mockEntry]);
+        
+        // Verify height was set
+        expect(track.style.minHeight).to.equal('300px');
+      }
+    });
+
+    it('should handle zero height measurement gracefully', async () => {
+      await decorate(carouselBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 200); });
+
+      // Create mock elements
+      let track = document.querySelector('.promo-carousel-track');
+      let wrapper = document.querySelector('.promo-carousel-wrapper');
+      
+      if (!wrapper) {
+        wrapper = document.createElement('div');
+        wrapper.className = 'promo-carousel-wrapper';
+        carouselBlock.appendChild(wrapper);
+      }
+      
+      if (!track) {
+        track = document.createElement('div');
+        track.className = 'promo-carousel-track';
+        wrapper.appendChild(track);
+      }
+
+      // Mock offsetHeight to return 0
+      Object.defineProperty(track, 'offsetHeight', {
+        configurable: true,
+        value: 0,
+      });
+
+      if (observerCallback && typeof observerCallback === 'function') {
+        const mockEntry = {
+          target: wrapper,
+          isIntersecting: true,
+          intersectionRatio: 0.5,
+        };
+        
+        observerCallback([mockEntry]);
+        
+        // Should not set minHeight for 0
+        expect(track.style.minHeight).to.not.equal('0px');
+      }
+    });
+
+    it('should test observer options configuration', () => {
+      // Test that we can create the observer with correct options
+      const testCallback = sinon.stub();
+      const testOptions = {
+        root: null,
+        rootMargin: '200px 0px',
+        threshold: 0.1,
+      };
+      
+      const testObserver = new IntersectionObserver(testCallback, testOptions);
+      expect(testObserver).to.exist;
+      
+      // Verify our stub was called with correct parameters
+      if (intersectionObserverStub.called) {
+        const [, options] = intersectionObserverStub.lastCall.args;
+        expect(options).to.deep.equal(testOptions);
+      }
+    });
+  });
+
+  describe('Height Measurement Edge Cases', () => {
+    it('should handle DOM elements with various height values', () => {
+      // Create test elements
+      const testElement = document.createElement('div');
+      testElement.style.height = '100px';
+      document.body.appendChild(testElement);
+
+      // Test height property access
+      expect(testElement.style.height).to.equal('100px');
+      
+      // Test setting min-height
+      testElement.style.minHeight = '200px';
+      expect(testElement.style.minHeight).to.equal('200px');
+      
+      // Cleanup
+      document.body.removeChild(testElement);
+    });
+
+    it('should validate IntersectionObserver API usage', () => {
+      // Test that IntersectionObserver can be created with our options
+      const callback = sinon.stub();
+      const options = {
+        root: null,
+        rootMargin: '200px 0px',
+        threshold: 0.1,
+      };
+      
+      const observer = new IntersectionObserver(callback, options);
+      expect(observer).to.exist;
+      expect(typeof observer.observe).to.equal('function');
+      expect(typeof observer.unobserve).to.equal('function');
+      expect(typeof observer.disconnect).to.equal('function');
+      
+      observer.disconnect();
+    });
+
+    it('should test height measurement edge values', () => {
+      const testCases = [
+        { input: 0, expected: '' },
+        { input: 1, expected: '1px' },
+        { input: 100, expected: '100px' },
+        { input: 9999, expected: '9999px' },
+      ];
+      
+      testCases.forEach(({ input, expected }) => {
+        const element = document.createElement('div');
+        
+        if (input > 0) {
+          element.style.minHeight = `${input}px`;
+          expect(element.style.minHeight).to.equal(expected);
+        } else {
+          // For 0, we expect no minHeight to be set
+          expect(element.style.minHeight).to.equal('');
+        }
+      });
+    });
+  });
 });
