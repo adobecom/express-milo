@@ -18,6 +18,8 @@
 }
 .section.ax-template-x-promo {
   display: flex;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 .section.ax-template-x-promo .content {
@@ -493,21 +495,16 @@
   padding: 0 15%;
 }
 
-.ax-template-x-promo .template.prev-template {
-  flex: 0 0 50%;
-  opacity: 1;
-  z-index: 2;
-}
-
-.ax-template-x-promo .template.current-template {
+.ax-template-x-promo .template.prev-template,
+.ax-template-x-promo .template.current-template,
+.ax-template-x-promo .template.next-template {
   flex: 0 0 50%;
   opacity: 1;
   z-index: 1;
 }
 
-.ax-template-x-promo .template.next-template {
-  flex: 0 0 50%;
-  opacity: 1;
+/* Singleton hover (focused/active template) should be on top */
+.ax-template-x-promo .template.singleton-hover {
   z-index: 2;
 }
 

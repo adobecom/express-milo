@@ -431,6 +431,29 @@ async function createTemplateElementForCarousel(templateData) {
   // Attach original template data for dimension calculations
   templateEl._templateData = templateData;
 
+  const mediaWrapper = templateEl.querySelector('.media-wrapper');
+  if (mediaWrapper) {
+    const buttonContainer = templateEl.querySelector('.button-container');
+    if (buttonContainer) {
+      buttonContainer.addEventListener('mouseenter', (e) => {
+        if (mediaWrapper.children.length > 0) {
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      }, { capture: true });
+
+      const ctaButton = buttonContainer.querySelector('.button');
+      if (ctaButton) {
+        ctaButton.addEventListener('focusin', (e) => {
+          if (mediaWrapper.children.length > 0) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        }, { capture: true });
+      }
+    }
+  }
+
   return templateEl;
 }
 
