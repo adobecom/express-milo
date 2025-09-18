@@ -210,7 +210,7 @@ function createUploadStatusListener(uploadStatusEvent, progressBar) {
      * and progress completes to 100 before assetId is resolved. This can cause
      * a confusion in experience where user might think the upload is stuck.
      */
-    if (progress === 100) {
+    if (progress > 95) {
       progressBar.setProgress(95);
     } else {
       progressBar.setProgress(progress);
