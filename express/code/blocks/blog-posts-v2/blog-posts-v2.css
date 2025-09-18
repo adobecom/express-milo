@@ -105,6 +105,7 @@ main .blog-posts-v2 .blog-hero-card {
     width: 100%;
     max-width: 530px;
     margin: var(--spacing-900) auto;
+    cursor: pointer;
 }
 
 .blog-card-body {
