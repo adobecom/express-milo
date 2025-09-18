@@ -343,24 +343,32 @@ async function handleDecodeFirst(dimensions, uploadPromise, initialDecodeControl
   return { assetId, dimensions };
 }
 
-async function buildEditorUrl(quickAction, assetId, dimensions) {
-  const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
-  const isVideoEditor = quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor;
-  const url = new URL(await getTrackingAppendedURL(frictionlessTargetBaseUrl));
-  let composedSearchParams = {
+/**
+ * Builds search parameters for editor URL based on route path and editor type
+ * @param {string} pathname - The URL pathname to determine parameter set
+ * @param {string} assetId - The frictionless upload asset ID
+ * @param {boolean} quickAction - The quick action ID.
+ * @param {Object} dimensions - Asset dimensions with width and height properties
+ * @returns {Object} Search parameters object
+ */
+function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimensions) {
+  const baseSearchParams = {
     frictionlessUploadAssetId: assetId,
   };
 
-  switch (url.pathname) {
+  let routeSpecificParams = {};
+
+  switch (pathname) {
     case EXPRESS_ROUTE_PATHS.focusedEditor: {
-      composedSearchParams = {
+      routeSpecificParams = {
         skipUploadStep: true,
       };
       break;
     }
     case EXPRESS_ROUTE_PATHS.loggedOutEditor:
     default: {
-      composedSearchParams = {
+      const isVideoEditor = quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor;
+      routeSpecificParams = {
         category: 'media',
         tab: isVideoEditor ? 'videos' : 'photos',
         width: dimensions?.width,
@@ -370,22 +378,58 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
     }
   }
 
-  Object.entries(composedSearchParams).forEach(([key, value]) => {
-    if (value) {
-      url.searchParams.set(key, value);
+  /**
+   * This block has been added to support the url path via query param.
+   * This is because on express side we validate the url path for SEO
+   * pages that need to be validated for the download flow in express to work.
+   * This works fine in prod, but fails for draft pages. This block helps
+   * in testing the download flow in express to work for draft pages, i.e.,
+   * pages not whitelisted for download flow on express side.
+   */
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlPathViaQueryParam = urlParams.has('hzUrlPath');
+  if (urlPathViaQueryParam) {
+    routeSpecificParams.url = urlParams.get('hzUrlPath');
+  }
+
+  return {
+    ...baseSearchParams,
+    ...routeSpecificParams,
+  };
+}
+
+/**
+ * Applies search parameters to URL, filtering out null, undefined, and empty values
+ * @param {URL} url - The URL object to modify
+ * @param {Object} searchParams - Object containing search parameters to apply
+ */
+function applySearchParamsToUrl(url, searchParams) {
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== '') {
+      url.searchParams.set(key, String(value));
     }
   });
+}
+
+async function buildEditorUrl(quickAction, assetId, dimensions) {
+  const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
+  let url = new URL(await getTrackingAppendedURL(frictionlessTargetBaseUrl));
+  const isImageEditor = quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor;
+
+  if (isImageEditor && url.pathname === EXPRESS_ROUTE_PATHS.focusedEditor) {
+    url = new URL(frictionlessTargetBaseUrl);
+  }
+
+  const searchParams = buildSearchParamsForEditorUrl(
+    url.pathname,
+    assetId,
+    quickAction,
+    dimensions,
+  );
+
+  applySearchParamsToUrl(url, searchParams);
 
   return url;
-}
-
-function addVideoEditorParams(url) {
-  url.searchParams.set('isVideoMaker', 'true');
-  url.searchParams.set('sceneline', 'true');
-}
-
-function addImageEditorParams(url) {
-  url.searchParams.set('learn', 'exercise:express/how-to/in-app/how-to-edit-an-image:-1');
 }
 
 async function performUploadAction(files, block, quickAction) {
@@ -423,14 +467,6 @@ async function performUploadAction(files, block, quickAction) {
   if (!result.assetId) return;
 
   const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
-
-  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor) {
-    addVideoEditorParams(url);
-  }
-
-  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor) {
-    addImageEditorParams(url);
-  }
 
   window.location.href = url.toString();
 }
