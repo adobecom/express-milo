@@ -249,7 +249,7 @@ async function getHeroCard(post, dateFormatter) {
 // For configs with more than one post, get regular cards
 function getCard(post, dateFormatter) {
   const {
-    path, title, teaser, filteredTitle, imagePath,
+    path, title, teaser, dateString, filteredTitle, imagePath,
   } = getCardParameters(post, dateFormatter);
   const cardPicture = createOptimizedPicture(`./media_${imagePath}?format=webply&optimize=medium&width=750`, title, false, [{ width: '750' }]);
   const card = createTag('a', {
@@ -269,6 +269,7 @@ function getCard(post, dateFormatter) {
         <section class="blog-card-body">
         <h3 class="blog-card-title">${filteredTitle}</h3>
         <p class="blog-card-teaser">${teaser}</p>
+        <p class="blog-card-date">${dateString}</p>
         </section>`;
   return card;
 }
