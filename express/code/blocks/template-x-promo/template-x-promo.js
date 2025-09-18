@@ -32,6 +32,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
     role: 'region',
     'aria-label': 'Template carousel',
   });
+
   const carouselId = `carousel-status-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   const status = createTagFn('div', {
     id: carouselId,
@@ -295,7 +296,53 @@ async function createDirectCarousel(block, templates, createTagFn) {
   block.classList.add('custom-promo-carousel');
   block.append(wrapper);
 
-  updateDisplay();
+  // Add ALL templates temporarily to measure max height
+  templates.forEach((template) => {
+    template.className = 'template';
+    track.append(template);
+  });
+
+  const proceedWithCleanup = () => {
+    // Now remove all templates and use normal display logic
+    while (track.firstChild) {
+      track.removeChild(track.firstChild);
+    }
+
+    // Initialize with first display
+    updateDisplay();
+  };
+
+  // Immediate height measurement (no timeout needed with Intersection Observer)
+  const attemptMeasurement = () => {
+    const maxHeight = track.offsetHeight;
+
+    if (maxHeight > 0) {
+      track.style.minHeight = `${maxHeight}px`;
+    } else {
+      track.style.minHeight = '400px';
+    }
+
+    proceedWithCleanup();
+  };
+
+  // Use Intersection Observer for lazy height measurement
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px', // Only trigger when actually entering viewport
+    threshold: 0.5, // Trigger when 50% of carousel is visible (more conservative)
+  };
+
+  const heightObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        heightObserver.unobserve(entry.target); // Only measure once
+        attemptMeasurement();
+      }
+    });
+  }, observerOptions);
+
+  // Observe the carousel wrapper for visibility
+  heightObserver.observe(wrapper);
 
   return {
     currentIndex: () => currentIndex,
@@ -310,6 +357,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
       track.removeEventListener('touchmove', handleTouchMove);
       track.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('click', handleClickOutside);
+      heightObserver.disconnect(); // Clean up intersection observer
     },
   };
 }
@@ -379,6 +427,9 @@ async function createTemplateElementForCarousel(templateData) {
   const templateEl = await renderTemplate(singlePageTemplate, [], {});
 
   templateEl.classList.add('template');
+
+  // Attach original template data for dimension calculations
+  templateEl._templateData = templateData;
 
   return templateEl;
 }
