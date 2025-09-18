@@ -1,13 +1,12 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
-let createTag; let getMetadata; let getConfig;
+let getMetadata;
 
 function getOptimalImageSize() {
   if (window.innerWidth <= 600) return 400; // Mobile
   if (window.innerWidth <= 900) return 600; // Tablet
   return 900; // Desktop+
 }
-
 function addImagePreconnects(imageUrl) {
   if (!imageUrl) return;
   try {
@@ -26,7 +25,6 @@ function addImagePreconnects(imageUrl) {
     // ignore invalid URL
   }
 }
-
 function setBackgroundFromFirstRow(block, rows) {
   const background = rows[0];
   const bgImg = background?.querySelector('img');
@@ -109,10 +107,10 @@ function classifyAndOptimizeCells(block, rows) {
 function replacePromptTokenInUrl(url, promptText) {
   if (!url || !promptText) return url;
   const encodedPrompt = encodeURIComponent(promptText).replace(/%20/g, '+');
-  // Match encoded and unencoded token variants, single or double braces, with space or hyphen
+  // Match encoded and unencoded token variants
   const patterns = [
-    /%7B%7B?prompt(?:%20|-)text%7D%7D?/gi, // encoded {prompt-text} or {{prompt text}}
-    /\{\{?prompt(?:\s|-)text\}\}?/gi,   // unencoded {prompt-text} or {{prompt text}}
+    /%7B%7B?prompt(?:%20|-)text%7D%7D?/gi,
+    /\{\{?prompt(?:\s|-)text\}\}?/gi,
   ];
   let result = url;
   patterns.forEach((re) => { result = result.replace(re, encodedPrompt); });
@@ -120,7 +118,7 @@ function replacePromptTokenInUrl(url, promptText) {
 }
 
 export default async function decorate(block) {
-  ({ createTag, getMetadata, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  ({ getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
   decorateButtons(block, 'button-xxl');
 
@@ -162,15 +160,19 @@ export default async function decorate(block) {
 
   // Inject an inline text input to the right of the CTA button, when present
   if (cta) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'logo-marquee-input-wrapper';
+    wrapper.setAttribute('data-placeholder', 'Enter your business name');
     const input = document.createElement('input');
     input.type = 'text';
     input.placeholder = 'Enter your business name';
     input.className = 'logo-marquee-input';
+    wrapper.appendChild(input);
 
     const container = cta.closest('.button-container') || cta.parentElement;
     container.classList.add('cta-with-input');
-    // Mobile: input above CTA (achieved with CSS orders). Desktop: swap order so CTA is right of input
-    container.prepend(input);
+    // Mobile: input above CTA (CSS orders). Desktop: CTA right of input
+    container.prepend(wrapper);
 
     // Submit on Enter delegates to CTA click
     input.addEventListener('keydown', (e) => {
@@ -183,23 +185,32 @@ export default async function decorate(block) {
     // Cache original href so repeated clicks always start from tokenized URL
     cta.dataset.originalHref = cta.getAttribute('href');
 
-    // Replace {prompt-text} token (and set input param) in CTA href on click
+    // Replace token (and set input param) in CTA href on click
     const onCtaClick = (e) => {
       e.stopPropagation();
       e.preventDefault();
-     
+
       const value = input.value?.trim();
       const baseHref = cta.href || cta.dataset.originalHref;
-      // If no value, keep normal behavior
-      if (!value) return;
+      if (!value) {
+        window.location.assign(baseHref);
+        return;
+      }
 
-      const nextUrlStr = replacePromptTokenInUrl(baseHref, value);
-      e.preventDefault();
+      let nextUrlStr = replacePromptTokenInUrl(baseHref, value);
+      if (nextUrlStr === baseHref) {
+        try {
+          const u = new URL(baseHref, window.location.href);
+          u.searchParams.set('input', value);
+          nextUrlStr = u.toString();
+        } catch (err) {
+          // ignore, will use baseHref
+        }
+      }
       window.location.assign(nextUrlStr);
     };
 
     // Use capture to ensure we run before any other navigation logic
     cta.addEventListener('click', onCtaClick, { capture: true });
   }
-}
-
+} // end
