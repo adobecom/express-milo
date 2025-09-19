@@ -156,61 +156,61 @@ jobs:
               }
             }
             
-            // Format the PR list
+            // Format the PR list - show ALL PRs with their available information
             let prList = '';
             
-            // Check if any PR has "Test URLs" section (contains changes list)
-            const prWithChanges = prDetails.find(pr => pr.changesInRelease);
+            console.log(`Formatting ${prDetails.length} PRs with available information`);
             
-            if (prWithChanges && prWithChanges.changesInRelease) {
-              // Use the "Test URLs" section or MWPW pattern from the PR
-              console.log('Using changes section from PR body');
-              prList = prWithChanges.changesInRelease;
-              
-              // Convert the format to Slack format
-              prList = prList
-                .split('\n')
-                .filter(line => line.trim() && !line.startsWith('#'))
-                .map(line => {
-                  // Handle GitHub URLs (from Test URLs section)
-                  const githubUrlMatch = line.match(/https:\/\/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/);
-                  if (githubUrlMatch) {
-                    const prNum = githubUrlMatch[1];
-                    return `- <https://github.com/${owner}/${repo}/pull/${prNum}|PR #${prNum}>`;
-                  }
-                  
-                  // Convert various ticket patterns to links
-                  const patterns = [
-                    // MWPW-XXXXXX: description #XXX
-                    { regex: /(MWPW-\d+):\s*(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
-                    // MWPW-XXXXXX description #XXX (no colon)
-                    { regex: /(MWPW-\d+)\s+(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
-                    // Just MWPW-XXXXXX #XXX (no description)
-                    { regex: /(MWPW-\d+)\s*#(\d+)/, format: (ticket, pr) => `${ticket}` },
-                    // Any ticket pattern: description #XXX
-                    { regex: /([A-Z]+-\d+):\s*(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
-                    // Just ticket #XXX
-                    { regex: /([A-Z]+-\d+)\s*#(\d+)/, format: (ticket, pr) => `${ticket}` }
-                  ];
-                  
-                  for (const pattern of patterns) {
-                    const match = line.match(pattern.regex);
-                    if (match) {
-                      const ticket = match[1];
-                      const prNum = match[match.length - 1]; // Last capture group is always PR number
-                      const description = match.length === 4 ? match[2] : ''; // Has description if 4 groups
-                      const displayText = pattern.format(ticket, description, prNum);
-                      return `- <https://jira.corp.adobe.com/browse/${ticket}|${displayText}> (#${prNum})`;
+            prDetails.forEach(pr => {
+              // Check if this PR has a "Test URLs" section or MWPW patterns
+              if (pr.changesInRelease) {
+                console.log(`PR #${pr.number} has changes section, using it`);
+                
+                // Use the changes section from this PR
+                const changes = pr.changesInRelease
+                  .split('\n')
+                  .filter(line => line.trim() && !line.startsWith('#'))
+                  .map(line => {
+                    // Handle GitHub URLs (from Test URLs section)
+                    const githubUrlMatch = line.match(/https:\/\/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/);
+                    if (githubUrlMatch) {
+                      const prNum = githubUrlMatch[1];
+                      return `- <https://github.com/${owner}/${repo}/pull/${prNum}|PR #${prNum}>`;
                     }
-                  }
-                  
-                  return line.trim();
-                })
-                .join('\n');
-            } else {
-              // Fallback to individual PR formatting
-              console.log('Using individual PR formatting (no Changes section found)');
-              prDetails.forEach(pr => {
+                    
+                    // Convert various ticket patterns to links
+                    const patterns = [
+                      // MWPW-XXXXXX: description #XXX
+                      { regex: /(MWPW-\d+):\s*(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
+                      // MWPW-XXXXXX description #XXX (no colon)
+                      { regex: /(MWPW-\d+)\s+(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
+                      // Just MWPW-XXXXXX #XXX (no description)
+                      { regex: /(MWPW-\d+)\s*#(\d+)/, format: (ticket, pr) => `${ticket}` },
+                      // Any ticket pattern: description #XXX
+                      { regex: /([A-Z]+-\d+):\s*(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
+                      // Just ticket #XXX
+                      { regex: /([A-Z]+-\d+)\s*#(\d+)/, format: (ticket, pr) => `${ticket}` }
+                    ];
+                    
+                    for (const pattern of patterns) {
+                      const match = line.match(pattern.regex);
+                      if (match) {
+                        const ticket = match[1];
+                        const prNum = match[match.length - 1]; // Last capture group is always PR number
+                        const description = match.length === 4 ? match[2] : ''; // Has description if 4 groups
+                        const displayText = pattern.format(ticket, description, prNum);
+                        return `- <https://jira.corp.adobe.com/browse/${ticket}|${displayText}> (#${prNum})`;
+                      }
+                    }
+                    
+                    return line.trim();
+                  })
+                  .join('\n');
+                
+                prList += changes + '\n';
+              } else {
+                // Fallback to individual PR formatting
+                console.log(`PR #${pr.number} using individual formatting`);
                 if (pr.ticketNumber) {
                   // Show ticket number in title, link to Jira, show GitHub PR at end
                   const displayTitle = `${pr.ticketNumber}: ${pr.title}`;
@@ -219,8 +219,8 @@ jobs:
                   // Link to GitHub PR
                   prList += `- <https://github.com/${owner}/${repo}/pull/${pr.number}|${pr.title}> (#${pr.number})\n`;
                 }
-              });
-            }
+              }
+            });
             
             // Set the output properly
             core.setOutput('prList', prList);
