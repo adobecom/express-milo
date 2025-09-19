@@ -53,8 +53,18 @@ test.describe('Template X Promo block tests', () => {
           console.log('First template image source:', imageSrc);
 
           // Verify images are from Adobe design assets CDN
-          if (imageSrc && imageSrc.includes('design-assets.adobeprojectm.com')) {
-            console.log('✅ Template images loading from Adobe CDN');
+          if (imageSrc) {
+            let imageHost;
+            try {
+              // Use baseURL for relative URLs
+              const urlObj = new URL(imageSrc, baseURL);
+              imageHost = urlObj.hostname;
+            } catch (e) {
+              console.warn('Unable to parse image src:', imageSrc, e);
+            }
+            if (imageHost === 'design-assets.adobeprojectm.com') {
+              console.log('✅ Template images loading from Adobe CDN');
+            }
           }
         }
       } else {
