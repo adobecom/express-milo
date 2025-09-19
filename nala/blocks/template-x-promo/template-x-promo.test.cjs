@@ -11,7 +11,7 @@ test.describe('Template X Promo block tests', () => {
   });
 
   // TCID 0: Real API integration
-  test.skip(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ baseURL }) => {
+  test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ baseURL }) => {
     console.info(`Testing: ${baseURL}${features[0].path}`);
     const testPage = `${baseURL}${features[0].path}`;
 
