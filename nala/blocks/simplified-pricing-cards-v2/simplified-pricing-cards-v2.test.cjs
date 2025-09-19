@@ -11,7 +11,7 @@ test.describe('simplified-pricing-cards-v2 test suite', () => {
   });
 
   features[0].path.forEach((path) => {
-    test(`${features[0].name}, path: ${path}`, async ({ baseURL }) => {
+    test(`[Test Id - ${features[0].tcid}] ${features[0].name}, path: ${path}`, async ({ baseURL }) => {
       const url = `${baseURL}${path}`;
       await spcv2.gotoURL(url);
       await spcv2.scrollToBlock();
