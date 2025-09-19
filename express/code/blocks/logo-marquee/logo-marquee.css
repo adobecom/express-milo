@@ -55,7 +55,7 @@
 .logo-marquee p { font-size: var(--body-font-size-l); font-weight: 400; line-height: 130%; }
 
 /* Upscale headings on larger viewports */
-@media (min-width: 600px) {
+@media (min-width: 768px) {
   .logo-marquee h1,
   .logo-marquee h2,
   .logo-marquee h3,
