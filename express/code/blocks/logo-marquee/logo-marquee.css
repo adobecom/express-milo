@@ -9,7 +9,7 @@
 
 .logo-marquee .icon.express-logo {
   width: fit-content;
-  marign-left: 0px;
+  margin-left: 0px;
   padding: 0px;
 }
 
@@ -31,7 +31,7 @@
 }
 
 .logo-marquee .column p {
-  max-width: 530px;
+  max-width: 500px;
   margin: 0;
 }
 
@@ -44,18 +44,27 @@
 .logo-marquee h6 {
   margin: 0;
   color: var(--Content-Neutral-default, #222);
- 
-  font-size: var(--Global-Typography-Size-Headings-Heading-2XL, 32px);
   font-style: normal;
   font-weight: 900;
-  line-height: var(--Global-Typography-Line-height-Headings-Heading-2XL, 36px); /* 112.5% */
+  /* Mobile-first sizes */
+  font-size: var(--heading-font-size-m);
+  line-height: 130%;
 }
 
-@media (max-width: 600px) {
-  .logo-marquee h1 { font-size: var(--heading-font-size-m); }
-  .logo-marquee h2 { font-size: var(--heading-font-size-m); }
-  .logo-marquee h3 { font-size: var(--heading-font-size-m); }
-  .logo-marquee p { font-size: 18px; font-weight: 400; line-height: 130%; }
+/* Mobile-first paragraph sizing */
+.logo-marquee p { font-size: 18px; font-weight: 400; line-height: 130%; }
+
+/* Upscale headings on larger viewports */
+@media (min-width: 600px) {
+  .logo-marquee h1,
+  .logo-marquee h2,
+  .logo-marquee h3,
+  .logo-marquee h4,
+  .logo-marquee h5,
+  .logo-marquee h6 {
+    font-size: var(--Global-Typography-Size-Headings-Heading-2XL, 32px);
+    line-height: var(--Global-Typography-Line-height-Headings-Heading-2XL, 36px);
+  }
 }
 
 .logo-marquee .button-container { display: block; }
@@ -124,7 +133,7 @@ main .logo-marquee .cta-with-input .con-button {
 }
 
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .logo-marquee {
     max-width: unset;
     margin: 0;
@@ -151,9 +160,7 @@ main .logo-marquee .cta-with-input .con-button {
     display: none;
   }
 
-  .logo-marquee .column p {
-    font-size: 18px;
-  }
+  /* Paragraphs inherit mobile base sizing; override here if needed */
 
   .logo-marquee .cta-with-input { flex-direction: row; align-items: center; }
   .logo-marquee .cta-with-input .logo-marquee-input { width: auto; flex: 1 1 auto; }
@@ -169,12 +176,25 @@ main .logo-marquee .cta-with-input .con-button {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
   .logo-marquee {
     margin: auto;
     max-width: 1400px;
     padding-left: var(--spacing-600);
     padding-right: var(--spacing-600);
+  }
+  .logo-marquee > div {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .logo-marquee h1 {
+    font-size: var(--Global-Typography-Size-Headings-Heading-2XL, 45px);
+    line-height: var(--Global-Typography-Line-height-Headings-Heading-2XL, 50px);
+  }
+
+  .logo-marquee .column p {
+    font-size: 18px; 
   }
 }
 
