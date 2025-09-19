@@ -133,9 +133,10 @@ jobs:
       - name: Send release notification
         if: success() && env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
         uses: 8398a7/action-slack@v3
+        env:
+          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         with:
           status: custom
-          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
           custom_payload: |
             {
               "text": "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}",
