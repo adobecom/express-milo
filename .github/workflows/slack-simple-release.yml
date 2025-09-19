@@ -88,11 +88,31 @@ jobs:
                   changesInRelease = changesMatch[1].trim();
                   console.log(`Found "Test URLs" section in PR #${prNumber}`);
                 } else {
-                  // Fallback: look for MWPW-XXXXXX: description #XXX pattern anywhere in the body
-                  const mwpwMatches = body.match(/(MWPW-\d+):\s*([^#\n]+?)\s*#(\d+)/g);
-                  if (mwpwMatches && mwpwMatches.length > 0) {
-                    changesInRelease = mwpwMatches.join('\n');
-                    console.log(`Found MWPW pattern matches in PR #${prNumber}: ${mwpwMatches.length} items`);
+                  // Fallback: look for various patterns that developers use
+                  const patterns = [
+                    // MWPW-XXXXXX: description #XXX
+                    /(MWPW-\d+):\s*([^#\n]+?)\s*#(\d+)/g,
+                    // MWPW-XXXXXX description #XXX (no colon)
+                    /(MWPW-\d+)\s+([^#\n]+?)\s*#(\d+)/g,
+                    // Just MWPW-XXXXXX #XXX (no description)
+                    /(MWPW-\d+)\s*#(\d+)/g,
+                    // Any ticket pattern: description #XXX
+                    /([A-Z]+-\d+):\s*([^#\n]+?)\s*#(\d+)/g,
+                    // Just ticket #XXX
+                    /([A-Z]+-\d+)\s*#(\d+)/g
+                  ];
+                  
+                  let allMatches = [];
+                  patterns.forEach(pattern => {
+                    const matches = body.match(pattern);
+                    if (matches) {
+                      allMatches = allMatches.concat(matches);
+                    }
+                  });
+                  
+                  if (allMatches.length > 0) {
+                    changesInRelease = allMatches.join('\n');
+                    console.log(`Found various pattern matches in PR #${prNumber}: ${allMatches.length} items`);
                   }
                 }
                 
@@ -159,11 +179,29 @@ jobs:
                     return `- <https://github.com/${owner}/${repo}/pull/${prNum}|PR #${prNum}>`;
                   }
                   
-                  // Convert MWPW-XXXXXX: description #XXX format to links
-                  const ticketMatch = line.match(/(MWPW-\d+):\s*(.+?)\s*#(\d+)/);
-                  if (ticketMatch) {
-                    const [, ticket, description, prNum] = ticketMatch;
-                    return `- <https://jira.corp.adobe.com/browse/${ticket}|${ticket}: ${description.trim()}> (#${prNum})`;
+                  // Convert various ticket patterns to links
+                  const patterns = [
+                    // MWPW-XXXXXX: description #XXX
+                    { regex: /(MWPW-\d+):\s*(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
+                    // MWPW-XXXXXX description #XXX (no colon)
+                    { regex: /(MWPW-\d+)\s+(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
+                    // Just MWPW-XXXXXX #XXX (no description)
+                    { regex: /(MWPW-\d+)\s*#(\d+)/, format: (ticket, pr) => `${ticket}` },
+                    // Any ticket pattern: description #XXX
+                    { regex: /([A-Z]+-\d+):\s*(.+?)\s*#(\d+)/, format: (ticket, desc, pr) => `${ticket}: ${desc.trim()}` },
+                    // Just ticket #XXX
+                    { regex: /([A-Z]+-\d+)\s*#(\d+)/, format: (ticket, pr) => `${ticket}` }
+                  ];
+                  
+                  for (const pattern of patterns) {
+                    const match = line.match(pattern.regex);
+                    if (match) {
+                      const ticket = match[1];
+                      const prNum = match[match.length - 1]; // Last capture group is always PR number
+                      const description = match.length === 4 ? match[2] : ''; // Has description if 4 groups
+                      const displayText = pattern.format(ticket, description, prNum);
+                      return `- <https://jira.corp.adobe.com/browse/${ticket}|${displayText}> (#${prNum})`;
+                    }
                   }
                   
                   return line.trim();
