@@ -389,3 +389,17 @@ export default async function decorate(block) {
 
   await decorateBlogPosts(block, config);
 }
+
+// Export functions for testing
+export {
+  fetchBlogIndex,
+  getFeatured,
+  isDuplicate,
+  filterBlogPosts,
+  getBlogPostsConfig,
+  filterAllBlogPostsOnPage,
+  getFilteredResults,
+  getReadMoreString,
+  checkStructure,
+  addRightChevronToViewAll
+};
