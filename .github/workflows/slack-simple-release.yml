@@ -94,15 +94,22 @@ jobs:
                     console.log(`Found ${githubPrUrls.length} GitHub PR URLs in Test URLs section`);
                     changesInRelease = githubPrUrls.join('\n');
                   } else {
-                    // Fallback: check if it's a markdown table format and extract URLs
-                    const tableMatch = changesInRelease.match(/\|.*?\|.*?\|\s*\n\|.*?\|.*?\|\s*\n((?:\|.*?\|.*?\|\s*\n?)*)/);
-                    if (tableMatch) {
-                      console.log(`Found markdown table in Test URLs section`);
-                      // Extract URLs from table rows
-                      const urlMatches = changesInRelease.match(/https:\/\/[^\s|]+/g);
-                      if (urlMatches) {
-                        changesInRelease = urlMatches.join('\n');
-                        console.log(`Extracted ${urlMatches.length} URLs from table`);
+                    // Fallback: look for MWPW patterns in the Test URLs section
+                    const mwpwPatterns = changesInRelease.match(/(MWPW-\d+):\s*([^#\n]+?)\s*#(\d+)/g);
+                    if (mwpwPatterns && mwpwPatterns.length > 0) {
+                      console.log(`Found ${mwpwPatterns.length} MWPW patterns in Test URLs section`);
+                      changesInRelease = mwpwPatterns.join('\n');
+                    } else {
+                      // Last resort: check if it's a markdown table format and extract URLs
+                      const tableMatch = changesInRelease.match(/\|.*?\|.*?\|\s*\n\|.*?\|.*?\|\s*\n((?:\|.*?\|.*?\|\s*\n?)*)/);
+                      if (tableMatch) {
+                        console.log(`Found markdown table in Test URLs section`);
+                        // Extract URLs from table rows
+                        const urlMatches = changesInRelease.match(/https:\/\/[^\s|]+/g);
+                        if (urlMatches) {
+                          changesInRelease = urlMatches.join('\n');
+                          console.log(`Extracted ${urlMatches.length} URLs from table`);
+                        }
                       }
                     }
                   }
@@ -194,7 +201,14 @@ jobs:
                     const githubUrlMatch = line.match(/https:\/\/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/);
                     if (githubUrlMatch) {
                       const prNum = githubUrlMatch[1];
-                      return `- <https://github.com/${owner}/${repo}/pull/${prNum}|PR #${prNum}>`;
+                      // Try to find the PR title from the prDetails array
+                      const prInfo = prDetails.find(p => p.number == prNum);
+                      if (prInfo) {
+                        const displayTitle = prInfo.ticketNumber ? `${prInfo.ticketNumber}: ${prInfo.title}` : prInfo.title;
+                        return `- <https://github.com/${owner}/${repo}/pull/${prNum}|${displayTitle}> (#${prNum})`;
+                      } else {
+                        return `- <https://github.com/${owner}/${repo}/pull/${prNum}|PR #${prNum}>`;
+                      }
                     }
                     
                     // Handle other URLs (from Test URLs table) - just show as links
