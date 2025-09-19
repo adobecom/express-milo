@@ -5,7 +5,6 @@ import sinon from 'sinon';
 describe('Basic Carousel Widget', () => {
   let buildBasicCarousel;
   let onBasicCarouselCSSLoad;
-  // let mockUtils; // For potential future use
   let mockCreateTag;
   let mockGetConfig;
   let mockLoadStyle;
@@ -30,12 +29,6 @@ describe('Basic Carousel Widget', () => {
       setTimeout(callback, 0);
     });
 
-    // mockUtils for potential future use
-    // mockUtils = {
-    //   createTag: mockCreateTag,
-    //   getConfig: mockGetConfig,
-    //   loadStyle: mockLoadStyle,
-    // };
 
     // Mock getLibs and the dynamic import
     window.getLibs = sinon.stub().returns('/libs');
