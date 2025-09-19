@@ -4,6 +4,7 @@
   padding-top: 40px;
   margin: auto;
   max-width: 900px;
+  padding-bottom: 40px;
 }
 
 .logo-marquee .icon.express-logo {
@@ -54,7 +55,7 @@
   .logo-marquee h1 { font-size: var(--heading-font-size-m); }
   .logo-marquee h2 { font-size: var(--heading-font-size-m); }
   .logo-marquee h3 { font-size: var(--heading-font-size-m); }
-  .logo-marquee p { font-size: var(--body-font-size-m); }
+  .logo-marquee p { font-size: 18px; font-weight: 400; line-height: 130%; }
 }
 
 .logo-marquee .button-container { display: block; }
@@ -69,30 +70,29 @@
   border: none;
 }
 
-.logo-marquee .button-container{
+main .section .logo-marquee .button-container{
   padding: 0;
+  margin-top: var(--spacing-300);
 }
 
 main .logo-marquee .cta-with-input .logo-marquee-input { order: 0; width: 100%; }
 main .logo-marquee .cta-with-input a.button:any-link,
-main .logo-marquee .cta-with-input .con-button { order: 1; width: 100%; white-space: nowrap; box-sizing: border-box; margin: 0; }
+main .logo-marquee .cta-with-input .con-button { 
+  order: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  padding: 12px 24px;
+ }
 
 .logo-marquee .column-picture {
-  margin: 28px 32px 28px 28px;
+  margin-top: var(--spacing-300);
   position: relative;
 }
 
 .logo-marquee .column-picture:not(.column-picture-mobile) {
   display: none;
-}
-
-.logo-marquee .column-picture-mobile {
-  display: block;
-  /* size constraints for the mobile-visible image */
-  max-width: 70vw;
-  margin-left: auto;
-  margin-right: auto;
-  max-height: 355px;
 }
 
 .logo-marquee .column-picture::before {
@@ -117,7 +117,12 @@ main .logo-marquee .cta-with-input .con-button { order: 1; width: 100%; white-sp
   transform: scale(1.1);
 }
 
-/* duplicate removed: mobile image sizing is defined above */
+@media (min-width: 768px) {
+  .logo-marquee .column-picture {
+    margin-top:  0px;
+  }
+}
+
 
 @media (min-width: 900px) {
   .logo-marquee {
@@ -188,7 +193,7 @@ main .logo-marquee .cta-with-input .con-button { order: 1; width: 100%; white-sp
 /* Always-visible placeholder pattern */
 .logo-marquee-input-wrapper {
   position: relative;
-  width: 100%;
+  flex-grow: 1;
 }
 
 .logo-marquee-input-wrapper::before {
