@@ -120,7 +120,7 @@ describe('Link List V2', () => {
 
       // Check that headings were normalized
       const headings = testBlock.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      headings.forEach(heading => {
+      headings.forEach((heading) => {
         const tagName = heading.tagName.toLowerCase();
         expect(['h2', 'h4'].includes(tagName)).to.be.true;
       });
@@ -208,6 +208,7 @@ describe('Link List V2', () => {
 
       // Test that function doesn't crash
       try {
+        const { normalizeHeadings } = imports[1];
         normalizeHeadings(testBlock, ['h2', 'h3']);
         expect(true).to.be.true; // Function completed without error
       } catch (error) {
@@ -225,6 +226,7 @@ describe('Link List V2', () => {
 
       // Test with different allowed levels
       try {
+        const { normalizeHeadings } = imports[1];
         normalizeHeadings(testBlock, ['h2', 'h4']);
         expect(true).to.be.true; // Function completed
       } catch (error) {
@@ -238,6 +240,7 @@ describe('Link List V2', () => {
 
       // Test with only high-level headings allowed
       try {
+        const { normalizeHeadings } = imports[1];
         normalizeHeadings(testBlock, ['h1']);
         expect(true).to.be.true;
       } catch (error) {
