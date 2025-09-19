@@ -294,7 +294,7 @@ jobs:
                     "color": "#ff6b35",
                     "fields": [
                       {
-                        "title": "🌐 Live URLs",
+                        "title": "🌐 Test URLs",
                         "value": "• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n• <https://adobecom.com/express|adobecom.com/express>",
                         "short": false
                       }
