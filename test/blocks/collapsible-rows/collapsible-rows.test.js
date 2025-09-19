@@ -27,16 +27,23 @@ describe('Collapsible Rows Block', () => {
     // Mock global functions
     window.getLibs = mockGetLibs;
 
-    // Mock the dynamic import for utils
-    const originalImport = window.import;
-    window.import = (path) => {
-      if (path.includes('utils/utils.js')) {
+    // Mock the dynamic import for utils properly
+    const originalImport = global.import || window.import;
+    const mockImport = (path) => {
+      if (path.includes('utils/utils.js') || path === '/libs/utils/utils.js') {
         return Promise.resolve({
           createTag: mockCreateTag,
         });
       }
       return originalImport ? originalImport(path) : Promise.resolve({});
     };
+
+    // Set import at multiple levels to catch all cases
+    global.import = mockImport;
+    window.import = mockImport;
+
+    // Also mock the direct utils import
+    window.utils = { createTag: mockCreateTag };
 
     // Import the module
     const module = await import('../../../express/code/blocks/collapsible-rows/collapsible-rows.js');
@@ -56,6 +63,8 @@ describe('Collapsible Rows Block', () => {
   after(() => {
     delete window.getLibs;
     delete window.import;
+    delete global.import;
+    delete window.utils;
   });
 
   describe('decorate function', () => {
@@ -214,8 +223,8 @@ describe('Collapsible Rows Block', () => {
       block.appendChild(headerRow);
       block.appendChild(dataRow);
 
-      // Override createTag to return real DOM elements
-      window.createTag = (tag, attributes) => {
+      // Override createTag globally to return real DOM elements
+      const realCreateTag = (tag, attributes) => {
         const el = document.createElement(tag);
         if (attributes) {
           Object.entries(attributes).forEach(([key, value]) => {
@@ -227,6 +236,18 @@ describe('Collapsible Rows Block', () => {
         }
         return el;
       };
+
+      window.createTag = realCreateTag;
+      window.utils = { createTag: realCreateTag };
+
+      // Update the import mock to return the real createTag
+      global.import = (path) => {
+        if (path.includes('utils/utils.js') || path === '/libs/utils/utils.js') {
+          return Promise.resolve({ createTag: realCreateTag });
+        }
+        return Promise.resolve({});
+      };
+      window.import = global.import;
 
       await decorate(block);
 
