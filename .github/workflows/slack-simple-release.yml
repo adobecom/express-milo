@@ -87,6 +87,25 @@ jobs:
                 if (changesMatch) {
                   changesInRelease = changesMatch[1].trim();
                   console.log(`Found "Test URLs" section in PR #${prNumber}`);
+                  
+                  // Check if it contains GitHub PR URLs (prioritize these)
+                  const githubPrUrls = changesInRelease.match(/https:\/\/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/g);
+                  if (githubPrUrls && githubPrUrls.length > 0) {
+                    console.log(`Found ${githubPrUrls.length} GitHub PR URLs in Test URLs section`);
+                    changesInRelease = githubPrUrls.join('\n');
+                  } else {
+                    // Fallback: check if it's a markdown table format and extract URLs
+                    const tableMatch = changesInRelease.match(/\|.*?\|.*?\|\s*\n\|.*?\|.*?\|\s*\n((?:\|.*?\|.*?\|\s*\n?)*)/);
+                    if (tableMatch) {
+                      console.log(`Found markdown table in Test URLs section`);
+                      // Extract URLs from table rows
+                      const urlMatches = changesInRelease.match(/https:\/\/[^\s|]+/g);
+                      if (urlMatches) {
+                        changesInRelease = urlMatches.join('\n');
+                        console.log(`Extracted ${urlMatches.length} URLs from table`);
+                      }
+                    }
+                  }
                 } else {
                   // Fallback: look for various patterns that developers use
                   const patterns = [
@@ -176,6 +195,12 @@ jobs:
                     if (githubUrlMatch) {
                       const prNum = githubUrlMatch[1];
                       return `- <https://github.com/${owner}/${repo}/pull/${prNum}|PR #${prNum}>`;
+                    }
+                    
+                    // Handle other URLs (from Test URLs table) - just show as links
+                    const urlMatch = line.match(/https:\/\/[^\s]+/);
+                    if (urlMatch) {
+                      return `- <${urlMatch[0]}|${urlMatch[0]}>`;
                     }
                     
                     // Convert various ticket patterns to links
