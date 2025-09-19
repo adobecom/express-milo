@@ -12,7 +12,7 @@ on:
 
 env:
   # Webhook URL (required)
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_WEBHOOK_URL: ${{ github.ref == 'refs/heads/release-to-slack' && secrets.SLACK_WEBHOOK_URL_TEST || secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   notify-release:
