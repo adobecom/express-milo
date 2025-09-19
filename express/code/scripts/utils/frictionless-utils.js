@@ -122,6 +122,12 @@ export const FRICTIONLESS_UPLOAD_QUICK_ACTIONS = {
   imageEditor: 'edit-image',
 };
 
+// Route paths map corresponding to the express routes
+export const EXPRESS_ROUTE_PATHS = {
+  loggedOutEditor: '/new',
+  focusedEditor: '/photo-editor/focused',
+};
+
 // Shared utility functions
 export function selectElementByTagPrefix(p) {
   const allEls = document.body.querySelectorAll(':scope > *');
