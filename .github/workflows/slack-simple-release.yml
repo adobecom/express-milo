@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - release-to-slack  # Testing branch
     paths-ignore:
       - 'README.md'
       - 'docs/**'
@@ -16,7 +17,7 @@ env:
 jobs:
   notify-release:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'adobecom' && github.ref == 'refs/heads/main'
+    if: github.repository_owner == 'adobecom' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release-to-slack')
     
     steps:
       - name: Checkout repository
@@ -30,6 +31,7 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
+            const core = require('@actions/core');
             
             console.log('🔍 Fetching recent PRs with detailed information...');
             
@@ -48,9 +50,8 @@ jobs:
             console.log(`Found ${mergeCommits.length} merge commits`);
             
             if (mergeCommits.length === 0) {
-              return {
-                prList: 'No recent PRs found'
-              };
+              core.setOutput('prList', 'No recent PRs found');
+              return;
             }
             
             // Extract PR numbers from merge commits
@@ -126,19 +127,19 @@ jobs:
               }
             });
             
-            return {
-              prList: prList
-            };
+            // Set the output properly
+            core.setOutput('prList', prList);
+            console.log('✅ PR list extracted and output set');
 
       - name: Send release notification
-        if: env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
+        if: success() && env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
         uses: 8398a7/action-slack@v3
         with:
           status: custom
           webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
           custom_payload: |
             {
-              "text": "🚀 *Express Milo Release Deployed*",
+              "text": "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}",
               "attachments": [
                 {
                   "color": "good",
