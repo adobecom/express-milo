@@ -31,7 +31,6 @@ jobs:
         with:
           script: |
             const { owner, repo } = context.repo;
-            const core = require('@actions/core');
             
             console.log('🔍 Fetching recent PRs with detailed information...');
             
