@@ -9,13 +9,31 @@ const imports = await Promise.all([
   import('../../../express/code/blocks/template-x-promo/template-x-promo.js'),
   import('../../../express/code/scripts/template-search-api-v3.js'),
 ]);
-const { getLibs } = imports[0];
+// const { getLibs } = imports[0]; // Not used in tests
 const { default: decorate } = imports[2];
 // const { isValidTemplate: originalIsValidTemplate } = imports[3]; // Not used in tests
 
-await import(`${getLibs()}/utils/utils.js`).then((mod) => {
-  mod.setConfig({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } });
-});
+// Mock getLibs to return a proper URL
+const mockGetLibs = () => 'https://main--milo--adobecom.aem.live/libs';
+
+// Mock the utils import
+const mockUtils = {
+  setConfig: () => {},
+  createTag: () => document.createElement('div'),
+  getConfig: () => ({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } }),
+};
+
+// Override getLibs
+window.getLibs = mockGetLibs;
+
+// Mock the dynamic import
+const originalImport = window.import;
+window.import = (specifier) => {
+  if (specifier.includes('/utils/utils.js')) {
+    return Promise.resolve(mockUtils);
+  }
+  return originalImport(specifier);
+};
 
 const body = await readFile({ path: './mocks/body.html' });
 

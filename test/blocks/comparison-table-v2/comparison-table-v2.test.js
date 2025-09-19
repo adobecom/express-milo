@@ -13,6 +13,30 @@ const body = await readFile({ path: './mocks/body.html' });
 describe('Comparison Table V2', () => {
   before(() => {
     window.isTestEnv = true;
+
+    // Mock external script loading
+    const originalCreateElement = document.createElement;
+    document.createElement = function (tagName) {
+      const element = originalCreateElement.call(this, tagName);
+      if (tagName === 'script') {
+        // Prevent external script loading
+        element.onload = null;
+        element.onerror = null;
+        setTimeout(() => {
+          if (element.onload) element.onload();
+        }, 0);
+      }
+      return element;
+    };
+
+    // Mock fetch to prevent external requests
+    const originalFetch = window.fetch;
+    window.fetch = function (url, ...args) {
+      if (typeof url === 'string' && (url.includes('privacy-standalone') || url.includes('cta-aria-label-config') || url.includes('product-names'))) {
+        return Promise.reject(new Error('External fetch blocked in test'));
+      }
+      return originalFetch.apply(this, [url, ...args]);
+    };
   });
 
   beforeEach(() => {
