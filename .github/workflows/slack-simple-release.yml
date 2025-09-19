@@ -81,6 +81,21 @@ jobs:
                 const title = pr.data.title;
                 const body = pr.data.body || '';
                 
+                // Look for "Test URLs" section in PR body (contains the changes list)
+                let changesInRelease = null;
+                let changesMatch = body.match(/## Test URLs\s*\n([\s\S]*?)(?=\n##|\n\*\*|\n###|\n-|\n$)/);
+                if (changesMatch) {
+                  changesInRelease = changesMatch[1].trim();
+                  console.log(`Found "Test URLs" section in PR #${prNumber}`);
+                } else {
+                  // Fallback: look for MWPW-XXXXXX: description #XXX pattern anywhere in the body
+                  const mwpwMatches = body.match(/(MWPW-\d+):\s*([^#\n]+?)\s*#(\d+)/g);
+                  if (mwpwMatches && mwpwMatches.length > 0) {
+                    changesInRelease = mwpwMatches.join('\n');
+                    console.log(`Found MWPW pattern matches in PR #${prNumber}: ${mwpwMatches.length} items`);
+                  }
+                }
+                
                 // Look for ticket numbers in various formats
                 let ticketNumber = null;
                 let cleanTitle = title;
@@ -110,10 +125,11 @@ jobs:
                   originalTitle: title,
                   body: body,
                   ticketNumber: ticketNumber,
-                  url: pr.data.html_url
+                  url: pr.data.html_url,
+                  changesInRelease: changesInRelease
                 });
                 
-                console.log(`PR #${prNumber}: "${cleanTitle}" ${ticketNumber ? `(Ticket: ${ticketNumber})` : '(No ticket found)'}`);
+                console.log(`PR #${prNumber}: "${cleanTitle}" ${ticketNumber ? `(Ticket: ${ticketNumber})` : '(No ticket found)'} ${changesInRelease ? '(Has Changes section)' : ''}`);
                 
               } catch (error) {
                 console.log(`Failed to get PR #${prNumber}: ${error.message}`);
@@ -122,16 +138,51 @@ jobs:
             
             // Format the PR list
             let prList = '';
-            prDetails.forEach(pr => {
-              if (pr.ticketNumber) {
-                // Show ticket number in title, link to Jira, show GitHub PR at end
-                const displayTitle = `${pr.ticketNumber}: ${pr.title}`;
-                prList += `- <https://jira.corp.adobe.com/browse/${pr.ticketNumber}|${displayTitle}> (#${pr.number})\n`;
-              } else {
-                // Link to GitHub PR
-                prList += `- <https://github.com/${owner}/${repo}/pull/${pr.number}|${pr.title}> (#${pr.number})\n`;
-              }
-            });
+            
+            // Check if any PR has "Test URLs" section (contains changes list)
+            const prWithChanges = prDetails.find(pr => pr.changesInRelease);
+            
+            if (prWithChanges && prWithChanges.changesInRelease) {
+              // Use the "Test URLs" section or MWPW pattern from the PR
+              console.log('Using changes section from PR body');
+              prList = prWithChanges.changesInRelease;
+              
+              // Convert the format to Slack format
+              prList = prList
+                .split('\n')
+                .filter(line => line.trim() && !line.startsWith('#'))
+                .map(line => {
+                  // Handle GitHub URLs (from Test URLs section)
+                  const githubUrlMatch = line.match(/https:\/\/github\.com\/[^\/]+\/[^\/]+\/pull\/(\d+)/);
+                  if (githubUrlMatch) {
+                    const prNum = githubUrlMatch[1];
+                    return `- <https://github.com/${owner}/${repo}/pull/${prNum}|PR #${prNum}>`;
+                  }
+                  
+                  // Convert MWPW-XXXXXX: description #XXX format to links
+                  const ticketMatch = line.match(/(MWPW-\d+):\s*(.+?)\s*#(\d+)/);
+                  if (ticketMatch) {
+                    const [, ticket, description, prNum] = ticketMatch;
+                    return `- <https://jira.corp.adobe.com/browse/${ticket}|${ticket}: ${description.trim()}> (#${prNum})`;
+                  }
+                  
+                  return line.trim();
+                })
+                .join('\n');
+            } else {
+              // Fallback to individual PR formatting
+              console.log('Using individual PR formatting (no Changes section found)');
+              prDetails.forEach(pr => {
+                if (pr.ticketNumber) {
+                  // Show ticket number in title, link to Jira, show GitHub PR at end
+                  const displayTitle = `${pr.ticketNumber}: ${pr.title}`;
+                  prList += `- <https://jira.corp.adobe.com/browse/${pr.ticketNumber}|${displayTitle}> (#${pr.number})\n`;
+                } else {
+                  // Link to GitHub PR
+                  prList += `- <https://github.com/${owner}/${repo}/pull/${pr.number}|${pr.title}> (#${pr.number})\n`;
+                }
+              });
+            }
             
             // Set the output properly
             core.setOutput('prList', prList);
