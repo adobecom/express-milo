@@ -266,49 +266,51 @@ jobs:
       - name: Send release notification
         if: success() && env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-            --data '{
-              "text": "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}",
-              "attachments": [
-                {
-                  "color": "good",
-                  "fields": [
-                    {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Branch",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>",
-                      "short": true
-                    }
-                  ]
-                },
-                {
-                  "color": "#f0f0f0",
-                  "fields": [
-                    {
-                      "title": "Live URLs",
-                      "value": "<https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n<https://adobecom.com/express|adobecom.com/express>",
-                      "short": false
-                    }
-                  ]
-                },
-                {
-                  "color": "#36a64f",
-                  "text": "*Changes in this Release:*\n${{ steps.extract-prs.outputs.prList }}",
-                  "mrkdwn_in": ["text"]
-                }
-              ],
-              "footer": "Express Milo",
-              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
-            }' \
+            curl -X POST -H 'Content-type: application/json' \
+              --data '{
+                "text": "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}",
+                "attachments": [
+                  {
+                    "color": "#0066cc",
+                    "fields": [
+                      {
+                        "title": "📦 Repository",
+                        "value": "${{ github.repository }}",
+                        "short": true
+                      },
+                      {
+                        "title": "🌿 Branch",
+                        "value": "`${{ github.ref_name }}`",
+                        "short": true
+                      },
+                      {
+                        "title": "🔗 Commit",
+                        "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|`${{ steps.short-sha.outputs.short-sha }}`>",
+                        "short": true
+                      }
+                    ]
+                  },
+                  {
+                    "color": "#ff6b35",
+                    "fields": [
+                      {
+                        "title": "🌐 Live URLs",
+                        "value": "• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n• <https://adobecom.com/express|adobecom.com/express>",
+                        "short": false
+                      }
+                    ]
+                  },
+                  {
+                    "color": "#28a745",
+                    "title": "📋 Changes in this Release",
+                    "text": "${{ steps.extract-prs.outputs.prList }}",
+                    "mrkdwn_in": ["text"]
+                  }
+                ],
+                "footer": "Express Milo • Adobe",
+                "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico",
+                "ts": "${{ github.event.head_commit.timestamp }}"
+              }' \
             ${{ env.SLACK_WEBHOOK_URL }}
 
       - name: Fallback notification
