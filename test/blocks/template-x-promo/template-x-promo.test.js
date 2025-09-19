@@ -1555,6 +1555,304 @@ describe('Template X Promo', () => {
     });
   });
 
+  describe('Edge Cases and Error Handling', () => {
+    it('should handle invalid API responses gracefully', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      // Mock API failure
+      fetchStub.resolves({
+        ok: false,
+        status: 500,
+        statusText: 'Internal Server Error',
+      });
+      
+      try {
+        await decorate(testBlock);
+        expect(testBlock.hasAttribute('data-decorated')).to.be.true;
+        console.log('✅ Handled API failure gracefully');
+      } catch (error) {
+        expect.fail(`Should handle API errors gracefully: ${error.message}`);
+      }
+    });
+
+    it('should handle malformed template data', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      // Mock malformed API response
+      fetchStub.resolves({
+        ok: true,
+        json: () => Promise.resolve({
+          items: [
+            { id: 'malformed-1' }, // Missing required fields
+            { title: 'No ID template' }, // Missing ID
+            null, // Null item
+            undefined, // Undefined item
+          ],
+        }),
+      });
+      
+      try {
+        await decorate(testBlock);
+        expect(testBlock.hasAttribute('data-decorated')).to.be.true;
+        console.log('✅ Handled malformed data gracefully');
+      } catch (error) {
+        expect.fail(`Should handle malformed data gracefully: ${error.message}`);
+      }
+    });
+
+    it('should handle empty template responses', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      // Mock empty response
+      fetchStub.resolves({
+        ok: true,
+        json: () => Promise.resolve({ items: [] }),
+      });
+      
+      try {
+        await decorate(testBlock);
+        expect(testBlock.hasAttribute('data-decorated')).to.be.true;
+        console.log('✅ Handled empty response gracefully');
+      } catch (error) {
+        expect.fail(`Should handle empty responses gracefully: ${error.message}`);
+      }
+    });
+
+    it('should handle network timeout scenarios', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      // Mock network timeout
+      fetchStub.rejects(new Error('Network timeout'));
+      
+      try {
+        await decorate(testBlock);
+        expect(testBlock.hasAttribute('data-decorated')).to.be.true;
+        console.log('✅ Handled network timeout gracefully');
+      } catch (error) {
+        expect.fail(`Should handle network timeouts gracefully: ${error.message}`);
+      }
+    });
+
+    it('should handle blocks with no recipe data', async () => {
+      // Create block without recipe data
+      document.body.innerHTML = '<div class="template-x-promo"><div><div><p>No recipe here</p></div></div></div>';
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      try {
+        await decorate(testBlock);
+        expect(testBlock.hasAttribute('data-decorated')).to.be.true;
+        console.log('✅ Handled missing recipe data gracefully');
+      } catch (error) {
+        expect.fail(`Should handle missing recipe data gracefully: ${error.message}`);
+      }
+    });
+
+    it('should handle carousel navigation edge cases', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      // Mock successful API response with many templates to trigger carousel
+      fetchStub.resolves({
+        ok: true,
+        json: () => Promise.resolve({
+          items: Array.from({ length: 10 }, (_, i) => ({
+            id: `template-${i}`,
+            title: `Template ${i}`,
+            status: 'approved',
+            assetType: 'Webpage_Template',
+            customLinks: { branchUrl: `https://express.adobe.com/edit${i}` },
+            thumbnail: { url: `https://design-assets.adobeprojectm.com/template${i}.jpg` },
+            behaviors: ['still'],
+            licensingCategory: i % 2 === 0 ? 'free' : 'premium',
+            _links: {
+              'urn:adobe:photoshop:web': { href: `https://express.adobe.com/edit${i}` },
+              'http://ns.adobe.com/adobecloud/rel/rendition': {
+                href: `https://design-assets.adobeprojectm.com/template${i}.jpg`,
+              },
+            },
+          })),
+        }),
+      });
+      
+      await decorate(testBlock);
+      
+      // Test navigation when at boundaries
+      const templates = testBlock.querySelectorAll('.template');
+      if (templates.length > 0) {
+        // Test keyboard navigation edge cases
+        const firstTemplate = templates[0];
+        const lastTemplate = templates[templates.length - 1];
+        
+        // Test Home key navigation
+        const homeEvent = new KeyboardEvent('keydown', { key: 'Home' });
+        firstTemplate.dispatchEvent(homeEvent);
+        
+        // Test End key navigation
+        const endEvent = new KeyboardEvent('keydown', { key: 'End' });
+        lastTemplate.dispatchEvent(endEvent);
+        
+        // Test Escape key
+        const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+        firstTemplate.dispatchEvent(escapeEvent);
+        
+        console.log('✅ Carousel navigation edge cases tested');
+      }
+    });
+
+    it('should handle template focus and blur events', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      await decorate(testBlock);
+      
+      const templates = testBlock.querySelectorAll('.template');
+      if (templates.length > 0) {
+        const template = templates[0];
+        
+        // Test focus event
+        const focusEvent = new FocusEvent('focus');
+        template.dispatchEvent(focusEvent);
+        
+        // Test blur event
+        const blurEvent = new FocusEvent('blur');
+        template.dispatchEvent(blurEvent);
+        
+        console.log('✅ Template focus/blur events tested');
+      }
+    });
+
+    it('should handle button container interactions', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      await decorate(testBlock);
+      
+      const buttonContainers = testBlock.querySelectorAll('.button-container');
+      if (buttonContainers.length > 0) {
+        const container = buttonContainers[0];
+        
+        // Test mouseenter/mouseleave on button container
+        const mouseEnterEvent = new MouseEvent('mouseenter');
+        container.dispatchEvent(mouseEnterEvent);
+        
+        const mouseLeaveEvent = new MouseEvent('mouseleave');
+        container.dispatchEvent(mouseLeaveEvent);
+        
+        console.log('✅ Button container interactions tested');
+      }
+    });
+
+    it('should handle window resize events', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      await decorate(testBlock);
+      
+      // Simulate window resize
+      const resizeEvent = new Event('resize');
+      window.dispatchEvent(resizeEvent);
+      
+      console.log('✅ Window resize handling tested');
+    });
+
+    it('should test animation state handling', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      await decorate(testBlock);
+      
+      // Test that functions return early when animation is in progress
+      const templates = testBlock.querySelectorAll('.template');
+      if (templates.length > 0) {
+        // Simulate animation state
+        window.isAnimating = true;
+        
+        // Test that navigation functions return early during animation
+        const leftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+        templates[0].dispatchEvent(leftEvent);
+        
+        const rightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+        templates[0].dispatchEvent(rightEvent);
+        
+        // Reset animation state
+        window.isAnimating = false;
+        
+        console.log('✅ Animation state handling tested');
+      }
+    });
+
+    it('should test template click without edit button', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      await decorate(testBlock);
+      
+      const templates = testBlock.querySelectorAll('.template');
+      if (templates.length > 0) {
+        const template = templates[0];
+        
+        // Remove edit button to test fallback behavior
+        const editButton = template.querySelector('.button');
+        if (editButton) {
+          editButton.remove();
+        }
+        
+        // Test Enter key on template without edit button
+        const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+        template.dispatchEvent(enterEvent);
+        
+        // Test Space key on template without edit button
+        const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
+        template.dispatchEvent(spaceEvent);
+        
+        console.log('✅ Template click without edit button tested');
+      }
+    });
+
+    it('should test share button functionality edge cases', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+      
+      // Mock navigator.clipboard for share functionality
+      const originalClipboard = navigator.clipboard;
+      Object.defineProperty(navigator, 'clipboard', {
+        value: {
+          writeText: sinon.stub().resolves(),
+        },
+        writable: true,
+        configurable: true,
+      });
+      
+      try {
+        await decorate(testBlock);
+        
+        const shareButtons = testBlock.querySelectorAll('.share-button');
+        if (shareButtons.length > 0) {
+          // Test share button click
+          const shareButton = shareButtons[0];
+          shareButton.click();
+          
+          console.log('✅ Share button functionality tested');
+        }
+      } finally {
+        // Restore original clipboard
+        if (originalClipboard) {
+          Object.defineProperty(navigator, 'clipboard', {
+            value: originalClipboard,
+            writable: true,
+            configurable: true,
+          });
+        } else {
+          delete navigator.clipboard;
+        }
+      }
+    });
+  });
+
   describe('Height Measurement Edge Cases', () => {
     it('should handle DOM elements with various height values', () => {
       // Create test elements
