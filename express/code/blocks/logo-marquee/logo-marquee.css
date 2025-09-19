@@ -1,10 +1,10 @@
 .logo-marquee {
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
-  padding-top: 40px;
+  padding-top: var(--spacing-600);
   margin: auto;
   max-width: 900px;
-  padding-bottom: 40px;
+  padding-bottom: var(--spacing-600);
 }
 
 .logo-marquee .icon.express-logo {
@@ -16,7 +16,7 @@
 .logo-marquee > div {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: var(--spacing-500);
   padding: 0;
 }
 
@@ -43,16 +43,16 @@
 .logo-marquee h5,
 .logo-marquee h6 {
   margin: 0;
-  color: var(--Content-Neutral-default, #222);
+  color: var(--color-gray-900);
   font-style: normal;
   font-weight: 900;
   /* Mobile-first sizes */
   font-size: var(--heading-font-size-m);
-  line-height: 130%;
+  line-height: var(--heading-line-height);
 }
 
 /* Mobile-first paragraph sizing */
-.logo-marquee p { font-size: 18px; font-weight: 400; line-height: 130%; }
+.logo-marquee p { font-size: var(--body-font-size-l); font-weight: 400; line-height: 130%; }
 
 /* Upscale headings on larger viewports */
 @media (min-width: 600px) {
@@ -142,7 +142,7 @@ main .logo-marquee .cta-with-input .con-button {
   }
 
   .logo-marquee > div {
-    gap: 48px;
+    gap: var(--spacing-700);
     flex-direction: row;
     align-items: center;
   }
@@ -184,17 +184,17 @@ main .logo-marquee .cta-with-input .con-button {
     padding-right: var(--spacing-600);
   }
   .logo-marquee > div {
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
   }
 
   .logo-marquee h1 {
-    font-size: var(--Global-Typography-Size-Headings-Heading-2XL, 45px);
-    line-height: var(--Global-Typography-Line-height-Headings-Heading-2XL, 50px);
+    font-size: var(--heading-font-size-xl);
+    line-height: var(--heading-line-height);
   }
 
   .logo-marquee .column p {
-    font-size: 18px; 
+    font-size: var(--body-font-size-l); 
   }
 }
 
