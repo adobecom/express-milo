@@ -26,9 +26,6 @@ describe('Collapsible Rows Block', () => {
     mockGetLibs = sinon.stub().returns('/libs');
     window.getLibs = mockGetLibs;
 
-    // ALSO set it globally to ensure it's available during import
-    global.getLibs = mockGetLibs;
-
     // BULLETPROOF APPROACH: Mock at the module level BEFORE import
     // Override the dynamic import function completely
     const originalImport = window.import;
