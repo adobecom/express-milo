@@ -8,8 +8,8 @@ describe('Collapsible Rows Block', () => {
   let mockGetLibs;
 
   before(async () => {
-    // Mock dependencies
-    mockCreateTag = sinon.stub().callsFake((tag, attributes, html) => {
+    // Create REAL DOM createTag function
+    mockCreateTag = (tag, attributes, html) => {
       const el = document.createElement(tag);
       if (attributes) {
         Object.entries(attributes).forEach(([key, value]) => {
@@ -20,39 +20,51 @@ describe('Collapsible Rows Block', () => {
       }
       if (html) el.innerHTML = html;
       return el;
-    });
+    };
 
+    // Mock getLibs to return proper path
     mockGetLibs = sinon.stub().returns('/libs');
-
-    // Mock global functions
     window.getLibs = mockGetLibs;
 
-    // Mock the dynamic import for utils properly
+    // BULLETPROOF APPROACH: Mock at the module level BEFORE import
+    // Override the dynamic import function completely
     const originalImport = window.import;
-    const mockImport = (path) => {
-      if (path.includes('utils/utils.js') || path === '/libs/utils/utils.js') {
-        return Promise.resolve({
+    window.import = async (path) => {
+      console.log(`Mocking import for: ${path}`);
+      if (path.includes('utils/utils.js')) {
+        return {
           createTag: mockCreateTag,
-        });
+        };
       }
-      return originalImport ? originalImport(path) : Promise.resolve({});
+      return originalImport ? originalImport(path) : { createTag: mockCreateTag };
     };
-    
-    // Set import at window level for browser environment
-    window.import = mockImport;
 
-    // Also mock the direct utils import
-    window.utils = { createTag: mockCreateTag };
+    // CRITICAL: Set global createTag so the module can access it
+    window.createTag = mockCreateTag;
 
-    // Import the module
+    // ALSO: Mock the utils module path that getLibs() returns
+    window['/libs/utils/utils.js'] = {
+      createTag: mockCreateTag,
+    };
+
+    // Import the module AFTER setting up mocks
     const module = await import('../../../express/code/blocks/collapsible-rows/collapsible-rows.js');
     decorate = module.default;
   });
 
   beforeEach(() => {
-    mockCreateTag.resetHistory();
-    mockGetLibs.resetHistory();
+    // Don't reset history if mockCreateTag is a real function
+    if (mockCreateTag.resetHistory) {
+      mockCreateTag.resetHistory();
+    }
+    if (mockGetLibs.resetHistory) {
+      mockGetLibs.resetHistory();
+    }
     document.body.innerHTML = '';
+
+    // Ensure mocks are still available
+    window.createTag = mockCreateTag;
+    window.getLibs = mockGetLibs;
   });
 
   afterEach(() => {
