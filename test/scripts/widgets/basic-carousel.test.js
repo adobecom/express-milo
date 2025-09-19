@@ -129,6 +129,22 @@ describe('Basic Carousel Widget', () => {
       window.loadStyle = mockLoadStyle;
 
       try {
+        // Import and mock the utils module properly
+        const utilsModule = {
+          createTag: mockCreateTag,
+          getConfig: mockGetConfig,
+          loadStyle: mockLoadStyle,
+        };
+
+        // Mock the dynamic import for utils
+        const originalImport = global.import || (() => Promise.resolve({}));
+        global.import = (path) => {
+          if (path.includes('utils/utils.js')) {
+            return Promise.resolve(utilsModule);
+          }
+          return originalImport(path);
+        };
+
         // Call onBasicCarouselCSSLoad directly to hit initializeCarousel
         await onBasicCarouselCSSLoad(null, parent);
 
