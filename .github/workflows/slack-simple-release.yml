@@ -100,17 +100,9 @@ jobs:
                       console.log(`Found ${mwpwPatterns.length} MWPW patterns in Test URLs section`);
                       changesInRelease = mwpwPatterns.join('\n');
                     } else {
-                      // Last resort: check if it's a markdown table format and extract URLs
-                      const tableMatch = changesInRelease.match(/\|.*?\|.*?\|\s*\n\|.*?\|.*?\|\s*\n((?:\|.*?\|.*?\|\s*\n?)*)/);
-                      if (tableMatch) {
-                        console.log(`Found markdown table in Test URLs section`);
-                        // Extract URLs from table rows
-                        const urlMatches = changesInRelease.match(/https:\/\/[^\s|]+/g);
-                        if (urlMatches) {
-                          changesInRelease = urlMatches.join('\n');
-                          console.log(`Extracted ${urlMatches.length} URLs from table`);
-                        }
-                      }
+                      // No valid content found in Test URLs section, set to null
+                      console.log(`No valid GitHub PR URLs or MWPW patterns found in Test URLs section`);
+                      changesInRelease = null;
                     }
                   }
                 } else {
@@ -211,10 +203,11 @@ jobs:
                       }
                     }
                     
-                    // Handle other URLs (from Test URLs table) - just show as links
-                    const urlMatch = line.match(/https:\/\/[^\s]+/);
-                    if (urlMatch) {
-                      return `- <${urlMatch[0]}|${urlMatch[0]}>`;
+                    // Skip test URLs (before/after URLs) - we only want GitHub PRs and MWPW patterns
+                    const testUrlMatch = line.match(/https:\/\/[^\/]*--express-milo--adobecom\.(aem|hlx)\.(page|live)/);
+                    if (testUrlMatch) {
+                      console.log(`Skipping test URL: ${line}`);
+                      return null; // Skip this line
                     }
                     
                     // Convert various ticket patterns to links
@@ -244,6 +237,7 @@ jobs:
                     
                     return line.trim();
                   })
+                  .filter(item => item !== null) // Remove null values (skipped test URLs)
                   .join('\n');
                 
                 prList += changes + '\n';
