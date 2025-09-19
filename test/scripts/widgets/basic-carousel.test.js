@@ -2,6 +2,37 @@
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 
+// Mock getLibs at the global level before any imports
+window.getLibs = () => 'https://main--milo--adobecom.aem.live/libs';
+
+// Mock the entire utils module
+const mockUtils = {
+  getLibs: () => 'https://main--milo--adobecom.aem.live/libs',
+  setLibs: () => {},
+  createTag: () => document.createElement('div'),
+  getConfig: () => ({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } }),
+  setConfig: () => {},
+  loadStyle: () => {},
+};
+
+// Mock the dynamic import
+const originalImport = window.import;
+window.import = (specifier) => {
+  if (specifier.includes('utils/utils.js')) {
+    return Promise.resolve(mockUtils);
+  }
+  return originalImport(specifier);
+};
+
+// Mock the module system to prevent undefined getLibs
+const originalRequire = window.require;
+window.require = (id) => {
+  if (id.includes('utils')) {
+    return mockUtils;
+  }
+  return originalRequire ? originalRequire(id) : {};
+};
+
 describe('Basic Carousel Widget', () => {
   let buildBasicCarousel;
   let onBasicCarouselCSSLoad;
@@ -30,7 +61,23 @@ describe('Basic Carousel Widget', () => {
     });
 
     // Mock getLibs and the dynamic import
-    window.getLibs = sinon.stub().returns('/libs');
+    window.getLibs = sinon.stub().returns('https://main--milo--adobecom.aem.live/libs');
+
+    // Mock the utils module
+    const mockUtilsLocal = {
+      getConfig: () => ({ locales: { '': { ietf: 'en-US', tk: 'jdq5hay.css' } } }),
+      setConfig: () => {},
+      createTag: () => document.createElement('div'),
+    };
+
+    // Mock the dynamic import
+    const originalImportLocal = window.import;
+    window.import = (specifier) => {
+      if (specifier.includes('utils/utils.js')) {
+        return Promise.resolve(mockUtilsLocal);
+      }
+      return originalImportLocal(specifier);
+    };
 
     // Import the module
     const module = await import('../../../express/code/scripts/widgets/basic-carousel.js');
@@ -135,12 +182,12 @@ describe('Basic Carousel Widget', () => {
         };
 
         // Mock the dynamic import for utils
-        const originalImport = global.import || (() => Promise.resolve({}));
+        const originalImportLocal2 = global.import || (() => Promise.resolve({}));
         global.import = (path) => {
           if (path.includes('utils/utils.js')) {
             return Promise.resolve(utilsModule);
           }
-          return originalImport(path);
+          return originalImportLocal2(path);
         };
 
         // Call onBasicCarouselCSSLoad directly to hit initializeCarousel

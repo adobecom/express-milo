@@ -32,8 +32,8 @@ describe('Grid Carousel Widget', () => {
     // Mock debounce function (for potential future use)
     // mockDebounce = sinon.stub().callsFake((fn) => fn);
 
-    // Mock getLibs
-    window.getLibs = sinon.stub().returns('/libs');
+    // Mock getLibs to return a proper URL
+    window.getLibs = sinon.stub().returns('https://main--milo--adobecom.aem.live/libs');
 
     // Import the module
     const module = await import('../../../express/code/scripts/widgets/grid-carousel.js');

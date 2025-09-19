@@ -28,10 +28,10 @@ describe('Wayfinder Block', () => {
     decorate(block);
 
     const rows = block.querySelectorAll(':scope > div');
-    expect(rows[0]).to.have.class('text-row');
-    expect(rows[1]).to.have.class('cta-row');
-    expect(rows[1]).to.have.attribute('role', 'group');
-    expect(rows[1]).to.have.attribute('aria-label', 'Main Text Content');
+    expect(rows[0].classList.contains('text-row')).to.be.true;
+    expect(rows[1].classList.contains('cta-row')).to.be.true;
+    expect(rows[1].getAttribute('role')).to.equal('group');
+    expect(rows[1].getAttribute('aria-label')).to.equal('Main Text Content');
   });
 
   it('should add button classes and role to links', () => {
@@ -48,8 +48,8 @@ describe('Wayfinder Block', () => {
 
     const links = block.querySelectorAll('a');
     links.forEach((link) => {
-      expect(link).to.have.class('button');
-      expect(link).to.have.attribute('role', 'button');
+      expect(link.classList.contains('button')).to.be.true;
+      expect(link.getAttribute('role')).to.equal('button');
     });
   });
 
@@ -142,28 +142,30 @@ describe('Wayfinder Block', () => {
     const block = document.createElement('div');
     block.innerHTML = `
       <div>Text Content</div>
-      <div><a href="#test">Button</a></div>
+      <div><a href="#test">Click Here</a></div>
     `;
 
     decorate(block);
 
     const rows = block.querySelectorAll(':scope > div');
-    expect(rows[0]).to.have.class('text-row');
-    expect(rows[1]).to.have.class('cta-row');
-    expect(rows[1]).to.have.attribute('aria-label', 'Text Content');
-    expect(block.querySelectorAll('a')[0]).to.have.class('button');
+    expect(rows.length).to.be.at.least(2);
+    expect(rows[0].classList.contains('text-row')).to.be.true;
+    expect(rows[1].classList.contains('cta-row')).to.be.true;
+    expect(rows[1].getAttribute('aria-label')).to.equal('Text Content');
+    expect(block.querySelectorAll('a')[0].classList.contains('button')).to.be.true;
   });
 
   it('should handle empty text content gracefully', () => {
     const block = document.createElement('div');
     block.innerHTML = `
       <div>   </div>
-      <div><a href="#test">Button</a></div>
+      <div><a href="#test">Click Here</a></div>
     `;
 
     decorate(block);
 
     const rows = block.querySelectorAll(':scope > div');
-    expect(rows[1]).to.have.attribute('aria-label', ''); // Empty after trim
+    expect(rows.length).to.be.at.least(2);
+    expect(rows[1].getAttribute('aria-label')).to.equal(''); // Empty after trim
   });
 });
