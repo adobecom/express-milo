@@ -22,16 +22,20 @@ describe('Collapsible Rows Block', () => {
       return el;
     };
 
-    // Mock getLibs to return proper path
+    // Mock getLibs to return proper path - CRITICAL FIX!
     mockGetLibs = sinon.stub().returns('/libs');
     window.getLibs = mockGetLibs;
+
+    // ALSO set it globally to ensure it's available during import
+    global.getLibs = mockGetLibs;
 
     // BULLETPROOF APPROACH: Mock at the module level BEFORE import
     // Override the dynamic import function completely
     const originalImport = window.import;
     window.import = async (path) => {
       console.log(`Mocking import for: ${path}`);
-      if (path.includes('utils/utils.js')) {
+      // Handle the specific problematic path
+      if (path === 'undefined/utils/utils.js' || path.includes('utils/utils.js') || path === '/libs/utils/utils.js') {
         return {
           createTag: mockCreateTag,
         };
