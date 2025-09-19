@@ -253,19 +253,17 @@ describe('Blog Posts V2 Block', () => {
       });
 
       try {
-        // Test case 1: Block with config rows (more than one row)
+        // Test case 1: Block with config rows (multiple rows triggers readBlockConfig)
         const configBlock = document.createElement('div');
         configBlock.className = 'blog-posts-v2';
         configBlock.innerHTML = `
           <div>
-            <div>
-              <div>topics</div>
-              <div>creative-trends</div>
-            </div>
-            <div>
-              <div>limit</div>
-              <div>10</div>
-            </div>
+            <div>topics</div>
+            <div>creative-trends</div>
+          </div>
+          <div>
+            <div>limit</div>
+            <div>10</div>
           </div>
         `;
 

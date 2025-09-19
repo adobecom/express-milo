@@ -29,7 +29,6 @@ describe('Basic Carousel Widget', () => {
       setTimeout(callback, 0);
     });
 
-
     // Mock getLibs and the dynamic import
     window.getLibs = sinon.stub().returns('/libs');
 

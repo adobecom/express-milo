@@ -401,5 +401,5 @@ export {
   getFilteredResults,
   getReadMoreString,
   checkStructure,
-  addRightChevronToViewAll
+  addRightChevronToViewAll,
 };
