@@ -137,15 +137,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         with:
           status: custom
-          text: |
-            🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}
-            
-            *Repository:* ${{ github.repository }}
-            *Branch:* ${{ github.ref_name }}
-            *Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>
-            
-            *Changes in this Release:*
-            ${{ steps.extract-prs.outputs.prList }}
+          text: "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}\n\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n\n*Changes in this Release:*\n${{ steps.extract-prs.outputs.prList }}"
 
       - name: Fallback notification
         if: failure() && env.SLACK_WEBHOOK_URL != ''
