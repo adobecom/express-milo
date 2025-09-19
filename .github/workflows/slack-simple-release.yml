@@ -25,6 +25,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get short SHA
+        id: short-sha
+        run: echo "short-sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
       - name: Extract PR information
         id: extract-prs
         uses: actions/github-script@v7
@@ -281,8 +285,18 @@ jobs:
                     },
                     {
                       "title": "Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>",
                       "short": true
+                    }
+                  ]
+                },
+                {
+                  "color": "#f0f0f0",
+                  "fields": [
+                    {
+                      "title": "Live URLs",
+                      "value": "<https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n<https://adobecom.com/express|adobecom.com/express>",
+                      "short": false
                     }
                   ]
                 },
