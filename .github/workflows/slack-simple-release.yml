@@ -137,39 +137,30 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
         with:
           status: custom
-          custom_payload: |
-            {
-              "text": "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}",
-              "attachments": [
-                {
-                  "color": "good",
-                  "fields": [
-                    {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Branch",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
-                      "short": true
-                    }
-                  ]
-                },
-                {
-                  "color": "#36a64f",
-                  "text": "## Changes in this Release\n${{ steps.extract-prs.outputs.prList }}",
-                  "mrkdwn_in": ["text"]
-                }
-              ],
-              "footer": "Express Milo",
-              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
-            }
+          text: "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}"
+          fields: |
+            [
+              {
+                "title": "Repository",
+                "value": "${{ github.repository }}",
+                "short": true
+              },
+              {
+                "title": "Branch", 
+                "value": "${{ github.ref_name }}",
+                "short": true
+              },
+              {
+                "title": "Commit",
+                "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                "short": true
+              },
+              {
+                "title": "Changes",
+                "value": "${{ steps.extract-prs.outputs.prList }}",
+                "short": false
+              }
+            ]
 
       - name: Fallback notification
         if: failure() && env.SLACK_WEBHOOK_URL != ''
