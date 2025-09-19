@@ -132,12 +132,41 @@ jobs:
 
       - name: Send release notification
         if: success() && env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
-        uses: 8398a7/action-slack@v3
-        env:
-          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
-        with:
-          status: custom
-          text: "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}\n\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>\n\n*Changes in this Release:*\n${{ steps.extract-prs.outputs.prList }}"
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "🚀 *Express Milo Release Deployed* ${{ github.ref == 'refs/heads/release-to-slack' && '(TEST MODE)' || '' }}",
+              "attachments": [
+                {
+                  "color": "good",
+                  "fields": [
+                    {
+                      "title": "Repository",
+                      "value": "${{ github.repository }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Branch",
+                      "value": "${{ github.ref_name }}",
+                      "short": true
+                    },
+                    {
+                      "title": "Commit",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                      "short": true
+                    }
+                  ]
+                },
+                {
+                  "color": "#36a64f",
+                  "text": "*Changes in this Release:*\n${{ steps.extract-prs.outputs.prList }}",
+                  "mrkdwn_in": ["text"]
+                }
+              ],
+              "footer": "Express Milo",
+              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
+            }' \
+            ${{ env.SLACK_WEBHOOK_URL }}
 
       - name: Fallback notification
         if: failure() && env.SLACK_WEBHOOK_URL != ''
