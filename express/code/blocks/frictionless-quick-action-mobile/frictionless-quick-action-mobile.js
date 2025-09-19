@@ -1,7 +1,6 @@
 import {
   createTag,
   getLibs,
-  getMobileOperatingSystem,
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
@@ -189,7 +188,7 @@ export default async function decorate(block) {
   // TODO: remove fallback row once authoring is done
   const [fallbackRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'fallback');
   fallbackRow?.remove();
-  if (fallbackRow && getMobileOperatingSystem() !== 'Android') {
+  if (fallbackRow) {
     const fallbackBlock = fallbackRow.querySelector(':scope > div:last-child > div');
     block.replaceWith(fallbackBlock);
     return fallbackBlock;

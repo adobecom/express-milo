@@ -1,4 +1,4 @@
-import { getLibs } from '../utils.js';
+import { getLibs, getWebBrowser } from '../utils.js';
 
 // Shared constants and configurations for frictionless quick actions
 const JPG = 'jpg';
@@ -181,6 +181,9 @@ export function createContainerConfig(quickAction) {
   };
 }
 
+const browserType = getWebBrowser();
+const isSafariBrowser = browserType === 'Safari';
+
 export function createDefaultExportConfig() {
   return [
     {
@@ -194,17 +197,20 @@ export function createDefaultExportConfig() {
         size: 'xl',
       },
     },
-    {
-      id: 'edit-in-express',
-      // label: 'Edit in Adobe Express for free',
-      action: { target: 'express' },
-      style: { uiType: 'button' },
-      buttonStyle: {
-        variant: 'primary',
-        treatment: 'fill',
-        size: 'xl',
-      },
-    },
+    ...(isSafariBrowser
+      ? []
+      : [{
+        id: 'edit-in-express',
+        // label: 'Edit in Adobe Express for free',
+        action: { target: 'express' },
+        style: { uiType: 'button' },
+        buttonStyle: {
+          variant: 'primary',
+          treatment: 'fill',
+          size: 'xl',
+        },
+      }]
+    ),
   ];
 }
 
@@ -214,18 +220,24 @@ export async function createMobileExportConfig(
   editText,
 ) {
   const exportConfig = createDefaultExportConfig();
-  return [
+  const result = [
     {
       ...exportConfig[0],
       ...(QA_CONFIGS[quickAction].group === 'video'
         ? {}
         : { label: downloadText }),
     },
-    {
+  ];
+
+  // Only add the edit option if it exists (not Safari browser)
+  if (exportConfig[1]) {
+    result.push({
       ...exportConfig[1],
       ...(QA_CONFIGS[quickAction].group === 'video' ? {} : { label: editText }),
-    },
-  ];
+    });
+  }
+
+  return result;
 }
 
 // Helper function to execute quick actions with common parameters
