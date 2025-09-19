@@ -355,7 +355,7 @@ describe('Floating CTA Widget', () => {
       // Mock utils module and import
       window.loadStyle = sinon.stub();
       window.decorateLinks = sinon.stub();
-      
+
       // Mock the dynamic import for utils
       const originalImport = window.import;
       window.import = (path) => {

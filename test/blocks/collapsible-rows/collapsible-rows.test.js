@@ -28,7 +28,7 @@ describe('Collapsible Rows Block', () => {
     window.getLibs = mockGetLibs;
 
     // Mock the dynamic import for utils properly
-    const originalImport = global.import || window.import;
+    const originalImport = window.import;
     const mockImport = (path) => {
       if (path.includes('utils/utils.js') || path === '/libs/utils/utils.js') {
         return Promise.resolve({
@@ -37,9 +37,8 @@ describe('Collapsible Rows Block', () => {
       }
       return originalImport ? originalImport(path) : Promise.resolve({});
     };
-
-    // Set import at multiple levels to catch all cases
-    global.import = mockImport;
+    
+    // Set import at window level for browser environment
     window.import = mockImport;
 
     // Also mock the direct utils import
@@ -63,7 +62,6 @@ describe('Collapsible Rows Block', () => {
   after(() => {
     delete window.getLibs;
     delete window.import;
-    delete global.import;
     delete window.utils;
   });
 
@@ -241,13 +239,12 @@ describe('Collapsible Rows Block', () => {
       window.utils = { createTag: realCreateTag };
 
       // Update the import mock to return the real createTag
-      global.import = (path) => {
+      window.import = (path) => {
         if (path.includes('utils/utils.js') || path === '/libs/utils/utils.js') {
           return Promise.resolve({ createTag: realCreateTag });
         }
         return Promise.resolve({});
       };
-      window.import = global.import;
 
       await decorate(block);
 
