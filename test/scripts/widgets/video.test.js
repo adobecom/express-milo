@@ -55,14 +55,13 @@ describe('Video Widget', () => {
     window.fetchVideoAnalytics = mockFetchVideoAnalytics;
     window.toClassName = mockToClassName;
 
-    // Mock window properties
-    Object.defineProperty(window, 'location', {
-      writable: true,
-      value: {
-        pathname: '/test-page',
-        href: 'https://example.com/test-page',
-      },
-    });
+    // Mock window properties safely
+    if (!window.location.originalPathname) {
+      window.location.originalPathname = window.location.pathname;
+      window.location.originalHref = window.location.href;
+    }
+    window.location.pathname = '/test-page';
+    window.location.href = 'https://example.com/test-page';
 
     Object.defineProperty(window, 'history', {
       writable: true,
