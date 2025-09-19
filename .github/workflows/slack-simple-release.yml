@@ -36,8 +36,8 @@ jobs:
             console.log(`🔍 Fetching recent PRs with detailed information... (${isTestMode ? 'TEST MODE' : 'PRODUCTION MODE'})`);
             
             // Determine how many PRs to fetch based on mode
-            const prLimit = isTestMode ? 3 : 1;
-            const commitLimit = isTestMode ? 10 : 5;
+            const prLimit = isTestMode ? 15 : 1; // Test with 15 commits
+            const commitLimit = isTestMode ? 20 : 5;
             
             console.log(`Mode: ${isTestMode ? 'TEST' : 'PRODUCTION'} - Fetching up to ${prLimit} PR(s) from last ${commitLimit} commits`);
             
