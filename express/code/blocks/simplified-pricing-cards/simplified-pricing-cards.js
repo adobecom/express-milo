@@ -1,47 +1,78 @@
-import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated, yieldToMain } from '../../scripts/utils.js';
 import {
   fetchPlanOnePlans,
   formatDynamicCartLink,
 } from '../../scripts/utils/pricing.js';
-import { debounce } from '../../scripts/utils/hofs.js';
+import { throttle } from '../../scripts/utils/hofs.js';
 import handleTooltip, { adjustElementPosition } from '../../scripts/widgets/tooltip.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let formatSalesPhoneNumber;
 
+// Shared IntersectionObserver for better performance
+let sharedObserver = null;
+
 const SALES_NUMBERS = '((business-sales-numbers))';
 const PRICE_TOKEN = '((pricing))';
 const YEAR_2_PRICING_TOKEN = '((year-2-pricing-token))';
 
+// Cache for computed styles to avoid repeated calculations
+const styleCache = new WeakMap();
+
 function getHeightWithoutPadding(element) {
+  // Check cache first
+  if (styleCache.has(element)) {
+    const cached = styleCache.get(element);
+    if (cached.clientHeight === element.clientHeight) {
+      return cached.height;
+    }
+  }
+
   const styles = window.getComputedStyle(element);
   const paddingTop = parseFloat(styles.paddingTop);
   const paddingBottom = parseFloat(styles.paddingBottom);
-  return element.clientHeight - paddingTop - paddingBottom;
+  const height = element.clientHeight - paddingTop - paddingBottom;
+
+  // Cache the result
+  styleCache.set(element, {
+    clientHeight: element.clientHeight,
+    height,
+  });
+
+  return height;
 }
 
-function equalizeHeights(el) {
+async function equalizeHeights(el) {
   const classNames = ['.plan-explanation', '.card-header'];
   const cardCount = el.querySelectorAll('.simplified-pricing-cards .card').length;
   if (cardCount === 1) return;
+
   for (const className of classNames) {
     const headers = el.querySelectorAll(className);
     let maxHeight = 0;
+
+    // Reset heights first
     headers.forEach((placeholder) => {
       placeholder.style.height = 'unset';
     });
+
     if (window.screen.width > 1279) {
-      headers.forEach((header) => {
+      // Calculate max height
+      for (const header of headers) {
         if (header.checkVisibility()) {
           const height = getHeightWithoutPadding(header);
           maxHeight = Math.max(maxHeight, height);
         }
-      });
-      headers.forEach((placeholder) => {
+        await yieldToMain(); // Yield control during heavy calculations
+      }
+
+      // Apply heights
+      for (const placeholder of headers) {
         if (maxHeight > 0) {
           placeholder.style.height = `${maxHeight}px`;
         }
-      });
+        await yieldToMain(); // Yield control during DOM updates
+      }
     }
   }
 }
@@ -137,7 +168,8 @@ async function createPricingSection(
   ctaGroup,
 ) {
   pricingArea.classList.add('pricing-area');
-  const priceEl = [...pricingArea.querySelectorAll('a')].filter((link) => link.textContent.includes(PRICE_TOKEN))[0];
+  const priceEl = pricingArea.querySelector(`a:has-text("${PRICE_TOKEN}")`)
+    || Array.from(pricingArea.querySelectorAll('a')).find((link) => link.textContent.includes(PRICE_TOKEN));
 
   if (priceEl) {
     const pricingSuffixTextElem = priceEl.closest('p').nextElementSibling;
@@ -245,7 +277,8 @@ export default async function init(el) {
 
   const defaultOpenIndex = getDefaultExpandedIndex(el);
 
-  /* eslint-disable no-await-in-loop */
+  // Parallel API calls for better performance
+  const pricingPromises = [];
   for (let cardIndex = 0; cardIndex < cardCount; cardIndex += 1) {
     const card = createTag('div', { class: 'card' });
     if (cardIndex !== defaultOpenIndex) {
@@ -253,17 +286,22 @@ export default async function init(el) {
     }
     decorateCardBorder(card, rows[1].children[0]);
     decorateHeader(rows[0].children[0], rows[2].children[0]);
-    await createPricingSection(
+
+    // Collect pricing promises for parallel execution
+    pricingPromises.push(createPricingSection(
       rows[0].children[0],
       rows[3].children[0],
       rows[4].children[0],
-    );
+    ));
 
     for (let j = 0; j < rows.length - 2; j += 1) {
       card.appendChild(rows[j].children[0]);
     }
     cards.push(card);
   }
+
+  // Execute all pricing API calls in parallel
+  await Promise.all(pricingPromises);
 
   el.innerHTML = '';
   el.appendChild(createTag('div', { class: 'card-wrapper' }));
@@ -275,22 +313,39 @@ export default async function init(el) {
   el.appendChild(rows[rows.length - 2]);
   el.appendChild(rows[rows.length - 1]);
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        equalizeHeights(el);
-        observer.unobserve(entry.target);
-        adjustElementPosition();
+  // Use shared observer for better performance
+  if (!sharedObserver) {
+    sharedObserver = new IntersectionObserver(async (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          const block = entry.target.closest('.simplified-pricing-cards');
+          if (block) {
+            await equalizeHeights(block);
+            sharedObserver.unobserve(entry.target);
+            adjustElementPosition();
+          }
+        }
       }
+    }, {
+      rootMargin: '50px 0px', // Start loading slightly before visible
+      threshold: 0.1,
     });
-  });
+  }
 
-  document.querySelectorAll('.simplified-pricing-cards .card').forEach((column) => {
-    observer.observe(column);
+  // Use the cards array instead of re-querying DOM
+  cards.forEach((card) => {
+    sharedObserver.observe(card);
   });
   await decorateButtonsDeprecated(el);
 
-  window.addEventListener('resize', debounce(() => {
-    equalizeHeights(el);
-  }, 100));
+  // Use throttle for immediate response, debounce for final execution
+  let resizeTimeout;
+  const handleResize = throttle(async () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(async () => {
+      await equalizeHeights(el);
+    }, 150);
+  }, 16); // ~60fps throttling
+
+  window.addEventListener('resize', handleResize);
 }
