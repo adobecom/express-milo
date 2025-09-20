@@ -83,6 +83,11 @@ jobs:
                   labels: targetLabels
                 });
                 console.log(`✅ Successfully set labels to: ${targetLabels.join(', ')}`);
+                
+                // Send Slack notification if "Ready for Review" was added
+                if (targetLabels.includes('Ready for Review')) {
+                  await sendSlackNotification(pr.data);
+                }
               } catch (error) {
                 console.log(`❌ Failed to set labels: ${error.message}`);
                 if (error.status === 404) {
@@ -99,4 +104,90 @@ jobs:
             }
             
             // No approval checking functions needed - simplified to just Ready for Review
+            
+            // Helper function to send Slack notification
+            async function sendSlackNotification(prData) {
+              try {
+                const title = prData.title;
+                const author = prData.user.login;
+                const url = prData.html_url;
+                const branch = prData.head.ref;
+                const baseBranch = prData.base.ref;
+                
+                // Extract Jira ticket if present
+                let jiraTicket = null;
+                const titleMatch = title.match(/(MWPW-\d+)/);
+                if (titleMatch) {
+                  jiraTicket = titleMatch[1];
+                } else {
+                  const bodyMatch = (prData.body || '').match(/(MWPW-\d+)/);
+                  if (bodyMatch) {
+                    jiraTicket = bodyMatch[1];
+                  }
+                }
+                
+                // Format the message
+                const displayTitle = jiraTicket ? `${jiraTicket}: ${title.replace(`${jiraTicket}: `, '')}` : title;
+                const jiraLink = jiraTicket ? `\n🔗 <https://jira.corp.adobe.com/browse/${jiraTicket}|${jiraTicket}>` : '';
+                
+                const isTestMode = prData.base.ref !== 'main';
+                const message = {
+                  text: `🔍 *New PR Ready for Review*${isTestMode ? ' (TEST MODE)' : ''}`,
+                  attachments: [
+                    {
+                      color: "#0066cc",
+                      fields: [
+                        {
+                          title: "📝 PR Title",
+                          value: displayTitle,
+                          short: false
+                        },
+                        {
+                          title: "👤 Author",
+                          value: author,
+                          short: true
+                        },
+                        {
+                          title: "🌿 Branch",
+                          value: `\`${branch}\` → \`${baseBranch}\``,
+                          short: true
+                        },
+                        {
+                          title: "🔗 Links",
+                          value: `<${url}|PR #${prData.number}>${jiraLink}`,
+                          short: false
+                        }
+                      ],
+                      footer: "Express Milo • Ready for Review",
+                      footer_icon: "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
+                    }
+                  ]
+                };
+                
+                // Send to Slack
+                const webhookUrl = process.env.SLACK_WEBHOOK_URL;
+                if (!webhookUrl) {
+                  console.log('❌ SLACK_WEBHOOK_URL not configured');
+                  return;
+                }
+                
+                const response = await fetch(webhookUrl, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(message)
+                });
+                
+                if (response.ok) {
+                  console.log('✅ Ready for Review notification sent successfully');
+                } else {
+                  console.log(`❌ Failed to send notification: ${response.status} ${response.statusText}`);
+                }
+              } catch (error) {
+                console.log(`❌ Error sending notification: ${error.message}`);
+              }
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ github.event.pull_request.base.ref == 'main' && secrets.SLACK_WEBHOOK_URL_PR || secrets.SLACK_WEBHOOK_URL_PR_TEST }}
 
