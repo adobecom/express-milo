@@ -189,7 +189,7 @@ jobs:
             let messageText;
             if (isLastReminder) {
               // Star Wars theme for last reminder of the day
-              messageText = `⚔️ *JEDI COUNCIL MEETING*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
+              messageText = `⚔️ *JEDI COUNCIL MEETING*${isTestMode ? ' [TEST_MODE]' : ''}\n\n\n`;
               
               // 1. Changes requested (highest priority)
               if (prsByStatus.changesRequested.length > 0) {
@@ -246,7 +246,7 @@ jobs:
               }
             } else {
               // Regular theme for other reminders
-              messageText = `🚨 *PRs REMINDER*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
+              messageText = `🚨 *PRs REMINDER*${isTestMode ? ' [TEST_MODE]' : ''}\n\n\n`;
               
               // 1. Changes requested (highest priority)
               if (prsByStatus.changesRequested.length > 0) {
