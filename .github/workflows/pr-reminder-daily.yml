@@ -220,7 +220,7 @@ jobs:
               messageText += `\n`;
             }
             
-            messageText += `⚡ *IMMEDIATE ACTION REQUIRED: Review and process these PRs to maintain development velocity!*`;
+            // Removed the action required line as requested
             
             const message = {
               text: messageText,
