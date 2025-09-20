@@ -78,8 +78,7 @@ jobs:
                 approvalCount = 0;
               }
               
-              // Only include PRs with less than 2 approvals
-              if (approvalCount < 2) {
+              // Include ALL PRs for comprehensive reminder
                 // Extract Jira ticket if present
                 let jiraTicket = null;
                 const titleMatch = pr.title.match(/(MWPW-\d+)/);
@@ -103,9 +102,11 @@ jobs:
                   approvalCount,
                   jiraTicket,
                   jiraLink,
-                  createdAt: pr.created_at
+                  createdAt: pr.created_at,
+                  hasRequestChanges,
+                  labels: pr.labels.map(label => label.name),
+                  draft: pr.draft
                 });
-              }
             }
             
             console.log(`Found ${prsNeedingReview.length} PRs needing review`);
@@ -204,7 +205,7 @@ jobs:
             
             // 3. 1 approval
             if (prsByStatus.oneApproval.length > 0) {
-              messageText += `🟠 *1 APPROVAL (${prsByStatus.oneApproval.length} PRs):*\n`;
+              messageText += `🟡 *1 APPROVAL (${prsByStatus.oneApproval.length} PRs):*\n`;
               for (const pr of prsByStatus.oneApproval) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
