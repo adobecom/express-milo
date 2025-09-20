@@ -34,7 +34,7 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             
-            console.log('🔍 Finding open PRs with less than 2 approvals...');
+            console.log('🔍 Finding all open PRs (including drafts)...');
             
             // Get all open PRs
             const openPRs = await github.rest.pulls.list({
@@ -49,11 +49,7 @@ jobs:
             const prsNeedingReview = [];
             
             for (const pr of openPRs.data) {
-              // Skip draft PRs
-              if (pr.draft) {
-                console.log(`Skipping draft PR #${pr.number}`);
-                continue;
-              }
+              // Include all PRs (including drafts) - we'll categorize them later
               
               // Get reviews for this PR
               const reviews = await github.rest.pulls.listReviews({
