@@ -1,4 +1,4 @@
-import { getLibs, toClassName, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated, yieldToMain } from '../../scripts/utils.js';
+import { getLibs, toClassName, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import {
@@ -29,8 +29,6 @@ function loadVideoWhenVisible(video) {
               source.src = source.getAttribute('data-src');
             }
             videoElement.load();
-
-            await yieldToMain(); // Yield control during video loading
           }
 
           videoObserver.unobserve(videoElement);
