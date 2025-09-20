@@ -158,9 +158,10 @@ jobs:
             
             // Group PRs by status for better organization
             const prsByStatus = {
-              noApprovals: prs.filter(pr => pr.approvalCount === 0),
-              oneApproval: prs.filter(pr => pr.approvalCount === 1),
-              twoApprovalsNoQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA')),
+              changesRequested: prs.filter(pr => pr.hasRequestChanges),
+              noApprovals: prs.filter(pr => pr.approvalCount === 0 && !pr.hasRequestChanges),
+              oneApproval: prs.filter(pr => pr.approvalCount === 1 && !pr.hasRequestChanges),
+              twoApprovalsNoQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA') && !pr.hasRequestChanges),
               readyForQA: prs.filter(pr => pr.labels.includes('Ready for QA')),
               draft: prs.filter(pr => pr.draft)
             };
@@ -183,7 +184,16 @@ jobs:
             
             let messageText = `🚨 *PRs REMINDER*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
             
-            // 1. No approvals (highest priority)
+            // 1. Changes requested (highest priority)
+            if (prsByStatus.changesRequested.length > 0) {
+              messageText += `🔴 *CHANGES REQUESTED (${prsByStatus.changesRequested.length} PRs):*\n`;
+              for (const pr of prsByStatus.changesRequested) {
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
+              }
+              messageText += `\n`;
+            }
+            
+            // 2. No approvals (second priority)
             if (prsByStatus.noApprovals.length > 0) {
               messageText += `🔴 *NO APPROVALS (${prsByStatus.noApprovals.length} PRs):*\n`;
               for (const pr of prsByStatus.noApprovals) {
@@ -192,7 +202,7 @@ jobs:
               messageText += `\n`;
             }
             
-            // 2. 1 approval
+            // 3. 1 approval
             if (prsByStatus.oneApproval.length > 0) {
               messageText += `🟠 *1 APPROVAL (${prsByStatus.oneApproval.length} PRs):*\n`;
               for (const pr of prsByStatus.oneApproval) {
@@ -201,7 +211,7 @@ jobs:
               messageText += `\n`;
             }
             
-            // 3. 2+ approvals but no Ready for QA label
+            // 4. 2+ approvals but no Ready for QA label
             if (prsByStatus.twoApprovalsNoQA.length > 0) {
               messageText += `🟡 *2+ APPROVALS - MISSING QA LABEL (${prsByStatus.twoApprovalsNoQA.length} PRs):*\n`;
               for (const pr of prsByStatus.twoApprovalsNoQA) {
@@ -210,7 +220,7 @@ jobs:
               messageText += `\n`;
             }
             
-            // 4. Ready for QA status
+            // 5. Ready for QA status
             if (prsByStatus.readyForQA.length > 0) {
               messageText += `🟢 *READY FOR QA (${prsByStatus.readyForQA.length} PRs):*\n`;
               for (const pr of prsByStatus.readyForQA) {
@@ -219,7 +229,7 @@ jobs:
               messageText += `\n`;
             }
             
-            // 5. Draft PRs (lowest priority)
+            // 6. Draft PRs (lowest priority)
             if (prsByStatus.draft.length > 0) {
               messageText += `⚪ *DRAFT PRs (${prsByStatus.draft.length} PRs):*\n`;
               for (const pr of prsByStatus.draft) {
