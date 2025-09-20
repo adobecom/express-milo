@@ -36,18 +36,13 @@ jobs:
               return; // Exit gracefully
             }
             
-            // Check for existing approval memory in PR body
-            const prBody = pr.data.body || '';
-            const approvalMemoryMatch = prBody.match(/<!-- APPROVAL_MEMORY:(\d+) -->/);
-            const storedApprovalCount = approvalMemoryMatch ? parseInt(approvalMemoryMatch[1]) : 0;
-            console.log(`Stored approval count from memory: ${storedApprovalCount}`);
+            // No approval checking needed - just Ready for Review
             
             const currentLabels = pr.data.labels.map(label => label.name);
             const isDraft = pr.data.draft;
-            const isTestMode = currentLabels.includes('test-qa-workflow');
             
             console.log(`Current labels on PR #${number}:`, currentLabels);
-            console.log(`Is draft: ${isDraft}, Is test mode: ${isTestMode}`);
+            console.log(`Is draft: ${isDraft}`);
             
             // Start fresh - only keep non-Ready labels
             const targetLabels = currentLabels.filter(label => 
@@ -58,10 +53,6 @@ jobs:
             if (isDraft) {
               // Draft PRs should have no Ready labels
               console.log(`Draft PR - no Ready labels needed`);
-            } else if (isTestMode || (await checkApprovals(owner, repo, number)) >= 2) {
-              // Ready for QA - 2+ approvals and no request changes
-              targetLabels.push('Ready for QA');
-              console.log(`Adding Ready for QA label`);
             } else {
               // Ready for Review - default for non-draft PRs
               targetLabels.push('Ready for Review');
@@ -107,78 +98,5 @@ jobs:
               console.log(`No label changes needed - Ready labels already correct`);
             }
             
-            // Helper function to check approvals with error handling and memory
-            async function checkApprovals(owner, repo, number) {
-              try {
-                const reviews = await github.rest.pulls.listReviews({
-                  owner,
-                  repo,
-                  pull_number: number
-                });
-                
-                let approvalCount = 0;
-                let hasRequestChanges = false;
-                
-                for (const review of reviews.data) {
-                  if (review.state === 'APPROVED') {
-                    approvalCount++;
-                  } else if (review.state === 'CHANGES_REQUESTED') {
-                    hasRequestChanges = true;
-                    console.log(`Found "request changes" review - blocking QA transition`);
-                  }
-                }
-                
-                // If we have approvals but reviews were dismissed (draft conversion),
-                // use the stored memory as fallback
-                if (approvalCount === 0 && storedApprovalCount > 0 && !hasRequestChanges) {
-                  console.log(`Using stored approval memory: ${storedApprovalCount} approvals`);
-                  approvalCount = storedApprovalCount;
-                }
-                
-                // Update approval memory in PR body if we found new approvals
-                if (approvalCount > storedApprovalCount) {
-                  await updateApprovalMemory(owner, repo, number, approvalCount);
-                }
-                
-                console.log(`Found ${approvalCount} approval(s) for PR #${number}`);
-                return hasRequestChanges ? 0 : approvalCount;
-              } catch (error) {
-                console.log(`❌ Failed to get reviews for PR #${number}: ${error.message}`);
-                if (error.status === 404) {
-                  console.log(`PR #${number} not found when checking reviews`);
-                } else if (error.status === 403) {
-                  console.log(`Insufficient permissions to read reviews for PR #${number}`);
-                }
-                // Fall back to stored memory on error
-                return storedApprovalCount;
-              }
-            }
-            
-            // Helper function to update approval memory in PR body
-            async function updateApprovalMemory(owner, repo, number, approvalCount) {
-              try {
-                const currentBody = pr.data.body || '';
-                const memoryPattern = /<!-- APPROVAL_MEMORY:\d+ -->/;
-                const newMemory = `<!-- APPROVAL_MEMORY:${approvalCount} -->`;
-                
-                let newBody;
-                if (memoryPattern.test(currentBody)) {
-                  newBody = currentBody.replace(memoryPattern, newMemory);
-                } else {
-                  newBody = currentBody + `\n\n${newMemory}`;
-                }
-                
-                await github.rest.pulls.update({
-                  owner,
-                  repo,
-                  pull_number: number,
-                  body: newBody
-                });
-                
-                console.log(`✅ Updated approval memory to ${approvalCount} in PR body`);
-              } catch (error) {
-                console.log(`⚠️ Failed to update approval memory: ${error.message}`);
-                // Don't fail the workflow for this
-              }
-            }
+            // No approval checking functions needed - simplified to just Ready for Review
 
