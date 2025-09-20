@@ -3,6 +3,12 @@ name: PR Ready for Review Notification
 on:
   pull_request:
     types: [labeled]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to test notification'
+        required: false
+        type: string
 
 jobs:
   notify-ready-for-review:
