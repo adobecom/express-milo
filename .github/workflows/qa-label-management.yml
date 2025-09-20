@@ -83,11 +83,6 @@ jobs:
                   labels: targetLabels
                 });
                 console.log(`✅ Successfully set labels to: ${targetLabels.join(', ')}`);
-                
-                // Send Slack notification if "Ready for Review" was added
-                if (targetLabels.includes('Ready for Review')) {
-                  await sendSlackNotification(pr.data);
-                }
               } catch (error) {
                 console.log(`❌ Failed to set labels: ${error.message}`);
                 if (error.status === 404) {
@@ -101,6 +96,12 @@ jobs:
               }
             } else {
               console.log(`No label changes needed - Ready labels already correct`);
+            }
+            
+            // Always send Slack notification for non-draft PRs (regardless of label changes)
+            if (!isDraft && targetLabels.includes('Ready for Review')) {
+              console.log(`Sending Ready for Review notification...`);
+              await sendSlackNotification(pr.data);
             }
             
             // No approval checking functions needed - simplified to just Ready for Review
