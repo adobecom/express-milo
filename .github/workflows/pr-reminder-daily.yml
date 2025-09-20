@@ -127,6 +127,19 @@ jobs:
             };
             
             const isTestMode = context.ref === 'refs/heads/feature/pr-label-management';
+            
+            // Escape special characters for JSON
+            const escapeJson = (str) => {
+              return str
+                .replace(/\\/g, '\\\\')
+                .replace(/"/g, '\\"')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r')
+                .replace(/\t/g, '\\t')
+                .replace(/\f/g, '\\f')
+                .replace(/\b/g, '\\b');
+            };
+            
             let messageText = `⏰ *Daily PR Review Reminder*${isTestMode ? ' (TEST MODE)' : ''}\n\n`;
             messageText += `Found *${count}* PR(s) needing review:\n\n`;
             
@@ -134,7 +147,7 @@ jobs:
             if (prsByApproval[0].length > 0) {
               messageText += `🔴 *${prsByApproval[0].length} PR(s) with 0 approvals:*\n`;
               for (const pr of prsByApproval[0]) {
-                messageText += `• <${pr.url}|${pr.title}> (#${pr.number}) by @${pr.author}${pr.jiraLink}\n`;
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
@@ -143,7 +156,7 @@ jobs:
             if (prsByApproval[1].length > 0) {
               messageText += `🟡 *${prsByApproval[1].length} PR(s) with 1 approval:*\n`;
               for (const pr of prsByApproval[1]) {
-                messageText += `• <${pr.url}|${pr.title}> (#${pr.number}) by @${pr.author}${pr.jiraLink}\n`;
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
