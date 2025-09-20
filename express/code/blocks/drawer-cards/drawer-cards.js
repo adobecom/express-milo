@@ -11,7 +11,10 @@ function drawerOff() {
   if (!currDrawer) return;
   currDrawer.closest('.card').setAttribute('aria-expanded', false);
   currDrawer.classList.add('hide');
-  currDrawer.querySelector('video')?.pause()?.catch(() => { });
+  const video = currDrawer.querySelector('video');
+  if (video) {
+    video.pause();
+  }
   currDrawer = null;
   if (!largeMQ.matches) document.body.classList.remove('disable-scroll');
 }
@@ -19,11 +22,20 @@ function drawerOn(drawer) {
   drawerOff();
   drawer.closest('.card').setAttribute('aria-expanded', true);
   drawer.classList.remove('hide');
+
+  // Load video when drawer opens
   const video = drawer.querySelector('video');
-  if (video && !reduceMotionMQ.matches) {
-    video.muted = true;
-    video.play().catch(() => { });
+  if (video) {
+    if (video.dataset.src && !video.src) {
+      video.src = video.dataset.src;
+      video.load();
+    }
+    if (!reduceMotionMQ.matches) {
+      video.muted = true;
+      video.play().catch(() => { });
+    }
   }
+
   currDrawer = drawer;
   if (!largeMQ.matches) document.body.classList.add('disable-scroll');
 }
@@ -74,10 +86,11 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     playsinline: '',
     muted: '',
     loop: '',
-    preload: 'metadata',
+    preload: 'none',
     title: titleText,
     poster,
-  }, `<source src="${videoSrc}" type="video/mp4">`);
+    'data-src': videoSrc,
+  });
   const videoWrapper = createTag('button', { class: 'video-container' }, video);
   // link video to first anchor
   videoWrapper.addEventListener('click', () => anchors[0]?.click());
