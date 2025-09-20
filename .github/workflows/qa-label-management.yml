@@ -130,7 +130,7 @@ jobs:
                 const displayTitle = jiraTicket ? `${jiraTicket}: ${title.replace(`${jiraTicket}: `, '')}` : title;
                 const jiraLink = jiraTicket ? `\n🔗 <https://jira.corp.adobe.com/browse/${jiraTicket}|${jiraTicket}>` : '';
                 
-                const isTestMode = prData.base.ref !== 'main';
+                const isTestMode = prData.base.ref !== 'main' && prData.base.ref !== 'stage';
                 const message = {
                   text: `🔍 *New PR Ready for Review*${isTestMode ? ' (TEST MODE)' : ''}`,
                   attachments: [
@@ -189,5 +189,5 @@ jobs:
               }
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ github.event.pull_request.base.ref == 'main' && secrets.SLACK_WEBHOOK_URL_PR || secrets.SLACK_WEBHOOK_URL_PR_TEST }}
+          SLACK_WEBHOOK_URL: ${{ (github.event.pull_request.base.ref == 'main' || github.event.pull_request.base.ref == 'stage') && secrets.SLACK_WEBHOOK_URL_PR || secrets.SLACK_WEBHOOK_URL_PR_TEST }}
 
