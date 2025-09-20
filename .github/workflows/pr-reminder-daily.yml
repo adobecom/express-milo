@@ -164,8 +164,9 @@ jobs:
               draft: prs.filter(pr => pr.draft)
             };
             
-            // Test mode: if this is the every-5-minute cron (testing only)
-            const isTestMode = context.event_name === 'schedule' && context.ref === 'refs/heads/main';
+            // Test mode: if this is the every-5-minute cron (testing only) OR if we're on feature branch
+            const isTestMode = (context.event_name === 'schedule' && context.ref === 'refs/heads/main') || 
+                              context.ref === 'refs/heads/feature/pr-label-management';
             
             // Escape special characters for JSON
             const escapeJson = (str) => {
