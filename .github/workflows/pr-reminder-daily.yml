@@ -159,11 +159,11 @@ jobs:
             
             // Group PRs by status for better organization
             const prsByStatus = {
-              changesRequested: prs.filter(pr => pr.hasRequestChanges),
-              noApprovals: prs.filter(pr => pr.approvalCount === 0 && !pr.hasRequestChanges),
-              oneApproval: prs.filter(pr => pr.approvalCount === 1 && !pr.hasRequestChanges),
-              twoApprovalsNoQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA') && !pr.hasRequestChanges),
-              readyForQA: prs.filter(pr => pr.labels.includes('Ready for QA')),
+              changesRequested: prs.filter(pr => pr.hasRequestChanges && !pr.draft),
+              noApprovals: prs.filter(pr => pr.approvalCount === 0 && !pr.hasRequestChanges && !pr.draft),
+              oneApproval: prs.filter(pr => pr.approvalCount === 1 && !pr.hasRequestChanges && !pr.draft),
+              twoApprovalsNoQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA') && !pr.hasRequestChanges && !pr.draft),
+              readyForQA: prs.filter(pr => pr.labels.includes('Ready for QA') && !pr.draft),
               draft: prs.filter(pr => pr.draft)
             };
             
