@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let createTag; let getConfig;
 
@@ -42,7 +42,7 @@ document.addEventListener('click', (e) => {
 });
 let isTouch;
 const iconRegex = /icon-\s*([^\s]+)/;
-async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, drawer) {
+function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, drawer) {
   const titleRow = createTag('div', { class: 'title-row' });
   const content = createTag('div', { class: 'content' });
   const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black'));
@@ -51,8 +51,6 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     drawerOff();
   });
   titleRow.append(createTag('strong', { class: 'drawer-title' }, titleText), closeButton);
-
-  await yieldToMain();
 
   const icons = panelsFrag.querySelectorAll('.icon');
   const anchors = [...panelsFrag.querySelectorAll('a')];
@@ -332,8 +330,9 @@ export default async function init(el) {
   const observer = new IntersectionObserver(async (entries) => {
     const entry = entries[0];
     if (entry.isIntersecting) {
-      observer.unobserve(el);
-      await yieldToMain();
+      if (observer.unobserve) {
+        observer.unobserve(el);
+      }
       cards.forEach((card) => card.lazyCB());
     }
   }, { rootMargin: '100px' });
