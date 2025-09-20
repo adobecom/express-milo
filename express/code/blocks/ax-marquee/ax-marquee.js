@@ -1,4 +1,4 @@
-import { getLibs, toClassName, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, toClassName, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated, yieldToMain } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import {
@@ -9,6 +9,41 @@ import { displayVideoModal, isVideoLink } from '../../scripts/widgets/video.js';
 
 let getMetadata; let createTag;
 let getConfig;
+
+// Shared IntersectionObserver for video lazy loading
+let videoObserver = null;
+
+// Lazy load video when it becomes visible
+function loadVideoWhenVisible(video) {
+  if (!videoObserver) {
+    videoObserver = new IntersectionObserver(async (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          const videoElement = entry.target;
+          const dataSrc = videoElement.getAttribute('data-src');
+          const source = videoElement.querySelector('source[data-src]');
+
+          if (dataSrc && !videoElement.src) {
+            videoElement.src = dataSrc;
+            if (source) {
+              source.src = source.getAttribute('data-src');
+            }
+            videoElement.load();
+
+            await yieldToMain(); // Yield control during video loading
+          }
+
+          videoObserver.unobserve(videoElement);
+        }
+      }
+    }, {
+      rootMargin: '50px 0px', // Start loading slightly before visible
+      threshold: 0.1,
+    });
+  }
+
+  videoObserver.observe(video);
+}
 
 const DEFAULT_BREAKPOINT = {
   typeHint: 'default',
@@ -233,9 +268,10 @@ function createAnimation(animations) {
 
   // replace anchor with video element
   const video = createTag('video', attribs);
-  video.setAttribute('preload', 'auto');
+  video.setAttribute('preload', 'none');
   if (source) {
-    video.innerHTML = `<source src="${source}" type="video/mp4">`;
+    video.setAttribute('data-src', source);
+    video.innerHTML = `<source data-src="${source}" type="video/mp4">`;
   }
   return video;
 }
@@ -248,6 +284,10 @@ function adjustLayout(animations, parent) {
     const newVideo = createAnimation(animations);
     if (newVideo) {
       parent.replaceChild(newVideo, parent.querySelector('video'));
+
+      // Lazy load video when it becomes visible
+      loadVideoWhenVisible(newVideo);
+
       newVideo.addEventListener('canplay', () => {
         if (localStorage.getItem('reduceMotion') !== 'on') {
           newVideo.muted = true;
