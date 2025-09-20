@@ -92,7 +92,7 @@ jobs:
                 }
                 
                 const displayTitle = jiraTicket ? `${jiraTicket}: ${pr.title.replace(`${jiraTicket}: `, '')}` : pr.title;
-                const jiraLink = jiraTicket ? `\n🔗 <https://jira.corp.adobe.com/browse/${jiraTicket}|${jiraTicket}>` : '';
+                const jiraLink = jiraTicket ? ` 🔗 <https://jira.corp.adobe.com/browse/${jiraTicket}|${jiraTicket}>` : '';
                 
                 prsNeedingReview.push({
                   number: pr.number,
@@ -156,11 +156,13 @@ jobs:
             const count = parseInt('${{ steps.find-prs.outputs.count }}');
             
             console.log(`📢 Sending reminder for ${count} PRs needing review`);
+            console.log(`🔍 Debug - Draft PRs found: ${prs.filter(pr => pr.draft).length}`);
+            console.log(`🔍 Debug - Draft PRs:`, prs.filter(pr => pr.draft).map(pr => `#${pr.number} - ${pr.title}`));
             
             // Group PRs by status for better organization
             const prsByStatus = {
               changesRequested: prs.filter(pr => pr.hasRequestChanges && !pr.draft),
-              noApprovals: prs.filter(pr => pr.approvalCount === 0 && !pr.hasRequestChanges && !pr.draft),
+              noApprovals: prs.filter(pr => pr.approvalCount === 0 && !pr.hasRequestChanges && !pr.draft && !pr.labels.includes('Ready for QA')),
               oneApproval: prs.filter(pr => pr.approvalCount === 1 && !pr.hasRequestChanges && !pr.draft),
               twoApprovalsNoQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA') && !pr.hasRequestChanges && !pr.draft),
               readyForQA: prs.filter(pr => pr.labels.includes('Ready for QA') && !pr.draft),
