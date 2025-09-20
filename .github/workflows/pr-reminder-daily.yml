@@ -10,7 +10,9 @@ on:
 jobs:
   remind-open-prs:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'adobecom'
+    if: |
+      github.repository_owner == 'adobecom' &&
+      (github.ref == 'refs/heads/feature/pr-label-management' || github.ref == 'refs/heads/main')
     
     steps:
       - name: Checkout repository
@@ -121,7 +123,8 @@ jobs:
               1: prs.filter(pr => pr.approvalCount === 1)
             };
             
-            let messageText = `⏰ *Daily PR Review Reminder*\n\n`;
+            const isTestMode = context.ref === 'refs/heads/feature/pr-label-management';
+            let messageText = `⏰ *Daily PR Review Reminder*${isTestMode ? ' (TEST MODE)' : ''}\n\n`;
             messageText += `Found *${count}* PR(s) needing review:\n\n`;
             
             // PRs with 0 approvals
@@ -181,7 +184,7 @@ jobs:
               console.log(`❌ Error sending reminder: ${error.message}`);
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PR }}
+          SLACK_WEBHOOK_URL: ${{ github.ref == 'refs/heads/main' && secrets.SLACK_WEBHOOK_URL_PR || secrets.SLACK_WEBHOOK_URL_PR_TEST }}
 
       - name: No PRs reminder
         if: steps.find-prs.outputs.count == '0'
