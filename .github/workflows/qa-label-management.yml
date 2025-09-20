@@ -98,8 +98,8 @@ jobs:
               console.log(`No label changes needed - Ready labels already correct`);
             }
             
-            // Always send Slack notification for non-draft PRs (regardless of label changes)
-            if (!isDraft && targetLabels.includes('Ready for Review')) {
+            // Send Slack notification only when "Ready for Review" label is actually added
+            if (!isDraft && targetLabels.includes('Ready for Review') && labelsChanged) {
               console.log(`Sending Ready for Review notification...`);
               await sendSlackNotification(pr.data);
             }
