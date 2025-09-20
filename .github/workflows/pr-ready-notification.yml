@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.label.name == 'Ready for Review' &&
-      github.repository_owner == 'adobecom'
+      github.repository_owner == 'adobecom' &&
+      (github.ref == 'refs/heads/feature/pr-label-management' || github.ref == 'refs/heads/main')
     
     steps:
       - name: Send Ready for Review notification
@@ -57,8 +58,9 @@ jobs:
             const displayTitle = jiraTicket ? `${jiraTicket}: ${title.replace(`${jiraTicket}: `, '')}` : title;
             const jiraLink = jiraTicket ? `\n🔗 <https://jira.corp.adobe.com/browse/${jiraTicket}|${jiraTicket}>` : '';
             
+            const isTestMode = context.ref === 'refs/heads/feature/pr-label-management';
             const message = {
-              text: `🔍 *New PR Ready for Review*`,
+              text: `🔍 *New PR Ready for Review*${isTestMode ? ' (TEST MODE)' : ''}`,
               attachments: [
                 {
                   color: "#0066cc",
@@ -115,4 +117,4 @@ jobs:
               console.log(`❌ Error sending notification: ${error.message}`);
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PR }}
+          SLACK_WEBHOOK_URL: ${{ github.ref == 'refs/heads/main' && secrets.SLACK_WEBHOOK_URL_PR || secrets.SLACK_WEBHOOK_URL_PR_TEST }}
