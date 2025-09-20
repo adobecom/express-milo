@@ -111,8 +111,14 @@ jobs:
             console.log(`Found ${prsNeedingReview.length} PRs needing review`);
             
             // Set output for next step
-            core.setOutput('prs', JSON.stringify(prsNeedingReview));
-            core.setOutput('count', prsNeedingReview.length);
+            try {
+              core.setOutput('prs', JSON.stringify(prsNeedingReview));
+              core.setOutput('count', prsNeedingReview.length);
+            } catch (error) {
+              console.log(`❌ Error serializing PRs: ${error.message}`);
+              core.setOutput('prs', '[]');
+              core.setOutput('count', '0');
+            }
 
       - name: Send reminder notification
         if: steps.find-prs.outputs.count != '0'
@@ -135,12 +141,16 @@ jobs:
             
             // Escape special characters for JSON
             const escapeJson = (str) => {
+              if (!str) return '';
               return str
                 .replace(/\\/g, '\\\\')
                 .replace(/"/g, '\\"')
                 .replace(/\n/g, '\\n')
                 .replace(/\r/g, '\\r')
-                .replace(/\t/g, '\\t');
+                .replace(/\t/g, '\\t')
+                .replace(/\f/g, '\\f')
+                .replace(/\b/g, '\\b')
+                .replace(/[\x00-\x1F\x7F-\x9F]/g, ''); // Remove control characters
             };
             
             let messageText = `⚡ *SYSTEM ALERT*${isTestMode ? ' [TEST_MODE]' : ''} - Code Review Required\n\n`;
@@ -186,12 +196,21 @@ jobs:
             }
             
             try {
+              let jsonPayload;
+              try {
+                jsonPayload = JSON.stringify(message);
+              } catch (jsonError) {
+                console.log(`❌ Error creating JSON payload: ${jsonError.message}`);
+                console.log('Message object:', JSON.stringify(message, null, 2));
+                return;
+              }
+              
               const response = await fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(message)
+                body: jsonPayload
               });
               
               if (response.ok) {
