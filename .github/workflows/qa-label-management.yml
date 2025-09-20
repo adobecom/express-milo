@@ -132,33 +132,33 @@ jobs:
                 
                 const isTestMode = prData.head.ref === 'feature/pr-label-management';
                 const message = {
-                  text: `🔍 *New PR Ready for Review*${isTestMode ? ' (TEST MODE)' : ''}`,
+                  text: `🚀 *CODE DEPLOYED*${isTestMode ? ' [TEST_MODE]' : ''} - Ready for Review`,
                   attachments: [
                     {
-                      color: "#0066cc",
+                      color: isTestMode ? "#ff6b35" : "#00ff00",
                       fields: [
                         {
-                          title: "📝 PR Title",
-                          value: displayTitle,
+                          title: "💻 TARGET",
+                          value: escapeJson(displayTitle),
                           short: false
                         },
                         {
-                          title: "👤 Author",
-                          value: author,
+                          title: "👨‍💻 HACKER",
+                          value: escapeJson(author),
                           short: true
                         },
                         {
-                          title: "🌿 Branch",
-                          value: `\`${branch}\` → \`${baseBranch}\``,
+                          title: "🌐 ROUTE",
+                          value: escapeJson(`\`${branch}\` → \`${baseBranch}\``),
                           short: true
                         },
                         {
-                          title: "🔗 Links",
-                          value: `<${url}|PR #${prData.number}>${jiraLink}`,
+                          title: "🔗 ACCESS_POINT",
+                          value: escapeJson(`<${url}|PR #${prData.number}>${jiraLink}`),
                           short: false
                         }
                       ],
-                      footer: "Express Milo • Ready for Review",
+                      footer: "Express Milo • System Online",
                       footer_icon: "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
                     }
                   ]
