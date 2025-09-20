@@ -3,12 +3,19 @@ import { getLibs, getMobileOperatingSystem, getIconElementDeprecated } from '../
 let createTag; let getConfig;
 
 let currDrawer = null;
-const largeMQ = window.matchMedia('(min-width: 1280px)');
-const mediumMQ = window.matchMedia('(min-width: 768px)');
-const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+let largeMQ;
+let mediumMQ;
+let reduceMotionMQ;
 
 const APPLE = 'apple';
 const GOOGLE = 'google';
+
+// Phase 1: Defer non-critical initialization
+function initializeMediaQueries() {
+  if (!largeMQ) largeMQ = window.matchMedia('(min-width: 1280px)');
+  if (!mediumMQ) mediumMQ = window.matchMedia('(min-width: 768px)');
+  if (!reduceMotionMQ) reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+}
 
 function drawerOff() {
   if (!currDrawer) return;
@@ -21,6 +28,7 @@ function drawerOff() {
   }
 
   currDrawer = null;
+  initializeMediaQueries();
   if (!largeMQ.matches) document.body.classList.remove('disable-scroll');
 }
 function drawerOn(drawer) {
@@ -28,10 +36,20 @@ function drawerOn(drawer) {
   drawer.closest('.card').setAttribute('aria-expanded', true);
   drawer.classList.remove('hide');
   const video = drawer.querySelector('video');
-  if (video && !reduceMotionMQ.matches) {
-    video.muted = true;
-    video.play().catch(() => { });
+  initializeMediaQueries();
+  
+  // Load video only when drawer opens (event-driven loading)
+  if (video) {
+    if (video.dataset.src && !video.src) {
+      video.src = video.dataset.src;
+      video.load();
+    }
+    if (!reduceMotionMQ.matches) {
+      video.muted = true;
+      video.play().catch(() => { });
+    }
   }
+  
   currDrawer = drawer;
   if (!largeMQ.matches) document.body.classList.add('disable-scroll');
 }
@@ -98,21 +116,8 @@ function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, drawer)
   });
   const videoWrapper = createTag('button', { class: 'video-container' }, video);
 
-  const videoObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const videoElement = entry.target;
-        if (videoElement.dataset.src && !videoElement.src) {
-          videoElement.src = videoElement.dataset.src;
-          videoElement.load();
-        }
-        videoObserver.unobserve(videoElement);
-      }
-    });
-  }, { rootMargin: '50px' });
-
-  videoObserver.observe(video);
-  video.videoObserver = videoObserver;
+  // Video loading is event-driven - only load when drawer opens
+  // No intersection observer needed since video is hidden until drawer opens
 
   // link video to first anchor
   videoWrapper.addEventListener('click', () => anchors[0]?.click());
@@ -198,27 +203,39 @@ function toCard(drawer) {
   return { card, lazyCB };
 }
 
+// Phase 1: Defer non-critical cart link formatting
 async function formatDynamicCartLink(a) {
   try {
     const pattern = /.*commerce.*adobe\.com.*/gm;
     if (!pattern.test(a.href)) return a;
-    a.style.visibility = 'hidden';
-    const {
-      fetchPlanOnePlans,
-      buildUrl,
-    } = await import('../../scripts/utils/pricing.js');
-    const {
-      url,
-      country,
-      language,
-      offerId,
-    } = await fetchPlanOnePlans(a.href);
-    const newTrialHref = buildUrl(url, country, language, getConfig, offerId);
-    a.href = newTrialHref;
+
+    // Show link immediately, update in background
+    a.style.visibility = 'visible';
+
+    // Use requestIdleCallback for non-critical pricing updates
+    const updateLink = async () => {
+      const {
+        fetchPlanOnePlans,
+        buildUrl,
+      } = await import('../../scripts/utils/pricing.js');
+      const {
+        url,
+        country,
+        language,
+        offerId,
+      } = await fetchPlanOnePlans(a.href);
+      const newTrialHref = buildUrl(url, country, language, getConfig, offerId);
+      a.href = newTrialHref;
+    };
+
+    if (window.requestIdleCallback) {
+      requestIdleCallback(updateLink, { timeout: 2000 });
+    } else {
+      setTimeout(updateLink, 100);
+    }
   } catch (error) {
-    window.lana.log(`Failed to fetch prices for page plan: ${error}`);
+    window.lana?.log(`Failed to fetch prices for page plan: ${error}`);
   }
-  a.style.visibility = 'visible';
   return a;
 }
 
@@ -298,53 +315,120 @@ async function makeRatings(
   return ratings;
 }
 
-export default async function init(el) {
+// Phase 1: Critical path - essential DOM structure
+async function phase1CriticalPath(el) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-  const [ratingPlaceholder,
-    starsPlaceholder,
-    playStoreLabelPlaceholder,
-    appleStoreLabelPlaceholder] = await Promise.all(
-    [
-      replaceKey('app-store-ratings', getConfig()),
-      replaceKey('app-store-stars', getConfig()),
-      replaceKey('app-store-ratings-play-store', getConfig()),
-      replaceKey('app-store-ratings-apple-store', getConfig()),
-    ],
-  );
+
   const rows = [...el.querySelectorAll(':scope > div')];
   const [headline, background, items, foreground] = [rows[0], rows[1], rows.slice(2), createTag('div', { class: 'foreground' })];
+
+  // Essential DOM structure only
   const logo = getIconElementDeprecated('adobe-express-logo');
   logo.classList.add('express-logo');
   const cards = items.map((item) => toCard(item));
   const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
+
+  // Clean up empty elements
   [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
-  foreground.append(logo, decorateHeadline(headline), cardsContainer, ...(el.classList.contains('ratings') ? [await makeRatings(
-    ratingPlaceholder,
-    starsPlaceholder,
-    playStoreLabelPlaceholder,
-    appleStoreLabelPlaceholder,
-  )] : []));
+
+  foreground.append(logo, decorateHeadline(headline), cardsContainer);
   background.classList.add('background');
   el.append(foreground);
+
+  return { cards, el };
+}
+
+// Phase 2: Non-critical enhancements
+async function phase2NonCritical(el) {
+  const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
+
+  // Defer ratings loading
+  if (el.classList.contains('ratings')) {
+    const [ratingPlaceholder,
+      starsPlaceholder,
+      playStoreLabelPlaceholder,
+      appleStoreLabelPlaceholder] = await Promise.all([
+      replaceKey('app-store-ratings', getConfig()),
+      replaceKey('app-store-stars', getConfig()),
+      replaceKey('app-store-ratings-play-store', getConfig()),
+      replaceKey('app-store-ratings-apple-store', getConfig()),
+    ]);
+
+    const ratings = await makeRatings(
+      ratingPlaceholder,
+      starsPlaceholder,
+      playStoreLabelPlaceholder,
+      appleStoreLabelPlaceholder,
+    );
+    el.querySelector('.foreground').append(ratings);
+  }
+}
+
+// Phase 3: Interaction readiness
+function phase3InteractionReadiness(el, cards) {
+  initializeMediaQueries();
+
+  // Optimized intersection observer
   const observer = new IntersectionObserver(async (entries) => {
     const entry = entries[0];
     if (entry.isIntersecting) {
-      if (observer.unobserve) {
-        observer.unobserve(el);
+      observer.unobserve(el);
+
+      // Use requestIdleCallback for non-critical card initialization
+      if (window.requestIdleCallback) {
+        requestIdleCallback(() => {
+          cards.forEach((card) => card.lazyCB());
+        });
+      } else {
+        setTimeout(() => {
+          cards.forEach((card) => card.lazyCB());
+        }, 0);
       }
-      cards.forEach((card) => card.lazyCB());
     }
-  }, { rootMargin: '100px' });
+  }, {
+    rootMargin: '100px',
+    threshold: 0.1,
+  });
 
   observer.observe(el);
-  largeMQ.addEventListener('change', () => {
-    isTouch = false;
-    drawerOff();
-  });
-  mediumMQ.addEventListener('change', () => {
-    drawerOff();
-  });
+
+  // Defer event listeners
+  if (window.requestIdleCallback) {
+    requestIdleCallback(() => {
+      largeMQ.addEventListener('change', () => {
+        isTouch = false;
+        drawerOff();
+      });
+      mediumMQ.addEventListener('change', () => {
+        drawerOff();
+      });
+    });
+  } else {
+    setTimeout(() => {
+      largeMQ.addEventListener('change', () => {
+        isTouch = false;
+        drawerOff();
+      });
+      mediumMQ.addEventListener('change', () => {
+        drawerOff();
+      });
+    }, 0);
+  }
+}
+
+export default async function init(el) {
+  // Phase 1: Critical path
+  const { cards } = await phase1CriticalPath(el);
+
+  // Phase 2: Non-critical (deferred)
+  if (window.requestIdleCallback) {
+    requestIdleCallback(() => phase2NonCritical(el));
+  } else {
+    setTimeout(() => phase2NonCritical(el), 0);
+  }
+
+  // Phase 3: Interaction readiness
+  phase3InteractionReadiness(el, cards);
 }
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && currDrawer) {
