@@ -14,7 +14,12 @@ function drawerOff() {
   if (!currDrawer) return;
   currDrawer.closest('.card').setAttribute('aria-expanded', false);
   currDrawer.classList.add('hide');
-  currDrawer.querySelector('video')?.pause()?.catch(() => { });
+
+  const video = currDrawer.querySelector('video');
+  if (video) {
+    video.pause()?.catch(() => { });
+  }
+
   currDrawer = null;
   if (!largeMQ.matches) document.body.classList.remove('disable-scroll');
 }
@@ -30,7 +35,11 @@ function drawerOn(drawer) {
   currDrawer = drawer;
   if (!largeMQ.matches) document.body.classList.add('disable-scroll');
 }
-document.addEventListener('click', (e) => currDrawer && !currDrawer.closest('.card').contains(e.target) && drawerOff());
+document.addEventListener('click', (e) => {
+  if (currDrawer && !currDrawer.closest('.card').contains(e.target)) {
+    drawerOff();
+  }
+});
 let isTouch;
 const iconRegex = /icon-\s*([^\s]+)/;
 async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, drawer) {
@@ -42,10 +51,14 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     drawerOff();
   });
   titleRow.append(createTag('strong', { class: 'drawer-title' }, titleText), closeButton);
+
   await yieldToMain();
 
   const icons = panelsFrag.querySelectorAll('.icon');
   const anchors = [...panelsFrag.querySelectorAll('a')];
+
+  const fragment = document.createDocumentFragment();
+
   anchors.forEach((anchor, i) => {
     const parent = anchor.parentElement;
     if (parent.tagName === 'P') {
@@ -71,20 +84,43 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
       toStay.classList.add('grid-marquee-label');
       anchor.append(toStay);
     }
+
+    fragment.append(anchor);
   });
 
   const video = createTag('video', {
     playsinline: '',
     muted: '',
     loop: '',
-    preload: 'metadata',
+    preload: 'none',
     title: titleText,
     poster,
-  }, `<source src="${videoSrc}" type="video/mp4">`);
+    'data-src': videoSrc,
+    loading: 'lazy',
+  });
   const videoWrapper = createTag('button', { class: 'video-container' }, video);
+
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const videoElement = entry.target;
+        if (videoElement.dataset.src && !videoElement.src) {
+          videoElement.src = videoElement.dataset.src;
+          videoElement.load();
+        }
+        videoObserver.unobserve(videoElement);
+      }
+    });
+  }, { rootMargin: '50px' });
+
+  videoObserver.observe(video);
+  video.videoObserver = videoObserver;
+
   // link video to first anchor
   videoWrapper.addEventListener('click', () => anchors[0]?.click());
   videoWrapper.setAttribute('title', anchors[0]?.title);
+
+  panelsFrag.append(fragment);
 
   content.append(titleRow, videoWrapper, panelsFrag);
   drawer.append(content);
@@ -293,10 +329,16 @@ export default async function init(el) {
   )] : []));
   background.classList.add('background');
   el.append(foreground);
-  new IntersectionObserver((entries, ob) => {
-    ob.unobserve(el);
-    cards.forEach((card) => card.lazyCB());
-  }).observe(el);
+  const observer = new IntersectionObserver(async (entries) => {
+    const entry = entries[0];
+    if (entry.isIntersecting) {
+      observer.unobserve(el);
+      await yieldToMain();
+      cards.forEach((card) => card.lazyCB());
+    }
+  }, { rootMargin: '100px' });
+
+  observer.observe(el);
   largeMQ.addEventListener('change', () => {
     isTouch = false;
     drawerOff();
