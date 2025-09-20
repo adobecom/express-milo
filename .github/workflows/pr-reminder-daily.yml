@@ -5,8 +5,8 @@ on:
     # Production: Run at 9 AM and 2 PM UTC (adjust timezone as needed)
     - cron: '0 9 * * *'  # 9 AM UTC
     - cron: '0 14 * * *' # 2 PM UTC
-    # Testing: every 5 minutes (minimum allowed by GitHub)
-    - cron: '*/5 * * * *'  # Every 5 minutes (test mode only)
+    # Testing: every 1 minute (for feature branch testing only)
+    - cron: '* * * * *'  # Every 1 minute (test mode only)
   push:
     branches:
       - feature/pr-label-management
@@ -164,7 +164,7 @@ jobs:
               draft: prs.filter(pr => pr.draft)
             };
             
-            // Test mode: if this is the every-5-minute cron (testing only) OR if we're on feature branch
+            // Test mode: if this is the every-1-minute cron (testing only) OR if we're on feature branch
             const isTestMode = (context.event_name === 'schedule' && context.ref === 'refs/heads/main') || 
                               context.ref === 'refs/heads/feature/pr-label-management';
             
