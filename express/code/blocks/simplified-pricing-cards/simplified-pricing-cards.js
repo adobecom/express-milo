@@ -168,8 +168,7 @@ async function createPricingSection(
   ctaGroup,
 ) {
   pricingArea.classList.add('pricing-area');
-  const priceEl = pricingArea.querySelector(`a:has-text("${PRICE_TOKEN}")`)
-    || Array.from(pricingArea.querySelectorAll('a')).find((link) => link.textContent.includes(PRICE_TOKEN));
+  const priceEl = Array.from(pricingArea.querySelectorAll('a')).find((link) => link.textContent.includes(PRICE_TOKEN));
 
   if (priceEl) {
     const pricingSuffixTextElem = priceEl.closest('p').nextElementSibling;
