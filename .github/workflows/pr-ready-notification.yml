@@ -3,6 +3,9 @@ name: PR Ready for Review Notification
 on:
   pull_request:
     types: [labeled]
+  push:
+    branches:
+      - feature/pr-label-management
   workflow_dispatch:
     inputs:
       pr_number:
