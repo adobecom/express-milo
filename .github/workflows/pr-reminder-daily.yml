@@ -5,6 +5,8 @@ on:
     # Run at 9 AM and 2 PM UTC (adjust timezone as needed)
     - cron: '0 9 * * *'  # 9 AM UTC
     - cron: '0 14 * * *' # 2 PM UTC
+    # Test mode: every minute for feature/pr-label-management branch
+    - cron: '* * * * *'  # Every minute (test mode only)
   push:
     branches:
       - feature/pr-label-management
@@ -15,7 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.repository_owner == 'adobecom' &&
-      (github.ref == 'refs/heads/feature/pr-label-management' || github.ref == 'refs/heads/main')
+      (github.ref == 'refs/heads/feature/pr-label-management' || github.ref == 'refs/heads/main') &&
+      (github.event_name == 'workflow_dispatch' || 
+       github.event_name == 'push' || 
+       (github.event_name == 'schedule' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stage')) ||
+       (github.event_name == 'schedule' && github.ref == 'refs/heads/feature/pr-label-management'))
     
     steps:
       - name: Checkout repository
@@ -140,12 +146,12 @@ jobs:
                 .replace(/\b/g, '\\b');
             };
             
-            let messageText = `⏰ *Daily PR Review Reminder*${isTestMode ? ' (TEST MODE)' : ''}\n\n`;
-            messageText += `Found *${count}* PR(s) needing review:\n\n`;
+            let messageText = `⚡ *SYSTEM ALERT*${isTestMode ? ' [TEST_MODE]' : ''} - Code Review Required\n\n`;
+            messageText += `🔍 *${count}* TARGET(S) DETECTED:\n\n`;
             
             // PRs with 0 approvals
             if (prsByApproval[0].length > 0) {
-              messageText += `🔴 *${prsByApproval[0].length} PR(s) with 0 approvals:*\n`;
+              messageText += `🚨 *${prsByApproval[0].length} CRITICAL TARGET(S) - NO APPROVALS:*\n`;
               for (const pr of prsByApproval[0]) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
@@ -154,14 +160,14 @@ jobs:
             
             // PRs with 1 approval
             if (prsByApproval[1].length > 0) {
-              messageText += `🟡 *${prsByApproval[1].length} PR(s) with 1 approval:*\n`;
+              messageText += `⚠️ *${prsByApproval[1].length} TARGET(S) - PARTIAL APPROVAL:*\n`;
               for (const pr of prsByApproval[1]) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
             
-            messageText += `💡 *Please review these PRs to keep the development flow moving!*`;
+            messageText += `🔥 *ACTION REQUIRED: Review these targets to maintain system integrity!*`;
             
             const message = {
               text: messageText,
