@@ -5,7 +5,7 @@ on:
     # Run at 9 AM and 2 PM UTC (adjust timezone as needed)
     - cron: '0 9 * * *'  # 9 AM UTC
     - cron: '0 14 * * *' # 2 PM UTC
-    # Test mode: every minute for feature/pr-label-management branch
+    # Test mode: every minute for testing
     - cron: '* * * * *'  # Every minute (test mode only)
   push:
     branches:
@@ -17,11 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.repository_owner == 'adobecom' &&
-      (github.ref == 'refs/heads/feature/pr-label-management' || github.ref == 'refs/heads/main') &&
       (github.event_name == 'workflow_dispatch' || 
        github.event_name == 'push' || 
-       (github.event_name == 'schedule' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stage')) ||
-       (github.event_name == 'schedule' && github.ref == 'refs/heads/feature/pr-label-management'))
+       github.event_name == 'schedule')
     
     steps:
       - name: Checkout repository
@@ -132,7 +130,9 @@ jobs:
               1: prs.filter(pr => pr.approvalCount === 1)
             };
             
-            const isTestMode = context.ref === 'refs/heads/feature/pr-label-management';
+            // Test mode: if on feature branch or if this is a frequent run (every minute)
+            const isTestMode = context.ref === 'refs/heads/feature/pr-label-management' || 
+                              (context.event_name === 'schedule' && context.schedule === '* * * * *');
             
             // Escape special characters for JSON
             const escapeJson = (str) => {
