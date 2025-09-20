@@ -130,9 +130,8 @@ jobs:
               1: prs.filter(pr => pr.approvalCount === 1)
             };
             
-            // Test mode: if this is the every-minute cron (testing only) OR if we're on the feature branch
-            const isTestMode = (context.event_name === 'schedule' && context.schedule === '* * * * *') ||
-                              context.ref === 'refs/heads/feature/pr-label-management';
+            // Test mode: if this is the every-minute cron (testing only)
+            const isTestMode = context.event_name === 'schedule' && context.schedule === '* * * * *';
             
             // Escape special characters for JSON
             const escapeJson = (str) => {
@@ -204,7 +203,7 @@ jobs:
               console.log(`❌ Error sending reminder: ${error.message}`);
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ github.ref == 'refs/heads/feature/pr-label-management' && secrets.SLACK_WEBHOOK_URL_PR_TEST || secrets.SLACK_WEBHOOK_URL_PR }}
+          SLACK_WEBHOOK_URL: ${{ github.event_name == 'schedule' && github.schedule == '* * * * *' && secrets.SLACK_WEBHOOK_URL_PR_TEST || secrets.SLACK_WEBHOOK_URL_PR }}
 
       - name: No PRs reminder
         if: steps.find-prs.outputs.count == '0'
