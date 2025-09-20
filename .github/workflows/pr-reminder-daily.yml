@@ -5,6 +5,9 @@ on:
     # Run at 9 AM and 2 PM UTC (adjust timezone as needed)
     - cron: '0 9 * * *'  # 9 AM UTC
     - cron: '0 14 * * *' # 2 PM UTC
+  push:
+    branches:
+      - feature/pr-label-management
   workflow_dispatch: # Allow manual trigger for testing
 
 jobs:
