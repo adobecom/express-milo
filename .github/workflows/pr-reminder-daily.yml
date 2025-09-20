@@ -126,7 +126,7 @@ jobs:
               1: prs.filter(pr => pr.approvalCount === 1)
             };
             
-            const isTestMode = context.ref !== 'refs/heads/main' && context.ref !== 'refs/heads/stage';
+            const isTestMode = context.ref === 'refs/heads/feature/pr-label-management';
             let messageText = `⏰ *Daily PR Review Reminder*${isTestMode ? ' (TEST MODE)' : ''}\n\n`;
             messageText += `Found *${count}* PR(s) needing review:\n\n`;
             
@@ -187,7 +187,7 @@ jobs:
               console.log(`❌ Error sending reminder: ${error.message}`);
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/stage') && secrets.SLACK_WEBHOOK_URL_PR || secrets.SLACK_WEBHOOK_URL_PR_TEST }}
+          SLACK_WEBHOOK_URL: ${{ github.ref == 'refs/heads/feature/pr-label-management' && secrets.SLACK_WEBHOOK_URL_PR_TEST || secrets.SLACK_WEBHOOK_URL_PR }}
 
       - name: No PRs reminder
         if: steps.find-prs.outputs.count == '0'
