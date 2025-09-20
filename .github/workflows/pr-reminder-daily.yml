@@ -130,10 +130,12 @@ jobs:
             
             console.log(`📢 Sending reminder for ${count} PRs needing review`);
             
-            // Group PRs by approval count for better organization
-            const prsByApproval = {
-              0: prs.filter(pr => pr.approvalCount === 0),
-              1: prs.filter(pr => pr.approvalCount === 1)
+            // Group PRs by status for better organization
+            const prsByStatus = {
+              readyForReview: prs.filter(pr => pr.approvalCount < 2),
+              readyForQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA')),
+              readyForQAWithLabel: prs.filter(pr => pr.labels.includes('Ready for QA')),
+              draft: prs.filter(pr => pr.draft)
             };
             
             // Test mode: if this is the every-5-minute cron (testing only)
@@ -153,28 +155,47 @@ jobs:
                 .replace(/[\x00-\x1F\x7F-\x9F]/g, ''); // Remove control characters
             };
             
-            let messageText = `⚡ *SYSTEM ALERT*${isTestMode ? ' [TEST_MODE]' : ''} - Code Review Required\n\n`;
-            messageText += `🔍 *${count}* TARGET(S) DETECTED:\n\n`;
+            let messageText = `🚨 *URGENT: OPEN PRs REMINDER*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
+            messageText += `📊 *SYSTEM STATUS OVERVIEW:*\n\n`;
             
-            // PRs with 0 approvals
-            if (prsByApproval[0].length > 0) {
-              messageText += `🚨 *${prsByApproval[0].length} CRITICAL TARGET(S) - NO APPROVALS:*\n`;
-              for (const pr of prsByApproval[0]) {
+            // Ready for Review but less than 2 approvals
+            if (prsByStatus.readyForReview.length > 0) {
+              messageText += `🔴 *READY FOR REVIEW (${prsByStatus.readyForReview.length} PRs) - NEEDS APPROVAL:*\n`;
+              for (const pr of prsByStatus.readyForReview) {
+                const approvalText = pr.approvalCount === 0 ? 'NO APPROVALS' : '1 APPROVAL';
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${approvalText}${pr.jiraLink}\n`;
+              }
+              messageText += `\n`;
+            }
+            
+            // Ready for Review with 2+ approvals, but no Ready for QA label
+            if (prsByStatus.readyForQA.length > 0) {
+              messageText += `🟡 *READY FOR QA (${prsByStatus.readyForQA.length} PRs) - MISSING LABEL:*\n`;
+              for (const pr of prsByStatus.readyForQA) {
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
+              }
+              messageText += `\n`;
+            }
+            
+            // Ready for QA Label
+            if (prsByStatus.readyForQAWithLabel.length > 0) {
+              messageText += `🟢 *READY FOR QA LABEL (${prsByStatus.readyForQAWithLabel.length} PRs) - READY TO DEPLOY:*\n`;
+              for (const pr of prsByStatus.readyForQAWithLabel) {
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
+              }
+              messageText += `\n`;
+            }
+            
+            // Draft PRs
+            if (prsByStatus.draft.length > 0) {
+              messageText += `⚪ *DRAFT PRs (${prsByStatus.draft.length} PRs) - IN PROGRESS:*\n`;
+              for (const pr of prsByStatus.draft) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
             
-            // PRs with 1 approval
-            if (prsByApproval[1].length > 0) {
-              messageText += `⚠️ *${prsByApproval[1].length} TARGET(S) - PARTIAL APPROVAL:*\n`;
-              for (const pr of prsByApproval[1]) {
-                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
-              }
-              messageText += `\n`;
-            }
-            
-            messageText += `🔥 *ACTION REQUIRED: Review these targets to maintain system integrity!*`;
+            messageText += `⚡ *IMMEDIATE ACTION REQUIRED: Review and process these PRs to maintain development velocity!*`;
             
             const message = {
               text: messageText,
