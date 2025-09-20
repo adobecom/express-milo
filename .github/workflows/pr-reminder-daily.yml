@@ -189,11 +189,11 @@ jobs:
             let messageText;
             if (isLastReminder) {
               // Star Wars theme for last reminder of the day
-              messageText = `⭐ *JEDI COUNCIL MEETING*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
+              messageText = `⚔️ *JEDI COUNCIL MEETING*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
               
               // 1. Changes requested (highest priority)
               if (prsByStatus.changesRequested.length > 0) {
-                messageText += `🔴 *SITH CORRUPTION DETECTED* (${prsByStatus.changesRequested.length} PRs - Changes Requested):*\n`;
+                messageText += `🦹 *SITH CORRUPTION DETECTED* (${prsByStatus.changesRequested.length} PRs - Changes Requested):*\n`;
                 for (const pr of prsByStatus.changesRequested) {
                   messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
                 }
@@ -202,7 +202,7 @@ jobs:
               
               // 2. No approvals (second priority)
               if (prsByStatus.noApprovals.length > 0) {
-                messageText += `🔴 *DARK SIDE THREATS* (${prsByStatus.noApprovals.length} PRs - 0 approvals):*\n`;
+                messageText += `⚡ *DARK SIDE THREATS* (${prsByStatus.noApprovals.length} PRs - 0 approvals):*\n`;
                 for (const pr of prsByStatus.noApprovals) {
                   messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
                 }
@@ -211,7 +211,7 @@ jobs:
 
               // 3. 1 approval
               if (prsByStatus.oneApproval.length > 0) {
-                messageText += `🟠 *PENDING JEDI TRAINING* (${prsByStatus.oneApproval.length} PRs - 1 approval):*\n`;
+                messageText += `🦸 *PENDING JEDI TRAINING* (${prsByStatus.oneApproval.length} PRs - 1 approval):*\n`;
                 for (const pr of prsByStatus.oneApproval) {
                   messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
                 }
@@ -220,7 +220,7 @@ jobs:
 
               // 4. 2+ approvals but no Ready for QA label
               if (prsByStatus.twoApprovalsNoQA.length > 0) {
-                messageText += `🟠 *PENDING JEDI COUNCIL* (${prsByStatus.twoApprovalsNoQA.length} PRs - 2+ approvals):*\n`;
+                messageText += `⚔️ *PENDING JEDI COUNCIL* (${prsByStatus.twoApprovalsNoQA.length} PRs - 2+ approvals):*\n`;
                 for (const pr of prsByStatus.twoApprovalsNoQA) {
                   messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
                 }
@@ -229,7 +229,7 @@ jobs:
 
               // 5. Ready for QA status
               if (prsByStatus.readyForQA.length > 0) {
-                messageText += `🟢 *FORCE MASTERY ACHIEVED* (${prsByStatus.readyForQA.length} PRs - Ready for QA):*\n`;
+                messageText += `⭐ *FORCE MASTERY ACHIEVED* (${prsByStatus.readyForQA.length} PRs - Ready for QA):*\n`;
                 for (const pr of prsByStatus.readyForQA) {
                   messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
                 }
@@ -238,7 +238,7 @@ jobs:
               
               // 6. Draft PRs (lowest priority)
               if (prsByStatus.draft.length > 0) {
-                messageText += `⚪ *PADAWAN MISSIONS* (${prsByStatus.draft.length} PRs - Draft):*\n`;
+                messageText += `🤖 *PADAWAN MISSIONS* (${prsByStatus.draft.length} PRs - Draft):*\n`;
                 for (const pr of prsByStatus.draft) {
                   messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
                 }
