@@ -158,9 +158,10 @@ jobs:
             
             // Group PRs by status for better organization
             const prsByStatus = {
-              readyForReview: prs.filter(pr => pr.approvalCount < 2),
-              readyForQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA')),
-              readyForQAWithLabel: prs.filter(pr => pr.labels.includes('Ready for QA')),
+              noApprovals: prs.filter(pr => pr.approvalCount === 0),
+              oneApproval: prs.filter(pr => pr.approvalCount === 1),
+              twoApprovalsNoQA: prs.filter(pr => pr.approvalCount >= 2 && !pr.labels.includes('Ready for QA')),
+              readyForQA: prs.filter(pr => pr.labels.includes('Ready for QA')),
               draft: prs.filter(pr => pr.draft)
             };
             
@@ -180,40 +181,47 @@ jobs:
                 .replace(/[\x00-\x1F\x7F-\x9F]/g, ''); // Remove control characters
             };
             
-            let messageText = `🚨 *URGENT: OPEN PRs REMINDER*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
-            messageText += `📊 *SYSTEM STATUS OVERVIEW:*\n\n`;
+            let messageText = `🚨 *PRs REMINDER*${isTestMode ? ' [TEST_MODE]' : ''}\n\n`;
             
-            // Ready for Review but less than 2 approvals
-            if (prsByStatus.readyForReview.length > 0) {
-              messageText += `🔴 *READY FOR REVIEW (${prsByStatus.readyForReview.length} PRs) - NEEDS APPROVAL:*\n`;
-              for (const pr of prsByStatus.readyForReview) {
-                const approvalText = pr.approvalCount === 0 ? 'NO APPROVALS' : '1 APPROVAL';
-                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${approvalText}${pr.jiraLink}\n`;
+            // 1. No approvals (highest priority)
+            if (prsByStatus.noApprovals.length > 0) {
+              messageText += `🔴 *NO APPROVALS (${prsByStatus.noApprovals.length} PRs):*\n`;
+              for (const pr of prsByStatus.noApprovals) {
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
             
-            // Ready for Review with 2+ approvals, but no Ready for QA label
+            // 2. 1 approval
+            if (prsByStatus.oneApproval.length > 0) {
+              messageText += `🟠 *1 APPROVAL (${prsByStatus.oneApproval.length} PRs):*\n`;
+              for (const pr of prsByStatus.oneApproval) {
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
+              }
+              messageText += `\n`;
+            }
+            
+            // 3. 2+ approvals but no Ready for QA label
+            if (prsByStatus.twoApprovalsNoQA.length > 0) {
+              messageText += `🟡 *2+ APPROVALS - MISSING QA LABEL (${prsByStatus.twoApprovalsNoQA.length} PRs):*\n`;
+              for (const pr of prsByStatus.twoApprovalsNoQA) {
+                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
+              }
+              messageText += `\n`;
+            }
+            
+            // 4. Ready for QA status
             if (prsByStatus.readyForQA.length > 0) {
-              messageText += `🟡 *READY FOR QA (${prsByStatus.readyForQA.length} PRs) - MISSING LABEL:*\n`;
+              messageText += `🟢 *READY FOR QA (${prsByStatus.readyForQA.length} PRs):*\n`;
               for (const pr of prsByStatus.readyForQA) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
             
-            // Ready for QA Label
-            if (prsByStatus.readyForQAWithLabel.length > 0) {
-              messageText += `🟢 *READY FOR QA LABEL (${prsByStatus.readyForQAWithLabel.length} PRs) - READY TO DEPLOY:*\n`;
-              for (const pr of prsByStatus.readyForQAWithLabel) {
-                messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
-              }
-              messageText += `\n`;
-            }
-            
-            // Draft PRs
+            // 5. Draft PRs (lowest priority)
             if (prsByStatus.draft.length > 0) {
-              messageText += `⚪ *DRAFT PRs (${prsByStatus.draft.length} PRs) - IN PROGRESS:*\n`;
+              messageText += `⚪ *DRAFT PRs (${prsByStatus.draft.length} PRs):*\n`;
               for (const pr of prsByStatus.draft) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
