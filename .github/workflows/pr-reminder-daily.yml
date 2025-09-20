@@ -184,7 +184,7 @@ jobs:
             // Check if this is the last reminder of the day (evening reminder)
             const now = new Date();
             const hour = now.getUTCHours();
-            const isLastReminder = hour >= 21; // 9 PM UTC or later (2 PM PST)
+            const isLastReminder = true; // TESTING: Always show Star Wars theme
             
             let messageText;
             if (isLastReminder) {
