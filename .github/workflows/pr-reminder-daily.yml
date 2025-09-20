@@ -2,10 +2,10 @@ name: Daily PR Reminder
 
 on:
   schedule:
-    # Run at 9 AM and 2 PM UTC (adjust timezone as needed)
+    # Production: Run at 9 AM and 2 PM UTC (adjust timezone as needed)
     - cron: '0 9 * * *'  # 9 AM UTC
     - cron: '0 14 * * *' # 2 PM UTC
-    # Test mode: every minute for testing
+    # Testing: every minute for feature/pr-label-management branch only
     - cron: '* * * * *'  # Every minute (test mode only)
   push:
     branches:
@@ -130,9 +130,9 @@ jobs:
               1: prs.filter(pr => pr.approvalCount === 1)
             };
             
-            // Test mode: if on feature branch or if this is a frequent run (every minute)
-            const isTestMode = context.ref === 'refs/heads/feature/pr-label-management' || 
-                              (context.event_name === 'schedule' && context.schedule === '* * * * *');
+            // Test mode: if this is the every-minute cron (testing only) OR if we're on the feature branch
+            const isTestMode = (context.event_name === 'schedule' && context.schedule === '* * * * *') ||
+                              context.ref === 'refs/heads/feature/pr-label-management';
             
             // Escape special characters for JSON
             const escapeJson = (str) => {
