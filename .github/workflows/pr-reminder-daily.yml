@@ -204,25 +204,25 @@ jobs:
               }
               messageText += `\n`;
             }
-            
+
             // 3. 1 approval
             if (prsByStatus.oneApproval.length > 0) {
-              messageText += `🟡 *1 APPROVAL (${prsByStatus.oneApproval.length} PRs):*\n`;
+              messageText += `🟠 *1 APPROVAL (${prsByStatus.oneApproval.length} PRs):*\n`;
               for (const pr of prsByStatus.oneApproval) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)}${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
-            
+
             // 4. 2+ approvals but no Ready for QA label
             if (prsByStatus.twoApprovalsNoQA.length > 0) {
-              messageText += `🟡 *2+ APPROVALS - MISSING QA LABEL (${prsByStatus.twoApprovalsNoQA.length} PRs):*\n`;
+              messageText += `🟠 *2+ APPROVALS - MISSING QA LABEL (${prsByStatus.twoApprovalsNoQA.length} PRs):*\n`;
               for (const pr of prsByStatus.twoApprovalsNoQA) {
                 messageText += `• <${pr.url}|${escapeJson(pr.title)}> (#${pr.number}) by @${escapeJson(pr.author)} - ${pr.approvalCount} approvals${pr.jiraLink}\n`;
               }
               messageText += `\n`;
             }
-            
+
             // 5. Ready for QA status
             if (prsByStatus.readyForQA.length > 0) {
               messageText += `🟢 *READY FOR QA (${prsByStatus.readyForQA.length} PRs):*\n`;
