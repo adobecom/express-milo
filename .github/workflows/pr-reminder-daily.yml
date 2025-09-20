@@ -6,7 +6,7 @@ on:
     - cron: '0 9 * * *'  # 9 AM UTC
     - cron: '0 14 * * *' # 2 PM UTC
     # Testing: every 1 minute (for feature branch testing only)
-    - cron: '* * * * *'  # Every 1 minute (test mode only)
+    - cron: '*/5 * * * *'  # Every 5 minutes (test mode only)
   push:
     branches:
       - feature/pr-label-management
@@ -165,7 +165,7 @@ jobs:
               draft: prs.filter(pr => pr.draft)
             };
             
-            // Test mode: if this is the every-1-minute cron (testing only) OR if we're on feature branch
+            // Test mode: if this is the every-5-minute cron (testing only) OR if we're on feature branch
             const isTestMode = (context.event_name === 'schedule' && context.ref === 'refs/heads/main') || 
                               context.ref === 'refs/heads/feature/pr-label-management';
             
@@ -184,7 +184,7 @@ jobs:
             // Check if this is the last reminder of the day (evening reminder)
             const now = new Date();
             const hour = now.getUTCHours();
-            const isLastReminder = true; // TESTING: Always show Star Wars theme
+            const isLastReminder = hour >= 21; // 9 PM UTC or later (2 PM PST)
             
             let messageText;
             if (isLastReminder) {
