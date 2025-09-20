@@ -106,6 +106,18 @@ jobs:
             
             // No approval checking functions needed - simplified to just Ready for Review
             
+            // Helper function to escape JSON special characters
+            function escapeJson(str) {
+              return str
+                .replace(/\\/g, '\\\\')
+                .replace(/"/g, '\\"')
+                .replace(/\n/g, '\\n')
+                .replace(/\r/g, '\\r')
+                .replace(/\t/g, '\\t')
+                .replace(/\f/g, '\\f')
+                .replace(/\b/g, '\\b');
+            }
+            
             // Helper function to send Slack notification
             async function sendSlackNotification(prData) {
               try {
