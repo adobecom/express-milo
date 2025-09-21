@@ -9,7 +9,8 @@ on:
     - cron: '*/5 * * * *'  # Every 5 minutes (test mode only)
   push:
     branches:
-      - MWPW-181168
+      - main
+      - stage
   workflow_dispatch: # Allow manual trigger for testing
 
 jobs:
@@ -165,9 +166,30 @@ jobs:
               draft: prs.filter(pr => pr.draft)
             };
             
-            // Test mode: if this is the every-5-minute cron (testing only) OR if we're on feature branch
+            // Helper function to check for test label
+            async function checkForTestLabel() {
+              try {
+                // Check if any PR has the test-daily-reminder label
+                const { owner, repo } = context.repo;
+                const prs = await github.rest.pulls.list({
+                  owner,
+                  repo,
+                  state: 'open',
+                  per_page: 100
+                });
+                
+                return prs.data.some(pr => 
+                  pr.labels.some(label => label.name === 'test-daily-reminder')
+                );
+              } catch (error) {
+                console.log('Error checking for test label:', error.message);
+                return false;
+              }
+            }
+            
+            // Test mode: if this is the every-5-minute cron (testing only) OR if test-daily-reminder label exists
             const isTestMode = (context.event_name === 'schedule' && context.ref === 'refs/heads/main') || 
-                              context.ref === 'refs/heads/MWPW-181168';
+                              await checkForTestLabel();
             
             // Escape special characters for JSON
             const escapeJson = (str) => {
