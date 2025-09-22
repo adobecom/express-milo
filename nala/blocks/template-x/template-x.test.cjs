@@ -17,7 +17,7 @@ test.describe('template-x Block Test Suite', () => {
       await page.goto(`${baseURL}${features[0].path}`);
       await page.waitForLoadState('domcontentloaded');
       await expect(page).toHaveURL(`${baseURL}${features[0].path}`);
-      //await page.waitForTimeout(3000);
+      // await page.waitForTimeout(3000);
     });
 
     await test.step('Verify search icon is displayed ', async () => {
