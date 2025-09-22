@@ -143,13 +143,9 @@ jobs:
 
       - name: Send release notification
         if: env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
-        uses: 8398a7/action-slack@v3
-        env:
-          SLACK_WEBHOOK_URL: ${{ env.SLACK_WEBHOOK_URL }}
-        with:
-          status: custom
-          custom_payload: |
-            {
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
               "text": "🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST MODE)' || '' }}",
               "attachments": [
                 {
@@ -180,7 +176,8 @@ jobs:
               ],
               "footer": "Express Milo",
               "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
-            }
+            }' \
+            ${{ env.SLACK_WEBHOOK_URL }}
 
       - name: Fallback notification
         if: failure() && env.SLACK_WEBHOOK_URL != ''
