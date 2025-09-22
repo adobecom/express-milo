@@ -1,4 +1,4 @@
-name: Simple Release Notification
+name: Slack Release Notification
 
 on:
   push:
