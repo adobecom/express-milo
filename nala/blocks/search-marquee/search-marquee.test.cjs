@@ -43,7 +43,7 @@ test.describe('Search Marquee block tests', () => {
       const enterKeyHint = await searchMarquee.getSearchBarEnterKeyHint();
 
       if (placeholder) {
-        expect(placeholder).toContain('Search for over 50,000 templates');
+        expect(placeholder).toContain('Search across hundreds of thousands of templates');
         console.log('✅ Search bar has correct placeholder');
       } else {
         console.log('⚠️ Search bar not found - placeholder check skipped');
