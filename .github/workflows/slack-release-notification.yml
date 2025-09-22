@@ -8,6 +8,8 @@ on:
       - 'README.md'
       - 'docs/**'
       - '*.md'
+  pull_request:
+    types: [labeled]
   workflow_dispatch:
     inputs:
       test_mode:
@@ -18,12 +20,16 @@ on:
 
 env:
   # Webhook URL (required)
-  SLACK_WEBHOOK_URL: ${{ (github.event.inputs.test_mode == 'true') && secrets.SLACK_WEBHOOK_URL_TEST || secrets.SLACK_WEBHOOK_URL }}
+  SLACK_WEBHOOK_URL: ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && secrets.SLACK_WEBHOOK_URL_TEST || secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   notify-release:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'adobecom' && (github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch')
+    if: |
+      github.repository_owner == 'adobecom' && 
+      (github.ref == 'refs/heads/main' || 
+       github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification')))
     
     steps:
       - name: Checkout repository
@@ -145,7 +151,7 @@ jobs:
           webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
           custom_payload: |
             {
-              "text": "🚀 *Express Milo Release Deployed* ${{ github.event.inputs.test_mode == 'true' && '(TEST MODE)' || '' }}",
+              "text": "🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST MODE)' || '' }}",
               "attachments": [
                 {
                   "color": "good",
