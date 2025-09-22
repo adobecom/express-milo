@@ -93,6 +93,13 @@ main .logo-marquee .cta-with-input .con-button {
   margin: 0;
   border: none;
   padding: 12px 24px;
+  min-width: auto; /* shrink to text width + padding */
+  display: inline-flex; /* reduce extra inline-box space */
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2; /* tighter vertical metrics around text */
+  height: auto;
+  min-height: 0; /* override any framework min-height */
  }
 
 .logo-marquee .column-picture {
@@ -165,7 +172,7 @@ main .logo-marquee .cta-with-input .con-button {
   .logo-marquee .cta-with-input { flex-direction: row; align-items: center; }
   .logo-marquee .cta-with-input .logo-marquee-input { width: auto; flex: 1 1 auto; }
   .logo-marquee .cta-with-input .button,
-  .logo-marquee .cta-with-input .con-button { width: auto; order: 1; }
+  .logo-marquee .cta-with-input .con-button { width: auto; order: 1; min-width: auto; }
 
   .logo-marquee .column-picture::before {
     width: 160%;
@@ -173,6 +180,21 @@ main .logo-marquee .cta-with-input .con-button {
     right: -30%;
     top: -30%;
     left: auto;
+  }
+}
+
+/* Keep one-row layout on lower tablet and shrink input text to avoid truncation */
+@media (min-width: 768px) and (max-width: 900px) {
+  .logo-marquee .cta-with-input { flex-wrap: nowrap; }
+  .logo-marquee .cta-with-input .logo-marquee-input { 
+    font-size: var(--body-font-size-s);
+    min-width: 0; /* allow flex item to shrink */
+  }
+  .logo-marquee .cta-with-input .button,
+  .logo-marquee .cta-with-input .con-button {
+    width: auto;
+    white-space: nowrap;
+    min-width: auto; /* keep compact; rely on padding only */
   }
 }
 
@@ -207,6 +229,9 @@ main .logo-marquee .cta-with-input .con-button {
   font-size: var(--body-font-size-m);
   transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
   background-color: var(--Palette-gray-25, #FFF);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
 }
 
@@ -223,6 +248,10 @@ main .logo-marquee .cta-with-input .con-button {
   color: var(--text-color-secondary, #6e6e6e);
   pointer-events: none;
   transition: all 150ms ease-out;
+  right: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Centered placeholder when empty */
@@ -231,6 +260,7 @@ main .logo-marquee .cta-with-input .con-button {
   transform: translateY(-50%);
   font-size: var(--body-font-size-m);
   line-height: 1;
+  text-align: left;
 }
 
 .logo-marquee-input-wrapper:has(.logo-marquee-input:placeholder-shown) .logo-marquee-input {
@@ -294,5 +324,6 @@ main .logo-marquee .cta-with-input .con-button {
 .logo-marquee-input-wrapper:has(.logo-marquee-input:focus-visible) .logo-marquee-input {
   padding-top: 20px;
   padding-left: 14px;
+  overflow: auto; /* allow user to scroll horizontally to see full text */
 }
 
