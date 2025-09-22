@@ -37,6 +37,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get short SHA
+        id: short-sha
+        run: echo "short-sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
       - name: Extract PR information
         id: extract-prs
         uses: actions/github-script@v7
@@ -152,18 +156,13 @@ jobs:
                   "color": "#0066cc",
                   "fields": [
                     {
-                      "title": "📦 Repository",
-                      "value": "${{ github.repository }}",
-                      "short": true
-                    },
-                    {
-                      "title": "🌿 Branch",
-                      "value": "`${{ github.ref_name }}`",
+                      "title": "🌿 Branch", 
+                      "value": "main",
                       "short": true
                     },
                     {
                       "title": "🔗 Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|`${{ github.sha }}`>",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>",
                       "short": true
                     }
                   ]
@@ -180,14 +179,15 @@ jobs:
                 },
                 {
                   "color": "#28a745",
-                  "title": "📋 Changes in this Release",
-                  "text": "${{ steps.extract-prs.outputs.prList }}",
-                  "mrkdwn_in": ["text"]
+                  "fields": [
+                    {
+                      "title": "📋 Changes in this Release",
+                      "value": "${{ steps.extract-prs.outputs.prList }}",
+                      "short": false
+                    }
+                  ]
                 }
-              ],
-              "footer": "Express Milo • Adobe",
-              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico",
-              "ts": "${{ github.event.head_commit.timestamp }}"
+              ]
             }' \
             ${{ env.SLACK_WEBHOOK_URL }}
 
