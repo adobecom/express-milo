@@ -149,33 +149,45 @@ jobs:
               "text": "🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST MODE)' || '' }}",
               "attachments": [
                 {
-                  "color": "good",
+                  "color": "#0066cc",
                   "fields": [
                     {
-                      "title": "Repository",
+                      "title": "📦 Repository",
                       "value": "${{ github.repository }}",
                       "short": true
                     },
                     {
-                      "title": "Branch",
-                      "value": "${{ github.ref_name }}",
+                      "title": "🌿 Branch",
+                      "value": "`${{ github.ref_name }}`",
                       "short": true
                     },
                     {
-                      "title": "Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                      "title": "🔗 Commit",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|`${{ github.sha }}`>",
                       "short": true
                     }
                   ]
                 },
                 {
-                  "color": "#36a64f",
-                  "text": "## Changes in this Release\n${{ steps.extract-prs.outputs.prList }}",
+                  "color": "#ff6b35",
+                  "fields": [
+                    {
+                      "title": "🌐 Test URLs",
+                      "value": "• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n• <https://adobecom.com/express|adobecom.com/express>",
+                      "short": false
+                    }
+                  ]
+                },
+                {
+                  "color": "#28a745",
+                  "title": "📋 Changes in this Release",
+                  "text": "${{ steps.extract-prs.outputs.prList }}",
                   "mrkdwn_in": ["text"]
                 }
               ],
-              "footer": "Express Milo",
-              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
+              "footer": "Express Milo • Adobe",
+              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico",
+              "ts": "${{ github.event.head_commit.timestamp }}"
             }' \
             ${{ env.SLACK_WEBHOOK_URL }}
 
