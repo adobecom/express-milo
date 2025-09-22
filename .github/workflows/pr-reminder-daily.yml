@@ -5,7 +5,7 @@ on:
     # Production: Run at 10 AM and 2 PM PST (6 PM and 10 PM UTC)
     - cron: '0 18 * * *'  # 6 PM UTC (10 AM PST)
     - cron: '0 22 * * *'  # 10 PM UTC (2 PM PST)
-    # Testing: every 5 minutes (for feature branch testing only)
+    # Testing: every 5 minutes (when test-daily-reminder label exists)
     - cron: '*/5 * * * *'  # Every 5 minutes (test mode only)
   push:
     branches:
@@ -187,9 +187,8 @@ jobs:
               }
             }
             
-            // Test mode: if this is the every-5-minute cron (testing only) OR if test-daily-reminder label exists
-            const isTestMode = (context.event_name === 'schedule' && context.ref === 'refs/heads/main') || 
-                              await checkForTestLabel();
+            // Test mode: if test-daily-reminder label exists on any PR
+            const isTestMode = await checkForTestLabel();
             
             // Escape special characters for JSON
             const escapeJson = (str) => {
