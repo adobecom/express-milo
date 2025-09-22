@@ -4,8 +4,10 @@
 }
 
 .how-to-cards {
-  /* max-width: 1280px;
-    margin: auto; */
+  /* local design tokens for this block */
+  --radius-pill: 50px;
+  --status-dot-size: 6px;
+  --status-curr-width: 30px;
 }
 
 .how-to-cards h3 {
@@ -16,7 +18,7 @@
 }
 
 .how-to-cards .text {
-  padding: 0 16px;
+  padding: 0 var(--spacing-300);
 }
 
 .how-to-cards .text h2 {
@@ -27,25 +29,22 @@
 .how-to-cards .text p {
   text-align: left;
   margin: 0;
-  padding: 8px 0 32px 0;
+  padding: var(--spacing-100) 0 var(--spacing-500) 0;
   font-size: var(--body-font-size-l);
 
 }
 
-/* .how-to-cards .cards-container {
-  margin: 0 -40px 0 0;
-} */
 
 .how-to-cards .card {
   flex: 0 0 auto;
   box-sizing: border-box;
-  padding: 24px;
+  padding: var(--spacing-400);
   border-radius: 12px;
   background-color: var(--color-gray-150);
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--spacing-300);
 }
 
 .how-to-cards .card p {
@@ -58,7 +57,7 @@
   position: relative;
   font-weight: 700;
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--color-white);
   width: 34px;
   height: 34px;
   display: flex;
@@ -78,7 +77,7 @@
   height: 0;
   width: 100%;
   transition: height .5s cubic-bezier(0.19, 1, 0.22, 1);
-  background-color: black;
+  background-color: var(--color-black);
 }
 
 .how-to-cards .card:hover,
@@ -115,7 +114,7 @@
 
 @media (min-width: 900px) {
   .how-to-cards {
-    padding: 0px 40px;
+    padding: 0 var(--spacing-600);
     max-width: 1440px;
     box-sizing: border-box;
   }
@@ -131,7 +130,7 @@
 
 @media (min-width: 1440px) {
   .how-to-cards {
-    padding: 0px 40px;
+    padding: 0 var(--spacing-600);
     max-width: 1600px;
     margin: auto;
     box-sizing: border-box;
@@ -181,13 +180,13 @@
 .gallery {
   display: flex;
   flex-wrap: nowrap;
-  gap: 16px;
+  gap: var(--spacing-300);
   overflow-x: scroll;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 0 16px;
-  scroll-padding: 0 16px;
+  padding: 0 var(--spacing-300);
+  scroll-padding: 0 var(--spacing-300);
 }
 
 .gallery::-webkit-scrollbar {
@@ -202,14 +201,14 @@
 
 .gallery--item {
   scroll-snap-align: start;
-  width: calc(100% - 16px);
+  width: calc(100% - var(--spacing-300));
 }
 
 .gallery-control {
-  padding: 16px 16px 0;
+  padding: var(--spacing-300) var(--spacing-300) 0;
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
+  gap: var(--spacing-100);
   align-items: center;
 }
 
@@ -227,7 +226,7 @@
   cursor: pointer;
   height: 2rem;
   box-shadow: 0px 2px 8px 0px #00000029;
-  border-radius: 50px;
+  border-radius: var(--radius-pill);
 }
 
 .gallery-control button:focus {
@@ -250,22 +249,22 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background-color: white;
+  background-color: var(--color-white);
   box-shadow: 0px 2px 8px 0px #00000029;
-  padding: 8px 16px;
-  border-radius: 50px;
+  padding: var(--spacing-100) var(--spacing-300);
+  border-radius: var(--radius-pill);
   height: 32px;
   box-sizing: border-box;
 }
 
 .gallery-control .status .dot {
   border-radius: 50px;
-  width: 6px;
-  height: 6px;
-  background-color: #717171;
+  width: var(--status-dot-size);
+  height: var(--status-dot-size);
+  background-color: var(--color-gray-600);
 }
 
 .gallery-control .status .dot.curr {
-  width: 30px;
-  background-color: #686DF4;
+  width: var(--status-curr-width);
+  background-color: var(--color-info-accent);
 }
