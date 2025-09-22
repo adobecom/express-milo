@@ -139,9 +139,7 @@ jobs:
               }
             });
             
-            return {
-              prList: prList
-            };
+            core.setOutput('prList', prList);
 
       - name: Send release notification
         if: env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
