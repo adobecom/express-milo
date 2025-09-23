@@ -1,5 +1,330 @@
-@import url('../logo-marquee/logo-marquee.css');
+.prompt-marquee {
+  padding-left: var(--spacing-300);
+  padding-right: var(--spacing-300);
+  padding-top: var(--spacing-600);
+  margin: auto;
+  max-width: 900px;
+  padding-bottom: var(--spacing-600);
+}
 
-/* This block intentionally imports the existing styles from logo-marquee to avoid duplication. */
+.prompt-marquee .icon.express-logo {
+  width: fit-content;
+  margin-left: 0px;
+  padding: 0px;
+}
 
+.prompt-marquee > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-500);
+  padding: 0;
+}
+
+.prompt-marquee .column {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  gap: var(--spacing-100);
+}
+
+.prompt-marquee .column p {
+  max-width: 500px;
+  margin: 0;
+}
+
+/* Mobile font sizing adjustments */
+.prompt-marquee h1,
+.prompt-marquee h2,
+.prompt-marquee h3,
+.prompt-marquee h4,
+.prompt-marquee h5,
+.prompt-marquee h6 {
+  margin: 0;
+  color: var(--color-gray-900);
+  font-style: normal;
+  font-weight: 900;
+  /* Mobile-first sizes */
+  font-size: var(--heading-font-size-m);
+  line-height: var(--heading-line-height);
+}
+
+/* Mobile-first paragraph sizing */
+.prompt-marquee p { font-size: var(--body-font-size-l); font-weight: 400; line-height: 130%; }
+
+/* Upscale headings on larger viewports */
+@media (min-width: 768px) {
+  .prompt-marquee h1,
+  .prompt-marquee h2,
+  .prompt-marquee h3,
+  .prompt-marquee h4,
+  .prompt-marquee h5,
+  .prompt-marquee h6 {
+    font-size: var(--Global-Typography-Size-Headings-Heading-2XL, 32px);
+    line-height: var(--Global-Typography-Line-height-Headings-Heading-2XL, 36px);
+  }
+}
+
+.prompt-marquee .button-container { display: block; }
+
+.prompt-marquee .cta-with-input {
+  display: flex;
+  gap: var(--spacing-300);
+  align-items: stretch;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 12px 24px;
+  border: none;
+}
+
+main .section .prompt-marquee .button-container{
+  padding: 0;
+  margin-top: var(--spacing-300);
+}
+
+main .prompt-marquee .cta-with-input .prompt-marquee-input { order: 0; width: 100%; }
+main .prompt-marquee .cta-with-input a.button:any-link,
+main .prompt-marquee .cta-with-input .con-button { 
+  order: 1;
+  white-space: nowrap;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+  padding: 12px 24px;
+  min-width: auto; /* shrink to text width + padding */
+  display: inline-flex; /* reduce extra inline-box space */
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2; /* tighter vertical metrics around text */
+  height: auto;
+  min-height: 0; /* override any framework min-height */
+ }
+
+.prompt-marquee .column-picture {
+  margin-top: var(--spacing-300);
+  position: relative;
+}
+
+.prompt-marquee .column-picture:not(.column-picture-mobile) {
+  display: none;
+}
+
+.prompt-marquee .column-picture::before {
+  content: '';
+  position: absolute;
+  width: 170%;
+  height: 160%;
+  left: -25%;
+  top: -20%;
+  z-index: -1;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+}
+
+.prompt-marquee .column-picture img {
+  transition: transform 0.3s ease;
+}
+
+.prompt-marquee .column-picture:hover img {
+  transform: scale(1.1);
+}
+
+@media (min-width: 768px) {
+  .prompt-marquee .column-picture {
+    margin-top:  0px;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .prompt-marquee {
+    max-width: unset;
+    margin: 0;
+    padding-left: var(--spacing-500);
+    padding-right: var(--spacing-500);
+  }
+
+  .prompt-marquee > div {
+    gap: var(--spacing-700);
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .prompt-marquee > div > div {
+    width: 50%;
+    box-sizing: border-box;
+  }
+
+  .prompt-marquee .column-picture:not(.column-picture-mobile) {
+    display: block;
+  }
+
+  .prompt-marquee .column-picture-mobile {
+    display: none;
+  }
+
+  /* Paragraphs inherit mobile base sizing; override here if needed */
+
+  .prompt-marquee .cta-with-input { flex-direction: row; align-items: center; }
+  .prompt-marquee .cta-with-input .prompt-marquee-input { width: auto; flex: 1 1 auto; }
+  .prompt-marquee .cta-with-input .button,
+  .prompt-marquee .cta-with-input .con-button { width: auto; order: 1; min-width: auto; }
+
+  .prompt-marquee .column-picture::before {
+    width: 160%;
+    height: 160%;
+    right: -30%;
+    top: -30%;
+    left: auto;
+  }
+}
+
+/* Keep one-row layout on lower tablet and shrink input text to avoid truncation */
+@media (min-width: 768px) and (max-width: 900px) {
+  .prompt-marquee .cta-with-input { flex-wrap: nowrap; }
+  .prompt-marquee .cta-with-input .prompt-marquee-input { 
+    font-size: var(--body-font-size-s);
+    min-width: 0; /* allow flex item to shrink */
+  }
+  .prompt-marquee .cta-with-input .button,
+  .prompt-marquee .cta-with-input .con-button {
+    width: auto;
+    white-space: nowrap;
+    min-width: auto; /* keep compact; rely on padding only */
+  }
+}
+
+@media (min-width: 1280px) {
+  .prompt-marquee {
+    margin: auto;
+    max-width: 1400px;
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
+  }
+  .prompt-marquee > div {
+    padding-left: var(--spacing-600);
+    padding-right: var(--spacing-600);
+  }
+
+  .prompt-marquee h1 {
+    font-size: var(--heading-font-size-xl);
+    line-height: var(--heading-line-height);
+  }
+
+  .prompt-marquee .column p {
+    font-size: var(--body-font-size-l); 
+  }
+}
+
+/* Input styling to match Milo form look */
+.prompt-marquee-input {
+  height: 48px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 2px solid var(--Palette-gray-300, #DADADA);
+  font-size: var(--body-font-size-m);
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
+  background-color: var(--Palette-gray-25, #FFF);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+/* Always-visible placeholder pattern */
+.prompt-marquee-input-wrapper {
+  position: relative;
+  flex-grow: 1;
+}
+
+.prompt-marquee-input-wrapper::before {
+  content: attr(data-placeholder);
+  position: absolute;
+  left: 16px;
+  color: var(--text-color-secondary, #6e6e6e);
+  pointer-events: none;
+  transition: all 150ms ease-out;
+  right: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Centered placeholder when empty */
+.prompt-marquee-input-wrapper:has(.prompt-marquee-input:placeholder-shown)::before {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--body-font-size-m);
+  line-height: 1;
+  text-align: left;
+}
+
+.prompt-marquee-input-wrapper:has(.prompt-marquee-input:placeholder-shown) .prompt-marquee-input {
+  padding: 0 0 0 14px; /* keep caret offset so it doesn't overlap label */
+  box-sizing: border-box;
+}
+
+/* Floated label when user has entered text */
+.prompt-marquee-input-wrapper:not(:has(.prompt-marquee-input:placeholder-shown))::before {
+  top: 6px;
+  transform: none;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: left;
+}
+
+.prompt-marquee-input-wrapper:not(:has(.prompt-marquee-input:placeholder-shown)) .prompt-marquee-input {
+  padding-top: 20px;
+  padding-left: 14px;
+}
+
+.prompt-marquee-input::placeholder {
+  color: transparent;
+}
+
+/* States: default/hover/focus/disabled with 150ms ease-out */
+
+.prompt-marquee-input:hover:not(:disabled) {
+  border-radius: 10px;
+  border: 2px solid var(--Palette-gray-400, #C6C6C6);
+  background: var(--Palette-gray-25, #FFF);
+}
+
+.prompt-marquee-input:focus-visible:not(:disabled),
+.prompt-marquee-input:focus:not(:disabled),
+.prompt-marquee-input:active:not(:disabled) {
+  outline: none;
+  border-radius: 10px;
+  border: 2px solid var(--Palette-gray-900, #131313);
+  background: var(--Palette-gray-25, #FFF);
+  box-shadow: none;
+}
+
+.prompt-marquee-input:disabled {
+  border-radius: 10px;
+  border: 2px solid var(--Palette-gray-300, #DADADA);
+  background: var(--Palette-gray-25, #FFF);
+  color: #9e9e9e;
+}
+
+/* Hide caret when focused and empty to avoid flashing against overlay label */
+/* On focus, float the label and apply input padding even when empty */
+.prompt-marquee-input-wrapper:has(.prompt-marquee-input:focus)::before,
+.prompt-marquee-input-wrapper:has(.prompt-marquee-input:focus-visible)::before {
+  top: 6px;
+  transform: none;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.prompt-marquee-input-wrapper:has(.prompt-marquee-input:focus) .prompt-marquee-input,
+.prompt-marquee-input-wrapper:has(.prompt-marquee-input:focus-visible) .prompt-marquee-input {
+  padding-top: 20px;
+  padding-left: 14px;
+  overflow: auto; /* allow user to scroll horizontally to see full text */
+}
 
