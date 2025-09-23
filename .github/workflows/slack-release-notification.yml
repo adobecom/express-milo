@@ -150,7 +150,7 @@ jobs:
         run: |
           curl -X POST -H 'Content-type: application/json' \
             --data '{
-              "text": "🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST MODE)' || '' }}",
+              "text": "@here 🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST MODE)' || '' }}",
               "attachments": [
                 {
                   "color": "#0066cc",
