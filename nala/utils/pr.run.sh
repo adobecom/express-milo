@@ -36,7 +36,7 @@ prRepo=${prRepo:-$toRepoName}
 prOrg=${prOrg:-$toRepoOrg}
 
 # TODO: add HLX5 support later if needed
-PR_BRANCH_LIVE_URL_GH="https://$FEATURE_BRANCH--$prRepo--$prOrg.hlx.live"
+PR_BRANCH_LIVE_URL_GH="https://$FEATURE_BRANCH--$prRepo--$prOrg.aem.live"
 
 # set env vars
 export PR_BRANCH_LIVE_URL_GH
