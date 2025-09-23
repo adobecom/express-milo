@@ -274,6 +274,7 @@ main .logo-marquee .cta-with-input .con-button {
   transform: none;
   font-size: 12px;
   line-height: 14px;
+  text-align: left;
 }
 
 .logo-marquee-input-wrapper:not(:has(.logo-marquee-input:placeholder-shown)) .logo-marquee-input {
