@@ -116,11 +116,19 @@ export const EXPERIMENTAL_VARIANTS = [
   'qa-in-product-control',
 ];
 
+export const EXPERIMENTAL_VARIANTS_PROMOID_MAP = {
+  [EXPERIMENTAL_VARIANTS.qaInProductVariant1]: "98SH4CD4",
+  [EXPERIMENTAL_VARIANTS.qaInProductVariant2]: '9DJJ47N3',
+  [EXPERIMENTAL_VARIANTS.qaNBA]: '9J8K43X2',
+  [EXPERIMENTAL_VARIANTS.qaInProductControl]: '91BF4LV6'
+};
+
 // Quick actions allowed in frictionless upload feature
 export const FRICTIONLESS_UPLOAD_QUICK_ACTIONS = {
   videoEditor: 'edit-video',
   imageEditor: 'edit-image',
-  removeBackground: 'remove-background'
+  removeBackgroundVariant1: 'qa-in-product-variant1',
+  removeBackgroundVariant2: 'qa-in-product-variant2'
 };
 
 // Shared utility functions

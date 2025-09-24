@@ -19,6 +19,7 @@ import {
   getErrorMsg,
   initProgressBar,
   FRICTIONLESS_UPLOAD_QUICK_ACTIONS,
+  EXPERIMENTAL_VARIANTS_PROMOID_MAP
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -47,6 +48,8 @@ function frictionlessQAExperiment(
   const urlVariant = urlParams.get('variant');
   const variant = urlVariant || quickAction;
   appConfig.metaData.variant = variant;
+  appConfig.metaData.promoid = EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant];
+  appConfig.metaData.mv = 'other';
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
     case 'qa-nba':
@@ -54,22 +57,6 @@ function frictionlessQAExperiment(
       break;
     case 'qa-in-product-control':
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-variant1':
-      appConfig.metaData.isFrictionlessQa = false;
-      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-        ...contConfig,
-        mode: 'modal',
-      });
-      break;
-    case 'qa-in-product-variant2':
-      appConfig.metaData.isFrictionlessQa = false;
-      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-        ...contConfig,
-        mode: 'modal',
-      });
       break;
     default:
       break;
@@ -346,7 +333,8 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   const urlsMap = {
     'edit-image': '/express/feature/image/editor',
     'edit-video': '/express/feature/video/editor',
-    'remove-background': '/express/feature/image/remove-background',
+    [EXPERIMENTAL_VARIANTS.qaInProductVariant1]: '/express/feature/image/remove-background',
+    [EXPERIMENTAL_VARIANTS.qaInProductVariant2]: '/express/feature/image/remove-background'
   };
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
@@ -379,10 +367,10 @@ function addImageEditorParams(url) {
   url.searchParams.set('learn', 'exercise:express/how-to/in-app/how-to-edit-an-image:-1');
 }
 
-function addRemoveBackgroundParams(url) {
-  url.searchParams.set('skipUploadStep', 'true');
-  url.searchParams.set('edit-action', 'remove-bg');
-  url.searchParams.set('variant', 'qa-in-product-variant4');
+function addRemoveBackgroundParams(url, quickAction) {
+  url.searchParams.set('variant', quickAction);
+  url.searchParams.set('promoid', EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction]);
+  url.searchParams.set('mv', 'other');
 }
 
 async function performUploadAction(files, block, quickAction) {
@@ -419,11 +407,7 @@ async function performUploadAction(files, block, quickAction) {
 
   if (!result.assetId) return;
 
-  const url = new URL("https://stage.projectx.corp.adobe.com/photo-editor/focused");
-  url.searchParams.set('frictionlessUploadAssetId', result.assetId);
-  url.searchParams.set('width', result.dimensions?.width);
-  url.searchParams.set('height', result.dimensions?.height);
-
+  const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor) {
     addVideoEditorParams(url);
   }
@@ -431,8 +415,8 @@ async function performUploadAction(files, block, quickAction) {
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor) {
     addImageEditorParams(url);
   }
-  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackground) {
-    addRemoveBackgroundParams(url);
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1 || quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
+    addRemoveBackgroundParams(url, quickAction);
   }
 
   window.location.href = url.toString();
@@ -452,13 +436,18 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     data = data.filter((item) => item);
   }
 
+  // here update the variant to the url variant if it exists
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlVariant = urlParams.get('variant');
+  const variant = urlVariant || quickAction;
+
   const frictionlessAllowedQuickActions = Object.values(FRICTIONLESS_UPLOAD_QUICK_ACTIONS);
-  if (frictionlessAllowedQuickActions.includes(quickAction)) {
-    await performUploadAction(files, block, quickAction);
+  if (frictionlessAllowedQuickActions.includes(variant)) {
+    await performUploadAction(files, block, variant);
     return;
   }
 
-  startSDK(data, quickAction, block);
+  startSDK(data, variant, block);
 }
 
 function createCaptionLocaleDropdown() {
@@ -509,9 +498,6 @@ export default async function decorate(block) {
   cta.addEventListener('click', (e) => e.preventDefault(), false);
   // Fetch the base url for editor entry from upload cta and save it for later use.
   frictionlessTargetBaseUrl = cta.href;
-  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackground) {
-    frictionlessTargetBaseUrl = 'https://localhost.adobe.com:8080/new?feature-enable=frictionless-upload-feature';
-  }
   const dropzoneHint = dropzone.querySelector('p:first-child');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
