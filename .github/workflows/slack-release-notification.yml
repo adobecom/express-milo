@@ -1,4 +1,4 @@
-name: Simple Release Notification
+name: Slack Release Notification
 
 on:
   push:
@@ -8,21 +8,38 @@ on:
       - 'README.md'
       - 'docs/**'
       - '*.md'
+  pull_request:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Test mode (uses test webhook)'
+        required: false
+        default: false
+        type: boolean
 
 env:
   # Webhook URL (required)
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_WEBHOOK_URL: ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && secrets.SLACK_WEBHOOK_URL_TEST || secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   notify-release:
     runs-on: ubuntu-latest
-    if: github.repository_owner == 'adobecom' && github.ref == 'refs/heads/main'
+    if: |
+      github.repository_owner == 'adobecom' && 
+      (github.ref == 'refs/heads/main' || 
+       github.event_name == 'workflow_dispatch' ||
+       (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification')))
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Get short SHA
+        id: short-sha
+        run: echo "short-sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
 
       - name: Extract PR information
         id: extract-prs
@@ -126,49 +143,53 @@ jobs:
               }
             });
             
-            return {
-              prList: prList
-            };
+            core.setOutput('prList', prList);
 
       - name: Send release notification
         if: env.SLACK_WEBHOOK_URL != '' && steps.extract-prs.outputs.prList != ''
-        uses: 8398a7/action-slack@v3
-        with:
-          status: custom
-          webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
-          custom_payload: |
-            {
-              "text": "🚀 *Express Milo Release Deployed*",
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "@here 🚀 *Express Milo Release Deployed* ${{ (github.event.inputs.test_mode == 'true' || (github.event_name == 'pull_request' && contains(github.event.label.name, 'test-release-notification'))) && '(TEST MODE)' || '' }}",
               "attachments": [
                 {
-                  "color": "good",
+                  "color": "#0066cc",
                   "fields": [
                     {
-                      "title": "Repository",
-                      "value": "${{ github.repository }}",
+                      "title": "🌿 Branch", 
+                      "value": "main",
                       "short": true
                     },
                     {
-                      "title": "Branch",
-                      "value": "${{ github.ref_name }}",
-                      "short": true
-                    },
-                    {
-                      "title": "Commit",
-                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>",
+                      "title": "🔗 Commit",
+                      "value": "<https://github.com/${{ github.repository }}/commit/${{ github.sha }}|${{ steps.short-sha.outputs.short-sha }}>",
                       "short": true
                     }
                   ]
                 },
                 {
-                  "color": "#36a64f",
-                  "text": "## Changes in this Release\n${{ steps.extract-prs.outputs.prList }}",
-                  "mrkdwn_in": ["text"]
+                  "color": "#ff6b35",
+                  "fields": [
+                    {
+                      "title": "🌐 Test URLs",
+                      "value": "• <https://main--express-milo--adobecom.aem.page/express|main--express-milo--adobecom.aem.page/express>\n• <https://adobecom.com/express|adobecom.com/express>",
+                      "short": false
+                    }
+                  ]
+                },
+                {
+                  "color": "#28a745",
+                  "fields": [
+                    {
+                      "title": "📋 Changes in this Release",
+                      "value": "${{ steps.extract-prs.outputs.prList }}",
+                      "short": false
+                    }
+                  ]
                 }
-              ],
-              "footer": "Express Milo",
-              "footer_icon": "https://github.com/adobecom/express-milo/raw/main/express/code/img/favicon.ico"
-            }
+              ]
+            }' \
+            ${{ env.SLACK_WEBHOOK_URL }}
 
       - name: Fallback notification
         if: failure() && env.SLACK_WEBHOOK_URL != ''
