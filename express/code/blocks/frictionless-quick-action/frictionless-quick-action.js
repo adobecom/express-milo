@@ -346,6 +346,7 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   const urlsMap = {
     'edit-image': '/express/feature/image/editor',
     'edit-video': '/express/feature/video/editor',
+    'remove-background': '/express/feature/image/remove-background',
   };
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
@@ -376,6 +377,12 @@ function addVideoEditorParams(url) {
 
 function addImageEditorParams(url) {
   url.searchParams.set('learn', 'exercise:express/how-to/in-app/how-to-edit-an-image:-1');
+}
+
+function addRemoveBackgroundParams(url) {
+  url.searchParams.set('skipUploadStep', 'true');
+  url.searchParams.set('edit-action', 'remove-bg');
+  url.searchParams.set('variant', 'qa-in-product-variant4');
 }
 
 async function performUploadAction(files, block, quickAction) {
@@ -412,7 +419,10 @@ async function performUploadAction(files, block, quickAction) {
 
   if (!result.assetId) return;
 
-  const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
+  const url = new URL("https://stage.projectx.corp.adobe.com/photo-editor/focused");
+  url.searchParams.set('frictionlessUploadAssetId', result.assetId);
+  url.searchParams.set('width', result.dimensions?.width);
+  url.searchParams.set('height', result.dimensions?.height);
 
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor) {
     addVideoEditorParams(url);
@@ -420,6 +430,9 @@ async function performUploadAction(files, block, quickAction) {
 
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor) {
     addImageEditorParams(url);
+  }
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackground) {
+    addRemoveBackgroundParams(url);
   }
 
   window.location.href = url.toString();
@@ -496,6 +509,9 @@ export default async function decorate(block) {
   cta.addEventListener('click', (e) => e.preventDefault(), false);
   // Fetch the base url for editor entry from upload cta and save it for later use.
   frictionlessTargetBaseUrl = cta.href;
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackground) {
+    frictionlessTargetBaseUrl = 'https://localhost.adobe.com:8080/new?feature-enable=frictionless-upload-feature';
+  }
   const dropzoneHint = dropzone.querySelector('p:first-child');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
