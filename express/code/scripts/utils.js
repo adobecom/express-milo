@@ -65,42 +65,6 @@ export function getMobileOperatingSystem() {
   return 'unknown';
 }
 
-export function getWebBrowser() {
-  const { userAgent } = navigator;
-
-  if (/SamsungBrowser/.test(userAgent)) {
-    return 'Samsung';
-  }
-
-  if (
-    /Chrome|CriOS/.test(userAgent)
-    && !/Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(
-      userAgent,
-    )
-  ) {
-    return 'Chrome';
-  }
-
-  if (/Firefox|FxiOS/.test(userAgent)) {
-    return 'Firefox';
-  }
-
-  if (/Edg[eA]?/.test(userAgent)) {
-    return 'Edge';
-  }
-
-  if (
-    /Safari/.test(userAgent)
-    && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(
-      userAgent,
-    )
-  ) {
-    return 'Safari';
-  }
-
-  return 'Unknown';
-}
-
 export async function getRedirectUri() {
   const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   if (getMetadata('adobe-home-redirect') === 'on') {
@@ -446,16 +410,19 @@ export function hideQuickActionsOnDevices(userAgent) {
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
   const isMobile = document.body.dataset.device === 'mobile';
-  const isQualifiedBrowser = /Chrome|Safari|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent);
-  if (!isQualifiedBrowser) {
+  const isQualifiedBrowserLegacy = !/Safari/.test(userAgent) || /Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent);
+  if (isMobile || !isQualifiedBrowserLegacy) {
     fqaMeta.setAttribute('name', 'fqa-off'); // legacy setup for mobile or desktop_safari
   } else {
     fqaMeta.setAttribute('name', 'fqa-on'); // legacy setup for desktop or non_safari
   }
-  // up-to-date setup that supports mobile frictionless
+  // latest setup that supports safari frictionless, enabled by metadata
+  // fqa-non-qualified: always removed
+  // fqa-qualified-mobile: mobile only
+  // fqa-qualified-desktop: desktop only
   const audienceFqaMeta = document.createElement('meta');
   audienceFqaMeta.setAttribute('content', 'on');
-  if (isQualifiedBrowser) {
+  if (getMetadata('frictionless-safari') || isQualifiedBrowserLegacy) {
     audienceFqaMeta.setAttribute('name', `fqa-qualified-${isMobile ? 'mobile' : 'desktop'}`);
   } else {
     audienceFqaMeta.setAttribute('name', 'fqa-non-qualified');

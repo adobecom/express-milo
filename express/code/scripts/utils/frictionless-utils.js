@@ -1,4 +1,4 @@
-import { getLibs, getWebBrowser } from '../utils.js';
+import { getLibs } from '../utils.js';
 
 // Shared constants and configurations for frictionless quick actions
 const JPG = 'jpg';
@@ -168,6 +168,42 @@ export function createMergeVideosDocConfig(data) {
   return {
     assets,
   };
+}
+
+function getWebBrowser() {
+  const { userAgent } = navigator;
+
+  if (/SamsungBrowser/.test(userAgent)) {
+    return 'Samsung';
+  }
+
+  if (
+    /Chrome|CriOS/.test(userAgent)
+    && !/Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(
+      userAgent,
+    )
+  ) {
+    return 'Chrome';
+  }
+
+  if (/Firefox|FxiOS/.test(userAgent)) {
+    return 'Firefox';
+  }
+
+  if (/Edg[eA]?/.test(userAgent)) {
+    return 'Edge';
+  }
+
+  if (
+    /Safari/.test(userAgent)
+    && !/Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(
+      userAgent,
+    )
+  ) {
+    return 'Safari';
+  }
+
+  return 'Unknown';
 }
 
 // Common container configuration
