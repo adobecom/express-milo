@@ -333,8 +333,8 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   const urlsMap = {
     'edit-image': '/express/feature/image/editor',
     'edit-video': '/express/feature/video/editor',
-    [EXPERIMENTAL_VARIANTS.qaInProductVariant1]: '/express/feature/image/remove-background',
-    [EXPERIMENTAL_VARIANTS.qaInProductVariant2]: '/express/feature/image/remove-background'
+    'qa-in-product-variant1': '/express/feature/image/remove-background',
+    'qa-in-product-variant2': '/express/feature/image/remove-background'
   };
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
@@ -440,6 +440,11 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
   const variant = urlVariant || quickAction;
+  if (urlParams.get('hzenv') === 'stage') {
+    frictionlessTargetBaseUrl = "https://stage.projectx.corp.adobe.com/new";
+  } else {
+    frictionlessTargetBaseUrl = "https://new.express.adobe.com/new";
+  }
 
   const frictionlessAllowedQuickActions = Object.values(FRICTIONLESS_UPLOAD_QUICK_ACTIONS);
   if (frictionlessAllowedQuickActions.includes(variant)) {
