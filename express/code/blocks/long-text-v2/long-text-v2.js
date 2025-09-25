@@ -10,16 +10,14 @@ export default function decorate(block) {
         const article = document.createElement('article');
         article.appendChild(element);
 
-        // Find the first valid paragraph after this H2
         for (let i = index + 1; i < allContentElements.length; i += 1) {
           const nextElement = allContentElements[i];
           if (nextElement.tagName === 'H2') {
-            // Stop at the next H2
             break;
           }
-          if (nextElement.tagName === 'P' && nextElement.textContent !== 'null' && nextElement.textContent !== null && nextElement.textContent.trim() !== '') {
+          if (nextElement.tagName === 'P' && nextElement.textContent !== 'null' && nextElement.textContent !== null) {
             article.appendChild(nextElement);
-            break; // Only add the first valid paragraph
+            break;
           }
         }
 
