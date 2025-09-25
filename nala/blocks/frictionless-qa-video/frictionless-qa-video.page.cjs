@@ -71,11 +71,11 @@ export default class FrictionlessQaVideo {
 
   async uploadVideo(path) {
     try {
-      const [fileChooser] = await Promise.all([
-        this.page.waitForEvent('filechooser', { timeout: 10000 }),
-        this.uploadButton.click(),
-      ]);
+      const fileChooserPromise = this.page.waitForEvent('filechooser', { timeout: 10000 });
+      await this.uploadButton.click();
+      const fileChooser = await fileChooserPromise;
       await fileChooser.setFiles(path);
+      await this.page.waitForTimeout(5000);
     } catch (error) {
       console.error('Error during file upload:', error);
       throw error;
