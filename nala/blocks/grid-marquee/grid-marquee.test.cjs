@@ -11,7 +11,7 @@ test.describe('grid-marquee test suite', () => {
   });
 
   features[0].path.forEach((path) => {
-    test(`${features[0].name}, path: ${path}, test logo and headline`, async ({ baseURL, page }) => {
+    test(`[Test Id - ${features[0].tcid}] ${features[0].name}, path: ${path}, test logo and headline`, async ({ baseURL, page }) => {
       const testPage = `${baseURL}${path}`;
       console.log(testPage);
       await gridMarquee.gotoURL(testPage);
@@ -44,7 +44,7 @@ test.describe('grid-marquee test suite', () => {
   });
 
   features[1].path.forEach((path) => {
-    test(`${features[1].name}, path: ${path}, test cards`, async ({ baseURL, page }) => {
+    test(`[Test Id - ${features[1].tcid}] ${features[1].name}, path: ${path}, test cards`, async ({ baseURL, page }) => {
       const testPage = `${baseURL}${path}`;
       await gridMarquee.gotoURL(testPage);
       await page.waitForSelector('.global-footer');
@@ -79,7 +79,7 @@ test.describe('grid-marquee test suite', () => {
   });
 
   features[2].path.forEach((path) => {
-    test(`${features[2].name}, path: ${path}, test ratings block`, async ({ baseURL, page }) => {
+    test(`[Test Id - ${features[2].tcid}] ${features[2].name}, path: ${path}, test ratings block`, async ({ baseURL, page }) => {
       const testPage = `${baseURL}${path}`;
       await gridMarquee.gotoURL(testPage);
       await page.waitForSelector('.global-footer');
@@ -99,6 +99,59 @@ test.describe('grid-marquee test suite', () => {
         await gridMarquee.gotoURL(testPage);
         await gridMarquee.googlePlayButton.click();
         expect(page.url).not.toBe(testPage);
+      });
+    });
+  });
+
+  features[3].path.forEach((path) => {
+    test(`[Test Id - ${features[3].tcid}] ${features[3].name}, path: ${path}, test z-index fix`, async ({ baseURL, page }) => {
+      const testPage = `${baseURL}${path}`;
+      await gridMarquee.gotoURL(testPage);
+      await page.waitForSelector('.global-footer');
+
+      await test.step('validate z-index values for drawer elements', async () => {
+        // First, hover over a card to make the drawer visible
+        await gridMarquee.cardImage.nth(0).hover();
+
+        // Wait for drawer to be visible
+        await expect(gridMarquee.cardDrawer.nth(0)).toBeVisible();
+
+        // Get the title row and video elements
+        const titleRow = gridMarquee.cardDrawer.nth(0).locator('.title-row');
+        const video = gridMarquee.cardDrawer.nth(0).locator('video');
+
+        // Check if elements exist
+        if (await titleRow.count() > 0 && await video.count() > 0) {
+          // Get computed styles
+          const titleRowZIndex = await titleRow.evaluate((el) => window.getComputedStyle(el).zIndex);
+          const videoZIndex = await video.evaluate((el) => window.getComputedStyle(el).zIndex);
+
+          // Verify z-index values
+          expect(titleRowZIndex).toBe('2');
+          // Video z-index should be 0, but if CSS isn't loaded, it might be 'auto'
+          expect(videoZIndex).toMatch(/^(0|auto)$/);
+        }
+      });
+
+      await test.step('validate z-index hierarchy across all drawers', async () => {
+        const cardCount = await gridMarquee.card.count();
+
+        for (let i = 0; i < cardCount; i++) {
+          // Hover over each card to make its drawer visible
+          await gridMarquee.cardImage.nth(i).hover();
+
+          const titleRow = gridMarquee.cardDrawer.nth(i).locator('.title-row');
+          const video = gridMarquee.cardDrawer.nth(i).locator('video');
+
+          if (await titleRow.count() > 0 && await video.count() > 0) {
+            const titleRowZIndex = await titleRow.evaluate((el) => window.getComputedStyle(el).zIndex);
+            const videoZIndex = await video.evaluate((el) => window.getComputedStyle(el).zIndex);
+
+            // Verify z-index values
+            expect(titleRowZIndex).toBe('2');
+            expect(videoZIndex).toBe('0');
+          }
+        }
       });
     });
   });
