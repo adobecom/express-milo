@@ -1,6 +1,7 @@
 import {
   createTag,
   getLibs,
+  getMobileOperatingSystem,
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
@@ -189,7 +190,7 @@ export default async function decorate(block) {
   const [fallbackRow] = rows.filter((row) => row.children[0]?.textContent?.toLowerCase()?.trim() === 'fallback');
   fallbackRow?.remove();
   // metadata enabled latest behavior: no fallback
-  if (!getMetadata('frictionless-safari') && fallbackRow) {
+  if (!getMetadata('frictionless-safari') && fallbackRow && getMobileOperatingSystem() !== 'Android') {
     const fallbackBlock = fallbackRow.querySelector(':scope > div:last-child > div');
     block.replaceWith(fallbackBlock);
     return fallbackBlock;
