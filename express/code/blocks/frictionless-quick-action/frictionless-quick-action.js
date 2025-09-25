@@ -19,7 +19,7 @@ import {
   getErrorMsg,
   initProgressBar,
   FRICTIONLESS_UPLOAD_QUICK_ACTIONS,
-  EXPERIMENTAL_VARIANTS_PROMOID_MAP
+  EXPERIMENTAL_VARIANTS_PROMOID_MAP,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -334,7 +334,7 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
     'edit-image': '/express/feature/image/editor',
     'edit-video': '/express/feature/video/editor',
     'qa-in-product-variant1': '/express/feature/image/remove-background',
-    'qa-in-product-variant2': '/express/feature/image/remove-background'
+    'qa-in-product-variant2': '/express/feature/image/remove-background',
   };
   const { getTrackingAppendedURL } = await import('../../scripts/branchlinks.js');
 
@@ -415,7 +415,8 @@ async function performUploadAction(files, block, quickAction) {
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor) {
     addImageEditorParams(url);
   }
-  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1 || quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1 || 
+    quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
     addRemoveBackgroundParams(url, quickAction);
   }
 
@@ -440,11 +441,6 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlVariant = urlParams.get('variant');
   const variant = urlVariant || quickAction;
-  if (urlParams.get('hzenv') === 'stage') {
-    frictionlessTargetBaseUrl = "https://stage.projectx.corp.adobe.com/new";
-  } else {
-    frictionlessTargetBaseUrl = "https://new.express.adobe.com/new";
-  }
 
   const frictionlessAllowedQuickActions = Object.values(FRICTIONLESS_UPLOAD_QUICK_ACTIONS);
   if (frictionlessAllowedQuickActions.includes(variant)) {
