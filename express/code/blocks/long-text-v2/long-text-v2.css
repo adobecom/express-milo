@@ -47,7 +47,7 @@ main .long-text-v2 h2 {
     font-size: var(--heading-font-size-xs);
     font-style: normal;
     font-weight: 900;
-    line-height: 130%;
+    line-height: var(--heading-line-height);
 }
 
 main .long-text-v2.plain h1 {
@@ -70,7 +70,7 @@ main .long-text-v2 p {
     font-size: var(--body-font-size-m);
     font-style: normal;
     font-weight: 400;
-    line-height: 130%;
+    line-height: var(--heading-line-height);
     margin-top: 0;
     margin-bottom: 0;
 }
