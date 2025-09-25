@@ -64,7 +64,6 @@ describe('Template List Block - Core Functionality', () => {
 
     it('should test handlelize function', () => {
       // Test the handlelize functionality indirectly
-      const testString = 'Test String With Accents éàü';
       // We can't directly test the function, but we can verify the module loads
       expect(decorate).to.be.a('function');
     });
