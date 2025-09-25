@@ -202,7 +202,7 @@ export default async function decorate(block) {
       if (nextUrlStr === baseHref) {
         try {
           const u = new URL(baseHref, window.location.href);
-          u.searchParams.set('input', value);
+          u.searchParams.set('acom-input', value);
           nextUrlStr = u.toString();
         } catch (err) {
           // ignore, will use baseHref
