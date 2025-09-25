@@ -4,7 +4,7 @@ main .section div.long-text-v2-wrapper {
 }
 
 main .section div.long-text-v2-wrapper.plain {
-    max-width: var(--max-width-content);
+    max-width: var(--block-lg-max-width);
     margin: auto;
 }
 
@@ -14,7 +14,7 @@ main .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .
 }
 
 main .long-text-v2 {
-    max-width: var(--max-width-content);
+    max-width: var(--block-lg-max-width);
     margin: 0 auto;
     padding: var(--spacing-xl) var(--spacing-s);
     display: flex;
