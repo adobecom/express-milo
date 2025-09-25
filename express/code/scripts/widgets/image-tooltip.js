@@ -172,7 +172,6 @@ export default async function handleImageTooltip(imgElement) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ getConfig } = utils);
   });
-
   await onImageTooltipCSSLoad();
 
   const altText = imgElement.alt || '';
