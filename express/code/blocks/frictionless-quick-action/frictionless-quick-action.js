@@ -408,6 +408,7 @@ async function performUploadAction(files, block, quickAction) {
   if (!result.assetId) return;
 
   const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
+
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.videoEditor) {
     addVideoEditorParams(url);
   }
@@ -415,8 +416,8 @@ async function performUploadAction(files, block, quickAction) {
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.imageEditor) {
     addImageEditorParams(url);
   }
-  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1 || 
-    quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1
+    || quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
     addRemoveBackgroundParams(url, quickAction);
   }
 
