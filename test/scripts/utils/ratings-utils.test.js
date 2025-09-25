@@ -118,4 +118,3 @@ describe('Ratings Utils', () => {
   // on external modules. For now, we're testing the basic infrastructure and
   // the simpler functions that don't have complex dependencies.
 });
-
