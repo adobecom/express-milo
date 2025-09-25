@@ -19,9 +19,8 @@ test.describe('Express Logo Row Block test suite', () => {
   test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
     const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}${miloLibs}`;
-    console.info(`[Test Page]: ${testUrl}`);
 
-    await test.step('Go to ax-columns(center) block test page', async () => {
+    await test.step('Go to logo row block test page', async () => {
       await page.goto(testUrl);
       await page.waitForLoadState('domcontentloaded');
       await expect(page).toHaveURL(testUrl);
