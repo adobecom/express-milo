@@ -142,7 +142,7 @@ jobs:
                 
                 const isTestMode = prData.head.ref === 'feature/pr-label-management';
                 const message = {
-                  text: `@ax-devs 🚀 *CODE DEPLOYED*${isTestMode ? ' [TEST_MODE]' : ''} - Ready for Review`,
+                  text: `@here 🚀 *CODE DEPLOYED*${isTestMode ? ' [TEST_MODE]' : ''} - Ready for Review`,
                   attachments: [
                     {
                       color: isTestMode ? "#ff6b35" : "#00ff00",
