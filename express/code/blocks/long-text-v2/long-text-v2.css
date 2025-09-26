@@ -1,0 +1,106 @@
+main .section div.long-text-v2-wrapper {
+    max-width: none;
+    padding: 0;
+}
+
+main .section div.long-text-v2-wrapper.plain {
+    max-width: var(--block-lg-max-width);
+    margin: auto;
+}
+
+main .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .long-text-v2-wrapper:first-child {
+    padding-top: var(--spacing-xxl);
+}
+
+main .long-text-v2 {
+    max-width: var(--block-lg-max-width);
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-s);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxl);
+}
+
+main .long-text-v2.plain {
+    margin: unset;
+    background-color: initial;
+    border-radius: unset;
+}
+
+main .long-text-v2 article {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-m);
+}
+
+main .long-text-v2 * {
+    text-align: left;
+}
+
+main .long-text-v2.center * {
+    text-align: center;
+}
+
+main .long-text-v2 h2 {
+    color: var(--color-gray-800);
+    font-size: var(--heading-font-size-xs);
+    font-style: normal;
+    font-weight: 900;
+    line-height: var(--heading-line-height);
+}
+
+main .long-text-v2.plain h1 {
+    font-size: var(--heading-font-size-l);
+    margin-bottom: var(--spacing-xl);
+}
+
+main .long-text-v2.plain h2 {
+    font-size: var(--heading-font-size-m);
+    margin-bottom: var(--spacing-m);
+}
+
+main .long-text-v2.plain h3 {
+    font-size: var(--heading-font-size-s);
+    margin-bottom: var(--spacing-s);
+}
+
+main .long-text-v2 p {
+    color: var(--color-gray-800);
+    font-size: var(--body-font-size-m);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--heading-line-height);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+main .long-text-v2.plain p {
+    margin-top: 0;
+    margin-bottom: var(--spacing-xxl);
+    font-size: var(--body-font-size-l);
+}
+
+@media (min-width: 767px) {
+    main .long-text-v2 {
+        padding: var(--spacing-xl) var(--spacing-m);
+    }
+}
+
+@media (min-width: 900px) {
+
+    main .long-text-v2.plain h1 {
+        font-size: var(--heading-font-size-xl);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    main .long-text-v2.plain h2 {
+        font-size: var(--heading-font-size-l);
+        margin-bottom: var(--spacing-m);
+    }
+
+    main .long-text-v2.plain h3 {
+        font-size: var(--heading-font-size-s);
+        margin-bottom: var(--spacing-s);
+    }
+}

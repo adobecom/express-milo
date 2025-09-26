@@ -258,9 +258,9 @@ jobs:
             };
             
             // Send to Slack
-            const webhookUrl = process.env.SLACK_WEBHOOK_URL;
+            const webhookUrl = process.env.SLACK_WEBHOOK_URL_PR_TEST;
             if (!webhookUrl) {
-              console.log('❌ SLACK_WEBHOOK_URL not configured');
+              console.log('❌ SLACK_WEBHOOK_URL_PR_TEST not configured');
               return;
             }
             
