@@ -189,7 +189,7 @@ jobs:
                 .replace(/[\x00-\x1F\x7F-\x9F]/g, ''); // Remove control characters
             };
             
-            let messageText = `@ax-devs 🧪 *TEST MODE - PRs REMINDER*\n\n\n`;
+            let messageText = `<!subteam^S07RK2JSX8X> 🧪 *TEST MODE - PRs REMINDER*\n\n\n`;
             
             // 1. Changes requested (highest priority)
             if (prsByStatus.changesRequested.length > 0) {
