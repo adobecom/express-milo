@@ -1,0 +1,67 @@
+MWPW-181177 Branch - Test Fixes Summary
+==========================================
+
+GOALS & STRATEGY
+----------------
+- Fix failing tests systematically, focusing on "easy wins"
+- One file at a time, commit only when tests are passing
+- Focus on simple function-level fixes with minimal mocking
+- Avoid regressions by targeting utility functions first
+
+KEY ISSUES FIXED
+----------------
+
+1. GLOBAL vs WINDOW USAGE IN TESTS
+   - Issue: Tests using global.fetch, global.import, global.clearTimeout
+   - Fix: Replaced all global.* with window.* equivalents
+   - Files: headline.test.js, autocomplete-api-v3.test.js, basic-carousel.test.js, assetDecoder.test.js
+
+2. NULL/UNDEFINED TYPE HANDLING
+   - Issue: Functions throwing TypeError on null/undefined inputs
+   - Files Fixed:
+     * express/code/scripts/utils/string.js - titleCase() function
+     * express/code/scripts/utils/assetDecoder.js - isSupported() function
+     * express/code/scripts/utils/color-tools.js - isDarkOverlayReadable() function
+
+3. COLOR TOOLS HEX PARSING BUG
+   - Issue: Template literal bug in hex color parsing
+   - Fix: Replaced + operator with parseInt(hexString, 16)
+   - Files: Both color-tools.js files (duplicate files issue)
+
+4. HIGHER-ORDER FUNCTIONS (HOFs)
+   - Issue: memoize() requiring TTL even for infinite caching
+   - Fix: Made TTL optional with proper validation
+   - Issue: debounce() leading option logic not working
+   - Fix: Improved leading option logic
+
+5. LOAD CAROUSEL NULL PARENT HANDLING
+   - Issue: loadCarousel() calling .closest() on null parent
+   - Fix: Added null check before DOM method calls
+
+PROGRESS
+--------
+- Starting Point: 77 failing tests
+- Files Successfully Fixed: 4-5 test files
+- Strategy: Simple utility function fixes first
+- All changes committed and pushed to remote
+
+SUCCESSFULLY COMMITTED FIXES
+-----------------------------
+1. Asset Decoder - Null/undefined type handling
+2. HOFs - Memoize TTL validation + debounce leading option  
+3. Load Carousel - Null parent handling
+4. Color Tools - Hex parsing bug + null validation
+
+KEY LEARNINGS
+-------------
+- Module resolution issues can cause tests to import wrong files
+- Simple null/undefined validation prevents many TypeError failures
+- Focus on utility functions before complex component tests
+- Always verify test results before committing changes
+
+CURRENT STATUS
+--------------
+- Branch: MWPW-181177 - All work committed and pushed
+- Ready to continue with remaining easy wins
+- Strategy proven effective for systematic test improvement
+
