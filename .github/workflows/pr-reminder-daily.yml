@@ -30,12 +30,13 @@ jobs:
             
             console.log('🔍 Finding all open PRs (including drafts)...');
             
-            // Get all open PRs
+            // Get all open PRs targeting main branches (stage or main)
             const openPRs = await github.rest.pulls.list({
               owner,
               repo,
               state: 'open',
-              per_page: 100
+              per_page: 100,
+              base: 'stage' // Only look for PRs targeting stage branch
             });
             
             console.log(`Found ${openPRs.data.length} open PRs`);
@@ -129,6 +130,8 @@ jobs:
             
             // Set output for next step
             try {
+              console.log(`🔍 Debug - Final PR count: ${cleanedPRs.length}`);
+              console.log(`🔍 Debug - Final PRs:`, cleanedPRs.map(pr => `#${pr.number} - ${pr.title} (draft: ${pr.draft})`));
               core.setOutput('prs', JSON.stringify(cleanedPRs));
               core.setOutput('count', cleanedPRs.length);
             } catch (error) {
@@ -146,8 +149,11 @@ jobs:
             const count = parseInt('${{ steps.find-prs.outputs.count }}');
             
             console.log(`📢 Sending reminder for ${count} PRs needing review`);
+            console.log(`🔍 Debug - Total PRs: ${prs.length}`);
             console.log(`🔍 Debug - Draft PRs found: ${prs.filter(pr => pr.draft).length}`);
             console.log(`🔍 Debug - Draft PRs:`, prs.filter(pr => pr.draft).map(pr => `#${pr.number} - ${pr.title}`));
+            console.log(`🔍 Debug - Non-draft PRs: ${prs.filter(pr => !pr.draft).length}`);
+            console.log(`🔍 Debug - All PRs:`, prs.map(pr => `#${pr.number} - ${pr.title} (draft: ${pr.draft})`));
             
             // Group PRs by status for better organization
             const prsByStatus = {
