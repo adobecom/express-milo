@@ -1,4 +1,4 @@
-name: QA Label Management
+name: Ready for Review Label Management
 
 on:
   pull_request:
@@ -6,10 +6,10 @@ on:
 
 jobs:
   manage-labels:
-    name: Manage All PR Labels
+    name: Manage Ready for Review Labels
     runs-on: ubuntu-latest
     steps:
-      - name: Manage labels based on PR state and approvals
+      - name: Manage Ready for Review labels based on PR state
         uses: actions/github-script@v7
         with:
           script: |
@@ -36,23 +36,22 @@ jobs:
               return; // Exit gracefully
             }
             
-            // No approval checking needed - just Ready for Review
-            
+            // Only manage Ready for Review labels - don't touch QA labels
             const currentLabels = pr.data.labels.map(label => label.name);
             const isDraft = pr.data.draft;
             
             console.log(`Current labels on PR #${number}:`, currentLabels);
             console.log(`Is draft: ${isDraft}`);
             
-            // Start fresh - only keep non-Ready labels
+            // Start fresh - only keep non-Ready for Review labels (preserve all other labels)
             const targetLabels = currentLabels.filter(label => 
-              !['Ready for Review', 'Ready for review', 'Ready for QA', 'Ready for qa'].includes(label)
+              !['Ready for Review', 'Ready for review'].includes(label)
             );
             
-            // Add the correct Ready label based on state
+            // Add Ready for Review label based on state
             if (isDraft) {
-              // Draft PRs should have no Ready labels
-              console.log(`Draft PR - no Ready labels needed`);
+              // Draft PRs should have no Ready for Review labels
+              console.log(`Draft PR - no Ready for Review labels needed`);
             } else {
               // Ready for Review - default for non-draft PRs
               targetLabels.push('Ready for Review');
@@ -104,7 +103,7 @@ jobs:
               await sendSlackNotification(pr.data);
             }
             
-            // No approval checking functions needed - simplified to just Ready for Review
+            // Only manages Ready for Review labels - QA labels are not touched
             
             // Helper function to escape JSON special characters
             function escapeJson(str) {
