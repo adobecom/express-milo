@@ -17,9 +17,13 @@ export default function decorate(block) {
       const article = document.createElement('article');
       article.appendChild(heading);
 
-      const nextP = heading.nextElementSibling;
-      if (nextP && nextP.tagName === 'P' && nextP.textContent.trim() !== 'null') {
-        article.appendChild(nextP);
+      // Find the first valid paragraph
+      const paragraphs = block.querySelectorAll('p');
+      for (const p of paragraphs) {
+        if (p.textContent.trim() !== 'null' && p.textContent.trim() !== '') {
+          article.appendChild(p);
+          break;
+        }
       }
 
       block.innerHTML = '';
