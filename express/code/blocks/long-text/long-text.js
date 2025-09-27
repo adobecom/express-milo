@@ -9,6 +9,37 @@ export default function decorate(block) {
     block.parentElement.classList.add('plain');
   }
 
+  if (block.classList.contains('no-background')) {
+    block.parentElement.classList.add('no-background');
+    
+    // Create simplified article structure for no-background variant
+    const h2Elements = block.querySelectorAll('h2');
+    if (h2Elements.length > 0) {
+      const allContentElements = Array.from(block.querySelectorAll('h2, p'));
+      block.innerHTML = '';
+
+      allContentElements.forEach((element, index) => {
+        if (element.tagName === 'H2') {
+          const article = document.createElement('article');
+          article.appendChild(element);
+
+          for (let i = index + 1; i < allContentElements.length; i += 1) {
+            const nextElement = allContentElements[i];
+            if (nextElement.tagName === 'H2') {
+              break;
+            }
+            if (nextElement.tagName === 'P' && nextElement.textContent !== 'null' && nextElement.textContent !== null) {
+              article.appendChild(nextElement);
+              break;
+            }
+          }
+
+          block.appendChild(article);
+        }
+      });
+    }
+  }
+
   if (block.textContent.trim() === '') {
     if (block.parentElement.classList.contains('long-text-wrapper')) {
       block.parentElement.remove();
@@ -16,8 +47,8 @@ export default function decorate(block) {
       block.remove();
     }
   }
-  if (block.querySelector('p').textContent === 'null'
-  || block.querySelector('p').textContent === null) {
+  
+  if (block.querySelector('p') && (block.querySelector('p').textContent === 'null' || block.querySelector('p').textContent === null)) {
     block.querySelector('p').remove();
   }
 }
