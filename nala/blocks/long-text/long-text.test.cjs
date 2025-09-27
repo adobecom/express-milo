@@ -28,7 +28,7 @@ test.describe('Express Long Text Block test suite', () => {
 
     await test.step('Wait for page to load and verify content', async () => {
       await longText.waitForContent();
-      await expect(longText.longText).toBeVisible();
+      await expect(longText.longText.first()).toBeVisible();
 
       // Verify basic structure
       const structure = await longText.getContentStructure();
@@ -90,11 +90,11 @@ test.describe('Express Long Text Block test suite', () => {
     });
 
     await test.step('Verify analytics attributes', async () => {
-      await expect(longText.longText).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('long-text', 1));
+      await expect(longText.longText.first()).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('long-text', 1));
     });
 
     await test.step('Verify accessibility', async () => {
-      await runAccessibilityTest({ page, testScope: longText.longText });
+      await runAccessibilityTest({ page, testScope: longText.longText.first() });
     });
 
     await test.step('Test responsive behavior - mobile viewport', async () => {

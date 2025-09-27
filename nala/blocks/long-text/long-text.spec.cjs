@@ -4,7 +4,7 @@ module.exports = {
     {
       tcid: '0',
       name: '@long-text all variants',
-      path: '/drafts/nala/blocks/long-text',
+      path: '/drafts/nala/blocks/long-text/long-text',
       data: {
         h2Text: 'Test Heading',
         pText: 'Test paragraph content',
