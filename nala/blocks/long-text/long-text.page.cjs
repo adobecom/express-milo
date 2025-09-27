@@ -176,4 +176,45 @@ export default class LongText {
     const headings = await this.longText.first().locator('h1, h2, h3, h4, h5, h6').count();
     return headings > 0;
   }
+
+  async getNoBackgroundPadding() {
+    const noBackgroundBlock = this.variants.noBackground.first();
+    const computedStyle = await noBackgroundBlock.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return {
+        paddingTop: style.paddingTop,
+        paddingRight: style.paddingRight,
+        paddingBottom: style.paddingBottom,
+        paddingLeft: style.paddingLeft,
+      };
+    });
+    return computedStyle;
+  }
+
+  async getNoBackgroundGap() {
+    const article = this.noBackgroundArticles.first();
+    const computedStyle = await article.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return {
+        gap: style.gap,
+        display: style.display,
+        flexDirection: style.flexDirection,
+      };
+    });
+    return computedStyle;
+  }
+
+  async getNoBackgroundDimensions() {
+    const noBackgroundBlock = this.variants.noBackground.first();
+    const dimensions = await noBackgroundBlock.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      return {
+        width: rect.width,
+        maxWidth: window.getComputedStyle(el).maxWidth,
+        marginLeft: window.getComputedStyle(el).marginLeft,
+        marginRight: window.getComputedStyle(el).marginRight,
+      };
+    });
+    return dimensions;
+  }
 }

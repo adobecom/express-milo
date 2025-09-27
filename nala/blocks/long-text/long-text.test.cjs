@@ -100,22 +100,103 @@ test.describe('Express Long Text Block test suite', () => {
     await test.step('Test responsive behavior - mobile viewport', async () => {
       await page.setViewportSize({ width: 375, height: 667 });
       await longText.waitForContent();
+
+      // Test content structure
       const structure = await longText.getContentStructure();
       expect(structure.h2Count).toBeGreaterThanOrEqual(1);
+
+      // Test no-background variant styling on mobile
+      const noBackgroundExists = await longText.variants.noBackground.count() > 0;
+      if (noBackgroundExists) {
+        const padding = await longText.getNoBackgroundPadding();
+        const gap = await longText.getNoBackgroundGap();
+        const dimensions = await longText.getNoBackgroundDimensions();
+
+        // Mobile padding should be 40px 16px (var(--spacing-600) var(--spacing-300))
+        expect(padding.paddingTop).toBe('40px');
+        expect(padding.paddingBottom).toBe('40px');
+        expect(padding.paddingLeft).toBe('16px');
+        expect(padding.paddingRight).toBe('16px');
+
+        // Gap should be 24px
+        expect(gap.gap).toBe('24px');
+        expect(gap.display).toBe('flex');
+        expect(gap.flexDirection).toBe('column');
+
+        // Should be centered with max-width
+        expect(dimensions.maxWidth).toBe('1024px');
+        // Check that the block is centered (either auto margins or calculated centering)
+        expect(parseInt(dimensions.marginLeft, 10) >= 0).toBe(true);
+        expect(parseInt(dimensions.marginRight, 10) >= 0).toBe(true);
+      }
     });
 
     await test.step('Test responsive behavior - tablet viewport', async () => {
       await page.setViewportSize({ width: 768, height: 1024 });
       await longText.waitForContent();
+
+      // Test content structure
       const structure = await longText.getContentStructure();
       expect(structure.h2Count).toBeGreaterThanOrEqual(1);
+
+      // Test no-background variant styling on tablet
+      const noBackgroundExists = await longText.variants.noBackground.count() > 0;
+      if (noBackgroundExists) {
+        const padding = await longText.getNoBackgroundPadding();
+        const gap = await longText.getNoBackgroundGap();
+        const dimensions = await longText.getNoBackgroundDimensions();
+
+        // Tablet padding should be 40px 32px (var(--spacing-600) var(--spacing-500))
+        expect(padding.paddingTop).toBe('40px');
+        expect(padding.paddingBottom).toBe('40px');
+        expect(padding.paddingLeft).toBe('32px');
+        expect(padding.paddingRight).toBe('32px');
+
+        // Gap should still be 24px
+        expect(gap.gap).toBe('24px');
+        expect(gap.display).toBe('flex');
+        expect(gap.flexDirection).toBe('column');
+
+        // Should be centered with max-width
+        expect(dimensions.maxWidth).toBe('1024px');
+        // Check that the block is centered (either auto margins or calculated centering)
+        expect(parseInt(dimensions.marginLeft, 10) >= 0).toBe(true);
+        expect(parseInt(dimensions.marginRight, 10) >= 0).toBe(true);
+      }
     });
 
     await test.step('Test responsive behavior - desktop viewport', async () => {
       await page.setViewportSize({ width: 1200, height: 800 });
       await longText.waitForContent();
+
+      // Test content structure
       const structure = await longText.getContentStructure();
       expect(structure.h2Count).toBeGreaterThanOrEqual(1);
+
+      // Test no-background variant styling on desktop
+      const noBackgroundExists = await longText.variants.noBackground.count() > 0;
+      if (noBackgroundExists) {
+        const padding = await longText.getNoBackgroundPadding();
+        const gap = await longText.getNoBackgroundGap();
+        const dimensions = await longText.getNoBackgroundDimensions();
+
+        // Desktop padding should be 80px 40px (var(--spacing-900) var(--spacing-600))
+        expect(padding.paddingTop).toBe('80px');
+        expect(padding.paddingBottom).toBe('80px');
+        expect(padding.paddingLeft).toBe('40px');
+        expect(padding.paddingRight).toBe('40px');
+
+        // Gap should still be 24px
+        expect(gap.gap).toBe('24px');
+        expect(gap.display).toBe('flex');
+        expect(gap.flexDirection).toBe('column');
+
+        // Should be centered with max-width
+        expect(dimensions.maxWidth).toBe('1024px');
+        // Check that the block is centered (either auto margins or calculated centering)
+        expect(parseInt(dimensions.marginLeft, 10) >= 0).toBe(true);
+        expect(parseInt(dimensions.marginRight, 10) >= 0).toBe(true);
+      }
     });
 
     await test.step('Test keyboard navigation', async () => {
