@@ -3,22 +3,41 @@
  * Tracks Core Web Vitals and video loading performance
  */
 
-// Core Web Vitals monitoring
+// Core Web Vitals monitoring - Performance optimized
 function initPerformanceMonitoring() {
   // Only run in production
   if (window.location.hostname === 'localhost' || window.location.hostname.includes('hlx.page')) {
     return;
   }
 
-  // Import web-vitals library
-  import('https://unpkg.com/web-vitals@3/dist/web-vitals.attribution.js').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-    // Track Core Web Vitals
-    getCLS(sendToAnalytics);
-    getFID(sendToAnalytics);
-    getFCP(sendToAnalytics);
-    getLCP(sendToAnalytics);
-    getTTFB(sendToAnalytics);
-  });
+  // Performance optimization: Use requestIdleCallback for non-critical monitoring
+  const scheduleMonitoring = () => {
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        import('https://unpkg.com/web-vitals@3/dist/web-vitals.attribution.js').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+          // Track Core Web Vitals
+          getCLS(sendToAnalytics);
+          getFID(sendToAnalytics);
+          getFCP(sendToAnalytics);
+          getLCP(sendToAnalytics);
+          getTTFB(sendToAnalytics);
+        });
+      });
+    } else {
+      // Fallback for browsers without requestIdleCallback
+      setTimeout(() => {
+        import('https://unpkg.com/web-vitals@3/dist/web-vitals.attribution.js').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+          getCLS(sendToAnalytics);
+          getFID(sendToAnalytics);
+          getFCP(sendToAnalytics);
+          getLCP(sendToAnalytics);
+          getTTFB(sendToAnalytics);
+        });
+      }, 1000);
+    }
+  };
+
+  scheduleMonitoring();
 
   // Track video loading performance
   trackVideoPerformance();

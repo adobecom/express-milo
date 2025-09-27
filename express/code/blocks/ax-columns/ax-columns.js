@@ -277,6 +277,12 @@ export default async function decorate(block) {
     const bgImg = background?.querySelector('img');
     block.firstElementChild?.remove();
     if (bgImg) {
+      // Performance optimization: Add fetchpriority for LCP images
+      if (block.classList.contains('marquee')) {
+        bgImg.setAttribute('fetchpriority', 'high');
+        bgImg.setAttribute('loading', 'eager');
+      }
+      
       // Create optimized image URL for CSS background (immediate)
       const url = new URL(bgImg.src, window.location.href);
       const { pathname } = url;

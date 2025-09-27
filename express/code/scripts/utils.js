@@ -780,16 +780,27 @@ export function decorateArea(area = document) {
   document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
   const selector = area === document ? 'main > div' : ':scope body > div';
   preDecorateSections(area);
-  // LCP image decoration
+  // LCP image decoration - Performance optimized
   (function decorateLCPImage() {
     const lcpImg = area.querySelector('img');
-    lcpImg?.removeAttribute('loading');
+    if (lcpImg) {
+      lcpImg.removeAttribute('loading');
+      // Add fetchpriority for LCP image
+      lcpImg.setAttribute('fetchpriority', 'high');
+      // Preload LCP image
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = lcpImg.src;
+      document.head.appendChild(link);
+    }
   }());
 
-  if (area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`).length) {
+  // Performance optimization: Cache DOM queries
+  const branchLinks = area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`);
+  if (branchLinks.length) {
     // eslint-disable-next-line import/no-cycle
-    // select links again to refresh reference
-    import('./branchlinks.js').then((mod) => mod.default(area.querySelectorAll(`${selector} a[href*="adobesparkpost.app.link"], ${selector} a[href*="adobesparkpost-web.app.link"]`)));
+    import('./branchlinks.js').then((mod) => mod.default(branchLinks));
   }
 
   cleanupBrackets(area);
@@ -801,13 +812,18 @@ export function decorateArea(area = document) {
   addPromotion(area);
   decorateLegalCopy(area);
 
+  // Performance optimization: Cache video link queries
   const linksToNotAutoblock = [];
   const embeds = area.querySelectorAll(`${selector} > .embed a[href*="instagram.com"]`);
   linksToNotAutoblock.push(...embeds);
 
-  let videoLinksToNotAutoBlock = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'drawer-cards', 'image-list', 'tutorials', 'quick-action-hub', 'holiday-blade'].map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
-  videoLinksToNotAutoBlock += `,${['tutorials'].map((block) => `${selector} .${block} a[href*="youtube.com"], ${selector} .${block} a[href*="youtu.be"], ${selector} .${block} a[href$=".mp4"], ${selector} .${block} a[href*="vimeo.com"], ${selector} .${block} a[href*="video.tv.adobe.com"]`).join(', ')}`;
-  linksToNotAutoblock.push(...area.querySelectorAll(videoLinksToNotAutoBlock));
+  // Cache video link selectors to avoid repeated DOM queries
+  const videoBlockSelectors = ['ax-columns', 'ax-marquee', 'hero-animation', 'cta-carousel', 'frictionless-quick-action', 'fullscreen-marquee', 'template-x', 'grid-marquee', 'drawer-cards', 'image-list', 'tutorials', 'quick-action-hub', 'holiday-blade'];
+  const videoLinksSelector = videoBlockSelectors.map((block) => `${selector} .${block} a[href$=".mp4"]`).join(', ');
+  const tutorialVideoSelector = `${selector} .tutorials a[href*="youtube.com"], ${selector} .tutorials a[href*="youtu.be"], ${selector} .tutorials a[href$=".mp4"], ${selector} .tutorials a[href*="vimeo.com"], ${selector} .tutorials a[href*="video.tv.adobe.com"]`;
+  const allVideoLinksSelector = `${videoLinksSelector},${tutorialVideoSelector}`;
+  
+  linksToNotAutoblock.push(...area.querySelectorAll(allVideoLinksSelector));
   linksToNotAutoblock.forEach((link) => {
     if (!link.href.includes('#_dnb')) link.href = `${link.href}#_dnb`;
   });

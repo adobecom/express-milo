@@ -20,6 +20,9 @@ body.no-desktop-brand-header header {
     margin: auto;
     width: 100%;
     box-sizing: border-box;
+    /* Performance optimization: Optimize for LCP */
+    contain: layout style;
+    will-change: auto;
 }
 
 .ax-marquee.light-primary-cta a.button.primaryCTA {
@@ -95,6 +98,9 @@ body.no-desktop-brand-header header {
 .ax-marquee .content-wrapper h1 {
     font-size: clamp(var(--heading-font-size-l), 4vw, var(--heading-font-size-xxl));
     margin: 0 0 8px 0;
+    /* Performance optimization: Prevent layout shift */
+    line-height: 1.2;
+    contain: layout;
 }
 
 .ax-marquee .content-wrapper h2 {
@@ -181,6 +187,9 @@ body.no-desktop-brand-header header {
 
 .ax-marquee .background-wrapper {
     position: relative;
+    /* Performance optimization: Optimize video container for LCP */
+    contain: layout;
+    overflow: hidden;
 }
 
 .ax-marquee video.marquee-background {
@@ -218,6 +227,8 @@ body.no-desktop-brand-header header {
     0% { background-position: -200px 0; }
     100% { background-position: calc(200px + 100%) 0; }
 }
+
+.ax-marquee video.marquee-background {
     min-height: 200px;
     max-height: 500px;
     object-position: center;

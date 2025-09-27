@@ -5,10 +5,33 @@
 <link rel="preconnect" href="//main--express--adobecom.hlx.page" crossorigin>
 <link rel="dns-prefetch" href="//fonts.googleapis.com">
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link rel="dns-prefetch" href="//unpkg.com">
 
-<!-- Preload critical resources -->
+<!-- Preload critical resources for Express homepage -->
 <link rel="preload" href="/express/code/styles/styles.css" as="style">
 <link rel="preload" href="/express/code/scripts/scripts.js" as="script">
+
+<!-- Critical CSS for above-the-fold content -->
+<style>
+  /* Critical CSS for LCP optimization */
+  .ax-marquee {
+    contain: layout style;
+    will-change: auto;
+  }
+  .ax-marquee .content-wrapper h1 {
+    line-height: 1.2;
+    contain: layout;
+  }
+  .ax-marquee video.marquee-background {
+    aspect-ratio: 16/9;
+    height: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  .ax-marquee video.marquee-background.loaded {
+    opacity: 1;
+  }
+</style>
 
 <script src="/express/code/scripts/fallback.js" nomodule></script>
 <script src="/express/code/scripts/scripts.js" type="module"></script>

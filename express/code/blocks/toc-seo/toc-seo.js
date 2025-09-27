@@ -792,20 +792,22 @@ function setupEventHandlers(tocElement) {
   const throttledHandleDesktopPositioning = throttleRAF(() => handleDesktopPositioning(tocElement));
   const throttledHandleMobileSticky = throttleRAF(() => handleMobileSticky(tocElement));
 
+  // Performance optimization: Cache DOM queries and use passive listeners
+  const longFormSections = document.querySelectorAll('main .section.long-form .content');
+  let lastLongFormContent = longFormSections[longFormSections.length - 1];
+  let lastBoundaryUpdate = 0;
+  
   // Single scroll handler with viewport check
   const handleScroll = () => {
     if (window.innerWidth >= 1024) {
       // Only update boundary calculation occasionally to reduce flashing
       // Always update boundary when near the bottom to ensure proper stopping
-      const longFormSections = document.querySelectorAll('main .section.long-form .content');
-      if (longFormSections.length > 0) {
-        const lastLongFormContent = longFormSections[longFormSections.length - 1];
+      if (lastLongFormContent) {
         const contentRect = lastLongFormContent.getBoundingClientRect();
 
         // Update boundary more frequently when near the bottom
-        const lastUpdate = parseInt(tocElement.dataset.lastBoundaryUpdate, 10) || 0;
-        const shouldUpdate = !tocElement.dataset.lastBoundaryUpdate
-          || Math.abs(window.pageYOffset - lastUpdate) > 100
+        const shouldUpdate = lastBoundaryUpdate === 0
+          || Math.abs(window.pageYOffset - lastBoundaryUpdate) > 100
           || contentRect.bottom < window.innerHeight + 200; // Update when near bottom
 
         if (shouldUpdate) {
@@ -825,6 +827,7 @@ function setupEventHandlers(tocElement) {
 
           // Store the boundary for use in positioning
           tocElement.dataset.textBottomBoundary = textBottom;
+          lastBoundaryUpdate = window.pageYOffset;
           tocElement.dataset.lastBoundaryUpdate = window.pageYOffset;
         }
       }
@@ -848,7 +851,8 @@ function setupEventHandlers(tocElement) {
     }
   };
 
-  window.addEventListener('scroll', handleScroll);
+  // Performance optimization: Use passive scroll listener
+  window.addEventListener('scroll', handleScroll, { passive: true });
   const throttledResizeHandler = throttleRAF(() => {
     // Reset sticky positioning when transitioning between viewports
     if (window.innerWidth >= 1024) {

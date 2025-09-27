@@ -48,6 +48,8 @@ main .section .ax-columns.enterprise .column h2 {
   max-width: 350px;
   line-height: initial;
   word-wrap: normal;
+  /* Performance optimization: Prevent CLS */
+  contain: layout;
 }
 
 .ax-columns.marquee.width-2-columns {
@@ -291,6 +293,11 @@ main .section .ax-columns.enterprise .column h2 {
 
 .ax-columns.marquee .column-picture img {
   transition: transform 0.3s ease;
+  /* Performance optimization: Prevent CLS */
+  aspect-ratio: 1;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
 }
 
 .ax-columns.marquee .column-picture:hover img {

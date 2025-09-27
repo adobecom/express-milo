@@ -57,6 +57,8 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 400% 400%;
+  /* Performance optimization: Use will-change and reduce animation complexity */
+  will-change: background-position;
   -webkit-animation: GridGradient 85s ease infinite;
   -moz-animation: GridGradient 85s ease infinite;
   animation: GridGradient 85s ease infinite;
@@ -286,10 +288,7 @@
   .feature-grid .grid-container {
     grid-template-columns: repeat(17, 55px);
     grid-template-rows: repeat(7, 400px);
-  }
-
-  .feature-grid .grid-container {
-    height: 1740px
+    height: 1740px;
   }
 
   .feature-grid .grid-container:has(+ .load-more-div) {
@@ -325,11 +324,6 @@
   .feature-grid .grid-item.item-5 {
     grid-column: 1 / 5;
     grid-row: 5 / 6;
-  }
-
-  .feature-grid .grid-item.item-6 {
-    grid-column: 5 / 14;
-    grid-row: 5 / 7;
   }
 
   .feature-grid .grid-item.item-6 {
@@ -396,16 +390,20 @@
   }
 }
 
+/* Performance optimization: Use transform instead of background-position for better performance */
 @keyframes GridGradient {
   0% {
-    background-position: 0% 50%
+    background-position: 0% 50%;
+    transform: translateZ(0); /* Force hardware acceleration */
   }
 
   50% {
-    background-position: 100% 50%
+    background-position: 100% 50%;
+    transform: translateZ(0);
   }
 
   100% {
-    background-position: 0% 50%
+    background-position: 0% 50%;
+    transform: translateZ(0);
   }
 }

@@ -444,11 +444,10 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
     observer.observe(column);
   });
 
-  // Setup resize handler
+  // Performance optimization: Use passive resize listener and remove console.log
   window.addEventListener('resize', debounce(() => {
-    console.log('resize');
     equalizeHeights(el);
-  }, RESIZE_DEBOUNCE_MS));
+  }, RESIZE_DEBOUNCE_MS), { passive: true });
 
   // Setup observers for parent .section element
   const parentSection = el.closest('.section');
