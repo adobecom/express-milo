@@ -1,4 +1,3 @@
-/* to remove after wrapper deprecation */
 main .section div.long-text-wrapper {
     max-width: none;
     padding: 0;
@@ -39,6 +38,17 @@ main .long-text.no-background article {
     display: flex;
     flex-direction: column;
     gap: 24px;
+}
+
+main .long-text.no-background article h1,
+main .long-text.no-background article h2,
+main .long-text.no-background article h3 {
+    margin-bottom: 0;
+}
+
+main .long-text.no-background article p {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 main .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,

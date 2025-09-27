@@ -11,32 +11,19 @@ export default function decorate(block) {
 
   if (block.classList.contains('no-background')) {
     block.parentElement.classList.add('no-background');
-    
-    // Create simplified article structure for no-background variant
-    const h2Elements = block.querySelectorAll('h2');
-    if (h2Elements.length > 0) {
-      const allContentElements = Array.from(block.querySelectorAll('h2, p'));
+
+    const heading = block.querySelector('h2, h3, h4');
+    if (heading) {
+      const article = document.createElement('article');
+      article.appendChild(heading);
+
+      const nextP = heading.nextElementSibling;
+      if (nextP && nextP.tagName === 'P' && nextP.textContent.trim() !== 'null') {
+        article.appendChild(nextP);
+      }
+
       block.innerHTML = '';
-
-      allContentElements.forEach((element, index) => {
-        if (element.tagName === 'H2') {
-          const article = document.createElement('article');
-          article.appendChild(element);
-
-          for (let i = index + 1; i < allContentElements.length; i += 1) {
-            const nextElement = allContentElements[i];
-            if (nextElement.tagName === 'H2') {
-              break;
-            }
-            if (nextElement.tagName === 'P' && nextElement.textContent !== 'null' && nextElement.textContent !== null) {
-              article.appendChild(nextElement);
-              break;
-            }
-          }
-
-          block.appendChild(article);
-        }
-      });
+      block.appendChild(article);
     }
   }
 
@@ -47,7 +34,7 @@ export default function decorate(block) {
       block.remove();
     }
   }
-  
+
   if (block.querySelector('p') && (block.querySelector('p').textContent === 'null' || block.querySelector('p').textContent === null)) {
     block.querySelector('p').remove();
   }
