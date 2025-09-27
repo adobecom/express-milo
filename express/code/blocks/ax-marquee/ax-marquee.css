@@ -187,6 +187,37 @@ body.no-desktop-brand-header header {
     z-index: -1;
     object-fit: cover;
     width: 100%;
+    /* Performance optimization: Prevent layout shift */
+    aspect-ratio: 16/9;
+    height: auto;
+    /* Smooth loading transition */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Show video when loaded */
+.ax-marquee video.marquee-background.loaded {
+    opacity: 1;
+}
+
+/* Skeleton loading state */
+.ax-marquee .marquee-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton-loading 1.5s infinite;
+    z-index: 1;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: -200px 0; }
+    100% { background-position: calc(200px + 100%) 0; }
+}
     min-height: 200px;
     max-height: 500px;
     object-position: center;

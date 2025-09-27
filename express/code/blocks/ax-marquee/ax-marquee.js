@@ -233,7 +233,10 @@ function createAnimation(animations) {
 
   // replace anchor with video element
   const video = createTag('video', attribs);
-  video.setAttribute('preload', 'auto');
+  // Performance optimization: Use metadata preload instead of auto
+  video.setAttribute('preload', 'metadata');
+  // Add loading attribute for lazy loading
+  video.setAttribute('loading', 'lazy');
   if (source) {
     video.innerHTML = `<source src="${source}" type="video/mp4">`;
   }
@@ -418,8 +421,36 @@ async function handleContent(div, block, animations) {
   injectExpressLogo(block, contentWrapper);
   div.append(marqueeForeground);
 
+  // Performance optimization: Lazy load video when in viewport
+  if (video && video.getAttribute('loading') === 'lazy') {
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const videoEl = entry.target;
+          // Load video when it enters viewport
+          videoEl.load();
+          videoObserver.unobserve(videoEl);
+        }
+      });
+    }, {
+      rootMargin: '100px', // Load 100px before entering viewport
+    });
+    videoObserver.observe(video);
+  }
+
   video.addEventListener('canplay', () => {
+    // Add loaded class for smooth transition
+    video.classList.add('loaded');
     buildReduceMotionSwitch(block, marqueeForeground);
+  });
+
+  // Handle video loading states
+  video.addEventListener('loadstart', () => {
+    video.classList.remove('loaded');
+  });
+
+  video.addEventListener('loadeddata', () => {
+    video.classList.add('loaded');
   });
 
   div.querySelectorAll(':scope p:empty').forEach((p) => {

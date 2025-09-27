@@ -411,4 +411,9 @@ const listenAlloy = () => {
   import('./express-delayed.js').then((mod) => {
     mod.default();
   });
+
+  // Initialize performance monitoring
+  import('./performance-monitor.js').then((mod) => {
+    mod.initPerformanceMonitoring();
+  });
 }());
