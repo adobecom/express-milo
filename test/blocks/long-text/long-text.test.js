@@ -114,7 +114,7 @@ describe('Long Text Block', () => {
 
       const articles = longText.querySelectorAll('article');
       expect(articles).to.have.length(1);
-      
+
       const article = articles[0];
       expect(article.querySelector('h2')).to.exist;
       expect(article.querySelector('p')).to.exist;
@@ -134,7 +134,7 @@ describe('Long Text Block', () => {
 
       const articles = longText.querySelectorAll('article');
       expect(articles).to.have.length(1);
-      
+
       const article = articles[0];
       expect(article.querySelector('h3')).to.exist;
       expect(article.querySelector('p')).to.exist;
@@ -152,7 +152,7 @@ describe('Long Text Block', () => {
 
       const articles = longText.querySelectorAll('article');
       expect(articles).to.have.length(1);
-      
+
       const article = articles[0];
       expect(article.querySelector('h4')).to.exist;
       expect(article.querySelector('p')).to.exist;
@@ -171,7 +171,7 @@ describe('Long Text Block', () => {
 
       const articles = longText.querySelectorAll('article');
       expect(articles).to.have.length(1);
-      
+
       const article = articles[0];
       expect(article.querySelector('h2')).to.exist;
       expect(article.querySelector('p')).to.exist;
@@ -202,7 +202,7 @@ describe('Long Text Block', () => {
 
       const articles = longText.querySelectorAll('article');
       expect(articles).to.have.length(1);
-      
+
       const article = articles[0];
       expect(article.querySelector('h2')).to.exist;
       expect(article.querySelector('p')).to.not.exist;
@@ -219,10 +219,10 @@ describe('Long Text Block', () => {
       `;
       const longText = document.querySelector('.long-text');
       decorate(longText);
-      
+
       expect(longText.parentElement.classList.contains('plain')).to.be.true;
       expect(longText.parentElement.classList.contains('no-background')).to.be.true;
-      
+
       const articles = longText.querySelectorAll('article');
       expect(articles).to.have.length(1);
     });

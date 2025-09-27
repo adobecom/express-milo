@@ -17,7 +17,7 @@ test.describe('Express Long Text Block test suite', () => {
 
   // Single comprehensive test with all variants
   test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
-    const { data } = features[0];
+    // const { data } = features[0];
     const testUrl = `${baseURL}${features[0].path}${miloLibs}`;
     console.info(`[Test Page]: ${testUrl}`);
 
@@ -42,11 +42,11 @@ test.describe('Express Long Text Block test suite', () => {
       const plainExists = await longText.variants.plain.count() > 0;
       if (plainExists) {
         await expect(longText.variants.plain).toBeVisible();
-        
+
         // Verify plain variant has wrapper class
         const plainWrapper = longText.variants.plain.locator('xpath=..');
         await expect(plainWrapper).toHaveClass(/plain/);
-        
+
         // Verify plain variant doesn't have article structure
         const plainArticles = longText.variants.plain.locator('article');
         const articleCount = await plainArticles.count();
@@ -58,16 +58,16 @@ test.describe('Express Long Text Block test suite', () => {
       const noBackgroundExists = await longText.variants.noBackground.count() > 0;
       if (noBackgroundExists) {
         await expect(longText.variants.noBackground).toBeVisible();
-        
+
         // Verify no-background variant has wrapper class
         const noBackgroundWrapper = longText.variants.noBackground.locator('xpath=..');
         await expect(noBackgroundWrapper).toHaveClass(/no-background/);
-        
+
         // Verify no-background variant has article structure
         const noBackgroundStructure = await longText.getNoBackgroundStructure();
         expect(noBackgroundStructure.hasSemanticStructure).toBe(true);
         expect(noBackgroundStructure.articleCount).toBeGreaterThanOrEqual(1);
-        
+
         // Verify articles contain heading and paragraph
         for (const article of noBackgroundStructure.articles) {
           const hasHeading = article.hasH2 || article.hasH3 || article.hasH4;
@@ -78,7 +78,7 @@ test.describe('Express Long Text Block test suite', () => {
     });
 
     await test.step('Verify design tokens are applied', async () => {
-      const tokens = await longText.getDesignTokens();
+      const tokens = LongText.getDesignTokens();
 
       // Verify h2 styling
       expect(tokens.h2Color).toBeTruthy();

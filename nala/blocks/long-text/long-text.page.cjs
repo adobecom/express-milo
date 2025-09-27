@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+// import { expect } from '@playwright/test';
 
 export default class LongText {
   constructor(page) {
@@ -61,7 +61,7 @@ export default class LongText {
       const hasP = await p.isVisible();
 
       console.log(`DEBUG: Article ${i} - hasH2: ${hasH2}, hasH3: ${hasH3}, hasH4: ${hasH4}, hasP: ${hasP}`);
-      
+
       // Debug: Check what's actually in the article
       const articleHTML = await article.innerHTML();
       console.log(`DEBUG: Article ${i} HTML:`, articleHTML);
@@ -152,14 +152,14 @@ export default class LongText {
     return articleCount > 0;
   }
 
-  async getDesignTokens() {
+  static getDesignTokens() {
     // Mock design tokens for testing
     return {
       h2Color: 'rgb(0, 0, 0)',
       h2FontSize: '24px',
       pColor: 'rgb(0, 0, 0)',
       pFontSize: '16px',
-      spacing: '24px'
+      spacing: '24px',
     };
   }
 
