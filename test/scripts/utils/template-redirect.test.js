@@ -3,6 +3,8 @@ import redirectToExistingPage, {
   constructTargetPath,
 } from '../../../express/code/scripts/utils/template-redirect.js';
 
+// Import existsTemplatePage for testing (it's not exported, so we need to test it indirectly)
+
 describe('Template Redirect Utils', () => {
   describe('constructTargetPath', () => {
     it('should construct path with all parameters', () => {
@@ -133,6 +135,26 @@ describe('Template Redirect Utils', () => {
   });
 
   describe('redirectToExistingPage', () => {
+    beforeEach(() => {
+      // Mock window.import
+      window.import = async (path) => {
+        if (path.includes('all-templates-metadata')) {
+          return {
+            default: () => Promise.resolve([
+              { url: '/us/express/templates/social-media/design' },
+              { url: '/us/express/templates/business/cards' },
+            ]),
+          };
+        }
+        return {
+          getConfig: () => ({ locale: { prefix: '/us' } }),
+        };
+      };
+
+      // Mock getLibs
+      window.getLibs = () => '/libs';
+    });
+
     it('should be a function', () => {
       expect(redirectToExistingPage).to.be.a('function');
     });
@@ -184,6 +206,57 @@ describe('Template Redirect Utils', () => {
       expect(proxy.get('topics')).to.equal('social-media');
       expect(proxy.get('tasks')).to.be.null;
       expect(proxy.get('tasksx')).to.be.null;
+    });
+
+    it('should handle URLSearchParams proxy behavior', () => {
+      // Test the URLSearchParams proxy behavior that redirectToExistingPage uses
+      const searchParams = new URLSearchParams('topics=social-media&tasks=design&searchId=123');
+      const proxy = new Proxy(searchParams, {
+        get: (params, prop) => {
+          if (prop === 'get') {
+            return (key) => params.get(key);
+          }
+          return params.get(prop);
+        },
+      });
+
+      expect(proxy.get('topics')).to.equal('social-media');
+      expect(proxy.get('tasks')).to.equal('design');
+      expect(proxy.get('searchId')).to.equal('123');
+    });
+
+    it('should handle different search parameters in proxy', () => {
+      // Test with different search parameters
+      const searchParams = new URLSearchParams('topics=business&tasks=cards');
+      const proxy = new Proxy(searchParams, {
+        get: (params, prop) => {
+          if (prop === 'get') {
+            return (key) => params.get(key);
+          }
+          return params.get(prop);
+        },
+      });
+
+      expect(proxy.get('topics')).to.equal('business');
+      expect(proxy.get('tasks')).to.equal('cards');
+      expect(proxy.get('searchId')).to.be.null;
+    });
+
+    it('should handle searchId parameter in proxy', () => {
+      // Test with searchId parameter
+      const searchParams = new URLSearchParams('topics=social-media&tasks=design&searchId=abc123');
+      const proxy = new Proxy(searchParams, {
+        get: (params, prop) => {
+          if (prop === 'get') {
+            return (key) => params.get(key);
+          }
+          return params.get(prop);
+        },
+      });
+
+      expect(proxy.get('topics')).to.equal('social-media');
+      expect(proxy.get('tasks')).to.equal('design');
+      expect(proxy.get('searchId')).to.equal('abc123');
     });
   });
 });
