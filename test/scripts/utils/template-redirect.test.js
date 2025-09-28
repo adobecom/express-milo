@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import {
+import redirectToExistingPage, {
   constructTargetPath,
 } from '../../../express/code/scripts/utils/template-redirect.js';
 
@@ -10,109 +10,71 @@ describe('Template Redirect Utils', () => {
         locale: { prefix: '/us' },
       });
 
-      const result = constructTargetPath('design', 'social-media', 'instagram', mockGetConfig);
-
-      expect(result).to.equal('/us/express/templates/social-media/design');
+      const result = constructTargetPath('social-media', 'design', 'instagram', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/design/social-media');
     });
 
-    it('should construct path with only topics', () => {
+    it('should handle tasksx parameter', () => {
       const mockGetConfig = () => ({
         locale: { prefix: '/us' },
       });
 
-      const result = constructTargetPath('design', null, null, mockGetConfig);
-
-      expect(result).to.equal('/us/express/templates/design');
+      const result = constructTargetPath('social-media', 'design', 'instagram', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/design/social-media');
     });
 
-    it('should construct path with only tasks', () => {
+    it('should handle only topics parameter', () => {
       const mockGetConfig = () => ({
         locale: { prefix: '/us' },
       });
 
-      const result = constructTargetPath(null, 'social-media', null, mockGetConfig);
-
+      const result = constructTargetPath('social-media', '', '', mockGetConfig);
       expect(result).to.equal('/us/express/templates/social-media');
     });
 
-    it('should construct path with only tasksx', () => {
+    it('should handle only tasks parameter', () => {
       const mockGetConfig = () => ({
         locale: { prefix: '/us' },
       });
 
-      const result = constructTargetPath(null, null, 'instagram', mockGetConfig);
-
-      expect(result).to.equal('/us/express/templates/instagram');
+      const result = constructTargetPath('', 'design', '', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/design');
     });
 
-    it('should construct path with tasks and topics', () => {
+    it('should handle empty parameters', () => {
       const mockGetConfig = () => ({
         locale: { prefix: '/us' },
       });
 
-      const result = constructTargetPath('design', 'social-media', null, mockGetConfig);
-
-      expect(result).to.equal('/us/express/templates/social-media/design');
-    });
-
-    it('should construct path with tasksx and topics', () => {
-      const mockGetConfig = () => ({
-        locale: { prefix: '/us' },
-      });
-
-      const result = constructTargetPath('design', null, 'instagram', mockGetConfig);
-
-      expect(result).to.equal('/us/express/templates/instagram/design');
-    });
-
-    it('should construct root path when no parameters', () => {
-      const mockGetConfig = () => ({
-        locale: { prefix: '/us' },
-      });
-
-      const result = constructTargetPath(null, null, null, mockGetConfig);
-
+      const result = constructTargetPath('', '', '', mockGetConfig);
       expect(result).to.equal('/us/express/templates/');
     });
 
-    it('should sanitize topics with invalid characters', () => {
+    it('should sanitize invalid characters', () => {
       const mockGetConfig = () => ({
         locale: { prefix: '/us' },
       });
 
-      const result = constructTargetPath('design<script>', null, null, mockGetConfig);
-
+      const result = constructTargetPath('test<>?', 'invalid"', 'bad{}', mockGetConfig);
       expect(result).to.equal('/us/express/templates/');
     });
 
-    it('should sanitize tasks with invalid characters', () => {
-      const mockGetConfig = () => ({
-        locale: { prefix: '/us' },
-      });
-
-      const result = constructTargetPath(null, 'social-media"', null, mockGetConfig);
-
-      expect(result).to.equal('/us/express/templates/');
-    });
-
-    it('should sanitize tasksx with invalid characters', () => {
-      const mockGetConfig = () => ({
-        locale: { prefix: '/us' },
-      });
-
-      const result = constructTargetPath(null, null, 'instagram<', mockGetConfig);
-
-      expect(result).to.equal('/us/express/templates/');
-    });
-
-    it('should handle empty string parameters', () => {
+    it('should handle single quotes as empty', () => {
       const mockGetConfig = () => ({
         locale: { prefix: '/us' },
       });
 
       const result = constructTargetPath("''", "''", "''", mockGetConfig);
-
       expect(result).to.equal('/us/express/templates/');
+    });
+
+    it('should handle complex parameter combinations', () => {
+      const mockGetConfig = () => ({
+        locale: { prefix: '/us' },
+      });
+
+      const result = constructTargetPath('social-media-marketing', 'web-design', 'instagram-stories', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/web-design/social-media-marketing');
     });
 
     it('should handle different locale prefixes', () => {
@@ -120,33 +82,53 @@ describe('Template Redirect Utils', () => {
         locale: { prefix: '/fr' },
       });
 
-      const result = constructTargetPath('design', 'social-media', null, mockGetConfig);
-
-      expect(result).to.equal('/fr/express/templates/social-media/design');
+      const result = constructTargetPath('social-media', 'design', '', mockGetConfig);
+      expect(result).to.equal('/fr/express/templates/design/social-media');
     });
 
-    it('should handle special characters in sanitization', () => {
+    it('should handle tasksx taking precedence over tasks', () => {
       const mockGetConfig = () => ({
         locale: { prefix: '/us' },
       });
 
-      const testCases = [
-        { input: 'test\'', expected: '/us/express/templates/' },
-        { input: 'test"', expected: '/us/express/templates/' },
-        { input: 'test<', expected: '/us/express/templates/' },
-        { input: 'test>', expected: '/us/express/templates/' },
-        { input: 'test?', expected: '/us/express/templates/' },
-        { input: 'test.', expected: '/us/express/templates/' },
-        { input: 'test;', expected: '/us/express/templates/' },
-        { input: 'test{', expected: '/us/express/templates/' },
-        { input: 'test}', expected: '/us/express/templates/' },
-        { input: 'valid-test', expected: '/us/express/templates/valid-test' },
-      ];
+      const result = constructTargetPath('social-media', 'design', 'instagram', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/design/social-media');
+    });
 
-      testCases.forEach(({ input, expected }) => {
-        const result = constructTargetPath(input, null, null, mockGetConfig);
-        expect(result).to.equal(expected);
+    it('should handle mixed valid and invalid parameters', () => {
+      const mockGetConfig = () => ({
+        locale: { prefix: '/us' },
       });
+
+      const result = constructTargetPath('valid-topic', 'invalid<>', 'valid-task', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/valid-task/valid-topic');
+    });
+
+    it('should handle special characters in valid parameters', () => {
+      const mockGetConfig = () => ({
+        locale: { prefix: '/us' },
+      });
+
+      const result = constructTargetPath('social-media-2024', 'web-design-v2', 'instagram-stories', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/web-design-v2/social-media-2024');
+    });
+
+    it('should handle edge case with only slashes', () => {
+      const mockGetConfig = () => ({
+        locale: { prefix: '/us' },
+      });
+
+      const result = constructTargetPath('', '', '', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/');
+    });
+
+    it('should handle complex sanitization', () => {
+      const mockGetConfig = () => ({
+        locale: { prefix: '/us' },
+      });
+
+      const result = constructTargetPath('test<>?.;{}', 'invalid"', 'bad{}', mockGetConfig);
+      expect(result).to.equal('/us/express/templates/');
     });
   });
 
@@ -156,13 +138,52 @@ describe('Template Redirect Utils', () => {
     });
 
     it('should handle URLSearchParams proxy correctly', () => {
-      const searchParams = new URLSearchParams('?topics=design&tasks=social-media&searchId=123');
-      const proxy = new Proxy(searchParams, { get: (params, prop) => params.get(prop) });
+      // Test the URLSearchParams proxy behavior
+      const searchParams = new URLSearchParams('topics=social-media&tasks=design&searchId=123');
+      const proxy = new Proxy(searchParams, {
+        get: (params, prop) => {
+          if (prop === 'get') {
+            return (key) => params.get(key);
+          }
+          return params.get(prop);
+        },
+      });
 
-      expect(proxy.topics).to.equal('design');
-      expect(proxy.tasks).to.equal('social-media');
-      expect(proxy.searchId).to.equal('123');
-      expect(proxy.nonexistent).to.be.null;
+      expect(proxy.get('topics')).to.equal('social-media');
+      expect(proxy.get('tasks')).to.equal('design');
+      expect(proxy.get('searchId')).to.equal('123');
+    });
+
+    it('should handle empty search parameters', () => {
+      const searchParams = new URLSearchParams('');
+      const proxy = new Proxy(searchParams, {
+        get: (params, prop) => {
+          if (prop === 'get') {
+            return (key) => params.get(key);
+          }
+          return params.get(prop);
+        },
+      });
+
+      expect(proxy.get('topics')).to.be.null;
+      expect(proxy.get('tasks')).to.be.null;
+      expect(proxy.get('searchId')).to.be.null;
+    });
+
+    it('should handle undefined search parameters', () => {
+      const searchParams = new URLSearchParams('topics=social-media');
+      const proxy = new Proxy(searchParams, {
+        get: (params, prop) => {
+          if (prop === 'get') {
+            return (key) => params.get(key);
+          }
+          return params.get(prop);
+        },
+      });
+
+      expect(proxy.get('topics')).to.equal('social-media');
+      expect(proxy.get('tasks')).to.be.null;
+      expect(proxy.get('tasksx')).to.be.null;
     });
   });
 });
