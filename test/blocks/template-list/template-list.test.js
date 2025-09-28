@@ -1,5 +1,5 @@
 import { expect } from '@esm-bundle/chai';
-import { decorateTemplateList } from '../../../express/code/blocks/template-list/template-list.js';
+import decorate, { decorateTemplateList } from '../../../express/code/blocks/template-list/template-list.js';
 
 describe('Template List Block', () => {
   let mockBlock;
@@ -9,7 +9,7 @@ describe('Template List Block', () => {
     // Create a mock block element
     mockBlock = document.createElement('div');
     mockBlock.className = 'template-list apipowered';
-    
+
     // Create mock props
     mockProps = {
       templates: [],
