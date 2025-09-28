@@ -5,10 +5,49 @@ import {
   determineActionUsed,
   buildSchema,
   updateSliderStyle,
+  fetchRatingsData,
+  submitRating,
+  sliderFunctionality,
   RATINGS_CONFIG,
 } from '../../../express/code/scripts/utils/ratings-utils.js';
 
 describe('Ratings Utils', () => {
+  let originalGetLibs;
+  let originalImport;
+
+  beforeEach(() => {
+    // Save original values
+    originalGetLibs = window.getLibs;
+    originalImport = window.import;
+
+    // Mock getLibs and import
+    window.getLibs = () => '/libs';
+    window.import = (path) => {
+      if (path === '/libs/utils/utils.js') {
+        return Promise.resolve({
+          getConfig: () => ({
+            env: { name: 'prod' },
+            locale: { prefix: '/us', ietf: 'en-US' },
+          }),
+          getMetadata: () => ({ 'rating-sheet': 'test-sheet' }),
+          createTag: (tag, attrs, html) => {
+            const element = document.createElement(tag);
+            if (attrs) Object.assign(element, attrs);
+            if (html) element.innerHTML = html;
+            return element;
+          },
+        });
+      }
+      return Promise.reject(new Error('Unknown module'));
+    };
+  });
+
+  afterEach(() => {
+    // Restore original values
+    window.getLibs = originalGetLibs;
+    window.import = originalImport;
+  });
+
   describe('populateStars', () => {
     it('should create the correct number of stars', () => {
       const parent = document.createElement('div');
@@ -106,6 +145,37 @@ describe('Ratings Utils', () => {
       const value = 0;
 
       expect(() => updateSliderStyle(block, value)).to.throw();
+    });
+  });
+
+  describe('fetchRatingsData', () => {
+    it('should be a function', () => {
+      expect(fetchRatingsData).to.be.a('function');
+    });
+  });
+
+  describe('submitRating', () => {
+    it('should be a function', () => {
+      expect(submitRating).to.be.a('function');
+    });
+  });
+
+  describe('sliderFunctionality', () => {
+    it('should be a function', () => {
+      expect(sliderFunctionality).to.be.a('function');
+    });
+
+    it('should handle null block', () => {
+      expect(() => sliderFunctionality(null, {})).to.throw();
+    });
+
+    it('should handle undefined block', () => {
+      expect(() => sliderFunctionality(undefined, {})).to.throw();
+    });
+
+    it('should handle empty options', () => {
+      const block = document.createElement('div');
+      expect(() => sliderFunctionality(block, {})).to.throw();
     });
   });
 
