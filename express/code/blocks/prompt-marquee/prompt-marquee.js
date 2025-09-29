@@ -2,10 +2,26 @@ import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let getMetadata;
 
+const IMAGE_ASPECT_RATIO = 9 / 16; // height relative to width
+
 function getOptimalImageSize() {
   if (window.innerWidth <= 600) return 400; // Mobile
   if (window.innerWidth <= 900) return 600; // Tablet
   return 900; // Desktop+
+}
+
+function getDesktopImageMaxWidth(block) {
+  if (!block) return 571;
+  const computed = getComputedStyle(block).getPropertyValue('--prompt-marquee-desktop-media-max-width');
+  const parsed = parseFloat(computed);
+  return Number.isNaN(parsed) ? 571 : parsed;
+}
+
+function getDisplayImageWidth(block, optimalWidth) {
+  const isDesktop = window.matchMedia('(min-width: 900px)').matches;
+  if (!isDesktop) return optimalWidth;
+  const desktopMax = getDesktopImageMaxWidth(block);
+  return Math.min(optimalWidth, desktopMax);
 }
 function addImagePreconnects(imageUrl) {
   if (!imageUrl) return;
@@ -36,7 +52,8 @@ function setBackgroundFromFirstRow(block, rows) {
   // optimize image URL and set CSS var
   const url = new URL(bgImg.src, window.location.href);
   const { pathname } = url;
-  const width = getOptimalImageSize();
+  const optimalWidth = getOptimalImageSize();
+  const width = getDisplayImageWidth(block, optimalWidth);
   const optimizedImageUrl = `${pathname}?width=${width}&format=webp&optimize=medium`;
   block.style.setProperty('--bg-image', `url("${optimizedImageUrl}")`);
 
@@ -78,10 +95,11 @@ function classifyAndOptimizeCells(block, rows) {
         const srcUrl = new URL(img.src, window.location.href);
         const { pathname } = srcUrl;
         const optimalWidth = getOptimalImageSize();
-        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=medium`;
+        const displayWidth = getDisplayImageWidth(block, optimalWidth);
+        const newSrc = `${pathname}?width=${displayWidth}&format=webp&optimize=medium`;
         if (img.src !== newSrc) img.src = newSrc;
-        img.setAttribute('width', optimalWidth);
-        img.setAttribute('height', Math.round(optimalWidth * (352 / 600)));
+        img.setAttribute('width', displayWidth);
+        img.setAttribute('height', Math.round(displayWidth * IMAGE_ASPECT_RATIO));
 
         if (shouldEagerLoad) {
           img.removeAttribute('loading');
