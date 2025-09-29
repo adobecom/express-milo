@@ -1,4 +1,7 @@
 .prompt-marquee {
+  --prompt-marquee-desktop-padding-block: var(--spacing-900);
+  --prompt-marquee-desktop-media-max-width: 571px;
+  --prompt-marquee-media-aspect-ratio: 16 / 9;
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
   padding-top: var(--spacing-600);
@@ -79,6 +82,12 @@
   border: none;
 }
 
+.prompt-marquee .cta-with-input .prompt-marquee-input {
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: 1.4;
+}
+
 main .section .prompt-marquee .button-container{
   padding: 0;
   margin-top: var(--spacing-300);
@@ -126,11 +135,10 @@ main .prompt-marquee .cta-with-input .con-button {
 }
 
 .prompt-marquee .column-picture img {
-  transition: transform 0.3s ease;
-}
-
-.prompt-marquee .column-picture:hover img {
-  transform: scale(1.1);
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: var(--prompt-marquee-media-aspect-ratio);
+  object-fit: cover;
 }
 
 @media (min-width: 768px) {
@@ -198,6 +206,19 @@ main .prompt-marquee .cta-with-input .con-button {
   }
 }
 
+@media (min-width: 900px) {
+  .prompt-marquee {
+    padding-top: var(--prompt-marquee-desktop-padding-block);
+    padding-bottom: var(--prompt-marquee-desktop-padding-block);
+  }
+
+  .prompt-marquee > div > .column-picture:not(.column-picture-mobile) {
+    width: auto;
+    flex: 0 1 var(--prompt-marquee-desktop-media-max-width);
+    max-width: var(--prompt-marquee-desktop-media-max-width);
+  }
+}
+
 @media (min-width: 1280px) {
   .prompt-marquee {
     margin: auto;
@@ -227,6 +248,7 @@ main .prompt-marquee .cta-with-input .con-button {
   border-radius: 10px;
   border: 2px solid var(--Palette-gray-300, #DADADA);
   font-size: var(--body-font-size-m);
+  font-family: var(--body-font-family);
   transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
   background-color: var(--Palette-gray-25, #FFF);
   overflow: hidden;
@@ -327,4 +349,3 @@ main .prompt-marquee .cta-with-input .con-button {
   padding-left: 14px;
   overflow: auto; /* allow user to scroll horizontally to see full text */
 }
-
