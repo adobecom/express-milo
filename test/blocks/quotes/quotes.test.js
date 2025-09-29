@@ -341,4 +341,222 @@ describe('Quotes', () => {
       expect(quotes).to.exist;
     }
   });
+
+  it('should handle carousel variant', async () => {
+    document.body.innerHTML = `
+      <div class="quotes carousel">
+        <div>
+          <blockquote>
+            <p>Quote 1</p>
+          </blockquote>
+          <p>Author 1</p>
+          <p>Summary 1</p>
+        </div>
+        <div>
+          <blockquote>
+            <p>Quote 2</p>
+          </blockquote>
+          <p>Author 2</p>
+          <p>Summary 2</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+    expect(quotes.classList.contains('carousel')).to.be.true;
+  });
+
+  it('should handle ratings variant', async () => {
+    document.body.innerHTML = `
+      <div class="quotes ratings">
+        <div>
+          <p>Rating data source</p>
+        </div>
+        <div>
+          <blockquote>
+            <p>Quote text</p>
+          </blockquote>
+          <p>Author Name</p>
+          <p>Summary text</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+    expect(quotes.classList.contains('ratings')).to.be.true;
+  });
+
+  it('should handle lottie variant', async () => {
+    document.body.innerHTML = `
+      <div class="quotes lottie">
+        <div>
+          <blockquote>
+            <p>Quote text</p>
+          </blockquote>
+          <p>Author Name</p>
+          <p>Summary text</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+    expect(quotes.classList.contains('lottie')).to.be.true;
+  });
+
+  it('should handle singular variant with background image', async () => {
+    document.body.innerHTML = `
+      <div class="quotes singular">
+        <div>
+          <div>
+            <img src="background.jpg" alt="Background">
+          </div>
+        </div>
+        <div>
+          <picture>
+            <img src="author.jpg" alt="Author">
+          </picture>
+          <blockquote>
+            <p>Quote text</p>
+          </blockquote>
+          <p>Author Name</p>
+          <p>Summary text</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+    expect(quotes.classList.contains('singular')).to.be.true;
+  });
+
+  it('should handle quotes with multiple children', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <blockquote>
+            <p>Quote 1</p>
+          </blockquote>
+          <p>Author 1</p>
+          <p>Summary 1</p>
+        </div>
+        <div>
+          <blockquote>
+            <p>Quote 2</p>
+          </blockquote>
+          <p>Author 2</p>
+          <p>Summary 2</p>
+        </div>
+        <div>
+          <blockquote>
+            <p>Quote 3</p>
+          </blockquote>
+          <p>Author 3</p>
+          <p>Summary 3</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+    const quoteElements = quotes.querySelectorAll('.quote');
+    expect(quoteElements.length).to.be.greaterThan(0);
+  });
+
+  it('should handle quotes with author elements', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <blockquote>
+            <p>Quote text</p>
+          </blockquote>
+          <div class="author">
+            <picture>
+              <img src="author.jpg" alt="Author">
+            </picture>
+            <p>Author Name</p>
+            <p>Summary text</p>
+          </div>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+    const author = quotes.querySelector('.author');
+    expect(author).to.exist;
+  });
+
+  it('should handle quotes with picture elements in author', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <blockquote>
+            <p>Quote text</p>
+          </blockquote>
+          <div class="author">
+            <picture>
+              <img src="author.jpg" alt="Author">
+            </picture>
+            <p>Author Name</p>
+            <p>Summary text</p>
+          </div>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+    const image = quotes.querySelector('.image');
+    expect(image).to.exist;
+  });
+
+  it('should handle quotes with no author', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <blockquote>
+            <p>Quote text</p>
+          </blockquote>
+          <p>Summary text</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+  });
+
+  it('should handle quotes with empty content', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <p>Some content</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    expect(quotes).to.exist;
+  });
 });
