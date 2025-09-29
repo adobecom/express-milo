@@ -55,6 +55,7 @@
     justify-content: center;
     transition: opacity 0.2s;
     flex-wrap: wrap;
+    gap: var(--ax-grid-gutter);
 }
 
 .frictionless-quick-action .fqa-container .button-container.hero-animation-overlay {
@@ -224,6 +225,10 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     display: flex;
     align-items: center;
     cursor: pointer;
+}
+
+.frictionless-quick-action video:focus-visible {
+    outline: none;
 }
 
 @media (min-width: 768px) {
