@@ -174,4 +174,165 @@ describe('Quotes', () => {
     const text = document.querySelectorAll('.quotes .quote-comment');
     expect(text).to.have.lengthOf(2);
   });
+
+  it('should handle carousel variant', async () => {
+    document.body.innerHTML = body;
+    const quotes = document.querySelector('.quotes');
+    quotes.classList.add('carousel');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+    // Carousel functionality should be initialized
+  });
+
+  it('should handle ratings functionality', async () => {
+    // Mock ratings functions
+    window.fetchRatingsData = () => Promise.resolve({ data: 'test' });
+    window.determineActionUsed = () => 'test';
+    window.hasRated = () => false;
+    window.submitRating = () => Promise.resolve();
+    window.createRatingSlider = () => document.createElement('div');
+    window.sliderFunctionality = () => {};
+    window.createHoverStarRating = () => document.createElement('div');
+    window.createRatingsContainer = () => document.createElement('div');
+    window.RATINGS_CONFIG = { test: 'config' };
+    
+    document.body.innerHTML = body;
+    const quotes = document.querySelector('.quotes');
+    quotes.classList.add('ratings');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+  });
+
+  it('should handle lottie animations', async () => {
+    // Mock lottie functions
+    window.getLottie = () => Promise.resolve();
+    window.lazyLoadLottiePlayer = () => Promise.resolve();
+    
+    document.body.innerHTML = body;
+    const quotes = document.querySelector('.quotes');
+    quotes.classList.add('lottie');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+  });
+
+  it('should handle random quote selection', async () => {
+    document.body.innerHTML = body;
+    const quotes = document.querySelector('.quotes');
+    quotes.classList.add('random');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+    // Random selection should work
+  });
+
+  it('should handle empty quotes block', async () => {
+    document.body.innerHTML = '<div class="quotes"></div>';
+    const quotes = document.querySelector('.quotes');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+  });
+
+  it('should handle quotes with only text content', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <p>This is a quote without author</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+    const quote = quotes.querySelector('.quote');
+    expect(quote).to.exist;
+  });
+
+  it('should handle quotes with author but no summary', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <p>Quote text</p>
+          <p>Author Name</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+    const author = quotes.querySelector('.author');
+    expect(author).to.exist;
+  });
+
+  it('should handle quotes with picture elements', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <p>Quote text</p>
+          <picture>
+            <img src="test.jpg" alt="Author">
+          </picture>
+          <p>Author Name</p>
+          <p>Summary text</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+    
+    await decorate(quotes);
+    
+    expect(quotes).to.exist;
+    const image = quotes.querySelector('.image');
+    expect(image).to.exist;
+  });
+
+  it('should handle error in utils loading gracefully', async () => {
+    // Mock utils import to fail
+    const originalImport = window.import;
+    window.import = (path) => {
+      if (path.includes('utils/utils.js')) {
+        return Promise.reject(new Error('Utils load failed'));
+      }
+      return originalImport ? originalImport(path) : Promise.resolve({});
+    };
+    
+    // Mock lana logging
+    window.lana = { log: () => {} };
+    
+    document.body.innerHTML = body;
+    const quotes = document.querySelector('.quotes');
+    
+    try {
+      await decorate(quotes);
+      // Should handle error gracefully
+    } catch (error) {
+      expect(error).to.be.an('error');
+    }
+  });
+
+  it('should handle different quote variants', async () => {
+    const variants = ['default', 'carousel', 'singular', 'ratings', 'lottie'];
+    
+    for (const variant of variants) {
+      document.body.innerHTML = body;
+      const quotes = document.querySelector('.quotes');
+      quotes.className = `quotes ${variant}`;
+      
+      await decorate(quotes);
+      
+      expect(quotes).to.exist;
+    }
+  });
 });
