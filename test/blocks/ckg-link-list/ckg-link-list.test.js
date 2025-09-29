@@ -319,11 +319,11 @@ describe('CKG Link List', () => {
   beforeEach(() => {
     window.isTestEnv = true;
     document.body.innerHTML = html;
-    
+
     // Mock getLibs
     originalGetLibs = window.getLibs;
     window.getLibs = () => '/libs';
-    
+
     // Mock createTag
     originalCreateTag = window.createTag;
     window.createTag = (tag, attrs, ...children) => {
@@ -331,7 +331,7 @@ describe('CKG Link List', () => {
       if (attrs) {
         Object.assign(element, attrs);
       }
-      children.forEach(child => {
+      children.forEach((child) => {
         if (typeof child === 'string') {
           element.textContent = child;
         } else if (child) {
@@ -340,29 +340,29 @@ describe('CKG Link List', () => {
       });
       return element;
     };
-    
+
     // Mock decorateButtonsDeprecated
     window.decorateButtonsDeprecated = () => Promise.resolve();
-    
+
     // Mock buildCarousel
     window.buildCarousel = () => Promise.resolve();
-    
+
     // Mock window.import
     const originalImport = window.import;
     window.import = (path) => {
       if (path.includes('utils/utils.js')) {
         return Promise.resolve({
-          createTag: window.createTag
+          createTag: window.createTag,
         });
       }
       if (path.includes('browse-api-controller.js')) {
         return Promise.resolve({
-          default: () => Promise.resolve(MOCK_JSON.queryResults[0].facets[0].buckets)
+          default: () => Promise.resolve(MOCK_JSON.queryResults[0].facets[0].buckets),
         });
       }
       return originalImport ? originalImport(path) : Promise.resolve({});
     };
-    
+
     // Mock fetch
     mockFetch = () => Promise.resolve(jsonOk(MOCK_JSON));
     window.fetch = mockFetch;
@@ -380,15 +380,15 @@ describe('CKG Link List', () => {
   it('should decorate block with color pills', async () => {
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     expect(block.style.visibility).to.equal('visible');
     expect(block.children.length).to.be.greaterThan(0);
-    
+
     const links = block.querySelectorAll('a');
     expect(links.length).to.be.greaterThan(0);
-    
+
     // Check that links have proper attributes
-    links.forEach(link => {
+    links.forEach((link) => {
       expect(link).to.have.property('href');
       expect(link).to.have.property('title');
       expect(link).to.have.property('class', 'button');
@@ -401,20 +401,20 @@ describe('CKG Link List', () => {
     window.import = (path) => {
       if (path.includes('utils/utils.js')) {
         return Promise.resolve({
-          createTag: window.createTag
+          createTag: window.createTag,
         });
       }
       if (path.includes('browse-api-controller.js')) {
         return Promise.resolve({
-          default: () => Promise.resolve(null)
+          default: () => Promise.resolve(null),
         });
       }
       return originalImport ? originalImport(path) : Promise.resolve({});
     };
-    
+
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     expect(block.style.visibility).to.equal('hidden');
     expect(block.children.length).to.equal(0);
   });
@@ -425,20 +425,20 @@ describe('CKG Link List', () => {
     window.import = (path) => {
       if (path.includes('utils/utils.js')) {
         return Promise.resolve({
-          createTag: window.createTag
+          createTag: window.createTag,
         });
       }
       if (path.includes('browse-api-controller.js')) {
         return Promise.resolve({
-          default: () => Promise.resolve([])
+          default: () => Promise.resolve([]),
         });
       }
       return originalImport ? originalImport(path) : Promise.resolve({});
     };
-    
+
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     expect(block.style.visibility).to.equal('hidden');
     expect(block.children.length).to.equal(0);
   });
@@ -450,26 +450,26 @@ describe('CKG Link List', () => {
       { canonicalName: 'test3', metadata: { hexCode: '#00ff00' } }, // missing link
       { canonicalName: null, metadata: { link: '/test4', hexCode: '#0000ff' } }, // missing canonicalName
     ];
-    
+
     // Mock getData to return incomplete pills
     const originalImport = window.import;
     window.import = (path) => {
       if (path.includes('utils/utils.js')) {
         return Promise.resolve({
-          createTag: window.createTag
+          createTag: window.createTag,
         });
       }
       if (path.includes('browse-api-controller.js')) {
         return Promise.resolve({
-          default: () => Promise.resolve(incompletePills)
+          default: () => Promise.resolve(incompletePills),
         });
       }
       return originalImport ? originalImport(path) : Promise.resolve({});
     };
-    
+
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     // Only the first pill should be added
     const links = block.querySelectorAll('a');
     expect(links.length).to.equal(1);
@@ -479,11 +479,11 @@ describe('CKG Link List', () => {
   it('should add color samplers to buttons', async () => {
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     const colorDots = block.querySelectorAll('.color-dot');
     expect(colorDots.length).to.be.greaterThan(0);
-    
-    colorDots.forEach(dot => {
+
+    colorDots.forEach((dot) => {
       expect(dot).to.have.property('class', 'color-dot');
       expect(dot.style.backgroundColor).to.match(/^#[0-9a-fA-F]{6}$/);
     });
@@ -492,7 +492,7 @@ describe('CKG Link List', () => {
   it('should apply colorful class to links with color samplers', async () => {
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     const colorfulLinks = block.querySelectorAll('a.colorful');
     expect(colorfulLinks.length).to.be.greaterThan(0);
   });
@@ -500,9 +500,9 @@ describe('CKG Link List', () => {
   it('should set button background color', async () => {
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     const buttonContainers = block.querySelectorAll('p.button-container');
-    buttonContainers.forEach(container => {
+    buttonContainers.forEach((container) => {
       expect(container.style.backgroundColor).to.match(/^#[0-9a-fA-F]{6}$/);
     });
   });
@@ -511,25 +511,25 @@ describe('CKG Link List', () => {
     const block = document.createElement('div');
     block.className = 'ckg-link-list';
     // Don't add any children
-    
+
     await decorate(block);
-    
+
     expect(block.style.visibility).to.equal('visible');
   });
 
   it('should call buildCarousel with correct parameters', async () => {
     let buildCarouselCalled = false;
     let buildCarouselParams = null;
-    
+
     window.buildCarousel = (selector, parent, options) => {
       buildCarouselCalled = true;
       buildCarouselParams = { selector, parent, options };
       return Promise.resolve();
     };
-    
+
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     expect(buildCarouselCalled).to.be.true;
     expect(buildCarouselParams.selector).to.equal('.button-container');
     expect(buildCarouselParams.parent).to.equal(block);
@@ -542,19 +542,19 @@ describe('CKG Link List', () => {
     window.import = (path) => {
       if (path.includes('utils/utils.js')) {
         return Promise.resolve({
-          createTag: window.createTag
+          createTag: window.createTag,
         });
       }
       if (path.includes('browse-api-controller.js')) {
         return Promise.resolve({
-          default: () => Promise.reject(new Error('API Error'))
+          default: () => Promise.reject(new Error('API Error')),
         });
       }
       return originalImport ? originalImport(path) : Promise.resolve({});
     };
-    
+
     const block = document.querySelector('.ckg-link-list');
-    
+
     try {
       await decorate(block);
       // Should not throw
@@ -567,13 +567,13 @@ describe('CKG Link List', () => {
   it('should use titleCase for button text', async () => {
     const block = document.querySelector('.ckg-link-list');
     await decorate(block);
-    
+
     const links = block.querySelectorAll('a');
-    links.forEach(link => {
+    links.forEach((link) => {
       const text = link.textContent.trim();
       // Check that text is title cased (first letter of each word capitalized)
       const words = text.split(' ');
-      words.forEach(word => {
+      words.forEach((word) => {
         if (word.length > 0) {
           expect(word[0]).to.equal(word[0].toUpperCase());
         }
