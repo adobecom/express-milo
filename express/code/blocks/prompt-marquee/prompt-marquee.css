@@ -1,5 +1,5 @@
 .prompt-marquee {
-  --prompt-marquee-desktop-padding-block: var(--spacing-900);
+  --prompt-marquee-desktop-padding-block: 80px;
   --prompt-marquee-desktop-media-max-width: 571px;
   --prompt-marquee-media-aspect-ratio: 16 / 9;
   padding-left: var(--spacing-300);
@@ -83,7 +83,7 @@
 }
 
 .prompt-marquee .cta-with-input .prompt-marquee-input {
-  font-family: var(--body-font-family);
+  font-family: var(--body-font-family, 'Adobe Clean', 'Helvetica Neue', Helvetica, Arial, sans-serif);
   font-size: var(--body-font-size-m);
   line-height: 1.4;
 }
@@ -248,7 +248,7 @@ main .prompt-marquee .cta-with-input .con-button {
   border-radius: 10px;
   border: 2px solid var(--Palette-gray-300, #DADADA);
   font-size: var(--body-font-size-m);
-  font-family: var(--body-font-family);
+  font-family: var(--body-font-family, 'Adobe Clean', 'Helvetica Neue', Helvetica, Arial, sans-serif);
   transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
   background-color: var(--Palette-gray-25, #FFF);
   overflow: hidden;
