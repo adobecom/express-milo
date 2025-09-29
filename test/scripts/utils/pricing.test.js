@@ -170,7 +170,7 @@ describe('Pricing Utils', () => {
 
     it('should handle fetch errors', async () => {
       window.fetch = () => Promise.reject(new Error('Network error'));
-      
+
       const result = await fetchPlanOnePlans('https://example.com/plans');
       expect(result).to.be.null;
     });
@@ -180,7 +180,7 @@ describe('Pricing Utils', () => {
         ok: false,
         status: 404,
       });
-      
+
       const result = await fetchPlanOnePlans('https://example.com/plans');
       expect(result).to.be.null;
     });
@@ -190,7 +190,7 @@ describe('Pricing Utils', () => {
         ok: true,
         json: () => Promise.resolve({ data: [] }),
       });
-      
+
       const result = await fetchPlanOnePlans('https://example.com/plans');
       expect(result).to.be.an('array');
       expect(result).to.have.length(0);
@@ -201,7 +201,7 @@ describe('Pricing Utils', () => {
         ok: true,
         json: () => Promise.resolve({}),
       });
-      
+
       const result = await fetchPlanOnePlans('https://example.com/plans');
       expect(result).to.be.null;
     });
@@ -297,7 +297,7 @@ describe('Pricing Utils', () => {
         env: { name: 'prod' },
         // No commerce property
       });
-      
+
       expect(() => buildUrl('https://example.com/plan', 'us', 'en', mockGetConfigNoCommerce)).to.throw();
     });
   });
