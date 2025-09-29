@@ -43,7 +43,7 @@ const CONFIG = {
   contentRoot: '/express',
   stageDomainsMap: {
     '--express-milo--adobecom.(hlx|aem).(page|live)': {
-      'www.adobe.com': 'www.stage.adobe.com',
+      'www.adobe.com': 'origin',
       'commerce.adobe.com': 'commerce-stg.adobe.com',
       'new.express.adobe.com': 'stage.projectx.corp.adobe.com',
       'express.adobe.com': 'stage.projectx.corp.adobe.com',
@@ -179,6 +179,15 @@ const CONFIG = {
     vn_en: '',
     vn_vi: '',
     za: '',
+  },
+  adobeid: {
+    enableGuestAccounts: true,
+    enableGuestTokenForceRefresh: true,
+    enableGuestBotDetection: false,
+    api_parameters: { check_token: { guest_allowed: true } },
+    onTokenExpired: () => {
+      window.location.reload();
+    },
   },
 };
 
