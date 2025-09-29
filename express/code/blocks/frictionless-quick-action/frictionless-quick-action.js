@@ -20,6 +20,7 @@ import {
   initProgressBar,
   FRICTIONLESS_UPLOAD_QUICK_ACTIONS,
   EXPRESS_ROUTE_PATHS,
+  EXPERIMENTAL_VARIANTS_PROMOID_MAP,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -48,6 +49,8 @@ function frictionlessQAExperiment(
   const urlVariant = urlParams.get('variant');
   const variant = urlVariant || quickAction;
   appConfig.metaData.variant = variant;
+  appConfig.metaData.promoid = EXPERIMENTAL_VARIANTS_PROMOID_MAP[variant];
+  appConfig.metaData.mv = 'other';
   appConfig.metaData.entryPoint = 'seo-quickaction-image-upload';
   switch (variant) {
     case 'qa-nba':
@@ -55,22 +58,6 @@ function frictionlessQAExperiment(
       break;
     case 'qa-in-product-control':
       ccEverywhere.quickAction.removeBackground(docConfig, appConfig, exportConfig, contConfig);
-      break;
-    case 'qa-in-product-variant1':
-      appConfig.metaData.isFrictionlessQa = false;
-      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-        ...contConfig,
-        mode: 'modal',
-      });
-      break;
-    case 'qa-in-product-variant2':
-      appConfig.metaData.isFrictionlessQa = false;
-      document.querySelector(`${globalNavSelector}.ready`).style.display = 'none';
-      ccEverywhere.editor.createWithAsset(docConfig, appConfig, exportConfig, {
-        ...contConfig,
-        mode: 'modal',
-      });
       break;
     default:
       break;
@@ -357,6 +344,7 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
   };
 
   let routeSpecificParams = {};
+  let pageSpecificParams = {};
 
   switch (pathname) {
     case EXPRESS_ROUTE_PATHS.focusedEditor: {
@@ -382,6 +370,14 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
     }
   }
 
+  if (EXPERIMENTAL_VARIANTS.includes(quickAction)) {
+    pageSpecificParams = {
+      variant: quickAction,
+      promoid: EXPERIMENTAL_VARIANTS_PROMOID_MAP[quickAction],
+      mv: 'other',
+    };
+  }
+
   /**
    * This block has been added to support the url path via query param.
    * This is because on express side we validate the url path for SEO
@@ -399,6 +395,7 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
   return {
     ...baseSearchParams,
     ...routeSpecificParams,
+    ...pageSpecificParams,
   };
 }
 
@@ -489,13 +486,18 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     data = data.filter((item) => item);
   }
 
+  // here update the variant to the url variant if it exists
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlVariant = urlParams.get('variant');
+  const variant = urlVariant || quickAction;
+
   const frictionlessAllowedQuickActions = Object.values(FRICTIONLESS_UPLOAD_QUICK_ACTIONS);
-  if (frictionlessAllowedQuickActions.includes(quickAction)) {
-    await performUploadAction(files, block, quickAction);
+  if (frictionlessAllowedQuickActions.includes(variant)) {
+    await performUploadAction(files, block, variant);
     return;
   }
 
-  startSDK(data, quickAction, block);
+  startSDK(data, variant, block);
 }
 
 function createCaptionLocaleDropdown() {
