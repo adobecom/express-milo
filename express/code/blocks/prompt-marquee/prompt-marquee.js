@@ -122,7 +122,7 @@ function classifyAndOptimizeCells(block, rows) {
   });
 }
 
-function replacePromptTokenInUrl(url, promptText) {
+export function replacePromptTokenInUrl(url, promptText) {
   if (!url || !promptText) return url;
   const encodedPrompt = encodeURIComponent(promptText).replace(/%20/g, '+');
   // Match encoded and unencoded token variants
