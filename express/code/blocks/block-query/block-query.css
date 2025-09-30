@@ -1,3 +1,7 @@
+.block-query {
+  padding: var(--spacing-700);
+}
+
 .block-query h2 {
   margin: 0 0 0.5rem;
 }
