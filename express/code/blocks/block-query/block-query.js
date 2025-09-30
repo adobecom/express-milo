@@ -108,6 +108,38 @@ function createComboElement(combo) {
   return wrapper;
 }
 
+function rewriteBranchUrl(url, branchName) {
+  const branch = (branchName || '').trim();
+  if (!branch) return url;
+  const match = /^(https:\/\/)([^/]+?)--(.*)$/.exec(url);
+  if (!match) return url;
+  const [, scheme, , rest] = match;
+  return `${scheme}${branch}--${rest}`;
+}
+
+function addMartechOff(url) {
+  try {
+    const parsed = new URL(url);
+    if (!parsed.searchParams.has('martech')) {
+      parsed.searchParams.set('martech', 'off');
+    }
+    return parsed.toString();
+  } catch (error) {
+    return url;
+  }
+}
+
+function uniquePreserveOrder(items) {
+  const seen = new Set();
+  const out = [];
+  items.forEach((item) => {
+    if (seen.has(item)) return;
+    seen.add(item);
+    out.push(item);
+  });
+  return out;
+}
+
 async function fetchBlockMap(url) {
   const response = await fetch(url, { credentials: 'omit' });
   if (!response.ok) {
@@ -209,7 +241,42 @@ export default function decorate(block) {
   exactList.className = 'block-query-exact-list';
   exactScroll.append(exactList);
 
-  exactCard.append(exactToolbar, exactScroll);
+  const branchWidget = document.createElement('div');
+  branchWidget.className = 'block-query-branch-widget';
+
+  const branchTitle = document.createElement('h4');
+  branchTitle.className = 'block-query-branch-title';
+  branchTitle.textContent = 'Copy URLs for a branch';
+
+  const branchHint = document.createElement('p');
+  branchHint.className = 'muted block-query-branch-hint';
+  branchHint.textContent = 'Overrides the branch on filtered URLs and removes duplicates before copying.';
+
+  const branchControls = document.createElement('div');
+  branchControls.className = 'block-query-branch-controls';
+
+  const branchInputId = `block-query-branch-${Math.random().toString(36).slice(2, 8)}`;
+
+  const branchLabel = document.createElement('label');
+  branchLabel.className = 'block-query-branch-label';
+  branchLabel.setAttribute('for', branchInputId);
+  branchLabel.textContent = 'Branch name';
+
+  const branchInput = document.createElement('input');
+  branchInput.className = 'block-query-branch-input';
+  branchInput.type = 'text';
+  branchInput.id = branchInputId;
+  branchInput.placeholder = 'feature-my-branch';
+
+  const branchCopyButton = document.createElement('button');
+  branchCopyButton.className = 'block-query-branch-copy';
+  branchCopyButton.textContent = 'Copy branch URLs';
+  branchCopyButton.disabled = true;
+
+  branchControls.append(branchInput, branchCopyButton);
+  branchWidget.append(branchTitle, branchHint, branchLabel, branchControls);
+
+  exactCard.append(exactToolbar, exactScroll, branchWidget);
 
   const combosCard = document.createElement('div');
   combosCard.className = 'card';
@@ -227,6 +294,7 @@ export default function decorate(block) {
 
   let blockMapData = null;
   let currentExact = [];
+  let filteredExact = [];
   const statusBaseClass = 'block-query-status muted';
 
   function setStatus(message, variant = '', codeValue) {
@@ -270,9 +338,13 @@ export default function decorate(block) {
 
   function renderExactList() {
     copyButton.textContent = 'Copy URLs';
-    const filtered = applyUrlFilter(currentExact);
-    renderList(exactList, filtered, makeLink);
-    copyButton.disabled = filtered.length === 0;
+    branchCopyButton.textContent = 'Copy branch URLs';
+    filteredExact = applyUrlFilter(currentExact);
+    renderList(exactList, filteredExact, makeLink);
+    const hasResults = filteredExact.length > 0;
+    copyButton.disabled = !hasResults;
+    const hasBranch = Boolean(branchInput.value.trim());
+    branchCopyButton.disabled = !hasResults || !hasBranch;
   }
 
   function update() {
@@ -313,22 +385,48 @@ export default function decorate(block) {
   loadButton.addEventListener('click', loadBlockMap);
 
   queryInput.addEventListener('input', () => {
-    console.log('queryInput.value', queryInput.value);
     update();
   });
 
   filterInput.addEventListener('input', () => {
     if (!blockMapData) return;
     renderExactList();
-    copyButton.textContent = 'Copy URLs';
+  });
+
+  branchInput.addEventListener('input', () => {
+    branchCopyButton.textContent = 'Copy branch URLs';
+    const hasBranch = Boolean(branchInput.value.trim());
+    branchCopyButton.disabled = !hasBranch || filteredExact.length === 0;
+  });
+
+  branchCopyButton.addEventListener('click', async () => {
+    const branchName = branchInput.value.trim();
+    if (!branchName || !filteredExact.length) return;
+
+    const rewritten = uniquePreserveOrder(
+      filteredExact.map((url) => addMartechOff(rewriteBranchUrl(url, branchName))),
+    );
+
+    if (!rewritten.length) return;
+
+    try {
+      await navigator.clipboard.writeText(rewritten.join('\n'));
+      branchCopyButton.textContent = 'Copied!';
+      setTimeout(() => {
+        branchCopyButton.textContent = 'Copy branch URLs';
+      }, 1200);
+    } catch (error) {
+      console.error(error);
+      // eslint-disable-next-line no-alert
+      window.alert('Failed to copy to clipboard.');
+    }
   });
 
   copyButton.addEventListener('click', async () => {
-    const filtered = applyUrlFilter(currentExact);
-    if (!filtered.length) return;
+    if (!filteredExact.length) return;
 
     try {
-      await navigator.clipboard.writeText(filtered.join('\n'));
+      await navigator.clipboard.writeText(filteredExact.join('\n'));
       copyButton.textContent = 'Copied!';
       setTimeout(() => {
         copyButton.textContent = 'Copy URLs';

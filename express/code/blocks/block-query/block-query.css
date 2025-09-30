@@ -1,5 +1,5 @@
-.block-query {
-  padding: var(--spacing-700);
+.block.block-query {
+  padding: 1.5rem 1rem;
 }
 
 .block-query h2 {
@@ -100,6 +100,47 @@
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   background-color: #fff;
+}
+
+.block-query .block-query-branch-widget {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.block-query .block-query-branch-title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.block-query .block-query-branch-hint {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.block-query .block-query-branch-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.block-query .block-query-branch-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.block-query .block-query-branch-input {
+  flex: 1 1 220px;
+  min-width: 180px;
+  max-width: 320px;
+  padding: 0.4rem 0.6rem;
+}
+
+.block-query .block-query-branch-copy {
+  white-space: nowrap;
 }
 
 .block-query .toolbar {
