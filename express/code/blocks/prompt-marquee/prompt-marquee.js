@@ -1,6 +1,8 @@
 import { getLibs, getIconElementDeprecated } from '../../scripts/utils.js';
 
 let getMetadata;
+let loadStyle;
+let getConfig;
 
 const IMAGE_ASPECT_RATIO = 9 / 16;
 const MOBILE_MAX = 600;
@@ -153,9 +155,11 @@ function assignLocation(url) {
 }
 
 export default async function decorate(block) {
-  ({ getMetadata } = await import(`${getLibs()}/utils/utils.js`));
+  ({ getMetadata, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
   decorateButtons(block, 'button-xxl');
+
+  loadStyle(`${getConfig().codeRoot}/blocks/prompt-marquee/prompt-marquee-delayed.css`);
 
   const rows = Array.from(block.children);
   if (!rows.length) return;
