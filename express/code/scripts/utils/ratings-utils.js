@@ -8,7 +8,7 @@ let getMetadata;
 
 // RNR API Constants
 const ASSET_TYPE = 'ADOBE_COM';
-const RNR_API_KEY = 'dc-general';
+const RNR_API_KEY = 'AdobeExpressWeb';
 
 // Check if we're in production
 const isProd = [
