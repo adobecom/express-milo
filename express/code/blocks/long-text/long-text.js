@@ -11,7 +11,7 @@ export default function decorate(block) {
 
   if (block.classList.contains('no-background')) {
     block.parentElement.classList.add('no-background');
-    
+
     // Create simplified article structure for no-background variant
     const h2Elements = block.querySelectorAll('h2');
     if (h2Elements.length > 0) {
@@ -47,7 +47,7 @@ export default function decorate(block) {
       block.remove();
     }
   }
-  
+
   if (block.querySelector('p') && (block.querySelector('p').textContent === 'null' || block.querySelector('p').textContent === null)) {
     block.querySelector('p').remove();
   }
