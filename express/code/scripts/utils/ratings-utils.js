@@ -22,7 +22,7 @@ const RNR_API_URL = isProd ? 'https://rnr.adobe.io/v1' : 'https://rnr-stage.adob
 // Errors, Analytics & Logging
 const lanaOptions = {
   sampleRate: 100,
-  tags: 'DC_Milo, RnR Block',
+  tags: 'Express_Milo, RnR Block',
 };
 
 // Initialize required dependencies
