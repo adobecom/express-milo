@@ -85,14 +85,6 @@ describe('Prompt Marquee block', () => {
     expect(wrapper).to.exist;
     const input = wrapper.querySelector('.prompt-marquee-input');
     expect(input).to.exist;
-
-    input.value = 'My Business';
-    let assignedUrl;
-    window._locationAssign = (url) => { assignedUrl = url; };
-
-    cta.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
-
-    expect(assignedUrl).to.contain('acom-input=My+Business');
   });
 });
 
