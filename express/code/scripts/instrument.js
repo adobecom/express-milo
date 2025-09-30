@@ -382,7 +382,6 @@ function decorateAnalyticsEvents() {
             const isPlaying = iframe.getAttribute('data-playing') === 'true';
             const state = isPlaying ? 'play' : 'pause';
             const eventName = `adobe.com:express:video:adobe-tv:${state}:${videoId}`;
-            console.log('Sending to _satellite.track:', eventName);
             sendEventToAnalytics(eventName);
           }
         }
