@@ -370,19 +370,30 @@ function decorateAnalyticsEvents() {
     sendEventToAnalytics(`adobe.com:express:cta:learn:columns:${e.detail.parameters.videoId}:videoClosed`);
   });
 
-  // tracking Adobe TV video play/pause events
-  window.addEventListener('message', (event) => {
-    if (event.origin !== 'https://video.tv.adobe.com' || !event.data) return;
-    
-    const { state, id } = event.data;
-    if (!['play', 'pause'].includes(state) || !Number.isInteger(id)) return;
-    
-    // Get the iframe that sent the message (cross-origin security prevents frameElement)
-    const iframe = document.querySelector(`iframe[src*="/v/${id}"]`);
-    if (!iframe) return;
-    
-    const eventName = `adobe.com:express:video:adobe-tv:${state}:${id}`;
-    sendEventToAnalytics(eventName);
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-playing') {
+        const iframe = mutation.target;
+        if (iframe.classList.contains('adobetv') && iframe.src) {
+          const url = new URL(iframe.src);
+          if (url.hostname === 'video.tv.adobe.com') {
+            const match = iframe.src.match(/\/v\/(\d+)/);
+            const videoId = match ? match[1] : 'unknown';
+            const isPlaying = iframe.getAttribute('data-playing') === 'true';
+            const state = isPlaying ? 'play' : 'pause';
+            const eventName = `adobe.com:express:video:adobe-tv:${state}:${videoId}`;
+            console.log('Sending to _satellite.track:', eventName);
+            sendEventToAnalytics(eventName);
+          }
+        }
+      }
+    });
+  });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['data-playing'],
   });
 }
 
