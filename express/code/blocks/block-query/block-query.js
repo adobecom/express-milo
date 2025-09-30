@@ -258,6 +258,8 @@ export default function decorate(block) {
       sourceValue.append(placeholder);
       loadButton.disabled = true;
     }
+
+    return activeBlockMapUrl;
   }
 
   function applyUrlFilter(urls) {
@@ -284,7 +286,7 @@ export default function decorate(block) {
     renderList(combosList, combos, createComboElement);
   }
 
-  loadButton.addEventListener('click', async () => {
+  async function loadBlockMap() {
     if (!activeBlockMapUrl) {
       setStatus('Please configure a block map link in the block.', 'err');
       return;
@@ -299,15 +301,19 @@ export default function decorate(block) {
       queryInput.disabled = false;
       filterInput.disabled = false;
       update();
+      block.setAttribute('data-loaded-block-map', activeBlockMapUrl);
     } catch (error) {
       console.error(error);
       setStatus('Error loading block map. See console for details.', 'err');
     } finally {
       loadButton.disabled = !activeBlockMapUrl;
     }
-  });
+  }
+
+  loadButton.addEventListener('click', loadBlockMap);
 
   queryInput.addEventListener('input', () => {
+    console.log('queryInput.value', queryInput.value);
     update();
   });
 
@@ -337,13 +343,12 @@ export default function decorate(block) {
   renderList(exactList, [], makeLink);
   renderList(combosList, [], createComboElement);
 
-  updateSource(activeBlockMapUrl, activeBlockMapLabel);
+  const resolvedUrl = updateSource(activeBlockMapUrl, activeBlockMapLabel);
 
-  if (!activeBlockMapUrl) {
+  if (!resolvedUrl) {
     setStatus('No block map URL configured. Add a link to this block.', 'err');
+    return;
   }
 
-  if (queryParamUrl) {
-    loadButton.click();
-  }
+  loadBlockMap();
 }
