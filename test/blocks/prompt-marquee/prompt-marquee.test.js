@@ -12,7 +12,7 @@ const [, { default: decorate, replacePromptTokenInUrl }] = await Promise.all([
 const base = await readFile({ path: './mocks/base.html' });
 
 describe('Prompt Marquee block', () => {
-  let originalAssign;
+  let originalLocationAssignHook;
   let originalMatchMedia;
 
   beforeEach(() => {
@@ -33,12 +33,16 @@ describe('Prompt Marquee block', () => {
       writable: true,
       value: 1200,
     });
-    originalAssign = window.location.assign;
+    originalLocationAssignHook = window.__locationAssign;
     document.body.innerHTML = base;
   });
 
   afterEach(() => {
-    window.location.assign = originalAssign;
+    if (typeof originalLocationAssignHook === 'function') {
+      window.__locationAssign = originalLocationAssignHook;
+    } else {
+      delete window.__locationAssign;
+    }
     if (originalMatchMedia) {
       window.matchMedia = originalMatchMedia;
     } else {
@@ -84,7 +88,7 @@ describe('Prompt Marquee block', () => {
 
     input.value = 'My Business';
     let assignedUrl;
-    window.location.assign = (url) => { assignedUrl = url; };
+    window.__locationAssign = (url) => { assignedUrl = url; };
 
     cta.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
 

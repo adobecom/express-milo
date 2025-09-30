@@ -135,6 +135,14 @@ export function replacePromptTokenInUrl(url, promptText) {
   return result;
 }
 
+function assignLocation(url) {
+  if (window.isTestEnv && typeof window.__locationAssign === 'function') {
+    window.__locationAssign(url);
+    return;
+  }
+  window.location.assign(url);
+}
+
 export default async function decorate(block) {
   ({ getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
@@ -212,7 +220,7 @@ export default async function decorate(block) {
       const value = input.value?.trim();
       const baseHref = cta.href || cta.dataset.originalHref;
       if (!value) {
-        window.location.assign(baseHref);
+        assignLocation(baseHref);
         return;
       }
 
@@ -226,7 +234,7 @@ export default async function decorate(block) {
           // ignore, will use baseHref
         }
       }
-      window.location.assign(nextUrlStr);
+      assignLocation(nextUrlStr);
     };
 
     // Use capture to ensure we run before any other navigation logic

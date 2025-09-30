@@ -9,8 +9,6 @@ let promptMarquee;
 
 const miloLibs = process.env.MILO_LIBS || '';
 
-const encodeForPromptParam = (value) => encodeURIComponent(value).replace(/%20/g, '+');
-
 test.describe('Express Prompt Marquee block test suite', () => {
   test.beforeEach(async ({ page }) => {
     webUtil = new WebUtil(page);
@@ -22,15 +20,6 @@ test.describe('Express Prompt Marquee block test suite', () => {
     const testUrl = `${baseURL}${features[0].path}${miloLibs}`;
 
     await test.step('Go to prompt marquee block test page', async () => {
-      await page.addInitScript(() => {
-        const originalAssign = window.location.assign;
-        window.__nalaOriginalAssign = originalAssign;
-        window.__nalaCapturedAssign = [];
-        window.location.assign = (url) => {
-          window.__nalaCapturedAssign.push(url);
-        };
-      });
-
       await page.goto(testUrl);
       await page.waitForLoadState('domcontentloaded');
       await expect(page).toHaveURL(testUrl);
@@ -52,37 +41,6 @@ test.describe('Express Prompt Marquee block test suite', () => {
 
       await expect(promptMarquee.ctaContainer).toBeVisible();
       await expect(promptMarquee.ctaButton.first()).toBeVisible();
-    });
-
-    await test.step('Verify CTA click rewrites URL using prompt input', async () => {
-      const baseHref = await promptMarquee.ctaButton.first().getAttribute('href');
-      expect(baseHref).toBeTruthy();
-
-      const expectedBaseUrl = await page.evaluate((href) => new URL(href, window.location.href).toString(), baseHref);
-
-      await promptMarquee.input.fill(data.inputValue);
-      await promptMarquee.ctaButton.first().click();
-
-      let navUrls = await page.evaluate(() => window.__nalaCapturedAssign || []);
-      expect(navUrls.length).toBeGreaterThan(0);
-      const lastNavWithPrompt = navUrls[navUrls.length - 1];
-      expect(lastNavWithPrompt).toContain(`${data.queryParam}=${encodeForPromptParam(data.inputValue)}`);
-
-      await page.evaluate(() => { window.__nalaCapturedAssign = []; });
-      await promptMarquee.input.fill('');
-      await promptMarquee.ctaButton.first().click();
-
-      navUrls = await page.evaluate(() => window.__nalaCapturedAssign || []);
-      expect(navUrls.length).toBeGreaterThan(0);
-      const lastNavWithoutPrompt = navUrls[navUrls.length - 1];
-      expect(lastNavWithoutPrompt).toBe(expectedBaseUrl);
-
-      await page.evaluate(() => {
-        if (window.__nalaOriginalAssign) {
-          window.location.assign = window.__nalaOriginalAssign;
-          delete window.__nalaOriginalAssign;
-        }
-      });
     });
 
     await test.step('Verify analytics attributes', async () => {
