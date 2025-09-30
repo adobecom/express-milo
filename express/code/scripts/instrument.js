@@ -369,6 +369,21 @@ function decorateAnalyticsEvents() {
   d.addEventListener('videoclosed', (e) => {
     sendEventToAnalytics(`adobe.com:express:cta:learn:columns:${e.detail.parameters.videoId}:videoClosed`);
   });
+
+  // tracking Adobe TV video play/pause events
+  window.addEventListener('message', (event) => {
+    if (event.origin !== 'https://video.tv.adobe.com' || !event.data) return;
+    
+    const { state, id } = event.data;
+    if (!['play', 'pause'].includes(state) || !Number.isInteger(id)) return;
+    
+    // Get the iframe that sent the message (cross-origin security prevents frameElement)
+    const iframe = document.querySelector(`iframe[src*="/v/${id}"]`);
+    if (!iframe) return;
+    
+    const eventName = `adobe.com:express:video:adobe-tv:${state}:${id}`;
+    sendEventToAnalytics(eventName);
+  });
 }
 
 export default async function martechLoadedCB() {
