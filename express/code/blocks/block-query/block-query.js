@@ -1,0 +1,349 @@
+const TOP_K = 5;
+
+function qs(name) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(name);
+}
+
+function tokenize(value) {
+  return String(value || '')
+    .toLowerCase()
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter(Boolean);
+}
+
+function jaccardScore(tokensA, tokensB) {
+  const setA = new Set(tokensA);
+  const setB = new Set(tokensB);
+  if (setA.size === 0 && setB.size === 0) return 0;
+  let intersection = 0;
+  setA.forEach((token) => {
+    if (setB.has(token)) intersection += 1;
+  });
+  const union = setA.size + setB.size - intersection;
+  return Math.round((intersection / (union || 1)) * 100);
+}
+
+function exactMatchUrls(blockMapObj, tokens) {
+  if (!Array.isArray(tokens) || tokens.length === 0) return [];
+  const urls = [];
+  const seen = new Set();
+
+  Object.values(blockMapObj || {}).forEach((data) => {
+    const classNames = (data.class_names || [])
+      .map((item) => String(item || '').toLowerCase());
+    const classSet = new Set(classNames);
+    const matchesAll = tokens.every((token) => classSet.has(token));
+    if (!matchesAll) return;
+
+    (data.urls || []).forEach((url) => {
+      if (!seen.has(url)) {
+        seen.add(url);
+        urls.push(url);
+      }
+    });
+  });
+
+  return urls;
+}
+
+function topSimilarCombos(blockMapObj, query, topK = TOP_K) {
+  const queryTokens = tokenize(query);
+  const seen = new Set();
+  const candidates = [];
+
+  Object.entries(blockMapObj || {}).forEach(([hashKey, data]) => {
+    const classes = (data.class_names || [])
+      .map((item) => String(item || '').trim().toLowerCase())
+      .filter(Boolean);
+    if (!classes.length) return;
+
+    const combo = classes.slice().sort().join(' ');
+    if (seen.has(combo)) return;
+    seen.add(combo);
+
+    const score = jaccardScore(queryTokens, tokenize(combo));
+    candidates.push({ combo, score, hashKey });
+  });
+
+  candidates.sort((a, b) => b.score - a.score);
+  return candidates.slice(0, topK);
+}
+
+function renderList(listEl, items, renderItem) {
+  listEl.innerHTML = '';
+  if (!items || !items.length) {
+    const li = document.createElement('li');
+    li.className = 'muted';
+    li.textContent = '(none)';
+    listEl.append(li);
+    return;
+  }
+
+  items.forEach((item) => {
+    const li = document.createElement('li');
+    li.append(renderItem(item));
+    listEl.append(li);
+  });
+}
+
+function makeLink(url) {
+  const href = String(url || '');
+  const anchor = document.createElement('a');
+  anchor.href = href;
+  anchor.textContent = href;
+  anchor.target = '_blank';
+  anchor.rel = 'noopener noreferrer';
+  return anchor;
+}
+
+function createComboElement(combo) {
+  const wrapper = document.createElement('span');
+  const text = document.createTextNode(combo.combo);
+  const score = document.createElement('span');
+  score.className = 'score';
+  score.textContent = ` (${combo.score})`;
+  wrapper.append(text, score);
+  return wrapper;
+}
+
+async function fetchBlockMap(url) {
+  const response = await fetch(url, { credentials: 'omit' });
+  if (!response.ok) {
+    throw new Error(`Failed to fetch block map: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+}
+
+export default function decorate(block) {
+  const authorLink = block.querySelector('a');
+  const authorHref = authorLink?.href || '';
+  const authorLabel = authorLink?.textContent?.trim() || authorHref;
+  const queryParamUrl = qs('blockMapUrl') || qs('url') || '';
+
+  let activeBlockMapUrl = queryParamUrl || authorHref;
+  const activeBlockMapLabel = queryParamUrl ? queryParamUrl : authorLabel;
+
+  block.textContent = '';
+
+  const title = document.createElement('h2');
+  title.textContent = 'Block Map Search';
+
+  const description = document.createElement('p');
+  description.className = 'muted';
+  description.innerHTML = 'Click Load to fetch the configured block_map.json and then search by keywords. You can also pass <code>?blockMapUrl=...</code> in the page URL.';
+
+  const loaderCard = document.createElement('div');
+  loaderCard.className = 'card stack block-query-loader';
+
+  const loaderGrid = document.createElement('div');
+  loaderGrid.className = 'grid';
+
+  const sourceField = document.createElement('div');
+  sourceField.className = 'block-query-source';
+
+  const sourceLabel = document.createElement('span');
+  sourceLabel.className = 'muted';
+  sourceLabel.textContent = 'Block map';
+
+  const sourceValue = document.createElement('div');
+  sourceValue.className = 'block-query-source-value';
+
+  const sourceLink = document.createElement('a');
+  sourceLink.className = 'block-query-map-link';
+  sourceLink.target = '_blank';
+  sourceLink.rel = 'noopener noreferrer';
+
+  const loadButton = document.createElement('button');
+  loadButton.className = 'block-query-load';
+  loadButton.textContent = 'Load';
+
+  sourceField.append(sourceLabel, sourceValue);
+  loaderGrid.append(sourceField, loadButton);
+  loaderCard.append(loaderGrid);
+
+  const statusEl = document.createElement('div');
+  statusEl.className = 'block-query-status muted';
+  statusEl.textContent = 'Not loaded.';
+  loaderCard.append(statusEl);
+
+  const queryInput = document.createElement('input');
+  queryInput.type = 'text';
+  queryInput.placeholder = 'Type keywords (e.g. hero centered sticky)';
+  queryInput.disabled = true;
+  queryInput.className = 'block-query-query-input';
+
+  const row = document.createElement('div');
+  row.className = 'row';
+
+  const exactCard = document.createElement('div');
+  exactCard.className = 'card';
+
+  const exactToolbar = document.createElement('div');
+  exactToolbar.className = 'toolbar';
+
+  const exactHeading = document.createElement('h3');
+  exactHeading.textContent = 'Exact match (all keywords)';
+
+  const exactControls = document.createElement('div');
+  exactControls.className = 'block-query-exact-controls';
+
+  const filterInput = document.createElement('input');
+  filterInput.type = 'text';
+  filterInput.placeholder = 'Filter URLs (substring)';
+  filterInput.disabled = true;
+
+  const copyButton = document.createElement('button');
+  copyButton.title = 'Copy exact-match URLs to clipboard';
+  copyButton.textContent = 'Copy URLs';
+  copyButton.disabled = true;
+
+  exactControls.append(filterInput, copyButton);
+  exactToolbar.append(exactHeading, exactControls);
+
+  const exactScroll = document.createElement('div');
+  exactScroll.className = 'scroll';
+
+  const exactList = document.createElement('ul');
+  exactList.className = 'block-query-exact-list';
+  exactScroll.append(exactList);
+
+  exactCard.append(exactToolbar, exactScroll);
+
+  const combosCard = document.createElement('div');
+  combosCard.className = 'card';
+
+  const combosHeading = document.createElement('h3');
+  combosHeading.textContent = 'Top 5 similar class name combinations (combo, score)';
+
+  const combosList = document.createElement('ul');
+  combosList.className = 'block-query-combos-list';
+
+  combosCard.append(combosHeading, combosList);
+  row.append(exactCard, combosCard);
+
+  block.append(title, description, loaderCard, queryInput, row);
+
+  let blockMapData = null;
+  let currentExact = [];
+  const statusBaseClass = 'block-query-status muted';
+
+  function setStatus(message, variant = '', codeValue) {
+    statusEl.className = statusBaseClass;
+    if (variant) statusEl.classList.add(variant);
+
+    statusEl.textContent = message || '';
+    if (codeValue) {
+      statusEl.append(' ');
+      const codeEl = document.createElement('code');
+      codeEl.textContent = codeValue;
+      statusEl.append(codeEl);
+    }
+  }
+
+  function updateSource(url, label) {
+    sourceValue.innerHTML = '';
+    activeBlockMapUrl = url || '';
+
+    if (activeBlockMapUrl) {
+      sourceLink.href = activeBlockMapUrl;
+      sourceLink.textContent = label || activeBlockMapUrl;
+      sourceValue.append(sourceLink);
+      loadButton.disabled = false;
+    } else {
+      const placeholder = document.createElement('span');
+      placeholder.className = 'muted';
+      placeholder.textContent = 'Add a block map link in this block.';
+      sourceValue.append(placeholder);
+      loadButton.disabled = true;
+    }
+  }
+
+  function applyUrlFilter(urls) {
+    const filterValue = filterInput.value.trim().toLowerCase();
+    if (!filterValue) return urls;
+    return urls.filter((url) => String(url).toLowerCase().includes(filterValue));
+  }
+
+  function renderExactList() {
+    copyButton.textContent = 'Copy URLs';
+    const filtered = applyUrlFilter(currentExact);
+    renderList(exactList, filtered, makeLink);
+    copyButton.disabled = filtered.length === 0;
+  }
+
+  function update() {
+    if (!blockMapData) return;
+    const tokens = tokenize(queryInput.value);
+
+    currentExact = exactMatchUrls(blockMapData, tokens);
+    renderExactList();
+
+    const combos = topSimilarCombos(blockMapData, queryInput.value, TOP_K);
+    renderList(combosList, combos, createComboElement);
+  }
+
+  loadButton.addEventListener('click', async () => {
+    if (!activeBlockMapUrl) {
+      setStatus('Please configure a block map link in the block.', 'err');
+      return;
+    }
+
+    loadButton.disabled = true;
+    setStatus('Loading', '', activeBlockMapUrl);
+
+    try {
+      blockMapData = await fetchBlockMap(activeBlockMapUrl);
+      setStatus('Loaded', 'ok', activeBlockMapUrl);
+      queryInput.disabled = false;
+      filterInput.disabled = false;
+      update();
+    } catch (error) {
+      console.error(error);
+      setStatus('Error loading block map. See console for details.', 'err');
+    } finally {
+      loadButton.disabled = !activeBlockMapUrl;
+    }
+  });
+
+  queryInput.addEventListener('input', () => {
+    update();
+  });
+
+  filterInput.addEventListener('input', () => {
+    if (!blockMapData) return;
+    renderExactList();
+    copyButton.textContent = 'Copy URLs';
+  });
+
+  copyButton.addEventListener('click', async () => {
+    const filtered = applyUrlFilter(currentExact);
+    if (!filtered.length) return;
+
+    try {
+      await navigator.clipboard.writeText(filtered.join('\n'));
+      copyButton.textContent = 'Copied!';
+      setTimeout(() => {
+        copyButton.textContent = 'Copy URLs';
+      }, 1200);
+    } catch (error) {
+      console.error(error);
+      // eslint-disable-next-line no-alert
+      window.alert('Failed to copy to clipboard.');
+    }
+  });
+
+  renderList(exactList, [], makeLink);
+  renderList(combosList, [], createComboElement);
+
+  updateSource(activeBlockMapUrl, activeBlockMapLabel);
+
+  if (!activeBlockMapUrl) {
+    setStatus('No block map URL configured. Add a link to this block.', 'err');
+  }
+
+  if (queryParamUrl) {
+    loadButton.click();
+  }
+}

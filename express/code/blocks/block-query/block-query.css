@@ -1,0 +1,143 @@
+.block.block-query h2 {
+  margin: 0 0 0.5rem;
+}
+
+.block.block-query .muted {
+  color: #666;
+}
+
+.block.block-query .block-query-loader {
+  margin-bottom: 1rem;
+}
+
+.block.block-query .stack {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.block.block-query .grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.block.block-query .block-query-source {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.block.block-query .block-query-source-value {
+  word-break: break-word;
+}
+
+.block.block-query .block-query-source-value a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.block.block-query .block-query-status {
+  min-height: 1.25rem;
+}
+
+.block.block-query input[type="text"] {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.block.block-query .toolbar input[type="text"] {
+  max-width: 420px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.95rem;
+}
+
+.block.block-query button {
+  padding: 0.5rem 0.8rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.block.block-query button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.block.block-query .row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 900px) {
+  .block.block-query .row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.block.block-query ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.block.block-query .scroll {
+  max-height: 420px;
+  overflow: auto;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  background-color: #fff;
+}
+
+.block.block-query .toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.block.block-query .block-query-exact-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.block.block-query .card {
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+.block.block-query .score {
+  color: #333;
+  font-variant-numeric: tabular-nums;
+}
+
+.block.block-query .ok {
+  color: #0a7;
+}
+
+.block.block-query .err {
+  color: #c00;
+}
+
+.block.block-query .block-query-exact-list li,
+.block.block-query .block-query-combos-list li {
+  margin-bottom: 0.25rem;
+}
+
+.block.block-query .block-query-exact-list li:last-child,
+.block.block-query .block-query-combos-list li:last-child {
+  margin-bottom: 0;
+}
