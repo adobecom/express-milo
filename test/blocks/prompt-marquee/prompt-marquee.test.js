@@ -33,15 +33,15 @@ describe('Prompt Marquee block', () => {
       writable: true,
       value: 1200,
     });
-    originalLocationAssignHook = window.__locationAssign;
+    originalLocationAssignHook = window._locationAssign;
     document.body.innerHTML = base;
   });
 
   afterEach(() => {
     if (typeof originalLocationAssignHook === 'function') {
-      window.__locationAssign = originalLocationAssignHook;
+      window._locationAssign = originalLocationAssignHook;
     } else {
-      delete window.__locationAssign;
+      delete window._locationAssign;
     }
     if (originalMatchMedia) {
       window.matchMedia = originalMatchMedia;
@@ -88,7 +88,7 @@ describe('Prompt Marquee block', () => {
 
     input.value = 'My Business';
     let assignedUrl;
-    window.__locationAssign = (url) => { assignedUrl = url; };
+    window._locationAssign = (url) => { assignedUrl = url; };
 
     cta.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
 
