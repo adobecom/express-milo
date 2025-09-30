@@ -199,5 +199,5 @@ jobs:
               }
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ github.event.pull_request.head.ref == 'feature/pr-label-management' && secrets.SLACK_WEBHOOK_URL_PR_TEST || secrets.SLACK_WEBHOOK_URL_PR }}
+          SLACK_WEBHOOK_URL_PR: ${{ github.event.pull_request.head.ref == 'feature/pr-label-management' && secrets.SLACK_WEBHOOK_URL_PR_TEST || secrets.SLACK_WEBHOOK_URL_PR }}
 
