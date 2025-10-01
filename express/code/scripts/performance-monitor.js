@@ -474,6 +474,7 @@ class PerformanceMonitor {
               this.logMetric('LCP', lcpTime);
               console.log('🎯 LCP estimated via navigation timing:', lcpTime + 'ms');
               console.log('✅ LCP captured successfully!');
+              console.log('LCP metric set:', this.metrics.lcp);
             } else {
               console.log('❌ No navigation timing available');
             }
@@ -509,8 +510,10 @@ class PerformanceMonitor {
           this.detectLCPManually();
         }
 
-        // Check if we have any metrics now
-        this.checkMissingMetrics();
+        // Check if we have any metrics now (with delay to ensure LCP is set)
+        setTimeout(() => {
+          this.checkMissingMetrics();
+        }, 100);
       }, 2000);
     };
 
