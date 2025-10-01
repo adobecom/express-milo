@@ -8,6 +8,7 @@ const IMAGE_ASPECT_RATIO = 9 / 16;
 const MOBILE_MAX = 600;
 const TABLET_MAX = 900;
 const DEFAULT_DESKTOP_MEDIA_WIDTH = 571;
+const DEFAULT_PLACEHOLDER_TEXT = 'Enter your business name';
 
 function getOptimalImageSize() {
   if (window.innerWidth <= MOBILE_MAX) return 400;
@@ -65,6 +66,26 @@ function addImagePreconnects(imageUrl) {
 function preloadImage(imageUrl) {
   if (!imageUrl) return;
   ensureLink('link', { rel: 'preload', as: 'image', href: imageUrl });
+}
+
+function getPlaceholderFromCta(cta) {
+  if (!cta) return DEFAULT_PLACEHOLDER_TEXT;
+
+  const datasetPlaceholder = cta.dataset?.placeholderText ?? cta.dataset?.placeholder;
+  if (datasetPlaceholder) {
+    const trimmed = datasetPlaceholder.trim();
+    return trimmed || DEFAULT_PLACEHOLDER_TEXT;
+  }
+
+  const host = cta.closest('p') || cta;
+  const placeholderParagraph = host?.nextElementSibling;
+  if (placeholderParagraph?.tagName === 'P') {
+    const text = placeholderParagraph.textContent.trim();
+    placeholderParagraph.remove();
+    return text || DEFAULT_PLACEHOLDER_TEXT;
+  }
+
+  return DEFAULT_PLACEHOLDER_TEXT;
 }
 
 function setBackgroundFromFirstRow(block, rows) {
@@ -172,7 +193,7 @@ export default async function decorate(block) {
 
   let cta = block.querySelector('a.button, a.con-button');
   if (!cta) {
-    const lastParagraph = block.querySelector('p:last-of-type');
+    const lastParagraph = block.querySelector('p:has(a)');
     const candidateLink = lastParagraph?.querySelector(':scope > a:not(.button)');
     const shouldPromote = !!(candidateLink
       && lastParagraph.childElementCount === 1
@@ -184,14 +205,22 @@ export default async function decorate(block) {
     }
   }
 
+  console.log(cta)
+
   if (cta) {
     const wrapper = document.createElement('div');
     wrapper.className = 'prompt-marquee-input-wrapper';
-    wrapper.setAttribute('data-placeholder', 'Enter your business name');
+
+    const placeholderText = getPlaceholderFromCta(cta);
+    wrapper.setAttribute('data-placeholder', placeholderText);
+
     const input = document.createElement('input');
     input.type = 'text';
-    input.placeholder = 'Enter your business name';
+    input.placeholder = placeholderText;
     input.className = 'prompt-marquee-input';
+    if (placeholderText && !input.hasAttribute('aria-label')) {
+      input.setAttribute('aria-label', placeholderText);
+    }
     wrapper.appendChild(input);
     cta.classList.add('same-fcta');
     cta.classList.add('suppress-until-not-visible');
@@ -204,6 +233,8 @@ export default async function decorate(block) {
       if (e.key === 'Enter') {
         e.preventDefault();
         cta.click();
+      } else if (e.key === 'Escape') {
+        input.blur();
       }
     });
 
