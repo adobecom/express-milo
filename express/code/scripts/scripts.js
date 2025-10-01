@@ -403,6 +403,11 @@ const listenAlloy = () => {
   // Apply performance optimizations early
   deferNonCriticalJS();
 
+  // Initialize performance monitoring
+  import('./performance-monitor.js').then(() => {
+    console.log('🚀 Performance monitoring initialized');
+  });
+
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   const urlParams = new URLSearchParams(window.location.search);

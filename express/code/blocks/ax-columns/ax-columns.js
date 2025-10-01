@@ -23,6 +23,113 @@ import {
 let createTag; let getMetadata;
 let getConfig;
 
+/**
+ * Calculate proper aspect ratio for an image to prevent CLS
+ * Uses multiple strategies to determine the correct aspect ratio
+ */
+function calculateImageAspectRatio(img, targetWidth) {
+  // Strategy 1: Use existing width/height attributes if they exist
+  const existingWidth = img.getAttribute('width');
+  const existingHeight = img.getAttribute('height');
+
+  if (existingWidth && existingHeight) {
+    const ratio = parseInt(existingHeight, 10) / parseInt(existingWidth, 10);
+    return {
+      width: targetWidth,
+      height: Math.round(targetWidth * ratio),
+      method: 'existing-attributes',
+    };
+  }
+
+  // Strategy 2: Use natural dimensions if available
+  if (img.naturalWidth && img.naturalHeight) {
+    const ratio = img.naturalHeight / img.naturalWidth;
+    return {
+      width: targetWidth,
+      height: Math.round(targetWidth * ratio),
+      method: 'natural-dimensions',
+    };
+  }
+
+  // Strategy 2.5: Wait for image to load and then calculate
+  if (img.complete === false) {
+    // Set a temporary aspect ratio and update when loaded
+    const tempRatio = 4 / 3; // Safe default
+    const tempHeight = Math.round(targetWidth * tempRatio);
+
+    // Update when image loads
+    img.addEventListener('load', () => {
+      if (img.naturalWidth && img.naturalHeight) {
+        const actualRatio = img.naturalHeight / img.naturalWidth;
+        const actualHeight = Math.round(targetWidth * actualRatio);
+
+        img.setAttribute('height', actualHeight);
+        img.style.aspectRatio = `${targetWidth} / ${actualHeight}`;
+
+        if (window.performanceMonitor) {
+          console.log('🖼️ Image aspect ratio updated after load:', {
+            src: img.src,
+            actualRatio: actualRatio.toFixed(3),
+            method: 'natural-dimensions-after-load',
+          });
+        }
+      }
+    });
+
+    return {
+      width: targetWidth,
+      height: tempHeight,
+      method: 'temporary-ratio',
+    };
+  }
+
+  // Strategy 3: Extract dimensions from URL parameters (common in AEM)
+  const urlParams = new URLSearchParams(img.src.split('?')[1] || '');
+  const urlWidth = urlParams.get('width');
+  const urlHeight = urlParams.get('height');
+
+  if (urlWidth && urlHeight) {
+    const ratio = parseInt(urlHeight, 10) / parseInt(urlWidth, 10);
+    return {
+      width: targetWidth,
+      height: Math.round(targetWidth * ratio),
+      method: 'url-parameters',
+    };
+  }
+
+  // Strategy 4: Use common aspect ratios based on image context
+  const commonRatios = {
+    hero: 16 / 9, // 1.78 - common for hero images
+    card: 4 / 3, // 1.33 - common for cards
+    square: 1, // 1.0 - square images
+    portrait: 3 / 4, // 0.75 - portrait images
+    banner: 21 / 9, // 2.33 - wide banners
+    default: 4 / 3, // 1.33 - safe default
+  };
+
+  // Determine context from image classes or parent elements
+  let context = 'default';
+  if (img.closest('.hero-marquee, .ax-marquee')) {
+    context = 'hero';
+  } else if (img.closest('.card, .cta-card')) {
+    context = 'card';
+  } else if (img.closest('.banner')) {
+    context = 'banner';
+  } else if (img.classList.contains('portrait') || img.closest('.portrait')) {
+    context = 'portrait';
+  } else if (img.classList.contains('square') || img.closest('.square')) {
+    context = 'square';
+  }
+
+  const ratio = commonRatios[context] || commonRatios.default;
+
+  return {
+    width: targetWidth,
+    height: Math.round(targetWidth * ratio),
+    method: `common-ratio-${context}`,
+  };
+}
+
 function replaceHyphensInText(area) {
   [...area.querySelectorAll('h1, h2, h3, h4, h5, h6')]
     .filter((header) => header.textContent.includes('-'))
@@ -447,12 +554,28 @@ export default async function decorate(block) {
               img.src = newSrc;
             }
 
+            // Calculate proper aspect ratio to prevent CLS
+            const aspectRatio = calculateImageAspectRatio(img, optimalWidth);
+
             // Update width/height attributes to match downloaded dimensions
             img.setAttribute('width', optimalWidth);
-            img.setAttribute('height', Math.round(optimalWidth * (352 / 600))); // Maintain aspect ratio
+            img.setAttribute('height', aspectRatio.height);
 
             // CLS prevention: Set explicit aspect ratio to prevent layout shift
-            img.style.aspectRatio = `${optimalWidth} / ${Math.round(optimalWidth * (352 / 600))}`;
+            img.style.aspectRatio = `${aspectRatio.width} / ${aspectRatio.height}`;
+
+            // Performance logging for image optimization
+            if (window.performanceMonitor) {
+              console.log('🖼️ Image optimization applied:', {
+                src: img.src,
+                width: optimalWidth,
+                height: aspectRatio.height,
+                aspectRatio: img.style.aspectRatio,
+                isMarquee: true,
+                isFirstImage: index === 0,
+                method: aspectRatio.method,
+              });
+            }
           });
 
           // Add preconnect for faster CDN connections

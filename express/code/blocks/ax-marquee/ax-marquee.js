@@ -243,9 +243,28 @@ function createAnimation(animations) {
     // Critical LCP video - use metadata preload to avoid blocking LCP
     video.setAttribute('preload', 'metadata');
     video.setAttribute('fetchpriority', 'high');
+
+    // Performance logging for LCP video
+    if (window.performanceMonitor) {
+      console.log('🎯 LCP Video optimization applied:', {
+        preload: 'metadata',
+        fetchpriority: 'high',
+        src: source,
+        isFirstSection: true,
+      });
+    }
   } else {
     // Non-critical videos - lazy load
     video.setAttribute('preload', 'none');
+
+    // Performance logging for lazy-loaded video
+    if (window.performanceMonitor) {
+      console.log('🎥 Lazy video optimization applied:', {
+        preload: 'none',
+        src: source,
+        isFirstSection: false,
+      });
+    }
   }
 
   if (source) {
@@ -440,8 +459,22 @@ async function handleContent(div, block, animations) {
     if (isFirstSection && isFirstVideo) {
       // Critical LCP video - load after page is stable
       const loadVideoContent = () => {
+        const startTime = performance.now();
         video.setAttribute('preload', 'auto');
         video.load();
+
+        // Performance logging
+        if (window.performanceMonitor) {
+          console.log('🎯 LCP Video content loading started:', {
+            src: video.querySelector('source')?.src,
+            delay: '100ms after page load',
+          });
+
+          video.addEventListener('canplay', () => {
+            const loadTime = performance.now() - startTime;
+            console.log('🎯 LCP Video can play:', `${loadTime.toFixed(2)}ms`);
+          });
+        }
       };
 
       // Load video content after LCP is likely complete
@@ -457,8 +490,23 @@ async function handleContent(div, block, animations) {
       const videoObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            const startTime = performance.now();
             entry.target.setAttribute('preload', 'auto');
             entry.target.load();
+
+            // Performance logging
+            if (window.performanceMonitor) {
+              console.log('🎥 Lazy video loading started:', {
+                src: entry.target.querySelector('source')?.src,
+                intersectionTime: performance.now(),
+              });
+
+              entry.target.addEventListener('canplay', () => {
+                const loadTime = performance.now() - startTime;
+                console.log('🎥 Lazy video can play:', `${loadTime.toFixed(2)}ms`);
+              });
+            }
+
             videoObserver.unobserve(entry.target);
           }
         });
