@@ -456,8 +456,16 @@ class PerformanceMonitor {
             console.log('🔍 No LCP in paint entries, trying navigation timing...');
             // Try to get LCP from navigation timing as fallback
             const navigation = performance.getEntriesByType('navigation')[0];
+            console.log('Navigation timing available:', !!navigation);
             if (navigation) {
+              console.log('Navigation timing details:', {
+                loadEventEnd: navigation.loadEventEnd,
+                fetchStart: navigation.fetchStart,
+                loadEventStart: navigation.loadEventStart
+              });
               const lcpTime = navigation.loadEventEnd - navigation.fetchStart;
+              console.log('Calculated LCP time:', lcpTime + 'ms');
+              
               this.metrics.lcp = {
                 value: lcpTime,
                 timestamp: Date.now(),
