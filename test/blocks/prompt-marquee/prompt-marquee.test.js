@@ -33,15 +33,15 @@ describe('Prompt Marquee block', () => {
       writable: true,
       value: 1200,
     });
-    originalLocationAssignHook = window._locationAssign;
+    originalLocationAssignHook = window.t_locationAssign;
     document.body.innerHTML = base;
   });
 
   afterEach(() => {
     if (typeof originalLocationAssignHook === 'function') {
-      window._locationAssign = originalLocationAssignHook;
+      window.t_locationAssign = originalLocationAssignHook;
     } else {
-      delete window._locationAssign;
+      delete window.t_locationAssign;
     }
     if (originalMatchMedia) {
       window.matchMedia = originalMatchMedia;
