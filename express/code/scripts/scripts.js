@@ -408,11 +408,6 @@ const listenAlloy = () => {
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
 
-  // Initialize baseline performance monitoring
-  import('./performance-monitor.js').then(() => {
-    console.log('🚀 Baseline Performance monitoring initialized');
-  });
-
   import('./express-delayed.js').then((mod) => {
     mod.default();
   });
