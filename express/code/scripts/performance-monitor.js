@@ -62,7 +62,7 @@ class PerformanceMonitor {
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
       this.observers.set('lcp', observer);
       
-      if (this.isDebugMode()) {
+      if (PerformanceMonitor.isDebugMode()) {
         console.log('🎯 LCP observer started');
       }
     } catch (error) {
@@ -94,7 +94,7 @@ class PerformanceMonitor {
       observer.observe({ entryTypes: ['first-input'] });
       this.observers.set('fid', observer);
       
-      if (this.isDebugMode()) {
+      if (PerformanceMonitor.isDebugMode()) {
         console.log('⚡ FID observer started');
       }
     } catch (error) {
@@ -130,7 +130,7 @@ class PerformanceMonitor {
       observer.observe({ entryTypes: ['layout-shift'] });
       this.observers.set('cls', observer);
       
-      if (this.isDebugMode()) {
+      if (PerformanceMonitor.isDebugMode()) {
         console.log('📐 CLS observer started');
       }
     } catch (error) {
@@ -350,7 +350,7 @@ class PerformanceMonitor {
   }
 
   logInitialMetrics() {
-    if (!this.isDebugMode()) return;
+    if (!PerformanceMonitor.isDebugMode()) return;
 
     console.log('📊 Baseline Performance Monitor Initialized');
     console.log('🔍 Monitoring Core Web Vitals and resource loading');
@@ -366,7 +366,7 @@ class PerformanceMonitor {
   }
 
   logNavigationMetrics() {
-    if (!this.isDebugMode()) return;
+    if (!PerformanceMonitor.isDebugMode()) return;
 
     const navigation = performance.getEntriesByType('navigation')[0];
     if (!navigation) return;
@@ -385,7 +385,7 @@ class PerformanceMonitor {
   }
 
   checkMissingMetrics() {
-    if (!this.isDebugMode()) return;
+    if (!PerformanceMonitor.isDebugMode()) return;
 
     const missing = [];
     if (!this.metrics.lcp) missing.push('LCP');
@@ -403,7 +403,7 @@ class PerformanceMonitor {
 
   captureLegacyMetrics() {
     // Fallback method to capture Core Web Vitals using legacy APIs
-    if (!this.isDebugMode()) return;
+    if (!PerformanceMonitor.isDebugMode()) return;
 
     // Try to get LCP from navigation timing
     window.addEventListener('load', () => {
