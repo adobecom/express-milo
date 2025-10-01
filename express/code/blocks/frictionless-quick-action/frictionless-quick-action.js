@@ -26,7 +26,6 @@ import {
 let createTag;
 let getConfig;
 let getMetadata;
-let globalNavSelector;
 let selectedVideoLanguage = 'en-us'; // Default to English (US)
 let replaceKey;
 
@@ -525,8 +524,6 @@ export default async function decorate(block) {
 
   ({ createTag, getMetadata, getConfig } = utils);
   ({ replaceKey } = placeholders);
-
-  globalNavSelector = gNavUtils?.selectors.globalNav;
 
   const rows = Array.from(block.children);
   rows[1].classList.add('fqa-container');
