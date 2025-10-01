@@ -1,6 +1,7 @@
 /*
  * Baseline Performance monitoring utility for Core Web Vitals tracking
  * Measures LCP, FID, CLS, and custom performance metrics
+ * This is the baseline version for comparison with optimized performance branch
  */
 
 class PerformanceMonitor {
@@ -16,11 +17,7 @@ class PerformanceMonitor {
   }
 
   init() {
-    // Only run in production or when explicitly enabled
-    if (window.location.hostname.includes('localhost') && !PerformanceMonitor.isDebugMode()) {
-      return;
-    }
-
+    // Always run performance monitoring, but with different logging levels
     this.observeLCP();
     this.observeFID();
     this.observeCLS();
@@ -47,12 +44,17 @@ class PerformanceMonitor {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
 
-        console.log('🎯 LCP Entry detected:', {
-          startTime: lastEntry.startTime,
-          element: lastEntry.element,
-          url: lastEntry.url,
-          size: lastEntry.size
-        });
+        // Always show LCP detection
+        console.log(`🎯 LCP detected: ${lastEntry.startTime.toFixed(2)}ms`);
+        
+        if (PerformanceMonitor.isDebugMode()) {
+          console.log('🎯 LCP Entry details:', {
+            startTime: lastEntry.startTime,
+            element: lastEntry.element,
+            url: lastEntry.url,
+            size: lastEntry.size
+          });
+        }
 
         this.metrics.lcp = {
           value: lastEntry.startTime,
@@ -62,7 +64,7 @@ class PerformanceMonitor {
           timestamp: Date.now(),
         };
 
-        this.logMetric('LCP', lastEntry.startTime, lastEntry.element);
+        this.logMetric('LCP', { value: lastEntry.startTime, element: lastEntry.element });
         this.analyzeLCPElement(lastEntry);
       });
 
@@ -88,13 +90,19 @@ class PerformanceMonitor {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
-          console.log('⚡ FID Entry detected:', {
-            processingStart: entry.processingStart,
-            startTime: entry.startTime,
-            delay: entry.processingStart - entry.startTime,
-            event: entry.name,
-            target: entry.target
-          });
+          const delay = entry.processingStart - entry.startTime;
+          // Always show FID detection
+          console.log(`⚡ FID detected: ${delay.toFixed(2)}ms`);
+          
+          if (PerformanceMonitor.isDebugMode()) {
+            console.log('⚡ FID Entry details:', {
+              processingStart: entry.processingStart,
+              startTime: entry.startTime,
+              delay: delay,
+              event: entry.name,
+              target: entry.target
+            });
+          }
 
           this.metrics.fid = {
             value: entry.processingStart - entry.startTime,
@@ -103,7 +111,7 @@ class PerformanceMonitor {
             timestamp: Date.now(),
           };
 
-          this.logMetric('FID', entry.processingStart - entry.startTime);
+          this.logMetric('FID', { value: entry.processingStart - entry.startTime, event: entry.name, target: entry.target });
         });
       });
 
@@ -130,11 +138,16 @@ class PerformanceMonitor {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
-          console.log('📐 CLS Entry detected:', {
-            value: entry.value,
-            hadRecentInput: entry.hadRecentInput,
-            sources: entry.sources
-          });
+          // Always show CLS detection
+          console.log(`📐 CLS detected: ${entry.value.toFixed(3)}`);
+          
+          if (PerformanceMonitor.isDebugMode()) {
+            console.log('📐 CLS Entry details:', {
+              value: entry.value,
+              hadRecentInput: entry.hadRecentInput,
+              sources: entry.sources
+            });
+          }
 
           if (!entry.hadRecentInput) {
             clsValue += entry.value;
@@ -147,7 +160,7 @@ class PerformanceMonitor {
           timestamp: Date.now(),
         };
 
-        this.logMetric('CLS', clsValue);
+        this.logMetric('CLS', { value: clsValue, entries: entries.length });
       });
 
       observer.observe({ entryTypes: ['layout-shift'] });
@@ -171,6 +184,8 @@ class PerformanceMonitor {
 
     // Monitor JavaScript execution time
     this.observeJSExecution();
+    
+    // Note: No optimizations applied in baseline version
   }
 
   observeVideoPerformance() {
@@ -234,6 +249,9 @@ class PerformanceMonitor {
       });
     });
   }
+
+  // Note: Image optimization removed from baseline version
+  // This branch is for monitoring only, not optimization
 
   isLCPCandidate(element) {
     const rect = element.getBoundingClientRect();
@@ -345,8 +363,14 @@ class PerformanceMonitor {
   logMetric(name, metric) {
     const emoji = this.getMetricEmoji(name);
     const status = this.getMetricStatus(name, metric.value);
+    const value = typeof metric.value === 'number' ? metric.value.toFixed(2) : metric.value;
 
-    console.log(`${emoji} ${name}: ${metric.value.toFixed(2)}ms ${status}`, metric);
+    // Always show Core Web Vitals metrics
+    console.log(`${emoji} ${name}: ${value} ${status}`);
+    
+    if (PerformanceMonitor.isDebugMode()) {
+      console.log(`📊 ${name} Details:`, metric);
+    }
   }
 
   getMetricEmoji(name) {
@@ -374,11 +398,15 @@ class PerformanceMonitor {
   }
 
   logInitialMetrics() {
-    if (!PerformanceMonitor.isDebugMode()) return;
-
+    // Always show basic initialization
     console.log('📊 Baseline Performance Monitor Initialized');
-    console.log('🔍 Monitoring Core Web Vitals and resource loading');
-    console.log('💡 Add ?perf-debug=true to URL for detailed logging');
+    console.log('🔍 Monitoring Core Web Vitals and resource loading (BASELINE)');
+    
+    if (PerformanceMonitor.isDebugMode()) {
+      console.log('💡 Debug mode enabled - detailed logging active');
+    } else {
+      console.log('💡 Add ?perf-debug=true to URL for detailed logging');
+    }
     
     // Log initial page load metrics
     this.logNavigationMetrics();
@@ -390,8 +418,6 @@ class PerformanceMonitor {
   }
 
   logNavigationMetrics() {
-    if (!PerformanceMonitor.isDebugMode()) return;
-
     const navigation = performance.getEntriesByType('navigation')[0];
     if (!navigation) return;
 
@@ -399,29 +425,40 @@ class PerformanceMonitor {
     const loadComplete = navigation.loadEventEnd - navigation.loadEventStart;
     const totalLoadTime = navigation.loadEventEnd - navigation.fetchStart;
 
-    console.log('🚀 Initial Page Load Metrics');
-    console.log(`DOM Content Loaded: ${domContentLoaded} ms`);
-    console.log(`Load Complete: ${loadComplete} ms`);
-    console.log(`Total Load Time: ${totalLoadTime} ms`);
+    // Always show basic metrics
+    console.log('🚀 Page Load Metrics');
+    console.log(`⏱️ Total Load Time: ${totalLoadTime} ms`);
+    console.log(`📄 DOM Ready: ${domContentLoaded} ms`);
+    console.log(`🔄 Load Complete: ${loadComplete} ms`);
 
-    // Log resource summary
-    this.logResourceSummary();
+    if (PerformanceMonitor.isDebugMode()) {
+      // Show detailed resource summary in debug mode
+      this.logResourceSummary();
+    }
   }
 
   checkMissingMetrics() {
-    if (!PerformanceMonitor.isDebugMode()) return;
-
     const missing = [];
     if (!this.metrics.lcp) missing.push('LCP');
     if (!this.metrics.fid) missing.push('FID');
     if (!this.metrics.cls) missing.push('CLS');
 
+    // Always show Core Web Vitals status
+    console.log('📊 Core Web Vitals Status:');
+    console.log(`🎯 LCP: ${this.metrics.lcp ? this.metrics.lcp.value.toFixed(2) + 'ms ✅' : 'Not captured ⏳'}`);
+    console.log(`⚡ FID: ${this.metrics.fid ? this.metrics.fid.value.toFixed(2) + 'ms ✅' : 'Not captured ⏳'}`);
+    console.log(`📐 CLS: ${this.metrics.cls ? this.metrics.cls.value.toFixed(3) + ' ✅' : 'Not captured ⏳'}`);
+
     if (missing.length > 0) {
-      console.warn('⚠️ Missing Core Web Vitals:', missing.join(', '));
-      console.log('💡 This is normal for FID (requires user interaction)');
-      console.log('💡 LCP and CLS should appear after page load');
+      console.log(`⚠️ Missing: ${missing.join(', ')}`);
+      if (missing.includes('FID')) {
+        console.log('💡 FID requires user interaction (click/tap) to measure');
+      }
+      if (missing.includes('LCP') || missing.includes('CLS')) {
+        console.log('💡 LCP and CLS should appear after page load');
+      }
     } else {
-      console.log('✅ All Core Web Vitals captured successfully');
+      console.log('✅ All Core Web Vitals captured successfully!');
     }
   }
 
@@ -450,7 +487,7 @@ class PerformanceMonitor {
               timestamp: Date.now(),
               method: 'legacy-paint'
             };
-            this.logMetric('LCP', lcpEntry.startTime);
+            this.logMetric('LCP', { value: lcpEntry.startTime, method: 'legacy-paint' });
             console.log('🎯 LCP captured via legacy paint API');
           } else {
             console.log('🔍 No LCP in paint entries, trying navigation timing...');
@@ -471,7 +508,7 @@ class PerformanceMonitor {
                 timestamp: Date.now(),
                 method: 'legacy-navigation'
               };
-              this.logMetric('LCP', lcpTime);
+              this.logMetric('LCP', { value: lcpTime, method: 'legacy-navigation' });
               console.log('🎯 LCP estimated via navigation timing:', lcpTime + 'ms');
               console.log('✅ LCP captured successfully!');
               console.log('LCP metric set:', this.metrics.lcp);
@@ -500,7 +537,7 @@ class PerformanceMonitor {
               timestamp: Date.now(),
               method: 'legacy-default'
             };
-            this.logMetric('CLS', 0);
+            this.logMetric('CLS', { value: 0, method: 'legacy-default' });
             console.log('📐 CLS: Set to 0 (no layout shifts detected)');
           }
         }
@@ -568,7 +605,7 @@ class PerformanceMonitor {
         method: 'manual-detection'
       };
       
-      this.logMetric('LCP', lcpTime);
+      this.logMetric('LCP', { value: lcpTime, method: 'manual-detection' });
       console.log('🎯 LCP detected manually:', {
         element: largestElement.tagName,
         size: largestSize,
@@ -596,7 +633,7 @@ class PerformanceMonitor {
           timestamp: Date.now(),
           method: 'manual-trigger'
         };
-        this.logMetric('FID', 0);
+        this.logMetric('FID', { value: 0, method: 'manual-trigger' });
         console.log('⚡ FID captured via manual trigger');
         this.checkMissingMetrics();
       }

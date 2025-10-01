@@ -34,6 +34,9 @@ if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta)
 
 const prodDomains = ['business.adobe.com', 'www.adobe.com'];
 
+// Note: Performance optimizations removed from baseline branch
+// This branch is for monitoring only, not optimization
+
 // Add any config options.
 const CONFIG = {
   local: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
@@ -385,6 +388,11 @@ const listenAlloy = () => {
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
+  // Initialize baseline performance monitoring (no optimizations)
+  import('./performance-monitor.js').then(() => {
+    console.log('🚀 Baseline performance monitoring initialized');
+  });
+
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   const urlParams = new URLSearchParams(window.location.search);
@@ -407,11 +415,6 @@ const listenAlloy = () => {
 
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
-
-  // Initialize baseline performance monitoring
-  import('./performance-monitor.js').then(() => {
-    console.log('🚀 Baseline Performance monitoring initialized');
-  });
 
   import('./express-delayed.js').then((mod) => {
     mod.default();
