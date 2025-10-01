@@ -146,15 +146,6 @@ export function replacePromptTokenInUrl(url, promptText) {
   return result;
 }
 
-function assignLocation(url) {
-  const testAssign = window['__locationAssign'];
-  if (window.isTestEnv && typeof testAssign === 'function') {
-    testAssign(url);
-    return;
-  }
-  window.location.assign(url);
-}
-
 export default async function decorate(block) {
   ({ getMetadata, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
@@ -239,7 +230,7 @@ export default async function decorate(block) {
           console.error(err);
         }
       }
-      assignLocation(nextUrlStr);
+      window.location.assign(nextUrlStr);
     };
 
     cta.addEventListener('click', onCtaClick, { capture: true });
