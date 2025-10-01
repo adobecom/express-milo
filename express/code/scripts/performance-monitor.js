@@ -124,6 +124,57 @@
       } catch (error) {
         console.warn('Resource observer failed:', error);
       }
+
+      // Monitor navigation timing
+      this.observeNavigationTiming();
+    }
+
+    observeNavigationTiming() {
+      if (!('performance' in window) || !('getEntriesByType' in performance)) return;
+
+      // Wait for page load to complete
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          this.logNavigationMetrics();
+        }, 100);
+      });
+    }
+
+    logNavigationMetrics() {
+      if (!PerformanceMonitor.isDebugMode()) return;
+
+      const navigation = performance.getEntriesByType('navigation')[0];
+      if (!navigation) return;
+
+      const domContentLoaded = navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart;
+      const loadComplete = navigation.loadEventEnd - navigation.loadEventStart;
+      const totalLoadTime = navigation.loadEventEnd - navigation.fetchStart;
+
+      console.log('🚀 Initial Page Load Metrics');
+      console.log(`DOM Content Loaded: ${domContentLoaded} ms`);
+      console.log(`Load Complete: ${loadComplete} ms`);
+      console.log(`Total Load Time: ${totalLoadTime} ms`);
+
+      // Log resource summary
+      this.logResourceSummary();
+    }
+
+    logResourceSummary() {
+      if (!PerformanceMonitor.isDebugMode()) return;
+
+      const resources = performance.getEntriesByType('resource');
+      const totalSize = resources.reduce((sum, resource) => sum + (resource.transferSize || 0), 0);
+      const resourceTypes = {};
+
+      resources.forEach(resource => {
+        const type = resource.initiatorType || 'other';
+        resourceTypes[type] = (resourceTypes[type] || 0) + 1;
+      });
+
+      console.log('📊 Resource Loading Summary');
+      console.log(`Total resources: ${resources.length}`);
+      console.log(`Total size: ${(totalSize / 1024).toFixed(2)} KB`);
+      console.log('By type:', resourceTypes);
     }
 
     logInitialMetrics() {
@@ -132,6 +183,28 @@
       console.log('📊 Performance Monitor Initialized (Baseline)');
       console.log('🔍 Monitoring Core Web Vitals and resource loading');
       console.log('💡 Add ?perf-debug=true to URL for detailed logging');
+      
+      // Check for missing Core Web Vitals after a delay
+      setTimeout(() => {
+        this.checkMissingMetrics();
+      }, 5000);
+    }
+
+    checkMissingMetrics() {
+      if (!PerformanceMonitor.isDebugMode()) return;
+
+      const missing = [];
+      if (!this.metrics.lcp) missing.push('LCP');
+      if (!this.metrics.fid) missing.push('FID');
+      if (!this.metrics.cls) missing.push('CLS');
+
+      if (missing.length > 0) {
+        console.warn('⚠️ Missing Core Web Vitals:', missing.join(', '));
+        console.log('💡 This is normal for FID (requires user interaction)');
+        console.log('💡 LCP and CLS should appear after page load');
+      } else {
+        console.log('✅ All Core Web Vitals captured successfully');
+      }
     }
 
     logMetric(name, value, element = null) {
