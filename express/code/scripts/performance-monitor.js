@@ -1,5 +1,5 @@
 /*
- * Performance monitoring utility for Core Web Vitals tracking
+ * Optimized Performance monitoring utility for Core Web Vitals tracking
  * Measures LCP, FID, CLS, and custom performance metrics
  */
 
@@ -350,25 +350,38 @@ class PerformanceMonitor {
   }
 
   logInitialMetrics() {
+    if (!this.isDebugMode()) return;
+
+    console.log('📊 Optimized Performance Monitor Initialized');
+    console.log('🔍 Monitoring Core Web Vitals and resource loading');
+    console.log('💡 Add ?perf-debug=true to URL for detailed logging');
+    
     // Log initial page load metrics
-    const navigation = performance.getEntriesByType('navigation')[0];
-    if (navigation) {
-      console.group('🚀 Initial Page Load Metrics');
-      console.log('DOM Content Loaded:', navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart, 'ms');
-      console.log('Load Complete:', navigation.loadEventEnd - navigation.loadEventStart, 'ms');
-      console.log('Total Load Time:', navigation.loadEventEnd - navigation.fetchStart, 'ms');
-      console.groupEnd();
-    }
-
-    // Log resource loading summary
-    setTimeout(() => {
-      this.logResourceSummary();
-    }, 2000);
-
+    this.logNavigationMetrics();
+    
     // Check for missing Core Web Vitals after a delay
     setTimeout(() => {
       this.checkMissingMetrics();
     }, 5000);
+  }
+
+  logNavigationMetrics() {
+    if (!this.isDebugMode()) return;
+
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (!navigation) return;
+
+    const domContentLoaded = navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart;
+    const loadComplete = navigation.loadEventEnd - navigation.loadEventStart;
+    const totalLoadTime = navigation.loadEventEnd - navigation.fetchStart;
+
+    console.log('🚀 Initial Page Load Metrics');
+    console.log(`DOM Content Loaded: ${domContentLoaded} ms`);
+    console.log(`Load Complete: ${loadComplete} ms`);
+    console.log(`Total Load Time: ${totalLoadTime} ms`);
+
+    // Log resource summary
+    this.logResourceSummary();
   }
 
   checkMissingMetrics() {
