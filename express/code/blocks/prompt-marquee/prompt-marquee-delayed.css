@@ -15,7 +15,7 @@
 .prompt-marquee-input-wrapper::before {
   content: attr(data-placeholder);
   position: absolute;
-  left: 16px;
+  left: var(--spacing-300);
   color: var(--text-color-secondary, #6e6e6e);
   pointer-events: none;
   transition: all 150ms ease-out;
@@ -41,7 +41,7 @@
 .prompt-marquee-input-wrapper:not(:has(.prompt-marquee-input:placeholder-shown))::before {
   top: 6px;
   transform: none;
-  font-size: 12px;
+  font-size: var(--spacing-200);
   line-height: 14px;
   text-align: left;
 }
@@ -82,8 +82,8 @@
 .prompt-marquee-input-wrapper:has(.prompt-marquee-input:focus-visible)::before {
   top: 6px;
   transform: none;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--spacing-200);
+  line-height: var(--spacing-300);
 }
 
 .prompt-marquee-input-wrapper:has(.prompt-marquee-input:focus) .prompt-marquee-input,
