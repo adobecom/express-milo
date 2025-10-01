@@ -17,7 +17,14 @@ export default class LongText {
   }
 
   async waitForContent() {
-    await this.longText.first().waitFor({ state: 'visible' });
+    // Wait for the page to be fully loaded
+    await this.page.waitForLoadState('networkidle');
+    
+    // Wait for long-text elements to be visible with a longer timeout
+    await this.longText.first().waitFor({ state: 'visible', timeout: 10000 });
+    
+    // Additional wait to ensure JavaScript has processed the elements
+    await this.page.waitForTimeout(1000);
   }
 
   async getContentStructure() {

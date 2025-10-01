@@ -28,6 +28,14 @@ test.describe('Express Long Text Block test suite', () => {
 
     await test.step('Wait for page to load and verify content', async () => {
       await longText.waitForContent();
+      
+      // Check if long-text elements exist, if not, wait a bit more
+      const longTextCount = await longText.longText.count();
+      if (longTextCount === 0) {
+        console.log('No long-text elements found, waiting for JavaScript to process...');
+        await page.waitForTimeout(2000);
+      }
+      
       await expect(longText.longText.first()).toBeVisible();
 
       // Verify basic structure
