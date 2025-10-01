@@ -450,6 +450,9 @@ export default async function decorate(block) {
             // Update width/height attributes to match downloaded dimensions
             img.setAttribute('width', optimalWidth);
             img.setAttribute('height', Math.round(optimalWidth * (352 / 600))); // Maintain aspect ratio
+
+            // CLS prevention: Set explicit aspect ratio to prevent layout shift
+            img.style.aspectRatio = `${optimalWidth} / ${Math.round(optimalWidth * (352 / 600))}`;
           });
 
           // Add preconnect for faster CDN connections

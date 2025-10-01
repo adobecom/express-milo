@@ -233,7 +233,21 @@ function createAnimation(animations) {
 
   // replace anchor with video element
   const video = createTag('video', attribs);
-  video.setAttribute('preload', 'auto');
+
+  // Performance optimization: Use metadata preload for LCP optimization
+  // Only preload auto for videos that are likely to be LCP candidates
+  const isFirstSection = document.querySelector('.section') === video.closest('.section');
+  const isFirstVideo = !document.querySelector('video');
+
+  if (isFirstSection && isFirstVideo) {
+    // Critical LCP video - use metadata preload to avoid blocking LCP
+    video.setAttribute('preload', 'metadata');
+    video.setAttribute('fetchpriority', 'high');
+  } else {
+    // Non-critical videos - lazy load
+    video.setAttribute('preload', 'none');
+  }
+
   if (source) {
     video.innerHTML = `<source src="${source}" type="video/mp4">`;
   }
@@ -418,9 +432,45 @@ async function handleContent(div, block, animations) {
   injectExpressLogo(block, contentWrapper);
   div.append(marqueeForeground);
 
-  video.addEventListener('canplay', () => {
-    buildReduceMotionSwitch(block, marqueeForeground);
-  });
+  // Performance optimization: Lazy load video content after LCP
+  if (video) {
+    const isFirstSection = block.closest('.section') === document.querySelector('.section');
+    const isFirstVideo = !document.querySelector('video');
+
+    if (isFirstSection && isFirstVideo) {
+      // Critical LCP video - load after page is stable
+      const loadVideoContent = () => {
+        video.setAttribute('preload', 'auto');
+        video.load();
+      };
+
+      // Load video content after LCP is likely complete
+      if (document.readyState === 'complete') {
+        setTimeout(loadVideoContent, 100);
+      } else {
+        window.addEventListener('load', () => {
+          setTimeout(loadVideoContent, 100);
+        });
+      }
+    } else {
+      // Non-critical videos - use intersection observer for lazy loading
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.setAttribute('preload', 'auto');
+            entry.target.load();
+            videoObserver.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '100px' });
+
+      videoObserver.observe(video);
+    }
+
+    video.addEventListener('canplay', () => {
+      buildReduceMotionSwitch(block, marqueeForeground);
+    });
+  }
 
   div.querySelectorAll(':scope p:empty').forEach((p) => {
     if (p.innerHTML.trim() === '') {

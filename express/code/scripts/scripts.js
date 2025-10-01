@@ -34,6 +34,21 @@ if (jarvisVisibleMeta && ['mobile', 'desktop', 'on'].includes(jarvisVisibleMeta)
 
 const prodDomains = ['business.adobe.com', 'www.adobe.com'];
 
+// Performance optimization: Defer non-critical JavaScript loading
+const deferNonCriticalJS = () => {
+  // Defer analytics and tracking scripts to improve FID
+  const analyticsScripts = document.querySelectorAll('script[src*="analytics"], script[src*="tracking"]');
+  analyticsScripts.forEach((script) => {
+    script.defer = true;
+  });
+
+  // Defer third-party scripts that don't affect LCP
+  const thirdPartyScripts = document.querySelectorAll('script[src*="google"], script[src*="facebook"], script[src*="twitter"]');
+  thirdPartyScripts.forEach((script) => {
+    script.defer = true;
+  });
+};
+
 // Add any config options.
 const CONFIG = {
   local: { express: 'stage.projectx.corp.adobe.com', commerce: 'commerce-stg.adobe.com' },
@@ -384,6 +399,9 @@ const listenAlloy = () => {
   document.head.append(headerMeta);
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
+
+  // Apply performance optimizations early
+  deferNonCriticalJS();
 
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
