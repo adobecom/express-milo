@@ -465,6 +465,7 @@ class PerformanceMonitor {
               };
               this.logMetric('LCP', lcpTime);
               console.log('🎯 LCP estimated via navigation timing:', lcpTime + 'ms');
+              console.log('✅ LCP captured successfully!');
             } else {
               console.log('❌ No navigation timing available');
             }
