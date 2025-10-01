@@ -216,7 +216,7 @@ export default async function decorate(block) {
       const value = input.value?.trim();
       const baseHref = cta.href || cta.dataset.originalHref;
       if (!value) {
-        assignLocation(baseHref);
+        window.location.assign(baseHref);
         return;
       }
 
