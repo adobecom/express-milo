@@ -3,6 +3,7 @@
 
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
 
 const [, { default: decorate, replacePromptTokenInUrl }] = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
@@ -85,6 +86,17 @@ describe('Prompt Marquee block', () => {
     expect(wrapper).to.exist;
     const input = wrapper.querySelector('.prompt-marquee-input');
     expect(input).to.exist;
+    const expectedPlaceholder = 'Try "DesignCo" as your business name';
+    expect(wrapper.dataset.placeholder).to.equal(expectedPlaceholder);
+    expect(input.placeholder).to.equal(expectedPlaceholder);
+    expect(input.getAttribute('aria-label')).to.equal(expectedPlaceholder);
+    expect(block.textContent).to.not.contain(expectedPlaceholder);
+
+    const blurSpy = sinon.spy(input, 'blur');
+    input.focus();
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(blurSpy.calledOnce).to.be.true;
+    blurSpy.restore();
   });
 });
 

@@ -29,7 +29,6 @@
   top: 50%;
   transform: translateY(-50%);
   font-size: var(--body-font-size-m);
-  line-height: 1;
   text-align: left;
 }
 
