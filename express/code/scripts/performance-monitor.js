@@ -63,7 +63,7 @@ class PerformanceMonitor {
           timestamp: Date.now(),
         };
 
-        this.logMetric('LCP', lastEntry.startTime, lastEntry.element);
+        this.logMetric('LCP', { value: lastEntry.startTime, element: lastEntry.element });
         this.analyzeLCPElement(lastEntry);
       });
 
@@ -110,7 +110,7 @@ class PerformanceMonitor {
             timestamp: Date.now(),
           };
 
-          this.logMetric('FID', entry.processingStart - entry.startTime);
+          this.logMetric('FID', { value: entry.processingStart - entry.startTime, event: entry.name, target: entry.target });
         });
       });
 
@@ -159,7 +159,7 @@ class PerformanceMonitor {
           timestamp: Date.now(),
         };
 
-        this.logMetric('CLS', clsValue);
+        this.logMetric('CLS', { value: clsValue, entries: entries.length });
       });
 
       observer.observe({ entryTypes: ['layout-shift'] });
@@ -183,6 +183,9 @@ class PerformanceMonitor {
 
     // Monitor JavaScript execution time
     this.observeJSExecution();
+    
+    // Apply general image optimizations
+    this.optimizeAllImages();
   }
 
   observeVideoPerformance() {
@@ -244,6 +247,31 @@ class PerformanceMonitor {
           console.log(`🚀 Performance: Critical script loaded in ${loadTime.toFixed(2)}ms`, script.src);
         }
       });
+    });
+  }
+
+  optimizeAllImages() {
+    // Apply basic image optimizations to all images
+    const images = document.querySelectorAll('img');
+    images.forEach((img, index) => {
+      // Skip if already optimized
+      if (img.style.aspectRatio) return;
+      
+      // Set basic aspect ratio if image has dimensions
+      if (img.naturalWidth && img.naturalHeight) {
+        const ratio = img.naturalHeight / img.naturalWidth;
+        const width = img.getAttribute('width') || img.naturalWidth;
+        const height = Math.round(width * ratio);
+        
+        img.style.aspectRatio = `${width} / ${height}`;
+        console.log(`🖼️ General image optimization applied: ${width}x${height} (${ratio.toFixed(3)})`);
+      } else if (img.getAttribute('width') && img.getAttribute('height')) {
+        // Use existing attributes
+        const width = img.getAttribute('width');
+        const height = img.getAttribute('height');
+        img.style.aspectRatio = `${width} / ${height}`;
+        console.log(`🖼️ General image optimization applied: ${width}x${height} (existing attributes)`);
+      }
     });
   }
 
@@ -481,7 +509,7 @@ class PerformanceMonitor {
               timestamp: Date.now(),
               method: 'legacy-paint'
             };
-            this.logMetric('LCP', lcpEntry.startTime);
+            this.logMetric('LCP', { value: lcpEntry.startTime, method: 'legacy-paint' });
             console.log('🎯 LCP captured via legacy paint API');
           } else {
             console.log('🔍 No LCP in paint entries, trying navigation timing...');
@@ -502,7 +530,7 @@ class PerformanceMonitor {
                 timestamp: Date.now(),
                 method: 'legacy-navigation'
               };
-              this.logMetric('LCP', lcpTime);
+              this.logMetric('LCP', { value: lcpTime, method: 'legacy-navigation' });
               console.log('🎯 LCP estimated via navigation timing:', lcpTime + 'ms');
               console.log('✅ LCP captured successfully!');
               console.log('LCP metric set:', this.metrics.lcp);
@@ -531,7 +559,7 @@ class PerformanceMonitor {
               timestamp: Date.now(),
               method: 'legacy-default'
             };
-            this.logMetric('CLS', 0);
+            this.logMetric('CLS', { value: 0, method: 'legacy-default' });
             console.log('📐 CLS: Set to 0 (no layout shifts detected)');
           }
         }
@@ -599,7 +627,7 @@ class PerformanceMonitor {
         method: 'manual-detection'
       };
       
-      this.logMetric('LCP', lcpTime);
+      this.logMetric('LCP', { value: lcpTime, method: 'manual-detection' });
       console.log('🎯 LCP detected manually:', {
         element: largestElement.tagName,
         size: largestSize,
@@ -627,7 +655,7 @@ class PerformanceMonitor {
           timestamp: Date.now(),
           method: 'manual-trigger'
         };
-        this.logMetric('FID', 0);
+        this.logMetric('FID', { value: 0, method: 'manual-trigger' });
         console.log('⚡ FID captured via manual trigger');
         this.checkMissingMetrics();
       }
