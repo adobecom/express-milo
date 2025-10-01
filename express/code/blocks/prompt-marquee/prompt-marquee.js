@@ -205,8 +205,6 @@ export default async function decorate(block) {
     }
   }
 
-  console.log(cta)
-
   if (cta) {
     const wrapper = document.createElement('div');
     wrapper.className = 'prompt-marquee-input-wrapper';
