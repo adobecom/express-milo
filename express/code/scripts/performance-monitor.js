@@ -473,6 +473,12 @@ class PerformanceMonitor {
           console.log('❌ Performance.getEntriesByType not available or LCP already captured');
         }
 
+        // Force manual detection if still no LCP
+        if (!this.metrics.lcp) {
+          console.log('🔍 Forcing manual LCP detection...');
+          this.detectLCPManually();
+        }
+
         // Try to get CLS from navigation timing
         if (!this.metrics.cls) {
           const navigation = performance.getEntriesByType('navigation')[0];
