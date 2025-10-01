@@ -78,7 +78,7 @@ test.describe('Express Long Text Block test suite', () => {
     });
 
     await test.step('Verify design tokens are applied', async () => {
-      const tokens = await longText.getDesignTokens();
+      const tokens = LongText.getDesignTokens();
 
       // Verify h2 styling
       expect(tokens.h2Color).toBeTruthy();
