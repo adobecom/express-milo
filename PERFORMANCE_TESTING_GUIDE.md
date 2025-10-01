@@ -14,12 +14,23 @@ https://performance--express--adobecom.hlx.page/express/?perf-debug=true
 https://main-monitor-core-vitals--express--adobecom.hlx.page/express/?perf-debug=true
 ```
 
+**Note**: Both branches now have performance monitoring enabled for proper comparison!
+
 ### What You'll See in Console
 
 #### 1. **Performance Monitor Initialization**
+
+**Performance Branch (Optimized):**
 ```
 📊 Performance Monitor Initialized
 🔍 Monitoring Core Web Vitals and resource loading
+💡 Debug mode enabled - detailed logging active
+```
+
+**Baseline Branch (For Comparison):**
+```
+📊 Baseline Performance Monitor Initialized
+🔍 Monitoring Core Web Vitals and resource loading (BASELINE)
 💡 Debug mode enabled - detailed logging active
 ```
 
@@ -31,17 +42,19 @@ https://main-monitor-core-vitals--express--adobecom.hlx.page/express/?perf-debug
 🔄 Load Complete: 890 ms
 ```
 
-#### 3. **Video Optimizations**
+#### 3. **Video Optimizations** (Performance Branch Only)
 ```
 🎯 LCP Video optimization applied: metadata preload + high priority
 🎥 Lazy video optimization applied: no preload
 ```
 
-#### 4. **Image Optimizations**
+#### 4. **Image Optimizations** (Performance Branch Only)
 ```
 🖼️ Image optimization applied: natural-dimensions (800x600)
 🖼️ Image optimization applied: existing-attributes (1200x800)
 ```
+
+**Note**: Baseline branch will NOT show these optimization messages - this is expected!
 
 #### 5. **Core Web Vitals Detection**
 ```
