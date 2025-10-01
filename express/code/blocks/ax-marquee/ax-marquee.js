@@ -245,8 +245,10 @@ function createAnimation(animations) {
     video.setAttribute('fetchpriority', 'high');
 
     // Performance logging for LCP video
-    if (window.performanceMonitor) {
-      console.log('🎯 LCP Video optimization applied:', {
+    console.log('🎯 LCP Video optimization applied: metadata preload + high priority');
+    
+    if (window.performanceMonitor && window.performanceMonitor.constructor.isDebugMode()) {
+      console.log('🎯 LCP Video details:', {
         preload: 'metadata',
         fetchpriority: 'high',
         src: source,
@@ -258,8 +260,10 @@ function createAnimation(animations) {
     video.setAttribute('preload', 'none');
 
     // Performance logging for lazy-loaded video
-    if (window.performanceMonitor) {
-      console.log('🎥 Lazy video optimization applied:', {
+    console.log('🎥 Lazy video optimization applied: no preload');
+    
+    if (window.performanceMonitor && window.performanceMonitor.constructor.isDebugMode()) {
+      console.log('🎥 Lazy video details:', {
         preload: 'none',
         src: source,
         isFirstSection: false,

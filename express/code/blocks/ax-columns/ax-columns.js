@@ -565,8 +565,10 @@ export default async function decorate(block) {
             img.style.aspectRatio = `${aspectRatio.width} / ${aspectRatio.height}`;
 
             // Performance logging for image optimization
-            if (window.performanceMonitor) {
-              console.log('🖼️ Image optimization applied:', {
+            console.log(`🖼️ Image optimization applied: ${aspectRatio.method} (${optimalWidth}x${aspectRatio.height})`);
+            
+            if (window.performanceMonitor && window.performanceMonitor.constructor.isDebugMode()) {
+              console.log('🖼️ Image optimization details:', {
                 src: img.src,
                 width: optimalWidth,
                 height: aspectRatio.height,
