@@ -58,7 +58,7 @@ function addImagePreconnects(imageUrl) {
       });
     }
   } catch (e) {
-    void e;
+    console.error(e);
   }
 }
 
@@ -147,8 +147,9 @@ export function replacePromptTokenInUrl(url, promptText) {
 }
 
 function assignLocation(url) {
-  if (window.isTestEnv && typeof window.__locationAssign === 'function') {
-    window.__locationAssign(url);
+  const testAssign = window['__locationAssign'];
+  if (window.isTestEnv && typeof testAssign === 'function') {
+    testAssign(url);
     return;
   }
   window.location.assign(url);
@@ -235,7 +236,7 @@ export default async function decorate(block) {
           u.searchParams.set('acom-input', value);
           nextUrlStr = u.toString();
         } catch (err) {
-          void err;
+          console.error(err);
         }
       }
       assignLocation(nextUrlStr);
