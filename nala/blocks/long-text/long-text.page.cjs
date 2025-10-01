@@ -19,12 +19,34 @@ export default class LongText {
   async waitForContent() {
     // Wait for the page to be fully loaded
     await this.page.waitForLoadState('networkidle');
-    
-    // Wait for long-text elements to be visible with a longer timeout
-    await this.longText.first().waitFor({ state: 'visible', timeout: 10000 });
-    
-    // Additional wait to ensure JavaScript has processed the elements
-    await this.page.waitForTimeout(1000);
+
+    // Debug: Check what elements are actually on the page
+    const bodyHTML = await this.page.locator('body').innerHTML();
+    console.log('Page body content:', `${bodyHTML.substring(0, 500)}...`);
+
+    // Check if long-text elements exist
+    const longTextCount = await this.longText.count();
+    console.log('Found long-text elements:', longTextCount);
+
+    if (longTextCount === 0) {
+      // If no long-text elements found, check for the basic structure
+      const h2Count = await this.page.locator('h2').count();
+      const pCount = await this.page.locator('p').count();
+      console.log('Found h2 elements:', h2Count, 'p elements:', pCount);
+
+      // Wait a bit more for JavaScript to process
+      await this.page.waitForTimeout(3000);
+
+      // Check again
+      const longTextCountAfter = await this.longText.count();
+      console.log('Found long-text elements after wait:', longTextCountAfter);
+
+      if (longTextCountAfter === 0) {
+        throw new Error('No long-text elements found on page. Page may not be loading JavaScript properly.');
+      }
+    }
+    // Wait for long-text elements to be visible
+    await this.longText.first().waitFor({ state: 'visible', timeout: 5000 });
   }
 
   async getContentStructure() {
