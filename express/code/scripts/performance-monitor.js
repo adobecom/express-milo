@@ -431,8 +431,8 @@ class PerformanceMonitor {
 
     console.log('🔄 Starting legacy metrics capture...');
 
-    // Try to get LCP from paint entries
-    window.addEventListener('load', () => {
+    // Try to get LCP from paint entries - run immediately
+    const tryLegacyCapture = () => {
       setTimeout(() => {
         console.log('🔍 Checking for LCP in paint entries...');
         
@@ -503,6 +503,14 @@ class PerformanceMonitor {
         // Check if we have any metrics now
         this.checkMissingMetrics();
       }, 2000);
+    };
+
+    // Try immediately
+    tryLegacyCapture();
+    
+    // Also try on load event
+    window.addEventListener('load', () => {
+      setTimeout(tryLegacyCapture, 1000);
     });
 
     // Add manual FID trigger for testing
