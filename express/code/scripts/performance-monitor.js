@@ -439,6 +439,7 @@ class PerformanceMonitor {
         if (!this.metrics.lcp && performance.getEntriesByType) {
           const paintEntries = performance.getEntriesByType('paint');
           console.log('Paint entries found:', paintEntries.length);
+          console.log('Paint entries:', paintEntries.map(p => ({ name: p.name, startTime: p.startTime })));
           
           // Look for LCP in paint entries
           const lcpEntry = paintEntries.find(entry => entry.name === 'largest-contentful-paint');
@@ -452,6 +453,7 @@ class PerformanceMonitor {
             this.logMetric('LCP', lcpEntry.startTime);
             console.log('🎯 LCP captured via legacy paint API');
           } else {
+            console.log('🔍 No LCP in paint entries, trying navigation timing...');
             // Try to get LCP from navigation timing as fallback
             const navigation = performance.getEntriesByType('navigation')[0];
             if (navigation) {
@@ -462,9 +464,13 @@ class PerformanceMonitor {
                 method: 'legacy-navigation'
               };
               this.logMetric('LCP', lcpTime);
-              console.log('🎯 LCP estimated via navigation timing');
+              console.log('🎯 LCP estimated via navigation timing:', lcpTime + 'ms');
+            } else {
+              console.log('❌ No navigation timing available');
             }
           }
+        } else {
+          console.log('❌ Performance.getEntriesByType not available or LCP already captured');
         }
 
         // Try to get CLS from navigation timing
@@ -483,6 +489,11 @@ class PerformanceMonitor {
           }
         }
 
+        // If still no LCP, try manual detection
+        if (!this.metrics.lcp) {
+          this.detectLCPManually();
+        }
+
         // Check if we have any metrics now
         this.checkMissingMetrics();
       }, 2000);
@@ -490,6 +501,57 @@ class PerformanceMonitor {
 
     // Add manual FID trigger for testing
     this.addManualFIDTrigger();
+  }
+
+  detectLCPManually() {
+    if (!PerformanceMonitor.isDebugMode()) return;
+
+    console.log('🔍 Attempting manual LCP detection...');
+    
+    // Use navigation timing to get actual load time
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (!navigation) {
+      console.log('❌ No navigation timing available for LCP measurement');
+      return;
+    }
+
+    // Find the largest visible element
+    const elements = document.querySelectorAll('img, video, canvas, svg, h1, h2, h3, p, div');
+    let largestElement = null;
+    let largestSize = 0;
+    
+    elements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const size = rect.width * rect.height;
+      
+      if (size > largestSize && rect.top >= 0 && rect.left >= 0) {
+        largestSize = size;
+        largestElement = el;
+      }
+    });
+    
+    if (largestElement) {
+      // Use loadEventEnd as a proxy for LCP time since it represents when the page finished loading
+      const lcpTime = navigation.loadEventEnd - navigation.fetchStart;
+      
+      this.metrics.lcp = {
+        value: lcpTime,
+        element: largestElement,
+        size: largestSize,
+        timestamp: Date.now(),
+        method: 'manual-detection'
+      };
+      
+      this.logMetric('LCP', lcpTime);
+      console.log('🎯 LCP detected manually:', {
+        element: largestElement.tagName,
+        size: largestSize,
+        time: lcpTime + 'ms',
+        method: 'loadEventEnd - fetchStart'
+      });
+    } else {
+      console.log('❌ No suitable LCP element found');
+    }
   }
 
   addManualFIDTrigger() {
