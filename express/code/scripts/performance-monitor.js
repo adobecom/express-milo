@@ -337,6 +337,28 @@ class PerformanceMonitor {
     setTimeout(() => {
       this.logResourceSummary();
     }, 2000);
+
+    // Check for missing Core Web Vitals after a delay
+    setTimeout(() => {
+      this.checkMissingMetrics();
+    }, 5000);
+  }
+
+  checkMissingMetrics() {
+    if (!this.isDebugMode()) return;
+
+    const missing = [];
+    if (!this.metrics.lcp) missing.push('LCP');
+    if (!this.metrics.fid) missing.push('FID');
+    if (!this.metrics.cls) missing.push('CLS');
+
+    if (missing.length > 0) {
+      console.warn('⚠️ Missing Core Web Vitals:', missing.join(', '));
+      console.log('💡 This is normal for FID (requires user interaction)');
+      console.log('💡 LCP and CLS should appear after page load');
+    } else {
+      console.log('✅ All Core Web Vitals captured successfully');
+    }
   }
 
   logResourceSummary() {
@@ -362,16 +384,14 @@ class PerformanceMonitor {
       }
     });
 
-    console.group('📊 Resource Loading Summary');
-    console.log('Total resources:', summary.totalResources);
-    console.log('Total size:', (summary.totalSize / 1024).toFixed(2), 'KB');
+    console.log('📊 Resource Loading Summary');
+    console.log(`Total resources: ${summary.totalResources}`);
+    console.log(`Total size: ${(summary.totalSize / 1024).toFixed(2)} KB`);
     console.log('By type:', summary.byType);
 
     if (summary.slowResources.length > 0) {
-      console.warn('Slow resources (>1s):', summary.slowResources);
+      console.warn('🐌 Slow resources (>1s):', summary.slowResources);
     }
-
-    console.groupEnd();
   }
 
   getMetrics() {
