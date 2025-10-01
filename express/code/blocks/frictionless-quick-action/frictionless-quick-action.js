@@ -497,7 +497,7 @@ async function startSDKWithUnconvertedFiles(files, quickAction, block) {
     return;
   }
 
-  startSDK(data, variant, block);
+  startSDK(data, quickAction, block);
 }
 
 function createCaptionLocaleDropdown() {
