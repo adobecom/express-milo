@@ -26,6 +26,9 @@ class PerformanceMonitor {
     this.observeCLS();
     this.observeCustomMetrics();
     this.logInitialMetrics();
+    
+    // Fallback: Try to capture Core Web Vitals using legacy API
+    this.captureLegacyMetrics();
   }
 
   static isDebugMode() {
@@ -34,7 +37,10 @@ class PerformanceMonitor {
   }
 
   observeLCP() {
-    if (!('PerformanceObserver' in window)) return;
+    if (!('PerformanceObserver' in window)) {
+      console.warn('PerformanceObserver not supported');
+      return;
+    }
 
     try {
       const observer = new PerformanceObserver((list) => {
@@ -46,21 +52,29 @@ class PerformanceMonitor {
           element: lastEntry.element,
           url: lastEntry.url,
           size: lastEntry.size,
+          timestamp: Date.now(),
         };
 
-        this.logMetric('LCP', this.metrics.lcp);
+        this.logMetric('LCP', lastEntry.startTime, lastEntry.element);
         this.analyzeLCPElement(lastEntry);
       });
 
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
       this.observers.set('lcp', observer);
+      
+      if (this.isDebugMode()) {
+        console.log('🎯 LCP observer started');
+      }
     } catch (error) {
       console.warn('Performance monitoring: LCP observer failed', error);
     }
   }
 
   observeFID() {
-    if (!('PerformanceObserver' in window)) return;
+    if (!('PerformanceObserver' in window)) {
+      console.warn('PerformanceObserver not supported');
+      return;
+    }
 
     try {
       const observer = new PerformanceObserver((list) => {
@@ -70,21 +84,29 @@ class PerformanceMonitor {
             value: entry.processingStart - entry.startTime,
             event: entry.name,
             target: entry.target,
+            timestamp: Date.now(),
           };
 
-          this.logMetric('FID', this.metrics.fid);
+          this.logMetric('FID', entry.processingStart - entry.startTime);
         });
       });
 
       observer.observe({ entryTypes: ['first-input'] });
       this.observers.set('fid', observer);
+      
+      if (this.isDebugMode()) {
+        console.log('⚡ FID observer started');
+      }
     } catch (error) {
       console.warn('Performance monitoring: FID observer failed', error);
     }
   }
 
   observeCLS() {
-    if (!('PerformanceObserver' in window)) return;
+    if (!('PerformanceObserver' in window)) {
+      console.warn('PerformanceObserver not supported');
+      return;
+    }
 
     try {
       let clsValue = 0;
@@ -99,13 +121,18 @@ class PerformanceMonitor {
         this.metrics.cls = {
           value: clsValue,
           entries: entries.length,
+          timestamp: Date.now(),
         };
 
-        this.logMetric('CLS', this.metrics.cls);
+        this.logMetric('CLS', clsValue);
       });
 
       observer.observe({ entryTypes: ['layout-shift'] });
       this.observers.set('cls', observer);
+      
+      if (this.isDebugMode()) {
+        console.log('📐 CLS observer started');
+      }
     } catch (error) {
       console.warn('Performance monitoring: CLS observer failed', error);
     }
@@ -359,6 +386,40 @@ class PerformanceMonitor {
     } else {
       console.log('✅ All Core Web Vitals captured successfully');
     }
+  }
+
+  captureLegacyMetrics() {
+    // Fallback method to capture Core Web Vitals using legacy APIs
+    if (!this.isDebugMode()) return;
+
+    // Try to get LCP from navigation timing
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (!this.metrics.lcp && performance.getEntriesByType) {
+          const paintEntries = performance.getEntriesByType('paint');
+          const lcpEntry = paintEntries.find(entry => entry.name === 'largest-contentful-paint');
+          
+          if (lcpEntry) {
+            this.metrics.lcp = {
+              value: lcpEntry.startTime,
+              timestamp: Date.now(),
+              method: 'legacy'
+            };
+            this.logMetric('LCP', lcpEntry.startTime);
+            console.log('🎯 LCP captured via legacy API');
+          }
+        }
+
+        // Try to get CLS from navigation timing
+        if (!this.metrics.cls) {
+          const navigation = performance.getEntriesByType('navigation')[0];
+          if (navigation) {
+            // CLS is harder to capture with legacy API, but we can log that we tried
+            console.log('📐 CLS: Legacy API attempted (Performance Observer preferred)');
+          }
+        }
+      }, 1000);
+    });
   }
 
   logResourceSummary() {
