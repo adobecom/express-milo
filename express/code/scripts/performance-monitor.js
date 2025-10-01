@@ -47,6 +47,13 @@ class PerformanceMonitor {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
 
+        console.log('🎯 LCP Entry detected:', {
+          startTime: lastEntry.startTime,
+          element: lastEntry.element,
+          url: lastEntry.url,
+          size: lastEntry.size
+        });
+
         this.metrics.lcp = {
           value: lastEntry.startTime,
           element: lastEntry.element,
@@ -64,6 +71,7 @@ class PerformanceMonitor {
       
       if (PerformanceMonitor.isDebugMode()) {
         console.log('🎯 LCP observer started');
+        console.log('🔍 Waiting for LCP entries...');
       }
     } catch (error) {
       console.warn('Performance monitoring: LCP observer failed', error);
@@ -80,6 +88,14 @@ class PerformanceMonitor {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
+          console.log('⚡ FID Entry detected:', {
+            processingStart: entry.processingStart,
+            startTime: entry.startTime,
+            delay: entry.processingStart - entry.startTime,
+            event: entry.name,
+            target: entry.target
+          });
+
           this.metrics.fid = {
             value: entry.processingStart - entry.startTime,
             event: entry.name,
@@ -96,6 +112,7 @@ class PerformanceMonitor {
       
       if (PerformanceMonitor.isDebugMode()) {
         console.log('⚡ FID observer started');
+        console.log('🔍 Waiting for user interaction...');
       }
     } catch (error) {
       console.warn('Performance monitoring: FID observer failed', error);
@@ -113,6 +130,12 @@ class PerformanceMonitor {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
         entries.forEach((entry) => {
+          console.log('📐 CLS Entry detected:', {
+            value: entry.value,
+            hadRecentInput: entry.hadRecentInput,
+            sources: entry.sources
+          });
+
           if (!entry.hadRecentInput) {
             clsValue += entry.value;
           }
@@ -132,6 +155,7 @@ class PerformanceMonitor {
       
       if (PerformanceMonitor.isDebugMode()) {
         console.log('📐 CLS observer started');
+        console.log('🔍 Waiting for layout shifts...');
       }
     } catch (error) {
       console.warn('Performance monitoring: CLS observer failed', error);
