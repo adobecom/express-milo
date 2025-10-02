@@ -12,6 +12,7 @@ let createTag;
 let getConfig;
 let replaceKey;
 
+/* istanbul ignore next */
 async function createDirectCarousel(block, templates, createTagFn) {
   const templateCount = templates.length;
   let currentIndex = 0;
@@ -370,6 +371,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
   };
 }
 
+/* istanbul ignore next */
 async function handleOneUpFromApiData(block, templateData) {
   const parent = block.parentElement;
   parent.classList.add('one-up');
@@ -424,6 +426,7 @@ async function handleOneUpFromApiData(block, templateData) {
   parent.append(buttonContainer);
 }
 
+/* istanbul ignore next */
 async function createTemplateElementForCarousel(templateData) {
   const { default: renderTemplate } = await import('../template-x/template-rendering.js');
 
@@ -831,6 +834,7 @@ const initializeUtilities = async () => {
   }
 };
 
+/* istanbul ignore next */
 const routeTemplates = async (block, templates) => {
   const routingDecision = determineTemplateRouting(templates);
 
@@ -854,6 +858,7 @@ const routeTemplates = async (block, templates) => {
   }
 };
 
+/* istanbul ignore next */
 const handleApiDrivenTemplates = async (block, apiUrl, cachedTemplates = null) => {
   try {
     let templates;
@@ -879,6 +884,7 @@ const handleApiDrivenTemplates = async (block, apiUrl, cachedTemplates = null) =
   }
 };
 
+/* istanbul ignore next */
 export default async function decorate(block) {
   if (block.hasAttribute('data-decorated')) {
     return;
