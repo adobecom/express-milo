@@ -37,10 +37,8 @@ export default {
     },
   },
   plugins: [importMapsPlugin({
-    imports: {
-      '/libs/utils/utils.js': '/express/code/libs/utils/utils.js',
-      '/libs/features/placeholders.js': '/express/code/libs/features/placeholders.js',
-    },
+    '/libs/utils/utils.js': '/express/code/libs/utils/utils.js',
+    '/libs/features/placeholders.js': '/express/code/libs/features/placeholders.js',
   })],
   reporters: [
     defaultReporter({ reportTestResults: true, reportTestProgress: true }),
