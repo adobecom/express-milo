@@ -105,9 +105,7 @@ export function recipe2ApiQuery(recipe) {
     query.headers = handleHeaders(params);
   }
 
-  // workaround to prevent akamai prod cache pollution causing cors issues in aem envs
-  const envParam = (new URL(base).host === window.location.host) ? '' : '&ax-env=stage';
-  query.url = `${base}?${decodeURIComponent(params.toString())}${envParam}`;
+  query.url = `${base}?${decodeURIComponent(params.toString())}`;
   return query;
 }
 

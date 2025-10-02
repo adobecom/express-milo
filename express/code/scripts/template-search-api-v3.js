@@ -236,10 +236,8 @@ async function fetchSearchUrl({
     'Oldest to Newest': '&orderBy=createDate',
   }[sort] || sort || '';
   const qParam = q && q !== '{{q}}' ? `&q=${q}` : '';
-  // workaround to prevent akamai prod cache pollution causing cors issues in aem envs
-  const envParam = new URL(base).host === window.location.host ? '' : '&ax-env=stage';
   const url = encodeURI(
-    `${base}?${collectionIdParam}${queryParam}${qParam}${limitParam}${startParam}${sortParam}${filterStr}${envParam}`,
+    `${base}?${collectionIdParam}${queryParam}${qParam}${limitParam}${startParam}${sortParam}${filterStr}`,
   );
 
   const langs = extractLangs(filters.locales);
