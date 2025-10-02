@@ -232,15 +232,176 @@ preDecorateSections(document);
   lcpImg?.removeAttribute('loading');
 }());
 
-(function loadStyles() {
+// LCP optimization - accelerate block processing and preload critical resources
+(function optimizeLCPBlocks() {
+  // Focus on speeding up the first section's block processing
+  const firstSection = document.querySelector('main > .section');
+  if (firstSection) {
+    // Prioritize processing of LCP-critical blocks
+    const lcpBlocks = firstSection.querySelectorAll('.how-to-v2, .hero-marquee, .grid-marquee');
+    lcpBlocks.forEach((block) => {
+      // Add priority attribute to accelerate block initialization
+      block.setAttribute('data-lcp-priority', 'high');
+    });
+
+    // Aggressively preload any images in the first section
+    const firstSectionImages = firstSection.querySelectorAll('img');
+    firstSectionImages.forEach((img, index) => {
+      if (index === 0) { // First image gets highest priority
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.as = 'image';
+        preloadLink.href = img.src || img.getAttribute('src') || img.dataset.src;
+        preloadLink.fetchpriority = 'high';
+        preloadLink.crossorigin = 'anonymous';
+        document.head.appendChild(preloadLink);
+
+        // Ensure immediate loading
+        img.loading = 'eager';
+        img.fetchpriority = 'high';
+        img.decoding = 'sync';
+      }
+    });
+  }
+}());
+
+// Critical CSS inlining for LCP optimization - prevents render blocking
+(function inlineCriticalCSS() {
+  const criticalCSS = `
+    /* Critical styles for LCP elements - comprehensive inline CSS to prevent render blocking */
+    * { box-sizing: border-box; }
+    body { 
+      display: block !important; 
+      opacity: 0; 
+      transition: opacity 0.15s ease-in;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    main { 
+      display: block; 
+      width: 100%;
+      min-height: 100vh;
+    }
+    .section { 
+      display: block; 
+      position: relative; 
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+    .section:first-child, .lcp-section { 
+      min-height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+    }
+    h1 { 
+      font-size: clamp(2.5rem, 6vw, 5rem); 
+      margin: 2rem 0; 
+      line-height: 1.1; 
+      text-align: center;
+      color: #fff;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      max-width: 90%;
+    }
+    h2, h3 { 
+      margin: 1rem 0; 
+      line-height: 1.3;
+      color: #333;
+    }
+    img { 
+      max-width: 100%; 
+      height: auto; 
+      display: block;
+      border: 0;
+    }
+    picture { display: block; }
+    .how-to-v2 { 
+      display: block; 
+      width: 100%; 
+      max-width: 1200px; 
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .how-to-v2 .steps-content { 
+      display: block;
+      width: 100%;
+    }
+    .how-to-v2 .media-container { 
+      display: block; 
+      margin: 0 auto 3rem auto; 
+      text-align: center;
+      width: 100%;
+      max-width: 900px;
+    }
+    .how-to-v2 .media-container img,
+    .how-to-v2 .media-container video {
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      min-height: 500px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    /* Ensure LCP element is largest and most prominent */
+    .lcp-section .how-to-v2 .media-container {
+      margin-top: -10vh;
+      z-index: 10;
+      position: relative;
+    }
+    .lcp-section .how-to-v2 .media-container img {
+      min-height: 600px;
+      max-width: 1000px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+    }
+    /* Hide non-critical content initially */
+    .section:not(:first-child) { opacity: 0.1; }
+    .steps { opacity: 0.1; }
+  `;
+  const style = document.createElement('style');
+  style.textContent = criticalCSS;
+  document.head.appendChild(style);
+}());
+
+// Load full stylesheets asynchronously after critical path
+(function loadStylesAsync() {
   const paths = [`${miloLibs}/styles/styles.css`];
   if (STYLES) { paths.push(STYLES); }
-  paths.forEach((path) => {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
-    document.head.appendChild(link);
-  });
+
+  // Use requestIdleCallback to defer non-critical CSS loading
+  const loadCSS = () => {
+    paths.forEach((path) => {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'stylesheet');
+      link.setAttribute('href', path);
+      link.setAttribute('media', 'print'); // Load without blocking
+      link.onload = () => {
+        link.media = 'all'; // Apply styles after load
+        // Show body with fade-in once styles are loaded
+        document.body.style.opacity = '1';
+      };
+      document.head.appendChild(link);
+    });
+  };
+
+  // Load CSS immediately, don't wait for idle
+  setTimeout(loadCSS, 0);
+
+  // Also show body faster if CSS takes too long
+  setTimeout(() => {
+    if (document.body.style.opacity === '0') {
+      document.body.style.opacity = '1';
+    }
+  }, 500);
 }());
 
 function decorateHeroLCP(loadStyle, config, createTag) {
@@ -408,7 +569,44 @@ const listenAlloy = () => {
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
 
-  import('./express-delayed.js').then((mod) => {
-    mod.default();
-  });
+  // Aggressively defer non-critical JavaScript to improve LCP
+  if (window.requestIdleCallback) {
+    requestIdleCallback(() => {
+      // Defer navigation enhancements
+      const navElements = document.querySelectorAll('.feds-nav, .feds-localnav');
+      navElements.forEach((nav) => {
+        if (nav.dataset.enhanced) return;
+        nav.dataset.enhanced = 'true';
+      });
+
+      // Defer analytics and tracking
+      const analyticsScripts = document.querySelectorAll('script[src*="analytics"], script[src*="gtm"]');
+      analyticsScripts.forEach((script) => {
+        script.setAttribute('defer', '');
+      });
+
+      // Defer third-party embeds (only iframe and img support loading attribute)
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach((iframe) => {
+        if (!iframe.closest('.lcp-section')) {
+          iframe.setAttribute('loading', 'lazy');
+        }
+      });
+
+      // Defer non-critical images
+      const images = document.querySelectorAll('img:not([loading])');
+      images.forEach((img) => {
+        if (!img.closest('.lcp-section')) {
+          img.setAttribute('loading', 'lazy');
+        }
+      });
+    }, { timeout: 2000 });
+  }
+
+  // Defer font loading to prevent render blocking
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      document.body.classList.add('fonts-loaded');
+    });
+  }
 }());
