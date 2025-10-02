@@ -93,14 +93,6 @@ export async function createAccessibilityVideoControls(videoElement) {
     createTag('img', { alt: '', src: `${federatedRootPath}/federal/assets/svgs/accessibility-play.svg`, class: 'accessibility-control icon-play-video isHidden' }),
   );
 
-  // Add keyboard support
-  controlsWrapper.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' || e.code === 'Enter') {
-      e.preventDefault();
-      controlsWrapper.click();
-    }
-  });
-
   // Update button state when video state changes
   videoElement.addEventListener('play', () => {
     controlsWrapper.setAttribute('aria-pressed', 'true');
