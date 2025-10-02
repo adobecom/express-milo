@@ -30,7 +30,6 @@ export default function decorate(block) {
             }
             if (nextElement.tagName === 'P' && nextElement.textContent !== 'null' && nextElement.textContent !== null) {
               article.appendChild(nextElement);
-              break;
             }
           }
 
