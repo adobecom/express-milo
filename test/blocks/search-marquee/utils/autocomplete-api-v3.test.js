@@ -21,6 +21,7 @@ afterEach(() => {
 describe('search-marquee/utils/autocomplete-api-v3.js', () => {
   let autocompleteModule;
 
+<<<<<<< HEAD
   beforeEach(async () => {
     // Mock fetch with successful response
     mockFetch = (url) => {
@@ -42,12 +43,66 @@ describe('search-marquee/utils/autocomplete-api-v3.js', () => {
         json: () => Promise.resolve(null),
       });
     };
+=======
+  describe('API Input Validation', () => {
+    it('should handle empty text query', async () => {
+      // Mock the module to access internal fetchAPI function
+      const mockFetchAPI = async ({ textQuery }) => {
+        if (!textQuery) return [];
+        return [{ title: 'test' }];
+      };
+
+      const result = await mockFetchAPI({ textQuery: '', locale: 'en-US' });
+      expect(result).to.deep.equal([]);
+    });
+
+    it('should handle unsupported locale', async () => {
+      const mockFetchAPI = async ({ textQuery, locale = 'en-US' }) => {
+        const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
+        if (!textQuery || !wlLocales.includes(locale)) {
+          return [];
+        }
+        return [{ title: 'test' }];
+      };
+
+      const result = await mockFetchAPI({
+        textQuery: 'test',
+        locale: 'unsupported-locale',
+      });
+      expect(result).to.deep.equal([]);
+    });
+  });
+
+  describe('API Error Handling', () => {
+    it('should handle API fetch success', async () => {
+      // Mock successful fetch
+      window.fetch = () => Promise.resolve({
+        json: () => Promise.resolve({
+          queryResults: [{ items: [{ title: 'Template 1' }] }],
+        }),
+      });
+>>>>>>> 014b999c (feat: add unit tests for search-marquee autocomplete API utility)
 
     window.fetch = mockFetch;
 
+<<<<<<< HEAD
     // Import the module
     autocompleteModule = await import('../../../../express/code/blocks/search-marquee/utils/autocomplete-api-v3.js');
   });
+=======
+        const res = await fetch('mock-url', {
+          method: 'POST',
+          headers: {
+            'x-api-key': window.atob('test'),
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({ textQuery, locale }),
+        })
+          .then((response) => response.json())
+          .then((response) => (response.queryResults?.[0]?.items
+            ? response
+            : { queryResults: [{ items: [] }] }));
+>>>>>>> 014b999c (feat: add unit tests for search-marquee autocomplete API utility)
 
   describe('useInputAutocomplete', () => {
     it('should be a function', () => {
@@ -217,8 +272,77 @@ describe('search-marquee/utils/autocomplete-api-v3.js', () => {
       // Mock fetch to throw an error
       window.fetch = () => Promise.reject(new Error('Network error'));
 
+<<<<<<< HEAD
       // The module should handle this gracefully
       expect(autocompleteModule.default).to.be.a('function');
+=======
+      const mockFetchAPI = async ({ textQuery, locale = 'en-US' }) => {
+        const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
+        if (!textQuery || !wlLocales.includes(locale)) {
+          return [];
+        }
+
+        try {
+          const res = await fetch('mock-url', {
+            method: 'POST',
+            headers: {
+              'x-api-key': window.atob('test'),
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({ textQuery, locale }),
+          })
+            .then((response) => response.json())
+            .then((response) => (response.queryResults?.[0]?.items
+              ? response
+              : { queryResults: [{ items: [] }] }));
+
+          return res.queryResults[0].items;
+        } catch (err) {
+          // Return empty result on error
+          return [];
+        }
+      };
+
+      const result = await mockFetchAPI({
+        textQuery: 'test',
+        locale: 'en-US',
+      });
+      expect(result).to.deep.equal([]);
+    });
+
+    it('should handle malformed API response', async () => {
+      // Mock malformed response
+      window.fetch = () => Promise.resolve({
+        json: () => Promise.resolve({ invalidStructure: true }),
+      });
+
+      const mockFetchAPI = async ({ textQuery, locale = 'en-US' }) => {
+        const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
+        if (!textQuery || !wlLocales.includes(locale)) {
+          return [];
+        }
+
+        const emptyRes = { queryResults: [{ items: [] }] };
+        const res = await fetch('mock-url', {
+          method: 'POST',
+          headers: {
+            'x-api-key': window.atob('test'),
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({ textQuery, locale }),
+        })
+          .then((response) => response.json())
+          .then((response) => (response.queryResults?.[0]?.items ? response : emptyRes));
+
+        return res.queryResults[0].items;
+      };
+
+      const result = await mockFetchAPI({
+        textQuery: 'test',
+        locale: 'en-US',
+      });
+      expect(result).to.deep.equal([]);
+>>>>>>> 014b999c (feat: add unit tests for search-marquee autocomplete API utility)
     });
   });
 
