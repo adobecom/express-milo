@@ -369,6 +369,31 @@ function decorateAnalyticsEvents() {
   d.addEventListener('videoclosed', (e) => {
     sendEventToAnalytics(`adobe.com:express:cta:learn:columns:${e.detail.parameters.videoId}:videoClosed`);
   });
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-playing') {
+        const iframe = mutation.target;
+        if (iframe.classList.contains('adobetv') && iframe.src) {
+          const url = new URL(iframe.src);
+          if (url.hostname === 'video.tv.adobe.com') {
+            const match = iframe.src.match(/\/v\/(\d+)/);
+            const videoId = match ? match[1] : 'unknown';
+            const isPlaying = iframe.getAttribute('data-playing') === 'true';
+            const state = isPlaying ? 'play' : 'pause';
+            const eventName = `adobe.com:express:video:adobe-tv:${state}:${videoId}`;
+            sendEventToAnalytics(eventName);
+          }
+        }
+      }
+    });
+  });
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['data-playing'],
+  });
 }
 
 export default async function martechLoadedCB() {
