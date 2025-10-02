@@ -28,11 +28,11 @@ export default function decorate(block) {
             if (nextElement.tagName === 'H2') {
               break;
             }
-            if (nextElement.tagName === 'P' && 
-                nextElement.textContent && 
-                nextElement.textContent.trim() !== '' && 
-                nextElement.textContent !== 'null' && 
-                nextElement.textContent !== null) {
+            if (nextElement.tagName === 'P'
+                && nextElement.textContent
+                && nextElement.textContent.trim() !== ''
+                && nextElement.textContent !== 'null'
+                && nextElement.textContent !== null) {
               article.appendChild(nextElement);
             }
           }
@@ -52,7 +52,7 @@ export default function decorate(block) {
   }
 
   // Remove empty or null paragraphs
-  block.querySelectorAll('p').forEach(p => {
+  block.querySelectorAll('p').forEach((p) => {
     if (!p.textContent || p.textContent.trim() === '' || p.textContent === 'null' || p.textContent === null) {
       p.remove();
     }
