@@ -18,26 +18,22 @@ export default function decorate(block) {
       const allContentElements = Array.from(block.querySelectorAll('h2, p'));
       block.innerHTML = '';
 
-      allContentElements.forEach((element, index) => {
+      let currentArticle = null;
+
+      allContentElements.forEach((element) => {
         if (element.tagName === 'H2') {
-          const article = document.createElement('article');
-          article.appendChild(element);
-
-          for (let i = index + 1; i < allContentElements.length; i += 1) {
-            const nextElement = allContentElements[i];
-            if (nextElement.tagName === 'H2') {
-              break;
-            }
-            if (nextElement.tagName === 'P'
-                && nextElement.textContent
-                && nextElement.textContent.trim() !== ''
-                && nextElement.textContent !== 'null'
-                && nextElement.textContent !== null) {
-              article.appendChild(nextElement);
-            }
-          }
-
-          block.appendChild(article);
+          // Start a new article for each H2
+          currentArticle = document.createElement('article');
+          currentArticle.appendChild(element);
+          block.appendChild(currentArticle);
+        } else if (element.tagName === 'P'
+                   && currentArticle
+                   && element.textContent
+                   && element.textContent.trim() !== ''
+                   && element.textContent !== 'null'
+                   && element.textContent !== null) {
+          // Add valid paragraphs to the current article
+          currentArticle.appendChild(element);
         }
       });
     }

@@ -114,7 +114,7 @@ describe('Long Text', () => {
 
       const article = longText.querySelector('article');
       const paragraphs = article.querySelectorAll('p');
-      
+
       // Should only have 2 valid paragraphs
       expect(paragraphs).to.have.length(2);
       expect(paragraphs[0].textContent).to.equal('Valid paragraph');
@@ -182,7 +182,7 @@ describe('Long Text', () => {
       decorate(longText);
 
       const paragraphs = longText.querySelectorAll('p');
-      
+
       // Should only have 2 valid paragraphs
       expect(paragraphs).to.have.length(2);
       expect(paragraphs[0].textContent).to.equal('Valid paragraph');
@@ -250,7 +250,7 @@ describe('Long Text', () => {
       // Should not create article structure without H2
       const articles = longText.querySelectorAll('article');
       expect(articles).to.have.length(0);
-      
+
       // Original structure should remain
       const paragraphs = longText.querySelectorAll('p');
       expect(paragraphs).to.have.length(2);
@@ -282,9 +282,25 @@ describe('Long Text', () => {
 
       // First article: H2 + 2 valid paragraphs
       expect(articles[0].querySelectorAll('p')).to.have.length(2);
-      
+
       // Second article: H2 + 1 valid paragraph
       expect(articles[1].querySelectorAll('p')).to.have.length(1);
+    });
+
+    it('should remove empty block when not in long-text-wrapper', () => {
+      const html = `
+        <div class="long-text">
+        </div>
+      `;
+      document.body.innerHTML = html;
+      const longText = document.querySelector('.long-text');
+      const { parentElement } = longText;
+
+      decorate(longText);
+
+      // Block should be removed directly since parent is not long-text-wrapper
+      expect(document.querySelector('.long-text')).to.be.null;
+      expect(parentElement.children).to.have.length(0);
     });
   });
 });
