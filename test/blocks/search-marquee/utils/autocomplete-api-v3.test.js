@@ -1,395 +1,98 @@
 import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import { fetchAPI } from '../../../../express/code/blocks/search-marquee/utils/autocomplete-api-v3.js';
 
-// Mock fetch
-let mockFetch;
-let originalFetch;
+describe('Autocomplete API v3 Utility Functions', () => {
+  let fetchStub;
+  let atobStub;
 
-// Mock window.atob
-Object.defineProperty(window, 'atob', {
-  writable: true,
-  value: () => 'projectx_marketing_web', // Mock decoded value
-});
-
-beforeEach(() => {
-  originalFetch = window.fetch;
-});
-
-afterEach(() => {
-  window.fetch = originalFetch;
-});
-
-describe('search-marquee/utils/autocomplete-api-v3.js', () => {
-  let autocompleteModule;
-
-<<<<<<< HEAD
-  beforeEach(async () => {
-    // Mock fetch with successful response
-    mockFetch = (url) => {
-      if (url === 'https://adobesearch-atc.adobe.io/uss/v3/autocomplete') {
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({
-            queryResults: [{
-              items: [
-                { title: 'Test Template 1', url: '/template1' },
-                { title: 'Test Template 2', url: '/template2' },
-              ],
-            }],
-          }),
-        });
-      }
-      return Promise.resolve({
-        ok: false,
-        json: () => Promise.resolve(null),
-      });
-    };
-=======
-  describe('API Input Validation', () => {
-    it('should handle empty text query', async () => {
-      // Mock the module to access internal fetchAPI function
-      const mockFetchAPI = async ({ textQuery }) => {
-        if (!textQuery) return [];
-        return [{ title: 'test' }];
-      };
-
-      const result = await mockFetchAPI({ textQuery: '', locale: 'en-US' });
-      expect(result).to.deep.equal([]);
-    });
-
-    it('should handle unsupported locale', async () => {
-      const mockFetchAPI = async ({ textQuery, locale = 'en-US' }) => {
-        const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
-        if (!textQuery || !wlLocales.includes(locale)) {
-          return [];
-        }
-        return [{ title: 'test' }];
-      };
-
-      const result = await mockFetchAPI({
-        textQuery: 'test',
-        locale: 'unsupported-locale',
-      });
-      expect(result).to.deep.equal([]);
-    });
+  beforeEach(() => {
+    fetchStub = sinon.stub(window, 'fetch');
+    atobStub = sinon.stub(window, 'atob').returns('mocked-api-key');
   });
 
-  describe('API Error Handling', () => {
-    it('should handle API fetch success', async () => {
-      // Mock successful fetch
-      window.fetch = () => Promise.resolve({
-        json: () => Promise.resolve({
-          queryResults: [{ items: [{ title: 'Template 1' }] }],
-        }),
-      });
->>>>>>> 014b999c (feat: add unit tests for search-marquee autocomplete API utility)
-
-    window.fetch = mockFetch;
-
-<<<<<<< HEAD
-    // Import the module
-    autocompleteModule = await import('../../../../express/code/blocks/search-marquee/utils/autocomplete-api-v3.js');
-  });
-=======
-        const res = await fetch('mock-url', {
-          method: 'POST',
-          headers: {
-            'x-api-key': window.atob('test'),
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({ textQuery, locale }),
-        })
-          .then((response) => response.json())
-          .then((response) => (response.queryResults?.[0]?.items
-            ? response
-            : { queryResults: [{ items: [] }] }));
->>>>>>> 014b999c (feat: add unit tests for search-marquee autocomplete API utility)
-
-  describe('useInputAutocomplete', () => {
-    it('should be a function', () => {
-      expect(autocompleteModule.default).to.be.a('function');
-    });
-
-    it('should return an object with inputHandler', () => {
-      const mockUpdateUI = () => {};
-      const mockGetConfig = () => ({ locale: { ietf: 'en-US' } });
-
-      const result = autocompleteModule.default(mockUpdateUI, mockGetConfig);
-
-      expect(result).to.be.an('object');
-      expect(result).to.have.property('inputHandler');
-      expect(result.inputHandler).to.be.a('function');
-    });
-
-    it('should handle input events', () => {
-      const mockUpdateUI = () => {};
-      const mockGetConfig = () => ({ locale: { ietf: 'en-US' } });
-
-      const { inputHandler } = autocompleteModule.default(mockUpdateUI, mockGetConfig);
-
-      const mockEvent = {
-        target: { value: 'test query' },
-      };
-
-      expect(() => inputHandler(mockEvent)).to.not.throw();
-    });
-
-    it('should handle different throttle and debounce delays', () => {
-      const mockUpdateUI = () => {};
-      const mockGetConfig = () => ({ locale: { ietf: 'en-US' } });
-      const options = {
-        throttleDelay: 100,
-        debounceDelay: 200,
-        limit: 10,
-      };
-
-      const result = autocompleteModule.default(mockUpdateUI, mockGetConfig, options);
-
-      expect(result).to.be.an('object');
-      expect(result).to.have.property('inputHandler');
-    });
-
-    it('should handle short queries with throttle', () => {
-      const mockUpdateUI = () => {};
-      const mockGetConfig = () => ({ locale: { ietf: 'en-US' } });
-
-      const { inputHandler } = autocompleteModule.default(mockUpdateUI, mockGetConfig);
-
-      const mockEvent = {
-        target: { value: 'abc' }, // length < 4
-      };
-
-      expect(() => inputHandler(mockEvent)).to.not.throw();
-    });
-
-    it('should handle queries ending with space with throttle', () => {
-      const mockUpdateUI = () => {};
-      const mockGetConfig = () => ({ locale: { ietf: 'en-US' } });
-
-      const { inputHandler } = autocompleteModule.default(mockUpdateUI, mockGetConfig);
-
-      const mockEvent = {
-        target: { value: 'test query ' }, // ends with space
-      };
-
-      expect(() => inputHandler(mockEvent)).to.not.throw();
-    });
-
-    it('should handle long queries with debounce', () => {
-      const mockUpdateUI = () => {};
-      const mockGetConfig = () => ({ locale: { ietf: 'en-US' } });
-
-      const { inputHandler } = autocompleteModule.default(mockUpdateUI, mockGetConfig);
-
-      const mockEvent = {
-        target: { value: 'test query' }, // length >= 4 and doesn't end with space
-      };
-
-      expect(() => inputHandler(mockEvent)).to.not.throw();
-    });
+  afterEach(() => {
+    fetchStub.restore();
+    atobStub.restore();
   });
 
-  describe('API configuration', () => {
-    it('should have correct API URL', () => {
-      expect('https://adobesearch-atc.adobe.io/uss/v3/autocomplete').to.be.a('string');
-    });
+  it('should fetch API with valid input', async () => {
+    fetchStub.returns(Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ queryResults: [{ items: [{ title: 'Suggestion 1' }] }] }),
+    }));
 
-    it('should have correct experience ID', () => {
-      expect('default-templates-autocomplete-v1').to.be.a('string');
-    });
-
-    it('should have correct scope entities', () => {
-      expect(['HzTemplate']).to.be.an('array');
-    });
-
-    it('should have correct whitelist locales', () => {
-      const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
-      expect(wlLocales).to.include('en-US');
-      expect(wlLocales).to.include('fr-FR');
-      expect(wlLocales).to.include('de-DE');
-      expect(wlLocales).to.include('ja-JP');
-    });
-  });
-
-  describe('API key handling', () => {
-    it('should decode API key correctly', () => {
-      const encodedKey = 'cHJvamVjdHhfbWFya2V0aW5nX3dlYg==';
-      const decodedKey = window.atob(encodedKey);
-      expect(decodedKey).to.be.a('string');
-      expect(decodedKey.length).to.be.greaterThan(0);
-    });
-  });
-
-  describe('empty response handling', () => {
-    it('should have correct empty response structure', () => {
-      const emptyRes = { queryResults: [{ items: [] }] };
-      expect(emptyRes).to.have.property('queryResults');
-      expect(emptyRes.queryResults).to.be.an('array');
-      expect(emptyRes.queryResults[0]).to.have.property('items');
-      expect(emptyRes.queryResults[0].items).to.be.an('array');
-    });
-  });
-
-  describe('memoization configuration', () => {
-    it('should have correct TTL', () => {
-      const ttl = 30 * 1000;
-      expect(ttl).to.equal(30000);
-    });
-
-    it('should use textQuery as key', () => {
-      const keyFunction = (options) => options.textQuery;
-      const testOptions = { textQuery: 'test query', locale: 'en-US' };
-      expect(keyFunction(testOptions)).to.equal('test query');
-    });
-  });
-
-  describe('request structure', () => {
-    it('should have correct request body structure', () => {
-      const requestBody = {
+    const result = await fetchAPI({ textQuery: 'test', locale: 'en-US' });
+    expect(fetchStub.calledOnce).to.be.true;
+    expect(fetchStub.calledOnceWith('https://adobesearch-atc.adobe.io/uss/v3/autocomplete', {
+      method: 'POST',
+      headers: {
+        'x-api-key': 'mocked-api-key',
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
         experienceId: 'default-templates-autocomplete-v1',
         textQuery: 'test',
         locale: 'en-US',
-        queries: [
-          {
-            limit: 5,
-            id: 'default-templates-autocomplete-v1',
-            scope: { entities: ['HzTemplate'] },
-          },
-        ],
-      };
-
-      expect(requestBody).to.have.property('experienceId');
-      expect(requestBody).to.have.property('textQuery');
-      expect(requestBody).to.have.property('locale');
-      expect(requestBody).to.have.property('queries');
-      expect(requestBody.queries).to.be.an('array');
-      expect(requestBody.queries[0]).to.have.property('scope');
-      expect(requestBody.queries[0].scope).to.have.property('entities');
-    });
+        queries: [{ limit: 5, id: 'default-templates-autocomplete-v1', scope: { entities: ['HzTemplate'] } }],
+      }),
+    })).to.be.true;
+    expect(result).to.deep.equal([{ title: 'Suggestion 1' }]);
   });
 
-  describe('error handling', () => {
-    it('should handle fetch errors gracefully', async () => {
-      // Mock fetch to throw an error
-      window.fetch = () => Promise.reject(new Error('Network error'));
-
-<<<<<<< HEAD
-      // The module should handle this gracefully
-      expect(autocompleteModule.default).to.be.a('function');
-=======
-      const mockFetchAPI = async ({ textQuery, locale = 'en-US' }) => {
-        const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
-        if (!textQuery || !wlLocales.includes(locale)) {
-          return [];
-        }
-
-        try {
-          const res = await fetch('mock-url', {
-            method: 'POST',
-            headers: {
-              'x-api-key': window.atob('test'),
-              'content-type': 'application/json',
-            },
-            body: JSON.stringify({ textQuery, locale }),
-          })
-            .then((response) => response.json())
-            .then((response) => (response.queryResults?.[0]?.items
-              ? response
-              : { queryResults: [{ items: [] }] }));
-
-          return res.queryResults[0].items;
-        } catch (err) {
-          // Return empty result on error
-          return [];
-        }
-      };
-
-      const result = await mockFetchAPI({
-        textQuery: 'test',
-        locale: 'en-US',
-      });
-      expect(result).to.deep.equal([]);
-    });
-
-    it('should handle malformed API response', async () => {
-      // Mock malformed response
-      window.fetch = () => Promise.resolve({
-        json: () => Promise.resolve({ invalidStructure: true }),
-      });
-
-      const mockFetchAPI = async ({ textQuery, locale = 'en-US' }) => {
-        const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
-        if (!textQuery || !wlLocales.includes(locale)) {
-          return [];
-        }
-
-        const emptyRes = { queryResults: [{ items: [] }] };
-        const res = await fetch('mock-url', {
-          method: 'POST',
-          headers: {
-            'x-api-key': window.atob('test'),
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({ textQuery, locale }),
-        })
-          .then((response) => response.json())
-          .then((response) => (response.queryResults?.[0]?.items ? response : emptyRes));
-
-        return res.queryResults[0].items;
-      };
-
-      const result = await mockFetchAPI({
-        textQuery: 'test',
-        locale: 'en-US',
-      });
-      expect(result).to.deep.equal([]);
->>>>>>> 014b999c (feat: add unit tests for search-marquee autocomplete API utility)
-    });
+  it('should return empty array for empty text query', async () => {
+    const result = await fetchAPI({ textQuery: '', locale: 'en-US' });
+    expect(fetchStub.called).to.be.false;
+    expect(result).to.deep.equal([]);
   });
 
-  describe('locale validation', () => {
-    it('should validate whitelist locales', () => {
-      const wlLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
-      const validLocales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP'];
-      const invalidLocales = ['es-ES', 'pt-BR', 'invalid'];
-
-      validLocales.forEach((locale) => {
-        expect(wlLocales.includes(locale)).to.be.true;
-      });
-
-      invalidLocales.forEach((locale) => {
-        expect(wlLocales.includes(locale)).to.be.false;
-      });
-    });
+  it('should return empty array for unsupported locale', async () => {
+    const result = await fetchAPI({ textQuery: 'test', locale: 'fr-CA' });
+    expect(fetchStub.called).to.be.false;
+    expect(result).to.deep.equal([]);
   });
 
-  describe('limit parameter', () => {
-    it('should have default limit of 5', () => {
-      const defaultLimit = 5;
-      expect(defaultLimit).to.equal(5);
-    });
+  it('should handle API network error gracefully', async () => {
+    fetchStub.returns(Promise.reject(new Error('Network error')));
+    const consoleErrorStub = sinon.stub(console, 'error');
 
-    it('should accept custom limit', () => {
-      const customLimit = 10;
-      expect(customLimit).to.be.a('number');
-      expect(customLimit).to.be.greaterThan(0);
-    });
+    const result = await fetchAPI({ textQuery: 'test', locale: 'en-US' });
+    expect(fetchStub.calledOnce).to.be.true;
+    expect(result).to.deep.equal([]);
+    expect(consoleErrorStub.calledOnceWith('Autocomplete API Error: ', sinon.match.instanceOf(Error))).to.be.true;
+    consoleErrorStub.restore();
   });
 
-  describe('state management', () => {
-    it('should maintain query state', () => {
-      const mockUpdateUI = () => {};
-      const mockGetConfig = () => ({ locale: { ietf: 'en-US' } });
+  it('should handle malformed API response gracefully', async () => {
+    fetchStub.returns(Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ someOtherData: 'invalid' }),
+    }));
 
-      const { inputHandler } = autocompleteModule.default(mockUpdateUI, mockGetConfig);
+    const result = await fetchAPI({ textQuery: 'test', locale: 'en-US' });
+    expect(fetchStub.calledOnce).to.be.true;
+    expect(result).to.deep.equal([]);
+  });
 
-      const mockEvent1 = { target: { value: 'query1' } };
-      const mockEvent2 = { target: { value: 'query2' } };
+  it('should handle API response with empty queryResults', async () => {
+    fetchStub.returns(Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ queryResults: [] }),
+    }));
 
-      inputHandler(mockEvent1);
-      inputHandler(mockEvent2);
+    const result = await fetchAPI({ textQuery: 'test', locale: 'en-US' });
+    expect(fetchStub.calledOnce).to.be.true;
+    expect(result).to.deep.equal([]);
+  });
 
-      // State should be updated
-      expect(() => inputHandler(mockEvent1)).to.not.throw();
-    });
+  it('should handle API response with empty items array', async () => {
+    fetchStub.returns(Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ queryResults: [{ items: [] }] }),
+    }));
+
+    const result = await fetchAPI({ textQuery: 'test', locale: 'en-US' });
+    expect(fetchStub.calledOnce).to.be.true;
+    expect(result).to.deep.equal([]);
   });
 });
