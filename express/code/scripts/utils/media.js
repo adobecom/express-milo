@@ -80,10 +80,9 @@ export async function createAccessibilityVideoControls(videoElement) {
 
   const federatedRootPath = getFederatedContentRoot() || federatedAccessibilityIconsPath;
 
-  const controlsWrapper = createTag('div', {
+  const controlsWrapper = createTag('button', {
     class: 'video-controls-wrapper',
-    tabIndex: '0',
-    role: 'button',
+    type: 'button',
     'aria-pressed': 'true',
     'aria-label': videoLabels.pauseMotion,
   });
