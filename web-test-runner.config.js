@@ -23,6 +23,14 @@ export default {
       '**/deps/**',
     ],
   },
+  // Preserve Istanbul comments during Babel transformation
+  babelConfig: {
+    comments: true,
+    compact: false,
+    parserOpts: {
+      preserveComments: true,
+    },
+  },
   plugins: [importMapsPlugin({})],
   reporters: [
     defaultReporter({ reportTestResults: true, reportTestProgress: true }),
