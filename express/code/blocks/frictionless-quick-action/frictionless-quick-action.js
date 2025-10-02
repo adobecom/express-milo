@@ -20,6 +20,7 @@ import {
   initProgressBar,
   FRICTIONLESS_UPLOAD_QUICK_ACTIONS,
   EXPRESS_ROUTE_PATHS,
+  isSafari,
 } from '../../scripts/utils/frictionless-utils.js';
 
 let createTag;
@@ -36,6 +37,7 @@ let uploadService;
 let fqaContainer;
 let uploadEvents;
 let frictionlessTargetBaseUrl;
+let progressBar;
 
 function frictionlessQAExperiment(
   quickAction,
@@ -196,12 +198,12 @@ async function startSDK(data = [''], quickAction, block) {
   runQuickAction(quickAction, data, block);
 }
 
-function resetUploadUI(progressBar) {
+function resetUploadUI() {
   progressBar.remove();
   fadeIn(fqaContainer);
 }
 
-function createUploadStatusListener(uploadStatusEvent, progressBar) {
+function createUploadStatusListener(uploadStatusEvent) {
   const listener = (e) => {
     const isUploadProgressLessThanVisual = e.detail.progress < progressBar.getProgress();
     const progress = isUploadProgressLessThanVisual ? progressBar.getProgress() : e.detail.progress;
@@ -220,7 +222,7 @@ function createUploadStatusListener(uploadStatusEvent, progressBar) {
     if (['completed', 'failed'].includes(e.detail.status)) {
       if (e.detail.status === 'failed') {
         setTimeout(() => {
-          resetUploadUI(progressBar);
+          resetUploadUI();
         }, 200);
       }
       window.removeEventListener(uploadStatusEvent, listener);
@@ -253,16 +255,16 @@ async function initializeUploadService() {
 }
 
 async function setupUploadUI(block) {
-  const progressBar = await initProgressBar(replaceKey, getConfig);
+  const progressBarElement = await initProgressBar(replaceKey, getConfig);
   fqaContainer = block.querySelector('.fqa-container');
   fadeOut(fqaContainer);
-  block.insertBefore(progressBar, fqaContainer);
-  return progressBar;
+  block.insertBefore(progressBarElement, fqaContainer);
+  return progressBarElement;
 }
 
-async function uploadAssetToStorage(file, progressBar) {
+async function uploadAssetToStorage(file) {
   const service = await initializeUploadService();
-  createUploadStatusListener(uploadEvents.UPLOAD_STATUS, progressBar);
+  createUploadStatusListener(uploadEvents.UPLOAD_STATUS);
 
   const { asset } = await service.uploadAsset({
     file,
@@ -276,8 +278,8 @@ async function uploadAssetToStorage(file, progressBar) {
 
 async function performStorageUpload(files, block) {
   try {
-    const progressBar = await setupUploadUI(block);
-    return await uploadAssetToStorage(files[0], progressBar);
+    progressBar = await setupUploadUI(block);
+    return await uploadAssetToStorage(files[0]);
   } catch (error) {
     if (error.code === 'UPLOAD_FAILED') {
       const message = await replaceKey('upload-media-error', getConfig());
@@ -471,6 +473,16 @@ async function performUploadAction(files, block, quickAction) {
   if (!result.assetId) return;
 
   const url = await buildEditorUrl(quickAction, result.assetId, result.dimensions);
+
+  /**
+ * In Safari, due to backward cache, when a user navigates back to the upload page
+ * from the editor, the upload UI is not reset. This creates an issue, where the user
+ * does not see the upload UI and instead sees the upload progress bar. So we reset
+ * the upload UI on safari just before navigating to the editor.
+ */
+  if (isSafari()) {
+    resetUploadUI();
+  }
 
   window.location.href = url.toString();
 }
