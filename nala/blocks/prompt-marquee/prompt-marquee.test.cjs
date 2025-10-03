@@ -26,10 +26,11 @@ test.describe('Express Prompt Marquee block test suite', () => {
     });
 
     await test.step('Verify prompt marquee block content/specs', async () => {
+      console.log(promptMarquee.block);
       await expect(promptMarquee.block).toBeVisible();
       await expect(promptMarquee.heading.first()).toBeVisible();
       await expect(promptMarquee.heading.first()).toHaveText(/\S+/);
-
+      console.log(promptMarquee.columns);
       const columnCount = await promptMarquee.columns.count();
       expect(columnCount).toBeGreaterThan(0);
 
