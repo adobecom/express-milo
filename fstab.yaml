@@ -31,3 +31,5 @@ folders:
   /no/express/colors/: /no/express/colors/default
   /se/express/colors/: /se/express/colors/default
   /tw/express/colors/: /tw/express/colors/default
+  /drafts/templates/: /drafts/templates/default
+  /drafts/colors/: /drafts/colors/default
