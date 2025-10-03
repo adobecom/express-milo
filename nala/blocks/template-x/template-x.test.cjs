@@ -22,7 +22,7 @@ test.describe('template-x Block Test Suite', () => {
 
     await test.step('Verify search icon is displayed ', async () => {
       await page.waitForLoadState();
-      
+
       // Check if search bar exists before interacting with it
       const searchBarCount = await templateX.searchBarWrapper.count();
       if (searchBarCount > 0) {
