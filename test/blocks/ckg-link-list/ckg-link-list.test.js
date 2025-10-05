@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
 import { readFile } from '@web/test-runner-commands';
+import { setLibs } from '../../../express/code/scripts/utils.js';
+
+setLibs('/libs');
 
 const html = await readFile({ path: './mocks/default.html' });
 
@@ -15,7 +18,7 @@ describe('CKG Link List', () => {
     // Mock getLibs
     originalGetLibs = window.getLibs;
     window.getLibs = () => '/libs';
-    
+
     // Mock window.import for utils/utils.js
     const originalImport = window.import;
     window.import = (path) => {
@@ -50,7 +53,6 @@ describe('CKG Link List', () => {
     // Mock buildCarousel
     window.buildCarousel = () => Promise.resolve();
 
-
     // Mock fetch
     mockFetch = () => Promise.resolve({
       ok: true,
@@ -75,7 +77,7 @@ describe('CKG Link List', () => {
   it('should not throw when called', async () => {
     const { default: decorate } = await import('../../../express/code/blocks/ckg-link-list/ckg-link-list.js');
     const block = document.querySelector('.ckg-link-list');
-    
+
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
@@ -84,7 +86,7 @@ describe('CKG Link List', () => {
     const { default: decorate } = await import('../../../express/code/blocks/ckg-link-list/ckg-link-list.js');
     const block = document.createElement('div');
     block.className = 'ckg-link-list';
-    
+
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
@@ -92,7 +94,7 @@ describe('CKG Link List', () => {
   it('should handle block with children', async () => {
     const { default: decorate } = await import('../../../express/code/blocks/ckg-link-list/ckg-link-list.js');
     const block = document.querySelector('.ckg-link-list');
-    
+
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
@@ -100,13 +102,9 @@ describe('CKG Link List', () => {
   it('should call decorateButtonsDeprecated', async () => {
     const { default: decorate } = await import('../../../express/code/blocks/ckg-link-list/ckg-link-list.js');
     const block = document.querySelector('.ckg-link-list');
-    
-    let decorateButtonsCalled = false;
-    window.decorateButtonsDeprecated = () => {
-      decorateButtonsCalled = true;
-      return Promise.resolve();
-    };
-    
+
+    window.decorateButtonsDeprecated = () => Promise.resolve();
+
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
@@ -114,7 +112,7 @@ describe('CKG Link List', () => {
   it('should set initial visibility to hidden', async () => {
     const { default: decorate } = await import('../../../express/code/blocks/ckg-link-list/ckg-link-list.js');
     const block = document.querySelector('.ckg-link-list');
-    
+
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
@@ -122,7 +120,7 @@ describe('CKG Link List', () => {
   it('should handle getData returning null', async () => {
     const { default: decorate } = await import('../../../express/code/blocks/ckg-link-list/ckg-link-list.js');
     const block = document.querySelector('.ckg-link-list');
-    
+
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
@@ -130,9 +128,8 @@ describe('CKG Link List', () => {
   it('should handle getData returning empty array', async () => {
     const { default: decorate } = await import('../../../express/code/blocks/ckg-link-list/ckg-link-list.js');
     const block = document.querySelector('.ckg-link-list');
-    
+
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
-
 });

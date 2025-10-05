@@ -21,25 +21,9 @@ export default {
       '**/node_modules/**',
       '**/test/**',
       '**/deps/**',
-      '**/blocks/template-list/template-list.js',
-      '**/blocks/template-list/breadcrumbs.js',
-      '**/blocks/quotes/quotes.js',
-      '**/blocks/frictionless-quick-action/frictionless-quick-action.js',
-      '**/blocks/ckg-link-list/ckg-link-list.js',
     ],
   },
-  // Preserve Istanbul comments during Babel transformation
-  babelConfig: {
-    comments: true,
-    compact: false,
-    parserOpts: {
-      preserveComments: true,
-    },
-  },
-  plugins: [importMapsPlugin({
-    '/libs/utils/utils.js': '/express/code/libs/utils/utils.js',
-    '/libs/features/placeholders.js': '/express/code/libs/features/placeholders.js',
-  })],
+  plugins: [importMapsPlugin({})],
   reporters: [
     defaultReporter({ reportTestResults: true, reportTestProgress: true }),
     customReporter(),
@@ -48,20 +32,6 @@ export default {
     <html>
       <head>
         <script type='module'>
-          // Global mocks for getLibs and import
-          window.getLibs = () => '/libs';
-          window.import = (path) => import(path);
-          
-          // Custom readFile mock to handle mock file loading
-          window.readFile = async (path) => {
-            const mockFiles = {
-              './mocks/branchlinks.html': '<div>Mock branchlinks content</div>',
-              './mocks/template-list.html': '<div>Mock template list content</div>',
-              './mocks/breadcrumbs.html': '<div>Mock breadcrumbs content</div>',
-            };
-            return mockFiles[path] || '<div>Mock content</div>';
-          };
-          
           const oldFetch = window.fetch;
           window.fetch = async (resource, options) => {
             if (!resource.startsWith('/') && !resource.startsWith('http://localhost')) {

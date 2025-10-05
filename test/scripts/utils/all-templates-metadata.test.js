@@ -1,4 +1,7 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
+
+setLibs('/libs');
 
 describe('All Templates Metadata', () => {
   let mockFetch;
@@ -106,7 +109,6 @@ describe('All Templates Metadata', () => {
     const result = await fetchAllTemplatesMetadata(mockGetConfig);
     expect(result).to.deep.equal([{ id: 'prod-template' }]);
   });
-
 
   it('should handle fetch errors gracefully', async () => {
     // Mock fetch to reject

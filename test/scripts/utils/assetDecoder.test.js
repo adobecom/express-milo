@@ -1,4 +1,5 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import {
   AssetDecoder,
   getImageDimensions,
@@ -6,6 +7,8 @@ import {
   getAssetDimensions,
   decodeWithTimeout,
 } from '../../../express/code/scripts/utils/assetDecoder.js';
+
+setLibs('/libs');
 
 describe('AssetDecoder', () => {
   let mockFile;

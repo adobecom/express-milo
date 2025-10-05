@@ -1,4 +1,5 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import {
   populateStars,
   hasRated,
@@ -10,6 +11,8 @@ import {
   sliderFunctionality,
   RATINGS_CONFIG,
 } from '../../../express/code/scripts/utils/ratings-utils.js';
+
+setLibs('/libs');
 
 describe('Ratings Utils', () => {
   let originalGetLibs;

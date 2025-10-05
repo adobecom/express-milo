@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import { addHeaderSizing } from '../../../express/code/scripts/utils/location-utils.js';
+
+setLibs('/libs');
 
 describe('Location Utils', () => {
   describe('addHeaderSizing', () => {
