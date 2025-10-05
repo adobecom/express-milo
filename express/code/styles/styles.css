@@ -1439,3 +1439,84 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 main .section.zero-margin:not([data-padding='none']) .content:first-child {
   padding-top: 0px;
 }
+
+/* Performance optimizations for Core Web Vitals */
+
+/* CLS Prevention: Reserve space for dynamic content */
+.ax-marquee {
+  min-height: 400px; /* Reserve space for video content */
+}
+
+.pricing-cards {
+  min-height: 300px; /* Reserve space for pricing cards */
+}
+
+.testimonials {
+  min-height: 200px; /* Reserve space for testimonials */
+}
+
+/* Skeleton loading states for dynamic content */
+.skeleton-loader {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 4px;
+  min-height: 20px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Image loading optimization */
+img {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px 200px; /* Default aspect ratio */
+}
+
+/* Video loading optimization */
+video {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 450px; /* Default aspect ratio */
+}
+
+/* Prevent layout shift from font loading */
+body {
+  font-display: swap;
+}
+
+/* Optimize critical rendering path */
+.hero-marquee,
+.ax-marquee {
+  contain: layout style paint;
+}
+
+/* Reduce motion for better performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
