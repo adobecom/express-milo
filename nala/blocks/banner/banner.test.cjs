@@ -41,6 +41,10 @@ test.describe('Express Banner Block test suite', () => {
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: banner.banner });
     });
+    await test.step('Validate card button click', async () => {
+      await banner.defaultBannerButton.click();
+      expect(page.url).not.toBe(testUrl);
+    });
   });
 
   // Test 1 : Banner light
@@ -70,6 +74,11 @@ test.describe('Express Banner Block test suite', () => {
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: banner.variants.light });
     });
+
+    await test.step('Validate card button click', async () => {
+      await banner.lightVariantButton.click();
+      expect(page.url).not.toBe(testUrl);
+    });
   });
 
   // Test 2 : Banner standout
@@ -98,6 +107,11 @@ test.describe('Express Banner Block test suite', () => {
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: banner.variants.standout });
     });
+
+    await test.step('Validate card button click', async () => {
+      await banner.standoutVariantButton.click();
+      expect(page.url).not.toBe(testUrl);
+    });
   });
 
   // Test 3 : Banner cool
@@ -125,6 +139,11 @@ test.describe('Express Banner Block test suite', () => {
 
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: banner.variants.cool });
+    });
+
+    await test.step('Validate card button click', async () => {
+      await banner.coolVariantButton.click();
+      expect(page.url).not.toBe(testUrl);
     });
   });
 });
