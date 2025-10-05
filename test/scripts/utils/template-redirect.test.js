@@ -1,7 +1,10 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import redirectToExistingPage, {
   constructTargetPath,
 } from '../../../express/code/scripts/utils/template-redirect.js';
+
+setLibs('/libs');
 
 // Import existsTemplatePage for testing (it's not exported, so we need to test it indirectly)
 

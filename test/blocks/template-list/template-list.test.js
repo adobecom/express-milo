@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import decorate, { decorateTemplateList } from '../../../express/code/blocks/template-list/template-list.js';
+
+setLibs('/libs');
 
 describe('Template List Block', () => {
   let mockBlock;

@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import { decorateSocialIcons } from '../../../express/code/scripts/utils/icons.js';
+
+setLibs('/libs');
 
 describe('Icons Utils', () => {
   describe('decorateSocialIcons', () => {

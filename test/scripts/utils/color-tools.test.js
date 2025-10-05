@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import isDarkOverlayReadable from '../../../express/code/scripts/utils/color-tools.js';
+
+setLibs('/libs');
 
 describe('Color Tools', () => {
   describe('isDarkOverlayReadable', () => {

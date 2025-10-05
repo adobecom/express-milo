@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import { titleCase } from '../../../express/code/scripts/utils/string.js';
+
+setLibs('/libs');
 
 describe('String Utils', () => {
   describe('titleCase', () => {

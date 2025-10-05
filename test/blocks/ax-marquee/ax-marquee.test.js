@@ -195,7 +195,7 @@ describe('ax-marquee', () => {
       `;
       const marquee = document.querySelector('.ax-marquee');
       await decorate(marquee);
-      
+
       const videoLink = marquee.querySelector('a[href="test.mp4"]');
       if (videoLink) {
         transformToVideoLink(videoLink.closest('div'), videoLink);
@@ -213,7 +213,7 @@ describe('ax-marquee', () => {
       `;
       const marquee = document.querySelector('.ax-marquee');
       await decorate(marquee);
-      
+
       const toggleWrapper = marquee.querySelector('.reduce-motion-wrapper');
       if (toggleWrapper) {
         decorateToggleContext(toggleWrapper, {});
@@ -231,7 +231,7 @@ describe('ax-marquee', () => {
       `;
       const marquee = document.querySelector('.ax-marquee');
       await decorate(marquee);
-      
+
       const mediaQuery = matchMedia('(prefers-reduced-motion: reduce)');
       handleMediaQuery(marquee, mediaQuery);
       expect(marquee).to.exist;
@@ -247,12 +247,12 @@ describe('ax-marquee', () => {
       `;
       const marquee = document.querySelector('.ax-marquee');
       await decorate(marquee);
-      
+
       const video = marquee.querySelector('video.marquee-background');
       video.dispatchEvent(new Event('canplay'));
       video.dispatchEvent(new Event('loadeddata'));
       video.dispatchEvent(new Event('error'));
-      
+
       expect(video).to.exist;
     });
 
@@ -266,7 +266,7 @@ describe('ax-marquee', () => {
       `;
       const marquee = document.querySelector('.ax-marquee');
       await decorate(marquee);
-      
+
       // Simulate window resize
       window.dispatchEvent(new Event('resize'));
       expect(marquee).to.exist;
@@ -274,7 +274,7 @@ describe('ax-marquee', () => {
 
     it('should handle different marquee variants', async () => {
       const variants = ['dark', 'wide', 'static'];
-      
+
       for (const variant of variants) {
         document.body.innerHTML = `
           <div class="ax-marquee ${variant}">

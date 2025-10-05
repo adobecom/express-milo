@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import ProgressBar from '../../../express/code/scripts/utils/createProgressBar.js';
+
+setLibs('/libs');
 
 describe('ProgressBar Web Component', () => {
   let progressBar;

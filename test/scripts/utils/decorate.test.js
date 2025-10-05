@@ -1,8 +1,11 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import {
   splitAndAddVariantsWithDash,
   normalizeHeadings,
 } from '../../../express/code/scripts/utils/decorate.js';
+
+setLibs('/libs');
 
 describe('Decorate Utils', () => {
   describe('splitAndAddVariantsWithDash', () => {

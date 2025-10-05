@@ -1,10 +1,13 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import {
   createOptimizedPicture,
   toggleVideo,
   addAnimationToggle,
   linkImage,
 } from '../../../express/code/scripts/utils/media.js';
+
+setLibs('/libs');
 
 describe('Media Utils', () => {
   describe('createOptimizedPicture', () => {

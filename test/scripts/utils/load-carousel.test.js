@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import loadCarousel from '../../../express/code/scripts/utils/load-carousel.js';
+
+setLibs('/libs');
 
 describe('Load Carousel', () => {
   it('should load grid carousel when parent has grid-carousel class', () => {

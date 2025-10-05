@@ -1,5 +1,8 @@
 import { expect } from '@esm-bundle/chai';
+import { setLibs } from '../../../express/code/scripts/utils.js';
 import { debounce, throttle, memoize } from '../../../express/code/scripts/utils/hofs.js';
+
+setLibs('/libs');
 
 describe('Higher Order Functions (HOFs)', () => {
   describe('debounce', () => {
