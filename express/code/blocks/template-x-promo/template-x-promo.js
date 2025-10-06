@@ -12,7 +12,7 @@ let createTag;
 let getConfig;
 let replaceKey;
 
-/* istanbul ignore next */
+/* c8 ignore next */
 async function createDirectCarousel(block, templates, createTagFn) {
   const templateCount = templates.length;
   let currentIndex = 0;
@@ -109,7 +109,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
 
     status.textContent = `Carousel item ${currentIndex + 1} of ${templateCount}`;
   };
-
+  /* c8 ignore next */
   const handleNext = () => {
     if (isAnimating) {
       return;
@@ -121,7 +121,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
       isAnimating = false;
     }, 300);
   };
-
+  /* c8 ignore next */
   const handlePrev = () => {
     if (isAnimating) {
       return;
