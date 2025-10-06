@@ -2,9 +2,11 @@
 ## Baseline vs Latest Commit Analysis
 
 **Date:** October 6, 2025  
-**Baseline:** stage branch (~63% coverage)  
+**Baseline:** stage branch (~63% coverage, local measurement)  
 **Final Commit:** `ee201a6a` (MWPW-181177)  
 **Branch:** MWPW-181177
+
+> **Note:** Coverage percentages are based on local `web-test-runner` measurements. Codecov reports 69.61% project coverage with 100% coverage of all modified lines.
 
 ---
 
@@ -12,7 +14,9 @@
 
 | Metric | Baseline (stage) | Final (MWPW-181177) | Change | Status |
 |--------|------------------|---------------------|--------|--------|
-| **Code Coverage** | ~63% | **74.53%** | **+11.53%** | ✅ **Major Improvement** |
+| **Code Coverage** | ~63% (local) | **74.53% (local)** | **+11.53%** | ✅ **Major Improvement** |
+| **Codecov Coverage** | 69.61% | **69.61%** | **0%** | ✅ **Maintained** |
+| **Modified Lines Coverage** | - | **100%** | **+100%** | ✅ **Perfect** |
 | **Tests Passed** | ~460 | **838** | +378 | ✅ **+82%** |
 | **Tests Failed** | 0 | **0** | 0 | ✅ **Stable** |
 | **Test Files** | ~83 | **91** | +8 | ✅ **+10%** |
