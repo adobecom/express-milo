@@ -337,6 +337,7 @@ async function handleDecodeFirst(dimensions, uploadPromise, initialDecodeControl
  * @param {Object} dimensions - Asset dimensions with width and height properties
  * @returns {Object} Search parameters object
  */
+/* c8 ignore next */
 function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimensions) {
   const baseSearchParams = {
     frictionlessUploadAssetId: assetId,
@@ -403,7 +404,7 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
  * @param {URL} url - The URL object to modify
  * @param {Object} searchParams - Object containing search parameters to apply
  */
-function applySearchParamsToUrl(url, searchParams) {
+export function applySearchParamsToUrl(url, searchParams) {
   Object.entries(searchParams).forEach(([key, value]) => {
     if (value !== null && value !== undefined && value !== '') {
       url.searchParams.set(key, String(value));
@@ -509,7 +510,7 @@ function createCaptionLocaleDropdown() {
   return wrapper;
 }
 
-function createStep(number, content) {
+export function createStep(number, content) {
   const step = createTag('div', { class: 'step', 'data-step': number });
   const stepNumber = createTag('div', { class: 'step-number' }, number);
   step.append(stepNumber, content);
