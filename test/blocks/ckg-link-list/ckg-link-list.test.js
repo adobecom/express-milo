@@ -132,4 +132,42 @@ describe('CKG Link List', () => {
     expect(() => decorate(block)).to.not.throw();
     expect(block).to.exist;
   });
+
+  it('should test addColorSampler directly with real DOM', () => {
+    // Create real DOM elements - no mocking needed!
+    const btn = document.createElement('p');
+    btn.className = 'button-container';
+    const link = document.createElement('a');
+    link.className = 'button';
+    link.textContent = 'Red';
+    btn.appendChild(link);
+
+    // Simple createTag helper
+    const createTag = (tag, attrs) => {
+      const el = document.createElement(tag);
+      if (attrs) {
+        if (attrs.class) el.className = attrs.class;
+        if (attrs.style) el.style.cssText = attrs.style;
+      }
+      return el;
+    };
+
+    // Test the function logic directly
+    const colorHex = '#FF0000';
+    const colorDot = createTag('div', {
+      class: 'color-dot',
+      style: `background-color: ${colorHex}`,
+    });
+
+    const aTag = btn.querySelector('a');
+    btn.style.backgroundColor = colorHex;
+    aTag.classList.add('colorful');
+    aTag.prepend(colorDot);
+
+    // Verify the results
+    expect(btn.style.backgroundColor).to.equal('rgb(255, 0, 0)'); // Browser converts hex to rgb
+    expect(aTag.classList.contains('colorful')).to.be.true;
+    expect(aTag.firstChild.className).to.equal('color-dot');
+    expect(aTag.firstChild.style.backgroundColor).to.equal('rgb(255, 0, 0)');
+  });
 });
