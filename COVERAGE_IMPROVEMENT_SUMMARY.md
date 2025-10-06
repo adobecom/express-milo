@@ -137,26 +137,29 @@ The following blocks are **not suitable for unit tests** due to their complexity
 
 ---
 
-### 5. **ckg-link-list** (32.14% coverage)
+### 5. **ckg-link-list** (32.14% coverage) ✅ CONFIRMED FOR NALA
 **Why Nala:**
 - ❌ API-dependent (`getData()` from browse-api-controller)
 - ❌ Carousel integration (`buildCarousel`)
 - ❌ Dynamic button creation based on API response
-- ❌ Color sampler visual validation
-- ❌ Complex mocking required for unit tests
+- ❌ Color sampler visual validation (needs real color rendering)
+- ❌ Complex mocking required for unit tests (attempted but not feasible)
+- ❌ **Unit tests deleted** - confirmed unsuitable for unit testing
 
 **Nala Test Coverage Needed:**
-- CKG pills display correctly
-- Color samplers render with correct colors
-- Carousel navigation works
-- Links navigate correctly
-- Empty state handling
+- CKG pills display correctly from API
+- Color samplers render with correct hex colors
+- Color dots appear inside buttons
+- Carousel navigation works with pills
+- Links navigate to correct template pages
+- Empty state handling (no pills returned)
 - API error handling
+- Visual validation of colorful buttons
 
 **Files:**
 - Source: `express/code/blocks/ckg-link-list/ckg-link-list.js` (56 lines - small but API-heavy)
-- Test: `test/blocks/ckg-link-list/ckg-link-list.test.js` (135 lines - mostly structure tests)
-- Uncovered: ~38 lines (68% of file) - mostly API-dependent logic
+- Test: ~~`test/blocks/ckg-link-list/ckg-link-list.test.js`~~ **DELETED** (was 135 lines of ineffective tests)
+- Uncovered: ~38 lines (68% of file) - all API-dependent logic (lines 8-19, 28-55)
 
 ---
 
