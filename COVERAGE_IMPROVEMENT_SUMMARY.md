@@ -5,11 +5,13 @@ This document summarizes the unit test coverage improvements made and identifies
 
 **Date:** October 6, 2025  
 **Branch:** MWPW-181177  
-**Baseline Coverage:** 63% (stage branch)  
-**Final Coverage:** 74.53%  
+**Baseline Coverage:** 63% (stage branch, local measurement)  
+**Final Coverage:** 74.53% (local measurement)  
 **Improvement:** +11.53 percentage points  
 **Tests:** 838 passing, 0 failing  
 **Status:** ✅ ALL TARGETS ACHIEVED
+
+> **Note:** Coverage percentages are based on local `web-test-runner` measurements. Codecov reports 69.61% project coverage with 100% coverage of all modified lines.
 
 ---
 
