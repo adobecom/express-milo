@@ -100,7 +100,7 @@
 }
 
 .faqv2.bold .faqv2-header {
-  font-size: 20px;
+  font-size: var(--heading-font-size-xs);
   font-weight: 900;
   padding-left: 10px;
   color: var(--color-light-grey)
@@ -441,7 +441,7 @@
     height: 128px;
     margin-bottom: 4px;
     border-radius: 0px 8px 8px 0px;
-    border-left: 4px solid #7E84FC;
+    border-left: 4px solid var(--color-info-accent);
     background: var(--color-gray-100);
     padding: var(--spacing-400);
     display: flex;
@@ -696,7 +696,7 @@
 }
 
 .faqv2.expandable .faqv2-header {
-  font-size: 18px;
+  font-size: var(--body-font-size-l);
   font-weight: 700;
   color: var(--color-gray-800);
   cursor: pointer;
