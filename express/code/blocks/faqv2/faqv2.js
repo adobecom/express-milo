@@ -34,6 +34,14 @@ function buildTableLayout(block) {
     };
   });
 
+  // Check if there's any actual content in the rows
+  const hasContent = collapsibleRows.some((row) => row.header || row.subHeader);
+  if (!hasContent) {
+    // No content found, hide the block
+    block.style.display = 'none';
+    return;
+  }
+
   collapsibleRows.forEach(({ header, subHeader }, index) => {
     const rowWrapper = createTag('div', { class: 'faqv2-wrapper' });
     container.appendChild(rowWrapper);
@@ -183,10 +191,18 @@ async function buildOriginalLayout(block) {
     const header = cells[0];
     const subHeader = cells[1];
     collapsibleRows.push({
-      header: header.textContent.trim(),
-      subHeader: subHeader?.textContent,
+      header: header?.textContent?.trim() || '',
+      subHeader: subHeader?.textContent?.trim() || '',
     });
   });
+
+  // Check if there's any actual content
+  const hasContent = collapsibleRows.some((row) => row.header || row.subHeader);
+  if (!hasContent) {
+    // No content found, hide the block
+    block.style.display = 'none';
+    return;
+  }
 
   while (block.firstChild) {
     block.removeChild(block.firstChild);
