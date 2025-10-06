@@ -26,6 +26,21 @@ function buildTableLayout(block) {
   const container = createTag('div', { class: 'faqv2-accordions-col' });
   parentContainer.appendChild(container);
 
+  // Add live region for screen reader announcements
+  const liveRegion = createTag('div', {
+    'aria-live': 'polite',
+    'aria-atomic': 'true',
+    'class': 'faqv2-live-region sr-only'
+  });
+  parentContainer.appendChild(liveRegion);
+
+  // Function to announce accordion state changes
+  function announceStateChange(headerText, isOpen) {
+    const action = isOpen ? 'opened' : 'closed';
+    const message = `${headerText} ${action}`;
+    liveRegion.textContent = message;
+  }
+
   const collapsibleRows = rows.map((row) => {
     const cells = [...row.children];
     return {
@@ -112,6 +127,10 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'false');
           headerDiv.setAttribute('aria-expanded', 'true');
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
+          
+          // Announce state change
+          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerText, true);
         } else {
           content.style.maxHeight = `${content.scrollHeight}px`;
           content.offsetHeight; // Force reflow
@@ -120,6 +139,10 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'true');
           headerDiv.setAttribute('aria-expanded', 'false');
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
+          
+          // Announce state change
+          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerText, false);
         }
       };
 
@@ -205,6 +228,10 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'false');
           headerDiv.setAttribute('aria-expanded', 'true');
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
+          
+          // Announce state change
+          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerText, true);
         } else {
           content.style.maxHeight = `${content.scrollHeight}px`;
           content.offsetHeight; // Force reflow
@@ -213,6 +240,10 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'true');
           headerDiv.setAttribute('aria-expanded', 'false');
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
+          
+          // Announce state change
+          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerText, false);
         }
       };
 
