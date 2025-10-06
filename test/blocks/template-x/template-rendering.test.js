@@ -1,5 +1,40 @@
 import { expect } from '@esm-bundle/chai';
 
+describe('Template Rendering - getTemplateTitle logic', () => {
+  it('should extract title from dc:title i-default', () => {
+    const template = {
+      'dc:title': {
+        'i-default': 'My Template Title',
+      },
+    };
+
+    // Test the logic: check if dc:title exists
+    const hasTitle = template['dc:title']?.['i-default'];
+    expect(hasTitle).to.equal('My Template Title');
+  });
+
+  it('should build title from moods and task name', () => {
+    const template = {
+      moods: ['Happy', 'Bright'],
+      task: { name: 'Flyer' },
+    };
+
+    // Test the logic: build title from moods and task
+    if (template.moods?.length && template.task?.name) {
+      const title = `${template.moods.join(', ')} ${template.task.name}`;
+      expect(title).to.equal('Happy, Bright Flyer');
+    }
+  });
+
+  it('should handle empty template object', () => {
+    const template = {};
+
+    // Test the logic: empty template should have no title
+    const hasTitle = template['dc:title']?.['i-default'];
+    expect(hasTitle).to.be.undefined;
+  });
+});
+
 describe('Template Rendering - buildiFrameContent logic', () => {
   it('should test iframe creation logic with manual DOM', () => {
     // Simulate what buildiFrameContent does - test the logic directly

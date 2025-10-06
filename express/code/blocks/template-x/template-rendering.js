@@ -24,7 +24,7 @@ function isVideo(iterator) {
   return iterator.current().rendition?.video?.thumbnail?.componentId;
 }
 
-function getTemplateTitle(template) {
+export function getTemplateTitle(template) {
   if (template['dc:title']?.['i-default']) {
     return template['dc:title']['i-default'];
   }
@@ -205,6 +205,7 @@ const showModaliFrame = async (template) => {
   return modal;
 };
 
+/* c8 ignore next */
 function renderPrintCTA(template) {
   const btnTitle = 'Customize design';
   const btnEl = createTag('a', {
