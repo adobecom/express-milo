@@ -161,6 +161,7 @@ test.describe('Express Banner Block test suite', () => {
 
     await test.step('Verify banner default block content/specs', async () => {
       await expect(banner.banner).toBeVisible();
+      await expect(banner.defaultBannerHeading3).toBeVisible();
       await expect(banner.defaultBannerHeading3).toContainText(data.headingText);
       await expect(banner.defaultBannerButton).toContainText(data.buttonText);
     });
