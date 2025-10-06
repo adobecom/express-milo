@@ -595,4 +595,21 @@ describe('Quotes', () => {
       expect(el.classList.contains('quote')).to.be.true;
     });
   });
+
+  it('should create blockquote elements for quote content', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <p>"This is a test quote"</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    const blockquote = quotes.querySelector('blockquote');
+    expect(blockquote).to.exist;
+    expect(blockquote.querySelector('.inner-content')).to.exist;
+  });
 });
