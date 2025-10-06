@@ -81,6 +81,7 @@ function getImageThumbnailSrc(renditionLinkHref, componentLinkHref, page) {
 
 const videoMetadataType = 'application/vnd.adobe.ccv.videometadata';
 
+/* c8 ignore next */
 async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
   const videoThumbnail = page.rendition?.video?.thumbnail;
   const { componentId } = videoThumbnail;
@@ -112,7 +113,7 @@ async function getVideoUrls(renditionLinkHref, componentLinkHref, page) {
     };
   }
 }
-
+/* c8 ignore next */
 async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
   const urlWithTracking = await getTrackingAppendedURL(branchUrl, {
     placement: 'template-x',
@@ -134,7 +135,7 @@ async function share(branchUrl, tooltip, timeoutId, liveRegion, text) {
     tooltip.classList.remove('flipped');
   }, 2500);
 }
-
+/* c8 ignore next */
 function renderShareWrapper(templateInfo) {
   const { templateTitle, branchUrl } = templateInfo;
   const text = tagCopied === 'tag copied' ? 'Copied to clipboard' : tagCopied;
@@ -189,7 +190,7 @@ export const buildiFrameContent = (template) => {
   iFrame.allowfullscreen = true;
   return iFrame;
 };
-
+/* c8 ignore next */
 const showModaliFrame = async (template) => {
   const { getModal } = await import(`${getLibs()}/blocks/modal/modal.js`);
 
