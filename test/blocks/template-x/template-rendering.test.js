@@ -47,4 +47,25 @@ describe('Template Rendering - buildiFrameContent logic', () => {
 
     expect(shortcode).to.equal('xyz789');
   });
+
+  it('should build complete iframe URL with all parameters', () => {
+    const template = {
+      id: 'test-id-999',
+      customLinks: {
+        branchUrl: 'https://example.com/branch/shortcode999',
+      },
+    };
+
+    const taskID = 'task-999';
+    const zazzleUrl = 'https://zazzle.example.com';
+    const lang = 'fr-FR';
+
+    const expectedUrl = `${zazzleUrl}?TD=${template.id}&taskID=${taskID}&shortcode=${template.customLinks.branchUrl.split('/').pop()}&lang=${lang}`;
+
+    expect(expectedUrl).to.include('TD=test-id-999');
+    expect(expectedUrl).to.include('taskID=task-999');
+    expect(expectedUrl).to.include('shortcode=shortcode999');
+    expect(expectedUrl).to.include('lang=fr-FR');
+    expect(expectedUrl).to.include('zazzle.example.com');
+  });
 });
