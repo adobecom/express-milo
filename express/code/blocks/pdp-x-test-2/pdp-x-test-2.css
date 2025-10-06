@@ -50,17 +50,17 @@ main .section .pdpx-global-container  p {
 .pdpx-product-hero-image {
   border-radius: 12px;
 }
-.pdpx-star-ratings {
+.pdpx-star-ratings-container {
   display: flex;
   flex-direction: row;
 }
 .pdpx-product-info-header-ratings-star {
   width: 17px;
 }
-.pdpx-ratings-container {
+.pdpx-product-ratings-lockup-container {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: baseline;
   gap: 4px;
 }
 .pdpx-delivery-estimate-pill {
