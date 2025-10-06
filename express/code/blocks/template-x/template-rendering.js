@@ -175,7 +175,7 @@ function renderShareWrapper(templateInfo) {
   return wrapper;
 }
 
-const buildiFrameContent = (template) => {
+export const buildiFrameContent = (template) => {
   const { branchUrl } = template.customLinks;
   const taskID = props?.taskid;
   const zazzleUrl = props?.zazzleurl;
