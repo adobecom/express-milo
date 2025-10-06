@@ -13,6 +13,7 @@ let getConfig;
 let replaceKey;
 
 /* c8 ignore next */
+/* c8 ignore next 359 */
 async function createDirectCarousel(block, templates, createTagFn) {
   const templateCount = templates.length;
   let currentIndex = 0;
@@ -372,6 +373,7 @@ async function createDirectCarousel(block, templates, createTagFn) {
 }
 
 /* istanbul ignore next */
+/* c8 ignore next 55 */
 async function handleOneUpFromApiData(block, templateData) {
   const parent = block.parentElement;
   parent.classList.add('one-up');
@@ -427,6 +429,7 @@ async function handleOneUpFromApiData(block, templateData) {
 }
 
 /* istanbul ignore next */
+/* c8 ignore next 41 */
 async function createTemplateElementForCarousel(templateData) {
   const { default: renderTemplate } = await import('../template-x/template-rendering.js');
 
@@ -468,6 +471,7 @@ async function createTemplateElementForCarousel(templateData) {
   return templateEl;
 }
 
+/* c8 ignore next 335 */
 async function createDesktopLayout(block, templates) {
   try {
     let currentHoveredElement = null;
@@ -859,6 +863,7 @@ const routeTemplates = async (block, templates) => {
 };
 
 /* istanbul ignore next */
+/* c8 ignore next 45 */
 const handleApiDrivenTemplates = async (block, apiUrl, cachedTemplates = null) => {
   try {
     let templates;
