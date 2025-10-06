@@ -1,6 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import fetchProductDetails from './fetchData/fetchProductDetails.js';
-import extractProductId from './utilities/extractProductId.js';
+import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
+import createDeliveryEstimatePill from './createComponents/createDeliveryEstimatePill.js';
 
 let createTag;
 
@@ -13,14 +14,17 @@ function createProductImagesContainer(productDetails) {
   return productImagesContainer;
 }
 
-function createDeliveryEstimatePill(productDetails) {
-  const deliveryEstimatePillContainer = createTag('div', { class: 'pdpx-delivery-estimate-pill' });
-  const deliveryEstimatePillIcon = createTag('img', { src: '/express/code/icons/delivery-truck.svg' });
-}
-
 function createProductInfoContainer(productDetails) {
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
+  const productInfoHeadingSectionContainer = createTag('div', { class: 'pdpx-product-info-heading-section-container' });
+  const productTitleAndRatingsContainer = createTag('div', { class: 'pdpx-title-and-ratings-container' });
+  const productTitle = createTag('h1', { class: 'pdpx-product-title' });
+  productTitle.textContent = productDetails.title;
+  productTitleAndRatingsContainer.appendChild(productTitle);
+  productInfoHeadingSectionContainer.appendChild(productTitleAndRatingsContainer);
+  productInfoContainer.appendChild(productInfoHeadingSectionContainer);
   const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);
+  productInfoContainer.appendChild(deliveryEstimatePill);
   return productInfoContainer;
 }
 
@@ -33,19 +37,13 @@ function createGlobalContainer(container, productDetails) {
   container.appendChild(globalContainer);
 }
 
-function normalizeProductDetailObject(APIResponse) {
-  const normalizedProductDetails = {
-    heroImage: APIResponse.product.initialPrettyPreferredViewUrl,
-  };
-  return normalizedProductDetails;
-}
-
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const productId = extractProductId(block);
   const APIResponse = await fetchProductDetails(productId);
   const productDetails = normalizeProductDetailObject(APIResponse);
-  console.log(productDetails);
+  console.log('APIResponse');
+  console.log(APIResponse);
   // debugger;
   block.innerHTML = '';
   createGlobalContainer(block, productDetails);

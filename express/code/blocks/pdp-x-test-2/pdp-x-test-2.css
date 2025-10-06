@@ -1,0 +1,75 @@
+main .section .pdpx-global-container  p {
+  margin: 0;
+}
+.pdpx-global-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+.pdpx-product-info-heading-section-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin-bottom: 32px;
+}
+.pdpx-title-and-ratings-container {
+  max-width: 64%;
+}
+.pdpx-price-info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.pdpx-price-label {
+  font-size: 20px;
+  font-weight: 700;
+}
+.pdpx-compare-price-label { 
+  text-decoration: line-through;
+  font-size: 14px;
+}
+.pdpx-compare-price-info-label {
+  font-size: 14px;
+}
+.pdpx-compare-price-info-icon {
+  width: 12px;
+}
+.pdpx-savings-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #05834e;
+}
+.pdpx-price-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.pdpx-product-hero-image {
+  border-radius: 12px;
+}
+.pdpx-star-ratings {
+  display: flex;
+  flex-direction: row;
+}
+.pdpx-product-info-header-ratings-star {
+  width: 17px;
+}
+.pdpx-ratings-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+.pdpx-delivery-estimate-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #E0E2FF;
+  border-radius: 8px;
+  width: fit-content;
+  padding: 8px;
+  gap: 4px;
+}
