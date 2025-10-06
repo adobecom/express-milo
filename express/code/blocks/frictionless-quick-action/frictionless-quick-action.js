@@ -175,7 +175,6 @@ export function runQuickAction(quickActionId, data, block) {
 }
 
 // eslint-disable-next-line default-param-last
-/* c8 ignore next 6 */
 async function startSDK(data = [''], quickAction, block) {
   if (!ccEverywhere) {
     ccEverywhere = await loadAndInitializeCCEverywhere(getConfig);
