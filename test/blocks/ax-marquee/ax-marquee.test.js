@@ -139,9 +139,12 @@ describe('ax-marquee', () => {
       const videoLink = marquee.querySelector('a[href="./media_1ff62f7924e9f7cb39ebf245d1ac1be92eb868835.mp4"]');
       if (videoLink) transformToVideoLink(videoLink.closest('div'), videoLink);
       videoLink.click();
-      setTimeout(() => {
-        expect(document.querySelector('.video-overlay')).to.exist;
-      }, 100);
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          expect(document.querySelector('.video-overlay')).to.exist;
+          resolve();
+        }, 100);
+      });
     });
   });
 
