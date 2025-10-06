@@ -99,6 +99,13 @@
   color: var(--color-light-grey);
 }
 
+/* Focus management for accessibility */
+.faqv2-header:focus {
+  outline: 2px solid var(--color-info-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 .faqv2.bold .faqv2-header {
   font-size: var(--heading-font-size-xs);
   font-weight: 900;
@@ -141,6 +148,11 @@
   color: var(--color-white);
   background-color: var(--color-info-accent);
   border-color: var(--color-info-accent);
+}
+
+.faqv2 .faqv2-toggle-btn:focus {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
 }
 
 .section.has-background {
