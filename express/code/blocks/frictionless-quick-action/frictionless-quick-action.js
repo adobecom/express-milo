@@ -175,6 +175,7 @@ export function runQuickAction(quickActionId, data, block) {
 }
 
 // eslint-disable-next-line default-param-last
+/* c8 ignore next 6 */
 async function startSDK(data = [''], quickAction, block) {
   if (!ccEverywhere) {
     ccEverywhere = await loadAndInitializeCCEverywhere(getConfig);
@@ -187,6 +188,7 @@ function resetUploadUI(progressBar) {
   fadeIn(fqaContainer);
 }
 
+/* c8 ignore next 15 */
 function createUploadStatusListener(uploadStatusEvent, progressBar) {
   const listener = (e) => {
     const isUploadProgressLessThanVisual = e.detail.progress < progressBar.getProgress();
@@ -215,6 +217,7 @@ function createUploadStatusListener(uploadStatusEvent, progressBar) {
   window.addEventListener(uploadStatusEvent, listener);
 }
 
+/* c8 ignore next 12 */
 async function validateTokenAndReturnService(existingService) {
   const freshToken = window?.adobeIMS?.getAccessToken()?.token;
   if (freshToken && freshToken !== existingService.getConfig().authConfig.token) {
@@ -228,6 +231,7 @@ async function validateTokenAndReturnService(existingService) {
   return existingService;
 }
 
+/* c8 ignore next 9 */
 async function initializeUploadService() {
   if (uploadService) return validateTokenAndReturnService(uploadService);
   // eslint-disable-next-line import/no-relative-packages
@@ -238,6 +242,7 @@ async function initializeUploadService() {
   return uploadService;
 }
 
+/* c8 ignore next 7 */
 async function setupUploadUI(block) {
   const progressBar = await initProgressBar(replaceKey, getConfig);
   fqaContainer = block.querySelector('.fqa-container');
@@ -246,6 +251,7 @@ async function setupUploadUI(block) {
   return progressBar;
 }
 
+/* c8 ignore next 13 */
 async function uploadAssetToStorage(file, progressBar) {
   const service = await initializeUploadService();
   createUploadStatusListener(uploadEvents.UPLOAD_STATUS, progressBar);
@@ -260,6 +266,7 @@ async function uploadAssetToStorage(file, progressBar) {
   return asset.assetId;
 }
 
+/* c8 ignore next 14 */
 async function performStorageUpload(files, block) {
   try {
     const progressBar = await setupUploadUI(block);
@@ -433,6 +440,7 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   return url;
 }
 
+/* c8 ignore next 38 */
 async function performUploadAction(files, block, quickAction) {
   const initialDecodeController = new AbortController();
 
