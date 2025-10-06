@@ -25,6 +25,9 @@ await import(`${getLibs()}/utils/utils.js`).then((mod) => {
 async function prepBlock(filePath) {
   document.body.innerHTML = await readFile({ path: filePath });
   const marquee = document.querySelector('.ax-marquee');
+  if (!marquee) {
+    throw new Error(`Failed to find .ax-marquee element after loading ${filePath}`);
+  }
   await decorate(marquee);
   return marquee;
 }
@@ -145,7 +148,9 @@ describe('ax-marquee', () => {
   describe('supports wide variant', () => {
     it('renders an wide background', async () => {
       const marquee = await prepBlock('./mocks/wide.html');
-      expect(marquee.classList.contains('wide')).to.be.true;
+      expect(marquee, 'marquee element should exist').to.exist;
+      expect(marquee.classList, 'marquee should have classList').to.exist;
+      expect(marquee.classList.contains('wide'), 'marquee should have wide class').to.be.true;
     });
   });
 
