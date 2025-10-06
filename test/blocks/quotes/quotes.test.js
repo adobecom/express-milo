@@ -559,4 +559,40 @@ describe('Quotes', () => {
 
     expect(quotes).to.exist;
   });
+
+  it('should handle quotes with only one child div', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div>
+          <p>"Single quote without author"</p>
+        </div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    const quote = quotes.querySelector('.quote');
+    expect(quote).to.exist;
+    const content = quote.querySelector('.content');
+    expect(content).to.exist;
+  });
+
+  it('should add quote class to all direct children', async () => {
+    document.body.innerHTML = `
+      <div class="quotes">
+        <div><p>"Quote 1"</p></div>
+        <div><p>"Quote 2"</p></div>
+        <div><p>"Quote 3"</p></div>
+      </div>
+    `;
+    const quotes = document.querySelector('.quotes');
+
+    await decorate(quotes);
+
+    const quoteElements = quotes.querySelectorAll(':scope > div');
+    quoteElements.forEach((el) => {
+      expect(el.classList.contains('quote')).to.be.true;
+    });
+  });
 });
