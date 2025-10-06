@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import fetchProductDetails from './fetchData/fetchProductDetails.js';
 import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
-import createDeliveryEstimatePill from './createComponents/createDeliveryEstimatePill.js';
+import createProductInfoHeadingSection, { createDeliveryEstimatePill } from './createComponents/createProductInfoHeadingSection.js';
 
 let createTag;
 
@@ -16,13 +16,8 @@ function createProductImagesContainer(productDetails) {
 
 function createProductInfoContainer(productDetails) {
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
-  const productInfoHeadingSectionContainer = createTag('div', { class: 'pdpx-product-info-heading-section-container' });
-  const productTitleAndRatingsContainer = createTag('div', { class: 'pdpx-title-and-ratings-container' });
-  const productTitle = createTag('h1', { class: 'pdpx-product-title' });
-  productTitle.textContent = productDetails.title;
-  productTitleAndRatingsContainer.appendChild(productTitle);
-  productInfoHeadingSectionContainer.appendChild(productTitleAndRatingsContainer);
-  productInfoContainer.appendChild(productInfoHeadingSectionContainer);
+  const productInfoHeadingSection = createProductInfoHeadingSection(productDetails);
+  productInfoContainer.appendChild(productInfoHeadingSection);
   const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);
   productInfoContainer.appendChild(deliveryEstimatePill);
   return productInfoContainer;
