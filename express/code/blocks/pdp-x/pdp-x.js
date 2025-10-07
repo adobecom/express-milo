@@ -673,7 +673,6 @@ function buildImageUrl(realviewParams, maxDim = 644) {
 
   // Override max_dim if specified
   params.set('max_dim', maxDim);
-  debugger;
 
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }

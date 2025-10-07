@@ -81,15 +81,22 @@ main .section .pdpx-global-container  p {
 .pdpx-image-thumbnail-carousel-container {
   display: flex;
   flex-direction: row;
-  gap: 8px;
-  overflow-x: auto;
+  overflow-x: scroll;
   scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  gap: 8px;
 }
 .pdpx-image-thumbnail-carousel-item {
+  flex-shrink: 0;
   width: 76px;
   height: 76px;
+  border: 0px;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+.pdpx-image-thumbnail-carousel-item-image {
   border-radius: 8px;
-  overflow: hidden;
+}
+.pdpx-product-images-container, .pdpx-product-info-container {
+  width: 50%;
 }

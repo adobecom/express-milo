@@ -10,6 +10,7 @@ export function formatDeliveryEstimateDateRange(minDate, maxDate) {
 }
 
 export function buildRealViewImageUrl(realviewParams, maxDim = 644) {
+  console.log('realviewParams', realviewParams);
   const params = new URLSearchParams();
   Object.entries(realviewParams).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {
