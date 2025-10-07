@@ -9,6 +9,18 @@ export function formatDeliveryEstimateDateRange(minDate, maxDate) {
   return `${minFormatted} - ${maxFormatted}`;
 }
 
+export function buildRealViewImageUrl(realviewParams, maxDim = 644) {
+  const params = new URLSearchParams();
+  Object.entries(realviewParams).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      params.set(key, value);
+    }
+  });
+  // Override max_dim if specified
+  params.set('max_dim', maxDim);
+  return `https://rlv.zcache.com/svc/view?${params.toString()}`;
+}
+
 export function normalizeProductDetailObject(productDetails, productPrice, productShippingEstimates) {
   const normalizedProductDetails = {
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
@@ -17,6 +29,7 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
     deliveryEstimateStringText: 'Order today and get it by',
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
+    realviews: productDetails.product.realviews,
   };
   return normalizedProductDetails;
 }

@@ -34,7 +34,6 @@ export default async function decorate(block) {
 
   console.log('productDetails');
   console.log(productDetails);
-  debugger;
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted);
 
