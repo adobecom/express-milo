@@ -6,12 +6,13 @@ main .section .pdpx-global-container  p {
   margin: 0 auto;
   padding: 24px;
   display: flex;
-  gap: 40px;
+  gap: 24px;
   align-items: flex-start;
 }
 .pdpx-product-info-heading-section-container {
   display: flex;
   flex-direction: row;
+  gap: 24px;
   align-items: baseline;
   margin-bottom: 32px;
 }
