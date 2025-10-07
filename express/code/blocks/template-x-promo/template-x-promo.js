@@ -12,7 +12,6 @@ let createTag;
 let getConfig;
 let replaceKey;
 
-/* c8 ignore next */
 /* c8 ignore next 359 */
 async function createDirectCarousel(block, templates, createTagFn) {
   const templateCount = templates.length;
