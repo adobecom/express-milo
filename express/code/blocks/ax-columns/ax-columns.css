@@ -1810,7 +1810,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 @media (min-width: 900px) {
 
-
+  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
+    padding: 40px 0px;
+  }
 
   .section.ax-max-entitled:has(.ax-columns) .column-picture img {
     max-width: 100%;
