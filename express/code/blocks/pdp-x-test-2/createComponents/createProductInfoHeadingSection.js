@@ -1,3 +1,5 @@
+import { formatDeliveryEstimateDateRange } from '../utilities/utility-functions.js';
+
 function createProductTitle(productDetails) {
   const productTitleContainer = document.createElement('div');
   productTitleContainer.className = 'pdpx-product-title-container';
@@ -128,6 +130,7 @@ function createPriceInfoContainer(productDetails) {
 
 // CREATE DELIVERY ESTIMATE PILL
 export function createDeliveryEstimatePill(productDetails) {
+  const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
   const deliveryEstimatePillContainer = document.createElement('div');
   deliveryEstimatePillContainer.className = 'pdpx-delivery-estimate-pill';
   const deliveryEstimatePillIcon = document.createElement('img');
@@ -135,7 +138,7 @@ export function createDeliveryEstimatePill(productDetails) {
   const deliveryEstimatePillText = document.createElement('span');
   deliveryEstimatePillText.innerHTML = `${productDetails.deliveryEstimateStringText} `;
   const deliveryEstimatePillDate = document.createElement('span');
-  deliveryEstimatePillDate.innerHTML = productDetails.deliveryEstimateDate;
+  deliveryEstimatePillDate.innerHTML = deliveryEstimateDateRange;
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillIcon);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillText);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillDate);
