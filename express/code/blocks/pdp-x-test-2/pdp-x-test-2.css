@@ -74,3 +74,22 @@ main .section .pdpx-global-container  p {
   padding: 8px;
   gap: 4px;
 }
+.pdpx-product-hero-image-container {
+  margin-bottom: 12px;
+}
+
+.pdpx-image-thumbnail-carousel-container {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.pdpx-image-thumbnail-carousel-item {
+  width: 76px;
+  height: 76px;
+  border-radius: 8px;
+  overflow: hidden;
+}
