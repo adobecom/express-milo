@@ -5,10 +5,6 @@
  * and migrating from the Milo typography system.
  */
 
-// Note: Conversion functions removed - they were confusing and not needed for the core authoring workflow
-
-// Note: Advanced utility functions removed - they were confusing and not needed for the core authoring workflow
-
 /**
  * Check if a class is an Express typography class
  * @param {string} className - The class name to check
@@ -33,28 +29,32 @@ export function isMiloTypographyClass(className) {
  * Process typography options for blocks - handles both Milo and Express typography
  * This function should be called after splitAndAddVariantsWithDash() in block initialization
  * @param {HTMLElement} block - The block element to process
- * @param {string} selector - CSS selector for elements to apply typography to (default: 'h1, h2, h3, h4, h5, h6')
+ * @param {string} selector - CSS selector for elements to apply typography to 
+ * (default: 'h1, h2, h3, h4, h5, h6')
  */
-export function processBlockTypography(block, selector = 'h1, h2, h3, h4, h5, h6') {
+export function processBlockTypography(
+  block,
+  selector = 'h1, h2, h3, h4, h5, h6',
+) {
   const elements = block.querySelectorAll(selector);
-  
+
   // Check for typography options in block classes
-  const typographyOptions = Array.from(block.classList).filter(cls => 
+  const typographyOptions = Array.from(block.classList).filter((cls) => 
     isMiloTypographyClass(cls) || isExpressTypographyClass(cls)
   );
-  
+
   if (typographyOptions.length === 0) return;
-  
+
   // Process each typography option
-  typographyOptions.forEach(option => {
+  typographyOptions.forEach((option) => {
     if (isExpressTypographyClass(option)) {
       // Express typography - apply directly
-      elements.forEach(el => {
+      elements.forEach((el) => {
         el.classList.add(option);
       });
     } else if (isMiloTypographyClass(option)) {
       // Milo typography - apply directly (maintains existing behavior)
-      elements.forEach(el => {
+      elements.forEach((el) => {
         el.classList.add(option);
       });
     }
@@ -67,7 +67,10 @@ export function processBlockTypography(block, selector = 'h1, h2, h3, h4, h5, h6
  * @param {HTMLElement} block - The block element to process
  * @param {string} selector - CSS selector for elements to apply typography to (default: 'h1, h2, h3, h4, h5, h6')
  */
-export function splitAndAddVariantsWithTypography(block, selector = 'h1, h2, h3, h4, h5, h6') {
+export function splitAndAddVariantsWithTypography(
+  block,
+  selector = 'h1, h2, h3, h4, h5, h6',
+) {
   // First, do the standard variant splitting
   const extra = [];
   block.classList.forEach((className, index) => {
@@ -80,7 +83,7 @@ export function splitAndAddVariantsWithTypography(block, selector = 'h1, h2, h3,
     }
   });
   block.classList.add(...extra);
-  
+
   // Then process typography options
   processBlockTypography(block, selector);
 }

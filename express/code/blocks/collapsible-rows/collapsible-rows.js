@@ -169,7 +169,9 @@ function convertStrongToSpan(element) {
  * @returns {Object} - Object with header and body typography classes
  */
 function extractTypographyClasses(block) {
-  const typographyClasses = Array.from(block.classList).filter((cls) => isMiloTypographyClass(cls) || isExpressTypographyClass(cls));
+  const typographyClasses = Array
+    .from(block.classList)
+    .filter((cls) => isMiloTypographyClass(cls) || isExpressTypographyClass(cls));
 
   // Separate heading and body classes
   const headerClasses = typographyClasses.filter((cls) => cls.includes('heading'));
@@ -185,13 +187,13 @@ function extractTypographyClasses(block) {
 export default async function decorate(block) {
   block.parentElement.classList.add('ax-collapsible-rows');
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  
+
   // Convert <strong> tags to <span> for accessibility before any processing
   convertStrongToSpan(block);
-  
+
   // Extract typography classes before DOM rebuild
   const typographyClasses = extractTypographyClasses(block);
-  
+
   const isExpandableVariant = block.classList.contains('expandable');
 
   if (isExpandableVariant) {
