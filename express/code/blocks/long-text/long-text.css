@@ -38,7 +38,7 @@ main .long-text.no-background {
 main .long-text.no-background article {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: var(--spacing-400);
 }
 
 main .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
