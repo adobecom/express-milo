@@ -28,7 +28,7 @@ main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content 
 }
 
 main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
-  font-size: 22px;
+  font-size: var(--heading-font-size-s);
   padding-top: 28px;
 }
 
@@ -105,7 +105,7 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .ax-columns.enterprise > div {
-  gap: 40px;
+  gap: var(--spacing-600);
 }
 
 .ax-columns .express-logo.icon {
@@ -126,7 +126,7 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .ax-columns.top.center, .ax-columns.fullsize.center, .ax-columns.light, .ax-columns.fullsize.center {
-  max-width: 375px;
+  max-width: var(--block-sm-max-width);
   padding-left: 0;
   padding-right: 0;
 }
@@ -376,7 +376,7 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .section .ax-columns.marquee > div {
-  gap: 32px;
+  gap: var(--spacing-500);
   padding: 0;
 }
 
@@ -862,7 +862,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .ax-columns.marquee
   .button-container.free-plan-container
   .free-plan-widget {
-    font-size: 14px;
+    font-size: var(--body-font-size-s);
     margin-left: 15px;
 }
 
@@ -1031,7 +1031,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 @media (min-width: 900px) {
   main .section:has(.ax-columns.enterprise):not([data-padding='none']) > .content h2 {
-    font-size: 36px;
+    font-size: var(--heading-font-size-l);
     padding-top: var(--spacing-700);
   }
 
@@ -1044,7 +1044,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section .ax-columns.marquee > div {
-    gap: 48px;
+    gap: var(--spacing-700);
   }
 
   .ax-columns.marquee.width-2-columns {
@@ -1331,7 +1331,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     font-size: var(--heading-font-size-m);
   }
   .ax-columns.marquee .column p {
-    font-size: 18px;
+    font-size: var(--body-font-size-l);
   }
   
   .ax-columns.marquee .column-picture::before {
@@ -1466,7 +1466,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 @media (min-width: 1200px) {
   .section:has(.ax-columns) > .content {
-    max-width: 1024px;
+    max-width: var(--block-lg-max-width);
   }
 
   .ax-columns.marquee
@@ -1482,13 +1482,13 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .section .ax-columns.marquee {
     margin: auto;
-    max-width: 1400px;
+    max-width: var(--block-wd-max-width);
     padding-left: var(--spacing-600);
     padding-right: var(--spacing-600);
   }
 
   .section .ax-columns, .ax-columns.top.center, .ax-columns.light {
-    max-width: 1024px;
+    max-width: var(--block-lg-max-width);
   }
 
   .section .ax-columns.fullsize {
@@ -1606,7 +1606,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section >  .ax-columns.extra-wide {
-    max-width: 1440px;
+    max-width: var(--block-wd-max-width);
   }
   .section .ax-columns.extra-wide .button-container, .section  .ax-columns.extra-wide .con-button{
     margin-top: 0;
@@ -1797,6 +1797,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .section.ax-max-entitled:has(.ax-columns)  h2{
   font-size: 28px;
   font-weight: 900;
+  line-height: 130%;
 }
 
 .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
