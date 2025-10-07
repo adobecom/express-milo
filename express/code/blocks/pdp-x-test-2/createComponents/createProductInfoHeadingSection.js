@@ -73,7 +73,7 @@ function createPrice(productDetails) {
   priceContainer.className = 'pdpx-price-container';
   const priceText = document.createElement('p');
   priceText.className = 'pdpx-price-label';
-  priceText.textContent = 'US$19.47';
+  priceText.textContent = `US$${productDetails.price}`;
   priceContainer.appendChild(priceText);
   return priceContainer;
 }
