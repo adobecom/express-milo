@@ -127,7 +127,7 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'false');
           headerDiv.setAttribute('aria-expanded', 'true');
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
-          
+
           // Announce state change
           const headerTextOpen = headerDiv.textContent.replace(iconElement.alt, '').trim();
           announceStateChange(headerTextOpen, true);
@@ -139,7 +139,7 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'true');
           headerDiv.setAttribute('aria-expanded', 'false');
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
-          
+
           // Announce state change
           const headerTextClose = headerDiv.textContent.replace(iconElement.alt, '').trim();
           announceStateChange(headerTextClose, false);
@@ -228,7 +228,7 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'false');
           headerDiv.setAttribute('aria-expanded', 'true');
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
-          
+
           // Announce state change
           const headerTextOpen = headerDiv.textContent.replace(iconElement.alt, '').trim();
           announceStateChange(headerTextOpen, true);
@@ -240,7 +240,7 @@ function buildTableLayout(block) {
           content.setAttribute('aria-hidden', 'true');
           headerDiv.setAttribute('aria-expanded', 'false');
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
-          
+
           // Announce state change
           const headerTextClose = headerDiv.textContent.replace(iconElement.alt, '').trim();
           announceStateChange(headerTextClose, false);
