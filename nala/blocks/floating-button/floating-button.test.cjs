@@ -34,6 +34,9 @@ test.describe('Express Floating Button Block test suite', () => {
       // Wait for floating button to become visible after scroll
       await expect(floatingButton.floatingButton).toBeVisible({ timeout: 10000 });
       await expect(floatingButton.floatingButton).toContainText(data.buttonText);
+
+      // Ensure the floating button is in the viewport before clicking
+      await floatingButton.floatingButton.scrollIntoViewIfNeeded();
       await floatingButton.floatingButton.click();
       await expect(page).not.toHaveURL(`${testUrl}`);
     });
