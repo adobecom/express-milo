@@ -30,14 +30,14 @@ function buildTableLayout(block) {
   const liveRegion = createTag('div', {
     'aria-live': 'polite',
     'aria-atomic': 'true',
-    'class': 'faqv2-live-region sr-only'
+    class: 'faqv2-live-region sr-only',
   });
   parentContainer.appendChild(liveRegion);
 
   // Function to announce accordion state changes
-  function announceStateChange(headerText, isOpen) {
+  function announceStateChange(headerTextParam, isOpen) {
     const action = isOpen ? 'opened' : 'closed';
-    const message = `${headerText} ${action}`;
+    const message = `${headerTextParam} ${action}`;
     liveRegion.textContent = message;
   }
 
@@ -129,8 +129,8 @@ function buildTableLayout(block) {
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
           
           // Announce state change
-          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
-          announceStateChange(headerText, true);
+          const headerTextOpen = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerTextOpen, true);
         } else {
           content.style.maxHeight = `${content.scrollHeight}px`;
           content.offsetHeight; // Force reflow
@@ -141,8 +141,8 @@ function buildTableLayout(block) {
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
           
           // Announce state change
-          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
-          announceStateChange(headerText, false);
+          const headerTextClose = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerTextClose, false);
         }
       };
 
@@ -230,8 +230,8 @@ function buildTableLayout(block) {
           iconElement.src = `${config.codeRoot}/icons/minus-heavy.svg`;
           
           // Announce state change
-          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
-          announceStateChange(headerText, true);
+          const headerTextOpen = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerTextOpen, true);
         } else {
           content.style.maxHeight = `${content.scrollHeight}px`;
           content.offsetHeight; // Force reflow
@@ -242,8 +242,8 @@ function buildTableLayout(block) {
           iconElement.src = `${config.codeRoot}/icons/plus-heavy.svg`;
           
           // Announce state change
-          const headerText = headerDiv.textContent.replace(iconElement.alt, '').trim();
-          announceStateChange(headerText, false);
+          const headerTextClose = headerDiv.textContent.replace(iconElement.alt, '').trim();
+          announceStateChange(headerTextClose, false);
         }
       };
 
