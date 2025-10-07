@@ -1,4 +1,4 @@
-import { addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { addTempWrapperDeprecated, isEmptyValue, hasContent } from '../../scripts/utils.js';
 
 export default function decorate(block) {
   if (!block.parentElement.classList.contains('long-text-wrapper')) {
@@ -28,10 +28,7 @@ export default function decorate(block) {
           block.appendChild(currentArticle);
         } else if (element.tagName === 'P'
                    && currentArticle
-                   && element.textContent
-                   && element.textContent.trim() !== ''
-                   && element.textContent !== 'null'
-                   && element.textContent !== null) {
+                   && hasContent(element)) {
           // Add valid paragraphs to the current article
           currentArticle.appendChild(element);
         }
@@ -49,7 +46,7 @@ export default function decorate(block) {
 
   // Remove empty or null paragraphs
   block.querySelectorAll('p').forEach((p) => {
-    if (!p.textContent || p.textContent.trim() === '' || p.textContent === 'null' || p.textContent === null) {
+    if (isEmptyValue(p)) {
       p.remove();
     }
   });
