@@ -209,18 +209,21 @@ test.describe('Express Banner Block test suite', () => {
       await runAccessibilityTest({ page, testScope: banner.variants.light });
     });
 
+    await test.step('Validate card hover', async () => {
+      const buttonBackgroundColorBeforeHover = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await banner.lightVariantButton.hover();
+      const buttonBackgroundColorInHoverState = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await page.waitForTimeout(1000);
+      await banner.lightVariantHeading.hover(); // move away
+      await page.waitForTimeout(1000);
+      const buttonBackgroundColorAfterHover = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      expect(buttonBackgroundColorBeforeHover).not.toEqual(buttonBackgroundColorInHoverState);
+      expect(buttonBackgroundColorAfterHover).toEqual(buttonBackgroundColorBeforeHover);
+    });
+
     await test.step('Validate card button click', async () => {
       await banner.lightVariantButton.click();
       expect(page.url).not.toBe(testPage);
-    });
-
-    await test.step('Validate card hover', async () => {
-      await page.goto(testPage);
-      await page.waitForLoadState('domcontentloaded');
-      const backgroundColorBefore = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
-      await banner.lightVariantButton.hover();
-      const backgroundColorAfter = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
-      expect(backgroundColorBefore).not.toEqual(backgroundColorAfter);
     });
   });
 });
