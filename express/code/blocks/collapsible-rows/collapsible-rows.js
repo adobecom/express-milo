@@ -156,7 +156,7 @@ function buildOriginalLayout(block, typographyClasses = {}) {
  */
 function convertStrongToSpan(element) {
   const strongTags = element.querySelectorAll('strong');
-  strongTags.forEach(strong => {
+  strongTags.forEach((strong) => {
     const span = createTag('span', { class: 'collapsible-row-bold' });
     span.innerHTML = strong.innerHTML;
     strong.replaceWith(span);
@@ -169,18 +169,16 @@ function convertStrongToSpan(element) {
  * @returns {Object} - Object with header and body typography classes
  */
 function extractTypographyClasses(block) {
-  const typographyClasses = Array.from(block.classList).filter(cls =>
-    isMiloTypographyClass(cls) || isExpressTypographyClass(cls)
-  );
-  
+  const typographyClasses = Array.from(block.classList).filter((cls) => isMiloTypographyClass(cls) || isExpressTypographyClass(cls));
+
   // Separate heading and body classes
-  const headerClasses = typographyClasses.filter(cls => cls.includes('heading'));
-  const bodyClasses = typographyClasses.filter(cls => cls.includes('body'));
-  
+  const headerClasses = typographyClasses.filter((cls) => cls.includes('heading'));
+  const bodyClasses = typographyClasses.filter((cls) => cls.includes('body'));
+
   return {
     header: headerClasses,
     body: bodyClasses,
-    all: typographyClasses
+    all: typographyClasses,
   };
 }
 
