@@ -1787,11 +1787,42 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 .section.ax-max-entitled:has(.ax-columns) .column-picture img {
   max-width: 100%;
   margin-top: var(--spacing-400);
+  border-radius: 16px;
 }
 
+.section.ax-max-entitled:has(.ax-columns) .column{
+  padding: 0px;
+}
+
+.section.ax-max-entitled:has(.ax-columns)  h2{
+  font-size: 28px;
+}
+
+.section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
+  padding: 0px;
+}
+
+.section.ax-max-entitled:has(.ax-columns) > .ax-columns p.button-container {
+  margin-top: var(--spacing-500);
+}
+
+
 @media (min-width: 900px) {
+
+
+
   .section.ax-max-entitled:has(.ax-columns) .column-picture img {
     max-width: 100%;
     margin-top: 0;
+  }
+
+  .section.ax-max-entitled:has(.ax-columns) div.ax-columns > div{
+    gap: var(--spacing-700);
+  }
+
+
+  .section.ax-max-entitled:has(.ax-columns) .ax-columns:not(.fullsize):not(.marquee) .column:not(.column-picture):not(.hero-animation-overlay):not(.text) 
+  {
+    padding: 0px;
   }
 }
