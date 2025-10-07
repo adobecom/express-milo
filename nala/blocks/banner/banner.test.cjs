@@ -181,7 +181,7 @@ test.describe('Express Banner Block test suite', () => {
   });
 
   // Test 5 : Banner light multiple buttons
-  test.only(`[Test Id - ${features[5].tcid}] ${features[5].name},${features[5].tags}`, async ({ page, baseURL }) => {
+  test(`[Test Id - ${features[5].tcid}] ${features[5].name},${features[5].tags}`, async ({ page, baseURL }) => {
     const { data } = features[5];
     const testPage = `${baseURL}${features[5].path}${miloLibs}`;
     console.info(`[Test Page]: ${testPage}`);
@@ -212,8 +212,8 @@ test.describe('Express Banner Block test suite', () => {
     await test.step('Validate card hover', async () => {
       const buttonBackgroundColorBeforeHover = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
       await banner.lightVariantButton.hover();
-      const buttonBackgroundColorInHoverState = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
       await page.waitForTimeout(1000);
+      const buttonBackgroundColorInHoverState = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
       await banner.lightVariantHeading.hover(); // move away
       await page.waitForTimeout(1000);
       const buttonBackgroundColorAfterHover = await banner.lightVariantButton.evaluate((element) => window.getComputedStyle(element).backgroundColor);
