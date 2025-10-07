@@ -25,8 +25,14 @@ test.describe('Express Floating Button Block test suite', () => {
     });
 
     await test.step('Verify floating-button block content/specs', async () => {
-      await expect(floatingButton.floatingButton).toBeVisible();
+      // Wait for floating button to be present and visible
+      await expect(floatingButton.floatingButton).toBeAttached();
+
+      // Scroll to trigger floating button visibility if needed
       await page.evaluate(() => window.scrollBy(0, 500));
+
+      // Wait for floating button to become visible after scroll
+      await expect(floatingButton.floatingButton).toBeVisible({ timeout: 10000 });
       await expect(floatingButton.floatingButton).toContainText(data.buttonText);
       await floatingButton.floatingButton.click();
       await expect(page).not.toHaveURL(`${testUrl}`);
