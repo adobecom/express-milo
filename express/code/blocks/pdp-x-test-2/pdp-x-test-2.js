@@ -30,11 +30,11 @@ export default async function decorate(block) {
   const productDetails = await fetchProductDetails(productId);
   const productPrice = await fetchProductPrice(productId);
   const productShippingEstimates = await fetchProductShippingEstimates(productId, '94065', 100);
-  const productDetailsFormatted = normalizeProductDetailObject(productDetails, productPrice);
+  const productDetailsFormatted = normalizeProductDetailObject(productDetails, productPrice, productShippingEstimates);
 
-  console.log('productShippingEstimates');
-  console.log(productShippingEstimates);
-  // debugger;
+  console.log('productDetails');
+  console.log(productDetails);
+  debugger;
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted);
 
