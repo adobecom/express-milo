@@ -307,8 +307,6 @@ async function buildSearchDropdown(block, searchBarWrapper) {
   const suggestionsTitle = createTag('p', { class: 'dropdown-title' });
   const suggestionsList = createTag('ul', { class: 'suggestions-list' });
 
-  const fromScratchLink = block.querySelector('a');
-
   // Use centralized system for trends and titles
   const [trendsTitle, searchTrends, searchSuggestionsTitle] = await replaceKeyArray(['search-trends-title', 'search-trends', 'search-suggestions-title'], getConfig());
   let trends;
@@ -318,24 +316,6 @@ async function buildSearchDropdown(block, searchBarWrapper) {
     } catch (e) {
       // Invalid JSON in search-trends configuration
     }
-  }
-
-  if (fromScratchLink) {
-    const linkDiv = fromScratchLink.parentElement.parentElement;
-    const templateFreeAccentIcon = getIconElementDeprecated('template-free-accent');
-    templateFreeAccentIcon.loading = 'lazy';
-    const arrowRightIcon = getIconElementDeprecated('arrow-right');
-    arrowRightIcon.loading = 'lazy';
-    fromScratchLink.prepend(templateFreeAccentIcon);
-    fromScratchLink.append(arrowRightIcon);
-    fromScratchLink.classList.remove('button');
-    fromScratchLink.classList.add('from-scratch-link');
-    fromScratchLink.href = getMetadata('search-marquee-from-scratch-link') || '/';
-    trendsContainer.append(fromScratchLink);
-    import('../../scripts/branchlinks.js').then(async (mod) => {
-      fromScratchLink.href = await mod.getTrackingAppendedURL([fromScratchLink], { placement: 'search-marquee' });
-    });
-    linkDiv.remove();
   }
 
   if (trendsTitle) {
