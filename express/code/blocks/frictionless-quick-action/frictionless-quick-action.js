@@ -554,11 +554,11 @@ export default async function decorate(block) {
   frictionlessTargetBaseUrl = cta.href;
   if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1
     || quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const isStage = urlParams.get('hzenv') === 'stage';
-      frictionlessTargetBaseUrl = isStage
-        ? 'https://stage.express.adobe.com/new'
-        : 'https://express.adobe.com/new';
+    const urlParams = new URLSearchParams(window.location.search);
+    const isStage = urlParams.get('hzenv') === 'stage';
+    frictionlessTargetBaseUrl = isStage
+      ? 'https://stage.express.adobe.com/new'
+      : 'https://express.adobe.com/new';
   }
 
   const dropzoneHint = dropzone.querySelector('p:first-child');
