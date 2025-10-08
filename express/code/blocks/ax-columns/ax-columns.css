@@ -1764,9 +1764,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .section.ax-max-entitled:has(.ax-columns) h2 {
-  font-size: 28px;
-  font-weight: 900;
-  line-height: 130%;
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--heading-font-weight-extra);
+  line-height: var(--heading-line-height);
 }
 
 .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
@@ -1803,7 +1803,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns>div {
     flex-direction: row;
-    gap: 48px;
+    gap: var(--spacing-700);
   }
 
 
@@ -1832,9 +1832,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 @media (min-width: 1200px) {
 
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
-    padding: 80px 0px;
+    padding: var(--spacing-900) 0px;
     max-width: unset;
-    gap: 80px;
+    gap: var(--spacing-900);
   }
 
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .column {
@@ -1847,17 +1847,17 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section.ax-max-entitled:has(.ax-columns) h2 {
-    font-size: 36px;
-    font-weight: 900;
-    line-height: 130%;
+    font-size: var(--heading-font-size-l);
+    font-weight: var(--heading-font-weight-extra);
+    line-height: var(--heading-line-height);
   }
 
   .section.ax-max-entitled:has(.ax-columns) div.ax-columns>div {
     gap: var(--spacing-700);
-    padding: 0px 24px;
+    padding: 0px var(--spacing-400);
     min-width: var(--Global-Device-Widths-device-min-width, 600px);
     margin: auto;
-    max-width: 1024px;
+    max-width: var(--block-lg-max-width);
   }
 
 
