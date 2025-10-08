@@ -3,8 +3,8 @@ import BlockMediator from '../../scripts/block-mediator.min.js';
 import { trackSearch, updateImpressionCache, generateSearchId } from '../../scripts/template-search-api-v3.js';
 
 let createTag; let getConfig;
-let getMetadata; let prefix;
-let blockConfig;
+let getMetadata; let replaceKeyArray;
+let prefix; let blockConfig;
 
 function handlelize(str) {
   return str.normalize('NFD')
@@ -132,8 +132,7 @@ function initSearchFunction(block, searchBarWrapper) {
   })).sort((a, b) => b[0].length - a[0].length);
 
   const redirectSearch = async () => {
-    const taskMap = blockConfig['task-name-mapping'] || '{}';
-    const taskXMap = blockConfig['x-task-name-mapping'] || '{}';
+    const [taskMap, taskXMap] = await replaceKeyArray(['task-name-mapping', 'x-task-name-mapping'], getConfig());
     const format = getMetadata('placeholder-format');
 
     const currentTasks = {
@@ -141,8 +140,8 @@ function initSearchFunction(block, searchBarWrapper) {
       content: '',
     };
     let searchInput = searchBar.value?.toLowerCase() || getMetadata('topics');
-    const tasksFoundInInput = findTask(JSON.parse(taskMap));
-    const tasksXFoundInInput = findTask(JSON.parse(taskXMap));
+    const tasksFoundInInput = findTask(JSON.parse(taskMap || '{}'));
+    const tasksXFoundInInput = findTask(JSON.parse(taskXMap || '{}'));
 
     if (tasksFoundInInput.length > 0) {
       searchInput = trimInput(tasksFoundInInput, searchInput);
@@ -309,9 +308,9 @@ async function buildSearchDropdown(block, searchBarWrapper) {
   const suggestionsList = createTag('ul', { class: 'suggestions-list' });
 
   const fromScratchLink = block.querySelector('a');
-  const trendsTitle = blockConfig['search-trends-title'] || '';
-  const searchTrends = blockConfig['search-trends'] || '';
-  const searchSuggestionsTitle = blockConfig['search-suggestions-title'] || '';
+
+  // Use centralized system for trends and titles
+  const [trendsTitle, searchTrends, searchSuggestionsTitle] = await replaceKeyArray(['search-trends-title', 'search-trends', 'search-suggestions-title'], getConfig());
   let trends;
   if (searchTrends && searchTrends !== 'search trends') {
     try {
@@ -389,8 +388,9 @@ export default async function decorate(block) {
   // Build configuration from Word document block structure
   blockConfig = buildSearchConfig(block);
 
-  await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
+  await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig, getMetadata } = utils);
+    ({ replaceKeyArray } = placeholders);
   });
   ({ prefix } = getConfig().locale);
 
