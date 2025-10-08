@@ -129,6 +129,7 @@ main .section .pdpx-global-container  p {
 display: flex;
 flex-direction: row;
 background-color: white;
+overflow: hidden;
 border-radius: 8px;
 border: 1px solid #DADADA;
 padding: 0px;
@@ -147,14 +148,11 @@ cursor: pointer;
   font-size: 14px;
 }
 
-.pdpx-pill-image {
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-}
 .pdpx-pill-text-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 4px;
   padding: 8px;
   padding-right: 24px;
