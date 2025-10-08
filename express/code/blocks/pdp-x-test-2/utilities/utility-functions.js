@@ -32,6 +32,91 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
     realviews: productDetails.product.realviews,
     productType: productDetails.product.productType,
+    sideQuantityptions: [
+      {
+        thumbnail: 'https://placehold.co/54',
+        name: 'Double-sided',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/54',
+        name: 'Single-sided',
+        priceAdjustment: '-US$5.95',
+      },
+    ],
+    cornerStyleOptions: [
+      {
+        thumbnail: 'https://placehold.co/54',
+        name: 'Squared',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/54',
+        name: 'Rounded',
+        priceAdjustment: '+US$0.00',
+      },
+    ],
+    sizeOptions: [
+      {
+        thumbnail: 'https://placehold.co/54',
+        name: '3.5"x2"',
+      },
+      {
+        thumbnail: 'https://placehold.co/54',
+        name: '2"x3.5"',
+      },
+      {
+        thumbnail: 'https://placehold.co/54',
+        name: '2.5"x2.5"',
+      },
+    ],
+    paperTypeOptions: [
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Standard Matte',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Standard Gloss',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Paper Type 3',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Paper Type 4',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Paper Type 5',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Paper Type 6',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Paper Type 7',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Paper Type 8',
+        priceAdjustment: '+$0.00',
+      },
+      {
+        thumbnail: 'https://placehold.co/48',
+        name: 'Paper Type 9',
+        priceAdjustment: '+$0.00',
+      },
+    ],
   };
   return normalizedProductDetails;
 }

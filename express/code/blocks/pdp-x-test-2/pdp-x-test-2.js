@@ -4,6 +4,7 @@ import { extractProductId, normalizeProductDetailObject } from './utilities/util
 import createProductInfoHeadingSection, { createDeliveryEstimatePill } from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
+import createProductDetailsSection from './createComponents/createProductDetailsSection.js';
 
 let createTag;
 
@@ -15,6 +16,8 @@ async function createProductInfoContainer(productDetails) {
   productInfoContainer.appendChild(deliveryEstimatePill);
   const customizationInputs = await createCustomizationInputs(productDetails);
   productInfoContainer.appendChild(customizationInputs);
+  const productDetailsSection = await createProductDetailsSection(productDetails);
+  productInfoContainer.appendChild(productDetailsSection);
   return productInfoContainer;
 }
 
