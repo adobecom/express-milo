@@ -1821,7 +1821,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     align-items: center;
     gap: 10px;
     box-sizing: border-box;
-
   }
 
   .section.ax-max-entitled:has(.ax-columns) .column-picture img {
@@ -1829,9 +1828,6 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
 }
-
-
-
 
 @media (min-width: 1200px) {
 
