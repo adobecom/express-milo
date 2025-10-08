@@ -73,6 +73,7 @@ main .section .pdpx-global-container  p {
   width: fit-content;
   padding: 8px;
   gap: 4px;
+  margin-bottom: 24px;
 }
 .pdpx-product-hero-image-container {
   margin-bottom: 12px;
@@ -99,4 +100,77 @@ main .section .pdpx-global-container  p {
 }
 .pdpx-product-images-container, .pdpx-product-info-container {
   width: 50%;
+}
+
+/* Pill Selector */
+
+.pdpx-pill-selector-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.pdpx-pill-selector-label-label {
+  font-weight: 700;
+}
+.pdpx-pill-selector-label-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.pdpx-pill-selector-options-container {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+}
+
+.pdpx-pill-container {
+display: flex;
+flex-direction: row;
+background-color: white;
+border-radius: 8px;
+border: 1px solid #DADADA;
+padding: 0px;
+cursor: pointer;
+}
+.pdpx-pill-image-container {
+  width: 54px;
+  height: 54px;
+}
+.pdpx-mini-pill-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+}
+.pdpx-mini-pill-price {
+  font-size: 14px;
+}
+
+.pdpx-pill-image {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.pdpx-pill-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 8px;
+  padding-right: 24px;
+}
+.pdpx-pill-text-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: black;
+
+}
+.pdpx-pill-text-price {
+  font-size: 14px;
+  font-weight: 400;
+  color: #505050;
+}
+
+.pdpx-pill-selector-container {
+  margin-bottom: 24px;
 }

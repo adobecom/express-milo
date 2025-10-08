@@ -3,22 +3,25 @@ import { fetchProductDetails, fetchProductPrice, fetchProductShippingEstimates }
 import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection, { createDeliveryEstimatePill } from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
+import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 
 let createTag;
 
-function createProductInfoContainer(productDetails) {
+async function createProductInfoContainer(productDetails) {
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
   const productInfoHeadingSection = createProductInfoHeadingSection(productDetails);
   productInfoContainer.appendChild(productInfoHeadingSection);
   const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);
   productInfoContainer.appendChild(deliveryEstimatePill);
+  const customizationInputs = await createCustomizationInputs(productDetails);
+  productInfoContainer.appendChild(customizationInputs);
   return productInfoContainer;
 }
 
 async function createGlobalContainer(container, productDetails) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   const productImagesContainer = await createProductImagesContainer(productDetails);
-  const productInfoContainer = createProductInfoContainer(productDetails);
+  const productInfoContainer = await createProductInfoContainer(productDetails);
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoContainer);
   container.appendChild(globalContainer);
