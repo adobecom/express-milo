@@ -31,6 +31,7 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
     realviews: productDetails.product.realviews,
+    productType: productDetails.product.productType,
   };
   return normalizedProductDetails;
 }
