@@ -64,10 +64,14 @@ test.describe('Express Long Text Block test suite', () => {
     await test.step('Verify no-background variant functionality', async () => {
       const noBackgroundExists = await longText.variants.noBackground.count() > 0;
       if (noBackgroundExists) {
-        await expect(longText.variants.noBackground).toBeVisible();
+        // Check each no-background variant individually to avoid strict mode violation
+        const noBackgroundCount = await longText.variants.noBackground.count();
+        for (let i = 0; i < noBackgroundCount; i++) {
+          await expect(longText.variants.noBackground.nth(i)).toBeVisible();
+        }
 
         // Verify no-background variant has wrapper class
-        const noBackgroundWrapper = longText.variants.noBackground.locator('xpath=..');
+        const noBackgroundWrapper = longText.variants.noBackground.first().locator('xpath=..');
         await expect(noBackgroundWrapper).toHaveClass(/no-background/);
 
         // Verify no-background variant has article structure
