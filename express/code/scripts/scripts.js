@@ -481,7 +481,6 @@ preDecorateSections(document);
       `${miloLibs}/blocks/widgets/basic-carousel.css`,
       `${miloLibs}/blocks/widgets/grid-carousel.css`,
       `${miloLibs}/blocks/widgets/masonry.css`,
-      `${miloLibs}/blocks/widgets/floating-cta.css`,
       `${miloLibs}/blocks/steps/steps.css`,
       `${miloLibs}/blocks/link-list/link-list.css`,
       `${miloLibs}/blocks/banner/banner.css`,
@@ -504,6 +503,19 @@ preDecorateSections(document);
     });
   }, 200);
   
+  // ✅ Defer floating CTA CSS to much later - it's not LCP critical
+  setTimeout(() => {
+    const floatingCTACSS = `${miloLibs}/blocks/widgets/floating-cta.css`;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = floatingCTACSS;
+    link.media = 'print';
+    link.onload = function() {
+      this.media = 'all';
+    };
+    document.head.appendChild(link);
+  }, 2000); // Load CSS 2 seconds later
+  
   // ✅ Defer heavy JavaScript files to reduce critical path
   setTimeout(() => {
     const heavyJS = [
@@ -514,7 +526,6 @@ preDecorateSections(document);
       `${miloLibs}/blocks/widgets/basic-carousel.js`,
       `${miloLibs}/blocks/widgets/grid-carousel.js`,
       `${miloLibs}/blocks/widgets/masonry.js`,
-      `${miloLibs}/blocks/widgets/floating-cta.js`,
       `${miloLibs}/blocks/steps/steps.js`,
       `${miloLibs}/blocks/link-list/link-list.js`,
       `${miloLibs}/blocks/banner/banner.js`,
@@ -533,6 +544,16 @@ preDecorateSections(document);
       document.head.appendChild(script);
     });
   }, 500);
+  
+  // ✅ Defer floating CTA to much later - it's not LCP critical
+  setTimeout(() => {
+    const floatingCTAJS = `${miloLibs}/blocks/widgets/floating-cta.js`;
+    const script = document.createElement('script');
+    script.src = floatingCTAJS;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  }, 2000); // Load 2 seconds later
 }());
 
 function decorateHeroLCP(loadStyle, config, createTag) {
@@ -677,7 +698,11 @@ const listenAlloy = () => {
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
-  buildAutoBlocks();
+  // ✅ Defer floating CTA block creation - it's not LCP critical
+  setTimeout(() => {
+    buildAutoBlocks();
+  }, 2500); // Create floating CTA 2.5 seconds after page load
+  
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   
   // ✅ Defer service worker registration to avoid blocking critical path
