@@ -882,9 +882,96 @@ preDecorateSections(document);
   typekitCSS.crossOrigin = 'anonymous';
   document.head.appendChild(typekitCSS);
   
-  // ✅ Let TypeKit handle font loading - remove problematic preloads
-  // The TypeKit CSS will load the correct Adobe Clean fonts
-  // No need for manual font preloading that causes 404 errors
+  // ✅ Force Adobe Clean font loading with fallback
+  const fontLoadingCSS = `
+    /* Force Adobe Clean font loading with proper fallbacks */
+    @font-face {
+      font-family: 'adobe-clean';
+      font-display: swap;
+      src: local('Adobe Clean'), local('AdobeClean'), local('Arial'), local('Helvetica'), sans-serif;
+    }
+    
+    @font-face {
+      font-family: 'adobe-clean-serif';
+      font-display: swap;
+      src: local('Adobe Clean Serif'), local('AdobeCleanSerif'), local('Times New Roman'), serif;
+    }
+    
+    /* Apply Adobe Clean immediately to all text elements */
+    body, h1, h2, h3, h4, h5, h6, p, a, button, span, div {
+      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+    }
+    
+    /* Ensure LCP elements have proper font rendering */
+    .section:first-child h1,
+    .section:first-child h2,
+    .section:first-child p,
+    .headline h1,
+    #free-logo-maker {
+      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-weight: 700;
+      font-synthesis: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Force font loading for critical elements */
+    .ax-columns h1, .ax-columns h2, .ax-columns h3,
+    .ax-columns p, .ax-columns .button {
+      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+    }
+  `;
+  
+  const fontStyle = document.createElement('style');
+  fontStyle.textContent = fontLoadingCSS;
+  document.head.appendChild(fontStyle);
+  
+  // ✅ Wait for TypeKit to load and then enhance font loading
+  typekitCSS.onload = function() {
+    // Force re-render of text elements after TypeKit loads
+    const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, a, button');
+    textElements.forEach(el => {
+      el.style.fontFamily = 'adobe-clean, Adobe Clean, Trebuchet MS, Arial, sans-serif';
+    });
+    console.log('✅ Adobe Clean fonts loaded and applied');
+  };
+  
+  // ✅ Fallback: Apply fonts after a short delay if TypeKit fails
+  setTimeout(() => {
+    const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, a, button');
+    textElements.forEach(el => {
+      if (!el.style.fontFamily.includes('adobe-clean')) {
+        el.style.fontFamily = 'adobe-clean, Adobe Clean, Trebuchet MS, Arial, sans-serif';
+      }
+    });
+  }, 1000);
+  
+  // ✅ Add error handling for external service failures
+  window.addEventListener('error', (event) => {
+    // Ignore 404/403 errors from external Adobe services
+    if (event.filename && (
+      event.filename.includes('publish-permissions-config') ||
+      event.filename.includes('UniversalNav') ||
+      event.filename.includes('RnR') ||
+      event.filename.includes('lana.js')
+    )) {
+      event.preventDefault();
+      console.warn('External service error (ignored):', event.filename);
+    }
+  });
+  
+  // ✅ Add unhandled promise rejection handling
+  window.addEventListener('unhandledrejection', (event) => {
+    // Ignore network errors from external services
+    if (event.reason && event.reason.message && (
+      event.reason.message.includes('404') ||
+      event.reason.message.includes('403') ||
+      event.reason.message.includes('ORB')
+    )) {
+      event.preventDefault();
+      console.warn('External service network error (ignored):', event.reason.message);
+    }
+  });
   
   // ✅ Load essential CSS immediately - page needs this to render
   const paths = [`${miloLibs}/styles/styles.css`];
