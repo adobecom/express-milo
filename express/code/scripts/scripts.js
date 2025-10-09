@@ -920,6 +920,60 @@ preDecorateSections(document);
     .ax-columns p, .ax-columns .button {
       font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
     }
+    
+    /* Fix text selection and highlighting issues */
+    body, h1, h2, h3, h4, h5, h6, p, a, button, span, div {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Allow text selection for input fields and text areas */
+    input, textarea, [contenteditable] {
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      user-select: text;
+    }
+    
+    /* Remove any unwanted text highlighting */
+    ::selection {
+      background: transparent;
+    }
+    
+    ::-moz-selection {
+      background: transparent;
+    }
+    
+    /* Ensure proper text colors without selection highlighting */
+    h1, h2, h3, h4, h5, h6 {
+      color: #000 !important;
+      background: transparent !important;
+    }
+    
+    p, span, div {
+      color: #333 !important;
+      background: transparent !important;
+    }
+    
+    .button, a.button {
+      color: white !important;
+      background: #0066cc !important;
+    }
+    
+    /* Fix any blue highlighting on text elements */
+    .section:first-child h1,
+    .section:first-child p,
+    .headline h1,
+    #free-logo-maker {
+      color: #000 !important;
+      background: transparent !important;
+      -webkit-user-select: none;
+      user-select: none;
+    }
   `;
   
   const fontStyle = document.createElement('style');
