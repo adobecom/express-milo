@@ -32,6 +32,8 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
     realviews: productDetails.product.realviews,
     productType: productDetails.product.productType,
+    quantities: productDetails.product.quantities,
+    pluralUnitLabel: productDetails.product.pluralUnitLabel,
     sideQuantityptions: [
       {
         thumbnail: 'https://placehold.co/54',
