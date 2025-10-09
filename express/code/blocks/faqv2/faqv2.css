@@ -100,7 +100,7 @@
 }
 
 /* Focus management for accessibility */
-.faqv2-header:focus {
+.faqv2-header:focus-visible {
   outline: 2px solid var(--color-info-accent);
   outline-offset: 2px;
   border-radius: 4px;
@@ -150,7 +150,7 @@
   border-color: var(--color-info-accent);
 }
 
-.faqv2 .faqv2-toggle-btn:focus {
+.faqv2 .faqv2-toggle-btn:focus-visible {
   outline: 2px solid var(--color-white);
   outline-offset: 2px;
 }
