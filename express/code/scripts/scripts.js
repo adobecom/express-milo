@@ -1187,12 +1187,18 @@ if (dynamicCriticalCSS) {
         // Add font-loaded class first to trigger CSS font swap
         document.body.classList.add('font-loaded');
         
-        // Then apply JavaScript font swap as backup
+        // Then apply JavaScript font swap as backup - use more specific approach
         textElements.forEach(el => {
+          // Remove any existing font-family styles first
+          el.style.removeProperty('font-family');
+          // Then set the new font with !important
           el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
           // Force a reflow to trigger font swap
           el.offsetHeight; // Force reflow
+          // Apply again to ensure it sticks
+          el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
         });
+        document.body.style.removeProperty('font-family');
         document.body.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
         
         // Check if the font was actually applied
@@ -1409,7 +1415,7 @@ if (dynamicCriticalCSS) {
     
     /* Adobe Clean font loading - will swap after TypeKit loads with highest specificity */
     .font-loaded body, .font-loaded h1, .font-loaded h2, .font-loaded h3, .font-loaded h4, .font-loaded h5, .font-loaded h6, .font-loaded p, .font-loaded a, .font-loaded button, .font-loaded span, .font-loaded div {
-      font-family: "adobe-clean", "Trebuchet MS", "Arial", sans-serif !important;
+      font-family: "adobe-clean", "Trebuchet MS", "Arial", sans-serif;
     }
     
     /* Critical LCP elements - immediate font rendering with fallback fonts */
