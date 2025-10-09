@@ -1159,23 +1159,43 @@ if (dynamicCriticalCSS) {
   style.textContent = criticalCSS;
   document.head.appendChild(style);
   
-  // ✅ Load TypeKit CSS immediately for Adobe Clean font with proper swap
-  const typekitCSS = document.createElement('link');
-  typekitCSS.rel = 'stylesheet';
-  typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
-  typekitCSS.crossOrigin = 'anonymous';
-  typekitCSS.media = 'print';
-  typekitCSS.onload = function() {
-    this.media = 'all';
-    console.log('✅ TypeKit fonts loaded and applied');
+  // ✅ Load fonts AFTER LCP (Phase L) - following AEM performance guidelines
+  function loadFontsAfterLCP() {
+    // Wait for LCP before loading fonts from external origins
+    const observer = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lcpEntry = entries[entries.length - 1];
+      
+      if (lcpEntry) {
+        console.log('✅ LCP achieved, now loading fonts safely');
+        
+        // LCP achieved, now safe to load fonts
+        setTimeout(() => {
+          const typekitCSS = document.createElement('link');
+          typekitCSS.rel = 'stylesheet';
+          typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
+          typekitCSS.crossOrigin = 'anonymous';
+          typekitCSS.media = 'print';
+          typekitCSS.onload = function() {
+            this.media = 'all';
+            console.log('✅ TypeKit fonts loaded after LCP');
+            
+            // Force font swap after TypeKit loads
+            setTimeout(() => {
+              document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+              console.log('🔄 Font swap applied - Adobe Clean should now be visible');
+            }, 100);
+          };
+          document.head.appendChild(typekitCSS);
+        }, 100); // Small delay to ensure LCP is stable
+      }
+    });
     
-    // Force font swap after TypeKit loads
-    setTimeout(() => {
-      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
-      console.log('🔄 Font swap applied - Adobe Clean should now be visible');
-    }, 100);
-  };
-  document.head.appendChild(typekitCSS);
+    observer.observe({ entryTypes: ['largest-contentful-paint'] });
+  }
+  
+  // Start font loading after LCP
+  loadFontsAfterLCP();
   
   // ✅ Font loading detection and fallback
   if ('fonts' in document) {
@@ -1209,12 +1229,25 @@ if (dynamicCriticalCSS) {
     const adobeLogos = document.querySelectorAll('img[src*="adobe-express-logo"], img[alt*="adobe-express-logo"]');
     adobeLogos.forEach(logo => {
       if (!logo.src || logo.src.includes('undefined') || logo.src.includes('null')) {
-        // Fix broken logo sources
-        logo.src = '/express/code/icons/adobe-express-logo.svg';
-        logo.alt = 'Adobe Express';
-        logo.style.width = '120px';
-        logo.style.height = 'auto';
-        console.log('🔧 Fixed broken Adobe logo:', logo);
+        // Try multiple possible logo paths
+        const logoPaths = [
+          '/express/code/icons/adobe-express-logo.svg',
+          '/icons/adobe-express-logo.svg',
+          'https://main--express--adobecom.hlx.page/icons/adobe-express-logo.svg'
+        ];
+        
+        // Test each path and use the first one that works
+        logoPaths.forEach(path => {
+          const testImg = new Image();
+          testImg.onload = () => {
+            logo.src = path;
+            logo.alt = 'Adobe Express';
+            logo.style.width = '120px';
+            logo.style.height = 'auto';
+            console.log('🔧 Fixed broken Adobe logo with:', path);
+          };
+          testImg.src = path;
+        });
       }
     });
     
@@ -1285,29 +1318,9 @@ if (dynamicCriticalCSS) {
     fixAdobeLogoLoading();
   }, 1000);
   
-  // ✅ Optimized font loading for better performance
+  // ✅ Optimized font loading for better performance - Phase L only
   const fontLoadingCSS = `
-    /* Optimized Adobe Clean font loading with proper TypeKit integration */
-    @font-face {
-      font-family: 'adobe-clean';
-      font-display: swap;
-      font-weight: 300;
-      src: url('https://use.typekit.net/af/1ce529/00000000000000003b9b3065/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n3&v=3') format('woff2');
-    }
-    @font-face {
-      font-family: 'adobe-clean';
-      font-display: swap;
-      font-weight: 400;
-      src: url('https://use.typekit.net/af/1ce529/00000000000000003b9b3065/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3') format('woff2');
-    }
-    @font-face {
-      font-family: 'adobe-clean';
-      font-display: swap;
-      font-weight: 700;
-      src: url('https://use.typekit.net/af/1ce529/00000000000000003b9b3065/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3') format('woff2');
-    }
-    
-    /* Fallback fonts for immediate rendering */
+    /* Fallback fonts for immediate rendering - Phase E only */
     @font-face {
       font-family: 'adobe-clean-fallback';
       font-display: swap;
