@@ -344,44 +344,35 @@ preDecorateSections(document);
   style.textContent = criticalCSS;
   document.head.appendChild(style);
   
-  // ✅ Preload critical TypeKit fonts to reduce render delay
+  // ✅ Minimal font preloading to avoid blocking critical path
   const fontPreloads = [
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3',
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3',
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n9&v=3'
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3'
   ];
   
-  fontPreloads.forEach((href) => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.href = href;
-    link.as = 'font';
-    link.type = 'font/woff2';
-    link.crossOrigin = 'anonymous';
-    link.fetchPriority = 'high';
-    document.head.appendChild(link);
-  });
+  // Defer font preloading to avoid blocking LCP
+  setTimeout(() => {
+    fontPreloads.forEach((href) => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.href = href;
+      link.as = 'font';
+      link.type = 'font/woff2';
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    });
+  }, 100);
   
-  // ✅ Preload TypeKit CSS with high priority
-  const typekitCSS = document.createElement('link');
-  typekitCSS.rel = 'preload';
-  typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
-  typekitCSS.as = 'style';
-  typekitCSS.onload = function() {
-    this.onload = null;
-    this.rel = 'stylesheet';
-  };
-  document.head.appendChild(typekitCSS);
-  
-  // ✅ Fallback for browsers that don't support preload
-  const typekitFallback = document.createElement('link');
-  typekitFallback.rel = 'stylesheet';
-  typekitFallback.href = 'https://use.typekit.net/jdq5hay.css';
-  typekitFallback.media = 'print';
-  typekitFallback.onload = function() {
-    this.media = 'all';
-  };
-  document.head.appendChild(typekitFallback);
+  // ✅ Defer TypeKit CSS loading to avoid blocking critical path
+  setTimeout(() => {
+    const typekitCSS = document.createElement('link');
+    typekitCSS.rel = 'stylesheet';
+    typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
+    typekitCSS.media = 'print';
+    typekitCSS.onload = function() {
+      this.media = 'all';
+    };
+    document.head.appendChild(typekitCSS);
+  }, 200);
   
   // ✅ Defer non-critical CSS to prevent render-blocking
   setTimeout(() => {
@@ -545,19 +536,21 @@ const listenAlloy = () => {
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   
-  // ✅ Register service worker for cache optimization
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/express/code/scripts/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
-  }
+  // ✅ Defer service worker registration to avoid blocking critical path
+  setTimeout(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/express/code/scripts/sw.js')
+        .then((registration) => {
+          console.log('SW registered: ', registration);
+        })
+        .catch((registrationError) => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    }
+  }, 1000);
 
-  // ✅ Universal image optimization for better performance
-  (async function optimizeImages() {
+  // ✅ Defer image optimization to avoid blocking critical path
+  setTimeout(async function optimizeImages() {
     const { createOptimizedPicture } = await import('./utils/media.js');
     
     // Optimize all images on the page
@@ -585,8 +578,8 @@ const listenAlloy = () => {
         const containerWidth = container?.offsetWidth || 750;
         const optimalWidth = Math.min(containerWidth * 2, 1200); // 2x for retina, max 1200px
         
-        // Update src with optimized parameters - more aggressive compression
-        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=85`;
+        // Update src with optimized parameters - aggressive compression for LCP
+        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=75`;
         if (img.src !== newSrc) {
           img.src = newSrc;
         }
@@ -612,8 +605,8 @@ const listenAlloy = () => {
         const containerWidth = container?.offsetWidth || 400;
         const optimalWidth = Math.min(containerWidth * 2, 900); // 2x for retina, max 900px
         
-        // Update src with optimized parameters - more aggressive compression
-        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=80`;
+        // Update src with optimized parameters - aggressive compression for non-LCP
+        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=70`;
         if (img.src !== newSrc) {
           img.src = newSrc;
         }
@@ -623,7 +616,7 @@ const listenAlloy = () => {
         img.setAttribute('height', Math.round(optimalWidth * 0.6));
       }
     });
-  }());
+  }, 500); // Defer by 500ms to avoid blocking LCP
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });
