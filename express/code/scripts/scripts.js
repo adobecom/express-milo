@@ -444,33 +444,32 @@ preDecorateSections(document);
     document.head.appendChild(typekitCSS);
   }, 200);
   
-  // ✅ Defer non-critical CSS to prevent render-blocking
-  setTimeout(() => {
-    const paths = [`${miloLibs}/styles/styles.css`];
-    if (STYLES) { paths.push(STYLES); }
-    paths.forEach((path) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = path;
-      // Add onload to ensure CSS is loaded before showing content
-      link.onload = () => {
-        document.body.style.visibility = 'visible';
-      };
-      document.head.appendChild(link);
-    });
-  }, 50); // Small delay to ensure critical CSS is applied first
+  // ✅ Load essential CSS immediately - page needs this to render
+  const paths = [`${miloLibs}/styles/styles.css`];
+  if (STYLES) { paths.push(...STYLES); }
+  paths.forEach((path) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = path;
+    // Add onload to ensure CSS is loaded before showing content
+    link.onload = () => {
+      document.body.style.visibility = 'visible';
+    };
+    document.head.appendChild(link);
+  });
   
   // ✅ Defer ALL non-critical CSS and JS to reduce critical path
   setTimeout(() => {
     // Defer global navigation CSS that's causing 1,511ms delay
-    const gnavCSS = document.createElement('link');
-    gnavCSS.rel = 'stylesheet';
-    gnavCSS.href = `${miloLibs}/blocks/global-navigation/global-navigation.css`;
-    gnavCSS.media = 'print';
-    gnavCSS.onload = function() {
-      this.media = 'all';
-    };
-    document.head.appendChild(gnavCSS);
+    // TEMPORARILY DISABLED - investigating 404 errors
+    // const gnavCSS = document.createElement('link');
+    // gnavCSS.rel = 'stylesheet';
+    // gnavCSS.href = `${miloLibs}/blocks/global-navigation/global-navigation.css`;
+    // gnavCSS.media = 'print';
+    // gnavCSS.onload = function() {
+    //   this.media = 'all';
+    // };
+    // document.head.appendChild(gnavCSS);
     
     // Defer other heavy CSS files
     // TEMPORARILY DISABLED - investigating 404 errors
@@ -505,17 +504,18 @@ preDecorateSections(document);
   }, 200);
   
   // ✅ Defer floating CTA CSS to later - it's not LCP critical
-  setTimeout(() => {
-    const floatingCTACSS = `${miloLibs}/blocks/widgets/floating-cta.css`;
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = floatingCTACSS;
-    link.media = 'print';
-    link.onload = function() {
-      this.media = 'all';
-    };
-    document.head.appendChild(link);
-  }, 1000); // Load CSS 1 second later
+  // TEMPORARILY DISABLED - investigating 404 errors
+  // setTimeout(() => {
+  //   const floatingCTACSS = `${miloLibs}/blocks/widgets/floating-cta.css`;
+  //   const link = document.createElement('link');
+  //   link.rel = 'stylesheet';
+  //   link.href = floatingCTACSS;
+  //   link.media = 'print';
+  //   link.onload = function() {
+  //     this.media = 'all';
+  //   };
+  //   document.head.appendChild(link);
+  // }, 1000); // Load CSS 1 second later
   
   // ✅ Defer heavy JavaScript files to reduce critical path
   // TEMPORARILY DISABLED - investigating 404 errors
@@ -548,14 +548,15 @@ preDecorateSections(document);
   // }, 500);
   
   // ✅ Defer floating CTA to later - it's not LCP critical
-  setTimeout(() => {
-    const floatingCTAJS = `${miloLibs}/blocks/widgets/floating-cta.js`;
-    const script = document.createElement('script');
-    script.src = floatingCTAJS;
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  }, 1000); // Load 1 second later
+  // TEMPORARILY DISABLED - investigating 404 errors
+  // setTimeout(() => {
+  //   const floatingCTAJS = `${miloLibs}/blocks/widgets/floating-cta.js`;
+  //   const script = document.createElement('script');
+  //   script.src = floatingCTAJS;
+  //   script.async = true;
+  //   script.defer = true;
+  //   document.head.appendChild(script);
+  // }, 1000); // Load 1 second later
 }());
 
 function decorateHeroLCP(loadStyle, config, createTag) {
