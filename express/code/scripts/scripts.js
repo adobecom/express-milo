@@ -493,6 +493,88 @@ preDecorateSections(document);
           display: inline-block;
           margin-top: 1rem;
         }
+      `,
+      'ax-columns': `
+        .ax-columns {
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          padding: 2rem 0;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+        .ax-columns > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 2rem;
+        }
+        .ax-columns .column {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .ax-columns h1, .ax-columns h2, .ax-columns h3 {
+          font-size: clamp(1.5rem, 3vw, 2.5rem);
+          font-weight: 700;
+          line-height: 1.2;
+          margin: 0 0 1rem 0;
+          color: #000;
+        }
+        .ax-columns p {
+          font-size: 1.125rem;
+          line-height: 1.6;
+          margin: 0 0 1.5rem 0;
+          color: #333;
+        }
+        .ax-columns .button, .ax-columns a.button {
+          display: inline-block;
+          padding: 12px 24px;
+          background: #0066cc;
+          color: white;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: 600;
+          font-size: 1rem;
+          transition: background-color 0.2s ease;
+        }
+        .ax-columns .button:hover, .ax-columns a.button:hover {
+          background: #0052a3;
+        }
+        .ax-columns .column-picture {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .ax-columns .column-picture img {
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
+        }
+        .ax-columns.center {
+          text-align: center;
+        }
+        .ax-columns.center > div {
+          flex-direction: column;
+          text-align: center;
+        }
+        .ax-columns.highlight {
+          background: #f8f9fa;
+          border-radius: 12px;
+          padding: 3rem 2rem;
+        }
+        .ax-columns.dark {
+          background: #1a1a1a;
+          color: white;
+        }
+        .ax-columns.dark h1, .ax-columns.dark h2, .ax-columns.dark h3 {
+          color: white;
+        }
+        .ax-columns.dark p {
+          color: rgba(255,255,255,0.9);
+        }
       `
     };
     
@@ -800,57 +882,9 @@ preDecorateSections(document);
   typekitCSS.crossOrigin = 'anonymous';
   document.head.appendChild(typekitCSS);
   
-  // ✅ Preload critical Adobe Clean font immediately
-  const fontPreloads = [
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3',
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3',
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n3&v=3'
-  ];
-  
-  // Load font preloads immediately for LCP optimization
-  fontPreloads.forEach((href) => {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.href = href;
-    link.as = 'font';
-    link.type = 'font/woff2';
-    link.crossOrigin = 'anonymous';
-    document.head.appendChild(link);
-  });
-  
-  // ✅ Force Adobe Clean font loading and apply immediately
-  const fontLoadingCSS = `
-    /* Force Adobe Clean font loading */
-    @font-face {
-      font-family: 'adobe-clean';
-      font-display: swap;
-      font-weight: 300 700;
-      src: url('https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n3&v=3') format('woff2');
-    }
-    
-    @font-face {
-      font-family: 'adobe-clean';
-      font-display: swap;
-      font-weight: 400;
-      src: url('https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3') format('woff2');
-    }
-    
-    @font-face {
-      font-family: 'adobe-clean';
-      font-display: swap;
-      font-weight: 700;
-      src: url('https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3') format('woff2');
-    }
-    
-    /* Apply Adobe Clean immediately to LCP elements */
-    body, h1, h2, h3, h4, h5, h6, p, a, button {
-      font-family: 'adobe-clean', 'Trebuchet MS', sans-serif;
-    }
-  `;
-  
-  const fontStyle = document.createElement('style');
-  fontStyle.textContent = fontLoadingCSS;
-  document.head.appendChild(fontStyle);
+  // ✅ Let TypeKit handle font loading - remove problematic preloads
+  // The TypeKit CSS will load the correct Adobe Clean fonts
+  // No need for manual font preloading that causes 404 errors
   
   // ✅ Load essential CSS immediately - page needs this to render
   const paths = [`${miloLibs}/styles/styles.css`];
