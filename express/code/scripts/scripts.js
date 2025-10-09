@@ -1159,74 +1159,12 @@ if (dynamicCriticalCSS) {
   style.textContent = criticalCSS;
   document.head.appendChild(style);
   
-  // ✅ Load fonts AFTER LCP (Phase L) - following AEM performance guidelines
-  function loadFontsAfterLCP() {
-    // Wait for LCP before loading fonts from external origins
-    const observer = new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      const lcpEntry = entries[entries.length - 1];
-      
-      if (lcpEntry) {
-        console.log('✅ LCP achieved, now loading fonts safely');
-        
-        // LCP achieved, now safe to load fonts
-        setTimeout(() => {
-          const typekitCSS = document.createElement('link');
-          typekitCSS.rel = 'stylesheet';
-          typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
-          typekitCSS.crossOrigin = 'anonymous';
-          typekitCSS.media = 'print';
-          typekitCSS.onload = function() {
-            this.media = 'all';
-            console.log('✅ TypeKit fonts loaded after LCP');
-            
-            // Force font swap after TypeKit loads
-            setTimeout(() => {
-              // Apply Adobe Clean to all text elements
-              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
-              textElements.forEach(el => {
-                el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
-              });
-              document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
-              console.log('🔄 Font swap applied - Adobe Clean should now be visible');
-            }, 100);
-          };
-          document.head.appendChild(typekitCSS);
-        }, 100); // Small delay to ensure LCP is stable
-      }
-    });
-    
-    observer.observe({ entryTypes: ['largest-contentful-paint'] });
-  }
-  
-  // Start font loading after LCP
-  loadFontsAfterLCP();
-  
-  // ✅ Font loading detection and fallback
-  if ('fonts' in document) {
-    document.fonts.ready.then(() => {
-      console.log('✅ All fonts loaded successfully');
-      // Apply Adobe Clean after fonts are ready
-      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
-    });
-  }
-  
-  // Fallback timeout for font loading
-  setTimeout(() => {
-    if (document.body.style.fontFamily === '') {
-      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
-      console.log('⏰ Font fallback applied after timeout');
-    }
-  }, 2000);
-  
-  // ✅ Force font swap on all text elements
-  function forceFontSwap() {
-    const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
-    textElements.forEach(el => {
-      el.style.fontFamily = 'Trebuchet MS, Arial, sans-serif';
-    });
-    console.log('🔄 Applied fallback fonts to all text elements');
-  }
+  // ✅ Load TypeKit CSS for Adobe Clean font
+  const typekitCSS = document.createElement('link');
+  typekitCSS.rel = 'stylesheet';
+  typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
+  typekitCSS.crossOrigin = 'anonymous';
+  document.head.appendChild(typekitCSS);
   
   // ✅ Fix Adobe logo loading issues
   function fixAdobeLogoLoading() {
@@ -1303,23 +1241,20 @@ if (dynamicCriticalCSS) {
     }
   }
   
-  // Run font swap and logo fixes after DOM is ready
+  // Run logo fixes after DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       ensureLogoLoading();
-      forceFontSwap();
       fixAdobeLogoLoading();
     });
   } else {
     ensureLogoLoading();
-    forceFontSwap();
     fixAdobeLogoLoading();
   }
   
   // Also run after a short delay to catch dynamically loaded content
   setTimeout(() => {
     ensureLogoLoading();
-    forceFontSwap();
     fixAdobeLogoLoading();
   }, 1000);
   
@@ -1333,7 +1268,7 @@ if (dynamicCriticalCSS) {
       src: local('Adobe Clean'), local('AdobeClean'), local('Arial'), local('Helvetica'), sans-serif;
     }
     
-    /* Apply fonts immediately to prevent render delay - use fallback first */
+    /* Apply fonts immediately to prevent render delay */
     body, h1, h2, h3, h4, h5, h6, p, a, button, span, div {
       font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
       font-synthesis: none;
