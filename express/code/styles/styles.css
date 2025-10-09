@@ -1439,3 +1439,14 @@ body:not(.blog) main #hero:not(:has(.hero-bg)) p {
 main .section.zero-margin:not([data-padding='none']) .content:first-child {
   padding-top: 0px;
 }
+
+/* ✅ Optimize TypeKit font loading to reduce render delay */
+@font-face {
+  font-family: 'adobe-clean';
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Adobe Clean';
+  font-display: swap;
+}
