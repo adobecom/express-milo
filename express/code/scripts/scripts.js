@@ -1178,17 +1178,17 @@ if (dynamicCriticalCSS) {
         document.body.classList.add('font-loaded');
         
         textElements.forEach(el => {
-          el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+          el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
           // Force a reflow to trigger font swap
           el.offsetHeight; // Force reflow
-          el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+          el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
         });
-        document.body.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+        document.body.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
         
         // Also try the exact font names from TypeKit with multiple attempts
         setTimeout(() => {
           textElements.forEach(el => {
-            el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+            el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
             el.offsetHeight; // Force reflow
           });
           console.log('🔄 Second font swap attempt completed');
@@ -1197,7 +1197,7 @@ if (dynamicCriticalCSS) {
         // Third attempt after longer delay for font-display: auto
         setTimeout(() => {
           textElements.forEach(el => {
-            el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+            el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
             el.offsetHeight; // Force reflow
           });
           console.log('🔄 Third font swap attempt completed');
@@ -1382,7 +1382,7 @@ if (dynamicCriticalCSS) {
     
     /* Apply fonts immediately to prevent render delay */
     body, h1, h2, h3, h4, h5, h6, p, a, button, span, div {
-      font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif;
       font-synthesis: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -1390,7 +1390,7 @@ if (dynamicCriticalCSS) {
     
     /* Adobe Clean font loading - will swap after TypeKit loads */
     .font-loaded body, .font-loaded h1, .font-loaded h2, .font-loaded h3, .font-loaded h4, .font-loaded h5, .font-loaded h6, .font-loaded p, .font-loaded a, .font-loaded button, .font-loaded span, .font-loaded div {
-      font-family: "adobe-clean", "Trebuchet MS", "Arial", sans-serif !important;
+      font-family: "adobe-clean", "Trebuchet MS", "Arial", sans-serif;
     }
     
     /* Critical LCP elements - immediate font rendering with fallback fonts */
@@ -1399,7 +1399,7 @@ if (dynamicCriticalCSS) {
     .section:first-child p,
     .headline h1,
     #free-logo-maker {
-      font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif;
       font-weight: 700;
       font-synthesis: none;
       -webkit-font-smoothing: antialiased;
@@ -1414,7 +1414,7 @@ if (dynamicCriticalCSS) {
     
     /* Force fallback fonts on all text elements initially */
     * {
-      font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif;
     }
     
     /* Ensure Adobe logo displays properly */
@@ -1447,7 +1447,7 @@ if (dynamicCriticalCSS) {
     /* ax-columns block optimization */
     .ax-columns h1, .ax-columns h2, .ax-columns h3,
     .ax-columns p, .ax-columns .button {
-      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif;
     }
     
     /* Fix text selection and highlighting issues */
