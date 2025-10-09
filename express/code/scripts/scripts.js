@@ -1182,6 +1182,11 @@ if (dynamicCriticalCSS) {
             
             // Force font swap after TypeKit loads
             setTimeout(() => {
+              // Apply Adobe Clean to all text elements
+              const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+              textElements.forEach(el => {
+                el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+              });
               document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
               console.log('🔄 Font swap applied - Adobe Clean should now be visible');
             }, 100);
@@ -1218,9 +1223,9 @@ if (dynamicCriticalCSS) {
   function forceFontSwap() {
     const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
     textElements.forEach(el => {
-      el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+      el.style.fontFamily = 'Trebuchet MS, Arial, sans-serif';
     });
-    console.log('🔄 Forced font swap on all text elements');
+    console.log('🔄 Applied fallback fonts to all text elements');
   }
   
   // ✅ Fix Adobe logo loading issues
@@ -1328,27 +1333,26 @@ if (dynamicCriticalCSS) {
       src: local('Adobe Clean'), local('AdobeClean'), local('Arial'), local('Helvetica'), sans-serif;
     }
     
-    /* Apply fonts immediately to prevent render delay */
+    /* Apply fonts immediately to prevent render delay - use fallback first */
     body, h1, h2, h3, h4, h5, h6, p, a, button, span, div {
-      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
       font-synthesis: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
     
-    /* Critical LCP elements - immediate font rendering with forced swap */
+    /* Critical LCP elements - immediate font rendering with fallback fonts */
     .section:first-child h1,
     .section:first-child h2,
     .section:first-child p,
     .headline h1,
     #free-logo-maker {
-      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
       font-weight: 700;
       font-synthesis: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeSpeed;
-      font-display: swap;
       visibility: visible !important;
       opacity: 1 !important;
       /* Force font swap for LCP elements */
@@ -1356,9 +1360,9 @@ if (dynamicCriticalCSS) {
       font-kerning: normal;
     }
     
-    /* Force Adobe Clean on all text elements */
+    /* Force fallback fonts on all text elements initially */
     * {
-      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
     }
     
     /* Ensure Adobe logo displays properly */
