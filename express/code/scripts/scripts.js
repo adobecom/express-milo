@@ -251,6 +251,38 @@ preDecorateSections(document);
     document.head.appendChild(link);
   });
   
+  // ✅ Get recommended preloads based on first block
+  function getRecommendedPreloads(blockName) {
+    const recommendations = {
+      'ax-columns': ['ax-columns'],
+      'grid-marquee': ['grid-marquee', 'ratings'],
+      'ax-marquee-dynamic-hero': ['ax-marquee-dynamic-hero'],
+      'hero-color': ['hero-color'],
+      'template-list': ['template-list'],
+      'template-x': ['template-x'],
+      'fullscreen-marquee': ['fullscreen-marquee'],
+      'feature-grid': ['feature-grid'],
+      'headline': ['headline'],
+      'banner': ['banner'],
+      'quotes': ['quotes'],
+      'ratings': ['ratings'],
+      'carousel': ['carousel'],
+      'steps': ['steps'],
+      'link-list': ['link-list'],
+      'faq': ['faq'],
+      'blog-posts': ['blog-posts'],
+      'cards': ['cards'],
+      'promotion': ['promotion'],
+      'mobile-fork-button': ['mobile-fork-button'],
+      'floating-cta': ['floating-cta'],
+      'masonry': ['masonry'],
+      'grid-carousel': ['grid-carousel'],
+      'basic-carousel': ['basic-carousel']
+    };
+    
+    return recommendations[blockName] || [blockName];
+  }
+
   // ✅ DC's Dynamic Preload System - Author-controlled resource preloading
   window.loadLink = (href, options = {}) => {
     const { as, callback, crossorigin, rel, fetchpriority } = options;
@@ -335,6 +367,22 @@ preDecorateSections(document);
   // Log preloads for debugging (can be removed in production)
   if (preloads.length > 0) {
     console.log('🚀 Express Milo: Preloaded resources from author configuration:', preloads);
+  }
+  
+  // ✅ Auto-detect first block and recommend preloads
+  const firstBlock = document.querySelector('main .section:first-of-type [data-block-name], main .section:first-of-type > div:first-child');
+  if (firstBlock) {
+    const blockName = firstBlock.getAttribute('data-block-name') || firstBlock.className.split(' ')[0];
+    const recommendedPreloads = getRecommendedPreloads(blockName);
+    
+    console.log('🎯 Express Milo: First block detected:', blockName);
+    console.log('💡 Recommended preloads:', recommendedPreloads.join(', '));
+    
+    // Show recommendation in console for authors
+    if (preloads.length === 0) {
+      console.log('📝 Author Tip: Add this to your preloads metadata:');
+      console.log(`<meta name="preloads" content="${recommendedPreloads.join(', ')}">`);
+    }
   }
   
   // ✅ CRITICAL: Inline critical CSS immediately to prevent render-blocking
