@@ -107,7 +107,7 @@
 }
 
 .faqv2-header:focus-visible + .faqv2-content.open {
-  margin-top: 10px;
+  margin-top: var(--spacing-300);
 }
 
 .faqv2.bold .faqv2-header {
