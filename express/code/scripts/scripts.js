@@ -1187,19 +1187,9 @@ if (dynamicCriticalCSS) {
         // Add font-loaded class first to trigger CSS font swap
         document.body.classList.add('font-loaded');
         
-        // Then apply JavaScript font swap as backup - use more specific approach
-        textElements.forEach(el => {
-          // Remove any existing font-family styles first
-          el.style.removeProperty('font-family');
-          // Then set the new font with !important
-          el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
-          // Force a reflow to trigger font swap
-          el.offsetHeight; // Force reflow
-          // Apply again to ensure it sticks
-          el.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
-        });
-        document.body.style.removeProperty('font-family');
-        document.body.style.setProperty('font-family', '"adobe-clean", "Trebuchet MS", Arial, sans-serif', 'important');
+        // Let CSS handle the font swap - just add the class
+        // The .font-loaded CSS rule will handle the font change
+        console.log('✅ Font swap triggered via CSS class');
         
         // Check if the font was actually applied
         setTimeout(() => {
@@ -1361,37 +1351,18 @@ if (dynamicCriticalCSS) {
       
       const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
       
-      // Try each font variation with forced reflow
-      fontVariations.forEach((fontFamily, index) => {
-        setTimeout(() => {
-          textElements.forEach(el => {
-            el.style.fontFamily = fontFamily;
-            el.offsetHeight; // Force reflow
-            el.style.fontFamily = fontFamily; // Apply again after reflow
-          });
-          document.body.style.fontFamily = fontFamily;
-          console.log(`🔄 Font variation ${index + 1} applied:`, fontFamily);
-        }, index * 200);
-      });
+      // Just add the font-loaded class - let CSS handle it
+      document.body.classList.add('font-loaded');
+      console.log('🔄 Font-loaded class applied via fallback');
     }
   }, 2000);
   
-  // ✅ Additional aggressive font swap after 3 seconds
+  // ✅ Final font swap attempt after 3 seconds
   setTimeout(() => {
     const bodyFont = getComputedStyle(document.body).fontFamily;
     if (!bodyFont.includes('adobe-clean')) {
-      console.log('🔄 Final aggressive font swap attempt');
+      console.log('🔄 Final font swap attempt - adding font-loaded class');
       document.body.classList.add('font-loaded');
-      
-      // Force all text elements to use Adobe Clean
-      const allTextElements = document.querySelectorAll('*');
-      allTextElements.forEach(el => {
-        const computedStyle = getComputedStyle(el);
-        if (computedStyle.fontFamily && computedStyle.fontFamily.includes('Trebuchet MS')) {
-          el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
-          el.offsetHeight; // Force reflow
-        }
-      });
     }
   }, 3000);
   
@@ -1407,7 +1378,7 @@ if (dynamicCriticalCSS) {
     
     /* Apply fonts immediately to prevent render delay - higher specificity than block styles */
     body, h1, h2, h3, h4, h5, h6, p, a, button, span, div {
-      font-family: 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-family: 'Trebuchet MS', 'Arial', sans-serif;
       font-synthesis: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -1437,8 +1408,8 @@ if (dynamicCriticalCSS) {
       font-kerning: normal;
     }
     
-    /* Force fallback fonts on all text elements initially */
-    * {
+    /* Force fallback fonts on all text elements initially - more specific */
+    h1, h2, h3, h4, h5, h6, p, a, button, span, div, li, td, th {
       font-family: 'Trebuchet MS', 'Arial', sans-serif;
     }
     
