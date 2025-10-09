@@ -1165,16 +1165,35 @@ if (dynamicCriticalCSS) {
   typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
   typekitCSS.crossOrigin = 'anonymous';
   typekitCSS.onload = function() {
-    console.log('✅ TypeKit CSS loaded, applying Adobe Clean fonts');
-    // Apply Adobe Clean fonts after TypeKit loads
-    setTimeout(() => {
-      const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
-      textElements.forEach(el => {
-        el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+    console.log('✅ TypeKit CSS loaded, waiting for fonts to be ready');
+    
+    // Wait for fonts to be actually loaded and ready
+    if ('fonts' in document) {
+      document.fonts.ready.then(() => {
+        console.log('✅ Fonts ready, applying Adobe Clean');
+        // Force font swap after fonts are actually loaded
+        const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+        textElements.forEach(el => {
+          el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+        });
+        document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+        console.log('🔄 Font swap applied - Adobe Clean should now be visible');
       });
-      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
-      console.log('🔄 Font swap applied - Adobe Clean should now be visible');
-    }, 100);
+    } else {
+      // Fallback for browsers without font loading API
+      setTimeout(() => {
+        console.log('✅ Fallback font swap after timeout');
+        const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+        textElements.forEach(el => {
+          el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+        });
+        document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+        console.log('🔄 Font swap applied - Adobe Clean should now be visible');
+      }, 1000);
+    }
+  };
+  typekitCSS.onerror = function() {
+    console.error('❌ TypeKit CSS failed to load');
   };
   document.head.appendChild(typekitCSS);
   
