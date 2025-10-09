@@ -9,7 +9,16 @@
   --status-dot-size: 6px;
   --status-curr-width: 30px;
   --block-padding: 40px;
-  padding: var(--block-padding) 0px var(--block-padding) 32px;
+  --side-padding: 20px;
+  padding: var(--block-padding) 0px var(--block-padding) 0px;
+}
+
+.how-to-cards:has(.gallery-control.hide) {
+  padding: var(--block-padding)  var(--side-padding) var(--block-padding) 0px;
+}
+
+.how-to-cards:has(.gallery-control.hide) .cards-container {
+  overflow: hidden;
 }
 
 .how-to-cards h3 {
@@ -20,7 +29,7 @@
 }
 
 .how-to-cards .text {
-  padding: 0;
+  padding: 0 var(--side-padding);
 }
 
 .how-to-cards .text h2 {
@@ -47,6 +56,14 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-300);
+}
+
+.how-to-cards .cards-container {
+  padding-left: var(--side-padding);
+}
+
+.how-to-cards .card:last-child {
+  margin-right: calc(2 * var(--side-padding));
 }
 
 .how-to-cards .card p {
@@ -114,11 +131,12 @@
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 768px) {
   .how-to-cards {
-    padding: 0 var(--spacing-600);
     max-width: 1440px;
     box-sizing: border-box;
+    --block-padding: 80px;
+    --side-padding: 32px;
   }
 
   .how-to-cards.cards-count-4 .cards-container ,
@@ -128,9 +146,14 @@
   }
 }
 
+@media (min-width: 1280px) {
+  .how-to-cards{
+    --side-padding: 40px;
+  }
+}
+
 @media (min-width: 1440px) {
   .how-to-cards {
-    padding: 0 var(--spacing-600);
     max-width: 1600px;
     margin: auto;
     box-sizing: border-box;
@@ -183,7 +206,7 @@
   gap: var(--spacing-300);
   overflow-x: scroll;
   scrollbar-width: none;
-  scroll-snap-type: x mandatory;
+  /* scroll-snap-type: x mandatory; */
   scroll-behavior: smooth;
   padding: 0;
   margin: 0;
@@ -225,25 +248,45 @@
 .gallery-control button {
   all: unset;
   cursor: pointer;
+  width: 2rem;
   height: 2rem;
   box-shadow: 0px 2px 8px 0px #00000029;
   border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white);
 }
 
 .gallery-control button:focus {
   outline: revert;
 }
 
-.gallery-control button:hover:not(:disabled) circle {
-  fill: var(--color-gray-300);
+.gallery-control button:hover:not(:disabled) {
+  background-color: var(--color-gray-300);
 }
 
 .gallery-control button:disabled {
   cursor: auto;
 }
 
-.gallery-control button:disabled path {
-  stroke: var(--color-gray-300);
+.gallery-control button .chevron-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  transform-origin: center;
+  display: block;
+}
+
+.gallery-control button.prev .chevron-icon {
+  transform: rotate(-90deg) translate(0px, -1px);
+}
+
+.gallery-control button.next .chevron-icon {
+  transform:rotate(90deg) translate(0px, -1px);
+}
+
+.gallery-control button:disabled .chevron-icon {
+  opacity: 0.35;
 }
 
 .gallery-control .status {
