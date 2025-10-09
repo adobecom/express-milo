@@ -344,6 +344,22 @@ preDecorateSections(document);
   style.textContent = criticalCSS;
   document.head.appendChild(style);
   
+  // ✅ Add preconnect hints for critical origins (300ms+ savings each)
+  const preconnectOrigins = [
+    'https://sstats.adobe.com',
+    'https://jvdtssh5lkvwwi4y3kbletjmvu0qctxj.lambda-url.us-west-2.on.aws',
+    'https://dcs.adobedc.net',
+    'https://www.adobe.com'
+  ];
+  
+  preconnectOrigins.forEach((origin) => {
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = origin;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  });
+  
   // ✅ Minimal font preloading to avoid blocking critical path
   const fontPreloads = [
     'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3'
@@ -389,6 +405,37 @@ preDecorateSections(document);
       document.head.appendChild(link);
     });
   }, 50); // Small delay to ensure critical CSS is applied first
+  
+  // ✅ Defer all non-critical CSS and JS to reduce critical path
+  setTimeout(() => {
+    // Defer global navigation CSS that's causing 1,511ms delay
+    const gnavCSS = document.createElement('link');
+    gnavCSS.rel = 'stylesheet';
+    gnavCSS.href = `${miloLibs}/blocks/global-navigation/global-navigation.css`;
+    gnavCSS.media = 'print';
+    gnavCSS.onload = function() {
+      this.media = 'all';
+    };
+    document.head.appendChild(gnavCSS);
+    
+    // Defer other heavy CSS files
+    const heavyCSS = [
+      `${miloLibs}/blocks/quotes/quotes.css`,
+      `${miloLibs}/blocks/template-x/template-x.css`,
+      `${miloLibs}/blocks/ratings/ratings.css`
+    ];
+    
+    heavyCSS.forEach((href) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.media = 'print';
+      link.onload = function() {
+        this.media = 'all';
+      };
+      document.head.appendChild(link);
+    });
+  }, 200);
 }());
 
 function decorateHeroLCP(loadStyle, config, createTag) {
@@ -549,6 +596,24 @@ const listenAlloy = () => {
     }
   }, 1000);
 
+  // ✅ Immediate LCP element optimization to reduce render delay
+  (function optimizeLCPElement() {
+    const lcpElement = document.querySelector('h1, .headline h1, #free-logo-maker');
+    if (lcpElement) {
+      // Ensure LCP element is immediately visible
+      lcpElement.style.visibility = 'visible';
+      lcpElement.style.opacity = '1';
+      lcpElement.classList.add('loaded');
+      
+      // Force immediate font rendering
+      lcpElement.style.fontFamily = 'Trebuchet MS, sans-serif';
+      lcpElement.style.fontWeight = '900';
+      lcpElement.style.fontSize = 'clamp(1.8rem, 4vw, 3rem)';
+      lcpElement.style.lineHeight = '1.1';
+      lcpElement.style.color = '#000';
+    }
+  }());
+
   // ✅ Defer image optimization to avoid blocking critical path
   setTimeout(async function optimizeImages() {
     const { createOptimizedPicture } = await import('./utils/media.js');
@@ -573,10 +638,21 @@ const listenAlloy = () => {
         img.setAttribute('loading', 'eager');
         img.setAttribute('fetchpriority', 'high');
         
-        // Calculate optimal width based on container
+        // Calculate optimal width based on container and display size
         const container = img.closest('.section, .column, .block');
         const containerWidth = container?.offsetWidth || 750;
-        const optimalWidth = Math.min(containerWidth * 2, 1200); // 2x for retina, max 1200px
+        
+        // Check if this is a template image that needs responsive sizing
+        const isTemplateImage = img.src.includes('adobeprojectm.com') || img.src.includes('component?assetType=');
+        const displayWidth = img.offsetWidth || 42; // Default display width for template images
+        
+        let optimalWidth;
+        if (isTemplateImage && displayWidth <= 50) {
+          // Template images displayed at 42x42 or 4x4 - use actual display size
+          optimalWidth = Math.max(displayWidth * 2, 84); // 2x for retina, min 84px
+        } else {
+          optimalWidth = Math.min(containerWidth * 2, 1200); // 2x for retina, max 1200px
+        }
         
         // Update src with optimized parameters - aggressive compression for LCP
         const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=75`;
@@ -600,10 +676,21 @@ const listenAlloy = () => {
         // Standard optimization: lazy loading, WebP format
         img.setAttribute('loading', 'lazy');
         
-        // Calculate responsive width
+        // Calculate responsive width with template image optimization
         const container = img.closest('.section, .column, .block');
         const containerWidth = container?.offsetWidth || 400;
-        const optimalWidth = Math.min(containerWidth * 2, 900); // 2x for retina, max 900px
+        
+        // Check if this is a template image that needs responsive sizing
+        const isTemplateImage = img.src.includes('adobeprojectm.com') || img.src.includes('component?assetType=');
+        const displayWidth = img.offsetWidth || 42; // Default display width for template images
+        
+        let optimalWidth;
+        if (isTemplateImage && displayWidth <= 50) {
+          // Template images displayed at 42x42 or 4x4 - use actual display size
+          optimalWidth = Math.max(displayWidth * 2, 84); // 2x for retina, min 84px
+        } else {
+          optimalWidth = Math.min(containerWidth * 2, 900); // 2x for retina, max 900px
+        }
         
         // Update src with optimized parameters - aggressive compression for non-LCP
         const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=70`;
