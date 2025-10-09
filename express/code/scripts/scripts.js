@@ -1203,15 +1203,87 @@ if (dynamicCriticalCSS) {
     console.log('🔄 Forced font swap on all text elements');
   }
   
-  // Run font swap after DOM is ready
+  // ✅ Fix Adobe logo loading issues
+  function fixAdobeLogoLoading() {
+    // Check for missing Adobe logos and fix them
+    const adobeLogos = document.querySelectorAll('img[src*="adobe-express-logo"], img[alt*="adobe-express-logo"]');
+    adobeLogos.forEach(logo => {
+      if (!logo.src || logo.src.includes('undefined') || logo.src.includes('null')) {
+        // Fix broken logo sources
+        logo.src = '/express/code/icons/adobe-express-logo.svg';
+        logo.alt = 'Adobe Express';
+        logo.style.width = '120px';
+        logo.style.height = 'auto';
+        console.log('🔧 Fixed broken Adobe logo:', logo);
+      }
+    });
+    
+    // Also check for missing logos in express-logo class elements
+    const expressLogos = document.querySelectorAll('.express-logo');
+    expressLogos.forEach(logo => {
+      if (!logo.src || logo.src.includes('undefined') || logo.src.includes('null')) {
+        logo.src = '/express/code/icons/adobe-express-logo.svg';
+        logo.alt = 'Adobe Express';
+        logo.style.width = '120px';
+        logo.style.height = 'auto';
+        console.log('🔧 Fixed broken express logo:', logo);
+      }
+    });
+    
+    // Fix any broken icon elements
+    const brokenIcons = document.querySelectorAll('img[src*="undefined"], img[src*="null"], img:not([src])');
+    brokenIcons.forEach(icon => {
+      if (icon.alt && icon.alt.includes('adobe-express-logo')) {
+        icon.src = '/express/code/icons/adobe-express-logo.svg';
+        icon.style.width = '120px';
+        icon.style.height = 'auto';
+        console.log('🔧 Fixed broken icon element:', icon);
+      }
+    });
+  }
+  
+  // ✅ Override getIconElementDeprecated to ensure proper logo loading
+  function ensureLogoLoading() {
+    if (window.getIconElementDeprecated) {
+      const originalGetIcon = window.getIconElementDeprecated;
+      window.getIconElementDeprecated = function(icons, size, alt, additionalClassName, altSrc) {
+        const icon = originalGetIcon.call(this, icons, size, alt, additionalClassName, altSrc);
+        
+        // Fix Adobe Express logo specifically
+        if (icons === 'adobe-express-logo' || (Array.isArray(icons) && icons.includes('adobe-express-logo'))) {
+          if (icon && icon.src) {
+            icon.src = '/express/code/icons/adobe-express-logo.svg';
+            icon.alt = 'Adobe Express';
+            icon.style.width = '120px';
+            icon.style.height = 'auto';
+            console.log('🔧 Ensured Adobe Express logo loads correctly');
+          }
+        }
+        
+        return icon;
+      };
+    }
+  }
+  
+  // Run font swap and logo fixes after DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', forceFontSwap);
+    document.addEventListener('DOMContentLoaded', () => {
+      ensureLogoLoading();
+      forceFontSwap();
+      fixAdobeLogoLoading();
+    });
   } else {
+    ensureLogoLoading();
     forceFontSwap();
+    fixAdobeLogoLoading();
   }
   
   // Also run after a short delay to catch dynamically loaded content
-  setTimeout(forceFontSwap, 1000);
+  setTimeout(() => {
+    ensureLogoLoading();
+    forceFontSwap();
+    fixAdobeLogoLoading();
+  }, 1000);
   
   // ✅ Optimized font loading for better performance
   const fontLoadingCSS = `
@@ -1274,6 +1346,22 @@ if (dynamicCriticalCSS) {
     /* Force Adobe Clean on all text elements */
     * {
       font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+    }
+    
+    /* Ensure Adobe logo displays properly */
+    .express-logo, img[alt*="adobe-express-logo"], img[src*="adobe-express-logo"] {
+      width: 120px !important;
+      height: auto !important;
+      max-width: 120px !important;
+      display: inline-block !important;
+      vertical-align: middle !important;
+    }
+    
+    /* Fix any broken logo containers */
+    .express-logo:not([src]), img[alt*="adobe-express-logo"]:not([src]) {
+      content: url('/express/code/icons/adobe-express-logo.svg');
+      width: 120px !important;
+      height: auto !important;
     }
     
     /* Force immediate text visibility to prevent render delay */
