@@ -1159,11 +1159,23 @@ if (dynamicCriticalCSS) {
   style.textContent = criticalCSS;
   document.head.appendChild(style);
   
-  // ✅ Load TypeKit CSS for Adobe Clean font
+  // ✅ Load TypeKit CSS for Adobe Clean font with proper font swap
   const typekitCSS = document.createElement('link');
   typekitCSS.rel = 'stylesheet';
   typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
   typekitCSS.crossOrigin = 'anonymous';
+  typekitCSS.onload = function() {
+    console.log('✅ TypeKit CSS loaded, applying Adobe Clean fonts');
+    // Apply Adobe Clean fonts after TypeKit loads
+    setTimeout(() => {
+      const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+      textElements.forEach(el => {
+        el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+      });
+      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+      console.log('🔄 Font swap applied - Adobe Clean should now be visible');
+    }, 100);
+  };
   document.head.appendChild(typekitCSS);
   
   // ✅ Fix Adobe logo loading issues
@@ -1257,6 +1269,20 @@ if (dynamicCriticalCSS) {
     ensureLogoLoading();
     fixAdobeLogoLoading();
   }, 1000);
+  
+  // ✅ Fallback font swap mechanism
+  setTimeout(() => {
+    // Check if fonts have been applied, if not apply them
+    const bodyFont = getComputedStyle(document.body).fontFamily;
+    if (!bodyFont.includes('adobe-clean')) {
+      console.log('🔄 Fallback font swap - applying Adobe Clean fonts');
+      const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+      textElements.forEach(el => {
+        el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+      });
+      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+    }
+  }, 2000);
   
   // ✅ Optimized font loading for better performance - Phase L only
   const fontLoadingCSS = `
