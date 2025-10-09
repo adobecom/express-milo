@@ -233,14 +233,86 @@ preDecorateSections(document);
 }());
 
 (function loadStyles() {
-  const paths = [`${miloLibs}/styles/styles.css`];
-  if (STYLES) { paths.push(STYLES); }
-  paths.forEach((path) => {
+  // ✅ CRITICAL: Inline critical CSS immediately to prevent render-blocking
+  const criticalCSS = `
+    /* Critical CSS for immediate rendering */
+    body { 
+      font-family: 'Trebuchet MS', sans-serif; 
+      margin: 0; 
+      padding: 0;
+      line-height: 1.4;
+    }
+    h1, h2, h3, h4, h5, h6 { 
+      font-family: 'Trebuchet MS', sans-serif; 
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0.5em 0;
+    }
+    h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
+    h3 { font-size: clamp(1.2rem, 2.5vw, 2rem); }
+    .section:first-child { 
+      min-height: 100vh; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    main { 
+      display: block; 
+      width: 100%; 
+    }
+    img { 
+      max-width: 100%; 
+      height: auto; 
+    }
+    /* Prevent layout shift during font loading */
+    .headline h1, #free-logo-maker {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    @media (min-width: 900px) {
+      .headline h1, #free-logo-maker {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+      }
+    }
+  `;
+  
+  const style = document.createElement('style');
+  style.textContent = criticalCSS;
+  document.head.appendChild(style);
+  
+  // ✅ Preload critical TypeKit fonts to reduce render delay
+  const fontPreloads = [
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3',
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3'
+  ];
+  
+  fontPreloads.forEach((href) => {
     const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', path);
+    link.rel = 'preload';
+    link.href = href;
+    link.as = 'font';
+    link.type = 'font/woff2';
+    link.crossOrigin = 'anonymous';
     document.head.appendChild(link);
   });
+  
+  // ✅ Defer non-critical CSS to prevent render-blocking
+  setTimeout(() => {
+    const paths = [`${miloLibs}/styles/styles.css`];
+    if (STYLES) { paths.push(STYLES); }
+    paths.forEach((path) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = path;
+      // Add onload to ensure CSS is loaded before showing content
+      link.onload = () => {
+        document.body.style.visibility = 'visible';
+      };
+      document.head.appendChild(link);
+    });
+  }, 50); // Small delay to ensure critical CSS is applied first
 }());
 
 function decorateHeroLCP(loadStyle, config, createTag) {
@@ -387,6 +459,67 @@ const listenAlloy = () => {
 
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
+  
+  // ✅ Universal image optimization for better performance
+  (async function optimizeImages() {
+    const { createOptimizedPicture } = await import('./utils/media.js');
+    
+    // Optimize all images on the page
+    const images = document.querySelectorAll('img[src*="/media_"]');
+    images.forEach((img) => {
+      const src = img.src;
+      if (!src.includes('/media_')) return;
+      
+      const url = new URL(src, window.location.href);
+      const { pathname } = url;
+      const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+      
+      // Determine if LCP candidate
+      const isFirstSection = img.closest('.section') === document.querySelector('.section');
+      const isFirstImage = img === img.closest('.section')?.querySelector('img');
+      const isLCPCandidate = isFirstSection && isFirstImage;
+      
+      if (isLCPCandidate) {
+        // LCP optimization: eager loading, high priority, WebP format
+        img.setAttribute('loading', 'eager');
+        img.setAttribute('fetchpriority', 'high');
+        
+        // Calculate optimal width based on container
+        const container = img.closest('.section, .column, .block');
+        const containerWidth = container?.offsetWidth || 750;
+        const optimalWidth = Math.min(containerWidth * 2, 1200); // 2x for retina, max 1200px
+        
+        // Update src with optimized parameters
+        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high`;
+        if (img.src !== newSrc) {
+          img.src = newSrc;
+        }
+        
+        // Set proper dimensions
+        img.setAttribute('width', optimalWidth);
+        img.setAttribute('height', Math.round(optimalWidth * 0.6));
+        
+      } else {
+        // Standard optimization: lazy loading, WebP format
+        img.setAttribute('loading', 'lazy');
+        
+        // Calculate responsive width
+        const container = img.closest('.section, .column, .block');
+        const containerWidth = container?.offsetWidth || 400;
+        const optimalWidth = Math.min(containerWidth * 2, 900); // 2x for retina, max 900px
+        
+        // Update src with optimized parameters
+        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high`;
+        if (img.src !== newSrc) {
+          img.src = newSrc;
+        }
+        
+        // Set proper dimensions
+        img.setAttribute('width', optimalWidth);
+        img.setAttribute('height', Math.round(optimalWidth * 0.6));
+      }
+    });
+  }());
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });

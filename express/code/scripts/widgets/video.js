@@ -111,10 +111,51 @@ async function playInlineVideo($element, vidUrls, playerType, title, ts) {
   const [primaryUrl] = vidUrls;
   if (!primaryUrl) return;
   if (playerType === 'html5') {
-    const sources = vidUrls.map((src) => `<source src="${src}" type="${getMimeType(src)}"></source>`).join('');
-    const videoHTML = `<video controls playsinline autoplay controlsList="nodownload" oncontextmenu="return false">${sources}</video>`;
+    // ✅ CRITICAL: Remove autoplay and src to prevent immediate loading
+    const sources = vidUrls.map((src) => `<source type="${getMimeType(src)}"></source>`).join('');
+    const videoHTML = `<video controls playsinline controlsList="nodownload" oncontextmenu="return false" preload="none">${sources}</video>`;
     $element.innerHTML = videoHTML;
+    
+    // Store video URLs for lazy loading
     const $video = $element.querySelector('video');
+    $video.dataset.lazySrcs = JSON.stringify(vidUrls);
+    
+    // ✅ Phase-aware video loading: Check if this is the first section (LCP critical)
+    const isFirstSection = $element.closest('.section') === document.querySelector('.section');
+    
+    if (isFirstSection) {
+      // Phase E: Load video immediately for LCP elements (no lazy loading)
+      const sources = $video.querySelectorAll('source');
+      const lazySrcs = JSON.parse($video.dataset.lazySrcs || '[]');
+      sources.forEach((source, index) => {
+        if (lazySrcs[index]) {
+          source.src = lazySrcs[index];
+        }
+      });
+      $video.setAttribute('preload', 'metadata');
+      $video.load();
+    } else {
+      // Phase L: Lazy load videos in below-fold sections
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const sources = entry.target.querySelectorAll('source');
+            const lazySrcs = JSON.parse(entry.target.dataset.lazySrcs || '[]');
+            sources.forEach((source, index) => {
+              if (lazySrcs[index]) {
+                source.src = lazySrcs[index];
+              }
+            });
+            entry.target.setAttribute('preload', 'metadata');
+            entry.target.load();
+            videoObserver.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '200px' }); // Reduced margin for more aggressive lazy loading
+      
+      videoObserver.observe($video);
+    }
+    
     $video.addEventListener('loadeddata', async () => {
       if (ts) {
         $video.currentTime = ts;

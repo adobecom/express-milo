@@ -40,6 +40,18 @@ async function loadVideoAnalytic(video) {
 }
 
 function startVideo(player, overlay) {
+  // ✅ Lazy load video sources if not already loaded
+  if (player.dataset.lazySrcs && !player.querySelector('source[src]')) {
+    const videoUrls = JSON.parse(player.dataset.lazySrcs);
+    const sources = player.querySelectorAll('source');
+    sources.forEach((source, index) => {
+      if (videoUrls[index]) {
+        source.src = videoUrls[index];
+      }
+    });
+    player.load(); // Load the video now that sources are set
+  }
+  
   overlay.style.zIndex = 0;
   const playPromise = player.play();
   if (playPromise !== undefined) {
@@ -89,15 +101,18 @@ function loadVideo(block, payload) {
     playerOverlay.style.zIndex = 1;
     playerOverlay.style.backgroundImage = `url('${currentVideo.thumbnail}')`;
 
+    // ✅ CRITICAL: Store video URLs for lazy loading instead of setting src immediately
+    const videoUrls = currentVideo.files.map(file => file.href);
+    inlinePlayer.dataset.lazySrcs = JSON.stringify(videoUrls);
+    
     for (let i = 0; i < currentVideo.files.length; i += 1) {
       const file = currentVideo.files[i];
       inlinePlayer.append(createTag('source', {
-        src: file.href,
         type: `video/${file.type}`,
       }));
     }
 
-    inlinePlayer.load();
+    // ✅ Don't call load() immediately - let startVideo handle it
     inlinePlayerDuration.textContent = currentVideo.duration;
     videoTitle.textContent = currentVideo.title;
     if (currentVideo.hideTitle) {

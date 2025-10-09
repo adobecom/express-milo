@@ -300,8 +300,10 @@ async function renderRotatingMedias(
       poster,
       class: 'unloaded hidden',
     });
+    
+    // ✅ CRITICAL: Store video URL for lazy loading instead of setting src immediately
+    video.dataset.lazySrc = src;
     const videoSource = createTag('source', {
-      src,
       type: 'video/mp4',
     });
 
@@ -336,21 +338,30 @@ async function renderRotatingMedias(
     if (video) {
       const videoSource = video.querySelector('source');
       video.classList.remove('hidden');
-      const { src, poster } = await getVideoUrls(
-        renditionLinkHref,
-        componentLinkHref,
-        pageIterator.current(),
-      );
-      video.poster = poster;
-      videoSource.src = src;
-      video.load();
-      video.muted = true;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // ignore
-        });
+      
+      // ✅ Use the already stored lazySrc from video creation
+      if (video.dataset.lazySrc && !videoSource.src) {
+        videoSource.src = video.dataset.lazySrc;
+        video.load();
       }
+      video.muted = true;
+      
+      // Add click handler to load and play video on user interaction
+      const loadAndPlayVideo = () => {
+        if (video.dataset.lazySrc && !videoSource.src) {
+          videoSource.src = video.dataset.lazySrc;
+          video.load();
+        }
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // ignore
+          });
+        }
+      };
+      
+      video.addEventListener('click', loadAndPlayVideo, { once: true });
+      video.addEventListener('touchstart', loadAndPlayVideo, { once: true });
     }
   };
 
