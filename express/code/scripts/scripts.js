@@ -275,26 +275,60 @@ preDecorateSections(document);
   
   // Process author-defined preloads from meta tag (Franklin-generated)
   // Support variable substitution like DC (MILOLIBS, UNITYLIBS, LOCALEPREFIX)
-  const miloLibs = '/libs'; // Could be dynamic based on environment
+  const miloLibsValue = miloLibs; // Use the already set miloLibs variable
   const unityLibs = '/unitylibs'; // Could be dynamic based on environment
   const localePrefix = window.location.pathname.split('/')[1] || ''; // Extract locale from URL
   
   const preloads = document.querySelector('meta[name="preloads"]')?.content?.split(',').map(x => 
     x.trim()
-      .replace('$MILOLIBS', miloLibs)
+      .replace('$MILOLIBS', miloLibsValue)
       .replace('$UNITYLIBS', unityLibs)
       .replace('$LOCALEPREFIX', localePrefix)
   ) || [];
   
-  preloads.forEach((link) => {
-    if (link.endsWith('.js')) {
-      loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
-    } else if (link.endsWith('.css')) {
-      loadLink(link, { as: 'style', rel: 'preload' });
-    } else if (/\.(json|html|svg)$/.test(link)) {
-      loadLink(link, { as: 'fetch', rel: 'preload', crossorigin: 'anonymous' });
-    } else if (/\.(png|jpg|jpeg|gif|webp)$/.test(link)) {
-      loadLink(link, { as: 'image', rel: 'preload', fetchpriority: 'high' });
+  // Map block names to actual resource paths
+  const blockToResources = {
+    'marquee': [`${miloLibs}/blocks/marquee/marquee.js`, `${miloLibs}/blocks/marquee/marquee.css`],
+    'grid-marquee': [`${miloLibs}/blocks/grid-marquee/grid-marquee.js`, `${miloLibs}/blocks/grid-marquee/grid-marquee.css`],
+    'quotes': [`${miloLibs}/blocks/quotes/quotes.js`, `${miloLibs}/blocks/quotes/quotes.css`],
+    'template-x': [`${miloLibs}/blocks/template-x/template-x.js`, `${miloLibs}/blocks/template-x/template-x.css`],
+    'ratings': [`${miloLibs}/blocks/ratings/ratings.js`, `${miloLibs}/blocks/ratings/ratings.css`],
+    'carousel': [`${miloLibs}/blocks/widgets/carousel.js`, `${miloLibs}/blocks/widgets/carousel.css`],
+    'steps': [`${miloLibs}/blocks/steps/steps.js`, `${miloLibs}/blocks/steps/steps.css`],
+    'link-list': [`${miloLibs}/blocks/link-list/link-list.js`, `${miloLibs}/blocks/link-list/link-list.css`],
+    'banner': [`${miloLibs}/blocks/banner/banner.js`, `${miloLibs}/blocks/banner/banner.css`],
+    'faq': [`${miloLibs}/blocks/faq/faq.js`, `${miloLibs}/blocks/faq/faq.css`],
+    'blog-posts': [`${miloLibs}/blocks/blog-posts/blog-posts.js`, `${miloLibs}/blocks/blog-posts/blog-posts.css`],
+    'cards': [`${miloLibs}/blocks/cards/cards.js`, `${miloLibs}/blocks/cards/cards.css`],
+    'promotion': [`${miloLibs}/blocks/promotion/promotion.js`, `${miloLibs}/blocks/promotion/promotion.css`],
+    'mobile-fork-button': [`${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.js`, `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.css`],
+    'floating-cta': [`${miloLibs}/blocks/widgets/floating-cta.js`, `${miloLibs}/blocks/widgets/floating-cta.css`],
+    'masonry': [`${miloLibs}/blocks/widgets/masonry.js`, `${miloLibs}/blocks/widgets/masonry.css`],
+    'grid-carousel': [`${miloLibs}/blocks/widgets/grid-carousel.js`, `${miloLibs}/blocks/widgets/grid-carousel.css`],
+    'basic-carousel': [`${miloLibs}/blocks/widgets/basic-carousel.js`, `${miloLibs}/blocks/widgets/basic-carousel.css`]
+  };
+  
+  preloads.forEach((preloadItem) => {
+    // Handle block names (e.g., "Marquee, grid-marquee")
+    if (blockToResources[preloadItem.toLowerCase()]) {
+      const resources = blockToResources[preloadItem.toLowerCase()];
+      resources.forEach((resource) => {
+        if (resource.endsWith('.js')) {
+          loadLink(resource, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
+        } else if (resource.endsWith('.css')) {
+          loadLink(resource, { as: 'style', rel: 'preload' });
+        }
+      });
+    }
+    // Handle direct file paths (e.g., "/libs/blocks/marquee/marquee.js")
+    else if (preloadItem.endsWith('.js')) {
+      loadLink(preloadItem, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
+    } else if (preloadItem.endsWith('.css')) {
+      loadLink(preloadItem, { as: 'style', rel: 'preload' });
+    } else if (/\.(json|html|svg)$/.test(preloadItem)) {
+      loadLink(preloadItem, { as: 'fetch', rel: 'preload', crossorigin: 'anonymous' });
+    } else if (/\.(png|jpg|jpeg|gif|webp)$/.test(preloadItem)) {
+      loadLink(preloadItem, { as: 'image', rel: 'preload', fetchpriority: 'high' });
     }
   });
   
@@ -472,35 +506,34 @@ preDecorateSections(document);
     // document.head.appendChild(gnavCSS);
     
     // Defer other heavy CSS files
-    // TEMPORARILY DISABLED - investigating 404 errors
-    // const heavyCSS = [
-    //   `${miloLibs}/blocks/quotes/quotes.css`,
-    //   `${miloLibs}/blocks/template-x/template-x.css`,
-    //   `${miloLibs}/blocks/ratings/ratings.css`,
-    //   `${miloLibs}/blocks/widgets/carousel.css`,
-    //   `${miloLibs}/blocks/widgets/basic-carousel.css`,
-    //   `${miloLibs}/blocks/widgets/grid-carousel.css`,
-    //   `${miloLibs}/blocks/widgets/masonry.css`,
-    //   `${miloLibs}/blocks/steps/steps.css`,
-    //   `${miloLibs}/blocks/link-list/link-list.css`,
-    //   `${miloLibs}/blocks/banner/banner.css`,
-    //   `${miloLibs}/blocks/faq/faq.css`,
-    //   `${miloLibs}/blocks/blog-posts/blog-posts.css`,
-    //   `${miloLibs}/blocks/cards/cards.css`,
-    //   `${miloLibs}/blocks/promotion/promotion.css`,
-    //   `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.css`
-    // ];
-    // 
-    // heavyCSS.forEach((href) => {
-    //   const link = document.createElement('link');
-    //   link.rel = 'stylesheet';
-    //   link.href = href;
-    //   link.media = 'print';
-    //   link.onload = function() {
-    //     this.media = 'all';
-    //   };
-    //   document.head.appendChild(link);
-    // });
+    const heavyCSS = [
+      `${miloLibs}/blocks/quotes/quotes.css`,
+      `${miloLibs}/blocks/template-x/template-x.css`,
+      `${miloLibs}/blocks/ratings/ratings.css`,
+      `${miloLibs}/blocks/widgets/carousel.css`,
+      `${miloLibs}/blocks/widgets/basic-carousel.css`,
+      `${miloLibs}/blocks/widgets/grid-carousel.css`,
+      `${miloLibs}/blocks/widgets/masonry.css`,
+      `${miloLibs}/blocks/steps/steps.css`,
+      `${miloLibs}/blocks/link-list/link-list.css`,
+      `${miloLibs}/blocks/banner/banner.css`,
+      `${miloLibs}/blocks/faq/faq.css`,
+      `${miloLibs}/blocks/blog-posts/blog-posts.css`,
+      `${miloLibs}/blocks/cards/cards.css`,
+      `${miloLibs}/blocks/promotion/promotion.css`,
+      `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.css`
+    ];
+    
+    heavyCSS.forEach((href) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      link.media = 'print';
+      link.onload = function() {
+        this.media = 'all';
+      };
+      document.head.appendChild(link);
+    });
   }, 200);
   
   // ✅ Defer floating CTA CSS to later - it's not LCP critical
@@ -518,34 +551,33 @@ preDecorateSections(document);
   // }, 1000); // Load CSS 1 second later
   
   // ✅ Defer heavy JavaScript files to reduce critical path
-  // TEMPORARILY DISABLED - investigating 404 errors
-  // setTimeout(() => {
-  //   const heavyJS = [
-  //     `${miloLibs}/blocks/quotes/quotes.js`,
-  //     `${miloLibs}/blocks/template-x/template-x.js`,
-  //     `${miloLibs}/blocks/ratings/ratings.js`,
-  //     `${miloLibs}/blocks/widgets/carousel.js`,
-  //     `${miloLibs}/blocks/widgets/basic-carousel.js`,
-  //     `${miloLibs}/blocks/widgets/grid-carousel.js`,
-  //     `${miloLibs}/blocks/widgets/masonry.js`,
-  //     `${miloLibs}/blocks/steps/steps.js`,
-  //     `${miloLibs}/blocks/link-list/link-list.js`,
-  //     `${miloLibs}/blocks/banner/banner.js`,
-  //     `${miloLibs}/blocks/faq/faq.js`,
-  //     `${miloLibs}/blocks/blog-posts/blog-posts.js`,
-  //     `${miloLibs}/blocks/cards/cards.js`,
-  //     `${miloLibs}/blocks/promotion/promotion.js`,
-  //     `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.js`
-  //   ];
-  //   
-  //   heavyJS.forEach((href) => {
-  //     const script = document.createElement('script');
-  //     script.src = href;
-  //     script.async = true;
-  //     script.defer = true;
-  //     document.head.appendChild(script);
-  //   });
-  // }, 500);
+  setTimeout(() => {
+    const heavyJS = [
+      `${miloLibs}/blocks/quotes/quotes.js`,
+      `${miloLibs}/blocks/template-x/template-x.js`,
+      `${miloLibs}/blocks/ratings/ratings.js`,
+      `${miloLibs}/blocks/widgets/carousel.js`,
+      `${miloLibs}/blocks/widgets/basic-carousel.js`,
+      `${miloLibs}/blocks/widgets/grid-carousel.js`,
+      `${miloLibs}/blocks/widgets/masonry.js`,
+      `${miloLibs}/blocks/steps/steps.js`,
+      `${miloLibs}/blocks/link-list/link-list.js`,
+      `${miloLibs}/blocks/banner/banner.js`,
+      `${miloLibs}/blocks/faq/faq.js`,
+      `${miloLibs}/blocks/blog-posts/blog-posts.js`,
+      `${miloLibs}/blocks/cards/cards.js`,
+      `${miloLibs}/blocks/promotion/promotion.js`,
+      `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.js`
+    ];
+    
+    heavyJS.forEach((href) => {
+      const script = document.createElement('script');
+      script.src = href;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
+    });
+  }, 500);
   
   // ✅ Defer floating CTA to later - it's not LCP critical
   // TEMPORARILY DISABLED - investigating 404 errors
