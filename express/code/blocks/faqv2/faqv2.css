@@ -99,15 +99,22 @@
   color: var(--color-light-grey);
 }
 
-/* Focus management for accessibility */
+
 .faqv2-header:focus-visible {
   outline: 2px solid var(--color-info-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-.faqv2-header:focus-visible + .faqv2-content.open {
-  margin-top: var(--spacing-300);
+.faqv2.expandable .faqv2-toggle:has(.faqv2-content.open) .faqv2-header:focus-visible {
+  outline: none;
+}
+
+.faqv2.expandable .faqv2-toggle:has(.faqv2-content.open):focus-visible,
+.faqv2.expandable .faqv2-toggle:has(.faqv2-content.open):has(.faqv2-header:focus-visible) {
+  outline: 2px solid var(--color-info-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
 
 .faqv2.bold .faqv2-header {
