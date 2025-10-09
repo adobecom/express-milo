@@ -503,7 +503,7 @@ preDecorateSections(document);
     });
   }, 200);
   
-  // ✅ Defer floating CTA CSS to much later - it's not LCP critical
+  // ✅ Defer floating CTA CSS to later - it's not LCP critical
   setTimeout(() => {
     const floatingCTACSS = `${miloLibs}/blocks/widgets/floating-cta.css`;
     const link = document.createElement('link');
@@ -514,7 +514,7 @@ preDecorateSections(document);
       this.media = 'all';
     };
     document.head.appendChild(link);
-  }, 2000); // Load CSS 2 seconds later
+  }, 1000); // Load CSS 1 second later
   
   // ✅ Defer heavy JavaScript files to reduce critical path
   setTimeout(() => {
@@ -545,7 +545,7 @@ preDecorateSections(document);
     });
   }, 500);
   
-  // ✅ Defer floating CTA to much later - it's not LCP critical
+  // ✅ Defer floating CTA to later - it's not LCP critical
   setTimeout(() => {
     const floatingCTAJS = `${miloLibs}/blocks/widgets/floating-cta.js`;
     const script = document.createElement('script');
@@ -553,7 +553,7 @@ preDecorateSections(document);
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
-  }, 2000); // Load 2 seconds later
+  }, 1000); // Load 1 second later
 }());
 
 function decorateHeroLCP(loadStyle, config, createTag) {
@@ -698,10 +698,7 @@ const listenAlloy = () => {
   const footerMeta = createTag('meta', { name: 'custom-footer', content: 'on' });
   document.head.append(footerMeta);
 
-  // ✅ Defer floating CTA block creation - it's not LCP critical
-  setTimeout(() => {
-    buildAutoBlocks();
-  }, 2500); // Create floating CTA 2.5 seconds after page load
+  buildAutoBlocks();
   
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   
