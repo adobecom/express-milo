@@ -348,18 +348,50 @@ function populateTemplates(block, templates, props) {
           const img = tmplt.querySelector('img');
           const video = createTag('video', {
             playsinline: '',
-            autoplay: '',
             loop: '',
             muted: '',
             poster: img.getAttribute('src'),
             title: img.getAttribute('alt'),
+            preload: 'none', // ✅ CRITICAL: No preload to prevent immediate loading
           });
+          
+          // ✅ Store video URL for lazy loading
+          video.dataset.lazySrc = videoLink;
           video.append(createTag('source', {
-            src: videoLink,
             type: 'video/mp4',
           }));
           parent.replaceChild(video, picture);
           imgLink.remove();
+          // ✅ Phase-aware video loading: Check if this is the first section (LCP critical)
+          const isFirstSection = video.closest('.section') === document.querySelector('.section');
+          
+          if (isFirstSection) {
+            // Phase E: Load video immediately for LCP elements (no lazy loading)
+            const source = video.querySelector('source');
+            if (source && video.dataset.lazySrc) {
+              source.src = video.dataset.lazySrc;
+              video.setAttribute('preload', 'metadata');
+              video.load();
+            }
+          } else {
+            // Phase L: Lazy load videos in below-fold sections
+            const videoObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  const source = entry.target.querySelector('source');
+                  if (source && entry.target.dataset.lazySrc) {
+                    source.src = entry.target.dataset.lazySrc;
+                    entry.target.setAttribute('preload', 'metadata');
+                    entry.target.load();
+                  }
+                  videoObserver.unobserve(entry.target);
+                }
+              });
+            }, { rootMargin: '200px' }); // Reduced margin for more aggressive lazy loading
+            
+            videoObserver.observe(video);
+          }
+          
           video.addEventListener('canplay', () => {
             video.muted = true;
             const playPromise = video.play();
@@ -1828,14 +1860,49 @@ function addBackgroundAnimation(block, animationUrl) {
 
   if (parent) {
     parent.classList.add('with-animation');
-    const videoBackground = createTag('video', { class: 'animation-background' });
-    videoBackground.append(createTag('source', { src: animationUrl, type: 'video/mp4' }));
-    videoBackground.setAttribute('autoplay', '');
+    const videoBackground = createTag('video', { 
+      class: 'animation-background',
+      preload: 'none', // ✅ CRITICAL: No preload to prevent immediate loading
+    });
+    
+    // ✅ Store video URL for lazy loading
+    videoBackground.dataset.lazySrc = animationUrl;
+    videoBackground.append(createTag('source', { type: 'video/mp4' }));
     videoBackground.setAttribute('muted', '');
     videoBackground.setAttribute('loop', '');
     videoBackground.setAttribute('playsinline', '');
     parent.prepend(videoBackground);
     videoBackground.muted = true;
+    
+    // ✅ Phase-aware video loading for background animation
+    const isFirstSection = videoBackground.closest('.section') === document.querySelector('.section');
+    
+    if (isFirstSection) {
+      // Phase E: Load video immediately for LCP elements (no lazy loading)
+      const source = videoBackground.querySelector('source');
+      if (source && videoBackground.dataset.lazySrc) {
+        source.src = videoBackground.dataset.lazySrc;
+        videoBackground.setAttribute('preload', 'metadata');
+        videoBackground.load();
+      }
+    } else {
+      // Phase L: Lazy load videos in below-fold sections
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const source = entry.target.querySelector('source');
+            if (source && entry.target.dataset.lazySrc) {
+              source.src = entry.target.dataset.lazySrc;
+              entry.target.setAttribute('preload', 'metadata');
+              entry.target.load();
+            }
+            videoObserver.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '200px' }); // Reduced margin for more aggressive lazy loading
+      
+      videoObserver.observe(videoBackground);
+    }
   }
 }
 

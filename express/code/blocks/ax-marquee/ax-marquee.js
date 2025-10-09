@@ -233,9 +233,11 @@ function createAnimation(animations) {
 
   // replace anchor with video element
   const video = createTag('video', attribs);
-  video.setAttribute('preload', 'auto');
+  video.setAttribute('preload', 'none'); // ✅ CRITICAL: No preload to prevent immediate loading
   if (source) {
-    video.innerHTML = `<source src="${source}" type="video/mp4">`;
+    // ✅ Store video URL for lazy loading
+    video.dataset.lazySrc = source;
+    video.innerHTML = `<source type="video/mp4">`;
   }
   return video;
 }
@@ -295,6 +297,36 @@ export function transformToVideoLink(cell, a) {
       displayVideoModal(vidUrls, title);
     }
   });
+
+  // ✅ Phase-aware video loading: Check if this is the first section (LCP critical)
+  const isFirstSection = block.closest('.section') === document.querySelector('.section');
+  
+  if (isFirstSection) {
+    // Phase E: Load video immediately for LCP elements (no lazy loading)
+    const source = video.querySelector('source');
+    if (source && video.dataset.lazySrc) {
+      source.src = video.dataset.lazySrc;
+      video.setAttribute('preload', 'metadata');
+      video.load();
+    }
+  } else {
+    // Phase L: Lazy load videos in below-fold sections
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const source = entry.target.querySelector('source');
+          if (source && entry.target.dataset.lazySrc) {
+            source.src = entry.target.dataset.lazySrc;
+          }
+          entry.target.setAttribute('preload', 'metadata');
+          entry.target.load();
+          videoObserver.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '200px' }); // Reduced margin for more aggressive lazy loading
+    
+    videoObserver.observe(video);
+  }
 
   // autoplay if hash matches title
   if (toClassName(title) === window.location.hash.substring(1)) {

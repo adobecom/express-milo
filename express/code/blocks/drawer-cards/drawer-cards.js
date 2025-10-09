@@ -21,6 +21,15 @@ function drawerOn(drawer) {
   drawer.classList.remove('hide');
   const video = drawer.querySelector('video');
   if (video && !reduceMotionMQ.matches) {
+    // ✅ Lazy load video source if not already loaded
+    if (video.dataset.lazySrc && !video.querySelector('source[src]')) {
+      const source = video.querySelector('source');
+      if (source) {
+        source.src = video.dataset.lazySrc;
+        video.setAttribute('preload', 'metadata');
+        video.load();
+      }
+    }
     video.muted = true;
     video.play().catch(() => { });
   }
@@ -74,10 +83,13 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     playsinline: '',
     muted: '',
     loop: '',
-    preload: 'metadata',
+    preload: 'none', // ✅ CRITICAL: No preload to prevent immediate loading
     title: titleText,
     poster,
-  }, `<source src="${videoSrc}" type="video/mp4">`);
+  }, `<source type="video/mp4">`);
+  
+  // ✅ Store video URL for lazy loading
+  video.dataset.lazySrc = videoSrc;
   const videoWrapper = createTag('button', { class: 'video-container' }, video);
   // link video to first anchor
   videoWrapper.addEventListener('click', () => anchors[0]?.click());
