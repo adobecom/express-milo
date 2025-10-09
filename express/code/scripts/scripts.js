@@ -851,34 +851,35 @@ preDecorateSections(document);
     // document.head.appendChild(gnavCSS);
     
     // Defer other heavy CSS files
-    const heavyCSS = [
-      `${miloLibs}/blocks/quotes/quotes.css`,
-      `${miloLibs}/blocks/template-x/template-x.css`,
-      `${miloLibs}/blocks/ratings/ratings.css`,
-      `${miloLibs}/blocks/widgets/carousel.css`,
-      `${miloLibs}/blocks/widgets/basic-carousel.css`,
-      `${miloLibs}/blocks/widgets/grid-carousel.css`,
-      `${miloLibs}/blocks/widgets/masonry.css`,
-      `${miloLibs}/blocks/steps/steps.css`,
-      `${miloLibs}/blocks/link-list/link-list.css`,
-      `${miloLibs}/blocks/banner/banner.css`,
-      `${miloLibs}/blocks/faq/faq.css`,
-      `${miloLibs}/blocks/blog-posts/blog-posts.css`,
-      `${miloLibs}/blocks/cards/cards.css`,
-      `${miloLibs}/blocks/promotion/promotion.css`,
-      `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.css`
-    ];
-    
-    heavyCSS.forEach((href) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = href;
-      link.media = 'print';
-      link.onload = function() {
-        this.media = 'all';
-      };
-      document.head.appendChild(link);
-    });
+    // TEMPORARILY DISABLED - investigating 404/ORB errors
+    // const heavyCSS = [
+    //   `${miloLibs}/blocks/quotes/quotes.css`,
+    //   `${miloLibs}/blocks/template-x/template-x.css`,
+    //   `${miloLibs}/blocks/ratings/ratings.css`,
+    //   `${miloLibs}/blocks/widgets/carousel.css`,
+    //   `${miloLibs}/blocks/widgets/basic-carousel.css`,
+    //   `${miloLibs}/blocks/widgets/grid-carousel.css`,
+    //   `${miloLibs}/blocks/widgets/masonry.css`,
+    //   `${miloLibs}/blocks/steps/steps.css`,
+    //   `${miloLibs}/blocks/link-list/link-list.css`,
+    //   `${miloLibs}/blocks/banner/banner.css`,
+    //   `${miloLibs}/blocks/faq/faq.css`,
+    //   `${miloLibs}/blocks/blog-posts/blog-posts.css`,
+    //   `${miloLibs}/blocks/cards/cards.css`,
+    //   `${miloLibs}/blocks/promotion/promotion.css`,
+    //   `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.css`
+    // ];
+    // 
+    // heavyCSS.forEach((href) => {
+    //   const link = document.createElement('link');
+    //   link.rel = 'stylesheet';
+    //   link.href = href;
+    //   link.media = 'print';
+    //   link.onload = function() {
+    //     this.media = 'all';
+    //   };
+    //   document.head.appendChild(link);
+    // });
   }, 200);
   
   // ✅ Defer floating CTA CSS to later - it's not LCP critical
@@ -896,33 +897,34 @@ preDecorateSections(document);
   // }, 1000); // Load CSS 1 second later
   
   // ✅ Defer heavy JavaScript files to reduce critical path
-  setTimeout(() => {
-    const heavyJS = [
-      `${miloLibs}/blocks/quotes/quotes.js`,
-      `${miloLibs}/blocks/template-x/template-x.js`,
-      `${miloLibs}/blocks/ratings/ratings.js`,
-      `${miloLibs}/blocks/widgets/carousel.js`,
-      `${miloLibs}/blocks/widgets/basic-carousel.js`,
-      `${miloLibs}/blocks/widgets/grid-carousel.js`,
-      `${miloLibs}/blocks/widgets/masonry.js`,
-      `${miloLibs}/blocks/steps/steps.js`,
-      `${miloLibs}/blocks/link-list/link-list.js`,
-      `${miloLibs}/blocks/banner/banner.js`,
-      `${miloLibs}/blocks/faq/faq.js`,
-      `${miloLibs}/blocks/blog-posts/blog-posts.js`,
-      `${miloLibs}/blocks/cards/cards.js`,
-      `${miloLibs}/blocks/promotion/promotion.js`,
-      `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.js`
-    ];
-    
-    heavyJS.forEach((href) => {
-      const script = document.createElement('script');
-      script.src = href;
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-    });
-  }, 500);
+  // TEMPORARILY DISABLED - investigating 404/ORB errors
+  // setTimeout(() => {
+  //   const heavyJS = [
+  //     `${miloLibs}/blocks/quotes/quotes.js`,
+  //     `${miloLibs}/blocks/template-x/template-x.js`,
+  //     `${miloLibs}/blocks/ratings/ratings.js`,
+  //     `${miloLibs}/blocks/widgets/carousel.js`,
+  //     `${miloLibs}/blocks/widgets/basic-carousel.js`,
+  //     `${miloLibs}/blocks/widgets/grid-carousel.js`,
+  //     `${miloLibs}/blocks/widgets/masonry.js`,
+  //     `${miloLibs}/blocks/steps/steps.js`,
+  //     `${miloLibs}/blocks/link-list/link-list.js`,
+  //     `${miloLibs}/blocks/banner/banner.js`,
+  //     `${miloLibs}/blocks/faq/faq.js`,
+  //     `${miloLibs}/blocks/blog-posts/blog-posts.js`,
+  //     `${miloLibs}/blocks/cards/cards.js`,
+  //     `${miloLibs}/blocks/promotion/promotion.js`,
+  //     `${miloLibs}/blocks/mobile-fork-button/mobile-fork-button.js`
+  //   ];
+  //   
+  //   heavyJS.forEach((href) => {
+  //     const script = document.createElement('script');
+  //     script.src = href;
+  //     script.async = true;
+  //     script.defer = true;
+  //     document.head.appendChild(script);
+  //   });
+  // }, 500);
   
   // ✅ Defer floating CTA to later - it's not LCP critical
   // TEMPORARILY DISABLED - investigating 404 errors
