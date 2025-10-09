@@ -251,6 +251,58 @@ preDecorateSections(document);
     document.head.appendChild(link);
   });
   
+  // ✅ DC's Dynamic Preload System - Author-controlled resource preloading
+  window.loadLink = (href, options = {}) => {
+    const { as, callback, crossorigin, rel, fetchpriority } = options;
+    let link = document.head.querySelector(`link[href="${href}"]`);
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', rel);
+      if (as) link.setAttribute('as', as);
+      if (crossorigin) link.setAttribute('crossorigin', crossorigin);
+      if (fetchpriority) link.setAttribute('fetchpriority', fetchpriority);
+      link.setAttribute('href', href);
+      if (callback) {
+        link.onload = (e) => callback(e.type);
+        link.onerror = (e) => callback(e.type);
+      }
+      document.head.appendChild(link);
+    } else if (callback) {
+      callback('noop');
+    }
+    return link;
+  };
+  
+  // Process author-defined preloads from meta tag (Franklin-generated)
+  // Support variable substitution like DC (MILOLIBS, UNITYLIBS, LOCALEPREFIX)
+  const miloLibs = '/libs'; // Could be dynamic based on environment
+  const unityLibs = '/unitylibs'; // Could be dynamic based on environment
+  const localePrefix = window.location.pathname.split('/')[1] || ''; // Extract locale from URL
+  
+  const preloads = document.querySelector('meta[name="preloads"]')?.content?.split(',').map(x => 
+    x.trim()
+      .replace('$MILOLIBS', miloLibs)
+      .replace('$UNITYLIBS', unityLibs)
+      .replace('$LOCALEPREFIX', localePrefix)
+  ) || [];
+  
+  preloads.forEach((link) => {
+    if (link.endsWith('.js')) {
+      loadLink(link, { as: 'script', rel: 'preload', crossorigin: 'anonymous' });
+    } else if (link.endsWith('.css')) {
+      loadLink(link, { as: 'style', rel: 'preload' });
+    } else if (/\.(json|html|svg)$/.test(link)) {
+      loadLink(link, { as: 'fetch', rel: 'preload', crossorigin: 'anonymous' });
+    } else if (/\.(png|jpg|jpeg|gif|webp)$/.test(link)) {
+      loadLink(link, { as: 'image', rel: 'preload', fetchpriority: 'high' });
+    }
+  });
+  
+  // Log preloads for debugging (can be removed in production)
+  if (preloads.length > 0) {
+    console.log('🚀 Express Milo: Preloaded resources from author configuration:', preloads);
+  }
+  
   // ✅ CRITICAL: Inline critical CSS immediately to prevent render-blocking
   const criticalCSS = `
     /* Critical CSS for immediate rendering - Enhanced for LCP optimization */

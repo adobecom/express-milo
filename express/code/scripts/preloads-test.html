@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express Milo Preloads Test</title>
+    
+    <!-- Test meta tag with preloads -->
+    <meta name="preloads" content="/styles/test.css,/scripts/test.js,/images/test.jpg,$MILOLIBS/utils/test.js">
+    
+    <!-- Load our scripts -->
+    <script src="scripts.js" type="module"></script>
+</head>
+<body>
+    <h1>Express Milo Preloads System Test</h1>
+    <p>Check the browser's Network tab to see preloaded resources.</p>
+    <p>Open the console to see the preloads log message.</p>
+    
+    <!-- Test content -->
+    <div>
+        <h2>Test Image</h2>
+        <img src="/images/test.jpg" alt="Test image" width="200" height="150">
+    </div>
+    
+    <div>
+        <h2>Test CSS</h2>
+        <p class="test-style">This text should be styled by the preloaded CSS.</p>
+    </div>
+    
+    <div>
+        <h2>Test JavaScript</h2>
+        <button onclick="testFunction()">Click me to test preloaded JS</button>
+    </div>
+</body>
+</html>
