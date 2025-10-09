@@ -1159,18 +1159,85 @@ if (dynamicCriticalCSS) {
   style.textContent = criticalCSS;
   document.head.appendChild(style);
   
-  // ✅ Load TypeKit CSS immediately for Adobe Clean font
+  // ✅ Load TypeKit CSS immediately for Adobe Clean font with proper swap
   const typekitCSS = document.createElement('link');
   typekitCSS.rel = 'stylesheet';
   typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
   typekitCSS.crossOrigin = 'anonymous';
+  typekitCSS.media = 'print';
+  typekitCSS.onload = function() {
+    this.media = 'all';
+    console.log('✅ TypeKit fonts loaded and applied');
+    
+    // Force font swap after TypeKit loads
+    setTimeout(() => {
+      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+      console.log('🔄 Font swap applied - Adobe Clean should now be visible');
+    }, 100);
+  };
   document.head.appendChild(typekitCSS);
+  
+  // ✅ Font loading detection and fallback
+  if ('fonts' in document) {
+    document.fonts.ready.then(() => {
+      console.log('✅ All fonts loaded successfully');
+      // Apply Adobe Clean after fonts are ready
+      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+    });
+  }
+  
+  // Fallback timeout for font loading
+  setTimeout(() => {
+    if (document.body.style.fontFamily === '') {
+      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+      console.log('⏰ Font fallback applied after timeout');
+    }
+  }, 2000);
+  
+  // ✅ Force font swap on all text elements
+  function forceFontSwap() {
+    const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+    textElements.forEach(el => {
+      el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+    });
+    console.log('🔄 Forced font swap on all text elements');
+  }
+  
+  // Run font swap after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', forceFontSwap);
+  } else {
+    forceFontSwap();
+  }
+  
+  // Also run after a short delay to catch dynamically loaded content
+  setTimeout(forceFontSwap, 1000);
   
   // ✅ Optimized font loading for better performance
   const fontLoadingCSS = `
-    /* Optimized Adobe Clean font loading with immediate fallbacks */
+    /* Optimized Adobe Clean font loading with proper TypeKit integration */
     @font-face {
       font-family: 'adobe-clean';
+      font-display: swap;
+      font-weight: 300;
+      src: url('https://use.typekit.net/af/1ce529/00000000000000003b9b3065/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n3&v=3') format('woff2');
+    }
+    @font-face {
+      font-family: 'adobe-clean';
+      font-display: swap;
+      font-weight: 400;
+      src: url('https://use.typekit.net/af/1ce529/00000000000000003b9b3065/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3') format('woff2');
+    }
+    @font-face {
+      font-family: 'adobe-clean';
+      font-display: swap;
+      font-weight: 700;
+      src: url('https://use.typekit.net/af/1ce529/00000000000000003b9b3065/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3') format('woff2');
+    }
+    
+    /* Fallback fonts for immediate rendering */
+    @font-face {
+      font-family: 'adobe-clean-fallback';
       font-display: swap;
       font-weight: 300 900;
       src: local('Adobe Clean'), local('AdobeClean'), local('Arial'), local('Helvetica'), sans-serif;
@@ -1184,7 +1251,7 @@ if (dynamicCriticalCSS) {
       -moz-osx-font-smoothing: grayscale;
     }
     
-    /* Critical LCP elements - immediate font rendering */
+    /* Critical LCP elements - immediate font rendering with forced swap */
     .section:first-child h1,
     .section:first-child h2,
     .section:first-child p,
@@ -1199,6 +1266,14 @@ if (dynamicCriticalCSS) {
       font-display: swap;
       visibility: visible !important;
       opacity: 1 !important;
+      /* Force font swap for LCP elements */
+      font-feature-settings: "kern" 1;
+      font-kerning: normal;
+    }
+    
+    /* Force Adobe Clean on all text elements */
+    * {
+      font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
     }
     
     /* Force immediate text visibility to prevent render delay */
