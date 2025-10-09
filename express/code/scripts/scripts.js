@@ -235,46 +235,108 @@ preDecorateSections(document);
 (function loadStyles() {
   // ✅ CRITICAL: Inline critical CSS immediately to prevent render-blocking
   const criticalCSS = `
-    /* Critical CSS for immediate rendering */
+    /* Critical CSS for immediate rendering - Enhanced for LCP optimization */
+    * { box-sizing: border-box; }
+    
     body { 
       font-family: 'Trebuchet MS', sans-serif; 
       margin: 0; 
       padding: 0;
       line-height: 1.4;
+      color: #000;
+      background: #fff;
+      font-size: 16px;
     }
+    
     h1, h2, h3, h4, h5, h6 { 
       font-family: 'Trebuchet MS', sans-serif; 
       font-weight: 700;
       line-height: 1.2;
       margin: 0.5em 0;
+      color: #000;
     }
-    h1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+    
+    h1 { 
+      font-size: clamp(1.8rem, 4vw, 3rem); 
+      font-weight: 900;
+      line-height: 1.1;
+    }
     h2 { font-size: clamp(1.5rem, 3vw, 2.5rem); }
     h3 { font-size: clamp(1.2rem, 2.5vw, 2rem); }
+    
+    /* Critical LCP section styling */
     .section:first-child { 
       min-height: 100vh; 
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding: 2rem 1rem;
     }
+    
     main { 
       display: block; 
       width: 100%; 
+      min-height: 100vh;
     }
+    
+    /* Critical image styling */
     img { 
       max-width: 100%; 
       height: auto; 
+      display: block;
     }
+    
+    /* Critical button styling */
+    button, .button {
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 16px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-block;
+    }
+    
+    /* Critical text styling */
+    p {
+      font-family: 'Trebuchet MS', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 1em 0;
+    }
+    
     /* Prevent layout shift during font loading */
     .headline h1, #free-logo-maker {
       font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 700;
-      line-height: 1.2;
+      font-weight: 900;
+      line-height: 1.1;
+      color: #000;
     }
+    
+    /* Critical responsive design */
+    @media (min-width: 600px) {
+      .section:first-child {
+        padding: 3rem 2rem;
+      }
+    }
+    
     @media (min-width: 900px) {
       .headline h1, #free-logo-maker {
         font-size: clamp(2.5rem, 5vw, 4rem);
       }
+      .section:first-child {
+        padding: 4rem 3rem;
+      }
+    }
+    
+    /* Critical loading states */
+    .loading {
+      opacity: 0.7;
+    }
+    
+    .loaded {
+      opacity: 1;
+      transition: opacity 0.3s ease;
     }
   `;
   
@@ -285,7 +347,8 @@ preDecorateSections(document);
   // ✅ Preload critical TypeKit fonts to reduce render delay
   const fontPreloads = [
     'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3',
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3'
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3',
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n9&v=3'
   ];
   
   fontPreloads.forEach((href) => {
@@ -295,8 +358,30 @@ preDecorateSections(document);
     link.as = 'font';
     link.type = 'font/woff2';
     link.crossOrigin = 'anonymous';
+    link.fetchPriority = 'high';
     document.head.appendChild(link);
   });
+  
+  // ✅ Preload TypeKit CSS with high priority
+  const typekitCSS = document.createElement('link');
+  typekitCSS.rel = 'preload';
+  typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
+  typekitCSS.as = 'style';
+  typekitCSS.onload = function() {
+    this.onload = null;
+    this.rel = 'stylesheet';
+  };
+  document.head.appendChild(typekitCSS);
+  
+  // ✅ Fallback for browsers that don't support preload
+  const typekitFallback = document.createElement('link');
+  typekitFallback.rel = 'stylesheet';
+  typekitFallback.href = 'https://use.typekit.net/jdq5hay.css';
+  typekitFallback.media = 'print';
+  typekitFallback.onload = function() {
+    this.media = 'all';
+  };
+  document.head.appendChild(typekitFallback);
   
   // ✅ Defer non-critical CSS to prevent render-blocking
   setTimeout(() => {
@@ -460,6 +545,17 @@ const listenAlloy = () => {
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
   
+  // ✅ Register service worker for cache optimization
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/express/code/scripts/sw.js')
+      .then((registration) => {
+        console.log('SW registered: ', registration);
+      })
+      .catch((registrationError) => {
+        console.log('SW registration failed: ', registrationError);
+      });
+  }
+
   // ✅ Universal image optimization for better performance
   (async function optimizeImages() {
     const { createOptimizedPicture } = await import('./utils/media.js');
@@ -489,8 +585,8 @@ const listenAlloy = () => {
         const containerWidth = container?.offsetWidth || 750;
         const optimalWidth = Math.min(containerWidth * 2, 1200); // 2x for retina, max 1200px
         
-        // Update src with optimized parameters
-        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high`;
+        // Update src with optimized parameters - more aggressive compression
+        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=85`;
         if (img.src !== newSrc) {
           img.src = newSrc;
         }
@@ -498,6 +594,14 @@ const listenAlloy = () => {
         // Set proper dimensions
         img.setAttribute('width', optimalWidth);
         img.setAttribute('height', Math.round(optimalWidth * 0.6));
+        
+        // Preload LCP image
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.as = 'image';
+        preloadLink.href = newSrc;
+        preloadLink.fetchPriority = 'high';
+        document.head.appendChild(preloadLink);
         
       } else {
         // Standard optimization: lazy loading, WebP format
@@ -508,8 +612,8 @@ const listenAlloy = () => {
         const containerWidth = container?.offsetWidth || 400;
         const optimalWidth = Math.min(containerWidth * 2, 900); // 2x for retina, max 900px
         
-        // Update src with optimized parameters
-        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high`;
+        // Update src with optimized parameters - more aggressive compression
+        const newSrc = `${pathname}?width=${optimalWidth}&format=webp&optimize=high&quality=80`;
         if (img.src !== newSrc) {
           img.src = newSrc;
         }
