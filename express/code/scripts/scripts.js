@@ -882,27 +882,25 @@ preDecorateSections(document);
   typekitCSS.crossOrigin = 'anonymous';
   document.head.appendChild(typekitCSS);
   
-  // ✅ Force Adobe Clean font loading with fallback
+  // ✅ Optimized font loading for better performance
   const fontLoadingCSS = `
-    /* Force Adobe Clean font loading with proper fallbacks */
+    /* Optimized Adobe Clean font loading with immediate fallbacks */
     @font-face {
       font-family: 'adobe-clean';
       font-display: swap;
+      font-weight: 300 900;
       src: local('Adobe Clean'), local('AdobeClean'), local('Arial'), local('Helvetica'), sans-serif;
     }
     
-    @font-face {
-      font-family: 'adobe-clean-serif';
-      font-display: swap;
-      src: local('Adobe Clean Serif'), local('AdobeCleanSerif'), local('Times New Roman'), serif;
-    }
-    
-    /* Apply Adobe Clean immediately to all text elements */
+    /* Apply fonts immediately to prevent render delay */
     body, h1, h2, h3, h4, h5, h6, p, a, button, span, div {
       font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
+      font-synthesis: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     
-    /* Ensure LCP elements have proper font rendering */
+    /* Critical LCP elements - immediate font rendering */
     .section:first-child h1,
     .section:first-child h2,
     .section:first-child p,
@@ -913,9 +911,10 @@ preDecorateSections(document);
       font-synthesis: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeSpeed;
     }
     
-    /* Force font loading for critical elements */
+    /* ax-columns block optimization */
     .ax-columns h1, .ax-columns h2, .ax-columns h3,
     .ax-columns p, .ax-columns .button {
       font-family: 'adobe-clean', 'Adobe Clean', 'Trebuchet MS', 'Arial', sans-serif !important;
@@ -974,6 +973,26 @@ preDecorateSections(document);
       -webkit-user-select: none;
       user-select: none;
     }
+    
+    /* Optimize template images for better LCP */
+    .template-list img,
+    .template-card img,
+    .template-preview img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      loading: lazy;
+    }
+    
+    /* Optimize avatar images that are causing 292KB savings */
+    .quotes .author-avatar,
+    .avatar img,
+    .profile-img {
+      width: 42px;
+      height: 42px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
   `;
   
   const fontStyle = document.createElement('style');
@@ -999,6 +1018,50 @@ preDecorateSections(document);
       }
     });
   }, 1000);
+  
+  // ✅ Optimize template images for better performance
+  function optimizeTemplateImages() {
+    // Optimize avatar images that are oversized (500x500 displayed as 42x42)
+    const avatarImages = document.querySelectorAll('.quotes .author-avatar, .avatar img, .profile-img');
+    avatarImages.forEach((img) => {
+      if (img.src && img.src.includes('media_')) {
+        // Add responsive sizing parameters
+        const url = new URL(img.src);
+        url.searchParams.set('width', '84'); // 2x for retina
+        url.searchParams.set('height', '84');
+        url.searchParams.set('format', 'webp');
+        url.searchParams.set('optimize', 'high');
+        img.src = url.toString();
+        img.style.width = '42px';
+        img.style.height = '42px';
+      }
+    });
+    
+    // Optimize template preview images
+    const templateImages = document.querySelectorAll('.template-list img, .template-card img, .template-preview img');
+    templateImages.forEach((img) => {
+      if (img.src && (img.src.includes('adobeprojectm.com') || img.src.includes('media_'))) {
+        // Add responsive sizing for template images
+        const url = new URL(img.src);
+        if (url.searchParams.get('width') === '500') {
+          url.searchParams.set('width', '330'); // Optimize for display size
+          url.searchParams.set('height', '330');
+          url.searchParams.set('format', 'webp');
+          url.searchParams.set('optimize', 'high');
+          img.src = url.toString();
+        }
+      }
+    });
+    
+    console.log('✅ Template images optimized for performance');
+  }
+  
+  // Run image optimization after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', optimizeTemplateImages);
+  } else {
+    optimizeTemplateImages();
+  }
   
   // ✅ Add error handling for external service failures
   window.addEventListener('error', (event) => {
