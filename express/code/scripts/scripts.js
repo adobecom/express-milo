@@ -283,6 +283,281 @@ preDecorateSections(document);
     return recommendations[blockName] || [blockName];
   }
   
+  // ✅ Page-specific critical CSS for top 5 worst LCP pages
+  function generatePageSpecificCriticalCSS() {
+    const currentPath = window.location.pathname;
+    const isMobile = window.innerWidth < 768;
+    
+    // Top 5 worst LCP pages optimization
+    if (currentPath === '/express/' || currentPath === '/express') {
+      // Express home page (4.28s LCP) - ax-marquee + grid-marquee + ax-columns
+      return `
+        /* Express Home Page Critical CSS - Target: 4.28s → 3.0s LCP */
+        .ax-marquee { 
+          min-height: 100vh; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          position: relative;
+          overflow: hidden;
+        }
+        .ax-marquee h1 { 
+          font-size: ${isMobile ? '2.5rem' : '4rem'}; 
+          font-weight: 700; 
+          color: white; 
+          text-align: center; 
+          margin: 0 0 1rem 0;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .ax-marquee p { 
+          font-size: ${isMobile ? '1.1rem' : '1.3rem'}; 
+          color: white; 
+          text-align: center; 
+          margin: 0 0 2rem 0;
+          opacity: 0.95;
+        }
+        .ax-marquee .button { 
+          background: #ff6b35; 
+          color: white; 
+          padding: 16px 32px; 
+          font-size: 1.1rem; 
+          font-weight: 600;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+          transition: transform 0.2s ease;
+        }
+        .ax-marquee .button:hover { 
+          transform: translateY(-2px); 
+          box-shadow: 0 6px 16px rgba(255,107,53,0.4);
+        }
+        .grid-marquee { 
+          padding: 60px 20px; 
+          background: #f8f9fa; 
+        }
+        .grid-marquee .cards { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+          gap: 30px; 
+          max-width: 1200px; 
+          margin: 0 auto; 
+        }
+        .ax-columns { 
+          padding: 80px 20px; 
+          background: white; 
+        }
+        .ax-columns .column { 
+          text-align: center; 
+          max-width: 600px; 
+          margin: 0 auto; 
+        }
+      `;
+    }
+    
+    if (currentPath.includes('/create/logo')) {
+      // Logo maker page (4.12s LCP) - ax-columns + template-list
+      return `
+        /* Logo Maker Page Critical CSS - Target: 4.12s → 3.0s LCP */
+        .ax-columns { 
+          min-height: 100vh; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          text-align: center;
+          padding: 40px 20px;
+        }
+        .ax-columns h1 { 
+          font-size: ${isMobile ? '2.5rem' : '3.5rem'}; 
+          font-weight: 700; 
+          margin: 0 0 1rem 0;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .ax-columns p { 
+          font-size: ${isMobile ? '1.1rem' : '1.3rem'}; 
+          margin: 0 0 2rem 0;
+          opacity: 0.95;
+        }
+        .ax-columns .button { 
+          background: #ff6b35; 
+          color: white; 
+          padding: 16px 32px; 
+          font-size: 1.1rem; 
+          font-weight: 600;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(255,107,53,0.3);
+        }
+        .template-list { 
+          padding: 60px 20px; 
+          background: #f8f9fa; 
+        }
+        .template-list .cards { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+          gap: 20px; 
+          max-width: 1200px; 
+          margin: 0 auto; 
+        }
+        .template-card { 
+          background: white; 
+          border-radius: 12px; 
+          overflow: hidden; 
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .template-card:hover { 
+          transform: translateY(-4px); 
+          box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+      `;
+    }
+    
+    if (currentPath.includes('/feature/image/remove-background')) {
+      // Remove background page (3.99s LCP) - ax-marquee + feature-grid
+      return `
+        /* Remove Background Page Critical CSS - Target: 3.99s → 3.0s LCP */
+        .ax-marquee { 
+          min-height: 100vh; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          text-align: center;
+          padding: 40px 20px;
+        }
+        .ax-marquee h1 { 
+          font-size: ${isMobile ? '2.2rem' : '3rem'}; 
+          font-weight: 700; 
+          margin: 0 0 1rem 0;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .ax-marquee p { 
+          font-size: ${isMobile ? '1rem' : '1.2rem'}; 
+          margin: 0 0 2rem 0;
+          opacity: 0.95;
+        }
+        .feature-grid { 
+          padding: 60px 20px; 
+          background: white; 
+        }
+        .feature-grid .cards { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+          gap: 30px; 
+          max-width: 1200px; 
+          margin: 0 auto; 
+        }
+        .feature-card { 
+          background: #f8f9fa; 
+          border-radius: 12px; 
+          padding: 30px; 
+          text-align: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+      `;
+    }
+    
+    if (currentPath.includes('/feature/image/resize')) {
+      // Resize page (3.91s LCP) - ax-marquee + feature-grid
+      return `
+        /* Resize Page Critical CSS - Target: 3.91s → 3.0s LCP */
+        .ax-marquee { 
+          min-height: 100vh; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          text-align: center;
+          padding: 40px 20px;
+        }
+        .ax-marquee h1 { 
+          font-size: ${isMobile ? '2.2rem' : '3rem'}; 
+          font-weight: 700; 
+          margin: 0 0 1rem 0;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .ax-marquee p { 
+          font-size: ${isMobile ? '1rem' : '1.2rem'}; 
+          margin: 0 0 2rem 0;
+          opacity: 0.95;
+        }
+        .feature-grid { 
+          padding: 60px 20px; 
+          background: white; 
+        }
+        .feature-grid .cards { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+          gap: 30px; 
+          max-width: 1200px; 
+          margin: 0 auto; 
+        }
+        .feature-card { 
+          background: #f8f9fa; 
+          border-radius: 12px; 
+          padding: 30px; 
+          text-align: center;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+      `;
+    }
+    
+    if (currentPath.includes('/spotlight/business')) {
+      // Business spotlight page (3.95s LCP) - ax-marquee + quotes + ax-columns
+      return `
+        /* Business Spotlight Page Critical CSS - Target: 3.95s → 3.0s LCP */
+        .ax-marquee { 
+          min-height: 100vh; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          text-align: center;
+          padding: 40px 20px;
+        }
+        .ax-marquee h1 { 
+          font-size: ${isMobile ? '2.2rem' : '3rem'}; 
+          font-weight: 700; 
+          margin: 0 0 1rem 0;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .ax-marquee p { 
+          font-size: ${isMobile ? '1rem' : '1.2rem'}; 
+          margin: 0 0 2rem 0;
+          opacity: 0.95;
+        }
+        .quotes { 
+          padding: 80px 20px; 
+          background: #f8f9fa; 
+        }
+        .quotes .cards { 
+          display: grid; 
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+          gap: 30px; 
+          max-width: 1200px; 
+          margin: 0 auto; 
+        }
+        .quote-card { 
+          background: white; 
+          border-radius: 12px; 
+          padding: 30px; 
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .ax-columns { 
+          padding: 80px 20px; 
+          background: white; 
+        }
+      `;
+    }
+    
+    return '';
+  }
+
   // ✅ Generate dynamic critical CSS based on first block
   function generateDynamicCriticalCSS(firstBlock) {
     if (!firstBlock) return '';
@@ -755,14 +1030,23 @@ preDecorateSections(document);
     }
   }
   
-  // ✅ Generate dynamic critical CSS based on first block
-  const dynamicCriticalCSS = generateDynamicCriticalCSS(firstBlock);
-  if (dynamicCriticalCSS) {
-    const dynamicStyle = document.createElement('style');
-    dynamicStyle.textContent = dynamicCriticalCSS;
-    document.head.appendChild(dynamicStyle);
-    console.log('🚀 Express Milo: Dynamic critical CSS applied for first block');
-  }
+// ✅ Generate page-specific critical CSS for top 5 worst LCP pages
+const pageSpecificCSS = generatePageSpecificCriticalCSS();
+if (pageSpecificCSS) {
+  const dynamicStyle = document.createElement('style');
+  dynamicStyle.textContent = pageSpecificCSS;
+  document.head.appendChild(dynamicStyle);
+  console.log('🚀 Express Milo: Page-specific critical CSS applied');
+}
+
+// ✅ Generate dynamic critical CSS based on first block
+const dynamicCriticalCSS = generateDynamicCriticalCSS(firstBlock);
+if (dynamicCriticalCSS) {
+  const dynamicStyle = document.createElement('style');
+  dynamicStyle.textContent = dynamicCriticalCSS;
+  document.head.appendChild(dynamicStyle);
+  console.log('🚀 Express Milo: Dynamic critical CSS applied for first block');
+}
   
   // ✅ CRITICAL: Inline critical CSS immediately to prevent render-blocking
   const criticalCSS = `
@@ -1117,6 +1401,76 @@ preDecorateSections(document);
     optimizeTemplateImages();
   }
   
+  // ✅ Page-specific JavaScript optimization for top 5 worst LCP pages
+  function optimizePageSpecificJavaScript() {
+    const currentPath = window.location.pathname;
+    
+    // Top 5 worst LCP pages - specific optimizations
+    if (currentPath === '/express/' || currentPath === '/express') {
+      // Express home page - keep only essential scripts
+      const homePageScripts = ['ax-marquee.js', 'grid-marquee.js', 'ax-columns.js'];
+      removeNonEssentialScripts(homePageScripts);
+      console.log('🚀 Express Home: Optimized for ax-marquee + grid-marquee + ax-columns');
+    }
+    
+    if (currentPath.includes('/create/logo')) {
+      // Logo maker page - keep only template and column scripts
+      const logoPageScripts = ['ax-columns.js', 'template-list.js', 'template-search-api-v3.js', 'template-rendering.js'];
+      removeNonEssentialScripts(logoPageScripts);
+      console.log('🚀 Logo Maker: Optimized for ax-columns + template-list');
+    }
+    
+    if (currentPath.includes('/feature/image/remove-background')) {
+      // Remove background page - keep only marquee and feature scripts
+      const removeBgScripts = ['ax-marquee.js', 'feature-grid.js', 'ratings.js'];
+      removeNonEssentialScripts(removeBgScripts);
+      console.log('🚀 Remove Background: Optimized for ax-marquee + feature-grid');
+    }
+    
+    if (currentPath.includes('/feature/image/resize')) {
+      // Resize page - keep only marquee and feature scripts
+      const resizeScripts = ['ax-marquee.js', 'feature-grid.js', 'ratings.js'];
+      removeNonEssentialScripts(resizeScripts);
+      console.log('🚀 Resize: Optimized for ax-marquee + feature-grid');
+    }
+    
+    if (currentPath.includes('/spotlight/business')) {
+      // Business spotlight page - keep only marquee, quotes, and column scripts
+      const businessScripts = ['ax-marquee.js', 'quotes.js', 'ax-columns.js', 'ratings.js'];
+      removeNonEssentialScripts(businessScripts);
+      console.log('🚀 Business Spotlight: Optimized for ax-marquee + quotes + ax-columns');
+    }
+    
+    // Defer remaining non-critical scripts
+    deferNonCriticalScripts();
+  }
+
+  function removeNonEssentialScripts(essentialScripts) {
+    const allScripts = document.querySelectorAll('script[src*="blocks/"]:not([data-critical])');
+    allScripts.forEach(script => {
+      if (script.src) {
+        const scriptName = script.src.split('/').pop();
+        const isEssential = essentialScripts.some(essential => scriptName.includes(essential));
+        
+        if (!isEssential) {
+          script.remove();
+          console.log(`✅ Removed non-essential script: ${scriptName}`);
+        }
+      }
+    });
+  }
+
+  function deferNonCriticalScripts() {
+    const remainingScripts = document.querySelectorAll('script[src*="blocks/"]:not([data-critical])');
+    remainingScripts.forEach(script => {
+      if (script.src && !script.dataset.deferred) {
+        script.defer = true;
+        script.async = true;
+        script.dataset.deferred = 'true';
+      }
+    });
+  }
+
   // ✅ Optimize JavaScript loading to reduce unused JS (220KB savings)
   function optimizeJavaScriptLoading() {
     // Defer non-critical JavaScript that's causing 220KB unused JS
@@ -1157,7 +1511,10 @@ preDecorateSections(document);
     console.log('✅ JavaScript loading optimized - targeting 220KB unused JS reduction');
   }
   
-  // Run JavaScript optimization
+  // Run page-specific JavaScript optimization first
+  setTimeout(optimizePageSpecificJavaScript, 50);
+  
+  // Run general JavaScript optimization
   setTimeout(optimizeJavaScriptLoading, 100);
   
   // ✅ Add error handling for external service failures
