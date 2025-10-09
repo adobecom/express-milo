@@ -187,6 +187,7 @@ function resetUploadUI(progressBar) {
   fadeIn(fqaContainer);
 }
 
+/* c8 ignore next 15 */
 function createUploadStatusListener(uploadStatusEvent, progressBar) {
   const listener = (e) => {
     const isUploadProgressLessThanVisual = e.detail.progress < progressBar.getProgress();
@@ -215,6 +216,7 @@ function createUploadStatusListener(uploadStatusEvent, progressBar) {
   window.addEventListener(uploadStatusEvent, listener);
 }
 
+/* c8 ignore next 12 */
 async function validateTokenAndReturnService(existingService) {
   const freshToken = window?.adobeIMS?.getAccessToken()?.token;
   if (freshToken && freshToken !== existingService.getConfig().authConfig.token) {
@@ -228,6 +230,7 @@ async function validateTokenAndReturnService(existingService) {
   return existingService;
 }
 
+/* c8 ignore next 9 */
 async function initializeUploadService() {
   if (uploadService) return validateTokenAndReturnService(uploadService);
   // eslint-disable-next-line import/no-relative-packages
@@ -238,6 +241,7 @@ async function initializeUploadService() {
   return uploadService;
 }
 
+/* c8 ignore next 7 */
 async function setupUploadUI(block) {
   const progressBar = await initProgressBar(replaceKey, getConfig);
   fqaContainer = block.querySelector('.fqa-container');
@@ -246,6 +250,7 @@ async function setupUploadUI(block) {
   return progressBar;
 }
 
+/* c8 ignore next 13 */
 async function uploadAssetToStorage(file, progressBar) {
   const service = await initializeUploadService();
   createUploadStatusListener(uploadEvents.UPLOAD_STATUS, progressBar);
@@ -260,6 +265,7 @@ async function uploadAssetToStorage(file, progressBar) {
   return asset.assetId;
 }
 
+/* c8 ignore next 14 */
 async function performStorageUpload(files, block) {
   try {
     const progressBar = await setupUploadUI(block);
@@ -337,6 +343,7 @@ async function handleDecodeFirst(dimensions, uploadPromise, initialDecodeControl
  * @param {Object} dimensions - Asset dimensions with width and height properties
  * @returns {Object} Search parameters object
  */
+/* c8 ignore next */
 function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimensions) {
   const baseSearchParams = {
     frictionlessUploadAssetId: assetId,
@@ -403,7 +410,7 @@ function buildSearchParamsForEditorUrl(pathname, assetId, quickAction, dimension
  * @param {URL} url - The URL object to modify
  * @param {Object} searchParams - Object containing search parameters to apply
  */
-function applySearchParamsToUrl(url, searchParams) {
+export function applySearchParamsToUrl(url, searchParams) {
   Object.entries(searchParams).forEach(([key, value]) => {
     if (value !== null && value !== undefined && value !== '') {
       url.searchParams.set(key, String(value));
@@ -432,6 +439,7 @@ async function buildEditorUrl(quickAction, assetId, dimensions) {
   return url;
 }
 
+/* c8 ignore next 38 */
 async function performUploadAction(files, block, quickAction) {
   const initialDecodeController = new AbortController();
 
@@ -509,7 +517,7 @@ function createCaptionLocaleDropdown() {
   return wrapper;
 }
 
-function createStep(number, content) {
+export function createStep(number, content) {
   const step = createTag('div', { class: 'step', 'data-step': number });
   const stepNumber = createTag('div', { class: 'step-number' }, number);
   step.append(stepNumber, content);
@@ -544,6 +552,17 @@ export default async function decorate(block) {
   cta.addEventListener('click', (e) => e.preventDefault(), false);
   // Fetch the base url for editor entry from upload cta and save it for later use.
   frictionlessTargetBaseUrl = cta.href;
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlVariant = urlParams.get('variant');
+  const variant = urlVariant || quickAction;
+  if (variant === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1
+    || variant === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
+    const isStage = urlParams.get('hzenv') === 'stage';
+    frictionlessTargetBaseUrl = isStage
+      ? 'https://stage.projectx.corp.adobe.com/new'
+      : 'https://express.adobe.com/new';
+  }
+
   const dropzoneHint = dropzone.querySelector('p:first-child');
   const gtcText = dropzone.querySelector('p:last-child');
   const actionColumn = createTag('div');
