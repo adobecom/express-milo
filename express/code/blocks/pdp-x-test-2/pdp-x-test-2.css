@@ -172,3 +172,12 @@ cursor: pointer;
 .pdpx-pill-selector-container {
   margin-bottom: 24px;
 }
+.pdpx-quantity-selector-label {
+  color: #505050;
+  margin-right: 40px;
+  
+}
+.pdpx-quantity-selector {
+  padding: 8px;
+  cursor: pointer;
+}

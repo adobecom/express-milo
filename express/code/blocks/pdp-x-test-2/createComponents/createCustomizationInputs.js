@@ -2,13 +2,19 @@ import { getLibs } from '../../../scripts/utils.js';
 
 let createTag;
 
-function createQuantitySelector() {
-  const quantitySelector = createTag('div', { class: 'pdpx-quantity-selector' });
+function createQuantitySelector(customizationOptions) {
+  const quantitySelectorContainer = createTag('div', { class: 'pdpx-quantity-selector-container' });
   const quantitySelectorLabel = createTag('label', { class: 'pdpx-quantity-selector-label' }, 'Quantity');
-  quantitySelector.appendChild(quantitySelectorLabel);
-  const quantitySelectorInput = createTag('input', { class: 'pdpx-quantity-selector-input', type: 'number' });
-  quantitySelector.appendChild(quantitySelectorInput);
-  return quantitySelector;
+  quantitySelectorContainer.appendChild(quantitySelectorLabel);
+  const quantitySelectorInput = createTag('select', { class: 'pdpx-quantity-selector', type: '' });
+  for (let i = 0; i < customizationOptions.quantities.length; i += 1) {
+    const optionLabel = `${customizationOptions.quantities[i]} ${customizationOptions.pluralUnitLabel}`;
+    const quantityOption = createTag('option', { value: customizationOptions.quantities[i], class: 'pdpx-quantity-selector-option' }, optionLabel);
+    quantitySelectorInput.appendChild(quantityOption);
+  }
+
+  quantitySelectorContainer.appendChild(quantitySelectorInput);
+  return quantitySelectorContainer;
 }
 
 function createPillOptionsSelector(customizationOptions, labelText) {
@@ -73,7 +79,7 @@ function createBusinessCardInputs(container, productDetails) {
   const paperTypeSelectorContainer = createPaperTypeSelector(productDetails.paperTypeOptions, paperTypeLabelText);
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerStyleOptions, cornerStyleLabelText);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.sizeOptions, sizeLabelText);
-  const quantitySelectorContainer = createQuantitySelector();
+  const quantitySelectorContainer = createQuantitySelector(productDetails);
   container.appendChild(sideQuantitySelectorContainer);
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
