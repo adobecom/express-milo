@@ -282,6 +282,294 @@ preDecorateSections(document);
     
     return recommendations[blockName] || [blockName];
   }
+  
+  // ✅ Generate dynamic critical CSS based on first block
+  function generateDynamicCriticalCSS(firstBlock) {
+    if (!firstBlock) return '';
+    
+    const blockName = firstBlock.getAttribute('data-block-name') || firstBlock.className.split(' ')[0];
+    const isMobile = window.innerWidth < 768;
+    
+    // Base critical CSS for LCP optimization
+    let criticalCSS = `
+      /* Dynamic Critical CSS for ${blockName} */
+      .section:first-child {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem 1rem;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .section:first-child h1 {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin: 0 0 1rem 0;
+        color: #000;
+        z-index: 2;
+        position: relative;
+      }
+      
+      .section:first-child p {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        line-height: 1.5;
+        margin: 0 0 2rem 0;
+        color: #333;
+        z-index: 2;
+        position: relative;
+      }
+      
+      .section:first-child img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        z-index: 1;
+        position: relative;
+      }
+    `;
+    
+    // Add block-specific critical CSS
+    const blockSpecificCSS = getBlockCriticalCSS(blockName, isMobile);
+    criticalCSS += blockSpecificCSS;
+    
+    // Add responsive optimizations
+    criticalCSS += getResponsiveCriticalCSS(isMobile);
+    
+    return criticalCSS;
+  }
+  
+  // ✅ Get block-specific critical CSS
+  function getBlockCriticalCSS(blockName, isMobile) {
+    const blockCSS = {
+      'ax-marquee': `
+        .ax-marquee {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+        .ax-marquee h1 {
+          color: white;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .ax-marquee p {
+          color: rgba(255,255,255,0.9);
+        }
+        .ax-marquee video {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 0;
+        }
+      `,
+      'grid-marquee': `
+        .grid-marquee {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 1rem;
+          padding: 2rem 0;
+        }
+        .grid-marquee .card {
+          background: white;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          transition: transform 0.2s ease;
+        }
+        .grid-marquee .card:hover {
+          transform: translateY(-2px);
+        }
+        .grid-marquee img {
+          width: 100%;
+          height: 200px;
+          object-fit: cover;
+        }
+      `,
+      'template-list': `
+        .template-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 1.5rem;
+          padding: 2rem 0;
+        }
+        .template-list .template-card {
+          background: white;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+        }
+        .template-list .template-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .template-list img {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+        }
+      `,
+      'feature-grid': `
+        .feature-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 2rem;
+          padding: 3rem 0;
+        }
+        .feature-grid .feature-card {
+          text-align: center;
+          padding: 2rem 1rem;
+        }
+        .feature-grid .feature-icon {
+          width: 64px;
+          height: 64px;
+          margin: 0 auto 1rem;
+          background: #f0f0f0;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      `,
+      'quotes': `
+        .quotes {
+          background: #f8f9fa;
+          padding: 3rem 0;
+        }
+        .quotes .quote-card {
+          background: white;
+          padding: 2rem;
+          border-radius: 8px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          margin-bottom: 1rem;
+        }
+        .quotes .quote-text {
+          font-size: 1.25rem;
+          font-style: italic;
+          margin-bottom: 1rem;
+          color: #333;
+        }
+        .quotes .quote-author {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        .quotes .author-avatar {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+      `,
+      'banner': `
+        .banner {
+          background: linear-gradient(135deg, #ff6b6b, #ffa500);
+          color: white;
+          padding: 2rem;
+          text-align: center;
+          border-radius: 8px;
+          margin: 2rem 0;
+        }
+        .banner h2 {
+          color: white;
+          margin-bottom: 1rem;
+        }
+        .banner .button {
+          background: white;
+          color: #ff6b6b;
+          padding: 12px 24px;
+          border-radius: 6px;
+          text-decoration: none;
+          font-weight: 600;
+          display: inline-block;
+          margin-top: 1rem;
+        }
+      `
+    };
+    
+    return blockCSS[blockName] || '';
+  }
+  
+  // ✅ Get responsive critical CSS
+  function getResponsiveCriticalCSS(isMobile) {
+    if (isMobile) {
+      return `
+        /* Mobile-first critical CSS */
+        .section:first-child {
+          padding: 1rem;
+          min-height: 100vh;
+        }
+        
+        .section:first-child h1 {
+          font-size: clamp(1.5rem, 6vw, 2.5rem);
+          margin-bottom: 0.5rem;
+        }
+        
+        .section:first-child p {
+          font-size: 1rem;
+          margin-bottom: 1.5rem;
+        }
+        
+        /* Mobile grid adjustments */
+        .grid-marquee,
+        .template-list,
+        .feature-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          padding: 1rem 0;
+        }
+        
+        /* Mobile button sizing */
+        .button {
+          width: 100%;
+          padding: 14px 20px;
+          font-size: 16px;
+        }
+      `;
+    } else {
+      return `
+        /* Desktop critical CSS */
+        .section:first-child {
+          padding: 4rem 3rem;
+        }
+        
+        .section:first-child h1 {
+          font-size: clamp(2.5rem, 5vw, 4rem);
+          margin-bottom: 1.5rem;
+        }
+        
+        .section:first-child p {
+          font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+          margin-bottom: 2.5rem;
+        }
+        
+        /* Desktop grid optimizations */
+        .grid-marquee {
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 2rem;
+        }
+        
+        .template-list {
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 2rem;
+        }
+        
+        .feature-grid {
+          grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+          gap: 3rem;
+        }
+      `;
+    }
+  }
 
   // ✅ DC's Dynamic Preload System - Author-controlled resource preloading
   window.loadLink = (href, options = {}) => {
@@ -383,6 +671,15 @@ preDecorateSections(document);
       console.log('📝 Author Tip: Add this to your preloads metadata:');
       console.log(`<meta name="preloads" content="${recommendedPreloads.join(', ')}">`);
     }
+  }
+  
+  // ✅ Generate dynamic critical CSS based on first block
+  const dynamicCriticalCSS = generateDynamicCriticalCSS(firstBlock);
+  if (dynamicCriticalCSS) {
+    const dynamicStyle = document.createElement('style');
+    dynamicStyle.textContent = dynamicCriticalCSS;
+    document.head.appendChild(dynamicStyle);
+    console.log('🚀 Express Milo: Dynamic critical CSS applied for first block');
   }
   
   // ✅ CRITICAL: Inline critical CSS immediately to prevent render-blocking
