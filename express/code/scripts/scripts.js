@@ -1171,12 +1171,37 @@ if (dynamicCriticalCSS) {
     if ('fonts' in document) {
       document.fonts.ready.then(() => {
         console.log('✅ Fonts ready, applying Adobe Clean');
-        // Force font swap after fonts are actually loaded
+        // Force font swap after fonts are actually loaded - use exact TypeKit font name
         const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+        
+        // Add font-loaded class to body to trigger CSS font swap
+        document.body.classList.add('font-loaded');
+        
         textElements.forEach(el => {
-          el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+          el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+          // Force a reflow to trigger font swap
+          el.offsetHeight; // Force reflow
+          el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
         });
-        document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+        document.body.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+        
+        // Also try the exact font names from TypeKit with multiple attempts
+        setTimeout(() => {
+          textElements.forEach(el => {
+            el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+            el.offsetHeight; // Force reflow
+          });
+          console.log('🔄 Second font swap attempt completed');
+        }, 100);
+        
+        // Third attempt after longer delay for font-display: auto
+        setTimeout(() => {
+          textElements.forEach(el => {
+            el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+            el.offsetHeight; // Force reflow
+          });
+          console.log('🔄 Third font swap attempt completed');
+        }, 500);
         console.log('🔄 Font swap applied - Adobe Clean should now be visible');
       });
     } else {
@@ -1293,15 +1318,57 @@ if (dynamicCriticalCSS) {
   setTimeout(() => {
     // Check if fonts have been applied, if not apply them
     const bodyFont = getComputedStyle(document.body).fontFamily;
+    console.log('🔍 Current body font:', bodyFont);
+    
     if (!bodyFont.includes('adobe-clean')) {
       console.log('🔄 Fallback font swap - applying Adobe Clean fonts');
+      
+      // Add font-loaded class
+      document.body.classList.add('font-loaded');
+      
+      // Try different font name variations - using exact TypeKit font names
+      const fontVariations = [
+        '"adobe-clean", "Trebuchet MS", Arial, sans-serif',
+        'adobe-clean, "Trebuchet MS", Arial, sans-serif',
+        '"adobe-clean", sans-serif',
+        'adobe-clean, sans-serif'
+      ];
+      
       const textElements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
-      textElements.forEach(el => {
-        el.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
+      
+      // Try each font variation with forced reflow
+      fontVariations.forEach((fontFamily, index) => {
+        setTimeout(() => {
+          textElements.forEach(el => {
+            el.style.fontFamily = fontFamily;
+            el.offsetHeight; // Force reflow
+            el.style.fontFamily = fontFamily; // Apply again after reflow
+          });
+          document.body.style.fontFamily = fontFamily;
+          console.log(`🔄 Font variation ${index + 1} applied:`, fontFamily);
+        }, index * 200);
       });
-      document.body.style.fontFamily = 'adobe-clean, "Adobe Clean", "Trebuchet MS", Arial, sans-serif';
     }
   }, 2000);
+  
+  // ✅ Additional aggressive font swap after 3 seconds
+  setTimeout(() => {
+    const bodyFont = getComputedStyle(document.body).fontFamily;
+    if (!bodyFont.includes('adobe-clean')) {
+      console.log('🔄 Final aggressive font swap attempt');
+      document.body.classList.add('font-loaded');
+      
+      // Force all text elements to use Adobe Clean
+      const allTextElements = document.querySelectorAll('*');
+      allTextElements.forEach(el => {
+        const computedStyle = getComputedStyle(el);
+        if (computedStyle.fontFamily && computedStyle.fontFamily.includes('Trebuchet MS')) {
+          el.style.fontFamily = '"adobe-clean", "Trebuchet MS", Arial, sans-serif';
+          el.offsetHeight; // Force reflow
+        }
+      });
+    }
+  }, 3000);
   
   // ✅ Optimized font loading for better performance - Phase L only
   const fontLoadingCSS = `
@@ -1319,6 +1386,11 @@ if (dynamicCriticalCSS) {
       font-synthesis: none;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Adobe Clean font loading - will swap after TypeKit loads */
+    .font-loaded body, .font-loaded h1, .font-loaded h2, .font-loaded h3, .font-loaded h4, .font-loaded h5, .font-loaded h6, .font-loaded p, .font-loaded a, .font-loaded button, .font-loaded span, .font-loaded div {
+      font-family: "adobe-clean", "Trebuchet MS", "Arial", sans-serif !important;
     }
     
     /* Critical LCP elements - immediate font rendering with fallback fonts */
