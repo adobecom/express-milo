@@ -793,35 +793,64 @@ preDecorateSections(document);
   style.textContent = criticalCSS;
   document.head.appendChild(style);
   
-  // ✅ Minimal font preloading to avoid blocking critical path
+  // ✅ Load TypeKit CSS immediately for Adobe Clean font
+  const typekitCSS = document.createElement('link');
+  typekitCSS.rel = 'stylesheet';
+  typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
+  typekitCSS.crossOrigin = 'anonymous';
+  document.head.appendChild(typekitCSS);
+  
+  // ✅ Preload critical Adobe Clean font immediately
   const fontPreloads = [
-    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3'
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3',
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3',
+    'https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n3&v=3'
   ];
   
-  // Defer font preloading to avoid blocking LCP
-  setTimeout(() => {
-    fontPreloads.forEach((href) => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.href = href;
-      link.as = 'font';
-      link.type = 'font/woff2';
-      link.crossOrigin = 'anonymous';
-      document.head.appendChild(link);
-    });
-  }, 100);
+  // Load font preloads immediately for LCP optimization
+  fontPreloads.forEach((href) => {
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.href = href;
+    link.as = 'font';
+    link.type = 'font/woff2';
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  });
   
-  // ✅ Defer TypeKit CSS loading to avoid blocking critical path
-  setTimeout(() => {
-    const typekitCSS = document.createElement('link');
-    typekitCSS.rel = 'stylesheet';
-    typekitCSS.href = 'https://use.typekit.net/jdq5hay.css';
-    typekitCSS.media = 'print';
-    typekitCSS.onload = function() {
-      this.media = 'all';
-    };
-    document.head.appendChild(typekitCSS);
-  }, 200);
+  // ✅ Force Adobe Clean font loading and apply immediately
+  const fontLoadingCSS = `
+    /* Force Adobe Clean font loading */
+    @font-face {
+      font-family: 'adobe-clean';
+      font-display: swap;
+      font-weight: 300 700;
+      src: url('https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n3&v=3') format('woff2');
+    }
+    
+    @font-face {
+      font-family: 'adobe-clean';
+      font-display: swap;
+      font-weight: 400;
+      src: url('https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n4&v=3') format('woff2');
+    }
+    
+    @font-face {
+      font-family: 'adobe-clean';
+      font-display: swap;
+      font-weight: 700;
+      src: url('https://use.typekit.net/af/7cdcb44/000000000000000000000000/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257b9199&fvd=n7&v=3') format('woff2');
+    }
+    
+    /* Apply Adobe Clean immediately to LCP elements */
+    body, h1, h2, h3, h4, h5, h6, p, a, button {
+      font-family: 'adobe-clean', 'Trebuchet MS', sans-serif;
+    }
+  `;
+  
+  const fontStyle = document.createElement('style');
+  fontStyle.textContent = fontLoadingCSS;
+  document.head.appendChild(fontStyle);
   
   // ✅ Load essential CSS immediately - page needs this to render
   const paths = [`${miloLibs}/styles/styles.css`];
