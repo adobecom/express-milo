@@ -30,7 +30,7 @@ test.describe('Express Floating Button Block test suite', () => {
 
       // Wait for the floating button to be properly positioned and visible
       await expect(floatingButton.floatingButton).toBeVisible({ timeout: 15000 });
-      
+
       // Wait for the floating button to be in a clickable state
       await page.waitForFunction(() => {
         const button = document.querySelector('.floating-button');

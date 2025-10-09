@@ -1,4 +1,3 @@
-
 export default class LongText {
   constructor(page) {
     this.page = page;
