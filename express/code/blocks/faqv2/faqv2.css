@@ -106,6 +106,10 @@
   border-radius: 4px;
 }
 
+.faqv2-header:focus-visible + .faqv2-content.open {
+  margin-top: 10px;
+}
+
 .faqv2.bold .faqv2-header {
   font-size: var(--heading-font-size-xs);
   font-weight: 900;
