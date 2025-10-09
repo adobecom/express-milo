@@ -25,7 +25,7 @@ const STYLES = ['/express/code/styles/styles.css'];
 
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
 const LIBS = '/libs';
-const miloLibs = setLibs(LIBS);
+const miloLibs = setLibs(LIBS, window.location);
 let jarvisImmediatelyVisible = false;
 const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
 const desktopViewport = window.matchMedia('(min-width: 900px)').matches;
