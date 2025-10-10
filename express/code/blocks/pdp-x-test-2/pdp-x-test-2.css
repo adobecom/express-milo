@@ -1,4 +1,4 @@
-:root {
+.pdp-x-test-2 {
   --figma-spacing-0: 0px;
   --figma-spacing-50: 2px;
   --figma-spacing-75: 4px;
@@ -13,7 +13,112 @@
   --figma-spacing-800: 64px;
   --figma-spacing-900: 80px;
   --figma-spacing-1000: 96px;
+  --font-size-25: 10px;
+  --font-size-50: 11px;
+  --font-size-75: 12px;
+  --font-size-100: 14px;
+  --font-size-200: 16px;
+  --font-size-300: 18px;
+  --font-size-400: 20px;
+  --font-size-500: 22px;
+  --font-size-600: 24px;
+  --font-size-700: 28px;
+  --font-size-800: 32px;
+  --font-size-900: 36px;
+  --font-size-1000: 40px;
+  --font-size-1100: 44px;
+  --font-size-1150: 48px;
+  --font-size-1200: 52px;
+  --font-size-1300: 58px;
+  --font-size-1400: 64px;
+  --font-size-1500: 72px;
+  --font-size-1600: 82px;
+  --line-height-25: 12px;
+  --line-height-50: 14px;
+  --line-height-75: 16px;
+  --line-height-100: 18px;
+  --line-height-200: 20px;
+  --line-height-300: 22px;
+  --line-height-400: 24px;
+  --line-height-500: 26px;
+  --line-height-600: 28px;
+  --line-height-700: 32px;
+  --line-height-800: 36px;
+  --line-height-900: 40px;
+  --line-height-1000: 40px;
+  --line-height-1100: 44px;
+  --line-height-1150: 48px;
+  --line-height-1200: 52px;
+  --line-height-1300: 58px;
+  --line-height-1400: 64px;
+  --line-height-1500: 72px;
+  --line-height-1600: 82px;
 }
+  /*WIDE-SCREEN*/
+  @media (min-width: 1680px) {
+    .pdp-x-test-2 {
+      --grid-max-width: 1680px;
+      --container-max-width: 1600px;
+      --container-padding-side: var(--figma-spacing-600);
+      --grid-gutter: var(--figma-spacing-400);
+      --device-min-width: 1680px;
+      --device-max-width: 5120px;
+      --figma-section-padding-small: var(--figma-spacing-600);
+      --figma-section-padding-medium: var(--figma-spacing-700);
+      --figma-section-padding-large: var(--figma-spacing-800);
+      --figma-section-padding-x-large: var(--figma-spacing-900);
+      
+    }
+  }
+  /*DESKTOP*/
+  @media (min-width: 1200px) {
+    .pdp-x-test-2 {
+      --grid-max-width: 1680px;
+      --container-max-width: 1600px;
+      --container-padding-side: var(--figma-spacing-600);
+      --grid-gutter: var(--figma-spacing-400);
+      --device-min-width: 1200px;
+      --device-max-width: 1679px;
+      --figma-section-padding-small: var(--figma-spacing-600);
+      --figma-section-padding-medium: var(--figma-spacing-700);
+      --figma-section-padding-large: var(--figma-spacing-800);
+      --figma-section-padding-x-large: var(--figma-spacing-900);
+
+
+    }
+  }
+  /*TABLET*/
+  @media (min-width: 600px ) {
+    .pdp-x-test-2 {
+      --grid-max-width: 1199px;
+      --container-max-width: 1199px;
+      --container-padding-side: var(--figma-spacing-500);
+      --grid-gutter: var(--figma-spacing-300);
+      --device-min-width: 600px;
+      --device-max-width: 1199px;
+      --figma-section-padding-small: var(--figma-spacing-300);
+      --figma-section-padding-medium: var(--figma-spacing-400);
+      --figma-section-padding-large: var(--figma-spacing-500);
+      --figma-section-padding-x-large: var(--figma-spacing-600);
+    }
+  }
+  /*MOBILE*/
+  @media (min-width: 320px) {
+    .pdp-x-test-2 {
+      --grid-max-width: 599px;
+      --container-max-width: 599px;
+      --container-padding-side: var(--figma-spacing-300);
+      --grid-gutter: var(--figma-spacing-100);
+      --device-min-width: 320px;
+      --device-max-width: 599px;
+      --figma-section-padding-small: var(--figma-spacing-300);
+      --figma-section-padding-medium: var(--figma-spacing-400);
+      --figma-section-padding-large: var(--figma-spacing-500);
+      --figma-section-padding-x-large: var(--figma-spacing-600);
+    }
+  }
+  
+
 
 main .section .pdpx-global-container p {
   margin: 0;
