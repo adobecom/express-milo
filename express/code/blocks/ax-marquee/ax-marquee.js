@@ -233,7 +233,8 @@ function createAnimation(animations) {
 
   // replace anchor with video element
   const video = createTag('video', attribs);
-  video.setAttribute('preload', 'auto');
+  // Video preload optimization handled by video-lazy-loading utility
+  // Will be set to 'metadata' or 'none' based on position (Phase E or Phase L)
   if (source) {
     video.innerHTML = `<source src="${source}" type="video/mp4">`;
   }
