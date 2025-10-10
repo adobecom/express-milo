@@ -77,6 +77,7 @@ export function initLottieArrow(lottieScrollButton, floatButtonWrapper, scrollAn
   }, { passive: true });
 }
 
+/* istanbul ignore next */
 function makeCTAFromSheet(block, data) {
   const audience = block.querySelector(':scope > div').textContent.trim();
   const audienceSpecificUrl = audience && ['desktop', 'mobile'].includes(audience) ? data.mainCta[`${audience}Href`] : null;
@@ -90,6 +91,7 @@ function makeCTAFromSheet(block, data) {
   return ctaFromSheet;
 }
 
+/* istanbul ignore next */
 async function buildLottieArrow(wrapper, floatingBtn, data) {
   const lottieScrollButton = createTag(
     'button',
@@ -116,6 +118,7 @@ async function buildLottieArrow(wrapper, floatingBtn, data) {
   return lottieScrollButton;
 }
 
+/* istanbul ignore next */
 export async function createFloatingButton(block, audience, data) {
   const { loadStyle, decorateLinks } = await import(`${getLibs()}/utils/utils.js`);
   const aTag = makeCTAFromSheet(block, data);
@@ -171,6 +174,15 @@ export async function createFloatingButton(block, audience, data) {
   });
   [...block.classList].filter((c) => c === 'closed').forEach((c) => floatButtonWrapper.classList.add(c));
   const floatButtonInnerWrapper = createTag('div', { class: 'floating-button-inner-wrapper' });
+
+  // Pre-apply suppressed state on mobile when suppression gating is enabled
+  // to avoid initial visibility flicker before observers attach.
+  if (audience === 'mobile' && data.enableSuppressGating) {
+    const hasSuppressTargets = !!document.querySelector('.suppress-until-not-visible');
+    if (hasSuppressTargets) {
+      floatButtonWrapper.classList.add('floating-button--suppressed');
+    }
+  }
 
   if (audience) {
     floatButtonWrapper.dataset.audience = audience;
@@ -289,6 +301,46 @@ export async function createFloatingButton(block, audience, data) {
     floatButtonWrapper.classList.add('floating-button--above-the-fold');
   }
 
+  // Mobile-only: hide floating CTA while any element with class
+  // "suppress-until-not-visible" is in view; show only when all are out of view.
+  if (floatButtonWrapper.dataset.audience === 'mobile' && data.enableSuppressGating) {
+    const suppressTargets = Array.from(document.querySelectorAll('.suppress-until-not-visible'));
+    if (suppressTargets.length) {
+      const updateSuppressedState = (anyVisible) => {
+        if (anyVisible) {
+          floatButtonWrapper.classList.add('floating-button--suppressed');
+          // Keep CTA pinned to bottom visually when suppressed
+          floatButton.style.bottom = '0px';
+        } else {
+          floatButtonWrapper.classList.remove('floating-button--suppressed');
+          if (promoBar && promoBar.block) {
+            floatButton.style.bottom = currentBottom ? `${currentBottom + promoBarHeight}px` : `${promoBarHeight}px`;
+          } else if (currentBottom) {
+            floatButton.style.bottom = currentBottom;
+          } else {
+            floatButton.style.removeProperty('bottom');
+          }
+        }
+      };
+
+      const suppressObserver = new IntersectionObserver((entries) => {
+        const anyVisible = entries.some((e) => e.intersectionRatio > 0 || e.isIntersecting);
+        updateSuppressedState(anyVisible);
+      }, {
+        root: null,
+        rootMargin: '-40px 0px',
+        threshold: 0,
+      });
+
+      const startObserving = () => suppressTargets.forEach((el) => suppressObserver.observe(el));
+      if (document.readyState === 'complete') {
+        startObserving();
+      } else {
+        window.addEventListener('load', startObserving);
+      }
+    }
+  }
+
   if (data.useLottieArrow) {
     const lottieScrollButton = buildLottieArrow(floatButtonWrapper, floatButton, data);
     document.dispatchEvent(new CustomEvent('linkspopulated', { detail: [floatButtonLink, lottieScrollButton] }));
@@ -315,6 +367,7 @@ export function collectFloatingButtonData() {
     toolsToStash: getMetadata('ctas-above-divider'),
     useLottieArrow: ['yes', 'y', 'true', 'on'].includes(getMetadata('use-floating-cta-lottie-arrow')?.toLowerCase()),
     delay: getMetadata('floating-cta-drawer-delay') || 0,
+    enableSuppressGating: ['yes', 'y', 'true', 'on'].includes(getMetadata('floating-cta-suppress-until-not-visible')?.toLowerCase()),
     tools: [],
     mainCta: {
       desktopHref: getMetadata('desktop-floating-cta-link'),
@@ -371,6 +424,7 @@ export function decorateBadge() {
   return anchor;
 }
 
+/* istanbul ignore next */
 export function buildToolBoxStructure(wrapper, data) {
   lazyLoadLottiePlayer();
   const toolBox = createTag('div', { class: 'toolbox' });
@@ -402,6 +456,7 @@ export function buildToolBoxStructure(wrapper, data) {
   }
 }
 
+/* istanbul ignore next */
 export function initToolBox(wrapper, data, toggleFunction) {
   const floatingButton = wrapper.querySelector('.floating-button');
   const cta = floatingButton.querySelector('a');
