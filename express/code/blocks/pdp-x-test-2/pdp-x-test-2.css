@@ -1,18 +1,35 @@
+:root {
+  --figma-spacing-0: 0px;
+  --figma-spacing-50: 2px;
+  --figma-spacing-75: 4px;
+  --figma-spacing-80: 6px;
+  --figma-spacing-100: 8px;
+  --figma-spacing-200: 12px;
+  --figma-spacing-300: 16px;
+  --figma-spacing-400: 24px;
+  --figma-spacing-500: 32px;
+  --figma-spacing-600: 40px;
+  --figma-spacing-700: 48px;
+  --figma-spacing-800: 64px;
+  --figma-spacing-900: 80px;
+  --figma-spacing-1000: 96px;
+}
+
 main .section .pdpx-global-container  p {
   margin: 0;
 }
 .pdpx-global-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px;
+  padding: var(--figma-spacing-400);
   display: flex;
-  gap: 24px;
+  gap: var(--figma-spacing-400);
   align-items: flex-start;
 }
 .pdpx-product-info-heading-section-container {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: var(--figma-spacing-400);
   align-items: baseline;
   margin-bottom: 32px;
 }
@@ -73,7 +90,7 @@ main .section .pdpx-global-container  p {
   width: fit-content;
   padding: 8px;
   gap: 4px;
-  margin-bottom: 24px;
+  margin-bottom: var(--figma-spacing-400);
 }
 .pdpx-product-hero-image-container {
   margin-bottom: 12px;
@@ -155,7 +172,7 @@ cursor: pointer;
   justify-content: center;
   gap: 4px;
   padding: 8px;
-  padding-right: 24px;
+  padding-right: var(--figma-spacing-400);
 }
 .pdpx-pill-text-name {
   font-size: 14px;
@@ -170,7 +187,11 @@ cursor: pointer;
 }
 
 .pdpx-pill-selector-container {
-  margin-bottom: 24px;
+  margin-bottom: var(--figma-spacing-400);
+}
+
+.pdpx-quantity-selector-container {
+  margin-bottom: var(--figma-spacing-400);
 }
 .pdpx-quantity-selector-label {
   color: #505050;
@@ -180,4 +201,23 @@ cursor: pointer;
 .pdpx-quantity-selector {
   padding: 8px;
   cursor: pointer;
+}
+
+.pdpx-product-details-section-item-container {
+  border-bottom: 1px solid #686868;
+  padding-top: var(--figma-spacing-300);
+  padding-bottom: var(--figma-spacing-300);
+}
+
+.pdpx-product-details-section-item-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: #131313;
+  padding-bottom: 5px;
+}
+.pdpx-product-details-section-item-title-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
