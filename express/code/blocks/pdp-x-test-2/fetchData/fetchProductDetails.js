@@ -1,3 +1,5 @@
+import { extractProductDescriptionsFromBlock } from '../utilities/utility-functions.js';
+
 export async function fetchProductDetails(productId) {
   let productDetailsFetch;
   try {
@@ -44,4 +46,9 @@ export async function fetchProductShippingEstimates(productId, zip, qty) {
   const productShippingEstimatesJSON = await productShippingEstimatesFetch.json();
   const productShippingEstimates = productShippingEstimatesJSON.data;
   return productShippingEstimates;
+}
+
+export async function formatProductDescriptions(block) {
+  const productDescriptions = extractProductDescriptionsFromBlock(block);
+  return productDescriptions;
 }
