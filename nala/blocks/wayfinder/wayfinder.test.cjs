@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import WebUtil from '../../libs/webutil.cjs';
 import { features } from './wayfinder.spec.cjs';
-import IconList from './wayfinder.page.cjs';
+import Wayfinder from './wayfinder.page.cjs';
 import { runAccessibilityTest } from '../../libs/accessibility.cjs';
 
 let webUtil;
@@ -12,7 +12,7 @@ const miloLibs = process.env.MILO_LIBS || '';
 test.describe('Express Wayfinder Block test suite', () => {
   test.beforeEach(async ({ page }) => {
     webUtil = new WebUtil(page);
-    wayfinder = new IconList(page);
+    wayfinder = new Wayfinder(page);
   });
 
   // Test 0 : Wayfinder default
@@ -87,6 +87,112 @@ test.describe('Express Wayfinder Block test suite', () => {
       ]);
       expect(newTab.url).not.toBe(testPage);
       await newTab.close();
+    });
+  });
+
+  // Test 2 : Wayfinder dark
+  test(`[Test Id - ${features[2].tcid}] ${features[2].name},${features[2].tags}`, async ({ page, baseURL }) => {
+    const { data } = features[2];
+    const testPage = `${baseURL}${features[2].path}${miloLibs}`;
+    console.info(`[Test Page]: ${testPage}`);
+
+    await test.step('Go to wayfinder dark test page', async () => {
+      await page.goto(testPage);
+      await page.waitForLoadState('domcontentloaded');
+      await expect(page).toHaveURL(testPage);
+    });
+
+    await test.step('Verify wayfinder dark block content/specs', async () => {
+      await expect(wayfinder.variants.dark).toBeVisible();
+      await expect(wayfinder.darkVariantContent1).toContainText(data.p1Text);
+      await expect(wayfinder.darkVariantContent2).toContainText(data.p2Text);
+      await expect(wayfinder.darkVariantButton1).toContainText(data.button1Text);
+      await expect(wayfinder.darkVariantButton2).toContainText(data.button2Text);
+      await expect(wayfinder.darkVariantButton3).toContainText(data.button3Text);
+    });
+
+    await test.step('Verify analytics attributes', async () => {
+      await expect(wayfinder.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(1));
+      await expect(wayfinder.variants.dark).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('wayfinder', 1));
+    });
+
+    await test.step('Verify accessibility', async () => {
+      await runAccessibilityTest({ page, testScope: wayfinder.variants.dark });
+    });
+
+    await test.step('Validate button click', async () => {
+      await wayfinder.darkVariantButton1.click();
+      await expect(page).not.toHaveURL(`${testPage}`);
+    });
+  });
+
+  // Test 3 : Wayfinder gradient
+  test(`[Test Id - ${features[3].tcid}] ${features[3].name},${features[3].tags}`, async ({ page, baseURL }) => {
+    const { data } = features[3];
+    const testPage = `${baseURL}${features[3].path}${miloLibs}`;
+    console.info(`[Test Page]: ${testPage}`);
+
+    await test.step('Go to wayfinder gradient test page', async () => {
+      await page.goto(testPage);
+      await page.waitForLoadState('domcontentloaded');
+      await expect(page).toHaveURL(testPage);
+    });
+
+    await test.step('Verify wayfinder gradient block content/specs', async () => {
+      await expect(wayfinder.variants.gradient).toBeVisible();
+      await expect(wayfinder.gradientVariantContent1).toContainText(data.p1Text);
+      await expect(wayfinder.gradientVariantContent2).toContainText(data.p2Text);
+      await expect(wayfinder.gradientVariantButton1).toContainText(data.button1Text);
+      await expect(wayfinder.gradientVariantButton2).toContainText(data.button2Text);
+    });
+
+    await test.step('Verify analytics attributes', async () => {
+      await expect(wayfinder.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(1));
+      await expect(wayfinder.variants.gradient).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('wayfinder', 1));
+    });
+
+    await test.step('Verify accessibility', async () => {
+      await runAccessibilityTest({ page, testScope: wayfinder.variants.gradient });
+    });
+
+    await test.step('Validate button click', async () => {
+      await wayfinder.gradientVariantButton1.click();
+      await expect(page).not.toHaveURL(`${testPage}`);
+    });
+  });
+
+  // Test 4 : Wayfinder light
+  test(`[Test Id - ${features[4].tcid}] ${features[4].name},${features[4].tags}`, async ({ page, baseURL }) => {
+    const { data } = features[4];
+    const testPage = `${baseURL}${features[4].path}${miloLibs}`;
+    console.info(`[Test Page]: ${testPage}`);
+
+    await test.step('Go to wayfinder light test page', async () => {
+      await page.goto(testPage);
+      await page.waitForLoadState('domcontentloaded');
+      await expect(page).toHaveURL(testPage);
+    });
+
+    await test.step('Verify wayfinder light block content/specs', async () => {
+      await expect(wayfinder.variants.light).toBeVisible();
+      await expect(wayfinder.lightVariantContent1).toContainText(data.p1Text);
+      await expect(wayfinder.lightVariantContent2).toContainText(data.p2Text);
+      await expect(wayfinder.lightVariantButton1).toContainText(data.button1Text);
+      await expect(wayfinder.lightVariantButton2).toContainText(data.button2Text);
+    });
+
+    await test.step('Verify analytics attributes', async () => {
+      await expect(wayfinder.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(1));
+      await expect(wayfinder.variants.light).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('wayfinder', 1));
+    });
+
+    await test.step('Verify accessibility', async () => {
+      await runAccessibilityTest({ page, testScope: wayfinder.variants.light });
+    });
+
+    await test.step('Validate button click', async () => {
+      await wayfinder.lightVariantButton1.click();
+      await expect(page).not.toHaveURL(`${testPage}`);
     });
   });
 });
