@@ -153,6 +153,7 @@ main .section .grid-marquee h1 {
   z-index: 2;
   background-color: var(--color-white);
   border-bottom: 1px solid #0000001a;
+  z-index: 2;
 }
 
 .grid-marquee .drawer .title-row strong {
