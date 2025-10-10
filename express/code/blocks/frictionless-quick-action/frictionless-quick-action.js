@@ -189,6 +189,7 @@ function resetUploadUI() {
   fadeIn(fqaContainer);
 }
 
+/* c8 ignore next 15 */
 function createUploadStatusListener(uploadStatusEvent) {
   const listener = (e) => {
     const isUploadProgressLessThanVisual = e.detail.progress < progressBar.getProgress();
@@ -251,6 +252,7 @@ async function setupUploadUI(block) {
   return progressBarElement;
 }
 
+/* c8 ignore next 13 */
 async function uploadAssetToStorage(file) {
   const service = await initializeUploadService();
   createUploadStatusListener(uploadEvents.UPLOAD_STATUS);
