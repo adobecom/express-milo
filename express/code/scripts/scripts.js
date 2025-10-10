@@ -405,13 +405,6 @@ const listenAlloy = () => {
 
   await loadArea();
 
-  // Optimize video loading after blocks are decorated
-  // Phase E (first section): preload="metadata" for quick poster
-  // Phase L (below-fold): preload="none" with lazy loading
-  import('./utils/video-lazy-loading.js').then((mod) => {
-    mod.initVideoLazyLoading();
-  });
-
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
 
