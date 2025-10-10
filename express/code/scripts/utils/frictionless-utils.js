@@ -502,3 +502,7 @@ export async function initProgressBar(replaceKey, getConfig) {
   progressBar.setAttribute('progress', '2');
   return progressBar;
 }
+
+export function isSafari() {
+  return /Safari/.test(navigator.userAgent);
+}
