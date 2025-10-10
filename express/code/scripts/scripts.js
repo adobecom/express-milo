@@ -405,6 +405,12 @@ const listenAlloy = () => {
 
   await loadArea();
 
+  // Optimize images after blocks are loaded
+  // Convert to WebP, add srcset/sizes for responsive images
+  import('./utils/responsive-images.js').then((mod) => {
+    mod.optimizeImagesInContainer(document.querySelector('main'));
+  });
+
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
 
