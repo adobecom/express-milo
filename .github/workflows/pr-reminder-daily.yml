@@ -297,6 +297,6 @@ jobs:
             
             console.log('✅ Reminder sent successfully');
         env:
-          SLACK_WEBHOOK_URL_PR: ${{ github.event_name == 'schedule' && secrets.SLACK_WEBHOOK_URL_PR_TEST || secrets.SLACK_WEBHOOK_URL_PR }}
+          SLACK_WEBHOOK_URL_PR: ${{ secrets.SLACK_WEBHOOK_URL_PR }}
           PRS_OUTPUT: ${{ steps.find-prs.outputs.prs }}
           COUNT_OUTPUT: ${{ steps.find-prs.outputs.count }}
