@@ -30,3 +30,22 @@ export default async function createProductDetailsSection(productDescriptions) {
 
   return productDetailsSectionContainer;
 }
+
+export function createCheckoutButton() {
+  const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
+  const checkoutButton = createTag('button', { class: 'pdpx-checkout-button' });
+  const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
+  const CTAText = createTag('span', { class: 'pdpx-checkout-button-text' }, 'Customize and print it');
+  checkoutButton.appendChild(CTAIcon);
+  checkoutButton.appendChild(CTAText);
+  const checkoutButtonSubhead = createTag('div', { class: 'pdpx-checkout-button-subhead' });
+  const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
+  const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns gauranteed');
+  const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
+  checkoutButtonSubhead.appendChild(checkoutButtonSubheadImage);
+  checkoutButtonSubhead.appendChild(checkoutButtonSubheadLink);
+  checkoutButtonSubhead.appendChild(checkoutButtonSubheadText);
+  checkoutButtonContainer.appendChild(checkoutButton);
+  checkoutButtonContainer.appendChild(checkoutButtonSubhead);
+  return checkoutButtonContainer;
+}

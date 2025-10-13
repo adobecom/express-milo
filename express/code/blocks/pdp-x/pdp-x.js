@@ -1389,7 +1389,7 @@ function updateRealviewImages(productData, selections) {
 
   // Build new realview params with current selections
   const updatedParams = { ...currentRealview.realviewParams };
-
+  debugger;
   // Update params based on current selections
   if (selections.media?.internalName) {
     updatedParams.media = selections.media.internalName;

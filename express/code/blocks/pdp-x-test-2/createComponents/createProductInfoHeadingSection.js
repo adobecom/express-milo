@@ -1,4 +1,4 @@
-import { formatDeliveryEstimateDateRange } from '../utilities/utility-functions.js';
+import { formatDeliveryEstimateDateRange, formatLargeNumberToK } from '../utilities/utility-functions.js';
 
 function createProductTitle(productDetails) {
   const productTitleContainer = document.createElement('div');
@@ -27,21 +27,23 @@ function createStarRatings(productDetails) {
 }
 
 function createRatingsNumber(productDetails) {
+  const ratingsNumberText = Math.round(productDetails.averageRating * 10) / 10;
   const ratingsNumberContainer = document.createElement('div');
   ratingsNumberContainer.className = 'pdpx-ratings-number-container';
   const ratingsNumber = document.createElement('p');
   ratingsNumber.className = 'pdpx-ratings-number';
-  ratingsNumber.textContent = '4.8';
+  ratingsNumber.textContent = ratingsNumberText;
   ratingsNumberContainer.append(ratingsNumber);
   return ratingsNumberContainer;
 }
 
 function createRatingsAmount(productDetails) {
+  const ratingsAmountText = formatLargeNumberToK(productDetails.totaltReviews);
   const ratingsAmountContainer = document.createElement('div');
   ratingsAmountContainer.className = 'pdpx-ratings-amount-container';
   const ratingsAmount = document.createElement('a');
   ratingsAmount.href = '#';
-  ratingsAmount.textContent = '316.4k ratings';
+  ratingsAmount.textContent = ratingsAmountText;
   ratingsAmount.className = 'pdpx-ratings-amount';
   ratingsAmountContainer.append(ratingsAmount);
   return ratingsAmountContainer;

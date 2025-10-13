@@ -28,7 +28,7 @@ function createPillOptionsSelector(customizationOptions, labelText) {
     const inputPillImage = createTag('img', { class: 'pdpx-pill-image', src: customizationOptions[i].thumbnail });
     inputPillImageContainer.appendChild(inputPillImage);
     const inputPillTextContainer = createTag('div', { class: 'pdpx-pill-text-container' });
-    const inputPillOptionName = createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].name);
+    const inputPillOptionName = createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].title);
     const inputPillOptionPrice = createTag('span', { class: 'pdpx-pill-text-price' }, customizationOptions[i].priceAdjustment);
     inputPillTextContainer.appendChild(inputPillOptionName);
     inputPillTextContainer.appendChild(inputPillOptionPrice);
@@ -40,20 +40,20 @@ function createPillOptionsSelector(customizationOptions, labelText) {
   return pillSelectorContainer;
 }
 
-const createPaperTypeSelector = (customizationOptions, labelText) => {
-  const selectedPaperType = customizationOptions[0].name;
+const createMiniPillOptionsSelector = (customizationOptions, labelText) => {
+  const selectedMiniPillOption = customizationOptions[0].name;
   const paperTypeSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const paperTypeSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
   const paperTypeSelectorLabelNameContainer = createTag('div', { class: 'pdpx-pill-selector-label-name-container' });
   const paperTypeSelectorLabel = createTag('span', { class: 'pdpx-pill-selector-label-label' }, labelText);
-  const paperTypeSelectorLabeLName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedPaperType);
+  const paperTypeSelectorLabeLName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOption);
   const paperTypeSelectorLabelCompareLink = createTag('a', { class: 'pdpx-pill-selector-label-compare-link' }, 'Compare Paper Types');
   paperTypeSelectorLabelNameContainer.appendChild(paperTypeSelectorLabel);
   paperTypeSelectorLabelNameContainer.appendChild(paperTypeSelectorLabeLName);
   paperTypeSelectorLabelContainer.appendChild(paperTypeSelectorLabelNameContainer);
   paperTypeSelectorLabelContainer.appendChild(paperTypeSelectorLabelCompareLink);
   paperTypeSelectorContainer.appendChild(paperTypeSelectorLabelContainer);
-  const paperTypeSelectorOptionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
+  const paperTypeSelectorOptionsContainer = createTag('div', { class: 'pdpx-mini-pill-selector-options-container' });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const paperTypeOption = createTag('div', { class: 'pdpx-mini-pill-container' });
     const paperTypeOptionImageContainer = createTag('div', { class: 'pdpx-mini-pill-image-container' });
@@ -61,6 +61,11 @@ const createPaperTypeSelector = (customizationOptions, labelText) => {
     paperTypeOptionImageContainer.appendChild(paperTypeOptionImage);
     const paperTypeOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const paperTypeOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
+    paperTypeOptionImageContainer.addEventListener('click', (element) => {
+      debugger;
+      element.currentTarget.classList.add('selected');
+      console.log('clicked');
+    });
     paperTypeOptionTextContainer.appendChild(paperTypeOptionPrice);
     paperTypeOption.appendChild(paperTypeOptionImageContainer);
     paperTypeOption.appendChild(paperTypeOptionTextContainer);
@@ -76,7 +81,7 @@ function createBusinessCardInputs(container, productDetails) {
   const cornerStyleLabelText = 'Corner style';
   const sizeLabelText = 'Resize business card';
   const sideQuantitySelectorContainer = createPillOptionsSelector(productDetails.sideQuantityptions, sideQuantityLabelText);
-  const paperTypeSelectorContainer = createPaperTypeSelector(productDetails.paperTypeOptions, paperTypeLabelText);
+  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.paperTypeOptions, paperTypeLabelText);
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerStyleOptions, cornerStyleLabelText);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.sizeOptions, sizeLabelText);
   const quantitySelectorContainer = createQuantitySelector(productDetails);

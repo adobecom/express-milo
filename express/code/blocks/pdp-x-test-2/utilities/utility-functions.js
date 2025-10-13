@@ -63,7 +63,84 @@ export function extractProductDescriptionsFromBlock(block) {
   return productDescriptions;
 }
 
-export function normalizeProductDetailObject(productDetails, productPrice, productShippingEstimates) {
+export function formatLargeNumberToK(totalReviews) {
+  if (totalReviews > 1000) {
+    const hundreds = Math.round((totalReviews % 1000) / 100);
+    if (hundreds === 0) {
+      return `${Math.round(totalReviews / 1000)}k`;
+    }
+    return `${Math.round(totalReviews / 1000)}.${Math.round((totalReviews % 1000) / 100)}k`;
+  }
+  return totalReviews;
+}
+
+function buildImageUrl(realviewParams) {
+  const params = new URLSearchParams();
+
+  Object.entries(realviewParams).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      params.set(key, value);
+    }
+  });
+  return `https://rlv.zcache.com/svc/view?${params.toString()}`;
+}
+
+function formatPriceAdjustment(priceAdjustment, short = false) {
+  const priceAdjustmentOperator = priceAdjustment >= 0 ? '+' : '-';
+  const currencySymbol = short ? '$' : 'US$';
+  const priceAdjustmentFormatted = priceAdjustmentOperator + currencySymbol + priceAdjustment.toFixed(2);
+  return priceAdjustmentFormatted;
+}
+
+function addCornerStyleOptionsObject(productDetails, normalizedProductDetails) {
+  const cornerStyleOptions = productDetails.product.attributes.cornerstyle.values;
+  const newCornerStyleOptionsArray = [];
+  for (let i = 0; i < cornerStyleOptions.length; i += 1) {
+    const cornerStyleOption = cornerStyleOptions[i];
+    const imageUrl = buildImageUrl(cornerStyleOption.firstProductRealviewParams);
+    newCornerStyleOptionsArray.push({
+      thumbnail: imageUrl,
+      title: cornerStyleOption.title,
+      name: cornerStyleOption.name,
+      priceAdjustment: formatPriceAdjustment(cornerStyleOption.priceDifferential),
+    });
+  }
+  normalizedProductDetails.cornerStyleOptions = newCornerStyleOptionsArray;
+}
+
+function addSizeOptionsObject(productDetails, normalizedProductDetails) {
+  const sizeOptions = productDetails.product.attributes.style.values;
+  const newSizeOptionsArray = [];
+  for (let i = 0; i < sizeOptions.length; i += 1) {
+    const sizeOption = sizeOptions[i];
+    const imageUrl = buildImageUrl(sizeOption.firstProductRealviewParams);
+    newSizeOptionsArray.push({
+      thumbnail: imageUrl,
+      title: sizeOption.title,
+      name: sizeOption.name,
+      priceAdjustment: formatPriceAdjustment(sizeOption.priceDifferential),
+    });
+  }
+  normalizedProductDetails.sizeOptions = newSizeOptionsArray;
+}
+
+function addPaperTypeOptionsObject(productDetails, normalizedProductDetails) {
+  const paperTypeOptions = productDetails.product.attributes.media.values;
+  const newPaperTypeOptionsArray = [];
+  for (let i = 0; i < paperTypeOptions.length; i += 1) {
+    const paperTypeOption = paperTypeOptions[i];
+    const imageUrl = buildImageUrl(paperTypeOption.firstProductRealviewParams);
+    newPaperTypeOptionsArray.push({
+      thumbnail: imageUrl,
+      title: paperTypeOption.title,
+      name: paperTypeOption.name,
+      priceAdjustment: formatPriceAdjustment(paperTypeOption.priceDifferential, true),
+    });
+  }
+  normalizedProductDetails.paperTypeOptions = newPaperTypeOptionsArray;
+}
+
+export function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
   const normalizedProductDetails = {
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
@@ -75,91 +152,70 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
     productType: productDetails.product.productType,
     quantities: productDetails.product.quantities,
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
+    averageRating: productReviews.reviews.stats.averageRating,
+    totaltReviews: productReviews.reviews.stats.totalReviews,
     sideQuantityptions: [
       {
         thumbnail: 'https://placehold.co/54',
-        name: 'Double-sided',
+        title: 'Double-sided',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/54',
-        name: 'Single-sided',
+        title: 'Single-sided',
         priceAdjustment: '-US$5.95',
-      },
-    ],
-    cornerStyleOptions: [
-      {
-        thumbnail: 'https://placehold.co/54',
-        name: 'Squared',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/54',
-        name: 'Rounded',
-        priceAdjustment: '+US$0.00',
-      },
-    ],
-    sizeOptions: [
-      {
-        thumbnail: 'https://placehold.co/54',
-        name: '3.5"x2"',
-      },
-      {
-        thumbnail: 'https://placehold.co/54',
-        name: '2"x3.5"',
-      },
-      {
-        thumbnail: 'https://placehold.co/54',
-        name: '2.5"x2.5"',
       },
     ],
     paperTypeOptions: [
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Standard Matte',
+        title: 'Standard Matte',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Standard Gloss',
+        title: 'Standard Gloss',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Paper Type 3',
+        title: 'Paper Type 3',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Paper Type 4',
+        title: 'Paper Type 4',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Paper Type 5',
+        title: 'Paper Type 5',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Paper Type 6',
+        title: 'Paper Type 6',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Paper Type 7',
+        title: 'Paper Type 7',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Paper Type 8',
+        title: 'Paper Type 8',
         priceAdjustment: '+$0.00',
       },
       {
         thumbnail: 'https://placehold.co/48',
-        name: 'Paper Type 9',
+        title: 'Paper Type 9',
         priceAdjustment: '+$0.00',
       },
     ],
   };
+  addCornerStyleOptionsObject(productDetails, normalizedProductDetails);
+  addSizeOptionsObject(productDetails, normalizedProductDetails);
+  addPaperTypeOptionsObject(productDetails, normalizedProductDetails);
   return normalizedProductDetails;
 }
