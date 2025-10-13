@@ -2,15 +2,17 @@ import { extractProductDescriptionsFromBlock } from '../utilities/utility-functi
 
 export async function fetchProductDetails(productId) {
   let productDetailsFetch;
-  productDetailsFetch = await fetch(`https://www.zazzle.com/svc/partner/adobeexpress/v1/getproduct?productId=${productId}`);
   /*
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproduct?productId=${productId}`;
+  const proxyUrl = `http://localhost:8080?url=${encodeURIComponent(url)}`;
+  productDetailsFetch = await fetch(proxyUrl);
+  */
   try {
     productDetailsFetch = await fetch(`https://www.zazzle.com/svc/partner/adobeexpress/v1/getproduct?productId=${productId}`);
   } catch (error) {
     debugger;
-    productDetailsFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getProduct22.json');
+    productDetailsFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getProduct.json');
   }
-  */
   const productDetailsJSON = await productDetailsFetch.json();
   const productDetails = productDetailsJSON.data;
   return productDetails;
