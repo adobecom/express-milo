@@ -1,3 +1,21 @@
+function getMerchCardWidth(el) {
+ 
+
+  let sibling = el.previousElementSibling;
+  while (sibling) {
+    console.log(sibling);
+    if (sibling.classList?.contains('content')) {
+      const computedWidth = window.getComputedStyle(sibling).width;
+      console.log(computedWidth);
+      if (computedWidth && computedWidth !== 'auto') {
+        el.style.maxWidth = computedWidth;
+      }
+      break;
+    }
+    sibling = sibling.previousElementSibling;
+  }
+}
+
 export default function init(el) {
   const firstRow = el.querySelector(':scope > div');
   if (!firstRow) return;
@@ -23,12 +41,15 @@ export default function init(el) {
     }
   }
 
-  if (!pricingCardsBlock) return;
+  // if (!pricingCardsBlock) return;
 
-  const cardCountClass = Array.from(pricingCardsBlock.classList)
-    .find((cls) => cls.startsWith('card-count-'));
+  // const cardCountClass = Array.from(pricingCardsBlock.classList)
+  //   .find((cls) => cls.startsWith('card-count-'));
 
-  if (cardCountClass) {
-    el.classList.add(cardCountClass);
-  }
+  // if (cardCountClass) {
+  //   el.classList.add(cardCountClass);
+  // }
+
+
+  getMerchCardWidth(el);
 }

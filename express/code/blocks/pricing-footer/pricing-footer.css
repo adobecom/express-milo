@@ -1,5 +1,5 @@
 .pricing-footer {
-  margin-top: 16px;
+  margin-top: 24px;
   margin-bottom: var(--spacing-600)
 }
 
@@ -12,7 +12,7 @@
   text-align: center;
 }
 
-.pricing-footer p {
+main .section .pricing-footer p {
   margin: 0;
   color: var(--Content-Neutral-default, #222);
   font-size: 12px;
