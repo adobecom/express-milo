@@ -136,6 +136,10 @@ async function formatHeadingPlaceholder(props) {
   const lang = config.locale.ietf;
   const templateCount = lang === 'es-ES' ? props.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : props.total.toLocaleString(lang);
   const templatePlaceholder = await replaceKey('template-placeholder', getConfig());
+  console.log(props.templateStats);
+  console.log(props.total);
+  console.log(templatePlaceholder);
+  console.log(templateCount);
   let toolBarHeading = getMetadata('toolbar-heading') ? props.templateStats : templatePlaceholder;
 
   const templateSearchHeadingSingular = await replaceKey('template-search-heading-singular', getConfig());
@@ -165,8 +169,10 @@ async function formatHeadingPlaceholder(props) {
         });
       }
     } else {
+      console.log(props.fallbackMsg);
+      console.log(templateCount);
       toolBarHeading = toolBarHeading
-        .replace('{{quantity}}', props.fallbackMsg ? '0' : templateCount)
+        .replace('{{quantity}}', templateCount)
         .replace('quantity', props.fallbackMsg ? '0' : templateCount)
         .replace('{{Type}}', titleCase(getMetadata('short-title') || getMetadata('q') || getMetadata('topics') || ''))
         .replace('{{type}}', getMetadata('short-title') || getMetadata('q') || getMetadata('topics') || '');
@@ -180,6 +186,7 @@ async function formatHeadingPlaceholder(props) {
           }
         });
       }
+      console.log(toolBarHeading);
     }
   }
 
@@ -407,6 +414,7 @@ async function build2by2(parentContainer, block) {
 async function decorateNewTemplates(block, props, options = { reDrawMasonry: false }) {
   const { templates: newTemplates } = await fetchAndRenderTemplates(props);
   updateImpressionCache({ result_count: props.total });
+  await updateStickySearchHeading(block, props);
   const loadMore = block.parentElement.querySelector('.load-more');
 
   props.templates = props.templates.concat(newTemplates);
@@ -1087,7 +1095,7 @@ async function decorateToolbar(block, props) {
   const tBar = createTag('div', { class: 'api-templates-toolbar' });
   const contentWrapper = createTag('div', { class: 'wrapper-content-search' });
   const functionsWrapper = createTag('div', { class: 'wrapper-functions' });
-
+  console.log(props.templateStats);
   if (props.templateStats) {
     sectionHeading.textContent = await formatHeadingPlaceholder(props) || '';
   }
@@ -1216,6 +1224,20 @@ function decorateHoliday(block, props) {
   initExpandCollapseToolbar(block, templateTitle, toggle, toggleChev);
 }
 
+async function updateStickySearchHeading(block, props, searchWrapper) {
+  const wrapper = searchWrapper || block.querySelector('.api-templates-toolbar .search-bar-wrapper');
+  if (!wrapper) return;
+  const headingEl = wrapper.querySelector('h2');
+  if (!headingEl) return;
+  const headingText = await formatHeadingPlaceholder(props);
+  if (!headingText) return;
+  const normalizedHeading = headingText.trim().toLowerCase();
+  const shouldSkipUpdate = ['template placeholder', 'template search heading singular', 'template search heading plural']
+    .includes(normalizedHeading);
+  if (shouldSkipUpdate) return;
+  headingEl.textContent = headingText;
+}
+
 async function decorateTemplates(block, props) {
   const impression = gatherPageImpression(props);
   updateImpressionCache(impression);
@@ -1285,6 +1307,9 @@ async function decorateTemplates(block, props) {
     result_count: props.total,
     content_category: 'templates',
   });
+  console.log('props.total');
+  console.log(props.total);
+  await updateStickySearchHeading(block, props);
   if (searchId) trackSearch('view-search-result', searchId);
 
   const templateLinks = block.querySelectorAll('.template .button-container > a, a.template.placeholder');
@@ -1307,7 +1332,7 @@ function cycleThroughSuggestions(block, targetIndex = 0) {
   if (suggestions.length > 0) suggestions[targetIndex].focus();
 }
 
-function importSearchBar(block, blockMediator) {
+async function importSearchBar(block, blockMediator, props) {
   const parent = block.querySelector('.api-templates-toolbar .wrapper-content-search');
   const searchWrapper = blockMediator.get('stickySearchBar')?.element;
   if (parent) {
@@ -1316,6 +1341,7 @@ function importSearchBar(block, blockMediator) {
       parent.prepend(searchWrapper);
       searchWrapper.classList.add('show');
       searchWrapper.classList.add('collapsed');
+      await updateStickySearchHeading(block, props, searchWrapper);
 
       const searchDropdown = searchWrapper.querySelector('.search-dropdown-container');
       const searchForm = searchWrapper.querySelector('.search-form');
@@ -1546,10 +1572,7 @@ async function handleTabClick(
   tabConfigs,
 ) {
   templatesWrapper.style.opacity = 0;
-  const {
-    templates: newTemplates,
-    fallbackMsg: newFallbackMsg,
-  } = await fetchAndRenderTemplates({
+  const tabProps = {
     ...props,
     start: '',
     filters: {
@@ -1557,9 +1580,17 @@ async function handleTabClick(
       tasks: task,
     },
     collectionId: tabConfigs[index].collectionId,
-  });
+  };
+  const {
+    templates: newTemplates,
+    fallbackMsg: newFallbackMsg,
+  } = await fetchAndRenderTemplates(tabProps);
   if (newTemplates?.length > 0) {
     props.fallbackMsg = newFallbackMsg;
+    props.start = tabProps.start;
+    props.total = tabProps.total;
+    props.filters = { ...tabProps.filters };
+    props.collectionId = tabProps.collectionId;
     renderFallbackMsgWrapper(block, props);
 
     templatesWrapper.innerHTML = '';
@@ -1692,7 +1723,7 @@ async function buildTemplateList(block, props, type = []) {
 
   if (props.toolBar && props.searchBar) {
     import('../../scripts/block-mediator.min.js').then(({ default: blockMediator }) => {
-      importSearchBar(block, blockMediator);
+      importSearchBar(block, blockMediator, props);
     });
   }
 
