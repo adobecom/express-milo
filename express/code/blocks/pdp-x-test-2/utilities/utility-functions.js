@@ -140,6 +140,12 @@ function addPaperTypeOptionsObject(productDetails, normalizedProductDetails) {
   normalizedProductDetails.paperTypeOptions = newPaperTypeOptionsArray;
 }
 
+export function formatStringSnakeCase(string) {
+  // remove special characters except for spaces
+  string = string.replace(/[^a-zA-Z0-9\s]/g, '');
+  return string.trim().toLowerCase().replace(/ /g, '_');
+}
+
 export function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
   const normalizedProductDetails = {
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
