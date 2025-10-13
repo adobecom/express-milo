@@ -15,35 +15,23 @@ export default class Wayfinder {
     };
 
     // Default details
-    this.defaultContent1 = this.wayfinder.locator('p').nth(0);
-    this.defaultContent2 = this.wayfinder.locator('p').nth(1);
-    this.defaultButton1 = this.wayfinder.locator('a').nth(0);
-    this.defaultButton2 = this.wayfinder.locator('a').nth(1);
-    this.defaultButton3 = this.wayfinder.locator('a').nth(2);
+    this.defaultPText = this.wayfinder.locator('p');
+    this.defaultButton = this.wayfinder.locator('a');
 
     // Borderless variant details
     this.borderlessVariantContent = this.variants.borderless.locator('div').nth(1);
-    this.borderlessVariantButton1 = this.variants.borderless.locator('a').nth(0);
-    this.borderlessVariantButton2 = this.variants.borderless.locator('a').nth(1);
+    this.borderlessVariantButton = this.variants.borderless.locator('a');
 
     // Dark variant details
-    this.darkVariantContent1 = this.variants.dark.locator('p').nth(0);
-    this.darkVariantContent2 = this.variants.dark.locator('p').nth(1);
-    this.darkVariantButton1 = this.variants.dark.locator('a').nth(0);
-    this.darkVariantButton2 = this.variants.dark.locator('a').nth(1);
-    this.darkVariantButton3 = this.variants.dark.locator('a').nth(2);
+    this.darkVariantPText = this.variants.dark.locator('p');
+    this.darkVariantButton = this.variants.dark.locator('a');
 
     // Gradient variant details
-    this.gradientVariantContent1 = this.variants.gradient.locator('p').nth(0);
-    this.gradientVariantContent2 = this.variants.gradient.locator('p').nth(1);
-    this.gradientVariantButton1 = this.variants.gradient.locator('a').nth(0);
-    this.gradientVariantButton2 = this.variants.gradient.locator('a').nth(1);
+    this.gradientVariantPText = this.variants.gradient.locator('p');
+    this.gradientVariantButton = this.variants.gradient.locator('a');
 
     // Light variant details
-    this.lightVariantContent1 = this.variants.light.locator('p').nth(0);
-    this.lightVariantContent2 = this.variants.light.locator('p').nth(1);
-    this.lightVariantButton1 = this.variants.light.locator('a').nth(0);
-    this.lightVariantButton2 = this.variants.light.locator('a').nth(1);
-    this.lightVariantButton3 = this.variants.light.locator('a').nth(2);
+    this.lightVariantPText = this.variants.light.locator('p');
+    this.lightVariantButton = this.variants.light.locator('a');
   }
 }

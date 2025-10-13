@@ -29,11 +29,12 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify wayfinder default block content/specs', async () => {
       await expect(wayfinder.wayfinder).toBeVisible();
-      await expect(wayfinder.defaultContent1).toContainText(data.p1Text);
-      await expect(wayfinder.defaultContent2).toContainText(data.p2Text);
-      await expect(wayfinder.defaultButton1).toContainText(data.button1Text);
-      await expect(wayfinder.defaultButton2).toContainText(data.button2Text);
-      await expect(wayfinder.defaultButton3).toContainText(data.button3Text);
+      await expect(wayfinder.defaultPText.nth(0)).toContainText(data.p1Text);
+      await expect(wayfinder.defaultPText.nth(1)).toContainText(data.p2Text);
+      await expect(wayfinder.defaultButton.nth(0)).toContainText(data.button1Text);
+      await expect(wayfinder.defaultButton.nth(1)).toContainText(data.button2Text);
+      await expect(wayfinder.defaultButton.nth(2)).toContainText(data.button3Text);
+      await expect(wayfinder.defaultButton).toHaveCount(data.buttonCount);
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -46,7 +47,7 @@ test.describe('Express Wayfinder Block test suite', () => {
     });
 
     await test.step('Validate button click', async () => {
-      await wayfinder.defaultButton1.click();
+      await wayfinder.defaultButton.nth(0).click();
       await expect(page).not.toHaveURL(`${testPage}`);
     });
   });
@@ -66,8 +67,9 @@ test.describe('Express Wayfinder Block test suite', () => {
     await test.step('Verify wayfinder borderless block content/specs', async () => {
       await expect(wayfinder.variants.borderless).toBeVisible();
       await expect(wayfinder.borderlessVariantContent).toContainText(data.content);
-      await expect(wayfinder.borderlessVariantButton1).toContainText(data.button1Text);
-      await expect(wayfinder.borderlessVariantButton2).toContainText(data.button2Text);
+      await expect(wayfinder.borderlessVariantButton.nth(0)).toContainText(data.button1Text);
+      await expect(wayfinder.borderlessVariantButton.nth(1)).toContainText(data.button2Text);
+      await expect(wayfinder.borderlessVariantButton).toHaveCount(data.buttonCount);
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -83,7 +85,7 @@ test.describe('Express Wayfinder Block test suite', () => {
       await page.waitForLoadState('networkidle');
       const [newTab] = await Promise.all([
         page.waitForEvent('popup'),
-        await wayfinder.borderlessVariantButton1.click(),
+        await wayfinder.borderlessVariantButton.nth(0).click(),
       ]);
       expect(newTab.url).not.toBe(testPage);
       await newTab.close();
@@ -104,11 +106,12 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify wayfinder dark block content/specs', async () => {
       await expect(wayfinder.variants.dark).toBeVisible();
-      await expect(wayfinder.darkVariantContent1).toContainText(data.p1Text);
-      await expect(wayfinder.darkVariantContent2).toContainText(data.p2Text);
-      await expect(wayfinder.darkVariantButton1).toContainText(data.button1Text);
-      await expect(wayfinder.darkVariantButton2).toContainText(data.button2Text);
-      await expect(wayfinder.darkVariantButton3).toContainText(data.button3Text);
+      await expect(wayfinder.darkVariantPText.nth(0)).toContainText(data.p1Text);
+      await expect(wayfinder.darkVariantPText.nth(1)).toContainText(data.p2Text);
+      await expect(wayfinder.darkVariantButton.nth(0)).toContainText(data.button1Text);
+      await expect(wayfinder.darkVariantButton.nth(1)).toContainText(data.button2Text);
+      await expect(wayfinder.darkVariantButton.nth(2)).toContainText(data.button3Text);
+      await expect(wayfinder.darkVariantButton).toHaveCount(data.buttonCount);
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -121,7 +124,7 @@ test.describe('Express Wayfinder Block test suite', () => {
     });
 
     await test.step('Validate button click', async () => {
-      await wayfinder.darkVariantButton1.click();
+      await wayfinder.darkVariantButton.nth(0).click();
       await expect(page).not.toHaveURL(`${testPage}`);
     });
   });
@@ -140,10 +143,11 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify wayfinder gradient block content/specs', async () => {
       await expect(wayfinder.variants.gradient).toBeVisible();
-      await expect(wayfinder.gradientVariantContent1).toContainText(data.p1Text);
-      await expect(wayfinder.gradientVariantContent2).toContainText(data.p2Text);
-      await expect(wayfinder.gradientVariantButton1).toContainText(data.button1Text);
-      await expect(wayfinder.gradientVariantButton2).toContainText(data.button2Text);
+      await expect(wayfinder.gradientVariantPText.nth(0)).toContainText(data.p1Text);
+      await expect(wayfinder.gradientVariantPText.nth(1)).toContainText(data.p2Text);
+      await expect(wayfinder.gradientVariantButton.nth(0)).toContainText(data.button1Text);
+      await expect(wayfinder.gradientVariantButton.nth(1)).toContainText(data.button2Text);
+      await expect(wayfinder.gradientVariantButton).toHaveCount(data.buttonCount);
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -156,7 +160,7 @@ test.describe('Express Wayfinder Block test suite', () => {
     });
 
     await test.step('Validate button click', async () => {
-      await wayfinder.gradientVariantButton1.click();
+      await wayfinder.gradientVariantButton.nth(0).click();
       await expect(page).not.toHaveURL(`${testPage}`);
     });
   });
@@ -175,10 +179,11 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify wayfinder light block content/specs', async () => {
       await expect(wayfinder.variants.light).toBeVisible();
-      await expect(wayfinder.lightVariantContent1).toContainText(data.p1Text);
-      await expect(wayfinder.lightVariantContent2).toContainText(data.p2Text);
-      await expect(wayfinder.lightVariantButton1).toContainText(data.button1Text);
-      await expect(wayfinder.lightVariantButton2).toContainText(data.button2Text);
+      await expect(wayfinder.lightVariantPText.nth(0)).toContainText(data.p1Text);
+      await expect(wayfinder.lightVariantPText.nth(1)).toContainText(data.p2Text);
+      await expect(wayfinder.lightVariantButton.nth(0)).toContainText(data.button1Text);
+      await expect(wayfinder.lightVariantButton.nth(1)).toContainText(data.button2Text);
+      await expect(wayfinder.lightVariantButton).toHaveCount(data.buttonCount);
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -191,7 +196,7 @@ test.describe('Express Wayfinder Block test suite', () => {
     });
 
     await test.step('Validate button click', async () => {
-      await wayfinder.lightVariantButton1.click();
+      await wayfinder.lightVariantButton.nth(0).click();
       await expect(page).not.toHaveURL(`${testPage}`);
     });
   });
