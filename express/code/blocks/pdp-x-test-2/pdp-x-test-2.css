@@ -340,14 +340,14 @@ main .section .pdpx-global-container p {
 .pdpx-pill-selector-container {
   margin-bottom: var(--figma-spacing-400);
 }
-.pdpx-quantity-selector-container {
+.pdpx-standard-selector-container {
   margin-bottom: var(--figma-spacing-400);
 }
-.pdpx-quantity-selector-label {
+.pdpx-standard-selector-label {
   color: #505050;
   margin-right: var(--figma-spacing-600);
 }
-.pdpx-quantity-selector {
+.pdpx-standard-selector {
   padding: var(--figma-spacing-100);
   cursor: pointer;
 }
@@ -398,4 +398,26 @@ main .section .pdpx-global-container p {
   background-image: url('/express/code/icons/plus-sign.svg');
   background-repeat: no-repeat;
   background-position: center;
+}
+.pdpx-hidden-select-input {
+  display: none;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-appearance: none;
 }
