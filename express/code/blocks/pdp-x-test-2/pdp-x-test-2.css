@@ -221,12 +221,46 @@ main .section .pdpx-global-container p {
   border-radius: 8px;
 }
 .pdpx-product-images-container,
-.pdpx-product-info-container {
+.pdpx-product-info-section-wrapper {
   width: 50%;
 }
 
-/* Pill Selector */
+.pdpx-product-info-container { 
+  height: 70vh;
+  overflow-y: scroll;
+}
 
+.pdpx-checkout-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: var(--figma-spacing-100);
+  margin-top: var(--figma-spacing-400);
+  width: 100%;
+  background-color: #5258E4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px;
+  border-radius: 24px;
+  cursor: pointer;
+}
+.pdpx-checkout-button-text {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pdpx-checkout-button-subhead {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+}
+
+/* Pill Selector */
 .pdpx-pill-selector-label {
   display: block;
   font-weight: 700;
@@ -245,12 +279,18 @@ main .section .pdpx-global-container p {
 .pdpx-pill-selector-options-container {
   display: flex;
   flex-direction: row;
+  gap: var(--figma-spacing-100);
+}
+.pdpx-mini-pill-selector-options-container {
+  display: flex;
+  flex-direction: row;
   gap: var(--figma-spacing-80);
 }
 
 .pdpx-pill-container {
   display: flex;
   flex-direction: row;
+  min-width: 150px;
   background-color: white;
   overflow: hidden;
   border-radius: 8px;
@@ -258,9 +298,15 @@ main .section .pdpx-global-container p {
   padding: 0px;
   cursor: pointer;
 }
+.pdpx-mini-pill-image-container {
+  cursor: pointer;
+}
 .pdpx-pill-image-container {
   width: 54px;
   height: 54px;
+}
+.pdpx-pill-image {
+  width: 100%;
 }
 .pdpx-mini-pill-image {
   width: 48px;
@@ -276,6 +322,7 @@ main .section .pdpx-global-container p {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  min-width: 92px;
   gap: var(--figma-spacing-75);
   padding: var(--figma-spacing-100);
   padding-right: var(--figma-spacing-400);
