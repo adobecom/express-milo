@@ -172,53 +172,6 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
         priceAdjustment: '-US$5.95',
       },
     ],
-    paperTypeOptions: [
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Standard Matte',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Standard Gloss',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Paper Type 3',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Paper Type 4',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Paper Type 5',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Paper Type 6',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Paper Type 7',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Paper Type 8',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/48',
-        title: 'Paper Type 9',
-        priceAdjustment: '+$0.00',
-      },
-    ],
   };
   addCornerStyleOptionsObject(productDetails, normalizedProductDetails);
   addSizeOptionsObject(productDetails, normalizedProductDetails);

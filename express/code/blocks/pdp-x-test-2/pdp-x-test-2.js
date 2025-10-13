@@ -1,5 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
-import { fetchProductDetails, fetchProductPrice, fetchProductReviews, fetchProductShippingEstimates, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
+import { fetchProductDetails, fetchProductPrice, fetchProductReviews, fetchProductShippingEstimates, fetchProductDetailsChangeOptions, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
 import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection, { createDeliveryEstimatePill } from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
@@ -42,6 +42,7 @@ export default async function decorate(block) {
   const productPrice = await fetchProductPrice(productId);
   const productReviews = await fetchProductReviews(productId);
   const productShippingEstimates = await fetchProductShippingEstimates(productId, '94065', 100);
+  const productDetailsChangeOptions = await fetchProductDetailsChangeOptions(productId);
   const productDetailsFormatted = normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
   const productDescriptions = await formatProductDescriptions(block);
   console.log('productDetails');

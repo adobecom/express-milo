@@ -1,0 +1,2819 @@
+{
+  "success": true,
+  "data": {
+    "entities": {
+      "seller": {
+        "238008941328162646": {
+          "id": "238008941328162646",
+          "displayName": "Adobe Express"
+        }
+      },
+      "stores": {
+        "250446904546836352": {
+          "id": "250446904546836352",
+          "email": "",
+          "handle": "adobe_express",
+          "newStoreFramework": true,
+          "showContact": true,
+          "showMakerAddress": false,
+          "showMakerPhoneNumber": false,
+          "showComments": false
+        }
+      },
+      "links": {
+        "WwwAst": {
+          "pd/productattributehelp/zazzle_businesscard_media/175ptmatte.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|175ptmatte\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/16ptsemi.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|16ptsemi\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/18ptsemi_gloss.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|18ptsemi_gloss\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/18ptsemi_matte.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|18ptsemi_matte\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/16ptcream.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|16ptcream\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/18ptsemi_softtouch.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|18ptsemi_softtouch\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/16ptlinen.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|16ptlinen\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/16ptpearl.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|16ptpearl\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/18ptkraft.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|18ptkraft\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/16ptpewtergray.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|16ptpewtergray\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/16ptblack.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|16ptblack\u003Cjpg",
+          "pd/productattributehelp/zazzle_businesscard_media/32ptultrathick.jpg": "s||asset\u003Czcache\u003Ccom|assets|graphics|pd|productAttributeHelp|zazzle_businesscard_media|32ptultrathick\u003Cjpg"
+        }
+      },
+      "dbStrings": {
+        "product.option.zazzle_businesscard.weight=120lb": "120 lb / 324 GSM",
+        "product.option.zazzle_businesscard.thickness=17_5": "18 pt",
+        "product.option.zazzle_businesscard.weight=150lb400gsm": "150 lb/ 400 GSM",
+        "product.option.zazzle_businesscard.thickness=16": "16 pt",
+        "product.option.zazzle_businesscard.weight=325gsm": "325 GSM",
+        "product.option.zazzle_businesscard.thickness=18": "18 pt",
+        "product.option.zazzle_businesscard.weight=130lb352gsm": "130 lb / 352 GSM",
+        "product.option.zazzle_businesscard.thickness=21": "21 pt",
+        "product.option.zazzle_businesscard.weight=130lb350gsm": "130 lb / 350 GSM",
+        "product.option.zazzle_businesscard.weight=125lb": "125 lb / 338 GSM",
+        "product.option.zazzle_businesscard.weight=240lb": "240 lb / 650 GSM",
+        "product.option.zazzle_businesscard.thickness=32": "32 pt"
+      }
+    },
+    "product": {
+      "allowCustomization": true,
+      "allowDesignTransfer": false,
+      "allowDigital": false,
+      "amountPerPack": 100,
+      "attributeDependencyGraph": {
+        "Name": "style",
+        "Dependencies": [
+          {
+            "Name": "cornerstyle",
+            "Dependencies": [
+              {
+                "Name": "media",
+                "Dependencies": [
+                  {
+                    "Name": "printquality",
+                    "Dependencies": [
+                      {
+                        "Name": "envelopes",
+                        "Graph": {
+                          "envelopes": null
+                        },
+                        "List": [
+                          "envelopes"
+                        ]
+                      }
+                    ],
+                    "Graph": {
+                      "printquality": [
+                        "envelopes"
+                      ],
+                      "envelopes": null
+                    },
+                    "List": [
+                      "printquality",
+                      "envelopes"
+                    ]
+                  }
+                ],
+                "Graph": {
+                  "media": [
+                    "printquality"
+                  ],
+                  "printquality": [
+                    "envelopes"
+                  ],
+                  "envelopes": null
+                },
+                "List": [
+                  "media",
+                  "printquality",
+                  "envelopes"
+                ]
+              }
+            ],
+            "Graph": {
+              "cornerstyle": [
+                "media"
+              ],
+              "media": [
+                "printquality"
+              ],
+              "printquality": [
+                "envelopes"
+              ],
+              "envelopes": null
+            },
+            "List": [
+              "cornerstyle",
+              "media",
+              "printquality",
+              "envelopes"
+            ]
+          }
+        ],
+        "Graph": {
+          "style": [
+            "cornerstyle"
+          ],
+          "cornerstyle": [
+            "media"
+          ],
+          "media": [
+            "printquality"
+          ],
+          "printquality": [
+            "envelopes"
+          ],
+          "envelopes": null
+        },
+        "List": [
+          "style",
+          "cornerstyle",
+          "media",
+          "printquality",
+          "envelopes"
+        ]
+      },
+      "attributeDescription": "",
+      "autoTranslationMessageEnabled": false,
+      "blankRealviewId": "113335724526596936",
+      "currencyMultiplier": 100,
+      "dateCreated": "2025-02-13T11:57:40.263-08:00",
+      "departmentId": "252300611877157193",
+      "departmentName": "Business Cards",
+      "description": "Yellow and Black Creative Agency Business Card",
+      "descriptionInOriginalLanguage": "Yellow and Black Creative Agency Business Card",
+      "designerId": "238008941328162646",
+      "designId": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+      "eligibleForDigital": false,
+      "fanMerchDesignerId": "0",
+      "hasAddressing": false,
+      "hasAreaGroups": true,
+      "hasForcedQuantities": false,
+      "hasGuideFiles": true,
+      "id": "256432838073857180",
+      "isAccessory": false,
+      "isBlankInstance": false,
+      "isBuyNowChangeLater": false,
+      "isCloned": false,
+      "isDiscontinued": false,
+      "isEditorsPick": false,
+      "isEmbroidery": false,
+      "isInstance": true,
+      "isInStock": true,
+      "isInStockShortTerm": true,
+      "isLocked": false,
+      "isPreorder": false,
+      "isPrivate": false,
+      "isPublic": true,
+      "isQuantitySelectable": true,
+      "isRealFoil": false,
+      "isZazzleSelect": false,
+      "isReportViolationReviewPending": false,
+      "isTemplate": false,
+      "isVizLite": false,
+      "isZazzleHeart": false,
+      "keywords": [
+        "black",
+        "business",
+        "card",
+        "cards",
+        "creative",
+        "agency",
+        "ad"
+      ],
+      "lockDisplayQuantities": false,
+      "makerId": "238577165252326506",
+      "maturity": "G",
+      "maxQuantity": 999999,
+      "merchantSellerId": "0",
+      "minQuantity": 1,
+      "oldPricingUI": true,
+      "optionFilterId": "254305429051426010",
+      "ownerId": "238008941328162646",
+      "partnerLegal": null,
+      "perUnitLabel": "per pack of 100",
+      "pluralUnitLabel": "packs of 100",
+      "preorderAvailableDate": null,
+      "priceMarkup": 0.05,
+      "productOption": "style=3.5x2&cornerstyle=normal&media=175ptmatte&printquality=4color&envelopes=none&design.areas=[zazzle_businesscard_business_front_front,zazzle_businesscard_business_back_back]&adobeproductid=urn.aaid.sc.VA6C2.fd83f621_bdc5_5069_a9a5_b6c7a89709be",
+      "productOptionsFromUrl": {
+
+      },
+      "productType": "zazzle_businesscard",
+      "productTypePluralName": "Business Cards",
+      "productTypeSingularName": "Business Card",
+      "promoLabel": "You save 40%",
+      "quantities": [1, 2, 3, 4, 5, 10, 20, 50, 100, 200, 500],
+      "quantityIncrement": 1,
+      "returnDiscontinuedOptions": false,
+      "rootDescription": "Yellow and Black Creative Agency Business Card",
+      "rootDesignId": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+      "rootAllowCustomization": true,
+      "rootAllowDesignTransfer": false,
+      "rootIsPublic": true,
+      "rootIsTemplate": false,
+      "rootOwnerId": "238008941328162646",
+      "rootStoreId": "250446904546836352",
+      "rootProductId": "256432838073857180",
+      "rootProductOption": "style=3.5x2&cornerstyle=normal&media=175ptmatte&printquality=4color&envelopes=none&design.areas=[zazzle_businesscard_business_front_front,zazzle_businesscard_business_back_back]&adobeproductid=urn.aaid.sc.VA6C2.fd83f621_bdc5_5069_a9a5_b6c7a89709be",
+      "rootProductType": "zazzle_businesscard",
+      "rootTemplates": [],
+      "singularUnitLabel": "pack of 100",
+      "storeHandle": "adobe_express",
+      "storeId": "250446904546836352",
+      "templates": [],
+      "titleInOriginalLanguage": "Yellow and Black Creative Agency Business Card",
+      "visibility": "DirectAccess",
+      "url": "https://www.zazzle.com/yellow_and_black_creative_agency_business_card-256432838073857180",
+      "designerDescription": "",
+      "realviews": [
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114482953096643096",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113688559969641161",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front"
+          ],
+          "realviewParams": {
+            "rlvnet": "1",
+            "realview": "113688559969641161",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "size": "business",
+            "media": "175ptmatte",
+            "cornerstyle": "normal",
+            "style": "3.5x2",
+            "image_type": "pdf",
+            "max_dim": "50",
+            "dpi": "150",
+            "zattribution": "none"
+          },
+          "title": "Printview",
+          "type": "Print",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114482953096643096",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113587635957752985",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "realviewParams": {
+            "rlvnet": "1",
+            "realview": "113587635957752985",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "size": "business",
+            "media": "175ptmatte",
+            "cornerstyle": "normal",
+            "style": "3.5x2",
+            "image_type": "pdf",
+            "max_dim": "50",
+            "dpi": "150",
+            "zattribution": "none"
+          },
+          "title": "Printview",
+          "type": "Print",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113718651879330452",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113718651879330452",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubbyround_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113050290609512991",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113050290609512991",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubbyround_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113299105192638792",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113299105192638792",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubby_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113320106160212985",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113320106160212985",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubby_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113246010327456979",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113246010327456979",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubbyround_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113019184781512893",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113019184781512893",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubbyround_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubbyround_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113503640508030868",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113503640508030868",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubby_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113271920958185333",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113271920958185333",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_chubby_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_chubby_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113567804734854611",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113567804734854611",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_businessround_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113488665335313365",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113488665335313365",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_businessround_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113034468139738652",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113034468139738652",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_business_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113387606646774838",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113387606646774838",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_business_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113213694124380385",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113213694124380385",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_businessround_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113275008262021003",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113275008262021003",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_businessround_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_businessround_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113222393894884947",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113222393894884947",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_business_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113800713974480624",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113800713974480624",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_business_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113004421139216227",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113004421139216227",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_skinny_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113995561380141566",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113995561380141566",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_skinny_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113034731271376581",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113034731271376581",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_skinny_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113045680082816782",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113045680082816782",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_skinny_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_skinny_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113156914943898927",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113156914943898927",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euroround_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113300663201858697",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113300663201858697",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euroround_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113222470007022632",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euro_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113222470007022632",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euro_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euro_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113360032179509703",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euro_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113360032179509703",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euro_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euro_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113818428447559187",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113818428447559187",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euroround_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113965233520201237",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113965233520201237",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euroround_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euroround_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113966990120091381",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euro_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113966990120091381",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euro_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euro_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113315941222137647",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_euro_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113315941222137647",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_euro_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_euro_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113269130311294556",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113269130311294556",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceaniaround_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113045644858310017",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113045644858310017",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceaniaround_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113420662442558645",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113420662442558645",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceania_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113719528516438295",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113719528516438295",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceania_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113547006377129977",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113547006377129977",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceaniaround_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113654593737619549",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113654593737619549",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceaniaround_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceaniaround_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113647374219067901",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_vert_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113647374219067901",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceania_vert_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_vert_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113093471299097604",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113093471299097604",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_oceania_vert_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_oceania_vert_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113424635700531103",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_squareround_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113424635700531103",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_squareround_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_squareround_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113201767796976432",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_squareround_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113201767796976432",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_squareround_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_squareround_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113330175479502186",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_square_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113330175479502186",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_square_front_front",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_square_front_front"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114179710768865330",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113186896976373492",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_square_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113186896976373492",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "zazzle_businesscard_square_back_back",
+          "type": "Design",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_square_back_back"
+          ],
+          "zltf": null
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114705735243819140",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113335724526596936",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113335724526596936",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "cornerstyle": "normal",
+            "envelopes": "none",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "Front",
+          "type": "Product",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front"
+          ],
+          "zltf": "adobe"
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114705735243819140",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113466622742179623",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113466622742179623",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "cornerstyle": "normal",
+            "envelopes": "none",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "Back",
+          "type": "Product",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "zltf": "adobe"
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114705735243819140",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113337099578326473",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front"
+          ],
+          "realviewParams": {
+            "realview": "113337099578326473",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "cornerstyle": "normal",
+            "envelopes": "none",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "Standing Front",
+          "type": "Product",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front"
+          ],
+          "zltf": "adobe"
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114705735243819140",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113908836188368045",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front",
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113908836188368045",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "cornerstyle": "normal",
+            "envelopes": "none",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "Front/Back",
+          "type": "Product",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front",
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "zltf": "adobe"
+        },
+        {
+          "canBePreferred": true,
+          "caption": null,
+          "contextId": "114705735243819140",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113643097329661494",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front",
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "realviewParams": {
+            "realview": "113643097329661494",
+            "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+            "style": "3.5x2",
+            "media": "175ptmatte",
+            "cornerstyle": "normal",
+            "envelopes": "none",
+            "istype": "lightwood_pprclip_black",
+            "max_dim": "50",
+            "zattribution": "none"
+          },
+          "title": "Front/Back In Situ",
+          "type": "Product",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [
+            "zazzle_businesscard_business_vert_front_front",
+            "zazzle_businesscard_business_front_front",
+            "zazzle_businesscard_business_back_back",
+            "zazzle_businesscard_business_vert_back_back"
+          ],
+          "zltf": "adobe"
+        },
+        {
+          "canBePreferred": false,
+          "caption": null,
+          "contextId": "0",
+          "designOnMe": false,
+          "dynamicVideoInputs": [],
+          "id": "113099207059102382",
+          "isUGC": false,
+          "media": "image",
+          "primaryVisibleDesignAreaNames": [],
+          "realviewParams": {
+            "realview": "113099207059102382",
+            "rlvnet": "1",
+            "max_dim": "50"
+          },
+          "title": "Paper Corner",
+          "type": "Product",
+          "ideaboardCGCUrl": null,
+          "ugcCaption": null,
+          "videoId": null,
+          "videoParams": null,
+          "visibleDesignAreaNames": [],
+          "zltf": null
+        }
+      ],
+      "mainDesignViewId": "113034468139738652",
+      "preferredRealviewId": "113335724526596936",
+      "preferredRealviewNonUGCId": "113335724526596936",
+      "initialPreferredRealviewId": "113335724526596936",
+      "attributes": {
+        "style": {
+          "description": "",
+          "displayDigital": true,
+          "name": "style",
+          "nominalValueCount": 1,
+          "title": "Size",
+          "values": [
+            {
+              "description": "\u003Cp\u003EWhen it comes to your business, don't wait for opportunity, create it! Make a lasting impression with quality cards that WOW.\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003EDimensions: 3.5\" x 2.0\"\u003C/li\u003E\r\n\u003Cli\u003EFull color CMYK print process\u003C/li\u003E\r\n\u003Cli\u003EDouble sided printing for no additional cost\u003C/li\u003E\r\n\u003Cli\u003E100% satisfaction guarantee\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "descriptionBrief": "",
+              "descriptionShort": "\u003Cp\u003EWhen it comes to your business, don't wait for opportunity, create it! Make a lasting impression with quality cards that WOW.\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003EDimensions: 3.5\" x 2.0\"\u003C/li\u003E\r\n\u003Cli\u003EFull color CMYK print process\u003C/li\u003E\r\n\u003Cli\u003EDouble sided printing for no additional cost\u003C/li\u003E\r\n\u003Cli\u003E100% satisfaction guarantee\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "3.5x2",
+              "isBestValue": true,
+              "isDiscontinued": false,
+              "isPopular": true,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "3.5x2",
+              "outOfStockReason": null,
+              "price": 23.15,
+              "priceDifferential": 0,
+              "properties": {
+                "bestValue": "true",
+                "inStock": "true",
+                "popular": "true",
+                "price": "2315",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "175ptmatte",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113684141024052272",
+                "style": "3.5x2",
+                "max_dim": "50"
+              },
+              "title": "Standard, 3.5\" x 2.0\"",
+              "titleLong": "Standard, 3.5\" x 2.0\""
+            }
+          ],
+          "bestValue": "3.5x2",
+          "popularValues": [
+            "3.5x2"
+          ],
+          "value": "3.5x2"
+        },
+        "cornerstyle": {
+          "description": "",
+          "displayDigital": true,
+          "name": "cornerstyle",
+          "nominalValueCount": 2,
+          "title": "Corner Style",
+          "values": [
+            {
+              "description": null,
+              "descriptionBrief": "",
+              "descriptionShort": null,
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "normal",
+              "isBestValue": true,
+              "isDiscontinued": false,
+              "isPopular": true,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "normal",
+              "outOfStockReason": null,
+              "price": 0,
+              "priceDifferential": 0,
+              "properties": {
+                "bestValue": "true",
+                "inStock": "true",
+                "popular": "true",
+                "price": "0",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "175ptmatte",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113474916875736696",
+                "cornerstyle": "normal",
+                "max_dim": "50"
+              },
+              "title": "Squared",
+              "titleLong": "Squared"
+            },
+            {
+              "description": null,
+              "descriptionBrief": "",
+              "descriptionShort": null,
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "allrounded",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "allrounded",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "allrounded",
+              "outOfStockReason": null,
+              "price": 5.35,
+              "priceDifferential": 5.35,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "535",
+                "cornerstyle": "allrounded",
+                "envelopes": "none",
+                "media": "175ptmatte",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_businessround_front_front,zazzle_businesscard_businessround_vert_front_front,zazzle_businesscard_businessround_back_back,zazzle_businesscard_businessround_vert_back_back",
+                "design.shade": "light"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "allrounded",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113474916875736696",
+                "cornerstyle": "allrounded",
+                "max_dim": "50"
+              },
+              "title": "Rounded",
+              "titleLong": "Rounded"
+            }
+          ],
+          "bestValue": "normal",
+          "popularValues": [
+            "normal"
+          ],
+          "value": "normal"
+        },
+        "media": {
+          "description": "",
+          "displayDigital": true,
+          "name": "media",
+          "nominalValueCount": 12,
+          "title": "Paper",
+          "values": [
+            {
+              "description": "\u003Cp\u003ESignature Matte is our best-selling paper—timeless, elegant, and crafted for a premium feel. With its softly textured, uncoated matte finish and sturdy 18 point thickness, it delivers a refined look and lasting impression. Made exclusively for Zazzle by Neenah, it blends print clarity, sustainability, and elevated style.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003ELight white, uncoated matte finish with an eggshell texture\u003C/li\u003E \u003Cli\u003EThick, premium-quality stock with a substantial feel (18 pt)\u003C/li\u003E \u003Cli\u003EIdeal for writing—won't smudge or smear\u003C/li\u003E \u003Cli\u003EMade with 30% post-consumer waste\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E18 pt thickness / 120 lb weight \u003Cbr\u003E Light eggshell white, uncoated matte finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003ESignature Matte is our best-selling paper—timeless, elegant, and crafted for a premium feel. With its softly textured, uncoated matte finish and sturdy 18 point thickness, it delivers a refined look and lasting impression.\nMade exclusively for Zazzle by Neenah, it blends print clarity, sustainability, and elevated style.\u003C/p\u003E\n\u003Cul\u003E\n\u003Cli\u003ELight white, uncoated matte finish with an eggshell texture\u003C/li\u003E\n\u003Cli\u003EThick, premium-quality stock with a substantial feel (18 pt)\u003C/li\u003E\n\u003Cli\u003EIdeal for writing—won’t smudge or smear\u003C/li\u003E\n\u003Cli\u003EMade with 30% post-consumer waste\u003C/li\u003E\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\n\u003C/ul\u003E ",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "175ptmatte",
+              "isBestValue": true,
+              "isDiscontinued": false,
+              "isPopular": true,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "175ptmatte",
+              "outOfStockReason": null,
+              "price": 0,
+              "priceDifferential": 0,
+              "properties": {
+                "bestValue": "true",
+                "inStock": "true",
+                "popular": "true",
+                "price": "0",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "175ptmatte",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "standard",
+                "thickness": "17_5",
+                "weight": "120lb"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "175ptmatte",
+                "max_dim": "50"
+              },
+              "title": "Signature Matte",
+              "titleLong": "Signature Matte"
+            },
+            {
+              "description": "\u003Cp\u003EOur most versatile and economical paper, Standard Semi-Gloss produces crisp, vibrant images with exceptional color and detail—a solid choice for all your printing needs.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E16 pt thickness / 150 lb weight / 400 GSM\u003C/li\u003E \u003Cli\u003EBright white, semi-gloss finish\u003C/li\u003E \u003Cli\u003E50% recycled content\u003C/li\u003E\u003Cli\u003EPaper imported from Italy; printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E16 pt thickness / 150 lb weight\n\u003Cbr\u003E\nBright white, semi-gloss finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EOur most versatile and economical paper, Standard Semi-Gloss produces crisp, vibrant images with exceptional color and detail—a solid choice for all your printing needs.\r\n\u003Cbr\u003E\r\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://fedrigoni.com/en/about-us/overview/\u003EFedrigoni\u003C/a\u003E\u003C/i\u003E\r\n\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003EBright white, semi-gloss finish\u003C/li\u003E\r\n\u003Cli\u003E50% recycled content\u003C/li\u003E\r\n\r\n\u003Cli\u003EMade in Italy, printed in the USA\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "16ptsemi",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "16ptsemi",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": true,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "16ptsemi",
+              "outOfStockReason": null,
+              "price": 0,
+              "priceDifferential": 0,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "true",
+                "price": "0",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "16ptsemi",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "standard",
+                "thickness": "16",
+                "weight": "150lb400gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "16ptsemi",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "16ptsemi",
+                "max_dim": "50"
+              },
+              "title": "Standard Semi-Gloss",
+              "titleLong": "Standard Semi-Gloss"
+            },
+            {
+              "description": "\u003Cp\u003EEspecially ideal for photography and graphic art, our Signature UV Gloss features a protective veneer that promises unparalleled detail and bold colors. Visually stunning, this is the perfect paper for those looking for their design to pop and stand out.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E18 pt thickness/ 325 GSM\u003C/li\u003E \u003Cli\u003EBright white, high-gloss finish\u003C/li\u003E \u003Cli\u003EUV coating adds an additional layer of protection\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E18 pt thickness / 325 GSM\n\u003Cbr\u003E\nBright white, high-gloss finish\n\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EEspecially ideal for photography and graphic art, our Signature UV Gloss features a protective veneer that promises unparalleled detail and bold colors. Visually stunning, this is the perfect paper for those looking for their design to pop and stand out. \u003Cbr\u003E \u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://www.shopgpa.com/aboutus\u003EGPA\u003C/a\u003E\u003C/i\u003E \u003C/p\u003E \u003Cul\u003E \u003Cli\u003EBright white, high-gloss finish\u003C/li\u003E \u003Cli\u003EUV coating adds an additional layer of protection\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "18ptsemi_gloss",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "18ptsemi_gloss",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "18ptsemi_gloss",
+              "outOfStockReason": null,
+              "price": 4.5,
+              "priceDifferential": 4.5,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "450",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "18ptsemi_gloss",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "signature",
+                "thickness": "18",
+                "weight": "325gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "18ptsemi_gloss",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "18ptsemi_gloss",
+                "max_dim": "50"
+              },
+              "title": "Signature UV Gloss",
+              "titleLong": "Signature UV Gloss"
+            },
+            {
+              "description": "\u003Cp\u003EAn upgrade from our Standard Matte, Signature UV Matte features a thicker and stiffer paper coated with a protective finish. It provides the perfect base for creating long-lasting, high-quality designs with robust color and detail.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E18 pt thickness/ 325 GSM\u003C/li\u003E \u003Cli\u003EBright white, matte finish\u003C/li\u003E \u003Cli\u003EUV coating adds an additional layer of protection\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E18 pt thickness / 325 GSM\n\u003Cbr\u003E\nBright white, matte finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EAn upgrade from our Standard Matte, Signature UV Matte features a thicker and stiffer paper coated with a protective finish. It provides the perfect base for creating long-lasting, high-quality designs with robust color and detail.\n\u003Cbr\u003E\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://www.shopgpa.com/aboutus\u003EGPA\u003C/a\u003E\u003C/i\u003E\n\u003C/p\u003E\n\u003Cul\u003E\n\u003Cli\u003EBright white, matte finish\u003C/li\u003E\n\u003Cli\u003EUV coating adds an additional layer of protection\u003C/li\u003E\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "18ptsemi_matte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "18ptsemi_matte",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "18ptsemi_matte",
+              "outOfStockReason": null,
+              "price": 4.5,
+              "priceDifferential": 4.5,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "450",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "18ptsemi_matte",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "signature",
+                "thickness": "18",
+                "weight": "325gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "18ptsemi_matte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "18ptsemi_matte",
+                "max_dim": "50"
+              },
+              "title": "Signature UV Matte",
+              "titleLong": "Signature UV Matte"
+            },
+            {
+              "description": "\u003Cp\u003EA traditional, off-white paper with a creamy smooth finish, our Signature Cream is ideal for any occasion. Colors print softer, adding a subtle, luxurious effect to any design.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E16 pt thickness / 130 lb weight / 352 GSM\u003C/li\u003E \u003Cli\u003ECream white, matte finish\u003C/li\u003E \u003Cli\u003EMade with 30% post consumer fiber \u003C/li\u003E \u003Cli\u003EPaper is easy to write on and won't smudge\u003C/li\u003E \u003Cli\u003E\u003Ci\u003EMade with 100% green electricity\u003C/i\u003E\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E16 pt thickness / 130 lb weight\n\u003Cbr\u003E\nCream white, matte finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EA traditional, off-white paper with a creamy smooth finish, our Signature Cream is ideal for any occasion. Colors print softer, adding a subtle, luxurious effect to any design.\r\n\u003Cbr\u003E\r\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://www.neenahpaper.com/about\u003ENeenah Inc.\u003C/a\u003E\u003C/i\u003E\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003ECream white, matte finish\u003C/li\u003E\r\n\u003Cli\u003EMade with 30% post consumer fiber\u003C/li\u003E\r\n\u003Cli\u003EMade with 100% green electricity\u003C/li\u003E\r\n\r\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "16ptcream",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "16ptcream",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "16ptcream",
+              "outOfStockReason": null,
+              "price": 4.5,
+              "priceDifferential": 4.5,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "450",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "16ptcream",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "signature",
+                "thickness": "16",
+                "weight": "130lb352gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "16ptcream",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "16ptcream",
+                "max_dim": "50"
+              },
+              "title": "Signature Cream",
+              "titleLong": "Signature Cream"
+            },
+            {
+              "description": "\u003Cp\u003EFeaturing a matte silk laminated stock, Premium Silk offers the most sophisticated and unique finish for modern designs. Soft to touch with a velvet-like texture, it's both water and tear resistant, making this our most luxurious and resilient paper.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E21 pt thickness/ 325 GSM\u003C/li\u003E \u003Cli\u003EBright white, velvety soft silk finish\u003C/li\u003E \u003Cli\u003EPremium laminate finish adds an additional layer of protection\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cul\u003E \u003Cli\u003E21 pt thickness/ 325 GSM\u003C/li\u003E \u003Cli\u003EBright white, soft silk finish\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionShort": "\u003Cp\u003EFeaturing a matte silk laminated stock, Premium Silk offers the most sophisticated and unique finish for modern designs. Soft to touch with a velvet-like texture, it's both water and tear resistant, making this our most luxurious and resilient paper.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003EBright white, velvety soft silk finish\u003C/li\u003E \u003Cli\u003EPremium laminate finish adds an additional layer of protection\u003C/li\u003E \u003C/ul\u003E\t",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "18ptsemi_softtouch",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "18ptsemi_softtouch",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "18ptsemi_softtouch",
+              "outOfStockReason": null,
+              "price": 8.95,
+              "priceDifferential": 8.95,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "895",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "18ptsemi_softtouch",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "premium",
+                "thickness": "21",
+                "weight": "325gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "18ptsemi_softtouch",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "18ptsemi_softtouch",
+                "max_dim": "50"
+              },
+              "title": "Premium Silk",
+              "titleLong": "Premium Silk"
+            },
+            {
+              "description": "\u003Cp\u003EPremium Linen features a soft and textured crosshatched finish, much like woven fabric. Finely crafted with intricate detail, this paper is an exquisite backdrop for your designs with quality that you can feel.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E16 pt thickness/ 130 lb weight / 352 GSM\u003C/li\u003E \u003Cli\u003ESolar white, uncoated linen finish\u003C/li\u003E \u003Cli\u003EEmbossed texture adds depth and refinement\u003C/li\u003E \u003Cli\u003EMade with 30% post consumer fiber \u003C/li\u003E \u003Cli\u003E\u003Ci\u003EMade with 100% green electricity\u003C/i\u003E\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E\t",
+              "descriptionBrief": "\u003Cp\u003E16 pt thickness / 130 lb weight\n\u003Cbr\u003E\nSolar white, uncoated finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EPremium Linen features a soft and textured crosshatched finish, much like woven fabric. Finely crafted with intricate detail, this paper is an exquisite backdrop for your designs with quality that you can feel.\r\n\u003Cbr\u003E\r\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://www.neenahpaper.com/about\u003ENeenah Inc.\u003C/a\u003E\u003C/i\u003E\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003ESolar white, uncoated linen finish\u003C/li\u003E\r\n\u003Cli\u003EEmbossed texture adds depth and refinement\u003C/li\u003E\r\n\r\n\u003Cli\u003EMade with 30% post consumer fiber and 100% green electricity\u003C/li\u003E\r\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "16ptlinen",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "16ptlinen",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "16ptlinen",
+              "outOfStockReason": null,
+              "price": 8.95,
+              "priceDifferential": 8.95,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "895",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "16ptlinen",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "premium",
+                "thickness": "16",
+                "weight": "130lb352gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "16ptlinen",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "16ptlinen",
+                "max_dim": "50"
+              },
+              "title": "Premium Linen",
+              "titleLong": "Premium Linen"
+            },
+            {
+              "description": "\u003Cp\u003EImported from Italy, our Premium Pearl features a smooth and shimmering paper with a subtle sheen of soft colors. Highlight your next event or special occasion with this lustrous and elegant paper.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E16 pt thickness / 130 lb weight / 350 GSM\u003C/li\u003E \u003Cli\u003ESoft white, coated shimmer finish\u003C/li\u003E \u003Cli\u003EAdds an elegant subtle sheen\u003C/li\u003E\u003Cli\u003EPaper imported from Italy; printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E16 pt thickness / 130 lb weight\n\u003Cbr\u003E\nSoft shimmer white, coated finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EImported from Italy, our Premium Pearl features a smooth and shimmering paper with a subtle sheen of soft colors. Highlight your next event or special occasion with this lustrous and elegant paper.\r\n\u003Cbr\u003E\r\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://fedrigoni.com/en/about-us/overview/\u003EFedrigoni\u003C/a\u003E\u003C/i\u003E\r\n\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003ESoft white, coated shimmer finish\u003C/li\u003E\r\n\u003Cli\u003EAdds an elegant subtle sheen\u003C/li\u003E\r\n\r\n\u003Cli\u003EMade in Italy, printed in the USA\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "16ptpearl",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "16ptpearl",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "16ptpearl",
+              "outOfStockReason": null,
+              "price": 8.95,
+              "priceDifferential": 8.95,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "895",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "16ptpearl",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "premium",
+                "thickness": "16",
+                "weight": "130lb350gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "16ptpearl",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "16ptpearl",
+                "max_dim": "50"
+              },
+              "title": "Premium Pearl",
+              "titleLong": "Premium Pearl"
+            },
+            {
+              "description": "\u003Cp\u003EBeloved for its simple and rustic nature, this natural paper is perfect for artists and crafters. Our Premium Kraft is refined with a vellum finish to add a smooth, even quality to the surface and composition.\u003C/p\u003E\u003Cul\u003E\u003Cli\u003EKraft, smooth and refined vellum finish\u003C/li\u003E\u003Cli\u003EPrinted with a white underlayer to help color pop\u003C/li\u003E\u003Cli\u003EMade with 30% post consumer fiber\u003C/li\u003E\u003Cli\u003EMade with 100% green electricity\u003C/li\u003E\u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E18 pt thickness/ 125 lb weight\n\u003Cbr\u003E\nKraft, smooth and refined vellum finish\n\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EBeloved for its simple and rustic nature, this natural paper is perfect for artists and crafters. Our Premium Kraft is refined with a vellum finish to add a smooth, even quality to the surface and composition.\r\n\u003Cbr\u003E\r\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://www.neenahpaper.com/about\u003ENeenah Inc.\u003C/a\u003E\u003C/i\u003E\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003EKraft, smooth and refined vellum finish\u003C/li\u003E\r\n\u003Cli\u003EPrinted with a white underlayer to help color pop\u003C/li\u003E\r\n\r\n\u003Cli\u003EMade with 30% post consumer fiber and 100% green electricity\u003C/li\u003E\r\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "18ptkraft",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "18ptkraft",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "18ptkraft",
+              "outOfStockReason": null,
+              "price": 8.95,
+              "priceDifferential": 8.95,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "895",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "18ptkraft",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "dark",
+                "group": "premium",
+                "thickness": "18",
+                "weight": "125lb"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "18ptkraft",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "18ptkraft",
+                "max_dim": "50"
+              },
+              "title": "Premium Kraft",
+              "titleLong": "Premium Kraft"
+            },
+            {
+              "description": "\u003Cp\u003EPremium Grey is the perfect neutral paper, quietly depicting sophistication and class. Subtle, yet significant, this shade creates a unique contrast, bringing more adventurous colors to life.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E16 pt thickness/ 130 lb weight / 352 GSM\u003C/li\u003E \u003Cli\u003ENeutral grey, smooth finish\u003C/li\u003E \u003Cli\u003EPrinted with a white underlayer to help color pop\u003C/li\u003E \u003Cli\u003EMade with 30% post consumer fiber\u003C/li\u003E \u003Cli\u003E\u003Ci\u003EMade with 100% green electricity\u003C/i\u003E\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E\t",
+              "descriptionBrief": "\u003Cp\u003E16 pt thickness/ 130 lb weight\n\u003Cbr\u003E\nNeutral gray, smooth finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EPremium Grey is the perfect neutral paper, quietly depicting sophistication and class. Subtle, yet significant, this shade creates a unique contrast, bringing more adventurous colors to life.\r\n\u003Cbr\u003E\r\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://www.neenahpaper.com/about\u003ENeenah Inc.\u003C/a\u003E\u003C/i\u003E\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003ENeutral grey, smooth finish\u003C/li\u003E\r\n\u003Cli\u003EPrinted with a white underlayer to help color pop\u003C/li\u003E\r\n\r\n\u003Cli\u003EMade with 30% post consumer fiber and 100% green electricity\u003C/li\u003E\r\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "16ptpewtergray",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "16ptpewtergray",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "16ptpewtergray",
+              "outOfStockReason": null,
+              "price": 8.95,
+              "priceDifferential": 8.95,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "895",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "16ptpewtergray",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "dark",
+                "group": "premium",
+                "thickness": "16",
+                "weight": "130lb352gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "16ptpewtergray",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "16ptpewtergray",
+                "max_dim": "50"
+              },
+              "title": "Premium Grey",
+              "titleLong": "Premium Grey"
+            },
+            {
+              "description": "\u003Cp\u003EExceptionally smooth, this intensely rich, jet black stock delivers a striking and bold statement, elevating even the most minimal designs. Choose Premium Black to create a distinct and lasting impression.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E16 pt thickness/ 130 lb weight / 352 GSM\u003C/li\u003E \u003Cli\u003EDeep black, smooth finish\u003C/li\u003E \u003Cli\u003EPrinted with a white underlayer to help color pop\u003C/li\u003E \u003Cli\u003EMade with 30% post consumer fiber\u003C/li\u003E \u003Cli\u003E\u003Ci\u003EMade with 100% green electricity\u003C/i\u003E\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E16 pt thickness/ 130 lb weight\n\u003Cbr\u003E\nDeep black, smooth finish\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EExceptionally smooth, this intensely rich, jet black stock delivers a striking and bold statement, elevating even the most minimal designs. Choose Premium Black to create a distinct and lasting impression.\r\n\u003Cbr\u003E\r\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://www.neenahpaper.com/about\u003ENeenah Inc.\u003C/a\u003E\u003C/i\u003E\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003EDeep black, smooth finish\u003C/li\u003E\r\n\u003Cli\u003EPrinted with a white underlayer to help color pop\u003C/li\u003E\r\n\r\n\u003Cli\u003EMade with 30% post consumer fiber and 100% green electricity\u003C/li\u003E\r\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\r\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "16ptblack",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "16ptblack",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "16ptblack",
+              "outOfStockReason": null,
+              "price": 8.95,
+              "priceDifferential": 8.95,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "895",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "16ptblack",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "dark",
+                "group": "premium",
+                "thickness": "16",
+                "weight": "130lb352gsm"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "16ptblack",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "16ptblack",
+                "max_dim": "50"
+              },
+              "title": "Premium Black",
+              "titleLong": "Premium Black"
+            },
+            {
+              "description": "\u003Cp\u003EOur most luxurious paper, Premium Thick is the ultimate canvas to add drama and distinction. The added weight combined with an ultra soft finish exemplifies quality, perfect for a high-end presentation.\u003C/p\u003E \u003Cul\u003E \u003Cli\u003E32 pt thickness/ 240 lb weight / 650 GSM\u003C/li\u003E \u003Cli\u003ELight white, uncoated matte finish with an eggshell texture\u003C/li\u003E \u003Cli\u003EPaper is easy to write on and won't smudge\u003C/li\u003E \u003Cli\u003EMade and printed in the USA\u003C/li\u003E \u003Cli\u003ENot available for rounded corner option\u003C/li\u003E \u003C/ul\u003E",
+              "descriptionBrief": "\u003Cp\u003E32 pt thickness/ 240 lb weight\n\u003Cbr\u003E\nEggshell white finish, soft cotton texture\u003C/p\u003E",
+              "descriptionShort": "\u003Cp\u003EOur most luxurious paper, Premium Thick is the ultimate canvas to add drama and distinction. The added weight combined with an ultra soft finish exemplifies quality, perfect for a high-end presentation.\n\u003Ci\u003ECrafted for Zazzle by \u003Ca target=\"_blank\" rel=\"noopener\" href=https://convertiblesolutions.com/about/\u003EConvertible Solutions\u003C/a\u003E\u003C/i\u003E\n\u003Cul\u003E\n\u003Cli\u003ELight white, uncoated matte finish with an eggshell texture\u003C/li\u003E\n\u003Cli\u003EPaper is easy to write on and won't smudge\u003C/li\u003E\n\u003Cli\u003EMade and printed in the USA\u003C/li\u003E\n\u003C/ul\u003E",
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "32ptultrathick",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "32ptultrathick",
+              "isBestValue": false,
+              "isDiscontinued": false,
+              "isPopular": false,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "32ptultrathick",
+              "outOfStockReason": null,
+              "price": 16.9,
+              "priceDifferential": 16.9,
+              "properties": {
+                "bestValue": "false",
+                "inStock": "true",
+                "popular": "false",
+                "price": "1690",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "32ptultrathick",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light",
+                "group": "premium",
+                "thickness": "32",
+                "weight": "240lb"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "32ptultrathick",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+                "rlvnet": "1",
+                "realview": "113055797571919632",
+                "media": "32ptultrathick",
+                "max_dim": "50"
+              },
+              "title": "Premium Thick",
+              "titleLong": "Premium Thick"
+            }
+          ],
+          "bestValue": "175ptmatte",
+          "popularValues": [
+            "175ptmatte",
+            "16ptsemi"
+          ],
+          "value": "175ptmatte"
+        },
+        "printquality": {
+          "description": "",
+          "displayDigital": true,
+          "name": "printquality",
+          "nominalValueCount": 1,
+          "title": "Printing Process",
+          "values": [
+            {
+              "description": null,
+              "descriptionBrief": "",
+              "descriptionShort": null,
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "4color",
+              "isBestValue": true,
+              "isDiscontinued": false,
+              "isPopular": true,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "4color",
+              "outOfStockReason": null,
+              "price": 0,
+              "priceDifferential": 0,
+              "properties": {
+                "bestValue": "true",
+                "inStock": "true",
+                "popular": "true",
+                "price": "0",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "175ptmatte",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+
+              },
+              "title": "Standard",
+              "titleLong": "Standard"
+            }
+          ],
+          "bestValue": "4color",
+          "popularValues": [
+            "4color"
+          ],
+          "value": "4color"
+        },
+        "envelopes": {
+          "description": "",
+          "displayDigital": true,
+          "name": "envelopes",
+          "nominalValueCount": 1,
+          "title": "Envelopes",
+          "values": [
+            {
+              "description": null,
+              "descriptionBrief": "",
+              "descriptionShort": null,
+              "firstProductRealviewParams": {
+                "realview": "113335724526596936",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "internalName": "none",
+              "isBestValue": true,
+              "isDiscontinued": false,
+              "isPopular": true,
+              "isInStock": true,
+              "isInStockShortTerm": true,
+              "name": "none",
+              "outOfStockReason": null,
+              "price": 0,
+              "priceDifferential": 0,
+              "properties": {
+                "bestValue": "true",
+                "inStock": "true",
+                "popular": "true",
+                "price": "0",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "media": "175ptmatte",
+                "printquality": "4color",
+                "style": "3.5x2",
+                "design.areas": "zazzle_businesscard_business_front_front,zazzle_businesscard_business_vert_front_front,zazzle_businesscard_business_back_back,zazzle_businesscard_business_vert_back_back",
+                "design.shade": "light"
+              },
+              "realviewParams": {
+                "realview": "113335724526596936",
+                "design": "3f2b82c0-a9f1-4321-9c42-8a3374a944d7",
+                "style": "3.5x2",
+                "media": "175ptmatte",
+                "cornerstyle": "normal",
+                "envelopes": "none",
+                "max_dim": "50",
+                "zattribution": "none"
+              },
+              "swatchParams": {
+
+              },
+              "title": "None",
+              "titleLong": "None"
+            }
+          ],
+          "bestValue": "none",
+          "popularValues": [
+            "none"
+          ],
+          "value": "none"
+        }
+      },
+      "dependentAccessories": {
+        "numResults": 0,
+        "items": []
+      }
+    }
+  }
+}
