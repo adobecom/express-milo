@@ -11,7 +11,7 @@ async function updateAllDynamicElements(productId) {
   const productPrice = await fetchAPIData(productId, formDataObject, 'getproductpricing');
   document.getElementById('pdpx-price-label').innerHTML = productPrice.unitPrice;
   const shippingEstimates = await fetchAPIData(productId, formDataObject, 'getshippingestimates');
-  debugger;
+  const renditions = await fetchAPIData(productId, formDataObject, 'getproductrenditions');
 }
 
 function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName) {
