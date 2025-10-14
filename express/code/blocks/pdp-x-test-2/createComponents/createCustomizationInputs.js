@@ -1,7 +1,16 @@
 import { getLibs } from '../../../scripts/utils.js';
-import { formatStringSnakeCase } from '../utilities/utility-functions.js';
+import { fetchProductPrice } from '../fetchData/fetchProductDetails.js';
 
 let createTag;
+
+async function updateAllDynamicElements(productId) {
+  const form = document.querySelector('#pdpx-customization-inputs-form');
+  const formData = new FormData(form);
+  const formDataObject = Object.fromEntries(formData.entries());
+  console.log('formDataObject', formDataObject);
+  const productPrice = await fetchProductPrice(productId, formDataObject);
+  debugger;
+}
 
 function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName) {
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
@@ -44,7 +53,7 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
   return pillSelectorContainer;
 }
 
-const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSelectInputName, CTALinkText) => {
+const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId) => {
   const selectedMiniPillOption = customizationOptions[0].name;
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
@@ -60,7 +69,7 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
   }
   miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
   const miniPillSelectorOptionsContainer = createTag('div', { class: 'pdpx-mini-pill-selector-options-container' });
-  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName });
+  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     hiddenSelectInput.appendChild(option);
@@ -70,9 +79,12 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
-    miniPillOptionImageContainer.addEventListener('click', (element) => {
+    // I want to pass the productId into the fetchProductPrice function
+    miniPillOptionImageContainer.addEventListener('click', async (element) => {
       element.currentTarget.classList.add('selected');
       miniPillSelectorLabeLName.innerHTML = element.currentTarget.getAttribute('data-title');
+      document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
+      updateAllDynamicElements(productId);
     });
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
     miniPillOption.appendChild(miniPillOptionImageContainer);
@@ -85,10 +97,10 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
 };
 
 function createBusinessCardInputs(container, productDetails) {
-  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'paper_type', 'Compare Paper Types');
-  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'corner_style');
+  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id);
+  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle');
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'size');
-  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'quantity');
+  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty');
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
   container.appendChild(sizeSelectorContainer);
