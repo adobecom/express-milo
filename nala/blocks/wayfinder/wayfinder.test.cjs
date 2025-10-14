@@ -35,6 +35,16 @@ test.describe('Express Wayfinder Block test suite', () => {
       await expect(wayfinder.defaultButton.nth(1)).toContainText(data.button2Text);
       await expect(wayfinder.defaultButton.nth(2)).toContainText(data.button3Text);
       await expect(wayfinder.defaultButton).toHaveCount(data.buttonCount);
+
+      // normal button, background color = black
+      const defaultButton1BgColor = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      console.log('Default Button 1 Background Color:', defaultButton1BgColor);
+      expect(defaultButton1BgColor).toBe('rgb(0, 0, 0)'); // Hex #0078d4
+
+      // bold button, background color = blue
+      const defaultButton2BgColor = await wayfinder.defaultButton.nth(1).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      console.log('Default Button 2 Background Color:', defaultButton2BgColor);
+      expect(defaultButton2BgColor).toBe('rgb(92, 92, 224)'); // Hex #0078d4
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -44,6 +54,18 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: wayfinder.wayfinder });
+    });
+
+    await test.step('Validate button hover', async () => {
+      const button1BackgroundColorBeforeHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.defaultButton.nth(0).hover();
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorInHoverState = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.defaultPText.nth(0).hover(); // move away
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorAfterHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      expect(button1BackgroundColorBeforeHover).not.toEqual(button1BackgroundColorInHoverState);
+      expect(button1BackgroundColorAfterHover).toEqual(button1BackgroundColorBeforeHover);
     });
 
     await test.step('Validate button click', async () => {
@@ -72,6 +94,11 @@ test.describe('Express Wayfinder Block test suite', () => {
       await expect(wayfinder.borderlessVariantButton).toHaveCount(data.buttonCount);
     });
 
+    await test.step('Validate borderless', async () => {
+      expect(wayfinder.wayfinder).toHaveCSS('border-top-width', '0px');
+      expect(wayfinder.wayfinder).toHaveCSS('border-bottom-width', '0px');
+    });
+
     await test.step('Verify analytics attributes', async () => {
       await expect(wayfinder.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(1));
       await expect(wayfinder.variants.borderless).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('wayfinder', 1));
@@ -79,6 +106,18 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: wayfinder.variants.borderless });
+    });
+
+    await test.step('Validate button hover', async () => {
+      const button1BackgroundColorBeforeHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.defaultButton.nth(0).hover();
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorInHoverState = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.borderlessVariantContent.hover(); // move away
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorAfterHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      expect(button1BackgroundColorBeforeHover).not.toEqual(button1BackgroundColorInHoverState);
+      expect(button1BackgroundColorAfterHover).toEqual(button1BackgroundColorBeforeHover);
     });
 
     await test.step('Validate button click', async () => {
@@ -112,6 +151,7 @@ test.describe('Express Wayfinder Block test suite', () => {
       await expect(wayfinder.darkVariantButton.nth(1)).toContainText(data.button2Text);
       await expect(wayfinder.darkVariantButton.nth(2)).toContainText(data.button3Text);
       await expect(wayfinder.darkVariantButton).toHaveCount(data.buttonCount);
+      await expect(wayfinder.wayfinder).toHaveCSS('background-color', 'rgb(0, 0, 0)');
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -121,6 +161,18 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: wayfinder.variants.dark });
+    });
+
+    await test.step('Validate button hover', async () => {
+      const button1BackgroundColorBeforeHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.defaultButton.nth(0).hover();
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorInHoverState = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.darkVariantPText.nth(0).hover(); // move away
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorAfterHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      expect(button1BackgroundColorBeforeHover).not.toEqual(button1BackgroundColorInHoverState);
+      expect(button1BackgroundColorAfterHover).toEqual(button1BackgroundColorBeforeHover);
     });
 
     await test.step('Validate button click', async () => {
@@ -159,6 +211,18 @@ test.describe('Express Wayfinder Block test suite', () => {
       await runAccessibilityTest({ page, testScope: wayfinder.variants.gradient });
     });
 
+    await test.step('Validate button hover', async () => {
+      const button1BackgroundColorBeforeHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.defaultButton.nth(0).hover();
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorInHoverState = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.gradientVariantPText.nth(0).hover(); // move away
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorAfterHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      expect(button1BackgroundColorBeforeHover).not.toEqual(button1BackgroundColorInHoverState);
+      expect(button1BackgroundColorAfterHover).toEqual(button1BackgroundColorBeforeHover);
+    });
+
     await test.step('Validate button click', async () => {
       await wayfinder.gradientVariantButton.nth(0).click();
       await expect(page).not.toHaveURL(`${testPage}`);
@@ -184,6 +248,9 @@ test.describe('Express Wayfinder Block test suite', () => {
       await expect(wayfinder.lightVariantButton.nth(0)).toContainText(data.button1Text);
       await expect(wayfinder.lightVariantButton.nth(1)).toContainText(data.button2Text);
       await expect(wayfinder.lightVariantButton).toHaveCount(data.buttonCount);
+
+      // italics and bold button, text = underlined
+      await expect(wayfinder.lightVariantButton.nth(0)).toHaveCSS('text-decoration-line', 'underline');
     });
 
     await test.step('Verify analytics attributes', async () => {
@@ -193,6 +260,18 @@ test.describe('Express Wayfinder Block test suite', () => {
 
     await test.step('Verify accessibility', async () => {
       await runAccessibilityTest({ page, testScope: wayfinder.variants.light });
+    });
+
+    await test.step('Validate button hover', async () => {
+      const button1BackgroundColorBeforeHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.defaultButton.nth(0).hover();
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorInHoverState = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      await wayfinder.lightVariantPText.nth(0).hover(); // move away
+      await page.waitForTimeout(1000);
+      const button1BackgroundColorAfterHover = await wayfinder.defaultButton.nth(0).evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      expect(button1BackgroundColorBeforeHover).not.toEqual(button1BackgroundColorInHoverState);
+      expect(button1BackgroundColorAfterHover).toEqual(button1BackgroundColorBeforeHover);
     });
 
     await test.step('Validate button click', async () => {
