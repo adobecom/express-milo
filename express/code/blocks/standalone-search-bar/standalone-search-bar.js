@@ -152,6 +152,28 @@ function initSearchFunction(block, searchBarWrapper) {
       searchInput = trimInput(tasksXFoundInInput, searchInput);
       [[currentTasks.content]] = tasksXFoundInInput;
     }
+
+    const { destination } = blockConfig;
+
+    // If destination is authored, use simple redirect with query param
+    if (destination && destination.trim() !== '') {
+      updateImpressionCache({ collection: 'all-templates', content_category: 'templates' });
+      trackSearch('search-inspire');
+
+      const searchId = BlockMediator.get('templateSearchSpecs')?.search_id;
+      const searchQuery = searchBar.value || '';
+      const separator = destination.includes('?') ? '&' : '?';
+      let targetLocation = `${destination}${separator}q=${encodeURIComponent(searchQuery)}`;
+
+      if (searchId) {
+        targetLocation += `&searchId=${searchId}`;
+      }
+
+      window.location.assign(targetLocation);
+      return;
+    }
+
+    // default redirect logic when no destination is authored
     const topicUrl = searchInput ? `/${searchInput}` : '';
     const taskUrl = `/${handlelize(currentTasks.xCore.toLowerCase())}`;
     const taskXUrl = `/${handlelize(currentTasks.content.toLowerCase())}`;
@@ -346,7 +368,6 @@ async function buildSearchDropdown(block, searchBarWrapper) {
   suggestionsTitle.textContent = searchSuggestionsTitle !== 'search suggestions title' ? searchSuggestionsTitle : '';
   suggestionsContainer.append(suggestionsTitle, suggestionsList);
 
-  // Only load free plan widget if configured in Word document
   const showFreePlan = blockConfig['show-free-plan']?.toLowerCase();
   if (showFreePlan && ['yes', 'on'].includes(showFreePlan)) {
     import('../../scripts/widgets/free-plan.js')
@@ -365,7 +386,6 @@ async function buildSearchDropdown(block, searchBarWrapper) {
 export default async function decorate(block) {
   addTempWrapperDeprecated(block, 'standalone-search-bar');
 
-  // Build configuration from Word document block structure
   blockConfig = buildSearchConfig(block);
 
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
@@ -378,7 +398,6 @@ export default async function decorate(block) {
   await buildSearchDropdown(block, searchBarWrapper);
   initSearchFunction(block, searchBarWrapper);
 
-  // Hide the original block content (Word document table) after reading configuration
   block.innerHTML = '';
   block.appendChild(searchBarWrapper);
 }

@@ -13,6 +13,7 @@ Content authors can configure page-specific settings by creating a Word document
 | search-placeholder | Search for over 50,000 templates |
 | search-enter-hint | Search |
 | show-free-plan | yes |
+| destination | /custom/search/page |
 
 ## Centralized Configuration Keys
 
@@ -34,6 +35,16 @@ These are managed through the centralized placeholder system (spreadsheet/CMS):
 - **show-free-plan**: Controls the free plan widget display
   - `yes` or `on` → Shows branded free plan widget
   - `no` or `off` → No free plan widget (default)
+- **destination**: Optional custom redirect URL for search submissions
+  - When set, overrides default search logic and redirects to this URL with `q=searchTerm` parameter
+  - Example: `/custom/search` → redirects to `/custom/search?q=user+search+term`
+  - If not set, uses default complex routing logic
+
+  <!-- - **show-free-plan**: Controls the free plan widget display
+  - `branded` or `yes` or `true` or `on` → Shows branded free plan widget
+  - `features` → Shows features free plan widget
+  - `entitled` → Shows entitled free plan widget
+  - `no` or `false` or `off` → No free plan widget (default) -->
 
 ### **Centralized Keys (Global):**
 - **search-trends-title**: Title for the popular searches section
