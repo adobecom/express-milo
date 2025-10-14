@@ -1,9 +1,11 @@
-.block.block-query {
-  padding: 1.5rem 1rem;
+.block-query {
+  padding: 2rem 1.5rem;
 }
 
 .block-query h2 {
   margin: 0 0 0.5rem;
+  font-size: 1.75rem;
+  line-height: 1.2;
 }
 
 .block-query .muted {
@@ -85,6 +87,16 @@
 @media (min-width: 900px) {
   .block-query .row {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 599px) {
+  .block.block-query {
+    padding: 1.5rem 1rem;
+  }
+
+  .block-query h2 {
+    font-size: 1.5rem;
   }
 }
 
