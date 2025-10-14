@@ -8,12 +8,11 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
   const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label' }, labelText);
   standardSelectorContainer.appendChild(standardSelectorLabel);
   const standardSelectorInput = createTag('select', { class: 'pdpx-standard-selector', name: hiddenSelectInputName });
-  for (let i = 0; i < customizationOptions.quantities.length; i += 1) {
-    const optionLabel = `${customizationOptions.quantities[i]} ${customizationOptions.pluralUnitLabel}`;
-    const standardOption = createTag('option', { value: customizationOptions.quantities[i], class: 'pdpx-standard-selector-option' }, optionLabel);
+  for (let i = 0; i < customizationOptions.length; i += 1) {
+    const optionLabel = customizationOptions[i].title;
+    const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
     standardSelectorInput.appendChild(standardOption);
   }
-
   standardSelectorContainer.appendChild(standardSelectorInput);
   return standardSelectorContainer;
 }
@@ -86,12 +85,10 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
 };
 
 function createBusinessCardInputs(container, productDetails) {
-  const sideQuantitySelectorContainer = createPillOptionsSelector(productDetails.sideQuantityptions, 'Choose the page(s) you want to print', 'side_quantity');
-  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.paperTypeOptions, 'Paper Type: ', 'paper_type', 'Compare Paper Types');
-  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerStyleOptions, 'Corner style', 'corner_style');
-  const sizeSelectorContainer = createPillOptionsSelector(productDetails.sizeOptions, 'Resize business card', 'size');
-  const quantitySelectorContainer = createStandardSelector(productDetails, 'Quantity', 'quantity');
-  container.appendChild(sideQuantitySelectorContainer);
+  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'paper_type', 'Compare Paper Types');
+  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'corner_style');
+  const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'size');
+  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'quantity');
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
   container.appendChild(sizeSelectorContainer);
@@ -99,10 +96,9 @@ function createBusinessCardInputs(container, productDetails) {
 }
 
 function createTShirtInputs(container, productDetails) {
-  debugger;
-  const sizeSelectorContainer = createPillOptionsSelector(productDetails.sizeOptions, 'Resize business card', 'size');
+  const styleSelectorContainer = createPillOptionsSelector(productDetails.style, 'T-Shirt', 'style');
   const quantitySelectorContainer = createStandardSelector(productDetails, 'Quantity', 'quantity');
-  container.appendChild(sizeSelectorContainer);
+  container.appendChild(styleSelectorContainer);
   container.appendChild(quantitySelectorContainer);
 }
 

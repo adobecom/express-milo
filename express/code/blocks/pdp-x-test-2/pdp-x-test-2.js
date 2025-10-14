@@ -49,7 +49,4 @@ export default async function decorate(block) {
   console.log(productDetails);
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions);
-
-  // extract productId from block
-  // use productId to fetch product details from api
 }
