@@ -1,16 +1,17 @@
 import { extractProductDescriptionsFromBlock } from '../utilities/utility-functions.js';
 
+function formatUrlForEnvironment(url) {
+  if (window.location.hostname === 'localhost') {
+    return `http://localhost:3001?url=${url}`;
+  }
+  return url;
+}
 export async function fetchProductDetails(productId) {
   let productDetailsFetch;
-  /*
   const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproduct?productId=${productId}`;
-  const proxyUrl = `http://localhost:8080?url=${encodeURIComponent(url)}`;
-  productDetailsFetch = await fetch(proxyUrl);
-  */
   try {
-    productDetailsFetch = await fetch(`https://www.zazzle.com/svc/partner/adobeexpress/v1/getproduct?productId=${productId}`);
+    productDetailsFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
-    debugger;
     productDetailsFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getProduct.json');
   }
   const productDetailsJSON = await productDetailsFetch.json();
@@ -20,8 +21,9 @@ export async function fetchProductDetails(productId) {
 
 export async function fetchProductDetailsChangeOptions(productId) {
   let productDetailsFetch;
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/changeoptions?productId=${productId}`;
   try {
-    productDetailsFetch = await fetch(`https://www.zazzle.com/svc/partner/adobeexpress/v1/changeoptions?productId=${productId}`);
+    productDetailsFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
     productDetailsFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getProduct.json');
   }
@@ -32,8 +34,9 @@ export async function fetchProductDetailsChangeOptions(productId) {
 
 export async function fetchProductPrice(productId) {
   let productPriceFetch;
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductpricing?productId=${productId}`;
   try {
-    productPriceFetch = await fetch(`https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductpricepricing?productId=${productId}`);
+    productPriceFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
     productPriceFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getProductPrice.json');
   }
@@ -44,8 +47,9 @@ export async function fetchProductPrice(productId) {
 
 export async function fetchProductReviews(productId) {
   let productPriceFetch;
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getreviews?productId=${productId}`;
   try {
-    productPriceFetch = await fetch(`https://www.zazzle.com/svc/partner/adobeexpress/v1/getreviews?productId=${productId}`);
+    productPriceFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
     productPriceFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getReviews.json');
   }
@@ -56,11 +60,14 @@ export async function fetchProductReviews(productId) {
 
 export async function fetchProductShippingEstimates(productId, zip, qty) {
   let productShippingEstimatesFetch;
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getshippingestimates?productId=${productId}&zip=${zip}&qty=${qty}`;
   try {
-    productShippingEstimatesFetch = await fetch(`https://www.zazzle.com/svc/partner/adobeexpress/v1/getshippingestimates?productId=${productId}&zip=${zip}&qty=${qty}`);
+    // productShippingEstimatesFetch = await fetch(formatUrlForEnvironment(url));
+    productShippingEstimatesFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getShippingEstimate.json');
   } catch (error) {
     productShippingEstimatesFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getShippingEstimate.json');
   }
+
   const productShippingEstimatesJSON = await productShippingEstimatesFetch.json();
   const productShippingEstimates = productShippingEstimatesJSON.data;
   return productShippingEstimates;

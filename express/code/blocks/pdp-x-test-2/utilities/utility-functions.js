@@ -141,9 +141,9 @@ function addPaperTypeOptionsObject(productDetails, normalizedProductDetails) {
 }
 
 export function formatStringSnakeCase(string) {
-  // remove special characters except for spaces
-  string = string.replace(/[^a-zA-Z0-9\s]/g, '');
-  return string.trim().toLowerCase().replace(/ /g, '_');
+  const normalizedString = string.replace(/[^a-zA-Z0-9\s]/g, '');
+  const formattedString = normalizedString.trim().toLowerCase().replace(/ /g, '_');
+  return formattedString;
 }
 
 export function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
@@ -173,8 +173,15 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
       },
     ],
   };
-  addCornerStyleOptionsObject(productDetails, normalizedProductDetails);
-  addSizeOptionsObject(productDetails, normalizedProductDetails);
-  addPaperTypeOptionsObject(productDetails, normalizedProductDetails);
+  if (productDetails.product.attributes.cornerstyle) {
+    addCornerStyleOptionsObject(productDetails, normalizedProductDetails);
+  }
+  if (productDetails.product.attributes.style) {
+    addSizeOptionsObject(productDetails, normalizedProductDetails);
+  }
+  if (productDetails.product.attributes.media) {
+    addPaperTypeOptionsObject(productDetails, normalizedProductDetails);
+  }
+  debugger;
   return normalizedProductDetails;
 }

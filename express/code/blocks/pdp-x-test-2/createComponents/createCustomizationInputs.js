@@ -98,6 +98,14 @@ function createBusinessCardInputs(container, productDetails) {
   container.appendChild(quantitySelectorContainer);
 }
 
+function createTShirtInputs(container, productDetails) {
+  debugger;
+  const sizeSelectorContainer = createPillOptionsSelector(productDetails.sizeOptions, 'Resize business card', 'size');
+  const quantitySelectorContainer = createStandardSelector(productDetails, 'Quantity', 'quantity');
+  container.appendChild(sizeSelectorContainer);
+  container.appendChild(quantitySelectorContainer);
+}
+
 export default async function createCustomizationInputs(productDetails) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const customizationInputsContainer = createTag('div', { class: 'pdpx-customization-inputs-container' });
@@ -105,6 +113,7 @@ export default async function createCustomizationInputs(productDetails) {
   customizationInputsContainer.appendChild(customizationInputsForm);
   const productTypeToInputsMap = new Map([
     ['zazzle_businesscard', createBusinessCardInputs],
+    ['zazzle_shirt', createTShirtInputs],
   ]);
   const createInputsFunction = productTypeToInputsMap.get(productDetails.productType);
   createInputsFunction(customizationInputsForm, productDetails);
