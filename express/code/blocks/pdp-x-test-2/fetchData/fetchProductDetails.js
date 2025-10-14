@@ -19,9 +19,15 @@ export async function fetchProductDetails(productId) {
   return productDetails;
 }
 
-export async function fetchProductDetailsChangeOptions(productId) {
+export async function fetchProductDetailsChangeOptions(productId, parameters) {
   let productDetailsFetch;
-  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/changeoptions?productId=${productId}`;
+  let parametersString;
+  if (parameters) {
+    parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
+  } else {
+    parametersString = '';
+  }
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/changeoptions?productId=${productId}&${parametersString}`;
   try {
     productDetailsFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
@@ -32,9 +38,15 @@ export async function fetchProductDetailsChangeOptions(productId) {
   return productDetails;
 }
 
-export async function fetchProductPrice(productId) {
+export async function fetchProductPrice(productId, parameters) {
   let productPriceFetch;
-  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductpricing?productId=${productId}`;
+  let parametersString;
+  if (parameters) {
+    parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
+  } else {
+    parametersString = '';
+  }
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductpricing?productId=${productId}&${parametersString}`;
   try {
     productPriceFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
@@ -45,9 +57,16 @@ export async function fetchProductPrice(productId) {
   return productPrice;
 }
 
-export async function fetchProductReviews(productId) {
+export async function fetchProductReviews(productId, parameters) {
   let productPriceFetch;
-  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getreviews?productId=${productId}`;
+  let parametersString;
+  if (parameters) {
+    parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
+  } else {
+    parametersString = '';
+  }
+
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getreviews?productId=${productId}&${parametersString}`;
   try {
     productPriceFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
@@ -58,16 +77,20 @@ export async function fetchProductReviews(productId) {
   return productPrice;
 }
 
-export async function fetchProductShippingEstimates(productId, zip, qty) {
+export async function fetchProductShippingEstimates(productId, parameters) {
   let productShippingEstimatesFetch;
-  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getshippingestimates?productId=${productId}&zip=${zip}&qty=${qty}`;
+  let parametersString;
+  if (parameters) {
+    parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
+  } else {
+    parametersString = '';
+  }
+  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getshippingestimates?productId=${productId}&${parametersString}`;
   try {
-    // productShippingEstimatesFetch = await fetch(formatUrlForEnvironment(url));
-    productShippingEstimatesFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getShippingEstimate.json');
+    productShippingEstimatesFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
     productShippingEstimatesFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/getShippingEstimate.json');
   }
-
   const productShippingEstimatesJSON = await productShippingEstimatesFetch.json();
   const productShippingEstimates = productShippingEstimatesJSON.data;
   return productShippingEstimates;
