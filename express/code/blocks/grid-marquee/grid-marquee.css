@@ -48,6 +48,13 @@ main .section .grid-marquee h1 {
   width: 100%
 }
 
+.grid-marquee.with-hero-above .background {
+  position: relative;
+  z-index: -1;
+  top: 20px;
+}
+
+
 .grid-marquee .background img {
   position: absolute;
   top: 50%;
@@ -56,6 +63,10 @@ main .section .grid-marquee h1 {
   transform: translate(-50%, -35%);
   max-height: 600px;
   max-width: 1200px;
+}
+
+.grid-marquee.with-hero-above .background img {
+  max-height: 550px;
 }
 
 .grid-marquee .foreground {
@@ -153,7 +164,6 @@ main .section .grid-marquee h1 {
   z-index: 2;
   background-color: var(--color-white);
   border-bottom: 1px solid #0000001a;
-  z-index: 2;
 }
 
 .grid-marquee .drawer .title-row strong {
