@@ -1,5 +1,5 @@
 import { getLibs } from '../../../scripts/utils.js';
-import { fetchProductPrice } from '../fetchData/fetchProductDetails.js';
+import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
 
 let createTag;
 
@@ -8,7 +8,9 @@ async function updateAllDynamicElements(productId) {
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
   console.log('formDataObject', formDataObject);
-  const productPrice = await fetchProductPrice(productId, formDataObject);
+  const productPrice = await fetchAPIData(productId, formDataObject, 'getproductpricing');
+  document.getElementById('pdpx-price-label').innerHTML = productPrice.unitPrice;
+  const shippingEstimates = await fetchAPIData(productId, formDataObject, 'getshippingestimates');
   debugger;
 }
 

@@ -1,5 +1,5 @@
 import { getLibs } from '../../scripts/utils.js';
-import { fetchProductDetails, fetchProductPrice, fetchProductReviews, fetchProductShippingEstimates, fetchProductDetailsChangeOptions, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
+import { fetchAPIData, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
 import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection, { createDeliveryEstimatePill } from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
@@ -38,15 +38,15 @@ async function createGlobalContainer(block, productDetails, productDescriptions)
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const productId = extractProductId(block);
-  const productDetails = await fetchProductDetails(productId);
-  const productPrice = await fetchProductPrice(productId);
-  const productReviews = await fetchProductReviews(productId);
+  // const productDetails = await fetchProductDetails(productId);
+  const productDetails = await fetchAPIData(productId, null, 'getproduct');
+  const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
+  const productReviews = await fetchAPIData(productId, null, 'getreviews');
   const sampleShippingParameters = {
     zip: '94065',
     qty: 100,
   };
-  const productShippingEstimates = await fetchProductShippingEstimates(productId, sampleShippingParameters);
-  const productDetailsChangeOptions = await fetchProductDetailsChangeOptions(productId);
+  const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
   const productDetailsFormatted = normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
   const productDescriptions = await formatProductDescriptions(block);
   console.log('productDetails');
