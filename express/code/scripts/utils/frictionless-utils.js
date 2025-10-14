@@ -243,7 +243,7 @@ export function createDefaultExportConfig() {
       action: { target: 'download' },
       style: { uiType: 'button' },
       buttonStyle: {
-        variant: 'secondary',
+        variant: isSafariBrowser ? 'primary' : 'secondary',
         treatment: 'fill',
         size: 'xl',
       },
