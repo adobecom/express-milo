@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated, createTag } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated, createTag, formatDynamicCartLink } from '../../scripts/utils.js';
 
 let currDrawer = null;
 const largeMQ = window.matchMedia('(min-width: 1280px)');
@@ -246,26 +246,45 @@ async function makeRatings(
 
 export default async function init(el) {
   const rows = [...el.querySelectorAll(':scope > div')];
-  // NEW STRUCTURE: empty div, background, items (no headline - that's in grid-marquee-hero)
-  const [, background, ...items] = rows;
-
-  // NUCLEAR OPTION: Remove ALL images from DOM initially to prevent ANY loading
-  const allImages = [...el.querySelectorAll('img')];
-  const imageData = allImages.map((img) => ({
-    element: img,
-    parent: img.parentNode,
-    nextSibling: img.nextSibling,
-  }));
-  allImages.forEach((img) => img.remove());
-
-  // Create structure for cards only - NO HEADLINE (that's in grid-marquee-hero now)
+  const hasLegacyHeadline = !!rows[0]?.querySelector('h1');
   const foreground = createTag('div', { class: 'foreground' });
 
-  // Background setup (images will be restored later)
-  background.classList.add('background');
-  el.append(foreground);
+  // Context: if a hero block exists in the previous section, tag for contextual styles
+  const thisSection = el.closest('.section');
+  let prevSection = thisSection && thisSection.previousElementSibling;
+  while (prevSection && !prevSection.classList.contains('section')) {
+    prevSection = prevSection.previousElementSibling;
+  }
+  if (prevSection?.querySelector('.grid-marquee-hero')) {
+    el.classList.add('with-hero-above');
+  }
 
-  // Setup responsive handlers immediately
+  // Helper to decorate headline in legacy mode
+  const decorateLegacyHeadline = (headline) => {
+    headline.classList.add('headline');
+    const ctas = headline.querySelectorAll('a');
+    if (!ctas.length) {
+      headline.classList.add('no-cta');
+      return headline;
+    }
+    ctas[0].parentElement.classList.add('ctas');
+    ctas.forEach((cta) => {
+      cta.classList.add('button');
+    });
+    ctas[0].classList.add('primaryCTA');
+    // Defer pricing formatting to idle time
+    const idleCb = (cb) => (
+      window.requestIdleCallback
+        ? window.requestIdleCallback(cb, { timeout: 3000 })
+        : setTimeout(cb, 3000)
+    );
+    idleCb(() => {
+      ctas.forEach((cta) => formatDynamicCartLink(cta));
+    });
+    return headline;
+  };
+
+  // Register responsive handlers for both modes
   largeMQ.addEventListener('change', () => {
     isTouch = false;
     drawerOff();
@@ -274,67 +293,119 @@ export default async function init(el) {
     drawerOff();
   });
 
-  // Image restoration function
-  let imagesRestored = false;
-  const restoreImages = () => {
-    if (imagesRestored) return;
-    imagesRestored = true;
-    imageData.forEach(({ element, parent, nextSibling }) => {
-      element.loading = 'lazy';
-      element.decoding = 'async';
-      element.fetchPriority = 'low';
-      if (nextSibling) {
-        parent.insertBefore(element, nextSibling);
-      } else {
-        parent.appendChild(element);
-      }
-    });
-  };
+  // Legacy mode: headline + background + items inside this block
+  if (hasLegacyHeadline) {
+    const [headline, background, ...items] = rows;
+    const logo = getIconElementDeprecated('adobe-express-logo');
+    logo.classList.add('express-logo');
 
-  // Process cards immediately after restoring images - no LCP concerns here
-  if (items.length > 0) {
-    // Restore images immediately in next frame
-    requestAnimationFrame(() => {
-      restoreImages();
+    background.classList.add('background');
+    el.append(foreground);
 
-      // Process cards immediately - no LCP blocking since hero handles that
-      const cards = items.map((item) => toCard(item));
-      const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
-      [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
-      foreground.append(cardsContainer);
+    // Build cards first (do not nuke headline images)
+    const cards = items.map((item) => toCard(item));
+    const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
+    [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
 
-      // Add ratings after cards if needed
-      if (el.classList.contains('ratings')) {
-        const ratingsPlaceholder = createTag('div', { class: 'ratings' });
-        foreground.append(ratingsPlaceholder);
+    // Headline decoration now
+    decorateLegacyHeadline(headline);
+    foreground.append(logo, headline, cardsContainer);
 
-        // Process ratings after a short delay
-        setTimeout(async () => {
-          const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
-          const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
-          const [ratingPlaceholder,
-            starsPlaceholder,
-            playStoreLabelPlaceholder,
-            appleStoreLabelPlaceholder] = await Promise.all([
-            replaceKey('app-store-ratings', getConfig()),
-            replaceKey('app-store-stars', getConfig()),
-            replaceKey('app-store-ratings-play-store', getConfig()),
-            replaceKey('app-store-ratings-apple-store', getConfig()),
-          ]);
+    // Ratings if needed
+    if (el.classList.contains('ratings')) {
+      const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
+      const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+      const [ratingPlaceholder,
+        starsPlaceholder,
+        playStoreLabelPlaceholder,
+        appleStoreLabelPlaceholder] = await Promise.all([
+        replaceKey('app-store-ratings', getConfig()),
+        replaceKey('app-store-stars', getConfig()),
+        replaceKey('app-store-ratings-play-store', getConfig()),
+        replaceKey('app-store-ratings-apple-store', getConfig()),
+      ]);
 
-          const ratingsElement = await makeRatings(
-            ratingPlaceholder,
-            starsPlaceholder,
-            playStoreLabelPlaceholder,
-            appleStoreLabelPlaceholder,
-          );
-          ratingsPlaceholder.replaceWith(ratingsElement);
-        }, 1000);
-      }
-    });
+      const ratingsElement = await makeRatings(
+        ratingPlaceholder,
+        starsPlaceholder,
+        playStoreLabelPlaceholder,
+        appleStoreLabelPlaceholder,
+      );
+      foreground.append(ratingsElement);
+    }
+  } else {
+    // New mode: headline is in grid-marquee-hero; this block handles background + cards (+ratings)
+    const [, background, ...items] = rows;
+
+    // NUCLEAR OPTION: Remove ALL images initially to avoid LCP impact
+    const allImages = [...el.querySelectorAll('img')];
+    const imageData = allImages.map((img) => ({
+      element: img,
+      parent: img.parentNode,
+      nextSibling: img.nextSibling,
+    }));
+    allImages.forEach((img) => img.remove());
+
+    background.classList.add('background');
+    el.append(foreground);
+
+    // Image restoration function
+    let imagesRestored = false;
+    const restoreImages = () => {
+      if (imagesRestored) return;
+      imagesRestored = true;
+      imageData.forEach(({ element, parent, nextSibling }) => {
+        element.loading = 'lazy';
+        element.decoding = 'async';
+        element.fetchPriority = 'low';
+        if (nextSibling) {
+          parent.insertBefore(element, nextSibling);
+        } else {
+          parent.appendChild(element);
+        }
+      });
+    };
+
+    if (items.length > 0) {
+      requestAnimationFrame(() => {
+        restoreImages();
+
+        const cards = items.map((item) => toCard(item));
+        const cardsContainer = createTag('div', { class: 'cards-container' }, cards.map(({ card }) => card));
+        [...cardsContainer.querySelectorAll('p:empty')].forEach((p) => p.remove());
+        foreground.append(cardsContainer);
+
+        if (el.classList.contains('ratings')) {
+          const ratingsPlaceholder = createTag('div', { class: 'ratings' });
+          foreground.append(ratingsPlaceholder);
+
+          setTimeout(async () => {
+            const { replaceKey } = await import(`${getLibs()}/features/placeholders.js`);
+            const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+            const [ratingPlaceholder,
+              starsPlaceholder,
+              playStoreLabelPlaceholder,
+              appleStoreLabelPlaceholder] = await Promise.all([
+              replaceKey('app-store-ratings', getConfig()),
+              replaceKey('app-store-stars', getConfig()),
+              replaceKey('app-store-ratings-play-store', getConfig()),
+              replaceKey('app-store-ratings-apple-store', getConfig()),
+            ]);
+
+            const ratingsElement = await makeRatings(
+              ratingPlaceholder,
+              starsPlaceholder,
+              playStoreLabelPlaceholder,
+              appleStoreLabelPlaceholder,
+            );
+            ratingsPlaceholder.replaceWith(ratingsElement);
+          }, 1000);
+        }
+      });
+    }
   }
 
-  // All processing handled in requestAnimationFrame above - no additional work needed
+  // Done
 }
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && currDrawer) {

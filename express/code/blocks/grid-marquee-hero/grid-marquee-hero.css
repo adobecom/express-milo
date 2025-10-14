@@ -46,36 +46,55 @@ main .section .grid-marquee-hero h1 {
   align-items: center;
 }
 
-/* Mobile first - show CTAs */
 @media (min-width: 768px) {
   .grid-marquee-hero .headline {
-    max-width: 436px;
+    max-width: 1200px;
   }
 
   .grid-marquee-hero .headline .ctas {
     display: flex;
+    margin-top: 16px;
+    padding-top: 16px;
     justify-content: center;
-    gap: 1rem;
-    padding-top: 24px;
+    gap: 8px;
+  }
+
+  .grid-marquee-hero .headline a.button {
+    margin: 0;
   }
 }
 
 @media (min-width: 1024px) {
-  .grid-marquee-hero .headline {
-    max-width: 570px;
-  }
-
   main .section .grid-marquee-hero h1 {
     font-size: var(--heading-font-size-l);
   }
 }
 
 @media (min-width: 1280px) {
+  .grid-marquee-hero .express-logo {
+    padding-top: 40px;
+  }
   .grid-marquee-hero .headline {
-    max-width: 680px;
+    max-width: 1600px;
+    padding-bottom: 40px;
+  }
+  .grid-marquee-hero .headline.no-cta {
+    padding-bottom: 0;
   }
 
   main .section .grid-marquee-hero h1 {
     font-size: var(--heading-font-size-xl);
+  }
+
+  .grid-marquee-hero .headline .ctas {
+    padding-top: 24px;
+  }
+
+  .grid-marquee-hero .headline a.button {
+    border-width: 1px;
+    padding: 12px 24px 13px 24px;
+    font-size: var(--body-font-size-l);
+    border-radius: 50px;
+    line-height: 23.4px;
   }
 }
