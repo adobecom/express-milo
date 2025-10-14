@@ -10,6 +10,8 @@ Content authors can configure page-specific settings by creating a Word document
 
 | Configuration Key | Value |
 |------------------|-------|
+| title | Find the perfect template |
+| subtitle | Browse over 50,000 professionally designed templates |
 | search-placeholder | Search for over 50,000 templates |
 | search-enter-hint | Search |
 | show-free-plan | yes |
@@ -30,6 +32,12 @@ These are managed through the centralized placeholder system (spreadsheet/CMS):
 ## Key Descriptions:
 
 ### **Word Document Keys (Page-Specific):**
+- **title**: Optional main heading displayed above the search bar
+  - Font: 28px, #131313 color, bold
+  - Example: "Find the perfect template"
+- **subtitle**: Optional descriptive text below the title
+  - Font: 16px, #292929 color, regular weight
+  - Example: "Browse over 50,000 professionally designed templates"
 - **search-placeholder**: The placeholder text shown in the search input
 - **search-enter-hint**: The hint text for the enter key (accessibility)
 - **show-free-plan**: Controls the free plan widget display

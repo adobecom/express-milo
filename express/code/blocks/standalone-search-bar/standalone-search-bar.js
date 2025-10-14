@@ -297,6 +297,26 @@ function initSearchFunction(block, searchBarWrapper) {
 
 async function decorateSearchFunctions() {
   const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
+
+  // Add title and subtitle if configured
+  if (blockConfig.title || blockConfig.subtitle) {
+    const headerWrapper = createTag('div', { class: 'search-header' });
+
+    if (blockConfig.title) {
+      const title = createTag('h1', { class: 'search-title' });
+      title.textContent = blockConfig.title;
+      headerWrapper.append(title);
+    }
+
+    if (blockConfig.subtitle) {
+      const subtitle = createTag('p', { class: 'search-subtitle' });
+      subtitle.textContent = blockConfig.subtitle;
+      headerWrapper.append(subtitle);
+    }
+
+    searchBarWrapper.append(headerWrapper);
+  }
+
   const searchForm = createTag('form', { class: 'search-form' });
   const searchBar = createTag('input', {
     class: 'search-bar',
@@ -306,12 +326,16 @@ async function decorateSearchFunctions() {
   });
 
   searchForm.append(searchBar);
+
+  // Create search input container for proper icon positioning
+  const searchInputWrapper = createTag('div', { class: 'search-input-wrapper' });
   const searchIcon = getIconElementDeprecated('search');
   searchIcon.loading = 'lazy';
   const searchClearIcon = getIconElementDeprecated('search-clear');
   searchClearIcon.loading = 'lazy';
-  searchBarWrapper.append(searchIcon, searchClearIcon);
-  searchBarWrapper.append(searchForm);
+
+  searchInputWrapper.append(searchIcon, searchClearIcon, searchForm);
+  searchBarWrapper.append(searchInputWrapper);
 
   return searchBarWrapper;
 }
@@ -375,7 +399,13 @@ async function buildSearchDropdown(searchBarWrapper) {
   }
 
   dropdownContainer.append(trendsContainer, suggestionsContainer);
-  searchBarWrapper.append(dropdownContainer);
+  // Position dropdown relative to search input wrapper
+  const searchInputWrapper = searchBarWrapper.querySelector('.search-input-wrapper');
+  if (searchInputWrapper) {
+    searchInputWrapper.append(dropdownContainer);
+  } else {
+    searchBarWrapper.append(dropdownContainer);
+  }
 }
 
 export default async function decorate(block) {
