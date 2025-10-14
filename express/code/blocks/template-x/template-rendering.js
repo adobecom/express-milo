@@ -566,6 +566,7 @@ function renderStillWrapper(template) {
   const img = createTag('img', {
     src: thumbnailImageHref,
     alt: templateTitle,
+    loading: 'lazy',
   });
   imgWrapper.append(img);
 
