@@ -160,14 +160,9 @@ function initSearchFunction(block, searchBarWrapper) {
       updateImpressionCache({ collection: 'all-templates', content_category: 'templates' });
       trackSearch('search-inspire');
 
-      const searchId = BlockMediator.get('templateSearchSpecs')?.search_id;
       const searchQuery = searchBar.value || '';
       const separator = destination.includes('?') ? '&' : '?';
-      let targetLocation = `${destination}${separator}q=${encodeURIComponent(searchQuery)}`;
-
-      if (searchId) {
-        targetLocation += `&searchId=${searchId}`;
-      }
+      const targetLocation = `${destination}${separator}q=${encodeURIComponent(searchQuery)}`;
 
       window.location.assign(targetLocation);
       return;
@@ -321,7 +316,7 @@ async function decorateSearchFunctions() {
   return searchBarWrapper;
 }
 
-async function buildSearchDropdown(block, searchBarWrapper) {
+async function buildSearchDropdown(searchBarWrapper) {
   if (!searchBarWrapper) return;
   const dropdownContainer = createTag('div', { class: 'search-dropdown-container hidden' });
   const trendsContainer = createTag('div', { class: 'trends-container' });
@@ -395,7 +390,7 @@ export default async function decorate(block) {
   ({ prefix } = getConfig().locale);
 
   const searchBarWrapper = await decorateSearchFunctions();
-  await buildSearchDropdown(block, searchBarWrapper);
+  await buildSearchDropdown(searchBarWrapper);
   initSearchFunction(block, searchBarWrapper);
 
   block.innerHTML = '';
