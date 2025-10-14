@@ -191,6 +191,16 @@
     display: none;
 }
 
+@media (max-width: 899px) {
+    .standalone-search-bar .search-title {
+        font-size: 24px;
+    }
+    
+    .standalone-search-bar .search-subtitle {
+        font-size: 16px;
+    }
+}
+
 @media (min-width: 900px) {
     .standalone-search-bar .search-dropdown-container .free-plans-container .free-plan-widget .plan-widget-tag {
         font-size: var(--body-font-size-m);
