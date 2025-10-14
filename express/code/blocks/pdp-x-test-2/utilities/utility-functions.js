@@ -1,5 +1,6 @@
 export function extractProductId(block) {
   const productIdBlock = block.children[0].children[1].textContent;
+  // FOR DEVELOPMENT PURPOSES ONLY, REMOVE IN PRODUCTION
   const urlParams = new URLSearchParams(window.location.search);
   const productIdURL = urlParams.get('productId');
   const productId = productIdURL || productIdBlock;
@@ -131,6 +132,7 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
 
 export function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
   const normalizedProductDetails = {
+    id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
     price: productPrice.unitPrice,

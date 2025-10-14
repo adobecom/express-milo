@@ -41,7 +41,11 @@ export default async function decorate(block) {
   const productDetails = await fetchProductDetails(productId);
   const productPrice = await fetchProductPrice(productId);
   const productReviews = await fetchProductReviews(productId);
-  const productShippingEstimates = await fetchProductShippingEstimates(productId, '94065', 100);
+  const sampleShippingParameters = {
+    zip: '94065',
+    qty: 100,
+  };
+  const productShippingEstimates = await fetchProductShippingEstimates(productId, sampleShippingParameters);
   const productDetailsChangeOptions = await fetchProductDetailsChangeOptions(productId);
   const productDetailsFormatted = normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
   const productDescriptions = await formatProductDescriptions(block);
