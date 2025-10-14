@@ -1,5 +1,9 @@
 export function extractProductId(block) {
-  return block.children[0].children[1].textContent;
+  const productIdBlock = block.children[0].children[1].textContent;
+  const urlParams = new URLSearchParams(window.location.search);
+  const productIdURL = urlParams.get('productId');
+  const productId = productIdURL || productIdBlock;
+  return productId;
 }
 
 export function formatDeliveryEstimateDateRange(minDate, maxDate) {
@@ -92,58 +96,37 @@ function formatPriceAdjustment(priceAdjustment, short = false) {
   return priceAdjustmentFormatted;
 }
 
-function addCornerStyleOptionsObject(productDetails, normalizedProductDetails) {
-  const cornerStyleOptions = productDetails.product.attributes.cornerstyle.values;
-  const newCornerStyleOptionsArray = [];
-  for (let i = 0; i < cornerStyleOptions.length; i += 1) {
-    const cornerStyleOption = cornerStyleOptions[i];
-    const imageUrl = buildImageUrl(cornerStyleOption.firstProductRealviewParams);
-    newCornerStyleOptionsArray.push({
-      thumbnail: imageUrl,
-      title: cornerStyleOption.title,
-      name: cornerStyleOption.name,
-      priceAdjustment: formatPriceAdjustment(cornerStyleOption.priceDifferential),
-    });
-  }
-  normalizedProductDetails.cornerStyleOptions = newCornerStyleOptionsArray;
-}
-
-function addSizeOptionsObject(productDetails, normalizedProductDetails) {
-  const sizeOptions = productDetails.product.attributes.style.values;
-  const newSizeOptionsArray = [];
-  for (let i = 0; i < sizeOptions.length; i += 1) {
-    const sizeOption = sizeOptions[i];
-    const imageUrl = buildImageUrl(sizeOption.firstProductRealviewParams);
-    newSizeOptionsArray.push({
-      thumbnail: imageUrl,
-      title: sizeOption.title,
-      name: sizeOption.name,
-      priceAdjustment: formatPriceAdjustment(sizeOption.priceDifferential),
-    });
-  }
-  normalizedProductDetails.sizeOptions = newSizeOptionsArray;
-}
-
-function addPaperTypeOptionsObject(productDetails, normalizedProductDetails) {
-  const paperTypeOptions = productDetails.product.attributes.media.values;
-  const newPaperTypeOptionsArray = [];
-  for (let i = 0; i < paperTypeOptions.length; i += 1) {
-    const paperTypeOption = paperTypeOptions[i];
-    const imageUrl = buildImageUrl(paperTypeOption.firstProductRealviewParams);
-    newPaperTypeOptionsArray.push({
-      thumbnail: imageUrl,
-      title: paperTypeOption.title,
-      name: paperTypeOption.name,
-      priceAdjustment: formatPriceAdjustment(paperTypeOption.priceDifferential, true),
-    });
-  }
-  normalizedProductDetails.paperTypeOptions = newPaperTypeOptionsArray;
-}
-
 export function formatStringSnakeCase(string) {
   const normalizedString = string.replace(/[^a-zA-Z0-9\s]/g, '');
   const formattedString = normalizedString.trim().toLowerCase().replace(/ /g, '_');
   return formattedString;
+}
+
+function convertAttributeToOptionsObject(attribute) {
+  const options = attribute.values;
+  const optionsArray = [];
+  for (let i = 0; i < options.length; i += 1) {
+    const option = options[i];
+    const imageUrl = buildImageUrl(option.firstProductRealviewParams);
+    optionsArray.push({
+      thumbnail: imageUrl,
+      title: option.title,
+      name: option.name,
+      priceAdjustment: formatPriceAdjustment(option.priceDifferential),
+    });
+  }
+  return optionsArray;
+}
+function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
+  const optionsArray = [];
+  for (let i = 0; i < quantities.length; i += 1) {
+    const option = quantities[i];
+    optionsArray.push({
+      title: `${option} ${pluralUnitLabel}`,
+      name: option,
+    });
+  }
+  return optionsArray;
 }
 
 export function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
@@ -160,28 +143,11 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
     averageRating: productReviews.reviews.stats.averageRating,
     totaltReviews: productReviews.reviews.stats.totalReviews,
-    sideQuantityptions: [
-      {
-        thumbnail: 'https://placehold.co/54',
-        title: 'Double-sided',
-        priceAdjustment: '+$0.00',
-      },
-      {
-        thumbnail: 'https://placehold.co/54',
-        title: 'Single-sided',
-        priceAdjustment: '-US$5.95',
-      },
-    ],
   };
-  if (productDetails.product.attributes.cornerstyle) {
-    addCornerStyleOptionsObject(productDetails, normalizedProductDetails);
+  for (const attribute of Object.values(productDetails.product.attributes)) {
+    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute);
   }
-  if (productDetails.product.attributes.style) {
-    addSizeOptionsObject(productDetails, normalizedProductDetails);
-  }
-  if (productDetails.product.attributes.media) {
-    addPaperTypeOptionsObject(productDetails, normalizedProductDetails);
-  }
-  debugger;
+  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
+  normalizedProductDetails.quantities = quantitiesOptions;
   return normalizedProductDetails;
 }
