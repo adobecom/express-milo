@@ -1,6 +1,9 @@
 .pricing-footer {
   margin-top: 24px;
-  margin-bottom: var(--spacing-600)
+  margin-bottom: var(--spacing-600);
+  margin-left: auto;
+  box-sizing: content-box;
+  margin-right: auto;
 }
 
 .pricing-footer > div {
@@ -20,29 +23,10 @@ main .section .pricing-footer p {
   font-weight: 400;
   line-height: 130%;
 }
-
-@media (min-width: 600px) {
-  .pricing-footer > div {
-    width: var(--ax-grid-8-col-width);
-  }
+ 
+.pricing-footer.card-count-2 {
+  padding-right: 16px
 }
 
-@media (min-width: 1200px) {
-  .pricing-footer > div {
-    width: var(--ax-grid-12-col-width);
-    margin: 0 var(--spacing-200);
-  }
 
-  .pricing-footer.card-count-2 > div {
-    width: var(--ax-grid-8-col-width);
-  }
-
-  .pricing-footer.card-count-1 > div {
-    width: var(--ax-grid-4-col-width);
-  }
-
-  .pricing-footer.card-count-1 > div,
-  .pricing-footer.card-count-2 > div {
-    margin: 0 var(--spacing-100);
-  }
-}
+ 
