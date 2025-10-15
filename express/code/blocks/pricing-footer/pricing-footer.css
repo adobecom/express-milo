@@ -1,5 +1,5 @@
 .pricing-footer {
-  margin-top: 24px;
+  margin-top: var(--spacing-400);
   margin-bottom: var(--spacing-600);
   margin-left: auto;
   box-sizing: content-box;
@@ -23,10 +23,7 @@ main .section .pricing-footer p {
   font-weight: 400;
   line-height: 130%;
 }
- 
+
 .pricing-footer.card-count-2 {
-  padding-right: 16px
+  padding-right: var(--spacing-300);
 }
-
-
- 
