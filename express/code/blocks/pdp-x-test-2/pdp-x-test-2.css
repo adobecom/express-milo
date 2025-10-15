@@ -54,71 +54,77 @@
   --line-height-1500: 72px;
   --line-height-1600: 82px;
 }
-  /*WIDE-SCREEN*/
-  @media (min-width: 1680px) {
-    .pdp-x-test-2 {
-      --grid-max-width: 1680px;
-      --container-max-width: 1600px;
-      --container-padding-side: var(--figma-spacing-600);
-      --grid-gutter: var(--figma-spacing-400);
-      --device-min-width: 1680px;
-      --device-max-width: 5120px;
-      --figma-section-padding-small: var(--figma-spacing-600);
-      --figma-section-padding-medium: var(--figma-spacing-700);
-      --figma-section-padding-large: var(--figma-spacing-800);
-      --figma-section-padding-x-large: var(--figma-spacing-900);
-      
-    }
+/*WIDE-SCREEN*/
+@media (min-width: 1680px) {
+  .pdp-x-test-2 {
+    --grid-max-width: 1680px;
+    --container-max-width: 1600px;
+    --container-padding-side: var(--figma-spacing-600);
+    --grid-gutter: var(--figma-spacing-400);
+    --device-min-width: 1680px;
+    --device-max-width: 5120px;
+    --figma-section-padding-small: var(--figma-spacing-600);
+    --figma-section-padding-medium: var(--figma-spacing-700);
+    --figma-section-padding-large: var(--figma-spacing-800);
+    --figma-section-padding-x-large: var(--figma-spacing-900);
   }
-  /*DESKTOP*/
-  @media (min-width: 1200px) {
-    .pdp-x-test-2 {
-      --grid-max-width: 1680px;
-      --container-max-width: 1600px;
-      --container-padding-side: var(--figma-spacing-600);
-      --grid-gutter: var(--figma-spacing-400);
-      --device-min-width: 1200px;
-      --device-max-width: 1679px;
-      --figma-section-padding-small: var(--figma-spacing-600);
-      --figma-section-padding-medium: var(--figma-spacing-700);
-      --figma-section-padding-large: var(--figma-spacing-800);
-      --figma-section-padding-x-large: var(--figma-spacing-900);
+}
+/*DESKTOP*/
+@media (min-width: 1200px) {
+  .pdp-x-test-2 {
+    --grid-max-width: 1680px;
+    --container-max-width: 1600px;
+    --container-padding-side: var(--figma-spacing-600);
+    --grid-gutter: var(--figma-spacing-400);
+    --device-min-width: 1200px;
+    --device-max-width: 1679px;
+    --figma-section-padding-small: var(--figma-spacing-600);
+    --figma-section-padding-medium: var(--figma-spacing-700);
+    --figma-section-padding-large: var(--figma-spacing-800);
+    --figma-section-padding-x-large: var(--figma-spacing-900);
+  }
+}
+/*TABLET*/
+@media (min-width: 600px) {
+  .pdp-x-test-2 {
+    --grid-max-width: 1199px;
+    --container-max-width: 1199px;
+    --container-padding-side: var(--figma-spacing-500);
+    --grid-gutter: var(--figma-spacing-300);
+    --device-min-width: 600px;
+    --device-max-width: 1199px;
+    --figma-section-padding-small: var(--figma-spacing-300);
+    --figma-section-padding-medium: var(--figma-spacing-400);
+    --figma-section-padding-large: var(--figma-spacing-500);
+    --figma-section-padding-x-large: var(--figma-spacing-600);
+  }
+}
+/*MOBILE*/
+@media (min-width: 320px) {
+  .pdp-x-test-2 {
+    --grid-max-width: 599px;
+    --container-max-width: 599px;
+    --container-padding-side: var(--figma-spacing-300);
+    --grid-gutter: var(--figma-spacing-100);
+    --device-min-width: 320px;
+    --device-max-width: 599px;
+    --figma-section-padding-small: var(--figma-spacing-300);
+    --figma-section-padding-medium: var(--figma-spacing-400);
+    --figma-section-padding-large: var(--figma-spacing-500);
+    --figma-section-padding-x-large: var(--figma-spacing-600);
+  }
+}
 
-
-    }
+@media (max-width: 600px) {
+  .pdpx-product-info-heading-section-container {
+    flex-direction: column;
   }
-  /*TABLET*/
-  @media (min-width: 600px ) {
-    .pdp-x-test-2 {
-      --grid-max-width: 1199px;
-      --container-max-width: 1199px;
-      --container-padding-side: var(--figma-spacing-500);
-      --grid-gutter: var(--figma-spacing-300);
-      --device-min-width: 600px;
-      --device-max-width: 1199px;
-      --figma-section-padding-small: var(--figma-spacing-300);
-      --figma-section-padding-medium: var(--figma-spacing-400);
-      --figma-section-padding-large: var(--figma-spacing-500);
-      --figma-section-padding-x-large: var(--figma-spacing-600);
-    }
+}
+@media (min-width: 600px) {
+  .pdpx-product-info-heading-section-container {
+    flex-direction: row;
   }
-  /*MOBILE*/
-  @media (min-width: 320px) {
-    .pdp-x-test-2 {
-      --grid-max-width: 599px;
-      --container-max-width: 599px;
-      --container-padding-side: var(--figma-spacing-300);
-      --grid-gutter: var(--figma-spacing-100);
-      --device-min-width: 320px;
-      --device-max-width: 599px;
-      --figma-section-padding-small: var(--figma-spacing-300);
-      --figma-section-padding-medium: var(--figma-spacing-400);
-      --figma-section-padding-large: var(--figma-spacing-500);
-      --figma-section-padding-x-large: var(--figma-spacing-600);
-    }
-  }
-  
-
+}
 
 main .section .pdpx-global-container p {
   margin: 0;
@@ -131,9 +137,11 @@ main .section .pdpx-global-container p {
   gap: var(--figma-spacing-400);
   align-items: flex-start;
 }
+.pdpx-product-title {
+  font-size: 28px;
+}
 .pdpx-product-info-heading-section-container {
   display: flex;
-  flex-direction: row;
   gap: var(--figma-spacing-400);
   align-items: baseline;
   margin-bottom: var(--figma-spacing-500);
@@ -145,6 +153,7 @@ main .section .pdpx-global-container p {
   display: flex;
   align-items: baseline;
   gap: var(--figma-spacing-75);
+  width: min-content;
 }
 .pdpx-price-label {
   font-size: 20px;
@@ -171,6 +180,7 @@ main .section .pdpx-global-container p {
   align-items: flex-end;
 }
 .pdpx-product-hero-image {
+  width: 100%;
   border-radius: 12px;
 }
 .pdpx-star-ratings-container {
@@ -225,7 +235,7 @@ main .section .pdpx-global-container p {
   width: 50%;
 }
 
-.pdpx-product-info-container { 
+.pdpx-product-info-container {
   height: 70vh;
   overflow-y: scroll;
 }
@@ -239,7 +249,7 @@ main .section .pdpx-global-container p {
   margin-bottom: var(--figma-spacing-100);
   margin-top: var(--figma-spacing-400);
   width: 100%;
-  background-color: #5258E4;
+  background-color: #5258e4;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -299,6 +309,8 @@ main .section .pdpx-global-container p {
   cursor: pointer;
 }
 .pdpx-mini-pill-image-container {
+  border-radius: 4px;
+  border: 1px solid transparent;
   cursor: pointer;
 }
 .pdpx-pill-image-container {
@@ -377,7 +389,6 @@ main .section .pdpx-global-container p {
   color: #131313;
   padding-bottom: 5px;
   width: 90%;
- 
 }
 
 .pdpx-product-details-section-item-icon {
@@ -392,13 +403,14 @@ main .section .pdpx-global-container p {
   display: block;
   visibility: visible;
 }
-.pdpx-product-details-section-item-container.expanded .pdpx-product-details-section-item-icon {
+.pdpx-product-details-section-item-container.expanded
+  .pdpx-product-details-section-item-icon {
   background-image: url('/express/code/icons/minus-sign.svg');
   background-repeat: no-repeat;
   background-position: center;
-  
 }
-.pdpx-product-details-section-item-container.collapsed .pdpx-product-details-section-item-icon {
+.pdpx-product-details-section-item-container.collapsed
+  .pdpx-product-details-section-item-icon {
   background-image: url('/express/code/icons/plus-sign.svg');
   background-repeat: no-repeat;
   background-position: center;
@@ -424,4 +436,8 @@ main .section .pdpx-global-container p {
   -moz-appearance: none;
   appearance: none;
   -webkit-appearance: none;
+}
+.pdpx-pill-container.selected,
+.pdpx-mini-pill-image-container.selected {
+  border: 1px solid #5258e4;
 }
