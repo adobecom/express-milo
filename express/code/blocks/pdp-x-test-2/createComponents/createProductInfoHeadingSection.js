@@ -96,7 +96,7 @@ function createComparePrice(productDetails) {
 function createComparePriceInfoContainer(productDetails) {
   const comparePriceInfoContainer = document.createElement('div');
   comparePriceInfoContainer.className = 'pdpx-price-info-row';
-  const comparePriceInfoLabel = document.createElement('p');
+  const comparePriceInfoLabel = document.createElement('span');
   comparePriceInfoLabel.className = 'pdpx-compare-price-info-label';
   comparePriceInfoLabel.textContent = 'Comp. value';
   comparePriceInfoContainer.appendChild(comparePriceInfoLabel);

@@ -3,15 +3,31 @@ import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
 
 let createTag;
 
+function formatProductOptionsToAPIParameters(formDataObject) {
+  const parameters = {};
+  // https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductpricing?productId=256432838073857180&productOptions=style%3D3.5x2%26media%3D18ptkraft
+  for (const [key, value] of Object.entries(formDataObject)) {
+    if (key !== 'qty') {
+      parameters[key] = value;
+    }
+  }
+  parameters.productOptions = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
+  parameters.qty = formDataObject.qty;
+  const finalParameters = {};
+  finalParameters.productOptions = encodeURIComponent(parameters.productOptions);
+  finalParameters.qty = parameters.qty;
+  return finalParameters;
+}
+
 async function updateAllDynamicElements(productId) {
   const form = document.querySelector('#pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
-  console.log('formDataObject', formDataObject);
-  const productPrice = await fetchAPIData(productId, formDataObject, 'getproductpricing');
+  const parameters = formatProductOptionsToAPIParameters(formDataObject);
+  const productPrice = await fetchAPIData(productId, parameters, 'getproductpricing');
   document.getElementById('pdpx-price-label').innerHTML = productPrice.unitPrice;
-  const shippingEstimates = await fetchAPIData(productId, formDataObject, 'getshippingestimates');
-  const renditions = await fetchAPIData(productId, formDataObject, 'getproductrenditions');
+  // const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
+  // const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
 }
 
 function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName) {
@@ -28,16 +44,16 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
   return standardSelectorContainer;
 }
 
-function createPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName) {
+function createPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, productId) {
   const pillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const pillSelectorContainerLabel = createTag('span', { class: 'pdpx-pill-selector-label' }, labelText);
   pillSelectorContainer.appendChild(pillSelectorContainerLabel);
   const pillSelectorOptionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
-  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName });
+  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     hiddenSelectInput.appendChild(option);
-    const pillContainer = createTag('button', { class: 'pdpx-pill-container' });
+    const pillContainer = createTag('button', { class: 'pdpx-pill-container', type: 'button' });
     const inputPillImageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
     const inputPillImage = createTag('img', { class: 'pdpx-pill-image', src: customizationOptions[i].thumbnail });
     inputPillImageContainer.appendChild(inputPillImage);
@@ -49,6 +65,15 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
     pillContainer.appendChild(inputPillImageContainer);
     pillContainer.appendChild(inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
+    pillContainer.addEventListener('click', async (element) => {
+      // I want to remove the selected class from all the other pill containers in this container
+      pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((pill) => {
+        pill.classList.remove('selected');
+      });
+      element.currentTarget.classList.toggle('selected');
+      document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
+      updateAllDynamicElements(productId);
+    });
   }
   pillSelectorContainer.appendChild(pillSelectorOptionsContainer);
   pillSelectorContainer.appendChild(hiddenSelectInput);
@@ -76,14 +101,16 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     hiddenSelectInput.appendChild(option);
     const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container' });
-    const miniPillOptionImageContainer = createTag('div', { class: 'pdpx-mini-pill-image-container', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
+    const miniPillOptionImageContainer = createTag('button', { class: 'pdpx-mini-pill-image-container', type: 'button', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
     const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', src: customizationOptions[i].thumbnail });
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
-    // I want to pass the productId into the fetchProductPrice function
     miniPillOptionImageContainer.addEventListener('click', async (element) => {
-      element.currentTarget.classList.add('selected');
+      miniPillSelectorOptionsContainer.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
+        pill.classList.remove('selected');
+      });
+      element.currentTarget.classList.toggle('selected');
       miniPillSelectorLabeLName.innerHTML = element.currentTarget.getAttribute('data-title');
       document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
@@ -100,8 +127,8 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
 
 function createBusinessCardInputs(container, productDetails) {
   const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id);
-  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle');
-  const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'size');
+  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id);
+  const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'style', productDetails.id);
   const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty');
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
