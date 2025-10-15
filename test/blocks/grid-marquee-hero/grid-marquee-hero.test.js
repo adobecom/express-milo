@@ -36,5 +36,3 @@ describe('Grid Marquee Hero', () => {
     expect(buttons[0].classList.contains('primaryCTA')).to.be.true;
   });
 });
-
-

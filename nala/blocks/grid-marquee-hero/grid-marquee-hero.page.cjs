@@ -14,5 +14,3 @@ export default class GridMarqueeHero {
     await this.page.waitForLoadState('domcontentloaded');
   }
 }
-
-
