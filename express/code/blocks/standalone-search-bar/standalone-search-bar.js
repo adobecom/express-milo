@@ -1,6 +1,6 @@
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
-import { trackSearch, generateSearchId, updateImpressionCache } from '../../scripts/template-search-api-v3.js';
+import { trackSearch, generateSearchId } from '../../scripts/template-search-api-v3.js';
 
 let createTag; let getConfig;
 let replaceKeyArray; let blockConfig;
@@ -126,21 +126,11 @@ function initSearchFunction(block, searchBarWrapper) {
     await redirectSearch();
   };
 
-  async function handleSubmitInteraction(item, index) {
+  async function handleSubmitInteraction(item) {
     if (item.query !== searchBar.value) {
       searchBar.value = item.query;
       searchBar.dispatchEvent(new Event('input'));
     }
-
-    updateImpressionCache({
-      status_filter: 'free',
-      type_filter: 'all',
-      collection: 'all-templates',
-      keyword_rank: index + 1,
-      search_keyword: searchBar.value || 'empty search',
-      search_type: 'autocomplete',
-    });
-
     await onSearchSubmit();
   }
 
