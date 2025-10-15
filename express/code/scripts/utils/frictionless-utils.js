@@ -504,7 +504,5 @@ export async function initProgressBar(replaceKey, getConfig) {
 }
 
 export function isSafari() {
-  const ua = navigator.userAgent;
-  return /Safari/.test(ua)
-        && /Version\//.test(ua);
+  return getWebBrowser() === 'Safari';
 }
