@@ -1,0 +1,71 @@
+:root {
+  --pdp-drawer-z-index: 102;
+  --pdp-drawer-curtain-z-index: 101;
+}
+
+.pdpx-global-container .drawer {
+  position: absolute;
+  z-index: var(--pdp-drawer-z-index);
+  background-color: var(--color-white);
+}
+
+.pdpx-global-container .drawer-head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #D5D5D5;
+  padding: 24px;
+}
+
+.pdpx-global-container .drawer-head button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.pdpx-global-container .drawer-body {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.pdpx-global-container .drawer-body img.hero {
+  width: 300px;
+}
+
+.pdpx-global-container .drawer-body .label-row {
+  display: flex;
+  gap: 8px;
+}
+
+.pdpx-global-container .drawer-body .label-pill {
+  border-radius: 8px;
+  padding: 4px 8px;
+  background-color: #F3F3F3;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pdpx-global-container .drawer-body .icon-checkmark {
+  /* TODO: find proper icon */
+  background-color: black;
+  display: block;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  padding: 3px;
+  margin-right: 4px;
+}
+
+.pdpx-global-container .drawer .description {
+  font-size: var(--body-font-size-s);
+}
+
+.pdp-curtain {
+  z-index: var(--pdp-drawer-curtain-z-index);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgb(50 50 50 / 80%);
+}
