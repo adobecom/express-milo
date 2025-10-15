@@ -14,9 +14,13 @@ test.describe('grid-marquee-hero test suite', () => {
     test(`[Test Id - ${features[0].tcid}] ${features[0].name}, path: ${path}, validate headline and responsive CTAs`, async ({ baseURL, page }) => {
       const testPage = `${baseURL}${path}`;
 
+      // Ensure block exists on page; skip if not present on this env/page
+      await hero.gotoURL(testPage);
+      const blockCount = await hero.hero.count();
+      test.skip(blockCount === 0, 'grid-marquee-hero block not present on page');
+
       // Mobile: CTAs hidden
       await page.setViewportSize({ width: 375, height: 800 });
-      await hero.gotoURL(testPage);
       await page.waitForSelector('.global-footer');
       await test.step('mobile: headline visible, CTAs hidden', async () => {
         await expect(hero.logo).toBeVisible();
@@ -26,7 +30,6 @@ test.describe('grid-marquee-hero test suite', () => {
 
       // Desktop: CTAs visible
       await page.setViewportSize({ width: 1280, height: 900 });
-      await hero.gotoURL(testPage);
       await test.step('desktop: headline and CTAs visible', async () => {
         await expect(hero.logo).toBeVisible();
         await expect(hero.heading).toBeVisible();
