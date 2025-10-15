@@ -33,15 +33,11 @@
 
 .template-x-carousel-toolbar .centered-heading {
   text-align: center;
-}
-
-.template-x-carousel-toolbar .search-bar-gallery {
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-400);
 }
 
 .template-x-carousel-toolbar .toolbar.search-bar {
-  margin-top: 24px;
+  margin-top: var(--spacing-400);
 }
 
 .template-x-carousel-toolbar .toolbar p {
