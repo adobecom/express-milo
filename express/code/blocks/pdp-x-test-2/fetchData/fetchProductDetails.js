@@ -25,6 +25,7 @@ export async function fetchAPIData(productId, parameters, endpoint) {
     parametersString = '';
   }
   url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
+
   if (endpoint === 'getshippingestimates') {
     url = '/express/code/blocks/pdp-x-test-2/sample_data/getShippingEstimate.json';
   }
