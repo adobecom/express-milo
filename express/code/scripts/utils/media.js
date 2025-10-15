@@ -164,7 +164,29 @@ export function transformLinkToAnimation($a, $videoLooping = true, hasControls =
       $video?.setAttribute('title', videoTitle);
     }
 
-    // Use createTag instead of innerHTML
+    const isFirstSection = $a.closest('.section') === document.querySelector('.section');
+    const isHidden = $a.classList.contains('drawer')
+                     || $a.classList.contains('hide')
+                     || $a.closest('[aria-hidden="true"]')
+                     || $a.closest('.drawer')
+                     || $a.closest('.hide')
+                     || $a.closest('[style*="display: none"]')
+                     || $a.closest('[style*="display:none"]');
+
+    $video.setAttribute('preload', (isFirstSection && !isHidden) ? 'metadata' : 'none');
+    if (isHidden) {
+      const hiddenParent = $a.closest('[aria-hidden="true"]') || $a.closest('.drawer');
+      if (hiddenParent) {
+        const observer = new MutationObserver(() => {
+          if (hiddenParent.getAttribute('aria-hidden') !== 'true') {
+            $video.setAttribute('preload', 'metadata');
+            $video.load();
+            observer.disconnect();
+          }
+        });
+        observer.observe(hiddenParent, { attributes: true, attributeFilter: ['aria-hidden'] });
+      }
+    }
     if (isLegacy) {
       const helixId = videoUrl.hostname.includes('hlx.blob.core') || videoUrl.hostname.includes('aem.blob.core') ? videoUrl.pathname.split('/')[2] : videoUrl.pathname.split('media_')[1].split('.')[0];
       const videoHref = `./media_${helixId}.mp4`;

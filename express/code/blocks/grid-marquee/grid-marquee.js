@@ -1,4 +1,5 @@
 import { getLibs, yieldToMain, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
+import { createOptimizedVideo } from '../../scripts/utils/video.js';
 
 let createTag; let getConfig;
 
@@ -24,6 +25,7 @@ function drawerOn(drawer) {
   drawer.classList.remove('hide');
   const video = drawer.querySelector('video');
   if (video && !reduceMotionMQ.matches) {
+    // Video lazy loading is handled by video utility (watches aria-hidden)
     video.muted = true;
     video.play().catch(() => { });
   }
@@ -73,14 +75,14 @@ async function decorateDrawer(videoSrc, poster, titleText, panels, panelsFrag, d
     }
   });
 
-  const video = createTag('video', {
-    playsinline: '',
-    muted: '',
-    loop: '',
-    preload: 'metadata',
-    title: titleText,
+  // Use centralized video utility for consistent preload strategy
+  const video = createOptimizedVideo({
+    src: videoSrc,
+    container: drawer,
+    attributes: { playsinline: '', muted: '', loop: '' },
     poster,
-  }, `<source src="${videoSrc}" type="video/mp4">`);
+    title: titleText,
+  });
   const videoWrapper = createTag('button', { class: 'video-container' }, video);
   // link video to first anchor
   videoWrapper.addEventListener('click', () => anchors[0]?.click());
