@@ -203,6 +203,8 @@ export default async function init(el) {
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
 
+  const includesSearchBar = el.classList.contains('search-bar');
+
   try {
     // TODO: lazy load templates
     const [
@@ -210,14 +212,21 @@ export default async function init(el) {
       sortSetup,
     ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
     const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
-    const dropdown = createDropdown(
-      sortOptions,
-      defaultIndex,
-      updateTemplates,
-      sortPlaceholderText,
-    );
-    const controlsContainer = createTag('div', { class: 'controls-container' }, [dropdown, galleryControl]);
-    sortOptions && controlsContainer.append(dropdown);
+
+    let dropdown;
+    if (!includesSearchBar) {
+      dropdown = createDropdown(
+        sortOptions,
+        defaultIndex,
+        updateTemplates,
+        sortPlaceholderText,
+      );
+    }
+
+    const controlsContainer = createTag('div', { class: 'controls-container' });
+    if (!includesSearchBar && sortOptions && dropdown) {
+      controlsContainer.append(dropdown);
+    }
     controlsContainer.append(galleryControl);
     toolbar.append(controlsContainer);
     el.append(templatesContainer);
