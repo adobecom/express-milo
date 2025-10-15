@@ -223,6 +223,9 @@ export default async function init(el) {
     el.prepend(heading);
   }
   toolbar.classList.add('toolbar');
+  if (includesSearchBar) {
+    toolbar.classList.add('search-bar');
+  }
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
 

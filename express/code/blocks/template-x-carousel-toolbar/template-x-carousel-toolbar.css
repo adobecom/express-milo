@@ -40,6 +40,10 @@
   margin-bottom: 24px;
 }
 
+.template-x-carousel-toolbar .toolbar.search-bar {
+  margin-top: 24px;
+}
+
 .template-x-carousel-toolbar .toolbar p {
   margin: 0;
   line-height: 1.3;
