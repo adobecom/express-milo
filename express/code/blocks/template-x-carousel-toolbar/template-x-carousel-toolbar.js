@@ -8,12 +8,12 @@ let replaceKey;
 
 const fromScratchFallbackLink = 'https://adobesparkpost.app.link/c4bWARQhWAb';
 
-async function createTemplates(recipe) {
+async function createTemplates(recipe, customProperties = null) {
   const res = await fetchResults(recipe);
   const templates = await Promise.all(
     res.items
       .filter((item) => isValidTemplate(item))
-      .map((item) => renderTemplate(item)),
+      .map((item) => renderTemplate(item, undefined, customProperties)),
   );
   templates.forEach((tplt) => tplt.classList.add('template'));
   return templates;
@@ -45,8 +45,16 @@ async function createTemplatesContainer(recipe, el, includesSearchBar = false) {
     templatesContainer.classList.add('search-bar-gallery');
   }
 
+  // Create custom properties for search bar variant
+  const customProperties = includesSearchBar ? {
+    customUrlConfig: {
+      baseUrl: 'https://new.express.adobe.com/tools/card-maker',
+      queryParams: 'source=seo-template',
+    },
+  } : null;
+
   // Conditionally create from-scratch element
-  const promises = [createTemplates(recipe)];
+  const promises = [createTemplates(recipe, customProperties)];
   if (!includesSearchBar) {
     promises.unshift(createFromScratch());
   }
@@ -66,7 +74,7 @@ async function createTemplatesContainer(recipe, el, includesSearchBar = false) {
   return {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
-      const newTemplates = await createTemplates(newRecipe);
+      const newTemplates = await createTemplates(newRecipe, customProperties);
       const newGalleryItems = scratch ? [scratch, ...newTemplates] : newTemplates;
       templatesContainer.replaceChildren(...newGalleryItems);
       const { control: newControl } = await buildGallery(
