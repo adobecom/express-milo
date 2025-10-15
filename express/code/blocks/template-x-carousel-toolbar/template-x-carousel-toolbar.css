@@ -36,8 +36,13 @@
   margin-bottom: var(--spacing-400);
 }
 
+.template-x-carousel-toolbar.search-bar {
+  padding-bottom: 0;
+}
+
 .template-x-carousel-toolbar .toolbar.search-bar {
   margin-top: var(--spacing-400);
+  padding-bottom: 16px;
 }
 
 .template-x-carousel-toolbar .toolbar p {
