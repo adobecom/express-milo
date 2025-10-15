@@ -233,23 +233,34 @@ function initSearchFunction(block, searchBarWrapper) {
   });
 }
 
-async function decorateSearchFunctions() {
+async function decorateSearchFunctions(block) {
   const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
 
-  // Add title and subtitle if configured
-  if (blockConfig.title || blockConfig.subtitle) {
+  // Read header and subheader from first block element (split by line breaks)
+  const firstElementText = block.children[0]?.textContent?.trim();
+  let headerText = '';
+  let subheaderText = '';
+
+  if (firstElementText) {
+    const lines = firstElementText.split('\n').map((line) => line.trim()).filter((line) => line);
+    headerText = lines[0] || '';
+    subheaderText = lines[1] || '';
+  }
+
+  // Add header and subheader if found
+  if (headerText || subheaderText) {
     const headerWrapper = createTag('div', { class: 'search-header' });
 
-    if (blockConfig.title) {
-      const title = createTag('h1', { class: 'search-title' });
-      title.textContent = blockConfig.title;
-      headerWrapper.append(title);
+    if (headerText) {
+      const header = createTag('h1', { class: 'search-title' });
+      header.textContent = headerText;
+      headerWrapper.append(header);
     }
 
-    if (blockConfig.subtitle) {
-      const subtitle = createTag('p', { class: 'search-subtitle' });
-      subtitle.textContent = blockConfig.subtitle;
-      headerWrapper.append(subtitle);
+    if (subheaderText) {
+      const subheader = createTag('p', { class: 'search-subtitle' });
+      subheader.textContent = subheaderText;
+      headerWrapper.append(subheader);
     }
 
     searchBarWrapper.append(headerWrapper);
@@ -349,7 +360,7 @@ export default async function decorate(block) {
     ({ replaceKeyArray } = placeholders);
   });
 
-  const searchBarWrapper = await decorateSearchFunctions();
+  const searchBarWrapper = await decorateSearchFunctions(block);
   await buildSearchDropdown(searchBarWrapper);
   initSearchFunction(block, searchBarWrapper);
 
