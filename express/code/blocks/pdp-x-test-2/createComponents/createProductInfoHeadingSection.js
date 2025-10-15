@@ -149,11 +149,17 @@ export function createDeliveryEstimatePill(productDetails) {
 }
 
 export default function createProductInfoHeadingSection(productDetails) {
+  const productInfoHeadingSectionWrapper = document.createElement('div');
+  productInfoHeadingSectionWrapper.className = 'pdpx-product-info-heading-section-wrapper';
   const productInfoHeadingSectionContainer = document.createElement('div');
   productInfoHeadingSectionContainer.className = 'pdpx-product-info-heading-section-container';
   const productTitleAndRatingsContainer = createProductTitleAndRatingsContainer(productDetails);
   productInfoHeadingSectionContainer.append(productTitleAndRatingsContainer);
   const priceInfoContainer = createPriceInfoContainer(productDetails);
   productInfoHeadingSectionContainer.append(priceInfoContainer);
-  return productInfoHeadingSectionContainer;
+  productInfoHeadingSectionWrapper.appendChild(productInfoHeadingSectionContainer);
+  const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);
+  productInfoHeadingSectionWrapper.appendChild(deliveryEstimatePill);
+
+  return productInfoHeadingSectionWrapper;
 }
