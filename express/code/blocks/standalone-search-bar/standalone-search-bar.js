@@ -7,7 +7,21 @@ let replaceKeyArray; let blockConfig;
 
 function cycleThroughSuggestions(block, targetIndex = 0) {
   const suggestions = block.querySelectorAll('.suggestions-list li');
-  if (targetIndex >= suggestions.length || targetIndex < 0) return;
+  const searchBar = block.querySelector('input.search-bar');
+
+  // If trying to go before first suggestion, return to search input
+  if (targetIndex < 0) {
+    searchBar.focus();
+    return;
+  }
+
+  if (targetIndex >= suggestions.length) return;
+
+  // Make all suggestions focusable when keyboard navigation starts
+  suggestions.forEach((suggestion) => {
+    suggestion.setAttribute('tabindex', '0');
+  });
+
   if (suggestions.length > 0) suggestions[targetIndex].focus();
 }
 
@@ -91,6 +105,15 @@ function initSearchFunction(block, searchBarWrapper) {
     if (e.key === 'ArrowDown' || e.keyCode === 40) {
       e.preventDefault();
       cycleThroughSuggestions(block);
+    } else if (e.key === 'ArrowUp' || e.keyCode === 38) {
+      e.preventDefault();
+      const suggestions = block.querySelectorAll('.suggestions-list li');
+      if (suggestions.length > 0) {
+        cycleThroughSuggestions(block, suggestions.length - 1);
+      }
+    } else if (e.key === 'Escape' || e.keyCode === 27) {
+      searchDropdown.classList.add('hidden');
+      searchBar.blur();
     }
   });
 
@@ -103,6 +126,7 @@ function initSearchFunction(block, searchBarWrapper) {
 
   const redirectSearch = async () => {
     const { destination } = blockConfig;
+    console.log('destination', destination);
 
     // If destination is authored, use simple redirect with query param
     if (destination && destination.trim() !== '') {
@@ -123,6 +147,7 @@ function initSearchFunction(block, searchBarWrapper) {
       source: block.dataset.blockName,
       target: searchBar.value,
     }, 1);
+    console.log('onSearchSubmit', searchBar.value);
     await redirectSearch();
   };
 
@@ -152,7 +177,7 @@ function initSearchFunction(block, searchBarWrapper) {
     const searchBarVal = searchBar.value.toLowerCase();
     if (suggestions && !(suggestions.length <= 1 && suggestions[0]?.query === searchBarVal)) {
       suggestions.forEach((item, index) => {
-        const li = createTag('li', { tabindex: 0 });
+        const li = createTag('li', { tabindex: -1 }); // Start unfocusable
         const valRegEx = new RegExp(searchBar.value, 'i');
         li.innerHTML = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
         li.addEventListener('click', async () => {
@@ -179,9 +204,24 @@ function initSearchFunction(block, searchBarWrapper) {
           }
         });
 
+        li.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' || e.keyCode === 27) {
+            e.preventDefault();
+            searchBar.focus();
+            searchDropdown.classList.add('hidden');
+          }
+        });
+
         suggestionsList.append(li);
       });
     }
+
+    // Ensure search input keeps focus after suggestions are populated
+    setTimeout(() => {
+      if (document.activeElement !== searchBar) {
+        searchBar.focus();
+      }
+    }, 0);
   };
 
   import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
