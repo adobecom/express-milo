@@ -125,16 +125,16 @@ function initSearchFunction(block, searchBarWrapper) {
   }, { passive: true });
 
   const redirectSearch = async () => {
-    const { destination } = blockConfig;
-    console.log('destination', destination);
+    const { 'search-destination': searchDestination } = blockConfig;
+    console.log('searchDestination', searchDestination);
 
     // If destination is authored, use simple redirect with query param
-    if (destination && destination.trim() !== '') {
+    if (searchDestination && searchDestination.trim() !== '') {
       trackSearch('search-inspire');
 
       const searchQuery = searchBar.value || '';
-      const separator = destination.includes('?') ? '&' : '?';
-      const targetLocation = `${destination}${separator}q=${encodeURIComponent(searchQuery)}`;
+      const separator = searchDestination.includes('?') ? '&' : '?';
+      const targetLocation = `${searchDestination}${separator}q=${encodeURIComponent(searchQuery)}`;
 
       window.location.assign(targetLocation);
     }
