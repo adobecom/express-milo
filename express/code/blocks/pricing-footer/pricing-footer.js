@@ -2,13 +2,10 @@ function getMerchCardWidth(el) {
   let sibling = el.previousElementSibling;
   while (sibling) {
     if (sibling.classList?.contains('content')) {
-      console.log(sibling.shadowRoot);
-
       const cards = sibling.querySelectorAll('merch-card');
       const cardCount = cards.length;
 
       if (cardCount > 0) {
-        // Remove any existing card-count-* class before applying the new one.
         Array.from(el.classList)
           .filter((cls) => cls.startsWith('card-count-'))
           .forEach((cls) => el.classList.remove(cls));
@@ -42,8 +39,6 @@ function getMerchCardWidth(el) {
         if (isNarrowViewport) {
           targetWidth = firstCardWidth > 0 ? firstCardWidth : targetWidth;
         }
-
-        console.log(targetWidth, columnGap, totalWidth);
         if (targetWidth > 0) {
           el.style.maxWidth = `${targetWidth}px`;
         }
@@ -81,15 +76,6 @@ export default function init(el) {
     }
   }
 
-  // if (!pricingCardsBlock) return;
-
-  // const cardCountClass = Array.from(pricingCardsBlock.classList)
-  //   .find((cls) => cls.startsWith('card-count-'));
-
-  // if (cardCountClass) {
-  //   el.classList.add(cardCountClass);
-  // }
-
   const runWidthCalculation = () => getMerchCardWidth(el);
 
   setTimeout(runWidthCalculation, 200);
@@ -101,6 +87,4 @@ export default function init(el) {
   } else {
     window.addEventListener('resize', runWidthCalculation);
   }
-
-  // getMerchCardWidth(el);
 }
