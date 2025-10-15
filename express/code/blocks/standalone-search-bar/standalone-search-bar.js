@@ -1,25 +1,9 @@
 import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
-import { trackSearch, updateImpressionCache, generateSearchId } from '../../scripts/template-search-api-v3.js';
+import { trackSearch, generateSearchId, updateImpressionCache } from '../../scripts/template-search-api-v3.js';
 
 let createTag; let getConfig;
-let getMetadata; let replaceKeyArray;
-let prefix; let blockConfig;
-
-function handlelize(str) {
-  return str.normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remove accents
-    .replace(/(\W+|\s+)/g, '-') // Replace space and other characters by hyphen
-    .replace(/--+/g, '-') // Replaces multiple hyphens by one hyphen
-    .replace(/(^-+|-+$)/g, '') // Remove extra hyphens from beginning or end of the string
-    .toLowerCase(); // To lowercase
-}
-
-function wordExistsInString(word, inputString) {
-  const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regexPattern = new RegExp(`(?:^|\\s|[.,!?()'"\\-])${escapedWord}(?:$|\\s|[.,!?()'"\\-])`, 'i');
-  return regexPattern.test(inputString);
-}
+let replaceKeyArray; let blockConfig;
 
 function cycleThroughSuggestions(block, targetIndex = 0) {
   const suggestions = block.querySelectorAll('.suggestions-list li');
@@ -117,47 +101,11 @@ function initSearchFunction(block, searchBarWrapper) {
     }
   }, { passive: true });
 
-  const trimInput = (tasks, input) => {
-    let alteredInput = input;
-    tasks[0][1].sort((a, b) => b.length - a.length).forEach((word) => {
-      alteredInput = alteredInput.toLowerCase().replace(word.toLowerCase(), '');
-    });
-
-    return alteredInput.trim();
-  };
-
-  const findTask = (map) => Object.entries(map).filter((task) => task[1].some((word) => {
-    const searchValue = searchBar.value.toLowerCase();
-    return wordExistsInString(word.toLowerCase(), searchValue);
-  })).sort((a, b) => b[0].length - a[0].length);
-
   const redirectSearch = async () => {
-    const [taskMap, taskXMap] = await replaceKeyArray(['task-name-mapping', 'x-task-name-mapping'], getConfig());
-    const format = getMetadata('placeholder-format');
-
-    const currentTasks = {
-      xCore: '',
-      content: '',
-    };
-    let searchInput = searchBar.value?.toLowerCase() || getMetadata('topics');
-    const tasksFoundInInput = findTask(JSON.parse(taskMap || '{}'));
-    const tasksXFoundInInput = findTask(JSON.parse(taskXMap || '{}'));
-
-    if (tasksFoundInInput.length > 0) {
-      searchInput = trimInput(tasksFoundInInput, searchInput);
-      [[currentTasks.xCore]] = tasksFoundInInput;
-    }
-
-    if (tasksXFoundInInput.length > 0) {
-      searchInput = trimInput(tasksXFoundInInput, searchInput);
-      [[currentTasks.content]] = tasksXFoundInInput;
-    }
-
     const { destination } = blockConfig;
 
     // If destination is authored, use simple redirect with query param
     if (destination && destination.trim() !== '') {
-      updateImpressionCache({ collection: 'all-templates', content_category: 'templates' });
       trackSearch('search-inspire');
 
       const searchQuery = searchBar.value || '';
@@ -165,34 +113,7 @@ function initSearchFunction(block, searchBarWrapper) {
       const targetLocation = `${destination}${separator}q=${encodeURIComponent(searchQuery)}`;
 
       window.location.assign(targetLocation);
-      return;
     }
-
-    // default redirect logic when no destination is authored
-    const topicUrl = searchInput ? `/${searchInput}` : '';
-    const taskUrl = `/${handlelize(currentTasks.xCore.toLowerCase())}`;
-    const taskXUrl = `/${handlelize(currentTasks.content.toLowerCase())}`;
-    const targetPath = `${prefix}/express/templates${taskUrl}${topicUrl}`;
-    const targetPathX = `${prefix}/express/templates${taskXUrl}${topicUrl}`;
-    const { default: fetchAllTemplatesMetadata } = await import('../../scripts/utils/all-templates-metadata.js');
-    const allTemplatesMetadata = await fetchAllTemplatesMetadata(getConfig);
-    const pathMatch = (e) => e.url === targetPath;
-    const pathMatchX = (e) => e.url === targetPathX;
-    let targetLocation;
-
-    updateImpressionCache({ collection: currentTasks.content || 'all-templates', content_category: 'templates' });
-    trackSearch('search-inspire');
-
-    const searchId = BlockMediator.get('templateSearchSpecs').search_id;
-    if (allTemplatesMetadata.some(pathMatchX) && document.body.dataset.device !== 'mobile') {
-      targetLocation = `${window.location.origin}${targetPathX}?searchId=${searchId || ''}`;
-    } else if (allTemplatesMetadata.some(pathMatch) && document.body.dataset.device !== 'desktop') {
-      targetLocation = `${window.location.origin}${targetPath}?searchId=${searchId || ''}`;
-    } else {
-      const searchUrlTemplate = `/express/templates/search?tasks=${currentTasks.xCore}&tasksx=${currentTasks.content}&phformat=${format}&topics=${searchInput || "''"}&q=${searchBar.value || "''"}&searchId=${searchId || ''}`;
-      targetLocation = `${window.location.origin}${prefix}${searchUrlTemplate}`;
-    }
-    window.location.assign(targetLocation);
   };
 
   const onSearchSubmit = async () => {
@@ -225,13 +146,6 @@ function initSearchFunction(block, searchBarWrapper) {
 
   searchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    updateImpressionCache({
-      status_filter: 'free',
-      type_filter: 'all',
-      collection: 'all-templates',
-      search_keyword: searchBar.value || 'empty search',
-      search_type: 'direct',
-    });
     await onSearchSubmit();
   });
 
@@ -276,11 +190,6 @@ function initSearchFunction(block, searchBarWrapper) {
         });
 
         suggestionsList.append(li);
-      });
-      const suggestListString = suggestions.map((s) => s.query).join(',');
-      updateImpressionCache({
-        prefix_query: searchBarVal,
-        suggestion_list_shown: suggestListString,
       });
     }
   };
@@ -370,13 +279,6 @@ async function buildSearchDropdown(searchBarWrapper) {
     for (const [key, value] of Object.entries(trends)) {
       const trendLinkWrapper = createTag('li');
       const trendLink = createTag('a', { class: 'trend-link', href: `${value}?searchId=${generateSearchId()}` });
-      trendLink.addEventListener('click', () => {
-        updateImpressionCache({
-          keyword_filter: key,
-          content_category: 'templates',
-        });
-        trackSearch('search-inspire', new URLSearchParams(new URL(trendLink.href).search).get('searchId'));
-      });
       trendLink.textContent = key;
       trendLinkWrapper.append(trendLink);
       trendsWrapper.append(trendLinkWrapper);
@@ -414,10 +316,9 @@ export default async function decorate(block) {
   blockConfig = buildSearchConfig(block);
 
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
-    ({ createTag, getConfig, getMetadata } = utils);
+    ({ createTag, getConfig } = utils);
     ({ replaceKeyArray } = placeholders);
   });
-  ({ prefix } = getConfig().locale);
 
   const searchBarWrapper = await decorateSearchFunctions();
   await buildSearchDropdown(searchBarWrapper);
