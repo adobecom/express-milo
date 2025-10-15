@@ -1,4 +1,4 @@
-import { getLibs, getIconElementDeprecated, createTag, formatDynamicCartLink } from '../../scripts/utils.js';
+import { getIconElementDeprecated, createTag, formatDynamicCartLink } from '../../scripts/utils.js';
 
 // formatDynamicCartLink now imported from utils
 

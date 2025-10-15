@@ -40,8 +40,8 @@ main .section .grid-marquee h1 {
 }
 
 .grid-marquee .headline a:not(.primaryCTA) {
-  background-color: black;
-  border-color: black;
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 .grid-marquee .background  {
@@ -51,7 +51,7 @@ main .section .grid-marquee h1 {
 .grid-marquee.with-hero-above .background {
   position: relative;
   z-index: -1;
-  top: 20px;
+  top: var(--ax-grid-margin);
 }
 
 
