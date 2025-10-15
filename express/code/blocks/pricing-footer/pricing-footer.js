@@ -4,9 +4,9 @@ function getMerchCardWidth(el) {
     if (sibling.classList?.contains('content')) {
       console.log(sibling.shadowRoot);
 
-      const cards = sibling.querySelectorAll('merch-card'); 
+      const cards = sibling.querySelectorAll('merch-card');
       const cardCount = cards.length;
- 
+
       if (cardCount > 0) {
         // Remove any existing card-count-* class before applying the new one.
         Array.from(el.classList)
@@ -43,7 +43,7 @@ function getMerchCardWidth(el) {
           targetWidth = firstCardWidth > 0 ? firstCardWidth : targetWidth;
         }
 
-        console.log(targetWidth, columnGap, totalWidth)
+        console.log(targetWidth, columnGap, totalWidth);
         if (targetWidth > 0) {
           el.style.maxWidth = `${targetWidth}px`;
         }
