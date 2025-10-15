@@ -68,8 +68,6 @@ describe('Pricing Footer', () => {
       observe() {
         this.callback([{ target: document.documentElement }]);
       }
-
-      disconnect() {}
     };
   });
 
