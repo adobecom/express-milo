@@ -16,7 +16,7 @@ Rutrum in dui sapien adipiscing ullamcorper volutpat viverra ut pretium. Quam ae
 Risus risus neque sollicitudin sapien. Neque egestas in quam a. Nec mauris consectetur ut nisi eget lorem massa vitae. Ultrices diam vel felis arcu diam. Sed quam vel vulputate in sem.`,
     labels: ['17.5pt thickness', '120lb weight', '324 GSM'],
     price: '+US$0.00',
-    imgSrc: 'https://rlv.zcache.com/svc/view?realview=113335724526596936&amp;style=3.5x2&amp;media=16ptcream&amp;cornerstyle=normal&amp;envelopes=none&amp;max_dim=50&amp;zattribution=none',
+    imgSrc: 'https://rlv.zcache.com/svc/view?realview=113335724526596936&style=3.5x2&media=18ptkraft&cornerstyle=normal&envelopes=none&max_dim=50&zattribution=none',
   },
 ];
 
@@ -51,8 +51,8 @@ function createDrawerFoot({ imgSrc, name, price }) {
   const selectButton = createTag('button', { class: 'select' }, 'Select'); // TODO: localize
   const infoContainer = createTag('div', { class: 'info-container' });
   const infoText = createTag('div', { class: 'info-text' });
-  infoText.append(createTag('div', { class: 'info-name' }), name);
-  infoText.append(createTag('div', { class: 'info-price' }), price);
+  infoText.append(createTag('div', { class: 'info-name' }, name));
+  infoText.append(createTag('div', { class: 'info-price' }, price));
   infoContainer.append(createTag('img', { src: imgSrc, alt: name }), infoText);
   drawerFoot.append(infoContainer, selectButton);
   return drawerFoot;
