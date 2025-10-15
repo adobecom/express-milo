@@ -410,17 +410,19 @@ export function hideQuickActionsOnDevices(userAgent) {
   const fqaMeta = document.createElement('meta');
   fqaMeta.setAttribute('content', 'on');
   const isMobile = document.body.dataset.device === 'mobile';
-  // safari won't work either mobile or desktop
   const isQualifiedBrowser = !/Safari/.test(userAgent) || /Chrome|CriOS|FxiOS|Edg|OPR|Opera|OPiOS|Vivaldi|YaBrowser|Avast|VivoBrowser|GSA/.test(userAgent);
   if (isMobile || !isQualifiedBrowser) {
     fqaMeta.setAttribute('name', 'fqa-off'); // legacy setup for mobile or desktop_safari
   } else {
     fqaMeta.setAttribute('name', 'fqa-on'); // legacy setup for desktop or non_safari
   }
-  // up-to-date setup that supports mobile frictionless
+  // latest setup that supports safari frictionless, enabled by metadata
+  // fqa-non-qualified: always removed. (before: safari)
+  // fqa-qualified-mobile: mobile only. (before: non-safari mobile)
+  // fqa-qualified-desktop: desktop only. (before: non-safari desktop)
   const audienceFqaMeta = document.createElement('meta');
   audienceFqaMeta.setAttribute('content', 'on');
-  if (isQualifiedBrowser) {
+  if (getMetadata('frictionless-safari') || isQualifiedBrowser) {
     audienceFqaMeta.setAttribute('name', `fqa-qualified-${isMobile ? 'mobile' : 'desktop'}`);
   } else {
     audienceFqaMeta.setAttribute('name', 'fqa-non-qualified');
@@ -854,4 +856,32 @@ export async function convertToInlineSVG(img) {
     window.lana?.log(`Error converting SVG: ${error}`);
     return img;
   }
+}
+
+/**
+ * Returns true if the provided value is effectively empty.
+ * Handles: null, undefined, empty strings, whitespace-only strings,
+ * and the string literal 'null'. If a DOM Node is provided, its
+ * textContent is evaluated.
+ */
+export function isEmptyValue(value) {
+  if (value === null || value === undefined) return true;
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return trimmed === '' || trimmed.toLowerCase() === 'null';
+  }
+  // If a DOM Node is provided, evaluate its textContent
+  if (typeof Node !== 'undefined' && value instanceof Node) {
+    return isEmptyValue(value.textContent);
+  }
+  // Arrays: empty means no content
+  if (Array.isArray(value)) return value.length === 0;
+  return false;
+}
+
+/**
+ * Returns true if the provided value has meaningful content.
+ */
+export function hasContent(value) {
+  return !isEmptyValue(value);
 }
