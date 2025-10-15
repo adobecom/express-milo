@@ -208,16 +208,19 @@ export async function extractSort(recipe) {
 export default async function init(el) {
   [{ createTag, getConfig }, { replaceKey }] = await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]);
   const [toolbar, recipeRow] = el.children;
+  const includesSearchBar = el.classList.contains('search-bar');
+
   const heading = toolbar.querySelector('h1,h2,h3');
   if (heading) {
     heading.classList.add('heading');
+    if (includesSearchBar) {
+      heading.classList.add('centered-heading');
+    }
     el.prepend(heading);
   }
   toolbar.classList.add('toolbar');
   const recipe = recipeRow.textContent.trim();
   recipeRow.remove();
-
-  const includesSearchBar = el.classList.contains('search-bar');
 
   try {
     // TODO: lazy load templates
