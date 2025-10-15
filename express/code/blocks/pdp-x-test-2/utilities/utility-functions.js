@@ -1,3 +1,5 @@
+import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
+
 export function extractProductId(block) {
   const productIdBlock = block.children[0].children[1].textContent;
   // FOR DEVELOPMENT PURPOSES ONLY, REMOVE IN PRODUCTION
@@ -15,7 +17,6 @@ export function formatDeliveryEstimateDateRange(minDate, maxDate) {
 }
 
 export function buildRealViewImageUrl(realviewParams, maxDim = 644) {
-  console.log('realviewParams', realviewParams);
   const params = new URLSearchParams();
   Object.entries(realviewParams).forEach(([key, value]) => {
     if (value !== null && value !== undefined) {
@@ -53,7 +54,6 @@ export function extractProductDescriptionsFromBlock(block) {
     for (let i = startIndex + 1; i < endIndex; i += 1) {
       const div = childDivs[i];
       const children = Array.from(div.children);
-
       if (children.length >= 2) {
         const title = children[0].textContent.trim();
         const description = children[1].textContent.trim();
@@ -90,11 +90,17 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
-function formatPriceAdjustment(priceAdjustment, short = false) {
-  const priceAdjustmentOperator = priceAdjustment >= 0 ? '+' : '-';
+export function formatPriceZazzle(price, differential = false, short = false) {
+  let priceDifferentialOperator;
+  price = parseFloat(price);
+  if (differential) {
+    priceDifferentialOperator = price >= 0 ? '+' : '-';
+  } else {
+    priceDifferentialOperator = '';
+  }
   const currencySymbol = short ? '$' : 'US$';
-  const priceAdjustmentFormatted = priceAdjustmentOperator + currencySymbol + priceAdjustment.toFixed(2);
-  return priceAdjustmentFormatted;
+  const priceFormatted = priceDifferentialOperator + currencySymbol + price.toFixed(2);
+  return priceFormatted;
 }
 
 export function formatStringSnakeCase(string) {
@@ -113,7 +119,7 @@ function convertAttributeToOptionsObject(attribute) {
       thumbnail: imageUrl,
       title: option.title,
       name: option.name,
-      priceAdjustment: formatPriceAdjustment(option.priceDifferential),
+      priceAdjustment: formatPriceZazzle(option.priceDifferential, true),
     });
   }
   return optionsArray;
@@ -130,7 +136,29 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-export function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
+async function addSideQuantityOptions(productDetails) {
+  const sideQuantityOptions = [];
+  // get renditions for product thumbnails
+  // check the product type, add different options for each product type
+  const productRenditions = await fetchAPIData(productDetails.product.id, {}, 'getproductrenditions');
+  if (productDetails.product.productType === 'zazzle_businesscard') {
+    sideQuantityOptions.push({
+      title: 'Double-sided',
+      name: 'double-sided',
+      thumbnail: productRenditions.realviewUrls['Front/Back'],
+      priceAdjustment: formatPriceZazzle('5.95', true),
+    });
+    sideQuantityOptions.push({
+      title: 'Single-sided',
+      name: 'single-sided',
+      thumbnail: productRenditions.realviewUrls.Front,
+      priceAdjustment: formatPriceZazzle('0', true),
+    });
+  }
+  return sideQuantityOptions;
+}
+
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
   const normalizedProductDetails = {
     id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
@@ -144,12 +172,16 @@ export function normalizeProductDetailObject(productDetails, productPrice, produ
     quantities: productDetails.product.quantities,
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
     averageRating: productReviews.reviews.stats.averageRating,
-    totaltReviews: productReviews.reviews.stats.totalReviews,
+    totalReviews: productReviews.reviews.stats.totalReviews,
   };
   for (const attribute of Object.values(productDetails.product.attributes)) {
     normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   normalizedProductDetails.quantities = quantitiesOptions;
+  const sideQuantityOptions = await addSideQuantityOptions(productDetails);
+  normalizedProductDetails.sideQuantityOptions = sideQuantityOptions;
+  console.log('normalizedProductDetails');
+  console.log(normalizedProductDetails);
   return normalizedProductDetails;
 }
