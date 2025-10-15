@@ -126,7 +126,6 @@ function initSearchFunction(block, searchBarWrapper) {
 
   const redirectSearch = async () => {
     const { 'search-destination': searchDestination } = blockConfig;
-    console.log('searchDestination', searchDestination);
 
     // If destination is authored, use simple redirect with query param
     if (searchDestination && searchDestination.trim() !== '') {
@@ -260,7 +259,7 @@ async function decorateSearchFunctions() {
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: blockConfig['search-placeholder'] || 'Search for over 50,000 templates',
+    placeholder: blockConfig['search-bar-text'] || 'Search for over 50,000 templates',
     enterKeyHint: blockConfig['search-enter-hint'] || 'Search',
   });
 
