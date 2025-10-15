@@ -449,6 +449,5 @@ export async function initProgressBar(replaceKey, getConfig) {
 export function isSafari() {
   const ua = navigator.userAgent;
   return /Safari/.test(ua)
-        && !/Chrome|Chromium|Edge|Opera/.test(ua)
         && /Version\//.test(ua);
 }
