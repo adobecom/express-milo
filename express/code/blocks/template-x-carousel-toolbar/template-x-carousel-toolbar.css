@@ -35,6 +35,11 @@
   text-align: center;
 }
 
+.template-x-carousel-toolbar .search-bar-gallery {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
 .template-x-carousel-toolbar .toolbar p {
   margin: 0;
   line-height: 1.3;

@@ -41,6 +41,10 @@ async function createFromScratch() {
 async function createTemplatesContainer(recipe, el, includesSearchBar = false) {
   const templatesContainer = createTag('div', { class: 'templates-container' });
 
+  if (includesSearchBar) {
+    templatesContainer.classList.add('search-bar-gallery');
+  }
+
   // Conditionally create from-scratch element
   const promises = [createTemplates(recipe)];
   if (!includesSearchBar) {
@@ -249,7 +253,13 @@ export default async function init(el) {
     }
     controlsContainer.append(galleryControl);
     toolbar.append(controlsContainer);
-    el.append(templatesContainer);
+
+    // Conditionally reorder elements for search bar variant
+    if (includesSearchBar) {
+      el.append(templatesContainer, toolbar);
+    } else {
+      el.append(templatesContainer);
+    }
   } catch (err) {
     window.lana?.log(`Error in template-x-carousel-toolbar: ${err}`);
     if (getConfig().env.name === 'prod') {
