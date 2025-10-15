@@ -241,9 +241,12 @@ export function createDefaultExportConfig() {
       id: 'downloadExportOption',
       // label: 'Download',
       action: { target: 'download' },
-      style: { uiType: 'button' },
+      style: {
+        uiType: 'button',
+        variant: isSafariBrowser ? 'accent' : 'secondary',
+      },
       buttonStyle: {
-        variant: isSafariBrowser ? 'primary' : 'secondary',
+        variant: isSafariBrowser ? 'accent' : 'secondary',
         treatment: 'fill',
         size: 'xl',
       },
