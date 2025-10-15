@@ -38,7 +38,7 @@ function createRatingsNumber(productDetails) {
 }
 
 function createRatingsAmount(productDetails) {
-  const ratingsAmountText = formatLargeNumberToK(productDetails.totaltReviews);
+  const ratingsAmountText = formatLargeNumberToK(productDetails.totalReviews);
   const ratingsAmountContainer = document.createElement('div');
   ratingsAmountContainer.className = 'pdpx-ratings-amount-container';
   const ratingsAmount = document.createElement('a');

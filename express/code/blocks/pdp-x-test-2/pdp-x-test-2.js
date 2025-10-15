@@ -45,7 +45,7 @@ export default async function decorate(block) {
     qty: 100,
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
-  const productDetailsFormatted = normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
+  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
   const productDescriptions = await formatProductDescriptions(block);
   console.log('productDetails');
   console.log(productDetails);
