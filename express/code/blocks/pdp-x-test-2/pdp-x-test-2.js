@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { fetchAPIData, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
 import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
-import createProductInfoHeadingSection, { createDeliveryEstimatePill } from './createComponents/createProductInfoHeadingSection.js';
+import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
@@ -14,8 +14,6 @@ async function createProductInfoContainer(productDetails, productDescriptions) {
 
   const productInfoHeadingSection = createProductInfoHeadingSection(productDetails);
   productInfoContainer.appendChild(productInfoHeadingSection);
-  const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);
-  productInfoContainer.appendChild(deliveryEstimatePill);
   const customizationInputs = await createCustomizationInputs(productDetails);
   productInfoContainer.appendChild(customizationInputs);
   const productDetailsSection = await createProductDetailsSection(productDescriptions);

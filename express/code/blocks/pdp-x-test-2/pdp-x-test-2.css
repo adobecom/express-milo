@@ -232,7 +232,7 @@ main .section .pdpx-global-container p {
 }
 .pdpx-product-images-container,
 .pdpx-product-info-section-wrapper {
-  width: 50%;
+  width: calc(50% - 12px);
 }
 
 .pdpx-product-info-container {

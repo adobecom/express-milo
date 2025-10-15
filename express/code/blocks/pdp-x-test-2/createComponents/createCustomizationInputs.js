@@ -5,7 +5,6 @@ let createTag;
 
 function formatProductOptionsToAPIParameters(formDataObject) {
   const parameters = {};
-  // https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductpricing?productId=256432838073857180&productOptions=style%3D3.5x2%26media%3D18ptkraft
   for (const [key, value] of Object.entries(formDataObject)) {
     if (key !== 'qty') {
       parameters[key] = value;
@@ -26,7 +25,7 @@ async function updateAllDynamicElements(productId) {
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
   const productPrice = await fetchAPIData(productId, parameters, 'getproductpricing');
   document.getElementById('pdpx-price-label').innerHTML = productPrice.unitPrice;
-  // const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
+  const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   // const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
 }
 
