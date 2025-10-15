@@ -40,5 +40,3 @@ test.describe('grid-marquee-hero test suite', () => {
     });
   });
 });
-
-
