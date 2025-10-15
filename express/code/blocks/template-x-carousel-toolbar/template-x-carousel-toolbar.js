@@ -38,21 +38,35 @@ async function createFromScratch() {
   return fromScratchContainer;
 }
 
-async function createTemplatesContainer(recipe, el) {
+async function createTemplatesContainer(recipe, el, includesSearchBar = false) {
   const templatesContainer = createTag('div', { class: 'templates-container' });
-  const [scratch, templates] = await Promise.all([createFromScratch(), createTemplates(recipe)]);
-  templatesContainer.append(scratch, ...templates);
+
+  // Conditionally create from-scratch element
+  const promises = [createTemplates(recipe)];
+  if (!includesSearchBar) {
+    promises.unshift(createFromScratch());
+  }
+
+  const results = await Promise.all(promises);
+  const scratch = includesSearchBar ? null : results[0];
+  const templates = includesSearchBar ? results[0] : results[1];
+
+  // Append elements conditionally
+  const galleryItems = scratch ? [scratch, ...templates] : templates;
+  templatesContainer.append(...galleryItems);
+
   const { control: initialControl } = await buildGallery(
-    [scratch, ...templates],
+    galleryItems,
     templatesContainer,
   );
   return {
     templatesContainer,
     updateTemplates: async (newRecipe) => {
       const newTemplates = await createTemplates(newRecipe);
-      templatesContainer.replaceChildren(scratch, ...newTemplates);
+      const newGalleryItems = scratch ? [scratch, ...newTemplates] : newTemplates;
+      templatesContainer.replaceChildren(...newGalleryItems);
       const { control: newControl } = await buildGallery(
-        [scratch, ...newTemplates],
+        newGalleryItems,
         templatesContainer,
       );
       const oldControl = el.querySelector('.gallery-control');
@@ -210,7 +224,10 @@ export default async function init(el) {
     const [
       { templatesContainer, updateTemplates, control: galleryControl },
       sortSetup,
-    ] = await Promise.all([createTemplatesContainer(recipe, el), extractSort(recipe)]);
+    ] = await Promise.all([
+      createTemplatesContainer(recipe, el, includesSearchBar),
+      extractSort(recipe),
+    ]);
     const { sortOptions, defaultIndex, sortPlaceholderText } = sortSetup;
 
     let dropdown;
