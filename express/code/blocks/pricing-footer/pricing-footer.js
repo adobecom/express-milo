@@ -21,7 +21,9 @@ function getMerchCardWidth(el) {
           return width + marginLeft + marginRight;
         };
 
-        const columnGap = 16;
+        // Include horizontal gutter between cards when summing widths.
+        // Prefer the computed column gap from CSS; fall back to 16px to align with grid defaults.
+        const columnGap = parseFloat(contentStyles.columnGap || contentStyles.gap || '16') || 16;
 
         const totalWidth = Array.from(cards).reduce((acc, card, index) => {
           let accumulatedWidth = acc + getCardOuterWidth(card);
@@ -64,17 +66,7 @@ export default function init(el) {
     .forEach((column) => {
       el.append(column);
     });
-
-  const wrapper = el.closest('.pricing-footer-wrapper');
-  let siblingBlock = wrapper?.previousElementSibling;
-  let pricingCardsBlock;
-
-  while (siblingBlock && !pricingCardsBlock) {
-    pricingCardsBlock = siblingBlock.querySelector('.pricing-cards-v2');
-    if (!pricingCardsBlock) {
-      siblingBlock = siblingBlock.previousElementSibling;
-    }
-  }
+  // Width is computed directly from the adjacent .content container.
 
   const runWidthCalculation = () => getMerchCardWidth(el);
 
