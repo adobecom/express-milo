@@ -6,6 +6,7 @@ import createProductInfoHeadingSection from './createComponents/createProductInf
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
+import { createDrawer, toggleDrawer } from './createComponents/createSideDrawer.js';
 
 let createTag;
 
@@ -52,4 +53,6 @@ export default async function decorate(block) {
   console.log(productDetails);
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions);
+
+  await toggleDrawer(block);
 }
