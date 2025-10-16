@@ -619,9 +619,13 @@ main h6 {
 
 main h1 {
   font-size: var(--heading-font-size-xxl);
-  /* CRITICAL: Force system fonts to prevent FOIT (Flash of Invisible Text) on LCP */
-  /* TypeKit's font-display: auto causes 3.5s render delay */
-  /* Using system fonts ensures text is ALWAYS visible immediately */
+}
+
+/* CRITICAL: Force system fonts on hero text to prevent FOIT on LCP */
+/* TypeKit's font-display: auto causes 3.7s render delay on hero <p> tag */
+/* Apply to both h1 AND hero paragraph (actual LCP element) */
+main .section:first-of-type h1,
+main .section:first-of-type p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
 }
 
