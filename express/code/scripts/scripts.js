@@ -10,6 +10,38 @@
  * governing permissions and limitations under the License.
  */
 
+// Force font-display: swap on TypeKit fonts to prevent FOIT on LCP
+// Watch for TypeKit stylesheet to load, then inject override immediately after
+(function forceTypekitSwap() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.tagName === 'LINK' && node.href && node.href.includes('typekit.net')) {
+          // TypeKit stylesheet detected, inject override immediately after it
+          const overrideStyle = document.createElement('style');
+          overrideStyle.textContent = `
+            @font-face {
+              font-family: adobe-clean;
+              font-display: swap !important;
+              font-weight: 100 900;
+              src: local(adobe-clean), local("Adobe Clean");
+            }
+            @font-face {
+              font-family: "Adobe Clean";
+              font-display: swap !important;
+              font-weight: 100 900;
+              src: local("Adobe Clean"), local(adobe-clean);
+            }
+          `;
+          node.parentNode.insertBefore(overrideStyle, node.nextSibling);
+          observer.disconnect();
+        }
+      });
+    });
+  });
+  observer.observe(document.head, { childList: true, subtree: true });
+}());
+
 import {
   setLibs,
   buildAutoBlocks,

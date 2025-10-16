@@ -6,6 +6,25 @@
   src: local('Trebuchet MS'), local('TrebuchetMS');
 }
 
+/* Force font-display: swap on adobe-clean to prevent FOIT on LCP */
+/* TypeKit loads adobe-clean with font-display: auto (causes FOIT) */
+/* This override forces swap behavior: show fallback immediately, then swap when font loads */
+@font-face {
+  font-family: adobe-clean;
+  font-display: swap;
+  font-weight: 100 900;
+  font-style: normal;
+  src: local(adobe-clean), local("Adobe Clean");
+}
+
+@font-face {
+  font-family: "Adobe Clean";
+  font-display: swap;
+  font-weight: 100 900;
+  font-style: normal;
+  src: local("Adobe Clean"), local(adobe-clean);
+}
+
 :root {
   --color-white: #fff;
   --color-light-gray: #E9E9E9;
@@ -600,6 +619,8 @@ main h6 {
 
 main h1 {
   font-size: var(--heading-font-size-xxl);
+  /* Ensure text is always visible, even before web fonts load */
+  text-rendering: optimizeSpeed;
 }
 
 main h2 {
