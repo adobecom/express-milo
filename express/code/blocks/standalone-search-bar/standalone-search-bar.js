@@ -5,23 +5,6 @@ import { trackSearch, generateSearchId } from '../../scripts/template-search-api
 let createTag; let getConfig;
 let replaceKeyArray; let blockConfig;
 
-// Search configuration constants
-const SEARCH_CONFIG = {
-  THROTTLE_DELAY: 300,
-  DEBOUNCE_DELAY: 500,
-  SUGGESTIONS_LIMIT: 7,
-};
-
-
-// CSS class constants
-const CSS_CLASSES = {
-  SEARCH_BAR_WRAPPER: 'search-bar-wrapper',
-  SEARCH_DROPDOWN: 'search-dropdown-container',
-  SUGGESTIONS_LIST: 'suggestions-list',
-  HIDDEN: 'hidden',
-  SEARCH_INPUT_WRAPPER: 'search-input-wrapper',
-};
-
 function cycleThroughSuggestions(block, targetIndex = 0) {
   const suggestions = block.querySelectorAll('.suggestions-list li');
   if (targetIndex >= suggestions.length || targetIndex < 0) return;

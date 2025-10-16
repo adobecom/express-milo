@@ -77,7 +77,6 @@
     margin: 0 0 var(--spacing-300) -8px;
 }
 
-.standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper li,
 .standalone-search-bar .search-dropdown-container .suggestions-container li {
     margin-bottom: var(--spacing-300);
 }
@@ -101,11 +100,31 @@
 }
 
 .standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper {
-    margin : 16px 0;
+    margin: 0;
+}
+
+.standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper li {
+    cursor: pointer;
+    margin: 0 var(--spacing-100) 0 0;
+}
+
+.standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper li a:focus-visible {
+    background: var(--color-gray-200);
+    outline: none;
+    border-radius: 8px;
+}
+
+.standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper li:hover {
+    background: transparent;
 }
 
 .standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper li a {
     color: var(--color-black);
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    margin: -var(--spacing-100);
+    padding: var(--spacing-100);
 }
 
 .standalone-search-bar .search-dropdown-container .free-plans-container .free-plan-widget {
