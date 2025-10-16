@@ -1,5 +1,3 @@
-import extractProductDescriptionsFromBlock from '../utilities/data-formatting.js';
-
 function formatUrlForEnvironment(url) {
   if (url.startsWith('/')) {
     return url;
@@ -10,12 +8,7 @@ function formatUrlForEnvironment(url) {
   return url;
 }
 
-export async function formatProductDescriptions(block) {
-  const productDescriptions = extractProductDescriptionsFromBlock(block);
-  return productDescriptions;
-}
-
-export async function fetchAPIData(productId, parameters, endpoint) {
+export default async function fetchAPIData(productId, parameters, endpoint) {
   let apiDataFetch;
   let parametersString;
   let url;
