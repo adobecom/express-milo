@@ -238,7 +238,7 @@ main .section .pdpx-global-container p {
 .pdpx-product-info-container {
   height: 70vh;
   overflow-y: scroll;
-  width: fit-content;
+  /*width: fit-content;*/
 }
 
 .pdpx-checkout-button {
@@ -357,6 +357,8 @@ main .section .pdpx-global-container p {
   margin-bottom: var(--figma-spacing-400);
 }
 .pdpx-standard-selector-label {
+  display: inline-block;
+  min-width: 104px;
   color: #505050;
   margin-right: var(--figma-spacing-600);
 }
