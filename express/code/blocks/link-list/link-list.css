@@ -324,3 +324,13 @@
 .section .link-list p.button-container.text-link a.text-link:hover {
   text-decoration: none;
 }
+
+/* Button styling for link-text variant - all buttons get #292929 background */
+.section .link-list.link-text p.button-container a:not(.text-link) {
+  background-color: #F8F8F8;
+  color: #292929;
+}
+
+.section .link-list.link-text p.button-container a:not(.text-link):hover {
+  background-color: #e0e0e0;
+}
