@@ -52,14 +52,9 @@ function cycleThroughSuggestions(block, targetIndex = 0) {
 
   if (targetIndex >= suggestions.length) return;
 
-  // Only make the target suggestion focusable and highlighted, keep others unfocusable
-  suggestions.forEach((suggestion, index) => {
-    suggestion.setAttribute('tabindex', index === targetIndex ? '0' : '-1');
-    if (index === targetIndex) {
-      suggestion.classList.add('keyboard-focused');
-    } else {
-      suggestion.classList.remove('keyboard-focused');
-    }
+  // Make all suggestions focusable when keyboard navigation starts
+  suggestions.forEach((suggestion) => {
+    suggestion.setAttribute('tabindex', '0');
   });
 
   if (suggestions.length > 0) suggestions[targetIndex].focus();
@@ -267,7 +262,7 @@ function createSuggestionsCallback(
         const valRegEx = new RegExp(searchBar.value, 'i');
         li.innerHTML = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
         li.addEventListener('click', async () => {
-          // Clear all keyboard highlighting on click interaction
+          // Clear all keyboard highlighting on click interaction  
           const allSuggestions = suggestionsList.querySelectorAll('li');
           allSuggestions.forEach((suggestion) => {
             suggestion.classList.remove('keyboard-focused');
@@ -307,7 +302,12 @@ function createSuggestionsCallback(
       });
     }
 
-    // Do not interfere with focus during typing - let the browser handle it naturally
+    // Ensure search input keeps focus after suggestions are populated
+    setTimeout(() => {
+      if (document.activeElement !== searchBar) {
+        searchBar.focus();
+      }
+    }, 0);
   };
 }
 
