@@ -5,6 +5,7 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
+import { optimizeExistingVideo } from '../../scripts/utils/video.js';
 import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 import {
   QA_CONFIGS,
@@ -269,6 +270,7 @@ export default async function decorate(block) {
   if (animation && animation.href.includes('.mp4')) {
     const video = transformLinkToAnimation(animation, false);
     video.addEventListener('ended', animationEnd);
+    optimizeExistingVideo(video);
   } else if (animationContainer.querySelector('picture')) {
     setTimeout(animationEnd, 3000);
   }

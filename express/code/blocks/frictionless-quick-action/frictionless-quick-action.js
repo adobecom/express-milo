@@ -3,6 +3,7 @@ import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '..
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
 import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
+import { optimizeExistingVideo } from '../../scripts/utils/video.js';
 import {
   QA_CONFIGS,
   EXPERIMENTAL_VARIANTS,
@@ -581,7 +582,9 @@ export default async function decorate(block) {
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });
 
   if (animation && animation.href.includes('.mp4')) {
-    animationContainer.append(transformLinkToAnimation(animation));
+    const video = transformLinkToAnimation(animation);
+    animationContainer.append(video);
+    optimizeExistingVideo(video);
   }
 
   const captionVideoDropzoneActionColumn = createTag('div', { class: 'caption-video-dropzone-action-column' });
