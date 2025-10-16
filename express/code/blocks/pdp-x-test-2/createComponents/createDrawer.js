@@ -16,14 +16,15 @@ Rutrum in dui sapien adipiscing ullamcorper volutpat viverra ut pretium. Quam ae
 Risus risus neque sollicitudin sapien. Neque egestas in quam a. Nec mauris consectetur ut nisi eget lorem massa vitae. Ultrices diam vel felis arcu diam. Sed quam vel vulputate in sem.`,
     labels: ['17.5pt thickness', '120lb weight', '324 GSM'],
     price: '+US$0.00',
-    imgSrc: 'https://rlv.zcache.com/svc/view?realview=113335724526596936&style=3.5x2&media=18ptkraft&cornerstyle=normal&envelopes=none&max_dim=50&zattribution=none',
+    imgSrc: './media_17cf7f6474fe12727dc188525b547cbce53115d4f.png?width=750&format=png&optimize=medium',
   },
 ];
 
-function createDrawerHead(drawerLabel) {
+function createDrawerHead(drawerLabel, toggle) {
   const drawerHead = createTag('div', { class: 'drawer-head' });
   const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black')); // TODO: analytics
-  drawerHead.append(createTag('div', { class: 'drawer-head-label'}, drawerLabel), closeButton);
+  closeButton.addEventListener('click', toggle);
+  drawerHead.append(createTag('div', { class: 'drawer-head-label' }, drawerLabel), closeButton);
   return drawerHead;
 }
 
@@ -58,31 +59,33 @@ function createDrawerFoot({ imgSrc, name, price }) {
   return drawerFoot;
 }
 
-export async function createDrawer({
+export default async function createDrawer({
   drawerLabel = 'Select paper type',
   data = mockData,
   selectedIndex = 0,
 }) {
   ({ createTag, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   // temporarily separating css to avoid code conflicts
-  await new Promise((resolve) => {
-    loadStyle(`${getConfig().codeRoot}/blocks/pdp-x-test-2/createComponents/side-drawer.css`, () => {
+  const styleLoaded = new Promise((resolve) => {
+    loadStyle(`${getConfig().codeRoot}/blocks/pdp-x-test-2/createComponents/drawer.css`, () => {
       resolve();
     });
   });
-  const curtain = createTag('div', { class: 'pdp-curtain' });
+  const curtain = createTag('div', { class: 'pdp-curtain hidden' });
   curtain.setAttribute('daa-ll', 'pdp-x-drawer-curtainClose');
-  const drawer = createTag('div', { class: 'drawer' });
+  const drawer = createTag('div', { class: 'drawer hidden' });
+  const toggle = () => {
+    document.body.classList.toggle('disable-scroll');
+    curtain.classList.toggle('hidden');
+    drawer.classList.toggle('hidden');
+    // drawer.setAttribute('aria-hidden', drawer.classList.contains('hidden'));
+  };
+  curtain.addEventListener('click', toggle);
   drawer.append(
-    createDrawerHead(drawerLabel),
+    createDrawerHead(drawerLabel, toggle),
     createDrawerBody(data[selectedIndex]),
     createDrawerFoot(data[selectedIndex]),
   );
-  return { curtain, drawer };
-}
-
-export async function toggleDrawer(block) {
-  const { curtain, drawer } = await createDrawer({});
-  block.querySelector('.pdpx-global-container')?.append(drawer);
-  document.body.append(curtain);
+  await styleLoaded;
+  return { curtain, drawer, toggle };
 }
