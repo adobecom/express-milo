@@ -9,7 +9,7 @@
 
 
 .grid-marquee .express-logo {
-  width: initial;
+  width: 98px; /* Explicit width to prevent CLS */
   height: 30px;
   padding: 1rem 0 1rem;
 }
@@ -60,6 +60,7 @@ main .section .grid-marquee h1 {
   top: 50%;
   object-fit: fill;
   width: 250%;
+  height: 600px; /* Explicit height to prevent CLS */
   transform: translate(-50%, -35%);
   max-height: 600px;
   max-width: 1200px;
@@ -297,6 +298,7 @@ main .section .grid-marquee h1 {
 }
 
 .grid-marquee .ratings img {
+  width: auto; /* Explicit width to prevent CLS */
   height: 35px;
   padding-left: 12px;
   margin: 0;
