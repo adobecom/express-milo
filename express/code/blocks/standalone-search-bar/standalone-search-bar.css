@@ -88,11 +88,16 @@
     padding: var(--spacing-100);
 }
 
-.standalone-search-bar .search-dropdown-container .suggestions-container li:hover,
-.standalone-search-bar .search-dropdown-container .suggestions-container li:focus-visible {
+.standalone-search-bar .search-dropdown-container .suggestions-container li:focus-visible,
+.standalone-search-bar .search-dropdown-container .suggestions-container li.keyboard-focused {
     background: var(--color-gray-200);
     outline: none;
     border-radius: 8px;
+}
+
+/* Remove hover highlighting to prevent conflicts with keyboard navigation */
+.standalone-search-bar .search-dropdown-container .suggestions-container li:hover {
+    background: transparent;
 }
 
 .standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper {
