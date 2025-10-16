@@ -48,7 +48,7 @@ async function createTemplatesContainer(recipe, el, includesSearchBar = false) {
   // Create custom properties for search bar variant
   const customProperties = includesSearchBar ? {
     customUrlConfig: {
-      baseUrl: 'https://new.express.adobe.com/tools/card-maker',
+      baseUrl: 'https://adobesparkpost.app.link/8JaoEy0DrSb',
       queryParams: 'source=seo-template',
     },
   } : null;

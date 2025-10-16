@@ -734,6 +734,12 @@ main .section.modular-search {
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.08), 0 1px 4px 0 rgba(0, 0, 0, 0.04), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
 }
 
+@media (max-width: 899px) {
+  main .section.modular-search {
+    padding: 0 32px 40px 32px;
+  }
+}
+
 /* Align link-list with template container when in modular-search */
 main .section.modular-search .link-list-wrapper,
 main .section.modular-search .link-list-wrapper:has(.link-list),
