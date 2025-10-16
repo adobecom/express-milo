@@ -752,7 +752,7 @@ function splitSections(area, selector) {
   });
 }
 
-async function formatDynamicCartLink(a) {
+export async function formatDynamicCartLink(a) {
   try {
     const pattern = /.*commerce.*adobe\.com.*/gm;
     if (!pattern.test(a.href)) return a;
