@@ -10,6 +10,13 @@ let createTag;
 const DEFAULT_VARIANT = 'default';
 const SMART_VARIANT = 'smart';
 
+// Breakpoint constants
+const BREAKPOINTS = {
+  MOBILE: 599,
+  TABLET: 899,
+  DESKTOP: 1200,
+};
+
 export function normalizeHeadings(block, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());
   block.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
@@ -123,7 +130,7 @@ function setupLinkTextVariant(block) {
     const carouselContainer = block.querySelector('.carousel-container');
 
     if (textLink && carouselContainer) {
-      if (window.innerWidth <= 599) {
+      if (window.innerWidth <= BREAKPOINTS.MOBILE) {
         // Move text link outside carousel on mobile
         if (textLink.parentNode === carouselContainer.querySelector('.carousel-platform')) {
           carouselContainer.insertAdjacentElement('afterend', textLink);
