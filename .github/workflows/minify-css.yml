@@ -1,4 +1,4 @@
-name: Minify CSS
+name: Minify CSS (Production Only)
 
 on:
   # Manual trigger
@@ -10,18 +10,18 @@ on:
         type: boolean
         default: false
   
-  # Auto-run on push to specific branches (optional)
+  # Auto-run ONLY on push to production branches
   push:
     branches:
-      - css-minification
       - stage
       - main
     paths:
       - 'express/code/blocks/**/*.css'
       - '!express/code/blocks/**/*.min.css'
+      - '!express/code/blocks/**/*.backup'
       - 'express/code/styles/**/*.css'
 
-  # Run on PRs to show savings (optional)
+  # Run on PRs to show savings (report only, no swap)
   pull_request:
     paths:
       - 'express/code/blocks/**/*.css'
