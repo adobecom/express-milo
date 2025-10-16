@@ -28,8 +28,10 @@ async function createGlobalContainer(block, productDetails, productDescriptions)
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   const productImagesContainer = await createProductImagesContainer(productDetails);
   const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions);
+  // const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
+  // globalContainer.appendChild(productInfoHeadingSection);
   block.appendChild(globalContainer);
 }
 
