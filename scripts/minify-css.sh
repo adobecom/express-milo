@@ -46,8 +46,8 @@ while IFS= read -r file; do
   else
     # Create minified version
     cat "$file" | \
-      # Remove C-style comments (/* ... */)
-      sed 's|/\*[^*]*\*\+\([^/*][^*]*\*\+\)*/||g' | \
+      # Remove C-style comments (/* ... */) - more aggressive
+      perl -pe 's/\/\*.*?\*\///gs' | \
       # Remove leading whitespace
       sed 's/^[[:space:]]*//' | \
       # Remove trailing whitespace
@@ -63,7 +63,13 @@ while IFS= read -r file; do
       # Remove spaces around > + ~
       sed 's/[[:space:]]*>[[:space:]]*/>/g' | \
       sed 's/[[:space:]]*+[[:space:]]*/+/g' | \
-      sed 's/[[:space:]]*~[[:space:]]*/~/g' \
+      sed 's/[[:space:]]*~[[:space:]]*/~/g' | \
+      # Join all lines into one (true minification)
+      tr '\n' ' ' | \
+      # Clean up multiple spaces
+      sed 's/  */ /g' | \
+      # Remove space after }
+      sed 's/} /}/g' \
       > "$minified"
     
     # Get minified size
