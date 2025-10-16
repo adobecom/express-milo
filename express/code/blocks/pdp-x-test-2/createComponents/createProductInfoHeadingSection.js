@@ -81,7 +81,7 @@ export function createDeliveryEstimatePill(productDetails) {
   const deliveryEstimatePillContainer = createTag('div', { class: 'pdpx-delivery-estimate-pill' });
   const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg' });
   const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
-  const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
+  const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date', id: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillIcon);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillText);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillDate);
