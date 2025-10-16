@@ -1,57 +1,45 @@
-import { formatDeliveryEstimateDateRange, formatLargeNumberToK } from '../utilities/utility-functions.js';
+import { getLibs } from '../../../scripts/utils.js';
+import { formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle } from '../utilities/utility-functions.js';
+
+let createTag;
 
 function createProductTitle(productDetails) {
-  const productTitleContainer = document.createElement('div');
-  productTitleContainer.className = 'pdpx-product-title-container';
-  const productTitle = document.createElement('h1');
-  productTitle.className = 'pdpx-product-title';
-  productTitle.textContent = productDetails.productTitle;
-  productTitleContainer.append(productTitle);
+  const productTitleContainer = createTag('div', { class: 'pdpx-product-title-container' });
+  const productTitle = createTag('h1', { class: 'pdpx-product-title' }, productDetails.productTitle);
+  productTitleContainer.appendChild(productTitle);
   return productTitleContainer;
 }
 
-// CREATE PRODUCT RATINGS LOCKUP
 function createStarRatings(productDetails) {
-  const starRatingsContainer = document.createElement('div');
-  starRatingsContainer.className = 'pdpx-star-ratings-container';
-  const starRatings = document.createElement('div');
-  starRatings.className = 'pdpx-star-ratings';
+  const starRatingsContainer = createTag('div', { class: 'pdpx-star-ratings-container' });
+  const starRatings = createTag('div', { class: 'pdpx-star-ratings' });
   for (let i = 0; i < 5; i += 1) {
-    const star = document.createElement('img');
-    star.src = '/express/code/icons/star-sharp.svg';
-    star.className = 'pdpx-product-info-header-ratings-star';
+    const star = createTag('img', { class: 'pdpx-product-info-header-ratings-star', src: '/express/code/icons/star-sharp.svg' });
     starRatings.appendChild(star);
   }
-  starRatingsContainer.append(starRatings);
+  starRatingsContainer.appendChild(starRatings);
   return starRatingsContainer;
 }
 
 function createRatingsNumber(productDetails) {
   const ratingsNumberText = Math.round(productDetails.averageRating * 10) / 10;
-  const ratingsNumberContainer = document.createElement('div');
-  ratingsNumberContainer.className = 'pdpx-ratings-number-container';
-  const ratingsNumber = document.createElement('p');
-  ratingsNumber.className = 'pdpx-ratings-number';
-  ratingsNumber.textContent = ratingsNumberText;
-  ratingsNumberContainer.append(ratingsNumber);
+  const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
+  const ratingsNumber = createTag('span', { class: 'pdpx-ratings-number' }, ratingsNumberText);
+  ratingsNumberContainer.appendChild(ratingsNumber);
   return ratingsNumberContainer;
 }
 
 function createRatingsAmount(productDetails) {
   const ratingsAmountText = formatLargeNumberToK(productDetails.totalReviews);
-  const ratingsAmountContainer = document.createElement('div');
+  const ratingsAmountContainer = createTag('div', { class: 'pdpx-ratings-amount-container' });
   ratingsAmountContainer.className = 'pdpx-ratings-amount-container';
-  const ratingsAmount = document.createElement('a');
-  ratingsAmount.href = '#';
-  ratingsAmount.textContent = ratingsAmountText;
-  ratingsAmount.className = 'pdpx-ratings-amount';
-  ratingsAmountContainer.append(ratingsAmount);
+  const ratingsAmount = createTag('a', { class: 'pdpx-ratings-amount', href: '#' }, ratingsAmountText);
+  ratingsAmountContainer.appendChild(ratingsAmount);
   return ratingsAmountContainer;
 }
 
 function createProductRatingsLockup(productDetails) {
-  const productRatingsLockupContainer = document.createElement('div');
-  productRatingsLockupContainer.className = 'pdpx-product-ratings-lockup-container';
+  const productRatingsLockupContainer = createTag('div', { class: 'pdpx-product-ratings-lockup-container' });
   const starRatings = createStarRatings(productDetails);
   const ratingsNumber = createRatingsNumber(productDetails);
   const ratingsAmount = createRatingsAmount(productDetails);
@@ -71,97 +59,45 @@ function createProductTitleAndRatingsContainer(productDetails) {
   return productTitleAndRatingsContainer;
 }
 
-// CREATE PRODUCT PRICE LOCKUP
-function createPrice(productDetails) {
-  const priceContainer = document.createElement('div');
-  priceContainer.className = 'pdpx-price-container';
-  const priceText = document.createElement('p');
-  priceText.className = 'pdpx-price-label';
-  priceText.id = 'pdpx-price-label';
-  priceText.textContent = `US$${productDetails.price}`;
-  priceContainer.appendChild(priceText);
-  return priceContainer;
-}
-
-function createComparePrice(productDetails) {
-  const comparePriceContainer = document.createElement('div');
-  comparePriceContainer.className = 'pdpx-compare-price-container';
-  const comparePriceLabel = document.createElement('p');
-  comparePriceLabel.className = 'pdpx-compare-price-label';
-  comparePriceLabel.id = 'pdpx-compare-price-label';
-  comparePriceLabel.textContent = 'US$25.95';
-  comparePriceContainer.appendChild(comparePriceLabel);
-  return comparePriceContainer;
-}
-
-function createComparePriceInfoContainer(productDetails) {
-  const comparePriceInfoContainer = document.createElement('div');
-  comparePriceInfoContainer.className = 'pdpx-price-info-row';
-  const comparePriceInfoLabel = document.createElement('span');
-  comparePriceInfoLabel.className = 'pdpx-compare-price-info-label';
-  comparePriceInfoLabel.textContent = 'Comp. value';
-  comparePriceInfoContainer.appendChild(comparePriceInfoLabel);
-  const comparePriceInfoIcon = document.createElement('img');
-  comparePriceInfoIcon.className = 'pdpx-compare-price-info-icon';
-  comparePriceInfoIcon.src = '/express/code/icons/info.svg';
-  comparePriceInfoContainer.appendChild(comparePriceInfoIcon);
-  return comparePriceInfoContainer;
-}
-
-function createSavingsText(productDetails) {
-  const savingsText = document.createElement('span');
-  savingsText.className = 'pdpx-savings-text';
-  savingsText.id = 'pdpx-savings-text';
-  savingsText.textContent = 'You save 25%';
-  return savingsText;
-}
-
-function createPriceInfoContainer(productDetails) {
-  const priceInfoContainer = document.createElement('div');
-  priceInfoContainer.className = 'pdpx-price-info-container';
-  const priceInfoRow = document.createElement('div');
-  priceInfoRow.className = 'pdpx-price-info-row';
-  const priceContainer = createPrice(productDetails);
+function createPriceLockup(productDetails) {
+  const priceInfoContainer = createTag('div', { class: 'pdpx-price-info-container' });
+  const priceInfoRow = createTag('div', { class: 'pdpx-price-info-row' });
+  const priceContainer = createTag('span', { class: 'pdpx-price-label', id: 'pdpx-price-label' }, formatPriceZazzle(productDetails.price));
   priceInfoRow.appendChild(priceContainer);
-  const comparePrice = createComparePrice(productDetails);
+  const comparePrice = createTag('span', { class: 'pdpx-compare-price-label', id: 'pdpx-compare-price-label' }, formatPriceZazzle(productDetails.strikethroughPrice));
   priceInfoRow.appendChild(comparePrice);
-  const comparePriceInfoContainer = createComparePriceInfoContainer(productDetails);
-  priceInfoRow.appendChild(comparePriceInfoContainer);
+  const comparePriceInfoLabel = createTag('span', { class: 'pdpx-compare-price-info-label' }, 'Comp. value');
+  const comparePriceInfoIcon = createTag('img', { class: 'pdpx-compare-price-info-icon', src: '/express/code/icons/info.svg' });
+  priceInfoRow.appendChild(comparePriceInfoLabel);
+  priceInfoRow.appendChild(comparePriceInfoIcon);
   priceInfoContainer.appendChild(priceInfoRow);
-  const savingsText = createSavingsText(productDetails);
+  const savingsText = createTag('span', { class: 'pdpx-savings-text', id: 'pdpx-savings-text' }, productDetails.discountString);
   priceInfoContainer.appendChild(savingsText);
   return priceInfoContainer;
 }
 
-// CREATE DELIVERY ESTIMATE PILL
 export function createDeliveryEstimatePill(productDetails) {
   const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
-  const deliveryEstimatePillContainer = document.createElement('div');
-  deliveryEstimatePillContainer.className = 'pdpx-delivery-estimate-pill';
-  const deliveryEstimatePillIcon = document.createElement('img');
-  deliveryEstimatePillIcon.src = '/express/code/icons/delivery-truck.svg';
-  const deliveryEstimatePillText = document.createElement('span');
-  deliveryEstimatePillText.innerHTML = `${productDetails.deliveryEstimateStringText} `;
-  const deliveryEstimatePillDate = document.createElement('span');
-  deliveryEstimatePillDate.innerHTML = deliveryEstimateDateRange;
+  const deliveryEstimatePillContainer = createTag('div', { class: 'pdpx-delivery-estimate-pill' });
+  const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg' });
+  const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
+  const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillIcon);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillText);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillDate);
   return deliveryEstimatePillContainer;
 }
 
-export default function createProductInfoHeadingSection(productDetails) {
-  const productInfoHeadingSectionWrapper = document.createElement('div');
-  productInfoHeadingSectionWrapper.className = 'pdpx-product-info-heading-section-wrapper';
-  const productInfoHeadingSectionContainer = document.createElement('div');
-  productInfoHeadingSectionContainer.className = 'pdpx-product-info-heading-section-container';
+export default async function createProductInfoHeadingSection(productDetails) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  const productInfoHeadingSectionWrapper = createTag('div', { class: 'pdpx-product-info-heading-section-wrapper' });
+  const productInfoHeadingSectionContainer = createTag('div', { class: 'pdpx-product-info-heading-section-container' });
   const productTitleAndRatingsContainer = createProductTitleAndRatingsContainer(productDetails);
   productInfoHeadingSectionContainer.append(productTitleAndRatingsContainer);
-  const priceInfoContainer = createPriceInfoContainer(productDetails);
+  const priceInfoContainer = createPriceLockup(productDetails);
   productInfoHeadingSectionContainer.append(priceInfoContainer);
   productInfoHeadingSectionWrapper.appendChild(productInfoHeadingSectionContainer);
   const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);
   productInfoHeadingSectionWrapper.appendChild(deliveryEstimatePill);
-
   return productInfoHeadingSectionWrapper;
 }
