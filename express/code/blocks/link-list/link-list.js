@@ -150,22 +150,6 @@ function setupLinkTextVariant(block) {
   // Initial layout and resize handling
   handleMobileLayout();
   window.addEventListener('resize', debouncedResize);
-
-  // Cleanup resize listener when block is removed from DOM
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      mutation.removedNodes.forEach((node) => {
-        if (node === block || (node.nodeType === Node.ELEMENT_NODE && node.contains(block))) {
-          window.removeEventListener('resize', debouncedResize);
-          observer.disconnect();
-        }
-      });
-    });
-  });
-
-  if (block.parentNode) {
-    observer.observe(block.parentNode, { childList: true, subtree: true });
-  }
 }
 
 export default async function decorate(block) {
