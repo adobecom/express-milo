@@ -40,11 +40,17 @@ Performance Score: 99-100 (expected)
 
 ## 🔧 Technical Implementation
 
-### File Changed
-**`express/code/scripts/scripts.js`** (Lines 13-76)
+### Files Changed
+1. **`head.html`** (Lines 3-7) - Inline interception script
+2. **`express/code/scripts/scripts.js`** - Removed duplicate code, added comment
 
-### Approach: DOM API Interception
-We intercept `document.createElement()` to catch when Milo's Global Navigation tries to inject the TypeKit stylesheet, then defer it until after LCP.
+### Approach: Inline DOM API Interception
+We intercept `document.createElement()` **inline in head.html** (before any scripts load) to catch when Milo's Global Navigation tries to inject the TypeKit stylesheet, then defer it until after LCP.
+
+**Critical:** Must run inline in `<head>` because:
+- Milo loads before `scripts.js` (module)
+- By the time `scripts.js` runs, TypeKit is already injected
+- Inline script runs **synchronously before** any other scripts
 
 ### Code Overview
 ```javascript
@@ -209,6 +215,50 @@ lighthouse https://main--express-milo--adobecom.aem.live/express/feature/image/r
 - Consistent LCP improvement
 - No broken layouts
 - Smooth font swaps
+
+---
+
+## 🎓 Implementation Evolution
+
+### Attempt 1: scripts.js Interception (Failed ❌)
+**Commit:** `129e38b1`  
+**Issue:** Code ran too late - Milo had already injected TypeKit  
+**Result:** LCP 2.7s, Render Delay 2,060ms (77% of LCP) - No improvement!  
+
+**Why it failed:**
+```
+Load Sequence:
+1. HTML loads
+2. Milo libs load (/libs/...)
+3. Milo Global Nav injects TypeKit  ← ALREADY HAPPENED
+4. scripts.js loads (type="module")
+5. Our interception runs              ← TOO LATE!
+```
+
+**Lighthouse Results:**
+- Performance: 91 (-2 from baseline!)
+- LCP: 2.7s (only -0.3s improvement)
+- Speed Index: 5.4s (+3.4s worse! Catastrophic!)
+- Render Delay: 2,060ms (still blocking)
+
+---
+
+### Attempt 2: head.html Inline Script (Current ✅)
+**Commit:** `a759a4f4`  
+**Solution:** Move interception to inline script in `head.html`  
+**Why:** Runs **before** Milo loads, catches TypeKit injection  
+
+**Load Sequence:**
+```
+1. HTML loads
+2. Inline script runs (head.html)     ← INTERCEPTS HERE
+3. Milo libs load
+4. Milo Global Nav tries TypeKit      ← CAUGHT!
+5. Our code defers it to Phase L      ← SUCCESS!
+6. scripts.js loads
+```
+
+**Status:** Pushed to test, awaiting Lighthouse results...
 
 ---
 
