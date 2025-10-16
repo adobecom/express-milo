@@ -11,7 +11,7 @@ let createTag;
 async function createProductInfoContainer(productDetails, productDescriptions) {
   const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper' });
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
-  const productInfoHeadingSection = createProductInfoHeadingSection(productDetails);
+  const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   productInfoContainer.appendChild(productInfoHeadingSection);
   const customizationInputs = await createCustomizationInputs(productDetails);
   productInfoContainer.appendChild(customizationInputs);
