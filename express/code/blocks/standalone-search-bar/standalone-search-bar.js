@@ -41,15 +41,19 @@ function cycleThroughSuggestions(block, targetIndex = 0) {
 
   // If trying to go before first suggestion, return to search input
   if (targetIndex < 0) {
+    // Reset all suggestions to be unfocusable
+    suggestions.forEach((suggestion) => {
+      suggestion.setAttribute('tabindex', '-1');
+    });
     searchBar.focus();
     return;
   }
 
   if (targetIndex >= suggestions.length) return;
 
-  // Make all suggestions focusable when keyboard navigation starts
-  suggestions.forEach((suggestion) => {
-    suggestion.setAttribute('tabindex', '0');
+  // Only make the target suggestion focusable, keep others unfocusable
+  suggestions.forEach((suggestion, index) => {
+    suggestion.setAttribute('tabindex', index === targetIndex ? '0' : '-1');
   });
 
   if (suggestions.length > 0) suggestions[targetIndex].focus();
@@ -86,17 +90,10 @@ function buildSearchConfig(block) {
   return searchConfig;
 }
 
-function initSearchFunction(block, searchBarWrapper) {
-  const searchDropdown = searchBarWrapper.querySelector(`.${CSS_CLASSES.SEARCH_DROPDOWN}`);
-  const searchForm = searchBarWrapper.querySelector('.search-form');
-  const searchBar = searchBarWrapper.querySelector('input.search-bar');
-  const clearBtn = searchBarWrapper.querySelector('.icon-search-clear');
-  const trendsContainer = searchBarWrapper.querySelector('.trends-container');
-  const suggestionsContainer = searchBarWrapper.querySelector('.suggestions-container');
-  const suggestionsList = searchBarWrapper.querySelector(`.${CSS_CLASSES.SUGGESTIONS_LIST}`);
-
-  clearBtn.style.display = 'none';
-
+/**
+ * Sets up sticky behavior for search bar using IntersectionObserver
+ */
+function setupStickyBehavior(searchBarWrapper) {
   const searchBarWatcher = new IntersectionObserver((entries) => {
     if (!entries[0].isIntersecting) {
       BlockMediator.set('stickySearchBar', {
@@ -112,7 +109,39 @@ function initSearchFunction(block, searchBarWrapper) {
   }, { rootMargin: '0px', threshold: 1 });
 
   searchBarWatcher.observe(searchBarWrapper);
+}
 
+/**
+ * Sets up keyboard navigation for search dropdown
+ */
+function setupKeyboardNavigation(block, searchBar, searchDropdown) {
+  searchBar.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.keyCode === KEY_CODES.ARROW_DOWN) {
+      e.preventDefault();
+      cycleThroughSuggestions(block);
+    } else if (e.key === 'ArrowUp' || e.keyCode === KEY_CODES.ARROW_UP) {
+      e.preventDefault();
+      const suggestions = block.querySelectorAll('.suggestions-list li');
+      if (suggestions.length > 0) {
+        cycleThroughSuggestions(block, suggestions.length - 1);
+      }
+    } else if (e.key === 'Escape' || e.keyCode === KEY_CODES.ESCAPE) {
+      searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
+      searchBar.blur();
+    }
+  });
+}
+
+/**
+ * Sets up basic search event listeners (click, keyup)
+ */
+function setupSearchEventListeners(
+  searchBar,
+  searchDropdown,
+  clearBtn,
+  trendsContainer,
+  suggestionsContainer,
+) {
   searchBar.addEventListener('click', (e) => {
     e.stopPropagation();
     searchBar.scrollIntoView({ behavior: 'smooth' });
@@ -129,31 +158,30 @@ function initSearchFunction(block, searchBarWrapper) {
       trendsContainer.classList.remove(CSS_CLASSES.HIDDEN);
       suggestionsContainer.classList.add(CSS_CLASSES.HIDDEN);
     }
-  }, { passive: true });
 
-  searchBar.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown' || e.keyCode === KEY_CODES.ARROW_DOWN) {
-      e.preventDefault();
-      cycleThroughSuggestions(block);
-    } else if (e.key === 'ArrowUp' || e.keyCode === KEY_CODES.ARROW_UP) {
-      e.preventDefault();
-      const suggestions = block.querySelectorAll('.suggestions-list li');
-      if (suggestions.length > 0) {
-        cycleThroughSuggestions(block, suggestions.length - 1);
-      }
-    } else if (e.key === 'Escape' || e.keyCode === KEY_CODES.ESCAPE) {
-      searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
-      searchBar.blur();
+    // Ensure focus stays on search input during typing
+    if (document.activeElement !== searchBar) {
+      searchBar.focus();
     }
-  });
+  }, { passive: true });
+}
 
+/**
+ * Sets up document click handler to close dropdown when clicking outside
+ */
+function setupDocumentClickHandler(searchBarWrapper, searchDropdown) {
   document.addEventListener('click', (e) => {
     const { target } = e;
     if (target !== searchBarWrapper && !searchBarWrapper.contains(target)) {
       searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
     }
   }, { passive: true });
+}
 
+/**
+ * Sets up search submission and redirect handlers
+ */
+function setupSearchHandlers(block, searchBar) {
   const redirectSearch = async () => {
     const { 'search-destination': searchDestination } = blockConfig;
 
@@ -179,19 +207,37 @@ function initSearchFunction(block, searchBarWrapper) {
     await redirectSearch();
   };
 
-  async function handleSubmitInteraction(item) {
+  const handleSubmitInteraction = async (item) => {
     if (item.query !== searchBar.value) {
       searchBar.value = item.query;
       searchBar.dispatchEvent(new Event('input'));
     }
     await onSearchSubmit();
-  }
+  };
 
+  return { redirectSearch, onSearchSubmit, handleSubmitInteraction };
+}
+
+/**
+ * Sets up form submission handler
+ */
+function setupFormSubmission(searchForm, onSearchSubmit) {
   searchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     await onSearchSubmit();
   });
+}
 
+/**
+ * Sets up clear button handler
+ */
+function setupClearButton(
+  clearBtn,
+  searchBar,
+  suggestionsList,
+  trendsContainer,
+  suggestionsContainer,
+) {
   clearBtn.addEventListener('click', () => {
     searchBar.value = '';
     suggestionsList.innerHTML = '';
@@ -199,8 +245,19 @@ function initSearchFunction(block, searchBarWrapper) {
     suggestionsContainer.classList.add(CSS_CLASSES.HIDDEN);
     clearBtn.style.display = 'none';
   }, { passive: true });
+}
 
-  const suggestionsListUIUpdateCB = (suggestions) => {
+/**
+ * Creates the suggestions callback for autocomplete
+ */
+function createSuggestionsCallback(
+  block,
+  searchBar,
+  searchDropdown,
+  suggestionsList,
+  handleSubmitInteraction,
+) {
+  return (suggestions) => {
     suggestionsList.innerHTML = '';
     const searchBarVal = searchBar.value.toLowerCase();
     if (suggestions && !(suggestions.length <= 1 && suggestions[0]?.query === searchBarVal)) {
@@ -245,13 +302,20 @@ function initSearchFunction(block, searchBarWrapper) {
     }
 
     // Ensure search input keeps focus after suggestions are populated
-    setTimeout(() => {
-      if (document.activeElement !== searchBar) {
+    // Use requestAnimationFrame for better timing than setTimeout
+    requestAnimationFrame(() => {
+      if (document.activeElement !== searchBar
+        && !searchDropdown.contains(document.activeElement)) {
         searchBar.focus();
       }
-    }, 0);
+    });
   };
+}
 
+/**
+ * Sets up autocomplete functionality
+ */
+function setupAutocomplete(searchBar, suggestionsListUIUpdateCB) {
   import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
     const { inputHandler } = useInputAutocomplete(
       suggestionsListUIUpdateCB,
@@ -264,6 +328,50 @@ function initSearchFunction(block, searchBarWrapper) {
     );
     searchBar.addEventListener('input', inputHandler);
   });
+}
+
+function initSearchFunction(block, searchBarWrapper) {
+  const searchDropdown = searchBarWrapper.querySelector(`.${CSS_CLASSES.SEARCH_DROPDOWN}`);
+  const searchForm = searchBarWrapper.querySelector('.search-form');
+  const searchBar = searchBarWrapper.querySelector('input.search-bar');
+  const clearBtn = searchBarWrapper.querySelector('.icon-search-clear');
+  const trendsContainer = searchBarWrapper.querySelector('.trends-container');
+  const suggestionsContainer = searchBarWrapper.querySelector('.suggestions-container');
+  const suggestionsList = searchBarWrapper.querySelector(`.${CSS_CLASSES.SUGGESTIONS_LIST}`);
+
+  clearBtn.style.display = 'none';
+
+  setupStickyBehavior(searchBarWrapper);
+  setupKeyboardNavigation(block, searchBar, searchDropdown);
+
+  setupSearchEventListeners(
+    searchBar,
+    searchDropdown,
+    clearBtn,
+    trendsContainer,
+    suggestionsContainer,
+  );
+  setupDocumentClickHandler(searchBarWrapper, searchDropdown);
+
+  const { onSearchSubmit, handleSubmitInteraction } = setupSearchHandlers(block, searchBar);
+  setupFormSubmission(searchForm, onSearchSubmit);
+  setupClearButton(
+    clearBtn,
+    searchBar,
+    suggestionsList,
+    trendsContainer,
+    suggestionsContainer,
+  );
+
+  const suggestionsListUIUpdateCB = createSuggestionsCallback(
+    block,
+    searchBar,
+    searchDropdown,
+    suggestionsList,
+    handleSubmitInteraction,
+  );
+
+  setupAutocomplete(searchBar, suggestionsListUIUpdateCB);
 }
 
 async function decorateSearchFunctions(block) {
