@@ -22,3 +22,4 @@ actionlint
 
 # CSS minification backup files (use ./scripts/restore-original-css.sh)
 **/*.css.backup
+**/*.min.css
