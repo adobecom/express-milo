@@ -1,18 +1,15 @@
 import { expect, test } from '@playwright/test';
-import WebUtil from '../../libs/webutil.cjs';
 import { runAccessibilityTest } from '../../libs/accessibility.cjs';
 import { features } from './pricing-footer.spec.cjs';
 import PricingFooter from './pricing-footer.page.cjs';
 
 let pricingFooter;
-let webUtil;
 
 const miloLibs = process.env.MILO_LIBS || '';
 
 test.describe('Express pricing-footer block test suite', () => {
   test.beforeEach(async ({ page }) => {
     pricingFooter = new PricingFooter(page);
-    webUtil = new WebUtil(page);
   });
 
   test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
