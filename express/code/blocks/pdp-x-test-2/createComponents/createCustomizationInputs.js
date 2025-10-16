@@ -1,6 +1,6 @@
 import { getLibs } from '../../../scripts/utils.js';
 import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle } from '../utilities/utility-functions.js';
+import { formatPriceZazzle, formatStringSnakeCase } from '../utilities/utility-functions.js';
 
 let createTag;
 
@@ -19,18 +19,41 @@ function formatProductOptionsToAPIParameters(formDataObject) {
   return finalParameters;
 }
 
+function calculateAdjustedPrices(productPriceAPIResponse) {
+  const quantity = productPriceAPIResponse.discountProductItems[0].applyToQuantity;
+  const originalPrice = productPriceAPIResponse.discountProductItems[0].price;
+  const { priceAdjusted } = productPriceAPIResponse.discountProductItems[0];
+  const productPrice = priceAdjusted * quantity;
+  const strikethroughPrice = originalPrice * quantity;
+  return { productPrice, strikethroughPrice };
+}
+
 async function updateAllDynamicElements(productId) {
   const form = document.querySelector('#pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
-  const productPrice = await fetchAPIData(productId, parameters, 'getproductpricing');
-  document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice.unitPrice);
+  const productPriceAPIResponse = await fetchAPIData(productId, parameters, 'getproductpricing');
+  if (productPriceAPIResponse.discountProductItems.length > 0) {
+    const { discountString } = productPriceAPIResponse.discountProductItems[0];
+    const { productPrice, strikethroughPrice } = calculateAdjustedPrices(productPriceAPIResponse);
+    document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(strikethroughPrice);
+    document.getElementById('pdpx-savings-text').innerHTML = discountString;
+    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
+  } else {
+    const productPrice = productPriceAPIResponse.unitPrice;
+    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
+  }
   const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
-  // const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
+  const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
+  document.getElementById('pdpx-product-hero-image').src = renditions.realviewUrls.Front;
+  const carouselImages = document.getElementsByClassName('pdpx-image-thumbnail-carousel-item-image');
+  for (let i = 0; i < carouselImages.length; i += 1) {
+    carouselImages[i].src = renditions.realviewUrls[carouselImages[i].dataset.imageType];
+  }
 }
 
-function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName) {
+function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productId) {
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
   const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label' }, labelText);
   standardSelectorContainer.appendChild(standardSelectorLabel);
@@ -40,6 +63,9 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
     const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
     standardSelectorInput.appendChild(standardOption);
   }
+  standardSelectorInput.addEventListener('change', (element) => {
+    updateAllDynamicElements(productId);
+  });
   standardSelectorContainer.appendChild(standardSelectorInput);
   return standardSelectorContainer;
 }
@@ -135,7 +161,7 @@ function createBusinessCardInputs(container, productDetails) {
   const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id);
   const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id);
   const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'style', productDetails.id);
-  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty');
+  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id);
   // container.appendChild(sideQuantitySelectorContainer);
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
@@ -144,8 +170,8 @@ function createBusinessCardInputs(container, productDetails) {
 }
 
 function createTShirtInputs(container, productDetails) {
-  const styleSelectorContainer = createPillOptionsSelector(productDetails.style, 'T-Shirt', 'style');
-  const quantitySelectorContainer = createStandardSelector(productDetails, 'Quantity', 'quantity');
+  const styleSelectorContainer = createPillOptionsSelector(productDetails.style, 'T-Shirt', 'style', productDetails.id);
+  const quantitySelectorContainer = createStandardSelector(productDetails, 'Quantity', 'quantity', productDetails.id);
   container.appendChild(styleSelectorContainer);
   container.appendChild(quantitySelectorContainer);
 }

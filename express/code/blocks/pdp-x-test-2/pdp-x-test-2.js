@@ -11,7 +11,6 @@ let createTag;
 async function createProductInfoContainer(productDetails, productDescriptions) {
   const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper' });
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
-
   const productInfoHeadingSection = createProductInfoHeadingSection(productDetails);
   productInfoContainer.appendChild(productInfoHeadingSection);
   const customizationInputs = await createCustomizationInputs(productDetails);
@@ -36,13 +35,12 @@ async function createGlobalContainer(block, productDetails, productDescriptions)
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const productId = extractProductId(block);
-  // const productDetails = await fetchProductDetails(productId);
   const productDetails = await fetchAPIData(productId, null, 'getproduct');
   const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
   const productReviews = await fetchAPIData(productId, null, 'getreviews');
   const sampleShippingParameters = {
     zip: '94065',
-    qty: 100,
+    qty: 1,
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
   const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);

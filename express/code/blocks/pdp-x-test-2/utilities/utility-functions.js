@@ -104,7 +104,7 @@ export function formatPriceZazzle(price, differential = false, short = false) {
 }
 
 export function formatStringSnakeCase(string) {
-  const normalizedString = string.replace(/[^a-zA-Z0-9\s]/g, '');
+  const normalizedString = string.replace(/[^a-zA-Z0-9\s]/g, '_');
   const formattedString = normalizedString.trim().toLowerCase().replace(/ /g, '_');
   return formattedString;
 }
