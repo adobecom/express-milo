@@ -1,12 +1,15 @@
 export default class PricingFooter {
   constructor(page) {
     this.page = page;
-    this.wrapper = page.locator('.pricing-footer-wrapper');
-    this.block = this.wrapper.locator('.pricing-footer');
+    this.section = this.page
+      .locator('.section:not([hidden])')
+      .filter({ has: this.page.locator('.pricing-footer') })
+      .first();
+    this.block = this.section.locator('.pricing-footer').first();
     this.columns = this.block.locator(':scope > div');
-    this.section = this.wrapper.locator('xpath=ancestor::div[contains(@class,"section")]').first();
-    this.merchCards = this.wrapper.locator('.content merch-card');
-    this.globalFooter = page.locator('.global-footer');
+    this.cardsContainer = this.block.locator('xpath=preceding-sibling::*[contains(@class,"content")][1]');
+    this.merchCards = this.cardsContainer.locator('merch-card');
+    this.globalFooter = this.page.locator('.global-footer');
   }
 
   async gotoURL(url) {
@@ -16,7 +19,7 @@ export default class PricingFooter {
   }
 
   async scrollToBlock() {
-    await this.block.first().waitFor({ state: 'visible', timeout: 15000 });
+    await this.page.waitForTimeout(5000);
     await this.block.scrollIntoViewIfNeeded();
   }
 
@@ -34,6 +37,8 @@ export default class PricingFooter {
   }
 
   async getMerchCardCount() {
+    const containerCount = await this.cardsContainer.count();
+    if (containerCount === 0) return 0;
     return this.merchCards.count();
   }
 
