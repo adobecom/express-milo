@@ -17,7 +17,7 @@
 
 main .section .pricing-footer p {
   margin: 0;
-  color: var(--Content-Neutral-default, #222);
+  color: var(--color-gray-900);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
