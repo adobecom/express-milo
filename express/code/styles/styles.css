@@ -726,17 +726,19 @@ main .section.secondary {
 
 /* section containing standalone search bar */
 main .section.modular-search {
-  margin: 0 40px 80px 40px; 
-  padding: 40px 32px;
+  margin: 0 var(--spacing-600) var(--spacing-900) var(--spacing-600); 
+  padding: var(--spacing-600) var(--spacing-500);
   border-radius: 16px;
-  border: 2px solid #FFF;
-  background: #F8F8F8;
+  border: 2px solid var(--color-white);
+  background: var(--color-gray-100);
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.08), 0 1px 4px 0 rgba(0, 0, 0, 0.04), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
 }
 
+
+
 @media (max-width: 899px) {
   main .section.modular-search {
-    padding: 0 32px 40px 32px;
+    padding: 0 var(--spacing-500) var(--spacing-600) var(--spacing-500);
   }
 }
 
