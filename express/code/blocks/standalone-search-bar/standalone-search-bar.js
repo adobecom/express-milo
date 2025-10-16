@@ -12,13 +12,7 @@ const SEARCH_CONFIG = {
   SUGGESTIONS_LIMIT: 7,
 };
 
-// Key codes for keyboard navigation
-const KEY_CODES = {
-  ARROW_DOWN: 40,
-  ARROW_UP: 38,
-  ESCAPE: 27,
-  ENTER: 13,
-};
+// Using simple key codes like working.js
 
 // Default text values
 const DEFAULT_TEXT = {
@@ -36,27 +30,8 @@ const CSS_CLASSES = {
 };
 
 function cycleThroughSuggestions(block, targetIndex = 0) {
-  const suggestions = block.querySelectorAll(`.${CSS_CLASSES.SUGGESTIONS_LIST} li`);
-  const searchBar = block.querySelector('input.search-bar');
-
-  // If trying to go before first suggestion, return to search input
-  if (targetIndex < 0) {
-    // Reset all suggestions to be unfocusable and remove keyboard focus styling
-    suggestions.forEach((suggestion) => {
-      suggestion.setAttribute('tabindex', '-1');
-      suggestion.classList.remove('keyboard-focused');
-    });
-    searchBar.focus();
-    return;
-  }
-
-  if (targetIndex >= suggestions.length) return;
-
-  // Make all suggestions focusable when keyboard navigation starts
-  suggestions.forEach((suggestion) => {
-    suggestion.setAttribute('tabindex', '0');
-  });
-
+  const suggestions = block.querySelectorAll('.suggestions-list li');
+  if (targetIndex >= suggestions.length || targetIndex < 0) return;
   if (suggestions.length > 0) suggestions[targetIndex].focus();
 }
 
@@ -117,18 +92,9 @@ function setupStickyBehavior(searchBarWrapper) {
  */
 function setupKeyboardNavigation(block, searchBar, searchDropdown) {
   searchBar.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown' || e.keyCode === KEY_CODES.ARROW_DOWN) {
+    if (e.key === 'ArrowDown' || e.keyCode === 40) {
       e.preventDefault();
       cycleThroughSuggestions(block);
-    } else if (e.key === 'ArrowUp' || e.keyCode === KEY_CODES.ARROW_UP) {
-      e.preventDefault();
-      const suggestions = block.querySelectorAll('.suggestions-list li');
-      if (suggestions.length > 0) {
-        cycleThroughSuggestions(block, suggestions.length - 1);
-      }
-    } else if (e.key === 'Escape' || e.keyCode === KEY_CODES.ESCAPE) {
-      searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
-      searchBar.blur();
     }
   });
 }
@@ -258,56 +224,36 @@ function createSuggestionsCallback(
     const searchBarVal = searchBar.value.toLowerCase();
     if (suggestions && !(suggestions.length <= 1 && suggestions[0]?.query === searchBarVal)) {
       suggestions.forEach((item, index) => {
-        const li = createTag('li', { tabindex: -1 }); // Start unfocusable, no keyboard highlighting
+        const li = createTag('li', { tabindex: 0 });
         const valRegEx = new RegExp(searchBar.value, 'i');
         li.innerHTML = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
         li.addEventListener('click', async () => {
-          // Clear all keyboard highlighting on click interaction  
-          const allSuggestions = suggestionsList.querySelectorAll('li');
-          allSuggestions.forEach((suggestion) => {
-            suggestion.classList.remove('keyboard-focused');
-          });
           await handleSubmitInteraction(item, index);
         });
 
         li.addEventListener('keydown', async (e) => {
-          if (e.key === 'Enter' || e.keyCode === KEY_CODES.ENTER) {
+          if (e.key === 'Enter' || e.keyCode === 13) {
             await handleSubmitInteraction(item, index);
           }
         });
 
         li.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowDown' || e.keyCode === KEY_CODES.ARROW_DOWN) {
+          if (e.key === 'ArrowDown' || e.keyCode === 40) {
             e.preventDefault();
             cycleThroughSuggestions(block, index + 1);
           }
         });
 
         li.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowUp' || e.keyCode === KEY_CODES.ARROW_UP) {
+          if (e.key === 'ArrowUp' || e.keyCode === 38) {
             e.preventDefault();
             cycleThroughSuggestions(block, index - 1);
-          }
-        });
-
-        li.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' || e.keyCode === KEY_CODES.ESCAPE) {
-            e.preventDefault();
-            searchBar.focus();
-            searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
           }
         });
 
         suggestionsList.append(li);
       });
     }
-
-    // Ensure search input keeps focus after suggestions are populated
-    setTimeout(() => {
-      if (document.activeElement !== searchBar) {
-        searchBar.focus();
-      }
-    }, 0);
   };
 }
 
