@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-// Note: Phase L Font Loading is now in head.html (inline) to intercept TypeKit early
-
 import {
   setLibs,
   buildAutoBlocks,
