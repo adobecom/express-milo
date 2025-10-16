@@ -88,6 +88,7 @@ function createComparePrice(productDetails) {
   comparePriceContainer.className = 'pdpx-compare-price-container';
   const comparePriceLabel = document.createElement('p');
   comparePriceLabel.className = 'pdpx-compare-price-label';
+  comparePriceLabel.id = 'pdpx-compare-price-label';
   comparePriceLabel.textContent = 'US$25.95';
   comparePriceContainer.appendChild(comparePriceLabel);
   return comparePriceContainer;
@@ -108,8 +109,9 @@ function createComparePriceInfoContainer(productDetails) {
 }
 
 function createSavingsText(productDetails) {
-  const savingsText = document.createElement('p');
+  const savingsText = document.createElement('span');
   savingsText.className = 'pdpx-savings-text';
+  savingsText.id = 'pdpx-savings-text';
   savingsText.textContent = 'You save 25%';
   return savingsText;
 }
