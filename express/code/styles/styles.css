@@ -724,6 +724,37 @@ main .section.secondary {
   background-color: var(--color-gray-100);
 }
 
+/* section containing standalone search bar */
+main .section.modular-search {
+  margin: 0 40px 80px 40px; 
+  padding: 40px 32px;
+  border-radius: 16px;
+  border: 2px solid #FFF;
+  background: #F8F8F8;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.08), 0 1px 4px 0 rgba(0, 0, 0, 0.04), 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Align link-list with template container when in modular-search */
+main .section.modular-search .link-list-wrapper,
+main .section.modular-search .link-list-wrapper:has(.link-list),
+main .section.modular-search .link-list-wrapper:has(.link-list:is([class*=" "])),
+main .section.modular-search .link-list-wrapper:has(.link-list.inline) {
+  max-width: var(--ax-grid-10-col-width);
+  margin: 0 auto;
+  padding: 60px 0 0 0;
+}
+
+@media (min-width: 1200px) {
+  main .section.modular-search .link-list-wrapper,
+  main .section.modular-search .link-list-wrapper:has(.link-list),
+  main .section.modular-search .link-list-wrapper:has(.link-list:is([class*=" "])),
+  main .section.modular-search .link-list-wrapper:has(.link-list.inline) {
+    max-width: var(--ax-grid-10-col-width);
+    margin: 0 auto;
+    padding: 60px 0 0 0;
+  }
+}
+
 main .section p.button-container,
 main .section .content p.button-container {
   text-align: center;

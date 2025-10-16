@@ -230,10 +230,6 @@
   transition: background-color .1s ease-out;
 }
 
-.section .link-list.inline.link-text {
-  padding-bottom: var(--spacing-600);
-}
-
 @media (min-width: 600px) {
   .section .link-list.inline {
     display: flex;
