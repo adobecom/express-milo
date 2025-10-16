@@ -1,5 +1,10 @@
 <!-- Modifying this file will impact your performance -->
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<script>
+// Phase L Font Loading: Intercept TypeKit BEFORE Milo loads it
+// Must run inline in head to catch Milo's Global Nav font injection
+(function(){const o=document.createElement.bind(document);let r=null,d=false;document.createElement=function(t){const e=o(t);if(t.toLowerCase()==='link'){const s=e.setAttribute.bind(e);e.setAttribute=function(n,v){if(n==='href'&&typeof v==='string'&&v.includes('typekit.net')){if(d)return s(n,v);d=true;if(!r){r=new PerformanceObserver((l)=>{const c=l.getEntries();const p=c[c.length-1];if(p){setTimeout(()=>{e.media='print';e.onload=function(){this.media='all'};s('href',v);s('rel','stylesheet');document.head.appendChild(e)},100);r.disconnect();r=null}});r.observe({entryTypes:['largest-contentful-paint']})}return}return s(n,v)}}return e}})();
+</script>
 <script src="/express/code/scripts/fallback.js" nomodule></script>
 <script src="/express/code/scripts/scripts.js" type="module"></script>
 <style>body { display: none; }</style>
