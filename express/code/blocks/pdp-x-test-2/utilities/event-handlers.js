@@ -49,7 +49,7 @@ async function updateProductImages(productId, parameters) {
   }
 }
 
-async function updateProductDeliveryEstimate(productId) {
+async function updateProductDeliveryEstimate(productId, parameters) {
   const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   document.getElementById('pdpx-delivery-estimate-pill-date').innerHTML = formatDeliveryEstimateDateRange(shippingEstimates.estimates[0].minDeliveryDate, shippingEstimates.estimates[0].maxDeliveryDate);
 }
