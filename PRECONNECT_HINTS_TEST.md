@@ -2,22 +2,27 @@
 
 ## 🎯 **What This Branch Tests**
 
-This branch adds **resource hints** (preconnect and dns-prefetch) for critical 3rd-party domains to improve connection times.
+**TEST 3 (Current)**: This branch tests **video preload** for the hero video to improve LCP.
 
-## 📝 **What Was Changed**
+**Previous Tests**:
+- Test 1: Adobe services preconnects (failed - LCP +5.8s regression)
+- Test 2: Lighthouse-recommended preconnects (failed - LCP +0.3s regression)
+
+## 📝 **What Was Changed (Test 3)**
 
 **File**: `express/code/scripts/scripts.js`
 
 **Added**:
 ```javascript
-// Add preconnect hints for critical 3rd-party domains
-// Saves ~200-300ms connection time for Adobe Launch and IMS
-const preconnectDTM = createTag('link', { rel: 'preconnect', href: 'https://assets.adobedtm.com', crossorigin: 'anonymous' });
-const preconnectIMS = createTag('link', { rel: 'preconnect', href: 'https://auth.services.adobe.com', crossorigin: 'anonymous' });
-const dnsPrefetchDemdex = createTag('link', { rel: 'dns-prefetch', href: 'https://dpm.demdex.net' });
-const dnsPrefetchAdobe = createTag('link', { rel: 'dns-prefetch', href: 'https://adobe.demdex.net' });
-
-document.head.append(preconnectDTM, preconnectIMS, dnsPrefetchDemdex, dnsPrefetchAdobe);
+// Preload hero video to improve LCP (test only - will revert)
+// This downloads the video early, potentially improving LCP if video is above-fold
+const videoPreload = createTag('link', {
+  rel: 'preload',
+  href: '/express/assets/video/marketing/homepage/media_1d617584a0b780c7bf8c2ca185a61a247c85298e8.mp4',
+  as: 'video',
+  type: 'video/mp4',
+});
+document.head.appendChild(videoPreload);
 ```
 
 ## 🧪 **How to Test**
@@ -96,23 +101,30 @@ npx lighthouse https://preconnect-hints--express-milo--adobecom.aem.live/express
 # Look at: performance.score, audits['first-contentful-paint'], audits['largest-contentful-paint']
 ```
 
-## 🎯 **Expected Results**
+## 🎯 **Expected Results (Test 3 - Video Preload)**
 
-| Metric | Baseline (stage) | With Hints | Improvement |
-|--------|------------------|------------|-------------|
-| **Performance Score** | 81-85 | 82-86 | +1-2 points |
-| **FCP** | 1.6-1.9s | 1.5-1.8s | -50-100ms |
-| **LCP** | 4.0-4.6s | 3.8-4.4s | -100-200ms |
-| **Adobe Launch TTFB** | 300-500ms | 100-200ms | -200-300ms |
-| **IMS TTFB** | 250-400ms | 100-150ms | -150-250ms |
+| Metric | Baseline (stage) | With Video Preload | Expected Improvement |
+|--------|------------------|--------------------|--------------------|
+| **Performance Score** | 81-85 | 82-87 | +1-3 points |
+| **FCP** | 1.6s | 1.6s | Unchanged (FCP is not video) |
+| **LCP** | 3.9-4.6s | 2.5-3.5s | **-0.5-1.5s (if video is LCP)** |
+| **Speed Index** | 5.4s | 4.5-5.0s | -0.4-0.9s |
+| **Video Load Start** | 2-3s | 0-0.5s | -1.5-3s (starts immediately) |
+
+**Key Difference from Preconnects:**
+- ✅ **Video preload** downloads actual content (hero video)
+- ✅ No bandwidth waste if video is LCP element
+- ✅ High-priority resource hint
+- ⚠️ Will waste bandwidth if video is NOT actually visible/LCP
 
 ---
 
-## ❌ **ACTUAL RESULTS (TEST FAILED)**
+## ❌ **ACTUAL RESULTS - TEST 1 (FAILED)**
 
 **Test Date:** October 15, 2025  
 **Test URL:** `https://preconnect-hints--express-milo--adobecom.aem.live/express/`  
-**Baseline URL:** `https://stage--express-milo--adobecom.aem.live/express/`
+**Baseline URL:** `https://stage--express-milo--adobecom.aem.live/express/`  
+**Test Type:** Preconnect hints for Adobe services
 
 | Metric | Baseline (stage) | With Hints | Change | Status |
 |--------|------------------|------------|--------|--------|

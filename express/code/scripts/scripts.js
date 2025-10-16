@@ -359,14 +359,15 @@ const listenAlloy = () => {
 
   const config = setConfig({ ...CONFIG, miloLibs });
 
-  // Add preconnect hints for critical 3rd-party domains
-  // Saves ~200-300ms connection time for Adobe Launch and IMS
-  const preconnectDTM = createTag('link', { rel: 'preconnect', href: 'https://assets.adobedtm.com', crossorigin: 'anonymous' });
-  const preconnectIMS = createTag('link', { rel: 'preconnect', href: 'https://auth.services.adobe.com', crossorigin: 'anonymous' });
-  const dnsPrefetchDemdex = createTag('link', { rel: 'dns-prefetch', href: 'https://dpm.demdex.net' });
-  const dnsPrefetchAdobe = createTag('link', { rel: 'dns-prefetch', href: 'https://adobe.demdex.net' });
-  
-  document.head.append(preconnectDTM, preconnectIMS, dnsPrefetchDemdex, dnsPrefetchAdobe);
+  // Preload hero video to improve LCP (test only - will revert)
+  // This downloads the video early, potentially improving LCP if video is above-fold
+  const videoPreload = createTag('link', {
+    rel: 'preload',
+    href: '/express/assets/video/marketing/homepage/media_1d617584a0b780c7bf8c2ca185a61a247c85298e8.mp4',
+    as: 'video',
+    type: 'video/mp4',
+  });
+  document.head.appendChild(videoPreload);
 
   if (getMetadata('template-search-page') === 'Y') {
     const { default: redirect } = await import('./utils/template-redirect.js');
