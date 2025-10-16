@@ -226,6 +226,23 @@ if (new URLSearchParams(window.location.search).get('lingo')) {
 
 document.body.dataset.device = navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop';
 preDecorateSections(document);
+
+// Preconnect to TypeKit for faster font loading (eliminate DNS/connection time)
+(function preconnectFonts() {
+  const typekit = document.createElement('link');
+  typekit.rel = 'preconnect';
+  typekit.href = 'https://use.typekit.net';
+  typekit.crossOrigin = 'anonymous';
+  document.head.appendChild(typekit);
+
+  // Also preconnect to font CDN
+  const fontCdn = document.createElement('link');
+  fontCdn.rel = 'preconnect';
+  fontCdn.href = 'https://p.typekit.net';
+  fontCdn.crossOrigin = 'anonymous';
+  document.head.appendChild(fontCdn);
+}());
+
 // LCP image decoration
 (function decorateLCPImage() {
   const lcpImg = document.querySelector('img');
