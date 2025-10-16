@@ -106,6 +106,54 @@ npx lighthouse https://preconnect-hints--express-milo--adobecom.aem.live/express
 | **Adobe Launch TTFB** | 300-500ms | 100-200ms | -200-300ms |
 | **IMS TTFB** | 250-400ms | 100-150ms | -150-250ms |
 
+---
+
+## ❌ **ACTUAL RESULTS (TEST FAILED)**
+
+**Test Date:** October 15, 2025  
+**Test URL:** `https://preconnect-hints--express-milo--adobecom.aem.live/express/`  
+**Baseline URL:** `https://stage--express-milo--adobecom.aem.live/express/`
+
+| Metric | Baseline (stage) | With Hints | Change | Status |
+|--------|------------------|------------|--------|--------|
+| **Performance Score** | 83 | 68 | **-15 points** | ❌ **WORSE** |
+| **FCP** | 1.6s | 1.6s | 0ms | ⚪ Same |
+| **LCP** | 3.9s | 9.7s | **+5.8s (149% slower)** | ❌ **MUCH WORSE** |
+| **Speed Index** | 5.4s | 6.9s | **+1.5s** | ❌ **WORSE** |
+| **CLS** | 0.008 | 0.008 | 0 | ⚪ Same |
+| **TBT** | 0ms | 0ms | 0ms | ⚪ Same |
+
+### **Conclusion: NEGATIVE IMPACT**
+
+Preconnect hints **significantly degraded** performance instead of improving it.
+
+### **Why This Failed:**
+
+1. **Timing Issue**: Hints added in `scripts.js` (too late)
+   - Browser already discovering resources when hints are added
+   - Preconnect needs to be in early `<head>`, not in async JS
+
+2. **Bandwidth Contention**: On Slow 4G, preconnects compete with content
+   - 4 simultaneous connections overwhelm limited bandwidth
+   - LCP resource (likely hero image/video) gets starved
+
+3. **CrossOrigin Mismatch**: Using `crossorigin="anonymous"` may be wrong
+   - If actual requests don't use CORS, separate connection pool
+   - Preconnect connection goes unused
+
+4. **Over-optimization**: Too many hints for slow connection
+   - 2 full preconnects + 2 DNS prefetches
+   - Each consumes bandwidth that could load actual content
+
+### **Lessons Learned:**
+
+- ✅ Always test performance optimizations (don't assume they help)
+- ✅ Preconnects work best on fast connections, can hurt on slow
+- ✅ Timing matters: hints must be early in `<head>`
+- ✅ Fewer is better on constrained connections
+- ❌ Don't add preconnects via async JavaScript
+- ❌ Don't preconnect to resources that load late anyway
+
 ## ✅ **Success Criteria**
 
 - ✅ No regression in any metrics
