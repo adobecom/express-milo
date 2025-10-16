@@ -209,8 +209,10 @@
   color: #131313;
 }
 
-.section .link-list.inline.link-text h3 {
-  margin-bottom: 16px;
+@media (max-width: 599px) {
+  .section .link-list.inline.link-text h3 {
+    margin-bottom: 16px;
+  }
 }
 
 .section .link-list.inline .button-container {
