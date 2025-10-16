@@ -359,14 +359,12 @@ const listenAlloy = () => {
 
   const config = setConfig({ ...CONFIG, miloLibs });
 
-  // Add preconnect hints for critical 3rd-party domains
-  // Saves ~200-300ms connection time for Adobe Launch and IMS
-  const preconnectDTM = createTag('link', { rel: 'preconnect', href: 'https://assets.adobedtm.com', crossorigin: 'anonymous' });
-  const preconnectIMS = createTag('link', { rel: 'preconnect', href: 'https://auth.services.adobe.com', crossorigin: 'anonymous' });
-  const dnsPrefetchDemdex = createTag('link', { rel: 'dns-prefetch', href: 'https://dpm.demdex.net' });
-  const dnsPrefetchAdobe = createTag('link', { rel: 'dns-prefetch', href: 'https://adobe.demdex.net' });
+  // Add preconnect hints based on Lighthouse suggestions (Test 2)
+  // Using only top Lighthouse candidates with estimated 300ms+ savings
+  const preconnectGeo = createTag('link', { rel: 'preconnect', href: 'https://geo2.adobe.com' });
+  const preconnectMilo = createTag('link', { rel: 'preconnect', href: 'https://main--milo--adobecom.aem.live' });
   
-  document.head.append(preconnectDTM, preconnectIMS, dnsPrefetchDemdex, dnsPrefetchAdobe);
+  document.head.append(preconnectGeo, preconnectMilo);
 
   if (getMetadata('template-search-page') === 'Y') {
     const { default: redirect } = await import('./utils/template-redirect.js');
