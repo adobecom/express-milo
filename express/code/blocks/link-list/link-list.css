@@ -316,7 +316,7 @@
   padding: 0;
   color: #292929;
   text-decoration: underline;
-  font-size: inherit;
+  font-size: 14px;
   font-weight: normal;
   cursor: pointer;
 }
@@ -333,4 +333,16 @@
 
 .section .link-list.link-text p.button-container a:not(.text-link):hover {
   background-color: #e0e0e0;
+}
+
+/* Mobile: allow text link to be visible outside carousel */
+@media (max-width: 599px) {
+  .section .link-list.link-text {
+    overflow: visible;
+  }
+  
+  .section .link-list.link-text .text-link-mobile {
+    text-align: left;
+    margin-top: 16px;
+  }
 }
