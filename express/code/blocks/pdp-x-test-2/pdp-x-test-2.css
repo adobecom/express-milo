@@ -165,6 +165,7 @@ main .section .pdpx-global-container p {
 }
 .pdpx-compare-price-info-label {
   font-size: 14px;
+  text-align: end;
 }
 .pdpx-compare-price-info-icon {
   width: 12px;
@@ -177,7 +178,7 @@ main .section .pdpx-global-container p {
 .pdpx-price-info-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  /*align-items: flex-end;*/
 }
 .pdpx-product-hero-image {
   width: 100%;

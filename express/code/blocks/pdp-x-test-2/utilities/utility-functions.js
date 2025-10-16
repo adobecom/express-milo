@@ -1,4 +1,4 @@
-import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
+import fetchAPIData from '../fetchData/fetchProductDetails.js';
 
 export function extractProductId(block) {
   const productIdBlock = block.children[0].children[1].textContent;
@@ -50,15 +50,19 @@ function buildImageUrl(realviewParams) {
 }
 
 export function formatPriceZazzle(price, differential = false, short = false) {
+  const region = 'en-US';
   let priceDifferentialOperator;
-  price = parseFloat(price);
+  const priceNumberFormatted = parseFloat(price).toLocaleString(region, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
   if (differential) {
     priceDifferentialOperator = price >= 0 ? '+' : '-';
   } else {
     priceDifferentialOperator = '';
   }
   const currencySymbol = short ? '$' : 'US$';
-  const priceFormatted = priceDifferentialOperator + currencySymbol + price.toFixed(2);
+  const priceFormatted = priceDifferentialOperator + currencySymbol + priceNumberFormatted;
   return priceFormatted;
 }
 
