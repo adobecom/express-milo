@@ -276,77 +276,174 @@ function setupAutocomplete(searchBar, suggestionsListUIUpdateCB) {
 }
 
 function initSearchFunction(block, searchBarWrapper) {
-  const searchDropdown = searchBarWrapper.querySelector(`.${CSS_CLASSES.SEARCH_DROPDOWN}`);
+  const searchDropdown = searchBarWrapper.querySelector('.search-dropdown-container');
   const searchForm = searchBarWrapper.querySelector('.search-form');
   const searchBar = searchBarWrapper.querySelector('input.search-bar');
   const clearBtn = searchBarWrapper.querySelector('.icon-search-clear');
   const trendsContainer = searchBarWrapper.querySelector('.trends-container');
   const suggestionsContainer = searchBarWrapper.querySelector('.suggestions-container');
-  const suggestionsList = searchBarWrapper.querySelector(`.${CSS_CLASSES.SUGGESTIONS_LIST}`);
+  const suggestionsList = searchBarWrapper.querySelector('.suggestions-list');
 
   clearBtn.style.display = 'none';
 
-  setupStickyBehavior(searchBarWrapper);
-  setupKeyboardNavigation(block, searchBar, searchDropdown);
+  const searchBarWatcher = new IntersectionObserver((entries) => {
+    if (!entries[0].isIntersecting) {
+      BlockMediator.set('stickySearchBar', {
+        element: searchBarWrapper.cloneNode(true),
+        loadSearchBar: true,
+      });
+    } else {
+      BlockMediator.set('stickySearchBar', {
+        element: searchBarWrapper.cloneNode(true),
+        loadSearchBar: false,
+      });
+    }
+  }, { rootMargin: '0px', threshold: 1 });
 
-  setupSearchEventListeners(
-    searchBar,
-    searchDropdown,
-    clearBtn,
-    trendsContainer,
-    suggestionsContainer,
-  );
-  setupDocumentClickHandler(searchBarWrapper, searchDropdown);
+  searchBarWatcher.observe(searchBarWrapper);
 
-  const { onSearchSubmit, handleSubmitInteraction } = setupSearchHandlers(block, searchBar);
-  setupFormSubmission(searchForm, onSearchSubmit);
-  setupClearButton(
-    clearBtn,
-    searchBar,
-    suggestionsList,
-    trendsContainer,
-    suggestionsContainer,
-  );
+  searchBar.addEventListener('click', (e) => {
+    e.stopPropagation();
+    searchBar.scrollIntoView({ behavior: 'smooth' });
+    searchDropdown.classList.remove('hidden');
+  }, { passive: true });
 
-  const suggestionsListUIUpdateCB = createSuggestionsCallback(
-    block,
-    searchBar,
-    searchDropdown,
-    suggestionsList,
-    handleSubmitInteraction,
-  );
+  searchBar.addEventListener('keyup', () => {
+    if (searchBar.value !== '') {
+      clearBtn.style.display = 'inline-block';
+      trendsContainer.classList.add('hidden');
+      suggestionsContainer.classList.remove('hidden');
+    } else {
+      clearBtn.style.display = 'none';
+      trendsContainer.classList.remove('hidden');
+      suggestionsContainer.classList.add('hidden');
+    }
+  }, { passive: true });
 
-  setupAutocomplete(searchBar, suggestionsListUIUpdateCB);
-}
+  searchBar.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.keyCode === 40) {
+      e.preventDefault();
+      cycleThroughSuggestions(block);
+    }
+  });
 
-async function decorateSearchFunctions(block) {
-  const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
+  document.addEventListener('click', (e) => {
+    const { target } = e;
+    if (target !== searchBarWrapper && !searchBarWrapper.contains(target)) {
+      searchDropdown.classList.add('hidden');
+    }
+  }, { passive: true });
 
-  // Read header and subheader from first block element (split by line breaks)
-  const firstElementText = block.children[0]?.textContent?.trim();
-  let headerText = '';
-  let subheaderText = '';
+  const redirectSearch = async () => {
+    const { 'search-destination': searchDestination } = blockConfig;
 
-  if (firstElementText) {
-    const lines = firstElementText.split('\n').map((line) => line.trim()).filter((line) => line);
-    headerText = lines[0] || '';
-    subheaderText = lines[1] || '';
+    // If destination is authored, use simple redirect with query param
+    if (searchDestination && searchDestination.trim() !== '') {
+      trackSearch('search-inspire');
+
+      const searchQuery = searchBar.value || '';
+      const separator = searchDestination.includes('?') ? '&' : '?';
+      const targetLocation = `${searchDestination}${separator}q=${encodeURIComponent(searchQuery)}`;
+
+      window.location.assign(targetLocation);
+    }
+  };
+
+  const onSearchSubmit = async () => {
+    const { sampleRUM } = await import(`${getLibs()}/utils/samplerum.js`);
+    searchBar.disabled = true;
+    sampleRUM('search', {
+      source: block.dataset.blockName,
+      target: searchBar.value,
+    }, 1);
+    await redirectSearch();
+  };
+
+  async function handleSubmitInteraction(item, index) {
+    if (item.query !== searchBar.value) {
+      searchBar.value = item.query;
+      searchBar.dispatchEvent(new Event('input'));
+    }
+    await onSearchSubmit();
   }
 
-  // Add header and subheader if found
-  if (headerText || subheaderText) {
+  searchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    await onSearchSubmit();
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchBar.value = '';
+    suggestionsList.innerHTML = '';
+    trendsContainer.classList.remove('hidden');
+    suggestionsContainer.classList.add('hidden');
+    clearBtn.style.display = 'none';
+  }, { passive: true });
+
+  const suggestionsListUIUpdateCB = (suggestions) => {
+    suggestionsList.innerHTML = '';
+    const searchBarVal = searchBar.value.toLowerCase();
+    if (suggestions && !(suggestions.length <= 1 && suggestions[0]?.query === searchBarVal)) {
+      suggestions.forEach((item, index) => {
+        const li = createTag('li', { tabindex: 0 });
+        const valRegEx = new RegExp(searchBar.value, 'i');
+        li.innerHTML = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
+        li.addEventListener('click', async () => {
+          await handleSubmitInteraction(item, index);
+        });
+
+        li.addEventListener('keydown', async (e) => {
+          if (e.key === 'Enter' || e.keyCode === 13) {
+            await handleSubmitInteraction(item, index);
+          }
+        });
+
+        li.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowDown' || e.keyCode === 40) {
+            e.preventDefault();
+            cycleThroughSuggestions(block, index + 1);
+          }
+        });
+
+        li.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowUp' || e.keyCode === 38) {
+            e.preventDefault();
+            cycleThroughSuggestions(block, index - 1);
+          }
+        });
+
+        suggestionsList.append(li);
+      });
+    }
+  };
+
+  import('./utils/autocomplete-api-v3.js').then(({ default: useInputAutocomplete }) => {
+    const { inputHandler } = useInputAutocomplete(
+      suggestionsListUIUpdateCB,
+      getConfig,
+      { throttleDelay: 300, debounceDelay: 500, limit: 7 },
+    );
+    searchBar.addEventListener('input', inputHandler);
+  });
+}
+
+async function decorateSearchFunctions() {
+  const searchBarWrapper = createTag('div', { class: 'search-bar-wrapper' });
+
+  // Add title and subtitle if configured
+  if (blockConfig.title || blockConfig.subtitle) {
     const headerWrapper = createTag('div', { class: 'search-header' });
 
-    if (headerText) {
-      const header = createTag('h1', { class: 'search-title' });
-      header.textContent = headerText;
-      headerWrapper.append(header);
+    if (blockConfig.title) {
+      const title = createTag('h1', { class: 'search-title' });
+      title.textContent = blockConfig.title;
+      headerWrapper.append(title);
     }
 
-    if (subheaderText) {
-      const subheader = createTag('p', { class: 'search-subtitle' });
-      subheader.textContent = subheaderText;
-      headerWrapper.append(subheader);
+    if (blockConfig.subtitle) {
+      const subtitle = createTag('p', { class: 'search-subtitle' });
+      subtitle.textContent = blockConfig.subtitle;
+      headerWrapper.append(subtitle);
     }
 
     searchBarWrapper.append(headerWrapper);
@@ -356,8 +453,8 @@ async function decorateSearchFunctions(block) {
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: blockConfig['search-bar-text'] || DEFAULT_TEXT.SEARCH_PLACEHOLDER,
-    enterKeyHint: blockConfig['search-enter-hint'] || DEFAULT_TEXT.SEARCH_HINT,
+    placeholder: blockConfig['search-placeholder'] || 'Search for over 50,000 templates',
+    enterKeyHint: blockConfig['search-enter-hint'] || 'Search',
   });
 
   searchForm.append(searchBar);
@@ -446,7 +543,7 @@ export default async function decorate(block) {
     ({ replaceKeyArray } = placeholders);
   });
 
-  const searchBarWrapper = await decorateSearchFunctions(block);
+  const searchBarWrapper = await decorateSearchFunctions();
   await buildSearchDropdown(searchBarWrapper);
   initSearchFunction(block, searchBarWrapper);
 
