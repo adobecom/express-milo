@@ -1,5 +1,5 @@
 import { getLibs } from '../../../scripts/utils.js';
-import { buildRealViewImageUrl, formatStringSnakeCase } from '../utilities/utility-functions.js';
+import { buildRealViewImageUrl } from '../utilities/utility-functions.js';
 
 let createTag;
 
@@ -11,11 +11,13 @@ export default async function createProductImagesContainer(productDetails) {
   const imageThumbnailCarouselContainer = createTag('div', { class: 'pdpx-image-thumbnail-carousel-container' });
   const productThumbnails = productDetails.realviews.filter((realview) => realview.type === 'Product' && realview.canBePreferred);
   for (let i = 0; i < productThumbnails.length; i += 1) {
-    const imageThumbnailCarouselItem = createTag('button', { class: 'pdpx-image-thumbnail-carousel-item' });
+    const imageThumbnailCarouselItem = createTag('button', { class: 'pdpx-image-thumbnail-carousel-item', 'data-image-type': productThumbnails[i].title });
     const imageURL = buildRealViewImageUrl(productThumbnails[i].realviewParams);
     const imageThumbnailCarouselItemImage = createTag('img', { class: 'pdpx-image-thumbnail-carousel-item-image', 'data-image-type': productThumbnails[i].title, src: imageURL });
-    imageThumbnailCarouselItem.addEventListener('click', () => {
+    imageThumbnailCarouselItem.addEventListener('click', (element) => {
       productHeroImage.src = imageURL;
+      productHeroImage.dataset.imageType = element.currentTarget.dataset.imageType;
+      // productHeroImage.setAttribute('data-image-type', productThumbnails[i].title);
     });
     imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);
     imageThumbnailCarouselContainer.appendChild(imageThumbnailCarouselItem);

@@ -46,7 +46,8 @@ async function updateAllDynamicElements(productId) {
   }
   const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
-  document.getElementById('pdpx-product-hero-image').src = renditions.realviewUrls.Front;
+  const heroImg = document.getElementById('pdpx-product-hero-image');
+  heroImg.src = renditions.realviewUrls[heroImg.dataset.imageType];
   const carouselImages = document.getElementsByClassName('pdpx-image-thumbnail-carousel-item-image');
   for (let i = 0; i < carouselImages.length; i += 1) {
     carouselImages[i].src = renditions.realviewUrls[carouselImages[i].dataset.imageType];
@@ -102,7 +103,6 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
       updateAllDynamicElements(productId);
     });
   }
-  // want to make sure that the hidden select input is given a value based on the first option
   hiddenSelectInput.value = customizationOptions[0].name;
   pillSelectorContainer.appendChild(pillSelectorOptionsContainer);
   pillSelectorContainer.appendChild(hiddenSelectInput);
@@ -146,6 +146,7 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
       document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
+    hiddenSelectInput.value = customizationOptions[0].name;
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
     miniPillOption.appendChild(miniPillOptionImageContainer);
     miniPillOption.appendChild(miniPillOptionTextContainer);
