@@ -1,6 +1,6 @@
 .standalone-search-bar {
     max-width: none;
-    padding:  var(--spacing-500) 28px;
+    padding: 0 28px var(--spacing-500) 28px;
     margin-bottom: var(--spacing-200);
     display: flex;
     flex-direction: column;

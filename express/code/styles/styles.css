@@ -741,7 +741,7 @@ main .section.modular-search .link-list-wrapper:has(.link-list:is([class*=" "]))
 main .section.modular-search .link-list-wrapper:has(.link-list.inline) {
   max-width: var(--ax-grid-10-col-width);
   margin: 0 auto;
-  padding: 60px 0 0 0;
+  padding: 0 28px var(--spacing-500) 28px;
 }
 
 @media (min-width: 1200px) {
