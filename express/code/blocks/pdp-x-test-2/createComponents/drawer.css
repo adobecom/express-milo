@@ -1,0 +1,191 @@
+:root {
+  --pdp-drawer-z-index: 102;
+  --pdp-drawer-curtain-z-index: 101;
+}
+
+.pdpx-global-container .drawer {
+  --drawer-padding: var(--spacing-300);
+  --drawer-body-gap: var(--spacing-200);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: var(--pdp-drawer-z-index);
+  border-radius: 16px 16px 0 0;
+  background-color: var(--color-white);
+  height: 600px;
+  width: 100%;
+  transform: translateY(0);
+  transition: transform 300ms ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdpx-global-container .drawer.hidden {
+  transform: translateY(100%);
+}
+
+.pdpx-global-container .drawer-head {
+  display: flex;
+  position: sticky;
+  top: 0;
+  justify-content: space-between;
+  border-radius: 16px 16px 0 0;
+  border-bottom: 1px solid #D5D5D5;
+  padding: var(--drawer-padding);
+  background-color: var(--color-white);
+}
+
+.pdpx-global-container .drawer-head-label {
+  font-weight: 700;
+}
+
+.pdpx-global-container .drawer-head button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.pdpx-global-container .drawer-body {
+  padding: var(--spacing-300) var(--drawer-padding) 0 var(--drawer-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--drawer-body-gap);
+  flex: 1;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+
+.pdpx-global-container .drawer-body img.hero {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.pdpx-global-container .drawer-body .title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pdpx-global-container .drawer-body .title-row .name {
+  font-weight: 700;
+}
+
+.pdpx-global-container .drawer-body .title-row .recommended {
+  font-size: var(--body-font-size-xs);
+  color: white;
+  padding: 4px 9px;
+  line-height: 1.3;
+  border-radius: 7px;
+  background-color: #3B63FB;
+}
+
+.pdpx-global-container .drawer-body .label-row {
+  display: flex;
+  gap: var(--spacing-100);
+}
+
+.pdpx-global-container .drawer-body .label-pill {
+  border-radius: 8px;
+  padding: 4px var(--spacing-100);
+  background-color: #F3F3F3;
+  display: flex;
+  align-items: center;
+  font-size: var(--body-font-size-s);
+  gap: 4px;
+}
+
+.pdpx-global-container .drawer-body .icon-checkmark {
+  /* TODO: find proper icon */
+  background-color: black;
+  display: block;
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+  padding: 3px;
+  margin-right: 4px;
+}
+
+.pdpx-global-container .drawer-body .description {
+  font-size: var(--body-font-size-s);
+}
+
+.pdpx-global-container .drawer-foot {
+  display: flex;
+  border-top: 1px solid #D5D5D5;
+  padding: var(--spacing-200) var(--drawer-padding);
+  justify-content: space-between;
+  background-color: var(--color-white);
+  flex-shrink: 0;
+}
+
+.pdpx-global-container .drawer-foot button {
+  color: var(--color-white);
+  background-color: #5258E4;
+  padding: var(--spacing-200) var(--spacing-400);
+  border-radius: 24px;
+  border: none;
+  font-family: var(--body-font-family);
+  font-weight: 700;
+  font-size: var(--body-font-size-l);
+}
+
+.pdpx-global-container .drawer-foot .info-container {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-200);
+}
+
+.pdpx-global-container .drawer-foot .info-container img {
+  width: 48px;
+  border-radius: 4px;
+}
+
+.pdpx-global-container .drawer-foot .info-name {
+  font-weight: 700;
+  line-height: 1.3;
+  padding-bottom: 2px;
+}
+
+.pdpx-global-container .drawer-foot .info-price {
+  font-size: var(--body-font-size-s);
+  line-height: 1.3;
+}
+
+.pdp-curtain {
+  z-index: var(--pdp-drawer-curtain-z-index);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgb(50 50 50 / 80%);
+}
+
+.pdp-curtain.hidden {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .pdpx-global-container .drawer {
+    --drawer-padding: var(--spacing-400);
+    --drawer-body-gap: var(--spacing-400);
+    bottom: initial;
+    top: 0;
+    right: 0;
+    left: initial;
+    width: 50%;
+    height: 100%;
+    border-radius: initial;
+
+    transform: translateX(0);
+  }
+  .pdpx-global-container .drawer.hidden {
+    transform: translateX(100%);
+  }
+  .pdpx-global-container .drawer-body .title-row .name {
+    font-size: var(--body-font-size-xl);
+  }
+}

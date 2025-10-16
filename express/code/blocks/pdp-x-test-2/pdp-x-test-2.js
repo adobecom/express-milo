@@ -6,6 +6,7 @@ import createProductInfoHeadingSection from './createComponents/createProductInf
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
+import createDrawer from './createComponents/createDrawer.js';
 
 let createTag;
 
@@ -52,4 +53,13 @@ export default async function decorate(block) {
   console.log(productDetails);
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions);
+
+  // temporary code for drawer integration
+  // TODO: lazy load for performance
+  const { curtain, drawer, toggle: toggleDrawer } = await createDrawer(block);
+  block.querySelector('.pdpx-product-info-section-wrapper')?.append(drawer);
+  document.body.append(curtain);
+
+  // temporary entry
+  block.querySelector('.pdpx-pill-selector-label-compare-link')?.addEventListener('click', toggleDrawer);
 }
