@@ -1,6 +1,6 @@
 import { getLibs } from '../../../scripts/utils.js';
 import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle, formatStringSnakeCase } from '../utilities/utility-functions.js';
+import { formatPriceZazzle, formatDeliveryEstimateDateRange } from '../utilities/utility-functions.js';
 
 let createTag;
 
@@ -20,7 +20,7 @@ function formatProductOptionsToAPIParameters(formDataObject) {
 }
 
 function calculateAdjustedPrices(productPriceAPIResponse) {
-  const quantity = productPriceAPIResponse.discountProductItems[0].applyToQuantity;
+  const quantity = productPriceAPIResponse.discountProductItems[0].applyToQuantity || 1;
   const originalPrice = productPriceAPIResponse.discountProductItems[0].price;
   const { priceAdjusted } = productPriceAPIResponse.discountProductItems[0];
   const productPrice = priceAdjusted * quantity;
@@ -37,14 +37,13 @@ async function updateAllDynamicElements(productId) {
   if (productPriceAPIResponse.discountProductItems.length > 0) {
     const { discountString } = productPriceAPIResponse.discountProductItems[0];
     const { productPrice, strikethroughPrice } = calculateAdjustedPrices(productPriceAPIResponse);
+    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
     document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(strikethroughPrice);
     document.getElementById('pdpx-savings-text').innerHTML = discountString;
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
   } else {
     const productPrice = productPriceAPIResponse.unitPrice;
     document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
   }
-  const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
   const heroImg = document.getElementById('pdpx-product-hero-image');
   heroImg.src = renditions.realviewUrls[heroImg.dataset.imageType];
@@ -52,6 +51,9 @@ async function updateAllDynamicElements(productId) {
   for (let i = 0; i < carouselImages.length; i += 1) {
     carouselImages[i].src = renditions.realviewUrls[carouselImages[i].dataset.imageType];
   }
+  const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
+  document.getElementById('pdpx-delivery-estimate-pill-date').innerHTML = formatDeliveryEstimateDateRange(shippingEstimates.estimates[0].minDeliveryDate, shippingEstimates.estimates[0].maxDeliveryDate);
+  console.log(formatDeliveryEstimateDateRange(shippingEstimates.estimates[0].minDeliveryDate, shippingEstimates.estimates[0].maxDeliveryDate));
 }
 
 function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productId) {
