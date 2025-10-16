@@ -28,7 +28,7 @@ function debounce(fn, delay) {
  */
 function getMerchCardWidth(el) {
   let sibling = el.previousElementSibling;
-  
+
   while (sibling) {
     if (sibling.classList?.contains('content')) {
       const cards = sibling.querySelectorAll('merch-card');
@@ -136,7 +136,7 @@ export default function init(el) {
     // Fallback for older browsers
     const resizeHandler = runWidthCalculation;
     window.addEventListener('resize', resizeHandler);
-    el._resizeHandler = resizeHandler;
+    el.resizeHandler = resizeHandler;
   }
 
   // Cleanup function for memory management
@@ -145,9 +145,9 @@ export default function init(el) {
       el.resizeObserver.disconnect();
       el.resizeObserver = null;
     }
-    if (el._resizeHandler) {
-      window.removeEventListener('resize', el._resizeHandler);
-      el._resizeHandler = null;
+    if (el.resizeHandler) {
+      window.removeEventListener('resize', el.resizeHandler);
+      el.resizeHandler = null;
     }
   };
 }
