@@ -5,7 +5,6 @@ import {
   getIconElementDeprecated,
 } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
-import { optimizeExistingVideo } from '../../scripts/utils/video.js';
 import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
 import {
   QA_CONFIGS,
@@ -270,7 +269,8 @@ export default async function decorate(block) {
   if (animation && animation.href.includes('.mp4')) {
     const video = transformLinkToAnimation(animation, false);
     video.addEventListener('ended', animationEnd);
-    optimizeExistingVideo(video);
+    // Note: Skip optimizeExistingVideo for frictionless - already has proper CSS sizing
+    // and setting explicit dimensions breaks responsive layout
   } else if (animationContainer.querySelector('picture')) {
     setTimeout(animationEnd, 3000);
   }

@@ -3,7 +3,6 @@ import { getLibs, getIconElementDeprecated, decorateButtonsDeprecated } from '..
 import { buildFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { sendFrictionlessEventToAdobeAnaltics } from '../../scripts/instrument.js';
 import { createLocaleDropdownWrapper } from '../../scripts/widgets/frictionless-locale-dropdown.js';
-import { optimizeExistingVideo } from '../../scripts/utils/video.js';
 import {
   QA_CONFIGS,
   EXPERIMENTAL_VARIANTS,
@@ -584,7 +583,8 @@ export default async function decorate(block) {
   if (animation && animation.href.includes('.mp4')) {
     const video = transformLinkToAnimation(animation);
     animationContainer.append(video);
-    optimizeExistingVideo(video);
+    // Note: Skip optimizeExistingVideo for frictionless - already has proper CSS sizing
+    // and setting explicit dimensions breaks responsive layout
   }
 
   const captionVideoDropzoneActionColumn = createTag('div', { class: 'caption-video-dropzone-action-column' });
