@@ -238,6 +238,7 @@ main .section .pdpx-global-container p {
 .pdpx-product-info-container {
   height: 70vh;
   overflow-y: scroll;
+  width: fit-content;
 }
 
 .pdpx-checkout-button {
