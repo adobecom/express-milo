@@ -311,8 +311,14 @@ export default async function decorate($block) {
         rootMargin: '50px', // Start loading 50px before entering viewport
       });
 
-      observer.observe($desktopContainerBackground);
-      observer.observe($mobileContainerBackground);
+      // Only observe the background for the active device (mobile or desktop)
+      // This saves 356 KB by not loading the hidden background
+      const deviceType = document.body.getAttribute('data-device');
+      if (deviceType === 'mobile') {
+        observer.observe($mobileContainerBackground);
+      } else {
+        observer.observe($desktopContainerBackground);
+      }
 
       $rows.shift();
     }
