@@ -1,4 +1,4 @@
-import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
+import fetchAPIData from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
 
 function formatProductOptionsToAPIParameters(formDataObject) {

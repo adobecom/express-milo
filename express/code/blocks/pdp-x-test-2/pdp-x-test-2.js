@@ -1,5 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
-import { fetchAPIData, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
+import fetchAPIData from './fetchData/fetchProductDetails.js';
+import extractProductDescriptionsFromBlock from './utilities/data-formatting.js';
 import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
@@ -44,7 +45,7 @@ export default async function decorate(block) {
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
   const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
-  const productDescriptions = await formatProductDescriptions(block);
+  const productDescriptions = await extractProductDescriptionsFromBlock(block);
   console.log('productDetails');
   console.log(productDetails);
   block.innerHTML = '';
