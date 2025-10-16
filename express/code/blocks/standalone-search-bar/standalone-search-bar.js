@@ -25,7 +25,15 @@ const CSS_CLASSES = {
 function cycleThroughSuggestions(block, targetIndex = 0) {
   const suggestions = block.querySelectorAll('.suggestions-list li');
   if (targetIndex >= suggestions.length || targetIndex < 0) return;
-  if (suggestions.length > 0) suggestions[targetIndex].focus();
+  
+  // Make all suggestions non-focusable first
+  suggestions.forEach(li => li.tabIndex = -1);
+  
+  // Make only the target suggestion focusable and focus it
+  if (suggestions.length > 0 && suggestions[targetIndex]) {
+    suggestions[targetIndex].tabIndex = 0;
+    suggestions[targetIndex].focus();
+  }
 }
 
 /**
@@ -166,38 +174,58 @@ function initSearchFunction(block, searchBarWrapper) {
   }, { passive: true });
 
   const suggestionsListUIUpdateCB = (suggestions) => {
-    suggestionsList.innerHTML = '';
     const searchBarVal = searchBar.value.toLowerCase();
     if (suggestions && !(suggestions.length <= 1 && suggestions[0]?.query === searchBarVal)) {
+      // Get existing list items
+      const existingItems = Array.from(suggestionsList.children);
+      
+      // Remove excess items if new list is shorter
+      while (existingItems.length > suggestions.length) {
+        const lastItem = existingItems.pop();
+        lastItem.remove();
+      }
+      
+      // Update existing items and add new ones as needed
       suggestions.forEach((item, index) => {
-        const li = createTag('li', { tabindex: 0 });
         const valRegEx = new RegExp(searchBar.value, 'i');
-        li.innerHTML = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
-        li.addEventListener('click', async () => {
-          await handleSubmitInteraction(item, index);
-        });
-
-        li.addEventListener('keydown', async (e) => {
-          if (e.key === 'Enter' || e.keyCode === 13) {
+        const highlightedQuery = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
+        
+        let li = existingItems[index];
+        
+        if (li) {
+          // Update existing item
+          li.innerHTML = highlightedQuery;
+        } else {
+          // Create new item
+          li = createTag('li', { tabindex: -1 });
+          li.innerHTML = highlightedQuery;
+          
+          li.addEventListener('click', async () => {
             await handleSubmitInteraction(item, index);
-          }
-        });
+          });
 
-        li.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowDown' || e.keyCode === 40) {
-            e.preventDefault();
-            cycleThroughSuggestions(block, index + 1);
-          }
-        });
+          li.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+              await handleSubmitInteraction(item, index);
+            }
+          });
 
-        li.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowUp' || e.keyCode === 38) {
-            e.preventDefault();
-            cycleThroughSuggestions(block, index - 1);
-          }
-        });
+          li.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.keyCode === 40) {
+              e.preventDefault();
+              cycleThroughSuggestions(block, index + 1);
+            }
+          });
 
-        suggestionsList.append(li);
+          li.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp' || e.keyCode === 38) {
+              e.preventDefault();
+              cycleThroughSuggestions(block, index - 1);
+            }
+          });
+
+          suggestionsList.append(li);
+        }
       });
     }
   };
