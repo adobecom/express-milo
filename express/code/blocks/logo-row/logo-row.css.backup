@@ -1,0 +1,121 @@
+main .section>.logo-row {
+    max-width: 1280px;
+    padding-bottom: 40px;
+    margin: auto;
+}
+
+main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .logo-row:first-child {
+    padding-top: 40px;
+}
+
+main .logo-row .block-layout {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+main .logo-row.block-layout .text-column {
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 900;
+}
+
+main .logo-row .block-row {
+    display: block;
+    width: fit-content;
+    margin: auto;
+}
+
+main .logo-row .text-column {
+    margin: auto auto 16px auto;
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+main .logo-row .text-content {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+main .logo-row .image-column {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin: auto;
+}
+
+main .logo-row .image-column p {
+    height: fit-content;
+    margin: auto;
+}
+
+main .logo-row.numerous .image-column {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+main .logo-row .brand-image {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: contain;
+}
+
+@media (min-width: 768px ) and (max-width: 1279px) {
+    main .logo-row .block-row {
+        display: flex;
+    }
+
+    main .logo-row .image-column {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+        max-width: unset;
+        margin: auto;
+    }
+
+    main .logo-row .text-column  {
+        margin: auto auto 16px auto;
+        padding-right: initial;
+        max-width: 300px;
+    }
+    main .logo-row .text-column > * {
+        text-align: left;
+        font-size: 20px;
+    }
+
+    main .logo-row .brand-image {
+        object-fit: contain;
+        max-width: 80px;
+        max-height: 80px;
+    }
+}
+
+@media (min-width: 1280px) {
+    main .logo-row .text-column {
+        margin: auto 0 16px auto;
+        padding-right: 40px;
+        max-width: 320px;
+        text-align: left;
+    }
+
+    main .logo-row .block-row {
+        display: flex;
+    }
+
+    main .logo-row .text-column > * {
+        text-align: left;
+    }
+    main .logo-row .image-column {
+        max-width: unset;
+    }
+
+}
