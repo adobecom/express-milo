@@ -434,8 +434,113 @@ Before deploying ANY performance optimization:
 
 ---
 
+---
+
+## 🧪 Test 2 Results: Lighthouse-Recommended Domains
+
+**Test Date**: October 16, 2025  
+**Changed**: Removed Adobe Launch/IMS hints, using only Lighthouse's top 2 picks
+
+### Implementation
+```javascript
+// Test 2: Only 2 hints, no crossorigin
+const preconnectGeo = createTag('link', { rel: 'preconnect', href: 'https://geo2.adobe.com' });
+const preconnectMilo = createTag('link', { rel: 'preconnect', href: 'https://main--milo--adobecom.aem.live' });
+```
+
+### Results vs Stage Baseline
+
+| Metric | Stage | Test 2 | Δ Change | Status |
+|--------|-------|--------|----------|--------|
+| **Performance Score** | 83 | 82 | -1 point | ⚠️ Worse |
+| **LCP** | 3.9s | 4.2s | +0.3s (+8%) | ❌ Worse |
+| **FCP** | 1.6s | 1.6s | 0ms | ⚪ Same |
+| **Speed Index** | 5.4s | 4.9s | -0.5s (-9%) | ✅ Better |
+| **CLS** | 0.008 | 0.008 | 0 | ⚪ Same |
+
+### Results vs Main (Production)
+
+| Metric | Main | Test 2 | Δ Change | Status |
+|--------|------|--------|----------|--------|
+| **Performance Score** | 75 | 82 | +7 points | ✅ Better |
+| **LCP** | 5.0s | 4.2s | -0.8s (-16%) | ✅ Better |
+| **Speed Index** | 6.6s | 4.9s | -1.7s (-26%) | ✅ Better |
+
+### Conclusion: Test 2
+
+**Better than production** but **worse than stage baseline** (which has no preconnects).
+
+**Key Finding**: Preconnects helped Speed Index but hurt LCP. For Core Web Vitals (where LCP is critical), this is a **net negative**.
+
+---
+
+## 📊 Final All-Tests Comparison
+
+| Branch | Performance | LCP | Speed Index | Verdict |
+|--------|-------------|-----|-------------|---------|
+| **Main (prod)** | 75 | 5.0s | 6.6s | Needs optimization |
+| **Stage (baseline)** | 83 | 3.9s | 5.4s | ✅ **BEST** |
+| **Test 1 (4 hints)** | 68 | 9.7s | 6.9s | ❌ **WORST** |
+| **Test 2 (2 hints)** | 82 | 4.2s | 4.9s | ⚠️ Mixed |
+
+---
+
+## 🎓 Final Conclusions
+
+### What We Learned
+
+1. **Preconnects hurt LCP on Slow 4G** - Even "good" candidates regress performance
+   - Test 1: LCP +5.8s (149% worse)
+   - Test 2: LCP +0.3s (8% worse)
+
+2. **Stage baseline is already optimal** - No preconnects needed
+   - Stage outperforms both test branches
+   - Clean code, better results
+
+3. **Speed Index ≠ LCP** - Different metrics, different story
+   - Preconnects can improve visual progression (Speed Index)
+   - But hurt largest element loading (LCP)
+   - Core Web Vitals prioritize LCP
+
+4. **Timing matters critically**
+   - Adding hints via JavaScript is too late
+   - Would need server-side HTML injection
+   - Not practical for Adobe EDS
+
+5. **Bandwidth is limited on mobile**
+   - Slow 4G can't handle multiple preconnects
+   - Each connection competes with content
+   - Fewer connections = faster LCP
+
+### Recommendations
+
+1. ✅ **Use Stage as baseline** - Already optimized (83 score, 3.9s LCP)
+2. ✅ **Focus on proven optimizations**:
+   - Performance branch: 78% LCP improvement
+   - CSS minification: +4 points, -600ms LCP
+3. ❌ **Don't use preconnects** - Net negative for Core Web Vitals
+4. ✅ **Document this as due diligence** - Shows thorough testing
+
+### When Preconnects MIGHT Help
+
+- Fast connections (fiber, 5G) where bandwidth isn't constrained
+- Server-side HTML injection (not JavaScript)
+- True LCP-critical resources (not analytics/tracking)
+- Desktop users (less bandwidth constrained)
+
+### When Preconnects DON'T Help (Our Case)
+
+- ❌ Slow 4G mobile users (Lighthouse testing conditions)
+- ❌ Added via JavaScript (too late in page load)
+- ❌ Non-LCP-critical resources (analytics, tracking, late-loading)
+- ❌ Already-optimized baseline (stage performs better without hints)
+
+---
+
 **Date**: October 16, 2025  
 **Author**: Performance Team  
 **Branch**: `preconnect-hints`  
-**Status**: Closed (Negative Results - Due Diligence)
+**Tests Conducted**: 2 (Test 1 failed, Test 2 mixed results)  
+**Final Decision**: REVERTED - Preconnects don't help in this context  
+**Status**: Closed (Due Diligence Complete - Documented for Learning)
 
