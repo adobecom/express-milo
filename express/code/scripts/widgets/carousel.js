@@ -101,33 +101,16 @@ function onCarouselCSSLoad(selector, parent, options) {
   const faderLeft = createTag('div', { class: 'carousel-fader-left arrow-hidden' });
   const faderRight = createTag('div', { class: 'carousel-fader-right arrow-hidden' });
 
-  // A11y: Use buttons instead of links for carousel navigation
-  // Arrows are hidden from screen readers as keyboard users have arrow keys
-  const arrowLeft = createTag('button', {
-    class: 'button carousel-arrow carousel-arrow-left',
-    'aria-label': 'Scroll to previous items',
-    'aria-hidden': 'true',
-    type: 'button',
-  });
-  const arrowRight = createTag('button', {
-    class: 'button carousel-arrow carousel-arrow-right',
-    'aria-label': 'Scroll to next items',
-    'aria-hidden': 'true',
-    type: 'button',
-  });
+  const arrowLeft = createTag('a', { class: 'button carousel-arrow carousel-arrow-left' });
+  const arrowRight = createTag('a', { class: 'button carousel-arrow carousel-arrow-right' });
+  arrowLeft.title = 'Carousel Left';
+  arrowRight.title = 'Carousel Right';
 
   platform.append(...carouselContent);
 
   if (!options.infinityScrollEnabled) {
-    // A11y: Hide decorative scroll detection triggers from screen readers
-    const leftTrigger = createTag('div', {
-      class: 'carousel-left-trigger',
-      'aria-hidden': 'true',
-    });
-    const rightTrigger = createTag('div', {
-      class: 'carousel-right-trigger',
-      'aria-hidden': 'true',
-    });
+    const leftTrigger = createTag('div', { class: 'carousel-left-trigger' });
+    const rightTrigger = createTag('div', { class: 'carousel-right-trigger' });
 
     platform.prepend(leftTrigger);
     platform.append(rightTrigger);
