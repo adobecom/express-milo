@@ -209,6 +209,10 @@
   color: #131313;
 }
 
+.section .link-list.inline.link-text h3 {
+  margin-bottom: 16px;
+}
+
 .section .link-list.inline .button-container {
   margin-left: 4px;
   margin-right: var(--spacing-200);
@@ -343,6 +347,6 @@
   
   .section .link-list.link-text .text-link-mobile {
     text-align: left;
-    margin-top: 16px;
+    margin-top: 18px;
   }
 }
