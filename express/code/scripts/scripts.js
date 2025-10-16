@@ -405,6 +405,65 @@ const listenAlloy = () => {
 
   await loadArea();
 
+  // BTF (Below-The-Fold) Block Deferral for Performance
+  // Defer loading of blocks that are not immediately visible
+  (function deferBelowTheFoldBlocks() {
+    const viewportHeight = window.innerHeight;
+    const blocks = document.querySelectorAll('main .block[data-block-status]');
+
+    // Blocks that should always load immediately (critical for LCP/UX)
+    const criticalSelectors = [
+      '.hero-marquee',
+      '.grid-marquee',
+      '.marquee',
+      '.header',
+      '.nav',
+    ];
+
+    blocks.forEach((block) => {
+      const isCritical = criticalSelectors.some(
+        (selector) => block.classList.contains(selector.substring(1)),
+      );
+      if (isCritical) return; // Let critical blocks load normally
+
+      const rect = block.getBoundingClientRect();
+      const isAboveFold = rect.top < viewportHeight * 1.5; // 1.5x viewport = "near fold"
+
+      if (!isAboveFold) {
+        // Block is below the fold - defer loading
+        const blockStatus = block.getAttribute('data-block-status');
+
+        // Only defer if block hasn't loaded yet
+        if (blockStatus !== 'loaded') {
+          // Mark as deferred
+          block.setAttribute('data-block-status', 'deferred');
+
+          // Set up lazy loading with IntersectionObserver
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const deferredBlock = entry.target;
+                // Restore original status to trigger loading
+                deferredBlock.setAttribute('data-block-status', 'initialized');
+
+                // Trigger block loading
+                import(`${miloLibs}/utils/utils.js`).then(({ loadBlock }) => {
+                  loadBlock(deferredBlock);
+                });
+
+                observer.unobserve(deferredBlock);
+              }
+            });
+          }, {
+            rootMargin: '300px', // Start loading 300px before visible
+          });
+
+          observer.observe(block);
+        }
+      }
+    });
+  }());
+
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
 

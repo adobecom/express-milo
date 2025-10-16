@@ -747,6 +747,24 @@ main .promotion.auto-promotion:not([data-block-status="loaded"]) {
   display: none;
 }
 
+/* BTF Block Deferral: Reserve space to prevent CLS */
+[data-block-status="deferred"] {
+  min-height: 200px; /* Reserve minimum space for deferred blocks */
+}
+
+[data-block-status="deferred"].simplified-pricing-cards,
+[data-block-status="deferred"].pricing-cards {
+  min-height: 400px; /* Pricing cards need more space */
+}
+
+[data-block-status="deferred"].quotes {
+  min-height: 300px; /* Quotes block needs space */
+}
+
+[data-block-status="deferred"].banner {
+  min-height: 150px; /* Banners need less space */
+}
+
 /* free plan widget */
 main .button-container.free-plan-container {
   position: relative;
