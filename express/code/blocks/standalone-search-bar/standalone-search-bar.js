@@ -5,8 +5,38 @@ import { trackSearch, generateSearchId } from '../../scripts/template-search-api
 let createTag; let getConfig;
 let replaceKeyArray; let blockConfig;
 
+// Search configuration constants
+const SEARCH_CONFIG = {
+  THROTTLE_DELAY: 300,
+  DEBOUNCE_DELAY: 500,
+  SUGGESTIONS_LIMIT: 7,
+};
+
+// Key codes for keyboard navigation
+const KEY_CODES = {
+  ARROW_DOWN: 40,
+  ARROW_UP: 38,
+  ESCAPE: 27,
+  ENTER: 13,
+};
+
+// Default text values
+const DEFAULT_TEXT = {
+  SEARCH_PLACEHOLDER: 'Search for over 50,000 templates',
+  SEARCH_HINT: 'Search',
+};
+
+// CSS class constants
+const CSS_CLASSES = {
+  SEARCH_BAR_WRAPPER: 'search-bar-wrapper',
+  SEARCH_DROPDOWN: 'search-dropdown-container',
+  SUGGESTIONS_LIST: 'suggestions-list',
+  HIDDEN: 'hidden',
+  SEARCH_INPUT_WRAPPER: 'search-input-wrapper',
+};
+
 function cycleThroughSuggestions(block, targetIndex = 0) {
-  const suggestions = block.querySelectorAll('.suggestions-list li');
+  const suggestions = block.querySelectorAll(`.${CSS_CLASSES.SUGGESTIONS_LIST} li`);
   const searchBar = block.querySelector('input.search-bar');
 
   // If trying to go before first suggestion, return to search input
@@ -57,13 +87,13 @@ function buildSearchConfig(block) {
 }
 
 function initSearchFunction(block, searchBarWrapper) {
-  const searchDropdown = searchBarWrapper.querySelector('.search-dropdown-container');
+  const searchDropdown = searchBarWrapper.querySelector(`.${CSS_CLASSES.SEARCH_DROPDOWN}`);
   const searchForm = searchBarWrapper.querySelector('.search-form');
   const searchBar = searchBarWrapper.querySelector('input.search-bar');
   const clearBtn = searchBarWrapper.querySelector('.icon-search-clear');
   const trendsContainer = searchBarWrapper.querySelector('.trends-container');
   const suggestionsContainer = searchBarWrapper.querySelector('.suggestions-container');
-  const suggestionsList = searchBarWrapper.querySelector('.suggestions-list');
+  const suggestionsList = searchBarWrapper.querySelector(`.${CSS_CLASSES.SUGGESTIONS_LIST}`);
 
   clearBtn.style.display = 'none';
 
@@ -86,33 +116,33 @@ function initSearchFunction(block, searchBarWrapper) {
   searchBar.addEventListener('click', (e) => {
     e.stopPropagation();
     searchBar.scrollIntoView({ behavior: 'smooth' });
-    searchDropdown.classList.remove('hidden');
+    searchDropdown.classList.remove(CSS_CLASSES.HIDDEN);
   }, { passive: true });
 
   searchBar.addEventListener('keyup', () => {
     if (searchBar.value !== '') {
       clearBtn.style.display = 'inline-block';
-      trendsContainer.classList.add('hidden');
-      suggestionsContainer.classList.remove('hidden');
+      trendsContainer.classList.add(CSS_CLASSES.HIDDEN);
+      suggestionsContainer.classList.remove(CSS_CLASSES.HIDDEN);
     } else {
       clearBtn.style.display = 'none';
-      trendsContainer.classList.remove('hidden');
-      suggestionsContainer.classList.add('hidden');
+      trendsContainer.classList.remove(CSS_CLASSES.HIDDEN);
+      suggestionsContainer.classList.add(CSS_CLASSES.HIDDEN);
     }
   }, { passive: true });
 
   searchBar.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown' || e.keyCode === 40) {
+    if (e.key === 'ArrowDown' || e.keyCode === KEY_CODES.ARROW_DOWN) {
       e.preventDefault();
       cycleThroughSuggestions(block);
-    } else if (e.key === 'ArrowUp' || e.keyCode === 38) {
+    } else if (e.key === 'ArrowUp' || e.keyCode === KEY_CODES.ARROW_UP) {
       e.preventDefault();
       const suggestions = block.querySelectorAll('.suggestions-list li');
       if (suggestions.length > 0) {
         cycleThroughSuggestions(block, suggestions.length - 1);
       }
-    } else if (e.key === 'Escape' || e.keyCode === 27) {
-      searchDropdown.classList.add('hidden');
+    } else if (e.key === 'Escape' || e.keyCode === KEY_CODES.ESCAPE) {
+      searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
       searchBar.blur();
     }
   });
@@ -120,7 +150,7 @@ function initSearchFunction(block, searchBarWrapper) {
   document.addEventListener('click', (e) => {
     const { target } = e;
     if (target !== searchBarWrapper && !searchBarWrapper.contains(target)) {
-      searchDropdown.classList.add('hidden');
+      searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
     }
   }, { passive: true });
 
@@ -146,7 +176,6 @@ function initSearchFunction(block, searchBarWrapper) {
       source: block.dataset.blockName,
       target: searchBar.value,
     }, 1);
-    console.log('onSearchSubmit', searchBar.value);
     await redirectSearch();
   };
 
@@ -166,8 +195,8 @@ function initSearchFunction(block, searchBarWrapper) {
   clearBtn.addEventListener('click', () => {
     searchBar.value = '';
     suggestionsList.innerHTML = '';
-    trendsContainer.classList.remove('hidden');
-    suggestionsContainer.classList.add('hidden');
+    trendsContainer.classList.remove(CSS_CLASSES.HIDDEN);
+    suggestionsContainer.classList.add(CSS_CLASSES.HIDDEN);
     clearBtn.style.display = 'none';
   }, { passive: true });
 
@@ -184,30 +213,30 @@ function initSearchFunction(block, searchBarWrapper) {
         });
 
         li.addEventListener('keydown', async (e) => {
-          if (e.key === 'Enter' || e.keyCode === 13) {
+          if (e.key === 'Enter' || e.keyCode === KEY_CODES.ENTER) {
             await handleSubmitInteraction(item, index);
           }
         });
 
         li.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowDown' || e.keyCode === 40) {
+          if (e.key === 'ArrowDown' || e.keyCode === KEY_CODES.ARROW_DOWN) {
             e.preventDefault();
             cycleThroughSuggestions(block, index + 1);
           }
         });
 
         li.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowUp' || e.keyCode === 38) {
+          if (e.key === 'ArrowUp' || e.keyCode === KEY_CODES.ARROW_UP) {
             e.preventDefault();
             cycleThroughSuggestions(block, index - 1);
           }
         });
 
         li.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' || e.keyCode === 27) {
+          if (e.key === 'Escape' || e.keyCode === KEY_CODES.ESCAPE) {
             e.preventDefault();
             searchBar.focus();
-            searchDropdown.classList.add('hidden');
+            searchDropdown.classList.add(CSS_CLASSES.HIDDEN);
           }
         });
 
@@ -227,7 +256,11 @@ function initSearchFunction(block, searchBarWrapper) {
     const { inputHandler } = useInputAutocomplete(
       suggestionsListUIUpdateCB,
       getConfig,
-      { throttleDelay: 300, debounceDelay: 500, limit: 7 },
+      {
+        throttleDelay: SEARCH_CONFIG.THROTTLE_DELAY,
+        debounceDelay: SEARCH_CONFIG.DEBOUNCE_DELAY,
+        limit: SEARCH_CONFIG.SUGGESTIONS_LIMIT,
+      },
     );
     searchBar.addEventListener('input', inputHandler);
   });
@@ -270,8 +303,8 @@ async function decorateSearchFunctions(block) {
   const searchBar = createTag('input', {
     class: 'search-bar',
     type: 'text',
-    placeholder: blockConfig['search-bar-text'] || 'Search for over 50,000 templates',
-    enterKeyHint: blockConfig['search-enter-hint'] || 'Search',
+    placeholder: blockConfig['search-bar-text'] || DEFAULT_TEXT.SEARCH_PLACEHOLDER,
+    enterKeyHint: blockConfig['search-enter-hint'] || DEFAULT_TEXT.SEARCH_HINT,
   });
 
   searchForm.append(searchBar);
