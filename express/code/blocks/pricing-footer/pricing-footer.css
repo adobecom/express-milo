@@ -8,7 +8,7 @@
 
 .pricing-footer > div {
   width: var(--ax-grid-12-col-width);
-  border-radius: 4px;
+  border-radius: var(--border-radius-small, 4px);
   background: var(--palette-indigo-200);
   padding: var(--spacing-200) var(--spacing-100);
   box-sizing: border-box;
@@ -18,10 +18,10 @@
 main .section .pricing-footer p {
   margin: 0;
   color: var(--color-gray-900);
-  font-size: 12px;
+  font-size: var(--font-size-small, 12px);
   font-style: normal;
   font-weight: 400;
-  line-height: 130%;
+  line-height: var(--line-height-tight, 130%);
 }
 
 .pricing-footer.card-count-2 {
