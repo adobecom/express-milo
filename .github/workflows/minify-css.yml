@@ -1,0 +1,192 @@
+name: Minify CSS
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      swap_files:
+        description: 'Swap original files with minified versions'
+        required: false
+        type: boolean
+        default: false
+  
+  # Auto-run on push to specific branches (optional)
+  push:
+    branches:
+      - css-minification
+      - stage
+      - main
+    paths:
+      - 'express/code/blocks/**/*.css'
+      - '!express/code/blocks/**/*.min.css'
+      - 'express/code/styles/**/*.css'
+
+  # Run on PRs to show savings (optional)
+  pull_request:
+    paths:
+      - 'express/code/blocks/**/*.css'
+      - '!express/code/blocks/**/*.min.css'
+
+jobs:
+  minify:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up permissions
+        run: |
+          chmod +x scripts/minify-css.sh
+          chmod +x scripts/use-minified-css.sh
+          chmod +x scripts/restore-original-css.sh
+      
+      - name: Find changed CSS files
+        id: changed-files
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # For PRs, get changed files
+            git fetch origin ${{ github.base_ref }}
+            CHANGED_CSS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.css$' | grep -v '\.min\.css$' || true)
+          else
+            # For pushes, get changed files from last commit
+            CHANGED_CSS=$(git diff --name-only HEAD~1 HEAD | grep -E '\.css$' | grep -v '\.min\.css$' || true)
+          fi
+          
+          if [ -z "$CHANGED_CSS" ]; then
+            echo "No CSS files changed"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changed CSS files:"
+            echo "$CHANGED_CSS"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGED_CSS" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Minify changed CSS files
+        if: steps.changed-files.outputs.has_changes == 'true'
+        id: minify
+        run: |
+          echo "## 🎨 CSS Minification Results" > minify-report.txt
+          echo "" >> minify-report.txt
+          
+          TOTAL_ORIGINAL=0
+          TOTAL_MINIFIED=0
+          FILES_COUNT=0
+          
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              echo "Processing: $file"
+              
+              # Get original size
+              ORIGINAL_SIZE=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file")
+              ORIGINAL_KB=$((ORIGINAL_SIZE / 1024))
+              
+              # Minify the file
+              ./scripts/minify-css.sh "$file"
+              
+              # Get minified size
+              MIN_FILE="${file%.css}.min.css"
+              if [ -f "$MIN_FILE" ]; then
+                MINIFIED_SIZE=$(stat -f%z "$MIN_FILE" 2>/dev/null || stat -c%s "$MIN_FILE")
+                MINIFIED_KB=$((MINIFIED_SIZE / 1024))
+                SAVED_KB=$((ORIGINAL_KB - MINIFIED_KB))
+                SAVED_PERCENT=$((SAVED_KB * 100 / ORIGINAL_KB))
+                
+                echo "| \`$(basename $file)\` | ${ORIGINAL_KB} KB | ${MINIFIED_KB} KB | ${SAVED_KB} KB | ${SAVED_PERCENT}% |" >> minify-report.txt
+                
+                TOTAL_ORIGINAL=$((TOTAL_ORIGINAL + ORIGINAL_KB))
+                TOTAL_MINIFIED=$((TOTAL_MINIFIED + MINIFIED_KB))
+                FILES_COUNT=$((FILES_COUNT + 1))
+              fi
+            fi
+          done <<< "${{ steps.changed-files.outputs.files }}"
+          
+          TOTAL_SAVED=$((TOTAL_ORIGINAL - TOTAL_MINIFIED))
+          TOTAL_PERCENT=$((TOTAL_SAVED * 100 / TOTAL_ORIGINAL))
+          
+          # Create summary
+          {
+            echo "| File | Original | Minified | Saved | % |"
+            echo "|------|----------|----------|-------|---|"
+            cat minify-report.txt
+            echo "| **TOTAL** | **${TOTAL_ORIGINAL} KB** | **${TOTAL_MINIFIED} KB** | **${TOTAL_SAVED} KB** | **${TOTAL_PERCENT}%** |"
+          } > minify-summary.txt
+          
+          cat minify-summary.txt
+          
+          echo "total_saved=${TOTAL_SAVED}" >> $GITHUB_OUTPUT
+          echo "files_count=${FILES_COUNT}" >> $GITHUB_OUTPUT
+      
+      - name: Swap files if requested
+        if: |
+          steps.changed-files.outputs.has_changes == 'true' && 
+          (github.event.inputs.swap_files == 'true' || 
+           github.ref == 'refs/heads/main' || 
+           github.ref == 'refs/heads/stage')
+        run: |
+          echo "🔄 Swapping to minified versions..."
+          ./scripts/use-minified-css.sh
+      
+      - name: Commit minified files
+        if: steps.changed-files.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add express/code/blocks/**/*.min.css
+          git add express/code/blocks/**/*.backup
+          git add express/code/styles/**/*.min.css
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update minified CSS files [skip ci]"
+            git push
+          fi
+      
+      - name: Comment on PR
+        if: |
+          github.event_name == 'pull_request' && 
+          steps.changed-files.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('minify-summary.txt', 'utf8');
+            
+            const comment = `## 🎨 CSS Minification Report
+            
+            ${summary}
+            
+            ### 💡 What This Means
+            - ✅ Minified files will be automatically generated
+            - 💰 Estimated bandwidth savings: ~${process.env.TOTAL_SAVED} KB per page load
+            - 📦 Files will be committed to the branch
+            
+            ### 🚀 To Use Minified Files
+            Run: \`./scripts/use-minified-css.sh\` to swap originals with minified versions.
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          env:
+            TOTAL_SAVED: ${{ steps.minify.outputs.total_saved }}
+      
+      - name: Upload minification report
+        if: steps.changed-files.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: minification-report
+          path: minify-summary.txt
+          retention-days: 30
+

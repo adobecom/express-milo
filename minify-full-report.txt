@@ -1,0 +1,73 @@
+==================================================
+🎨 CSS Minification Script
+==================================================
+Target: express/code/blocks
+Dry Run: false
+
+[0;32m✓[0m express/code/blocks/login-page/login-page.css
+  Original: 1 KB → Minified: 1 KB (Saved: 0 KB / 12%)
+[0;32m✓[0m express/code/blocks/promotion/promotion.css
+  Original: 0 KB → Minified: 0 KB (Saved: 0 KB / 0%)
+[0;32m✓[0m express/code/blocks/pricing-cards-v2/pricing-cards-v2.css
+  Original: 11 KB → Minified: 10 KB (Saved: 1 KB / 8%)
+[0;32m✓[0m express/code/blocks/drawer-cards/drawer-cards.css
+  Original: 8 KB → Minified: 7 KB (Saved: 1 KB / 12%)
+[0;32m✓[0m express/code/blocks/banner-bg/banner-bg.css
+  Original: 5 KB → Minified: 5 KB (Saved: 0 KB / 7%)
+[0;32m✓[0m express/code/blocks/susi-light/susi-light.css
+  Original: 4 KB → Minified: 3 KB (Saved: 0 KB / 8%)
+[0;32m✓[0m express/code/blocks/ax-grid-demo/ax-grid-demo.css
+  Original: 1 KB → Minified: 1 KB (Saved: 0 KB / 9%)
+[0;32m✓[0m express/code/blocks/split-action/split-action.css
+  Original: 2 KB → Minified: 2 KB (Saved: 0 KB / 15%)
+[0;32m✓[0m express/code/blocks/cta-cards/cta-cards.css
+  Original: 1 KB → Minified: 1 KB (Saved: 0 KB / 10%)
+[0;32m✓[0m express/code/blocks/template-list/template-list.css
+  Original: 60 KB → Minified: 60 KB (Saved: 0 KB / 0%)
+[0;32m✓[0m express/code/blocks/playlist/playlist.css
+  Original: 9 KB → Minified: 7 KB (Saved: 1 KB / 17%)
+[0;32m✓[0m express/code/blocks/app-banner/app-banner.css
+  Original: 2 KB → Minified: 2 KB (Saved: 0 KB / 17%)
+[0;32m✓[0m express/code/blocks/template-x-promo/template-x-promo.css
+  Original: 18 KB → Minified: 16 KB (Saved: 1 KB / 9%)
+[0;32m✓[0m express/code/blocks/feature-list/feature-list.css
+  Original: 0 KB → Minified: 0 KB (Saved: 0 KB / 17%)
+[0;32m✓[0m express/code/blocks/seo-nav/seo-nav.css
+  Original: 2 KB → Minified: 2 KB (Saved: 0 KB / 10%)
+[0;32m✓[0m express/code/blocks/collapsible-card/collapsible-card.css
+  Original: 1 KB → Minified: 1 KB (Saved: 0 KB / 14%)
+[0;32m✓[0m express/code/blocks/wayfinder/wayfinder.css
+  Original: 3 KB → Minified: 2 KB (Saved: 0 KB / 19%)
+[0;32m✓[0m express/code/blocks/discover-cards/discover-cards.css
+  Original: 9 KB → Minified: 8 KB (Saved: 1 KB / 12%)
+[0;32m✓[0m express/code/blocks/frictionless-quick-action-mobile/frictionless-quick-action-mobile.css
+  Original: 6 KB → Minified: 5 KB (Saved: 0 KB / 11%)
+[0;32m✓[0m express/code/blocks/embed/embed.css
+  Original: 0 KB → Minified: 0 KB (Saved: 0 KB / 13%)
+[0;32m✓[0m express/code/blocks/mobile-fork-button-dismissable/mobile-fork-button-dismissable.css
+  Original: 2 KB → Minified: 2 KB (Saved: 0 KB / 13%)
+[0;32m✓[0m express/code/blocks/hover-cards/hover-cards.css
+  Original: 2 KB → Minified: 2 KB (Saved: 0 KB / 9%)
+[0;32m✓[0m express/code/blocks/hero-color/hero-color.css
+  Original: 2 KB → Minified: 2 KB (Saved: 0 KB / 12%)
+[0;32m✓[0m express/code/blocks/interactive-marquee/interactive-marquee.css
+  Original: 17 KB → Minified: 14 KB (Saved: 2 KB / 15%)
+[0;32m✓[0m express/code/blocks/quotes/quotes.css
+  Original: 16 KB → Minified: 16 KB (Saved: 0 KB / 0%)
+[0;32m✓[0m express/code/blocks/templates-as-a-service/library/dist/templates-as-a-service.css
+  Original: 2 KB → Minified: 2 KB (Saved: 0 KB / 0%)
+[0;32m✓[0m express/code/blocks/templates-as-a-service/library/src/dev-styles.css
+  Original: 0 KB → Minified: 0 KB (Saved: 0 KB / 0%)
+[0;32m✓[0m express/code/blocks/templates-as-a-service/library/src/App.css
+  Original: 3 KB → Minified: 3 KB (Saved: 0 KB / 13%)
+./scripts/minify-css.sh: line 76: saved * 100 / original_size: division by 0 (error token is "e")
+
+==================================================
+📊 Summary
+==================================================
+Files processed: 29
+Total original size: 198 KB
+Total minified size: 184 KB
+[0;32mTotal saved: 14 KB (7%)[0m
+
+✅ Done!
