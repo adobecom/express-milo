@@ -283,12 +283,35 @@ export default async function decorate($block) {
       const $img = $rows[0].children[0].querySelector('img');
       const backgroundUrl = $img.src;
 
-      const backgroundDesktopCSS = `no-repeat calc(-400px + 25%) -20px / 640px url("${backgroundUrl}"), `
-        + `no-repeat calc(450px + 75%) -20px / 640px url("${backgroundUrl}")`;
-      $desktopContainerBackground.style.background = backgroundDesktopCSS;
+      // Store background URLs in data attributes for lazy loading
+      // Desktop: Use single image instead of duplicate
+      const backgroundDesktopCSS = `no-repeat center center / cover url("${backgroundUrl}")`;
+      $desktopContainerBackground.setAttribute('data-background', backgroundDesktopCSS);
 
       const backgroundMobileCSS = `no-repeat -80px -48px / 750px url("${backgroundUrl}")`;
-      $mobileContainerBackground.style.background = backgroundMobileCSS;
+      $mobileContainerBackground.setAttribute('data-background', backgroundMobileCSS);
+
+      // Lazy load backgrounds using Intersection Observer
+      const lazyLoadBackground = (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const element = entry.target;
+            const background = element.getAttribute('data-background');
+            if (background) {
+              element.style.background = background;
+              element.removeAttribute('data-background');
+            }
+            observer.unobserve(element);
+          }
+        });
+      };
+
+      const observer = new IntersectionObserver(lazyLoadBackground, {
+        rootMargin: '50px', // Start loading 50px before entering viewport
+      });
+
+      observer.observe($desktopContainerBackground);
+      observer.observe($mobileContainerBackground);
 
       $rows.shift();
     }
