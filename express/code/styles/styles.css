@@ -746,6 +746,13 @@ main .section.modular-search {
   }
 }
 
+@media (min-width: 1800px) {
+  main .section.modular-search {
+    margin: 0 auto var(--spacing-900) auto;
+    max-width: 1679px;
+  }
+}
+
 /* Align link-list with template container when in modular-search */
 main .section.modular-search .link-list-wrapper,
 main .section.modular-search .link-list-wrapper:has(.link-list),
