@@ -265,34 +265,31 @@ export default async function decorate($block) {
   if (isSingularVariant) {
     const $rows = [...$block.querySelectorAll(':scope>div')];
 
-    // The Desktop design has a different element layout from the mobile design, plus
-    // the desktop design uses the background image twice, while the mobile design uses
-    // it once. Because of the many differences, it may be simpler to divide them into two layouts
-    const $quoteContainer = createTag('div', { class: 'quote-container' });
-    const $desktopContainer = createTag('div', { class: 'desktop-container' });
-    const $mobileContainer = createTag('div', { class: 'mobile-container' });
-    const $desktopContainerBackground = createTag('div', { class: 'background' });
-    const $mobileContainerBackground = createTag('div', { class: 'background' });
+    // Only create the container for the active device (mobile or desktop)
+    // This reduces DOM size and avoids rendering hidden elements
+    const deviceType = document.body.getAttribute('data-device');
+    const isMobile = deviceType === 'mobile';
 
-    $desktopContainer.append($desktopContainerBackground);
-    $mobileContainer.append($mobileContainerBackground);
-    $quoteContainer.append($desktopContainer);
-    $quoteContainer.append($mobileContainer);
+    const $quoteContainer = createTag('div', { class: 'quote-container' });
+    const $container = createTag('div', { class: isMobile ? 'mobile-container' : 'desktop-container' });
+    const $containerBackground = createTag('div', { class: 'background' });
+
+    $container.append($containerBackground);
+    $quoteContainer.append($container);
 
     if ($rows[0].children.length === 1) {
       const $img = $rows[0].children[0].querySelector('img');
       const backgroundUrl = $img.src;
 
-      // Store background URLs in data attributes for lazy loading
+      // Store background URL in data attribute for lazy loading
       // Desktop: Keep original positioning but use single image (remove duplicate)
-      const backgroundDesktopCSS = `no-repeat calc(-400px + 25%) -20px / 640px url("${backgroundUrl}")`;
-      $desktopContainerBackground.setAttribute('data-background', backgroundDesktopCSS);
-
       // Mobile: Keep original positioning
-      const backgroundMobileCSS = `no-repeat -80px -48px / 750px url("${backgroundUrl}")`;
-      $mobileContainerBackground.setAttribute('data-background', backgroundMobileCSS);
+      const backgroundCSS = isMobile
+        ? `no-repeat -80px -48px / 750px url("${backgroundUrl}")`
+        : `no-repeat calc(-400px + 25%) -20px / 640px url("${backgroundUrl}")`;
+      $containerBackground.setAttribute('data-background', backgroundCSS);
 
-      // Lazy load backgrounds using Intersection Observer
+      // Lazy load background using Intersection Observer
       const lazyLoadBackground = (entries, observer) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -311,14 +308,7 @@ export default async function decorate($block) {
         rootMargin: '50px', // Start loading 50px before entering viewport
       });
 
-      // Only observe the background for the active device (mobile or desktop)
-      // This saves 356 KB by not loading the hidden background
-      const deviceType = document.body.getAttribute('data-device');
-      if (deviceType === 'mobile') {
-        observer.observe($mobileContainerBackground);
-      } else {
-        observer.observe($desktopContainerBackground);
-      }
+      observer.observe($containerBackground);
 
       $rows.shift();
     }
@@ -326,17 +316,13 @@ export default async function decorate($block) {
     // at this point, $rows contains only quotes (no param)
     const $quoteSelected = pickRandomFromArray($rows);
     const $picture = $quoteSelected.querySelector('picture');
-    const $quoteDesktop = createTag('div', { class: 'quote' });
+    const authorDescription = $quoteSelected.children[1].textContent;
 
-    $desktopContainer.append($quoteDesktop);
-
-    const $authorPhoto = createTag('div', { class: 'author-photo' });
-    $quoteDesktop.append($authorPhoto);
-
-    $authorPhoto.append($picture);
+    const $quote = createTag('div', { class: 'quote' });
+    $container.append($quote);
 
     const $quoteDetails = createTag('div', { class: 'quote-details' });
-    $quoteDesktop.append($quoteDetails);
+    $quote.append($quoteDetails);
 
     const $quoteComment = createTag('div', { class: 'quote-comment' });
     $quoteDetails.append($quoteComment);
@@ -345,35 +331,28 @@ export default async function decorate($block) {
       $quoteSelected.firstElementChild.textContent,
     ));
 
-    const authorDescription = $quoteSelected.children[1].textContent;
+    if (isMobile) {
+      // Mobile layout: author-panel with photo and description
+      const $quoteAuthorPanel = createTag('div', { class: 'author-panel' });
+      $quoteDetails.append($quoteAuthorPanel);
 
-    const $authorDescription = createTag('div', { class: 'author-description' });
-    $quoteDetails.append($authorDescription);
+      const $quoteAuthorPhoto = createTag('div', { class: 'author-photo' });
+      $quoteAuthorPanel.append($quoteAuthorPhoto);
 
-    $authorDescription.append(authorDescription);
+      $quoteAuthorPhoto.append($picture);
+      $quoteAuthorPanel.append(authorDescription);
+    } else {
+      // Desktop layout: author-photo before quote-details
+      const $authorPhoto = createTag('div', { class: 'author-photo' });
+      $quote.insertBefore($authorPhoto, $quoteDetails);
 
-    // Mobile layout
+      $authorPhoto.append($picture);
 
-    const $quoteMobile = createTag('div', { class: 'quote' });
-    $mobileContainer.append($quoteMobile);
+      const $authorDescription = createTag('div', { class: 'author-description' });
+      $quoteDetails.append($authorDescription);
 
-    const $quoteDetailsMobile = createTag('div', { class: 'quote-details' });
-    $quoteMobile.append($quoteDetailsMobile);
-
-    const $quoteCommentMobile = $quoteComment.cloneNode(true);
-
-    $quoteDetailsMobile.append($quoteCommentMobile);
-
-    const $quoteAuthorPanelMobile = createTag('div', { class: 'author-panel' });
-    $quoteDetailsMobile.append($quoteAuthorPanelMobile);
-
-    const $quoteAuthorPhotoMobile = createTag('div', { class: 'author-photo' });
-    $quoteAuthorPanelMobile.append($quoteAuthorPhotoMobile);
-
-    const $pictureCloned = $picture.cloneNode(true);
-
-    $quoteAuthorPhotoMobile.append($pictureCloned);
-    $quoteAuthorPanelMobile.append(authorDescription);
+      $authorDescription.append(authorDescription);
+    }
 
     $block.replaceChildren($quoteContainer);
   } else if (isCarouselVariant) {
