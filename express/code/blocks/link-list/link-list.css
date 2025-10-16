@@ -308,3 +308,19 @@
     max-width: 1200px;
   }
 }
+
+/* Text link styling for link-text variant */
+.section .link-list p.button-container.text-link a.text-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #292929;
+  text-decoration: underline;
+  font-size: inherit;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.section .link-list p.button-container.text-link a.text-link:hover {
+  text-decoration: none;
+}

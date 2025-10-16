@@ -6,6 +6,7 @@ import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
 let replaceKey;
 let getConfig;
+let createTag;
 const DEFAULT_VARIANT = 'default';
 const SMART_VARIANT = 'smart';
 
@@ -96,7 +97,7 @@ export default async function decorate(block) {
   }
   addTempWrapperDeprecated(block, 'link-list');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
-    ({ getConfig } = utils);
+    ({ getConfig, createTag } = utils);
     ({ replaceKey } = placeholders);
   });
   const options = {};
@@ -111,6 +112,30 @@ export default async function decorate(block) {
     }
   }
 
+  if (block.classList.contains('link-text')) {
+    // Find the last row that's not already a button-container
+    const allRows = [...block.children];
+    const lastRow = allRows[allRows.length - 1];
+
+    if (lastRow && !lastRow.classList.contains('button-container')) {
+      // Convert last row to a text link
+      const linkText = lastRow.textContent.trim();
+      const linkHref = lastRow.querySelector('a')?.href || '#';
+
+      // Create text link container
+      const textLinkContainer = createTag('p', { class: 'button-container text-link' });
+      const textLink = createTag('a', {
+        href: linkHref,
+        class: 'text-link-style',
+      });
+      textLink.textContent = linkText;
+      textLinkContainer.append(textLink);
+
+      // Replace the last row with our text link
+      lastRow.replaceWith(textLinkContainer);
+    }
+  }
+
   if (block.classList.contains('center')) {
     options.centerAlign = true;
   }
@@ -120,10 +145,17 @@ export default async function decorate(block) {
   if (links.length) {
     links.forEach((p) => {
       const link = p.querySelector('a');
-      link.classList.add('secondary');
 
-      link.classList.add('medium');
-      link.classList.remove('accent');
+      // Apply different styling based on link type
+      if (link.classList.contains('text-link-style')) {
+        // Text link styling - no button classes
+        link.classList.add('text-link');
+      } else {
+        // Button link styling
+        link.classList.add('secondary');
+        link.classList.add('medium');
+        link.classList.remove('accent');
+      }
     });
     const platformEl = document.createElement('div');
     platformEl.classList.add('link-list-platform');
