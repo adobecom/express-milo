@@ -100,6 +100,13 @@ function initSearchFunction(block, searchBarWrapper) {
     if (e.key === 'ArrowDown' || e.keyCode === 40) {
       e.preventDefault();
       cycleThroughSuggestions(block);
+    } else if (e.key === 'Tab' && !e.shiftKey) {
+      // Check if suggestions are visible and have items
+      const suggestions = block.querySelectorAll('.suggestions-list li');
+      if (!suggestionsContainer.classList.contains('hidden') && suggestions.length > 0) {
+        e.preventDefault();
+        cycleThroughSuggestions(block, 0); // Focus first suggestion
+      }
     }
   });
 
@@ -178,9 +185,11 @@ function initSearchFunction(block, searchBarWrapper) {
         if (li) {
           // Update existing item
           li.innerHTML = highlightedQuery;
+          // Set tabindex: first item focusable, others not
+          li.tabIndex = index === 0 ? 0 : -1;
         } else {
-          // Create new item
-          li = createTag('li', { tabindex: -1 });
+          // Create new item - first item focusable, others not
+          li = createTag('li', { tabindex: index === 0 ? 0 : -1 });
           li.innerHTML = highlightedQuery;
           
           li.addEventListener('click', async () => {
@@ -190,18 +199,19 @@ function initSearchFunction(block, searchBarWrapper) {
           li.addEventListener('keydown', async (e) => {
             if (e.key === 'Enter' || e.keyCode === 13) {
               await handleSubmitInteraction(item, index);
-            }
-          });
-
-          li.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowDown' || e.keyCode === 40) {
+            } else if (e.key === 'Tab') {
+              e.preventDefault();
+              const nextIndex = e.shiftKey ? index - 1 : index + 1;
+              if (nextIndex >= 0 && nextIndex < suggestions.length) {
+                cycleThroughSuggestions(block, nextIndex);
+              } else if (!e.shiftKey && nextIndex >= suggestions.length) {
+                // Tab out of dropdown - return focus to search input
+                searchBar.focus();
+              }
+            } else if (e.key === 'ArrowDown' || e.keyCode === 40) {
               e.preventDefault();
               cycleThroughSuggestions(block, index + 1);
-            }
-          });
-
-          li.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp' || e.keyCode === 38) {
+            } else if (e.key === 'ArrowUp' || e.keyCode === 38) {
               e.preventDefault();
               cycleThroughSuggestions(block, index - 1);
             }
