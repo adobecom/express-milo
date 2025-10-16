@@ -246,7 +246,6 @@ export function createDefaultExportConfig() {
         variant: isSafariBrowser ? 'accent' : 'secondary',
       },
       buttonStyle: {
-        variant: isSafariBrowser ? 'accent' : 'secondary',
         treatment: 'fill',
         size: 'xl',
       },
