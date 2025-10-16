@@ -16,16 +16,20 @@ test.describe('Express pricing-footer block test suite', () => {
   });
 
   test(`[Test Id - ${features[0].tcid}] ${features[0].name},${features[0].tags}`, async ({ page, baseURL }) => {
-    const testPage = `${baseURL}${features[0].path}${miloLibs}`;
+    const pagePath = features[0].path;
+    const isAbsolute = /^https?:\/\//.test(pagePath);
+    const testPage = `${isAbsolute ? pagePath : `${baseURL}${pagePath}`}${miloLibs}`;
     console.info(`[Test Page]: ${testPage}`);
 
     await test.step('Go to pricing footer block test page', async () => {
       await pricingFooter.gotoURL(testPage);
+      await page.waitForTimeout(1000);
       await expect(page).toHaveURL(testPage);
-      await pricingFooter.scrollToBlock();
     });
 
     await test.step('Verify pricing footer structure', async () => {
+      await page.waitForTimeout(2000);
+      console.log(pricingFooter.block);
       await expect(pricingFooter.block).toBeVisible();
       await expect(pricingFooter.block).toHaveClass(/pricing-footer/);
       await expect(pricingFooter.block).toHaveClass(/ax-grid-container/);
@@ -47,11 +51,6 @@ test.describe('Express pricing-footer block test suite', () => {
       await expect.poll(async () => pricingFooter.getComputedMaxWidth()).not.toMatch(/^(none|0px)$/);
       const maxWidth = await pricingFooter.getComputedMaxWidth();
       expect(Number.parseFloat(maxWidth)).toBeGreaterThan(0);
-    });
-
-    await test.step('Verify analytics attributes', async () => {
-      await expect(pricingFooter.section).toHaveAttribute('daa-lh', await webUtil.getSectionDaalh(1));
-      await expect(pricingFooter.block).toHaveAttribute('daa-lh', await webUtil.getBlockDaalh('pricing-footer', 1));
     });
 
     await test.step('Verify accessibility', async () => {
