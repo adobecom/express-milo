@@ -474,14 +474,65 @@ const preconnectMilo = createTag('link', { rel: 'preconnect', href: 'https://mai
 
 ---
 
+## ❌ **Test 3: Video Preload (FAILED)**
+
+**Test Date**: October 16, 2025  
+**Hypothesis**: Preloading hero video would improve LCP (assuming video is LCP element)
+
+### Implementation
+```javascript
+// Preload hero video to improve LCP
+const videoPreload = createTag('link', {
+  rel: 'preload',
+  href: '/express/assets/video/marketing/homepage/media_1d617584...mp4',
+  as: 'video',
+  type: 'video/mp4',
+});
+document.head.appendChild(videoPreload);
+```
+
+### Results vs Stage (Baseline)
+
+| Metric | Stage | Test 3 (Video Preload) | Δ Change | Status |
+|--------|-------|------------------------|----------|--------|
+| **Performance Score** | 83 | 84 | +1 point | ✅ Better |
+| **FCP** | 1.6s | 1.6s | 0s | ⚪ Same |
+| **LCP** | 4.0s | 4.2s | +0.2s (+5%) | ❌ **WORSE** |
+| **Speed Index** | 5.4s | 3.8s | -1.6s (-30%) | ✅ **MUCH BETTER** |
+| **CLS** | 0.008 | 0.004 | -0.004 | ✅ Better |
+
+### Conclusion: Test 3
+
+**REJECTED** - Despite Speed Index improvement, LCP regressed (the critical metric).
+
+**Root Cause**:
+- Video is NOT the LCP element (text `<p>` is)
+- Preloading video competes with actual LCP resource
+- LCP render delay increased to 1,530ms
+- On Slow 4G, ANY extra resource hurts LCP
+
+**Key Learning**: Only preload resources that ARE your LCP element. Preloading non-LCP resources (even "important" ones like hero videos) always hurts on constrained connections.
+
+---
+
 ## 📊 Final All-Tests Comparison
 
-| Branch | Performance | LCP | Speed Index | Verdict |
-|--------|-------------|-----|-------------|---------|
-| **Main (prod)** | 75 | 5.0s | 6.6s | Needs optimization |
-| **Stage (baseline)** | 83 | 3.9s | 5.4s | ✅ **BEST** |
-| **Test 1 (4 hints)** | 68 | 9.7s | 6.9s | ❌ **WORST** |
-| **Test 2 (2 hints)** | 82 | 4.2s | 4.9s | ⚠️ Mixed |
+| Branch | Performance | LCP | Speed Index | CLS | Verdict |
+|--------|-------------|-----|-------------|-----|---------|
+| **Main (prod)** | 75 | 5.0s | 6.6s | - | Needs optimization |
+| **Stage (baseline)** | 83 | 4.0s | 5.4s | 0.008 | ✅ **BEST LCP** |
+| **Test 1 (4 hints)** | 68 | 9.7s | 6.9s | 0.008 | ❌ **WORST** |
+| **Test 2 (2 hints)** | 82 | 4.2s | 4.9s | - | ⚠️ LCP regressed |
+| **Test 3 (video preload)** | 84 | 4.2s | 3.8s | 0.004 | ⚠️ LCP regressed |
+
+### Key Pattern Across All Tests
+
+**On Slow 4G, ANY extra resource hurts LCP:**
+- Test 1 (preconnects): LCP +5.8s ❌
+- Test 2 (lighter preconnects): LCP +0.3s ❌
+- Test 3 (video preload): LCP +0.2s ❌
+
+**Winner**: Stage baseline (no hints, no preloads) = Best LCP
 
 ---
 
@@ -489,28 +540,39 @@ const preconnectMilo = createTag('link', { rel: 'preconnect', href: 'https://mai
 
 ### What We Learned
 
-1. **Preconnects hurt LCP on Slow 4G** - Even "good" candidates regress performance
-   - Test 1: LCP +5.8s (149% worse)
-   - Test 2: LCP +0.3s (8% worse)
+1. **ALL resource hints hurt LCP on Slow 4G** - Even seemingly smart optimizations regress performance
+   - Test 1 (preconnects): LCP +5.8s (149% worse) ❌
+   - Test 2 (lighter preconnects): LCP +0.3s (8% worse) ❌
+   - Test 3 (video preload): LCP +0.2s (5% worse) ❌
 
-2. **Stage baseline is already optimal** - No preconnects needed
-   - Stage outperforms both test branches
+2. **Stage baseline is already optimal** - No hints, no preloads needed
+   - Stage outperforms ALL test branches for LCP
    - Clean code, better results
+   - Sometimes doing nothing is the best optimization
 
-3. **Speed Index ≠ LCP** - Different metrics, different story
-   - Preconnects can improve visual progression (Speed Index)
+3. **Speed Index ≠ LCP** - Different metrics, different priorities
+   - Resource hints can improve visual progression (Speed Index)
    - But hurt largest element loading (LCP)
-   - Core Web Vitals prioritize LCP
+   - Core Web Vitals prioritize LCP over Speed Index
+   - Test 3 showed this clearly: -1.6s Speed Index, +0.2s LCP
 
-4. **Timing matters critically**
+4. **Only preload YOUR LCP element**
+   - Test 3 failed because video is NOT the LCP element
+   - LCP is a text `<p>` element, not the hero video
+   - Preloading non-LCP resources competes with actual LCP
+   - Identify LCP first, then decide what to preload
+
+5. **Timing matters critically**
    - Adding hints via JavaScript is too late
    - Would need server-side HTML injection
    - Not practical for Adobe EDS
+   - Browser already discovering resources when hints are added
 
-5. **Bandwidth is limited on mobile**
-   - Slow 4G can't handle multiple preconnects
-   - Each connection competes with content
-   - Fewer connections = faster LCP
+6. **Bandwidth is severely limited on mobile**
+   - Slow 4G can't handle multiple preconnects OR large preloads
+   - Each connection/download competes with content
+   - Fewer resources = faster LCP
+   - On constrained connections, LESS is MORE
 
 ### Recommendations
 
@@ -540,7 +602,14 @@ const preconnectMilo = createTag('link', { rel: 'preconnect', href: 'https://mai
 **Date**: October 16, 2025  
 **Author**: Performance Team  
 **Branch**: `preconnect-hints`  
-**Tests Conducted**: 2 (Test 1 failed, Test 2 mixed results)  
-**Final Decision**: REVERTED - Preconnects don't help in this context  
-**Status**: Closed (Due Diligence Complete - Documented for Learning)
+**Tests Conducted**: 3 (All failed - LCP regressions)  
+**Final Decision**: REVERTED - Resource hints/preloads don't help in this context  
+**Status**: Closed (Due Diligence Complete - All approaches tested and documented)
+
+### Test Summary
+- **Test 1**: 4 preconnect/dns-prefetch hints → LCP +5.8s ❌
+- **Test 2**: 2 preconnect hints (Lighthouse-recommended) → LCP +0.3s ❌
+- **Test 3**: Hero video preload → LCP +0.2s ❌
+
+**Conclusion**: On Slow 4G mobile, stage baseline (no hints) performs best.
 

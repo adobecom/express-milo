@@ -359,16 +359,6 @@ const listenAlloy = () => {
 
   const config = setConfig({ ...CONFIG, miloLibs });
 
-  // Preload hero video to improve LCP (test only - will revert)
-  // This downloads the video early, potentially improving LCP if video is above-fold
-  const videoPreload = createTag('link', {
-    rel: 'preload',
-    href: '/express/assets/video/marketing/homepage/media_1d617584a0b780c7bf8c2ca185a61a247c85298e8.mp4',
-    as: 'video',
-    type: 'video/mp4',
-  });
-  document.head.appendChild(videoPreload);
-
   if (getMetadata('template-search-page') === 'Y') {
     const { default: redirect } = await import('./utils/template-redirect.js');
     await redirect();

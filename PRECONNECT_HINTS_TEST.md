@@ -166,6 +166,64 @@ Preconnect hints **significantly degraded** performance instead of improving it.
 - ❌ Don't add preconnects via async JavaScript
 - ❌ Don't preconnect to resources that load late anyway
 
+---
+
+## ❌ **ACTUAL RESULTS - TEST 3 (FAILED)**
+
+**Test Date:** October 16, 2025  
+**Test URL:** `https://preconnect-hints--express-milo--adobecom.aem.live/express/`  
+**Baseline URL:** `https://stage--express-milo--adobecom.aem.live/express/`  
+**Test Type:** Video preload for hero video
+
+| Metric | Baseline (stage) | With Video Preload | Change | Status |
+|--------|------------------|-----------------------|--------|--------|
+| **Performance Score** | 83 | 84 | +1 | ✅ Better |
+| **FCP** | 1.6s | 1.6s | 0s | ⚪ Same |
+| **LCP** | 4.0s | 4.2s | **+0.2s (5% slower)** | ❌ **WORSE** |
+| **Speed Index** | 5.4s | 3.8s | **-1.6s (30% faster)** | ✅ **MUCH BETTER** |
+| **CLS** | 0.008 | 0.004 | -0.004 | ✅ Better |
+| **TBT** | 0ms | 0ms | 0ms | ⚪ Same |
+
+### **Conclusion: REJECTED (LCP Regression)**
+
+Video preload showed **mixed results** - Speed Index dramatically improved, but LCP (the critical Core Web Vital) regressed.
+
+### **Why This Failed:**
+
+1. **Video is NOT the LCP element**: LCP is a `<p>` text element
+   - LCP Element: "Make stunning social posts, images, videos, flyers..."
+   - Preloading video doesn't help the actual LCP resource
+
+2. **Bandwidth Competition**: On Slow 4G, preloading video competes with LCP
+   - Video file: ~1-2 MB
+   - Steals bandwidth from text/image that IS the LCP
+   - LCP render delay increased to 1,530ms
+
+3. **Speed Index vs LCP Trade-off**:
+   - ✅ Speed Index improved (video makes page look loaded faster)
+   - ❌ LCP regressed (actual critical content loads slower)
+   - For Core Web Vitals, LCP is what matters
+
+4. **Wrong Resource Prioritized**:
+   - Should only preload resources that ARE the LCP element
+   - Hero video is below-fold or not the LCP candidate
+   - Preload should target the actual text/image LCP
+
+### **Lessons Learned:**
+
+- ✅ Only preload resources that ARE your LCP element
+- ✅ Identify LCP element first before adding preload hints
+- ✅ Speed Index improvements don't justify LCP regressions
+- ✅ On Slow 4G, ANY extra resource competes with critical content
+- ❌ Don't preload videos unless they're confirmed to be LCP
+- ❌ Don't assume hero videos are LCP (often text/images are)
+
+### **Key Insight:**
+
+This test revealed that the original snippet `<link rel="preload" ... video>` was likely added without confirming the video was actually the LCP element. Preloading non-LCP resources always hurts on constrained connections.
+
+---
+
 ## ✅ **Success Criteria**
 
 - ✅ No regression in any metrics
