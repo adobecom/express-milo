@@ -39,6 +39,27 @@ function createQuoteContent(textContent, addContentClass = false) {
   return $blockquote;
 }
 
+function createAuthorContent($author) {
+  const $authorContent = createTag('div', { class: 'author-content' });
+
+  const $picture = $author.querySelector('picture');
+  if ($picture) {
+    const $authorImg = createTag('div', { class: 'image' });
+    $authorImg.appendChild($picture);
+    $authorContent.appendChild($authorImg);
+  }
+
+  const $authorSummary = createTag('div', { class: 'summary' });
+  Array.from($author.querySelectorAll('p'))
+    .filter(($p) => !!$p.textContent.trim())
+    .forEach(($p) => $authorSummary.appendChild($p));
+
+  $authorContent.appendChild($authorSummary);
+  $author.appendChild($authorContent);
+
+  return $authorContent;
+}
+
 async function createQuotesRatings({
   sheet,
   isCarouselVariant = false,
@@ -167,7 +188,7 @@ async function createQuotesRatings({
         cleanupPreviousRating();
 
         // Wait for the next tick to ensure the comment box is in the DOM
-        await new Promise((resolve) => { setTimeout(resolve, 0); });
+        await Promise.resolve();
 
         // Get the comment box and its elements
         const commentBox = hoverRating.querySelector('.slider-comment');
@@ -196,7 +217,7 @@ async function createQuotesRatings({
           if (isSubmitting) return;
 
           // Check if textarea is required and empty
-          if (textarea.hasAttribute('required') && !textarea.value.trim()) {
+          if (textarea.required && !textarea.value.trim()) {
             textarea.classList.add('invalid');
             return;
           }
@@ -416,20 +437,7 @@ export default async function decorate($block) {
       if ($card.children.length > 1) {
         const $author = $card.children[1];
         $author.classList.add('author');
-        const $authorContent = createTag('div', { class: 'author-content' });
-
-        if ($author.querySelector('picture')) {
-          const $authorImg = createTag('div', { class: 'image' });
-          $authorImg.appendChild($author.querySelector('picture'));
-          $authorContent.appendChild($authorImg);
-        }
-
-        const $authorSummary = createTag('div', { class: 'summary' });
-        Array.from($author.querySelectorAll('p'))
-          .filter(($p) => !!$p.textContent.trim())
-          .forEach(($p) => $authorSummary.appendChild($p));
-        $authorContent.appendChild($authorSummary);
-        $author.appendChild($authorContent);
+        createAuthorContent($author);
       }
 
       const $blockquote = createQuoteContent($card.firstElementChild.textContent, true);
@@ -476,22 +484,7 @@ export default async function decorate($block) {
       if ($card.children.length > 1) {
         const $author = $card.children[1];
         $author.classList.add('author');
-        // Create a container for image and summary
-        const $authorContent = createTag('div', { class: 'author-content' });
-
-        if ($author.querySelector('picture')) {
-          const $authorImg = createTag('div', { class: 'image' });
-          $authorImg.appendChild($author.querySelector('picture'));
-          $authorContent.appendChild($authorImg);
-        }
-
-        const $authorSummary = createTag('div', { class: 'summary' });
-        Array.from($author.querySelectorAll('p'))
-          .filter(($p) => !!$p.textContent.trim())
-          .forEach(($p) => $authorSummary.appendChild($p));
-        $authorContent.appendChild($authorSummary);
-        // Append the author content container to author
-        $author.appendChild($authorContent);
+        createAuthorContent($author);
       }
 
       const $blockquote = createQuoteContent($card.firstElementChild.textContent, true);

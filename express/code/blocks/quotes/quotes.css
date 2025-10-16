@@ -46,8 +46,7 @@
   margin: auto;
 }
 
-.quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow::before,
-.quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow::before {
+.quotes-ratings-wrapper .arrow-hidden .basic-carousel-arrow::before {
   opacity: 0.7;
   border-radius: 2px;
 } 
@@ -68,7 +67,7 @@
 }
 
 .quotes-ratings-wrapper .basic-carousel-container a.button.basic-carousel-arrow {
-  margin: 0 0px;
+  margin: 0;
   background: #FFFFFF;
   padding-bottom: 1px;
   box-shadow: 0 4px 8px 2px rgba(102, 102, 102, 0.2);
@@ -117,8 +116,7 @@
   gap: 16px;
 }
 
-.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
-.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .quotes:last-child {
+.section:where(:not([class*="-spacing"])) .quotes:last-child {
   padding-bottom: 80px;
 }
 
@@ -145,7 +143,6 @@
   box-sizing: border-box;
   border-radius: 20px;
   margin: 0 auto;
-  background-color: #FFF;
   padding: 32px;
   display: flex;
   flex-direction: column;
@@ -240,18 +237,10 @@
   width: 100%;
   margin-top: 0;
 }
-
-.quotes.carousel .quote .author {
-  display: flex;
-  margin-top: 0;
-  align-items: center;
-}
 .quotes.carousel .quote .author > p {
   display: none;
 }
-.quotes .quote .author hr {
-  display: none;
-}
+/* Removed: .quotes .quote .author hr (never rendered) */
 
 .quotes.carousel .quote .author .summary p:first-of-type {
   font-size: var(--body-font-size-s);
@@ -335,14 +324,7 @@ main .quotes.singular .quote-container .mobile-container .quote {
   }
 }
 
-main .quotes.singular .quote-container .desktop-container .background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-main .quotes.singular .quote-container .mobile-container .background {
+main .quotes.singular .quote-container .background {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -378,18 +360,7 @@ main .quotes.singular .author-photo picture img {
 main .quotes.singular .mobile-container .author-photo {
   width: 60px;
   height: 60px;
-  min-width: 60px; /* at certain container width, the 60px width may be made smaller by the browser, so impose a min-width */
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-main .quotes.singular .mobile-container .author-photo picture,
-main .quotes.singular .mobile-container .author-photo picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 0%;
-  display: inline-block;
+  min-width: 60px;
 }
 
 main .quotes.singular .quote-details {
@@ -770,12 +741,6 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   }
   .quotes.carousel .quotes-ratings-wrapper h2 {
     font-size: var(--heading-font-size-l);
-  }
-  .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin: auto;
   }
   .quotes-wrapper:has(.quotes.carousel) {
     max-width: 1410px;
