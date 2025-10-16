@@ -284,10 +284,11 @@ export default async function decorate($block) {
       const backgroundUrl = $img.src;
 
       // Store background URLs in data attributes for lazy loading
-      // Desktop: Use single image instead of duplicate
-      const backgroundDesktopCSS = `no-repeat center center / cover url("${backgroundUrl}")`;
+      // Desktop: Keep original positioning but use single image (remove duplicate)
+      const backgroundDesktopCSS = `no-repeat calc(-400px + 25%) -20px / 640px url("${backgroundUrl}")`;
       $desktopContainerBackground.setAttribute('data-background', backgroundDesktopCSS);
 
+      // Mobile: Keep original positioning
       const backgroundMobileCSS = `no-repeat -80px -48px / 750px url("${backgroundUrl}")`;
       $mobileContainerBackground.setAttribute('data-background', backgroundMobileCSS);
 
