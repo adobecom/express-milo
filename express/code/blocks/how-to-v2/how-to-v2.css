@@ -3,6 +3,10 @@
   padding-right: var(--spacing-300);
   margin: 0;
   max-width: unset;
+  background-image: var(--background-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .how-to-v2 h2 {
