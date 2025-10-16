@@ -1,63 +1,9 @@
 import { getLibs } from '../../../scripts/utils.js';
-import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle, formatDeliveryEstimateDateRange } from '../utilities/utility-functions.js';
+import updateAllDynamicElements from '../utilities/event-handlers.js';
 
 let createTag;
 
-function formatProductOptionsToAPIParameters(formDataObject) {
-  const parameters = {};
-  for (const [key, value] of Object.entries(formDataObject)) {
-    if (key !== 'qty') {
-      parameters[key] = value;
-    }
-  }
-  parameters.productOptions = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
-  parameters.qty = formDataObject.qty;
-  const finalParameters = {};
-  finalParameters.productOptions = encodeURIComponent(parameters.productOptions);
-  finalParameters.qty = parameters.qty;
-  return finalParameters;
-}
-
-function calculateAdjustedPrices(productPriceAPIResponse) {
-  const quantity = productPriceAPIResponse.discountProductItems[0].applyToQuantity || 1;
-  const originalPrice = productPriceAPIResponse.discountProductItems[0].price;
-  const { priceAdjusted } = productPriceAPIResponse.discountProductItems[0];
-  const productPrice = priceAdjusted * quantity;
-  const strikethroughPrice = originalPrice * quantity;
-  return { productPrice, strikethroughPrice };
-}
-
-async function updateAllDynamicElements(productId) {
-  const form = document.querySelector('#pdpx-customization-inputs-form');
-  const formData = new FormData(form);
-  const formDataObject = Object.fromEntries(formData.entries());
-  const parameters = formatProductOptionsToAPIParameters(formDataObject);
-  const productPriceAPIResponse = await fetchAPIData(productId, parameters, 'getproductpricing');
-  if (productPriceAPIResponse.discountProductItems.length > 0) {
-    const { discountString } = productPriceAPIResponse.discountProductItems[0];
-    const { productPrice, strikethroughPrice } = calculateAdjustedPrices(productPriceAPIResponse);
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
-    document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(strikethroughPrice);
-    document.getElementById('pdpx-savings-text').innerHTML = discountString;
-  } else {
-    const productPrice = productPriceAPIResponse.unitPrice;
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
-  }
-  const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
-  const heroImg = document.getElementById('pdpx-product-hero-image');
-  heroImg.src = renditions.realviewUrls[heroImg.dataset.imageType];
-  const carouselImages = document.getElementsByClassName('pdpx-image-thumbnail-carousel-item-image');
-  for (let i = 0; i < carouselImages.length; i += 1) {
-    carouselImages[i].src = renditions.realviewUrls[carouselImages[i].dataset.imageType];
-  }
-  const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
-  document.getElementById('pdpx-delivery-estimate-pill-date').innerHTML = formatDeliveryEstimateDateRange(shippingEstimates.estimates[0].minDeliveryDate, shippingEstimates.estimates[0].maxDeliveryDate);
-  console.log(formatDeliveryEstimateDateRange(shippingEstimates.estimates[0].minDeliveryDate, shippingEstimates.estimates[0].maxDeliveryDate));
-}
-
 function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productId) {
-  debugger;
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
   const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label' }, labelText);
   standardSelectorContainer.appendChild(standardSelectorLabel);
@@ -112,7 +58,7 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
   return pillSelectorContainer;
 }
 
-const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId) => {
+function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId) {
   const selectedMiniPillOption = customizationOptions[0].name;
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
@@ -158,7 +104,7 @@ const createMiniPillOptionsSelector = (customizationOptions, labelText, hiddenSe
   miniPillSelectorContainer.appendChild(miniPillSelectorOptionsContainer);
   miniPillSelectorContainer.appendChild(hiddenSelectInput);
   return miniPillSelectorContainer;
-};
+}
 
 function createBusinessCardInputs(container, productDetails) {
   const sideQuantitySelectorContainer = createPillOptionsSelector(productDetails.sideQuantityOptions, 'Choose the page(s) you want to print', 'sidequantity', productDetails.id);
