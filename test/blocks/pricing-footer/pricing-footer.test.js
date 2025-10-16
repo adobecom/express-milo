@@ -18,6 +18,7 @@ describe('Pricing Footer', () => {
   let originalGetComputedStyle;
   let matchMediaResult;
   let block;
+  let clock;
 
   before(() => {
     window.isTestEnv = true;
@@ -26,6 +27,7 @@ describe('Pricing Footer', () => {
   });
 
   beforeEach(() => {
+    clock = sinon.useFakeTimers();
     matchMediaResult = false;
     document.body.innerHTML = body;
     block = document.querySelector('.pricing-footer');
@@ -75,6 +77,10 @@ describe('Pricing Footer', () => {
     if (block?.resizeObserver?.disconnect) {
       block.resizeObserver.disconnect();
     }
+    if (clock) {
+      clock.restore();
+      clock = null;
+    }
 
     document.body.innerHTML = '';
     sinon.restore();
@@ -111,6 +117,7 @@ describe('Pricing Footer', () => {
   it('applies card count class and width for wider viewports', async () => {
     applyCardWidths([200, 200]);
     await decorate(block);
+    await clock.tickAsync(200);
 
     expect(block.classList.contains('card-count-2')).to.be.true;
     expect(block.style.maxWidth).to.equal('416px');
@@ -120,6 +127,7 @@ describe('Pricing Footer', () => {
     matchMediaResult = true;
     applyCardWidths([150, 170]);
     await decorate(block);
+    await clock.tickAsync(200);
 
     expect(block.classList.contains('card-count-2')).to.be.true;
     expect(block.style.maxWidth).to.equal('150px');
