@@ -57,6 +57,7 @@ async function updateAllDynamicElements(productId) {
 }
 
 function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productId) {
+  debugger;
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
   const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label' }, labelText);
   standardSelectorContainer.appendChild(standardSelectorLabel);
@@ -174,9 +175,13 @@ function createBusinessCardInputs(container, productDetails) {
 
 function createTShirtInputs(container, productDetails) {
   const styleSelectorContainer = createPillOptionsSelector(productDetails.style, 'T-Shirt', 'style', productDetails.id);
-  const quantitySelectorContainer = createStandardSelector(productDetails, 'Quantity', 'quantity', productDetails.id);
+  const colorSelectorContainer = createMiniPillOptionsSelector(productDetails.color, 'Shirt color: ', 'color', '', productDetails.id);
+  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id);
+  const sizeSelectorContainer = createStandardSelector(productDetails.size, 'Size', 'size', productDetails.id);
   container.appendChild(styleSelectorContainer);
+  container.appendChild(colorSelectorContainer);
   container.appendChild(quantitySelectorContainer);
+  container.appendChild(sizeSelectorContainer);
 }
 
 export default async function createCustomizationInputs(productDetails) {
