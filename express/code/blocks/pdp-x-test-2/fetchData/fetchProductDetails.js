@@ -1,4 +1,4 @@
-import { extractProductDescriptionsFromBlock } from '../utilities/utility-functions.js';
+import extractProductDescriptionsFromBlock from '../utilities/data-formatting.js';
 
 function formatUrlForEnvironment(url) {
   if (url.startsWith('/')) {
