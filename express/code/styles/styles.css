@@ -619,8 +619,10 @@ main h6 {
 
 main h1 {
   font-size: var(--heading-font-size-xxl);
-  /* Ensure text is always visible, even before web fonts load */
-  text-rendering: optimizeSpeed;
+  /* CRITICAL: Force system fonts to prevent FOIT (Flash of Invisible Text) on LCP */
+  /* TypeKit's font-display: auto causes 3.5s render delay */
+  /* Using system fonts ensures text is ALWAYS visible immediately */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
 }
 
 main h2 {
