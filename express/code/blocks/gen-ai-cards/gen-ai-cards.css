@@ -1,65 +1,25 @@
 /* Mobile Styles (Default) */
-.section .gen-ai-cards-wrapper {
+.section .gen-ai-cards {
   max-width: none;
   margin: auto;
 }
 
-.section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
-  .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .gen-ai-cards.homepage:first-child {
+.section:not([class*="-spacing"]) .gen-ai-cards.homepage:first-child {
   padding-top: 60px;
 }
 
 .gen-ai-cards {
- 
-  padding: 24px 0px 40px 16px;
+  padding: 24px 0 40px 16px;
   max-width: 1440px;
   margin: auto;
-  /* Card dimensions */
-  --card-height: 315px;
-  --card-width: 292px;
-  --card-padding: 12px;
-  --card-gap: 8px;
-  --input-form-width: 244px;
-  --blue-background: #EDEEFF;
   
-  /* Colors */
-  --color-text-primary: #212121;
-  --color-background-light:  #EDEEFF;
-  --color-hover-light: #e6e6e6;
-  --color-border: none;
-  
-  /* Font Sizes */
-  --font-size-tag: 10px;
-  --font-size-beta: 10px;
-  --font-size-heading-mobile: 22px;
-  --font-size-heading-desktop: 36px;
-  
-  /* Spacing and Sizing */
-  --spacing-card-margin: 20px;
-  --spacing-card-padding: 8px;
-  --spacing-border-radius-small: 3px;
-  --spacing-border-radius-medium: 8px;
-  --spacing-border-radius-large: 16px;
-  
-  /* Media Wrapper Dimensions */
-  --media-wrapper-height: 228px;
-  --media-wrapper-desktop-width: 352px;
-  
-  /* Card Dimensions */
-  --card-height-mobile: 325px;
-  --card-height-desktop: 392px;
+  /* Only keep frequently reused variables */
   --card-width-desktop: 380px;
-  
-  /* Form Elements */
-  --form-padding: 8px;
-  --form-border-radius: 8px;
-  --form-border-width: 2px;
-  
-  /* Animation */
-  --transition-duration: 0.3s;
-  --transition-timing: ease-in-out;
+  --color-background: #EDEEFF;
+  --border-radius: 8px;
+  --transition: 0.3s ease-in-out;
 
-  gap: var(--Spacing-spacing-400, 24px);
+  gap: 24px;
   display: flex;
   flex-direction: column;
 }
@@ -152,27 +112,27 @@
   position: relative;
   flex-direction: column;
   display: flex;
-  min-height: var(--card-height);
-  min-width: var(--card-width);
-  max-width: var(--card-width);
-  padding: var(--card-padding);
-  gap: var(--card-gap);
-  border-radius: var(--spacing-border-radius-medium);
+  min-height: 315px;
+  min-width: 292px;
+  max-width: 292px;
+  padding: 12px;
+  gap: 8px;
+  border-radius: 8px;
   overflow: hidden;
   margin: 0px;
-  background-color: var(--color-background-light);
+  background-color: #EDEEFF;
   display: flex;
   align-items: flex-start;
-  transition: width var(--transition-duration) var(--transition-timing), 
-              min-width var(--transition-duration) var(--transition-timing), 
-              max-width var(--transition-duration) var(--transition-timing);
-  border-color: var(--color-border);
-  border: 2px solid var(--color-border);
+  transition: width 0.3s ease-in-out, 
+              min-width 0.3s ease-in-out, 
+              max-width 0.3s ease-in-out;
+  border-color: none;
+  border: 2px solid none;
 }
 
 .gen-ai-cards .card:first-of-type {
-  border-radius: var(--spacing-border-radius-medium);
-  background: var(--blue-background);
+  border-radius: 8px;
+  background: #EDEEFF;
 }
 
 .gen-ai-cards.homepage .carousel-element.card {
@@ -207,7 +167,7 @@
   font-size: var(--body-font-size-l);
   line-height: var(--body-font-size-m);
   font-weight: 700;
-  color: var(--color-text-primary);
+  color: #212121;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
@@ -216,19 +176,19 @@
 }
 
 .gen-ai-cards .card .text-wrapper .tag {
-  font-size: var(--font-size-tag);
+  font-size: 10px;
   padding: 0 4px;
   margin-left: 6px;
   font-weight: 700;
   background-color: var(--palette-indigo-200);
   color: var(--palette-indigo-1000);
-  border-radius: var(--spacing-border-radius-small);
+  border-radius: 3px;
 }
 
 .gen-ai-cards .card .text-wrapper p.cta-card-desc {
   font-size: var(--body-font-size-s);
   line-height: var(--body-font-size-l);
-  color: var(--color-text-primary);
+  color: #212121;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -236,9 +196,9 @@
 }
 
 .gen-ai-cards .card .media-wrapper {
-  border-radius: var(--spacing-border-radius-large);
-  height: var(--media-wrapper-height);
-  min-height: var(--media-wrapper-height);;
+  border-radius: 16px;
+  height: 228px;
+  min-height: 228px;;
   overflow: hidden;
 }
 
@@ -280,7 +240,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
 }
 
 .gen-ai-cards .card .gen-ai-input-form {
-  min-width: var(--input-form-width);
+  min-width: 244px;
   padding: 8px;
   background-color: var(--color-white);
   border-radius: 8px;
@@ -390,7 +350,7 @@ main .gen-ai-cards.homepage .card .media-wrapper {
   margin: 4px auto;
   width: max-content;
   color: var(--color-white);
-  border: var(--form-border-width) solid var(--color-border-black);
+  border: 2px solid var(--color-border-black);
   background-color: var(--color-background-accent-default);
 }
 
@@ -446,7 +406,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right {
   text-align: center;
 }
 
-.section .gen-ai-cards-wrapper.homepage {
+.section .gen-ai-cards.homepage {
   max-width: fit-content;
 }
 
@@ -527,13 +487,13 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
 
 .gen-ai-cards .card .beta-tag {
   color: var(--Content-Accent-default, #5258E4);
-  font-size: var(--font-size-beta);
+  font-size: 10px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   position: absolute;
   padding: 0.5px 4px;
-  border-radius: var(--spacing-border-radius-small);
+  border-radius: 3px;
   background: var(--Palette-indigo-200, #E0E2FF);
   margin-left: 4px;
   margin-top: 2px;
@@ -623,7 +583,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards.homepage .gen-ai-cards-heading {
-    font-size: var(--font-size-heading-desktop);
+    font-size: 36px;
   }
 
   .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {

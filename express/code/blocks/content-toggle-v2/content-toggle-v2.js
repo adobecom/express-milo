@@ -1,4 +1,4 @@
-import { readBlockConfig, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { readBlockConfig } from '../../scripts/utils.js';
 import createCarousel from '../../scripts/widgets/carousel.js';
 
 function getTabIndexFromURL() {
@@ -151,7 +151,6 @@ function decorteSectionsMetadata() {
 }
 
 export default function decorate(block) {
-  addTempWrapperDeprecated(block, 'content-toggle');
   decorteSectionsMetadata();
 
   const enclosingMain = block.closest('main');

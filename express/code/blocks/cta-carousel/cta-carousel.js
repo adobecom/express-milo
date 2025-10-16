@@ -1,4 +1,4 @@
-import { getLibs, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
@@ -250,7 +250,6 @@ function constructPayload(block) {
 }
 
 export default async function decorate(block) {
-  addTempWrapperDeprecated(block, 'cta-carousel');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig } = utils);
     ({ replaceKey } = placeholders);

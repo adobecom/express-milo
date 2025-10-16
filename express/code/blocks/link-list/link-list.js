@@ -1,4 +1,4 @@
-import { getLibs, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
@@ -94,7 +94,6 @@ export default async function decorate(block) {
   if (block.classList.contains(SMART_VARIANT)) {
     variant = SMART_VARIANT;
   }
-  addTempWrapperDeprecated(block, 'link-list');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`), decorateButtonsDeprecated(block)]).then(([utils, placeholders]) => {
     ({ getConfig } = utils);
     ({ replaceKey } = placeholders);

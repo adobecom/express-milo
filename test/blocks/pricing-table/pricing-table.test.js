@@ -15,7 +15,7 @@ const setupTest = async (htmlFile) => {
   document.body.innerHTML = testBody;
   window.placeholders = { 'search-branch-links': 'https://adobesparkpost.app.link/c4bWARQhWAb' };
   await decorate(document.querySelector('.pricing-table'));
-  return document.querySelector('.pricing-table-wrapper');
+  return document.querySelector('.pricing-table');
 };
 
 // Shared test cleanup

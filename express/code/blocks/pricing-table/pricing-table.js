@@ -1,4 +1,4 @@
-import { getLibs, yieldToMain, fixIcons, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, fixIcons, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/utils/hofs.js';
 import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
@@ -221,7 +221,6 @@ export default async function init(el) {
   const isSingleSectionVariant = el.classList.contains('single-section');
   let deviceBySize = defineDeviceByScreenSize();
 
-  addTempWrapperDeprecated(el, 'pricing-table');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
     ({ createTag, getConfig } = utils);
     ({ replaceKey } = placeholders);

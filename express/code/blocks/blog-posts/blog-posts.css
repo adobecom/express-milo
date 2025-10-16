@@ -1,32 +1,32 @@
-.blog main .section:has(.blog-posts-wrapper):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+.blog main .section:has(.blog-posts):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > div:first-child {
     padding: 0;
     margin-top: 64px;
 }
 
-main .section:has(.blog-posts-wrapper) > div {
+main .section:has(.blog-posts) > div {
     max-width: 375px;
     margin: auto;
 }
 
-main .section:has(.blog-posts-wrapper) > div:not:first-child {
+main .section:has(.blog-posts) > div:not:first-child {
     padding: 0;
 }
 
 main .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
-.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .blog-posts-wrapper:first-child {
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) > .blog-posts:first-child {
     padding-top: 60px
 }
 
-main .section:has(.blog-posts-wrapper) div > h3:first-child  {
+main .section:has(.blog-posts) div > h3:first-child  {
     margin-top: 0px
 }
 
-.blog main .section:has(.blog-posts-wrapper) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
+.blog main .section:has(.blog-posts) > div > h2, main .section:has(.blog-posts) div.blog-posts-decoration {
     max-width: 280px;
 }
 
-main .section:has(.blog-posts-wrapper) div.blog-posts-decoration {
+main .section:has(.blog-posts) div.blog-posts-decoration {
     display: flex;
     justify-content: space-between;
 }

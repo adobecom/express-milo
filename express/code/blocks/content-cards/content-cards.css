@@ -1,9 +1,9 @@
-.section .content-cards-wrapper {
+.section .content-cards {
   max-width: min-content;
   margin: auto;
 }
 
-.content-cards-wrapper.wide {
+.content-cards.wide {
   max-width: none;
 }
 
@@ -19,7 +19,7 @@
   width: 100%
 }
 
-.content-cards-wrapper .background img {
+.content-cards .background img {
   position: absolute;
   top: 50%;
   object-fit: fill;
@@ -33,7 +33,7 @@
   margin: 20px;
 }
 
-.content-cards-wrapper.wide .content-cards-heading-section {
+.content-cards.wide .content-cards-heading-section {
   margin: 20px 20px -11px 20px;
 }
 
@@ -427,7 +427,7 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
     width: 93%;
     height: 296px;
   }
-  .content-cards-wrapper:has(.carousel-platform.two-card) {
+  .content-cards:has(.carousel-platform.two-card) {
     max-width: 1198px;
   }
   .content-cards .content-cards-heading-section {
@@ -454,7 +454,7 @@ main .content-cards.wide .carousel-container .carousel-fader-left, main .content
   .content-cards-heading-section .text-wrapper p {
     width: max-content;
   }
-  .content-cards-wrapper:has(.carousel-platform.two-card) .content-cards-heading-section .text-wrapper p {
+  .content-cards:has(.carousel-platform.two-card) .content-cards-heading-section .text-wrapper p {
     width: unset;
   }
   main .content-cards.wide .carousel-container .carousel-fader-left {

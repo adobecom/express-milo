@@ -1,4 +1,4 @@
-import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 let createTag; let getConfig;
@@ -229,7 +229,6 @@ function constructPayload(block) {
 
 export default async function decorate(block) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  addTempWrapperDeprecated(block, 'content-cards');
 
   const links = block.querySelectorAll(':scope a[href*="adobesparkpost"]');
 

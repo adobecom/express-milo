@@ -1,4 +1,4 @@
-import { getLibs, fixIcons, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, fixIcons } from '../../scripts/utils.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
@@ -8,7 +8,6 @@ export default async function decorate($block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`), fixIcons($block)]).then(([utils]) => {
     ({ createTag } = utils);
   });
-  addTempWrapperDeprecated($block, 'make-a-project');
 
   if ($block.children.length) {
     const $projectlist = createTag('div', { class: 'make-a-project-projectlist' });

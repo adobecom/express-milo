@@ -1,7 +1,7 @@
 import {
   getLibs,
   fixIcons,
-  addTempWrapperDeprecated, decorateButtonsDeprecated,
+  decorateButtonsDeprecated,
 } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/utils/hofs.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
@@ -473,7 +473,6 @@ export default async function init(el) {
     parentElement.replaceChild(i, offer);
   });
   await decorateButtonsDeprecated(el);
-  addTempWrapperDeprecated(el, 'pricing-cards-v2');
 
   const currentKeys = [...blockKeys];
   const divs = currentKeys.map((_, index) => el.querySelectorAll(`:scope > div:nth-child(${index + 1}) > div`));
@@ -543,7 +542,6 @@ export default async function init(el) {
       });
 
       if (displayChanged && parentSection.offsetHeight > 0) {
-        console.log('Section display changed, equalizing heights');
         equalizeHeights(el);
       }
     }, 100));

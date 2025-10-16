@@ -1,18 +1,18 @@
 /* Base styles for quotes wrapper */
-.quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
+.quotes, .section .content:has(+ .quotes) {
   max-width: 375px;
   margin: auto;
 }
 
 /* Carousel specific styles */
-.quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+.quotes:has(.quotes.carousel), .section .content:has(+ .carousel) {
   max-width: unset;
   padding-top: var(--spacing-600);
   padding-left: var(--spacing-300);
   padding-right: var(--spacing-300);
 }
 
-.quotes-wrapper .quote .author-content .summary p {
+.quotes .quote .author-content .summary p {
   font-size: 12px;
 }
 
@@ -28,17 +28,17 @@
   margin-bottom: var(--spacing-400);
 }
 
-.quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
+.quotes .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
   margin-left: var(--spacing-400);
   margin-right: var(--spacing-300);
 }
 
-.quotes-wrapper .basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
+.quotes .basic-carousel-platform > .template.basic-carousel-element.quote:not(:nth-child(2)) {
   margin-left: 0;
   margin-right: var(--spacing-300)
 }
 
-.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
+.quotes:has(.quotes.carousel) .basic-carousel-container {
   scroll-padding-left: var(--spacing-300);
   display: flex;
   flex-direction: column;
@@ -46,8 +46,8 @@
   margin: auto;
 }
 
-.quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow::before,
-.quotes-wrapper .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow::before {
+.quotes .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-left.arrow-hidden a.button.basic-carousel-arrow::before,
+.quotes .quotes-ratings-wrapper .basic-carousel-container .basic-carousel-fader-right.arrow-hidden a.button.basic-carousel-arrow::before {
   opacity: 0.7;
   border-radius: 2px;
 } 
@@ -76,7 +76,7 @@
   height: 32px;
 }
 
-.quotes-wrapper:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
+.quotes:has(.quotes.carousel) .basic-carousel-container .basic-carousel-platform {
   max-width: 100%;
   height: auto;
   min-height: 0;
@@ -122,7 +122,7 @@
   padding-bottom: 80px;
 }
 
-.section .quotes-wrapper .quotes.carousel {
+.section .quotes .quotes.carousel {
   margin: 0 -24px;
   padding-bottom: 0;
 }
@@ -276,11 +276,11 @@
 }
 
 /* Singular quote layout */
-main div:has(> .quotes-wrapper .singular.quotes) {
+main div:has(> .quotes .singular.quotes) {
   padding-top: 0;
 }
 
-main .quotes-wrapper:has(.singular.quotes) {
+main .quotes:has(.singular.quotes) {
   margin-left: 0;
   margin-right: 0;
   max-width: unset;
@@ -315,15 +315,15 @@ main .quotes.singular .quote-container .mobile-container .quote {
   main .quotes.singular .quote-container .mobile-container {
     display: none;
   }
-  .section .quotes-wrapper .quotes.carousel {
+  .section .quotes .quotes.carousel {
     margin: 0px -40px;
   }
-  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+  .quotes:has(.quotes.carousel), .section .content:has(+ .carousel) {
     padding-top: var(--spacing-600);
     padding-left: var(--spacing-500);
     padding-right: var(--spacing-500);
   }
-  .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
+  .quotes .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: var(--spacing-600);
   }
 }
@@ -771,28 +771,28 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
   .quotes.carousel .quotes-ratings-wrapper h2 {
     font-size: var(--heading-font-size-l);
   }
-  .quotes-wrapper:has(.quotes.carousel) .basic-carousel-container {
+  .quotes:has(.quotes.carousel) .basic-carousel-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin: auto;
   }
-  .quotes-wrapper:has(.quotes.carousel) {
+  .quotes:has(.quotes.carousel) {
     max-width: 1410px;
   }
   .quotes-ratings-wrapper .container {
     margin-left: 0;
   }
-  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+  .quotes:has(.quotes.carousel), .section .content:has(+ .carousel) {
     padding: var(--spacing-900) var(--spacing-600) 0;
   }
-  .quotes-wrapper .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
+  .quotes .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {
     margin-left: var(--spacing-600);
   }
 }
 
 @media (min-width: 1550px) {
-  .quotes-wrapper:has(.quotes.carousel), .section .content:has(+ .carousel) {
+  .quotes:has(.quotes.carousel), .section .content:has(+ .carousel) {
     padding: var(--spacing-900) 0 0 0;
   }
 }
@@ -822,7 +822,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
 }
 
 @media (min-width: 900px) {
-  .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
+  .quotes, .section .content:has(+ .quotes) {
     max-width: 724px;
   }
 
@@ -837,7 +837,7 @@ main .quotes.carousel .ratings button.selected .icon.icon-star {
 }
 
 @media (min-width: 1200px) {
-  .quotes-wrapper, .section .content:has(+ .quotes-wrapper) {
+  .quotes, .section .content:has(+ .quotes) {
     max-width: 1024px;
   }
   .basic-carousel-container .template.basic-carousel-element.quote:nth-child(2) {

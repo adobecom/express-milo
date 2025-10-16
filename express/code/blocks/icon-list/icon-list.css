@@ -1,4 +1,4 @@
-main .section:has(.icon-list-wrapper:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
+main .section:has(.icon-list:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
 .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) {
   padding-top: 60px;
 }
@@ -7,7 +7,7 @@ main .section:has(.icon-list) h2 {
   margin-top: 80px;
 }
 
-main .icon-list-wrapper {
+main .icon-list {
   margin: auto;
   max-width: 375px;
   padding: 0;
@@ -160,7 +160,7 @@ main .icon-list.highlight .icon-list-regular .icon-list-image svg {
   height: 72px;
 }
 
-main .section.icon-list-two-column-container > div.icon-list-wrapper {
+main .section.icon-list-two-column-container > div.icon-list {
   max-width: unset;
   padding: 60px 32px;
 }
@@ -177,7 +177,7 @@ main .icon-list a:not(.button):any-link {
 }
 
 @media (min-width:900px) {
-  main .icon-list-wrapper {
+  main .icon-list {
     max-width: 830px;
   }
 
@@ -199,7 +199,7 @@ main .icon-list a:not(.button):any-link {
 }
 
 @media (min-width:1200px) {
-  main .icon-list-wrapper {
+  main .icon-list {
     max-width: 1024px;
   }
 

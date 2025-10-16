@@ -1,16 +1,16 @@
 /* to remove after wrapper deprecation */
-main .section div.long-text-wrapper {
+main .section div.long-text {
     max-width: none;
     padding: 0;
 }
 
-main .section div.long-text-wrapper.plain {
+main .section div.long-text.plain {
     max-width: var(--block-lg-max-width);
     margin: auto;
 }
 
 main .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
-.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .long-text-wrapper:first-child {
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .long-text:first-child {
     padding-top: 60px;
 }
 
@@ -42,7 +42,7 @@ main .long-text.no-background article {
 }
 
 main .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
-.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .long-text-wrapper.no-background:first-child {
+.l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .long-text.no-background:first-child {
     padding-top: 0;
 }
 

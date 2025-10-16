@@ -1,4 +1,4 @@
-import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, getMobileOperatingSystem, getIconElementDeprecated } from '../../scripts/utils.js';
 import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
 
 let createTag; let getMetadata;
@@ -181,7 +181,6 @@ export default async function decorate(block) {
     decorateNormal(block);
     return;
   }
-  addTempWrapperDeprecated(block, 'multifunction-button');
   if (!block.classList.contains('meta-powered')) return;
 
   const audience = block.querySelector(':scope > div').textContent.trim();

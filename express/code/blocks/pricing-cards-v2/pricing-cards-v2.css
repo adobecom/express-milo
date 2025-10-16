@@ -39,16 +39,16 @@
   border-radius: 8px;
 }
 
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gen-ai-promo >h2,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gen-ai-promo >h3,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gen-ai-promo >h4,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gen-ai-promo >h5,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gen-ai-promo >h6,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gradient-promo >h2,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gradient-promo >h3,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gradient-promo >h4,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gradient-promo >h5,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gradient-promo >h6 {
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gen-ai-promo >h2,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gen-ai-promo >h3,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gen-ai-promo >h4,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gen-ai-promo >h5,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gen-ai-promo >h6,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gradient-promo >h2,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gradient-promo >h3,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gradient-promo >h4,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gradient-promo >h5,
+main .pricing-cards-v2 .pricing-cards-v2 .card-border.gradient-promo >h6 {
   color: var(--color-white);
   font-weight: var(--font-weight-regular);
   padding: 4px var(--spacing-100);
@@ -58,11 +58,11 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-border.gradient-promo >h6
   margin-top: 0;
 }
 
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h2,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h3,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h4,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h5,
-main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
+main .pricing-cards-v2 .pricing-cards-v2 .card-header h2,
+main .pricing-cards-v2 .pricing-cards-v2 .card-header h3,
+main .pricing-cards-v2 .pricing-cards-v2 .card-header h4,
+main .pricing-cards-v2 .pricing-cards-v2 .card-header h5,
+main .pricing-cards-v2 .pricing-cards-v2 .card-header h6 {
   color: var(--Content-Neutral-default, #222);
   /* Desktop/Title/XL */
   font-family: var(--heading-font-family);

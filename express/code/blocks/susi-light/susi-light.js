@@ -14,7 +14,6 @@ const usp = new URLSearchParams(window.location.search);
 
 const onRedirect = (e) => {
   // eslint-disable-next-line no-console
-  console.log('redirecting to:', e.detail);
   // temporary solution: allows analytics to go thru. should move to a promise
   setTimeout(() => {
     window.location.assign(e.detail);

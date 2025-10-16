@@ -1,4 +1,4 @@
-import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 
 let createTag;
 
@@ -35,7 +35,6 @@ function decorateList(block) {
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  addTempWrapperDeprecated(block, 'list');
   decorateList(block);
 
   const pricingLinks = [...block.querySelectorAll('a')].filter((a) => a.textContent.includes('((pricing'));

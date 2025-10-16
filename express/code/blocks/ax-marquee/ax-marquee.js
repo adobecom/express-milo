@@ -1,4 +1,4 @@
-import { getLibs, toClassName, getIconElementDeprecated, addTempWrapperDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';
 import { addHeaderSizing } from '../../scripts/utils/location-utils.js';
 import {
@@ -518,7 +518,6 @@ export default async function decorate(block) {
   await Promise.all([import(`${getLibs()}/utils/utils.js`)]).then(([utils]) => {
     ({ getMetadata, createTag, getConfig } = utils);
   });
-  addTempWrapperDeprecated(block, 'ax-marquee');
   handlePrice(block);
   handlePrice(block, '[[savePercentage]]', 'savePer');
   handlePrice(block, '[[base-pricing-token]]', 'formattedBP');

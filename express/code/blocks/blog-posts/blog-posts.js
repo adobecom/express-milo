@@ -2,7 +2,6 @@
 import {
   getLibs,
   readBlockConfig,
-  addTempWrapperDeprecated,
 } from '../../scripts/utils.js';
 import { createOptimizedPicture } from '../../scripts/utils/media.js';
 
@@ -336,7 +335,6 @@ export default async function decorate(block) {
     ({ getConfig, createTag, getLocale } = utils);
     ({ replaceKey } = placeholders);
   });
-  addTempWrapperDeprecated(block, 'blog-posts');
   const config = getBlogPostsConfig(block);
 
   // wrap p in parent section

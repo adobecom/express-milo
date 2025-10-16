@@ -1,4 +1,3 @@
-import { addTempWrapperDeprecated } from '../../scripts/utils.js';
 import {
   createFloatingButton,
   collectFloatingButtonData,
@@ -6,7 +5,6 @@ import {
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 
 export default async function decorate(block) {
-  addTempWrapperDeprecated(block, 'floating-button');
   if (!block.classList.contains('meta-powered')) {
     block.parentElement?.remove();
     return;

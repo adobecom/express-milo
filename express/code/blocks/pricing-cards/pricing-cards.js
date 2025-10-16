@@ -2,7 +2,7 @@ import {
   getLibs,
   yieldToMain,
   fixIcons,
-  addTempWrapperDeprecated, decorateButtonsDeprecated,
+  decorateButtonsDeprecated,
 } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/utils/hofs.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
@@ -622,7 +622,6 @@ export default async function init(el) {
     return acc;
   }, {});
   await decorateButtonsDeprecated(el);
-  addTempWrapperDeprecated(el, 'pricing-cards');
 
   // For backwards compatability with old versions of the pricing card
   const legacyVersion = el.querySelectorAll(':scope > div').length < 10;

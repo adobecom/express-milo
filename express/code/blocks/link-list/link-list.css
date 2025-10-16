@@ -1,17 +1,17 @@
-.section div + .link-list-wrapper {
+.section div + .link-list {
   padding: 0 0 0 0;
 }
 
-.section .link-list-wrapper:has(.link-list:is([class*=" "])) {
+.section .link-list:has(.link-list:is([class*=" "])) {
   max-width: 375px;
 }
 
-.section  .link-list-wrapper {
+.section  .link-list {
   padding: 60px 0 0 0;
   margin: 0 auto;
 }
 
-.section .link-list-wrapper .link-list.narrow {
+.section .link-list .link-list.narrow {
   max-width: 850px;
 }
 
@@ -106,49 +106,49 @@
 }
 
 /* fullwidth variant */
-.section .link-list-wrapper:has(.link-list.fullwidth) {
+.section .link-list:has(.link-list.fullwidth) {
   box-sizing: border-box;
   width: fit-content;
   max-width: 100%;
   padding-top: 0;
 }
 
-.section div.link-list-wrapper:has(.link-list.fullwidth) .link-list,
-.section div.link-list-wrapper:has(.link-list.fullwidth) .link-list h2,
-.section div.link-list-wrapper:has(.link-list.fullwidth) .link-list h3,
-.section div.link-list-wrapper:has(.link-list.fullwidth) .link-list h4 {
+.section div.link-list:has(.link-list.fullwidth) .link-list,
+.section div.link-list:has(.link-list.fullwidth) .link-list h2,
+.section div.link-list:has(.link-list.fullwidth) .link-list h3,
+.section div.link-list:has(.link-list.fullwidth) .link-list h4 {
   text-align: center;
 }
 
-.section div.link-list-wrapper:has(.link-list.fullwidth) .link-list .carousel-platform {
+.section div.link-list:has(.link-list.fullwidth) .link-list .carousel-platform {
   margin-left: auto;
   margin-right: auto;
 }
 
-.section .hero-animation-wrapper + .link-list-wrapper .link-list {
+.section .hero-animation-wrapper + .link-list .link-list {
   margin-top: 16px;
 }
 
-.section .link-list-wrapper .link-list.noarrows {
+.section .link-list .link-list.noarrows {
   margin-top: 0;
 }
 
-.section .link-list-wrapper .link-list.noarrows > div:first-of-type > div > p:first-of-type {
+.section .link-list .link-list.noarrows > div:first-of-type > div > p:first-of-type {
   font-weight: 800;
   font-size: 16px;
   margin: 0 12px 4px 12px;
 }
 
-.section .link-list-wrapper .link-list.noarrows .carousel-fader-right,
-.section .link-list-wrapper .link-list.noarrows .carousel-fader-left {
+.section .link-list .link-list.noarrows .carousel-fader-right,
+.section .link-list .link-list.noarrows .carousel-fader-left {
   display: none;
 }
 
-.section .link-list-wrapper .link-list.noarrows p.button-container {
+.section .link-list .link-list.noarrows p.button-container {
   margin: 0 8px;
 }
 
-.section .link-list-wrapper .link-list.noarrows p.button-container .button.medium.secondary {
+.section .link-list .link-list.noarrows p.button-container .button.medium.secondary {
   padding: 3px 14px;
 }
 
@@ -170,7 +170,7 @@
 }
 
 /* fullwidth + leftalign variant */
-.section .link-list-wrapper:has(.link-list.fullwidth.leftalign) {
+.section .link-list:has(.link-list.fullwidth.leftalign) {
   padding-top: 0;
   margin-left: 0;
 }
@@ -191,7 +191,7 @@
   margin-left: 0;
 }
 
-.section .link-list-wrapper:has(.link-list.inline) {
+.section .link-list:has(.link-list.inline) {
   max-width: initial;
 }
 
@@ -253,18 +253,18 @@
     padding-left: 0;
   }
 
-  .section div + .link-list-wrapper {
+  .section div + .link-list {
     padding-top: 0px;
   }
 
-  .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
+  .section .link-list:has(.link-list:is([class*=" "])) {
      max-width: 830px;
   }
-  .section .link-list-wrapper:has(.link-list.inline) {
+  .section .link-list:has(.link-list.inline) {
     max-width: initial;
   }
 
-  .section .link-list-wrapper {
+  .section .link-list {
     padding: 60px 50px 0 50px;
     margin: 0 auto;
   }
@@ -283,10 +283,10 @@
     scroll-padding: 0;
   }
 
-  .section div.link-list-wrapper:has(.link-list.fullwidth.leftalign) .link-list,
-  .section div.link-list-wrapper:has(.link-list.fullwidth.leftalign) .link-list h2,
-  .section div.link-list-wrapper:has(.link-list.fullwidth.leftalign) .link-list h3,
-  .section div.link-list-wrapper:has(.link-list.fullwidth.leftalign) .link-list h4 {
+  .section div.link-list:has(.link-list.fullwidth.leftalign) .link-list,
+  .section div.link-list:has(.link-list.fullwidth.leftalign) .link-list h2,
+  .section div.link-list:has(.link-list.fullwidth.leftalign) .link-list h3,
+  .section div.link-list:has(.link-list.fullwidth.leftalign) .link-list h4 {
     padding-left: 0;
   }
 
@@ -296,14 +296,14 @@
 }
 
 @media (min-width: 1200px) {
-  .section .link-list-wrapper:has(.link-list:is([class*=" "])) {
+  .section .link-list:has(.link-list:is([class*=" "])) {
     max-width: 1024px;
   }
-  .section .link-list-wrapper:has(.link-list.inline) {
+  .section .link-list:has(.link-list.inline) {
     max-width: initial;
   }
 
-  .section .link-list-wrapper {
+  .section .link-list {
     padding: 60px 50px 0 50px;
     max-width: 1200px;
   }

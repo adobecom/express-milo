@@ -1,10 +1,9 @@
-import { getLibs, fixIcons, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, fixIcons } from '../../scripts/utils.js';
 import { transformLinkToAnimation } from '../../scripts/utils/media.js';
 
 let createTag;
 
 export default async function decorate(block) {
-  addTempWrapperDeprecated(block, 'quick-action-hub');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), fixIcons(block)]).then(([utils]) => {
     ({ createTag } = utils);
   });

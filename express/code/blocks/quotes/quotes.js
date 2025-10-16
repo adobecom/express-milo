@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import { getLibs, addTempWrapperDeprecated, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
 import loadCarousel from '../../scripts/utils/load-carousel.js';
 import {
   fetchRatingsData,
@@ -255,7 +255,6 @@ async function createQuotesRatings({
 }
 
 export default async function decorate($block) {
-  addTempWrapperDeprecated($block, 'quotes');
   lazyLoadLottiePlayer($block);
 
   const isSingularVariant = $block.classList.contains('singular');

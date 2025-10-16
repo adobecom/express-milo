@@ -1,4 +1,4 @@
-import { getLibs, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs } from '../../scripts/utils.js';
 import buildCompactNavCarousel from '../../scripts/widgets/compact-nav-carousel.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
@@ -261,19 +261,11 @@ async function convertCountryLink(block) {
 
 export default async function decorate(block) {
   ({ createTag, getConfig } = await import(`${getLibs()}/utils/utils.js`));
-  addTempWrapperDeprecated(block, 'gen-ai-cards');
   const links = block.querySelectorAll(':scope a[href*="adobesparkpost"]');
 
   if (links) {
     const linksPopulated = new CustomEvent('linkspopulated', { detail: links });
     document.dispatchEvent(linksPopulated);
-  }
-
-  if (block.classList.contains('homepage')) {
-    const parent = block.closest('.gen-ai-cards-wrapper');
-    if (parent) {
-      parent.classList.add('homepage');
-    }
   }
 
   const payload = constructPayload(block);

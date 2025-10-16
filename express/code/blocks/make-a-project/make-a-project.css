@@ -1,4 +1,4 @@
-main .section .make-a-project-wrapper:has(.make-a-project.centered) {
+main .section .make-a-project:has(.make-a-project.centered) {
   max-width: 375px;
   margin: 0 auto;
 }
@@ -376,7 +376,7 @@ main .make-a-project .make-a-project-projectlist .make-a-project-item picture {
     margin-bottom: 0;
   }
 
-  main .section .make-a-project-wrapper:has(.make-a-project.centered) {
+  main .section .make-a-project:has(.make-a-project.centered) {
     max-width: 830px;
   }
 }
@@ -420,7 +420,7 @@ main .make-a-project:not(.dark) .make-a-project-CTA h2 {
   }
 }
 
-main .hero-animation-wrapper + .make-a-project-wrapper .make-a-project-CTA h2 {
+main .hero-animation-wrapper + .make-a-project .make-a-project-CTA h2 {
   margin-top: 0;
 }
 
@@ -428,26 +428,26 @@ main .hero-animation-wide-container .hero-animation-wrapper {
   background: var(--color-gray-100);
 }
 
-main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project-wrapper {
+main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project {
   background: -webkit-linear-gradient(180deg, var(--color-gray-100) 0%, rgba(255,255,255,0) 100%);
   background: linear-gradient(180deg, var(--color-gray-100) 0%, rgba(255,255,255,0) 100%);
 }
 
 /* Specific sizing rules for Intent-Driven Home Page desktop version */
 
-main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project-wrapper .make-a-project-item:nth-child(2) img {
+main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project .make-a-project-item:nth-child(2) img {
   max-height: 171px;
 }
 
-main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project-wrapper .make-a-project-item:nth-child(3) img {
+main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project .make-a-project-item:nth-child(3) img {
   max-height: 120px;
 }
 
-main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project-wrapper .make-a-project-item:nth-child(5) img {
+main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project .make-a-project-item:nth-child(5) img {
   max-height: 111px;
 }
 
-main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project-wrapper .make-a-project-item:nth-child(7) img {
+main .hero-animation-wide-container .hero-animation-wrapper + .make-a-project .make-a-project-item:nth-child(7) img {
   max-height: 158px;
 }
 
@@ -456,7 +456,7 @@ main .make-a-project .free-plan-widget {
 }
 
 /* add padding if make a project isn't the first block */
-main .content + .make-a-project-wrapper > .make-a-project {
+main .content + .make-a-project > .make-a-project {
   padding-top: 40px;
 }
 
@@ -465,7 +465,7 @@ main .make-a-project .carousel-container .carousel-platform {
 }
 
 @media(min-width: 1200px) {
-  main .section .make-a-project-wrapper:has(.make-a-project.centered) {
+  main .section .make-a-project:has(.make-a-project.centered) {
     max-width: 1024px;
   }
 }
