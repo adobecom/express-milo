@@ -40,48 +40,9 @@ The quotes block on the Adobe Express homepage was eagerly loading a large decor
 
 ## Solution Evolution
 
-We tested multiple approaches before finding the optimal solution:
+We tested multiple approaches for optimizing the quotes block background images:
 
-### ❌ Failed Attempt 1: Preconnect Hints (Test 1)
-
-**Approach:** Added preconnect hints for Adobe Launch, IMS, and tracking domains.
-
-**Results:**
-- Performance: 67 (-11 points)
-- LCP: 9.8s (+4.8s regression)
-- Speed Index: 7.4s (+2.6s regression)
-
-**Why it failed:** Adding speculative connections competed with critical resources, delaying LCP significantly.
-
----
-
-### ❌ Failed Attempt 2: Lighthouse-Recommended Preconnects (Test 2)
-
-**Approach:** Added only Lighthouse-recommended preconnects (geo2.adobe.com, main--milo--adobecom.aem.live).
-
-**Results:**
-- Performance: 80 (+2 points)
-- LCP: 4.9s (+0.3s regression)
-- Speed Index: 5.4s (+0.6s regression)
-
-**Why it failed:** Even targeted preconnects caused minor regressions with no clear benefit.
-
----
-
-### ❌ Failed Attempt 3: Video Preload (Test 3)
-
-**Approach:** Added `<link rel="preload">` for hero video.
-
-**Results:**
-- Performance: 81 (+3 points)
-- LCP: 4.2s (+0.2s regression)
-- Speed Index: 6.6s (+1.8s regression)
-
-**Why it failed:** Video preload caused Speed Index regression, minimal LCP benefit.
-
----
-
-### ⚠️ Partial Success: Dual-Container Lazy Loading
+### ⚠️ Attempt 1: Dual-Container Lazy Loading
 
 **Approach:**
 - Lazy load background image using Intersection Observer
@@ -99,7 +60,7 @@ We tested multiple approaches before finding the optimal solution:
 
 ---
 
-### ✅ Final Solution: Single-Container Lazy Loading
+### ✅ Attempt 2 (Final Solution): Single-Container Lazy Loading
 
 **Approach:**
 1. **Lazy load background image** using Intersection Observer
