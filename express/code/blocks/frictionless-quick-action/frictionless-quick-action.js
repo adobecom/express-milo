@@ -488,6 +488,12 @@ async function performUploadAction(files, block, quickAction) {
     resetUploadUI();
   }
 
+  if (quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant1
+    || quickAction === FRICTIONLESS_UPLOAD_QUICK_ACTIONS.removeBackgroundVariant2) {
+    window.open(url.toString(), '_blank');
+    return;
+  }
+
   window.location.href = url.toString();
 }
 
