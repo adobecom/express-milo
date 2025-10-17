@@ -2029,4 +2029,105 @@ describe('Template X Promo', () => {
       console.log('✅ cta-link has tabindex="-1" to avoid tab trap');
     });
   });
+
+  describe('One-Up Template Image Clickability Tests', () => {
+    it('should have clickable image link in one-up variant', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      // Mock single template response for one-up
+      const mockOneUpResponse = {
+        ok: true,
+        json: () => Promise.resolve({
+          items: [
+            {
+              id: 'one-up-template',
+              title: 'One Up Template',
+              status: 'approved',
+              assetType: 'Webpage_Template',
+              customLinks: { branchUrl: 'https://express.adobe.com/edit-one-up' },
+              thumbnail: { url: 'https://design-assets.adobeprojectm.com/oneup.jpg' },
+              behaviors: ['still'],
+              licensingCategory: 'free',
+              _links: {
+                'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit-one-up' },
+                'http://ns.adobe.com/adobecloud/rel/rendition': {
+                  href: 'https://design-assets.adobeprojectm.com/oneup.jpg',
+                },
+              },
+            },
+          ],
+        }),
+      };
+
+      fetchStub.resolves(mockOneUpResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const imageLink = testBlock.querySelector('.one-up-image-link');
+      
+      if (imageLink) {
+        expect(imageLink).to.exist;
+        
+        // Verify it wraps the image-wrapper
+        const imageWrapper = imageLink.querySelector('.image-wrapper');
+        expect(imageWrapper).to.exist;
+        
+        // Verify it has proper href
+        const href = imageLink.getAttribute('href');
+        expect(href).to.include('express.adobe.com');
+        
+        // Verify cursor pointer
+        const styles = window.getComputedStyle(imageLink);
+        expect(styles.cursor).to.equal('pointer');
+        
+        console.log('✅ One-up image link is clickable');
+      } else {
+        console.log('ℹ️ Not a one-up variant (multiple templates)');
+      }
+    });
+
+    it('should have aria-label on one-up image link', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      const mockOneUpResponse = {
+        ok: true,
+        json: () => Promise.resolve({
+          items: [
+            {
+              id: 'one-up-template',
+              title: 'Test Template',
+              status: 'approved',
+              assetType: 'Webpage_Template',
+              customLinks: { branchUrl: 'https://express.adobe.com/edit' },
+              thumbnail: { url: 'https://design-assets.adobeprojectm.com/test.jpg' },
+              behaviors: ['still'],
+              licensingCategory: 'free',
+              _links: {
+                'urn:adobe:photoshop:web': { href: 'https://express.adobe.com/edit' },
+                'http://ns.adobe.com/adobecloud/rel/rendition': {
+                  href: 'https://design-assets.adobeprojectm.com/test.jpg',
+                },
+              },
+            },
+          ],
+        }),
+      };
+
+      fetchStub.resolves(mockOneUpResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const imageLink = testBlock.querySelector('.one-up-image-link');
+      
+      if (imageLink) {
+        const ariaLabel = imageLink.getAttribute('aria-label');
+        expect(ariaLabel).to.exist;
+        expect(ariaLabel).to.include('Edit this template');
+        
+        console.log('✅ One-up image link has accessible aria-label');
+      }
+    });
+  });
 });

@@ -409,9 +409,18 @@ async function handleOneUpFromApiData(block, templateData) {
     imgWrapper.append(premiumIcon);
   }
 
-  block.append(imgWrapper);
-
   const editThisTemplate = await replaceKey('edit-this-template', getConfig()) ?? 'Edit this template';
+  
+  // Wrap image in clickable link
+  const imageLink = createTag('a', {
+    href: metadata.editUrl,
+    class: 'one-up-image-link',
+    'aria-label': `${editThisTemplate} ${metadata.title}`,
+    target: '_self',
+  });
+  imageLink.append(imgWrapper);
+
+  block.append(imageLink);
   const editTemplateButton = createTag('a', {
     href: metadata.editUrl,
     class: 'button accent small',
