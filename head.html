@@ -3,6 +3,9 @@
 <script src="/express/code/scripts/fallback.js" nomodule></script>
 <script src="/express/code/scripts/scripts.js" type="module"></script>
 <style>
+  /* Keep Milo's default body hiding */
+  body { display: none; }
+  
   /* Define fallback font with size-adjust to match Adobe Clean metrics */
   @font-face {
     font-family: 'Fallback Font';
@@ -19,57 +22,23 @@
   main .section:first-of-type p {
     font-family: 'Fallback Font', adobe-clean, "Adobe Clean", sans-serif !important;
   }
-  
-  /* Keep body hidden initially (Milo default) */
-  body { display: none; }
 </style>
 <script>
-  // POC: Show body after Global Nav loads to prevent layout shift
+  // POC: Show body immediately to eliminate font render delay
+  // This runs BEFORE Milo's main scripts, avoiding FOUC
   (function() {
-    console.log('🔍 POC: Body visibility script loaded');
-    
-    const showBodyWhenGnavReady = () => {
-      console.log('🔍 POC: Starting Global Nav detection');
-      let attempts = 0;
-      
-      // Wait for Global Nav to be loaded
-      const checkGnav = setInterval(() => {
-        attempts++;
-        const gnav = document.querySelector('header.global-navigation');
-        const header = document.querySelector('header');
-        
-        // Debug logging
-        if (attempts % 10 === 0) {
-          console.log(`🔍 POC: Attempt ${attempts}, header:`, !!header, 'gnav:', !!gnav);
-        }
-        
-        // Check multiple possible selectors
-        if (header || gnav) {
-          clearInterval(checkGnav);
-          // Global Nav is ready, show body
-          document.body.style.display = 'block';
-          document.body.style.visibility = 'visible';
-          console.log('✅ POC: Body visible after Global Nav loaded (attempts:', attempts, ')');
-        }
-      }, 50);
-      
-      // Fallback: show body after 2s even if Global Nav isn't detected
-      setTimeout(() => {
-        clearInterval(checkGnav);
-        if (document.body.style.display === 'none') {
-          document.body.style.display = 'block';
-          document.body.style.visibility = 'visible';
-          console.log('⚠️ POC: Body visible (timeout fallback after', attempts, 'attempts)');
-        }
-      }, 2000);
-    };
-    
-    // Start checking as soon as DOM is interactive
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', showBodyWhenGnavReady);
-    } else {
-      showBodyWhenGnavReady();
+    function showBody() {
+      if (document.body) {
+        document.body.style.display = 'block';
+        document.body.style.visibility = 'visible';
+      } else {
+        // Body doesn't exist yet, check again very soon
+        requestAnimationFrame(showBody);
+      }
     }
+    
+    // Start trying to show body immediately
+    showBody();
   })();
 </script>
 <link rel="icon" href="data:,">
