@@ -243,6 +243,48 @@ preDecorateSections(document);
   });
 }());
 
+// POC: Intercept TypeKit loading and modify font-display behavior
+(function interceptTypekitFontDisplay() {
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        // Intercept TypeKit stylesheet
+        if (node.tagName === 'LINK' 
+            && node.getAttribute('href')?.includes('typekit.net')) {
+          console.log('🎯 POC: Intercepting TypeKit stylesheet');
+          
+          // Fetch TypeKit CSS and modify font-display
+          fetch(node.href)
+            .then((response) => response.text())
+            .then((css) => {
+              // Replace all font-display:auto with font-display:swap
+              const modifiedCSS = css.replace(/font-display\s*:\s*auto/g, 'font-display:swap');
+              
+              // Create a new style element with modified CSS
+              const style = document.createElement('style');
+              style.textContent = modifiedCSS;
+              style.setAttribute('data-typekit-override', 'true');
+              
+              // Remove original TypeKit link
+              node.remove();
+              
+              // Add modified CSS
+              document.head.appendChild(style);
+              
+              console.log('✅ POC: TypeKit font-display changed to swap');
+            })
+            .catch((err) => console.error('❌ POC: TypeKit intercept failed', err));
+        }
+      });
+    });
+  });
+  
+  // Start observing before Milo loads
+  observer.observe(document.head, { childList: true, subtree: true });
+  
+  console.log('🔍 POC: TypeKit interceptor active');
+}());
+
 function decorateHeroLCP(loadStyle, config, createTag) {
   const template = getMetadata('template');
   const h1 = document.querySelector('main h1');
