@@ -156,11 +156,6 @@ export class Masonry {
       mediaWidth = video.videoWidth;
       calculatedHeight = ((this.columnWidth) / mediaWidth) * mediaHeight;
     }
-    if (this.debug) {
-      // eslint-disable-next-line no-console
-      console.log(cell.offsetHeight, calculatedHeight, cell);
-    }
-
     const column = this.getNextColumn(calculatedHeight);
     column.colEl.append(cell);
     cell.classList.add('appear');

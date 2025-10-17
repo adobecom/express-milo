@@ -1,10 +1,6 @@
 import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated } from '../../../utils.js';
 import { createFloatingButton } from '../../../widgets/floating-cta.js';
 
-// import { getLibs, getMobileOperatingSystem, getIconElementDeprecated, addTempWrapperDeprecated }
-// from '../../scripts/utils.js';
-// import { createFloatingButton } from '../../scripts/widgets/floating-cta.js';
-
 let createTag; let getMetadata;
 
 const LONG_TEXT_CUTOFF = 70;
@@ -176,7 +172,6 @@ export default async function decorate(block) {
   ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   if (!androidDeviceAndRamCheck()) {
     const { default: decorateNormal } = await import('../../../../blocks/floating-button/floating-button.js');
-    // const { default: decorateNormal } = await import('../floating-button/floating-button.js');
     decorateNormal(block);
     return;
   }

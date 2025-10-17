@@ -543,7 +543,6 @@ export default async function init(el) {
       });
 
       if (displayChanged && parentSection.offsetHeight > 0) {
-        console.log('Section display changed, equalizing heights');
         equalizeHeights(el);
       }
     }, 100));

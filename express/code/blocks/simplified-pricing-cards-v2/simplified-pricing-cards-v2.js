@@ -446,7 +446,6 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
 
   // Setup resize handler
   window.addEventListener('resize', debounce(() => {
-    console.log('resize');
     equalizeHeights(el);
   }, RESIZE_DEBOUNCE_MS));
 
@@ -475,7 +474,6 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
       });
 
       if (displayChanged && parentSection.offsetHeight > 0) {
-        console.log('Section display changed, equalizing heights');
         equalizeHeights(el);
       }
     }, RESIZE_DEBOUNCE_MS));
@@ -484,7 +482,6 @@ function setupDOMAndEvents(el, cards, rows, defaultOpenIndex, cardWrapper) {
     const resizeObserver = new ResizeObserver(debounce((entries) => {
       for (const entry of entries) {
         if (entry.target === parentSection && entry.contentRect.height > 0) {
-          console.log('Section resized, equalizing heights');
           equalizeHeights(el);
         }
       }

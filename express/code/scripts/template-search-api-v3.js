@@ -94,11 +94,6 @@ function formatFilterString(filters) {
       .filter((l) => supportedLanguages.includes(l))
       .join(',');
     if (langFilter) str += `&filters=language==${langFilter}`;
-
-    // No Region Filter as template region tagging is still inconsistent.
-    // We still have Region Boosting via x-express-pref-region-code header
-    // const regionFilter = extractRegions(locales).join(',');
-    // if (regionFilter) str += `&filters=applicableRegions==${regionFilter}`;
   }
 
   return str;

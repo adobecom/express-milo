@@ -13,8 +13,6 @@ const DCTX_ID_PROD = 'v:2,s,dcp-r,bg:express2024,45faecb0-e687-11ee-a865-f545a8c
 const usp = new URLSearchParams(window.location.search);
 
 const onRedirect = (e) => {
-  // eslint-disable-next-line no-console
-  console.log('redirecting to:', e.detail);
   // temporary solution: allows analytics to go thru. should move to a promise
   setTimeout(() => {
     window.location.assign(e.detail);
