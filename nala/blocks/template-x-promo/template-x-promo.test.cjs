@@ -255,11 +255,16 @@ test.describe('Template X Promo block tests', () => {
 
       if (templates > 0) {
         const firstTemplate = templateXPromo.page.locator('.template').first();
+        
+        // Hover to show the button-container with cta-link
+        await firstTemplate.hover();
+        await templateXPromo.page.waitForTimeout(500);
+        
         const ctaLink = firstTemplate.locator('.cta-link');
 
-        // Verify cta-link exists
+        // Verify cta-link exists and is now visible after hover
         await expect(ctaLink).toBeVisible();
-        console.log('✅ cta-link is visible');
+        console.log('✅ cta-link is visible after hover');
 
         // Verify cta-link has proper pointer events
         const pointerEvents = await ctaLink.evaluate((el) => window.getComputedStyle(el).pointerEvents);
