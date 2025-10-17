@@ -3,13 +3,6 @@
 <script src="/express/code/scripts/fallback.js" nomodule></script>
 <script src="/express/code/scripts/scripts.js" type="module"></script>
 <style>
-  /* POC: Override Milo's body hiding to eliminate font render delay */
-  body { 
-    display: block !important; 
-    visibility: visible !important; 
-    opacity: 1 !important;
-  }
-  
   /* Define fallback font with size-adjust to match Adobe Clean metrics */
   @font-face {
     font-family: 'Fallback Font';
@@ -26,5 +19,43 @@
   main .section:first-of-type p {
     font-family: 'Fallback Font', adobe-clean, "Adobe Clean", sans-serif !important;
   }
+  
+  /* Keep body hidden initially (Milo default) */
+  body { display: none; }
 </style>
+<script>
+  // POC: Show body after Global Nav loads to prevent layout shift
+  (function() {
+    const showBodyWhenGnavReady = () => {
+      // Wait for Global Nav to be loaded
+      const checkGnav = setInterval(() => {
+        const gnav = document.querySelector('header.global-navigation');
+        if (gnav && gnav.querySelector('nav')) {
+          clearInterval(checkGnav);
+          // Global Nav is ready, show body
+          document.body.style.display = 'block';
+          document.body.style.visibility = 'visible';
+          console.log('✅ Body visible after Global Nav loaded');
+        }
+      }, 50);
+      
+      // Fallback: show body after 2s even if Global Nav isn't detected
+      setTimeout(() => {
+        clearInterval(checkGnav);
+        if (document.body.style.display === 'none') {
+          document.body.style.display = 'block';
+          document.body.style.visibility = 'visible';
+          console.log('⚠️ Body visible (timeout fallback)');
+        }
+      }, 2000);
+    };
+    
+    // Start checking as soon as DOM is interactive
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', showBodyWhenGnavReady);
+    } else {
+      showBodyWhenGnavReady();
+    }
+  })();
+</script>
 <link rel="icon" href="data:,">
