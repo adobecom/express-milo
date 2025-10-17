@@ -1,6 +1,4 @@
-import { getLibs } from '../../scripts/utils.js';
-
-import { titleCase } from '../../scripts/utils/string.js';
+import { getLibs, titleCase } from '../../scripts/utils.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
 
 let createTag; let getMetadata;

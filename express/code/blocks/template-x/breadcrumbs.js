@@ -1,8 +1,8 @@
 import {
   getLibs,
+  titleCase,
 } from '../../scripts/utils.js';
 import fetchAllTemplatesMetadata from '../../scripts/utils/all-templates-metadata.js';
-import { titleCase } from '../../scripts/utils/string.js';
 
 let createTag; let getMetadata;
 let getConfig; let replaceKeyArray;

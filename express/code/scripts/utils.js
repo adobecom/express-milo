@@ -112,6 +112,15 @@ export function toClassName(name) {
     : '';
 }
 
+export function titleCase(str) {
+  if (!str) return '';
+  const splitStr = str.toLowerCase().split(' ');
+  for (let i = 0; i < splitStr.length; i += 1) {
+    splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+  }
+  return splitStr.join(' ');
+}
+
 function sanitizeInput(input) {
   if (Number.isInteger(input)) return input;
   return input.replace(/[^a-zA-Z0-9-_]/g, ''); // Simple regex to strip out potentially dangerous characters

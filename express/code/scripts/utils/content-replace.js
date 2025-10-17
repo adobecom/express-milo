@@ -1,5 +1,4 @@
-import { titleCase } from './string.js';
-import { getLibs, yieldToMain } from '../utils.js';
+import { getLibs, yieldToMain, titleCase } from '../utils.js';
 
 let getConfig; let getMetadata;
 let replaceKey;

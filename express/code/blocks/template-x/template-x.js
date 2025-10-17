@@ -5,8 +5,8 @@ import {
   getIconElementDeprecated,
   fixIcons,
   getLibs,
+  titleCase,
 } from '../../scripts/utils.js';
-import { titleCase } from '../../scripts/utils/string.js';
 import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
 import {
   closeDrawer,

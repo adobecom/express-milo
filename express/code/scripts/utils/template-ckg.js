@@ -1,5 +1,4 @@
-import { getLibs } from '../utils.js';
-import { titleCase } from './string.js';
+import { getLibs, titleCase } from '../utils.js';
 
 import getCKGData from './browse-api-controller.js';
 
