@@ -8,6 +8,12 @@ import {
 } from '../../scripts/utils.js';
 import { titleCase } from '../../scripts/utils/string.js';
 import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
+import {
+  closeDrawer,
+  getPlaceholderWidth,
+  wordStartsWithVowels,
+  initToolbarShadow,
+} from '../../scripts/utils/template-shared-utils.js';
 import { Masonry } from '../../scripts/widgets/masonry.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import {
@@ -32,10 +38,6 @@ let variant;
 
 // currently running experiment
 const TWO_ROW = 'tworow';
-
-function wordStartsWithVowels(word) {
-  return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
-}
 
 function camelize(str) {
   return str.replace(/^\w|[A-Z]|\b\w/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase())).replace(/\s+/g, '');
@@ -818,22 +820,6 @@ async function decorateCategoryList(block, props) {
   }
 }
 
-function closeDrawer(toolBar) {
-  const drawerBackground = toolBar.querySelector('.drawer-background');
-  const drawer = toolBar.querySelector('.filter-drawer-mobile');
-  const applyButton = toolBar.querySelector('.apply-filter-button-wrapper');
-
-  drawer.classList.add('retracted');
-  drawerBackground.classList.add('transparent');
-  applyButton.classList.add('transparent');
-
-  setTimeout(() => {
-    drawer.classList.add('hidden');
-    drawerBackground.classList.add('hidden');
-    applyButton.classList.add('hidden');
-  }, 500);
-}
-
 function updateOptionsStatus(block, props, toolBar) {
   const wrappers = toolBar.querySelectorAll('.function-wrapper');
   const waysOfSort = {
@@ -1122,49 +1108,6 @@ async function initFilterSort(block, props, toolBar) {
   }
 }
 
-function getPlaceholderWidth(block) {
-  let width;
-  if (window.innerWidth >= 900) {
-    if (block.classList.contains('sm-view')) {
-      width = 165;
-    }
-
-    if (block.classList.contains('md-view')) {
-      width = 258.5;
-    }
-
-    if (block.classList.contains('lg-view')) {
-      width = 352;
-    }
-  } else if (window.innerWidth >= 600) {
-    if (block.classList.contains('sm-view')) {
-      width = 165;
-    }
-
-    if (block.classList.contains('md-view')) {
-      width = 227.33;
-    }
-
-    if (block.classList.contains('lg-view')) {
-      width = 352;
-    }
-  } else {
-    if (block.classList.contains('sm-view')) {
-      width = 106.33;
-    }
-
-    if (block.classList.contains('md-view')) {
-      width = 165.5;
-    }
-
-    if (block.classList.contains('lg-view')) {
-      width = 335;
-    }
-  }
-
-  return width;
-}
-
 function toggleMasonryView(block, props, button, toggleButtons) {
   const blockEl = block.closest('.template-x');
   blockEl.classList.add('template-x-wrapper');
@@ -1224,17 +1167,6 @@ function initViewToggle(block, props, toolBar) {
     button.addEventListener('click', () => {
       toggleMasonryView(block, props, button, toggleButtons);
     }, { passive: true });
-  });
-}
-
-function initToolbarShadow(toolbar) {
-  const toolbarWrapper = toolbar.parentElement;
-  document.addEventListener('scroll', () => {
-    if (toolbarWrapper.getBoundingClientRect().top <= 0) {
-      toolbarWrapper.classList.add('with-box-shadow');
-    } else {
-      toolbarWrapper.classList.remove('with-box-shadow');
-    }
   });
 }
 

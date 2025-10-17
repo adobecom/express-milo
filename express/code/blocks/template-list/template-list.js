@@ -10,7 +10,12 @@ import {
 
 import { addAnimationToggle, createOptimizedPicture, linkImage } from '../../scripts/utils/media.js';
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
-
+import {
+  closeDrawer,
+  getPlaceholderWidth,
+  wordStartsWithVowels,
+  initToolbarShadow,
+} from '../../scripts/utils/template-shared-utils.js';
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 
 import { Masonry } from '../../scripts/widgets/masonry.js';
@@ -23,9 +28,6 @@ import getBreadcrumbs from './breadcrumbs.js';
 let createTag; let getConfig;
 let getMetadata; let decorateSections;
 let replaceKey;
-function wordStartsWithVowels(word) {
-  return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
-}
 
 function handlelize(str) {
   return str.normalize('NFD')
@@ -1029,22 +1031,6 @@ async function decorateSearchFunctions(toolBar, section, props) {
   initSearchFunction(toolBar, stickySearchBarWrapper, searchBarWrapper, props);
 }
 
-function closeDrawer(toolBar) {
-  const drawerBackground = toolBar.querySelector('.drawer-background');
-  const drawer = toolBar.querySelector('.filter-drawer-mobile');
-  const applyButton = toolBar.querySelector('.apply-filter-button-wrapper');
-
-  drawer.classList.add('retracted');
-  drawerBackground.classList.add('transparent');
-  applyButton.classList.add('transparent');
-
-  setTimeout(() => {
-    drawer.classList.add('hidden');
-    drawerBackground.classList.add('hidden');
-    applyButton.classList.add('hidden');
-  }, 500);
-}
-
 function updateOptionsStatus(block, toolBar, props) {
   const wrappers = toolBar.querySelectorAll('.function-wrapper');
 
@@ -1317,49 +1303,6 @@ function initFilterSort(block, toolBar, props) {
   }
 }
 
-function getPlaceholderWidth(block) {
-  let width;
-  if (window.innerWidth >= 900) {
-    if (block.classList.contains('sm-view')) {
-      width = 165;
-    }
-
-    if (block.classList.contains('md-view')) {
-      width = 258.5;
-    }
-
-    if (block.classList.contains('lg-view')) {
-      width = 352;
-    }
-  } else if (window.innerWidth >= 600) {
-    if (block.classList.contains('sm-view')) {
-      width = 165;
-    }
-
-    if (block.classList.contains('md-view')) {
-      width = 227.33;
-    }
-
-    if (block.classList.contains('lg-view')) {
-      width = 352;
-    }
-  } else {
-    if (block.classList.contains('sm-view')) {
-      width = 106.33;
-    }
-
-    if (block.classList.contains('md-view')) {
-      width = 165.5;
-    }
-
-    if (block.classList.contains('lg-view')) {
-      width = 335;
-    }
-  }
-
-  return width;
-}
-
 function toggleMasonryView(block, button, toggleButtons, props) {
   const templatesToView = block.querySelectorAll('.template:not(.placeholder)');
   const blockWrapper = block.closest('.template-list-wrapper');
@@ -1426,17 +1369,6 @@ async function decorateBreadcrumbs(block) {
   if (document.body.dataset.device !== 'desktop') return;
   const breadcrumbs = await getBreadcrumbs(createTag, getMetadata, getConfig);
   if (breadcrumbs) parent.prepend(breadcrumbs);
-}
-
-function initToolbarShadow(toolbar) {
-  const toolbarWrapper = toolbar.parentElement;
-  document.addEventListener('scroll', () => {
-    if (toolbarWrapper.getBoundingClientRect().top <= 0) {
-      toolbarWrapper.classList.add('with-box-shadow');
-    } else {
-      toolbarWrapper.classList.remove('with-box-shadow');
-    }
-  });
 }
 
 async function decorateToolbar(block, section, props) {
