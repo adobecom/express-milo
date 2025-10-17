@@ -84,6 +84,15 @@ test.describe('Template X Promo block tests', () => {
       if (globalTemplateCount > 0) {
         // Test hover interactions on templates
         const firstTemplate = templateXPromo.page.locator('.template').first();
+        // Wait for template images to load first (fixes Firefox lazy-load visibility issue)
+        await templateXPromo.page.waitForLoadState('networkidle');
+        await templateXPromo.page.waitForFunction(() => {
+          const template = document.querySelector('.template');
+          const img = template?.querySelector('img');
+          return img && img.complete && img.naturalHeight > 0;
+        }, { timeout: 30000 });
+        // Now wait for template to be visible and stable before hovering
+        await firstTemplate.waitFor({ state: 'visible', timeout: 30000 });
         await firstTemplate.hover();
         console.log('✅ Template hover interaction tested');
 
