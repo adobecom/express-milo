@@ -37,6 +37,19 @@
   flex-direction: column;
   padding: 20px;
 }
+.ax-template-x-promo.one-up .one-up-image-link {
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+}
+
+.ax-template-x-promo.one-up .one-up-image-link:focus-visible {
+  outline: 2px solid var(--color-info-accent);
+  outline-offset: 2px;
+  border-radius: var(--spacing-300);
+}
+
 .ax-template-x-promo.one-up img {
   border-radius: var(--spacing-300);
   width: 100%;
