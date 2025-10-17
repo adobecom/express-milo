@@ -351,6 +351,22 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
   }
+
+  // Preload LCP block resources dynamically
+  const firstBlock = document.querySelector('main > div > div[class]');
+  if (firstBlock) {
+    const blockName = firstBlock.className.split(' ')[0];
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.href = `${config.codeRoot}/blocks/${blockName}/${blockName}.css`;
+    link.as = 'style';
+    document.head.appendChild(link);
+    const moduleLink = document.createElement('link');
+    moduleLink.rel = 'modulepreload';
+    moduleLink.href = `${config.codeRoot}/blocks/${blockName}/${blockName}.js`;
+    document.head.appendChild(moduleLink);
+  }
+
   // Decorate the page with site specific needs.
   decorateArea();
 
