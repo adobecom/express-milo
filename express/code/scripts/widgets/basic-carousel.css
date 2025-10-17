@@ -48,9 +48,9 @@
   display: flex;
   justify-content: end;
   padding-top: 0;
-  padding-bottom: var(--spacing-700);
-  padding-right: var(--spacing-300);
-  gap: var(--spacing-100);
+  padding-bottom: var(--spacing-xl);
+  padding-right: var(--spacing-xs);
+  gap: var(--spacing-xxs);
 }
 
 .basic-carousel-container a.button.basic-carousel-arrow {
@@ -336,9 +336,9 @@ main a.basic-carousel-play-pause-button:focus {
 
 @media (min-width: 768px) {
   .basic-carousel-controls-wrapper {
-    padding-top: var(--spacing-400);
+    padding-top: var(--spacing-s);
     padding-bottom: var(--spacing-800);
-    padding-right: var(--spacing-500);
+    padding-right: var(--spacing-m);
   }
   .basic-carousel-platform::after {
     content: "";
@@ -350,7 +350,7 @@ main a.basic-carousel-play-pause-button:focus {
 
 @media (min-width: 1280px) {
   .basic-carousel-controls-wrapper {
-    padding-bottom: var(--spacing-900);
+    padding-bottom: var(--spacing-xxl);
     max-width: 1300px;
   }
 }

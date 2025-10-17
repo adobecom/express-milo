@@ -1,7 +1,7 @@
 .highlight {
-  padding-left: var(--spacing-600);
-  padding-right: var(--spacing-600);
-  padding-bottom: var(--spacing-500);
+  padding-left: var(--spacing-l);
+  padding-right: var(--spacing-l);
+  padding-bottom: var(--spacing-m);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--ax-grid-gutter);
@@ -27,7 +27,7 @@
 
 .highlight .icon-row .text {
   padding-left: 0;
-  margin-top: var(--spacing-100);
+  margin-top: var(--spacing-xxs);
   font-size: var(--body-font-size-s);
   font-weight: bold;
   color: var(--color-black);
@@ -45,7 +45,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    padding: var(--spacing-200) var(--spacing-600) var(--spacing-600);
+    padding: var(--spacing-200) var(--spacing-l) var(--spacing-l);
     max-width: 1440px;
     width: 100%;
     margin-left: auto;
@@ -62,7 +62,7 @@
   }
 
   .highlight .icon-row .text {
-    margin-top: var(--spacing-100);
+    margin-top: var(--spacing-xxs);
     margin-bottom: 0;
   }
 }
@@ -73,7 +73,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-200) var(--spacing-600);
+    padding: var(--spacing-200) var(--spacing-l);
     max-width: 1440px;
     width: 100%;
     margin-left: auto;
@@ -91,6 +91,6 @@
   .highlight .icon-row .text {
     margin-top: 0;
     margin-bottom: 0;
-    padding-left: var(--spacing-100);
+    padding-left: var(--spacing-xxs);
   }
 }

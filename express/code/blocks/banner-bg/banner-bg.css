@@ -2,7 +2,7 @@
 
 /* Base styles for all background variants - using higher specificity */
 .banner-bg[class*="-bg"] {
-  padding: var(--spacing-600) 20px;
+  padding: var(--spacing-l) 20px;
   text-align: center;
   margin: 0 auto;
   background-size: cover;
@@ -44,8 +44,8 @@
   border-radius: 16px;
   border: 2px solid var(--color-white);
   background: linear-gradient(95deg, rgba(255, 255, 255, 0.80) 18%, rgba(255, 255, 255, 0.40) 93%);
-  padding: var(--spacing-800) var(--spacing-500);
-  width: calc(100vw - var(--spacing-600));
+  padding: var(--spacing-800) var(--spacing-m);
+  width: calc(100vw - var(--spacing-l));
   box-sizing: border-box;
   max-width: none;
 }
@@ -63,8 +63,8 @@
 /* Paragraph styling for background variants */
 .banner-bg[class*="-bg"] p:not(.button-container) {
   color: var(--color-content-neutral);
-  margin-top: var(--spacing-100);
-  margin-bottom: var(--spacing-400);
+  margin-top: var(--spacing-xxs);
+  margin-bottom: var(--spacing-s);
   font-size: var(--body-font-size-xl);
 }
 
@@ -95,16 +95,16 @@
 /* Reduce spacing between stacked buttons on mobile */
 @media (max-width: 767px) {
   .banner-bg[class*="-bg"].multi-button .button-container {
-    margin-top: var(--spacing-100);
-    margin-bottom: var(--spacing-100);
+    margin-top: var(--spacing-xxs);
+    margin-bottom: var(--spacing-xxs);
   }
   
   .banner-bg[class*="-bg"].multi-button .button-container:first-child {
-    margin-top: var(--spacing-500);
+    margin-top: var(--spacing-m);
   }
   
   .banner-bg[class*="-bg"].multi-button .button-container:last-child {
-    margin-bottom: var(--spacing-300);
+    margin-bottom: var(--spacing-xs);
   }
 }
 
@@ -112,8 +112,8 @@
 .banner-bg[class*="-bg"].multi-button .button-container {
   display: inline-block;
   margin-top: 0;
-  margin-bottom: var(--spacing-300);
-  margin-right: var(--spacing-300);
+  margin-bottom: var(--spacing-xs);
+  margin-right: var(--spacing-xs);
 }
 
 .banner-bg[class*="-bg"].multi-button .button-container:last-child {
@@ -122,13 +122,13 @@
 
 /* Single button container styling */
 .banner-bg[class*="-bg"] .button-container:not(.multi-button .button-container) {
-  margin-bottom: var(--spacing-300)
+  margin-bottom: var(--spacing-xs)
 }
 
 .banner-bg[class*="-bg"] .button-container a.button.bg-banner-button {
   font-size: 18px;
   line-height: 1;
-  padding: 13px var(--spacing-400);
+  padding: 13px var(--spacing-s);
   border-radius: 24px;
   background-color: var(--color-content-neutral);
   border: 2px solid var(--color-content-neutral);
@@ -163,17 +163,17 @@
 /* Tablet styles */
 @media (min-width: 768px) {
   .banner-bg[class*="-bg"] {
-    padding: var(--spacing-600) var(--spacing-500);
+    padding: var(--spacing-l) var(--spacing-m);
   }
 
   .banner-bg[class*="-bg"] .background-container {
-    width: calc(100vw - var(--spacing-900));
+    width: calc(100vw - var(--spacing-xxl));
   }
 
   /* Paragraph styling for background variants */
   .banner-bg[class*="-bg"] p:not(.button-container) {
     margin-top: var(--spacing-200);
-    margin-bottom: var(--spacing-500);
+    margin-bottom: var(--spacing-m);
   }
 
   .banner-bg[class*="-bg"] h2 {
@@ -186,7 +186,7 @@
 /* Desktop styles */
 @media (min-width: 1200px) {
   .banner-bg[class*="-bg"] {
-    padding: var(--spacing-900) var(--spacing-600);
+    padding: var(--spacing-xxl) var(--spacing-l);
     margin: 0 auto;
     box-sizing: border-box;
   }

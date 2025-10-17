@@ -1,6 +1,6 @@
 .pricing-footer {
-  margin-top: var(--spacing-400);
-  margin-bottom: var(--spacing-600);
+  margin-top: var(--spacing-s);
+  margin-bottom: var(--spacing-l);
   margin-left: auto;
   box-sizing: content-box;
   margin-right: auto;
@@ -10,7 +10,7 @@
   width: var(--ax-grid-12-col-width);
   border-radius: var(--border-radius-small, 4px);
   background: var(--palette-indigo-200);
-  padding: var(--spacing-200) var(--spacing-100);
+  padding: var(--spacing-200) var(--spacing-xxs);
   box-sizing: border-box;
   text-align: center;
 }
@@ -25,5 +25,5 @@ main .section .pricing-footer p {
 }
 
 .pricing-footer.card-count-2 {
-  padding-right: var(--spacing-300);
+  padding-right: var(--spacing-xs);
 }

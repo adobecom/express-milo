@@ -5,7 +5,7 @@
 }
 
 .hover-cards .heading-container {
-  padding-bottom: calc(var(--spacing-500) - var(--box-shadow-vertical-offset));
+  padding-bottom: calc(var(--spacing-m) - var(--box-shadow-vertical-offset));
 }
 
 .hover-cards .heading-container p {
@@ -17,18 +17,18 @@
 
 .hover-cards .heading-container h2,
 .hover-cards .heading-container h3 {
-  padding-bottom: var(--spacing-100);
+  padding-bottom: var(--spacing-xxs);
   font-size: var(--body-font-size-xl);
   color: #131313;
 }
 
 .hover-cards .gallery {
   padding: var(--box-shadow-vertical-offset);
-  gap: var(--spacing-300);
+  gap: var(--spacing-xs);
 }
 
 .hover-cards .gallery-control {
-  padding-top: var(--spacing-300);
+  padding-top: var(--spacing-xs);
 }
 
 .hover-cards .card {
@@ -60,7 +60,7 @@
 
 .hover-cards .card .cta {
   position: relative;
-  padding: var(--spacing-200) var(--spacing-300) var(--spacing-300);
+  padding: var(--spacing-200) var(--spacing-xs) var(--spacing-xs);
   box-sizing: border-box;
   width: 100%;
   display: flex;
@@ -82,7 +82,7 @@
 
 .hover-cards .card .media {
   position: relative;
-  padding: var(--spacing-300) var(--spacing-300) 0;
+  padding: var(--spacing-xs) var(--spacing-xs) 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,7 +96,7 @@
 @media (min-width: 600px) {
   .hover-cards .heading-container h2,
   .hover-cards .heading-container h3 {
-    padding-bottom: var(--spacing-100);
+    padding-bottom: var(--spacing-xxs);
     font-size: var(--heading-font-size-s);
   }
   .hover-cards .heading-container {

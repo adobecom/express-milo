@@ -12,12 +12,12 @@
 }
 
 .section:has(.ax-columns.marquee) {
-  padding-top: var(--spacing-600);
+  padding-top: var(--spacing-l);
 }
 
 .section:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
   .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing).long-form .ax-columns:last-child {
-  padding-bottom: var(--spacing-600);
+  padding-bottom: var(--spacing-l);
 }
 
 .section:has(.ax-columns)>.content {
@@ -52,8 +52,8 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .ax-columns.marquee.width-2-columns {
-  padding-left: var(--spacing-300);
-  padding-right: var(--spacing-300);
+  padding-left: var(--spacing-xs);
+  padding-right: var(--spacing-xs);
 }
 
 .ax-columns.centered {
@@ -95,24 +95,24 @@ main .section .ax-columns.enterprise .column h2 {
 
 .section:has(.ax-columns.enterprise) .content h2 {
   margin-top: 0;
-  padding-top: var(--spacing-900);
+  padding-top: var(--spacing-xxl);
 }
 
 
 .section .ax-columns.enterprise {
-  padding-left: var(--spacing-900);
-  padding-right: var(--spacing-900);
+  padding-left: var(--spacing-xxl);
+  padding-right: var(--spacing-xxl);
   max-width: unset;
 }
 
 .ax-columns.enterprise>div {
-  gap: var(--spacing-600);
+  gap: var(--spacing-l);
 }
 
 .ax-columns .express-logo.icon {
   width: unset;
   height: 30px;
-  padding-bottom: var(--spacing-100);
+  padding-bottom: var(--spacing-xxs);
   float: unset;
 }
 
@@ -139,7 +139,7 @@ main .section .ax-columns.enterprise .column h2 {
   .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing)>.ax-columns:last-child,
 .section:has(.ax-columns:not(.top.center, .fullsize, .light, .dark, .numbered, .centered, .color)):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
   .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing)>.content:last-child {
-  padding-bottom: var(--spacing-600);
+  padding-bottom: var(--spacing-l);
 }
 
 .ax-columns h1,
@@ -186,7 +186,7 @@ main .section .ax-columns.enterprise .column h2 {
 }
 
 .section .ax-columns p {
-  margin: var(--spacing-300) 0;
+  margin: var(--spacing-xs) 0;
   font-size: var(--body-font-size-m);
   line-height: 1.33;
 }
@@ -216,7 +216,7 @@ main .section .ax-columns.enterprise .column h2 {
 .section>.ax-columns p.button-container,
 .section>.ax-columns .con-button {
   margin: 0;
-  margin-top: var(--spacing-600);
+  margin-top: var(--spacing-l);
 }
 
 .section>.ax-columns .button-container a {
@@ -248,7 +248,7 @@ main .section .ax-columns.enterprise .column h2 {
   display: inline-block;
   width: 18px;
   height: 20px;
-  margin-right: var(--spacing-300);
+  margin-right: var(--spacing-xs);
   vertical-align: sub;
   top: 1px;
   position: relative;
@@ -258,8 +258,8 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns .column-picture {
   margin: 15px 0;
   position: relative;
-  padding-left: var(--spacing-100);
-  padding-right: var(--spacing-100);
+  padding-left: var(--spacing-xxs);
+  padding-right: var(--spacing-xxs);
   transition: transform 0.3s ease;
 }
 
@@ -354,7 +354,7 @@ main .section .ax-columns.enterprise .column h2 {
 .section .ax-columns h6 {
   font-size: var(--heading-font-size-m);
   line-height: 1.14;
-  margin-top: var(--spacing-500);
+  margin-top: var(--spacing-m);
 }
 
 .section .ax-columns h2+h2,
@@ -378,11 +378,11 @@ main .section .ax-columns.enterprise .column h2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--spacing-600) 0;
+  padding: var(--spacing-l) 0;
 }
 
 .section .ax-columns.marquee>div {
-  gap: var(--spacing-500);
+  gap: var(--spacing-m);
   padding: 0;
 }
 
@@ -476,24 +476,24 @@ main .section .ax-columns.enterprise .column h2 {
 .ax-columns .social.icon {
   width: 32px;
   height: 32px;
-  margin-right: var(--spacing-400);
+  margin-right: var(--spacing-s);
 }
 
 .ax-columns .column hr {
-  margin-top: var(--spacing-500);
+  margin-top: var(--spacing-m);
 }
 
 .ax-columns .column .columns-iconlist {
   display: flex;
   flex-direction: column;
-  margin-top: var(--spacing-100);
-  margin-bottom: var(--spacing-600);
+  margin-top: var(--spacing-xxs);
+  margin-bottom: var(--spacing-l);
 }
 
 .ax-columns .column .columns-iconlist>div {
   display: flex;
   align-items: center;
-  margin-top: var(--spacing-500);
+  margin-top: var(--spacing-m);
 }
 
 .ax-columns .column .columns-iconlist p {
@@ -567,7 +567,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .section:first-child:not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
   .l-spacing, .m-spacing, .s-spacing, .xs-spacing, .xxs-spacing) .ax-columns:first-child>div.columns-video {
-  padding: var(--spacing-600) 0;
+  padding: var(--spacing-l) 0;
 }
 
 .ax-columns.highlight>div:first-child {
@@ -617,7 +617,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .section:has(.ax-columns.highlight) h4 {
-  margin: var(--spacing-300) 0;
+  margin: var(--spacing-xs) 0;
   font-size: var(--heading-font-size-m);
 }
 
@@ -627,7 +627,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 
 .ax-columns.highlight .column:not(.column-picture):not(.hero-animation-overlay) {
-  padding: 20px var(--spacing-300);
+  padding: 20px var(--spacing-xs);
 }
 
 .ax-columns.highlight .column h5 {
@@ -662,7 +662,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.highlight .column .columns-iconlist>div {
-  margin-top: var(--spacing-100);
+  margin-top: var(--spacing-xxs);
 }
 
 .ax-columns.highlight .column p {
@@ -674,12 +674,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.offer .column:not(:first-child) {
-  padding-top: var(--spacing-600);
+  padding-top: var(--spacing-l);
 }
 
 .ax-columns.offer>div p.button-container,
 .ax-columns.offer>div a.con-button {
-  margin-bottom: var(--spacing-600);
+  margin-bottom: var(--spacing-l);
 }
 
 /* sub title */
@@ -687,7 +687,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   font-size: var(--body-font-size-xl);
   font-weight: 600;
   line-height: var(--body-line-height);
-  margin: var(--spacing-900) 0 0;
+  margin: var(--spacing-xxl) 0 0;
 }
 
 .ax-columns.offer .columns-offer-icon .icon {
@@ -716,8 +716,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns .column {
-  padding-left: var(--spacing-500);
-  padding-right: var(--spacing-500);
+  padding-left: var(--spacing-m);
+  padding-right: var(--spacing-m);
 }
 
 .ax-columns.fullsize .column-picture,
@@ -726,16 +726,16 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize>div>div p {
-  margin: var(--spacing-300) 0;
+  margin: var(--spacing-xs) 0;
 }
 
 .ax-columns.fullsize>div>div .button-container,
 .ax-columns.fullsize>div>div a.con-button {
-  margin: var(--spacing-300) 0;
+  margin: var(--spacing-xs) 0;
 }
 
 .ax-columns.fullsize>div>div .button-container a {
-  margin: var(--spacing-300) 0 0 0;
+  margin: var(--spacing-xs) 0 0 0;
 }
 
 .ax-columns.fullsize .has-brand>div p:first-child {
@@ -743,21 +743,21 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize .column {
-  padding-left: var(--spacing-400);
-  padding-right: var(--spacing-400);
+  padding-left: var(--spacing-s);
+  padding-right: var(--spacing-s);
   width: calc(100% - 48px);
 }
 
 .ax-columns .column.column-picture {
-  padding-left: var(--spacing-100);
-  padding-right: var(--spacing-100);
+  padding-left: var(--spacing-xxs);
+  padding-right: var(--spacing-xxs);
   margin: auto;
 }
 
 .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
   transform: none;
   left: 0;
-  padding-left: var(--spacing-500);
+  padding-left: var(--spacing-m);
 }
 
 .ax-columns.fullsize .hero-animation-overlay {
@@ -768,7 +768,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .ax-columns.fullsize .hero-animation-overlay video {
   max-height: 40vh;
-  margin-bottom: var(--spacing-600);
+  margin-bottom: var(--spacing-l);
   max-width: 370px;
 }
 
@@ -778,7 +778,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize .has-brand>div:not(.column-picture):not(.hero-animation-overlay) {
-  padding-top: var(--spacing-300);
+  padding-top: var(--spacing-xs);
 }
 
 .ax-columns.highlight .column.column-picture {
@@ -803,7 +803,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.color>div {
-  padding: var(--spacing-900) 0 0 0;
+  padding: var(--spacing-xxl) 0 0 0;
   gap: 15px;
 }
 
@@ -836,7 +836,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 .ax-columns .button-container.free-plan-container.stacked .free-plan-widget {
   margin-top: 0;
-  padding: var(--spacing-300) 0;
+  padding: var(--spacing-xs) 0;
   background-color: transparent;
 }
 
@@ -851,7 +851,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 
 .ax-columns.center.button-container.free-plan-container.stacked .free-plan-widget {
-  padding-left: var(--spacing-400);
+  padding-left: var(--spacing-s);
 }
 
 .ax-columns.fullsize.top {
@@ -859,7 +859,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .ax-columns.fullsize.top>div {
-  padding: var(--spacing-600) 0;
+  padding: var(--spacing-l) 0;
 }
 
 .ax-columns.fullsize.top .column {
@@ -878,12 +878,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 
 .ax-columns.fullsize.top .column .columns-iconlist .columns-iconlist-icon img.icon {
-  margin-right: var(--spacing-100);
+  margin-right: var(--spacing-xxs);
 }
 
 
 .ax-columns.fullsize.top .column .columns-iconlist .columns-iconlist-description {
-  margin-left: var(--spacing-100);
+  margin-left: var(--spacing-xxs);
 }
 
 /* Japanese font sizing styles */
@@ -939,8 +939,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section .ax-columns.minimum-padding {
-    padding-left: var(--spacing-300);
-    padding-right: var(--spacing-300);
+    padding-left: var(--spacing-xs);
+    padding-right: var(--spacing-xs);
     text-align: left;
     max-width: unset;
   }
@@ -1002,7 +1002,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 @media (min-width: 900px) {
   main .section:has(.ax-columns.enterprise):not([data-padding='none'])>.content h2 {
     font-size: var(--heading-font-size-l);
-    padding-top: var(--spacing-700);
+    padding-top: var(--spacing-xl);
   }
 
   .ax-columns.marquee .column-picture:not(.column-picture-mobile) {
@@ -1014,12 +1014,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section .ax-columns.marquee>div {
-    gap: var(--spacing-700);
+    gap: var(--spacing-xl);
   }
 
   .ax-columns.marquee.width-2-columns {
-    padding-left: var(--spacing-500);
-    padding-right: var(--spacing-500);
+    padding-left: var(--spacing-m);
+    padding-right: var(--spacing-m);
   }
 
   .section:first-of-type .ax-columns:first-of-type:not(.center):not(.fullsize) .brand.icon {
@@ -1032,8 +1032,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns .column {
     margin: 0;
-    padding-left: var(--spacing-500);
-    padding-right: var(--spacing-500);
+    padding-left: var(--spacing-m);
+    padding-right: var(--spacing-m);
   }
 
   .section:has(.ax-columns)>.content {
@@ -1051,16 +1051,16 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 
   .ax-columns:not(.marquee) .column:first-child:not(.column-picture):not(.hero-animation-overlay):not(.text) {
-    padding-right: var(--spacing-300);
+    padding-right: var(--spacing-xs);
   }
 
   .ax-columns .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay):not(.text) {
-    padding-left: var(--spacing-300);
+    padding-left: var(--spacing-xs);
   }
 
 
   .ax-columns.highlight .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay) {
-    padding-left: var(--spacing-500);
+    padding-left: var(--spacing-m);
   }
 
   .ax-columns.color .column {
@@ -1085,13 +1085,13 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns.fullsize>div>div p {
-    margin: var(--spacing-300) 0;
+    margin: var(--spacing-xs) 0;
   }
 
   .ax-columns.fullsize>div>div .button-container,
   .ax-columns.fullsize>div>div a.con-button {
     margin: 0;
-    margin-top: var(--spacing-600);
+    margin-top: var(--spacing-l);
   }
 
   .ax-columns.fullsize>div>div .button-container a {
@@ -1099,12 +1099,12 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns.fullsize .has-brand>div p:first-child {
-    margin: var(--spacing-300) 0;
+    margin: var(--spacing-xs) 0;
   }
 
   .ax-columns .column.column-picture {
-    padding-left: var(--spacing-100);
-    padding-right: var(--spacing-100);
+    padding-left: var(--spacing-xxs);
+    padding-right: var(--spacing-xxs);
   }
 
   .ax-columns.marquee .column.column-picture {
@@ -1114,7 +1114,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns .column:nth-child(2):not(.column-picture):not(.hero-animation-overlay) {
-    padding-left: var(--spacing-300);
+    padding-left: var(--spacing-xs);
   }
 
   .collapsible-card-wrapper+.columns-wrapper .ax-columns>div {
@@ -1157,8 +1157,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .ax-columns.light,
   .ax-columns.fullsize.center {
     max-width: 836px;
-    padding-left: var(--spacing-500);
-    padding-right: var(--spacing-500);
+    padding-left: var(--spacing-m);
+    padding-right: var(--spacing-m);
   }
 
   .section .ax-columns.extra-wide {
@@ -1439,15 +1439,15 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section:has(.ax-columns.marquee) {
-    padding-top: var(--spacing-900);
-    padding-bottom: var(--spacing-900);
+    padding-top: var(--spacing-xxl);
+    padding-bottom: var(--spacing-xxl);
   }
 
   .section .ax-columns.marquee {
     margin: auto;
     max-width: var(--block-wd-max-width);
-    padding-left: var(--spacing-600);
-    padding-right: var(--spacing-600);
+    padding-left: var(--spacing-l);
+    padding-right: var(--spacing-l);
   }
 
   .section .ax-columns,
@@ -1461,7 +1461,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns:not(.fullsize):not(.marquee) .column:not(.column-picture):not(.hero-animation-overlay):not(.text) {
-    padding: var(--spacing-600);
+    padding: var(--spacing-l);
   }
 
   .ax-columns.fullsize .column.hero-animation-overlay {
@@ -1495,7 +1495,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .ax-columns.offer .column {
     width: 490px;
-    padding: var(--spacing-600) 0;
+    padding: var(--spacing-l) 0;
   }
 
   .ax-columns.offer .column:not(:first-child) {
@@ -1516,7 +1516,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .ax-columns.fullsize.top>div {
-    padding: var(--spacing-900) 0;
+    padding: var(--spacing-xxl) 0;
   }
 
   :lang(ja) .section .ax-columns h1 {
@@ -1755,7 +1755,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 /* Patch for MAX */
 .section.ax-max-entitled:has(.ax-columns) .column-picture img {
   max-width: 100%;
-  margin-top: var(--spacing-400);
+  margin-top: var(--spacing-s);
   border-radius: 16px;
 }
 
@@ -1776,7 +1776,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 .section.ax-max-entitled:has(.ax-columns)>.ax-columns p.button-container {
-  margin-top: var(--spacing-500);
+  margin-top: var(--spacing-m);
 }
 
 .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns p {
@@ -1787,7 +1787,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 @media (min-width: 600px) {
   .section.ax-max-entitled:has(.ax-columns)>.ax-columns p.button-container {
-    margin-top: var(--spacing-600);
+    margin-top: var(--spacing-l);
   }
 
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .column {
@@ -1801,7 +1801,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns>div {
     flex-direction: row;
-    gap: var(--spacing-700);
+    gap: var(--spacing-xl);
   }
 
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns .column-picture {
@@ -1826,9 +1826,9 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 
 @media (min-width: 1200px) {
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
-    padding: var(--spacing-900) 0px;
+    padding: var(--spacing-xxl) 0px;
     max-width: unset;
-    gap: var(--spacing-900);
+    gap: var(--spacing-xxl);
   }
 
   .section:not(:first-child).ax-max-entitled:has(.ax-columns) .column {
@@ -1847,8 +1847,8 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   }
 
   .section.ax-max-entitled:has(.ax-columns) div.ax-columns>div {
-    gap: var(--spacing-700);
-    padding: 0px var(--spacing-400);
+    gap: var(--spacing-xl);
+    padding: 0px var(--spacing-s);
     min-width: var(--Global-Device-Widths-device-min-width, 600px);
     margin: auto;
     max-width: var(--block-lg-max-width);

@@ -19,7 +19,7 @@
 }
 
 .faqv2.expandable.longform .faqv2-wrapper .faqv2-toggle {
-  padding-left: var(--spacing-400);
+  padding-left: var(--spacing-s);
 }
 
 .faqv2.expandable .faqv2-wrapper {
@@ -66,7 +66,7 @@
 .faqv2.expandable.longform .faqv2-content.open {
   margin-top: 0;
   padding-right: 30px;
-  padding-bottom: var(--spacing-500);
+  padding-bottom: var(--spacing-m);
   line-height: 130%;
 
 }
@@ -167,7 +167,7 @@
 }
 
 .section.has-background {
-  padding: var(--spacing-600) var(--spacing-400);
+  padding: var(--spacing-l) var(--spacing-s);
 }
 
 .section.has-background:has(.faqv2.expandable) {
@@ -392,12 +392,12 @@
   padding-top: 0;
   padding-bottom: 0;
   padding-right: 0;
-  margin-bottom: var(--spacing-500);
+  margin-bottom: var(--spacing-m);
 }
 
 .faqv2.expandable.longform .faqv2-accordion.title {
   text-align: left;
-  margin-bottom: var(--spacing-500);
+  margin-bottom: var(--spacing-m);
 }
 
 .faqv2-grey-bg {
@@ -441,7 +441,7 @@
 }
 
 .faqv2.expandable.longform .faqv2-wrapper:first-child .faqv2-header {
-  padding-top: var(--spacing-500);
+  padding-top: var(--spacing-m);
 }
 
 @media (min-width: 400px) {
@@ -466,7 +466,7 @@
     border-radius: 0px 8px 8px 0px;
     border-left: 4px solid var(--color-info-accent);
     background: var(--color-gray-100);
-    padding: var(--spacing-400);
+    padding: var(--spacing-s);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -506,7 +506,7 @@
     margin: 0 10px 8px;
   }
   .section.has-background {
-    padding: var(--spacing-900) var(--spacing-600);
+    padding: var(--spacing-xxl) var(--spacing-l);
   }
   .faqv2.expandable {
     width: unset;
@@ -514,7 +514,7 @@
   }
   .faqv2.expandable .faqv2-accordion.title {
     font-size: var(--heading-font-size-m);
-    margin-bottom: var(--spacing-500);
+    margin-bottom: var(--spacing-m);
   }
   .faqv2.expandable.longform .faqv2-content {
     overflow: hidden;
@@ -531,7 +531,7 @@
   }
 
   .faqv2.longform.expandable .faqv2-header {
-    padding-top: var(--spacing-400);
+    padding-top: var(--spacing-s);
   }
 
   .faqv2.expandable.longform .faqv2-wrapper:not(:last-child)::after {
@@ -551,7 +551,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-right: var(--spacing-300);
+    padding-right: var(--spacing-xs);
     padding-left: 0;
   }
   .section:has(.faqv2.expandable) picture.section-background {
@@ -684,12 +684,12 @@
   }
 
   section.has-background {
-    padding: var(--spacing-900) var(--spacing-600); 
+    padding: var(--spacing-xxl) var(--spacing-l); 
   }
 
   .faqv2.expandable .faqv2-accordion.title {
     font-size: var(--heading-font-size-l);
-    margin-bottom: var(--spacing-700);
+    margin-bottom: var(--spacing-xl);
   }
 
 }

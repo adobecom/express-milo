@@ -8,7 +8,7 @@
   position: relative;
   height: auto;
   width: 100%;
-  margin-bottom: var(--spacing-400);
+  margin-bottom: var(--spacing-s);
   --mobile-template-height: 207px;
   --mobile-template-width: 207px;
   --mobile-template-border-radius: 16px;
@@ -144,8 +144,8 @@
 
 @media (max-width: 599px) {
   .template-x.basic-carousel.grid .basic-carousel-container {
-    margin-top: var(--spacing-600);
-    margin-bottom: var(--spacing-900);
+    margin-top: var(--spacing-l);
+    margin-bottom: var(--spacing-xxl);
   }
   
   .template-x.basic-carousel.grid .basic-carousel-platform {

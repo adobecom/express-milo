@@ -53,10 +53,10 @@ main .section .grid-marquee-hero h1 {
 
   .grid-marquee-hero .headline .ctas {
     display: flex;
-    margin-top: var(--spacing-300);
-    padding-top: var(--spacing-300);
+    margin-top: var(--spacing-xs);
+    padding-top: var(--spacing-xs);
     justify-content: center;
-    gap: var(--spacing-100);
+    gap: var(--spacing-xxs);
   }
 
   .grid-marquee-hero .headline a.button {
@@ -72,11 +72,11 @@ main .section .grid-marquee-hero h1 {
 
 @media (min-width: 1280px) {
   .grid-marquee-hero .express-logo {
-    padding-top: var(--spacing-600);
+    padding-top: var(--spacing-l);
   }
   .grid-marquee-hero .headline {
     max-width: var(--block-wd-grid-max-width);
-    padding-bottom: var(--spacing-600);
+    padding-bottom: var(--spacing-l);
   }
   .grid-marquee-hero .headline.no-cta {
     padding-bottom: 0;
@@ -87,7 +87,7 @@ main .section .grid-marquee-hero h1 {
   }
 
   .grid-marquee-hero .headline .ctas {
-    padding-top: var(--spacing-400);
+    padding-top: var(--spacing-s);
   }
 
   .grid-marquee-hero .headline a.button {

@@ -22,7 +22,7 @@
 .gallery-control {
   display: flex;
   justify-content: flex-end;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
   align-items: center;
 }
 

@@ -31,7 +31,7 @@
   color: var(--color-background-accent-default);
   font-size: var(--body-font-size-m);
   font-style: normal;
-  font-weight: var(--heading-font-weight-medium);
+  font-weight: var(--type-detail-all-weight);
   line-height: 130%;
 }
 
@@ -44,13 +44,13 @@
 }
 
 .ax-template-promo.one-up {
-  gap: var(--spacing-300);
+  gap: var(--spacing-xs);
   display: flex;
   flex-direction: column;
 }
 
 .ax-template-promo.one-up img {
-  border-radius: var(--spacing-300);
+  border-radius: var(--spacing-xs);
 }
 
 
@@ -94,20 +94,20 @@
   position: absolute;
   width: 30px;
   height: 30px;
-  bottom: var(--spacing-100);
-  right: var(--spacing-100);
+  bottom: var(--spacing-xxs);
+  right: var(--spacing-xxs);
 }
 
 .ax-template-promo.one-up .image-wrapper .icon-premium {
   position: absolute;
   width: 30px;
   height: 30px;
-  bottom: var(--spacing-100);
-  right: var(--spacing-100);
+  bottom: var(--spacing-xxs);
+  right: var(--spacing-xxs);
 }
 
 .ax-template-promo.multiple-up {
-  gap: var(--spacing-600);
+  gap: var(--spacing-l);
 }
 
 .ax-template-promo.multiple-up .template-promo,
@@ -124,7 +124,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  border-radius: var(--spacing-300);
+  border-radius: var(--spacing-xs);
 }
 
 /** Button Container */
@@ -139,7 +139,7 @@
   background-color: var(--color-background-accent-default);
   margin: 0;
   font-size: var(--body-font-size-m);
-  padding: var(--spacing-100) var(--spacing-300);
+  padding: var(--spacing-xxs) var(--spacing-xs);
   border-radius: 1000px;
 }
 
@@ -149,7 +149,7 @@
 }
 
 .ax-template-promo.multiple-up .collapsible-rows {
-  padding: var(--spacing-600) 0;
+  padding: var(--spacing-l) 0;
 }
 
 .ax-template-promo.one-up .collapsible-row-accordion {
@@ -161,7 +161,7 @@
   font-family: var(--body-font-family);
   font-size: var(--heading-font-size-xs);
   font-style: normal;
-  font-weight: var(--heading-font-weight);
+  font-weight: var(--type-heading-all-weight);
   line-height: var(--heading-line-height);
 }
 
@@ -186,7 +186,7 @@
     font-family: var(--body-font-family);
     font-size: var(--heading-font-size-xs);
     font-style: normal;
-    font-weight: var(--heading-font-weight);
+    font-weight: var(--type-heading-all-weight);
     line-height: var(--heading-line-height);
   }
 
@@ -210,7 +210,7 @@
     font-family: var(--body-font-family);
     font-size: var(--heading-font-size-s);
     font-style: normal;
-    font-weight: var(--heading-font-weight);
+    font-weight: var(--type-heading-all-weight);
     line-height: var(--heading-line-height);
   }
 
@@ -223,7 +223,7 @@
   .ax-template-promo.one-up {
     padding: 20px 40px;
     width: var(--ax-grid-7-col-width);
-    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-l) + var(--ax-grid-gutter));
     box-sizing: border-box;
   }
 }

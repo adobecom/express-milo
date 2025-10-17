@@ -1,13 +1,13 @@
 .prompt-marquee {
-  --prompt-marquee-desktop-padding-block: var(--spacing-900);
+  --prompt-marquee-desktop-padding-block: var(--spacing-xxl);
   --prompt-marquee-desktop-media-max-width: 571px;
   --prompt-marquee-media-aspect-ratio: 16 / 9;
-  padding-left: var(--spacing-300);
-  padding-right: var(--spacing-300);
-  padding-top: var(--spacing-600);
+  padding-left: var(--spacing-xs);
+  padding-right: var(--spacing-xs);
+  padding-top: var(--spacing-l);
   margin: auto;
   max-width: 900px;
-  padding-bottom: var(--spacing-600);
+  padding-bottom: var(--spacing-l);
 }
 
 .prompt-marquee .icon.express-logo {
@@ -19,7 +19,7 @@
 .prompt-marquee>div {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-500);
+  gap: var(--spacing-m);
   padding: 0;
 }
 
@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   justify-content: left;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
 }
 
 .prompt-marquee .column p {
@@ -64,11 +64,11 @@
 
 .prompt-marquee .cta-with-input {
   display: flex;
-  gap: var(--spacing-300);
+  gap: var(--spacing-xs);
   align-items: stretch;
   flex-direction: column;
   box-sizing: border-box;
-  padding: var(--spacing-200) var(--spacing-400);
+  padding: var(--spacing-200) var(--spacing-s);
   border: none;
 }
 
@@ -80,7 +80,7 @@
 
 main .section .prompt-marquee .button-container {
   padding: 0;
-  margin-top: var(--spacing-300);
+  margin-top: var(--spacing-xs);
 }
 
 main .prompt-marquee .cta-with-input .prompt-marquee-input {
@@ -95,7 +95,7 @@ main .prompt-marquee .cta-with-input .con-button {
   box-sizing: border-box;
   margin: 0;
   border: none;
-  padding: var(--spacing-200) var(--spacing-400);
+  padding: var(--spacing-200) var(--spacing-s);
   min-width: auto;
   display: inline-flex;
   align-items: center;
@@ -106,7 +106,7 @@ main .prompt-marquee .cta-with-input .con-button {
 }
 
 .prompt-marquee .column-picture {
-  margin-top: var(--spacing-300);
+  margin-top: var(--spacing-xs);
   position: relative;
 }
 

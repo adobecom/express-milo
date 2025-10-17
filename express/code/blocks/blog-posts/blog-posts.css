@@ -157,7 +157,7 @@ main .blog-posts p.blog-card-date {
     font-size: var(--body-font-size-s);
     line-height: var(--body-line-height);
     font-family: var(--body-serif-font-family);
-    font-weight: var(--heading-font-weight);
+    font-weight: var(--type-heading-all-weight);
     grid-area: date;
 }
 

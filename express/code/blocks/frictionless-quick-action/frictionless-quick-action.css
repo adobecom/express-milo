@@ -118,7 +118,7 @@
     margin: 0;
     padding: 39px 24px 0 24px;
     font-size: var(--heading-font-size-m);
-    font-weight: var(--heading-font-weight);
+    font-weight: var(--type-heading-all-weight);
     line-height: var(--heading-line-height);
 }
 
@@ -288,20 +288,20 @@ main .section .frictionless-quick-action .free-plan-widget img.icon.icon-checkma
     display: flex;
     flex-direction: column;
     width: auto;
-    gap: var(--spacing-300);
+    gap: var(--spacing-xs);
 }
 
 .frictionless-quick-action[data-frictionlesstype="caption-video"] .caption-video-dropzone-action-column > p:last-of-type {
     margin: 0;
     text-align: left;
     font-size: 0.75rem;
-    margin-block-start: var(--spacing-300);
+    margin-block-start: var(--spacing-xs);
 }
 
 .step {
     display: flex;
     flex-direction: row;
-    gap: var(--spacing-300);
+    gap: var(--spacing-xs);
 }
 
 .step-number {

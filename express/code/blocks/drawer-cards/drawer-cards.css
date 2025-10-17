@@ -10,13 +10,13 @@
 }
 
 .drawer-cards .express-logo {
-  padding: var(--spacing-300) 0 var(--spacing-300);
+  padding: var(--spacing-xs) 0 var(--spacing-xs);
   width: initial;
   height: 30px;
 }
 
 main .section .drawer-cards .heading {
-  padding-bottom: var(--spacing-100);
+  padding-bottom: var(--spacing-xxs);
   font-size: var(--heading-font-size-s);
 }
 
@@ -27,7 +27,7 @@ main .section .drawer-cards .heading {
 }
 
 .drawer-cards .heading-row {
-  padding-bottom: var(--spacing-400);
+  padding-bottom: var(--spacing-s);
   max-width: var(--t-img-w);
 }
 
@@ -72,7 +72,7 @@ main .section .drawer-cards .heading {
   display: grid;
   grid-template-columns: repeat(2, max-content);
   grid-template-rows: auto;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
   justify-content: center;
   justify-items: center;
 }
@@ -80,7 +80,7 @@ main .section .drawer-cards .heading {
 .drawer-cards .card {
   border-radius: 8px;
   border: 1px solid var(--color-white);
-  padding: var(--spacing-100);
+  padding: var(--spacing-xxs);
   display: flex;
   width: 170px;
   background: linear-gradient(170.96deg, rgba(255, 255, 255, 0.6) 18.95%, rgba(255, 255, 255, 0.2) 99.73%);
@@ -91,7 +91,7 @@ main .section .drawer-cards .heading {
 .drawer-cards .face {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
 }
 
 .drawer-cards .face p {
@@ -113,8 +113,8 @@ main .section .drawer-cards .heading {
 
 .drawer-cards .drawer {
   z-index: 3;
-  border-radius: var(--spacing-300) var(--spacing-300) 0 0;
-  padding-top: var(--spacing-300);
+  border-radius: var(--spacing-xs) var(--spacing-xs) 0 0;
+  padding-top: var(--spacing-xs);
   position: fixed;
   left: 0;
   bottom: 0;
@@ -128,7 +128,7 @@ main .section .drawer-cards .heading {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
 }
 
 .drawer-cards .drawer .content {
@@ -148,7 +148,7 @@ main .section .drawer-cards .heading {
   top: 0;
   z-index: 2;
   border-bottom: 1px solid #0000001a;
-  padding: 0px var(--spacing-300) var(--spacing-200);
+  padding: 0px var(--spacing-xs) var(--spacing-200);
   font-size: var(--body-font-size-l);
   display: flex;
   align-items: center;
@@ -164,7 +164,7 @@ main .section .drawer-cards .heading {
   /* override browser button style */
   margin: auto;
   border: 0;
-  padding: var(--spacing-300) 0;
+  padding: var(--spacing-xs) 0;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -189,7 +189,7 @@ main .section .drawer-cards .heading {
 }
 
 .drawer-cards .panel .drawer-cta {
-  padding: var(--spacing-300);
+  padding: var(--spacing-xs);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -197,7 +197,7 @@ main .section .drawer-cards .heading {
 
 .drawer-cards .panel .drawer-cta .text-group {
   display: flex;
-  gap: var(--spacing-300);
+  gap: var(--spacing-xs);
   align-items: center;
 }
 
@@ -235,13 +235,13 @@ main .section .drawer-cards .heading {
 }
 
 .drawer-cards .drawer div[role='tablist'] {
-  padding: 0 0 var(--spacing-100) var(--spacing-300);
+  padding: 0 0 var(--spacing-xxs) var(--spacing-xs);
 }
 
 .drawer-cards .drawer [role='tab'] {
   border: initial;
-  border-radius: var(--spacing-300);
-  padding: var(--spacing-100) var(--spacing-200);
+  border-radius: var(--spacing-xs);
+  padding: var(--spacing-xxs) var(--spacing-200);
   font-size: var(--body-font-size-s);
   color: var(--color-gray-800-variant);
   background-color: initial;
@@ -282,11 +282,11 @@ main .section .drawer-cards .heading {
     font-size: var(--heading-font-size-m);
   }
   .drawer-cards .heading-row .ctas {
-    margin-top: var(--spacing-300);
-    padding-top: var(--spacing-300);
+    margin-top: var(--spacing-xs);
+    padding-top: var(--spacing-xs);
     display: flex;
     justify-content: center;
-    gap: var(--spacing-100);
+    gap: var(--spacing-xxs);
   }
 
   .drawer-cards .heading-row a.button {
@@ -294,12 +294,12 @@ main .section .drawer-cards .heading {
   }
 
   .drawer-cards .cards-container {
-    gap: var(--spacing-100);
+    gap: var(--spacing-xxs);
   }
 
   .drawer-cards .card {
     width: var(--t-img-w);
-    border-radius: var(--spacing-300);
+    border-radius: var(--spacing-xs);
   }
 
   .drawer-cards .face img {
@@ -318,10 +318,10 @@ main .section .drawer-cards .heading {
   }
   
   .drawer-cards .drawer div[role='tablist'] {
-    padding: 0 0 var(--spacing-100) 0;
+    padding: 0 0 var(--spacing-xxs) 0;
     display: flex;
     justify-content: center;
-    gap: var(--spacing-100);
+    gap: var(--spacing-xxs);
   }
 
   .drawer-cards .panel .drawer-cta-wrapper {
@@ -336,37 +336,37 @@ main .section .drawer-cards .heading {
 
 @media screen and (min-width: 1280px) {
   .drawer-cards .express-logo {
-    padding-top: var(--spacing-600);
+    padding-top: var(--spacing-l);
   }
   .drawer-cards .background img {
     max-height: min(100%, var(--block-height));
     max-width: 1800px;
   }
   .drawer-cards .heading-row {
-    padding-bottom: var(--spacing-600);
+    padding-bottom: var(--spacing-l);
     max-width: 1600px;
   }
   main .section .drawer-cards .heading {
     font-size: var(--heading-font-size-l);
   }
   .drawer-cards .heading-row .ctas {
-    padding-top: var(--spacing-400);
+    padding-top: var(--spacing-s);
   }
   .drawer-cards .heading-row a.button {
     border-width: 1px;
     border-radius: 50px;
-    padding: var(--spacing-200) var(--spacing-400) 13px var(--spacing-400);
+    padding: var(--spacing-200) var(--spacing-s) 13px var(--spacing-s);
     font-size: var(--body-font-size-l);
     line-height: 23.4px;
   }
   .drawer-cards .cards-container {
     grid-template-columns: repeat(auto-fit, minmax(var(--d-card-w), 1fr));
     width: 1200px;
-    gap: var(--spacing-300);
+    gap: var(--spacing-xs);
   }
   .drawer-cards .card {
     width: var(--d-card-w);
-    padding: var(--spacing-300);
+    padding: var(--spacing-xs);
     position: relative;
   }
 
@@ -383,7 +383,7 @@ main .section .drawer-cards .heading {
     top: 0;
     bottom: initial;
     border-radius: 12px;
-    padding-bottom: var(--spacing-300);
+    padding-bottom: var(--spacing-xs);
     width: 100%;
     visibility: visible;
     opacity: 1;
@@ -416,7 +416,7 @@ main .section .drawer-cards .heading {
   }
 
   .drawer-cards .drawer div[role='tablist'] {
-    padding: 0 0 var(--spacing-300) var(--spacing-300);
+    padding: 0 0 var(--spacing-xs) var(--spacing-xs);
     display: block;
   }
 
@@ -430,7 +430,7 @@ main .section .drawer-cards .heading {
   }
 
   .drawer-cards .drawer .panel .drawer-cta {
-    padding: 6px var(--spacing-300);
+    padding: 6px var(--spacing-xs);
     width: initial;
     font-size: var(--body-font-size-l);
   }

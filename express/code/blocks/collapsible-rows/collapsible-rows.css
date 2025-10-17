@@ -17,7 +17,7 @@
 .collapsible-rows {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-100);
+    gap: var(--spacing-xxs);
     position: relative;
     height: auto;
     padding: 20px;
@@ -47,7 +47,7 @@
     color: var(  --color-gray-900);
 }
 .collapsible-row-sub-header {
-    padding-top: var(--spacing-100);
+    padding-top: var(--spacing-xxs);
     font-size: var(--body-font-size-l);
     font-style: normal;
     font-weight: 700;
@@ -214,7 +214,7 @@
     .collapsible-rows .collapsible-row-accordion {
         margin-left: 0;
         margin-right: 0;
-        padding: var(--spacing-400) var(--spacing-300);
+        padding: var(--spacing-s) var(--spacing-xs);
     }
     .collapsible-rows .collapsible-row-toggle-btn {
         width: 65px;
@@ -227,7 +227,7 @@
 @media (min-width: 1024px) {
     .collapsible-rows {
         width: var(--ax-grid-7-col-width);
-        margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+        margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-l) + var(--ax-grid-gutter));
     }
 
     .collapsible-row-header {

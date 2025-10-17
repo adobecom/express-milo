@@ -33,7 +33,7 @@ Legacy CSS for cards and special promo
 }
 
 .pricing-cards .card .card-header h3 {
-  font-weight: var(--heading-font-weight);
+  font-weight: var(--type-heading-all-weight);
   line-height: var(--heading-line-height);
   font-size: 1.75rem;
   margin-top: 0;

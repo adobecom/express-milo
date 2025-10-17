@@ -7,7 +7,7 @@
   border-bottom: 1px solid var(--color-light-gray);
   cursor: pointer;
   position: sticky;
-  top: var(--spacing-600);
+  top: var(--spacing-l);
   background: var(--color-white);
   z-index: 2;
 }
@@ -20,7 +20,7 @@
   left: 0;
   width: var(--ax-grid-3-col-width);
   z-index: 1;
-  padding-left: var(--spacing-600);
+  padding-left: var(--spacing-l);
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -88,7 +88,7 @@ main .icon {
 
 .toc-container.open .toc-content {
   display: block;
-  margin-top: var(--spacing-100);
+  margin-top: var(--spacing-xxs);
   padding-right: 20px;
 }
 
@@ -105,7 +105,7 @@ main .icon {
 
 main .toc-content a {
   display: block;
-  padding: var(--spacing-100) var(--spacing-400);
+  padding: var(--spacing-xxs) var(--spacing-s);
   text-decoration: none;
   color: var(--color-background-accent-default);
   font-style: normal;
@@ -160,7 +160,7 @@ main .toc-content a:focus:not(:focus-visible) {
 .toc-social-icons {
   display: none;
   gap: var(--spacing-200);
-  margin-top: var(--spacing-300);
+  margin-top: var(--spacing-xs);
   padding: 0;
 }
 
@@ -177,12 +177,12 @@ main .toc-content a:focus:not(:focus-visible) {
   position: absolute;
   background: var(--color-black);
   color: var(--color-white);
-  padding: var(--spacing-100) var(--spacing-200);
+  padding: var(--spacing-xxs) var(--spacing-200);
   border-radius: 4px;
   font-size: 12px;
   white-space: nowrap;
   z-index: 10;
-  top: calc(-1 * var(--spacing-600));
+  top: calc(-1 * var(--spacing-l));
   left: 50%;
   transform: translateX(-50%);
 }
@@ -254,7 +254,7 @@ main .toc-content a:focus:not(:focus-visible) {
   
   .toc-container .toc-social-icons {
     display: flex;
-    margin-top: var(--spacing-300);
+    margin-top: var(--spacing-xs);
   }
 }
 

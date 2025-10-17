@@ -1,5 +1,5 @@
 .section.ax-link-list-v2-container {
-  padding: var(--spacing-600) var(--ax-grid-margin);
+  padding: var(--spacing-l) var(--ax-grid-margin);
 }
 .section.ax-link-list-v2-container div + .link-list-v2-wrapper {
   padding: 0 0 0 0;
@@ -60,7 +60,7 @@
 
 .section.ax-link-list-v2-container .link-list-v2 a.button.secondary {
   margin: 6px 0;
-  padding: var(--spacing-100) var(--spacing-300) 10px;
+  padding: var(--spacing-xxs) var(--spacing-xs) 10px;
   border-radius: 100px;
   color: var(--color-gray-900);
   border: none;
@@ -201,11 +201,11 @@
 @media (min-width: 768px) {
   .section.ax-link-list-v2-container {
     max-width: 1600px;
-    padding: var(--spacing-600) 32px;
+    padding: var(--spacing-l) 32px;
   }
 
   /* .section.ax-link-list-v2-container .link-list-v2-wrapper {
-    padding: var(--spacing-600) 32px;
+    padding: var(--spacing-l) 32px;
   } */
 
   .section.ax-link-list-v2-container .link-list-v2.content-group {
@@ -257,6 +257,6 @@
   .section.ax-link-list-v2-container {
     max-width: 1600px;
     margin: 0 auto;
-    padding: var(--spacing-600);
+    padding: var(--spacing-l);
   }
 }

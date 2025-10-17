@@ -4,7 +4,7 @@ main .section .content-toggle-v2 {
     --button-exterior-padding: 2px;
     --button-border-radius: 8px;
     margin: 0 auto;
-    padding: 0 var(--spacing-300);
+    padding: 0 var(--spacing-xs);
     max-width: max-content;
 }
 
@@ -146,7 +146,7 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
 @media screen and (min-width: 768px) {
     main .section .content-toggle-v2 {
         --button-height: 40px;
-        --spacing-button-padding-vertical: var(--spacing-300);
+        --spacing-button-padding-vertical: var(--spacing-xs);
         max-width: 600px;
         width: fit-content;
     }
@@ -154,25 +154,25 @@ main .content-toggle-v2 .carousel-container.circleless-button a.button.carousel-
 
 @media screen and (min-width: 1024px) {
     main .section .content-toggle-v2.padding-m {
-        padding: var(--spacing-500) 0px;
+        padding: var(--spacing-m) 0px;
         margin: auto;
         width: fit-content;
     }
 
     main .section .content-toggle-v2.padding-400 {
-       padding: var(--spacing-400) 0px;
+       padding: var(--spacing-s) 0px;
     }
 }
 
 @media screen and (min-width: 1200px) {
     main .section .content-toggle-v2{
-        padding: 0px var(--spacing-600);
+        padding: 0px var(--spacing-l);
         box-sizing: border-box;
         max-width: var(--ax-grid-12-col-width);
     }
 
     main .section .content-toggle-v2.padding-m {
-        padding: var(--spacing-500) var(--spacing-600);
+        padding: var(--spacing-m) var(--spacing-l);
     }
 }
 

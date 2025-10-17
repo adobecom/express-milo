@@ -36,13 +36,13 @@ main .section .discover-cards {
     flex-direction: column;
     position: relative;
     overflow: hidden;
-    padding: var(--spacing-300);
+    padding: var(--spacing-xs);
     margin: 9px -7px 10px auto;
 }
 .discover-cards.flip {
   height: 550px;
-  padding-top: var(--spacing-700);
-  padding-bottom: var(--spacing-700);
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
 }
 .discover-cards.flip .cards-container .card {
   background: unset;
@@ -69,12 +69,12 @@ main .section .discover-cards {
 .discover-cards.flip .cards-container.gallery {
   display: grid;
   grid-auto-columns: 250px;
-  gap: var(--spacing-300);
+  gap: var(--spacing-xs);
   overflow-x: scroll;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding-top: var(--spacing-300);
+  padding-top: var(--spacing-xs);
   max-width: 100vw;
   margin-left: auto;
   margin-right: auto;
@@ -111,18 +111,18 @@ main .section .discover-cards {
 .discover-cards .center-title {
     text-align: center;
     font-size: var(--heading-font-size-s);
-    padding: 0 var(--spacing-300) var(--spacing-300);
+    padding: 0 var(--spacing-xs) var(--spacing-xs);
 }
 .discover-cards .gallery-control {
     padding-top: 11px;
-    padding: var(--spacing-300) var(--spacing-300) 0;
+    padding: var(--spacing-xs) var(--spacing-xs) 0;
     display: flex;
     justify-content: flex-end;
-    gap: var(--spacing-100);
+    gap: var(--spacing-xxs);
     align-items: center;
 }
 .discover-cards.flip .gallery-control {
-  padding-top: var(--spacing-600);
+  padding-top: var(--spacing-l);
 }
 .discover-cards .gallery-control .status {
     display: none;
@@ -152,7 +152,7 @@ main .section .discover-cards {
     background-color: #292929;
     color: var(--color-white);
     border: none;
-    margin-top: var(--spacing-500);
+    margin-top: var(--spacing-m);
     margin-left: 0;
 }
 
@@ -206,10 +206,10 @@ main .section .discover-cards {
       padding-bottom: var(--spacing-800);
     }
     .discover-cards.flip .cards-container.gallery {
-      padding-left: var(--spacing-500);
-      padding-right: var(--spacing-500);
-      scroll-padding-left: var(--spacing-500);
-      scroll-padding-right: var(--spacing-500);
+      padding-left: var(--spacing-m);
+      padding-right: var(--spacing-m);
+      scroll-padding-left: var(--spacing-m);
+      scroll-padding-right: var(--spacing-m);
       justify-content: center;
     }
 }
@@ -244,13 +244,13 @@ main .section .discover-cards {
 .discover-cards.flip .gallery {
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--spacing-300);
+  gap: var(--spacing-xs);
   overflow-x: scroll;
   scrollbar-width: none;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  padding: 0 var(--spacing-300);
-  scroll-padding: 0 var(--spacing-300);
+  padding: 0 var(--spacing-xs);
+  scroll-padding: 0 var(--spacing-xs);
 }
 
 .discover-cards.flip .gallery {
@@ -340,7 +340,7 @@ main .section .discover-cards {
   backface-visibility: hidden;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
   border-radius: 16px;
-  padding: var(--spacing-500) var(--spacing-400);
+  padding: var(--spacing-m) var(--spacing-s);
   box-sizing: border-box;
   grid-area: 1 / 1;
 }

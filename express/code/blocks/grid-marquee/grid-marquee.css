@@ -490,7 +490,7 @@ main .section .grid-marquee.pricing-page h1 {
   }
 
   .grid-marquee.pricing-page {
-    --padding-bottom:  var(--spacing-100);
+    --padding-bottom:  var(--spacing-xxs);
   }
 
   .grid-marquee.pricing-page .headline {

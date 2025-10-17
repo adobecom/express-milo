@@ -76,7 +76,7 @@ main .section>.simplified-pricing-cards-wrapper {
 .simplified-pricing-cards .card-header h4,
 .simplified-pricing-cards .card-header h5,
 .simplified-pricing-cards .card-header h6 {
-    font-weight: var(--heading-font-weight);
+    font-weight: var(--type-heading-all-weight);
     line-height: var(--heading-line-height);
     font-size: var(--header-size);
     margin-top: 0;

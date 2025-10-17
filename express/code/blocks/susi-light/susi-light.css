@@ -34,7 +34,7 @@
 }
 
 .susi-layout .footer {
-  padding: var(--spacing-300) 0;
+  padding: var(--spacing-xs) 0;
   line-height: 1.3;
   font-size: var(--body-font-size-s);
   text-align: center;
@@ -54,7 +54,7 @@
 }
 
 .susi-layout .footer.susi-bubbles {
-  padding-bottom: var(--spacing-500);
+  padding-bottom: var(--spacing-m);
 }
 
 .susi-layout .footer.susi-bubbles h2 {
@@ -65,7 +65,7 @@
 }
 
 .susi-layout .footer .susi-bubble-container {
-  padding-top: var(--spacing-100);
+  padding-top: var(--spacing-xxs);
   display: flex;
   gap: var(--spacing-200);
   justify-content: center;
@@ -74,7 +74,7 @@
 .susi-layout .footer .susi-bubble {
   border-radius: 8px;
   margin: 0;
-  padding: var(--spacing-200) var(--spacing-400);
+  padding: var(--spacing-200) var(--spacing-s);
   display: flex;
   flex-direction: column;
   font-size: var(--body-font-size-s);
@@ -83,7 +83,7 @@
 
 /* tabs styles */
 .susi-light.tabs [role='tablist'] {
-  margin-top: var(--spacing-300);
+  margin-top: var(--spacing-xs);
   border-radius: 8px;
   padding: 4px;
   display: flex;
@@ -97,7 +97,7 @@
 
 .susi-light.tabs [role='tab'] {
   border: initial;
-  padding: var(--spacing-100) var(--spacing-200) 10px;
+  padding: var(--spacing-xxs) var(--spacing-200) 10px;
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-xs);
   font-weight: 700;
@@ -138,9 +138,9 @@
 
 /* student styles */
 .susi-light.student .student-check {
-  margin-top: var(--spacing-300);
-  padding: var(--spacing-300) 0;
-  width: calc(100% - 2 * var(--spacing-400));
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-xs) 0;
+  width: calc(100% - 2 * var(--spacing-s));
   font-weight: 700;
   font-size: var(--body-font-size-m);
   background-color: var(--color-gray-150);
@@ -151,7 +151,7 @@
   width: max-content;
   display: flex;
   align-items: center;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
 }
 
 .susi-light.student input[type='checkbox'] {
@@ -171,12 +171,12 @@
 }
 
 .dialog-modal .susi-light .express-logo {
-  padding-top: var(--spacing-500);
+  padding-top: var(--spacing-m);
 }
 
 /* ax-login-page section metadata styles */
 .section.ax-login-page .susi-light .express-logo {
-  padding-top: var(--spacing-500);
+  padding-top: var(--spacing-m);
 }
 
 .section.ax-login-page .susi-layout {
@@ -185,7 +185,7 @@
 }
 
 .section.ax-login-page .susi-light {
-  padding-bottom: var(--spacing-700);
+  padding-bottom: var(--spacing-xl);
 }
 .section.ax-login-page .susi-light.b2b {
   width: var(--susi-modal-width);

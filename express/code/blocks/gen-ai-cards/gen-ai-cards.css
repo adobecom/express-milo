@@ -627,7 +627,7 @@ main .gen-ai-cards.homepage .carousel-container .carousel-fader-right.arrow-hidd
   }
 
   .gen-ai-cards.homepage .carousel-container .carousel-element.card:nth-child(2) {
-    margin-left: var(--spacing-300);
+    margin-left: var(--spacing-xs);
   }
 
   .gen-ai-cards .carousel-container .carousel-fader-left,

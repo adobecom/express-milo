@@ -1,7 +1,7 @@
 .section.ax-how-to-v3-container {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-400);
+    gap: var(--spacing-s);
     margin: 0;
     padding:  20px;
   }
@@ -55,7 +55,7 @@
   }
   
   .how-to-v3 ol li .step-content {
-    padding: var(--spacing-100) var(--spacing-300);
+    padding: var(--spacing-xxs) var(--spacing-xs);
     margin: 0;
   }
 
@@ -84,7 +84,7 @@
   }
 
   .how-to-v3 ol li .detail-text {
-    padding-top: var(--spacing-100);
+    padding-top: var(--spacing-xxs);
   }
 
   /* so that there is no initial re-paint */
@@ -130,7 +130,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    gap: var(--spacing-300);
+    gap: var(--spacing-xs);
   }
 
   .how-to-v3 .steps-content:has(.media-container .milo-video) {
@@ -146,7 +146,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-300);
+    gap: var(--spacing-xs);
   }
 
   .how-to-v3 ol.steps .step .step-content:has(.detail-container.closed) h3:not(:has(picture), :has(.milo-video)):hover {
@@ -208,7 +208,7 @@
     }
 
     .how-to-v3 .steps-content {
-      gap: var(--spacing-400);
+      gap: var(--spacing-s);
     }
 
     .how-to-v3 .steps-content:has(.media-container .milo-video) {
@@ -239,7 +239,7 @@
   @media (min-width: 1024px) {
     .section.ax-how-to-v3-container {
       width: var(--ax-grid-7-col-width);
-      margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+      margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-l) + var(--ax-grid-gutter));
       margin-right: auto;
     }
 
@@ -266,7 +266,7 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      gap: var(--spacing-500);
+      gap: var(--spacing-m);
     }
   }
 

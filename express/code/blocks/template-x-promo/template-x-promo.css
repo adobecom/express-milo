@@ -32,13 +32,13 @@
   text-align: justify;
 }
 .ax-template-x-promo.one-up {
-  gap: var(--spacing-300);
+  gap: var(--spacing-xs);
   display: flex;
   flex-direction: column;
   padding: 20px;
 }
 .ax-template-x-promo.one-up img {
-  border-radius: var(--spacing-300);
+  border-radius: var(--spacing-xs);
   width: 100%;
   height: auto;
   display: block;
@@ -56,7 +56,7 @@
   background-color: var(--color-background-accent-default);
   margin: 0;
   font-size: var(--body-font-size-m);
-  padding: var(--spacing-100) var(--spacing-300);
+  padding: var(--spacing-xxs) var(--spacing-xs);
   border-radius: 1000px;
 }
 .ax-template-x-promo.one-up .button-container a.button.accent:hover {
@@ -78,16 +78,16 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-400);
+  gap: var(--spacing-s);
 }
 .ax-template-x-promo .template .free-tag,
 .ax-template-x-promo .free-tag {
   position: absolute;
-  top: var(--spacing-300);
-  right: var(--spacing-300);
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
   background: rgba(36, 36, 36, 0.70);
   color: white;
-  padding: var(--spacing-100) var(--spacing-200);
+  padding: var(--spacing-xxs) var(--spacing-200);
   border-radius: 50px;
   font-size: var(--spacing-200);
   font-weight: 700;
@@ -95,8 +95,8 @@
 .ax-template-x-promo .template .image-wrapper .icon.icon-premium,
 .ax-template-x-promo .image-wrapper .icon.icon-premium {
   position: absolute;
-  top: var(--spacing-300);
-  right: var(--spacing-300);
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
   width: 30px;
   height: 30px;
   display: block;
@@ -114,13 +114,13 @@
 .ax-template-x-promo .template:focus {
   outline: 2px solid var(--color-blue-600);
   outline-offset: 2px;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
 }
 
 .ax-template-x-promo .template:focus-visible {
   outline: 2px solid var(--color-blue-600);
   outline-offset: 4px;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
   box-shadow: 0 0 0 2px var(--color-blue-600);
 }
 
@@ -131,7 +131,7 @@
 .ax-template-x-promo .template .image-wrapper {
   position: relative;
   width: 100%;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
   overflow: hidden;
 }
 .ax-template-x-promo .template .image-wrapper img {
@@ -140,7 +140,7 @@
   object-fit: cover;
   object-position: top;
   display: block;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
 }
 
 .ax-template-x-promo .template .button-container .media-wrapper video {
@@ -167,8 +167,8 @@
   width: 20px;
   height: 20px;
   background-color: var(--color-white);
-  bottom: var(--spacing-100);
-  left: var(--spacing-100);
+  bottom: var(--spacing-xxs);
+  left: var(--spacing-xxs);
   border-radius: 50%;
   box-shadow: 0 0 5px var(--color-gray-900);
 }
@@ -183,10 +183,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: var(--spacing-100);
+  padding: var(--spacing-xxs);
   padding-bottom: 8px;
   z-index: 2;
-  border-radius: var(--spacing-300);
+  border-radius: var(--spacing-xs);
   opacity: 0;
   pointer-events: none;
   display: flex;
@@ -203,7 +203,7 @@
   position: relative;
   flex: 1;
   pointer-events: none;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
   overflow: hidden;
   z-index: 1;
 }
@@ -212,7 +212,7 @@
   height: 90%;
   object-fit: cover;
   object-position: top;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
   display: block;
   margin: 0;
 }
@@ -228,7 +228,7 @@
   font-size: var(--spacing-200);
   font-weight: 600;
   padding: 4px 12px;
-  border-radius: var(--spacing-400);
+  border-radius: var(--spacing-s);
   transition: all 0.2s ease;
   position: relative;
   z-index: 2;
@@ -243,11 +243,11 @@
 }
 .ax-template-x-promo .template .button-container .share-icon-wrapper {
   position: absolute;
-  top: var(--spacing-300);
-  right: var(--spacing-300);
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
   border-radius: 50%;
-  width: var(--spacing-500);
-  height: var(--spacing-500);
+  width: var(--spacing-m);
+  height: var(--spacing-m);
   background-color: var(--color-white);
   display: flex;
   align-items: center;
@@ -259,8 +259,8 @@
 .ax-template-x-promo .template .button-container .icon-share-arrow {
   cursor: pointer;
   pointer-events: auto;
-  width: var(--spacing-300);
-  height: var(--spacing-300);
+  width: var(--spacing-xs);
+  height: var(--spacing-xs);
   padding: 0;
   background-color: transparent;
   overflow: visible;
@@ -270,8 +270,8 @@
 .ax-template-x-promo .template .button-container .share-button {
   cursor: pointer;
   pointer-events: auto;
-  width: var(--spacing-300);
-  height: var(--spacing-300);
+  width: var(--spacing-xs);
+  height: var(--spacing-xs);
   padding: 0;
   background-color: transparent;
   overflow: visible;
@@ -327,8 +327,8 @@
   background-color: white;
   border-radius: 50%;
   padding: 2px;
-  width: var(--spacing-300);
-  height: var(--spacing-300);
+  width: var(--spacing-xs);
+  height: var(--spacing-xs);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,7 +360,7 @@
 }
 .ax-template-x-promo .promo-nav-controls {
   display: flex;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
   justify-content: flex-end;
   padding-right: 20px;
   position: relative;
@@ -409,8 +409,8 @@
 }
 .ax-template-x-promo .promo-nav-btn svg {
   display: block;
-  width: var(--spacing-500);
-  height: var(--spacing-500);
+  width: var(--spacing-m);
+  height: var(--spacing-m);
 }
 .ax-template-x-promo .sr-only {
   position: absolute !important;
@@ -429,7 +429,7 @@
   left: 0;
   background: var(--color-blue-600);
   color: white;
-  padding: var(--spacing-100) var(--spacing-300);
+  padding: var(--spacing-xxs) var(--spacing-xs);
   text-decoration: none;
   clip: auto;
   width: auto;
@@ -451,7 +451,7 @@
   padding: 0;
 }
 .ax-template-x-promo.multiple-up .collapsible-rows {
-  padding: var(--spacing-600) 0;
+  padding: var(--spacing-l) 0;
 }
 .ax-template-x-promo.one-up .collapsible-row-accordion {
   margin: 0;
@@ -461,7 +461,7 @@
   font-family: var(--body-font-family);
   font-size: var(--heading-font-size-xs);
   font-style: normal;
-  font-weight: var(--heading-font-weight);
+  font-weight: var(--type-heading-all-weight);
   line-height: var(--heading-line-height);
 }
 .ax-template-x-promo.one-up .collapsible-rows .collapsible-row-sub-header {
@@ -484,7 +484,7 @@
 
 .ax-template-x-promo .promo-carousel-track {
   display: flex;
-  gap: var(--spacing-100);
+  gap: var(--spacing-xxs);
   align-items: center;
   width: 100%;
   justify-content: center;
@@ -512,7 +512,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 3/4;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
   overflow: hidden;
 }
 
@@ -523,7 +523,7 @@
   object-fit: cover;
   object-position: top;
   display: block;
-  border-radius: var(--spacing-100);
+  border-radius: var(--spacing-xxs);
   background-color: var(--color-gray-100);
 }
 
@@ -568,7 +568,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: var(--spacing-100);
+  padding: var(--spacing-xxs);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -586,8 +586,8 @@
 }
 
 .ax-template-x-promo .template .button-container .share-icon-wrapper img {
-  width: var(--spacing-300);
-  height: var(--spacing-300);
+  width: var(--spacing-xs);
+  height: var(--spacing-xs);
   display: block;
   object-fit: contain;
 }
@@ -644,7 +644,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 3/4;
-    border-radius: var(--spacing-100);
+    border-radius: var(--spacing-xxs);
     overflow: hidden;
   }
   .ax-template-x-promo .promo-image-wrapper img {
@@ -653,7 +653,7 @@
     max-height: var(--template-max-height);
     object-fit: cover;
     display: block;
-    border-radius: var(--spacing-100);
+    border-radius: var(--spacing-xxs);
     background-color: var(--color-gray-100);
   }
 
@@ -688,7 +688,7 @@
   .ax-template-x-promo.multiple-up {
     padding: 20px 40px;
     width: var(--ax-grid-7-col-width);
-    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-l) + var(--ax-grid-gutter));
     box-sizing: border-box;
   }
   .ax-template-x-promo.one-up .collapsible-rows {

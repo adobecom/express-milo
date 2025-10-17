@@ -1,5 +1,5 @@
 .ax-marquee-dynamic-hero {
-  padding: var(--spacing-600) 20px;
+  padding: var(--spacing-l) 20px;
   min-width: 320px;
   box-sizing: border-box;
 }
@@ -15,7 +15,7 @@ main .ax-marquee-dynamic-hero p.button-container {
   width: 164px;
   margin: 0;
   margin-left: 0;
-  padding-top: var(--spacing-600);
+  padding-top: var(--spacing-l);
 }
 
 /* Hide original video controls when accessibility controls are present */
@@ -62,7 +62,7 @@ main .ax-marquee-dynamic-hero p.button-container {
   background-color: var(--color-background-accent-default);
   padding-top: var(--spacing-200);
   padding-bottom: var(--spacing-200);
-  margin: 0 0 var(--spacing-600) 0;
+  margin: 0 0 var(--spacing-l) 0;
   border-radius: 22px;
   width: 183px;
   font-size: var(--body-font-size-m);
@@ -77,8 +77,8 @@ main .ax-marquee-dynamic-hero p.button-container {
 }
 
 .ax-marquee-dynamic-hero [class*="heading"]:first-of-type + p {
-  margin-top: var(--spacing-300);
-  margin-bottom: var(--spacing-400);
+  margin-top: var(--spacing-xs);
+  margin-bottom: var(--spacing-s);
   font-size: var(--body-font-size-m);
   text-align: center;
 }
@@ -86,7 +86,7 @@ main .ax-marquee-dynamic-hero p.button-container {
 /* Media query for ax-columns-dynamic-hero on tablet */
 @media (min-width: 768px) and (max-width: 899px) {
   .ax-marquee-dynamic-hero {
-    padding: var(--spacing-600) var(--spacing-500);
+    padding: var(--spacing-l) var(--spacing-m);
   }
   
   .ax-marquee-dynamic-hero > div {
@@ -124,7 +124,7 @@ main .ax-marquee-dynamic-hero p.button-container {
 /* Media query for ax-columns-dynamic-hero on desktop */
 @media (min-width: 1024px) {
   .ax-marquee-dynamic-hero {
-    padding: var(--spacing-900) var(--spacing-600);
+    padding: var(--spacing-xxl) var(--spacing-l);
     max-width: 1440px;
     margin: 0 auto;
   }
@@ -133,7 +133,7 @@ main .ax-marquee-dynamic-hero p.button-container {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    gap: var(--spacing-600);
+    gap: var(--spacing-l);
   }
 
   .ax-marquee-dynamic-hero > img.express-logo,

@@ -1,5 +1,5 @@
 .template-promo-carousel {
-  --template-expand-top-len: var(--spacing-100);
+  --template-expand-top-len: var(--spacing-xxs);
   --template-expand-bot-len: 54px;
   --template-purple: #5258e4;
   --white-background: #e1e1e1;
@@ -12,11 +12,11 @@
 }
 
 .template-promo-carousel .heading-row {
-  padding-bottom: var(--spacing-500);
+  padding-bottom: var(--spacing-m);
 }
 
 .template-promo-carousel .heading {
-  padding-bottom: var(--spacing-100);
+  padding-bottom: var(--spacing-xxs);
   line-height: 1.3;
   font-size: var(--body-font-size-xl);
   font-weight: 900;
@@ -40,7 +40,7 @@
 }
 
 .template-promo-carousel .gallery-control {
-  padding-top: var(--spacing-400);
+  padding-top: var(--spacing-s);
   padding-right: 27.5px;
 }
 
@@ -112,7 +112,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, calc(-50% + var(--ax-grid-gutter)));
-  padding: var(--spacing-100);
+  padding: var(--spacing-xxs);
   border-radius: 20px;
   width: 100%;
   max-width: 90vw;
@@ -146,8 +146,8 @@
 
 .template-promo-carousel .template .share-icon-wrapper {
   position: absolute;
-  top: var(--spacing-300);
-  right: var(--spacing-300);
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
   border-radius: 50%;
   height: 20px;
   opacity: 1;
@@ -277,16 +277,16 @@
 
 .template-promo-carousel .template .still-wrapper .icon-premium {
   position: absolute;
-  bottom: var(--spacing-100);
-  right: var(--spacing-100);
+  bottom: var(--spacing-xxs);
+  right: var(--spacing-xxs);
   width: 30px;
   height: 30px;
 }
 
 .template-promo-carousel .template .still-wrapper .media-type-icon {
   position: absolute;
-  bottom: var(--spacing-100);
-  left: var(--spacing-100);
+  bottom: var(--spacing-xxs);
+  left: var(--spacing-xxs);
   border-radius: 50%;
   width: 20px;
   height: 20px;

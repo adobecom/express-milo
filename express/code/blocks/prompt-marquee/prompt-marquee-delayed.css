@@ -15,7 +15,7 @@
 .prompt-marquee-input-wrapper::before {
   content: attr(data-placeholder);
   position: absolute;
-  left: var(--spacing-300);
+  left: var(--spacing-xs);
   color: var(--text-color-secondary, #6e6e6e);
   pointer-events: none;
   transition: all 150ms ease-out;
@@ -82,7 +82,7 @@
   top: 6px;
   transform: none;
   font-size: var(--spacing-200);
-  line-height: var(--spacing-300);
+  line-height: var(--spacing-xs);
 }
 
 .prompt-marquee-input-wrapper:has(.prompt-marquee-input:focus) .prompt-marquee-input,
@@ -100,12 +100,12 @@
   .prompt-marquee {
     max-width: unset;
     margin: 0;
-    padding-left: var(--spacing-500);
-    padding-right: var(--spacing-500);
+    padding-left: var(--spacing-m);
+    padding-right: var(--spacing-m);
   }
 
   .prompt-marquee > div {
-    gap: var(--spacing-700);
+    gap: var(--spacing-xl);
     flex-direction: row;
     align-items: center;
   }
@@ -184,13 +184,13 @@
   .prompt-marquee {
     margin: auto;
     max-width: 1400px;
-    padding-left: var(--spacing-600);
-    padding-right: var(--spacing-600);
+    padding-left: var(--spacing-l);
+    padding-right: var(--spacing-l);
   }
 
   .prompt-marquee > div {
-    padding-left: var(--spacing-600);
-    padding-right: var(--spacing-600);
+    padding-left: var(--spacing-l);
+    padding-right: var(--spacing-l);
   }
 
   .prompt-marquee h1 {

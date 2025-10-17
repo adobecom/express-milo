@@ -32,13 +32,13 @@ main .long-text.no-background {
     margin: 0 auto;
     background-color: initial;
     border-radius: unset;
-    padding: var(--spacing-600) var(--spacing-300);
+    padding: var(--spacing-l) var(--spacing-xs);
 }
 
 main .long-text.no-background article {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-400);
+    gap: var(--spacing-s);
 }
 
 main .section:not(:first-child):not(.xxxl-spacing-static, .xxl-spacing-static, .xl-spacing-static, .xxxl-spacing, .xxl-spacing, .xl-spacing,
@@ -106,13 +106,13 @@ main .long-text.no-background p {
 
 @media (min-width: 768px) {
     main .long-text.no-background {
-        padding: var(--spacing-600) var(--spacing-500);
+        padding: var(--spacing-l) var(--spacing-m);
     }
 }
 
 @media (min-width: 1200px) {
     main .long-text.no-background {
-        padding: var(--spacing-900) var(--spacing-600);
+        padding: var(--spacing-xxl) var(--spacing-l);
     }
 }
 

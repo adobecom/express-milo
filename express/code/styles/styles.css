@@ -33,11 +33,13 @@
   --color-info-accent-reverse: #eeeefc;
   --color-info-accent-reverse-down: #e6e6f4;
   --color-info-accent-light: #dedef9;
-  --color-info-primary: #242424;
+  /* Note: Express uses Milo color tokens for consistency:
+   * #242424: use --color-gray-800 (from Milo)
+   * #000:    use --color-black (from Milo)
+   * #e8e8e8: use --color-gray-200 (from Milo)
+   * #d4d4d4: use --color-gray-300 (from Milo)
+   */
   --color-info-primary-hover: #090909;
-  --color-info-primary-down: #000;
-  --color-info-secondary: #e8e8e8;
-  --color-info-secondary-hover: #d4d4d4;
   --color-info-secondary-down: #cdcdcd;
   --color-info-premium: #ebcf2d;
   --gradient-highlight-vertical: linear-gradient(15deg, #7c84fc, #ff4dd2);
@@ -74,11 +76,12 @@
   /* 14px */
   --body-font-size-xs: 0.75rem;
   /* 12px */
-  /* headings */
-  --heading-font-weight-medium: 700;
-  --heading-font-weight: 800;
+  /* headings 
+   * Note: Express uses Milo typography tokens for consistency:
+   * 700: use --type-detail-all-weight (from Milo)
+   * 800: use --type-heading-all-weight (from Milo)
+   */
   --heading-font-weight-extra: 900;
-  --subheading-font-weight: 700;
   --heading-color: var(--color-gray-800);
   --heading-line-height: 130%;
   --heading-font-size-xxxl: 5rem;
@@ -102,16 +105,21 @@
   --block-wd-grid-max-width: 1600px;
   --block-wd-max-width: 1440px;
 
-  /* Spacing */
-  --spacing-100: 8px;
+  /* Spacing 
+   * Note: Express uses Milo spacing tokens for consistency:
+   * 8px:   use --spacing-xxs (from Milo)
+   * 16px:  use --spacing-xs (from Milo)
+   * 24px:  use --spacing-s (from Milo)
+   * 32px:  use --spacing-m (from Milo)
+   * 40px:  use --spacing-l (from Milo)
+   * 48px:  use --spacing-xl (from Milo)
+   * 80px:  use --spacing-xxl (from Milo)
+   * 12px:  use --spacing-200 (Express-specific)
+   * 64px:  use --spacing-800 (Express-specific)
+   * 96px:  use --spacing-1000 (Express-specific)
+   */
   --spacing-200: 12px;
-  --spacing-300: 16px;
-  --spacing-400: 24px;
-  --spacing-500: 32px;
-  --spacing-600: 40px;
-  --spacing-700: 48px;
   --spacing-800: 64px;
-  --spacing-900: 80px;
   --spacing-1000: 96px;
 
   --S2-Buttons-Gen-AI: linear-gradient(96deg, #D73220 0%, #D92361 33%, #7155FA 100%);
@@ -379,8 +387,8 @@ main a.button.primaryCTA:focus {
 main a.button.primary:any-link,
 main .dark a.con-button.outline:any-link {
   color: var(--color-white);
-  background-color: var(--color-info-primary);
-  border-color: var(--color-info-primary);
+  background-color: var(--color-gray-800);
+  border-color: var(--color-gray-800);
 }
 
 main a.button.primary:any-link:hover,
@@ -391,8 +399,8 @@ main a.con-button.outline:any-link:hover {
 
 main a.button.primary:any-link:active,
 main a.con-button.outline:any-link:active {
-  background-color: var(--color-info-primary-down);
-  border-color: var(--color-info-primary-down);
+  background-color: var(--color-black);
+  border-color: var(--color-black);
 }
 
 main a.button.primary:focus,
@@ -404,13 +412,13 @@ main a.button.primary.reverse:focus {
 
 main a.button.secondary:any-link {
   color: var(--color-black);
-  background-color: var(--color-info-secondary);
-  border-color: var(--color-info-secondary);
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-200);
 }
 
 main a.button.secondary:any-link:hover {
-  background-color: var(--color-info-secondary-hover);
-  border-color: var(--color-info-secondary-hover);
+  background-color: var(--color-gray-300);
+  border-color: var(--color-gray-300);
 }
 
 main a.button.secondary:any-link:active {
@@ -432,7 +440,7 @@ main a.con-button.outline:any-link {
 
 main a.button.reverse:any-link:hover,
 main a.con-button.outline:any-link:hover {
-  background-color: var(--color-info-secondary-hover);
+  background-color: var(--color-gray-300);
 }
 
 main a.button.reverse:any-link:active,
@@ -497,7 +505,7 @@ main a.con-button.outline:any-link:focus {
 }
 
 main a.con-button.outline:any-link:active {
-  background-color: var(--color-info-secondary-hover);
+  background-color: var(--color-gray-300);
   box-shadow: 0 0 0 2px var(--color-white),
     0 0 0 4px var(--color-info-accent-hover);
 }
@@ -589,7 +597,7 @@ main h3,
 main h4,
 main h5,
 main h6 {
-  font-weight: var(--heading-font-weight);
+  font-weight: var(--type-heading-all-weight);
   line-height: var(--heading-line-height);
   -webkit-hyphens: auto;
   /* safari */
@@ -1192,7 +1200,7 @@ main .section.long-form .content p {
   main .section.long-form .content {
     /* Desktop: 7 columns, shifted right to accommodate fixed TOC */
     max-width: var(--ax-grid-7-col-width);
-    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-600) + var(--ax-grid-gutter));
+    margin-left: calc(var(--ax-grid-3-col-width) + var(--spacing-l) + var(--ax-grid-gutter));
     margin-right: auto;
   }
 }

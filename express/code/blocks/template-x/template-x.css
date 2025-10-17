@@ -3120,16 +3120,16 @@ main .template-x.horizontal > .template-x.horizontal.tabbed > .template-title {
 }
 main .template-x.horizontal.fullwidth.tabbed {
   max-width: var(--block-wd-max-width);
-  margin: auto  var(--spacing-300);
-  padding: var(--spacing-400) 0px var(--spacing-300) 0px ;
+  margin: auto  var(--spacing-xs);
+  padding: var(--spacing-s) 0px var(--spacing-xs) 0px ;
 }
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs{
-   gap:  var(--spacing-300);
+   gap:  var(--spacing-xs);
    width: min-content;
    background: transparent;
    position: relative;
-   padding-bottom: var(--spacing-100);
+   padding-bottom: var(--spacing-xxs);
  }
 
  main .template-x.horizontal.tabbed.fullwidth .template-tabs button {
@@ -3156,7 +3156,7 @@ main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel
   padding-left: 0px;
   padding-right: 0px;
   max-width: 100%;
-  max-height: calc(200px + 2*var(--spacing-400));
+  max-height: calc(200px + 2*var(--spacing-s));
  
 }
 main .template-x.horizontal.tabbed.fullwidth .template-x-inner-wrapper .carousel-container {
@@ -3178,7 +3178,7 @@ main .template-x.horizontal.tabbed.fullwidth .template-tabs button:nth-child(1){
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs button.template-tab-button {
   margin: 0;
-  padding: var(--spacing-100);
+  padding: var(--spacing-xxs);
 }
 
 main .template-x.horizontal.tabbed.fullwidth .template-tabs button.template-tab-button:first-of-type{
@@ -3190,7 +3190,7 @@ main .template-x.horizontal.tabbed.fullwidth .media-wrapper video {
 }
 
 main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
-  margin-top: var(--spacing-300);
+  margin-top: var(--spacing-xs);
   margin-bottom: 0px;
 }
 
@@ -3207,8 +3207,8 @@ main .template-x.tworow .template-x-inner-wrapper.gallery {
   padding-left: initial;
   padding-right: initial;
 
-  padding-bottom: var(--spacing-300);
-  padding-top: var(--spacing-300);
+  padding-bottom: var(--spacing-xs);
+  padding-top: var(--spacing-xs);
 
   scroll-padding-left: var(--ax-grid-margin);
 }
@@ -3309,12 +3309,12 @@ main .template-x.tworow .template-2x2-col .template .still-wrapper img:not(.icon
 
 @media (min-width: 768px) {
   main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper{
-    margin-top:  var(--spacing-400);
+    margin-top:  var(--spacing-s);
     margin-bottom: 0px;
   }
 
   main .template-x.horizontal.tabbed.fullwidth {
-     margin: auto var(--spacing-500)
+     margin: auto var(--spacing-m)
   }
 
   main .template-x.horizontal.tabbed.fullwidth .template-tabs {
@@ -3349,9 +3349,9 @@ main .template-x.tworow .template-2x2-col .template .still-wrapper img:not(.icon
 
 @media (min-width: 1280px) {
   main .template-x.horizontal.tabbed.fullwidth {
-      margin-left: var(--spacing-600);
-      margin-right: var(--spacing-600);
-      padding-bottom: var(--spacing-600);
+      margin-left: var(--spacing-l);
+      margin-right: var(--spacing-l);
+      padding-bottom: var(--spacing-l);
   }
 
   main .template-x.horizontal.tabbed.fullwidth .view-all-link-wrapper {
