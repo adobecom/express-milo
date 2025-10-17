@@ -255,11 +255,11 @@ test.describe('Template X Promo block tests', () => {
 
       if (templates > 0) {
         const firstTemplate = templateXPromo.page.locator('.template').first();
-        
+
         // Hover to show the button-container with cta-link
         await firstTemplate.hover();
         await templateXPromo.page.waitForTimeout(500);
-        
+
         const ctaLink = firstTemplate.locator('.cta-link');
 
         // Verify cta-link exists and is now visible after hover
@@ -276,10 +276,17 @@ test.describe('Template X Promo block tests', () => {
         expect(cursor).toBe('pointer');
         console.log('✅ cta-link has cursor: pointer');
 
-        // Verify cta-link has valid href
+        // Verify cta-link has valid href (can be express.adobe.com or app.link)
         const href = await ctaLink.getAttribute('href');
         expect(href).toBeTruthy();
-        expect(href).toContain('express.adobe.com');
+        let hostname;
+        try {
+          // Parse URL and extract hostname for secure validation
+          hostname = (new URL(href, 'https://dummybase.com')).hostname;
+        } catch (e) {
+          hostname = '';
+        }
+        expect(['express.adobe.com', 'adobesparkpost.app.link'].includes(hostname)).toBe(true);
         console.log(`✅ cta-link has valid href: ${href}`);
 
         // Verify cta-link wraps media-wrapper
@@ -338,7 +345,7 @@ test.describe('Template X Promo block tests', () => {
 
       if (templates > 0) {
         const firstTemplate = templateXPromo.page.locator('.template').first();
-        
+
         // Hover to show button container
         await firstTemplate.hover();
         await templateXPromo.page.waitForTimeout(500);
