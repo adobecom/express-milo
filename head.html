@@ -3,14 +3,21 @@
 <script src="/express/code/scripts/fallback.js" nomodule></script>
 <script src="/express/code/scripts/scripts.js" type="module"></script>
 <style>body { display: none; }</style>
-<!-- CRITICAL: Force system fonts on LCP text BEFORE TypeKit loads -->
-<!-- This prevents 3.6s FOIT render delay on hero content -->
+<!-- CRITICAL: Force hero to render IMMEDIATELY before TypeKit loads -->
+<!-- This ensures LCP happens before TypeKit blocks rendering (3.6s delay) -->
 <style>
+/* Force hero content to be visible immediately with system fonts */
+.grid-marquee,
+.grid-marquee .foreground,
+.grid-marquee .foreground .headline,
 .grid-marquee .foreground .headline h1,
 .grid-marquee .foreground .headline p,
+main .section:first-of-type,
 main .section:first-of-type h1,
 main .section:first-of-type p {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 </style>
 <link rel="icon" href="data:,">
