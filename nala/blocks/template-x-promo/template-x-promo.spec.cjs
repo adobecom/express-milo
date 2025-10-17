@@ -7,5 +7,11 @@ module.exports = {
       path: ['/drafts/nala/blocks/template-x-promo/template-x-promo-api'],
       tags: '@express @smoke @regression @template-x-promo',
     },
+    {
+      tcid: '1',
+      name: '@template-x-promo template image clickability',
+      path: ['/drafts/nala/blocks/template-x-promo/template-x-promo-api'],
+      tags: '@express @smoke @regression @template-x-promo',
+    },
   ],
 };

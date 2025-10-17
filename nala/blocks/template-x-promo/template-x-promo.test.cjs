@@ -235,10 +235,10 @@ test.describe('Template X Promo block tests', () => {
     });
   });
 
-  // New test for template image clickability
-  test('[Test Id - clickability] Template image clickability', async ({ baseURL }) => {
-    console.info(`Testing template clickability: ${baseURL}${features[0].path}`);
-    const testPage = `${baseURL}${features[0].path}`;
+  // TCID 1: Template image clickability
+  test(`[Test Id - ${features[1].tcid}] ${features[1].name},${features[1].tags}`, async ({ baseURL }) => {
+    console.info(`Testing template clickability: ${baseURL}${features[1].path}`);
+    const testPage = `${baseURL}${features[1].path}`;
 
     await test.step('Navigate to test page', async () => {
       await templateXPromo.gotoURL(testPage);
