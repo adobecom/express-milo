@@ -234,4 +234,144 @@ test.describe('Template X Promo block tests', () => {
       }
     });
   });
+
+  // New test for template image clickability
+  test('[Test Id - clickability] Template image clickability', async ({ baseURL }) => {
+    console.info(`Testing template clickability: ${baseURL}${features[0].path}`);
+    const testPage = `${baseURL}${features[0].path}`;
+
+    await test.step('Navigate to test page', async () => {
+      await templateXPromo.gotoURL(testPage);
+    });
+
+    await test.step('Wait for templates to load', async () => {
+      await templateXPromo.page.waitForLoadState('networkidle');
+      await templateXPromo.page.waitForTimeout(3000);
+    });
+
+    await test.step('Verify cta-link exists and is clickable', async () => {
+      const templates = await templateXPromo.page.locator('.template').count();
+      console.log(`Found ${templates} templates to test`);
+
+      if (templates > 0) {
+        const firstTemplate = templateXPromo.page.locator('.template').first();
+        const ctaLink = firstTemplate.locator('.cta-link');
+
+        // Verify cta-link exists
+        await expect(ctaLink).toBeVisible();
+        console.log('✅ cta-link is visible');
+
+        // Verify cta-link has proper pointer events
+        const pointerEvents = await ctaLink.evaluate((el) => window.getComputedStyle(el).pointerEvents);
+        expect(pointerEvents).toBe('auto');
+        console.log('✅ cta-link has pointer-events: auto');
+
+        // Verify cta-link has cursor pointer
+        const cursor = await ctaLink.evaluate((el) => window.getComputedStyle(el).cursor);
+        expect(cursor).toBe('pointer');
+        console.log('✅ cta-link has cursor: pointer');
+
+        // Verify cta-link has valid href
+        const href = await ctaLink.getAttribute('href');
+        expect(href).toBeTruthy();
+        expect(href).toContain('express.adobe.com');
+        console.log(`✅ cta-link has valid href: ${href}`);
+
+        // Verify cta-link wraps media-wrapper
+        const mediaWrapper = ctaLink.locator('.media-wrapper');
+        await expect(mediaWrapper).toBeVisible();
+        console.log('✅ cta-link wraps media-wrapper');
+      } else {
+        console.log('⚠️ No templates found for clickability test');
+      }
+    });
+
+    await test.step('Verify template image is clickable (no navigation)', async () => {
+      const templates = await templateXPromo.page.locator('.template').count();
+
+      if (templates > 0) {
+        const firstTemplate = templateXPromo.page.locator('.template').first();
+        const ctaLink = firstTemplate.locator('.cta-link');
+        const href = await ctaLink.getAttribute('href');
+
+        // Hover to show overlay
+        await firstTemplate.hover();
+        await templateXPromo.page.waitForTimeout(500);
+
+        // Get the current URL before clicking
+        const currentUrl = templateXPromo.page.url();
+
+        // Click the template image (cta-link) and prevent navigation for testing
+        await templateXPromo.page.evaluate(() => {
+          // Add temporary click handler to prevent navigation
+          document.querySelectorAll('.cta-link').forEach((link) => {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              link.setAttribute('data-clicked', 'true');
+            }, { once: true });
+          });
+        });
+
+        await ctaLink.click();
+        await templateXPromo.page.waitForTimeout(500);
+
+        // Verify click was registered
+        const wasClicked = await ctaLink.getAttribute('data-clicked');
+        expect(wasClicked).toBe('true');
+        console.log('✅ Template image click was registered');
+
+        // Verify we didn't navigate (stayed on same page)
+        expect(templateXPromo.page.url()).toBe(currentUrl);
+        console.log('✅ Click handler prevented navigation for testing');
+
+        console.log(`📝 In production, clicking would navigate to: ${href}`);
+      }
+    });
+
+    await test.step('Verify both button and cta-link have same href', async () => {
+      const templates = await templateXPromo.page.locator('.template').count();
+
+      if (templates > 0) {
+        const firstTemplate = templateXPromo.page.locator('.template').first();
+        
+        // Hover to show button container
+        await firstTemplate.hover();
+        await templateXPromo.page.waitForTimeout(500);
+
+        const button = firstTemplate.locator('.button-container .button');
+        const ctaLink = firstTemplate.locator('.button-container .cta-link');
+
+        const buttonHref = await button.getAttribute('href');
+        const linkHref = await ctaLink.getAttribute('href');
+
+        expect(buttonHref).toBe(linkHref);
+        console.log('✅ Button and cta-link have matching hrefs');
+      }
+    });
+
+    await test.step('Verify overlay closes when clicking outside', async () => {
+      const templates = await templateXPromo.page.locator('.template').count();
+
+      if (templates > 0) {
+        const firstTemplate = templateXPromo.page.locator('.template').first();
+
+        // Hover to show overlay
+        await firstTemplate.hover();
+        await templateXPromo.page.waitForTimeout(500);
+
+        // Verify overlay is visible (singleton-hover class)
+        const hasSingletonHover = await firstTemplate.evaluate((el) => el.classList.contains('singleton-hover'));
+        console.log(`Overlay state after hover: singleton-hover=${hasSingletonHover}`);
+
+        // Click outside the template
+        await templateXPromo.page.mouse.click(50, 50);
+        await templateXPromo.page.waitForTimeout(500);
+
+        // Verify overlay is hidden
+        const stillHasSingletonHover = await firstTemplate.evaluate((el) => el.classList.contains('singleton-hover'));
+        expect(stillHasSingletonHover).toBe(false);
+        console.log('✅ Overlay closes when clicking outside');
+      }
+    });
+  });
 });
