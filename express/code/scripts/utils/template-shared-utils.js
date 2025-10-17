@@ -1,13 +1,3 @@
-/**
- * Shared utilities for template-list and template-x blocks
- * This file contains common functions to avoid code duplication
- * and ensure consistent behavior across template blocks.
- */
-
-/**
- * Closes the filter drawer with animation
- * @param {HTMLElement} toolBar - The toolbar element containing the drawer
- */
 export function closeDrawer(toolBar) {
   const drawerBackground = toolBar.querySelector('.drawer-background');
   const drawer = toolBar.querySelector('.filter-drawer-mobile');
@@ -24,11 +14,6 @@ export function closeDrawer(toolBar) {
   }, 500);
 }
 
-/**
- * Calculates placeholder width based on viewport and view mode
- * @param {HTMLElement} block - The template block element
- * @returns {number} Calculated width in pixels
- */
 export function getPlaceholderWidth(block) {
   let width;
   if (window.innerWidth >= 900) {
@@ -61,19 +46,10 @@ export function getPlaceholderWidth(block) {
   return Math.round(width);
 }
 
-/**
- * Checks if a word starts with a vowel
- * @param {string} word - The word to check
- * @returns {boolean} True if word starts with a vowel
- */
 export function wordStartsWithVowels(word) {
   return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
 }
 
-/**
- * Initializes toolbar shadow effect based on scroll position
- * @param {HTMLElement} block - The template block element
- */
 export function initToolbarShadow(block) {
   const scrollableDiv = block.querySelector('.card-wrapper, .template-container-wrapper');
   const toolBar = block.querySelector('.filter-wrapper, .template-x-filter-container');
