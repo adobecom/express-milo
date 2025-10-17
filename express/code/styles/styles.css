@@ -6,24 +6,6 @@
   src: local('Trebuchet MS'), local('TrebuchetMS');
 }
 
-/* Force font-display: swap on adobe-clean to prevent FOIT on LCP */
-/* TypeKit loads adobe-clean with font-display: auto (causes FOIT) */
-/* This override forces swap behavior: show fallback immediately, then swap when font loads */
-@font-face {
-  font-family: adobe-clean;
-  font-display: swap;
-  font-weight: 100 900;
-  font-style: normal;
-  src: local(adobe-clean), local("Adobe Clean");
-}
-
-@font-face {
-  font-family: "Adobe Clean";
-  font-display: swap;
-  font-weight: 100 900;
-  font-style: normal;
-  src: local("Adobe Clean"), local(adobe-clean);
-}
 
 :root {
   --color-white: #fff;
@@ -619,19 +601,6 @@ main h6 {
 
 main h1 {
   font-size: var(--heading-font-size-xxl);
-}
-
-/* CRITICAL: Force system fonts on hero text to prevent FOIT (Flash of Invisible Text) on LCP */
-/* TypeKit's adobe-clean font causes 3.5s render delay on hero content */
-/* Using ultra-specific selectors to override TypeKit's CSS (which loads after styles.css) */
-main .section:first-of-type h1,
-main .section:first-of-type p,
-main .grid-marquee .headline h1,
-main .grid-marquee .headline p,
-.grid-marquee .foreground .headline h1,
-.grid-marquee .foreground .headline p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-  font-synthesis: none !important; /* Prevent browser from trying to synthesize missing font weights */
 }
 
 main h2 {
