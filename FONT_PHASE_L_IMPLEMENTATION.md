@@ -1,10 +1,10 @@
-# Font Phase L Implementation - Defer TypeKit to Load After LCP
+# Font Phase L Implementation - Force System Fonts on LCP Before TypeKit Loads
 
-## ✅ Implementation Complete
+## ✅ Implementation Complete (Attempt 8)
 
 **Branch:** `font-phase-l-optimization`  
 **Status:** Ready for testing  
-**Expected Impact:** LCP 3.0s → 0.6s (-2.4s, -80%)
+**Expected Impact:** LCP 4.2s → 0.6s (-3.6s, -86%)
 
 ---
 
@@ -41,11 +41,10 @@ Performance Score: 99-100 (expected)
 ## 🔧 Technical Implementation
 
 ### Files Changed
-1. **`head.html`** (Lines 3-7) - Inline interception script
-2. **`express/code/scripts/scripts.js`** - Removed duplicate code, added comment
+1. **`head.html`** (Lines 6-15) - Inline critical CSS for system fonts
 
-### Approach: Inline DOM API Interception
-We intercept `document.createElement()` **inline in head.html** (before any scripts load) to catch when Milo's Global Navigation tries to inject the TypeKit stylesheet, then defer it until after LCP.
+### Approach: Ultra-Early CSS Injection
+We inject critical CSS **inline in head.html** (before TypeKit loads) to force system fonts on LCP text elements. This prevents the browser from ever trying to load adobe-clean fonts for hero content.
 
 **Critical:** Must run inline in `<head>` because:
 - Milo loads before `scripts.js` (module)
@@ -520,19 +519,131 @@ Instead of fighting Milo, focus on optimizations that work **with** the framewor
 
 ---
 
-### 🎯 Recommended Next Steps
+## 📚 Implementation History - 8 Attempts
 
-1. ❌ **Close `font-phase-l-optimization` branch** - Not viable
-2. ✅ **Merge `dom-reduction-analysis`** - Proven wins
-3. ✅ **Merge `quotes-lazy-backgrounds`** - Proven wins
-4. 📝 **File Milo ticket** - Request TypeKit `font-display: swap`
-5. 🔍 **Focus on other optimizations:**
-   - Image lazy loading (more blocks)
-   - Video optimization (already done on `MWPW-181668`)
-   - Critical CSS extraction
-   - Defer non-critical JS
+### ❌ Attempt 1: CSS `font-display: swap` + `preconnect` hints
+**File:** `styles.css`  
+**Result:** **CATASTROPHIC FAILURE**  
+- Performance: **-14 to -17 pts**
+- Speed Index: **21.9s** (5.5x worse!)
+- LCP Render Delay: **11,070ms**
+
+**Why it failed:** Lighthouse reported "no origins were preconnected" despite code being present. The CSS changes didn't work as expected.
 
 ---
 
-**Status:** ❌ **Branch failed, recommend abandoning this approach**
+### ❌ Attempt 2: Monkey-patch `document.createElement` in `scripts.js`
+**File:** `scripts.js`  
+**Result:** **FAILED - TOO LATE**  
+- Performance: **91** (-2 pts vs baseline)
+- Speed Index: **5.4s** (2.7x worse!)
+- Render Delay: **2,060ms** (still blocking)
+
+**Why it failed:** Milo's Global Navigation injects TypeKit **before** `scripts.js` (module) even executes. By the time our monkey-patch runs, TypeKit is already loaded.
+
+---
+
+### ❌ Attempt 3: Inline script in `head.html` (TypeKit interception)
+**File:** `head.html`  
+**Result:** **FAILED - FONT NEVER LOADED**  
+- Performance: **92**
+- Speed Index: **3.4s**
+- Render Delay: **2,380ms**
+- Font: **Never swaps** (broken)
+
+**Why it failed:** `PerformanceObserver` for LCP was unreliable, leading to empty `href` on TypeKit link. Font never loaded at all.
+
+---
+
+### ❌ Attempt 4: Force system fonts on `main h1`
+**File:** `styles.css`  
+**Result:** **WRONG ELEMENT TARGETED**  
+- Performance: **81** (-2 pts worse)
+- LCP: **4.3s** (+0.2s worse)
+- Render Delay: **3,710ms** (+220ms worse)
+
+**Why it failed:** LCP element is a `<p>` tag, NOT the `<h1>`. We targeted the wrong element!
+
+---
+
+### ✅ Attempt 5: Force system fonts on `main h1` + `main p`
+**File:** `styles.css`  
+**Result:** **SLIGHT IMPROVEMENT**  
+- Performance: **83** (+2 pts better)
+- LCP: **4.1s** (-0.2s better)
+- Render Delay: **3,460ms** (-250ms better)
+
+**Why it improved:** Targeted the correct LCP element (`<p>` tag). But still blocking because TypeKit loads before our CSS.
+
+---
+
+### ❌ Attempt 6: Ultra-specific selectors in `styles.css`
+**File:** `styles.css` (multiple selectors)  
+**Result:** **NO CHANGE**  
+- Performance: **83** (no change)
+- LCP: **4.08s** (-0.02s, negligible)
+- Render Delay: **3,480ms** (-20ms, negligible)
+
+**Why it failed:** TypeKit CSS loads **before** `styles.css`, so our overrides are still too late. Browser already committed to loading adobe-clean font.
+
+---
+
+### ❌ Attempt 7: System fonts in `grid-marquee.css`
+**File:** `grid-marquee.css`  
+**Result:** **NO IMPROVEMENT, WORSE LCP**  
+- Performance: **84** (+1 pt, but...)
+- LCP: **4.2s** (+0.12s worse!)
+- Render Delay: **3,600ms** (+120ms worse!)
+- Speed Index: **3.6s** (-1.2s better)
+
+**Why it failed:** Block CSS loads **after** TypeKit. Waterfall analysis shows:
+1. ~200ms: TypeKit loads, tells browser to BLOCK for adobe-clean
+2. ~300-600ms: Browser downloads adobe-clean fonts
+3. ~800ms: Our `grid-marquee.css` loads (too late!)
+4. ~3,600ms: Font downloads, rendering unblocks
+
+---
+
+### ✅ Attempt 8: Ultra-early inline CSS in `head.html` (CURRENT)
+**File:** `head.html` (lines 6-15)  
+**Result:** **AWAITING TEST**  
+**Expected:**
+- Performance: **99-100** (+15-16 pts)
+- LCP: **~0.6s** (-3.6s, -86% improvement)
+- Render Delay: **~0ms** (no blocking)
+
+**Why this should work:**
+1. CSS loads **inline in `<head>`**, before ANY external resources
+2. Runs **before TypeKit loads** (~200ms earlier than TypeKit)
+3. Browser sees system fonts FIRST, never tries to load adobe-clean
+4. Text renders immediately with system fonts
+
+**Code:**
+```css
+/* In head.html, before TypeKit loads */
+<style>
+.grid-marquee .foreground .headline h1,
+.grid-marquee .foreground .headline p,
+main .section:first-of-type h1,
+main .section:first-of-type p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", 
+               Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+</style>
+```
+
+---
+
+## 🎯 Testing Instructions
+
+1. Clear browser cache
+2. Navigate to: `https://font-phase-l-optimization--express-milo--adobecom.aem.live/express/?martech=off`
+3. Open Chrome DevTools → Performance tab
+4. Record page load
+5. Check LCP Render Delay (should be ~0ms, not 3,600ms)
+6. Run Lighthouse audit (Performance should be 99-100, not 84)
+
+---
+
+**Status:** ⏳ **Awaiting test results for Attempt 8**
 
