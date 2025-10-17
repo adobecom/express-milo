@@ -2,20 +2,35 @@
 
 ## Executive Summary
 
-Successfully optimized the quotes block on the Adobe Express homepage by implementing device-aware lazy loading and single-container rendering. This resulted in significant performance improvements with zero regressions.
+⚠️ **IMPORTANT: This optimization is causing performance regressions and should not be merged in its current state.**
 
-### Performance Impact
+### Performance Impact (Current Reality)
 
-| Metric | Production | Optimized | Improvement |
-|--------|-----------|-----------|-------------|
-| **Performance Score** | 78 | 85 | +7 points (+9%) |
-| **LCP** | 5.0s | 4.0s | -1.0s (-20%) |
-| **Speed Index** | 4.8s | 4.1s | -0.7s (-15%) |
-| **CLS** | 0.004 | 0.004 | No change |
-| **TBT** | N/A | 0ms | Perfect |
-| **FCP** | N/A | 1.6s | Excellent |
+| Metric | Baseline (main) | Optimized Branch | Result |
+|--------|-----------------|------------------|---------|
+| **Performance Score** | 87 | 82 | -5 points ❌ |
+| **LCP** | 3.8s | 4.0s | +0.2s (slower) ❌ |
+| **Speed Index** | 3.8s | 5.5s | +1.7s (slower) ❌ |
+| **CLS** | 0.008 | 0.008 | No change |
+| **TBT** | 0ms | 0ms | No change |
+| **FCP** | 1.6s | 1.6s | No change |
 
-**Test URL:** [PageSpeed Insights Results](https://pagespeed.web.dev/analysis/https-quotes-lazy-backgrounds--express-milo--adobecom-aem-live-express/p1l2f80dmz?form_factor=mobile)
+**Baseline URL:** [main branch](https://main--express-milo--adobecom.aem.live/express/?martech=off)  
+**Test Branch URL:** [quotes-block-enhancement](https://quotes-block-enhancement--express-milo--adobecom.aem.live/express/?martech=off)
+
+**Test Date:** October 17, 2025  
+**Test Conditions:** Moto G Power (4G Slow), Mobile viewport
+
+### Why Original Testing Showed Different Results
+
+The initial documentation claimed a Performance Score of 85 with improvements, but real-world testing shows regressions. Possible reasons:
+
+1. **Different test page** - Original may have tested a page where quotes was above-fold
+2. **Cache effects** - Background image may have been cached during testing
+3. **Network variability** - PageSpeed Insights results can vary ±5 points between runs
+4. **Incorrect baseline** - May have compared against an older/slower baseline
+
+**Current reality:** The lazy loading optimization is making Speed Index **1.7s slower** (3.8s → 5.5s) because it delays the visual completion of a below-fold decorative element.
 
 ---
 
