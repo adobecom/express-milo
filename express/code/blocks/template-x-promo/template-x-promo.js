@@ -916,17 +916,25 @@ export default async function decorate(block) {
   if (apiUrl) {
     await handleApiDrivenTemplates(block, apiUrl);
 
-    // Debounce utility for resize handlers
+    // Debounce utility for resize handlers with cancellation support
     const debounce = (func, wait) => {
       let timeout;
-      return function executedFunction(...args) {
+      const executedFunction = function debounced(...args) {
         const later = () => {
           clearTimeout(timeout);
+          timeout = null;
           func(...args);
         };
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
       };
+      executedFunction.cancel = () => {
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+      };
+      return executedFunction;
     };
 
     const selectors = {
@@ -1004,8 +1012,17 @@ export default async function decorate(block) {
     window.addEventListener('orientationchange', debouncedOrientationHandler);
 
     block._cleanup = () => {
+      // Cancel any pending debounced calls before removing listeners
+      if (debouncedResizeHandler && debouncedResizeHandler.cancel) {
+        debouncedResizeHandler.cancel();
+      }
+      if (debouncedOrientationHandler && debouncedOrientationHandler.cancel) {
+        debouncedOrientationHandler.cancel();
+      }
+      
       window.removeEventListener('resize', debouncedResizeHandler);
       window.removeEventListener('orientationchange', debouncedOrientationHandler);
+      
       if (block._carousel && block._carousel.destroy) {
         block._carousel.destroy();
       }
