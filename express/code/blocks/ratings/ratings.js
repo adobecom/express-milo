@@ -1,5 +1,4 @@
-import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
-import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
+import { getLibs, getLottie, lazyLoadLottiePlayer, toClassName, getIconElementDeprecated, decorateButtonsDeprecated, splitAndAddVariantsWithDash } from '../../scripts/utils.js';
 import {
   createStarRating,
   populateStars,

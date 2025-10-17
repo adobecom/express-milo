@@ -1,9 +1,9 @@
 import { expect } from '@esm-bundle/chai';
-import { setLibs } from '../../../express/code/scripts/utils.js';
 import {
+  setLibs,
   splitAndAddVariantsWithDash,
   normalizeHeadings,
-} from '../../../express/code/scripts/utils/decorate.js';
+} from '../../../express/code/scripts/utils.js';
 
 setLibs('/libs');
 

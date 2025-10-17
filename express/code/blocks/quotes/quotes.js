@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
 import { getLibs, addTempWrapperDeprecated, getLottie, lazyLoadLottiePlayer, toClassName } from '../../scripts/utils.js';
-import loadCarousel from '../../scripts/utils/load-carousel.js';
 import {
   fetchRatingsData,
   determineActionUsed,
@@ -419,7 +418,20 @@ export default async function decorate($block) {
         resolve();
       });
     });
-    await loadCarousel(null, $carouselContainer);
+    // Dynamic carousel loading (was load-carousel.js) - only loads the ONE carousel needed
+    if ($carouselContainer.closest('.grid-carousel')) {
+      const { default: buildGridCarousel } = await import('../../scripts/widgets/grid-carousel.js');
+      await buildGridCarousel(null, $carouselContainer);
+    } else {
+      const useBasicCarousel = $carouselContainer.closest('.basic-carousel');
+      if (useBasicCarousel) {
+        const { default: buildBasicCarousel } = await import('../../scripts/widgets/basic-carousel.js');
+        await buildBasicCarousel(null, $carouselContainer);
+      } else {
+        const { default: buildCarousel } = await import('../../scripts/widgets/carousel.js');
+        await buildCarousel(null, $carouselContainer);
+      }
+    }
 
     // Create a wrapper to hold everything
     const $wrapper = createTag('div', { class: 'quotes-ratings-wrapper' });

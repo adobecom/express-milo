@@ -1,5 +1,4 @@
-import { getLibs, decorateButtonsDeprecated, fixIcons, getIconElementDeprecated, readBlockConfig } from '../../scripts/utils.js';
-import { normalizeHeadings } from '../../scripts/utils/decorate.js';
+import { getLibs, decorateButtonsDeprecated, fixIcons, getIconElementDeprecated, readBlockConfig, normalizeHeadings } from '../../scripts/utils.js';
 import { formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
 
 // ============================================================================

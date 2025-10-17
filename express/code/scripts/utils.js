@@ -121,6 +121,41 @@ export function titleCase(str) {
   return splitStr.join(' ');
 }
 
+export function splitAndAddVariantsWithDash(block) {
+  const extra = [];
+  block.classList.forEach((className, index) => {
+    if (index === 0) return;
+    const split = className.split('-');
+    if (split.length > 1) {
+      split.forEach((part) => {
+        extra.push(part);
+      });
+    }
+  });
+  block.classList.add(...extra);
+}
+
+export function normalizeHeadings(block, allowedHeadings) {
+  const allowed = allowedHeadings.map((h) => h.toLowerCase());
+  block.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
+    const h = tag.tagName.toLowerCase();
+    if (allowed.indexOf(h) === -1) {
+      let level = parseInt(h.charAt(1), 10) - 1;
+      while (allowed.indexOf(`h${level}`) === -1 && level > 0) {
+        level -= 1;
+      }
+      if (level === 0) {
+        while (allowed.indexOf(`h${level}`) === -1 && level < 7) {
+          level += 1;
+        }
+      }
+      if (level !== 7) {
+        tag.outerHTML = `<h${level}>${tag.textContent.trim()}</h${level}>`;
+      }
+    }
+  });
+}
+
 function sanitizeInput(input) {
   if (Number.isInteger(input)) return input;
   return input.replace(/[^a-zA-Z0-9-_]/g, ''); // Simple regex to strip out potentially dangerous characters

@@ -1,4 +1,10 @@
-import { getLibs, toClassName, getIconElementDeprecated, decorateButtonsDeprecated } from '../../scripts/utils.js';
+import {
+  getLibs,
+  toClassName,
+  getIconElementDeprecated,
+  decorateButtonsDeprecated,
+  splitAndAddVariantsWithDash,
+} from '../../scripts/utils.js';
 
 import {
   addAnimationToggle,
@@ -8,9 +14,6 @@ import {
 
 import { decorateSocialIcons } from '../../scripts/utils/icons.js';
 import { addHeaderSizing, formatSalesPhoneNumber } from '../../scripts/utils/location-utils.js';
-import {
-  splitAndAddVariantsWithDash,
-} from '../../scripts/utils/decorate.js';
 import { addFreePlanWidget } from '../../scripts/widgets/free-plan.js';
 import { displayVideoModal, hideVideoModal, isVideoLink } from '../../scripts/widgets/video.js';
 import BlockMediator from '../../scripts/block-mediator.min.js';

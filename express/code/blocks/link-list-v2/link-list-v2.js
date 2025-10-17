@@ -1,8 +1,7 @@
-import { getLibs, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, decorateButtonsDeprecated, addTempWrapperDeprecated, splitAndAddVariantsWithDash } from '../../scripts/utils.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 
 import { fetchRelevantRows } from '../../scripts/utils/relevant.js';
-import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 
 let replaceKey;
 let getConfig;

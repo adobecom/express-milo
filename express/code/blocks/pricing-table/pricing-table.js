@@ -1,6 +1,5 @@
-import { getLibs, yieldToMain, fixIcons, decorateButtonsDeprecated, addTempWrapperDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, fixIcons, decorateButtonsDeprecated, addTempWrapperDeprecated, splitAndAddVariantsWithDash } from '../../scripts/utils.js';
 import { debounce } from '../../scripts/utils/hofs.js';
-import { splitAndAddVariantsWithDash } from '../../scripts/utils/decorate.js';
 import { formatDynamicCartLink } from '../../scripts/utils/pricing.js';
 import { sendEventToAnalytics } from '../../scripts/instrument.js';
 
