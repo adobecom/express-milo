@@ -245,13 +245,18 @@ preDecorateSections(document);
 
 // POC: Intercept TypeKit loading and modify font-display behavior
 (function interceptTypekitFontDisplay() {
+  let typekitProcessed = false;
+  
   const observer = new MutationObserver((mutations) => {
+    if (typekitProcessed) return; // Already handled, ignore further mutations
+    
     mutations.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
         // Intercept TypeKit stylesheet
         if (node.tagName === 'LINK' 
             && node.getAttribute('href')?.includes('typekit.net')) {
           console.log('🎯 POC: Intercepting TypeKit stylesheet');
+          typekitProcessed = true;
           
           // Fetch TypeKit CSS and modify font-display
           fetch(node.href)
@@ -272,8 +277,16 @@ preDecorateSections(document);
               document.head.appendChild(style);
               
               console.log('✅ POC: TypeKit font-display changed to swap');
+              
+              // Clean up: disconnect observer after successful intercept
+              observer.disconnect();
+              console.log('🧹 POC: Observer disconnected');
             })
-            .catch((err) => console.error('❌ POC: TypeKit intercept failed', err));
+            .catch((err) => {
+              console.error('❌ POC: TypeKit intercept failed', err);
+              // Still disconnect on error to avoid infinite retries
+              observer.disconnect();
+            });
         }
       });
     });
