@@ -42,6 +42,16 @@
   cursor: pointer;
   text-decoration: none;
   outline: none;
+  transition: transform 0.3s ease;
+  border-radius: var(--spacing-300);
+}
+
+.ax-template-x-promo.one-up .one-up-image-link:hover {
+  transform: scale(1.01);
+}
+
+.ax-template-x-promo.one-up .one-up-image-link:active {
+  transform: scale(0.99);
 }
 
 .ax-template-x-promo.one-up .one-up-image-link:focus-visible {
