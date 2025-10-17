@@ -69,8 +69,6 @@ const CONFIG = {
   locales: {
     '': { ietf: 'en-US', tk: 'jdq5hay.css' },
     br: { ietf: 'pt-BR', tk: 'inq1xob.css' },
-    // eslint-disable-next-line max-len
-    // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hans-CN
     cn: { ietf: 'zh-CN', tk: 'qxw8hzm' },
     de: { ietf: 'de-DE', tk: 'vin7zsi.css' },
     dk: { ietf: 'da-DK', tk: 'aaz7dvd.css' },
@@ -86,8 +84,6 @@ const CONFIG = {
     nl: { ietf: 'nl-NL', tk: 'cya6bri.css' },
     no: { ietf: 'no-NO', tk: 'aaz7dvd.css' },
     se: { ietf: 'sv-SE', tk: 'fpk1pcd.css' },
-    // eslint-disable-next-line max-len
-    // TODO check that this ietf is ok to use everywhere. It's different in the old project zh-Hant-TW
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     uk: { ietf: 'en-GB', tk: 'pps7abe.css' },
   },
@@ -253,12 +249,10 @@ function decorateHeroLCP(loadStyle, config, createTag) {
       const main = document.querySelector('main');
       if (main.children.length === 1) {
         heroSection = createTag('div', { id: 'hero' });
-        const div = createTag('div');
-        heroSection.append(div);
         if (heroPicture) {
-          div.append(heroPicture);
+          heroSection.append(heroPicture);
         }
-        div.append(h1);
+        heroSection.append(h1);
         main.prepend(heroSection);
       } else {
         heroSection = h1.closest('main > div');
@@ -335,7 +329,6 @@ function decorateHeroLCP(loadStyle, config, createTag) {
 
   const googleLoginRedirect = createTag('meta', { name: 'google-login', content: 'desktop' });
   document.head.append(googleLoginRedirect);
-  // end TODO remove metadata after we go live
 
   const config = setConfig({ ...CONFIG, miloLibs });
 
@@ -344,29 +337,12 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     await redirect();
   }
 
-  // TODO remove metadata after we go live
   getMetadata('gnav-source') || document.head.append(createTag('meta', { name: 'gnav-source', content: `${config.locale.prefix}/express/localnav-express` }));
 
   if (getMetadata('sheet-powered') === 'Y' || window.location.href.includes('/express/templates/')) {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
   }
-
-  // Preload LCP block resources dynamically
-  const firstBlock = document.querySelector('main > div > div[class]');
-  if (firstBlock) {
-    const blockName = firstBlock.className.split(' ')[0];
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.href = `${config.codeRoot}/blocks/${blockName}/${blockName}.css`;
-    link.as = 'style';
-    document.head.appendChild(link);
-    const moduleLink = document.createElement('link');
-    moduleLink.rel = 'modulepreload';
-    moduleLink.href = `${config.codeRoot}/blocks/${blockName}/${blockName}.js`;
-    document.head.appendChild(moduleLink);
-  }
-
   // Decorate the page with site specific needs.
   decorateArea();
 
