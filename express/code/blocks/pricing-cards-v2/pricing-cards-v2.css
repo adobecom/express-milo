@@ -272,12 +272,12 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
 }
 
 .pricing-cards-v2 .pricing-price.price-active {
-  color: var(--palette-indigo-1000);
+  color: var(--color-background-accent-hover);
   line-height: var(--line-height-default);
 }
 
 .pricing-cards-v2 .pricing-price.price-active > strong {
-  color: var(--palette-indigo-1000); 
+  color: var(--color-background-accent-hover); 
   line-height: var(--line-height-default);
 }
  
@@ -336,7 +336,7 @@ main .pricing-cards-v2-wrapper .pricing-cards-v2 .card-header h6 {
 }
 
 .pricing-cards-v2 .card-compare a {
-  color: var(--palette-indigo-1000);
+  color: var(--color-background-accent-hover);
   font-weight: 400;
 }
 

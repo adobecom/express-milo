@@ -221,7 +221,7 @@
   margin-left: 6px;
   font-weight: 700;
   background-color: var(--palette-indigo-200);
-  color: var(--palette-indigo-1000);
+  color: var(--color-background-accent-hover);
   border-radius: var(--spacing-border-radius-small);
 }
 

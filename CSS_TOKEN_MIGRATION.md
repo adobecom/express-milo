@@ -2,7 +2,7 @@
 
 ## Summary
 
-Migrated 14 Express CSS custom properties to use equivalent Milo tokens, eliminating redundancy and improving consistency across the codebase.
+Migrated 16 Express CSS custom properties to use equivalent Milo tokens and consolidated duplicate color values, eliminating redundancy and improving consistency across the codebase.
 
 ---
 
@@ -10,11 +10,11 @@ Migrated 14 Express CSS custom properties to use equivalent Milo tokens, elimina
 
 | Metric | Value |
 |--------|-------|
-| **Tokens Eliminated** | 14 |
+| **Tokens Eliminated** | 16 |
 | **Tokens Retained** | 3 (no Milo equivalent) |
-| **Reduction** | **13.3%** of Express tokens |
-| **Files Modified** | ~45 CSS files |
-| **Total Replacements** | **381 occurrences** |
+| **Reduction** | **15.2%** of Express tokens |
+| **Files Modified** | ~47 CSS files |
+| **Total Replacements** | **399 occurrences** |
 | **Test Results** | ✅ 876 passed, 0 failed |
 | **Linting** | ✅ All passed |
 
@@ -41,14 +41,16 @@ Migrated 14 Express CSS custom properties to use equivalent Milo tokens, elimina
 
 ---
 
-### Colors (4 tokens eliminated)
+### Colors (6 tokens eliminated)
 
-| ❌ Express Token (Old) | ✅ Milo Token (New) | Value |
-|------------------------|---------------------|-------|
+| ❌ Express Token (Old) | ✅ Milo/Express Token (New) | Value |
+|------------------------|------------------------------|-------|
 | `--color-info-primary` | `--color-gray-800` | #242424 |
 | `--color-info-primary-down` | `--color-black` | #000 |
 | `--color-info-secondary` | `--color-gray-200` | #e8e8e8 |
 | `--color-info-secondary-hover` | `--color-gray-300` | #d4d4d4 |
+| `--color-content-neutral` | `--color-gray-900` | #222 |
+| `--palette-indigo-1000` | `--color-background-accent-hover` | #4046CA |
 
 #### Retained Express Color Tokens
 - `--color-info-primary-hover: #090909` (no Milo equivalent)
@@ -147,11 +149,17 @@ margin: var(--spacing-m);    /* Milo everywhere */
 - Added documentation comments explaining Milo token usage
 - Retained 3 Express-specific tokens with no Milo equivalents
 
-### Phase 3: Validation ✅
+### Phase 3: Color Consolidation ✅
+- Identified 2 duplicate color values (#222/#222222 and #4046CA)
+- Consolidated `--color-content-neutral` → `--color-gray-900` (8 replacements)
+- Consolidated `--palette-indigo-1000` → `--color-background-accent-hover` (8 replacements)
+- Removed 2 additional redundant token definitions
+
+### Phase 4: Validation ✅
 - **CSS Linting:** ✅ All passed
 - **JS Linting:** ✅ All passed (warnings pre-existing)
 - **Unit Tests:** ✅ 876 passed, 0 failed
-- **Code Coverage:** 75.39%
+- **Code Coverage:** 65.42%
 
 ---
 
@@ -223,13 +231,13 @@ sed -i '' 's/var(--spacing-xs)/var(--spacing-300)/g' express/code/**/*.css
 
 ✅ **Migration Successful**
 
-- **14 tokens eliminated** (13.3% reduction)
-- **381 replacements** across ~45 files
+- **16 tokens eliminated** (15.2% reduction)
+- **399 replacements** across ~47 files
 - **Zero test failures**
 - **Zero linting errors**
 - **Full backward compatibility** (no breaking changes)
 
-Express now uses Milo's token naming conventions for spacing, colors, and typography, improving consistency and maintainability across the Adobe Express codebase.
+Express now uses Milo's token naming conventions for spacing, colors, and typography, plus consolidated duplicate color values, improving consistency and maintainability across the Adobe Express codebase.
 
 ---
 

@@ -25,7 +25,6 @@
   --color-gray-900: #222;
   --color-blue-600: #0066CC;
   --color-black: #000;
-  --color-content-neutral: #222222;
   --color-brand-title: #000b1d;
   --color-info-accent: #5c5ce0;
   --color-info-accent-hover: #4646c6;
@@ -46,7 +45,6 @@
   --gradient-highlight-horizontal: linear-gradient(90deg, #ff4dd2, #7c84fc);
   --gradient-highlight-diagonal: linear-gradient(45deg, #7c84fc, #ff4dd2);
   --palette-indigo-200: #E0E2FF;
-  --palette-indigo-1000: #4046CA;
   --palette-gray-200: #E6E6E6;
   --background-positive-default: #007A4D;
 

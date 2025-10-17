@@ -209,7 +209,7 @@ Border style variants
   height: 20px;
   font-size: var(--body-font-size-xs);
   font-weight: 700;
-  color: var(--palette-indigo-1000);
+  color: var(--color-background-accent-hover);
   height: 20px;
   font-style: normal;
   height: auto;
@@ -233,7 +233,7 @@ Border style variants
 }
 
 .pricing-cards .pricing-price.price-active {
-  color: var(--palette-indigo-1000);
+  color: var(--color-background-accent-hover);
 }
 
 .pricing-cards .pricing-base-price {
@@ -424,7 +424,7 @@ Border style variants
 
 .pricing-cards .card-compare a {
   text-decoration: underline;
-  color: var(--palette-indigo-1000);
+  color: var(--color-background-accent-hover);
   font-weight: 400;
 }
 
