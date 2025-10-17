@@ -26,16 +26,30 @@
 <script>
   // POC: Show body after Global Nav loads to prevent layout shift
   (function() {
+    console.log('🔍 POC: Body visibility script loaded');
+    
     const showBodyWhenGnavReady = () => {
+      console.log('🔍 POC: Starting Global Nav detection');
+      let attempts = 0;
+      
       // Wait for Global Nav to be loaded
       const checkGnav = setInterval(() => {
+        attempts++;
         const gnav = document.querySelector('header.global-navigation');
-        if (gnav && gnav.querySelector('nav')) {
+        const header = document.querySelector('header');
+        
+        // Debug logging
+        if (attempts % 10 === 0) {
+          console.log(`🔍 POC: Attempt ${attempts}, header:`, !!header, 'gnav:', !!gnav);
+        }
+        
+        // Check multiple possible selectors
+        if (header || gnav) {
           clearInterval(checkGnav);
           // Global Nav is ready, show body
           document.body.style.display = 'block';
           document.body.style.visibility = 'visible';
-          console.log('✅ Body visible after Global Nav loaded');
+          console.log('✅ POC: Body visible after Global Nav loaded (attempts:', attempts, ')');
         }
       }, 50);
       
@@ -45,7 +59,7 @@
         if (document.body.style.display === 'none') {
           document.body.style.display = 'block';
           document.body.style.visibility = 'visible';
-          console.log('⚠️ Body visible (timeout fallback)');
+          console.log('⚠️ POC: Body visible (timeout fallback after', attempts, 'attempts)');
         }
       }, 2000);
     };
