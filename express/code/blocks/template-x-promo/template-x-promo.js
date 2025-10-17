@@ -916,19 +916,24 @@ export default async function decorate(block) {
   if (apiUrl) {
     await handleApiDrivenTemplates(block, apiUrl);
 
-    let lastResponsiveCheck = 0;
-    const RESPONSIVE_THROTTLE_MS = 100;
+    // Debounce utility for resize handlers
+    const debounce = (func, wait) => {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    };
 
     const selectors = {
       carousel: '.promo-carousel-wrapper',
       desktop: '.template:not(.prev-template):not(.next-template):not(.current-template)',
     };
     const handleResponsiveChange = () => {
-      const now = Date.now();
-      if (now - lastResponsiveCheck < RESPONSIVE_THROTTLE_MS) {
-        return;
-      }
-      lastResponsiveCheck = now;
 
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
       const hasCarousel = block.querySelector(selectors.carousel);
@@ -955,12 +960,6 @@ export default async function decorate(block) {
     };
 
     const handleResponsiveOrientationChange = async () => {
-      const now = Date.now();
-      if (now - lastResponsiveCheck < RESPONSIVE_THROTTLE_MS) {
-        return;
-      }
-      lastResponsiveCheck = now;
-
       const isMobile = window.screen.width <= 767;
       const hasCarousel = block.querySelector(selectors.carousel);
       const hasDesktopLayout = block.parentElement?.querySelector(selectors.desktop);
@@ -997,12 +996,16 @@ export default async function decorate(block) {
       }
     };
 
-    window.addEventListener('resize', handleResponsiveChange);
-    window.addEventListener('orientationchange', handleResponsiveOrientationChange);
+    // Apply debounce to handlers (250ms for resize, 300ms for orientation)
+    const debouncedResizeHandler = debounce(handleResponsiveChange, 250);
+    const debouncedOrientationHandler = debounce(handleResponsiveOrientationChange, 300);
+
+    window.addEventListener('resize', debouncedResizeHandler);
+    window.addEventListener('orientationchange', debouncedOrientationHandler);
 
     block._cleanup = () => {
-      window.removeEventListener('resize', handleResponsiveChange);
-      window.removeEventListener('orientationchange', handleResponsiveOrientationChange);
+      window.removeEventListener('resize', debouncedResizeHandler);
+      window.removeEventListener('orientationchange', debouncedOrientationHandler);
       if (block._carousel && block._carousel.destroy) {
         block._carousel.destroy();
       }
