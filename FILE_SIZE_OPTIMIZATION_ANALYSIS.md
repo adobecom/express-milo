@@ -34,33 +34,33 @@ These tiny files add minimal value but create extra network requests and parse t
 
 | File | Lines | Issue | Solution |
 |------|-------|-------|----------|
-| `blocks/feature-list/feature-list.js` | 2 | CSS-only block with empty function | ❌ **DELETE** |
-| `blocks/promotion/promotion.js` | 9 | Deprecated block, just removes DOM | ❌ **DELETE** |
-| `scripts/utils/string.js` | 9 | Single `titleCase()` utility | ⚠️ **INLINE** where used |
-| `scripts/utils/load-carousel.js` | 14 | Import wrapper for 3 carousel types | ⚠️ **INLINE** or keep |
+| `blocks/feature-list/feature-list.js` | 2 | CSS-only block with empty function | ✅ **DELETED** |
+| `blocks/promotion/promotion.js` | 9 | Deprecated, but needed until authoring cleanup | ✅ **KEEP** (prevents UI breaks) |
+| `scripts/utils/string.js` | 9 | Single `titleCase()` utility (6 usages) | ⚠️ **KEEP** (worth it) |
+| `scripts/utils/load-carousel.js` | 14 | Import wrapper (1 usage in quotes.js) | ⚠️ **KEEP** (minimal) |
 
 ---
 
-### 1. **feature-list.js** (2 lines) - DELETE ✅
+### 1. **feature-list.js** (2 lines) - ✅ DELETED
 
 ```javascript
 // CSS Only Block
 export default function decorate() {}
 ```
 
-**Recommendation:** ❌ **DELETE THIS FILE**
-- Provides zero functionality
+**Status:** ✅ **DELETED**
+- Provided zero functionality
+- No references found in codebase
 - Can be handled with CSS-only styling
-- Authoring can reference a non-existent block safely
 
 **Impact:**
-- ✅ Eliminates 1 network request
-- ✅ Reduces parse/eval time
+- ✅ Eliminated 1 network request
+- ✅ Reduced parse/eval time
 - ✅ Cleaner codebase
 
 ---
 
-### 2. **promotion.js** (9 lines) - DELETE ✅
+### 2. **promotion.js** (9 lines) - ✅ KEEP
 
 ```javascript
 /**
@@ -74,15 +74,16 @@ export default async function decorate($block) {
 }
 ```
 
-**Recommendation:** ❌ **DELETE THIS FILE**
-- Block is deprecated
-- Just removes itself from DOM
-- Can be handled by removing the authoring reference entirely
+**Status:** ✅ **KEEPING** (graceful deprecation)
+- Block is deprecated BUT still referenced in authoring documents
+- Serves as graceful degradation handler
+- Prevents UI breaks until authors clean up their content
+- **Cannot be deleted until authoring cleanup is complete**
 
-**Impact:**
-- ✅ Eliminates 1 network request
-- ✅ Simplifies codebase
-- ⚠️ Need to verify authoring won't break
+**Decision:**
+- ⚠️ Must stay to prevent production breakage
+- 📝 Track authoring cleanup progress
+- 🔄 Can delete after all document references removed
 
 ---
 
@@ -309,15 +310,17 @@ Step 3: Split by concern:
 
 ## 🚀 Recommended Action Plan
 
-### **Phase 1: Quick Wins (1-2 hours)**
-1. ✅ Delete `feature-list.js` (2 lines)
-2. ✅ Delete `promotion.js` (9 lines)
-3. ⚠️ Analyze `titleCase()` usage and inline/consolidate
+### **Phase 1: Quick Wins (COMPLETED)**
+1. ✅ **DELETED** `feature-list.js` (2 lines, 0 references)
+2. ✅ **KEPT** `promotion.js` (9 lines, needed for graceful deprecation)
+3. ✅ **KEPT** `titleCase()` in `string.js` (6 usages, worth it)
+4. ✅ **KEPT** `load-carousel.js` (1 usage, minimal overhead)
 
-**Expected Impact:**
-- -11 to -34 lines
-- -2 to -4 network requests
+**Actual Impact:**
+- -2 lines eliminated
+- -1 network request saved
 - Cleaner codebase
+- **Production safety maintained**
 
 ---
 
@@ -355,11 +358,11 @@ Step 3: Split by concern:
 
 | Metric | Current | After Optimization | Savings |
 |--------|---------|-------------------|---------|
-| **Tiny Files** | 4 files, 34 lines | 0-1 files, 0-14 lines | -3 to -4 files |
-| **Massive File Lines** | 5,966 lines | ~1,100 lines | **-4,866 lines** |
-| **Duplicated Code** | 200-400 lines | 0 lines | **-200 to -400 lines** |
-| **Network Requests** | Many | Fewer | -3 to -4 initial |
-| **Initial Parse Time** | High | Lower | **~82% reduction** |
+| **Tiny Files** | 4 files, 34 lines | 3 files, 32 lines | **-1 file, -2 lines** ✅ |
+| **Massive File Lines** | 5,966 lines | ~1,100 lines | **-4,866 lines** (pending) |
+| **Duplicated Code** | 200-400 lines | 0 lines | **-200 to -400 lines** (pending) |
+| **Network Requests** | Many | Fewer | **-1 request** ✅ |
+| **Initial Parse Time** | High | Lower | **~82% reduction** (pending Phase 3) |
 
 ---
 
