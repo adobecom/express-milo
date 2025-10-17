@@ -318,6 +318,27 @@ Speed Index: 4.6s  (+0.9s, acceptable trade-off)
 
 ## 🧪 Testing Instructions
 
+### PageSpeed Insights Tests
+
+**Optimized Branch:**  
+[https://pagespeed.web.dev/analysis/https-font-phase-l-optimization--express-milo--adobecom-aem-live-express/2ms1usvv21?form_factor=mobile](https://pagespeed.web.dev/analysis/https-font-phase-l-optimization--express-milo--adobecom-aem-live-express/2ms1usvv21?form_factor=mobile)
+
+**Baseline (Main Branch):**  
+[https://pagespeed.web.dev/analysis/https-main--express-milo--adobecom-aem-live-express/8yimiogq7w?form_factor=mobile](https://pagespeed.web.dev/analysis/https-main--express-milo--adobecom-aem-live-express/8yimiogq7w?form_factor=mobile)
+
+> **Note:** If PageSpeed shows "No Data", re-run the analysis or use Lighthouse directly from Chrome DevTools (DevTools → Lighthouse → Mobile → Analyze page load).
+
+**Expected Results (Mobile, Slow 4G):**
+
+| Metric | Baseline | Optimized | Δ |
+|--------|----------|-----------|---|
+| Performance | 81-84 | 95-97 | +13-16 |
+| FCP | 1.5-1.6s | 0.8s | -0.7-0.8s |
+| LCP | 4.0-4.2s | 0.9s | -3.1-3.3s |
+| TBT | 0ms | 0ms | 0ms |
+| CLS | 0.004 | 0.016 | +0.012 |
+| Speed Index | 3.7s | 4.6s | +0.9s |
+
 ### 1. Visual Verification
 
 **Test on:** `https://font-phase-l-optimization--express-milo--adobecom.aem.live/express/?martech=off`
