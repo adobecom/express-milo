@@ -278,6 +278,20 @@ preDecorateSections(document);
               
               console.log('✅ POC: TypeKit font-display changed to swap');
               
+              // Remove the fallback font override so Adobe Clean can be used
+              // Find all inline styles in head and remove the fallback font rules
+              const styles = document.head.querySelectorAll('style');
+              styles.forEach((styleEl) => {
+                if (styleEl.textContent.includes('Fallback Font')) {
+                  // Remove only the fallback font rules, keep other styles
+                  styleEl.textContent = styleEl.textContent.replace(
+                    /\/\*\s*Define fallback font[\s\S]*?}\s*\/\*\s*Force fallback font[\s\S]*?}\s*/g,
+                    ''
+                  );
+                  console.log('🔄 POC: Fallback font styles removed, Adobe Clean will now be used');
+                }
+              });
+              
               // Clean up: disconnect observer after successful intercept
               observer.disconnect();
               console.log('🧹 POC: Observer disconnected');
