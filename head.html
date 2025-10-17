@@ -3,20 +3,23 @@
 <script src="/express/code/scripts/fallback.js" nomodule></script>
 <script src="/express/code/scripts/scripts.js" type="module"></script>
 <style>body { display: none; }</style>
-<!-- CRITICAL: Force hero to render IMMEDIATELY before TypeKit loads -->
-<!-- Ultra-high specificity to override TypeKit's CSS -->
+<!-- CRITICAL: Override TypeKit's font-display:auto with font-display:swap -->
+<!-- TypeKit uses font-display:auto which blocks rendering for 3.6s -->
+<!-- We override this BEFORE TypeKit loads to prevent FOIT -->
 <style>
-body main div.section:first-of-type div.grid-marquee div.foreground div.headline h1,
-body main div.section:first-of-type div.grid-marquee div.foreground div.headline p,
-body main div.section:first-of-type h1,
-body main div.section:first-of-type p,
-body div.grid-marquee div.foreground div.headline h1,
-body div.grid-marquee div.foreground div.headline p {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-  font-synthesis: none !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  display: block !important;
+@font-face {
+  font-family: "adobe-clean";
+  font-display: swap !important;
+  font-style: normal;
+  font-weight: 100 900;
+  src: local("Arial"), local("Helvetica"), local("sans-serif");
+}
+@font-face {
+  font-family: "adobe-clean";
+  font-display: swap !important;
+  font-style: italic;
+  font-weight: 100 900;
+  src: local("Arial"), local("Helvetica"), local("sans-serif");
 }
 </style>
 <link rel="icon" href="data:,">
