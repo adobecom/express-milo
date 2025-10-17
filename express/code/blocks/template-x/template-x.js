@@ -8,12 +8,6 @@ import {
   titleCase,
 } from '../../scripts/utils.js';
 import { createOptimizedPicture, transformLinkToAnimation } from '../../scripts/utils/media.js';
-import {
-  closeDrawer,
-  getPlaceholderWidth,
-  wordStartsWithVowels,
-  initToolbarShadow,
-} from '../../scripts/utils/template-shared-utils.js';
 import { Masonry } from '../../scripts/widgets/masonry.js';
 import buildCarousel from '../../scripts/widgets/carousel.js';
 import {
@@ -38,6 +32,10 @@ let variant;
 
 // currently running experiment
 const TWO_ROW = 'tworow';
+
+function wordStartsWithVowels(word) {
+  return word.match('^[aieouâêîôûäëïöüàéèùœAIEOUÂÊÎÔÛÄËÏÖÜÀÉÈÙŒ].*');
+}
 
 function camelize(str) {
   return str.replace(/^\w|[A-Z]|\b\w/g, (word, index) => (index === 0 ? word.toLowerCase() : word.toUpperCase())).replace(/\s+/g, '');
@@ -818,6 +816,66 @@ async function decorateCategoryList(block, props) {
   || variant.includes('print')) {
     categoriesDesktopWrapper.remove();
   }
+}
+
+function closeDrawer(toolBar) {
+  const drawerBackground = toolBar.querySelector('.drawer-background');
+  const drawer = toolBar.querySelector('.filter-drawer-mobile');
+  const applyButton = toolBar.querySelector('.apply-filter-button-wrapper');
+
+  drawer.classList.add('retracted');
+  drawerBackground.classList.add('transparent');
+  applyButton.classList.add('transparent');
+
+  setTimeout(() => {
+    drawer.classList.add('hidden');
+    drawerBackground.classList.add('hidden');
+    applyButton.classList.add('hidden');
+  }, 500);
+}
+
+function getPlaceholderWidth(block) {
+  let width;
+  if (window.innerWidth >= 900) {
+    if (block.classList.contains('sm-view')) {
+      width = 165;
+    }
+
+    if (block.classList.contains('md-view')) {
+      width = 258.5;
+    }
+
+    if (block.classList.contains('lg-view')) {
+      width = 352;
+    }
+  } else if (window.innerWidth >= 600) {
+    if (block.classList.contains('sm-view')) {
+      width = 165;
+    }
+
+    if (block.classList.contains('md-view')) {
+      width = 258.5;
+    }
+
+    if (block.classList.contains('lg-view')) {
+      width = 352;
+    }
+  } else {
+    width = window.innerWidth >= 400 ? 165 : window.innerWidth - 32;
+  }
+  return Math.round(width);
+}
+
+function initToolbarShadow(block) {
+  const scrollableDiv = block.querySelector('.card-wrapper, .template-container-wrapper');
+  const toolBar = block.querySelector('.filter-wrapper, .template-x-filter-container');
+  scrollableDiv?.addEventListener('scroll', () => {
+    if (scrollableDiv.scrollTop > 0) {
+      toolBar.classList.add('toolbar-box-shadow');
+    } else {
+      toolBar.classList.remove('toolbar-box-shadow');
+    }
+  });
 }
 
 function updateOptionsStatus(block, props, toolBar) {
