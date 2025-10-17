@@ -239,7 +239,8 @@
   height: calc(100% - 34px);
   white-space: nowrap;
   font-weight: var(--body-font-weight);
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
 }
 .ax-template-x-promo .template .button-container .share-icon-wrapper {
   position: absolute;

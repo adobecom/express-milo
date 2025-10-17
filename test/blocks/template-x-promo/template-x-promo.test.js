@@ -1919,4 +1919,114 @@ describe('Template X Promo', () => {
       });
     });
   });
+
+  describe('Template Image Clickability Tests', () => {
+    it('should have clickable cta-link with pointer-events auto', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      fetchStub.resolves(mockFreeResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const ctaLink = testBlock.querySelector('.cta-link');
+      expect(ctaLink).to.exist;
+
+      // Verify cta-link has proper styles for clickability
+      const styles = window.getComputedStyle(ctaLink);
+      expect(styles.pointerEvents).to.equal('auto');
+      expect(styles.cursor).to.equal('pointer');
+      
+      console.log('✅ Template cta-link is clickable with pointer-events: auto');
+    });
+
+    it('should have cta-link wrapping media-wrapper', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      fetchStub.resolves(mockFreeResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const ctaLink = testBlock.querySelector('.cta-link');
+      const mediaWrapper = ctaLink?.querySelector('.media-wrapper');
+      
+      expect(ctaLink).to.exist;
+      expect(mediaWrapper).to.exist;
+      
+      console.log('✅ cta-link wraps media-wrapper for image clickability');
+    });
+
+    it('should have valid href on cta-link', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      fetchStub.resolves(mockFreeResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const ctaLink = testBlock.querySelector('.cta-link');
+      const href = ctaLink?.getAttribute('href');
+      
+      expect(href).to.exist;
+      expect(href).to.include('express.adobe.com');
+      
+      console.log('✅ cta-link has valid edit URL:', href);
+    });
+
+    it('should have both button and cta-link with same href', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      fetchStub.resolves(mockFreeResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const button = testBlock.querySelector('.button-container .button');
+      const ctaLink = testBlock.querySelector('.button-container .cta-link');
+      
+      expect(button).to.exist;
+      expect(ctaLink).to.exist;
+      
+      const buttonHref = button?.getAttribute('href');
+      const linkHref = ctaLink?.getAttribute('href');
+      
+      expect(buttonHref).to.equal(linkHref);
+      
+      console.log('✅ Both button and cta-link point to same URL');
+    });
+
+    it('should have proper aria-label on cta-link', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      fetchStub.resolves(mockFreeResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const ctaLink = testBlock.querySelector('.cta-link');
+      const ariaLabel = ctaLink?.getAttribute('aria-label');
+      
+      expect(ariaLabel).to.exist;
+      expect(ariaLabel).to.include('Edit this template');
+      
+      console.log('✅ cta-link has accessible aria-label');
+    });
+
+    it('should have tabindex="-1" on cta-link for keyboard navigation', async () => {
+      document.body.innerHTML = body;
+      const testBlock = document.querySelector('.template-x-promo');
+
+      fetchStub.resolves(mockFreeResponse);
+      await decorate(testBlock);
+      await new Promise((resolve) => { setTimeout(resolve, 100); });
+
+      const ctaLink = testBlock.querySelector('.cta-link');
+      const tabindex = ctaLink?.getAttribute('tabindex');
+      
+      expect(tabindex).to.equal('-1');
+      
+      console.log('✅ cta-link has tabindex="-1" to avoid tab trap');
+    });
+  });
 });
