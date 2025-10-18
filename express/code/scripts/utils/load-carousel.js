@@ -12,3 +12,4 @@ function loadCarousel(selector, parent, options) {
 }
 
 export default loadCarousel;
+

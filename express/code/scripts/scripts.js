@@ -356,13 +356,6 @@ function decorateHeroLCP(loadStyle, config, createTag) {
 
   buildAutoBlocks();
   decorateHeroLCP(loadStyle, config, createTag, getMetadata);
-
-  // Defer personalization (Target/AJO) to post-LCP for better performance
-  const targetMeta = createTag('meta', { name: 'target', content: 'postlcp' });
-  document.head.append(targetMeta);
-  const ajoMeta = createTag('meta', { name: 'ajo', content: 'postlcp' });
-  document.head.append(ajoMeta);
-
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('martech') !== 'off' && getMetadata('martech') !== 'off') {
     import('./instrument.js').then((mod) => { mod.default(); });

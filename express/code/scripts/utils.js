@@ -477,7 +477,7 @@ export function hideQuickActionsOnDevices(userAgent) {
 export function preDecorateSections(area) {
   if (!area) return;
   const selector = area === document ? 'body > main > div' : ':scope > div';
-
+  
   // SYNCHRONOUS: Critical DOM mutations (prevent FOUC, CLS, broken links)
   area.querySelectorAll(selector).forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
