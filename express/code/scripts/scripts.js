@@ -373,10 +373,12 @@ const listenAlloy = () => {
     await replaceContent(document.querySelector('main'));
   }
 
-  // Remove Express-specific ax- prefixed icons before Milo's decorateArea runs
-  // These icons are handled by Express's own icon system (getIconElementDeprecated)
-  // This prevents 24 wasted 404 requests to federal icon endpoints
-  document.querySelectorAll('span.icon[class*="icon-ax-"]').forEach((icon) => {
+  // Remove icon class from ALL icons before Milo's decorateArea runs
+  // Express has its own icon system (getIconElementDeprecated) with 447 icons
+  // in /express/code/icons/. Milo's icon loader tries to fetch these from
+  // federal server, causing wasted 404 requests. This prevents ALL unnecessary
+  // federal icon requests (40+ 404s before LCP)
+  document.querySelectorAll('span.icon').forEach((icon) => {
     icon.classList.remove('icon');
     icon.classList.add('express-icon'); // Mark as Express-handled
   });
