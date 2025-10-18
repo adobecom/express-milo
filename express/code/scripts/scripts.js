@@ -312,8 +312,7 @@ function decorateHeroLCP(loadStyle, config, createTag) {
 (async function loadPage() {
   if (window.isTestEnv) return;
   const {
-    processSection,
-    checkForPageMods,
+    loadArea,
     loadStyle,
     setConfig,
     createTag,
@@ -372,23 +371,7 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     }
   });
 
-  // Custom parallel section loading for better performance
-  // Load LCP section first, then parallelize remaining sections
-  const main = document.querySelector('main');
-  if (main) {
-    await checkForPageMods(main);
-    const sections = Array.from(main.querySelectorAll(':scope > div'));
-    if (sections.length > 0) {
-      // Priority 1: Load LCP section first
-      await processSection(sections[0]);
-      // Priority 2: Load remaining sections in parallel
-      if (sections.length > 1) {
-        await Promise.all(
-          sections.slice(1).map((section) => processSection(section)),
-        );
-      }
-    }
-  }
+  await loadArea();
 
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
