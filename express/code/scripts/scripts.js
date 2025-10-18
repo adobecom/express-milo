@@ -376,7 +376,10 @@ function decorateHeroLCP(loadStyle, config, createTag) {
   const { fixIcons } = await import('./utils.js');
   document.querySelectorAll('.section>.text').forEach((block) => fixIcons(block));
 
-  import('./express-delayed.js').then((mod) => {
-    mod.default();
-  });
+  // Phase D: Defer non-critical work 3+ seconds after page load
+  setTimeout(() => {
+    import('./express-delayed.js').then((mod) => {
+      mod.default();
+    });
+  }, 3000);
 }());
