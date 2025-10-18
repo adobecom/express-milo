@@ -315,7 +315,6 @@ function decorateHeroLCP(loadStyle, config, createTag) {
     loadArea,
     loadStyle,
     setConfig,
-    loadLana,
     createTag,
   } = await import(`${miloLibs}/utils/utils.js`);
 
@@ -346,7 +345,7 @@ function decorateHeroLCP(loadStyle, config, createTag) {
   // Decorate the page with site specific needs.
   decorateArea();
 
-  loadLana({ clientId: 'express' });
+  // loadLana({ clientId: 'express' });
 
   // prevent milo gnav from loading
   const headerMeta = createTag('meta', { name: 'custom-header', content: 'on' });
