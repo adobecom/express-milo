@@ -24,7 +24,8 @@ import {
 const STYLES = ['/express/code/styles/styles.css'];
 
 // Use 'https://milo.adobe.com/libs' if you cannot map '/libs' to milo's origin.
-const LIBS = '/libs';
+// Temporarily using Milo branch with ax- icon fix to test performance improvement
+const LIBS = 'https://filter-express-ax-icons--milo--adobecom.aem.live/libs';
 const miloLibs = setLibs(LIBS);
 let jarvisImmediatelyVisible = false;
 const jarvisVisibleMeta = getMetadata('jarvis-immediately-visible')?.toLowerCase();
@@ -371,6 +372,15 @@ const listenAlloy = () => {
     const { default: replaceContent } = await import('./utils/content-replace.js');
     await replaceContent(document.querySelector('main'));
   }
+
+  // Remove Express-specific ax- prefixed icons before Milo's decorateArea runs
+  // These icons are handled by Express's own icon system (getIconElementDeprecated)
+  // This prevents 24 wasted 404 requests to federal icon endpoints
+  document.querySelectorAll('span.icon[class*="icon-ax-"]').forEach((icon) => {
+    icon.classList.remove('icon');
+    icon.classList.add('express-icon'); // Mark as Express-handled
+  });
+
   // Decorate the page with site specific needs.
   decorateArea();
 
