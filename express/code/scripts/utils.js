@@ -477,6 +477,8 @@ export function hideQuickActionsOnDevices(userAgent) {
 export function preDecorateSections(area) {
   if (!area) return;
   const selector = area === document ? 'body > main > div' : ':scope > div';
+  
+  // SYNCHRONOUS: Critical DOM mutations (prevent FOUC, CLS, broken links)
   area.querySelectorAll(selector).forEach((section) => {
     const sectionMetaBlock = section.querySelector('div.section-metadata');
     if (sectionMetaBlock) {
@@ -506,52 +508,55 @@ export function preDecorateSections(area) {
 
   area.querySelectorAll(`${selector} > .billing-radio, ${selector} > .split-action`).forEach((el) => el.remove());
 
-  // floating CTA vs page CTA with same text or link logics
-  if (['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) {
+  // DEFERRED: Floating CTA logic (heavy URL parsing, cosmetic only)
+  requestIdleCallback(() => {
+    if (!['yes', 'y', 'true', 'on'].includes(getMetadata('show-floating-cta')?.toLowerCase())) return;
+
     const { device } = document.body.dataset;
     const textToTarget = getMetadata(`${device}-floating-cta-text`)?.trim() || getMetadata('main-cta-text')?.trim();
     const linkToTarget = getMetadata(`${device}-floating-cta-link`)?.trim() || getMetadata('main-cta-link')?.trim();
-    if (textToTarget || linkToTarget) {
-      let linkToTargetURL = null;
-      let targetPathname = null;
-      let targetHash = null;
-      try {
-        linkToTargetURL = new URL(linkToTarget);
-        targetPathname = linkToTargetURL.pathname;
-        targetHash = linkToTargetURL.hash;
-      } catch (err) {
-        window.lana?.log(err);
-      }
-      const sameUrlCTAs = Array.from(area.querySelectorAll('a:any-link'))
-        .filter((a) => {
-          try {
-            // Early return: skip floating-button links (cheap DOM check first)
-            if (a.classList.contains('floating-cta-ignore')) return false;
-            const closestBlock = a.closest('.block');
-            if (closestBlock?.classList.contains('floating-button')) return false;
+    if (!textToTarget && !linkToTarget) return;
 
-            // Try cheap text match first (avoid URL parsing)
-            const trimmedText = a.textContent.trim();
-            if (textToTarget && trimmedText === textToTarget) return true;
-
-            // Only create URL if text didn't match and we have a target URL
-            if (!linkToTargetURL) return false;
-            const currURL = new URL(a.href);
-            const samePathname = currURL.pathname === targetPathname;
-            const sameHash = currURL.hash === targetHash;
-
-            return samePathname && sameHash;
-          } catch (err) {
-            window.lana?.log(err);
-            return false;
-          }
-        });
-
-      sameUrlCTAs.forEach((cta) => {
-        cta.classList.add('same-fcta');
-      });
+    let linkToTargetURL = null;
+    let targetPathname = null;
+    let targetHash = null;
+    try {
+      linkToTargetURL = new URL(linkToTarget);
+      targetPathname = linkToTargetURL.pathname;
+      targetHash = linkToTargetURL.hash;
+    } catch (err) {
+      window.lana?.log(err);
     }
-  }
+
+    const sameUrlCTAs = Array.from(area.querySelectorAll('a:any-link'))
+      .filter((a) => {
+        try {
+          // Early return: skip floating-button links (cheap DOM check first)
+          if (a.classList.contains('floating-cta-ignore')) return false;
+          const closestBlock = a.closest('.block');
+          if (closestBlock?.classList.contains('floating-button')) return false;
+
+          // Try cheap text match first (avoid URL parsing)
+          const trimmedText = a.textContent.trim();
+          if (textToTarget && trimmedText === textToTarget) return true;
+
+          // Only create URL if text didn't match and we have a target URL
+          if (!linkToTargetURL) return false;
+          const currURL = new URL(a.href);
+          const samePathname = currURL.pathname === targetPathname;
+          const sameHash = currURL.hash === targetHash;
+
+          return samePathname && sameHash;
+        } catch (err) {
+          window.lana?.log(err);
+          return false;
+        }
+      });
+
+    sameUrlCTAs.forEach((cta) => {
+      cta.classList.add('same-fcta');
+    });
+  });
 }
 
 function renameConflictingBlocks(area, selector) {
