@@ -513,23 +513,34 @@ export function preDecorateSections(area) {
     const linkToTarget = getMetadata(`${device}-floating-cta-link`)?.trim() || getMetadata('main-cta-link')?.trim();
     if (textToTarget || linkToTarget) {
       let linkToTargetURL = null;
+      let targetPathname = null;
+      let targetHash = null;
       try {
         linkToTargetURL = new URL(linkToTarget);
+        targetPathname = linkToTargetURL.pathname;
+        targetHash = linkToTargetURL.hash;
       } catch (err) {
         window.lana?.log(err);
       }
       const sameUrlCTAs = Array.from(area.querySelectorAll('a:any-link'))
         .filter((a) => {
           try {
-            const currURL = new URL(a.href);
-            const sameText = a.textContent.trim() === textToTarget;
-            const samePathname = currURL.pathname === linkToTargetURL?.pathname;
-            const sameHash = currURL.hash === linkToTargetURL?.hash;
-            const isNotInFloatingCta = !a.closest('.block')?.classList.contains('floating-button');
-            const notFloatingCtaIgnore = !a.classList.contains('floating-cta-ignore');
+            // Early return: skip floating-button links (cheap DOM check first)
+            if (a.classList.contains('floating-cta-ignore')) return false;
+            const closestBlock = a.closest('.block');
+            if (closestBlock?.classList.contains('floating-button')) return false;
 
-            return (sameText || (samePathname && sameHash))
-              && isNotInFloatingCta && notFloatingCtaIgnore;
+            // Try cheap text match first (avoid URL parsing)
+            const trimmedText = a.textContent.trim();
+            if (textToTarget && trimmedText === textToTarget) return true;
+
+            // Only create URL if text didn't match and we have a target URL
+            if (!linkToTargetURL) return false;
+            const currURL = new URL(a.href);
+            const samePathname = currURL.pathname === targetPathname;
+            const sameHash = currURL.hash === targetHash;
+
+            return samePathname && sameHash;
           } catch (err) {
             window.lana?.log(err);
             return false;
