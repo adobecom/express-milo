@@ -53,6 +53,16 @@
   --line-height-1400: 64px;
   --line-height-1500: 72px;
   --line-height-1600: 82px;
+  --grid-max-width: 599px;
+  --container-max-width: 599px;
+  --container-padding-side: var(--figma-spacing-300);
+  --grid-gutter: var(--figma-spacing-100);
+  --device-min-width: 320px;
+  --device-max-width: 599px;
+  --figma-section-padding-small: var(--figma-spacing-300);
+  --figma-section-padding-medium: var(--figma-spacing-400);
+  --figma-section-padding-large: var(--figma-spacing-500);
+  --figma-section-padding-x-large: var(--figma-spacing-600);
 }
 
 .pdpx-global-container {
@@ -66,9 +76,15 @@
 }
 .pdpx-product-info-section-wrapper-container {
   display: contents;
+  overflow-y: scroll;
 }
 .pdpx-product-info-heading-section-container {
+  display: flex;
+  flex-direction: column;
   order: 1;
+  gap: var(--figma-spacing-100);
+  align-items: baseline;
+  margin-bottom: var(--figma-spacing-200);
 }
 .pdpx-product-images-container {
   order: 2;
@@ -79,13 +95,6 @@
 .pdpx-product-title {
   font-size: 28px;
 }
-.pdpx-product-info-heading-section-container {
-  display: flex;
-  gap: var(--figma-spacing-100);
-  align-items: baseline;
-  margin-bottom: var(--figma-spacing-400);
-}
-
 .pdpx-price-info-row {
   display: flex;
   align-items: baseline;
@@ -170,7 +179,6 @@
 
 .pdpx-product-info-container {
   height: 70vh;
-  overflow-y: scroll;
 }
 
 .pdpx-checkout-button {
@@ -376,24 +384,6 @@
 .pdpx-mini-pill-image-container.selected {
   border: 1px solid #5258e4;
 }
-/*MOBILE*/
-@media (min-width: 320px) {
-  .pdp-x-test-2 {
-    --grid-max-width: 599px;
-    --container-max-width: 599px;
-    --container-padding-side: var(--figma-spacing-300);
-    --grid-gutter: var(--figma-spacing-100);
-    --device-min-width: 320px;
-    --device-max-width: 599px;
-    --figma-section-padding-small: var(--figma-spacing-300);
-    --figma-section-padding-medium: var(--figma-spacing-400);
-    --figma-section-padding-large: var(--figma-spacing-500);
-    --figma-section-padding-x-large: var(--figma-spacing-600);
-  }
-  .pdpx-product-info-heading-section-container {
-    flex-direction: column;
-  }
-}
 /*TABLET*/
 @media (min-width: 600px) {
   .pdp-x-test-2 {
@@ -445,6 +435,7 @@
   }
   .pdpx-product-info-heading-section-container {
     flex-direction: row;
+    margin-bottom: var(--figma-spacing-400);
     gap: var(--figma-spacing-400);
     .pdpx-price-info-container {
       align-items: flex-end;
