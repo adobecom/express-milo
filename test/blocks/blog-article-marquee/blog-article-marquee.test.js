@@ -10,6 +10,7 @@ const [, { default: decorate }] = await Promise.all([
 ]);
 
 const base = await readFile({ path: './mocks/base.html' });
+const multipleProducts = await readFile({ path: './mocks/multiple-products.html' });
 
 describe('Blog Article Marquee block', () => {
   beforeEach(() => {
@@ -93,5 +94,30 @@ describe('Blog Article Marquee block', () => {
     const mediaImg = block.querySelector('.blog-article-marquee-media img');
     expect(mediaImg?.getAttribute('loading')).to.equal('eager');
     expect(mediaImg?.getAttribute('fetchpriority')).to.equal('high');
+  });
+
+  it('collapses extra product rows and maintains highlight placement', async () => {
+    document.body.innerHTML = multipleProducts;
+
+    const block = document.getElementById('blog-article-marquee-block');
+    await decorate(block);
+
+    const inner = block.querySelector('.blog-article-marquee-inner');
+    expect(inner).to.exist;
+    expect([...inner.children].filter((child) => child.tagName === 'DIV').length).to.equal(1);
+
+    const highlight = block.querySelector('.blog-article-marquee-products');
+    expect(highlight).to.exist;
+
+    const productNames = [...highlight.querySelectorAll('.blog-article-marquee-product-name')]
+      .map((heading) => heading.textContent.trim());
+    expect(productNames).to.deep.equal(['Adobe Express']);
+
+    const buttonContainer = block.querySelector('.blog-article-marquee-content .button-container');
+    expect(buttonContainer).to.exist;
+    expect(highlight.nextElementSibling).to.equal(buttonContainer);
+
+    const removedProduct = block.querySelector('.blog-article-marquee-inner h2:nth-of-type(2)');
+    expect(removedProduct).to.not.exist;
   });
 });
