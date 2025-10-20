@@ -5,14 +5,11 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 import sinon from 'sinon';
 
-const [utilsModule, , blockModule] = await Promise.all([
-  import('../../../express/code/scripts/utils.js'),
+const imports = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
   import('../../../express/code/blocks/pricing-footer/pricing-footer.js'),
 ]);
-const { setLibs } = utilsModule;
-const { default: decorate } = blockModule;
-const libsPath = '/test/blocks/pricing-footer/mocks/libs';
+const { default: decorate } = imports[1];
 
 const body = await readFile({ path: './mocks/body.html' });
 
@@ -32,7 +29,6 @@ describe('Pricing Footer', () => {
   beforeEach(() => {
     clock = sinon.useFakeTimers();
     matchMediaResult = false;
-    setLibs(libsPath, { hostname: 'www.adobe.com', search: '' });
     document.body.innerHTML = body;
     block = document.querySelector('.pricing-footer');
 
@@ -114,10 +110,7 @@ describe('Pricing Footer', () => {
     expect(block.classList.contains('ax-grid-container')).to.be.true;
     expect(block.classList.contains('small-gap')).to.be.true;
     expect(columns.length).to.equal(2);
-    expect(columns[0].textContent.trim()).to.contain('Primary footer content');
-    const cta = columns[0].querySelector('a.con-button');
-    expect(cta).to.exist;
-    expect(cta.closest('.button-container')).to.exist;
+    expect(columns[0].textContent.trim()).to.equal('Primary footer content');
     expect(columns[1].textContent.trim()).to.equal('Secondary footer content');
   });
 

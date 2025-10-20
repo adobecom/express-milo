@@ -1,18 +1,3 @@
-import { getLibs } from '../../scripts/utils.js';
-
-let decorateButtonsFn;
-
-async function decorateCtas(el) {
-  const libsBase = getLibs?.();
-  if (!libsBase) return;
-
-  if (!decorateButtonsFn) {
-    ({ decorateButtons: decorateButtonsFn } = await import(`${libsBase}/utils/decorate.js`));
-  }
-
-  decorateButtonsFn?.(el);
-}
-
 // Configuration constants
 const CONFIG = {
   DEFAULT_GAP: 16,
@@ -112,12 +97,12 @@ function getMerchCardWidth(el) {
 }
 
 /**
- * Initializes the pricing-footer block by restructuring DOM, decorating CTAs,
+ * Initializes the pricing-footer block by restructuring DOM
  * and setting up responsive width calculation.
  *
  * @param {HTMLElement} el - The pricing-footer block element
  */
-export default async function init(el) {
+export default function init(el) {
   const firstRow = el.querySelector(':scope > div');
   if (!firstRow) return;
 
@@ -130,7 +115,6 @@ export default async function init(el) {
     .forEach((column) => {
       el.append(column);
     });
-  await decorateCtas(el);
 
   // Debounced calculation function for better performance
   const runWidthCalculation = debounce(
