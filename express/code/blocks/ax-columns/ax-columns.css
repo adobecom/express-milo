@@ -1769,6 +1769,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   line-height: var(--heading-line-height);
 }
 
+
 .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns,
 .section.ax-max-entitled:has(.ax-columns) .ax-columns {
   padding: 0px 28px;
