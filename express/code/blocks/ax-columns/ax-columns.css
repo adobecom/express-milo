@@ -1769,7 +1769,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   line-height: var(--heading-line-height);
 }
 
-.section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
+.section.ax-max-entitled:has(.ax-columns) .ax-columns {
   padding: 0px 28px;
   margin: auto;
   max-width: 599px;
@@ -1779,7 +1779,7 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   margin-top: var(--spacing-500);
 }
 
-.section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns p {
+.section.ax-max-entitled:has(.ax-columns) .ax-columns p {
   font-size: 18px;
   font-weight: 400;
   line-height: 130%;
@@ -1790,25 +1790,25 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
     margin-top: var(--spacing-600);
   }
 
-  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .column {
+  .section.ax-max-entitled:has(.ax-columns) .column {
     width: 50%;
   }
 
-  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .column:not(.column-picture) {
+  .section.ax-max-entitled:has(.ax-columns) .column:not(.column-picture) {
     height: fit-content;
     margin: auto;
   }
 
-  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns>div {
+  .section.ax-max-entitled:has(.ax-columns) .ax-columns>div {
     flex-direction: row;
     gap: var(--spacing-700);
   }
 
-  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns .column-picture {
+  .section.ax-max-entitled:has(.ax-columns) .ax-columns .column-picture {
     order: 0;
   }
 
-  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
+  .section.ax-max-entitled:has(.ax-columns) .ax-columns {
     display: flex;
     min-width: 600px;
     max-width: 1199px;
@@ -1825,13 +1825,13 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
 }
 
 @media (min-width: 1200px) {
-  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .ax-columns {
+  .section.ax-max-entitled:has(.ax-columns) .ax-columns {
     padding: var(--spacing-900) 0px;
     max-width: unset;
     gap: var(--spacing-900);
   }
 
-  .section:not(:first-child).ax-max-entitled:has(.ax-columns) .column {
+  .section.ax-max-entitled:has(.ax-columns) .column {
     width: 50%;
   }
 
