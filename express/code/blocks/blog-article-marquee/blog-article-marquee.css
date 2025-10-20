@@ -82,11 +82,15 @@
 
 .blog-article-marquee .blog-article-marquee-media picture,
 .blog-article-marquee .blog-article-marquee-media img {
-  width: 100%;
+ 
   max-width: 560px;
   border-radius: 20px;
   height: auto;
   object-fit: contain;
+
+  margin-left: -16px;
+  margin-right: -16px;
+  width: calc(100% + 32px);
 }
 
 .blog-article-marquee .blog-article-marquee-products {
@@ -165,6 +169,10 @@
     max-width: 640px;
     height: auto;
     object-fit: contain;
+
+    margin-left: 0;  
+    margin-right: 0;
+    width: 100%
   }
 }
 
