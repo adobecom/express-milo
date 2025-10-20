@@ -1,6 +1,14 @@
 import fetchAPIData from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
 
+export function toggleDrawer() {
+  const curtain = document.querySelector('.pdp-curtain');
+  const drawer = document.querySelector('.drawer');
+  document.body.classList.toggle('disable-scroll');
+  curtain.classList.toggle('hidden');
+  drawer.classList.toggle('hidden');
+}
+
 function formatProductOptionsToAPIParameters(formDataObject) {
   const parameters = {};
   for (const [key, value] of Object.entries(formDataObject)) {

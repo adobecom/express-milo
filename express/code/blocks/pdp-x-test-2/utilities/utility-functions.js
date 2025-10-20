@@ -49,7 +49,34 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
+function getUsersTopLevelDomain() {
+  const topLevelDomain = window.location.hostname.split('.').pop();
+  return topLevelDomain;
+}
+
 export function formatPriceZazzle(price, differential = false, short = false) {
+  const topLevelDomain = getUsersTopLevelDomain();
+  let countryCode;
+  let currencyCode;
+  let priceDifferentialOperator;
+  if (topLevelDomain === 'uk') {
+    countryCode = 'en-GB';
+    currencyCode = 'GBP';
+  } else {
+    countryCode = 'en-US';
+    currencyCode = 'USD';
+  }
+  const localizedPrice = new Intl.NumberFormat(countryCode, { style: 'currency', currency: currencyCode }).format(price);
+  if (differential) {
+    priceDifferentialOperator = price >= 0 ? '+' : '-';
+  } else {
+    priceDifferentialOperator = '';
+  }
+  const formattedPrice = priceDifferentialOperator + localizedPrice;
+  return formattedPrice;
+}
+
+export function formatPriceZazzle_old(price, differential = false, short = false) {
   const region = 'en-US';
   let priceDifferentialOperator;
   const priceNumberFormatted = parseFloat(price).toLocaleString(region, {
@@ -101,8 +128,6 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
 
 async function addSideQuantityOptions(productDetails) {
   const sideQuantityOptions = [];
-  // get renditions for product thumbnails
-  // check the product type, add different options for each product type
   const productRenditions = await fetchAPIData(productDetails.product.id, {}, 'getproductrenditions');
   if (productDetails.product.productType === 'zazzle_businesscard') {
     sideQuantityOptions.push({
