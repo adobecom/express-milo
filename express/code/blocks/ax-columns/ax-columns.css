@@ -1860,4 +1860,5 @@ main .ax-columns.highlight.dark .columns-video:last-of-type {
   .section.ax-max-entitled:has(.ax-columns) .ax-columns:not(.fullsize):not(.marquee) .column:not(.column-picture):not(.hero-animation-overlay):not(.text) {
     padding: 0px;
   }
+  
 }
