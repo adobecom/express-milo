@@ -11,6 +11,7 @@ import createDrawer from './createComponents/createDrawer.js';
 let createTag;
 
 async function createProductInfoContainer(productDetails, productDescriptions, drawer) {
+  const productInfoSectionWrapperContainer = createTag('div', { class: 'pdpx-product-info-section-wrapper-container' });
   const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper' });
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
   const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
@@ -23,7 +24,9 @@ async function createProductInfoContainer(productDetails, productDescriptions, d
   const checkoutButton = createCheckoutButton();
   productInfoSectionWrapper.appendChild(checkoutButton);
   productInfoSectionWrapper.appendChild(drawer);
-  return productInfoSectionWrapper;
+  productInfoSectionWrapperContainer.appendChild(productInfoHeadingSection);
+  productInfoSectionWrapperContainer.appendChild(productInfoSectionWrapper);
+  return productInfoSectionWrapperContainer;
 }
 
 async function createGlobalContainer(block, productDetails, productDescriptions, drawer) {
@@ -31,9 +34,9 @@ async function createGlobalContainer(block, productDetails, productDescriptions,
   const productImagesContainer = await createProductImagesContainer(productDetails);
   const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions, drawer);
   // const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
+  // globalContainer.appendChild(productInfoHeadingSection);
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
-  // globalContainer.appendChild(productInfoHeadingSection);
   block.appendChild(globalContainer);
 }
 
@@ -50,10 +53,10 @@ export default async function decorate(block) {
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
   const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
   const productDescriptions = await extractProductDescriptionsFromBlock(block);
-  block.innerHTML = '';
   // temporary code for drawer integration
   // TODO: lazy load drawer component for performance
   const { curtain, drawer } = await createDrawer(block);
+  block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions, drawer);
   document.body.append(curtain);
 }
