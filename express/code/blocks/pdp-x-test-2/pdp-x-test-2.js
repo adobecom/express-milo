@@ -52,6 +52,7 @@ export default async function decorate(block) {
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
   const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
+  debugger;
   const productDescriptions = await extractProductDescriptionsFromBlock(block);
   // temporary code for drawer integration
   // TODO: lazy load drawer component for performance

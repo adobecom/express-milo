@@ -1,4 +1,4 @@
-function formatUrlForEnvironment(url) {
+function formatUrlForEnvironment(url, endpoint, productId, parametersString) {
   let topLevelDomain;
   // FOR DEVELOPMENT PURPOSES. NEED A BETTER LONG TERM STRATEGY TO IDENFITY TOP LEVEL DOMAINS
   const topLevelDomainSuffix = window.location.hostname.split('.').pop();
@@ -26,7 +26,7 @@ export default async function fetchAPIData(productId, parameters, endpoint) {
   }
   url = `https://www.zazzle.co.uk/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
   try {
-    apiDataFetch = await fetch(formatUrlForEnvironment(url));
+    apiDataFetch = await fetch(formatUrlForEnvironment(url, endpoint, productId, parametersString));
   } catch (error) {
     console.info(error);
   }
