@@ -31,7 +31,7 @@ async function createProductInfoContainer(productDetails, productDescriptions, d
 
 async function createGlobalContainer(block, productDetails, productDescriptions, drawer) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
-  const productImagesContainer = await createProductImagesContainer(productDetails);
+  const productImagesContainer = await createProductImagesContainer(productDetails.realviews, productDetails.heroImage);
   const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions, drawer);
   // const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   // globalContainer.appendChild(productInfoHeadingSection);
@@ -46,12 +46,13 @@ export default async function decorate(block) {
   const productDetails = await fetchAPIData(productId, null, 'getproduct');
   const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
   const productReviews = await fetchAPIData(productId, null, 'getreviews');
+  const productRenditions = await fetchAPIData(productId, null, 'getproductrenditions');
   const sampleShippingParameters = {
     zip: '94065',
     qty: 1,
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
-  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
+  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates, productRenditions);
   const productDescriptions = await extractProductDescriptionsFromBlock(block);
   // temporary code for drawer integration
   // TODO: lazy load drawer component for performance
