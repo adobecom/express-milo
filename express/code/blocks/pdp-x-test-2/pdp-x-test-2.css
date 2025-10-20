@@ -180,6 +180,7 @@
 
 .pdpx-product-info-container {
   height: 70vh;
+  overflow-y: scroll;
 }
 
 .pdpx-checkout-button {
