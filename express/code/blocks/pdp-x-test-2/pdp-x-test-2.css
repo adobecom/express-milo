@@ -114,6 +114,7 @@
 }
 .pdpx-compare-price-info-icon {
   width: 12px;
+  cursor: pointer;
 }
 .pdpx-savings-text {
   font-size: 12px;
