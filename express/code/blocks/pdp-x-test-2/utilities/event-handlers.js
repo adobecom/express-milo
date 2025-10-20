@@ -1,5 +1,6 @@
 import fetchAPIData from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
+import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 
 export function toggleDrawer() {
   const curtain = document.querySelector('.pdp-curtain');
@@ -50,11 +51,9 @@ async function updateProductPrice(productId, parameters) {
 async function updateProductImages(productId, parameters) {
   const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
   const heroImg = document.getElementById('pdpx-product-hero-image');
-  heroImg.src = renditions.realviewUrls[heroImg.dataset.imageType];
-  const carouselImages = document.getElementsByClassName('pdpx-image-thumbnail-carousel-item-image');
-  for (let i = 0; i < carouselImages.length; i += 1) {
-    carouselImages[i].src = renditions.realviewUrls[carouselImages[i].dataset.imageType];
-  }
+  const newHeroImgSrc = renditions.realviewUrls[heroImg.dataset.imageType] || renditions.realviewUrls.Front || Object.keys(renditions.realviewUrls)[0];
+  const newProductImagesContainer = await createProductImagesContainer(renditions.realviewUrls, newHeroImgSrc, heroImg.dataset.imageType);
+  document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
 }
 
 async function updateProductDeliveryEstimate(productId, parameters) {
@@ -68,6 +67,8 @@ export default async function updateAllDynamicElements(productId) {
   const formDataObject = Object.fromEntries(formData.entries());
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
   await updateProductPrice(productId, parameters);
+
   await updateProductImages(productId, parameters);
+
   await updateProductDeliveryEstimate(productId, parameters);
 }

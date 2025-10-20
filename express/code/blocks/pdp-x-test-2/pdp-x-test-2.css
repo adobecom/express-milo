@@ -168,16 +168,19 @@
   gap: var(--figma-spacing-100);
 }
 .pdpx-image-thumbnail-carousel-item {
+  border-radius: 8px;
+  overflow: hidden;
   flex-shrink: 0;
   width: 76px;
   height: 76px;
-  border: 0px;
+  border: 1px solid transparent;
   background-color: transparent;
   padding: 0;
   cursor: pointer;
 }
-.pdpx-image-thumbnail-carousel-item-image {
-  border-radius: 8px;
+
+.pdpx-image-thumbnail-carousel-item.selected {
+  border: 1px solid #5258e4;
 }
 
 .pdpx-product-info-container {
@@ -422,7 +425,6 @@
   }
   .pdpx-product-images-container {
     order: 1;
-    flex: 0 0 calc(50% - 12px);
   }
   .pdpx-product-info-section-wrapper-container {
     display: flex;
@@ -436,6 +438,10 @@
   }
   .pdpx-product-info-section-wrapper {
     order: 2;
+  }
+  .pdpx-product-images-container,
+  .pdpx-product-info-section-wrapper-container {
+    width: calc(50% - 12px);
   }
 }
 /*DESKTOP*/

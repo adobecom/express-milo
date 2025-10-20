@@ -146,7 +146,7 @@ async function addSideQuantityOptions(productDetails) {
   return sideQuantityOptions;
 }
 
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates) {
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates, productRenditions) {
   const normalizedProductDetails = {
     id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
@@ -157,7 +157,8 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     deliveryEstimateStringText: 'Order today and get it by',
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
-    realviews: productDetails.product.realviews,
+    // realviews: productDetails.product.realviews,
+    realviews: productRenditions.realviewUrls,
     productType: productDetails.product.productType,
     quantities: productDetails.product.quantities,
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
