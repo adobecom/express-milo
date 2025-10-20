@@ -1,4 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
+import { toggleDrawer } from '../utilities/event-handlers.js';
 
 let createTag;
 let loadStyle;
@@ -74,18 +75,12 @@ export default async function createDrawer({
   const curtain = createTag('div', { class: 'pdp-curtain hidden' });
   curtain.setAttribute('daa-ll', 'pdp-x-drawer-curtainClose');
   const drawer = createTag('div', { class: 'drawer hidden' });
-  const toggle = () => {
-    document.body.classList.toggle('disable-scroll');
-    curtain.classList.toggle('hidden');
-    drawer.classList.toggle('hidden');
-    // drawer.setAttribute('aria-hidden', drawer.classList.contains('hidden'));
-  };
-  curtain.addEventListener('click', toggle);
+  curtain.addEventListener('click', toggleDrawer);
   drawer.append(
-    createDrawerHead(drawerLabel, toggle),
+    createDrawerHead(drawerLabel, toggleDrawer),
     createDrawerBody(data[selectedIndex]),
     createDrawerFoot(data[selectedIndex]),
   );
   await styleLoaded;
-  return { curtain, drawer, toggle };
+  return { curtain, drawer };
 }

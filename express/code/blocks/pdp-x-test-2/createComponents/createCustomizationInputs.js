@@ -1,5 +1,5 @@
 import { getLibs } from '../../../scripts/utils.js';
-import updateAllDynamicElements from '../utilities/event-handlers.js';
+import updateAllDynamicElements, { toggleDrawer } from '../utilities/event-handlers.js';
 
 let createTag;
 
@@ -69,7 +69,8 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabeLName);
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
   if (CTALinkText) {
-    const miniPillSelectorLabelCompareLink = createTag('a', { class: 'pdpx-pill-selector-label-compare-link' }, CTALinkText);
+    const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button' }, CTALinkText);
+    miniPillSelectorLabelCompareLink.addEventListener('click', toggleDrawer);
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
   miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);

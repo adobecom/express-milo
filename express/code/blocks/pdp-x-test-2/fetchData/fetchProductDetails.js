@@ -1,11 +1,18 @@
 function formatUrlForEnvironment(url) {
-  if (url.startsWith('/')) {
-    return url;
+  let topLevelDomain;
+  // FOR DEVELOPMENT PURPOSES. NEED A BETTER LONG TERM STRATEGY TO IDENFITY TOP LEVEL DOMAINS
+  const topLevelDomainSuffix = window.location.hostname.split('.').pop();
+  if (topLevelDomainSuffix === 'uk') {
+    topLevelDomain = 'co.uk';
+  } else {
+    // topLevelDomain = topLevelDomainSuffix;
+    topLevelDomain = '.co.uk';
   }
   if (window.location.hostname === 'localhost') {
     return `http://localhost:3001?url=${url}`;
   }
-  return url;
+  const URLFormatted = `https://www.zazzle${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
+  return URLFormatted;
 }
 
 export default async function fetchAPIData(productId, parameters, endpoint) {
@@ -17,12 +24,7 @@ export default async function fetchAPIData(productId, parameters, endpoint) {
   } else {
     parametersString = '';
   }
-  url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
-  /*
-  if (endpoint === 'getshippingestimates') {
-    url = '/express/code/blocks/pdp-x-test-2/sample_data/getShippingEstimate.json';
-  }
-  */
+  url = `https://www.zazzle.co.uk/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
   try {
     apiDataFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
