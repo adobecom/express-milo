@@ -10,7 +10,7 @@ import createDrawer from './createComponents/createDrawer.js';
 
 let createTag;
 
-async function createProductInfoContainer(productDetails, productDescriptions) {
+async function createProductInfoContainer(productDetails, productDescriptions, drawer) {
   const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper' });
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
   const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
@@ -22,13 +22,14 @@ async function createProductInfoContainer(productDetails, productDescriptions) {
   productInfoSectionWrapper.appendChild(productInfoContainer);
   const checkoutButton = createCheckoutButton();
   productInfoSectionWrapper.appendChild(checkoutButton);
+  productInfoSectionWrapper.appendChild(drawer);
   return productInfoSectionWrapper;
 }
 
-async function createGlobalContainer(block, productDetails, productDescriptions) {
+async function createGlobalContainer(block, productDetails, productDescriptions, drawer) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   const productImagesContainer = await createProductImagesContainer(productDetails);
-  const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions);
+  const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions, drawer);
   // const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
@@ -49,17 +50,10 @@ export default async function decorate(block) {
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
   const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates);
   const productDescriptions = await extractProductDescriptionsFromBlock(block);
-  console.log('productDetails');
-  console.log(productDetails);
   block.innerHTML = '';
-  await createGlobalContainer(block, productDetailsFormatted, productDescriptions);
-
   // temporary code for drawer integration
-  // TODO: lazy load for performance
-  const { curtain, drawer, toggle: toggleDrawer } = await createDrawer(block);
-  block.querySelector('.pdpx-product-info-section-wrapper')?.append(drawer);
+  // TODO: lazy load drawer component for performance
+  const { curtain, drawer } = await createDrawer(block);
+  await createGlobalContainer(block, productDetailsFormatted, productDescriptions, drawer);
   document.body.append(curtain);
-
-  // temporary entry
-  block.querySelector('.pdpx-pill-selector-label-compare-link')?.addEventListener('click', toggleDrawer);
 }

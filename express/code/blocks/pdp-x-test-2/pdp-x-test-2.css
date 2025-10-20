@@ -174,11 +174,12 @@ main .section .pdpx-global-container p {
   font-size: 12px;
   font-weight: 700;
   color: #05834e;
+  text-align: end;
 }
 .pdpx-price-info-container {
   display: flex;
   flex-direction: column;
-  /*align-items: flex-end;*/
+  align-items: flex-end;
 }
 .pdpx-product-hero-image {
   width: 100%;
