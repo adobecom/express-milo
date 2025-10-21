@@ -1,32 +1,119 @@
 import { getLibs } from '../../../scripts/utils.js';
+import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import BlockMediator from '../utilities/BlockMediator.js';
 
 let createTag;
 
 export default async function createProductDetailsSection(productDescriptions) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  
   const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section-container' });
   const productDetailsSectionTitleContainer = createTag('div', { class: 'pdpx-product-details-section-title-container' });
   const productDetailsSectionTitle = createTag('span', { class: 'pdpx-product-details-section-title' }, 'Product Details');
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
-  for (let i = 0; i < productDescriptions.length; i += 1) {
-    const productDetailsSectionItemContainer = createTag('div', { class: 'pdpx-product-details-section-item-container collapsed' });
-    const productDetailsSectionItemTitleContainer = createTag('span', { class: 'pdpx-product-details-section-item-title-container' });
-    const productDetailsSectionItemTitle = createTag('span', { class: 'pdpx-product-details-section-item-title' }, productDescriptions[i].title);
-    const productDetailsSectionItemIcon = createTag('div', { class: 'pdpx-product-details-section-item-icon' });
-    const productDetailsSectionItemDescription = createTag('span', { class: 'pdpx-product-details-section-item-description' }, productDescriptions[i].description);
-    productDetailsSectionItemTitleContainer.appendChild(productDetailsSectionItemTitle);
-    productDetailsSectionItemTitleContainer.appendChild(productDetailsSectionItemIcon);
-    productDetailsSectionItemContainer.appendChild(productDetailsSectionItemTitleContainer);
-    productDetailsSectionItemContainer.appendChild(productDetailsSectionItemDescription);
-    productDetailsSectionContainer.appendChild(productDetailsSectionItemContainer);
-    productDetailsSectionItemContainer.addEventListener('click', () => {
-      console.log('clicked');
-      // add a class to the productDetailsSectionItemContentContainer
-      productDetailsSectionItemContainer.classList.toggle('collapsed');
-      productDetailsSectionItemContainer.classList.toggle('expanded');
-    });
+  
+  // Track which item is currently expanded
+  let expandedItemIndex = -1;
+  
+  // Generate unique ID for this accordion instance
+  const accordionId = `pdpx-details-${Math.floor(Math.random() * 10000)}`;
+  
+  // Function to build accordion items
+  function buildAccordionItems(descriptions, keepExpandedIndex = true) {
+    // Remember which item was expanded before clearing
+    if (keepExpandedIndex) {
+      const existingItems = productDetailsSectionContainer.querySelectorAll('.pdpx-product-details-section-item-container');
+      existingItems.forEach((item, idx) => {
+        if (item.classList.contains('expanded')) {
+          expandedItemIndex = idx;
+        }
+      });
+    }
+    
+    // Clear existing items (keep title)
+    const existingItems = productDetailsSectionContainer.querySelectorAll('.pdpx-product-details-section-item-container');
+    existingItems.forEach((item) => item.remove());
+    
+    // Build new items
+    for (let i = 0; i < descriptions.length; i += 1) {
+      // If this was the expanded item, keep it expanded
+      const shouldExpand = keepExpandedIndex && i === expandedItemIndex;
+      
+      const productDetailsSectionItemContainer = createTag('div', { class: 'pdpx-product-details-section-item-container' });
+      
+      // Button (no heading wrapper)
+      const productDetailsSectionItemTitleContainer = createTag('button', {
+        type: 'button',
+        id: `${accordionId}-trigger-${i + 1}`,
+        class: 'accordion-trigger',
+        'aria-expanded': shouldExpand ? 'true' : 'false',
+        'aria-controls': `${accordionId}-content-${i + 1}`,
+      });
+      
+      productDetailsSectionItemTitleContainer.textContent = descriptions[i].title;
+      
+      const productDetailsSectionItemIcon = createTag('span', { class: 'accordion-icon' });
+      productDetailsSectionItemTitleContainer.appendChild(productDetailsSectionItemIcon);
+      
+      // Content (aria-hidden approach)
+      const productDetailsSectionItemDescription = createTag('div', {
+        'aria-labelledby': `${accordionId}-trigger-${i + 1}`,
+        id: `${accordionId}-content-${i + 1}`,
+        class: shouldExpand ? 'descr-details visible' : 'descr-details',
+        'aria-hidden': shouldExpand ? 'false' : 'true',
+      });
+      
+      // Wrap content in inner div
+      const contentInner = createTag('div');
+      contentInner.innerHTML = descriptions[i].description;
+      productDetailsSectionItemDescription.appendChild(contentInner);
+      
+      productDetailsSectionItemContainer.appendChild(productDetailsSectionItemTitleContainer);
+      productDetailsSectionItemContainer.appendChild(productDetailsSectionItemDescription);
+      productDetailsSectionContainer.appendChild(productDetailsSectionItemContainer);
+      
+      // Button click handler
+      productDetailsSectionItemTitleContainer.addEventListener('click', () => {
+        const isExpanded = productDetailsSectionItemTitleContainer.getAttribute('aria-expanded') === 'true';
+        
+        // Close all others
+        const allButtons = productDetailsSectionContainer.querySelectorAll('.accordion-trigger');
+        const allContents = productDetailsSectionContainer.querySelectorAll('.descr-details');
+        allButtons.forEach((btn, idx) => {
+          if (btn !== productDetailsSectionItemTitleContainer) {
+            btn.setAttribute('aria-expanded', 'false');
+            allContents[idx].setAttribute('aria-hidden', 'true');
+            allContents[idx].classList.remove('visible');
+          }
+        });
+        
+        // Toggle current
+        if (isExpanded) {
+          productDetailsSectionItemTitleContainer.setAttribute('aria-expanded', 'false');
+          productDetailsSectionItemDescription.setAttribute('aria-hidden', 'true');
+          productDetailsSectionItemDescription.classList.remove('visible');
+          expandedItemIndex = -1;
+        } else {
+          productDetailsSectionItemTitleContainer.setAttribute('aria-expanded', 'true');
+          productDetailsSectionItemDescription.setAttribute('aria-hidden', 'false');
+          productDetailsSectionItemDescription.classList.add('visible');
+          expandedItemIndex = i;
+        }
+      });
+    }
   }
+  
+  // Build initial items (all collapsed)
+  buildAccordionItems(productDescriptions, false);
+  
+  // Subscribe to product updates
+  BlockMediator.subscribe('product:updated', (data) => {
+    const { productDetails, formData } = data;
+    const updatedDescriptions = formatProductDescriptions(productDetails, formData);
+    // Rebuild and preserve expanded state
+    buildAccordionItems(updatedDescriptions, true);
+  });
 
   return productDetailsSectionContainer;
 }

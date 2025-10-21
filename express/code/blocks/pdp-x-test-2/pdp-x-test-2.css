@@ -394,49 +394,68 @@
   font-size: 16px;
   font-weight: 700;
 }
+/* Simplified accordion structure (no heading wrapper) */
 .pdpx-product-details-section-item-container {
-  border-bottom: 1px solid #686868;
-  padding: var(--figma-spacing-300);
-  cursor: pointer;
+  /* Container for button + content */
 }
-.pdpx-product-details-section-item-title-container {
+
+.accordion-trigger {
+  width: 100%;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-.pdpx-product-details-section-item-title {
-  display: block;
+  padding: 16px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #686868;
+  cursor: pointer;
+  text-align: left;
   font-size: 16px;
   font-weight: 700;
   color: #131313;
-  padding-bottom: 5px;
-  width: 90%;
 }
 
-.pdpx-product-details-section-item-icon {
-  padding: var(--figma-spacing-100);
+.accordion-trigger:hover {
+  background-color: #f8f8f8;
 }
-.pdpx-product-details-section-item-description {
+
+.accordion-trigger:focus {
+  outline: 2px solid #1473E6;
+  outline-offset: -2px;
+}
+
+.accordion-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-left: 16px;
+  display: inline-block;
+  background-size: 20px 20px;
+}
+
+/* Icon states based on aria-expanded */
+.accordion-trigger[aria-expanded="true"] .accordion-icon {
+  background-image: url('/express/code/icons/minus-heavy.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.accordion-trigger[aria-expanded="false"] .accordion-icon {
+  background-image: url('/express/code/icons/plus-heavy.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.descr-details {
   display: none;
-  visibility: hidden;
+  padding: 0 16px 16px 16px;
+  color: #505050;
+  font-size: 14px;
+  line-height: 1.6;
 }
-.pdpx-product-details-section-item-container.expanded
-  .pdpx-product-details-section-item-description {
+
+.descr-details.visible {
   display: block;
-  visibility: visible;
-}
-.pdpx-product-details-section-item-container.expanded
-  .pdpx-product-details-section-item-icon {
-  background-image: url('/express/code/icons/minus-sign.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.pdpx-product-details-section-item-container.collapsed
-  .pdpx-product-details-section-item-icon {
-  background-image: url('/express/code/icons/plus-sign.svg');
-  background-repeat: no-repeat;
-  background-position: center;
 }
 .pdpx-hidden-select-input {
   display: none;
