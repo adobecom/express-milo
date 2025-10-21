@@ -158,7 +158,7 @@
   font-size: var(--Global-Typography-Size-Body-Body-XS, 12px);
   line-height: 130%;
 }
- 
+
 .blog-article-marquee a.con-button.blue:any-link {
   margin: 0;
   margin-top: var(--spacing-400);
