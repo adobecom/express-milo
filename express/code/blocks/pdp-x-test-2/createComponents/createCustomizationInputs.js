@@ -45,8 +45,6 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
     pillContainer.appendChild(inputPillImageContainer);
     pillContainer.appendChild(inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
-    // We'll eventually need to add other events such as tab and others for accessibility
-    // Ideally selected state is controlled by the hidden select input
     pillContainer.addEventListener('click', async (element) => {
       pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((pill) => {
         pill.classList.remove('selected');
