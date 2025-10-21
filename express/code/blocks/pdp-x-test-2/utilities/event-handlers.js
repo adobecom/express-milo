@@ -40,8 +40,15 @@ async function updateProductPrice(productDetails) {
 
 async function updateProductImages(productDetails) {
   const heroImg = document.getElementById('pdpx-product-hero-image');
-  const newHeroImgSrc = productDetails.realViews[heroImg.dataset.imageType];
-  const newProductImagesContainer = await createProductImagesContainer(productDetails.realViews, newHeroImgSrc, heroImg.dataset.imageType);
+  const firstImageType = Object.keys(productDetails.realViews)[0];
+  let imageType;
+  if (productDetails.realViews[heroImg.dataset.imageType]) {
+    imageType = heroImg.dataset.imageType;
+  } else {
+    imageType = firstImageType;
+  }
+  const newHeroImgSrc = productDetails.realViews[imageType];
+  const newProductImagesContainer = await createProductImagesContainer(productDetails.realViews, newHeroImgSrc, imageType);
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
 }
 
@@ -50,8 +57,6 @@ async function updateProductDeliveryEstimate(productDetails) {
 }
 
 async function updateCustomizationOptions(productDetails, formDataObject) {
-  console.log('formDataObject');
-  console.log(formDataObject);
   const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
