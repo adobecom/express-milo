@@ -97,10 +97,12 @@ describe('Blog Article Marquee block', () => {
     expect(productLogoWrapper).to.exist;
     const productLogo = productLogoWrapper.querySelector('img');
     expect(productLogo).to.exist;
-    expect(productLogo.getAttribute('src')).to.equal('/express/code/blocks/blog-article-marquee/author.png');
+    expect(productLogo.getAttribute('src')).to.equal('/express/code/blocks/blog-article-marquee/adobe.webp');
     expect(productLogo.getAttribute('alt')).to.equal(`${expectedProductName} logo`);
     expect(productLogo.getAttribute('loading')).to.equal('lazy');
     expect(productLogo.getAttribute('decoding')).to.equal('async');
+    expect(productLogo.getAttribute('width')).to.equal('48');
+    expect(productLogo.getAttribute('height')).to.equal('48');
     expect(productLogo.hasAttribute('fetchpriority')).to.be.false;
 
     const eyebrow = block.querySelector('.blog-article-marquee-eyebrow');

@@ -7,7 +7,8 @@ const MOBILE_MAX = 600;
 const TABLET_MAX = 900;
 const HERO_IMAGE_WIDTHS = { mobile: 480, tablet: 720, desktop: 960 };
 const PRECONNECT_DATA_ATTRIBUTE = 'blogArticleMarquee';
-const PRODUCT_ICON_PATH = '/express/code/blocks/blog-article-marquee/author.png';
+const PRODUCT_ICON_PATH = '/express/code/blocks/blog-article-marquee/adobe.webp';
+const PRODUCT_ICON_SIZE = 48;
 
 const METADATA_KEYS = {
   eyebrow: 'blog-article-eyebrow',
@@ -145,25 +146,49 @@ function isPictureOnlyColumn(column) {
   return nonDecorativeChildren.length === 0;
 }
 
-function buildProductHighlight(metadata = {}) {
+function normalizeProductMedia(media) {
+  if (!media) return null;
+  if (typeof media.remove === 'function') media.remove();
+
+  let wrapper = media;
+  if (!wrapper.classList?.contains('blog-article-marquee-product-media')) {
+    wrapper = createTag('div', { class: 'blog-article-marquee-product-media' });
+    wrapper.append(media);
+  }
+
+  const img = wrapper.querySelector?.('img') || (wrapper.tagName === 'IMG' ? wrapper : null);
+  if (img) {
+    if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+    if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+    img.setAttribute('width', PRODUCT_ICON_SIZE);
+    img.setAttribute('height', PRODUCT_ICON_SIZE);
+  }
+
+  return wrapper;
+}
+
+function buildProductHighlight(metadata = {}, fallbackMedia = null) {
   const { productName, date } = metadata;
   const productCopy = Array.isArray(metadata.productCopy) ? metadata.productCopy : [];
-  const hasContent = productName || date || productCopy.length;
+  const hasContent = productName || date || productCopy.length || fallbackMedia;
   if (!hasContent) return null;
 
   const wrapper = createTag('div', { class: 'blog-article-marquee-products' });
   const product = createTag('div', { class: 'blog-article-marquee-product' });
 
-  if (PRODUCT_ICON_PATH) {
-    const mediaWrapper = createTag('div', { class: 'blog-article-marquee-product-media' });
-    const logoAlt = productName ? `${productName} logo` : 'Product logo';
+  if (fallbackMedia) {
+    const mediaWrapper = normalizeProductMedia(fallbackMedia);
+    if (mediaWrapper) product.append(mediaWrapper);
+  } else if (PRODUCT_ICON_PATH) {
     const logoImg = createTag('img', {
       src: PRODUCT_ICON_PATH,
-      alt: logoAlt,
+      alt: productName ? `${productName} logo` : 'Product logo',
       loading: 'lazy',
       decoding: 'async',
+      width: PRODUCT_ICON_SIZE,
+      height: PRODUCT_ICON_SIZE,
     });
-    mediaWrapper.append(logoImg);
+    const mediaWrapper = normalizeProductMedia(logoImg);
     product.append(mediaWrapper);
   }
 
@@ -224,8 +249,78 @@ function decorateContentColumn(column, metadata = {}, ctaNode = null, fallbackNo
     }
   }
 
-  const productHighlight = buildProductHighlight(metadata);
-  if (productHighlight) column.append(productHighlight);
+  const mergedMetadata = { ...metadata };
+  let fallbackHighlightWrapper = takeFallback((node) => node.classList?.contains('blog-article-marquee-products'));
+  let fallbackHighlightProduct = null;
+
+  if (fallbackHighlightWrapper) {
+    fallbackHighlightProduct = fallbackHighlightWrapper.querySelector('.blog-article-marquee-product');
+  } else {
+    fallbackHighlightProduct = takeFallback((node) => node.classList?.contains('blog-article-marquee-product'));
+  }
+
+  const highlightSource = fallbackHighlightProduct || fallbackHighlightWrapper;
+
+  const extractMediaFromSource = (source) => {
+    if (!source) return null;
+    const directMedia = source.querySelector?.('.blog-article-marquee-product-media');
+    if (directMedia) {
+      return directMedia;
+    }
+    return source.matches?.('.blog-article-marquee-product-media') ? source : null;
+  };
+
+  let mediaCandidate = extractMediaFromSource(highlightSource);
+
+  if (!mediaCandidate) {
+    mediaCandidate = takeFallback((node) => {
+      if (!node) return false;
+      if (node.classList?.contains('blog-article-marquee-product-media')) return true;
+      if (node.matches?.('picture, img')) return true;
+      return node.querySelector?.('picture, img');
+    });
+  }
+
+  let productMediaNode = null;
+  if (mediaCandidate) {
+    const picture = mediaCandidate.matches?.('picture, img')
+      ? mediaCandidate
+      : mediaCandidate.querySelector?.('picture, img');
+    if (picture) {
+      productMediaNode = picture;
+    } else if (mediaCandidate.classList?.contains('blog-article-marquee-product-media')) {
+      productMediaNode = mediaCandidate;
+    }
+    if (productMediaNode !== mediaCandidate) {
+      mediaCandidate.remove?.();
+    }
+  }
+
+  if (highlightSource) {
+    const nameNode = highlightSource.querySelector('.blog-article-marquee-product-name');
+    if (!mergedMetadata.productName && nameNode) mergedMetadata.productName = nameNode.textContent.trim();
+    const dateNode = highlightSource.querySelector('.blog-article-marquee-product-date');
+    if (!mergedMetadata.date && dateNode) mergedMetadata.date = dateNode.textContent.trim();
+    if (!Array.isArray(mergedMetadata.productCopy) || !mergedMetadata.productCopy.length) {
+      const copyParas = [...highlightSource.querySelectorAll('.blog-article-marquee-product-copy p')]
+        .filter((p) => !p.classList.contains('blog-article-marquee-product-name')
+          && !p.classList.contains('blog-article-marquee-product-date'))
+        .map((p) => p.textContent.trim())
+        .filter(Boolean);
+      if (copyParas.length) mergedMetadata.productCopy = copyParas;
+    }
+  }
+
+  const productHighlight = buildProductHighlight(mergedMetadata, productMediaNode);
+  if (productHighlight) {
+    column.append(productHighlight);
+  } else if (fallbackHighlightWrapper) {
+    column.append(fallbackHighlightWrapper);
+  } else if (fallbackHighlightProduct) {
+    const wrapper = createTag('div', { class: 'blog-article-marquee-products' });
+    wrapper.append(fallbackHighlightProduct);
+    column.append(wrapper);
+  }
 
   if (ctaNode) column.append(ctaNode);
 }
@@ -291,17 +386,19 @@ function prepareStructure(block) {
   if (imageRow) {
     const columns = [...imageRow.children].filter((col) => col.tagName === 'DIV');
     const processColumn = (col) => {
+      const childNodes = Array.from(col.childNodes);
+
       if (isPictureOnlyColumn(col)) {
-        while (col.firstChild) {
-          const child = col.firstChild;
+        childNodes.forEach((child) => {
           mediaColumn.append(child);
-        }
+        });
       } else {
-        while (col.firstChild) {
-          const child = col.firstChild;
+        childNodes.forEach((child) => {
           if (child.nodeType === Node.ELEMENT_NODE) fallbackNodes.push(child);
-        }
+          child.remove();
+        });
       }
+
       col.remove();
     };
 
