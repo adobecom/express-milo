@@ -11,8 +11,8 @@ function formatUrlForEnvironment(url, endpoint, productId, parametersString) {
   if (window.location.hostname === 'localhost') {
     return `http://localhost:3001?url=${url}`;
   }
-
   const URLFormatted = `https://www.zazzle${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
+
   return URLFormatted;
 }
 

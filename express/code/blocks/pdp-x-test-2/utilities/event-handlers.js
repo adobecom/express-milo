@@ -1,6 +1,7 @@
 import fetchAPIData from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
+import { formatPriceZazzle, formatDeliveryEstimateDateRange, normalizeProductDetailObject } from './utility-functions.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
+import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
 
 export function toggleDrawer() {
   const curtain = document.querySelector('.pdp-curtain');
@@ -19,41 +20,43 @@ function formatProductOptionsToAPIParameters(formDataObject) {
   }
   parameters.productOptions = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
   parameters.qty = formDataObject.qty;
+  parameters.zip = '94065';
   const finalParameters = {};
   finalParameters.productOptions = encodeURIComponent(parameters.productOptions);
   finalParameters.qty = parameters.qty;
   return finalParameters;
 }
 
-function calculateAdjustedPrices(productPriceAPIResponse) {
-  const quantity = productPriceAPIResponse.discountProductItems[0].applyToQuantity || 1;
-  const originalPrice = productPriceAPIResponse.discountProductItems[0].price;
-  const { priceAdjusted } = productPriceAPIResponse.discountProductItems[0];
-  const productPrice = priceAdjusted * quantity;
-  const strikethroughPrice = originalPrice * quantity;
+function calculateAdjustedPrices(productDetails) {
+  const productPrice = productDetails?.priceAdjusted * productDetails?.applyToQuantity;
+  const strikethroughPrice = productDetails?.unitPrice * productDetails?.applyToQuantity;
+
   return { productPrice, strikethroughPrice };
 }
 
-async function updateProductPrice(productId, parameters) {
-  const productPriceAPIResponse = await fetchAPIData(productId, parameters, 'getproductpricing');
-  if (productPriceAPIResponse.discountProductItems.length > 0) {
-    const { discountString } = productPriceAPIResponse.discountProductItems[0];
-    const { productPrice, strikethroughPrice } = calculateAdjustedPrices(productPriceAPIResponse);
+async function updateProductPrice(productDetails) {
+  if (productDetails.discountAvailable) {
+    const { productPrice, strikethroughPrice } = calculateAdjustedPrices(productDetails);
     document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
     document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(strikethroughPrice);
-    document.getElementById('pdpx-savings-text').innerHTML = discountString;
+    document.getElementById('pdpx-savings-text').innerHTML = productDetails.discountString;
   } else {
-    const productPrice = productPriceAPIResponse.unitPrice;
+    const productPrice = productDetails.unitPrice;
     document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
   }
 }
 
-async function updateProductImages(productId, parameters) {
-  const renditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
+async function updateProductImages(productDetails) {
   const heroImg = document.getElementById('pdpx-product-hero-image');
-  const newHeroImgSrc = renditions.realviewUrls[heroImg.dataset.imageType] || renditions.realviewUrls.Front || Object.keys(renditions.realviewUrls)[0];
-  const newProductImagesContainer = await createProductImagesContainer(renditions.realviewUrls, newHeroImgSrc, heroImg.dataset.imageType);
+  const newHeroImgSrc = productDetails[heroImg.dataset.imageType] || productDetails?.Front || Object.keys(productDetails)[0];
+  const newProductImagesContainer = await createProductImagesContainer(productDetails, newHeroImgSrc, heroImg.dataset.imageType);
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
+}
+
+async function updateCustomizationOptions(productId, parameters) {
+  const options = await fetchAPIData(productId, parameters, 'getproduct');
+  const newCustomizationInputs = await createCustomizationInputs(options);
+  document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 
 async function updateProductDeliveryEstimate(productId, parameters) {
@@ -66,9 +69,14 @@ export default async function updateAllDynamicElements(productId) {
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
-  await updateProductPrice(productId, parameters);
-
-  await updateProductImages(productId, parameters);
-
-  await updateProductDeliveryEstimate(productId, parameters);
+  const productDetails = await fetchAPIData(productId, parameters, 'getproduct');
+  const productPrice = await fetchAPIData(productId, parameters, 'getproductpricing');
+  const productReviews = await fetchAPIData(productId, null, 'getreviews');
+  const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
+  const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
+  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates);
+  await updateProductPrice(normalizedProductDetails);
+  // await updateProductImages(normalizedProductDetails);
+  // await updateProductDeliveryEstimate(normalizedProductDetails);
+  // await updateCustomizationOptions(normalizedProductDetails);
 }
