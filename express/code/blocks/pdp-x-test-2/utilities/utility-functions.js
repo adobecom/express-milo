@@ -129,18 +129,18 @@ async function addSideQuantityOptions(productDetails) {
   return sideQuantityOptions;
 }
 
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates) {
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity) {
   const applicableDiscount = productPrice.discountProductItems[1] || productPrice.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
+  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
   const normalizedProductDetails = {
     id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
     unitPrice: productPrice.unitPrice,
+    productPrice: calculatedProductPrice,
+    strikethroughPrice: productPrice?.unitPrice * quantity,
     discountAvailable,
-    applyToQuantity: applicableDiscount?.applyToQuantity || 1,
-    priceAdjusted: applicableDiscount?.priceAdjusted,
-    strikethroughPrice: applicableDiscount?.price,
     discountString: applicableDiscount?.discountString,
     deliveryEstimateStringText: 'Order today and get it by',
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,

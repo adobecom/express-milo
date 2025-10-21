@@ -62,7 +62,7 @@ function createProductTitleAndRatingsContainer(productDetails) {
 function createPriceLockup(productDetails) {
   const priceInfoContainer = createTag('div', { class: 'pdpx-price-info-container' });
   const priceInfoRow = createTag('div', { class: 'pdpx-price-info-row' });
-  const priceContainer = createTag('span', { class: 'pdpx-price-label', id: 'pdpx-price-label' }, formatPriceZazzle(productDetails.priceAdjusted));
+  const priceContainer = createTag('span', { class: 'pdpx-price-label', id: 'pdpx-price-label' }, formatPriceZazzle(productDetails.productPrice));
   priceInfoRow.appendChild(priceContainer);
   const comparePrice = createTag('span', { class: 'pdpx-compare-price-label', id: 'pdpx-compare-price-label' }, formatPriceZazzle(productDetails.strikethroughPrice));
   priceInfoRow.appendChild(comparePrice);
