@@ -66,7 +66,10 @@ export default async function updateAllDynamicElements(productId) {
   const productReviews = await fetchAPIData(productId, null, 'getreviews');
   const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
   const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
-  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty);
+  const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
+  console.log('updatedConfigurationOptions');
+  console.log(updatedConfigurationOptions);
+  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty, updatedConfigurationOptions);
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
