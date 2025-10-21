@@ -52,7 +52,8 @@ export default async function decorate(block) {
     qty: 1,
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
-  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates);
+  const quantity = 1;
+  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity);
   const productDescriptions = await extractProductDescriptionsFromBlock(block);
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions);

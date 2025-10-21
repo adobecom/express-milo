@@ -27,17 +27,10 @@ function formatProductOptionsToAPIParameters(formDataObject) {
   return finalParameters;
 }
 
-function calculateAdjustedPrices(productDetails) {
-  const productPrice = productDetails?.priceAdjusted * productDetails?.applyToQuantity;
-  const strikethroughPrice = productDetails?.unitPrice * productDetails?.applyToQuantity;
-  return { productPrice, strikethroughPrice };
-}
-
 async function updateProductPrice(productDetails) {
   if (productDetails.discountAvailable) {
-    const { productPrice, strikethroughPrice } = calculateAdjustedPrices(productDetails);
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
-    document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(strikethroughPrice);
+    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productDetails.productPrice);
+    document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(productDetails.strikethroughPrice);
     document.getElementById('pdpx-savings-text').innerHTML = productDetails.discountString;
   } else {
     const productPrice = productDetails.unitPrice;
@@ -58,9 +51,8 @@ async function updateCustomizationOptions(productId, parameters) {
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 
-async function updateProductDeliveryEstimate(productId, parameters) {
-  const shippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
-  document.getElementById('pdpx-delivery-estimate-pill-date').innerHTML = formatDeliveryEstimateDateRange(shippingEstimates.estimates[0].minDeliveryDate, shippingEstimates.estimates[0].maxDeliveryDate);
+async function updateProductDeliveryEstimate(productDetails) {
+  document.getElementById('pdpx-delivery-estimate-pill-date').innerHTML = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
 }
 
 export default async function updateAllDynamicElements(productId) {
@@ -73,9 +65,9 @@ export default async function updateAllDynamicElements(productId) {
   const productReviews = await fetchAPIData(productId, null, 'getreviews');
   const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
   const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
-  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates);
+  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty);
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
-  // await updateProductDeliveryEstimate(normalizedProductDetails);
+  await updateProductDeliveryEstimate(normalizedProductDetails);
   // await updateCustomizationOptions(normalizedProductDetails);
 }
