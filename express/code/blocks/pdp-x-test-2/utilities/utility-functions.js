@@ -129,7 +129,8 @@ async function addSideQuantityOptions(productDetails) {
   return sideQuantityOptions;
 }
 
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity) {
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}) {
+  const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
   const applicableDiscount = productPrice.discountProductItems[1] || productPrice.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
   const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
@@ -152,7 +153,7 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     averageRating: productReviews.reviews.stats.averageRating,
     totalReviews: productReviews.reviews.stats.totalReviews,
   };
-  for (const attribute of Object.values(productDetails.product.attributes)) {
+  for (const attribute of Object.values(attributeOptions)) {
     normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
