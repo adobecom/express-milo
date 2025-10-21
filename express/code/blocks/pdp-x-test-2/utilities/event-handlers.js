@@ -45,14 +45,15 @@ async function updateProductImages(productDetails) {
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
 }
 
-async function updateCustomizationOptions(productId, parameters) {
-  const options = await fetchAPIData(productId, parameters, 'getproduct');
-  const newCustomizationInputs = await createCustomizationInputs(options);
-  document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
-}
-
 async function updateProductDeliveryEstimate(productDetails) {
   document.getElementById('pdpx-delivery-estimate-pill-date').innerHTML = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
+}
+
+async function updateCustomizationOptions(productDetails, formDataObject) {
+  console.log('formDataObject');
+  console.log(formDataObject);
+  const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
+  document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 
 export default async function updateAllDynamicElements(productId) {
@@ -69,5 +70,5 @@ export default async function updateAllDynamicElements(productId) {
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
-  // await updateCustomizationOptions(normalizedProductDetails);
+  await updateCustomizationOptions(normalizedProductDetails, formDataObject);
 }
