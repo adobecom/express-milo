@@ -146,18 +146,26 @@ async function addSideQuantityOptions(productDetails) {
   return sideQuantityOptions;
 }
 
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productShippingEstimates, productRenditions) {
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates) {
+  let discountAvailable;
+  if (Array.isArray(productPrice.discountProductItems)) {
+    discountAvailable = productPrice.discountProductItems.length > 0;
+  } else {
+    discountAvailable = Object.keys(productPrice.discountProductItems[0])?.length > 0;
+  }
   const normalizedProductDetails = {
     id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
-    price: productPrice.discountProductItems[0] ? productPrice.discountProductItems[0].priceAdjusted : productPrice.unitPrice,
-    strikethroughPrice: productPrice.discountProductItems[0] ? productPrice.discountProductItems[0].price : 0,
-    discountString: productPrice.discountProductItems[0] ? productPrice.discountProductItems[0].discountString : 0,
+    unitPrice: productPrice.unitPrice,
+    discountAvailable: !!discountAvailable,
+    applyToQuantity: productPrice.discountProductItems[0]?.applyToQuantity ? productPrice.discountProductItems[0]?.applyToQuantity : 1,
+    priceAdjusted: discountAvailable ? productPrice.discountProductItems[0]?.priceAdjusted : 0,
+    strikethroughPrice: discountAvailable ? productPrice.discountProductItems[0]?.price : 0,
+    discountString: discountAvailable ? productPrice.discountProductItems[0]?.discountString : 0,
     deliveryEstimateStringText: 'Order today and get it by',
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
-    // realviews: productDetails.product.realviews,
     realviews: productRenditions.realviewUrls,
     productType: productDetails.product.productType,
     quantities: productDetails.product.quantities,
