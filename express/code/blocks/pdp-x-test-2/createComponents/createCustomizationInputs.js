@@ -31,7 +31,7 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
   const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
-    const isSelected = customizationOptions[i].name === defaultValue;
+    const isSelected = customizationOptions[i].name === selectedPillOption;
     hiddenSelectInput.appendChild(option);
     const pillContainer = createTag('button', { class: isSelected ? 'pdpx-pill-container selected' : 'pdpx-pill-container', type: 'button', 'data-name': customizationOptions[i].name });
     const inputPillImageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
@@ -63,14 +63,12 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
 }
 
 function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue) {
-  const selectedMiniPillOption = defaultValue || customizationOptions[0].name;
+  let selectedValueExists = false;
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
   const miniPillSelectorLabelNameContainer = createTag('div', { class: 'pdpx-pill-selector-label-name-container' });
   const miniPillSelectorLabel = createTag('span', { class: 'pdpx-pill-selector-label-label' }, labelText);
-  const miniPillSelectorLabeLName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOption);
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabel);
-  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabeLName);
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
   if (CTALinkText) {
     const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button' }, CTALinkText);
@@ -82,9 +80,12 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
   const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
+    if (customizationOptions[i].name === defaultValue) {
+      selectedValueExists = customizationOptions[i].name;
+    }
     hiddenSelectInput.appendChild(option);
     const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container' });
-    const miniPillOptionImageContainer = createTag('button', { class: i === 0 ? 'pdpx-mini-pill-image-container selected' : 'pdpx-mini-pill-image-container', type: 'button', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
+    const miniPillOptionImageContainer = createTag('button', { class: 'pdpx-mini-pill-image-container', type: 'button', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
     const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', src: customizationOptions[i].thumbnail });
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
@@ -100,23 +101,27 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
       document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
-    hiddenSelectInput.value = customizationOptions[0].name;
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
     miniPillOption.appendChild(miniPillOptionImageContainer);
     miniPillOption.appendChild(miniPillOptionTextContainer);
     miniPillSelectorOptionsContainer.appendChild(miniPillOption);
   }
+  hiddenSelectInput.value = selectedValueExists || customizationOptions[0].name;
+  const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainer.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
+  selectedMiniPillOptionImageContainer.classList.add('selected');
+  const miniPillSelectorLabeLName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
+  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabeLName);
   miniPillSelectorContainer.appendChild(miniPillSelectorOptionsContainer);
   miniPillSelectorContainer.appendChild(hiddenSelectInput);
   return miniPillSelectorContainer;
 }
 
 function createBusinessCardInputs(container, productDetails, formDataObject = {}) {
-  const sideQuantitySelectorContainer = createPillOptionsSelector(productDetails.sideQuantityOptions, 'Choose the page(s) you want to print', 'sidequantity', productDetails.id);
-  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id);
-  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id);
-  const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'style', productDetails.id);
-  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id);
+  const sideQuantitySelectorContainer = createPillOptionsSelector(productDetails.sideQuantityOptions, 'Choose the page(s) you want to print', 'sidequantity', productDetails.id, formDataObject?.sidequantity);
+  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id, formDataObject?.media);
+  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
+  const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
+  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
   // container.appendChild(sideQuantitySelectorContainer);
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
