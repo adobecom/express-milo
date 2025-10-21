@@ -30,7 +30,6 @@ function formatProductOptionsToAPIParameters(formDataObject) {
 function calculateAdjustedPrices(productDetails) {
   const productPrice = productDetails?.priceAdjusted * productDetails?.applyToQuantity;
   const strikethroughPrice = productDetails?.unitPrice * productDetails?.applyToQuantity;
-
   return { productPrice, strikethroughPrice };
 }
 
@@ -48,8 +47,8 @@ async function updateProductPrice(productDetails) {
 
 async function updateProductImages(productDetails) {
   const heroImg = document.getElementById('pdpx-product-hero-image');
-  const newHeroImgSrc = productDetails[heroImg.dataset.imageType] || productDetails?.Front || Object.keys(productDetails)[0];
-  const newProductImagesContainer = await createProductImagesContainer(productDetails, newHeroImgSrc, heroImg.dataset.imageType);
+  const newHeroImgSrc = productDetails.realViews[heroImg.dataset.imageType];
+  const newProductImagesContainer = await createProductImagesContainer(productDetails.realViews, newHeroImgSrc, heroImg.dataset.imageType);
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
 }
 
@@ -76,7 +75,7 @@ export default async function updateAllDynamicElements(productId) {
   const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates);
   await updateProductPrice(normalizedProductDetails);
-  // await updateProductImages(normalizedProductDetails);
+  await updateProductImages(normalizedProductDetails);
   // await updateProductDeliveryEstimate(normalizedProductDetails);
   // await updateCustomizationOptions(normalizedProductDetails);
 }

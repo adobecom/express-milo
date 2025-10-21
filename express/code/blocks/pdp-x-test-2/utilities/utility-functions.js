@@ -68,29 +68,12 @@ export function formatPriceZazzle(price, differential = false, short = false) {
   }
   const localizedPrice = new Intl.NumberFormat(countryCode, { style: 'currency', currency: currencyCode }).format(price);
   if (differential) {
-    priceDifferentialOperator = price >= 0 ? '+' : '-';
+    priceDifferentialOperator = price >= 0 ? '+' : '';
   } else {
     priceDifferentialOperator = '';
   }
   const formattedPrice = priceDifferentialOperator + localizedPrice;
   return formattedPrice;
-}
-
-export function formatPriceZazzle_old(price, differential = false, short = false) {
-  const region = 'en-US';
-  let priceDifferentialOperator;
-  const priceNumberFormatted = parseFloat(price).toLocaleString(region, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-  if (differential) {
-    priceDifferentialOperator = price >= 0 ? '+' : '-';
-  } else {
-    priceDifferentialOperator = '';
-  }
-  const currencySymbol = short ? '$' : 'US$';
-  const priceFormatted = priceDifferentialOperator + currencySymbol + priceNumberFormatted;
-  return priceFormatted;
 }
 
 export function formatStringSnakeCase(string) {
@@ -147,26 +130,22 @@ async function addSideQuantityOptions(productDetails) {
 }
 
 export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates) {
-  let discountAvailable;
-  if (Array.isArray(productPrice.discountProductItems)) {
-    discountAvailable = productPrice.discountProductItems.length > 0;
-  } else {
-    discountAvailable = Object.keys(productPrice.discountProductItems[0])?.length > 0;
-  }
+  const applicableDiscount = productPrice.discountProductItems[1] || productPrice.discountProductItems[0];
+  const discountAvailable = !!applicableDiscount;
   const normalizedProductDetails = {
     id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
     unitPrice: productPrice.unitPrice,
-    discountAvailable: !!discountAvailable,
-    applyToQuantity: productPrice.discountProductItems[0]?.applyToQuantity ? productPrice.discountProductItems[0]?.applyToQuantity : 1,
-    priceAdjusted: discountAvailable ? productPrice.discountProductItems[0]?.priceAdjusted : 0,
-    strikethroughPrice: discountAvailable ? productPrice.discountProductItems[0]?.price : 0,
-    discountString: discountAvailable ? productPrice.discountProductItems[0]?.discountString : 0,
+    discountAvailable,
+    applyToQuantity: applicableDiscount?.applyToQuantity || 1,
+    priceAdjusted: applicableDiscount?.priceAdjusted,
+    strikethroughPrice: applicableDiscount?.price,
+    discountString: applicableDiscount?.discountString,
     deliveryEstimateStringText: 'Order today and get it by',
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
-    realviews: productRenditions.realviewUrls,
+    realViews: productRenditions.realviewUrls,
     productType: productDetails.product.productType,
     quantities: productDetails.product.quantities,
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
@@ -180,7 +159,5 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
   normalizedProductDetails.quantities = quantitiesOptions;
   const sideQuantityOptions = await addSideQuantityOptions(productDetails);
   normalizedProductDetails.sideQuantityOptions = sideQuantityOptions;
-  console.log('normalizedProductDetails');
-  console.log(normalizedProductDetails);
   return normalizedProductDetails;
 }
