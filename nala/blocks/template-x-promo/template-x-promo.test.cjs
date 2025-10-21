@@ -367,6 +367,9 @@ test.describe('Template X Promo block tests', () => {
       if (templates > 0) {
         const firstTemplate = templateXPromo.page.locator('.template').first();
 
+        // Ensure template is visible before interacting
+        await firstTemplate.waitFor({ state: 'visible', timeout: 10000 });
+
         // Hover to show overlay
         await firstTemplate.hover();
         await templateXPromo.page.waitForTimeout(500);
@@ -375,9 +378,12 @@ test.describe('Template X Promo block tests', () => {
         const hasSingletonHover = await firstTemplate.evaluate((el) => el.classList.contains('singleton-hover'));
         console.log(`Overlay state after hover: singleton-hover=${hasSingletonHover}`);
 
-        // Click outside the template
+        // Click outside the template (far away from any template)
         await templateXPromo.page.mouse.click(50, 50);
-        await templateXPromo.page.waitForTimeout(500);
+        await templateXPromo.page.waitForTimeout(800);
+
+        // Wait for template to be visible again before checking state
+        await firstTemplate.waitFor({ state: 'visible', timeout: 10000 });
 
         // Verify overlay is hidden
         const stillHasSingletonHover = await firstTemplate.evaluate((el) => el.classList.contains('singleton-hover'));
