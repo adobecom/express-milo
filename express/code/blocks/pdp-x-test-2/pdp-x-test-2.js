@@ -32,7 +32,7 @@ async function createProductInfoContainer(productDetails, productDescriptions, d
 async function createGlobalContainer(block, productDetails, productDescriptions) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   const { curtain, drawer } = await createDrawer(block);
-  const productImagesContainer = await createProductImagesContainer(productDetails.realviews, productDetails.heroImage);
+  const productImagesContainer = await createProductImagesContainer(productDetails.realViews, productDetails.heroImage);
   const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions, drawer);
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
