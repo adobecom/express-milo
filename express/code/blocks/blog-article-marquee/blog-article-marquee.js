@@ -1,12 +1,39 @@
 import { getLibs } from '../../scripts/utils.js';
 
 let createTag;
+let getMetadata;
 
 const MOBILE_MAX = 600;
 const TABLET_MAX = 900;
 const HERO_IMAGE_WIDTHS = { mobile: 480, tablet: 720, desktop: 960 };
-const PRODUCT_IMAGE_WIDTHS = { mobile: 160, tablet: 200, desktop: 240 };
 const PRECONNECT_DATA_ATTRIBUTE = 'blogArticleMarquee';
+const PRODUCT_ICON_PATH = '/express/code/blocks/blog-article-marquee/author.png';
+
+const METADATA_KEYS = {
+  eyebrow: 'blog-article-eyebrow',
+  headline: 'blog-article-title',
+  subcopy: 'blog-article-subheading',
+  productName: 'blog-article-product-name',
+  date: 'blog-article-date',
+  productCopy: 'blog-article-description',
+};
+
+function getBlogArticleMarqueeMetadata() {
+  if (!getMetadata) return {};
+  const sanitize = (value) => (typeof value === 'string' ? value.trim() : '');
+  const meta = Object.entries(METADATA_KEYS).reduce((acc, [key, metaName]) => {
+    const metaValue = sanitize(getMetadata(metaName));
+    if (metaValue) acc[key] = metaValue;
+    return acc;
+  }, {});
+  if (meta.productCopy) {
+    meta.productCopy = meta.productCopy
+      .split(/\r?\n+|[|]{2,}/)
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+  return meta;
+}
 
 function getViewportWidth() {
   return window.innerWidth || document.documentElement?.clientWidth || 0;
@@ -110,6 +137,7 @@ function optimizeImage(img, {
 }
 
 function isPictureOnlyColumn(column) {
+  if (!column) return false;
   const media = column.querySelectorAll('picture, img');
   if (!media.length) return false;
   const nonDecorativeChildren = [...column.children]
@@ -117,113 +145,89 @@ function isPictureOnlyColumn(column) {
   return nonDecorativeChildren.length === 0;
 }
 
-function findHeading(container) {
-  return container.querySelector('h1, h2, h3, h4, h5, h6');
-}
+function buildProductHighlight(metadata = {}) {
+  const { productName, date } = metadata;
+  const productCopy = Array.isArray(metadata.productCopy) ? metadata.productCopy : [];
+  const hasContent = productName || date || productCopy.length;
+  if (!hasContent) return null;
 
-function cleanEmptyElements(container) {
-  container.querySelectorAll('p, div').forEach((el) => {
-    if (!el.textContent.trim() && !el.querySelector('img, picture, svg')) el.remove();
-  });
-}
-
-function extractProductHighlight(row) {
-  const column = row.querySelector('div');
-  if (!column) return null;
-
+  const wrapper = createTag('div', { class: 'blog-article-marquee-products' });
   const product = createTag('div', { class: 'blog-article-marquee-product' });
-  const mediaWrapper = createTag('div', { class: 'blog-article-marquee-product-media' });
-  const copyWrapper = createTag('div', { class: 'blog-article-marquee-product-copy' });
 
-  const picture = column.querySelector('picture, img');
-  if (picture) {
-    const pictureParent = picture.parentElement;
-    mediaWrapper.append(picture);
-    if (pictureParent && pictureParent !== column && pictureParent.childElementCount === 0) {
-      pictureParent.remove();
-    }
-    const productImg = mediaWrapper.querySelector('img');
-    if (productImg) {
-      const targetWidth = getResponsiveWidth(PRODUCT_IMAGE_WIDTHS, PRODUCT_IMAGE_WIDTHS.desktop);
-      optimizeImage(productImg, {
-        width: targetWidth,
-        eager: false,
-        preconnect: false,
-      });
-    }
+  if (PRODUCT_ICON_PATH) {
+    const mediaWrapper = createTag('div', { class: 'blog-article-marquee-product-media' });
+    const logoAlt = productName ? `${productName} logo` : 'Product logo';
+    const logoImg = createTag('img', {
+      src: PRODUCT_ICON_PATH,
+      alt: logoAlt,
+      loading: 'lazy',
+      decoding: 'async',
+    });
+    mediaWrapper.append(logoImg);
     product.append(mediaWrapper);
   }
 
-  const heading = findHeading(column);
-  if (heading) {
-    heading.classList.add('blog-article-marquee-product-name');
-    copyWrapper.append(heading);
+  const copyWrapper = createTag('div', { class: 'blog-article-marquee-product-copy' });
+  if (productName) {
+    copyWrapper.append(createTag('p', { class: 'blog-article-marquee-product-name' }, productName));
+  }
+  productCopy.forEach((paragraph) => {
+    copyWrapper.append(createTag('p', null, paragraph));
+  });
+  if (date) {
+    copyWrapper.append(createTag('p', { class: 'blog-article-marquee-product-date' }, date));
   }
 
-  column.querySelectorAll('p').forEach((para) => {
-    if (!para.querySelector('picture, img')) {
-      copyWrapper.append(para);
-    }
-  });
+  if (copyWrapper.childElementCount) product.append(copyWrapper);
+  if (!product.childElementCount) return null;
 
-  cleanEmptyElements(copyWrapper);
-
-  if (!copyWrapper.childElementCount) {
-    copyWrapper.remove();
-  } else {
-    product.append(copyWrapper);
-  }
-
-  column.querySelectorAll('*').forEach((node) => {
-    if (node instanceof HTMLElement && node.childElementCount === 0 && !node.textContent.trim()) {
-      node.remove();
-    }
-  });
-  cleanEmptyElements(column);
-
-  return product.childElementCount ? product : null;
-}
-
-function buildProductHighlight(rows) {
-  if (!rows.length) return null;
-
-  const row = rows.find((candidate) => candidate.querySelector('div'));
-  if (!row) return null;
-
-  const highlight = extractProductHighlight(row);
-  rows.forEach((extraRow) => extraRow.remove());
-
-  if (!highlight) return null;
-  const wrapper = createTag('div', { class: 'blog-article-marquee-products' });
-  wrapper.append(highlight);
+  wrapper.append(product);
   return wrapper;
 }
 
-function decorateContentColumn(column, extraRows = []) {
+function decorateContentColumn(column, metadata = {}, ctaNode = null, fallbackNodes = []) {
   column.classList.add('blog-article-marquee-content');
-  column.querySelectorAll('p').forEach((para) => {
-    if (!para.textContent.trim()) para.remove();
-  });
-  const headline = findHeading(column);
-  if (headline) {
-    const eyebrow = headline.previousElementSibling;
-    if (eyebrow?.tagName === 'P') eyebrow.classList.add('blog-article-marquee-eyebrow');
-  }
+  column.textContent = '';
 
-  const productHighlight = buildProductHighlight(extraRows);
-  if (productHighlight) {
-    const ctaContainer = column.querySelector('p:has(a)');
-    if (ctaContainer?.parentElement) {
-      ctaContainer.parentElement.insertBefore(productHighlight, ctaContainer);
-    } else {
-      column.append(productHighlight);
+  const availableFallback = [...fallbackNodes];
+  const takeFallback = (predicate) => {
+    const index = availableFallback.findIndex((node) => node.nodeType === Node.ELEMENT_NODE && predicate(node));
+    if (index === -1) return null;
+    const [node] = availableFallback.splice(index, 1);
+    return node;
+  };
+
+  if (metadata.eyebrow) {
+    column.append(createTag('p', { class: 'blog-article-marquee-eyebrow' }, metadata.eyebrow));
+  } else {
+    const fallbackEyebrow = takeFallback((node) => node.matches?.('p'));
+    if (fallbackEyebrow) {
+      fallbackEyebrow.classList.add('blog-article-marquee-eyebrow');
+      column.append(fallbackEyebrow);
     }
   }
 
-  // column.querySelectorAll('p:has(a)').forEach((para) => {
-  //   const button = para.querySelector('a.button, a.con-button');
-  //   if (button) para.classList.add('button-container');
-  // });
+  if (metadata.headline) {
+    column.append(createTag('h1', null, metadata.headline));
+  } else {
+    const fallbackHeadline = takeFallback((node) => /^H[1-6]$/.test(node.tagName));
+    if (fallbackHeadline) column.append(fallbackHeadline);
+  }
+
+  if (metadata.subcopy) {
+    column.append(createTag('p', { class: 'blog-article-marquee-subcopy' }, metadata.subcopy));
+  } else {
+    const fallbackParagraph = takeFallback((node) => node.tagName === 'P');
+    if (fallbackParagraph) {
+      fallbackParagraph.classList.add('blog-article-marquee-subcopy');
+      column.append(fallbackParagraph);
+    }
+  }
+
+  const productHighlight = buildProductHighlight(metadata);
+  if (productHighlight) column.append(productHighlight);
+
+  if (ctaNode) column.append(ctaNode);
 }
 
 function decorateMediaColumn(column) {
@@ -241,53 +245,107 @@ function decorateMediaColumn(column) {
   img.classList.add('blog-article-marquee-media-image');
 }
 
+function extractCTA(row) {
+  if (!row) return null;
+  const container = row.querySelector('p:has(a), div:has(a), a');
+  if (!container) return null;
+  const target = container.closest('p, div') || container;
+  target.remove();
+  target.classList.add('button-container');
+  return target;
+}
+
 function prepareStructure(block) {
   const rows = [...block.children].filter((row) => row.tagName === 'DIV');
-  if (!rows.length) return { mainRow: null, extraRows: [] };
+  if (!rows.length) {
+    const wrapperFallback = createTag('div', { class: 'blog-article-marquee-inner' });
+    const mainRowFallback = createTag('div', { class: 'blog-article-marquee-row' });
+    wrapperFallback.append(mainRowFallback);
+    block.replaceChildren(wrapperFallback);
+    const content = createTag('div', { class: 'column blog-article-marquee-content' });
+    const media = createTag('div', { class: 'column blog-article-marquee-media' });
+    mainRowFallback.append(content, media);
+    return {
+      wrapper: wrapperFallback,
+      mainRow: mainRowFallback,
+      contentColumn: content,
+      mediaColumn: media,
+      ctaNode: null,
+      fallbackNodes: [],
+    };
+  }
 
-  const [mainRow, ...extraRows] = rows;
+  const [imageRow, ...maybeCtaRows] = rows;
   const wrapper = createTag('div', { class: 'blog-article-marquee-inner' });
   block.replaceChildren(wrapper);
-  wrapper.append(mainRow, ...extraRows);
 
-  mainRow.classList.add('blog-article-marquee-row');
-  const columns = [...mainRow.children].filter((col) => col.tagName === 'DIV');
-  columns.forEach((col) => col.classList.add('column'));
+  const mainRow = createTag('div', { class: 'blog-article-marquee-row' });
+  wrapper.append(mainRow);
 
-  let contentColumn = columns.find((col) => !isPictureOnlyColumn(col));
-  if (!contentColumn) [contentColumn] = columns;
-  const mediaColumn = columns.find((col) => col !== contentColumn && isPictureOnlyColumn(col))
-    || columns.find((col) => col !== contentColumn) || null;
+  const contentColumn = createTag('div', { class: 'column blog-article-marquee-content' });
+  const mediaColumn = createTag('div', { class: 'column blog-article-marquee-media' });
+  mainRow.append(contentColumn, mediaColumn);
+
+  const fallbackNodes = [];
+
+  if (imageRow) {
+    const columns = [...imageRow.children].filter((col) => col.tagName === 'DIV');
+    const processColumn = (col) => {
+      if (isPictureOnlyColumn(col)) {
+        while (col.firstChild) {
+          const child = col.firstChild;
+          mediaColumn.append(child);
+        }
+      } else {
+        while (col.firstChild) {
+          const child = col.firstChild;
+          if (child.nodeType === Node.ELEMENT_NODE) fallbackNodes.push(child);
+        }
+      }
+      col.remove();
+    };
+
+    if (columns.length) {
+      columns.forEach(processColumn);
+    } else {
+      processColumn(imageRow);
+    }
+
+    imageRow.remove();
+  }
+
+  const ctaNode = extractCTA(maybeCtaRows.find((row) => row.querySelector('a')));
 
   return {
     wrapper,
     mainRow,
     contentColumn,
     mediaColumn,
-    extraRows,
+    ctaNode,
+    fallbackNodes,
   };
 }
 
 export default async function decorate(block) {
-  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  //
+  ({ createTag, getMetadata } = await import(`${getLibs()}/utils/utils.js`));
   const { decorateButtons } = await import(`${getLibs()}/utils/decorate.js`);
-  console.log(decorateButtons);
   block.classList.add('blog-article-marquee');
 
+  const metadata = getBlogArticleMarqueeMetadata();
 
   const {
     wrapper,
     mainRow,
     contentColumn,
     mediaColumn,
-    extraRows,
+    ctaNode,
+    fallbackNodes,
   } = prepareStructure(block);
 
   if (!mainRow || !contentColumn) return;
 
-  decorateContentColumn(contentColumn, extraRows);
+  decorateContentColumn(contentColumn, metadata, ctaNode, fallbackNodes);
   if (mediaColumn) decorateMediaColumn(mediaColumn);
   decorateButtons(block, 'button-xl');
-  wrapper.classList.add('blog-article-marquee-ready',);
+  wrapper.classList.add('blog-article-marquee-ready');
 }
