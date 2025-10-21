@@ -1,6 +1,6 @@
 .blog-article-marquee {
   margin: 0 auto;
-  padding: var(--spacing-700) 16px; 
+  padding: var(--spacing-700) 0;
   max-width: var(--ax-grid-max-width, 1200px);
 }
 
@@ -25,6 +25,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-200);
+  padding: 0 16px;
 }
 
 /* merged p margin reset into parent block */
@@ -66,7 +67,7 @@
 .blog-article-marquee .blog-article-marquee-eyebrow {
   color: var(--Content-neutral-subdued-default, #464646);
 
-  /* Express web/Titles/XS */ 
+  /* Express web/Titles/XS */
   font-size: var(--Global-Typography-Size-Title-Title-XS, 16px);
   font-style: normal;
   font-weight: 700;
@@ -80,7 +81,6 @@
   font-style: normal;
   font-weight: 700;
   line-height: var(--Global-Typography-Line-height-Title-Title-S, 24px);
-  
 }
 
 .blog-article-marquee .blog-article-marquee-media {
@@ -91,13 +91,12 @@
 .blog-article-marquee .blog-article-marquee-media picture,
 .blog-article-marquee .blog-article-marquee-media img {
   display: block;
-  max-width: 560px;
-  width: calc(100% + 32px);
+  width: 100%;
+  max-width: 100%;
   height: auto;
   object-fit: contain;
-  border-radius: 20px;
-  margin-left: -16px;
-  margin-right: -16px;
+  border-radius: 0;
+  margin: 0;
 }
 
 .blog-article-marquee .blog-article-marquee-products {
@@ -159,7 +158,6 @@
   line-height: 130%;
 }
 
-
 .blog-article-marquee a.con-button.blue:any-link {
   margin: 0;
   margin-top: var(--spacing-400);
@@ -170,10 +168,11 @@
   box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   .blog-article-marquee {
     padding: var(--spacing-700) 32px;
   }
+
   .blog-article-marquee .blog-article-marquee-row {
     grid-template-columns: repeat(12, 1fr);
     align-items: center;
@@ -183,6 +182,7 @@
   .blog-article-marquee .blog-article-marquee-content {
     grid-column: 1 / span 6;
     gap: var(--spacing-100);
+    padding: 0;
   }
 
   .blog-article-marquee .blog-article-marquee-media {
@@ -195,8 +195,8 @@
     max-width: 640px;
     height: auto;
     object-fit: contain;
-
-    margin-left: 0;  
+    border-radius: 20px;
+    margin-left: 0;
     margin-right: 0;
     width: 100%;
   }

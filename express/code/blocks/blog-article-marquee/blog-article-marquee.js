@@ -16,7 +16,6 @@ const METADATA_KEYS = {
   subcopy: 'blog-article-subheading',
   productName: 'blog-article-product-name',
   date: 'blog-article-date',
-  productCopy: 'blog-article-description',
 };
 
 function getBlogArticleMarqueeMetadata() {
@@ -27,12 +26,6 @@ function getBlogArticleMarqueeMetadata() {
     if (metaValue) acc[key] = metaValue;
     return acc;
   }, {});
-  if (meta.productCopy) {
-    meta.productCopy = meta.productCopy
-      .split(/\r?\n+|[|]{2,}/)
-      .map((entry) => entry.trim())
-      .filter(Boolean);
-  }
   return meta;
 }
 

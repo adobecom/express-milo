@@ -17,7 +17,6 @@ const META_FIXTURES = {
   'blog-article-subheading': 'Launch campaigns faster with ready-to-use assets and reusable creative systems.',
   'blog-article-product-name': 'Adobe Express Metadata',
   'blog-article-date': 'October 02, 2024',
-  'blog-article-description': 'Unlock premium templates, fonts, and collaboration tools built for creative teams.',
 };
 
 const applyMetaFixtures = (fixtures) => Object.entries(fixtures).map(([name, content]) => {
@@ -78,7 +77,6 @@ describe('Blog Article Marquee block', () => {
     const expectedEyebrow = META_FIXTURES['blog-article-eyebrow'];
     const expectedSubcopy = META_FIXTURES['blog-article-subheading'];
     const expectedHeadline = META_FIXTURES['blog-article-title'];
-    const expectedProductCopy = META_FIXTURES['blog-article-description'];
 
     const product = block.querySelector('.blog-article-marquee-product');
     expect(product).to.exist;
@@ -89,7 +87,7 @@ describe('Blog Article Marquee block', () => {
       .filter((p) => !p.classList.contains('blog-article-marquee-product-name')
         && !p.classList.contains('blog-article-marquee-product-date'))
       .map((p) => p.textContent.trim());
-    expect(productCopyParas).to.deep.equal([expectedProductCopy]);
+    expect(productCopyParas).to.deep.equal([]);
     const productDate = product.querySelector('.blog-article-marquee-product-date');
     expect(productDate).to.exist;
     expect(productDate.textContent.trim()).to.equal(expectedProductDate);
@@ -159,7 +157,7 @@ describe('Blog Article Marquee block', () => {
 
   it('omits product highlight when product metadata is absent', async () => {
     const block = document.getElementById('blog-article-marquee-block');
-    ['blog-article-product-name', 'blog-article-date', 'blog-article-description']
+    ['blog-article-product-name', 'blog-article-date']
       .forEach((metaName) => {
         const meta = document.head.querySelector(`meta[name="${metaName}"]`);
         meta?.setAttribute('content', '');
