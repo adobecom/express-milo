@@ -686,6 +686,20 @@ async function createDesktopLayout(block, templates) {
       addTrackedListener(template, 'keydown', handleKeyboard);
     });
 
+    // Handle click outside to close button containers (desktop layout)
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.template')) {
+        const templatesWithHover = parent.querySelectorAll('.template.singleton-hover');
+        templatesWithHover.forEach((template) => {
+          template.classList.remove('singleton-hover');
+          template.setAttribute('tabindex', '0');
+        });
+        currentHoveredElementRef.current = null;
+      }
+    };
+
+    addTrackedListener(document, 'click', handleClickOutside);
+
     return {
       currentIndex: () => 0,
       templateCount: () => templateElements.length,
