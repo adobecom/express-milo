@@ -7,7 +7,6 @@ import createProductImagesContainer from './createComponents/createProductImages
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
 import createDrawer from './createComponents/createDrawer.js';
-import UIStrings from './sample_data/UIStrings.js';
 
 let createTag;
 
@@ -58,6 +57,4 @@ export default async function decorate(block) {
   const productDescriptions = await extractProductDescriptionsFromBlock(block);
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions);
-  console.log('UIStrings');
-  console.log(UIStrings);
 }
