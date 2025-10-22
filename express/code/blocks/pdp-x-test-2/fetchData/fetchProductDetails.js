@@ -23,6 +23,7 @@ export default async function fetchAPIData(productId, parameters, endpoint) {
   } else {
     parametersString = '';
   }
+
   url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
   try {
     apiDataFetch = await fetch(formatUrlForEnvironment(url));

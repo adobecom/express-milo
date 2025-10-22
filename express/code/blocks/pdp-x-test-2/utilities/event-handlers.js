@@ -15,7 +15,7 @@ export function toggleDrawer() {
 function formatProductOptionsToAPIParameters(formDataObject) {
   const parameters = {};
   for (const [key, value] of Object.entries(formDataObject)) {
-    if (key !== 'qty') {
+    if (key !== 'qty' && key !== 'printingprocess') {
       parameters[key] = value;
     }
   }
@@ -73,7 +73,7 @@ export default async function updateAllDynamicElements(productId) {
   const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
   const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
-  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty, updatedConfigurationOptions);
+  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty, updatedConfigurationOptions, formDataObject.printingprocess);
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
