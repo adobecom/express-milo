@@ -1,7 +1,7 @@
 import { getLibs } from '../../../scripts/utils.js';
 import { fetchAPIData } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, formatStringSnakeCase } from '../utilities/utility-functions.js';
-import BlockMediator from '../utilities/BlockMediator.js';
+import BlockMediator from '../../../scripts/block-mediator.min.js';
 import { toggleDrawer } from '../utilities/event-handlers.js';
 
 let createTag;

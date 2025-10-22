@@ -296,7 +296,7 @@ main .template-x.sixcols:not(.print) .masonry-col, main .template-x.fullwidth:no
 
 .template-x .template-link:hover,
 .template-x .template-title-link:hover {
-  color: var(--palette-indigo-1000)
+  color: var(--color-background-accent-hover)
 }
 
 .template-x .toggle-button {
