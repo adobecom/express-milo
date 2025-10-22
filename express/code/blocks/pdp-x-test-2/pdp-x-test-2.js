@@ -42,7 +42,7 @@ async function createGlobalContainer(block, productDetails, productDescriptions)
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productId = extractProductId(block);
+  const productId = await extractProductId(block);
   const productDetails = await fetchAPIData(productId, null, 'getproduct');
   const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
   const productReviews = await fetchAPIData(productId, null, 'getreviews');

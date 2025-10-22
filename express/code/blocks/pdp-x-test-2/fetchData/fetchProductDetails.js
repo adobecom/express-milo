@@ -1,4 +1,4 @@
-function formatUrlForEnvironment(url) {
+export function formatUrlForEnvironment(url) {
   if (window.location.hostname === 'localhost') {
     return `http://localhost:3001?url=${url}`;
   }
