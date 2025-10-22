@@ -77,7 +77,6 @@ export function formatProductDescriptions(productDetails, selectedOptions = {}) 
 }
 
 export async function fetchAPIData(productId, parameters, endpoint) {
-  let apiDataFetch;
   let parametersString;
   let url;
   let topLevelDomain;
@@ -95,14 +94,21 @@ export async function fetchAPIData(productId, parameters, endpoint) {
   }
 
   url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
+  
   try {
-    apiDataFetch = await fetch(formatUrlForEnvironment(url));
+    const apiDataFetch = await fetch(formatUrlForEnvironment(url));
+    
+    if (!apiDataFetch.ok) {
+      throw new Error(`HTTP error! status: ${apiDataFetch.status}`);
+    }
+    
+    const apiDataJSON = await apiDataFetch.json();
+    const apiData = apiDataJSON.data;
+    return apiData;
   } catch (error) {
-    console.info(error);
+    console.error(`Error fetching ${endpoint}:`, error);
+    return null;
   }
-  const apiDataJSON = await apiDataFetch.json();
-  const apiData = apiDataJSON.data;
-  return apiData;
 }
 export async function fetchUIStrings() {
   const apiDataFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/UIStrings.json');
