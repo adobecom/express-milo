@@ -1,5 +1,6 @@
 import fetchAPIData from '../fetchData/fetchProductDetails.js';
-import { formatPriceZazzle, formatDeliveryEstimateDateRange, normalizeProductDetailObject } from './utility-functions.js';
+import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-functions.js';
+import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
 

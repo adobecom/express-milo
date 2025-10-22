@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import fetchAPIData from './fetchData/fetchProductDetails.js';
-import extractProductDescriptionsFromBlock from './utilities/data-formatting.js';
-import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
+import extractProductDescriptionsFromBlock, { normalizeProductDetailObject } from './utilities/data-formatting.js';
+import { extractProductId } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
@@ -47,12 +47,11 @@ export default async function decorate(block) {
   const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
   const productReviews = await fetchAPIData(productId, null, 'getreviews');
   const productRenditions = await fetchAPIData(productId, null, 'getproductrenditions');
+  const quantity = 1;
   const sampleShippingParameters = {
-    zip: '94065',
-    qty: 1,
+    qty: quantity,
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
-  const quantity = 1;
   const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity);
   const productDescriptions = await extractProductDescriptionsFromBlock(block);
   block.innerHTML = '';
