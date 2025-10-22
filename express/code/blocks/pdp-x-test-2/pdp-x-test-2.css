@@ -114,10 +114,43 @@
   font-size: 14px;
   text-align: end;
 }
-.pdpx-compare-price-info-icon {
-  width: 12px;
-  cursor: pointer;
+
+.pdpx-compare-price-info-icon-container {
+  position: relative;
+  .pdpx-compare-price-info-icon-button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    align-self: end;
+    cursor: pointer;
+    .pdpx-compare-price-info-icon {
+      width: 12px;
+    }
+  }
+  .pdpx-info-tooltip-content {
+    position: absolute;
+    display: none;
+    right: 0;
+    background-color: #323232;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 200px;
+    .pdpx-info-tooltip-content-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .pdpx-info-tooltip-content-description {
+      font-size: 12px;
+      margin: 0;
+      padding: 0;
+      padding-top: 10px;
+    }
+  }
 }
+
 .pdpx-savings-text {
   font-size: 12px;
   font-weight: 700;

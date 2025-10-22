@@ -1,4 +1,4 @@
-import fetchAPIData from '../fetchData/fetchProductDetails.js';
+import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 
 export function extractProductId(block) {
   const productIdBlock = block.children[0].children[1].textContent;
@@ -130,6 +130,9 @@ async function addSideQuantityOptions(productDetails) {
 }
 
 export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}) {
+  const UIStrings = await fetchUIStrings();
+  console.log('UIStrings');
+  console.log(UIStrings);
   const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
   const applicableDiscount = productPrice.discountProductItems[1] || productPrice.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
@@ -152,6 +155,9 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
     averageRating: productReviews.reviews.stats.averageRating,
     totalReviews: productReviews.reviews.stats.totalReviews,
+    tooltipTitle: UIStrings.adobe_comp_value_tooltip_title,
+    tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
+    tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
   };
   for (const attribute of Object.values(attributeOptions)) {
     normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute);
