@@ -128,10 +128,13 @@ function createBusinessCardInputs(container, productDetails, formDataObject = {}
 }
 
 function createTShirtInputs(container, productDetails, formDataObject = {}) {
+  const printingProcessSelectorContainer = createPillOptionsSelector(productDetails.printingProcessOptions, 'Printing Process', 'printingprocess', productDetails.id, formDataObject?.printingprocess);
   const styleSelectorContainer = createPillOptionsSelector(productDetails.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
   const colorSelectorContainer = createMiniPillOptionsSelector(productDetails.color, 'Shirt color: ', 'color', '', productDetails.id, formDataObject?.color);
   const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
   const sizeSelectorContainer = createStandardSelector(productDetails.size, 'Size', 'size', productDetails.id, formDataObject?.size);
+
+  container.appendChild(printingProcessSelectorContainer);
   container.appendChild(styleSelectorContainer);
   container.appendChild(colorSelectorContainer);
   container.appendChild(quantitySelectorContainer);

@@ -165,18 +165,30 @@
   width: 100%;
   border-radius: 12px;
 }
-.pdpx-star-ratings-container {
-  display: flex;
-  flex-direction: row;
-}
-.pdpx-product-info-header-ratings-star {
-  width: 17px;
-}
 .pdpx-product-ratings-lockup-container {
   display: flex;
   flex-direction: row;
   align-items: baseline;
   gap: var(--figma-spacing-75);
+  .pdpx-product-info-header-ratings-star {
+    width: 17px;
+  }
+  .pdpx-star-ratings {
+    display: flex;
+    align-self: anchor-center;
+  }
+  .pdpx-ratings-number {
+    font-weight: 700;
+  }
+  .pdpx-ratings-amount {
+    background: transparent;
+    font-size: 14px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    text-decoration-line: underline;
+    cursor: pointer;
+  }
 }
 .pdpx-delivery-estimate-pill {
   display: flex;
@@ -317,6 +329,16 @@
 }
 
 /* MINI PILL SELECTOR */
+.pdpx-pill-selector-label-compare-link {
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .pdpx-mini-pill-selector-options-container {
   display: flex;
   flex-direction: row;
