@@ -24,18 +24,15 @@ export default async function fetchAPIData(productId, parameters, endpoint) {
     parametersString = '';
   }
   url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
-
   try {
     apiDataFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
     console.info(error);
   }
-
   const apiDataJSON = await apiDataFetch.json();
   const apiData = apiDataJSON.data;
   return apiData;
 }
-
 export async function fetchUIStrings() {
   const apiDataFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/UIStrings.json');
   const apiDataJSON = await apiDataFetch.json();

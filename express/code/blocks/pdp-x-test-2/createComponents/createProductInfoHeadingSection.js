@@ -11,14 +11,12 @@ function createProductTitle(productDetails) {
 }
 
 function createStarRatings(productDetails) {
-  const starRatingsContainer = createTag('div', { class: 'pdpx-star-ratings-container' });
   const starRatings = createTag('div', { class: 'pdpx-star-ratings' });
   for (let i = 0; i < 5; i += 1) {
     const star = createTag('img', { class: 'pdpx-product-info-header-ratings-star', src: '/express/code/icons/star-sharp.svg' });
     starRatings.appendChild(star);
   }
-  starRatingsContainer.appendChild(starRatings);
-  return starRatingsContainer;
+  return starRatings;
 }
 
 function createRatingsNumber(productDetails) {
@@ -33,7 +31,7 @@ function createRatingsAmount(productDetails) {
   const ratingsAmountText = formatLargeNumberToK(productDetails.totalReviews);
   const ratingsAmountContainer = createTag('div', { class: 'pdpx-ratings-amount-container' });
   ratingsAmountContainer.className = 'pdpx-ratings-amount-container';
-  const ratingsAmount = createTag('a', { class: 'pdpx-ratings-amount', href: '#' }, ratingsAmountText);
+  const ratingsAmount = createTag('button', { class: 'pdpx-ratings-amount', type: 'button' }, ratingsAmountText);
   ratingsAmountContainer.appendChild(ratingsAmount);
   return ratingsAmountContainer;
 }
