@@ -189,5 +189,6 @@
     "zi_search_SearchPage_Search_No_Found_Query": "No products found for \"{query}\" ðŸ˜ž",
     "zi_search_SearchPage_Search_Placeholder": "Find a product",
     "zi_search_SearchPage_Title": "What do you want to print?",
-    "zi_create_bulk_reviewBulkOrderDialog_okButtonLabel": "Add to cart"
+    "zi_create_bulk_reviewBulkOrderDialog_okButtonLabel": "Add to cart",
+    "adobe_comp_value_tooltip_title": "Comparative Value Price"
 }
