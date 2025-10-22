@@ -14,6 +14,7 @@ const METADATA_KEYS = {
   eyebrow: 'category',
   headline: 'headline',
   subcopy: 'subheading',
+  title: 'og:title',
   productName: 'author',
   date: 'publication-date',
   description: 'description',
@@ -23,7 +24,7 @@ const METADATA_KEYS = {
 function getBlogArticleMarqueeMetadata() {
   if (!getMetadata) return {};
   const sanitize = (value) => (typeof value === 'string' ? value.trim() : '');
-  const meta = Object.entries(METADATA_KEYS).reduce((acc, [key, metaName]) => {
+  const meta = Object.entries(METADATA_KEYS).reduce((acc, [key, metaName]) => { 
     const metaValue = sanitize(getMetadata(metaName));
     if (metaValue) acc[key] = metaValue;
     return acc;
@@ -249,8 +250,8 @@ function decorateContentColumn(column, metadata = {}, ctaNode = null, fallbackNo
     }
   }
 
-  if (metadata.headline) {
-    column.append(createTag('h1', null, metadata.headline));
+  if (metadata.title) {
+    column.append(createTag('h1', null, metadata.title));
   } else {
     const fallbackHeadline = takeFallback((node) => /^H[1-6]$/.test(node.tagName));
     if (fallbackHeadline) column.append(fallbackHeadline);
