@@ -51,7 +51,14 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
-function convertAttributeToOptionsObject(attribute) {
+function convertAttributeToOptionsObject(attribute, printingprocess) {
+  if (attribute.title === 'Color & Print Process') {
+    if (printingprocess === 'classic') {
+      attribute.values = attribute.values.filter((value) => !value.properties.tags?.includes('showswhite'));
+    } else if (printingprocess === 'vivid') {
+      attribute.values = attribute.values.filter((value) => value.properties.tags?.includes('showswhite'));
+    }
+  }
   const options = attribute.values;
   const optionsArray = [];
   for (let i = 0; i < options.length; i += 1) {
@@ -112,7 +119,7 @@ async function addPrintingProcessOptions(attributeOptions, productRenditions) {
   if (fourColorPrintingAvailable) {
     printingProcessOptions.push({
       title: 'Classic 4-Color printing',
-      name: 'classic-printing',
+      name: 'classic',
       thumbnail: productRenditions.realviewUrls.Front,
       priceAdjustment: formatPriceZazzle('0', true),
     });
@@ -120,21 +127,20 @@ async function addPrintingProcessOptions(attributeOptions, productRenditions) {
   if (vividPrintingAvailable) {
     printingProcessOptions.push({
       title: 'Vivid 5-Color printing',
-      name: 'vivid-printing',
+      name: 'vivid',
       thumbnail: productRenditions.realviewUrls.Front,
-      priceAdjustment: formatPriceZazzle('2.95', true),
+      priceAdjustment: formatPriceZazzle('0', true),
     });
   }
   return printingProcessOptions;
 }
 
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}) {
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, printingprocess = 'classic') {
   const UIStrings = await fetchUIStrings();
   const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
   const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
   const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
-
   const normalizedProductDetails = {
     id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
@@ -157,19 +163,19 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
     tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
   };
-  for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute);
+  if (productDetails.product.productType === 'zazzle_shirt') {
+    const printingProcessOptions = await addPrintingProcessOptions(attributeOptions, productRenditions);
+    normalizedProductDetails.printingProcessOptions = printingProcessOptions;
   }
-
+  for (const attribute of Object.values(attributeOptions)) {
+    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute, printingprocess);
+  }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   normalizedProductDetails.quantities = quantitiesOptions;
   if (productDetails.product.productType === 'zazzle_businesscard') {
     const sideQuantityOptions = await addSideQuantityOptions(productRenditions);
     normalizedProductDetails.sideQuantityOptions = sideQuantityOptions;
   }
-  if (productDetails.product.productType === 'zazzle_shirt') {
-    const printingProcessOptions = await addPrintingProcessOptions(attributeOptions, productRenditions);
-    normalizedProductDetails.printingProcessOptions = printingProcessOptions;
-  }
+
   return normalizedProductDetails;
 }
