@@ -12,11 +12,13 @@ const [, { default: decorate }] = await Promise.all([
 const base = await readFile({ path: './mocks/base.html' });
 
 const META_FIXTURES = {
-  'blog-article-eyebrow': 'Metadata Eyebrow',
-  'blog-article-title': 'Bring your product story to life',
-  'blog-article-subheading': 'Launch campaigns faster with ready-to-use assets and reusable creative systems.',
-  'blog-article-product-name': 'Adobe Express Metadata',
-  'blog-article-date': 'October 02, 2024',
+  category: 'Enterprise',
+  title: 'Bring your product story to life',
+  subheading: 'Launch campaigns faster with ready-to-use assets and reusable creative systems.',
+  author: 'Adobe Express Metadata',
+  'publication-date': 'October 20, 2025',
+  description: 'Unlock premium templates, fonts, and collaboration tools built for creative teams.',
+  tags: 'Small business\nFeatured\nSocial media marketing',
 };
 
 const applyMetaFixtures = (fixtures) => Object.entries(fixtures).map(([name, content]) => {
@@ -72,11 +74,11 @@ describe('Blog Article Marquee block', () => {
     const rows = wrapper.querySelectorAll(':scope > div');
     expect(rows.length).to.equal(1);
 
-    const expectedProductName = META_FIXTURES['blog-article-product-name'];
-    const expectedProductDate = META_FIXTURES['blog-article-date'];
-    const expectedEyebrow = META_FIXTURES['blog-article-eyebrow'];
-    const expectedSubcopy = META_FIXTURES['blog-article-subheading'];
-    const expectedHeadline = META_FIXTURES['blog-article-title'];
+    const expectedProductName = META_FIXTURES.author;
+    const expectedProductDate = META_FIXTURES['publication-date'];
+    const expectedEyebrow = META_FIXTURES.category;
+    const expectedSubcopy = META_FIXTURES.subheading;
+    const expectedHeadline = META_FIXTURES.title;
 
     const product = block.querySelector('.blog-article-marquee-product');
     expect(product).to.exist;
@@ -87,7 +89,10 @@ describe('Blog Article Marquee block', () => {
       .filter((p) => !p.classList.contains('blog-article-marquee-product-name')
         && !p.classList.contains('blog-article-marquee-product-date'))
       .map((p) => p.textContent.trim());
-    expect(productCopyParas).to.deep.equal([]);
+    expect(productCopyParas).to.deep.equal([
+      META_FIXTURES.description,
+      'Tags: Small business, Featured, Social media marketing',
+    ]);
     const productDate = product.querySelector('.blog-article-marquee-product-date');
     expect(productDate).to.exist;
     expect(productDate.textContent.trim()).to.equal(expectedProductDate);
@@ -135,7 +140,7 @@ describe('Blog Article Marquee block', () => {
 
   it('omits eyebrow when metadata value is empty', async () => {
     const block = document.getElementById('blog-article-marquee-block');
-    const eyebrowMeta = document.head.querySelector('meta[name="blog-article-eyebrow"]');
+    const eyebrowMeta = document.head.querySelector('meta[name="category"]');
     eyebrowMeta?.setAttribute('content', '');
 
     await decorate(block);
@@ -157,7 +162,7 @@ describe('Blog Article Marquee block', () => {
 
   it('omits product highlight when product metadata is absent', async () => {
     const block = document.getElementById('blog-article-marquee-block');
-    ['blog-article-product-name', 'blog-article-date']
+    ['author', 'publication-date', 'description', 'tags']
       .forEach((metaName) => {
         const meta = document.head.querySelector(`meta[name="${metaName}"]`);
         meta?.setAttribute('content', '');

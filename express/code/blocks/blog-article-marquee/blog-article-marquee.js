@@ -11,11 +11,13 @@ const PRODUCT_ICON_PATH = '/express/code/blocks/blog-article-marquee/adobe.webp'
 const PRODUCT_ICON_SIZE = 48;
 
 const METADATA_KEYS = {
-  eyebrow: 'blog-article-eyebrow',
-  headline: 'blog-article-title',
-  subcopy: 'blog-article-subheading',
-  productName: 'blog-article-product-name',
-  date: 'blog-article-date',
+  eyebrow: 'category',
+  headline: 'headline',
+  subcopy: 'subheading',
+  productName: 'author',
+  date: 'publication-date',
+  description: 'description',
+  tags: 'tags',
 };
 
 function getBlogArticleMarqueeMetadata() {
@@ -26,6 +28,28 @@ function getBlogArticleMarqueeMetadata() {
     if (metaValue) acc[key] = metaValue;
     return acc;
   }, {});
+  const productCopy = [];
+  if (meta.description) {
+    productCopy.push(meta.description);
+  }
+  const tags = Array.isArray(meta.tags)
+    ? meta.tags
+    : meta.tags
+      ?.split(/\r?\n+|[|]{2,}|,+/)
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+
+  if (tags?.length) {
+    productCopy.push(`Tags: ${tags.join(', ')}`);
+  }
+
+  if (productCopy.length) {
+    meta.productCopy = productCopy;
+  }
+
+  delete meta.description;
+  delete meta.tags;
+
   return meta;
 }
 
@@ -422,6 +446,7 @@ export default async function decorate(block) {
   block.classList.add('blog-article-marquee');
 
   const metadata = getBlogArticleMarqueeMetadata();
+  console.log(metadata);
 
   const {
     wrapper,
