@@ -1,6 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import { fetchAPIData, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
-import { extractProductId, normalizeProductDetailObject } from './utilities/utility-functions.js';
+import { extractProductId } from './utilities/utility-functions.js';
+import { normalizeProductDetailObject } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';

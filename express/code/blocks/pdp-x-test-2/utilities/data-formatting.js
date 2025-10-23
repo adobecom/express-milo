@@ -1,4 +1,4 @@
-import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
+import { fetchAPIData, fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle } from './utility-functions.js';
 
 export default function extractProductDescriptionsFromBlock(block) {
