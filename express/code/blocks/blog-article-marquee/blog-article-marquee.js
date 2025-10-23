@@ -199,7 +199,7 @@ function buildProductHighlight(metadata = {}, fallbackMedia = null) {
     const mediaWrapper = normalizeProductMedia(fallbackMedia);
     if (mediaWrapper) product.append(mediaWrapper);
   } else {
-    const iconPath = productIcon;
+    const iconPath = productIcon || DEFAULT_PRODUCT_ICON_PATH;
     if (iconPath) {
       const logoImg = createTag('img', {
         src: iconPath,
