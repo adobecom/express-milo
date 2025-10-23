@@ -6,26 +6,26 @@ let createTag;
 
 export default async function createProductDetailsSection(productDescriptions) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  
+
   // Main section container with flex
   const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section' });
-  
+
   // Title container
   const productDetailsSectionTitleContainer = createTag('div', { class: 'pdpx-product-details-section-title-container' });
   const productDetailsSectionTitle = createTag('span', { class: 'pdpx-product-details-section-title' }, 'Product Details');
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
-  
+
   // Items container (wrapper for all accordion items)
   const productDetailsItemsContainer = createTag('div', { class: 'pdpx-product-details-items-container' });
   productDetailsSectionContainer.appendChild(productDetailsItemsContainer);
-  
+
   // Track which item is currently expanded
   let expandedItemIndex = -1;
-  
+
   // Generate unique ID for this accordion instance
   const accordionId = `pdpx-details-${Math.floor(Math.random() * 10000)}`;
-  
+
   // Function to build accordion items
   function buildAccordionItems(descriptions, keepExpandedIndex = true) {
     // Remember which item was expanded before clearing
@@ -37,17 +37,17 @@ export default async function createProductDetailsSection(productDescriptions) {
         }
       });
     }
-    
+
     // Clear existing items
     productDetailsItemsContainer.innerHTML = '';
-    
+
     // Build new items
     for (let i = 0; i < descriptions.length; i += 1) {
       // If this was the expanded item, keep it expanded
       const shouldExpand = keepExpandedIndex && i === expandedItemIndex;
-      
+
       const productDetailsSectionItemContainer = createTag('div', { class: 'pdpx-product-details-section-item-container' });
-      
+
       // Button (no heading wrapper)
       const productDetailsSectionItemTitleContainer = createTag('button', {
         type: 'button',
@@ -56,12 +56,12 @@ export default async function createProductDetailsSection(productDescriptions) {
         'aria-expanded': shouldExpand ? 'true' : 'false',
         'aria-controls': `${accordionId}-content-${i + 1}`,
       });
-      
+
       productDetailsSectionItemTitleContainer.textContent = descriptions[i].title;
-      
+
       const productDetailsSectionItemIcon = createTag('span', { class: 'accordion-icon' });
       productDetailsSectionItemTitleContainer.appendChild(productDetailsSectionItemIcon);
-      
+
       // Content (aria-hidden approach)
       const productDetailsSectionItemDescription = createTag('div', {
         'aria-labelledby': `${accordionId}-trigger-${i + 1}`,
@@ -69,20 +69,22 @@ export default async function createProductDetailsSection(productDescriptions) {
         class: shouldExpand ? 'descr-details visible' : 'descr-details',
         'aria-hidden': shouldExpand ? 'false' : 'true',
       });
-      
+
       // Wrap content in inner div
       const contentInner = createTag('div');
       contentInner.innerHTML = descriptions[i].description;
       productDetailsSectionItemDescription.appendChild(contentInner);
-      
+
       productDetailsSectionItemContainer.appendChild(productDetailsSectionItemTitleContainer);
       productDetailsSectionItemContainer.appendChild(productDetailsSectionItemDescription);
       productDetailsItemsContainer.appendChild(productDetailsSectionItemContainer);
-      
-      // Button click handler
+
+      // Button click handler (capture current index)
+      const currentIndex = i;
+      // eslint-disable-next-line no-loop-func
       productDetailsSectionItemTitleContainer.addEventListener('click', () => {
         const isExpanded = productDetailsSectionItemTitleContainer.getAttribute('aria-expanded') === 'true';
-        
+
         // Close all others
         const allButtons = productDetailsItemsContainer.querySelectorAll('.accordion-trigger');
         const allContents = productDetailsItemsContainer.querySelectorAll('.descr-details');
@@ -93,7 +95,7 @@ export default async function createProductDetailsSection(productDescriptions) {
             allContents[idx].classList.remove('visible');
           }
         });
-        
+
         // Toggle current
         if (isExpanded) {
           productDetailsSectionItemTitleContainer.setAttribute('aria-expanded', 'false');
@@ -104,15 +106,31 @@ export default async function createProductDetailsSection(productDescriptions) {
           productDetailsSectionItemTitleContainer.setAttribute('aria-expanded', 'true');
           productDetailsSectionItemDescription.setAttribute('aria-hidden', 'false');
           productDetailsSectionItemDescription.classList.add('visible');
-          expandedItemIndex = i;
+          expandedItemIndex = currentIndex;
+
+          // Smooth scroll into view after content expands
+          setTimeout(() => {
+            const rect = productDetailsSectionItemContainer.getBoundingClientRect();
+            // Scroll if: top is above viewport OR bottom extends below viewport
+            const needsScroll = rect.top < 0 || rect.bottom > window.innerHeight;
+
+            if (needsScroll) {
+              // Scroll the top of the accordion into view
+              productDetailsSectionItemContainer.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+                inline: 'nearest',
+              });
+            }
+          }, 260); // Wait for animation to complete (250ms + 10ms buffer)
         }
       });
     }
   }
-  
+
   // Build initial items (all collapsed)
   buildAccordionItems(productDescriptions, false);
-  
+
   // Subscribe to product updates
   BlockMediator.subscribe('product:updated', (data) => {
     const { productDetails, formData } = data;

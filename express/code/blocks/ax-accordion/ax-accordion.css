@@ -73,18 +73,21 @@
 
 /* Content */
 .ax-accordion-item-description {
-  display: none;
-  padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-300);
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 var(--spacing-300);
   color: #505050;
   font-size: var(--body-font-size-s);
   font-style: normal;
   font-weight: var(--body-font-weight);
   line-height: var(--heading-line-height);
+  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out;
 }
 
 .ax-accordion-item-container.expanded .ax-accordion-item-description,
 .ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-description {
-  display: block;
+  max-height: 2000px;
+  padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-300);
 }
 
 /* Lists in content */
