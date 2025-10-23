@@ -7,7 +7,7 @@ const MOBILE_MAX = 600;
 const TABLET_MAX = 900;
 const HERO_IMAGE_WIDTHS = { mobile: 480, tablet: 720, desktop: 960 };
 const PRECONNECT_DATA_ATTRIBUTE = 'blogArticleMarquee';
-const PRODUCT_ICON_PATH = '/express/code/blocks/blog-article-marquee/adobe.webp';
+const PRODUCT_ICON_PATH = '/express/code/blocks/blog-article-marquee/adobe.png';
 const PRODUCT_ICON_SIZE = 48;
 
 const METADATA_KEYS = {
