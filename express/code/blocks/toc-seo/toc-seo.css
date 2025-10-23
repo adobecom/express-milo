@@ -25,6 +25,13 @@
   padding-bottom: 0;
 }
 
+/* Desktop scrollable TOC for tall content */
+.toc.toc-container.toc-desktop.toc-scrollable {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 /* Mobile fixed positioning */
 .toc.toc-container.toc-mobile-fixed {
   position: fixed;

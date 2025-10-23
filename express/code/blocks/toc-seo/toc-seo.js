@@ -251,6 +251,11 @@ function preventOverlapWithFooter(position, tocElement) {
 function applyPositionToElement(tocElement, topPosition) {
   tocElement.style.setProperty('--toc-top-position', `${topPosition + 45}px`);
   tocElement.classList.add('toc-desktop');
+
+  // Check if this TOC needs scrolling (simple one-time check)
+  if (tocElement.dataset.needsScrolling === 'true') {
+    tocElement.classList.add('toc-scrollable');
+  }
 }
 
 /**
@@ -295,7 +300,7 @@ function handleDesktopPositioning(tocElement) {
  */
 function cleanupDesktopPositioning(tocElement) {
   if (!isDesktopViewport() && tocElement) {
-    tocElement.classList.remove('toc-desktop');
+    tocElement.classList.remove('toc-desktop', 'toc-scrollable');
     tocElement.style.removeProperty('--toc-top-position');
   }
 }
@@ -843,9 +848,20 @@ function setupEventHandlers(tocElement) {
       // Desktop: remove mobile/tablet sticky, add desktop positioning
       tocElement.classList.remove('toc-mobile-fixed');
       tocElement.classList.add('toc-desktop');
+
+      // Recalculate scrolling need on resize
+      const tocHeight = tocElement.offsetHeight;
+      const maxAvailableHeight = window.innerHeight - CONFIG.positioning.fixedTopDistance - 100;
+      if (tocHeight > maxAvailableHeight) {
+        tocElement.dataset.needsScrolling = 'true';
+      } else {
+        tocElement.dataset.needsScrolling = 'false';
+        tocElement.classList.remove('toc-scrollable');
+      }
     } else {
       // Mobile/Tablet: remove desktop positioning
-      tocElement.classList.remove('toc-desktop');
+      tocElement.classList.remove('toc-desktop', 'toc-scrollable');
+      tocElement.dataset.needsScrolling = 'false';
     }
 
     // Remove placeholder if it exists
@@ -979,6 +995,16 @@ export default async function decorate(block) {
     if (highlightElement) {
       // Insert after the highlight element
       highlightElement.insertAdjacentElement('afterend', toc);
+
+      // Check if TOC needs scrolling (simple one-time check after insertion)
+      if (window.innerWidth >= 1024) {
+        const tocHeight = toc.offsetHeight;
+        const maxAvailableHeight = window.innerHeight - CONFIG.positioning.fixedTopDistance - 100;
+        if (tocHeight > maxAvailableHeight) {
+          toc.dataset.needsScrolling = 'true';
+        }
+      }
+
       // Hide the original block after successful TOC creation
       block.style.display = 'none';
     } else {
