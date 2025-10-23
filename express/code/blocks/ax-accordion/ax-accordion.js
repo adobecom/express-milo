@@ -3,19 +3,6 @@ import { getLibs, createTag } from '../../scripts/utils.js';
 /**
  * AX Accordion Block
  * Clean, accessible accordion component with WAI-ARIA support
- * Primary use: Programmatic data injection for PDP
- * Optional: Can be authored if needed
- *
- * @example Programmatic Usage:
- * const accordion = document.querySelector('.ax-accordion');
- * accordion.accordionData = [
- *   { title: 'Section 1', content: '<p>Content here</p>' },
- *   { title: 'Section 2', content: '<p>More content</p>' }
- * ];
- * await axAccordionDecorate(accordion);
- *
- * @example Update accordion:
- * accordion.updateAccordion(newData, 'Section 1'); // Force expand Section 1
  */
 
 // Animation constants - keep in sync with CSS
@@ -34,12 +21,7 @@ const eventHandlers = new WeakMap();
 // WeakMap to cache button references per accordion
 const buttonCache = new WeakMap();
 
-/**
- * Throttle function to limit execution rate
- * @param {Function} func - Function to throttle
- * @param {number} wait - Minimum time between executions (ms)
- * @returns {Function} Throttled function
- */
+// Throttle function to limit execution rate
 function throttle(func, wait) {
   let timeout = null;
   let previous = 0;
@@ -236,10 +218,8 @@ function buildAccordion(block, items, forceExpandTitle = null) {
   });
 }
 
-/**
- * Extract items from authored content
- * Expected structure: 2-column table (title | content)
- */
+// Extract items from authored content
+// Expected structure: 2-column table (title | content)
 function extractItemsFromBlock(block) {
   const items = [];
   const rows = Array.from(block.children);
@@ -257,11 +237,8 @@ function extractItemsFromBlock(block) {
   return items;
 }
 
-/**
- * Auto-collapse all accordions when user scrolls back up past the block
- * Optimized with Intersection Observer and throttled scroll events
- * @param {HTMLElement} block - The accordion block element
- */
+// Auto-collapse all accordions when user scrolls back up past the block
+// Optimized with Intersection Observer and throttled scroll events
 function setupAutoCollapse(block) {
   let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
   let hasExpandedItem = false;
@@ -342,9 +319,7 @@ function setupAutoCollapse(block) {
   window.addEventListener('scroll', scrollHandler, { passive: true });
 }
 
-/**
- * Main decorate function
- */
+// Main decorate function
 export default async function decorate(block) {
   // Initialize utils
   await initUtils();
