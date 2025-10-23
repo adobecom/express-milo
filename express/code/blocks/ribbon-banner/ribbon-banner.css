@@ -31,10 +31,9 @@
     border: none;
 }
 .section .ribbon-banner a.con-button.outline:hover {
-    background-color: transparent;
+    background-color: rgba(19, 19, 19, 0.08);
     border-color: transparent;
-    color: var(--color-gray-800);
-    outline-color: var(--color-gray-800);
+    /* keep text and outline intact */
 }
 .ribbon-banner.text-light {
     color: white;
@@ -45,7 +44,7 @@
     outline-color: white;
 }
 .ribbon-banner.text-light a.con-button.outline:hover {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.16);
     border-color: transparent;
     color: #e1e1e1;
     outline-color: #e1e1e1;
