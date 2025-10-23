@@ -16,7 +16,7 @@ const METADATA_KEYS = {
   subcopy: 'subheading',
   title: 'og:title',
   productName: 'author',
-  productIcon: 'product-icon',
+  productIcon: 'blog-marquee-icon',
   date: 'publication-date',
   description: 'description',
   tags: 'tags',
