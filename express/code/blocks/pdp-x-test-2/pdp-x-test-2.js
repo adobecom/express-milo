@@ -32,8 +32,15 @@ async function createProductInfoContainer(productDetails, productDescriptions, d
 async function createGlobalContainer(block, productDetails, productDescriptions) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   const { curtain, drawer } = await createDrawer(block);
-  const productImagesContainer = await createProductImagesContainer(productDetails.realViews, productDetails.heroImage);
-  const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions, drawer);
+  const productImagesContainer = await createProductImagesContainer(
+    productDetails.realViews,
+    productDetails.heroImage,
+  );
+  const productInfoSectionWrapper = await createProductInfoContainer(
+    productDetails,
+    productDescriptions,
+    drawer,
+  );
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
   block.appendChild(globalContainer);
@@ -50,7 +57,13 @@ export default async function decorate(block) {
     qty: 1,
   };
 
-  const [productDetails, productPrice, productReviews, productRenditions, productShippingEstimates] = await Promise.all([
+  const [
+    productDetails,
+    productPrice,
+    productReviews,
+    productRenditions,
+    productShippingEstimates,
+  ] = await Promise.all([
     fetchAPIData(productId, null, 'getproduct'),
     fetchAPIData(productId, null, 'getproductpricing'),
     fetchAPIData(productId, null, 'getreviews'),
@@ -59,7 +72,14 @@ export default async function decorate(block) {
   ]);
 
   // Process the data
-  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, 1);
+  const productDetailsFormatted = await normalizeProductDetailObject(
+    productDetails,
+    productPrice,
+    productReviews,
+    productRenditions,
+    productShippingEstimates,
+    1,
+  );
   const productDescriptions = formatProductDescriptions(productDetails);
 
   block.innerHTML = '';

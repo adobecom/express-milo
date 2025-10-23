@@ -2,6 +2,7 @@
 
 .ax-accordion {
   width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--color-gray-600);
@@ -73,24 +74,39 @@
 
 /* Content */
 .ax-accordion-item-description {
-  max-height: 0;
+  display: grid;
+  grid-template-rows: 0fr;
   overflow: hidden;
-  padding: 0 var(--spacing-300);
-  opacity: 0;
   color: #505050;
   font-size: var(--body-font-size-s);
   font-style: normal;
   font-weight: var(--body-font-weight);
   line-height: var(--heading-line-height);
-  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out, opacity 100ms ease-in;
+  transition: grid-template-rows 200ms ease-in, padding 200ms ease-in;
+  max-width: 100%;
+}
+
+.ax-accordion-item-description > * {
+  min-height: 0;
+  padding: 0 var(--spacing-300);
+  opacity: 0;
+  transition: opacity 50ms linear, padding 200ms ease-in;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .ax-accordion-item-container.expanded .ax-accordion-item-description,
 .ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-description {
-  max-height: 450px;
+  grid-template-rows: 1fr;
+}
+
+.ax-accordion-item-container.expanded .ax-accordion-item-description > *,
+.ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-description > * {
   padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-300);
   opacity: 1;
-  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out, opacity 250ms ease-in-out;
+  transition: opacity 250ms ease-out, padding 250ms ease-in-out;
 }
 
 /* Lists in content */

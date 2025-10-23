@@ -35,7 +35,7 @@ async function updateAllDynamicElements(productId) {
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
-  
+
   // Fetch updated product data
   const [productPriceAPIResponse, shippingEstimates, renditions, productDetails] = await Promise.all([
     fetchAPIData(productId, parameters, 'getproductpricing'),
@@ -43,7 +43,7 @@ async function updateAllDynamicElements(productId) {
     fetchAPIData(productId, parameters, 'getproductrenditions'),
     fetchAPIData(productId, parameters, 'getproduct'),
   ]);
-  
+
   // Update price
   if (productPriceAPIResponse.discountProductItems.length > 0) {
     const { discountString } = productPriceAPIResponse.discountProductItems[0];
@@ -55,16 +55,16 @@ async function updateAllDynamicElements(productId) {
     const productPrice = productPriceAPIResponse.unitPrice;
     document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
   }
-  
+
   // Update images
   document.getElementById('pdpx-product-hero-image').src = renditions.realviewUrls.Front;
   const carouselImages = document.getElementsByClassName('pdpx-image-thumbnail-carousel-item-image');
   for (let i = 0; i < carouselImages.length; i += 1) {
     carouselImages[i].src = renditions.realviewUrls[carouselImages[i].dataset.imageType];
   }
-  
-  // Publish event with updated product details
-  BlockMediator.publish('product:updated', {
+
+  // Set updated product details in BlockMediator (triggers subscribers)
+  BlockMediator.set('product:updated', {
     productDetails,
     formData: formDataObject,
     shippingEstimates,

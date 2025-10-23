@@ -1,3 +1,8 @@
+.pdp-x-test-2,
+.pdp-x-test-2 * {
+  box-sizing: border-box;
+}
+
 .pdp-x-test-2 {
   --figma-spacing-0: 0px;
   --figma-spacing-50: 2px;
@@ -74,6 +79,7 @@
 }
 .pdpx-product-info-section-wrapper {
   width: 100%;
+  max-width: 100%;
   order: 3;
 }
 .pdpx-product-title {
@@ -388,6 +394,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 100%;
 }
 
 .pdpx-product-details-section-title-container {
@@ -402,95 +409,7 @@
 }
 
 /* Container for all accordion items */
-.pdpx-product-details-items-container {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--color-gray-600);
-}
-
-/* Accordion Trigger Button */
-.accordion-trigger {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-300) var(--spacing-200);
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--color-gray-600);
-  cursor: pointer;
-  text-align: left;
-  flex: 1 0 0;
-  color: var(--color-gray-950);
-  font-size: var(--body-font-size-s);
-  font-style: normal;
-  font-weight: var(--subheading-font-weight);
-  line-height: 20px;
-}
-
-.accordion-trigger:hover {
-  background-color: var(--color-gray-100);
-}
-
-/* Accordion Icon */
-.accordion-icon {
-  width: var(--spacing-200);
-  height: var(--spacing-200);
-  flex-shrink: 0;
-  margin-left: var(--spacing-300);
-  display: flex;
-  padding: var(--spacing-100);
-  justify-content: center;
-  align-items: center;
-  background-size: var(--spacing-200) var(--spacing-200);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-image: url('/express/code/icons/plus-heavy.svg');
-}
-
-.accordion-trigger[aria-expanded="true"] .accordion-icon {
-  background-image: url('/express/code/icons/minus-heavy.svg');
-}
-
-/* Accordion Content */
-.descr-details {
-  max-height: 0;
-  overflow: hidden;
-  padding: 0 var(--spacing-300);
-  opacity: 0;
-  color: #505050;
-  font-size: var(--body-font-size-s);
-  font-style: normal;
-  font-weight: var(--body-font-weight);
-  line-height: var(--heading-line-height);
-  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out, opacity 100ms ease-in;
-}
-
-.descr-details.visible {
-  max-height: 450px;
-  padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-300);
-  opacity: 1;
-  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out, opacity 250ms ease-in-out;
-}
-
-/* Lists in accordion content */
-.pdpx-details-list {
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-  list-style-type: disc;
-}
-
-/* Border handling for expanded items */
-.accordion-trigger[aria-expanded="true"] {
-  border-bottom: none;
-}
-
-.accordion-trigger[aria-expanded="true"] + .descr-details + .pdpx-product-details-section-item-container .accordion-trigger,
-.pdpx-product-details-section-item-container:has(.accordion-trigger[aria-expanded="true"]) + .pdpx-product-details-section-item-container .accordion-trigger {
-  border-top: 1px solid var(--color-gray-600);
-}
+/* Accordion styles now handled by ax-accordion block */
 
 .pdpx-hidden-select-input {
   display: none;

@@ -1,13 +1,14 @@
 import { getLibs } from '../../../scripts/utils.js';
 import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
+import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
 
 let createTag;
 
 export default async function createProductDetailsSection(productDescriptions) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
 
-  // Main section container with flex
+  // Main section container
   const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section' });
 
   // Title container
@@ -16,127 +17,54 @@ export default async function createProductDetailsSection(productDescriptions) {
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
 
-  // Items container (wrapper for all accordion items)
-  const productDetailsItemsContainer = createTag('div', { class: 'pdpx-product-details-items-container' });
-  productDetailsSectionContainer.appendChild(productDetailsItemsContainer);
+  // Create ax-accordion block element
+  const accordionBlock = createTag('div', { class: 'ax-accordion pdpx-product-details-accordion' });
 
-  // Track which item is currently expanded
-  let expandedItemIndex = -1;
+  // Map data format: formatProductDescriptions returns { title, description }
+  // but ax-accordion expects { title, content }
+  const mapToAccordionFormat = (descriptions) => descriptions.map((item) => ({
+    title: item.title,
+    content: item.description,
+  }));
 
-  // Generate unique ID for this accordion instance
-  const accordionId = `pdpx-details-${Math.floor(Math.random() * 10000)}`;
+  // Set accordion data programmatically
+  accordionBlock.accordionData = mapToAccordionFormat(productDescriptions);
 
-  // Function to build accordion items
-  function buildAccordionItems(descriptions, keepExpandedIndex = true) {
-    // Remember which item was expanded before clearing
-    if (keepExpandedIndex) {
-      const existingItems = productDetailsItemsContainer.querySelectorAll('.pdpx-product-details-section-item-container');
-      existingItems.forEach((item, idx) => {
-        if (item.classList.contains('expanded')) {
-          expandedItemIndex = idx;
-        }
-      });
-    }
+  // Decorate the accordion
+  await axAccordionDecorate(accordionBlock);
 
-    // Clear existing items
-    productDetailsItemsContainer.innerHTML = '';
+  // Append to container
+  productDetailsSectionContainer.appendChild(accordionBlock);
 
-    // Build new items
-    for (let i = 0; i < descriptions.length; i += 1) {
-      // If this was the expanded item, keep it expanded
-      const shouldExpand = keepExpandedIndex && i === expandedItemIndex;
-
-      const productDetailsSectionItemContainer = createTag('div', { class: 'pdpx-product-details-section-item-container' });
-
-      // Button (no heading wrapper)
-      const productDetailsSectionItemTitleContainer = createTag('button', {
-        type: 'button',
-        id: `${accordionId}-trigger-${i + 1}`,
-        class: 'accordion-trigger',
-        'aria-expanded': shouldExpand ? 'true' : 'false',
-        'aria-controls': `${accordionId}-content-${i + 1}`,
-      });
-
-      productDetailsSectionItemTitleContainer.textContent = descriptions[i].title;
-
-      const productDetailsSectionItemIcon = createTag('span', { class: 'accordion-icon' });
-      productDetailsSectionItemTitleContainer.appendChild(productDetailsSectionItemIcon);
-
-      // Content (aria-hidden approach)
-      const productDetailsSectionItemDescription = createTag('div', {
-        'aria-labelledby': `${accordionId}-trigger-${i + 1}`,
-        id: `${accordionId}-content-${i + 1}`,
-        class: shouldExpand ? 'descr-details visible' : 'descr-details',
-        'aria-hidden': shouldExpand ? 'false' : 'true',
-      });
-
-      // Wrap content in inner div
-      const contentInner = createTag('div');
-      contentInner.innerHTML = descriptions[i].description;
-      productDetailsSectionItemDescription.appendChild(contentInner);
-
-      productDetailsSectionItemContainer.appendChild(productDetailsSectionItemTitleContainer);
-      productDetailsSectionItemContainer.appendChild(productDetailsSectionItemDescription);
-      productDetailsItemsContainer.appendChild(productDetailsSectionItemContainer);
-
-      // Button click handler (capture current index)
-      const currentIndex = i;
-      // eslint-disable-next-line no-loop-func
-      productDetailsSectionItemTitleContainer.addEventListener('click', () => {
-        const isExpanded = productDetailsSectionItemTitleContainer.getAttribute('aria-expanded') === 'true';
-
-        // Close all others
-        const allButtons = productDetailsItemsContainer.querySelectorAll('.accordion-trigger');
-        const allContents = productDetailsItemsContainer.querySelectorAll('.descr-details');
-        allButtons.forEach((btn, idx) => {
-          if (btn !== productDetailsSectionItemTitleContainer) {
-            btn.setAttribute('aria-expanded', 'false');
-            allContents[idx].setAttribute('aria-hidden', 'true');
-            allContents[idx].classList.remove('visible');
-          }
-        });
-
-        // Toggle current
-        if (isExpanded) {
-          productDetailsSectionItemTitleContainer.setAttribute('aria-expanded', 'false');
-          productDetailsSectionItemDescription.setAttribute('aria-hidden', 'true');
-          productDetailsSectionItemDescription.classList.remove('visible');
-          expandedItemIndex = -1;
-        } else {
-          productDetailsSectionItemTitleContainer.setAttribute('aria-expanded', 'true');
-          productDetailsSectionItemDescription.setAttribute('aria-hidden', 'false');
-          productDetailsSectionItemDescription.classList.add('visible');
-          expandedItemIndex = currentIndex;
-
-          // Smooth scroll into view after content expands
-          setTimeout(() => {
-            const rect = productDetailsSectionItemContainer.getBoundingClientRect();
-            // Scroll if: top is above viewport OR bottom extends below viewport
-            const needsScroll = rect.top < 0 || rect.bottom > window.innerHeight;
-
-            if (needsScroll) {
-              // Scroll the top of the accordion into view
-              productDetailsSectionItemContainer.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-                inline: 'nearest',
-              });
-            }
-          }, 260); // Wait for animation to complete (250ms + 10ms buffer)
-        }
-      });
-    }
-  }
-
-  // Build initial items (all collapsed)
-  buildAccordionItems(productDescriptions, false);
+  // Map form field names to accordion section titles
+  const formFieldToAccordionTitle = {
+    media: 'Paper',
+    cornerstyle: 'Corner Style',
+    style: 'Size',
+    qty: null, // Quantity doesn't have an accordion section
+  };
 
   // Subscribe to product updates
-  BlockMediator.subscribe('product:updated', (data) => {
-    const { productDetails, formData } = data;
+  BlockMediator.subscribe('product:updated', (e) => {
+    const { productDetails, formData } = e.newValue;
+    const oldFormData = e.oldValue?.formData || {};
+
+    // Detect which form field changed
+    let changedField = null;
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== oldFormData[key]) {
+        changedField = key;
+      }
+    });
+
     const updatedDescriptions = formatProductDescriptions(productDetails, formData);
-    // Rebuild and preserve expanded state
-    buildAccordionItems(updatedDescriptions, true);
+    const mappedData = mapToAccordionFormat(updatedDescriptions);
+
+    // Determine which accordion section to auto-expand
+    const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;
+
+    // Update accordion with new data (map to correct format)
+    accordionBlock.updateAccordion(mappedData, forceExpandTitle);
   });
 
   return productDetailsSectionContainer;
