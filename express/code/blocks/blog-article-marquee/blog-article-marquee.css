@@ -4,8 +4,7 @@
   max-width: var(--ax-grid-max-width, 1200px);
 }
 
-.blog-article-marquee p,
-.blog-article-marquee .blog-article-marquee-content p {
+main .section .blog-article-marquee p {
   margin: 0;
 }
 
@@ -28,7 +27,7 @@
   padding: 0 16px;
 }
 
-/* merged p margin reset into parent block */
+ 
 
 .blog-article-marquee .blog-article-marquee-content h1 {
   margin: 0;
@@ -47,14 +46,7 @@
   margin: 0;
 }
 
-.blog-article-marquee .blog-article-marquee-content h1 + p {
-  color: var(--Alias-content-typography-body, #292929);
-  font-size: var(--Global-Typography-Size-Body-Body-M, 16px);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 130%;
-}
-
+.blog-article-marquee .blog-article-marquee-content h1 + p,
 .blog-article-marquee .blog-article-marquee-subcopy {
   margin: 0;
   color: var(--Alias-content-typography-body, #292929);
@@ -92,7 +84,6 @@
 .blog-article-marquee .blog-article-marquee-media img {
   display: block;
   width: 100%;
-  max-width: 100%;
   height: auto;
   object-fit: contain;
   border-radius: 0;
@@ -123,16 +114,13 @@
   flex-shrink: 0;
 }
 
-.blog-article-marquee .blog-article-marquee-product-media picture {
-  display: block;
-  width: 48px;
-  height: 48px;
-}
-
+.blog-article-marquee .blog-article-marquee-product-media picture,
 .blog-article-marquee .blog-article-marquee-product-media img {
   display: block;
   width: 48px;
   height: 48px;
+}
+.blog-article-marquee .blog-article-marquee-product-media img {
   border-radius: 24px;
 }
 
@@ -159,8 +147,7 @@
 }
 
 .blog-article-marquee a.con-button.blue:any-link {
-  margin: 0;
-  margin-top: var(--spacing-400);
+  margin: var(--spacing-400) 0 0;
   /* Use standard button typography scale; fallback to 18/22 if tokens unavailable */
   font-size: var(--Global-Typography-Size-Button-Button-M, 18px);
   line-height: var(--Global-Typography-Line-height-Button-Button-M, 22px);
@@ -193,12 +180,7 @@
   .blog-article-marquee .blog-article-marquee-media picture,
   .blog-article-marquee .blog-article-marquee-media img {
     max-width: 640px;
-    height: auto;
-    object-fit: contain;
     border-radius: 20px;
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
   }
 }
 
