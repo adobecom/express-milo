@@ -2,6 +2,7 @@
   padding: var(--spacing-600) 20px;
   min-width: 320px;
   box-sizing: border-box;
+  text-align: left;
 }
 
 main .ax-marquee-dynamic-hero p.button-container {
@@ -34,6 +35,7 @@ main .ax-marquee-dynamic-hero p.button-container {
   margin: 0;
   margin-left: 0;
   padding-top: var(--spacing-600);
+  display: block;
 }
 
 /* Hide original video controls when accessibility controls are present */
