@@ -1,4 +1,4 @@
-.product-detail-x {
+.print-product-detail {
   --figma-spacing-0: 0px;
   --figma-spacing-50: 2px;
   --figma-spacing-75: 4px;
@@ -463,7 +463,7 @@
 
 /*TABLET*/
 @media (min-width: 600px) {
-  .product-detail-x {
+  .print-product-detail {
     --grid-max-width: 1199px;
     --container-max-width: 1199px;
     --container-padding-side: var(--figma-spacing-500);
@@ -501,7 +501,7 @@
 }
 /*DESKTOP*/
 @media (min-width: 1200px) {
-  .product-detail-x {
+  .print-product-detail {
     --grid-max-width: 1680px;
     --container-max-width: 1600px;
     --container-padding-side: var(--figma-spacing-600);
@@ -537,7 +537,7 @@
 }
 /*WIDE-SCREEN*/
 @media (min-width: 1680px) {
-  .product-detail-x {
+  .print-product-detail {
     --grid-max-width: 1680px;
     --container-max-width: 1600px;
     --container-padding-side: var(--figma-spacing-600);
