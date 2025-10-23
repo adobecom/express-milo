@@ -7,7 +7,7 @@ const MOBILE_MAX = 600;
 const TABLET_MAX = 900;
 const HERO_IMAGE_WIDTHS = { mobile: 480, tablet: 720, desktop: 960 };
 const PRECONNECT_DATA_ATTRIBUTE = 'blogArticleMarquee';
-const PRODUCT_ICON_PATH = '/express/code/blocks/blog-article-marquee/adobe.png';
+const DEFAULT_PRODUCT_ICON_PATH = 'https://main--express-milo--adobecom.aem.page/express/learn/blog/assets/media_1f021705c13704e1e3041b414d0aa1ce883e067ec.png';
 const PRODUCT_ICON_SIZE = 48;
 
 const METADATA_KEYS = {
@@ -16,6 +16,7 @@ const METADATA_KEYS = {
   subcopy: 'subheading',
   title: 'og:title',
   productName: 'author',
+  productIcon: 'product-icon',
   date: 'publication-date',
   description: 'description',
   tags: 'tags',
@@ -186,7 +187,7 @@ function normalizeProductMedia(media) {
 }
 
 function buildProductHighlight(metadata = {}, fallbackMedia = null) {
-  const { productName, date } = metadata;
+  const { productName, productIcon, date } = metadata;
   const productCopy = Array.isArray(metadata.productCopy) ? metadata.productCopy : [];
   const hasContent = productName || date || productCopy.length || fallbackMedia;
   if (!hasContent) return null;
@@ -197,17 +198,20 @@ function buildProductHighlight(metadata = {}, fallbackMedia = null) {
   if (fallbackMedia) {
     const mediaWrapper = normalizeProductMedia(fallbackMedia);
     if (mediaWrapper) product.append(mediaWrapper);
-  } else if (PRODUCT_ICON_PATH) {
-    const logoImg = createTag('img', {
-      src: PRODUCT_ICON_PATH,
-      alt: productName ? `${productName} logo` : 'Product logo',
-      loading: 'lazy',
-      decoding: 'async',
-      width: PRODUCT_ICON_SIZE,
-      height: PRODUCT_ICON_SIZE,
-    });
-    const mediaWrapper = normalizeProductMedia(logoImg);
-    product.append(mediaWrapper);
+  } else {
+    const iconPath = productIcon;
+    if (iconPath) {
+      const logoImg = createTag('img', {
+        src: iconPath,
+        alt: productName ? `${productName} logo` : 'Product logo',
+        loading: 'lazy',
+        decoding: 'async',
+        width: PRODUCT_ICON_SIZE,
+        height: PRODUCT_ICON_SIZE,
+      });
+      const mediaWrapper = normalizeProductMedia(logoImg);
+      product.append(mediaWrapper);
+    }
   }
 
   const copyWrapper = createTag('div', { class: 'blog-article-marquee-product-copy' });
