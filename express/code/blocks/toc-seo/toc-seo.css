@@ -128,21 +128,6 @@ main .toc-content a:hover {
   text-shadow: 0px 0px 1px var(--color-background-accent-default);
 }
 
-/* Active state for TOC links */
-main .toc-content a.active {
-  text-shadow: 0px 0px 1px var(--color-background-accent-default);
-}
-
-main .toc-content a.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background-color: var(--color-light-gray)
-}
-
 main .toc-content a:focus {
   outline: 2px solid var(--color-background-accent-default);
   outline-offset: 2px;
