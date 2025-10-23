@@ -202,11 +202,6 @@ function scrollToHeader(headerText, toc) {
         top: scrollDistance,
         behavior: 'smooth',
       });
-
-      // Close TOC after scroll (both mobile and tablet)
-      setTimeout(() => {
-        toc.classList.remove('open');
-      }, 100);
     }
   }
 }
@@ -760,14 +755,7 @@ function handleMobileSticky(tocElement) {
     tocElement.classList.add('toc-mobile-fixed');
     tocElement.style.setProperty('--mobile-nav-height', `${navHeight}px`);
 
-    // Close TOC when it becomes sticky
-    tocElement.classList.remove('open');
-    const titleButton = tocElement.querySelector('.toc-title');
-    if (titleButton) {
-      titleButton.setAttribute('aria-expanded', 'false');
-    }
-
-    // Update placeholder height to match closed TOC
+    // Update placeholder height to match current TOC state
     const placeholder = tocElement.nextElementSibling;
     if (placeholder && placeholder.classList.contains('toc-placeholder')) {
       placeholder.style.height = `${tocElement.offsetHeight}px`;
