@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData from './fetchData/fetchProductDetails.js';
-import extractProductDescriptionsFromBlock, { normalizeProductDetailObject } from './utilities/data-formatting.js';
+import { fetchAPIData, formatProductDescriptions } from './fetchData/fetchProductDetails.js';
 import { extractProductId } from './utilities/utility-functions.js';
+import { normalizeProductDetailObject } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
@@ -32,8 +32,15 @@ async function createProductInfoContainer(productDetails, productDescriptions, d
 async function createGlobalContainer(block, productDetails, productDescriptions) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   const { curtain, drawer } = await createDrawer(block);
-  const productImagesContainer = await createProductImagesContainer(productDetails.realViews, productDetails.heroImage);
-  const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions, drawer);
+  const productImagesContainer = await createProductImagesContainer(
+    productDetails.realViews,
+    productDetails.heroImage,
+  );
+  const productInfoSectionWrapper = await createProductInfoContainer(
+    productDetails,
+    productDescriptions,
+    drawer,
+  );
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
   block.appendChild(globalContainer);
@@ -42,18 +49,39 @@ async function createGlobalContainer(block, productDetails, productDescriptions)
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productId = await extractProductId(block);
-  const productDetails = await fetchAPIData(productId, null, 'getproduct');
-  const productRenditions = await fetchAPIData(productId, null, 'getproductrenditions');
-  const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
-  const productReviews = await fetchAPIData(productId, null, 'getreviews');
-  const quantity = 1;
+  const productId = extractProductId(block);
+
+  // Fetch all API data in parallel
   const sampleShippingParameters = {
-    qty: quantity,
+    zip: '94065',
+    qty: 1,
   };
-  const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
-  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity);
-  const productDescriptions = await extractProductDescriptionsFromBlock(block);
+
+  const [
+    productDetails,
+    productPrice,
+    productReviews,
+    productRenditions,
+    productShippingEstimates,
+  ] = await Promise.all([
+    fetchAPIData(productId, null, 'getproduct'),
+    fetchAPIData(productId, null, 'getproductpricing'),
+    fetchAPIData(productId, null, 'getreviews'),
+    fetchAPIData(productId, null, 'getproductrenditions'),
+    fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates'),
+  ]);
+
+  // Process the data
+  const productDetailsFormatted = await normalizeProductDetailObject(
+    productDetails,
+    productPrice,
+    productReviews,
+    productRenditions,
+    productShippingEstimates,
+    1,
+  );
+  const productDescriptions = formatProductDescriptions(productDetails);
+
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions);
 }

@@ -1,19 +1,10 @@
-import fetchAPIData, { formatUrlForEnvironment } from '../fetchData/fetchProductDetails.js';
-
-export async function extractProductId(block) {
-  const templateId = block.children[0].children[1].textContent;
-
-  const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductfromtemplate?templateID=${templateId}`;
-  const productIdAPICall = await fetch(formatUrlForEnvironment(url));
-  const productIdAPICallJSON = await productIdAPICall.json();
-
-  const productId = productIdAPICallJSON.data.product.id;
-
+export function extractProductId(block) {
+  const productIdBlock = block.children[0].children[1].textContent;
   // FOR DEVELOPMENT PURPOSES ONLY, REMOVE IN PRODUCTION
   const urlParams = new URLSearchParams(window.location.search);
   const productIdURL = urlParams.get('productId');
-  const productIdFinal = productIdURL || productId;
-  return productIdFinal;
+  const productId = productIdURL || productIdBlock;
+  return productId;
 }
 
 export function formatDeliveryEstimateDateRange(minDate, maxDate) {
