@@ -2,13 +2,33 @@ import { getLibs, createTag } from '../../scripts/utils.js';
 
 /**
  * AX Accordion Block
- * Clean, accessible accordion component
+ * Clean, accessible accordion component with WAI-ARIA support
  * Primary use: Programmatic data injection for PDP
  * Optional: Can be authored if needed
+ *
+ * @example Programmatic Usage:
+ * const accordion = document.querySelector('.ax-accordion');
+ * accordion.accordionData = [
+ *   { title: 'Section 1', content: '<p>Content here</p>' },
+ *   { title: 'Section 2', content: '<p>More content</p>' }
+ * ];
+ * await axAccordionDecorate(accordion);
+ *
+ * @example Update accordion:
+ * accordion.updateAccordion(newData, 'Section 1'); // Force expand Section 1
  */
+
+// Animation constants - keep in sync with CSS
+const ANIMATION_DURATION = 250; // ms - matches CSS grid-template-rows transition
+const ANIMATION_BUFFER = 10; // ms - buffer for animation completion
+const SCROLL_THRESHOLD = 100; // px - distance from top to trigger auto-collapse
 
 let loadStyle;
 let getConfig;
+let accordionInstanceCounter = 0; // Unique ID generator
+
+// WeakMap to store event handlers for cleanup (avoids underscore-dangle lint issues)
+const eventHandlers = new WeakMap();
 
 // Initialize milo utils
 async function initUtils() {
@@ -21,9 +41,11 @@ async function initUtils() {
 function createAccordionItem(container, { title, content }, index) {
   const itemContainer = createTag('div', { class: 'ax-accordion-item-container' });
 
-  // Generate unique IDs for ARIA relationship
-  const buttonId = `ax-accordion-button-${Date.now()}-${index}`;
-  const panelId = `ax-accordion-panel-${Date.now()}-${index}`;
+  // Generate unique IDs for ARIA relationship using instance counter
+  const instanceId = accordionInstanceCounter;
+  accordionInstanceCounter += 1;
+  const buttonId = `ax-accordion-button-${instanceId}-${index}`;
+  const panelId = `ax-accordion-panel-${instanceId}-${index}`;
 
   // Header button (proper semantic HTML)
   const itemButton = createTag('button', {
@@ -84,7 +106,7 @@ function createAccordionItem(container, { title, content }, index) {
             inline: 'nearest',
           });
         }
-      }, 260); // Wait for expand animation (250ms + 10ms buffer)
+      }, ANIMATION_DURATION + ANIMATION_BUFFER);
     }
   });
 
@@ -190,6 +212,7 @@ function extractItemsFromBlock(block) {
 
 /**
  * Auto-collapse all accordions when user scrolls back up past the block
+ * @param {HTMLElement} block - The accordion block element
  */
 function setupAutoCollapse(block) {
   let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -201,13 +224,13 @@ function setupAutoCollapse(block) {
     hasExpandedItem = expandedButtons.length > 0;
   };
 
-  // Use setTimeout to run after click handler completes
-  block.addEventListener('click', () => {
+  // Click handler to track expanded state
+  const clickHandler = () => {
     setTimeout(checkExpandedState, 0);
-  });
+  };
 
-  // Collapse all when scrolling back up past the block
-  window.addEventListener('scroll', () => {
+  // Scroll handler for auto-collapse
+  const scrollHandler = () => {
     if (!hasExpandedItem) return;
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -215,7 +238,7 @@ function setupAutoCollapse(block) {
     const isScrollingUp = scrollTop < lastScrollTop;
 
     // User scrolled up past the top of the accordion block
-    if (isScrollingUp && blockRect.top > 100) {
+    if (isScrollingUp && blockRect.top > SCROLL_THRESHOLD) {
       const expandedButtons = block.querySelectorAll('.ax-accordion-item-title-container[aria-expanded="true"]');
       if (expandedButtons.length > 0) {
         expandedButtons.forEach((button) => {
@@ -226,7 +249,25 @@ function setupAutoCollapse(block) {
     }
 
     lastScrollTop = scrollTop;
-  });
+  };
+
+  // Clean up previous listeners if they exist
+  const existingHandlers = eventHandlers.get(block);
+  if (existingHandlers) {
+    if (existingHandlers.clickHandler) {
+      block.removeEventListener('click', existingHandlers.clickHandler);
+    }
+    if (existingHandlers.scrollHandler) {
+      window.removeEventListener('scroll', existingHandlers.scrollHandler);
+    }
+  }
+
+  // Store handlers in WeakMap for cleanup
+  eventHandlers.set(block, { clickHandler, scrollHandler });
+
+  // Attach new listeners
+  block.addEventListener('click', clickHandler);
+  window.addEventListener('scroll', scrollHandler);
 }
 
 /**
@@ -261,5 +302,26 @@ export default async function decorate(block) {
   // Add update method for programmatic use
   block.updateAccordion = (newItems, forceExpandTitle = null) => {
     buildAccordion(block, newItems, forceExpandTitle);
+  };
+
+  // Add destroy method for cleanup
+  block.destroyAccordion = () => {
+    // Remove event listeners
+    const handlers = eventHandlers.get(block);
+    if (handlers) {
+      if (handlers.clickHandler) {
+        block.removeEventListener('click', handlers.clickHandler);
+      }
+      if (handlers.scrollHandler) {
+        window.removeEventListener('scroll', handlers.scrollHandler);
+      }
+      eventHandlers.delete(block);
+    }
+    // Clear content
+    block.innerHTML = '';
+    // Remove methods
+    delete block.updateAccordion;
+    delete block.destroyAccordion;
+    delete block.accordionData;
   };
 }

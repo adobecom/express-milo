@@ -1,4 +1,6 @@
-/* AX Accordion - Accessible Accordion Component */
+/* AX Accordion - Accessible Accordion Component
+ * Animation timing: 200-250ms (keep in sync with ANIMATION_DURATION in ax-accordion.js)
+ */
 
 .ax-accordion {
   width: 100%;
@@ -78,7 +80,7 @@
   display: grid;
   grid-template-rows: 0fr;
   overflow: hidden;
-  color: #505050;
+  color: var(--color-gray-600);
   font-size: var(--body-font-size-s);
   font-style: normal;
   font-weight: var(--body-font-weight);
