@@ -76,18 +76,21 @@
   max-height: 0;
   overflow: hidden;
   padding: 0 var(--spacing-300);
+  opacity: 0;
   color: #505050;
   font-size: var(--body-font-size-s);
   font-style: normal;
   font-weight: var(--body-font-weight);
   line-height: var(--heading-line-height);
-  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out;
+  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out, opacity 100ms ease-in;
 }
 
 .ax-accordion-item-container.expanded .ax-accordion-item-description,
 .ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-description {
-  max-height: 2000px;
+  max-height: 450px;
   padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-300);
+  opacity: 1;
+  transition: max-height 250ms ease-in-out, padding 250ms ease-in-out, opacity 250ms ease-in-out;
 }
 
 /* Lists in content */
