@@ -25,7 +25,7 @@ main .ax-marquee-dynamic-hero p.button-container {
 }
 
 .ax-marquee-dynamic-hero .video-controls-wrapper {
-  background-color: white;
+  background-color: var(--color-white);
 }
 
 .ax-marquee-dynamic-hero .accessibility-control.icon-pause-video,
@@ -62,7 +62,7 @@ main .ax-marquee-dynamic-hero p.button-container {
   background-color: var(--color-background-accent-default);
   padding-top: var(--spacing-200);
   padding-bottom: var(--spacing-200);
-  margin: 0 0 var(--spacing-600) 0;
+  margin-bottom: 0;
   border-radius: 22px;
   width: 183px;
   font-size: var(--body-font-size-m);
@@ -73,14 +73,14 @@ main .ax-marquee-dynamic-hero p.button-container {
 
 .ax-marquee-dynamic-hero [class*="heading"]:first-of-type {
   font-size: var(--heading-font-size-l);
-  text-align: center;
+  text-align: left;
 }
 
 .ax-marquee-dynamic-hero [class*="heading"]:first-of-type + p {
   margin-top: var(--spacing-300);
   margin-bottom: var(--spacing-400);
   font-size: var(--body-font-size-m);
-  text-align: center;
+  text-align: left;
 }
 
 /* Media query for ax-columns-dynamic-hero on tablet */
