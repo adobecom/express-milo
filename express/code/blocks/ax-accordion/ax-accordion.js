@@ -22,6 +22,7 @@ import { getLibs, createTag } from '../../scripts/utils.js';
 const ANIMATION_DURATION = 250; // ms - matches CSS grid-template-rows transition
 const ANIMATION_BUFFER = 10; // ms - buffer for animation completion
 const SCROLL_THRESHOLD = 100; // px - distance from top to trigger auto-collapse
+const SCROLL_THROTTLE = 100; // ms - throttle scroll events for performance
 
 let loadStyle;
 let getConfig;
@@ -29,6 +30,40 @@ let accordionInstanceCounter = 0; // Unique ID generator
 
 // WeakMap to store event handlers for cleanup (avoids underscore-dangle lint issues)
 const eventHandlers = new WeakMap();
+
+// WeakMap to cache button references per accordion
+const buttonCache = new WeakMap();
+
+/**
+ * Throttle function to limit execution rate
+ * @param {Function} func - Function to throttle
+ * @param {number} wait - Minimum time between executions (ms)
+ * @returns {Function} Throttled function
+ */
+function throttle(func, wait) {
+  let timeout = null;
+  let previous = 0;
+
+  return function throttled(...args) {
+    const now = Date.now();
+    const remaining = wait - (now - previous);
+
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      func.apply(this, args);
+    } else if (!timeout) {
+      timeout = setTimeout(() => {
+        previous = Date.now();
+        timeout = null;
+        func.apply(this, args);
+      }, remaining);
+    }
+  };
+}
 
 // Initialize milo utils
 async function initUtils() {
@@ -80,8 +115,14 @@ function createAccordionItem(container, { title, content }, index) {
   // Toggle on button click
   itemButton.addEventListener('click', () => {
     // Close all others first (single-expand pattern)
-    const allButtons = container.querySelectorAll('.ax-accordion-item-title-container');
-    allButtons.forEach((btn) => {
+    // Use cached button references for better performance
+    let cachedButtons = buttonCache.get(container);
+    if (!cachedButtons || cachedButtons.length === 0) {
+      cachedButtons = Array.from(container.querySelectorAll('.ax-accordion-item-title-container'));
+      buttonCache.set(container, cachedButtons);
+    }
+
+    cachedButtons.forEach((btn) => {
       if (btn !== itemButton && btn.getAttribute('aria-expanded') === 'true') {
         btn.setAttribute('aria-expanded', 'false');
       }
@@ -93,19 +134,22 @@ function createAccordionItem(container, { title, content }, index) {
 
     if (!isExpanded) {
       // Smooth scroll into view after content expands
+      // Use requestAnimationFrame for better performance
       setTimeout(() => {
-        const rect = itemContainer.getBoundingClientRect();
-        // Scroll if: top is above viewport OR bottom extends below viewport
-        const needsScroll = rect.top < 0 || rect.bottom > window.innerHeight;
+        requestAnimationFrame(() => {
+          const rect = itemContainer.getBoundingClientRect();
+          // Scroll if: top is above viewport OR bottom extends below viewport
+          const needsScroll = rect.top < 0 || rect.bottom > window.innerHeight;
 
-        if (needsScroll) {
-          // Scroll the top of the accordion into view
-          itemContainer.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'nearest',
-          });
-        }
+          if (needsScroll) {
+            // Scroll the top of the accordion into view
+            itemContainer.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest',
+            });
+          }
+        });
       }, ANIMATION_DURATION + ANIMATION_BUFFER);
     }
   });
@@ -171,6 +215,9 @@ function buildAccordion(block, items, forceExpandTitle = null) {
   // Clear existing accordion items
   existingItems.forEach((item) => item.remove());
 
+  // Clear button cache when rebuilding
+  buttonCache.delete(block);
+
   // Add items and restore expanded state if title matches
   items.forEach((item, index) => {
     const accordionItem = createAccordionItem(block, item, index);
@@ -212,13 +259,15 @@ function extractItemsFromBlock(block) {
 
 /**
  * Auto-collapse all accordions when user scrolls back up past the block
+ * Optimized with Intersection Observer and throttled scroll events
  * @param {HTMLElement} block - The accordion block element
  */
 function setupAutoCollapse(block) {
   let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
   let hasExpandedItem = false;
+  let isBlockVisible = false;
 
-  // Track if any item is expanded
+  // Track if any item is expanded (direct flag update, no setTimeout)
   const checkExpandedState = () => {
     const expandedButtons = block.querySelectorAll('.ax-accordion-item-title-container[aria-expanded="true"]');
     hasExpandedItem = expandedButtons.length > 0;
@@ -226,30 +275,50 @@ function setupAutoCollapse(block) {
 
   // Click handler to track expanded state
   const clickHandler = () => {
-    setTimeout(checkExpandedState, 0);
+    checkExpandedState();
   };
 
-  // Scroll handler for auto-collapse
-  const scrollHandler = () => {
-    if (!hasExpandedItem) return;
+  // Throttled scroll handler for auto-collapse (reduces from 60fps to ~10fps)
+  const scrollHandler = throttle(() => {
+    // Skip if no expanded items or block not visible
+    if (!hasExpandedItem || !isBlockVisible) return;
 
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const blockRect = block.getBoundingClientRect();
     const isScrollingUp = scrollTop < lastScrollTop;
 
     // User scrolled up past the top of the accordion block
-    if (isScrollingUp && blockRect.top > SCROLL_THRESHOLD) {
-      const expandedButtons = block.querySelectorAll('.ax-accordion-item-title-container[aria-expanded="true"]');
-      if (expandedButtons.length > 0) {
-        expandedButtons.forEach((button) => {
-          button.setAttribute('aria-expanded', 'false');
-        });
-        hasExpandedItem = false;
+    if (isScrollingUp) {
+      // Only query DOM once to check position
+      const blockRect = block.getBoundingClientRect();
+      if (blockRect.top > SCROLL_THRESHOLD) {
+        const expandedButtons = block.querySelectorAll('.ax-accordion-item-title-container[aria-expanded="true"]');
+        if (expandedButtons.length > 0) {
+          expandedButtons.forEach((button) => {
+            button.setAttribute('aria-expanded', 'false');
+          });
+          hasExpandedItem = false;
+        }
       }
     }
 
     lastScrollTop = scrollTop;
-  };
+  }, SCROLL_THROTTLE);
+
+  // Use Intersection Observer to track visibility (performance optimization)
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        isBlockVisible = entry.isIntersecting;
+        // If block scrolls out of view, disable scroll handler
+        if (!isBlockVisible) {
+          hasExpandedItem = false;
+        }
+      });
+    },
+    { threshold: 0.1 }, // Trigger when 10% visible
+  );
+
+  observer.observe(block);
 
   // Clean up previous listeners if they exist
   const existingHandlers = eventHandlers.get(block);
@@ -260,14 +329,17 @@ function setupAutoCollapse(block) {
     if (existingHandlers.scrollHandler) {
       window.removeEventListener('scroll', existingHandlers.scrollHandler);
     }
+    if (existingHandlers.observer) {
+      existingHandlers.observer.disconnect();
+    }
   }
 
   // Store handlers in WeakMap for cleanup
-  eventHandlers.set(block, { clickHandler, scrollHandler });
+  eventHandlers.set(block, { clickHandler, scrollHandler, observer });
 
-  // Attach new listeners
+  // Attach new listeners with passive flag for better scroll performance
   block.addEventListener('click', clickHandler);
-  window.addEventListener('scroll', scrollHandler);
+  window.addEventListener('scroll', scrollHandler, { passive: true });
 }
 
 /**
@@ -315,8 +387,13 @@ export default async function decorate(block) {
       if (handlers.scrollHandler) {
         window.removeEventListener('scroll', handlers.scrollHandler);
       }
+      if (handlers.observer) {
+        handlers.observer.disconnect();
+      }
       eventHandlers.delete(block);
     }
+    // Clear caches
+    buttonCache.delete(block);
     // Clear content
     block.innerHTML = '';
     // Remove methods
