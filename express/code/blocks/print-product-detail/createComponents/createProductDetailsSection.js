@@ -66,7 +66,7 @@ export function createCheckoutButton() {
   checkoutButton.appendChild(CTAText);
   const checkoutButtonSubhead = createTag('div', { class: 'pdpx-checkout-button-subhead' });
   const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
-  const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns gauranteed');
+  const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns guaranteed');
   const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
   checkoutButtonSubhead.appendChild(checkoutButtonSubheadImage);
   checkoutButtonSubhead.appendChild(checkoutButtonSubheadLink);

@@ -36,7 +36,10 @@ function createAccordionItem(container, { title, content }, index) {
   });
 
   const itemTitle = createTag('span', { class: 'ax-accordion-item-title' }, title);
-  const itemIcon = createTag('div', { class: 'ax-accordion-item-icon' });
+  const itemIcon = createTag('div', { 
+    class: 'ax-accordion-item-icon',
+    'aria-hidden': 'true',
+  });
 
   itemButton.appendChild(itemTitle);
   itemButton.appendChild(itemIcon);
@@ -46,6 +49,7 @@ function createAccordionItem(container, { title, content }, index) {
     id: panelId,
     role: 'region',
     'aria-labelledby': buttonId,
+    'aria-hidden': 'true',
   });
 
   const contentWrapper = createTag('div');
@@ -65,11 +69,16 @@ function createAccordionItem(container, { title, content }, index) {
     cachedButtons.forEach((btn) => {
       if (btn !== itemButton && btn.getAttribute('aria-expanded') === 'true') {
         btn.setAttribute('aria-expanded', 'false');
+        const otherDescription = btn.nextElementSibling;
+        if (otherDescription) {
+          otherDescription.setAttribute('aria-hidden', 'true');
+        }
       }
     });
 
     const isExpanded = itemButton.getAttribute('aria-expanded') === 'true';
     itemButton.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+    itemDescription.setAttribute('aria-hidden', isExpanded ? 'true' : 'false');
 
     if (!isExpanded) {
       setTimeout(() => {
@@ -150,9 +159,13 @@ function buildAccordion(block, items, forceExpandTitle = null) {
 
     if (expandedTitle && item.title === expandedTitle) {
       const button = accordionItem.querySelector('.ax-accordion-item-title-container');
+      const description = button.nextElementSibling;
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           button.setAttribute('aria-expanded', 'true');
+          if (description) {
+            description.setAttribute('aria-hidden', 'false');
+          }
         });
       });
     }
@@ -203,6 +216,10 @@ function setupAutoCollapse(block) {
         if (expandedButtons.length > 0) {
           expandedButtons.forEach((button) => {
             button.setAttribute('aria-expanded', 'false');
+            const description = button.nextElementSibling;
+            if (description) {
+              description.setAttribute('aria-hidden', 'true');
+            }
           });
           hasExpandedItem = false;
         }

@@ -36,7 +36,7 @@
 }
 
 .ax-accordion-item-title-container:focus {
-  outline: 2px solid #1473E6;
+  outline: 2px solid var(--color-info-accent);
   outline-offset: -2px;
 }
 
