@@ -390,21 +390,6 @@ function updateActiveTOCLink(toc) {
       }
     }
   }
-
-  // Remove active class from all links
-  tocLinks.forEach((link) => {
-    link.classList.remove('active');
-  });
-
-  // Add active class to corresponding link
-  if (activeHeader) {
-    const headerText = activeHeader.textContent.trim();
-    const activeLink = Array.from(tocLinks).find((link) => link.textContent.trim().includes(headerText.replace('...', '').trim()));
-
-    if (activeLink) {
-      activeLink.classList.add('active');
-    }
-  }
 }
 
 /**
