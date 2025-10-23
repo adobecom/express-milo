@@ -68,7 +68,7 @@ export default async function createDrawer({
   ({ createTag, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   // temporarily separating css to avoid code conflicts
   const styleLoaded = new Promise((resolve) => {
-    loadStyle(`${getConfig().codeRoot}/blocks/product-detail-x/createComponents/drawer.css`, () => {
+    loadStyle(`${getConfig().codeRoot}/blocks/print-product-detail/createComponents/drawer.css`, () => {
       resolve();
     });
   });
