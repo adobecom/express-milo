@@ -2,11 +2,12 @@
     text-align: left;
     max-width: initial;
     font-weight: 700;
-    font-size: var(--body-font-size-s);
+    color: var(--Alias-content-typography-Heading, #131313);
+    font-size: 14px;
 }
 .ribbon-banner .content {
     padding: 12px 16px;
-    line-height: 1.3;
+    line-height: 130%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,7 +16,7 @@
 
 .ribbon-banner strong {
     font-weight: 900;
-    font-size: var(--body-font-size-m);
+    font-size: 14px;
 }
 
 .section .ribbon-banner a.con-button.outline {
@@ -23,33 +24,39 @@
     white-space: nowrap;
     overflow: initial;
     background-color: transparent;
-    border-color: var(--color-gray-900);
+    border-color: transparent;
     color: var(--color-gray-900);
+    outline: 2px solid var(--color-gray-900);
+    outline-offset: 0;
+    border: none;
 }
 .section .ribbon-banner a.con-button.outline:hover {
     background-color: transparent;
-    border-color: var(--color-gray-800);
+    border-color: transparent;
     color: var(--color-gray-800);
+    outline-color: var(--color-gray-800);
 }
 .ribbon-banner.text-light {
     color: white;
 }
 .ribbon-banner.text-light a.con-button.outline {
     color: white;
-    border-color: white;
+    border-color: transparent;
+    outline-color: white;
 }
 .ribbon-banner.text-light a.con-button.outline:hover {
     background-color: transparent;
-    border-color: #e1e1e1;
+    border-color: transparent;
     color: #e1e1e1;
+    outline-color: #e1e1e1;
 }
 
 @media screen and (min-width: 768px) {
     .section .ribbon-banner {
         text-align: center;
-        font-size: var(--body-font-size-m);
+        font-size: 14px;
     }
     .ribbon-banner strong {
-        font-size: var(--body-font-size-l);
+        font-size: 14px;
     }
 }
