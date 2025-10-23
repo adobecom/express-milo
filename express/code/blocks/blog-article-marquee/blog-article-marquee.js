@@ -250,8 +250,9 @@ function decorateContentColumn(column, metadata = {}, ctaNode = null, fallbackNo
     }
   }
 
-  if (metadata.title) {
-    column.append(createTag('h1', null, metadata.title));
+  const headlineText = metadata.headline || metadata.title;
+  if (headlineText) {
+    column.append(createTag('h1', null, headlineText));
   } else {
     const fallbackHeadline = takeFallback((node) => /^H[1-6]$/.test(node.tagName));
     if (fallbackHeadline) column.append(fallbackHeadline);
@@ -360,11 +361,18 @@ function decorateMediaColumn(column) {
 
 function extractCTA(row) {
   if (!row) return null;
-  const container = row.querySelector('p:has(a), div:has(a), a');
+  const container = row.querySelector('p:has(a)') || row.querySelector('div:has(a)') || row.querySelector('a');
   if (!container) return null;
   const target = container.closest('p, div') || container;
+  const childNodes = [...target.childNodes];
   target.remove();
+  if (target.tagName === 'P') {
+    const wrapper = createTag('div', { class: 'button-container action-area' });
+    wrapper.append(...childNodes);
+    return wrapper;
+  }
   target.classList.add('button-container');
+  target.classList.add('action-area');
   return target;
 }
 
@@ -447,7 +455,6 @@ export default async function decorate(block) {
   block.classList.add('blog-article-marquee');
 
   const metadata = getBlogArticleMarqueeMetadata();
-  console.log(metadata);
 
   const {
     wrapper,
@@ -463,5 +470,11 @@ export default async function decorate(block) {
   decorateContentColumn(contentColumn, metadata, ctaNode, fallbackNodes);
   if (mediaColumn) decorateMediaColumn(mediaColumn);
   decorateButtons(block, 'button-xl');
+  if (ctaNode) {
+    ctaNode.querySelectorAll('a').forEach((link) => {
+      link.classList.add('button-xl');
+      if (!link.classList.contains('con-button')) link.classList.add('con-button');
+    });
+  }
   wrapper.classList.add('blog-article-marquee-ready');
 }

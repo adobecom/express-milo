@@ -3,7 +3,6 @@
 
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-
 const [, { default: decorate }] = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
   import('../../../express/code/blocks/blog-article-marquee/blog-article-marquee.js'),
@@ -13,12 +12,13 @@ const base = await readFile({ path: './mocks/base.html' });
 
 const META_FIXTURES = {
   category: 'Enterprise',
-  title: 'Bring your product story to life',
-  subheading: 'Launch campaigns faster with ready-to-use assets and reusable creative systems.',
-  author: 'Adobe Express Metadata',
-  'publication-date': 'October 20, 2025',
-  description: 'Unlock premium templates, fonts, and collaboration tools built for creative teams.',
-  tags: 'Small business\nFeatured\nSocial media marketing',
+  headline: 'Test title',
+  'og:title': 'Test title fallback',
+  subheading: 'Lorem ipsum dolor sit amet consectetur. Mauris elementum ullamcorper dignissim sodales tempus. A a nam ut facilisi nunc. Convallis morbi faucibus vulputate proin cras lectus interdum risus diam. Lacus semper sit magnis pellentesque.',
+  author: 'Adobe Express',
+  'publication-date': '10/20/2025',
+  description: 'Get the lowdown on the hottest graphic design trends predicted for 2025.',
+  tags: '',
 };
 
 const applyMetaFixtures = (fixtures) => Object.entries(fixtures).map(([name, content]) => {
@@ -71,31 +71,55 @@ describe('Blog Article Marquee block', () => {
 
     const wrapper = block.querySelector('.blog-article-marquee-inner');
     expect(wrapper).to.exist;
-    const rows = wrapper.querySelectorAll(':scope > div');
-    expect(rows.length).to.equal(1);
+    expect(wrapper.classList.contains('blog-article-marquee-ready')).to.be.true;
+    const row = wrapper.querySelector(':scope > .blog-article-marquee-row');
+    expect(row).to.exist;
+    const columns = [...row.querySelectorAll(':scope > .column')];
+    expect(columns.length).to.equal(2);
+    const [contentColumn, mediaColumn] = columns;
+    expect(contentColumn.classList.contains('blog-article-marquee-content')).to.be.true;
+    expect(mediaColumn.classList.contains('blog-article-marquee-media')).to.be.true;
 
     const expectedProductName = META_FIXTURES.author;
     const expectedProductDate = META_FIXTURES['publication-date'];
     const expectedEyebrow = META_FIXTURES.category;
     const expectedSubcopy = META_FIXTURES.subheading;
-    const expectedHeadline = META_FIXTURES.title;
+    const expectedHeadline = META_FIXTURES.headline;
+
+    const eyebrow = contentColumn.querySelector('.blog-article-marquee-eyebrow');
+    expect(eyebrow).to.exist;
+    expect(eyebrow.textContent.trim()).to.equal(expectedEyebrow);
+
+    const headline = contentColumn.querySelector('h1');
+    expect(headline).to.exist;
+    expect(headline.textContent.trim()).to.equal(expectedHeadline);
+
+    const subcopy = contentColumn.querySelector('.blog-article-marquee-subcopy');
+    expect(subcopy).to.exist;
+    expect(subcopy.textContent.trim()).to.equal(expectedSubcopy);
 
     const product = block.querySelector('.blog-article-marquee-product');
     expect(product).to.exist;
-    const productHeading = product.querySelector('.blog-article-marquee-product-name');
+    const productCopyWrapper = product.querySelector('.blog-article-marquee-product-copy');
+    expect(productCopyWrapper).to.exist;
+    const productHeading = productCopyWrapper.querySelector('.blog-article-marquee-product-name');
     expect(productHeading).to.exist;
     expect(productHeading.textContent).to.equal(expectedProductName);
-    const productCopyParas = [...product.querySelectorAll('.blog-article-marquee-product-copy p')]
+    const productCopyParas = [...productCopyWrapper.querySelectorAll('p')]
       .filter((p) => !p.classList.contains('blog-article-marquee-product-name')
         && !p.classList.contains('blog-article-marquee-product-date'))
       .map((p) => p.textContent.trim());
-    expect(productCopyParas).to.deep.equal([
-      META_FIXTURES.description,
-      'Tags: Small business, Featured, Social media marketing',
-    ]);
-    const productDate = product.querySelector('.blog-article-marquee-product-date');
+    expect(productCopyParas).to.deep.equal([META_FIXTURES.description]);
+    const productDate = productCopyWrapper.querySelector('.blog-article-marquee-product-date');
     expect(productDate).to.exist;
     expect(productDate.textContent.trim()).to.equal(expectedProductDate);
+    const productCopyChildren = [...productCopyWrapper.children];
+    expect(productCopyChildren.length).to.equal(3);
+    expect(productCopyChildren[0]).to.equal(productHeading);
+    expect(productCopyChildren[1].classList.contains('blog-article-marquee-product-name')).to.be.false;
+    expect(productCopyChildren[1].classList.contains('blog-article-marquee-product-date')).to.be.false;
+    expect(productCopyChildren[1].textContent.trim()).to.equal(META_FIXTURES.description);
+    expect(productCopyChildren[2]).to.equal(productDate);
     const productLogoWrapper = product.querySelector('.blog-article-marquee-product-media');
     expect(productLogoWrapper).to.exist;
     const productLogo = productLogoWrapper.querySelector('img');
@@ -108,34 +132,52 @@ describe('Blog Article Marquee block', () => {
     expect(productLogo.getAttribute('height')).to.equal('48');
     expect(productLogo.hasAttribute('fetchpriority')).to.be.false;
 
-    const eyebrow = block.querySelector('.blog-article-marquee-eyebrow');
-    expect(eyebrow).to.exist;
-    expect(eyebrow.textContent.trim()).to.equal(expectedEyebrow);
-
-    const headline = block.querySelector('.blog-article-marquee-content h1');
-    expect(headline).to.exist;
-    expect(headline.textContent.trim()).to.equal(expectedHeadline);
-
-    const subcopy = block.querySelector('.blog-article-marquee-subcopy');
-    expect(subcopy).to.exist;
-    expect(subcopy.textContent.trim()).to.equal(expectedSubcopy);
-
-    const buttonContainer = block.querySelector('.button-container');
-    expect(buttonContainer).to.exist;
-
-    const contentColumn = block.querySelector('.blog-article-marquee-content');
     const highlightWrapper = contentColumn.querySelector('.blog-article-marquee-products');
     expect(highlightWrapper).to.exist;
+    const productWrapper = highlightWrapper.querySelector('.blog-article-marquee-product');
+    expect(productWrapper).to.exist;
+
+    const buttonContainer = contentColumn.querySelector('.button-container');
+    expect(buttonContainer).to.exist;
+    expect(buttonContainer.classList.contains('action-area')).to.be.true;
+    const cta = buttonContainer.querySelector('a');
+    expect(cta).to.exist;
+    expect(cta.classList.contains('button-xl')).to.be.true;
+    expect(cta.classList.contains('con-button')).to.be.true;
+    expect(cta.textContent.trim()).to.equal('Read more');
+    expect(cta.getAttribute('href')).to.equal('https://example.com/read');
     expect(subcopy.nextElementSibling).to.equal(highlightWrapper);
     expect(highlightWrapper.nextElementSibling).to.equal(buttonContainer);
+    const orderedChildren = [...contentColumn.children];
+    expect(orderedChildren.length).to.equal(5);
+    expect(orderedChildren[0]).to.equal(eyebrow);
+    expect(orderedChildren[1]).to.equal(headline);
+    expect(orderedChildren[2]).to.equal(subcopy);
+    expect(orderedChildren[3]).to.equal(highlightWrapper);
+    expect(orderedChildren[4]).to.equal(buttonContainer);
 
-    const mediaImg = block.querySelector('.blog-article-marquee-media img');
+    const mediaPicture = mediaColumn.querySelector(':scope > picture');
+    expect(mediaPicture).to.exist;
+    const mediaImg = mediaPicture.querySelector('img');
     expect(mediaImg).to.exist;
     expect(mediaImg.getAttribute('loading')).to.equal('eager');
     expect(mediaImg.getAttribute('fetchpriority')).to.equal('high');
     expect(mediaImg.getAttribute('decoding')).to.equal('async');
     expect(mediaImg.getAttribute('src')).to.contain('width=');
+    expect(mediaImg.classList.contains('blog-article-marquee-media-image')).to.be.true;
     expect(Number(mediaImg.getAttribute('width'))).to.be.greaterThan(0);
+  });
+
+  it('falls back to og:title metadata when headline is missing', async () => {
+    const block = document.getElementById('blog-article-marquee-block');
+    const headlineMeta = document.head.querySelector('meta[name="headline"]');
+    headlineMeta?.setAttribute('content', '');
+
+    await decorate(block);
+
+    const headline = block.querySelector('.blog-article-marquee-content h1');
+    expect(headline).to.exist;
+    expect(headline.textContent.trim()).to.equal(META_FIXTURES['og:title']);
   });
 
   it('omits eyebrow when metadata value is empty', async () => {
