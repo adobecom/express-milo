@@ -360,7 +360,8 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
         for (const item of items) {
           const titleText = await item.locator('.ax-accordion-item-title').innerText();
           if (titleText === expandedTitle) {
-            const ariaExpanded = await item.getAttribute('aria-expanded');
+            const button = item.locator('.ax-accordion-item-title-container');
+            const ariaExpanded = await button.getAttribute('aria-expanded');
             expect(ariaExpanded).toBe('true');
             found = true;
             break;
@@ -424,10 +425,11 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
         const itemCount = await items.count();
 
         if (itemCount > 0) {
-          await items.first().locator('.ax-accordion-item-title-container').click();
+          const firstButton = items.first().locator('.ax-accordion-item-title-container');
+          await firstButton.click();
           await page.waitForTimeout(300);
 
-          const expanded = await items.first().getAttribute('aria-expanded');
+          const expanded = await firstButton.getAttribute('aria-expanded');
           expect(expanded).toBe('true');
         }
       });
