@@ -862,6 +862,15 @@ function setupEventHandlers(tocElement) {
       // Mobile/Tablet: remove desktop positioning
       tocElement.classList.remove('toc-desktop', 'toc-scrollable');
       tocElement.dataset.needsScrolling = 'false';
+
+      // Set TOC to open by default on mobile and tablet
+      if (isMobileViewport() || (window.innerWidth >= 768 && window.innerWidth < 1024)) {
+        tocElement.classList.add('open');
+        const titleButton = tocElement.querySelector('.toc-title');
+        if (titleButton) {
+          titleButton.setAttribute('aria-expanded', 'true');
+        }
+      }
     }
 
     // Remove placeholder if it exists
