@@ -1,11 +1,3 @@
-function formatUrlForEnvironment(url) {
-  if (window.location.hostname === 'localhost') {
-    return `http://localhost:3001?url=${url}`;
-  }
-  const URLFormatted = url;
-  return URLFormatted;
-}
-
 export function formatProductDescriptions(productDetails, selectedOptions = {}) {
   const productDescriptions = [];
 
@@ -63,9 +55,17 @@ export function formatProductDescriptions(productDetails, selectedOptions = {}) 
   return productDescriptions;
 }
 
-export async function fetchAPIData(productId, parameters, endpoint) {
+export function formatUrlForEnvironment(url) {
+  if (window.location.hostname === 'localhost') {
+    return `http://localhost:3001?url=${url}`;
+  }
+  const URLFormatted = url;
+  return URLFormatted;
+}
+
+export default async function fetchAPIData(productId, parameters, endpoint) {
+  let apiDataFetch;
   let parametersString;
-  let url;
   let topLevelDomain;
   const urlParams = new URLSearchParams(window.location.search);
   const region = urlParams.get('region');
@@ -80,25 +80,19 @@ export async function fetchAPIData(productId, parameters, endpoint) {
     parametersString = '';
   }
 
-  url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
-  
+  const url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
   try {
-    const apiDataFetch = await fetch(formatUrlForEnvironment(url));
-    
-    if (!apiDataFetch.ok) {
-      throw new Error(`HTTP error! status: ${apiDataFetch.status}`);
-    }
-    
-    const apiDataJSON = await apiDataFetch.json();
-    const apiData = apiDataJSON.data;
-    return apiData;
+    apiDataFetch = await fetch(formatUrlForEnvironment(url));
   } catch (error) {
-    console.error(`Error fetching ${endpoint}:`, error);
-    return null;
+    // eslint-disable-next-line no-console
+    console.info(error);
   }
+  const apiDataJSON = await apiDataFetch.json();
+  const apiData = apiDataJSON.data;
+  return apiData;
 }
 export async function fetchUIStrings() {
-  const apiDataFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/UIStrings.json');
+  const apiDataFetch = await fetch('/express/code/blocks/print-product-detail/sample_data/UIStrings.json');
   const apiDataJSON = await apiDataFetch.json();
   return apiDataJSON;
 }
