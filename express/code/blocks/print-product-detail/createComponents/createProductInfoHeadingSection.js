@@ -13,7 +13,7 @@ function createProductTitle(productDetails) {
 function createStarRatings(productDetails) {
   const starRatings = createTag('div', { class: 'pdpx-star-ratings' });
   for (let i = 0; i < 5; i += 1) {
-    const star = createTag('img', { class: 'pdpx-product-info-header-ratings-star', src: '/express/code/icons/star-sharp.svg' });
+    const star = createTag('img', { class: 'pdpx-product-info-header-ratings-star', src: '/express/code/icons/star-sharp.svg', loading: 'lazy', decoding: 'async' });
     starRatings.appendChild(star);
   }
   return starRatings;
@@ -88,7 +88,7 @@ function createPriceLockup(productDetails) {
   ['mouseleave'].forEach((eventType) => {
     comparePriceInfoIconButton.addEventListener(eventType, hideTooltip);
   });
-  const comparePriceInfoIcon = createTag('img', { class: 'pdpx-compare-price-info-icon', src: '/express/code/icons/info.svg' });
+  const comparePriceInfoIcon = createTag('img', { class: 'pdpx-compare-price-info-icon', src: '/express/code/icons/info.svg', loading: 'lazy', decoding: 'async' });
   const infoTooltipContent = createInfoTooltipContent(productDetails);
   priceInfoRow.appendChild(priceContainer);
   priceInfoRow.appendChild(comparePrice);
@@ -107,7 +107,7 @@ function createPriceLockup(productDetails) {
 export function createDeliveryEstimatePill(productDetails) {
   const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
   const deliveryEstimatePillContainer = createTag('div', { class: 'pdpx-delivery-estimate-pill' });
-  const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg' });
+  const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg', loading: 'lazy', decoding: 'async' });
   const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
   const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date', id: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillIcon);
