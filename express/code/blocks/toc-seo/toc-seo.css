@@ -131,10 +131,6 @@ main .toc-content a {
   }
 }
 
-main .toc-content a:hover {
-  text-shadow: 0px 0px 1px var(--color-background-accent-default);
-}
-
 main .toc-content a:focus {
   outline: 2px solid var(--color-background-accent-default);
   outline-offset: 2px;
