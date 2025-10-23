@@ -29,11 +29,15 @@
     outline: 2px solid var(--color-gray-900);
     outline-offset: 0;
     border: none;
+    transition: background-color 0.2s ease;
 }
 .section .ribbon-banner a.con-button.outline:hover {
     background-color: rgba(19, 19, 19, 0.08);
     border-color: transparent;
     /* keep text and outline intact */
+}
+.section .ribbon-banner a.con-button.outline:focus-visible {
+    background-color: rgba(19, 19, 19, 0.08);
 }
 .ribbon-banner.text-light {
     color: white;
@@ -48,6 +52,9 @@
     border-color: transparent;
     color: #e1e1e1;
     outline-color: #e1e1e1;
+}
+.ribbon-banner.text-light a.con-button.outline:focus-visible {
+    background-color: rgba(255, 255, 255, 0.16);
 }
 
 @media screen and (min-width: 768px) {
