@@ -25,6 +25,8 @@ main .ax-marquee-dynamic-hero p.button-container {
 
 .ax-marquee-dynamic-hero .button-container.free-plan-container a {
   margin-bottom: 0;
+  text-align: center;
+  justify-content: center; /* Center content when display: flex is active */
 }
 
 /* Make CTA and free plan widget inline on tablet and up */
