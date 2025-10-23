@@ -1,4 +1,4 @@
-import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
+import { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle } from './utility-functions.js';
 
 export default function extractProductDescriptionsFromBlock(block) {
@@ -135,24 +135,41 @@ async function addPrintingProcessOptions(attributeOptions, productRenditions) {
   return printingProcessOptions;
 }
 
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, printingprocess = 'classic') {
+export async function normalizeProductDetailObject(
+  productDetails,
+  productPrice,
+  productReviews,
+  productRenditions,
+  productShippingEstimates,
+  quantity,
+  changeOptions = {},
+  printingprocess = 'classic',
+) {
   const UIStrings = await fetchUIStrings();
-  const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
-  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
+  const attributeOptions = changeOptions?.product?.attributes
+    || productDetails.product.attributes;
+  const applicableDiscount = productPrice?.discountProductItems?.[1]
+    || productPrice?.discountProductItems?.[0];
   const discountAvailable = !!applicableDiscount;
-  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
+  const priceAdjusted = applicableDiscount?.priceAdjusted;
+  const unitPrice = productPrice?.unitPrice;
+  const basePrice = (priceAdjusted != null ? priceAdjusted : unitPrice || 0);
+  const calculatedProductPrice = basePrice * (quantity || 1);
+  const firstEstimate = productShippingEstimates?.estimates?.[0];
+  const minDate = firstEstimate?.minDeliveryDate || null;
+  const maxDate = firstEstimate?.maxDeliveryDate || null;
   const normalizedProductDetails = {
     id: productDetails.product.id,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
-    unitPrice: productPrice?.unitPrice,
+    unitPrice: unitPrice || 0,
     productPrice: calculatedProductPrice,
-    strikethroughPrice: productPrice?.unitPrice * quantity,
+    strikethroughPrice: (unitPrice || 0) * (quantity || 1),
     discountAvailable,
     discountString: applicableDiscount?.discountString,
     deliveryEstimateStringText: 'Order today and get it by',
-    deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
-    deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
+    deliveryEstimateMinDate: minDate,
+    deliveryEstimateMaxDate: maxDate,
     realViews: productRenditions.realviewUrls,
     productType: productDetails.product.productType,
     quantities: productDetails.product.quantities,
@@ -164,13 +181,22 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
   };
   if (productDetails.product.productType === 'zazzle_shirt') {
-    const printingProcessOptions = await addPrintingProcessOptions(attributeOptions, productRenditions);
+    const printingProcessOptions = await addPrintingProcessOptions(
+      attributeOptions,
+      productRenditions,
+    );
     normalizedProductDetails.printingProcessOptions = printingProcessOptions;
   }
   for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute, printingprocess);
+    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(
+      attribute,
+      printingprocess,
+    );
   }
-  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
+  const quantitiesOptions = formatQuantityOptionsObject(
+    productDetails.product.quantities,
+    productDetails.product.pluralUnitLabel,
+  );
   normalizedProductDetails.quantities = quantitiesOptions;
   if (productDetails.product.productType === 'zazzle_businesscard') {
     const sideQuantityOptions = await addSideQuantityOptions(productRenditions);
