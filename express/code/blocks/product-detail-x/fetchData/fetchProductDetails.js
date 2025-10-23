@@ -35,7 +35,7 @@ export default async function fetchAPIData(productId, parameters, endpoint) {
   return apiData;
 }
 export async function fetchUIStrings() {
-  const apiDataFetch = await fetch('/express/code/blocks/pdp-x-test-2/sample_data/UIStrings.json');
+  const apiDataFetch = await fetch('/express/code/blocks/pdp-x-product-detail-x/sample_data/UIStrings.json');
   const apiDataJSON = await apiDataFetch.json();
   return apiDataJSON;
 }
