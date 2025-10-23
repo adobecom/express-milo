@@ -53,24 +53,26 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
     }
 
     await test.step('Verify accordions can be toggled', async () => {
-      const firstItem = accordionItems.first();
-      const initialState = await firstItem.getAttribute('aria-expanded');
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
+      const initialState = await firstButton.getAttribute('aria-expanded');
 
       // Click to toggle
-      await firstItem.click();
+      await firstButton.click();
       await page.waitForTimeout(300);
 
-      const newState = await firstItem.getAttribute('aria-expanded');
+      const newState = await firstButton.getAttribute('aria-expanded');
       expect(newState).not.toBe(initialState);
     });
 
     if (count >= 2) {
       await test.step('Open second accordion - first should auto-collapse', async () => {
-        await accordionItems.nth(1).click();
+        const secondButton = accordionItems.nth(1).locator('.ax-accordion-item-title-container');
+        await secondButton.click();
         await page.waitForTimeout(300);
 
-        const firstExpanded = await accordionItems.nth(0).getAttribute('aria-expanded');
-        const secondExpanded = await accordionItems.nth(1).getAttribute('aria-expanded');
+        const firstButton = accordionItems.nth(0).locator('.ax-accordion-item-title-container');
+        const firstExpanded = await firstButton.getAttribute('aria-expanded');
+        const secondExpanded = await secondButton.getAttribute('aria-expanded');
 
         expect(firstExpanded).toBe('false');
         expect(secondExpanded).toBe('true');
@@ -80,8 +82,8 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
     await test.step('Verify only one is expanded at any time', async () => {
       let expandedCount = 0;
       for (let i = 0; i < count; i++) {
-        const item = accordionItems.nth(i);
-        const ariaExpanded = await item.getAttribute('aria-expanded');
+        const button = accordionItems.nth(i).locator('.ax-accordion-item-title-container');
+        const ariaExpanded = await button.getAttribute('aria-expanded');
         if (ariaExpanded === 'true') {
           expandedCount++;
         }
@@ -109,13 +111,13 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
     });
 
     await test.step('Measure expand animation time', async () => {
-      const firstItem = accordionItems.first();
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
       const startTime = Date.now();
 
-      await firstItem.click();
+      await firstButton.click();
       await page.waitForTimeout(100); // Small buffer
 
-      const ariaExpanded = await firstItem.getAttribute('aria-expanded');
+      const ariaExpanded = await firstButton.getAttribute('aria-expanded');
       expect(ariaExpanded).toBe('true');
 
       // Animation should complete within reasonable time (200-400ms)
@@ -142,11 +144,11 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
     });
 
     await test.step('Verify expanded state has - icon', async () => {
-      const firstItem = accordionItems.first();
-      await firstItem.click();
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
+      await firstButton.click();
       await page.waitForTimeout(300);
 
-      const icon = firstItem.locator('.ax-accordion-item-icon');
+      const icon = firstButton.locator('.ax-accordion-item-icon');
       const bgImage = await icon.evaluate((el) => getComputedStyle(el).backgroundImage);
 
       expect(bgImage).toContain('minus');
@@ -162,29 +164,31 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       test.skip(true, 'No accordion items found');
     }
 
-    await test.step('Verify accordion items are keyboard focusable', async () => {
-      const firstItem = accordionItems.first();
-      const tabindex = await firstItem.getAttribute('tabindex');
-      expect(tabindex).toBe('0');
+    await test.step('Verify accordion buttons are keyboard focusable', async () => {
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
+      // Buttons are natively focusable, no tabindex needed
+      await firstButton.focus();
+      const isFocused = await firstButton.evaluate((el) => document.activeElement === el);
+      expect(isFocused).toBe(true);
     });
 
     await test.step('Verify Enter key expands accordion', async () => {
-      const firstItem = accordionItems.first();
-      await firstItem.focus();
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
+      await firstButton.focus();
       await page.keyboard.press('Enter');
       await page.waitForTimeout(300);
 
-      const ariaExpanded = await firstItem.getAttribute('aria-expanded');
+      const ariaExpanded = await firstButton.getAttribute('aria-expanded');
       expect(ariaExpanded).toBe('true');
     });
 
     await test.step('Verify Space key collapses accordion', async () => {
-      const firstItem = accordionItems.first();
-      await firstItem.focus();
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
+      await firstButton.focus();
       await page.keyboard.press('Space');
       await page.waitForTimeout(300);
 
-      const ariaExpanded = await firstItem.getAttribute('aria-expanded');
+      const ariaExpanded = await firstButton.getAttribute('aria-expanded');
       expect(ariaExpanded).toBe('false');
     });
   });
@@ -198,26 +202,31 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       test.skip(true, 'No accordion items found');
     }
 
-    await test.step('Verify accordion items have required ARIA attributes', async () => {
-      const firstItem = accordionItems.first();
+    await test.step('Verify button ARIA attributes are present', async () => {
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
+      const firstPanel = accordionItems.first().locator('.ax-accordion-item-description');
 
-      const role = await firstItem.getAttribute('role');
-      const tabindex = await firstItem.getAttribute('tabindex');
-      const ariaExpanded = await firstItem.getAttribute('aria-expanded');
+      const tagName = await firstButton.evaluate((el) => el.tagName.toLowerCase());
+      const ariaExpanded = await firstButton.getAttribute('aria-expanded');
+      const ariaControls = await firstButton.getAttribute('aria-controls');
+      const panelRole = await firstPanel.getAttribute('role');
+      const panelLabelledBy = await firstPanel.getAttribute('aria-labelledby');
 
-      expect(role).toBe('button');
-      expect(tabindex).toBe('0');
+      expect(tagName).toBe('button');
       expect(ariaExpanded).toBeTruthy();
+      expect(ariaControls).toBeTruthy();
+      expect(panelRole).toBe('region');
+      expect(panelLabelledBy).toBeTruthy();
     });
 
     await test.step('Verify aria-expanded toggles correctly', async () => {
-      const firstItem = accordionItems.first();
+      const firstButton = accordionItems.first().locator('.ax-accordion-item-title-container');
 
-      const initialState = await firstItem.getAttribute('aria-expanded');
-      await firstItem.click();
+      const initialState = await firstButton.getAttribute('aria-expanded');
+      await firstButton.click();
       await page.waitForTimeout(300);
 
-      const newState = await firstItem.getAttribute('aria-expanded');
+      const newState = await firstButton.getAttribute('aria-expanded');
       expect(newState).not.toBe(initialState);
     });
 
@@ -244,14 +253,14 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       const firstItem = accordionItems.first();
       const description = firstItem.locator('.ax-accordion-item-description');
 
-      // Check if content is effectively hidden via CSS Grid (grid-template-rows: 0fr)
+      // Check if content is effectively hidden via CSS Grid (browsers may compute 0fr as 0px)
       const gridRows = await description.evaluate((el) => getComputedStyle(el).gridTemplateRows);
-      expect(gridRows).toContain('0fr');
+      expect(gridRows === '0fr' || gridRows === '0px').toBeTruthy();
     });
 
     await test.step('Verify content is visible when expanded', async () => {
       const firstItem = accordionItems.first();
-      await firstItem.click();
+      await firstItem.locator('.ax-accordion-item-title-container').click();
       await page.waitForTimeout(300);
 
       const description = firstItem.locator('.ax-accordion-item-description');
@@ -283,7 +292,7 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
     }
 
     await test.step('Expand an accordion and scroll down', async () => {
-      await accordionItems.first().click();
+      await accordionItems.first().locator('.ax-accordion-item-title-container').click();
       await page.waitForTimeout(300);
 
       // Scroll down significantly
@@ -296,7 +305,7 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.waitForTimeout(500); // Wait for scroll detection
 
-      const firstExpanded = await accordionItems.first().getAttribute('aria-expanded');
+      const firstExpanded = await accordionItems.first().locator('.ax-accordion-item-title-container').getAttribute('aria-expanded');
       expect(firstExpanded).toBe('false');
     });
   });
@@ -314,10 +323,10 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       const secondItem = accordionItems.nth(1);
       const titleText = await secondItem.locator('.ax-accordion-item-title').innerText();
 
-      await secondItem.click();
+      await secondItem.locator('.ax-accordion-item-title-container').click();
       await page.waitForTimeout(300);
 
-      const ariaExpanded = await secondItem.getAttribute('aria-expanded');
+      const button = secondItem.locator('.ax-accordion-item-title-container'); const ariaExpanded = await button.getAttribute('aria-expanded');
       expect(ariaExpanded).toBe('true');
 
       // Store the title for later verification
@@ -385,7 +394,7 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       const count = await accordionItems.count();
 
       if (count > 0) {
-        await accordionItems.first().click();
+        await accordionItems.first().locator('.ax-accordion-item-title-container').click();
         await page.waitForTimeout(300);
 
         // Check for horizontal scrollbar
@@ -415,7 +424,7 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
         const itemCount = await items.count();
 
         if (itemCount > 0) {
-          await items.first().click();
+          await items.first().locator('.ax-accordion-item-title-container').click();
           await page.waitForTimeout(300);
 
           const expanded = await items.first().getAttribute('aria-expanded');
@@ -432,10 +441,10 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       const firstItemCount = await firstItems.count();
 
       if (firstItemCount > 0) {
-        await firstItems.first().click();
+        await firstItems.first().locator('.ax-accordion-item-title-container').click();
         await page.waitForTimeout(300);
 
-        const firstExpanded = await firstItems.first().getAttribute('aria-expanded');
+        const firstExpanded = await firstItems.first().locator('.ax-accordion-item-title-container').getAttribute('aria-expanded');
         expect(firstExpanded).toBe('true');
       }
 
@@ -445,7 +454,7 @@ test.describe('PDP-X Accordion Comprehensive Tests', () => {
       const secondItemCount = await secondItems.count();
 
       if (secondItemCount > 0) {
-        const secondExpanded = await secondItems.first().getAttribute('aria-expanded');
+        const secondExpanded = await secondItems.first().locator('.ax-accordion-item-title-container').getAttribute('aria-expanded');
         expect(secondExpanded).toBe('false');
       }
     });

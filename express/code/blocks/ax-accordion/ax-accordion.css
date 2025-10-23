@@ -26,6 +26,7 @@
   font-style: normal;
   font-weight: var(--subheading-font-weight);
   line-height: 20px;
+  font-family: inherit;
 }
 
 .ax-accordion-item-title-container:hover {
@@ -37,13 +38,13 @@
   outline-offset: -2px;
 }
 
-/* When expanded, remove border-bottom */
-.ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-title-container {
+/* When button is expanded, remove border-bottom */
+.ax-accordion-item-title-container[aria-expanded="true"] {
   border-bottom: none;
 }
 
-/* Next sibling after expanded item gets border-top */
-.ax-accordion-item-container[aria-expanded="true"] + .ax-accordion-item-container .ax-accordion-item-title-container {
+/* Next sibling container after expanded item gets border-top on its button */
+.ax-accordion-item-container:has(.ax-accordion-item-title-container[aria-expanded="true"]) + .ax-accordion-item-container .ax-accordion-item-title-container {
   border-top: 1px solid var(--color-gray-600);
 }
 
@@ -67,8 +68,8 @@
   background-image: url('/express/code/icons/plus-heavy.svg');
 }
 
-/* Icon states based on aria-expanded */
-.ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-icon {
+/* Icon states based on button aria-expanded */
+.ax-accordion-item-title-container[aria-expanded="true"] .ax-accordion-item-icon {
   background-image: url('/express/code/icons/minus-heavy.svg');
 }
 
@@ -97,13 +98,12 @@
   max-width: 100%;
 }
 
-.ax-accordion-item-container.expanded .ax-accordion-item-description,
-.ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-description {
+/* When button is expanded, show content */
+.ax-accordion-item-title-container[aria-expanded="true"] + .ax-accordion-item-description {
   grid-template-rows: 1fr;
 }
 
-.ax-accordion-item-container.expanded .ax-accordion-item-description > *,
-.ax-accordion-item-container[aria-expanded="true"] .ax-accordion-item-description > * {
+.ax-accordion-item-title-container[aria-expanded="true"] + .ax-accordion-item-description > * {
   padding: 0 var(--spacing-300) var(--spacing-300) var(--spacing-300);
   opacity: 1;
   transition: opacity 250ms ease-out, padding 250ms ease-in-out;
