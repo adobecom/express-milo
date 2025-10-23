@@ -18,27 +18,28 @@
     font-size: var(--body-font-size-m);
 }
 
-.section .ribbon-banner a.button {
+.section .ribbon-banner a.con-button.outline {
     margin: 0;
     white-space: nowrap;
     overflow: initial;
-    background-color: initial;
-    border-color: #222;
-    color: #222;
+    background-color: transparent;
+    border-color: var(--color-gray-900);
+    color: var(--color-gray-900);
 }
-.section .ribbon-banner a.button:hover {
-    background-color: initial;
-    border-color: black;
-    color: black;
+.section .ribbon-banner a.con-button.outline:hover {
+    background-color: transparent;
+    border-color: var(--color-gray-800);
+    color: var(--color-gray-800);
 }
 .ribbon-banner.text-light {
     color: white;
 }
-.ribbon-banner.text-light a.button {
+.ribbon-banner.text-light a.con-button.outline {
     color: white;
     border-color: white;
 }
-.ribbon-banner.text-light a.button:hover {
+.ribbon-banner.text-light a.con-button.outline:hover {
+    background-color: transparent;
     border-color: #e1e1e1;
     color: #e1e1e1;
 }
