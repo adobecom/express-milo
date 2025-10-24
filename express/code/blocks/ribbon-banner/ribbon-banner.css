@@ -38,6 +38,10 @@
 }
 .section .ribbon-banner a.con-button.outline:focus-visible {
     background-color: rgba(19, 19, 19, 0.08);
+    color: var(--color-gray-900);
+    outline-color: var(--color-info-accent);
+    outline-offset: 2px;
+    box-shadow: inset 0 0 0 2px var(--color-gray-900);
 }
 .ribbon-banner.text-light {
     color: white;
@@ -55,6 +59,10 @@
 }
 .ribbon-banner.text-light a.con-button.outline:focus-visible {
     background-color: rgba(255, 255, 255, 0.16);
+    color: white;
+    outline-color: white;
+    outline-offset: 2px;
+    box-shadow: inset 0 0 0 2px white;
 }
 
 @media screen and (min-width: 768px) {
