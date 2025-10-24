@@ -35,7 +35,12 @@
   background-color: var(--color-gray-100);
 }
 
+.ax-accordion-item-title-container:active {
+  background-color: var(--color-light-gray);
+}
+
 .ax-accordion-item-title-container:focus-visible {
+  background-color: var(--color-light-gray);
   outline: 2px solid var(--color-info-accent);
   outline-offset: -2px;
 }
