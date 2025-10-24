@@ -265,12 +265,7 @@ export default async function init(el) {
     controlsContainer.append(galleryControl);
     toolbar.append(controlsContainer);
 
-    // Conditionally reorder elements for search bar variant
-    if (includesSearchBar) {
-      el.append(templatesContainer, toolbar);
-    } else {
-      el.append(templatesContainer);
-    }
+    el.append(templatesContainer);
   } catch (err) {
     window.lana?.log(`Error in template-x-carousel-toolbar: ${err}`);
     if (getConfig().env.name === 'prod') {
