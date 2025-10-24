@@ -1,6 +1,6 @@
-const { features } = require('./pdp-x-test-2.spec.cjs');
+const { features } = require('./print-product-detail.spec.cjs');
 
-class PdpXTest2 {
+class PrintProductDetail {
   constructor(page) {
     this.page = page;
     // Feature definitions (kept for compatibility)
@@ -16,4 +16,4 @@ class PdpXTest2 {
   }
 }
 
-module.exports = PdpXTest2;
+module.exports = PrintProductDetail;

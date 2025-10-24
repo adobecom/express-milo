@@ -1,14 +1,14 @@
 const { expect, test } = require('@playwright/test');
-const { features } = require('./pdp-x-test-2.spec.cjs');
-const PdpXTest2 = require('./pdp-x-test-2.page.cjs');
+const { features } = require('./print-product-detail.spec.cjs');
+const PrintProductDetail = require('./print-product-detail.page.cjs');
 
 let pdp;
 
 const miloLibs = process.env.MILO_LIBS || '';
 
-test.describe('Express PDP-X-Test-2 Block test suite', () => {
+test.describe('Express Print Product Detail Block test suite', () => {
   test.beforeEach(async ({ page }) => {
-    pdp = new PdpXTest2(page);
+    pdp = new PrintProductDetail(page);
   });
 
   // Test 0: Block loads and displays content

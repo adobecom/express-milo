@@ -4,10 +4,10 @@ const { features } = require('./accordion.spec.cjs');
 const miloLibs = process.env.MILO_LIBS || '';
 
 /**
- * Comprehensive Accordion Tests for PDP-X-Test-2
+ * Comprehensive Accordion Tests for Print Product Detail
  * Tests all requirements from the accordion specification
  */
-test.describe('PDP-X Accordion Comprehensive Tests', () => {
+test.describe('Print Product Detail Accordion Comprehensive Tests', () => {
   let page;
   let baseURL;
 
