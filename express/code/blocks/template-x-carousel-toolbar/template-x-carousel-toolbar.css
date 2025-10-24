@@ -41,11 +41,6 @@
   max-width: unset;
 }
 
-.template-x-carousel-toolbar .toolbar.search-bar {
-  margin-top: var(--spacing-400);
-  padding-bottom: 16px;
-}
-
 .template-x-carousel-toolbar .toolbar p {
   margin: 0;
   line-height: 1.3;
