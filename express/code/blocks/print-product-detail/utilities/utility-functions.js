@@ -1,34 +1,19 @@
 import fetchAPIData, { formatUrlForEnvironment } from '../fetchData/fetchProductDetails.js';
 
 export async function extractProductId(block) {
-  const templateId = block.children[0]?.children?.[1]?.textContent;
-
-  // Dev override via query param
-  const urlParams = new URLSearchParams(window.location.search);
-  const productIdURL = urlParams.get('productId');
-  if (productIdURL) return productIdURL;
-
-  // Session cache to avoid extra round-trip
-  try {
-    const cacheKey = `pdp:tpl:${templateId}`;
-    const cached = sessionStorage.getItem(cacheKey);
-    if (cached) return cached;
-  } catch (e) {
-    // ignore storage errors
-  }
+  const templateId = block.children[0].children[1].textContent;
 
   const url = `https://www.zazzle.com/svc/partner/adobeexpress/v1/getproductfromtemplate?templateID=${templateId}`;
   const productIdAPICall = await fetch(formatUrlForEnvironment(url));
   const productIdAPICallJSON = await productIdAPICall.json();
+
   const productId = productIdAPICallJSON.data.product.id;
 
-  try {
-    const cacheKey = `pdp:tpl:${templateId}`;
-    sessionStorage.setItem(cacheKey, productId);
-  } catch (e) {
-    // ignore storage errors
-  }
-  return productId;
+  // FOR DEVELOPMENT PURPOSES ONLY, REMOVE IN PRODUCTION
+  const urlParams = new URLSearchParams(window.location.search);
+  const productIdURL = urlParams.get('productId');
+  const productIdFinal = productIdURL || productId;
+  return productIdFinal;
 }
 
 export function formatDeliveryEstimateDateRange(minDate, maxDate) {
