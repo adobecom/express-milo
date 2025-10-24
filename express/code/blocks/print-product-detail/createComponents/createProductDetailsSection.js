@@ -10,8 +10,12 @@ export default async function createProductDetailsSection(productDescriptions) {
 
   const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section' });
 
-  const productDetailsSectionTitleContainer = createTag('div', { class: 'pdpx-product-details-section-title-container' });
-  const productDetailsSectionTitle = createTag('span', { class: 'pdpx-product-details-section-title' }, 'Product Details');
+  const productDetailsSectionTitleContainer = createTag('div', {
+    class: 'pdpx-product-details-section-title-container',
+  });
+  const productDetailsSectionTitle = createTag('span', {
+    class: 'pdpx-product-details-section-title',
+  }, 'Product Details');
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
 
@@ -36,7 +40,7 @@ export default async function createProductDetailsSection(productDescriptions) {
   };
 
   BlockMediator.subscribe('product:updated', (e) => {
-    const { productDetails, formData } = e.newValue;
+    const { productDetails: updatedProductDetails, formData } = e.newValue;
     const oldFormData = e.oldValue?.formData || {};
 
     let changedField = null;
@@ -46,7 +50,7 @@ export default async function createProductDetailsSection(productDescriptions) {
       }
     });
 
-    const updatedDescriptions = formatProductDescriptions(productDetails, formData);
+    const updatedDescriptions = formatProductDescriptions(updatedProductDetails, formData);
     const mappedData = mapToAccordionFormat(updatedDescriptions);
 
     const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;

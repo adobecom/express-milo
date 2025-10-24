@@ -3,6 +3,104 @@
   --pdp-drawer-curtain-z-index: 101;
 }
 
+/* Comparison Drawer Styles */
+.drawer-body--comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-300);
+  padding: var(--spacing-300);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.comparison-column {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-300);
+  align-items: flex-start;
+}
+
+.comparison-image {
+  width: 40%;
+  max-width: 300px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.comparison-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-100);
+}
+
+.comparison-heading {
+  font-size: var(--body-font-size-m);
+  font-weight: var(--subheading-font-weight);
+  color: var(--color-gray-950);
+  margin: 0;
+}
+
+.comparison-price {
+  font-size: var(--body-font-size-s);
+  color: var(--color-gray-600);
+  font-weight: var(--body-font-weight);
+  margin: var(--spacing-100) 0;
+}
+
+.comparison-description {
+  font-size: var(--body-font-size-xs);
+  color: var(--color-gray-600);
+  line-height: 1.4;
+  margin: var(--spacing-200) 0;
+}
+
+.comparison-color-process {
+  display: flex;
+  align-items: center;
+  font-size: var(--body-font-size-xs);
+  color: var(--color-gray-950);
+  font-weight: var(--body-font-weight);
+  margin-top: var(--spacing-200);
+}
+
+.comparison-droplets {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.comparison-droplet {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.comparison-droplet img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .drawer-body--comparison {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-400);
+  }
+
+  .comparison-column {
+    flex-direction: column;
+  }
+
+  .comparison-image {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 .pdpx-global-container .drawer {
   --drawer-padding: var(--spacing-300);
   --drawer-body-gap: var(--spacing-200);
@@ -13,11 +111,13 @@
   border-radius: 16px 16px 0 0;
   background-color: var(--color-white);
   height: 600px;
+  max-height: 90vh;
   width: 100%;
   transform: translateY(0);
   transition: transform 300ms ease;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .pdpx-global-container .drawer.hidden {

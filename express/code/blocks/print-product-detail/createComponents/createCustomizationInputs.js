@@ -22,11 +22,30 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
   return standardSelectorContainer;
 }
 
-function createPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, productId, defaultValue) {
+function createPillOptionsSelector(
+  customizationOptions,
+  labelText,
+  hiddenSelectInputName,
+  productId,
+  defaultValue,
+  comparisonDrawer = null,
+) {
   const selectedPillOption = defaultValue || customizationOptions[0].name;
   const pillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
+  const pillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
   const pillSelectorContainerLabel = createTag('span', { class: 'pdpx-pill-selector-label' }, labelText);
-  pillSelectorContainer.appendChild(pillSelectorContainerLabel);
+  pillSelectorLabelContainer.appendChild(pillSelectorContainerLabel);
+  
+  if (hiddenSelectInputName === 'printingprocess') {
+    const learnMoreLink = createTag('button', {
+      class: 'pdpx-pill-selector-label-compare-link',
+      type: 'button',
+    }, 'Learn more');
+    learnMoreLink.addEventListener('click', toggleDrawer);
+    pillSelectorLabelContainer.appendChild(learnMoreLink);
+  }
+  
+  pillSelectorContainer.appendChild(pillSelectorLabelContainer);
   const pillSelectorOptionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
   const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
   for (let i = 0; i < customizationOptions.length; i += 1) {
@@ -56,6 +75,27 @@ function createPillOptionsSelector(customizationOptions, labelText, hiddenSelect
   }
   hiddenSelectInput.value = selectedPillOption;
   pillSelectorContainer.appendChild(pillSelectorOptionsContainer);
+
+  if (hiddenSelectInputName === 'printingprocess' && comparisonDrawer) {
+    // eslint-disable-next-line no-console
+    console.log('[Drawer Debug] Adding Learn More link for printingprocess');
+    const learnMoreLink = createTag('button', {
+      class: 'pdpx-pill-learn-more-link',
+      type: 'button',
+    }, 'Learn more');
+    learnMoreLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      comparisonDrawer.open();
+    });
+    pillSelectorContainer.appendChild(learnMoreLink);
+  } else {
+    // eslint-disable-next-line no-console
+    console.log('[Drawer Debug] Learn More NOT added:', {
+      hiddenSelectInputName,
+      hasDrawer: !!comparisonDrawer,
+    });
+  }
+
   pillSelectorContainer.appendChild(hiddenSelectInput);
   return pillSelectorContainer;
 }
@@ -114,12 +154,46 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
   return miniPillSelectorContainer;
 }
 
-function createBusinessCardInputs(container, productDetails, formDataObject = {}) {
-  const sideQuantitySelectorContainer = createPillOptionsSelector(productDetails.sideQuantityOptions, 'Choose the page(s) you want to print', 'sidequantity', productDetails.id, formDataObject?.sidequantity);
-  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id, formDataObject?.media);
-  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
-  const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
-  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
+function createBusinessCardInputs(container, productDetails, formDataObject = {}, comparisonDrawer = null) {
+  const sideQuantitySelectorContainer = createPillOptionsSelector(
+    productDetails.sideQuantityOptions,
+    'Choose the page(s) you want to print',
+    'sidequantity',
+    productDetails.id,
+    formDataObject?.sidequantity,
+    comparisonDrawer,
+  );
+  const paperTypeSelectorContainer = createMiniPillOptionsSelector(
+    productDetails.media,
+    'Paper Type: ',
+    'media',
+    'Compare Paper Types',
+    productDetails.id,
+    formDataObject?.media,
+  );
+  const cornerStyleSelectorContainer = createPillOptionsSelector(
+    productDetails.cornerstyle,
+    'Corner style',
+    'cornerstyle',
+    productDetails.id,
+    formDataObject?.cornerstyle,
+    comparisonDrawer,
+  );
+  const sizeSelectorContainer = createPillOptionsSelector(
+    productDetails.style,
+    'Resize business card',
+    'style',
+    productDetails.id,
+    formDataObject?.style,
+    comparisonDrawer,
+  );
+  const quantitySelectorContainer = createStandardSelector(
+    productDetails.quantities,
+    'Quantity',
+    'qty',
+    productDetails.id,
+    formDataObject?.qty,
+  );
   // container.appendChild(sideQuantitySelectorContainer);
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
@@ -127,12 +201,45 @@ function createBusinessCardInputs(container, productDetails, formDataObject = {}
   container.appendChild(quantitySelectorContainer);
 }
 
-function createTShirtInputs(container, productDetails, formDataObject = {}) {
-  const printingProcessSelectorContainer = createPillOptionsSelector(productDetails.printingProcessOptions, 'Printing Process', 'printingprocess', productDetails.id, formDataObject?.printingprocess);
-  const styleSelectorContainer = createPillOptionsSelector(productDetails.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
-  const colorSelectorContainer = createMiniPillOptionsSelector(productDetails.color, 'Shirt color: ', 'color', '', productDetails.id, formDataObject?.color);
-  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
-  const sizeSelectorContainer = createStandardSelector(productDetails.size, 'Size', 'size', productDetails.id, formDataObject?.size);
+function createTShirtInputs(container, productDetails, formDataObject = {}, comparisonDrawer = null) {
+  const printingProcessSelectorContainer = createPillOptionsSelector(
+    productDetails.printingProcessOptions,
+    'Printing Process',
+    'printingprocess',
+    productDetails.id,
+    formDataObject?.printingprocess,
+    comparisonDrawer,
+  );
+  const styleSelectorContainer = createPillOptionsSelector(
+    productDetails.style,
+    'T-Shirt',
+    'style',
+    productDetails.id,
+    formDataObject?.style,
+    comparisonDrawer,
+  );
+  const colorSelectorContainer = createMiniPillOptionsSelector(
+    productDetails.color,
+    'Shirt color: ',
+    'color',
+    '',
+    productDetails.id,
+    formDataObject?.color,
+  );
+  const quantitySelectorContainer = createStandardSelector(
+    productDetails.quantities,
+    'Quantity',
+    'qty',
+    productDetails.id,
+    formDataObject?.qty,
+  );
+  const sizeSelectorContainer = createStandardSelector(
+    productDetails.size,
+    'Size',
+    'size',
+    productDetails.id,
+    formDataObject?.size,
+  );
 
   container.appendChild(printingProcessSelectorContainer);
   container.appendChild(styleSelectorContainer);
@@ -141,16 +248,26 @@ function createTShirtInputs(container, productDetails, formDataObject = {}) {
   container.appendChild(sizeSelectorContainer);
 }
 
-export default async function createCustomizationInputs(productDetails, formDataObject = {}) {
+export default async function createCustomizationInputs(
+  productDetails,
+  formDataObject = {},
+  comparisonDrawer = null,
+) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const customizationInputsContainer = createTag('div', { class: 'pdpx-customization-inputs-container', id: 'pdpx-customization-inputs-container' });
-  const customizationInputsForm = createTag('form', { class: 'pdpx-customization-inputs-form', id: 'pdpx-customization-inputs-form' });
+  const customizationInputsContainer = createTag('div', {
+    class: 'pdpx-customization-inputs-container',
+    id: 'pdpx-customization-inputs-container',
+  });
+  const customizationInputsForm = createTag('form', {
+    class: 'pdpx-customization-inputs-form',
+    id: 'pdpx-customization-inputs-form',
+  });
   customizationInputsContainer.appendChild(customizationInputsForm);
   const productTypeToInputsMap = new Map([
     ['zazzle_businesscard', createBusinessCardInputs],
     ['zazzle_shirt', createTShirtInputs],
   ]);
   const createInputsFunction = productTypeToInputsMap.get(productDetails.productType);
-  createInputsFunction(customizationInputsForm, productDetails, formDataObject);
+  createInputsFunction(customizationInputsForm, productDetails, formDataObject, comparisonDrawer);
   return customizationInputsContainer;
 }

@@ -60,10 +60,73 @@ function createDrawerFoot({ imgSrc, name, price }) {
   return drawerFoot;
 }
 
+function createDropletIcon(iconName) {
+  const droplet = createTag('span', {
+    'aria-hidden': 'true',
+    class: 'comparison-droplet',
+  });
+  droplet.appendChild(getIconElementDeprecated(iconName));
+  return droplet;
+}
+
+function createColorProcess(colorCount, iconNames) {
+  const processDiv = createTag('div', { class: 'comparison-color-process' });
+  processDiv.append(`${colorCount} Color\u00A0`);
+  const dropletsSpan = createTag('span', { class: 'comparison-droplets' });
+  iconNames.forEach((iconName) => {
+    dropletsSpan.append(createDropletIcon(iconName));
+  });
+  processDiv.append(dropletsSpan);
+  return processDiv;
+}
+
+function createDrawerBodyComparison(data) {
+  const drawerBody = createTag('div', { class: 'drawer-body drawer-body--comparison' });
+
+  // Left column (Classic - 4 Color)
+  const leftColumn = createTag('div', { class: 'comparison-column' });
+  const leftImage = createTag('img', { class: 'comparison-image', src: data.left.imageUrl, alt: data.left.title });
+  const leftContent = createTag('div', { class: 'comparison-content' });
+  leftContent.innerHTML = `
+    <h3 class="comparison-heading">${data.left.title}</h3>
+    <div class="comparison-price">+US$0.00 per shirt</div>
+    <div class="comparison-description">${data.left.description}</div>
+  `;
+  leftContent.append(createColorProcess('4', [
+    'droplet-cyan',
+    'droplet-magenta',
+    'droplet-yellow',
+    'droplet-black',
+  ]));
+  leftColumn.append(leftImage, leftContent);
+
+  // Right column (Vivid - 5 Color)
+  const rightColumn = createTag('div', { class: 'comparison-column' });
+  const rightImage = createTag('img', { class: 'comparison-image', src: data.right.imageUrl, alt: data.right.title });
+  const rightContent = createTag('div', { class: 'comparison-content' });
+  rightContent.innerHTML = `
+    <h3 class="comparison-heading">${data.right.title}</h3>
+    <div class="comparison-price">+US$0.00 per shirt</div>
+    <div class="comparison-description">${data.right.description}</div>
+  `;
+  rightContent.append(createColorProcess('5', [
+    'droplet-cyan',
+    'droplet-magenta',
+    'droplet-yellow',
+    'droplet-black',
+    'droplet-white',
+  ]));
+  rightColumn.append(rightImage, rightContent);
+
+  drawerBody.append(leftColumn, rightColumn);
+  return drawerBody;
+}
+
 export default async function createDrawer({
   drawerLabel = 'Select paper type',
   data = mockData,
   selectedIndex = 0,
+  template = 'default',
 }) {
   ({ createTag, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   // temporarily separating css to avoid code conflicts
@@ -76,11 +139,20 @@ export default async function createDrawer({
   curtain.setAttribute('daa-ll', 'pdp-x-drawer-curtainClose');
   const drawer = createTag('div', { class: 'drawer hidden' });
   curtain.addEventListener('click', toggleDrawer);
-  drawer.append(
-    createDrawerHead(drawerLabel, toggleDrawer),
-    createDrawerBody(data[selectedIndex]),
-    createDrawerFoot(data[selectedIndex]),
-  );
+
+  if (template === 'comparison') {
+    drawer.append(
+      createDrawerHead(drawerLabel, toggleDrawer),
+      createDrawerBodyComparison(data),
+    );
+  } else {
+    drawer.append(
+      createDrawerHead(drawerLabel, toggleDrawer),
+      createDrawerBody(data[selectedIndex]),
+      createDrawerFoot(data[selectedIndex]),
+    );
+  }
+
   await styleLoaded;
   return { curtain, drawer };
 }

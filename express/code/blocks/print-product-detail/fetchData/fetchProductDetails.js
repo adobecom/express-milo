@@ -48,7 +48,11 @@ export function formatProductDescriptions(productDetails, selectedOptions = {}) 
     }
 
     if (title && description) {
-      productDescriptions.push({ title, description });
+      productDescriptions.push({
+        title,
+        description,
+        attributeName,
+      });
     }
   });
 
