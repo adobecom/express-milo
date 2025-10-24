@@ -32,12 +32,17 @@
     transition: background-color 0.2s ease;
 }
 .section .ribbon-banner a.con-button.outline:hover {
-    background-color: rgba(19, 19, 19, 0.08);
+    background-color: var(--Palette-gray-100, #E9E9E9);
     border-color: transparent;
-    /* keep text and outline intact */
+    color: var(--color-gray-900);
+}
+.section .ribbon-banner a.con-button.outline:active {
+    background-color: var(--Palette-gray-200, #E1E1E1);
+    border-color: transparent;
+    color: var(--color-gray-900);
 }
 .section .ribbon-banner a.con-button.outline:focus-visible {
-    background-color: rgba(19, 19, 19, 0.08);
+    background-color: var(--Palette-gray-200, #E1E1E1);
     color: var(--color-gray-900);
     outline-color: var(--color-info-accent);
     outline-offset: 2px;
@@ -52,17 +57,23 @@
     outline-color: white;
 }
 .ribbon-banner.text-light a.con-button.outline:hover {
-    background-color: rgba(255, 255, 255, 0.16);
+    background-color: var(--Palette-gray-100, #E9E9E9);
     border-color: transparent;
-    color: #e1e1e1;
-    outline-color: #e1e1e1;
+    color: var(--color-gray-900);
+    outline-color: var(--color-info-accent);
+}
+.ribbon-banner.text-light a.con-button.outline:active {
+    background-color: var(--Palette-gray-200, #E1E1E1);
+    border-color: transparent;
+    color: var(--color-gray-900);
+    outline-color: var(--color-info-accent);
 }
 .ribbon-banner.text-light a.con-button.outline:focus-visible {
-    background-color: rgba(255, 255, 255, 0.16);
-    color: white;
-    outline-color: white;
+    background-color: var(--Palette-gray-200, #E1E1E1);
+    color: var(--color-gray-900);
+    outline-color: var(--color-info-accent);
     outline-offset: 2px;
-    box-shadow: inset 0 0 0 2px white;
+    box-shadow: inset 0 0 0 2px var(--color-gray-900);
 }
 
 @media screen and (min-width: 768px) {
