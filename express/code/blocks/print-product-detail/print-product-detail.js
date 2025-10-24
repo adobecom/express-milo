@@ -1,12 +1,12 @@
 import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData from './fetchData/fetchProductDetails.js';
+import fetchAPIData, { fetchProductDetails } from './fetchData/fetchProductDetails.js';
 import extractProductDescriptionsFromBlock, { normalizeProductDetailObject } from './utilities/data-formatting.js';
-import { extractProductId } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
 import createDrawer from './createComponents/createDrawer.js';
+import { addPrefetchLinks } from './utilities/utility-functions.js';
 
 let createTag;
 
@@ -42,8 +42,9 @@ async function createGlobalContainer(block, productDetails, productDescriptions)
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productId = await extractProductId(block);
-  const productDetails = await fetchAPIData(productId, null, 'getproduct');
+  addPrefetchLinks();
+  const productDetails = await fetchProductDetails(block);
+  const productId = productDetails.product.id;
   const productRenditions = await fetchAPIData(productId, null, 'getproductrenditions');
   const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
   const productReviews = await fetchAPIData(productId, null, 'getreviews');
