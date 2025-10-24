@@ -51,14 +51,7 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
-function convertAttributeToOptionsObject(attribute, printingprocess) {
-  if (attribute.title === 'Color & Print Process') {
-    if (printingprocess === 'classic') {
-      attribute.values = attribute.values.filter((value) => !value.properties.tags?.includes('showswhite'));
-    } else if (printingprocess === 'vivid') {
-      attribute.values = attribute.values.filter((value) => value.properties.tags?.includes('showswhite'));
-    }
-  }
+function convertAttributeToOptionsObject(attribute) {
   const options = attribute.values;
   const optionsArray = [];
   for (let i = 0; i < options.length; i += 1) {
@@ -86,56 +79,7 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-async function addSideQuantityOptions(productRenditions) {
-  const sideQuantityOptions = [];
-  sideQuantityOptions.push({
-    title: 'Double-sided',
-    name: 'double-sided',
-    thumbnail: productRenditions.realviewUrls['Front/Back'],
-    priceAdjustment: formatPriceZazzle('5.95', true),
-  });
-  sideQuantityOptions.push({
-    title: 'Single-sided',
-    name: 'single-sided',
-    thumbnail: productRenditions.realviewUrls.Front,
-    priceAdjustment: formatPriceZazzle('0', true),
-  });
-  return sideQuantityOptions;
-}
-
-async function addPrintingProcessOptions(attributeOptions, productRenditions) {
-  const printingProcessOptions = [];
-  let vividPrintingAvailable = false;
-  let fourColorPrintingAvailable = false;
-  const colorOptions = attributeOptions.color.values;
-  for (const colorOption of colorOptions) {
-    if (colorOption.properties.tags?.includes('showswhite')) {
-      vividPrintingAvailable = true;
-    }
-    if (!colorOption.properties.tags?.includes('showswhite')) {
-      fourColorPrintingAvailable = true;
-    }
-  }
-  if (fourColorPrintingAvailable) {
-    printingProcessOptions.push({
-      title: 'Classic 4-Color printing',
-      name: 'classic',
-      thumbnail: productRenditions.realviewUrls.Front,
-      priceAdjustment: formatPriceZazzle('0', true),
-    });
-  }
-  if (vividPrintingAvailable) {
-    printingProcessOptions.push({
-      title: 'Vivid 5-Color printing',
-      name: 'vivid',
-      thumbnail: productRenditions.realviewUrls.Front,
-      priceAdjustment: formatPriceZazzle('0', true),
-    });
-  }
-  return printingProcessOptions;
-}
-
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, printingprocess = 'classic') {
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}) {
   const UIStrings = await fetchUIStrings();
   const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
   const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
@@ -163,19 +107,10 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
     tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
   };
-  if (productDetails.product.productType === 'zazzle_shirt') {
-    const printingProcessOptions = await addPrintingProcessOptions(attributeOptions, productRenditions);
-    normalizedProductDetails.printingProcessOptions = printingProcessOptions;
-  }
   for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute, printingprocess);
+    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   normalizedProductDetails.quantities = quantitiesOptions;
-  if (productDetails.product.productType === 'zazzle_businesscard') {
-    const sideQuantityOptions = await addSideQuantityOptions(productRenditions);
-    normalizedProductDetails.sideQuantityOptions = sideQuantityOptions;
-  }
-
   return normalizedProductDetails;
 }

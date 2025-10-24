@@ -15,13 +15,12 @@ export function toggleDrawer() {
 function formatProductOptionsToAPIParameters(formDataObject) {
   const parameters = {};
   for (const [key, value] of Object.entries(formDataObject)) {
-    if (key !== 'qty' && key !== 'printingprocess') {
+    if (key !== 'qty') {
       parameters[key] = value;
     }
   }
   parameters.productOptions = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
   parameters.qty = formDataObject.qty;
-  parameters.zip = '94065';
   const finalParameters = {};
   finalParameters.productOptions = encodeURIComponent(parameters.productOptions);
   finalParameters.qty = parameters.qty;
