@@ -79,7 +79,7 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}) {
+export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, templateId) {
   const UIStrings = await fetchUIStrings();
   const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
   const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
@@ -87,6 +87,7 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
   const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
   const normalizedProductDetails = {
     id: productDetails.product.id,
+    templateId,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
     unitPrice: productPrice?.unitPrice,
