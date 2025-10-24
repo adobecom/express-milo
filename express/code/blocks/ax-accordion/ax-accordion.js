@@ -94,7 +94,7 @@ function createAccordionItem(container, { title, content }, index, onStateChange
           if (needsScroll) {
             itemContainer.scrollIntoView({
               behavior: 'smooth',
-              block: 'start',
+              block: 'nearest',
               inline: 'nearest',
             });
           }
