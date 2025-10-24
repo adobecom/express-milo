@@ -66,19 +66,38 @@ async function updateCheckoutButton(productDetails) {
   const urlbase = 'https://new.express.adobe.com/design/template/';
   checkoutButton.href = `${urlbase}${productDetails.templateId}`;
 }
+
+function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity) {
+  const selectedValuesObject = {};
+  for (const [key, value] of Object.entries(updatedConfigurationOptions.product.attributes)) {
+    // we want to first check if the value for this key in the formDatObject is one of the name values in the value.values array
+    const valueName = value.values.find((v) => v.name === formDataObject[key]);
+    if (valueName) {
+      selectedValuesObject[key] = valueName.name;
+    } else {
+      selectedValuesObject[key] = value.values[0].name;
+    }
+  }
+  selectedValuesObject.qty = quantity;
+  return selectedValuesObject;
+}
+
 export default async function updateAllDynamicElements(productId) {
+  const { templateId } = document.querySelector('.pdpx-global-container').dataset;
   const form = document.querySelector('#pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
-  const { templateId } = document.querySelector('.pdpx-global-container').dataset;
+  const quantity = formDataObject.qty;
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
-  const productDetails = await fetchAPIData(productId, parameters, 'getproduct');
-  const productPrice = await fetchAPIData(productId, parameters, 'getproductpricing');
-  const productReviews = await fetchAPIData(productId, null, 'getreviews');
-  const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
-  const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
-  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty, updatedConfigurationOptions, templateId);
+  const updatedSelectedValuesObject = createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity);
+  const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
+  const productDetails = await fetchAPIData(productId, updatedParameters, 'getproduct');
+  const productPrice = await fetchAPIData(productId, updatedParameters, 'getproductpricing');
+  const productReviews = await fetchAPIData(productId, null, 'getreviews');
+  const productRenditions = await fetchAPIData(productId, updatedParameters, 'getproductrenditions');
+  const productShippingEstimates = await fetchAPIData(productId, updatedParameters, 'getshippingestimates');
+  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, updatedConfigurationOptions, templateId);
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
