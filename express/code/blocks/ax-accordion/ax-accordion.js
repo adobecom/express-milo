@@ -84,15 +84,42 @@ function createAccordionItem(container, { title, content }, index) {
     if (!isExpanded) {
       setTimeout(() => {
         requestAnimationFrame(() => {
-          const rect = itemContainer.getBoundingClientRect();
-          const needsScroll = rect.top < 0 || rect.bottom > window.innerHeight;
+          // Find scrollable parent container
+          let scrollParent = itemContainer.parentElement;
+          while (scrollParent && scrollParent !== document.body) {
+            const { overflowY } = window.getComputedStyle(scrollParent);
+            if (overflowY === 'auto' || overflowY === 'scroll') {
+              break;
+            }
+            scrollParent = scrollParent.parentElement;
+          }
 
-          if (needsScroll) {
-            itemContainer.scrollIntoView({
-              behavior: 'smooth',
-              block: 'nearest',
-              inline: 'nearest',
-            });
+          // If in a scrollable container, check visibility within that container
+          if (scrollParent && scrollParent !== document.body) {
+            const containerRect = scrollParent.getBoundingClientRect();
+            const itemRect = itemContainer.getBoundingClientRect();
+            const isAboveContainer = itemRect.top < containerRect.top;
+            const isBelowContainer = itemRect.bottom > containerRect.bottom;
+
+            if (isAboveContainer || isBelowContainer) {
+              itemContainer.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest',
+              });
+            }
+          } else {
+            // Fallback: check against viewport
+            const rect = itemContainer.getBoundingClientRect();
+            const needsScroll = rect.top < 0 || rect.bottom > window.innerHeight;
+
+            if (needsScroll) {
+              itemContainer.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'nearest',
+              });
+            }
           }
         });
       }, ANIMATION_DURATION + ANIMATION_BUFFER);
