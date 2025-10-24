@@ -21,7 +21,7 @@ async function initUtils() {
   }
 }
 
-function createAccordionItem(container, { title, content }, index, onStateChange) {
+function createAccordionItem(container, { title, content }, index) {
   const itemContainer = createTag('div', { class: 'ax-accordion-item-container' });
 
   const instanceId = accordionInstanceCounter;
@@ -81,10 +81,6 @@ function createAccordionItem(container, { title, content }, index, onStateChange
     itemButton.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
     itemDescription.setAttribute('aria-hidden', isExpanded ? 'true' : 'false');
 
-    if (onStateChange) {
-      onStateChange();
-    }
-
     if (!isExpanded) {
       setTimeout(() => {
         requestAnimationFrame(() => {
@@ -106,7 +102,7 @@ function createAccordionItem(container, { title, content }, index, onStateChange
   return itemContainer;
 }
 
-function buildAccordion(block, items, forceExpandTitle = null, onStateChange = null) {
+function buildAccordion(block, items, forceExpandTitle = null) {
   const existingItems = block.querySelectorAll('.ax-accordion-item-container');
 
   const existingTitles = Array.from(existingItems).map((item) => {
@@ -159,7 +155,7 @@ function buildAccordion(block, items, forceExpandTitle = null, onStateChange = n
   buttonCache.delete(block);
 
   items.forEach((item, index) => {
-    const accordionItem = createAccordionItem(block, item, index, onStateChange);
+    const accordionItem = createAccordionItem(block, item, index);
     block.appendChild(accordionItem);
 
     if (expandedTitle && item.title === expandedTitle) {
@@ -170,9 +166,6 @@ function buildAccordion(block, items, forceExpandTitle = null, onStateChange = n
           button.setAttribute('aria-expanded', 'true');
           if (description) {
             description.setAttribute('aria-hidden', 'false');
-          }
-          if (onStateChange) {
-            onStateChange();
           }
         });
       });
@@ -199,20 +192,8 @@ function extractItemsFromBlock(block) {
 
 function setupAutoCollapse(block) {
   let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  let hasExpandedItem = false;
-
-  const checkExpandedState = () => {
-    const expandedButtons = block.querySelectorAll('.ax-accordion-item-title-container[aria-expanded="true"]');
-    hasExpandedItem = expandedButtons.length > 0;
-  };
-
-  const clickHandler = () => {
-    checkExpandedState();
-  };
 
   const scrollHandler = throttle(() => {
-    if (!hasExpandedItem) return;
-
     const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
     if (!isMobile) return;
 
@@ -231,7 +212,6 @@ function setupAutoCollapse(block) {
               description.setAttribute('aria-hidden', 'true');
             }
           });
-          hasExpandedItem = false;
         }
       }
     }
@@ -240,25 +220,13 @@ function setupAutoCollapse(block) {
   }, SCROLL_THROTTLE);
 
   const existingHandlers = eventHandlers.get(block);
-  if (existingHandlers) {
-    if (existingHandlers.clickHandler) {
-      block.removeEventListener('click', existingHandlers.clickHandler);
-    }
-    if (existingHandlers.scrollHandler) {
-      window.removeEventListener('scroll', existingHandlers.scrollHandler);
-    }
+  if (existingHandlers?.scrollHandler) {
+    window.removeEventListener('scroll', existingHandlers.scrollHandler);
   }
 
-  eventHandlers.set(block, {
-    clickHandler,
-    scrollHandler,
-    checkExpandedState,
-  });
+  eventHandlers.set(block, { scrollHandler });
 
-  block.addEventListener('click', clickHandler);
   window.addEventListener('scroll', scrollHandler, { passive: true });
-
-  return checkExpandedState;
 }
 
 export default async function decorate(block) {
@@ -277,26 +245,19 @@ export default async function decorate(block) {
     items = extractItemsFromBlock(block);
   }
 
-  const checkExpandedState = setupAutoCollapse(block);
-  buildAccordion(block, items, null, checkExpandedState);
+  setupAutoCollapse(block);
+  buildAccordion(block, items);
 
   block.updateAccordion = (newItems, forceExpandTitle = null) => {
-    const handlers = eventHandlers.get(block);
-    const stateChecker = handlers?.checkExpandedState;
-    buildAccordion(block, newItems, forceExpandTitle, stateChecker);
+    buildAccordion(block, newItems, forceExpandTitle);
   };
 
   block.destroyAccordion = () => {
     const handlers = eventHandlers.get(block);
-    if (handlers) {
-      if (handlers.clickHandler) {
-        block.removeEventListener('click', handlers.clickHandler);
-      }
-      if (handlers.scrollHandler) {
-        window.removeEventListener('scroll', handlers.scrollHandler);
-      }
-      eventHandlers.delete(block);
+    if (handlers?.scrollHandler) {
+      window.removeEventListener('scroll', handlers.scrollHandler);
     }
+    eventHandlers.delete(block);
     buttonCache.delete(block);
     block.innerHTML = '';
     delete block.updateAccordion;
