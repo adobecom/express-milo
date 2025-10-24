@@ -77,10 +77,6 @@
 }
 
 .standalone-search-bar .search-dropdown-container .suggestions-container li {
-    margin-bottom: var(--spacing-300);
-}
-
-.standalone-search-bar .search-dropdown-container .suggestions-container li {
     cursor: pointer;
     margin: 0 var(--spacing-100) 0 0;
     padding: var(--spacing-100);
@@ -100,6 +96,7 @@
 
 .standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper {
     margin: 0;
+    overflow-x: hidden;
 }
 
 .standalone-search-bar .search-dropdown-container .trends-container .trends-wrapper li {
