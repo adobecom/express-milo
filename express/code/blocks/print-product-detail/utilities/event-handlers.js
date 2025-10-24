@@ -61,10 +61,16 @@ async function updateCustomizationOptions(productDetails, formDataObject) {
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 
+async function updateCheckoutButton(productDetails) {
+  const checkoutButton = document.getElementById('pdpx-checkout-button');
+  const urlbase = 'https://new.express.adobe.com/design/template/';
+  checkoutButton.href = `${urlbase}${productDetails.templateId}`;
+}
 export default async function updateAllDynamicElements(productId) {
   const form = document.querySelector('#pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
+  const { templateId } = document.querySelector('.pdpx-global-container').dataset;
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
   const productDetails = await fetchAPIData(productId, parameters, 'getproduct');
   const productPrice = await fetchAPIData(productId, parameters, 'getproductpricing');
@@ -72,9 +78,10 @@ export default async function updateAllDynamicElements(productId) {
   const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
   const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
-  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty, updatedConfigurationOptions, formDataObject.printingprocess);
+  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty, updatedConfigurationOptions, templateId);
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+  await updateCheckoutButton(normalizedProductDetails);
 }

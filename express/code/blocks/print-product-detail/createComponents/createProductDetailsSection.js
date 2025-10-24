@@ -31,9 +31,9 @@ export default async function createProductDetailsSection(productDescriptions) {
   return productDetailsSectionContainer;
 }
 
-export function createCheckoutButton() {
+export function createCheckoutButton(productDetails) {
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
-  const checkoutButton = createTag('button', { class: 'pdpx-checkout-button' });
+  const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
   const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
   const CTAText = createTag('span', { class: 'pdpx-checkout-button-text' }, 'Customize and print it');
   checkoutButton.appendChild(CTAIcon);
