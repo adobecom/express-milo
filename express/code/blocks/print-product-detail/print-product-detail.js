@@ -1,6 +1,6 @@
 import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData from './fetchData/fetchProductDetails.js';
-import extractProductDescriptionsFromBlock, { normalizeProductDetailObject } from './utilities/data-formatting.js';
+import fetchAPIData, { formatProductDescriptions } from './fetchData/fetchProductDetails.js';
+import { normalizeProductDetailObject } from './utilities/data-formatting.js';
 import { extractProductId } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
@@ -32,8 +32,15 @@ async function createProductInfoContainer(productDetails, productDescriptions, d
 async function createGlobalContainer(block, productDetails, productDescriptions) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   const { curtain, drawer } = await createDrawer(block);
-  const productImagesContainer = await createProductImagesContainer(productDetails.realViews, productDetails.heroImage);
-  const productInfoSectionWrapper = await createProductInfoContainer(productDetails, productDescriptions, drawer);
+  const productImagesContainer = await createProductImagesContainer(
+    productDetails.realViews,
+    productDetails.heroImage,
+  );
+  const productInfoSectionWrapper = await createProductInfoContainer(
+    productDetails,
+    productDescriptions,
+    drawer,
+  );
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
   block.appendChild(globalContainer);
@@ -52,8 +59,15 @@ export default async function decorate(block) {
     qty: quantity,
   };
   const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
-  const productDetailsFormatted = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity);
-  const productDescriptions = await extractProductDescriptionsFromBlock(block);
+  const productDetailsFormatted = await normalizeProductDetailObject(
+    productDetails,
+    productPrice,
+    productReviews,
+    productRenditions,
+    productShippingEstimates,
+    quantity,
+  );
+  const productDescriptions = formatProductDescriptions(productDetails);
   block.innerHTML = '';
   await createGlobalContainer(block, productDetailsFormatted, productDescriptions);
 }
