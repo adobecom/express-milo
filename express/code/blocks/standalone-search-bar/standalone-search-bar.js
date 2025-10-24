@@ -8,10 +8,10 @@ let replaceKeyArray; let blockConfig;
 function cycleThroughSuggestions(block, targetIndex = 0) {
   const suggestions = block.querySelectorAll('.suggestions-list li');
   if (targetIndex >= suggestions.length || targetIndex < 0) return;
-  
+
   // Make all suggestions non-focusable first
-  suggestions.forEach(li => li.tabIndex = -1);
-  
+  suggestions.forEach((li) => li.tabIndex = -1);
+
   // Make only the target suggestion focusable and focus it
   if (suggestions.length > 0 && suggestions[targetIndex]) {
     suggestions[targetIndex].tabIndex = 0;
@@ -49,7 +49,6 @@ function buildSearchConfig(block) {
 
   return searchConfig;
 }
-
 
 function initSearchFunction(block, searchBarWrapper) {
   const searchDropdown = searchBarWrapper.querySelector('.search-dropdown-container');
@@ -167,20 +166,20 @@ function initSearchFunction(block, searchBarWrapper) {
     if (suggestions && !(suggestions.length <= 1 && suggestions[0]?.query === searchBarVal)) {
       // Get existing list items
       const existingItems = Array.from(suggestionsList.children);
-      
+
       // Remove excess items if new list is shorter
       while (existingItems.length > suggestions.length) {
         const lastItem = existingItems.pop();
         lastItem.remove();
       }
-      
+
       // Update existing items and add new ones as needed
       suggestions.forEach((item, index) => {
         const valRegEx = new RegExp(searchBar.value, 'i');
         const highlightedQuery = item.query.replace(valRegEx, `<b>${searchBarVal}</b>`);
-        
+
         let li = existingItems[index];
-        
+
         if (li) {
           // Update existing item
           li.innerHTML = highlightedQuery;
@@ -190,7 +189,7 @@ function initSearchFunction(block, searchBarWrapper) {
           // Create new item - first item focusable, others not
           li = createTag('li', { tabindex: index === 0 ? 0 : -1 });
           li.innerHTML = highlightedQuery;
-          
+
           li.addEventListener('click', async () => {
             await handleSubmitInteraction(item, index);
           });

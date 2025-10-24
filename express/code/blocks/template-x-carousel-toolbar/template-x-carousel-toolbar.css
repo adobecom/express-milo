@@ -38,6 +38,7 @@
 
 .template-x-carousel-toolbar.search-bar {
   padding-bottom: 0;
+  max-width: unset;
 }
 
 .template-x-carousel-toolbar .toolbar.search-bar {
