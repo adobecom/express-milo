@@ -44,6 +44,7 @@
   grid-template-rows: auto auto;
   align-items: center;
   gap: var(--spacing-400);
+  margin-bottom: 48px;
 }
 
 .template-x-carousel-toolbar.search-bar .centered-heading {
