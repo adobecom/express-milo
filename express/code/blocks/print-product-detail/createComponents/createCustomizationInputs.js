@@ -1,9 +1,15 @@
 import { getLibs } from '../../../scripts/utils.js';
-import updateAllDynamicElements, { toggleDrawer } from '../utilities/event-handlers.js';
+import updateAllDynamicElements from '../utilities/event-handlers.js';
 
 let createTag;
 
-function createStandardSelector(customizationOptions, labelText, hiddenSelectInputName, productId, defaultValue) {
+function createStandardSelector(
+  customizationOptions,
+  labelText,
+  hiddenSelectInputName,
+  productId,
+  defaultValue,
+) {
   const selectedOption = defaultValue || customizationOptions[0].name;
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
   const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label' }, labelText);
@@ -14,7 +20,7 @@ function createStandardSelector(customizationOptions, labelText, hiddenSelectInp
     const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
     standardSelectorInput.appendChild(standardOption);
   }
-  standardSelectorInput.addEventListener('change', (element) => {
+  standardSelectorInput.addEventListener('change', () => {
     updateAllDynamicElements(productId);
   });
   standardSelectorInput.value = selectedOption;
@@ -35,16 +41,23 @@ function createPillOptionsSelector(
   const pillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
   const pillSelectorContainerLabel = createTag('span', { class: 'pdpx-pill-selector-label' }, labelText);
   pillSelectorLabelContainer.appendChild(pillSelectorContainerLabel);
-  
+
   if (hiddenSelectInputName === 'printingprocess') {
     const learnMoreLink = createTag('button', {
       class: 'pdpx-pill-selector-label-compare-link',
       type: 'button',
     }, 'Learn more');
-    learnMoreLink.addEventListener('click', toggleDrawer);
+    learnMoreLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (comparisonDrawer) {
+        comparisonDrawer.drawer.classList.remove('hidden');
+        comparisonDrawer.curtain.classList.remove('hidden');
+        document.body.classList.add('disable-scroll');
+      }
+    });
     pillSelectorLabelContainer.appendChild(learnMoreLink);
   }
-  
+
   pillSelectorContainer.appendChild(pillSelectorLabelContainer);
   const pillSelectorOptionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
   const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
@@ -75,32 +88,18 @@ function createPillOptionsSelector(
   }
   hiddenSelectInput.value = selectedPillOption;
   pillSelectorContainer.appendChild(pillSelectorOptionsContainer);
-
-  if (hiddenSelectInputName === 'printingprocess' && comparisonDrawer) {
-    // eslint-disable-next-line no-console
-    console.log('[Drawer Debug] Adding Learn More link for printingprocess');
-    const learnMoreLink = createTag('button', {
-      class: 'pdpx-pill-learn-more-link',
-      type: 'button',
-    }, 'Learn more');
-    learnMoreLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      comparisonDrawer.open();
-    });
-    pillSelectorContainer.appendChild(learnMoreLink);
-  } else {
-    // eslint-disable-next-line no-console
-    console.log('[Drawer Debug] Learn More NOT added:', {
-      hiddenSelectInputName,
-      hasDrawer: !!comparisonDrawer,
-    });
-  }
-
   pillSelectorContainer.appendChild(hiddenSelectInput);
   return pillSelectorContainer;
 }
 
-function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue) {
+function createMiniPillOptionsSelector(
+  customizationOptions,
+  labelText,
+  hiddenSelectInputName,
+  CTALinkText,
+  productId,
+  defaultValue,
+) {
   let selectedValueExists = false;
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
@@ -110,7 +109,16 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
   if (CTALinkText) {
     const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button' }, CTALinkText);
-    miniPillSelectorLabelCompareLink.addEventListener('click', toggleDrawer);
+    miniPillSelectorLabelCompareLink.addEventListener('click', () => {
+      // Assuming default drawer is for comparison
+      const defaultDrawer = document.querySelector('.drawer');
+      const defaultCurtain = document.querySelector('.pdp-curtain');
+      if (defaultDrawer && defaultCurtain) {
+        defaultDrawer.classList.remove('hidden');
+        defaultCurtain.classList.remove('hidden');
+        document.body.classList.add('disable-scroll');
+      }
+    });
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
   miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
@@ -128,15 +136,14 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
-    // We'll eventually need to add other events such as tab and others for accessibility
-    // Ideally selected state is controlled by the hidden select input
-    miniPillOptionImageContainer.addEventListener('click', async (element) => {
+    miniPillOptionImageContainer.addEventListener('click', async (e) => {
       miniPillSelectorOptionsContainer.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
         pill.classList.remove('selected');
       });
-      element.currentTarget.classList.toggle('selected');
-      miniPillSelectorLabeLName.innerHTML = element.currentTarget.getAttribute('data-title');
-      document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
+      e.currentTarget.classList.toggle('selected');
+      const labelNameSpan = miniPillSelectorLabelNameContainer.querySelector('.pdpx-pill-selector-label-name');
+      labelNameSpan.innerHTML = e.currentTarget.getAttribute('data-title');
+      document.getElementById(hiddenSelectInputName).value = e.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
@@ -145,24 +152,27 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
     miniPillSelectorOptionsContainer.appendChild(miniPillOption);
   }
   hiddenSelectInput.value = selectedValueExists || customizationOptions[0].name;
-  const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainer.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
+  const selector = `.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`;
+  const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainer
+    .querySelector(selector);
   selectedMiniPillOptionImageContainer.classList.add('selected');
-  const miniPillSelectorLabeLName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
+  const miniPillSelectorLabeLName = createTag(
+    'span',
+    { class: 'pdpx-pill-selector-label-name' },
+    selectedMiniPillOptionImageContainer.dataset.title,
+  );
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabeLName);
   miniPillSelectorContainer.appendChild(miniPillSelectorOptionsContainer);
   miniPillSelectorContainer.appendChild(hiddenSelectInput);
   return miniPillSelectorContainer;
 }
 
-function createBusinessCardInputs(container, productDetails, formDataObject = {}, comparisonDrawer = null) {
-  const sideQuantitySelectorContainer = createPillOptionsSelector(
-    productDetails.sideQuantityOptions,
-    'Choose the page(s) you want to print',
-    'sidequantity',
-    productDetails.id,
-    formDataObject?.sidequantity,
-    comparisonDrawer,
-  );
+function createBusinessCardInputs(
+  container,
+  productDetails,
+  formDataObject = {},
+  comparisonDrawer = null,
+) {
   const paperTypeSelectorContainer = createMiniPillOptionsSelector(
     productDetails.media,
     'Paper Type: ',
@@ -194,14 +204,19 @@ function createBusinessCardInputs(container, productDetails, formDataObject = {}
     productDetails.id,
     formDataObject?.qty,
   );
-  // container.appendChild(sideQuantitySelectorContainer);
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
   container.appendChild(sizeSelectorContainer);
   container.appendChild(quantitySelectorContainer);
 }
 
-function createTShirtInputs(container, productDetails, formDataObject = {}, comparisonDrawer = null) {
+function createTShirtInputs(
+  container,
+  productDetails,
+  formDataObject = {},
+  comparisonDrawer = null,
+  sizeChartDrawer = null,
+) {
   const printingProcessSelectorContainer = createPillOptionsSelector(
     productDetails.printingProcessOptions,
     'Printing Process',
@@ -246,12 +261,29 @@ function createTShirtInputs(container, productDetails, formDataObject = {}, comp
   container.appendChild(colorSelectorContainer);
   container.appendChild(quantitySelectorContainer);
   container.appendChild(sizeSelectorContainer);
+
+  // Add Size Chart link as a sibling if drawer is available
+  if (sizeChartDrawer) {
+    const sizeChartLink = createTag('button', {
+      class: 'pdpx-size-chart-link',
+      type: 'button',
+    }, 'Size Chart');
+
+    sizeChartLink.addEventListener('click', () => {
+      sizeChartDrawer.drawer.classList.remove('hidden');
+      sizeChartDrawer.curtain.classList.remove('hidden');
+      document.body.classList.add('disable-scroll');
+    });
+
+    container.appendChild(sizeChartLink);
+  }
 }
 
 export default async function createCustomizationInputs(
   productDetails,
   formDataObject = {},
   comparisonDrawer = null,
+  sizeChartDrawer = null,
 ) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const customizationInputsContainer = createTag('div', {
@@ -264,10 +296,16 @@ export default async function createCustomizationInputs(
   });
   customizationInputsContainer.appendChild(customizationInputsForm);
   const productTypeToInputsMap = new Map([
-    ['zazzle_businesscard', createBusinessCardInputs],
-    ['zazzle_shirt', createTShirtInputs],
+    ['zazzle_businesscard', (c, pd, fd, cd) => createBusinessCardInputs(c, pd, fd, cd)],
+    ['zazzle_shirt', (c, pd, fd, cd, scd) => createTShirtInputs(c, pd, fd, cd, scd)],
   ]);
   const createInputsFunction = productTypeToInputsMap.get(productDetails.productType);
-  createInputsFunction(customizationInputsForm, productDetails, formDataObject, comparisonDrawer);
+  createInputsFunction(
+    customizationInputsForm,
+    productDetails,
+    formDataObject,
+    comparisonDrawer,
+    sizeChartDrawer,
+  );
   return customizationInputsContainer;
 }

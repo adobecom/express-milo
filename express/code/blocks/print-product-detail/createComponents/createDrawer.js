@@ -1,5 +1,4 @@
 import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
-import { toggleDrawer } from '../utilities/event-handlers.js';
 
 let createTag;
 let loadStyle;
@@ -21,10 +20,16 @@ Risus risus neque sollicitudin sapien. Neque egestas in quam a. Nec mauris conse
   },
 ];
 
-function createDrawerHead(drawerLabel, toggle) {
+function createDrawerHead(drawerLabel, drawer, curtain) {
   const drawerHead = createTag('div', { class: 'drawer-head' });
-  const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black')); // TODO: analytics
-  closeButton.addEventListener('click', toggle);
+  const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black'));
+
+  closeButton.addEventListener('click', () => {
+    drawer.classList.add('hidden');
+    curtain.classList.add('hidden');
+    document.body.classList.remove('disable-scroll');
+  });
+
   drawerHead.append(createTag('div', { class: 'drawer-head-label' }, drawerLabel), closeButton);
   return drawerHead;
 }
@@ -71,12 +76,12 @@ function createDropletIcon(iconName) {
 
 function createColorProcess(colorCount, iconNames) {
   const processDiv = createTag('div', { class: 'comparison-color-process' });
-  processDiv.append(`${colorCount} Color\u00A0`);
   const dropletsSpan = createTag('span', { class: 'comparison-droplets' });
   iconNames.forEach((iconName) => {
     dropletsSpan.append(createDropletIcon(iconName));
   });
   processDiv.append(dropletsSpan);
+  processDiv.append(`\u00A0${colorCount} color process`);
   return processDiv;
 }
 
@@ -92,13 +97,13 @@ function createDrawerBodyComparison(data) {
     <div class="comparison-price">+US$0.00 per shirt</div>
     <div class="comparison-description">${data.left.description}</div>
   `;
-  leftContent.append(createColorProcess('4', [
+  const leftColorProcess = createColorProcess('4', [
     'droplet-cyan',
     'droplet-magenta',
     'droplet-yellow',
     'droplet-black',
-  ]));
-  leftColumn.append(leftImage, leftContent);
+  ]);
+  leftColumn.append(leftImage, leftContent, leftColorProcess);
 
   // Right column (Vivid - 5 Color)
   const rightColumn = createTag('div', { class: 'comparison-column' });
@@ -109,16 +114,125 @@ function createDrawerBodyComparison(data) {
     <div class="comparison-price">+US$0.00 per shirt</div>
     <div class="comparison-description">${data.right.description}</div>
   `;
-  rightContent.append(createColorProcess('5', [
+  const rightColorProcess = createColorProcess('5', [
     'droplet-cyan',
     'droplet-magenta',
     'droplet-yellow',
     'droplet-black',
     'droplet-white',
-  ]));
-  rightColumn.append(rightImage, rightContent);
+  ]);
+  rightColumn.append(rightImage, rightContent, rightColorProcess);
 
   drawerBody.append(leftColumn, rightColumn);
+  return drawerBody;
+}
+
+function createDrawerBodySizeChart(data, currentUnit = 'IN') {
+  const drawerBody = createTag('div', { class: 'drawer-body drawer-body--size-chart' });
+
+  const productName = createTag('h2', { class: 'size-chart-product-name' }, data.productName);
+  drawerBody.append(productName);
+
+  const tableContainer = createTag('div', { class: 'size-chart-table-container' });
+  const tablesGrid = createTag('div', { class: 'size-chart-tables' });
+
+  // Body measurements table
+  const bodySection = createTag('div', { class: 'size-chart-table-section' });
+  const bodyTable = createTag('table', { class: 'size-chart-table' });
+  bodyTable.innerHTML = `
+    <thead>
+      <tr>
+        <th class="size-chart-table-header">Body (${currentUnit})</th>
+        <th>Chest</th>
+        <th>Waist</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${data.sizes[currentUnit].map((size) => `
+        <tr>
+          <td>${size.name}</td>
+          <td>${size.body.chest}</td>
+          <td>${size.body.waist}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+  bodySection.append(bodyTable);
+
+  // Garment measurements table
+  const garmentSection = createTag('div', { class: 'size-chart-table-section' });
+  const garmentTable = createTag('table', { class: 'size-chart-table' });
+  garmentTable.innerHTML = `
+    <thead>
+      <tr>
+        <th class="size-chart-table-header">Garment (${currentUnit})</th>
+        <th>Chest</th>
+        <th>Waist</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${data.sizes[currentUnit].map((size) => `
+        <tr>
+          <td>${size.name}</td>
+          <td>${size.garment.width}</td>
+          <td>${size.garment.length}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+  garmentSection.append(garmentTable);
+
+  tablesGrid.append(bodySection, garmentSection);
+  tableContainer.append(tablesGrid);
+  drawerBody.append(tableContainer);
+
+  // Unit toggle
+  const unitToggle = createTag('div', { class: 'size-chart-unit-toggle' });
+  const inButton = createTag('button', {
+    class: `size-chart-unit-button ${currentUnit === 'IN' ? 'active' : ''}`,
+    type: 'button',
+  }, 'IN');
+  const cmButton = createTag('button', {
+    class: `size-chart-unit-button ${currentUnit === 'CM' ? 'active' : ''}`,
+    type: 'button',
+  }, 'CM');
+
+  // Unit toggle handler - recreate drawer body with new unit
+  const handleUnitToggle = (newUnit) => {
+    const newDrawerBody = createDrawerBodySizeChart(data, newUnit);
+    drawerBody.replaceWith(newDrawerBody);
+  };
+
+  inButton.addEventListener('click', () => handleUnitToggle('IN'));
+  cmButton.addEventListener('click', () => handleUnitToggle('CM'));
+  unitToggle.append(inButton, cmButton);
+  drawerBody.append(unitToggle);
+
+  // Instructions
+  const instructions = createTag('div', { class: 'size-chart-instructions' });
+  const bodyInstructions = createTag('div', { class: 'size-chart-instruction-section' });
+  bodyInstructions.innerHTML = `
+    <h3>Body</h3>
+    <p class="size-chart-instruction-text">Measure under your arms around the fullest part of your chest</p>
+    <p class="size-chart-instruction-text">Measure around your natural waistline at the narrowest point</p>
+  `;
+  const garmentInstructions = createTag('div', { class: 'size-chart-instruction-section' });
+  garmentInstructions.innerHTML = `
+    <h3>Garment</h3>
+    <p class="size-chart-instruction-text">Measure garment from arm hole to arm hole</p>
+    <p class="size-chart-instruction-text">Measure garment from the seam at the neck to the bottom of the garment</p>
+  `;
+
+  // Fit
+  const fitSection = createTag('div', { class: 'size-chart-instruction-section' });
+  fitSection.innerHTML = `
+    <h3>Fit</h3>
+    <p class="size-chart-instruction-text">${data.fit}</p>
+  `;
+
+  instructions.append(bodyInstructions, garmentInstructions, fitSection);
+  drawerBody.append(instructions);
+
   return drawerBody;
 }
 
@@ -138,16 +252,27 @@ export default async function createDrawer({
   const curtain = createTag('div', { class: 'pdp-curtain hidden' });
   curtain.setAttribute('daa-ll', 'pdp-x-drawer-curtainClose');
   const drawer = createTag('div', { class: 'drawer hidden' });
-  curtain.addEventListener('click', toggleDrawer);
+
+  // Curtain closes the drawer when clicked
+  curtain.addEventListener('click', () => {
+    drawer.classList.add('hidden');
+    curtain.classList.add('hidden');
+    document.body.classList.remove('disable-scroll');
+  });
 
   if (template === 'comparison') {
     drawer.append(
-      createDrawerHead(drawerLabel, toggleDrawer),
+      createDrawerHead(drawerLabel, drawer, curtain),
       createDrawerBodyComparison(data),
+    );
+  } else if (template === 'size-chart') {
+    drawer.append(
+      createDrawerHead(drawerLabel, drawer, curtain),
+      createDrawerBodySizeChart(data),
     );
   } else {
     drawer.append(
-      createDrawerHead(drawerLabel, toggleDrawer),
+      createDrawerHead(drawerLabel, drawer, curtain),
       createDrawerBody(data[selectedIndex]),
       createDrawerFoot(data[selectedIndex]),
     );
