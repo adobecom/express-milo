@@ -1,32 +1,58 @@
 import { getLibs } from '../../../scripts/utils.js';
+import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import BlockMediator from '../../../scripts/block-mediator.min.js';
+import axAccordionDecorate from '../../ax-accordion/ax-accordion.js';
 
 let createTag;
 
 export default async function createProductDetailsSection(productDescriptions) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section-container' });
+
+  const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section' });
+
   const productDetailsSectionTitleContainer = createTag('div', { class: 'pdpx-product-details-section-title-container' });
   const productDetailsSectionTitle = createTag('span', { class: 'pdpx-product-details-section-title' }, 'Product Details');
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
-  for (let i = 0; i < productDescriptions.length; i += 1) {
-    const productDetailsSectionItemContainer = createTag('div', { class: 'pdpx-product-details-section-item-container collapsed' });
-    const productDetailsSectionItemTitleContainer = createTag('span', { class: 'pdpx-product-details-section-item-title-container' });
-    const productDetailsSectionItemTitle = createTag('span', { class: 'pdpx-product-details-section-item-title' }, productDescriptions[i].title);
-    const productDetailsSectionItemIcon = createTag('div', { class: 'pdpx-product-details-section-item-icon' });
-    const productDetailsSectionItemDescription = createTag('span', { class: 'pdpx-product-details-section-item-description' }, productDescriptions[i].description);
-    productDetailsSectionItemTitleContainer.appendChild(productDetailsSectionItemTitle);
-    productDetailsSectionItemTitleContainer.appendChild(productDetailsSectionItemIcon);
-    productDetailsSectionItemContainer.appendChild(productDetailsSectionItemTitleContainer);
-    productDetailsSectionItemContainer.appendChild(productDetailsSectionItemDescription);
-    productDetailsSectionContainer.appendChild(productDetailsSectionItemContainer);
-    productDetailsSectionItemContainer.addEventListener('click', () => {
-      console.log('clicked');
-      // add a class to the productDetailsSectionItemContentContainer
-      productDetailsSectionItemContainer.classList.toggle('collapsed');
-      productDetailsSectionItemContainer.classList.toggle('expanded');
+
+  const accordionBlock = createTag('div', { class: 'ax-accordion pdpx-product-details-accordion' });
+
+  const mapToAccordionFormat = (descriptions) => descriptions.map((item) => ({
+    title: item.title,
+    content: item.description,
+  }));
+
+  accordionBlock.accordionData = mapToAccordionFormat(productDescriptions);
+
+  await axAccordionDecorate(accordionBlock);
+
+  productDetailsSectionContainer.appendChild(accordionBlock);
+
+  const formFieldToAccordionTitle = {
+    media: 'Paper',
+    cornerstyle: 'Corner Style',
+    style: 'Size',
+    qty: null,
+  };
+
+  BlockMediator.subscribe('product:updated', (e) => {
+    const { productDetails, formData } = e.newValue;
+    const oldFormData = e.oldValue?.formData || {};
+
+    let changedField = null;
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== oldFormData[key]) {
+        changedField = key;
+      }
     });
-  }
+
+    const updatedDescriptions = formatProductDescriptions(productDetails, formData);
+    const mappedData = mapToAccordionFormat(updatedDescriptions);
+
+    const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;
+
+    accordionBlock.updateAccordion(mappedData, forceExpandTitle);
+  });
 
   return productDetailsSectionContainer;
 }
@@ -40,7 +66,7 @@ export function createCheckoutButton() {
   checkoutButton.appendChild(CTAText);
   const checkoutButtonSubhead = createTag('div', { class: 'pdpx-checkout-button-subhead' });
   const checkoutButtonSubheadImage = createTag('img', { class: 'pdpx-checkout-button-subhead-image', src: '/express/code/icons/powered-by-zazzle.svg' });
-  const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns gauranteed');
+  const checkoutButtonSubheadLink = createTag('a', { class: 'pdpx-checkout-button-subhead-link', href: 'https://www.zazzle.com/returns' }, 'Returns guaranteed');
   const checkoutButtonSubheadText = createTag('span', { class: 'pdpx-checkout-button-subhead-text' }, 'through 100% satisfaction promise.');
   checkoutButtonSubhead.appendChild(checkoutButtonSubheadImage);
   checkoutButtonSubhead.appendChild(checkoutButtonSubheadLink);

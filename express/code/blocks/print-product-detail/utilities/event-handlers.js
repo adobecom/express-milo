@@ -3,6 +3,7 @@ import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-fu
 import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
+import BlockMediator from '../../../scripts/block-mediator.min.js';
 
 export function toggleDrawer() {
   const curtain = document.querySelector('.pdp-curtain');
@@ -49,7 +50,11 @@ async function updateProductImages(productDetails) {
     imageType = firstImageType;
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
-  const newProductImagesContainer = await createProductImagesContainer(productDetails.realViews, newHeroImgSrc, imageType);
+  const newProductImagesContainer = await createProductImagesContainer(
+    productDetails.realViews,
+    newHeroImgSrc,
+    imageType,
+  );
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
 }
 
@@ -73,9 +78,24 @@ export default async function updateAllDynamicElements(productId) {
   const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
   const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
-  const normalizedProductDetails = await normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, formDataObject.qty, updatedConfigurationOptions, formDataObject.printingprocess);
+  const normalizedProductDetails = await normalizeProductDetailObject(
+    productDetails,
+    productPrice,
+    productReviews,
+    productRenditions,
+    productShippingEstimates,
+    formDataObject.qty,
+    updatedConfigurationOptions,
+    formDataObject.printingprocess,
+  );
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+
+  // Publish to BlockMediator to trigger accordion updates
+  BlockMediator.set('product:updated', {
+    productDetails,
+    formData: formDataObject,
+  });
 }
