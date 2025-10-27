@@ -108,6 +108,3 @@ export function getTypographySystem(className) {
   if (isExpressTypographyClass(className)) return 'express';
   return null;
 }
-
-// Note: Conversion functions removed - they were confusing
-// and not needed for the core authoring workflow
