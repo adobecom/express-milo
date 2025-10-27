@@ -1,5 +1,6 @@
 import { getLibs } from '../../../scripts/utils.js';
 import updateAllDynamicElements from '../utilities/event-handlers.js';
+import { updatePaperSelectionUI } from './createDrawer.js';
 
 let createTag;
 
@@ -126,52 +127,32 @@ function createMiniPillOptionsSelector(
         const currentMediaValue = hiddenSelectInput.value;
         const { drawer } = miniPillSelectorLabelCompareLink.drawerRef;
         const drawerBody = drawer.querySelector('.drawer-body--paper-selection');
-        if (drawerBody && currentMediaValue) {
-          // Update the selected paper in the drawer
-          drawerBody.dataset.selectedPaperName = currentMediaValue;
 
+        if (drawerBody && currentMediaValue) {
           // Find the paper data to update UI
           const selector = `.paper-selection-thumb[data-paper-name="${currentMediaValue}"]`;
           const selectedThumb = drawerBody.querySelector(selector);
+
           if (selectedThumb) {
-            // Update selected state on thumbnails
-            drawerBody.querySelectorAll('.paper-selection-thumb').forEach((thumb) => {
-              thumb.classList.remove('selected');
-            });
-            selectedThumb.classList.add('selected');
+            // Build cached elements object for the shared update function
+            const cachedElements = {
+              heroImage: drawerBody.querySelector('.paper-selection-hero'),
+              paperName: drawerBody.querySelector('.paper-selection-name'),
+              paperTypeLabel: drawerBody.querySelector('.paper-selection-type-label'),
+              description: drawerBody.querySelector('.paper-selection-description'),
+              specsRow: drawerBody.querySelector('.paper-selection-specs'),
+              titleRow: drawerBody.querySelector('.paper-selection-title-row'),
+            };
 
-            // Update hero image, name, and description
-            const heroImage = drawerBody.querySelector('.paper-selection-hero');
-            const paperName = drawerBody.querySelector('.paper-selection-name');
-            const typeName = drawerBody.querySelector('.paper-selection-type-name');
-            const description = drawerBody.querySelector('.paper-selection-description');
-            const footerImage = drawer.querySelector('.drawer-foot img');
-            const footerName = drawer.querySelector('.info-name');
-            const footerPrice = drawer.querySelector('.info-price');
+            // Build footer elements object
+            const footerElements = {
+              image: drawer.querySelector('.drawer-foot img'),
+              name: drawer.querySelector('.info-name'),
+              price: drawer.querySelector('.info-price'),
+            };
 
-            const thumbImg = selectedThumb.querySelector('img');
-            if (heroImage) {
-              heroImage.src = selectedThumb.dataset.heroImage || thumbImg.src;
-            }
-            if (heroImage) {
-              heroImage.alt = selectedThumb.dataset.paperTitle || currentMediaValue;
-            }
-            if (paperName) {
-              paperName.textContent = selectedThumb.dataset.paperTitle || currentMediaValue;
-            }
-            if (typeName) {
-              typeName.textContent = selectedThumb.dataset.paperTitle || currentMediaValue;
-            }
-            if (description) description.innerHTML = selectedThumb.dataset.description || '';
-            if (footerImage) footerImage.src = thumbImg.src;
-            if (footerName) {
-              footerName.textContent = selectedThumb.dataset.paperTitle || currentMediaValue;
-            }
-            const priceEl = selectedThumb.querySelector('.paper-selection-thumb-price');
-            if (footerPrice) footerPrice.textContent = priceEl.textContent;
-
-            // Scroll selected thumbnail into view
-            selectedThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            // Use shared update function with error handling
+            updatePaperSelectionUI(drawerBody, selectedThumb, cachedElements, footerElements);
           }
         }
 
