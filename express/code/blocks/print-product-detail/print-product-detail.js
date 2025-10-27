@@ -1,7 +1,7 @@
 import { getLibs } from '../../scripts/utils.js';
 import fetchAPIData, { formatProductDescriptions } from './fetchData/fetchProductDetails.js';
 import { normalizeProductDetailObject } from './utilities/data-formatting.js';
-import { extractProductId } from './utilities/utility-functions.js';
+import { extractProductId, buildRealViewImageUrl } from './utilities/utility-functions.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
@@ -33,6 +33,63 @@ const SIZE_CHART_DATA = {
     },
   },
 };
+
+async function setupPaperSelectionDrawer(productDetails, productDescriptions, rawProductDetails) {
+  if (productDetails.productType !== 'zazzle_businesscard') {
+    return null;
+  }
+
+  if (!productDetails.media || productDetails.media.length === 0) {
+    return null;
+  }
+
+  // Get raw media data from API to access firstProductRealviewParams
+  const rawMediaAttribute = rawProductDetails.product.attributes.media;
+  const rawMediaValues = rawMediaAttribute.values;
+
+  // Find the selected paper (first one by default)
+  const selectedPaper = productDetails.media[0];
+  const selectedRawPaper = rawMediaValues[0];
+
+  // Find the paper description from accordion data
+  const paperDescription = productDescriptions.find((desc) => desc.title === 'Paper');
+
+  // Build hero image URL with larger max_dim
+  const heroImageUrl = buildRealViewImageUrl(selectedRawPaper.firstProductRealviewParams, 644);
+
+  const paperData = {
+    selectedPaper: {
+      name: selectedPaper.title,
+      heroImage: heroImageUrl,
+      recommended: true, // First paper is recommended
+      specs: ['17.5pt thickness', '120lb weight', '324 GSM'], // TODO: Extract from API
+      typeName: selectedPaper.title,
+      description: selectedRawPaper.description || '',
+      imgSrc: selectedPaper.thumbnail,
+      price: selectedPaper.priceAdjustment,
+    },
+    papers: productDetails.media.map((paper, index) => {
+      const rawPaper = rawMediaValues[index];
+      const heroUrl = buildRealViewImageUrl(rawPaper.firstProductRealviewParams, 644);
+      return {
+        name: paper.name,
+        title: paper.title,
+        thumbnail: paper.thumbnail,
+        heroImage: heroUrl,
+        priceAdjustment: paper.priceAdjustment,
+        description: rawPaper.description || '',
+      };
+    }),
+  };
+
+  const paperDrawer = await createDrawer({
+    drawerLabel: 'Select paper type',
+    template: 'paper-selection',
+    data: paperData,
+  });
+
+  return paperDrawer;
+}
 
 async function setupComparisonDrawer(productDetails) {
   if (productDetails.productType !== 'zazzle_shirt') {
@@ -110,6 +167,7 @@ async function createProductInfoContainer(
     null,
     comparisonDrawer,
     sizeChartDrawer,
+    drawer,
   );
   productInfoContainer.appendChild(customizationInputs);
   const productDetailsSection = await createProductDetailsSection(productDescriptions);
@@ -117,11 +175,6 @@ async function createProductInfoContainer(
   productInfoSectionWrapper.appendChild(productInfoContainer);
   const checkoutButton = createCheckoutButton();
   productInfoSectionWrapper.appendChild(checkoutButton);
-
-  // Only append default drawer if it exists (business cards)
-  if (drawer) {
-    productInfoSectionWrapper.appendChild(drawer);
-  }
 
   productInfoSectionWrapperContainer.appendChild(productInfoHeadingSection);
   productInfoSectionWrapperContainer.appendChild(productInfoSectionWrapper);
@@ -136,16 +189,9 @@ async function createGlobalContainer(
   rawProductDetails,
 ) {
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
+  globalContainer.dataset.productId = productDetails.id;
 
-  // Only create default drawer for business cards (paper type selector)
-  let defaultDrawer = null;
-  let defaultCurtain = null;
-  if (productDetails.productType === 'zazzle_businesscard') {
-    const result = await createDrawer(block);
-    defaultDrawer = result.drawer;
-    defaultCurtain = result.curtain;
-  }
-
+  const paperDrawer = await setupPaperSelectionDrawer(productDetails, productDescriptions, rawProductDetails);
   const comparisonDrawer = await setupComparisonDrawer(productDetails);
   const sizeChartDrawer = await setupSizeChartDrawer(productDetails);
   const productImagesContainer = await createProductImagesContainer(
@@ -155,7 +201,7 @@ async function createGlobalContainer(
   const productInfoSectionWrapper = await createProductInfoContainer(
     productDetails,
     productDescriptions,
-    defaultDrawer,
+    paperDrawer,
     rawProductDetails,
     comparisonDrawer,
     sizeChartDrawer,
@@ -163,7 +209,13 @@ async function createGlobalContainer(
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
 
-  // Append comparison and size chart drawers to global container
+  // Append paper drawer to global container (for business cards)
+  if (paperDrawer) {
+    globalContainer.appendChild(paperDrawer.curtain);
+    globalContainer.appendChild(paperDrawer.drawer);
+  }
+
+  // Append comparison and size chart drawers to global container (for t-shirts)
   if (comparisonDrawer) {
     globalContainer.appendChild(comparisonDrawer.curtain);
     globalContainer.appendChild(comparisonDrawer.drawer);
@@ -175,9 +227,6 @@ async function createGlobalContainer(
   }
 
   block.appendChild(globalContainer);
-  if (defaultCurtain) {
-    document.body.append(defaultCurtain);
-  }
 }
 
 export default async function decorate(block) {

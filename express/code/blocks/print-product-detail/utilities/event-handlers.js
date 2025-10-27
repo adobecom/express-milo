@@ -63,7 +63,32 @@ async function updateProductDeliveryEstimate(productDetails) {
 }
 
 async function updateCustomizationOptions(productDetails, formDataObject) {
-  const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
+  // Retrieve existing drawer references before replacing the form
+  const existingCompareLink = document.querySelector('.pdpx-pill-selector-label-compare-link');
+  const comparisonDrawer = existingCompareLink?.drawerRef || null;
+  const existingSizeChartLink = document.querySelector('.pdpx-size-chart-link');
+  const sizeChartDrawer = existingSizeChartLink?.drawerRef || null;
+
+  // For paper drawer, check if it exists in the DOM
+  const existingPaperLink = document.querySelector('.pdpx-pill-selector-label-compare-link[data-drawer-type="paper"]');
+  let paperDrawer = existingPaperLink?.drawerRef || null;
+
+  // If not found via link, try to find the drawer directly in the DOM
+  if (!paperDrawer) {
+    const paperDrawerElement = document.querySelector('.drawer-body--paper-selection')?.parentElement;
+    const paperCurtain = document.querySelector('.pdp-curtain');
+    if (paperDrawerElement && paperCurtain) {
+      paperDrawer = { drawer: paperDrawerElement, curtain: paperCurtain };
+    }
+  }
+
+  const newCustomizationInputs = await createCustomizationInputs(
+    productDetails,
+    formDataObject,
+    comparisonDrawer,
+    sizeChartDrawer,
+    paperDrawer,
+  );
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 

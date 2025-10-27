@@ -88,6 +88,123 @@
   display: block;
 }
 
+/* Paper Selection Drawer Styles */
+.drawer-body--paper-selection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-300);
+  padding: var(--spacing-300);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.paper-selection-hero {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.paper-selection-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paper-selection-name {
+  font-size: var(--body-font-size-m);
+  font-weight: var(--subheading-font-weight);
+  color: var(--color-gray-950);
+  margin: 0;
+}
+
+.paper-selection-recommended {
+  font-size: var(--body-font-size-xs);
+  color: var(--color-white);
+  padding: 4px 9px;
+  line-height: 1.3;
+  border-radius: 7px;
+  background-color: #3B63FB;
+}
+
+.paper-selection-specs {
+  display: flex;
+  gap: var(--spacing-100);
+  flex-wrap: wrap;
+}
+
+.paper-selection-spec-pill {
+  border-radius: 8px;
+  padding: 4px var(--spacing-100);
+  background-color: #F3F3F3;
+  display: flex;
+  align-items: center;
+  font-size: var(--body-font-size-s);
+  gap: 4px;
+}
+
+.paper-selection-type-label {
+  font-size: var(--body-font-size-s);
+  color: var(--color-gray-950);
+}
+
+.paper-selection-type-name {
+  font-weight: var(--subheading-font-weight);
+}
+
+.paper-selection-carousel {
+  display: flex;
+  gap: var(--spacing-200);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: var(--spacing-100) 0;
+  min-height: 100px;
+}
+
+.paper-selection-thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 80px;
+}
+
+.paper-selection-thumb.selected {
+  border-color: var(--color-info-accent);
+  background: var(--color-gray-100);
+}
+
+.paper-selection-thumb:hover {
+  border-color: var(--color-gray-300);
+  background: var(--color-gray-100);
+}
+
+.paper-selection-thumb-image {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.paper-selection-thumb-price {
+  font-size: var(--body-font-size-xs);
+  color: var(--color-gray-600);
+}
+
+.paper-selection-description {
+  font-size: var(--body-font-size-s);
+  color: var(--color-gray-600);
+  line-height: 1.4;
+}
+
 @media (max-width: 767px) {
   .drawer-body--comparison {
     grid-template-columns: 1fr;
@@ -257,6 +374,7 @@
   font-family: var(--body-font-family);
   font-weight: 700;
   font-size: var(--body-font-size-l);
+  cursor: pointer;
 }
 
 .pdpx-global-container .drawer-foot .info-container {

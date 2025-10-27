@@ -107,23 +107,82 @@ function createMiniPillOptionsSelector(
   const miniPillSelectorLabel = createTag('span', { class: 'pdpx-pill-selector-label-label' }, labelText);
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabel);
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
-  if (CTALinkText) {
-    const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button' }, CTALinkText);
+  miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
+  const miniPillSelectorOptionsContainer = createTag('div', { class: 'pdpx-mini-pill-selector-options-container' });
+  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
+
+  if (CTALinkText && hiddenSelectInputName === 'media') {
+    const miniPillSelectorLabelCompareLink = createTag('button', {
+      class: 'pdpx-pill-selector-label-compare-link',
+      type: 'button',
+      'data-drawer-type': 'paper',
+    }, CTALinkText);
+    // Store drawer reference on the element for later use
+    miniPillSelectorLabelCompareLink.drawerRef = null;
     miniPillSelectorLabelCompareLink.addEventListener('click', () => {
-      // Assuming default drawer is for comparison
-      const defaultDrawer = document.querySelector('.drawer');
-      const defaultCurtain = document.querySelector('.pdp-curtain');
-      if (defaultDrawer && defaultCurtain) {
-        defaultDrawer.classList.remove('hidden');
-        defaultCurtain.classList.remove('hidden');
+      // Use stored drawer reference if available
+      if (miniPillSelectorLabelCompareLink.drawerRef) {
+        // Sync drawer state with current form value before opening
+        const currentMediaValue = hiddenSelectInput.value;
+        const { drawer } = miniPillSelectorLabelCompareLink.drawerRef;
+        const drawerBody = drawer.querySelector('.drawer-body--paper-selection');
+        if (drawerBody && currentMediaValue) {
+          // Update the selected paper in the drawer
+          drawerBody.dataset.selectedPaperName = currentMediaValue;
+
+          // Find the paper data to update UI
+          const selector = `.paper-selection-thumb[data-paper-name="${currentMediaValue}"]`;
+          const selectedThumb = drawerBody.querySelector(selector);
+          if (selectedThumb) {
+            // Update selected state on thumbnails
+            drawerBody.querySelectorAll('.paper-selection-thumb').forEach((thumb) => {
+              thumb.classList.remove('selected');
+            });
+            selectedThumb.classList.add('selected');
+
+            // Update hero image, name, and description
+            const heroImage = drawerBody.querySelector('.paper-selection-hero');
+            const paperName = drawerBody.querySelector('.paper-selection-name');
+            const typeName = drawerBody.querySelector('.paper-selection-type-name');
+            const description = drawerBody.querySelector('.paper-selection-description');
+            const footerImage = drawer.querySelector('.drawer-foot img');
+            const footerName = drawer.querySelector('.info-name');
+            const footerPrice = drawer.querySelector('.info-price');
+
+            const thumbImg = selectedThumb.querySelector('img');
+            if (heroImage) {
+              heroImage.src = selectedThumb.dataset.heroImage || thumbImg.src;
+            }
+            if (heroImage) {
+              heroImage.alt = selectedThumb.dataset.paperTitle || currentMediaValue;
+            }
+            if (paperName) {
+              paperName.textContent = selectedThumb.dataset.paperTitle || currentMediaValue;
+            }
+            if (typeName) {
+              typeName.textContent = selectedThumb.dataset.paperTitle || currentMediaValue;
+            }
+            if (description) description.innerHTML = selectedThumb.dataset.description || '';
+            if (footerImage) footerImage.src = thumbImg.src;
+            if (footerName) {
+              footerName.textContent = selectedThumb.dataset.paperTitle || currentMediaValue;
+            }
+            const priceEl = selectedThumb.querySelector('.paper-selection-thumb-price');
+            if (footerPrice) footerPrice.textContent = priceEl.textContent;
+
+            // Scroll selected thumbnail into view
+            selectedThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        }
+
+        miniPillSelectorLabelCompareLink.drawerRef.drawer.classList.remove('hidden');
+        miniPillSelectorLabelCompareLink.drawerRef.curtain.classList.remove('hidden');
         document.body.classList.add('disable-scroll');
       }
     });
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
-  miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
-  const miniPillSelectorOptionsContainer = createTag('div', { class: 'pdpx-mini-pill-selector-options-container' });
-  const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
+
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const option = createTag('option', { value: customizationOptions[i].name }, customizationOptions[i].title);
     if (customizationOptions[i].name === defaultValue) {
@@ -171,7 +230,7 @@ function createBusinessCardInputs(
   container,
   productDetails,
   formDataObject = {},
-  comparisonDrawer = null,
+  paperDrawer = null,
 ) {
   const paperTypeSelectorContainer = createMiniPillOptionsSelector(
     productDetails.media,
@@ -181,13 +240,21 @@ function createBusinessCardInputs(
     productDetails.id,
     formDataObject?.media,
   );
+
+  // Set drawer reference on the "Compare Paper Types" link
+  if (paperDrawer) {
+    const compareLink = paperTypeSelectorContainer.querySelector('.pdpx-pill-selector-label-compare-link');
+    if (compareLink) {
+      compareLink.drawerRef = paperDrawer;
+    }
+  }
   const cornerStyleSelectorContainer = createPillOptionsSelector(
     productDetails.cornerstyle,
     'Corner style',
     'cornerstyle',
     productDetails.id,
     formDataObject?.cornerstyle,
-    comparisonDrawer,
+    null,
   );
   const sizeSelectorContainer = createPillOptionsSelector(
     productDetails.style,
@@ -195,7 +262,7 @@ function createBusinessCardInputs(
     'style',
     productDetails.id,
     formDataObject?.style,
-    comparisonDrawer,
+    null,
   );
   const quantitySelectorContainer = createStandardSelector(
     productDetails.quantities,
@@ -284,6 +351,7 @@ export default async function createCustomizationInputs(
   formDataObject = {},
   comparisonDrawer = null,
   sizeChartDrawer = null,
+  paperDrawer = null,
 ) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const customizationInputsContainer = createTag('div', {
@@ -296,16 +364,26 @@ export default async function createCustomizationInputs(
   });
   customizationInputsContainer.appendChild(customizationInputsForm);
   const productTypeToInputsMap = new Map([
-    ['zazzle_businesscard', (c, pd, fd, cd) => createBusinessCardInputs(c, pd, fd, cd)],
+    ['zazzle_businesscard', (c, pd, fd, papDrawer) => createBusinessCardInputs(c, pd, fd, papDrawer)],
     ['zazzle_shirt', (c, pd, fd, cd, scd) => createTShirtInputs(c, pd, fd, cd, scd)],
   ]);
   const createInputsFunction = productTypeToInputsMap.get(productDetails.productType);
-  createInputsFunction(
-    customizationInputsForm,
-    productDetails,
-    formDataObject,
-    comparisonDrawer,
-    sizeChartDrawer,
-  );
+
+  if (productDetails.productType === 'zazzle_businesscard') {
+    createInputsFunction(
+      customizationInputsForm,
+      productDetails,
+      formDataObject,
+      paperDrawer,
+    );
+  } else {
+    createInputsFunction(
+      customizationInputsForm,
+      productDetails,
+      formDataObject,
+      comparisonDrawer,
+      sizeChartDrawer,
+    );
+  }
   return customizationInputsContainer;
 }

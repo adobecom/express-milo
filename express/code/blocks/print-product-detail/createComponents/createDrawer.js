@@ -236,6 +236,117 @@ function createDrawerBodySizeChart(data, currentUnit = 'IN') {
   return drawerBody;
 }
 
+function createDrawerBodyPaperSelection(data) {
+  const drawerBody = createTag('div', { class: 'drawer-body drawer-body--paper-selection' });
+
+  // Store currently selected paper name on the drawerBody for later access
+  drawerBody.dataset.selectedPaperName = data.selectedPaper.name;
+
+  // Hero image
+  const heroImage = createTag('img', {
+    class: 'paper-selection-hero',
+    src: data.selectedPaper.heroImage,
+    alt: data.selectedPaper.name,
+  });
+  drawerBody.append(heroImage);
+
+  // Paper name + recommended badge
+  const titleRow = createTag('div', { class: 'paper-selection-title-row' });
+  const paperName = createTag('h3', { class: 'paper-selection-name' }, data.selectedPaper.name);
+  titleRow.append(paperName);
+  if (data.selectedPaper.recommended) {
+    const recommendedBadge = createTag('span', { class: 'paper-selection-recommended' }, 'Recommended');
+    titleRow.append(recommendedBadge);
+  }
+  drawerBody.append(titleRow);
+
+  // Specs (thickness, weight, GSM) with checkmarks
+  if (data.selectedPaper.specs && data.selectedPaper.specs.length > 0) {
+    const specsRow = createTag('div', { class: 'paper-selection-specs' });
+    data.selectedPaper.specs.forEach((spec) => {
+      const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
+      specPill.append(getIconElementDeprecated('checkmark'), spec);
+      specsRow.append(specPill);
+    });
+    drawerBody.append(specsRow);
+  }
+
+  // Paper type label
+  const paperTypeLabel = createTag('div', { class: 'paper-selection-type-label' });
+  paperTypeLabel.innerHTML = `Paper type: <span class="paper-selection-type-name">${data.selectedPaper.typeName}</span>`;
+  drawerBody.append(paperTypeLabel);
+
+  // Paper thumbnails carousel
+  const carouselContainer = createTag('div', { class: 'paper-selection-carousel' });
+  data.papers.forEach((paper, index) => {
+    const isSelected = index === 0; // First paper is selected by default
+    const paperThumb = createTag('button', {
+      class: isSelected ? 'paper-selection-thumb selected' : 'paper-selection-thumb',
+      type: 'button',
+      'data-paper-name': paper.name,
+      'data-paper-title': paper.title,
+      'data-hero-image': paper.heroImage || paper.thumbnail,
+      'data-description': paper.description || '',
+    });
+    const thumbImage = createTag('img', {
+      class: 'paper-selection-thumb-image',
+      src: paper.thumbnail,
+      alt: paper.title || paper.name,
+    });
+    const thumbPrice = createTag('span', { class: 'paper-selection-thumb-price' }, paper.priceAdjustment);
+    paperThumb.append(thumbImage, thumbPrice);
+
+    // Update hero image and selection on click
+    paperThumb.addEventListener('click', () => {
+      // Update selected state
+      carouselContainer.querySelectorAll('.paper-selection-thumb').forEach((thumb) => {
+        thumb.classList.remove('selected');
+      });
+      paperThumb.classList.add('selected');
+
+      // Store the currently selected paper name
+      drawerBody.dataset.selectedPaperName = paper.name;
+
+      // Update hero image (use larger heroImage, not thumbnail)
+      heroImage.src = paper.heroImage || paper.thumbnail;
+      heroImage.alt = paper.title || paper.name;
+
+      // Update paper name (display title)
+      paperName.textContent = paper.title || paper.name;
+
+      // Update type name (display title)
+      const typeName = paperTypeLabel.querySelector('.paper-selection-type-name');
+      if (typeName) {
+        typeName.textContent = paper.title || paper.name;
+      }
+
+      // Update description
+      const descriptionElement = drawerBody.querySelector('.paper-selection-description');
+      if (descriptionElement && paper.description) {
+        descriptionElement.innerHTML = paper.description;
+      }
+
+      // Update footer info (use thumbnail for footer)
+      const footerImage = drawerBody.parentElement.querySelector('.drawer-foot img');
+      const footerName = drawerBody.parentElement.querySelector('.info-name');
+      const footerPrice = drawerBody.parentElement.querySelector('.info-price');
+      if (footerImage) footerImage.src = paper.thumbnail;
+      if (footerName) footerName.textContent = paper.title || paper.name;
+      if (footerPrice) footerPrice.textContent = paper.priceAdjustment;
+    });
+
+    carouselContainer.append(paperThumb);
+  });
+  drawerBody.append(carouselContainer);
+
+  // Description
+  const description = createTag('div', { class: 'paper-selection-description' });
+  description.innerHTML = data.selectedPaper.description;
+  drawerBody.append(description);
+
+  return drawerBody;
+}
+
 export default async function createDrawer({
   drawerLabel = 'Select paper type',
   data = mockData,
@@ -270,6 +381,70 @@ export default async function createDrawer({
       createDrawerHead(drawerLabel, drawer, curtain),
       createDrawerBodySizeChart(data),
     );
+  } else if (template === 'paper-selection') {
+    const drawerBody = createDrawerBodyPaperSelection(data);
+    const drawerFoot = createDrawerFoot(data.selectedPaper);
+    drawer.append(
+      createDrawerHead(drawerLabel, drawer, curtain),
+      drawerBody,
+      drawerFoot,
+    );
+
+    // Add Select button handler for paper selection
+    const selectButton = drawerFoot.querySelector('.select');
+    if (selectButton) {
+      selectButton.addEventListener('click', async () => {
+        const { selectedPaperName } = drawerBody.dataset;
+
+        // Update the hidden select input in the form
+        const mediaSelect = document.getElementById('media');
+
+        if (mediaSelect && selectedPaperName) {
+          // Update the select value FIRST
+          mediaSelect.value = selectedPaperName;
+
+          // Also update the visual mini pill selector
+          const miniPillContainer = mediaSelect.closest('.pdpx-pill-selector-container');
+
+          if (miniPillContainer) {
+            // Update selected thumbnail
+            const allThumbs = miniPillContainer.querySelectorAll('.pdpx-mini-pill-image-container');
+            allThumbs.forEach((thumb) => {
+              if (thumb.dataset.name === selectedPaperName) {
+                thumb.classList.add('selected');
+                // Update the label text
+                const labelName = miniPillContainer.querySelector('.pdpx-pill-selector-label-name');
+                if (labelName) {
+                  labelName.textContent = thumb.dataset.title;
+                }
+              } else {
+                thumb.classList.remove('selected');
+              }
+            });
+          }
+
+          // Trigger change event to update all dynamic elements and WAIT for it to complete
+          const { default: updateAllDynamicElements } = await import('../utilities/event-handlers.js');
+          const globalContainer = document.querySelector('.pdpx-global-container');
+          const productId = globalContainer?.dataset?.productId;
+
+          if (productId) {
+            // WAIT for the update to complete before closing drawer
+            await updateAllDynamicElements(productId);
+
+            // Close the drawer AFTER update completes
+            drawer.classList.add('hidden');
+            curtain.classList.add('hidden');
+            document.body.classList.remove('disable-scroll');
+          }
+        } else {
+          // If no update needed, just close the drawer
+          drawer.classList.add('hidden');
+          curtain.classList.add('hidden');
+          document.body.classList.remove('disable-scroll');
+        }
+      });
+    }
   } else {
     drawer.append(
       createDrawerHead(drawerLabel, drawer, curtain),
