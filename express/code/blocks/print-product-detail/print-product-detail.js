@@ -1,12 +1,12 @@
 import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData, { fetchProductDetails } from './fetchData/fetchProductDetails.js';
-import extractProductDescriptionsFromBlock, { normalizeProductDetailObject, createEmptyDataObject, updateDataObjectProductDetails } from './utilities/data-formatting.js';
+import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/fetchProductDetails.js';
+import { createEmptyDataObject, updateDataObjectProductDetails, updateDataObjectProductPrice, updateDataObjectProductShippingEstimates, updateDataObjectProductReviews, updateDataObjectProductRenditions, updateDataObjectUIStrings } from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
 import createProductImagesContainer, { createProductThumbnailCarousel } from './createComponents/createProductImagesContainer.js';
-import createCustomizationInputs, { createBusinessCardInputs, createTShirtInputs } from './createComponents/createCustomizationInputs.js';
-import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
+import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
+import { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
 import createDrawer from './createComponents/createDrawer.js';
-import { addPrefetchLinks } from './utilities/utility-functions.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK } from './utilities/utility-functions.js';
 
 let createTag;
 
@@ -84,10 +84,43 @@ async function updatePageWithProductDetails(productDetails) {
 function updatePageWithProductImages(productDetails) {
   const imageThumbnailCarouselContainer = document.getElementById('pdpx-image-thumbnail-carousel-container');
   const heroProductImage = document.getElementById('pdpx-product-hero-image');
-  imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
   const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(productDetails.realViews, 'Front', heroProductImage);
   imageThumbnailCarouselContainer.appendChild(newImageThumbnailCarouselContainer);
+  imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
   return imageThumbnailCarouselContainer;
+}
+
+function updatePageWithProductPrice(productDetails) {
+  const priceLabel = document.getElementById('pdpx-price-label');
+  const comparePriceLabel = document.getElementById('pdpx-compare-price-label');
+  const savingsText = document.getElementById('pdpx-savings-text');
+  priceLabel.textContent = productDetails.productPrice;
+  comparePriceLabel.textContent = productDetails.strikethroughPrice;
+  savingsText.textContent = productDetails.discountString;
+}
+
+function updatePageWithProductReviews(productDetails) {
+  const ratingsNumber = document.getElementById('pdpx-ratings-number');
+  ratingsNumber.textContent = Math.round(productDetails.averageRating * 10) / 10;
+  const ratingsAmount = document.getElementById('pdpx-ratings-amount');
+  ratingsAmount.textContent = formatLargeNumberToK(productDetails.totalReviews);
+}
+
+function updatePageWithProductShippingEstimates(productDetails) {
+  const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
+  const deliveryEstimatePillDate = document.getElementById('pdpx-delivery-estimate-pill-date');
+  deliveryEstimatePillDate.textContent = deliveryEstimateDateRange;
+}
+
+function updatePageWithUIStrings(productDetails) {
+  const deliveryEstimatePillText = document.getElementById('pdpx-delivery-estimate-pill-text');
+  deliveryEstimatePillText.textContent = productDetails.deliveryEstimateStringText;
+  const compareValueTooltipTitle = document.getElementById('pdpx-info-tooltip-content-title');
+  compareValueTooltipTitle.textContent = productDetails.compareValueTooltipTitle;
+  const compareValueTooltipDescription1 = document.getElementById('pdpx-info-tooltip-content-description-1');
+  compareValueTooltipDescription1.textContent = productDetails.compareValueTooltipDescription1;
+  const compareValueTooltipDescription2 = document.getElementById('pdpx-info-tooltip-content-description-2');
+  compareValueTooltipDescription2.textContent = productDetails.compareValueTooltipDescription2;
 }
 
 export default async function decorate(block) {
@@ -104,18 +137,34 @@ export default async function decorate(block) {
     dataObject = updateDataObjectProductDetails(dataObject, productDetailsResponse);
     const updatedPageResponse = updatePageWithProductDetails(dataObject);
     productId = productDetailsResponse.product.id;
-
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
     productRenditions.then((productRenditionsResponse) => {
-      dataObject.realViews = productRenditionsResponse.realviewUrls;
+      dataObject = updateDataObjectProductRenditions(dataObject, productRenditionsResponse);
       updatePageWithProductImages(dataObject);
     });
-    const productPrice = fetchAPIData(productId, null, 'getproductpricing');
-    const productReviews = fetchAPIData(productId, null, 'getreviews');
     const quantity = 1;
-    // const sampleShippingParameters = { qty: quantity };
-    const sampleShippingParameters = updatedPageResponse.checkoutButtonParameters;
+    const productPrice = fetchAPIData(productId, null, 'getproductpricing');
+    productPrice.then((productPriceResponse) => {
+      dataObject = updateDataObjectProductPrice(dataObject, productPriceResponse, quantity);
+      updatePageWithProductPrice(dataObject);
+    });
+    const productReviews = fetchAPIData(productId, null, 'getreviews');
+    productReviews.then((productReviewsResponse) => {
+      dataObject = updateDataObjectProductReviews(dataObject, productReviewsResponse);
+      updatePageWithProductReviews(dataObject);
+    });
 
+    const sampleShippingParameters = { qty: quantity };
     const productShippingEstimates = fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
+    productShippingEstimates.then((productShippingEstimatesResponse) => {
+      dataObject = updateDataObjectProductShippingEstimates(dataObject, productShippingEstimatesResponse);
+      updatePageWithProductShippingEstimates(dataObject);
+    });
+
+    const UIStrings = fetchUIStrings();
+    UIStrings.then((UIStringsResponse) => {
+      dataObject = updateDataObjectUIStrings(dataObject, UIStringsResponse);
+      updatePageWithUIStrings(dataObject);
+    });
   });
 }

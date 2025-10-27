@@ -22,7 +22,7 @@ function createStarRatings(productDetails) {
 function createRatingsNumber(productDetails) {
   const ratingsNumberText = Math.round(productDetails.averageRating * 10) / 10;
   const ratingsNumberContainer = createTag('div', { class: 'pdpx-ratings-number-container' });
-  const ratingsNumber = createTag('span', { class: 'pdpx-ratings-number' }, ratingsNumberText);
+  const ratingsNumber = createTag('span', { class: 'pdpx-ratings-number', id: 'pdpx-ratings-number' }, ratingsNumberText);
   ratingsNumberContainer.appendChild(ratingsNumber);
   return ratingsNumberContainer;
 }
@@ -31,7 +31,7 @@ function createRatingsAmount(productDetails) {
   const ratingsAmountText = formatLargeNumberToK(productDetails.totalReviews);
   const ratingsAmountContainer = createTag('div', { class: 'pdpx-ratings-amount-container' });
   ratingsAmountContainer.className = 'pdpx-ratings-amount-container';
-  const ratingsAmount = createTag('button', { class: 'pdpx-ratings-amount', type: 'button' }, ratingsAmountText);
+  const ratingsAmount = createTag('button', { class: 'pdpx-ratings-amount', id: 'pdpx-ratings-amount', type: 'button' }, ratingsAmountText);
   ratingsAmountContainer.appendChild(ratingsAmount);
   return ratingsAmountContainer;
 }
@@ -59,10 +59,10 @@ function createProductTitleAndRatingsContainer(productDetails) {
 
 function createInfoTooltipContent(productDetails) {
   const infoTooltipContent = createTag('div', { class: 'pdpx-info-tooltip-content', id: 'pdpx-info-tooltip-content', role: 'tooltip' });
-  const infoTooltipContentTitle = createTag('h6', { class: 'pdpx-info-tooltip-content-title' }, 'Comparative Value Price');
+  const infoTooltipContentTitle = createTag('h6', { class: 'pdpx-info-tooltip-content-title', id: 'pdpx-info-tooltip-content-title' }, productDetails.compareValueTooltipTitle);
   infoTooltipContent.appendChild(infoTooltipContentTitle);
-  const infoTooltipContentDescription1 = createTag('p', { class: 'pdpx-info-tooltip-content-description' }, productDetails.tooltipDescription1);
-  const infoTooltipContentDescription2 = createTag('p', { class: 'pdpx-info-tooltip-content-description' }, productDetails.tooltipDescription2);
+  const infoTooltipContentDescription1 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-1' }, productDetails.tooltipDescription1);
+  const infoTooltipContentDescription2 = createTag('p', { class: 'pdpx-info-tooltip-content-description', id: 'pdpx-info-tooltip-content-description-2' }, productDetails.tooltipDescription2);
   infoTooltipContent.appendChild(infoTooltipContentDescription1);
   infoTooltipContent.appendChild(infoTooltipContentDescription2);
   return infoTooltipContent;
@@ -108,7 +108,7 @@ export function createDeliveryEstimatePill(productDetails) {
   const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(productDetails.deliveryEstimateMinDate, productDetails.deliveryEstimateMaxDate);
   const deliveryEstimatePillContainer = createTag('div', { class: 'pdpx-delivery-estimate-pill' });
   const deliveryEstimatePillIcon = createTag('img', { class: 'pdpx-delivery-estimate-pill-icon', src: '/express/code/icons/delivery-truck.svg' });
-  const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
+  const deliveryEstimatePillText = createTag('span', { class: 'pdpx-delivery-estimate-pill-text', id: 'pdpx-delivery-estimate-pill-text' }, productDetails.deliveryEstimateStringText);
   const deliveryEstimatePillDate = createTag('span', { class: 'pdpx-delivery-estimate-pill-date', id: 'pdpx-delivery-estimate-pill-date' }, deliveryEstimateDateRange);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillIcon);
   deliveryEstimatePillContainer.appendChild(deliveryEstimatePillText);

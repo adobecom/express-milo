@@ -140,6 +140,9 @@ export function createEmptyDataObject(templateId) {
     tooltipDescription2: '',
     attributes: {},
     quantities: [],
+    compareValueTooltipTitle: '',
+    compareValueTooltipDescription1: '',
+    compareValueTooltipDescription2: '',
   };
   return emptyDataObject;
 }
@@ -155,5 +158,41 @@ export function updateDataObjectProductDetails(dataObject, productDetails) {
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   dataObject.attributes.quantities = quantitiesOptions;
+  return dataObject;
+}
+
+export function updateDataObjectProductPrice(dataObject, productPrice, quantity) {
+  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
+  const discountAvailable = !!applicableDiscount;
+  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
+  dataObject.productPrice = calculatedProductPrice;
+  dataObject.strikethroughPrice = productPrice?.unitPrice * quantity;
+  dataObject.discountAvailable = discountAvailable;
+  dataObject.discountString = applicableDiscount?.discountString;
+  return dataObject;
+}
+
+export function updateDataObjectProductShippingEstimates(dataObject, productShippingEstimates) {
+  dataObject.deliveryEstimateMinDate = productShippingEstimates.estimates[0].minDeliveryDate;
+  dataObject.deliveryEstimateMaxDate = productShippingEstimates.estimates[0].maxDeliveryDate;
+  return dataObject;
+}
+
+export function updateDataObjectProductReviews(dataObject, productReviews) {
+  dataObject.averageRating = productReviews.reviews.stats.averageRating;
+  dataObject.totalReviews = productReviews.reviews.stats.totalReviews;
+  return dataObject;
+}
+
+export function updateDataObjectProductRenditions(dataObject, productRenditions) {
+  dataObject.realViews = productRenditions.realviewUrls;
+  return dataObject;
+}
+
+export function updateDataObjectUIStrings(dataObject, UIStrings) {
+  dataObject.compareValueTooltipTitle = UIStrings.adobe_compareValueTooltipTitle;
+  dataObject.compareValueTooltipDescription1 = UIStrings.zi_product_Price_CompValueTooltip1Adobe;
+  dataObject.compareValueTooltipDescription2 = UIStrings.zi_product_Price_CompValueTooltip2Adobe;
+  dataObject.deliveryEstimateStringText = UIStrings.adobe_deliveryEstimateStringText;
   return dataObject;
 }
