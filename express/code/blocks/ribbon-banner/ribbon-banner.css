@@ -53,20 +53,24 @@
     box-shadow: inset 0 0 0 2px var(--color-gray-900);
 }
 
-.ribbon-banner.text-light {
+.ribbon-banner.text-light,
+.ribbon-banner.light {
     color: var(--color-white);
 }
-.ribbon-banner.text-light a.con-button.outline {
+.ribbon-banner.text-light a.con-button.outline,
+.ribbon-banner.light a.con-button.outline {
     color: var(--color-white);
-    outline-color: var(--color-white);
+    outline: 2px solid var(--color-white);
 }
-.ribbon-banner.text-light a.con-button.outline:hover {
+.ribbon-banner.text-light a.con-button.outline:hover,
+.ribbon-banner.light a.con-button.outline:hover {
     background-color: var(--rb-cta-hover-bg);
     border-color: transparent;
     color: var(--color-gray-900);
     outline-color: var(--color-info-accent);
 }
-.ribbon-banner.text-light a.con-button.outline:active {
+.ribbon-banner.text-light a.con-button.outline:active,
+.ribbon-banner.light a.con-button.outline:active {
     background-color: var(--rb-cta-active-bg);
     border-color: transparent;
     color: var(--color-gray-900);
