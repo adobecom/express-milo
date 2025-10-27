@@ -297,71 +297,83 @@ function createDrawerBodyPaperSelection(data) {
     });
     const thumbPrice = createTag('span', { class: 'paper-selection-thumb-price' }, paper.priceAdjustment);
     paperThumb.append(thumbImage, thumbPrice);
-
-    // Update hero image and selection on click
-    paperThumb.addEventListener('click', () => {
-      // Update selected state
-      carouselContainer.querySelectorAll('.paper-selection-thumb').forEach((thumb) => {
-        thumb.classList.remove('selected');
-      });
-      paperThumb.classList.add('selected');
-
-      // Store the currently selected paper name
-      drawerBody.dataset.selectedPaperName = paper.name;
-
-      // Update hero image (use larger heroImage, not thumbnail)
-      heroImage.src = paper.heroImage || paper.thumbnail;
-      heroImage.alt = paper.title || paper.name;
-
-      // Update paper name (display title)
-      paperName.textContent = paper.title || paper.name;
-
-      // Update type name (display title)
-      const typeName = paperTypeLabel.querySelector('.paper-selection-type-name');
-      if (typeName) {
-        typeName.textContent = paper.title || paper.name;
-      }
-
-      // Update description
-      const descriptionElement = drawerBody.querySelector('.paper-selection-description');
-      if (descriptionElement && paper.description) {
-        descriptionElement.innerHTML = paper.description;
-      }
-
-      // Update specs
-      const specsRow = drawerBody.querySelector('.paper-selection-specs');
-      if (specsRow) {
-        const specs = JSON.parse(paperThumb.dataset.specs || '[]');
-        specsRow.innerHTML = '';
-        specs.forEach((spec) => {
-          const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
-          specPill.append(getIconElementDeprecated('checkmark'), spec);
-          specsRow.append(specPill);
-        });
-      }
-
-      // Update recommended badge
-      const titleRowEl = drawerBody.querySelector('.paper-selection-title-row');
-      const existingBadge = titleRowEl.querySelector('.paper-selection-recommended');
-      const isRecommended = paperThumb.dataset.recommended === 'true';
-      if (isRecommended && !existingBadge) {
-        const badge = createTag('span', { class: 'paper-selection-recommended' }, 'Recommended');
-        titleRowEl.append(badge);
-      } else if (!isRecommended && existingBadge) {
-        existingBadge.remove();
-      }
-
-      // Update footer info (use thumbnail for footer)
-      const footerImage = drawerBody.parentElement.querySelector('.drawer-foot img');
-      const footerName = drawerBody.parentElement.querySelector('.info-name');
-      const footerPrice = drawerBody.parentElement.querySelector('.info-price');
-      if (footerImage) footerImage.src = paper.thumbnail;
-      if (footerName) footerName.textContent = paper.title || paper.name;
-      if (footerPrice) footerPrice.textContent = paper.priceAdjustment;
-    });
-
     carouselContainer.append(paperThumb);
   });
+
+  // Cache DOM elements for performance
+  const cachedElements = {
+    heroImage,
+    paperName,
+    paperTypeLabel,
+    description: drawerBody.querySelector('.paper-selection-description'),
+    specsRow: drawerBody.querySelector('.paper-selection-specs'),
+    titleRow: drawerBody.querySelector('.paper-selection-title-row'),
+  };
+
+  // Use event delegation to avoid memory leaks
+  carouselContainer.addEventListener('click', (e) => {
+    const clickedThumb = e.target.closest('.paper-selection-thumb');
+    if (!clickedThumb) return;
+
+    // Update selected state
+    carouselContainer.querySelectorAll('.paper-selection-thumb').forEach((thumb) => {
+      thumb.classList.remove('selected');
+    });
+    clickedThumb.classList.add('selected');
+
+    // Store the currently selected paper name
+    drawerBody.dataset.selectedPaperName = clickedThumb.dataset.paperName;
+
+    // Update hero image (use larger heroImage, not thumbnail)
+    cachedElements.heroImage.src = clickedThumb.dataset.heroImage || clickedThumb.querySelector('img').src;
+    cachedElements.heroImage.alt = clickedThumb.dataset.paperTitle;
+
+    // Update paper name (display title)
+    cachedElements.paperName.textContent = clickedThumb.dataset.paperTitle;
+
+    // Update type name (display title)
+    const typeName = cachedElements.paperTypeLabel.querySelector('.paper-selection-type-name');
+    if (typeName) {
+      typeName.textContent = clickedThumb.dataset.paperTitle;
+    }
+
+    // Update description
+    if (cachedElements.description) {
+      cachedElements.description.innerHTML = clickedThumb.dataset.description;
+    }
+
+    // Update specs
+    if (cachedElements.specsRow) {
+      const specs = JSON.parse(clickedThumb.dataset.specs || '[]');
+      cachedElements.specsRow.innerHTML = '';
+      specs.forEach((spec) => {
+        const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
+        specPill.append(getIconElementDeprecated('checkmark'), spec);
+        cachedElements.specsRow.append(specPill);
+      });
+    }
+
+    // Update recommended badge
+    const existingBadge = cachedElements.titleRow.querySelector('.paper-selection-recommended');
+    const isRecommended = clickedThumb.dataset.recommended === 'true';
+    if (isRecommended && !existingBadge) {
+      const badge = createTag('span', { class: 'paper-selection-recommended' }, 'Recommended');
+      cachedElements.titleRow.append(badge);
+    } else if (!isRecommended && existingBadge) {
+      existingBadge.remove();
+    }
+
+    // Update footer info (use cached elements if available)
+    const footerEls = carouselContainer.footerElements;
+    if (footerEls) {
+      const thumbImg = clickedThumb.querySelector('img');
+      const thumbPrice = clickedThumb.querySelector('.paper-selection-thumb-price');
+      if (footerEls.image) footerEls.image.src = thumbImg.src;
+      if (footerEls.name) footerEls.name.textContent = clickedThumb.dataset.paperTitle;
+      if (footerEls.price) footerEls.price.textContent = thumbPrice.textContent;
+    }
+  });
+
   drawerBody.append(carouselContainer);
 
   // Description
@@ -414,6 +426,19 @@ export default async function createDrawer({
       drawerBody,
       drawerFoot,
     );
+
+    // Cache footer elements for performance
+    const footerElements = {
+      image: drawerFoot.querySelector('img'),
+      name: drawerFoot.querySelector('.info-name'),
+      price: drawerFoot.querySelector('.info-price'),
+    };
+
+    // Update carousel click handler to use cached footer elements
+    const carousel = drawerBody.querySelector('.paper-selection-carousel');
+    if (carousel) {
+      carousel.footerElements = footerElements;
+    }
 
     // Add Select button handler for paper selection
     const selectButton = drawerFoot.querySelector('.select');
