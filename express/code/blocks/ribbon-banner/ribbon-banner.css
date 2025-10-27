@@ -10,12 +10,12 @@
     font-size: 14px;
 }
 .ribbon-banner .content {
-    padding: 12px 16px;
+    padding: var(--spacing-200) var(--spacing-300);
     line-height: 130%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
+    gap: var(--spacing-300);
 }
 
 .ribbon-banner strong {
