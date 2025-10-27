@@ -1,45 +1,5 @@
-import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
+import { fetchUIStrings, formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle } from './utility-functions.js';
-
-export default function extractProductDescriptionsFromBlock(block) {
-  const productDescriptions = [];
-  const childDivs = Array.from(block.children);
-  let startIndex = -1;
-  let endIndex = -1;
-  // Find the start marker (div with child div containing 'productDetails')
-  for (let i = 0; i < childDivs.length; i += 1) {
-    const firstChild = childDivs[i].firstElementChild;
-    if (firstChild && firstChild.textContent.trim() === 'productDetails') {
-      startIndex = i;
-      break;
-    }
-  }
-  // Find the end marker (div with child div containing 'endProductDetails')
-  for (let i = 0; i < childDivs.length; i += 1) {
-    const firstChild = childDivs[i].firstElementChild;
-    if (firstChild && firstChild.textContent.trim() === 'endProductDetails') {
-      endIndex = i;
-      break;
-    }
-  }
-  // Extract all divs between the markers
-  if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-    for (let i = startIndex + 1; i < endIndex; i += 1) {
-      const div = childDivs[i];
-      const children = Array.from(div.children);
-      if (children.length >= 2) {
-        const title = children[0].textContent.trim();
-        const description = children[1].textContent.trim();
-        productDescriptions.push({
-          title,
-          description,
-          element: div,
-        });
-      }
-    }
-  }
-  return productDescriptions;
-}
 
 function buildImageUrl(realviewParams) {
   const params = new URLSearchParams();
@@ -95,24 +55,28 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     strikethroughPrice: productPrice?.unitPrice * quantity,
     discountAvailable,
     discountString: applicableDiscount?.discountString,
-    deliveryEstimateStringText: 'Order today and get it by',
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
     realViews: productRenditions.realviewUrls,
     productType: productDetails.product.productType,
-    quantities: productDetails.product.quantities,
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
     averageRating: productReviews.reviews.stats.averageRating,
     totalReviews: productReviews.reviews.stats.totalReviews,
     tooltipTitle: UIStrings.adobe_comp_value_tooltip_title,
     tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
     tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
+    compareValueTooltipTitle: UIStrings.adobe_compareValueTooltipTitle,
+    compareValueTooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
+    compareValueTooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
+    deliveryEstimateStringText: UIStrings.adobe_deliveryEstimateStringText,
+    productDescriptions: [],
+    attributes: { quantities: productDetails.product.quantities },
   };
   for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute);
+    normalizedProductDetails.attributes[attribute.name] = convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
-  normalizedProductDetails.quantities = quantitiesOptions;
+  normalizedProductDetails.attributes.quantities = quantitiesOptions;
   return normalizedProductDetails;
 }
 
@@ -138,11 +102,11 @@ export function createEmptyDataObject(templateId) {
     tooltipTitle: '',
     tooltipDescription1: '',
     tooltipDescription2: '',
-    attributes: {},
-    quantities: [],
+    attributes: { quantities: [] },
     compareValueTooltipTitle: '',
     compareValueTooltipDescription1: '',
     compareValueTooltipDescription2: '',
+    productDescriptions: [],
   };
   return emptyDataObject;
 }
@@ -158,6 +122,7 @@ export function updateDataObjectProductDetails(dataObject, productDetails) {
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   dataObject.attributes.quantities = quantitiesOptions;
+  dataObject.productDescriptions = formatProductDescriptions(productDetails);
   return dataObject;
 }
 

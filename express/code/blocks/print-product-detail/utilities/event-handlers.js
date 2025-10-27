@@ -75,7 +75,6 @@ async function updateCheckoutButton(productDetails) {
 function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity) {
   const selectedValuesObject = {};
   for (const [key, value] of Object.entries(updatedConfigurationOptions.product.attributes)) {
-    // we want to first check if the value for this key in the formDatObject is one of the name values in the value.values array
     const valueName = value.values.find((v) => v.name === formDataObject[key]);
     if (valueName) {
       selectedValuesObject[key] = valueName.name;

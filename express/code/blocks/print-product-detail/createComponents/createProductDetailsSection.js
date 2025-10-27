@@ -53,7 +53,6 @@ export default async function createProductDetailsSection(productDescriptions) {
 
     accordionBlock.updateAccordion(mappedData, forceExpandTitle);
   });
-
   return productDetailsSectionContainer;
 }
 
