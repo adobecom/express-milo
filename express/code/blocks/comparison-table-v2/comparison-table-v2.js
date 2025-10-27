@@ -67,6 +67,18 @@ function handleCellIcons(cell) {
   }
 }
 
+function applyTextOnlyIconPadding(cell) {
+  if (!cell.classList.contains('feature-cell')) return;
+  cell.classList.remove('no-icon-offset');
+  const wrapper = cell.querySelector('.icon-wrapper');
+  if (!wrapper) return;
+  const hasSpanIcon = wrapper.querySelector('span');
+  const wrapperText = wrapper.textContent.trim();
+  if (!hasSpanIcon && wrapperText.length > 0) {
+    cell.classList.add('no-icon-offset');
+  }
+}
+
 function getFooter(blockChildren) {
   let footer;
   const lastChild = blockChildren[blockChildren.length - 1];
@@ -201,6 +213,8 @@ function createTableRow(featureRowDiv) {
     }
 
     handleCellIcons(tableCell);
+
+    applyTextOnlyIconPadding(tableCell);
 
     const tooltipElements = cellIndex === 0 ? [tableCell] : tableCell.querySelectorAll('p');
 

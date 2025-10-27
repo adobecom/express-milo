@@ -161,7 +161,18 @@ main .section .comparison-table-v2 p {
     border: 1px solid var(--color-gray-200);
     background: var(--color-white);
     padding: var(--spacing-200) 0;
+    display: flex;
     box-sizing: border-box;
+}
+
+.comparison-table-v2 .feature-cell.no-icon-offset {
+    padding-bottom: var(--spacing-400);
+}
+
+@media (min-width: 1024px) {
+    .comparison-table-v2 .feature-cell.no-icon-offset {
+        padding-bottom: 0;
+    }
 }
 
 .comparison-table-v2 .icon-wrapper .icon-wrapper-text {
@@ -199,7 +210,7 @@ main .section .comparison-table-v2 p {
 
 .comparison-table-v2 .sticky-header .plan-cell a.con-button {
     margin: var(--spacing-300) 0 0;
-    padding: 0 var(--spacing-100);
+    padding: 5px var(--spacing-100) 6px;
     box-sizing: border-box;
     width: 100%;
     min-height: var(--min-button-height);
