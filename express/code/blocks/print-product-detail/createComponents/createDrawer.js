@@ -287,6 +287,8 @@ function createDrawerBodyPaperSelection(data) {
       'data-paper-title': paper.title,
       'data-hero-image': paper.heroImage || paper.thumbnail,
       'data-description': paper.description || '',
+      'data-specs': JSON.stringify(paper.specs || []),
+      'data-recommended': paper.recommended || false,
     });
     const thumbImage = createTag('img', {
       class: 'paper-selection-thumb-image',
@@ -324,6 +326,29 @@ function createDrawerBodyPaperSelection(data) {
       const descriptionElement = drawerBody.querySelector('.paper-selection-description');
       if (descriptionElement && paper.description) {
         descriptionElement.innerHTML = paper.description;
+      }
+
+      // Update specs
+      const specsRow = drawerBody.querySelector('.paper-selection-specs');
+      if (specsRow) {
+        const specs = JSON.parse(paperThumb.dataset.specs || '[]');
+        specsRow.innerHTML = '';
+        specs.forEach((spec) => {
+          const specPill = createTag('div', { class: 'paper-selection-spec-pill' });
+          specPill.append(getIconElementDeprecated('checkmark'), spec);
+          specsRow.append(specPill);
+        });
+      }
+
+      // Update recommended badge
+      const titleRowEl = drawerBody.querySelector('.paper-selection-title-row');
+      const existingBadge = titleRowEl.querySelector('.paper-selection-recommended');
+      const isRecommended = paperThumb.dataset.recommended === 'true';
+      if (isRecommended && !existingBadge) {
+        const badge = createTag('span', { class: 'paper-selection-recommended' }, 'Recommended');
+        titleRowEl.append(badge);
+      } else if (!isRecommended && existingBadge) {
+        existingBadge.remove();
       }
 
       // Update footer info (use thumbnail for footer)

@@ -47,12 +47,18 @@ async function setupPaperSelectionDrawer(productDetails, productDescriptions, ra
   const rawMediaAttribute = rawProductDetails.product.attributes.media;
   const rawMediaValues = rawMediaAttribute.values;
 
+  // Helper function to extract specs from descriptionBrief
+  const extractSpecs = (descriptionBrief) => {
+    if (!descriptionBrief) return [];
+    // Remove HTML tags and split by line breaks
+    const text = descriptionBrief.replace(/<[^>]*>/g, ' ').trim();
+    // Split by common delimiters and filter empty strings
+    return text.split(/\n|<br>|\//).map((s) => s.trim()).filter((s) => s.length > 0);
+  };
+
   // Find the selected paper (first one by default)
   const selectedPaper = productDetails.media[0];
   const selectedRawPaper = rawMediaValues[0];
-
-  // Find the paper description from accordion data
-  const paperDescription = productDescriptions.find((desc) => desc.title === 'Paper');
 
   // Build hero image URL with larger max_dim
   const heroImageUrl = buildRealViewImageUrl(selectedRawPaper.firstProductRealviewParams, 644);
@@ -61,8 +67,8 @@ async function setupPaperSelectionDrawer(productDetails, productDescriptions, ra
     selectedPaper: {
       name: selectedPaper.title,
       heroImage: heroImageUrl,
-      recommended: true, // First paper is recommended
-      specs: ['17.5pt thickness', '120lb weight', '324 GSM'], // TODO: Extract from API
+      recommended: selectedRawPaper.isBestValue || false,
+      specs: extractSpecs(selectedRawPaper.descriptionBrief),
       typeName: selectedPaper.title,
       description: selectedRawPaper.description || '',
       imgSrc: selectedPaper.thumbnail,
@@ -78,6 +84,8 @@ async function setupPaperSelectionDrawer(productDetails, productDescriptions, ra
         heroImage: heroUrl,
         priceAdjustment: paper.priceAdjustment,
         description: rawPaper.description || '',
+        specs: extractSpecs(rawPaper.descriptionBrief),
+        recommended: rawPaper.isBestValue || false,
       };
     }),
   };
@@ -191,7 +199,11 @@ async function createGlobalContainer(
   const globalContainer = createTag('div', { class: 'pdpx-global-container' });
   globalContainer.dataset.productId = productDetails.id;
 
-  const paperDrawer = await setupPaperSelectionDrawer(productDetails, productDescriptions, rawProductDetails);
+  const paperDrawer = await setupPaperSelectionDrawer(
+    productDetails,
+    productDescriptions,
+    rawProductDetails,
+  );
   const comparisonDrawer = await setupComparisonDrawer(productDetails);
   const sizeChartDrawer = await setupSizeChartDrawer(productDetails);
   const productImagesContainer = await createProductImagesContainer(
