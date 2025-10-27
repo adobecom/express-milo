@@ -3,6 +3,7 @@ import { formatPriceZazzle, formatDeliveryEstimateDateRange } from './utility-fu
 import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
+import BlockMediator from '../../../scripts/block-mediator.min.js';
 
 export function toggleDrawer() {
   const curtain = document.querySelector('.pdp-curtain');
@@ -48,7 +49,11 @@ async function updateProductImages(productDetails) {
     imageType = firstImageType;
   }
   const newHeroImgSrc = productDetails.realViews[imageType];
-  const newProductImagesContainer = await createProductImagesContainer(productDetails.realViews, newHeroImgSrc, imageType);
+  const newProductImagesContainer = await createProductImagesContainer(
+    productDetails.realViews,
+    newHeroImgSrc,
+    imageType,
+  );
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
 }
 
@@ -103,4 +108,10 @@ export default async function updateAllDynamicElements(productId) {
   await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
   await updateCheckoutButton(normalizedProductDetails);
+
+  // Publish to BlockMediator to trigger accordion updates
+  BlockMediator.set('product:updated', {
+    productDetails,
+    formData: formDataObject,
+  });
 }
