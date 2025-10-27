@@ -6,7 +6,7 @@ import createProductImagesContainer, { createProductThumbnailCarousel } from './
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
 import createDrawer from './createComponents/createDrawer.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK } from './utilities/utility-functions.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle } from './utilities/utility-functions.js';
 
 let createTag;
 
@@ -16,12 +16,6 @@ async function createProductInfoContainer(productDetails, drawer) {
   const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container', id: 'pdpx-product-info-container' });
   const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   productInfoContainer.appendChild(productInfoHeadingSection);
-  /*
-  const customizationInputs = await createCustomizationInputs(productDetails);
-  productInfoContainer.appendChild(customizationInputs);
-  const productDetailsSection = await createProductDetailsSection(productDetails.productDescriptions);
-  productInfoContainer.appendChild(productDetailsSection);
-  */
   productInfoSectionWrapper.appendChild(productInfoContainer);
   const checkoutButton = await createCheckoutButton(productDetails);
   productInfoSectionWrapper.appendChild(checkoutButton);
@@ -99,8 +93,8 @@ function updatePageWithProductPrice(productDetails) {
   const priceLabel = document.getElementById('pdpx-price-label');
   const comparePriceLabel = document.getElementById('pdpx-compare-price-label');
   const savingsText = document.getElementById('pdpx-savings-text');
-  priceLabel.textContent = productDetails.productPrice;
-  comparePriceLabel.textContent = productDetails.strikethroughPrice;
+  priceLabel.textContent = formatPriceZazzle(productDetails.productPrice);
+  comparePriceLabel.textContent = formatPriceZazzle(productDetails.strikethroughPrice);
   savingsText.textContent = productDetails.discountString;
 }
 
