@@ -164,7 +164,7 @@ main .section .comparison-table-v2 p {
     box-sizing: border-box;
 }
 
-.comparison-table-v2 .icon-wrapper .icon-wrapper-text.tooltip {
+.comparison-table-v2 .icon-wrapper .icon-wrapper-text {
     min-height: unset;
     padding: 6px;
     width: fit-content;
@@ -1087,7 +1087,9 @@ main .comparison-table-v2 .sticky-header .plan-cell p {
         box-sizing: border-box;
         width: 100%;
         margin: var(--spacing-400) 0 0 0;
+        display: flex;
     }
+
 
     .comparison-table-v2 table td .icon-wrapper-text {
         width: 100%;
