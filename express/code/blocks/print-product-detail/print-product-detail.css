@@ -65,6 +65,18 @@
   --figma-section-padding-x-large: var(--figma-spacing-600);
 }
 
+[data-skeleton="true"] {
+  background: linear-gradient(90deg, #eee 25%, #f5f5f5 37%, #eee 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.2s ease-in-out infinite;
+  border-radius: 4px;
+  min-height: 16px;
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
 .pdpx-global-container {
   max-width: 1440px;
   margin: 0 auto;
@@ -203,6 +215,11 @@
 }
 .pdpx-product-hero-image-container {
   margin-bottom: var(--figma-spacing-200);
+  aspect-ratio: 1/1;
+  border-radius: 12px;
+  overflow: hidden;
+  object-fit: contain;
+  object-position: center;
 }
 
 .pdpx-image-thumbnail-carousel-container {

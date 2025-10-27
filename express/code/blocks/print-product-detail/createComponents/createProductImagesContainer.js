@@ -6,9 +6,21 @@ let createTag;
 export default async function createProductImagesContainer(realViews, heroImage, heroImageType = 'Front') {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const productImagesContainer = createTag('div', { class: 'pdpx-product-images-container', id: 'pdpx-product-images-container' });
-  const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container' });
-  const productHeroImage = createTag('img', { class: 'pdpx-product-hero-image', id: 'pdpx-product-hero-image', 'data-image-type': heroImageType, src: heroImage });
-  const imageThumbnailCarouselContainer = createTag('div', { class: 'pdpx-image-thumbnail-carousel-container' });
+  const { productHeroImage, productHeroImageContainer } = createproductHeroImage(heroImage, heroImageType);
+  const imageThumbnailCarouselContainer = createProductThumbnailCarousel(realViews, heroImageType, productHeroImage);
+  productImagesContainer.appendChild(productHeroImageContainer);
+  productImagesContainer.appendChild(imageThumbnailCarouselContainer);
+  return productImagesContainer;
+}
+
+export function createproductHeroImage(heroImage, heroImageType) {
+  const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
+  const productHeroImage = createTag('img', { class: 'pdpx-product-hero-image', id: 'pdpx-product-hero-image', 'data-image-type': heroImageType, fetchpriority: 'high', decoding: 'async', loading: 'eager', alt: 'Product Hero Image', src: heroImage });
+  productHeroImageContainer.appendChild(productHeroImage);
+  return { productHeroImage, productHeroImageContainer };
+}
+export function createProductThumbnailCarousel(realViews, heroImageType, productHeroImage) {
+  const imageThumbnailCarouselContainer = createTag('div', { class: 'pdpx-image-thumbnail-carousel-container', id: 'pdpx-image-thumbnail-carousel-container', 'data-skeleton': 'true' });
   for (let i = 0; i < Object.keys(realViews).length; i += 1) {
     const imageThumbnailCarouselItem = createTag('button', { class: 'pdpx-image-thumbnail-carousel-item', 'data-image-type': Object.keys(realViews)[i] });
     if (heroImageType === Object.keys(realViews)[i]) {
@@ -29,8 +41,5 @@ export default async function createProductImagesContainer(realViews, heroImage,
     imageThumbnailCarouselItem.appendChild(imageThumbnailCarouselItemImage);
     imageThumbnailCarouselContainer.appendChild(imageThumbnailCarouselItem);
   }
-  productHeroImageContainer.appendChild(productHeroImage);
-  productImagesContainer.appendChild(productHeroImageContainer);
-  productImagesContainer.appendChild(imageThumbnailCarouselContainer);
-  return productImagesContainer;
+  return imageThumbnailCarouselContainer;
 }

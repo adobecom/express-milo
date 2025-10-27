@@ -8,28 +8,10 @@ export function formatUrlForEnvironment(url) {
   return URLFormatted;
 }
 
-export async function fetchProductDetails(block) {
-  let identifier;
-  let endpoint;
-  let parameterName;
-  // FOR DEVELOPMENT PURPOSES ONLY, REMOVE IN PRODUCTION
-  const urlParams = new URLSearchParams(window.location.search);
-  const productIdURL = urlParams.get('productId');
-  if (productIdURL) {
-    identifier = productIdURL;
-  } else {
-    identifier = block.children[0].children[1].textContent;
-  }
-  if (identifier.startsWith('urn')) {
-    endpoint = 'getproductfromtemplate';
-    parameterName = 'templateID';
-  } else {
-    endpoint = 'getproduct';
-    parameterName = 'productId';
-  }
+export async function fetchProductDetails(templateId) {
   const region = getRegion();
   const topLevelDomain = exchangeRegionForTopLevelDomain(region);
-  const url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?${parameterName}=${identifier}`;
+  const url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/getproductfromtemplate?templateId=${templateId}`;
   const productIdAPICall = await fetch(formatUrlForEnvironment(url));
   const productIdAPICallJSON = await productIdAPICall.json();
   const productDetails = productIdAPICallJSON.data;

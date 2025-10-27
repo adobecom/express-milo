@@ -5,7 +5,7 @@ let createTag;
 
 function createProductTitle(productDetails) {
   const productTitleContainer = createTag('div', { class: 'pdpx-product-title-container' });
-  const productTitle = createTag('h1', { class: 'pdpx-product-title' }, productDetails.productTitle);
+  const productTitle = createTag('h1', { class: 'pdpx-product-title', id: 'pdpx-product-title', 'data-skeleton': 'true' }, productDetails.productTitle);
   productTitleContainer.appendChild(productTitle);
   return productTitleContainer;
 }

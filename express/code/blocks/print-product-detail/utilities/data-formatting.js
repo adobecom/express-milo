@@ -115,3 +115,45 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
   normalizedProductDetails.quantities = quantitiesOptions;
   return normalizedProductDetails;
 }
+
+export function createEmptyDataObject(templateId) {
+  const emptyDataObject = {
+    id: '',
+    templateId,
+    heroImage: '',
+    productTitle: '',
+    unitPrice: '',
+    productPrice: '',
+    strikethroughPrice: '',
+    discountAvailable: '',
+    discountString: '',
+    deliveryEstimateStringText: '',
+    deliveryEstimateMinDate: '',
+    deliveryEstimateMaxDate: '',
+    realViews: {},
+    productType: 'default',
+    pluralUnitLabel: '',
+    averageRating: '',
+    totalReviews: '',
+    tooltipTitle: '',
+    tooltipDescription1: '',
+    tooltipDescription2: '',
+    attributes: {},
+    quantities: [],
+  };
+  return emptyDataObject;
+}
+
+export function updateDataObjectProductDetails(dataObject, productDetails) {
+  dataObject.id = productDetails.product.id;
+  dataObject.heroImage = productDetails.product.initialPrettyPreferredViewUrl;
+  dataObject.productTitle = productDetails.product.title;
+  dataObject.productType = productDetails.product.productType;
+  const attributeOptions = productDetails.product.attributes;
+  for (const attribute of Object.values(attributeOptions)) {
+    dataObject.attributes[attribute.name] = convertAttributeToOptionsObject(attribute);
+  }
+  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
+  dataObject.attributes.quantities = quantitiesOptions;
+  return dataObject;
+}

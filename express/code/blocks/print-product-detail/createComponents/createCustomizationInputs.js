@@ -114,26 +114,29 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
   return miniPillSelectorContainer;
 }
 
-function createBusinessCardInputs(container, productDetails, formDataObject = {}) {
-  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id, formDataObject?.media);
-  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
-  const sizeSelectorContainer = createPillOptionsSelector(productDetails.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
-  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
+export function createBusinessCardInputs(container, productDetails, formDataObject = {}) {
+  const paperTypeSelectorContainer = createMiniPillOptionsSelector(productDetails.attributes.media, 'Paper Type: ', 'media', 'Compare Paper Types', productDetails.id, formDataObject?.media);
+  const cornerStyleSelectorContainer = createPillOptionsSelector(productDetails.attributes.cornerstyle, 'Corner style', 'cornerstyle', productDetails.id, formDataObject?.cornerstyle);
+  const sizeSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'Resize business card', 'style', productDetails.id, formDataObject?.style);
+  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
   container.appendChild(paperTypeSelectorContainer);
   container.appendChild(cornerStyleSelectorContainer);
   container.appendChild(sizeSelectorContainer);
   container.appendChild(quantitySelectorContainer);
 }
 
-function createTShirtInputs(container, productDetails, formDataObject = {}) {
-  const styleSelectorContainer = createPillOptionsSelector(productDetails.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
-  const colorSelectorContainer = createMiniPillOptionsSelector(productDetails.color, 'Shirt color: ', 'color', '', productDetails.id, formDataObject?.color);
-  const quantitySelectorContainer = createStandardSelector(productDetails.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
-  const sizeSelectorContainer = createStandardSelector(productDetails.size, 'Size', 'size', productDetails.id, formDataObject?.size);
+export function createTShirtInputs(container, productDetails, formDataObject = {}) {
+  const styleSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
+  const colorSelectorContainer = createMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color: ', 'color', '', productDetails.id, formDataObject?.color);
+  const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
+  const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails.id, formDataObject?.size);
   container.appendChild(styleSelectorContainer);
   container.appendChild(colorSelectorContainer);
   container.appendChild(quantitySelectorContainer);
   container.appendChild(sizeSelectorContainer);
+}
+function createDefaultInputs(container, productDetails, formDataObject = {}) {
+  return container;
 }
 
 export default async function createCustomizationInputs(productDetails, formDataObject = {}) {
@@ -142,6 +145,7 @@ export default async function createCustomizationInputs(productDetails, formData
   const customizationInputsForm = createTag('form', { class: 'pdpx-customization-inputs-form', id: 'pdpx-customization-inputs-form' });
   customizationInputsContainer.appendChild(customizationInputsForm);
   const productTypeToInputsMap = new Map([
+    ['default', createDefaultInputs],
     ['zazzle_businesscard', createBusinessCardInputs],
     ['zazzle_shirt', createTShirtInputs],
   ]);
