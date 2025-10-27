@@ -323,10 +323,6 @@ main .section .comparison-table-v2 p {
     transition: background var(--transition-standard);
 }
 
-
-/* removed duplicate: .sticky-header.is-stuck .first-cell display none is defined with .plan-selector-wrapper above */
-
-
 .comparison-table-v2 .sticky-header .plan-cell.premium .plan-cell-wrapper {
     z-index: 5;
     border-radius: 8px;
