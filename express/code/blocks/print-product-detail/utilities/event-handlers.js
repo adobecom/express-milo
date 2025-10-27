@@ -30,12 +30,12 @@ function formatProductOptionsToAPIParameters(formDataObject) {
 
 async function updateProductPrice(productDetails) {
   if (productDetails.discountAvailable) {
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productDetails.productPrice);
-    document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(productDetails.strikethroughPrice);
+    document.getElementById('pdpx-price-label').innerHTML = await formatPriceZazzle(productDetails.productPrice);
+    document.getElementById('pdpx-compare-price-label').innerHTML = await formatPriceZazzle(productDetails.strikethroughPrice);
     document.getElementById('pdpx-savings-text').innerHTML = productDetails.discountString;
   } else {
     const productPrice = productDetails.unitPrice;
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
+    document.getElementById('pdpx-price-label').innerHTML = await formatPriceZazzle(productPrice);
   }
 }
 

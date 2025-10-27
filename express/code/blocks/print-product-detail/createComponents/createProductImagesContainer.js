@@ -8,8 +8,7 @@ export default async function createProductImagesContainer(realViews, heroImage,
   const productImagesContainer = createTag('div', { class: 'pdpx-product-images-container', id: 'pdpx-product-images-container' });
   const { productHeroImage, productHeroImageContainer } = createproductHeroImage(heroImage, heroImageType);
   const imageThumbnailCarouselContainer = createProductThumbnailCarousel(realViews, heroImageType, productHeroImage);
-  productImagesContainer.appendChild(productHeroImageContainer);
-  productImagesContainer.appendChild(imageThumbnailCarouselContainer);
+  productImagesContainer.append(productHeroImageContainer, imageThumbnailCarouselContainer);
   return productImagesContainer;
 }
 

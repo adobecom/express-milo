@@ -65,7 +65,7 @@
   --figma-section-padding-x-large: var(--figma-spacing-600);
 }
 
-[data-skeleton="true"] {
+[data-skeleton='true'] {
   background: linear-gradient(90deg, #eee 25%, #f5f5f5 37%, #eee 63%);
   background-size: 400% 100%;
   animation: skeleton-shimmer 1.2s ease-in-out infinite;
@@ -73,8 +73,12 @@
   min-height: 16px;
 }
 @keyframes skeleton-shimmer {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }
 
 .pdpx-global-container {
@@ -249,27 +253,36 @@
   height: 70vh;
   overflow-y: scroll;
 }
-
-a.pdpx-checkout-button {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: var(--figma-spacing-100);
-  margin-top: var(--figma-spacing-400);
-  background-color: #5258e4;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 13px;
-  border-radius: 24px;
-  cursor: pointer;
-  color: #fff; 
-  span {
+.pdpx-checkout-button-container {
+  position: relative;
+  margin-top: var(--figma-spacing-200);
+  a.pdpx-checkout-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: var(--figma-spacing-100);
+    background-color: #5258e4;
     color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    border-radius: 24px;
+    cursor: pointer;
   }
 }
+.pdpx-checkout-button-container::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  height: var(--figma-spacing-900);
+  pointer-events: none;
+  background: linear-gradient(to top, white 20%, rgba(255, 255, 255, 0) 100%);
+}
+
 .pdpx-checkout-button-text {
   font-size: 18px;
   font-weight: 700;

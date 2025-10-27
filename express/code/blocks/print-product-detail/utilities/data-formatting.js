@@ -11,7 +11,7 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
-function convertAttributeToOptionsObject(attribute) {
+async function convertAttributeToOptionsObject(attribute) {
   const options = attribute.values;
   const optionsArray = [];
   for (let i = 0; i < options.length; i += 1) {
@@ -21,7 +21,7 @@ function convertAttributeToOptionsObject(attribute) {
       thumbnail: imageUrl,
       title: option.title,
       name: option.name,
-      priceAdjustment: formatPriceZazzle(option.priceDifferential, true),
+      priceAdjustment: await formatPriceZazzle(option.priceDifferential, true),
     });
   }
   return optionsArray;
@@ -73,7 +73,7 @@ export async function normalizeProductDetailObject({ productDetails, productPric
     attributes: { quantities: productDetails.product.quantities },
   };
   for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails.attributes[attribute.name] = convertAttributeToOptionsObject(attribute);
+    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   normalizedProductDetails.attributes.quantities = quantitiesOptions;
@@ -111,14 +111,14 @@ export function createEmptyDataObject(templateId) {
   return emptyDataObject;
 }
 
-export function updateDataObjectProductDetails(dataObject, productDetails) {
+export async function updateDataObjectProductDetails(dataObject, productDetails) {
   dataObject.id = productDetails.product.id;
   dataObject.heroImage = productDetails.product.initialPrettyPreferredViewUrl;
   dataObject.productTitle = productDetails.product.title;
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
   for (const attribute of Object.values(attributeOptions)) {
-    dataObject.attributes[attribute.name] = convertAttributeToOptionsObject(attribute);
+    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   dataObject.attributes.quantities = quantitiesOptions;

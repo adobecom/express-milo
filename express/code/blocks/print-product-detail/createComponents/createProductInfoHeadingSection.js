@@ -68,11 +68,11 @@ function createInfoTooltipContent(productDetails) {
   return infoTooltipContent;
 }
 
-function createPriceLockup(productDetails) {
+async function createPriceLockup(productDetails) {
   const priceInfoContainer = createTag('div', { class: 'pdpx-price-info-container' });
   const priceInfoRow = createTag('div', { class: 'pdpx-price-info-row' });
-  const priceContainer = createTag('span', { class: 'pdpx-price-label', id: 'pdpx-price-label' }, formatPriceZazzle(productDetails.productPrice));
-  const comparePrice = createTag('span', { class: 'pdpx-compare-price-label', id: 'pdpx-compare-price-label' }, formatPriceZazzle(productDetails.strikethroughPrice));
+  const priceContainer = createTag('span', { class: 'pdpx-price-label', id: 'pdpx-price-label' }, await formatPriceZazzle(productDetails.productPrice));
+  const comparePrice = createTag('span', { class: 'pdpx-compare-price-label', id: 'pdpx-compare-price-label' }, await formatPriceZazzle(productDetails.strikethroughPrice));
   const comparePriceInfoLabel = createTag('span', { class: 'pdpx-compare-price-info-label' }, 'Comp. value');
   const comparePriceInfoIconContainer = createTag('div', { class: 'pdpx-compare-price-info-icon-container' });
   const comparePriceInfoIconButton = createTag('button', { class: 'pdpx-compare-price-info-icon-button', type: 'button', 'aria-label': productDetails.tooltipTitle, 'aria-expanded': 'false' });
@@ -122,7 +122,7 @@ export default async function createProductInfoHeadingSection(productDetails) {
   const productInfoHeadingSectionContainer = createTag('div', { class: 'pdpx-product-info-heading-section-container' });
   const productTitleAndRatingsContainer = createProductTitleAndRatingsContainer(productDetails);
   productInfoHeadingSectionContainer.append(productTitleAndRatingsContainer);
-  const priceInfoContainer = createPriceLockup(productDetails);
+  const priceInfoContainer = await createPriceLockup(productDetails);
   productInfoHeadingSectionContainer.append(priceInfoContainer);
   productInfoHeadingSectionWrapper.appendChild(productInfoHeadingSectionContainer);
   const deliveryEstimatePill = createDeliveryEstimatePill(productDetails);

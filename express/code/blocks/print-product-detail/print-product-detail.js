@@ -89,12 +89,12 @@ function updatePageWithProductImages(productDetails) {
   return imageThumbnailCarouselContainer;
 }
 
-function updatePageWithProductPrice(productDetails) {
+async function updatePageWithProductPrice(productDetails) {
   const priceLabel = document.getElementById('pdpx-price-label');
   const comparePriceLabel = document.getElementById('pdpx-compare-price-label');
   const savingsText = document.getElementById('pdpx-savings-text');
-  priceLabel.textContent = formatPriceZazzle(productDetails.productPrice);
-  comparePriceLabel.textContent = formatPriceZazzle(productDetails.strikethroughPrice);
+  priceLabel.textContent = await formatPriceZazzle(productDetails.productPrice);
+  comparePriceLabel.textContent = await formatPriceZazzle(productDetails.strikethroughPrice);
   savingsText.textContent = productDetails.discountString;
 }
 
@@ -132,9 +132,9 @@ export default async function decorate(block) {
   const globalContainer = await createGlobalContainer(dataObject);
   block.appendChild(globalContainer);
   const productDetails = fetchProductDetails(templateId);
-  productDetails.then((productDetailsResponse) => {
-    dataObject = updateDataObjectProductDetails(dataObject, productDetailsResponse);
-    const updatedPageResponse = updatePageWithProductDetails(dataObject);
+  productDetails.then(async (productDetailsResponse) => {
+    dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
+    updatePageWithProductDetails(dataObject);
     productId = productDetailsResponse.product.id;
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
     productRenditions.then((productRenditionsResponse) => {
@@ -143,9 +143,9 @@ export default async function decorate(block) {
     });
     const quantity = 1;
     const productPrice = fetchAPIData(productId, null, 'getproductpricing');
-    productPrice.then((productPriceResponse) => {
+    productPrice.then(async (productPriceResponse) => {
       dataObject = updateDataObjectProductPrice(dataObject, productPriceResponse, quantity);
-      updatePageWithProductPrice(dataObject);
+      await updatePageWithProductPrice(dataObject);
     });
     const productReviews = fetchAPIData(productId, null, 'getreviews');
     productReviews.then((productReviewsResponse) => {

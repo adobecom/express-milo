@@ -1,4 +1,4 @@
-import { createTag } from '../../../scripts/utils.js';
+import { getLibs, createTag } from '../../../scripts/utils.js';
 import { formatUrlForEnvironment } from '../fetchData/fetchProductDetails.js';
 
 export function formatDeliveryEstimateDateRange(minDate, maxDate) {
@@ -30,43 +30,22 @@ export function formatLargeNumberToK(totalReviews) {
   return totalReviews;
 }
 
-export function getRegion() {
-  let region;
-  const urlParams = new URLSearchParams(window.location.search);
-  const htmlElement = document.querySelector('html');
-  const regionURL = urlParams.get('region');
-  if (regionURL) {
-    region = regionURL;
-  } else {
-    region = htmlElement.lang;
-  }
-  return region;
-}
-
 export function exchangeRegionForTopLevelDomain(region) {
   if (region === 'en-GB') {
     return 'co.uk';
   }
   return 'com';
 }
-export function exchangeRegionForCurrencyCode(region) {
-  let countryCode;
-  let currencyCode;
-  if (region === 'en-GB') {
-    countryCode = 'en-GB';
-    currencyCode = 'GBP';
-  } else {
-    countryCode = 'en-US';
-    currencyCode = 'USD';
-  }
-  return { countryCode, currencyCode };
-}
 
-export function formatPriceZazzle(price, differential = false) {
+export async function formatPriceZazzle(price, differential = false) {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const { ietf } = getConfig().locale;
+  const { getCountry } = await import('../../../scripts/utils/location-utils.js');
+  const country = await getCountry();
+  const { getCurrency, formatPrice } = await import('../../../scripts/utils/pricing.js');
+  const currency = await getCurrency(country);
   let priceDifferentialOperator;
-  const region = getRegion();
-  const { countryCode, currencyCode } = exchangeRegionForCurrencyCode(region);
-  const localizedPrice = new Intl.NumberFormat(countryCode, { style: 'currency', currency: currencyCode }).format(price);
+  const localizedPrice = await formatPrice(price, currency);
   if (differential) {
     priceDifferentialOperator = price >= 0 ? '+' : '';
   } else {
@@ -82,9 +61,10 @@ export function formatStringSnakeCase(string) {
   return formattedString;
 }
 
-export function addPrefetchLinks() {
-  const region = getRegion();
-  const topLevelDomain = exchangeRegionForTopLevelDomain(region);
+export async function addPrefetchLinks() {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const { ietf } = getConfig().locale;
+  const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
   const prefetchLink1 = createTag('link', {
     rel: 'dns-prefetch',
     href: `https://www.zazzle.${topLevelDomain}`,
