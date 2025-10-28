@@ -214,7 +214,7 @@ function createBusinessCardInputs(
   paperDrawer = null,
 ) {
   const paperTypeSelectorContainer = createMiniPillOptionsSelector(
-    productDetails.media,
+    productDetails.attributes.media,
     'Paper Type: ',
     'media',
     'Compare Paper Types',
@@ -230,7 +230,7 @@ function createBusinessCardInputs(
     }
   }
   const cornerStyleSelectorContainer = createPillOptionsSelector(
-    productDetails.cornerstyle,
+    productDetails.attributes.cornerstyle,
     'Corner style',
     'cornerstyle',
     productDetails.id,
@@ -238,7 +238,7 @@ function createBusinessCardInputs(
     null,
   );
   const sizeSelectorContainer = createPillOptionsSelector(
-    productDetails.style,
+    productDetails.attributes.style,
     'Resize business card',
     'style',
     productDetails.id,
@@ -246,7 +246,7 @@ function createBusinessCardInputs(
     null,
   );
   const quantitySelectorContainer = createStandardSelector(
-    productDetails.quantities,
+    productDetails.attributes.quantities,
     'Quantity',
     'qty',
     productDetails.id,
@@ -266,7 +266,7 @@ function createTShirtInputs(
   sizeChartDrawer = null,
 ) {
   const printingProcessSelectorContainer = createPillOptionsSelector(
-    productDetails.printingProcessOptions,
+    productDetails.attributes.printingprocess,
     'Printing Process',
     'printingprocess',
     productDetails.id,
@@ -274,7 +274,7 @@ function createTShirtInputs(
     comparisonDrawer,
   );
   const styleSelectorContainer = createPillOptionsSelector(
-    productDetails.style,
+    productDetails.attributes.style,
     'T-Shirt',
     'style',
     productDetails.id,
@@ -282,7 +282,7 @@ function createTShirtInputs(
     comparisonDrawer,
   );
   const colorSelectorContainer = createMiniPillOptionsSelector(
-    productDetails.color,
+    productDetails.attributes.color,
     'Shirt color: ',
     'color',
     '',
@@ -290,14 +290,14 @@ function createTShirtInputs(
     formDataObject?.color,
   );
   const quantitySelectorContainer = createStandardSelector(
-    productDetails.quantities,
+    productDetails.attributes.quantities,
     'Quantity',
     'qty',
     productDetails.id,
     formDataObject?.qty,
   );
   const sizeSelectorContainer = createStandardSelector(
-    productDetails.size,
+    productDetails.attributes.size,
     'Size',
     'size',
     productDetails.id,

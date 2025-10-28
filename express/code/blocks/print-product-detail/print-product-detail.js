@@ -104,14 +104,14 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
     return;
   }
 
-  if (!productDetails.media || productDetails.media.length === 0) {
+  if (!productDetails.attributes?.media || productDetails.attributes.media.length === 0) {
     return;
   }
 
   const rawMediaAttribute = rawProductDetails.product.attributes.media;
   const rawMediaValues = rawMediaAttribute.values;
 
-  const selectedPaper = productDetails.media[0];
+  const selectedPaper = productDetails.attributes.media[0];
   const selectedRawPaper = rawMediaValues[0];
 
   const heroImageUrl = buildRealViewImageUrl(
@@ -121,7 +121,7 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
 
   const paperData = {
     selectedPaper: {
-      name: selectedPaper.title,
+      name: selectedPaper.name,
       heroImage: heroImageUrl,
       recommended: selectedRawPaper.isBestValue || false,
       specs: extractSpecs(selectedRawPaper.descriptionBrief),
@@ -130,7 +130,7 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
       imgSrc: selectedPaper.thumbnail,
       price: selectedPaper.priceAdjustment,
     },
-    papers: productDetails.media.map((paper, index) => {
+    papers: productDetails.attributes.media.map((paper, index) => {
       const rawPaper = rawMediaValues[index];
       const heroUrl = buildRealViewImageUrl(rawPaper.firstProductRealviewParams, 644);
       return {
@@ -172,8 +172,8 @@ async function updatePageWithComparisonDrawer(productDetails) {
   }
 
   if (
-    !productDetails.printingProcessOptions
-    || productDetails.printingProcessOptions.length < 2
+    !productDetails.attributes?.printingprocess
+    || productDetails.attributes.printingprocess.length < 2
   ) {
     return;
   }
@@ -214,7 +214,7 @@ async function updatePageWithSizeChartDrawer(productDetails) {
     return;
   }
 
-  const styleName = productDetails.style?.[0]?.name;
+  const styleName = productDetails.attributes?.style?.[0]?.name;
   if (!styleName || !SIZE_CHART_DATA[styleName]) {
     return;
   }

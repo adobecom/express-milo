@@ -19,6 +19,8 @@ export function createEmptyDataObject(templateId) {
   return {
     templateId,
     productTitle: '',
+    productType: '',
+    id: '',
     heroImage: '',
     productPrice: 0,
     strikethroughPrice: 0,
@@ -33,12 +35,15 @@ export function createEmptyDataObject(templateId) {
     compareValueTooltipDescription2: '',
     realViews: [],
     productDescriptions: [],
+    attributes: {},
   };
 }
 
 export async function updateDataObjectProductDetails(dataObject, productDetails) {
   const updatedDataObject = { ...dataObject };
   const productTitle = productDetails.product.title;
+  const { productType } = productDetails.product;
+  const productId = productDetails.product.id;
   const heroImage = buildRealViewImageUrl(
     productDetails.product.attributes.media.values[0].firstProductRealviewParams,
   );
@@ -47,10 +52,34 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
     viewUrl: buildRealViewImageUrl(view.firstProductRealviewParams),
   }));
   const productDescriptions = formatProductDescriptions(productDetails);
+
+  // Extract attributes for customization inputs
+  const attributes = {};
+  Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
+    if (attribute.values && Array.isArray(attribute.values)) {
+      attributes[key] = attribute.values.map((value) => ({
+        name: value.name,
+        title: value.title || value.titleLong || value.name,
+        thumbnail: value.thumbnailUrl || value.helpImageUrl || '',
+        priceAdjustment: value.priceAdjustment || '',
+        description: value.description || value.descriptionBrief || '',
+        descriptionBrief: value.descriptionBrief || '',
+        firstProductRealviewParams: value.firstProductRealviewParams || null,
+        isBestValue: value.isBestValue || false,
+      }));
+    } else if (key === 'quantities') {
+      // Special handling for quantities
+      attributes[key] = attribute.values || [];
+    }
+  });
+
   updatedDataObject.productTitle = productTitle;
+  updatedDataObject.productType = productType;
+  updatedDataObject.id = productId;
   updatedDataObject.heroImage = heroImage;
   updatedDataObject.realViews = realViews;
   updatedDataObject.productDescriptions = productDescriptions;
+  updatedDataObject.attributes = attributes;
   return updatedDataObject;
 }
 
