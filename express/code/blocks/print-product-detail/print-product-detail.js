@@ -117,6 +117,7 @@ function updatePageWithUIStrings(productDetails) {
   compareValueTooltipDescription1.textContent = productDetails.compareValueTooltipDescription1;
   const compareValueTooltipDescription2 = document.getElementById('pdpx-info-tooltip-content-description-2');
   compareValueTooltipDescription2.textContent = productDetails.compareValueTooltipDescription2;
+  document.getElementById('pdpx-compare-price-info-label').textContent = productDetails.compareValueInfoIconLabel;
 }
 
 export default async function decorate(block) {

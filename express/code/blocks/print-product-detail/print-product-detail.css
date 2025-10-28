@@ -131,6 +131,7 @@
 .pdpx-compare-price-info-label {
   font-size: 14px;
   text-align: end;
+  white-space: nowrap;
 }
 
 .pdpx-compare-price-info-icon-container {
@@ -142,6 +143,7 @@
     margin: 0;
     align-self: end;
     cursor: pointer;
+    width: max-content;
     .pdpx-compare-price-info-icon {
       width: 12px;
     }

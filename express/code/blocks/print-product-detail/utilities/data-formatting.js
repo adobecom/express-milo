@@ -159,5 +159,6 @@ export function updateDataObjectUIStrings(dataObject, UIStrings) {
   dataObject.compareValueTooltipDescription1 = UIStrings.zi_product_Price_CompValueTooltip1Adobe;
   dataObject.compareValueTooltipDescription2 = UIStrings.zi_product_Price_CompValueTooltip2Adobe;
   dataObject.deliveryEstimateStringText = UIStrings.adobe_deliveryEstimateStringText;
+  dataObject.compareValueInfoIconLabel = UIStrings.zi_product_Price_CompValue;
   return dataObject;
 }
