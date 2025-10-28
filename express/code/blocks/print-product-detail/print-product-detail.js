@@ -164,6 +164,8 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
   if (compareLink) {
     compareLink.drawerRef = paperDrawer;
   }
+  
+  return paperDrawer;
 }
 
 async function updatePageWithComparisonDrawer(productDetails) {
@@ -207,6 +209,8 @@ async function updatePageWithComparisonDrawer(productDetails) {
     globalContainer.appendChild(comparisonDrawer.curtain);
     globalContainer.appendChild(comparisonDrawer.drawer);
   }
+  
+  return comparisonDrawer;
 }
 
 async function updatePageWithSizeChartDrawer(productDetails) {
@@ -230,6 +234,8 @@ async function updatePageWithSizeChartDrawer(productDetails) {
     globalContainer.appendChild(sizeChartDrawer.curtain);
     globalContainer.appendChild(sizeChartDrawer.drawer);
   }
+  
+  return sizeChartDrawer;
 }
 
 async function createProductInfoContainer(productDetails, drawer) {
@@ -305,8 +311,26 @@ async function updatePageWithProductDetails(productDetails, rawProductDetails) {
   const productHeroImage = document.getElementById('pdpx-product-hero-image');
   productHeroImage.src = productDetails.heroImage;
   productHeroImage.removeAttribute('data-skeleton');
+  
+  // Create drawers FIRST so they can be passed to customization inputs
+  const [paperDrawerResult, comparisonDrawerResult, sizeChartDrawerResult] = await Promise.all([
+    updatePageWithPaperDrawer(productDetails, rawProductDetails),
+    updatePageWithComparisonDrawer(productDetails),
+    updatePageWithSizeChartDrawer(productDetails),
+  ]).catch((err) => {
+    // eslint-disable-next-line no-console
+    console.error('Drawer creation failed:', err);
+    return [null, null, null];
+  });
+  
   const productInfoContainer = document.getElementById('pdpx-product-info-container');
-  const customizationInputs = await createCustomizationInputs(productDetails);
+  const customizationInputs = await createCustomizationInputs(
+    productDetails,
+    {},
+    comparisonDrawerResult,
+    sizeChartDrawerResult,
+    paperDrawerResult,
+  );
   productInfoContainer.appendChild(customizationInputs);
   const productDetailsSection = await createProductDetailsSection(
     productDetails.productDescriptions,
@@ -325,33 +349,45 @@ async function updatePageWithProductDetails(productDetails, rawProductDetails) {
   );
   checkoutButton.href = checkoutButtonHref;
 
-  // Create our specialized drawers after customization inputs are rendered
-  await Promise.all([
-    updatePageWithPaperDrawer(productDetails, rawProductDetails),
-    updatePageWithComparisonDrawer(productDetails),
-    updatePageWithSizeChartDrawer(productDetails),
-  ]).catch((err) => {
-    // eslint-disable-next-line no-console
-    console.error('Drawer creation failed:', err);
-  });
-
   const returnObject = { checkoutButtonParameters };
   return returnObject;
 }
 
 function updatePageWithProductImages(productDetails) {
+  // Don't update if realViews is empty
+  if (!productDetails.realViews || Object.keys(productDetails.realViews).length === 0) {
+    return;
+  }
+  
   const imageThumbnailCarouselContainer = document.getElementById(
     'pdpx-image-thumbnail-carousel-container',
   );
   const heroProductImage = document.getElementById('pdpx-product-hero-image');
+  
+  // Clear existing content and create new carousel
+  imageThumbnailCarouselContainer.innerHTML = '';
+  
+  // Update hero image to first view from realViews
+  const firstViewKey = Object.keys(productDetails.realViews)[0];
+  if (firstViewKey) {
+    heroProductImage.src = productDetails.realViews[firstViewKey];
+    heroProductImage.dataset.imageType = firstViewKey;
+    heroProductImage.parentElement.removeAttribute('data-skeleton');
+  }
+  
+  // Create and populate thumbnail carousel
   const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(
     productDetails.realViews,
-    'Front',
+    firstViewKey || 'Front',
     heroProductImage,
   );
-  imageThumbnailCarouselContainer.appendChild(newImageThumbnailCarouselContainer);
+  
+  // Replace the carousel items directly (not nested)
+  Array.from(newImageThumbnailCarouselContainer.children).forEach((child) => {
+    imageThumbnailCarouselContainer.appendChild(child);
+  });
+  
   imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
-  newImageThumbnailCarouselContainer.removeAttribute('data-skeleton');
   return imageThumbnailCarouselContainer;
 }
 
@@ -359,13 +395,21 @@ async function updatePageWithProductPrice(productDetails) {
   const priceLabel = document.getElementById('pdpx-price-label');
   const comparePriceLabel = document.getElementById('pdpx-compare-price-label');
   const savingsText = document.getElementById('pdpx-savings-text');
-  priceLabel.textContent = await formatPriceZazzle(
-    productDetails.productPrice,
-  );
-  comparePriceLabel.textContent = await formatPriceZazzle(
-    productDetails.strikethroughPrice,
-  );
-  savingsText.textContent = productDetails.discountString;
+  
+  // Only format if price is a valid number, otherwise use placeholder
+  if (typeof productDetails.productPrice === 'number' && productDetails.productPrice > 0) {
+    priceLabel.textContent = await formatPriceZazzle(productDetails.productPrice);
+  } else {
+    priceLabel.textContent = productDetails.productPrice || '—';
+  }
+  
+  if (typeof productDetails.strikethroughPrice === 'number' && productDetails.strikethroughPrice > 0) {
+    comparePriceLabel.textContent = await formatPriceZazzle(productDetails.strikethroughPrice);
+  } else {
+    comparePriceLabel.textContent = productDetails.strikethroughPrice || '—';
+  }
+  
+  savingsText.textContent = productDetails.discountString || '';
 }
 
 function updatePageWithProductReviews(productDetails) {
@@ -412,7 +456,8 @@ export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addPrefetchLinks();
 
-  const templateId = block.children[0].children[1].textContent;
+  // Get template ID from block content
+  const templateId = block.children[0].children[1].textContent.trim();
   let productId;
   let dataObject = createEmptyDataObject(templateId);
 
@@ -420,11 +465,13 @@ export default async function decorate(block) {
   const globalContainer = await createGlobalContainer(dataObject);
   block.appendChild(globalContainer);
 
+  // Always use getproductfromtemplate to get full customization options
   const productDetails = fetchProductDetails(templateId);
+    
   productDetails.then(async (productDetailsResponse) => {
     const rawProductDetails = productDetailsResponse;
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
-    updatePageWithProductDetails(dataObject, rawProductDetails);
+    await updatePageWithProductDetails(dataObject, rawProductDetails);
     productId = productDetailsResponse.product.id;
 
     const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');

@@ -44,14 +44,14 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   const productTitle = productDetails.product.title;
   const { productType } = productDetails.product;
   const productId = productDetails.product.id;
-  const heroImage = buildRealViewImageUrl(
-    productDetails.product.attributes.media.values[0].firstProductRealviewParams,
-  );
+  // Don't set heroImage here - it will be set when renditions API loads
   // Don't populate realViews here - that comes from the renditions API
   const productDescriptions = formatProductDescriptions(productDetails);
 
   // Extract attributes for customization inputs
   const attributes = {};
+  // eslint-disable-next-line no-console
+  console.log('[Data Formatting] Raw attributes:', Object.keys(productDetails.product.attributes));
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
     // Handle attributes with values array
     if (attribute.values && Array.isArray(attribute.values)) {
@@ -148,8 +148,8 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   updatedDataObject.productTitle = productTitle;
   updatedDataObject.productType = productType;
   updatedDataObject.id = productId;
-  updatedDataObject.heroImage = heroImage;
-  // Don't update realViews here - it comes from renditions API
+  // heroImage will be set when renditions API loads
+  // realViews will be set when renditions API loads
   updatedDataObject.productDescriptions = productDescriptions;
   updatedDataObject.attributes = attributes;
   return updatedDataObject;
@@ -157,12 +157,23 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 
 export function updateDataObjectProductPrice(dataObject, productPrice) {
   const updatedDataObject = { ...dataObject };
-  updatedDataObject.productPrice = productPrice.price;
-  updatedDataObject.strikethroughPrice = productPrice.compareAtPrice;
-  const discountPercentage = Math.round(
-    ((productPrice.compareAtPrice - productPrice.price) / productPrice.compareAtPrice) * 100,
-  );
-  updatedDataObject.discountString = `Save ${discountPercentage}%`;
+  
+  // API returns unitPrice and discountProductItems array
+  const basePrice = productPrice.unitPrice || 0;
+  const discountItem = productPrice.discountProductItems?.[0];
+  
+  if (discountItem) {
+    // Use discounted price and original price
+    updatedDataObject.productPrice = discountItem.priceAdjusted || discountItem.price || basePrice;
+    updatedDataObject.strikethroughPrice = discountItem.price || basePrice;
+    updatedDataObject.discountString = discountItem.discountString || '';
+  } else {
+    // No discount available
+    updatedDataObject.productPrice = basePrice;
+    updatedDataObject.strikethroughPrice = basePrice;
+    updatedDataObject.discountString = '';
+  }
+  
   return updatedDataObject;
 }
 
@@ -178,20 +189,20 @@ export function updateDataObjectProductShippingEstimates(dataObject, productShip
 
 export function updateDataObjectProductReviews(dataObject, productReviews) {
   const updatedDataObject = { ...dataObject };
-  updatedDataObject.averageRating = productReviews.averageRating;
-  updatedDataObject.totalReviews = productReviews.totalReviews;
+  updatedDataObject.averageRating = productReviews?.averageRating || 0;
+  updatedDataObject.totalReviews = productReviews?.totalReviews || 0;
   return updatedDataObject;
 }
 
 export function updateDataObjectProductRenditions(dataObject, productRenditions) {
   const updatedDataObject = { ...dataObject };
-  if (productRenditions?.renditions) {
-    // Convert renditions array to object with viewName as key and url as value
-    const realViews = {};
-    productRenditions.renditions.forEach((rendition) => {
-      realViews[rendition.viewName] = rendition.url;
-    });
+  // API returns realviewUrls object, not renditions array
+  if (productRenditions?.realviewUrls) {
+    const realViews = productRenditions.realviewUrls;
     updatedDataObject.realViews = realViews;
+    
+    // Set heroImage to Front view, or first available view
+    updatedDataObject.heroImage = realViews.Front || Object.values(realViews)[0] || '';
   }
   return updatedDataObject;
 }

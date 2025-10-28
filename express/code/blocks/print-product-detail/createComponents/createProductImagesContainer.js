@@ -5,7 +5,9 @@ let createTag;
 
 function createproductHeroImage(heroImage, heroImageType) {
   const productHeroImageContainer = createTag('div', { class: 'pdpx-product-hero-image-container', 'data-skeleton': 'true' });
-  const productHeroImage = createTag('img', { class: 'pdpx-product-hero-image', id: 'pdpx-product-hero-image', 'data-image-type': heroImageType, fetchpriority: 'high', decoding: 'async', loading: 'eager', alt: 'Product Hero Image', src: heroImage });
+  // Use a data URL placeholder if heroImage is empty (skeleton state)
+  const imageSrc = heroImage || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="644" height="400"%3E%3Crect fill="%23f0f0f0" width="644" height="400"/%3E%3C/svg%3E';
+  const productHeroImage = createTag('img', { class: 'pdpx-product-hero-image', id: 'pdpx-product-hero-image', 'data-image-type': heroImageType, fetchpriority: 'high', decoding: 'async', loading: 'eager', alt: 'Product Hero Image', src: imageSrc });
   productHeroImageContainer.appendChild(productHeroImage);
   return { productHeroImage, productHeroImageContainer };
 }
