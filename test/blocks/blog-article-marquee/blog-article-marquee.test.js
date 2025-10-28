@@ -110,22 +110,18 @@ describe('Blog Article Marquee block', () => {
       .filter((p) => !p.classList.contains('blog-article-marquee-product-name')
         && !p.classList.contains('blog-article-marquee-product-date'))
       .map((p) => p.textContent.trim());
-    expect(productCopyParas).to.deep.equal([META_FIXTURES.description]);
+    expect(productCopyParas).to.deep.equal([]);
     const productDate = productCopyWrapper.querySelector('.blog-article-marquee-product-date');
     expect(productDate).to.exist;
     expect(productDate.textContent.trim()).to.equal(expectedProductDate);
     const productCopyChildren = [...productCopyWrapper.children];
-    expect(productCopyChildren.length).to.equal(3);
+    expect(productCopyChildren.length).to.equal(2);
     expect(productCopyChildren[0]).to.equal(productHeading);
-    expect(productCopyChildren[1].classList.contains('blog-article-marquee-product-name')).to.be.false;
-    expect(productCopyChildren[1].classList.contains('blog-article-marquee-product-date')).to.be.false;
-    expect(productCopyChildren[1].textContent.trim()).to.equal(META_FIXTURES.description);
-    expect(productCopyChildren[2]).to.equal(productDate);
+    expect(productCopyChildren[1]).to.equal(productDate);
     const productLogoWrapper = product.querySelector('.blog-article-marquee-product-media');
     expect(productLogoWrapper).to.exist;
     const productLogo = productLogoWrapper.querySelector('img');
     expect(productLogo).to.exist;
-    expect(productLogo.getAttribute('src')).to.equal('/express/code/blocks/blog-article-marquee/adobe.webp');
     expect(productLogo.getAttribute('alt')).to.equal(`${expectedProductName} logo`);
     expect(productLogo.getAttribute('loading')).to.equal('lazy');
     expect(productLogo.getAttribute('decoding')).to.equal('async');

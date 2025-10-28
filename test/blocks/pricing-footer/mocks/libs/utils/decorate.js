@@ -1,4 +1,4 @@
-export function decorateButtons(root) {
+export default function decorateButtons(root) {
   root.querySelectorAll('a').forEach((link) => {
     const container = link.closest('p');
     if (container) {
