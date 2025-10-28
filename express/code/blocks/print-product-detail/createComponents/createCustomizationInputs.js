@@ -350,21 +350,23 @@ export default async function createCustomizationInputs(
   ]);
   const createInputsFunction = productTypeToInputsMap.get(productDetails.productType);
 
-  if (productDetails.productType === 'zazzle_businesscard') {
-    createInputsFunction(
-      customizationInputsForm,
-      productDetails,
-      formDataObject,
-      paperDrawer,
-    );
-  } else {
-    createInputsFunction(
-      customizationInputsForm,
-      productDetails,
-      formDataObject,
-      comparisonDrawer,
-      sizeChartDrawer,
-    );
+  if (createInputsFunction) {
+    if (productDetails.productType === 'zazzle_businesscard') {
+      createInputsFunction(
+        customizationInputsForm,
+        productDetails,
+        formDataObject,
+        paperDrawer,
+      );
+    } else {
+      createInputsFunction(
+        customizationInputsForm,
+        productDetails,
+        formDataObject,
+        comparisonDrawer,
+        sizeChartDrawer,
+      );
+    }
   }
   return customizationInputsContainer;
 }

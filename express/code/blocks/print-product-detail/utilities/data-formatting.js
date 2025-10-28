@@ -67,8 +67,11 @@ export function updateDataObjectProductPrice(dataObject, productPrice) {
 
 export function updateDataObjectProductShippingEstimates(dataObject, productShippingEstimates) {
   const updatedDataObject = { ...dataObject };
-  updatedDataObject.deliveryEstimateMinDate = productShippingEstimates.shippingEstimates[0].minDate;
-  updatedDataObject.deliveryEstimateMaxDate = productShippingEstimates.shippingEstimates[0].maxDate;
+  if (productShippingEstimates?.shippingEstimates?.[0]) {
+    const estimate = productShippingEstimates.shippingEstimates[0];
+    updatedDataObject.deliveryEstimateMinDate = estimate.minDate;
+    updatedDataObject.deliveryEstimateMaxDate = estimate.maxDate;
+  }
   return updatedDataObject;
 }
 
@@ -81,11 +84,13 @@ export function updateDataObjectProductReviews(dataObject, productReviews) {
 
 export function updateDataObjectProductRenditions(dataObject, productRenditions) {
   const updatedDataObject = { ...dataObject };
-  const realViews = productRenditions.renditions.map((rendition) => ({
-    viewName: rendition.viewName,
-    viewUrl: rendition.url,
-  }));
-  updatedDataObject.realViews = realViews;
+  if (productRenditions?.renditions) {
+    const realViews = productRenditions.renditions.map((rendition) => ({
+      viewName: rendition.viewName,
+      viewUrl: rendition.url,
+    }));
+    updatedDataObject.realViews = realViews;
+  }
   return updatedDataObject;
 }
 
