@@ -1,12 +1,30 @@
 import { getLibs } from '../../scripts/utils.js';
-import fetchAPIData, { formatProductDescriptions } from './fetchData/fetchProductDetails.js';
-import { normalizeProductDetailObject } from './utilities/data-formatting.js';
-import { extractProductId, buildRealViewImageUrl } from './utilities/utility-functions.js';
+import fetchAPIData, { fetchProductDetails, fetchUIStrings } from './fetchData/fetchProductDetails.js';
+import {
+  createEmptyDataObject,
+  updateDataObjectProductDetails,
+  updateDataObjectProductPrice,
+  updateDataObjectProductShippingEstimates,
+  updateDataObjectProductReviews,
+  updateDataObjectProductRenditions,
+  updateDataObjectUIStrings,
+} from './utilities/data-formatting.js';
 import createProductInfoHeadingSection from './createComponents/createProductInfoHeadingSection.js';
-import createProductImagesContainer from './createComponents/createProductImagesContainer.js';
+import createProductImagesContainer, {
+  createProductThumbnailCarousel,
+} from './createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
-import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
+import createProductDetailsSection, {
+  createCheckoutButton,
+} from './createComponents/createProductDetailsSection.js';
 import createDrawer from './createComponents/createDrawer.js';
+import {
+  addPrefetchLinks,
+  formatDeliveryEstimateDateRange,
+  formatLargeNumberToK,
+  formatPriceZazzle,
+  buildRealViewImageUrl,
+} from './utilities/utility-functions.js';
 
 let createTag;
 
@@ -17,51 +35,89 @@ const SIZE_CHART_DATA = {
     fit: 'Standard',
     sizes: {
       IN: [
-        { name: 'Adult S', body: { chest: '34-37', waist: '30-32' }, garment: { width: '18', length: '28' } },
-        { name: 'Adult M', body: { chest: '38-41', waist: '32-34' }, garment: { width: '20', length: '29' } },
-        { name: 'Adult L', body: { chest: '42-45', waist: '34-36' }, garment: { width: '22', length: '30' } },
-        { name: 'Adult XL', body: { chest: '46-49', waist: '36-38' }, garment: { width: '24', length: '31' } },
-        { name: 'Adult 2XL', body: { chest: '50-53', waist: '38-40' }, garment: { width: '26', length: '32' } },
+        {
+          name: 'Adult S',
+          body: { chest: '34-37', waist: '30-32' },
+          garment: { width: '18', length: '28' },
+        },
+        {
+          name: 'Adult M',
+          body: { chest: '38-41', waist: '32-34' },
+          garment: { width: '20', length: '29' },
+        },
+        {
+          name: 'Adult L',
+          body: { chest: '42-45', waist: '34-36' },
+          garment: { width: '22', length: '30' },
+        },
+        {
+          name: 'Adult XL',
+          body: { chest: '46-49', waist: '36-38' },
+          garment: { width: '24', length: '31' },
+        },
+        {
+          name: 'Adult 2XL',
+          body: { chest: '50-53', waist: '38-40' },
+          garment: { width: '26', length: '32' },
+        },
       ],
       CM: [
-        { name: 'Adult S', body: { chest: '86.4-94', waist: '76.2-81.3' }, garment: { width: '45.7', length: '71.1' } },
-        { name: 'Adult M', body: { chest: '96.5-104.1', waist: '81.3-86.4' }, garment: { width: '50.8', length: '73.7' } },
-        { name: 'Adult L', body: { chest: '106.7-114.3', waist: '86.4-91.4' }, garment: { width: '55.9', length: '76.2' } },
-        { name: 'Adult XL', body: { chest: '116.8-124.5', waist: '91.4-96.5' }, garment: { width: '61', length: '78.7' } },
-        { name: 'Adult 2XL', body: { chest: '127-134.6', waist: '96.5-101.6' }, garment: { width: '66', length: '81.3' } },
+        {
+          name: 'Adult S',
+          body: { chest: '86.4-94', waist: '76.2-81.3' },
+          garment: { width: '45.7', length: '71.1' },
+        },
+        {
+          name: 'Adult M',
+          body: { chest: '96.5-104.1', waist: '81.3-86.4' },
+          garment: { width: '50.8', length: '73.7' },
+        },
+        {
+          name: 'Adult L',
+          body: { chest: '106.7-114.3', waist: '86.4-91.4' },
+          garment: { width: '55.9', length: '76.2' },
+        },
+        {
+          name: 'Adult XL',
+          body: { chest: '116.8-124.5', waist: '91.4-96.5' },
+          garment: { width: '61', length: '78.7' },
+        },
+        {
+          name: 'Adult 2XL',
+          body: { chest: '127-134.6', waist: '96.5-101.6' },
+          garment: { width: '66', length: '81.3' },
+        },
       ],
     },
   },
 };
 
-async function setupPaperSelectionDrawer(productDetails, productDescriptions, rawProductDetails) {
+// Helper function to extract specs from descriptionBrief
+function extractSpecs(descriptionBrief) {
+  if (!descriptionBrief) return [];
+  const text = descriptionBrief.replace(/<[^>]*>/g, ' ').trim();
+  return text.split(/\n|<br>|\//).map((s) => s.trim()).filter((s) => s.length > 0);
+}
+
+async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
   if (productDetails.productType !== 'zazzle_businesscard') {
-    return null;
+    return;
   }
 
   if (!productDetails.media || productDetails.media.length === 0) {
-    return null;
+    return;
   }
 
-  // Get raw media data from API to access firstProductRealviewParams
   const rawMediaAttribute = rawProductDetails.product.attributes.media;
   const rawMediaValues = rawMediaAttribute.values;
 
-  // Helper function to extract specs from descriptionBrief
-  const extractSpecs = (descriptionBrief) => {
-    if (!descriptionBrief) return [];
-    // Remove HTML tags and split by line breaks
-    const text = descriptionBrief.replace(/<[^>]*>/g, ' ').trim();
-    // Split by common delimiters and filter empty strings
-    return text.split(/\n|<br>|\//).map((s) => s.trim()).filter((s) => s.length > 0);
-  };
-
-  // Find the selected paper (first one by default)
   const selectedPaper = productDetails.media[0];
   const selectedRawPaper = rawMediaValues[0];
 
-  // Build hero image URL with larger max_dim
-  const heroImageUrl = buildRealViewImageUrl(selectedRawPaper.firstProductRealviewParams, 644);
+  const heroImageUrl = buildRealViewImageUrl(
+    selectedRawPaper.firstProductRealviewParams,
+    644,
+  );
 
   const paperData = {
     selectedPaper: {
@@ -96,16 +152,30 @@ async function setupPaperSelectionDrawer(productDetails, productDescriptions, ra
     data: paperData,
   });
 
-  return paperDrawer;
-}
-
-async function setupComparisonDrawer(productDetails) {
-  if (productDetails.productType !== 'zazzle_shirt') {
-    return null;
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  if (globalContainer && paperDrawer) {
+    globalContainer.appendChild(paperDrawer.curtain);
+    globalContainer.appendChild(paperDrawer.drawer);
   }
 
-  if (!productDetails.printingProcessOptions || productDetails.printingProcessOptions.length < 2) {
-    return null;
+  const compareLink = document.querySelector(
+    '.pdpx-pill-selector-label-compare-link[data-drawer-type="paper"]',
+  );
+  if (compareLink) {
+    compareLink.drawerRef = paperDrawer;
+  }
+}
+
+async function updatePageWithComparisonDrawer(productDetails) {
+  if (productDetails.productType !== 'zazzle_shirt') {
+    return;
+  }
+
+  if (
+    !productDetails.printingProcessOptions
+    || productDetails.printingProcessOptions.length < 2
+  ) {
+    return;
   }
 
   const baseUrl = 'https://asset.zcache.com/assets/graphics/pd/productAttributeHelp/underbasePrintProcess';
@@ -132,17 +202,21 @@ async function setupComparisonDrawer(productDetails) {
     data: drawerData,
   });
 
-  return comparisonDrawer;
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  if (globalContainer && comparisonDrawer) {
+    globalContainer.appendChild(comparisonDrawer.curtain);
+    globalContainer.appendChild(comparisonDrawer.drawer);
+  }
 }
 
-async function setupSizeChartDrawer(productDetails) {
+async function updatePageWithSizeChartDrawer(productDetails) {
   if (productDetails.productType !== 'zazzle_shirt') {
-    return null;
+    return;
   }
 
   const styleName = productDetails.style?.[0]?.name;
   if (!styleName || !SIZE_CHART_DATA[styleName]) {
-    return null;
+    return;
   }
 
   const sizeChartDrawer = await createDrawer({
@@ -151,117 +225,248 @@ async function setupSizeChartDrawer(productDetails) {
     data: SIZE_CHART_DATA[styleName],
   });
 
-  return sizeChartDrawer;
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  if (globalContainer && sizeChartDrawer) {
+    globalContainer.appendChild(sizeChartDrawer.curtain);
+    globalContainer.appendChild(sizeChartDrawer.drawer);
+  }
 }
 
-async function createProductInfoContainer(
-  productDetails,
-  productDescriptions,
-  drawer,
-  rawProductDetails,
-  comparisonDrawer,
-  sizeChartDrawer,
-) {
+async function createProductInfoContainer(productDetails, drawer) {
   const productInfoSectionWrapperContainer = createTag('div', {
     class: 'pdpx-product-info-section-wrapper-container',
   });
-  const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper' });
-  const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container' });
+  const productInfoSectionWrapper = createTag('div', {
+    class: 'pdpx-product-info-section-wrapper',
+  });
+  const productInfoContainer = createTag('div', {
+    class: 'pdpx-product-info-container',
+    id: 'pdpx-product-info-container',
+  });
   const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
   productInfoContainer.appendChild(productInfoHeadingSection);
-
-  const customizationInputs = await createCustomizationInputs(
-    productDetails,
-    null,
-    comparisonDrawer,
-    sizeChartDrawer,
-    drawer,
-  );
-  productInfoContainer.appendChild(customizationInputs);
-  const productDetailsSection = await createProductDetailsSection(productDescriptions);
-  productInfoContainer.appendChild(productDetailsSection);
   productInfoSectionWrapper.appendChild(productInfoContainer);
-  const checkoutButton = createCheckoutButton();
+  const checkoutButton = await createCheckoutButton(productDetails);
   productInfoSectionWrapper.appendChild(checkoutButton);
-
+  productInfoSectionWrapper.appendChild(drawer);
   productInfoSectionWrapperContainer.appendChild(productInfoHeadingSection);
   productInfoSectionWrapperContainer.appendChild(productInfoSectionWrapper);
-
   return productInfoSectionWrapperContainer;
 }
 
-async function createGlobalContainer(
-  block,
-  productDetails,
-  productDescriptions,
-  rawProductDetails,
-) {
-  const globalContainer = createTag('div', { class: 'pdpx-global-container' });
-  globalContainer.dataset.productId = productDetails.id;
-
-  const paperDrawer = await setupPaperSelectionDrawer(
-    productDetails,
-    productDescriptions,
-    rawProductDetails,
-  );
-  const comparisonDrawer = await setupComparisonDrawer(productDetails);
-  const sizeChartDrawer = await setupSizeChartDrawer(productDetails);
+async function createGlobalContainer(productDetails) {
+  const globalContainer = createTag('div', {
+    class: 'pdpx-global-container',
+    'data-template-id': productDetails.templateId,
+  });
+  const { curtain, drawer } = await createDrawer(productDetails);
   const productImagesContainer = await createProductImagesContainer(
     productDetails.realViews,
     productDetails.heroImage,
   );
   const productInfoSectionWrapper = await createProductInfoContainer(
     productDetails,
-    productDescriptions,
-    paperDrawer,
-    rawProductDetails,
-    comparisonDrawer,
-    sizeChartDrawer,
+    drawer,
   );
   globalContainer.appendChild(productImagesContainer);
   globalContainer.appendChild(productInfoSectionWrapper);
+  document.body.append(curtain);
+  return globalContainer;
+}
 
-  // Append paper drawer to global container (for business cards)
-  if (paperDrawer) {
-    globalContainer.appendChild(paperDrawer.curtain);
-    globalContainer.appendChild(paperDrawer.drawer);
-  }
+function createCheckoutButtonParameters(formDataObject) {
+  const parameters = {};
+  const productSettingsString = Object.entries(formDataObject)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+  parameters.productSettings = productSettingsString;
+  parameters.action = 'print-null-now';
+  parameters.loadPrintAddon = 'true';
+  parameters.mv = '1';
+  parameters.referrer = 'a.com-print-and-deliver-seo';
+  parameters.sdid = 'MH16S6M4';
+  return parameters;
+}
 
-  // Append comparison and size chart drawers to global container (for t-shirts)
-  if (comparisonDrawer) {
-    globalContainer.appendChild(comparisonDrawer.curtain);
-    globalContainer.appendChild(comparisonDrawer.drawer);
-  }
+function createCheckoutButtonHref(templateId, parameters) {
+  const parametersString = Object.entries(parameters)
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&');
+  const encodedParametersString = encodeURIComponent(parametersString);
+  const baseUrl = 'https://new.express.adobe.com/design/template';
+  const checkoutButtonHref = `${baseUrl}/${templateId}?${encodedParametersString}`;
+  return checkoutButtonHref;
+}
 
-  if (sizeChartDrawer) {
-    globalContainer.appendChild(sizeChartDrawer.curtain);
-    globalContainer.appendChild(sizeChartDrawer.drawer);
-  }
+async function updatePageWithProductDetails(productDetails, rawProductDetails) {
+  const productTitle = document.getElementById('pdpx-product-title');
+  productTitle.textContent = productDetails.productTitle;
+  productTitle.removeAttribute('data-skeleton');
+  const productHeroImage = document.getElementById('pdpx-product-hero-image');
+  productHeroImage.src = productDetails.heroImage;
+  productHeroImage.removeAttribute('data-skeleton');
+  const productInfoContainer = document.getElementById('pdpx-product-info-container');
+  const customizationInputs = await createCustomizationInputs(productDetails);
+  productInfoContainer.appendChild(customizationInputs);
+  const productDetailsSection = await createProductDetailsSection(
+    productDetails.productDescriptions,
+  );
+  productInfoContainer.appendChild(productDetailsSection);
+  const form = document.getElementById('pdpx-customization-inputs-form');
+  const formData = new FormData(form);
+  const formDataObject = Object.fromEntries(formData.entries());
+  const checkoutButton = document.getElementById('pdpx-checkout-button');
+  const checkoutButtonParameters = createCheckoutButtonParameters(
+    formDataObject,
+  );
+  const checkoutButtonHref = createCheckoutButtonHref(
+    productDetails.templateId,
+    checkoutButtonParameters,
+  );
+  checkoutButton.href = checkoutButtonHref;
 
-  block.appendChild(globalContainer);
+  // Create our specialized drawers after customization inputs are rendered
+  await Promise.all([
+    updatePageWithPaperDrawer(productDetails, rawProductDetails),
+    updatePageWithComparisonDrawer(productDetails),
+    updatePageWithSizeChartDrawer(productDetails),
+  ]).catch((err) => {
+    // eslint-disable-next-line no-console
+    console.error('Drawer creation failed:', err);
+  });
+
+  const returnObject = { checkoutButtonParameters };
+  return returnObject;
+}
+
+function updatePageWithProductImages(productDetails) {
+  const imageThumbnailCarouselContainer = document.getElementById(
+    'pdpx-image-thumbnail-carousel-container',
+  );
+  const heroProductImage = document.getElementById('pdpx-product-hero-image');
+  const newImageThumbnailCarouselContainer = createProductThumbnailCarousel(
+    productDetails.realViews,
+    'Front',
+    heroProductImage,
+  );
+  imageThumbnailCarouselContainer.appendChild(newImageThumbnailCarouselContainer);
+  imageThumbnailCarouselContainer.removeAttribute('data-skeleton');
+  newImageThumbnailCarouselContainer.removeAttribute('data-skeleton');
+  return imageThumbnailCarouselContainer;
+}
+
+async function updatePageWithProductPrice(productDetails) {
+  const priceLabel = document.getElementById('pdpx-price-label');
+  const comparePriceLabel = document.getElementById('pdpx-compare-price-label');
+  const savingsText = document.getElementById('pdpx-savings-text');
+  priceLabel.textContent = await formatPriceZazzle(
+    productDetails.productPrice,
+  );
+  comparePriceLabel.textContent = await formatPriceZazzle(
+    productDetails.strikethroughPrice,
+  );
+  savingsText.textContent = productDetails.discountString;
+}
+
+function updatePageWithProductReviews(productDetails) {
+  const ratingsNumber = document.getElementById('pdpx-ratings-number');
+  const roundedRating = Math.round(productDetails.averageRating * 10) / 10;
+  ratingsNumber.textContent = roundedRating;
+  const ratingsAmount = document.getElementById('pdpx-ratings-amount');
+  ratingsAmount.textContent = formatLargeNumberToK(
+    productDetails.totalReviews,
+  );
+}
+
+function updatePageWithProductShippingEstimates(productDetails) {
+  const deliveryEstimateDateRange = formatDeliveryEstimateDateRange(
+    productDetails.deliveryEstimateMinDate,
+    productDetails.deliveryEstimateMaxDate,
+  );
+  const deliveryEstimatePillDate = document.getElementById(
+    'pdpx-delivery-estimate-pill-date',
+  );
+  deliveryEstimatePillDate.textContent = deliveryEstimateDateRange;
+}
+
+function updatePageWithUIStrings(productDetails) {
+  const deliveryEstimatePillText = document.getElementById(
+    'pdpx-delivery-estimate-pill-text',
+  );
+  deliveryEstimatePillText.textContent = productDetails.deliveryEstimateStringText;
+  const compareValueTooltipTitle = document.getElementById(
+    'pdpx-info-tooltip-content-title',
+  );
+  compareValueTooltipTitle.textContent = productDetails.compareValueTooltipTitle;
+  const compareValueTooltipDescription1 = document.getElementById(
+    'pdpx-info-tooltip-content-description-1',
+  );
+  compareValueTooltipDescription1.textContent = productDetails.compareValueTooltipDescription1;
+  const compareValueTooltipDescription2 = document.getElementById(
+    'pdpx-info-tooltip-content-description-2',
+  );
+  compareValueTooltipDescription2.textContent = productDetails.compareValueTooltipDescription2;
 }
 
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  const productId = await extractProductId(block);
-  const productDetails = await fetchAPIData(productId, null, 'getproduct');
-  const productRenditions = await fetchAPIData(productId, null, 'getproductrenditions');
-  const productPrice = await fetchAPIData(productId, null, 'getproductpricing');
-  const productReviews = await fetchAPIData(productId, null, 'getreviews');
-  const quantity = 1;
-  const sampleShippingParameters = {
-    qty: quantity,
-  };
-  const productShippingEstimates = await fetchAPIData(productId, sampleShippingParameters, 'getshippingestimates');
-  const productDetailsFormatted = await normalizeProductDetailObject(
-    productDetails,
-    productPrice,
-    productReviews,
-    productRenditions,
-    productShippingEstimates,
-    quantity,
-  );
-  const productDescriptions = formatProductDescriptions(productDetails);
+  addPrefetchLinks();
+
+  const templateId = block.children[0].children[1].textContent;
+  let productId;
+  let dataObject = createEmptyDataObject(templateId);
+
   block.innerHTML = '';
-  await createGlobalContainer(block, productDetailsFormatted, productDescriptions, productDetails);
+  const globalContainer = await createGlobalContainer(dataObject);
+  block.appendChild(globalContainer);
+
+  const productDetails = fetchProductDetails(templateId);
+  productDetails.then(async (productDetailsResponse) => {
+    const rawProductDetails = productDetailsResponse;
+    dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
+    updatePageWithProductDetails(dataObject, rawProductDetails);
+    productId = productDetailsResponse.product.id;
+
+    const productRenditions = fetchAPIData(productId, null, 'getproductrenditions');
+    productRenditions.then((productRenditionsResponse) => {
+      dataObject = updateDataObjectProductRenditions(
+        dataObject,
+        productRenditionsResponse,
+      );
+      updatePageWithProductImages(dataObject);
+    });
+
+    const quantity = 1;
+    const productPrice = fetchAPIData(productId, null, 'getproductpricing');
+    productPrice.then(async (productPriceResponse) => {
+      dataObject = updateDataObjectProductPrice(dataObject, productPriceResponse);
+      await updatePageWithProductPrice(dataObject);
+    });
+
+    const productReviews = fetchAPIData(productId, null, 'getreviews');
+    productReviews.then((productReviewsResponse) => {
+      dataObject = updateDataObjectProductReviews(dataObject, productReviewsResponse);
+      updatePageWithProductReviews(dataObject);
+    });
+
+    const sampleShippingParameters = { qty: quantity };
+    const productShippingEstimates = fetchAPIData(
+      productId,
+      sampleShippingParameters,
+      'getshippingestimates',
+    );
+    productShippingEstimates.then((productShippingEstimatesResponse) => {
+      dataObject = updateDataObjectProductShippingEstimates(
+        dataObject,
+        productShippingEstimatesResponse,
+      );
+      updatePageWithProductShippingEstimates(dataObject);
+    });
+
+    const UIStrings = fetchUIStrings();
+    UIStrings.then((UIStringsResponse) => {
+      dataObject = updateDataObjectUIStrings(dataObject, UIStringsResponse);
+      updatePageWithUIStrings(dataObject);
+    });
+  });
 }
