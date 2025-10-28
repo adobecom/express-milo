@@ -33,38 +33,6 @@ async function initDependencies() {
   }
 }
 
-// #region IMS Helpers
-
-const getImsToken = async (operation) => {
-  try {
-    const token = window.adobeIMS.getAccessToken()?.token;
-    if (!token) {
-      throw new Error(`Cannot ${operation} token is missing`);
-    }
-    return token;
-  } catch (error) {
-    window.lana?.log(
-      `RnR: ${error.message}`,
-      lanaOptions,
-    );
-    return null;
-  }
-};
-
-const waitForIms = (timeout = 1000) => new Promise((resolve) => {
-  if (window.adobeIMS) {
-    resolve(true);
-    return;
-  }
-  setTimeout(() => resolve(!!window.adobeIMS), timeout);
-});
-
-const getAndValidateImsToken = async (operation) => {
-  await waitForIms();
-  const token = await getImsToken(operation);
-  return token;
-};
-
 // #endregion
 
 /**
@@ -87,13 +55,10 @@ export function populateStars(count, starType, parent) {
 export async function fetchRatingsData(sheet) {
   try {
     await initDependencies();
-    const token = await getAndValidateImsToken('load review data');
-    if (!token) return null;
 
     const headers = {
       Accept: 'application/vnd.adobe-review.review-overall-rating-v1+json',
       'x-api-key': RNR_API_KEY,
-      Authorization: token,
     };
 
     const response = await fetch(
@@ -314,9 +279,6 @@ export function determineActionUsed(actionSegments) {
 
 export async function submitRating(sheet, rating, comment) {
   try {
-    const token = await getAndValidateImsToken('post review');
-    if (!token) return;
-
     // Get locale from config
     const { locale } = getConfig();
     const localeString = locale.ietf?.replace('-', '_') || 'en-US';
@@ -334,7 +296,6 @@ export async function submitRating(sheet, rating, comment) {
       Accept: 'application/vnd.adobe-review.review-data-v1+json',
       'Content-Type': 'application/vnd.adobe-review.review-request-v1+json',
       'x-api-key': RNR_API_KEY,
-      Authorization: token,
     };
 
     const response = await fetch(`${RNR_API_URL}/reviews`, { method: 'POST', body, headers });
