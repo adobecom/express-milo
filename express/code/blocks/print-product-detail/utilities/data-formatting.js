@@ -1,4 +1,4 @@
-import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import { fetchUIStrings, formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, buildRealViewImageUrl } from './utility-functions.js';
 
 export default function extractProductDescriptionsFromBlock(block) {
@@ -50,8 +50,6 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 
   // Extract attributes for customization inputs
   const attributes = {};
-  // eslint-disable-next-line no-console
-  console.log('[Data Formatting] Raw attributes:', Object.keys(productDetails.product.attributes));
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
     // Handle attributes with values array
     if (attribute.values && Array.isArray(attribute.values)) {
@@ -216,75 +214,82 @@ export function updateDataObjectUIStrings(dataObject, UIStrings) {
   return updatedDataObject;
 }
 
-export async function normalizeProductDetailObject({
-  productDetails,
-  productPrice,
-  productReviews,
-  productRenditions,
-  productShippingEstimates,
-  changeOptions = {},
-  templateId,
-}) {
-  const productTitle = productDetails.product.title;
-  const { productType } = productDetails.product;
-  const productId = productDetails.product.id;
-  const heroImage = buildRealViewImageUrl(
-    productDetails.product.attributes.media.values[0].firstProductRealviewParams,
-  );
-  const realViews = productRenditions.renditions.map((rendition) => ({
-    viewName: rendition.viewName,
-    viewUrl: rendition.url,
-  }));
-  const productPriceFormatted = await formatPriceZazzle(productPrice.price);
-  const strikethroughPrice = await formatPriceZazzle(productPrice.compareAtPrice);
-  const discountPercentage = Math.round(
-    ((productPrice.compareAtPrice - productPrice.price) / productPrice.compareAtPrice) * 100,
-  );
-  const discountString = `Save ${discountPercentage}%`;
-  const { averageRating } = productReviews;
-  const { totalReviews } = productReviews;
-  const deliveryEstimateMinDate = productShippingEstimates.shippingEstimates[0].minDate;
-  const deliveryEstimateMaxDate = productShippingEstimates.shippingEstimates[0].maxDate;
-  const productDescriptions = formatProductDescriptions(productDetails, changeOptions);
+// OLD FUNCTION - Still used by event handlers
+function buildImageUrl(realviewParams) {
+  const params = new URLSearchParams();
+  Object.entries(realviewParams).forEach(([key, value]) => {
+    if (value !== null && value !== undefined) {
+      params.set(key, value);
+    }
+  });
+  return `https://rlv.zcache.com/svc/view?${params.toString()}`;
+}
 
-  const media = productDetails.product.attributes.media.values.map((paper) => ({
-    name: paper.name,
-    title: paper.title,
-    thumbnail: paper.thumbnailUrl,
-    priceAdjustment: paper.priceAdjustment,
-  }));
+async function convertAttributeToOptionsObject(attribute) {
+  const options = attribute.values;
+  const optionsArray = [];
+  for (let i = 0; i < options.length; i += 1) {
+    const option = options[i];
+    const imageUrl = buildImageUrl(option.firstProductRealviewParams);
+    optionsArray.push({
+      thumbnail: imageUrl,
+      title: option.title,
+      name: option.name,
+      priceAdjustment: await formatPriceZazzle(option.priceDifferential, true),
+    });
+  }
+  return optionsArray;
+}
 
-  const style = productDetails.product.attributes.style?.values.map((size) => ({
-    name: size.name,
-    title: size.title,
-    priceAdjustment: size.priceAdjustment,
-  }));
+function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
+  const optionsArray = [];
+  for (let i = 0; i < quantities.length; i += 1) {
+    const option = quantities[i];
+    optionsArray.push({
+      title: `${option} ${pluralUnitLabel}`,
+      name: option,
+    });
+  }
+  return optionsArray;
+}
 
-  const printingProcessOptions = productDetails.product.attributes.printingprocess?.values.map(
-    (process) => ({
-      name: process.name,
-      title: process.title,
-      priceAdjustment: process.priceAdjustment,
-    }),
-  );
-
-  return {
+export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, templateId }) {
+  const UIStrings = await fetchUIStrings();
+  const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
+  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
+  const discountAvailable = !!applicableDiscount;
+  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
+  const normalizedProductDetails = {
+    id: productDetails.product.id,
     templateId,
-    productType,
-    id: productId,
-    productTitle,
-    heroImage,
-    realViews,
-    productPrice: productPriceFormatted,
-    strikethroughPrice,
-    discountString,
-    averageRating,
-    totalReviews,
-    deliveryEstimateMinDate,
-    deliveryEstimateMaxDate,
-    productDescriptions,
-    media,
-    style,
-    printingProcessOptions,
+    heroImage: productDetails.product.initialPrettyPreferredViewUrl,
+    productTitle: productDetails.product.title,
+    unitPrice: productPrice?.unitPrice,
+    productPrice: calculatedProductPrice,
+    strikethroughPrice: productPrice?.unitPrice * quantity,
+    discountAvailable,
+    discountString: applicableDiscount?.discountString,
+    deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
+    deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
+    realViews: productRenditions.realviewUrls || {},
+    productType: productDetails.product.productType,
+    pluralUnitLabel: productDetails.product.pluralUnitLabel,
+    averageRating: productReviews.reviews.stats.averageRating,
+    totalReviews: productReviews.reviews.stats.totalReviews,
+    tooltipTitle: UIStrings.adobe_comp_value_tooltip_title,
+    tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
+    tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
+    compareValueTooltipTitle: UIStrings.adobe_compareValueTooltipTitle,
+    compareValueTooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
+    compareValueTooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
+    deliveryEstimateStringText: UIStrings.adobe_deliveryEstimateStringText,
+    productDescriptions: formatProductDescriptions(productDetails, changeOptions),
+    attributes: { quantities: productDetails.product.quantities },
   };
+  for (const attribute of Object.values(attributeOptions)) {
+    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
+  }
+  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
+  normalizedProductDetails.attributes.quantities = quantitiesOptions;
+  return normalizedProductDetails;
 }
