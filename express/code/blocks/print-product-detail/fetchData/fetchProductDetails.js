@@ -1,3 +1,6 @@
+import { getLibs } from '../../../scripts/utils.js';
+import { exchangeRegionForTopLevelDomain } from '../utilities/utility-functions.js';
+
 export function formatProductDescriptions(productDetails, selectedOptions = {}) {
   const productDescriptions = [];
 
@@ -63,23 +66,28 @@ export function formatUrlForEnvironment(url) {
   return URLFormatted;
 }
 
+export async function fetchProductDetails(templateId) {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const { ietf } = getConfig().locale;
+  const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
+  const url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/getproductfromtemplate?templateId=${templateId}`;
+  const productIdAPICall = await fetch(formatUrlForEnvironment(url));
+  const productIdAPICallJSON = await productIdAPICall.json();
+  const productDetails = productIdAPICallJSON.data;
+  return productDetails;
+}
+
 export default async function fetchAPIData(productId, parameters, endpoint) {
+  const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
+  const { ietf } = getConfig().locale;
   let apiDataFetch;
   let parametersString;
-  let topLevelDomain;
-  const urlParams = new URLSearchParams(window.location.search);
-  const region = urlParams.get('region');
-  if (region === 'uk') {
-    topLevelDomain = 'co.uk';
-  } else {
-    topLevelDomain = 'com';
-  }
+  const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
   if (parameters) {
     parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
   } else {
     parametersString = '';
   }
-
   const url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/${endpoint}?productId=${productId}&${parametersString}`;
   try {
     apiDataFetch = await fetch(formatUrlForEnvironment(url));

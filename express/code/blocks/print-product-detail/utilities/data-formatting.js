@@ -1,45 +1,5 @@
-import fetchAPIData, { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
+import { fetchUIStrings, formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle } from './utility-functions.js';
-
-export default function extractProductDescriptionsFromBlock(block) {
-  const productDescriptions = [];
-  const childDivs = Array.from(block.children);
-  let startIndex = -1;
-  let endIndex = -1;
-  // Find the start marker (div with child div containing 'productDetails')
-  for (let i = 0; i < childDivs.length; i += 1) {
-    const firstChild = childDivs[i].firstElementChild;
-    if (firstChild && firstChild.textContent.trim() === 'productDetails') {
-      startIndex = i;
-      break;
-    }
-  }
-  // Find the end marker (div with child div containing 'endProductDetails')
-  for (let i = 0; i < childDivs.length; i += 1) {
-    const firstChild = childDivs[i].firstElementChild;
-    if (firstChild && firstChild.textContent.trim() === 'endProductDetails') {
-      endIndex = i;
-      break;
-    }
-  }
-  // Extract all divs between the markers
-  if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
-    for (let i = startIndex + 1; i < endIndex; i += 1) {
-      const div = childDivs[i];
-      const children = Array.from(div.children);
-      if (children.length >= 2) {
-        const title = children[0].textContent.trim();
-        const description = children[1].textContent.trim();
-        productDescriptions.push({
-          title,
-          description,
-          element: div,
-        });
-      }
-    }
-  }
-  return productDescriptions;
-}
 
 function buildImageUrl(realviewParams) {
   const params = new URLSearchParams();
@@ -51,14 +11,7 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
-function convertAttributeToOptionsObject(attribute, printingprocess) {
-  if (attribute.title === 'Color & Print Process') {
-    if (printingprocess === 'classic') {
-      attribute.values = attribute.values.filter((value) => !value.properties.tags?.includes('showswhite'));
-    } else if (printingprocess === 'vivid') {
-      attribute.values = attribute.values.filter((value) => value.properties.tags?.includes('showswhite'));
-    }
-  }
+async function convertAttributeToOptionsObject(attribute) {
   const options = attribute.values;
   const optionsArray = [];
   for (let i = 0; i < options.length; i += 1) {
@@ -68,7 +21,7 @@ function convertAttributeToOptionsObject(attribute, printingprocess) {
       thumbnail: imageUrl,
       title: option.title,
       name: option.name,
-      priceAdjustment: formatPriceZazzle(option.priceDifferential, true),
+      priceAdjustment: await formatPriceZazzle(option.priceDifferential, true),
     });
   }
   return optionsArray;
@@ -86,56 +39,7 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-async function addSideQuantityOptions(productRenditions) {
-  const sideQuantityOptions = [];
-  sideQuantityOptions.push({
-    title: 'Double-sided',
-    name: 'double-sided',
-    thumbnail: productRenditions.realviewUrls['Front/Back'],
-    priceAdjustment: formatPriceZazzle('5.95', true),
-  });
-  sideQuantityOptions.push({
-    title: 'Single-sided',
-    name: 'single-sided',
-    thumbnail: productRenditions.realviewUrls.Front,
-    priceAdjustment: formatPriceZazzle('0', true),
-  });
-  return sideQuantityOptions;
-}
-
-async function addPrintingProcessOptions(attributeOptions, productRenditions) {
-  const printingProcessOptions = [];
-  let vividPrintingAvailable = false;
-  let fourColorPrintingAvailable = false;
-  const colorOptions = attributeOptions.color.values;
-  for (const colorOption of colorOptions) {
-    if (colorOption.properties.tags?.includes('showswhite')) {
-      vividPrintingAvailable = true;
-    }
-    if (!colorOption.properties.tags?.includes('showswhite')) {
-      fourColorPrintingAvailable = true;
-    }
-  }
-  if (fourColorPrintingAvailable) {
-    printingProcessOptions.push({
-      title: 'Classic 4-Color printing',
-      name: 'classic',
-      thumbnail: productRenditions.realviewUrls.Front,
-      priceAdjustment: formatPriceZazzle('0', true),
-    });
-  }
-  if (vividPrintingAvailable) {
-    printingProcessOptions.push({
-      title: 'Vivid 5-Color printing',
-      name: 'vivid',
-      thumbnail: productRenditions.realviewUrls.Front,
-      priceAdjustment: formatPriceZazzle('0', true),
-    });
-  }
-  return printingProcessOptions;
-}
-
-export async function normalizeProductDetailObject(productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, printingprocess = 'classic') {
+export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, templateId }) {
   const UIStrings = await fetchUIStrings();
   const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
   const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
@@ -143,6 +47,7 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
   const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
   const normalizedProductDetails = {
     id: productDetails.product.id,
+    templateId,
     heroImage: productDetails.product.initialPrettyPreferredViewUrl,
     productTitle: productDetails.product.title,
     unitPrice: productPrice?.unitPrice,
@@ -150,32 +55,109 @@ export async function normalizeProductDetailObject(productDetails, productPrice,
     strikethroughPrice: productPrice?.unitPrice * quantity,
     discountAvailable,
     discountString: applicableDiscount?.discountString,
-    deliveryEstimateStringText: 'Order today and get it by',
     deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
     deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
     realViews: productRenditions.realviewUrls,
     productType: productDetails.product.productType,
-    quantities: productDetails.product.quantities,
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
     averageRating: productReviews.reviews.stats.averageRating,
     totalReviews: productReviews.reviews.stats.totalReviews,
     tooltipTitle: UIStrings.adobe_comp_value_tooltip_title,
     tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
     tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
+    compareValueTooltipTitle: UIStrings.adobe_compareValueTooltipTitle,
+    compareValueTooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
+    compareValueTooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
+    deliveryEstimateStringText: UIStrings.adobe_deliveryEstimateStringText,
+    productDescriptions: [],
+    attributes: { quantities: productDetails.product.quantities },
   };
-  if (productDetails.product.productType === 'zazzle_shirt') {
-    const printingProcessOptions = await addPrintingProcessOptions(attributeOptions, productRenditions);
-    normalizedProductDetails.printingProcessOptions = printingProcessOptions;
-  }
   for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails[attribute.name] = convertAttributeToOptionsObject(attribute, printingprocess);
+    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
-  normalizedProductDetails.quantities = quantitiesOptions;
-  if (productDetails.product.productType === 'zazzle_businesscard') {
-    const sideQuantityOptions = await addSideQuantityOptions(productRenditions);
-    normalizedProductDetails.sideQuantityOptions = sideQuantityOptions;
-  }
-
+  normalizedProductDetails.attributes.quantities = quantitiesOptions;
   return normalizedProductDetails;
+}
+
+export function createEmptyDataObject(templateId) {
+  const emptyDataObject = {
+    id: '',
+    templateId,
+    heroImage: '',
+    productTitle: '',
+    unitPrice: '',
+    productPrice: '',
+    strikethroughPrice: '',
+    discountAvailable: '',
+    discountString: '',
+    deliveryEstimateStringText: '',
+    deliveryEstimateMinDate: '',
+    deliveryEstimateMaxDate: '',
+    realViews: {},
+    productType: 'default',
+    pluralUnitLabel: '',
+    averageRating: '',
+    totalReviews: '',
+    tooltipTitle: '',
+    tooltipDescription1: '',
+    tooltipDescription2: '',
+    attributes: { quantities: [] },
+    compareValueTooltipTitle: '',
+    compareValueTooltipDescription1: '',
+    compareValueTooltipDescription2: '',
+    productDescriptions: [],
+  };
+  return emptyDataObject;
+}
+
+export async function updateDataObjectProductDetails(dataObject, productDetails) {
+  dataObject.id = productDetails.product.id;
+  dataObject.heroImage = productDetails.product.initialPrettyPreferredViewUrl;
+  dataObject.productTitle = productDetails.product.title;
+  dataObject.productType = productDetails.product.productType;
+  const attributeOptions = productDetails.product.attributes;
+  for (const attribute of Object.values(attributeOptions)) {
+    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
+  }
+  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
+  dataObject.attributes.quantities = quantitiesOptions;
+  dataObject.productDescriptions = formatProductDescriptions(productDetails);
+  return dataObject;
+}
+
+export function updateDataObjectProductPrice(dataObject, productPrice, quantity) {
+  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
+  const discountAvailable = !!applicableDiscount;
+  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
+  dataObject.productPrice = calculatedProductPrice;
+  dataObject.strikethroughPrice = productPrice?.unitPrice * quantity;
+  dataObject.discountAvailable = discountAvailable;
+  dataObject.discountString = applicableDiscount?.discountString;
+  return dataObject;
+}
+
+export function updateDataObjectProductShippingEstimates(dataObject, productShippingEstimates) {
+  dataObject.deliveryEstimateMinDate = productShippingEstimates.estimates[0].minDeliveryDate;
+  dataObject.deliveryEstimateMaxDate = productShippingEstimates.estimates[0].maxDeliveryDate;
+  return dataObject;
+}
+
+export function updateDataObjectProductReviews(dataObject, productReviews) {
+  dataObject.averageRating = productReviews.reviews.stats.averageRating;
+  dataObject.totalReviews = productReviews.reviews.stats.totalReviews;
+  return dataObject;
+}
+
+export function updateDataObjectProductRenditions(dataObject, productRenditions) {
+  dataObject.realViews = productRenditions.realviewUrls;
+  return dataObject;
+}
+
+export function updateDataObjectUIStrings(dataObject, UIStrings) {
+  dataObject.compareValueTooltipTitle = UIStrings.adobe_compareValueTooltipTitle;
+  dataObject.compareValueTooltipDescription1 = UIStrings.zi_product_Price_CompValueTooltip1Adobe;
+  dataObject.compareValueTooltipDescription2 = UIStrings.zi_product_Price_CompValueTooltip2Adobe;
+  dataObject.deliveryEstimateStringText = UIStrings.adobe_deliveryEstimateStringText;
+  return dataObject;
 }
