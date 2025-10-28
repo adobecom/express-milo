@@ -218,9 +218,6 @@ function buildProductHighlight(metadata = {}, fallbackMedia = null) {
   if (productName) {
     copyWrapper.append(createTag('p', { class: 'blog-article-marquee-product-name' }, productName));
   }
-  productCopy.forEach((paragraph) => {
-    copyWrapper.append(createTag('p', null, paragraph));
-  });
   if (date) {
     copyWrapper.append(createTag('p', { class: 'blog-article-marquee-product-date' }, date));
   }
