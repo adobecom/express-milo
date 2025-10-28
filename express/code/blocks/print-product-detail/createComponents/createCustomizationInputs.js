@@ -11,6 +11,11 @@ function createStandardSelector(
   productId,
   defaultValue,
 ) {
+  if (!customizationOptions || customizationOptions.length === 0) {
+    // eslint-disable-next-line no-console
+    console.warn(`No customization options provided for ${hiddenSelectInputName}`);
+    return createTag('div', { class: 'pdpx-standard-selector-container hidden' });
+  }
   const selectedOption = defaultValue || customizationOptions[0].name;
   const standardSelectorContainer = createTag('div', { class: 'pdpx-standard-selector-container' });
   const standardSelectorLabel = createTag('label', { class: 'pdpx-standard-selector-label' }, labelText);
@@ -37,6 +42,11 @@ function createPillOptionsSelector(
   defaultValue,
   comparisonDrawer = null,
 ) {
+  if (!customizationOptions || customizationOptions.length === 0) {
+    // eslint-disable-next-line no-console
+    console.warn(`No customization options provided for ${hiddenSelectInputName}`);
+    return createTag('div', { class: 'pdpx-pill-selector-container hidden' });
+  }
   const selectedPillOption = defaultValue || customizationOptions[0].name;
   const pillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const pillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
@@ -101,6 +111,11 @@ function createMiniPillOptionsSelector(
   productId,
   defaultValue,
 ) {
+  if (!customizationOptions || customizationOptions.length === 0) {
+    // eslint-disable-next-line no-console
+    console.warn(`No customization options provided for ${hiddenSelectInputName}`);
+    return createTag('div', { class: 'pdpx-pill-selector-container hidden' });
+  }
   let selectedValueExists = false;
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });

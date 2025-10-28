@@ -57,19 +57,32 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   const attributes = {};
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
     if (attribute.values && Array.isArray(attribute.values)) {
-      attributes[key] = attribute.values.map((value) => ({
-        name: value.name,
-        title: value.title || value.titleLong || value.name,
-        thumbnail: value.thumbnailUrl || value.helpImageUrl || '',
-        priceAdjustment: value.priceAdjustment || '',
-        description: value.description || value.descriptionBrief || '',
-        descriptionBrief: value.descriptionBrief || '',
-        firstProductRealviewParams: value.firstProductRealviewParams || null,
-        isBestValue: value.isBestValue || false,
-      }));
-    } else if (key === 'quantities') {
-      // Special handling for quantities
-      attributes[key] = attribute.values || [];
+      attributes[key] = attribute.values.map((value) => {
+        // Handle different value structures (some attributes have simpler structures)
+        if (typeof value === 'object' && value !== null) {
+          return {
+            name: value.name || value.value || value,
+            title: value.title || value.titleLong || value.name || value.value || value,
+            thumbnail: value.thumbnailUrl || value.helpImageUrl || '',
+            priceAdjustment: value.priceAdjustment || '',
+            description: value.description || value.descriptionBrief || '',
+            descriptionBrief: value.descriptionBrief || '',
+            firstProductRealviewParams: value.firstProductRealviewParams || null,
+            isBestValue: value.isBestValue || false,
+          };
+        }
+        // Handle primitive values (like numbers for quantities)
+        return {
+          name: String(value),
+          title: String(value),
+          thumbnail: '',
+          priceAdjustment: '',
+          description: '',
+          descriptionBrief: '',
+          firstProductRealviewParams: null,
+          isBestValue: false,
+        };
+      });
     }
   });
 
