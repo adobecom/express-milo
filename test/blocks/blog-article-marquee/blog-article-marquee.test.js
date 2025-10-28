@@ -3,6 +3,7 @@
 
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
+
 const [, { default: decorate }] = await Promise.all([
   import('../../../express/code/scripts/scripts.js'),
   import('../../../express/code/blocks/blog-article-marquee/blog-article-marquee.js'),

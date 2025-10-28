@@ -25,7 +25,7 @@ const METADATA_KEYS = {
 function getBlogArticleMarqueeMetadata() {
   if (!getMetadata) return {};
   const sanitize = (value) => (typeof value === 'string' ? value.trim() : '');
-  const meta = Object.entries(METADATA_KEYS).reduce((acc, [key, metaName]) => { 
+  const meta = Object.entries(METADATA_KEYS).reduce((acc, [key, metaName]) => {
     const metaValue = sanitize(getMetadata(metaName));
     if (metaValue) acc[key] = metaValue;
     return acc;
@@ -62,7 +62,9 @@ function getViewportWidth() {
 function getResponsiveWidth(widths, fallback = 600) {
   const viewportWidth = getViewportWidth();
   if (viewportWidth && viewportWidth <= MOBILE_MAX) return widths.mobile ?? fallback;
-  if (viewportWidth && viewportWidth <= TABLET_MAX) return widths.tablet ?? widths.desktop ?? fallback;
+  if (viewportWidth && viewportWidth <= TABLET_MAX) {
+    return widths.tablet ?? widths.desktop ?? fallback;
+  }
   return widths.desktop ?? widths.tablet ?? widths.mobile ?? fallback;
 }
 
@@ -235,7 +237,9 @@ function decorateContentColumn(column, metadata = {}, ctaNode = null, fallbackNo
 
   const availableFallback = [...fallbackNodes];
   const takeFallback = (predicate) => {
-    const index = availableFallback.findIndex((node) => node.nodeType === Node.ELEMENT_NODE && predicate(node));
+    const index = availableFallback.findIndex(
+      (node) => node.nodeType === Node.ELEMENT_NODE && predicate(node),
+    );
     if (index === -1) return null;
     const [node] = availableFallback.splice(index, 1);
     return node;
@@ -270,7 +274,7 @@ function decorateContentColumn(column, metadata = {}, ctaNode = null, fallbackNo
   }
 
   const mergedMetadata = { ...metadata };
-  let fallbackHighlightWrapper = takeFallback((node) => node.classList?.contains('blog-article-marquee-products'));
+  const fallbackHighlightWrapper = takeFallback((node) => node.classList?.contains('blog-article-marquee-products'));
   let fallbackHighlightProduct = null;
 
   if (fallbackHighlightWrapper) {
@@ -318,7 +322,9 @@ function decorateContentColumn(column, metadata = {}, ctaNode = null, fallbackNo
 
   if (highlightSource) {
     const nameNode = highlightSource.querySelector('.blog-article-marquee-product-name');
-    if (!mergedMetadata.productName && nameNode) mergedMetadata.productName = nameNode.textContent.trim();
+    if (!mergedMetadata.productName && nameNode) {
+      mergedMetadata.productName = nameNode.textContent.trim();
+    }
     const dateNode = highlightSource.querySelector('.blog-article-marquee-product-date');
     if (!mergedMetadata.date && dateNode) mergedMetadata.date = dateNode.textContent.trim();
     if (!Array.isArray(mergedMetadata.productCopy) || !mergedMetadata.productCopy.length) {
@@ -350,7 +356,10 @@ function decorateMediaColumn(column) {
   const img = column.querySelector('img');
   if (!img) return;
   const columnWidth = Math.round(column.getBoundingClientRect().width);
-  const targetWidth = columnWidth || getResponsiveWidth(HERO_IMAGE_WIDTHS, HERO_IMAGE_WIDTHS.desktop);
+  const targetWidth = columnWidth || getResponsiveWidth(
+    HERO_IMAGE_WIDTHS,
+    HERO_IMAGE_WIDTHS.desktop,
+  );
   optimizeImage(img, {
     width: targetWidth,
     eager: true,
