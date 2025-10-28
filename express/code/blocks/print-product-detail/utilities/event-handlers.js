@@ -104,13 +104,12 @@ export default async function updateAllDynamicElements(productId) {
     fetchAPIData(productId, updatedParameters, 'getshippingestimates'),
   ]);
   const normalizeProductDetailsParametersObject = {
-    productDetails,
+    productDetails: updatedConfigurationOptions,
     productPrice,
     productReviews,
     productRenditions,
     productShippingEstimates,
     quantity,
-    updatedConfigurationOptions,
     templateId,
   };
   const normalizedProductDetails = await normalizeProductDetailObject(normalizeProductDetailsParametersObject);

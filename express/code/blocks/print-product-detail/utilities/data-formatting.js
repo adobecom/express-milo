@@ -39,9 +39,7 @@ function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
   return optionsArray;
 }
 
-export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, templateId }) {
-  const UIStrings = await fetchUIStrings();
-  const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
+export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, templateId }) {
   const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
   const discountAvailable = !!applicableDiscount;
   const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
@@ -62,17 +60,10 @@ export async function normalizeProductDetailObject({ productDetails, productPric
     pluralUnitLabel: productDetails.product.pluralUnitLabel,
     averageRating: productReviews.reviews.stats.averageRating,
     totalReviews: productReviews.reviews.stats.totalReviews,
-    tooltipTitle: UIStrings.adobe_comp_value_tooltip_title,
-    tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
-    tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
-    compareValueTooltipTitle: UIStrings.adobe_compareValueTooltipTitle,
-    compareValueTooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
-    compareValueTooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
-    deliveryEstimateStringText: UIStrings.adobe_deliveryEstimateStringText,
     productDescriptions: [],
     attributes: { quantities: productDetails.product.quantities },
   };
-  for (const attribute of Object.values(attributeOptions)) {
+  for (const attribute of Object.values(productDetails.product.attributes)) {
     normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
