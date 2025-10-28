@@ -18,7 +18,7 @@ main .section .blog-article-marquee p {
 .blog-article-marquee .blog-article-marquee-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--spacing-500);
+  gap: 40px;
 }
 
 .blog-article-marquee .blog-article-marquee-content {
@@ -156,7 +156,7 @@ main .section .blog-article-marquee p {
 
 @media (min-width: 800px) {
   .blog-article-marquee {
-    padding: var(--spacing-700) 32px;
+    padding: 40px 32px;
   }
 
   .blog-article-marquee .blog-article-marquee-row {
@@ -185,7 +185,7 @@ main .section .blog-article-marquee p {
 
 @media (min-width: 1024px) {
   .blog-article-marquee {
-    padding: 40px;
+    padding: 80px 40px;
   }
 
   .blog-article-marquee .blog-article-marquee-content h1,
