@@ -55,37 +55,45 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 
   // Extract attributes for customization inputs
   const attributes = {};
-  // eslint-disable-next-line no-console
-  console.log('[DEBUG] Product attributes:', productDetails.product.attributes);
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
     // Handle attributes with values array
     if (attribute.values && Array.isArray(attribute.values)) {
-      // eslint-disable-next-line no-console
-      console.log(`[DEBUG] Attribute "${key}" values:`, attribute.values.slice(0, 2));
-      attributes[key] = attribute.values.map((value, index) => {
+      attributes[key] = attribute.values.map((value) => {
         // Handle different value structures (some attributes have simpler structures)
         if (typeof value === 'object' && value !== null) {
+          // Format price adjustment - check multiple possible sources
+          let priceAdjustment = '';
+          if (value.priceDifferential !== undefined && value.priceDifferential !== 0) {
+            // Use priceDifferential if available and non-zero
+            priceAdjustment = value.priceDifferential > 0 ? `+$${value.priceDifferential.toFixed(2)}` : `$${value.priceDifferential.toFixed(2)}`;
+          } else if (value.price !== undefined && value.price !== 0) {
+            // Use price if available and non-zero
+            priceAdjustment = value.price > 0 ? `+$${value.price.toFixed(2)}` : `$${value.price.toFixed(2)}`;
+          } else if (value.properties?.price !== undefined) {
+            // Check properties.price as fallback
+            const priceValue = parseFloat(value.properties.price);
+            if (!isNaN(priceValue) && priceValue !== 0) {
+              priceAdjustment = priceValue > 0 ? `+$${priceValue.toFixed(2)}` : `$${priceValue.toFixed(2)}`;
+            }
+          }
+
+          // Generate thumbnail from realview params if available
+          let thumbnail = value.thumbnailUrl || value.helpImageUrl || value.thumbnail || '';
+          if (!thumbnail && value.firstProductRealviewParams) {
+            // Generate thumbnail URL from realview params (smaller size for thumbnails)
+            thumbnail = buildRealViewImageUrl(value.firstProductRealviewParams, 120);
+          }
+
           const extracted = {
             name: value.name || value.value || String(value),
             title: value.title || value.titleLong || value.name || value.value || String(value),
-            thumbnail: value.thumbnailUrl || value.helpImageUrl || value.thumbnail || '',
-            priceAdjustment: value.priceAdjustment || value.price || '',
+            thumbnail,
+            priceAdjustment,
             description: value.description || value.descriptionBrief || '',
             descriptionBrief: value.descriptionBrief || '',
             firstProductRealviewParams: value.firstProductRealviewParams || null,
             isBestValue: value.isBestValue || false,
           };
-          // Log first item of each attribute to see what we extracted
-          if (index === 0) {
-            // eslint-disable-next-line no-console
-            console.log(`[DEBUG] Extracted ${key}[0]:`, extracted);
-            // eslint-disable-next-line no-console
-            console.log(`[DEBUG] Original ${key}[0] had:`, {
-              thumbnailUrl: value.thumbnailUrl,
-              priceAdjustment: value.priceAdjustment,
-              helpImageUrl: value.helpImageUrl,
-            });
-          }
           return extracted;
         }
         // Handle primitive values (like numbers for quantities)
@@ -132,8 +140,6 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 
   // Add default quantities if not present in API
   if (!attributes.quantities) {
-    // eslint-disable-next-line no-console
-    console.log('[DEBUG] No quantities attribute found, using default values');
     attributes.quantities = [
       { name: '50', title: '50', thumbnail: '', priceAdjustment: '', description: '', descriptionBrief: '', firstProductRealviewParams: null, isBestValue: false },
       { name: '100', title: '100', thumbnail: '', priceAdjustment: '', description: '', descriptionBrief: '', firstProductRealviewParams: null, isBestValue: false },
