@@ -34,7 +34,7 @@ main .section .blog-article-marquee p {
 .blog-article-marquee .blog-article-marquee-content h1 {
   margin: 0;
   color: var(--font-color);
-  font-size: var(--Global-Typography-Size-Headings-Heading-2XL, 32px);
+  font-size: 32px;
   font-weight: 900;
   line-height: 104%;
 }
@@ -137,9 +137,8 @@ main .section .blog-article-marquee p {
 
 .blog-article-marquee a.con-button.blue:any-link {
   margin: var(--spacing-400) 0 0;
-  /* Use standard button typography scale; fallback to 18/22 if tokens unavailable */
-  font-size: var(--Global-Typography-Size-Button-Button-M, 18px);
-  line-height: var(--Global-Typography-Line-height-Button-Button-M, 22px);
+  font-size: 18px;
+  line-height: 22px;
   min-width: 108px;
   box-sizing: border-box;
 }
