@@ -522,6 +522,8 @@
     flex: 1 1 auto;
     height: 90vh;
     overflow-y: scroll;
+    scrollbar-gutter: stable;
+    padding-right: var(--figma-spacing-400);
   }
   .pdpx-product-info-heading-section-container {
     flex-direction: column;
