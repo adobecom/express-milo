@@ -67,6 +67,10 @@
   grid-row: 2;
 }
 
+.templates-container.search-bar-gallery .template.gallery--item .still-wrapper .image-wrapper .free-tag {
+  display: none;
+}
+
 .template-x-carousel-toolbar .toolbar p {
   margin: 0;
   line-height: 1.3;
