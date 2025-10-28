@@ -46,7 +46,7 @@ main .section .blog-article-marquee p {
 .blog-article-marquee .blog-article-marquee-content h1 + p,
 .blog-article-marquee .blog-article-marquee-subcopy {
   margin: 0;
-  color: #505050;
+  color: var(--color-dark-gray);
   font-size: var(--ax-body-s-size);
   font-style: normal;
   font-weight: 400;
@@ -121,7 +121,7 @@ main .section .blog-article-marquee p {
 }
 
 .blog-article-marquee .blog-article-marquee-product-copy p {
-  color: var(--Alias-content-typography-body, #292929);
+  color: var(--color-dark-gray);
   font-size: var(--ax-body-xs-size);
   font-style: normal;
   font-weight: 400;
@@ -130,7 +130,7 @@ main .section .blog-article-marquee p {
 
 .blog-article-marquee .blog-article-marquee-product-date {
   margin: 0;
-  color: var(--Content-neutral-subdued-default, #464646);
+  color: var(--color-dark-gray);
   font-size: var(--ax-body-xxs-size);
   line-height: 130%;
 }

@@ -190,6 +190,8 @@
   --ax-body-weight-bold: 700;
   --ax-detail-weight: 700;
   --ax-detail-transform: uppercase;
+
+  --color-dark-gray: #505050;
 }
 
 @media (min-width: 600px) {
