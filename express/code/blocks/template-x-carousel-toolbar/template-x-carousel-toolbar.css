@@ -52,6 +52,9 @@
   grid-row: 1;
   text-align: center;
   margin-bottom: 0;
+  color: var(--color-gray-950);
+  font-weight: 700;
+  font-size: var(--body-font-size-l);
 }
 
 .template-x-carousel-toolbar.search-bar .toolbar.search-bar {
