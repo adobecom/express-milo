@@ -12,16 +12,16 @@ let createTag;
 
 async function createProductInfoContainer(productDetails, drawer) {
   const productInfoSectionWrapperContainer = createTag('div', { class: 'pdpx-product-info-section-wrapper-container' });
-  const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper' });
-  const productInfoContainer = createTag('div', { class: 'pdpx-product-info-container', id: 'pdpx-product-info-container' });
+  const productInfoSectionWrapper = createTag('div', { class: 'pdpx-product-info-section-wrapper', id: 'pdpx-product-info-section-wrapper' });
+  const productInfoScrollableWrapper = createTag('div', { class: 'pdpx-product-info-scrollable-wrapper', id: 'pdpx-product-info-scrollable-wrapper' });
   const productInfoHeadingSection = await createProductInfoHeadingSection(productDetails);
-  productInfoContainer.appendChild(productInfoHeadingSection);
-  productInfoSectionWrapper.appendChild(productInfoContainer);
-  const checkoutButton = await createCheckoutButton(productDetails);
-  productInfoSectionWrapper.appendChild(checkoutButton);
+
   productInfoSectionWrapper.appendChild(drawer);
-  productInfoSectionWrapperContainer.appendChild(productInfoHeadingSection);
-  productInfoSectionWrapperContainer.appendChild(productInfoSectionWrapper);
+  productInfoScrollableWrapper.appendChild(productInfoHeadingSection);
+  productInfoScrollableWrapper.appendChild(productInfoSectionWrapper);
+  productInfoSectionWrapperContainer.appendChild(productInfoScrollableWrapper);
+  const checkoutButton = await createCheckoutButton(productDetails);
+  productInfoSectionWrapperContainer.appendChild(checkoutButton);
   return productInfoSectionWrapperContainer;
 }
 
@@ -63,11 +63,11 @@ async function updatePageWithProductDetails(productDetails) {
   const productHeroImage = document.getElementById('pdpx-product-hero-image');
   productHeroImage.src = productDetails.heroImage;
   productHeroImage.removeAttribute('data-skeleton');
-  const productInfoContainer = document.getElementById('pdpx-product-info-container');
+  const productInfoSectionWrapper = document.getElementById('pdpx-product-info-section-wrapper');
   const customizationInputs = await createCustomizationInputs(productDetails);
-  productInfoContainer.appendChild(customizationInputs);
+  productInfoSectionWrapper.appendChild(customizationInputs);
   const productDetailsSection = await createProductDetailsSection(productDetails.productDescriptions);
-  productInfoContainer.appendChild(productDetailsSection);
+  productInfoSectionWrapper.appendChild(productDetailsSection);
   const form = document.getElementById('pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());

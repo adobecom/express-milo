@@ -80,7 +80,9 @@
     background-position: -100% 0;
   }
 }
-
+.pdpx-product-info-scrollable-wrapper {
+  display: contents;
+}
 .pdpx-global-container {
   max-width: 1440px;
   margin: 0 auto;
@@ -249,13 +251,12 @@
   border: 1px solid #5258e4;
 }
 
-.pdpx-product-info-container {
-  height: 70vh;
-  overflow-y: scroll;
-}
 .pdpx-checkout-button-container {
-  position: relative;
+  position: sticky;
+  bottom: 0;
+  background: #fff;
   margin-top: var(--figma-spacing-200);
+  order: 4;
   a.pdpx-checkout-button {
     display: flex;
     flex-direction: row;
@@ -519,6 +520,8 @@
     flex-direction: column;
     order: 2;
     flex: 1 1 auto;
+    height: 90vh;
+    overflow-y: scroll;
   }
   .pdpx-product-info-heading-section-container {
     flex-direction: column;
