@@ -9,9 +9,10 @@
 :root {
   --color-white: #fff;
   --color-light-gray: #E9E9E9;
-  --color-gray-100: #f8f8f8;
+  --color-gray-100: #F8F8F8;
   --color-gray-150: #f3f3f3;
   --color-gray-200: #e8e8e8;
+  --color-gray-250: #e1e1e1;
   --color-gray-300: #d4d4d4;
   --color-gray-300-variant: #dadada;
   --color-gray-400: #b6b6b6;
@@ -23,6 +24,7 @@
   --color-gray-800: #242424;
   --color-gray-800-variant: #292929;
   --color-gray-900: #222;
+  --color-gray-950: #131313;
   --color-blue-600: #0066CC;
   --color-black: #000;
   --color-content-neutral: #222222;
