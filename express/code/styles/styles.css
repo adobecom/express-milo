@@ -95,6 +95,7 @@
   /* 22px */
   --heading-font-size-xs: 1.25rem;
   /* 20px */
+  --heading-font-size-ml : 2rem;
 
   --block-sm-max-width: 375px;
   --block-md-max-width: 830px;
@@ -192,6 +193,7 @@
   --ax-detail-transform: uppercase;
 
   --color-dark-gray: #505050;
+  --color-default-font: #131313;
 }
 
 @media (min-width: 600px) {

@@ -2,7 +2,7 @@
   margin: 0 auto;
   padding:  var(--spacing-600) 0;
   box-sizing: border-box;
-  max-width: 1600px;
+  max-width: var(--ax-grid-container-width);
   --font-color: #131313;  /* Body color */
 }
 
@@ -34,7 +34,7 @@ main .section .blog-article-marquee p {
 .blog-article-marquee .blog-article-marquee-content h1 {
   margin: 0;
   color: var(--font-color);
-  font-size: 32px;
+  font-size: var(--heading-font-size-ml);
   font-weight: 900;
   line-height: 104%;
 }
@@ -137,7 +137,7 @@ main .section .blog-article-marquee p {
 
 .blog-article-marquee a.con-button.blue:any-link {
   margin: var(--spacing-400) 0 0;
-  font-size: 18px;
+  font-size: var(--ax-body-m-size);
   line-height: 22px;
   min-width: 108px;
   box-sizing: border-box;
