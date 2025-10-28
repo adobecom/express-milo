@@ -1,4 +1,4 @@
-import { fetchUIStrings, formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle } from './utility-functions.js';
 
 function buildImageUrl(realviewParams) {
@@ -11,12 +11,19 @@ function buildImageUrl(realviewParams) {
   return `https://rlv.zcache.com/svc/view?${params.toString()}`;
 }
 
-async function convertAttributeToOptionsObject(attribute) {
+async function convertAttributeToOptionsObject(productType, attribute) {
   const options = attribute.values;
   const optionsArray = [];
   for (let i = 0; i < options.length; i += 1) {
+    let imageUrl;
     const option = options[i];
-    const imageUrl = buildImageUrl(option.firstProductRealviewParams);
+    if (productType === 'zazzle_businesscard' && attribute.name === 'media') {
+      option.swatchParams.max_dim = '100';
+      imageUrl = buildImageUrl(option.swatchParams);
+    } else {
+      option.firstProductRealviewParams.max_dim = '100';
+      imageUrl = buildImageUrl(option.firstProductRealviewParams);
+    }
     optionsArray.push({
       thumbnail: imageUrl,
       title: option.title,
@@ -64,7 +71,7 @@ export async function normalizeProductDetailObject({ productDetails, productPric
     attributes: { quantities: productDetails.product.quantities },
   };
   for (const attribute of Object.values(productDetails.product.attributes)) {
-    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
+    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   normalizedProductDetails.attributes.quantities = quantitiesOptions;
@@ -109,7 +116,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   dataObject.productType = productDetails.product.productType;
   const attributeOptions = productDetails.product.attributes;
   for (const attribute of Object.values(attributeOptions)) {
-    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
+    dataObject.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
   }
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   dataObject.attributes.quantities = quantitiesOptions;
