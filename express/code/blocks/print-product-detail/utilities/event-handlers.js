@@ -96,11 +96,13 @@ export default async function updateAllDynamicElements(productId) {
   const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
   const updatedSelectedValuesObject = createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity);
   const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
-  const productDetails = await fetchAPIData(productId, updatedParameters, 'getproduct');
-  const productPrice = await fetchAPIData(productId, updatedParameters, 'getproductpricing');
-  const productReviews = await fetchAPIData(productId, null, 'getreviews');
-  const productRenditions = await fetchAPIData(productId, updatedParameters, 'getproductrenditions');
-  const productShippingEstimates = await fetchAPIData(productId, updatedParameters, 'getshippingestimates');
+  const [productDetails, productPrice, productReviews, productRenditions, productShippingEstimates] = await Promise.all([
+    fetchAPIData(productId, updatedParameters, 'getproduct'),
+    fetchAPIData(productId, updatedParameters, 'getproductpricing'),
+    fetchAPIData(productId, null, 'getreviews'),
+    fetchAPIData(productId, updatedParameters, 'getproductrenditions'),
+    fetchAPIData(productId, updatedParameters, 'getshippingestimates'),
+  ]);
   const normalizeProductDetailsParametersObject = {
     productDetails,
     productPrice,
@@ -112,12 +114,11 @@ export default async function updateAllDynamicElements(productId) {
     templateId,
   };
   const normalizedProductDetails = await normalizeProductDetailObject(normalizeProductDetailsParametersObject);
-  await updateProductPrice(normalizedProductDetails);
-  await updateProductImages(normalizedProductDetails);
-  await updateProductDeliveryEstimate(normalizedProductDetails);
-  await updateCustomizationOptions(normalizedProductDetails, formDataObject);
   await updateCheckoutButton(normalizedProductDetails);
-
+  await updateProductImages(normalizedProductDetails);
+  await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+  await updateProductPrice(normalizedProductDetails);
+  await updateProductDeliveryEstimate(normalizedProductDetails);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
     productDetails,
