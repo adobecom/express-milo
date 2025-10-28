@@ -211,7 +211,7 @@
 
 @media (max-width: 599px) {
   .section .link-list.inline.link-text h3 {
-    margin-bottom: 16px;
+    margin-bottom: var(--spacing-300);
   }
 }
 
@@ -320,9 +320,9 @@
   background: none;
   border: none;
   padding: 0;
-  color: #292929;
+  color: var(--color-gray-800-variant);
   text-decoration: underline;
-  font-size: 14px;
+  font-size: var(--body-font-size-s);
   font-weight: normal;
   cursor: pointer;
 }
@@ -334,7 +334,7 @@
 /* Button styling for link-text variant - all buttons get #292929 background */
 .section .link-list.link-text p.button-container a:not(.text-link) {
   background-color: #F8F8F8;
-  color: #292929;
+  color: var(--color-gray-800-variant);
 }
 
 .section .link-list.link-text p.button-container a:not(.text-link):hover {
@@ -349,6 +349,6 @@
   
   .section .link-list.link-text .text-link-mobile {
     text-align: left;
-    margin-top: 18px;
+    margin-top: var(--spacing-300);
   }
 }
