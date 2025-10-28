@@ -50,11 +50,12 @@
 .template-x-carousel-toolbar.search-bar .centered-heading {
   grid-column: 1 / -1;
   grid-row: 1;
-  text-align: center;
   margin-bottom: 0;
   color: var(--color-gray-950);
   font-weight: 700;
   font-size: var(--body-font-size-l);
+  text-align: left;
+  width: 150px;
 }
 
 .template-x-carousel-toolbar.search-bar .toolbar.search-bar {
