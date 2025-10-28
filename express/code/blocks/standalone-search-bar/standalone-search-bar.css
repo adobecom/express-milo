@@ -15,13 +15,13 @@
 
 .standalone-search-bar .search-title {
     font-size: 28px;
-    color: #131313;
+    color: var(--color-gray-950);
     margin: 0 0 var(--spacing-200) 0;
     line-height: 1.2;
 }
 
 .standalone-search-bar .search-subtitle {
-    font-size: 16px;
+    font-size: var(--body-font-size-m);
     color: var(--color-gray-800-variant);
     margin: 0;
     line-height: 1.4;
@@ -213,11 +213,11 @@
 
 @media (max-width: 899px) {
     .standalone-search-bar .search-title {
-        font-size: 24px;
+        font-size: var(--body-font-size-xxl);
     }
     
     .standalone-search-bar .search-subtitle {
-        font-size: 16px;
+        font-size: var(--body-font-size-m);
     }
 }
 
