@@ -10,6 +10,7 @@ main .section .blog-article-marquee p {
   margin: 0;
 }
 
+
 .blog-article-marquee .blog-article-marquee-inner {
   display: flex;
   flex-direction: column;
@@ -98,16 +99,16 @@ main .section .blog-article-marquee p {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: var(--spacing-700);
+  height: var(--spacing-700);
   border-radius: 24px;
   flex-shrink: 0;
 }
 
 .blog-article-marquee .blog-article-marquee-product-media :is(picture, img) {
   display: block;
-  width: 48px;
-  height: 48px;
+  width: var(--spacing-700);
+  height: var(--spacing-700);
 }
 .blog-article-marquee .blog-article-marquee-product-media img {
   border-radius: 24px;
