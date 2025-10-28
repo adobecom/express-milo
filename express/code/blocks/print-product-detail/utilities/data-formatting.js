@@ -47,11 +47,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   const heroImage = buildRealViewImageUrl(
     productDetails.product.attributes.media.values[0].firstProductRealviewParams,
   );
-  // Convert realViews array to object with viewName as key and viewUrl as value
-  const realViews = {};
-  productDetails.product.attributes.media.values.forEach((view) => {
-    realViews[view.title] = buildRealViewImageUrl(view.firstProductRealviewParams);
-  });
+  // Don't populate realViews here - that comes from the renditions API
   const productDescriptions = formatProductDescriptions(productDetails);
 
   // Extract attributes for customization inputs
@@ -153,7 +149,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   updatedDataObject.productType = productType;
   updatedDataObject.id = productId;
   updatedDataObject.heroImage = heroImage;
-  updatedDataObject.realViews = realViews;
+  // Don't update realViews here - it comes from renditions API
   updatedDataObject.productDescriptions = productDescriptions;
   updatedDataObject.attributes = attributes;
   return updatedDataObject;
