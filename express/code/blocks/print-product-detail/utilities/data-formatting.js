@@ -60,6 +60,8 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
     // Handle attributes with values array
     if (attribute.values && Array.isArray(attribute.values)) {
+      // eslint-disable-next-line no-console
+      console.log(`[DEBUG] Attribute "${key}" values:`, attribute.values.slice(0, 2));
       attributes[key] = attribute.values.map((value) => {
         // Handle different value structures (some attributes have simpler structures)
         if (typeof value === 'object' && value !== null) {
@@ -115,6 +117,18 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
       }
     }
   });
+
+  // Add default quantities if not present in API
+  if (!attributes.quantities) {
+    // eslint-disable-next-line no-console
+    console.log('[DEBUG] No quantities attribute found, using default values');
+    attributes.quantities = [
+      { name: '50', title: '50', thumbnail: '', priceAdjustment: '', description: '', descriptionBrief: '', firstProductRealviewParams: null, isBestValue: false },
+      { name: '100', title: '100', thumbnail: '', priceAdjustment: '', description: '', descriptionBrief: '', firstProductRealviewParams: null, isBestValue: false },
+      { name: '250', title: '250', thumbnail: '', priceAdjustment: '', description: '', descriptionBrief: '', firstProductRealviewParams: null, isBestValue: false },
+      { name: '500', title: '500', thumbnail: '', priceAdjustment: '', description: '', descriptionBrief: '', firstProductRealviewParams: null, isBestValue: false },
+    ];
+  }
 
   updatedDataObject.productTitle = productTitle;
   updatedDataObject.productType = productType;
