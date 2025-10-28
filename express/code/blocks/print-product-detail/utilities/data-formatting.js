@@ -62,10 +62,10 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
     if (attribute.values && Array.isArray(attribute.values)) {
       // eslint-disable-next-line no-console
       console.log(`[DEBUG] Attribute "${key}" values:`, attribute.values.slice(0, 2));
-      attributes[key] = attribute.values.map((value) => {
+      attributes[key] = attribute.values.map((value, index) => {
         // Handle different value structures (some attributes have simpler structures)
         if (typeof value === 'object' && value !== null) {
-          return {
+          const extracted = {
             name: value.name || value.value || String(value),
             title: value.title || value.titleLong || value.name || value.value || String(value),
             thumbnail: value.thumbnailUrl || value.helpImageUrl || value.thumbnail || '',
@@ -75,6 +75,18 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
             firstProductRealviewParams: value.firstProductRealviewParams || null,
             isBestValue: value.isBestValue || false,
           };
+          // Log first item of each attribute to see what we extracted
+          if (index === 0) {
+            // eslint-disable-next-line no-console
+            console.log(`[DEBUG] Extracted ${key}[0]:`, extracted);
+            // eslint-disable-next-line no-console
+            console.log(`[DEBUG] Original ${key}[0] had:`, {
+              thumbnailUrl: value.thumbnailUrl,
+              priceAdjustment: value.priceAdjustment,
+              helpImageUrl: value.helpImageUrl,
+            });
+          }
+          return extracted;
         }
         // Handle primitive values (like numbers for quantities)
         return {
