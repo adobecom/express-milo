@@ -55,16 +55,19 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 
   // Extract attributes for customization inputs
   const attributes = {};
+  // eslint-disable-next-line no-console
+  console.log('[DEBUG] Product attributes:', productDetails.product.attributes);
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
+    // Handle attributes with values array
     if (attribute.values && Array.isArray(attribute.values)) {
       attributes[key] = attribute.values.map((value) => {
         // Handle different value structures (some attributes have simpler structures)
         if (typeof value === 'object' && value !== null) {
           return {
-            name: value.name || value.value || value,
-            title: value.title || value.titleLong || value.name || value.value || value,
-            thumbnail: value.thumbnailUrl || value.helpImageUrl || '',
-            priceAdjustment: value.priceAdjustment || '',
+            name: value.name || value.value || String(value),
+            title: value.title || value.titleLong || value.name || value.value || String(value),
+            thumbnail: value.thumbnailUrl || value.helpImageUrl || value.thumbnail || '',
+            priceAdjustment: value.priceAdjustment || value.price || '',
             description: value.description || value.descriptionBrief || '',
             descriptionBrief: value.descriptionBrief || '',
             firstProductRealviewParams: value.firstProductRealviewParams || null,
@@ -83,6 +86,33 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
           isBestValue: false,
         };
       });
+    } else if (attribute.value !== undefined) {
+      // Handle attributes with a single value property (not an array)
+      // This might be for quantities or other single-value attributes
+      const singleValue = attribute.value;
+      if (Array.isArray(singleValue)) {
+        attributes[key] = singleValue.map((val) => ({
+          name: String(val),
+          title: String(val),
+          thumbnail: '',
+          priceAdjustment: '',
+          description: '',
+          descriptionBrief: '',
+          firstProductRealviewParams: null,
+          isBestValue: false,
+        }));
+      } else {
+        attributes[key] = [{
+          name: String(singleValue),
+          title: String(singleValue),
+          thumbnail: '',
+          priceAdjustment: '',
+          description: '',
+          descriptionBrief: '',
+          firstProductRealviewParams: null,
+          isBestValue: false,
+        }];
+      }
     }
   });
 
