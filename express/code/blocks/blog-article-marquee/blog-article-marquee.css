@@ -176,7 +176,7 @@ main .section .blog-article-marquee p {
 
 @media (min-width: 1200px) {
   .blog-article-marquee {
-    padding: 80px var(--spacing-600);
+    padding: var(--spacing-900) var(--spacing-600);
   }
   .blog-article-marquee .blog-article-marquee-content h1,
   .blog-article-marquee .blog-article-marquee-content h2 {
