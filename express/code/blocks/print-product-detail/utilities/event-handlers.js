@@ -16,13 +16,12 @@ export function toggleDrawer() {
 function formatProductOptionsToAPIParameters(formDataObject) {
   const parameters = {};
   for (const [key, value] of Object.entries(formDataObject)) {
-    if (key !== 'qty' && key !== 'printingprocess') {
+    if (key !== 'qty') {
       parameters[key] = value;
     }
   }
   parameters.productOptions = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
   parameters.qty = formDataObject.qty;
-  parameters.zip = '94065';
   const finalParameters = {};
   finalParameters.productOptions = encodeURIComponent(parameters.productOptions);
   finalParameters.qty = parameters.qty;
@@ -31,12 +30,12 @@ function formatProductOptionsToAPIParameters(formDataObject) {
 
 async function updateProductPrice(productDetails) {
   if (productDetails.discountAvailable) {
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productDetails.productPrice);
-    document.getElementById('pdpx-compare-price-label').innerHTML = formatPriceZazzle(productDetails.strikethroughPrice);
+    document.getElementById('pdpx-price-label').innerHTML = await formatPriceZazzle(productDetails.productPrice);
+    document.getElementById('pdpx-compare-price-label').innerHTML = await formatPriceZazzle(productDetails.strikethroughPrice);
     document.getElementById('pdpx-savings-text').innerHTML = productDetails.discountString;
   } else {
     const productPrice = productDetails.unitPrice;
-    document.getElementById('pdpx-price-label').innerHTML = formatPriceZazzle(productPrice);
+    document.getElementById('pdpx-price-label').innerHTML = await formatPriceZazzle(productPrice);
   }
 }
 
@@ -63,60 +62,79 @@ async function updateProductDeliveryEstimate(productDetails) {
 }
 
 async function updateCustomizationOptions(productDetails, formDataObject) {
-  // Retrieve existing drawer references before replacing the form
-  const existingCompareLink = document.querySelector('.pdpx-pill-selector-label-compare-link');
-  const comparisonDrawer = existingCompareLink?.drawerRef || null;
-  const existingSizeChartLink = document.querySelector('.pdpx-size-chart-link');
-  const sizeChartDrawer = existingSizeChartLink?.drawerRef || null;
-
-  // For paper drawer, check if it exists in the DOM
-  const existingPaperLink = document.querySelector('.pdpx-pill-selector-label-compare-link[data-drawer-type="paper"]');
-  let paperDrawer = existingPaperLink?.drawerRef || null;
-
-  // If not found via link, try to find the drawer directly in the DOM
-  if (!paperDrawer) {
-    const paperDrawerElement = document.querySelector('.drawer-body--paper-selection')?.parentElement;
-    const paperCurtain = document.querySelector('.pdp-curtain');
-    if (paperDrawerElement && paperCurtain) {
-      paperDrawer = { drawer: paperDrawerElement, curtain: paperCurtain };
-    }
-  }
-
-  const newCustomizationInputs = await createCustomizationInputs(
-    productDetails,
-    formDataObject,
-    comparisonDrawer,
-    sizeChartDrawer,
-    paperDrawer,
-  );
+  const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 
+async function updateCheckoutButton(productDetails) {
+  const checkoutButton = document.getElementById('pdpx-checkout-button');
+  const urlbase = 'https://new.express.adobe.com/design/template/';
+  checkoutButton.href = `${urlbase}${productDetails.templateId}`;
+}
+
+function createUpdatedSelectedValuesObject(updatedConfigurationOptions, formDataObject, quantity) {
+  const selectedValuesObject = {};
+  for (const [key, value] of Object.entries(updatedConfigurationOptions.product.attributes)) {
+    const valueName = value.values.find((v) => v.name === formDataObject[key]);
+    if (valueName) {
+      selectedValuesObject[key] = valueName.name;
+    } else {
+      selectedValuesObject[key] = value.values[0].name;
+    }
+  }
+  selectedValuesObject.qty = quantity;
+  return selectedValuesObject;
+}
+
 export default async function updateAllDynamicElements(productId) {
+  const { templateId } = document.querySelector('.pdpx-global-container').dataset;
   const form = document.querySelector('#pdpx-customization-inputs-form');
   const formData = new FormData(form);
   const formDataObject = Object.fromEntries(formData.entries());
+  const quantity = formDataObject.qty;
   const parameters = formatProductOptionsToAPIParameters(formDataObject);
-  const productDetails = await fetchAPIData(productId, parameters, 'getproduct');
-  const productPrice = await fetchAPIData(productId, parameters, 'getproductpricing');
+  const updatedConfigurationOptions = await fetchAPIData(
+    productId,
+    parameters,
+    'changeoptions',
+  );
+  const updatedSelectedValuesObject = createUpdatedSelectedValuesObject(
+    updatedConfigurationOptions,
+    formDataObject,
+    quantity,
+  );
+  const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
+  const productDetails = await fetchAPIData(productId, updatedParameters, 'getproduct');
+  const productPrice = await fetchAPIData(productId, updatedParameters, 'getproductpricing');
   const productReviews = await fetchAPIData(productId, null, 'getreviews');
-  const productRenditions = await fetchAPIData(productId, parameters, 'getproductrenditions');
-  const productShippingEstimates = await fetchAPIData(productId, parameters, 'getshippingestimates');
-  const updatedConfigurationOptions = await fetchAPIData(productId, parameters, 'changeoptions');
-  const normalizedProductDetails = await normalizeProductDetailObject(
+  const productRenditions = await fetchAPIData(
+    productId,
+    updatedParameters,
+    'getproductrenditions',
+  );
+  const productShippingEstimates = await fetchAPIData(
+    productId,
+    updatedParameters,
+    'getshippingestimates',
+  );
+  const normalizeProductDetailsParametersObject = {
     productDetails,
     productPrice,
     productReviews,
     productRenditions,
     productShippingEstimates,
-    formDataObject.qty,
+    quantity,
     updatedConfigurationOptions,
-    formDataObject.printingprocess,
+    templateId,
+  };
+  const normalizedProductDetails = await normalizeProductDetailObject(
+    normalizeProductDetailsParametersObject,
   );
   await updateProductPrice(normalizedProductDetails);
   await updateProductImages(normalizedProductDetails);
   await updateProductDeliveryEstimate(normalizedProductDetails);
   await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+  await updateCheckoutButton(normalizedProductDetails);
 
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {

@@ -10,12 +10,8 @@ export default async function createProductDetailsSection(productDescriptions) {
 
   const productDetailsSectionContainer = createTag('div', { class: 'pdpx-product-details-section' });
 
-  const productDetailsSectionTitleContainer = createTag('div', {
-    class: 'pdpx-product-details-section-title-container',
-  });
-  const productDetailsSectionTitle = createTag('span', {
-    class: 'pdpx-product-details-section-title',
-  }, 'Product Details');
+  const productDetailsSectionTitleContainer = createTag('div', { class: 'pdpx-product-details-section-title-container' });
+  const productDetailsSectionTitle = createTag('span', { class: 'pdpx-product-details-section-title' }, 'Product Details');
   productDetailsSectionTitleContainer.appendChild(productDetailsSectionTitle);
   productDetailsSectionContainer.appendChild(productDetailsSectionTitleContainer);
 
@@ -40,7 +36,7 @@ export default async function createProductDetailsSection(productDescriptions) {
   };
 
   BlockMediator.subscribe('product:updated', (e) => {
-    const { productDetails: updatedProductDetails, formData } = e.newValue;
+    const { productDetails, formData } = e.newValue;
     const oldFormData = e.oldValue?.formData || {};
 
     let changedField = null;
@@ -50,20 +46,20 @@ export default async function createProductDetailsSection(productDescriptions) {
       }
     });
 
-    const updatedDescriptions = formatProductDescriptions(updatedProductDetails, formData);
+    const updatedDescriptions = formatProductDescriptions(productDetails, formData);
     const mappedData = mapToAccordionFormat(updatedDescriptions);
 
     const forceExpandTitle = changedField ? formFieldToAccordionTitle[changedField] : null;
 
     accordionBlock.updateAccordion(mappedData, forceExpandTitle);
   });
-
   return productDetailsSectionContainer;
 }
 
-export function createCheckoutButton() {
+export async function createCheckoutButton(productDetails) {
+  ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   const checkoutButtonContainer = createTag('div', { class: 'pdpx-checkout-button-container' });
-  const checkoutButton = createTag('button', { class: 'pdpx-checkout-button' });
+  const checkoutButton = createTag('a', { class: 'pdpx-checkout-button', id: 'pdpx-checkout-button', href: `https://new.express.adobe.com/design/template/${productDetails.templateId}` });
   const CTAIcon = createTag('img', { class: 'pdpx-checkout-button-icon', src: '/express/code/icons/print-icon.svg' });
   const CTAText = createTag('span', { class: 'pdpx-checkout-button-text' }, 'Customize and print it');
   checkoutButton.appendChild(CTAIcon);
