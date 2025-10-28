@@ -3,7 +3,6 @@
   padding:  var(--spacing-600) 0;
   box-sizing: border-box;
   max-width: var(--ax-grid-container-width);
-  --font-color: #131313;
   --regular-font-size: var(--ax-body-s-size);
 }
 
@@ -34,7 +33,7 @@ main .section .blog-article-marquee p {
 
 .blog-article-marquee .blog-article-marquee-content h1 {
   margin: 0;
-  color: var(--font-color);
+  color: var(--color-default-font);
   font-size: var(--heading-font-size-ml);
   font-weight: 900;
   line-height: 104%;
@@ -55,7 +54,7 @@ main .section .blog-article-marquee p {
 }
 
 .blog-article-marquee .blog-article-marquee-eyebrow {
-  color: var(--font-color);
+  color: var(--color-default-font);
   font-size: var(--regular-font-size);
   font-weight: 700;
   line-height: 137.5%;
@@ -63,7 +62,7 @@ main .section .blog-article-marquee p {
 
 .blog-article-marquee .blog-article-marquee-content .blog-article-marquee-product-name {
   margin: 0;
-  color: var(--font-color);
+  color: var(--color-default-font);
   font-size: var(--regular-font-size);
   font-weight: 700;
   line-height: 130%;
