@@ -63,6 +63,12 @@
   --figma-section-padding-medium: var(--figma-spacing-400);
   --figma-section-padding-large: var(--figma-spacing-500);
   --figma-section-padding-x-large: var(--figma-spacing-600);
+  --tooltip-background-color: #292929;
+  --standard-transition-hover-in-border-color: opacity 80ms ease-out 20ms;
+  --standard-transition-hover-out-border-color: opacity 80ms ease-out 220ms;
+  --standard-transition-hover-in-opacity: opacity 80ms ease-out 20ms;
+  --standard-transition-hover-out-opacity: opacity 80ms ease-out 220ms;
+
 }
 
 [data-skeleton='true'] {
@@ -389,11 +395,13 @@
   padding: 0;
   background-color: transparent;
   display: inline-block;
-  overflow: hidden;
+  overflow: visible;
+  position: relative;
   line-height: 0;
   cursor: pointer;
-  transition: border-color 80ms ease-out 20ms;
+  transition: var(--standard-transition-hover-out-border-color);
   .pdpx-mini-pill-image {
+    border-radius: 4px;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -403,7 +411,49 @@
 }
 .pdpx-mini-pill-image-container:hover {
   border-color: #000;
-  transition: border-color 40ms ease-out 10ms;
+  transition: var(--standard-transition-hover-in-border-color);
+}
+
+/* Tooltip content */
+.pdpx-mini-pill-image-container::after {
+  content: attr(data-title);
+  position: absolute;
+  font-size: 14px;
+  padding: 18px 12px;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, -8px);
+  background: var(--tooltip-background-color);
+  color: #fff;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--standard-transition-hover-out-opacity);
+}
+
+/* Tooltip arrow */
+.pdpx-mini-pill-image-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translate(-50%, -4px) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--tooltip-background-color);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--standard-transition-hover-out-opacity);
+}
+/* Show tooltip on hover */
+.pdpx-mini-pill-image-container:hover::after,
+.pdpx-mini-pill-image-container:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transition: var(--standard-transition-hover-in-opacity);
 }
 
 .pdpx-mini-pill-price {
