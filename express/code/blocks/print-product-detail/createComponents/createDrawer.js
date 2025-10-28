@@ -408,12 +408,19 @@ function createDrawerBodyPaperSelection(data) {
     carouselContainer.append(paperThumb);
   });
 
-  // Cache DOM elements for performance
+  drawerBody.append(carouselContainer);
+
+  // Description
+  const description = createTag('div', { class: 'paper-selection-description' });
+  description.innerHTML = data.selectedPaper.description;
+  drawerBody.append(description);
+
+  // Cache DOM elements for performance (after all elements are in DOM)
   const cachedElements = {
     heroImage,
     paperName,
     paperTypeLabel,
-    description: drawerBody.querySelector('.paper-selection-description'),
+    description,
     specsRow: drawerBody.querySelector('.paper-selection-specs'),
     titleRow: drawerBody.querySelector('.paper-selection-title-row'),
   };
@@ -431,13 +438,6 @@ function createDrawerBodyPaperSelection(data) {
       carouselContainer.footerElements,
     );
   });
-
-  drawerBody.append(carouselContainer);
-
-  // Description
-  const description = createTag('div', { class: 'paper-selection-description' });
-  description.innerHTML = data.selectedPaper.description;
-  drawerBody.append(description);
 
   return drawerBody;
 }
