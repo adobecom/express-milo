@@ -55,6 +55,7 @@ async function updateProductImages(productDetails) {
     imageType,
   );
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
+  newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container').dataset.skeleton = 'false';
 }
 
 async function updateProductDeliveryEstimate(productDetails) {

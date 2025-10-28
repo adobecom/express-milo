@@ -392,6 +392,7 @@
   overflow: hidden;
   line-height: 0;
   cursor: pointer;
+  transition: border-color 80ms ease-out 20ms;
   .pdpx-mini-pill-image {
     width: 100%;
     height: 100%;
@@ -400,6 +401,11 @@
     display: block;
   }
 }
+.pdpx-mini-pill-image-container:hover {
+  border-color: #000;
+  transition: border-color 40ms ease-out 10ms;
+}
+
 .pdpx-mini-pill-price {
   font-size: 14px;
 }
