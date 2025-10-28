@@ -22,9 +22,9 @@ export function createEmptyDataObject(templateId) {
     productType: '',
     id: '',
     heroImage: '',
-    productPrice: 0,
-    strikethroughPrice: 0,
-    discountString: '',
+    productPrice: '—',
+    strikethroughPrice: '—',
+    discountString: '—',
     averageRating: 0,
     totalReviews: 0,
     deliveryEstimateMinDate: '',
@@ -33,7 +33,7 @@ export function createEmptyDataObject(templateId) {
     compareValueTooltipTitle: '',
     compareValueTooltipDescription1: '',
     compareValueTooltipDescription2: '',
-    realViews: [],
+    realViews: {},
     productDescriptions: [],
     attributes: {},
   };
@@ -47,10 +47,11 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   const heroImage = buildRealViewImageUrl(
     productDetails.product.attributes.media.values[0].firstProductRealviewParams,
   );
-  const realViews = productDetails.product.attributes.media.values.map((view) => ({
-    viewName: view.title,
-    viewUrl: buildRealViewImageUrl(view.firstProductRealviewParams),
-  }));
+  // Convert realViews array to object with viewName as key and viewUrl as value
+  const realViews = {};
+  productDetails.product.attributes.media.values.forEach((view) => {
+    realViews[view.title] = buildRealViewImageUrl(view.firstProductRealviewParams);
+  });
   const productDescriptions = formatProductDescriptions(productDetails);
 
   // Extract attributes for customization inputs
@@ -189,10 +190,11 @@ export function updateDataObjectProductReviews(dataObject, productReviews) {
 export function updateDataObjectProductRenditions(dataObject, productRenditions) {
   const updatedDataObject = { ...dataObject };
   if (productRenditions?.renditions) {
-    const realViews = productRenditions.renditions.map((rendition) => ({
-      viewName: rendition.viewName,
-      viewUrl: rendition.url,
-    }));
+    // Convert renditions array to object with viewName as key and url as value
+    const realViews = {};
+    productRenditions.renditions.forEach((rendition) => {
+      realViews[rendition.viewName] = rendition.url;
+    });
     updatedDataObject.realViews = realViews;
   }
   return updatedDataObject;
