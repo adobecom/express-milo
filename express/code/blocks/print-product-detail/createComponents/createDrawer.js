@@ -1,4 +1,5 @@
 import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
+import updateAllDynamicElements from '../utilities/event-handlers.js';
 
 let createTag;
 let loadStyle;
