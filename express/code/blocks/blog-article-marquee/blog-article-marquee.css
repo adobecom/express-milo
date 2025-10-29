@@ -26,7 +26,7 @@ main .section .blog-article-marquee p {
 .blog-article-marquee .blog-article-marquee-content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-200);
+  gap: var(--spacing-100);
   padding: 0 var(--spacing-300);
 }
 
