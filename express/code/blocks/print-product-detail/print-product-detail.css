@@ -433,6 +433,13 @@
   transition: var(--standard-transition-hover-out-opacity);
   z-index: 1000;
 }
+.pdpx-mini-pill-options-section-container {
+  margin-bottom: var(--figma-spacing-400);
+}
+.pdpx-pill-selector-section-label {
+  display: block;
+  margin-bottom: var(--figma-spacing-100);
+}
 
 /* Tooltip arrow */
 .pdpx-mini-pill-image-container::before {

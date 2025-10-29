@@ -97,7 +97,7 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
         pill.classList.remove('selected');
       });
       element.currentTarget.classList.toggle('selected');
-      miniPillSelectorLabeLName.innerHTML = element.currentTarget.getAttribute('data-title');
+      miniPillSelectorLabelName.innerHTML = element.currentTarget.getAttribute('data-title');
       document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
@@ -109,8 +109,8 @@ function createMiniPillOptionsSelector(customizationOptions, labelText, hiddenSe
   hiddenSelectInput.value = selectedValueExists || customizationOptions[0].name;
   const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainer.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
   selectedMiniPillOptionImageContainer.classList.add('selected');
-  const miniPillSelectorLabeLName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
-  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabeLName);
+  const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
+  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorContainer.appendChild(miniPillSelectorOptionsContainer);
   miniPillSelectorContainer.appendChild(hiddenSelectInput);
   return miniPillSelectorContainer;
@@ -129,7 +129,7 @@ export function createBusinessCardInputs(container, productDetails, formDataObje
 
 export async function createTShirtInputs(container, productDetails, formDataObject = {}) {
   const styleSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
-  const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', '', productDetails.id, formDataObject?.color);
+  const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', 'Learn More', productDetails.id, formDataObject?.color, 'printingProcess');
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
   const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails.id, formDataObject?.size);
   container.appendChild(styleSelectorContainer);

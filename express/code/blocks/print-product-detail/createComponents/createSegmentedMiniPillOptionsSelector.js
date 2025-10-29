@@ -3,7 +3,7 @@ import updateAllDynamicElements, { toggleDrawer } from '../utilities/event-handl
 
 let createTag;
 
-export default async function createSegmentedMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue) {
+export default async function createSegmentedMiniPillOptionsSelector(customizationOptions, labelText, hiddenSelectInputName, CTALinkText, productId, defaultValue, drawerType) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   let selectedValueExists = false;
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
@@ -13,15 +13,25 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabel);
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
   if (CTALinkText) {
-    const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button' }, CTALinkText);
-    miniPillSelectorLabelCompareLink.addEventListener('click', toggleDrawer);
+    const miniPillSelectorLabelCompareLink = createTag('button', { class: 'pdpx-pill-selector-label-compare-link', type: 'button', 'data-drawer-type': drawerType }, CTALinkText);
+    miniPillSelectorLabelCompareLink.addEventListener('click', async () => {
+      await toggleDrawer(drawerType);
+    });
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
   }
   miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
   const miniPillSelectorOptionsContainerWrapper = createTag('div', { class: 'pdpx-mini-pill-selector-options-container-wrapper' });
+  const miniPillOptionsSectionContainerClassic = createTag('div', { class: 'pdpx-mini-pill-options-section-container' });
+  const miniPillOptionsSectionContainerVivid = createTag('div', { class: 'pdpx-mini-pill-options-section-container' });
   const miniPillSelectorOptionsContainerClassic = createTag('div', { class: 'pdpx-mini-pill-selector-options-container', id: 'classic-selector-options-container' });
+  const miniPillSelectorLabelNameClassic = createTag('span', { class: 'pdpx-pill-selector-section-label' }, 'Classic Printing: No Underbase');
+  miniPillOptionsSectionContainerClassic.appendChild(miniPillSelectorLabelNameClassic);
   const miniPillSelectorOptionsContainerVivid = createTag('div', { class: 'pdpx-mini-pill-selector-options-container', id: 'vivid-selector-options-container' });
-  miniPillSelectorOptionsContainerWrapper.append(miniPillSelectorOptionsContainerClassic, miniPillSelectorOptionsContainerVivid);
+  const miniPillSelectorLabelNameVivid = createTag('span', { class: 'pdpx-pill-selector-section-label' }, 'Vivid Printing: White Underbase');
+  miniPillOptionsSectionContainerVivid.appendChild(miniPillSelectorLabelNameVivid);
+  miniPillOptionsSectionContainerClassic.append(miniPillSelectorOptionsContainerClassic);
+  miniPillOptionsSectionContainerVivid.append(miniPillSelectorOptionsContainerVivid);
+  miniPillSelectorOptionsContainerWrapper.append(miniPillOptionsSectionContainerClassic, miniPillOptionsSectionContainerVivid);
   const hiddenSelectInput = createTag('select', { class: 'pdpx-hidden-select-input', name: hiddenSelectInputName, id: hiddenSelectInputName });
   for (let i = 0; i < customizationOptions.length; i += 1) {
     const miniPillSelectorOptionsContainer = customizationOptions[i].printingProcess === 'classic' ? miniPillSelectorOptionsContainerClassic : miniPillSelectorOptionsContainerVivid;
@@ -37,14 +47,12 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
-    // We'll eventually need to add other events such as tab and others for accessibility
-    // Ideally selected state is controlled by the hidden select input
     miniPillOptionImageContainer.addEventListener('click', async (element) => {
       miniPillSelectorOptionsContainer.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
         pill.classList.remove('selected');
       });
       element.currentTarget.classList.toggle('selected');
-      miniPillSelectorLabeLName.innerHTML = element.currentTarget.getAttribute('data-title');
+      miniPillSelectorLabelName.innerHTML = element.currentTarget.getAttribute('data-title');
       document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
       updateAllDynamicElements(productId);
     });
@@ -56,8 +64,8 @@ export default async function createSegmentedMiniPillOptionsSelector(customizati
   hiddenSelectInput.value = selectedValueExists || customizationOptions[0].name;
   const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainerWrapper.querySelector(`.pdpx-mini-pill-image-container[data-name="${hiddenSelectInput.value}"]`);
   selectedMiniPillOptionImageContainer.classList.add('selected');
-  const miniPillSelectorLabeLName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
-  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabeLName);
+  const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
+  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorContainer.appendChild(miniPillSelectorOptionsContainerWrapper);
   miniPillSelectorContainer.appendChild(hiddenSelectInput);
   return miniPillSelectorContainer;

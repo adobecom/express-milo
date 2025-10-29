@@ -6,7 +6,7 @@ import createProductImagesContainer, { createProductThumbnailCarousel } from './
 import createCustomizationInputs from './createComponents/createCustomizationInputs.js';
 import createProductDetailsSection, { createCheckoutButton } from './createComponents/createProductDetailsSection.js';
 import createDrawer from './createComponents/createDrawer.js';
-import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle } from './utilities/utility-functions.js';
+import { addPrefetchLinks, formatDeliveryEstimateDateRange, formatLargeNumberToK, formatPriceZazzle, extractTemplateId } from './utilities/utility-functions.js';
 
 let createTag;
 
@@ -123,7 +123,7 @@ function updatePageWithUIStrings(productDetails) {
 export default async function decorate(block) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
   addPrefetchLinks();
-  const templateId = block.children[0].children[1].textContent;
+  const templateId = extractTemplateId(block);
   let productId;
   let dataObject = createEmptyDataObject(templateId);
   block.innerHTML = '';

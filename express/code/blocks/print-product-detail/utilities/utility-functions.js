@@ -1,5 +1,9 @@
 import { getLibs, createTag } from '../../../scripts/utils.js';
-import { formatUrlForEnvironment } from '../fetchData/fetchProductDetails.js';
+
+export function extractTemplateId(block) {
+  const templateId = block.children[0].children[1].textContent;
+  return templateId;
+}
 
 export function formatDeliveryEstimateDateRange(minDate, maxDate) {
   const options = { month: 'short', day: 'numeric' };

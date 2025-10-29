@@ -4,10 +4,18 @@ import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
+import createDrawerContentSizeChart, { createDrawerContentPrintingProcess } from '../createComponents/createDrawerContent.js';
 
-export function toggleDrawer() {
+export async function toggleDrawer(drawerType) {
   const curtain = document.querySelector('.pdp-curtain');
   const drawer = document.querySelector('.drawer');
+  if (drawerType === 'sizeChart') {
+    const sizeChartContent = await createDrawerContentSizeChart();
+    drawer.appendChild(sizeChartContent);
+  } else if (drawerType === 'printingProcess') {
+    const printingProcessContent = await createDrawerContentPrintingProcess();
+    drawer.appendChild(printingProcessContent);
+  }
   document.body.classList.toggle('disable-scroll');
   curtain.classList.toggle('hidden');
   drawer.classList.toggle('hidden');
