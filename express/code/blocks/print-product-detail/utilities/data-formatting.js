@@ -57,8 +57,6 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 
   // Extract attributes for customization inputs
   const attributes = {};
-  console.log('[Data Formatting] Available attributes:', Object.keys(productDetails.product.attributes));
-  console.log('[Data Formatting] Full product data:', productDetails.product);
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
     // Handle attributes with values array
     if (attribute.values && Array.isArray(attribute.values)) {
@@ -168,7 +166,6 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
       });
     });
   }
-  console.log('[Data Formatting] Extracted help links:', attributeHelpLinks);
 
   updatedDataObject.productTitle = productTitle;
   updatedDataObject.productType = productType;
@@ -178,6 +175,8 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   updatedDataObject.productDescriptions = productDescriptions;
   updatedDataObject.attributes = attributes;
   updatedDataObject.attributeHelpLinks = attributeHelpLinks;
+  updatedDataObject.pbjOverrides = productDetails.product.pbjOverrides || {};
+  updatedDataObject.dbStrings = productDetails.entities?.dbStrings || {};
   return updatedDataObject;
 }
 

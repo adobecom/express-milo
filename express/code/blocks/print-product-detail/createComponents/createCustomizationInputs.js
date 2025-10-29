@@ -83,7 +83,6 @@ function createPillOptionsSelector(
     const inputPillTextContainer = createTag('div', { class: 'pdpx-pill-text-container' });
     const inputPillOptionName = createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].title);
     const inputPillOptionPrice = createTag('span', { class: 'pdpx-pill-text-price' }, customizationOptions[i].priceAdjustment);
-    console.log('[Create Customization Inputs] Customization Options:', customizationOptions);
     inputPillTextContainer.appendChild(inputPillOptionName);
     inputPillTextContainer.appendChild(inputPillOptionPrice);
     pillContainer.appendChild(inputPillImageContainer);
@@ -281,24 +280,114 @@ function createTShirtInputs(
   comparisonDrawer = null,
   sizeChartDrawer = null,
 ) {
-  // Only create printing process selector if the attribute exists
-  // eslint-disable-next-line no-console
-  console.log('[Printing Process] Attribute exists?', !!productDetails.attributes?.printingprocess);
-  if (productDetails.attributes?.printingprocess) {
-    // eslint-disable-next-line no-console
-    console.log('[Printing Process] Full attribute data:', productDetails.attributes.printingprocess);
+  // Create printing process selector if pbjOverrides configuration exists
+  // The printing process is NOT a separate attribute, but a grouping of color options
+  // based on design.shade parameter (light = Classic, dark = Vivid)
+  let printingProcessSelectorContainer = null;
+  
+  // Find the color attribute's inlineSelection configuration
+  let colorInlineSelection = null;
+  if (productDetails.pbjOverrides?.attributeGroups) {
+    productDetails.pbjOverrides.attributeGroups.forEach((group) => {
+      if (group.attributes) {
+        const colorAttr = group.attributes.find((attr) => attr.name === 'color');
+        if (colorAttr?.inlineSelection?.groups) {
+          colorInlineSelection = colorAttr.inlineSelection;
+        }
+      }
+    });
   }
-  const printingProcessSelectorContainer = productDetails.attributes?.printingprocess
-    ? createPillOptionsSelector(
-      productDetails.attributes.printingprocess,
-      'Printing Process',
-      'printingprocess',
-      productDetails.id,
-      formDataObject?.printingprocess,
-      comparisonDrawer,
-    )
-    : null;
 
+  // Create printing process selector if we have groups
+  if (colorInlineSelection?.groups && productDetails.dbStrings) {
+    printingProcessSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
+    
+    const labelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
+    const label = createTag('span', { class: 'pdpx-pill-selector-label' }, 'Printing process');
+    labelContainer.appendChild(label);
+    
+    // Add "Learn More" link if comparison drawer is available
+    if (comparisonDrawer) {
+      const learnMoreLink = createTag('button', {
+        class: 'pdpx-pill-selector-label-compare-link',
+        type: 'button',
+      }, 'Learn more');
+      
+      learnMoreLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        comparisonDrawer.drawer.classList.remove('hidden');
+        comparisonDrawer.curtain.classList.remove('hidden');
+        document.body.classList.add('disable-scroll');
+      });
+      
+      labelContainer.appendChild(learnMoreLink);
+    }
+    
+    printingProcessSelectorContainer.appendChild(labelContainer);
+    
+    // Create options container for the printing process buttons (like pill selector)
+    const optionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
+    
+    // Create a button for each group (Classic vs Vivid)
+    colorInlineSelection.groups.forEach((group, index) => {
+      // Find a color that matches this group's filter to use for the thumbnail
+      // The filter is like "design.shade=light" or "design.shade=dark"
+      const filterValue = group.filter?.['design.shade'];
+      const matchingColor = productDetails.attributes.color?.find((color) => color.design?.shade === filterValue);
+      
+      const button = createTag('button', {
+        class: `pdpx-pill-container${index === 0 ? ' selected' : ''}`,
+        type: 'button',
+        'data-filter': JSON.stringify(group.filter),
+      });
+      
+      // Create image container with thumbnail
+      const imageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
+      const img = createTag('img', { 
+        class: 'pdpx-pill-image',
+        src: matchingColor?.thumbnail || '',
+        alt: group.label,
+      });
+      imageContainer.appendChild(img);
+      button.appendChild(imageContainer);
+      
+      // Create text container with label and price
+      const textContainer = createTag('div', { class: 'pdpx-pill-text-container' });
+      
+      // Get the label from dbStrings
+      const labelKey = group.label; // e.g., "product.option.zazzle_shirt.design.shade=light"
+      const labelText = productDetails.dbStrings[labelKey] || group.label;
+      
+      const nameSpan = createTag('span', { class: 'pdpx-pill-text-name' }, labelText);
+      textContainer.appendChild(nameSpan);
+      
+      // Add price (TODO: Calculate actual price difference)
+      const priceSpan = createTag('span', { class: 'pdpx-pill-text-price' }, index === 0 ? '+US$0.00' : '+US$2.95');
+      textContainer.appendChild(priceSpan);
+      
+      button.appendChild(textContainer);
+      
+      // Add click handler to filter colors
+      button.addEventListener('click', () => {
+        // Remove selected class from all buttons
+        optionsContainer.querySelectorAll('.pdpx-pill-container').forEach((btn) => {
+          btn.classList.remove('selected');
+        });
+        // Add selected class to clicked button
+        button.classList.add('selected');
+        
+        // TODO: Filter color options based on the selected printing process
+        // eslint-disable-next-line no-console
+        console.log('[Printing Process] Selected filter:', group.filter);
+      });
+      
+      optionsContainer.appendChild(button);
+    });
+    
+    printingProcessSelectorContainer.appendChild(optionsContainer);
+  }
+
+  /*
   const styleSelectorContainer = createPillOptionsSelector(
     productDetails.attributes.style,
     'T-Shirt',
@@ -307,6 +396,7 @@ function createTShirtInputs(
     formDataObject?.style,
     comparisonDrawer,
   );
+  */
   const colorSelectorContainer = createMiniPillOptionsSelector(
     productDetails.attributes.color,
     'Shirt color: ',
@@ -315,28 +405,6 @@ function createTShirtInputs(
     productDetails.id,
     formDataObject?.color,
   );
-  
-  // Add "Learn More" link for color if help link exists and comparison drawer is available
-  if (productDetails.attributeHelpLinks?.color && comparisonDrawer) {
-    const learnMoreLink = createTag('button', {
-      class: 'pdpx-pill-selector-label-compare-link',
-      type: 'button',
-    }, 'Learn more');
-    
-    // Open comparison drawer on link click
-    learnMoreLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      comparisonDrawer.drawer.classList.remove('hidden');
-      comparisonDrawer.curtain.classList.remove('hidden');
-      document.body.classList.add('disable-scroll');
-    });
-    
-    // Find the label container and append the link
-    const labelContainer = colorSelectorContainer.querySelector('.pdpx-pill-selector-label-container');
-    if (labelContainer) {
-      labelContainer.appendChild(learnMoreLink);
-    }
-  }
   
   const quantitySelectorContainer = createStandardSelector(
     productDetails.attributes.quantities,
@@ -353,15 +421,7 @@ function createTShirtInputs(
     formDataObject?.size,
   );
 
-  if (printingProcessSelectorContainer) {
-    container.appendChild(printingProcessSelectorContainer);
-  }
-  container.appendChild(styleSelectorContainer);
-  container.appendChild(colorSelectorContainer);
-  container.appendChild(quantitySelectorContainer);
-  container.appendChild(sizeSelectorContainer);
-
-  // Add Size Chart link as a sibling if drawer is available
+  // Add Size Chart link inside size selector container if drawer is available
   if (sizeChartDrawer) {
     const sizeChartLink = createTag('button', {
       class: 'pdpx-size-chart-link',
@@ -374,8 +434,16 @@ function createTShirtInputs(
       document.body.classList.add('disable-scroll');
     });
 
-    container.appendChild(sizeChartLink);
+    sizeSelectorContainer.appendChild(sizeChartLink);
   }
+
+  // container.appendChild(styleSelectorContainer);
+  if (printingProcessSelectorContainer) {
+    container.appendChild(printingProcessSelectorContainer);
+  }
+  container.appendChild(colorSelectorContainer);
+  container.appendChild(quantitySelectorContainer);
+  container.appendChild(sizeSelectorContainer);
 }
 
 export default async function createCustomizationInputs(

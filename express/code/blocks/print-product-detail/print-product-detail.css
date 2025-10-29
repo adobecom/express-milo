@@ -361,14 +361,27 @@
 }
 
 /* MINI PILL SELECTOR */
-.pdpx-pill-selector-label-compare-link,
-.pdpx-size-chart-link {
+.pdpx-pill-selector-label-compare-link {
   background: transparent;
   font-size: 14px;
   font-weight: 500;
   border: none;
   padding: 0;
   margin: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.pdpx-size-chart-link {
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  padding: 0;
+  margin-top: 8px;
+  margin-left: calc(104px + var(--figma-spacing-600));
+  flex-basis: 100%;
+  text-align: left;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -407,10 +420,12 @@
 
 /* STANDARD SELECTOR */
 .pdpx-standard-selector-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   margin-bottom: var(--figma-spacing-400);
 }
 .pdpx-standard-selector-label {
-  display: inline-block;
   min-width: 104px;
   color: #505050;
   margin-right: var(--figma-spacing-600);
@@ -418,6 +433,7 @@
 .pdpx-standard-selector {
   padding: var(--figma-spacing-100);
   cursor: pointer;
+  width: 120px;
 }
 .pdpx-product-details-section-title-container {
   border-bottom: 1px solid #686868;

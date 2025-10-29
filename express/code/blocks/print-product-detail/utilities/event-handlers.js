@@ -62,7 +62,27 @@ async function updateProductDeliveryEstimate(productDetails) {
 }
 
 async function updateCustomizationOptions(productDetails, formDataObject) {
-  const newCustomizationInputs = await createCustomizationInputs(productDetails, formDataObject);
+  // Retrieve drawer references from global container dataset
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  const comparisonDrawer = globalContainer?._comparisonDrawer || null;
+  const sizeChartDrawer = globalContainer?._sizeChartDrawer || null;
+  const paperDrawer = globalContainer?._paperDrawer || null;
+  
+  // Restore pbjOverrides and dbStrings if they're missing from the API response
+  if (!productDetails.pbjOverrides && globalContainer?._pbjOverrides) {
+    productDetails.pbjOverrides = globalContainer._pbjOverrides;
+  }
+  if (!productDetails.dbStrings && globalContainer?._dbStrings) {
+    productDetails.dbStrings = globalContainer._dbStrings;
+  }
+  
+  const newCustomizationInputs = await createCustomizationInputs(
+    productDetails,
+    formDataObject,
+    comparisonDrawer,
+    sizeChartDrawer,
+    paperDrawer,
+  );
   document.getElementById('pdpx-customization-inputs-container').replaceWith(newCustomizationInputs);
 }
 

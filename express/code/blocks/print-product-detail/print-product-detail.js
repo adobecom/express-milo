@@ -327,6 +327,17 @@ async function updatePageWithProductDetails(productDetails, rawProductDetails) {
     return [null, null, null];
   });
   
+  // Store drawer references and product config on global container for use during re-renders
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  if (globalContainer) {
+    globalContainer._comparisonDrawer = comparisonDrawerResult;
+    globalContainer._sizeChartDrawer = sizeChartDrawerResult;
+    globalContainer._paperDrawer = paperDrawerResult;
+    // Store pbjOverrides and dbStrings for printing process selector
+    globalContainer._pbjOverrides = productDetails.pbjOverrides;
+    globalContainer._dbStrings = productDetails.dbStrings;
+  }
+  
   const productInfoContainer = document.getElementById('pdpx-product-info-container');
   const customizationInputs = await createCustomizationInputs(
     productDetails,
