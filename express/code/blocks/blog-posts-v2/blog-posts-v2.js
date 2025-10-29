@@ -8,6 +8,7 @@ import { createOptimizedPicture } from '../../scripts/utils/media.js';
 
 let replaceKey; let getConfig;
 let createTag; let getLocale;
+let getMetadata;
 
 const blogPosts = [];
 let blogResults;
@@ -137,6 +138,62 @@ function getBlogPostsConfig(block) {
   return config;
 }
 
+// Build spreadsheet-driven configuration (metadata → config)
+function getSpreadsheetConfig() {
+  if (!getMetadata) return null;
+  const cfg = {};
+
+  // Support up to 3 direct links from spreadsheet metadata
+  const directLinks = [
+    getMetadata('blog-post-link-1'),
+    getMetadata('blog-post-link-2'),
+    getMetadata('blog-post-link-3'),
+  ]
+    .filter((v) => typeof v === 'string' && v.trim())
+    .map((v) => v.trim())
+    // Normalize to absolute URLs so getFeatured() can parse with new URL()
+    .map((v) => {
+      try {
+        return new URL(v, window.location.origin).href;
+      } catch (e) {
+        return v;
+      }
+    });
+
+  const featuredCsv = getMetadata('blog-featured');
+  const featuredOnly = getMetadata('blog-featured-only');
+  const tagsCsv = getMetadata('blog-tags');
+  const authorCsv = getMetadata('blog-author');
+  const categoryCsv = getMetadata('blog-category');
+  const pageSize = getMetadata('blog-page-size');
+  const loadMoreText = getMetadata('blog-load-more');
+
+  if (directLinks.length) {
+    cfg.featured = directLinks.slice(0, 3);
+    cfg.featuredOnly = true; // explicit spreadsheet links imply exact selection
+  } else if (featuredCsv) {
+    cfg.featured = featuredCsv
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((v) => {
+        try {
+          return new URL(v, window.location.origin).href;
+        } catch (e) {
+          return v;
+        }
+      });
+  }
+  if (featuredOnly) cfg.featuredOnly = ['y', 'yes', 'true', 'on'].includes(featuredOnly.toLowerCase());
+  if (tagsCsv) cfg.tags = tagsCsv.split(',').map((s) => s.trim()).filter(Boolean);
+  if (authorCsv) cfg.author = authorCsv.split(',').map((s) => s.trim()).filter(Boolean);
+  if (categoryCsv) cfg.category = categoryCsv.split(',').map((s) => s.trim()).filter(Boolean);
+  if (pageSize && !Number.isNaN(parseInt(pageSize, 10))) cfg['page-size'] = parseInt(pageSize, 10);
+  if (loadMoreText) cfg['load-more'] = loadMoreText;
+
+  return Object.keys(cfg).length ? cfg : null;
+}
+
 async function filterAllBlogPostsOnPage() {
   if (!blogResultsLoaded) {
     let resolve;
@@ -161,7 +218,7 @@ async function filterAllBlogPostsOnPage() {
 
     for (let i = 0; i < blocks.length; i += 1) {
       const block = blocks[i];
-      const config = getBlogPostsConfig(block);
+      const config = getSpreadsheetConfig() || getBlogPostsConfig(block);
       const posts = filterBlogPosts(config, blogIndex);
       results.push({ config, posts });
     }
@@ -361,7 +418,7 @@ function checkStructure(element, querySelectors) {
 export default async function decorate(block) {
   block.parentElement.classList.add('ax-blog-posts-container');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
-    ({ getConfig, createTag, getLocale } = utils);
+    ({ getConfig, createTag, getLocale, getMetadata } = utils);
     ({ replaceKey } = placeholders);
   });
 
@@ -373,8 +430,9 @@ export default async function decorate(block) {
   }
 
   addTempWrapperDeprecated(block, 'blog-posts');
-  const config = getBlogPostsConfig(block);
 
+  /* Build config from spreadsheet metadata if present, otherwise from block */
+  const config = getSpreadsheetConfig() || getBlogPostsConfig(block);
   // wrap p in parent section
   if (checkStructure(block.parentNode, ['h2 + p + p + div.blog-posts', 'h2 + p + div.blog-posts', 'h2 + div.blog-posts'])) {
     const wrapper = createTag('div', { class: 'blog-posts-decoration' });
