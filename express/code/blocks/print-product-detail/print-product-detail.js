@@ -131,10 +131,10 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
   });
 
   const paperDrawer = await createDrawer({
-    type: 'paper',
-    title: 'Select paper type',
+    template: 'paper-selection',
+    drawerLabel: 'Select paper type',
     productId: productDetails.id,
-    paperOptions,
+    data: { paperOptions, selectedPaper: paperOptions.find((p) => p.isRecommended) || paperOptions[0] },
   });
 
   return paperDrawer;
@@ -145,37 +145,24 @@ async function updatePageWithComparisonDrawer(productDetails) {
     return null;
   }
 
-  const comparisonColumns = [
-    {
-      name: 'Classic Printing: No Underbase',
-      image: 'https://rlv.zcache.com/svc/view?rlvnet=1&realview=113500568478784410&style=triblend_shortsleeve3413&size=&color=white&max_dim=120',
-      recommended: false,
-      specs: [
-        { label: 'Best for light colored shirts', value: true },
-        { label: 'More transparent look', value: true },
-        { label: 'Slightly less vibrant colors', value: true },
-      ],
+  const comparisonData = {
+    left: {
+      title: 'Classic Printing: No Underbase',
+      imageUrl: 'https://rlv.zcache.com/svc/view?rlvnet=1&realview=113500568478784410&style=triblend_shortsleeve3413&size=&color=white&max_dim=120',
       description: 'Our classic printing method works best on light-colored garments. The ink absorbs into the fabric for a soft, breathable feel.',
     },
-    {
-      name: 'Vivid Printing: White Underbase',
-      image: 'https://rlv.zcache.com/svc/view?rlvnet=1&realview=113528354214055062&style=triblend_shortsleeve3413&size=&color=whitefleck&max_dim=120',
-      recommended: true,
-      specs: [
-        { label: 'Works on all shirt colors', value: true },
-        { label: 'More opaque coverage', value: true },
-        { label: 'Brighter, more vivid colors', value: true },
-      ],
+    right: {
+      title: 'Vivid Printing: White Underbase',
+      imageUrl: 'https://rlv.zcache.com/svc/view?rlvnet=1&realview=113528354214055062&style=triblend_shortsleeve3413&size=&color=whitefleck&max_dim=120',
       description: 'A white underbase is applied first, then your design is printed on top. This creates more vibrant colors and works on any shirt color.',
     },
-  ];
+  };
 
   const comparisonDrawer = await createDrawer({
-    type: 'comparison',
-    title: 'Compare printing processes',
+    template: 'comparison',
+    drawerLabel: 'Compare printing processes',
     productId: productDetails.id,
-    columns: comparisonColumns,
-    readOnly: true,
+    data: comparisonData,
   });
 
   return comparisonDrawer;
@@ -194,10 +181,10 @@ async function updatePageWithSizeChartDrawer(productDetails) {
   }
 
   const sizeChartDrawer = await createDrawer({
-    type: 'sizeChart',
-    title: 'Size Chart',
+    template: 'size-chart',
+    drawerLabel: 'Size Chart',
     productId: productDetails.id,
-    sizeChartData,
+    data: sizeChartData,
   });
   
   return sizeChartDrawer;
