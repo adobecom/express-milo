@@ -74,33 +74,12 @@ export function initResizeDebug() {
   
   window.matchMedia = function(query) {
     const mql = originalMatchMedia.call(window, query);
-    const originalAddListener = mql.addListener || mql.addEventListener;
     
-    if (originalAddListener) {
-      const wrappedAddListener = function(callback) {
-        mediaQueryCount++;
-        console.log(`🎯 [Resize Debug] Media query listener #${mediaQueryCount}: ${query}`);
-        
-        const wrappedCallback = function(...args) {
-          const start = performance.now();
-          callback.apply(this, args);
-          const duration = performance.now() - start;
-          
-          if (duration > 10) {
-            console.warn(`   ⚠️ Slow media query callback: ${duration.toFixed(2)}ms`);
-          }
-        };
-        
-        return originalAddListener.call(this, wrappedCallback);
-      };
-      
-      if (mql.addListener) {
-        mql.addListener = wrappedAddListener;
-      }
-      if (mql.addEventListener) {
-        mql.addEventListener = wrappedAddListener;
-      }
-    }
+    mediaQueryCount++;
+    const stack = new Error().stack;
+    const caller = stack.split('\n')[2]?.trim() || 'unknown';
+    console.log(`🎯 [Resize Debug] Media query listener #${mediaQueryCount}: ${query}`);
+    console.log(`   Called from: ${caller}`);
     
     return mql;
   };
