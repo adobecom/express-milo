@@ -68,7 +68,6 @@
   --standard-transition-hover-out-border-color: opacity 80ms ease-out 220ms;
   --standard-transition-hover-in-opacity: opacity 80ms ease-out 20ms;
   --standard-transition-hover-out-opacity: opacity 80ms ease-out 220ms;
-
 }
 
 [data-skeleton='true'] {
@@ -95,7 +94,7 @@
   padding: var(--figma-spacing-400);
   display: flex;
   flex-direction: column;
-  gap: var(--figma-spacing-100);
+  gap: var(--figma-spacing-300);
   align-items: flex-start;
 }
 .pdpx-product-info-section-container {
@@ -163,6 +162,7 @@
     padding: 15px;
     border-radius: 8px;
     width: 200px;
+    z-index: 1;
     .pdpx-info-tooltip-content-title {
       font-size: 14px;
       font-weight: 700;
@@ -181,7 +181,6 @@
   font-size: 12px;
   font-weight: 700;
   color: #05834e;
-  text-align: end;
 }
 .pdpx-price-info-container {
   display: flex;
@@ -264,6 +263,7 @@
   bottom: 0;
   background: #fff;
   margin-top: var(--figma-spacing-200);
+  width: 100%;
   order: 4;
   a.pdpx-checkout-button {
     display: flex;
@@ -298,7 +298,7 @@
 }
 
 .pdpx-checkout-button-subhead {
-  display: flex;
+  display: none;
   flex-direction: row;
   align-items: baseline;
   justify-content: center;
@@ -409,11 +409,11 @@
     display: block;
   }
 }
-.pdpx-mini-pill-image-container:hover {
+.pdpx-mini-pill-image-container:hover:not(.selected),
+.pdpx-image-thumbnail-carousel-item:hover:not(.selected) {
   border-color: #000;
   transition: var(--standard-transition-hover-in-border-color);
 }
-
 /* Tooltip content */
 .pdpx-mini-pill-image-container::after {
   content: attr(data-title);
@@ -431,6 +431,7 @@
   opacity: 0;
   visibility: hidden;
   transition: var(--standard-transition-hover-out-opacity);
+  z-index: 1000;
 }
 
 /* Tooltip arrow */
@@ -579,6 +580,8 @@
     order: 2;
     flex: 1 1 auto;
     height: 90vh;
+    overflow-x: clip;
+    overflow-clip-margin: 150px;
     overflow-y: scroll;
     scrollbar-gutter: stable;
     padding-right: var(--figma-spacing-400);
@@ -594,6 +597,13 @@
   .pdpx-product-info-section-container {
     width: calc(50% - 12px);
   }
+  .pdpx-checkout-button-subhead {
+    display: flex;
+  }
+  .pdpx-delivery-estimate-pill {
+    margin-bottom: var(--figma-spacing-400);
+  }
+  
 }
 /*DESKTOP*/
 @media (min-width: 1200px) {
@@ -620,15 +630,15 @@
       align-items: flex-end;
     }
   }
-  .pdpx-delivery-estimate-pill {
-    margin-bottom: var(--figma-spacing-400);
-  }
   .pdpx-title-and-ratings-container {
     max-width: 64%;
   }
   .pdpx-product-images-container,
   .pdpx-product-info-section-container {
     width: calc(50% - 12px);
+  }
+  .pdpx-savings-text {
+    text-align: end;
   }
 }
 /*WIDE-SCREEN*/

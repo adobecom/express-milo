@@ -1,5 +1,6 @@
 import { getLibs } from '../../../scripts/utils.js';
 import updateAllDynamicElements, { toggleDrawer } from '../utilities/event-handlers.js';
+import createSegmentedMiniPillOptionsSelector from './createSegmentedMiniPillOptionsSelector.js';
 
 let createTag;
 
@@ -126,9 +127,9 @@ export function createBusinessCardInputs(container, productDetails, formDataObje
   container.appendChild(quantitySelectorContainer);
 }
 
-export function createTShirtInputs(container, productDetails, formDataObject = {}) {
+export async function createTShirtInputs(container, productDetails, formDataObject = {}) {
   const styleSelectorContainer = createPillOptionsSelector(productDetails.attributes.style, 'T-Shirt', 'style', productDetails.id, formDataObject?.style);
-  const colorSelectorContainer = createMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', '', productDetails.id, formDataObject?.color);
+  const colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(productDetails.attributes.color, 'Shirt color', 'color', '', productDetails.id, formDataObject?.color);
   const quantitySelectorContainer = createStandardSelector(productDetails.attributes.quantities, 'Quantity', 'qty', productDetails.id, formDataObject?.qty);
   const sizeSelectorContainer = createStandardSelector(productDetails.attributes.size, 'Size', 'size', productDetails.id, formDataObject?.size);
   container.appendChild(styleSelectorContainer);
@@ -151,6 +152,6 @@ export default async function createCustomizationInputs(productDetails, formData
     ['zazzle_shirt', createTShirtInputs],
   ]);
   const createInputsFunction = productTypeToInputsMap.get(productDetails.productType);
-  createInputsFunction(customizationInputsForm, productDetails, formDataObject);
+  await createInputsFunction(customizationInputsForm, productDetails, formDataObject);
   return customizationInputsContainer;
 }
