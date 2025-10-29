@@ -387,6 +387,7 @@ function createTShirtInputs(
     printingProcessSelectorContainer.appendChild(optionsContainer);
   }
 
+  /*
   const styleSelectorContainer = createPillOptionsSelector(
     productDetails.attributes.style,
     'T-Shirt',
@@ -415,6 +416,7 @@ function createTShirtInputs(
       labelContainer.appendChild(learnMoreLink);
     }
   }
+  */
   const colorSelectorContainer = createMiniPillOptionsSelector(
     productDetails.attributes.color,
     'Shirt color: ',
@@ -455,12 +457,10 @@ function createTShirtInputs(
     sizeSelectorContainer.appendChild(sizeChartLink);
   }
 
-  container.appendChild(styleSelectorContainer);
-  /*
+  // container.appendChild(styleSelectorContainer);
   if (printingProcessSelectorContainer) {
     container.appendChild(printingProcessSelectorContainer);
   }
-  */
   container.appendChild(colorSelectorContainer);
   container.appendChild(quantitySelectorContainer);
   container.appendChild(sizeSelectorContainer);
