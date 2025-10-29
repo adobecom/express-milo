@@ -1,13 +1,13 @@
 .section .ribbon-banner {
     text-align: left;
     max-width: initial;
-    font-weight: 700;
+    font-weight: var(--heading-font-weight-medium);
     color: var(--color-default-font);
     font-size: var(--ax-body-s-size);
 }
 .ribbon-banner .content {
     padding: var(--spacing-200) var(--spacing-300);
-    line-height: 130%;
+    line-height: var(--heading-line-height);
     display: flex;
     align-items: center;
     justify-content: center;
