@@ -280,12 +280,7 @@ function createTShirtInputs(
   comparisonDrawer = null,
   sizeChartDrawer = null,
 ) {
-  // Create printing process selector if pbjOverrides configuration exists
-  // The printing process is NOT a separate attribute, but a grouping of color options
-  // based on design.shade parameter (light = Classic, dark = Vivid)
   let printingProcessSelectorContainer = null;
-  
-  // Find the color attribute's inlineSelection configuration
   let colorInlineSelection = null;
   if (productDetails.pbjOverrides?.attributeGroups) {
     productDetails.pbjOverrides.attributeGroups.forEach((group) => {
@@ -298,7 +293,6 @@ function createTShirtInputs(
     });
   }
 
-  // Create printing process selector if we have groups
   if (colorInlineSelection?.groups && productDetails.dbStrings) {
     printingProcessSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
     
@@ -306,7 +300,6 @@ function createTShirtInputs(
     const label = createTag('span', { class: 'pdpx-pill-selector-label' }, 'Printing process');
     labelContainer.appendChild(label);
     
-    // Add "Learn More" link if comparison drawer is available
     if (comparisonDrawer) {
       const learnMoreLink = createTag('button', {
         class: 'pdpx-pill-selector-label-compare-link',
@@ -325,13 +318,9 @@ function createTShirtInputs(
     
     printingProcessSelectorContainer.appendChild(labelContainer);
     
-    // Create options container for the printing process buttons (like pill selector)
     const optionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
     
-    // Create a button for each group (Classic vs Vivid)
     colorInlineSelection.groups.forEach((group, index) => {
-      // Find a color that matches this group's filter to use for the thumbnail
-      // The filter is like "design.shade=light" or "design.shade=dark"
       const filterValue = group.filter?.['design.shade'];
       const matchingColor = productDetails.attributes.color?.find((color) => color.design?.shade === filterValue);
       
@@ -341,7 +330,6 @@ function createTShirtInputs(
         'data-filter': JSON.stringify(group.filter),
       });
       
-      // Create image container with thumbnail
       const imageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
       const img = createTag('img', { 
         class: 'pdpx-pill-image',
@@ -351,32 +339,24 @@ function createTShirtInputs(
       imageContainer.appendChild(img);
       button.appendChild(imageContainer);
       
-      // Create text container with label and price
       const textContainer = createTag('div', { class: 'pdpx-pill-text-container' });
       
-      // Get the label from dbStrings
-      const labelKey = group.label; // e.g., "product.option.zazzle_shirt.design.shade=light"
+      const labelKey = group.label;
       const labelText = productDetails.dbStrings[labelKey] || group.label;
       
       const nameSpan = createTag('span', { class: 'pdpx-pill-text-name' }, labelText);
       textContainer.appendChild(nameSpan);
       
-      // Add price (TODO: Calculate actual price difference)
       const priceSpan = createTag('span', { class: 'pdpx-pill-text-price' }, index === 0 ? '+US$0.00' : '+US$2.95');
       textContainer.appendChild(priceSpan);
       
       button.appendChild(textContainer);
       
-      // Add click handler to filter colors
       button.addEventListener('click', () => {
-        // Remove selected class from all buttons
         optionsContainer.querySelectorAll('.pdpx-pill-container').forEach((btn) => {
           btn.classList.remove('selected');
         });
-        // Add selected class to clicked button
         button.classList.add('selected');
-        
-        // TODO: Filter color options based on the selected printing process
         // eslint-disable-next-line no-console
         console.log('[Printing Process] Selected filter:', group.filter);
       });
@@ -393,10 +373,9 @@ function createTShirtInputs(
     'style',
     productDetails.id,
     formDataObject?.style,
-    null, // Don't pass comparison drawer here, we'll add Learn More separately
+    null,
   );
   
-  // Add Learn More link to T-Shirt selector if comparison drawer exists
   if (comparisonDrawer && styleSelectorContainer) {
     const labelContainer = styleSelectorContainer.querySelector('.pdpx-pill-selector-label-container');
     if (labelContainer) {

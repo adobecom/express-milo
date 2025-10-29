@@ -195,12 +195,10 @@ function createColorProcess(colorCount, iconNames) {
 }
 
 function createDrawerBodyComparison(data) {
-  // Static/read-only comparison drawer
   const drawerBody = createTag('div', { 
     class: 'drawer-body drawer-body--comparison',
   });
 
-  // Left column (Classic - 4 Color)
   const leftColumn = createTag('div', { 
     class: 'comparison-column', 
     'data-option': 'left',
@@ -220,7 +218,6 @@ function createDrawerBodyComparison(data) {
   ]);
   leftColumn.append(leftImage, leftContent, leftColorProcess);
 
-  // Right column (Vivid - 5 Color)
   const rightColumn = createTag('div', { class: 'comparison-column', 'data-option': 'right' });
   const rightImage = createTag('img', { class: 'comparison-image', src: data.right.imageUrl, alt: data.right.title });
   const rightContent = createTag('div', { class: 'comparison-content' });
@@ -506,7 +503,6 @@ export default async function createDrawer({
   });
 
   if (template === 'comparison') {
-    // Static/read-only comparison drawer for informational purposes only
     const drawerBody = createDrawerBodyComparison(data);
     drawer.append(
       createDrawerHead(drawerLabel, drawer, curtain),
