@@ -83,6 +83,7 @@ function createPillOptionsSelector(
     const inputPillTextContainer = createTag('div', { class: 'pdpx-pill-text-container' });
     const inputPillOptionName = createTag('span', { class: 'pdpx-pill-text-name' }, customizationOptions[i].title);
     const inputPillOptionPrice = createTag('span', { class: 'pdpx-pill-text-price' }, customizationOptions[i].priceAdjustment);
+    console.log('[Create Customization Inputs] Customization Options:', customizationOptions);
     inputPillTextContainer.appendChild(inputPillOptionName);
     inputPillTextContainer.appendChild(inputPillOptionPrice);
     pillContainer.appendChild(inputPillImageContainer);
@@ -280,14 +281,24 @@ function createTShirtInputs(
   comparisonDrawer = null,
   sizeChartDrawer = null,
 ) {
-  const printingProcessSelectorContainer = createPillOptionsSelector(
-    productDetails.attributes.printingprocess,
-    'Printing Process',
-    'printingprocess',
-    productDetails.id,
-    formDataObject?.printingprocess,
-    comparisonDrawer,
-  );
+  // Only create printing process selector if the attribute exists
+  // eslint-disable-next-line no-console
+  console.log('[Printing Process] Attribute exists?', !!productDetails.attributes?.printingprocess);
+  if (productDetails.attributes?.printingprocess) {
+    // eslint-disable-next-line no-console
+    console.log('[Printing Process] Full attribute data:', productDetails.attributes.printingprocess);
+  }
+  const printingProcessSelectorContainer = productDetails.attributes?.printingprocess
+    ? createPillOptionsSelector(
+      productDetails.attributes.printingprocess,
+      'Printing Process',
+      'printingprocess',
+      productDetails.id,
+      formDataObject?.printingprocess,
+      comparisonDrawer,
+    )
+    : null;
+
   const styleSelectorContainer = createPillOptionsSelector(
     productDetails.attributes.style,
     'T-Shirt',
@@ -304,6 +315,29 @@ function createTShirtInputs(
     productDetails.id,
     formDataObject?.color,
   );
+  
+  // Add "Learn More" link for color if help link exists and comparison drawer is available
+  if (productDetails.attributeHelpLinks?.color && comparisonDrawer) {
+    const learnMoreLink = createTag('button', {
+      class: 'pdpx-pill-selector-label-compare-link',
+      type: 'button',
+    }, 'Learn more');
+    
+    // Open comparison drawer on link click
+    learnMoreLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      comparisonDrawer.drawer.classList.remove('hidden');
+      comparisonDrawer.curtain.classList.remove('hidden');
+      document.body.classList.add('disable-scroll');
+    });
+    
+    // Find the label container and append the link
+    const labelContainer = colorSelectorContainer.querySelector('.pdpx-pill-selector-label-container');
+    if (labelContainer) {
+      labelContainer.appendChild(learnMoreLink);
+    }
+  }
+  
   const quantitySelectorContainer = createStandardSelector(
     productDetails.attributes.quantities,
     'Quantity',
@@ -319,7 +353,9 @@ function createTShirtInputs(
     formDataObject?.size,
   );
 
-  container.appendChild(printingProcessSelectorContainer);
+  if (printingProcessSelectorContainer) {
+    container.appendChild(printingProcessSelectorContainer);
+  }
   container.appendChild(styleSelectorContainer);
   container.appendChild(colorSelectorContainer);
   container.appendChild(quantitySelectorContainer);

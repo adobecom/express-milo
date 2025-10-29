@@ -458,7 +458,9 @@ export default async function createDrawer({
   });
   const curtain = createTag('div', { class: 'pdp-curtain hidden' });
   curtain.setAttribute('daa-ll', 'pdp-x-drawer-curtainClose');
+  curtain.setAttribute('data-drawer-type', template);
   const drawer = createTag('div', { class: 'drawer hidden' });
+  drawer.setAttribute('data-drawer-type', template);
 
   // Curtain closes the drawer when clicked
   curtain.addEventListener('click', () => {

@@ -488,6 +488,7 @@
   color: var(--color-gray-950);
   text-align: left;
   padding: var(--spacing-100);
+  white-space: nowrap;
 }
 
 .size-chart-table {

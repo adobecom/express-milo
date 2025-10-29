@@ -361,7 +361,8 @@
 }
 
 /* MINI PILL SELECTOR */
-.pdpx-pill-selector-label-compare-link {
+.pdpx-pill-selector-label-compare-link,
+.pdpx-size-chart-link {
   background: transparent;
   font-size: 14px;
   font-weight: 500;
@@ -566,6 +567,7 @@
     width: calc(50% - 12px);
   }
 }
+
 /*WIDE-SCREEN*/
 @media (min-width: 1680px) {
   .print-product-detail {

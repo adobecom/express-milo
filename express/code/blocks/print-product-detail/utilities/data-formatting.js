@@ -1,4 +1,4 @@
-import { fetchUIStrings, formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
+import { formatProductDescriptions } from '../fetchData/fetchProductDetails.js';
 import { formatPriceZazzle, buildRealViewImageUrl } from './utility-functions.js';
 
 export default function extractProductDescriptionsFromBlock(block) {
@@ -41,6 +41,13 @@ export function createEmptyDataObject(templateId) {
 
 export async function updateDataObjectProductDetails(dataObject, productDetails) {
   const updatedDataObject = { ...dataObject };
+  
+  // Null check for productDetails
+  if (!productDetails || !productDetails.product) {
+    console.error('[updateDataObjectProductDetails] Invalid productDetails:', productDetails);
+    return updatedDataObject;
+  }
+  
   const productTitle = productDetails.product.title;
   const { productType } = productDetails.product;
   const productId = productDetails.product.id;
@@ -50,6 +57,8 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
 
   // Extract attributes for customization inputs
   const attributes = {};
+  console.log('[Data Formatting] Available attributes:', Object.keys(productDetails.product.attributes));
+  console.log('[Data Formatting] Full product data:', productDetails.product);
   Object.entries(productDetails.product.attributes).forEach(([key, attribute]) => {
     // Handle attributes with values array
     if (attribute.values && Array.isArray(attribute.values)) {
@@ -143,6 +152,24 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
     ];
   }
 
+  // Extract help links from pbjOverrides (for "Learn More" links)
+  const attributeHelpLinks = {};
+  if (productDetails.product.pbjOverrides?.attributeGroups) {
+    productDetails.product.pbjOverrides.attributeGroups.forEach((group) => {
+      group.attributes?.forEach((attr) => {
+        if (attr.helpLink && attr.name) {
+          attributeHelpLinks[attr.name] = {
+            type: attr.helpLink.type,
+            label: attr.helpLink.label,
+            dialogType: attr.helpLink.dialogType,
+            helpSlug: attr.helpLink.helpSlug,
+          };
+        }
+      });
+    });
+  }
+  console.log('[Data Formatting] Extracted help links:', attributeHelpLinks);
+
   updatedDataObject.productTitle = productTitle;
   updatedDataObject.productType = productType;
   updatedDataObject.id = productId;
@@ -150,6 +177,7 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   // realViews will be set when renditions API loads
   updatedDataObject.productDescriptions = productDescriptions;
   updatedDataObject.attributes = attributes;
+  updatedDataObject.attributeHelpLinks = attributeHelpLinks;
   return updatedDataObject;
 }
 
@@ -214,82 +242,102 @@ export function updateDataObjectUIStrings(dataObject, UIStrings) {
   return updatedDataObject;
 }
 
-// OLD FUNCTION - Still used by event handlers
-function buildImageUrl(realviewParams) {
-  const params = new URLSearchParams();
-  Object.entries(realviewParams).forEach(([key, value]) => {
-    if (value !== null && value !== undefined) {
-      params.set(key, value);
+export async function normalizeProductDetailObject({
+  productDetails,
+  productPrice,
+  productReviews,
+  productRenditions,
+  productShippingEstimates,
+  changeOptions = {},
+  templateId,
+}) {
+  const productTitle = productDetails.product.title;
+  const { productType } = productDetails.product;
+  const productId = productDetails.product.id;
+  const heroImage = productDetails.product.attributes?.media?.values?.[0]?.firstProductRealviewParams
+    ? buildRealViewImageUrl(productDetails.product.attributes.media.values[0].firstProductRealviewParams)
+    : productDetails.product.initialPrettyPreferredViewUrl || '';
+  const realViews = productRenditions?.realviewUrls || {};
+  
+  // Handle productPrice structure (unitPrice and discountProductItems)
+  const basePrice = productPrice?.unitPrice || 0;
+  const discountItem = productPrice?.discountProductItems?.[0];
+  let productPriceFormatted = '';
+  let strikethroughPrice = '';
+  let discountString = '';
+  
+  if (discountItem) {
+    // Use discounted price and original price
+    const adjustedPrice = discountItem.priceAdjusted || discountItem.price || basePrice;
+    const originalPrice = discountItem.price || basePrice;
+    productPriceFormatted = await formatPriceZazzle(adjustedPrice);
+    strikethroughPrice = await formatPriceZazzle(originalPrice);
+    discountString = discountItem.discountString || '';
+  } else if (basePrice > 0) {
+    // No discount available
+    productPriceFormatted = await formatPriceZazzle(basePrice);
+    strikethroughPrice = await formatPriceZazzle(basePrice);
+  }
+  const { averageRating = 0 } = productReviews || {};
+  const { totalReviews = 0 } = productReviews || {};
+  const deliveryEstimateMinDate = productShippingEstimates?.shippingEstimates?.[0]?.minDate || '';
+  const deliveryEstimateMaxDate = productShippingEstimates?.shippingEstimates?.[0]?.maxDate || '';
+  const productDescriptions = formatProductDescriptions(productDetails, changeOptions);
+
+  // Extract attributes in the same format as formatInitialProductDetailObject
+  const attributes = {};
+  Object.entries(productDetails.product.attributes || {}).forEach(([key, attribute]) => {
+    if (attribute.values && Array.isArray(attribute.values)) {
+      attributes[key] = attribute.values.map((value) => {
+        // Generate thumbnail from realview params if not provided
+        let thumbnail = value.thumbnailUrl || value.helpImageUrl || value.thumbnail || '';
+        if (!thumbnail && value.firstProductRealviewParams) {
+          thumbnail = buildRealViewImageUrl(value.firstProductRealviewParams, 120);
+        }
+
+        return {
+          name: value.name || value.value || String(value),
+          title: value.title || value.name || String(value),
+          thumbnail,
+          priceAdjustment: value.priceAdjustment || '',
+          description: value.description || '',
+          descriptionBrief: value.descriptionBrief || '',
+          firstProductRealviewParams: value.firstProductRealviewParams || null,
+          isBestValue: value.isBestValue || false,
+        };
+      });
     }
   });
-  return `https://rlv.zcache.com/svc/view?${params.toString()}`;
-}
 
-async function convertAttributeToOptionsObject(attribute) {
-  const options = attribute.values;
-  const optionsArray = [];
-  for (let i = 0; i < options.length; i += 1) {
-    const option = options[i];
-    const imageUrl = buildImageUrl(option.firstProductRealviewParams);
-    optionsArray.push({
-      thumbnail: imageUrl,
-      title: option.title,
-      name: option.name,
-      priceAdjustment: await formatPriceZazzle(option.priceDifferential, true),
-    });
+  // Add quantities from product.quantities array
+  if (productDetails.product.quantities && Array.isArray(productDetails.product.quantities)) {
+    attributes.quantities = productDetails.product.quantities.map((qty) => ({
+      name: String(qty),
+      title: String(qty),
+      thumbnail: '',
+      priceAdjustment: '',
+      description: '',
+      descriptionBrief: '',
+      firstProductRealviewParams: null,
+      isBestValue: false,
+    }));
   }
-  return optionsArray;
-}
 
-function formatQuantityOptionsObject(quantities, pluralUnitLabel) {
-  const optionsArray = [];
-  for (let i = 0; i < quantities.length; i += 1) {
-    const option = quantities[i];
-    optionsArray.push({
-      title: `${option} ${pluralUnitLabel}`,
-      name: option,
-    });
-  }
-  return optionsArray;
-}
-
-export async function normalizeProductDetailObject({ productDetails, productPrice, productReviews, productRenditions, productShippingEstimates, quantity, changeOptions = {}, templateId }) {
-  const UIStrings = await fetchUIStrings();
-  const attributeOptions = changeOptions?.product?.attributes || productDetails.product.attributes;
-  const applicableDiscount = productPrice?.discountProductItems[1] || productPrice?.discountProductItems[0];
-  const discountAvailable = !!applicableDiscount;
-  const calculatedProductPrice = applicableDiscount?.priceAdjusted * quantity || productPrice?.unitPrice * quantity;
-  const normalizedProductDetails = {
-    id: productDetails.product.id,
+  return {
     templateId,
-    heroImage: productDetails.product.initialPrettyPreferredViewUrl,
-    productTitle: productDetails.product.title,
-    unitPrice: productPrice?.unitPrice,
-    productPrice: calculatedProductPrice,
-    strikethroughPrice: productPrice?.unitPrice * quantity,
-    discountAvailable,
-    discountString: applicableDiscount?.discountString,
-    deliveryEstimateMinDate: productShippingEstimates.estimates[0].minDeliveryDate,
-    deliveryEstimateMaxDate: productShippingEstimates.estimates[0].maxDeliveryDate,
-    realViews: productRenditions.realviewUrls || {},
-    productType: productDetails.product.productType,
-    pluralUnitLabel: productDetails.product.pluralUnitLabel,
-    averageRating: productReviews.reviews.stats.averageRating,
-    totalReviews: productReviews.reviews.stats.totalReviews,
-    tooltipTitle: UIStrings.adobe_comp_value_tooltip_title,
-    tooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
-    tooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
-    compareValueTooltipTitle: UIStrings.adobe_compareValueTooltipTitle,
-    compareValueTooltipDescription1: UIStrings.zi_product_Price_CompValueTooltip1Adobe,
-    compareValueTooltipDescription2: UIStrings.zi_product_Price_CompValueTooltip2Adobe,
-    deliveryEstimateStringText: UIStrings.adobe_deliveryEstimateStringText,
-    productDescriptions: formatProductDescriptions(productDetails, changeOptions),
-    attributes: { quantities: productDetails.product.quantities },
+    productType,
+    id: productId,
+    productTitle,
+    heroImage,
+    realViews,
+    productPrice: productPriceFormatted,
+    strikethroughPrice,
+    discountString,
+    averageRating,
+    totalReviews,
+    deliveryEstimateMinDate,
+    deliveryEstimateMaxDate,
+    productDescriptions,
+    attributes,
   };
-  for (const attribute of Object.values(attributeOptions)) {
-    normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(attribute);
-  }
-  const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
-  normalizedProductDetails.attributes.quantities = quantitiesOptions;
-  return normalizedProductDetails;
 }

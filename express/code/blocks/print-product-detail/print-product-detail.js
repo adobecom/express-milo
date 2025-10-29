@@ -173,10 +173,14 @@ async function updatePageWithComparisonDrawer(productDetails) {
     return;
   }
 
-  if (
-    !productDetails.attributes?.printingprocess
-    || productDetails.attributes.printingprocess.length < 2
-  ) {
+  // Create comparison drawer if either:
+  // 1. Product has printingprocess attribute with multiple options, OR
+  // 2. Product has a "Learn More" help link for color attribute
+  const hasPrintingProcess = productDetails.attributes?.printingprocess
+    && productDetails.attributes.printingprocess.length >= 2;
+  const hasColorHelpLink = productDetails.attributeHelpLinks?.color;
+
+  if (!hasPrintingProcess && !hasColorHelpLink) {
     return;
   }
 
@@ -469,6 +473,13 @@ export default async function decorate(block) {
   const productDetails = fetchProductDetails(templateId);
     
   productDetails.then(async (productDetailsResponse) => {
+    // Check if API call succeeded
+    if (!productDetailsResponse || !productDetailsResponse.product) {
+      console.error('[PDP] Failed to fetch product details. Response:', productDetailsResponse);
+      console.error('[PDP] Template ID:', templateId);
+      return;
+    }
+    
     const rawProductDetails = productDetailsResponse;
     dataObject = await updateDataObjectProductDetails(dataObject, productDetailsResponse);
     await updatePageWithProductDetails(dataObject, rawProductDetails);
