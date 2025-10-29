@@ -12,6 +12,7 @@ main .section .discover-cards {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%), linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%), url(/express/code/blocks/discover-cards/img/cards-bg-large.webp);
 }
 
 .discover-cards .sub-header {
@@ -214,7 +215,7 @@ main .section .discover-cards {
     }
 }
 
-@media (min-width: 900px) { 
+@media (min-width: 900px) {
   .discover-cards.flip .center-title {
     font-size: var(--heading-font-size-l);
   }
@@ -330,7 +331,7 @@ main .section .discover-cards {
   transform: rotateY(180deg);
 }
 
-.discover-cards.flip .flip-card-front, 
+.discover-cards.flip .flip-card-front,
 .discover-cards.flip .flip-card-back {
   font-size: var(--heading-font-size-s);
   text-align: left;
