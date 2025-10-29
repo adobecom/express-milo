@@ -393,8 +393,28 @@ function createTShirtInputs(
     'style',
     productDetails.id,
     formDataObject?.style,
-    comparisonDrawer,
+    null, // Don't pass comparison drawer here, we'll add Learn More separately
   );
+  
+  // Add Learn More link to T-Shirt selector if comparison drawer exists
+  if (comparisonDrawer && styleSelectorContainer) {
+    const labelContainer = styleSelectorContainer.querySelector('.pdpx-pill-selector-label-container');
+    if (labelContainer) {
+      const learnMoreLink = createTag('button', {
+        class: 'pdpx-pill-selector-label-compare-link',
+        type: 'button',
+      }, 'Learn more');
+      
+      learnMoreLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        comparisonDrawer.drawer.classList.remove('hidden');
+        comparisonDrawer.curtain.classList.remove('hidden');
+        document.body.classList.add('disable-scroll');
+      });
+      
+      labelContainer.appendChild(learnMoreLink);
+    }
+  }
   const colorSelectorContainer = createMiniPillOptionsSelector(
     productDetails.attributes.color,
     'Shirt color: ',
