@@ -1,7 +1,7 @@
 import { getLibs, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
-// nate test 2
+// nate test 3
 
 let createTag;
 
@@ -42,59 +42,59 @@ function createControl(items, container) {
     'aria-label': 'Previous',
   }, nextSVGHTML);
 
-  // const intersecting = Array.from(items).fill(false);
+  const intersecting = Array.from(items).fill(false);
 
-  // const len = items.length;
-  // const pageInc = throttle((inc) => {
-  //   const first = intersecting.indexOf(true);
-  //   if (first === -1) return; // middle of swapping only page
-  //   if (first + inc < 0 || first + inc >= len) return; // no looping
-  //   const target = items[(first + inc + len) % len];
-  //   target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-  // }, 200);
-  // prevButton.addEventListener('click', () => pageInc(-1));
-  // nextButton.addEventListener('click', () => pageInc(1));
+  const len = items.length;
+  const pageInc = throttle((inc) => {
+    const first = intersecting.indexOf(true);
+    if (first === -1) return; // middle of swapping only page
+    if (first + inc < 0 || first + inc >= len) return; // no looping
+    const target = items[(first + inc + len) % len];
+    target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }, 200);
+  prevButton.addEventListener('click', () => pageInc(-1));
+  nextButton.addEventListener('click', () => pageInc(1));
 
-  // const dots = items.map(() => {
-  //   const dot = createTag('div', { class: 'dot' });
-  //   status.append(dot);
-  //   return dot;
-  // });
+  const dots = items.map(() => {
+    const dot = createTag('div', { class: 'dot' });
+    status.append(dot);
+    return dot;
+  });
 
-  // const updateDOM = debounce((first, last) => {
-  //   prevButton.disabled = first === 0;
-  //   nextButton.disabled = last === items.length - 1;
-  //   dots.forEach((dot, i) => {
-  //     /* eslint-disable chai-friendly/no-unused-expressions */
-  //     i === first ? dot.classList.add('curr') : dot.classList.remove('curr');
-  //     i === first ? items[i].classList.add('curr') : items[i].classList.remove('curr');
-  //     i > first && i <= last ? dot.classList.add('hide') : dot.classList.remove('hide');
-  //     /* eslint-disable chai-friendly/no-unused-expressions */
-  //   });
-  //   if (items.length === last - first + 1) {
-  //     control.classList.add('hide');
-  //     container.classList.add('gallery--all-displayed');
-  //   } else {
-  //     control.classList.remove('hide');
-  //     container.classList.remove('gallery--all-displayed');
-  //   }
-  //   control.classList.remove('loading');
-  // }, 300);
+  const updateDOM = debounce((first, last) => {
+    prevButton.disabled = first === 0;
+    nextButton.disabled = last === items.length - 1;
+    dots.forEach((dot, i) => {
+      /* eslint-disable chai-friendly/no-unused-expressions */
+      i === first ? dot.classList.add('curr') : dot.classList.remove('curr');
+      i === first ? items[i].classList.add('curr') : items[i].classList.remove('curr');
+      i > first && i <= last ? dot.classList.add('hide') : dot.classList.remove('hide');
+      /* eslint-disable chai-friendly/no-unused-expressions */
+    });
+    if (items.length === last - first + 1) {
+      control.classList.add('hide');
+      container.classList.add('gallery--all-displayed');
+    } else {
+      control.classList.remove('hide');
+      container.classList.remove('gallery--all-displayed');
+    }
+    control.classList.remove('loading');
+  }, 300);
 
-  // const reactToChange = (entries) => {
-  //   entries.forEach((entry) => {
-  //     intersecting[items.indexOf(entry.target)] = entry.isIntersecting;
-  //   });
-  //   const [first, last] = [intersecting.indexOf(true), intersecting.lastIndexOf(true)];
-  //   if (first === -1) return; // middle of swapping only page
-  //   updateDOM(first, last);
-  // };
+  const reactToChange = (entries) => {
+    entries.forEach((entry) => {
+      intersecting[items.indexOf(entry.target)] = entry.isIntersecting;
+    });
+    const [first, last] = [intersecting.indexOf(true), intersecting.lastIndexOf(true)];
+    if (first === -1) return; // middle of swapping only page
+    updateDOM(first, last);
+  };
 
-  // const scrollObserver = new IntersectionObserver((entries) => {
-  //   reactToChange(entries);
-  // }, { root: container, threshold: 1, rootMargin: `0px ${scrollPadding}px 0px ${scrollPadding}px` });
+  const scrollObserver = new IntersectionObserver((entries) => {
+    reactToChange(entries);
+  }, { root: container, threshold: 1, rootMargin: `0px ${scrollPadding}px 0px ${scrollPadding}px` });
 
-  // items.forEach((item) => scrollObserver.observe(item));
+  items.forEach((item) => scrollObserver.observe(item));
 
   control.append(status, prevButton, nextButton);
   return control;
