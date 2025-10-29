@@ -580,6 +580,7 @@ export default async function decorate(block) {
   const actionColumn = createTag('div');
   const dropzoneContainer = createTag('div', { class: 'dropzone-container' });
 
+
   if (animation && animation.href.includes('.mp4')) {
     animationContainer.append(transformLinkToAnimation(animation));
   }
@@ -680,6 +681,88 @@ export default async function decorate(block) {
     checkmarks: true,
   });
   dropzone.append(freePlanTags);
+
+  class EasyUpload {
+    constructor() {
+      this.enabledQuickActions = ['remove-background', 'resize-image', 'crop-image', 'convert-to-jpg', 'convert-to-png'];
+    }
+
+    isExperimentEnabled(quickAction) {
+      return this.enabledQuickActions.includes(quickAction);
+    }
+
+    loadQRCodeLibrary() {
+      return new Promise((resolve, reject) => {
+        if (window.QRCodeStyling) {
+          resolve(window.QRCodeStyling);
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/qr-code-styling@1.9.2/lib/qr-code-styling.js';
+        script.onload = () => resolve(window.QRCodeStyling);
+        script.onerror = () => reject(new Error('Failed to load QR code library'));
+        document.head.appendChild(script);
+      })
+    }
+
+    async generateQRCode() {
+      const QRCodeStyling = await this.loadQRCodeLibrary();
+
+      const qrCode = new QRCodeStyling({
+        width: 200,
+        height: 200,
+        data: 'https://test.com',
+        dotsOptions: {
+          color: '#000000',
+          type: 'rounded',
+        },
+        backgroundOptions: {
+          color: '#ffffff',
+        },
+        imageOptions: {
+          crossOrigin: 'anonymous',
+          margin: 10,
+        },
+      });
+
+      // Create a container for the QR code and append it to the button container
+      const buttonContainer = dropzone.querySelector('.button-container');
+      if (buttonContainer) {
+        const qrCodeContainer = createTag('div', { class: 'qr-code-container' });
+        qrCode.append(qrCodeContainer);
+
+        // Add Confirm Import button
+        const confirmButton = createTag('a', {
+          href: '#',
+          class: 'button accent xlarge',
+          title: 'Confirm Import'
+        }, 'Confirm Import');
+
+        confirmButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation(); // Prevent file browser from opening
+
+          // Add your custom import logic here
+          // Example: Process QR code data, trigger API call, etc.
+        });
+
+        buttonContainer.appendChild(qrCodeContainer);
+        buttonContainer.appendChild(confirmButton);
+      }
+    }
+  }
+
+  // Load Easy Upload Experiment for enabled quick actions if experiment is on.
+  const easyUpload = new EasyUpload();
+  if (easyUpload.isExperimentEnabled(quickAction)) {
+    try {
+      // Load QR code styling library
+      await easyUpload.generateQRCode();
+    } catch (error) {
+      console.error('Failed to load QR code library:', error);
+    }
+  }
 
   window.addEventListener('popstate', (e) => {
     const editorModal = selectElementByTagPrefix('cc-everywhere-container-');
