@@ -15,7 +15,7 @@
 }
 
 .ribbon-banner strong {
-    font-weight: 900;
+    font-weight: var(--heading-font-weight-extra);
     font-size: var(--ax-body-s-size);
 }
 
