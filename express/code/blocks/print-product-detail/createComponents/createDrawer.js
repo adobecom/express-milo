@@ -174,6 +174,18 @@ function createDrawerFoot({ imgSrc, name, price }) {
   return drawerFoot;
 }
 
+function createDrawerFootComparison(leftOption, rightOption) {
+  const drawerFoot = createTag('div', { class: 'drawer-foot drawer-foot--comparison' });
+  const selectButton = createTag('button', { class: 'select' }, 'Select');
+  const infoContainer = createTag('div', { class: 'info-container' });
+  const infoText = createTag('div', { class: 'info-text' });
+  infoText.append(createTag('div', { class: 'info-name' }, leftOption.title));
+  infoText.append(createTag('div', { class: 'info-price' }, leftOption.colorCount));
+  infoContainer.append(infoText);
+  drawerFoot.append(infoContainer, selectButton);
+  return drawerFoot;
+}
+
 function createDropletIcon(iconName) {
   const droplet = createTag('span', {
     'aria-hidden': 'true',
@@ -196,9 +208,12 @@ function createColorProcess(colorCount, iconNames) {
 
 function createDrawerBodyComparison(data) {
   const drawerBody = createTag('div', { class: 'drawer-body drawer-body--comparison' });
+  
+  // Store selected option (default to left/Classic)
+  drawerBody.dataset.selectedOption = 'left';
 
   // Left column (Classic - 4 Color)
-  const leftColumn = createTag('div', { class: 'comparison-column' });
+  const leftColumn = createTag('div', { class: 'comparison-column selected', 'data-option': 'left' });
   const leftImage = createTag('img', { class: 'comparison-image', src: data.left.imageUrl, alt: data.left.title });
   const leftContent = createTag('div', { class: 'comparison-content' });
   leftContent.innerHTML = `
@@ -215,7 +230,7 @@ function createDrawerBodyComparison(data) {
   leftColumn.append(leftImage, leftContent, leftColorProcess);
 
   // Right column (Vivid - 5 Color)
-  const rightColumn = createTag('div', { class: 'comparison-column' });
+  const rightColumn = createTag('div', { class: 'comparison-column', 'data-option': 'right' });
   const rightImage = createTag('img', { class: 'comparison-image', src: data.right.imageUrl, alt: data.right.title });
   const rightContent = createTag('div', { class: 'comparison-content' });
   rightContent.innerHTML = `
@@ -233,6 +248,20 @@ function createDrawerBodyComparison(data) {
   rightColumn.append(rightImage, rightContent, rightColorProcess);
 
   drawerBody.append(leftColumn, rightColumn);
+  
+  // Add click handlers for selection
+  leftColumn.addEventListener('click', () => {
+    leftColumn.classList.add('selected');
+    rightColumn.classList.remove('selected');
+    drawerBody.dataset.selectedOption = 'left';
+  });
+  
+  rightColumn.addEventListener('click', () => {
+    rightColumn.classList.add('selected');
+    leftColumn.classList.remove('selected');
+    drawerBody.dataset.selectedOption = 'right';
+  });
+  
   return drawerBody;
 }
 
@@ -385,8 +414,19 @@ function createDrawerBodyPaperSelection(data) {
   paperTypeLabel.innerHTML = `Paper type: <span class="paper-selection-type-name">${data.selectedPaper.typeName}</span>`;
   drawerBody.append(paperTypeLabel);
 
-  // Paper thumbnails carousel
-  const carouselContainer = createTag('div', { class: 'paper-selection-carousel' });
+  // Paper thumbnails carousel with simple scroll arrows
+  const carouselContainer = createTag('div', { class: 'paper-selection-carousel-container' });
+  
+  // Left arrow
+  const leftArrow = createTag('button', {
+    class: 'paper-carousel-arrow paper-carousel-arrow-left',
+    type: 'button',
+    'aria-label': 'Scroll left',
+  });
+  leftArrow.innerHTML = '&lt;';
+  
+  // Scrollable wrapper
+  const carouselWrapper = createTag('div', { class: 'paper-selection-carousel' });
   data.papers.forEach((paper, index) => {
     const isSelected = index === 0; // First paper is selected by default
     const paperThumb = createTag('button', {
@@ -406,9 +446,27 @@ function createDrawerBodyPaperSelection(data) {
     });
     const thumbPrice = createTag('span', { class: 'paper-selection-thumb-price' }, paper.priceAdjustment);
     paperThumb.append(thumbImage, thumbPrice);
-    carouselContainer.append(paperThumb);
+    carouselWrapper.append(paperThumb);
   });
-
+  
+  // Right arrow
+  const rightArrow = createTag('button', {
+    class: 'paper-carousel-arrow paper-carousel-arrow-right',
+    type: 'button',
+    'aria-label': 'Scroll right',
+  });
+  rightArrow.innerHTML = '&gt;';
+  
+  // Add scroll handlers
+  leftArrow.addEventListener('click', () => {
+    carouselWrapper.scrollBy({ left: -200, behavior: 'smooth' });
+  });
+  
+  rightArrow.addEventListener('click', () => {
+    carouselWrapper.scrollBy({ left: 200, behavior: 'smooth' });
+  });
+  
+  carouselContainer.append(leftArrow, carouselWrapper, rightArrow);
   drawerBody.append(carouselContainer);
 
   // Description
@@ -427,7 +485,7 @@ function createDrawerBodyPaperSelection(data) {
   };
 
   // Use event delegation to avoid memory leaks
-  carouselContainer.addEventListener('click', (e) => {
+  carouselWrapper.addEventListener('click', (e) => {
     const clickedThumb = e.target.closest('.paper-selection-thumb');
     if (!clickedThumb) return;
 
@@ -436,7 +494,7 @@ function createDrawerBodyPaperSelection(data) {
       drawerBody,
       clickedThumb,
       cachedElements,
-      carouselContainer.footerElements,
+      carouselWrapper.footerElements,
     );
   });
 
@@ -470,10 +528,42 @@ export default async function createDrawer({
   });
 
   if (template === 'comparison') {
+    const drawerBody = createDrawerBodyComparison(data);
+    const drawerFoot = createDrawerFootComparison(data.left, data.right);
     drawer.append(
       createDrawerHead(drawerLabel, drawer, curtain),
-      createDrawerBodyComparison(data),
+      drawerBody,
+      drawerFoot,
     );
+    
+    // Add Select button handler for comparison
+    const selectButton = drawerFoot.querySelector('.select');
+    if (selectButton) {
+      selectButton.addEventListener('click', () => {
+        const { selectedOption } = drawerBody.dataset;
+        const selectedData = selectedOption === 'left' ? data.left : data.right;
+        
+        // Find the printing process selector buttons
+        const printingProcessContainer = document.querySelector('.pdpx-pill-selector-container');
+        if (printingProcessContainer) {
+          const buttons = printingProcessContainer.querySelectorAll('.pdpx-pill-container');
+          buttons.forEach((button, index) => {
+            // Assuming left=Classic (index 0), right=Vivid (index 1)
+            if ((selectedOption === 'left' && index === 0) || (selectedOption === 'right' && index === 1)) {
+              button.classList.add('selected');
+              button.click(); // Trigger the existing click handler to update form
+            } else {
+              button.classList.remove('selected');
+            }
+          });
+        }
+        
+        // Close the drawer
+        drawer.classList.add('hidden');
+        curtain.classList.add('hidden');
+        document.body.classList.remove('disable-scroll');
+      });
+    }
   } else if (template === 'size-chart') {
     drawer.append(
       createDrawerHead(drawerLabel, drawer, curtain),
