@@ -178,10 +178,18 @@ function createDrawerFootComparison(leftOption, rightOption) {
   const drawerFoot = createTag('div', { class: 'drawer-foot drawer-foot--comparison' });
   const selectButton = createTag('button', { class: 'select' }, 'Select');
   const infoContainer = createTag('div', { class: 'info-container' });
+  
+  // Add thumbnail image (start with left option as default)
+  const thumbnailImage = createTag('img', {
+    src: leftOption.imageUrl,
+    alt: leftOption.title,
+  });
+  
   const infoText = createTag('div', { class: 'info-text' });
   infoText.append(createTag('div', { class: 'info-name' }, leftOption.title));
   infoText.append(createTag('div', { class: 'info-price' }, leftOption.colorCount));
-  infoContainer.append(infoText);
+  
+  infoContainer.append(thumbnailImage, infoText);
   drawerFoot.append(infoContainer, selectButton);
   return drawerFoot;
 }
@@ -506,6 +514,7 @@ export default async function createDrawer({
   data = mockData,
   selectedIndex = 0,
   template = 'default',
+  productId = null,
 }) {
   ({ createTag, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`));
   // temporarily separating css to avoid code conflicts
@@ -535,6 +544,31 @@ export default async function createDrawer({
       drawerBody,
       drawerFoot,
     );
+    
+    // Cache footer elements for updating
+    const footerImage = drawerFoot.querySelector('img');
+    const footerName = drawerFoot.querySelector('.info-name');
+    const footerPrice = drawerFoot.querySelector('.info-price');
+    
+    // Update footer when columns are clicked
+    const leftColumn = drawerBody.querySelector('.comparison-column[data-option="left"]');
+    const rightColumn = drawerBody.querySelector('.comparison-column[data-option="right"]');
+    
+    if (leftColumn) {
+      leftColumn.addEventListener('click', () => {
+        if (footerImage) footerImage.src = data.left.imageUrl;
+        if (footerName) footerName.textContent = data.left.title;
+        if (footerPrice) footerPrice.textContent = data.left.colorCount;
+      });
+    }
+    
+    if (rightColumn) {
+      rightColumn.addEventListener('click', () => {
+        if (footerImage) footerImage.src = data.right.imageUrl;
+        if (footerName) footerName.textContent = data.right.title;
+        if (footerPrice) footerPrice.textContent = data.right.colorCount;
+      });
+    }
     
     // Add Select button handler for comparison
     const selectButton = drawerFoot.querySelector('.select');
@@ -625,25 +659,19 @@ export default async function createDrawer({
           }
 
           // Trigger change event to update all dynamic elements and WAIT for it to complete
-          const { default: updateAllDynamicElements } = await import('../utilities/event-handlers.js');
           const globalContainer = document.querySelector('.pdpx-global-container');
-          const productId = globalContainer?.dataset?.productId;
+          const productId = globalContainer?.id || globalContainer?.dataset?.productId;
 
           if (productId) {
             // WAIT for the update to complete before closing drawer
             await updateAllDynamicElements(productId);
-
-            // Close the drawer AFTER update completes
-            drawer.classList.add('hidden');
-            curtain.classList.add('hidden');
-            document.body.classList.remove('disable-scroll');
           }
-        } else {
-          // If no update needed, just close the drawer
-          drawer.classList.add('hidden');
-          curtain.classList.add('hidden');
-          document.body.classList.remove('disable-scroll');
         }
+        
+        // Close the drawer
+        drawer.classList.add('hidden');
+        curtain.classList.add('hidden');
+        document.body.classList.remove('disable-scroll');
       });
     }
   } else {
