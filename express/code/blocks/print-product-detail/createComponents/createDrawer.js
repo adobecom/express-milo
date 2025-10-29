@@ -1,9 +1,11 @@
 import { getLibs, getIconElementDeprecated } from '../../../scripts/utils.js';
 import updateAllDynamicElements from '../utilities/event-handlers.js';
+import { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 
 let createTag;
 let loadStyle;
 let getConfig;
+let uiStrings = {};
 
 /**
  * Updates the paper selection UI when a thumbnail is clicked or state is synced
@@ -80,7 +82,7 @@ function updatePaperSelectionUI(drawerBody, selectedThumb, cachedElements, foote
       const existingBadge = cachedElements.titleRow.querySelector('.paper-selection-recommended');
       const isRecommended = selectedThumb.dataset.recommended === 'true';
       if (isRecommended && !existingBadge) {
-        const badge = createTag('span', { class: 'paper-selection-recommended' }, 'Recommended');
+        const badge = createTag('span', { class: 'paper-selection-recommended' }, uiStrings.zi_common_Recommended || 'Recommended');
         cachedElements.titleRow.append(badge);
       } else if (!isRecommended && existingBadge) {
         existingBadge.remove();
@@ -146,7 +148,7 @@ function createDrawerBody({ name, recommended, labels, imgSrc, description }) {
   const drawerBody = createTag('div', { class: 'drawer-body' });
   drawerBody.append(createTag('img', { class: 'hero', src: imgSrc, alt: name }));
   const titleRow = createTag('div', { class: 'title-row' });
-  const recommendTag = createTag('span', { class: ['recommended', recommended ? null : 'hidden'].filter(Boolean).join() }, 'Recommended'); // TODO: localize
+  const recommendTag = createTag('span', { class: ['recommended', recommended ? null : 'hidden'].filter(Boolean).join() }, uiStrings.zi_common_Recommended || 'Recommended');
   titleRow.append(createTag('span', { class: 'name' }, name), recommendTag);
   drawerBody.append(titleRow);
   const labelRow = createTag('div', { class: 'label-row' });
@@ -163,7 +165,7 @@ function createDrawerBody({ name, recommended, labels, imgSrc, description }) {
 
 function createDrawerFoot({ imgSrc, name, price }) {
   const drawerFoot = createTag('div', { class: 'drawer-foot' });
-  const selectButton = createTag('button', { class: 'select' }, 'Select'); // TODO: localize
+  const selectButton = createTag('button', { class: 'select' }, uiStrings.zi_common_Select || 'Select');
   const infoContainer = createTag('div', { class: 'info-container' });
   const infoText = createTag('div', { class: 'info-text' });
   infoText.append(createTag('div', { class: 'info-name' }, name));
@@ -366,7 +368,7 @@ function createDrawerBodyPaperSelection(data) {
   const paperName = createTag('h3', { class: 'paper-selection-name' }, data.selectedPaper.name);
   titleRow.append(paperName);
   if (data.selectedPaper.recommended) {
-    const recommendedBadge = createTag('span', { class: 'paper-selection-recommended' }, 'Recommended');
+    const recommendedBadge = createTag('span', { class: 'paper-selection-recommended' }, uiStrings.zi_common_Recommended || 'Recommended');
     titleRow.append(recommendedBadge);
   }
   drawerBody.append(titleRow);
@@ -483,6 +485,15 @@ export default async function createDrawer({
   productId = null,
 }) {
   ({ createTag, loadStyle, getConfig } = await import(`${getLibs()}/utils/utils.js`));
+  
+  // Load UI strings if not already loaded
+  if (Object.keys(uiStrings).length === 0) {
+    try {
+      uiStrings = await fetchUIStrings();
+    } catch (error) {
+      console.warn('Failed to load UI strings, using defaults:', error);
+    }
+  }
   // temporarily separating css to avoid code conflicts
   const styleLoaded = new Promise((resolve) => {
     loadStyle(`${getConfig().codeRoot}/blocks/print-product-detail/createComponents/drawer.css`, () => {

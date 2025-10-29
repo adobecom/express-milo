@@ -1,8 +1,10 @@
 import { getLibs } from '../../../scripts/utils.js';
 import updateAllDynamicElements from '../utilities/event-handlers.js';
 import { updatePaperSelectionUI } from './createDrawer.js';
+import { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
 
 let createTag;
+let uiStrings = {};
 
 function createStandardSelector(
   customizationOptions,
@@ -61,7 +63,7 @@ function createPillOptionsSelector(
     const learnMoreLink = createTag('button', {
       class: 'pdpx-pill-selector-label-compare-link',
       type: 'button',
-    }, 'Learn more');
+    }, uiStrings.zi_common_LearnMore || 'Learn more');
     learnMoreLink.addEventListener('click', (e) => {
       e.preventDefault();
       if (comparisonDrawer) {
@@ -318,7 +320,7 @@ function createTShirtInputs(
       const learnMoreLink = createTag('button', {
         class: 'pdpx-pill-selector-label-compare-link',
         type: 'button',
-      }, 'Learn more');
+      }, uiStrings.zi_common_LearnMore || 'Learn more');
       
       learnMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
@@ -394,7 +396,7 @@ function createTShirtInputs(
       const learnMoreLink = createTag('button', {
         class: 'pdpx-pill-selector-label-compare-link',
         type: 'button',
-      }, 'Learn more');
+      }, uiStrings.zi_common_LearnMore || 'Learn more');
       
       learnMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
@@ -460,6 +462,15 @@ export default async function createCustomizationInputs(
   paperDrawer = null,
 ) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
+  
+  // Load UI strings if not already loaded
+  if (Object.keys(uiStrings).length === 0) {
+    try {
+      uiStrings = await fetchUIStrings();
+    } catch (error) {
+      console.warn('Failed to load UI strings, using defaults:', error);
+    }
+  }
   const customizationInputsContainer = createTag('div', {
     class: 'pdpx-customization-inputs-container',
     id: 'pdpx-customization-inputs-container',
