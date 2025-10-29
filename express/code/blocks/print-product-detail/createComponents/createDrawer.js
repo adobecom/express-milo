@@ -8,6 +8,29 @@ let getConfig;
 let uiStrings = {};
 
 /**
+ * Focus trap helper to keep focus within drawer
+ * @param {HTMLElement} drawer - The drawer element
+ * @param {Event} e - The keydown event
+ */
+function handleFocusTrap(drawer, e) {
+  if (e.key !== 'Tab') return;
+
+  const focusableElements = drawer.querySelectorAll(
+    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  );
+  const firstFocusable = focusableElements[0];
+  const lastFocusable = focusableElements[focusableElements.length - 1];
+
+  if (e.shiftKey && document.activeElement === firstFocusable) {
+    e.preventDefault();
+    lastFocusable.focus();
+  } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+    e.preventDefault();
+    firstFocusable.focus();
+  }
+}
+
+/**
  * Updates the paper selection UI when a thumbnail is clicked or state is synced
  * @param {HTMLElement} drawerBody - The drawer body element
  * @param {HTMLElement} selectedThumb - The selected thumbnail element
@@ -130,7 +153,7 @@ Risus risus neque sollicitudin sapien. Neque egestas in quam a. Nec mauris conse
   },
 ];
 
-function createDrawerHead(drawerLabel, drawer, curtain) {
+function createDrawerHead(drawerLabel, drawer, curtain, focusTrapHandler, returnFocusHandler) {
   const drawerHead = createTag('div', { class: 'drawer-head' });
   const closeButton = createTag('button', { 'aria-label': 'close' }, getIconElementDeprecated('close-black'));
 
@@ -138,10 +161,20 @@ function createDrawerHead(drawerLabel, drawer, curtain) {
     drawer.classList.add('hidden');
     curtain.classList.add('hidden');
     document.body.classList.remove('disable-scroll');
+    
+    // Remove focus trap
+    if (focusTrapHandler) {
+      drawer.removeEventListener('keydown', focusTrapHandler);
+    }
+    
+    // Return focus to triggering element
+    if (returnFocusHandler) {
+      returnFocusHandler();
+    }
   });
 
   drawerHead.append(createTag('div', { class: 'drawer-head-label' }, drawerLabel), closeButton);
-  return drawerHead;
+  return { drawerHead, closeButton };
 }
 
 function createDrawerBody({ name, recommended, labels, imgSrc, description }) {
@@ -506,32 +539,63 @@ export default async function createDrawer({
   const drawer = createTag('div', { class: 'drawer hidden' });
   drawer.setAttribute('data-drawer-type', template);
 
+  // Store reference to element that opened the drawer
+  let triggerElement = null;
+  
+  // Focus trap handler
+  const focusTrapHandler = (e) => handleFocusTrap(drawer, e);
+  
+  // Return focus handler
+  const returnFocusHandler = () => {
+    if (triggerElement && document.contains(triggerElement)) {
+      triggerElement.focus();
+    }
+  };
+
   // Curtain closes the drawer when clicked
   curtain.addEventListener('click', () => {
     drawer.classList.add('hidden');
     curtain.classList.add('hidden');
     document.body.classList.remove('disable-scroll');
+    drawer.removeEventListener('keydown', focusTrapHandler);
+    returnFocusHandler();
   });
 
+  let closeButton;
+  
   if (template === 'comparison') {
     const drawerBody = createDrawerBodyComparison(data);
-    drawer.append(
-      createDrawerHead(drawerLabel, drawer, curtain),
-      drawerBody,
+    const { drawerHead, closeButton: btn } = createDrawerHead(
+      drawerLabel,
+      drawer,
+      curtain,
+      focusTrapHandler,
+      returnFocusHandler,
     );
+    closeButton = btn;
+    drawer.append(drawerHead, drawerBody);
   } else if (template === 'size-chart') {
-    drawer.append(
-      createDrawerHead(drawerLabel, drawer, curtain),
-      createDrawerBodySizeChart(data),
+    const { drawerHead, closeButton: btn } = createDrawerHead(
+      drawerLabel,
+      drawer,
+      curtain,
+      focusTrapHandler,
+      returnFocusHandler,
     );
+    closeButton = btn;
+    drawer.append(drawerHead, createDrawerBodySizeChart(data));
   } else if (template === 'paper-selection') {
     const drawerBody = createDrawerBodyPaperSelection(data);
     const drawerFoot = createDrawerFoot(data.selectedPaper);
-    drawer.append(
-      createDrawerHead(drawerLabel, drawer, curtain),
-      drawerBody,
-      drawerFoot,
+    const { drawerHead, closeButton: btn } = createDrawerHead(
+      drawerLabel,
+      drawer,
+      curtain,
+      focusTrapHandler,
+      returnFocusHandler,
     );
+    closeButton = btn;
+    drawer.append(drawerHead, drawerBody, drawerFoot);
 
     // Cache footer elements for performance
     const footerElements = {
@@ -593,18 +657,42 @@ export default async function createDrawer({
         drawer.classList.add('hidden');
         curtain.classList.add('hidden');
         document.body.classList.remove('disable-scroll');
+        drawer.removeEventListener('keydown', focusTrapHandler);
+        returnFocusHandler();
       });
     }
   } else {
-    drawer.append(
-      createDrawerHead(drawerLabel, drawer, curtain),
-      createDrawerBody(data[selectedIndex]),
-      createDrawerFoot(data[selectedIndex]),
+    const { drawerHead, closeButton: btn } = createDrawerHead(
+      drawerLabel,
+      drawer,
+      curtain,
+      focusTrapHandler,
+      returnFocusHandler,
     );
+    closeButton = btn;
+    drawer.append(drawerHead, createDrawerBody(data[selectedIndex]), createDrawerFoot(data[selectedIndex]));
   }
 
+  // Helper method to open drawer with proper focus management
+  const openDrawer = (triggerEl) => {
+    triggerElement = triggerEl || document.activeElement;
+    drawer.classList.remove('hidden');
+    curtain.classList.remove('hidden');
+    document.body.classList.add('disable-scroll');
+    
+    // Add focus trap
+    drawer.addEventListener('keydown', focusTrapHandler);
+    
+    // Focus close button after a short delay to ensure drawer is visible
+    requestAnimationFrame(() => {
+      if (closeButton && document.contains(closeButton)) {
+        closeButton.focus();
+      }
+    });
+  };
+
   await styleLoaded;
-  return { curtain, drawer };
+  return { curtain, drawer, openDrawer };
 }
 
 // Export the shared update function for use in other components
