@@ -1,19 +1,19 @@
-import { getLibs, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
+import { getLibs, yieldToMain, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
-// nate bg at top
+// nate test 5
 
 let createTag;
 
-// async function syncMinHeights(groups) {
-//   const maxHeights = groups.map((els) => els
-//     .filter((e) => !!e)
-//     .reduce((max, e) => Math.max(max, e.offsetHeight), 0));
-//   await yieldToMain();
-//   maxHeights.forEach((maxHeight, i) => groups[i].forEach((e) => {
-//     if (e) e.style.minHeight = `${maxHeight}px`;
-//   }));
-// }
+async function syncMinHeights(groups) {
+  const maxHeights = groups.map((els) => els
+    .filter((e) => !!e)
+    .reduce((max, e) => Math.max(max, e.offsetHeight), 0));
+  await yieldToMain();
+  maxHeights.forEach((maxHeight, i) => groups[i].forEach((e) => {
+    if (e) e.style.minHeight = `${maxHeight}px`;
+  }));
+}
 
 const nextSVGHTML = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g id="Slider Button - Arrow - Right">
@@ -116,12 +116,6 @@ export async function buildGallery(
 }
 
 export default async function decorate(block) {
-  block.style.backgroundImage = `
-        linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
-      `;
-
   const isDiscoverFlipCards = block.classList.contains('flip');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), decorateButtonsDeprecated(block)]).then(([utils]) => {
     ({ createTag } = utils);
@@ -224,11 +218,17 @@ export default async function decorate(block) {
 
   block.appendChild(cardsWrapper);
   await buildGallery(cards, cardsWrapper);
-  // new IntersectionObserver((entries, obs) => {
-  //   obs.unobserve(block);
-  //   syncMinHeights(cardParagraphs);
-  // }).observe(block);
-  // window.addEventListener('resize', debounce(() => {
-  //   syncMinHeights(cardParagraphs);
-  // }, 100));
+  new IntersectionObserver((entries, obs) => {
+    obs.unobserve(block);
+    syncMinHeights(cardParagraphs);
+  }).observe(block);
+  window.addEventListener('resize', debounce(() => {
+    syncMinHeights(cardParagraphs);
+  }, 100));
+
+  // block.style.backgroundImage = `
+  //       linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
+  //       linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
+  //       url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
+  //     `;
 }
