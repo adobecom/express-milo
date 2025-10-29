@@ -42,7 +42,7 @@
 }
 
 .drawer-body--read-only .comparison-column:hover {
-  border-color: var(--color-gray-200);
+  border-color: transparent;
   background: transparent;
 }
 
