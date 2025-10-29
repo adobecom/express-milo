@@ -397,14 +397,8 @@ function createTShirtInputs(
   );
   
   // Add Learn More link to T-Shirt selector if comparison drawer exists
-  // eslint-disable-next-line no-console
-  console.log('[T-Shirt Inputs] comparisonDrawer:', comparisonDrawer);
-  // eslint-disable-next-line no-console
-  console.log('[T-Shirt Inputs] styleSelectorContainer:', styleSelectorContainer);
   if (comparisonDrawer && styleSelectorContainer) {
     const labelContainer = styleSelectorContainer.querySelector('.pdpx-pill-selector-label-container');
-    // eslint-disable-next-line no-console
-    console.log('[T-Shirt Inputs] labelContainer:', labelContainer);
     if (labelContainer) {
       const learnMoreLink = createTag('button', {
         class: 'pdpx-pill-selector-label-compare-link',
@@ -419,8 +413,6 @@ function createTShirtInputs(
       });
       
       labelContainer.appendChild(learnMoreLink);
-      // eslint-disable-next-line no-console
-      console.log('[T-Shirt Inputs] Learn More link added!');
     }
   }
   const colorSelectorContainer = createMiniPillOptionsSelector(

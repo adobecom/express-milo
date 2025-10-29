@@ -36,6 +36,16 @@
   background: var(--color-info-light);
 }
 
+/* Read-only mode: disable hover and selection states */
+.drawer-body--read-only .comparison-column {
+  cursor: default;
+}
+
+.drawer-body--read-only .comparison-column:hover {
+  border-color: var(--color-gray-200);
+  background: transparent;
+}
+
 .comparison-image {
   width: 40%;
   max-width: 300px;

@@ -215,7 +215,9 @@ function createColorProcess(colorCount, iconNames) {
 }
 
 function createDrawerBodyComparison(data, readOnly = false) {
-  const drawerBody = createTag('div', { class: 'drawer-body drawer-body--comparison' });
+  const drawerBody = createTag('div', { 
+    class: readOnly ? 'drawer-body drawer-body--comparison drawer-body--read-only' : 'drawer-body drawer-body--comparison',
+  });
   
   // Store selected option (default to left/Classic) only if not read-only
   if (!readOnly) {
@@ -553,13 +555,6 @@ export default async function createDrawer({
         createDrawerHead(drawerLabel, drawer, curtain),
         drawerBody,
       );
-      
-      // Remove click handlers and hover states from columns in read-only mode
-      const columns = drawerBody.querySelectorAll('.comparison-column');
-      columns.forEach((column) => {
-        column.style.cursor = 'default';
-        column.classList.remove('selected');
-      });
     } else {
       // Interactive mode: with footer and clickable columns
       const drawerFoot = createDrawerFootComparison(data.left, data.right);
