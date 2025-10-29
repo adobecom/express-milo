@@ -137,6 +137,12 @@ async function updatePageWithPaperDrawer(productDetails, rawProductDetails) {
     data: { paperOptions, selectedPaper: paperOptions.find((p) => p.isRecommended) || paperOptions[0] },
   });
 
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  if (globalContainer && paperDrawer) {
+    globalContainer.appendChild(paperDrawer.curtain);
+    globalContainer.appendChild(paperDrawer.drawer);
+  }
+
   return paperDrawer;
 }
 
@@ -165,6 +171,12 @@ async function updatePageWithComparisonDrawer(productDetails) {
     data: comparisonData,
   });
 
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  if (globalContainer && comparisonDrawer) {
+    globalContainer.appendChild(comparisonDrawer.curtain);
+    globalContainer.appendChild(comparisonDrawer.drawer);
+  }
+
   return comparisonDrawer;
 }
 
@@ -186,6 +198,12 @@ async function updatePageWithSizeChartDrawer(productDetails) {
     productId: productDetails.id,
     data: sizeChartData,
   });
+
+  const globalContainer = document.querySelector('.pdpx-global-container');
+  if (globalContainer && sizeChartDrawer) {
+    globalContainer.appendChild(sizeChartDrawer.curtain);
+    globalContainer.appendChild(sizeChartDrawer.drawer);
+  }
   
   return sizeChartDrawer;
 }
