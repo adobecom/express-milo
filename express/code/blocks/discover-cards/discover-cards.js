@@ -1,7 +1,7 @@
 import { getLibs, yieldToMain, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
-// nate test 11
+// nate test 12
 
 let createTag;
 
@@ -225,12 +225,4 @@ export default async function decorate(block) {
   window.addEventListener('resize', debounce(() => {
     syncMinHeights(cardParagraphs);
   }, 100));
-
-  setTimeout(() => {
-    block.style.backgroundImage = `
-        linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
-      `;
-  }, 10000);
 }
