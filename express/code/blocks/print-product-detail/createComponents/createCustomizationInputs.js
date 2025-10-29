@@ -66,10 +66,8 @@ function createPillOptionsSelector(
     }, uiStrings.zi_common_LearnMore || 'Learn more');
     learnMoreLink.addEventListener('click', (e) => {
       e.preventDefault();
-      if (comparisonDrawer) {
-        comparisonDrawer.drawer.classList.remove('hidden');
-        comparisonDrawer.curtain.classList.remove('hidden');
-        document.body.classList.add('disable-scroll');
+      if (comparisonDrawer && comparisonDrawer.openDrawer) {
+        comparisonDrawer.openDrawer(learnMoreLink);
       }
     });
     pillSelectorLabelContainer.appendChild(learnMoreLink);
@@ -181,9 +179,9 @@ function createMiniPillOptionsSelector(
           }
         }
 
-        miniPillSelectorLabelCompareLink.drawerRef.drawer.classList.remove('hidden');
-        miniPillSelectorLabelCompareLink.drawerRef.curtain.classList.remove('hidden');
-        document.body.classList.add('disable-scroll');
+        if (miniPillSelectorLabelCompareLink.drawerRef.openDrawer) {
+          miniPillSelectorLabelCompareLink.drawerRef.openDrawer(miniPillSelectorLabelCompareLink);
+        }
       }
     });
     miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelCompareLink);
@@ -324,9 +322,9 @@ function createTShirtInputs(
       
       learnMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
-        comparisonDrawer.drawer.classList.remove('hidden');
-        comparisonDrawer.curtain.classList.remove('hidden');
-        document.body.classList.add('disable-scroll');
+        if (comparisonDrawer.openDrawer) {
+          comparisonDrawer.openDrawer(learnMoreLink);
+        }
       });
       
       labelContainer.appendChild(learnMoreLink);
@@ -400,9 +398,9 @@ function createTShirtInputs(
       
       learnMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
-        comparisonDrawer.drawer.classList.remove('hidden');
-        comparisonDrawer.curtain.classList.remove('hidden');
-        document.body.classList.add('disable-scroll');
+        if (comparisonDrawer.openDrawer) {
+          comparisonDrawer.openDrawer(learnMoreLink);
+        }
       });
       
       labelContainer.appendChild(learnMoreLink);
@@ -440,9 +438,9 @@ function createTShirtInputs(
     }, 'Size Chart');
 
     sizeChartLink.addEventListener('click', () => {
-      sizeChartDrawer.drawer.classList.remove('hidden');
-      sizeChartDrawer.curtain.classList.remove('hidden');
-      document.body.classList.add('disable-scroll');
+      if (sizeChartDrawer.openDrawer) {
+        sizeChartDrawer.openDrawer(sizeChartLink);
+      }
     });
 
     sizeSelectorContainer.appendChild(sizeChartLink);
