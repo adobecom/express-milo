@@ -12,7 +12,6 @@ main .section .discover-cards {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url(/express/code/blocks/discover-cards/img/cards-bg-large.webp);
 }
 
 .discover-cards .sub-header {
