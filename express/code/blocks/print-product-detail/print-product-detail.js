@@ -206,7 +206,6 @@ async function updatePageWithComparisonDrawer(productDetails) {
     drawerLabel: 'Select printing process',
     template: 'comparison',
     data: drawerData,
-    readOnly: true, // Static/informational mode for T-Shirt Learn More
   });
 
   const globalContainer = document.querySelector('.pdpx-global-container');

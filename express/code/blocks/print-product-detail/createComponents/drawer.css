@@ -14,36 +14,16 @@
   color: var(--color-gray-900); /* #222 */
 }
 
+/* Static comparison drawer - no hover or selection states */
 .comparison-column {
   display: flex;
   flex-direction: row;
   gap: var(--spacing-500); /* 32px */
   align-items: flex-start;
-  cursor: pointer;
+  cursor: default;
   padding: var(--spacing-200);
   border-radius: 8px;
   border: 2px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.comparison-column:hover {
-  border-color: var(--color-gray-300);
-  background: var(--color-gray-100);
-}
-
-.comparison-column.selected {
-  border-color: var(--color-info-accent);
-  background: var(--color-info-light);
-}
-
-/* Read-only mode: disable hover and selection states */
-.drawer-body--read-only .comparison-column {
-  cursor: default;
-}
-
-.drawer-body--read-only .comparison-column:hover {
-  border-color: transparent;
-  background: transparent;
 }
 
 .comparison-image {
