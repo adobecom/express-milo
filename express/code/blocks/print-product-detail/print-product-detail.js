@@ -390,7 +390,7 @@ export default async function decorate(block) {
     const quantity = 1;
     const productPrice = fetchAPIData(productId, null, 'getproductpricing');
     productPrice.then(async (productPriceResponse) => {
-      dataObject = updateDataObjectProductPrice(dataObject, productPriceResponse);
+      dataObject = updateDataObjectProductPrice(dataObject, productPriceResponse, quantity);
       await updatePageWithProductPrice(dataObject);
     });
 
