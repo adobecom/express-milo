@@ -1,7 +1,7 @@
 import { getLibs, decorateButtonsDeprecated, getIconElementDeprecated } from '../../scripts/utils.js';
 import { debounce, throttle } from '../../scripts/utils/hofs.js';
 
-// nate test 4
+// nate test no webp bg
 
 let createTag;
 
@@ -228,7 +228,6 @@ export default async function decorate(block) {
 
   block.style.backgroundImage = `
         linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%),
-        url(/express/code/blocks/discover-cards/img/cards-bg-large.webp)
+        linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%)
       `;
 }
