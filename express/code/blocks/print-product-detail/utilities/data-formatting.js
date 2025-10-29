@@ -24,7 +24,6 @@ async function convertAttributeToOptionsObject(productType, attribute) {
       option.firstProductRealviewParams.max_dim = '100';
       imageUrl = buildImageUrl(option.firstProductRealviewParams);
     }
-    console.log(option.properties.tags);
     optionsArray.push({
       thumbnail: imageUrl,
       title: option.title,
@@ -73,6 +72,8 @@ export async function normalizeProductDetailObject({ productDetails, productPric
     totalReviews: productReviews.reviews.stats.totalReviews,
     productDescriptions: [],
     attributes: { quantities: productDetails.product.quantities },
+    pbjOverrides: productDetails.product.pbjOverrides,
+    dbStrings: productDetails.product.dbStrings,
   };
   for (const attribute of Object.values(productDetails.product.attributes)) {
     normalizedProductDetails.attributes[attribute.name] = await convertAttributeToOptionsObject(productDetails.product.productType, attribute);
@@ -109,6 +110,8 @@ export function createEmptyDataObject(templateId) {
     compareValueTooltipDescription1: '',
     compareValueTooltipDescription2: '',
     productDescriptions: [],
+    pbjOverrides: null,
+    dbStrings: null,
   };
   return emptyDataObject;
 }
@@ -125,6 +128,8 @@ export async function updateDataObjectProductDetails(dataObject, productDetails)
   const quantitiesOptions = formatQuantityOptionsObject(productDetails.product.quantities, productDetails.product.pluralUnitLabel);
   dataObject.attributes.quantities = quantitiesOptions;
   dataObject.productDescriptions = formatProductDescriptions(productDetails);
+  dataObject.pbjOverrides = productDetails.product.pbjOverrides;
+  dataObject.dbStrings = productDetails.product.dbStrings;
   return dataObject;
 }
 
