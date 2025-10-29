@@ -71,16 +71,15 @@ function createInfoTooltipContent(productDetails) {
 async function createPriceLockup(productDetails) {
   const priceInfoContainer = createTag('div', { class: 'pdpx-price-info-container' });
   const priceInfoRow = createTag('div', { class: 'pdpx-price-info-row' });
-  // Use placeholder directly if price is a string, otherwise format it
-  const priceText = typeof productDetails.productPrice === 'string' 
-    ? productDetails.productPrice 
+  const priceText = typeof productDetails.productPrice === 'string'
+    ? productDetails.productPrice
     : await formatPriceZazzle(productDetails.productPrice);
   const comparePriceText = typeof productDetails.strikethroughPrice === 'string'
     ? productDetails.strikethroughPrice
     : await formatPriceZazzle(productDetails.strikethroughPrice);
   const priceContainer = createTag('span', { class: 'pdpx-price-label', id: 'pdpx-price-label' }, priceText);
   const comparePrice = createTag('span', { class: 'pdpx-compare-price-label', id: 'pdpx-compare-price-label' }, comparePriceText);
-  const comparePriceInfoLabel = createTag('span', { class: 'pdpx-compare-price-info-label' }, 'Comp. value');
+  const comparePriceInfoLabel = createTag('span', { class: 'pdpx-compare-price-info-label', id: 'pdpx-compare-price-info-label' }, productDetails.compareValueInfoIconLabel);
   const comparePriceInfoIconContainer = createTag('div', { class: 'pdpx-compare-price-info-icon-container' });
   const comparePriceInfoIconButton = createTag('button', { class: 'pdpx-compare-price-info-icon-button', type: 'button', 'aria-label': productDetails.tooltipTitle, 'aria-expanded': 'false' });
   function showTooltip() {

@@ -69,7 +69,8 @@ export function formatUrlForEnvironment(url) {
 export async function fetchProductDetails(templateId) {
   const { getConfig } = await import(`${getLibs()}/utils/utils.js`);
   const { ietf } = getConfig().locale;
-  const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
+  // const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
+  const topLevelDomain = 'co.uk';
   const url = `https://www.zazzle.${topLevelDomain}/svc/partner/adobeexpress/v1/getproductfromtemplate?templateId=${templateId}`;
   const productIdAPICall = await fetch(formatUrlForEnvironment(url));
   const productIdAPICallJSON = await productIdAPICall.json();
@@ -82,7 +83,8 @@ export default async function fetchAPIData(productId, parameters, endpoint) {
   const { ietf } = getConfig().locale;
   let apiDataFetch;
   let parametersString;
-  const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
+  // const topLevelDomain = exchangeRegionForTopLevelDomain(ietf);
+  const topLevelDomain = 'co.uk';
   if (parameters) {
     parametersString = Object.entries(parameters).map(([key, value]) => `${key}=${value}`).join('&');
   } else {

@@ -1,7 +1,8 @@
 import { getLibs } from '../../../scripts/utils.js';
-import updateAllDynamicElements from '../utilities/event-handlers.js';
+import updateAllDynamicElements, { toggleDrawer } from '../utilities/event-handlers.js';
 import { updatePaperSelectionUI } from './createDrawer.js';
 import { fetchUIStrings } from '../fetchData/fetchProductDetails.js';
+import createSegmentedMiniPillOptionsSelector from './createSegmentedMiniPillOptionsSelector.js';
 
 let createTag;
 let uiStrings = {};
@@ -128,7 +129,7 @@ function createMiniPillOptionsSelector(
   const miniPillSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
   const miniPillSelectorLabelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
   const miniPillSelectorLabelNameContainer = createTag('div', { class: 'pdpx-pill-selector-label-name-container' });
-  const miniPillSelectorLabel = createTag('span', { class: 'pdpx-pill-selector-label-label' }, labelText);
+  const miniPillSelectorLabel = createTag('span', { class: 'pdpx-pill-selector-label-label' }, `${labelText}: `);
   miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabel);
   miniPillSelectorLabelContainer.appendChild(miniPillSelectorLabelNameContainer);
   miniPillSelectorContainer.appendChild(miniPillSelectorLabelContainer);
@@ -141,23 +142,18 @@ function createMiniPillOptionsSelector(
       type: 'button',
       'data-drawer-type': 'paper',
     }, CTALinkText);
-    // Store drawer reference on the element for later use
     miniPillSelectorLabelCompareLink.drawerRef = null;
     miniPillSelectorLabelCompareLink.addEventListener('click', () => {
-      // Use stored drawer reference if available
       if (miniPillSelectorLabelCompareLink.drawerRef) {
-        // Sync drawer state with current form value before opening
         const currentMediaValue = hiddenSelectInput.value;
         const { drawer } = miniPillSelectorLabelCompareLink.drawerRef;
         const drawerBody = drawer.querySelector('.drawer-body--paper-selection');
 
         if (drawerBody && currentMediaValue) {
-          // Find the paper data to update UI
           const selector = `.paper-selection-thumb[data-paper-name="${currentMediaValue}"]`;
           const selectedThumb = drawerBody.querySelector(selector);
 
           if (selectedThumb) {
-            // Build cached elements object for the shared update function
             const cachedElements = {
               heroImage: drawerBody.querySelector('.paper-selection-hero'),
               paperName: drawerBody.querySelector('.paper-selection-name'),
@@ -167,14 +163,12 @@ function createMiniPillOptionsSelector(
               titleRow: drawerBody.querySelector('.paper-selection-title-row'),
             };
 
-            // Build footer elements object
             const footerElements = {
               image: drawer.querySelector('.drawer-foot img'),
               name: drawer.querySelector('.info-name'),
               price: drawer.querySelector('.info-price'),
             };
 
-            // Use shared update function with error handling
             updatePaperSelectionUI(drawerBody, selectedThumb, cachedElements, footerElements);
           }
         }
@@ -195,7 +189,8 @@ function createMiniPillOptionsSelector(
     hiddenSelectInput.appendChild(option);
     const miniPillOption = createTag('div', { class: 'pdpx-mini-pill-container' });
     const miniPillOptionImageContainer = createTag('button', { class: 'pdpx-mini-pill-image-container', type: 'button', 'data-name': customizationOptions[i].name, 'data-title': customizationOptions[i].title });
-    const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', src: customizationOptions[i].thumbnail });
+    const altTextMiniPill = `${labelText} Option Image Thumbnail: ${customizationOptions[i].title}`;
+    const miniPillOptionImage = createTag('img', { class: 'pdpx-mini-pill-image', alt: altTextMiniPill, src: customizationOptions[i].thumbnail });
     miniPillOptionImageContainer.appendChild(miniPillOptionImage);
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
@@ -225,12 +220,8 @@ function createMiniPillOptionsSelector(
   const selectedMiniPillOptionImageContainer = miniPillSelectorOptionsContainer
     .querySelector(selector);
   selectedMiniPillOptionImageContainer.classList.add('selected');
-  const miniPillSelectorLabeLName = createTag(
-    'span',
-    { class: 'pdpx-pill-selector-label-name' },
-    selectedMiniPillOptionImageContainer.dataset.title,
-  );
-  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabeLName);
+  const miniPillSelectorLabelName = createTag('span', { class: 'pdpx-pill-selector-label-name' }, selectedMiniPillOptionImageContainer.dataset.title);
+  miniPillSelectorLabelNameContainer.appendChild(miniPillSelectorLabelName);
   miniPillSelectorContainer.appendChild(miniPillSelectorOptionsContainer);
   miniPillSelectorContainer.appendChild(hiddenSelectInput);
   return miniPillSelectorContainer;
@@ -244,14 +235,13 @@ function createBusinessCardInputs(
 ) {
   const paperTypeSelectorContainer = createMiniPillOptionsSelector(
     productDetails.attributes.media,
-    'Paper Type: ',
+    'Paper Type',
     'media',
     'Compare Paper Types',
     productDetails.id,
     formDataObject?.media,
   );
 
-  // Set drawer reference on the "Compare Paper Types" link
   if (paperDrawer) {
     const compareLink = paperTypeSelectorContainer.querySelector('.pdpx-pill-selector-label-compare-link');
     if (compareLink) {
@@ -309,73 +299,73 @@ function createTShirtInputs(
 
   if (colorInlineSelection?.groups && productDetails.dbStrings) {
     printingProcessSelectorContainer = createTag('div', { class: 'pdpx-pill-selector-container' });
-    
+
     const labelContainer = createTag('div', { class: 'pdpx-pill-selector-label-container' });
     const label = createTag('span', { class: 'pdpx-pill-selector-label' }, 'Printing process');
     labelContainer.appendChild(label);
-    
+
     if (comparisonDrawer) {
       const learnMoreLink = createTag('button', {
         class: 'pdpx-pill-selector-label-compare-link',
         type: 'button',
       }, uiStrings.zi_common_LearnMore || 'Learn more');
-      
+
       learnMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
         if (comparisonDrawer.openDrawer) {
           comparisonDrawer.openDrawer(learnMoreLink);
         }
       });
-      
+
       labelContainer.appendChild(learnMoreLink);
     }
-    
+
     printingProcessSelectorContainer.appendChild(labelContainer);
-    
+
     const optionsContainer = createTag('div', { class: 'pdpx-pill-selector-options-container' });
-    
+
     colorInlineSelection.groups.forEach((group, index) => {
       const filterValue = group.filter?.['design.shade'];
       const matchingColor = productDetails.attributes.color?.find((color) => color.design?.shade === filterValue);
-      
+
       const button = createTag('button', {
         class: `pdpx-pill-container${index === 0 ? ' selected' : ''}`,
         type: 'button',
         'data-filter': JSON.stringify(group.filter),
       });
-      
+
       const imageContainer = createTag('div', { class: 'pdpx-pill-image-container' });
-      const img = createTag('img', { 
+      const img = createTag('img', {
         class: 'pdpx-pill-image',
         src: matchingColor?.thumbnail || '',
         alt: group.label,
       });
       imageContainer.appendChild(img);
       button.appendChild(imageContainer);
-      
+
       const textContainer = createTag('div', { class: 'pdpx-pill-text-container' });
-      
+
       const labelKey = group.label;
       const labelText = productDetails.dbStrings[labelKey] || group.label;
-      
+
       const nameSpan = createTag('span', { class: 'pdpx-pill-text-name' }, labelText);
       textContainer.appendChild(nameSpan);
-      
+
       const priceSpan = createTag('span', { class: 'pdpx-pill-text-price' }, index === 0 ? '+US$0.00' : '+US$2.95');
       textContainer.appendChild(priceSpan);
-      
+
       button.appendChild(textContainer);
-      
+
       button.addEventListener('click', () => {
         optionsContainer.querySelectorAll('.pdpx-pill-container').forEach((btn) => {
           btn.classList.remove('selected');
         });
         button.classList.add('selected');
       });
-      
+
       optionsContainer.appendChild(button);
     });
-    
+
     printingProcessSelectorContainer.appendChild(optionsContainer);
   }
 
@@ -387,7 +377,7 @@ function createTShirtInputs(
     formDataObject?.style,
     null,
   );
-  
+
   if (comparisonDrawer && styleSelectorContainer) {
     const labelContainer = styleSelectorContainer.querySelector('.pdpx-pill-selector-label-container');
     if (labelContainer) {
@@ -395,26 +385,26 @@ function createTShirtInputs(
         class: 'pdpx-pill-selector-label-compare-link',
         type: 'button',
       }, uiStrings.zi_common_LearnMore || 'Learn more');
-      
+
       learnMoreLink.addEventListener('click', (e) => {
         e.preventDefault();
         if (comparisonDrawer.openDrawer) {
           comparisonDrawer.openDrawer(learnMoreLink);
         }
       });
-      
+
       labelContainer.appendChild(learnMoreLink);
     }
   }
   const colorSelectorContainer = createMiniPillOptionsSelector(
     productDetails.attributes.color,
-    'Shirt color: ',
+    'Shirt color',
     'color',
     '',
     productDetails.id,
     formDataObject?.color,
   );
-  
+
   const quantitySelectorContainer = createStandardSelector(
     productDetails.attributes.quantities,
     'Quantity',
@@ -430,7 +420,6 @@ function createTShirtInputs(
     formDataObject?.size,
   );
 
-  // Add Size Chart link inside size selector container if drawer is available
   if (sizeChartDrawer) {
     const sizeChartLink = createTag('button', {
       class: 'pdpx-size-chart-link',
@@ -460,8 +449,7 @@ export default async function createCustomizationInputs(
   paperDrawer = null,
 ) {
   ({ createTag } = await import(`${getLibs()}/utils/utils.js`));
-  
-  // Load UI strings if not already loaded
+
   if (Object.keys(uiStrings).length === 0) {
     try {
       uiStrings = await fetchUIStrings();

@@ -1,5 +1,10 @@
 import { getLibs, createTag } from '../../../scripts/utils.js';
 
+export function extractTemplateId(block) {
+  const templateId = block.children[0].children[1].textContent;
+  return templateId;
+}
+
 export function formatDeliveryEstimateDateRange(minDate, maxDate) {
   const options = { month: 'short', day: 'numeric' };
   const minFormatted = new Date(minDate).toLocaleDateString('en-US', options);

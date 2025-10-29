@@ -4,10 +4,18 @@ import { normalizeProductDetailObject } from './data-formatting.js';
 import createProductImagesContainer from '../createComponents/createProductImagesContainer.js';
 import createCustomizationInputs from '../createComponents/createCustomizationInputs.js';
 import BlockMediator from '../../../scripts/block-mediator.min.js';
+import createDrawerContentSizeChart, { createDrawerContentPrintingProcess } from '../createComponents/createDrawerContent.js';
 
-export function toggleDrawer() {
+export async function toggleDrawer(drawerType) {
   const curtain = document.querySelector('.pdp-curtain');
   const drawer = document.querySelector('.drawer');
+  if (drawerType === 'sizeChart') {
+    const sizeChartContent = await createDrawerContentSizeChart();
+    drawer.appendChild(sizeChartContent);
+  } else if (drawerType === 'printingProcess') {
+    const printingProcessContent = await createDrawerContentPrintingProcess();
+    drawer.appendChild(printingProcessContent);
+  }
   document.body.classList.toggle('disable-scroll');
   curtain.classList.toggle('hidden');
   drawer.classList.toggle('hidden');
@@ -55,6 +63,7 @@ async function updateProductImages(productDetails) {
     imageType,
   );
   document.getElementById('pdpx-product-images-container').replaceWith(newProductImagesContainer);
+  newProductImagesContainer.querySelector('#pdpx-image-thumbnail-carousel-container').dataset.skeleton = 'false';
 }
 
 async function updateProductDeliveryEstimate(productDetails) {
@@ -124,38 +133,28 @@ export default async function updateAllDynamicElements(productId) {
     quantity,
   );
   const updatedParameters = formatProductOptionsToAPIParameters(updatedSelectedValuesObject);
-  const productDetails = await fetchAPIData(productId, updatedParameters, 'getproduct');
-  const productPrice = await fetchAPIData(productId, updatedParameters, 'getproductpricing');
-  const productReviews = await fetchAPIData(productId, null, 'getreviews');
-  const productRenditions = await fetchAPIData(
-    productId,
-    updatedParameters,
-    'getproductrenditions',
-  );
-  const productShippingEstimates = await fetchAPIData(
-    productId,
-    updatedParameters,
-    'getshippingestimates',
-  );
+  const [productDetails, productPrice, productReviews, productRenditions, productShippingEstimates] = await Promise.all([
+    fetchAPIData(productId, updatedParameters, 'getproduct'),
+    fetchAPIData(productId, updatedParameters, 'getproductpricing'),
+    fetchAPIData(productId, null, 'getreviews'),
+    fetchAPIData(productId, updatedParameters, 'getproductrenditions'),
+    fetchAPIData(productId, updatedParameters, 'getshippingestimates'),
+  ]);
   const normalizeProductDetailsParametersObject = {
-    productDetails,
+    productDetails: updatedConfigurationOptions,
     productPrice,
     productReviews,
     productRenditions,
     productShippingEstimates,
     quantity,
-    updatedConfigurationOptions,
     templateId,
   };
-  const normalizedProductDetails = await normalizeProductDetailObject(
-    normalizeProductDetailsParametersObject,
-  );
-  await updateProductPrice(normalizedProductDetails);
-  await updateProductImages(normalizedProductDetails);
-  await updateProductDeliveryEstimate(normalizedProductDetails);
-  await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+  const normalizedProductDetails = await normalizeProductDetailObject(normalizeProductDetailsParametersObject);
   await updateCheckoutButton(normalizedProductDetails);
-
+  await updateProductImages(normalizedProductDetails);
+  await updateCustomizationOptions(normalizedProductDetails, formDataObject);
+  await updateProductPrice(normalizedProductDetails);
+  await updateProductDeliveryEstimate(normalizedProductDetails);
   // Publish to BlockMediator to trigger accordion updates
   BlockMediator.set('product:updated', {
     productDetails,
