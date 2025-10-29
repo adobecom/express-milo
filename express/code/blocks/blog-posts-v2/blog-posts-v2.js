@@ -138,8 +138,18 @@ function getBlogPostsConfig(block) {
   return config;
 }
 
+// Normalize a URL string to an absolute URL based on current origin
+function normalizeToAbsolute(urlString) {
+  try {
+    return new URL(urlString, window.location.origin).href;
+  } catch (e) {
+    return urlString;
+  }
+}
+
 // Build spreadsheet-driven configuration (metadata → config)
-function getSpreadsheetConfig() {
+function getSpreadsheetConfig(block) {
+  if (!block?.classList?.contains('spreadsheet-powered')) return null;
   if (!getMetadata) return null;
   const cfg = {};
 
@@ -152,13 +162,7 @@ function getSpreadsheetConfig() {
     .filter((v) => typeof v === 'string' && v.trim())
     .map((v) => v.trim())
     // Normalize to absolute URLs so getFeatured() can parse with new URL()
-    .map((v) => {
-      try {
-        return new URL(v, window.location.origin).href;
-      } catch (e) {
-        return v;
-      }
-    });
+    .map((v) => normalizeToAbsolute(v));
 
   const featuredCsv = getMetadata('blog-featured');
   const featuredOnly = getMetadata('blog-featured-only');
@@ -176,13 +180,7 @@ function getSpreadsheetConfig() {
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean)
-      .map((v) => {
-        try {
-          return new URL(v, window.location.origin).href;
-        } catch (e) {
-          return v;
-        }
-      });
+      .map((v) => normalizeToAbsolute(v));
   }
   if (featuredOnly) cfg.featuredOnly = ['y', 'yes', 'true', 'on'].includes(featuredOnly.toLowerCase());
   if (tagsCsv) cfg.tags = tagsCsv.split(',').map((s) => s.trim()).filter(Boolean);
@@ -193,6 +191,8 @@ function getSpreadsheetConfig() {
 
   return Object.keys(cfg).length ? cfg : null;
 }
+
+// (intentionally left no spreadsheet overlap helpers beyond getSpreadsheetConfig)
 
 async function filterAllBlogPostsOnPage() {
   if (!blogResultsLoaded) {
@@ -212,13 +212,12 @@ async function filterAllBlogPostsOnPage() {
           locales.push(blogLocale);
         }
       });
-
       blogIndex = await fetchBlogIndex(locales);
     }
 
     for (let i = 0; i < blocks.length; i += 1) {
       const block = blocks[i];
-      const config = getSpreadsheetConfig() || getBlogPostsConfig(block);
+      const config = getBlogPostsConfig(block);
       const posts = filterBlogPosts(config, blogIndex);
       results.push({ config, posts });
     }
@@ -357,8 +356,8 @@ function addRightChevronToViewAll(blockElement) {
 }
 
 // Given a blog post element and a config, append all posts defined in the config to blogPosts
-async function decorateBlogPosts(blogPostsElements, config, offset = 0) {
-  const posts = await getFilteredResults(config);
+async function decorateBlogPosts(blogPostsElements, config, offset = 0, precomputedPosts = null) {
+  const posts = precomputedPosts || await getFilteredResults(config);
   // If a blog config has only one featured item, then build the item as a hero card.
   const isHero = config.featured && config.featured.length === 1;
 
@@ -415,6 +414,43 @@ function checkStructure(element, querySelectors) {
   return matched;
 }
 
+async function handelSpreadsheetVariant(block) { 
+  const spreadsheetConfig = getSpreadsheetConfig(block);
+  if (spreadsheetConfig) {
+    const locales = new Set([getConfig().locale.prefix]);
+    if (spreadsheetConfig.featured?.length) {
+      spreadsheetConfig.featured.forEach((href) => {
+        try {
+          const blogLocale = getLocale(getConfig().locales, new URL(href).pathname).prefix;
+          locales.add(blogLocale);
+        } catch (e) {
+          /* ignore */
+        }
+      });
+    }
+    const blogIndexLocal = await fetchBlogIndex(Array.from(locales));
+    const posts = filterBlogPosts(spreadsheetConfig, blogIndexLocal);
+    await decorateBlogPosts(block, spreadsheetConfig, 0, posts);
+  }
+}
+
+async function handleRegularVariant(block) {
+  const config = getBlogPostsConfig(block);
+  // wrap p in parent section
+  if (checkStructure(block.parentNode, ['h2 + p + p + div.blog-posts', 'h2 + p + div.blog-posts', 'h2 + div.blog-posts'])) {
+    const wrapper = createTag('div', { class: 'blog-posts-decoration' });
+    block.parentNode.insertBefore(wrapper, block);
+    const allP = block.parentNode.querySelectorAll(':scope > p');
+    allP.forEach((p) => {
+      wrapper.appendChild(p);
+    });
+  }
+
+  addRightChevronToViewAll(block);
+
+  await decorateBlogPosts(block, config);
+}
+
 export default async function decorate(block) {
   block.parentElement.classList.add('ax-blog-posts-container');
   await Promise.all([import(`${getLibs()}/utils/utils.js`), import(`${getLibs()}/features/placeholders.js`)]).then(([utils, placeholders]) => {
@@ -431,19 +467,10 @@ export default async function decorate(block) {
 
   addTempWrapperDeprecated(block, 'blog-posts');
 
-  /* Build config from spreadsheet metadata if present, otherwise from block */
-  const config = getSpreadsheetConfig() || getBlogPostsConfig(block);
-  // wrap p in parent section
-  if (checkStructure(block.parentNode, ['h2 + p + p + div.blog-posts', 'h2 + p + div.blog-posts', 'h2 + div.blog-posts'])) {
-    const wrapper = createTag('div', { class: 'blog-posts-decoration' });
-    block.parentNode.insertBefore(wrapper, block);
-    const allP = block.parentNode.querySelectorAll(':scope > p');
-    allP.forEach((p) => {
-      wrapper.appendChild(p);
-    });
+
+  if (block.classList.contains('spreadsheet-powered')) {
+    await handelSpreadsheetVariant(block);
+  } else {
+    await handleRegularVariant(block);
   }
-
-  addRightChevronToViewAll(block);
-
-  await decorateBlogPosts(block, config);
 }
