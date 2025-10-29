@@ -277,7 +277,7 @@ function createBusinessCardInputs(
   container.appendChild(quantitySelectorContainer);
 }
 
-function createTShirtInputs(
+async function createTShirtInputs(
   container,
   productDetails,
   formDataObject = {},
@@ -396,14 +396,28 @@ function createTShirtInputs(
       labelContainer.appendChild(learnMoreLink);
     }
   }
-  const colorSelectorContainer = createMiniPillOptionsSelector(
-    productDetails.attributes.color,
-    'Shirt color',
-    'color',
-    '',
-    productDetails.id,
-    formDataObject?.color,
-  );
+
+  let colorSelectorContainer;
+  if (colorInlineSelection?.groups && productDetails.dbStrings) {
+    colorSelectorContainer = await createSegmentedMiniPillOptionsSelector(
+      productDetails.attributes.color,
+      'Shirt color',
+      'color',
+      '',
+      productDetails.id,
+      formDataObject?.color,
+      colorInlineSelection,
+    );
+  } else {
+    colorSelectorContainer = createMiniPillOptionsSelector(
+      productDetails.attributes.color,
+      'Shirt color',
+      'color',
+      '',
+      productDetails.id,
+      formDataObject?.color,
+    );
+  }
 
   const quantitySelectorContainer = createStandardSelector(
     productDetails.attributes.quantities,
@@ -481,7 +495,7 @@ export default async function createCustomizationInputs(
         paperDrawer,
       );
     } else {
-      createInputsFunction(
+      await createInputsFunction(
         customizationInputsForm,
         productDetails,
         formDataObject,

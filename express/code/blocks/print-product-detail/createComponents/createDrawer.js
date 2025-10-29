@@ -244,7 +244,7 @@ function createDrawerBodyComparison(data) {
     <div class="comparison-price">+US$0.00 per shirt</div>
     <div class="comparison-description">${data.left.description}</div>
   `;
-  const leftColorProcess = createColorProcess('4', [
+  const leftColorProcess = createColorProcess(data.left.colorCount || '4', [
     'droplet-cyan',
     'droplet-magenta',
     'droplet-yellow',
@@ -260,7 +260,7 @@ function createDrawerBodyComparison(data) {
     <div class="comparison-price">+US$0.00 per shirt</div>
     <div class="comparison-description">${data.right.description}</div>
   `;
-  const rightColorProcess = createColorProcess('5', [
+  const rightColorProcess = createColorProcess(data.right.colorCount || '5', [
     'droplet-cyan',
     'droplet-magenta',
     'droplet-yellow',

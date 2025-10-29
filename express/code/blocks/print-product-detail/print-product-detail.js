@@ -96,6 +96,8 @@ const SIZE_CHART_DATA = {
 // Helper function to extract specs from descriptionBrief
 function extractSpecs(descriptionBrief) {
   const specs = {};
+  if (!descriptionBrief) return specs;
+  
   const lines = descriptionBrief.split('\n');
   lines.forEach((line) => {
     const match = line.match(/^([^:]+):\s*(.+)$/);
@@ -151,24 +153,28 @@ async function updatePageWithComparisonDrawer(productDetails) {
     return null;
   }
 
-  const comparisonData = {
+  const baseUrl = 'https://asset.zcache.com/assets/graphics/pd/productAttributeHelp/underbasePrintProcess';
+
+  const drawerData = {
+    title: 'Classic vs. Vivid Printing',
     left: {
       title: 'Classic Printing: No Underbase',
-      imageUrl: 'https://rlv.zcache.com/svc/view?rlvnet=1&realview=113500568478784410&style=triblend_shortsleeve3413&size=&color=white&max_dim=120',
-      description: 'Our classic printing method works best on light-colored garments. The ink absorbs into the fabric for a soft, breathable feel.',
+      colorCount: '4 Color',
+      imageUrl: `${baseUrl}/Classic.jpg`,
+      description: 'No white base layer is printed on the fabric, any white used in the design will come across as transparent allowing the color of the fabric to show through.',
     },
     right: {
       title: 'Vivid Printing: White Underbase',
-      imageUrl: 'https://rlv.zcache.com/svc/view?rlvnet=1&realview=113528354214055062&style=triblend_shortsleeve3413&size=&color=whitefleck&max_dim=120',
-      description: 'A white underbase is applied first, then your design is printed on top. This creates more vibrant colors and works on any shirt color.',
+      colorCount: '5 Color',
+      imageUrl: `${baseUrl}/Vivid.jpg`,
+      description: 'Fabric is treated with a white base layer under the design, allowing the design to be more vibrant. Extra production step may require a surcharge.',
     },
   };
 
   const comparisonDrawer = await createDrawer({
+    drawerLabel: 'Select printing process',
     template: 'comparison',
-    drawerLabel: 'Compare printing processes',
-    productId: productDetails.id,
-    data: comparisonData,
+    data: drawerData,
   });
 
   const globalContainer = document.querySelector('.pdpx-global-container');
