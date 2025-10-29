@@ -20,10 +20,9 @@ function updatePaperSelectionUI(drawerBody, selectedThumb, cachedElements, foote
       return false;
     }
 
-    // Update selected state on thumbnails
-    const carousel = drawerBody.querySelector('.paper-selection-carousel');
-    if (carousel) {
-      carousel.querySelectorAll('.paper-selection-thumb').forEach((thumb) => {
+    // Update selected state on thumbnails using cached array
+    if (cachedElements?.thumbs) {
+      cachedElements.thumbs.forEach((thumb) => {
         thumb.classList.remove('selected');
       });
       selectedThumb.classList.add('selected');
@@ -456,6 +455,7 @@ function createDrawerBodyPaperSelection(data) {
     description,
     specsRow: drawerBody.querySelector('.paper-selection-specs'),
     titleRow: drawerBody.querySelector('.paper-selection-title-row'),
+    thumbs: Array.from(carouselWrapper.querySelectorAll('.paper-selection-thumb')),
   };
 
   // Use event delegation to avoid memory leaks

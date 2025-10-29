@@ -26,8 +26,12 @@ function createStandardSelector(
     const standardOption = createTag('option', { value: customizationOptions[i].name, class: 'pdpx-standard-selector-option' }, optionLabel);
     standardSelectorInput.appendChild(standardOption);
   }
-  standardSelectorInput.addEventListener('change', () => {
-    updateAllDynamicElements(productId);
+  standardSelectorInput.addEventListener('change', async () => {
+    try {
+      await updateAllDynamicElements(productId);
+    } catch (error) {
+      console.error('Failed to update product options:', error);
+    }
   });
   standardSelectorInput.value = selectedOption;
   standardSelectorContainer.appendChild(standardSelectorInput);
@@ -89,12 +93,16 @@ function createPillOptionsSelector(
     pillContainer.appendChild(inputPillTextContainer);
     pillSelectorOptionsContainer.appendChild(pillContainer);
     pillContainer.addEventListener('click', async (element) => {
-      pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((pill) => {
-        pill.classList.remove('selected');
-      });
-      element.currentTarget.classList.toggle('selected');
-      document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
-      updateAllDynamicElements(productId);
+      try {
+        pillSelectorOptionsContainer.querySelectorAll('.pdpx-pill-container').forEach((pill) => {
+          pill.classList.remove('selected');
+        });
+        element.currentTarget.classList.toggle('selected');
+        document.getElementById(hiddenSelectInputName).value = element.currentTarget.getAttribute('data-name');
+        await updateAllDynamicElements(productId);
+      } catch (error) {
+        console.error('Failed to update product options:', error);
+      }
     });
   }
   hiddenSelectInput.value = selectedPillOption;
@@ -192,14 +200,20 @@ function createMiniPillOptionsSelector(
     const miniPillOptionTextContainer = createTag('div', { class: 'pdpx-mini-pill-text-container' });
     const miniPillOptionPrice = createTag('span', { class: 'pdpx-mini-pill-price' }, customizationOptions[i].priceAdjustment);
     miniPillOptionImageContainer.addEventListener('click', async (e) => {
-      miniPillSelectorOptionsContainer.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
-        pill.classList.remove('selected');
-      });
-      e.currentTarget.classList.toggle('selected');
-      const labelNameSpan = miniPillSelectorLabelNameContainer.querySelector('.pdpx-pill-selector-label-name');
-      labelNameSpan.innerHTML = e.currentTarget.getAttribute('data-title');
-      document.getElementById(hiddenSelectInputName).value = e.currentTarget.getAttribute('data-name');
-      updateAllDynamicElements(productId);
+      try {
+        miniPillSelectorOptionsContainer.querySelectorAll('.pdpx-mini-pill-image-container').forEach((pill) => {
+          pill.classList.remove('selected');
+        });
+        e.currentTarget.classList.toggle('selected');
+        const labelNameSpan = miniPillSelectorLabelNameContainer.querySelector('.pdpx-pill-selector-label-name');
+        if (labelNameSpan) {
+          labelNameSpan.textContent = e.currentTarget.getAttribute('data-title');
+        }
+        document.getElementById(hiddenSelectInputName).value = e.currentTarget.getAttribute('data-name');
+        await updateAllDynamicElements(productId);
+      } catch (error) {
+        console.error('Failed to update product options:', error);
+      }
     });
     miniPillOptionTextContainer.appendChild(miniPillOptionPrice);
     miniPillOption.appendChild(miniPillOptionImageContainer);
@@ -357,8 +371,6 @@ function createTShirtInputs(
           btn.classList.remove('selected');
         });
         button.classList.add('selected');
-        // eslint-disable-next-line no-console
-        console.log('[Printing Process] Selected filter:', group.filter);
       });
       
       optionsContainer.appendChild(button);
@@ -435,11 +447,6 @@ function createTShirtInputs(
   }
 
   container.appendChild(styleSelectorContainer);
-  /*
-  if (printingProcessSelectorContainer) {
-    container.appendChild(printingProcessSelectorContainer);
-  }
-  */
   container.appendChild(colorSelectorContainer);
   container.appendChild(quantitySelectorContainer);
   container.appendChild(sizeSelectorContainer);
