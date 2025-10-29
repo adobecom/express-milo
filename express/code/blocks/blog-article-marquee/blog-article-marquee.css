@@ -36,7 +36,7 @@ main .section .blog-article-marquee p {
   margin: 0;
   color: var(--color-default-font);
   font-size: var(--heading-font-size-ml);
-  font-weight: 900;
+  font-weight: var(--heading-font-weight-extra);
   line-height: 104%;
 }
 
@@ -50,14 +50,14 @@ main .section .blog-article-marquee p {
   color: var(--color-dark-gray);
   font-size: var(--regular-font-size);
   font-style: normal;
-  font-weight: 400;
-  line-height: 130%;
+  font-weight: var(--ax-body-weight);
+  line-height: var(--heading-line-height);
 }
 
 .blog-article-marquee .blog-article-marquee-eyebrow {
   color: var(--color-default-font);
   font-size: var(--regular-font-size);
-  font-weight: 700;
+  font-weight: var(--ax-body-weight-bold);
   line-height: 137.5%;
 }
 
@@ -65,8 +65,8 @@ main .section .blog-article-marquee p {
   margin: 0;
   color: var(--color-default-font);
   font-size: var(--regular-font-size);
-  font-weight: 700;
-  line-height: 130%;
+  font-weight: var(--ax-body-weight-bold);
+  line-height: var(--heading-line-height);
 }
 
 .blog-article-marquee .blog-article-marquee-media {
@@ -101,7 +101,7 @@ main .section .blog-article-marquee p {
   justify-content: center;
   width: var(--spacing-700);
   height: var(--spacing-700);
-  border-radius: 24px;
+  border-radius: var(--spacing-400);
   flex-shrink: 0;
 }
 
@@ -111,7 +111,7 @@ main .section .blog-article-marquee p {
   height: var(--spacing-700);
 }
 .blog-article-marquee .blog-article-marquee-product-media img {
-  border-radius: 24px;
+  border-radius: var(--spacing-400);
 }
 
 .blog-article-marquee .blog-article-marquee-product-copy {
@@ -125,15 +125,15 @@ main .section .blog-article-marquee p {
   color: var(--color-dark-gray);
   font-size: var(--ax-body-xs-size);
   font-style: normal;
-  font-weight: 400;
-  line-height: 130%;
+  font-weight: var(--ax-body-weight);
+  line-height: var(--heading-line-height);
 }
 
 .blog-article-marquee .blog-article-marquee-product-date {
   margin: 0;
   color: var(--color-dark-gray);
   font-size: var(--ax-body-xxs-size);
-  line-height: 130%;
+  line-height: var(--heading-line-height);
 }
 
 .blog-article-marquee a.con-button.blue:any-link {
@@ -184,7 +184,7 @@ main .section .blog-article-marquee p {
   .blog-article-marquee .blog-article-marquee-content h2 {
     font-size: var(--heading-font-size-xl);
     line-height: 1.2;
-    font-weight: 900;
+    font-weight: var(--heading-font-weight-extra);
   }
 
   .blog-article-marquee .blog-article-marquee-products {
