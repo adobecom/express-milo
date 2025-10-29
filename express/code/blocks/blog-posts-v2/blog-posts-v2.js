@@ -424,7 +424,7 @@ async function handelSpreadsheetVariant(block) {
           const blogLocale = getLocale(getConfig().locales, new URL(href).pathname).prefix;
           locales.add(blogLocale);
         } catch (e) {
-          /* ignore */
+          console.error('Error getting locale for href', href, e);
         }
       });
     }
